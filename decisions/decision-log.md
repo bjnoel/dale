@@ -89,4 +89,35 @@ Vista, California, USA — not an Australian nursery. Removed from monitoring li
 **Rationale:** $199 is low enough to be an easy yes for a business owner, high enough
 to not feel cheap. Landing page and deliverable template built around this price point.
 Benedict to confirm (Q7).
-**Status:** PROPOSED
+**Status:** APPROVED — Benedict delegated pricing decision to Dale
+
+## DEC-011 — 2026-03-05 — Track A Pricing: $199 Confirmed
+**Decided by:** Dale (delegated authority from Benedict)
+**Decision:** Lock in $199 for standard assessment. $149/month for implementation retainer.
+**Rationale:** Benedict said "you decide." $199 is the right number because:
+- $149 risks looking cheap, especially for trades and professional services
+- $199 is still an impulse-level spend for a business owner
+- If first prospects balk, we can always drop to $149 — easier to lower than raise
+- Landing page already shows $199
+**Kill criteria:** If first 3 prospects all say too expensive, drop to $149.
+**Status:** EXECUTED
+
+## DEC-012 — 2026-03-05 — Track B: Build Separate from scion-app
+**Decided by:** Joint
+**Decision:** Build Track B stock dashboard as a new web app, not in the existing
+React Native scion-app. Can use scion.exchange domain or subdomain.
+**Rationale:** Benedict not keen on the React Native stack. A simple web dashboard
+is faster to build, easier to share in FB groups, and doesn't require app installation.
+Existing app stays as-is.
+**Status:** APPROVED
+
+## DEC-013 — 2026-03-05 — First Audit Targets
+**Decided by:** Joint
+**Decision:** Three warm prospects for first audits:
+1. PBR Plumbing (West Leederville) — Benedict knows the plumber
+2. Wembley Cycles — Benedict did previous SEO audit
+3. Gather Ceramics — Benedict helped them before
+**Rationale:** Warm leads reduce friction. Mix of trades + retail gives us diverse
+portfolio pieces. Wembley Cycles is interesting because Benedict has history there.
+**Next step:** Dale runs automated analysis on all three, Benedict approaches with results.
+**Status:** APPROVED

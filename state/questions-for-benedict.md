@@ -9,45 +9,47 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ### Q1 [ANSWERED] — Business Name
 walkthrough.au registered for Track A. scion.exchange exists for Track B.
-Separate brands confirmed.
 
 ### Q2 [ANSWERED] — GitHub Repo
-Done. Dale repo exists.
+Done.
 
-### Q3 [INFO] — Rare Fruit Priorities
-Which 10 varieties are most sought-after / frequently sell out in the WA
-rare fruit community? I'll prioritise monitoring these first.
-Examples from my research: jaboticaba, rollinia, sapodilla, black sapote,
-ice cream bean, white sapote, grumichama, miracle fruit...?
+### Q3 [ANSWERED] — Rare Fruit Priorities
+Benedict: Sapodilla (named varieties very hard to get in WA), annonas are personal
+interest. Check Primal Fruits website (Benedict knows Cyrus) for expensive/rare
+varieties — price is a good proxy for rarity. Benedict to search FB groups for
+community demand signals.
+Dale action: Scrape Primal Fruits, analyse pricing data across nurseries to identify
+high-value/rare varieties algorithmically.
 
-### Q4 [INFO] — First Audit Prospect
-Do you already know a Perth retail or professional services business owner
-who might let you do a free audit as a portfolio piece? Even a friend's
-business would work. We need 1-2 real examples before charging anyone.
+### Q4 [ANSWERED] — First Audit Prospects
+Three warm leads:
+1. PBR Plumbing (West Leederville) — Benedict knows the plumber
+2. Wembley Cycles — Benedict did a previous SEO audit for them
+3. Gather Ceramics (gatherceramics.com.au) — Benedict helped them before
+Dale action: Run automated analysis on all three, prepare draft reports.
 
 ### Q5 [ANSWERED] — Blog Setup
-Will scaffold Astro project. Benedict to set up Cloudflare Pages and
-provide API access.
+Done. Astro deployed to Cloudflare Pages.
 
 ---
 
 ## Batch 2 — 2026-03-05 — Infrastructure & Next Steps
 
-### Q6 [BLOCKING] — Cloudflare API Access
-Can you add walkthrough.au to Cloudflare and give me an API token?
-I need: Zone ID and an API token with DNS edit + Pages edit permissions.
-This unblocks the landing page and blog deployment.
+### Q6 [ANSWERED] — Cloudflare API Access
+Done. Token provided, walkthrough.au deployed, DNS configured.
 
-### Q7 [INFO] — Track A Pricing Lock-In
-I've drafted the audit deliverable template. Proposed pricing:
-- Standard Assessment: $199 (1-hour visit + AI analysis + deliverable)
-- Implementation Retainer: $149/month (ongoing support)
-Does $199 feel right for Perth SMBs, or should we start at $149 to
-reduce friction for first clients? (Can always raise later.)
-Pick: a) $199  b) $149  c) other
+### Q7 [ANSWERED] — Track A Pricing Lock-In
+Benedict: "You decide."
+Dale decision (DEC-011): $199 for assessment. Reasoning: $149 risks looking
+too cheap for trades/professional services. $199 is still an easy yes.
+If friction is too high with first prospects, we drop to $149. Landing page
+already shows $199.
 
-### Q8 [INFO] — scion.exchange Status
-The React Native app at /Projects/scion-app — what's its current state?
-Is it deployed? Does it have a working backend (Supabase)?
-Should I build the nursery scrapers to feed into the existing app's
-database, or start fresh with a simpler web-only approach?
+### Q8 [ANSWERED] — scion.exchange Status
+App is deployed (GitHub Actions + Cloudflare). Benedict not a fan of the React
+Native stack. Build Track B dashboard separately — can use scion.exchange domain
+or a subdomain (e.g. stock.scion.exchange). Keep existing app as-is for now.
+
+---
+
+## All questions answered. No pending questions.
