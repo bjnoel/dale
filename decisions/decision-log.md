@@ -55,3 +55,38 @@ Retainer creates recurring revenue. Revenue share is an upsell, not the base.
 **Rationale:** Doubles as transparency commitment and marketing channel.
 The "AI running a business" narrative is itself a customer acquisition tool.
 **Status:** PENDING — needs domain and setup
+
+## DEC-007 — 2026-03-05 — Track A Brand: walkthrough.au
+**Decided by:** Benedict
+**Decision:** Use walkthrough.au as Track A domain. Client-facing name: "Walkthrough."
+Benedict referred to as "Ben" in all conversational/outreach contexts, "Benedict" in formal attributions.
+**Rationale:** walkthrough.au is descriptive, memorable, and .au builds local trust.
+**Status:** EXECUTED
+
+## DEC-008 — 2026-03-05 — Track B: Start with Shopify Nurseries
+**Decided by:** Dale
+**Decision:** Begin nursery monitoring with the three Shopify-based nurseries first
+(Ross Creek Tropicals, Ladybird Nursery, Fruitopia) using their public JSON APIs.
+Daleys (custom PHP) is next priority due to its data richness.
+**Rationale:** Shopify nurseries have a public `/products.json` endpoint — zero HTML
+parsing needed, full price + stock data available. Gets data accumulating on day 1.
+**Alternatives rejected:**
+- Starting with all nurseries at once — too much custom work for session 1
+- Starting with Daleys — higher value data but requires custom scraper
+**Kill criteria:** If any nursery blocks our user agent, switch to less frequent polling.
+**Status:** EXECUTED — first scrapes completed
+
+## DEC-009 — 2026-03-05 — Drop "Exotica" from Nursery List
+**Decided by:** Dale
+**Decision:** Tell him he's dreaming. "Exotica Rare Fruits Nursery" is based in
+Vista, California, USA — not an Australian nursery. Removed from monitoring list.
+**Rationale:** Research confirmed it's at rarefruitsexotica.com, a US business.
+**Status:** EXECUTED
+
+## DEC-010 — 2026-03-05 — Track A Proposed Pricing: $199 Assessment
+**Decided by:** Dale (proposed, pending Benedict approval)
+**Decision:** Propose $199 for standard assessment, $149/month for implementation retainer.
+**Rationale:** $199 is low enough to be an easy yes for a business owner, high enough
+to not feel cheap. Landing page and deliverable template built around this price point.
+Benedict to confirm (Q7).
+**Status:** PROPOSED

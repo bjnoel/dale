@@ -1,0 +1,60 @@
+{
+  "business_name": "Drift Kitchen",
+  "date": "5 March 2026",
+  "visit_date": "4 March 2026",
+  "contact_name": "Owner",
+  "executive_summary": "We found 4 practical improvements that could increase your online visibility, protect your customers, and streamline your booking process. The biggest wins are fixing the HTTPS security warning and adding online ordering for your takeaway menu.",
+  "finding_count": "4",
+  "online": {
+    "state": "Solid WordPress site with good SEO basics (title, meta description, sitemap). Active on Facebook and Instagram. Listed on TripAdvisor, Yelp, and AGFG. However, site loads over HTTP — browsers show 'Not Secure' warning.",
+    "opportunity": "High — HTTPS fix is critical, and adding online ordering could capture significant takeaway revenue"
+  },
+  "ops": {
+    "state": "Reservation system built into website with time-slot booking. Menu is HTML-based with dietary markers. Appears to use WordPress with Fluent Forms for enquiries.",
+    "opportunity": "Medium — online ordering for takeaway would reduce phone calls and capture more orders"
+  },
+  "cx": {
+    "state": "Good reviews on TripAdvisor (ranked #12 of 42 Scarborough restaurants). Customers praise food quality and friendly staff. Instagram feed integrated into website.",
+    "opportunity": "Medium — not responding to all reviews, no loyalty program visible"
+  },
+  "tools": {
+    "state": "WordPress site with Fluent Forms plugin, Instagram feed integration, flatpickr for bookings. No online ordering platform detected.",
+    "opportunity": "High — existing WordPress setup can easily support WooCommerce or third-party ordering integration"
+  },
+  "findings": [
+    {
+      "title": "Website Shows 'Not Secure' Warning in Browsers",
+      "what": "Your website at driftkitchen.com.au loads over HTTP, not HTTPS. Every major browser now displays a 'Not Secure' warning in the address bar. This is the first thing tech-savvy customers see when they visit your site.",
+      "why": "Google penalises non-HTTPS sites in search rankings, and customers are increasingly wary of 'Not Secure' warnings — especially if they're submitting reservation details or contact forms through your site. This also affects your Google ranking directly.",
+      "action": "Install an SSL certificate on your hosting. Most hosts (like SiteGround, WP Engine, or Cloudways) offer free Let's Encrypt certificates with one-click setup. Your web developer can do this in under an hour.",
+      "result": "Removes the 'Not Secure' warning, improves Google search ranking, and protects customer data submitted through your booking and contact forms. Zero ongoing cost."
+    },
+    {
+      "title": "No Online Ordering for Takeaway",
+      "what": "Your site promotes takeaway ('Coffee | Brunch | Takeaway' is in your page title) but there's no way to order online. Customers must call 0403 021 771 or visit in person.",
+      "why": "Post-COVID, customers expect to order food online. Each phone call for takeaway takes staff time and risks miscommunication. Competitors offering online ordering are capturing customers who won't pick up the phone.",
+      "action": "Add online ordering through a platform like Square Online, Mr Yum, or me&u — all integrate well with existing operations. Alternatively, a simple WooCommerce setup on your existing WordPress site could work. Start with your top 10 takeaway items.",
+      "result": "Capture takeaway orders 24/7, reduce phone interruptions during busy service, and potentially increase average order value (online orders typically 15-20% higher than phone orders)."
+    },
+    {
+      "title": "All Website Images Missing Alt Text",
+      "what": "All 5 images on your homepage are missing alt text descriptions. This is an accessibility issue and an SEO miss — Google can't 'see' your food photos without alt text.",
+      "why": "Alt text helps visually impaired customers using screen readers, and it helps Google understand and index your images. Your beautiful food photos could be appearing in Google Image searches for 'Scarborough brunch' or 'woodfired pizza Perth' — but right now Google doesn't know what they show.",
+      "action": "Add descriptive alt text to every image on your site. For example, instead of no alt text on a food photo, use 'Drift Kitchen breakfast bowl with poached eggs and avocado'. Your WordPress admin makes this easy — just edit each image in the Media Library.",
+      "result": "Better accessibility compliance, improved image search visibility, and a small but meaningful SEO boost across your whole site. Takes about 30 minutes to update all images."
+    },
+    {
+      "title": "No Google Business Profile Link or Review Strategy",
+      "what": "Your website doesn't link to or promote your Google Business Profile. There's no 'Review us on Google' prompt anywhere on the site. You're ranked #12 of 42 restaurants on TripAdvisor, which shows customers like you — but that social proof isn't being leveraged.",
+      "why": "Google Business Profile is the single most important local search tool. When someone searches 'cafe near me' or 'brunch Scarborough', Google shows the Map Pack first — above all regular search results. Reviews and an active profile directly influence whether you appear there.",
+      "action": "Add a 'Review us on Google' link to your website footer and on your receipts/table cards. Respond to every Google review (positive and negative) within 48 hours. Post weekly updates to your Google Business Profile with photos and specials.",
+      "result": "More visibility in 'near me' searches, higher click-through from Google Maps, and a growing bank of social proof that builds trust with new customers before they even visit."
+    }
+  ],
+  "step1": "Enable HTTPS on your website (this week)",
+  "step1_time": "1 hour with your hosting provider — free with Let's Encrypt, immediate security improvement",
+  "step2": "Add alt text to all website images (this week)",
+  "step2_time": "30 minutes in WordPress admin — instant SEO and accessibility benefit",
+  "step3": "Set up a Google Business review strategy (this month)",
+  "step3_time": "2 hours initial setup, then 10 minutes per week to respond to reviews and post updates"
+}

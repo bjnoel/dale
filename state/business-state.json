@@ -1,0 +1,53 @@
+{
+  "version": "0.1.0",
+  "last_updated": "2026-03-05",
+  "session_count": 1,
+  "phase": 0,
+  "phase_name": "Setup",
+  "runway_months_remaining": 6,
+  "revenue_monthly": 0,
+  "expenses_monthly": 7.00,
+  "tracks": {
+    "a": {
+      "name": "Perth AI Efficiency Audits",
+      "brand": "Walkthrough",
+      "domain": "walkthrough.au",
+      "email": "hello@walkthrough.au",
+      "status": "ready-for-clients",
+      "clients": 0,
+      "revenue_total": 0,
+      "assets_built": [
+        "Audit report HTML template",
+        "Report generator (JSON -> HTML)",
+        "Website analysis tool (Python)",
+        "Approach script for Benedict",
+        "Landing page deployed (walkthrough.au)",
+        "Portfolio piece (Drift Kitchen, Scarborough)",
+        "Email (hello@walkthrough.au via Fastmail)"
+      ],
+      "next_action": "Find first client — Benedict to approach businesses"
+    },
+    "b": {
+      "name": "Rare Fruit Stock Tracker",
+      "domain": "scion.exchange",
+      "status": "data-collection",
+      "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
+      "nurseries_monitored": 4,
+      "nurseries_researched": 7,
+      "first_scrape_date": "2026-03-05",
+      "products_tracked": 8895,
+      "subscribers": 0,
+      "revenue_total": 0,
+      "next_action": "Build public-facing stock dashboard, start sharing data in community"
+    }
+  },
+  "infrastructure": {
+    "github": "done",
+    "cloudflare": "done — walkthrough.au deployed to CF Pages",
+    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo)",
+    "stripe": "pending",
+    "email": "done — hello@walkthrough.au via Fastmail",
+    "blog": "deployed — walkthrough.au live",
+    "question_dashboard": "pending"
+  }
+}

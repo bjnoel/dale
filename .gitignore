@@ -1,1 +1,18 @@
 .DS_Store
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+
+# Large data files (tracked separately or via LFS)
+data/nursery-stock/*/20*.json
+data/nursery-stock/*/latest.json
+data/analyses/*.json
+
+# Deliverables (generated, contain client data)
+deliverables/
+
+# Secrets
+state/secrets/

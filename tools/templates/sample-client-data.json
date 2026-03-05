@@ -1,0 +1,60 @@
+{
+  "business_name": "Example Cafe",
+  "date": "5 March 2026",
+  "visit_date": "4 March 2026",
+  "contact_name": "Sarah",
+  "executive_summary": "We found 4 practical changes that could save you 5-8 hours per week and increase online orders by 20-30%. The biggest wins are automating your roster and fixing your Google Business listing.",
+  "finding_count": "4",
+  "online": {
+    "state": "Google listing outdated, no online ordering",
+    "opportunity": "High — easy fixes with big payoff"
+  },
+  "ops": {
+    "state": "Manual rostering in spreadsheet, paper ordering",
+    "opportunity": "Medium — automation saves 4+ hours/week"
+  },
+  "cx": {
+    "state": "Good in-person, weak online",
+    "opportunity": "Medium — loyalty program opportunity"
+  },
+  "tools": {
+    "state": "Square POS, manual everything else",
+    "opportunity": "High — Square has features you're not using"
+  },
+  "findings": [
+    {
+      "title": "Google Business Profile is Incomplete",
+      "what": "Your Google listing is missing opening hours, menu photos, and hasn't been updated in 6 months. You're showing as 'Temporarily Closed' on some searches.",
+      "why": "Google Business is the #1 way new customers find local cafes. An incomplete listing means you're invisible to people searching 'cafe near me'.",
+      "action": "Update your Google Business profile: add current hours, upload 5-10 photos of your food and space, respond to the 3 unanswered reviews. Takes about 30 minutes.",
+      "result": "Expect 15-25% more foot traffic from Google searches within 2-4 weeks."
+    },
+    {
+      "title": "No Online Ordering Despite Demand",
+      "what": "You're getting 3-4 phone calls per day asking about takeaway ordering, but have no online ordering system.",
+      "why": "Each missed online order is $15-25 in lost revenue. That's $200-400/week walking out the door.",
+      "action": "Enable Square Online (free with your existing Square account). It takes about 2 hours to set up your menu. We can walk you through it.",
+      "result": "Capture $800-1,600/month in online orders with zero additional cost."
+    },
+    {
+      "title": "Manual Rostering Wastes Hours Every Week",
+      "what": "You're spending 3-4 hours per week building rosters in Excel, texting staff individually, and dealing with swaps manually.",
+      "why": "At your hourly rate, that's $150-200/week spent on admin that software can do in minutes.",
+      "action": "Switch to Deputy or When I Work (both ~$3/staff/month). Staff manage their own availability and swaps via an app.",
+      "result": "Save 3+ hours per week. Staff are happier. Fewer no-shows."
+    },
+    {
+      "title": "Square POS Features You're Not Using",
+      "what": "You're using Square for payments only, but your plan includes inventory tracking, customer loyalty, and sales analytics.",
+      "why": "You're paying for features that could replace your manual stock counting and help you understand which menu items actually make money.",
+      "action": "Turn on Square Loyalty (free) and start tracking inventory for your top 20 items. We can help set this up.",
+      "result": "Better data on what sells, automatic reorder alerts, and a free loyalty program to bring customers back."
+    }
+  ],
+  "step1": "Fix your Google Business Profile (this week)",
+  "step1_time": "30 minutes — do it today, results within 2 weeks",
+  "step2": "Set up Square Online ordering (next week)",
+  "step2_time": "2 hours — free to set up, starts generating revenue immediately",
+  "step3": "Trial a rostering app with your team (this month)",
+  "step3_time": "1 hour setup + 1 week trial — most offer free trials"
+}

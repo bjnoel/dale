@@ -1,0 +1,32 @@
+{
+  "currency": "AUD",
+  "entries": [
+    {
+      "date": "2026-03-05",
+      "type": "expense",
+      "category": "infrastructure",
+      "description": "walkthrough.au domain registration",
+      "amount": -9.95,
+      "recurring": false
+    },
+    {
+      "date": "2026-03-05",
+      "type": "expense",
+      "category": "infrastructure",
+      "description": "Hetzner CAX11 VPS (Nuremberg) — nursery scrapers",
+      "amount": -7.00,
+      "recurring": true,
+      "recurring_period": "monthly",
+      "note": "~EUR 4.39/mo, approx $7 AUD"
+    }
+  ],
+  "summary": {
+    "total_revenue": 0,
+    "total_expenses": -16.95,
+    "net": -16.95,
+    "monthly_burn": 7.00,
+    "runway_start_date": "2026-03-05",
+    "runway_months": 6,
+    "note": "Benedict funding ~$100 USD/month for Claude API. Hetzner ~$7 AUD/mo for scraper server."
+  }
+}

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Efficiency Assessment — {{BUSINESS_NAME}}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --primary: #1a56db;
+    --primary-light: #e8effc;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --bg-light: #f9fafb;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--primary);
+    margin-bottom: 32px;
+  }
+  .header .brand {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    color: var(--text-light);
+    font-size: 16px;
+  }
+  .header .meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  /* Sections */
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 32px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 24px 0 8px;
+  }
+
+  /* Executive Summary */
+  .summary-box {
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 20px 24px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0 24px;
+  }
+  .summary-box p {
+    font-size: 15px;
+  }
+
+  /* Finding Cards */
+  .finding {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .finding-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .finding-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .finding-impact {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .impact-high {
+    background: #fef2f2;
+    color: var(--danger);
+  }
+  .impact-medium {
+    background: #fffbeb;
+    color: var(--warning);
+  }
+  .impact-low {
+    background: #f0fdf4;
+    color: var(--success);
+  }
+
+  .finding-what, .finding-why, .finding-action, .finding-result {
+    margin: 8px 0;
+    font-size: 14px;
+  }
+  .finding-what strong, .finding-why strong,
+  .finding-action strong, .finding-result strong {
+    display: inline-block;
+    width: 120px;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+
+  /* Quick Wins vs Strategic */
+  .category-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .cat-quick {
+    background: #ecfdf5;
+    color: #065f46;
+  }
+  .cat-strategic {
+    background: #eff6ff;
+    color: #1e40af;
+  }
+
+  /* Summary Table */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .summary-table th {
+    text-align: left;
+    padding: 10px 12px;
+    background: var(--bg-light);
+    border-bottom: 2px solid var(--border);
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .summary-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Next Steps */
+  .next-steps {
+    background: var(--bg-light);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .next-steps ol {
+    padding-left: 20px;
+  }
+  .next-steps li {
+    margin: 8px 0;
+    font-size: 14px;
+  }
+  .next-steps .timeframe {
+    color: var(--text-light);
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-light);
+    font-size: 13px;
+  }
+  .footer a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+
+  /* Print */
+  @media print {
+    body { padding: 20px; }
+    .finding { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">Walkthrough</div>
+  <h1>Business Efficiency Assessment</h1>
+  <div class="subtitle">{{BUSINESS_NAME}}</div>
+  <div class="meta">
+    Prepared {{DATE}} | Assessment by Benedict Noel | Analysis by Walkthrough AI
+  </div>
+</div>
+
+<div class="summary-box">
+  <p><strong>In short:</strong> {{EXECUTIVE_SUMMARY}}</p>
+</div>
+
+<h2>What We Looked At</h2>
+<p>On {{VISIT_DATE}}, we spent an hour at {{BUSINESS_NAME}} observing day-to-day
+operations and talking with {{CONTACT_NAME}} about what's working and what's not.
+We then ran our AI-powered analysis on your online presence, tools, and workflows.</p>
+
+<table class="summary-table">
+  <tr>
+    <th>Area</th>
+    <th>Current State</th>
+    <th>Opportunity</th>
+  </tr>
+  <tr>
+    <td>Online Presence</td>
+    <td>{{ONLINE_STATE}}</td>
+    <td>{{ONLINE_OPPORTUNITY}}</td>
+  </tr>
+  <tr>
+    <td>Operations</td>
+    <td>{{OPS_STATE}}</td>
+    <td>{{OPS_OPPORTUNITY}}</td>
+  </tr>
+  <tr>
+    <td>Customer Experience</td>
+    <td>{{CX_STATE}}</td>
+    <td>{{CX_OPPORTUNITY}}</td>
+  </tr>
+  <tr>
+    <td>Tools & Automation</td>
+    <td>{{TOOLS_STATE}}</td>
+    <td>{{TOOLS_OPPORTUNITY}}</td>
+  </tr>
+</table>
+
+<h2>Our Findings</h2>
+<p>We identified {{FINDING_COUNT}} specific opportunities, ranked by potential impact on your business.</p>
+
+<!-- FINDING 1 -->
+<div class="finding">
+  <div class="finding-header">
+    <span class="finding-title">{{F1_TITLE}}</span>
+    <span class="finding-impact impact-high">High Impact</span>
+  </div>
+  <span class="category-label cat-quick">Quick Win</span>
+  <div class="finding-what"><strong>What we found:</strong> {{F1_WHAT}}</div>
+  <div class="finding-why"><strong>Why it matters:</strong> {{F1_WHY}}</div>
+  <div class="finding-action"><strong>What to do:</strong> {{F1_ACTION}}</div>
+  <div class="finding-result"><strong>Expected result:</strong> {{F1_RESULT}}</div>
+</div>
+
+<!-- FINDING 2 -->
+<div class="finding">
+  <div class="finding-header">
+    <span class="finding-title">{{F2_TITLE}}</span>
+    <span class="finding-impact impact-high">High Impact</span>
+  </div>
+  <span class="category-label cat-quick">Quick Win</span>
+  <div class="finding-what"><strong>What we found:</strong> {{F2_WHAT}}</div>
+  <div class="finding-why"><strong>Why it matters:</strong> {{F2_WHY}}</div>
+  <div class="finding-action"><strong>What to do:</strong> {{F2_ACTION}}</div>
+  <div class="finding-result"><strong>Expected result:</strong> {{F2_RESULT}}</div>
+</div>
+
+<!-- FINDING 3 -->
+<div class="finding">
+  <div class="finding-header">
+    <span class="finding-title">{{F3_TITLE}}</span>
+    <span class="finding-impact impact-medium">Medium Impact</span>
+  </div>
+  <span class="category-label cat-strategic">Strategic</span>
+  <div class="finding-what"><strong>What we found:</strong> {{F3_WHAT}}</div>
+  <div class="finding-why"><strong>Why it matters:</strong> {{F3_WHY}}</div>
+  <div class="finding-action"><strong>What to do:</strong> {{F3_ACTION}}</div>
+  <div class="finding-result"><strong>Expected result:</strong> {{F3_RESULT}}</div>
+</div>
+
+<!-- FINDING 4 (optional) -->
+<div class="finding">
+  <div class="finding-header">
+    <span class="finding-title">{{F4_TITLE}}</span>
+    <span class="finding-impact impact-medium">Medium Impact</span>
+  </div>
+  <span class="category-label cat-strategic">Strategic</span>
+  <div class="finding-what"><strong>What we found:</strong> {{F4_WHAT}}</div>
+  <div class="finding-why"><strong>Why it matters:</strong> {{F4_WHY}}</div>
+  <div class="finding-action"><strong>What to do:</strong> {{F4_ACTION}}</div>
+  <div class="finding-result"><strong>Expected result:</strong> {{F4_RESULT}}</div>
+</div>
+
+<!-- FINDING 5 (optional) -->
+<div class="finding">
+  <div class="finding-header">
+    <span class="finding-title">{{F5_TITLE}}</span>
+    <span class="finding-impact impact-low">Nice to Have</span>
+  </div>
+  <span class="category-label cat-strategic">Strategic</span>
+  <div class="finding-what"><strong>What we found:</strong> {{F5_WHAT}}</div>
+  <div class="finding-why"><strong>Why it matters:</strong> {{F5_WHY}}</div>
+  <div class="finding-action"><strong>What to do:</strong> {{F5_ACTION}}</div>
+  <div class="finding-result"><strong>Expected result:</strong> {{F5_RESULT}}</div>
+</div>
+
+<h2>Recommended Next Steps</h2>
+<div class="next-steps">
+  <ol>
+    <li>
+      <strong>{{STEP1}}</strong>
+      <div class="timeframe">{{STEP1_TIME}}</div>
+    </li>
+    <li>
+      <strong>{{STEP2}}</strong>
+      <div class="timeframe">{{STEP2_TIME}}</div>
+    </li>
+    <li>
+      <strong>{{STEP3}}</strong>
+      <div class="timeframe">{{STEP3_TIME}}</div>
+    </li>
+  </ol>
+</div>
+
+<h2>About This Assessment</h2>
+<p style="font-size: 14px;">
+  This assessment was produced by <strong>Walkthrough</strong> — a Perth-based service
+  combining in-person business observation with AI-powered analysis. Ben visits
+  your business, our AI analyses the data, and we deliver practical recommendations
+  you can act on this week.
+</p>
+<p style="font-size: 14px; margin-top: 12px;">
+  <strong>What's included:</strong> This report, plus a 30-minute walkthrough of our
+  findings with Ben. If you'd like ongoing implementation support, we offer a
+  monthly retainer — ask Ben for details.
+</p>
+
+<div class="footer">
+  <p><strong>Walkthrough</strong> | walkthrough.au</p>
+  <p>AI-powered efficiency assessments for Perth businesses</p>
+  <p style="margin-top: 8px; font-size: 11px;">
+    This assessment contains confidential business analysis prepared exclusively for
+    {{BUSINESS_NAME}}. Please do not share without permission.
+  </p>
+</div>
+
+</body>
+</html>
