@@ -40,9 +40,24 @@ NURSERIES = {
         "location": "Brisbane/Gold Coast, QLD",
         "ships_to_wa": False,
     },
+    "fruit-salad-trees": {
+        "name": "Fruit Salad Trees",
+        "domain": "www.fruitsaladtrees.com",
+        "location": "Emmaville, NSW",
+        "ships_to_wa": True,
+        "ships_to_wa_note": "1st Tuesday of month",
+    },
+    "diggers": {
+        "name": "The Diggers Club",
+        "domain": "www.diggers.com.au",
+        "location": "Dromana, VIC",
+        "ships_to_wa": True,
+        "ships_to_wa_note": "Weekly",
+        "fruit_tags": ["all fruit & nuts", "all fruit &amp; nuts", "all berries", "fruit trees", "nuts"],
+    },
 }
 
-DATA_DIR = Path(__file__).parent.parent.parent / "data" / "nursery-stock"
+DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
 USER_AGENT = "WalkthroughBot/1.0 (+https://scion.exchange; stock-monitoring)"
 REQUEST_DELAY = 2  # seconds between paginated requests
 
@@ -91,6 +106,21 @@ def scrape_shopify(nursery_key, config):
         page += 1
         time.sleep(REQUEST_DELAY)
 
+    # Filter by fruit tags if configured
+    fruit_tags = config.get("fruit_tags")
+    if fruit_tags:
+        filtered = []
+        for p in all_products:
+            tags = p.get("tags", [])
+            if isinstance(tags, str):
+                tags = [t.strip().lower() for t in tags.split(",")]
+            else:
+                tags = [t.lower() for t in tags]
+            if any(ft.lower() in tags for ft in fruit_tags):
+                filtered.append(p)
+        print(f"  Total: {len(all_products)} products, {len(filtered)} fruit/nut (filtered)")
+        return filtered
+
     print(f"  Total: {len(all_products)} products")
     return all_products
 
@@ -124,9 +154,11 @@ def normalize_product(raw, nursery_key, config):
             "sku": v.get("sku"),
         })
 
-    # Summary fields
-    product["min_price"] = min((float(v["price"]) for v in product["variants"] if v["price"]), default=None)
-    product["max_price"] = max((float(v["price"]) for v in product["variants"] if v["price"]), default=None)
+    # Summary fields — prefer prices from available variants
+    avail_prices = [float(v["price"]) for v in product["variants"] if v["price"] and v["available"]]
+    all_prices = [float(v["price"]) for v in product["variants"] if v["price"]]
+    product["min_price"] = min(avail_prices) if avail_prices else (min(all_prices) if all_prices else None)
+    product["max_price"] = max(avail_prices) if avail_prices else (max(all_prices) if all_prices else None)
     product["any_available"] = any(v["available"] for v in product["variants"])
     product["on_sale"] = any(v["compare_at_price"] and float(v["compare_at_price"]) > float(v["price"]) for v in product["variants"] if v["price"] and v["compare_at_price"])
 

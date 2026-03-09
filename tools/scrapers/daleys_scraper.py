@@ -244,9 +244,10 @@ def parse_plant_list(html):
     # Compute summary fields
     products = []
     for p in products_by_url.values():
-        prices = [v["price"] for v in p["variants"] if v["price"] is not None]
-        p["min_price"] = min(prices) if prices else None
-        p["max_price"] = max(prices) if prices else None
+        avail_prices = [v["price"] for v in p["variants"] if v["price"] is not None and v["available"]]
+        all_prices = [v["price"] for v in p["variants"] if v["price"] is not None]
+        p["min_price"] = min(avail_prices) if avail_prices else (min(all_prices) if all_prices else None)
+        p["max_price"] = max(avail_prices) if avail_prices else (max(all_prices) if all_prices else None)
         p["any_available"] = any(v["available"] for v in p["variants"])
         p["total_stock"] = sum(v["stock_count"] for v in p["variants"])
         products.append(p)

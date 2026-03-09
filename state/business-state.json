@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "last_updated": "2026-03-05",
-  "session_count": 1,
+  "last_updated": "2026-03-09",
+  "session_count": 5,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -13,7 +13,7 @@
       "brand": "Walkthrough",
       "domain": "walkthrough.au",
       "email": "hello@walkthrough.au",
-      "status": "ready-for-clients",
+      "status": "approaching-prospects",
       "clients": 0,
       "revenue_total": 0,
       "assets_built": [
@@ -23,28 +23,60 @@
         "Approach script for Benedict",
         "Landing page deployed (walkthrough.au)",
         "Portfolio piece (Drift Kitchen, Scarborough)",
-        "Email (hello@walkthrough.au via Fastmail)"
+        "Email (hello@walkthrough.au via Fastmail)",
+        "Prospect briefs: PBR Plumbing, Wembley Cycles, Gather Ceramics"
       ],
-      "next_action": "Find first client — Benedict to approach businesses"
+      "prospects": {
+        "wembley_cycles": {"status": "brief-ready", "hook": "No online service booking"},
+        "pbr_plumbing": {"status": "brief-ready", "hook": "Strata manager portal"},
+        "gather_ceramics": {"status": "brief-ready", "hook": "No Google Business Profile"},
+        "tass1_trees": {"status": "identified", "hook": "No online shop, basic HTML site, Track A+B crossover"},
+        "leeming_fruit_trees": {"status": "identified", "hook": "No website at all, Track A+B crossover"}
+      },
+      "next_action": "Benedict to approach prospects. Tass1 Trees and Leeming Fruit Trees are Track A+B crossover opportunities."
     },
     "b": {
       "name": "Rare Fruit Stock Tracker",
       "domain": "scion.exchange",
-      "status": "data-collection",
+      "status": "ready-to-share",
+      "dashboard_url": "https://stock.scion.exchange",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
-      "nurseries_monitored": 4,
-      "nurseries_researched": 7,
+      "nurseries_monitored": 8,
+      "nurseries_researched": 15,
       "first_scrape_date": "2026-03-05",
-      "products_tracked": 8895,
+      "days_of_data": 4,
+      "products_tracked": 4954,
+      "products_note": "fruit/edible only (filtered from ~18,000 total raw)",
+      "species_matched_pct": 68,
+      "taxonomy_source": "scion-exchange fruit_species (164 species)",
       "subscribers": 0,
       "revenue_total": 0,
-      "next_action": "Build public-facing stock dashboard, start sharing data in community"
+      "features": [
+        "Daily scraping of 8 nurseries",
+        "Price/stock change detection",
+        "WA shipping filter",
+        "Species taxonomy matching (68%)",
+        "Daily digest (text + HTML)",
+        "Email signup form (collecting subscribers)",
+        "Changes only filter"
+      ],
+      "nursery_details": {
+        "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
+        "ladybird": {"products": 1690, "in_stock": 724, "platform": "Shopify", "ships_to_wa": false, "location": "QLD", "note": "fruit/edible filtered from ~6500 total"},
+        "fruitopia": {"products": 627, "in_stock": 168, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
+        "daleys": {"products": 668, "in_stock": 663, "platform": "Custom PHP", "ships_to_wa": true, "location": "NSW"},
+        "primal_fruits": {"products": 97, "in_stock": 63, "platform": "Ecwid", "ships_to_wa": true, "location": "WA"},
+        "guildford": {"products": 610, "in_stock": 190, "platform": "WooCommerce", "ships_to_wa": true, "location": "WA"},
+        "fruit_salad_trees": {"products": 88, "in_stock": 83, "platform": "Shopify", "ships_to_wa": true, "location": "NSW", "note": "Ships to WA 1st Tuesday/month"},
+        "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"}
+      },
+      "next_action": "Benedict to share digest in WA fruit FB groups. Fix stock.scion.exchange DNS."
     }
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done — walkthrough.au deployed to CF Pages",
-    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo)",
+    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
     "email": "done — hello@walkthrough.au via Fastmail",
     "blog": "deployed — walkthrough.au live",

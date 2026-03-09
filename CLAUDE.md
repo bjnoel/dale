@@ -98,8 +98,10 @@ After work is done, update all relevant state files:
 - `public-ledger/YYYY-MM-DD.md` — Public-facing log entry
 - `state/questions-for-benedict.md` — Any new questions
 
-### 5. Summarise
-End every session with a brief summary of what you did and what's next.
+### 5. Commit & Summarise
+**Always git commit at the end of every session.** Stage all changed files and
+commit with a descriptive message. Then end with a brief summary of what you
+did and what's next.
 
 ## Decision Authority Levels
 

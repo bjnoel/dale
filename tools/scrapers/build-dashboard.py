@@ -1,0 +1,701 @@
+#!/usr/bin/env python3
+"""
+Build a static HTML dashboard from nursery stock JSON data.
+Generates a single self-contained index.html with embedded data.
+
+Usage:
+    python3 build-dashboard.py /path/to/data/nursery-stock /path/to/output/
+"""
+
+import json
+import os
+import re
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+
+# Confirmed via nursery websites/policies:
+# - Daleys: ships to WA seasonally (special quarantine window, extra $25+ fee)
+# - Primal Fruits: WA-based, ships within WA
+# - Ross Creek: ships QLD/NSW/ACT/VIC only, NOT WA (quarantine restrictions noted)
+# - Ladybird: ships QLD/NSW/VIC/ACT only, NOT WA
+# - Fruitopia: unclear from policy, likely does NOT ship to WA (QLD-based, no WA mention)
+SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+
+
+def load_species_lookup() -> dict:
+    """Load fruit species data and build a title-matching lookup."""
+    if not SPECIES_FILE.exists():
+        return {}
+
+    with open(SPECIES_FILE) as f:
+        species = json.load(f)
+
+    lookup = {}
+    for s in species:
+        common = s["common_name"].lower()
+        entry = {
+            "cn": s["common_name"],
+            "ln": s["latin_name"],
+            "r": s["region"],
+        }
+        # Parse genus/species from latin_name
+        parts = s["latin_name"].split()
+        if len(parts) >= 2:
+            entry["g"] = parts[0]  # genus
+
+        lookup[common] = entry
+        for syn in s.get("synonyms", []):
+            if syn:
+                lookup[syn.lower()] = entry
+
+    return lookup
+
+
+def match_species(title: str, lookup: dict) -> dict | None:
+    """Try to match a product title against the species lookup."""
+    title_lower = title.lower()
+
+    # Strip common prefixes that precede the actual species name
+    prefixes = ["dwarf ", "semi-dwarf ", "semi dwarf ", "miniature ", "standard ",
+                 "grafted ", "advanced ", "bare root ", "bare-root "]
+    clean_title = title_lower
+    clean_title_original = title
+    for prefix in prefixes:
+        if clean_title.startswith(prefix):
+            clean_title = clean_title[len(prefix):]
+            clean_title_original = title[len(prefix):]
+            break
+
+    # Try matching on both original and cleaned title
+    for t_lower, t_orig in [(title_lower, title), (clean_title, clean_title_original)]:
+        words = re.split(r'[\s\-–—]+', t_lower)
+        for n in range(len(words), 0, -1):
+            candidate = " ".join(words[:n])
+            if candidate in lookup:
+                result = dict(lookup[candidate])
+                # Extract cultivar: everything after the matched common name
+                matched = lookup[candidate]["cn"]
+                # Find where the match ends in the original title
+                match_idx = t_orig.lower().find(matched.lower())
+                if match_idx >= 0:
+                    remainder = t_orig[match_idx + len(matched):].strip(" -–—'\"")
+                else:
+                    remainder = ""
+                if remainder and not remainder.startswith("("):
+                    # Check for quoted cultivar name: "Apple 'Granny Smith'"
+                    cv_match = re.match(r"['\"]([^'\"]+)['\"]", remainder)
+                    if cv_match:
+                        result["cv"] = cv_match.group(1)
+                    else:
+                        cv = remainder.split(" - ")[0].split(" (")[0].strip()
+                        # Don't treat size/pot info as cultivar
+                        if cv and not re.match(r'\d+mm|\d+cm|\d+ltr|pot|pack|pick\s*up', cv.lower()):
+                            result["cv"] = cv
+                return result
+
+    return None
+
+
+# Product type / tag filters for fruit-only tracking
+# If a nursery has useful categorization, only include products matching these
+FRUIT_FILTERS = {
+    "ladybird": {
+        "mode": "tags",
+        "include_tags": ["Fruit Trees & Edibles"],  # products with this tag prefix
+    },
+    "ross-creek": {
+        "mode": "all",  # all products are fruit/plant related
+    },
+    "fruitopia": {
+        "mode": "all",
+    },
+    "daleys": {
+        "mode": "all",
+    },
+    "primal-fruits": {
+        "mode": "all",
+    },
+    "guildford": {
+        "mode": "all",  # already filtered at scrape time by WooCommerce categories
+    },
+    "fruit-salad-trees": {
+        "mode": "all",  # all products are multi-graft fruit trees
+    },
+    "diggers": {
+        "mode": "all",  # already filtered at scrape time by fruit/nut tags
+    },
+}
+
+
+def is_fruit_product(product: dict, nursery_key: str) -> bool:
+    """Check if a product should be included based on nursery-specific filters."""
+    filt = FRUIT_FILTERS.get(nursery_key)
+    if not filt or filt.get("mode") == "all":
+        return True
+
+    if filt.get("mode") == "tags":
+        tags = product.get("tags", [])
+        include_tags = filt.get("include_tags", [])
+        for tag in tags:
+            for inc in include_tags:
+                if tag.startswith(inc):
+                    return True
+        return False
+
+    return True
+
+
+WA_SHIPPING_OVERRIDES = {
+    "daleys": True,
+    "primal-fruits": True,
+    "guildford": True,  # WA-based, Perth metro delivery
+    "fruit-salad-trees": True,  # Ships to WA on 1st Tuesday of month
+    "diggers": True,  # Ships to WA weekly
+    "ross-creek": False,  # Some items can go via quarantine, but not standard
+    "ladybird": False,
+    "fruitopia": False,
+}
+
+
+def load_previous_snapshot(nursery_dir: Path) -> dict:
+    """Load the second-most-recent snapshot for price comparison."""
+    snapshots = sorted(
+        [f for f in nursery_dir.glob("*.json") if f.name != "latest.json"],
+        reverse=True,
+    )
+    if len(snapshots) < 2:
+        return {}
+    # snapshots[0] = today, snapshots[1] = previous day
+    with open(snapshots[1]) as f:
+        data = json.load(f)
+    # Build lookup by URL (unique) with title fallback for comparison
+    lookup = {}
+    for p in data.get("products", []):
+        key = p.get("url") or p.get("title", "")
+        lookup[key] = p
+    return lookup
+
+
+def load_nursery_data(data_dir: Path) -> list[dict]:
+    """Load latest.json from each nursery subdirectory and normalize products."""
+    species_lookup = load_species_lookup()
+    products = []
+    nurseries_loaded = []
+    matched_count = 0
+
+    for nursery_dir in sorted(data_dir.iterdir()):
+        if not nursery_dir.is_dir():
+            continue
+
+        latest = nursery_dir / "latest.json"
+        if not latest.exists():
+            continue
+
+        with open(latest) as f:
+            data = json.load(f)
+
+        # Load previous snapshot for change detection
+        prev_products = load_previous_snapshot(nursery_dir)
+        products_before = len(products)
+
+        nursery_name = nursery_dir.name
+        raw_products = data.get("products", [])
+        scraped_at = data.get("scraped_at", "unknown")
+
+        for p in raw_products:
+            # Apply nursery-specific fruit/edible filter
+            if not is_fruit_product(p, nursery_name):
+                continue
+
+            # Skip non-plant items
+            title = p.get("title", "")
+            title_lower = title.lower()
+            product_type = p.get("product_type", p.get("category", "")).lower()
+
+            # Exact title matches to skip
+            skip_titles = {"gift card", "gift voucher", "gift certificate"}
+            if title_lower in skip_titles:
+                continue
+
+            # Skip non-plant product types
+            non_plant_types = {
+                "accessories", "tools", "fertilizer", "fertiliser", "soil",
+                "potting mix", "mulch", "pots", "planters", "garden supplies",
+                "merchandise", "apparel", "clothing", "books", "gift cards",
+            }
+            if product_type in non_plant_types:
+                continue
+
+            # Skip items matching non-plant keywords in title
+            non_plant_keywords = [
+                "fertilizer", "fertiliser", "potting mix", "soil mix",
+                "seaweed solution", "fish emulsion", "worm castings",
+                "secateurs", "pruning", "garden gloves", "plant label",
+                "grafting tape", "grafting knife", "budding tape",
+                "grow bag", "terracotta", "saucer",
+                "pest spray", "insecticide", "fungicide", "neem oil",
+                "insect killer", "insect control", "white oil",
+                "weed killer", "herbicide", "concentrate spray",
+                "shipping", "postage", "freight", "delivery charge",
+                "combo pack", "starter kit",
+                "sharp shooter", "searles liquid",
+            ]
+            if any(kw in title_lower for kw in non_plant_keywords):
+                continue
+
+            # Skip standalone pot/planter products (but not "potted" plants)
+            # Matches "Pot 'Storm' Size 1", "Pot 'Rock' Size 2", etc.
+            if re.match(r"^pot\s+['\"]", title_lower):
+                continue
+
+            # Skip garden chemical products
+            if 'ecofend' in title_lower or 'searles' in title_lower:
+                continue
+
+            # Skip if title looks like a liquid/spray product (e.g., "Product 1L", "250ml Spray")
+            if re.search(r'\b\d+\s*(ml|l|litre|liter)\b', title_lower):
+                # But allow plant names that happen to contain these (e.g., "45Ltr Pot" in plant name is OK)
+                # Only skip if it looks like a standalone liquid product (starts with number or contains spray/concentrate)
+                if re.match(r'^\d+\s*(ml|l)', title_lower) or 'spray' in title_lower or 'concentrate' in title_lower:
+                    continue
+
+            # Normalize to common format — prefer prices from available variants
+            variants = p.get("variants", [])
+            min_price = p.get("min_price")
+            if min_price is None and variants:
+                avail_prices = [float(v.get("price", 0)) for v in variants if v.get("price") and v.get("available", True)]
+                all_prices = [float(v.get("price", 0)) for v in variants if v.get("price")]
+                min_price = min(avail_prices) if avail_prices else (min(all_prices) if all_prices else None)
+            elif min_price is None:
+                min_price = p.get("price")
+
+            available = p.get("any_available", p.get("available", False))
+            stock_count = p.get("total_stock")
+            if stock_count is None and variants:
+                counts = [v.get("stock_count") for v in variants if v.get("stock_count") is not None]
+                stock_count = sum(counts) if counts else None
+
+            on_sale = p.get("on_sale", False)
+            if not on_sale and variants:
+                on_sale = any(v.get("compare_at_price") for v in variants)
+
+            # Use override if we have confirmed info, otherwise use scraped data
+            nursery_key = p.get("nursery", nursery_name)
+            wa_override = WA_SHIPPING_OVERRIDES.get(nursery_key)
+            ships_to_wa = wa_override if wa_override is not None else p.get("ships_to_wa", False)
+
+            # Match against species taxonomy
+            species = match_species(title, species_lookup)
+
+            product_data = {
+                "t": title,
+                "n": p.get("nursery_name", nursery_name),
+                "nk": p.get("nursery", nursery_name),
+                "p": round(min_price, 2) if min_price else None,
+                "a": bool(available),
+                "s": stock_count,
+                "w": bool(ships_to_wa),
+                "u": p.get("url", ""),
+                "sale": bool(on_sale),
+                "cat": p.get("product_type", p.get("category", "")),
+            }
+
+            if species:
+                matched_count += 1
+                product_data["ln"] = species.get("ln", "")  # latin name
+                if "g" in species:
+                    product_data["g"] = species["g"]  # genus
+                if "cv" in species:
+                    product_data["cv"] = species["cv"]  # cultivar
+                if "r" in species:
+                    product_data["r"] = species["r"]  # region
+
+            # Price/stock change detection vs previous snapshot
+            if prev_products:
+                product_url = p.get("url", "")
+                prev = prev_products.get(product_url) or prev_products.get(title)
+                if prev is None:
+                    product_data["ch"] = "new"  # new product
+                else:
+                    prev_price = prev.get("min_price")
+                    prev_avail = prev.get("any_available", False)
+                    if min_price and prev_price:
+                        diff = min_price - prev_price
+                        if abs(diff) > 0.01:
+                            product_data["pp"] = round(prev_price, 2)  # previous price
+                            product_data["ch"] = "up" if diff > 0 else "down"
+                    if available and not prev_avail:
+                        product_data["ch"] = "back"  # back in stock
+                    elif not available and prev_avail:
+                        product_data["ch"] = "gone"  # went out of stock
+
+            products.append(product_data)
+
+        nursery_added = products[products_before:]
+        nurseries_loaded.append({
+            "key": nursery_name,
+            "name": data.get("nursery_name", nursery_name),
+            "count": len(nursery_added),
+            "in_stock": sum(1 for p in nursery_added if p.get("a")),
+            "scraped_at": scraped_at,
+        })
+
+    print(f"  Species matched: {matched_count}/{len(products)} ({100*matched_count//len(products) if products else 0}%)")
+    return products, nurseries_loaded
+
+
+def build_html(products: list[dict], nurseries: list[dict]) -> str:
+    """Generate the dashboard HTML with embedded data."""
+    products_json = json.dumps(products, separators=(",", ":"))
+    nurseries_json = json.dumps(nurseries, separators=(",", ":"))
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>scion.exchange - Australian Nursery Stock Tracker</title>
+<meta name="description" content="Track rare fruit and plant stock across Australian nurseries. Search availability, compare prices, find what's in stock.">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
+  .stock-badge {{ font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }}
+  .wa-badge {{ background: #fef3c7; color: #92400e; }}
+  .sale-badge {{ background: #fee2e2; color: #991b1b; }}
+  .new-badge {{ background: #dbeafe; color: #1e40af; }}
+  .back-badge {{ background: #d1fae5; color: #065f46; font-weight: 600; }}
+  .price-down {{ color: #059669; font-weight: 600; }}
+  .price-up {{ color: #dc2626; }}
+  .in-stock {{ background: #d1fae5; color: #065f46; }}
+  .out-stock {{ background: #f3f4f6; color: #6b7280; }}
+  #results {{ min-height: 200px; }}
+  .product-row {{ border-bottom: 1px solid #f3f4f6; }}
+  .product-row:hover {{ background: #f9fafb; }}
+  .nursery-tag {{ font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }}
+</style>
+</head>
+<body class="bg-white text-gray-900">
+
+<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
+  <div class="max-w-5xl mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-bold text-green-800">scion.exchange</h1>
+        <p class="text-sm text-gray-500">Australian Nursery Stock Tracker</p>
+      </div>
+      <div class="text-right text-xs text-gray-400">
+        <div id="stats"></div>
+        <div>Updated {now}</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-4">
+  <!-- Search & Filters -->
+  <div class="mb-4 space-y-3">
+    <input type="text" id="search" placeholder="Search plants... (e.g. sapodilla, mango, fig)"
+      class="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+      autofocus>
+    <div class="flex flex-wrap gap-2 items-center text-sm">
+      <label class="flex items-center gap-1 cursor-pointer">
+        <input type="checkbox" id="inStockOnly" checked class="rounded"> In stock only
+      </label>
+      <label class="flex items-center gap-1 cursor-pointer">
+        <input type="checkbox" id="waOnly" class="rounded"> Ships to WA
+      </label>
+      <label class="flex items-center gap-1 cursor-pointer">
+        <input type="checkbox" id="changesOnly" class="rounded"> Changes only
+      </label>
+      <select id="nurseryFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
+        <option value="">All nurseries</option>
+      </select>
+      <select id="sortBy" class="border border-gray-300 rounded px-2 py-1 text-sm">
+        <option value="relevance">Sort: Relevance</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="name">Name: A-Z</option>
+      </select>
+      <span id="resultCount" class="text-gray-400 ml-auto"></span>
+    </div>
+  </div>
+
+  <!-- Nursery Summary -->
+  <div id="nurserySummary" class="mb-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm"></div>
+
+  <!-- Results -->
+  <div id="results"></div>
+  <div id="loadMore" class="text-center py-4 hidden">
+    <button onclick="showMore()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+      Show more results
+    </button>
+  </div>
+</main>
+
+<!-- Email Alerts Signup -->
+<section class="max-w-5xl mx-auto px-4 py-8 mt-4 border-t border-gray-200">
+  <div class="max-w-md mx-auto text-center">
+    <h2 class="text-lg font-bold text-green-800 mb-2">Get stock alerts</h2>
+    <p class="text-sm text-gray-500 mb-4">
+      Daily email when plants come back in stock, prices drop, or new varieties appear.
+      Focused on nurseries that ship to WA.
+    </p>
+    <form id="subscribeForm" class="flex gap-2">
+      <input type="email" id="subEmail" placeholder="your@email.com" required
+        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+      <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+        Subscribe
+      </button>
+    </form>
+    <div id="subMessage" class="mt-2 text-sm hidden"></div>
+    <p class="text-xs text-gray-400 mt-2">No spam. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<!-- Latest Digest -->
+<section class="max-w-5xl mx-auto px-4 py-4">
+  <details class="text-sm">
+    <summary class="cursor-pointer text-green-700 font-medium">View latest daily digest</summary>
+    <pre id="digestText" class="mt-2 text-xs text-gray-600 whitespace-pre-wrap bg-gray-50 p-4 rounded-lg overflow-auto max-h-96">Loading...</pre>
+  </details>
+</section>
+
+<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
+  <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>
+  <p class="mt-1">Built by <a href="https://walkthrough.au" class="underline">Walkthrough</a> | Part of the Dale project</p>
+</footer>
+
+<script>
+const P = {products_json};
+const N = {nurseries_json};
+
+const NURSERY_URLS = {{
+  'ross-creek': 'rosscreektropicals.com.au',
+  'ladybird': 'ladybirdnursery.com.au',
+  'fruitopia': 'fruitopia.com.au',
+  'daleys': 'daleysfruit.com.au',
+  'primal-fruits': 'primalfruits.com.au',
+}};
+
+let displayCount = 50;
+let currentResults = [];
+
+// Populate nursery filter & summary
+const nurserySelect = document.getElementById('nurseryFilter');
+const nurserySummary = document.getElementById('nurserySummary');
+N.forEach(n => {{
+  const opt = document.createElement('option');
+  opt.value = n.key;
+  opt.textContent = `${{n.name}} (${{n.in_stock}} in stock)`;
+  nurserySelect.appendChild(opt);
+
+  nurserySummary.innerHTML += `
+    <div class="border border-gray-200 rounded p-2">
+      <div class="font-medium text-xs">${{n.name}}</div>
+      <div class="text-green-700 font-bold">${{n.in_stock}}</div>
+      <div class="text-gray-400 text-xs">of ${{n.count}} in stock</div>
+    </div>`;
+}});
+
+const totalProducts = P.length;
+const totalInStock = P.filter(p => p.a).length;
+document.getElementById('stats').textContent =
+  `${{totalInStock.toLocaleString()}} in stock across ${{N.length}} nurseries (${{totalProducts.toLocaleString()}} total)`;
+
+// Search & filter
+const searchInput = document.getElementById('search');
+const inStockOnly = document.getElementById('inStockOnly');
+const waOnly = document.getElementById('waOnly');
+const changesOnly = document.getElementById('changesOnly');
+const sortBy = document.getElementById('sortBy');
+
+function search() {{
+  displayCount = 50;
+  const q = searchInput.value.toLowerCase().trim();
+  const nursery = nurserySelect.value;
+  const stockOnly = inStockOnly.checked;
+  const waShip = waOnly.checked;
+  const sort = sortBy.value;
+
+  let results = P;
+
+  if (stockOnly) results = results.filter(p => p.a);
+  if (waShip) results = results.filter(p => p.w);
+  if (changesOnly.checked) results = results.filter(p => p.ch);
+  if (nursery) results = results.filter(p => p.nk === nursery);
+
+  if (q) {{
+    const terms = q.split(/\\s+/);
+    results = results.filter(p => {{
+      const text = (p.t + ' ' + p.cat + ' ' + (p.ln || '') + ' ' + (p.cv || '')).toLowerCase();
+      return terms.every(t => text.includes(t));
+    }});
+    // Score by how early the match appears
+    results = results.map(p => {{
+      const idx = p.t.toLowerCase().indexOf(terms[0]);
+      return {{ ...p, _score: idx === -1 ? 999 : idx }};
+    }});
+  }}
+
+  // Sort
+  if (sort === 'price-asc') {{
+    results.sort((a, b) => (a.p || 9999) - (b.p || 9999));
+  }} else if (sort === 'price-desc') {{
+    results.sort((a, b) => (b.p || 0) - (a.p || 0));
+  }} else if (sort === 'name') {{
+    results.sort((a, b) => a.t.localeCompare(b.t));
+  }} else if (q) {{
+    results.sort((a, b) => (a._score || 0) - (b._score || 0));
+  }} else {{
+    results.sort((a, b) => a.t.localeCompare(b.t));
+  }}
+
+  currentResults = results;
+  render();
+}}
+
+function render() {{
+  const results = currentResults;
+  const showing = results.slice(0, displayCount);
+  const container = document.getElementById('results');
+  const countEl = document.getElementById('resultCount');
+  const loadMoreEl = document.getElementById('loadMore');
+
+  countEl.textContent = `${{results.length}} result${{results.length !== 1 ? 's' : ''}}`;
+
+  if (showing.length === 0) {{
+    container.innerHTML = '<div class="text-center py-12 text-gray-400">No plants found matching your search.</div>';
+    loadMoreEl.classList.add('hidden');
+    return;
+  }}
+
+  container.innerHTML = showing.map(p => {{
+    const price = p.p ? ('$' + p.p.toFixed(2)) : '';
+    const stockBadge = p.a
+      ? `<span class="stock-badge in-stock">${{p.s ? p.s + ' left' : 'In stock'}}</span>`
+      : '<span class="stock-badge out-stock">Out of stock</span>';
+    const waBadge = p.w ? '<span class="stock-badge wa-badge">Ships to WA</span>' : '';
+    const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
+    const latinName = p.ln ? `<span class="text-xs text-gray-400 italic ml-1">${{p.ln}}</span>` : '';
+    const cultivar = p.cv ? ` '${{p.cv}}'` : '';
+
+    // Change indicators
+    let changeBadge = '';
+    if (p.ch === 'new') changeBadge = '<span class="stock-badge new-badge">New</span>';
+    else if (p.ch === 'back') changeBadge = '<span class="stock-badge back-badge">Back in stock!</span>';
+    else if (p.ch === 'gone') changeBadge = '<span class="stock-badge out-stock">Just sold out</span>';
+
+    let priceInfo = price;
+    if (p.ch === 'down' && p.pp) priceInfo = `<span class="price-down">${{price}}</span> <span class="text-xs text-gray-400 line-through">${{('$' + p.pp.toFixed(2))}}</span>`;
+    else if (p.ch === 'up' && p.pp) priceInfo = `<span class="price-up">${{price}}</span> <span class="text-xs text-gray-400">was ${{('$' + p.pp.toFixed(2))}}</span>`;
+
+    return `<a href="${{p.u}}" target="_blank" rel="noopener" class="product-row flex items-center gap-3 py-3 px-2 block">
+      <div class="flex-1 min-w-0">
+        <div class="font-medium text-sm truncate">${{p.t}}${{latinName}}</div>
+        <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+          <span class="nursery-tag">${{p.n}}</span>
+          ${{stockBadge}} ${{waBadge}} ${{saleBadge}} ${{changeBadge}}
+        </div>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <div class="font-bold text-sm">${{priceInfo}}</div>
+      </div>
+    </a>`;
+  }}).join('');
+
+  if (results.length > displayCount) {{
+    loadMoreEl.classList.remove('hidden');
+  }} else {{
+    loadMoreEl.classList.add('hidden');
+  }}
+}}
+
+function showMore() {{
+  displayCount += 50;
+  render();
+}}
+
+// Event listeners
+searchInput.addEventListener('input', search);
+inStockOnly.addEventListener('change', search);
+waOnly.addEventListener('change', search);
+changesOnly.addEventListener('change', search);
+nurserySelect.addEventListener('change', search);
+sortBy.addEventListener('change', search);
+
+// Initial render
+search();
+
+// Subscribe form
+document.getElementById('subscribeForm').addEventListener('submit', async (e) => {{
+  e.preventDefault();
+  const email = document.getElementById('subEmail').value;
+  const msg = document.getElementById('subMessage');
+  const btn = e.target.querySelector('button');
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+  try {{
+    const resp = await fetch('/api/subscribe', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{email}}),
+    }});
+    const data = await resp.json();
+    msg.textContent = data.message || 'Subscribed!';
+    msg.className = 'mt-2 text-sm text-green-600';
+    msg.classList.remove('hidden');
+    if (resp.status === 201) {{
+      document.getElementById('subEmail').value = '';
+    }}
+  }} catch (err) {{
+    msg.textContent = 'Something went wrong. Try again later.';
+    msg.className = 'mt-2 text-sm text-red-600';
+    msg.classList.remove('hidden');
+  }}
+  btn.disabled = false;
+  btn.textContent = 'Subscribe';
+}});
+
+// Load digest
+fetch('/digest-wa.txt')
+  .then(r => r.ok ? r.text() : 'No digest available yet.')
+  .then(t => document.getElementById('digestText').textContent = t)
+  .catch(() => document.getElementById('digestText').textContent = 'No digest available yet.');
+</script>
+</body>
+</html>"""
+
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: build-dashboard.py <data-dir> [output-dir]")
+        print("  data-dir: path to nursery-stock/ directory with nursery subdirectories")
+        print("  output-dir: where to write index.html (default: ./dashboard-output/)")
+        sys.exit(1)
+
+    data_dir = Path(sys.argv[1])
+    output_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("dashboard-output")
+
+    if not data_dir.exists():
+        print(f"Error: {data_dir} does not exist")
+        sys.exit(1)
+
+    print(f"Loading nursery data from {data_dir}...")
+    products, nurseries = load_nursery_data(data_dir)
+    print(f"Loaded {len(products)} products from {len(nurseries)} nurseries")
+
+    for n in nurseries:
+        print(f"  {n['name']}: {n['count']} products ({n['in_stock']} in stock)")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    html = build_html(products, nurseries)
+    out_file = output_dir / "index.html"
+    out_file.write_text(html)
+    print(f"Dashboard written to {out_file} ({len(html):,} bytes)")
+
+
+if __name__ == "__main__":
+    main()

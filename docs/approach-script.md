@@ -36,6 +36,41 @@ you'd be happy for me to mention you as a case study. No pressure."
 want to see what a report looks like. No hard sell — just give me a call if
 you're interested."
 
+## The Friends / Portfolio Approach
+
+For the first three prospects (John & Felicity at Wembley Cycles / Gather
+Ceramics, Paul at PBR Plumbing) — these are friends, not cold prospects.
+Don't pitch. Just be honest:
+
+"Hey [Name], I'm starting something new — a consultancy called Walkthrough
+where I look at how businesses run and find practical ways to save time with
+technology. I'm building up my portfolio and I'd love to use yours as one of
+my first case studies. Completely free — I just need an hour to watch how
+things work, and I'll come back with 3-5 specific things you could change.
+All I'd ask in return is honest feedback on whether it was useful, and if
+it is, that you're happy for me to reference you when I talk to other
+businesses. No pressure either way."
+
+**If they ask what's in it for you:**
+"Honestly? I need real examples to show other businesses. A report based on
+a real Perth shop is worth more than any marketing I could write. And I
+genuinely think I'll find stuff that's useful for you — I've already had
+a look at your website and spotted a few things."
+
+**If they want specifics (use the prospect briefs):**
+- John (Wembley Cycles): "I noticed you're still phone-only for service
+  bookings — there's a tool called Velodrop that plugs into Lightspeed..."
+- Paul (PBR): "Your strata clients like JLL — how do they track job history
+  and compliance docs? Because there's a really clean opportunity there..."
+- Felicity (Gather): "Did you know you don't have a Google Business Profile?
+  That's a 10-minute fix that would get you showing up in 'pottery classes
+  near me' searches..."
+
+**After the free assessment — the retainer pitch:**
+"If you found this useful and want ongoing help actually implementing the
+changes, I offer a monthly retainer for $149. But no pressure — the
+assessment is the assessment, it's yours to keep either way."
+
 ## The Warm Approach (through a contact)
 
 "[Mutual friend] mentioned you've been [struggling with X / looking to

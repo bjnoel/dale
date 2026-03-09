@@ -52,4 +52,90 @@ or a subdomain (e.g. stock.scion.exchange). Keep existing app as-is for now.
 
 ---
 
-## All questions answered. No pending questions.
+## Batch 3 — 2026-03-05 — Prospect Approach & Track B
+
+### Q9 [ANSWERED] — Wembley Cycles / Gather Ceramics Connection
+Benedict: Felicity and John are friends (not partners). Paul (PBR) is also
+a friend. All three are friends of Benedict.
+
+### Q10 [ANSWERED] — Approach Order
+Benedict: Confirmed. All three as free portfolio pieces (DEC-016).
+
+### Q11 [ANSWERED] — All Three: Portfolio Pieces
+Benedict: Do all three free in exchange for case studies and referrals.
+Logged as DEC-016.
+
+### Q12 [INFO] — Primal Fruits / Cyrus
+I've built a scraper for Primal Fruits and it's running now (~139 products).
+They ship to WA (rare!) and have some high-value items (Alphonso grafted
+mango $242.50, Burdekin plum $145, sapodilla $72.75). When you see Cyrus,
+worth mentioning we're building a stock tracker — could be good exposure
+for his nursery if he's keen.
+
+---
+
+## Batch 4 — 2026-03-05 — Dashboard & DNS
+
+### Q13 [ANSWERED] — scion.exchange DNS
+Benedict added A record, but it's being caught by a wildcard rule
+(*.scion.exchange) pointing to CF Pages. The `stock` subdomain
+resolves to Cloudflare's proxy IPs and serves the existing scion-exchange
+app instead of our dashboard.
+**Fix needed:** Either:
+(a) Set the `stock` A record to DNS-only (grey cloud, not proxied)
+    pointing to 178.104.20.9 — Caddy handles HTTPS directly
+(b) Or delete any wildcard CNAME/A record that's overriding the `stock` record
+The dashboard works at http://178.104.20.9/ in the meantime.
+
+Re: API token — yes, if you want me to manage scion.exchange DNS from
+here, I'd need a new token with scion.exchange zone permissions added.
+Not urgent since you can toggle the proxy setting in the CF dashboard.
+
+### Q14 [ANSWERED] — Dashboard Feedback
+Benedict feedback: taxonomy (genus/species/cultivar), historical prices,
+more WA nursery research. Working on all three now.
+
+### Q15 [ANSWERED] — Track A Prospect Status
+Benedict: Will make contact over the next week. No action needed from Dale.
+
+### Q16 [INFO] — WA Nurseries + Track A Crossover
+Great idea mixing tracks. Found these WA fruit nurseries:
+- **Guildford Garden Centre** — WooCommerce site, can scrape (50+ fruit trees)
+- **Tass1 Trees** (Joe, Baskerville) — basic HTML site, no online shop. Open Sat-Sun. **Track A candidate.**
+- **Leeming Fruit Trees** — no website found at all! Phone/address only. **Track A candidate.**
+- **Perth Mobile Nursery** — has site, worth checking
+- **Lena Nursery** (Wangara) — large range, worth checking
+
+Tass1 and Leeming are perfect: show them the stock tracker,
+offer to list their inventory for free, upsell Walkthrough for a proper
+site/shop. Would you visit any of these?
+
+### Q17 — Dashboard: Ornamental Filtering
+I've filtered out ornamentals (roses, grevilleas, azaleas, etc.).
+Dashboard now shows 4,141 fruit/nut/edible products (was 8,950).
+Taxonomy matching at 64%. Latin names now show next to products.
+Refresh http://178.104.20.9/ to see the update.
+
+---
+
+## Batch 5 — 2026-03-09 — Sharing & Alerts
+
+### Q18 [BLOCKING] — Share Digest in WA Fruit FB Groups
+The daily digest is ready with links to each product. Daleys dropped prices
+on ~20 items (figs, chestnuts, starfruit, pomegranate, blueberries) and
+restocked them. This is exactly what the WA rare fruit community wants to see.
+
+**Can you share this in WA fruit FB groups this week?**
+Copy-paste from: https://stock.scion.exchange/digest-wa.txt
+
+The dashboard (https://stock.scion.exchange) now also has an email signup
+form so people can subscribe for daily alerts.
+
+### Q19 [INFO] — Track A Prospect Status Check
+How's the approach going? Any conversations started with Wembley Cycles,
+PBR Plumbing, or Gather Ceramics? No rush — just want to know if anything
+has shifted.
+
+### Q20 [ANSWERED] — scion.exchange DNS
+stock.scion.exchange is live with HTTPS! Caddy auto-provisioned the cert.
+Dashboard now accessible at https://stock.scion.exchange. Q13 resolved.
