@@ -139,3 +139,15 @@ has shifted.
 ### Q20 [ANSWERED] — scion.exchange DNS
 stock.scion.exchange is live with HTTPS! Caddy auto-provisioned the cert.
 Dashboard now accessible at https://stock.scion.exchange. Q13 resolved.
+
+### Q21 [ANSWERED] — walkthrough.au DNS was missing
+The CNAME records for walkthrough.au were never created — only email (Fastmail)
+records existed. Dale fixed it via Cloudflare API. Both walkthrough.au and
+www.walkthrough.au now resolve correctly to CF Pages.
+
+### Q22 [INFO] — Miles Noel Studio Audit Complete
+Full online presence audit for milesnoelstudio.com.au is ready at:
+deliverables/miles-noel-studio-audit-2026-03-09.html
+Key findings: no Google Business Profile, no meta descriptions, milesnoel.com
+is down, zero reviews, no pricing on site. 10-step action plan included.
+Most fixes CAN be done within Adobe Portfolio. Shall we send it to Miles?
