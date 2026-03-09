@@ -32,7 +32,7 @@ NURSERIES = {
     },
 }
 
-DATA_DIR = Path("/opt/dale/data") / "nursery-stock"
+DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
 USER_AGENT = "WalkthroughBot/1.0 (+https://scion.exchange; stock-monitoring)"
 REQUEST_DELAY = 1.5  # seconds between requests — be polite
 

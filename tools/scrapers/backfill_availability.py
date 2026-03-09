@@ -42,40 +42,63 @@ def backfill_nursery(nursery_dir: Path):
             if not title:
                 continue
 
-            # Use URL as key to distinguish same-titled products
-            product_key = p.get("url") or title
+            url = p.get("url", "")
+            variants = p.get("variants", [])
 
-            available = p.get("any_available", p.get("available", False))
-            price = p.get("min_price")
-            if price is None:
-                variants = p.get("variants", [])
-                if variants:
-                    avail_prices = [float(v.get("price", 0)) for v in variants if v.get("price") and v.get("available", True)]
-                    all_prices = [float(v.get("price", 0)) for v in variants if v.get("price")]
-                    price = min(avail_prices) if avail_prices else (min(all_prices) if all_prices else None)
+            # Build list of (key, display_title, available, price) entries
+            entries = []
+            if not variants:
+                product_key = url or title
+                available = p.get("any_available", p.get("available", False))
+                price = p.get("min_price")
+                entries.append((product_key, title, available, price))
+            else:
+                for v in variants:
+                    sku = v.get("sku")
+                    vid = v.get("id")
+                    vtitle = v.get("title", "Default")
+                    if sku:
+                        vkey = f"{url}|sku:{sku}"
+                    elif vid:
+                        vkey = f"{url}|id:{vid}"
+                    else:
+                        vkey = f"{url}|v:{vtitle}"
 
-            if product_key not in history["products"]:
-                history["products"][product_key] = {
-                    "title": title,
-                    "first_seen": day,
-                    "days": {},
-                }
+                    display = title
+                    if vtitle and vtitle not in ("Default", "Default Title"):
+                        display = f"{title} ({vtitle})"
 
-            prod = history["products"][product_key]
-            day_entry = {"a": bool(available)}
+                    vprice = v.get("price")
+                    if isinstance(vprice, str):
+                        try:
+                            vprice = float(vprice)
+                        except (ValueError, TypeError):
+                            vprice = None
+                    entries.append((vkey, display, bool(v.get("available", False)), vprice))
 
-            # Only record price if changed
-            if price is not None:
-                prev_days = {k: v for k, v in prod["days"].items() if k < day}
-                if prev_days:
-                    last_day = max(prev_days.keys())
-                    last_price = prev_days[last_day].get("p")
-                    if last_price is None or abs(price - last_price) > 0.01:
+            for product_key, display_title, available, price in entries:
+                if product_key not in history["products"]:
+                    history["products"][product_key] = {
+                        "title": display_title,
+                        "first_seen": day,
+                        "days": {},
+                    }
+
+                prod = history["products"][product_key]
+                day_entry = {"a": bool(available)}
+
+                # Only record price if changed
+                if price is not None:
+                    prev_days = {k: v for k, v in prod["days"].items() if k < day}
+                    if prev_days:
+                        last_day = max(prev_days.keys())
+                        last_price = prev_days[last_day].get("p")
+                        if last_price is None or abs(price - last_price) > 0.01:
+                            day_entry["p"] = round(price, 2)
+                    else:
                         day_entry["p"] = round(price, 2)
-                else:
-                    day_entry["p"] = round(price, 2)
 
-            prod["days"][day] = day_entry
+                prod["days"][day] = day_entry
 
     # Save
     with open(avail_file, "w") as f:

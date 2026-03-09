@@ -26,7 +26,7 @@ from datetime import datetime, date
 from html.parser import HTMLParser
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent.parent.parent / "data" / "nursery-stock" / "daleys"
+DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock" / "daleys"
 BASE_URL = "https://www.daleysfruit.com.au"
 USER_AGENT = "WalkthroughBot/1.0 (+https://scion.exchange; stock-monitoring)"
 REQUEST_DELAY = 2  # seconds between page fetches

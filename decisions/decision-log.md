@@ -264,3 +264,71 @@ simplest possible thing — no email sending yet, just collection.
 **Next:** Need SMTP credentials or a sending service to actually send alerts. Will propose
 when we have subscribers.
 **Status:** EXECUTED
+
+## DEC-025 — 2026-03-09 — Shareable Digest Pages + Price History
+**Decided by:** Dale
+**Decision:** Build three new web features for the stock tracker:
+1. **Shareable digest page** (`/digest.html`, `/digest-wa.html`) — proper web pages with
+   navigation, OG meta tags, and styled layout. Replaces raw email HTML as the primary
+   shareable link. Benedict can drop a URL into FB groups instead of walls of text.
+2. **Price history timeline** (`/history.html`, `/history-wa.html`) — browsable daily
+   change history across all nurseries. Expand/collapse each day, filter quiet days.
+   Shows 1,450 total changes across 5 days of data — compelling proof of value.
+3. **Dated digest archives** (`/archive/digest-YYYY-MM-DD.html`) — each day's digest
+   preserved. Shows the service is active and ongoing.
+
+Also fixed bugs: Daleys and Ecwid scrapers had hardcoded data paths that broke on
+the server (used `DALE_DATA_DIR` env var like the other scrapers). Added nav links
+(Today's Digest, History) to the main dashboard header.
+
+**Files changed:** daily_digest.py (added `--page` flag, refactored HTML builders),
+build_history.py (new), run-all-scrapers.sh (generates all new outputs),
+build-dashboard.py (nav links), daleys_scraper.py (path fix), ecwid_scraper.py (path fix).
+
+**Rationale:** The digest text was designed for copy-paste into FB groups but a shareable
+URL is more versatile — it works in any context (FB, WhatsApp, email, forums). The price
+history page builds the data moat and gives people a reason to return. Both features are
+zero-cost to operate (static HTML served by existing Caddy).
+**Status:** EXECUTED
+
+## DEC-026 — 2026-03-09 — Variant-Level Price Tracking
+**Decided by:** Dale
+**Decision:** Refactor price/stock change detection from product-level to variant-level
+comparison. Multi-variant products (e.g. Daleys trees with Small/Medium/Large pot sizes)
+are now tracked as individual entries keyed by SKU (Daleys/Ecwid), variant ID (Shopify),
+or variant title (fallback). Single-variant products unchanged.
+**Rationale:** The old code keyed products by URL and compared `min_price` across all
+variants. When a cheap variant went out of stock, the `min_price` shifted to a more
+expensive variant, creating false "price increase" reports. Daleys alone had **162 false
+price increases** in one day due to this. After the fix: only **3 real price changes**.
+This was undermining trust in the data.
+**Files changed:** daily_digest.py (load_snapshot, new _variant_key/_variant_display_title
+helpers), availability_tracker.py, backfill_availability.py. build_history.py inherits
+the fix automatically via imported functions.
+**Impact:** Daleys products expanded from 676 to ~1,032 tracked entries (variants
+flattened). Digest entries now show variant info: "Acerola (Large)" instead of "Acerola".
+**Status:** EXECUTED — deployed to server, history + digest pages rebuilt
+
+## DEC-027 — 2026-03-09 — Autonomous Dale (Cron-Based Self-Invocation)
+**Decided by:** Joint
+**Decision:** Build an autonomous execution system where Dale self-invokes via cron
+on the Hetzner VPS, performs business tasks overnight, and emails Benedict a summary.
+All spending requires email approval. Token usage is tracked and budgeted.
+**Architecture:**
+- `dale-runner.sh` cron wrapper runs at 2am AWST (18:00 UTC) nightly
+- `claude -p` headless mode using Benedict's Max $100 subscription
+- Token budget tracker ensures no contention with daytime interactive use
+- Resend API for email notifications to b@bjnoel.com
+- Wise virtual card ($50 AUD/month cap) for any approved spending
+- STOP file + circuit breakers for safety
+- Approval flow: Dale proposes spending via email, Benedict approves/denies async
+- Learning mode first 2 weeks: 15-minute session cap to establish baseline
+**Rationale:** Dale can operate ~8 hours/day while Benedict sleeps. Track B is
+particularly suited to autonomous operation (scrape, process, publish, grow audience).
+This is the logical evolution from "AI agent that needs a human to press enter" to
+"AI agent that operates within defined guardrails."
+**Benedict provides:** Resend API key, Claude Code auth on Hetzner, git deploy key.
+**Hard safety limits:** Wise card cap ($50 AUD/mo), STOP file, circuit breakers,
+spending approval flow, git-reversible changes only.
+**Full plan:** docs/autonomous-dale-plan.md
+**Status:** PLANNED — build next session

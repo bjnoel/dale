@@ -151,3 +151,27 @@ deliverables/miles-noel-studio-audit-2026-03-09.html
 Key findings: no Google Business Profile, no meta descriptions, milesnoel.com
 is down, zero reviews, no pricing on site. 10-step action plan included.
 Most fixes CAN be done within Adobe Portfolio. Shall we send it to Miles?
+
+---
+
+## Batch 6 — 2026-03-09 — Autonomous Dale Setup
+
+### Q23 [BLOCKING] — Pre-build checklist for autonomous Dale
+Before next session, Dale needs these set up on the Hetzner VPS:
+
+1. **Resend API key** — Create at resend.com, store at `/opt/dale/secrets/resend.env`
+   Format: `RESEND_API_KEY=re_xxxxxxxxxxxx`
+   Domain: walkthrough.au (or whatever you've verified)
+
+2. **Claude Code CLI on Hetzner** — SSH to dale-server and:
+   ```
+   npm install -g @anthropic-ai/claude-code
+   claude auth
+   ```
+   Then test: `claude -p "Say hello" --output-format json`
+
+3. **Git push access from Hetzner** — Dale needs to commit + push from the server.
+   Easiest: `gh auth login` on the server, or add a deploy key to the repo.
+
+Which of these can you do before next session? No rush — Dale will build
+whatever's ready and stub the rest.

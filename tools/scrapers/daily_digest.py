@@ -76,8 +76,36 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
     return True
 
 
+def _variant_key(product_url: str, variant: dict) -> str:
+    """Generate a unique key for a specific variant within a product."""
+    base = product_url or ""
+    # Prefer SKU (Daleys, Ecwid) — most stable identifier
+    sku = variant.get("sku")
+    if sku:
+        return f"{base}|sku:{sku}"
+    # Prefer variant ID (Shopify)
+    vid = variant.get("id")
+    if vid:
+        return f"{base}|id:{vid}"
+    # Fallback: variant title
+    vtitle = variant.get("title", "Default")
+    return f"{base}|v:{vtitle}"
+
+
+def _variant_display_title(product_title: str, variant_title: str) -> str:
+    """Build a display title for a variant, e.g. 'Acerola (Large)'."""
+    if not variant_title or variant_title in ("Default", "Default Title"):
+        return product_title
+    return f"{product_title} ({variant_title})"
+
+
 def load_snapshot(nursery_dir: Path, target_date: str) -> dict:
-    """Load a snapshot for a specific date, return product lookup by URL/title."""
+    """Load a snapshot for a specific date, return product lookup by variant key.
+
+    Multi-variant products are flattened so each variant is tracked independently.
+    This prevents false price changes when one variant goes out of stock and the
+    min_price shifts to a different-priced variant.
+    """
     snapshot = nursery_dir / f"{target_date}.json"
     if not snapshot.exists():
         return {}
@@ -88,8 +116,34 @@ def load_snapshot(nursery_dir: Path, target_date: str) -> dict:
     for p in data.get("products", []):
         if not is_fruit_product(p, nursery_key):
             continue
-        key = p.get("url") or p.get("title", "")
-        products[key] = p
+
+        url = p.get("url", "")
+        title = p.get("title", "")
+        variants = p.get("variants", [])
+
+        if not variants:
+            # No variants at all (e.g. Ecwid flat products) — key by URL
+            key = url or title
+            products[key] = p
+        else:
+            # Always flatten to variant level, even single-variant products.
+            # This ensures consistent keys when a product gains/loses variants.
+            for v in variants:
+                vkey = _variant_key(url, v)
+                vprice = v.get("price")
+                if isinstance(vprice, str):
+                    try:
+                        vprice = float(vprice)
+                    except (ValueError, TypeError):
+                        vprice = None
+
+                products[vkey] = {
+                    "title": _variant_display_title(title, v.get("title", "")),
+                    "url": url,
+                    "min_price": vprice,
+                    "any_available": bool(v.get("available", False)),
+                }
+
     return products
 
 
@@ -228,6 +282,15 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False) -> s
                 items.append(f"  ... and {extra} more")
             sections.append(("Sold out", items))
 
+        if changes.get("removed"):
+            items = []
+            for item in changes["removed"][:5]:
+                items.append(f"  🗑️ {item['title']}")
+            extra = len(changes["removed"]) - 5
+            if extra > 0:
+                items.append(f"  ... and {extra} more")
+            sections.append(("Removed", items))
+
         if not sections:
             continue
 
@@ -250,11 +313,11 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False) -> s
     return "\n".join(lines)
 
 
-def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> str:
-    """Format changes as HTML for email."""
+def _build_change_sections(all_changes: dict, wa_only: bool = False) -> tuple[list[str], bool]:
+    """Build HTML sections for each nursery's changes. Returns (sections_html, has_any)."""
     sections_html = []
-
     has_any = False
+
     for nursery_key, changes in sorted(all_changes.items()):
         if wa_only and nursery_key not in WA_NURSERIES:
             continue
@@ -266,15 +329,17 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> s
 
         for item in changes["back_in_stock"]:
             price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
+            if item.get("old_price"):
+                price += f" (was ${item['old_price']:.2f})"
             url = item.get("url", "")
-            link = f'<a href="{url}">{item["title"]}</a>' if url else item["title"]
-            items_html.append(f'<li style="color:#059669">✅ {link}{price} <strong>Back in stock!</strong></li>')
+            link = f'<a href="{url}" target="_blank">{item["title"]}</a>' if url else item["title"]
+            items_html.append(f'<li style="color:#059669;padding:4px 0"><span title="Was out of stock, now available again" style="cursor:help">✅</span> {link}{price} <strong>Back in stock!</strong></li>')
 
         for item in changes["price_drops"]:
             url = item.get("url", "")
-            link = f'<a href="{url}">{item["title"]}</a>' if url else item["title"]
+            link = f'<a href="{url}" target="_blank">{item["title"]}</a>' if url else item["title"]
             items_html.append(
-                f'<li>📉 {link}: '
+                f'<li style="padding:4px 0"><span title="Price decreased" style="cursor:help">📉</span> {link}: '
                 f'<span style="text-decoration:line-through;color:#999">${item["old_price"]:.2f}</span> '
                 f'→ <strong style="color:#059669">${item["new_price"]:.2f}</strong></li>'
             )
@@ -282,14 +347,17 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> s
         for item in changes["new_products"][:10]:
             price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
             url = item.get("url", "")
-            link = f'<a href="{url}">{item["title"]}</a>' if url else item["title"]
-            items_html.append(f'<li>🆕 {link}{price}</li>')
+            link = f'<a href="{url}" target="_blank">{item["title"]}</a>' if url else item["title"]
+            items_html.append(f'<li style="padding:4px 0"><span title="Newly listed on the nursery website" style="cursor:help">🆕</span> {link}{price}</li>')
         extra = len(changes["new_products"]) - 10
         if extra > 0:
-            items_html.append(f'<li>... and {extra} more new listings</li>')
+            items_html.append(f'<li style="padding:4px 0">... and {extra} more new listings</li>')
 
         for item in changes["sold_out"][:5]:
-            items_html.append(f'<li style="color:#999">❌ {item["title"]} — sold out</li>')
+            items_html.append(f'<li style="color:#999;padding:4px 0"><span title="Still listed but currently out of stock — may come back" style="cursor:help">❌</span> {item["title"]} — sold out</li>')
+
+        for item in changes.get("removed", [])[:5]:
+            items_html.append(f'<li style="color:#999;padding:4px 0"><span title="No longer listed on the nursery website" style="cursor:help">🗑️</span> {item["title"]} — removed</li>')
 
         if not items_html:
             continue
@@ -300,6 +368,13 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> s
             f'<h3 style="margin:16px 0 8px">{name}{wa_badge}</h3>'
             f'<ul style="list-style:none;padding:0;margin:0">{"".join(items_html)}</ul>'
         )
+
+    return sections_html, has_any
+
+
+def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> str:
+    """Format changes as HTML for email (inline styles, no external deps)."""
+    sections_html, has_any = _build_change_sections(all_changes, wa_only)
 
     if not has_any:
         sections_html.append('<p>No changes today — all quiet across the nurseries.</p>')
@@ -318,12 +393,137 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> s
 </body></html>"""
 
 
+def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False) -> str:
+    """Format changes as a shareable web page with proper styling and navigation."""
+    sections_html, has_any = _build_change_sections(all_changes, wa_only)
+
+    if not has_any:
+        sections_html.append(
+            '<div style="text-align:center;padding:48px 0;color:#9ca3af">'
+            'No changes today — all quiet across the nurseries.</div>'
+        )
+
+    title_suffix = " (Ships to WA)" if wa_only else ""
+
+    # Count changes by type for summary pills
+    total_by_type = {}
+    for nursery_key, changes in all_changes.items():
+        if wa_only and nursery_key not in WA_NURSERIES:
+            continue
+        for cat, items in changes.items():
+            if items:
+                total_by_type[cat] = total_by_type.get(cat, 0) + len(items)
+
+    pills = []
+    pill_config = [
+        ("back_in_stock", "✅", "Back in stock"),
+        ("price_drops", "📉", "Price drops"),
+        ("new_products", "🆕", "New"),
+        ("sold_out", "❌", "Sold out"),
+    ]
+    for key, icon, label in pill_config:
+        count = total_by_type.get(key, 0)
+        if count > 0:
+            pills.append(
+                f'<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 12px;'
+                f'border-radius:9999px;font-size:0.875rem;background:#f3f4f6">'
+                f'{icon} {count} {label}</span>'
+            )
+
+    pills_html = " ".join(pills) if pills else ""
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nursery Stock Update — {target_date}{title_suffix} — scion.exchange</title>
+<meta name="description" content="Daily fruit nursery stock changes for {target_date}. Price drops, back in stock alerts, and new listings.">
+<meta property="og:title" content="Nursery Stock Update — {target_date}">
+<meta property="og:description" content="Daily price and stock changes across Australian fruit nurseries.">
+<meta property="og:type" content="article">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
+  a {{ color: #065f46; }}
+  a:hover {{ text-decoration: underline; }}
+  li {{ border-bottom: 1px solid #f3f4f6; }}
+  li:last-child {{ border-bottom: none; }}
+</style>
+</head>
+<body class="bg-white text-gray-900">
+
+<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
+  <div class="max-w-2xl mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-bold text-green-800">
+          <a href="/" class="hover:no-underline">scion.exchange</a>
+        </h1>
+        <p class="text-sm text-gray-500">Nursery Stock Update{title_suffix}</p>
+      </div>
+      <div class="flex gap-2 text-sm">
+        <a href="/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 no-underline">Dashboard</a>
+        <a href="/history.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 no-underline">History</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-2xl mx-auto px-4 py-6">
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-green-900 mb-2">🌱 {target_date}</h2>
+    <div class="flex flex-wrap gap-2">{pills_html}</div>
+  </div>
+
+  {"".join(sections_html)}
+
+  <div class="mt-8 p-4 bg-green-50 rounded-lg text-sm text-green-800">
+    <p class="font-medium mb-1">Get daily updates</p>
+    <p>We track ~5,000 fruit &amp; edible plants across 8 Australian nurseries every day.</p>
+    <p class="mt-2">
+      <a href="/" class="font-medium">Search the dashboard →</a> &nbsp;|&nbsp;
+      <a href="/history.html" class="font-medium">View price history →</a>
+    </p>
+  </div>
+</main>
+
+<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
+  <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>
+</footer>
+
+</body>
+</html>"""
+
+
+def load_all_changes(data_dir: Path, target_date: str) -> tuple[dict, int]:
+    """Load and compare snapshots for a given date. Returns (all_changes, total_changes)."""
+    prev_date = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
+    all_changes = {}
+    total_changes = 0
+
+    for nursery_dir in sorted(data_dir.iterdir()):
+        if not nursery_dir.is_dir():
+            continue
+        prev = load_snapshot(nursery_dir, prev_date)
+        curr = load_snapshot(nursery_dir, target_date)
+        if not prev or not curr:
+            continue
+        changes = compare_snapshots(prev, curr)
+        nursery_key = nursery_dir.name
+        all_changes[nursery_key] = changes
+        total_changes += sum(len(v) for v in changes.values())
+
+    return all_changes, total_changes
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Generate daily stock change digest")
     parser.add_argument("data_dir", help="Path to nursery-stock directory")
     parser.add_argument("--date", help="Date to compare (default: today)", default=None)
-    parser.add_argument("--html", action="store_true", help="Output HTML instead of text")
+    parser.add_argument("--html", action="store_true", help="Output HTML (email format)")
+    parser.add_argument("--page", action="store_true", help="Output HTML (shareable web page)")
     parser.add_argument("--wa-only", action="store_true", help="Only show WA-shipping nurseries")
     parser.add_argument("--save", help="Save output to file")
     args = parser.parse_args()
@@ -334,29 +534,11 @@ def main():
         sys.exit(1)
 
     target_date = args.date or date.today().isoformat()
-    prev_date = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
+    all_changes, total_changes = load_all_changes(data_dir, target_date)
 
-    all_changes = {}
-    total_changes = 0
-
-    for nursery_dir in sorted(data_dir.iterdir()):
-        if not nursery_dir.is_dir():
-            continue
-
-        prev = load_snapshot(nursery_dir, prev_date)
-        curr = load_snapshot(nursery_dir, target_date)
-
-        if not prev or not curr:
-            continue
-
-        changes = compare_snapshots(prev, curr)
-        nursery_key = nursery_dir.name
-        all_changes[nursery_key] = changes
-
-        n_changes = sum(len(v) for v in changes.values())
-        total_changes += n_changes
-
-    if args.html:
+    if args.page:
+        output = format_html_page(all_changes, target_date, wa_only=args.wa_only)
+    elif args.html:
         output = format_html(all_changes, target_date, wa_only=args.wa_only)
     else:
         output = format_text(all_changes, target_date, wa_only=args.wa_only)

@@ -41,12 +41,38 @@ echo "$LOG_PREFIX Building dashboard..."
 python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" 2>&1
 echo "$LOG_PREFIX Dashboard build complete."
 
-# Generate daily digest (text + HTML versions)
+# Generate daily digest (text + HTML + shareable web page versions)
 echo "$LOG_PREFIX Generating daily digest..."
+TODAY=$(date '+%Y-%m-%d')
+DIGEST_DIR="$PROJECT_DIR/dashboard"
+ARCHIVE_DIR="$DIGEST_DIR/archive"
+mkdir -p "$ARCHIVE_DIR"
+
+# Text digests (for FB groups)
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --save "$PROJECT_DIR/dashboard/digest.txt" 2>&1
+    --save "$DIGEST_DIR/digest.txt" 2>&1
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --wa-only --save "$PROJECT_DIR/dashboard/digest-wa.txt" 2>&1
+    --wa-only --save "$DIGEST_DIR/digest-wa.txt" 2>&1
+
+# Email HTML digests
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --html --save "$PROJECT_DIR/dashboard/digest.html" 2>&1
-echo "$LOG_PREFIX Digest complete."
+    --html --save "$DIGEST_DIR/digest-email.html" 2>&1
+python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
+    --html --wa-only --save "$DIGEST_DIR/digest-wa-email.html" 2>&1
+
+# Shareable web page digests (main ones served at /digest.html)
+python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
+    --page --save "$DIGEST_DIR/digest.html" 2>&1
+python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
+    --page --wa-only --save "$DIGEST_DIR/digest-wa.html" 2>&1
+
+# Archive dated copies
+cp "$DIGEST_DIR/digest.html" "$ARCHIVE_DIR/digest-$TODAY.html"
+cp "$DIGEST_DIR/digest-wa.html" "$ARCHIVE_DIR/digest-wa-$TODAY.html"
+echo "$LOG_PREFIX Digest complete (archived as $TODAY)."
+
+# Build price/stock change history page
+echo "$LOG_PREFIX Building history page..."
+python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1
+python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" --wa-only 2>&1
+echo "$LOG_PREFIX History page complete."

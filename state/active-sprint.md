@@ -35,7 +35,9 @@
 - [ ] Set up stock.scion.exchange DNS (Q13 — needs Benedict)
 - [x] Build daily digest script for FB sharing (DEC-023)
 - [x] Build email subscriber collection + signup form (DEC-024)
-- [ ] Benedict to share digest in WA fruit FB groups (Q18)
+- [x] Build shareable digest web pages + price history (DEC-025)
+- [x] Fix Daleys/Ecwid scraper data path bugs
+- [ ] Benedict to share http://178.104.20.9/digest-wa.html in WA fruit FB groups (Q18)
 - [ ] Build email sending for subscribers (needs SMTP creds or service)
 
 ### Infrastructure (Both Tracks)
@@ -48,9 +50,20 @@
 - [ ] Set up question dashboard (simple web page for Benedict Q&A)
 - [ ] Set up Stripe (when first client is ready to pay)
 
+### Autonomous Dale (DEC-027)
+- [ ] Benedict: Set up Resend API key on Hetzner (Q23)
+- [ ] Benedict: Install Claude Code CLI + auth on Hetzner (Q23)
+- [ ] Benedict: Set up git push access from Hetzner (Q23)
+- [ ] Build dale-runner.sh (cron wrapper)
+- [ ] Build budget-tracker.py (token usage tracking)
+- [ ] Build notify.py (Resend email notifications)
+- [ ] Build session-prompt.py (autonomous session context builder)
+- [ ] Create config.json + TASK_QUEUE.md
+- [ ] Test pipeline manually, then enable cron
+
 ### Blockers
 - Waiting for Benedict to approach first prospect
-- Need stock.scion.exchange DNS set up (Q13)
+- Need Resend + Claude CLI + git auth on Hetzner before autonomous build (Q23)
 
 ### Session 5 Completed (2026-03-09)
 - Verified scrapers running perfectly: 6 snapshots accumulated, real changes detected

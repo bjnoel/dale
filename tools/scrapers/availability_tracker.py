@@ -72,45 +72,71 @@ def update_nursery(nursery_dir: Path):
         if not title:
             continue
 
-        # Use URL as key to distinguish products with same title (e.g. different pot sizes)
-        # Fall back to title for products without URLs
-        product_key = p.get("url") or title
+        url = p.get("url", "")
+        variants = p.get("variants", [])
 
-        available = p.get("any_available", p.get("available", False))
-        price = p.get("min_price")
-        if price is None:
-            variants = p.get("variants", [])
-            if variants:
-                avail_prices = [float(v.get("price", 0)) for v in variants if v.get("price") and v.get("available", True)]
-                all_prices = [float(v.get("price", 0)) for v in variants if v.get("price")]
-                price = min(avail_prices) if avail_prices else (min(all_prices) if all_prices else None)
+        # Build list of (key, display_title, available, price) entries
+        # All variants are flattened so each is tracked independently
+        entries = []
+        if not variants:
+            # No variants (e.g. Ecwid flat products) — key by URL
+            product_key = url or title
+            available = p.get("any_available", p.get("available", False))
+            price = p.get("min_price")
+            entries.append((product_key, title, available, price))
+        else:
+            # Multi-variant: one entry per variant
+            for v in variants:
+                sku = v.get("sku")
+                vid = v.get("id")
+                vtitle = v.get("title", "Default")
+                if sku:
+                    vkey = f"{url}|sku:{sku}"
+                elif vid:
+                    vkey = f"{url}|id:{vid}"
+                else:
+                    vkey = f"{url}|v:{vtitle}"
 
-        # Get or create product history
-        if product_key not in history["products"]:
-            history["products"][product_key] = {
-                "title": title,
-                "first_seen": today,
-                "days": {},
-            }
-            new += 1
+                display = title
+                if vtitle and vtitle not in ("Default", "Default Title"):
+                    display = f"{title} ({vtitle})"
 
-        prod = history["products"][product_key]
-        day_entry = {"a": bool(available)}
+                vprice = v.get("price")
+                if isinstance(vprice, str):
+                    try:
+                        vprice = float(vprice)
+                    except (ValueError, TypeError):
+                        vprice = None
 
-        # Only record price if it changed from most recent entry
-        if price is not None:
-            prev_days = prod["days"]
-            if prev_days:
-                # Find most recent day
-                last_day = max(prev_days.keys())
-                last_price = prev_days[last_day].get("p")
-                if last_price is None or abs(price - last_price) > 0.01:
+                entries.append((vkey, display, bool(v.get("available", False)), vprice))
+
+        for product_key, display_title, available, price in entries:
+            # Get or create product history
+            if product_key not in history["products"]:
+                history["products"][product_key] = {
+                    "title": display_title,
+                    "first_seen": today,
+                    "days": {},
+                }
+                new += 1
+
+            prod = history["products"][product_key]
+            day_entry = {"a": bool(available)}
+
+            # Only record price if it changed from most recent entry
+            if price is not None:
+                prev_days = prod["days"]
+                if prev_days:
+                    # Find most recent day
+                    last_day = max(prev_days.keys())
+                    last_price = prev_days[last_day].get("p")
+                    if last_price is None or abs(price - last_price) > 0.01:
+                        day_entry["p"] = round(price, 2)
+                else:
                     day_entry["p"] = round(price, 2)
-            else:
-                day_entry["p"] = round(price, 2)
 
-        prod["days"][today] = day_entry
-        updated += 1
+            prod["days"][today] = day_entry
+            updated += 1
 
     # Save
     with open(avail_file, "w") as f:
