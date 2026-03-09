@@ -104,8 +104,8 @@ def send_summary(session_log_path):
 <h3>Usage</h3>
 <ul>
 <li>Tokens: {tokens_in:,} in / {tokens_out:,} out</li>
-<li>Turns: {num_turns} &bull; Cost: ${cost_usd:.4f} &bull; Stop: {stop_reason}</li>
-<li>Duration: {duration_min:.1f} minutes</li>
+<li>Turns: {num_turns} &bull; Duration: {duration_min:.1f} minutes</li>
+<li>Stop reason: {stop_reason}</li>
 </ul>
 <p style="color: #888; font-size: 12px;">Autonomous Dale &mdash; <a href="https://github.com/bjnoel/Dale">repo</a></p>"""
 
@@ -114,7 +114,7 @@ def send_summary(session_log_path):
 {summary_text[:2000]}
 
 Tokens: {tokens_in:,} in / {tokens_out:,} out
-Turns: {num_turns} | Cost: ${cost_usd:.4f} | Duration: {duration_min:.1f} min"""
+Turns: {num_turns} | Duration: {duration_min:.1f} min"""
 
     send_email(f"Dale Session — {today}", html, text)
 
