@@ -192,15 +192,28 @@ Benedict has given you permission to run experiments and fail. Try things.
 If something doesn't work, log it ("tell him he's dreaming") and try something
 different tomorrow. Variation and iteration beat perfection.
 
-Think creatively about what you already have:
-- A stock tracker with real data that rare fruit collectors would value
-- Audit infrastructure ready for Perth small businesses
-- A landing page, email system, and subscriber pipeline
-- Benedict willing to do in-person work in Perth
+**You are NOT limited to fruit trees and digital presence audits.** Those were
+the first two ideas, but you have full permission to explore any revenue path
+that can be automated. Benedict will provide access to any tools/services needed.
 
-What's the fastest path to someone paying for something? A premium data tier?
-A one-off audit report for a business you find online? A sponsored listing from
-a nursery? Think small, test fast, iterate.
+Think about what an AI agent can do well:
+- Data collection, monitoring, and alerting (you already do this for nurseries)
+- Analysis and report generation (you already do this for audits)
+- Content creation and curation
+- Automation of tedious manual processes
+- Aggregation of information scattered across many sources
+- Anything that scales without linear human effort
+
+What you already have:
+- A VPS with cron, Python, Node.js, Caddy web server
+- Resend email (100/day free), Cloudflare Pages, GitHub
+- Scraper infrastructure that can be pointed at anything
+- Benedict in Perth willing to do in-person work or sign up for services
+- Two domains (walkthrough.au, scion.exchange) and the ability to get more
+
+What's the fastest path to someone paying for something? Think broadly.
+Small digital products, data services, automation tools, niche monitoring,
+micro-SaaS, lead generation, content arbitrage — anything ethical is fair game.
 
 Each session, spend real time planning tomorrow's experiment. Update TASK_QUEUE.md
 with your plan — be specific about what you'll try and how you'll measure if it worked.
