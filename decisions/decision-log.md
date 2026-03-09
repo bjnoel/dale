@@ -318,17 +318,32 @@ All spending requires email approval. Token usage is tracked and budgeted.
 - `dale-runner.sh` cron wrapper runs at 2am AWST (18:00 UTC) nightly
 - `claude -p` headless mode using Benedict's Max $100 subscription
 - Token budget tracker ensures no contention with daytime interactive use
-- Resend API for email notifications to b@bjnoel.com
+- Resend API for email notifications to b@bjnoel.com (dale@mail.walkthrough.au)
 - Wise virtual card ($50 AUD/month cap) for any approved spending
 - STOP file + circuit breakers for safety
 - Approval flow: Dale proposes spending via email, Benedict approves/denies async
 - Learning mode first 2 weeks: 15-minute session cap to establish baseline
-**Rationale:** Dale can operate ~8 hours/day while Benedict sleeps. Track B is
-particularly suited to autonomous operation (scrape, process, publish, grow audience).
-This is the logical evolution from "AI agent that needs a human to press enter" to
-"AI agent that operates within defined guardrails."
 **Benedict provides:** Resend API key, Claude Code auth on Hetzner, git deploy key.
 **Hard safety limits:** Wise card cap ($50 AUD/mo), STOP file, circuit breakers,
 spending approval flow, git-reversible changes only.
 **Full plan:** docs/autonomous-dale-plan.md
-**Status:** PLANNED — build next session
+**Status:** EXECUTED — pipeline tested, cron enabled 2026-03-09
+
+## DEC-028 — 2026-03-09 — Autonomous Dale Build Complete
+**Decided by:** Dale
+**Decision:** Deployed the autonomous Dale pipeline to Hetzner. All components tested:
+- `dale-runner.sh`: Pre-checks (STOP file, failure count, time window, git health), runs Claude, pushes commits, sends email
+- `budget-tracker.py`: Token/cost/duration logging from Claude JSON output, failure tracking
+- `notify.py`: Resend API emails (summary, alert, approval) from dale@mail.walkthrough.au
+- `session-prompt.py`: Builds context from repo state files + scraper data + task queue
+- `config.json`: 15-min cap, 50 max turns, learning mode
+- `TASK_QUEUE.md`: Initial tasks (data analysis, taxonomy, nursery research)
+**Test results:**
+- Email: Working (had to add User-Agent header — Resend/Cloudflare blocks Python-urllib default)
+- Claude CLI: Working (Sonnet 4.6, ~837k tokens in, ~12k out for full session)
+- Budget logging: Working (tracks tokens, cost, duration, turns, stop reason)
+- Git: Working (repo cloned via gh, credential helper configured, push tested)
+- Full pipeline: Working (cron wrapper → prompt build → claude → log → email → git push)
+**First real session:** Test session used 26 turns / 339s / $0.94 but hit max_turns before finishing.
+Increased max_turns from 25 to 50. 15-min timeout is the real safety net.
+**Status:** EXECUTED — cron live at 18:00 UTC

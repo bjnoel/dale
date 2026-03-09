@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "schedule": {
+    "cron_time": "0 18 * * *",
+    "allowed_window_utc_start": 17,
+    "allowed_window_utc_end": 1,
+    "timezone_note": "18:00 UTC = 02:00 AWST"
+  },
+  "budget": {
+    "max_session_duration_minutes": 15,
+    "learning_mode": true,
+    "max_turns": 50
+  },
+  "notifications": {
+    "from_email": "dale@mail.walkthrough.au",
+    "to_email": "b@bjnoel.com"
+  },
+  "paths": {
+    "repo": "/opt/dale/repo",
+    "data": "/opt/dale/data",
+    "autonomous": "/opt/dale/autonomous",
+    "secrets": "/opt/dale/secrets",
+    "scrapers": "/opt/dale/scrapers"
+  },
+  "circuit_breakers": {
+    "max_consecutive_failures": 3
+  }
+}

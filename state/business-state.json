@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "last_updated": "2026-03-09",
-  "session_count": 6,
+  "session_count": 7,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -83,7 +83,7 @@
     "email": "done — hello@walkthrough.au via Fastmail",
     "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "planned — needs Resend API key, Claude CLI auth, git access on Hetzner",
-    "resend": "pending — Benedict setting up"
+    "autonomous_dale": "live — cron at 18:00 UTC (2am AWST), learning mode (15-min cap), 50 max turns",
+    "resend": "done — dale@mail.walkthrough.au + mail.scion.exchange verified"
   }
 }

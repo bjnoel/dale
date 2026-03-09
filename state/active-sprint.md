@@ -50,20 +50,23 @@
 - [ ] Set up question dashboard (simple web page for Benedict Q&A)
 - [ ] Set up Stripe (when first client is ready to pay)
 
-### Autonomous Dale (DEC-027)
-- [ ] Benedict: Set up Resend API key on Hetzner (Q23)
-- [ ] Benedict: Install Claude Code CLI + auth on Hetzner (Q23)
-- [ ] Benedict: Set up git push access from Hetzner (Q23)
-- [ ] Build dale-runner.sh (cron wrapper)
-- [ ] Build budget-tracker.py (token usage tracking)
-- [ ] Build notify.py (Resend email notifications)
-- [ ] Build session-prompt.py (autonomous session context builder)
-- [ ] Create config.json + TASK_QUEUE.md
-- [ ] Test pipeline manually, then enable cron
+### Autonomous Dale (DEC-027, DEC-028)
+- [x] Benedict: Set up Resend API key on Hetzner (Q23) — done
+- [x] Benedict: Install Claude Code CLI + auth on Hetzner (Q23) — done
+- [x] Benedict: Set up git push access from Hetzner (Q23) — done (gh auth)
+- [x] Build dale-runner.sh (cron wrapper) — deployed
+- [x] Build budget-tracker.py (token usage tracking) — deployed
+- [x] Build notify.py (Resend email notifications) — deployed, tested
+- [x] Build session-prompt.py (autonomous session context builder) — deployed
+- [x] Create config.json + TASK_QUEUE.md — deployed
+- [x] Test pipeline manually, then enable cron — tested + cron live at 18:00 UTC
+- [ ] Verify walkthrough.au domain in Resend (currently using mail.walkthrough.au subdomain)
+- [ ] Monitor first 3 nightly runs for issues
+- [ ] Graduate from 15-min to 20-min cap after 2 weeks if stable
 
 ### Blockers
 - Waiting for Benedict to approach first prospect
-- Need Resend + Claude CLI + git auth on Hetzner before autonomous build (Q23)
+- Waiting for Benedict to share digest in WA fruit FB groups (Q18)
 
 ### Session 5 Completed (2026-03-09)
 - Verified scrapers running perfectly: 6 snapshots accumulated, real changes detected
