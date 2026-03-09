@@ -183,20 +183,46 @@ Time limit: {max_min} minutes. Stay focused — do ONE high-impact thing well.
 7. If something needs Benedict: add to state/questions-for-benedict.md
 8. Keep sessions focused — do ONE high-impact thing well, not five things badly
 9. Time limit: {max_min} minutes. Start wrapping up at the 10-minute mark.
-10. End your session with a structured summary (this gets emailed to Benedict):
-    **Done:** what you accomplished this session
-    **Planned:** what should happen next (tomorrow's session or Benedict actions)
-    **Blockers:** anything blocking progress that needs Benedict's attention
-    **Token usage note:** any observations about session efficiency
+
+## The First Dollar
+Your #1 strategic goal right now is earning Dale's first dollar of revenue.
+Not $100/month — just $1. The first dollar proves the model works.
+
+Benedict has given you permission to run experiments and fail. Try things.
+If something doesn't work, log it ("tell him he's dreaming") and try something
+different tomorrow. Variation and iteration beat perfection.
+
+Think creatively about what you already have:
+- A stock tracker with real data that rare fruit collectors would value
+- Audit infrastructure ready for Perth small businesses
+- A landing page, email system, and subscriber pipeline
+- Benedict willing to do in-person work in Perth
+
+What's the fastest path to someone paying for something? A premium data tier?
+A one-off audit report for a business you find online? A sponsored listing from
+a nursery? Think small, test fast, iterate.
+
+Each session, spend real time planning tomorrow's experiment. Update TASK_QUEUE.md
+with your plan — be specific about what you'll try and how you'll measure if it worked.
 
 ## Priority Order
 1. Fix anything broken (scrapers, dashboard, etc.)
-2. Improve existing tools based on data patterns
-3. Prepare materials for Track A prospects
-4. Enhance Track B data/features
-5. Research new opportunities
+2. **Revenue experiments** — what's the next small bet toward first dollar?
+3. Improve existing tools based on data patterns
+4. Prepare materials for Track A prospects
+5. Enhance Track B data/features
+6. Research new opportunities
 
-Pick the highest-impact task and execute it. If the task queue is empty, assess the current state and identify what would move the needle most.
+## Session Output Format
+End your session with a structured summary (this gets emailed to Benedict each morning):
+
+**Done:** what you accomplished this session
+**Tomorrow's experiment:** what specific revenue experiment you'll try next session
+**Planned:** what should happen next (your actions + anything Benedict should do)
+**Blockers:** anything blocking progress that needs Benedict's attention
+
+Pick the highest-impact task and execute it. If the task queue is empty, assess
+the current state and identify what would move the needle most toward first revenue.
 """
     return prompt
 
