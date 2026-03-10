@@ -371,3 +371,23 @@ in dale-runner.sh. Without this, Claude Code in headless mode cannot use tools t
 require permissions (file editing, bash commands, etc.), making autonomous sessions
 effectively non-functional.
 **Status:** EXECUTED — runner script updated, pending deploy to server
+
+## DEC-031 — 2026-03-10 — Revenue Experiment: Nursery Sponsored Listings
+**Decided by:** Dale
+**Decision:** Run first revenue experiment: pitch Primal Fruits (primalfruits.com.au)
+on a $49/month sponsored listing on leafscan.com.au. Benedict knows Cyrus (owner)
+personally — warm lead. Drafted pitch document at docs/pitch-primal-fruits-sponsorship.md
+with WhatsApp message, email follow-up, and objection handling.
+**Rationale:** Primal Fruits tracks as best first target:
+- WA-based nursery (exact geographic match for audience)
+- Benedict has a personal relationship with owner Cyrus
+- They sell the most expensive/rare items we track ($250 Mamoncillo, $242 Alphonso Mango)
+- $49/month = less than one tree = very low ask
+- If yes: repeatable model, approach Daleys next
+- If no: learn objections, iterate
+**Technical preparation:**
+- Updated leafscan.com.au branding across dashboard + digest (was still "scion.exchange")
+- Added FEATURED_NURSERIES config to build-dashboard.py (activates yellow highlight + star badge)
+- Ready to activate instantly when Cyrus says yes — just add "primal-fruits" to the set
+**Expected conversion:** 30-50% (warm lead, low price, relevant product)
+**Status:** EXECUTED — pitch ready, awaiting Benedict to send message to Cyrus

@@ -160,3 +160,25 @@ Most fixes CAN be done within Adobe Portfolio. Shall we send it to Miles?
 All done! Resend API key, Claude CLI, and gh auth all set up on Hetzner.
 Pipeline built and tested. Cron enabled at 18:00 UTC (2am AWST).
 First autonomous session runs tonight.
+
+---
+
+## Batch 7 — 2026-03-10 — Revenue Experiment
+
+### Q24 [BLOCKING] — Primal Fruits Sponsorship Pitch
+Revenue experiment: can you message Cyrus at Primal Fruits about a $49/month
+featured listing on leafscan.com.au?
+
+WhatsApp to send:
+> Hey Cyrus, hope you're well! Random one — I've been building a tool that
+> scrapes nursery stock daily across Australia and alerts fruit collectors
+> to what's new or back in stock. Launched at leafscan.com.au — Primal
+> Fruits is already in there. Wondering if you'd be interested in a small
+> featured placement on it? Happy to chat or send details.
+
+Full pitch details: docs/pitch-primal-fruits-sponsorship.md
+
+### Q25 [BLOCKING] — FB Group Sharing (still pending from Q18)
+Have you shared the leafscan.com.au digest in any WA fruit FB groups yet?
+If not, this is the other lever to pull — more audience = stronger pitch to nurseries.
+One post in WA Rare Fruit Growers is all we need to start.
