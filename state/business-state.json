@@ -37,9 +37,10 @@
     },
     "b": {
       "name": "Rare Fruit Stock Tracker",
-      "domain": "scion.exchange",
+      "domain": "leafscan.com.au",
+      "domain_alt": "scion.exchange",
       "status": "ready-to-share",
-      "dashboard_url": "https://stock.scion.exchange",
+      "dashboard_url": "https://leafscan.com.au",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
       "nurseries_monitored": 8,
       "nurseries_researched": 15,

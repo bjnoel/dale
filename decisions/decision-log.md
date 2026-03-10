@@ -347,3 +347,27 @@ spending approval flow, git-reversible changes only.
 **First real session:** Test session used 26 turns / 339s / $0.94 but hit max_turns before finishing.
 Increased max_turns from 25 to 50. 15-min timeout is the real safety net.
 **Status:** EXECUTED — cron live at 18:00 UTC
+
+## DEC-029 — 2026-03-10 — Track B Domain: leafscan.com.au
+**Decided by:** Joint
+**Decision:** Register leafscan.com.au as the public-facing domain for the fruit tree
+stock tracker (Track B). Replaces stock.scion.exchange as primary URL.
+**Cost:** $9.95 AUD first year, $22.95/year after (VentraIP).
+**Rationale:** stock.scion.exchange had multiple problems:
+- Too long and hard to share verbally
+- `.exchange` TLD reads as crypto/fintech to non-tech audience
+- No Australian SEO signal (target audience is 100% Australian)
+- `.com.au` is universally recognised as Australian
+- "leafscan" is short, snappy, and descriptive enough
+Considered and rejected: fruitstock, rarefruits, orchardprices, plantstock (taken),
+plantwatch (taken), growlist (taken), treefinder (taken), various grow/leaf combos.
+scion.exchange kept as redirect. stock.scion.exchange continues working as alias.
+**Status:** EXECUTED — domain registered, DNS setup pending
+
+## DEC-030 — 2026-03-10 — Autonomous Dale: Add --dangerously-skip-permissions
+**Decided by:** Joint
+**Decision:** Add `--dangerously-skip-permissions` flag to the `claude -p` invocation
+in dale-runner.sh. Without this, Claude Code in headless mode cannot use tools that
+require permissions (file editing, bash commands, etc.), making autonomous sessions
+effectively non-functional.
+**Status:** EXECUTED — runner script updated, pending deploy to server

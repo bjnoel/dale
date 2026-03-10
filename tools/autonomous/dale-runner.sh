@@ -94,6 +94,7 @@ PROMPT=$(python3 "$SCRIPT_DIR/session-prompt.py" 2>>"$LOG_DIR/prompt-errors.log"
 # Run with timeout
 SECONDS_LIMIT=$((MAX_MINUTES * 60))
 timeout "${SECONDS_LIMIT}" claude -p "$PROMPT" \
+    --dangerously-skip-permissions \
     --output-format json \
     --max-turns "$MAX_TURNS" \
     > "$SESSION_LOG" 2>"$LOG_DIR/claude-stderr-$TODAY.log"
