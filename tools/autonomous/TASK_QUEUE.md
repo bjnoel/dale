@@ -65,6 +65,6 @@
 ---
 
 ## Completed
-- [x] 2026-03-10: leafscan.com.au branding updated across dashboard + digest builder
+- [x] 2026-03-10: treestock.com.au branding updated across dashboard + digest builder
 - [x] 2026-03-10: Nursery sponsored listing pitch drafted (Primal Fruits)
 - [x] 2026-03-10: Featured listing badge infrastructure added to dashboard

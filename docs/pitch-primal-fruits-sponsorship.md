@@ -10,7 +10,7 @@
 
 ## The Opportunity
 
-We're building leafscan.com.au — a daily stock tracker for rare fruit trees across
+We're building treestock.com.au — a daily stock tracker for rare fruit trees across
 Australian nurseries. Every day we check 8 nurseries (including Primal Fruits) and
 show collectors what's new, what's back in stock, and what's changed in price.
 
@@ -27,11 +27,11 @@ Our audience is exactly Cyrus's customer base.
 
 **Featured Listing — $49/month AUD**
 
-- Primal Fruits appears as a "Featured" nursery at the top of leafscan.com.au
+- Primal Fruits appears as a "Featured" nursery at the top of treestock.com.au
 - New stock listings from Primal Fruits get a "FEATURED" callout in the daily digest
 - Price drops on their rare items get highlighted to subscribers
 - Primal Fruits listed first in the nursery filter dropdown
-- "Supports leafscan" badge on their nursery card
+- "Supports treestock" badge on their nursery card
 
 **Why $49?**
 - Less than one Mamoncillo tree
@@ -46,13 +46,13 @@ Our audience is exactly Cyrus's customer base.
 
 > Hey Cyrus, hope you're well! Random one — I've been building a tool that scrapes
 > nursery stock daily across Australia and alerts fruit collectors to what's new or
-> back in stock. Launched at leafscan.com.au — Primal Fruits is already in there.
+> back in stock. Launched at treestock.com.au — Primal Fruits is already in there.
 > Wondering if you'd be interested in a small featured placement on it? Happy to
 > chat or send details.
 
 ### Follow-up if they reply yes / want to know more:
 
-> It's leafscan.com.au — we track 8 nurseries daily and show collectors price changes
+> It's treestock.com.au — we track 8 nurseries daily and show collectors price changes
 > and new stock. You've got some seriously rare stuff (I saw the Mamoncillo and
 > Alphonso Mango!) that collectors are hunting for.
 >
@@ -84,7 +84,7 @@ Our audience is exactly Cyrus's customer base.
 
 Benedict needs to:
 1. Get their email + confirm payment method (bank transfer is fine initially)
-2. Let Dale know to add "Featured" badge to their nursery card on leafscan.com.au
+2. Let Dale know to add "Featured" badge to their nursery card on treestock.com.au
 3. Set up invoice via any simple invoicing tool (even a PDF is fine to start)
 
 Dale will handle the technical side of the featured listing immediately.

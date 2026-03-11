@@ -23,11 +23,11 @@
       "date": "2026-03-10",
       "type": "expense",
       "category": "infrastructure",
-      "description": "leafscan.com.au domain registration (VentraIP)",
+      "description": "leafscan.com.au domain registration (VentraIP) — replaced by treestock.com.au",
       "amount": -9.95,
-      "recurring": true,
+      "recurring": false,
       "recurring_period": "yearly",
-      "note": "$9.95 first year, $22.95/year after. Track B fruit tracker domain."
+      "note": "Superseded. treestock.com.au registered 2026-03-11 (Benedict's personal expense, not counted)."
     }
   ],
   "summary": {

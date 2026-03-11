@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Minimal email subscription server for scion.exchange stock alerts.
+Minimal email subscription server for treestock.com.au stock alerts.
 
 Runs as a tiny HTTP server that accepts POST /subscribe with an email address.
 Stores subscribers in a JSON file. Designed to run behind Caddy reverse proxy.

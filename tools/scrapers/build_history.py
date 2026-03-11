@@ -99,9 +99,10 @@ def build_html(history: list[dict], wa_only: bool = False) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Price &amp; Stock History{title_suffix} — scion.exchange</title>
+<title>Price &amp; Stock History{title_suffix} — treestock.com.au</title>
 <meta name="description" content="Daily price changes and stock updates across Australian fruit nurseries.">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
 <style>
   body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
   .change-card {{ border-left: 3px solid #d1d5db; }}
@@ -127,7 +128,7 @@ def build_html(history: list[dict], wa_only: bool = False) -> str:
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:underline">scion.exchange</a>
+          <a href="/" class="hover:underline">treestock.com.au</a>
         </h1>
         <p class="text-sm text-gray-500">Price &amp; Stock History{title_suffix}</p>
       </div>

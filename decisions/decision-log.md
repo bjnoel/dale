@@ -391,3 +391,31 @@ with WhatsApp message, email follow-up, and objection handling.
 - Ready to activate instantly when Cyrus says yes — just add "primal-fruits" to the set
 **Expected conversion:** 30-50% (warm lead, low price, relevant product)
 **Status:** EXECUTED — pitch ready, awaiting Benedict to send message to Cyrus
+
+## DEC-032 — 2026-03-11 — Comprehensive leafscan.com.au Branding Fix
+**Decided by:** Dale
+**Decision:** Fix all remaining scion.exchange references across source files. DEC-031
+claimed to update branding but only partially succeeded — the Python source files that
+generate the dashboard, digest, and history pages still contained scion.exchange throughout.
+**Files changed:** build-dashboard.py (x2, dashboard + scrapers copies), daily_digest.py,
+build_history.py, subscribe_server.py, daleys_scraper.py, ecwid_scraper.py,
+shopify_scraper.py, woocommerce_scraper.py (user-agent strings).
+Also fixed `stock.scion.exchange` URLs → `leafscan.com.au` (no subdomain needed).
+**Deployed:** All files synced to server, dashboard + digest + history pages rebuilt.
+leafscan.com.au DNS confirmed pointing to 178.104.20.9, Caddy already configured.
+**Status:** EXECUTED — superseded by DEC-033 (treestock.com.au) same day
+
+## DEC-033 — 2026-03-11 — Track B Domain: treestock.com.au (replaces leafscan.com.au)
+**Decided by:** Benedict
+**Decision:** Rebrand Track B domain from leafscan.com.au to treestock.com.au.
+Third domain iteration (scion.exchange → leafscan.com.au → treestock.com.au).
+**Cost:** Benedict's personal expense, not counted towards ledger.
+**Changes:**
+- DNS: treestock.com.au A record → 178.104.20.9 (via Cloudflare API)
+- Caddy: treestock.com.au serves dashboard, stock.scion.exchange + leafscan.com.au
+  now 301 redirect to treestock.com.au
+- All source files updated (build-dashboard.py x2, daily_digest.py, build_history.py,
+  all 4 scrapers, subscribe_server.py, pitch doc, task queue)
+- Dashboard + digest + history pages rebuilt and deployed
+- Cloudflare zone ID for treestock: 87880cb83388c52cf86b0a7037845cb3
+**Status:** EXECUTED

@@ -229,7 +229,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False) -> s
     """Format changes as plain text for FB groups."""
     lines = []
     lines.append(f"🌱 Nursery Stock Update — {target_date}")
-    lines.append(f"via scion.exchange")
+    lines.append(f"via treestock.com.au")
     lines.append("")
 
     has_any = False
@@ -307,7 +307,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False) -> s
         lines.append("")
 
     lines.append("—")
-    lines.append("Full dashboard: https://stock.scion.exchange")
+    lines.append("Full dashboard: https://treestock.com.au")
     lines.append("Tracking 8 nurseries, ~5,000 fruit & edible plants daily.")
 
     return "\n".join(lines)
@@ -386,9 +386,9 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> s
 {"".join(sections_html)}
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.9em;color:#6b7280">
-  <a href="https://stock.scion.exchange">Full dashboard</a> &bull;
+  <a href="https://treestock.com.au">Full dashboard</a> &bull;
   Tracking 8 nurseries, ~5,000 fruit &amp; edible plants daily.<br>
-  Built by <a href="https://scion.exchange">scion.exchange</a>
+  Built by <a href="https://treestock.com.au">treestock.com.au</a>
 </p>
 </body></html>"""
 
@@ -437,12 +437,13 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False)
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nursery Stock Update — {target_date}{title_suffix} — scion.exchange</title>
+<title>Nursery Stock Update — {target_date}{title_suffix} — treestock.com.au</title>
 <meta name="description" content="Daily fruit nursery stock changes for {target_date}. Price drops, back in stock alerts, and new listings.">
 <meta property="og:title" content="Nursery Stock Update — {target_date}">
 <meta property="og:description" content="Daily price and stock changes across Australian fruit nurseries.">
 <meta property="og:type" content="article">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
 <style>
   body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
   a {{ color: #065f46; }}
@@ -458,7 +459,7 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False)
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:no-underline">scion.exchange</a>
+          <a href="/" class="hover:no-underline">treestock.com.au</a>
         </h1>
         <p class="text-sm text-gray-500">Nursery Stock Update{title_suffix}</p>
       </div>

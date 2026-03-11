@@ -357,9 +357,10 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>scion.exchange - Australian Nursery Stock Tracker</title>
+<title>treestock.com.au - Australian Nursery Stock Tracker</title>
 <meta name="description" content="Track rare fruit and plant stock across Australian nurseries. Search availability, compare prices, find what's in stock.">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
 <style>
   body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
   .stock-badge {{ font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }}
@@ -383,7 +384,7 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
   <div class="max-w-5xl mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-xl font-bold text-green-800">scion.exchange</h1>
+        <h1 class="text-xl font-bold text-green-800">treestock.com.au</h1>
         <p class="text-sm text-gray-500">Australian Nursery Stock Tracker</p>
       </div>
       <div class="text-right text-xs text-gray-400">
@@ -426,6 +427,24 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
   <!-- Nursery Summary -->
   <div id="nurserySummary" class="mb-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm"></div>
 
+  <!-- Email Alerts Signup -->
+  <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <div class="flex-1">
+        <p class="text-sm font-medium text-green-800">Get notified when daily email alerts launch</p>
+        <p class="text-xs text-gray-500">We're building price drop &amp; back-in-stock alerts for WA. Leave your email to be first in line.</p>
+      </div>
+      <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
+        <input type="email" id="subEmail" placeholder="your@email.com" required
+          class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-48">
+        <button type="submit" class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+          Notify me
+        </button>
+      </form>
+    </div>
+    <div id="subMessage" class="mt-2 text-sm hidden"></div>
+  </div>
+
   <!-- Results -->
   <div id="results"></div>
   <div id="loadMore" class="text-center py-4 hidden">
@@ -434,26 +453,6 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
     </button>
   </div>
 </main>
-
-<!-- Email Alerts Signup -->
-<section class="max-w-5xl mx-auto px-4 py-8 mt-4 border-t border-gray-200">
-  <div class="max-w-md mx-auto text-center">
-    <h2 class="text-lg font-bold text-green-800 mb-2">Get stock alerts</h2>
-    <p class="text-sm text-gray-500 mb-4">
-      Daily email when plants come back in stock, prices drop, or new varieties appear.
-      Focused on nurseries that ship to WA.
-    </p>
-    <form id="subscribeForm" class="flex gap-2">
-      <input type="email" id="subEmail" placeholder="your@email.com" required
-        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-      <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
-        Subscribe
-      </button>
-    </form>
-    <div id="subMessage" class="mt-2 text-sm hidden"></div>
-    <p class="text-xs text-gray-400 mt-2">No spam. Unsubscribe anytime.</p>
-  </div>
-</section>
 
 <!-- Latest Digest -->
 <section class="max-w-5xl mx-auto px-4 py-4">

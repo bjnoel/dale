@@ -58,7 +58,7 @@ NURSERIES = {
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
-USER_AGENT = "WalkthroughBot/1.0 (+https://scion.exchange; stock-monitoring)"
+USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 REQUEST_DELAY = 2  # seconds between paginated requests
 
 
