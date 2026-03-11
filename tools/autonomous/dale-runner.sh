@@ -74,6 +74,12 @@ git pull --ff-only origin main 2>>"$LOG_DIR/git-errors.log" || {
     exit 1
 }
 
+# Deploy scripts from repo to server locations
+if [ -f "$REPO_DIR/tools/deploy.sh" ]; then
+    bash "$REPO_DIR/tools/deploy.sh" 2>>"$LOG_DIR/cron.log"
+    log "Deployed scripts from repo"
+fi
+
 # --- Run Claude ---
 
 log "Running Claude (${MAX_MINUTES}min cap, ${MAX_TURNS} max turns)"
@@ -91,23 +97,47 @@ PROMPT=$(python3 "$SCRIPT_DIR/session-prompt.py" 2>>"$LOG_DIR/prompt-errors.log"
     exit 1
 }
 
-# Run with timeout
+# Run with timeout + retry on empty output
 SECONDS_LIMIT=$((MAX_MINUTES * 60))
-timeout "${SECONDS_LIMIT}" claude -p "$PROMPT" \
-    --dangerously-skip-permissions \
-    --output-format json \
-    --max-turns "$MAX_TURNS" \
-    > "$SESSION_LOG" 2>"$LOG_DIR/claude-stderr-$TODAY.log"
+MAX_ATTEMPTS=3
+ATTEMPT=0
+EXIT_CODE=1
 
-EXIT_CODE=$?
+while [ "$ATTEMPT" -lt "$MAX_ATTEMPTS" ]; do
+    ATTEMPT=$((ATTEMPT + 1))
 
-if [ "$EXIT_CODE" -eq 124 ]; then
-    log "Session timed out after ${MAX_MINUTES} minutes (this is normal)"
-elif [ "$EXIT_CODE" -ne 0 ]; then
-    log "Claude exited with code $EXIT_CODE"
-    python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "claude-exit-$EXIT_CODE"
-    # Still try to send summary of whatever happened
-fi
+    if [ "$ATTEMPT" -gt 1 ]; then
+        log "Retry attempt $ATTEMPT/$MAX_ATTEMPTS (waiting 30s)"
+        sleep 30
+    fi
+
+    timeout "${SECONDS_LIMIT}" claude -p "$PROMPT" \
+        --dangerously-skip-permissions \
+        --output-format json \
+        --max-turns "$MAX_TURNS" \
+        > "$SESSION_LOG" 2>"$LOG_DIR/claude-stderr-$TODAY.log"
+
+    EXIT_CODE=$?
+    OUTPUT_SIZE=$(stat -c%s "$SESSION_LOG" 2>/dev/null || stat -f%z "$SESSION_LOG" 2>/dev/null || echo 0)
+
+    if [ "$EXIT_CODE" -eq 0 ] || [ "$EXIT_CODE" -eq 124 ]; then
+        # Success or timeout (timeout is normal)
+        if [ "$EXIT_CODE" -eq 124 ]; then
+            log "Session timed out after ${MAX_MINUTES} minutes (this is normal)"
+        fi
+        break
+    fi
+
+    # Non-zero exit with empty output = transient failure, worth retrying
+    if [ "$OUTPUT_SIZE" -le 1 ] && [ "$ATTEMPT" -lt "$MAX_ATTEMPTS" ]; then
+        log "Claude exited with code $EXIT_CODE, empty output (${OUTPUT_SIZE}B). Will retry."
+    else
+        # Non-zero exit but got output, or final attempt
+        log "Claude exited with code $EXIT_CODE (attempt $ATTEMPT, output ${OUTPUT_SIZE}B)"
+        python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "claude-exit-$EXIT_CODE"
+        break
+    fi
+done
 
 # --- Post-run ---
 
