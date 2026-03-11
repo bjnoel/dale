@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "last_updated": "2026-03-11",
-  "session_count": 11,
+  "session_count": 12,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -59,6 +59,8 @@
         "Species taxonomy matching (68%)",
         "Daily digest (text + HTML + shareable web page)",
         "Email signup form (collecting subscribers)",
+        "Daily email digest to subscribers (via Resend)",
+        "Unsubscribe flow (HMAC-secured, Spam Act compliant)",
         "Changes only filter",
         "Price/stock change history page",
         "Dated digest archives"

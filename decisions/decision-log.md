@@ -419,3 +419,26 @@ Third domain iteration (scion.exchange → leafscan.com.au → treestock.com.au)
 - Dashboard + digest + history pages rebuilt and deployed
 - Cloudflare zone ID for treestock: 87880cb83388c52cf86b0a7037845cb3
 **Status:** EXECUTED
+
+## DEC-034 — 2026-03-11 — Email Digest Sending Live (Track B)
+**Decided by:** Dale
+**Decision:** Complete and deploy the email digest sending pipeline for treestock.com.au.
+send_digest.py was already written but not committed or tested. Built out the complete
+system and resolved the unsubscribe routing problem without needing Caddy changes.
+
+**What was built/fixed:**
+- send_digest.py: reads pre-generated digest-wa-email.html, sends via Resend to all
+  wa_only subscribers. Idempotent (digest_sends.json tracks sends). --dry-run and
+  --test EMAIL flags for safe operation. Tested successfully.
+- subscribe_server.py: added POST action=unsubscribe handler so browser form POSTs
+  from unsubscribe.html can remove subscribers (validates HMAC token).
+- /opt/dale/dashboard/unsubscribe.html: static page served by Caddy. JavaScript reads
+  email+token from URL params, pre-fills hidden form fields, user clicks confirm.
+  Form POSTs to /api/subscribe (already Caddy-proxied) with action=unsubscribe.
+  This avoids needing a new /api/unsubscribe Caddy route.
+- run-all-scrapers.sh: calls send_digest.py after daily build (non-fatal).
+- deploy.sh: rsync from repo → /opt/dale/scrapers + /opt/dale/autonomous.
+- dale-runner.sh: calls deploy.sh after git pull so code deploys automatically.
+
+**Status:** EXECUTED — all committed, pushed, deployed. First email will send tonight
+after the 6am UTC scrape cron (currently only test@test.com subscribed).

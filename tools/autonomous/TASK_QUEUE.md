@@ -79,18 +79,11 @@ The scraped dataset is our real asset and it's not backed up.
 
 ---
 
-### 3. Build Email Digest Sending
+### ~~3. Build Email Digest Sending~~ DONE (Session 12, 2026-03-11)
 
-The signup form collects addresses but doesn't send anything — we need to
-deliver on the promise before Benedict drives traffic from FB.
-
-- Use Resend API (already configured, 100/day free tier)
-- Subscribers are in /opt/dale/data/subscribers.json
-- Send the daily WA digest HTML as the email body
-- Add a send-digest.py script to the daily cron pipeline (runs after digest generation)
-- Include unsubscribe link (required by CAN-SPAM / AU spam law)
-- Test with Benedict's email (b@bjnoel.com) before going live
-- Log as a decision
+send_digest.py deployed and wired into the daily cron. Unsubscribe flow works via
+static /unsubscribe.html page + POST action=unsubscribe to subscribe_server. All
+Australian Spam Act compliant. First email will send at 6am UTC (test@test.com only).
 
 ---
 
@@ -188,3 +181,4 @@ filler. The unique data (prices, stock, shipping) IS the value — make it promi
 - [x] 2026-03-10: treestock.com.au branding updated across dashboard + digest builder
 - [x] 2026-03-10: Nursery sponsored listing pitch drafted (Primal Fruits)
 - [x] 2026-03-10: Featured listing badge infrastructure added to dashboard
+- [x] 2026-03-11: Email digest sending live (send_digest.py + subscribe_server unsubscribe + unsubscribe.html)

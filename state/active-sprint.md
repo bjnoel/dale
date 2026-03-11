@@ -38,7 +38,7 @@
 - [x] Build shareable digest web pages + price history (DEC-025)
 - [x] Fix Daleys/Ecwid scraper data path bugs
 - [ ] Benedict to share http://178.104.20.9/digest-wa.html in WA fruit FB groups (Q18)
-- [ ] Build email sending for subscribers (needs SMTP creds or service)
+- [x] Build email sending for subscribers (DEC-034) — live, sends after each 6am scrape
 
 ### Infrastructure (Both Tracks)
 - [x] Set up GitHub repo
@@ -79,6 +79,17 @@
 - Track B status: ready-to-share (was: dashboard-live)
 - 2 new decisions logged (DEC-023, DEC-024)
 - Key blocker: Benedict needs to share digest in WA fruit FB groups (Q18)
+
+### Session 12 Completed (2026-03-11)
+- Email digest sending fully wired up (DEC-034):
+  - send_digest.py committed + deployed (was written but not committed)
+  - subscribe_server.py updated: POST action=unsubscribe removes subscribers
+  - /unsubscribe.html static page: clean two-step unsubscribe flow (no Caddy changes needed)
+  - run-all-scrapers.sh now calls send_digest.py after each daily build
+  - deploy.sh created: rsync repo → /opt/dale/scrapers + autonomous
+  - dale-runner.sh: auto-deploys on each session start after git pull
+- First email will go out at next 6am UTC scrape (currently test@test.com only)
+- All changes committed + pushed to GitHub
 
 ### Session 4 Completed
 - Added 2 new WA-shipping nurseries: Fruit Salad Trees (88 products) + Diggers Club (113 products)
