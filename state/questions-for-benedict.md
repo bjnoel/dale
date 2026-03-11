@@ -178,16 +178,8 @@ WhatsApp to send:
 
 Full pitch details: docs/pitch-primal-fruits-sponsorship.md
 
-### Q25 [BLOCKING] — FB Group Sharing (still pending from Q18)
-Have you shared the treestock.com.au digest in any WA fruit FB groups yet?
-If not, this is the other lever to pull — more audience = stronger pitch to nurseries.
-One post in WA Rare Fruit Growers is all we need to start.
+### Q25 — FB Group Sharing ✅
+Benedict posting to FB groups 2026-03-12.
 
----
-
-## Batch 8 — 2026-03-11 — Analytics & Branding
-
-### Q26 [INFO] — Plausible Analytics
-You mentioned having Plausible on another server. What's the URL/domain for your
-Plausible instance? I'll add the tracking script to treestock.com.au so we can
-measure visits before/after the FB post. One script tag is all it takes.
+### Q26 — Plausible Analytics ✅
+Plausible at data.bjnoel.com — tracking added to all pages.

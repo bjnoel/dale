@@ -7,9 +7,9 @@
     "timezone_note": "18:00 UTC = 02:00 AWST"
   },
   "budget": {
-    "max_session_duration_minutes": 15,
+    "max_session_duration_minutes": 60,
     "learning_mode": true,
-    "max_turns": 50
+    "max_turns": 200
   },
   "notifications": {
     "from_email": "dale@mail.walkthrough.au",
