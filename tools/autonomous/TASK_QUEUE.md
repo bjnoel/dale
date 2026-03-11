@@ -53,7 +53,12 @@ Known shipping data to verify/expand:
 
 **1d. Update build_history.py if it has WA-specific logic.**
 
-**1e. Rebuild dashboard and deploy.** Run the full pipeline after changes:
+**1e. Update the email signup copy** in build-dashboard.py:
+- Currently says "price drop & back-in-stock alerts for WA"
+- Change to "for Australian fruit tree collectors" (or similar)
+- The signup form should match the expanded state-based scope
+
+**1f. Rebuild dashboard and deploy.** Run the full pipeline after changes:
 - Update scrapers on server (copy to /opt/dale/scrapers/)
 - Rebuild dashboard
 - Rebuild digests
