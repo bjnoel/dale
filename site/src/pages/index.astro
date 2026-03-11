@@ -2,15 +2,15 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Walkthrough — Practical Efficiency Assessments for Perth Businesses">
+<Base title="Walkthrough - Practical Efficiency Assessments for Perth Businesses">
   <header>
     <nav>
-      <a href="/" class="logo">Walkthrough</a>
+      <a href="/" class="logo">Walk<span>through</span></a>
       <div class="nav-links">
         <a href="#how">How It Works</a>
         <a href="#pricing">Pricing</a>
         <a href="/log">Public Log</a>
-        <a href="#contact" class="btn-nav">Get Started</a>
+        <a href="#contact" class="btn-nav">Book Assessment</a>
       </div>
     </nav>
   </header>
@@ -18,61 +18,105 @@ import Base from '../layouts/Base.astro';
   <main>
     <section class="hero">
       <div class="container">
-        <h1>Find 3-5 things you can change <em>this week</em> to save time and money</h1>
-        <p class="hero-sub">
-          We visit your Perth business, watch how things actually work, and come back
-          with practical recommendations. No jargon. No 40-page report. Just stuff that works.
-        </p>
-        <a href="#contact" class="btn-primary">Book an Assessment</a>
-        <p class="hero-note">$199 one-off. No lock-in. Most clients save more than that in week one.</p>
-      </div>
-    </section>
-
-    <section class="problem" id="why">
-      <div class="container">
-        <h2>Sound familiar?</h2>
-        <div class="problem-grid">
-          <div class="problem-card">
-            <div class="problem-icon">&#x23F0;</div>
-            <p>You're spending hours on things that software could do in minutes</p>
+        <div class="hero-inner">
+          <div class="hero-content">
+            <span class="hero-eyebrow">Perth Small Business &bull; Efficiency Assessment</span>
+            <h1>Find 3-5 things you can change <em>this week</em> to save time and money</h1>
+            <p class="hero-sub">
+              We visit your Perth business, watch how things actually work, and come back
+              with practical recommendations. No jargon. No 40-page report. Just stuff that works.
+            </p>
+            <div class="hero-cta-group">
+              <a href="#contact" class="btn-primary">Book an Assessment</a>
+              <span class="hero-cta-note">$199 one-off &nbsp;&middot;&nbsp; No lock-in.</span>
+            </div>
           </div>
-          <div class="problem-card">
-            <div class="problem-icon">&#x1F4F1;</div>
-            <p>Your online presence hasn't been updated in months (or years)</p>
-          </div>
-          <div class="problem-card">
-            <div class="problem-icon">&#x1F4B8;</div>
-            <p>You're paying for tools you're not using — or using the wrong ones</p>
-          </div>
-          <div class="problem-card">
-            <div class="problem-icon">&#x1F914;</div>
-            <p>You know AI is changing things but don't know where to start</p>
+          <div class="hero-graphic" aria-hidden="true">
+            <svg width="160" height="200" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="16" y="28" width="128" height="160" rx="3" fill="white" stroke="#c8c0b8" stroke-width="2"/>
+              <rect x="52" y="18" width="56" height="24" rx="3" fill="white" stroke="#c8c0b8" stroke-width="2"/>
+              <rect x="64" y="22" width="32" height="4" rx="2" fill="#d8d0c8"/>
+              <circle cx="80" cy="22" r="4" fill="#c8c0b8"/>
+              <line x1="32" y1="72" x2="128" y2="72" stroke="#e8e4de" stroke-width="1"/>
+              <line x1="32" y1="90" x2="128" y2="90" stroke="#e8e4de" stroke-width="1"/>
+              <line x1="32" y1="108" x2="128" y2="108" stroke="#e8e4de" stroke-width="1"/>
+              <line x1="32" y1="126" x2="100" y2="126" stroke="#e8e4de" stroke-width="1"/>
+              <line x1="32" y1="144" x2="112" y2="144" stroke="#e8e4de" stroke-width="1"/>
+              <rect x="32" y="60" width="14" height="14" rx="1" stroke="#c8c0b8" stroke-width="1.5" fill="white"/>
+              <rect x="32" y="78" width="14" height="14" rx="1" stroke="#c8c0b8" stroke-width="1.5" fill="white"/>
+              <rect x="32" y="96" width="14" height="14" rx="1" stroke="#c8c0b8" stroke-width="1.5" fill="white"/>
+              <polyline points="34,67 38,71 45,63" stroke="#1a5632" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="34,85 38,89 45,81" stroke="#1a5632" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="104" cy="148" r="32" fill="#1a5632"/>
+              <polyline points="89,148 100,160 120,136" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="how" id="how">
+    <section class="problems" id="why">
       <div class="container">
-        <h2>How it works</h2>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <h3>We visit</h3>
-            <p>Ben spends an hour in your business — watching operations,
-               asking questions, understanding what's really going on.</p>
+        <div class="section-header">
+          <div class="field-label">Observations / Intake</div>
+          <h2 class="section-title">Sound familiar?</h2>
+        </div>
+        <div class="problems-list">
+          <div class="problem-item">
+            <div class="checkbox" aria-hidden="true"></div>
+            <p class="problem-text">You're spending hours on manual tasks that software could handle in minutes</p>
           </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <h3>We analyse</h3>
-            <p>Our AI analyses your online presence, compares you to similar businesses,
-               and identifies specific opportunities.</p>
+          <div class="problem-item">
+            <div class="checkbox" aria-hidden="true"></div>
+            <p class="problem-text">Your online presence hasn't been updated in months (or years)</p>
           </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <h3>We deliver</h3>
-            <p>You get 3-5 actionable recommendations with a 30-minute walkthrough.
-               Clear steps you can take this week.</p>
+          <div class="problem-item">
+            <div class="checkbox" aria-hidden="true"></div>
+            <p class="problem-text">You're paying for tools you're not using, or using the wrong ones entirely</p>
+          </div>
+          <div class="problem-item">
+            <div class="checkbox" aria-hidden="true"></div>
+            <p class="problem-text">You know AI is changing things but don't know where it actually applies to you</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-header">
+          <div class="field-label">Process / Method</div>
+          <h2 class="section-title">How it works</h2>
+        </div>
+        <div class="steps-wrapper">
+          <div class="steps-track">
+            <div class="step">
+              <span class="step-num">01</span>
+              <div class="step-counter">
+                <span class="field-label">Visit</span>
+              </div>
+              <h3>We visit</h3>
+              <p>Ben spends an hour in your business, watching operations, asking questions, understanding what's really going on. No assumptions. No remote guesswork.</p>
+              <div class="step-meta">Ben &bull; 1 hour on-site</div>
+            </div>
+            <div class="step">
+              <span class="step-num">02</span>
+              <div class="step-counter">
+                <span class="field-label">Analysis</span>
+              </div>
+              <h3>We analyse</h3>
+              <p>AI analyses your online presence, benchmarks you against similar businesses, and identifies specific opportunities. Faster and more thorough than any human alone.</p>
+              <div class="step-meta">Dale (AI) &bull; Full comparison analysis</div>
+            </div>
+            <div class="step">
+              <span class="step-num">03</span>
+              <div class="step-counter">
+                <span class="field-label">Deliverable</span>
+              </div>
+              <h3>We deliver</h3>
+              <p>You get 3-5 specific, actionable recommendations with a 30-minute walkthrough. Clear steps you can take this week, not a shelf document.</p>
+              <div class="step-meta">3-5 recommendations &bull; 30-min walkthrough</div>
+            </div>
           </div>
         </div>
       </div>
@@ -80,62 +124,84 @@ import Base from '../layouts/Base.astro';
 
     <section class="diff">
       <div class="container">
-        <h2>Why this is different</h2>
+        <div class="section-header">
+          <div class="field-label">Why This Is Different</div>
+          <h2 class="section-title">Not another remote audit</h2>
+        </div>
         <div class="diff-grid">
           <div class="diff-item">
-            <h3>In-person, not remote</h3>
-            <p>We physically visit your business. We see things a remote audit never could —
-               like the 45 minutes you spend on manual inventory every day.</p>
+            <span class="diff-marker">In-person</span>
+            <h3>We actually visit your business</h3>
+            <p>We physically walk through your operation. We see things a remote audit never could, like the 45 minutes you spend on manual inventory every day because nobody showed you the sync button.</p>
           </div>
           <div class="diff-item">
-            <h3>AI-powered analysis</h3>
-            <p>We use AI to crunch data, analyse your online presence, and benchmark you
-               against similar businesses. Faster and more thorough than any human alone.</p>
+            <span class="diff-marker">AI-powered</span>
+            <h3>Technology does the heavy lifting</h3>
+            <p>AI crunches your data, analyses your online presence, and benchmarks you against comparable businesses. Human insight + machine throughput in the same service.</p>
           </div>
           <div class="diff-item">
-            <h3>Practical, not theoretical</h3>
-            <p>No buzzwords. No "digital transformation roadmap." Just: here's what's
-               costing you time and money, and here's how to fix it.</p>
+            <span class="diff-marker">Practical</span>
+            <h3>No buzzwords. No roadmaps.</h3>
+            <p>No "digital transformation strategy." Just: here's what's costing you time and money, here's how to fix it, and here's what to do first.</p>
           </div>
           <div class="diff-item">
-            <h3>Perth prices, not agency prices</h3>
-            <p>SEO audits start at $1,500. Business consultants charge $300/hour.
-               We charge $199 for the whole thing.</p>
+            <span class="diff-marker">Perth prices</span>
+            <h3>Not agency pricing</h3>
+            <p>SEO audits from agencies start at $1,500. Business consultants charge $300/hour or more. We charge $199 for the whole assessment.</p>
+            <div class="stat">$199 <span class="stat-vs">vs</span> $1,500+</div>
+            <div class="stat-label">Full assessment vs. agency audit</div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="pricing" id="pricing">
+    <section id="pricing">
       <div class="container">
-        <h2>Simple pricing</h2>
-        <div class="pricing-cards">
-          <div class="pricing-card featured">
-            <div class="pricing-label">Most Popular</div>
-            <h3>Assessment</h3>
-            <div class="price">$199</div>
-            <div class="price-note">one-off</div>
-            <ul>
-              <li>1-hour on-site visit</li>
-              <li>AI-powered analysis of your online presence</li>
-              <li>3-5 specific, actionable recommendations</li>
-              <li>Professional report you can act on immediately</li>
-              <li>30-minute walkthrough of findings</li>
-            </ul>
-            <a href="#contact" class="btn-primary">Book Now</a>
+        <div class="section-header">
+          <div class="field-label">Fees / Schedule</div>
+          <h2 class="section-title">Simple, transparent pricing</h2>
+        </div>
+        <div class="pricing-wrapper">
+          <div class="pricing-header-row">
+            <span class="field-label pricing-ref-col">Ref.</span>
+            <span class="field-label">Service</span>
+            <span class="field-label">Fee</span>
           </div>
-          <div class="pricing-card">
-            <h3>Implementation Support</h3>
-            <div class="price">$149</div>
-            <div class="price-note">per month</div>
-            <ul>
-              <li>Everything in Assessment</li>
-              <li>Help implementing recommendations</li>
-              <li>Monthly check-in and progress review</li>
-              <li>Priority email/phone support</li>
-              <li>Cancel anytime, no lock-in</li>
-            </ul>
-            <a href="#contact" class="btn-secondary">Learn More</a>
+          <div class="pricing-row featured">
+            <div class="pricing-index">A-01</div>
+            <div class="pricing-details">
+              <div class="pricing-name">Assessment</div>
+              <ul class="pricing-includes">
+                <li>1-hour on-site visit with Ben</li>
+                <li>AI-powered analysis of your online presence</li>
+                <li>3-5 specific, actionable recommendations</li>
+                <li>Written report you can act on immediately</li>
+                <li>30-minute walkthrough of findings</li>
+              </ul>
+              <a href="#contact" class="btn-book pricing-cta">Book Assessment</a>
+            </div>
+            <div class="pricing-amount">
+              <span class="price-figure">$199</span>
+              <span class="price-term">one-off</span>
+            </div>
+          </div>
+          <div class="pricing-row">
+            <div class="pricing-index">B-01</div>
+            <div class="pricing-details">
+              <div class="pricing-name">Implementation Support</div>
+              <ul class="pricing-includes">
+                <li>Everything in Assessment</li>
+                <li>Help implementing the recommendations</li>
+                <li>Monthly check-in &amp; progress review</li>
+                <li>Priority support by email</li>
+                <li>Cancel anytime, no lock-in</li>
+              </ul>
+              <a href="#contact" class="btn-enquire pricing-cta">Enquire</a>
+            </div>
+            <div class="pricing-amount">
+              <span class="price-figure">$149</span>
+              <span class="price-term">/ month</span>
+            </div>
           </div>
         </div>
       </div>
@@ -143,159 +209,756 @@ import Base from '../layouts/Base.astro';
 
     <section class="transparency">
       <div class="container">
-        <h2>Full transparency</h2>
-        <p>Walkthrough is a partnership between a human (Ben) and an AI (Dale, powered
-           by Claude). Every business decision we make is published in our
-           <a href="/log">public log</a>. We believe in earning trust through openness,
-           not hiding behind corporate-speak.</p>
-        <p class="transparency-note">Yes, AI helps with the analysis. No, AI doesn't replace
-           the human who visits your business and delivers results in person.</p>
+        <div class="section-header">
+          <div class="field-label">Disclosure / About</div>
+          <h2 class="section-title">Full transparency</h2>
+        </div>
+        <div class="transparency-inner">
+          <div class="transparency-body">
+            <p>Walkthrough is a partnership between <strong>Ben</strong> (the human who visits your business) and <strong>Dale</strong> (an AI, powered by Claude). Every business decision we make is published in our <a href="/log">public log</a>. We believe in earning trust through openness, not hiding behind corporate-speak.</p>
+            <p>Ben holds the ABN, meets clients in person, and handles everything that requires a real human in the room. Dale handles research, analysis, content, and business logic between sessions.</p>
+            <p class="transparency-note">AI helps with the analysis. AI doesn't replace the human who visits your business and delivers results in person.</p>
+          </div>
+          <div class="stamp-wrap" aria-hidden="true">
+            <div class="stamp">
+              <div class="stamp-text">OPEN<br/>BOOK</div>
+              <div class="stamp-sub">Public&nbsp;log</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="contact" id="contact">
+    <section id="contact" class="contact-section">
       <div class="container">
-        <h2>Ready to find out what you're missing?</h2>
-        <p>Drop us a line and we'll set up a time to visit.</p>
-        <div class="contact-methods">
-          <a href="mailto:hello@walkthrough.au" class="btn-primary">hello@walkthrough.au</a>
+        <div class="contact-box">
+          <div class="contact-eyebrow">Next Step</div>
+          <h2 class="contact-headline">Ready to find out what you're missing?</h2>
+          <p class="contact-sub">Drop us a line and we'll set up a time to visit.</p>
+          <a href="mailto:hello@walkthrough.au" class="email-link">hello@walkthrough.au</a>
+          <div class="contact-meta">
+            <span>Perth metro area</span>
+            <span>Available within a week</span>
+            <span>No obligation</span>
+          </div>
         </div>
-        <p class="contact-note">Perth metro area. Usually available within a week.</p>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container">
-      <p>Walkthrough &mdash; Perth, Western Australia</p>
-      <p><a href="/log">Public Decision Log</a></p>
+    <div class="footer-inner">
+      <div class="footer-attribution">
+        Assessment by: <strong>Ben (Human)</strong> + <strong>Dale (AI)</strong> &nbsp;&middot;&nbsp; Perth, WA
+      </div>
+      <div class="footer-links">
+        <a href="/log">Public Log</a>
+      </div>
     </div>
   </footer>
 </Base>
 
 <style>
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  .field-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+
+  /* Navigation */
+  header {
+    border-bottom: 1px solid var(--gray-border);
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(4px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
   nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 24px;
-    max-width: 1100px;
+    padding: 14px 24px;
+    max-width: 960px;
     margin: 0 auto;
   }
-  .logo { font-weight: 700; font-size: 20px; color: var(--text); }
+
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--green); }
   .logo:hover { text-decoration: none; }
-  .nav-links { display: flex; gap: 24px; align-items: center; }
-  .nav-links a { color: var(--text-light); font-size: 14px; font-weight: 500; }
+
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray-dark);
+  }
+
   .btn-nav {
-    background: var(--primary);
+    background: var(--green) !important;
     color: white !important;
     padding: 8px 16px;
-    border-radius: 6px;
+    border: 1px solid var(--green);
   }
-  .btn-nav:hover { background: var(--primary-dark); text-decoration: none; }
+  .btn-nav:hover { background: #0f3d22 !important; text-decoration: none !important; }
 
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  /* Hero */
+  .hero {
+    padding: 80px 0 80px;
+    border-bottom: 2px solid var(--gray-border);
+  }
 
-  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    border: 1px solid var(--green-rule);
+    background: var(--green-light);
+    padding: 4px 10px;
+    margin-bottom: 20px;
+  }
+
   .hero h1 {
-    font-size: 42px; font-weight: 700; line-height: 1.2;
-    max-width: 700px; margin: 0 auto 20px;
+    font-family: var(--font-mono);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--black);
+    max-width: 560px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
   }
-  .hero em { font-style: normal; color: var(--primary); }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--green);
+    border-bottom: 3px solid var(--green);
+    padding-bottom: 1px;
+  }
+
   .hero-sub {
-    font-size: 18px; color: var(--text-light);
-    max-width: 600px; margin: 0 auto 32px;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    color: var(--gray-dark);
+    max-width: 520px;
+    margin-bottom: 32px;
+    line-height: 1.65;
   }
-  .hero-note { margin-top: 12px; font-size: 14px; color: var(--text-light); }
+
+  .hero-cta-group {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
 
   .btn-primary {
-    display: inline-block; background: var(--primary); color: white !important;
-    padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px;
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--green);
+    color: white !important;
+    padding: 14px 28px;
+    border: 2px solid var(--green);
   }
-  .btn-primary:hover { background: var(--primary-dark); text-decoration: none; }
-  .btn-secondary {
-    display: inline-block; border: 2px solid var(--primary); color: var(--primary) !important;
-    padding: 12px 26px; border-radius: 8px; font-weight: 600; font-size: 16px;
+  .btn-primary:hover {
+    background: #0f3d22;
+    border-color: #0f3d22;
+    text-decoration: none !important;
   }
-  .btn-secondary:hover { background: var(--primary-light); text-decoration: none; }
 
-  section { padding: 60px 0; }
-  section:nth-child(even) { background: var(--bg-alt); }
-  h2 { font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 32px; }
+  .hero-cta-note {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--gray-mid);
+  }
 
-  .problem-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+  .hero-graphic {
+    flex-shrink: 0;
+    opacity: 0.9;
   }
-  .problem-card {
-    text-align: center; padding: 24px;
-    border: 1px solid var(--border); border-radius: 8px; background: white;
-  }
-  .problem-icon { font-size: 32px; margin-bottom: 12px; }
-  .problem-card p { font-size: 15px; color: var(--text-light); }
 
-  .steps {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 32px;
+  /* Section scaffolding */
+  section { padding: 72px 0; border-bottom: 1px solid var(--gray-border); }
+
+  .section-header { margin-bottom: 48px; }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--black);
+    margin-top: 8px;
+    letter-spacing: -0.01em;
   }
-  .step { text-align: center; }
+
+  /* Problems */
+  .problems { background: var(--gray-bg); }
+
+  .problems-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--gray-border);
+    background: var(--white);
+  }
+
+  .problem-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+    border-bottom: 1px solid var(--gray-border);
+    border-right: 1px solid var(--gray-border);
+  }
+
+  .problem-item:nth-child(2n) { border-right: none; }
+  .problem-item:nth-last-child(-n+2) { border-bottom: none; }
+
+  .checkbox {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--gray-warm);
+    margin-top: 2px;
+    position: relative;
+    background: var(--white);
+  }
+
+  .problem-text {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--gray-dark);
+    line-height: 1.5;
+  }
+
+  /* How It Works */
+  .steps-track {
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+
+  .step {
+    flex: 1;
+    padding: 32px 28px 32px 24px;
+    position: relative;
+  }
+
+  .step + .step { border-left: 1px dashed var(--gray-border); }
+
+  .step-counter {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .step-num {
-    width: 48px; height: 48px; background: var(--primary); color: white;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 20px; margin: 0 auto 16px;
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
   }
-  .step h3 { margin-bottom: 8px; }
-  .step p { font-size: 15px; color: var(--text-light); }
+
+  .step h3 {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .step p {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--gray-dark);
+    line-height: 1.6;
+  }
+
+  .step-meta {
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.06em;
+  }
+
+  .steps-wrapper {
+    border: 1px solid var(--gray-border);
+    background: var(--white);
+  }
+
+  /* Differentiators */
+  .diff { background: var(--gray-bg); }
 
   .diff-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--gray-border);
+    background: var(--white);
   }
+
   .diff-item {
-    padding: 24px; border: 1px solid var(--border); border-radius: 8px; background: white;
-  }
-  .diff-item h3 { margin-bottom: 8px; font-size: 16px; }
-  .diff-item p { font-size: 14px; color: var(--text-light); }
-
-  .pricing-cards { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
-  .pricing-card {
-    border: 1px solid var(--border); border-radius: 12px; padding: 32px;
-    width: 340px; background: white; text-align: center; position: relative;
-  }
-  .pricing-card.featured {
-    border: 2px solid var(--primary);
-    box-shadow: 0 4px 20px rgba(26, 86, 219, 0.1);
-  }
-  .pricing-label {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: var(--primary); color: white; padding: 4px 16px;
-    border-radius: 12px; font-size: 12px; font-weight: 600;
-  }
-  .pricing-card h3 { font-size: 20px; margin-bottom: 8px; }
-  .price { font-size: 48px; font-weight: 700; color: var(--primary); }
-  .price-note { color: var(--text-light); font-size: 14px; margin-bottom: 20px; }
-  .pricing-card ul { list-style: none; text-align: left; margin: 20px 0; }
-  .pricing-card li { padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
-  .pricing-card li::before {
-    content: "\2713 "; color: var(--primary); font-weight: 700; margin-right: 8px;
+    padding: 28px 24px;
+    border-bottom: 1px solid var(--gray-border);
+    border-right: 1px solid var(--gray-border);
   }
 
-  .transparency { text-align: center; }
-  .transparency p { max-width: 700px; margin: 0 auto 16px; font-size: 16px; }
-  .transparency-note { font-style: italic; color: var(--text-light); font-size: 14px; }
+  .diff-item:nth-child(2n) { border-right: none; }
+  .diff-item:nth-last-child(-n+2) { border-bottom: none; }
 
-  .contact { text-align: center; }
-  .contact p { font-size: 16px; color: var(--text-light); margin-bottom: 20px; }
-  .contact-methods { margin: 24px 0; }
-  .contact-note { font-size: 13px; color: var(--text-light); }
+  .diff-marker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--green-light);
+    border: 1px solid var(--green-rule);
+    padding: 2px 8px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
 
+  .diff-item h3 {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .diff-item p {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--gray-dark);
+    line-height: 1.6;
+  }
+
+  .stat {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green);
+    margin-top: 10px;
+  }
+
+  .stat-vs {
+    font-size: 14px;
+    color: var(--gray-mid);
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-mid);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Pricing */
+  .pricing-wrapper {
+    border: 1px solid var(--gray-border);
+    background: var(--white);
+  }
+
+  .pricing-header-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--gray-border);
+    background: var(--gray-bg);
+  }
+
+  .pricing-ref-col { min-width: 40px; }
+
+  .pricing-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: 24px;
+    padding: 28px 24px;
+    border-bottom: 1px solid var(--gray-border);
+  }
+
+  .pricing-row:last-child { border-bottom: none; }
+  .pricing-row.featured { background: var(--green-light); }
+
+  .pricing-index {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-mid);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-top: 4px;
+    min-width: 40px;
+  }
+
+  .pricing-name {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .pricing-row.featured .pricing-name::after {
+    content: 'RECOMMENDED';
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--green);
+    border: 1px solid var(--green-rule);
+    background: var(--white);
+    padding: 2px 7px;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+
+  .pricing-includes { list-style: none; margin-top: 4px; }
+
+  .pricing-includes li {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--gray-dark);
+    padding: 4px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .pricing-includes li::before {
+    content: '-';
+    font-family: var(--font-mono);
+    color: var(--gray-warm);
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+
+  .pricing-amount { text-align: right; flex-shrink: 0; }
+
+  .price-figure {
+    font-family: var(--font-mono);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+    display: block;
+  }
+
+  .price-term {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-mid);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  .pricing-cta {
+    display: inline-block;
+    margin-top: 16px;
+  }
+
+  .btn-book {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--green);
+    color: white !important;
+    padding: 10px 18px;
+    border: 2px solid var(--green);
+    white-space: nowrap;
+  }
+  .btn-book:hover {
+    background: #0f3d22;
+    border-color: #0f3d22;
+    text-decoration: none !important;
+  }
+
+  .btn-enquire {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--green) !important;
+    padding: 10px 18px;
+    border: 2px solid var(--green);
+    white-space: nowrap;
+  }
+  .btn-enquire:hover {
+    background: var(--green-light);
+    text-decoration: none !important;
+  }
+
+  /* Transparency */
+  .transparency { background: var(--gray-bg); }
+
+  .transparency-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .transparency-body p {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--gray-dark);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .transparency-body p:last-child { margin-bottom: 0; }
+
+  .transparency-note {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--green);
+    border-left: 3px solid var(--green);
+    padding-left: 12px;
+    margin-top: 16px !important;
+    font-style: italic !important;
+    line-height: 1.6 !important;
+  }
+
+  .stamp-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 8px;
+  }
+
+  .stamp {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border: 3px solid var(--green);
+    box-shadow:
+      0 0 0 2px var(--green-light),
+      0 0 0 4px var(--green),
+      inset 0 0 0 4px var(--green-light);
+    transform: rotate(-7deg);
+    text-align: center;
+    padding: 12px;
+  }
+
+  .stamp-text {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    line-height: 1.2;
+  }
+
+  .stamp-sub {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-top: 4px;
+  }
+
+  /* Contact */
+  .contact-section { background: var(--gray-bg); }
+
+  .contact-box {
+    border: 1px solid var(--gray-border);
+    background: var(--white);
+    padding: 48px 40px;
+    text-align: center;
+  }
+
+  .contact-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 16px;
+  }
+
+  .contact-headline {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .contact-sub {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--gray-dark);
+    margin-bottom: 28px;
+  }
+
+  .email-link {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--green) !important;
+    border-bottom: 2px solid var(--green-rule);
+    padding-bottom: 2px;
+  }
+  .email-link:hover {
+    border-bottom-color: var(--green);
+    text-decoration: none !important;
+  }
+
+  .contact-meta {
+    margin-top: 20px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-mid);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contact-meta span {
+    display: inline-block;
+    margin: 0 8px;
+  }
+
+  .contact-meta span::before {
+    content: '\00B7';
+    margin-right: 8px;
+  }
+
+  .contact-meta span:first-child::before { content: ''; margin: 0; }
+
+  /* Footer */
   footer {
-    padding: 32px 0; text-align: center;
-    border-top: 1px solid var(--border); font-size: 13px; color: var(--text-light);
+    border-top: 2px solid var(--gray-border);
+    padding: 0;
   }
-  footer p { margin: 4px 0; }
 
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 20px 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .footer-attribution {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-mid);
+    letter-spacing: 0.06em;
+  }
+
+  .footer-attribution strong {
+    color: var(--gray-dark);
+    font-weight: 600;
+  }
+
+  .footer-links { display: flex; gap: 20px; }
+
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+
+  .footer-links a:hover { color: var(--green); }
+
+  /* Responsive */
   @media (max-width: 768px) {
-    .hero h1 { font-size: 28px; }
-    .hero-sub { font-size: 16px; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-graphic { display: none; }
+    .hero h1 { font-size: 26px; }
+    .problems-list,
+    .diff-grid { grid-template-columns: 1fr; }
+    .problem-item,
+    .diff-item { border-right: none !important; }
+    .problem-item:nth-last-child(-n+2),
+    .diff-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--gray-border) !important; }
+    .problem-item:last-child,
+    .diff-item:last-child { border-bottom: none !important; }
+    .steps-track { flex-direction: column; }
+    .step + .step {
+      border-left: none;
+      border-top: 1px dashed var(--gray-border);
+    }
+    .pricing-row { grid-template-columns: 1fr; gap: 12px; }
+    .pricing-amount { text-align: left; }
+    .pricing-index { display: none; }
+    .pricing-header-row { display: none; }
+    .transparency-inner { grid-template-columns: 1fr; }
+    .stamp-wrap { display: none; }
+    .footer-inner { grid-template-columns: 1fr; gap: 12px; }
+    .footer-links { display: none; }
+    .contact-box { padding: 32px 20px; }
     .nav-links a:not(.btn-nav) { display: none; }
-    .pricing-card { width: 100%; }
+    .contact-headline { font-size: 18px; }
+    .email-link { font-size: 15px; }
   }
 </style>
