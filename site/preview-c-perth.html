@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walkthrough — Perth Small Business AI Audits</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cream: #f7f2ea;
+      --cream-dark: #efe8d8;
+      --terracotta: #b84c2a;
+      --terracotta-light: #d4694a;
+      --terracotta-pale: #f5e8e3;
+      --green: #4a7c6b;
+      --green-light: #6a9e8d;
+      --green-pale: #e6f0ec;
+      --charcoal: #2d2a26;
+      --charcoal-light: #5a5550;
+      --warm-white: #fdf9f4;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--cream);
+      color: var(--charcoal);
+      font-size: 17px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Satoshi', 'Nunito', sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(247, 242, 234, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(184, 76, 42, 0.12);
+    }
+
+    .nav-logo {
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 900;
+      font-size: 1.25rem;
+      color: var(--terracotta);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-cta {
+      background: var(--terracotta);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--terracotta-light);
+      transform: translateY(-1px);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      padding: 140px 40px 80px;
+      background: var(--cream);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(184, 76, 42, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 80px;
+      left: -150px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(74, 124, 107, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      background: var(--terracotta-pale);
+      color: var(--terracotta);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 900;
+      color: var(--charcoal);
+      max-width: 780px;
+      margin: 0 auto 28px;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .this-week-wrap {
+      position: relative;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .this-week-wrap .squiggle {
+      position: absolute;
+      bottom: -10px;
+      left: -4px;
+      width: calc(100% + 8px);
+      height: 14px;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--charcoal-light);
+      max-width: 580px;
+      margin: 0 auto 44px;
+      line-height: 1.75;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--terracotta);
+      color: white;
+      border-radius: 50px;
+      padding: 16px 40px;
+      font-family: 'Satoshi', 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 20px rgba(184, 76, 42, 0.28);
+    }
+
+    .btn-primary:hover {
+      background: var(--terracotta-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(184, 76, 42, 0.35);
+    }
+
+    .cta-note {
+      font-size: 0.88rem;
+      color: var(--charcoal-light);
+      font-style: italic;
+    }
+
+    .hero-wave {
+      position: relative;
+      margin-top: 60px;
+      line-height: 0;
+    }
+
+    /* ===== PROBLEMS ===== */
+    .problems {
+      background: var(--warm-white);
+      padding: 80px 40px 100px;
+      position: relative;
+    }
+
+    .section-label {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-label h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+
+    .section-label p {
+      color: var(--charcoal-light);
+      font-size: 1.05rem;
+    }
+
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .problem-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 2px 20px rgba(45, 42, 38, 0.07);
+      position: relative;
+    }
+
+    .problem-card:nth-child(1) {
+      transform: rotate(-1.2deg) translateY(-8px);
+      z-index: 4;
+      margin-right: -12px;
+    }
+    .problem-card:nth-child(2) {
+      transform: rotate(0.8deg) translateY(4px);
+      z-index: 3;
+      margin-right: -12px;
+    }
+    .problem-card:nth-child(3) {
+      transform: rotate(-0.6deg) translateY(-4px);
+      z-index: 2;
+      margin-right: -12px;
+    }
+    .problem-card:nth-child(4) {
+      transform: rotate(1.1deg) translateY(6px);
+      z-index: 1;
+    }
+
+    .problem-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--terracotta-pale);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .problem-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+
+    .problem-card p {
+      font-size: 0.93rem;
+      color: var(--charcoal-light);
+      line-height: 1.65;
+    }
+
+    .problems-wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      line-height: 0;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-it-works {
+      background: var(--cream);
+      padding: 100px 40px 80px;
+      position: relative;
+    }
+
+    .steps-container {
+      max-width: 860px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .steps-path {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step {
+      display: flex;
+      gap: 36px;
+      align-items: flex-start;
+    }
+
+    .step:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .step-icon-wrap {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      background: var(--warm-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 16px rgba(45, 42, 38, 0.1);
+      border: 2px solid var(--cream-dark);
+    }
+
+    .step-body {
+      padding-top: 12px;
+      flex: 1;
+    }
+
+    .step-num {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 6px;
+    }
+
+    .step-body h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+
+    .step-body p {
+      font-size: 0.97rem;
+      color: var(--charcoal-light);
+      max-width: 420px;
+    }
+
+    /* ===== DIFFERENTIATORS ===== */
+    .diff-section {
+      background: var(--terracotta);
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .diff-section::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .diff-section .section-label h2 {
+      color: white;
+    }
+
+    .diff-section .section-label p {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .diff-card {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+    }
+
+    .diff-pill {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+
+    .diff-card h3 {
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .diff-card p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .diff-compare {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+    }
+
+    /* ===== PRICING ===== */
+    .pricing {
+      background: var(--cream);
+      padding: 100px 40px;
+      position: relative;
+    }
+
+    .pricing-cards {
+      display: flex;
+      gap: 28px;
+      max-width: 820px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .pricing-card {
+      flex: 1;
+      min-width: 280px;
+      max-width: 380px;
+      background: white;
+      border-radius: 24px;
+      padding: 40px 36px;
+      box-shadow: 0 4px 32px rgba(45, 42, 38, 0.09);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--cream-dark);
+      border-radius: 24px 24px 0 0;
+    }
+
+    .pricing-card.featured::before {
+      background: linear-gradient(90deg, var(--terracotta), var(--terracotta-light));
+    }
+
+    .pricing-card.featured {
+      background: var(--warm-white);
+    }
+
+    .pricing-tag {
+      display: inline-block;
+      background: var(--green-pale);
+      color: var(--green);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+    }
+
+    .pricing-card.featured .pricing-tag {
+      background: var(--terracotta-pale);
+      color: var(--terracotta);
+    }
+
+    .pricing-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--charcoal);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 16px 0 6px;
+    }
+
+    .price sup {
+      font-size: 1.2rem;
+      font-weight: 700;
+      vertical-align: top;
+      margin-top: 8px;
+      display: inline-block;
+    }
+
+    .price-note {
+      font-size: 0.85rem;
+      color: var(--charcoal-light);
+      margin-bottom: 28px;
+      font-style: italic;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.93rem;
+      color: var(--charcoal-light);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(45, 42, 38, 0.06);
+    }
+
+    .pricing-features li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-check {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .btn-pricing {
+      display: block;
+      text-align: center;
+      background: var(--cream-dark);
+      color: var(--charcoal);
+      border-radius: 50px;
+      padding: 14px 28px;
+      font-family: 'Satoshi', 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.97rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-pricing:hover {
+      background: var(--terracotta-pale);
+      color: var(--terracotta);
+    }
+
+    .pricing-card.featured .btn-pricing {
+      background: var(--terracotta);
+      color: white;
+      box-shadow: 0 4px 16px rgba(184, 76, 42, 0.28);
+    }
+
+    .pricing-card.featured .btn-pricing:hover {
+      background: var(--terracotta-light);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(184, 76, 42, 0.35);
+    }
+
+    /* ===== TRANSPARENCY ===== */
+    .transparency {
+      background: var(--green-pale);
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .transparency::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: var(--cream);
+      clip-path: ellipse(60% 100% at 50% 0%);
+    }
+
+    .transparency-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .transparency-inner h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--green);
+      margin-bottom: 20px;
+    }
+
+    .transparency-inner p {
+      color: var(--charcoal-light);
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+
+    .transparency-badges {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+
+    .badge {
+      background: white;
+      border: 1.5px solid var(--green-light);
+      color: var(--green);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    /* ===== CONTACT ===== */
+    .contact {
+      position: relative;
+      background: var(--cream);
+      padding: 100px 40px 80px;
+      overflow: hidden;
+    }
+
+    /* Perth skyline silhouette */
+    .skyline {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 160px;
+      opacity: 0.045;
+      pointer-events: none;
+    }
+
+    .contact-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .contact-inner h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 900;
+      color: var(--charcoal);
+      margin-bottom: 18px;
+    }
+
+    .contact-inner p {
+      color: var(--charcoal-light);
+      font-size: 1.05rem;
+      margin-bottom: 36px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-email {
+      display: inline-block;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--terracotta);
+      text-decoration: none;
+      border-bottom: 2px solid var(--terracotta);
+      padding-bottom: 2px;
+      transition: color 0.2s ease;
+    }
+
+    .contact-email:hover {
+      color: var(--terracotta-light);
+      border-bottom-color: var(--terracotta-light);
+    }
+
+    .contact-note {
+      margin-top: 20px;
+      font-size: 0.88rem;
+      color: var(--charcoal-light);
+      font-style: italic;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255, 255, 255, 0.55);
+      text-align: center;
+      padding: 28px 40px;
+      font-size: 0.88rem;
+    }
+
+    footer span {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+    }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.2s; }
+    .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 20px;
+      }
+
+      .hero {
+        padding: 120px 24px 60px;
+      }
+
+      .problems {
+        padding: 60px 24px 80px;
+      }
+
+      .problems-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .problem-card:nth-child(1),
+      .problem-card:nth-child(2),
+      .problem-card:nth-child(3),
+      .problem-card:nth-child(4) {
+        transform: none;
+        margin-right: 0;
+      }
+
+      .how-it-works {
+        padding: 80px 24px 60px;
+      }
+
+      .step, .step:nth-child(even) {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .step-body p {
+        max-width: 100%;
+      }
+
+      .steps-path {
+        display: none;
+      }
+
+      .diff-section {
+        padding: 60px 24px;
+      }
+
+      .pricing {
+        padding: 80px 24px;
+      }
+
+      .pricing-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .transparency {
+        padding: 80px 24px 60px;
+      }
+
+      .contact {
+        padding: 80px 24px 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">Walkthrough</a>
+    <a class="nav-cta" href="#contact">Book an Assessment</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Perth Small Business Audits</div>
+    <h1>
+      Find 3–5 things you can change
+      <span class="this-week-wrap">this&nbsp;week
+        <!-- Hand-drawn squiggle underline -->
+        <svg class="squiggle" viewBox="0 0 160 14" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2,8 C14,3 26,13 40,7 C52,2 64,12 78,7 C92,2 104,12 118,7 C130,3 144,11 158,7"
+            stroke="#b84c2a" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"
+            stroke-dasharray="none" opacity="0.85"/>
+        </svg>
+      </span>
+      to save time and money
+    </h1>
+    <p class="hero-sub">
+      We visit your Perth business, watch how things actually work, and come back with practical recommendations. No jargon. No 40-page report. Just stuff that works.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#contact" class="btn-primary">Book an Assessment</a>
+      <span class="cta-note">$199 one-off &nbsp;·&nbsp; No lock-in.</span>
+    </div>
+
+    <!-- Organic wave divider -->
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:60px;">
+        <path d="M0,30 C180,70 360,5 540,38 C720,70 900,10 1080,42 C1260,72 1380,22 1440,35 L1440,80 L0,80 Z"
+          fill="#fdf9f4"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- PROBLEMS -->
+  <section class="problems">
+    <div class="section-label fade-up">
+      <h2>Sound familiar?</h2>
+      <p>Most Perth small businesses are leaving time and money on the table.</p>
+    </div>
+
+    <div class="problems-grid">
+      <div class="problem-card fade-up">
+        <div class="problem-icon">
+          <!-- Clock icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <polyline points="12 7 12 12 15.5 15.5"/>
+          </svg>
+        </div>
+        <h3>Drowning in manual tasks</h3>
+        <p>Hours spent on data entry, scheduling, invoicing — work that could be automated in an afternoon.</p>
+      </div>
+
+      <div class="problem-card fade-up">
+        <div class="problem-icon">
+          <!-- Globe/web icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M2.5 12 H21.5 M12 3 C8,7 8,17 12,21 M12 3 C16,7 16,17 12,21"/>
+          </svg>
+        </div>
+        <h3>Outdated online presence</h3>
+        <p>No Google Business Profile, a website that's not mobile-friendly, or reviews you're not managing.</p>
+      </div>
+
+      <div class="problem-card fade-up">
+        <div class="problem-icon">
+          <!-- Dollar/tools icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <path d="M16 5 V3 M8 5 V3 M2 10 H22"/>
+          </svg>
+        </div>
+        <h3>Paying for the wrong tools</h3>
+        <p>Subscriptions you've outgrown, overlapping software, or features you're paying for but never use.</p>
+      </div>
+
+      <div class="problem-card fade-up">
+        <div class="problem-icon">
+          <!-- Spark/AI icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2 L13.8 9 L20 12 L13.8 15 L12 22 L10.2 15 L4 12 L10.2 9 Z"/>
+          </svg>
+        </div>
+        <h3>Unsure about AI</h3>
+        <p>You've heard the buzz but you don't know what's hype, what's real, or what's actually relevant for your business.</p>
+      </div>
+    </div>
+
+    <!-- Wave bottom -->
+    <svg class="problems-wave" viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:55px;">
+      <path d="M0,25 C240,65 480,5 720,35 C960,62 1200,8 1440,30 L1440,70 L0,70 Z" fill="#f7f2ea"/>
+    </svg>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="section-label fade-up">
+      <h2>How it works</h2>
+      <p>Simple. Three steps. No hidden extras.</p>
+    </div>
+
+    <div class="steps-container">
+      <!-- Curved connecting line -->
+      <svg class="steps-path" viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" style="height:360px;">
+        <path d="M 300 40 C 400 80 150 160 300 220 C 440 275 140 310 300 360"
+          stroke="#b84c2a" stroke-width="2.5" stroke-dasharray="8 6" stroke-linecap="round"/>
+      </svg>
+
+      <div class="steps-list">
+
+        <!-- Step 1 -->
+        <div class="step fade-up">
+          <div class="step-icon-wrap">
+            <!-- Walking figure -->
+            <svg width="38" height="38" viewBox="0 0 40 40" fill="none" stroke="#b84c2a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Head -->
+              <circle cx="20" cy="9" r="3.5"/>
+              <!-- Body -->
+              <path d="M20 13 L20 23"/>
+              <!-- Left arm -->
+              <path d="M20 17 L14 21"/>
+              <!-- Right arm -->
+              <path d="M20 17 L26 20"/>
+              <!-- Left leg -->
+              <path d="M20 23 L15 31"/>
+              <!-- Right leg -->
+              <path d="M20 23 L25 31"/>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-num">Step 1</div>
+            <h3>We visit your business</h3>
+            <p>Ben spends about an hour with you — watching how things actually work day-to-day. Not asking for a tour. Actually watching. The bottlenecks only show when you're looking at the real thing.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step fade-up">
+          <div class="step-icon-wrap">
+            <!-- Magnifying glass / chart -->
+            <svg width="38" height="38" viewBox="0 0 40 40" fill="none" stroke="#b84c2a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="17" cy="17" r="9"/>
+              <path d="M24 24 L33 33"/>
+              <!-- chart bars inside -->
+              <path d="M12 20 L12 17"/>
+              <path d="M16 20 L16 14"/>
+              <path d="M20 20 L20 16"/>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-num">Step 2</div>
+            <h3>Dale analyses everything</h3>
+            <p>Ben's notes, your website, your tools, your industry — Dale (that's the AI side) compares what you're doing against what's possible. What would take a consultant a week takes us a few hours.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step fade-up">
+          <div class="step-icon-wrap">
+            <!-- Document with checkmark -->
+            <svg width="38" height="38" viewBox="0 0 40 40" fill="none" stroke="#b84c2a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="6" width="22" height="28" rx="3"/>
+              <path d="M14 15 H26"/>
+              <path d="M14 20 H22"/>
+              <!-- checkmark -->
+              <path d="M14 28 L17.5 31.5 L26 24"/>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-num">Step 3</div>
+            <h3>We deliver your recommendations</h3>
+            <p>3–5 specific, practical things you can change. Not a 40-page PDF. Ben walks you through it in a 30-minute call, answers questions, and leaves you with something you can actually act on this week.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFFERENTIATORS -->
+  <section class="diff-section">
+    <div class="section-label fade-up" style="margin-bottom:44px;">
+      <h2>Why we're different</h2>
+      <p style="color:rgba(255,255,255,0.7)">There are plenty of agencies. There aren't many people doing this.</p>
+    </div>
+
+    <div class="diff-grid">
+      <div class="diff-card fade-up">
+        <div class="diff-pill">In-person</div>
+        <h3>We actually visit</h3>
+        <p>Remote consultants guess. We come to you. The thing costing you the most time is usually something you'd never think to mention in a form.</p>
+      </div>
+
+      <div class="diff-card fade-up">
+        <div class="diff-pill">AI-powered</div>
+        <h3>Deeper analysis, faster</h3>
+        <p>Human observation + AI analysis means we can benchmark you against hundreds of comparable businesses in the time it takes most consultants to write a proposal.</p>
+      </div>
+
+      <div class="diff-card fade-up">
+        <div class="diff-pill">Practical</div>
+        <h3>Not theoretical</h3>
+        <p>Everything we recommend is something you can actually implement. We won't tell you to "invest in digital transformation." We'll tell you to set up a booking link.</p>
+      </div>
+
+      <div class="diff-card fade-up">
+        <div class="diff-pill">Perth prices</div>
+        <h3>$199, not $1,500+</h3>
+        <p>A full-service agency audit starts at $1,500 and takes weeks. Ours is $199, done in a few days, and you know exactly what you're getting before you book.</p>
+        <div class="diff-compare">vs. $1,500–5,000+ for a comparable agency engagement</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing">
+    <div class="section-label fade-up">
+      <h2>Honest pricing</h2>
+      <p>No packages with hidden fees. No pressure to upgrade.</p>
+    </div>
+
+    <div class="pricing-cards">
+
+      <!-- Assessment card (featured) -->
+      <div class="pricing-card featured fade-up">
+        <div class="pricing-tag">Most popular</div>
+        <h3>Business Assessment</h3>
+        <div class="price"><sup>$</sup>199</div>
+        <div class="price-note">One-off payment &nbsp;·&nbsp; No lock-in</div>
+        <ul class="pricing-features">
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            1-hour in-person business visit
+          </li>
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            AI-powered analysis and benchmarking
+          </li>
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            3–5 prioritised recommendations
+          </li>
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            Written report you can keep
+          </li>
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#b84c2a" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            30-minute walkthrough call
+          </li>
+        </ul>
+        <a href="#contact" class="btn-pricing">Book an Assessment</a>
+      </div>
+
+      <!-- Retainer card -->
+      <div class="pricing-card fade-up">
+        <div class="pricing-tag" style="background:var(--green-pale);color:var(--green);">Optional add-on</div>
+        <h3>Implementation Support</h3>
+        <div class="price"><sup>$</sup>149<span style="font-size:1rem;font-weight:500;color:var(--charcoal-light)">/mo</span></div>
+        <div class="price-note">Cancel anytime &nbsp;·&nbsp; No contracts</div>
+        <ul class="pricing-features">
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#4a7c6b" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            Everything in the Assessment
+          </li>
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#4a7c6b" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            Help actually implementing changes
+          </li>
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#4a7c6b" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            Monthly progress check-in
+          </li>
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#4a7c6b" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            Priority email support
+          </li>
+          <li>
+            <svg class="feature-check" viewBox="0 0 18 18" fill="none" stroke="#4a7c6b" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 9 L7.5 13.5 L15 5"/>
+            </svg>
+            Cancel anytime, no penalty
+          </li>
+        </ul>
+        <a href="#contact" class="btn-pricing">Get in Touch</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TRANSPARENCY -->
+  <section class="transparency">
+    <div class="transparency-inner fade-up">
+      <h2>A different kind of partnership</h2>
+      <p>
+        Walkthrough is a collaboration between <strong>Ben</strong> (human, Perth) and <strong>Dale</strong> (AI, powered by Claude). Ben does the in-person work. Dale does the analysis. Together we do the work of a small agency at a fraction of the cost.
+      </p>
+      <p>
+        We don't hide the AI involvement — we think it's the best part. AI helps with analysis. AI doesn't replace the human who visits your business.
+      </p>
+      <p>
+        Every decision we make — including how we price, who we pitch to, and what worked — is logged publicly. We're building this business transparently, in the open.
+      </p>
+      <div class="transparency-badges">
+        <span class="badge">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#4a7c6b" stroke-width="2" stroke-linecap="round">
+            <path d="M8 2 L9.5 6.5 L14 8 L9.5 9.5 L8 14 L6.5 9.5 L2 8 L6.5 6.5 Z"/>
+          </svg>
+          AI-powered analysis
+        </span>
+        <span class="badge">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#4a7c6b" stroke-width="2" stroke-linecap="round">
+            <circle cx="8" cy="8" r="6"/>
+            <path d="M8 5 L8 9 M8 11 L8 11.5"/>
+          </svg>
+          Fully transparent
+        </span>
+        <span class="badge">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#4a7c6b" stroke-width="2" stroke-linecap="round">
+            <path d="M3 9 L6.5 12.5 L13 5"/>
+          </svg>
+          Ethics-first
+        </span>
+        <span class="badge">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#4a7c6b" stroke-width="2" stroke-linecap="round">
+            <path d="M8 2 C4 2 2 5 2 8 C2 11.3 4.7 14 8 14 C11.3 14 14 11.3 14 8"/>
+            <path d="M8 6 L8 8 L10 10"/>
+          </svg>
+          Perth-based
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+
+    <!-- Perth skyline silhouette -->
+    <svg class="skyline" viewBox="0 0 1440 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+      <!-- Simple geometric Perth-ish skyline -->
+      <g fill="#2d2a26">
+        <!-- Left buildings -->
+        <rect x="0" y="110" width="80" height="50"/>
+        <rect x="82" y="90" width="55" height="70"/>
+        <rect x="139" y="105" width="40" height="55"/>
+        <rect x="181" y="75" width="65" height="85"/>
+        <!-- Antenna on tall left -->
+        <rect x="210" y="55" width="4" height="20"/>
+        <rect x="149" y="80" width="60" height="80"/>
+        <!-- Mid-left gap -->
+        <rect x="260" y="95" width="50" height="65"/>
+        <rect x="312" y="60" width="70" height="100"/>
+        <!-- Central tower group — CityLink/Brookfield style -->
+        <rect x="384" y="30" width="50" height="130"/>
+        <rect x="436" y="50" width="55" height="110"/>
+        <rect x="493" y="40" width="45" height="120"/>
+        <!-- Antenna -->
+        <rect x="511" y="15" width="6" height="25"/>
+        <rect x="540" y="60" width="60" height="100"/>
+        <rect x="602" y="45" width="50" height="115"/>
+        <!-- Mid-right -->
+        <rect x="654" y="80" width="45" height="80"/>
+        <rect x="701" y="65" width="55" height="95"/>
+        <rect x="758" y="90" width="50" height="70"/>
+        <rect x="810" y="75" width="40" height="85"/>
+        <!-- Right side lower -->
+        <rect x="852" y="100" width="60" height="60"/>
+        <rect x="914" y="115" width="50" height="45"/>
+        <rect x="966" y="105" width="35" height="55"/>
+        <rect x="1003" y="118" width="55" height="42"/>
+        <rect x="1060" y="108" width="45" height="52"/>
+        <rect x="1107" y="120" width="80" height="40"/>
+        <rect x="1189" y="112" width="50" height="48"/>
+        <rect x="1241" y="125" width="60" height="35"/>
+        <rect x="1303" y="118" width="70" height="42"/>
+        <rect x="1375" y="130" width="65" height="30"/>
+        <!-- Ground -->
+        <rect x="0" y="155" width="1440" height="10"/>
+      </g>
+    </svg>
+
+    <div class="contact-inner fade-up">
+      <h2>Ready to find out what you're missing?</h2>
+      <p>Perth metro. Available within a week. No obligation to chat first.</p>
+      <a href="mailto:hello@walkthrough.au" class="contact-email">hello@walkthrough.au</a>
+      <div class="contact-note">We'll reply within one business day to organise a time.</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Walkthrough</span> &nbsp;—&nbsp; Perth, Western Australia &nbsp;·&nbsp; A partnership between Ben &amp; Dale
+  </footer>
+
+  <!-- Scroll animations -->
+  <script>
+    (function() {
+      var els = document.querySelectorAll('.fade-up');
+      if (!window.IntersectionObserver) {
+        els.forEach(function(el) { el.classList.add('visible'); });
+        return;
+      }
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      els.forEach(function(el) { observer.observe(el); });
+    })();
+  </script>
+
+</body>
+</html>
