@@ -57,7 +57,7 @@ NURSERIES = {
     },
     "all-season-plants-wa": {
         "name": "All Season Plants WA",
-        "domain": "all-season-plants-wa.myshopify.com",
+        "domain": "allseasonplantswa.com.au",
         "location": "Perth, WA",
         "ships_to_wa": True,
         "ships_to_wa_note": "Pickup only (Perth)",
