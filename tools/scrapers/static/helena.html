@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect your domain to Shopify via Cloudflare - treestock.com.au</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  .step-number {
+    width: 2rem; height: 2rem; border-radius: 9999px;
+    background: #065f46; color: white; display: inline-flex;
+    align-items: center; justify-content: center; font-weight: 700;
+    font-size: 0.875rem; flex-shrink: 0;
+  }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #d1d5db; padding: 0.5rem 0.75rem; text-align: left; }
+  th { background: #f3f4f6; font-size: 0.875rem; }
+  td { font-size: 0.875rem; }
+  code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .grey-cloud { display: inline-block; background: #9ca3af; color: white; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; }
+  .orange-cloud { display: inline-block; background: #f97316; color: white; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body class="bg-white text-gray-900">
+
+<header class="border-b border-gray-200 bg-white">
+  <div class="max-w-3xl mx-auto px-4 py-3">
+    <div class="flex items-center gap-2">
+      <a href="/" class="flex items-center gap-2 text-green-800 hover:text-green-600">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7">
+          <rect width="64" height="64" rx="12" fill="#065f46"/>
+          <path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/>
+          <circle cx="44" cy="44" r="8" fill="#f59e0b"/>
+          <text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text>
+        </svg>
+        <span class="font-bold">treestock.com.au</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Connect your domain to Shopify via Cloudflare</h1>
+  <p class="text-gray-500 mb-8">A step-by-step guide for setting up your custom domain using Cloudflare's free DNS (with built-in DDoS protection) and linking it to your Shopify store.</p>
+
+  <!-- Step 1 -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="step-number">1</span>
+      <h2 class="text-lg font-bold">Sign up for Cloudflare</h2>
+    </div>
+    <div class="ml-11 space-y-2 text-gray-700">
+      <ol class="list-decimal ml-5 space-y-2">
+        <li>Go to <a href="https://www.cloudflare.com/" class="text-green-700 underline" target="_blank" rel="noopener">cloudflare.com</a> and create a free account</li>
+        <li>Click <strong>"Add a site"</strong> and type in your domain name (e.g. <code>allseasonplantswa.com.au</code>)</li>
+        <li>Select the <strong>Free</strong> plan</li>
+        <li>Cloudflare will scan for existing DNS records. You can skip or delete anything it finds since the domain is new</li>
+        <li>Cloudflare will give you <strong>two nameservers</strong>, something like:
+          <div class="bg-gray-50 rounded p-3 mt-2 font-mono text-sm">
+            alma.ns.cloudflare.com<br>
+            guy.ns.cloudflare.com
+          </div>
+          <p class="text-sm text-gray-500 mt-1"><strong>Write these down</strong> (yours will be different to the example above). You'll need them in the next step.</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="step-number">2</span>
+      <h2 class="text-lg font-bold">Point VentraIP to Cloudflare</h2>
+    </div>
+    <div class="ml-11 space-y-2 text-gray-700">
+      <ol class="list-decimal ml-5 space-y-2">
+        <li>Log in to <a href="https://vip.ventraip.com.au/" class="text-green-700 underline" target="_blank" rel="noopener">VIPControl</a></li>
+        <li>Go to <strong>My Services</strong> &rarr; <strong>Domain Management</strong></li>
+        <li>Find your domain and click the <strong>"DNS"</strong> button next to it</li>
+        <li>Click the <strong>Custom Nameservers</strong> tab, then click <strong>Enable</strong></li>
+        <li><strong>Delete any existing nameservers</strong> that are already listed (e.g. VentraIP's default ones)</li>
+        <li>Enter the two Cloudflare nameservers from Step 1</li>
+        <li>Save</li>
+      </ol>
+      <p class="text-sm text-gray-500 mt-3">This takes anywhere from 30 minutes to a few hours to kick in. Cloudflare will send you an email when it's active.</p>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="step-number">3</span>
+      <h2 class="text-lg font-bold">Add DNS records in Cloudflare</h2>
+    </div>
+    <div class="ml-11 space-y-2 text-gray-700">
+      <p>Once Cloudflare confirms your domain is active:</p>
+      <ol class="list-decimal ml-5 space-y-2">
+        <li>In Cloudflare, go to <strong>DNS</strong> &rarr; <strong>Records</strong></li>
+        <li>Add these two records:</li>
+      </ol>
+
+      <div class="overflow-x-auto mt-3">
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Target</th>
+              <th>Proxy status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>A</strong></td>
+              <td><code>@</code></td>
+              <td><code>23.227.38.65</code></td>
+              <td><span class="grey-cloud">DNS only</span> (grey cloud)</td>
+            </tr>
+            <tr>
+              <td><strong>CNAME</strong></td>
+              <td><code>www</code></td>
+              <td><code>shops.myshopify.com</code></td>
+              <td><span class="grey-cloud">DNS only</span> (grey cloud)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mt-3 text-sm">
+        <strong>Important:</strong> Make sure both records show a <span class="grey-cloud">grey cloud</span> icon, not <span class="orange-cloud">orange</span>. Click the orange cloud to toggle it off. Shopify has its own CDN and SSL, so Cloudflare's proxy needs to be off for it to work properly.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="step-number">4</span>
+      <h2 class="text-lg font-bold">Connect the domain in Shopify</h2>
+    </div>
+    <div class="ml-11 space-y-2 text-gray-700">
+      <ol class="list-decimal ml-5 space-y-2">
+        <li>In your Shopify admin, go to <strong>Settings</strong> &rarr; <strong>Domains</strong></li>
+        <li>Click <strong>"Connect existing domain"</strong></li>
+        <li>Enter your domain (e.g. <code>allseasonplantswa.com.au</code>)</li>
+        <li>Shopify will verify the DNS records and set up SSL automatically</li>
+      </ol>
+      <p class="text-sm text-gray-500 mt-2">This can take up to 24 hours but is usually much quicker.</p>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="step-number">5</span>
+      <h2 class="text-lg font-bold">Check it works</h2>
+    </div>
+    <div class="ml-11 space-y-2 text-gray-700">
+      <ul class="list-disc ml-5 space-y-2">
+        <li>Visit your domain in a browser. You should see your Shopify store.</li>
+        <li>Check that the <code>www</code> version works too (e.g. <code>www.allseasonplantswa.com.au</code>)</li>
+        <li>The padlock icon (HTTPS) should appear automatically once Shopify provisions the SSL certificate.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Troubleshooting -->
+  <div class="mb-8 border-t border-gray-200 pt-6">
+    <h2 class="text-lg font-bold mb-3">If something goes wrong</h2>
+    <div class="space-y-3 text-gray-700 text-sm">
+      <div class="bg-gray-50 rounded p-3">
+        <strong>"Domain not verified" in Shopify:</strong> Double-check the DNS records are exactly right, and that the proxy is off (grey cloud, not orange). Give it a bit more time.
+      </div>
+      <div class="bg-gray-50 rounded p-3">
+        <strong>SSL errors / no padlock:</strong> These usually resolve within an hour once Shopify picks up the DNS. Don't enable "Always Use HTTPS" in Cloudflare; Shopify handles that itself.
+      </div>
+      <div class="bg-gray-50 rounded p-3">
+        <strong>Still stuck?</strong> Give us a shout and we can do a screen share to sort it out.
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="border-t border-gray-200 py-6 text-center text-xs text-gray-400">
+  <p>A guide from <a href="/" class="underline">treestock.com.au</a>, by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
+</footer>
+
+</body>
+</html>
