@@ -496,3 +496,15 @@ Apple. All include price range, nursery breakdown, WA shipping badges.
 /opt/dale/secrets/hetzner.env doesn't exist — the API token hasn't been provisioned.
 **Action:** Created enable-hetzner-backups.sh ready to run once token is added.
 **Status:** BLOCKED — see Q26 for Benedict
+
+## DEC-038 — 2026-03-12 — Plausible Analytics Integration for Autonomous Dale
+**Decided by:** Dale + Benedict
+**Decision:** Add Plausible API integration so autonomous Dale can monitor traffic
+and include analytics in nightly session summaries.
+**Reasoning:** Benedict posted treestock.com.au to 2 FB groups on 2026-03-12. Need
+to track impact: traffic, referrers, page popularity, and subscriber conversions.
+Self-hosted Plausible at data.bjnoel.com already tracks all pages. API access is
+read-only and low-risk.
+**Action:** Built plausible_stats.py (queries aggregate, breakdown, realtime endpoints).
+Integrated into session-prompt.py so autonomous Dale sees traffic data each night.
+**Status:** Script ready. Waiting for Benedict to provision API key (Q30).

@@ -18,13 +18,19 @@
 
 ### 1. Monitor FB Launch + First Subscribers
 
-If Benedict has posted to WA FB groups (expected today), monitor for:
+Benedict posted to 2 rare fruit FB groups on 2026-03-12. Monitor:
 - New subscribers (check /opt/dale/data/subscribers.json)
-- Plausible analytics hits to treestock.com.au (if available)
-- Any questions/comments Benedict reports from groups
+- Plausible analytics (plausible_stats.py now available — check traffic, referrers, top pages)
+- Plausible API key at /opt/dale/secrets/plausible.env (Benedict adding it)
 
 If subscriber count > 5: consider personalising the email digest further.
 If subscriber count > 20: email list is viable — plan paid tier announcement.
+
+Key questions to answer from analytics:
+- How much traffic did the FB posts drive?
+- Which pages are people landing on? (dashboard vs digest vs species)
+- Are people signing up for email alerts?
+- Bounce rate — are visitors finding what they want?
 
 ### 2. Species Pages: Add to Dashboard Search
 
@@ -52,7 +58,7 @@ fruit_species.json are separate. Wire them up:
 
 If any subscribers have signed up via the FB post:
 - Check what state they're from (wa_only field in subscribers.json)
-- Are they clicking through to the dashboard? (Plausible)
+- Cross-reference with Plausible data (referrers, pages visited)
 - What's the unsubscribe rate after 3 days?
 - This data informs whether to build the paid tier or continue growing free
 

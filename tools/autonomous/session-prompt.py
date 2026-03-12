@@ -123,6 +123,15 @@ def get_token_stats(auto_dir):
         return "Error reading token log."
 
 
+def get_plausible_stats():
+    """Get Plausible analytics summary, if available."""
+    try:
+        from plausible_stats import get_stats_summary
+        return get_stats_summary()
+    except Exception as e:
+        return f"Plausible stats unavailable: {e}"
+
+
 def build_prompt():
     config = load_config()
     repo = config["paths"]["repo"]
@@ -144,6 +153,7 @@ def build_prompt():
     data_summary = get_data_summary(data)
     pending_approvals = get_pending_approvals(auto)
     token_stats = get_token_stats(auto)
+    plausible_stats = get_plausible_stats()
 
     prompt = f"""This is an AUTONOMOUS session running via cron at {now}.
 You are Dale, the AI business agent. Benedict is asleep (it's ~2am in Perth).
@@ -164,6 +174,9 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 ## Today's Data Summary
 {data_summary}
+
+## Website Traffic (Plausible Analytics)
+{plausible_stats}
 
 ## Token Usage History
 {token_stats}

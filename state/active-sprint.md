@@ -37,7 +37,7 @@
 - [x] Build email subscriber collection + signup form (DEC-024)
 - [x] Build shareable digest web pages + price history (DEC-025)
 - [x] Fix Daleys/Ecwid scraper data path bugs
-- [ ] Benedict to share http://178.104.20.9/digest-wa.html in WA fruit FB groups (Q18)
+- [x] Benedict shared treestock.com.au in 2 WA fruit FB groups (2026-03-12)
 - [x] Build email sending for subscribers (DEC-034) — live, sends after each 6am scrape
 
 ### Infrastructure (Both Tracks)
@@ -66,7 +66,8 @@
 
 ### Blockers
 - Waiting for Benedict to approach first prospect
-- Waiting for Benedict to share digest in WA fruit FB groups (Q18)
+- ~~Waiting for Benedict to share digest in WA fruit FB groups~~ DONE 2026-03-12
+- ~~Waiting for Plausible API key on server~~ DONE (Q30, deployed + tested)
 
 ### Session 5 Completed (2026-03-09)
 - Verified scrapers running perfectly: 6 snapshots accumulated, real changes detected
