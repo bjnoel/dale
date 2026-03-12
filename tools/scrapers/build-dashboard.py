@@ -281,7 +281,12 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
 
             on_sale = p.get("on_sale", False)
             if not on_sale and variants:
-                on_sale = any(v.get("compare_at_price") for v in variants)
+                on_sale = any(
+                    v.get("compare_at_price") and v.get("price")
+                    and float(v["compare_at_price"]) > float(v["price"])
+                    for v in variants
+                    if v.get("compare_at_price") and v.get("price")
+                )
 
             nursery_key = p.get("nursery", nursery_name)
 
@@ -318,7 +323,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                     product_data["ch"] = "new"  # new product
                 else:
                     prev_price = prev.get("min_price")
-                    prev_avail = prev.get("any_available", False)
+                    prev_avail = prev.get("any_available", prev.get("available", False))
                     if min_price and prev_price:
                         diff = min_price - prev_price
                         if abs(diff) > 0.01:
