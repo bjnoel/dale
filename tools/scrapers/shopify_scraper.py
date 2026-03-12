@@ -55,6 +55,13 @@ NURSERIES = {
         "ships_to_wa_note": "Weekly",
         "fruit_tags": ["all fruit & nuts", "all fruit &amp; nuts", "all berries", "fruit trees", "nuts"],
     },
+    "all-season-plants-wa": {
+        "name": "All Season Plants WA",
+        "domain": "all-season-plants-wa.myshopify.com",
+        "location": "Perth, WA",
+        "ships_to_wa": True,
+        "ships_to_wa_note": "Pickup only (Perth)",
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

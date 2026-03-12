@@ -14,7 +14,7 @@ LOG_PREFIX="[$(date '+%Y-%m-%d %H:%M:%S')]"
 
 echo "$LOG_PREFIX Starting nursery stock scrape..."
 
-# Shopify nurseries (Ross Creek, Ladybird, Fruitopia, Fruit Salad Trees, Diggers)
+# Shopify nurseries (Ross Creek, Ladybird, Fruitopia, Fruit Salad Trees, Diggers, All Season Plants WA)
 echo "$LOG_PREFIX Scraping Shopify nurseries..."
 python3 "$SCRIPT_DIR/shopify_scraper.py" 2>&1
 

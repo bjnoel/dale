@@ -126,6 +126,9 @@ FRUIT_FILTERS = {
     "diggers": {
         "mode": "all",  # already filtered at scrape time by fruit/nut tags
     },
+    "all-season-plants-wa": {
+        "mode": "all",  # WA-based fruit tree nursery, all products are fruit
+    },
 }
 
 
@@ -158,6 +161,7 @@ SHIPPING_MAP = {
     "guildford": ["WA"],                                           # WA-based, Perth metro
     "fruit-salad-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],  # WA+TAS: 1st Tue/month
     "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],      # Ships nationwide
+    "all-season-plants-wa": ["WA"],                                          # WA-based, pickup only (Perth)
 }
 
 
@@ -367,13 +371,13 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://treestock.com.au/">
 <meta property="og:title" content="treestock.com.au - Australian Nursery Stock Tracker">
-<meta property="og:description" content="Track fruit tree stock across 8 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
+<meta property="og:description" content="Track fruit tree stock across 9 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
 <meta property="og:image" content="https://treestock.com.au/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="treestock.com.au - Australian Nursery Stock Tracker">
-<meta name="twitter:description" content="Track fruit tree stock across 8 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
+<meta name="twitter:description" content="Track fruit tree stock across 9 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
 <meta name="twitter:image" content="https://treestock.com.au/og-image.png">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
