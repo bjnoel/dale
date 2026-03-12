@@ -147,15 +147,17 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
     return True
 
 
-WA_SHIPPING_OVERRIDES = {
-    "daleys": True,
-    "primal-fruits": True,
-    "guildford": True,  # WA-based, Perth metro delivery
-    "fruit-salad-trees": True,  # Ships to WA on 1st Tuesday of month
-    "diggers": True,  # Ships to WA weekly
-    "ross-creek": False,  # Some items can go via quarantine, but not standard
-    "ladybird": False,
-    "fruitopia": False,
+# States each nursery ships to. Verified via nursery websites March 2026.
+# Quarantine states (WA, TAS, NT) require special permits; many QLD nurseries won't ship there.
+SHIPPING_MAP = {
+    "daleys": ["NSW", "VIC", "QLD", "SA", "WA", "ACT"],          # WA: seasonal window + extra fee
+    "ross-creek": ["NSW", "VIC", "QLD", "ACT"],                   # Confirmed: QLD/NSW/VIC/ACT only
+    "ladybird": ["NSW", "VIC", "QLD", "ACT"],                     # QLD-based, restricted
+    "fruitopia": ["NSW", "VIC", "QLD", "SA", "ACT"],              # QLD-based estimate
+    "primal-fruits": ["WA"],                                       # WA-based, local only
+    "guildford": ["WA"],                                           # WA-based, Perth metro
+    "fruit-salad-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],  # WA+TAS: 1st Tue/month
+    "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],      # Ships nationwide
 }
 
 
@@ -281,10 +283,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             if not on_sale and variants:
                 on_sale = any(v.get("compare_at_price") for v in variants)
 
-            # Use override if we have confirmed info, otherwise use scraped data
             nursery_key = p.get("nursery", nursery_name)
-            wa_override = WA_SHIPPING_OVERRIDES.get(nursery_key)
-            ships_to_wa = wa_override if wa_override is not None else p.get("ships_to_wa", False)
 
             # Match against species taxonomy
             species = match_species(title, species_lookup)
@@ -296,7 +295,6 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "p": round(min_price, 2) if min_price else None,
                 "a": bool(available),
                 "s": stock_count,
-                "w": bool(ships_to_wa),
                 "u": p.get("url", ""),
                 "sale": bool(on_sale),
                 "cat": p.get("product_type", p.get("category", "")),
@@ -340,6 +338,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             "count": len(nursery_added),
             "in_stock": sum(1 for p in nursery_added if p.get("a")),
             "scraped_at": scraped_at,
+            "st": SHIPPING_MAP.get(nursery_name, []),
         })
 
     print(f"  Species matched: {matched_count}/{len(products)} ({100*matched_count//len(products) if products else 0}%)")
@@ -405,9 +404,17 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="inStockOnly" checked class="rounded"> In stock only
       </label>
-      <label class="flex items-center gap-1 cursor-pointer">
-        <input type="checkbox" id="waOnly" class="rounded"> Ships to WA
-      </label>
+      <select id="stateFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
+        <option value="">All states</option>
+        <option value="NSW">NSW</option>
+        <option value="VIC">VIC</option>
+        <option value="QLD">QLD</option>
+        <option value="SA">SA</option>
+        <option value="WA">WA</option>
+        <option value="TAS">TAS</option>
+        <option value="NT">NT</option>
+        <option value="ACT">ACT</option>
+      </select>
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="changesOnly" class="rounded"> Changes only
       </label>
@@ -432,7 +439,7 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
     <div class="flex flex-col sm:flex-row sm:items-center gap-3">
       <div class="flex-1">
         <p class="text-sm font-medium text-green-800">Get notified when daily email alerts launch</p>
-        <p class="text-xs text-gray-500">We're building price drop &amp; back-in-stock alerts for WA. Leave your email to be first in line.</p>
+        <p class="text-xs text-gray-500">Daily price drop &amp; back-in-stock alerts for Australian fruit tree collectors. Free.</p>
       </div>
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
         <input type="email" id="subEmail" placeholder="your@email.com" required
@@ -464,7 +471,11 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
 
 <footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
   <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>
-  <p class="mt-1">Built by <a href="https://walkthrough.au" class="underline">Walkthrough</a> | Part of the Dale project</p>
+  <p class="mt-1">
+    <a href="/species/" class="underline">Browse by species</a> &bull;
+    <a href="/history.html" class="underline">Price history</a> &bull;
+    Built by <a href="https://walkthrough.au" class="underline">Walkthrough</a>
+  </p>
 </footer>
 
 <script>
@@ -481,6 +492,10 @@ const NURSERY_URLS = {{
 
 let displayCount = 50;
 let currentResults = [];
+
+// Build state→nursery shipping lookup
+const SHIPS_TO = {{}};
+N.forEach(n => {{ SHIPS_TO[n.key] = n.st || []; }});
 
 // Populate nursery filter & summary
 const nurserySelect = document.getElementById('nurseryFilter');
@@ -507,7 +522,7 @@ document.getElementById('stats').textContent =
 // Search & filter
 const searchInput = document.getElementById('search');
 const inStockOnly = document.getElementById('inStockOnly');
-const waOnly = document.getElementById('waOnly');
+const stateFilter = document.getElementById('stateFilter');
 const changesOnly = document.getElementById('changesOnly');
 const sortBy = document.getElementById('sortBy');
 
@@ -516,13 +531,13 @@ function search() {{
   const q = searchInput.value.toLowerCase().trim();
   const nursery = nurserySelect.value;
   const stockOnly = inStockOnly.checked;
-  const waShip = waOnly.checked;
+  const st = stateFilter.value;
   const sort = sortBy.value;
 
   let results = P;
 
   if (stockOnly) results = results.filter(p => p.a);
-  if (waShip) results = results.filter(p => p.w);
+  if (st) results = results.filter(p => (SHIPS_TO[p.nk] || []).includes(st));
   if (changesOnly.checked) results = results.filter(p => p.ch);
   if (nursery) results = results.filter(p => p.nk === nursery);
 
@@ -576,7 +591,9 @@ function render() {{
     const stockBadge = p.a
       ? `<span class="stock-badge in-stock">${{p.s ? p.s + ' left' : 'In stock'}}</span>`
       : '<span class="stock-badge out-stock">Out of stock</span>';
-    const waBadge = p.w ? '<span class="stock-badge wa-badge">Ships to WA</span>' : '';
+    const _st = stateFilter.value;
+    const shipsBadge = (_st && (SHIPS_TO[p.nk] || []).includes(_st))
+      ? `<span class="stock-badge wa-badge">Ships to ${{_st}}</span>` : '';
     const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
     const latinName = p.ln ? `<span class="text-xs text-gray-400 italic ml-1">${{p.ln}}</span>` : '';
     const cultivar = p.cv ? ` '${{p.cv}}'` : '';
@@ -596,7 +613,7 @@ function render() {{
         <div class="font-medium text-sm truncate">${{p.t}}${{latinName}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
           <span class="nursery-tag">${{p.n}}</span>
-          ${{stockBadge}} ${{waBadge}} ${{saleBadge}} ${{changeBadge}}
+          ${{stockBadge}} ${{shipsBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
       <div class="text-right flex-shrink-0">
@@ -620,7 +637,7 @@ function showMore() {{
 // Event listeners
 searchInput.addEventListener('input', search);
 inStockOnly.addEventListener('change', search);
-waOnly.addEventListener('change', search);
+stateFilter.addEventListener('change', search);
 changesOnly.addEventListener('change', search);
 nurserySelect.addEventListener('change', search);
 sortBy.addEventListener('change', search);

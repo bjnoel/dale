@@ -80,6 +80,23 @@
 - 2 new decisions logged (DEC-023, DEC-024)
 - Key blocker: Benedict needs to share digest in WA fruit FB groups (Q18)
 
+### Session 13 Completed (2026-03-12 UTC)
+- State-based shipping filters (DEC-035):
+  - Replaced WA-only checkbox with state dropdown (All/NSW/VIC/QLD/SA/WA/TAS/NT/ACT)
+  - SHIPPING_MAP replaces WA_SHIPPING_OVERRIDES — ships_to state lists per nursery
+  - Research confirmed: Ross Creek ships QLD/NSW/VIC/ACT; Fruit Salad Trees ships WA+TAS; Diggers ships all states
+  - daily_digest.py: --state XX flag added; --wa-only kept as alias
+  - Email signup copy updated: "Australian fruit tree collectors" (not WA-specific)
+- Species pages launched (DEC-036):
+  - fruit_species.json: 50-species taxonomy (common name, Latin name, synonyms, region, slug)
+  - build_species_pages.py: auto-generates /species/[slug].html + /species/index.html
+  - 50 pages live at treestock.com.au/species/ targeting "buy X tree online Australia" keywords
+  - Added to daily cron in run-all-scrapers.sh
+  - Dashboard footer links to /species/ index
+- Hetzner backups: script ready (enable-hetzner-backups.sh), blocked on API token (Q27)
+- FB post for Benedict ready at deliverables/fb-post-treestock.md
+- All deployed, dashboard rebuilt
+
 ### Session 12 Completed (2026-03-11)
 - Email digest sending fully wired up (DEC-034):
   - send_digest.py committed + deployed (was written but not committed)

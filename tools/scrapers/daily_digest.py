@@ -43,7 +43,25 @@ NON_PLANT_KEYWORDS = [
     "sharp shooter", "searles liquid", "ecofend",
 ]
 
-WA_NURSERIES = {"daleys", "primal-fruits", "guildford", "fruit-salad-trees", "diggers"}
+SHIPPING_MAP = {
+    "daleys": ["NSW", "VIC", "QLD", "SA", "WA", "ACT"],
+    "ross-creek": ["NSW", "VIC", "QLD", "ACT"],
+    "ladybird": ["NSW", "VIC", "QLD", "ACT"],
+    "fruitopia": ["NSW", "VIC", "QLD", "SA", "ACT"],
+    "primal-fruits": ["WA"],
+    "guildford": ["WA"],
+    "fruit-salad-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],
+    "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
+}
+
+# Backwards-compat: set of nurseries that ship to WA
+WA_NURSERIES = {k for k, states in SHIPPING_MAP.items() if "WA" in states}
+
+
+def nursery_ships_to(nursery_key: str, state: str) -> bool:
+    """Return True if this nursery ships to the given state code (e.g. 'WA')."""
+    return state in SHIPPING_MAP.get(nursery_key, [])
+
 
 NURSERY_NAMES = {
     "daleys": "Daleys Fruit Trees",
@@ -225,8 +243,11 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
     return changes
 
 
-def format_text(all_changes: dict, target_date: str, wa_only: bool = False) -> str:
+def format_text(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "") -> str:
     """Format changes as plain text for FB groups."""
+    # --wa-only is an alias for --state WA
+    filter_state = "WA" if wa_only else state
+
     lines = []
     lines.append(f"🌱 Nursery Stock Update — {target_date}")
     lines.append(f"via treestock.com.au")
@@ -235,7 +256,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False) -> s
     has_any = False
 
     for nursery_key, changes in sorted(all_changes.items()):
-        if wa_only and nursery_key not in WA_NURSERIES:
+        if filter_state and not nursery_ships_to(nursery_key, filter_state):
             continue
 
         name = NURSERY_NAMES.get(nursery_key, nursery_key)
@@ -313,13 +334,14 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False) -> s
     return "\n".join(lines)
 
 
-def _build_change_sections(all_changes: dict, wa_only: bool = False) -> tuple[list[str], bool]:
+def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str = "") -> tuple[list[str], bool]:
     """Build HTML sections for each nursery's changes. Returns (sections_html, has_any)."""
+    filter_state = "WA" if wa_only else state
     sections_html = []
     has_any = False
 
     for nursery_key, changes in sorted(all_changes.items()):
-        if wa_only and nursery_key not in WA_NURSERIES:
+        if filter_state and not nursery_ships_to(nursery_key, filter_state):
             continue
 
         name = NURSERY_NAMES.get(nursery_key, nursery_key)
@@ -363,7 +385,9 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False) -> tuple[li
             continue
 
         has_any = True
-        wa_badge = ' <span style="background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:4px;font-size:0.8em">Ships to WA</span>' if ships_wa else ""
+        badge_state = filter_state if filter_state else ("WA" if ships_wa else "")
+        wa_badge = (f' <span style="background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:4px;font-size:0.8em">Ships to {badge_state}</span>'
+                    if badge_state and nursery_ships_to(nursery_key, badge_state) else "")
         sections_html.append(
             f'<h3 style="margin:16px 0 8px">{name}{wa_badge}</h3>'
             f'<ul style="list-style:none;padding:0;margin:0">{"".join(items_html)}</ul>'
@@ -372,9 +396,9 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False) -> tuple[li
     return sections_html, has_any
 
 
-def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> str:
+def format_html(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "") -> str:
     """Format changes as HTML for email (inline styles, no external deps)."""
-    sections_html, has_any = _build_change_sections(all_changes, wa_only)
+    sections_html, has_any = _build_change_sections(all_changes, wa_only, state)
 
     if not has_any:
         sections_html.append('<p>No changes today — all quiet across the nurseries.</p>')
@@ -393,9 +417,10 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False) -> s
 </body></html>"""
 
 
-def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False) -> str:
+def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "") -> str:
     """Format changes as a shareable web page with proper styling and navigation."""
-    sections_html, has_any = _build_change_sections(all_changes, wa_only)
+    filter_state = "WA" if wa_only else state
+    sections_html, has_any = _build_change_sections(all_changes, wa_only, state)
 
     if not has_any:
         sections_html.append(
@@ -403,12 +428,12 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False)
             'No changes today — all quiet across the nurseries.</div>'
         )
 
-    title_suffix = " (Ships to WA)" if wa_only else ""
+    title_suffix = f" (Ships to {filter_state})" if filter_state else ""
 
     # Count changes by type for summary pills
     total_by_type = {}
     for nursery_key, changes in all_changes.items():
-        if wa_only and nursery_key not in WA_NURSERIES:
+        if filter_state and not nursery_ships_to(nursery_key, filter_state):
             continue
         for cat, items in changes.items():
             if items:
@@ -525,7 +550,8 @@ def main():
     parser.add_argument("--date", help="Date to compare (default: today)", default=None)
     parser.add_argument("--html", action="store_true", help="Output HTML (email format)")
     parser.add_argument("--page", action="store_true", help="Output HTML (shareable web page)")
-    parser.add_argument("--wa-only", action="store_true", help="Only show WA-shipping nurseries")
+    parser.add_argument("--wa-only", action="store_true", help="Alias for --state WA")
+    parser.add_argument("--state", help="Filter to nurseries shipping to this state (e.g. WA, TAS, NSW)")
     parser.add_argument("--save", help="Save output to file")
     args = parser.parse_args()
 
@@ -534,15 +560,17 @@ def main():
         print(f"Error: {data_dir} does not exist", file=sys.stderr)
         sys.exit(1)
 
+    state = (args.state or "").upper() if args.state else ""
+
     target_date = args.date or date.today().isoformat()
     all_changes, total_changes = load_all_changes(data_dir, target_date)
 
     if args.page:
-        output = format_html_page(all_changes, target_date, wa_only=args.wa_only)
+        output = format_html_page(all_changes, target_date, wa_only=args.wa_only, state=state)
     elif args.html:
-        output = format_html(all_changes, target_date, wa_only=args.wa_only)
+        output = format_html(all_changes, target_date, wa_only=args.wa_only, state=state)
     else:
-        output = format_text(all_changes, target_date, wa_only=args.wa_only)
+        output = format_text(all_changes, target_date, wa_only=args.wa_only, state=state)
 
     if args.save:
         Path(args.save).write_text(output)

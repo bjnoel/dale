@@ -442,3 +442,57 @@ system and resolved the unsubscribe routing problem without needing Caddy change
 
 **Status:** EXECUTED — all committed, pushed, deployed. First email will send tonight
 after the 6am UTC scrape cron (currently only test@test.com subscribed).
+
+## DEC-035 — 2026-03-12 — State-Based Shipping Filters (replaces WA-only)
+**Decided by:** Dale
+**Decision:** Replace the WA-only shipping checkbox on treestock.com.au with a
+state dropdown (All states / NSW / VIC / QLD / SA / WA / TAS / NT / ACT).
+**Rationale:** Benedict is posting to WA FB groups but the site should be useful
+for ALL Australian fruit collectors. A state dropdown lets anyone filter to nurseries
+that ship to them. Research confirmed Ross Creek ships to QLD/NSW/VIC/ACT only;
+Diggers ships nationally; Fruit Salad Trees ships to WA+TAS on 1st Tuesday/month.
+**Changes:**
+- build-dashboard.py: SHIPPING_MAP replaces WA_SHIPPING_OVERRIDES. Per-nursery
+  `ships_to` state list added to nursery data. State dropdown in JS filters products
+  by nursery. Email signup copy updated to "Australian fruit tree collectors".
+- daily_digest.py: SHIPPING_MAP + WA_NURSERIES computed set. nursery_ships_to()
+  helper. --state XX flag added; --wa-only kept as alias for --state WA.
+- build_history.py: No changes (WA_NURSERIES still exported from daily_digest).
+**Shipping data (March 2026):**
+- Daleys (NSW): NSW, VIC, QLD, SA, WA, ACT (WA: seasonal window + extra fee)
+- Ross Creek (QLD): NSW, VIC, QLD, ACT only (confirmed from website)
+- Ladybird (QLD): NSW, VIC, QLD, ACT (estimated, similar to Ross Creek)
+- Fruitopia (QLD): NSW, VIC, QLD, SA, ACT (estimated)
+- Primal Fruits (WA): WA only (local)
+- Guildford (WA): WA only (local)
+- Fruit Salad Trees (NSW): NSW, VIC, QLD, SA, WA, TAS, ACT (WA+TAS 1st Tue/month — confirmed)
+- Diggers (VIC): All states including NT (confirmed — ships nationwide)
+**Status:** EXECUTED — deployed to server, dashboard rebuilt
+
+## DEC-036 — 2026-03-12 — Programmatic SEO: Species Pages
+**Decided by:** Dale
+**Decision:** Build auto-generated species pages at /species/[slug].html showing
+all varieties, prices, nurseries, and shipping for each fruit species.
+**Rationale:** Highest long-term growth lever for treestock.com.au. Target keywords:
+"buy [species] tree online Australia", "[species] tree price Australia". No competitor
+aggregates this data across nurseries — the data IS the content. 50 species × 8
+nurseries = 400 unique price comparison data points per day.
+**What was built:**
+- fruit_species.json: 50-species taxonomy with common names, Latin names, synonyms,
+  region, and slug. Covers all major commercially available fruit species in Australia.
+- build_species_pages.py: Reads latest nursery data, matches products to species using
+  title-based lookup, generates /species/[slug].html per species + /species/index.html.
+  Each page: Latin name, in-stock count, price range, nursery availability table,
+  full variety listing with prices + shipping badges.
+- run-all-scrapers.sh: Species page build added after history page (non-fatal).
+- Dashboard footer: Added "Browse by species" link.
+**Initial results:** 50 pages generated. Top species: Mango, Avocado, Fig, Lychee,
+Apple. All include price range, nursery breakdown, WA shipping badges.
+**Status:** EXECUTED — 50 pages live at treestock.com.au/species/
+
+## DEC-037 — 2026-03-12 — Hetzner Backups: Deferred (token not available)
+**Decided by:** Dale
+**Decision:** Enable Hetzner backups is approved and desired (~€0.76/month) but
+/opt/dale/secrets/hetzner.env doesn't exist — the API token hasn't been provisioned.
+**Action:** Created enable-hetzner-backups.sh ready to run once token is added.
+**Status:** BLOCKED — see Q26 for Benedict

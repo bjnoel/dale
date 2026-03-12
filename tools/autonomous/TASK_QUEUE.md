@@ -5,127 +5,56 @@
 
 ---
 
-## Tonight's Tasks (2026-03-12) — In Priority Order
+## Completed This Session (2026-03-12 UTC)
 
-### 1. State-Based Shipping Filters (CRITICAL — Benedict posting to FB tomorrow)
-
-Benedict is posting treestock.com.au to WA fruit FB groups tomorrow. The site needs
-to be useful for ALL Australians, not just WA buyers. Implement state-based shipping
-filters so anyone can find nurseries that ship to their state.
-
-**Background:**
-Australia has state-level plant quarantine restrictions. Three "quarantine states"
-(WA, TAS, NT) have strict rules — many nurseries refuse to ship there. SA is moderate.
-NSW/VIC/QLD/ACT are generally easy (most nurseries ship there).
-
-**What to build:**
-
-**1a. Replace `ships_to_wa` with `ships_to` state list in each scraper config:**
-
-Research each nursery's actual shipping policy (check their websites) and set:
-```python
-"ships_to": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"]
-```
-
-Known shipping data to verify/expand:
-- Daleys: Ships WA (seasonal windows only), likely most states. Check TAS/NT.
-- Ross Creek Tropicals: Doesn't ship WA. Check others.
-- Ladybird: Doesn't ship WA. Likely doesn't ship TAS/NT/SA. Check.
-- Fruitopia: Doesn't ship WA. Check others.
-- Fruit Salad Trees: Ships WA (1st Tue of month). Likely most states. Check.
-- Diggers: Ships WA (weekly). Likely all states. Check.
-- Primal Fruits Perth: WA-based, local only / ships within WA.
-- Guildford Garden Centre: WA-based, likely WA only.
-
-**1b. Update build-dashboard.py:**
-- Replace `WA_SHIPPING_OVERRIDES` with a `SHIPPING_MAP` dict per nursery
-- Add a state selector dropdown (default: "All states") instead of the WA checkbox
-- When a state is selected, filter to nurseries that ship there
-- Show shipping badges like "Ships to WA" / "Ships to TAS" etc.
-- Keep compact data format but change `"w": bool` to `"s": ["WA","NSW",...]`
-
-**1c. Update daily_digest.py:**
-- Replace `WA_NURSERIES` set and `--wa-only` flag with `--state XX` flag
-- Support `--state WA`, `--state TAS`, etc.
-- Keep `--wa-only` as an alias for backwards compatibility
-- Generate state-specific digest pages: /digest-wa.html, /digest-tas.html, etc.
-- At minimum generate WA and "all" versions (those are the current ones)
-
-**1d. Update build_history.py if it has WA-specific logic.**
-
-**1e. Update the email signup copy** in build-dashboard.py:
-- Currently says "price drop & back-in-stock alerts for WA"
-- Change to "for Australian fruit tree collectors" (or similar)
-- The signup form should match the expanded state-based scope
-
-**1f. Rebuild dashboard and deploy.** Run the full pipeline after changes:
-- Update scrapers on server (copy to /opt/dale/scrapers/)
-- Rebuild dashboard
-- Rebuild digests
-- Verify the site looks good
+- [x] State-based shipping filters — DONE (DEC-035)
+- [x] Hetzner backups — script ready, blocked on API token (Q27 for Benedict)
+- [x] FB post for Benedict — DONE (deliverables/fb-post-treestock.md)
+- [x] Species pages (start) — DONE (DEC-036, 50 pages live at /species/)
 
 ---
 
-### 2. Enable Hetzner Server Backups
+## Tomorrow's Tasks (2026-03-13 UTC) — In Priority Order
 
-The scraped dataset is our real asset and it's not backed up.
+### 1. Monitor FB Launch + First Subscribers
 
-- Use the Hetzner API to enable automatic backups on server ID 122794972
-- API token is in /opt/dale/secrets/hetzner.env
-- Cost: ~€0.76/month for daily rolling 7-day backups
-- API call: `POST /servers/{id}/actions/enable_backup`
-- This is within Dale's autonomous spending authority (< $10/month)
-- Log as a decision in decision-log.md
+If Benedict has posted to WA FB groups (expected today), monitor for:
+- New subscribers (check /opt/dale/data/subscribers.json)
+- Plausible analytics hits to treestock.com.au (if available)
+- Any questions/comments Benedict reports from groups
 
----
+If subscriber count > 5: consider personalising the email digest further.
+If subscriber count > 20: email list is viable — plan paid tier announcement.
 
-### ~~3. Build Email Digest Sending~~ DONE (Session 12, 2026-03-11)
+### 2. Species Pages: Add to Dashboard Search
 
-send_digest.py deployed and wired into the daily cron. Unsubscribe flow works via
-static /unsubscribe.html page + POST action=unsubscribe to subscribe_server. All
-Australian Spam Act compliant. First email will send at 6am UTC (test@test.com only).
+Currently species pages only link from the footer. Make them discoverable:
+- Add a "Browse by species" section to the main dashboard (below nursery summary)
+- Show top 10-12 species with in-stock counts as clickable cards
+- Style consistently with the existing dashboard
 
----
+### 3. SEO: Add Sitemap
 
-### 4. Generate FB Group Post for Benedict
+Generate /sitemap.xml for the species pages so Google can find them.
+- Include: /, /species/index.html, /species/[slug].html (one per species)
+- Include: /history.html, /digest.html
+- Add to daily cron in run-all-scrapers.sh
 
-Benedict is posting tomorrow. Draft a ready-to-paste Facebook post for him.
+### 4. Species Pages: Improve Taxonomy Matching
 
-- Write to /opt/dale/repo/deliverables/fb-post-treestock.md
-- Tone: casual, helpful, community-first. NOT salesy.
-- Angle: "I've been building a tool that tracks fruit tree stock across 8 Australian
-  nurseries — shows what's available, price changes, and which ones ship to WA.
-  Free to use, thought it might be useful for the group."
-- Include the treestock.com.au link and maybe the WA digest link
-- Keep it short — FB group posts that are 3-5 sentences perform best
-- Maybe mention the state filter if it's built by then
+Currently showing "Species matched: 0/4965 (0%)" because build-dashboard.py and
+fruit_species.json are separate. Wire them up:
+- build-dashboard.py already tries to load SPECIES_FILE (fruit_species.json)
+- The file now exists — deploy it and rebuild to get species matching working
+- After rebuild, check match rate (should be ~40-60% with 50 species)
 
----
+### 5. Revenue: Analyse First Subscriber Behaviour
 
-### 5. Programmatic SEO — Species Pages (Start)
-
-This is the biggest long-term growth lever. Auto-generate one page per species
-from the existing 164-species taxonomy + live scraper data.
-
-**Each page (e.g., /species/mango.html) should show:**
-- Species name + common names
-- All varieties currently in stock across nurseries
-- Price range (cheapest to most expensive)
-- Which nurseries stock it + shipping states
-- Current availability (in stock / out of stock counts)
-
-**Target keywords:** "buy [species] tree online Australia", "[species] tree price Australia"
-
-**Implementation:**
-- Add a `build_species_pages.py` script
-- Read taxonomy from fruit_species.json + latest nursery data
-- Generate static HTML pages with the same Tailwind styling as the dashboard
-- Include Plausible analytics tag
-- Add to the daily cron so pages update with fresh data
-- Start with a few pages to validate the approach, then scale
-
-**Important:** Each page must have genuinely useful content, not thin auto-generated
-filler. The unique data (prices, stock, shipping) IS the value — make it prominent.
+If any subscribers have signed up via the FB post:
+- Check what state they're from (wa_only field in subscribers.json)
+- Are they clicking through to the dashboard? (Plausible)
+- What's the unsubscribe rate after 3 days?
+- This data informs whether to build the paid tier or continue growing free
 
 ---
 
@@ -135,21 +64,20 @@ filler. The unique data (prices, stock, shipping) IS the value — make it promi
 - [ ] Set up weekly data backup: tar /opt/dale/data/ and rsync offsite (free)
 - [ ] Add uptime monitoring for treestock.com.au (free tier: UptimeRobot or similar)
 - [ ] Review Caddy access logs for traffic patterns once FB post is live
+- [ ] Hetzner backups: run enable-hetzner-backups.sh once Q27 is answered
 
 ### SEO & Content
 - [ ] Nursery profile pages (/nursery/daleys, /nursery/ross-creek, etc.)
 - [ ] Variety-level pages (deeper than species — individual cultivars)
 - [ ] "Compare prices" pages (e.g., /compare/mango-prices)
 - [ ] Location pages (/wa-fruit-trees, /tas-fruit-trees) for state-based SEO
+- [ ] Submit sitemap to Google Search Console
 - [ ] Submit to Australian business directories (Hotfrog, StartLocal, True Local)
-- [ ] Submit to startup directories (Product Hunt, BetaList, SaaSHub, Indie Hackers)
-- [ ] "Built in public" story post draft for Hacker News / Indie Hackers
 
 ### Revenue Experiments
 - [ ] Stock alert signups — "email me when [variety] is back in stock" (monetisable)
 - [ ] Nursery affiliate outreach drafts (check if Daleys, Ross Creek etc have programs)
 - [ ] Cold outreach audit: pick a Perth business, run analyse-business.py, draft email
-- [ ] Loom-style audit approach: draft script for Benedict to record video walkthroughs
 - [ ] Approach Daleys for sponsored listing once Primal Fruits result is in
 - [ ] Cross-sell Track A+B: approach WA nurseries without websites (Tass1, Leeming)
 
@@ -158,12 +86,10 @@ filler. The unique data (prices, stock, shipping) IS the value — make it promi
 - [ ] Create a "Fruit Tree Finder" search tool (postcode + variety → results)
 - [ ] Identify Reddit threads to answer with treestock data (r/AustralianPlants etc)
 - [ ] Reach out to rare fruit societies about listing as a resource
-- [ ] "2026 Australian Fruit Tree Buying Season Calendar" — free PDF lead magnet
 
 ### Data Quality
-- [ ] Improve taxonomy matching (68% → 80%+)
+- [ ] Verify Ladybird and Fruitopia shipping states (currently estimated)
 - [ ] Analyse scraper data trends (price/stock changes over the week)
-- [ ] Check if Tass1 Trees has any scrapeable inventory
 - [ ] Look for other Perth-area nurseries with online stock
 
 ---
@@ -182,3 +108,7 @@ filler. The unique data (prices, stock, shipping) IS the value — make it promi
 - [x] 2026-03-10: Nursery sponsored listing pitch drafted (Primal Fruits)
 - [x] 2026-03-10: Featured listing badge infrastructure added to dashboard
 - [x] 2026-03-11: Email digest sending live (send_digest.py + subscribe_server unsubscribe + unsubscribe.html)
+- [x] 2026-03-12: State-based shipping filters (replaces WA-only checkbox)
+- [x] 2026-03-12: Species pages (50 pages at /species/, daily SEO content)
+- [x] 2026-03-12: FB post drafted for Benedict (deliverables/fb-post-treestock.md)
+- [x] 2026-03-12: Hetzner backup script ready (waiting on API token, Q27)

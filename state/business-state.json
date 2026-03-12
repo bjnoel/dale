@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "last_updated": "2026-03-11",
-  "session_count": 12,
+  "last_updated": "2026-03-12",
+  "session_count": 13,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -55,15 +55,16 @@
       "features": [
         "Daily scraping of 8 nurseries",
         "Price/stock change detection",
-        "WA shipping filter",
-        "Species taxonomy matching (68%)",
+        "State-based shipping filter (all 8 states)",
+        "Species taxonomy (50 species, fruit_species.json)",
         "Daily digest (text + HTML + shareable web page)",
         "Email signup form (collecting subscribers)",
         "Daily email digest to subscribers (via Resend)",
         "Unsubscribe flow (HMAC-secured, Spam Act compliant)",
         "Changes only filter",
         "Price/stock change history page",
-        "Dated digest archives"
+        "Dated digest archives",
+        "Species pages (50 pages at /species/ for SEO)"
       ],
       "nursery_details": {
         "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
@@ -75,7 +76,7 @@
         "fruit_salad_trees": {"products": 88, "in_stock": 83, "platform": "Shopify", "ships_to_wa": true, "location": "NSW", "note": "Ships to WA 1st Tuesday/month"},
         "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"}
       },
-      "next_action": "Benedict to share https://treestock.com.au/digest-wa.html in WA fruit FB groups. Cyrus messaged re: sponsorship, waiting reply."
+      "next_action": "Benedict to post treestock.com.au in WA fruit FB groups (post ready at deliverables/fb-post-treestock.md). Hetzner backups need API token (Q27). Primal Fruits sponsorship: waiting on Cyrus reply (Q24)."
     }
   },
   "infrastructure": {

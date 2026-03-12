@@ -77,6 +77,11 @@ python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGES
 python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" --wa-only 2>&1
 echo "$LOG_PREFIX History page complete."
 
+# Build species pages (SEO)
+echo "$LOG_PREFIX Building species pages..."
+python3 "$SCRIPT_DIR/build_species_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Species page build failed (non-fatal)"
+echo "$LOG_PREFIX Species pages complete."
+
 # Send digest to email subscribers
 echo "$LOG_PREFIX Sending digest to email subscribers..."
 python3 "$SCRIPT_DIR/send_digest.py" 2>&1 || echo "$LOG_PREFIX WARNING: Digest email send failed (non-fatal)"
