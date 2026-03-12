@@ -37,6 +37,12 @@ rsync -a \
     "$REPO_TOOLS/autonomous/" /opt/dale/autonomous/
 log "Synced autonomous"
 
+# Copy static assets (favicon, OG image) to dashboard dir
+if [ -d "$REPO_TOOLS/scrapers/static" ]; then
+    cp -a "$REPO_TOOLS/scrapers/static/"* /opt/dale/dashboard/ 2>/dev/null
+    log "Copied static assets to dashboard"
+fi
+
 # Ensure executables
 chmod +x /opt/dale/scrapers/run-all-scrapers.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/dale-runner.sh 2>/dev/null

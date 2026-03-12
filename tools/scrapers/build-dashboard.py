@@ -363,6 +363,18 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>treestock.com.au - Australian Nursery Stock Tracker</title>
 <meta name="description" content="Track rare fruit and plant stock across Australian nurseries. Search availability, compare prices, find what's in stock.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://treestock.com.au/">
+<meta property="og:title" content="treestock.com.au - Australian Nursery Stock Tracker">
+<meta property="og:description" content="Track fruit tree stock across 8 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
+<meta property="og:image" content="https://treestock.com.au/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="treestock.com.au - Australian Nursery Stock Tracker">
+<meta name="twitter:description" content="Track fruit tree stock across 8 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
+<meta name="twitter:image" content="https://treestock.com.au/og-image.png">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
 <style>
