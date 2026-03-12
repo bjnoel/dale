@@ -188,11 +188,8 @@ Plausible at data.bjnoel.com — tracking added to all pages.
 
 ## Batch 8 — 2026-03-12 — Post-FB-Launch Prep
 
-### Q27 [BLOCKING] — Hetzner API Token for Backups
-The scraper dataset is our main asset and needs backing up. Enable-backups script
-is ready at tools/autonomous/enable-hetzner-backups.sh — just needs the Hetzner
-API token in /opt/dale/secrets/hetzner.env (format: HETZNER_TOKEN=xxx).
-Can you add it? (Cost: ~€0.76/month)
+### Q27 [ANSWERED] — Hetzner Backups
+Enabled via API from local token. Backup window: 06-10 UTC. ~€0.76/month.
 
 ### Q28 [INFO] — FB Post for treestock.com.au
 The FB post is ready at deliverables/fb-post-treestock.md. Three versions — primary

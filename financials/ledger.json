@@ -28,13 +28,23 @@
       "recurring": false,
       "recurring_period": "yearly",
       "note": "Superseded. treestock.com.au registered 2026-03-11 (Benedict's personal expense, not counted)."
+    },
+    {
+      "date": "2026-03-12",
+      "type": "expense",
+      "category": "infrastructure",
+      "description": "Hetzner server backups enabled",
+      "amount": -1.20,
+      "recurring": true,
+      "recurring_period": "monthly",
+      "note": "~EUR 0.76/mo, approx $1.20 AUD. Backup window 06-10 UTC."
     }
   ],
   "summary": {
     "total_revenue": 0,
-    "total_expenses": -26.90,
-    "net": -26.90,
-    "monthly_burn": 7.00,
+    "total_expenses": -28.10,
+    "net": -28.10,
+    "monthly_burn": 8.20,
     "runway_start_date": "2026-03-05",
     "runway_months": 6,
     "note": "Benedict funding ~$100 USD/month for Claude API. Hetzner ~$7 AUD/mo for scraper server."

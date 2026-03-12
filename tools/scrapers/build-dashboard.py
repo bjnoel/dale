@@ -397,13 +397,23 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
 <body class="bg-white text-gray-900">
 
 <header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-5xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold text-green-800">treestock.com.au</h1>
-        <p class="text-sm text-gray-500">Australian Nursery Stock Tracker</p>
+  <div class="max-w-5xl mx-auto px-4 py-3">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-8 h-8 flex-shrink-0">
+          <rect width="64" height="64" rx="12" fill="#065f46"/>
+          <path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/>
+          <path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/>
+          <circle cx="44" cy="44" r="8" fill="#f59e0b"/>
+          <text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text>
+        </svg>
+        <div>
+          <h1 class="text-xl font-bold text-green-800">treestock.com.au</h1>
+          <p class="text-xs text-gray-400 sm:hidden" id="statsSmall"></p>
+          <p class="text-xs text-gray-400 hidden sm:block">Australian Nursery Stock Tracker</p>
+        </div>
       </div>
-      <div class="text-right text-xs text-gray-400">
+      <div class="hidden sm:block text-right text-xs text-gray-400">
         <div id="stats"></div>
         <div>Updated {now}</div>
       </div>
@@ -448,11 +458,24 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
     </div>
   </div>
 
-  <!-- Nursery Summary -->
-  <div id="nurserySummary" class="mb-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm"></div>
+  <!-- Nursery Summary (hidden when searching) -->
+  <div id="nurserySummaryWrap" class="mb-4">
+    <button id="nurseryToggle" class="sm:hidden flex items-center gap-1 text-sm text-gray-500 mb-2" onclick="toggleNurserySummary()">
+      <span id="nurseryToggleIcon">&#9654;</span> Nurseries
+    </button>
+    <div id="nurserySummary" class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm"></div>
+  </div>
 
-  <!-- Email Alerts Signup -->
-  <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+  <!-- Results -->
+  <div id="results"></div>
+  <div id="loadMore" class="text-center py-4 hidden">
+    <button onclick="showMore()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+      Show more results
+    </button>
+  </div>
+
+  <!-- Email Alerts Signup (below results) -->
+  <div class="mt-6 mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-3">
       <div class="flex-1">
         <p class="text-sm font-medium text-green-800">Get notified when daily email alerts launch</p>
@@ -468,31 +491,16 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
     </div>
     <div id="subMessage" class="mt-2 text-sm hidden"></div>
   </div>
-
-  <!-- Results -->
-  <div id="results"></div>
-  <div id="loadMore" class="text-center py-4 hidden">
-    <button onclick="showMore()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-      Show more results
-    </button>
-  </div>
 </main>
 
-<!-- Latest Digest -->
-<section class="max-w-5xl mx-auto px-4 py-4">
-  <details class="text-sm">
-    <summary class="cursor-pointer text-green-700 font-medium">View latest daily digest</summary>
-    <pre id="digestText" class="mt-2 text-xs text-gray-600 whitespace-pre-wrap bg-gray-50 p-4 rounded-lg overflow-auto max-h-96">Loading...</pre>
-  </details>
-</section>
-
 <footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
+  <div class="flex justify-center gap-4 mb-3 text-sm">
+    <a href="/digest.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Today's Digest</a>
+    <a href="/species/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Browse by Species</a>
+    <a href="/history.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Price History</a>
+  </div>
   <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>
-  <p class="mt-1">
-    <a href="/species/" class="underline">Browse by species</a> &bull;
-    <a href="/history.html" class="underline">Price history</a> &bull;
-    Built by <a href="https://walkthrough.au" class="underline">Walkthrough</a>
-  </p>
+  <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
 </footer>
 
 <script>
@@ -509,6 +517,22 @@ const NURSERY_URLS = {{
 
 let displayCount = 50;
 let currentResults = [];
+let nurseryExpanded = false;
+
+function toggleNurserySummary() {{
+  nurseryExpanded = !nurseryExpanded;
+  const el = document.getElementById('nurserySummary');
+  const icon = document.getElementById('nurseryToggleIcon');
+  if (nurseryExpanded) {{
+    el.classList.remove('hidden');
+    el.classList.add('grid');
+    icon.innerHTML = '&#9660;';
+  }} else {{
+    el.classList.add('hidden');
+    el.classList.remove('grid');
+    icon.innerHTML = '&#9654;';
+  }}
+}}
 
 // Build state→nursery shipping lookup
 const SHIPS_TO = {{}};
@@ -533,8 +557,10 @@ N.forEach(n => {{
 
 const totalProducts = P.length;
 const totalInStock = P.filter(p => p.a).length;
-document.getElementById('stats').textContent =
-  `${{totalInStock.toLocaleString()}} in stock across ${{N.length}} nurseries (${{totalProducts.toLocaleString()}} total)`;
+const statsText = `${{totalInStock.toLocaleString()}} in stock across ${{N.length}} nurseries (${{totalProducts.toLocaleString()}} total)`;
+document.getElementById('stats').textContent = statsText;
+const sm = document.getElementById('statsSmall');
+if (sm) sm.textContent = statsText;
 
 // Search & filter
 const searchInput = document.getElementById('search');
@@ -550,6 +576,11 @@ function search() {{
   const stockOnly = inStockOnly.checked;
   const st = stateFilter.value;
   const sort = sortBy.value;
+
+  // Hide nursery summary when actively searching/filtering
+  const hasFilters = q || nursery || changesOnly.checked;
+  const wrap = document.getElementById('nurserySummaryWrap');
+  wrap.style.display = hasFilters ? 'none' : '';
 
   let results = P;
 
@@ -627,7 +658,7 @@ function render() {{
 
     return `<a href="${{p.u}}" target="_blank" rel="noopener" class="product-row flex items-center gap-3 py-3 px-2 block">
       <div class="flex-1 min-w-0">
-        <div class="font-medium text-sm truncate">${{p.t}}${{latinName}}</div>
+        <div class="font-medium text-sm">${{p.t}}${{latinName}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
           <span class="nursery-tag">${{p.n}}</span>
           ${{stockBadge}} ${{shipsBadge}} ${{saleBadge}} ${{changeBadge}}
@@ -692,11 +723,6 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
   btn.textContent = 'Subscribe';
 }});
 
-// Load digest
-fetch('/digest-wa.txt')
-  .then(r => r.ok ? r.text() : 'No digest available yet.')
-  .then(t => document.getElementById('digestText').textContent = t)
-  .catch(() => document.getElementById('digestText').textContent = 'No digest available yet.');
 </script>
 </body>
 </html>"""
