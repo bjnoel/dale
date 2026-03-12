@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Email notifications for autonomous Dale via Resend API."""
 
+import base64
 import json
 import os
 import sys
 import urllib.request
 import urllib.error
 from datetime import datetime, timezone
+from pathlib import Path
 
 SECRETS_DIR = "/opt/dale/secrets"
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
@@ -27,8 +29,8 @@ def get_api_key():
     raise ValueError("RESEND_API_KEY not found in resend.env")
 
 
-def send_email(subject, html_body, text_body=None):
-    """Send an email via Resend API."""
+def send_email(subject, html_body, text_body=None, attachments=None):
+    """Send an email via Resend API. attachments: list of {"filename": str, "path": str}."""
     config = load_config()
     api_key = get_api_key()
 
@@ -40,6 +42,16 @@ def send_email(subject, html_body, text_body=None):
     }
     if text_body:
         payload["text"] = text_body
+
+    if attachments:
+        payload["attachments"] = []
+        for att in attachments:
+            with open(att["path"], "rb") as f:
+                content = base64.b64encode(f.read()).decode("ascii")
+            payload["attachments"].append({
+                "filename": att["filename"],
+                "content": content,
+            })
 
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
@@ -65,8 +77,29 @@ def send_email(subject, html_body, text_body=None):
         return False
 
 
+def find_new_deliverables(repo_dir):
+    """Find deliverables modified today (untracked/changed, not in git)."""
+    deliverables_dir = Path(repo_dir) / "deliverables"
+    if not deliverables_dir.is_dir():
+        return []
+
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    attachments = []
+    for f in deliverables_dir.rglob("*"):
+        if not f.is_file():
+            continue
+        # Only include files modified today
+        mtime = datetime.fromtimestamp(f.stat().st_mtime, tz=timezone.utc)
+        if mtime.strftime("%Y-%m-%d") == today:
+            attachments.append({
+                "filename": f.name,
+                "path": str(f),
+            })
+    return attachments
+
+
 def send_summary(session_log_path):
-    """Send daily session summary email."""
+    """Send daily session summary email with any new deliverables attached."""
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     # Parse session output
@@ -109,6 +142,15 @@ def send_summary(session_log_path):
 </ul>
 <p style="color: #888; font-size: 12px;">Autonomous Dale &mdash; <a href="https://github.com/bjnoel/Dale">repo</a></p>"""
 
+    # Find deliverables to attach
+    config = load_config()
+    repo_dir = config.get("paths", {}).get("repo", "/opt/dale/repo")
+    attachments = find_new_deliverables(repo_dir)
+
+    if attachments:
+        att_list = "".join(f"<li>{a['filename']}</li>" for a in attachments)
+        html += f"\n<h3>Deliverables</h3>\n<ul>{att_list}</ul>"
+
     text = f"""Dale Session — {today}
 
 {summary_text[:2000]}
@@ -116,7 +158,10 @@ def send_summary(session_log_path):
 Tokens: {tokens_in:,} in / {tokens_out:,} out
 Turns: {num_turns} | Duration: {duration_min:.1f} min"""
 
-    send_email(f"Dale Session — {today}", html, text)
+    if attachments:
+        text += f"\n\nDeliverables attached: {', '.join(a['filename'] for a in attachments)}"
+
+    send_email(f"Dale Session — {today}", html, text, attachments=attachments)
 
 
 def send_alert(reason):
