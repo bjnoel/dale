@@ -46,5 +46,7 @@ fi
 # Ensure executables
 chmod +x /opt/dale/scrapers/run-all-scrapers.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/dale-runner.sh 2>/dev/null
+chmod +x /opt/dale/autonomous/weekly-pester.py 2>/dev/null
+chmod +x /opt/dale/autonomous/check-weekly-update.py 2>/dev/null
 
 log "Deploy complete"

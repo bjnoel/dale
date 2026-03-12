@@ -80,6 +80,13 @@ if [ -f "$REPO_DIR/tools/deploy.sh" ]; then
     log "Deployed scripts from repo"
 fi
 
+# 6. Weekly update check (Dale strikes Wed-Sun if no update from Benedict)
+python3 "$SCRIPT_DIR/check-weekly-update.py" || {
+    log "Weekly update missing. Dale is on strike."
+    python3 "$SCRIPT_DIR/notify.py" alert "Dale is on strike! No weekly update from Benedict. Write /opt/dale/data/weekly-updates/$(date -u +%Y)-W$(date -u +%V).md"
+    exit 0
+}
+
 # --- Run Claude ---
 
 log "Running Claude (${MAX_MINUTES}min cap, ${MAX_TURNS} max turns)"
