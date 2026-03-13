@@ -158,6 +158,19 @@ def get_plausible_stats():
         return f"Plausible stats unavailable: {e}"
 
 
+def has_notion_tasks(data_dir):
+    """Check if there are any actionable Notion tasks."""
+    tasks_path = os.path.join(data_dir, "notion-tasks.json")
+    if not os.path.exists(tasks_path):
+        return False
+    try:
+        with open(tasks_path) as f:
+            tasks = json.load(f)
+        return bool(tasks)
+    except (json.JSONDecodeError, IOError):
+        return False
+
+
 def build_prompt():
     config = load_config()
     repo = config["paths"]["repo"]
@@ -181,12 +194,40 @@ def build_prompt():
     token_stats = get_token_stats(auto)
     plausible_stats = get_plausible_stats()
     notion_tasks = get_notion_tasks(data)
+    has_notion = has_notion_tasks(data)
+
+    # Build the Notion tasks block — if there are tasks, make them unmissable
+    if has_notion:
+        notion_block = f"""
+## *** STOP — BENEDICT'S TASKS (DO THESE FIRST) ***
+
+Benedict has personally assigned you tasks via Notion. These are your TOP
+priority. Do NOT touch the task queue until ALL Notion tasks below are
+completed or blocked. This is not optional.
+
+{notion_tasks}
+
+For each Notion task:
+1. Work on it fully (research, implement, test, commit)
+2. Update Notion when done:
+   python3 -c "import sys; sys.path.insert(0, '/opt/dale/autonomous'); from notion_poller import update_task_status; update_task_status('PAGE_ID', 'Done', 'What you did')"
+3. If you need clarification from Benedict:
+   python3 -c "import sys; sys.path.insert(0, '/opt/dale/autonomous'); from notion_poller import update_task_status; update_task_status('PAGE_ID', 'Question', 'Your question')"
+4. Only after ALL Notion tasks are Done or Question, move to the task queue.
+
+*** DO NOT SKIP THIS SECTION ***
+"""
+    else:
+        notion_block = """
+## Benedict's Tasks (from Notion)
+No tasks from Benedict right now. Proceed with the task queue.
+"""
 
     prompt = f"""This is an AUTONOMOUS session running via cron at {now}.
 You are Dale, the AI business agent. Benedict is asleep (it's ~2am in Perth).
-Time limit: {max_min} minutes. Work through the task queue sequentially — do each
+Time limit: {max_min} minutes. Work through tasks sequentially — do each
 task WELL before moving on. No shortcuts, no half-finished work. Quality over quantity.
-
+{notion_block}
 ## Current Business State
 {business_state}
 
@@ -195,18 +236,6 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 ## Recent Decisions
 {recent_decisions}
-
-## Benedict's Tasks (from Notion — PRIORITY)
-{notion_tasks}
-
-IMPORTANT: Benedict's Notion tasks take priority over the regular task queue.
-Work through these FIRST, in order of priority. When you complete a task or
-need clarification, update Notion using the notion_poller.py helper:
-  python3 /opt/dale/autonomous/notion_poller.py is the poller, but to update
-  a task status, use this Python snippet:
-    from notion_poller import update_task_status
-    update_task_status("page-id", "Done", "Dale's notes about what was done")
-    update_task_status("page-id", "Question", "What did you mean by X?")
 
 ## Task Queue
 {task_queue}
@@ -275,12 +304,13 @@ Each session, spend real time planning tomorrow's experiment. Update TASK_QUEUE.
 with your plan — be specific about what you'll try and how you'll measure if it worked.
 
 ## Priority Order
-1. Fix anything broken (scrapers, dashboard, etc.)
-2. **Revenue experiments** — what's the next small bet toward first dollar?
-3. Improve existing tools based on data patterns
-4. Prepare materials for Track A prospects
-5. Enhance Track B data/features
-6. Research new opportunities
+1. **Benedict's Notion tasks** — always first, no exceptions
+2. Fix anything broken (scrapers, dashboard, etc.)
+3. **Revenue experiments** — what's the next small bet toward first dollar?
+4. Improve existing tools based on data patterns
+5. Prepare materials for Track A prospects
+6. Enhance Track B data/features
+7. Research new opportunities
 
 ## Session Output Format
 End your session with a structured summary (this gets emailed to Benedict each morning):

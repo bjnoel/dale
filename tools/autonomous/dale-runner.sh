@@ -47,21 +47,13 @@ if [ "${FAILURE_COUNT:-0}" -ge 3 ]; then
     exit 0
 fi
 
-# 3. Time window check (17:00-01:00 UTC) — skipped for Notion triggers
-if [ "$NOTION_TRIGGER" = false ]; then
-    HOUR=$(date -u +%-H)
-    if [ "$HOUR" -ge 1 ] && [ "$HOUR" -lt 17 ]; then
-        log "Outside run window (UTC hour: $HOUR). Skipping."
-        exit 0
-    fi
-fi
-
-# 4. Read config
+# 3. Read config
 REPO_DIR=$(python3 -c "import json; print(json.load(open('$CONFIG'))['paths']['repo'])")
 MAX_MINUTES=$(python3 -c "import json; print(json.load(open('$CONFIG'))['budget']['max_session_duration_minutes'])")
 MAX_TURNS=$(python3 -c "import json; print(json.load(open('$CONFIG'))['budget']['max_turns'])")
 
-# 5. Repo health
+# 4. Repo health + pull + deploy (BEFORE time window check, so Notion triggers
+#    always run the latest runner/scripts even during off-hours)
 if [ ! -d "$REPO_DIR/.git" ]; then
     log "Repo not found at $REPO_DIR. Aborting."
     python3 "$SCRIPT_DIR/notify.py" alert "Git repo not found at $REPO_DIR"
@@ -71,7 +63,6 @@ fi
 
 cd "$REPO_DIR"
 
-# Pull latest
 git fetch origin 2>>"$LOG_DIR/git-errors.log" || {
     log "Git fetch failed."
     python3 "$SCRIPT_DIR/notify.py" alert "Git fetch failed"
@@ -90,6 +81,15 @@ git pull --ff-only origin main 2>>"$LOG_DIR/git-errors.log" || {
 if [ -f "$REPO_DIR/tools/deploy.sh" ]; then
     bash "$REPO_DIR/tools/deploy.sh" 2>>"$LOG_DIR/cron.log"
     log "Deployed scripts from repo"
+fi
+
+# 5. Time window check (17:00-01:00 UTC) — skipped for Notion triggers
+if [ "$NOTION_TRIGGER" = false ]; then
+    HOUR=$(date -u +%-H)
+    if [ "$HOUR" -ge 1 ] && [ "$HOUR" -lt 17 ]; then
+        log "Outside run window (UTC hour: $HOUR). Skipping."
+        exit 0
+    fi
 fi
 
 # 6. Weekly update check (Dale strikes Wed-Sun if no update from Benedict)
