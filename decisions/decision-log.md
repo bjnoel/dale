@@ -550,3 +550,19 @@ to prove demand.
 **Deployment note:** subscribe_server.py needs a service restart to pick up the watch
 endpoint (needs Benedict: Q32).
 **Status:** EXECUTED — deployed, species pages rebuilt. Service restart pending.
+
+## DEC-041 — 2026-03-13 — Nursery Profile Pages
+**Decided by:** Dale
+**Decision:** Build /nursery/[slug].html profile pages for all 10 monitored nurseries.
+**Rationale:** Low-effort SEO pages targeting "daleys fruit trees review", "ross creek tropicals stock", etc. Each nursery page shows: blurb, location, shipping states, species they carry, in-stock count, sample products, and link to filtered dashboard view. All data is already available — this is just presenting it differently for search engines. 10 pages × potential search traffic = worth building.
+**What was built:**
+- build_nursery_pages.py: Generates /nursery/[slug].html per nursery + /nursery/index.html.
+  Each page: full blurb, WA shipping badge, stat cards (in-stock/total/species/WA-ships),
+  species table with in-stock counts, in-stock product table with prices, link to dashboard.
+- NURSERY_META: Rich metadata for all 10 nurseries (location, blurb, specialties, WA notes).
+- build-dashboard.py: Added "Nurseries" link to footer nav. Added ?nursery= URL param support
+  so nursery pages can deep-link into filtered dashboard view.
+- build_sitemap.py: Now includes /nursery/ index + all 10 nursery pages (65 total URLs, was 54).
+- run-all-scrapers.sh: Nursery page build added before sitemap step (non-fatal).
+**Results:** 10 nursery profile pages + index generated. Sitemap updated to 65 URLs.
+**Status:** EXECUTED — live at treestock.com.au/nursery/

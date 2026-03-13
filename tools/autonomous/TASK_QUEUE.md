@@ -5,14 +5,16 @@
 
 ---
 
-## Completed This Session (2026-03-13 UTC, session 2 — 13:12 UTC)
+## Completed This Session (2026-03-13 UTC, session 3 — 14:08 UTC)
 
-- [x] Species restock alerts ("Notify Me") — DONE (DEC-040): notify-me forms on all species pages,
-      subscribe_server.py extended with action=watch, send_species_alerts.py written, added to cron pipeline.
-      Service restart needed for watch endpoint to activate (Q32 for Benedict).
-- [x] Email signup copy — Already correct ("Daily stock alerts — price drops & restocks, free."), no change needed
-- [x] Day 2 traffic monitoring — 94 visitors today (still FB-driven), 32 direct (bookmarks = high intent!)
-- [x] Weekly FB post template — DONE: deliverables/fb-weekly-template.md (3 templates: What's New, Price Drop, Species Spotlight)
+- [x] Notion task: Vergeside bjnoel.com footer link — DONE in local clone of bjnoel/vergeside-htmx.
+      All 8 HTML pages updated. Can't push (server token lacks write access to vergeside repo).
+      Marked as "Question" in Notion — Benedict needs to push from his machine (see Q33).
+- [x] Nursery affiliate research — DONE (no programs exist): Daleys, Diggers, Fruit Salad Trees
+      all checked. None have affiliate/referral programs. Not a viable revenue path currently.
+- [x] Nursery profile pages — DONE (DEC-041): 10 nursery pages + index at /nursery/. build_nursery_pages.py
+      written, added to cron pipeline. Sitemap updated to 65 URLs. Dashboard has ?nursery= URL param
+      support + "Nurseries" footer link.
 
 ---
 
@@ -25,35 +27,20 @@ Now that the notify-me feature is live (after Benedict restarts the service), mo
 - Which species are most watched (sapodilla, jaboticaba, annonas expected)
 - Log first watch signup in decision log as a milestone
 
-### 2. Nursery affiliate research
+### 2. Uptime monitoring setup
 
-Check if these nurseries have affiliate programs:
-- Daleys Fruit Trees (daleysfruit.com.au) — biggest national nursery in our data
-- The Diggers Club (diggers.com.au) — large subscriber base, may have affiliate
-- Fruit Salad Trees (fruitsaladtrees.com.au)
+Research free self-hosted uptime monitoring options for Hetzner:
+- Option A: Uptime Kuma (self-hosted, Docker) — can run on Hetzner, alerts via email
+- Option B: UptimeRobot free tier — Benedict needs to sign up
+- Preference: self-hosted on Hetzner if Docker is available (dale is in docker group)
+- Set up whichever is easier; alert on treestock.com.au + walkthrough.au
 
-Research: look for /affiliates, /referral, /partners pages on each site.
-If Daleys has one: draft a short pitch for Benedict to submit.
-This is potentially $10-30/month in passive commission with zero ongoing work.
+### 3. Cold outreach Track A
 
-### 3. Nursery profile pages
-
-Build /nursery/[slug].html pages for each nursery (SEO + context):
-- Nursery name, location, what they specialise in
-- List of all species they carry
-- Shipping states
-- Link to their products on dashboard (filtered view)
-- Target keywords: "daleys fruit trees review", "ross creek tropicals stock"
-
-These are lower-traffic but high-intent pages. 8 nurseries × decent search volume = worth building.
-
-### 4. Uptime monitoring setup
-
-Add UptimeRobot free tier monitoring for treestock.com.au:
-- Benedict needs to create account at uptimerobot.com
-- Add http(s) monitor for https://treestock.com.au
-- Set alert email to hello@walkthrough.au or Benedict's personal email
-- Or: research if there's a free self-hosted option on the Hetzner server
+Pick a Perth business, run analyse-business.py, draft a short cold email:
+- Target: retail or professional services with weak digital presence
+- Provide the analysis and email draft ready for Benedict to send
+- This is the next step toward Track A revenue
 
 ---
 
@@ -64,14 +51,14 @@ Add UptimeRobot free tier monitoring for treestock.com.au:
 - [ ] Add uptime monitoring for treestock.com.au (free tier: UptimeRobot or similar) ← see task 4 above
 
 ### SEO & Content
-- [ ] Nursery profile pages (/nursery/daleys, /nursery/ross-creek, etc.) ← see task 3 above
+- [x] Nursery profile pages — DONE 2026-03-13 (DEC-041)
 - [ ] Variety-level pages (deeper than species — individual cultivars)
 - [ ] "Compare prices" pages (e.g., /compare/mango-prices)
 - [ ] Location pages (/wa-fruit-trees, /tas-fruit-trees) for state-based SEO
 - [ ] Submit to Australian business directories (Hotfrog, StartLocal, True Local)
 
 ### Revenue Experiments
-- [ ] Nursery affiliate programs — check Daleys, Diggers, Fruit Salad Trees ← see task 2 above
+- [x] Nursery affiliate programs — DONE 2026-03-13: None of Daleys/Diggers/Fruit Salad Trees have programs
 - [ ] Cold outreach audit: pick a Perth business, run analyse-business.py, draft email
 - [ ] Approach Daleys for sponsored listing once Primal Fruits result is in
 - [ ] Cross-sell Track A+B: approach WA nurseries without websites (Tass1, Leeming)
@@ -111,3 +98,5 @@ Add UptimeRobot free tier monitoring for treestock.com.au:
 - [x] 2026-03-13: FB launch analysis: 268 visitors, 211 from Facebook, 2 subscribers day 1
 - [x] 2026-03-13: Per-species restock alerts (notify-me forms + alert email pipeline) — DEC-040
 - [x] 2026-03-13: Weekly FB post template — deliverables/fb-weekly-template.md
+- [x] 2026-03-13: Nursery profile pages (10 pages + index, DEC-041) — /nursery/ live
+- [x] 2026-03-13: Sitemap updated to 65 URLs (was 54, +11 nursery pages)

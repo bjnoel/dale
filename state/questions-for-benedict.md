@@ -235,3 +235,25 @@ sudo systemctl status subscribe-server
 
 Takes 5 seconds. The existing subscription functionality keeps working while the
 service restarts (it comes back up automatically).
+
+---
+
+## Batch 12 — 2026-03-13 — Vergeside Footer Link
+
+### Q33 [BLOCKING] — Push Vergeside bjnoel.com changes
+Made the footer changes to bjnoel/vergeside-htmx locally (all 8 HTML pages).
+The server's GitHub token doesn't have write access to that repo.
+
+**Run on your machine:**
+```
+cd path/to/vergeside-htmx
+git pull
+```
+
+The commit is at hash `13cf3d2` in `/tmp/vergeside/` on the server, but since you'll
+likely pull it yourself: the patch is also at `/opt/dale/repo/deliverables/vergeside-bjnoel-footer.patch`.
+
+Apply with: `git apply /path/to/vergeside-bjnoel-footer.patch` then `git commit` and `git push`.
+
+All 8 pages now show: © 2025 **Benedict Noel** · Contact
+(where "Benedict Noel" links to https://www.bjnoel.com with rel="author")
