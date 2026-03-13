@@ -402,8 +402,13 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     """Generate the dashboard HTML with embedded data."""
     products_json = json.dumps(products, separators=(",", ":"))
     nurseries_json = json.dumps(nurseries, separators=(",", ":"))
-    top_species_json = json.dumps(top_species, separators=(",", ":"))
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+    # Server-render species strip for SEO (crawlable <a> tags)
+    species_strip_html = "\n".join(
+        f'<a href="/species/{s["sl"]}.html" class="species-pill">{s["cn"]} <span class="count">{s["in_stock"]}</span></a>'
+        for s in top_species
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -441,6 +446,12 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .product-row {{ border-bottom: 1px solid #f3f4f6; }}
   .product-row:hover {{ background: #f9fafb; }}
   .nursery-tag {{ font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }}
+  .species-strip {{ display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }}
+  .species-strip::-webkit-scrollbar {{ height: 3px; }}
+  .species-strip::-webkit-scrollbar-thumb {{ background: #d1d5db; border-radius: 3px; }}
+  .species-pill {{ flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; text-decoration: none; transition: border-color 0.15s, background 0.15s; }}
+  .species-pill:hover {{ border-color: #22c55e; background: #f0fdf4; color: #065f46; }}
+  .species-pill .count {{ color: #059669; font-weight: 600; font-size: 0.7rem; }}
 </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -515,11 +526,28 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     <div id="nurserySummary" class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm"></div>
   </div>
 
-  <!-- Browse by Species (hidden when searching) -->
+  <!-- Browse by Species — horizontal scroll strip, server-rendered for SEO -->
   <div id="speciesWrap" class="mb-4">
-    <h2 class="text-sm font-semibold text-gray-600 mb-2">Browse by Species</h2>
-    <div id="speciesGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm"></div>
-    <a href="/species/" class="mt-2 inline-block text-xs text-green-600 hover:underline">See all 50+ species →</a>
+    <div class="flex items-center gap-2 mb-2">
+      <h2 class="text-sm font-semibold text-gray-600">Browse by Species</h2>
+      <a href="/species/" class="text-xs text-green-600 hover:underline ml-auto">All species &rarr;</a>
+    </div>
+    <div class="species-strip">{species_strip_html}</div>
+  </div>
+
+  <!-- Email Alerts Signup (above results) -->
+  <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+      <p class="text-sm text-green-800 flex-1"><strong>Daily stock alerts</strong> — price drops &amp; restocks, free.</p>
+      <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
+        <input type="email" id="subEmail" placeholder="your@email.com" required
+          class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
+        <button type="submit" class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+          Subscribe
+        </button>
+      </form>
+    </div>
+    <div id="subMessage" class="mt-2 text-sm hidden"></div>
   </div>
 
   <!-- Results -->
@@ -528,24 +556,6 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     <button onclick="showMore()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
       Show more results
     </button>
-  </div>
-
-  <!-- Email Alerts Signup (below results) -->
-  <div class="mt-6 mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-      <div class="flex-1">
-        <p class="text-sm font-medium text-green-800">Get daily stock alerts — free</p>
-        <p class="text-xs text-gray-500">Price drops &amp; back-in-stock alerts for Australian fruit tree collectors. Unsubscribe anytime.</p>
-      </div>
-      <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
-        <input type="email" id="subEmail" placeholder="your@email.com" required
-          class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-48">
-        <button type="submit" class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
-          Subscribe free
-        </button>
-      </form>
-    </div>
-    <div id="subMessage" class="mt-2 text-sm hidden"></div>
   </div>
 </main>
 
@@ -562,7 +572,6 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 <script>
 const P = {products_json};
 const N = {nurseries_json};
-const SP = {top_species_json};
 
 const NURSERY_URLS = {{
   'ross-creek': 'rosscreektropicals.com.au',
@@ -610,18 +619,6 @@ N.forEach(n => {{
       <div class="text-green-700 font-bold">${{n.in_stock}}</div>
       <div class="text-gray-400 text-xs">of ${{n.count}} in stock</div>
     </div>`;
-}});
-
-// Render species grid
-const speciesGrid = document.getElementById('speciesGrid');
-SP.forEach(s => {{
-  const priceStr = s.min_p ? ('from $' + Math.round(s.min_p)) : '';
-  const priceHtml = priceStr ? '<div class="text-gray-400 text-xs">' + priceStr + '</div>' : '';
-  speciesGrid.innerHTML += '<a href="/species/' + s.sl + '.html" class="block border border-gray-200 rounded p-2 hover:border-green-300 hover:bg-green-50 transition-colors">'
-    + '<div class="font-medium text-xs text-gray-800">' + s.cn + '</div>'
-    + '<div class="text-green-700 text-xs font-semibold">' + s.in_stock + ' in stock</div>'
-    + priceHtml
-    + '</a>';
 }});
 
 const totalProducts = P.length;
