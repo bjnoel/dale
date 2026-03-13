@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 # Autonomous Dale — cron wrapper
-# Called by cron at 18:00 UTC (2:00 AWST)
+# Called by cron at 18:00 UTC (2:00 AWST) or by Notion poller on-demand.
 # Pre-checks, runs Claude headlessly, handles post-run tasks.
+# Pass --notion to skip the time window check (for on-demand triggers).
 
 set -uo pipefail
+
+NOTION_TRIGGER=false
+if [ "${1:-}" = "--notion" ]; then
+    NOTION_TRIGGER=true
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG="$SCRIPT_DIR/config.json"
@@ -19,6 +25,10 @@ log() {
 }
 
 log "=== Starting autonomous session ==="
+
+# Write PID file so notion_poller can check if we're running
+echo $$ > "$LOG_DIR/dale-session.pid"
+trap 'rm -f "$LOG_DIR/dale-session.pid"' EXIT
 
 # --- Pre-checks ---
 
@@ -37,11 +47,13 @@ if [ "${FAILURE_COUNT:-0}" -ge 3 ]; then
     exit 0
 fi
 
-# 3. Time window check (17:00-01:00 UTC)
-HOUR=$(date -u +%-H)
-if [ "$HOUR" -ge 1 ] && [ "$HOUR" -lt 17 ]; then
-    log "Outside run window (UTC hour: $HOUR). Skipping."
-    exit 0
+# 3. Time window check (17:00-01:00 UTC) — skipped for Notion triggers
+if [ "$NOTION_TRIGGER" = false ]; then
+    HOUR=$(date -u +%-H)
+    if [ "$HOUR" -ge 1 ] && [ "$HOUR" -lt 17 ]; then
+        log "Outside run window (UTC hour: $HOUR). Skipping."
+        exit 0
+    fi
 fi
 
 # 4. Read config
