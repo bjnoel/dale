@@ -195,8 +195,6 @@ def build_species_page(species: dict, products: list[dict]) -> str:
             if p["available"] else
             '<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">Out of stock</span>'
         )
-        ships_wa = "WA" in SHIPPING_MAP.get(p["nursery_key"], [])
-        wa_badge = '<span class="text-xs px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded">Ships WA</span>' if ships_wa else ""
         utm_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=referral" if p["url"] else ""
         link = f'<a href="{utm_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>' if p["url"] else p["title"]
         product_rows += f"""
@@ -204,9 +202,7 @@ def build_species_page(species: dict, products: list[dict]) -> str:
         <td class="py-2 pr-3 text-sm">{link}</td>
         <td class="py-2 pr-3 text-xs text-gray-500">{p['nursery_name']}</td>
         <td class="py-2 pr-3 text-sm font-medium">{price_str}</td>
-        <td class="py-2">
-          <div class="flex gap-1 items-center flex-wrap">{avail_badge} {wa_badge}</div>
-        </td>
+        <td class="py-2">{avail_badge}</td>
       </tr>"""
 
     in_stock_count = len(in_stock)
