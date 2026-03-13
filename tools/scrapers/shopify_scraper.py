@@ -26,41 +26,37 @@ NURSERIES = {
         "name": "Ross Creek Tropicals",
         "domain": "www.rosscreektropicals.com.au",
         "location": "Gympie, QLD",
-        "ships_to_wa": False,
     },
     "ladybird": {
         "name": "Ladybird Nursery",
         "domain": "www.ladybirdnursery.com.au",
         "location": "Kallangur, QLD",
-        "ships_to_wa": False,
     },
     "fruitopia": {
         "name": "Fruitopia Nursery",
         "domain": "fruitopianursery.com.au",
         "location": "Brisbane/Gold Coast, QLD",
-        "ships_to_wa": False,
     },
     "fruit-salad-trees": {
         "name": "Fruit Salad Trees",
         "domain": "www.fruitsaladtrees.com",
         "location": "Emmaville, NSW",
-        "ships_to_wa": True,
-        "ships_to_wa_note": "1st Tuesday of month",
     },
     "diggers": {
         "name": "The Diggers Club",
         "domain": "www.diggers.com.au",
         "location": "Dromana, VIC",
-        "ships_to_wa": True,
-        "ships_to_wa_note": "Weekly",
         "fruit_tags": ["all fruit & nuts", "all fruit &amp; nuts", "all berries", "fruit trees", "nuts"],
     },
     "all-season-plants-wa": {
         "name": "All Season Plants WA",
         "domain": "allseasonplantswa.com.au",
         "location": "Perth, WA",
-        "ships_to_wa": True,
-        "ships_to_wa_note": "Pickup only (Perth)",
+    },
+    "ausnurseries": {
+        "name": "Aus Nurseries",
+        "domain": "ausnurseries.com",
+        "location": "Australia",
     },
 }
 
@@ -147,7 +143,6 @@ def normalize_product(raw, nursery_key, config):
         "tags": raw.get("tags", []) if isinstance(raw.get("tags"), list) else [t.strip() for t in raw.get("tags", "").split(",") if t.strip()],
         "created_at": raw.get("created_at"),
         "updated_at": raw.get("updated_at"),
-        "ships_to_wa": config.get("ships_to_wa", False),
         "variants": [],
     }
 

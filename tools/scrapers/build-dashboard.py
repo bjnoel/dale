@@ -14,6 +14,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from shipping import SHIPPING_MAP, NURSERY_NAMES
+
 
 # Confirmed via nursery websites/policies:
 # - Daleys: ships to WA seasonally (special quarantine window, extra $25+ fee)
@@ -135,6 +137,9 @@ FRUIT_FILTERS = {
     "all-season-plants-wa": {
         "mode": "all",  # WA-based fruit tree nursery, all products are fruit
     },
+    "ausnurseries": {
+        "mode": "all",  # Dedicated fruit/nut tree nursery
+    },
 }
 
 
@@ -161,19 +166,6 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
     return True
 
 
-# States each nursery ships to. Verified via nursery websites March 2026.
-# Quarantine states (WA, TAS, NT) require special permits; many QLD nurseries won't ship there.
-SHIPPING_MAP = {
-    "daleys": ["NSW", "VIC", "QLD", "SA", "WA", "ACT"],          # WA: seasonal window + extra fee
-    "ross-creek": ["NSW", "VIC", "QLD", "ACT"],                   # Confirmed: QLD/NSW/VIC/ACT only
-    "ladybird": ["NSW", "VIC", "QLD", "ACT"],                     # QLD-based, restricted
-    "fruitopia": ["NSW", "VIC", "QLD", "SA", "ACT"],              # QLD-based estimate
-    "primal-fruits": ["WA"],                                       # WA-based, local only
-    "guildford": ["WA"],                                           # WA-based, Perth metro
-    "fruit-salad-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],  # WA+TAS: 1st Tue/month
-    "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],      # Ships nationwide
-    "all-season-plants-wa": ["WA"],                                          # WA-based, pickup only (Perth)
-}
 
 
 def load_previous_snapshot(nursery_dir: Path) -> dict:

@@ -27,7 +27,6 @@ NURSERIES = {
         "name": "Primal Fruits Perth",
         "domain": "primalfruits.com.au",
         "location": "Parkwood, WA",
-        "ships_to_wa": True,
         "store_id": "102345518",
     },
 }
@@ -139,7 +138,6 @@ def scrape_ecwid(nursery_key, config):
         if product:
             product["nursery"] = nursery_key
             product["nursery_name"] = config["name"]
-            product["ships_to_wa"] = config.get("ships_to_wa", False)
             products.append(product)
             status = "IN STOCK" if product["available"] else "out of stock"
             print(f"${product['price']:.2f} ({status})" if product["price"] else "no price")
@@ -165,7 +163,6 @@ def save_snapshot(nursery_key, products, config):
         "nursery": nursery_key,
         "nursery_name": config["name"],
         "location": config.get("location", ""),
-        "ships_to_wa": config.get("ships_to_wa", False),
         "scraped_at": datetime.now().isoformat(),
         "product_count": len(products),
         "in_stock_count": len(in_stock),

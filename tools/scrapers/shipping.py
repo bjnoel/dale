@@ -1,0 +1,39 @@
+"""
+Shared shipping configuration for all nurseries.
+
+Single source of truth for which states each nursery ships to.
+Used by scrapers, dashboard builder, digest, history, and species pages.
+"""
+
+# States each nursery ships to. Verified via nursery websites March 2026.
+# Quarantine states (WA, TAS, NT) require special permits; many QLD nurseries won't ship there.
+SHIPPING_MAP = {
+    "daleys": ["NSW", "VIC", "QLD", "SA", "WA", "ACT"],          # WA: seasonal window + extra fee
+    "ross-creek": ["NSW", "VIC", "QLD", "ACT"],                   # Confirmed: QLD/NSW/VIC/ACT only
+    "ladybird": ["NSW", "VIC", "QLD", "ACT"],                     # QLD-based, restricted
+    "fruitopia": ["NSW", "VIC", "QLD", "SA", "ACT"],              # QLD-based estimate
+    "primal-fruits": ["WA"],                                       # WA-based, local only
+    "guildford": ["WA"],                                           # WA-based, Perth metro
+    "fruit-salad-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],  # WA+TAS: 1st Tue/month
+    "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],      # Ships nationwide
+    "all-season-plants-wa": ["WA"],                                          # WA-based, pickup only (Perth)
+    "ausnurseries": ["NSW", "VIC", "QLD", "SA", "ACT"],           # Does not ship to WA, NT, or TAS
+}
+
+NURSERY_NAMES = {
+    "daleys": "Daleys Fruit Trees",
+    "ross-creek": "Ross Creek Tropicals",
+    "ladybird": "Ladybird Nursery",
+    "fruitopia": "Fruitopia",
+    "primal-fruits": "Primal Fruits Perth",
+    "guildford": "Guildford Garden Centre",
+    "fruit-salad-trees": "Fruit Salad Trees",
+    "diggers": "The Diggers Club",
+    "all-season-plants-wa": "All Season Plants WA",
+    "ausnurseries": "Aus Nurseries",
+}
+
+
+def nursery_ships_to(nursery_key: str, state: str) -> bool:
+    """Return True if this nursery ships to the given state code (e.g. 'WA')."""
+    return state in SHIPPING_MAP.get(nursery_key, [])

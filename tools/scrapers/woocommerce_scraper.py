@@ -26,7 +26,6 @@ NURSERIES = {
         "name": "Guildford Garden Centre",
         "domain": "guildfordgardencentre.com.au",
         "location": "Guildford, WA",
-        "ships_to_wa": True,
         "fruit_categories": ["fruits-nuts", "edibles"],
     },
 }
@@ -120,7 +119,6 @@ def normalize_product(raw, nursery_key, config):
         "url": raw.get("permalink", ""),
         "product_type": ", ".join(c["name"] for c in raw.get("categories", [])),
         "tags": [t["name"] for t in raw.get("tags", [])],
-        "ships_to_wa": config.get("ships_to_wa", False),
         "variants": [{
             "title": "Default",
             "price": price,
@@ -146,7 +144,6 @@ def save_snapshot(nursery_key, products, config):
         "nursery": nursery_key,
         "nursery_name": config["name"],
         "location": config.get("location", ""),
-        "ships_to_wa": config.get("ships_to_wa", False),
         "scraped_at": datetime.now().isoformat(),
         "product_count": len(normalized),
         "in_stock_count": in_stock,

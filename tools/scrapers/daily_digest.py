@@ -18,6 +18,8 @@ import sys
 from datetime import date, timedelta
 from pathlib import Path
 
+from shipping import SHIPPING_MAP, NURSERY_NAMES, nursery_ships_to
+
 # Fruit species lookup for filtering non-fruit products
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
@@ -43,36 +45,8 @@ NON_PLANT_KEYWORDS = [
     "sharp shooter", "searles liquid", "ecofend",
 ]
 
-SHIPPING_MAP = {
-    "daleys": ["NSW", "VIC", "QLD", "SA", "WA", "ACT"],
-    "ross-creek": ["NSW", "VIC", "QLD", "ACT"],
-    "ladybird": ["NSW", "VIC", "QLD", "ACT"],
-    "fruitopia": ["NSW", "VIC", "QLD", "SA", "ACT"],
-    "primal-fruits": ["WA"],
-    "guildford": ["WA"],
-    "fruit-salad-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],
-    "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
-}
-
-# Backwards-compat: set of nurseries that ship to WA
+# Backwards-compat: set of nurseries that ship to WA (used by build_history.py)
 WA_NURSERIES = {k for k, states in SHIPPING_MAP.items() if "WA" in states}
-
-
-def nursery_ships_to(nursery_key: str, state: str) -> bool:
-    """Return True if this nursery ships to the given state code (e.g. 'WA')."""
-    return state in SHIPPING_MAP.get(nursery_key, [])
-
-
-NURSERY_NAMES = {
-    "daleys": "Daleys Fruit Trees",
-    "ross-creek": "Ross Creek Tropicals",
-    "ladybird": "Ladybird Nursery",
-    "fruitopia": "Fruitopia",
-    "primal-fruits": "Primal Fruits Perth",
-    "guildford": "Guildford Garden Centre",
-    "fruit-salad-trees": "Fruit Salad Trees",
-    "diggers": "The Diggers Club",
-}
 
 
 def is_fruit_product(product: dict, nursery_key: str) -> bool:

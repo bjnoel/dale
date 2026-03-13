@@ -20,19 +20,9 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+from shipping import SHIPPING_MAP
 
-# Reuse shipping data from build-dashboard.py
-SHIPPING_MAP = {
-    "daleys": ["NSW", "VIC", "QLD", "SA", "WA", "ACT"],
-    "ross-creek": ["NSW", "VIC", "QLD", "ACT"],
-    "ladybird": ["NSW", "VIC", "QLD", "ACT"],
-    "fruitopia": ["NSW", "VIC", "QLD", "SA", "ACT"],
-    "primal-fruits": ["WA"],
-    "guildford": ["WA"],
-    "fruit-salad-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],
-    "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
-}
+SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
 NON_PLANT_KEYWORDS = [
