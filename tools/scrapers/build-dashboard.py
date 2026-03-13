@@ -38,6 +38,7 @@ def load_species_lookup() -> dict:
         entry = {
             "cn": s["common_name"],
             "ln": s["latin_name"],
+            "sl": s["slug"],
             "r": s["region"],
         }
         # Parse genus/species from latin_name
@@ -312,6 +313,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             if species:
                 matched_count += 1
                 product_data["ln"] = species.get("ln", "")  # latin name
+                product_data["sl"] = species.get("sl", "")  # slug (for species pages)
                 if "g" in species:
                     product_data["g"] = species["g"]  # genus
                 if "cv" in species:
@@ -351,13 +353,56 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
         })
 
     print(f"  Species matched: {matched_count}/{len(products)} ({100*matched_count//len(products) if products else 0}%)")
-    return products, nurseries_loaded
+
+    # Build species summary for the browse-by-species section
+    species_summary: dict[str, dict] = {}
+    for p in products:
+        sl = p.get("sl")
+        if not sl:
+            continue
+        if sl not in species_summary:
+            species_summary[sl] = {
+                "cn": "",  # filled below
+                "sl": sl,
+                "in_stock": 0,
+                "prices": [],
+            }
+        if p.get("a"):
+            species_summary[sl]["in_stock"] += 1
+        if p.get("p"):
+            species_summary[sl]["prices"].append(p["p"])
+        if not species_summary[sl]["cn"] and p.get("ln"):
+            species_summary[sl]["_ln"] = p["ln"]
+
+    # Resolve common names from species lookup
+    ln_to_cn: dict[str, str] = {}
+    if species_lookup:
+        for entry in species_lookup.values():
+            ln = entry.get("ln", "")
+            cn = entry.get("cn", "")
+            if ln and cn and ln not in ln_to_cn:
+                ln_to_cn[ln] = cn
+
+    for sl, s in species_summary.items():
+        if not s["cn"]:
+            ln = s.get("_ln", "")
+            s["cn"] = ln_to_cn.get(ln, sl.replace("-", " ").title())
+        s.pop("_ln", None)
+        prices = s.pop("prices", [])
+        if prices:
+            s["min_p"] = round(min(prices), 2)
+            s["max_p"] = round(max(prices), 2)
+
+    top_species = sorted(species_summary.values(), key=lambda x: -x["in_stock"])[:16]
+
+    return products, nurseries_loaded, top_species
 
 
-def build_html(products: list[dict], nurseries: list[dict]) -> str:
+def build_html(products: list[dict], nurseries: list[dict], top_species: list[dict]) -> str:
     """Generate the dashboard HTML with embedded data."""
     products_json = json.dumps(products, separators=(",", ":"))
     nurseries_json = json.dumps(nurseries, separators=(",", ":"))
+    top_species_json = json.dumps(top_species, separators=(",", ":"))
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     return f"""<!DOCTYPE html>
@@ -470,6 +515,13 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
     <div id="nurserySummary" class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm"></div>
   </div>
 
+  <!-- Browse by Species (hidden when searching) -->
+  <div id="speciesWrap" class="mb-4">
+    <h2 class="text-sm font-semibold text-gray-600 mb-2">Browse by Species</h2>
+    <div id="speciesGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm"></div>
+    <a href="/species/" class="mt-2 inline-block text-xs text-green-600 hover:underline">See all 50+ species →</a>
+  </div>
+
   <!-- Results -->
   <div id="results"></div>
   <div id="loadMore" class="text-center py-4 hidden">
@@ -482,14 +534,14 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
   <div class="mt-6 mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-3">
       <div class="flex-1">
-        <p class="text-sm font-medium text-green-800">Get notified when daily email alerts launch</p>
-        <p class="text-xs text-gray-500">Daily price drop &amp; back-in-stock alerts for Australian fruit tree collectors. Free.</p>
+        <p class="text-sm font-medium text-green-800">Get daily stock alerts — free</p>
+        <p class="text-xs text-gray-500">Price drops &amp; back-in-stock alerts for Australian fruit tree collectors. Unsubscribe anytime.</p>
       </div>
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
         <input type="email" id="subEmail" placeholder="your@email.com" required
           class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-48">
         <button type="submit" class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
-          Notify me
+          Subscribe free
         </button>
       </form>
     </div>
@@ -510,6 +562,7 @@ def build_html(products: list[dict], nurseries: list[dict]) -> str:
 <script>
 const P = {products_json};
 const N = {nurseries_json};
+const SP = {top_species_json};
 
 const NURSERY_URLS = {{
   'ross-creek': 'rosscreektropicals.com.au',
@@ -559,6 +612,18 @@ N.forEach(n => {{
     </div>`;
 }});
 
+// Render species grid
+const speciesGrid = document.getElementById('speciesGrid');
+SP.forEach(s => {{
+  const priceStr = s.min_p ? ('from $' + Math.round(s.min_p)) : '';
+  const priceHtml = priceStr ? '<div class="text-gray-400 text-xs">' + priceStr + '</div>' : '';
+  speciesGrid.innerHTML += '<a href="/species/' + s.sl + '.html" class="block border border-gray-200 rounded p-2 hover:border-green-300 hover:bg-green-50 transition-colors">'
+    + '<div class="font-medium text-xs text-gray-800">' + s.cn + '</div>'
+    + '<div class="text-green-700 text-xs font-semibold">' + s.in_stock + ' in stock</div>'
+    + priceHtml
+    + '</a>';
+}});
+
 const totalProducts = P.length;
 const totalInStock = P.filter(p => p.a).length;
 const statsText = `${{totalInStock.toLocaleString()}} in stock across ${{N.length}} nurseries (${{totalProducts.toLocaleString()}} total)`;
@@ -581,10 +646,12 @@ function search() {{
   const st = stateFilter.value;
   const sort = sortBy.value;
 
-  // Hide nursery summary when actively searching/filtering
+  // Hide nursery summary and species grid when actively searching/filtering
   const hasFilters = q || nursery || changesOnly.checked;
   const wrap = document.getElementById('nurserySummaryWrap');
   wrap.style.display = hasFilters ? 'none' : '';
+  const speciesWrap = document.getElementById('speciesWrap');
+  speciesWrap.style.display = hasFilters ? 'none' : '';
 
   let results = P;
 
@@ -747,14 +814,15 @@ def main():
         sys.exit(1)
 
     print(f"Loading nursery data from {data_dir}...")
-    products, nurseries = load_nursery_data(data_dir)
+    products, nurseries, top_species = load_nursery_data(data_dir)
     print(f"Loaded {len(products)} products from {len(nurseries)} nurseries")
 
     for n in nurseries:
         print(f"  {n['name']}: {n['count']} products ({n['in_stock']} in stock)")
+    print(f"  Top species for grid: {', '.join(s['cn'] for s in top_species[:5])}")
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    html = build_html(products, nurseries)
+    html = build_html(products, nurseries, top_species)
     out_file = output_dir / "index.html"
     out_file.write_text(html)
     print(f"Dashboard written to {out_file} ({len(html):,} bytes)")

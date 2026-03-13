@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "last_updated": "2026-03-12",
-  "session_count": 14,
+  "last_updated": "2026-03-13",
+  "session_count": 15,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -50,7 +50,7 @@
       "products_note": "fruit/edible only (filtered from ~18,000 total raw)",
       "species_matched_pct": 68,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
-      "subscribers": 0,
+      "subscribers": 2,
       "revenue_total": 0,
       "features": [
         "Daily scraping of 8 nurseries",
@@ -64,7 +64,9 @@
         "Changes only filter",
         "Price/stock change history page",
         "Dated digest archives",
-        "Species pages (50 pages at /species/ for SEO)"
+        "Species pages (50 pages at /species/ for SEO)",
+        "Species browsing grid on dashboard (top 16 species by stock)",
+        "sitemap.xml (54 URLs, daily auto-generated)"
       ],
       "nursery_details": {
         "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
@@ -76,7 +78,7 @@
         "fruit_salad_trees": {"products": 88, "in_stock": 83, "platform": "Shopify", "ships_to_wa": true, "location": "NSW", "note": "Ships to WA 1st Tuesday/month"},
         "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"}
       },
-      "next_action": "Benedict posted to 2 FB groups (2026-03-12). Monitor traffic + subscribers. Plausible API key needed on server (Q30). Primal Fruits sponsorship: waiting on Cyrus reply (Q24)."
+      "next_action": "FB post drove 268 visitors (day 1), 2 subscribers. Submit sitemap to Google Search Console (needs Benedict). Next: stock alert signups (monetisable). Primal Fruits sponsorship: waiting on Cyrus reply (Q24)."
     }
   },
   "infrastructure": {

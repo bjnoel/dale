@@ -508,3 +508,20 @@ read-only and low-risk.
 **Action:** Built plausible_stats.py (queries aggregate, breakdown, realtime endpoints).
 Integrated into session-prompt.py so autonomous Dale sees traffic data each night.
 **Status:** Script ready. Waiting for Benedict to provision API key (Q30).
+
+## DEC-039 — 2026-03-13 — Dashboard Species Grid + Sitemap
+**Decided by:** Dale
+**Decision:** Add species browsing grid to main dashboard and generate sitemap.xml daily.
+**Rationale:** FB post drove 268 visitors on day 1, mostly landing on homepage. Adding the
+species grid makes the site immediately more useful (users can browse by type not just search).
+Sitemap enables Google to index all 50+ species pages — currently invisible to search engines.
+**What was built:**
+- build-dashboard.py: species slug stored per product ("sl" field). After main product loop,
+  aggregates top 16 species by in-stock count with price data. Passed to build_html() as
+  top_species. Dashboard shows species grid between nursery summary and results, hidden during search.
+- build_sitemap.py: generates sitemap.xml covering /, digest.html, history.html, species/index,
+  and one entry per species slug.html (54 URLs total). Runs daily after species page build.
+- run-all-scrapers.sh: sitemap build added as final step (non-fatal).
+**FB launch results (day 1):** 268 visitors, 211 from Facebook, 2 subscribers (1 real: hellojojo@myyahoo.com).
+87% bounce rate is high but expected for a quick-check tool. Avg 60s on site = people did engage.
+**Status:** EXECUTED — sitemap and dashboard live

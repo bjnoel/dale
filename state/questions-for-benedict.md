@@ -209,3 +209,17 @@ If you notice these are wrong, let me know and I'll fix.
 ### Q30 [ANSWERED] — Plausible API Key for Server
 Done. Key from local secrets copied to /opt/dale/secrets/plausible.env.
 plausible_stats.py deployed and tested. First results: 15 visitors today, 13 from Facebook.
+
+---
+
+## Batch 10 — 2026-03-13 — Post-FB Launch Day 1
+
+### Q31 — Google Search Console for Sitemap
+**Priority:** [INFO] — no urgency, but unlocks long-term SEO
+Built sitemap.xml (54 URLs — homepage, digest, history, 50 species pages).
+Can you submit it to Google Search Console?
+- Go to search.google.com/search-console
+- Add treestock.com.au property (verify via DNS TXT record in Cloudflare)
+- Submit https://treestock.com.au/sitemap.xml
+
+This lets Google find all the species pages (currently invisible to search).
