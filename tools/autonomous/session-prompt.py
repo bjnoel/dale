@@ -123,6 +123,32 @@ def get_token_stats(auto_dir):
         return "Error reading token log."
 
 
+def get_notion_tasks(data_dir):
+    """Read Notion tasks synced by the poller."""
+    tasks_path = os.path.join(data_dir, "notion-tasks.json")
+    if not os.path.exists(tasks_path):
+        return "No Notion tasks found."
+    try:
+        with open(tasks_path) as f:
+            tasks = json.load(f)
+        if not tasks:
+            return "No active Notion tasks."
+        lines = []
+        priority_order = {"Urgent": 0, "Normal": 1, "Low": 2}
+        tasks.sort(key=lambda t: priority_order.get(t.get("priority", "Normal"), 1))
+        for t in tasks:
+            status = t.get("status", "New")
+            priority = t.get("priority", "Normal")
+            dale = t.get("dale_notes", "")
+            line = f"- [{status}] [{priority}] {t['task']} (id: {t['id']})"
+            if dale:
+                line += f"\n  Dale's previous notes: {dale}"
+            lines.append(line)
+        return "\n".join(lines)
+    except (json.JSONDecodeError, IOError) as e:
+        return f"Error reading Notion tasks: {e}"
+
+
 def get_plausible_stats():
     """Get Plausible analytics summary, if available."""
     try:
@@ -154,6 +180,7 @@ def build_prompt():
     pending_approvals = get_pending_approvals(auto)
     token_stats = get_token_stats(auto)
     plausible_stats = get_plausible_stats()
+    notion_tasks = get_notion_tasks(data)
 
     prompt = f"""This is an AUTONOMOUS session running via cron at {now}.
 You are Dale, the AI business agent. Benedict is asleep (it's ~2am in Perth).
@@ -168,6 +195,18 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 ## Recent Decisions
 {recent_decisions}
+
+## Benedict's Tasks (from Notion — PRIORITY)
+{notion_tasks}
+
+IMPORTANT: Benedict's Notion tasks take priority over the regular task queue.
+Work through these FIRST, in order of priority. When you complete a task or
+need clarification, update Notion using the notion_poller.py helper:
+  python3 /opt/dale/autonomous/notion_poller.py is the poller, but to update
+  a task status, use this Python snippet:
+    from notion_poller import update_task_status
+    update_task_status("page-id", "Done", "Dale's notes about what was done")
+    update_task_status("page-id", "Question", "What did you mean by X?")
 
 ## Task Queue
 {task_queue}

@@ -400,15 +400,34 @@ def save_snapshot(products, pre_purchase_products):
     today = date.today().isoformat()
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Merge products: tag source
-    all_products = []
+    # Merge products by URL: if the same product appears on both Plant-List
+    # and pre-purchase pages, combine their variants into a single entry.
+    # Without this, the dashboard sees duplicate URLs and compares prices
+    # across different variant sets (e.g. Small $17.90 vs 6L $69.00).
+    by_url = {}
     for p in products:
         p["source"] = "plant_list"
         p["pre_purchase"] = False
-        all_products.append(p)
+        by_url[p["url"]] = p
     for p in pre_purchase_products:
         p["source"] = "pre_purchase"
-        all_products.append(p)
+        if p["url"] in by_url:
+            # Merge variants into existing entry
+            existing = by_url[p["url"]]
+            existing_skus = {v.get("sku") for v in existing["variants"]}
+            for v in p["variants"]:
+                if v.get("sku") not in existing_skus:
+                    existing["variants"].append(v)
+            # Recompute summary fields after merge
+            avail_prices = [v["price"] for v in existing["variants"] if v["price"] is not None and v["available"]]
+            all_prices = [v["price"] for v in existing["variants"] if v["price"] is not None]
+            existing["min_price"] = min(avail_prices) if avail_prices else (min(all_prices) if all_prices else None)
+            existing["max_price"] = max(avail_prices) if avail_prices else (max(all_prices) if all_prices else None)
+            existing["any_available"] = any(v["available"] for v in existing["variants"])
+            existing["total_stock"] = sum(v["stock_count"] for v in existing["variants"])
+        else:
+            by_url[p["url"]] = p
+    all_products = list(by_url.values())
 
     in_stock = sum(1 for p in all_products if p["any_available"])
     out_of_stock = sum(1 for p in all_products if not p["any_available"])

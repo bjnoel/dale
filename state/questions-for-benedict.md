@@ -166,8 +166,8 @@ First autonomous session runs tonight.
 ## Batch 7 — 2026-03-10 — Revenue Experiment
 
 ### Q24 [IN PROGRESS] — Primal Fruits Sponsorship Pitch
-Revenue experiment: can you message Cyrus at Primal Fruits about a $49/month
-featured listing on treestock.com.au?
+First WhatsApp sent, no reply. Cyrus engaged with FB post though (aware of treestock).
+Benedict can try another channel but has only met him once — low-pressure relationship.
 
 WhatsApp to send:
 > Hey Cyrus, hope you're well! Random one — I've been building a tool that
@@ -214,15 +214,9 @@ plausible_stats.py deployed and tested. First results: 15 visitors today, 13 fro
 
 ## Batch 10 — 2026-03-13 — Post-FB Launch Day 1
 
-### Q31 — Google Search Console for Sitemap
-**Priority:** [INFO] — no urgency, but unlocks long-term SEO
-Built sitemap.xml (54 URLs — homepage, digest, history, 50 species pages).
-Can you submit it to Google Search Console?
-- Go to search.google.com/search-console
-- Add treestock.com.au property (verify via DNS TXT record in Cloudflare)
-- Submit https://treestock.com.au/sitemap.xml
-
-This lets Google find all the species pages (currently invisible to search).
+### Q31 [ANSWERED] — Google Search Console for Sitemap
+Benedict set up GSC for treestock.com.au on 2026-03-13. Sitemap submitted.
+SEO for species pages now unlocked. Will monitor impressions in coming weeks.
 
 ---
 

@@ -187,11 +187,25 @@ def load_previous_snapshot(nursery_dir: Path) -> dict:
     # snapshots[0] = today, snapshots[1] = previous day
     with open(snapshots[1]) as f:
         data = json.load(f)
-    # Build lookup by URL (unique) with title fallback for comparison
+    # Build lookup by URL with title fallback. Merge duplicates (Daleys
+    # has plant-list + pre-purchase entries for the same URL) so min_price
+    # reflects all variants, preventing false price-change detection.
     lookup = {}
     for p in data.get("products", []):
         key = p.get("url") or p.get("title", "")
-        lookup[key] = p
+        if key in lookup:
+            # Merge variants into existing entry, recompute min_price
+            existing = lookup[key]
+            existing_skus = {v.get("sku") for v in existing.get("variants", [])}
+            for v in p.get("variants", []):
+                if v.get("sku") not in existing_skus:
+                    existing.setdefault("variants", []).append(v)
+            avail_prices = [v["price"] for v in existing.get("variants", [])
+                            if v.get("price") is not None and v.get("available")]
+            if avail_prices:
+                existing["min_price"] = min(avail_prices)
+        else:
+            lookup[key] = p
     return lookup
 
 
@@ -218,8 +232,33 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
         products_before = len(products)
 
         nursery_name = nursery_dir.name
-        raw_products = data.get("products", [])
         scraped_at = data.get("scraped_at", "unknown")
+
+        # Deduplicate products by URL (Daleys has plant-list + pre-purchase
+        # entries for the same URL with different variants)
+        raw_products = []
+        seen_urls = {}
+        for p in data.get("products", []):
+            url = p.get("url", "")
+            if url and url in seen_urls:
+                # Merge variants into first occurrence
+                existing = seen_urls[url]
+                existing_skus = {v.get("sku") for v in existing.get("variants", [])}
+                for v in p.get("variants", []):
+                    if v.get("sku") not in existing_skus:
+                        existing.setdefault("variants", []).append(v)
+                # Recompute min_price
+                avail_prices = [v["price"] for v in existing.get("variants", [])
+                                if v.get("price") is not None and v.get("available")]
+                all_prices = [v["price"] for v in existing.get("variants", [])
+                              if v.get("price") is not None]
+                existing["min_price"] = min(avail_prices) if avail_prices else (min(all_prices) if all_prices else None)
+                existing["any_available"] = any(v.get("available") for v in existing.get("variants", []))
+                existing["total_stock"] = sum(v.get("stock_count", 0) for v in existing.get("variants", []))
+            else:
+                raw_products.append(p)
+                if url:
+                    seen_urls[url] = p
 
         for p in raw_products:
             # Apply nursery-specific fruit/edible filter
