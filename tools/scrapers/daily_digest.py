@@ -354,12 +354,14 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
             if item.get("old_price"):
                 price += f" (was ${item['old_price']:.2f})"
             url = item.get("url", "")
-            link = f'<a href="{url}" target="_blank">{item["title"]}</a>' if url else item["title"]
+            utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
+            link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
             items_html.append(f'<li style="color:#059669;padding:4px 0"><span title="Was out of stock, now available again" style="cursor:help">✅</span> {link}{price} <strong>Back in stock!</strong></li>')
 
         for item in changes["price_drops"]:
             url = item.get("url", "")
-            link = f'<a href="{url}" target="_blank">{item["title"]}</a>' if url else item["title"]
+            utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
+            link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
             items_html.append(
                 f'<li style="padding:4px 0"><span title="Price decreased" style="cursor:help">📉</span> {link}: '
                 f'<span style="text-decoration:line-through;color:#999">${item["old_price"]:.2f}</span> '
@@ -369,7 +371,8 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
         for item in changes["new_products"][:10]:
             price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
             url = item.get("url", "")
-            link = f'<a href="{url}" target="_blank">{item["title"]}</a>' if url else item["title"]
+            utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
+            link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
             items_html.append(f'<li style="padding:4px 0"><span title="Newly listed on the nursery website" style="cursor:help">🆕</span> {link}{price}</li>')
         extra = len(changes["new_products"]) - 10
         if extra > 0:
@@ -468,7 +471,7 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
 <meta property="og:description" content="Daily price and stock changes across Australian fruit nurseries.">
 <meta property="og:type" content="article">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
 <style>
   body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
   a {{ color: #065f46; }}

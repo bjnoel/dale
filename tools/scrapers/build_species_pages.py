@@ -197,7 +197,8 @@ def build_species_page(species: dict, products: list[dict]) -> str:
         )
         ships_wa = "WA" in SHIPPING_MAP.get(p["nursery_key"], [])
         wa_badge = '<span class="text-xs px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded">Ships WA</span>' if ships_wa else ""
-        link = f'<a href="{p["url"]}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>' if p["url"] else p["title"]
+        utm_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=referral" if p["url"] else ""
+        link = f'<a href="{utm_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>' if p["url"] else p["title"]
         product_rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50">
         <td class="py-2 pr-3 text-sm">{link}</td>
@@ -222,7 +223,7 @@ def build_species_page(species: dict, products: list[dict]) -> str:
 <meta property="og:title" content="{name} Trees for Sale in Australia">
 <meta property="og:description" content="{in_stock_count} {name} varieties in stock across {nursery_count} nurseries. From {price_range}.">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
 <style>body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}</style>
 </head>
 <body class="bg-white text-gray-900">
@@ -346,7 +347,7 @@ def build_species_index(species_data: list[dict]) -> str:
 <title>Buy Fruit Trees Online Australia — treestock.com.au</title>
 <meta name="description" content="Find fruit trees for sale across Australian nurseries. Track prices, availability, and shipping for 50+ species including mango, avocado, fig, lychee and more.">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
 <style>body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}</style>
 </head>
 <body class="bg-white text-gray-900">

@@ -102,7 +102,7 @@ def build_html(history: list[dict], wa_only: bool = False) -> str:
 <title>Price &amp; Stock History{title_suffix} — treestock.com.au</title>
 <meta name="description" content="Daily price changes and stock updates across Australian fruit nurseries.">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
 <style>
   body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
   .change-card {{ border-left: 3px solid #d1d5db; }}
@@ -183,7 +183,8 @@ function formatPrice(p) {{
 function renderItem(item, category) {{
   const title = item.title || '';
   const url = item.url || '';
-  const link = url ? `<a href="${{url}}" target="_blank" class="underline">${{title}}</a>` : title;
+  const utmUrl = url ? url + (url.includes('?') ? '&' : '?') + 'utm_source=treestock&utm_medium=referral' : '';
+  const link = url ? `<a href="${{utmUrl}}" target="_blank" class="underline">${{title}}</a>` : title;
 
   switch (category) {{
     case 'back_in_stock':

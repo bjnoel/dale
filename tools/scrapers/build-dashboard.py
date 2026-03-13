@@ -441,7 +441,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 <meta name="twitter:description" content="Track fruit tree stock across 9 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
 <meta name="twitter:image" content="https://treestock.com.au/og-image.png">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
 <style>
   body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
   .stock-badge {{ font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }}
@@ -735,7 +735,8 @@ function render() {{
     if (p.ch === 'down' && p.pp) priceInfo = `<span class="price-down">${{price}}</span> <span class="text-xs text-gray-400 line-through">${{('$' + p.pp.toFixed(2))}}</span>`;
     else if (p.ch === 'up' && p.pp) priceInfo = `<span class="price-up">${{price}}</span> <span class="text-xs text-gray-400">was ${{('$' + p.pp.toFixed(2))}}</span>`;
 
-    return `<a href="${{p.u}}" target="_blank" rel="noopener" class="product-row flex items-center gap-3 py-3 px-2 block">
+    const utm = p.u ? (p.u.includes('?') ? '&' : '?') + 'utm_source=treestock&utm_medium=referral' : '';
+    return `<a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row flex items-center gap-3 py-3 px-2 block">
       <div class="flex-1 min-w-0">
         <div class="font-medium text-sm">${{p.t}}${{latinName}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
