@@ -113,7 +113,12 @@ FRUIT_FILTERS = {
         "mode": "all",
     },
     "daleys": {
-        "mode": "all",
+        "mode": "categories",
+        "include_prefixes": [
+            "Fruit and Nut Trees", "Fruit Trees/",
+            "Bush Food Plants",
+            "Herbs, Spices & Perennial Vegetables",
+        ],
     },
     "primal-fruits": {
         "mode": "all",
@@ -147,6 +152,11 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
                 if tag.startswith(inc):
                     return True
         return False
+
+    if filt.get("mode") == "categories":
+        cat = product.get("product_type", product.get("category", ""))
+        include_prefixes = filt.get("include_prefixes", [])
+        return any(cat.startswith(prefix) for prefix in include_prefixes)
 
     return True
 
@@ -248,6 +258,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "shipping", "postage", "freight", "delivery charge",
                 "combo pack", "starter kit",
                 "sharp shooter", "searles liquid",
+                "irrigation", "tree sealant", "end stop terminator",
             ]
             if any(kw in title_lower for kw in non_plant_keywords):
                 continue
