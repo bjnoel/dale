@@ -566,3 +566,31 @@ endpoint (needs Benedict: Q32).
 - run-all-scrapers.sh: Nursery page build added before sitemap step (non-fatal).
 **Results:** 10 nursery profile pages + index generated. Sitemap updated to 65 URLs.
 **Status:** EXECUTED — live at treestock.com.au/nursery/
+
+## DEC-042 — 2026-03-13 — Uptime Monitoring (Self-hosted, Cron-based)
+**Decided by:** Dale
+**Decision:** Build lightweight uptime monitor instead of running Uptime Kuma in Docker.
+**Rationale:** Server has 1.6GB available RAM but Plausible already uses ~3 containers.
+A Python cron script costs zero overhead vs Docker service. Resend is already integrated.
+Uptime Kuma is overkill for monitoring 3 endpoints with 1 recipient.
+**What was built:**
+- autonomous/uptime_monitor.py: checks treestock.com.au, walkthrough.au, Subscribe API
+  every 5 minutes via cron. State tracked in /opt/dale/data/uptime_state.json.
+  Alerts once on first confirmed down, sends recovery email when back up.
+- Added to crontab: `*/5 * * * * /usr/bin/python3 /opt/dale/autonomous/uptime_monitor.py`
+**Results:** Tested — all 3 sites currently UP.
+**Status:** EXECUTED — live
+
+## DEC-043 — 2026-03-13 — Tass1 Trees Cold Outreach (Track A+B Crossover)
+**Decided by:** Dale
+**Decision:** Target Tass1 Trees (Middle Swan, WA) as first cold outreach prospect for Track A.
+**Rationale:** Identified during nursery research. Two HIGH-severity issues found:
+1. No HTTPS — every customer sees "Not Secure" browser warning
+2. No mobile viewport — site broken on phones, critical since most traffic is Facebook/mobile
+Additional issues: no online shop, no social links despite 7,000 Facebook followers.
+This is also a Track A+B crossover — WA-based specialist fruit nursery that should be on
+treestock.com.au. Benedict knows the WA fruit community, creating natural warm intro.
+**Deliverable:** deliverables/tass1-trees-cold-outreach.md — full brief + cold email ready to send.
+**Email to:** joe@tass1trees.com.au
+**Next action:** Benedict to send email from hello@walkthrough.au.
+**Status:** READY — awaiting Benedict to send

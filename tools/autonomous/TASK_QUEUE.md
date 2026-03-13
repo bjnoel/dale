@@ -5,50 +5,63 @@
 
 ---
 
-## Completed This Session (2026-03-13 UTC, session 3 — 14:08 UTC)
+## Completed This Session (2026-03-13 UTC, session 4 — 18:00 UTC)
 
-- [x] Notion task: Vergeside bjnoel.com footer link — DONE in local clone of bjnoel/vergeside-htmx.
-      All 8 HTML pages updated. Can't push (server token lacks write access to vergeside repo).
-      Marked as "Question" in Notion — Benedict needs to push from his machine (see Q33).
-- [x] Nursery affiliate research — DONE (no programs exist): Daleys, Diggers, Fruit Salad Trees
-      all checked. None have affiliate/referral programs. Not a viable revenue path currently.
-- [x] Nursery profile pages — DONE (DEC-041): 10 nursery pages + index at /nursery/. build_nursery_pages.py
-      written, added to cron pipeline. Sitemap updated to 65 URLs. Dashboard has ?nursery= URL param
-      support + "Nurseries" footer link.
+- [x] Notion task: Vergeside bjnoel.com footer link — re-confirmed status in Notion as "Question".
+      Work was done in session 3 (commit b347873). Patch at deliverables/vergeside-bjnoel-footer.patch.
+      Benedict still needs to push from his machine (Q33).
+- [x] Alert signup growth tracking — 3 subscribers, 0 watch signups. Expected: subscribe-server
+      hasn't been restarted (Q32 still pending). Watch endpoint deployed but not running yet.
+- [x] Uptime monitoring — built uptime_monitor.py. Checks treestock.com.au + walkthrough.au + Subscribe API
+      every 5 minutes via cron. Sends email via Resend on down/recovery. All 3 endpoints currently UP.
+- [x] Cold outreach Track A — analysed Tass1 Trees (Middle Swan, Perth specialist fruit nursery).
+      Found: no HTTPS (browsers show "Not Secure"), no mobile support, no online shop, no social links.
+      Full brief + cold email draft at deliverables/tass1-trees-cold-outreach.md.
+      This is also a Track A+B crossover — potential treestock.com.au nursery addition.
 
 ---
 
 ## Tomorrow's Tasks (2026-03-14 UTC) — In Priority Order
 
-### 1. Track alert signup growth
+### 1. Add Tass1 Trees to treestock.com.au
 
-Now that the notify-me feature is live (after Benedict restarts the service), monitor:
-- How many species alert signups arrive in the next 24-48 hours
-- Which species are most watched (sapodilla, jaboticaba, annonas expected)
-- Log first watch signup in decision log as a milestone
+Tass1 Trees is a WA-based specialist fruit nursery identified during cold outreach research.
+They don't have an online shop — their products page is a static list linking to PDF/list files.
+Research their website structure and build a scraper if possible.
+- Check http://tass1trees.com.au/fruitingplants.htm for product list format
+- If scrapeable: build scraper, add to pipeline
+- If not scrapeable: add to "nurseries researched but not trackable" list with notes
+- Either way: note in business-state.json + log decision
 
-### 2. Uptime monitoring setup
+### 2. Benedict action: Send Tass1 Trees cold email
 
-Research free self-hosted uptime monitoring options for Hetzner:
-- Option A: Uptime Kuma (self-hosted, Docker) — can run on Hetzner, alerts via email
-- Option B: UptimeRobot free tier — Benedict needs to sign up
-- Preference: self-hosted on Hetzner if Docker is available (dale is in docker group)
-- Set up whichever is easier; alert on treestock.com.au + walkthrough.au
+The email is ready at deliverables/tass1-trees-cold-outreach.md.
+Benedict should send from hello@walkthrough.au to joe@tass1trees.com.au.
+Subject: "Two things on your website that are turning customers away"
+This is the highest-priority Track A revenue action right now.
+*(Note for Benedict: add as Notion task if you want Dale to track it)*
 
-### 3. Cold outreach Track A
+### 3. Subscribe-server restart (Q32 — needs Benedict)
 
-Pick a Perth business, run analyse-business.py, draft a short cold email:
-- Target: retail or professional services with weak digital presence
-- Provide the analysis and email draft ready for Benedict to send
-- This is the next step toward Track A revenue
+The watch/notify-me endpoint is deployed but the service hasn't been restarted.
+Benedict to run: `sudo systemctl restart subscribe-server`
+Watch signups will start accumulating once restarted.
+
+### 4. Weekly data backup setup
+
+Set up a simple weekly tar + local archive of /opt/dale/data/:
+- cron: `0 2 * * 0 tar -czf /opt/dale/backups/data-$(date +\%Y-\%W).tar.gz /opt/dale/data/`
+- Keep last 4 weeks
+- No external dependency needed — pure local backup
+- Future: add rsync to Benedict's machine or S3
 
 ---
 
 ## Backlog — Future Sessions
 
 ### Ops & Infrastructure
-- [ ] Set up weekly data backup: tar /opt/dale/data/ and rsync offsite (free)
-- [ ] Add uptime monitoring for treestock.com.au (free tier: UptimeRobot or similar) ← see task 4 above
+- [ ] Set up weekly data backup: tar /opt/dale/data/ and rsync offsite (free) ← task 4 above
+- [x] Add uptime monitoring — DONE 2026-03-13: uptime_monitor.py, cron every 5 min
 
 ### SEO & Content
 - [x] Nursery profile pages — DONE 2026-03-13 (DEC-041)
@@ -59,9 +72,10 @@ Pick a Perth business, run analyse-business.py, draft a short cold email:
 
 ### Revenue Experiments
 - [x] Nursery affiliate programs — DONE 2026-03-13: None of Daleys/Diggers/Fruit Salad Trees have programs
-- [ ] Cold outreach audit: pick a Perth business, run analyse-business.py, draft email
+- [x] Cold outreach audit — DONE 2026-03-13: Tass1 Trees analysis + email ready
+- [ ] Benedict to send Tass1 Trees cold email ← see task 2 above (Benedict's action)
 - [ ] Approach Daleys for sponsored listing once Primal Fruits result is in
-- [ ] Cross-sell Track A+B: approach WA nurseries without websites (Tass1, Leeming)
+- [ ] Cross-sell Track A+B: approach WA nurseries without websites (Leeming Fruit Trees)
 - [ ] Species alerts paid tier: once 10+ watchers on a rare species, consider $2/month premium
 
 ### Community & Growth
@@ -71,7 +85,7 @@ Pick a Perth business, run analyse-business.py, draft a short cold email:
 ### Data Quality
 - [ ] Verify Ladybird and Fruitopia shipping states (currently estimated)
 - [ ] Analyse scraper data trends (price/stock changes over the week)
-- [ ] Look for other Perth-area nurseries with online stock
+- [ ] Add Tass1 Trees to treestock.com.au if scrapeable ← task 1 above
 
 ---
 
@@ -100,3 +114,5 @@ Pick a Perth business, run analyse-business.py, draft a short cold email:
 - [x] 2026-03-13: Weekly FB post template — deliverables/fb-weekly-template.md
 - [x] 2026-03-13: Nursery profile pages (10 pages + index, DEC-041) — /nursery/ live
 - [x] 2026-03-13: Sitemap updated to 65 URLs (was 54, +11 nursery pages)
+- [x] 2026-03-13: Uptime monitor (uptime_monitor.py) — cron every 5 min, all sites UP
+- [x] 2026-03-13: Tass1 Trees cold outreach brief + email (deliverables/tass1-trees-cold-outreach.md)

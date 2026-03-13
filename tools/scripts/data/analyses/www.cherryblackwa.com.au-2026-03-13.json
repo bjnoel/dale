@@ -1,0 +1,58 @@
+{
+  "business_name": "Cherry Black Accountants",
+  "url": "https://www.cherryblackwa.com.au",
+  "domain": "www.cherryblackwa.com.au",
+  "analysis_date": "2026-03-13",
+  "website": {
+    "status_code": 200,
+    "reachable": true,
+    "has_title": true,
+    "title": "Small Business Tax Accountants Perth - Cherry Black",
+    "title_length": 51,
+    "has_meta_description": true,
+    "meta_description_length": 152,
+    "has_viewport": true,
+    "uses_https": true,
+    "platforms_detected": [
+      "Squarespace"
+    ],
+    "social_links": {
+      "facebook": true,
+      "instagram": true,
+      "twitter": false,
+      "linkedin": true,
+      "tiktok": false
+    },
+    "has_schema": true,
+    "total_images": 11,
+    "images_missing_alt": 6,
+    "page_size_kb": 170.4,
+    "has_robots_txt": true,
+    "has_sitemap": true
+  },
+  "google_business": {
+    "note": "Manual check needed: search Google for 'Cherry Black Accountants Perth' and check the business panel",
+    "checklist": [
+      "Is there a Google Business listing?",
+      "Are hours listed and current?",
+      "Are there recent photos?",
+      "How many reviews? What's the average rating?",
+      "Are reviews being responded to?",
+      "Is the business description filled in?",
+      "Are services/products listed?"
+    ]
+  },
+  "issues": [
+    {
+      "severity": "low",
+      "area": "accessibility",
+      "issue": "6 of 11 images missing alt text (55%)"
+    }
+  ],
+  "opportunities": [
+    {
+      "area": "social",
+      "opportunity": "Missing social links: twitter, tiktok. Active: facebook, instagram, linkedin"
+    }
+  ]
+}
