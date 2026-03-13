@@ -66,7 +66,9 @@
         "Dated digest archives",
         "Species pages (50 pages at /species/ for SEO)",
         "Species browsing grid on dashboard (top 16 species by stock)",
-        "sitemap.xml (54 URLs, daily auto-generated)"
+        "sitemap.xml (54 URLs, daily auto-generated)",
+        "Per-species restock alerts (notify me when species back in stock)",
+        "Weekly FB post template for community engagement"
       ],
       "nursery_details": {
         "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
@@ -78,7 +80,7 @@
         "fruit_salad_trees": {"products": 88, "in_stock": 83, "platform": "Shopify", "ships_to_wa": true, "location": "NSW", "note": "Ships to WA 1st Tuesday/month"},
         "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"}
       },
-      "next_action": "FB post drove 268 visitors (day 1), 2 subscribers. Submit sitemap to Google Search Console (needs Benedict). Next: stock alert signups (monetisable). Primal Fruits sponsorship: waiting on Cyrus reply (Q24)."
+      "next_action": "Day 2: 94 visitors, still Facebook-driven. Species restock alerts live (notify-me forms on all species pages). Service restart needed for watch endpoint (Q32). Next: grow alert signups as path to paid tier."
     }
   },
   "infrastructure": {

@@ -525,3 +525,28 @@ Sitemap enables Google to index all 50+ species pages — currently invisible to
 **FB launch results (day 1):** 268 visitors, 211 from Facebook, 2 subscribers (1 real: hellojojo@myyahoo.com).
 87% bounce rate is high but expected for a quick-check tool. Avg 60s on site = people did engage.
 **Status:** EXECUTED — sitemap and dashboard live
+
+## DEC-040 — 2026-03-13 — Species Restock Alerts ("Notify Me")
+**Decided by:** Dale
+**Decision:** Build per-species restock alert system. Users enter email on any species page
+and get emailed when that species comes back in stock across any monitored nursery.
+**Rationale:** This is the clearest monetisation path visible from current data. The email
+subscription list is growing (2 real subscribers after day 1 of FB launch). A species alert
+feature gives people a reason to subscribe who wouldn't subscribe for a daily digest. It's
+also directly useful — if you're hunting sapodilla, you want to know the moment one appears.
+Future: premium tier for rare species (sapodilla, annonas) once we have enough alert signups
+to prove demand.
+**What was built:**
+- subscribe_server.py: New `action=watch` handler in POST /subscribe. Accepts
+  {email, action: "watch", species: "slug"}. Creates subscriber if new, adds species to
+  watch_species list. Returns 201 "Alert set!" or 200 "Already watching".
+- build_species_pages.py: Each species page now has a "Notify me" form. Shows amber
+  warning if in_stock_count == 0 ("out of stock, notify me when back"). Shows green
+  "get restock alerts" form otherwise. Posts to /api/subscribe with action=watch.
+- send_species_alerts.py: New script. Runs after each daily scrape. Compares today's
+  in-stock counts vs yesterday's for each watched species. If a species goes 0→>0,
+  sends targeted email to all watchers. Idempotent (tracks sends in species_alert_sends.json).
+- run-all-scrapers.sh: send_species_alerts.py added as final step (non-fatal).
+**Deployment note:** subscribe_server.py needs a service restart to pick up the watch
+endpoint (needs Benedict: Q32).
+**Status:** EXECUTED — deployed, species pages rebuilt. Service restart pending.

@@ -299,12 +299,44 @@ def build_species_page(species: dict, products: list[dict]) -> str:
     </div>
   </section>
 
-  <!-- CTA -->
-  <div class="p-4 bg-green-50 rounded-lg text-sm">
-    <p class="font-medium text-green-800 mb-1">Track {name} prices automatically</p>
-    <p class="text-gray-600">treestock.com.au monitors {nursery_count} Australian nurseries daily and alerts you to price drops and restocks.</p>
-    <a href="/" class="inline-block mt-2 text-green-700 font-medium hover:underline">Browse all species →</a>
+  <!-- Notify Me / CTA -->
+  {'<div class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm mb-6">' if in_stock_count == 0 else '<div class="p-4 bg-green-50 rounded-lg text-sm mb-6">'}
+    {'<p class="font-semibold text-amber-800 mb-1">⚠️ ' + name + ' trees are currently out of stock</p><p class="text-gray-600 mb-3">Enter your email and we\'ll alert you when any ' + name + ' variety comes back in stock across our 8 monitored nurseries.</p>' if in_stock_count == 0 else '<p class="font-medium text-green-800 mb-1">Get restock alerts for ' + name + '</p><p class="text-gray-600 mb-3">We\'ll email you when new ' + name + ' varieties appear or prices drop at any of the 8 nurseries we monitor.</p>'}
+    <form id="watchForm" class="flex flex-col sm:flex-row gap-2">
+      <input type="email" id="watchEmail" placeholder="your@email.com" required
+        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
+      <button type="submit"
+        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
+        Notify me
+      </button>
+    </form>
+    <div id="watchMessage" class="mt-2 text-sm hidden"></div>
   </div>
+
+  <script>
+  document.getElementById('watchForm').addEventListener('submit', function(e) {{
+    e.preventDefault();
+    var email = document.getElementById('watchEmail').value.trim();
+    var msg = document.getElementById('watchMessage');
+    fetch('/api/subscribe', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{email: email, action: 'watch', species: '{slug}'}})
+    }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      msg.textContent = d.message === 'Already watching'
+        ? 'You\'re already set up for {name} alerts.'
+        : '✓ Done! We\'ll email you when {name} trees come back in stock.';
+      msg.className = 'mt-2 text-sm text-green-700';
+      document.getElementById('watchForm').style.display = 'none';
+    }})
+    .catch(function() {{
+      msg.textContent = 'Something went wrong — please try again.';
+      msg.className = 'mt-2 text-sm text-red-600';
+    }});
+  }});
+  </script>
 
 </main>
 

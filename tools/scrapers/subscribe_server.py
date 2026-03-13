@@ -134,6 +134,32 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 self.send_html(200, "<h2>Not found</h2><p>That email wasn't in our subscriber list.</p>")
             return
 
+        # Handle watch (species restock alert)
+        if action == "watch":
+            species = data.get("species", "").strip().lower() if self.headers.get("Content-Type", "").startswith("application/json") else params.get("species", [""])[0].strip().lower()
+            if not species:
+                self.send_json(400, {"error": "Species slug required"})
+                return
+            subscribers = load_subscribers()
+            existing = next((s for s in subscribers if s["email"] == email), None)
+            if existing:
+                watch_list = existing.get("watch_species", [])
+                if species in watch_list:
+                    self.send_json(200, {"message": "Already watching", "email": email, "species": species})
+                    return
+                existing.setdefault("watch_species", []).append(species)
+            else:
+                subscribers.append({
+                    "email": email,
+                    "subscribed_at": datetime.now().isoformat(),
+                    "wa_only": True,
+                    "watch_species": [species],
+                })
+            save_subscribers(subscribers)
+            print(f"Watch added: {email} → {species}")
+            self.send_json(201, {"message": "Alert set!", "email": email, "species": species})
+            return
+
         # Handle subscribe (default)
         subscribers = load_subscribers()
         existing = [s for s in subscribers if s["email"] == email]

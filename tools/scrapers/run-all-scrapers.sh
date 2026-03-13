@@ -91,3 +91,8 @@ echo "$LOG_PREFIX Sitemap complete."
 echo "$LOG_PREFIX Sending digest to email subscribers..."
 python3 "$SCRIPT_DIR/send_digest.py" 2>&1 || echo "$LOG_PREFIX WARNING: Digest email send failed (non-fatal)"
 echo "$LOG_PREFIX Subscriber send complete."
+
+# Send species restock alerts to watchers
+echo "$LOG_PREFIX Sending species restock alerts..."
+python3 "$SCRIPT_DIR/send_species_alerts.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Species alert send failed (non-fatal)"
+echo "$LOG_PREFIX Species alert send complete."

@@ -5,55 +5,55 @@
 
 ---
 
-## Completed This Session (2026-03-13 UTC)
+## Completed This Session (2026-03-13 UTC, session 2 — 13:12 UTC)
 
-- [x] Monitor FB launch — DONE: 268 visitors (211 FB), 2 subscribers, 87% bounce, 60s avg
-- [x] Species grid on dashboard — DONE (DEC-039): top 16 species shown as clickable cards
-- [x] Sitemap.xml — DONE (DEC-039): 54 URLs, daily auto-generated, Q31 for Benedict re: GSC
-- [x] Species taxonomy matching — Already working at 59% (2943/4968 products), was a stale task
-- [x] Subscriber analysis — 1 real subscriber (hellojojo@myyahoo.com, WA), 0.5% FB→sub conversion
+- [x] Species restock alerts ("Notify Me") — DONE (DEC-040): notify-me forms on all species pages,
+      subscribe_server.py extended with action=watch, send_species_alerts.py written, added to cron pipeline.
+      Service restart needed for watch endpoint to activate (Q32 for Benedict).
+- [x] Email signup copy — Already correct ("Daily stock alerts — price drops & restocks, free."), no change needed
+- [x] Day 2 traffic monitoring — 94 visitors today (still FB-driven), 32 direct (bookmarks = high intent!)
+- [x] Weekly FB post template — DONE: deliverables/fb-weekly-template.md (3 templates: What's New, Price Drop, Species Spotlight)
 
 ---
 
 ## Tomorrow's Tasks (2026-03-14 UTC) — In Priority Order
 
-### 1. Revenue Experiment: "Notify Me" Stock Alerts
+### 1. Track alert signup growth
 
-**Context:** The email signup currently says "Get notified when daily email alerts launch" but
-daily emails are already live. The form text is misleading — fix it. More importantly, build a
-per-species "notify me when back in stock" feature. This is the clearest monetisation path:
+Now that the notify-me feature is live (after Benedict restarts the service), monitor:
+- How many species alert signups arrive in the next 24-48 hours
+- Which species are most watched (sapodilla, jaboticaba, annonas expected)
+- Log first watch signup in decision log as a milestone
 
-- Change signup copy to: "Get daily stock alerts — free for Australian fruit collectors"
-- Build per-species alert signups: user enters email + selects species, gets emailed when
-  any variety of that species comes back in stock
-- This can be a **paid feature** for rare/high-demand species (e.g., Sapodilla, Annonas)
-- Architecture: extend subscribers.json to include `watch_species: ["sapodilla", "jackfruit"]`
-  - Or create separate watch_list.json
-  - send_digest.py already has email infrastructure — extend it to send species alerts
+### 2. Nursery affiliate research
 
-### 2. Fix Email Signup Copy on Dashboard
+Check if these nurseries have affiliate programs:
+- Daleys Fruit Trees (daleysfruit.com.au) — biggest national nursery in our data
+- The Diggers Club (diggers.com.au) — large subscriber base, may have affiliate
+- Fruit Salad Trees (fruitsaladtrees.com.au)
 
-The current copy "Get notified when daily email alerts launch" is wrong — emails are already live.
-Fix in build-dashboard.py:
-- Change to: "Get daily stock alerts — free"
-- Subtext: "Price drops and back-in-stock alerts for Australian fruit tree collectors."
-- Button: "Subscribe free"
+Research: look for /affiliates, /referral, /partners pages on each site.
+If Daleys has one: draft a short pitch for Benedict to submit.
+This is potentially $10-30/month in passive commission with zero ongoing work.
 
-### 3. Monitor Day 2 Traffic
+### 3. Nursery profile pages
 
-Check Plausible for day 2 numbers:
-- Did people return directly (direct traffic increase = high intent users bookmarking)
-- Any more subscribers?
-- Did the species grid increase engagement with species pages?
-- If subscriber count reaches 5: consider personalising the digest (add "top picks for WA")
+Build /nursery/[slug].html pages for each nursery (SEO + context):
+- Nursery name, location, what they specialise in
+- List of all species they carry
+- Shipping states
+- Link to their products on dashboard (filtered view)
+- Target keywords: "daleys fruit trees review", "ross creek tropicals stock"
 
-### 4. Weekly FB Post Template
+These are lower-traffic but high-intent pages. 8 nurseries × decent search volume = worth building.
 
-Benedict should post a weekly "what's new" update to the FB groups to keep the community engaged.
-Draft a template:
-- Format: brief (2-3 lines), link to digest.html, highlight 2-3 specific items
-- Keep it non-spammy (weekly max, not daily)
-- Save to deliverables/fb-weekly-template.md
+### 4. Uptime monitoring setup
+
+Add UptimeRobot free tier monitoring for treestock.com.au:
+- Benedict needs to create account at uptimerobot.com
+- Add http(s) monitor for https://treestock.com.au
+- Set alert email to hello@walkthrough.au or Benedict's personal email
+- Or: research if there's a free self-hosted option on the Hetzner server
 
 ---
 
@@ -61,26 +61,23 @@ Draft a template:
 
 ### Ops & Infrastructure
 - [ ] Set up weekly data backup: tar /opt/dale/data/ and rsync offsite (free)
-- [ ] Add uptime monitoring for treestock.com.au (free tier: UptimeRobot or similar)
-- [ ] Hetzner backups: run enable-hetzner-backups.sh once Q27 is answered
+- [ ] Add uptime monitoring for treestock.com.au (free tier: UptimeRobot or similar) ← see task 4 above
 
 ### SEO & Content
-- [ ] Nursery profile pages (/nursery/daleys, /nursery/ross-creek, etc.)
+- [ ] Nursery profile pages (/nursery/daleys, /nursery/ross-creek, etc.) ← see task 3 above
 - [ ] Variety-level pages (deeper than species — individual cultivars)
 - [ ] "Compare prices" pages (e.g., /compare/mango-prices)
 - [ ] Location pages (/wa-fruit-trees, /tas-fruit-trees) for state-based SEO
 - [ ] Submit to Australian business directories (Hotfrog, StartLocal, True Local)
 
 ### Revenue Experiments
-- [ ] Species alert signups — "notify me when [species] back in stock" (premium tier)
-- [ ] Nursery affiliate outreach drafts (check if Daleys, Ross Creek etc have programs)
+- [ ] Nursery affiliate programs — check Daleys, Diggers, Fruit Salad Trees ← see task 2 above
 - [ ] Cold outreach audit: pick a Perth business, run analyse-business.py, draft email
 - [ ] Approach Daleys for sponsored listing once Primal Fruits result is in
 - [ ] Cross-sell Track A+B: approach WA nurseries without websites (Tass1, Leeming)
+- [ ] Species alerts paid tier: once 10+ watchers on a rare species, consider $2/month premium
 
 ### Community & Growth
-- [ ] Weekly "what's new" FB post template — TOP PRIORITY, see task 4 above
-- [ ] Create a "Fruit Tree Finder" search tool (postcode + variety → results)
 - [ ] Identify Reddit threads to answer with treestock data (r/AustralianPlants etc)
 - [ ] Reach out to rare fruit societies about listing as a resource
 
@@ -112,3 +109,5 @@ Draft a template:
 - [x] 2026-03-13: Species grid on dashboard (top 16 species, live stock counts)
 - [x] 2026-03-13: Sitemap.xml generated daily (54 URLs, needs GSC submission — Q31)
 - [x] 2026-03-13: FB launch analysis: 268 visitors, 211 from Facebook, 2 subscribers day 1
+- [x] 2026-03-13: Per-species restock alerts (notify-me forms + alert email pipeline) — DEC-040
+- [x] 2026-03-13: Weekly FB post template — deliverables/fb-weekly-template.md

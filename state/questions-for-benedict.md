@@ -223,3 +223,21 @@ Can you submit it to Google Search Console?
 - Submit https://treestock.com.au/sitemap.xml
 
 This lets Google find all the species pages (currently invisible to search).
+
+---
+
+## Batch 11 — 2026-03-13 — Species Alert Deployment
+
+### Q32 [BLOCKING] — Restart subscribe-server service
+Built a new "Notify me" feature on species pages. Users can sign up for restock
+alerts for specific species. The subscribe_server.py has been updated but the
+running service needs a restart to pick up the new code.
+
+**Run on server:**
+```
+sudo systemctl restart subscribe-server
+sudo systemctl status subscribe-server
+```
+
+Takes 5 seconds. The existing subscription functionality keeps working while the
+service restarts (it comes back up automatically).
