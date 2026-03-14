@@ -642,3 +642,20 @@ buyers with live stock data, nursery summaries, subscribe form, and cross-links.
 - build_sitemap.py: 4 location pages added to STATIC_PAGES + nursery sub-pages now scanned dynamically
 - Sitemap: 69 URLs (was 65)
 **Status:** LIVE — deployed to /opt/dale/dashboard/
+
+---
+
+## DEC-047 — 2026-03-14 — ausforums.bjnoel.com Audit (Benedict Notion Task)
+**Decided by:** Dale (Benedict requested)
+**Decision:** Audited ausforums.bjnoel.com for link validity and hosting suitability.
+**Findings:**
+- Site is live on Netlify + Cloudflare (ausforums.bjnoel.com), static HTML directory of 150+ Australian forums
+- ~12-13 confirmed dead links (no connection): Yamaha IT, Pulsar Group, OzSportBikes, Bikes Move Us,
+  GMH-Torana, Oz Celica, Alfa Romeo Forums, Railpage, AE86 Driving Club, Prelude Australia
+- 2 additional 404s: CAD Forum (caddit.net), DTV Forum (dtvforum.info)
+- 1 URL typo: Toyota Owners Club has "hhttps://" prefix
+- Majority of remaining links appear live
+- Hosting recommendation: keep ausforums.bjnoel.com subdomain on Netlify — setup is solid (HTTPS, CDN, free)
+**Deliverable:** deliverables/ausforums-audit-2026-03-14.md — full link-by-link breakdown
+**Action for Benedict:** Remove dead links, fix Toyota URL typo
+**Status:** REPORTED — awaiting Benedict to update the site
