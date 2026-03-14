@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "last_updated": "2026-03-13",
-  "session_count": 15,
+  "last_updated": "2026-03-14",
+  "session_count": 16,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -30,7 +30,7 @@
         "wembley_cycles": {"status": "brief-ready", "hook": "No online service booking"},
         "pbr_plumbing": {"status": "brief-ready", "hook": "Strata manager portal"},
         "gather_ceramics": {"status": "brief-ready", "hook": "No Google Business Profile"},
-        "tass1_trees": {"status": "identified", "hook": "No online shop, basic HTML site, Track A+B crossover"},
+        "tass1_trees": {"status": "brief-ready", "hook": "No HTTPS, no mobile, no online shop — cold email ready at deliverables/tass1-trees-cold-outreach.md"},
         "leeming_fruit_trees": {"status": "identified", "hook": "No website at all, Track A+B crossover"}
       },
       "next_action": "Benedict to approach prospects. Tass1 Trees and Leeming Fruit Trees are Track A+B crossover opportunities."
@@ -68,7 +68,9 @@
         "Species browsing grid on dashboard (top 16 species by stock)",
         "sitemap.xml (54 URLs, daily auto-generated)",
         "Per-species restock alerts (notify me when species back in stock)",
-        "Weekly FB post template for community engagement"
+        "Weekly FB post template for community engagement",
+        "Location pages (WA/QLD/NSW/VIC — /buy-fruit-trees-[state].html)",
+        "Weekly data backup (Sunday 02:00 UTC, 4-week rolling)"
       ],
       "nursery_details": {
         "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
@@ -80,7 +82,7 @@
         "fruit_salad_trees": {"products": 88, "in_stock": 83, "platform": "Shopify", "ships_to_wa": true, "location": "NSW", "note": "Ships to WA 1st Tuesday/month"},
         "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"}
       },
-      "next_action": "Day 2: 94 visitors, still Facebook-driven. Species restock alerts live (notify-me forms on all species pages). Service restart needed for watch endpoint (Q32). Next: grow alert signups as path to paid tier."
+      "next_action": "Day 9: 435 visitors (7-day). Location pages live for WA/QLD/NSW/VIC. Species restock alerts deployed but service restart pending (Q32). Sitemap at 69 URLs submitted to GSC. Next: grow Google traffic via location + species SEO."
     }
   },
   "infrastructure": {

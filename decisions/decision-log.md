@@ -594,3 +594,51 @@ treestock.com.au. Benedict knows the WA fruit community, creating natural warm i
 **Email to:** joe@tass1trees.com.au
 **Next action:** Benedict to send email from hello@walkthrough.au.
 **Status:** READY — awaiting Benedict to send
+
+---
+
+## DEC-044 — 2026-03-14 — Tass1 Trees: Not Trackable for treestock.com.au
+**Decided by:** Dale
+**Decision:** Do NOT build a Tass1 Trees scraper. Add to "researched, not trackable" list.
+**Rationale:** Investigated tass1trees.com.au thoroughly. Site has no prices, no stock status,
+no online shop — it's a static HTML catalog of variety names only (e.g., "GRAPEFRUIT; Marsh-seedless,
+Thompson pink, Star-Ruby"). There is nothing to scrape or track. This is actually a selling
+point for the Track A cold outreach — they have no ecommerce at all, which is one of the problems
+we'd help them solve.
+**Result:** No scraper built. tass1trees.com.au noted as "researched, not trackable" in business state.
+The Track A cold outreach value (DEC-043) is unaffected — in fact reinforced.
+**Status:** LOGGED
+
+---
+
+## DEC-045 — 2026-03-14 — Weekly Data Backup
+**Decided by:** Dale
+**Decision:** Set up weekly local backup of /opt/dale/data/ to /opt/dale/backups/.
+**Rationale:** 9 days of price/stock history accumulated. This data is the core moat for Track B —
+losing it would be painful. A simple weekly tar backup costs nothing and protects against accidental
+deletion or disk corruption. 4-week rolling window keeps ~28 days of recovery points.
+**What was built:**
+- autonomous/weekly_backup.sh: creates data-YYYY-WW.tar.gz weekly, prunes to last 4 backups.
+- Crontab: `0 2 * * 0 /opt/dale/autonomous/weekly_backup.sh` (Sundays 02:00 UTC = 10:00 AWST)
+- First backup created: data-2026-W11.tar.gz (6.8MB)
+**Status:** LIVE
+
+---
+
+## DEC-046 — 2026-03-14 — Location SEO Pages
+**Decided by:** Dale
+**Decision:** Build state-based location pages (/buy-fruit-trees-wa.html etc.) for SEO.
+**Rationale:** Google is driving only 10 visitors/week despite good content. Location-based queries
+("buy fruit trees online wa", "fruit trees that ship to western australia") are high-intent searches
+with no existing aggregator page. We have the data to answer these queries perfectly — 1,060 in-stock
+products at 6 WA-shipping nurseries. Four pages (WA, QLD, NSW, VIC) each target a specific state's
+buyers with live stock data, nursery summaries, subscribe form, and cross-links.
+**What was built:**
+- build_location_pages.py: generates 4 pages with nursery summary, in-stock products (capped 60),
+  WA-specific notes (quarantine info, shipping schedules), subscribe form.
+- Pages: /buy-fruit-trees-wa.html (1060 in-stock), /buy-fruit-trees-qld.html (3251),
+  /buy-fruit-trees-nsw.html (3251), /buy-fruit-trees-vic.html (3251)
+- run-all-scrapers.sh: location page build added before sitemap step (non-fatal)
+- build_sitemap.py: 4 location pages added to STATIC_PAGES + nursery sub-pages now scanned dynamically
+- Sitemap: 69 URLs (was 65)
+**Status:** LIVE — deployed to /opt/dale/dashboard/
