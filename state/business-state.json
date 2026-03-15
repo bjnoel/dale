@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "last_updated": "2026-03-15",
-  "session_count": 17,
+  "session_count": 18,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -73,7 +73,9 @@
         "Weekly FB post template for community engagement",
         "Location pages (WA/QLD/NSW/VIC — /buy-fruit-trees-[state].html)",
         "Weekly data backup (Sunday 02:00 UTC, 4-week rolling)",
-        "Compare price pages (50 pages at /compare/ — cross-nursery price comparison for SEO)"
+        "Compare price pages (50 pages at /compare/ — cross-nursery price comparison for SEO)",
+        "Rare & Exotic Finds page (/rare.html — 22 rare species, shareable community content)",
+        "Variety/cultivar pages (2,308 pages at /variety/ — individual named cultivar pages for SEO)"
       ],
       "nursery_details": {
         "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
@@ -88,7 +90,7 @@
         "all_season_plants_wa": {"products": 20, "in_stock": 20, "platform": "Shopify", "ships_to_wa": true, "location": "WA", "note": "WA pickup + local delivery, rare tropicals (mangosteen, wampee, jaboticaba)"},
         "ausnurseries": {"products": 409, "in_stock": 109, "platform": "Shopify", "ships_to_wa": false, "location": "NSW", "note": "does not ship to WA/NT/TAS"}
       },
-      "next_action": "Day 10: 466 visitors (7-day). 11 nurseries, 10,426 products, 3,547 in stock. Next: compare-price pages for SEO (species cross-nursery comparisons)."
+      "next_action": "Day 10: 467 visitors (7-day), 3 subscribers. Sitemap: 2,457 URLs. Next: research new nurseries or improve subscriber conversion."
     }
   },
   "infrastructure": {

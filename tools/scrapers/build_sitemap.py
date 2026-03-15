@@ -27,6 +27,7 @@ STATIC_PAGES = [
     ("buy-fruit-trees-vic.html", "daily", "0.7"),
     ("compare/", "weekly", "0.8"),
     ("rare.html", "daily", "0.8"),
+    ("variety/", "weekly", "0.7"),
 ]
 
 
@@ -71,6 +72,20 @@ def build_sitemap(species_dir: Path, output_dir: Path) -> None:
     <lastmod>{today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
+  </url>""")
+
+    # Variety pages (cultivar-level, dynamically scanned)
+    variety_dir = output_dir / "variety"
+    if variety_dir.exists():
+        for html_file in sorted(variety_dir.glob("*.html")):
+            if html_file.name == "index.html":
+                continue  # already in static pages as variety/
+            loc = f"{BASE_URL}/variety/{html_file.name}"
+            urls.append(f"""  <url>
+    <loc>{loc}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
   </url>""")
 
     # Species pages

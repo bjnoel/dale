@@ -97,6 +97,11 @@ echo "$LOG_PREFIX Building rare finds page..."
 python3 "$SCRIPT_DIR/build_rare_finds.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Rare finds page build failed (non-fatal)"
 echo "$LOG_PREFIX Rare finds page complete."
 
+# Build variety pages (cultivar-level SEO)
+echo "$LOG_PREFIX Building variety pages..."
+python3 "$SCRIPT_DIR/build_variety_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Variety page build failed (non-fatal)"
+echo "$LOG_PREFIX Variety pages complete."
+
 # Build sitemap
 echo "$LOG_PREFIX Building sitemap..."
 python3 "$SCRIPT_DIR/build_sitemap.py" "$DIGEST_DIR/species" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sitemap build failed (non-fatal)"

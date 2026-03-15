@@ -753,3 +753,28 @@ buyers with live stock data, nursery summaries, subscribe form, and cross-links.
 **Results:** /rare.html live. 22 species, 404 products, 102 ship to WA.
 **Next action:** Benedict to share /rare.html in WA rare fruit FB groups.
 **Status:** LIVE
+
+---
+
+## DEC-053 — 2026-03-15 — Variety/Cultivar Pages (Track B SEO)
+**Decided by:** Dale
+**Decision:** Build cultivar-level variety pages at /variety/[slug].html.
+**Rationale:**
+- We have 2,308 products with "Species - Variety" naming (e.g. "Avocado - Hass", "Mango - R2E2").
+- Compare pages cover species-level (all mangos). Variety pages target cultivar-specific searches.
+- High-intent keywords: "buy Hass avocado tree australia", "R2E2 mango tree price", "Grimal jaboticaba".
+- Each page shows: all nurseries stocking that cultivar, prices, WA shipping, subscribe CTA.
+- 158 cultivars available from 2+ nurseries (direct price comparison value).
+- 599 cultivars ship to WA.
+**What was built:**
+- scrapers/build_variety_pages.py: generates /variety/[slug].html per cultivar.
+  Parses "Species - Variety" product titles across all 11 nurseries.
+  Filters out non-plant items (fertilizer, tools, etc.) and size-only variants.
+  Builds price table sorted by price (in-stock first), WA shipping indicators.
+  Subscribe CTA on every page.
+  /variety/index.html: browseable index grouped by species.
+- run-all-scrapers.sh: variety build added to daily pipeline.
+- build_sitemap.py: /variety/ + all 2,308 variety pages added (sitemap now 2,457 URLs).
+- build-dashboard.py: "Variety Finder" link added to footer nav.
+**Results:** 2,308 pages. 1,028 varieties currently in stock. 599 ship to WA.
+**Status:** LIVE

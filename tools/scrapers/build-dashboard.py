@@ -617,6 +617,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   <div class="flex justify-center gap-4 mb-3 text-sm">
     <a href="/digest.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Today's Digest</a>
     <a href="/species/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Browse by Species</a>
+    <a href="/variety/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Variety Finder</a>
     <a href="/compare/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Compare Prices</a>
     <a href="/rare.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Rare Finds</a>
     <a href="/history.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Price History</a>
