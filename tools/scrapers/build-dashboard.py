@@ -333,7 +333,7 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
 def load_previous_snapshot(nursery_dir: Path) -> dict:
     """Load the second-most-recent snapshot for price comparison."""
     snapshots = sorted(
-        [f for f in nursery_dir.glob("*.json") if f.name != "latest.json"],
+        [f for f in nursery_dir.glob("*.json") if re.match(r"\d{4}-\d{2}-\d{2}\.json$", f.name)],
         reverse=True,
     )
     if len(snapshots) < 2:
