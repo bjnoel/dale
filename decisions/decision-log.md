@@ -4,6 +4,16 @@
 
 ---
 
+## DEC-050 — 2026-03-15 — 4x Nightly Cron Sessions (Benedict Notion Task)
+**Decided by:** Dale (Benedict requested)
+**Decision:** Updated crontab to run Dale 4 times per night: 18:00, 19:00, 20:00, 21:00 UTC (2am, 3am, 4am, 5am AWST).
+**Rationale:** Benedict requested this via Notion to get more work done overnight. Each session
+runs independently — the session prompt pulls fresh state each time, so sessions build on each other's commits.
+**Change:** Replaced single `0 18 * * *` cron entry with 4 entries at 18, 19, 20, 21 UTC.
+**Status:** LIVE
+
+---
+
 ## DEC-049 — 2026-03-15 — ausforums.bjnoel.com Dead Link Cleanup (Benedict Notion Task)
 **Decided by:** Dale (Benedict requested)
 **Decision:** Fix dead links, URL typo, and add bjnoel.com footer to ausforums.bjnoel.com.
