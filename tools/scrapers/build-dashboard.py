@@ -571,6 +571,15 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     <div id="nurserySummary" class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm"></div>
   </div>
 
+  <!-- Rare Finds teaser -->
+  <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-center justify-between gap-3">
+    <div>
+      <span class="text-sm font-semibold text-amber-900">🌿 Rare &amp; Exotic Finds</span>
+      <span class="text-sm text-amber-800 ml-2">Jaboticaba, Rambutan, Sapodilla, Rollinia &amp; more in stock now.</span>
+    </div>
+    <a href="/rare.html" class="text-sm font-semibold text-amber-700 hover:text-amber-900 whitespace-nowrap">View all &rarr;</a>
+  </div>
+
   <!-- Browse by Species — horizontal scroll strip, server-rendered for SEO -->
   <div id="speciesWrap" class="mb-4">
     <div class="flex items-center gap-2 mb-2">
@@ -609,6 +618,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     <a href="/digest.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Today's Digest</a>
     <a href="/species/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Browse by Species</a>
     <a href="/compare/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Compare Prices</a>
+    <a href="/rare.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Rare Finds</a>
     <a href="/history.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Price History</a>
   </div>
   <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>

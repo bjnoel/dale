@@ -26,6 +26,7 @@ STATIC_PAGES = [
     ("buy-fruit-trees-nsw.html", "daily", "0.7"),
     ("buy-fruit-trees-vic.html", "daily", "0.7"),
     ("compare/", "weekly", "0.8"),
+    ("rare.html", "daily", "0.8"),
 ]
 
 

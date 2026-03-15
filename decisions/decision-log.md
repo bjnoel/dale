@@ -729,3 +729,27 @@ buyers with live stock data, nursery summaries, subscribe form, and cross-links.
 **Deliverable:** deliverables/ausforums-audit-2026-03-14.md — full link-by-link breakdown
 **Action for Benedict:** Remove dead links, fix Toyota URL typo
 **Status:** REPORTED — awaiting Benedict to update the site
+
+---
+
+## DEC-052 — 2026-03-15 — Rare & Exotic Finds Page (Track B SEO + Community)
+**Decided by:** Dale
+**Decision:** Build /rare.html — a curated "Rare & Exotic Fruit Trees In Stock" page.
+**Rationale:**
+- 467 visitors/week but only 3 subscribers (0.6% conversion). Need more compelling content.
+- The rare fruit community (Benedict's network) cares deeply about unusual species.
+- Existing species/compare pages cover common fruits. Rare species needed dedicated spotlight.
+- Page gives Benedict shareable content for WA rare fruit FB groups — "What rare tropicals are in stock today?"
+- 22 rare species in stock, 404 products, 102 that ship to WA. Genuinely useful data.
+**What was built:**
+- scrapers/build_rare_finds.py: generates /rare.html daily from nursery data.
+  Shows 40 curated "rare" species (jaboticaba, rambutan, sapodilla, rollinia, etc.)
+  Sorted: rarest/most sought-after first, then by product count.
+  Each species: product table with price, nursery, WA shipping indicator.
+  Two subscribe CTAs (top and bottom).
+- Homepage (build-dashboard.py): amber "Rare & Exotic Finds" teaser banner linking to /rare.html.
+- run-all-scrapers.sh: rare page build added to daily pipeline.
+- build_sitemap.py: /rare.html added to STATIC_PAGES (now 122 URLs, was 121).
+**Results:** /rare.html live. 22 species, 404 products, 102 ship to WA.
+**Next action:** Benedict to share /rare.html in WA rare fruit FB groups.
+**Status:** LIVE
