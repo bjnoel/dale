@@ -4,6 +4,21 @@
 
 ---
 
+## DEC-049 — 2026-03-15 — ausforums.bjnoel.com Dead Link Cleanup (Benedict Notion Task)
+**Decided by:** Dale (Benedict requested)
+**Decision:** Fix dead links, URL typo, and add bjnoel.com footer to ausforums.bjnoel.com.
+**What was done:**
+- Cloned bjnoel/ausforums repo from GitHub
+- Removed 12 dead/404 links: Alfa Romeo Forums, GMH-Torana, Prelude Australia, Pulsar Group,
+  AE86 Driving Club, Oz Celica, CAD Forum, OzSportBikes, Yamaha IT, Bikes MoveUs, DTV Forum, Railpage
+- Fixed Toyota Owners Club URL typo: `hhttps://` → `https://`
+- Added footer: "A project by Benedict Noel · Contact" linking to bjnoel.com
+- Fixed missing #outdoors option in navbar dropdown
+- Pushed to GitHub — Netlify auto-deploys on push
+**Status:** DEPLOYED — live at ausforums.bjnoel.com
+
+---
+
 ## DEC-048 — 2026-03-15 — Add Fruit Tree Cottage to treestock.com.au (Benedict Notion Task)
 **Decided by:** Dale (Benedict requested via Notion)
 **Decision:** Add Fruit Tree Cottage (www.fruittreecottage.com.au) to the treestock.com.au scraper.
