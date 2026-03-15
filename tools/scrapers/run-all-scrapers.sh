@@ -14,7 +14,7 @@ LOG_PREFIX="[$(date '+%Y-%m-%d %H:%M:%S')]"
 
 echo "$LOG_PREFIX Starting nursery stock scrape..."
 
-# Shopify nurseries (Ross Creek, Ladybird, Fruitopia, Fruit Salad Trees, Diggers, All Season Plants WA)
+# Shopify nurseries (Ross Creek, Ladybird, Fruitopia, Fruit Salad Trees, Diggers, All Season Plants WA, Aus Nurseries, Fruit Tree Cottage)
 echo "$LOG_PREFIX Scraping Shopify nurseries..."
 python3 "$SCRIPT_DIR/shopify_scraper.py" 2>&1
 
@@ -76,6 +76,11 @@ echo "$LOG_PREFIX Building history page..."
 python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1
 python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" --wa-only 2>&1
 echo "$LOG_PREFIX History page complete."
+
+# Build nursery profile pages (SEO)
+echo "$LOG_PREFIX Building nursery pages..."
+python3 "$SCRIPT_DIR/build_nursery_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Nursery page build failed (non-fatal)"
+echo "$LOG_PREFIX Nursery pages complete."
 
 # Build species pages (SEO)
 echo "$LOG_PREFIX Building species pages..."

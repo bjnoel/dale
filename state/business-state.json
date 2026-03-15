@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "last_updated": "2026-03-14",
-  "session_count": 16,
+  "last_updated": "2026-03-15",
+  "session_count": 17,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -42,18 +42,18 @@
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
-      "nurseries_monitored": 8,
-      "nurseries_researched": 15,
+      "nurseries_monitored": 9,
+      "nurseries_researched": 16,
       "first_scrape_date": "2026-03-05",
-      "days_of_data": 5,
-      "products_tracked": 4973,
-      "products_note": "fruit/edible only (filtered from ~18,000 total raw)",
+      "days_of_data": 10,
+      "products_tracked": 5158,
+      "products_note": "fruit/edible only (filtered from ~18,000+ total raw)",
       "species_matched_pct": 68,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
       "subscribers": 2,
       "revenue_total": 0,
       "features": [
-        "Daily scraping of 8 nurseries",
+        "Daily scraping of 9 nurseries",
         "Price/stock change detection",
         "State-based shipping filter (all 8 states)",
         "Species taxonomy (50 species, fruit_species.json)",
@@ -66,7 +66,8 @@
         "Dated digest archives",
         "Species pages (50 pages at /species/ for SEO)",
         "Species browsing grid on dashboard (top 16 species by stock)",
-        "sitemap.xml (54 URLs, daily auto-generated)",
+        "sitemap.xml (70 URLs, daily auto-generated)",
+        "Nursery profile pages (11 pages at /nursery/ for SEO)",
         "Per-species restock alerts (notify me when species back in stock)",
         "Weekly FB post template for community engagement",
         "Location pages (WA/QLD/NSW/VIC — /buy-fruit-trees-[state].html)",
@@ -80,9 +81,10 @@
         "primal_fruits": {"products": 97, "in_stock": 63, "platform": "Ecwid", "ships_to_wa": true, "location": "WA"},
         "guildford": {"products": 610, "in_stock": 190, "platform": "WooCommerce", "ships_to_wa": true, "location": "WA"},
         "fruit_salad_trees": {"products": 88, "in_stock": 83, "platform": "Shopify", "ships_to_wa": true, "location": "NSW", "note": "Ships to WA 1st Tuesday/month"},
-        "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"}
+        "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"},
+        "fruit_tree_cottage": {"products": 185, "in_stock": 108, "platform": "Shopify", "ships_to_wa": false, "location": "QLD", "note": "does not ship to WA/NT/TAS, added 2026-03-15"}
       },
-      "next_action": "Day 9: 435 visitors (7-day). Location pages live for WA/QLD/NSW/VIC. Species restock alerts deployed but service restart pending (Q32). Sitemap at 69 URLs submitted to GSC. Next: grow Google traffic via location + species SEO."
+      "next_action": "Day 10: 451 visitors (7-day). 11 nurseries now monitored. Nursery profile pages live at /nursery/. Sitemap at 70 URLs. Next: grow Google traffic via location + species SEO."
     }
   },
   "infrastructure": {

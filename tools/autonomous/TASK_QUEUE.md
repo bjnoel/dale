@@ -5,7 +5,19 @@
 
 ---
 
-## Completed This Session (2026-03-13 UTC, session 4 — 18:00 UTC)
+## Completed This Session (2026-03-15 UTC, session 7 — 05:22 UTC)
+
+- [x] Notion task: Add Fruit Tree Cottage to treestock.com.au scraper (DEC-048).
+      Shopify confirmed. Shipping: NSW/VIC/QLD/SA/ACT (not WA/NT/TAS).
+      First scrape: 185 products, 108 in stock. Great tropical selection.
+      Profile page live: treestock.com.au/nursery/fruit-tree-cottage.html
+      Rebuilt build_nursery_pages.py (was missing from repo) — all 11 nursery pages regenerated.
+      Sitemap updated: 70 URLs (now includes nursery + location pages).
+      All changes deployed. Notion task marked Done.
+
+---
+
+## Completed (2026-03-13 UTC, session 4 — 18:00 UTC)
 
 - [x] Notion task: Vergeside bjnoel.com footer link — re-confirmed status in Notion as "Question".
       Work was done in session 3 (commit b347873). Patch at deliverables/vergeside-bjnoel-footer.patch.
@@ -85,7 +97,8 @@ Set up a simple weekly tar + local archive of /opt/dale/data/:
 ### Data Quality
 - [ ] Verify Ladybird and Fruitopia shipping states (currently estimated)
 - [ ] Analyse scraper data trends (price/stock changes over the week)
-- [ ] Add Tass1 Trees to treestock.com.au if scrapeable ← task 1 above
+- [x] Add Tass1 Trees to treestock.com.au — DONE 2026-03-14: not scrapeable (no prices, no stock, static catalog only)
+- [x] Add Fruit Tree Cottage to treestock.com.au — DONE 2026-03-15 (DEC-048)
 
 ---
 

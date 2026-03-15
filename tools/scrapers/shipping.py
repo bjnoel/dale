@@ -18,6 +18,7 @@ SHIPPING_MAP = {
     "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],      # Ships nationwide
     "all-season-plants-wa": ["WA"],                                          # WA-based, pickup only (Perth)
     "ausnurseries": ["NSW", "VIC", "QLD", "SA", "ACT"],           # Does not ship to WA, NT, or TAS
+    "fruit-tree-cottage": ["NSW", "VIC", "QLD", "SA", "ACT"],     # Does not ship to WA, NT, or TAS
 }
 
 NURSERY_NAMES = {
@@ -31,6 +32,7 @@ NURSERY_NAMES = {
     "diggers": "The Diggers Club",
     "all-season-plants-wa": "All Season Plants WA",
     "ausnurseries": "Aus Nurseries",
+    "fruit-tree-cottage": "Fruit Tree Cottage",
 }
 
 

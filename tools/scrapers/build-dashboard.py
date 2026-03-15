@@ -140,6 +140,9 @@ FRUIT_FILTERS = {
     "ausnurseries": {
         "mode": "all",  # Dedicated fruit/nut tree nursery
     },
+    "fruit-tree-cottage": {
+        "mode": "all",  # Dedicated fruit tree nursery (Forest Glen, QLD)
+    },
 }
 
 

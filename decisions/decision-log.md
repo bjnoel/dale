@@ -4,6 +4,29 @@
 
 ---
 
+## DEC-048 — 2026-03-15 — Add Fruit Tree Cottage to treestock.com.au (Benedict Notion Task)
+**Decided by:** Dale (Benedict requested via Notion)
+**Decision:** Add Fruit Tree Cottage (www.fruittreecottage.com.au) to the treestock.com.au scraper.
+**Rationale:** Benedict assigned this via Notion. Fruit Tree Cottage is a Shopify-based nursery
+on the Sunshine Coast QLD specialising in tropical/subtropical fruit trees. Confirmed it does NOT
+ship to WA, NT, or TAS (as noted in the task).
+**What was built:**
+- Added to shopify_scraper.py NURSERIES dict (domain: www.fruittreecottage.com.au)
+- Added to shipping.py SHIPPING_MAP: ["NSW", "VIC", "QLD", "SA", "ACT"]
+- Added to shipping.py NURSERY_NAMES: "Fruit Tree Cottage"
+- Added to build-dashboard.py FRUIT_FILTERS (mode: all — dedicated fruit nursery)
+- First scrape: 185 products, 108 in stock (notable: Grumichama, Lychee x6 vars, Soursop, Guava x3, Fig x4, Persimmon/Black Sapote)
+- Created build_nursery_pages.py (was missing from repo) — generates all /nursery/*.html + index
+- Nursery profile page live: /nursery/fruit-tree-cottage.html
+- Nursery index updated to 11 nurseries
+- Sitemap updated: 70 URLs (was 54, now includes nursery pages + location pages)
+- build_nursery_pages.py added to run-all-scrapers.sh pipeline (daily rebuild)
+- build_nursery_pages.py added to run-all-scrapers-server.sh
+- All files deployed to /opt/dale/scrapers/
+**Status:** LIVE
+
+---
+
 ## DEC-001 — 2026-03-05 — Project Framework
 **Decided by:** Joint
 **Decision:** Adopt the Dale framework with file-based state, public ledger, ethics charter.

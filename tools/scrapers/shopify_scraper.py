@@ -58,6 +58,11 @@ NURSERIES = {
         "domain": "ausnurseries.com",
         "location": "Australia",
     },
+    "fruit-tree-cottage": {
+        "name": "Fruit Tree Cottage",
+        "domain": "www.fruittreecottage.com.au",
+        "location": "Forest Glen, QLD",
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

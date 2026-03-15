@@ -20,6 +20,11 @@ STATIC_PAGES = [
     ("digest.html", "daily", "0.8"),
     ("history.html", "daily", "0.7"),
     ("species/", "weekly", "0.8"),
+    ("nursery/", "weekly", "0.8"),
+    ("buy-fruit-trees-wa.html", "daily", "0.7"),
+    ("buy-fruit-trees-qld.html", "daily", "0.7"),
+    ("buy-fruit-trees-nsw.html", "daily", "0.7"),
+    ("buy-fruit-trees-vic.html", "daily", "0.7"),
 ]
 
 
@@ -38,12 +43,25 @@ def build_sitemap(species_dir: Path, output_dir: Path) -> None:
     <priority>{priority}</priority>
   </url>""")
 
+    # Nursery profile pages (dynamically scanned)
+    nursery_dir = output_dir / "nursery"
+    if nursery_dir.exists():
+        for html_file in sorted(nursery_dir.glob("*.html")):
+            if html_file.name == "index.html":
+                continue  # already in static pages as nursery/
+            loc = f"{BASE_URL}/nursery/{html_file.name}"
+            urls.append(f"""  <url>
+    <loc>{loc}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>""")
+
     # Species pages
     if species_dir.exists():
         for html_file in sorted(species_dir.glob("*.html")):
             if html_file.name == "index.html":
                 continue  # already in static pages as species/
-            slug = html_file.stem
             loc = f"{BASE_URL}/species/{html_file.name}"
             urls.append(f"""  <url>
     <loc>{loc}</loc>
