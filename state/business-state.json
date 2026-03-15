@@ -42,18 +42,19 @@
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
-      "nurseries_monitored": 9,
+      "nurseries_monitored": 11,
       "nurseries_researched": 16,
       "first_scrape_date": "2026-03-05",
       "days_of_data": 10,
-      "products_tracked": 5158,
+      "products_tracked": 10426,
+      "in_stock": 3547,
       "products_note": "fruit/edible only (filtered from ~18,000+ total raw)",
       "species_matched_pct": 68,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
-      "subscribers": 2,
+      "subscribers": 3,
       "revenue_total": 0,
       "features": [
-        "Daily scraping of 9 nurseries",
+        "Daily scraping of 11 nurseries",
         "Price/stock change detection",
         "State-based shipping filter (all 8 states)",
         "Species taxonomy (50 species, fruit_species.json)",
@@ -71,7 +72,8 @@
         "Per-species restock alerts (notify me when species back in stock)",
         "Weekly FB post template for community engagement",
         "Location pages (WA/QLD/NSW/VIC — /buy-fruit-trees-[state].html)",
-        "Weekly data backup (Sunday 02:00 UTC, 4-week rolling)"
+        "Weekly data backup (Sunday 02:00 UTC, 4-week rolling)",
+        "Compare price pages (50 pages at /compare/ — cross-nursery price comparison for SEO)"
       ],
       "nursery_details": {
         "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
@@ -82,9 +84,11 @@
         "guildford": {"products": 610, "in_stock": 190, "platform": "WooCommerce", "ships_to_wa": true, "location": "WA"},
         "fruit_salad_trees": {"products": 88, "in_stock": 83, "platform": "Shopify", "ships_to_wa": true, "location": "NSW", "note": "Ships to WA 1st Tuesday/month"},
         "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"},
-        "fruit_tree_cottage": {"products": 185, "in_stock": 108, "platform": "Shopify", "ships_to_wa": false, "location": "QLD", "note": "does not ship to WA/NT/TAS, added 2026-03-15"}
+        "fruit_tree_cottage": {"products": 185, "in_stock": 108, "platform": "Shopify", "ships_to_wa": false, "location": "QLD", "note": "does not ship to WA/NT/TAS, added 2026-03-15"},
+        "all_season_plants_wa": {"products": 20, "in_stock": 20, "platform": "Shopify", "ships_to_wa": true, "location": "WA", "note": "WA pickup + local delivery, rare tropicals (mangosteen, wampee, jaboticaba)"},
+        "ausnurseries": {"products": 409, "in_stock": 109, "platform": "Shopify", "ships_to_wa": false, "location": "NSW", "note": "does not ship to WA/NT/TAS"}
       },
-      "next_action": "Day 10: 451 visitors (7-day). 11 nurseries now monitored. Nursery profile pages live at /nursery/. Sitemap at 70 URLs. Next: grow Google traffic via location + species SEO."
+      "next_action": "Day 10: 466 visitors (7-day). 11 nurseries, 10,426 products, 3,547 in stock. Next: compare-price pages for SEO (species cross-nursery comparisons)."
     }
   },
   "infrastructure": {
@@ -95,7 +99,7 @@
     "email": "done — hello@walkthrough.au via Fastmail",
     "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live — cron at 18:00 UTC (2am AWST), learning mode (15-min cap), 50 max turns",
+    "autonomous_dale": "live — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), learning mode (15-min cap), 50 max turns",
     "resend": "done — dale@mail.walkthrough.au + mail.scion.exchange verified"
   }
 }

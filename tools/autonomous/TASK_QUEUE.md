@@ -5,6 +5,20 @@
 
 ---
 
+## Completed This Session (2026-03-15 UTC, session 8 — 13:52 UTC)
+
+- [x] Notion task: 4x nightly cron sessions (DEC-050).
+      Updated crontab: Dale now runs at 18:00, 19:00, 20:00, 21:00 UTC (2am-5am AWST).
+      Notion task marked Done.
+- [x] Compare price pages (DEC-051).
+      50 pages at treestock.com.au/compare/ — cross-nursery price comparison per species.
+      Shows cheapest nursery, price-sorted listings, email alert CTAs.
+      Added to run-all-scrapers.sh. Sitemap updated: 121 URLs (was 70).
+      Dashboard footer links to /compare/.
+- [x] Business state updated: 11 nurseries, 10,426 products, 3,547 in stock, 3 subscribers.
+
+---
+
 ## Completed This Session (2026-03-15 UTC, session 7 — 05:22 UTC)
 
 - [x] Notion task: Add Fruit Tree Cottage to treestock.com.au scraper (DEC-048).
@@ -78,7 +92,7 @@ Set up a simple weekly tar + local archive of /opt/dale/data/:
 ### SEO & Content
 - [x] Nursery profile pages — DONE 2026-03-13 (DEC-041)
 - [ ] Variety-level pages (deeper than species — individual cultivars)
-- [ ] "Compare prices" pages (e.g., /compare/mango-prices)
+- [x] "Compare prices" pages — DONE 2026-03-15: 50 pages at /compare/ (DEC-051)
 - [ ] Location pages (/wa-fruit-trees, /tas-fruit-trees) for state-based SEO
 - [ ] Submit to Australian business directories (Hotfrog, StartLocal, True Local)
 

@@ -25,6 +25,7 @@ STATIC_PAGES = [
     ("buy-fruit-trees-qld.html", "daily", "0.7"),
     ("buy-fruit-trees-nsw.html", "daily", "0.7"),
     ("buy-fruit-trees-vic.html", "daily", "0.7"),
+    ("compare/", "weekly", "0.8"),
 ]
 
 
@@ -50,6 +51,20 @@ def build_sitemap(species_dir: Path, output_dir: Path) -> None:
             if html_file.name == "index.html":
                 continue  # already in static pages as nursery/
             loc = f"{BASE_URL}/nursery/{html_file.name}"
+            urls.append(f"""  <url>
+    <loc>{loc}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>""")
+
+    # Compare pages (price comparison, dynamically scanned)
+    compare_dir = output_dir / "compare"
+    if compare_dir.exists():
+        for html_file in sorted(compare_dir.glob("*.html")):
+            if html_file.name == "index.html":
+                continue  # already in static pages as compare/
+            loc = f"{BASE_URL}/compare/{html_file.name}"
             urls.append(f"""  <url>
     <loc>{loc}</loc>
     <lastmod>{today}</lastmod>

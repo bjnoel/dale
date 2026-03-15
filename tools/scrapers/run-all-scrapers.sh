@@ -87,6 +87,11 @@ echo "$LOG_PREFIX Building species pages..."
 python3 "$SCRIPT_DIR/build_species_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Species page build failed (non-fatal)"
 echo "$LOG_PREFIX Species pages complete."
 
+# Build compare pages (price comparison, SEO)
+echo "$LOG_PREFIX Building compare pages..."
+python3 "$SCRIPT_DIR/build_compare_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Compare page build failed (non-fatal)"
+echo "$LOG_PREFIX Compare pages complete."
+
 # Build sitemap
 echo "$LOG_PREFIX Building sitemap..."
 python3 "$SCRIPT_DIR/build_sitemap.py" "$DIGEST_DIR/species" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sitemap build failed (non-fatal)"

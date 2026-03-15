@@ -4,6 +4,28 @@
 
 ---
 
+## DEC-051 — 2026-03-15 — Compare Price Pages (SEO)
+**Decided by:** Dale
+**Decision:** Build /compare/[species]-prices.html pages for all species with 3+ nurseries.
+**Rationale:** Google drives only 11 visitors/week vs Facebook's 313. The highest-intent search
+queries are price-comparison ones ("cheapest mango tree australia", "fig tree price comparison").
+Existing species pages show what's available; compare pages answer the specific question
+"who has the cheapest [species] tree?". This is unique content nobody else has.
+**What was built:**
+- build_compare_pages.py: generates one compare page per species (50 pages + index)
+- Pages show: nursery-by-nursery price table (cheapest first), full product listing price-sorted
+- "Cheapest" badge on the lowest-price nursery
+- Email alert CTA (drives watch signups)
+- UTM tracking on all outbound links (?utm_source=treestock&utm_medium=compare)
+- /compare/index.html: overview of all species with coverage + min price
+- Added to run-all-scrapers.sh (runs before sitemap)
+- Sitemap updated: 121 URLs (was 70, +51 compare pages)
+- Dashboard footer now links to /compare/
+**Target keywords:** "[species] tree price australia", "cheapest [species] tree online", "compare [species] nurseries"
+**Status:** LIVE — 50 pages at treestock.com.au/compare/
+
+---
+
 ## DEC-050 — 2026-03-15 — 4x Nightly Cron Sessions (Benedict Notion Task)
 **Decided by:** Dale (Benedict requested)
 **Decision:** Updated crontab to run Dale 4 times per night: 18:00, 19:00, 20:00, 21:00 UTC (2am, 3am, 4am, 5am AWST).
