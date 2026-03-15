@@ -146,6 +146,165 @@ FRUIT_FILTERS = {
 }
 
 
+def build_recent_highlights(data_dir: Path) -> str:
+    """Scan last 7 days of nursery data to find notable restocks and price drops.
+    Returns an HTML snippet for the homepage 'Recent Highlights' section."""
+    restocks = []
+    price_drops = []
+
+    for nursery_dir in sorted(data_dir.iterdir()):
+        if not nursery_dir.is_dir():
+            continue
+
+        snapshots = sorted([f for f in nursery_dir.glob("2026-03-*.json")])
+        if len(snapshots) < 2:
+            continue
+
+        # Load shipping info from latest.json
+        latest_path = nursery_dir / "latest.json"
+        if not latest_path.exists():
+            continue
+        with open(latest_path) as f:
+            latest_meta = json.load(f)
+        # Use SHIPPING_MAP as source of truth for WA shipping
+        nursery_key = nursery_dir.name
+        ships_wa = "WA" in SHIPPING_MAP.get(nursery_key, [])
+        nursery_name = NURSERY_NAMES.get(nursery_key, latest_meta.get("nursery_name", nursery_key))
+
+        # Scan consecutive days
+        for i in range(1, len(snapshots)):
+            with open(snapshots[i - 1]) as f:
+                prev_data = json.load(f)
+            with open(snapshots[i]) as f:
+                curr_data = json.load(f)
+
+            snap_date = snapshots[i].stem  # e.g. "2026-03-14"
+
+            prev_prods = {}
+            for p in prev_data.get("products", []):
+                key = p.get("url") or p.get("title", "")
+                prev_prods[key] = p
+
+            for p in curr_data.get("products", []):
+                key = p.get("url") or p.get("title", "")
+                title = p.get("title", "")
+                url = p.get("url", "")
+
+                curr_avail = p.get("available") or p.get("any_available", False)
+                curr_price = p.get("price") or p.get("min_price") or 0
+
+                if key in prev_prods:
+                    prev = prev_prods[key]
+                    prev_avail = prev.get("available") or prev.get("any_available", False)
+                    prev_price = prev.get("price") or prev.get("min_price") or 0
+
+                    # Restock: was out, now in stock
+                    if curr_avail and not prev_avail and curr_price and curr_price < 500:
+                        restocks.append({
+                            "nursery": nursery_name,
+                            "title": title,
+                            "price": curr_price,
+                            "date": snap_date,
+                            "ships_wa": ships_wa,
+                            "url": url,
+                        })
+
+                    # Price drop: meaningful drop (>=5%)
+                    if (curr_avail and prev_price and curr_price
+                            and curr_price < prev_price
+                            and (prev_price - curr_price) / prev_price >= 0.05
+                            and (prev_price - curr_price) >= 3):
+                        price_drops.append({
+                            "nursery": nursery_name,
+                            "title": title,
+                            "old_price": prev_price,
+                            "new_price": curr_price,
+                            "drop": prev_price - curr_price,
+                            "pct": round((prev_price - curr_price) / prev_price * 100),
+                            "date": snap_date,
+                            "ships_wa": ships_wa,
+                            "url": url,
+                        })
+
+    # Sort: WA-shipping first, then by date desc
+    restocks.sort(key=lambda x: (not x["ships_wa"], x["date"]), reverse=True)
+    price_drops.sort(key=lambda x: (not x["ships_wa"], x["drop"]), reverse=True)
+
+    # Pick top items (prefer WA-shipping, deduplicate by nursery)
+    top_restocks = []
+    seen_nurseries_r = set()
+    for r in restocks:
+        if r["nursery"] not in seen_nurseries_r or r["ships_wa"]:
+            top_restocks.append(r)
+            seen_nurseries_r.add(r["nursery"])
+        if len(top_restocks) >= 4:
+            break
+
+    top_drops = []
+    seen_nurseries_d = set()
+    for d in price_drops:
+        if d["nursery"] not in seen_nurseries_d or d["ships_wa"]:
+            top_drops.append(d)
+            seen_nurseries_d.add(d["nursery"])
+        if len(top_drops) >= 3:
+            break
+
+    if not top_restocks and not top_drops:
+        return ""
+
+    def wa_badge(ships_wa):
+        if ships_wa:
+            return '<span class="inline-block text-xs bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded ml-1">Ships to WA</span>'
+        return ""
+
+    restock_rows = ""
+    for r in top_restocks:
+        price_str = f"${r['price']:.0f}" if r['price'] else ""
+        short_date = r["date"][5:]  # "03-14" -> show as MM/DD for brevity
+        restock_rows += f"""<li class="flex items-baseline gap-1.5 py-1 border-b border-green-100 last:border-0">
+          <span class="text-green-600 font-bold text-sm">✅</span>
+          <span class="text-sm flex-1 min-w-0">
+            <span class="font-medium">{r['title']}</span>
+            <span class="text-gray-500"> — {r['nursery']}</span>
+            {wa_badge(r['ships_wa'])}
+          </span>
+          <span class="text-sm font-semibold text-gray-700 flex-shrink-0">{price_str}</span>
+        </li>"""
+
+    drop_rows = ""
+    for d in top_drops:
+        drop_rows += f"""<li class="flex items-baseline gap-1.5 py-1 border-b border-blue-100 last:border-0">
+          <span class="text-blue-600 font-bold text-sm">↓</span>
+          <span class="text-sm flex-1 min-w-0">
+            <span class="font-medium">{d['title']}</span>
+            <span class="text-gray-500"> — {d['nursery']}</span>
+            {wa_badge(d['ships_wa'])}
+          </span>
+          <span class="text-sm flex-shrink-0"><span class="line-through text-gray-400">${d['old_price']:.0f}</span> <span class="font-semibold text-blue-700">${d['new_price']:.0f}</span> <span class="text-blue-600">−{d['pct']}%</span></span>
+        </li>"""
+
+    total_restocks = len(restocks)
+    total_drops = len(price_drops)
+
+    return f"""  <!-- Recent Highlights — "what subscribers knew this week" -->
+  <div class="mb-4 rounded-lg border border-gray-200 overflow-hidden">
+    <div class="bg-gray-50 px-4 py-2.5 border-b border-gray-200 flex items-center justify-between">
+      <span class="text-sm font-semibold text-gray-700">📬 What subscribers got alerted to this week</span>
+      <span class="text-xs text-gray-400">{total_restocks} restocks · {total_drops} price drops detected</span>
+    </div>
+    <div class="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+      <div class="px-4 py-3">
+        <p class="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">Back in stock</p>
+        <ul class="space-y-0.5">{restock_rows}</ul>
+      </div>
+      <div class="px-4 py-3">
+        <p class="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Price drops</p>
+        <ul class="space-y-0.5">{drop_rows}</ul>
+      </div>
+    </div>
+  </div>"""
+
+
 def is_fruit_product(product: dict, nursery_key: str) -> bool:
     """Check if a product should be included based on nursery-specific filters."""
     filt = FRUIT_FILTERS.get(nursery_key)
@@ -443,7 +602,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
     return products, nurseries_loaded, top_species
 
 
-def build_html(products: list[dict], nurseries: list[dict], top_species: list[dict]) -> str:
+def build_html(products: list[dict], nurseries: list[dict], top_species: list[dict], highlights_html: str = "") -> str:
     """Generate the dashboard HTML with embedded data."""
     products_json = json.dumps(products, separators=(",", ":"))
     nurseries_json = json.dumps(nurseries, separators=(",", ":"))
@@ -589,10 +748,12 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     <div class="species-strip">{species_strip_html}</div>
   </div>
 
+{highlights_html}
+
   <!-- Email Alerts Signup (above results) -->
   <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-      <p class="text-sm text-green-800 flex-1"><strong>Daily stock alerts</strong> — price drops &amp; restocks, free. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See sample &rarr;</a></p>
+      <p class="text-sm text-green-800 flex-1"><strong>Get tomorrow's changes in your inbox</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
         <input type="email" id="subEmail" placeholder="your@email.com" required
           class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
@@ -876,8 +1037,12 @@ def main():
         print(f"  {n['name']}: {n['count']} products ({n['in_stock']} in stock)")
     print(f"  Top species for grid: {', '.join(s['cn'] for s in top_species[:5])}")
 
+    print("Building recent highlights...")
+    highlights_html = build_recent_highlights(data_dir)
+    print(f"  Highlights section: {'generated' if highlights_html else 'empty (insufficient data)'}")
+
     output_dir.mkdir(parents=True, exist_ok=True)
-    html = build_html(products, nurseries, top_species)
+    html = build_html(products, nurseries, top_species, highlights_html)
     out_file = output_dir / "index.html"
     out_file.write_text(html)
     print(f"Dashboard written to {out_file} ({len(html):,} bytes)")

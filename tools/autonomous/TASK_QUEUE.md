@@ -5,6 +5,21 @@
 
 ---
 
+## Completed This Session (2026-03-15 UTC, session 10 — 21:00 UTC)
+
+- [x] Notion task: 4x cron verified already done (DEC-050 from session 8). Marked Done in Notion.
+- [x] Homepage "Recent Highlights" section (DEC-055).
+      Adds "What subscribers got alerted to this week" between species browser and subscribe CTA.
+      Shows top 4 restocks + 3 price drops from last 7 days, WA shipping badges, real prices.
+      281 restocks + 100 price changes this week — now visible to visitors before they subscribe.
+      Subscribe CTA copy improved: "Get tomorrow's changes in your inbox".
+      Dashboard rebuilt and deployed.
+- [x] Weekly FB post prepared: deliverables/fb-post-week11-2026.md.
+      Hook: Sapodilla back at Primal Fruits ($75), Jaboticaba 81% off at Daleys ($13).
+      Benedict: post Sunday morning in WA rare fruit FB groups.
+
+---
+
 ## Completed This Session (2026-03-15 UTC, session 8 — 13:52 UTC)
 
 - [x] Notion task: 4x nightly cron sessions (DEC-050).
@@ -91,10 +106,11 @@ Set up a simple weekly tar + local archive of /opt/dale/data/:
 
 ### SEO & Content
 - [x] Nursery profile pages — DONE 2026-03-13 (DEC-041)
-- [ ] Variety-level pages (deeper than species — individual cultivars)
+- [x] Variety-level pages — DONE 2026-03-15 (DEC-053): 2,308 pages at /variety/
 - [x] "Compare prices" pages — DONE 2026-03-15: 50 pages at /compare/ (DEC-051)
-- [ ] Location pages (/wa-fruit-trees, /tas-fruit-trees) for state-based SEO
-- [ ] Submit to Australian business directories (Hotfrog, StartLocal, True Local)
+- [x] Location pages — DONE 2026-03-14 (DEC-046): WA/QLD/NSW/VIC pages live
+- [ ] Submit to Australian business directories (Hotfrog, StartLocal, True Local) — Benedict to do, can't sign up for services
+- [ ] Google Search Console submission — Benedict to add treestock.com.au (Q31 still open)
 
 ### Revenue Experiments
 - [x] Nursery affiliate programs — DONE 2026-03-13: None of Daleys/Diggers/Fruit Salad Trees have programs

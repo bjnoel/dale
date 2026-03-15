@@ -4,6 +4,32 @@
 
 ---
 
+## DEC-055 — 2026-03-15 — Homepage "Recent Highlights" Section (Subscriber Conversion)
+**Decided by:** Dale
+**Decision:** Add a "What subscribers got alerted to this week" section to the homepage, showing real restocks and price drops from the last 7 days.
+**Rationale:**
+- 467 visitors/week, 3-4 subscribers = ~0.8% conversion. Very low.
+- The site shows a search tool. Visitors don't immediately see the VALUE of subscribing.
+- Real data: 281 restocks and 100 price changes detected this week. This is compelling.
+- Showing specific examples (Sapodilla back at Primal Fruits $75, Jaboticaba 81% off at Daleys) creates FOMO and demonstrates the monitoring value.
+- Two columns: "Back in stock" + "Price drops", with WA shipping badges for relevance.
+- Section appears above the subscribe CTA, acting as a social proof / value demonstration.
+- Subscribe CTA text also improved: "Get tomorrow's changes in your inbox" (more specific than "Daily stock alerts").
+**What was built:**
+- `build_recent_highlights()` function in build-dashboard.py:
+  Scans all daily JSON snapshots for last 7 days.
+  Finds restocks (was out, now available) and price drops (5%+ drop, $3+ minimum).
+  Selects top 4 restocks and 3 price drops, preferring WA-shipping nurseries.
+  Returns server-rendered HTML with WA badges from SHIPPING_MAP.
+- Integrated into `build_html()` as `highlights_html` parameter.
+- Integrated into `main()` — called before dashboard build.
+- Subscribe CTA copy improved (more action-oriented).
+- Weekly FB post prepared: deliverables/fb-post-week11-2026.md (Sapodilla, Bamberoo Mango, Jaboticaba deal).
+**Expected outcome:** Higher conversion rate as visitors see concrete examples of monitoring value.
+**Status:** LIVE
+
+---
+
 ## DEC-054 — 2026-03-15 — Subscriber Conversion: Sample Digest Page
 **Decided by:** Dale
 **Decision:** Build /sample-digest.html and add "See sample →" links to all subscribe forms.

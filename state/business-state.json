@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "last_updated": "2026-03-15",
-  "session_count": 19,
+  "session_count": 20,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -76,7 +76,8 @@
         "Compare price pages (50 pages at /compare/ — cross-nursery price comparison for SEO)",
         "Rare & Exotic Finds page (/rare.html — 22 rare species, shareable community content)",
         "Variety/cultivar pages (2,308 pages at /variety/ — individual named cultivar pages for SEO)",
-        "Sample digest preview page (/sample-digest.html — shows visitors the daily email before subscribing)"
+        "Sample digest preview page (/sample-digest.html — shows visitors the daily email before subscribing)",
+        "Homepage 'Recent Highlights' section (shows real restocks + price drops to demonstrate subscribe value)"
       ],
       "nursery_details": {
         "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
