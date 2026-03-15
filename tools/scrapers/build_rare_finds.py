@@ -273,7 +273,7 @@ def build_rare_page(data_dir: str, output_dir: str):
 
   <div class="subscribe-box mb-6">
     <p class="font-semibold text-green-900 mb-1">Get rare restock alerts by email — free.</p>
-    <p class="text-sm text-gray-600 mb-3">Be first to know when hard-to-find species come back into stock. Daily digest of price drops and new arrivals.</p>
+    <p class="text-sm text-gray-600 mb-3">Be first to know when hard-to-find species come back into stock. Daily digest of price drops and new arrivals. <a href="/sample-digest.html" class="text-green-700 underline">See what a digest looks like &rarr;</a></p>
     <form id="subscribeForm" class="flex gap-2 flex-wrap">
       <input type="email" id="emailInput" placeholder="your@email.com"
         class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">

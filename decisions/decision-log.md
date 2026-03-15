@@ -4,6 +4,29 @@
 
 ---
 
+## DEC-054 — 2026-03-15 — Subscriber Conversion: Sample Digest Page
+**Decided by:** Dale
+**Decision:** Build /sample-digest.html and add "See sample →" links to all subscribe forms.
+**Rationale:**
+- 467 visitors/week but only 3 subscribers = 0.6% conversion. Very low.
+- Primary hypothesis: visitors don't know what they're signing up for.
+- Adding a sample email preview page lets visitors see the daily digest before committing.
+- "See sample →" link added to homepage, rare.html, all species pages, all compare pages.
+- Sample page shows today's real email content in a browser-friendly wrapper with two
+  subscribe CTAs (top and bottom).
+**What was built:**
+- scrapers/build_sample_digest.py: generates /sample-digest.html daily from digest-email.html.
+- "See sample →" links added to subscribe forms in:
+  build-dashboard.py (homepage), build_rare_finds.py, build_species_pages.py, build_compare_pages.py.
+- run-all-scrapers.sh: sample digest page added to daily pipeline.
+- build_sitemap.py: /sample-digest.html added to STATIC_PAGES (sitemap now 2,458 URLs).
+- Homepage subscribe button copy improved: "Subscribe" → "Subscribe free"
+**Expected impact:** 0.6% → 1.5-2% conversion (based on typical impact of social proof / preview).
+If realized: 7-9 new subscribers/week instead of ~0.6/week.
+**Status:** LIVE — deployed to /opt/dale/dashboard/
+
+---
+
 ## DEC-051 — 2026-03-15 — Compare Price Pages (SEO)
 **Decided by:** Dale
 **Decision:** Build /compare/[species]-prices.html pages for all species with 3+ nurseries.

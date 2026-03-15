@@ -323,7 +323,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
   <!-- Email alert CTA -->
   <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
     <p class="font-medium text-green-800 mb-1">Get price drop alerts for {name}</p>
-    <p class="text-gray-600 mb-3">We monitor {total_nurseries} nurseries daily. Get emailed when {name} prices drop or new varieties appear.</p>
+    <p class="text-gray-600 mb-3">We monitor {total_nurseries} nurseries daily. Get emailed when {name} prices drop or new varieties appear. <a href="/sample-digest.html" class="text-green-700 underline">See sample &rarr;</a></p>
     <form id="watchForm" class="flex flex-col sm:flex-row gap-2">
       <input type="email" id="watchEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">

@@ -592,12 +592,12 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   <!-- Email Alerts Signup (above results) -->
   <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-      <p class="text-sm text-green-800 flex-1"><strong>Daily stock alerts</strong> — price drops &amp; restocks, free.</p>
+      <p class="text-sm text-green-800 flex-1"><strong>Daily stock alerts</strong> — price drops &amp; restocks, free. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See sample &rarr;</a></p>
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
         <input type="email" id="subEmail" placeholder="your@email.com" required
           class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
         <button type="submit" class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
-          Subscribe
+          Subscribe free
         </button>
       </form>
     </div>
