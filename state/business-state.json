@@ -1,12 +1,12 @@
 {
   "version": "0.1.0",
   "last_updated": "2026-03-16",
-  "session_count": 22,
+  "session_count": 23,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
   "revenue_monthly": 0,
-  "expenses_monthly": 7.00,
+  "expenses_monthly": 7.0,
   "tracks": {
     "a": {
       "name": "Perth AI Efficiency Audits",
@@ -25,17 +25,33 @@
         "Portfolio piece (Drift Kitchen, Scarborough)",
         "Email (hello@walkthrough.au via Fastmail)",
         "Prospect briefs: PBR Plumbing, Wembley Cycles, Gather Ceramics",
-        "Nursery partnership page (treestock.com.au/advertise.html)"
+        "Nursery partnership page (treestock.com.au/advertise.html)",
+        "Leeming Fruit Trees prospect brief (deliverables/leeming-fruit-trees-cold-outreach.md)"
       ],
       "model_pivot": "DEC-051: Implementation over reports. Dale builds shops, Benedict does relationships. treestock.com.au is portfolio + traffic for nursery clients.",
       "prospects": {
-        "gather_ceramics": {"status": "closed", "hook": "Learning experience (DEC-050). Reports don't work, GBP already existed, attribution unclear."},
-        "tass1_trees": {"status": "priority", "hook": "No HTTPS, no mobile, no online shop. Track A+B crossover. Build demo shop with treestock data."},
-        "leeming_fruit_trees": {"status": "priority", "hook": "No website at all. Track A+B crossover. Build from scratch."},
-        "wembley_cycles": {"status": "deprioritised", "hook": "Old model (report). Revisit if implementation model proves out."},
-        "pbr_plumbing": {"status": "deprioritised", "hook": "Old model (report). Revisit if implementation model proves out."}
+        "gather_ceramics": {
+          "status": "closed",
+          "hook": "Learning experience (DEC-050). Reports don't work, GBP already existed, attribution unclear."
+        },
+        "tass1_trees": {
+          "status": "priority",
+          "hook": "No HTTPS, no mobile, no online shop. Track A+B crossover. Build demo shop with treestock data."
+        },
+        "leeming_fruit_trees": {
+          "status": "priority",
+          "hook": "No website, 10K+ Facebook followers, rare tropicals (exact treestock audience). WA-based, open Wed-Sat. Better prospect than Tass1 Trees."
+        },
+        "wembley_cycles": {
+          "status": "deprioritised",
+          "hook": "Old model (report). Revisit if implementation model proves out."
+        },
+        "pbr_plumbing": {
+          "status": "deprioritised",
+          "hook": "Old model (report). Revisit if implementation model proves out."
+        }
       },
-      "next_action": "Benedict to send Tass1 Trees cold email (hello@walkthrough.au). Partnership page live at /advertise.html for approaching Primal Fruits."
+      "next_action": "Benedict to visit Leeming Fruit Trees (4a Westmorland Dr, Leeming, Wed-Sat 8:30am-2pm). Also: send Tass1 Trees email + Heritage Fruit Trees outreach."
     },
     "b": {
       "name": "Rare Fruit Stock Tracker",
@@ -73,41 +89,121 @@
         "Nursery profile pages (12 pages at /nursery/ for SEO)",
         "Per-species restock alerts (notify me when species back in stock)",
         "Weekly FB post template for community engagement",
-        "Location pages (WA/QLD/NSW/VIC — /buy-fruit-trees-[state].html)",
+        "Location pages (WA/QLD/NSW/VIC \u2014 /buy-fruit-trees-[state].html)",
         "Weekly data backup (Sunday 02:00 UTC, 4-week rolling)",
-        "Compare price pages (50 pages at /compare/ — cross-nursery price comparison for SEO)",
-        "Rare & Exotic Finds page (/rare.html — 22 rare species, shareable community content)",
-        "Variety/cultivar pages (2,308 pages at /variety/ — individual named cultivar pages for SEO)",
-        "Sample digest preview page (/sample-digest.html — shows visitors the daily email before subscribing)",
+        "Compare price pages (50 pages at /compare/ \u2014 cross-nursery price comparison for SEO)",
+        "Rare & Exotic Finds page (/rare.html \u2014 22 rare species, shareable community content)",
+        "Variety/cultivar pages (2,308 pages at /variety/ \u2014 individual named cultivar pages for SEO)",
+        "Sample digest preview page (/sample-digest.html \u2014 shows visitors the daily email before subscribing)",
         "Homepage 'Recent Highlights' section (shows real restocks + price drops to demonstrate subscribe value)",
-        "Nursery partnership page (/advertise.html — for nursery sponsorship outreach)"
+        "Nursery partnership page (/advertise.html \u2014 for nursery sponsorship outreach)",
+        "Location pages auto-rebuild daily (build_location_pages.py, species-filtered \u2014 no non-plant items)"
       ],
       "nursery_details": {
-        "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
-        "ladybird": {"products": 1690, "in_stock": 724, "platform": "Shopify", "ships_to_wa": false, "location": "QLD", "note": "fruit/edible filtered from ~6500 total"},
-        "fruitopia": {"products": 627, "in_stock": 168, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
-        "daleys": {"products": 668, "in_stock": 663, "platform": "Custom PHP", "ships_to_wa": true, "location": "NSW"},
-        "primal_fruits": {"products": 97, "in_stock": 63, "platform": "Ecwid", "ships_to_wa": true, "location": "WA"},
-        "guildford": {"products": 610, "in_stock": 190, "platform": "WooCommerce", "ships_to_wa": true, "location": "WA"},
-        "fruit_salad_trees": {"products": 88, "in_stock": 83, "platform": "Shopify", "ships_to_wa": true, "location": "NSW", "note": "Ships to WA 1st Tuesday/month"},
-        "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"},
-        "fruit_tree_cottage": {"products": 185, "in_stock": 108, "platform": "Shopify", "ships_to_wa": false, "location": "QLD", "note": "does not ship to WA/NT/TAS, added 2026-03-15"},
-        "all_season_plants_wa": {"products": 20, "in_stock": 20, "platform": "Shopify", "ships_to_wa": true, "location": "WA", "note": "WA pickup + local delivery, rare tropicals (mangosteen, wampee, jaboticaba)"},
-        "ausnurseries": {"products": 409, "in_stock": 109, "platform": "Shopify", "ships_to_wa": false, "location": "NSW", "note": "does not ship to WA/NT/TAS"},
-        "heritage_fruit_trees": {"products": 332, "in_stock": 331, "platform": "BigCommerce", "ships_to_wa": true, "location": "VIC", "note": "Heritage/heirloom temperate varieties. WA shipping in winter/dormant season (May-Sep). Added 2026-03-16."}
+        "ross_creek": {
+          "products": 1060,
+          "in_stock": 484,
+          "platform": "Shopify",
+          "ships_to_wa": false,
+          "location": "QLD"
+        },
+        "ladybird": {
+          "products": 1690,
+          "in_stock": 724,
+          "platform": "Shopify",
+          "ships_to_wa": false,
+          "location": "QLD",
+          "note": "fruit/edible filtered from ~6500 total"
+        },
+        "fruitopia": {
+          "products": 627,
+          "in_stock": 168,
+          "platform": "Shopify",
+          "ships_to_wa": false,
+          "location": "QLD"
+        },
+        "daleys": {
+          "products": 668,
+          "in_stock": 663,
+          "platform": "Custom PHP",
+          "ships_to_wa": true,
+          "location": "NSW"
+        },
+        "primal_fruits": {
+          "products": 97,
+          "in_stock": 63,
+          "platform": "Ecwid",
+          "ships_to_wa": true,
+          "location": "WA"
+        },
+        "guildford": {
+          "products": 610,
+          "in_stock": 190,
+          "platform": "WooCommerce",
+          "ships_to_wa": true,
+          "location": "WA"
+        },
+        "fruit_salad_trees": {
+          "products": 88,
+          "in_stock": 83,
+          "platform": "Shopify",
+          "ships_to_wa": true,
+          "location": "NSW",
+          "note": "Ships to WA 1st Tuesday/month"
+        },
+        "diggers": {
+          "products": 114,
+          "in_stock": 62,
+          "platform": "Shopify",
+          "ships_to_wa": true,
+          "location": "VIC",
+          "note": "fruit/nut filtered from 1799 total"
+        },
+        "fruit_tree_cottage": {
+          "products": 185,
+          "in_stock": 108,
+          "platform": "Shopify",
+          "ships_to_wa": false,
+          "location": "QLD",
+          "note": "does not ship to WA/NT/TAS, added 2026-03-15"
+        },
+        "all_season_plants_wa": {
+          "products": 20,
+          "in_stock": 20,
+          "platform": "Shopify",
+          "ships_to_wa": true,
+          "location": "WA",
+          "note": "WA pickup + local delivery, rare tropicals (mangosteen, wampee, jaboticaba)"
+        },
+        "ausnurseries": {
+          "products": 409,
+          "in_stock": 109,
+          "platform": "Shopify",
+          "ships_to_wa": false,
+          "location": "NSW",
+          "note": "does not ship to WA/NT/TAS"
+        },
+        "heritage_fruit_trees": {
+          "products": 332,
+          "in_stock": 331,
+          "platform": "BigCommerce",
+          "ships_to_wa": true,
+          "location": "VIC",
+          "note": "Heritage/heirloom temperate varieties. WA shipping in winter/dormant season (May-Sep). Added 2026-03-16."
+        }
       },
-      "next_action": "Benedict to send Heritage Fruit Trees outreach (deliverables/heritage-fruit-trees-outreach-2026-03-16.md) + WhatsApp Cyrus at Primal Fruits. Location pages now auto-rebuild daily."
+      "next_action": "Benedict: visit Leeming Fruit Trees (potential Track B nursery addition). Send Heritage Fruit Trees outreach. WhatsApp Cyrus at Primal Fruits."
     }
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done — hello@walkthrough.au via Fastmail",
-    "blog": "deployed — walkthrough.au live",
+    "email": "done \u2014 hello@walkthrough.au via Fastmail",
+    "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), learning mode (15-min cap), 50 max turns",
-    "resend": "done — dale@mail.walkthrough.au + mail.scion.exchange verified"
+    "autonomous_dale": "live \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), learning mode (15-min cap), 50 max turns",
+    "resend": "done \u2014 dale@mail.walkthrough.au + mail.scion.exchange verified"
   }
 }

@@ -931,3 +931,19 @@ in progress. Will be live in tomorrow's dashboard build.
 **Action for Benedict:** Send Heritage Fruit Trees outreach via their contact form this week.
   Also: WhatsApp Cyrus at Primal Fruits directly ("Hey Cyrus, your stock is on treestock.com.au...").
 **Status:** LIVE + AWAITING BENEDICT
+
+---
+
+## DEC-058 — 2026-03-16 — Location Pages Script + Leeming Fruit Trees Outreach
+
+**Decided by:** Dale
+**Decision:** (1) Build missing build_location_pages.py with proper fruit-species filtering. (2) Research and prepare Leeming Fruit Trees as top Track A+B prospect.
+**Rationale:**
+- Location pages were rebuilt from hardcoded data in session 22 but the script (build_location_pages.py) was never created/committed. Old pages showed irrigation connectors and ornamentals. New script uses species matching for clean filtering.
+- Leeming Fruit Trees (Leeming, WA) is a rare tropical fruit nursery with 10K+ Facebook followers and no website. This is a better Track A+B prospect than Tass1 Trees: WA-based, rare tropicals (exact treestock.com.au audience), 25 min from Perth CBD, open Wed-Sat.
+**What was built:**
+- scrapers/build_location_pages.py: generates 4 location pages using fruit_species.json matching (no non-plant items, no ornamentals). Sorted by price descending (interesting varieties first). WA: 491 in-stock, QLD/NSW/VIC: 1,349 in-stock.
+- scrapers/run-all-scrapers.sh: location pages added at end of daily pipeline.
+- deliverables/leeming-fruit-trees-cold-outreach.md: full prospect brief with visit strategy, Facebook message template, Track A+B path.
+**Action for Benedict:** Visit Leeming Fruit Trees (4a Westmorland Dr, Leeming) Wed-Sat 8:30am-2pm. Buy a tree. Mention treestock.com.au. Explore website build opportunity.
+**Status:** READY — awaiting Benedict visit
