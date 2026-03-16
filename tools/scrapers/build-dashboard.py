@@ -254,15 +254,15 @@ def build_recent_highlights(data_dir: Path) -> str:
                                                 "drop": prev_price - vprice, "pct": round((prev_price - vprice) / prev_price * 100),
                                                 "date": snap_date, "ships_wa": ships_wa, "url": url})
 
-    # Sort: WA-shipping first, then by date desc
-    restocks.sort(key=lambda x: (not x["ships_wa"], x["date"]), reverse=True)
-    price_drops.sort(key=lambda x: (not x["ships_wa"], x["drop"]), reverse=True)
+    # Sort: by date desc, then by impact
+    restocks.sort(key=lambda x: x["date"], reverse=True)
+    price_drops.sort(key=lambda x: x["drop"], reverse=True)
 
-    # Pick top items (prefer WA-shipping, deduplicate by nursery)
+    # Pick top items (deduplicate by nursery)
     top_restocks = []
     seen_nurseries_r = set()
     for r in restocks:
-        if r["nursery"] not in seen_nurseries_r or r["ships_wa"]:
+        if r["nursery"] not in seen_nurseries_r:
             top_restocks.append(r)
             seen_nurseries_r.add(r["nursery"])
         if len(top_restocks) >= 4:
@@ -271,7 +271,7 @@ def build_recent_highlights(data_dir: Path) -> str:
     top_drops = []
     seen_nurseries_d = set()
     for d in price_drops:
-        if d["nursery"] not in seen_nurseries_d or d["ships_wa"]:
+        if d["nursery"] not in seen_nurseries_d:
             top_drops.append(d)
             seen_nurseries_d.add(d["nursery"])
         if len(top_drops) >= 3:
@@ -280,21 +280,14 @@ def build_recent_highlights(data_dir: Path) -> str:
     if not top_restocks and not top_drops:
         return ""
 
-    def wa_badge(ships_wa):
-        if ships_wa:
-            return '<span class="inline-block text-xs bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded ml-1">Ships to WA</span>'
-        return ""
-
     restock_rows = ""
     for r in top_restocks:
         price_str = f"${r['price']:.0f}" if r['price'] else ""
-        short_date = r["date"][5:]  # "03-14" -> show as MM/DD for brevity
         restock_rows += f"""<li class="flex items-baseline gap-1.5 py-1 border-b border-green-100 last:border-0">
-          <span class="text-green-600 font-bold text-sm">✅</span>
+          <span class="text-green-600 font-bold text-sm">&#10003;</span>
           <span class="text-sm flex-1 min-w-0">
             <span class="font-medium">{r['title']}</span>
-            <span class="text-gray-500"> — {r['nursery']}</span>
-            {wa_badge(r['ships_wa'])}
+            <span class="text-gray-500"> &mdash; {r['nursery']}</span>
           </span>
           <span class="text-sm font-semibold text-gray-700 flex-shrink-0">{price_str}</span>
         </li>"""
@@ -302,13 +295,12 @@ def build_recent_highlights(data_dir: Path) -> str:
     drop_rows = ""
     for d in top_drops:
         drop_rows += f"""<li class="flex items-baseline gap-1.5 py-1 border-b border-blue-100 last:border-0">
-          <span class="text-blue-600 font-bold text-sm">↓</span>
+          <span class="text-blue-600 font-bold text-sm">&darr;</span>
           <span class="text-sm flex-1 min-w-0">
             <span class="font-medium">{d['title']}</span>
-            <span class="text-gray-500"> — {d['nursery']}</span>
-            {wa_badge(d['ships_wa'])}
+            <span class="text-gray-500"> &mdash; {d['nursery']}</span>
           </span>
-          <span class="text-sm flex-shrink-0"><span class="line-through text-gray-400">${d['old_price']:.0f}</span> <span class="font-semibold text-blue-700">${d['new_price']:.0f}</span> <span class="text-blue-600">−{d['pct']}%</span></span>
+          <span class="text-sm flex-shrink-0"><span class="line-through text-gray-400">${d['old_price']:.0f}</span> <span class="font-semibold text-blue-700">${d['new_price']:.0f}</span> <span class="text-blue-600">&minus;{d['pct']}%</span></span>
         </li>"""
 
     total_restocks = len(restocks)
@@ -715,7 +707,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 <style>
   body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
   .stock-badge {{ font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }}
-  .wa-badge {{ background: #fef3c7; color: #92400e; }}
+  .restrict-badge {{ background: #fee2e2; color: #991b1b; font-size: 0.65rem; }}
   .sale-badge {{ background: #fee2e2; color: #991b1b; }}
   .new-badge {{ background: #dbeafe; color: #1e40af; }}
   .back-badge {{ background: #d1fae5; color: #065f46; font-weight: 600; }}
@@ -799,36 +791,16 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     </div>
   </div>
 
-  <!-- Nursery Summary (hidden when searching) -->
-  <div id="nurserySummaryWrap" class="mb-4">
-    <button id="nurseryToggle" class="sm:hidden flex items-center gap-1 text-sm text-gray-500 mb-2" onclick="toggleNurserySummary()">
-      <span id="nurseryToggleIcon">&#9654;</span> Nurseries
+  <!-- Results (keep above the fold) -->
+  <div id="results"></div>
+  <div id="loadMore" class="text-center py-4 hidden">
+    <button onclick="showMore()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+      Show more results
     </button>
-    <div id="nurserySummary" class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm"></div>
   </div>
 
-  <!-- Rare Finds teaser -->
-  <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-center justify-between gap-3">
-    <div>
-      <span class="text-sm font-semibold text-amber-900">🌿 Rare &amp; Exotic Finds</span>
-      <span class="text-sm text-amber-800 ml-2">Jaboticaba, Rambutan, Sapodilla, Rollinia &amp; more in stock now.</span>
-    </div>
-    <a href="/rare.html" class="text-sm font-semibold text-amber-700 hover:text-amber-900 whitespace-nowrap">View all &rarr;</a>
-  </div>
-
-  <!-- Browse by Species — horizontal scroll strip, server-rendered for SEO -->
-  <div id="speciesWrap" class="mb-4">
-    <div class="flex items-center gap-2 mb-2">
-      <h2 class="text-sm font-semibold text-gray-600">Browse by Species</h2>
-      <a href="/species/" class="text-xs text-green-600 hover:underline ml-auto">All species &rarr;</a>
-    </div>
-    <div class="species-strip">{species_strip_html}</div>
-  </div>
-
-{highlights_html}
-
-  <!-- Email Alerts Signup (above results) -->
-  <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+  <!-- Email Alerts Signup (below results) -->
+  <div class="mt-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
       <p class="text-sm text-green-800 flex-1"><strong>Get tomorrow's changes in your inbox</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
@@ -842,12 +814,15 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     <div id="subMessage" class="mt-2 text-sm hidden"></div>
   </div>
 
-  <!-- Results -->
-  <div id="results"></div>
-  <div id="loadMore" class="text-center py-4 hidden">
-    <button onclick="showMore()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-      Show more results
-    </button>
+{highlights_html}
+
+  <!-- Browse by Species -->
+  <div id="speciesWrap" class="mb-4">
+    <div class="flex items-center gap-2 mb-2">
+      <h2 class="text-sm font-semibold text-gray-600">Browse by Species</h2>
+      <a href="/species/" class="text-xs text-green-600 hover:underline ml-auto">All species &rarr;</a>
+    </div>
+    <div class="species-strip">{species_strip_html}</div>
   </div>
 </main>
 
@@ -878,42 +853,18 @@ const NURSERY_URLS = {{
 
 let displayCount = 50;
 let currentResults = [];
-let nurseryExpanded = false;
-
-function toggleNurserySummary() {{
-  nurseryExpanded = !nurseryExpanded;
-  const el = document.getElementById('nurserySummary');
-  const icon = document.getElementById('nurseryToggleIcon');
-  if (nurseryExpanded) {{
-    el.classList.remove('hidden');
-    el.classList.add('grid');
-    icon.innerHTML = '&#9660;';
-  }} else {{
-    el.classList.add('hidden');
-    el.classList.remove('grid');
-    icon.innerHTML = '&#9654;';
-  }}
-}}
 
 // Build state→nursery shipping lookup
 const SHIPS_TO = {{}};
 N.forEach(n => {{ SHIPS_TO[n.key] = n.st || []; }});
 
-// Populate nursery filter & summary
+// Populate nursery filter
 const nurserySelect = document.getElementById('nurseryFilter');
-const nurserySummary = document.getElementById('nurserySummary');
 N.forEach(n => {{
   const opt = document.createElement('option');
   opt.value = n.key;
   opt.textContent = `${{n.name}} (${{n.in_stock}} in stock)`;
   nurserySelect.appendChild(opt);
-
-  nurserySummary.innerHTML += `
-    <div class="border border-gray-200 rounded p-2">
-      <div class="font-medium text-xs">${{n.name}}</div>
-      <div class="text-green-700 font-bold">${{n.in_stock}}</div>
-      <div class="text-gray-400 text-xs">of ${{n.count}} in stock</div>
-    </div>`;
 }});
 
 const totalProducts = P.length;
@@ -937,13 +888,6 @@ function search() {{
   const stockOnly = inStockOnly.checked;
   const st = stateFilter.value;
   const sort = sortBy.value;
-
-  // Hide nursery summary and species grid when actively searching/filtering
-  const hasFilters = q || nursery || changesOnly.checked;
-  const wrap = document.getElementById('nurserySummaryWrap');
-  wrap.style.display = hasFilters ? 'none' : '';
-  const speciesWrap = document.getElementById('speciesWrap');
-  speciesWrap.style.display = hasFilters ? 'none' : '';
 
   let results = P;
 
@@ -1002,9 +946,15 @@ function render() {{
     const stockBadge = p.a
       ? `<span class="stock-badge in-stock">${{p.s ? p.s + ' left' : 'In stock'}}</span>`
       : '<span class="stock-badge out-stock">Out of stock</span>';
+    // Show shipping restriction warnings for WA/NT/TAS
+    const nShips = SHIPS_TO[p.nk] || [];
+    const restricted = ['WA','NT','TAS'].filter(s => !nShips.includes(s));
     const _st = stateFilter.value;
-    const shipsBadge = (_st && (SHIPS_TO[p.nk] || []).includes(_st))
-      ? `<span class="stock-badge wa-badge">Ships to ${{_st}}</span>` : '';
+    const shipsBadge = (_st && !nShips.includes(_st))
+      ? `<span class="stock-badge restrict-badge">No ${{_st}}</span>`
+      : (restricted.length > 0 && restricted.length < 3 && !_st)
+        ? `<span class="stock-badge restrict-badge">No ${{restricted.join('/')}}</span>`
+        : '';
     const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
     const latinName = p.ln ? `<span class="text-xs text-gray-400 italic ml-1">${{p.ln}}</span>` : '';
     const cultivar = p.cv ? ` '${{p.cv}}'` : '';
