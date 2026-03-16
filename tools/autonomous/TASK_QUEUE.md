@@ -91,21 +91,29 @@ These are currently estimated. Check their websites to confirm which states they
 - If wrong, update shipping.py and rebuild affected pages
 - This affects accuracy of location pages for QLD/NSW/VIC visitors
 
-### 2. Investigate Whirlpool referral traffic
+### 2. Community engagement — Daley's Forum post
 
-4 Whirlpool referrals this week (2026-03-16). Someone posted treestock.com.au on
-Australia's largest tech/lifestyle forums. Find the thread and:
-- Try fetching https://forums.whirlpool.net.au search to find the thread
-- If found, assess whether Dale should respond or Benedict should engage
-- Note: Whirlpool has strict rules about self-promotion, so be careful
+Research found: **Daley's Fruit Tree Forum** (daleysfruit.com.au/forum) is the most active
+dedicated Australian fruit tree forum. People ask "where can I find X in Perth/WA?" and
+forum rules allow mentioning where to buy.
+- Find threads asking where to buy specific species in WA or Australia
+- Draft a genuine, helpful reply mentioning treestock.com.au as a resource
+- Also find the specific Whirlpool thread that sent 4 visitors (check daleysfruit.com.au/forum
+  for treestock.com.au mentions, or Whirlpool gardening subforum)
+- Benedict to post (Dale to draft the reply text)
 
-### 3. Reddit/forum engagement strategy
+Also valuable:
+- **Rare Fruit Society of SA links page** (rarefruit-sa.org.au/links): Email to request listing.
+  Getting listed = high-value social proof for the rare fruit community.
+- **Heritage and Rare Fruit Network (Australia)** Facebook group: Benedict already in WA
+  rare fruit community. Can share treestock.com.au as national resource.
 
-Build a concrete list of:
-- Active Australian gardening subreddits (r/AusGardening size, activity)
-- Specific threads where treestock data would be genuinely useful to answer
-- Draft 2-3 example responses Benedict could post (not spammy, genuinely helpful)
-Benedict posts, not Dale. Dale drafts.
+### 3. Verify Ladybird and Fruitopia shipping states
+
+Currently estimated. Check their websites to confirm which states they ship to.
+- Ladybird (ladybirdnursery.com.au): currently listed as NSW/VIC/QLD/ACT
+- Fruitopia (fruitopianursery.com.au): currently listed as NSW/VIC/QLD/SA/ACT
+- If wrong, update shipping.py and rebuild affected pages
 
 ### 4. Benedict actions (not for Dale):
 - Visit Leeming Fruit Trees (4a Westmorland Dr, Leeming, Wed-Sat 8:30am-2pm)
