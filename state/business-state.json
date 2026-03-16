@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "last_updated": "2026-03-16",
-  "session_count": 21,
+  "session_count": 22,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -48,8 +48,8 @@
       "nurseries_researched": 17,
       "first_scrape_date": "2026-03-05",
       "days_of_data": 11,
-      "products_tracked": 10426,
-      "in_stock": 3547,
+      "products_tracked": 5688,
+      "in_stock": 2785,
       "products_note": "fruit/edible only (filtered from ~18,000+ total raw). HFT adds ~300 temperate varieties.",
       "species_matched_pct": 68,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
@@ -94,9 +94,9 @@
         "fruit_tree_cottage": {"products": 185, "in_stock": 108, "platform": "Shopify", "ships_to_wa": false, "location": "QLD", "note": "does not ship to WA/NT/TAS, added 2026-03-15"},
         "all_season_plants_wa": {"products": 20, "in_stock": 20, "platform": "Shopify", "ships_to_wa": true, "location": "WA", "note": "WA pickup + local delivery, rare tropicals (mangosteen, wampee, jaboticaba)"},
         "ausnurseries": {"products": 409, "in_stock": 109, "platform": "Shopify", "ships_to_wa": false, "location": "NSW", "note": "does not ship to WA/NT/TAS"},
-        "heritage_fruit_trees": {"products": 332, "in_stock": "pending first scrape", "platform": "BigCommerce", "ships_to_wa": true, "location": "VIC", "note": "Heritage/heirloom temperate varieties. WA shipping in winter/dormant season (May-Sep). Added 2026-03-16."}
+        "heritage_fruit_trees": {"products": 332, "in_stock": 331, "platform": "BigCommerce", "ships_to_wa": true, "location": "VIC", "note": "Heritage/heirloom temperate varieties. WA shipping in winter/dormant season (May-Sep). Added 2026-03-16."}
       },
-      "next_action": "Day 11: 490 visitors (7-day), 4 subscribers, Whirlpool referrals appearing. Heritage Fruit Trees (12th nursery) first scrape running. Partnership page live for nursery outreach."
+      "next_action": "Benedict to send Heritage Fruit Trees outreach (deliverables/heritage-fruit-trees-outreach-2026-03-16.md) + WhatsApp Cyrus at Primal Fruits. Location pages now auto-rebuild daily."
     }
   },
   "infrastructure": {

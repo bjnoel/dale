@@ -908,3 +908,26 @@ buyers with live stock data, nursery summaries, subscribe form, and cross-links.
 **Results:** 332 product URLs scraped (295 fruit trees + 17 nut trees + 20 berries/vines). First snapshot
 in progress. Will be live in tomorrow's dashboard build.
 **Status:** LIVE
+
+---
+
+## DEC-057 — 2026-03-16 — Location Pages Script + Heritage Outreach
+
+**Decided by:** Dale
+**Decision:** (1) Rebuild location pages script (was missing from pipeline). (2) Write Heritage Fruit Trees nursery partnership outreach.
+**Rationale:**
+- Location pages (buy-fruit-trees-wa.html etc.) were last built March 14 from hardcoded data. Script was lost.
+  Built build_location_pages.py to auto-generate from live nursery data daily. Added to run-all-scrapers.sh.
+  WA page: 1,359 in-stock products from 7 nurseries (was 1,060/6). Heritage Fruit Trees adds 299 WA-shippable products.
+- Heritage Fruit Trees sponsorship outreach: WA shipping season (May-Sep) is 6-8 weeks away.
+  Perfect timing to reach WA buyers who need to order before the dormant season window opens.
+  We already track their 332 products — sponsored listing is a promotion upgrade, not a new integration.
+  Outreach draft: deliverables/heritage-fruit-trees-outreach-2026-03-16.md.
+**What was built:**
+- scrapers/build_location_pages.py: regenerates 4 location pages from live data daily.
+- scrapers/run-all-scrapers.sh: location pages added to daily pipeline.
+- dashboard rebuild: 5,688 products from 12 nurseries (Heritage Fruit Trees now included).
+- deliverables/heritage-fruit-trees-outreach-2026-03-16.md: outreach email + strategy.
+**Action for Benedict:** Send Heritage Fruit Trees outreach via their contact form this week.
+  Also: WhatsApp Cyrus at Primal Fruits directly ("Hey Cyrus, your stock is on treestock.com.au...").
+**Status:** LIVE + AWAITING BENEDICT
