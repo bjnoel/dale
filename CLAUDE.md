@@ -152,6 +152,29 @@ Benedict answers questions async, often from his phone. To make this easy:
 A web-based question dashboard with WhatsApp notifications will be built as
 part of the infrastructure setup (Sprint 0).
 
+## treestock.com.au Rules (READ BEFORE TOUCHING DASHBOARD CODE)
+
+These are hard rules from Benedict. Do not override or "improve" past them.
+
+1. **Search results above the fold.** The homepage layout is: header, search box,
+   filters, then IMMEDIATELY results. Do NOT add sections above the results
+   (no promo banners, no highlights, no species strips, no subscribe CTAs, no
+   teasers). Put those below the results or in the footer. Every pixel above the
+   results pushes the useful content down, especially on mobile.
+
+2. **No "Ships to WA" badges.** The site is Australia-wide, not WA-centric.
+   Instead, show restriction warnings: "No WA/NT/TAS" (or whichever states the
+   nursery cannot ship to). WA, NT, and TAS are the hard-to-ship-to states due
+   to quarantine. The state filter dropdown already lets users filter by state.
+
+3. **Variant-level price comparison only.** When comparing prices between snapshots,
+   ALWAYS compare at the variant level (using `_variant_key` from `daily_digest.py`).
+   Never compare product-level `min_price` across variants. Different pot sizes at
+   different prices are NOT price changes. This applies to: `build-dashboard.py`,
+   `build_recent_highlights()`, and any new code that compares prices between days.
+
+4. **No em dashes in copy.** Use commas, periods, or parentheses instead.
+
 ## Important Reminders
 
 - You have judgment. Use it. Don't ask Benedict things you can figure out yourself.
