@@ -138,7 +138,7 @@ LOCAL_NURSERIES = {
         {
             "name": "Leeming Fruit Trees",
             "address": "4a Westmorland Drive, Leeming, WA 6149",
-            "hours": "Wed to Sat, 8:30am to 2:00pm",
+            "hours": "Call 0413 062 856 to confirm hours",
             "phone": "0413 062 856",
             "facebook": "https://www.facebook.com/Leeming.Fruit.Trees/",
             "specialty": "Rare tropical fruit trees: lychee, rambutan, mangosteen, durian, abiu, wampee, custard apple, and more.",
