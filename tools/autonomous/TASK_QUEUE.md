@@ -5,6 +5,25 @@
 
 ---
 
+## Completed This Session (2026-03-16 UTC, sessions 22-23 — 18:00-20:00 UTC)
+
+- [x] Notion task: 4x cron confirmed already done (DEC-050 from session 8). Marked Done.
+- [x] Heritage Fruit Trees (BigCommerce) added to treestock.com.au (DEC-056, session 22).
+      332 products scraped, 331 in stock. First temperate/heritage nursery.
+- [x] Location pages script rebuilt (DEC-057/058):
+      build_location_pages.py created with fruit_species.json filtering.
+      Old pages showed irrigation connectors. New: 491 WA in-stock, 1,349 QLD/NSW/VIC.
+      Added to run-all-scrapers.sh. Products sorted by price descending (interesting first).
+- [x] Leeming Fruit Trees prospect research (session 23, DEC-058):
+      - Address: 4a Westmorland Dr, Leeming, WA 6149. Phone: 0413 062 856. Wed-Sat 8:30am-2pm.
+      - 10,148 Facebook followers. No website. Rare tropicals (rambutan, mangosteen, durian, etc.)
+      - Better Track A+B prospect than Tass1 Trees — WA-based, exact treestock audience.
+      - Full brief: deliverables/leeming-fruit-trees-cold-outreach.md
+      - Already listed on treestock.com.au/buy-fruit-trees-wa.html (local pickup section).
+      - Benedict to visit in person Wed-Sat.
+
+---
+
 ## Completed This Session (2026-03-15 UTC, session 10 — 21:00 UTC)
 
 - [x] Notion task: 4x cron verified already done (DEC-050 from session 8). Marked Done in Notion.
@@ -62,25 +81,41 @@
 
 ---
 
-## Tomorrow's Tasks (2026-03-14 UTC) — In Priority Order
+## Tomorrow's Tasks (2026-03-17 UTC) — In Priority Order
 
-### 1. Add Tass1 Trees to treestock.com.au
+### 1. Verify Ladybird and Fruitopia shipping states
 
-Tass1 Trees is a WA-based specialist fruit nursery identified during cold outreach research.
-They don't have an online shop — their products page is a static list linking to PDF/list files.
-Research their website structure and build a scraper if possible.
-- Check http://tass1trees.com.au/fruitingplants.htm for product list format
-- If scrapeable: build scraper, add to pipeline
-- If not scrapeable: add to "nurseries researched but not trackable" list with notes
-- Either way: note in business-state.json + log decision
+These are currently estimated. Check their websites to confirm which states they ship to.
+- Ladybird (ladybirdnursery.com.au): currently listed as NSW/VIC/QLD/ACT
+- Fruitopia (fruitopianursery.com.au): currently listed as NSW/VIC/QLD/SA/ACT
+- If wrong, update shipping.py and rebuild affected pages
+- This affects accuracy of location pages for QLD/NSW/VIC visitors
 
-### 2. Benedict action: Send Tass1 Trees cold email
+### 2. Investigate Whirlpool referral traffic
 
-The email is ready at deliverables/tass1-trees-cold-outreach.md.
-Benedict should send from hello@walkthrough.au to joe@tass1trees.com.au.
-Subject: "Two things on your website that are turning customers away"
-This is the highest-priority Track A revenue action right now.
-*(Note for Benedict: add as Notion task if you want Dale to track it)*
+4 Whirlpool referrals this week (2026-03-16). Someone posted treestock.com.au on
+Australia's largest tech/lifestyle forums. Find the thread and:
+- Try fetching https://forums.whirlpool.net.au search to find the thread
+- If found, assess whether Dale should respond or Benedict should engage
+- Note: Whirlpool has strict rules about self-promotion, so be careful
+
+### 3. Reddit/forum engagement strategy
+
+Build a concrete list of:
+- Active Australian gardening subreddits (r/AusGardening size, activity)
+- Specific threads where treestock data would be genuinely useful to answer
+- Draft 2-3 example responses Benedict could post (not spammy, genuinely helpful)
+Benedict posts, not Dale. Dale drafts.
+
+### 4. Benedict actions (not for Dale):
+- Visit Leeming Fruit Trees (4a Westmorland Dr, Leeming, Wed-Sat 8:30am-2pm)
+  Show them: treestock.com.au/buy-fruit-trees-wa.html (already listed there)
+  Pitch: free listing today, website build for $199+
+- Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
+  hello@walkthrough.au to joe@tass1trees.com.au
+- Send Heritage Fruit Trees outreach (deliverables/heritage-fruit-trees-outreach-2026-03-16.md)
+  WA shipping season opens May — timing is now
+- WhatsApp Cyrus at Primal Fruits re: featured listing
 
 ### 3. Subscribe-server restart (Q32 — needs Benedict)
 
@@ -117,7 +152,7 @@ Set up a simple weekly tar + local archive of /opt/dale/data/:
 - [x] Cold outreach audit — DONE 2026-03-13: Tass1 Trees analysis + email ready
 - [ ] Benedict to send Tass1 Trees cold email ← see task 2 above (Benedict's action)
 - [ ] Approach Daleys for sponsored listing once Primal Fruits result is in
-- [ ] Cross-sell Track A+B: approach WA nurseries without websites (Leeming Fruit Trees)
+- [x] Cross-sell Track A+B: Leeming Fruit Trees researched — DONE 2026-03-16. Brief ready, listed on WA page. Benedict to visit.
 - [ ] Species alerts paid tier: once 10+ watchers on a rare species, consider $2/month premium
 
 ### Community & Growth
