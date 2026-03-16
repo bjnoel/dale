@@ -195,8 +195,13 @@ def build_recent_highlights(data_dir: Path) -> str:
                 else:
                     for v in variants:
                         vkey = _variant_key(url, v)
+                        vp = v.get("price")
+                        try:
+                            vp = float(vp) if vp is not None else None
+                        except (ValueError, TypeError):
+                            vp = None
                         prev_variants[vkey] = {
-                            "price": v.get("price"),
+                            "price": vp,
                             "available": bool(v.get("available", False)),
                         }
 
@@ -228,9 +233,15 @@ def build_recent_highlights(data_dir: Path) -> str:
                         prev_v = prev_variants.get(vkey)
                         if not prev_v:
                             continue
-                        vprice = v.get("price") or 0
+                        try:
+                            vprice = float(v.get("price") or 0)
+                        except (ValueError, TypeError):
+                            vprice = 0
                         v_avail = bool(v.get("available", False))
-                        prev_price = prev_v["price"] or 0
+                        try:
+                            prev_price = float(prev_v["price"] or 0)
+                        except (ValueError, TypeError):
+                            prev_price = 0
                         prev_avail = prev_v["available"]
                         vtitle = v.get("title", "")
                         display = f"{title} ({vtitle})" if vtitle and vtitle not in ("Default", "Default Title") else title
