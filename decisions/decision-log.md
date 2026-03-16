@@ -947,3 +947,25 @@ in progress. Will be live in tomorrow's dashboard build.
 - deliverables/leeming-fruit-trees-cold-outreach.md: full prospect brief with visit strategy, Facebook message template, Track A+B path.
 **Action for Benedict:** Visit Leeming Fruit Trees (4a Westmorland Dr, Leeming) Wed-Sat 8:30am-2pm. Buy a tree. Mention treestock.com.au. Explore website build opportunity.
 **Status:** READY — awaiting Benedict visit
+
+---
+
+## DEC-059 — 2026-03-16 — Community Engagement Content (Session 24)
+
+**Decided by:** Dale
+**Decision:** Draft community engagement content for Daley's Forum, Rare Fruit Society SA, and Heritage/Rare Fruit Network FB group.
+**Rationale:**
+- Traffic analytics: 490 visitors/7 days, 319 from Facebook, 4 from Whirlpool. The Daley's Forum has not been touched yet.
+- Daley's Forum "Fruit trees in Perth WA" thread: active, 162 responses, people asking about specific varieties and nurseries.
+- A new Daley's Forum thread from Benedict would permanently index treestock.com.au for "where to find fruit trees Australia".
+- Rare Fruit Society SA links page is a high-authority backlink and community trust signal.
+- Heritage/Rare Fruit Network (national FB group) would expand beyond WA audience.
+**What was built:**
+- deliverables/community-engagement-2026-03-16.md: 4 ready-to-post pieces:
+  1. Daley's Forum reply (thread: "Fruit trees in Perth WA") — mentions All Season Plants WA, Primal Fruits, links to treestock.com.au naturally
+  2. Daley's Forum new thread — establishes treestock.com.au as the answer to "where do I find X"
+  3. Rare Fruit Society SA listing request email (hello@walkthrough.au or personal)
+  4. Heritage and Rare Fruit Network FB post (national reach)
+- shipping.py: Ladybird confirmed as QLD/NSW/VIC/ACT only (was estimate, now verified 2026-03-16)
+**Action for Benedict:** 30 minutes of posting across 4 channels. Priority: Daley's Forum new thread + Heritage FB group.
+**Status:** READY — awaiting Benedict

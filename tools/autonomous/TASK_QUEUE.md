@@ -5,6 +5,23 @@
 
 ---
 
+## Completed This Session (2026-03-16 UTC, session 24 — 21:00 UTC)
+
+- [x] Notion task: 4x cron confirmed already done (again). Marked Done in Notion (id: 3247f8d5).
+- [x] Verified Ladybird shipping states: Confirmed QLD/NSW/VIC/ACT only (not WA/NT/TAS).
+      shipping.py updated with confirmed annotation.
+- [x] Fruitopia shipping states: Could not confirm definitively. Current estimate (NSW/VIC/QLD/SA/ACT)
+      remains. Their shipping policy doesn't list states explicitly.
+- [x] Community engagement content drafted (DEC-059):
+      deliverables/community-engagement-2026-03-16.md — 4 ready-to-post pieces:
+      1. Daley's Forum thread reply (Fruit trees in Perth WA) — mentions All Season Plants WA, Primal Fruits
+      2. Daley's Forum new thread — launch post for treestock.com.au in the community
+      3. Rare Fruit Society SA listing request email
+      4. Heritage and Rare Fruit Network national FB post
+      Benedict: 30 min of posting. Priority: new Daley's Forum thread + Heritage FB group.
+
+---
+
 ## Completed This Session (2026-03-16 UTC, sessions 22-23 — 18:00-20:00 UTC)
 
 - [x] Notion task: 4x cron confirmed already done (DEC-050 from session 8). Marked Done.
@@ -83,68 +100,48 @@
 
 ## Tomorrow's Tasks (2026-03-17 UTC) — In Priority Order
 
-### 1. Verify Ladybird and Fruitopia shipping states
-
-These are currently estimated. Check their websites to confirm which states they ship to.
-- Ladybird (ladybirdnursery.com.au): currently listed as NSW/VIC/QLD/ACT
-- Fruitopia (fruitopianursery.com.au): currently listed as NSW/VIC/QLD/SA/ACT
-- If wrong, update shipping.py and rebuild affected pages
-- This affects accuracy of location pages for QLD/NSW/VIC visitors
-
-### 2. Community engagement — Daley's Forum post
-
-Research found: **Daley's Fruit Tree Forum** (daleysfruit.com.au/forum) is the most active
-dedicated Australian fruit tree forum. People ask "where can I find X in Perth/WA?" and
-forum rules allow mentioning where to buy.
-- Find threads asking where to buy specific species in WA or Australia
-- Draft a genuine, helpful reply mentioning treestock.com.au as a resource
-- Also find the specific Whirlpool thread that sent 4 visitors (check daleysfruit.com.au/forum
-  for treestock.com.au mentions, or Whirlpool gardening subforum)
-- Benedict to post (Dale to draft the reply text)
-
-Also valuable:
-- **Rare Fruit Society of SA links page** (rarefruit-sa.org.au/links): Email to request listing.
-  Getting listed = high-value social proof for the rare fruit community.
-- **Heritage and Rare Fruit Network (Australia)** Facebook group: Benedict already in WA
-  rare fruit community. Can share treestock.com.au as national resource.
-
-### 3. Verify Ladybird and Fruitopia shipping states
-
-Currently estimated. Check their websites to confirm which states they ship to.
-- Ladybird (ladybirdnursery.com.au): currently listed as NSW/VIC/QLD/ACT
-- Fruitopia (fruitopianursery.com.au): currently listed as NSW/VIC/QLD/SA/ACT
-- If wrong, update shipping.py and rebuild affected pages
-
-### 4. Benedict actions (not for Dale):
+### 1. Benedict actions (priority — not for Dale)
+- **Post on Daley's Fruit Tree Forum** — see deliverables/community-engagement-2026-03-16.md (Task 2: new thread)
+- **Post in Heritage and Rare Fruit Network** national FB group (Task 4 in same file)
+- **Email Rare Fruit Society SA** to request links listing (Task 3 in same file)
 - Visit Leeming Fruit Trees (4a Westmorland Dr, Leeming, Wed-Sat 8:30am-2pm)
-  Show them: treestock.com.au/buy-fruit-trees-wa.html (already listed there)
-  Pitch: free listing today, website build for $199+
-- Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
-  hello@walkthrough.au to joe@tass1trees.com.au
 - Send Heritage Fruit Trees outreach (deliverables/heritage-fruit-trees-outreach-2026-03-16.md)
-  WA shipping season opens May — timing is now
+- Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
 - WhatsApp Cyrus at Primal Fruits re: featured listing
+- Run: `sudo systemctl restart subscribe-server` (watch/notify-me endpoint needs restart)
 
-### 3. Subscribe-server restart (Q32 — needs Benedict)
+### 2. Dale: Subscriber growth experiment — sample digest page or email sequence
 
-The watch/notify-me endpoint is deployed but the service hasn't been restarted.
-Benedict to run: `sudo systemctl restart subscribe-server`
+We have 4 subscribers (up from 3). The conversion rate from visit to subscribe is very low (~0.6%).
+The /sample-digest.html page exists. Consider:
+- A/B test: send a "best of the week" round-up to existing subscribers to show value
+- Build a "7-day new subscriber welcome" email sequence (Day 1: welcome + how to use,
+  Day 7: "here's what you missed this week" highlights)
+- Goal: get existing subscribers to share with friends
+
+### 3. Dale: Check if All Season Plants WA should be on treestock.com.au as pickup listing
+
+They have 20 in-stock rare tropicals (Grimal jaboticaba, mangosteens, wampee, named mangoes).
+Currently NOT in the scraper — only in the WA location page as a local pickup mention.
+Consider: add to scraper so their stock appears in search and species pages.
+This would make treestock.com.au more complete for WA collectors.
+
+### 4. Dale: Fruitopia shipping states verification
+
+Still unconfirmed. Current estimate (NSW/VIC/QLD/SA/ACT) may or may not include SA.
+Try: check their Shopify checkout shipping calculator (add a product to cart, enter SA postcode)
+or email them directly. Low priority — affects accuracy of location pages for SA.
+
+### 5. Subscribe-server restart (Q32 — needs Benedict)
+Run: `sudo systemctl restart subscribe-server`
 Watch signups will start accumulating once restarted.
-
-### 4. Weekly data backup setup
-
-Set up a simple weekly tar + local archive of /opt/dale/data/:
-- cron: `0 2 * * 0 tar -czf /opt/dale/backups/data-$(date +\%Y-\%W).tar.gz /opt/dale/data/`
-- Keep last 4 weeks
-- No external dependency needed — pure local backup
-- Future: add rsync to Benedict's machine or S3
 
 ---
 
 ## Backlog — Future Sessions
 
 ### Ops & Infrastructure
-- [ ] Set up weekly data backup: tar /opt/dale/data/ and rsync offsite (free) ← task 4 above
+- [x] Set up weekly data backup — DONE: weekly_backup.sh + cron Sundays 02:00 UTC, 4-week rolling
 - [x] Add uptime monitoring — DONE 2026-03-13: uptime_monitor.py, cron every 5 min
 
 ### SEO & Content
@@ -168,7 +165,8 @@ Set up a simple weekly tar + local archive of /opt/dale/data/:
 - [ ] Reach out to rare fruit societies about listing as a resource
 
 ### Data Quality
-- [ ] Verify Ladybird and Fruitopia shipping states (currently estimated)
+- [x] Ladybird shipping states — DONE 2026-03-16: Confirmed QLD/NSW/VIC/ACT only (shipping.py updated)
+- [ ] Fruitopia shipping states — still unconfirmed (estimate: NSW/VIC/QLD/SA/ACT, no WA/NT/TAS)
 - [ ] Analyse scraper data trends (price/stock changes over the week)
 - [x] Add Tass1 Trees to treestock.com.au — DONE 2026-03-14: not scrapeable (no prices, no stock, static catalog only)
 - [x] Add Fruit Tree Cottage to treestock.com.au — DONE 2026-03-15 (DEC-048)

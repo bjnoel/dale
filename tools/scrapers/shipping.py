@@ -10,7 +10,7 @@ Used by scrapers, dashboard builder, digest, history, and species pages.
 SHIPPING_MAP = {
     "daleys": ["NSW", "VIC", "QLD", "SA", "WA", "ACT"],          # WA: seasonal window + extra fee
     "ross-creek": ["NSW", "VIC", "QLD", "ACT"],                   # Confirmed: QLD/NSW/VIC/ACT only
-    "ladybird": ["NSW", "VIC", "QLD", "ACT"],                     # QLD-based, restricted
+    "ladybird": ["NSW", "VIC", "QLD", "ACT"],                     # Confirmed 2026-03-16: ships to QLD/NSW/VIC/ACT only (not WA/NT/TAS)
     "fruitopia": ["NSW", "VIC", "QLD", "SA", "ACT"],              # QLD-based estimate
     "primal-fruits": ["WA"],                                       # WA-based, local only
     "guildford": ["WA"],                                           # WA-based, Perth metro
