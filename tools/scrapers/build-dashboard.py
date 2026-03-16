@@ -14,6 +14,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES
 
 
@@ -331,7 +332,12 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
 
 
 def load_previous_snapshot(nursery_dir: Path) -> dict:
-    """Load the second-most-recent snapshot for price comparison."""
+    """Load the second-most-recent snapshot for variant-level price comparison.
+
+    Returns a dict keyed by variant key (url|sku:X, url|id:X, or url|v:Title)
+    with {min_price, any_available} per variant. This prevents false price changes
+    when a different-sized variant goes in/out of stock.
+    """
     snapshots = sorted(
         [f for f in nursery_dir.glob("*.json") if re.match(r"\d{4}-\d{2}-\d{2}\.json$", f.name)],
         reverse=True,
@@ -341,25 +347,27 @@ def load_previous_snapshot(nursery_dir: Path) -> dict:
     # snapshots[0] = today, snapshots[1] = previous day
     with open(snapshots[1]) as f:
         data = json.load(f)
-    # Build lookup by URL with title fallback. Merge duplicates (Daleys
-    # has plant-list + pre-purchase entries for the same URL) so min_price
-    # reflects all variants, preventing false price-change detection.
+    # Build variant-level lookup (same approach as daily_digest.load_snapshot)
     lookup = {}
     for p in data.get("products", []):
-        key = p.get("url") or p.get("title", "")
-        if key in lookup:
-            # Merge variants into existing entry, recompute min_price
-            existing = lookup[key]
-            existing_skus = {v.get("sku") for v in existing.get("variants", [])}
-            for v in p.get("variants", []):
-                if v.get("sku") not in existing_skus:
-                    existing.setdefault("variants", []).append(v)
-            avail_prices = [v["price"] for v in existing.get("variants", [])
-                            if v.get("price") is not None and v.get("available")]
-            if avail_prices:
-                existing["min_price"] = min(avail_prices)
-        else:
+        url = p.get("url", "")
+        variants = p.get("variants", [])
+        if not variants:
+            key = url or p.get("title", "")
             lookup[key] = p
+        else:
+            for v in variants:
+                vkey = _variant_key(url, v)
+                vprice = v.get("price")
+                if isinstance(vprice, str):
+                    try:
+                        vprice = float(vprice)
+                    except (ValueError, TypeError):
+                        vprice = None
+                lookup[vkey] = {
+                    "min_price": vprice,
+                    "any_available": bool(v.get("available", False)),
+                }
     return lookup
 
 
@@ -525,24 +533,66 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 if "r" in species:
                     product_data["r"] = species["r"]  # region
 
-            # Price/stock change detection vs previous snapshot
+            # Price/stock change detection vs previous snapshot (variant-level)
             if prev_products:
                 product_url = p.get("url", "")
-                prev = prev_products.get(product_url) or prev_products.get(title)
-                if prev is None:
-                    product_data["ch"] = "new"  # new product
+                variants_list = p.get("variants", [])
+                if variants_list:
+                    # Compare each variant individually to detect real price changes
+                    any_prev_found = False
+                    best_change = None  # track the most significant change to display
+                    for v in variants_list:
+                        vkey = _variant_key(product_url, v)
+                        prev_v = prev_products.get(vkey)
+                        if prev_v is not None:
+                            any_prev_found = True
+                            vprice = v.get("price")
+                            if isinstance(vprice, str):
+                                try:
+                                    vprice = float(vprice)
+                                except (ValueError, TypeError):
+                                    vprice = None
+                            prev_vprice = prev_v.get("min_price")
+                            v_avail = bool(v.get("available", False))
+                            prev_v_avail = prev_v.get("any_available", False)
+                            # Price change on this variant
+                            if vprice and prev_vprice and abs(vprice - prev_vprice) > 0.01:
+                                diff = vprice - prev_vprice
+                                pct = abs(diff) / prev_vprice
+                                ch = "up" if diff > 0 else "down"
+                                if best_change is None or pct > best_change[2]:
+                                    best_change = (ch, prev_vprice, pct, vprice)
+                            # Back in stock
+                            if v_avail and not prev_v_avail:
+                                if best_change is None:
+                                    product_data["ch"] = "back"
+                            elif not v_avail and prev_v_avail:
+                                if best_change is None and not product_data.get("ch"):
+                                    product_data["ch"] = "gone"
+                    if not any_prev_found:
+                        product_data["ch"] = "new"
+                    elif best_change:
+                        product_data["ch"] = best_change[0]
+                        product_data["pp"] = round(best_change[1], 2)
+                        # Override displayed price with the variant that actually changed
+                        product_data["p"] = round(best_change[3], 2)
                 else:
-                    prev_price = prev.get("min_price")
-                    prev_avail = prev.get("any_available", prev.get("available", False))
-                    if min_price and prev_price:
-                        diff = min_price - prev_price
-                        if abs(diff) > 0.01:
-                            product_data["pp"] = round(prev_price, 2)  # previous price
-                            product_data["ch"] = "up" if diff > 0 else "down"
-                    if available and not prev_avail:
-                        product_data["ch"] = "back"  # back in stock
-                    elif not available and prev_avail:
-                        product_data["ch"] = "gone"  # went out of stock
+                    # No variants — fall back to product-level lookup
+                    prev = prev_products.get(product_url) or prev_products.get(title)
+                    if prev is None:
+                        product_data["ch"] = "new"
+                    else:
+                        prev_price = prev.get("min_price")
+                        prev_avail = prev.get("any_available", prev.get("available", False))
+                        if min_price and prev_price:
+                            diff = min_price - prev_price
+                            if abs(diff) > 0.01:
+                                product_data["pp"] = round(prev_price, 2)
+                                product_data["ch"] = "up" if diff > 0 else "down"
+                        if available and not prev_avail:
+                            product_data["ch"] = "back"
+                        elif not available and prev_avail:
+                            product_data["ch"] = "gone"
 
             products.append(product_data)
 
