@@ -131,6 +131,22 @@ CROSS_LINKS = {
     "VIC": [("WA", "Buy in WA"), ("QLD", "Buy in QLD"), ("NSW", "Buy in NSW")],
 }
 
+# Manual entries for local pickup nurseries not in the scraper
+# Shown as an additional section on state pages
+LOCAL_NURSERIES = {
+    "WA": [
+        {
+            "name": "Leeming Fruit Trees",
+            "address": "4a Westmorland Drive, Leeming, WA 6149",
+            "hours": "Wed to Sat, 8:30am to 2:00pm",
+            "phone": "0413 062 856",
+            "facebook": "https://www.facebook.com/Leeming.Fruit.Trees/",
+            "specialty": "Rare tropical fruit trees: lychee, rambutan, mangosteen, durian, abiu, wampee, custard apple, and more.",
+            "note": "Pickup only, no online shop",
+        },
+    ],
+}
+
 
 def load_species() -> set[str]:
     """Load all known fruit species names and synonyms."""
@@ -309,6 +325,48 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     <p class="text-sm">{info_box}</p>
   </div>\n\n"""
 
+    # Local pickup nurseries section (manual, non-scraped)
+    local_nurseries = LOCAL_NURSERIES.get(state, [])
+    local_section_html = ""
+    if local_nurseries:
+        local_rows = ""
+        for n in local_nurseries:
+            contact_parts = []
+            if n.get("phone"):
+                contact_parts.append(f'<a href="tel:{n["phone"]}" class="hover:text-green-700">{n["phone"]}</a>')
+            if n.get("facebook"):
+                contact_parts.append(f'<a href="{n["facebook"]}" class="text-green-700 hover:underline" target="_blank" rel="noopener">Facebook</a>')
+            contact_html = " &middot; ".join(contact_parts) if contact_parts else ""
+            local_rows += f"""        <tr class="border-b border-gray-100">
+          <td class="py-2 pr-4 text-sm">
+            <div class="font-medium">{n['name']}</div>
+            <div class="text-xs text-gray-500">{n['address']}</div>
+            <div class="text-xs text-gray-500">{n['hours']}</div>
+          </td>
+          <td class="py-2 pr-4 text-xs text-gray-600">{n['specialty']}</td>
+          <td class="py-2 text-xs">{contact_html}</td>
+        </tr>\n"""
+        local_section_html = f"""
+  <!-- Local pickup nurseries -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold mb-1">Local nurseries ({state_abbr} pickup only)</h2>
+    <p class="text-sm text-gray-500 mb-3">These nurseries don't ship online but are worth visiting in person.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide">
+            <th class="pb-2 pr-4">Nursery</th>
+            <th class="pb-2 pr-4">Speciality</th>
+            <th class="pb-2">Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+{local_rows}        </tbody>
+      </table>
+    </div>
+  </section>
+"""
+
     # Build canonical date string
     try:
         dt = datetime.strptime(today_str, "%Y-%m-%d")
@@ -409,7 +467,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     </p>
   </section>
 
-  <!-- Subscribe CTA -->
+{local_section_html}  <!-- Subscribe CTA -->
   <section class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
     <h2 class="text-lg font-semibold text-green-900 mb-2">Get daily stock alerts for {state_name}</h2>
     <p class="text-sm text-green-800 mb-4">Free daily email when rare varieties come back in stock or prices change. Unsubscribe anytime.</p>
