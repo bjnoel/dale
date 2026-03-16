@@ -85,6 +85,63 @@ runs independently — the session prompt pulls fresh state each time, so sessio
 
 ---
 
+## DEC-051 — 2026-03-15 — Track A Pivot: Implementation Over Reports
+
+**Decided by:** Joint (Benedict + Dale)
+**Decision:** Pivot Track A from "assessment reports" to "done-for-you implementation,"
+specifically building/rebuilding online presence for small businesses that lack one.
+
+**Context:** First real client interaction (Gather Ceramics, DEC-050) revealed:
+1. Assessment reports have no value to time-poor small business owners
+2. Clients can't attribute results when multiple things change at once
+3. Benedict's time is worth $150/h, so the model can't depend on his hours
+4. The product must be something Dale delivers at scale, not Benedict consulting
+
+**New model:**
+- Target businesses with NO online shop or a broken one (not businesses already doing fine)
+- Dale builds the shop (templated, Shopify or similar), Benedict does the initial conversation
+- Attribution is clear: shop didn't exist before, now it does, every sale through it is ours
+- For nurseries specifically: treestock.com.au is the portfolio AND traffic source
+- Pricing TBD but likely: low/free setup + monthly fee or revenue share
+
+**First targets:** Tass1 Trees (has terrible static site, no shop), Leeming Fruit Trees (no website at all)
+
+**What changes:**
+- Assessment reports are no longer the product (they're a free discovery tool at most)
+- Landing page (walkthrough.au) needs updating to reflect "we build it for you"
+- Prospect briefs should lead with "here's what we'll build" not "here's what's wrong"
+- Track A and Track B converge for nursery clients (treestock traffic = built-in value prop)
+**Status:** ACTIVE — need to solve cold-start problem (no show pieces yet)
+
+---
+
+## DEC-050 — 2026-03-15 — Close Gather Ceramics as Learning Experience
+
+**Decided by:** Joint (Benedict + Dale)
+**Decision:** Close Gather Ceramics engagement. Log learnings, do not pursue further.
+
+**Context:** Benedict delivered the assessment report to Felicity on 2026-03-14.
+Response was poor:
+- She wasn't impressed with the report format
+- Said she has no time to implement any of the 5 recommendations
+- Wanted prices for Benedict to do the work (not scalable at his $150/h rate)
+- Her husband John echoed the sentiment: "all IT people" deliver reports, not results
+- She asked how to attribute results when they also have a new sales guy
+- Our GBP recommendation was wrong: she already had one set up with products and photos
+
+**Learnings (applied to DEC-051):**
+1. Reports = homework. Small business owners don't want homework.
+2. Attribution matters. If you can't clearly show your impact, clients won't retain.
+3. Verify current state before recommending. We recommended GBP setup when it existed.
+4. Solo artisans pivoting B2B (architects/hotels) aren't our target. Their bottleneck
+   is relationships, not digital presence.
+5. The free portfolio piece (DEC-016) model was right: this cost us nothing except time,
+   and the learnings are worth more than $199 would have been.
+
+**Status:** CLOSED — learning experience, no further action
+
+---
+
 ## DEC-049 — 2026-03-15 — ausforums.bjnoel.com Dead Link Cleanup (Benedict Notion Task)
 **Decided by:** Dale (Benedict requested)
 **Decision:** Fix dead links, URL typo, and add bjnoel.com footer to ausforums.bjnoel.com.

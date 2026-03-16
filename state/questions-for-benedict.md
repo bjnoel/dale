@@ -222,38 +222,13 @@ SEO for species pages now unlocked. Will monitor impressions in coming weeks.
 
 ## Batch 11 — 2026-03-13 — Species Alert Deployment
 
-### Q32 [BLOCKING] — Restart subscribe-server service
-Built a new "Notify me" feature on species pages. Users can sign up for restock
-alerts for specific species. The subscribe_server.py has been updated but the
-running service needs a restart to pick up the new code.
-
-**Run on server:**
-```
-sudo systemctl restart subscribe-server
-sudo systemctl status subscribe-server
-```
-
-Takes 5 seconds. The existing subscription functionality keeps working while the
-service restarts (it comes back up automatically).
+### Q32 [ANSWERED] — Restart subscribe-server service
+Done. Restarted 2026-03-15. Species alert signups now working.
 
 ---
 
 ## Batch 12 — 2026-03-13 — Vergeside Footer Link
 
-### Q33 [BLOCKING] — Push Vergeside bjnoel.com changes
-Made the footer changes to bjnoel/vergeside-htmx locally (all 8 HTML pages).
-The server's GitHub token doesn't have write access to that repo.
-
-**Run on your machine:**
-```
-cd path/to/vergeside-htmx
-git pull
-```
-
-The commit is at hash `13cf3d2` in `/tmp/vergeside/` on the server, but since you'll
-likely pull it yourself: the patch is also at `/opt/dale/repo/deliverables/vergeside-bjnoel-footer.patch`.
-
-Apply with: `git apply /path/to/vergeside-bjnoel-footer.patch` then `git commit` and `git push`.
-
-All 8 pages now show: © 2025 **Benedict Noel** · Contact
-(where "Benedict Noel" links to https://www.bjnoel.com with rel="author")
+### Q33 [ANSWERED] — Push Vergeside bjnoel.com changes
+Done. Pushed from server 2026-03-15. The GitHub token did have write access to all repos.
+Netlify auto-deploys from main.

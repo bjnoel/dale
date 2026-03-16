@@ -172,7 +172,7 @@ def build_recent_highlights(data_dir: Path) -> str:
         ships_wa = "WA" in SHIPPING_MAP.get(nursery_key, [])
         nursery_name = NURSERY_NAMES.get(nursery_key, latest_meta.get("nursery_name", nursery_key))
 
-        # Scan consecutive days
+        # Scan consecutive days using variant-level comparison
         for i in range(1, len(snapshots)):
             with open(snapshots[i - 1]) as f:
                 prev_data = json.load(f)
@@ -181,51 +181,67 @@ def build_recent_highlights(data_dir: Path) -> str:
 
             snap_date = snapshots[i].stem  # e.g. "2026-03-14"
 
-            prev_prods = {}
+            # Build variant-level lookup for previous day
+            prev_variants = {}
             for p in prev_data.get("products", []):
-                key = p.get("url") or p.get("title", "")
-                prev_prods[key] = p
+                url = p.get("url", "")
+                variants = p.get("variants", [])
+                if not variants:
+                    key = url or p.get("title", "")
+                    prev_variants[key] = {
+                        "price": p.get("price") or p.get("min_price"),
+                        "available": p.get("available") or p.get("any_available", False),
+                    }
+                else:
+                    for v in variants:
+                        vkey = _variant_key(url, v)
+                        prev_variants[vkey] = {
+                            "price": v.get("price"),
+                            "available": bool(v.get("available", False)),
+                        }
 
             for p in curr_data.get("products", []):
-                key = p.get("url") or p.get("title", "")
                 title = p.get("title", "")
                 url = p.get("url", "")
+                variants = p.get("variants", [])
 
-                curr_avail = p.get("available") or p.get("any_available", False)
-                curr_price = p.get("price") or p.get("min_price") or 0
+                if not variants:
+                    # No variants — product-level comparison
+                    key = url or title
+                    curr_avail = p.get("available") or p.get("any_available", False)
+                    curr_price = p.get("price") or p.get("min_price") or 0
+                    prev_v = prev_variants.get(key)
+                    if prev_v:
+                        prev_avail = prev_v["available"]
+                        prev_price = prev_v["price"] or 0
+                        if curr_avail and not prev_avail and curr_price and curr_price < 500:
+                            restocks.append({"nursery": nursery_name, "title": title, "price": curr_price, "date": snap_date, "ships_wa": ships_wa, "url": url})
+                        if (curr_avail and prev_price and curr_price and curr_price < prev_price
+                                and (prev_price - curr_price) / prev_price >= 0.05 and (prev_price - curr_price) >= 3):
+                            price_drops.append({"nursery": nursery_name, "title": title, "old_price": prev_price, "new_price": curr_price,
+                                                "drop": prev_price - curr_price, "pct": round((prev_price - curr_price) / prev_price * 100),
+                                                "date": snap_date, "ships_wa": ships_wa, "url": url})
+                else:
+                    # Variant-level comparison
+                    for v in variants:
+                        vkey = _variant_key(url, v)
+                        prev_v = prev_variants.get(vkey)
+                        if not prev_v:
+                            continue
+                        vprice = v.get("price") or 0
+                        v_avail = bool(v.get("available", False))
+                        prev_price = prev_v["price"] or 0
+                        prev_avail = prev_v["available"]
+                        vtitle = v.get("title", "")
+                        display = f"{title} ({vtitle})" if vtitle and vtitle not in ("Default", "Default Title") else title
 
-                if key in prev_prods:
-                    prev = prev_prods[key]
-                    prev_avail = prev.get("available") or prev.get("any_available", False)
-                    prev_price = prev.get("price") or prev.get("min_price") or 0
-
-                    # Restock: was out, now in stock
-                    if curr_avail and not prev_avail and curr_price and curr_price < 500:
-                        restocks.append({
-                            "nursery": nursery_name,
-                            "title": title,
-                            "price": curr_price,
-                            "date": snap_date,
-                            "ships_wa": ships_wa,
-                            "url": url,
-                        })
-
-                    # Price drop: meaningful drop (>=5%)
-                    if (curr_avail and prev_price and curr_price
-                            and curr_price < prev_price
-                            and (prev_price - curr_price) / prev_price >= 0.05
-                            and (prev_price - curr_price) >= 3):
-                        price_drops.append({
-                            "nursery": nursery_name,
-                            "title": title,
-                            "old_price": prev_price,
-                            "new_price": curr_price,
-                            "drop": prev_price - curr_price,
-                            "pct": round((prev_price - curr_price) / prev_price * 100),
-                            "date": snap_date,
-                            "ships_wa": ships_wa,
-                            "url": url,
-                        })
+                        if v_avail and not prev_avail and vprice and vprice < 500:
+                            restocks.append({"nursery": nursery_name, "title": display, "price": vprice, "date": snap_date, "ships_wa": ships_wa, "url": url})
+                        if (v_avail and prev_price and vprice and vprice < prev_price
+                                and (prev_price - vprice) / prev_price >= 0.05 and (prev_price - vprice) >= 3):
+                            price_drops.append({"nursery": nursery_name, "title": display, "old_price": prev_price, "new_price": vprice,
+                                                "drop": prev_price - vprice, "pct": round((prev_price - vprice) / prev_price * 100),
+                                                "date": snap_date, "ships_wa": ships_wa, "url": url})
 
     # Sort: WA-shipping first, then by date desc
     restocks.sort(key=lambda x: (not x["ships_wa"], x["date"]), reverse=True)
