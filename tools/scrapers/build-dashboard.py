@@ -791,7 +791,12 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     </div>
   </div>
 
-  <!-- Results (keep above the fold) -->
+  <!-- Browse by Species -->
+  <div id="speciesWrap" class="mb-3">
+    <div class="species-strip">{species_strip_html}</div>
+  </div>
+
+  <!-- Results -->
   <div id="results"></div>
   <div id="loadMore" class="text-center py-4 hidden">
     <button onclick="showMore()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
@@ -816,14 +821,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 
 {highlights_html}
 
-  <!-- Browse by Species -->
-  <div id="speciesWrap" class="mb-4">
-    <div class="flex items-center gap-2 mb-2">
-      <h2 class="text-sm font-semibold text-gray-600">Browse by Species</h2>
-      <a href="/species/" class="text-xs text-green-600 hover:underline ml-auto">All species &rarr;</a>
-    </div>
-    <div class="species-strip">{species_strip_html}</div>
-  </div>
+
 </main>
 
 <footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
