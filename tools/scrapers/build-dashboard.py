@@ -834,7 +834,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     <a href="/history.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Price History</a>
   </div>
   <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>
-  <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
+  <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA &middot; <a href="/advertise.html" class="underline">Nursery partnerships</a></p>
 </footer>
 
 <script>

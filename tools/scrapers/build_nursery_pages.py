@@ -73,6 +73,11 @@ NURSERY_META = {
         "tags": ["tropical fruit", "subtropical fruit", "rare varieties"],
         "description": "Fruit Tree Cottage is a specialist fruit tree nursery on the Sunshine Coast, Queensland. They focus on tropical and subtropical varieties with an impressive range of lychee, fig, guava, persimmon, and other rare edibles. Does not ship to WA, NT, or TAS.",
     },
+    "heritage-fruit-trees": {
+        "url": "https://www.heritagefruittrees.com.au",
+        "tags": ["heritage varieties", "heirloom", "temperate fruit", "apples", "pears", "plums"],
+        "description": "Heritage Fruit Trees is a Victorian specialist nursery carrying one of Australia's largest collections of heritage and heirloom temperate fruit trees. Based in Beaufort, VIC, they stock hundreds of apple, pear, plum, cherry, quince, and nut tree varieties including many rare cultivars unavailable elsewhere. They ship to WA during the dormant/winter season (approximately May to September).",
+    },
 }
 
 

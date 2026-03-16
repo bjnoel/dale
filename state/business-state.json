@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "last_updated": "2026-03-15",
-  "session_count": 20,
+  "last_updated": "2026-03-16",
+  "session_count": 21,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -24,7 +24,8 @@
         "Landing page deployed (walkthrough.au)",
         "Portfolio piece (Drift Kitchen, Scarborough)",
         "Email (hello@walkthrough.au via Fastmail)",
-        "Prospect briefs: PBR Plumbing, Wembley Cycles, Gather Ceramics"
+        "Prospect briefs: PBR Plumbing, Wembley Cycles, Gather Ceramics",
+        "Nursery partnership page (treestock.com.au/advertise.html)"
       ],
       "model_pivot": "DEC-051: Implementation over reports. Dale builds shops, Benedict does relationships. treestock.com.au is portfolio + traffic for nursery clients.",
       "prospects": {
@@ -34,7 +35,7 @@
         "wembley_cycles": {"status": "deprioritised", "hook": "Old model (report). Revisit if implementation model proves out."},
         "pbr_plumbing": {"status": "deprioritised", "hook": "Old model (report). Revisit if implementation model proves out."}
       },
-      "next_action": "Build demo shop for Tass1 Trees using treestock product data as show piece. Solve cold-start problem before approaching."
+      "next_action": "Benedict to send Tass1 Trees cold email (hello@walkthrough.au). Partnership page live at /advertise.html for approaching Primal Fruits."
     },
     "b": {
       "name": "Rare Fruit Stock Tracker",
@@ -43,19 +44,19 @@
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
-      "nurseries_monitored": 11,
-      "nurseries_researched": 16,
+      "nurseries_monitored": 12,
+      "nurseries_researched": 17,
       "first_scrape_date": "2026-03-05",
-      "days_of_data": 10,
+      "days_of_data": 11,
       "products_tracked": 10426,
       "in_stock": 3547,
-      "products_note": "fruit/edible only (filtered from ~18,000+ total raw)",
+      "products_note": "fruit/edible only (filtered from ~18,000+ total raw). HFT adds ~300 temperate varieties.",
       "species_matched_pct": 68,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
-      "subscribers": 3,
+      "subscribers": 4,
       "revenue_total": 0,
       "features": [
-        "Daily scraping of 11 nurseries",
+        "Daily scraping of 12 nurseries",
         "Price/stock change detection",
         "State-based shipping filter (all 8 states)",
         "Species taxonomy (50 species, fruit_species.json)",
@@ -69,7 +70,7 @@
         "Species pages (50 pages at /species/ for SEO)",
         "Species browsing grid on dashboard (top 16 species by stock)",
         "sitemap.xml (70 URLs, daily auto-generated)",
-        "Nursery profile pages (11 pages at /nursery/ for SEO)",
+        "Nursery profile pages (12 pages at /nursery/ for SEO)",
         "Per-species restock alerts (notify me when species back in stock)",
         "Weekly FB post template for community engagement",
         "Location pages (WA/QLD/NSW/VIC — /buy-fruit-trees-[state].html)",
@@ -78,7 +79,8 @@
         "Rare & Exotic Finds page (/rare.html — 22 rare species, shareable community content)",
         "Variety/cultivar pages (2,308 pages at /variety/ — individual named cultivar pages for SEO)",
         "Sample digest preview page (/sample-digest.html — shows visitors the daily email before subscribing)",
-        "Homepage 'Recent Highlights' section (shows real restocks + price drops to demonstrate subscribe value)"
+        "Homepage 'Recent Highlights' section (shows real restocks + price drops to demonstrate subscribe value)",
+        "Nursery partnership page (/advertise.html — for nursery sponsorship outreach)"
       ],
       "nursery_details": {
         "ross_creek": {"products": 1060, "in_stock": 484, "platform": "Shopify", "ships_to_wa": false, "location": "QLD"},
@@ -91,9 +93,10 @@
         "diggers": {"products": 114, "in_stock": 62, "platform": "Shopify", "ships_to_wa": true, "location": "VIC", "note": "fruit/nut filtered from 1799 total"},
         "fruit_tree_cottage": {"products": 185, "in_stock": 108, "platform": "Shopify", "ships_to_wa": false, "location": "QLD", "note": "does not ship to WA/NT/TAS, added 2026-03-15"},
         "all_season_plants_wa": {"products": 20, "in_stock": 20, "platform": "Shopify", "ships_to_wa": true, "location": "WA", "note": "WA pickup + local delivery, rare tropicals (mangosteen, wampee, jaboticaba)"},
-        "ausnurseries": {"products": 409, "in_stock": 109, "platform": "Shopify", "ships_to_wa": false, "location": "NSW", "note": "does not ship to WA/NT/TAS"}
+        "ausnurseries": {"products": 409, "in_stock": 109, "platform": "Shopify", "ships_to_wa": false, "location": "NSW", "note": "does not ship to WA/NT/TAS"},
+        "heritage_fruit_trees": {"products": 332, "in_stock": "pending first scrape", "platform": "BigCommerce", "ships_to_wa": true, "location": "VIC", "note": "Heritage/heirloom temperate varieties. WA shipping in winter/dormant season (May-Sep). Added 2026-03-16."}
       },
-      "next_action": "Day 10: 467 visitors (7-day), 3 subscribers. Sitemap: 2,457 URLs. Next: research new nurseries or improve subscriber conversion."
+      "next_action": "Day 11: 490 visitors (7-day), 4 subscribers, Whirlpool referrals appearing. Heritage Fruit Trees (12th nursery) first scrape running. Partnership page live for nursery outreach."
     }
   },
   "infrastructure": {

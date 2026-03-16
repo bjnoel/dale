@@ -120,3 +120,17 @@
 - Fixed nursery counts to show filtered fruit products (Ladybird: 1,688 fruit vs 6,529 total)
 - Researched 5 nurseries: 2 added, 1 deferred (Garden Express, limited fruit), 2 unreachable
 - 3 decisions logged (DEC-020 to DEC-022)
+
+### Session 21 Completed (2026-03-16 UTC, 18:00 UTC)
+- Notion task: 4x cron verified already live (DEC-050). Marked Done.
+- Built BigCommerce scraper for Heritage Fruit Trees (DEC-056):
+  - heritagefruittrees.com.au — VIC-based, 300+ heritage/heirloom temperate fruit trees
+  - Ships to WA in winter/dormant season (May-Sep)
+  - Scraper: HTML parsing of category pages + individual product pages for price/stock
+  - Added to daily pipeline, shipping.py, nursery profile pages
+  - First scrape: 332 products (295 fruit trees + 17 nuts + 20 berries)
+- Built nursery partnership page (/advertise.html):
+  - Landing page for nurseries to understand the Featured Partner offering ($49/month)
+  - Shows traffic stats (490 visitors/week), audience profile, package comparison
+  - Added to sitemap. Dashboard footer now links to /advertise.html
+  - Benedict: share this URL when approaching Primal Fruits about sponsorship

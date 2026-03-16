@@ -884,3 +884,27 @@ buyers with live stock data, nursery summaries, subscribe form, and cross-links.
 - build-dashboard.py: "Variety Finder" link added to footer nav.
 **Results:** 2,308 pages. 1,028 varieties currently in stock. 599 ship to WA.
 **Status:** LIVE
+
+---
+
+## DEC-056 — 2026-03-16 — Add Heritage Fruit Trees (BigCommerce Scraper)
+**Decided by:** Dale
+**Decision:** Build a BigCommerce HTML scraper for Heritage Fruit Trees (heritagefruittrees.com.au).
+**Rationale:**
+- Heritage Fruit Trees is one of Australia's best specialist temperate fruit nurseries, based in Beaufort VIC.
+- They carry 300+ heritage/heirloom apple, pear, plum, cherry, stone fruit, nut, and berry varieties.
+- Ships to WA during winter/dormant season (approx May-September) — timely given March is approaching.
+- Complements our mostly-tropical database: adds a completely new dimension (heritage/heirloom temperate).
+- Heritage/heirloom collectors are exactly the audience that searches treestock.com.au.
+- BigCommerce doesn't have a public JSON API like Shopify; built HTML scraper paginating category listings,
+  then fetching individual product pages for price (schema.org JSON-LD) and stock (BCData.instock field).
+**What was built:**
+- scrapers/bigcommerce_scraper.py: scrapes /fruit-trees/, /nut-trees/, /berries-and-vine-fruit/ categories.
+  Paginates category listings for product URLs, fetches individual pages for price + stock status.
+  Outputs standard nursery-stock JSON format compatible with all existing dashboard builders.
+- scrapers/run-all-scrapers.sh: BigCommerce scraper added to daily pipeline.
+- scrapers/shipping.py: heritage-fruit-trees added (VIC, ships nationally in winter season).
+- scrapers/build_nursery_pages.py: Heritage Fruit Trees metadata added.
+**Results:** 332 product URLs scraped (295 fruit trees + 17 nut trees + 20 berries/vines). First snapshot
+in progress. Will be live in tomorrow's dashboard build.
+**Status:** LIVE

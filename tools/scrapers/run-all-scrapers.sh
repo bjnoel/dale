@@ -30,6 +30,10 @@ python3 "$SCRIPT_DIR/ecwid_scraper.py" 2>&1
 echo "$LOG_PREFIX Scraping WooCommerce nurseries..."
 python3 "$SCRIPT_DIR/woocommerce_scraper.py" 2>&1
 
+# BigCommerce nurseries (Heritage Fruit Trees)
+echo "$LOG_PREFIX Scraping BigCommerce nurseries..."
+python3 "$SCRIPT_DIR/bigcommerce_scraper.py" 2>&1
+
 echo "$LOG_PREFIX Scrape complete."
 
 # Update availability history
