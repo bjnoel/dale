@@ -5,6 +5,26 @@
 
 ---
 
+## Completed This Session (2026-03-17 UTC, session 25 — 18:00 UTC)
+
+- [x] Notion task: 4x cron confirmed already done (again). Marked Done in Notion (id: 3247f8d5).
+- [x] Welcome email for new subscribers (DEC-060):
+      scrapers/send_welcome_email.py — HTML welcome email via Resend.
+      subscribe_server.py updated to fire it on each new signup (non-blocking Popen).
+      subscribe-server restarted. Tested live — sent to ben@walkthrough.au OK.
+- [x] All Season Plants WA scraper check: already in scraper since 2026-03-12. Not pending.
+      Updated task queue to reflect this.
+- [x] Fruitopia shipping: policy says "up to 3 weeks for other locations" — no explicit exclusions.
+      Current estimate (NSW/VIC/QLD/SA/ACT) retained unchanged.
+- [x] Dynamic subscribe CTA on homepage (DEC-060):
+      When user searches "sapodilla", CTA reads "Get alerted when Sapodilla prices change"
+      + link to species restock alert page. Falls back to query-specific copy for unknown terms.
+      Uses SPECIES_MAP JS object (50 species + 150+ synonyms). Dashboard rebuilt + deployed.
+- [x] Whirlpool traffic spike: 19 visitors from Whirlpool today. Added Q34 for Benedict
+      (find the thread, post a response).
+
+---
+
 ## Completed This Session (2026-03-16 UTC, session 24 — 21:00 UTC)
 
 - [x] Notion task: 4x cron confirmed already done (again). Marked Done in Notion (id: 3247f8d5).
@@ -98,9 +118,10 @@
 
 ---
 
-## Tomorrow's Tasks (2026-03-17 UTC) — In Priority Order
+## Tomorrow's Tasks (2026-03-18 UTC) — In Priority Order
 
 ### 1. Benedict actions (priority — not for Dale)
+- **Search Whirlpool for treestock.com.au** — find the thread, post a reply (Q34). 19 visitors today!
 - **Post on Daley's Fruit Tree Forum** — see deliverables/community-engagement-2026-03-16.md (Task 2: new thread)
 - **Post in Heritage and Rare Fruit Network** national FB group (Task 4 in same file)
 - **Email Rare Fruit Society SA** to request links listing (Task 3 in same file)
@@ -108,33 +129,24 @@
 - Send Heritage Fruit Trees outreach (deliverables/heritage-fruit-trees-outreach-2026-03-16.md)
 - Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
 - WhatsApp Cyrus at Primal Fruits re: featured listing
-- Run: `sudo systemctl restart subscribe-server` (watch/notify-me endpoint needs restart)
 
-### 2. Dale: Subscriber growth experiment — sample digest page or email sequence
+### 2. Dale: Revenue experiment — nursery value report for sponsorship pitch
 
-We have 4 subscribers (up from 3). The conversion rate from visit to subscribe is very low (~0.6%).
-The /sample-digest.html page exists. Consider:
-- A/B test: send a "best of the week" round-up to existing subscribers to show value
-- Build a "7-day new subscriber welcome" email sequence (Day 1: welcome + how to use,
-  Day 7: "here's what you missed this week" highlights)
-- Goal: get existing subscribers to share with friends
+Build a simple "here's how treestock.com.au promotes your nursery" PDF or HTML report
+that Benedict can attach to the Heritage Fruit Trees or Primal Fruits outreach email.
+Content: page views for their nursery page, species they uniquely carry, what WA buyers
+are searching for (mango, sapodilla, etc.). Makes the $49/month ask concrete and evidence-based.
 
-### 3. Dale: Check if All Season Plants WA should be on treestock.com.au as pickup listing
+### 3. Dale: Weekly FB post (2026-03-17 week)
 
-They have 20 in-stock rare tropicals (Grimal jaboticaba, mangosteens, wampee, named mangoes).
-Currently NOT in the scraper — only in the WA location page as a local pickup mention.
-Consider: add to scraper so their stock appears in search and species pages.
-This would make treestock.com.au more complete for WA collectors.
+Draft the weekly FB post for Benedict to post Sunday morning.
+Use this week's most interesting changes: new listings, restocks, price drops.
+Check the digest data for compelling hooks.
 
-### 4. Dale: Fruitopia shipping states verification
+### 4. Dale: Check Reddit + Whirlpool gardening threads
 
-Still unconfirmed. Current estimate (NSW/VIC/QLD/SA/ACT) may or may not include SA.
-Try: check their Shopify checkout shipping calculator (add a product to cart, enter SA postcode)
-or email them directly. Low priority — affects accuracy of location pages for SA.
-
-### 5. Subscribe-server restart (Q32 — needs Benedict)
-Run: `sudo systemctl restart subscribe-server`
-Watch signups will start accumulating once restarted.
+r/AustralianPlants, r/GardeningAustralia — any threads where treestock.com.au is useful?
+Draft responses for Benedict to post (can't sign up for services, but can draft the posts).
 
 ---
 
@@ -166,7 +178,7 @@ Watch signups will start accumulating once restarted.
 
 ### Data Quality
 - [x] Ladybird shipping states — DONE 2026-03-16: Confirmed QLD/NSW/VIC/ACT only (shipping.py updated)
-- [ ] Fruitopia shipping states — still unconfirmed (estimate: NSW/VIC/QLD/SA/ACT, no WA/NT/TAS)
+- [x] Fruitopia shipping states — DONE 2026-03-17: Policy confirms national shipping, no explicit exclusions. Estimate retained (NSW/VIC/QLD/SA/ACT). QLD biosecurity rules apply by default.
 - [ ] Analyse scraper data trends (price/stock changes over the week)
 - [x] Add Tass1 Trees to treestock.com.au — DONE 2026-03-14: not scrapeable (no prices, no stock, static catalog only)
 - [x] Add Fruit Tree Cottage to treestock.com.au — DONE 2026-03-15 (DEC-048)

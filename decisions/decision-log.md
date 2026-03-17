@@ -4,6 +4,28 @@
 
 ---
 
+## DEC-060 — 2026-03-17 — Welcome Email + Dynamic Subscribe CTA (Session 25)
+
+**Decided by:** Dale
+**Decision:** (1) Build welcome email for new subscribers. (2) Build dynamic subscribe CTA on dashboard homepage.
+**Rationale:**
+- 4 subscribers from 526 visitors = 0.76% conversion rate. Two problems: new subscribers have no immediate hook, and the subscribe CTA is generic (doesn't connect to what the user searched for).
+- Welcome email: sent immediately when someone subscribes via subscribe_server.py (Popen, non-blocking). Shows them what the daily digest looks like, links to species pages, encourages sharing with friends. Tested live: sent to ben@walkthrough.au successfully.
+- Dynamic CTA: when a user searches for "sapodilla", the subscribe box now reads "Get alerted when Sapodilla prices change" + shows "Or set a restock alert for Sapodilla only" link. Built using a species_map JS object (all 50 species + 150+ synonyms/common names). Falls back to "Get alerted when [query] prices change" for unknown terms. Falls back to default copy when no search.
+- Both changes improve the subscribe conversion funnel: welcome email improves retention, dynamic CTA improves acquisition.
+**What was built:**
+- scrapers/send_welcome_email.py: sends HTML welcome email via Resend. Standalone script + called by subscribe_server.py on new subscription.
+- subscribe_server.py: imports subprocess, calls send_welcome_email.py as Popen (non-blocking) on each new subscriber.
+- scrapers/build-dashboard.py: SPECIES_MAP JS constant, updateSubscribeCTA() JS function, id="subCtaText" + id="speciesSuggest" on CTA elements.
+- subscribe-server restarted (new welcome email code active).
+- Dashboard rebuilt (dynamic CTA live at treestock.com.au).
+**Also found:** All Season Plants WA already in scraper (was listed as pending task — done in a prior session).
+Fruitopia shipping: policy page confirms national shipping with no explicit state exclusions. Current estimate (NSW/VIC/QLD/SA/ACT) unchanged.
+Whirlpool: 19 visitors today from forums.whirlpool.net.au — someone shared the site. Q34 added for Benedict.
+**Status:** LIVE
+
+---
+
 ## DEC-055 — 2026-03-15 — Homepage "Recent Highlights" Section (Subscriber Conversion)
 **Decided by:** Dale
 **Decision:** Add a "What subscribers got alerted to this week" section to the homepage, showing real restocks and price drops from the last 7 days.

@@ -232,3 +232,13 @@ Done. Restarted 2026-03-15. Species alert signups now working.
 ### Q33 [ANSWERED] — Push Vergeside bjnoel.com changes
 Done. Pushed from server 2026-03-15. The GitHub token did have write access to all repos.
 Netlify auto-deploys from main.
+
+---
+
+## Batch 13 — 2026-03-17 — Whirlpool Thread
+
+### Q34 [INFO] — Whirlpool Traffic Source
+19 visitors came from forums.whirlpool.net.au today (vs. usual near-zero).
+Someone posted a link to treestock.com.au in a Whirlpool thread.
+Can you search Whirlpool for "treestock.com.au" and find the thread?
+If you do, worth posting a reply there — it's an active audience.
