@@ -5,6 +5,23 @@
 
 ---
 
+## Completed This Session (2026-03-17 UTC, session 26 — 19:00 UTC)
+
+- [x] Notion task: 4x cron confirmed (again). Marked Done in Notion (id: 3247f8d5).
+- [x] Nursery value reports (DEC-061):
+      scrapers/build_nursery_report.py — generates HTML sponsorship pitch per nursery.
+      Reports live at treestock.com.au/nursery-report-primal-fruits.html and /nursery-report-heritage-fruit-trees.html.
+      Shows: product counts, avg price, 526 visitor/7d audience, traffic sources, top products, basic vs featured comparison, $49/month CTA.
+      Benedict: attach these URLs to Heritage Fruit Trees outreach + Cyrus WhatsApp.
+- [x] Weekly FB post (deliverables/fb-post-week12-2026.md):
+      Hooks: Sapodilla $75 Primal Fruits, Lemon Cempedak (rare), Jaboticaba Sabara $150, Ackee $95.
+      Benedict: post Sunday morning 2026-03-22 in WA rare fruit FB groups.
+- [x] Reddit + Whirlpool drafts (deliverables/reddit-whirlpool-drafts-2026-03-17.md):
+      5 posts: Whirlpool thread reply, Whirlpool new thread, r/AustralianPlants comment, r/GardeningAustralia comment, Daley's Forum link.
+      Priority: find existing Whirlpool thread (19 visitors from there today), reply to it.
+
+---
+
 ## Completed This Session (2026-03-17 UTC, session 25 — 18:00 UTC)
 
 - [x] Notion task: 4x cron confirmed already done (again). Marked Done in Notion (id: 3247f8d5).
@@ -121,25 +138,35 @@
 ## Tomorrow's Tasks (2026-03-18 UTC) — In Priority Order
 
 ### 1. Benedict actions (priority — not for Dale)
-- **Search Whirlpool for treestock.com.au** — find the thread, post a reply (Q34). 19 visitors today!
-- **Post on Daley's Fruit Tree Forum** — see deliverables/community-engagement-2026-03-16.md (Task 2: new thread)
+- **Find Whirlpool thread** (search "treestock.com.au" on forums.whirlpool.net.au), reply — see deliverables/reddit-whirlpool-drafts-2026-03-17.md
+- **WhatsApp Cyrus (Primal Fruits)** about featured listing — share link: treestock.com.au/nursery-report-primal-fruits.html
+- **Send Heritage Fruit Trees outreach** — see deliverables/heritage-fruit-trees-outreach-2026-03-16.md, attach report URL: treestock.com.au/nursery-report-heritage-fruit-trees.html
+- **Post on Daley's Fruit Tree Forum** — new thread, see deliverables/community-engagement-2026-03-16.md (Task 2)
 - **Post in Heritage and Rare Fruit Network** national FB group (Task 4 in same file)
 - **Email Rare Fruit Society SA** to request links listing (Task 3 in same file)
 - Visit Leeming Fruit Trees (4a Westmorland Dr, Leeming, Wed-Sat 8:30am-2pm)
-- Send Heritage Fruit Trees outreach (deliverables/heritage-fruit-trees-outreach-2026-03-16.md)
+- Post weekly FB post Sunday morning (deliverables/fb-post-week12-2026.md)
 - Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
-- WhatsApp Cyrus at Primal Fruits re: featured listing
 
-### 2. Dale: Revenue experiment — nursery value report for sponsorship pitch
+### 2. Dale: Revenue — follow up on subscriber growth momentum
 
-Build a simple "here's how treestock.com.au promotes your nursery" PDF or HTML report
-that Benedict can attach to the Heritage Fruit Trees or Primal Fruits outreach email.
-Content: page views for their nursery page, species they uniquely carry, what WA buyers
-are searching for (mango, sapodilla, etc.). Makes the $49/month ask concrete and evidence-based.
+We have 526 visitors/week and 4 subscribers. The conversion is too low. Look at:
+- Is the subscribe CTA prominent enough on mobile?
+- Add a popup/banner for returning visitors who haven't subscribed?
+- Check if the welcome email is sending correctly (built last session)
 
-### 3. Dale: Weekly FB post (2026-03-17 week)
+### 3. Dale: Subscriber conversion rate experiment
 
-Draft the weekly FB post for Benedict to post Sunday morning.
+Try adding a "floating subscribe bar" at the bottom of mobile screens on treestock.com.au.
+Most of our traffic is from Facebook on mobile. A sticky bottom bar (not intrusive, easily dismissed)
+could meaningfully lift subscription rate.
+
+### 4. Dale: Analyse Heritage Fruit Trees data quality
+
+The Heritage Fruit Trees scraper shows 332 products but all with $0 price and None availability.
+This is the dormant season. Check if the BigCommerce scraper needs to handle "out of season"
+state differently, and whether prices can be extracted from the HTML when the items are technically
+out of stock (for the variety/compare pages to still show historical prices).
 Use this week's most interesting changes: new listings, restocks, price drops.
 Check the digest data for compelling hooks.
 

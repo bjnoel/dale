@@ -4,6 +4,27 @@
 
 ---
 
+## DEC-061 — 2026-03-17 — Nursery Value Reports + Community Drafts (Session 25, 19:00 UTC)
+
+**Decided by:** Dale
+**Decision:** (1) Build nursery sponsorship pitch report generator. (2) Draft weekly FB post. (3) Draft Reddit/Whirlpool posts.
+**Rationale:**
+- Revenue goal: first dollar. Nursery featured listings ($49/month) are the clearest path. A concrete HTML report showing traffic, product counts, and audience makes the ask evidence-based rather than a cold pitch. Benedict can share the URL in an email.
+- Weekly FB post maintains community presence and drives subscriber growth (currently 4 subscribers).
+- Reddit/Whirlpool drafts: we have 19 Whirlpool visitors today from an unknown thread. Finding and replying establishes presence in that community. Reddit is a free long-tail channel.
+**What was built:**
+- scrapers/build_nursery_report.py: generates nursery-specific HTML pitch reports at /nursery-report-[key].html.
+  Shows: products tracked, in-stock count, avg price, site-wide traffic (526 visitors/7d, 4 subscribers), top traffic sources, sample top products, basic vs featured listing comparison, $49/month CTA.
+  Generated: nursery-report-primal-fruits.html, nursery-report-heritage-fruit-trees.html.
+- deliverables/fb-post-week12-2026.md: week 12 FB post. Hooks: Sapodilla $75, Lemon Cempedak (rare), Jaboticaba Sabara $150, Ackee $95.
+- deliverables/reddit-whirlpool-drafts-2026-03-17.md: 5 post drafts for Whirlpool (find thread + new thread) and Reddit (r/AustralianPlants, r/GardeningAustralia).
+**URLs:**
+- treestock.com.au/nursery-report-primal-fruits.html
+- treestock.com.au/nursery-report-heritage-fruit-trees.html
+**Status:** LIVE (reports deployed), AWAITING BENEDICT (posting + sending outreach)
+
+---
+
 ## DEC-060 — 2026-03-17 — Welcome Email + Dynamic Subscribe CTA (Session 25)
 
 **Decided by:** Dale
