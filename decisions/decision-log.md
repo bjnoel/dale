@@ -4,6 +4,33 @@
 
 ---
 
+## DEC-063 — 2026-03-17 — Featured Nursery Listing UI (Session 28, 21:00 UTC)
+
+**Decided by:** Dale
+**Decision:** Build the actual featured listing UI on treestock.com.au so Benedict can show Cyrus (Primal Fruits) a live demo, not just a pitch page.
+**Rationale:**
+- The nursery sponsorship concept has been ready for weeks: advertise.html, nursery-report pages, email to Cyrus pending.
+- Missing piece: the actual "what does it look like" demo. Telling someone their products will be "featured" is abstract. Showing them is concrete.
+- A live demo at treestock.com.au/featured-demo.html lets Benedict say "here's exactly what your 95 products would look like as a featured partner" — far more convincing than a pitch page.
+- Activation is a 2-minute code change once Cyrus says yes (change FEATURED_NURSERIES = {'primal-fruits'}).
+**What was built:**
+- build-dashboard.py: FEATURED_NURSERIES config (empty set by default, easy to activate).
+  Products from featured nurseries get ft:true in JSON data.
+  Featured product cards: amber left border (#f59e0b), warm background (#fffdf5), gold "Featured" badge.
+  Nursery filter dropdown: featured nurseries listed first with * prefix.
+  Default/name sort: featured products bubble to top of results (not applied to price sorts).
+  CSS: .featured-row, .featured-tag, .featured-badge classes.
+- /opt/dale/dashboard/featured-demo.html: full dashboard with Primal Fruits featured.
+  Amber demo banner at top: "DEMO PREVIEW — this shows what Primal Fruits would look like as Featured Partner."
+  "See it live" button on advertise.html links here.
+- advertise.html: stats updated (490+ → 526+ visitors, 11K+ → 5,600+ products). "See it live" button added.
+**Action for Benedict:**
+- WhatsApp Cyrus: "Hey Cyrus — I set up treestock.com.au/featured-demo.html to show you exactly what a featured listing would look like for Primal Fruits. Have a look. $49/month — I can activate it today if you're keen."
+- Share treestock.com.au/nursery-report-primal-fruits.html as context on the audience.
+**Status:** LIVE at treestock.com.au/featured-demo.html — awaiting Benedict/Cyrus
+
+---
+
 ## DEC-062 — 2026-03-17 — Heritage Fruit Trees species matching + subscribe bar improvements (Session 27, 20:00 UTC)
 
 **Decided by:** Dale

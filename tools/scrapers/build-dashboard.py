@@ -26,6 +26,10 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES
 # - Fruitopia: unclear from policy, likely does NOT ship to WA (QLD-based, no WA mention)
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
+# Featured nurseries (paying partners). Products are visually highlighted and sorted first.
+# To activate a featured listing, add the nursery key here.
+FEATURED_NURSERIES: set[str] = set()  # e.g. {'primal-fruits'} when live
+
 
 def load_species_lookup() -> dict:
     """Load fruit species data and build a title-matching lookup."""
@@ -563,6 +567,8 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "sale": bool(on_sale),
                 "cat": p.get("product_type", p.get("category", "")),
             }
+            if nursery_name in FEATURED_NURSERIES:
+                product_data["ft"] = True
 
             if species:
                 matched_count += 1
@@ -646,6 +652,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             "in_stock": sum(1 for p in nursery_added if p.get("a")),
             "scraped_at": scraped_at,
             "st": SHIPPING_MAP.get(nursery_name, []),
+            "ft": nursery_name in FEATURED_NURSERIES,
         })
 
     print(f"  Species matched: {matched_count}/{len(products)} ({100*matched_count//len(products) if products else 0}%)")
@@ -754,7 +761,11 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   #results {{ min-height: 200px; }}
   .product-row {{ border-bottom: 1px solid #f3f4f6; }}
   .product-row:hover {{ background: #f9fafb; }}
+  .product-row.featured-row {{ border-left: 3px solid #f59e0b; background: #fffdf5; }}
+  .product-row.featured-row:hover {{ background: #fef9e7; }}
   .nursery-tag {{ font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }}
+  .nursery-tag.featured-tag {{ background: #fef3c7; color: #92400e; font-weight: 600; }}
+  .featured-badge {{ font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #f59e0b; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }}
   .species-strip {{ display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }}
   .species-strip::-webkit-scrollbar {{ height: 3px; }}
   .species-strip::-webkit-scrollbar-thumb {{ background: #d1d5db; border-radius: 3px; }}
@@ -893,12 +904,15 @@ let currentResults = [];
 const SHIPS_TO = {{}};
 N.forEach(n => {{ SHIPS_TO[n.key] = n.st || []; }});
 
-// Populate nursery filter
+// Populate nursery filter (featured nurseries first, then alphabetical)
 const nurserySelect = document.getElementById('nurseryFilter');
-N.forEach(n => {{
+const sortedN = [...N].sort((a, b) => (b.ft ? 1 : 0) - (a.ft ? 1 : 0) || a.name.localeCompare(b.name));
+sortedN.forEach(n => {{
   const opt = document.createElement('option');
   opt.value = n.key;
-  opt.textContent = `${{n.name}} (${{n.in_stock}} in stock)`;
+  opt.textContent = n.ft
+    ? `* ${{n.name}} (${{n.in_stock}} in stock)`
+    : `${{n.name}} (${{n.in_stock}} in stock)`;
   nurserySelect.appendChild(opt);
 }});
 
@@ -955,6 +969,11 @@ function search() {{
     results.sort((a, b) => (a._score || 0) - (b._score || 0));
   }} else {{
     results.sort((a, b) => a.t.localeCompare(b.t));
+  }}
+
+  // Featured nurseries bubble to top within current sort (only on default/name sort, not price sort)
+  if (!sort || sort === 'name') {{
+    results.sort((a, b) => (b.ft ? 1 : 0) - (a.ft ? 1 : 0));
   }}
 
   currentResults = results;
@@ -1040,12 +1059,15 @@ function render() {{
     else if (p.ch === 'up' && p.pp) priceInfo = `<span class="price-up">${{price}}</span> <span class="text-xs text-gray-400">was ${{('$' + p.pp.toFixed(2))}}</span>`;
 
     const utm = p.u ? (p.u.includes('?') ? '&' : '?') + 'utm_source=treestock&utm_medium=referral' : '';
-    return `<a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row flex items-center gap-3 py-3 px-2 block">
+    const featuredClass = p.ft ? ' featured-row' : '';
+    const nurseryTagClass = p.ft ? 'nursery-tag featured-tag' : 'nursery-tag';
+    const featuredBadge = p.ft ? '<span class="featured-badge">Featured</span>' : '';
+    return `<a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row${{featuredClass}} flex items-center gap-3 py-3 px-2 block">
       <div class="flex-1 min-w-0">
         <div class="font-medium text-sm">${{p.t}}${{latinName}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
-          <span class="nursery-tag">${{p.n}}</span>
-          ${{stockBadge}} ${{shipsBadge}} ${{saleBadge}} ${{changeBadge}}
+          <span class="${{nurseryTagClass}}">${{p.n}}</span>
+          ${{featuredBadge}} ${{stockBadge}} ${{shipsBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
       <div class="text-right flex-shrink-0">
