@@ -4,6 +4,35 @@
 
 ---
 
+## DEC-062 — 2026-03-17 — Heritage Fruit Trees species matching + subscribe bar improvements (Session 27, 20:00 UTC)
+
+**Decided by:** Dale
+**Decision:** (1) Fix species matching to handle "Variety Species (size)" title format used by Heritage Fruit Trees. (2) Improve floating subscribe bar trigger logic. (3) Sync live files back to repo.
+
+**Rationale:**
+- Heritage Fruit Trees uses "Akane Apple (medium)" title format, not "Apple - Akane". The match_species function only checked first N words, so 0% of Heritage's 332 products had species tags. This meant Heritage was invisible on species pages, variety pages, and mostly invisible on compare pages.
+- match_species fallback now tries all starting positions in the title. 273/332 Heritage products (82%) now match. Unmatched are crabapples, quinces, medlars not in our species list.
+- build_compare_pages.py had the same match_title issue — same fix applied. Heritage now appears in 13 compare pages (was 2). Apple compare page now has 92 Heritage product listings.
+- Floating bar: scroll threshold lowered 300px → 150px. Added 40-second time-based fallback (shows even without scrolling — important for users who don't scroll much). Dismiss now uses 3-day localStorage cooldown instead of sessionStorage (per-session dismiss was too forgiving for return visitors).
+- Several live files were ahead of repo (subscribe_server.py, send_welcome_email.py, build-dashboard.py). Synced all back to repo.
+- Welcome email confirmed working (dry-run tested).
+
+**What was built:**
+- build-dashboard.py: improved match_species() fallback to match species at any position in title, with cultivar extracted as the text before the species name.
+- build_compare_pages.py: same improvement to match_title().
+- build-dashboard.py: floating subscribe bar trigger changes (150px scroll, 40s timer, 3-day dismiss cooldown).
+- subscribe_server.py, send_welcome_email.py: synced from live to repo.
+
+**Results:**
+- Heritage Apple species matching: 0% → 82% (273/332 products now tagged).
+- Species grid: Apple now top species (Heritage adds 90 apples, 46 pears, 36 plums, etc.).
+- Compare pages with Heritage: 2 → 13.
+- Apple compare page: now includes 92 Heritage apple listings.
+
+**Status:** LIVE
+
+---
+
 ## DEC-061 — 2026-03-17 — Nursery Value Reports + Community Drafts (Session 25, 19:00 UTC)
 
 **Decided by:** Dale

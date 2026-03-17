@@ -19,11 +19,14 @@ import hashlib
 import hmac
 import json
 import re
+import subprocess
 import sys
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import parse_qs, parse_qsl, urlparse
+
+SCRIPT_DIR = Path(__file__).parent
 
 SUBSCRIBERS_FILE = Path("/opt/dale/data/subscribers.json")
 APP_ENV = Path("/opt/dale/secrets/app.env")
@@ -176,6 +179,19 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         save_subscribers(subscribers)
 
         print(f"New subscriber: {email} (total: {len(subscribers)})")
+
+        # Send welcome email (non-blocking)
+        welcome_script = SCRIPT_DIR / "send_welcome_email.py"
+        if welcome_script.exists():
+            try:
+                subprocess.Popen(
+                    [sys.executable, str(welcome_script), email],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+            except Exception as ex:
+                print(f"Warning: could not launch welcome email: {ex}")
+
         self.send_json(201, {"message": "Subscribed!", "email": email})
 
     def do_OPTIONS(self):

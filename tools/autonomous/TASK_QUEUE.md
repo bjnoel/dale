@@ -5,6 +5,25 @@
 
 ---
 
+## Completed This Session (2026-03-17 UTC, session 27 — 20:00 UTC)
+
+- [x] Notion task: 4x cron confirmed (again). Marked Done in Notion (id: 3247f8d5).
+- [x] Heritage Fruit Trees species matching fix (DEC-062):
+      match_species() and match_title() both improved with fallback that matches species
+      at any position in the title (not just first N words).
+      Heritage "Variety Species (size)" format now works: 0% → 82% (273/332 products tagged).
+      Apple now top species in grid (Heritage adds 90 apples, 46 pears, 36 plums, etc.).
+      Compare pages with Heritage: 2 → 13. Apple compare page: 92 Heritage listings.
+- [x] Floating subscribe bar improved (DEC-062):
+      Scroll threshold: 300px → 150px (shows sooner to users who don't scroll far).
+      Time-based fallback: shows after 40 seconds even without scrolling.
+      Dismiss: sessionStorage (per-session) → 3-day localStorage cooldown.
+- [x] Welcome email confirmed working (dry-run tested).
+- [x] Synced live files back to repo: subscribe_server.py, send_welcome_email.py, build-dashboard.py.
+- [x] Dashboard + compare + variety + location pages all rebuilt and deployed.
+
+---
+
 ## Completed This Session (2026-03-17 UTC, session 26 — 19:00 UTC)
 
 - [x] Notion task: 4x cron confirmed (again). Marked Done in Notion (id: 3247f8d5).
@@ -148,32 +167,30 @@
 - Post weekly FB post Sunday morning (deliverables/fb-post-week12-2026.md)
 - Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
 
-### 2. Dale: Revenue — follow up on subscriber growth momentum
+### 2. Dale: Revenue — first dollar experiment (nursery sponsored listings)
 
-We have 526 visitors/week and 4 subscribers. The conversion is too low. Look at:
-- Is the subscribe CTA prominent enough on mobile?
-- Add a popup/banner for returning visitors who haven't subscribed?
-- Check if the welcome email is sending correctly (built last session)
+Current state: 526 visitors/week, 4 subscribers, $0 revenue.
+The nursery sponsorship pitch infrastructure is ready (nursery-report pages, featured badge code).
+Waiting for Benedict to contact Cyrus/Heritage. But Dale can work on this in parallel:
+- Build a nursery-specific "featured listing" demo for Primal Fruits (the actual featured UI, not just the pitch page)
+- What does a "featured" listing look like on the homepage? Currently just a badge — should it be highlighted, pinned, or shown in a dedicated section?
+- Check the /advertise.html page — is it compelling? Any improvements needed?
 
-### 3. Dale: Subscriber conversion rate experiment
+### 3. Dale: Build Google Search Console integration or traffic analysis
 
-Try adding a "floating subscribe bar" at the bottom of mobile screens on treestock.com.au.
-Most of our traffic is from Facebook on mobile. A sticky bottom bar (not intrusive, easily dismissed)
-could meaningfully lift subscription rate.
+We have 526 visitors/week but only 4 subscribers (0.8% CVR). We need to understand:
+- What search queries are bringing people to treestock.com.au? (Plausible doesn't show keywords)
+- Which pages have the most engagement vs bounce?
+- Are the species/variety/compare pages getting any organic traffic yet?
+- Add a "most visited" or "trending searches" section to the homepage to guide discovery?
 
-### 4. Dale: Analyse Heritage Fruit Trees data quality
+### 4. Dale: Add more nurseries to Track B
 
-The Heritage Fruit Trees scraper shows 332 products but all with $0 price and None availability.
-This is the dormant season. Check if the BigCommerce scraper needs to handle "out of season"
-state differently, and whether prices can be extracted from the HTML when the items are technically
-out of stock (for the variety/compare pages to still show historical prices).
-Use this week's most interesting changes: new listings, restocks, price drops.
-Check the digest data for compelling hooks.
-
-### 4. Dale: Check Reddit + Whirlpool gardening threads
-
-r/AustralianPlants, r/GardeningAustralia — any threads where treestock.com.au is useful?
-Draft responses for Benedict to post (can't sign up for services, but can draft the posts).
+Priority candidates to research:
+- Hidden Valley Hibiscus (QLD) — tropical fruits
+- Trees and Shrubs Online (national) — research whether scrapeable
+- Gurney's / other online garden stores — check for fruit tree sections
+Focus on nurseries that ship to WA or are WA-based (biggest gap in our coverage).
 
 ---
 

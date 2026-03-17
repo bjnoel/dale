@@ -72,7 +72,7 @@ def match_species(title: str, lookup: dict) -> dict | None:
             clean_title_original = title[len(prefix):]
             break
 
-    # Try matching on both original and cleaned title
+    # Try matching on both original and cleaned title (prefix-first approach)
     for t_lower, t_orig in [(title_lower, title), (clean_title, clean_title_original)]:
         words = re.split(r'[\s\-–—]+', t_lower)
         for n in range(len(words), 0, -1):
@@ -98,6 +98,29 @@ def match_species(title: str, lookup: dict) -> dict | None:
                         if cv and not re.match(r'\d+mm|\d+cm|\d+ltr|pot|pack|pick\s*up', cv.lower()):
                             result["cv"] = cv
                 return result
+
+    # Fallback: try matching any N-word sequence starting at each position.
+    # Handles "Variety Species (size)" format (e.g. Heritage Fruit Trees titles
+    # like "Akane Apple (medium)" where "apple" is not at position 0).
+    # Only try starting positions > 0 (already tried position 0 above).
+    for t_lower, t_orig in [(title_lower, title), (clean_title, clean_title_original)]:
+        words = re.split(r'[\s\-–—(]+', t_lower)
+        words = [w.rstrip(").,") for w in words if w]
+        for start in range(1, len(words)):
+            for n in range(min(len(words) - start, 3), 0, -1):
+                candidate = " ".join(words[start:start + n])
+                if candidate in lookup:
+                    result = dict(lookup[candidate])
+                    # Cultivar is the part BEFORE the species name
+                    matched = lookup[candidate]["cn"]
+                    match_idx = t_orig.lower().find(matched.lower())
+                    if match_idx > 0:
+                        cv = t_orig[:match_idx].strip(" -–—'\"()")
+                        # Remove trailing size info like (dwarf), (medium), (semi-dwarf)
+                        cv = re.sub(r'\s*\(?(dwarf|semi-dwarf|standard|medium|large|small|miniature)\)?$', '', cv, flags=re.I).strip()
+                        if cv and not re.match(r'\d+mm|\d+cm|\d+ltr|pot|pack', cv.lower()):
+                            result["cv"] = cv
+                    return result
 
     return None
 
@@ -677,6 +700,19 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     nurseries_json = json.dumps(nurseries, separators=(",", ":"))
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
+    # Build species slug lookup for dynamic CTA (common names + synonyms -> slug + display name)
+    species_slugs: dict[str, dict] = {}
+    if SPECIES_FILE.exists():
+        with open(SPECIES_FILE) as f:
+            species_data = json.load(f)
+        for s in species_data:
+            entry = {"slug": s["slug"], "name": s["common_name"]}
+            species_slugs[s["common_name"].lower()] = entry
+            for syn in s.get("synonyms", []):
+                if syn:
+                    species_slugs[syn.lower()] = entry
+    species_slugs_json = json.dumps(species_slugs, separators=(",", ":"))
+
     # Server-render species strip for SEO (crawlable <a> tags)
     species_strip_html = "\n".join(
         f'<a href="/species/{s["sl"]}.html" class="species-pill">{s["cn"]} <span class="count">{s["in_stock"]}</span></a>'
@@ -807,7 +843,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   <!-- Email Alerts Signup (below results) -->
   <div class="mt-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-      <p class="text-sm text-green-800 flex-1"><strong>Get tomorrow's changes in your inbox</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
+      <p id="subCTA" class="text-sm text-green-800 flex-1"><strong>Get tomorrow's changes in your inbox</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
         <input type="email" id="subEmail" placeholder="your@email.com" required
           class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
@@ -840,6 +876,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 <script>
 const P = {products_json};
 const N = {nurseries_json};
+const SPECIES_SLUGS = {species_slugs_json};
 
 const NURSERY_URLS = {{
   'ross-creek': 'rosscreektropicals.com.au',
@@ -922,6 +959,41 @@ function search() {{
 
   currentResults = results;
   render();
+  updateSubCTA(q);
+}}
+
+function updateSubCTA(q) {{
+  const ctaEl = document.getElementById('subCTA');
+  if (!ctaEl) return;
+  const floatInput = document.getElementById('floatEmail');
+
+  if (!q) {{
+    ctaEl.innerHTML = '<strong>Get tomorrow\'s changes in your inbox</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>';
+    if (floatInput) floatInput.placeholder = 'Get daily alerts (free)';
+    return;
+  }}
+
+  // Check if query matches a known species (try longest match first)
+  const words = q.split(/\s+/);
+  let matched = null;
+  for (let n = words.length; n >= 1; n--) {{
+    const candidate = words.slice(0, n).join(' ');
+    if (SPECIES_SLUGS[candidate]) {{
+      matched = SPECIES_SLUGS[candidate];
+      break;
+    }}
+  }}
+
+  if (matched) {{
+    const name = matched.name;
+    const slug = matched.slug;
+    ctaEl.innerHTML = `<strong>Get alerted when ${{name}} prices change or come back in stock</strong> — free daily email. <a href="/species/${{slug}}.html" class="text-green-700 underline whitespace-nowrap">See all ${{name}} &rarr;</a>`;
+    if (floatInput) floatInput.placeholder = `${{name}} price alerts (free)`;
+  }} else {{
+    const displayQ = q.length > 20 ? q.slice(0, 20) + '...' : q;
+    ctaEl.innerHTML = `<strong>Get alerted when "${{displayQ}}" prices change</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
+    if (floatInput) floatInput.placeholder = `"${{displayQ}}" price alerts (free)`;
+  }}
 }}
 
 function render() {{
@@ -1035,7 +1107,95 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
   btn.textContent = 'Subscribe';
 }});
 
+// Floating subscribe bar (mobile only — shows after scroll or timer)
+(function() {{
+  if (localStorage.getItem('ts_subscribed')) return;
+  // 3-day dismiss cooldown (not per-session, so returning visitors still see it)
+  const dismissedUntil = localStorage.getItem('ts_bar_dismissed_until');
+  if (dismissedUntil && Date.now() < parseInt(dismissedUntil, 10)) return;
+
+  const bar = document.getElementById('floatBar');
+  if (!bar) return;
+
+  // Sync placeholder text with main CTA if it has been updated
+  const subCTA = document.getElementById('subCTA');
+  const floatInput = document.getElementById('floatEmail');
+  if (subCTA && floatInput) {{
+    const ctaText = subCTA.innerText || '';
+    if (ctaText.includes('Get alerted when') && ctaText.length < 80) {{
+      floatInput.placeholder = ctaText.replace('Get alerted when', 'Alert me when').replace(' — free daily email', '').trim().slice(0, 50) || 'Get daily alerts (free)';
+    }}
+  }}
+
+  let shown = false;
+  function showBar() {{
+    if (shown) return;
+    shown = true;
+    bar.classList.remove('translate-y-full');
+    bar.classList.add('translate-y-0');
+  }}
+
+  // Show after 150px scroll (was 300px — show sooner)
+  window.addEventListener('scroll', function() {{
+    if (!shown && window.scrollY > 150) showBar();
+  }}, {{ passive: true }});
+
+  // Also show after 40 seconds even without scrolling (time-based fallback)
+  setTimeout(showBar, 40000);
+
+  document.getElementById('floatDismiss').addEventListener('click', function() {{
+    // 3-day cooldown — won't pester same-day, but will show to return visitors
+    localStorage.setItem('ts_bar_dismissed_until', Date.now() + 3 * 24 * 60 * 60 * 1000);
+    bar.classList.add('translate-y-full');
+  }});
+
+  document.getElementById('floatForm').addEventListener('submit', async function(e) {{
+    e.preventDefault();
+    const email = document.getElementById('floatEmail').value;
+    const btn = e.target.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.textContent = '...';
+    try {{
+      const resp = await fetch('/api/subscribe', {{
+        method: 'POST',
+        headers: {{'Content-Type': 'application/json'}},
+        body: JSON.stringify({{email}}),
+      }});
+      const data = await resp.json();
+      if (resp.status === 201 || resp.status === 200) {{
+        localStorage.setItem('ts_subscribed', '1');
+        bar.innerHTML = '<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-green-800 font-medium">Subscribed! You\'ll get tomorrow\'s changes in your inbox.</div>';
+        setTimeout(function() {{ bar.classList.add('translate-y-full'); }}, 3000);
+      }} else {{
+        btn.disabled = false;
+        btn.textContent = 'Subscribe';
+        document.getElementById('floatMsg').textContent = data.message || 'Try again';
+        document.getElementById('floatMsg').classList.remove('hidden');
+      }}
+    }} catch(err) {{
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    }}
+  }});
+}})();
+
 </script>
+
+<!-- Floating subscribe bar (mobile only) -->
+<div id="floatBar" class="md:hidden fixed bottom-0 left-0 right-0 bg-green-700 text-white shadow-lg transform translate-y-full transition-transform duration-300 z-50">
+  <div class="flex items-center gap-2 px-3 py-2.5">
+    <form id="floatForm" class="flex items-center gap-2 flex-1 min-w-0">
+      <input type="email" id="floatEmail" placeholder="Get daily alerts (free)" required
+        class="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg text-sm text-gray-900 border-0 focus:outline-none focus:ring-2 focus:ring-white">
+      <button type="submit" class="flex-shrink-0 px-3 py-1.5 bg-white text-green-700 rounded-lg text-sm font-semibold">
+        Subscribe
+      </button>
+    </form>
+    <button id="floatDismiss" aria-label="Dismiss" class="flex-shrink-0 text-green-200 hover:text-white pl-1 text-lg leading-none">&times;</button>
+  </div>
+  <div id="floatMsg" class="hidden text-xs text-green-200 px-3 pb-2"></div>
+</div>
+
 </body>
 </html>"""
 

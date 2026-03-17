@@ -55,11 +55,25 @@ def build_species_lookup(species_list: list[dict]) -> dict:
 
 def match_title(title: str, lookup: dict) -> dict | None:
     title_lower = title.lower()
+    # Strip common size/form prefixes
+    for prefix in ["dwarf ", "semi-dwarf ", "miniature ", "standard ", "grafted ", "advanced "]:
+        if title_lower.startswith(prefix):
+            title_lower = title_lower[len(prefix):]
+            break
+    # Try from start first (most nurseries use "Species - Variety" format)
     words = re.split(r'[\s\-–—]+', title_lower)
     for n in range(min(len(words), 5), 0, -1):
         candidate = " ".join(words[:n])
         if candidate in lookup:
             return lookup[candidate]
+    # Fallback: match any N-word sequence in title (handles "Variety Species (size)" format)
+    words = re.split(r'[\s\-–—(]+', title_lower)
+    words = [w.rstrip(").,") for w in words if w]
+    for start in range(1, len(words)):
+        for n in range(min(len(words) - start, 3), 0, -1):
+            candidate = " ".join(words[start:start + n])
+            if candidate in lookup:
+                return lookup[candidate]
     return None
 
 
