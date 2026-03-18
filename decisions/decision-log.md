@@ -4,6 +4,44 @@
 
 ---
 
+## DEC-066 — 2026-03-18 — Fix JS SyntaxError (Blank Prices) + Perth Mobile Nursery Report
+
+**Decided by:** Dale (Notion urgent task from Benedict)
+**Decision:** (1) Fix JS SyntaxError causing blank prices on treestock.com.au. (2) Build Perth Mobile Nursery nursery report.
+**Rationale:**
+- Root cause: Python f-strings consume backslashes, so `tomorrow\'s` in JS single-quoted strings was written as `tomorrow's` to the HTML. An unescaped apostrophe in a JS single-quoted string = SyntaxError. This crashed the entire page script, leaving prices blank (prices are JS-rendered).
+- The Plausible analytics "Loading failed" error was a browser cascade from the page crash, not an actual DNS issue (script.outbound-links.js loads fine — HTTP 200).
+- Fix: switched both affected JS strings to template literals (backticks), which need no apostrophe escaping.
+- Perth Mobile Nursery report needed: build_nursery_report.py was missing Perth Mobile Nursery metadata and had a schema bug (checked for `available`/`price` but Shopify data uses `any_available`/`min_price`). Fixed with normalize_product() helper.
+**What was built:**
+- build-dashboard.py: 2 JS strings changed from single-quote to template literal. Dashboard rebuilt and redeployed.
+- build_nursery_report.py: Perth Mobile Nursery metadata added. normalize_product() schema normalizer added. Site stats updated to current. All 3 reports regenerated.
+- nursery-report-perth-mobile-nursery.html: Live at treestock.com.au/nursery-report-perth-mobile-nursery.html. Shows $770-880 mangoes, premium tropical selection, 539 visitor/week audience pitch.
+**Status:** LIVE
+
+---
+
+## DEC-067 — 2026-03-18 — Add Yalca Fruit Trees
+
+**Decided by:** Dale
+**Decision:** Add Yalca Fruit Trees (yalcafruittrees.com.au, Yalca VIC) to treestock.com.au.
+**Rationale:**
+- Yalca is a specialist heritage/dwarf fruit tree nursery. WooCommerce with public REST API — very easy to scrape.
+- 201 fruit/edible products (filtered from ornamentals), 125 in stock.
+- Apple becomes #1 species in the grid (Heritage + Yalca combined = dominant apple selection).
+- Their season opens late June (3+ months away) — indexing now means they appear in searches right when their season opens. Buyers researching apples and pears in WA will find treestock.com.au even for eastern states options.
+- No WA shipping (WA/NT/TAS excluded, seasonal: late June to 15 Sep only). Valuable for NSW/VIC/QLD/SA/ACT visitors.
+- Birdwood Nursery: wholesale/B2B only. Skip — not appropriate.
+**What was built:**
+- woocommerce_scraper.py: yalca-fruit-trees added with category filter (20 fruit categories, excludes ornamentals/oaks/maples).
+- shipping.py: NSW/VIC/QLD/SA/ACT, seasonal note.
+- build_nursery_pages.py: Yalca metadata and description.
+- First scrape: 201 products, 125 in stock.
+- Dashboard rebuilt: 6,099 products, 14 nurseries. Nursery page at /nursery/yalca-fruit-trees.html. Sitemap: 2,518 URLs.
+**Status:** LIVE
+
+---
+
 ## DEC-064 — 2026-03-18 — Deploy Reliability (Session 29, Urgent Fix)
 
 **Decided by:** Dale (Notion task from Benedict)

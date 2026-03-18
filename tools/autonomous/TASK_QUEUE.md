@@ -5,6 +5,33 @@
 
 ---
 
+## Completed This Session (2026-03-18 UTC, session 31 — 05:02 UTC)
+
+- [x] Notion task (URGENT): JS SyntaxError + blank prices (DEC-066):
+      Root cause: Python f-strings consume backslashes, so `tomorrow\'s` in JS single-quoted strings
+      was written as `tomorrow's` to the HTML. Unescaped apostrophe in JS single-quoted string = SyntaxError.
+      This crashed the entire page script, leaving prices blank (prices are JS-rendered via render()).
+      Plausible script "Loading failed" was a browser cascade from the page crash, not a DNS issue.
+      Fixed both instances in build-dashboard.py by switching to JS template literals.
+      Dashboard rebuilt and redeployed. Notion task updated to Done.
+- [x] Notion task (empty, id 3277f8d5-3f8e-80ad-b90a-d4538352be21): No description. Marked Done.
+- [x] Perth Mobile Nursery nursery report (DEC-066):
+      build_nursery_report.py: Perth Mobile Nursery metadata added. normalize_product() schema normalizer
+      added to handle Shopify (any_available/min_price) vs Ecwid/BC (available/price) schema differences.
+      Site stats updated to current (539 visitors, 14 nurseries, 6,099 products).
+      All 3 nursery reports regenerated. Perth Mobile report shows $770-880 mangoes prominently.
+      URL: treestock.com.au/nursery-report-perth-mobile-nursery.html
+- [x] Weekly FB post updated (fb-post-week12-2026.md):
+      New angle: Perth Mobile Nursery just added. Lead hook: Bambaroo Mango $880, Nam Dok Mai $770,
+      Longan Kohala $650, Black Sapote $550. Secondary: Primal Fruits Sapodilla $75, Lychee price drop.
+- [x] Yalca Fruit Trees added to treestock.com.au (DEC-067):
+      201 products (heritage/dwarf apples, pears, stone fruit, figs, quince, berry), 125 in stock.
+      WooCommerce with public API. VIC-based. Seasonal: late June to Sep 15 only. No WA/NT/TAS shipping.
+      Birdwood Nursery: wholesale B2B only. Not suitable for treestock.com.au.
+      Dashboard: 6,099 products, 14 nurseries. Nursery page: /nursery/yalca-fruit-trees.html. Sitemap: 2,518 URLs.
+
+---
+
 ## Completed This Session (2026-03-18 UTC, session 30 — 04:10 UTC)
 
 - [x] Notion task: treestock.com.au still missing data (id: 3277f8d5) — investigated and marked Done.
@@ -201,34 +228,28 @@
 ### 1. Benedict actions (priority — not for Dale)
 - **WhatsApp Cyrus (Primal Fruits)** about featured listing — share these two URLs:
   - nursery report: treestock.com.au/nursery-report-primal-fruits.html
-  - live demo: treestock.com.au/featured-demo.html (now has "this is what your listing looks like" banner)
+  - live demo: treestock.com.au/featured-demo.html
 - **Find Whirlpool thread** (search "treestock.com.au" on forums.whirlpool.net.au), reply — see deliverables/reddit-whirlpool-drafts-2026-03-17.md
 - **Send Heritage Fruit Trees outreach** — see deliverables/heritage-fruit-trees-outreach-2026-03-16.md, attach: treestock.com.au/nursery-report-heritage-fruit-trees.html
-- **Submit treestock.com.au to Google Search Console (Q31)** — robots.txt is now live, sitemap at treestock.com.au/sitemap.xml (2,504 URLs). This will unlock Google traffic.
+- **Submit treestock.com.au to Google Search Console (Q31)** — sitemap at treestock.com.au/sitemap.xml (2,518 URLs). Unlock Google traffic.
 - **Post on Daley's Fruit Tree Forum** — new thread, see deliverables/community-engagement-2026-03-16.md (Task 2)
 - **Post in Heritage and Rare Fruit Network** national FB group (Task 4 in same file)
 - **Email Rare Fruit Society SA** to request links listing (Task 3 in same file)
 - Visit Leeming Fruit Trees (4a Westmorland Dr, Leeming, Wed-Sat 8:30am-2pm)
-- Post weekly FB post Sunday morning (deliverables/fb-post-week12-2026.md)
+- Post weekly FB post Sunday morning (deliverables/fb-post-week12-2026.md) — refreshed with Perth Mobile Nursery this session
 - Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
 
-### 2. Dale: Add Perth Mobile Nursery nursery report (DONE this session — see DEC-065)
+### 2. Dale: Revenue experiment — Yalca FB/forum outreach
 
-### 3. Dale: Research Yalca Fruit Trees + other temperate nurseries
+Now that Yalca is in the tracker, consider:
+- Post in eastern states fruit groups (r/GardeningAustralia, Daley's forum) about heritage/dwarf apples
+- Angle: "planning your bare-root season? Yalca ships June-Sep and they're now on treestock.com.au"
+- Research: are there eastern states FB groups (NSW/VIC gardening, heritage orchards) worth targeting?
 
-Yalca Fruit Trees (yalcafruittrees.com.au): WooCommerce, VIC, seasonal (June-Sep), no WA shipping.
-Worth adding for eastern states users? Their bare-root season starts June — timing is relevant.
-Also: research whether any national nurseries (e.g. Birdwood Nursery, Plant Mates) are scrapeable.
+### 3. Dale: Research Plant Native + Ross Creek Tropicals shipping confirmation
 
-### 4. Dale: Write Perth Mobile Nursery nursery report page
-
-Now that Perth Mobile Nursery is in the tracker, build a nursery-report-perth-mobile-nursery.html
-(same format as primal-fruits and heritage). This is a future sponsorship target.
-
-### 5. Dale: Weekly FB post update
-
-Current post (fb-post-week12-2026.md) was written 2026-03-17. Refresh with Perth Mobile Nursery
-highlights (rare mangoes $770-880, Black Sapote $550, Soursop $550, Longan Kohala $650).
+Ross Creek Tropicals shipping: currently estimated QLD/NSW/VIC/ACT. Verify on their website.
+Also check: Ausnurseries shipping states — estimated, not confirmed.
 
 ---
 

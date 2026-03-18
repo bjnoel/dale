@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "last_updated": "2026-03-18",
-  "session_count": 30,
+  "session_count": 31,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -60,19 +60,19 @@
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
-      "nurseries_monitored": 13,
-      "nurseries_researched": 17,
+      "nurseries_monitored": 14,
+      "nurseries_researched": 18,
       "first_scrape_date": "2026-03-05",
-      "days_of_data": 11,
-      "products_tracked": 5898,
-      "in_stock": 2945,
-      "products_note": "fruit/edible only (filtered from ~18,000+ total raw). HFT adds ~300 temperate varieties.",
+      "days_of_data": 13,
+      "products_tracked": 6099,
+      "in_stock": 3200,
+      "products_note": "fruit/edible only (filtered from ~20,000+ total raw). HFT adds ~300 temperate varieties. Yalca adds 201 heritage/dwarf varieties.",
       "species_matched_pct": 68,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
       "subscribers": 4,
       "revenue_total": 0,
       "features": [
-        "Daily scraping of 12 nurseries",
+        "Daily scraping of 14 nurseries",
         "Price/stock change detection",
         "State-based shipping filter (all 8 states)",
         "Species taxonomy (50 species, fruit_species.json)",
@@ -198,6 +198,14 @@
           "ships_to_wa": true,
           "location": "WA",
           "note": "Premium WA nursery. Perth metro delivery. Rare mangoes ($770-880), figs, pomegranates, dragon fruit. Added 2026-03-18."
+        },
+        "yalca_fruit_trees": {
+          "products": 201,
+          "in_stock": 125,
+          "platform": "WooCommerce",
+          "ships_to_wa": false,
+          "location": "VIC",
+          "note": "Heritage/dwarf specialist. NSW/VIC/QLD/SA/ACT only. Seasonal: late June to Sep 15 (dormant bare-root). 201 apple, pear, stone fruit, fig, quince, berry varieties. Added 2026-03-18."
         }
       },
       "next_action": "Benedict: visit Leeming Fruit Trees (potential Track B nursery addition). Send Heritage Fruit Trees outreach. WhatsApp Cyrus at Primal Fruits."
