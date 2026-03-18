@@ -4,6 +4,24 @@
 
 ---
 
+## DEC-070 — 2026-03-18 — Perth Mobile Nursery Outreach + Nursery Research
+
+**Decided by:** Dale
+**Decision:** (1) Draft Perth Mobile Nursery sponsored listing outreach. (2) Research 4 more nursery candidates. (3) Fix nursery report stats to use live variables.
+**Rationale:**
+- Perth Mobile Nursery is the strongest immediate revenue candidate: WA-based, premium pricing ($770-880 mangoes), already tracked. Outreach drafted with direct email + WhatsApp options and the nursery report as the pitch asset.
+- Nursery research has now exhausted all obvious candidates. 4 more researched: Fruit Tree Man (Shopify but 0 available products — seasonal, no live pricing), Tropical Planet Nursery (Wix — not scrape-able), Exotica Rare Fruits (GoDaddy — no cart/prices), Sow Exotic (US-based, USD).
+- Combined with Session 33's 6 ruled-out candidates (Engall's, Woodbridge, Mount Martin, El Arish, South Eden, Birdwood) — 10 candidates researched this day, all ruled out. Diminishing returns on nursery research.
+- Nursery report stats were hardcoded (526 visitors, 5,688 products, 12 nurseries). Fixed to use SITE_STATS variables; updated to current figures (548 visitors, 6,181 products, 15 nurseries).
+**What was built:**
+- deliverables/perth-mobile-nursery-outreach-2026-03-18.md: full outreach brief with email draft, WhatsApp fallback, strategy notes, and timing rationale.
+- scrapers/build_nursery_report.py: hardcoded stats replaced with SITE_STATS variables; stats updated to current figures.
+- All 3 nursery reports regenerated with current stats.
+**Action for Benedict:** Send email to info@perthmobilenursery.com.au with nursery report link. Do this IN PARALLEL with Primal Fruits WhatsApp to Cyrus (both are WA nurseries, different channels).
+**Status:** READY — awaiting Benedict
+
+---
+
 ## DEC-069 — 2026-03-18 — Add Forever Seeds
 
 **Decided by:** Dale

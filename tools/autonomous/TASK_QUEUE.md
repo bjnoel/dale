@@ -5,6 +5,43 @@
 
 ---
 
+## Completed This Session (2026-03-18 UTC, session 34 — 18:00 UTC)
+
+- [x] Notion task (clickable header, id 3277f8d5-3f8e-8081-847e-c2116f4dd70b):
+      Already completed in Session 33 (commit 3f94916). Verified header has `<a href="/">` wrapping icon + title. Notion marked Done.
+- [x] Perth Mobile Nursery outreach drafted (DEC-070):
+      deliverables/perth-mobile-nursery-outreach-2026-03-18.md — email draft + WhatsApp fallback + strategy notes.
+      Contact: info@perthmobilenursery.com.au | WhatsApp: +61 431 095 777.
+      Nursery report URL: treestock.com.au/nursery-report-perth-mobile-nursery.html
+- [x] Nursery report stats fixed (DEC-070):
+      build_nursery_report.py: hardcoded numbers (526 visitors, 5,688 products, 12 nurseries) replaced with SITE_STATS variables.
+      Updated to current: 548 visitors, 6,181 products, 15 nurseries. All 3 reports regenerated.
+- [x] Nursery research — 4 more candidates investigated, all ruled out:
+      - Fruit Tree Man (Perth, Shopify): 0 available products — seasonal only, no live pricing. Not suitable.
+      - Tropical Planet Nursery: Wix. Not scrape-able.
+      - Exotica Rare Fruits (rarefruitsexotica.com): GoDaddy builder, no cart or prices. Catalogue only.
+      - Sow Exotic (sowexotic.com): Shopify but US-based (USD, countryCode: US). Not suitable.
+      Combined with Session 33's 6 ruled-out candidates — nursery pipeline is effectively exhausted for now.
+
+---
+
+## Completed This Session (2026-03-18 UTC, session 33 — 06:56 UTC)
+
+- [x] Notion task (clickable header, id 3277f8d5-3f8e-8081-847e-c2116f4dd70b): Done.
+      Wrapped header SVG logo + "treestock.com.au" title in `<a href="/">`. Both clickable, link to homepage.
+- [x] Nursery research — 6 more candidates investigated, all ruled out:
+      Engall's (citrus only, no WA shipping), Woodbridge (CLOSED mid-2025), Mount Martin (click-and-collect only),
+      El Arish (Neto, ornamentals), South Eden (US), Birdwood (B2B wholesale confirmed).
+- [x] Data trend analysis (7-day, 2026-03-11 to 2026-03-18):
+      Net: -101 in-stock items (autumn/end-of-season pattern). Daleys -47, Ladybird -40, Fruitopia -13.
+      Ross Creek +16 (unusual). Primal Fruits: active inventory management (11 price increases).
+- [x] Forever Seeds added (DEC-069):
+      82 products, 76 in stock. NSW. Ships QLD/NSW/VIC/SA/ACT only. Rare tropicals specialist.
+      Rollinia, Canistel, Black Sapote, Soursop, Vanilla Bean Orchid, Jackfruit, Longan, Cocoa, Coffee.
+      Dashboard: 6,099 products, 15 nurseries. Nursery page: /nursery/forever-seeds.html.
+
+---
+
 ## Completed This Session (2026-03-18 UTC, session 32 — 05:26 UTC)
 
 - [x] Notion task (GSC sitemap blocker, id 3277f8d5-3f8e-80ad-b90a-d4538352be21):
@@ -244,20 +281,22 @@
 
 ---
 
-## Tomorrow's Tasks (2026-03-19 UTC) — In Priority Order
+## Tomorrow's Tasks (2026-03-20 UTC) — In Priority Order
 
-### 1. Benedict actions (priority — not for Dale)
-- **WhatsApp Cyrus (Primal Fruits)** about featured listing — share these two URLs:
-  - nursery report: treestock.com.au/nursery-report-primal-fruits.html
-  - live demo: treestock.com.au/featured-demo.html
+### 1. Benedict actions (PRIORITY — not for Dale)
+
+**Revenue outreach (highest priority):**
+- **Email Perth Mobile Nursery** — info@perthmobilenursery.com.au — see deliverables/perth-mobile-nursery-outreach-2026-03-18.md. Send with nursery report: treestock.com.au/nursery-report-perth-mobile-nursery.html
+- **WhatsApp Cyrus (Primal Fruits)** about featured listing — see deliverables/perth-mobile-nursery-outreach-2026-03-18.md for framing. Share: treestock.com.au/nursery-report-primal-fruits.html and treestock.com.au/featured-demo.html
+- **Send Heritage Fruit Trees outreach** — see deliverables/heritage-fruit-trees-outreach-2026-03-16.md. Share: treestock.com.au/nursery-report-heritage-fruit-trees.html
+
+**Community outreach (do after revenue):**
 - **Find Whirlpool thread** (search "treestock.com.au" on forums.whirlpool.net.au), reply — see deliverables/reddit-whirlpool-drafts-2026-03-17.md
-- **Send Heritage Fruit Trees outreach** — see deliverables/heritage-fruit-trees-outreach-2026-03-16.md, attach: treestock.com.au/nursery-report-heritage-fruit-trees.html
-- ~~**Submit treestock.com.au to Google Search Console**~~ DONE — sitemap submitted, Google crawled it 2026-03-17. SEO unlocked.
 - **Post on Daley's Fruit Tree Forum** — new thread, see deliverables/community-engagement-2026-03-16.md (Task 2)
 - **Post in Heritage and Rare Fruit Network** national FB group (Task 4 in same file)
 - **Email Rare Fruit Society SA** to request links listing (Task 3 in same file)
 - Visit Leeming Fruit Trees (4a Westmorland Dr, Leeming, Wed-Sat 8:30am-2pm)
-- Post weekly FB post Sunday morning (deliverables/fb-post-week12-2026.md) — refreshed with Perth Mobile Nursery this session
+- Post weekly FB post Sunday morning (deliverables/fb-post-week12-2026.md)
 - Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
 
 ### 2. Benedict actions — Eastern States Outreach (Yalca)
@@ -268,16 +307,18 @@ Content is ready in deliverables/yalca-eastern-states-outreach-2026-03-18.md. Pr
 3. **Heritage & Rare Fruit Network contact form** (5 min) — request listing on heritageandrarefruits.weebly.com/sources-of-fruit-trees.html (they already list Yalca — we aggregate them)
 4. **r/AustralianPlants comment** (5 min) — find a relevant thread
 
-### 3. Dale: Research next nursery addition
+### 3. Dale: Revenue experiment — subscriber growth
 
-Shipping confirmed:
-- [x] Ross Creek Tropicals: QLD/NSW/VIC/ACT only. Confirmed 2026-03-18. Already correct in shipping.py.
-- [ ] Ausnurseries: site DNS is down. Could not verify. Estimate (NSW/VIC/QLD/SA/ACT) stands.
+Nursery pipeline is effectively exhausted (10 ruled-out candidates across sessions 33-34).
+Focus shifts to growing subscriber list (more subscribers = stronger nursery pitch):
+- Analyse subscriber signup funnel: where are visitors dropping off?
+- Test improvements to the subscribe CTA copy or placement
+- Consider: does the sample digest page convert? Check traffic to /sample-digest.html
+- Consider: can we add a "New to rare fruit trees? Start here" page to capture broader audience?
 
-Candidate nurseries to research next:
-- Engall's Nursery (QLD, mangoes/tropicals)
-- Woodbridge Fruit Trees (TAS) — already on Heritage & Rare Fruit Network source list, ships mainland
-- Birdwood Nursery (SA) — B2B wholesale only, NOT suitable (confirmed session 31)
+### 4. Dale: Ausnurseries shipping check
+
+Site DNS was down on 2026-03-18. Try again — if up, confirm shipping states.
 
 ---
 

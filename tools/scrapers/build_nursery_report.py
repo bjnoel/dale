@@ -59,12 +59,12 @@ NURSERY_META = {
 
 # Site-wide stats (updated from Plausible, accurate as of 2026-03-18)
 SITE_STATS = {
-    "visitors_7d": 541,
-    "visitors_30d": 541,
-    "pageviews_30d": 832,
+    "visitors_7d": 548,
+    "visitors_30d": 548,
+    "pageviews_30d": 841,
     "subscribers": 4,
-    "products_tracked": 6099,
-    "nurseries": 14,
+    "products_tracked": 6181,
+    "nurseries": 15,
     "launch_date": "2026-03-05",
     "top_sources": [
         ("Facebook (rare fruit groups)", "328 visitors / 7 days"),
@@ -249,20 +249,20 @@ def build_report(nursery_key):
     </p>
     <div class="stats-grid">
       <div class="stat">
-        <div class="number">526</div>
+        <div class="number">{SITE_STATS['visitors_7d']}</div>
         <div class="label">Visitors this week</div>
       </div>
       <div class="stat">
-        <div class="number">490</div>
+        <div class="number">{SITE_STATS['visitors_30d']}</div>
         <div class="label">Visitors past 30 days</div>
       </div>
       <div class="stat">
-        <div class="number">4</div>
+        <div class="number">{SITE_STATS['subscribers']}</div>
         <div class="label">Email subscribers<br>(growing daily)</div>
       </div>
       <div class="stat">
-        <div class="number">5,688</div>
-        <div class="label">Products tracked<br>across 12 nurseries</div>
+        <div class="number">{SITE_STATS['products_tracked']:,}</div>
+        <div class="label">Products tracked<br>across {SITE_STATS['nurseries']} nurseries</div>
       </div>
     </div>
     <p style="margin-top:1.25rem; font-size:0.92rem; font-weight:600;">Where our visitors come from:</p>
