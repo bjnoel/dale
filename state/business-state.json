@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "last_updated": "2026-03-17",
-  "session_count": 27,
+  "last_updated": "2026-03-18",
+  "session_count": 30,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -60,12 +60,12 @@
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
-      "nurseries_monitored": 12,
+      "nurseries_monitored": 13,
       "nurseries_researched": 17,
       "first_scrape_date": "2026-03-05",
       "days_of_data": 11,
-      "products_tracked": 5688,
-      "in_stock": 2785,
+      "products_tracked": 5898,
+      "in_stock": 2945,
       "products_note": "fruit/edible only (filtered from ~18,000+ total raw). HFT adds ~300 temperate varieties.",
       "species_matched_pct": 68,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
@@ -190,6 +190,14 @@
           "ships_to_wa": true,
           "location": "VIC",
           "note": "Heritage/heirloom temperate varieties. WA shipping in winter/dormant season (May-Sep). Added 2026-03-16."
+        },
+        "perth_mobile_nursery": {
+          "products": 220,
+          "in_stock": 160,
+          "platform": "Shopify",
+          "ships_to_wa": true,
+          "location": "WA",
+          "note": "Premium WA nursery. Perth metro delivery. Rare mangoes ($770-880), figs, pomegranates, dragon fruit. Added 2026-03-18."
         }
       },
       "next_action": "Benedict: visit Leeming Fruit Trees (potential Track B nursery addition). Send Heritage Fruit Trees outreach. WhatsApp Cyrus at Primal Fruits."

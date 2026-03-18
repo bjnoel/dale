@@ -63,6 +63,11 @@ NURSERIES = {
         "domain": "www.fruittreecottage.com.au",
         "location": "Forest Glen, QLD",
     },
+    "perth-mobile-nursery": {
+        "name": "Perth Mobile Nursery",
+        "domain": "perthmobilenursery.com.au",
+        "location": "Perth, WA",
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

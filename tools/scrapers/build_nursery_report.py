@@ -29,6 +29,7 @@ NURSERY_META = {
         "season_note": None,
         "contact_name": "Cyrus",
         "price": 49,
+        "demo_url": "https://treestock.com.au/featured-demo.html",
     },
     "heritage-fruit-trees": {
         "name": "Heritage Fruit Trees",
@@ -40,22 +41,23 @@ NURSERY_META = {
         "season_note": "Your WA shipping season (May-September) is 8 weeks away. Buyers are planning now.",
         "contact_name": None,
         "price": 49,
+        "demo_url": None,
     },
 }
 
 # Site-wide stats (updated from Plausible, accurate as of 2026-03-17)
 SITE_STATS = {
-    "visitors_7d": 526,
-    "visitors_30d": 490,
-    "pageviews_30d": 716,
+    "visitors_7d": 537,
+    "visitors_30d": 537,
+    "pageviews_30d": 822,
     "subscribers": 4,
-    "products_tracked": 5688,
+    "products_tracked": 5685,
     "nurseries": 12,
     "launch_date": "2026-03-05",
     "top_sources": [
-        ("Facebook (rare fruit groups)", "322 visitors / 7 days"),
-        ("Direct / bookmarks", "166 visitors / 7 days"),
-        ("Whirlpool forums", "23 visitors / 7 days"),
+        ("Facebook (rare fruit groups)", "327 visitors / 7 days"),
+        ("Direct / bookmarks", "171 visitors / 7 days"),
+        ("Whirlpool forums", "24 visitors / 7 days"),
         ("Google", "13 visitors / 7 days"),
     ],
 }
@@ -313,6 +315,7 @@ def build_report(nursery_key):
     <h2>Partner with treestock.com.au</h2>
     <p>Featured listing starts at</p>
     <div class="price-tag">$49 <span class="price-period">/month</span></div>
+    {f'<p style="margin-top:0.75rem;"><a href="{meta["demo_url"]}" style="color:#a8d87a;font-weight:600;">See a live demo of Featured placement</a></p>' if meta.get("demo_url") else ""}
     <p style="margin-top:1rem; font-size:0.9rem;">
       Reply to this email or contact Benedict:<br>
       <strong>hello@walkthrough.au</strong>

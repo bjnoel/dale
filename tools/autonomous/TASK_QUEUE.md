@@ -5,6 +5,32 @@
 
 ---
 
+## Completed This Session (2026-03-18 UTC, session 30 — 04:10 UTC)
+
+- [x] Notion task: treestock.com.au still missing data (id: 3277f8d5) — investigated and marked Done.
+      Site is healthy: 5,898 products, 13 nurseries, 1.73MB dashboard built at 04:11 UTC.
+      Session 29's fix was effective. The Notion task was created before the fix resolved the issue.
+      Notion updated to Done.
+- [x] robots.txt created (was missing!):
+      /opt/dale/dashboard/robots.txt — allows all crawlers, points to sitemap.xml.
+      Now live at treestock.com.au/robots.txt. This helps Google discover all 2,500+ URLs.
+- [x] Nursery pitch materials improved (DEC-065):
+      featured-demo.html: rebuilt with sticky amber banner ("This is what Primal Fruits Perth looks like as Featured Partner").
+      advertise.html: stats updated (490 → 537 visitors, 11k → 5,600+ fruit trees), "See a live demo" button added.
+      build_nursery_report.py: stats updated, "See a live demo" link added to Primal Fruits report CTA.
+      Nursery reports regenerated.
+- [x] Perth Mobile Nursery added to treestock.com.au (DEC-065):
+      220 products, 160 in stock. WA-based (Perth metro delivery).
+      Premium pricing: mangoes $770-880, figs, pomegranates, dragon fruit, lychees.
+      Scraped first snapshot. Nursery profile page live at treestock.com.au/nursery/perth-mobile-nursery.html
+      Dashboard rebuilt: 5,898 products, 13 nurseries. Species/compare/location pages rebuilt. Sitemap: 2,504 URLs.
+- [x] Traffic analysis completed:
+      98% of 537 visitors/week go to homepage. Species pages get trickle (Whirlpool visitors explore species).
+      13 Google visitors/week — lychee species page ranked for 1 Google query. Site is 13 days old.
+      CVR: 0.7% (4/537). Expected at this stage; will improve with reputation/time.
+
+---
+
 ## Completed This Session (2026-03-18 UTC, session 29 — 03:36 UTC, URGENT)
 
 - [x] Notion task: treestock.com.au listing outage — DEC-064 (FIXED):
@@ -170,12 +196,15 @@
 
 ---
 
-## Tomorrow's Tasks (2026-03-18 UTC) — In Priority Order
+## Tomorrow's Tasks (2026-03-19 UTC) — In Priority Order
 
 ### 1. Benedict actions (priority — not for Dale)
+- **WhatsApp Cyrus (Primal Fruits)** about featured listing — share these two URLs:
+  - nursery report: treestock.com.au/nursery-report-primal-fruits.html
+  - live demo: treestock.com.au/featured-demo.html (now has "this is what your listing looks like" banner)
 - **Find Whirlpool thread** (search "treestock.com.au" on forums.whirlpool.net.au), reply — see deliverables/reddit-whirlpool-drafts-2026-03-17.md
-- **WhatsApp Cyrus (Primal Fruits)** about featured listing — share link: treestock.com.au/nursery-report-primal-fruits.html
-- **Send Heritage Fruit Trees outreach** — see deliverables/heritage-fruit-trees-outreach-2026-03-16.md, attach report URL: treestock.com.au/nursery-report-heritage-fruit-trees.html
+- **Send Heritage Fruit Trees outreach** — see deliverables/heritage-fruit-trees-outreach-2026-03-16.md, attach: treestock.com.au/nursery-report-heritage-fruit-trees.html
+- **Submit treestock.com.au to Google Search Console (Q31)** — robots.txt is now live, sitemap at treestock.com.au/sitemap.xml (2,504 URLs). This will unlock Google traffic.
 - **Post on Daley's Fruit Tree Forum** — new thread, see deliverables/community-engagement-2026-03-16.md (Task 2)
 - **Post in Heritage and Rare Fruit Network** national FB group (Task 4 in same file)
 - **Email Rare Fruit Society SA** to request links listing (Task 3 in same file)
@@ -183,30 +212,23 @@
 - Post weekly FB post Sunday morning (deliverables/fb-post-week12-2026.md)
 - Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
 
-### 2. Dale: Revenue — first dollar experiment (nursery sponsored listings)
+### 2. Dale: Add Perth Mobile Nursery nursery report (DONE this session — see DEC-065)
 
-Current state: 526 visitors/week, 4 subscribers, $0 revenue.
-The nursery sponsorship pitch infrastructure is ready (nursery-report pages, featured badge code).
-Waiting for Benedict to contact Cyrus/Heritage. But Dale can work on this in parallel:
-- Build a nursery-specific "featured listing" demo for Primal Fruits (the actual featured UI, not just the pitch page)
-- What does a "featured" listing look like on the homepage? Currently just a badge — should it be highlighted, pinned, or shown in a dedicated section?
-- Check the /advertise.html page — is it compelling? Any improvements needed?
+### 3. Dale: Research Yalca Fruit Trees + other temperate nurseries
 
-### 3. Dale: Build Google Search Console integration or traffic analysis
+Yalca Fruit Trees (yalcafruittrees.com.au): WooCommerce, VIC, seasonal (June-Sep), no WA shipping.
+Worth adding for eastern states users? Their bare-root season starts June — timing is relevant.
+Also: research whether any national nurseries (e.g. Birdwood Nursery, Plant Mates) are scrapeable.
 
-We have 526 visitors/week but only 4 subscribers (0.8% CVR). We need to understand:
-- What search queries are bringing people to treestock.com.au? (Plausible doesn't show keywords)
-- Which pages have the most engagement vs bounce?
-- Are the species/variety/compare pages getting any organic traffic yet?
-- Add a "most visited" or "trending searches" section to the homepage to guide discovery?
+### 4. Dale: Write Perth Mobile Nursery nursery report page
 
-### 4. Dale: Add more nurseries to Track B
+Now that Perth Mobile Nursery is in the tracker, build a nursery-report-perth-mobile-nursery.html
+(same format as primal-fruits and heritage). This is a future sponsorship target.
 
-Priority candidates to research:
-- Hidden Valley Hibiscus (QLD) — tropical fruits
-- Trees and Shrubs Online (national) — research whether scrapeable
-- Gurney's / other online garden stores — check for fruit tree sections
-Focus on nurseries that ship to WA or are WA-based (biggest gap in our coverage).
+### 5. Dale: Weekly FB post update
+
+Current post (fb-post-week12-2026.md) was written 2026-03-17. Refresh with Perth Mobile Nursery
+highlights (rare mangoes $770-880, Black Sapote $550, Soursop $550, Longan Kohala $650).
 
 ---
 

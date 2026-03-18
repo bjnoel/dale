@@ -78,6 +78,11 @@ NURSERY_META = {
         "tags": ["heritage varieties", "heirloom", "temperate fruit", "apples", "pears", "plums"],
         "description": "Heritage Fruit Trees is a Victorian specialist nursery carrying one of Australia's largest collections of heritage and heirloom temperate fruit trees. Based in Beaufort, VIC, they stock hundreds of apple, pear, plum, cherry, quince, and nut tree varieties including many rare cultivars unavailable elsewhere. They ship to WA during the dormant/winter season (approximately May to September).",
     },
+    "perth-mobile-nursery": {
+        "url": "https://perthmobilenursery.com.au",
+        "tags": ["WA grown", "tropical fruit", "mangoes", "figs", "rare varieties"],
+        "description": "Perth Mobile Nursery is a premium WA-based nursery specialising in fruit trees suited to Perth's climate. They carry a range of tropical and subtropical varieties including rare mango cultivars, figs, pomegranates, and edibles grown locally in WA. Perth metro delivery available.",
+    },
 }
 
 

@@ -20,6 +20,7 @@ SHIPPING_MAP = {
     "ausnurseries": ["NSW", "VIC", "QLD", "SA", "ACT"],           # Does not ship to WA, NT, or TAS
     "fruit-tree-cottage": ["NSW", "VIC", "QLD", "SA", "ACT"],     # Does not ship to WA, NT, or TAS
     "heritage-fruit-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],  # VIC-based, ships nationally in winter/dormant season
+    "perth-mobile-nursery": ["WA"],                                             # WA-based, Perth metro delivery only
 }
 
 NURSERY_NAMES = {
@@ -35,6 +36,7 @@ NURSERY_NAMES = {
     "ausnurseries": "Aus Nurseries",
     "fruit-tree-cottage": "Fruit Tree Cottage",
     "heritage-fruit-trees": "Heritage Fruit Trees",
+    "perth-mobile-nursery": "Perth Mobile Nursery",
 }
 
 

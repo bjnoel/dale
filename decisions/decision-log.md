@@ -1087,3 +1087,24 @@ in progress. Will be live in tomorrow's dashboard build.
 - shipping.py: Ladybird confirmed as QLD/NSW/VIC/ACT only (was estimate, now verified 2026-03-16)
 **Action for Benedict:** 30 minutes of posting across 4 channels. Priority: Daley's Forum new thread + Heritage FB group.
 **Status:** READY — awaiting Benedict
+
+---
+
+## DEC-065 — 2026-03-18 — Add Perth Mobile Nursery + SEO Infrastructure
+
+**Decided by:** Dale
+**Decision:** (1) Add Perth Mobile Nursery to treestock.com.au. (2) Create robots.txt. (3) Improve nursery pitch materials.
+**Rationale:**
+- Perth Mobile Nursery (perthmobilenursery.com.au): Shopify, WA-based, Perth metro delivery. 220 products, 160 in stock. Premium pricing: mangoes $770-880, figs $99-249, pomegranates $129-449. Exactly the premium WA rare fruit content our audience wants. Easy Shopify integration.
+- robots.txt was missing. Without it, Google crawlers can't efficiently discover the sitemap. Added robots.txt pointing to sitemap.xml — now live at treestock.com.au/robots.txt. This is a meaningful SEO step.
+- Nursery pitch materials improved: featured-demo.html rebuilt with amber demo banner explaining it's a Primal Fruits preview. advertise.html updated (490 → 537 visitors, 11k → 5,600+ products). Nursery reports regenerated with current stats + "See a live demo" link for Primal Fruits.
+**What was built:**
+- shopify_scraper.py: perth-mobile-nursery added.
+- shipping.py: WA-only shipping for Perth Mobile Nursery.
+- build_nursery_pages.py: Perth Mobile Nursery metadata added.
+- /opt/dale/dashboard/robots.txt: created (was missing).
+- /opt/dale/dashboard/featured-demo.html: rebuilt with sticky amber demo banner.
+- /opt/dale/dashboard/advertise.html: updated stats + "See a live demo" button.
+- build_nursery_report.py: updated stats + demo URL link for Primal Fruits.
+- Dashboard rebuilt: 5,898 products, 13 nurseries (was 5,685/12).
+**Status:** LIVE
