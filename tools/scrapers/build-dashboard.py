@@ -779,7 +779,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 <header class="border-b border-gray-200 bg-white sticky top-0 z-10">
   <div class="max-w-5xl mx-auto px-4 py-3">
     <div class="flex items-start justify-between gap-2">
-      <div class="flex items-center gap-2">
+      <a href="/" class="flex items-center gap-2 no-underline">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-8 h-8 flex-shrink-0">
           <rect width="64" height="64" rx="12" fill="#065f46"/>
           <path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/>
@@ -792,7 +792,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
           <p class="text-xs text-gray-400 sm:hidden" id="statsSmall"></p>
           <p class="text-xs text-gray-400 hidden sm:block">Australian Nursery Stock Tracker</p>
         </div>
-      </div>
+      </a>
       <div class="hidden sm:block text-right text-xs text-gray-400">
         <div id="stats"></div>
         <div>Updated {now}</div>
