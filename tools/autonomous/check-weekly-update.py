@@ -56,21 +56,38 @@ def get_iso_weekday():
     return datetime.now(timezone.utc).isocalendar()[2]
 
 
-def update_exists(data_dir):
-    """Check if a weekly update file exists and has content."""
-    week_label = get_week_label()
-    update_path = os.path.join(data_dir, "weekly-updates", f"{week_label}.md")
-    if not os.path.exists(update_path):
+def _file_has_content(path):
+    """Check if a file exists and has at least 10 chars of non-header content."""
+    if not os.path.exists(path):
         return False
-    # Check it's not empty (at least 10 characters of actual content)
     try:
-        with open(update_path) as f:
+        with open(path) as f:
             content = f.read().strip()
-        # Strip markdown header to check for real content
         lines = [l for l in content.split("\n") if l.strip() and not l.strip().startswith("#")]
         return len("".join(lines)) >= 10
     except IOError:
         return False
+
+
+def update_exists(data_dir):
+    """Check if a weekly update file exists and has content.
+
+    Checks both the data directory and the repo's weekly-updates/ directory,
+    so updates submitted via git are recognised before deploy.sh runs.
+    """
+    week_label = get_week_label()
+    filename = f"{week_label}.md"
+
+    # Primary location: /opt/dale/data/weekly-updates/
+    if _file_has_content(os.path.join(data_dir, "weekly-updates", filename)):
+        return True
+
+    # Fallback: repo weekly-updates/ directory (resolved relative to repo root)
+    repo_root = os.path.normpath(os.path.join(SCRIPT_DIR, "..", ".."))
+    if _file_has_content(os.path.join(repo_root, "weekly-updates", filename)):
+        return True
+
+    return False
 
 
 def check():

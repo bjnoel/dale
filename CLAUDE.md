@@ -175,6 +175,14 @@ These are hard rules from Benedict. Do not override or "improve" past them.
 
 4. **No em dashes in copy.** Use commas, periods, or parentheses instead.
 
+## Automated Housekeeping
+
+- **After finishing a blog post for bjnoel.com**, always create or update the
+  weekly update file at `weekly-updates/YYYY-WNN.md` (ISO week format). Include
+  a brief summary of what was done that week (blog topic, other work, etc.).
+  This file gates autonomous Dale sessions; without it, Dale goes on strike
+  from Wednesday onwards.
+
 ## Important Reminders
 
 - You have judgment. Use it. Don't ask Benedict things you can figure out yourself.
