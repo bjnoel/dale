@@ -5,6 +5,27 @@
 
 ---
 
+## Completed This Session (2026-03-18 UTC, session 32 — 05:26 UTC)
+
+- [x] Notion task (GSC sitemap blocker, id 3277f8d5-3f8e-80ad-b90a-d4538352be21):
+      Benedict confirmed Google crawled sitemap on 2026-03-17. Removed blocker from task queue + backlog.
+      Notion updated to Done.
+- [x] Ross Creek Tropicals shipping confirmed (2026-03-18):
+      Ships QLD/NSW/VIC/ACT only (Mon/Tue). No WA/NT/TAS. Already correct in shipping.py. Updated comment.
+- [x] Ausnurseries shipping: site DNS is down/unreachable. Could not verify. Estimate retained (NSW/VIC/QLD/SA/ACT).
+- [x] Yalca eastern states outreach content drafted:
+      deliverables/yalca-eastern-states-outreach-2026-03-18.md — 6 ready-to-post pieces:
+      1. Daley's Forum reply (heritage apple/Yalca thread)
+      2. Daley's Forum new thread — treestock.com.au for planning bare-root 2026 season
+      3. r/GardeningAustralia post — site intro, bare-root season angle
+      4. r/AustralianPlants comment
+      5. Heritage & Rare Fruit Network contact form (request listing on their sources page)
+      6. Heritage Fruits Society VIC — worth investigating for listing
+      Key insight: Heritage & Rare Fruit Network already lists Yalca on their sources page.
+      treestock.com.au is not listed. This is a valuable backlink + credibility opportunity.
+
+---
+
 ## Completed This Session (2026-03-18 UTC, session 31 — 05:02 UTC)
 
 - [x] Notion task (URGENT): JS SyntaxError + blank prices (DEC-066):
@@ -231,7 +252,7 @@
   - live demo: treestock.com.au/featured-demo.html
 - **Find Whirlpool thread** (search "treestock.com.au" on forums.whirlpool.net.au), reply — see deliverables/reddit-whirlpool-drafts-2026-03-17.md
 - **Send Heritage Fruit Trees outreach** — see deliverables/heritage-fruit-trees-outreach-2026-03-16.md, attach: treestock.com.au/nursery-report-heritage-fruit-trees.html
-- **Submit treestock.com.au to Google Search Console (Q31)** — sitemap at treestock.com.au/sitemap.xml (2,518 URLs). Unlock Google traffic.
+- ~~**Submit treestock.com.au to Google Search Console**~~ DONE — sitemap submitted, Google crawled it 2026-03-17. SEO unlocked.
 - **Post on Daley's Fruit Tree Forum** — new thread, see deliverables/community-engagement-2026-03-16.md (Task 2)
 - **Post in Heritage and Rare Fruit Network** national FB group (Task 4 in same file)
 - **Email Rare Fruit Society SA** to request links listing (Task 3 in same file)
@@ -239,17 +260,24 @@
 - Post weekly FB post Sunday morning (deliverables/fb-post-week12-2026.md) — refreshed with Perth Mobile Nursery this session
 - Send Tass1 Trees cold email (deliverables/tass1-trees-cold-outreach.md)
 
-### 2. Dale: Revenue experiment — Yalca FB/forum outreach
+### 2. Benedict actions — Eastern States Outreach (Yalca)
 
-Now that Yalca is in the tracker, consider:
-- Post in eastern states fruit groups (r/GardeningAustralia, Daley's forum) about heritage/dwarf apples
-- Angle: "planning your bare-root season? Yalca ships June-Sep and they're now on treestock.com.au"
-- Research: are there eastern states FB groups (NSW/VIC gardening, heritage orchards) worth targeting?
+Content is ready in deliverables/yalca-eastern-states-outreach-2026-03-18.md. Priority order:
+1. **Daley's Forum new thread** (20 min) — "planning bare-root 2026 season?" + treestock link
+2. **r/GardeningAustralia post** (5 min) — site intro, bare-root season angle
+3. **Heritage & Rare Fruit Network contact form** (5 min) — request listing on heritageandrarefruits.weebly.com/sources-of-fruit-trees.html (they already list Yalca — we aggregate them)
+4. **r/AustralianPlants comment** (5 min) — find a relevant thread
 
-### 3. Dale: Research Plant Native + Ross Creek Tropicals shipping confirmation
+### 3. Dale: Research next nursery addition
 
-Ross Creek Tropicals shipping: currently estimated QLD/NSW/VIC/ACT. Verify on their website.
-Also check: Ausnurseries shipping states — estimated, not confirmed.
+Shipping confirmed:
+- [x] Ross Creek Tropicals: QLD/NSW/VIC/ACT only. Confirmed 2026-03-18. Already correct in shipping.py.
+- [ ] Ausnurseries: site DNS is down. Could not verify. Estimate (NSW/VIC/QLD/SA/ACT) stands.
+
+Candidate nurseries to research next:
+- Engall's Nursery (QLD, mangoes/tropicals)
+- Woodbridge Fruit Trees (TAS) — already on Heritage & Rare Fruit Network source list, ships mainland
+- Birdwood Nursery (SA) — B2B wholesale only, NOT suitable (confirmed session 31)
 
 ---
 
@@ -265,7 +293,7 @@ Also check: Ausnurseries shipping states — estimated, not confirmed.
 - [x] "Compare prices" pages — DONE 2026-03-15: 50 pages at /compare/ (DEC-051)
 - [x] Location pages — DONE 2026-03-14 (DEC-046): WA/QLD/NSW/VIC pages live
 - [ ] Submit to Australian business directories (Hotfrog, StartLocal, True Local) — Benedict to do, can't sign up for services
-- [ ] Google Search Console submission — Benedict to add treestock.com.au (Q31 still open)
+- [x] Google Search Console submission — DONE 2026-03-17: sitemap crawled by Google.
 
 ### Revenue Experiments
 - [x] Nursery affiliate programs — DONE 2026-03-13: None of Daleys/Diggers/Fruit Salad Trees have programs
@@ -276,8 +304,8 @@ Also check: Ausnurseries shipping states — estimated, not confirmed.
 - [ ] Species alerts paid tier: once 10+ watchers on a rare species, consider $2/month premium
 
 ### Community & Growth
-- [ ] Identify Reddit threads to answer with treestock data (r/AustralianPlants etc)
-- [ ] Reach out to rare fruit societies about listing as a resource
+- [ ] Identify Reddit threads to answer with treestock data (r/AustralianPlants etc) — content drafted in yalca-eastern-states-outreach-2026-03-18.md
+- [ ] Reach out to rare fruit societies about listing as a resource — Heritage & Rare Fruit Network contact form ready (yalca-eastern-states-outreach-2026-03-18.md task 5)
 
 ### Data Quality
 - [x] Ladybird shipping states — DONE 2026-03-16: Confirmed QLD/NSW/VIC/ACT only (shipping.py updated)
