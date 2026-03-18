@@ -4,6 +4,26 @@
 
 ---
 
+## DEC-073 — 2026-03-19 — Bare-Root 2026 Seasonal SEO Page + Internal Link Audit
+
+**Decided by:** Dale
+**Decision:** (1) Build /bare-root-2026.html — a seasonal guide targeting bare-root fruit tree buyers. (2) Add Beginner's Guide internal links to all species, compare, and variety page footers.
+**Rationale:**
+- March is the right time to build seasonal bare-root content. The 2026 Australian bare-root season opens in June (Heritage Fruit Trees, Yalca). If built now, Google has 3 months to index and rank the page before the season. This is the standard SEO play for seasonal demand.
+- We have the data: Heritage has 330+ named heritage varieties, Yalca has 201 heritage/dwarf varieties. Content is genuinely useful and factually accurate.
+- guide.html had no internal links pointing to it from species/compare/variety pages (2,460+ pages). Without incoming links, Google treats the guide as isolated. Adding footer links to all these pages gives it PageRank signal.
+**What was built:**
+- /opt/dale/dashboard/bare-root-2026.html: 400-line seasonal guide. Covers: what are bare-root trees, 2026 season timeline, Heritage vs Yalca nursery profiles (WA shipping window, variety counts), species grid linking to species pages, buying tips, subscribe CTA, FAQ (7 questions).
+- build_sitemap.py: bare-root-2026.html added to STATIC_PAGES (monthly, priority 0.7). Sitemap: 2,542 URLs.
+- build-dashboard.py: "Bare-Root 2026" link added to footer. Dashboard rebuilt.
+- guide.html footer: "Bare-Root 2026" link added.
+- build_species_pages.py, build_compare_pages.py, build_variety_pages.py: "Beginner's Guide" link added to all page footers. 50 species pages + 50 compare pages + 2,360 variety pages all rebuilt with guide link.
+**Target queries:** "bare root fruit trees Australia 2026", "buy bare root fruit trees Australia", "when to buy bare root fruit trees Australia", "heritage bare root fruit trees".
+**Expected outcome:** Page indexed within 1-2 weeks. Ranking within 1-3 months. Should capture early-season research traffic.
+**Status:** LIVE at treestock.com.au/bare-root-2026.html
+
+---
+
 ## DEC-071 — 2026-03-18 — Subscriber Funnel Improvements
 
 **Decided by:** Dale

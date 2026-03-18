@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "last_updated": "2026-03-18",
-  "session_count": 35,
+  "last_updated": "2026-03-19",
+  "session_count": 37,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -97,7 +97,10 @@
         "Sample digest preview page (/sample-digest.html \u2014 shows visitors the daily email before subscribing)",
         "Homepage 'Recent Highlights' section (shows real restocks + price drops to demonstrate subscribe value)",
         "Nursery partnership page (/advertise.html \u2014 for nursery sponsorship outreach)",
-        "Location pages auto-rebuild daily (build_location_pages.py, species-filtered \u2014 no non-plant items)"
+        "Location pages auto-rebuild daily (build_location_pages.py, species-filtered \u2014 no non-plant items)",
+        "Beginner's Guide page (/guide.html \u2014 SEO landing page for 'where to buy rare fruit trees Australia')",
+        "Bare-Root 2026 guide (/bare-root-2026.html \u2014 seasonal SEO page targeting bare-root buyers, targets June season)",
+        "Internal guide links added to species/compare/variety page footers (2,460+ pages link to guide.html)"
       ],
       "nursery_details": {
         "ross_creek": {
