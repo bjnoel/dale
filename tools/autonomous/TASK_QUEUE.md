@@ -5,6 +5,22 @@
 
 ---
 
+## Completed This Session (2026-03-18 UTC, session 29 — 03:36 UTC, URGENT)
+
+- [x] Notion task: treestock.com.au listing outage — DEC-064 (FIXED):
+      Root cause: session 28 built featured-demo.html by modifying the live build script,
+      which rebuilt index.html with Primal Fruits featured (reordered listings, amber styling).
+      Fixed with:
+      1. build-dashboard.py: --featured + --output-name flags (safe demo builds, never touch index.html)
+      2. build-dashboard.py: atomic writes (tmp file → rename, no partial HTML served)
+      3. build-dashboard.py: post-build verification (exit 2 if <500KB or <1000 products)
+      4. run-all-scrapers.sh: pre-build backup + automatic rollback on failure
+      5. deploy.sh: post-deploy size check with warning
+      Tested: build works, --featured primal-fruits --output-name featured-demo.html works.
+      Notion task updated to Done.
+
+---
+
 ## Completed This Session (2026-03-17 UTC, session 27 — 20:00 UTC)
 
 - [x] Notion task: 4x cron confirmed (again). Marked Done in Notion (id: 3247f8d5).

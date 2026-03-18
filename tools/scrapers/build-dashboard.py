@@ -1223,18 +1223,26 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: build-dashboard.py <data-dir> [output-dir]")
-        print("  data-dir: path to nursery-stock/ directory with nursery subdirectories")
-        print("  output-dir: where to write index.html (default: ./dashboard-output/)")
-        sys.exit(1)
+    import argparse
+    parser = argparse.ArgumentParser(description="Build treestock.com.au dashboard")
+    parser.add_argument("data_dir", help="Path to nursery-stock/ directory")
+    parser.add_argument("output_dir", nargs="?", default="dashboard-output", help="Where to write index.html (default: ./dashboard-output/)")
+    parser.add_argument("--featured", metavar="NURSERY_KEY", help="Nursery key to feature (e.g. primal-fruits). Overrides FEATURED_NURSERIES constant. Use for demo/preview builds only.")
+    parser.add_argument("--output-name", default="index.html", metavar="FILENAME", help="Output filename (default: index.html). Use e.g. featured-demo.html for demo builds.")
+    args = parser.parse_args()
 
-    data_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("dashboard-output")
+    data_dir = Path(args.data_dir)
+    output_dir = Path(args.output_dir)
 
     if not data_dir.exists():
         print(f"Error: {data_dir} does not exist")
         sys.exit(1)
+
+    # --featured flag overrides the FEATURED_NURSERIES constant without modifying source
+    global FEATURED_NURSERIES
+    if args.featured:
+        FEATURED_NURSERIES = {args.featured}
+        print(f"Featured nursery override: {args.featured}")
 
     print(f"Loading nursery data from {data_dir}...")
     products, nurseries, top_species = load_nursery_data(data_dir)
@@ -1250,9 +1258,23 @@ def main():
 
     output_dir.mkdir(parents=True, exist_ok=True)
     html = build_html(products, nurseries, top_species, highlights_html)
-    out_file = output_dir / "index.html"
-    out_file.write_text(html)
+
+    # Atomic write: write to temp file then rename to avoid serving partial HTML
+    out_file = output_dir / args.output_name
+    tmp_file = output_dir / (args.output_name + ".tmp")
+    tmp_file.write_text(html)
+    tmp_file.rename(out_file)
     print(f"Dashboard written to {out_file} ({len(html):,} bytes)")
+
+    # Post-build verification
+    actual_size = out_file.stat().st_size
+    if actual_size < 500_000:
+        print(f"WARNING: Output file is suspiciously small ({actual_size:,} bytes). Expected >500KB.", file=sys.stderr)
+        sys.exit(2)
+    if len(products) < 1000:
+        print(f"WARNING: Only {len(products)} products loaded. Expected >1000. Check scrapers.", file=sys.stderr)
+        sys.exit(2)
+    print(f"Verification passed: {actual_size:,} bytes, {len(products)} products")
 
 
 if __name__ == "__main__":

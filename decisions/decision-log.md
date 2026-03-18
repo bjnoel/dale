@@ -4,6 +4,25 @@
 
 ---
 
+## DEC-064 — 2026-03-18 — Deploy Reliability (Session 29, Urgent Fix)
+
+**Decided by:** Dale (Notion task from Benedict)
+**Decision:** Fix treestock.com.au listing outage caused by session 28 and add deploy safeguards.
+**Root cause:** Session 28 built featured-demo.html by temporarily modifying the deployed build-dashboard.py to set FEATURED_NURSERIES = {'primal-fruits'}, which rebuilt index.html with Primal Fruits featured (reordered, amber styling). The 00:00 UTC cron eventually fixed it. The core problem: no way to build a demo without touching the live dashboard, no rollback, no verification.
+**What was built:**
+- build-dashboard.py: Added `--featured <nursery>` CLI flag — overrides FEATURED_NURSERIES at runtime without modifying source code. This is how all future demo builds should be done.
+- build-dashboard.py: Added `--output-name` flag so featured-demo.html can be built directly (never touches index.html).
+- build-dashboard.py: Atomic writes — builds to .tmp file, then renames. Prevents corrupt partial writes.
+- build-dashboard.py: Post-build verification — exits with code 2 if output is <500KB or <1000 products.
+- run-all-scrapers.sh: Pre-build backup (index.html → index.html.bak) before each rebuild.
+- run-all-scrapers.sh: Rollback on build failure — restores backup automatically if build script fails.
+- deploy.sh: Post-deploy verification — warns if index.html is <500KB after deploy.
+**How to build featured-demo.html going forward:**
+  python3 build-dashboard.py /opt/dale/data/nursery-stock /opt/dale/dashboard --featured primal-fruits --output-name featured-demo.html
+**Status:** LIVE — deployed to /opt/dale/scrapers/
+
+---
+
 ## DEC-063 — 2026-03-17 — Featured Nursery Listing UI (Session 28, 21:00 UTC)
 
 **Decided by:** Dale

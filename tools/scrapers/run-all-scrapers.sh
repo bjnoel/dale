@@ -40,10 +40,27 @@ echo "$LOG_PREFIX Scrape complete."
 echo "$LOG_PREFIX Updating availability history..."
 python3 "$SCRIPT_DIR/availability_tracker.py" "$PROJECT_DIR/data/nursery-stock" 2>&1
 
-# Build dashboard
+# Backup previous dashboard before rebuilding (keep last-known-good for rollback)
+DASHBOARD_FILE="$PROJECT_DIR/dashboard/index.html"
+DASHBOARD_BACKUP="$PROJECT_DIR/dashboard/index.html.bak"
+if [ -f "$DASHBOARD_FILE" ]; then
+    cp "$DASHBOARD_FILE" "$DASHBOARD_BACKUP"
+fi
+
+# Build dashboard (atomic write + post-build verification built into script)
 echo "$LOG_PREFIX Building dashboard..."
-python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" 2>&1
-echo "$LOG_PREFIX Dashboard build complete."
+if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" 2>&1; then
+    echo "$LOG_PREFIX Dashboard build complete."
+else
+    BUILD_EXIT=$?
+    echo "$LOG_PREFIX ERROR: Dashboard build failed (exit $BUILD_EXIT). Rolling back to backup."
+    if [ -f "$DASHBOARD_BACKUP" ]; then
+        cp "$DASHBOARD_BACKUP" "$DASHBOARD_FILE"
+        echo "$LOG_PREFIX Rollback complete. Serving previous dashboard."
+    else
+        echo "$LOG_PREFIX ERROR: No backup available. Dashboard may be missing!"
+    fi
+fi
 
 # Generate daily digest (text + HTML + shareable web page versions)
 echo "$LOG_PREFIX Generating daily digest..."

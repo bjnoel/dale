@@ -58,4 +58,18 @@ if [ -d "$REPO_UPDATES" ]; then
     log "Synced weekly updates from repo"
 fi
 
+# Post-deploy verification: check live dashboard is still healthy
+DASHBOARD="/opt/dale/dashboard/index.html"
+if [ -f "$DASHBOARD" ]; then
+    DASHBOARD_SIZE=$(stat -c%s "$DASHBOARD" 2>/dev/null || stat -f%z "$DASHBOARD" 2>/dev/null || echo 0)
+    if [ "$DASHBOARD_SIZE" -lt 500000 ]; then
+        log "WARNING: dashboard index.html is only ${DASHBOARD_SIZE} bytes after deploy — may be corrupt!"
+        echo "WARNING: treestock.com.au dashboard is suspiciously small (${DASHBOARD_SIZE} bytes). Check immediately." >&2
+    else
+        log "Deploy verified: dashboard ${DASHBOARD_SIZE} bytes OK"
+    fi
+else
+    log "WARNING: dashboard index.html not found after deploy!"
+fi
+
 log "Deploy complete"
