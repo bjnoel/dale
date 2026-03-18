@@ -303,7 +303,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
 
     lines.append("—")
     lines.append("Full dashboard: https://treestock.com.au")
-    lines.append("Tracking 8 nurseries, ~5,000 fruit & edible plants daily.")
+    lines.append(f"Tracking {len(SHIPPING_MAP)} nurseries daily.")
 
     return "\n".join(lines)
 
@@ -388,7 +388,7 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False, stat
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.9em;color:#6b7280">
   <a href="https://treestock.com.au">Full dashboard</a> &bull;
-  Tracking 8 nurseries, ~5,000 fruit &amp; edible plants daily.<br>
+  Tracking {len(SHIPPING_MAP)} nurseries daily.<br>
   Built by <a href="https://treestock.com.au">treestock.com.au</a>
 </p>
 </body></html>"""
@@ -483,7 +483,7 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
 
   <div class="mt-8 p-4 bg-green-50 rounded-lg text-sm text-green-800">
     <p class="font-medium mb-1">Get daily updates</p>
-    <p>We track ~5,000 fruit &amp; edible plants across 8 Australian nurseries every day.</p>
+    <p>We track {len(SHIPPING_MAP)} Australian nurseries every day — price drops, restocks, new arrivals.</p>
     <p class="mt-2">
       <a href="/" class="font-medium">Search the dashboard →</a> &nbsp;|&nbsp;
       <a href="/history.html" class="font-medium">View price history →</a>

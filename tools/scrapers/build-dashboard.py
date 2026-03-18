@@ -184,7 +184,10 @@ def build_recent_highlights(data_dir: Path) -> str:
         if not nursery_dir.is_dir():
             continue
 
-        snapshots = sorted([f for f in nursery_dir.glob("2026-03-*.json")])
+        # Use date-based glob to get last 7 days (handles month/year rollover)
+        from datetime import date, timedelta
+        cutoff = (date.today() - timedelta(days=7)).isoformat()
+        snapshots = sorted([f for f in nursery_dir.glob("2???-??-??.json") if f.stem >= cutoff])
         if len(snapshots) < 2:
             continue
 

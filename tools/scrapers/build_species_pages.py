@@ -198,6 +198,7 @@ def build_species_page(species: dict, products: list[dict]) -> str:
     in_stock_count = len(in_stock)
     total_count = len(products)
     nursery_count = len(nurseries_seen)
+    total_nurseries = len(SHIPPING_MAP)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -287,7 +288,7 @@ def build_species_page(species: dict, products: list[dict]) -> str:
 
   <!-- Notify Me / CTA -->
   {'<div class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm mb-6">' if in_stock_count == 0 else '<div class="p-4 bg-green-50 rounded-lg text-sm mb-6">'}
-    {'<p class="font-semibold text-amber-800 mb-1">⚠️ ' + name + ' trees are currently out of stock</p><p class="text-gray-600 mb-3">Enter your email and we\'ll alert you when any ' + name + ' variety comes back in stock across our 8 monitored nurseries. <a href="/sample-digest.html" class="text-green-700 underline">See what you\'ll receive &rarr;</a></p>' if in_stock_count == 0 else '<p class="font-medium text-green-800 mb-1">Get restock alerts for ' + name + '</p><p class="text-gray-600 mb-3">We\'ll email you when new ' + name + ' varieties appear or prices drop at any of the 8 nurseries we monitor. <a href="/sample-digest.html" class="text-green-700 underline">See sample &rarr;</a></p>'}
+    {'<p class="font-semibold text-amber-800 mb-1">⚠️ ' + name + ' trees are currently out of stock</p><p class="text-gray-600 mb-3">Enter your email and we\'ll alert you when any ' + name + ' variety comes back in stock across our ' + str(total_nurseries) + ' monitored nurseries. <a href="/sample-digest.html" class="text-green-700 underline">See what you\'ll receive &rarr;</a></p>' if in_stock_count == 0 else '<p class="font-medium text-green-800 mb-1">Get restock alerts for ' + name + '</p><p class="text-gray-600 mb-3">We\'ll email you when new ' + name + ' varieties appear or prices drop at any of the ' + str(total_nurseries) + ' nurseries we monitor. <a href="/sample-digest.html" class="text-green-700 underline">See sample &rarr;</a></p>'}
     <form id="watchForm" class="flex flex-col sm:flex-row gap-2">
       <input type="email" id="watchEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">

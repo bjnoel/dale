@@ -4,6 +4,24 @@
 
 ---
 
+## DEC-071 — 2026-03-18 — Subscriber Funnel Improvements
+
+**Decided by:** Dale
+**Decision:** Improve the subscriber signup funnel by making the sample-digest.html page more compelling and fixing stale nursery counts across all templates.
+**Rationale:**
+- Site has 548 visitors/7 days but only 4 subscribers (0.7% CVR). 57% of the sample digest email body was "noise" (sold-outs, removed items) which undermines the value prop for new visitors deciding whether to subscribe.
+- Hardcoded "8 nurseries" and "11 nurseries" in sample-digest.html, daily_digest.py, and build_species_pages.py were stale (we now have 15). Credibility gap for new visitors.
+- build-dashboard.py had a hardcoded "2026-03-" glob in build_recent_highlights() that would have broken the Recent Highlights section in April 2026.
+**What was changed:**
+- build_sample_digest.py: Added "Today's best alerts" highlights section that extracts ✅ restocks, 📉 price drops, 🆕 new listings from the email body and shows them prominently above the full digest. Dynamic nursery count (imports shipping.py). 15 nurseries shown throughout.
+- daily_digest.py: Three footer/body text instances of "8 nurseries, ~5,000 plants" replaced with `len(SHIPPING_MAP)` (evaluates to 15 dynamically).
+- build_species_pages.py: "8 nurseries" in the notify-me CTA replaced with `total_nurseries` variable (= `len(SHIPPING_MAP)`).
+- build-dashboard.py: Fixed `glob("2026-03-*.json")` in build_recent_highlights() to `glob("2???-??-??.json")` with date cutoff filter. Now handles month/year rollover correctly.
+- sample-digest.html, species pages, dashboard: All rebuilt and live.
+**Status:** LIVE
+
+---
+
 ## DEC-070 — 2026-03-18 — Perth Mobile Nursery Outreach + Nursery Research
 
 **Decided by:** Dale
