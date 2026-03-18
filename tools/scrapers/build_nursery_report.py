@@ -43,21 +43,33 @@ NURSERY_META = {
         "price": 49,
         "demo_url": None,
     },
+    "perth-mobile-nursery": {
+        "name": "Perth Mobile Nursery",
+        "location": "Perth, WA",
+        "ships_to": "Perth metro (delivery + pickup)",
+        "audience_note": "Your customers are Perth locals. Our WA audience is your entire market.",
+        "unique_angle": "Premium WA rare tropical nursery with the highest-priced stock on the platform",
+        "wa_only": True,
+        "season_note": None,
+        "contact_name": None,
+        "price": 49,
+        "demo_url": None,
+    },
 }
 
-# Site-wide stats (updated from Plausible, accurate as of 2026-03-17)
+# Site-wide stats (updated from Plausible, accurate as of 2026-03-18)
 SITE_STATS = {
-    "visitors_7d": 537,
-    "visitors_30d": 537,
-    "pageviews_30d": 822,
+    "visitors_7d": 539,
+    "visitors_30d": 539,
+    "pageviews_30d": 826,
     "subscribers": 4,
-    "products_tracked": 5685,
-    "nurseries": 12,
+    "products_tracked": 5898,
+    "nurseries": 13,
     "launch_date": "2026-03-05",
     "top_sources": [
-        ("Facebook (rare fruit groups)", "327 visitors / 7 days"),
+        ("Facebook (rare fruit groups)", "328 visitors / 7 days"),
         ("Direct / bookmarks", "171 visitors / 7 days"),
-        ("Whirlpool forums", "24 visitors / 7 days"),
+        ("Whirlpool forums", "25 visitors / 7 days"),
         ("Google", "13 visitors / 7 days"),
     ],
 }
@@ -69,15 +81,24 @@ def load_nursery_data(key):
     with open(latest) as f:
         return json.load(f)
 
+def normalize_product(p):
+    """Normalize product fields across different scraper schemas (Ecwid, Shopify, BigCommerce)."""
+    # Shopify schema uses any_available + min_price; Ecwid/BC use available + price
+    available = p.get("available") or p.get("any_available", False)
+    price = p.get("price") or p.get("min_price", 0) or 0
+    return {"title": p.get("title", ""), "price": float(price), "available": available,
+            "url": p.get("url", ""), "nursery": p.get("nursery", ""), "nursery_name": p.get("nursery_name", "")}
+
 def get_in_stock_products(data):
     if not data:
         return []
     products = data.get("products", [])
-    return [p for p in products
-            if p.get("available")
-            and p.get("price", 0) > 0
-            and "gift" not in p.get("title", "").lower()
-            and "workshop" not in p.get("title", "").lower()]
+    normalized = [normalize_product(p) for p in products]
+    return [p for p in normalized
+            if p["available"]
+            and p["price"] > 0
+            and "gift" not in p["title"].lower()
+            and "workshop" not in p["title"].lower()]
 
 def get_top_products(products, n=8):
     return sorted(products, key=lambda p: -p.get("price", 0))[:n]
