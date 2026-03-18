@@ -49,4 +49,13 @@ chmod +x /opt/dale/autonomous/dale-runner.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/weekly-pester.py 2>/dev/null
 chmod +x /opt/dale/autonomous/check-weekly-update.py 2>/dev/null
 
+# Sync weekly updates from repo to data dir (allows submitting updates via git)
+REPO_UPDATES="$REPO_TOOLS/../weekly-updates"
+DATA_UPDATES="/opt/dale/data/weekly-updates"
+if [ -d "$REPO_UPDATES" ]; then
+    mkdir -p "$DATA_UPDATES"
+    cp -n "$REPO_UPDATES"/*.md "$DATA_UPDATES/" 2>/dev/null
+    log "Synced weekly updates from repo"
+fi
+
 log "Deploy complete"
