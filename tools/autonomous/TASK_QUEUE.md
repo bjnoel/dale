@@ -5,6 +5,19 @@
 
 ---
 
+## Completed This Session (2026-03-18 UTC, session 36 — 20:00 UTC)
+
+- [x] Notion task (clickable header, id 3277f8d5-3f8e-8081-847e-c2116f4dd70b):
+      Already done in Sessions 33-35. Verified header live. Notion marked Done.
+- [x] Ausnurseries: still DNS-unreachable (day 3). Will try again tomorrow.
+- [x] Beginners Guide page built (DEC-072):
+      /guide.html — 550-line SEO page targeting "where to buy rare fruit trees Australia".
+      7 sections: why they're hard to find, species by climate zone, all 15 nurseries + shipping,
+      state-by-state guide, FAQ, subscribe CTA.
+      Sitemap updated: 2,520 URLs. Dashboard footer: "Beginners Guide" link added. Dashboard rebuilt.
+
+---
+
 ## Completed This Session (2026-03-18 UTC, session 35 — 19:00 UTC)
 
 - [x] Notion task (clickable header, id 3277f8d5-3f8e-8081-847e-c2116f4dd70b):
@@ -320,17 +333,23 @@ Content is ready in deliverables/yalca-eastern-states-outreach-2026-03-18.md. Pr
 3. **Heritage & Rare Fruit Network contact form** (5 min) — request listing on heritageandrarefruits.weebly.com/sources-of-fruit-trees.html (they already list Yalca — we aggregate them)
 4. **r/AustralianPlants comment** (5 min) — find a relevant thread
 
-### 3. Dale: Revenue experiment — subscriber growth (continued)
+### 3. Dale: Ausnurseries shipping check (day 4)
 
-Session 35 tackled the funnel (sample digest improved, stale counts fixed, April glob bug fixed).
-Next subscriber growth levers to explore:
-- **"New to rare fruit trees?" landing page** — educational intro page targeting Google searches like "where to buy rare fruit trees Australia". Would serve as SEO content + subscriber funnel entry point for users unfamiliar with the site. Target URL: /guide.html or /start.html.
-- **Ausnurseries shipping check** — DNS was down 2 days in a row. Try again, or drop them from listed nurseries if still down.
-- **Google ranking check** — what queries are we now ranking for? Check Search Console via Benedict if possible.
+ausnurseries.com.au has been DNS-unreachable for 3 days (2026-03-18, 19, 20). Try again next session.
+If still down after 5 days total, consider removing from dashboard or marking as "currently unavailable".
 
-### 4. Dale: Ausnurseries shipping check
+### 4. Dale: SEO next steps — Internal linking for guide.html
 
-Site DNS has been down 2+ days (2026-03-18, 2026-03-19). Try again next session — if still down, consider removing from dashboard or marking as unreachable.
+guide.html is live but needs internal links from other pages to get Google juice:
+- Add "New to fruit tree collecting?" link in the species page footer (build_species_pages.py)
+- Add guide link to sample-digest.html footer
+- Consider: add a subtle "First time here? Read our guide" banner at the bottom of the homepage (not above results per Rule 1)
+
+### 5. Dale: Consider "in season now" content angle
+
+Autumn is starting. Heritage/Yalca dormant season (bare-root orders) opens in late June.
+A seasonal content piece targeting "buy bare-root fruit trees Australia 2026" could rank before the season opens.
+Evaluate whether this is worth 1-2 hours of work next session.
 
 ---
 

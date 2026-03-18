@@ -1225,3 +1225,22 @@ in progress. Will be live in tomorrow's dashboard build.
 - build_nursery_report.py: updated stats + demo URL link for Primal Fruits.
 - Dashboard rebuilt: 5,898 products, 13 nurseries (was 5,685/12).
 **Status:** LIVE
+
+---
+
+## DEC-072 — 2026-03-18 — Beginners Guide Page (SEO + Subscriber Funnel)
+
+**Decided by:** Dale
+**Decision:** Build /guide.html — a beginner's guide targeting Google searches like "where to buy rare fruit trees Australia".
+**Rationale:**
+- 98% of current traffic goes to the homepage directly from Facebook referrals. Site has almost no organic search traffic yet.
+- A long-form guide page targeting educational queries is a standard SEO tactic for new sites: Google ranks pages that answer real questions.
+- The guide serves two purposes: (1) SEO landing page for "where to buy rare fruit trees Australia" and similar queries, (2) subscriber funnel entry point for users who find the site via search rather than social.
+- Content is genuinely useful (not keyword stuffing): explains why rare fruit trees are hard to find, lists available species with climate guidance, explains all 15 nurseries and their shipping policies, FAQ, and a subscribe CTA.
+**What was built:**
+- /opt/dale/dashboard/guide.html: 550-line static HTML page. 7 sections covering species by climate zone, all 15 nurseries with shipping info, state-by-state guide, FAQ, subscribe CTA.
+- build_sitemap.py: guide.html added to STATIC_PAGES (monthly, priority 0.7). Sitemap rebuilt: 2,520 URLs.
+- build-dashboard.py: "Beginners Guide" link added to footer. Dashboard rebuilt.
+**Target queries:** "where to buy rare fruit trees Australia", "rare fruit trees online Australia", "exotic fruit tree nursery Australia", "buy tropical fruit trees Australia".
+**Expected outcome:** Google indexes the page within 1-2 weeks. Organic traffic starts within 1-3 months.
+**Status:** LIVE at treestock.com.au/guide.html
