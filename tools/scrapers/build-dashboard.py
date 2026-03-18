@@ -987,7 +987,7 @@ function updateSubCTA(q) {{
   const floatInput = document.getElementById('floatEmail');
 
   if (!q) {{
-    ctaEl.innerHTML = '<strong>Get tomorrow\'s changes in your inbox</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>';
+    ctaEl.innerHTML = `<strong>Get tomorrow's changes in your inbox</strong> \u2014 free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
     if (floatInput) floatInput.placeholder = 'Get daily alerts (free)';
     return;
   }}
@@ -1186,7 +1186,7 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
       const data = await resp.json();
       if (resp.status === 201 || resp.status === 200) {{
         localStorage.setItem('ts_subscribed', '1');
-        bar.innerHTML = '<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-green-800 font-medium">Subscribed! You\'ll get tomorrow\'s changes in your inbox.</div>';
+        bar.innerHTML = `<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-green-800 font-medium">Subscribed! You'll get tomorrow's changes in your inbox.</div>`;
         setTimeout(function() {{ bar.classList.add('translate-y-full'); }}, 3000);
       }} else {{
         btn.disabled = false;
