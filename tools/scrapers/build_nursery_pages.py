@@ -83,6 +83,11 @@ NURSERY_META = {
         "tags": ["WA grown", "tropical fruit", "mangoes", "figs", "rare varieties"],
         "description": "Perth Mobile Nursery is a premium WA-based nursery specialising in fruit trees suited to Perth's climate. They carry a range of tropical and subtropical varieties including rare mango cultivars, figs, pomegranates, and edibles grown locally in WA. Perth metro delivery available.",
     },
+    "yalca-fruit-trees": {
+        "url": "https://yalcafruittrees.com.au",
+        "tags": ["heritage varieties", "dwarf fruit trees", "apples", "pears", "stone fruit", "temperate"],
+        "description": "Yalca Fruit Trees is a specialist heritage and dwarf fruit tree nursery based in Yalca, Victoria. They carry a broad range of apple, pear, plum, cherry, apricot, nectarine, peach, fig, quince, persimmon and berry varieties. Shipping season is late June to 15 September (dormant bare-root season). Does not ship to WA, NT, or TAS.",
+    },
 }
 
 

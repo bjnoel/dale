@@ -28,6 +28,20 @@ NURSERIES = {
         "location": "Guildford, WA",
         "fruit_categories": ["fruits-nuts", "edibles"],
     },
+    "yalca-fruit-trees": {
+        "name": "Yalca Fruit Trees",
+        "domain": "yalcafruittrees.com.au",
+        "location": "Yalca, VIC",
+        "fruit_categories": [
+            "apple-trees", "dwarf-apple-trees", "apricot-trees", "cherry-trees",
+            "fig-trees", "mulberry-trees", "nectarine-trees", "peach-trees",
+            "pear-trees", "perry-pear-trees", "persimmon-trees",
+            "plum-trees", "plum-trees-european", "quince-trees",
+            "almond-trees", "pistachio-trees", "raspberry-plants",
+            "dwarf-fruit-trees", "sub-tropical-and-low-chill-fruits",
+            "fruit-tree-hybrid", "specials-discounts",
+        ],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

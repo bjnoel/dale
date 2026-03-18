@@ -21,6 +21,7 @@ SHIPPING_MAP = {
     "fruit-tree-cottage": ["NSW", "VIC", "QLD", "SA", "ACT"],     # Does not ship to WA, NT, or TAS
     "heritage-fruit-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],  # VIC-based, ships nationally in winter/dormant season
     "perth-mobile-nursery": ["WA"],                                             # WA-based, Perth metro delivery only
+    "yalca-fruit-trees": ["NSW", "VIC", "QLD", "SA", "ACT"],                   # Does not ship to WA, NT, or TAS. Seasonal: late June to Sep 15 only.
 }
 
 NURSERY_NAMES = {
@@ -37,6 +38,7 @@ NURSERY_NAMES = {
     "fruit-tree-cottage": "Fruit Tree Cottage",
     "heritage-fruit-trees": "Heritage Fruit Trees",
     "perth-mobile-nursery": "Perth Mobile Nursery",
+    "yalca-fruit-trees": "Yalca Fruit Trees",
 }
 
 
