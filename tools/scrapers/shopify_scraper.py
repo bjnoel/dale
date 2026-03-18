@@ -68,6 +68,12 @@ NURSERIES = {
         "domain": "perthmobilenursery.com.au",
         "location": "Perth, WA",
     },
+    "forever-seeds": {
+        "name": "Forever Seeds",
+        "domain": "forever-seeds.myshopify.com",
+        "location": "NSW",
+        "fruit_tags": ["Fruit", "edible", "citrus"],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

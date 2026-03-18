@@ -88,6 +88,11 @@ NURSERY_META = {
         "tags": ["heritage varieties", "dwarf fruit trees", "apples", "pears", "stone fruit", "temperate"],
         "description": "Yalca Fruit Trees is a specialist heritage and dwarf fruit tree nursery based in Yalca, Victoria. They carry a broad range of apple, pear, plum, cherry, apricot, nectarine, peach, fig, quince, persimmon and berry varieties. Shipping season is late June to 15 September (dormant bare-root season). Does not ship to WA, NT, or TAS.",
     },
+    "forever-seeds": {
+        "url": "https://forever-seeds.myshopify.com",
+        "tags": ["rare tropicals", "exotic fruit trees", "NSW", "seedlings"],
+        "description": "Forever Seeds is a NSW-based nursery specialising in rare and exotic tropical fruit trees. Their range includes unusual varieties such as Rollinia (Brazilian Custard Apple), Canistel (Yellow Sapote), Agarwood, Sudachi Lime, Yuzu, Longan, and other hard-to-find tropicals. Ships to NSW, VIC, QLD, SA and ACT. Does not ship to WA, NT, or TAS.",
+    },
 }
 
 

@@ -59,16 +59,16 @@ NURSERY_META = {
 
 # Site-wide stats (updated from Plausible, accurate as of 2026-03-18)
 SITE_STATS = {
-    "visitors_7d": 539,
-    "visitors_30d": 539,
-    "pageviews_30d": 826,
+    "visitors_7d": 541,
+    "visitors_30d": 541,
+    "pageviews_30d": 832,
     "subscribers": 4,
-    "products_tracked": 5898,
-    "nurseries": 13,
+    "products_tracked": 6099,
+    "nurseries": 14,
     "launch_date": "2026-03-05",
     "top_sources": [
         ("Facebook (rare fruit groups)", "328 visitors / 7 days"),
-        ("Direct / bookmarks", "171 visitors / 7 days"),
+        ("Direct / bookmarks", "173 visitors / 7 days"),
         ("Whirlpool forums", "25 visitors / 7 days"),
         ("Google", "13 visitors / 7 days"),
     ],

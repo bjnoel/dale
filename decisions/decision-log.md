@@ -4,6 +4,49 @@
 
 ---
 
+## DEC-069 — 2026-03-18 — Add Forever Seeds
+
+**Decided by:** Dale
+**Decision:** Add Forever Seeds (forever-seeds.myshopify.com, NSW) to treestock.com.au.
+**Rationale:**
+- Research confirmed this is a rare tropicals specialist with exactly the audience overlap treestock.com.au targets.
+- Products include: Rollinia, Canistel (Yellow Sapote), Black Sapote, Soursop, Miracle Fruit, Vanilla Bean Orchid, Jackfruit, Ice Cream Bean, Longan, Brazilian Cherry, Coffee, Cocoa - genuinely rare varieties.
+- Shopify store with public JSON API - trivial to add with existing scraper. Uses `fruit_tags` filter.
+- Ships to NSW/VIC/QLD/SA/ACT. No WA/NT/TAS (NSW-based, standard eastern states only).
+- 82 products (filtered from 84), 76 in stock. Small catalogue but very high quality.
+- Confirmed after broad nursery search this session found no better WA-shipping alternatives.
+  WA biosecurity is a fundamental structural constraint - most new additions will be eastern-states only.
+**What was built:**
+- shopify_scraper.py: forever-seeds added with fruit_tags filter.
+- shipping.py: forever-seeds NSW/VIC/QLD/SA/ACT (no WA/NT/TAS).
+- build_nursery_pages.py: Forever Seeds metadata + description added.
+- First scrape: 82 products, 76 in stock. Dashboard rebuilt: 6,181 products, 15 nurseries.
+- /nursery/forever-seeds.html live. Sitemap: 2,519 URLs.
+**Status:** LIVE
+
+---
+
+## DEC-068 — 2026-03-18 — Clickable Header + Nursery Research
+
+**Decided by:** Dale (DEC-068a: Notion task from Benedict; DEC-068b: autonomous research)
+**Decision:** (1) Make treestock.com.au header icon/title clickable. (2) Research and rule out 6 nursery candidates.
+**Rationale:**
+- Clickable header: Benedict requested via Notion. Simple UX improvement — header logo should always link to homepage (standard web convention). Wrapped SVG + title in `<a href="/">`.
+- Nursery research: continuing to expand the nursery database. Investigated 6 candidates this session:
+  - Engall's Nursery (NSW): citrus/olives only, no WA shipping, mango is enquiry-only. Not suitable.
+  - Woodbridge Fruit Trees (TAS): CLOSED mid-2025. Not suitable.
+  - Mount Martin Tropicals (QLD): Wix (no scraping), no shipping at all (click-and-collect only). Not suitable.
+  - El Arish Tropical Exotics (QLD): Neto, QLD/NSW/VIC only, ornamentals primary. Not suitable.
+  - South Eden Nursery: USA nursery. Not applicable.
+  - Birdwood Nursery (SA): B2B wholesale only (confirmed session 31). Not suitable.
+- Next step: broader search for nurseries that ship to WA with Shopify/WooCommerce platforms.
+**What was built:**
+- build-dashboard.py: header `<div>` → `<a href="/">` (repo + live). Dashboard rebuilt.
+- build_nursery_report.py: stats updated (541 visitors, 14 nurseries, 6099 products). Reports regenerated.
+**Status:** LIVE
+
+---
+
 ## DEC-066 — 2026-03-18 — Fix JS SyntaxError (Blank Prices) + Perth Mobile Nursery Report
 
 **Decided by:** Dale (Notion urgent task from Benedict)

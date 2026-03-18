@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "last_updated": "2026-03-18",
-  "session_count": 31,
+  "session_count": 33,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -60,14 +60,14 @@
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
-      "nurseries_monitored": 14,
-      "nurseries_researched": 18,
+      "nurseries_monitored": 15,
+      "nurseries_researched": 24,
       "first_scrape_date": "2026-03-05",
       "days_of_data": 13,
-      "products_tracked": 6099,
-      "in_stock": 3200,
-      "products_note": "fruit/edible only (filtered from ~20,000+ total raw). HFT adds ~300 temperate varieties. Yalca adds 201 heritage/dwarf varieties.",
-      "species_matched_pct": 68,
+      "products_tracked": 6181,
+      "in_stock": 3276,
+      "products_note": "fruit/edible only (filtered from ~20,000+ total raw). HFT adds ~300 temperate varieties. Yalca adds 201 heritage/dwarf varieties. Forever Seeds adds 82 rare tropicals.",
+      "species_matched_pct": 73,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
       "subscribers": 4,
       "revenue_total": 0,
@@ -206,6 +206,14 @@
           "ships_to_wa": false,
           "location": "VIC",
           "note": "Heritage/dwarf specialist. NSW/VIC/QLD/SA/ACT only. Seasonal: late June to Sep 15 (dormant bare-root). 201 apple, pear, stone fruit, fig, quince, berry varieties. Added 2026-03-18."
+        },
+        "forever_seeds": {
+          "products": 82,
+          "in_stock": 76,
+          "platform": "Shopify",
+          "ships_to_wa": false,
+          "location": "NSW",
+          "note": "Rare tropicals specialist. NSW/VIC/QLD/SA/ACT only. Rollinia, Canistel, Black Sapote, Soursop, Miracle Fruit, Jackfruit, Vanilla Bean Orchid, Cocoa, Coffee, Longan. Added 2026-03-18."
         }
       },
       "next_action": "Benedict: visit Leeming Fruit Trees (potential Track B nursery addition). Send Heritage Fruit Trees outreach. WhatsApp Cyrus at Primal Fruits."
