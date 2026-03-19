@@ -187,8 +187,11 @@ def main():
     # Load subscribers
     all_subscribers = load_subscribers()
     if test_email:
-        subscribers = [{"email": test_email, "state": "ALL"}]
-        print(f"TEST MODE: Sending only to {test_email}")
+        # Look up actual state preference if subscriber exists, else default ALL
+        existing = next((s for s in all_subscribers if s["email"] == test_email.lower()), None)
+        test_state = get_subscriber_state(existing) if existing else "ALL"
+        subscribers = [{"email": test_email, "state": test_state}]
+        print(f"TEST MODE: Sending only to {test_email} (state={test_state})")
     else:
         subscribers = all_subscribers
 
@@ -196,9 +199,9 @@ def main():
         print("No subscribers to send to.")
         return
 
-    # Load send log (skip already-sent today)
+    # Load send log (skip already-sent today; test mode bypasses idempotency)
     sends_log = load_sends_log()
-    already_sent = set(sends_log.get(target_date, []))
+    already_sent = set() if test_email else set(sends_log.get(target_date, []))
 
     to_send = [s for s in subscribers if s["email"] not in already_sent]
     skipped = len(subscribers) - len(to_send)
