@@ -211,7 +211,6 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
             continue
 
         name = NURSERY_NAMES.get(nursery_key, nursery_key)
-        ships_wa = nursery_key in WA_NURSERIES
 
         sections = []
 
@@ -249,8 +248,11 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
             continue
 
         has_any = True
-        wa_tag = " 🚛 Ships to WA" if ships_wa else ""
-        lines.append(f"📦 {name}{wa_tag}")
+        # Show restriction warnings for hard-to-ship states, not "Ships to" badges
+        ships_to = SHIPPING_MAP.get(nursery_key, [])
+        restricted = [s for s in ("WA", "NT", "TAS") if s not in ships_to]
+        restrict_tag = f" ⚠️ No {'/'.join(restricted)}" if restricted else ""
+        lines.append(f"📦 {name}{restrict_tag}")
         for section_name, items in sections:
             for item in items:
                 lines.append(item)
@@ -278,7 +280,6 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
             continue
 
         name = NURSERY_NAMES.get(nursery_key, nursery_key)
-        ships_wa = nursery_key in WA_NURSERIES
 
         items_html = []
 
@@ -315,11 +316,13 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
             continue
 
         has_any = True
-        badge_state = filter_state if filter_state else ("WA" if ships_wa else "")
-        wa_badge = (f' <span style="background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:4px;font-size:0.8em">Ships to {badge_state}</span>'
-                    if badge_state and nursery_ships_to(nursery_key, badge_state) else "")
+        # Show restriction warnings for hard-to-ship states, not "Ships to" badges
+        ships_to = SHIPPING_MAP.get(nursery_key, [])
+        restricted = [s for s in ("WA", "NT", "TAS") if s not in ships_to]
+        restrict_badge = (f' <span style="background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:4px;font-size:0.8em">No {"/".join(restricted)}</span>'
+                          if restricted else "")
         sections_html.append(
-            f'<h3 style="margin:16px 0 8px">{name}{wa_badge}</h3>'
+            f'<h3 style="margin:16px 0 8px">{name}{restrict_badge}</h3>'
             f'<ul style="list-style:none;padding:0;margin:0">{"".join(items_html)}</ul>'
         )
 
