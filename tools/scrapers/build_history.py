@@ -171,9 +171,6 @@ const CATEGORY_CONFIG = {{
   back_in_stock: {{ icon: '✅', label: 'Back in stock', cls: 'back-in-stock', tip: 'Was out of stock, now available again' }},
   price_drops: {{ icon: '📉', label: 'Price drops', cls: 'price-drop', tip: 'Price decreased' }},
   new_products: {{ icon: '🆕', label: 'New listings', cls: 'new-product', tip: 'Newly listed on the nursery website' }},
-  sold_out: {{ icon: '❌', label: 'Sold out', cls: 'sold-out', tip: 'Still listed but currently out of stock — may come back' }},
-  price_increases: {{ icon: '📈', label: 'Price increases', cls: 'price-up', tip: 'Price increased' }},
-  removed: {{ icon: '🗑️', label: 'Removed', cls: 'sold-out', tip: 'No longer listed on the nursery website' }},
 }};
 
 function formatPrice(p) {{
@@ -193,15 +190,9 @@ function renderItem(item, category) {{
       return `<span class="back-in-stock">${{link}}${{priceNote}}</span>`;
     case 'price_drops':
       return `<span class="price-drop">${{link}}: ${{formatPrice(item.old_price)}} → ${{formatPrice(item.new_price)}}</span>`;
-    case 'price_increases':
-      return `<span class="price-up">${{link}}: ${{formatPrice(item.old_price)}} → ${{formatPrice(item.new_price)}}</span>`;
     case 'new_products':
       const np = item.price ? ` — ${{formatPrice(item.price)}}` : '';
       return `<span class="new-product">${{link}}${{np}}</span>`;
-    case 'sold_out':
-      return `<span class="sold-out">${{link}}</span>`;
-    case 'removed':
-      return `<span class="sold-out">${{title}}</span>`;
     default:
       return title;
   }}

@@ -858,9 +858,16 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   <div class="mt-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
       <p id="subCTA" class="text-sm text-green-800 flex-1"><strong>Get tomorrow's changes in your inbox</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
-      <form id="subscribeForm" class="flex gap-2 flex-shrink-0">
+      <form id="subscribeForm" class="flex gap-2 flex-shrink-0 flex-wrap">
         <input type="email" id="subEmail" placeholder="your@email.com" required
           class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
+        <select id="subState" class="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+          <option value="ALL">All states</option>
+          <option value="NSW">NSW</option><option value="VIC">VIC</option>
+          <option value="QLD">QLD</option><option value="WA">WA</option>
+          <option value="SA">SA</option><option value="TAS">TAS</option>
+          <option value="NT">NT</option><option value="ACT">ACT</option>
+        </select>
         <button type="submit" class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
           Subscribe free
         </button>
@@ -1095,7 +1102,12 @@ function showMore() {{
 // Event listeners
 searchInput.addEventListener('input', search);
 inStockOnly.addEventListener('change', search);
-stateFilter.addEventListener('change', search);
+stateFilter.addEventListener('change', function() {{
+  search();
+  // Sync subscribe state dropdown with search filter
+  const subState = document.getElementById('subState');
+  if (subState && stateFilter.value) subState.value = stateFilter.value;
+}});
 changesOnly.addEventListener('change', search);
 nurserySelect.addEventListener('change', search);
 sortBy.addEventListener('change', search);
@@ -1107,6 +1119,7 @@ search();
 document.getElementById('subscribeForm').addEventListener('submit', async (e) => {{
   e.preventDefault();
   const email = document.getElementById('subEmail').value;
+  const state = document.getElementById('subState').value;
   const msg = document.getElementById('subMessage');
   const btn = e.target.querySelector('button');
   btn.disabled = true;
@@ -1115,7 +1128,7 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
     const resp = await fetch('/api/subscribe', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{email}}),
+      body: JSON.stringify({{email, state}}),
     }});
     const data = await resp.json();
     msg.textContent = data.message || 'Subscribed!';
@@ -1178,6 +1191,7 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
   document.getElementById('floatForm').addEventListener('submit', async function(e) {{
     e.preventDefault();
     const email = document.getElementById('floatEmail').value;
+    const state = document.getElementById('subState') ? document.getElementById('subState').value : 'ALL';
     const btn = e.target.querySelector('button[type=submit]');
     btn.disabled = true;
     btn.textContent = '...';
@@ -1185,7 +1199,7 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
       const resp = await fetch('/api/subscribe', {{
         method: 'POST',
         headers: {{'Content-Type': 'application/json'}},
-        body: JSON.stringify({{email}}),
+        body: JSON.stringify({{email, state}}),
       }});
       const data = await resp.json();
       if (resp.status === 201 || resp.status === 200) {{

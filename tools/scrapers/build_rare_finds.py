@@ -277,6 +277,13 @@ def build_rare_page(data_dir: str, output_dir: str):
     <form id="subscribeForm" class="flex gap-2 flex-wrap">
       <input type="email" id="emailInput" placeholder="your@email.com"
         class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+      <select id="stateInput" class="px-2 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
       <button type="submit" id="subscribeBtn"
         class="bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-800">
         Subscribe
@@ -301,6 +308,13 @@ def build_rare_page(data_dir: str, output_dir: str):
     <form id="subscribeForm2" class="flex gap-2 flex-wrap">
       <input type="email" id="emailInput2" placeholder="your@email.com"
         class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+      <select id="stateInput2" class="px-2 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
       <button type="submit" id="subscribeBtn2"
         class="bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-800">
         Subscribe
@@ -323,12 +337,14 @@ def build_rare_page(data_dir: str, output_dir: str):
 </footer>
 
 <script>
-async function handleSubscribe(formId, inputId, btnId, msgId) {{
+async function handleSubscribe(formId, inputId, stateId, btnId, msgId) {{
   const form = document.getElementById(formId);
   if (!form) return;
   form.addEventListener('submit', async (e) => {{
     e.preventDefault();
     const email = document.getElementById(inputId).value.trim();
+    const stateEl = document.getElementById(stateId);
+    const state = stateEl ? stateEl.value : 'ALL';
     const btn = document.getElementById(btnId);
     const msg = document.getElementById(msgId);
     if (!email) return;
@@ -338,7 +354,7 @@ async function handleSubscribe(formId, inputId, btnId, msgId) {{
       const resp = await fetch('/api/subscribe', {{
         method: 'POST',
         headers: {{'Content-Type': 'application/json'}},
-        body: JSON.stringify({{email}})
+        body: JSON.stringify({{email, state}})
       }});
       const data = await resp.json();
       msg.textContent = data.message || 'Subscribed!';
@@ -352,8 +368,8 @@ async function handleSubscribe(formId, inputId, btnId, msgId) {{
     btn.textContent = 'Subscribe';
   }});
 }}
-handleSubscribe('subscribeForm', 'emailInput', 'subscribeBtn', 'subscribeMsg');
-handleSubscribe('subscribeForm2', 'emailInput2', 'subscribeBtn2', 'subscribeMsg2');
+handleSubscribe('subscribeForm', 'emailInput', 'stateInput', 'subscribeBtn', 'subscribeMsg');
+handleSubscribe('subscribeForm2', 'emailInput2', 'stateInput2', 'subscribeBtn2', 'subscribeMsg2');
 </script>
 
 </body>

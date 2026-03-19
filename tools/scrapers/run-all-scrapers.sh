@@ -75,11 +75,9 @@ python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
     --wa-only --save "$DIGEST_DIR/digest-wa.txt" 2>&1
 
-# Email HTML digests
+# Email HTML digest (unfiltered; send_digest.py handles per-subscriber state filtering)
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
     --html --save "$DIGEST_DIR/digest-email.html" 2>&1
-python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --html --wa-only --save "$DIGEST_DIR/digest-wa-email.html" 2>&1
 
 # Shareable web page digests (main ones served at /digest.html)
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \

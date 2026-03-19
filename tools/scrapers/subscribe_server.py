@@ -13,6 +13,9 @@ Caddy config addition:
     handle /api/subscribe {
         reverse_proxy localhost:8099
     }
+    handle /api/preferences {
+        reverse_proxy localhost:8099
+    }
 """
 
 import hashlib
@@ -73,29 +76,44 @@ def is_valid_email(email: str) -> bool:
 class SubscribeHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
-        if parsed.path != "/unsubscribe":
-            self.send_error(404)
-            return
-
         params = dict(parse_qsl(parsed.query))
         email = params.get("email", "").strip().lower()
         token = params.get("token", "").strip()
 
-        if not email or not token or not verify_unsubscribe_token(email, token):
-            self.send_html(400, "<h2>Invalid unsubscribe link.</h2><p>Please contact us at treestock.com.au</p>")
+        if parsed.path in ("/unsubscribe", "/api/unsubscribe"):
+            if not email or not token or not verify_unsubscribe_token(email, token):
+                self.send_html(400, "<h2>Invalid unsubscribe link.</h2><p>Please contact us at treestock.com.au</p>")
+                return
+
+            subscribers = load_subscribers()
+            updated = [s for s in subscribers if s["email"] != email]
+            if len(updated) < len(subscribers):
+                save_subscribers(updated)
+                print(f"Unsubscribed: {email}")
+                self.send_html(200, f"<h2>Unsubscribed</h2><p>{email} has been removed from treestock.com.au alerts.</p>")
+            else:
+                self.send_html(200, "<h2>Not found</h2><p>That email wasn't in our list.</p>")
             return
 
-        subscribers = load_subscribers()
-        updated = [s for s in subscribers if s["email"] != email]
-        if len(updated) < len(subscribers):
-            save_subscribers(updated)
-            print(f"Unsubscribed: {email}")
-            self.send_html(200, f"<h2>Unsubscribed</h2><p>{email} has been removed from treestock.com.au alerts.</p>")
-        else:
-            self.send_html(200, "<h2>Not found</h2><p>That email wasn't in our list.</p>")
+        if parsed.path in ("/preferences", "/api/preferences"):
+            if not email or not token or not verify_unsubscribe_token(email, token):
+                self.send_html(400, "<h2>Invalid link.</h2><p>Please use the link from your email.</p>")
+                return
+
+            subscribers = load_subscribers()
+            subscriber = next((s for s in subscribers if s["email"] == email), None)
+            if not subscriber:
+                self.send_html(404, "<h2>Not found</h2><p>That email isn't in our subscriber list.</p>")
+                return
+
+            current_state = subscriber.get("state", "WA" if subscriber.get("wa_only") else "ALL")
+            self.send_preferences_page(email, token, current_state)
+            return
+
+        self.send_error(404)
 
     def do_POST(self):
-        if self.path != "/subscribe":
+        if self.path not in ("/subscribe", "/api/subscribe"):
             self.send_error(404)
             return
 
@@ -155,12 +173,41 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 subscribers.append({
                     "email": email,
                     "subscribed_at": datetime.now().isoformat(),
-                    "wa_only": True,
+                    "state": "ALL",
                     "watch_species": [species],
                 })
             save_subscribers(subscribers)
             print(f"Watch added: {email} → {species}")
             self.send_json(201, {"message": "Alert set!", "email": email, "species": species})
+            return
+
+        # Handle preferences update
+        if action == "update_preferences":
+            if not verify_unsubscribe_token(email, token):
+                self.send_json(403, {"error": "Invalid token"})
+                return
+            if self.headers.get("Content-Type", "").startswith("application/json"):
+                new_state = data.get("state", "").upper().strip()
+            else:
+                new_state = params.get("state", [""])[0].upper().strip()
+            valid_states = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
+            if new_state not in valid_states:
+                self.send_json(400, {"error": f"Invalid state. Must be one of: {', '.join(sorted(valid_states))}"})
+                return
+            subscribers = load_subscribers()
+            found = False
+            for s in subscribers:
+                if s["email"] == email:
+                    s["state"] = new_state
+                    s.pop("wa_only", None)
+                    found = True
+                    break
+            if not found:
+                self.send_json(404, {"error": "Subscriber not found"})
+                return
+            save_subscribers(subscribers)
+            print(f"Preferences updated: {email} → state={new_state}")
+            self.send_json(200, {"message": "Preferences updated", "state": new_state})
             return
 
         # Handle subscribe (default)
@@ -171,10 +218,19 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             self.send_json(200, {"message": "Already subscribed", "email": email})
             return
 
+        # Accept optional state from signup form
+        if self.headers.get("Content-Type", "").startswith("application/json"):
+            sub_state = data.get("state", "ALL").upper().strip()
+        else:
+            sub_state = params.get("state", ["ALL"])[0].upper().strip()
+        valid_states = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
+        if sub_state not in valid_states:
+            sub_state = "ALL"
+
         subscribers.append({
             "email": email,
             "subscribed_at": datetime.now().isoformat(),
-            "wa_only": True,  # Default to WA-focused alerts
+            "state": sub_state,
         })
         save_subscribers(subscribers)
 
@@ -200,6 +256,80 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
+
+    def send_preferences_page(self, email: str, token: str, current_state: str):
+        states = ["ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"]
+        state_labels = {
+            "ALL": "All states (no filter)",
+            "NSW": "New South Wales", "VIC": "Victoria", "QLD": "Queensland",
+            "WA": "Western Australia", "SA": "South Australia",
+            "TAS": "Tasmania", "NT": "Northern Territory", "ACT": "ACT",
+        }
+        options = "\n".join(
+            f'<option value="{s}"{" selected" if s == current_state else ""}>{state_labels[s]}</option>'
+            for s in states
+        )
+        body = f"""
+<h2 style="color:#065f46;margin:0 0 8px">Email preferences</h2>
+<p style="color:#6b7280;font-size:0.9rem;margin:0 0 20px">{email}</p>
+<p style="color:#374151;margin:0 0 16px;line-height:1.5">
+  Choose which state to filter nurseries by. You'll only see stock updates
+  from nurseries that ship to your selected state. Choose "All states" to
+  see everything.
+</p>
+<form id="prefsForm" style="margin:0 0 16px">
+  <label for="stateSelect" style="display:block;font-weight:600;color:#374151;margin:0 0 6px;font-size:0.9rem">
+    Show nurseries that ship to:
+  </label>
+  <select id="stateSelect" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:0.9rem;width:100%;max-width:300px">
+    {options}
+  </select>
+  <br>
+  <button type="submit" style="margin-top:12px;background:#16a34a;color:white;border:none;padding:10px 24px;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer">
+    Save preferences
+  </button>
+</form>
+<p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:0"></p>
+<hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
+<p style="font-size:0.8rem;color:#9ca3af">
+  <a href="https://treestock.com.au" style="color:#6b7280">treestock.com.au</a>
+</p>
+<script>
+document.getElementById('prefsForm').addEventListener('submit', async function(e) {{
+  e.preventDefault();
+  const state = document.getElementById('stateSelect').value;
+  const msg = document.getElementById('prefsMsg');
+  const btn = e.target.querySelector('button');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+  try {{
+    const resp = await fetch('/api/subscribe', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{
+        email: '{email}',
+        token: '{token}',
+        action: 'update_preferences',
+        state: state
+      }})
+    }});
+    const data = await resp.json();
+    if (resp.ok) {{
+      msg.style.color = '#065f46';
+      msg.textContent = 'Preferences saved! Your next digest will be filtered to ' + (state === 'ALL' ? 'all states' : state) + '.';
+    }} else {{
+      msg.style.color = '#dc2626';
+      msg.textContent = data.error || 'Something went wrong.';
+    }}
+  }} catch (err) {{
+    msg.style.color = '#dc2626';
+    msg.textContent = 'Network error. Please try again.';
+  }}
+  btn.disabled = false;
+  btn.textContent = 'Save preferences';
+}});
+</script>"""
+        self.send_html(200, body)
 
     def send_html(self, status: int, body: str):
         html = f"""<!DOCTYPE html><html><head><meta charset="UTF-8">

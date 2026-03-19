@@ -28,13 +28,20 @@ except Exception:
     NURSERY_COUNT = 15  # fallback
 
 
-def make_subscribe_form(form_id="subscribeForm", email_id="subEmail", btn_id="subBtn", msg_id="subMsg", nursery_count=15):
+def make_subscribe_form(form_id="subscribeForm", email_id="subEmail", btn_id="subBtn", msg_id="subMsg", state_id="subState", nursery_count=15):
     return f"""
 <div class="subscribe-box">
   <p class="box-heading">Get this in your inbox every day — free</p>
   <p class="box-sub">Daily stock alerts: price drops, restocks, and new arrivals across {nursery_count} Australian nurseries. Unsubscribe any time.</p>
   <form id="{form_id}" class="sub-form">
     <input type="email" id="{email_id}" placeholder="your@email.com" required class="sub-input">
+    <select id="{state_id}" class="sub-input" style="flex:0 0 auto;width:auto;min-width:0">
+      <option value="ALL">All states</option>
+      <option value="NSW">NSW</option><option value="VIC">VIC</option>
+      <option value="QLD">QLD</option><option value="WA">WA</option>
+      <option value="SA">SA</option><option value="TAS">TAS</option>
+      <option value="NT">NT</option><option value="ACT">ACT</option>
+    </select>
     <button type="submit" id="{btn_id}" class="sub-btn">Subscribe free</button>
   </form>
   <p id="{msg_id}" class="sub-msg"></p>
@@ -42,12 +49,14 @@ def make_subscribe_form(form_id="subscribeForm", email_id="subEmail", btn_id="su
 """
 
 
-def make_subscribe_js(form_id, email_id, btn_id, msg_id):
+def make_subscribe_js(form_id, email_id, btn_id, msg_id, state_id="subState"):
     return f"""
 <script>
 document.getElementById('{form_id}').addEventListener('submit', async function(e) {{
   e.preventDefault();
   const email = document.getElementById('{email_id}').value.trim();
+  const stateEl = document.getElementById('{state_id}');
+  const state = stateEl ? stateEl.value : 'ALL';
   const btn = document.getElementById('{btn_id}');
   const msg = document.getElementById('{msg_id}');
   if (!email) return;
@@ -57,7 +66,7 @@ document.getElementById('{form_id}').addEventListener('submit', async function(e
     const resp = await fetch('{SUBSCRIBE_API}', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{email}})
+      body: JSON.stringify({{email, state}})
     }});
     const data = await resp.json();
     if (resp.ok) {{
@@ -185,10 +194,10 @@ def build_sample_digest():
     today = datetime.now(timezone.utc).strftime("%-d %B %Y")
     n = NURSERY_COUNT
 
-    form1 = make_subscribe_form("subscribeForm", "subEmail", "subBtn", "subMsg", n)
-    form2 = make_subscribe_form("subscribeForm2", "subEmail2", "subBtn2", "subMsg2", n)
-    js1 = make_subscribe_js("subscribeForm", "subEmail", "subBtn", "subMsg")
-    js2 = make_subscribe_js("subscribeForm2", "subEmail2", "subBtn2", "subMsg2")
+    form1 = make_subscribe_form("subscribeForm", "subEmail", "subBtn", "subMsg", "subState", n)
+    form2 = make_subscribe_form("subscribeForm2", "subEmail2", "subBtn2", "subMsg2", "subState2", n)
+    js1 = make_subscribe_js("subscribeForm", "subEmail", "subBtn", "subMsg", "subState")
+    js2 = make_subscribe_js("subscribeForm2", "subEmail2", "subBtn2", "subMsg2", "subState2")
 
     page = f"""<!DOCTYPE html>
 <html lang="en">

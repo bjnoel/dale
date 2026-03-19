@@ -2,11 +2,11 @@
 """
 Send daily nursery stock digest to email subscribers via Resend.
 
-Reads the pre-generated digest-wa-email.html and sends it to all wa_only
-subscribers. Tracks sends to avoid duplicates (idempotent — safe to re-run).
+Generates state-filtered digests per subscriber and sends individually.
+Tracks sends to avoid duplicates (idempotent, safe to re-run).
 
 Usage:
-    python3 send_digest.py                    # Send WA digest to all wa_only subscribers
+    python3 send_digest.py                    # Send to all subscribers
     python3 send_digest.py --dry-run          # Show who would receive it, no actual send
     python3 send_digest.py --test EMAIL       # Send to one address only (for testing)
     python3 send_digest.py --date 2026-03-11  # Use a specific date's digest
@@ -20,7 +20,6 @@ Australian Spam Act compliance:
 import hashlib
 import hmac
 import json
-import os
 import sys
 import urllib.error
 import urllib.parse
@@ -28,9 +27,13 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
+# Import digest generation for per-state filtering
+sys.path.insert(0, str(Path(__file__).parent))
+from daily_digest import load_all_changes, format_html
+
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
-DASHBOARD_DIR = Path("/opt/dale/dashboard")
+NURSERY_STOCK_DIR = DATA_DIR / "nursery-stock"
 SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 SENDS_LOG_FILE = DATA_DIR / "digest_sends.json"
 RESEND_ENV = SECRETS_DIR / "resend.env"
@@ -40,6 +43,7 @@ FROM_EMAIL = "alerts@mail.scion.exchange"
 FROM_NAME = "treestock.com.au"
 SITE_URL = "https://treestock.com.au"
 UNSUBSCRIBE_BASE = f"{SITE_URL}/unsubscribe.html"
+PREFERENCES_BASE = f"{SITE_URL}/api/preferences"
 
 
 def get_resend_api_key() -> str:
@@ -99,28 +103,29 @@ def save_sends_log(log: dict):
         json.dump(log, f, indent=2)
 
 
-def load_digest_html(target_date: str, wa_only: bool = True) -> str | None:
-    """Load pre-generated digest HTML. Falls back to archive if current missing."""
-    # Try current (today's) version first
-    suffix = "-wa" if wa_only else ""
-    current = DASHBOARD_DIR / f"digest{suffix}-email.html"
-    if current.exists():
-        return current.read_text()
-    # Try archive
-    archive = DASHBOARD_DIR / "archive" / f"digest{suffix}-{target_date}.html"
-    if archive.exists():
-        return archive.read_text()
-    return None
+def get_subscriber_state(subscriber: dict) -> str:
+    """Get subscriber's state preference, with backwards compat for wa_only."""
+    if "state" in subscriber:
+        return subscriber["state"]
+    # Legacy: wa_only=true means WA
+    if subscriber.get("wa_only"):
+        return "WA"
+    return "ALL"
 
 
-def inject_unsubscribe(html: str, email: str, token: str) -> str:
-    """Add personalised unsubscribe footer to email HTML."""
-    unsubscribe_url = f"{UNSUBSCRIBE_BASE}?email={urllib.parse.quote(email)}&token={token}"
+def inject_footer(html: str, email: str, token: str, state: str) -> str:
+    """Add personalised footer with unsubscribe + preferences links."""
+    encoded_email = urllib.parse.quote(email)
+    unsubscribe_url = f"{UNSUBSCRIBE_BASE}?email={encoded_email}&token={token}"
+    preferences_url = f"{PREFERENCES_BASE}?email={encoded_email}&token={token}"
+
+    state_label = f"Filtered to: {state}" if state != "ALL" else "Showing: all states"
+
     footer = f"""
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.75em;color:#9ca3af;text-align:center">
   You're receiving this because you subscribed at <a href="{SITE_URL}" style="color:#6b7280">{SITE_URL}</a>.<br>
-  <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
+  {state_label} · <a href="{preferences_url}" style="color:#6b7280">Change state</a> · <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
 </p>
 """
     # Insert before </body> if present, else append
@@ -174,19 +179,18 @@ def main():
 
     print(f"send_digest.py — {target_date}{' [DRY RUN]' if dry_run else ''}")
 
-    # Load digest HTML
-    digest_html = load_digest_html(target_date, wa_only=True)
-    if not digest_html:
-        print(f"ERROR: No digest HTML found for {target_date}", file=sys.stderr)
-        sys.exit(1)
+    # Load change data for state-filtered digest generation
+    all_changes, total_changes = load_all_changes(NURSERY_STOCK_DIR, target_date)
+    if not all_changes:
+        print(f"WARNING: No change data for {target_date}", file=sys.stderr)
 
     # Load subscribers
     all_subscribers = load_subscribers()
     if test_email:
-        subscribers = [{"email": test_email, "wa_only": True}]
+        subscribers = [{"email": test_email, "state": "ALL"}]
         print(f"TEST MODE: Sending only to {test_email}")
     else:
-        subscribers = [s for s in all_subscribers if s.get("wa_only", True)]
+        subscribers = all_subscribers
 
     if not subscribers:
         print("No subscribers to send to.")
@@ -205,28 +209,48 @@ def main():
         print("All subscribers already received today's digest.")
         return
 
+    # Group subscribers by state for efficient digest generation
+    by_state: dict[str, list] = {}
+    for s in to_send:
+        state = get_subscriber_state(s)
+        by_state.setdefault(state, []).append(s)
+
+    print(f"States: {', '.join(f'{st}({len(subs)})' for st, subs in sorted(by_state.items()))}")
+
     if dry_run:
         for s in to_send:
-            print(f"  Would send to: {s['email']}")
+            state = get_subscriber_state(s)
+            print(f"  Would send to: {s['email']} (state={state})")
         return
 
     api_key = get_resend_api_key()
     secret = get_unsubscribe_secret()
     subject = f"Nursery Stock Update — {target_date}"
 
+    # Cache generated HTML per state
+    html_cache: dict[str, str] = {}
+
     sent_emails = list(already_sent)
     failed = 0
 
-    for subscriber in to_send:
-        email = subscriber["email"]
-        token = make_unsubscribe_token(email, secret)
-        personalised_html = inject_unsubscribe(digest_html, email, token)
+    for state, state_subscribers in sorted(by_state.items()):
+        # Generate digest HTML for this state (cached)
+        if state not in html_cache:
+            filter_state = "" if state == "ALL" else state
+            html_cache[state] = format_html(all_changes, target_date, state=filter_state)
 
-        success = send_email(api_key, email, subject, personalised_html)
-        if success:
-            sent_emails.append(email)
-        else:
-            failed += 1
+        digest_html = html_cache[state]
+
+        for subscriber in state_subscribers:
+            email = subscriber["email"]
+            token = make_unsubscribe_token(email, secret)
+            personalised_html = inject_footer(digest_html, email, token, state)
+
+            success = send_email(api_key, email, subject, personalised_html)
+            if success:
+                sent_emails.append(email)
+            else:
+                failed += 1
 
     # Save updated log
     sends_log[target_date] = sent_emails

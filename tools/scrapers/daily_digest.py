@@ -143,11 +143,8 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
     """Compare two snapshots and return categorized changes."""
     changes = {
         "price_drops": [],
-        "price_increases": [],
         "back_in_stock": [],
-        "sold_out": [],
         "new_products": [],
-        "removed": [],
     }
 
     for key, product in curr.items():
@@ -170,7 +167,6 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
 
         # Stock changes first (affects how we report price changes)
         back_in_stock = available and not prev_available
-        just_sold_out = not available and prev_available
 
         if back_in_stock:
             entry = {
@@ -182,11 +178,6 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
             if price and prev_price and abs(price - prev_price) > 0.01:
                 entry["old_price"] = prev_price
             changes["back_in_stock"].append(entry)
-        elif just_sold_out:
-            changes["sold_out"].append({
-                "title": title,
-                "url": product.get("url", ""),
-            })
 
         # Price changes (only for items that stayed available — back-in-stock
         # items already show their price change above)
@@ -199,20 +190,6 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
                     "new_price": price,
                     "url": product.get("url", ""),
                 })
-            elif diff > 0.01:
-                changes["price_increases"].append({
-                    "title": title,
-                    "old_price": prev_price,
-                    "new_price": price,
-                    "url": product.get("url", ""),
-                })
-
-    # Check for removed products
-    for key in prev:
-        if key not in curr:
-            changes["removed"].append({
-                "title": prev[key].get("title", key),
-            })
 
     return changes
 
@@ -267,24 +244,6 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
             if extra > 0:
                 items.append(f"  ... and {extra} more")
             sections.append(("New listings", items))
-
-        if changes["sold_out"]:
-            items = []
-            for item in changes["sold_out"][:5]:
-                items.append(f"  ❌ {item['title']}")
-            extra = len(changes["sold_out"]) - 5
-            if extra > 0:
-                items.append(f"  ... and {extra} more")
-            sections.append(("Sold out", items))
-
-        if changes.get("removed"):
-            items = []
-            for item in changes["removed"][:5]:
-                items.append(f"  🗑️ {item['title']}")
-            extra = len(changes["removed"]) - 5
-            if extra > 0:
-                items.append(f"  ... and {extra} more")
-            sections.append(("Removed", items))
 
         if not sections:
             continue
@@ -352,12 +311,6 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
         if extra > 0:
             items_html.append(f'<li style="padding:4px 0">... and {extra} more new listings</li>')
 
-        for item in changes["sold_out"][:5]:
-            items_html.append(f'<li style="color:#999;padding:4px 0"><span title="Still listed but currently out of stock — may come back" style="cursor:help">❌</span> {item["title"]} — sold out</li>')
-
-        for item in changes.get("removed", [])[:5]:
-            items_html.append(f'<li style="color:#999;padding:4px 0"><span title="No longer listed on the nursery website" style="cursor:help">🗑️</span> {item["title"]} — removed</li>')
-
         if not items_html:
             continue
 
@@ -421,7 +374,6 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
         ("back_in_stock", "✅", "Back in stock"),
         ("price_drops", "📉", "Price drops"),
         ("new_products", "🆕", "New"),
-        ("sold_out", "❌", "Sold out"),
     ]
     for key, icon, label in pill_config:
         count = total_by_type.get(key, 0)

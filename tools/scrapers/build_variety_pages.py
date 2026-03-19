@@ -299,6 +299,13 @@ def build_variety_page(slug: str, data: dict) -> str:
     <form id="subscribeForm" class="flex gap-2 flex-wrap">
       <input type="email" id="subEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
+      <select id="subState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
       <button type="submit"
         class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
         Subscribe free
@@ -336,11 +343,13 @@ def build_variety_page(slug: str, data: dict) -> str:
 document.getElementById('subscribeForm').addEventListener('submit', function(e) {{
   e.preventDefault();
   var email = document.getElementById('subEmail').value.trim();
+  var stateEl = document.getElementById('subState');
+  var state = stateEl ? stateEl.value : 'ALL';
   var msg = document.getElementById('subMsg');
   fetch('/api/subscribe', {{
     method: 'POST',
     headers: {{'Content-Type': 'application/json'}},
-    body: JSON.stringify({{email: email, action: 'subscribe'}})
+    body: JSON.stringify({{email: email, state: state, action: 'subscribe'}})
   }})
   .then(function(r) {{ return r.json(); }})
   .then(function(d) {{
