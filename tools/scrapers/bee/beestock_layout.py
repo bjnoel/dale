@@ -14,7 +14,12 @@ SITE_NAME = "beestock.com.au"
 SITE_URL = "https://beestock.com.au"
 
 TAILWIND_CDN = "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-PLAUSIBLE_SCRIPT = '<script defer data-domain="beestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>'
+PLAUSIBLE_SCRIPT = """\
+<script async src="https://data.bjnoel.com/js/pa-ncu0JIgthEVy21f-Vfd6K.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>"""
 
 NAV_ITEMS = [
     ("Search", "/"),
