@@ -9,6 +9,9 @@ dist/
 # Large data files (tracked separately or via LFS)
 data/nursery-stock/*/20*.json
 data/nursery-stock/*/latest.json
+data/bee-stock/*/20*.json
+data/bee-stock/*/latest.json
+data/bee-dashboard-output/
 data/analyses/*.json
 
 # Deliverables (generated, contain client data)

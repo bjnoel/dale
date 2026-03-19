@@ -4,6 +4,46 @@
 
 ---
 
+## DEC-075 -- 2026-03-19 -- beestock.com.au: Beekeeping Supply Price Tracker MVP (Track B Experiment)
+**Decided by:** Benedict + Dale
+**Decision:** Build a treestock-style price tracker for Australian beekeeping supplies. Reuse ~70% of treestock infrastructure. Start with 4 Shopify retailers (Ecrotek, The Bee Store, Buzzbee, Flow Hive). Working name: beestock.
+**Rationale:**
+- Zero competition. No price comparison or tracking service exists for AU beekeeping supplies.
+- Benedict is an active beekeeper (sells honey at beefriends.shop), connected to WA beekeeping community (WAAS 800+ members).
+- Varroa mite crisis creates ongoing demand for treatment availability and price tracking.
+- 70% infrastructure reuse from treestock (scrapers, dashboard pattern, deploy pipeline, email).
+- Dale-autonomous: no boots on ground needed for MVP.
+**What was built:**
+- `tools/scrapers/bee/` directory with 6 files: retailer configs, category taxonomy, Shopify scraper, dashboard builder, daily digest, layout module, and run script.
+- First scrape: 1,262 products across 4 retailers (952 in stock).
+- Dashboard builds successfully (326KB, fully functional search/filter/sort).
+- Category breakdown: Hives & Boxes (635), Frames & Foundation (132), Extractors & Processing (106), Protective Gear (73), Smokers & Tools (57), Treatments & Health (53), Honey Containers (34), Books (13), Feeders (12), Other (147).
+- Australian Bee Supplies excluded from MVP (JSON API disabled, 404/406).
+**Next steps:**
+- Benedict: register beestock.com.au domain, point DNS to VPS.
+- Deploy scrapers + dashboard to Hetzner VPS (same server as treestock).
+- Add bee scrapers to daily cron (run after nursery scrapers).
+- Configure Caddy for beestock.com.au subdomain.
+- Benedict: share in WA beekeeping Facebook groups once live.
+**Status:** BUILT, PENDING DEPLOY
+
+---
+
+## DEC-074 — 2026-03-19 — Leeming Fruit Trees: Deferred (Timing)
+**Decided by:** Benedict + Dale
+**Decision:** Accept Tri's deferral gracefully. No follow-up pressure. Revisit late April or at next in-person encounter.
+**What happened:**
+- Benedict sent demo Shopify store to Tri via FB Messenger (2026-03-16).
+- Tri replied 2026-03-19: "It looks good, although I'm a bit tied up with other things at the moment, but I'll keep it in mind and revisit it when the timing is better."
+- This is a timing deferral, not a rejection. He confirmed "looks good" (positive signal on the demo).
+- Demo store (leeming-fruit-trees.myshopify.com) stays up as a passive asset.
+- Benedict replied with a short, no-pressure message keeping the door open.
+- Save treestock.com.au mention for a future in-person interaction (fruit meet or market).
+**Revisit:** Late April 2026 or next in-person encounter with Tri.
+**Status:** DEFERRED
+
+---
+
 ## DEC-073 — 2026-03-19 — Bare-Root 2026 Seasonal SEO Page + Internal Link Audit
 
 **Decided by:** Dale

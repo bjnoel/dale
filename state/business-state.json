@@ -39,8 +39,9 @@
           "hook": "No HTTPS, no mobile, no online shop. Track A+B crossover. Build demo shop with treestock data."
         },
         "leeming_fruit_trees": {
-          "status": "priority",
-          "hook": "No website, 10K+ Facebook followers, rare tropicals (exact treestock audience). WA-based, open Wed-Sat. Better prospect than Tass1 Trees."
+          "status": "deferred",
+          "hook": "Tri replied 2026-03-19: 'looks good' but busy, will revisit when timing is better. Not a rejection. Demo store stays up at leeming-fruit-trees.myshopify.com. Revisit late April or at next in-person encounter.",
+          "demo_store": "leeming-fruit-trees.myshopify.com"
         },
         "wembley_cycles": {
           "status": "deprioritised",
@@ -51,7 +52,7 @@
           "hook": "Old model (report). Revisit if implementation model proves out."
         }
       },
-      "next_action": "Benedict to visit Leeming Fruit Trees (4a Westmorland Dr, Leeming, Wed-Sat 8:30am-2pm). Also: send Tass1 Trees email + Heritage Fruit Trees outreach."
+      "next_action": "Leeming deferred (Tri busy). Focus on Tass1 Trees demo shop build + Heritage Fruit Trees outreach. Revisit Leeming late April or at next fruit meet."
     },
     "b": {
       "name": "Rare Fruit Stock Tracker",
@@ -220,6 +221,30 @@
         }
       },
       "next_action": "Benedict: visit Leeming Fruit Trees (potential Track B nursery addition). Send Heritage Fruit Trees outreach. WhatsApp Cyrus at Primal Fruits."
+    },
+    "b_experiment_beestock": {
+      "name": "Beekeeping Supply Price Tracker",
+      "domain": "beestock.com.au",
+      "status": "built-pending-deploy",
+      "retailers_monitored": 4,
+      "products_tracked": 1262,
+      "in_stock": 952,
+      "first_scrape_date": "2026-03-19",
+      "days_of_data": 1,
+      "retailer_details": {
+        "ecrotek": {"products": 410, "in_stock": 260, "platform": "Shopify", "location": "VIC"},
+        "the-bee-store": {"products": 320, "in_stock": 248, "platform": "Shopify"},
+        "buzzbee": {"products": 466, "in_stock": 386, "platform": "Shopify"},
+        "flow-hive": {"products": 67, "in_stock": 59, "platform": "Shopify", "location": "NSW"}
+      },
+      "features": [
+        "Daily scraping of 4 Shopify retailers",
+        "Price/stock change detection (variant-level)",
+        "Static HTML dashboard with search, category filter, retailer filter, sort",
+        "Daily digest (text + HTML page)",
+        "9 product categories (Hives, Frames, Extractors, Gear, Smokers, Treatments, Feeders, Containers, Books)"
+      ],
+      "next_action": "Benedict: register beestock.com.au, point DNS to VPS. Dale: deploy to server + configure Caddy + cron."
     }
   },
   "infrastructure": {

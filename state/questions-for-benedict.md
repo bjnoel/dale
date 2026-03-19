@@ -315,3 +315,18 @@ sudo systemctl restart subscribe-server
 ```
 
 All 4 subscribers have been migrated from wa_only to state="WA".
+
+---
+
+## Batch 15 -- 2026-03-19 -- beestock.com.au Setup
+
+### Q36 [BLOCKING] -- Register beestock.com.au domain
+beestock.com.au MVP is built and tested locally. 1,262 products across 4 retailers (Ecrotek, The Bee Store, Buzzbee, Flow Hive). Dashboard, digest, and daily scraper pipeline all working.
+
+To go live:
+1. Register beestock.com.au (should be ~$15 AUD/year)
+2. Point DNS A record to 178.104.20.9 (same VPS as treestock)
+3. Dale will handle Caddy config, cron setup, and deployment
+
+### Q37 [INFO] -- Validate with beekeepers
+When convenient, ask 2-3 beekeeper mates: "Would you use a site that tracks beekeeping supply prices across AU retailers?" No rush, just useful signal before we share publicly.
