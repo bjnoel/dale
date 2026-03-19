@@ -22,6 +22,7 @@ from daily_digest import (
     compare_snapshots,
     load_snapshot,
 )
+from treestock_layout import render_head, render_header, render_footer
 
 
 def get_available_dates(data_dir: Path) -> list[str]:
@@ -94,51 +95,35 @@ def build_html(history: list[dict], wa_only: bool = False) -> str:
     history_json = json.dumps(history, separators=(",", ":"))
     title_suffix = " (Ships to WA)" if wa_only else ""
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Price &amp; Stock History{title_suffix} — treestock.com.au</title>
-<meta name="description" content="Daily price changes and stock updates across Australian fruit nurseries.">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>
-  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
-  .change-card {{ border-left: 3px solid #d1d5db; }}
-  .change-card.has-changes {{ border-left-color: #059669; }}
-  .wa-badge {{ background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 9999px; font-size: 0.7rem; }}
-  .day-header {{ cursor: pointer; }}
-  .day-header:hover {{ background: #f9fafb; }}
-  .change-item {{ padding: 4px 0; border-bottom: 1px solid #f3f4f6; }}
-  .change-item:last-child {{ border-bottom: none; }}
-  .back-in-stock {{ color: #059669; }}
-  .price-drop {{ color: #059669; }}
-  .price-up {{ color: #dc2626; }}
-  .sold-out {{ color: #6b7280; }}
-  .new-product {{ color: #1e40af; }}
-  .stat-pill {{ display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
-    border-radius: 9999px; font-size: 0.75rem; background: #f3f4f6; }}
-</style>
-</head>
-<body class="bg-white text-gray-900">
+    extra_style = """\
+  .change-card { border-left: 3px solid #d1d5db; }
+  .change-card.has-changes { border-left-color: #059669; }
+  .wa-badge { background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 9999px; font-size: 0.7rem; }
+  .day-header { cursor: pointer; }
+  .day-header:hover { background: #f9fafb; }
+  .change-item { padding: 4px 0; border-bottom: 1px solid #f3f4f6; }
+  .change-item:last-child { border-bottom: none; }
+  .back-in-stock { color: #059669; }
+  .price-drop { color: #059669; }
+  .price-up { color: #dc2626; }
+  .sold-out { color: #6b7280; }
+  .new-product { color: #1e40af; }
+  .stat-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
+    border-radius: 9999px; font-size: 0.75rem; background: #f3f4f6; }"""
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-3xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:underline">treestock.com.au</a>
-        </h1>
-        <p class="text-sm text-gray-500">Price &amp; Stock History{title_suffix}</p>
-      </div>
-      <div class="flex gap-2 text-sm">
-        <a href="/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Dashboard</a>
-        <a href="/digest.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Today's Digest</a>
-      </div>
-    </div>
-  </div>
-</header>
+    head = render_head(
+        title=f"Price &amp; Stock History{title_suffix} — treestock.com.au",
+        description="Daily price changes and stock updates across Australian fruit nurseries.",
+        extra_style=extra_style,
+    )
+    header = render_header(
+        subtitle=f"Price &amp; Stock History{title_suffix}",
+        active_path="/history.html",
+    )
+    footer = render_footer()
+
+    return f"""{head}
+{header}
 
 <main class="max-w-3xl mx-auto px-4 py-6">
   <div class="mb-4 flex flex-wrap gap-2 items-center text-sm">
@@ -154,10 +139,7 @@ def build_html(history: list[dict], wa_only: bool = False) -> str:
   <div id="timeline"></div>
 </main>
 
-<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
-  <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>
-  <p class="mt-1"><a href="/" class="underline">Back to dashboard</a></p>
-</footer>
+{footer}
 
 <script>
 const H = {history_json};

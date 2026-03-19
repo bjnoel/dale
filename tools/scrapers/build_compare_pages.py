@@ -20,6 +20,7 @@ from datetime import datetime, timezone
 from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
@@ -238,45 +239,22 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
         wa_note = " (ships to WA)" if ships_wa else " (does not ship to WA)"
         cheapest_summary = f'<p class="text-sm text-gray-600 mt-2">Cheapest in stock: <strong>{cheapest_n["name"]}</strong> from <strong>${cheapest_n["best_price"]:.2f}</strong>{wa_note}.</p>'
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{name} Tree Price Comparison Australia — treestock.com.au</title>
-<meta name="description" content="Compare {name} ({latin}) tree prices across {total_nurseries} Australian nurseries. {len(in_stock)} varieties in stock. {'Prices from ' + price_range_str + ' AUD.' if price_range_str else ''} Updated daily.">
-<meta property="og:title" content="{name} Tree Prices — Compare {total_nurseries} Australian Nurseries">
-<meta property="og:description" content="{'From ' + price_range_str if price_range_str else str(len(in_stock)) + ' varieties in stock'} across {nursery_count} nurseries. Compare prices and availability at treestock.com.au">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}</style>
-</head>
-<body class="bg-white text-gray-900">
+    head = render_head(
+        title=f"{name} Tree Price Comparison Australia — treestock.com.au",
+        description=f"Compare {name} ({latin}) tree prices across {total_nurseries} Australian nurseries. {len(in_stock)} varieties in stock. {'Prices from ' + price_range_str + ' AUD.' if price_range_str else ''} Updated daily.",
+        og_title=f"{name} Tree Prices — Compare {total_nurseries} Australian Nurseries",
+        og_description=f"{'From ' + price_range_str if price_range_str else str(len(in_stock)) + ' varieties in stock'} across {nursery_count} nurseries. Compare prices and availability at treestock.com.au",
+    )
+    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/compare/")
+    breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "/compare/"), (name, "")])
+    footer = render_footer()
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-3xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:underline">treestock.com.au</a>
-        </h1>
-        <p class="text-sm text-gray-500">Australian Nursery Stock Tracker</p>
-      </div>
-      <div class="flex gap-2 text-sm">
-        <a href="/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 no-underline">Dashboard</a>
-      </div>
-    </div>
-  </div>
-</header>
+    return f"""{head}
+{header}
 
 <main class="max-w-3xl mx-auto px-4 py-6">
 
-  <!-- Breadcrumb -->
-  <nav class="text-xs text-gray-400 mb-4">
-    <a href="/" class="hover:underline">Home</a> ›
-    <a href="/compare/" class="hover:underline">Compare Prices</a> ›
-    {name}
-  </nav>
+  {breadcrumb}
 
   <!-- Hero -->
   <div class="mb-6">
@@ -386,10 +364,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
 
 </main>
 
-<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
-  <p>Data scraped daily from public nursery websites. Prices and availability may change. Updated {now}.</p>
-  <p class="mt-1"><a href="/" class="underline">treestock.com.au</a> — Australian Nursery Stock Tracker</p>
-</footer>
+{footer}
 
 </body>
 </html>"""
@@ -414,40 +389,19 @@ def build_compare_index(entries: list[dict]) -> str:
       <td class="py-3 text-sm font-medium">{price}</td>
     </tr>"""
 
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fruit Tree Price Comparisons — Australian Nurseries — treestock.com.au</title>
-<meta name="description" content="Compare fruit tree prices across Australian online nurseries. Find the cheapest mango, fig, avocado, lemon and more. Updated daily from {len(entries)} species.">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}</style>
-</head>
-<body class="bg-white text-gray-900">
+    head = render_head(
+        title="Fruit Tree Price Comparisons — Australian Nurseries — treestock.com.au",
+        description=f"Compare fruit tree prices across Australian online nurseries. Find the cheapest mango, fig, avocado, lemon and more. Updated daily from {len(entries)} species.",
+    )
+    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/compare/")
+    breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "")])
+    footer = render_footer()
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-3xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:underline">treestock.com.au</a>
-        </h1>
-        <p class="text-sm text-gray-500">Australian Nursery Stock Tracker</p>
-      </div>
-      <div class="flex gap-2 text-sm">
-        <a href="/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 no-underline">Dashboard</a>
-      </div>
-    </div>
-  </div>
-</header>
+    return f"""{head}
+{header}
 
 <main class="max-w-3xl mx-auto px-4 py-6">
-  <nav class="text-xs text-gray-400 mb-4">
-    <a href="/" class="hover:underline">Home</a> › Compare Prices
-  </nav>
+  {breadcrumb}
 
   <h2 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Price Comparisons</h2>
   <p class="text-gray-600 mb-6">
@@ -472,10 +426,7 @@ def build_compare_index(entries: list[dict]) -> str:
   </div>
 </main>
 
-<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
-  <p>Data scraped daily from public nursery websites. Updated {now}.</p>
-  <p class="mt-1"><a href="/" class="underline">treestock.com.au</a> — Australian Nursery Stock Tracker</p>
-</footer>
+{footer}
 
 </body>
 </html>"""

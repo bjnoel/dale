@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 NURSERY_URLS = {
     "daleys": "https://www.daleysfruit.com.au",
@@ -230,44 +231,23 @@ def build_variety_page(slug: str, data: dict) -> str:
         f"{in_stock_count} nurseries currently in stock. Updated daily."
     )
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buy {title} Trees in Australia — Prices & Availability — treestock.com.au</title>
-<meta name="description" content="{meta_desc}">
-<link rel="canonical" href="https://treestock.com.au/variety/{slug}.html">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}</style>
-</head>
-<body class="bg-white text-gray-900">
+    head = render_head(
+        title=f"Buy {title} Trees in Australia — Prices & Availability — treestock.com.au",
+        description=meta_desc,
+        canonical_url=f"https://treestock.com.au/variety/{slug}.html",
+    )
+    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/variety/")
+    breadcrumb = render_breadcrumb([
+        ("Home", "/"), ("Varieties", "/variety/"),
+        (species, f"/species/{species_slug}.html"), (variety, ""),
+    ])
+    footer = render_footer()
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-3xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:underline">treestock.com.au</a>
-        </h1>
-        <p class="text-sm text-gray-500">Australian Nursery Stock Tracker</p>
-      </div>
-      <div class="flex gap-2 text-sm">
-        <a href="/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Dashboard</a>
-        <a href="/species/{species_slug}.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">All {species}</a>
-      </div>
-    </div>
-  </div>
-</header>
+    return f"""{head}
+{header}
 
 <main class="max-w-3xl mx-auto px-4 py-6">
-  <nav class="text-xs text-gray-400 mb-4">
-    <a href="/" class="hover:underline">Home</a> ›
-    <a href="/variety/" class="hover:underline">Varieties</a> ›
-    <a href="/species/{species_slug}.html" class="hover:underline">{species}</a> ›
-    {variety}
-  </nav>
+  {breadcrumb}
 
   <h2 class="text-3xl font-bold text-green-900 mb-1">Buy {title} Trees in Australia</h2>
   <p class="text-gray-500 text-sm mb-4">Updated {today} · {nursery_count} nurseries tracked · {in_stock_count} in stock</p>
@@ -334,10 +314,7 @@ def build_variety_page(slug: str, data: dict) -> str:
 
 </main>
 
-<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
-  <p>Data scraped daily from public nursery websites. Prices and availability may change. Updated {now}.</p>
-  <p class="mt-1"><a href="/" class="underline">treestock.com.au</a> — Australian Nursery Stock Tracker</p>
-</footer>
+{footer}
 
 <script>
 document.getElementById('subscribeForm').addEventListener('submit', function(e) {{
@@ -423,43 +400,22 @@ def build_variety_index(entries: list[dict]) -> str:
     </div>
   </section>"""
 
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     total_varieties = len(entries)
     total_in_stock = sum(e["in_stock"] for e in entries)
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fruit Tree Varieties for Sale in Australia — treestock.com.au</title>
-<meta name="description" content="Browse {total_varieties} named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check WA shipping. Updated daily.">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}</style>
-</head>
-<body class="bg-white text-gray-900">
+    head = render_head(
+        title="Fruit Tree Varieties for Sale in Australia — treestock.com.au",
+        description=f"Browse {total_varieties} named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check WA shipping. Updated daily.",
+    )
+    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/variety/")
+    breadcrumb = render_breadcrumb([("Home", "/"), ("Varieties", "")])
+    footer = render_footer()
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-3xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:underline">treestock.com.au</a>
-        </h1>
-        <p class="text-sm text-gray-500">Australian Nursery Stock Tracker</p>
-      </div>
-      <div class="flex gap-2 text-sm">
-        <a href="/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50">Dashboard</a>
-      </div>
-    </div>
-  </div>
-</header>
+    return f"""{head}
+{header}
 
 <main class="max-w-3xl mx-auto px-4 py-6">
-  <nav class="text-xs text-gray-400 mb-4">
-    <a href="/" class="hover:underline">Home</a> › Varieties
-  </nav>
+  {breadcrumb}
 
   <h2 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Varieties for Sale in Australia</h2>
   <p class="text-gray-600 mb-6">
@@ -471,10 +427,7 @@ def build_variety_index(entries: list[dict]) -> str:
 
 </main>
 
-<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
-  <p>Data scraped daily from public nursery websites. Updated {now}.</p>
-  <p class="mt-1"><a href="/" class="underline">treestock.com.au</a> — Australian Nursery Stock Tracker</p>
-</footer>
+{footer}
 
 </body>
 </html>"""

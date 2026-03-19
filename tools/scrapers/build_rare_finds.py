@@ -21,6 +21,7 @@ SCRAPERS_DIR = Path(__file__).parent
 sys.path.insert(0, str(SCRAPERS_DIR))
 from build_compare_pages import load_species, build_species_lookup, match_title
 from shipping import SHIPPING_MAP, NURSERY_NAMES
+from treestock_layout import render_head, render_header, render_footer
 
 # Species the rare fruit community genuinely cares about
 # (not just apples, lemons, mangoes — those are covered on main dashboard)
@@ -199,66 +200,56 @@ def build_rare_page(data_dir: str, output_dir: str):
     all_cards = '\n'.join(cards_html)
     species_count = len(species_data)
 
-    html = f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rare &amp; Exotic Fruit Trees In Stock — treestock.com.au</title>
-  <meta name="description" content="Find rare and exotic fruit trees in stock at Australian nurseries right now. {species_count} unusual species tracked including jaboticaba, rambutan, sapodilla and more. Updated daily.">
-  <meta property="og:title" content="Rare Fruit Trees In Stock in Australia — {date_str}">
-  <meta property="og:description" content="{total_products} rare &amp; exotic fruit trees in stock across {species_count} species. Including {wa_products} that ship to WA. Updated daily at treestock.com.au">
-  <meta property="og:image" content="https://treestock.com.au/og-image.png">
-  <meta property="og:url" content="https://treestock.com.au/rare.html">
-  <link rel="canonical" href="https://treestock.com.au/rare.html">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }}
-    .wa-badge {{ background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }}
-    .no-wa-badge {{ background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; }}
-    .rare-badge {{ background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; margin-left: 4px; }}
-    .species-card {{ border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px; }}
-    .species-card:hover {{ border-color: #86efac; }}
-    .species-header {{ margin-bottom: 12px; }}
-    .species-title-row {{ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }}
-    .species-name {{ font-size: 1.1rem; font-weight: 700; color: #166534; margin: 0; }}
-    .species-name a {{ color: inherit; text-decoration: none; }}
-    .species-name a:hover {{ text-decoration: underline; }}
-    .species-meta {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.8rem; color: #6b7280; }}
-    .sci-name {{ font-style: italic; }}
-    .stock-count, .nursery-count, .price-range {{ font-weight: 500; color: #374151; }}
-    .prod-table {{ width: 100%; border-collapse: collapse; font-size: 0.875rem; }}
-    .prod-table td {{ padding: 6px 8px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }}
-    .prod-table tr:last-child td {{ border-bottom: none; }}
-    .prod-title {{ max-width: 300px; }}
-    .prod-title a {{ color: #1d4ed8; text-decoration: none; }}
-    .prod-title a:hover {{ text-decoration: underline; }}
-    .prod-nursery a {{ color: #374151; text-decoration: none; font-size: 0.8rem; }}
-    .prod-nursery a:hover {{ text-decoration: underline; }}
-    .prod-price {{ font-weight: 600; color: #166534; white-space: nowrap; }}
-    .prod-wa {{ text-align: center; }}
-    .more-link {{ font-size: 0.8rem; color: #6b7280; margin-top: 8px; text-align: right; }}
-    .more-link a {{ color: #16a34a; text-decoration: none; }}
-    .more-link a:hover {{ text-decoration: underline; }}
-    .subscribe-box {{ background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 20px; }}
-    @media (max-width: 640px) {{
-      .prod-table {{ font-size: 0.8rem; }}
-      .prod-title {{ max-width: 160px; }}
-    }}
-  </style>
-</head>
-<body class="bg-white text-gray-900">
+    extra_style = """\
+  .wa-badge { background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+  .no-wa-badge { background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; }
+  .rare-badge { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; margin-left: 4px; }
+  .species-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .species-card:hover { border-color: #86efac; }
+  .species-header { margin-bottom: 12px; }
+  .species-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+  .species-name { font-size: 1.1rem; font-weight: 700; color: #166534; margin: 0; }
+  .species-name a { color: inherit; text-decoration: none; }
+  .species-name a:hover { text-decoration: underline; }
+  .species-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.8rem; color: #6b7280; }
+  .sci-name { font-style: italic; }
+  .stock-count, .nursery-count, .price-range { font-weight: 500; color: #374151; }
+  .prod-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .prod-table td { padding: 6px 8px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+  .prod-table tr:last-child td { border-bottom: none; }
+  .prod-title { max-width: 300px; }
+  .prod-title a { color: #1d4ed8; text-decoration: none; }
+  .prod-title a:hover { text-decoration: underline; }
+  .prod-nursery a { color: #374151; text-decoration: none; font-size: 0.8rem; }
+  .prod-nursery a:hover { text-decoration: underline; }
+  .prod-price { font-weight: 600; color: #166534; white-space: nowrap; }
+  .prod-wa { text-align: center; }
+  .more-link { font-size: 0.8rem; color: #6b7280; margin-top: 8px; text-align: right; }
+  .more-link a { color: #16a34a; text-decoration: none; }
+  .more-link a:hover { text-decoration: underline; }
+  .subscribe-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 20px; }
+  @media (max-width: 640px) {
+    .prod-table { font-size: 0.8rem; }
+    .prod-title { max-width: 160px; }
+  }"""
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-    <div>
-      <a href="/" class="text-xl font-bold text-green-800 no-underline">treestock.com.au</a>
-      <span class="text-gray-400 text-sm ml-2">Rare &amp; Exotic Finds</span>
-    </div>
-    <a href="/" class="text-sm text-green-700 hover:underline">← All stock</a>
-  </div>
-</header>
+    head = render_head(
+        title="Rare &amp; Exotic Fruit Trees In Stock — treestock.com.au",
+        description=f"Find rare and exotic fruit trees in stock at Australian nurseries right now. {species_count} unusual species tracked including jaboticaba, rambutan, sapodilla and more. Updated daily.",
+        canonical_url="https://treestock.com.au/rare.html",
+        og_title=f"Rare Fruit Trees In Stock in Australia — {date_str}",
+        og_description=f"{total_products} rare &amp; exotic fruit trees in stock across {species_count} species. Including {wa_products} that ship to WA. Updated daily at treestock.com.au",
+        og_image="https://treestock.com.au/og-image.png",
+        extra_style=extra_style,
+    )
+    header = render_header(
+        subtitle="Rare &amp; Exotic Finds",
+        active_path="/rare.html",
+    )
+    footer = render_footer()
+
+    html = f'''{head}
+{header}
 
 <main class="max-w-3xl mx-auto px-4 py-6">
 
@@ -325,16 +316,7 @@ def build_rare_page(data_dir: str, output_dir: str):
 
 </main>
 
-<footer class="border-t border-gray-100 mt-8 py-6 text-center text-xs text-gray-400">
-  <div class="max-w-3xl mx-auto px-4">
-    <a href="/" class="hover:text-gray-600">Home</a> ·
-    <a href="/nursery/" class="hover:text-gray-600">Nurseries</a> ·
-    <a href="/species/" class="hover:text-gray-600">Species</a> ·
-    <a href="/compare/" class="hover:text-gray-600">Compare Prices</a> ·
-    <a href="/digest.html" class="hover:text-gray-600">Today's Digest</a>
-    <p class="mt-2">Data updated daily. Prices from {len(NURSERY_NAMES)} Australian nurseries. Not affiliated with any nursery.</p>
-  </div>
-</footer>
+{footer}
 
 <script>
 async function handleSubscribe(formId, inputId, stateId, btnId, msgId) {{

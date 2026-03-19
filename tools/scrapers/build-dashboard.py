@@ -16,6 +16,7 @@ from pathlib import Path
 
 from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES
+from treestock_layout import render_head, render_footer, SITE_NAME, TAILWIND_CDN, PLAUSIBLE_SCRIPT, NAV_ITEMS
 
 
 # Confirmed via nursery websites/policies:
@@ -729,54 +730,51 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
         for s in top_species
     )
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>treestock.com.au - Australian Nursery Stock Tracker</title>
-<meta name="description" content="Track rare fruit and plant stock across Australian nurseries. Search availability, compare prices, find what's in stock.">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://treestock.com.au/">
-<meta property="og:title" content="treestock.com.au - Australian Nursery Stock Tracker">
-<meta property="og:description" content="Track fruit tree stock across 9 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
-<meta property="og:image" content="https://treestock.com.au/og-image.png">
-<meta property="og:image:width" content="1200">
+    extra_style = """\
+  .stock-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }
+  .restrict-badge { background: #fee2e2; color: #991b1b; font-size: 0.65rem; }
+  .sale-badge { background: #fee2e2; color: #991b1b; }
+  .new-badge { background: #dbeafe; color: #1e40af; }
+  .back-badge { background: #d1fae5; color: #065f46; font-weight: 600; }
+  .price-down { color: #059669; font-weight: 600; }
+  .price-up { color: #dc2626; }
+  .in-stock { background: #d1fae5; color: #065f46; }
+  .out-stock { background: #f3f4f6; color: #6b7280; }
+  #results { min-height: 200px; }
+  .product-row { border-bottom: 1px solid #f3f4f6; }
+  .product-row:hover { background: #f9fafb; }
+  .product-row.featured-row { border-left: 3px solid #f59e0b; background: #fffdf5; }
+  .product-row.featured-row:hover { background: #fef9e7; }
+  .nursery-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }
+  .nursery-tag.featured-tag { background: #fef3c7; color: #92400e; font-weight: 600; }
+  .featured-badge { font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #f59e0b; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .species-strip { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .species-strip::-webkit-scrollbar { height: 3px; }
+  .species-strip::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+  .species-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; text-decoration: none; transition: border-color 0.15s, background 0.15s; }
+  .species-pill:hover { border-color: #22c55e; background: #f0fdf4; color: #065f46; }
+  .species-pill .count { color: #059669; font-weight: 600; font-size: 0.7rem; }"""
+
+    extra_head_tags = """<meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="treestock.com.au - Australian Nursery Stock Tracker">
-<meta name="twitter:description" content="Track fruit tree stock across 9 Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
-<meta name="twitter:image" content="https://treestock.com.au/og-image.png">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>
-  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
-  .stock-badge {{ font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }}
-  .restrict-badge {{ background: #fee2e2; color: #991b1b; font-size: 0.65rem; }}
-  .sale-badge {{ background: #fee2e2; color: #991b1b; }}
-  .new-badge {{ background: #dbeafe; color: #1e40af; }}
-  .back-badge {{ background: #d1fae5; color: #065f46; font-weight: 600; }}
-  .price-down {{ color: #059669; font-weight: 600; }}
-  .price-up {{ color: #dc2626; }}
-  .in-stock {{ background: #d1fae5; color: #065f46; }}
-  .out-stock {{ background: #f3f4f6; color: #6b7280; }}
-  #results {{ min-height: 200px; }}
-  .product-row {{ border-bottom: 1px solid #f3f4f6; }}
-  .product-row:hover {{ background: #f9fafb; }}
-  .product-row.featured-row {{ border-left: 3px solid #f59e0b; background: #fffdf5; }}
-  .product-row.featured-row:hover {{ background: #fef9e7; }}
-  .nursery-tag {{ font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }}
-  .nursery-tag.featured-tag {{ background: #fef3c7; color: #92400e; font-weight: 600; }}
-  .featured-badge {{ font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #f59e0b; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }}
-  .species-strip {{ display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }}
-  .species-strip::-webkit-scrollbar {{ height: 3px; }}
-  .species-strip::-webkit-scrollbar-thumb {{ background: #d1d5db; border-radius: 3px; }}
-  .species-pill {{ flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; text-decoration: none; transition: border-color 0.15s, background 0.15s; }}
-  .species-pill:hover {{ border-color: #22c55e; background: #f0fdf4; color: #065f46; }}
-  .species-pill .count {{ color: #059669; font-weight: 600; font-size: 0.7rem; }}
-</style>
-</head>
+<meta name="twitter:description" content="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
+<meta name="twitter:image" content="https://treestock.com.au/og-image.png">"""
+
+    head = render_head(
+        title="treestock.com.au - Australian Nursery Stock Tracker",
+        description="Track rare fruit and plant stock across Australian nurseries. Search availability, compare prices, find what's in stock.",
+        canonical_url="https://treestock.com.au/",
+        og_title="treestock.com.au - Australian Nursery Stock Tracker",
+        og_description="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.",
+        og_image="https://treestock.com.au/og-image.png",
+        og_type="website",
+        extra_head=extra_head_tags,
+        extra_style=extra_style,
+    )
+
+    return f"""{head}
 <body class="bg-white text-gray-900">
 
 <header class="border-b border-gray-200 bg-white sticky top-0 z-10">
@@ -881,19 +879,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 
 </main>
 
-<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
-  <div class="flex justify-center gap-4 mb-3 text-sm">
-    <a href="/digest.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Today's Digest</a>
-    <a href="/species/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Browse by Species</a>
-    <a href="/variety/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Variety Finder</a>
-    <a href="/compare/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Compare Prices</a>
-    <a href="/rare.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Rare Finds</a>
-    <a href="/history.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Price History</a>
-    <a href="/guide.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-600">Beginners Guide</a>
-  </div>
-  <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>
-  <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA &middot; <a href="/advertise.html" class="underline">Nursery partnerships</a></p>
-</footer>
+{render_footer(max_width="max-w-5xl", extra_text='<a href="/advertise.html" class="underline">Nursery partnerships</a>')}
 
 <script>
 const P = {products_json};

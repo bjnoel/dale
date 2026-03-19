@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
@@ -163,16 +164,6 @@ def ships_to_wa(nursery_key: str) -> bool:
     return "WA" in SHIPPING_MAP.get(nursery_key, [])
 
 
-NAV = """    <nav class="navbar navbar-light bg-white border-bottom">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">🌱 treestock.com.au</a>
-            <div class="d-flex gap-3 align-items-center">
-                <a href="/species/" class="text-muted small">Browse Species</a>
-                <a href="/nursery/" class="text-muted small">Nurseries</a>
-                <a href="/digest.html" class="text-muted small">Daily Digest</a>
-            </div>
-        </div>
-    </nav>"""
 
 
 def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> str:
@@ -236,138 +227,131 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
     else:
         scraped_at_fmt = "recently"
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{name} — Stock, Prices &amp; Shipping | treestock.com.au</title>
-    <meta name="description" content="Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. Ships to: {', '.join(ships)}.">
-    <meta property="og:title" content="{name} — Stock, Prices &amp; Shipping">
-    <meta property="og:description" content="Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. Ships to: {', '.join(ships)}.">
-    <meta property="og:url" content="https://treestock.com.au/nursery/{nursery_key}.html">
-    <meta property="og:type" content="website">
-    <link rel="canonical" href="https://treestock.com.au/nursery/{nursery_key}.html">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
-    <style>
-        body {{ background: #f8f9fa; }}
-        .nursery-header {{ background: white; border-bottom: 1px solid #dee2e6; padding: 2rem 0; }}
-        .stat-card {{ background: white; border-radius: 8px; border: 1px solid #dee2e6; padding: 1.2rem; text-align: center; }}
-        .stat-card .number {{ font-size: 2rem; font-weight: 700; color: #198754; }}
-        .stat-card .label {{ font-size: 0.85rem; color: #6c757d; }}
-        table {{ background: white; }}
-        .back-link {{ color: #6c757d; text-decoration: none; font-size: 0.9rem; }}
-        .back-link:hover {{ color: #000; }}
-        footer {{ color: #6c757d; font-size: 0.85rem; }}
-    </style>
-</head>
-<body>
-{NAV}
+    wa_badge_tw = '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full font-semibold ml-2">Ships to WA</span>' if wa else '<span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full font-semibold ml-2">Does not ship to WA</span>'
+    tag_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded mr-1 mb-1">{t}</span>' for t in tags)
+    ship_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-600 text-white rounded mr-1">{s}</span>' for s in ships)
 
-    <div class="nursery-header">
-        <div class="container">
-            <a href="/nursery/" class="back-link mb-2 d-inline-block">← All Nurseries</a>
-            <h1 class="mb-1">{name} {wa_badge}</h1>
-            <p class="text-muted mb-2">
-                {location_line}
-            </p>
-            <div class="mb-2">{tag_badges}</div>
-            <div>Ships to: {ship_badges}</div>
-        </div>
+    # Rebuild species rows for Tailwind
+    species_rows_tw = ""
+    for sp in species_breakdown:
+        in_s = sp["in_stock"]
+        tot = sp["total"]
+        stock_cell = f'<span class="text-green-700 font-bold">{in_s}</span>' if in_s > 0 else f'<span class="text-gray-400">{in_s}</span>'
+        species_rows_tw += f"""
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-1.5 pr-3 text-sm"><a href="/species/{sp['sl']}.html" class="text-green-700 hover:underline">{sp['cn']}</a></td>
+          <td class="py-1.5 pr-3 text-xs text-gray-400 italic">{sp['ln']}</td>
+          <td class="py-1.5 pr-3 text-center text-sm">{stock_cell}</td>
+          <td class="py-1.5 text-center text-sm text-gray-400">{tot}</td>
+        </tr>"""
+
+    # Rebuild product rows for Tailwind
+    product_rows_tw = ""
+    for p in in_stock_products:
+        price = f"${p['min_price']:.2f}" if p.get("min_price") else "POA"
+        title = p.get("title", "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        p_url = p.get("url", "#")
+        product_rows_tw += f"""
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-1.5 pr-3 text-sm"><a href="{p_url}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{title}</a></td>
+          <td class="py-1.5 text-right text-sm font-medium">{price}</td>
+        </tr>"""
+
+    extra_style = """\
+  .stat-card { background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 1.2rem; text-align: center; }
+  .stat-card .number { font-size: 2rem; font-weight: 700; color: #059669; }
+  .stat-card .label { font-size: 0.85rem; color: #6b7280; }
+  .scrollable-table { max-height: 420px; overflow-y: auto; }
+  .scrollable-table thead { position: sticky; top: 0; background: #f9fafb; }"""
+
+    head = render_head(
+        title=f"{name} — Stock, Prices &amp; Shipping | treestock.com.au",
+        description=f"Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. Ships to: {', '.join(ships)}.",
+        canonical_url=f"https://treestock.com.au/nursery/{nursery_key}.html",
+        og_title=f"{name} — Stock, Prices &amp; Shipping",
+        og_description=f"Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. Ships to: {', '.join(ships)}.",
+        og_type="website",
+        extra_style=extra_style,
+    )
+    header_html = render_header(active_path="/nursery/")
+    breadcrumb = render_breadcrumb([("Home", "/"), ("Nurseries", "/nursery/"), (name, "")])
+    footer = render_footer()
+
+    url_display = url.replace("https://", "").replace("http://", "")
+    url_link = f'<a href="{url}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{url_display}</a>' if url else ""
+
+    return f"""{head}
+{header_html}
+
+<main class="max-w-3xl mx-auto px-4 py-6">
+  {breadcrumb}
+
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-gray-900 mb-1">{name} {wa_badge_tw}</h2>
+    <p class="text-gray-500 text-sm mb-2">📍 {location}{(' · ' + url_link) if url_link else ''}</p>
+    <div class="mb-2">{tag_badges_tw}</div>
+    <div>Ships to: {ship_badges_tw}</div>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+    <div class="stat-card"><div class="number">{in_stock_count}</div><div class="label">In Stock</div></div>
+    <div class="stat-card"><div class="number">{total_count}</div><div class="label">Products Tracked</div></div>
+    <div class="stat-card"><div class="number">{species_count}</div><div class="label">Species</div></div>
+    <div class="stat-card"><div class="number">{wa_stat}</div><div class="label">Ships to WA</div></div>
+  </div>
+
+  {f'<div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-sm text-gray-700">{description}</div>' if description else ''}
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="border border-gray-200 rounded-lg">
+      <div class="flex justify-between items-center px-4 py-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+        <span class="font-semibold text-sm">Species Carried</span>
+        <span class="text-xs text-gray-500">{species_count} species</span>
+      </div>
+      <div class="scrollable-table">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
+              <th class="py-2 px-3">Species</th>
+              <th class="py-2 px-3 italic text-gray-400">Latin name</th>
+              <th class="py-2 px-3 text-center">In Stock</th>
+              <th class="py-2 px-3 text-center">Total</th>
+            </tr>
+          </thead>
+          <tbody class="px-3">
+            {species_rows_tw}
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="container py-4">
-        <div class="row g-3 mb-4">
-            <div class="col-6 col-md-3">
-                <div class="stat-card">
-                    <div class="number">{in_stock_count}</div>
-                    <div class="label">In Stock</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-card">
-                    <div class="number">{total_count}</div>
-                    <div class="label">Products Tracked</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-card">
-                    <div class="number">{species_count}</div>
-                    <div class="label">Species</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-card">
-                    <div class="number">{wa_stat}</div>
-                    <div class="label">Ships to WA</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card mb-4"><div class="card-body"><p class="mb-0">{description}</p></div></div>
-
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <strong>Species Carried</strong>
-                        <span class="text-muted small">{species_count} species</span>
-                    </div>
-                    <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
-                        <table class="table table-sm table-hover mb-0">
-                            <thead class="table-light sticky-top">
-                                <tr>
-                                    <th>Species</th>
-                                    <th class="text-muted fst-italic">Latin name</th>
-                                    <th class="text-center">In Stock</th>
-                                    <th class="text-center">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {species_rows}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <strong>In Stock Now</strong>
-                        <a href="/?nursery={nursery_key}" class="btn btn-sm btn-outline-success">View all on dashboard →</a>
-                    </div>
-                    <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
-                        <table class="table table-sm table-hover mb-0">
-                            <thead class="table-light sticky-top">
-                                <tr>
-                                    <th>Product</th>
-                                    <th class="text-end">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {product_rows}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer text-muted small">Showing top 20 in-stock products. <a href="/?nursery={nursery_key}">See all →</a></div>
-                </div>
-            </div>
-        </div>
-
-        <p class="text-muted small mt-4">Data updated daily. Last checked: {scraped_at_fmt}.</p>
+    <div class="border border-gray-200 rounded-lg">
+      <div class="flex justify-between items-center px-4 py-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+        <span class="font-semibold text-sm">In Stock Now</span>
+        <a href="/?nursery={nursery_key}" class="text-xs px-2 py-1 border border-green-600 text-green-700 rounded hover:bg-green-50">View all on dashboard →</a>
+      </div>
+      <div class="scrollable-table">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
+              <th class="py-2 px-3">Product</th>
+              <th class="py-2 px-3 text-right">Price</th>
+            </tr>
+          </thead>
+          <tbody class="px-3">
+            {product_rows_tw}
+          </tbody>
+        </table>
+      </div>
+      <div class="px-4 py-2 border-t border-gray-200 text-xs text-gray-500">Showing top 20 in-stock products. <a href="/?nursery={nursery_key}" class="text-green-700 hover:underline">See all →</a></div>
     </div>
+  </div>
 
-    <footer class="border-top py-3 mt-4">
-        <div class="container">
-            <a href="/nursery/" class="text-muted me-3">All Nurseries</a>
-            <a href="/species/" class="text-muted me-3">Browse Species</a>
-            <a href="/" class="text-muted me-3">Dashboard</a>
-            <a href="/digest.html" class="text-muted">Daily Digest</a>
-        </div>
-    </footer>
+  <p class="text-xs text-gray-400 mt-4">Data updated daily. Last checked: {scraped_at_fmt}.</p>
+</main>
+
+{footer}
+
 </body>
 </html>"""
 
@@ -386,73 +370,52 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
         total = data.get("product_count", len(data.get("products", [])))
         location = data.get("location", "Australia")
 
-        wa_badge = '<span class="badge bg-success">Ships WA</span>' if wa else '<span class="badge bg-warning text-dark">No WA</span>'
-        tag_badges = " ".join(f'<span class="badge bg-light text-dark border small">{t}</span>' for t in tags[:3])
+        wa_badge = '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full font-semibold">Ships WA</span>' if wa else '<span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full font-semibold">No WA</span>'
+        tag_badges = " ".join(f'<span class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded">{t}</span>' for t in tags[:3])
         ship_str = ", ".join(ships)
 
         cards += f"""
-        <div class="col-md-6 col-lg-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-1">
-                        <h5 class="card-title mb-0">
-                            <a href="/nursery/{key}.html" class="text-decoration-none text-dark">{name}</a>
-                        </h5>
-                        {wa_badge}
-                    </div>
-                    <p class="text-muted small mb-2">📍 {location}</p>
-                    <div class="mb-2">{tag_badges}</div>
-                    <p class="small text-muted mb-1">
-                        <strong>{in_stock}</strong> in stock &middot; {total} tracked
-                    </p>
-                    <p class="small text-muted mb-0">Ships to: {ship_str}</p>
-                </div>
-                <div class="card-footer bg-transparent border-top-0">
-                    <a href="/nursery/{key}.html" class="btn btn-sm btn-outline-success w-100">View Nursery →</a>
-                </div>
-            </div>
-        </div>"""
-
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Australian Fruit Tree Nurseries — Stock &amp; Shipping | treestock.com.au</title>
-    <meta name="description" content="Browse all {count} Australian fruit tree nurseries tracked by treestock.com.au. Compare stock, prices, and shipping to your state including WA.">
-    <meta property="og:title" content="Australian Fruit Tree Nurseries — treestock.com.au">
-    <meta property="og:url" content="https://treestock.com.au/nursery/">
-    <link rel="canonical" href="https://treestock.com.au/nursery/">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
-    <style>
-        body {{ background: #f8f9fa; }}
-        .card {{ transition: box-shadow 0.2s; }}
-        .card:hover {{ box-shadow: 0 2px 8px rgba(0,0,0,0.12); }}
-    </style>
-</head>
-<body>
-{NAV}
-
-    <div class="container py-4">
-        <h1 class="mb-1">Australian Fruit Tree Nurseries</h1>
-        <p class="text-muted mb-4">
-            Daily stock tracking across {count} nurseries. Updated {today}.
-        </p>
-
-        <div class="row g-3">
-            {cards}
+    <div class="border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+      <div class="p-4">
+        <div class="flex justify-between items-start mb-1">
+          <h3 class="font-semibold text-sm">
+            <a href="/nursery/{key}.html" class="text-gray-900 hover:text-green-700 no-underline">{name}</a>
+          </h3>
+          {wa_badge}
         </div>
-    </div>
+        <p class="text-xs text-gray-500 mb-2">📍 {location}</p>
+        <div class="mb-2 flex flex-wrap gap-1">{tag_badges}</div>
+        <p class="text-xs text-gray-500 mb-1"><strong>{in_stock}</strong> in stock · {total} tracked</p>
+        <p class="text-xs text-gray-500 mb-0">Ships to: {ship_str}</p>
+      </div>
+      <div class="px-4 pb-4">
+        <a href="/nursery/{key}.html" class="block text-center text-sm px-3 py-1.5 border border-green-600 text-green-700 rounded hover:bg-green-50 no-underline">View Nursery →</a>
+      </div>
+    </div>"""
 
-    <footer class="border-top py-3 mt-4">
-        <div class="container">
-            <a href="/" class="text-muted me-3">Dashboard</a>
-            <a href="/species/" class="text-muted me-3">Browse Species</a>
-            <a href="/digest.html" class="text-muted">Daily Digest</a>
-        </div>
-    </footer>
+    head = render_head(
+        title="Australian Fruit Tree Nurseries — Stock &amp; Shipping | treestock.com.au",
+        description=f"Browse all {count} Australian fruit tree nurseries tracked by treestock.com.au. Compare stock, prices, and shipping to your state including WA.",
+        canonical_url="https://treestock.com.au/nursery/",
+        og_title="Australian Fruit Tree Nurseries — treestock.com.au",
+    )
+    header_html = render_header(active_path="/nursery/")
+    footer = render_footer()
+
+    return f"""{head}
+{header_html}
+
+<main class="max-w-3xl mx-auto px-4 py-6">
+  <h2 class="text-2xl font-bold text-gray-900 mb-1">Australian Fruit Tree Nurseries</h2>
+  <p class="text-gray-500 text-sm mb-6">Daily stock tracking across {count} nurseries. Updated {today}.</p>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {cards}
+  </div>
+</main>
+
+{footer}
+
 </body>
 </html>"""
 

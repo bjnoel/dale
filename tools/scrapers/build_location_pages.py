@@ -20,6 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
@@ -382,44 +383,24 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
         for s in other_states
     )
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buy Fruit Trees Online — {state_name} | treestock.com.au</title>
-<meta name="description" content="Find fruit trees for sale online that ship to {state_name}. {total_in_stock} varieties in stock across {nursery_count} nurseries, updated daily. Compare prices and check availability.">
-<meta property="og:title" content="Fruit Trees for Sale Online in {state_name}">
-<meta property="og:description" content="Find fruit trees for sale online that ship to {state_name}. {total_in_stock} varieties in stock across {nursery_count} nurseries, updated daily.">
-<meta property="og:url" content="https://treestock.com.au/buy-fruit-trees-{slug}.html">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://treestock.com.au/buy-fruit-trees-{slug}.html">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}</style>
-</head>
-<body class="bg-white text-gray-900">
+    head = render_head(
+        title=f"Buy Fruit Trees Online — {state_name} | treestock.com.au",
+        description=f"Find fruit trees for sale online that ship to {state_name}. {total_in_stock} varieties in stock across {nursery_count} nurseries, updated daily. Compare prices and check availability.",
+        canonical_url=f"https://treestock.com.au/buy-fruit-trees-{slug}.html",
+        og_title=f"Fruit Trees for Sale Online in {state_name}",
+        og_description=f"Find fruit trees for sale online that ship to {state_name}. {total_in_stock} varieties in stock across {nursery_count} nurseries, updated daily.",
+        extra_head='<meta name="robots" content="index, follow">',
+    )
+    header = render_header(subtitle=f"Fruit Trees — {state_name}")
+    breadcrumb = render_breadcrumb([("Home", "/"), (f"Fruit trees for sale, {state_name}", "")])
+    footer = render_footer()
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-3xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <a href="/" class="text-lg font-bold text-green-700">treestock.com.au</a>
-      <nav class="text-sm text-gray-600 space-x-4 hidden sm:block">
-        <a href="/species/" class="hover:text-green-700">Browse species</a>
-        <a href="/nursery/" class="hover:text-green-700">Nurseries</a>
-        <a href="/digest.html" class="hover:text-green-700">Daily digest</a>
-      </nav>
-    </div>
-  </div>
-</header>
+    return f"""{head}
+{header}
 
 <main class="max-w-3xl mx-auto px-4 py-8">
 
-  <nav class="text-xs text-gray-500 mb-6">
-    <a href="/" class="hover:text-green-700">Home</a>
-    <span class="mx-2">&rsaquo;</span>
-    <span>Fruit trees for sale &mdash; {state_name}</span>
-  </nav>
+  {breadcrumb}
 
   <h1 class="text-2xl font-bold mb-2">Buy Fruit Trees Online in {state_name}</h1>
   <p class="text-gray-600 mb-1">Updated {date_display} &middot; {total_in_stock} varieties in stock across {nursery_count} nurseries</p>
@@ -489,17 +470,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
 
 </main>
 
-<footer class="border-t border-gray-200 mt-8 py-6">
-  <div class="max-w-3xl mx-auto px-4">
-    <p class="text-xs text-gray-500">
-      <a href="/" class="hover:text-green-700">treestock.com.au</a> &middot;
-      Australian fruit tree stock tracker &middot;
-      Data updated daily &middot;
-      <a href="/nursery/" class="hover:text-green-700">All nurseries</a> &middot;
-      <a href="/species/" class="hover:text-green-700">Browse by species</a>
-    </p>
-  </div>
-</footer>
+{footer}
 
 </body>
 </html>

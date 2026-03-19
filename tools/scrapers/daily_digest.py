@@ -19,6 +19,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, nursery_ships_to
+from treestock_layout import render_head, render_header, render_footer
 
 # Fruit species lookup for filtering non-fruit products
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -380,44 +381,29 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
 
     pills_html = " ".join(pills) if pills else ""
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nursery Stock Update — {target_date}{title_suffix} — treestock.com.au</title>
-<meta name="description" content="Daily fruit nursery stock changes for {target_date}. Price drops, back in stock alerts, and new listings.">
-<meta property="og:title" content="Nursery Stock Update — {target_date}">
-<meta property="og:description" content="Daily price and stock changes across Australian fruit nurseries.">
-<meta property="og:type" content="article">
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>
-  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
-  a {{ color: #065f46; }}
-  a:hover {{ text-decoration: underline; }}
-  li {{ border-bottom: 1px solid #f3f4f6; }}
-  li:last-child {{ border-bottom: none; }}
-</style>
-</head>
-<body class="bg-white text-gray-900">
+    extra_style = """\
+  a { color: #065f46; }
+  a:hover { text-decoration: underline; }
+  li { border-bottom: 1px solid #f3f4f6; }
+  li:last-child { border-bottom: none; }"""
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-2xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:no-underline">treestock.com.au</a>
-        </h1>
-        <p class="text-sm text-gray-500">Nursery Stock Update{title_suffix}</p>
-      </div>
-      <div class="flex gap-2 text-sm">
-        <a href="/" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 no-underline">Dashboard</a>
-        <a href="/history.html" class="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 no-underline">History</a>
-      </div>
-    </div>
-  </div>
-</header>
+    head = render_head(
+        title=f"Nursery Stock Update — {target_date}{title_suffix} — treestock.com.au",
+        description=f"Daily fruit nursery stock changes for {target_date}. Price drops, back in stock alerts, and new listings.",
+        og_title=f"Nursery Stock Update — {target_date}",
+        og_description="Daily price and stock changes across Australian fruit nurseries.",
+        og_type="article",
+        extra_style=extra_style,
+    )
+    header = render_header(
+        subtitle=f"Nursery Stock Update{title_suffix}",
+        max_width="max-w-2xl",
+        active_path="/digest.html",
+    )
+    footer = render_footer(max_width="max-w-2xl")
+
+    return f"""{head}
+{header}
 
 <main class="max-w-2xl mx-auto px-4 py-6">
   <div class="mb-6">
@@ -437,9 +423,7 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
   </div>
 </main>
 
-<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
-  <p>Data scraped daily from public nursery websites. Prices and availability may change.</p>
-</footer>
+{footer}
 
 </body>
 </html>"""
