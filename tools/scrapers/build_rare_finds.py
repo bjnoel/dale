@@ -340,7 +340,7 @@ handleSubscribe('subscribeForm2', 'emailInput2', 'stateInput2', 'subscribeBtn2',
         f.write(html)
 
     print(f"Built {out_path}")
-    print(f"  {species_count} rare species, {total_products} products, {wa_products} ship to WA")
+    print(f"  {species_count} rare species, {total_products} products")
     return species_count, total_products
 
 
