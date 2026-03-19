@@ -248,11 +248,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
             continue
 
         has_any = True
-        # Show restriction warnings for hard-to-ship states, not "Ships to" badges
-        ships_to = SHIPPING_MAP.get(nursery_key, [])
-        restricted = [s for s in ("WA", "NT", "TAS") if s not in ships_to]
-        restrict_tag = f" ⚠️ No {'/'.join(restricted)}" if restricted else ""
-        lines.append(f"📦 {name}{restrict_tag}")
+        lines.append(f"📦 {name}")
         for section_name, items in sections:
             for item in items:
                 lines.append(item)
@@ -316,13 +312,8 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
             continue
 
         has_any = True
-        # Show restriction warnings for hard-to-ship states, not "Ships to" badges
-        ships_to = SHIPPING_MAP.get(nursery_key, [])
-        restricted = [s for s in ("WA", "NT", "TAS") if s not in ships_to]
-        restrict_badge = (f' <span style="background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:4px;font-size:0.8em">No {"/".join(restricted)}</span>'
-                          if restricted else "")
         sections_html.append(
-            f'<h3 style="margin:16px 0 8px">{name}{restrict_badge}</h3>'
+            f'<h3 style="margin:16px 0 8px">{name}</h3>'
             f'<ul style="list-style:none;padding:0;margin:0">{"".join(items_html)}</ul>'
         )
 
