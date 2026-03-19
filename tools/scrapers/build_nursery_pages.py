@@ -12,7 +12,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from shipping import SHIPPING_MAP, NURSERY_NAMES
+from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -183,7 +183,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
     species_breakdown = build_species_breakdown(products, species_lookup)
     species_count = len(species_breakdown)
 
-    wa_badge = '<span class="badge bg-success ms-2">Ships to WA</span>' if wa else '<span class="badge bg-warning text-dark ms-2">Does not ship to WA</span>'
+    restrict = restriction_warning(nursery_key)
     tag_badges = "".join(f'<span class="badge bg-light text-dark border me-1 mb-1">{t}</span>' for t in tags)
     ship_badges = "".join(f'<span class="badge bg-secondary me-1">{s}</span>' for s in ships)
     wa_stat = "✓" if wa else "✗"
@@ -227,7 +227,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
     else:
         scraped_at_fmt = "recently"
 
-    wa_badge_tw = '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full font-semibold ml-2">Ships to WA</span>' if wa else '<span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full font-semibold ml-2">Does not ship to WA</span>'
+    restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold ml-2">{restrict}</span>' if restrict else ''
     tag_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded mr-1 mb-1">{t}</span>' for t in tags)
     ship_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-600 text-white rounded mr-1">{s}</span>' for s in ships)
 
@@ -287,7 +287,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
   {breadcrumb}
 
   <div class="mb-6">
-    <h2 class="text-2xl font-bold text-gray-900 mb-1">{name} {wa_badge_tw}</h2>
+    <h2 class="text-2xl font-bold text-gray-900 mb-1">{name} {restrict_badge}</h2>
     <p class="text-gray-500 text-sm mb-2">📍 {location}{(' · ' + url_link) if url_link else ''}</p>
     <div class="mb-2">{tag_badges_tw}</div>
     <div>Ships to: {ship_badges_tw}</div>
@@ -297,7 +297,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
     <div class="stat-card"><div class="number">{in_stock_count}</div><div class="label">In Stock</div></div>
     <div class="stat-card"><div class="number">{total_count}</div><div class="label">Products Tracked</div></div>
     <div class="stat-card"><div class="number">{species_count}</div><div class="label">Species</div></div>
-    <div class="stat-card"><div class="number">{wa_stat}</div><div class="label">Ships to WA</div></div>
+    <div class="stat-card"><div class="number">{len(ships)}</div><div class="label">States</div></div>
   </div>
 
   {f'<div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-sm text-gray-700">{description}</div>' if description else ''}
@@ -370,7 +370,8 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
         total = data.get("product_count", len(data.get("products", [])))
         location = data.get("location", "Australia")
 
-        wa_badge = '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full font-semibold">Ships WA</span>' if wa else '<span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full font-semibold">No WA</span>'
+        restrict = restriction_warning(key)
+        restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold">{restrict}</span>' if restrict else ''
         tag_badges = " ".join(f'<span class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded">{t}</span>' for t in tags[:3])
         ship_str = ", ".join(ships)
 
@@ -381,7 +382,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
           <h3 class="font-semibold text-sm">
             <a href="/nursery/{key}.html" class="text-gray-900 hover:text-green-700 no-underline">{name}</a>
           </h3>
-          {wa_badge}
+          {restrict_badge}
         </div>
         <p class="text-xs text-gray-500 mb-2">📍 {location}</p>
         <div class="mb-2 flex flex-wrap gap-1">{tag_badges}</div>

@@ -47,3 +47,16 @@ NURSERY_NAMES = {
 def nursery_ships_to(nursery_key: str, state: str) -> bool:
     """Return True if this nursery ships to the given state code (e.g. 'WA')."""
     return state in SHIPPING_MAP.get(nursery_key, [])
+
+
+# Quarantine states that are hard to ship to
+QUARANTINE_STATES = ["WA", "NT", "TAS"]
+
+
+def restriction_warning(nursery_key: str) -> str:
+    """Return a restriction warning like 'No WA/NT/TAS', or '' if ships everywhere."""
+    ships = set(SHIPPING_MAP.get(nursery_key, []))
+    excluded = [s for s in QUARANTINE_STATES if s not in ships]
+    if not excluded:
+        return ""
+    return "No " + "/".join(excluded)

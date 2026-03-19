@@ -20,7 +20,7 @@ from collections import defaultdict
 SCRAPERS_DIR = Path(__file__).parent
 sys.path.insert(0, str(SCRAPERS_DIR))
 from build_compare_pages import load_species, build_species_lookup, match_title
-from shipping import SHIPPING_MAP, NURSERY_NAMES
+from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
 from treestock_layout import render_head, render_header, render_footer
 
 # Species the rare fruit community genuinely cares about
@@ -69,7 +69,7 @@ def build_rare_page(data_dir: str, output_dir: str):
             raw = json.load(f)
 
         nursery_name = NURSERY_NAMES.get(nursery, nursery)
-        ships_wa = 'WA' in SHIPPING_MAP.get(nursery, [])
+        restrict = restriction_warning(nursery)
         nursery_url = f'/nursery/{nursery}.html'
 
         for p in raw.get('products', []):
@@ -97,7 +97,7 @@ def build_rare_page(data_dir: str, output_dir: str):
                 'price': p.get('min_price'),
                 'max_price': p.get('max_price'),
                 'url': p.get('url', ''),
-                'ships_wa': ships_wa,
+                'restrict': restrict,
             })
             species_data[sname]['nurseries'].add(nursery)
 
@@ -118,10 +118,6 @@ def build_rare_page(data_dir: str, output_dir: str):
 
     # Stats
     total_products = sum(len(d['products']) for d in species_data.values())
-    wa_products = sum(
-        sum(1 for p in d['products'] if p['ships_wa'])
-        for d in species_data.values()
-    )
 
     # Build species cards HTML
     cards_html = []
@@ -139,30 +135,22 @@ def build_rare_page(data_dir: str, output_dir: str):
         else:
             price_str = 'POA'
 
-        # WA shipping indicator
-        wa_prods = [p for p in products if p['ships_wa']]
-        if wa_prods:
-            wa_badge = f'<span class="wa-badge">{len(wa_prods)} ship to WA</span>'
-        else:
-            wa_badge = '<span class="no-wa-badge">Eastern states only</span>'
-
         # Highlight badge
         highlight_badge = ''
         if sname in HIGHLIGHT_SPECIES:
             highlight_badge = '<span class="rare-badge">Rare find</span>'
 
         # Product rows (up to 6 per species)
-        show_products = sorted(products, key=lambda x: (not x['ships_wa'], x['price'] or 999))
+        show_products = sorted(products, key=lambda x: (x['price'] or 999))
         prod_rows = []
         for p in show_products[:6]:
-            wa_icon = '🚛' if p['ships_wa'] else '📦'
+            restrict_note = f'<span class="restrict-badge">{p["restrict"]}</span>' if p['restrict'] else ''
             price_disp = f'${p["price"]:.2f}' if p['price'] else '—'
             prod_rows.append(
                 f'<tr>'
                 f'<td class="prod-title"><a href="{p["url"]}" target="_blank" rel="noopener">{p["title"]}</a></td>'
-                f'<td class="prod-nursery"><a href="{p["nursery_url"]}">{p["nursery_name"]}</a></td>'
+                f'<td class="prod-nursery"><a href="{p["nursery_url"]}">{p["nursery_name"]}</a> {restrict_note}</td>'
                 f'<td class="prod-price">{price_disp}</td>'
-                f'<td class="prod-wa">{wa_icon}</td>'
                 f'</tr>'
             )
 
@@ -186,7 +174,6 @@ def build_rare_page(data_dir: str, output_dir: str):
         <span class="stock-count">{len(products)} in stock</span>
         <span class="nursery-count">{nursery_count} {"nursery" if nursery_count == 1 else "nurseries"}</span>
         <span class="price-range">{price_str}</span>
-        {wa_badge}
       </div>
     </div>
     <table class="prod-table">
@@ -201,8 +188,7 @@ def build_rare_page(data_dir: str, output_dir: str):
     species_count = len(species_data)
 
     extra_style = """\
-  .wa-badge { background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-  .no-wa-badge { background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; }
+  .restrict-badge { background: #fee2e2; color: #991b1b; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; }
   .rare-badge { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; margin-left: 4px; }
   .species-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
   .species-card:hover { border-color: #86efac; }
@@ -238,7 +224,7 @@ def build_rare_page(data_dir: str, output_dir: str):
         description=f"Find rare and exotic fruit trees in stock at Australian nurseries right now. {species_count} unusual species tracked including jaboticaba, rambutan, sapodilla and more. Updated daily.",
         canonical_url="https://treestock.com.au/rare.html",
         og_title=f"Rare Fruit Trees In Stock in Australia — {date_str}",
-        og_description=f"{total_products} rare &amp; exotic fruit trees in stock across {species_count} species. Including {wa_products} that ship to WA. Updated daily at treestock.com.au",
+        og_description=f"{total_products} rare &amp; exotic fruit trees in stock across {species_count} species. Updated daily at treestock.com.au",
         og_image="https://treestock.com.au/og-image.png",
         extra_style=extra_style,
     )
@@ -257,7 +243,7 @@ def build_rare_page(data_dir: str, output_dir: str):
     <h1 class="text-2xl font-bold text-green-900 mb-2">Rare &amp; Exotic Fruit Trees In Stock</h1>
     <p class="text-gray-600 text-sm">
       {species_count} unusual species currently available across Australian nurseries — updated daily.
-      <strong>{total_products} total listings</strong>, including <strong>{wa_products} that ship to Western Australia</strong>.
+      <strong>{total_products} total listings</strong>.
       Last updated: {date_str}.
     </p>
   </div>
@@ -283,15 +269,7 @@ def build_rare_page(data_dir: str, output_dir: str):
     <p id="subscribeMsg" class="text-sm mt-2 text-gray-600"></p>
   </div>
 
-  <div class="flex items-center gap-3 text-sm text-gray-500 mb-6 flex-wrap">
-    <span>Legend:</span>
-    <span>🚛 Ships to WA</span>
-    <span>📦 Eastern states only</span>
-    <span class="wa-badge">X ship to WA</span>
-    <span class="rare-badge">Rare find</span>
-  </div>
-
-  {all_cards}
+{all_cards}
 
   <div class="subscribe-box mt-8">
     <p class="font-semibold text-green-900 mb-1">Want alerts when rare species restock?</p>

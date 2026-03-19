@@ -22,7 +22,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from collections import defaultdict
 
-from shipping import SHIPPING_MAP, NURSERY_NAMES
+from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 NURSERY_URLS = {
@@ -105,7 +105,7 @@ def load_all_products(data_dir: Path) -> list[dict]:
             data = json.load(fp)
         nursery_key = nursery_dir.name
         nursery_name = NURSERY_NAMES.get(nursery_key, nursery_key)
-        ships_wa = "WA" in SHIPPING_MAP.get(nursery_key, [])
+        restrict = restriction_warning(nursery_key)
 
         raw_products = data.get("products", [])
         for p in raw_products:
@@ -120,7 +120,7 @@ def load_all_products(data_dir: Path) -> list[dict]:
                 "url": p.get("url", ""),
                 "price": p.get("min_price") or 0,
                 "available": p.get("any_available", False),
-                "ships_wa": ships_wa,
+                "restrict": restrict,
                 "ships_states": SHIPPING_MAP.get(nursery_key, []),
             })
     return products
@@ -163,9 +163,7 @@ def build_variety_page(slug: str, data: dict) -> str:
     out_stock = [p for p in products if not p["available"] or not p["price"]]
     in_stock.sort(key=lambda p: p["price"])
 
-    wa_options = [p for p in in_stock if p["ships_wa"]]
     cheapest = in_stock[0] if in_stock else None
-    cheapest_wa = wa_options[0] if wa_options else None
 
     # Build product rows
     rows = ""
@@ -176,11 +174,7 @@ def build_variety_page(slug: str, data: dict) -> str:
             if p["available"]
             else '<span class="text-red-400 text-sm">Out of stock</span>'
         )
-        wa_badge = (
-            '<span class="text-blue-600 text-xs">Ships to WA</span>'
-            if p["ships_wa"]
-            else '<span class="text-gray-400 text-xs">No WA shipping</span>'
-        )
+        restrict_note = f'<span class="text-xs text-red-600">{p["restrict"]}</span>' if p["restrict"] else ''
         states = ", ".join(p["ships_states"]) if p["ships_states"] else "—"
         nursery_url = NURSERY_URLS.get(p["nursery_key"], "#")
         product_link = p["url"] or nursery_url
@@ -189,7 +183,7 @@ def build_variety_page(slug: str, data: dict) -> str:
         <td class="py-3 pr-4">
           <a href="{product_link}" target="_blank" rel="nofollow noopener"
              class="font-medium text-green-800 hover:underline">{p["nursery_name"]}</a>
-          <div class="text-xs text-gray-400">{wa_badge}</div>
+          {f'<div class="text-xs">{restrict_note}</div>' if restrict_note else ''}
         </td>
         <td class="py-3 pr-4 font-semibold text-gray-900">{price_str}</td>
         <td class="py-3 pr-4">{avail_badge}</td>
@@ -202,21 +196,6 @@ def build_variety_page(slug: str, data: dict) -> str:
         summary_parts.append(
             f'<span class="font-medium">Cheapest:</span> '
             f'{cheapest["nursery_name"]} at ${cheapest["price"]:.2f}'
-        )
-    if cheapest_wa and cheapest_wa != cheapest:
-        summary_parts.append(
-            f'<span class="font-medium">Best WA option:</span> '
-            f'{cheapest_wa["nursery_name"]} at ${cheapest_wa["price"]:.2f}'
-        )
-    elif cheapest_wa:
-        summary_parts.append(
-            f'<span class="font-medium">Ships to WA:</span> Yes — '
-            f'{cheapest_wa["nursery_name"]}'
-        )
-    else:
-        summary_parts.append(
-            '<span class="font-medium text-amber-700">WA shipping:</span> '
-            'None of the nurseries currently ship this variety to WA'
         )
 
     summary_html = " &nbsp;·&nbsp; ".join(summary_parts) if summary_parts else ""
@@ -365,12 +344,10 @@ def build_variety_index(entries: list[dict]) -> str:
             in_s = v["in_stock"]
             n_count = v["nursery_count"]
             price = f'${v["min_price"]:.2f}' if v["min_price"] else "—"
-            wa_note = " 🚛 WA" if v["wa_available"] else ""
             rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50">
         <td class="py-2 pr-4">
           <a href="/variety/{v['slug']}.html" class="text-green-800 hover:underline">{v['variety']}</a>
-          {wa_note}
         </td>
         <td class="py-2 pr-4 text-sm text-gray-600">{n_count} nurseries</td>
         <td class="py-2 pr-4 text-sm">{in_s} in stock</td>
@@ -405,7 +382,7 @@ def build_variety_index(entries: list[dict]) -> str:
 
     head = render_head(
         title="Fruit Tree Varieties for Sale in Australia — treestock.com.au",
-        description=f"Browse {total_varieties} named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check WA shipping. Updated daily.",
+        description=f"Browse {total_varieties} named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.",
     )
     header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/variety/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Varieties", "")])
@@ -456,7 +433,6 @@ def main():
         prods = data["products"]
         in_stock = [p for p in prods if p["available"] and p["price"]]
         all_nurseries = set(p["nursery_key"] for p in prods)
-        wa_available = any(p["ships_wa"] for p in in_stock)
         min_price = min((p["price"] for p in in_stock), default=None)
 
         html = build_variety_page(slug, data)
@@ -472,7 +448,6 @@ def main():
             "nursery_count": len(all_nurseries),
             "in_stock": len(in_stock),
             "min_price": min_price,
-            "wa_available": wa_available,
         })
         pages_written += 1
 
@@ -486,8 +461,7 @@ def main():
     # Print summary stats
     multi = sum(1 for e in index_entries if e["nursery_count"] > 1)
     in_stock_count = sum(1 for e in index_entries if e["in_stock"] > 0)
-    wa_count = sum(1 for e in index_entries if e["wa_available"])
-    print(f"  Multi-nursery: {multi}, In-stock varieties: {in_stock_count}, WA-shippable: {wa_count}")
+    print(f"  Multi-nursery: {multi}, In-stock varieties: {in_stock_count}")
 
 
 if __name__ == "__main__":

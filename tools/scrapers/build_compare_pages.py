@@ -235,9 +235,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
     cheapest_summary = ""
     if sorted_nurseries and sorted_nurseries[0][1]["best_price"] and sorted_nurseries[0][1]["in_stock_count"] > 0:
         cheapest_nk, cheapest_n = sorted_nurseries[0]
-        ships_wa = "WA" in cheapest_n["ships_to"]
-        wa_note = " (ships to WA)" if ships_wa else " (does not ship to WA)"
-        cheapest_summary = f'<p class="text-sm text-gray-600 mt-2">Cheapest in stock: <strong>{cheapest_n["name"]}</strong> from <strong>${cheapest_n["best_price"]:.2f}</strong>{wa_note}.</p>'
+        cheapest_summary = f'<p class="text-sm text-gray-600 mt-2">Cheapest in stock: <strong>{cheapest_n["name"]}</strong> from <strong>${cheapest_n["best_price"]:.2f}</strong>.</p>'
 
     head = render_head(
         title=f"{name} Tree Price Comparison Australia — treestock.com.au",
