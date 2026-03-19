@@ -68,17 +68,24 @@ def get_team_id(team_name):
 
 def get_issue_id(identifier):
     """Get internal issue ID from identifier like DAL-42."""
+    # Parse team key and number from identifier (e.g. DAL-42)
+    parts = identifier.rsplit("-", 1)
+    if len(parts) != 2:
+        print(f"Invalid identifier format: {identifier}", file=sys.stderr)
+        sys.exit(1)
+    team_key, number = parts[0], parts[1]
+
     data = graphql("""
-        query($identifier: String!) {
-            issueSearch(query: $identifier, first: 1) {
+        query($filter: IssueFilter!) {
+            issues(filter: $filter, first: 1) {
                 nodes { id identifier }
             }
         }
-    """, {"identifier": identifier})
-    if not data or not data["issueSearch"]["nodes"]:
+    """, {"filter": {"number": {"eq": int(number)}, "team": {"key": {"eq": team_key}}}})
+    if not data or not data["issues"]["nodes"]:
         print(f"Issue {identifier} not found", file=sys.stderr)
         sys.exit(1)
-    return data["issueSearch"]["nodes"][0]["id"]
+    return data["issues"]["nodes"][0]["id"]
 
 
 def get_state_id(team_id, state_name):
@@ -113,14 +120,12 @@ def get_user_id(name_or_email):
 
 
 def get_label_ids(team_id, label_names):
-    """Get label IDs by name for a team."""
+    """Get label IDs by name."""
     data = graphql("""
-        query($teamId: ID!) {
-            issueLabels(filter: { team: { id: { eq: $teamId } } }) {
-                nodes { id name }
-            }
+        query {
+            issueLabels { nodes { id name } }
         }
-    """, {"teamId": team_id})
+    """)
     if not data:
         return []
     ids = []
