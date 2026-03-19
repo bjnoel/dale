@@ -215,7 +215,7 @@ def build_variety_page(slug: str, data: dict) -> str:
         description=meta_desc,
         canonical_url=f"https://treestock.com.au/variety/{slug}.html",
     )
-    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/variety/")
+    header = render_header(active_path="/variety/")
     breadcrumb = render_breadcrumb([
         ("Home", "/"), ("Varieties", "/variety/"),
         (species, f"/species/{species_slug}.html"), (variety, ""),
@@ -384,7 +384,7 @@ def build_variety_index(entries: list[dict]) -> str:
         title="Fruit Tree Varieties for Sale in Australia — treestock.com.au",
         description=f"Browse {total_varieties} named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.",
     )
-    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/variety/")
+    header = render_header(active_path="/variety/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Varieties", "")])
     footer = render_footer()
 

@@ -27,8 +27,26 @@ NAV_ITEMS = [
     ("History", "/history.html"),
 ]
 
+LOGO_SVG = """\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7 flex-shrink-0">\
+<rect width="64" height="64" rx="12" fill="#065f46"/>\
+<path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/>\
+<path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/>\
+<circle cx="44" cy="44" r="8" fill="#f59e0b"/>\
+<text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text>\
+</svg>"""
+
 BASE_STYLE = """\
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }"""
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  #nav-menu.open { display: flex; }"""
+
+# Hamburger toggle script (tiny, no dependencies)
+_NAV_TOGGLE_SCRIPT = """\
+<script>
+document.getElementById('nav-toggle').addEventListener('click', function() {
+  document.getElementById('nav-menu').classList.toggle('open');
+});
+</script>"""
 
 
 # --- Functions ---
@@ -89,44 +107,55 @@ def render_header(
     active_path: str = "",
     extra_right: str = "",
 ) -> str:
-    """Render the sticky site header with optional nav links."""
-    nav_html = ""
+    """Render the sticky site header with SVG logo, desktop nav, and mobile hamburger."""
+
+    # Build nav links (desktop inline, mobile dropdown)
+    nav_section = ""
+    nav_script = ""
     if show_nav:
         links = []
         for label, path in NAV_ITEMS:
             if path == "/":
-                continue  # Don't show "Search" link on subpages, home link is the logo
+                continue  # Home link is the logo
             is_active = active_path and active_path.rstrip("/") == path.rstrip("/")
-            active_cls = " bg-green-50 text-green-800 border-green-300" if is_active else ""
+            active_cls = " text-green-800 font-semibold" if is_active else " text-gray-600"
             links.append(
-                f'<a href="{path}" class="px-2 py-1 rounded border border-gray-300 '
-                f'hover:bg-gray-50 no-underline whitespace-nowrap{active_cls}">{label}</a>'
+                f'<a href="{path}" class="hover:text-green-700 no-underline whitespace-nowrap{active_cls}">{label}</a>'
             )
-        nav_html = f"""
-      <div class="flex gap-1.5 text-xs flex-wrap justify-end">
-        {"".join(links)}
-      </div>"""
+        links_html = "\n        ".join(links)
 
-    right_content = extra_right or nav_html
+        # Desktop: inline row of text links. Mobile: hidden, toggled by hamburger.
+        nav_section = f"""
+      <nav id="nav-menu" class="hidden sm:flex sm:items-center sm:gap-4 text-sm
+                                flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0
+                                border-t sm:border-0 border-gray-100 pt-2 sm:pt-0">
+        {links_html}
+      </nav>
+      <button id="nav-toggle" class="sm:hidden p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>"""
+        nav_script = _NAV_TOGGLE_SCRIPT
 
-    subtitle_html = ""
-    if subtitle:
-        subtitle_html = f'\n        <p class="text-sm text-gray-500">{subtitle}</p>'
+    right_section = ""
+    if extra_right:
+        right_section = extra_right
 
     return f"""
 <body class="bg-white text-gray-900">
 
 <header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="{max_width} mx-auto px-4 py-3">
-    <div class="flex items-center justify-between gap-3">
-      <div class="flex-shrink-0">
-        <h1 class="text-xl font-bold text-green-800">
-          <a href="/" class="hover:underline">{SITE_NAME}</a>
-        </h1>{subtitle_html}
-      </div>{right_content}
+  <div class="{max_width} mx-auto px-4 py-2">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
+        {LOGO_SVG}
+        <span class="text-lg font-bold text-green-800">{SITE_NAME}</span>
+      </a>{nav_section}{right_section}
     </div>
   </div>
-</header>"""
+</header>
+{nav_script}"""
 
 
 def render_breadcrumb(crumbs: list[tuple[str, str]], max_width: str = "max-w-3xl") -> str:

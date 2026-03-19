@@ -391,7 +391,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
         og_description=f"Find fruit trees for sale online that ship to {state_name}. {total_in_stock} varieties in stock across {nursery_count} nurseries, updated daily.",
         extra_head='<meta name="robots" content="index, follow">',
     )
-    header = render_header(subtitle=f"Fruit Trees — {state_name}")
+    header = render_header()
     breadcrumb = render_breadcrumb([("Home", "/"), (f"Fruit trees for sale, {state_name}", "")])
     footer = render_footer()
 

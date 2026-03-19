@@ -229,7 +229,6 @@ def build_rare_page(data_dir: str, output_dir: str):
         extra_style=extra_style,
     )
     header = render_header(
-        subtitle="Rare &amp; Exotic Finds",
         active_path="/rare.html",
     )
     footer = render_footer()

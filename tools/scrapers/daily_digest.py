@@ -396,7 +396,6 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
         extra_style=extra_style,
     )
     header = render_header(
-        subtitle=f"Nursery Stock Update{title_suffix}",
         max_width="max-w-2xl",
         active_path="/digest.html",
     )

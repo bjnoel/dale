@@ -117,7 +117,6 @@ def build_html(history: list[dict], wa_only: bool = False) -> str:
         extra_style=extra_style,
     )
     header = render_header(
-        subtitle=f"Price &amp; Stock History{title_suffix}",
         active_path="/history.html",
     )
     footer = render_footer()

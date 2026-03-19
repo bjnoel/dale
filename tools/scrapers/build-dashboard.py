@@ -16,7 +16,7 @@ from pathlib import Path
 
 from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES
-from treestock_layout import render_head, render_footer, SITE_NAME, TAILWIND_CDN, PLAUSIBLE_SCRIPT, NAV_ITEMS
+from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS
 
 
 # Confirmed via nursery websites/policies:
@@ -778,25 +778,16 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 <body class="bg-white text-gray-900">
 
 <header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-5xl mx-auto px-4 py-3">
-    <div class="flex items-start justify-between gap-2">
-      <a href="/" class="flex items-center gap-2 no-underline">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-8 h-8 flex-shrink-0">
-          <rect width="64" height="64" rx="12" fill="#065f46"/>
-          <path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/>
-          <path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/>
-          <circle cx="44" cy="44" r="8" fill="#f59e0b"/>
-          <text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text>
-        </svg>
-        <div>
-          <h1 class="text-xl font-bold text-green-800">treestock.com.au</h1>
-          <p class="text-xs text-gray-400 sm:hidden" id="statsSmall"></p>
-          <p class="text-xs text-gray-400 hidden sm:block">Australian Nursery Stock Tracker</p>
-        </div>
+  <div class="max-w-5xl mx-auto px-4 py-2">
+    <div class="flex items-center justify-between gap-3">
+      <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
+        {LOGO_SVG}
+        <span class="text-lg font-bold text-green-800">{SITE_NAME}</span>
       </a>
-      <div class="hidden sm:block text-right text-xs text-gray-400">
-        <div id="stats"></div>
-        <div>Updated {now}</div>
+      <div class="text-right text-xs text-gray-400">
+        <div id="stats" class="hidden sm:block"></div>
+        <div id="statsSmall" class="sm:hidden"></div>
+        <div class="hidden sm:block">Updated {now}</div>
       </div>
     </div>
   </div>

@@ -243,7 +243,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
         og_title=f"{name} Tree Prices — Compare {total_nurseries} Australian Nurseries",
         og_description=f"{'From ' + price_range_str if price_range_str else str(len(in_stock)) + ' varieties in stock'} across {nursery_count} nurseries. Compare prices and availability at treestock.com.au",
     )
-    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/compare/")
+    header = render_header(active_path="/compare/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "/compare/"), (name, "")])
     footer = render_footer()
 
@@ -391,7 +391,7 @@ def build_compare_index(entries: list[dict]) -> str:
         title="Fruit Tree Price Comparisons — Australian Nurseries — treestock.com.au",
         description=f"Compare fruit tree prices across Australian online nurseries. Find the cheapest mango, fig, avocado, lemon and more. Updated daily from {len(entries)} species.",
     )
-    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/compare/")
+    header = render_header(active_path="/compare/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "")])
     footer = render_footer()
 

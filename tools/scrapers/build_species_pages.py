@@ -207,7 +207,7 @@ def build_species_page(species: dict, products: list[dict]) -> str:
         og_title=f"{name} Trees for Sale in Australia",
         og_description=f"{in_stock_count} {name} varieties in stock across {nursery_count} nurseries. From {price_range}.",
     )
-    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/species/")
+    header = render_header(active_path="/species/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Species", "/species/"), (name, "")])
     footer = render_footer()
 
@@ -337,7 +337,7 @@ def build_species_index(species_data: list[dict]) -> str:
         title="Buy Fruit Trees Online Australia — treestock.com.au",
         description="Find fruit trees for sale across Australian nurseries. Track prices, availability, and shipping for 50+ species including mango, avocado, fig, lychee and more.",
     )
-    header = render_header(subtitle="Australian Nursery Stock Tracker", active_path="/species/")
+    header = render_header(active_path="/species/")
     footer = render_footer()
 
     return f"""{head}
