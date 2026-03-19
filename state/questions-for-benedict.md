@@ -242,3 +242,76 @@ Netlify auto-deploys from main.
 Someone posted a link to treestock.com.au in a Whirlpool thread.
 Can you search Whirlpool for "treestock.com.au" and find the thread?
 If you do, worth posting a reply there — it's an active audience.
+
+---
+
+## Batch 14 — 2026-03-19 — Caddy Config + Server Restart
+
+### Q35 [BLOCKING] — Update Caddyfile for preferences endpoint
+Deployed state-based subscriber filtering. Need two Caddy route additions.
+Run these on the server:
+
+```bash
+# 1. Update Caddyfile — add preferences + unsubscribe API routes
+sudo tee /etc/caddy/Caddyfile > /dev/null << 'EOF'
+treestock.com.au, www.treestock.com.au {
+    handle /api/subscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/preferences {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/unsubscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+
+    root * /opt/dale/dashboard
+    file_server
+
+    header {
+        Cache-Control "public, max-age=3600"
+    }
+}
+
+stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
+    redir https://treestock.com.au{uri} permanent
+}
+
+:80 {
+    handle /api/subscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/preferences {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/unsubscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+
+    root * /opt/dale/dashboard
+    file_server
+
+    header {
+        Cache-Control "public, max-age=3600"
+    }
+}
+
+data.bjnoel.com {
+    reverse_proxy localhost:8000
+}
+EOF
+
+# 2. Reload Caddy
+sudo systemctl reload caddy
+
+# 3. Restart subscribe server to pick up new code
+sudo systemctl restart subscribe-server
+```
+
+All 4 subscribers have been migrated from wa_only to state="WA".
