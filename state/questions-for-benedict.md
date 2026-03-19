@@ -320,13 +320,14 @@ All 4 subscribers have been migrated from wa_only to state="WA".
 
 ## Batch 15 -- 2026-03-19 -- beestock.com.au Setup
 
-### Q36 [BLOCKING] -- Register beestock.com.au domain
-beestock.com.au MVP is built and tested locally. 1,262 products across 4 retailers (Ecrotek, The Bee Store, Buzzbee, Flow Hive). Dashboard, digest, and daily scraper pipeline all working.
+### Q36 [ANSWERED] -- Register beestock.com.au domain
+Domain registered, DNS pointed, site deployed. beestock.com.au is LIVE.
+Dale set up: A records via Cloudflare API, Caddy config, cron (00:30 UTC daily), first scrape on server.
+1,262 products across 4 retailers. Dashboard at https://beestock.com.au.
 
-To go live:
-1. Register beestock.com.au (should be ~$15 AUD/year)
-2. Point DNS A record to 178.104.20.9 (same VPS as treestock)
-3. Dale will handle Caddy config, cron setup, and deployment
+### Q38 [INFO] -- Add beestock.com.au to Plausible
+Add beestock.com.au as a site in Plausible (data.bjnoel.com admin panel).
+The tracking script is already embedded in all beestock pages. Once added, analytics will start flowing.
 
 ### Q37 [INFO] -- Validate with beekeepers
 When convenient, ask 2-3 beekeeper mates: "Would you use a site that tracks beekeeping supply prices across AU retailers?" No rush, just useful signal before we share publicly.

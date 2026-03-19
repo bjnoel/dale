@@ -225,7 +225,8 @@
     "b_experiment_beestock": {
       "name": "Beekeeping Supply Price Tracker",
       "domain": "beestock.com.au",
-      "status": "built-pending-deploy",
+      "status": "live",
+      "dashboard_url": "https://beestock.com.au",
       "retailers_monitored": 4,
       "products_tracked": 1262,
       "in_stock": 952,
@@ -244,7 +245,7 @@
         "Daily digest (text + HTML page)",
         "9 product categories (Hives, Frames, Extractors, Gear, Smokers, Treatments, Feeders, Containers, Books)"
       ],
-      "next_action": "Benedict: register beestock.com.au, point DNS to VPS. Dale: deploy to server + configure Caddy + cron."
+      "next_action": "Live at beestock.com.au. Cron daily at 00:30 UTC. Benedict: add to Plausible, share in WA beekeeping FB groups when ready."
     }
   },
   "infrastructure": {
