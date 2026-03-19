@@ -1,15 +1,16 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "schedule": {
     "cron_time": "0 18 * * *",
-    "allowed_window_utc_start": 17,
-    "allowed_window_utc_end": 1,
-    "timezone_note": "18:00 UTC = 02:00 AWST"
+    "timezone_note": "18:00 UTC = 02:00 AWST, single session"
   },
   "budget": {
-    "max_session_duration_minutes": 60,
-    "learning_mode": true,
-    "max_turns": 200
+    "max_session_duration_minutes": 120,
+    "max_turns": 400
+  },
+  "linear": {
+    "team": "Dale",
+    "max_backlog": 20
   },
   "notifications": {
     "from_email": "dale@mail.walkthrough.au",

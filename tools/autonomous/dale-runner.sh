@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
 # Autonomous Dale — cron wrapper
-# Called by cron at 18:00 UTC (2:00 AWST) or by Notion poller on-demand.
-# Pre-checks, runs Claude headlessly, handles post-run tasks.
-# Pass --notion to skip the time window check (for on-demand triggers).
+# Called by cron at 18:00 UTC (2:00 AWST). Single session per night.
+# Fetches Linear tickets, runs Claude headlessly, handles post-run tasks.
 
 set -uo pipefail
-
-NOTION_TRIGGER=false
-if [ "${1:-}" = "--notion" ]; then
-    NOTION_TRIGGER=true
-fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG="$SCRIPT_DIR/config.json"
@@ -25,10 +19,6 @@ log() {
 }
 
 log "=== Starting autonomous session ==="
-
-# Write PID file so notion_poller can check if we're running
-echo $$ > "$LOG_DIR/dale-session.pid"
-trap 'rm -f "$LOG_DIR/dale-session.pid"' EXIT
 
 # --- Pre-checks ---
 
@@ -52,8 +42,7 @@ REPO_DIR=$(python3 -c "import json; print(json.load(open('$CONFIG'))['paths']['r
 MAX_MINUTES=$(python3 -c "import json; print(json.load(open('$CONFIG'))['budget']['max_session_duration_minutes'])")
 MAX_TURNS=$(python3 -c "import json; print(json.load(open('$CONFIG'))['budget']['max_turns'])")
 
-# 4. Repo health + pull + deploy (BEFORE time window check, so Notion triggers
-#    always run the latest runner/scripts even during off-hours)
+# 4. Repo health + pull + deploy
 if [ ! -d "$REPO_DIR/.git" ]; then
     log "Repo not found at $REPO_DIR. Aborting."
     python3 "$SCRIPT_DIR/notify.py" alert "Git repo not found at $REPO_DIR"
@@ -83,20 +72,18 @@ if [ -f "$REPO_DIR/tools/deploy.sh" ]; then
     log "Deployed scripts from repo"
 fi
 
-# 5. Time window check (17:00-01:00 UTC) — skipped for Notion triggers
-if [ "$NOTION_TRIGGER" = false ]; then
-    HOUR=$(date -u +%-H)
-    if [ "$HOUR" -ge 1 ] && [ "$HOUR" -lt 17 ]; then
-        log "Outside run window (UTC hour: $HOUR). Skipping."
-        exit 0
-    fi
-fi
-
-# 6. Weekly update check (Dale strikes Wed-Sun if no update from Benedict)
+# 5. Weekly update check (Dale strikes Wed-Sun if no update from Benedict)
 python3 "$SCRIPT_DIR/check-weekly-update.py" || {
     log "Weekly update missing. Dale is on strike."
     python3 "$SCRIPT_DIR/notify.py" alert "Dale is on strike! No weekly update from Benedict. Write /opt/dale/data/weekly-updates/$(date -u +%Y)-W$(date -u +%V).md"
     exit 0
+}
+
+# --- Fetch Linear tickets ---
+
+log "Fetching Linear tickets"
+python3 "$SCRIPT_DIR/linear_poller.py" 2>>"$LOG_DIR/cron.log" || {
+    log "Warning: Linear poller failed (will proceed with stale data if available)"
 }
 
 # --- Run Claude ---

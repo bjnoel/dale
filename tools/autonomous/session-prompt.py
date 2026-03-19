@@ -123,30 +123,16 @@ def get_token_stats(auto_dir):
         return "Error reading token log."
 
 
-def get_notion_tasks(data_dir):
-    """Read Notion tasks synced by the poller."""
-    tasks_path = os.path.join(data_dir, "notion-tasks.json")
+def get_linear_tasks(data_dir):
+    """Read Linear tasks fetched by linear_poller.py."""
+    tasks_path = os.path.join(data_dir, "linear-tasks.json")
     if not os.path.exists(tasks_path):
-        return "No Notion tasks found."
+        return None
     try:
         with open(tasks_path) as f:
-            tasks = json.load(f)
-        if not tasks:
-            return "No active Notion tasks."
-        lines = []
-        priority_order = {"Urgent": 0, "Normal": 1, "Low": 2}
-        tasks.sort(key=lambda t: priority_order.get(t.get("priority", "Normal"), 1))
-        for t in tasks:
-            status = t.get("status", "New")
-            priority = t.get("priority", "Normal")
-            dale = t.get("dale_notes", "")
-            line = f"- [{status}] [{priority}] {t['task']} (id: {t['id']})"
-            if dale:
-                line += f"\n  Dale's previous notes: {dale}"
-            lines.append(line)
-        return "\n".join(lines)
+            return json.load(f)
     except (json.JSONDecodeError, IOError) as e:
-        return f"Error reading Notion tasks: {e}"
+        return None
 
 
 def get_plausible_stats():
@@ -158,17 +144,60 @@ def get_plausible_stats():
         return f"Plausible stats unavailable: {e}"
 
 
-def has_notion_tasks(data_dir):
-    """Check if there are any actionable Notion tasks."""
-    tasks_path = os.path.join(data_dir, "notion-tasks.json")
-    if not os.path.exists(tasks_path):
-        return False
-    try:
-        with open(tasks_path) as f:
-            tasks = json.load(f)
-        return bool(tasks)
-    except (json.JSONDecodeError, IOError):
-        return False
+def format_linear_block(linear_data):
+    """Format Linear tickets into a prompt block."""
+    if not linear_data:
+        return """
+## Linear Work Queue
+No Linear data available. Do read-only work only (research, analysis).
+"""
+
+    lines = []
+    lines.append("## Linear Work Queue")
+    lines.append("")
+
+    # In Progress tickets (continue from last session)
+    in_progress = linear_data.get("in_progress", [])
+    if in_progress:
+        lines.append("### In Progress (continue from last session)")
+        for t in in_progress:
+            labels = ", ".join(t.get("labels", []))
+            label_str = f" [{labels}]" if labels else ""
+            lines.append(f"- **{t['id']}**: {t['title']} (Priority: {t['priority']}{label_str})")
+            if t.get("description"):
+                desc = t["description"][:200].replace("\n", " ")
+                lines.append(f"  {desc}")
+        lines.append("")
+
+    # Todo tickets (approved by Benedict)
+    todo = linear_data.get("todo", [])
+    if todo:
+        lines.append("### Todo (approved by Benedict, pick next)")
+        for t in todo:
+            labels = ", ".join(t.get("labels", []))
+            label_str = f" [{labels}]" if labels else ""
+            lines.append(f"- **{t['id']}**: {t['title']} (Priority: {t['priority']}{label_str})")
+            if t.get("description"):
+                desc = t["description"][:200].replace("\n", " ")
+                lines.append(f"  {desc}")
+        lines.append("")
+
+    # Backlog status
+    backlog_count = linear_data.get("backlog_count", 0)
+    max_backlog = linear_data.get("max_backlog", 20)
+    remaining = max_backlog - backlog_count
+    lines.append(f"### Backlog: {backlog_count}/{max_backlog} slots used")
+    if remaining > 0:
+        lines.append(f"You may propose up to {remaining} more tickets.")
+    else:
+        lines.append("**Backlog is FULL.** Do not create new tickets until some are resolved.")
+    lines.append("")
+
+    if not in_progress and not todo:
+        lines.append("No approved tickets to work on. Do read-only work only (research, analysis).")
+        lines.append("If you identify work that should be done, create a Backlog ticket and stop.")
+
+    return "\n".join(lines)
 
 
 def build_prompt():
@@ -188,46 +217,20 @@ def build_prompt():
     recent_decisions = get_last_n_decisions(
         os.path.join(repo, "decisions", "decision-log.md"), n=5
     )
-    task_queue = read_file(os.path.join(auto, "TASK_QUEUE.md"))
     data_summary = get_data_summary(data)
     pending_approvals = get_pending_approvals(auto)
     token_stats = get_token_stats(auto)
     plausible_stats = get_plausible_stats()
-    notion_tasks = get_notion_tasks(data)
-    has_notion = has_notion_tasks(data)
-
-    # Build the Notion tasks block — if there are tasks, make them unmissable
-    if has_notion:
-        notion_block = f"""
-## *** STOP — BENEDICT'S TASKS (DO THESE FIRST) ***
-
-Benedict has personally assigned you tasks via Notion. These are your TOP
-priority. Do NOT touch the task queue until ALL Notion tasks below are
-completed or blocked. This is not optional.
-
-{notion_tasks}
-
-For each Notion task:
-1. Work on it fully (research, implement, test, commit)
-2. Update Notion when done:
-   python3 -c "import sys; sys.path.insert(0, '/opt/dale/autonomous'); from notion_poller import update_task_status; update_task_status('PAGE_ID', 'Done', 'What you did')"
-3. If you need clarification from Benedict:
-   python3 -c "import sys; sys.path.insert(0, '/opt/dale/autonomous'); from notion_poller import update_task_status; update_task_status('PAGE_ID', 'Question', 'Your question')"
-4. Only after ALL Notion tasks are Done or Question, move to the task queue.
-
-*** DO NOT SKIP THIS SECTION ***
-"""
-    else:
-        notion_block = """
-## Benedict's Tasks (from Notion)
-No tasks from Benedict right now. Proceed with the task queue.
-"""
+    linear_data = get_linear_tasks(data)
+    linear_block = format_linear_block(linear_data)
 
     prompt = f"""This is an AUTONOMOUS session running via cron at {now}.
 You are Dale, the AI business agent. Benedict is asleep (it's ~2am in Perth).
-Time limit: {max_min} minutes. Work through tasks sequentially — do each
+Time limit: {max_min} minutes. Work through approved tickets sequentially. Do each
 task WELL before moving on. No shortcuts, no half-finished work. Quality over quantity.
-{notion_block}
+
+{linear_block}
+
 ## Current Business State
 {business_state}
 
@@ -236,9 +239,6 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 ## Recent Decisions
 {recent_decisions}
-
-## Task Queue
-{task_queue}
 
 ## Today's Data Summary
 {data_summary}
@@ -256,76 +256,64 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 {questions}
 
 ## Rules for Autonomous Operation
+
+### What you CAN do without a ticket (read-only / research)
+- Research, data analysis, monitoring, reading code
+- Generating analysis reports (not publishing them)
+- Proposing spending (write to /opt/dale/autonomous/approvals/pending/)
+
+### What requires an approved Linear ticket
+- Writing or deploying code
+- Changing content on live sites
+- Modifying infrastructure or config
+- Sending emails to external parties
+- Any system-changing work
+
+### Emergency exception
+If something is BROKEN (scraper crash, dashboard 500, data corruption),
+fix it immediately without a ticket. Then create a Done ticket documenting
+what broke and what you fixed.
+
+### Ticket workflow
+For each ticket you work on:
+1. Move to In Progress: `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "In Progress"`
+2. Do the work. Commit changes to git.
+3. When done: `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "Done"`
+4. If you need Benedict's input: assign to him and add a comment:
+   `python3 /opt/dale/autonomous/linear_update.py assign TICKET-ID benedict`
+   `python3 /opt/dale/autonomous/linear_update.py comment TICKET-ID "Your question here"`
+
+### Proposing new work
+To propose work Benedict should approve:
+`python3 /opt/dale/autonomous/linear_update.py create "Title" --description "Why this matters" --labels "SEO,Track B" --priority 3`
+This creates a Backlog ticket. Benedict will move it to Todo if approved.
+Do NOT create more tickets if the backlog is full (check the count above).
+
+### Standing rules
 1. You CANNOT make purchases or sign up for services
-2. You CAN: write code, analyse data, generate content, update state files
-3. You CAN: propose spending (write to /opt/dale/autonomous/approvals/pending/)
-4. You MUST: log all decisions to decisions/decision-log.md
-5. You MUST: update state/business-state.json after any changes
-6. You MUST: commit all changes to git with descriptive messages
-7. If something needs Benedict: add to state/questions-for-benedict.md
-8. Work through tasks sequentially. Finish each one properly — test it, verify it
-   works, commit — before starting the next. No shortcuts. Quality over quantity.
-9. If you run out of time mid-task, update TASK_QUEUE.md with exactly where you
-   stopped and what remains, so you can resume cleanly tomorrow.
-10. Time limit: {max_min} minutes. Start wrapping up at the 10-minute mark.
-
-## The First Dollar
-Your #1 strategic goal right now is earning Dale's first dollar of revenue.
-Not $100/month — just $1. The first dollar proves the model works.
-
-Benedict has given you permission to run experiments and fail. Try things.
-If something doesn't work, log it ("tell him he's dreaming") and try something
-different tomorrow. Variation and iteration beat perfection.
-
-**You are NOT limited to fruit trees and digital presence audits.** Those were
-the first two ideas, but you have full permission to explore any revenue path
-that can be automated. Benedict will provide access to any tools/services needed.
-
-Think about what an AI agent can do well:
-- Data collection, monitoring, and alerting (you already do this for nurseries)
-- Analysis and report generation (you already do this for audits)
-- Content creation and curation
-- Automation of tedious manual processes
-- Aggregation of information scattered across many sources
-- Anything that scales without linear human effort
-
-What you already have:
-- A VPS with cron, Python, Node.js, Caddy web server
-- Resend email (100/day free), Cloudflare Pages, GitHub
-- Scraper infrastructure that can be pointed at anything
-- Benedict in Perth willing to do in-person work or sign up for services
-- Two domains (walkthrough.au, scion.exchange) and the ability to get more
-
-What's the fastest path to someone paying for something? Think broadly.
-Small digital products, data services, automation tools, niche monitoring,
-micro-SaaS, lead generation, content arbitrage — anything ethical is fair game.
-
-Each session, spend real time planning tomorrow's experiment. Update TASK_QUEUE.md
-with your plan — be specific about what you'll try and how you'll measure if it worked.
+2. You MUST: log all decisions to decisions/decision-log.md
+3. You MUST: update state/business-state.json after any changes
+4. You MUST: commit all changes to git with descriptive messages
+5. Work through tickets sequentially. Finish each one properly before the next.
+6. If you run out of time mid-ticket, add a comment to the ticket explaining
+   where you stopped, and leave it In Progress for next session.
+7. Time limit: {max_min} minutes. Start wrapping up at the 10-minute mark.
+8. If there are no approved tickets, do read-only research only. Propose new
+   tickets for anything you think should be done, then stop.
 
 ## Priority Order
-1. **Benedict's Notion tasks** — always first, no exceptions
-2. Fix anything broken (scrapers, dashboard, etc.)
-3. **Revenue experiments** — what's the next small bet toward first dollar?
-4. Improve existing tools based on data patterns
-5. Prepare materials for Track A prospects
-6. Enhance Track B data/features
-7. Research new opportunities
+1. **In Progress tickets** — finish what was started
+2. Fix anything broken (emergency exception)
+3. **Todo tickets** — work through in priority order
+4. Read-only research if no tickets remain
 
 ## Session Output Format
 End your session with a structured summary (this gets emailed to Benedict each morning):
 
-**Done:** what you accomplished this session
-**Tomorrow's experiment:** what specific revenue experiment you'll try next session
-**Planned:** what should happen next (your actions + anything Benedict should do)
+**Tickets completed:** list ticket IDs and one-line summaries
+**Tickets proposed:** any new Backlog tickets you created
 **Blockers:** anything blocking progress that needs Benedict's attention
-
-Work through the task queue sequentially. Complete each task properly — verify it
-works end-to-end — before moving on. If you run out of time mid-task, update
-TASK_QUEUE.md with exactly where you stopped (files changed, what's left, any
-gotchas) so you can pick up cleanly tomorrow. If the task queue is empty, assess
-the current state and identify what would move the needle most — then do it.
-Always update TASK_QUEUE.md at the end with what's done and what's next.
+**Research notes:** any read-only findings worth noting
 """
     return prompt
 
