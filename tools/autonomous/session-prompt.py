@@ -279,15 +279,19 @@ For each ticket you work on:
 1. Move to In Progress: `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "In Progress"`
 2. Do the work. Commit changes to git.
 3. When done: `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "Done"`
-4. If you need Benedict's input: assign to him and add a comment:
+4. If you need Benedict's input: assign to him, remove Dale label, and add a comment:
    `python3 /opt/dale/autonomous/linear_update.py assign TICKET-ID benedict`
+   `python3 /opt/dale/autonomous/linear_update.py label remove TICKET-ID Dale`
    `python3 /opt/dale/autonomous/linear_update.py comment TICKET-ID "Your question here"`
 
 ### Proposing new work
 To propose work Benedict should approve:
 `python3 /opt/dale/autonomous/linear_update.py create "Title" --description "Why this matters" --labels "SEO,Track B" --priority 3`
-This creates a Backlog ticket. Benedict will move it to Todo if approved.
+This creates a Backlog ticket with a "Dale" label automatically added.
+Benedict will move it to Todo if approved.
 Do NOT create more tickets if the backlog is full (check the count above).
+When you assign a ticket to Benedict (for questions/review), remove the Dale label:
+the Dale label means "in Dale's court". Benedict re-adds it when passing back to you.
 
 ### Standing rules
 1. You CANNOT make purchases or sign up for services

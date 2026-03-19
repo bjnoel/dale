@@ -270,13 +270,15 @@ def cmd_create(args):
         mutation_input += ", description: $description"
         var_types += ", $description: String!"
 
+    # Always add "Dale" label to tickets created by autonomous Dale
+    label_names = ["Dale"]
     if labels_str:
-        label_names = [l.strip() for l in labels_str.split(",")]
-        label_ids = get_label_ids(team_id, label_names)
-        if label_ids:
-            variables["labelIds"] = label_ids
-            mutation_input += ", labelIds: $labelIds"
-            var_types += ", $labelIds: [String!]!"
+        label_names += [l.strip() for l in labels_str.split(",")]
+    label_ids = get_label_ids(team_id, label_names)
+    if label_ids:
+        variables["labelIds"] = label_ids
+        mutation_input += ", labelIds: $labelIds"
+        var_types += ", $labelIds: [String!]!"
 
     data = graphql(f"""
         mutation({var_types}) {{
@@ -291,11 +293,58 @@ def cmd_create(args):
     print(f"Backlog: {len(backlog) + 1}/{max_backlog}")
 
 
+def cmd_label(args):
+    """Add or remove a label from an issue."""
+    if len(args) < 3 or args[0] not in ("add", "remove"):
+        print("Usage: linear_update.py label add|remove DAL-42 'Label Name'", file=sys.stderr)
+        sys.exit(1)
+    action, identifier, label_name = args[0], args[1], args[2]
+    issue_id = get_issue_id(identifier)
+
+    config = load_config()
+    team_name = config.get("linear", {}).get("team", "Dale")
+    team_id = get_team_id(team_name)
+    label_ids = get_label_ids(team_id, [label_name])
+    if not label_ids:
+        print(f"Label '{label_name}' not found", file=sys.stderr)
+        sys.exit(1)
+    label_id = label_ids[0]
+
+    # Get current labels on the issue
+    data = graphql("""
+        query($id: String!) {
+            issue(id: $id) { labels { nodes { id name } } }
+        }
+    """, {"id": issue_id})
+    current_ids = [l["id"] for l in data["issue"]["labels"]["nodes"]]
+
+    if action == "add":
+        if label_id in current_ids:
+            print(f"{identifier} already has label '{label_name}'")
+            return
+        new_ids = current_ids + [label_id]
+    else:  # remove
+        if label_id not in current_ids:
+            print(f"{identifier} doesn't have label '{label_name}'")
+            return
+        new_ids = [lid for lid in current_ids if lid != label_id]
+
+    graphql("""
+        mutation($id: String!, $labelIds: [String!]!) {
+            issueUpdate(id: $id, input: { labelIds: $labelIds }) {
+                issue { identifier labels { nodes { name } } }
+            }
+        }
+    """, {"id": issue_id, "labelIds": new_ids})
+    print(f"{identifier}: {'added' if action == 'add' else 'removed'} label '{label_name}'")
+
+
 COMMANDS = {
     "status": cmd_status,
     "comment": cmd_comment,
     "assign": cmd_assign,
     "create": cmd_create,
+    "label": cmd_label,
 }
 
 
