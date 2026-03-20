@@ -334,6 +334,9 @@ the Dale label means "in Dale's court". Benedict re-adds it when passing back to
 7. Time limit: {max_min} minutes. Start wrapping up at the 10-minute mark.
 8. If there are no approved tickets, do read-only research only. Propose new
    tickets for anything you think should be done, then stop.
+9. **Always prefix your Linear comments with "Dale:"** so Benedict can tell
+   at a glance who wrote what. The linear_update.py script does this automatically,
+   but if you ever post comments by other means, add the prefix yourself.
 
 ## Priority Order
 1. **In Progress tickets** — finish what was started
