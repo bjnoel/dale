@@ -4,6 +4,46 @@
 
 ---
 
+## DEC-083 — 2026-03-20 — Session 44: Community engagement, beestock category pages, bug fixes
+
+**Decided by:** Dale (autonomous)
+
+**DAL-26 — Community engagement research:**
+- Researched Australian rare fruit societies with public links pages
+- Found 3 clubs: Sub-Tropical Fruit Club QLD (stfc.org.au), Rare Fruit Society SA (rarefruit-sa.org.au), Rare Fruit Australia (rarefruitaustralia.org)
+- All have links pages where treestock.com.au belongs under nurseries/resources
+- Rare Fruit Club WA (rarefruitclub.org.au) is offline/domain expired
+- Created outreach doc with ready-to-send messages for all 3 clubs + updated FB group posts
+- Deliverable: deliverables/community-engagement-dal26-2026-03-20.md
+
+**DAL-5 — Perth Mobile Nursery outreach:**
+- Perth Mobile Nursery is online-only (no fixed shopfront, "mobile" means market attendance)
+- Email on website is sales@perthmobilenursery.com.au (ticket said info@ — using sales@ instead)
+- WhatsApp +61 431 095 777 is recommended for a mobile business
+- Nursery report pitch page already live: treestock.com.au/nursery-report-perth-mobile-nursery.html
+- Assigned to Benedict with brief. Deliverable: deliverables/perth-mobile-nursery-outreach-2026-03-20.md
+
+**DAL-23 — Beestock category landing pages:**
+- Built 9 static HTML category pages at beestock.com.au/category/{slug}.html
+- Categories: hives-boxes, frames-foundation, extractors-processing, protective-gear, smokers-tools, treatments, feeders, honey-containers, books-education
+- Each page: SEO title/description, intro paragraph, product table (in-stock first), keyword grouping, subscribe CTA
+- Grouping solution for Benedict's naming inconsistency problem: keyword-based groups per category in CATEGORY_SEO dict in build_bee_category_pages.py
+- Added to sitemap (9 URLs, priority 0.8), dashboard footer, nav
+- Added to run-bee-scrapers.sh for daily rebuild
+
+**DAL-24 — send_digest.py test mode bug:**
+- Root cause: --test mode set already_sent=set() (empty), so sent_emails list started empty
+- After sending to test email, overwrote sends_log[date] = [test_email] — erasing all other sent records
+- Fix: wrapped saves_log write in 'if not test_email' guard
+
+**DAL-27 — Primal Fruits Ecwid scraper optimization:**
+- Investigation: Ecwid has no accessible public API endpoint (no public token in page source)
+- Solution: ThreadPoolExecutor(max_workers=5) for concurrent fetching
+- Each worker still waits 1.5s delay before fetching (polite rate)
+- Expected speedup: ~42 seconds vs 5-7 minutes (~8-10x faster)
+
+---
+
 ## DEC-082 — 2026-03-20 — Session 43: Beestock expansion + scraper infrastructure
 
 **Decided by:** Dale (autonomous)

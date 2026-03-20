@@ -17,8 +17,10 @@ import os
 import re
 import sys
 import time
+import threading
 import urllib.request
 import urllib.error
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, date
 from pathlib import Path
 
@@ -33,7 +35,8 @@ NURSERIES = {
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
-REQUEST_DELAY = 1.5  # seconds between requests — be polite
+REQUEST_DELAY = 1.5   # seconds between requests per worker — be polite
+MAX_WORKERS = 5       # concurrent fetches — keeps total request rate reasonable
 
 
 def fetch_page(url, timeout=20):
@@ -114,8 +117,29 @@ def extract_product_data(url, html):
     }
 
 
+def fetch_product(url: str, nursery_key: str, nursery_name: str, index: int, total: int) -> dict | None:
+    """Fetch and parse a single product page. Used by concurrent scraper."""
+    time.sleep(REQUEST_DELAY)  # polite delay per worker
+    slug = url.split("/products/")[-1][:40]
+    html = fetch_page(url)
+    if not html:
+        print(f"  [{index}/{total}] {slug}... failed")
+        return None
+    product = extract_product_data(url, html)
+    if product:
+        product["nursery"] = nursery_key
+        product["nursery_name"] = nursery_name
+        status = "IN STOCK" if product["available"] else "out of stock"
+        price_str = f"${product['price']:.2f}" if product["price"] else "no price"
+        print(f"  [{index}/{total}] {slug}... {price_str} ({status})")
+        return product
+    else:
+        print(f"  [{index}/{total}] {slug}... no data")
+        return None
+
+
 def scrape_ecwid(nursery_key, config):
-    """Scrape all products from an Ecwid store."""
+    """Scrape all products from an Ecwid store using concurrent fetches."""
     domain = config["domain"]
     print(f"Scraping {config['name']} ({domain})...")
 
@@ -124,28 +148,22 @@ def scrape_ecwid(nursery_key, config):
         print("  No products found")
         return []
 
+    total = len(product_urls)
+    print(f"  Fetching {total} product pages with {MAX_WORKERS} concurrent workers...")
+
     products = []
-    for i, url in enumerate(product_urls):
-        slug = url.split("/products/")[-1][:40]
-        print(f"  [{i+1}/{len(product_urls)}] {slug}...", end=" ", flush=True)
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {
+            executor.submit(fetch_product, url, nursery_key, config["name"], i + 1, total): url
+            for i, url in enumerate(product_urls)
+        }
+        for future in as_completed(futures):
+            result = future.result()
+            if result:
+                products.append(result)
 
-        html = fetch_page(url)
-        if not html:
-            print("failed")
-            continue
-
-        product = extract_product_data(url, html)
-        if product:
-            product["nursery"] = nursery_key
-            product["nursery_name"] = config["name"]
-            products.append(product)
-            status = "IN STOCK" if product["available"] else "out of stock"
-            print(f"${product['price']:.2f} ({status})" if product["price"] else "no price")
-        else:
-            print("no data")
-
-        time.sleep(REQUEST_DELAY)
-
+    # Sort by title for deterministic output
+    products.sort(key=lambda p: p.get("title", ""))
     print(f"  Total: {len(products)} products scraped")
     return products
 

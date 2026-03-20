@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "last_updated": "2026-03-20",
-  "session_count": 42,
+  "session_count": 44,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -285,7 +285,8 @@
         "Email subscriber signup form + bee_subscribe_server (port 8098)",
         "Welcome email on subscription (send_bee_welcome_email.py)",
         "robots.txt + sitemap.xml (auto-regenerated daily)",
-        "flock protection on run-bee-scrapers.sh (no overlapping runs)"
+        "flock protection on run-bee-scrapers.sh (no overlapping runs)",
+        "Category landing pages (9 categories at /category/ for SEO)"
       ],
       "next_action": "Share in WA beekeeping FB groups when ready. Benedict: confirm beestock.com.au is in Plausible admin (data.bjnoel.com)."
     }

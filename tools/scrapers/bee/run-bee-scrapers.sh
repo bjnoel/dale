@@ -61,4 +61,12 @@ python3 "$SCRIPT_DIR/bee_daily_digest.py" "$PROJECT_DIR/data/bee-stock" \
 cp "$BEE_DASHBOARD_DIR/digest.html" "$ARCHIVE_DIR/digest-$TODAY.html"
 echo "$LOG_PREFIX Digest complete (archived as $TODAY)."
 
+# Build category landing pages (SEO)
+echo "$LOG_PREFIX Building category pages..."
+if python3 "$SCRIPT_DIR/build_bee_category_pages.py" "$PROJECT_DIR/data/bee-stock" "$BEE_DASHBOARD_DIR" 2>&1; then
+    echo "$LOG_PREFIX Category pages complete."
+else
+    echo "$LOG_PREFIX WARNING: Category page build failed (non-fatal)."
+fi
+
 echo "$LOG_PREFIX Bee pipeline complete."

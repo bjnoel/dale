@@ -255,9 +255,10 @@ def main():
             else:
                 failed += 1
 
-    # Save updated log
-    sends_log[target_date] = sent_emails
-    save_sends_log(sends_log)
+    # Save updated log — skip in test mode to avoid corrupting production sends log
+    if not test_email:
+        sends_log[target_date] = sent_emails
+        save_sends_log(sends_log)
 
     print(f"Done: {len(sent_emails) - len(already_sent)} sent, {failed} failed")
     if failed:
