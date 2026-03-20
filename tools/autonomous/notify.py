@@ -98,6 +98,30 @@ def find_new_deliverables(repo_dir):
     return attachments
 
 
+def load_gsc_snippet() -> str:
+    """Load top-3 GSC metrics for inclusion in the morning summary."""
+    gsc_path = Path("/opt/dale/data/gsc_report.json")
+    if not gsc_path.exists():
+        return ""
+    try:
+        with open(gsc_path) as f:
+            d = json.load(f)
+        totals = d.get("totals", {})
+        clicks = totals.get("clicks", 0)
+        impressions = totals.get("impressions", 0)
+        avg_pos = totals.get("avg_position", 0)
+        period = d.get("period", {})
+        start = period.get("start", period.get("start_date", ""))
+        end = period.get("end", period.get("end_date", ""))
+        top_queries = d.get("top_queries_by_impressions", [])[:3]
+        lines = [f"GSC ({start} to {end}): {clicks} clicks, {impressions} impressions, avg position {avg_pos:.1f}"]
+        for q in top_queries:
+            lines.append(f"  \"{q['query']}\": pos {q['position']:.0f}, {q['impressions']} impressions")
+        return "\n".join(lines)
+    except Exception:
+        return ""
+
+
 def send_summary(session_log_path):
     """Send daily session summary email with any new deliverables attached."""
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -131,6 +155,13 @@ def send_summary(session_log_path):
 
     duration_min = duration_s / 60
 
+    gsc_snippet = load_gsc_snippet()
+    gsc_html = ""
+    gsc_text = ""
+    if gsc_snippet:
+        gsc_html = f'\n<h3>SEO (GSC)</h3>\n<pre style="white-space: pre-wrap; font-family: monospace; background: #f5f5f5; padding: 8px; border-radius: 4px; font-size: 12px;">{gsc_snippet}</pre>'
+        gsc_text = f"\n\n{gsc_snippet}"
+
     html = f"""<h2>Dale Session &mdash; {today}</h2>
 <h3>Session Output</h3>
 <pre style="white-space: pre-wrap; font-family: monospace; background: #f5f5f5; padding: 12px; border-radius: 4px;">{summary_text[:3000]}</pre>
@@ -139,7 +170,7 @@ def send_summary(session_log_path):
 <li>Tokens: {tokens_in:,} in / {tokens_out:,} out</li>
 <li>Turns: {num_turns} &bull; Duration: {duration_min:.1f} minutes</li>
 <li>Stop reason: {stop_reason}</li>
-</ul>
+</ul>{gsc_html}
 <p style="color: #888; font-size: 12px;">Autonomous Dale &mdash; <a href="https://github.com/bjnoel/Dale">repo</a></p>"""
 
     # Find deliverables to attach
@@ -156,7 +187,7 @@ def send_summary(session_log_path):
 {summary_text[:2000]}
 
 Tokens: {tokens_in:,} in / {tokens_out:,} out
-Turns: {num_turns} | Duration: {duration_min:.1f} min"""
+Turns: {num_turns} | Duration: {duration_min:.1f} min{gsc_text}"""
 
     if attachments:
         text += f"\n\nDeliverables attached: {', '.join(a['filename'] for a in attachments)}"

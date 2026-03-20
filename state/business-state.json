@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "last_updated": "2026-03-20",
-  "session_count": 41,
+  "session_count": 42,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -102,7 +102,9 @@
         "Beginner's Guide page (/guide.html \u2014 SEO landing page for 'where to buy rare fruit trees Australia')",
         "Bare-Root 2026 guide (/bare-root-2026.html \u2014 seasonal SEO page targeting bare-root buyers, targets June season)",
         "Internal guide links added to species/compare/variety page footers (2,460+ pages link to guide.html)",
-        "GSC analysis script (scrapers/gsc_analysis.py) — pulls impressions/clicks/CTR/queries via Search Console API, saves JSON report"
+        "GSC analysis script (scrapers/gsc_analysis.py) \u2014 pulls impressions/clicks/CTR/queries via Search Console API, saves JSON report",
+        "Sapodilla species page: 200-word growing guide (climate, care, varieties) for SEO",
+        "Homepage layout fixed: species pills moved inside filter section (Rule #1 compliance)"
       ],
       "nursery_details": {
         "ross_creek": {
@@ -262,9 +264,14 @@
         "Price/stock change detection (variant-level)",
         "Static HTML dashboard with search, category filter, retailer filter, sort",
         "Daily digest (text + HTML page)",
-        "9 product categories (Hives, Frames, Extractors, Gear, Smokers, Treatments, Feeders, Containers, Books)"
+        "9 product categories (Hives, Frames, Extractors, Gear, Smokers, Treatments, Feeders, Containers, Books)",
+        "Category pill strip (9 categories, horizontal scrollable, click to filter)",
+        "Price range display for multi-variant products (e.g. $187 - $215)",
+        "Sale filter checkbox",
+        "Email subscriber signup form + bee_subscribe_server (port 8098)",
+        "Welcome email on subscription (send_bee_welcome_email.py)"
       ],
-      "next_action": "Live at beestock.com.au. Cron daily at 00:30 UTC. Benedict: add to Plausible, share in WA beekeeping FB groups when ready."
+      "next_action": "Share in WA beekeeping FB groups when ready. Add to Plausible dashboard."
     }
   },
   "infrastructure": {

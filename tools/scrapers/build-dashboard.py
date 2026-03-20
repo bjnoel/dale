@@ -331,7 +331,7 @@ def build_recent_highlights(data_dir: Path) -> str:
           <span class="text-green-600 font-bold text-sm">&#10003;</span>
           <span class="text-sm flex-1 min-w-0">
             <span class="font-medium">{r['title']}</span>
-            <span class="text-gray-500"> &mdash; {r['nursery']}</span>
+            <span class="text-gray-500"> ({r['nursery']})</span>
           </span>
           <span class="text-sm font-semibold text-gray-700 flex-shrink-0">{price_str}</span>
         </li>"""
@@ -342,7 +342,7 @@ def build_recent_highlights(data_dir: Path) -> str:
           <span class="text-blue-600 font-bold text-sm">&darr;</span>
           <span class="text-sm flex-1 min-w-0">
             <span class="font-medium">{d['title']}</span>
-            <span class="text-gray-500"> &mdash; {d['nursery']}</span>
+            <span class="text-gray-500"> ({d['nursery']})</span>
           </span>
           <span class="text-sm flex-shrink-0"><span class="line-through text-gray-400">${d['old_price']:.0f}</span> <span class="font-semibold text-blue-700">${d['new_price']:.0f}</span> <span class="text-blue-600">&minus;{d['pct']}%</span></span>
         </li>"""
@@ -827,6 +827,9 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     <input type="text" id="search" placeholder="Search plants... (e.g. sapodilla, mango, fig)"
       class="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
       autofocus>
+    <div id="speciesWrap">
+      <div class="species-strip">{species_strip_html}</div>
+    </div>
     <div class="flex flex-wrap gap-2 items-center text-sm">
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="inStockOnly" checked class="rounded"> In stock only
@@ -858,11 +861,6 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     </div>
   </div>
 
-  <!-- Browse by Species -->
-  <div id="speciesWrap" class="mb-3">
-    <div class="species-strip">{species_strip_html}</div>
-  </div>
-
   <!-- Results -->
   <div id="results"></div>
   <div id="loadMore" class="text-center py-4 hidden">
@@ -874,7 +872,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   <!-- Email Alerts Signup (below results) -->
   <div class="mt-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-      <p id="subCTA" class="text-sm text-green-800 flex-1"><strong>Get tomorrow's changes in your inbox</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
+      <p id="subCTA" class="text-sm text-green-800 flex-1"><strong>Get tomorrow's changes in your inbox.</strong> Free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0 flex-wrap">
         <input type="email" id="subEmail" placeholder="your@email.com" required
           class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
@@ -1022,11 +1020,11 @@ function updateSubCTA(q) {{
   if (matched) {{
     const name = matched.name;
     const slug = matched.slug;
-    ctaEl.innerHTML = `<strong>Get alerted when ${{name}} prices change or come back in stock</strong> — free daily email. <a href="/species/${{slug}}.html" class="text-green-700 underline whitespace-nowrap">See all ${{name}} &rarr;</a>`;
+    ctaEl.innerHTML = `<strong>Get alerted when ${{name}} prices change or come back in stock.</strong> Free daily email. <a href="/species/${{slug}}.html" class="text-green-700 underline whitespace-nowrap">See all ${{name}} &rarr;</a>`;
     if (floatInput) floatInput.placeholder = `${{name}} price alerts (free)`;
   }} else {{
     const displayQ = q.length > 20 ? q.slice(0, 20) + '...' : q;
-    ctaEl.innerHTML = `<strong>Get alerted when "${{displayQ}}" prices change</strong> — free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
+    ctaEl.innerHTML = `<strong>Get alerted when "${{displayQ}}" prices change.</strong> Free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
     if (floatInput) floatInput.placeholder = `"${{displayQ}}" price alerts (free)`;
   }}
 }}

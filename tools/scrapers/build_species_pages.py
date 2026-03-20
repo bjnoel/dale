@@ -130,6 +130,23 @@ def group_by_species(products: list[dict], lookup: dict) -> dict:
     return by_species
 
 
+def build_species_description(species: dict) -> str:
+    """Render the optional growing/description section for a species page."""
+    description = species.get("description", "")
+    if not description:
+        return ""
+    name = species["common_name"]
+    paragraphs = [p.strip() for p in description.strip().split("\n\n") if p.strip()]
+    paras_html = "\n".join(f'      <p class="text-gray-700 text-sm leading-relaxed mb-3">{p}</p>' for p in paragraphs)
+    return f"""  <!-- Growing Guide -->
+  <section class="mb-8">
+    <h3 class="text-lg font-semibold text-gray-800 mb-3">Growing {name} in Australia</h3>
+    <div class="prose prose-sm max-w-none">
+{paras_html}
+    </div>
+  </section>"""
+
+
 def build_species_page(species: dict, products: list[dict]) -> str:
     """Generate HTML for a single species page."""
     name = species["common_name"]
@@ -249,6 +266,8 @@ def build_species_page(species: dict, products: list[dict]) -> str:
       </table>
     </div>
   </section>
+
+  {build_species_description(species)}
 
   <!-- All Varieties -->
   <section class="mb-8">

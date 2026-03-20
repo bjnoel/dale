@@ -124,6 +124,12 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
                     if v.get("compare_at_price") and v.get("price")
                 )
 
+            max_price = p.get("max_price")
+            if max_price is None and variants:
+                avail_prices = [float(v.get("price", 0)) for v in variants if v.get("price") and v.get("available", True)]
+                all_prices = [float(v.get("price", 0)) for v in variants if v.get("price")]
+                max_price = max(avail_prices) if avail_prices else (max(all_prices) if all_prices else None)
+
             product_data = {
                 "t": title,
                 "n": p.get("retailer_name", retailer_name),
@@ -134,6 +140,9 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
                 "sale": bool(on_sale),
                 "cat": cat,
             }
+
+            if max_price and min_price and max_price > min_price + 0.01:
+                product_data["mp"] = round(max_price, 2)
 
             # Vendor (brand) if available
             vendor = p.get("vendor", "")
@@ -224,6 +233,22 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
         cat_options.append(f'<option value="{slug}">{name} ({count})</option>')
     cat_options_html = "\n".join(cat_options)
 
+    # Build category pill strip (in-stock only, sorted by count)
+    in_stock_by_cat: dict[str, int] = {}
+    for p in products:
+        if p.get("a"):
+            cat = p.get("cat", "other")
+            in_stock_by_cat[cat] = in_stock_by_cat.get(cat, 0) + 1
+
+    cat_pills_html = ""
+    for slug, count in sorted(in_stock_by_cat.items(), key=lambda x: -x[1]):
+        if count < 3:
+            continue
+        name = CATEGORY_NAMES.get(slug, "Other")
+        if name == "Other":
+            continue
+        cat_pills_html += f'<button class="cat-pill" data-cat="{slug}">{name} <span class="count">{count}</span></button>\n'
+
     extra_style = """\
   .stock-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }
   .restrict-badge { background: #fee2e2; color: #991b1b; font-size: 0.65rem; }
@@ -238,7 +263,14 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   .product-row { border-bottom: 1px solid #f3f4f6; }
   .product-row:hover { background: #f9fafb; }
   .retailer-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #fef3c7; color: #92400e; }
-  .cat-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }"""
+  .cat-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }
+  .cat-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  .cat-pill:hover { border-color: #f59e0b; background: #fef3c7; color: #92400e; }
+  .cat-pill.active { border-color: #d97706; background: #fef3c7; color: #92400e; font-weight: 600; }
+  .cat-pill .count { color: #d97706; font-weight: 600; font-size: 0.7rem; }
+  .cat-pill.active .count { color: #b45309; }
+  #cat-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  #cat-pills::-webkit-scrollbar { display: none; }"""
 
     head = render_head(
         title="beestock.com.au - Australian Beekeeping Supply Price Tracker",
@@ -275,17 +307,24 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
     <input type="text" id="search" placeholder="Search beekeeping supplies... (e.g. extractor, flow hive, varroa)"
       class="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
       autofocus>
+    <!-- Category pills -->
+    <div id="cat-pills">
+      {cat_pills_html}
+    </div>
     <div class="flex flex-wrap gap-2 items-center text-sm">
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="inStockOnly" checked class="rounded"> In stock only
+      </label>
+      <label class="flex items-center gap-1 cursor-pointer">
+        <input type="checkbox" id="changesOnly" class="rounded"> Changes only
+      </label>
+      <label class="flex items-center gap-1 cursor-pointer">
+        <input type="checkbox" id="saleOnly" class="rounded"> Sale only
       </label>
       <select id="categoryFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
         <option value="">All categories</option>
         {cat_options_html}
       </select>
-      <label class="flex items-center gap-1 cursor-pointer">
-        <input type="checkbox" id="changesOnly" class="rounded"> Changes only
-      </label>
       <select id="retailerFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
         <option value="">All retailers</option>
       </select>
@@ -307,11 +346,26 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
     </button>
   </div>
 
-  <!-- About section (below results) -->
-  <div class="mt-6 mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-900">
-    <p class="font-semibold mb-1">About beestock.com.au</p>
-    <p>We track prices and availability across Australian beekeeping supply retailers every day. Find the best prices on extractors, hives, protective gear, varroa treatments, and more.</p>
-    <p class="mt-2 text-yellow-700">Built by a beekeeper, for beekeepers. <a href="/digest.html" class="underline font-medium">See today's changes &rarr;</a></p>
+  <!-- Subscribe CTA (below results) -->
+  <div class="mt-6 mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+    <p class="font-semibold text-yellow-900 mb-1">Get daily price alerts</p>
+    <p class="text-sm text-yellow-800 mb-3">Be the first to know when prices drop or items restock. Free, daily email digest.</p>
+    <form id="subscribeForm" class="flex gap-2 flex-wrap">
+      <input type="email" id="subEmail" placeholder="your@email.com" required
+        class="flex-1 min-w-0 px-3 py-2 border border-yellow-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+      <button type="submit"
+        class="px-4 py-2 bg-yellow-700 text-white rounded-lg text-sm font-medium hover:bg-yellow-800 whitespace-nowrap">
+        Subscribe
+      </button>
+    </form>
+    <p id="subMsg" class="text-sm mt-2 hidden"></p>
+  </div>
+
+  <!-- About section (below subscribe) -->
+  <div class="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
+    <p class="font-semibold text-gray-800 mb-1">About beestock.com.au</p>
+    <p>Track prices and availability across Australian beekeeping supply retailers every day. Find the best prices on extractors, hives, protective gear, varroa treatments, and more.</p>
+    <p class="mt-2"><a href="/digest.html" class="text-yellow-800 underline font-medium">See today's changes &rarr;</a></p>
   </div>
 </main>
 
@@ -347,6 +401,7 @@ const searchInput = document.getElementById('search');
 const inStockOnly = document.getElementById('inStockOnly');
 const categoryFilter = document.getElementById('categoryFilter');
 const changesOnly = document.getElementById('changesOnly');
+const saleOnly = document.getElementById('saleOnly');
 const sortBy = document.getElementById('sortBy');
 
 function search() {{
@@ -362,6 +417,7 @@ function search() {{
   if (stockOnly) results = results.filter(p => p.a);
   if (category) results = results.filter(p => p.cat === category);
   if (changesOnly.checked) results = results.filter(p => p.ch);
+  if (saleOnly.checked) results = results.filter(p => p.sale);
   if (retailer) results = results.filter(p => p.nk === retailer);
 
   if (q) {{
@@ -409,7 +465,8 @@ function render() {{
   }}
 
   container.innerHTML = showing.map(p => {{
-    const price = p.p ? ('$' + p.p.toFixed(2)) : '';
+    let price = p.p ? ('$' + p.p.toFixed(2)) : '';
+    if (p.mp && p.p && p.mp > p.p + 0.01) price = '$' + p.p.toFixed(2) + ' - $' + p.mp.toFixed(2);
     const stockBadge = p.a
       ? '<span class="stock-badge in-stock">In stock</span>'
       : '<span class="stock-badge out-stock">Out of stock</span>';
@@ -422,9 +479,10 @@ function render() {{
     else if (p.ch === 'back') changeBadge = '<span class="stock-badge back-badge">Back in stock!</span>';
     else if (p.ch === 'gone') changeBadge = '<span class="stock-badge out-stock">Just sold out</span>';
 
+    const minPrice = p.p ? ('$' + p.p.toFixed(2)) : '';
     let priceInfo = price;
-    if (p.ch === 'down' && p.pp) priceInfo = `<span class="price-down">${{price}}</span> <span class="text-xs text-gray-400 line-through">${{('$' + p.pp.toFixed(2))}}</span>`;
-    else if (p.ch === 'up' && p.pp) priceInfo = `<span class="price-up">${{price}}</span> <span class="text-xs text-gray-400">was ${{('$' + p.pp.toFixed(2))}}</span>`;
+    if (p.ch === 'down' && p.pp) priceInfo = `<span class="price-down">${{minPrice}}</span> <span class="text-xs text-gray-400 line-through">${{('$' + p.pp.toFixed(2))}}</span>`;
+    else if (p.ch === 'up' && p.pp) priceInfo = `<span class="price-up">${{minPrice}}</span> <span class="text-xs text-gray-400">was ${{('$' + p.pp.toFixed(2))}}</span>`;
 
     const utm = p.u ? (p.u.includes('?') ? '&' : '?') + 'utm_source=beestock&utm_medium=referral' : '';
     return `<a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row flex items-center gap-3 py-3 px-2 block">
@@ -454,15 +512,79 @@ function showMore() {{
 }}
 
 // Event listeners
-searchInput.addEventListener('input', search);
+searchInput.addEventListener('input', function() {{
+  // Clear active pill when typing manually
+  document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+  categoryFilter.value = '';
+  search();
+}});
 inStockOnly.addEventListener('change', search);
-categoryFilter.addEventListener('change', search);
+categoryFilter.addEventListener('change', function() {{
+  // Clear active pill when dropdown changes
+  document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+  search();
+}});
 changesOnly.addEventListener('change', search);
+saleOnly.addEventListener('change', search);
 retailerSelect.addEventListener('change', search);
 sortBy.addEventListener('change', search);
 
+// Category pill clicks
+document.querySelectorAll('.cat-pill[data-cat]').forEach(function(pill) {{
+  pill.addEventListener('click', function(e) {{
+    e.preventDefault();
+    const cat = this.getAttribute('data-cat');
+    const isActive = this.classList.contains('active');
+    document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+    if (isActive) {{
+      categoryFilter.value = '';
+    }} else {{
+      this.classList.add('active');
+      categoryFilter.value = cat;
+    }}
+    search();
+  }});
+}});
+
 // Initial render
 search();
+
+// Subscribe form
+const subForm = document.getElementById('subscribeForm');
+const subMsg = document.getElementById('subMsg');
+if (subForm) {{
+  subForm.addEventListener('submit', function(e) {{
+    e.preventDefault();
+    const email = document.getElementById('subEmail').value.trim();
+    if (!email) return;
+    const btn = subForm.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.textContent = 'Subscribing...';
+    fetch('/api/subscribe', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{email}}),
+    }})
+    .then(r => r.json())
+    .then(d => {{
+      subMsg.classList.remove('hidden', 'text-red-700');
+      subMsg.classList.add('text-green-700');
+      subMsg.textContent = d.message === 'Already subscribed'
+        ? "You're already subscribed."
+        : "Subscribed! Check your inbox for a confirmation.";
+      subForm.reset();
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    }})
+    .catch(() => {{
+      subMsg.classList.remove('hidden', 'text-green-700');
+      subMsg.classList.add('text-red-700');
+      subMsg.textContent = 'Something went wrong. Please try again.';
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    }});
+  }});
+}}
 </script>
 
 </body>

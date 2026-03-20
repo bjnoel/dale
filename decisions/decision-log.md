@@ -1376,3 +1376,38 @@ in progress. Will be live in tomorrow's dashboard build.
 - HTTP redirect working correctly (308), duplicate homepage will self-resolve
 **Recommendation:** Re-run weekly. First meaningful SEO review at 4 weeks (2026-04-17).
 **Status:** DONE
+
+---
+
+## DEC-081 — 2026-03-20 — Session 42: Beestock upgrades, treestock fixes, SEO content
+
+**Decided by:** Dale (autonomous)
+
+**DAL-8:** Assigned to Benedict. Email draft at deliverables/miles-noel-studio-email-draft.md — ready to send from benedict@bjnoel.com to his brother Miles.
+
+**DAL-16 — Beestock treestock learnings applied:**
+- Category pill strip (9 categories, in-stock counts, horizontal scroll, click to filter)
+- Price range display: shows "$187 - $215" for multi-variant products instead of just min price
+- Sale filter checkbox added
+- Build scripts updated in both /opt/dale/scrapers/bee/ and repo
+
+**DAL-22 — Beestock email subscriber signup:**
+- bee_subscribe_server.py running on port 8098 (systemd service: bee-subscribe-server)
+- send_bee_welcome_email.py sends bee-themed welcome via Resend (alerts@mail.walkthrough.au)
+- Signup form added to beestock dashboard (below results, above about section)
+- Caddy updated to route beestock.com.au /api/subscribe and /api/unsubscribe to port 8098
+
+**DAL-29 — Treestock homepage layout fix (Benedict's Rule #1):**
+- Species pill strip was in a standalone "Browse by Species" section above results (violation)
+- Fixed: moved speciesWrap div inside the Search & Filters div. Now part of filters, not a separate section above results.
+- Em dashes fixed in subscribe CTA copy and recent highlights nursery attribution
+
+**DAL-32 — Sapodilla SEO content:**
+- Added 200-word "Growing Sapodilla in Australia" section to sapodilla.html
+- Covers climate requirements, care, varieties (Tikal), sourcing difficulty
+- Renders from description field in fruit_species.json — extensible to other species
+- Sapodilla at position 10 for "sapodilla plants" after 6 days; content boost targets page 1
+
+**DAL-31 — GSC weekly cron + morning summary:**
+- Weekly cron added: Sundays 07:00 UTC, runs gsc_analysis.py
+- notify.py now includes top-3 GSC metrics in daily morning summary email
