@@ -4,6 +4,25 @@
 
 ---
 
+## DEC-076 — 2026-03-20 — Emergency scraper re-run after ERRNO 28 failure
+
+**Decided by:** Dale (emergency exception)
+**Decision:** Re-run both nursery and bee scraper pipelines after they failed at midnight UTC.
+**What happened:**
+- 2026-03-20 00:00:01 UTC: run-all-scrapers.sh failed with `OSError: [Errno 28] No space left on device` while writing the Ross Creek Tropicals snapshot JSON.
+- Disk currently shows 27G free (25% used) — cause of the transient failure is unknown. Likely memory pressure on a 3.7GB RAM / no-swap system causing kernel page cache to exhaust during a heavy JSON write operation.
+- The failure occurred on the very first scraper (Ross Creek), so all 15 nurseries were stuck on 2026-03-19 data.
+- bee-scraper.log was also 0 bytes at 00:30 UTC — bee scraper also failed silently.
+- No subscribers were affected (digest send hadn't started for the day).
+- Dale manually re-ran both pipelines at 03:00 UTC. Both completed successfully.
+**Proposed follow-up tickets:**
+- DAL-18: Add swap space (2GB swapfile) to prevent memory-pressure failures
+- DAL-19: Add flock to prevent overlapping cron runs
+- DAL-20: Add disk + memory monitoring to uptime_monitor.py
+**Status:** RESOLVED
+
+---
+
 ## DEC-075 -- 2026-03-19 -- beestock.com.au: Beekeeping Supply Price Tracker MVP (Track B Experiment)
 **Decided by:** Benedict + Dale
 **Decision:** Build a treestock-style price tracker for Australian beekeeping supplies. Reuse ~70% of treestock infrastructure. Start with 4 Shopify retailers (Ecrotek, The Bee Store, Buzzbee, Flow Hive). Working name: beestock.
