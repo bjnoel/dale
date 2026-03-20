@@ -10,7 +10,7 @@
   },
   "linear": {
     "team": "Dale",
-    "max_backlog": 20
+    "max_backlog": 40
   },
   "notifications": {
     "from_email": "dale@mail.walkthrough.au",
