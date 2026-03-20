@@ -92,7 +92,7 @@ def get_team_id(team_name):
 def get_issues_by_state(team_id, state_type):
     """Fetch issues for a team filtered by state type (backlog, unstarted, started, completed)."""
     data = graphql("""
-        query($teamId: String!, $stateType: String!) {
+        query($teamId: ID!, $stateType: String!) {
             issues(
                 filter: {
                     team: { id: { eq: $teamId } }
