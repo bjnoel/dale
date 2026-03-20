@@ -4,6 +4,40 @@
 
 ---
 
+## DEC-082 — 2026-03-20 — Session 43: Beestock expansion + scraper infrastructure
+
+**Decided by:** Dale (autonomous)
+
+**DAL-25 (closed):** Superseded by DAL-33 per Benedict. Closed with redirect note.
+
+**DAL-21 — Beestock SEO foundation:**
+- robots.txt: created at /opt/dale/bee-dashboard/robots.txt (points to sitemap)
+- sitemap.xml: created build_bee_sitemap.py; generates sitemap with homepage, digest, and archive pages; runs daily via run-bee-scrapers.sh
+- Plausible: already embedded (pa-ncu0JIgthEVy21f-Vfd6K.js in beestock_layout.py). Benedict needs to confirm beestock.com.au is added as a site in Plausible admin.
+
+**DAL-19 — Flock for scraper cron:**
+- Added flock lock to run-all-scrapers.sh (/tmp/run-all-scrapers.lock)
+- Added flock lock to run-bee-scrapers.sh (/tmp/run-bee-scrapers.lock)
+- Prevents overlapping runs if a scrape takes longer than 24 hours
+
+**DAL-26 — Community engagement research:**
+- Confirmed Daley's Forum is off the list (ghost town)
+- Found 3 clubs with public links pages: Rare Fruit Society SA, Sub-Tropical Fruit Club QLD, Rare Fruit Australia (QLD branches)
+- Found 5 new Facebook groups: FNQ RFA, Cassowary Coast Rare Fruit, STFC QLD, RFSA, Heritage Fruits Society VIC
+- Created deliverables/community-engagement-updated-2026-03-20.md
+- Assigned to Benedict for outreach actions (30 min total)
+
+**DAL-30 — Add Beekeeping Supplies Australia + Beewise:**
+- BSA (Shopify, QLD): Added with beekeeping_only=True filter. Categorise_product() filters mixed inventory.
+- Beewise (Magento 2, Perth + Sydney): Built magento_bee_scraper.py. Uses /rest/V1/products API. Stock availability uses status=1 proxy (auth required for stock_item endpoint).
+- Dashboard now: 6 retailers, 2,103 products (was 4 retailers, 1,262 products)
+
+**DAL-5 (assigned to Benedict):** Perth Mobile Nursery outreach. Benedict mentioned DAL-4 (visit Tass1 Trees, ownership may have changed). Interpretation: apply same in-person-first principle to Perth Mobile Nursery since they're also Perth-based. Assigned to Benedict with outreach material ready.
+
+**Status:** All done
+
+---
+
 ## DEC-077 — 2026-03-20 — DAL-18: Add 2GB swap + passwordless sudo
 
 **Decided by:** Dale (autonomous, server admin)

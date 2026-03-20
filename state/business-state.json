@@ -230,15 +230,15 @@
       "domain": "beestock.com.au",
       "status": "live",
       "dashboard_url": "https://beestock.com.au",
-      "retailers_monitored": 4,
-      "products_tracked": 1262,
-      "in_stock": 952,
+      "retailers_monitored": 6,
+      "products_tracked": 2103,
+      "in_stock": 1782,
       "first_scrape_date": "2026-03-19",
-      "days_of_data": 1,
+      "days_of_data": 2,
       "retailer_details": {
         "ecrotek": {
           "products": 410,
-          "in_stock": 260,
+          "in_stock": 259,
           "platform": "Shopify",
           "location": "VIC"
         },
@@ -249,7 +249,7 @@
         },
         "buzzbee": {
           "products": 466,
-          "in_stock": 386,
+          "in_stock": 388,
           "platform": "Shopify"
         },
         "flow-hive": {
@@ -257,10 +257,24 @@
           "in_stock": 59,
           "platform": "Shopify",
           "location": "NSW"
+        },
+        "beekeeping-supplies-australia": {
+          "products": 62,
+          "in_stock": 50,
+          "platform": "Shopify",
+          "location": "QLD",
+          "note": "Beekeeping products only (excludes pet/garden inventory). Added 2026-03-20."
+        },
+        "beewise": {
+          "products": 778,
+          "in_stock": 778,
+          "platform": "Magento 2",
+          "location": "Perth WA + Sydney NSW",
+          "note": "Benedict's local Perth supplier. Stock proxy: enabled products = in stock. Added 2026-03-20."
         }
       },
       "features": [
-        "Daily scraping of 4 Shopify retailers",
+        "Daily scraping of 4 Shopify retailers + 1 Magento retailer",
         "Price/stock change detection (variant-level)",
         "Static HTML dashboard with search, category filter, retailer filter, sort",
         "Daily digest (text + HTML page)",
@@ -269,9 +283,11 @@
         "Price range display for multi-variant products (e.g. $187 - $215)",
         "Sale filter checkbox",
         "Email subscriber signup form + bee_subscribe_server (port 8098)",
-        "Welcome email on subscription (send_bee_welcome_email.py)"
+        "Welcome email on subscription (send_bee_welcome_email.py)",
+        "robots.txt + sitemap.xml (auto-regenerated daily)",
+        "flock protection on run-bee-scrapers.sh (no overlapping runs)"
       ],
-      "next_action": "Share in WA beekeeping FB groups when ready. Add to Plausible dashboard."
+      "next_action": "Share in WA beekeeping FB groups when ready. Benedict: confirm beestock.com.au is in Plausible admin (data.bjnoel.com)."
     }
   },
   "infrastructure": {
