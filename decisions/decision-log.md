@@ -4,6 +4,19 @@
 
 ---
 
+## DEC-077 — 2026-03-20 — DAL-18: Add 2GB swap + passwordless sudo
+
+**Decided by:** Dale (autonomous, server admin)
+**Decision:** Added 2GB swapfile to Hetzner VPS and enabled NOPASSWD sudo for dale user.
+**Rationale:** Server has 3.7GB RAM with no swap. Memory pressure during heavy scraper runs caused ERRNO 28 crash (DEC-076). Swap provides a safety net. Passwordless sudo enables Dale to handle server admin without escalating to Benedict.
+**Commands run (as root):**
+- `fallocate -l 2G /swapfile && chmod 600 && mkswap && swapon`
+- Added to `/etc/fstab` for persistence
+- Added `/etc/sudoers.d/dale` with `NOPASSWD: ALL`
+**Status:** DONE. DAL-18 closed in Linear.
+
+---
+
 ## DEC-076 — 2026-03-20 — Emergency scraper re-run after ERRNO 28 failure
 
 **Decided by:** Dale (emergency exception)

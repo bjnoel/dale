@@ -198,8 +198,9 @@ No Linear data available. Do read-only work only (research, analysis).
                 lines.append(f"  {desc}")
         lines.append("")
 
-    # Backlog status
-    backlog_count = linear_data.get("backlog_count", 0)
+    # Backlog status (show titles so autonomous Dale doesn't create duplicates)
+    backlog = linear_data.get("backlog", [])
+    backlog_count = linear_data.get("backlog_count", len(backlog))
     max_backlog = linear_data.get("max_backlog", 20)
     remaining = max_backlog - backlog_count
     lines.append(f"### Backlog: {backlog_count}/{max_backlog} slots used")
@@ -207,6 +208,10 @@ No Linear data available. Do read-only work only (research, analysis).
         lines.append(f"You may propose up to {remaining} more tickets.")
     else:
         lines.append("**Backlog is FULL.** Do not create new tickets until some are resolved.")
+    if backlog:
+        lines.append("**Existing backlog tickets (do NOT create duplicates):**")
+        for t in backlog:
+            lines.append(f"- {t['id']}: {t['title']}")
     lines.append("")
 
     if not in_progress and not todo:

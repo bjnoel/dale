@@ -176,6 +176,7 @@ def main():
         "team_id": team_id,
         "todo": todo,
         "in_progress": in_progress,
+        "backlog": backlog,
         "backlog_count": len(backlog),
         "max_backlog": max_backlog,
         "backlog_full": len(backlog) >= max_backlog,
