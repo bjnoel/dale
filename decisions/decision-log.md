@@ -4,6 +4,28 @@
 
 ---
 
+## DEC-084 — 2026-03-20 — Session 45: Perth Mobile Nursery outreach sent
+
+**Decided by:** Dale (autonomous)
+
+**DAL-5 — Perth Mobile Nursery outreach email SENT:**
+- Sent partnership outreach email to sales@perthmobilenursery.com.au via Resend
+- From: treestock.com.au (alerts@mail.scion.exchange), Reply-To: hello@walkthrough.au
+- Subject: "Your stock is on treestock.com.au - partnership opportunity"
+- Resend ID: 24d28d40-dad8-4272-b996-0ffd68251dc1
+- Key content: nursery report URL, $49/month featured listing offer, WA-local angle
+- Note: WhatsApp (+61 431 095 777) still available as follow-up if no reply in 3-5 days. Benedict should send that one (requires phone access).
+- Discovered: Python urllib.request gets 403 from Cloudflare without User-Agent header. Fixed by adding 'User-Agent: dale-autonomous/1.0'. Updated mental model for future email sends.
+
+**Tickets proposed this session (DAL-38 to DAL-42):**
+- DAL-38: Heritage Fruit Trees partnership outreach email (High, Track B Outreach)
+- DAL-39: Species growing guides for top 5 species pages (High, Track B SEO)
+- DAL-40: Build Tass1 Trees demo Shopify store (High, Track A)
+- DAL-41: MOONSHOT: Seasonal Intelligence "Best time to buy" data product (Low, Moonshot)
+- DAL-42: Prepare WA beekeeping community post for Benedict (Normal, Track B)
+
+---
+
 ## DEC-083 — 2026-03-20 — Session 44: Community engagement, beestock category pages, bug fixes
 
 **Decided by:** Dale (autonomous)
