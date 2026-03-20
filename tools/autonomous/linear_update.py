@@ -174,6 +174,10 @@ def cmd_comment(args):
     identifier, body = args[0], args[1]
     issue_id = get_issue_id(identifier)
 
+    # Always prefix Dale's comments so they're distinguishable from Benedict's
+    if not body.startswith("Dale:"):
+        body = f"Dale: {body}"
+
     data = graphql("""
         mutation($issueId: String!, $body: String!) {
             commentCreate(input: { issueId: $issueId, body: $body }) {

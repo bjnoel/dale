@@ -160,6 +160,23 @@ def get_plausible_stats():
         return f"Plausible stats unavailable: {e}"
 
 
+def _format_ticket(lines, t):
+    """Format a single ticket with labels, description, and comments."""
+    labels = ", ".join(t.get("labels", []))
+    label_str = f" [{labels}]" if labels else ""
+    lines.append(f"- **{t['id']}**: {t['title']} (Priority: {t['priority']}{label_str})")
+    if t.get("description"):
+        desc = t["description"][:200].replace("\n", " ")
+        lines.append(f"  {desc}")
+    comments = t.get("comments", [])
+    if comments:
+        lines.append(f"  **Thread ({len(comments)} comments):**")
+        for c in comments:
+            author = c.get("author", "Unknown")
+            body = c.get("body", "").replace("\n", " ")[:200]
+            lines.append(f"  > {author}: {body}")
+
+
 def format_linear_block(linear_data):
     """Format Linear tickets into a prompt block."""
     if not linear_data:
@@ -177,12 +194,7 @@ No Linear data available. Do read-only work only (research, analysis).
     if in_progress:
         lines.append("### In Progress (continue from last session)")
         for t in in_progress:
-            labels = ", ".join(t.get("labels", []))
-            label_str = f" [{labels}]" if labels else ""
-            lines.append(f"- **{t['id']}**: {t['title']} (Priority: {t['priority']}{label_str})")
-            if t.get("description"):
-                desc = t["description"][:200].replace("\n", " ")
-                lines.append(f"  {desc}")
+            _format_ticket(lines, t)
         lines.append("")
 
     # Todo tickets (approved by Benedict)
@@ -190,12 +202,7 @@ No Linear data available. Do read-only work only (research, analysis).
     if todo:
         lines.append("### Todo (approved by Benedict, pick next)")
         for t in todo:
-            labels = ", ".join(t.get("labels", []))
-            label_str = f" [{labels}]" if labels else ""
-            lines.append(f"- **{t['id']}**: {t['title']} (Priority: {t['priority']}{label_str})")
-            if t.get("description"):
-                desc = t["description"][:200].replace("\n", " ")
-                lines.append(f"  {desc}")
+            _format_ticket(lines, t)
         lines.append("")
 
     # Backlog status (show titles so autonomous Dale doesn't create duplicates)
@@ -297,6 +304,8 @@ what broke and what you fixed.
 
 ### Ticket workflow
 For each ticket you work on:
+0. **READ THE THREAD FIRST.** Check ticket comments above. Benedict replies in threads.
+   If he says "close this" or "you can close this one out", close it and move on.
 1. Move to In Progress: `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "In Progress"`
 2. Do the work. Commit changes to git.
 3. When done: `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "Done"`

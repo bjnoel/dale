@@ -112,6 +112,13 @@ def get_issues_by_state(team_id, state_type):
                     state { name type }
                     assignee { name email }
                     labels { nodes { name } }
+                    comments(first: 10) {
+                        nodes {
+                            body
+                            createdAt
+                            user { name }
+                        }
+                    }
                 }
             }
         }
@@ -128,6 +135,16 @@ def format_issue(issue):
     assignee = issue.get("assignee")
     priority_map = {0: "None", 1: "Urgent", 2: "High", 3: "Normal", 4: "Low"}
 
+    # Extract comments (newest first)
+    comments = []
+    for c in issue.get("comments", {}).get("nodes", []):
+        user = c.get("user", {}).get("name", "Unknown")
+        comments.append({
+            "author": user,
+            "body": (c.get("body") or "")[:300],
+            "created": c.get("createdAt", ""),
+        })
+
     return {
         "id": issue["identifier"],
         "title": issue["title"],
@@ -140,6 +157,7 @@ def format_issue(issue):
         "assignee": assignee["name"] if assignee else None,
         "created": issue["createdAt"],
         "updated": issue["updatedAt"],
+        "comments": comments,
     }
 
 
