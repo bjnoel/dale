@@ -65,7 +65,7 @@ NURSERY_META = {
         "description": "All Season Plants WA is a Perth-based nursery specialising in tropical and rare fruit trees suited to Western Australia's warm climate. Pickup available at their Perth location.",
     },
     "ausnurseries": {
-        "url": "https://www.ausnurseries.com.au",
+        "url": "https://www.ausnurseries.com",
         "tags": ["fruit trees", "edibles"],
         "description": "Aus Nurseries is an online nursery offering a variety of fruit trees and edible plants across Australia. They carry a range of common and less common fruit species, shipping to most Australian states excluding WA, NT, and TAS.",
     },

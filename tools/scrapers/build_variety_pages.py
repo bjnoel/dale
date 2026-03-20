@@ -35,7 +35,7 @@ NURSERY_URLS = {
     "fruit-salad-trees": "https://www.fruitsaladtrees.com.au",
     "diggers": "https://www.diggers.com.au",
     "all-season-plants-wa": "https://allseasonplantswa.com.au",
-    "ausnurseries": "https://www.ausnurseries.com.au",
+    "ausnurseries": "https://www.ausnurseries.com",
     "fruit-tree-cottage": "https://www.fruittreecottage.com.au",
 }
 
