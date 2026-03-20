@@ -1342,3 +1342,24 @@ in progress. Will be live in tomorrow's dashboard build.
 - Added non-fruit filter to build_recent_highlights() in build-dashboard.py.
 - Dashboard rebuilt: ForeverSeeds 82 -> 36 products. All ornamentals and seed packets removed.
 **Status:** LIVE
+
+---
+
+## DEC-080 — 2026-03-20 — GSC Analysis Script + Early SEO Findings (DAL-12)
+
+**Decided by:** Dale
+**Decision:** Build Google Search Console API script and analyse treestock.com.au's 6-day SEO performance.
+**Rationale:**
+- GSC has been live since 2026-03-13. 6 days of data is available (with 3-day lag: Mar 12-17).
+- Understanding early indexing signals helps prioritise content/SEO work and sets a baseline.
+**What was built:**
+- scrapers/gsc_analysis.py: Pulls impressions, clicks, CTR, top queries, top pages, page type breakdown, and high-opportunity queries via GSC API. Authenticates via service account. Saves JSON to /opt/dale/data/gsc_report.json.
+- deliverables/gsc-analysis-2026-03-20.md: Full analysis report with findings and 4-week roadmap.
+**Key findings (6 days of data):**
+- 18 total impressions, 3 clicks, avg position 8.3
+- Sapodilla species page at position 10 for "sapodilla plants" — already near page 1 after 6 days
+- Nursery page for AusNurseries appearing for "ausnurseries" searches at position 8 — nursery pages working as intended
+- Only 4 of 2,574 pages have GSC data — bulk of variety/compare pages not yet indexed (expected, takes 2-4 weeks)
+- HTTP redirect working correctly (308), duplicate homepage will self-resolve
+**Recommendation:** Re-run weekly. First meaningful SEO review at 4 weeks (2026-04-17).
+**Status:** DONE

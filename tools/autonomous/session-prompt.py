@@ -49,25 +49,41 @@ def get_data_summary(data_dir):
     """Summarize latest scraper data."""
     lines = []
 
-    # Find latest snapshots
-    snapshot_dirs = sorted(glob.glob(os.path.join(data_dir, "nursery-stock", "*")))
-    if snapshot_dirs:
-        latest = snapshot_dirs[-1]
-        date = os.path.basename(latest)
-        files = os.listdir(latest)
-        lines.append(f"Latest snapshot: {date} ({len(files)} nursery files)")
+    # Find per-nursery directories (each has dated snapshots + latest.json)
+    nursery_stock_dir = os.path.join(data_dir, "nursery-stock")
+    nursery_dirs = sorted(glob.glob(os.path.join(nursery_stock_dir, "*")))
+    nursery_dirs = [d for d in nursery_dirs if os.path.isdir(d)]
 
-        # Count products per nursery
-        for f in sorted(files):
-            if f.endswith(".json"):
-                try:
-                    with open(os.path.join(latest, f)) as fh:
-                        data = json.load(fh)
-                    count = len(data) if isinstance(data, list) else 0
-                    name = f.replace(".json", "").replace("_", " ").title()
-                    lines.append(f"  {name}: {count} products")
-                except (json.JSONDecodeError, IOError):
-                    pass
+    if nursery_dirs:
+        # Read latest.json from each nursery directory for current totals
+        total_products = 0
+        total_in_stock = 0
+        nursery_lines = []
+        latest_date = None
+
+        for nursery_dir in nursery_dirs:
+            latest_path = os.path.join(nursery_dir, "latest.json")
+            if not os.path.exists(latest_path):
+                continue
+            try:
+                with open(latest_path) as fh:
+                    data = json.load(fh)
+                name = data.get("nursery_name") or os.path.basename(nursery_dir)
+                products = data.get("product_count", 0)
+                in_stock = data.get("in_stock_count", 0)
+                scraped = data.get("scraped_at", "")
+                if scraped and not latest_date:
+                    latest_date = scraped[:10]
+                total_products += products
+                total_in_stock += in_stock
+                nursery_lines.append(f"  {name}: {products} products ({in_stock} in stock)")
+            except (json.JSONDecodeError, IOError):
+                pass
+
+        date_str = latest_date or "unknown date"
+        lines.append(f"Latest snapshot ({date_str}): {len(nursery_lines)} nurseries")
+        lines.append(f"  Total: {total_products} products, {total_in_stock} in stock")
+        lines.extend(nursery_lines)
 
     # Check for latest digest
     digest_path = os.path.join(data_dir, "..", "dashboard", "digest-wa.txt")

@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "last_updated": "2026-03-20",
-  "session_count": 40,
+  "session_count": 41,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -101,7 +101,8 @@
         "Location pages auto-rebuild daily (build_location_pages.py, species-filtered \u2014 no non-plant items)",
         "Beginner's Guide page (/guide.html \u2014 SEO landing page for 'where to buy rare fruit trees Australia')",
         "Bare-Root 2026 guide (/bare-root-2026.html \u2014 seasonal SEO page targeting bare-root buyers, targets June season)",
-        "Internal guide links added to species/compare/variety page footers (2,460+ pages link to guide.html)"
+        "Internal guide links added to species/compare/variety page footers (2,460+ pages link to guide.html)",
+        "GSC analysis script (scrapers/gsc_analysis.py) — pulls impressions/clicks/CTR/queries via Search Console API, saves JSON report"
       ],
       "nursery_details": {
         "ross_creek": {
