@@ -33,6 +33,8 @@ NON_PLANT_KEYWORDS = [
     "herbicide", "concentrate spray", "shipping", "postage", "freight",
     "delivery charge", "gift card", "gift voucher", "gift certificate",
     "sharp shooter", "searles liquid", "ecofend",
+    "ornamental",  # ornamental trees/shrubs are not fruit trees
+    "asparagus",   # vegetable, not a fruit tree
 ]
 
 # Minimum nurseries for a compare page to be useful
@@ -96,7 +98,10 @@ def load_all_products(data_dir: Path) -> list[dict]:
         nursery_name = data.get("nursery_name") or NURSERY_NAMES.get(nursery_key, nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
-            if any(kw in title.lower() for kw in NON_PLANT_KEYWORDS):
+            title_lower = title.lower()
+            if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
+                continue
+            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
                 continue
             min_price = p.get("min_price")
             variants = p.get("variants", [])

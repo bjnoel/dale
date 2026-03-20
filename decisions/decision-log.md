@@ -1323,3 +1323,22 @@ in progress. Will be live in tomorrow's dashboard build.
 **Target queries:** "where to buy rare fruit trees Australia", "rare fruit trees online Australia", "exotic fruit tree nursery Australia", "buy tropical fruit trees Australia".
 **Expected outcome:** Google indexes the page within 1-2 weeks. Organic traffic starts within 1-3 months.
 **Status:** LIVE at treestock.com.au/guide.html
+
+---
+
+## DEC-079 — 2026-03-20 — Exclude Non-Fruit Products and Seed Sellers (DAL-14)
+
+**Decided by:** Dale
+**Decision:** Fix two categories of non-fruit products leaking into treestock.com.au: (1) ornamentals and asparagus in product titles, (2) seed packets from ForeverSeeds and other nurseries.
+**Rationale:**
+- Products like "Ornamental Plum", "Ornamental Pear", "Grape - Ornamental", "Asparagus" were appearing in the dashboard and digest. These are not fruit trees.
+- ForeverSeeds sells both grown seedling trees AND seed packets. Seed packets (e.g. "SOURSOP Seeds", "Finger Lime Seed 'Alstonville'") are not nursery stock — users need to grow them from seed, not buy a tree.
+- Other nurseries (Primal Fruits, Ross Creek) had occasional seed products that should be excluded.
+**What was built:**
+- Added "ornamental" and "asparagus" to NON_PLANT_KEYWORDS in all 7 scraper/builder files.
+- Added seed detection: re.search(r'\bseeds?\b', title) where "seedling" and "seedless" are not present.
+- Added "title_include" mode to FRUIT_FILTERS for forever-seeds, keeping only "fruit tree", "fruit plant", "vine plant", "fruiting" products (36 of 82 — cuts herbs, seed packets, non-fruit plants).
+- Updated is_fruit_product() in build-dashboard.py and daily_digest.py to handle "title_include" mode.
+- Added non-fruit filter to build_recent_highlights() in build-dashboard.py.
+- Dashboard rebuilt: ForeverSeeds 82 -> 36 products. All ornamentals and seed packets removed.
+**Status:** LIVE

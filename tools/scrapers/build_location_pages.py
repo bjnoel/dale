@@ -45,6 +45,8 @@ NON_PLANT_KEYWORDS = [
     "swamp paperbark", "river red gum", "lemon scented gum",
     "narrow-leaved ironbark", "flooded gum", "blackbutt",
     "resource book", "catalogue",
+    "ornamental",  # ornamental trees/shrubs are not fruit trees
+    "asparagus",   # vegetable, not a fruit tree
 ]
 
 # States to generate pages for
@@ -186,7 +188,12 @@ def match_title_to_species(title: str, lookup: dict) -> dict | None:
 
 def is_non_plant(title: str) -> bool:
     t = title.lower()
-    return any(kw in t for kw in NON_PLANT_KEYWORDS)
+    if any(kw in t for kw in NON_PLANT_KEYWORDS):
+        return True
+    # Exclude seed packets (not nursery-grown trees)
+    if re.search(r'\bseeds?\b', t) and 'seedling' not in t and 'seedless' not in t:
+        return True
+    return False
 
 
 def load_all_products(data_dir: Path) -> list[dict]:

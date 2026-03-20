@@ -14,6 +14,7 @@ Usage:
 """
 
 import json
+import re
 import sys
 from datetime import date, timedelta
 from pathlib import Path
@@ -30,6 +31,10 @@ FRUIT_FILTERS = {
         "mode": "tags",
         "include_tags": ["Fruit Trees & Edibles"],
     },
+    "forever-seeds": {
+        "mode": "title_include",
+        "include_keywords": ["fruit tree", "fruit plant", "vine plant", "fruiting"],
+    },
 }
 
 NON_PLANT_KEYWORDS = [
@@ -44,6 +49,8 @@ NON_PLANT_KEYWORDS = [
     "shipping", "postage", "freight", "delivery charge",
     "gift card", "gift voucher", "gift certificate",
     "sharp shooter", "searles liquid", "ecofend",
+    "ornamental",  # ornamental trees/shrubs are not fruit trees
+    "asparagus",   # vegetable, not a fruit tree
 ]
 
 # Backwards-compat: set of nurseries that ship to WA (used by build_history.py)
@@ -52,11 +59,16 @@ WA_NURSERIES = {k for k, states in SHIPPING_MAP.items() if "WA" in states}
 
 def is_fruit_product(product: dict, nursery_key: str) -> bool:
     """Check if product is fruit/edible (same logic as dashboard)."""
+    title_lower = product.get("title", "").lower()
+
     filt = FRUIT_FILTERS.get(nursery_key)
     if not filt or filt.get("mode") == "all":
-        # Still filter non-plant items
-        title_lower = product.get("title", "").lower()
-        return not any(kw in title_lower for kw in NON_PLANT_KEYWORDS)
+        if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
+            return False
+        # Skip seed packets
+        if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
+            return False
+        return True
 
     if filt.get("mode") == "tags":
         tags = product.get("tags", [])
@@ -66,6 +78,11 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
                 if tag.startswith(inc):
                     return True
         return False
+
+    if filt.get("mode") == "title_include":
+        include_keywords = filt.get("include_keywords", [])
+        return any(kw in title_lower for kw in include_keywords)
+
     return True
 
 

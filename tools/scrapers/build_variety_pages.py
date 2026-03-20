@@ -48,6 +48,8 @@ NON_PLANT_KEYWORDS = [
     "postage", "freight", "delivery", "sharp shooter", "searles",
     "richgro", "poss-off", "eco-oil", "eco oil", "seasol", "powerfeed",
     "yates", "osmocote", "dynamic lifter",
+    "ornamental",  # ornamental trees/shrubs are not fruit trees
+    "asparagus",   # vegetable, not a fruit tree
 ]
 
 
@@ -110,8 +112,12 @@ def load_all_products(data_dir: Path) -> list[dict]:
         raw_products = data.get("products", [])
         for p in raw_products:
             title = p.get("title", "").strip()
+            title_lower = title.lower()
             # Skip non-plant items
-            if any(kw in title.lower() for kw in NON_PLANT_KEYWORDS):
+            if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
+                continue
+            # Skip seed packets (not nursery-grown trees)
+            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
                 continue
             products.append({
                 "nursery_key": nursery_key,
@@ -344,8 +350,9 @@ def build_variety_index(entries: list[dict]) -> str:
             in_s = v["in_stock"]
             n_count = v["nursery_count"]
             price = f'${v["min_price"]:.2f}' if v["min_price"] else "—"
-            rows += f"""
-      <tr class="border-b border-gray-100 hover:bg-gray-50">
+            var_lower = v['variety'].lower().replace('"', '&quot;')
+        rows += f"""
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="{var_lower}">
         <td class="py-2 pr-4">
           <a href="/variety/{v['slug']}.html" class="text-green-800 hover:underline">{v['variety']}</a>
         </td>
@@ -356,7 +363,7 @@ def build_variety_index(entries: list[dict]) -> str:
 
         in_stock_count = sum(v["in_stock"] for v in varieties)
         species_sections += f"""
-  <section class="mb-8" id="{sp_slug}">
+  <section class="mb-8" id="{sp_slug}" data-sp="{sp.lower()}">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
       <a href="/species/{sp_slug}.html" class="hover:underline">{sp}</a>
       <span class="text-sm font-normal text-gray-500 ml-2">{len(varieties)} varieties · {in_stock_count} in stock</span>
@@ -395,14 +402,90 @@ def build_variety_index(entries: list[dict]) -> str:
   {breadcrumb}
 
   <h2 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Varieties for Sale in Australia</h2>
-  <p class="text-gray-600 mb-6">
+  <p class="text-gray-600 mb-4">
     Browse {total_varieties} named cultivars tracked across {len(by_species)} species.
     {total_in_stock} currently in stock across all Australian nurseries. Updated daily.
   </p>
 
+  <div class="mb-6">
+    <input id="varietySearch" type="search" placeholder="Search varieties or species (e.g. Hass, Bowen, Valencia...)"
+      class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+      autocomplete="off">
+    <p id="varietyCount" class="text-xs text-gray-400 mt-1">{total_varieties} varieties across {len(by_species)} species</p>
+  </div>
+
+  <div id="noResults" class="hidden text-center py-12 text-gray-500">
+    <p class="text-lg">No varieties found matching your search.</p>
+    <p class="text-sm mt-1">Try a different spelling or species name.</p>
+  </div>
+
   {species_sections}
 
 </main>
+
+<script>
+(function() {{
+  const input = document.getElementById('varietySearch');
+  const countEl = document.getElementById('varietyCount');
+  const noResultsEl = document.getElementById('noResults');
+  const sections = document.querySelectorAll('section[data-sp]');
+  const totalVarieties = {total_varieties};
+  const totalSpecies = {len(by_species)};
+
+  input.addEventListener('input', function() {{
+    const q = this.value.toLowerCase().trim();
+    let visibleVarieties = 0;
+    let visibleSpecies = 0;
+
+    sections.forEach(function(section) {{
+      const sp = section.getAttribute('data-sp');
+      const rows = section.querySelectorAll('tr[data-var]');
+      let sectionMatch = false;
+
+      if (!q) {{
+        // No filter: show everything
+        rows.forEach(r => r.style.display = '');
+        section.style.display = '';
+        sectionMatch = true;
+        visibleVarieties += rows.length;
+        visibleSpecies++;
+      }} else {{
+        // Filter rows by variety name or species name
+        const spMatch = sp.includes(q);
+        let rowsShown = 0;
+        rows.forEach(function(row) {{
+          const varName = row.getAttribute('data-var');
+          if (spMatch || varName.includes(q)) {{
+            row.style.display = '';
+            rowsShown++;
+          }} else {{
+            row.style.display = 'none';
+          }}
+        }});
+        if (rowsShown > 0) {{
+          section.style.display = '';
+          visibleVarieties += rowsShown;
+          visibleSpecies++;
+          sectionMatch = true;
+        }} else {{
+          section.style.display = 'none';
+        }}
+      }}
+    }});
+
+    if (!q) {{
+      countEl.textContent = totalVarieties + ' varieties across ' + totalSpecies + ' species';
+      noResultsEl.classList.add('hidden');
+    }} else if (visibleVarieties === 0) {{
+      countEl.textContent = 'No matches found';
+      noResultsEl.classList.remove('hidden');
+    }} else {{
+      countEl.textContent = visibleVarieties + ' varieties across ' + visibleSpecies + ' species';
+      noResultsEl.classList.add('hidden');
+    }}
+  }});
+}})();
+</script>
 
 {footer}
 

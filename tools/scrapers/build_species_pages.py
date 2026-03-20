@@ -35,6 +35,8 @@ NON_PLANT_KEYWORDS = [
     "herbicide", "concentrate spray", "shipping", "postage", "freight",
     "delivery charge", "gift card", "gift voucher", "gift certificate",
     "sharp shooter", "searles liquid", "ecofend",
+    "ornamental",  # ornamental trees/shrubs are not fruit trees
+    "asparagus",   # vegetable, not a fruit tree
 ]
 
 
@@ -87,6 +89,8 @@ def load_nursery_products(data_dir: Path) -> list[dict]:
             title = p.get("title", "")
             title_lower = title.lower()
             if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
+                continue
+            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
                 continue
             if title_lower in {"gift card", "gift voucher", "gift certificate"}:
                 continue

@@ -172,6 +172,11 @@ FRUIT_FILTERS = {
     "fruit-tree-cottage": {
         "mode": "all",  # Dedicated fruit tree nursery (Forest Glen, QLD)
     },
+    "forever-seeds": {
+        # Only include products that are grown plants/trees, not seed packets or herbs
+        "mode": "title_include",
+        "include_keywords": ["fruit tree", "fruit plant", "vine plant", "fruiting"],
+    },
 }
 
 
@@ -236,10 +241,18 @@ def build_recent_highlights(data_dir: Path) -> str:
                             "available": bool(v.get("available", False)),
                         }
 
+            _highlight_skip = ["ornamental", "asparagus", "fertiliz", "fertilis",
+                               "potting mix", "insecticide", "fungicide", "herbicide"]
             for p in curr_data.get("products", []):
                 title = p.get("title", "")
                 url = p.get("url", "")
                 variants = p.get("variants", [])
+                # Skip non-fruit products in highlights
+                _tl = title.lower()
+                if any(kw in _tl for kw in _highlight_skip):
+                    continue
+                if re.search(r'\bseeds?\b', _tl) and 'seedling' not in _tl and 'seedless' not in _tl:
+                    continue
 
                 if not variants:
                     # No variants — product-level comparison
@@ -376,6 +389,11 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
         include_prefixes = filt.get("include_prefixes", [])
         return any(cat.startswith(prefix) for prefix in include_prefixes)
 
+    if filt.get("mode") == "title_include":
+        title_lower = product.get("title", "").lower()
+        include_keywords = filt.get("include_keywords", [])
+        return any(kw in title_lower for kw in include_keywords)
+
     return True
 
 
@@ -510,8 +528,15 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "combo pack", "starter kit",
                 "sharp shooter", "searles liquid",
                 "irrigation", "tree sealant", "end stop terminator",
+                "ornamental",  # ornamental trees/shrubs are not fruit trees
+                "asparagus",   # vegetable, not a fruit tree
             ]
             if any(kw in title_lower for kw in non_plant_keywords):
+                continue
+
+            # Skip seed packets (not nursery-grown trees/plants)
+            # Match standalone "seed" or "seeds" but not "seedling" or "seedless"
+            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
                 continue
 
             # Skip standalone pot/planter products (but not "potted" plants)
@@ -725,8 +750,9 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     species_slugs_json = json.dumps(species_slugs, separators=(",", ":"))
 
     # Server-render species strip for SEO (crawlable <a> tags)
+    # data-q attribute drives JS filter; href preserved for crawlers/fallback
     species_strip_html = "\n".join(
-        f'<a href="/species/{s["sl"]}.html" class="species-pill">{s["cn"]} <span class="count">{s["in_stock"]}</span></a>'
+        f'<a href="/species/{s["sl"]}.html" class="species-pill" data-q="{s["cn"]}">{s["cn"]} <span class="count">{s["in_stock"]}</span></a>'
         for s in top_species
     )
 
@@ -751,9 +777,11 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .species-strip { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
   .species-strip::-webkit-scrollbar { height: 3px; }
   .species-strip::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
-  .species-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; text-decoration: none; transition: border-color 0.15s, background 0.15s; }
+  .species-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; text-decoration: none; transition: border-color 0.15s, background 0.15s; cursor: pointer; }
   .species-pill:hover { border-color: #22c55e; background: #f0fdf4; color: #065f46; }
-  .species-pill .count { color: #059669; font-weight: 600; font-size: 0.7rem; }"""
+  .species-pill.active { border-color: #16a34a; background: #dcfce7; color: #166534; font-weight: 600; }
+  .species-pill .count { color: #059669; font-weight: 600; font-size: 0.7rem; }
+  .species-pill.active .count { color: #15803d; }"""
 
     extra_head_tags = """<meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -1077,7 +1105,11 @@ function showMore() {{
 }}
 
 // Event listeners
-searchInput.addEventListener('input', search);
+searchInput.addEventListener('input', function() {{
+  // Clear active pill when user types manually
+  document.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
+  search();
+}});
 inStockOnly.addEventListener('change', search);
 stateFilter.addEventListener('change', function() {{
   search();
@@ -1088,6 +1120,29 @@ stateFilter.addEventListener('change', function() {{
 changesOnly.addEventListener('change', search);
 nurserySelect.addEventListener('change', search);
 sortBy.addEventListener('change', search);
+
+// Species strip pill click: filter homepage results (preserving all other filters)
+document.querySelectorAll('.species-pill[data-q]').forEach(function(pill) {{
+  pill.addEventListener('click', function(e) {{
+    e.preventDefault();
+    const q = this.getAttribute('data-q');
+    const isActive = this.classList.contains('active');
+    // Clear all active pills
+    document.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
+    if (isActive) {{
+      // Clicking an active pill clears the species filter
+      searchInput.value = '';
+    }} else {{
+      // Set species search and mark this pill active
+      searchInput.value = q;
+      this.classList.add('active');
+    }}
+    search();
+    // Scroll to results
+    const results = document.getElementById('results');
+    if (results) results.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+  }});
+}});
 
 // Initial render
 search();

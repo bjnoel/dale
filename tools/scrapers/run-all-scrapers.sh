@@ -145,3 +145,8 @@ echo "$LOG_PREFIX Species alert send complete."
 echo "$LOG_PREFIX Building location pages..."
 python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Location page build failed (non-fatal)"
 echo "$LOG_PREFIX Location pages complete."
+
+# Post-deploy smoke test — check key pages are up and correct size
+echo "$LOG_PREFIX Running post-deploy smoke test..."
+python3 "$SCRIPT_DIR/smoke_test.py" --quiet 2>&1 || echo "$LOG_PREFIX WARNING: Smoke test failed — alert sent to Benedict"
+echo "$LOG_PREFIX Smoke test complete."
