@@ -1,7 +1,7 @@
 {
-  "version": "0.1.0",
+  "version": "2.0.0",
   "last_updated": "2026-03-20",
-  "session_count": 38,
+  "session_count": 40,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -233,10 +233,28 @@
       "first_scrape_date": "2026-03-19",
       "days_of_data": 1,
       "retailer_details": {
-        "ecrotek": {"products": 410, "in_stock": 260, "platform": "Shopify", "location": "VIC"},
-        "the-bee-store": {"products": 320, "in_stock": 248, "platform": "Shopify"},
-        "buzzbee": {"products": 466, "in_stock": 386, "platform": "Shopify"},
-        "flow-hive": {"products": 67, "in_stock": 59, "platform": "Shopify", "location": "NSW"}
+        "ecrotek": {
+          "products": 410,
+          "in_stock": 260,
+          "platform": "Shopify",
+          "location": "VIC"
+        },
+        "the-bee-store": {
+          "products": 320,
+          "in_stock": 248,
+          "platform": "Shopify"
+        },
+        "buzzbee": {
+          "products": 466,
+          "in_stock": 386,
+          "platform": "Shopify"
+        },
+        "flow-hive": {
+          "products": 67,
+          "in_stock": 59,
+          "platform": "Shopify",
+          "location": "NSW"
+        }
       },
       "features": [
         "Daily scraping of 4 Shopify retailers",
@@ -256,7 +274,7 @@
     "email": "done \u2014 hello@walkthrough.au via Fastmail",
     "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), learning mode (15-min cap), 50 max turns",
+    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
     "resend": "done \u2014 dale@mail.walkthrough.au + mail.scion.exchange verified"
   }
 }
