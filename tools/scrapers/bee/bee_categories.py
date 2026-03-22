@@ -5,6 +5,8 @@ Used by dashboard and digest to classify products into browsable categories.
 Categories are matched against product titles and tags.
 """
 
+import re
+
 CATEGORIES = [
     {
         "slug": "hives-boxes",
@@ -12,7 +14,7 @@ CATEGORIES = [
         "keywords": [
             "hive", "brood box", "super", "nuc", "nucleus",
             "langstroth", "flow hive", "observation hive",
-            "lid", "roof", "base", "bottom board",
+            "hive lid", "roof", "bottom board",
             "queen excluder", "inner cover", "hive mat",
             "hive stand", "entrance reducer",
         ],
@@ -42,8 +44,8 @@ CATEGORIES = [
         "slug": "protective-gear",
         "name": "Protective Gear",
         "keywords": [
-            "suit", "jacket", "veil", "glove", "hat",
             "bee suit", "bee jacket", "bee veil", "bee gloves",
+            "suit", "jacket", "veil", "glove", "hat",
             "ventilated", "cotton suit", "mesh",
             "full suit", "half suit", "smock",
         ],
@@ -82,8 +84,8 @@ CATEGORIES = [
         "slug": "honey-containers",
         "name": "Honey Containers & Labels",
         "keywords": [
-            "jar", "bottle", "container", "honey jar",
-            "hex jar", "round jar", "squeeze bottle",
+            "honey jar", "hex jar", "round jar", "squeeze bottle",
+            "jar", "bottle", "container",
             "label", "tamper seal", "lid", "cap",
         ],
     },
@@ -98,7 +100,15 @@ CATEGORIES = [
 
 
 def categorise_product(title: str, tags: list[str] = None, product_type: str = "") -> str:
-    """Match a product to a category slug. Returns 'other' if no match."""
+    """Match a product to a category slug. Returns 'other' if no match.
+
+    Uses word-boundary matching to avoid false positives from short keywords
+    (e.g. 'hat' matching 'what', 'lid' matching 'liquid').
+
+    Multi-word keywords are checked before single-word keywords so more
+    specific terms (e.g. 'hive tool') win over general ones (e.g. 'hive').
+    Within each category, multi-word keywords are listed first as a convention.
+    """
     title_lower = title.lower()
     combined = title_lower
     if tags:
@@ -106,10 +116,18 @@ def categorise_product(title: str, tags: list[str] = None, product_type: str = "
     if product_type:
         combined += " " + product_type.lower()
 
+    # Build list of (keyword, slug) sorted by keyword length descending
+    # so multi-word (more specific) keywords are checked first.
+    all_keywords = []
     for cat in CATEGORIES:
         for kw in cat["keywords"]:
-            if kw in combined:
-                return cat["slug"]
+            all_keywords.append((kw, cat["slug"]))
+    all_keywords.sort(key=lambda x: len(x[0]), reverse=True)
+
+    for kw, slug in all_keywords:
+        pattern = r"\b" + re.escape(kw) + r"\b"
+        if re.search(pattern, combined):
+            return slug
 
     return "other"
 

@@ -7,6 +7,7 @@ Usage:
     python3 build_bee_dashboard.py /path/to/data/bee-stock /path/to/output/
 """
 
+import html as html_mod
 import json
 import re
 import sys
@@ -95,8 +96,20 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
             tags = p.get("tags", [])
             product_type = p.get("product_type", "")
 
+            # Decode HTML entities (Magento scrapers may return &amp;amp;amp; etc.)
+            prev_title = None
+            while prev_title != title:
+                prev_title = title
+                title = html_mod.unescape(title)
+            title = title.strip()
+
+            # Skip garbage titles: empty, whitespace-only, or special-char-only (e.g. '*', '**')
+            if len(re.sub(r'[^a-zA-Z0-9]', '', title)) < 3:
+                continue
+
             # Skip gift cards
-            if title.lower() in ("gift card", "gift voucher", "gift certificate"):
+            title_lower = title.lower()
+            if any(kw in title_lower for kw in ("gift card", "gift voucher", "gift certificate")):
                 continue
 
             # Categorise
@@ -442,7 +455,18 @@ function search() {{
   }} else if (q) {{
     results.sort((a, b) => (a._score || 0) - (b._score || 0));
   }} else {{
-    results.sort((a, b) => a.t.localeCompare(b.t));
+    // Relevance sort (no query): in-stock first, then items with changes, then alphabetic
+    const relevanceScore = p => {{
+      if (!p.a) return 3;
+      if (p.ch === 'new' || p.ch === 'back') return 0;
+      if (p.ch === 'down') return 1;
+      return 2;
+    }};
+    results.sort((a, b) => {{
+      const diff = relevanceScore(a) - relevanceScore(b);
+      if (diff !== 0) return diff;
+      return a.t.localeCompare(b.t);
+    }});
   }}
 
   currentResults = results;
@@ -466,7 +490,8 @@ function render() {{
 
   container.innerHTML = showing.map(p => {{
     let price = p.p ? ('$' + p.p.toFixed(2)) : '';
-    if (p.mp && p.p && p.mp > p.p + 0.01) price = '$' + p.p.toFixed(2) + ' - $' + p.mp.toFixed(2);
+    if (p.mp && p.p && p.mp > p.p * 4) price = 'from $' + p.p.toFixed(2);
+    else if (p.mp && p.p && p.mp > p.p + 0.01) price = '$' + p.p.toFixed(2) + ' - $' + p.mp.toFixed(2);
     const stockBadge = p.a
       ? '<span class="stock-badge in-stock">In stock</span>'
       : '<span class="stock-badge out-stock">Out of stock</span>';

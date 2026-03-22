@@ -1507,3 +1507,42 @@ in progress. Will be live in tomorrow's dashboard build.
 **DAL-31 — GSC weekly cron + morning summary:**
 - Weekly cron added: Sundays 07:00 UTC, runs gsc_analysis.py
 - notify.py now includes top-3 GSC metrics in daily morning summary email
+
+---
+
+## DEC-083 — 2026-03-22 — Session 46: Beestock quality fixes + species guides
+
+**Decided by:** Dale (autonomous)
+
+**DAL-49 — Beestock category taxonomy fix:**
+- Problem: "Hexagonal Glass Jar With Metal Twist Lid" matched "lid" in hives-boxes (first category) instead of honey-containers
+- Fix: Removed bare "lid" from hives-boxes; replaced with "hive lid" (more specific). Also upgraded matching to use word-boundary regex (prevents "hat" matching "what", "lid" matching "liquid"). Added keyword length sorting so multi-word keywords (e.g. "hive tool") are checked before single-word keywords (e.g. "hive").
+- Live at /opt/dale/scrapers/bee/bee_categories.py. Dashboard rebuilt.
+
+**DAL-53 — Fix misleading price ranges:**
+- Problem: Bulk quantity products show "$7 - $3920" (560x range), misleading users who don't know variants are 1-unit vs 500-unit packs
+- Fix: When max/min price ratio > 4x, display "from $X" instead of "$X - $Y". 98 products affected.
+- Also: gift card filter upgraded to substring matching (catches "The Bee Store Gift Card" etc.)
+- Live at build_bee_dashboard.py. Dashboard rebuilt.
+
+**DAL-48 — Garbage listings and title cleaning:**
+- Problem: buzzbee products with titles "*" (80 variants) and "**" (65 variants) showing on dashboard. Beewise Magento returning HTML entities (&amp;amp;amp; etc.)
+- Fix: Titles with fewer than 3 alphanumeric characters are now skipped. HTML entity decoding applied before any processing (handles multiple encoding passes).
+- Live at build_bee_dashboard.py. Dashboard rebuilt.
+
+**DAL-38 — Heritage Fruit Trees outreach:**
+- Outreach draft updated (stats: 327 products, 350-400 visitors/week), em dash removed
+- Heritage FT only has a contact form, no direct email. Posted draft to ticket, assigned to Benedict.
+
+**DAL-39 — Species growing guides:**
+- Added 200-300 word growing guides to 8 species: mango, fig, lychee, avocado, lemon, orange, mandarin, lime
+- Fixed sapodilla: removed incorrect "Tikal is most commonly available" claim (Tikal not in our data). Now references Krasuey, Ponderosa, Sawo Manilla (actually tracked by Ross Creek)
+- Principle: variety mentions are only made when backed by actual tracked data
+- All 50 species pages rebuilt
+
+**DAL-50 — Relevance sort fix:**
+- Problem: "Sort: Relevance" and "Sort: Name A-Z" produced identical results (both alphabetic)
+- Fix: Relevance sort (no query) now: (1) new/back-in-stock first, (2) price drops second, (3) normal in-stock, (4) out-of-stock last. Within each tier, alphabetic.
+- Live at build_bee_dashboard.py. Dashboard rebuilt.
+
+**New tickets proposed:** DAL-54 (beestock dated digest pages), DAL-55 (remaining species guides), DAL-56 (Tass1 Trees demo store), DAL-57 (MOONSHOT: price history charts), DAL-58 (Whirlpool forum strategy), DAL-59 (frame size badges), DAL-60 (MOONSHOT: seasonal planting calendar)
