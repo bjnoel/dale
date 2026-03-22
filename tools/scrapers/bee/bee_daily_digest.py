@@ -268,7 +268,13 @@ def format_html(all_changes: dict, target_date: str, state: str = "") -> str:
 </body></html>"""
 
 
-def format_html_page(all_changes: dict, target_date: str, state: str = "") -> str:
+def format_html_page(
+    all_changes: dict,
+    target_date: str,
+    state: str = "",
+    prev_date: str = None,
+    next_date: str = None,
+) -> str:
     """Format changes as a shareable web page."""
     sections_html, has_any = _build_change_sections(all_changes, state)
 
@@ -304,6 +310,31 @@ def format_html_page(all_changes: dict, target_date: str, state: str = "") -> st
 
     pills_html = " ".join(pills) if pills else ""
 
+    # Prev/next navigation
+    nav_parts = []
+    if prev_date:
+        nav_parts.append(
+            f'<a href="/digest/{prev_date}.html" class="text-sm text-yellow-800 hover:underline">'
+            f'&larr; {prev_date}</a>'
+        )
+    else:
+        nav_parts.append('<span></span>')
+    nav_parts.append(
+        '<a href="/digest/" class="text-sm text-gray-500 hover:underline">All digests</a>'
+    )
+    if next_date:
+        nav_parts.append(
+            f'<a href="/digest/{next_date}.html" class="text-sm text-yellow-800 hover:underline">'
+            f'{next_date} &rarr;</a>'
+        )
+    else:
+        nav_parts.append('<span></span>')
+    date_nav_html = (
+        '<div class="flex items-center justify-between mb-4">'
+        + "".join(nav_parts)
+        + "</div>"
+    )
+
     extra_style = """\
   a { color: #92400e; }
   a:hover { text-decoration: underline; }
@@ -313,6 +344,7 @@ def format_html_page(all_changes: dict, target_date: str, state: str = "") -> st
     head = render_head(
         title=f"Beekeeping Supply Update \u2014 {target_date} \u2014 beestock.com.au",
         description=f"Daily beekeeping supply price changes for {target_date}. Price drops, back in stock alerts, and new listings.",
+        canonical_url=f"https://beestock.com.au/digest/{target_date}.html",
         extra_style=extra_style,
     )
     header = render_header(
@@ -325,6 +357,7 @@ def format_html_page(all_changes: dict, target_date: str, state: str = "") -> st
 {header}
 
 <main class="max-w-2xl mx-auto px-4 py-6">
+  {date_nav_html}
   <div class="mb-6">
     <h2 class="text-2xl font-bold text-yellow-900 mb-2">{target_date}</h2>
     <div class="flex flex-wrap gap-2">{pills_html}</div>
@@ -339,6 +372,64 @@ def format_html_page(all_changes: dict, target_date: str, state: str = "") -> st
       <a href="/" class="font-medium">Search the dashboard &rarr;</a>
     </p>
   </div>
+</main>
+
+{footer}
+
+</body>
+</html>"""
+
+
+def build_digest_index(digest_dir: "Path") -> str:
+    """Build an archive index page listing all dated digest pages."""
+    from beestock_layout import render_head, render_header, render_footer
+
+    # Collect all dated digest files
+    entries = []
+    for f in sorted(digest_dir.glob("*.html"), reverse=True):
+        if f.stem == "index":
+            continue
+        try:
+            date.fromisoformat(f.stem)  # validate it's a date
+            entries.append(f.stem)
+        except ValueError:
+            continue
+
+    rows_html = []
+    for d in entries:
+        rows_html.append(
+            f'<li class="py-2 border-b border-gray-100 last:border-0">'
+            f'<a href="/digest/{d}.html" class="text-yellow-800 hover:underline font-medium">{d}</a>'
+            f"</li>"
+        )
+
+    if not rows_html:
+        content = '<p class="text-gray-500">No digest pages yet.</p>'
+    else:
+        content = f'<ul class="divide-y divide-gray-100">{"".join(rows_html)}</ul>'
+
+    extra_style = """\
+  a { color: #92400e; }
+  a:hover { text-decoration: underline; }"""
+
+    head = render_head(
+        title="Daily Digest Archive \u2014 beestock.com.au",
+        description="Archive of daily beekeeping supply price change digests.",
+        canonical_url="https://beestock.com.au/digest/",
+        extra_style=extra_style,
+    )
+    header = render_header(max_width="max-w-2xl", active_path="/digest.html")
+    footer = render_footer(max_width="max-w-2xl")
+
+    return f"""{head}
+{header}
+
+<main class="max-w-2xl mx-auto px-4 py-6">
+  <h2 class="text-2xl font-bold text-yellow-900 mb-4">Daily Digest Archive</h2>
+  <p class="text-sm text-gray-500 mb-6">
+    Daily price and stock changes across {len(SHIPPING_MAP)} Australian beekeeping retailers.
+  </p>
+  {content}
 </main>
 
 {footer}
@@ -368,16 +459,98 @@ def load_all_changes(data_dir: Path, target_date: str) -> tuple[dict, int]:
     return all_changes, total_changes
 
 
+def _update_sitemap_for_digests(digest_dir: "Path") -> None:
+    """Add dated digest pages to the site sitemap.xml."""
+    import re as _re
+    sitemap = digest_dir.parent / "sitemap.xml"
+    if not sitemap.exists():
+        return
+
+    content = sitemap.read_text()
+
+    # Remove existing digest entries (both new /digest/ and old /archive/digest- paths)
+    content = _re.sub(
+        r'\s*<url>\s*<loc>https://beestock\.com\.au/digest(?:/[^<]*)?</loc>.*?</url>',
+        '',
+        content,
+        flags=_re.DOTALL,
+    )
+    content = _re.sub(
+        r'\s*<url>\s*<loc>https://beestock\.com\.au/archive/digest-[^<]+</loc>.*?</url>',
+        '',
+        content,
+        flags=_re.DOTALL,
+    )
+
+    # Collect dated pages
+    entries = []
+    for f in sorted(digest_dir.glob("*.html"), reverse=True):
+        if f.stem == "index":
+            continue
+        try:
+            date.fromisoformat(f.stem)
+            entries.append(f.stem)
+        except ValueError:
+            continue
+
+    if not entries:
+        return
+
+    new_entries = ""
+    for d in entries:
+        priority = "0.7" if d == entries[0] else "0.4"
+        new_entries += f"""
+  <url>
+    <loc>https://beestock.com.au/digest/{d}.html</loc>
+    <lastmod>{d}</lastmod>
+    <changefreq>never</changefreq>
+    <priority>{priority}</priority>
+  </url>"""
+    # Also add index
+    new_entries += f"""
+  <url>
+    <loc>https://beestock.com.au/digest/</loc>
+    <lastmod>{entries[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>"""
+
+    content = content.replace("</urlset>", new_entries + "\n</urlset>")
+    sitemap.write_text(content)
+    print(f"Sitemap updated: {len(entries)} digest pages + index", file=sys.stderr)
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Generate daily bee stock change digest")
-    parser.add_argument("data_dir", help="Path to bee-stock directory")
+    parser.add_argument("data_dir", nargs="?", help="Path to bee-stock directory")
     parser.add_argument("--date", help="Date to compare (default: today)", default=None)
     parser.add_argument("--html", action="store_true", help="Output HTML (email format)")
     parser.add_argument("--page", action="store_true", help="Output HTML (shareable web page)")
     parser.add_argument("--state", help="Filter to retailers shipping to this state")
     parser.add_argument("--save", help="Save output to file")
+    parser.add_argument("--prev-date", help="Previous date for page navigation", default=None)
+    parser.add_argument("--next-date", help="Next date for page navigation", default=None)
+    parser.add_argument("--build-index", metavar="DIGEST_DIR",
+                        help="Build archive index.html in the given digest directory")
     args = parser.parse_args()
+
+    # Build-index mode: scan digest dir and write index.html + update sitemap
+    if args.build_index:
+        digest_dir = Path(args.build_index)
+        if not digest_dir.exists():
+            print(f"Error: {digest_dir} does not exist", file=sys.stderr)
+            sys.exit(1)
+        html = build_digest_index(digest_dir)
+        out = digest_dir / "index.html"
+        out.write_text(html)
+        print(f"Digest index written to {out}", file=sys.stderr)
+        # Update sitemap if it exists in the parent directory
+        _update_sitemap_for_digests(digest_dir)
+        return
+
+    if not args.data_dir:
+        parser.error("data_dir is required unless --build-index is used")
 
     data_dir = Path(args.data_dir)
     if not data_dir.exists():
@@ -389,7 +562,11 @@ def main():
     all_changes, total_changes = load_all_changes(data_dir, target_date)
 
     if args.page:
-        output = format_html_page(all_changes, target_date, state=state)
+        output = format_html_page(
+            all_changes, target_date, state=state,
+            prev_date=args.prev_date,
+            next_date=args.next_date,
+        )
     elif args.html:
         output = format_html(all_changes, target_date, state=state)
     else:

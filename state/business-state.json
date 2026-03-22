@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "last_updated": "2026-03-22",
-  "session_count": 46,
+  "session_count": 47,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -105,7 +105,7 @@
         "GSC analysis script (scrapers/gsc_analysis.py) \u2014 pulls impressions/clicks/CTR/queries via Search Console API, saves JSON report",
         "Sapodilla species page: 200-word growing guide (climate, care, varieties) for SEO",
         "Homepage layout fixed: species pills moved inside filter section (Rule #1 compliance)",
-        "Species growing guides (mango, fig, lychee, avocado, lemon, orange, mandarin, lime + sapodilla fix)"
+        "Species growing guides (all 50 species now have 150-220 word Australian growing guides)"
       ],
       "nursery_details": {
         "ross_creek": {
@@ -292,7 +292,9 @@
         "Price range display: bulk products (>4x ratio) show from $X instead of $X - $Y",
         "Garbage title filter: removes products with no alphanumeric content (e.g. **, *)",
         "HTML entity decoding: fixes Beewise Magento triple-encoded titles",
-        "Relevance sort: in-stock first, then changes (new/back/price drops), then alphabetic"
+        "Relevance sort: in-stock first, then changes (new/back/price drops), then alphabetic",
+        "Dated digest archive pages (/digest/YYYY-MM-DD.html with prev/next navigation + /digest/index.html)",
+        "Frame size badges (8-frame / 10-frame) on 214 products extracted from title"
       ],
       "next_action": "Share in WA beekeeping FB groups when ready. Benedict: confirm beestock.com.au is in Plausible admin (data.bjnoel.com)."
     }

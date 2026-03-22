@@ -46,20 +46,54 @@ fi
 # Generate daily digest
 echo "$LOG_PREFIX Generating daily digest..."
 TODAY=$(date '+%Y-%m-%d')
-ARCHIVE_DIR="$BEE_DASHBOARD_DIR/archive"
-mkdir -p "$ARCHIVE_DIR"
+YESTERDAY=$(date -d 'yesterday' '+%Y-%m-%d' 2>/dev/null || date -v-1d '+%Y-%m-%d')
+DIGEST_DIR="$BEE_DASHBOARD_DIR/digest"
+mkdir -p "$DIGEST_DIR"
 
-# Text digest
+# Text digest (plain, for email)
 python3 "$SCRIPT_DIR/bee_daily_digest.py" "$PROJECT_DIR/data/bee-stock" \
     --save "$BEE_DASHBOARD_DIR/digest.txt" 2>&1
 
-# Shareable web page digest
+# Dated shareable page at /digest/YYYY-MM-DD.html
+PREV_ARG=""
+if [ -f "$DIGEST_DIR/$YESTERDAY.html" ]; then
+    PREV_ARG="--prev-date $YESTERDAY"
+fi
 python3 "$SCRIPT_DIR/bee_daily_digest.py" "$PROJECT_DIR/data/bee-stock" \
-    --page --save "$BEE_DASHBOARD_DIR/digest.html" 2>&1
+    --page --date "$TODAY" $PREV_ARG \
+    --save "$DIGEST_DIR/$TODAY.html" 2>&1
 
-# Archive dated copy
-cp "$BEE_DASHBOARD_DIR/digest.html" "$ARCHIVE_DIR/digest-$TODAY.html"
-echo "$LOG_PREFIX Digest complete (archived as $TODAY)."
+# Update yesterday's page to add a "next" link pointing to today
+if [ -f "$DIGEST_DIR/$YESTERDAY.html" ]; then
+    DAY_BEFORE=$(date -d '2 days ago' '+%Y-%m-%d' 2>/dev/null || date -v-2d '+%Y-%m-%d')
+    PREV2_ARG=""
+    if [ -f "$DIGEST_DIR/$DAY_BEFORE.html" ]; then
+        PREV2_ARG="--prev-date $DAY_BEFORE"
+    fi
+    python3 "$SCRIPT_DIR/bee_daily_digest.py" "$PROJECT_DIR/data/bee-stock" \
+        --page --date "$YESTERDAY" $PREV2_ARG --next-date "$TODAY" \
+        --save "$DIGEST_DIR/$YESTERDAY.html" 2>&1
+fi
+
+# Also write a non-dated /digest.html that redirects to today's dated page
+cat > "$BEE_DASHBOARD_DIR/digest.html" << HTMLEOF
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="0; url=/digest/$TODAY.html">
+<title>Redirecting...</title>
+</head>
+<body>
+<p>Redirecting to <a href="/digest/$TODAY.html">today's digest</a>...</p>
+</body>
+</html>
+HTMLEOF
+
+# Build archive index page
+python3 "$SCRIPT_DIR/bee_daily_digest.py" --build-index "$DIGEST_DIR" 2>&1
+
+echo "$LOG_PREFIX Digest complete (dated page at /digest/$TODAY.html)."
 
 # Build category landing pages (SEO)
 echo "$LOG_PREFIX Building category pages..."

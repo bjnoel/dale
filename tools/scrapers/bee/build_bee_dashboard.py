@@ -18,6 +18,17 @@ from bee_retailers import SHIPPING_MAP, RETAILER_NAMES
 from bee_categories import categorise_product, CATEGORIES, CATEGORY_NAMES
 from beestock_layout import render_head, render_header, render_footer, SITE_NAME, LOGO_SVG
 
+# Matches "8 frame", "10 frame", "8-frame", "10-frame" etc. in product titles
+_FRAME_SIZE_RE = re.compile(r'\b(8|10)\s*-?\s*frame\b', re.IGNORECASE)
+
+
+def extract_frame_size(title: str) -> str | None:
+    """Return '8' or '10' if the title specifies a frame size, else None."""
+    m = _FRAME_SIZE_RE.search(title)
+    if m:
+        return m.group(1)  # '8' or '10'
+    return None
+
 
 def _variant_key(product_url: str, variant: dict) -> str:
     """Generate a unique key for a specific variant within a product."""
@@ -143,6 +154,7 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
                 all_prices = [float(v.get("price", 0)) for v in variants if v.get("price")]
                 max_price = max(avail_prices) if avail_prices else (max(all_prices) if all_prices else None)
 
+            frame_size = extract_frame_size(title)
             product_data = {
                 "t": title,
                 "n": p.get("retailer_name", retailer_name),
@@ -153,6 +165,8 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
                 "sale": bool(on_sale),
                 "cat": cat,
             }
+            if frame_size:
+                product_data["fs"] = frame_size
 
             if max_price and min_price and max_price > min_price + 0.01:
                 product_data["mp"] = round(max_price, 2)
@@ -268,6 +282,7 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   .sale-badge { background: #fee2e2; color: #991b1b; }
   .new-badge { background: #dbeafe; color: #1e40af; }
   .back-badge { background: #d1fae5; color: #065f46; font-weight: 600; }
+  .frame-badge { background: #fef3c7; color: #78350f; font-size: 0.65rem; padding: 2px 6px; border-radius: 9999px; }
   .price-down { color: #059669; font-weight: 600; }
   .price-up { color: #dc2626; }
   .in-stock { background: #d1fae5; color: #065f46; }
@@ -498,6 +513,7 @@ function render() {{
     const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
     const catName = CATEGORY_NAMES[p.cat] || '';
     const catBadge = catName ? `<span class="cat-tag">${{catName}}</span>` : '';
+    const frameBadge = p.fs ? `<span class="frame-badge">${{p.fs}}-frame</span>` : '';
 
     let changeBadge = '';
     if (p.ch === 'new') changeBadge = '<span class="stock-badge new-badge">New</span>';
@@ -515,7 +531,7 @@ function render() {{
         <div class="font-medium text-sm">${{p.t}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
           <span class="retailer-tag">${{p.n}}</span>
-          ${{catBadge}} ${{stockBadge}} ${{saleBadge}} ${{changeBadge}}
+          ${{catBadge}} ${{frameBadge}} ${{stockBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
       <div class="text-right flex-shrink-0">

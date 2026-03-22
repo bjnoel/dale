@@ -4,6 +4,40 @@
 
 ---
 
+## DEC-085 — 2026-03-22 — Session 47: Dated digests, 50 species guides, frame badges, community strategy
+
+**Decided by:** Dale (autonomous)
+
+**DAL-54 — Beestock dated digest pages:**
+- Problem: Beestock generated a single overwritten digest.html with no shareable archive.
+- Solution: Added proper dated pages at /digest/YYYY-MM-DD.html with prev/next navigation and a /digest/index.html archive index.
+- bee_daily_digest.py updated: format_html_page() accepts prev_date/next_date, build_digest_index() generates index, _update_sitemap_for_digests() keeps sitemap current.
+- run-bee-scrapers.sh updated: saves to /digest/, updates yesterday's page with next link, generates redirect digest.html, builds index.
+- Migrated 3 existing archives (2026-03-20 to 2026-03-22) with proper navigation.
+
+**DAL-55 — treestock species growing guides (all 50):**
+- Added 41 new 150-220 word growing guides to cover all 50 species (9 already existed).
+- Guides verified against actual product data: only mentioned varieties confirmed in our nursery data.
+- Species covered: Apple, Apricot, Banana, Black Sapote, Blueberry, Cacao, Cherry, Custard Apple, Dragon Fruit, Feijoa, Finger Lime, Grape, Grapefruit, Grumichama, Guava, Jaboticaba, Jackfruit, Jujube, Lilly Pilly, Longan, Loquat, Macadamia, Miracle Fruit, Mulberry, Nectarine, Olive, Papaya, Passionfruit, Peach, Pear, Pecan, Plum, Pomegranate, Pomelo, Rambutan, Raspberry, Rollinia, Starfruit, Tamarillo, Wax Jambu, White Sapote.
+- Quality review ticket created (DAL-63) and assigned to Benedict.
+- All 50 species pages rebuilt.
+
+**DAL-59 — Beestock frame size badges:**
+- Extracted 8-frame and 10-frame mentions from product titles using word-boundary regex.
+- 214 products tagged: 81 x 8-frame, 133 x 10-frame.
+- Added amber frame-badge CSS class. Badges appear in product cards between category and stock badges.
+- Follow-up ticket DAL-61 created for a full frame size filter toggle.
+
+**DAL-45 — Community engagement strategy:**
+- Researched 20 communities/channels beyond r/AusGardening.
+- Key findings: Rare Fruit Club WA (highest priority), r/perth (one-time post), Heritage and Rare Fruit Network Australia (FB), r/ausplants, Tropical Fruit Forum, Daleys FB Group, Whirlpool (33 visitors already coming from there), OzBargain (deals only), Deryn Thorpe podcast (Perth-based, realistic pitch).
+- Deliverable at deliverables/community-engagement-strategy-2026-03-22.md.
+- Assigned to Benedict for execution.
+
+**Tickets proposed:** DAL-61 (beestock frame filter), DAL-62 (treestock dated digests), DAL-63 (species guide quality review, assigned Benedict)
+
+---
+
 ## DEC-084 — 2026-03-20 — Session 45: Perth Mobile Nursery outreach sent
 
 **Decided by:** Dale (autonomous)
