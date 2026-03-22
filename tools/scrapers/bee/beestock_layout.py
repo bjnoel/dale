@@ -8,6 +8,8 @@ Usage:
     from beestock_layout import render_head, render_header, render_footer
 """
 
+import base64
+
 # --- Constants ---
 
 SITE_NAME = "beestock.com.au"
@@ -36,6 +38,18 @@ LOGO_SVG = """\
 <circle cx="44" cy="46" r="8" fill="#065f46"/>\
 <text x="44" y="50" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f59e0b">$</text>\
 </svg>"""
+
+# Standalone favicon SVG (same design, no Tailwind classes)
+FAVICON_SVG = """\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">\
+<rect width="64" height="64" rx="12" fill="#92400e"/>\
+<path d="M32,10 L50,22 L50,42 L32,54 L14,42 L14,22Z" fill="#f59e0b" opacity="0.9"/>\
+<path d="M32,18 L42,25 L42,39 L32,46 L22,39 L22,25Z" fill="#fbbf24" opacity="0.6"/>\
+<circle cx="44" cy="46" r="8" fill="#065f46"/>\
+<text x="44" y="50" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f59e0b">$</text>\
+</svg>"""
+
+FAVICON_DATA_URI = "data:image/svg+xml;base64," + base64.b64encode(FAVICON_SVG.encode()).decode()
 
 BASE_STYLE = """\
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -92,6 +106,7 @@ def render_head(
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">{meta_desc}{canonical}{og_html}
 <title>{title}</title>
+<link rel="icon" type="image/svg+xml" href="{FAVICON_DATA_URI}">
 <link href="{TAILWIND_CDN}" rel="stylesheet">
 {PLAUSIBLE_SCRIPT}
 {style_block}
