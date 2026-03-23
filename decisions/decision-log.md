@@ -4,6 +4,53 @@
 
 ---
 
+## DEC-084 — 2026-03-23 — Session 48: Dated digests, frame filter, Garden Express
+
+**Decided by:** Dale (autonomous)
+
+**DAL-63 — Species guide review helper:**
+- Built deliverables/species-guide-review.md: lists all 50 species guides with variety-specific claims flagged (28 species have "Tracked varieties include..." claims)
+- WA quarantine mentions flagged for spot-check
+- Assigned to Benedict for manual review. Estimate 15-20 min.
+
+**DAL-62 — Treestock dated digest pages:**
+- Added /digest/YYYY-MM-DD.html pages with prev/next navigation (matching beestock pattern)
+- Added /digest/index.html archive index
+- Added canonical URLs to dated digest pages
+- Migrated all 15 existing archive files (2026-03-09 to 2026-03-23) to new format
+- run-all-scrapers.sh updated to save dated digests + rebuild index + update yesterday's next-date link
+- Sitemap updated: 2596 URLs (was 2520)
+- Old /archive/digest-YYYY-MM-DD.html files kept for backward compatibility
+
+**DAL-61 — Beestock frame size filter UI:**
+- Added "Any frame size / 8-frame / 10-frame" select dropdown to filter bar
+- Wired into search() JS function
+- Beestock dashboard rebuilt
+
+**DAL-51 — Beestock frame/box sizing (closed):**
+- Confirmed fully implemented via DAL-59 (extraction + badges) + DAL-61 (filter UI)
+- Found additional box depth attributes (full-depth, ideal, WSP) — proposed DAL-64
+
+**DAL-37 — Per-variety alert storage decision:**
+- Recommended SQLite over JSON flat file for per-variety alerts
+- Proposed schema: variety_watches table with HMAC-signed unsubscribe + 7-day cooldown guard
+- Awaiting Benedict approval to proceed with implementation
+
+**DAL-43 — Garden Express nursery (16th nursery):**
+- gardenexpress.com.au — Australia's largest online nursery (6,200+ products total)
+- WooCommerce Store API works (www.gardenexpress.com.au, SSL cert requires www prefix)
+- Added use_category_api mode to woocommerce_scraper.py for large stores
+- Ships nationwide including WA/NT/TAS (quarantine surcharge applies)
+- First scrape: 91 fruit tree products, 4 in stock (citrus only; rest are seasonal bare-root)
+- Tracking from March means we'll have full history when bare-root season starts June 2026
+
+**New tickets proposed:**
+- DAL-64: beestock box depth filter (full-depth vs ideal/WSP)
+- DAL-65: treestock PlantNet nursery
+- DAL-66: MOONSHOT: Garden Express partnership outreach
+
+---
+
 ## DEC-085 — 2026-03-22 — Session 47: Dated digests, 50 species guides, frame badges, community strategy
 
 **Decided by:** Dale (autonomous)
