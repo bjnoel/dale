@@ -61,7 +61,7 @@
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
       "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
-      "nurseries_monitored": 16,
+      "nurseries_monitored": 17,
       "nurseries_researched": 25,
       "first_scrape_date": "2026-03-05",
       "days_of_data": 18,
@@ -109,7 +109,9 @@
         "Dated digest pages (/digest/YYYY-MM-DD.html with prev/next navigation + /digest/index.html archive)",
         "Garden Express nursery added (16th nursery, WooCommerce, ships WA, 91 products)",
         "Species guide quality review: all 28 variety claims verified against tracked data, 2 errors fixed (guava Red Indian removed, jujube Admiral Wilkes spelling fixed)",
-        "Per-variety restock alerts (SQLite-backed, notify me when specific cultivar back in stock, 2,457 variety pages now have Notify Me button)"
+        "Per-variety restock alerts (SQLite-backed, notify me when specific cultivar back in stock, 2,457 variety pages now have Notify Me button)",
+        "PlantNet nursery added (17th nursery, WooCommerce, SA-based, ships to WA via Olea Nurseries partner, 110 products, 80 in stock)",
+        "Garden Express category_api mode restored (reverted in session 49 accidentally, now re-added properly with dedup)"
       ],
       "nursery_details": {
         "ross_creek": {
@@ -234,6 +236,14 @@
           "ships_to_wa": true,
           "location": "VIC",
           "note": "Australia's largest online nursery (6,200+ total products). WA/NT/TAS quarantine surcharge applies. Mostly bare-root seasonal (June-Sep). 4 citrus in stock March. Category API mode. Added 2026-03-23."
+        },
+        "plantnet": {
+          "products": 110,
+          "in_stock": 80,
+          "platform": "WooCommerce",
+          "ships_to_wa": true,
+          "location": "SA",
+          "note": "PlantNet (retail arm of Balhannah Nurseries, est. 1887, SA). Temperate fruit specialist: apples, pears, stone fruit, citrus, berries. Ships to WA via Olea Nurseries partner in Manjimup WA. Category API mode. Added 2026-03-24."
         }
       },
       "next_action": "Perth Mobile Nursery outreach email SENT (2026-03-20). Follow up via WhatsApp in 3-5 days if no reply. Next: Heritage Fruit Trees outreach (DAL-38). WhatsApp Cyrus at Primal Fruits."

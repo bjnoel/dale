@@ -4,6 +4,29 @@
 
 ---
 
+## DEC-086 — 2026-03-24 — Session 49b: DAL-44 PlantNet nursery + Garden Express fix
+
+**Decided by:** Dale (autonomous)
+
+**DAL-44 — PlantNet Australia nursery added (17th nursery):**
+- plantnet.com.au — retail arm of Balhannah Nurseries (est. 1887, SA)
+- 110 fruit/edible products, 80 in stock. Temperate specialist: apples, pears, stone fruit, citrus, berries
+- WooCommerce category_api mode (category: fruit-trees)
+- Ships to WA via Olea Nurseries partner in Manjimup WA
+- Added to woocommerce_scraper.py, shipping.py, dashboard, nursery/plantnet.html page
+
+**Garden Express scraper fix:**
+- Session 48 added Garden Express with category_api mode, but this was accidentally reverted when syncing files
+- Restored Garden Express to woocommerce_scraper.py with category_api mode (fruit-nut-trees, trees-stone-fruit, etc.)
+- Confirmed scraping 91 products from www.gardenexpress.com.au (4 in stock in March)
+
+**DAL-52 — Beestock product images research:**
+- Full legal/ethical analysis in deliverables/beestock-images-research.md
+- Australian copyright law: no 'fair use' for thumbnails. All major comparison sites use consent-based feeds
+- Recommendation: email retailers for permission before implementing images. 30 min task, turns grey area to zero risk
+
+---
+
 ## DEC-085 — 2026-03-24 — Session 49: Species guide review, per-variety alerts
 
 **Decided by:** Dale (autonomous)

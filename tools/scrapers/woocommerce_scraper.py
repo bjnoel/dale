@@ -42,6 +42,35 @@ NURSERIES = {
             "fruit-tree-hybrid", "specials-discounts",
         ],
     },
+    "garden-express": {
+        # Australia's largest online nursery (6,200+ products total, mostly non-fruit).
+        # Use category_api mode to fetch only the fruit/nut categories — avoids paginating 60+ pages.
+        # Ships nationwide incl. WA/NT/TAS (quarantine surcharge applies).
+        # Mostly bare-root seasonal (June-Sep); only citrus in stock March.
+        "name": "Garden Express",
+        "domain": "www.gardenexpress.com.au",
+        "location": "VIC",
+        "category_api": True,
+        "fruit_categories": [
+            "fruit-nut-trees",
+            "trees-stone-fruit",
+            "trees-apples-pears",
+            "trees-avocados",
+            "fruiting-vines",
+            "fruit-trees-2025",
+        ],
+    },
+    "plantnet": {
+        # PlantNet (retail arm of Balhannah Nurseries, est. 1887, SA).
+        # Ships to WA via their Olea Nurseries partner in Manjimup WA.
+        # Temperate fruit specialist: apples, pears, stone fruit, berries, citrus.
+        # ~110 products in fruit-trees category.
+        "name": "PlantNet",
+        "domain": "plantnet.com.au",
+        "location": "Balhannah, SA",
+        "category_api": True,
+        "fruit_categories": ["fruit-trees"],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
@@ -70,11 +99,16 @@ def scrape_woocommerce(nursery_key, config):
     """Scrape all products from a WooCommerce store."""
     domain = config["domain"]
     fruit_cats = config.get("fruit_categories", [])
+    use_category_api = config.get("category_api", False)
+
+    print(f"Scraping {config['name']} ({domain})...")
+
+    if use_category_api:
+        return _scrape_by_category(nursery_key, config, domain, fruit_cats)
+
     all_products = []
     page = 1
     per_page = 100
-
-    print(f"Scraping {config['name']} ({domain})...")
 
     while True:
         url = f"https://{domain}/wp-json/wc/store/v1/products?per_page={per_page}&page={page}"
@@ -104,6 +138,37 @@ def scrape_woocommerce(nursery_key, config):
 
         page += 1
         time.sleep(REQUEST_DELAY)
+
+    print(f"  Total fruit/edible: {len(all_products)} products")
+    return all_products
+
+
+def _scrape_by_category(nursery_key, config, domain, fruit_cats):
+    """Fetch products by iterating specific category slugs (for large stores)."""
+    seen_ids = set()
+    all_products = []
+    per_page = 100
+
+    for cat_slug in fruit_cats:
+        page = 1
+        cat_new = 0
+        while True:
+            url = (f"https://{domain}/wp-json/wc/store/v1/products"
+                   f"?per_page={per_page}&page={page}&category={cat_slug}")
+            data = fetch_json(url)
+            if not data:
+                break
+            for product in data:
+                pid = product.get("id")
+                if pid and pid not in seen_ids:
+                    seen_ids.add(pid)
+                    all_products.append(product)
+                    cat_new += 1
+            if len(data) < per_page:
+                break
+            page += 1
+            time.sleep(REQUEST_DELAY)
+        print(f"  Category '{cat_slug}'... {cat_new} ({cat_new} new, {len(all_products)} total)")
 
     print(f"  Total fruit/edible: {len(all_products)} products")
     return all_products

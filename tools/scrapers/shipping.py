@@ -23,6 +23,8 @@ SHIPPING_MAP = {
     "perth-mobile-nursery": ["WA"],                                             # WA-based, Perth metro delivery only
     "yalca-fruit-trees": ["NSW", "VIC", "QLD", "SA", "ACT"],                   # Does not ship to WA, NT, or TAS. Seasonal: late June to Sep 15 only.
     "forever-seeds": ["NSW", "VIC", "QLD", "SA", "ACT"],                       # NSW-based. Does not ship to WA, NT, or TAS.
+    "garden-express": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],  # Ships nationwide; quarantine surcharge for WA/NT/TAS.
+    "plantnet": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],              # SA-based. Ships to WA via Olea Nurseries partner (Manjimup WA).
 }
 
 NURSERY_NAMES = {
@@ -41,6 +43,8 @@ NURSERY_NAMES = {
     "perth-mobile-nursery": "Perth Mobile Nursery",
     "yalca-fruit-trees": "Yalca Fruit Trees",
     "forever-seeds": "Forever Seeds",
+    "garden-express": "Garden Express",
+    "plantnet": "PlantNet",
 }
 
 
