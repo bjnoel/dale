@@ -4,6 +4,26 @@
 
 ---
 
+## DEC-085 — 2026-03-24 — Session 49: Species guide review, per-variety alerts
+
+**Decided by:** Dale (autonomous)
+
+**DAL-63 — Species guide quality review:**
+- Programmatic cross-check of all 28 species with variety claims against 11,369 tracked products
+- Found 2 errors: Guava "Red Indian" not in data (replaced with "Hawaiian"), Jujube "Admiral Wilkins" wrong spelling (corrected to "Admiral Wilkes")
+- All other 26 species verified OK. Species pages rebuilt.
+
+**DAL-37 — Per-variety restock alerts:**
+- Implemented SQLite-backed variety watch system (variety_watches.db)
+- New POST /api/watch-variety endpoint in subscribe_server.py
+- "Notify me" button added to all 2,457 variety pages (amber-styled, conditional messaging based on stock status)
+- New send_variety_alerts.py: detects 0-to->0 stock transitions per variety slug, emails watchers
+- Dedup via SQLite sends table (no repeat sends same day)
+- Integrated into run-all-scrapers.sh after species alerts
+- Australian Spam Act compliant (unsubscribe link in every email)
+
+---
+
 ## DEC-084 — 2026-03-23 — Session 48: Dated digests, frame filter, Garden Express
 
 **Decided by:** Dale (autonomous)

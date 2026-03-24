@@ -141,6 +141,11 @@ echo "$LOG_PREFIX Sending species restock alerts..."
 python3 "$SCRIPT_DIR/send_species_alerts.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Species alert send failed (non-fatal)"
 echo "$LOG_PREFIX Species alert send complete."
 
+# Send per-variety restock alerts to watchers
+echo "$LOG_PREFIX Sending variety restock alerts..."
+python3 "$SCRIPT_DIR/send_variety_alerts.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Variety alerts failed (non-fatal)"
+echo "$LOG_PREFIX Variety alert send complete."
+
 # Build location pages (WA/QLD/NSW/VIC, fruit-species-filtered)
 echo "$LOG_PREFIX Building location pages..."
 python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Location page build failed (non-fatal)"

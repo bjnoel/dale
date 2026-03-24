@@ -22,6 +22,7 @@ import hashlib
 import hmac
 import json
 import re
+import sqlite3
 import subprocess
 import sys
 from datetime import datetime
@@ -33,7 +34,34 @@ SCRIPT_DIR = Path(__file__).parent
 
 SUBSCRIBERS_FILE = Path("/opt/dale/data/subscribers.json")
 APP_ENV = Path("/opt/dale/secrets/app.env")
+VARIETY_WATCHES_DB = Path("/opt/dale/data/variety_watches.db")
 PORT = 8099
+
+
+def init_variety_watches_db():
+    """Initialise the SQLite DB for per-variety restock watches."""
+    VARIETY_WATCHES_DB.parent.mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(VARIETY_WATCHES_DB)
+    con.executescript("""
+        CREATE TABLE IF NOT EXISTS watches (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            variety_slug TEXT NOT NULL,
+            species_slug TEXT NOT NULL,
+            variety_title TEXT NOT NULL,
+            added_at TEXT NOT NULL,
+            UNIQUE(email, variety_slug)
+        );
+        CREATE TABLE IF NOT EXISTS sends (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            variety_slug TEXT NOT NULL,
+            sent_at TEXT NOT NULL,
+            UNIQUE(email, variety_slug, sent_at)
+        );
+    """)
+    con.commit()
+    con.close()
 
 
 def get_unsubscribe_secret() -> str:
@@ -113,12 +141,81 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):
-        if self.path not in ("/subscribe", "/api/subscribe"):
+        if self.path not in ("/subscribe", "/api/subscribe", "/api/watch-variety", "/api/unwatch-variety"):
             self.send_error(404)
             return
 
         content_length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(content_length).decode()
+
+        # Handle per-variety watch
+        if self.path == "/api/watch-variety":
+            try:
+                data = json.loads(body)
+            except json.JSONDecodeError:
+                self.send_json(400, {"error": "Invalid JSON"})
+                return
+            email = data.get("email", "").strip().lower()
+            variety_slug = data.get("variety_slug", "").strip()
+            species_slug = data.get("species_slug", "").strip()
+            variety_title = data.get("variety_title", "").strip()
+            if not email or not is_valid_email(email):
+                self.send_json(400, {"error": "Valid email required"})
+                return
+            if not variety_slug:
+                self.send_json(400, {"error": "variety_slug required"})
+                return
+            added_at = datetime.now().isoformat()
+            try:
+                con = sqlite3.connect(VARIETY_WATCHES_DB)
+                cur = con.execute(
+                    "INSERT OR IGNORE INTO watches (email, variety_slug, species_slug, variety_title, added_at) "
+                    "VALUES (?, ?, ?, ?, ?)",
+                    (email, variety_slug, species_slug, variety_title, added_at),
+                )
+                con.commit()
+                inserted = cur.rowcount > 0
+                con.close()
+            except sqlite3.Error as e:
+                self.send_json(500, {"error": f"DB error: {e}"})
+                return
+            if inserted:
+                print(f"Variety watch added: {email} -> {variety_slug}")
+                self.send_json(201, {"message": "Alert set!", "variety_slug": variety_slug})
+            else:
+                self.send_json(200, {"message": "Already watching", "variety_slug": variety_slug})
+            return
+
+        # Handle per-variety unwatch
+        if self.path == "/api/unwatch-variety":
+            try:
+                data = json.loads(body)
+            except json.JSONDecodeError:
+                self.send_json(400, {"error": "Invalid JSON"})
+                return
+            email = data.get("email", "").strip().lower()
+            token = data.get("token", "").strip()
+            variety_slug = data.get("variety_slug", "").strip()
+            if not email or not token or not verify_unsubscribe_token(email, token):
+                self.send_json(403, {"error": "Invalid token"})
+                return
+            if not variety_slug:
+                self.send_json(400, {"error": "variety_slug required"})
+                return
+            try:
+                con = sqlite3.connect(VARIETY_WATCHES_DB)
+                con.execute(
+                    "DELETE FROM watches WHERE email = ? AND variety_slug = ?",
+                    (email, variety_slug),
+                )
+                con.commit()
+                con.close()
+            except sqlite3.Error as e:
+                self.send_json(500, {"error": f"DB error: {e}"})
+                return
+            print(f"Variety watch removed: {email} -> {variety_slug}")
+            self.send_json(200, {"message": "Alert removed"})
+            return
 
         # Support both form-encoded and JSON
         if self.headers.get("Content-Type", "").startswith("application/json"):
@@ -362,6 +459,9 @@ def main():
     if "--port" in sys.argv:
         idx = sys.argv.index("--port")
         port = int(sys.argv[idx + 1])
+
+    init_variety_watches_db()
+    print(f"Variety watches DB initialised at {VARIETY_WATCHES_DB}")
 
     server = HTTPServer(("127.0.0.1", port), SubscribeHandler)
     print(f"Subscribe server listening on 127.0.0.1:{port}")

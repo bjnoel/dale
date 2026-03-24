@@ -209,6 +209,11 @@ def build_variety_page(slug: str, data: dict) -> str:
     in_stock_count = len(in_stock)
     nursery_count = len(set(p["nursery_key"] for p in products))
     species_slug = slugify(species)
+    variety_title = f"{species} - {variety}"
+    # Escape single quotes for safe embedding in JS string literals
+    variety_title_js = variety_title.replace("'", "\\'")
+    slug_js = slug.replace("'", "\\'")
+    species_slug_js = species_slug.replace("'", "\\'")
 
     meta_desc = (
         f"Find {title} trees for sale in Australia. "
@@ -252,6 +257,25 @@ def build_variety_page(slug: str, data: dict) -> str:
       <tbody>{rows}
       </tbody>
     </table>
+  </div>
+
+  <!-- Per-variety restock alert -->
+  <div id="watchSection" class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
+    <h3 class="font-semibold text-gray-900 mb-1">
+      {"Notify me next time this comes back" if in_stock else "Get notified when this comes back in stock"}
+    </h3>
+    <p class="text-sm text-gray-600 mb-3">
+      {"This variety is currently in stock. You can still set an alert for next time." if in_stock else "This specific variety is currently out of stock. Enter your email to get an alert the moment it's available again."}
+    </p>
+    <form id="watchForm" class="flex gap-2 flex-wrap">
+      <input type="email" id="watchEmail" placeholder="your@email.com" required
+        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 flex-1 max-w-xs">
+      <button type="submit"
+        class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 text-sm font-medium whitespace-nowrap">
+        Notify me
+      </button>
+    </form>
+    <div id="watchMsg" class="mt-2 text-sm hidden"></div>
   </div>
 
   <!-- Email signup -->
@@ -321,6 +345,36 @@ document.getElementById('subscribeForm').addEventListener('submit', function(e) 
     msg.className = 'mt-2 text-sm text-green-700';
     msg.style.display = 'block';
     document.getElementById('subscribeForm').style.display = 'none';
+  }})
+  .catch(function() {{
+    msg.textContent = 'Something went wrong — please try again.';
+    msg.className = 'mt-2 text-sm text-red-600';
+    msg.style.display = 'block';
+  }});
+}});
+
+document.getElementById('watchForm').addEventListener('submit', function(e) {{
+  e.preventDefault();
+  var email = document.getElementById('watchEmail').value.trim();
+  var msg = document.getElementById('watchMsg');
+  fetch('/api/watch-variety', {{
+    method: 'POST',
+    headers: {{'Content-Type': 'application/json'}},
+    body: JSON.stringify({{
+      email: email,
+      variety_slug: '{slug_js}',
+      species_slug: '{species_slug_js}',
+      variety_title: '{variety_title_js}'
+    }})
+  }})
+  .then(function(r) {{ return r.json(); }})
+  .then(function(d) {{
+    msg.textContent = d.message === 'Already watching'
+      ? 'You\\'re already watching this variety!'
+      : '✓ Alert set! You\\'ll be notified when {variety_title_js} is back in stock.';
+    msg.className = 'mt-2 text-sm text-amber-700';
+    msg.style.display = 'block';
+    document.getElementById('watchForm').style.display = 'none';
   }})
   .catch(function() {{
     msg.textContent = 'Something went wrong — please try again.';
