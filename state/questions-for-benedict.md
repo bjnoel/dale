@@ -331,3 +331,16 @@ The tracking script is already embedded in all beestock pages. Once added, analy
 
 ### Q37 [INFO] -- Validate with beekeepers
 When convenient, ask 2-3 beekeeper mates: "Would you use a site that tracks beekeeping supply prices across AU retailers?" No rush, just useful signal before we share publicly.
+
+---
+
+## Batch 16 -- 2026-03-24 -- Session 49 Output
+
+### Q39 [INFO] -- Per-variety restock alerts now live
+2,457 variety pages on treestock.com.au now have a "Notify me when back in stock" button (Notify me next time if in stock). Backed by SQLite, HMAC-secured unsubscribe. Sends via Resend the morning after a 0-stock-to-in-stock transition. No action needed -- just FYI.
+
+### Q40 [INFO] -- Beestock product images: don't display yet
+Research completed (deliverables/beestock-images-research.md). Australian Copyright Act 1968 has no "fair use" exception for thumbnails. The safe path is to email each retailer for permission first -- same approach as GetPrice, Google Shopping. Recommended action (when ready): email Ecrotek, The Bee Store, Buzzbee, Flow Hive, Beekeeping Supplies AU, Beewise asking to display their product images with attribution + link-back. Keep replies on file.
+
+### Q41 [INFO] -- PlantNet + Garden Express now tracked
+17th nursery added: PlantNet (plantnet.com.au, SA-based, ships WA via Olea Nurseries partner in Manjimup). 110 products, 80 in stock. Garden Express also confirmed working (91 products, 4 in stock in March -- mostly bare-root seasonal). Both in daily scrape pipeline.
