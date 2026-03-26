@@ -180,6 +180,22 @@ def main():
     in_progress_raw = get_issues_by_state(team_id, "started")  # In Progress
     backlog_raw = get_issues_by_state(team_id, "backlog")      # Backlog
 
+    # Filter Todo/In Progress to only tickets Dale should work on:
+    # - Has "Dale" label, OR
+    # - Is unassigned
+    # Tickets assigned to Benedict without "Dale" label are his to handle.
+    def is_dale_ticket(issue):
+        labels = [l["name"] for l in issue.get("labels", {}).get("nodes", [])]
+        assignee = issue.get("assignee")
+        if "Dale" in labels:
+            return True
+        if assignee is None:
+            return True
+        return False
+
+    todo_raw = [i for i in todo_raw if is_dale_ticket(i)]
+    in_progress_raw = [i for i in in_progress_raw if is_dale_ticket(i)]
+
     todo = [format_issue(i) for i in todo_raw]
     in_progress = [format_issue(i) for i in in_progress_raw]
     backlog = [format_issue(i) for i in backlog_raw]
