@@ -103,4 +103,12 @@ else
     echo "$LOG_PREFIX WARNING: Category page build failed (non-fatal)."
 fi
 
+# Build retailer profile pages
+echo "$LOG_PREFIX Building retailer pages..."
+if python3 "$SCRIPT_DIR/build_bee_retailer_pages.py" "$PROJECT_DIR/data/bee-stock" "$BEE_DASHBOARD_DIR" 2>&1; then
+    echo "$LOG_PREFIX Retailer pages complete."
+else
+    echo "$LOG_PREFIX WARNING: Retailer page build failed (non-fatal)."
+fi
+
 echo "$LOG_PREFIX Bee pipeline complete."

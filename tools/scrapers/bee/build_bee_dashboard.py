@@ -282,7 +282,8 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   .sale-badge { background: #fee2e2; color: #991b1b; }
   .new-badge { background: #dbeafe; color: #1e40af; }
   .back-badge { background: #d1fae5; color: #065f46; font-weight: 600; }
-  .frame-badge { background: #fef3c7; color: #78350f; font-size: 0.65rem; padding: 2px 6px; border-radius: 9999px; }
+  .frame-badge { background: #fef3c7; color: #78350f; font-size: 0.65rem; padding: 2px 6px; border-radius: 9999px; cursor: pointer; }
+  .frame-badge:hover { background: #fde68a; }
   .price-down { color: #059669; font-weight: 600; }
   .price-up { color: #dc2626; }
   .in-stock { background: #d1fae5; color: #065f46; }
@@ -292,7 +293,8 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   .product-row:hover { background: #f9fafb; }
   .retailer-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #fef3c7; color: #92400e; cursor: pointer; }
   .retailer-tag:hover { background: #fde68a; }
-  .cat-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }
+  .cat-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; cursor: pointer; }
+  .cat-tag:hover { background: #c7d2fe; }
   .cat-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
   .cat-pill:hover { border-color: #f59e0b; background: #fef3c7; color: #92400e; }
   .cat-pill.active { border-color: #d97706; background: #fef3c7; color: #92400e; font-weight: 600; }
@@ -516,7 +518,7 @@ function render() {{
       : '<span class="stock-badge out-stock">Out of stock</span>';
     const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
     const catName = CATEGORY_NAMES[p.cat] || '';
-    const catBadge = catName ? `<span class="cat-tag">${{catName}}</span>` : '';
+    const catBadge = catName ? `<span class="cat-tag" data-cat="${{p.cat}}">${{catName}}</span>` : '';
     const frameBadge = p.fs ? `<span class="frame-badge">${{p.fs}}-frame</span>` : '';
 
     let changeBadge = '';
@@ -578,6 +580,7 @@ sortBy.addEventListener('change', search);
 document.querySelectorAll('.cat-pill[data-cat]').forEach(function(pill) {{
   pill.addEventListener('click', function(e) {{
     e.preventDefault();
+    searchInput.value = '';
     const cat = this.getAttribute('data-cat');
     const isActive = this.classList.contains('active');
     document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
@@ -604,15 +607,40 @@ document.querySelectorAll('.cat-pill[data-cat]').forEach(function(pill) {{
   }}
 }})();
 
-// Retailer tag click: filter by retailer
+// Tag clicks: filter by retailer, category, or frame size
 document.getElementById('results').addEventListener('click', function(e) {{
-  const tag = e.target.closest('.retailer-tag[data-nk]');
-  if (tag) {{
+  const retailerTag = e.target.closest('.retailer-tag[data-nk]');
+  if (retailerTag) {{
     e.preventDefault();
     e.stopPropagation();
-    retailerSelect.value = tag.getAttribute('data-nk');
+    retailerSelect.value = retailerTag.getAttribute('data-nk');
     search();
     window.scrollTo({{ top: 0, behavior: 'smooth' }});
+    return;
+  }}
+  const catTag = e.target.closest('.cat-tag[data-cat]');
+  if (catTag) {{
+    e.preventDefault();
+    e.stopPropagation();
+    searchInput.value = '';
+    categoryFilter.value = catTag.getAttribute('data-cat');
+    document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+    const pill = document.querySelector('.cat-pill[data-cat="' + catTag.getAttribute('data-cat') + '"]');
+    if (pill) pill.classList.add('active');
+    search();
+    window.scrollTo({{ top: 0, behavior: 'smooth' }});
+    return;
+  }}
+  const frameBadge = e.target.closest('.frame-badge');
+  if (frameBadge) {{
+    e.preventDefault();
+    e.stopPropagation();
+    searchInput.value = frameBadge.textContent.trim();
+    categoryFilter.value = '';
+    document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+    search();
+    window.scrollTo({{ top: 0, behavior: 'smooth' }});
+    return;
   }}
 }});
 

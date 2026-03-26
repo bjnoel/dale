@@ -26,6 +26,7 @@ PLAUSIBLE_SCRIPT = """\
 NAV_ITEMS = [
     ("Search", "/"),
     ("Categories", "/category/hives-boxes.html"),
+    ("Retailers", "/retailer/"),
     ("Digest", "/digest.html"),
 ]
 
@@ -161,6 +162,18 @@ def render_header(
   </div>
 </header>
 {nav_script}"""
+
+
+def render_breadcrumb(crumbs: list[tuple[str, str]], max_width: str = "max-w-5xl") -> str:
+    """Render breadcrumb navigation. Each crumb is (label, url). Last crumb has no link."""
+    parts = []
+    for i, (label, url) in enumerate(crumbs):
+        if i == len(crumbs) - 1:
+            parts.append(f'<span class="text-gray-500">{label}</span>')
+        else:
+            parts.append(f'<a href="{url}" class="text-yellow-700 hover:underline">{label}</a>')
+    sep = ' <span class="text-gray-300 mx-1">/</span> '
+    return f'<nav class="text-xs text-gray-500 mb-4" aria-label="Breadcrumb">{sep.join(parts)}</nav>'
 
 
 def render_footer(max_width: str = "max-w-5xl") -> str:
