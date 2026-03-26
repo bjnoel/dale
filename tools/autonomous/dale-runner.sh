@@ -161,6 +161,11 @@ if [ -n "$UNPUSHED" ]; then
     }
 fi
 
+# Generate traffic report (non-blocking — email sends even if this fails)
+python3 "$SCRIPT_DIR/traffic_report.py" --output /opt/dale/data/traffic_report.json 2>>"$LOG_DIR/cron.log" || {
+    log "Warning: traffic report generation failed"
+}
+
 # Send summary email
 python3 "$SCRIPT_DIR/notify.py" summary "$SESSION_LOG" 2>>"$LOG_DIR/cron.log"
 

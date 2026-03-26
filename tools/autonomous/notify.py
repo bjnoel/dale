@@ -98,28 +98,117 @@ def find_new_deliverables(repo_dir):
     return attachments
 
 
-def load_gsc_snippet() -> str:
-    """Load top-3 GSC metrics for inclusion in the morning summary."""
-    gsc_path = Path("/opt/dale/data/gsc_report.json")
-    if not gsc_path.exists():
-        return ""
+def load_traffic_report() -> tuple:
+    """Load multi-site traffic report for the morning summary.
+
+    Returns (html, text) tuple for inclusion in the email.
+    """
+    report_path = Path("/opt/dale/data/traffic_report.json")
+    if not report_path.exists():
+        return "", ""
     try:
-        with open(gsc_path) as f:
-            d = json.load(f)
-        totals = d.get("totals", {})
-        clicks = totals.get("clicks", 0)
-        impressions = totals.get("impressions", 0)
-        avg_pos = totals.get("avg_position", 0)
-        period = d.get("period", {})
-        start = period.get("start", period.get("start_date", ""))
-        end = period.get("end", period.get("end_date", ""))
-        top_queries = d.get("top_queries_by_impressions", [])[:3]
-        lines = [f"GSC ({start} to {end}): {clicks} clicks, {impressions} impressions, avg position {avg_pos:.1f}"]
-        for q in top_queries:
-            lines.append(f"  \"{q['query']}\": pos {q['position']:.0f}, {q['impressions']} impressions")
-        return "\n".join(lines)
+        with open(report_path) as f:
+            report = json.load(f)
     except Exception:
-        return ""
+        return "", ""
+
+    text_lines = []
+    html_parts = []
+
+    # --- Plausible traffic table ---
+    plausible = report.get("plausible", [])
+    if plausible:
+        text_lines.append("Traffic Dashboard")
+        text_lines.append(f"{'Site':<24} {'Yest':>6} {'7-day':>7} {'Wk':>7} {'Mo':>7}")
+        text_lines.append("-" * 55)
+
+        html_parts.append('<h3>Traffic Dashboard</h3>')
+        html_parts.append('<table style="font-family: monospace; font-size: 12px; border-collapse: collapse; width: 100%;">')
+        html_parts.append('<tr style="border-bottom: 1px solid #ddd; font-weight: bold;">'
+                          '<td style="padding: 4px 8px;">Site</td>'
+                          '<td style="padding: 4px 8px; text-align: right;">Yest</td>'
+                          '<td style="padding: 4px 8px; text-align: right;">7-day</td>'
+                          '<td style="padding: 4px 8px; text-align: right;">Wk</td>'
+                          '<td style="padding: 4px 8px; text-align: right;">Mo</td></tr>')
+
+        for site in plausible:
+            name = site["site"]
+            yd = site.get("yesterday", {}).get("visitors", 0)
+            wk = site.get("week", {}).get("visitors", 0)
+            wk_ch = site.get("week_change")
+            mo_ch = site.get("month_change")
+
+            wk_str = f"{wk_ch:+d}%" if wk_ch is not None else "--"
+            mo_str = f"{mo_ch:+d}%" if mo_ch is not None else "--"
+
+            text_lines.append(f"{name:<24} {yd:>6} {wk:>7} {wk_str:>7} {mo_str:>7}")
+
+            # Color trends
+            wk_color = "#2e7d32" if wk_ch and wk_ch > 0 else "#c62828" if wk_ch and wk_ch < 0 else "#888"
+            mo_color = "#2e7d32" if mo_ch and mo_ch > 0 else "#c62828" if mo_ch and mo_ch < 0 else "#888"
+
+            html_parts.append(
+                f'<tr style="border-bottom: 1px solid #eee;">'
+                f'<td style="padding: 4px 8px;">{name}</td>'
+                f'<td style="padding: 4px 8px; text-align: right;">{yd}</td>'
+                f'<td style="padding: 4px 8px; text-align: right;">{wk:,}</td>'
+                f'<td style="padding: 4px 8px; text-align: right; color: {wk_color};">{wk_str}</td>'
+                f'<td style="padding: 4px 8px; text-align: right; color: {mo_color};">{mo_str}</td></tr>'
+            )
+
+        html_parts.append('</table>')
+        text_lines.append("")
+
+    # --- GSC highlights per site ---
+    gsc = report.get("gsc", [])
+    for site_data in gsc:
+        totals = site_data.get("totals", {})
+        if totals.get("impressions", 0) == 0:
+            continue
+
+        domain = site_data["site"]
+        clicks = totals["clicks"]
+        impressions = totals["impressions"]
+        avg_pos = totals["avg_position"]
+
+        # Format impressions compactly
+        impr_str = f"{impressions:,}" if impressions < 10000 else f"{impressions/1000:.1f}K"
+
+        header = f"GSC: {domain} (14d: {clicks} clicks, {impr_str} impr, pos {avg_pos:.1f})"
+        text_lines.append(header)
+        html_parts.append(f'<h4 style="margin: 12px 0 4px 0; font-size: 13px;">{header}</h4>')
+        html_parts.append('<pre style="font-size: 11px; background: #f5f5f5; padding: 6px 8px; border-radius: 4px; margin: 0 0 8px 0; white-space: pre-wrap;">')
+
+        detail_lines = []
+
+        new_queries = site_data.get("new_queries", [])
+        if new_queries:
+            for q in new_queries[:5]:
+                line = f'New: "{q["query"]}" pos {q["position"]:.0f} ({q["impressions"]} impr)'
+                detail_lines.append(line)
+
+        movers = site_data.get("position_movers", [])
+        if movers:
+            for m in movers[:5]:
+                direction = "Up" if m["change"] > 0 else "Down"
+                line = (f'{direction}: "{m["query"]}" '
+                        f'{m["old_position"]:.0f}->{m["new_position"]:.0f} '
+                        f'({"+" if m["change"] > 0 else ""}{m["change"]:.0f} spots, '
+                        f'{m["impressions"]} impr)')
+                detail_lines.append(line)
+
+        if not detail_lines:
+            detail_lines.append("No notable query changes this period.")
+
+        for line in detail_lines:
+            text_lines.append(f"  {line}")
+        html_parts.append("\n".join(detail_lines))
+        html_parts.append('</pre>')
+        text_lines.append("")
+
+    html = "\n".join(html_parts)
+    text = "\n".join(text_lines)
+    return html, text
 
 
 def send_summary(session_log_path):
@@ -155,14 +244,10 @@ def send_summary(session_log_path):
 
     duration_min = duration_s / 60
 
-    gsc_snippet = load_gsc_snippet()
-    gsc_html = ""
-    gsc_text = ""
-    if gsc_snippet:
-        gsc_html = f'\n<h3>SEO (GSC)</h3>\n<pre style="white-space: pre-wrap; font-family: monospace; background: #f5f5f5; padding: 8px; border-radius: 4px; font-size: 12px;">{gsc_snippet}</pre>'
-        gsc_text = f"\n\n{gsc_snippet}"
+    traffic_html, traffic_text = load_traffic_report()
 
     html = f"""<h2>Dale Session &mdash; {today}</h2>
+{traffic_html}
 <h3>Session Output</h3>
 <pre style="white-space: pre-wrap; font-family: monospace; background: #f5f5f5; padding: 12px; border-radius: 4px;">{summary_text[:3000]}</pre>
 <h3>Usage</h3>
@@ -170,7 +255,7 @@ def send_summary(session_log_path):
 <li>Tokens: {tokens_in:,} in / {tokens_out:,} out</li>
 <li>Turns: {num_turns} &bull; Duration: {duration_min:.1f} minutes</li>
 <li>Stop reason: {stop_reason}</li>
-</ul>{gsc_html}
+</ul>
 <p style="color: #888; font-size: 12px;">Autonomous Dale &mdash; <a href="https://github.com/bjnoel/Dale">repo</a></p>"""
 
     # Find deliverables to attach
@@ -184,10 +269,12 @@ def send_summary(session_log_path):
 
     text = f"""Dale Session — {today}
 
+{traffic_text}
+
 {summary_text[:2000]}
 
 Tokens: {tokens_in:,} in / {tokens_out:,} out
-Turns: {num_turns} | Duration: {duration_min:.1f} min{gsc_text}"""
+Turns: {num_turns} | Duration: {duration_min:.1f} min"""
 
     if attachments:
         text += f"\n\nDeliverables attached: {', '.join(a['filename'] for a in attachments)}"

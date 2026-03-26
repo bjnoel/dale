@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Query Plausible analytics for treestock.com.au traffic data."""
+"""Query Plausible analytics for site traffic data."""
 
 import json
 import os
@@ -9,7 +9,7 @@ import urllib.error
 from datetime import datetime, timedelta, timezone
 
 SECRETS_DIR = "/opt/dale/secrets"
-SITE_ID = "treestock.com.au"
+SITE_ID = "treestock.com.au"  # default for backwards compat
 
 
 def load_plausible_config():
