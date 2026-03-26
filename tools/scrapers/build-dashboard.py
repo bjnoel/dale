@@ -959,6 +959,7 @@ const stateFilter = document.getElementById('stateFilter');
 const changesOnly = document.getElementById('changesOnly');
 const sortBy = document.getElementById('sortBy');
 let activeSpeciesSlug = '';
+const defaultPillsHTML = document.querySelector('.species-strip').innerHTML;
 
 function search() {{
   displayCount = 50;
@@ -1174,7 +1175,6 @@ document.getElementById('activeFilters').addEventListener('click', function(e) {
 }});
 
 // Update species pills: re-rank by current filters so each nursery shows its own top species
-const defaultPillsHTML = document.querySelector('.species-strip').innerHTML;
 function updatePillCounts() {{
   const stockOnly = inStockOnly.checked;
   const st = stateFilter.value;
