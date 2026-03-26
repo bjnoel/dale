@@ -33,7 +33,16 @@ fi
 # Build dashboard
 echo "$LOG_PREFIX Building bee dashboard..."
 if python3 "$SCRIPT_DIR/build_bee_dashboard.py" "$PROJECT_DIR/data/bee-stock" "$BEE_DASHBOARD_DIR" 2>&1; then
-    echo "$LOG_PREFIX Dashboard build complete."
+    JS_CHECK=$(awk '/<script>/{p=1; next} /<\/script>/{p=0} p' "$DASHBOARD_FILE" | node --check /dev/stdin 2>&1)
+    if [ $? -eq 0 ]; then
+        echo "$LOG_PREFIX Dashboard build complete. JS syntax verified."
+    else
+        echo "$LOG_PREFIX ERROR: Dashboard JS syntax error: $JS_CHECK"
+        if [ -f "$DASHBOARD_BACKUP" ]; then
+            cp "$DASHBOARD_BACKUP" "$DASHBOARD_FILE"
+            echo "$LOG_PREFIX Rollback complete."
+        fi
+    fi
 else
     BUILD_EXIT=$?
     echo "$LOG_PREFIX ERROR: Dashboard build failed (exit $BUILD_EXIT)."

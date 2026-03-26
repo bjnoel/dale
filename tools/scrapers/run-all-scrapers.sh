@@ -50,7 +50,20 @@ fi
 # Build dashboard (atomic write + post-build verification built into script)
 echo "$LOG_PREFIX Building dashboard..."
 if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" 2>&1; then
-    echo "$LOG_PREFIX Dashboard build complete."
+    # Verify JS syntax in the built dashboard
+    JS_CHECK=$(awk '/<script>/{p=1; next} /<\/script>/{p=0} p' "$DASHBOARD_FILE" | node --check /dev/stdin 2>&1)
+    if [ $? -eq 0 ]; then
+        echo "$LOG_PREFIX Dashboard build complete. JS syntax verified."
+    else
+        echo "$LOG_PREFIX ERROR: Dashboard JS syntax error: $JS_CHECK"
+        echo "$LOG_PREFIX Rolling back to backup."
+        if [ -f "$DASHBOARD_BACKUP" ]; then
+            cp "$DASHBOARD_BACKUP" "$DASHBOARD_FILE"
+            echo "$LOG_PREFIX Rollback complete. Serving previous dashboard."
+        else
+            echo "$LOG_PREFIX ERROR: No backup available. Dashboard may have broken JS!"
+        fi
+    fi
 else
     BUILD_EXIT=$?
     echo "$LOG_PREFIX ERROR: Dashboard build failed (exit $BUILD_EXIT). Rolling back to backup."
