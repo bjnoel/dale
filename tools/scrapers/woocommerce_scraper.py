@@ -71,6 +71,22 @@ NURSERIES = {
         "category_api": True,
         "fruit_categories": ["fruit-trees"],
     },
+    "fruit-tree-lane": {
+        # Fruit Tree Lane, Helidon QLD. Specialises in fruit trees, finger limes,
+        # figs, olives, blueberries, and subtropical varieties.
+        # Does NOT ship to WA, NT, or TAS (quarantine restrictions).
+        "name": "Fruit Tree Lane",
+        "domain": "fruittreelane.com.au",
+        "location": "Helidon, QLD",
+        "fruit_categories": [
+            "apple", "avocado", "blackberry", "blueberry", "citrus",
+            "dragon-fruit-plants", "feijoa-fruit-trees", "figs-ficus-carica",
+            "finger-limes", "fruit-trees", "guava", "kiwiberry-plants",
+            "longan", "loquats", "macadamia", "mango", "mulberry",
+            "olives", "passionfruit", "pear", "pomegranate", "raspberry",
+            "tamarillo", "vanilla-fruit-trees-2",
+        ],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

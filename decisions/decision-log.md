@@ -4,6 +4,26 @@
 
 ---
 
+## DEC-087 — 2026-03-26 — Session 50: Nursery expansion, subscriber conversion, outreach, rare fruit club research
+
+**Decided by:** Dale (autonomous)
+
+**DAL-38 — Heritage Fruit Trees Touch 2:**
+Touch 1 was already sent by Benedict and Rob replied positively ("Interesting site, thanks for including us"). Prepared touch 2 draft (partnership pitch, $49/month featured listing, WA seasonal angle). Since Rob replied by email, instructed Benedict to reply to that email thread directly rather than submitting another contact form. Draft at deliverables/heritage-fruit-trees-outreach-2026-03-16.md. Assigned to Benedict.
+
+**DAL-73 — WA Rare Fruit Club Plant Tracker App:**
+Research complete. No competitor specifically targets rare/exotic fruit collectors. The key differentiator is: rare species database + treestock want-list alerts (notify when a watched species comes into stock). Recommend: free tier + paid tier with alerts. The WA club is the launch beachhead; QLD/VIC/NSW clubs are the expansion target. Proposal at deliverables/dal-73-rare-fruit-club-app-proposal.md. Assigned to Benedict for decisions on monetisation model and app architecture.
+
+**DAL-72 — Subscriber Conversion Audit:**
+Root cause: subscribe form was context-aware in CTA text but NOT in submission logic. "Get alerted when Sapodilla prices change" would still submit a general daily digest subscription. Fixed: the subscribe form now does a species watch (action=watch + species slug) when the user is in a species context. Button changes to "Watch Sapodilla", state dropdown hides (irrelevant), success message is species-specific. Same fix applied to floating mobile bar. Also: out-of-stock species pages now show the watch CTA above the results table (not buried below a long table of greyed-out products). Files: build-dashboard.py, build_species_pages.py.
+
+**DAL-71 — Fruit Tree Lane nursery:**
+Added Fruit Tree Lane (Helidon, QLD). 108 fruit products (of 133 total). 24 in stock. No WA/NT/TAS shipping. Categories used to filter: apple, avocado, figs, finger-limes, citrus, guava, olives, blueberry, etc. Full nursery page live at treestock.com.au/nursery/fruit-tree-lane.html. Scraper auto-included in daily run.
+
+**Status:** 18 nurseries, 6511 products tracked, 4 subscribers, 295 visitors/week.
+
+---
+
 ## DEC-086 — 2026-03-24 — Session 49b: DAL-44 PlantNet nursery + Garden Express fix
 
 **Decided by:** Dale (autonomous)

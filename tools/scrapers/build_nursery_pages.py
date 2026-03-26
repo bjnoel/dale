@@ -94,6 +94,11 @@ NURSERY_META = {
         "tags": ["rare tropicals", "exotic fruit trees", "NSW", "seedlings"],
         "description": "Forever Seeds is a NSW-based nursery specialising in rare and exotic tropical fruit trees. Their range includes unusual varieties such as Rollinia (Brazilian Custard Apple), Canistel (Yellow Sapote), Agarwood, Sudachi Lime, Yuzu, Longan, and other hard-to-find tropicals. Ships to NSW, VIC, QLD, SA and ACT. Does not ship to WA, NT, or TAS.",
     },
+    "fruit-tree-lane": {
+        "url": "https://fruittreelane.com.au",
+        "tags": ["finger limes", "figs", "olives", "blueberries", "subtropical", "QLD"],
+        "description": "Fruit Tree Lane is a Queensland-based nursery specialising in fruit trees, finger limes, figs, olives, blueberries, and subtropical varieties. Based in Helidon, QLD, they carry a wide range of edible trees suited to subtropical and warm temperate climates. Does not ship to WA, NT, or TAS.",
+    },
 }
 
 

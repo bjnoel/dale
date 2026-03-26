@@ -25,6 +25,7 @@ SHIPPING_MAP = {
     "forever-seeds": ["NSW", "VIC", "QLD", "SA", "ACT"],                       # NSW-based. Does not ship to WA, NT, or TAS.
     "garden-express": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],  # Ships nationwide; quarantine surcharge for WA/NT/TAS.
     "plantnet": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],              # SA-based. Ships to WA via Olea Nurseries partner (Manjimup WA).
+    "fruit-tree-lane": ["NSW", "VIC", "QLD", "SA", "ACT"],                    # QLD-based (Helidon). Does not ship to WA, NT, or TAS (quarantine).
 }
 
 NURSERY_NAMES = {
@@ -45,6 +46,7 @@ NURSERY_NAMES = {
     "forever-seeds": "Forever Seeds",
     "garden-express": "Garden Express",
     "plantnet": "PlantNet",
+    "fruit-tree-lane": "Fruit Tree Lane",
 }
 
 

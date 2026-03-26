@@ -896,7 +896,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
           <option value="SA">SA</option><option value="TAS">TAS</option>
           <option value="NT">NT</option><option value="ACT">ACT</option>
         </select>
-        <button type="submit" class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+        <button id="subBtn" type="submit" class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
           Subscribe free
         </button>
       </form>
@@ -917,6 +917,9 @@ const N = {nurseries_json};
 const SPECIES_SLUGS = {species_slugs_json};
 const SLUG_TO_NAME = {{}};
 Object.values(SPECIES_SLUGS).forEach(v => {{ SLUG_TO_NAME[v.slug] = v.name; }});
+
+// Tracks which species the user is currently viewing (for context-aware subscribe)
+let currentWatchSlug = null;
 
 const NURSERY_URLS = {{
   'ross-creek': 'rosscreektropicals.com.au',
@@ -1019,10 +1022,15 @@ function updateSubCTA(q) {{
   const ctaEl = document.getElementById('subCTA');
   if (!ctaEl) return;
   const floatInput = document.getElementById('floatEmail');
+  const subBtn = document.getElementById('subBtn');
+  const subState = document.getElementById('subState');
 
   if (!q) {{
+    currentWatchSlug = null;
     ctaEl.innerHTML = `<strong>Get tomorrow's changes in your inbox</strong> \u2014 free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
     if (floatInput) floatInput.placeholder = 'Get daily alerts (free)';
+    if (subBtn) subBtn.textContent = 'Subscribe free';
+    if (subState) subState.style.display = '';
     return;
   }}
 
@@ -1040,12 +1048,18 @@ function updateSubCTA(q) {{
   if (matched) {{
     const name = matched.name;
     const slug = matched.slug;
-    ctaEl.innerHTML = `<strong>Get alerted when ${{name}} prices change or come back in stock.</strong> Free daily email. <a href="/species/${{slug}}.html" class="text-green-700 underline whitespace-nowrap">See all ${{name}} &rarr;</a>`;
-    if (floatInput) floatInput.placeholder = `${{name}} price alerts (free)`;
+    currentWatchSlug = slug;
+    ctaEl.innerHTML = `<strong>Alert me when ${{name}} comes back in stock.</strong> Free, unsubscribe any time. <a href="/species/${{slug}}.html" class="text-green-700 underline whitespace-nowrap">See all ${{name}} &rarr;</a>`;
+    if (floatInput) floatInput.placeholder = `Alert me when ${{name}} is available`;
+    if (subBtn) subBtn.textContent = `Watch ${{name}}`;
+    if (subState) subState.style.display = 'none';
   }} else {{
+    currentWatchSlug = null;
     const displayQ = q.length > 20 ? q.slice(0, 20) + '...' : q;
     ctaEl.innerHTML = `<strong>Get alerted when "${{displayQ}}" prices change.</strong> Free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
     if (floatInput) floatInput.placeholder = `"${{displayQ}}" price alerts (free)`;
+    if (subBtn) subBtn.textContent = 'Subscribe free';
+    if (subState) subState.style.display = '';
   }}
 }}
 
@@ -1318,35 +1332,61 @@ document.getElementById('results').addEventListener('click', function(e) {{
 // Initial render
 search();
 
-// Subscribe form
+// Subscribe form (context-aware: species watch or general daily alert)
 document.getElementById('subscribeForm').addEventListener('submit', async (e) => {{
   e.preventDefault();
-  const email = document.getElementById('subEmail').value;
-  const state = document.getElementById('subState').value;
+  const email = document.getElementById('subEmail').value.trim();
+  const stateEl = document.getElementById('subState');
+  const state = stateEl ? stateEl.value : 'ALL';
   const msg = document.getElementById('subMessage');
-  const btn = e.target.querySelector('button');
+  const btn = document.getElementById('subBtn');
+  const watchSlug = currentWatchSlug;
   btn.disabled = true;
-  btn.textContent = 'Subscribing...';
+  btn.textContent = watchSlug ? 'Setting alert...' : 'Subscribing...';
+
+  let payload;
+  if (watchSlug) {{
+    payload = {{email, action: 'watch', species: watchSlug}};
+  }} else {{
+    payload = {{email, state}};
+  }}
+
   try {{
     const resp = await fetch('/api/subscribe', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{email, state}}),
+      body: JSON.stringify(payload),
     }});
     const data = await resp.json();
-    msg.textContent = data.message || 'Subscribed!';
-    msg.className = 'mt-2 text-sm text-green-600';
-    msg.classList.remove('hidden');
-    if (resp.status === 201) {{
-      document.getElementById('subEmail').value = '';
+    if (resp.ok) {{
+      if (watchSlug && resp.status === 201) {{
+        const speciesName = SLUG_TO_NAME[watchSlug] || watchSlug;
+        msg.textContent = `Watching ${{speciesName}} \u2014 we\u2019ll email you when any ${{speciesName}} variety comes back in stock.`;
+      }} else if (watchSlug && resp.status === 200) {{
+        const speciesName = SLUG_TO_NAME[watchSlug] || watchSlug;
+        msg.textContent = `You\u2019re already watching ${{speciesName}}.`;
+      }} else if (resp.status === 201) {{
+        msg.textContent = `Subscribed! You'll get tomorrow\u2019s changes in your inbox.`;
+      }} else {{
+        msg.textContent = data.message || 'You\u2019re already subscribed.';
+      }}
+      msg.className = 'mt-2 text-sm text-green-600';
+      if (resp.status === 201) {{
+        document.getElementById('subEmail').value = '';
+        localStorage.setItem('ts_subscribed', '1');
+      }}
+    }} else {{
+      msg.textContent = data.error || 'Something went wrong. Try again.';
+      msg.className = 'mt-2 text-sm text-red-600';
     }}
+    msg.classList.remove('hidden');
   }} catch (err) {{
     msg.textContent = 'Something went wrong. Try again later.';
     msg.className = 'mt-2 text-sm text-red-600';
     msg.classList.remove('hidden');
   }}
   btn.disabled = false;
-  btn.textContent = 'Subscribe';
+  btn.textContent = watchSlug ? `Watch ${{SLUG_TO_NAME[watchSlug] || watchSlug}}` : 'Subscribe free';
 }});
 
 // Floating subscribe bar (mobile only — shows after scroll or timer)
@@ -1393,21 +1433,34 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
 
   document.getElementById('floatForm').addEventListener('submit', async function(e) {{
     e.preventDefault();
-    const email = document.getElementById('floatEmail').value;
-    const state = document.getElementById('subState') ? document.getElementById('subState').value : 'ALL';
+    const email = document.getElementById('floatEmail').value.trim();
+    const stateEl = document.getElementById('subState');
+    const state = stateEl ? stateEl.value : 'ALL';
+    const watchSlug = currentWatchSlug;
     const btn = e.target.querySelector('button[type=submit]');
     btn.disabled = true;
     btn.textContent = '...';
+
+    let payload;
+    if (watchSlug) {{
+      payload = {{email, action: 'watch', species: watchSlug}};
+    }} else {{
+      payload = {{email, state}};
+    }}
+
     try {{
       const resp = await fetch('/api/subscribe', {{
         method: 'POST',
         headers: {{'Content-Type': 'application/json'}},
-        body: JSON.stringify({{email, state}}),
+        body: JSON.stringify(payload),
       }});
       const data = await resp.json();
       if (resp.status === 201 || resp.status === 200) {{
         localStorage.setItem('ts_subscribed', '1');
-        bar.innerHTML = `<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-green-800 font-medium">Subscribed! You'll get tomorrow's changes in your inbox.</div>`;
+        const confirmMsg = watchSlug
+          ? `Alert set! We\u2019ll email when ${{SLUG_TO_NAME[watchSlug] || watchSlug}} is back in stock.`
+          : `Subscribed! You\u2019ll get tomorrow\u2019s changes in your inbox.`;
+        bar.innerHTML = `<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-white font-medium">${{confirmMsg}}</div>`;
         setTimeout(function() {{ bar.classList.add('translate-y-full'); }}, 3000);
       }} else {{
         btn.disabled = false;
