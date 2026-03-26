@@ -25,5 +25,11 @@
   },
   "circuit_breakers": {
     "max_consecutive_failures": 3
+  },
+  "reflection": {
+    "category_streak_threshold": 3,
+    "parent_streak_threshold": 4,
+    "revenue_alarm_days_threshold": 14,
+    "lookback_sessions": 5
   }
 }

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "last_updated": "2026-03-26",
+  "last_session": 49,
+  "categories": {
+    "treestock:nursery_expansion": { "parent": "treestock", "metrics": ["nurseries_monitored", "products_tracked"] },
+    "treestock:seo": { "parent": "treestock", "metrics": ["weekly_organic_visitors"] },
+    "treestock:subscriber_conversion": { "parent": "treestock", "metrics": ["subscribers"] },
+    "treestock:dashboard": { "parent": "treestock", "metrics": ["weekly_visitors"] },
+    "treestock:data_quality": { "parent": "treestock", "metrics": ["species_matched_pct"] },
+    "treestock:social": { "parent": "treestock", "metrics": ["weekly_visitors", "subscribers"] },
+    "beestock:growth": { "parent": "beestock", "metrics": ["weekly_visitors", "subscribers"] },
+    "beestock:expansion": { "parent": "beestock", "metrics": ["retailers_monitored"] },
+    "walkthrough:outreach": { "parent": "walkthrough", "metrics": ["prospects_contacted"] },
+    "walkthrough:demos": { "parent": "walkthrough", "metrics": ["clients"] },
+    "revenue:monetisation": { "parent": "revenue", "metrics": ["revenue_monthly"] },
+    "infrastructure": { "parent": "infrastructure", "metrics": ["uptime_pct"] }
+  },
+  "parents": {
+    "treestock": "treestock.com.au growth",
+    "beestock": "beestock.com.au growth",
+    "walkthrough": "Track A (Walkthrough) revenue",
+    "revenue": "Direct monetisation",
+    "infrastructure": "Infrastructure"
+  },
+  "session_log": [],
+  "override": null
+}

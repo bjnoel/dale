@@ -160,6 +160,310 @@ def get_plausible_stats():
         return f"Plausible stats unavailable: {e}"
 
 
+def load_focus_tracker(repo_path):
+    """Read state/focus-tracker.json, return parsed data or None."""
+    path = os.path.join(repo_path, "state", "focus-tracker.json")
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+
+def _get_session_days(session_log):
+    """Deduplicate session_log entries by date, merging categories.
+
+    Returns a list of {date, categories_worked, metric_snapshot} dicts,
+    one per unique date, ordered oldest-first.
+    """
+    by_date = {}
+    for entry in session_log:
+        d = entry.get("date", "")
+        if not d:
+            continue
+        if d not in by_date:
+            by_date[d] = {
+                "date": d,
+                "categories_worked": set(),
+                "metric_snapshot": entry.get("metric_snapshot", {}),
+            }
+        by_date[d]["categories_worked"].update(entry.get("categories_worked", []))
+        # Keep the latest snapshot for this date
+        if entry.get("metric_snapshot"):
+            by_date[d]["metric_snapshot"] = entry["metric_snapshot"]
+    result = sorted(by_date.values(), key=lambda x: x["date"])
+    # Convert sets back to lists for consistency
+    for r in result:
+        r["categories_worked"] = list(r["categories_worked"])
+    return result
+
+
+def _metric_moved(metric_name, start_val, end_val):
+    """Check if a metric moved meaningfully between two snapshots."""
+    if start_val is None or end_val is None:
+        return True  # Can't tell, assume it moved
+    if metric_name == "revenue_monthly":
+        return end_val > 0
+    if metric_name == "subscribers":
+        return (end_val - start_val) >= 2
+    if metric_name in ("weekly_visitors", "weekly_organic_visitors"):
+        if start_val == 0:
+            return end_val > 5
+        return abs(end_val - start_val) / max(start_val, 1) >= 0.15
+    if metric_name == "species_matched_pct":
+        return (end_val - start_val) >= 5
+    # For counts like nurseries_monitored, retailers_monitored, products_tracked:
+    # these always go up when worked on, so they don't count as "movement"
+    # that justifies continued work. Return False to force pairing with other metrics.
+    if metric_name in ("nurseries_monitored", "retailers_monitored", "products_tracked"):
+        return False
+    # Default: any change counts
+    return start_val != end_val
+
+
+def compute_reflection(tracker, config):
+    """Compute the strategic reflection based on focus tracker data.
+
+    Returns a dict with: level, stale_categories, stale_parents,
+    revenue_alarm, and enough data for build_reflection_block().
+    """
+    reflection_cfg = config.get("reflection", {})
+    cat_threshold = reflection_cfg.get("category_streak_threshold", 3)
+    parent_threshold = reflection_cfg.get("parent_streak_threshold", 4)
+    revenue_days_threshold = reflection_cfg.get("revenue_alarm_days_threshold", 14)
+    lookback = reflection_cfg.get("lookback_sessions", 5)
+
+    session_log = tracker.get("session_log", [])
+    categories = tracker.get("categories", {})
+    parents = tracker.get("parents", {})
+    override = tracker.get("override")
+
+    # Deduplicate by date
+    session_days = _get_session_days(session_log)
+    recent = session_days[-lookback:] if len(session_days) >= lookback else session_days
+
+    result = {
+        "level": 0,
+        "stale_categories": [],
+        "stale_parents": [],
+        "revenue_alarm": False,
+        "recent_distribution": {},
+        "days_operating": 0,
+    }
+
+    if len(recent) < cat_threshold:
+        return result  # Not enough data yet
+
+    # Calculate days of operation
+    if session_days:
+        first_date = datetime.strptime(session_days[0]["date"], "%Y-%m-%d")
+        today = datetime.now(timezone.utc).replace(
+            hour=0, minute=0, second=0, microsecond=0, tzinfo=None
+        )
+        result["days_operating"] = (today - first_date).days
+
+    # Check override
+    override_category = None
+    if override and isinstance(override, dict):
+        expires = override.get("expires", "")
+        today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        if expires and expires >= today_str:
+            override_category = override.get("category")
+
+    # Count category appearances across recent session-days
+    cat_counts = {}
+    for day in recent:
+        for cat in day.get("categories_worked", []):
+            cat_counts[cat] = cat_counts.get(cat, 0) + 1
+
+    result["recent_distribution"] = cat_counts
+
+    # Check for stale categories (Level 1)
+    for cat, count in cat_counts.items():
+        if count < cat_threshold:
+            continue
+        if cat == override_category:
+            continue
+        if cat not in categories:
+            continue
+
+        cat_info = categories[cat]
+        metrics = cat_info.get("metrics", [])
+
+        # Find first and last session-day where this category was worked
+        first_snap = None
+        last_snap = None
+        for day in recent:
+            if cat in day.get("categories_worked", []):
+                if first_snap is None:
+                    first_snap = day.get("metric_snapshot", {})
+                last_snap = day.get("metric_snapshot", {})
+
+        if not first_snap or not last_snap:
+            continue
+
+        # Check if ANY relevant metric moved meaningfully
+        any_moved = False
+        metric_details = []
+        for m in metrics:
+            start_val = first_snap.get(m)
+            end_val = last_snap.get(m)
+            moved = _metric_moved(m, start_val, end_val)
+            metric_details.append({
+                "name": m, "start": start_val, "end": end_val, "moved": moved
+            })
+            if moved:
+                any_moved = True
+
+        if not any_moved:
+            result["stale_categories"].append({
+                "category": cat,
+                "count": count,
+                "total_days": len(recent),
+                "metrics": metric_details,
+                "parent": cat_info.get("parent", ""),
+            })
+
+    # Check for stale parents (Level 2)
+    parent_counts = {}
+    for cat, count in cat_counts.items():
+        cat_info = categories.get(cat, {})
+        p = cat_info.get("parent", "")
+        if p:
+            parent_counts[p] = parent_counts.get(p, 0) + count
+
+    # More accurately: count session-days where ANY child of parent was worked
+    parent_day_counts = {}
+    for day in recent:
+        parents_seen = set()
+        for cat in day.get("categories_worked", []):
+            cat_info = categories.get(cat, {})
+            p = cat_info.get("parent", "")
+            if p:
+                parents_seen.add(p)
+        for p in parents_seen:
+            parent_day_counts[p] = parent_day_counts.get(p, 0) + 1
+
+    for p, day_count in parent_day_counts.items():
+        if day_count < parent_threshold:
+            continue
+        # Check if any stale categories belong to this parent
+        stale_in_parent = [sc for sc in result["stale_categories"] if sc["parent"] == p]
+        if stale_in_parent:
+            other_parents = [name for name in parents if name != p]
+            result["stale_parents"].append({
+                "parent": p,
+                "display": parents.get(p, p),
+                "day_count": day_count,
+                "total_days": len(recent),
+                "stale_children": [sc["category"] for sc in stale_in_parent],
+                "alternatives": [parents.get(op, op) for op in other_parents],
+            })
+
+    # Revenue alarm (Level 3)
+    if result["days_operating"] >= revenue_days_threshold:
+        # Check if revenue is still 0
+        latest_snap = recent[-1].get("metric_snapshot", {}) if recent else {}
+        revenue = latest_snap.get("revenue_monthly", 0)
+        if revenue == 0:
+            result["revenue_alarm"] = True
+
+    # Set overall level
+    if result["revenue_alarm"]:
+        result["level"] = 3
+    elif result["stale_parents"]:
+        result["level"] = 2
+    elif result["stale_categories"]:
+        result["level"] = 1
+
+    return result
+
+
+def build_reflection_block(reflection):
+    """Generate a prompt block from the reflection analysis."""
+    if reflection["level"] == 0:
+        return ""
+
+    lines = []
+
+    # Revenue alarm (Level 3) -- always show if triggered
+    if reflection["revenue_alarm"]:
+        days = reflection["days_operating"]
+        dist = reflection.get("recent_distribution", {})
+        # Group distribution by parent
+        lines.append("## STRATEGIC REFLECTION -- REVENUE ALARM (automatic)")
+        lines.append("")
+        lines.append(f"Revenue: $0/month after {days} days of operation.")
+        if dist:
+            lines.append("Recent session focus distribution:")
+            for cat, count in sorted(dist.items(), key=lambda x: -x[1]):
+                lines.append(f"  - {cat}: {count} session-days")
+        lines.append("")
+        lines.append("REQUIRED: This session MUST include at least one of:")
+        lines.append("  - Revenue work: sponsorship outreach, pricing page, payment integration")
+        lines.append("  - Track A work: prospect contact, demo build, outreach draft")
+        lines.append("  - Strategy: write a concrete plan to get to the first dollar of revenue")
+        lines.append("")
+        lines.append("Do NOT spend this entire session on product features or content.")
+        lines.append("")
+
+    # Level 2: parent/channel stale
+    if reflection["stale_parents"]:
+        for sp in reflection["stale_parents"][:2]:  # Cap at 2
+            lines.append(f"## STRATEGIC REFLECTION -- CHANNEL STALE (automatic)")
+            lines.append("")
+            lines.append(
+                f"You have spent {sp['day_count']} of the last {sp['total_days']} "
+                f"session-days on **{sp['display']}**."
+            )
+            lines.append("Metrics in this area are flat despite sustained effort.")
+            lines.append("")
+            lines.append("REQUIRED: Before picking another ticket in this area, step back and consider:")
+            lines.append("1. Why hasn't this sustained effort moved the metrics?")
+            lines.append("2. What assumption are you making that might be wrong?")
+            alts = ", ".join(sp["alternatives"])
+            lines.append(f"3. Would effort in a different area ({alts}) have more impact?")
+            lines.append("")
+            lines.append(
+                "If you cannot articulate a genuinely NEW approach, you MUST "
+                "work on a different channel this session."
+            )
+            lines.append("")
+
+    # Level 1: category stale (only show if no Level 2 for same parent)
+    stale_parents_set = {sp["parent"] for sp in reflection.get("stale_parents", [])}
+    orphan_stale = [
+        sc for sc in reflection["stale_categories"]
+        if sc["parent"] not in stale_parents_set
+    ]
+    for sc in orphan_stale[:3]:  # Cap at 3
+        lines.append(f"## STRATEGIC REFLECTION -- APPROACH STALE (automatic)")
+        lines.append("")
+        lines.append(
+            f"You have worked on **{sc['category']}** in {sc['count']} of the last "
+            f"{sc['total_days']} session-days."
+        )
+        lines.append("Metric movement during this streak:")
+        for m in sc["metrics"]:
+            start = m["start"] if m["start"] is not None else "?"
+            end = m["end"] if m["end"] is not None else "?"
+            status = "no change" if not m["moved"] else "moved"
+            lines.append(f"  - {m['name']}: {start} -> {end} ({status})")
+        lines.append("")
+        lines.append("REQUIRED: Before picking another ticket in this area:")
+        lines.append("1. Why hasn't the metric moved despite repeated effort?")
+        lines.append("2. Is there a higher-leverage approach within this area?")
+        lines.append("3. Should you switch to a different category entirely?")
+        lines.append("")
+        lines.append(
+            "If you cannot articulate what you will do DIFFERENTLY, "
+            "you MUST work on a different category this session."
+        )
+        lines.append("")
+
+    return "\n".join(lines)
+
+
 def _format_ticket(lines, t):
     """Format a single ticket with labels, description, and comments."""
     labels = ", ".join(t.get("labels", []))
@@ -251,6 +555,19 @@ def build_prompt():
     linear_data = get_linear_tasks(data)
     linear_block = format_linear_block(linear_data)
 
+    # Strategic reflection (diminishing returns detection)
+    tracker = load_focus_tracker(repo)
+    reflection_block = ""
+    if tracker:
+        reflection = compute_reflection(tracker, config)
+        reflection_block = build_reflection_block(reflection)
+    elif os.path.exists(os.path.join(repo, "state", "focus-tracker.json")):
+        reflection_block = (
+            "## FOCUS TRACKER ERROR\n"
+            "state/focus-tracker.json exists but could not be parsed. "
+            "Repair the JSON this session before other work.\n"
+        )
+
     prompt = f"""This is an AUTONOMOUS session running via cron at {now}.
 You are Dale, the AI business agent. Benedict is asleep (it's ~2am in Perth).
 Time limit: {max_min} minutes. Work through approved tickets sequentially. Do each
@@ -258,6 +575,7 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 {linear_block}
 
+{reflection_block}
 ## Current Business State (metrics only, work tracking is in Linear)
 {business_state}
 
@@ -358,6 +676,14 @@ the Dale label means "in Dale's court". Benedict re-adds it when passing back to
 9. **Always prefix your Linear comments with "Dale:"** so Benedict can tell
    at a glance who wrote what. The linear_update.py script does this automatically,
    but if you ever post comments by other means, add the prefix yourself.
+10. **Focus tracker (MANDATORY):** At the end of every session, update state/focus-tracker.json:
+    - Append to "session_log": session number, date, categories_worked (use ONLY keys from
+      the "categories" dict in the file), tickets_completed, tickets_proposed, and a
+      metric_snapshot with current values for all tracked metrics.
+    - Update "last_updated" and "last_session".
+    - Commit with your other changes.
+    - If the session_log has fewer than 3 entries, backfill from recent decisions in
+      the decision log (best effort, approximate categories).
 
 ## Priority Order
 1. **In Progress tickets** — finish what was started
