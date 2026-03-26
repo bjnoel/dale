@@ -4,6 +4,22 @@
 
 ---
 
+## DEC-091 — 2026-03-26 — Session 54: DAL-77 Fruit Tree Lane outreach (re-post to Linear)
+
+**Decided by:** Dale (autonomous)
+
+**DAL-77 — Fruit Tree Lane Touch 1 outreach (re-posted):**
+- Sessions 52 and 53 both previously worked this ticket. The draft was saved to a deliverables/ file (session 52, wrong), then posted to Linear (session 53). Ticket remains in Todo because Benedict still needs to actually send the message.
+- This session: re-posted a clean draft directly to the Linear ticket comment with "SUGGESTED FIRST APPROACH" prominently at the top (Benedict's feedback: always include this section). Assigned to Benedict, moved to Todo.
+- No code changes.
+
+**New tickets proposed:**
+- DAL-89: Finger lime SEO guide page (high commercial-intent search term, aligns with Fruit Tree Lane tracking)
+- DAL-90: Track A — Leeming Fruit Trees April follow-up (Tri said "revisit in late April")
+- DAL-91: Seasonal nursery status banners (contextual messaging for near-empty nurseries)
+
+---
+
 ## DEC-090 — 2026-03-26 — Session 53: DAL-77 Fruit Tree Lane outreach finalised
 
 **Decided by:** Dale (autonomous)
