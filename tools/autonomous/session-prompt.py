@@ -637,6 +637,11 @@ When drafting nursery or client outreach, always use a two-touch approach:
 - Touch 2: Only after a positive reply, mention paid options.
 Never lead with a sales pitch to someone we haven't spoken to before.
 
+### Deliverables go in Linear, not git
+When you produce a deliverable (outreach email draft, brief, analysis), attach it
+directly to the Linear ticket as a comment. Do NOT save it as a separate file in
+deliverables/. Benedict reads tickets on his phone and needs everything in one place.
+
 ### Proposing new work
 You should ALWAYS propose new tickets during every session, not just when idle.
 After finishing each ticket (or at the end of the session), think about:
