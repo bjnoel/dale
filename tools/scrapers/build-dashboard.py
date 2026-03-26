@@ -1075,10 +1075,10 @@ function setupWatchForm(formId, emailId, msgId) {{
     btn.disabled = true;
     btn.textContent = 'Watching...';
     try {{
-      const resp = await fetch('/api/subscribe?action=watch', {{
+      const resp = await fetch('/api/subscribe', {{
         method: 'POST',
         headers: {{'Content-Type': 'application/json'}},
-        body: JSON.stringify({{email, species}}),
+        body: JSON.stringify({{email, action: 'watch', species}}),
       }});
       const result = await resp.json();
       msg.classList.remove('hidden');
