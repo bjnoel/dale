@@ -308,6 +308,27 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             self.send_json(200, {"message": "Preferences updated", "state": new_state})
             return
 
+        # Handle unwatch species
+        if action == "unwatch_species":
+            if not verify_unsubscribe_token(email, token):
+                self.send_json(403, {"error": "Invalid token"})
+                return
+            species = data.get("species", "").strip().lower() if self.headers.get("Content-Type", "").startswith("application/json") else params.get("species", [""])[0].strip().lower()
+            if not species:
+                self.send_json(400, {"error": "Species slug required"})
+                return
+            subscribers = load_subscribers()
+            for s in subscribers:
+                if s["email"] == email:
+                    watch_list = s.get("watch_species", [])
+                    if species in watch_list:
+                        watch_list.remove(species)
+                    break
+            save_subscribers(subscribers)
+            print(f"Species watch removed: {email} → {species}")
+            self.send_json(200, {"message": "Watch removed", "species": species})
+            return
+
         # Handle subscribe (default)
         subscribers = load_subscribers()
         existing = [s for s in subscribers if s["email"] == email]
@@ -355,6 +376,19 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
 
+    def _get_variety_watches(self, email: str):
+        """Get variety watches for an email from SQLite."""
+        try:
+            con = sqlite3.connect(VARIETY_WATCHES_DB)
+            rows = con.execute(
+                "SELECT variety_slug, variety_title, species_slug FROM watches WHERE email = ? ORDER BY added_at",
+                (email.lower(),)
+            ).fetchall()
+            con.close()
+            return [{"slug": r[0], "title": r[1], "species": r[2]} for r in rows]
+        except sqlite3.Error:
+            return []
+
     def send_preferences_page(self, email: str, token: str, current_state: str):
         states = ["ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"]
         state_labels = {
@@ -367,30 +401,82 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             f'<option value="{s}"{" selected" if s == current_state else ""}>{state_labels[s]}</option>'
             for s in states
         )
+
+        # Get species watches from subscriber record
+        subscribers = load_subscribers()
+        subscriber = next((s for s in subscribers if s["email"] == email), None)
+        watch_species = subscriber.get("watch_species", []) if subscriber else []
+
+        species_items = ""
+        if watch_species:
+            for sp in watch_species:
+                display = sp.replace("-", " ").title()
+                species_items += (
+                    f'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;'
+                    f'border-bottom:1px solid #f3f4f6">'
+                    f'<span>{display}</span>'
+                    f'<button onclick="removeSpecies(\'{sp}\')" style="background:none;border:1px solid #d1d5db;'
+                    f'color:#6b7280;padding:4px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer">Remove</button>'
+                    f'</div>'
+                )
+        else:
+            species_items = '<p style="color:#9ca3af;font-size:0.85rem">None. Browse species pages to add watches.</p>'
+
+        # Get variety watches from SQLite
+        variety_watches = self._get_variety_watches(email)
+        variety_items = ""
+        if variety_watches:
+            for vw in variety_watches:
+                variety_items += (
+                    f'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;'
+                    f'border-bottom:1px solid #f3f4f6">'
+                    f'<span>{vw["title"]}</span>'
+                    f'<button onclick="removeVariety(\'{vw["slug"]}\')" style="background:none;border:1px solid #d1d5db;'
+                    f'color:#6b7280;padding:4px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer">Remove</button>'
+                    f'</div>'
+                )
+        else:
+            variety_items = '<p style="color:#9ca3af;font-size:0.85rem">None. Browse variety pages to add watches.</p>'
+
         body = f"""
-<h2 style="color:#065f46;margin:0 0 8px">Email preferences</h2>
+<h2 style="color:#065f46;margin:0 0 8px">Manage your alerts</h2>
 <p style="color:#6b7280;font-size:0.9rem;margin:0 0 20px">{email}</p>
-<p style="color:#374151;margin:0 0 16px;line-height:1.5">
-  Choose which state to filter nurseries by. You'll only see stock updates
-  from nurseries that ship to your selected state. Choose "All states" to
-  see everything.
+
+<h3 style="color:#374151;font-size:1rem;margin:0 0 8px">State filter</h3>
+<p style="color:#6b7280;font-size:0.85rem;margin:0 0 12px">
+  Only see stock updates from nurseries that ship to your state.
 </p>
-<form id="prefsForm" style="margin:0 0 16px">
-  <label for="stateSelect" style="display:block;font-weight:600;color:#374151;margin:0 0 6px;font-size:0.9rem">
-    Show nurseries that ship to:
-  </label>
+<form id="prefsForm" style="margin:0 0 24px">
   <select id="stateSelect" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:0.9rem;width:100%;max-width:300px">
     {options}
   </select>
   <br>
-  <button type="submit" style="margin-top:12px;background:#16a34a;color:white;border:none;padding:10px 24px;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer">
-    Save preferences
+  <button type="submit" style="margin-top:8px;background:#16a34a;color:white;border:none;padding:8px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer">
+    Save
   </button>
 </form>
-<p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:0"></p>
+<p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:0 0 16px"></p>
+
+<h3 style="color:#374151;font-size:1rem;margin:0 0 8px">Species restock alerts</h3>
+<p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
+  Get emailed when any variety of these species comes back in stock.
+</p>
+<div id="speciesWatches" style="margin:0 0 24px">
+{species_items}
+</div>
+
+<h3 style="color:#374151;font-size:1rem;margin:0 0 8px">Variety restock alerts</h3>
+<p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
+  Get emailed when these specific varieties come back in stock.
+</p>
+<div id="varietyWatches" style="margin:0 0 24px">
+{variety_items}
+</div>
+
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.8rem;color:#9ca3af">
-  <a href="https://treestock.com.au" style="color:#6b7280">treestock.com.au</a>
+  <a href="https://treestock.com.au/unsubscribe?email={email}&token={token}" style="color:#dc2626">Unsubscribe from all</a>
+  &middot; <a href="https://treestock.com.au" style="color:#6b7280">treestock.com.au</a>
 </p>
 <script>
 document.getElementById('prefsForm').addEventListener('submit', async function(e) {{
@@ -414,7 +500,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
     const data = await resp.json();
     if (resp.ok) {{
       msg.style.color = '#065f46';
-      msg.textContent = 'Preferences saved! Your next digest will be filtered to ' + (state === 'ALL' ? 'all states' : state) + '.';
+      msg.textContent = 'Saved! Next digest will show ' + (state === 'ALL' ? 'all states' : state) + '.';
     }} else {{
       msg.style.color = '#dc2626';
       msg.textContent = data.error || 'Something went wrong.';
@@ -424,8 +510,43 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
     msg.textContent = 'Network error. Please try again.';
   }}
   btn.disabled = false;
-  btn.textContent = 'Save preferences';
+  btn.textContent = 'Save';
 }});
+
+async function removeSpecies(slug) {{
+  if (!confirm('Stop watching ' + slug.replace(/-/g, ' ') + '?')) return;
+  try {{
+    const resp = await fetch('/api/subscribe', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{
+        email: '{email}',
+        token: '{token}',
+        action: 'unwatch_species',
+        species: slug
+      }})
+    }});
+    if (resp.ok) location.reload();
+    else alert('Failed to remove watch.');
+  }} catch (err) {{ alert('Network error.'); }}
+}}
+
+async function removeVariety(slug) {{
+  if (!confirm('Stop watching this variety?')) return;
+  try {{
+    const resp = await fetch('/api/unwatch-variety', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{
+        email: '{email}',
+        token: '{token}',
+        variety_slug: slug
+      }})
+    }});
+    if (resp.ok) location.reload();
+    else alert('Failed to remove watch.');
+  }} catch (err) {{ alert('Network error.'); }}
+}}
 </script>"""
         self.send_html(200, body)
 

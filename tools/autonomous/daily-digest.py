@@ -237,6 +237,53 @@ def aggregate_sessions(since):
     }
 
 
+def get_subscriber_stats():
+    """Read subscriber data and return stats for the digest."""
+    import sqlite3
+
+    subs_path = "/opt/dale/data/subscribers.json"
+    watches_db = "/opt/dale/data/variety_watches.db"
+
+    stats = {
+        "total_subscribers": 0,
+        "with_species_watches": 0,
+        "species_watches": {},
+        "variety_watch_count": 0,
+        "variety_watch_emails": 0,
+        "variety_watches": {},
+    }
+
+    # Read subscribers.json
+    try:
+        with open(subs_path) as f:
+            subs = json.load(f)
+        stats["total_subscribers"] = len(subs)
+        for s in subs:
+            watch_species = s.get("watch_species", [])
+            if watch_species:
+                stats["with_species_watches"] += 1
+                for sp in watch_species:
+                    stats["species_watches"][sp] = stats["species_watches"].get(sp, 0) + 1
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+
+    # Read variety_watches.db
+    try:
+        con = sqlite3.connect(watches_db)
+        rows = con.execute(
+            "SELECT variety_title, COUNT(*) as cnt FROM watches GROUP BY variety_slug ORDER BY cnt DESC"
+        ).fetchall()
+        emails = con.execute("SELECT COUNT(DISTINCT email) FROM watches").fetchone()[0]
+        con.close()
+        stats["variety_watch_count"] = sum(r[1] for r in rows)
+        stats["variety_watch_emails"] = emails
+        stats["variety_watches"] = {r[0]: r[1] for r in rows}
+    except Exception:
+        pass
+
+    return stats
+
+
 def load_focus_summary(repo_dir):
     """Read focus tracker and compute a one-line summary."""
     tracker_path = os.path.join(repo_dir, "state", "focus-tracker.json")
@@ -266,7 +313,7 @@ def load_focus_summary(repo_dir):
 
 
 def build_digest_html(completed, created, in_progress, session_stats,
-                      traffic_html, focus_summary, today):
+                      traffic_html, focus_summary, subscriber_stats, today):
     """Build the HTML email body."""
     parts = [f"<h2>Dale Daily Digest &mdash; {today}</h2>"]
 
@@ -322,6 +369,21 @@ def build_digest_html(completed, created, in_progress, session_stats,
     parts.append(f"<h3>Focus Tracker</h3>")
     parts.append(f"<p>{focus_summary}</p>")
 
+    # Subscriber stats
+    ss = subscriber_stats
+    parts.append("<h3>Subscribers</h3>")
+    parts.append(
+        f"<p>{ss['total_subscribers']} subscribers | "
+        f"{ss['with_species_watches']} watching species | "
+        f"{ss['variety_watch_count']} variety watches ({ss['variety_watch_emails']} users)</p>"
+    )
+    if ss["species_watches"]:
+        sw = ", ".join(f"{sp} ({n})" for sp, n in sorted(ss["species_watches"].items(), key=lambda x: -x[1]))
+        parts.append(f"<p style='font-size:0.9em;color:#555'>Species: {sw}</p>")
+    if ss["variety_watches"]:
+        vw = ", ".join(f"{t} ({n})" for t, n in list(ss["variety_watches"].items())[:10])
+        parts.append(f"<p style='font-size:0.9em;color:#555'>Varieties: {vw}</p>")
+
     parts.append(
         '<p style="color: #888; font-size: 12px;">Autonomous Dale &mdash; '
         '<a href="https://github.com/bjnoel/Dale">repo</a></p>'
@@ -331,7 +393,7 @@ def build_digest_html(completed, created, in_progress, session_stats,
 
 
 def build_digest_text(completed, created, in_progress, session_stats,
-                      traffic_text, focus_summary, today):
+                      traffic_text, focus_summary, subscriber_stats, today):
     """Build the plaintext email body."""
     lines = [f"Dale Daily Digest -- {today}", ""]
 
@@ -374,6 +436,21 @@ def build_digest_text(completed, created, in_progress, session_stats,
     lines.append("")
 
     lines.append(f"Focus: {focus_summary}")
+    lines.append("")
+
+    ss = subscriber_stats
+    lines.append("== Subscribers ==")
+    lines.append(
+        f"  {ss['total_subscribers']} subscribers | "
+        f"{ss['with_species_watches']} watching species | "
+        f"{ss['variety_watch_count']} variety watches"
+    )
+    if ss["species_watches"]:
+        sw = ", ".join(f"{sp} ({n})" for sp, n in sorted(ss["species_watches"].items(), key=lambda x: -x[1]))
+        lines.append(f"  Species: {sw}")
+    if ss["variety_watches"]:
+        vw = ", ".join(f"{t} ({n})" for t, n in list(ss["variety_watches"].items())[:10])
+        lines.append(f"  Varieties: {vw}")
 
     return "\n".join(lines)
 
@@ -421,11 +498,16 @@ def main():
     # 4. Focus tracker
     focus_summary = load_focus_summary(repo_dir)
 
+    # 5. Subscriber stats
+    subscriber_stats = get_subscriber_stats()
+    log(f"Subscribers: {subscriber_stats['total_subscribers']} total, "
+        f"{subscriber_stats['variety_watch_count']} variety watches")
+
     # Build email
     html = build_digest_html(completed, created, in_progress, session_stats,
-                             traffic_html, focus_summary, today)
+                             traffic_html, focus_summary, subscriber_stats, today)
     text = build_digest_text(completed, created, in_progress, session_stats,
-                             traffic_text, focus_summary, today)
+                             traffic_text, focus_summary, subscriber_stats, today)
 
     if dry_run:
         print("=== HTML ===")

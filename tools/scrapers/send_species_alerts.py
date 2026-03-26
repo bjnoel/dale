@@ -261,10 +261,12 @@ def build_alert_email(species_name: str, slug: str, new_products: list[dict]) ->
 
 def inject_unsubscribe(html: str, email: str, token: str) -> str:
     unsubscribe_url = f"{UNSUBSCRIBE_BASE}?email={urllib.parse.quote(email)}&token={token}"
+    manage_url = f"{SITE_URL}/api/preferences?email={urllib.parse.quote(email)}&token={token}"
     footer = f"""
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.75em;color:#9ca3af;text-align:center">
   You're receiving this because you requested restock alerts at <a href="{SITE_URL}" style="color:#6b7280">{SITE_URL}</a>.<br>
+  <a href="{manage_url}" style="color:#6b7280">Manage your alerts</a> &middot;
   <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
 </p>
 """

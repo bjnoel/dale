@@ -53,7 +53,7 @@ def make_unsubscribe_token(email: str, secret: str) -> str:
     ).hexdigest()[:32]
 
 
-def build_welcome_html(email: str, unsubscribe_url: str) -> str:
+def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -> str:
     return f"""<!DOCTYPE html>
 <html>
 <head>
@@ -121,6 +121,7 @@ def build_welcome_html(email: str, unsubscribe_url: str) -> str:
     <div style="border-top:1px solid #e5e7eb;padding:16px 24px;text-align:center;">
       <p style="margin:0;font-size:0.75rem;color:#9ca3af;">
         You subscribed at <a href="{SITE_URL}" style="color:#6b7280;">{SITE_URL}</a>.<br>
+        <a href="{manage_url}" style="color:#6b7280;">Manage your alerts</a> &middot;
         <a href="{unsubscribe_url}" style="color:#6b7280;">Unsubscribe</a>
       </p>
     </div>
@@ -135,7 +136,8 @@ def send_welcome(email: str, dry_run: bool = False) -> bool:
     secret = get_unsubscribe_secret()
     token = make_unsubscribe_token(email, secret) if secret else ""
     unsubscribe_url = f"{UNSUBSCRIBE_BASE}?email={urllib.parse.quote(email)}&token={token}"
-    html = build_welcome_html(email, unsubscribe_url)
+    manage_url = f"{SITE_URL}/api/preferences?email={urllib.parse.quote(email)}&token={token}"
+    html = build_welcome_html(email, unsubscribe_url, manage_url)
     subject = "Welcome to treestock.com.au — you're all set"
 
     if dry_run:
