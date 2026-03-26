@@ -755,6 +755,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
         f'<a href="/species/{s["sl"]}.html" class="species-pill" data-q="{s["cn"]}" data-sl="{s["sl"]}">{s["cn"]} <span class="count">{s["in_stock"]}</span></a>'
         for s in top_species
     )
+    species_strip_html += '\n<span class="species-pill other-pill" id="otherPill" style="display:none">Other <span class="count" id="otherCount">0</span></span>'
 
     extra_style = """\
   .stock-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }
@@ -786,6 +787,9 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .species-pill.active .count { color: #15803d; }
   .species-pill.dimmed { opacity: 0.4; }
   .species-pill.dimmed .count { color: #9ca3af; }
+  .other-pill { cursor: default; color: #9ca3af; border-color: #e5e7eb; }
+  .other-pill:hover { background: transparent; border-color: #e5e7eb; color: #9ca3af; }
+  .other-pill .count { color: #9ca3af; }
   .filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
   .filter-chip button { background: none; border: none; color: #166534; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
   .filter-chip button:hover { color: #dc2626; }"""
@@ -1187,9 +1191,12 @@ function updatePillCounts() {{
     if (p.sl) counts[p.sl] = (counts[p.sl] || 0) + 1;
   }});
 
+  // Update each pill and track the sum of displayed pill counts
+  let pillTotal = 0;
   document.querySelectorAll('.species-pill[data-sl]').forEach(pill => {{
     const sl = pill.getAttribute('data-sl');
     const count = counts[sl] || 0;
+    pillTotal += count;
     const countEl = pill.querySelector('.count');
     if (countEl) countEl.textContent = count;
     if (count === 0) {{
@@ -1198,6 +1205,19 @@ function updatePillCounts() {{
       pill.classList.remove('dimmed');
     }}
   }});
+
+  // "Other" pill: products not matching any displayed species pill
+  const otherCount = base.length - pillTotal;
+  const otherPill = document.getElementById('otherPill');
+  const otherCountEl = document.getElementById('otherCount');
+  if (otherPill && otherCountEl) {{
+    if (otherCount > 0) {{
+      otherCountEl.textContent = otherCount;
+      otherPill.style.display = '';
+    }} else {{
+      otherPill.style.display = 'none';
+    }}
+  }}
 }}
 
 // Event listeners
