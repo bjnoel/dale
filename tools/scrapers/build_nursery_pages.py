@@ -239,10 +239,10 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
         stock_cell = f'<span class="text-green-700 font-bold">{in_s}</span>' if in_s > 0 else f'<span class="text-gray-400">{in_s}</span>'
         species_rows_tw += f"""
         <tr class="border-b border-gray-100 hover:bg-gray-50">
-          <td class="py-1.5 pr-3 text-sm"><a href="/species/{sp['sl']}.html" class="text-green-700 hover:underline">{sp['cn']}</a></td>
-          <td class="py-1.5 pr-3 text-xs text-gray-400 italic">{sp['ln']}</td>
-          <td class="py-1.5 pr-3 text-center text-sm">{stock_cell}</td>
-          <td class="py-1.5 text-center text-sm text-gray-400">{tot}</td>
+          <td class="py-1.5 px-3 text-sm"><a href="/species/{sp['sl']}.html" class="text-green-700 hover:underline">{sp['cn']}</a></td>
+          <td class="py-1.5 px-3 text-xs text-gray-400 italic">{sp['ln']}</td>
+          <td class="py-1.5 px-3 text-center text-sm">{stock_cell}</td>
+          <td class="py-1.5 px-3 text-center text-sm text-gray-400">{tot}</td>
         </tr>"""
 
     # Rebuild product rows for Tailwind
@@ -253,8 +253,8 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
         p_url = p.get("url", "#")
         product_rows_tw += f"""
         <tr class="border-b border-gray-100 hover:bg-gray-50">
-          <td class="py-1.5 pr-3 text-sm"><a href="{p_url}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{title}</a></td>
-          <td class="py-1.5 text-right text-sm font-medium">{price}</td>
+          <td class="py-1.5 px-3 text-sm"><a href="{p_url}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{title}</a></td>
+          <td class="py-1.5 px-3 text-right text-sm font-medium">{price}</td>
         </tr>"""
 
     extra_style = """\
@@ -318,7 +318,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
               <th class="py-2 px-3 text-center">Total</th>
             </tr>
           </thead>
-          <tbody class="px-3">
+          <tbody>
             {species_rows_tw}
           </tbody>
         </table>
@@ -338,7 +338,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
               <th class="py-2 px-3 text-right">Price</th>
             </tr>
           </thead>
-          <tbody class="px-3">
+          <tbody>
             {product_rows_tw}
           </tbody>
         </table>
