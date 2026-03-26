@@ -783,7 +783,12 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .species-pill:hover { border-color: #22c55e; background: #f0fdf4; color: #065f46; }
   .species-pill.active { border-color: #16a34a; background: #dcfce7; color: #166534; font-weight: 600; }
   .species-pill .count { color: #059669; font-weight: 600; font-size: 0.7rem; }
-  .species-pill.active .count { color: #15803d; }"""
+  .species-pill.active .count { color: #15803d; }
+  .species-pill.dimmed { opacity: 0.4; }
+  .species-pill.dimmed .count { color: #9ca3af; }
+  .filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+  .filter-chip button { background: none; border: none; color: #166534; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
+  .filter-chip button:hover { color: #dc2626; }"""
 
     extra_head_tags = """<meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -833,6 +838,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
       <div class="species-strip">{species_strip_html}</div>
       <button id="toggleSpecies" class="toggle-pills-btn" style="display:none">Show all &#9662;</button>
     </div>
+    <div id="activeFilters" class="flex flex-wrap gap-1.5" style="display:none"></div>
     <div class="flex flex-wrap gap-2 items-center text-sm">
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="inStockOnly" checked class="rounded"> In stock only
@@ -998,6 +1004,8 @@ function search() {{
   currentResults = results;
   render();
   updateSubCTA(q);
+  updateActiveFilters();
+  updatePillCounts();
 }}
 
 function updateSubCTA(q) {{
@@ -1105,6 +1113,91 @@ function render() {{
 function showMore() {{
   displayCount += 50;
   render();
+}}
+
+// Active filter chips
+function updateActiveFilters() {{
+  const el = document.getElementById('activeFilters');
+  if (!el) return;
+  const chips = [];
+  if (activeSpeciesSlug) {{
+    const pill = document.querySelector('.species-pill[data-sl="' + activeSpeciesSlug + '"]');
+    const name = pill ? pill.getAttribute('data-q') : activeSpeciesSlug;
+    chips.push({{label: name, action: 'species'}});
+  }} else if (searchInput.value.trim()) {{
+    chips.push({{label: '"' + searchInput.value.trim() + '"', action: 'search'}});
+  }}
+  const nursery = nurserySelect.value;
+  if (nursery) {{
+    const opt = nurserySelect.options[nurserySelect.selectedIndex];
+    const name = opt ? opt.textContent.split('(')[0].replace('* ','').trim() : nursery;
+    chips.push({{label: name, action: 'nursery'}});
+  }}
+  const st = stateFilter.value;
+  if (st) chips.push({{label: st, action: 'state'}});
+  if (changesOnly.checked) chips.push({{label: 'Changes only', action: 'changes'}});
+
+  if (chips.length === 0) {{
+    el.style.display = 'none';
+    return;
+  }}
+  el.style.display = 'flex';
+  el.innerHTML = chips.map(c =>
+    `<span class="filter-chip">${{c.label}} <button data-action="${{c.action}}" aria-label="Remove filter">&times;</button></span>`
+  ).join('');
+}}
+
+document.getElementById('activeFilters').addEventListener('click', function(e) {{
+  const btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  const action = btn.getAttribute('data-action');
+  if (action === 'species') {{
+    activeSpeciesSlug = '';
+    searchInput.value = '';
+    document.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
+  }} else if (action === 'search') {{
+    searchInput.value = '';
+  }} else if (action === 'nursery') {{
+    nurserySelect.value = '';
+  }} else if (action === 'state') {{
+    stateFilter.value = '';
+  }} else if (action === 'changes') {{
+    changesOnly.checked = false;
+  }}
+  search();
+}});
+
+// Update species pill counts based on current filters (excluding species filter itself)
+function updatePillCounts() {{
+  const stockOnly = inStockOnly.checked;
+  const st = stateFilter.value;
+  const nursery = nurserySelect.value;
+  const changes = changesOnly.checked;
+
+  // Get the base filtered set (all filters except species)
+  let base = P;
+  if (stockOnly) base = base.filter(p => p.a);
+  if (st) base = base.filter(p => (SHIPS_TO[p.nk] || []).includes(st));
+  if (changes) base = base.filter(p => p.ch);
+  if (nursery) base = base.filter(p => p.nk === nursery);
+
+  // Count per species slug
+  const counts = {{}};
+  base.forEach(p => {{
+    if (p.sl) counts[p.sl] = (counts[p.sl] || 0) + 1;
+  }});
+
+  document.querySelectorAll('.species-pill[data-sl]').forEach(pill => {{
+    const sl = pill.getAttribute('data-sl');
+    const count = counts[sl] || 0;
+    const countEl = pill.querySelector('.count');
+    if (countEl) countEl.textContent = count;
+    if (count === 0) {{
+      pill.classList.add('dimmed');
+    }} else {{
+      pill.classList.remove('dimmed');
+    }}
+  }});
 }}
 
 // Event listeners
