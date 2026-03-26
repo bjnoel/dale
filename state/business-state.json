@@ -1,6 +1,6 @@
 {
-  "version": "2.0.0",
-  "last_updated": "2026-03-24",
+  "version": "3.0.0",
+  "last_updated": "2026-03-26",
   "session_count": 49,
   "phase": 0,
   "phase_name": "Setup",
@@ -16,19 +16,6 @@
       "status": "approaching-prospects",
       "clients": 0,
       "revenue_total": 0,
-      "assets_built": [
-        "Audit report HTML template",
-        "Report generator (JSON -> HTML)",
-        "Website analysis tool (Python)",
-        "Approach script for Benedict",
-        "Landing page deployed (walkthrough.au)",
-        "Portfolio piece (Drift Kitchen, Scarborough)",
-        "Email (hello@walkthrough.au via Fastmail)",
-        "Prospect briefs: PBR Plumbing, Wembley Cycles, Gather Ceramics",
-        "Nursery partnership page (treestock.com.au/advertise.html)",
-        "Leeming Fruit Trees prospect brief (deliverables/leeming-fruit-trees-cold-outreach.md)"
-      ],
-      "model_pivot": "DEC-051: Implementation over reports. Dale builds shops, Benedict does relationships. treestock.com.au is portfolio + traffic for nursery clients.",
       "prospects": {
         "gather_ceramics": {
           "status": "closed",
@@ -51,8 +38,7 @@
           "status": "deprioritised",
           "hook": "Old model (report). Revisit if implementation model proves out."
         }
-      },
-      "next_action": "Leeming deferred (Tri busy). Focus on Tass1 Trees demo shop build + Heritage Fruit Trees outreach. Revisit Leeming late April or at next fruit meet."
+      }
     },
     "b": {
       "name": "Rare Fruit Stock Tracker",
@@ -60,193 +46,16 @@
       "domain_alt": "scion.exchange",
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
-      "app": "React Native (Expo) at /Users/bjnoel/Projects/scion-app",
       "nurseries_monitored": 17,
       "nurseries_researched": 25,
       "first_scrape_date": "2026-03-05",
       "days_of_data": 18,
       "products_tracked": 6272,
       "in_stock": 3280,
-      "products_note": "fruit/edible only (filtered from ~26,000+ total raw). HFT adds ~300 temperate varieties. Yalca adds 201 heritage/dwarf varieties. Forever Seeds adds 82 rare tropicals. Garden Express adds 91 (mostly seasonal bare-root, 4 in stock in March).",
       "species_matched_pct": 73,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
       "subscribers": 4,
-      "revenue_total": 0,
-      "features": [
-        "Daily scraping of 14 nurseries",
-        "Price/stock change detection",
-        "State-based shipping filter (all 8 states)",
-        "Species taxonomy (50 species, fruit_species.json)",
-        "Daily digest (text + HTML + shareable web page)",
-        "Email signup form (collecting subscribers)",
-        "Daily email digest to subscribers (via Resend)",
-        "Unsubscribe flow (HMAC-secured, Spam Act compliant)",
-        "Changes only filter",
-        "Price/stock change history page",
-        "Dated digest archives",
-        "Species pages (50 pages at /species/ for SEO)",
-        "Species browsing grid on dashboard (top 16 species by stock)",
-        "sitemap.xml (70 URLs, daily auto-generated)",
-        "Nursery profile pages (12 pages at /nursery/ for SEO)",
-        "Per-species restock alerts (notify me when species back in stock)",
-        "Weekly FB post template for community engagement",
-        "Location pages (WA/QLD/NSW/VIC \u2014 /buy-fruit-trees-[state].html)",
-        "Weekly data backup (Sunday 02:00 UTC, 4-week rolling)",
-        "Compare price pages (50 pages at /compare/ \u2014 cross-nursery price comparison for SEO)",
-        "Rare & Exotic Finds page (/rare.html \u2014 22 rare species, shareable community content)",
-        "Variety/cultivar pages (2,308 pages at /variety/ \u2014 individual named cultivar pages for SEO)",
-        "Sample digest preview page (/sample-digest.html \u2014 shows visitors the daily email before subscribing)",
-        "Homepage 'Recent Highlights' section (shows real restocks + price drops to demonstrate subscribe value)",
-        "Nursery partnership page (/advertise.html \u2014 for nursery sponsorship outreach)",
-        "Location pages auto-rebuild daily (build_location_pages.py, species-filtered \u2014 no non-plant items)",
-        "Beginner's Guide page (/guide.html \u2014 SEO landing page for 'where to buy rare fruit trees Australia')",
-        "Bare-Root 2026 guide (/bare-root-2026.html \u2014 seasonal SEO page targeting bare-root buyers, targets June season)",
-        "Internal guide links added to species/compare/variety page footers (2,460+ pages link to guide.html)",
-        "GSC analysis script (scrapers/gsc_analysis.py) \u2014 pulls impressions/clicks/CTR/queries via Search Console API, saves JSON report",
-        "Sapodilla species page: 200-word growing guide (climate, care, varieties) for SEO",
-        "Homepage layout fixed: species pills moved inside filter section (Rule #1 compliance)",
-        "Species growing guides (all 50 species now have 150-220 word Australian growing guides)",
-        "Dated digest pages (/digest/YYYY-MM-DD.html with prev/next navigation + /digest/index.html archive)",
-        "Garden Express nursery added (16th nursery, WooCommerce, ships WA, 91 products)",
-        "Species guide quality review: all 28 variety claims verified against tracked data, 2 errors fixed (guava Red Indian removed, jujube Admiral Wilkes spelling fixed)",
-        "Per-variety restock alerts (SQLite-backed, notify me when specific cultivar back in stock, 2,457 variety pages now have Notify Me button)",
-        "PlantNet nursery added (17th nursery, WooCommerce, SA-based, ships to WA via Olea Nurseries partner, 110 products, 80 in stock)",
-        "Garden Express category_api mode restored (reverted in session 49 accidentally, now re-added properly with dedup)"
-      ],
-      "nursery_details": {
-        "ross_creek": {
-          "products": 1060,
-          "in_stock": 484,
-          "platform": "Shopify",
-          "ships_to_wa": false,
-          "location": "QLD"
-        },
-        "ladybird": {
-          "products": 1690,
-          "in_stock": 724,
-          "platform": "Shopify",
-          "ships_to_wa": false,
-          "location": "QLD",
-          "note": "fruit/edible filtered from ~6500 total"
-        },
-        "fruitopia": {
-          "products": 627,
-          "in_stock": 168,
-          "platform": "Shopify",
-          "ships_to_wa": false,
-          "location": "QLD"
-        },
-        "daleys": {
-          "products": 668,
-          "in_stock": 663,
-          "platform": "Custom PHP",
-          "ships_to_wa": true,
-          "location": "NSW"
-        },
-        "primal_fruits": {
-          "products": 97,
-          "in_stock": 63,
-          "platform": "Ecwid",
-          "ships_to_wa": true,
-          "location": "WA"
-        },
-        "guildford": {
-          "products": 610,
-          "in_stock": 190,
-          "platform": "WooCommerce",
-          "ships_to_wa": true,
-          "location": "WA"
-        },
-        "fruit_salad_trees": {
-          "products": 88,
-          "in_stock": 83,
-          "platform": "Shopify",
-          "ships_to_wa": true,
-          "location": "NSW",
-          "note": "Ships to WA 1st Tuesday/month"
-        },
-        "diggers": {
-          "products": 114,
-          "in_stock": 62,
-          "platform": "Shopify",
-          "ships_to_wa": true,
-          "location": "VIC",
-          "note": "fruit/nut filtered from 1799 total"
-        },
-        "fruit_tree_cottage": {
-          "products": 185,
-          "in_stock": 108,
-          "platform": "Shopify",
-          "ships_to_wa": false,
-          "location": "QLD",
-          "note": "does not ship to WA/NT/TAS, added 2026-03-15"
-        },
-        "all_season_plants_wa": {
-          "products": 20,
-          "in_stock": 20,
-          "platform": "Shopify",
-          "ships_to_wa": true,
-          "location": "WA",
-          "note": "WA pickup + local delivery, rare tropicals (mangosteen, wampee, jaboticaba)"
-        },
-        "ausnurseries": {
-          "products": 409,
-          "in_stock": 109,
-          "platform": "Shopify",
-          "ships_to_wa": false,
-          "location": "NSW",
-          "note": "does not ship to WA/NT/TAS"
-        },
-        "heritage_fruit_trees": {
-          "products": 332,
-          "in_stock": 331,
-          "platform": "BigCommerce",
-          "ships_to_wa": true,
-          "location": "VIC",
-          "note": "Heritage/heirloom temperate varieties. WA shipping in winter/dormant season (May-Sep). Added 2026-03-16."
-        },
-        "perth_mobile_nursery": {
-          "products": 220,
-          "in_stock": 160,
-          "platform": "Shopify",
-          "ships_to_wa": true,
-          "location": "WA",
-          "note": "Premium WA nursery. Perth metro delivery. Rare mangoes ($770-880), figs, pomegranates, dragon fruit. Added 2026-03-18."
-        },
-        "yalca_fruit_trees": {
-          "products": 201,
-          "in_stock": 125,
-          "platform": "WooCommerce",
-          "ships_to_wa": false,
-          "location": "VIC",
-          "note": "Heritage/dwarf specialist. NSW/VIC/QLD/SA/ACT only. Seasonal: late June to Sep 15 (dormant bare-root). 201 apple, pear, stone fruit, fig, quince, berry varieties. Added 2026-03-18."
-        },
-        "forever_seeds": {
-          "products": 82,
-          "in_stock": 76,
-          "platform": "Shopify",
-          "ships_to_wa": false,
-          "location": "NSW",
-          "note": "Rare tropicals specialist. NSW/VIC/QLD/SA/ACT only. Rollinia, Canistel, Black Sapote, Soursop, Miracle Fruit, Jackfruit, Vanilla Bean Orchid, Cocoa, Coffee, Longan. Added 2026-03-18."
-        },
-        "garden_express": {
-          "products": 91,
-          "in_stock": 4,
-          "platform": "WooCommerce",
-          "ships_to_wa": true,
-          "location": "VIC",
-          "note": "Australia's largest online nursery (6,200+ total products). WA/NT/TAS quarantine surcharge applies. Mostly bare-root seasonal (June-Sep). 4 citrus in stock March. Category API mode. Added 2026-03-23."
-        },
-        "plantnet": {
-          "products": 110,
-          "in_stock": 80,
-          "platform": "WooCommerce",
-          "ships_to_wa": true,
-          "location": "SA",
-          "note": "PlantNet (retail arm of Balhannah Nurseries, est. 1887, SA). Temperate fruit specialist: apples, pears, stone fruit, citrus, berries. Ships to WA via Olea Nurseries partner in Manjimup WA. Category API mode. Added 2026-03-24."
-        }
-      },
-      "next_action": "Perth Mobile Nursery outreach email SENT (2026-03-20). Follow up via WhatsApp in 3-5 days if no reply. Next: Heritage Fruit Trees outreach (DAL-38). WhatsApp Cyrus at Primal Fruits."
+      "revenue_total": 0
     },
     "b_experiment_beestock": {
       "name": "Beekeeping Supply Price Tracker",
@@ -258,79 +67,19 @@
       "in_stock": 1782,
       "first_scrape_date": "2026-03-19",
       "days_of_data": 2,
-      "retailer_details": {
-        "ecrotek": {
-          "products": 410,
-          "in_stock": 259,
-          "platform": "Shopify",
-          "location": "VIC"
-        },
-        "the-bee-store": {
-          "products": 320,
-          "in_stock": 248,
-          "platform": "Shopify"
-        },
-        "buzzbee": {
-          "products": 466,
-          "in_stock": 388,
-          "platform": "Shopify"
-        },
-        "flow-hive": {
-          "products": 67,
-          "in_stock": 59,
-          "platform": "Shopify",
-          "location": "NSW"
-        },
-        "beekeeping-supplies-australia": {
-          "products": 62,
-          "in_stock": 50,
-          "platform": "Shopify",
-          "location": "QLD",
-          "note": "Beekeeping products only (excludes pet/garden inventory). Added 2026-03-20."
-        },
-        "beewise": {
-          "products": 778,
-          "in_stock": 778,
-          "platform": "Magento 2",
-          "location": "Perth WA + Sydney NSW",
-          "note": "Benedict's local Perth supplier. Stock proxy: enabled products = in stock. Added 2026-03-20."
-        }
-      },
-      "features": [
-        "Daily scraping of 4 Shopify retailers + 1 Magento retailer",
-        "Price/stock change detection (variant-level)",
-        "Static HTML dashboard with search, category filter, retailer filter, sort",
-        "Daily digest (text + HTML page)",
-        "9 product categories (Hives, Frames, Extractors, Gear, Smokers, Treatments, Feeders, Containers, Books)",
-        "Category pill strip (9 categories, horizontal scrollable, click to filter)",
-        "Price range display for multi-variant products (e.g. $187 - $215)",
-        "Sale filter checkbox",
-        "Email subscriber signup form + bee_subscribe_server (port 8098)",
-        "Welcome email on subscription (send_bee_welcome_email.py)",
-        "robots.txt + sitemap.xml (auto-regenerated daily)",
-        "flock protection on run-bee-scrapers.sh (no overlapping runs)",
-        "Category landing pages (9 categories at /category/ for SEO)",
-        "Category taxonomy fix: jar/lid collision resolved, word-boundary matching, multi-word keyword priority",
-        "Price range display: bulk products (>4x ratio) show from $X instead of $X - $Y",
-        "Garbage title filter: removes products with no alphanumeric content (e.g. **, *)",
-        "HTML entity decoding: fixes Beewise Magento triple-encoded titles",
-        "Relevance sort: in-stock first, then changes (new/back/price drops), then alphabetic",
-        "Dated digest archive pages (/digest/YYYY-MM-DD.html with prev/next navigation + /digest/index.html)",
-        "Frame size badges (8-frame / 10-frame) on 214 products extracted from title",
-        "Frame size filter (8-frame / 10-frame / Any) in search UI"
-      ],
-      "next_action": "Share in WA beekeeping FB groups when ready. Benedict: confirm beestock.com.au is in Plausible admin (data.bjnoel.com)."
+      "subscribers": 0,
+      "revenue_total": 0
     }
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done \u2014 hello@walkthrough.au via Fastmail",
-    "blog": "deployed \u2014 walkthrough.au live",
+    "email": "done — hello@walkthrough.au via Fastmail",
+    "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done \u2014 dale@mail.walkthrough.au + mail.scion.exchange verified"
+    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done — dale@mail.walkthrough.au + mail.scion.exchange verified"
   }
 }

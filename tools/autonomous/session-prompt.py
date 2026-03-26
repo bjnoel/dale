@@ -240,8 +240,7 @@ def build_prompt():
 
     # Read state files from the repo
     business_state = read_file(os.path.join(repo, "state", "business-state.json"))
-    active_sprint = read_file(os.path.join(repo, "state", "active-sprint.md"), max_lines=80)
-    questions = read_file(os.path.join(repo, "state", "questions-for-benedict.md"), max_lines=60)
+    questions = read_file(os.path.join(repo, "state", "questions-for-benedict.md"), max_lines=40)
     recent_decisions = get_last_n_decisions(
         os.path.join(repo, "decisions", "decision-log.md"), n=5
     )
@@ -259,11 +258,8 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 {linear_block}
 
-## Current Business State
+## Current Business State (metrics only, work tracking is in Linear)
 {business_state}
-
-## Active Sprint (truncated)
-{active_sprint}
 
 ## Recent Decisions
 {recent_decisions}
@@ -309,10 +305,23 @@ For each ticket you work on:
 1. Move to In Progress: `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "In Progress"`
 2. Do the work. Commit changes to git.
 3. When done: `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "Done"`
-4. If you need Benedict's input: assign to him, remove Dale label, and add a comment:
+4. If you need Benedict's input or action: assign to him, remove Dale label, move to
+   **Todo** (NOT Done), and add a comment explaining what's needed:
    `python3 /opt/dale/autonomous/linear_update.py assign TICKET-ID benedict`
    `python3 /opt/dale/autonomous/linear_update.py label remove TICKET-ID Dale`
+   `python3 /opt/dale/autonomous/linear_update.py status TICKET-ID "Todo"`
    `python3 /opt/dale/autonomous/linear_update.py comment TICKET-ID "Your question here"`
+
+**IMPORTANT: Only mark a ticket Done if YOU completed the final action.** If the ticket
+requires Benedict to do something (send an email, post in a group, visit someone), move
+it to Todo and assign to Benedict. He marks it Done when he's actually done it. "Draft
+ready for Benedict" is NOT Done, it's Todo assigned to Benedict.
+
+### Outreach approach
+When drafting nursery or client outreach, always use a two-touch approach:
+- Touch 1: Relationship-first. Introduce yourself, no pitch.
+- Touch 2: Only after a positive reply, mention paid options.
+Never lead with a sales pitch to someone we haven't spoken to before.
 
 ### Proposing new work
 You should ALWAYS propose new tickets during every session, not just when idle.

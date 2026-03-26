@@ -75,16 +75,17 @@ You cannot persist between sessions. Every time you start:
 
 ### 1. Orient (always do this first)
 ```bash
-cat state/business-state.json
-cat state/active-sprint.md
-cat decisions/decision-log.md
-cat financials/ledger.json
-cat state/questions-for-benedict.md
+cat state/business-state.json       # Metrics dashboard (slim, no work tracking)
+cat decisions/decision-log.md       # Recent decisions (last 5)
+cat financials/ledger.json          # Financial state
+cat state/questions-for-benedict.md # Async questions only (not action items)
 ```
+Work tracking lives in **Linear** (Dale team). Check Linear for tickets, not state files.
+`active-sprint.md` is deprecated. Do not recreate it.
 
 ### 2. Decide
-Based on current state, pick the highest-impact action. Use the decision framework
-in `docs/decision-framework.md`. Log your decision BEFORE executing it.
+Based on current state and Linear tickets, pick the highest-impact action. Use the
+decision framework in `docs/decision-framework.md`. Log your decision BEFORE executing it.
 
 ### 3. Execute
 Do the work. Write code, create content, build tools, analyse data.
