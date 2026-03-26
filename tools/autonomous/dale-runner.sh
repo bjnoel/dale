@@ -181,8 +181,7 @@ UNPUSHED=$(git log origin/main..HEAD --oneline 2>/dev/null)
 if [ -n "$UNPUSHED" ]; then
     log "Pushing commits: $(echo "$UNPUSHED" | wc -l | tr -d ' ') commit(s)"
     git push origin main 2>>"$LOG_DIR/git-errors.log" || {
-        log "Git push failed"
-        python3 "$SCRIPT_DIR/notify.py" alert "Git push failed after autonomous session"
+        log "Git push failed (will retry next session)"
     }
 fi
 
