@@ -89,13 +89,13 @@ def get_team_id(team_name):
 def get_recent_activity(team_id, since_iso):
     """Fetch tickets completed/created in last 24h + currently in progress."""
 
-    # Completed tickets (completedAt >= since)
+    # Completed tickets: fetch all Done, filter by completedAt in Python
     completed_data = graphql("""
-        query($teamId: ID!, $since: DateTime!) {
+        query($teamId: ID!) {
             issues(
                 filter: {
                     team: { id: { eq: $teamId } }
-                    completedAt: { gte: $since }
+                    state: { type: { eq: "completed" } }
                 }
                 orderBy: updatedAt
                 first: 50
@@ -110,29 +110,29 @@ def get_recent_activity(team_id, since_iso):
                 }
             }
         }
-    """, {"teamId": team_id, "since": since_iso})
+    """, {"teamId": team_id})
 
     completed = []
     if completed_data and completed_data.get("issues"):
         for i in completed_data["issues"]["nodes"]:
-            # Get last Dale comment as summary
-            summary = ""
-            for c in i.get("comments", {}).get("nodes", []):
-                if c.get("user", {}).get("name", "").lower() == "dale":
-                    summary = (c.get("body") or "")[:150]
-            completed.append({
-                "id": i["identifier"],
-                "title": i["title"],
-                "summary": summary,
-            })
+            completed_at = i.get("completedAt", "")
+            if completed_at and completed_at >= since_iso:
+                summary = ""
+                for c in i.get("comments", {}).get("nodes", []):
+                    if c.get("user", {}).get("name", "").lower() == "dale":
+                        summary = (c.get("body") or "")[:150]
+                completed.append({
+                    "id": i["identifier"],
+                    "title": i["title"],
+                    "summary": summary,
+                })
 
-    # Created tickets (backlog, createdAt >= since)
+    # Created tickets: fetch all Backlog, filter by createdAt in Python
     created_data = graphql("""
-        query($teamId: ID!, $since: DateTime!) {
+        query($teamId: ID!) {
             issues(
                 filter: {
                     team: { id: { eq: $teamId } }
-                    createdAt: { gte: $since }
                     state: { type: { eq: "backlog" } }
                 }
                 orderBy: createdAt
@@ -141,23 +141,26 @@ def get_recent_activity(team_id, since_iso):
                 nodes {
                     identifier title
                     description
+                    createdAt
                     labels { nodes { name } }
                 }
             }
         }
-    """, {"teamId": team_id, "since": since_iso})
+    """, {"teamId": team_id})
 
     created = []
     if created_data and created_data.get("issues"):
         for i in created_data["issues"]["nodes"]:
-            desc = (i.get("description") or "")[:150]
-            labels = [l["name"] for l in i.get("labels", {}).get("nodes", [])]
-            created.append({
-                "id": i["identifier"],
-                "title": i["title"],
-                "description": desc,
-                "labels": labels,
-            })
+            created_at = i.get("createdAt", "")
+            if created_at and created_at >= since_iso:
+                desc = (i.get("description") or "")[:150]
+                labels = [l["name"] for l in i.get("labels", {}).get("nodes", [])]
+                created.append({
+                    "id": i["identifier"],
+                    "title": i["title"],
+                    "description": desc,
+                    "labels": labels,
+                })
 
     # In Progress tickets
     in_progress_data = graphql("""
