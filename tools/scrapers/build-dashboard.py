@@ -752,7 +752,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     # Server-render species strip for SEO (crawlable <a> tags)
     # data-q attribute drives JS filter; href preserved for crawlers/fallback
     species_strip_html = "\n".join(
-        f'<a href="/species/{s["sl"]}.html" class="species-pill" data-q="{s["cn"]}">{s["cn"]} <span class="count">{s["in_stock"]}</span></a>'
+        f'<a href="/species/{s["sl"]}.html" class="species-pill" data-q="{s["cn"]}" data-sl="{s["sl"]}">{s["cn"]} <span class="count">{s["in_stock"]}</span></a>'
         for s in top_species
     )
 
@@ -946,6 +946,7 @@ const inStockOnly = document.getElementById('inStockOnly');
 const stateFilter = document.getElementById('stateFilter');
 const changesOnly = document.getElementById('changesOnly');
 const sortBy = document.getElementById('sortBy');
+let activeSpeciesSlug = '';
 
 function search() {{
   displayCount = 50;
@@ -961,8 +962,9 @@ function search() {{
   if (st) results = results.filter(p => (SHIPS_TO[p.nk] || []).includes(st));
   if (changesOnly.checked) results = results.filter(p => p.ch);
   if (nursery) results = results.filter(p => p.nk === nursery);
+  if (activeSpeciesSlug) results = results.filter(p => p.sl === activeSpeciesSlug);
 
-  if (q) {{
+  if (q && !activeSpeciesSlug) {{
     const terms = q.split(/\\s+/);
     results = results.filter(p => {{
       const text = (p.t + ' ' + p.cat + ' ' + (p.ln || '') + ' ' + (p.cv || '')).toLowerCase();
@@ -1107,7 +1109,8 @@ function showMore() {{
 
 // Event listeners
 searchInput.addEventListener('input', function() {{
-  // Clear active pill when user types manually
+  // Clear active pill and species filter when user types manually
+  activeSpeciesSlug = '';
   document.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
   search();
 }});
@@ -1122,24 +1125,24 @@ changesOnly.addEventListener('change', search);
 nurserySelect.addEventListener('change', search);
 sortBy.addEventListener('change', search);
 
-// Species strip pill click: filter homepage results (preserving all other filters)
-document.querySelectorAll('.species-pill[data-q]').forEach(function(pill) {{
+// Species strip pill click: filter by species slug (exact match, not text search)
+document.querySelectorAll('.species-pill[data-sl]').forEach(function(pill) {{
   pill.addEventListener('click', function(e) {{
     e.preventDefault();
+    const sl = this.getAttribute('data-sl');
     const q = this.getAttribute('data-q');
     const isActive = this.classList.contains('active');
     // Clear all active pills
     document.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
     if (isActive) {{
-      // Clicking an active pill clears the species filter
+      activeSpeciesSlug = '';
       searchInput.value = '';
     }} else {{
-      // Set species search and mark this pill active
+      activeSpeciesSlug = sl;
       searchInput.value = q;
       this.classList.add('active');
     }}
     search();
-    // Scroll to results
     const results = document.getElementById('results');
     if (results) results.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
   }});
