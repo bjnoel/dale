@@ -95,7 +95,6 @@ STATE_INFO_BOX = {
 STATE_NURSERY_NOTES = {
     "WA": {
         "daleys": "seasonal window + extra fee",
-        "heritage-fruit-trees": "VIC, ships to WA in winter (May-Sep)",
         "guildford": "Perth metro only",
         "fruit-salad-trees": "ships 1st Tuesday/month",
         "diggers": "ships nationwide",

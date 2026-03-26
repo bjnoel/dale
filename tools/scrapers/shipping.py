@@ -19,7 +19,7 @@ SHIPPING_MAP = {
     "all-season-plants-wa": ["WA"],                                          # WA-based, pickup only (Perth)
     "ausnurseries": ["NSW", "VIC", "QLD", "SA", "ACT"],           # Does not ship to WA, NT, or TAS
     "fruit-tree-cottage": ["NSW", "VIC", "QLD", "SA", "ACT"],     # Does not ship to WA, NT, or TAS
-    "heritage-fruit-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],  # VIC-based, ships nationally in winter/dormant season
+    "heritage-fruit-trees": ["NSW", "VIC", "QLD", "SA", "ACT"],  # VIC-based. No WA/TAS: accreditation discontinued (Mar 2026).
     "perth-mobile-nursery": ["WA"],                                             # WA-based, Perth metro delivery only
     "yalca-fruit-trees": ["NSW", "VIC", "QLD", "SA", "ACT"],                   # Does not ship to WA, NT, or TAS. Seasonal: late June to Sep 15 only.
     "forever-seeds": ["NSW", "VIC", "QLD", "SA", "ACT"],                       # NSW-based. Does not ship to WA, NT, or TAS.

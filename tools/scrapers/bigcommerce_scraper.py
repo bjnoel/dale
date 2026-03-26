@@ -4,7 +4,7 @@ Heritage Fruit Trees BigCommerce Scraper
 
 Scrapes Heritage Fruit Trees (heritagefruittrees.com.au) - a BigCommerce store
 specialising in heritage/heirloom apple, pear, plum, cherry, stone fruit and other
-temperate trees. Ships to WA during winter/dormant season (approx May-September).
+temperate trees. Does not ship to WA, TAS, or NT (accreditation discontinued Mar 2026).
 
 Product format: In BigCommerce, each size/rootstock variant is a *separate product URL*
 (e.g. /akane-apple-medium/ and /akane-apple-dwarf/ are two products). We treat each
