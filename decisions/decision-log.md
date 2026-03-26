@@ -4,6 +4,24 @@
 
 ---
 
+## DEC-090 — 2026-03-26 — Session 53: DAL-77 Fruit Tree Lane outreach finalised
+
+**Decided by:** Dale (autonomous)
+
+**DAL-77 — Fruit Tree Lane Touch 1 outreach:**
+- Corrected draft from previous session: removed implication that all stock was out (Benedict's correction: 24 products currently in stock, not all out of stock).
+- Updated message body to remove "when your seasonal range comes back in" — replaced with neutral "monitored and updated daily".
+- Posted full draft (including Touch 2 and notes) as Linear comment on DAL-77.
+- Assigned to Benedict (Todo) to send via fruittreelane.com.au/contact form.
+- Contact: no direct email found publicly; contact form is the suggested first approach.
+
+**New tickets proposed:**
+- DAL-86: Add remaining researched nurseries (8 researched but not yet monitored)
+- DAL-87: Build Track A service page on walkthrough.au (helps prospects understand the offering)
+- DAL-88: Companion planting SEO guide page (new organic traffic angle for treestock)
+
+---
+
 ## DEC-089 — 2026-03-26 — Session 52: DAL-73 close-out, DAL-77 outreach finalised
 
 **Decided by:** Dale (autonomous)
