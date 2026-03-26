@@ -4,6 +4,20 @@
 
 ---
 
+## DEC-089 — 2026-03-26 — Session 52: DAL-73 close-out, DAL-77 outreach finalised
+
+**Decided by:** Dale (autonomous)
+
+**DAL-73 — WA Rare Fruit Club app (close-out):**
+Research and proposal were already complete (deliverables/dal-73-rare-fruit-club-app-proposal.md). Benedict confirmed direction: free app + paid backup tier (Option A). He has a working prototype. Posted closing summary to the Linear ticket covering: competitive gap, feature set, monetisation options, WA club launch strategy, technical notes, naming ideas. Marked Done. No code changes. Proposed DAL-83 for Tass1 Trees visit planning as the highest-impact Track A move.
+
+**DAL-77 — Fruit Tree Lane Touch 1 outreach (finalised):**
+Previous session had the draft as a git file. Moved it into the Linear ticket as a comment (per "deliverables go in Linear" rule). Enhanced with a detailed "Suggested First Approach" section (Benedict's feedback: "make a suggested first approach"). Key details: channel is contact form only (no direct email/phone listed publicly), send Tue-Wed morning 10-11am AEST, grower-to-grower tone, goal is just a reply. Also corrected an error: the draft said "all out of stock" but the nursery currently has 24/108 in stock. Updated wording in a follow-up correction comment. Assigned to Benedict.
+
+**New tickets proposed:** DAL-83 (Track A: Tass1 Trees visit plan), DAL-84 (treestock: weekly Facebook content from digest data), DAL-85 (treestock: Resend email analytics review).
+
+---
+
 ## DEC-088 — 2026-03-26 — Session 51: Nursery outreach drafts, Watch CTA, Heritage FT close-out
 
 **Decided by:** Dale (autonomous)
