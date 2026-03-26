@@ -407,11 +407,19 @@ def build_compare_index(entries: list[dict]) -> str:
   {breadcrumb}
 
   <h2 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Price Comparisons</h2>
-  <p class="text-gray-600 mb-6">
+  <p class="text-gray-600 mb-4">
     Compare fruit tree prices across {len(entries)} species and multiple Australian nurseries.
     Find the cheapest price, check which nurseries ship to your state, and get alerts when prices drop.
     Updated daily.
   </p>
+
+  <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-center justify-between">
+    <div>
+      <p class="font-semibold text-green-900 text-sm">Compare nurseries side-by-side</p>
+      <p class="text-xs text-gray-600 mt-0.5">Which nursery has the most stock? Who ships to WA? See all 18 nurseries in one table.</p>
+    </div>
+    <a href="/compare/nurseries.html" class="ml-4 flex-shrink-0 text-sm px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800 no-underline">Compare nurseries &rarr;</a>
+  </div>
 
   <div class="overflow-x-auto">
     <table class="w-full text-left">

@@ -99,6 +99,11 @@ NURSERY_META = {
         "tags": ["finger limes", "figs", "olives", "blueberries", "subtropical", "QLD"],
         "description": "Fruit Tree Lane is a Queensland-based nursery specialising in fruit trees, finger limes, figs, olives, blueberries, and subtropical varieties. Based in Helidon, QLD, they carry a wide range of edible trees suited to subtropical and warm temperate climates. Does not ship to WA, NT, or TAS.",
     },
+    "plantnet": {
+        "url": "https://plantnet.com.au",
+        "tags": ["dwarf fruit trees", "SA grown", "pears", "peaches", "citrus"],
+        "description": "PlantNet is a South Australian nursery specialising in dwarf and compact fruit tree varieties. They carry a good range of pears, peaches, nectarines, plums, and citrus in pot-friendly sizes. WA orders are fulfilled via their Olea Nurseries partner based in Manjimup WA (not direct interstate shipping), so WA buyers receive locally grown stock with no interstate quarantine issues.",
+    },
 }
 
 

@@ -21,12 +21,33 @@ from beestock_layout import render_head, render_header, render_footer, SITE_NAME
 # Matches "8 frame", "10 frame", "8-frame", "10-frame" etc. in product titles
 _FRAME_SIZE_RE = re.compile(r'\b(8|10)\s*-?\s*frame\b', re.IGNORECASE)
 
+# Box depth patterns (order matters - check WSP before "super" to avoid overlap)
+_BOX_DEPTH_FULL = re.compile(r'\bfull[\s-]depth\b|\bFD\b', re.IGNORECASE)
+_BOX_DEPTH_WSP = re.compile(r'\bWSP\b')
+_BOX_DEPTH_IDEAL = re.compile(r'\bideal\b', re.IGNORECASE)
+_BOX_DEPTH_SUPER = re.compile(r'\bsuper\b', re.IGNORECASE)
+
 
 def extract_frame_size(title: str) -> str | None:
     """Return '8' or '10' if the title specifies a frame size, else None."""
     m = _FRAME_SIZE_RE.search(title)
     if m:
         return m.group(1)  # '8' or '10'
+    return None
+
+
+def extract_box_depth(title: str) -> str | None:
+    """Return box depth category if detectable from title, else None.
+    Categories: 'Full Depth', 'WSP', 'Ideal', 'Super'
+    """
+    if _BOX_DEPTH_FULL.search(title):
+        return "Full Depth"
+    if _BOX_DEPTH_WSP.search(title):
+        return "WSP"
+    if _BOX_DEPTH_IDEAL.search(title):
+        return "Ideal"
+    if _BOX_DEPTH_SUPER.search(title):
+        return "Super"
     return None
 
 
@@ -155,6 +176,7 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
                 max_price = max(avail_prices) if avail_prices else (max(all_prices) if all_prices else None)
 
             frame_size = extract_frame_size(title)
+            box_depth = extract_box_depth(title)
             product_data = {
                 "t": title,
                 "n": p.get("retailer_name", retailer_name),
@@ -167,6 +189,8 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
             }
             if frame_size:
                 product_data["fs"] = frame_size
+            if box_depth:
+                product_data["bd"] = box_depth
 
             if max_price and min_price and max_price > min_price + 0.01:
                 product_data["mp"] = round(max_price, 2)
@@ -284,6 +308,8 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   .back-badge { background: #d1fae5; color: #065f46; font-weight: 600; }
   .frame-badge { background: #fef3c7; color: #78350f; font-size: 0.65rem; padding: 2px 6px; border-radius: 9999px; cursor: pointer; }
   .frame-badge:hover { background: #fde68a; }
+  .depth-badge { background: #ede9fe; color: #5b21b6; font-size: 0.65rem; padding: 2px 6px; border-radius: 9999px; cursor: pointer; }
+  .depth-badge:hover { background: #ddd6fe; }
   .price-down { color: #059669; font-weight: 600; }
   .price-up { color: #dc2626; }
   .in-stock { background: #d1fae5; color: #065f46; }
@@ -362,6 +388,13 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
       <select id="retailerFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
         <option value="">All retailers</option>
       </select>
+      <select id="depthFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
+        <option value="">All depths</option>
+        <option value="Full Depth">Full Depth</option>
+        <option value="WSP">WSP</option>
+        <option value="Ideal">Ideal</option>
+        <option value="Super">Super</option>
+      </select>
       <select id="sortBy" class="border border-gray-300 rounded px-2 py-1 text-sm">
         <option value="relevance">Sort: Relevance</option>
         <option value="price-asc">Price: Low to High</option>
@@ -436,6 +469,7 @@ const inStockOnly = document.getElementById('inStockOnly');
 const categoryFilter = document.getElementById('categoryFilter');
 const changesOnly = document.getElementById('changesOnly');
 const saleOnly = document.getElementById('saleOnly');
+const depthFilter = document.getElementById('depthFilter');
 const sortBy = document.getElementById('sortBy');
 
 function search() {{
@@ -453,6 +487,8 @@ function search() {{
   if (changesOnly.checked) results = results.filter(p => p.ch);
   if (saleOnly.checked) results = results.filter(p => p.sale);
   if (retailer) results = results.filter(p => p.nk === retailer);
+  const depth = depthFilter.value;
+  if (depth) results = results.filter(p => p.bd === depth);
 
   if (q) {{
     const terms = q.split(/\\s+/);
@@ -520,6 +556,7 @@ function render() {{
     const catName = CATEGORY_NAMES[p.cat] || '';
     const catBadge = catName ? `<span class="cat-tag" data-cat="${{p.cat}}">${{catName}}</span>` : '';
     const frameBadge = p.fs ? `<span class="frame-badge">${{p.fs}}-frame</span>` : '';
+    const depthBadge = p.bd ? `<span class="depth-badge">${{p.bd}}</span>` : '';
 
     let changeBadge = '';
     if (p.ch === 'new') changeBadge = '<span class="stock-badge new-badge">New</span>';
@@ -537,7 +574,7 @@ function render() {{
         <div class="font-medium text-sm">${{p.t}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
           <span class="retailer-tag" data-nk="${{p.nk}}">${{p.n}}</span>
-          ${{catBadge}} ${{frameBadge}} ${{stockBadge}} ${{saleBadge}} ${{changeBadge}}
+          ${{catBadge}} ${{frameBadge}} ${{depthBadge}} ${{stockBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
       <div class="text-right flex-shrink-0">
@@ -638,6 +675,15 @@ document.getElementById('results').addEventListener('click', function(e) {{
     searchInput.value = frameBadge.textContent.trim();
     categoryFilter.value = '';
     document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+    search();
+    window.scrollTo({{ top: 0, behavior: 'smooth' }});
+    return;
+  }}
+  const depthBadge = e.target.closest('.depth-badge');
+  if (depthBadge) {{
+    e.preventDefault();
+    e.stopPropagation();
+    depthFilter.value = depthBadge.textContent.trim();
     search();
     window.scrollTo({{ top: 0, behavior: 'smooth' }});
     return;

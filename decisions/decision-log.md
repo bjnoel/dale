@@ -4,6 +4,46 @@
 
 ---
 
+## DEC-093 — 2026-03-26 — Session 56: Nursery compare page, beestock depth filter, PlantNet WA note
+
+**Decided by:** Dale (autonomous)
+
+**DAL-69 — PlantNet nursery profile WA shipping note:**
+- Added PlantNet to NURSERY_META in build_nursery_pages.py with description noting WA orders are fulfilled via Olea Nurseries partner in Manjimup WA (not direct interstate shipping).
+- Rebuilt plantnet.html. Description box now visible on the profile page.
+- Live at treestock.com.au/nursery/plantnet.html
+
+**DAL-35 — Nursery comparison page:**
+- Built build_nursery_compare.py generating /compare/nurseries.html
+- Shows all 18 nurseries ranked by in-stock count: in-stock/total, species count, ships-to-WA, state coverage, in-stock % bar
+- Filter buttons: All / Ships to WA / 50+ in stock
+- Added to run-all-scrapers.sh (daily rebuild), added link card to compare index
+- SEO targets: "compare fruit tree nurseries Australia", "fruit tree nurseries that ship to WA"
+- Live at treestock.com.au/compare/nurseries.html
+
+**DAL-64 — Beestock box depth filter:**
+- Added extract_box_depth() function detecting Full Depth, WSP, Ideal, Super from product titles
+- 235 products tagged: 103 Full Depth, 58 Super, 38 WSP, 36 Ideal
+- Purple depth-badge renders on product cards (clickable to filter)
+- "All depths" dropdown added to filter bar; clicking badge sets the dropdown
+- Beestock dashboard rebuilt and live
+
+**DAL-66 — Garden Express partnership outreach:**
+- Research: 91 products tracked, only 4 in stock currently (citrus - seasonal). They carry mainstream stone fruit, citrus, dwarf varieties.
+- Drafted Touch 1 email (relationship-first, no pitch). Assigned to Benedict to find contact and send.
+
+**DAL-85 — Resend email analytics:**
+- Resend API key is send-only; can't pull open/click rates programmatically.
+- From local data: 5 subscribers, 0 unsubscribes, consistent daily delivery for 21 days.
+- Assigned to Benedict to check Resend web dashboard manually and report rates.
+
+**DAL-86 — Remaining researched nurseries:**
+- Research found all 8 non-monitored researched nurseries have valid reasons for exclusion (Wix sites, US-based, B2B wholesale, closed, no online ordering).
+- Recommended Benedict suggest new candidates from the WA rare fruit community.
+- Assigned to Benedict.
+
+---
+
 ## DEC-092 — 2026-03-26 — Session 55: Finger Lime SEO Guide Page (DAL-89)
 
 **Decided by:** Dale (autonomous)

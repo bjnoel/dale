@@ -114,6 +114,11 @@ echo "$LOG_PREFIX Building nursery pages..."
 python3 "$SCRIPT_DIR/build_nursery_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Nursery page build failed (non-fatal)"
 echo "$LOG_PREFIX Nursery pages complete."
 
+# Build nursery comparison page (SEO)
+echo "$LOG_PREFIX Building nursery comparison page..."
+python3 "$SCRIPT_DIR/build_nursery_compare.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Nursery compare page build failed (non-fatal)"
+echo "$LOG_PREFIX Nursery comparison page complete."
+
 # Build species pages (SEO)
 echo "$LOG_PREFIX Building species pages..."
 python3 "$SCRIPT_DIR/build_species_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Species page build failed (non-fatal)"
