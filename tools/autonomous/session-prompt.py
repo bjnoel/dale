@@ -660,6 +660,10 @@ To propose work:
 This creates a Backlog ticket with a "Dale" label automatically added.
 Benedict will move it to Todo if approved.
 Do NOT create more tickets if the backlog is full (check the count above).
+**DUPLICATE CHECK (CRITICAL):** Before creating ANY ticket, read EVERY existing backlog
+title above and ask: "Does this overlap with an existing ticket?" Check for same nursery,
+same feature, same outreach target, or same concept with different wording. If in doubt,
+do NOT create it. Benedict wastes time triaging duplicates. This is a recurring problem.
 When you assign a ticket to Benedict (for questions/review), remove the Dale label:
 the Dale label means "in Dale's court". Benedict re-adds it when passing back to you.
 
