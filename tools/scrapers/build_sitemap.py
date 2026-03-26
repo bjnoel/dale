@@ -30,6 +30,7 @@ STATIC_PAGES = [
     ("variety/", "weekly", "0.7"),
     ("sample-digest.html", "daily", "0.6"),
     ("guide.html", "monthly", "0.7"),
+    ("finger-lime-guide.html", "monthly", "0.8"),
     ("advertise.html", "monthly", "0.4"),
 ]
 

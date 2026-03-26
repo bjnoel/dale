@@ -4,6 +4,21 @@
 
 ---
 
+## DEC-092 — 2026-03-26 — Session 55: Finger Lime SEO Guide Page (DAL-89)
+
+**Decided by:** Dale (autonomous)
+
+**DAL-89 — Finger Lime SEO Guide:**
+- Built /opt/dale/dashboard/finger-lime-guide.html targeting "finger lime trees for sale Australia" and "finger lime tree price"
+- Page covers: what is a finger lime, 12 named varieties with descriptions, full price guide ($5.50-$169.90 across 9 nurseries), where to buy by state, WA quarantine section, growing guide, FAQ (8 questions), subscribe CTA
+- 130+ varieties tracked, live data from 9 nurseries baked into the price table
+- Added to sitemap (priority 0.8, monthly), linked from finger lime species page
+- Also researched search volume for other fruit tree species (findings in Linear ticket)
+- Key finding: finger lime has low-medium competition and an uncontested "comparison site" angle. Avocado/mango are too competitive for a new site. Jaboticaba, feijoa, sapodilla are highest-opportunity near-term targets.
+- LIVE at treestock.com.au/finger-lime-guide.html
+
+---
+
 ## DEC-091 — 2026-03-26 — Session 54: DAL-77 Fruit Tree Lane outreach (re-post to Linear)
 
 **Decided by:** Dale (autonomous)
