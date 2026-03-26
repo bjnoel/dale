@@ -915,6 +915,8 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 const P = {products_json};
 const N = {nurseries_json};
 const SPECIES_SLUGS = {species_slugs_json};
+const SLUG_TO_NAME = {{}};
+Object.values(SPECIES_SLUGS).forEach(v => {{ SLUG_TO_NAME[v.slug] = v.name; }});
 
 const NURSERY_URLS = {{
   'ross-creek': 'rosscreektropicals.com.au',
@@ -1171,12 +1173,14 @@ document.getElementById('activeFilters').addEventListener('click', function(e) {
   search();
 }});
 
-// Update species pill counts based on current filters (excluding species filter itself)
+// Update species pills: re-rank by current filters so each nursery shows its own top species
+const defaultPillsHTML = document.querySelector('.species-strip').innerHTML;
 function updatePillCounts() {{
   const stockOnly = inStockOnly.checked;
   const st = stateFilter.value;
   const nursery = nurserySelect.value;
   const changes = changesOnly.checked;
+  const hasFilter = nursery || st || changes;
 
   // Get the base filtered set (all filters except species)
   let base = P;
@@ -1191,31 +1195,77 @@ function updatePillCounts() {{
     if (p.sl) counts[p.sl] = (counts[p.sl] || 0) + 1;
   }});
 
-  // Update each pill and track the sum of displayed pill counts
-  let pillTotal = 0;
-  document.querySelectorAll('.species-pill[data-sl]').forEach(pill => {{
-    const sl = pill.getAttribute('data-sl');
-    const count = counts[sl] || 0;
-    pillTotal += count;
-    const countEl = pill.querySelector('.count');
-    if (countEl) countEl.textContent = count;
-    if (count === 0) {{
-      pill.classList.add('dimmed');
-    }} else {{
-      pill.classList.remove('dimmed');
+  const strip = document.querySelector('.species-strip');
+  if (!hasFilter) {{
+    // No narrowing filter: restore original server-rendered pills, update counts
+    strip.innerHTML = defaultPillsHTML;
+    let pillTotal = 0;
+    strip.querySelectorAll('.species-pill[data-sl]').forEach(pill => {{
+      const sl = pill.getAttribute('data-sl');
+      const count = counts[sl] || 0;
+      pillTotal += count;
+      pill.querySelector('.count').textContent = count;
+      pill.classList.toggle('dimmed', count === 0);
+      if (sl === activeSpeciesSlug) pill.classList.add('active');
+    }});
+    const otherCount = base.length - pillTotal;
+    const otherPill = document.getElementById('otherPill');
+    if (otherPill) {{
+      if (otherCount > 0) {{
+        document.getElementById('otherCount').textContent = otherCount;
+        otherPill.style.display = '';
+      }} else {{
+        otherPill.style.display = 'none';
+      }}
     }}
+  }} else {{
+    // Narrowing filter active: rebuild pills from this filtered set's top species
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 16);
+    let pillTotal = 0;
+    let html = sorted.map(([sl, count]) => {{
+      pillTotal += count;
+      const name = SLUG_TO_NAME[sl] || sl.replace(/-/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase());
+      const active = sl === activeSpeciesSlug ? ' active' : '';
+      return `<a href="/species/${{sl}}.html" class="species-pill${{active}}" data-q="${{name}}" data-sl="${{sl}}">${{name}} <span class="count">${{count}}</span></a>`;
+    }}).join('\n');
+    const otherCount = base.length - pillTotal;
+    if (otherCount > 0) {{
+      html += `\n<span class="species-pill other-pill" id="otherPill">Other <span class="count" id="otherCount">${{otherCount}}</span></span>`;
+    }}
+    strip.innerHTML = html;
+  }}
+
+  // Re-bind pill click handlers after rebuild
+  strip.querySelectorAll('.species-pill[data-sl]').forEach(function(pill) {{
+    pill.addEventListener('click', function(e) {{
+      e.preventDefault();
+      const sl = this.getAttribute('data-sl');
+      const q = this.getAttribute('data-q');
+      const isActive = this.classList.contains('active');
+      strip.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
+      if (isActive) {{
+        activeSpeciesSlug = '';
+        searchInput.value = '';
+      }} else {{
+        activeSpeciesSlug = sl;
+        searchInput.value = q;
+        this.classList.add('active');
+      }}
+      search();
+      const results = document.getElementById('results');
+      if (results) results.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+    }});
   }});
 
-  // "Other" pill: products not matching any displayed species pill
-  const otherCount = base.length - pillTotal;
-  const otherPill = document.getElementById('otherPill');
-  const otherCountEl = document.getElementById('otherCount');
-  if (otherPill && otherCountEl) {{
-    if (otherCount > 0) {{
-      otherCountEl.textContent = otherCount;
-      otherPill.style.display = '';
+  // Re-check toggle button visibility
+  const btn = document.getElementById('toggleSpecies');
+  if (btn) {{
+    if (strip.scrollHeight > strip.clientHeight) {{
+      btn.style.display = 'inline';
     }} else {{
-      otherPill.style.display = 'none';
+      btn.style.display = 'none';
+      strip.classList.remove('expanded');
+      btn.innerHTML = 'Show all &#9662;';
     }}
   }}
 }}
@@ -1238,40 +1288,19 @@ changesOnly.addEventListener('change', search);
 nurserySelect.addEventListener('change', search);
 sortBy.addEventListener('change', search);
 
-// Species strip pill click: filter by species slug (exact match, not text search)
-document.querySelectorAll('.species-pill[data-sl]').forEach(function(pill) {{
-  pill.addEventListener('click', function(e) {{
-    e.preventDefault();
-    const sl = this.getAttribute('data-sl');
-    const q = this.getAttribute('data-q');
-    const isActive = this.classList.contains('active');
-    // Clear all active pills
-    document.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
-    if (isActive) {{
-      activeSpeciesSlug = '';
-      searchInput.value = '';
-    }} else {{
-      activeSpeciesSlug = sl;
-      searchInput.value = q;
-      this.classList.add('active');
-    }}
-    search();
-    const results = document.getElementById('results');
-    if (results) results.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
-  }});
-}});
-
-// Show/hide species pill toggle button based on overflow
+// Show/hide species pill toggle button + initial pill click binding
 (function() {{
   const strip = document.querySelector('.species-strip');
   const btn = document.getElementById('toggleSpecies');
-  if (strip && btn && strip.scrollHeight > strip.clientHeight) {{
-    btn.style.display = 'inline';
+  if (strip && btn) {{
+    if (strip.scrollHeight > strip.clientHeight) btn.style.display = 'inline';
     btn.addEventListener('click', function() {{
       strip.classList.toggle('expanded');
       this.innerHTML = strip.classList.contains('expanded') ? 'Show less &#9652;' : 'Show all &#9662;';
     }});
   }}
+  // Initial pill click binding (updatePillCounts rebinds after rebuilds)
+  updatePillCounts();
 }})();
 
 // Nursery tag click: filter by nursery
