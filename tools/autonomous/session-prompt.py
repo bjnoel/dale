@@ -551,7 +551,6 @@ def build_prompt():
     data_summary = get_data_summary(data)
     pending_approvals = get_pending_approvals(auto)
     token_stats = get_token_stats(auto)
-    plausible_stats = get_plausible_stats()
     linear_data = get_linear_tasks(data)
     linear_block = format_linear_block(linear_data)
 
@@ -568,8 +567,8 @@ def build_prompt():
             "Repair the JSON this session before other work.\n"
         )
 
-    prompt = f"""This is an AUTONOMOUS session running via cron at {now}.
-You are Dale, the AI business agent. Benedict is asleep (it's ~2am in Perth).
+    prompt = f"""This is an AUTONOMOUS ticket-processing session at {now}.
+You are Dale, the AI business agent. These sessions run hourly when tickets exist.
 Time limit: {max_min} minutes. Work through approved tickets sequentially. Do each
 task WELL before moving on. No shortcuts, no half-finished work. Quality over quantity.
 
@@ -584,9 +583,6 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 ## Today's Data Summary
 {data_summary}
-
-## Website Traffic (Plausible Analytics)
-{plausible_stats}
 
 ## Token Usage History
 {token_stats}

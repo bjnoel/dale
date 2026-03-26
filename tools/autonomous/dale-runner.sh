@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Autonomous Dale — cron wrapper
-# Called by cron at 18:00 UTC (2:00 AWST). Single session per night.
-# Fetches Linear tickets, runs Claude headlessly, handles post-run tasks.
+# Autonomous Dale — hourly ticket runner
+# Called by cron every hour. Polls Linear for Todo/In Progress tickets.
+# If no work exists, exits immediately (no cost). Otherwise runs a focused
+# Claude session to process tickets.
 
 set -uo pipefail
 
@@ -9,27 +10,41 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG="$SCRIPT_DIR/config.json"
 LOG_DIR="$SCRIPT_DIR/logs"
 STOP_FILE="$SCRIPT_DIR/STOP"
+LOCK_FILE="$SCRIPT_DIR/locks/session.lock"
+NOW_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 TODAY=$(date -u +%Y-%m-%d)
-SESSION_LOG="$LOG_DIR/session-$TODAY.json"
+HOUR=$(date -u +%H)
+SESSION_LOG="$LOG_DIR/session-$TODAY-$HOUR.json"
+TASKS_FILE="/opt/dale/data/linear-tasks.json"
 
-mkdir -p "$LOG_DIR"
+mkdir -p "$LOG_DIR" "$(dirname "$LOCK_FILE")"
 
 log() {
     echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) — $1" >> "$LOG_DIR/cron.log"
 }
 
-log "=== Starting autonomous session ==="
-
 # --- Pre-checks ---
 
 # 1. STOP file
 if [ -f "$STOP_FILE" ]; then
-    log "STOP file exists. Aborting."
-    python3 "$SCRIPT_DIR/notify.py" alert "STOP file exists — autonomous run halted"
+    log "STOP file exists. Skipping."
     exit 0
 fi
 
-# 2. Consecutive failures
+# 2. Lock file (prevent overlapping sessions)
+if [ -f "$LOCK_FILE" ]; then
+    LOCK_PID=$(cat "$LOCK_FILE" 2>/dev/null)
+    if [ -n "$LOCK_PID" ] && kill -0 "$LOCK_PID" 2>/dev/null; then
+        log "Session already running (PID $LOCK_PID), skipping"
+        exit 0
+    fi
+    # Stale lock, remove it
+    rm -f "$LOCK_FILE"
+fi
+echo $$ > "$LOCK_FILE"
+trap 'rm -f "$LOCK_FILE"' EXIT
+
+# 3. Consecutive failures
 FAILURE_COUNT=$(python3 "$SCRIPT_DIR/budget-tracker.py" failure-count 2>/dev/null | tail -1)
 if [ "${FAILURE_COUNT:-0}" -ge 3 ]; then
     log "3+ consecutive failures ($FAILURE_COUNT). Halting."
@@ -37,15 +52,14 @@ if [ "${FAILURE_COUNT:-0}" -ge 3 ]; then
     exit 0
 fi
 
-# 3. Read config
+# 4. Read config
 REPO_DIR=$(python3 -c "import json; print(json.load(open('$CONFIG'))['paths']['repo'])")
 MAX_MINUTES=$(python3 -c "import json; print(json.load(open('$CONFIG'))['budget']['max_session_duration_minutes'])")
 MAX_TURNS=$(python3 -c "import json; print(json.load(open('$CONFIG'))['budget']['max_turns'])")
 
-# 4. Repo health + pull + deploy
+# 5. Repo health + pull + deploy
 if [ ! -d "$REPO_DIR/.git" ]; then
     log "Repo not found at $REPO_DIR. Aborting."
-    python3 "$SCRIPT_DIR/notify.py" alert "Git repo not found at $REPO_DIR"
     python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "repo-not-found"
     exit 1
 fi
@@ -54,14 +68,12 @@ cd "$REPO_DIR"
 
 git fetch origin 2>>"$LOG_DIR/git-errors.log" || {
     log "Git fetch failed."
-    python3 "$SCRIPT_DIR/notify.py" alert "Git fetch failed"
     python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "git-fetch-failed"
     exit 1
 }
 
 git pull --ff-only origin main 2>>"$LOG_DIR/git-errors.log" || {
     log "Git pull failed (possible conflicts)."
-    python3 "$SCRIPT_DIR/notify.py" alert "Git pull --ff-only failed — possible conflicts on main"
     python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "git-pull-conflict"
     exit 1
 }
@@ -69,10 +81,9 @@ git pull --ff-only origin main 2>>"$LOG_DIR/git-errors.log" || {
 # Deploy scripts from repo to server locations
 if [ -f "$REPO_DIR/tools/deploy.sh" ]; then
     bash "$REPO_DIR/tools/deploy.sh" 2>>"$LOG_DIR/cron.log"
-    log "Deployed scripts from repo"
 fi
 
-# 5. Weekly update check (Dale strikes Wed-Sun if no update from Benedict)
+# 6. Weekly update check (Dale strikes Wed-Sun if no update from Benedict)
 python3 "$SCRIPT_DIR/check-weekly-update.py" || {
     log "Weekly update missing. Dale is on strike."
     python3 "$SCRIPT_DIR/notify.py" alert "Dale is on strike! No weekly update from Benedict. Write /opt/dale/data/weekly-updates/$(date -u +%Y)-W$(date -u +%V).md"
@@ -86,9 +97,25 @@ python3 "$SCRIPT_DIR/linear_poller.py" 2>>"$LOG_DIR/cron.log" || {
     log "Warning: Linear poller failed (will proceed with stale data if available)"
 }
 
-# --- Run Claude ---
+# --- Check if there's work to do ---
 
-log "Running Claude (${MAX_MINUTES}min cap, ${MAX_TURNS} max turns)"
+TODO_COUNT=0
+if [ -f "$TASKS_FILE" ]; then
+    TODO_COUNT=$(python3 -c "
+import json
+d = json.load(open('$TASKS_FILE'))
+print(len(d.get('todo', [])) + len(d.get('in_progress', [])))
+" 2>/dev/null || echo 0)
+fi
+
+if [ "$TODO_COUNT" = "0" ]; then
+    log "No tickets to process, exiting"
+    exit 0
+fi
+
+log "=== Starting session ($TODO_COUNT ticket(s), ${MAX_MINUTES}min cap, ${MAX_TURNS} turns) ==="
+
+# --- Run Claude ---
 
 # Load Claude auth
 if [ -f /opt/dale/secrets/claude.env ]; then
@@ -121,13 +148,12 @@ while [ "$ATTEMPT" -lt "$MAX_ATTEMPTS" ]; do
         --dangerously-skip-permissions \
         --output-format json \
         --max-turns "$MAX_TURNS" \
-        > "$SESSION_LOG" 2>"$LOG_DIR/claude-stderr-$TODAY.log"
+        > "$SESSION_LOG" 2>"$LOG_DIR/claude-stderr-$TODAY-$HOUR.log"
 
     EXIT_CODE=$?
     OUTPUT_SIZE=$(stat -c%s "$SESSION_LOG" 2>/dev/null || stat -f%z "$SESSION_LOG" 2>/dev/null || echo 0)
 
     if [ "$EXIT_CODE" -eq 0 ] || [ "$EXIT_CODE" -eq 124 ]; then
-        # Success or timeout (timeout is normal)
         if [ "$EXIT_CODE" -eq 124 ]; then
             log "Session timed out after ${MAX_MINUTES} minutes (this is normal)"
         fi
@@ -138,7 +164,6 @@ while [ "$ATTEMPT" -lt "$MAX_ATTEMPTS" ]; do
     if [ "$OUTPUT_SIZE" -le 1 ] && [ "$ATTEMPT" -lt "$MAX_ATTEMPTS" ]; then
         log "Claude exited with code $EXIT_CODE, empty output (${OUTPUT_SIZE}B). Will retry."
     else
-        # Non-zero exit but got output, or final attempt
         log "Claude exited with code $EXIT_CODE (attempt $ATTEMPT, output ${OUTPUT_SIZE}B)"
         python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "claude-exit-$EXIT_CODE"
         break
@@ -160,14 +185,6 @@ if [ -n "$UNPUSHED" ]; then
         python3 "$SCRIPT_DIR/notify.py" alert "Git push failed after autonomous session"
     }
 fi
-
-# Generate traffic report (non-blocking — email sends even if this fails)
-python3 "$SCRIPT_DIR/traffic_report.py" --output /opt/dale/data/traffic_report.json 2>>"$LOG_DIR/cron.log" || {
-    log "Warning: traffic report generation failed"
-}
-
-# Send summary email
-python3 "$SCRIPT_DIR/notify.py" summary "$SESSION_LOG" 2>>"$LOG_DIR/cron.log"
 
 # Clear failure counter on successful completion
 if [ "$EXIT_CODE" -eq 0 ] || [ "$EXIT_CODE" -eq 124 ]; then

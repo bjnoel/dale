@@ -1,12 +1,13 @@
 {
   "version": "2.0",
   "schedule": {
-    "cron_time": "0 18 * * *",
-    "timezone_note": "18:00 UTC = 02:00 AWST, single session"
+    "cron_time": "0 * * * *",
+    "digest_time": "0 22 * * *",
+    "timezone_note": "Runner: every hour. Digest: 22:00 UTC = 06:00 AWST"
   },
   "budget": {
-    "max_session_duration_minutes": 120,
-    "max_turns": 400
+    "max_session_duration_minutes": 60,
+    "max_turns": 200
   },
   "linear": {
     "team": "Dale",
