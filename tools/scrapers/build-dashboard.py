@@ -771,10 +771,11 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .product-row:hover { background: #f9fafb; }
   .product-row.featured-row { border-left: 3px solid #f59e0b; background: #fffdf5; }
   .product-row.featured-row:hover { background: #fef9e7; }
-  .nursery-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }
+  .nursery-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; cursor: pointer; }
+  .nursery-tag:hover { background: #c7d2fe; }
   .nursery-tag.featured-tag { background: #fef3c7; color: #92400e; font-weight: 600; }
   .featured-badge { font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #f59e0b; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-  .species-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; max-height: 36px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
+  .species-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; max-height: 34px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
   .species-strip.expanded { max-height: 500px; }
   .toggle-pills-btn { background: none; border: none; color: #059669; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
   .toggle-pills-btn:hover { text-decoration: underline; }
@@ -1082,7 +1083,7 @@ function render() {{
       <div class="flex-1 min-w-0">
         <div class="font-medium text-sm">${{p.t}}${{latinName}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
-          <span class="${{nurseryTagClass}}">${{p.n}}</span>
+          <span class="${{nurseryTagClass}}" data-nk="${{p.nk}}">${{p.n}}</span>
           ${{featuredBadge}} ${{stockBadge}} ${{shipsBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
@@ -1156,6 +1157,18 @@ document.querySelectorAll('.species-pill[data-q]').forEach(function(pill) {{
     }});
   }}
 }})();
+
+// Nursery tag click: filter by nursery
+document.getElementById('results').addEventListener('click', function(e) {{
+  const tag = e.target.closest('.nursery-tag[data-nk]');
+  if (tag) {{
+    e.preventDefault();
+    e.stopPropagation();
+    nurserySelect.value = tag.getAttribute('data-nk');
+    search();
+    window.scrollTo({{ top: 0, behavior: 'smooth' }});
+  }}
+}});
 
 // Initial render
 search();

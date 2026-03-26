@@ -290,14 +290,15 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   #results { min-height: 200px; }
   .product-row { border-bottom: 1px solid #f3f4f6; }
   .product-row:hover { background: #f9fafb; }
-  .retailer-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #fef3c7; color: #92400e; }
+  .retailer-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #fef3c7; color: #92400e; cursor: pointer; }
+  .retailer-tag:hover { background: #fde68a; }
   .cat-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }
   .cat-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
   .cat-pill:hover { border-color: #f59e0b; background: #fef3c7; color: #92400e; }
   .cat-pill.active { border-color: #d97706; background: #fef3c7; color: #92400e; font-weight: 600; }
   .cat-pill .count { color: #d97706; font-weight: 600; font-size: 0.7rem; }
   .cat-pill.active .count { color: #b45309; }
-  #cat-pills { display: flex; gap: 8px; flex-wrap: wrap; max-height: 36px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
+  #cat-pills { display: flex; gap: 8px; flex-wrap: wrap; max-height: 34px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
   #cat-pills.expanded { max-height: 500px; }
   .toggle-pills-btn { background: none; border: none; color: #d97706; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
   .toggle-pills-btn:hover { text-decoration: underline; }"""
@@ -533,7 +534,7 @@ function render() {{
       <div class="flex-1 min-w-0">
         <div class="font-medium text-sm">${{p.t}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
-          <span class="retailer-tag">${{p.n}}</span>
+          <span class="retailer-tag" data-nk="${{p.nk}}">${{p.n}}</span>
           ${{catBadge}} ${{frameBadge}} ${{stockBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
@@ -602,6 +603,18 @@ document.querySelectorAll('.cat-pill[data-cat]').forEach(function(pill) {{
     }});
   }}
 }})();
+
+// Retailer tag click: filter by retailer
+document.getElementById('results').addEventListener('click', function(e) {{
+  const tag = e.target.closest('.retailer-tag[data-nk]');
+  if (tag) {{
+    e.preventDefault();
+    e.stopPropagation();
+    retailerSelect.value = tag.getAttribute('data-nk');
+    search();
+    window.scrollTo({{ top: 0, behavior: 'smooth' }});
+  }}
+}});
 
 // Initial render
 search();
