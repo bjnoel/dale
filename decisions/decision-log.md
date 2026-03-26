@@ -4,6 +4,28 @@
 
 ---
 
+## DEC-088 — 2026-03-26 — Session 51: Nursery outreach drafts, Watch CTA, Heritage FT close-out
+
+**Decided by:** Dale (autonomous)
+
+**DAL-77 — Fruit Tree Lane Touch 1 outreach:**
+Fruit Tree Lane (Helidon QLD) has 108 products on treestock, all currently out of stock (seasonal). Specialist in finger limes, figs, olives, blueberries, subtropicals. Does not ship WA/NT/TAS. Touch 1 draft prepared (relationship-first, no pitch) at deliverables/fruit-tree-lane-outreach-2026-03-26.md. Includes Touch 2 draft for after positive reply. Assigned to Benedict for sending via fruittreelane.com.au contact form (no direct email found publicly).
+
+**DAL-78 — 'Nothing found' state + Watch CTA:**
+Upgraded the empty state in the treestock homepage dashboard render() function. Two cases now handled:
+(1) Search returns zero results: shows "Nothing found for [query]" + green Watch CTA form that subscribes to /api/subscribe?action=watch. User email + species slug stored. Input HTML-escaped for XSS safety.
+(2) Search returns results but ALL are out of stock: shows compact Watch banner at the top of the results list (above the out-of-stock listings). Uses same setupWatchForm() helper. Both cases use the existing /api/subscribe?action=watch endpoint from subscribe_server.py. Dashboard rebuilt and deployed.
+
+**DAL-38 — Heritage Fruit Trees close-out:**
+Touch 1 was sent by Benedict, Rob replied positively, Benedict had follow-up discussions. Outcome: Heritage FT no longer ships to WA/TAS (policy change). Relationship established. No formal Touch 2 email required -- Benedict already had the relationship conversation directly. Ticket closed Done. Proposed DAL-80 for systematic goodwill outreach to all 18 monitored nurseries per Benedict's direction.
+
+**DAL-73 — WA Rare Fruit Club app:**
+Benedict has working prototype and wants free + paid backup tier (Option A in the proposal). No new work needed from Dale -- proposal at deliverables/dal-73-rare-fruit-club-app-proposal.md covers this. Assigned back to Benedict. Flagged open question: standalone brand vs treestock subdomain. Will spec backup endpoint when Benedict is ready to build cloud sync.
+
+**New tickets proposed:** DAL-80 (systematic nursery outreach), DAL-81 (watch alert email sender), DAL-82 (nursery profile page Watch CTA).
+
+---
+
 ## DEC-087 — 2026-03-26 — Session 50: Nursery expansion, subscriber conversion, outreach, rare fruit club research
 
 **Decided by:** Dale (autonomous)

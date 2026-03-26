@@ -1063,6 +1063,41 @@ function updateSubCTA(q) {{
   }}
 }}
 
+function setupWatchForm(formId, emailId, msgId) {{
+  const form = document.getElementById(formId);
+  if (!form) return;
+  form.addEventListener('submit', async function(e) {{
+    e.preventDefault();
+    const email = document.getElementById(emailId).value.trim();
+    const species = form.dataset.species;
+    const msg = document.getElementById(msgId);
+    const btn = form.querySelector('button');
+    btn.disabled = true;
+    btn.textContent = 'Watching...';
+    try {{
+      const resp = await fetch('/api/subscribe?action=watch', {{
+        method: 'POST',
+        headers: {{'Content-Type': 'application/json'}},
+        body: JSON.stringify({{email, species}}),
+      }});
+      const result = await resp.json();
+      msg.classList.remove('hidden');
+      msg.classList.add('text-green-700');
+      msg.textContent = result.message === 'Already watching'
+        ? 'You are already watching this.'
+        : 'Done! We will email you when it comes in stock.';
+      form.querySelector('input').disabled = true;
+      btn.classList.add('hidden');
+    }} catch(err) {{
+      msg.classList.remove('hidden');
+      msg.classList.add('text-red-600');
+      msg.textContent = 'Something went wrong. Please try again.';
+      btn.disabled = false;
+      btn.textContent = 'Watch this';
+    }}
+  }});
+}}
+
 function render() {{
   const results = currentResults;
   const showing = results.slice(0, displayCount);
@@ -1073,7 +1108,26 @@ function render() {{
   countEl.textContent = `${{results.length}} result${{results.length !== 1 ? 's' : ''}}`;
 
   if (showing.length === 0) {{
-    container.innerHTML = '<div class="text-center py-12 text-gray-400">No plants found matching your search.</div>';
+    const q = searchInput.value.trim();
+    if (q) {{
+      const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const slug = q.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      container.innerHTML =
+        '<div class="py-10 px-4">' +
+        '<p class="text-center text-gray-400 mb-5">Nothing found for <strong class="text-gray-600">' + esc(q) + '</strong></p>' +
+        '<div class="max-w-sm mx-auto bg-green-50 border border-green-200 rounded-xl p-5">' +
+        '<p class="text-sm font-semibold text-green-800 mb-1">Watch <span class="text-green-900">' + esc(q) + '</span></p>' +
+        '<p class="text-xs text-gray-500 mb-3">Get an email when it comes into stock at any monitored nursery. Free.</p>' +
+        '<form id="watchForm" data-species="' + slug + '" class="flex gap-2">' +
+        '<input type="email" id="watchEmail" placeholder="your@email.com" required class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">' +
+        '<button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">Watch this</button>' +
+        '</form>' +
+        '<div id="watchMsg" class="mt-2 text-sm hidden"></div>' +
+        '</div></div>';
+      setupWatchForm('watchForm', 'watchEmail', 'watchMsg');
+    }} else {{
+      container.innerHTML = '<div class="text-center py-12 text-gray-400">No plants found matching your filters.</div>';
+    }}
     loadMoreEl.classList.add('hidden');
     return;
   }}
@@ -1123,6 +1177,25 @@ function render() {{
       </div>
     </a>`;
   }}).join('');
+
+  // Watch CTA: show when search results all out of stock
+  const q2 = searchInput.value.trim();
+  if (q2 && results.length > 0 && results.every(p => !p.a)) {{
+    const esc2 = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const slug2 = q2.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    const banner =
+      '<div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-3" id="watchBannerWrap">' +
+      '<p class="text-sm font-semibold text-green-800">All <span class="text-green-900">' + esc2(q2) + '</span> listings are currently out of stock</p>' +
+      '<p class="text-xs text-gray-500 mt-0.5 mb-2">Get an email when any come back in stock.</p>' +
+      '<form id="watchBannerForm" data-species="' + slug2 + '" class="flex gap-2">' +
+      '<input type="email" id="watchBannerEmail" placeholder="your@email.com" required class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 min-w-0">' +
+      '<button type="submit" class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">Watch</button>' +
+      '</form>' +
+      '<div id="watchBannerMsg" class="mt-2 text-sm hidden"></div>' +
+      '</div>';
+    container.insertAdjacentHTML('afterbegin', banner);
+    setupWatchForm('watchBannerForm', 'watchBannerEmail', 'watchBannerMsg');
+  }}
 
   if (results.length > displayCount) {{
     loadMoreEl.classList.remove('hidden');
