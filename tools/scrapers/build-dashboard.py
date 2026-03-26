@@ -774,9 +774,10 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .nursery-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: #e0e7ff; color: #3730a3; }
   .nursery-tag.featured-tag { background: #fef3c7; color: #92400e; font-weight: 600; }
   .featured-badge { font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #f59e0b; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-  .species-strip { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
-  .species-strip::-webkit-scrollbar { height: 3px; }
-  .species-strip::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+  .species-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; max-height: 36px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
+  .species-strip.expanded { max-height: 500px; }
+  .toggle-pills-btn { background: none; border: none; color: #059669; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
+  .toggle-pills-btn:hover { text-decoration: underline; }
   .species-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; text-decoration: none; transition: border-color 0.15s, background 0.15s; cursor: pointer; }
   .species-pill:hover { border-color: #22c55e; background: #f0fdf4; color: #065f46; }
   .species-pill.active { border-color: #16a34a; background: #dcfce7; color: #166534; font-weight: 600; }
@@ -829,6 +830,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
       autofocus>
     <div id="speciesWrap">
       <div class="species-strip">{species_strip_html}</div>
+      <button id="toggleSpecies" class="toggle-pills-btn" style="display:none">Show all &#9662;</button>
     </div>
     <div class="flex flex-wrap gap-2 items-center text-sm">
       <label class="flex items-center gap-1 cursor-pointer">
@@ -1141,6 +1143,19 @@ document.querySelectorAll('.species-pill[data-q]').forEach(function(pill) {{
     if (results) results.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
   }});
 }});
+
+// Show/hide species pill toggle button based on overflow
+(function() {{
+  const strip = document.querySelector('.species-strip');
+  const btn = document.getElementById('toggleSpecies');
+  if (strip && btn && strip.scrollHeight > strip.clientHeight) {{
+    btn.style.display = 'inline';
+    btn.addEventListener('click', function() {{
+      strip.classList.toggle('expanded');
+      this.innerHTML = strip.classList.contains('expanded') ? 'Show less &#9652;' : 'Show all &#9662;';
+    }});
+  }}
+}})();
 
 // Initial render
 search();

@@ -297,8 +297,10 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   .cat-pill.active { border-color: #d97706; background: #fef3c7; color: #92400e; font-weight: 600; }
   .cat-pill .count { color: #d97706; font-weight: 600; font-size: 0.7rem; }
   .cat-pill.active .count { color: #b45309; }
-  #cat-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-  #cat-pills::-webkit-scrollbar { display: none; }"""
+  #cat-pills { display: flex; gap: 8px; flex-wrap: wrap; max-height: 36px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
+  #cat-pills.expanded { max-height: 500px; }
+  .toggle-pills-btn { background: none; border: none; color: #d97706; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
+  .toggle-pills-btn:hover { text-decoration: underline; }"""
 
     head = render_head(
         title="beestock.com.au - Australian Beekeeping Supply Price Tracker",
@@ -339,6 +341,7 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
     <div id="cat-pills">
       {cat_pills_html}
     </div>
+    <button id="toggleCatPills" class="toggle-pills-btn" style="display:none">Show all &#9662;</button>
     <div class="flex flex-wrap gap-2 items-center text-sm">
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="inStockOnly" checked class="rounded"> In stock only
@@ -586,6 +589,19 @@ document.querySelectorAll('.cat-pill[data-cat]').forEach(function(pill) {{
     search();
   }});
 }});
+
+// Show/hide category pill toggle button based on overflow
+(function() {{
+  const strip = document.getElementById('cat-pills');
+  const btn = document.getElementById('toggleCatPills');
+  if (strip && btn && strip.scrollHeight > strip.clientHeight) {{
+    btn.style.display = 'inline';
+    btn.addEventListener('click', function() {{
+      strip.classList.toggle('expanded');
+      this.innerHTML = strip.classList.contains('expanded') ? 'Show less &#9652;' : 'Show all &#9662;';
+    }});
+  }}
+}})();
 
 // Initial render
 search();
