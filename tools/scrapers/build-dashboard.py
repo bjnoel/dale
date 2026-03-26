@@ -1227,10 +1227,10 @@ function updatePillCounts() {{
       const name = SLUG_TO_NAME[sl] || sl.replace(/-/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase());
       const active = sl === activeSpeciesSlug ? ' active' : '';
       return `<a href="/species/${{sl}}.html" class="species-pill${{active}}" data-q="${{name}}" data-sl="${{sl}}">${{name}} <span class="count">${{count}}</span></a>`;
-    }}).join('\n');
+    }}).join('');
     const otherCount = base.length - pillTotal;
     if (otherCount > 0) {{
-      html += `\n<span class="species-pill other-pill" id="otherPill">Other <span class="count" id="otherCount">${{otherCount}}</span></span>`;
+      html += '<span class="species-pill other-pill" id="otherPill">Other <span class="count" id="otherCount">' + otherCount + '</span></span>';
     }}
     strip.innerHTML = html;
   }}
