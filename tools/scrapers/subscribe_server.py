@@ -141,7 +141,8 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):
-        if self.path not in ("/subscribe", "/api/subscribe", "/watch-variety", "/api/watch-variety", "/unwatch-variety", "/api/unwatch-variety"):
+        path = self.path.split("?")[0]
+        if path not in ("/subscribe", "/api/subscribe", "/watch-variety", "/api/watch-variety", "/unwatch-variety", "/api/unwatch-variety"):
             self.send_error(404)
             return
 
@@ -149,7 +150,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         body = self.rfile.read(content_length).decode()
 
         # Handle per-variety watch
-        if self.path in ("/watch-variety", "/api/watch-variety"):
+        if path in ("/watch-variety", "/api/watch-variety"):
             try:
                 data = json.loads(body)
             except json.JSONDecodeError:
@@ -187,7 +188,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             return
 
         # Handle per-variety unwatch
-        if self.path in ("/unwatch-variety", "/api/unwatch-variety"):
+        if path in ("/unwatch-variety", "/api/unwatch-variety"):
             try:
                 data = json.loads(body)
             except json.JSONDecodeError:
