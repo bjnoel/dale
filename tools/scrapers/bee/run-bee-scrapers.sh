@@ -120,4 +120,15 @@ else
     echo "$LOG_PREFIX WARNING: Retailer page build failed (non-fatal)."
 fi
 
+# Build Tailwind CSS (purged, scans all generated HTML for used classes)
+echo "$LOG_PREFIX Building Tailwind CSS..."
+TREESTOCK_SCRIPT_DIR="$(dirname "$SCRIPT_DIR")"
+if tailwindcss --input "$TREESTOCK_SCRIPT_DIR/tailwind-input.css" \
+    --output "$BEE_DASHBOARD_DIR/styles.css" \
+    --content "$BEE_DASHBOARD_DIR/**/*.html" --minify 2>&1; then
+    echo "$LOG_PREFIX Tailwind CSS complete ($(wc -c < "$BEE_DASHBOARD_DIR/styles.css") bytes)."
+else
+    echo "$LOG_PREFIX WARNING: Tailwind CSS build failed (non-fatal)"
+fi
+
 echo "$LOG_PREFIX Bee pipeline complete."

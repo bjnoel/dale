@@ -174,6 +174,16 @@ echo "$LOG_PREFIX Building location pages..."
 python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Location page build failed (non-fatal)"
 echo "$LOG_PREFIX Location pages complete."
 
+# Build Tailwind CSS (purged, scans all generated HTML for used classes)
+echo "$LOG_PREFIX Building Tailwind CSS..."
+if tailwindcss --input "$SCRIPT_DIR/tailwind-input.css" \
+    --output "$DIGEST_DIR/styles.css" \
+    --content "$DIGEST_DIR/**/*.html" --minify 2>&1; then
+    echo "$LOG_PREFIX Tailwind CSS complete ($(wc -c < "$DIGEST_DIR/styles.css") bytes)."
+else
+    echo "$LOG_PREFIX WARNING: Tailwind CSS build failed (non-fatal)"
+fi
+
 # Post-deploy smoke test — check key pages are up and correct size
 echo "$LOG_PREFIX Running post-deploy smoke test..."
 python3 "$SCRIPT_DIR/smoke_test.py" --quiet 2>&1 || echo "$LOG_PREFIX WARNING: Smoke test failed — alert sent to Benedict"

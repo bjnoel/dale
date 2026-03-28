@@ -13,7 +13,7 @@ Usage:
 SITE_NAME = "treestock.com.au"
 SITE_URL = "https://treestock.com.au"
 
-TAILWIND_CDN = "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+TAILWIND_CSS = "/styles.css"
 PLAUSIBLE_SCRIPT = '<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>'
 
 NAV_ITEMS = [
@@ -93,7 +93,7 @@ def render_head(
 <meta name="viewport" content="width=device-width, initial-scale=1.0">{meta_desc}{canonical}{og_html}
 <title>{title}</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link href="{TAILWIND_CDN}" rel="stylesheet">
+<link href="{TAILWIND_CSS}" rel="stylesheet">
 {PLAUSIBLE_SCRIPT}
 {style_block}
 {extra_head}

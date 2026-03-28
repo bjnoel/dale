@@ -1,0 +1,88 @@
+treestock.com.au, www.treestock.com.au {
+    handle /api/subscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/preferences {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/unsubscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/watch-variety {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/unwatch-variety {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+
+    root * /opt/dale/dashboard
+    encode zstd gzip
+    file_server
+
+    header {
+        Cache-Control "public, max-age=3600"
+    }
+}
+
+beestock.com.au, www.beestock.com.au {
+    handle /api/subscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8098
+    }
+    handle /api/unsubscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8098
+    }
+
+    root * /opt/dale/bee-dashboard
+    encode zstd gzip
+    file_server
+
+    header {
+        Cache-Control "public, max-age=3600"
+    }
+}
+
+stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
+    redir https://treestock.com.au{uri} permanent
+}
+
+:80 {
+    handle /api/subscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/preferences {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/unsubscribe {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/watch-variety {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/unwatch-variety {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+
+    root * /opt/dale/dashboard
+    encode zstd gzip
+    file_server
+
+    header {
+        Cache-Control "public, max-age=3600"
+    }
+}
+
+data.bjnoel.com {
+    reverse_proxy localhost:8000
+}

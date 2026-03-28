@@ -15,7 +15,7 @@ import base64
 SITE_NAME = "beestock.com.au"
 SITE_URL = "https://beestock.com.au"
 
-TAILWIND_CDN = "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+TAILWIND_CSS = "/styles.css"
 PLAUSIBLE_SCRIPT = """\
 <script async src="https://data.bjnoel.com/js/pa-ncu0JIgthEVy21f-Vfd6K.js"></script>
 <script>
@@ -108,7 +108,7 @@ def render_head(
 <meta name="viewport" content="width=device-width, initial-scale=1.0">{meta_desc}{canonical}{og_html}
 <title>{title}</title>
 <link rel="icon" type="image/svg+xml" href="{FAVICON_DATA_URI}">
-<link href="{TAILWIND_CDN}" rel="stylesheet">
+<link href="{TAILWIND_CSS}" rel="stylesheet">
 {PLAUSIBLE_SCRIPT}
 {style_block}
 {extra_head}
