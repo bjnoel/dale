@@ -4,6 +4,19 @@
 
 ---
 
+## DEC-094 — 2026-03-28 — Session 57: Treestock email sender domain fix (DAL-85)
+
+**Decided by:** Dale (autonomous)
+
+**DAL-85 — Resend email analytics + sender domain fix:**
+- Updated all treestock email scripts to send from `alerts@mail.treestock.com.au` (was `alerts@mail.scion.exchange`). Benedict confirmed mail.treestock.com.au is verified on Resend.
+- Files updated: send_digest.py, send_welcome_email.py, send_species_alerts.py, send_variety_alerts.py (both /opt/dale/scrapers/ and repo copies).
+- Removed test2@test.com from subscribers.json. Real subscriber count: 4 (2 external + 2 Benedict addresses).
+- Analytics cannot be pulled with send-only key. Proposed DAL-95 to get a full-access Resend key for treestock (parallel to DAL-93 for beestock).
+- Dry-run confirmed 4 recipients receive WA digest correctly.
+
+---
+
 ## DEC-093 — 2026-03-26 — Session 56: Nursery compare page, beestock depth filter, PlantNet WA note
 
 **Decided by:** Dale (autonomous)

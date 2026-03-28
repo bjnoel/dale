@@ -39,7 +39,7 @@ SENDS_LOG_FILE = DATA_DIR / "digest_sends.json"
 RESEND_ENV = SECRETS_DIR / "resend.env"
 APP_ENV = SECRETS_DIR / "app.env"
 
-FROM_EMAIL = "alerts@mail.scion.exchange"
+FROM_EMAIL = "alerts@mail.treestock.com.au"
 FROM_NAME = "treestock.com.au"
 SITE_URL = "https://treestock.com.au"
 UNSUBSCRIBE_BASE = f"{SITE_URL}/unsubscribe.html"

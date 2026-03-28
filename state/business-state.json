@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
-  "last_updated": "2026-03-26",
-  "session_count": 50,
+  "last_updated": "2026-03-28",
+  "session_count": 51,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -80,6 +80,6 @@
     "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
     "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done — dale@mail.walkthrough.au + mail.scion.exchange verified"
+    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified (treestock emails now send from mail.treestock.com.au)"
   }
 }
