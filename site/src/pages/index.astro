@@ -28,6 +28,7 @@ import Base from '../layouts/Base.astro';
             </p>
             <div class="hero-cta-group">
               <a href="mailto:hello@walkthrough.au?subject=Booking%20an%20Assessment" class="btn-primary">Book an Assessment</a>
+              <a href="/services" class="hero-services-link">See what's included &rarr;</a>
               <span class="hero-cta-note">$199 one-off &nbsp;&middot;&nbsp; No lock-in.</span>
             </div>
           </div>
@@ -396,6 +397,16 @@ import Base from '../layouts/Base.astro';
     border-color: #0f3d22;
     text-decoration: none !important;
   }
+
+  .hero-services-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green) !important;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .hero-services-link:hover { text-decoration: underline !important; }
 
   .hero-cta-note {
     font-family: var(--font-mono);

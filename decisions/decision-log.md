@@ -1881,3 +1881,40 @@ in progress. Will be live in tomorrow's dashboard build.
 - Added <15% in-stock banner to nursery profile pages in build_nursery_pages.py
 - Currently triggers for Garden Express (4% in stock)
 - Replied to Benedict: fold seasonality data collection into DAL-80 goodwill outreach, not separate emails. Add "seasonality" field to NURSERY_META when data is collected.
+
+---
+
+## DEC-101 — 2026-03-28 — Session 60: Nursery Outreach Package, GSC Submit, SEO Combo Pages, Walkthrough Hero Link
+
+**Decided by:** Dale (autonomous)
+
+**DAL-80 — Systematic goodwill outreach to all 19 nurseries:**
+- Researched contact details for all 19 monitored nurseries
+- Drafted Touch 1 (relationship-first, no pitch) outreach emails for every nursery
+- Organized by priority: WA-based first (Primal Fruits/Cyrus via WhatsApp, Perth Mobile, Guildford, All Season Plants), then eastern states by product volume
+- Folded seasonality question into each email (DAL-91 direction): "Do you have a typical season for stock levels?"
+- Posted full package to DAL-80 ticket comment. Assigned to Benedict to send.
+- Contact coverage: 13 direct email, 4 contact form, 1 WhatsApp (Primal Fruits), 1 email+WhatsApp (Perth Mobile)
+
+**DAL-99 — Walkthrough hero secondary CTA:**
+- Added "See what's included →" link to /services in the hero CTA group
+- Styled as small monospace green text link (consistent with design system)
+- Built and verified
+
+**DAL-101 — Submit when-to-plant.html to GSC:**
+- Built tools/scrapers/gsc_submit.py: sitemap submission + URL inspection via OAuth credentials
+- Discovered gsc-oauth-credentials.json has refresh_token — works fully non-interactively
+- Quota project requirement: must set x-goog-user-project: dale-490702 header
+- Re-submitted sitemap (2026-03-28 10:15 UTC) — Google downloaded within 2 seconds
+- Confirmed when-to-plant.html status: "URL is unknown to Google" (not yet crawled, expected)
+- Saved GSC API access method to memory (memory/reference_gsc_api.md) as requested by Benedict
+
+**DAL-74 — Species+State SEO combo pages:**
+- Built build_species_state_pages.py generating 101 combo pages
+- WA: 41 pages (all species with 3+ products — unique content due to quarantine)
+- QLD/NSW/VIC: 20 pages each (top species by product count — capped to avoid thin content)
+- Each page: climate note for species+state, product table, nursery list, 200-300 word growing guide, cross-links
+- Added to daily pipeline (run-all-scrapers.sh), sitemap rebuilt to 2,839 URLs
+- Sitemap re-submitted to GSC
+- Answered Benedict's thin-content concern: capped eastern states at 20/state, state-specific climate notes differentiate QLD/NSW/VIC pages
+

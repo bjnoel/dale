@@ -174,6 +174,11 @@ echo "$LOG_PREFIX Building location pages..."
 python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Location page build failed (non-fatal)"
 echo "$LOG_PREFIX Location pages complete."
 
+# Build species+state combo pages (buy-[species]-trees-[state].html)
+echo "$LOG_PREFIX Building species+state combo pages..."
+python3 "$SCRIPT_DIR/build_species_state_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 | tail -3 || echo "$LOG_PREFIX WARNING: Species+state page build failed (non-fatal)"
+echo "$LOG_PREFIX Species+state combo pages complete."
+
 # Build Tailwind CSS (purged, scans all generated HTML for used classes)
 echo "$LOG_PREFIX Building Tailwind CSS..."
 if tailwindcss --input "$SCRIPT_DIR/tailwind-input.css" \

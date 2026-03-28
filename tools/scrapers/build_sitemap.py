@@ -93,6 +93,29 @@ def build_sitemap(species_dir: Path, output_dir: Path) -> None:
     <priority>0.6</priority>
   </url>""")
 
+    # Species+state combo pages (buy-[species]-trees-[state].html)
+    import re as _re
+    COMBO_PATTERN = _re.compile(r'^buy-.+-trees-.+\.html$')
+    for html_file in sorted(output_dir.glob("buy-*-trees-*.html")):
+        if COMBO_PATTERN.match(html_file.name):
+            loc = f"{BASE_URL}/{html_file.name}"
+            urls.append(f"""  <url>
+    <loc>{loc}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>""")
+
+    # Index page for species+state combos
+    combo_index = output_dir / "buy-fruit-trees-by-species-state.html"
+    if combo_index.exists():
+        urls.append(f"""  <url>
+    <loc>{BASE_URL}/buy-fruit-trees-by-species-state.html</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>""")
+
     # Species pages
     if species_dir.exists():
         for html_file in sorted(species_dir.glob("*.html")):

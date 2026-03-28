@@ -1,20 +1,83 @@
 {
   "schema_version": 1,
   "last_updated": "2026-03-28",
-  "last_session": 59,
+  "last_session": 60,
   "categories": {
-    "treestock:nursery_expansion": { "parent": "treestock", "metrics": ["nurseries_monitored", "products_tracked"] },
-    "treestock:seo": { "parent": "treestock", "metrics": ["weekly_organic_visitors"] },
-    "treestock:subscriber_conversion": { "parent": "treestock", "metrics": ["subscribers"] },
-    "treestock:dashboard": { "parent": "treestock", "metrics": ["weekly_visitors"] },
-    "treestock:data_quality": { "parent": "treestock", "metrics": ["species_matched_pct"] },
-    "treestock:social": { "parent": "treestock", "metrics": ["weekly_visitors", "subscribers"] },
-    "beestock:growth": { "parent": "beestock", "metrics": ["weekly_visitors", "subscribers"] },
-    "beestock:expansion": { "parent": "beestock", "metrics": ["retailers_monitored"] },
-    "walkthrough:outreach": { "parent": "walkthrough", "metrics": ["prospects_contacted"] },
-    "walkthrough:demos": { "parent": "walkthrough", "metrics": ["clients"] },
-    "revenue:monetisation": { "parent": "revenue", "metrics": ["revenue_monthly"] },
-    "infrastructure": { "parent": "infrastructure", "metrics": ["uptime_pct"] }
+    "treestock:nursery_expansion": {
+      "parent": "treestock",
+      "metrics": [
+        "nurseries_monitored",
+        "products_tracked"
+      ]
+    },
+    "treestock:seo": {
+      "parent": "treestock",
+      "metrics": [
+        "weekly_organic_visitors"
+      ]
+    },
+    "treestock:subscriber_conversion": {
+      "parent": "treestock",
+      "metrics": [
+        "subscribers"
+      ]
+    },
+    "treestock:dashboard": {
+      "parent": "treestock",
+      "metrics": [
+        "weekly_visitors"
+      ]
+    },
+    "treestock:data_quality": {
+      "parent": "treestock",
+      "metrics": [
+        "species_matched_pct"
+      ]
+    },
+    "treestock:social": {
+      "parent": "treestock",
+      "metrics": [
+        "weekly_visitors",
+        "subscribers"
+      ]
+    },
+    "beestock:growth": {
+      "parent": "beestock",
+      "metrics": [
+        "weekly_visitors",
+        "subscribers"
+      ]
+    },
+    "beestock:expansion": {
+      "parent": "beestock",
+      "metrics": [
+        "retailers_monitored"
+      ]
+    },
+    "walkthrough:outreach": {
+      "parent": "walkthrough",
+      "metrics": [
+        "prospects_contacted"
+      ]
+    },
+    "walkthrough:demos": {
+      "parent": "walkthrough",
+      "metrics": [
+        "clients"
+      ]
+    },
+    "revenue:monetisation": {
+      "parent": "revenue",
+      "metrics": [
+        "revenue_monthly"
+      ]
+    },
+    "infrastructure": {
+      "parent": "infrastructure",
+      "metrics": [
+        "uptime_pct"
+      ]
+    }
   },
   "parents": {
     "treestock": "treestock.com.au growth",
@@ -25,12 +88,60 @@
   },
   "session_log": [
     {
+      "session": 60,
+      "date": "2026-03-28",
+      "categories_worked": [
+        "treestock:seo",
+        "treestock:nursery_expansion",
+        "walkthrough:outreach",
+        "infrastructure"
+      ],
+      "tickets_completed": [
+        "DAL-80",
+        "DAL-99",
+        "DAL-101",
+        "DAL-74"
+      ],
+      "tickets_assigned_to_benedict": [
+        "DAL-80"
+      ],
+      "tickets_proposed": [],
+      "metric_snapshot": {
+        "nurseries_monitored": 19,
+        "products_tracked": 11698,
+        "in_stock": 4537,
+        "subscribers": 4,
+        "weekly_visitors": null,
+        "revenue_monthly": 0,
+        "sitemap_urls": 2839,
+        "seo_combo_pages": 101
+      }
+    },
+    {
       "session": 59,
       "date": "2026-03-28",
-      "categories_worked": ["treestock:seo", "treestock:dashboard", "beestock:growth", "beestock:expansion", "walkthrough:outreach"],
-      "tickets_completed": ["DAL-60", "DAL-87", "DAL-91"],
-      "tickets_assigned_to_benedict": ["DAL-67", "DAL-46"],
-      "tickets_proposed": ["DAL-98", "DAL-99", "DAL-100", "DAL-101"],
+      "categories_worked": [
+        "treestock:seo",
+        "treestock:dashboard",
+        "beestock:growth",
+        "beestock:expansion",
+        "walkthrough:outreach"
+      ],
+      "tickets_completed": [
+        "DAL-60",
+        "DAL-87",
+        "DAL-91"
+      ],
+      "tickets_assigned_to_benedict": [
+        "DAL-67",
+        "DAL-46"
+      ],
+      "tickets_proposed": [
+        "DAL-98",
+        "DAL-99",
+        "DAL-100",
+        "DAL-101"
+      ],
       "metric_snapshot": {
         "nurseries_monitored": 19,
         "products_tracked": 11698,
@@ -43,8 +154,14 @@
     {
       "session": 58,
       "date": "2026-03-28",
-      "categories_worked": ["treestock:nursery_expansion", "infrastructure"],
-      "tickets_completed": ["DAL-86", "DAL-93"],
+      "categories_worked": [
+        "treestock:nursery_expansion",
+        "infrastructure"
+      ],
+      "tickets_completed": [
+        "DAL-86",
+        "DAL-93"
+      ],
       "tickets_assigned_to_benedict": [],
       "tickets_proposed": [],
       "metric_snapshot": {
@@ -59,10 +176,17 @@
     {
       "session": 57,
       "date": "2026-03-28",
-      "categories_worked": ["treestock:subscriber_conversion", "infrastructure"],
-      "tickets_completed": ["DAL-85"],
+      "categories_worked": [
+        "treestock:subscriber_conversion",
+        "infrastructure"
+      ],
+      "tickets_completed": [
+        "DAL-85"
+      ],
       "tickets_assigned_to_benedict": [],
-      "tickets_proposed": ["DAL-95"],
+      "tickets_proposed": [
+        "DAL-95"
+      ],
       "metric_snapshot": {
         "nurseries_monitored": 18,
         "products_tracked": 11644,
@@ -75,9 +199,22 @@
     {
       "session": 56,
       "date": "2026-03-26",
-      "categories_worked": ["treestock:seo", "treestock:dashboard", "beestock:growth", "walkthrough:outreach"],
-      "tickets_completed": ["DAL-69", "DAL-35", "DAL-64"],
-      "tickets_assigned_to_benedict": ["DAL-85", "DAL-66", "DAL-86"],
+      "categories_worked": [
+        "treestock:seo",
+        "treestock:dashboard",
+        "beestock:growth",
+        "walkthrough:outreach"
+      ],
+      "tickets_completed": [
+        "DAL-69",
+        "DAL-35",
+        "DAL-64"
+      ],
+      "tickets_assigned_to_benedict": [
+        "DAL-85",
+        "DAL-66",
+        "DAL-86"
+      ],
       "tickets_proposed": [],
       "metric_snapshot": {
         "nurseries_monitored": 18,
@@ -91,8 +228,12 @@
     {
       "session": 55,
       "date": "2026-03-26",
-      "categories_worked": ["treestock:seo"],
-      "tickets_completed": ["DAL-89"],
+      "categories_worked": [
+        "treestock:seo"
+      ],
+      "tickets_completed": [
+        "DAL-89"
+      ],
       "tickets_assigned_to_benedict": [],
       "tickets_proposed": [],
       "metric_snapshot": {
@@ -107,10 +248,18 @@
     {
       "session": 54,
       "date": "2026-03-26",
-      "categories_worked": ["walkthrough:outreach"],
+      "categories_worked": [
+        "walkthrough:outreach"
+      ],
       "tickets_completed": [],
-      "tickets_assigned_to_benedict": ["DAL-77"],
-      "tickets_proposed": ["DAL-89", "DAL-90", "DAL-91"],
+      "tickets_assigned_to_benedict": [
+        "DAL-77"
+      ],
+      "tickets_proposed": [
+        "DAL-89",
+        "DAL-90",
+        "DAL-91"
+      ],
       "metric_snapshot": {
         "nurseries_monitored": 18,
         "products_tracked": 11707,
@@ -123,10 +272,18 @@
     {
       "session": 53,
       "date": "2026-03-26",
-      "categories_worked": ["walkthrough:outreach"],
+      "categories_worked": [
+        "walkthrough:outreach"
+      ],
       "tickets_completed": [],
-      "tickets_assigned_to_benedict": ["DAL-77"],
-      "tickets_proposed": ["DAL-86", "DAL-87", "DAL-88"],
+      "tickets_assigned_to_benedict": [
+        "DAL-77"
+      ],
+      "tickets_proposed": [
+        "DAL-86",
+        "DAL-87",
+        "DAL-88"
+      ],
       "metric_snapshot": {
         "nurseries_monitored": 18,
         "products_tracked": 11707,
@@ -139,10 +296,21 @@
     {
       "session": 52,
       "date": "2026-03-26",
-      "categories_worked": ["walkthrough:outreach", "treestock:nursery_expansion"],
-      "tickets_completed": ["DAL-73"],
-      "tickets_assigned_to_benedict": ["DAL-77"],
-      "tickets_proposed": ["DAL-83", "DAL-84", "DAL-85"],
+      "categories_worked": [
+        "walkthrough:outreach",
+        "treestock:nursery_expansion"
+      ],
+      "tickets_completed": [
+        "DAL-73"
+      ],
+      "tickets_assigned_to_benedict": [
+        "DAL-77"
+      ],
+      "tickets_proposed": [
+        "DAL-83",
+        "DAL-84",
+        "DAL-85"
+      ],
       "metric_snapshot": {
         "nurseries_monitored": 18,
         "products_tracked": 11707,
@@ -155,10 +323,25 @@
     {
       "session": 51,
       "date": "2026-03-26",
-      "categories_worked": ["treestock:dashboard", "treestock:subscriber_conversion", "treestock:nursery_expansion", "walkthrough:outreach"],
-      "tickets_completed": ["DAL-78", "DAL-38"],
-      "tickets_assigned_to_benedict": ["DAL-77", "DAL-73"],
-      "tickets_proposed": ["DAL-80", "DAL-81", "DAL-82"],
+      "categories_worked": [
+        "treestock:dashboard",
+        "treestock:subscriber_conversion",
+        "treestock:nursery_expansion",
+        "walkthrough:outreach"
+      ],
+      "tickets_completed": [
+        "DAL-78",
+        "DAL-38"
+      ],
+      "tickets_assigned_to_benedict": [
+        "DAL-77",
+        "DAL-73"
+      ],
+      "tickets_proposed": [
+        "DAL-80",
+        "DAL-81",
+        "DAL-82"
+      ],
       "metric_snapshot": {
         "nurseries_monitored": 18,
         "products_tracked": 6511,
@@ -171,9 +354,19 @@
     {
       "session": 50,
       "date": "2026-03-26",
-      "categories_worked": ["treestock:nursery_expansion", "treestock:subscriber_conversion", "walkthrough:outreach"],
-      "tickets_completed": ["DAL-72", "DAL-71"],
-      "tickets_assigned_to_benedict": ["DAL-38", "DAL-73"],
+      "categories_worked": [
+        "treestock:nursery_expansion",
+        "treestock:subscriber_conversion",
+        "walkthrough:outreach"
+      ],
+      "tickets_completed": [
+        "DAL-72",
+        "DAL-71"
+      ],
+      "tickets_assigned_to_benedict": [
+        "DAL-38",
+        "DAL-73"
+      ],
       "tickets_proposed": [],
       "metric_snapshot": {
         "nurseries_monitored": 18,
