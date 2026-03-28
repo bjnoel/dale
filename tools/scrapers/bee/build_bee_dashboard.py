@@ -509,7 +509,7 @@ const sortBy = document.getElementById('sortBy');
 
 function search() {{
   displayCount = 50;
-  const q = searchInput.value.toLowerCase().trim();
+  const q = searchInput.value.toLowerCase().trim().replace(/-/g, ' ');
   const retailer = retailerSelect.value;
   const stockOnly = inStockOnly.checked;
   const sort = sortBy.value;
@@ -579,7 +579,7 @@ function updateRetailerCounts() {{
   // Recalculate retailer in-stock counts based on current filters (excluding retailer)
   const stockOnly = inStockOnly.checked;
   const depth = depthFilter.value;
-  const q = searchInput.value.toLowerCase().trim();
+  const q = searchInput.value.toLowerCase().trim().replace(/-/g, ' ');
 
   let base = P;
   if (stockOnly) base = base.filter(p => p.a);
