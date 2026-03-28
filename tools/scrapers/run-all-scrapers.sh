@@ -149,6 +149,11 @@ echo "$LOG_PREFIX Building sitemap..."
 python3 "$SCRIPT_DIR/build_sitemap.py" "$DIGEST_DIR/species" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sitemap build failed (non-fatal)"
 echo "$LOG_PREFIX Sitemap complete."
 
+# Detect significant stock count changes (surges/drops) across nurseries
+echo "$LOG_PREFIX Checking for stock surges..."
+python3 "$SCRIPT_DIR/detect_stock_surges.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Stock surge detection failed (non-fatal)"
+echo "$LOG_PREFIX Stock surge check complete."
+
 # Send digest to email subscribers
 echo "$LOG_PREFIX Sending digest to email subscribers..."
 python3 "$SCRIPT_DIR/send_digest.py" 2>&1 || echo "$LOG_PREFIX WARNING: Digest email send failed (non-fatal)"
