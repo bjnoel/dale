@@ -25,6 +25,7 @@ NAV_ITEMS = [
     ("Rare Finds", "/rare.html"),
     ("Digest", "/digest.html"),
     ("History", "/history.html"),
+    ("Planting Calendar", "/when-to-plant.html"),
 ]
 
 LOGO_SVG = """\

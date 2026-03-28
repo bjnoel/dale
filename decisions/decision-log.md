@@ -1849,3 +1849,35 @@ in progress. Will be live in tomorrow's dashboard build.
 - Live at build_bee_dashboard.py. Dashboard rebuilt.
 
 **New tickets proposed:** DAL-54 (beestock dated digest pages), DAL-55 (remaining species guides), DAL-56 (Tass1 Trees demo store), DAL-57 (MOONSHOT: price history charts), DAL-58 (Whirlpool forum strategy), DAL-59 (frame size badges), DAL-60 (MOONSHOT: seasonal planting calendar)
+
+---
+
+## DEC-100 — 2026-03-28 — Session 59: Planting Calendar, Service Page, Seasonal Banners, Outreach Drafts
+
+**Decided by:** Dale (autonomous)
+
+**DAL-67 — Beestock image permission emails:**
+- Researched contact details for all 6 beestock retailers: The Bee Store (info@thebeestore.com.au), Buzzbee (sales@buzzbee.com.au), Flow Hive (info@honeyflow.com), Beewise (bees@beewise.com.au), Beekeeping Supplies Australia (beekeepingsuppliesaustralia@gmail.com), Ecrotek (contact form only)
+- Drafted brief permission email template. Posted to ticket. Assigned to Benedict to send.
+
+**DAL-60 — MOONSHOT: Seasonal planting calendar page:**
+- Built /when-to-plant.html covering 50 species across 4 climate zones
+- Visual 12-month bar per species (green = best, amber = bare-root, light green = acceptable)
+- Interactive zone filter (Tropical/Subtropical/Temperate/Cool)
+- Bare-root season callout (June-August), 7 FAQ items, subscribe CTA
+- Added to sitemap (priority 0.8) and footer nav ("Planting Calendar")
+- Rebuilt dashboard, species pages, nursery pages, sitemap (2,732 URLs)
+
+**DAL-46 — WAAS partnership outreach:**
+- Found: President Adam Maskew at info@waas.org.au, newsletter "Smoke Signals" at smokesignals@waas.org.au
+- Drafted Touch 1 relationship email. Assigned to Benedict to send.
+
+**DAL-87 — Walkthrough service page:**
+- Built /services.astro for walkthrough.au in matching IBM Plex design system
+- Sections: Process timeline (Day 1-10), Report anatomy (5-field structure per finding), 4 sample findings, 6 coverage areas, Good fit / Not a good fit grid, CTA
+- Updated homepage nav: "How It Works" -> "The Audit" -> /services
+
+**DAL-91 — Seasonal nursery status banners:**
+- Added <15% in-stock banner to nursery profile pages in build_nursery_pages.py
+- Currently triggers for Garden Express (4% in stock)
+- Replied to Benedict: fold seasonality data collection into DAL-80 goodwill outreach, not separate emails. Add "seasonality" field to NURSERY_META when data is collected.
