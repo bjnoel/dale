@@ -15,7 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from bee_retailers import SHIPPING_MAP, RETAILER_NAMES
-from bee_categories import categorise_product, CATEGORIES, CATEGORY_NAMES
+from bee_categories import (categorise_product, CATEGORIES, CATEGORY_NAMES,
+                            PARENT_NAMES, SUBCATEGORY_NAMES, SUBS_BY_PARENT)
 from beestock_layout import render_head, render_header, render_footer, SITE_NAME, LOGO_SVG
 
 # Matches "8 frame", "10 frame", "8-frame", "10-frame" etc. in product titles
@@ -144,9 +145,9 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
             if any(kw in title_lower for kw in ("gift card", "gift voucher", "gift certificate")):
                 continue
 
-            # Categorise
-            cat = categorise_product(title, tags, product_type)
-            category_counts[cat] = category_counts.get(cat, 0) + 1
+            # Categorise (two-level: parent + subcategory)
+            cat_parent, cat_sub = categorise_product(title, tags, product_type)
+            category_counts[cat_parent] = category_counts.get(cat_parent, 0) + 1
 
             # Normalize pricing
             variants = p.get("variants", [])
@@ -185,7 +186,8 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
                 "a": bool(available),
                 "u": p.get("url", ""),
                 "sale": bool(on_sale),
-                "cat": cat,
+                "cat": cat_parent,
+                "sub": cat_sub,
             }
             if frame_size:
                 product_data["fs"] = frame_size
@@ -277,28 +279,45 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
     retailers_json = json.dumps(retailers, separators=(",", ":"))
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-    # Build category filter options (sorted by count, descending)
+    # Build category filter options (grouped by parent)
     cat_options = []
-    for slug, count in sorted(category_counts.items(), key=lambda x: -x[1]):
-        name = CATEGORY_NAMES.get(slug, slug)
-        cat_options.append(f'<option value="{slug}">{name} ({count})</option>')
+    for parent_slug in PARENT_NAMES:
+        if parent_slug == "other":
+            continue
+        parent_name = PARENT_NAMES[parent_slug]
+        parent_count = category_counts.get(parent_slug, 0)
+        if parent_count == 0:
+            continue
+        cat_options.append(f'<option value="{parent_slug}">{parent_name} ({parent_count})</option>')
+        for sub in SUBS_BY_PARENT.get(parent_slug, []):
+            sub_count = sum(1 for p in products if p.get("sub") == sub["slug"])
+            if sub_count > 0:
+                cat_options.append(f'<option value="sub:{sub["slug"]}">&nbsp;&nbsp;{sub["name"]} ({sub_count})</option>')
     cat_options_html = "\n".join(cat_options)
 
-    # Build category pill strip (in-stock only, sorted by count)
-    in_stock_by_cat: dict[str, int] = {}
+    # Build parent-level pill strip (in-stock only, sorted by count)
+    in_stock_by_parent: dict[str, int] = {}
     for p in products:
         if p.get("a"):
             cat = p.get("cat", "other")
-            in_stock_by_cat[cat] = in_stock_by_cat.get(cat, 0) + 1
+            in_stock_by_parent[cat] = in_stock_by_parent.get(cat, 0) + 1
 
     cat_pills_html = ""
-    for slug, count in sorted(in_stock_by_cat.items(), key=lambda x: -x[1]):
+    for slug, count in sorted(in_stock_by_parent.items(), key=lambda x: -x[1]):
         if count < 3:
             continue
-        name = CATEGORY_NAMES.get(slug, "Other")
+        name = PARENT_NAMES.get(slug, "Other")
         if name == "Other":
             continue
         cat_pills_html += f'<button class="cat-pill" data-cat="{slug}">{name} <span class="count">{count}</span></button>\n'
+
+    # Build subcategory lookup JSON for JS
+    subs_by_parent_json = json.dumps({
+        parent: [{"slug": s["slug"], "name": s["name"]} for s in subs]
+        for parent, subs in SUBS_BY_PARENT.items()
+    }, separators=(",", ":"))
+    parent_names_json = json.dumps(PARENT_NAMES, separators=(",", ":"))
+    sub_names_json = json.dumps(SUBCATEGORY_NAMES, separators=(",", ":"))
 
     extra_style = """\
   .stock-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }
@@ -449,11 +468,16 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
 const P = {products_json};
 const R = {retailers_json};
 
+const PARENT_NAMES = {parent_names_json};
+const SUB_NAMES = {sub_names_json};
+const SUBS_BY_PARENT = {subs_by_parent_json};
 const CATEGORY_NAMES = {json.dumps(CATEGORY_NAMES, separators=(",", ":"))};
 
 let displayCount = 50;
 let currentResults = [];
 let activeCatSlug = '';
+let activeSubSlug = '';
+let viewLevel = 'parent';
 const defaultPillsHTML = document.getElementById('cat-pills').innerHTML;
 
 // Populate retailer filter
@@ -491,15 +515,23 @@ function search() {{
   let results = P;
 
   if (stockOnly) results = results.filter(p => p.a);
-  if (activeCatSlug) results = results.filter(p => p.cat === activeCatSlug);
-  else if (categoryFilter.value) results = results.filter(p => p.cat === categoryFilter.value);
+  // Category filtering: pill state takes priority, then dropdown
+  if (activeSubSlug) {{
+    results = results.filter(p => p.sub === activeSubSlug);
+  }} else if (activeCatSlug) {{
+    results = results.filter(p => p.cat === activeCatSlug);
+  }} else if (categoryFilter.value) {{
+    const cv = categoryFilter.value;
+    if (cv.startsWith('sub:')) results = results.filter(p => p.sub === cv.slice(4));
+    else results = results.filter(p => p.cat === cv);
+  }}
   if (changesOnly.checked) results = results.filter(p => p.ch);
   if (saleOnly.checked) results = results.filter(p => p.sale);
   if (retailer) results = results.filter(p => p.nk === retailer);
   const depth = depthFilter.value;
   if (depth) results = results.filter(p => p.bd === depth);
 
-  if (q && !activeCatSlug) {{
+  if (q && !activeCatSlug && !activeSubSlug) {{
     const terms = q.split(/\\s+/);
     results = results.filter(p => {{
       const text = (p.t + ' ' + (p.brand || '') + ' ' + (CATEGORY_NAMES[p.cat] || '')).toLowerCase();
@@ -563,7 +595,7 @@ function render() {{
       ? '<span class="stock-badge in-stock">In stock</span>'
       : '<span class="stock-badge out-stock">Out of stock</span>';
     const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
-    const catName = CATEGORY_NAMES[p.cat] || '';
+    const catName = SUB_NAMES[p.sub] || PARENT_NAMES[p.cat] || '';
     const catBadge = catName ? `<span class="cat-tag" data-cat="${{p.cat}}">${{catName}}</span>` : '';
     const frameBadge = p.fs ? `<span class="frame-badge">${{p.fs}}-frame</span>` : '';
     const depthBadge = p.bd ? `<span class="depth-badge">${{p.bd}}</span>` : '';
@@ -605,14 +637,19 @@ function showMore() {{
   render();
 }}
 
-// --- Active filter chips ---
+// --- Active filter chips (breadcrumb style) ---
 function updateActiveFilters() {{
   const el = document.getElementById('activeFilters');
   const chips = [];
   if (activeCatSlug) {{
-    const name = CATEGORY_NAMES[activeCatSlug] || activeCatSlug;
-    chips.push({{label: name, action: 'category'}});
-  }} else if (searchInput.value.trim()) {{
+    const name = PARENT_NAMES[activeCatSlug] || activeCatSlug;
+    chips.push({{label: name, action: 'parent'}});
+  }}
+  if (activeSubSlug) {{
+    const name = SUB_NAMES[activeSubSlug] || activeSubSlug;
+    chips.push({{label: name, action: 'sub'}});
+  }}
+  if (!activeCatSlug && !activeSubSlug && searchInput.value.trim()) {{
     chips.push({{label: '"' + searchInput.value.trim() + '"', action: 'search'}});
   }}
   if (retailerSelect.value) {{
@@ -634,10 +671,17 @@ document.getElementById('activeFilters').addEventListener('click', function(e) {
   const btn = e.target.closest('button[data-action]');
   if (!btn) return;
   const action = btn.getAttribute('data-action');
-  if (action === 'category') {{
+  if (action === 'sub') {{
+    // Go back to parent level (keep parent filter, drop sub)
+    activeSubSlug = '';
+    viewLevel = 'sub';
+    categoryFilter.value = activeCatSlug;
+  }} else if (action === 'parent') {{
+    // Clear everything, go back to top-level
     activeCatSlug = '';
+    activeSubSlug = '';
+    viewLevel = 'parent';
     categoryFilter.value = '';
-    document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
   }} else if (action === 'search') {{
     searchInput.value = '';
   }} else if (action === 'retailer') {{
@@ -652,23 +696,45 @@ document.getElementById('activeFilters').addEventListener('click', function(e) {
   search();
 }});
 
-// --- Dynamic pill count updates ---
+// --- Hierarchical pill system ---
 function bindPillClicks() {{
   document.querySelectorAll('.cat-pill[data-cat]').forEach(function(pill) {{
     pill.addEventListener('click', function(e) {{
       e.preventDefault();
       const cat = this.getAttribute('data-cat');
+      const isSub = this.hasAttribute('data-sub');
       const isActive = this.classList.contains('active');
-      document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
-      if (isActive) {{
-        activeCatSlug = '';
-        categoryFilter.value = '';
-        searchInput.value = '';
+
+      if (isSub) {{
+        // Subcategory pill clicked
+        document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+        if (isActive) {{
+          // Deselect sub, stay in parent view
+          activeSubSlug = '';
+          categoryFilter.value = activeCatSlug;
+        }} else {{
+          activeSubSlug = cat;
+          categoryFilter.value = 'sub:' + cat;
+          this.classList.add('active');
+        }}
       }} else {{
-        activeCatSlug = cat;
-        categoryFilter.value = cat;
-        searchInput.value = '';
-        this.classList.add('active');
+        // Parent pill clicked
+        document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+        if (isActive) {{
+          // Deselect parent, go back to top level
+          activeCatSlug = '';
+          activeSubSlug = '';
+          viewLevel = 'parent';
+          categoryFilter.value = '';
+          searchInput.value = '';
+        }} else {{
+          // Select parent, drill into subcategories
+          activeCatSlug = cat;
+          activeSubSlug = '';
+          viewLevel = 'sub';
+          categoryFilter.value = cat;
+          searchInput.value = '';
+        }}
       }}
       search();
       document.getElementById('results').scrollIntoView({{behavior: 'smooth', block: 'start'}});
@@ -682,9 +748,8 @@ function updatePillCounts() {{
   const depth = depthFilter.value;
   const changes = changesOnly.checked;
   const sale = saleOnly.checked;
-  const hasFilter = retailer || depth || changes || sale;
 
-  // Base set: all filters EXCEPT category
+  // Base set: all filters EXCEPT category/sub
   let base = P;
   if (stockOnly) base = base.filter(p => p.a);
   if (retailer) base = base.filter(p => p.nk === retailer);
@@ -692,31 +757,59 @@ function updatePillCounts() {{
   if (changes) base = base.filter(p => p.ch);
   if (sale) base = base.filter(p => p.sale);
 
-  const counts = {{}};
-  base.forEach(p => {{ counts[p.cat] = (counts[p.cat] || 0) + 1; }});
-
   const strip = document.getElementById('cat-pills');
 
-  if (!hasFilter) {{
-    strip.innerHTML = defaultPillsHTML;
-    strip.querySelectorAll('.cat-pill[data-cat]').forEach(pill => {{
-      const cat = pill.getAttribute('data-cat');
-      const count = counts[cat] || 0;
-      pill.querySelector('.count').textContent = count;
-      pill.classList.toggle('dimmed', count === 0);
-      if (cat === activeCatSlug) pill.classList.add('active');
-    }});
+  if (viewLevel === 'sub' && activeCatSlug) {{
+    // Show subcategory pills for the active parent
+    const parentBase = base.filter(p => p.cat === activeCatSlug);
+    const subCounts = {{}};
+    parentBase.forEach(p => {{ subCounts[p.sub] = (subCounts[p.sub] || 0) + 1; }});
+
+    const subs = SUBS_BY_PARENT[activeCatSlug] || [];
+    let html = subs
+      .map(s => ({{slug: s.slug, name: s.name, count: subCounts[s.slug] || 0}}))
+      .filter(s => s.count > 0)
+      .sort((a, b) => b.count - a.count)
+      .map(s => {{
+        const active = s.slug === activeSubSlug ? ' active' : '';
+        return `<button class="cat-pill${{active}}" data-cat="${{s.slug}}" data-sub="1">${{s.name}} <span class="count">${{s.count}}</span></button>`;
+      }}).join('');
+
+    // Add "other" count if any products in this parent don't match a sub
+    const otherCount = subCounts['other'] || 0;
+    if (otherCount > 0) {{
+      const active = activeSubSlug === 'other' ? ' active' : '';
+      html += `<button class="cat-pill${{active}}" data-cat="other" data-sub="1">Other <span class="count">${{otherCount}}</span></button>`;
+    }}
+
+    strip.innerHTML = html;
   }} else {{
-    const sorted = Object.entries(counts)
-      .filter(([cat]) => cat !== 'other')
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 16);
-    strip.innerHTML = sorted.map(([cat, count]) => {{
-      const name = CATEGORY_NAMES[cat] || cat;
-      const active = cat === activeCatSlug ? ' active' : '';
-      const dimmed = count === 0 ? ' dimmed' : '';
-      return `<button class="cat-pill${{active}}${{dimmed}}" data-cat="${{cat}}">${{name}} <span class="count">${{count}}</span></button>`;
-    }}).join('');
+    // Show parent-level pills
+    const parentCounts = {{}};
+    base.forEach(p => {{ parentCounts[p.cat] = (parentCounts[p.cat] || 0) + 1; }});
+
+    const hasNarrow = retailer || depth || changes || sale;
+    if (!hasNarrow) {{
+      strip.innerHTML = defaultPillsHTML;
+      strip.querySelectorAll('.cat-pill[data-cat]').forEach(pill => {{
+        const cat = pill.getAttribute('data-cat');
+        const count = parentCounts[cat] || 0;
+        pill.querySelector('.count').textContent = count;
+        pill.classList.toggle('dimmed', count === 0);
+        if (cat === activeCatSlug) pill.classList.add('active');
+      }});
+    }} else {{
+      const sorted = Object.entries(parentCounts)
+        .filter(([cat]) => cat !== 'other')
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 16);
+      strip.innerHTML = sorted.map(([cat, count]) => {{
+        const name = PARENT_NAMES[cat] || cat;
+        const active = cat === activeCatSlug ? ' active' : '';
+        const dimmed = count === 0 ? ' dimmed' : '';
+        return `<button class="cat-pill${{active}}${{dimmed}}" data-cat="${{cat}}">${{name}} <span class="count">${{count}}</span></button>`;
+      }}).join('');
+    }}
   }}
 
   bindPillClicks();
@@ -736,14 +829,16 @@ function updatePillCounts() {{
 // Event listeners
 searchInput.addEventListener('input', function() {{
   activeCatSlug = '';
+  activeSubSlug = '';
+  viewLevel = 'parent';
   categoryFilter.value = '';
-  document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
   search();
 }});
 inStockOnly.addEventListener('change', search);
 categoryFilter.addEventListener('change', function() {{
   activeCatSlug = '';
-  document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+  activeSubSlug = '';
+  viewLevel = 'parent';
   search();
 }});
 changesOnly.addEventListener('change', search);
@@ -784,11 +879,10 @@ document.getElementById('results').addEventListener('click', function(e) {{
     e.stopPropagation();
     const cat = catTag.getAttribute('data-cat');
     activeCatSlug = cat;
+    activeSubSlug = '';
+    viewLevel = 'sub';
     categoryFilter.value = cat;
     searchInput.value = '';
-    document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
-    const pill = document.querySelector('.cat-pill[data-cat="' + cat + '"]');
-    if (pill) pill.classList.add('active');
     search();
     window.scrollTo({{ top: 0, behavior: 'smooth' }});
     return;
@@ -798,9 +892,10 @@ document.getElementById('results').addEventListener('click', function(e) {{
     e.preventDefault();
     e.stopPropagation();
     activeCatSlug = '';
+    activeSubSlug = '';
+    viewLevel = 'parent';
     searchInput.value = frameBadge.textContent.trim();
     categoryFilter.value = '';
-    document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
     search();
     window.scrollTo({{ top: 0, behavior: 'smooth' }});
     return;
