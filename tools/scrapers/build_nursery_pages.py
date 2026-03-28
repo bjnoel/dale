@@ -211,7 +211,9 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
             <td class="text-center text-muted">{tot}</td>
         </tr>"""
 
-    in_stock_products = [p for p in products if p.get("any_available")][:20]
+    all_in_stock = [p for p in products if p.get("any_available")]
+    in_stock_products = all_in_stock[:20]
+    has_more_products = len(all_in_stock) > 20
     product_rows = ""
     for p in in_stock_products:
         price = f"${p['min_price']:.2f}" if p.get("min_price") else "POA"
@@ -353,7 +355,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
           </tbody>
         </table>
       </div>
-      <div class="px-4 py-2 border-t border-gray-200 text-xs text-gray-500">Showing top 20 in-stock products. <a href="/?nursery={nursery_key}" class="text-green-700 hover:underline">See all →</a></div>
+      {'<div class="px-4 py-2 border-t border-gray-200 text-xs text-gray-500">Showing top 20 in-stock products. <a href="/?nursery=' + nursery_key + '" class="text-green-700 hover:underline">See all →</a></div>' if has_more_products else ''}
     </div>
   </div>
 

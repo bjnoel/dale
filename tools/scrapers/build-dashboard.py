@@ -1402,6 +1402,13 @@ document.getElementById('results').addEventListener('click', function(e) {{
   }}
 }});
 
+// Apply URL parameters (e.g. ?nursery=garden-express)
+const urlParams = new URLSearchParams(window.location.search);
+const nurseryParam = urlParams.get('nursery');
+if (nurseryParam && nurserySelect.querySelector(`option[value="${{nurseryParam}}"]`)) {{
+  nurserySelect.value = nurseryParam;
+}}
+
 // Initial render
 search();
 

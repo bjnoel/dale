@@ -305,11 +305,11 @@ def collect_gsc_stats(sites):
 
 # --- Main ---
 
-def generate_report(output_path=None):
+def generate_report(output_path=None, skip_gsc=False):
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "plausible": collect_plausible_stats(PLAUSIBLE_SITES),
-        "gsc": collect_gsc_stats(GSC_SITES),
+        "gsc": [] if skip_gsc else collect_gsc_stats(GSC_SITES),
     }
 
     if output_path:
@@ -324,5 +324,6 @@ def generate_report(output_path=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Multi-site traffic report")
     parser.add_argument("--output", default="/opt/dale/data/traffic_report.json")
+    parser.add_argument("--skip-gsc", action="store_true", help="Skip GSC data collection")
     args = parser.parse_args()
-    generate_report(output_path=args.output)
+    generate_report(output_path=args.output, skip_gsc=args.skip_gsc)

@@ -475,15 +475,16 @@ def main():
         log("Warning: could not find Linear team")
         completed, created, in_progress = [], [], []
 
-    # 2. Traffic report (generate fresh)
+    # 2. Traffic report (generate fresh; GSC only on Sundays)
     traffic_html, traffic_text = "", ""
     try:
         import subprocess
         traffic_script = os.path.join(SCRIPT_DIR, "traffic_report.py")
-        subprocess.run(
-            ["python3", traffic_script, "--output", "/opt/dale/data/traffic_report.json"],
-            timeout=120, capture_output=True
-        )
+        traffic_cmd = ["python3", traffic_script, "--output", "/opt/dale/data/traffic_report.json"]
+        is_sunday = datetime.now(timezone.utc).weekday() == 6
+        if not is_sunday:
+            traffic_cmd.append("--skip-gsc")
+        subprocess.run(traffic_cmd, timeout=120, capture_output=True)
         # Import the rendering function from notify.py
         sys.path.insert(0, SCRIPT_DIR)
         from notify import load_traffic_report
