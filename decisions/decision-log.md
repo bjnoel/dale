@@ -4,6 +4,36 @@
 
 ---
 
+## DEC-102 — 2026-03-28 — Session 61: Beestock FB Post, GSC URL Inspection, Retailer Research
+
+**Decided by:** Dale (autonomous)
+
+**DAL-42 — WA beekeeping community Facebook post:**
+- Drafted 3 post variants (primary, short, with signup CTA) following treestock FB launch playbook
+- Target: WA Amateur Beekeepers Society (WAAS) group and other WA beekeeping groups
+- Hook: "6 retailers, 2,100+ products, see what's in stock and price drops"
+- Notes for Benedict: post primary version first, mention you don't need to say you built it
+- Assigned to Benedict to post
+
+**DAL-104 — GSC URL inspection extension:**
+- Extended gsc_analysis.py with --inspect flag using OAuth credentials from gsc_submit.py
+- Inspects 62 key SEO pages per run: homepage, location pages, species pages, WA combo pages, special pages
+- Added species+state pages and planting calendar to page_type_breakdown
+- Updated weekly cron (Sundays 07:00 UTC) to include --inspect --output flags
+- Deployed to /opt/dale/scrapers/gsc_analysis.py
+- First inspection run: 7 PASS (indexed), 57 NEUTRAL (not yet indexed). No alerts.
+- Notable: location pages not indexed despite being in sitemap for weeks - may need more internal links
+
+**DAL-102 — Beestock retailer research:**
+- Identified 3 Shopify retailers ready to add: Beekeeping Gear (~625 products), The Urban Beehive (~455, Perth-based), Bec's BeeHive (~308)
+- The Urban Beehive being Perth-based is notable for Benedict's WA community connections
+- Non-Shopify candidates (Adelaide Beekeeping, Burnett, Quality) deferred (harder to scrape)
+- Adding all 3 Shopify candidates would grow beestock from ~2,100 to ~3,500+ products
+- Each new Shopify retailer = one entry in bee_retailers.py (10 minutes per retailer)
+- Assigned to Benedict for approval on which to add first
+
+---
+
 ## DEC-095 — 2026-03-28 — Session 58: Engall's Nursery + Resend Analytics Key (DAL-86, DAL-93)
 
 **Decided by:** Dale (autonomous)

@@ -2,27 +2,38 @@
 """
 GSC Analysis for treestock.com.au
 DAL-12: Pull impressions, clicks, CTR, top queries via Search Console API.
+DAL-104: URL inspection status for top SEO pages.
 
 Usage:
     python3 gsc_analysis.py
     python3 gsc_analysis.py --output /opt/dale/data/gsc_report.json
     python3 gsc_analysis.py --days 30
+    python3 gsc_analysis.py --inspect           # Also run URL inspection (requires OAuth creds)
+    python3 gsc_analysis.py --inspect-only      # Run only URL inspection
 """
 
 import json
 import sys
 import os
 import argparse
+import time
 from datetime import datetime, timedelta
 from collections import defaultdict
 
+import requests
 from google.oauth2 import service_account
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 CREDENTIALS_PATH = "/opt/dale/secrets/gsc-credentials.json"
+OAUTH_CREDS_PATH = "/opt/dale/secrets/gsc-oauth-credentials.json"
 SITE_URL = "sc-domain:treestock.com.au"
+SITE_BASE = "https://treestock.com.au"
+DASHBOARD_DIR = "/opt/dale/dashboard"
 SCOPES = ["https://www.googleapis.com/auth/webmasters.readonly"]
+INSPECTION_API = "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect"
 
 
 def get_service():
@@ -30,6 +41,203 @@ def get_service():
         CREDENTIALS_PATH, scopes=SCOPES
     )
     return build("searchconsole", "v1", credentials=creds)
+
+
+def get_oauth_credentials():
+    """Load OAuth credentials with refresh token (from gsc_submit.py pattern)."""
+    with open(OAUTH_CREDS_PATH) as f:
+        creds_data = json.load(f)
+    with open(CREDENTIALS_PATH) as f:
+        sa_data = json.load(f)
+    project_id = sa_data["project_id"]
+
+    creds = Credentials(
+        token=None,
+        refresh_token=creds_data["refresh_token"],
+        client_id=creds_data["client_id"],
+        client_secret=creds_data["client_secret"],
+        token_uri="https://oauth2.googleapis.com/token",
+        scopes=["https://www.googleapis.com/auth/webmasters"],
+        quota_project_id=project_id,
+    )
+    creds.refresh(Request())
+    return creds, project_id
+
+
+def inspect_url(creds, project_id, page_url):
+    """Call URL Inspection API for a single URL. Returns dict with verdict/coverage/crawled."""
+    headers = {
+        "Authorization": f"Bearer {creds.token}",
+        "x-goog-user-project": project_id,
+        "Content-Type": "application/json",
+    }
+    body = {"inspectionUrl": page_url, "siteUrl": SITE_URL}
+    try:
+        resp = requests.post(INSPECTION_API, json=body, headers=headers, timeout=15)
+        if resp.status_code == 200:
+            result = resp.json().get("inspectionResult", {})
+            index = result.get("indexStatusResult", {})
+            return {
+                "url": page_url,
+                "verdict": index.get("verdict", "UNKNOWN"),
+                "coverage": index.get("coverageState", "Unknown"),
+                "last_crawled": index.get("lastCrawlTime", None),
+                "robots_txt_state": index.get("robotsTxtState", None),
+                "sitemap": index.get("sitemap", []),
+                "error": None,
+            }
+        else:
+            return {
+                "url": page_url,
+                "verdict": "API_ERROR",
+                "coverage": f"HTTP {resp.status_code}",
+                "last_crawled": None,
+                "error": resp.text[:200],
+            }
+    except Exception as e:
+        return {
+            "url": page_url,
+            "verdict": "API_ERROR",
+            "coverage": str(e)[:100],
+            "last_crawled": None,
+            "error": str(e),
+        }
+
+
+def build_inspection_urls(top_gsc_pages=None):
+    """
+    Build list of key SEO URLs to inspect.
+    Prioritises: pages with GSC data, new combo pages (WA), location pages, special pages.
+    """
+    urls = []
+    seen = set()
+
+    def add(url):
+        if url not in seen:
+            seen.add(url)
+            urls.append(url)
+
+    # 1. Homepage and key special pages
+    add(f"{SITE_BASE}/")
+    add(f"{SITE_BASE}/when-to-plant.html")
+    add(f"{SITE_BASE}/rare.html")
+
+    # 2. Location pages (4 total)
+    for state in ["wa", "qld", "nsw", "vic"]:
+        add(f"{SITE_BASE}/buy-fruit-trees-{state}.html")
+
+    # 3. Pages from GSC impressions data (top by impressions, up to 15)
+    if top_gsc_pages:
+        for row in sorted(top_gsc_pages, key=lambda r: r["impressions"], reverse=True)[:15]:
+            page = row.get("page", "")
+            if page.startswith("https://treestock.com.au"):
+                add(page)
+
+    # 4. Top species pages (by alphabetical slug if no GSC data yet)
+    species_dir = os.path.join(DASHBOARD_DIR, "species")
+    if os.path.isdir(species_dir):
+        slugs = [f.replace(".html", "") for f in sorted(os.listdir(species_dir))
+                 if f.endswith(".html") and not f.startswith("species/")]
+        for slug in slugs[:20]:
+            add(f"{SITE_BASE}/species/{slug}.html")
+
+    # 5. WA combo pages (all — unique quarantine content)
+    wa_combos = [
+        f for f in sorted(os.listdir(DASHBOARD_DIR))
+        if f.endswith("-western-australia.html") and f.startswith("buy-")
+    ]
+    for fname in wa_combos[:25]:
+        add(f"{SITE_BASE}/{fname}")
+
+    # 6. Sample of other state combo pages (top 10 by alphabetical)
+    other_combos = [
+        f for f in sorted(os.listdir(DASHBOARD_DIR))
+        if f.startswith("buy-") and f.endswith(".html")
+        and not f.endswith("-western-australia.html")
+        and not f.startswith("buy-fruit-trees-")
+    ]
+    for fname in other_combos[:10]:
+        add(f"{SITE_BASE}/{fname}")
+
+    return urls
+
+
+def run_url_inspection(urls=None, top_gsc_pages=None, delay_seconds=0.5):
+    """
+    Inspect a list of URLs via GSC URL Inspection API.
+    Returns list of inspection results plus alert list.
+    """
+    if not os.path.exists(OAUTH_CREDS_PATH):
+        print("  SKIP: OAuth credentials not found at", OAUTH_CREDS_PATH)
+        return None
+
+    try:
+        creds, project_id = get_oauth_credentials()
+    except Exception as e:
+        print(f"  ERROR: Could not load OAuth credentials: {e}")
+        return None
+
+    if urls is None:
+        urls = build_inspection_urls(top_gsc_pages=top_gsc_pages)
+
+    print(f"\n--- URL INSPECTION ({len(urls)} URLs) ---")
+    results = []
+    alerts = []
+
+    verdict_counts = defaultdict(int)
+
+    for i, url in enumerate(urls):
+        result = inspect_url(creds, project_id, url)
+        results.append(result)
+        verdict = result["verdict"]
+        coverage = result["coverage"]
+        last_crawled = result.get("last_crawled", "never")
+
+        verdict_counts[verdict] += 1
+
+        # Format display
+        short_url = url.replace(SITE_BASE, "")
+        crawl_str = last_crawled[:10] if last_crawled else "never"
+        print(f"  [{verdict:<12}] {short_url:<60} (crawled: {crawl_str})")
+
+        # Alert conditions
+        if verdict == "FAIL":
+            alerts.append({"url": url, "reason": f"FAIL — {coverage}", "severity": "critical"})
+        elif verdict == "NEUTRAL" and "Crawl anomaly" in coverage:
+            alerts.append({"url": url, "reason": f"Crawl anomaly: {coverage}", "severity": "warning"})
+        elif verdict == "API_ERROR":
+            alerts.append({"url": url, "reason": f"API error: {coverage}", "severity": "info"})
+
+        # Refresh token periodically and throttle
+        if (i + 1) % 20 == 0:
+            try:
+                creds.refresh(Request())
+            except Exception:
+                pass
+        if delay_seconds > 0:
+            time.sleep(delay_seconds)
+
+    print()
+    print(f"  Summary: ", end="")
+    for verdict, count in sorted(verdict_counts.items()):
+        print(f"{verdict}: {count}  ", end="")
+    print()
+
+    if alerts:
+        print(f"\n  ALERTS ({len(alerts)}):")
+        for alert in alerts:
+            print(f"    [{alert['severity'].upper()}] {alert['url']}")
+            print(f"      {alert['reason']}")
+    else:
+        print("  No alerts.")
+
+    return {
+        "inspected_at": datetime.utcnow().isoformat(),
+        "total_urls": len(urls),
+        "verdict_summary": dict(verdict_counts),
+        "results": results,
+        "alerts": alerts,
+    }
 
 
 def date_range(days_back=30):
@@ -66,7 +274,7 @@ def format_num(v, decimals=1):
     return f"{v:.{decimals}f}"
 
 
-def run_analysis(days=16, output_path=None):
+def run_analysis(days=16, output_path=None, inspect=False):
     print("=== GSC Analysis: treestock.com.au ===")
     print(f"Period: last {days} days (with 3-day GSC lag)")
     print()
@@ -184,8 +392,12 @@ def run_analysis(days=16, output_path=None):
             ptype = "homepage"
         elif path.startswith("/buy-fruit-trees"):
             ptype = "location pages"
+        elif path.startswith("/buy-") and path.endswith(".html"):
+            ptype = "species+state pages"
         elif "/guide" in path:
             ptype = "guide page"
+        elif "/when-to-plant" in path:
+            ptype = "planting calendar"
         elif "/rare" in path:
             ptype = "rare finds page"
         elif "/digest" in path or "/daily" in path:
@@ -287,6 +499,19 @@ def run_analysis(days=16, output_path=None):
         },
     }
 
+    # 6. URL Inspection (optional, requires OAuth creds)
+    if inspect:
+        print("\n=== URL INSPECTION ===")
+        inspection = run_url_inspection(
+            top_gsc_pages=report["top_pages_by_impressions"]
+        )
+        if inspection:
+            report["url_inspection"] = inspection
+            # Surface alerts in the overall report
+            if inspection["alerts"]:
+                print(f"\n*** {len(inspection['alerts'])} ALERT(S) REQUIRE ATTENTION ***")
+            print()
+
     # Save report
     if output_path:
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -301,6 +526,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GSC Analysis for treestock.com.au")
     parser.add_argument("--days", type=int, default=16, help="Days of data to pull (default 16)")
     parser.add_argument("--output", type=str, default="/opt/dale/data/gsc_report.json")
+    parser.add_argument("--inspect", action="store_true", help="Also run URL inspection for key SEO pages")
+    parser.add_argument("--inspect-only", action="store_true", help="Run only URL inspection (skip search analytics)")
     args = parser.parse_args()
 
-    run_analysis(days=args.days, output_path=args.output)
+    if args.inspect_only:
+        print("=== GSC URL Inspection: treestock.com.au ===")
+        result = run_url_inspection()
+        if result and args.output:
+            os.makedirs(os.path.dirname(args.output), exist_ok=True)
+            with open(args.output, "w") as f:
+                json.dump(result, f, indent=2)
+            print(f"Inspection report saved to {args.output}")
+    else:
+        run_analysis(days=args.days, output_path=args.output, inspect=args.inspect)
