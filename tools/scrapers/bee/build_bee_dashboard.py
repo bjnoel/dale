@@ -348,6 +348,7 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   #cat-pills { display: flex; gap: 8px; flex-wrap: wrap; max-height: 34px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
   #cat-pills.expanded { max-height: 500px; }
   .cat-pill.dimmed { opacity: 0.4; }
+  .cat-pill.parent-label { background: #fef3c7; border-color: #d97706; color: #92400e; font-weight: 600; }
   .toggle-pills-btn { background: none; border: none; color: #d97706; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
   .toggle-pills-btn:hover { text-decoration: underline; }
   .filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
@@ -703,9 +704,17 @@ function bindPillClicks() {{
       e.preventDefault();
       const cat = this.getAttribute('data-cat');
       const isSub = this.hasAttribute('data-sub');
+      const isParentLabel = this.classList.contains('parent-label');
       const isActive = this.classList.contains('active');
 
-      if (isSub) {{
+      if (isParentLabel) {{
+        // Back button: go to top level
+        activeCatSlug = '';
+        activeSubSlug = '';
+        viewLevel = 'parent';
+        categoryFilter.value = '';
+        searchInput.value = '';
+      }} else if (isSub) {{
         // Subcategory pill clicked
         document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
         if (isActive) {{
@@ -782,7 +791,9 @@ function updatePillCounts() {{
       html += `<button class="cat-pill${{active}}" data-cat="other" data-sub="1">Other <span class="count">${{otherCount}}</span></button>`;
     }}
 
-    strip.innerHTML = html;
+    // Prepend parent label with back arrow
+    const parentName = PARENT_NAMES[activeCatSlug] || activeCatSlug;
+    strip.innerHTML = `<button class="cat-pill parent-label" data-cat="${{activeCatSlug}}" title="Back to all categories">&#9664; ${{parentName}}</button>` + html;
   }} else {{
     // Show parent-level pills
     const parentCounts = {{}};
