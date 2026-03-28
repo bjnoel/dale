@@ -87,6 +87,16 @@ NURSERIES = {
             "tamarillo", "vanilla-fruit-trees-2",
         ],
     },
+    "engalls": {
+        # Engall's Nursery, Dural NSW. Citrus specialist — 70+ products including
+        # specialty/rare varieties: Yuzu, Buddha's Hand, Calamansi, Sudachi, Etrog,
+        # Bergamot, Rangpur Lime, Indonesian Lime, Chinotto, and more.
+        # Does NOT ship to WA, NT, TAS, or parts of SA (quarantine restrictions).
+        "name": "Engall's Nursery",
+        "domain": "www.engalls.com.au",
+        "location": "Dural, NSW",
+        "fruit_categories": ["citrus", "dwarf-citrus"],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

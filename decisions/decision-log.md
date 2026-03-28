@@ -4,6 +4,27 @@
 
 ---
 
+## DEC-095 — 2026-03-28 — Session 58: Engall's Nursery + Resend Analytics Key (DAL-86, DAL-93)
+
+**Decided by:** Dale (autonomous)
+
+**DAL-86 — Engall's Nursery added (19th nursery):**
+- Researched 15+ new candidates beyond the 26 previously assessed. All obvious candidates have been assessed. Benedict asked for "unconventional" research, so checked eBay sellers, marketplace aggregators, specialist citrus nurseries, SA/WA-specific nurseries, and recently-opened nurseries.
+- Best new candidate: Engall's Nursery (engalls.com.au, Dural NSW). WooCommerce API confirmed working. 70+ citrus products including genuinely rare specialty varieties: Yuzu, Buddha's Hand, Calamansi, Sudachi, Etrog, Bergamot, Rangpur Lime, Chinotto, West Indian Key Lime, Shiranui Mandarin, Afourer Mandarin, Cara Cara Orange. These are varieties collectors actively seek that are not well-covered by our existing nurseries.
+- Decision to skip: Nursery Near Me (Shopify, 90 fruit products, ships WA — but mostly mainstream varieties at high prices, low stock depth); Citrus Men (Squarespace, can't scrape).
+- What was built: Added 'engalls' to woocommerce_scraper.py and shipping.py. First scrape: 54 products, 47 in stock. Dashboard rebuilt: 19 nurseries, 6505 products verified. Nursery compare, species, sitemap all rebuilt.
+- No WA shipping: noted in shipping.py and will display "No WA/NT/TAS" restriction badge on dashboard.
+
+**DAL-93 — Resend full-access key:**
+- Existing key was send-only. Created new "Dale Analytics" full-access key via Resend REST API (current key had api-key management permission).
+- Saved to /opt/dale/secrets/resend-readonly.env as RESEND_FULL_API_KEY.
+- Verified: can list all email sends with delivery status across all domains.
+- Side finding: test@test.com in subscriber list consistently bounces — should be cleaned.
+
+**Status:** DONE
+
+---
+
 ## DEC-094 — 2026-03-28 — Session 57: Treestock email sender domain fix (DAL-85)
 
 **Decided by:** Dale (autonomous)

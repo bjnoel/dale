@@ -46,12 +46,12 @@
       "domain_alt": "scion.exchange",
       "status": "live-in-community",
       "dashboard_url": "https://treestock.com.au",
-      "nurseries_monitored": 18,
-      "nurseries_researched": 26,
+      "nurseries_monitored": 19,
+      "nurseries_researched": 27,
       "first_scrape_date": "2026-03-05",
-      "days_of_data": 21,
-      "products_tracked": 6511,
-      "in_stock": 3350,
+      "days_of_data": 23,
+      "products_tracked": 6559,
+      "in_stock": 3397,
       "species_matched_pct": 73,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
       "subscribers": 4,
@@ -80,6 +80,6 @@
     "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
     "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified (treestock emails now send from mail.treestock.com.au)"
+    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env"
   }
 }

@@ -26,6 +26,7 @@ SHIPPING_MAP = {
     "garden-express": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],  # Ships nationwide; quarantine surcharge for WA/NT/TAS.
     "plantnet": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],              # SA-based. Ships to WA via Olea Nurseries partner (Manjimup WA).
     "fruit-tree-lane": ["NSW", "VIC", "QLD", "SA", "ACT"],                    # QLD-based (Helidon). Does not ship to WA, NT, or TAS (quarantine).
+    "engalls": ["NSW", "VIC", "QLD", "SA", "ACT"],                             # NSW-based (Dural). Does not ship to WA, NT, TAS, or some SA areas (quarantine).
 }
 
 NURSERY_NAMES = {
@@ -47,6 +48,7 @@ NURSERY_NAMES = {
     "garden-express": "Garden Express",
     "plantnet": "PlantNet",
     "fruit-tree-lane": "Fruit Tree Lane",
+    "engalls": "Engall's Nursery",
 }
 
 
