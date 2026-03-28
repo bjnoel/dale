@@ -532,7 +532,7 @@ function search() {{
   const depth = depthFilter.value;
   if (depth) results = results.filter(p => p.bd === depth);
 
-  if (q && !activeCatSlug && !activeSubSlug) {{
+  if (q) {{
     const terms = q.split(/\\s+/);
     results = results.filter(p => {{
       const text = (p.t + ' ' + (p.brand || '') + ' ' + (CATEGORY_NAMES[p.cat] || '')).toLowerCase();
@@ -571,6 +571,39 @@ function search() {{
   render();
   updateActiveFilters();
   updatePillCounts();
+  updateRetailerCounts();
+}}
+
+function updateRetailerCounts() {{
+  // Recalculate retailer in-stock counts based on current filters (excluding retailer)
+  const stockOnly = inStockOnly.checked;
+  const depth = depthFilter.value;
+  const q = searchInput.value.toLowerCase().trim();
+
+  let base = P;
+  if (stockOnly) base = base.filter(p => p.a);
+  if (activeSubSlug) base = base.filter(p => p.sub === activeSubSlug);
+  else if (activeCatSlug) base = base.filter(p => p.cat === activeCatSlug);
+  if (depth) base = base.filter(p => p.bd === depth);
+  if (changesOnly.checked) base = base.filter(p => p.ch);
+  if (saleOnly.checked) base = base.filter(p => p.sale);
+  if (q) {{
+    const terms = q.split(/\s+/);
+    base = base.filter(p => {{
+      const text = (p.t + ' ' + (p.brand || '') + ' ' + (CATEGORY_NAMES[p.cat] || '')).toLowerCase();
+      return terms.every(t => text.includes(t));
+    }});
+  }}
+
+  const counts = {{}};
+  base.forEach(p => {{ counts[p.nk] = (counts[p.nk] || 0) + 1; }});
+
+  Array.from(retailerSelect.options).forEach(opt => {{
+    if (!opt.value) return;
+    const count = counts[opt.value] || 0;
+    const name = R.find(r => r.key === opt.value);
+    opt.textContent = `${{name ? name.name : opt.value}} (${{count}})`;
+  }});
 }}
 
 function render() {{
@@ -650,7 +683,7 @@ function updateActiveFilters() {{
     const name = SUB_NAMES[activeSubSlug] || activeSubSlug;
     chips.push({{label: name, action: 'sub'}});
   }}
-  if (!activeCatSlug && !activeSubSlug && searchInput.value.trim()) {{
+  if (searchInput.value.trim()) {{
     chips.push({{label: '"' + searchInput.value.trim() + '"', action: 'search'}});
   }}
   if (retailerSelect.value) {{
@@ -839,10 +872,6 @@ function updatePillCounts() {{
 
 // Event listeners
 searchInput.addEventListener('input', function() {{
-  activeCatSlug = '';
-  activeSubSlug = '';
-  viewLevel = 'parent';
-  categoryFilter.value = '';
   search();
 }});
 inStockOnly.addEventListener('change', search);
@@ -902,11 +931,7 @@ document.getElementById('results').addEventListener('click', function(e) {{
   if (frameBadge) {{
     e.preventDefault();
     e.stopPropagation();
-    activeCatSlug = '';
-    activeSubSlug = '';
-    viewLevel = 'parent';
     searchInput.value = frameBadge.textContent.trim();
-    categoryFilter.value = '';
     search();
     window.scrollTo({{ top: 0, behavior: 'smooth' }});
     return;
