@@ -328,8 +328,12 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   .cat-pill.active .count { color: #b45309; }
   #cat-pills { display: flex; gap: 8px; flex-wrap: wrap; max-height: 34px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
   #cat-pills.expanded { max-height: 500px; }
+  .cat-pill.dimmed { opacity: 0.4; }
   .toggle-pills-btn { background: none; border: none; color: #d97706; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
-  .toggle-pills-btn:hover { text-decoration: underline; }"""
+  .toggle-pills-btn:hover { text-decoration: underline; }
+  .filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .filter-chip button { background: none; border: none; color: #92400e; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
+  .filter-chip button:hover { color: #dc2626; }"""
 
     head = render_head(
         title="beestock.com.au - Australian Beekeeping Supply Price Tracker",
@@ -405,6 +409,9 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
     </div>
   </div>
 
+  <!-- Active filter chips -->
+  <div id="activeFilters" class="flex flex-wrap gap-2 mb-2" style="display:none"></div>
+
   <!-- Results -->
   <div id="results"></div>
   <div id="loadMore" class="text-center py-4 hidden">
@@ -446,6 +453,8 @@ const CATEGORY_NAMES = {json.dumps(CATEGORY_NAMES, separators=(",", ":"))};
 
 let displayCount = 50;
 let currentResults = [];
+let activeCatSlug = '';
+const defaultPillsHTML = document.getElementById('cat-pills').innerHTML;
 
 // Populate retailer filter
 const retailerSelect = document.getElementById('retailerFilter');
@@ -476,21 +485,21 @@ function search() {{
   displayCount = 50;
   const q = searchInput.value.toLowerCase().trim();
   const retailer = retailerSelect.value;
-  const category = categoryFilter.value;
   const stockOnly = inStockOnly.checked;
   const sort = sortBy.value;
 
   let results = P;
 
   if (stockOnly) results = results.filter(p => p.a);
-  if (category) results = results.filter(p => p.cat === category);
+  if (activeCatSlug) results = results.filter(p => p.cat === activeCatSlug);
+  else if (categoryFilter.value) results = results.filter(p => p.cat === categoryFilter.value);
   if (changesOnly.checked) results = results.filter(p => p.ch);
   if (saleOnly.checked) results = results.filter(p => p.sale);
   if (retailer) results = results.filter(p => p.nk === retailer);
   const depth = depthFilter.value;
   if (depth) results = results.filter(p => p.bd === depth);
 
-  if (q) {{
+  if (q && !activeCatSlug) {{
     const terms = q.split(/\\s+/);
     results = results.filter(p => {{
       const text = (p.t + ' ' + (p.brand || '') + ' ' + (CATEGORY_NAMES[p.cat] || '')).toLowerCase();
@@ -512,7 +521,6 @@ function search() {{
   }} else if (q) {{
     results.sort((a, b) => (a._score || 0) - (b._score || 0));
   }} else {{
-    // Relevance sort (no query): in-stock first, then items with changes, then alphabetic
     const relevanceScore = p => {{
       if (!p.a) return 3;
       if (p.ch === 'new' || p.ch === 'back') return 0;
@@ -528,6 +536,8 @@ function search() {{
 
   currentResults = results;
   render();
+  updateActiveFilters();
+  updatePillCounts();
 }}
 
 function render() {{
@@ -595,41 +605,154 @@ function showMore() {{
   render();
 }}
 
+// --- Active filter chips ---
+function updateActiveFilters() {{
+  const el = document.getElementById('activeFilters');
+  const chips = [];
+  if (activeCatSlug) {{
+    const name = CATEGORY_NAMES[activeCatSlug] || activeCatSlug;
+    chips.push({{label: name, action: 'category'}});
+  }} else if (searchInput.value.trim()) {{
+    chips.push({{label: '"' + searchInput.value.trim() + '"', action: 'search'}});
+  }}
+  if (retailerSelect.value) {{
+    const opt = retailerSelect.options[retailerSelect.selectedIndex];
+    const name = opt ? opt.textContent.split('(')[0].trim() : retailerSelect.value;
+    chips.push({{label: name, action: 'retailer'}});
+  }}
+  if (depthFilter.value) chips.push({{label: depthFilter.value, action: 'depth'}});
+  if (changesOnly.checked) chips.push({{label: 'Changes only', action: 'changes'}});
+  if (saleOnly.checked) chips.push({{label: 'Sale only', action: 'sale'}});
+  if (!chips.length) {{ el.style.display = 'none'; return; }}
+  el.style.display = 'flex';
+  el.innerHTML = chips.map(c =>
+    `<span class="filter-chip">${{c.label}} <button data-action="${{c.action}}" aria-label="Remove filter">&times;</button></span>`
+  ).join('');
+}}
+
+document.getElementById('activeFilters').addEventListener('click', function(e) {{
+  const btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  const action = btn.getAttribute('data-action');
+  if (action === 'category') {{
+    activeCatSlug = '';
+    categoryFilter.value = '';
+    document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+  }} else if (action === 'search') {{
+    searchInput.value = '';
+  }} else if (action === 'retailer') {{
+    retailerSelect.value = '';
+  }} else if (action === 'depth') {{
+    depthFilter.value = '';
+  }} else if (action === 'changes') {{
+    changesOnly.checked = false;
+  }} else if (action === 'sale') {{
+    saleOnly.checked = false;
+  }}
+  search();
+}});
+
+// --- Dynamic pill count updates ---
+function bindPillClicks() {{
+  document.querySelectorAll('.cat-pill[data-cat]').forEach(function(pill) {{
+    pill.addEventListener('click', function(e) {{
+      e.preventDefault();
+      const cat = this.getAttribute('data-cat');
+      const isActive = this.classList.contains('active');
+      document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+      if (isActive) {{
+        activeCatSlug = '';
+        categoryFilter.value = '';
+        searchInput.value = '';
+      }} else {{
+        activeCatSlug = cat;
+        categoryFilter.value = cat;
+        searchInput.value = '';
+        this.classList.add('active');
+      }}
+      search();
+      document.getElementById('results').scrollIntoView({{behavior: 'smooth', block: 'start'}});
+    }});
+  }});
+}}
+
+function updatePillCounts() {{
+  const stockOnly = inStockOnly.checked;
+  const retailer = retailerSelect.value;
+  const depth = depthFilter.value;
+  const changes = changesOnly.checked;
+  const sale = saleOnly.checked;
+  const hasFilter = retailer || depth || changes || sale;
+
+  // Base set: all filters EXCEPT category
+  let base = P;
+  if (stockOnly) base = base.filter(p => p.a);
+  if (retailer) base = base.filter(p => p.nk === retailer);
+  if (depth) base = base.filter(p => p.bd === depth);
+  if (changes) base = base.filter(p => p.ch);
+  if (sale) base = base.filter(p => p.sale);
+
+  const counts = {{}};
+  base.forEach(p => {{ counts[p.cat] = (counts[p.cat] || 0) + 1; }});
+
+  const strip = document.getElementById('cat-pills');
+
+  if (!hasFilter) {{
+    strip.innerHTML = defaultPillsHTML;
+    strip.querySelectorAll('.cat-pill[data-cat]').forEach(pill => {{
+      const cat = pill.getAttribute('data-cat');
+      const count = counts[cat] || 0;
+      pill.querySelector('.count').textContent = count;
+      pill.classList.toggle('dimmed', count === 0);
+      if (cat === activeCatSlug) pill.classList.add('active');
+    }});
+  }} else {{
+    const sorted = Object.entries(counts)
+      .filter(([cat]) => cat !== 'other')
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 16);
+    strip.innerHTML = sorted.map(([cat, count]) => {{
+      const name = CATEGORY_NAMES[cat] || cat;
+      const active = cat === activeCatSlug ? ' active' : '';
+      const dimmed = count === 0 ? ' dimmed' : '';
+      return `<button class="cat-pill${{active}}${{dimmed}}" data-cat="${{cat}}">${{name}} <span class="count">${{count}}</span></button>`;
+    }}).join('');
+  }}
+
+  bindPillClicks();
+
+  const btn = document.getElementById('toggleCatPills');
+  if (btn) {{
+    if (strip.scrollHeight > strip.clientHeight) {{
+      btn.style.display = 'inline';
+    }} else {{
+      btn.style.display = 'none';
+      strip.classList.remove('expanded');
+      btn.innerHTML = 'Show all &#9662;';
+    }}
+  }}
+}}
+
 // Event listeners
 searchInput.addEventListener('input', function() {{
-  // Clear active pill when typing manually
-  document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
+  activeCatSlug = '';
   categoryFilter.value = '';
+  document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
   search();
 }});
 inStockOnly.addEventListener('change', search);
 categoryFilter.addEventListener('change', function() {{
-  // Clear active pill when dropdown changes
+  activeCatSlug = '';
   document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
   search();
 }});
 changesOnly.addEventListener('change', search);
 saleOnly.addEventListener('change', search);
 retailerSelect.addEventListener('change', search);
+depthFilter.addEventListener('change', search);
 sortBy.addEventListener('change', search);
 
-// Category pill clicks
-document.querySelectorAll('.cat-pill[data-cat]').forEach(function(pill) {{
-  pill.addEventListener('click', function(e) {{
-    e.preventDefault();
-    searchInput.value = '';
-    const cat = this.getAttribute('data-cat');
-    const isActive = this.classList.contains('active');
-    document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
-    if (isActive) {{
-      categoryFilter.value = '';
-    }} else {{
-      this.classList.add('active');
-      categoryFilter.value = cat;
-    }}
-    search();
-  }});
-}});
+bindPillClicks();
 
 // Show/hide category pill toggle button based on overflow
 (function() {{
@@ -659,10 +782,12 @@ document.getElementById('results').addEventListener('click', function(e) {{
   if (catTag) {{
     e.preventDefault();
     e.stopPropagation();
+    const cat = catTag.getAttribute('data-cat');
+    activeCatSlug = cat;
+    categoryFilter.value = cat;
     searchInput.value = '';
-    categoryFilter.value = catTag.getAttribute('data-cat');
     document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
-    const pill = document.querySelector('.cat-pill[data-cat="' + catTag.getAttribute('data-cat') + '"]');
+    const pill = document.querySelector('.cat-pill[data-cat="' + cat + '"]');
     if (pill) pill.classList.add('active');
     search();
     window.scrollTo({{ top: 0, behavior: 'smooth' }});
@@ -672,6 +797,7 @@ document.getElementById('results').addEventListener('click', function(e) {{
   if (frameBadge) {{
     e.preventDefault();
     e.stopPropagation();
+    activeCatSlug = '';
     searchInput.value = frameBadge.textContent.trim();
     categoryFilter.value = '';
     document.querySelectorAll('.cat-pill.active').forEach(p => p.classList.remove('active'));
