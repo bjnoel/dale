@@ -201,14 +201,12 @@ def build_retailer_page(retailer_key: str, data: dict) -> str:
     <h2 class="text-2xl font-bold text-gray-900 mb-1">{name} {restrict_badge}</h2>
     <p class="text-gray-500 text-sm mb-2">📍 {location}{(' · ' + url_link) if url_link else ''}</p>
     <div class="mb-2">{tag_badges}</div>
-    <div>Ships to: {ship_badges}</div>
   </div>
 
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
     <div class="stat-card"><div class="number">{in_stock_count}</div><div class="label">In Stock</div></div>
     <div class="stat-card"><div class="number">{total_count}</div><div class="label">Products Tracked</div></div>
     <div class="stat-card"><div class="number">{cat_count}</div><div class="label">Categories</div></div>
-    <div class="stat-card"><div class="number">{len(ships)}</div><div class="label">States</div></div>
   </div>
 
   {f'<div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-sm text-gray-700">{description}</div>' if description else ''}
@@ -306,8 +304,7 @@ def build_index_page(retailers_data: dict, today: str) -> str:
         </div>
         <p class="text-xs text-gray-500 mb-2">📍 {location}</p>
         <div class="mb-2 flex flex-wrap gap-1">{tag_badges}</div>
-        <p class="text-xs text-gray-500 mb-1"><strong>{in_stock}</strong> in stock · {total} tracked</p>
-        <p class="text-xs text-gray-500 mb-0">Ships to: {ship_str}</p>
+        <p class="text-xs text-gray-500 mb-0"><strong>{in_stock}</strong> in stock · {total} tracked</p>
       </div>
       <div class="px-4 pb-4">
         <a href="/retailer/{key}.html" class="block text-center text-sm px-3 py-1.5 border border-yellow-600 text-yellow-700 rounded hover:bg-yellow-50 no-underline">View Retailer →</a>

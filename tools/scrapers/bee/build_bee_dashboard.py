@@ -737,7 +737,7 @@ function bindPillClicks() {{
         }}
       }}
       search();
-      document.getElementById('results').scrollIntoView({{behavior: 'smooth', block: 'start'}});
+      // Don't scroll - keep user's current position
     }});
   }});
 }}
