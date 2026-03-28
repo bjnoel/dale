@@ -140,9 +140,10 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
             if len(re.sub(r'[^a-zA-Z0-9]', '', title)) < 3:
                 continue
 
-            # Skip gift cards
+            # Skip gift cards and pickup-only listings
             title_lower = title.lower()
-            if any(kw in title_lower for kw in ("gift card", "gift voucher", "gift certificate")):
+            if any(kw in title_lower for kw in ("gift card", "gift voucher", "gift certificate",
+                                                 "pickup only", "pick up only", "pickup in store")):
                 continue
 
             # Categorise (two-level: parent + subcategory)
