@@ -194,7 +194,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
     species_breakdown = build_species_breakdown(products, species_lookup)
     species_count = len(species_breakdown)
 
-    restrict = restriction_warning(nursery_key)
+    restrict = "" if local_label else restriction_warning(nursery_key)
     tag_badges = "".join(f'<span class="badge bg-light text-dark border me-1 mb-1">{t}</span>' for t in tags)
     ship_badges = "".join(f'<span class="badge bg-secondary me-1">{s}</span>' for s in ships)
     wa_stat = "✓" if wa else "✗"
@@ -384,7 +384,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
         total = data.get("product_count", len(data.get("products", [])))
         location = data.get("location", "Australia")
 
-        restrict = restriction_warning(key)
+        restrict = "" if local_lbl else restriction_warning(key)
         restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold">{restrict}</span>' if restrict else ''
         tag_badges = " ".join(f'<span class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded">{t}</span>' for t in tags[:3])
         ship_str = ", ".join(ships)

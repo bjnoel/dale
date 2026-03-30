@@ -107,7 +107,7 @@ def build_compare_page(nurseries_data: dict, species_lookup: dict, today: str) -
             wa_cell = '<span class="text-green-700 font-semibold">Yes</span>'
         else:
             wa_cell = '<span class="text-red-600">No</span>'
-        restrict_cell = f'<span class="text-xs text-red-700">{r["restrict"]}</span>' if r["restrict"] else ""
+        restrict_cell = "" if local_lbl else (f'<span class="text-xs text-red-700">{r["restrict"]}</span>' if r["restrict"] else "")
         ship_str = local_lbl if local_lbl else (", ".join(r["ships"]) if r["ships"] else "Unknown")
         pct_bar = f'<div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-green-500 h-1.5 rounded-full" style="width:{r["pct"]}%"></div></div>'
         row_bg = "bg-white" if i % 2 == 0 else "bg-gray-50"

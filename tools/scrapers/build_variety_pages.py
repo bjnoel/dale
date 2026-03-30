@@ -107,7 +107,7 @@ def load_all_products(data_dir: Path) -> list[dict]:
             data = json.load(fp)
         nursery_key = nursery_dir.name
         nursery_name = NURSERY_NAMES.get(nursery_key, nursery_key)
-        restrict = restriction_warning(nursery_key)
+        restrict = "" if delivery_label(nursery_key) else restriction_warning(nursery_key)
 
         raw_products = data.get("products", [])
         for p in raw_products:

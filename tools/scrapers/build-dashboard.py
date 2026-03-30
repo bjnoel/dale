@@ -1140,16 +1140,17 @@ function render() {{
     const stockBadge = p.a
       ? `<span class="stock-badge in-stock">${{p.s ? p.s + ' left' : 'In stock'}}</span>`
       : '<span class="stock-badge out-stock">Out of stock</span>';
-    // Show shipping restriction warnings for WA/NT/TAS
+    // Show shipping restriction warnings for WA/NT/TAS (skip for local-delivery nurseries)
+    const localArea = LOCAL_ONLY[p.nk];
     const nShips = SHIPS_TO[p.nk] || [];
     const restricted = ['WA','NT','TAS'].filter(s => !nShips.includes(s));
     const _st = stateFilter.value;
-    const shipsBadge = (_st && !nShips.includes(_st))
-      ? `<span class="stock-badge restrict-badge">No ${{_st}}</span>`
-      : (restricted.length > 0 && restricted.length < 3 && !_st)
-        ? `<span class="stock-badge restrict-badge">No ${{restricted.join('/')}}</span>`
-        : '';
-    const localArea = LOCAL_ONLY[p.nk];
+    const shipsBadge = localArea ? ''
+      : (_st && !nShips.includes(_st))
+        ? `<span class="stock-badge restrict-badge">No ${{_st}}</span>`
+        : (restricted.length > 0 && restricted.length < 3 && !_st)
+          ? `<span class="stock-badge restrict-badge">No ${{restricted.join('/')}}</span>`
+          : '';
     const localBadge = localArea ? `<span class="stock-badge local-badge">${{localArea}} only</span>` : '';
     const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
     const latinName = p.ln ? `<span class="text-xs text-gray-400 italic ml-1">${{p.ln}}</span>` : '';
