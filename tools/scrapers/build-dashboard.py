@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from daily_digest import _variant_key
-from shipping import SHIPPING_MAP, NURSERY_NAMES
+from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS
 
 
@@ -681,6 +681,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             "in_stock": sum(1 for p in nursery_added if p.get("a")),
             "scraped_at": scraped_at,
             "st": SHIPPING_MAP.get(nursery_name, []),
+            "lo": LOCAL_DELIVERY.get(nursery_name, {}).get("area", ""),
             "ft": nursery_name in FEATURED_NURSERIES,
         })
 
@@ -760,6 +761,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
     extra_style = """\
   .stock-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }
   .restrict-badge { background: #fee2e2; color: #991b1b; font-size: 0.65rem; }
+  .local-badge { background: #fef3c7; color: #92400e; font-size: 0.65rem; }
   .sale-badge { background: #fee2e2; color: #991b1b; }
   .new-badge { background: #dbeafe; color: #1e40af; }
   .back-badge { background: #d1fae5; color: #065f46; font-weight: 600; }
@@ -934,7 +936,8 @@ let currentResults = [];
 
 // Build state→nursery shipping lookup
 const SHIPS_TO = {{}};
-N.forEach(n => {{ SHIPS_TO[n.key] = n.st || []; }});
+const LOCAL_ONLY = {{}};
+N.forEach(n => {{ SHIPS_TO[n.key] = n.st || []; if (n.lo) LOCAL_ONLY[n.key] = n.lo; }});
 
 // Populate nursery filter (featured nurseries first, then alphabetical)
 const nurserySelect = document.getElementById('nurseryFilter');
@@ -1146,6 +1149,8 @@ function render() {{
       : (restricted.length > 0 && restricted.length < 3 && !_st)
         ? `<span class="stock-badge restrict-badge">No ${{restricted.join('/')}}</span>`
         : '';
+    const localArea = LOCAL_ONLY[p.nk];
+    const localBadge = localArea ? `<span class="stock-badge local-badge">${{localArea}} only</span>` : '';
     const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
     const latinName = p.ln ? `<span class="text-xs text-gray-400 italic ml-1">${{p.ln}}</span>` : '';
     const cultivar = p.cv ? ` '${{p.cv}}'` : '';
@@ -1169,7 +1174,7 @@ function render() {{
         <div class="font-medium text-sm">${{p.t}}${{latinName}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
           <span class="${{nurseryTagClass}}" data-nk="${{p.nk}}">${{p.n}}</span>
-          ${{featuredBadge}} ${{stockBadge}} ${{shipsBadge}} ${{saleBadge}} ${{changeBadge}}
+          ${{featuredBadge}} ${{stockBadge}} ${{shipsBadge}} ${{localBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
       <div class="text-right flex-shrink-0">

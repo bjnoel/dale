@@ -12,7 +12,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
+from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label, restriction_warning
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -184,6 +184,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
     tags = meta.get("tags", [])
     description = meta.get("description", "")
     ships = sorted(SHIPPING_MAP.get(nursery_key, []))
+    local_label = delivery_label(nursery_key)
     wa = ships_to_wa(nursery_key)
 
     products = data.get("products", [])
@@ -278,10 +279,10 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
 
     head = render_head(
         title=f"{name} — Stock, Prices &amp; Shipping | treestock.com.au",
-        description=f"Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. Ships to: {', '.join(ships)}.",
+        description=f"Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. {('Delivers to: ' + local_label + '.') if local_label else ('Ships to: ' + ', '.join(ships) + '.')}",
         canonical_url=f"https://treestock.com.au/nursery/{nursery_key}.html",
         og_title=f"{name} — Stock, Prices &amp; Shipping",
-        og_description=f"Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. Ships to: {', '.join(ships)}.",
+        og_description=f"Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. {('Delivers to: ' + local_label + '.') if local_label else ('Ships to: ' + ', '.join(ships) + '.')}",
         og_type="website",
         extra_style=extra_style,
     )
@@ -302,7 +303,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
     <h2 class="text-2xl font-bold text-gray-900 mb-1">{name} {restrict_badge}</h2>
     <p class="text-gray-500 text-sm mb-2">📍 {location}{(' · ' + url_link) if url_link else ''}</p>
     <div class="mb-2">{tag_badges_tw}</div>
-    <div>Ships to: {ship_badges_tw}</div>
+    <div>{'Delivers to: <span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded font-semibold">' + local_label + '</span>' if local_label else 'Ships to: ' + ship_badges_tw}</div>
   </div>
 
   <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
@@ -377,6 +378,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
         name = NURSERY_NAMES.get(key, data.get("nursery_name", key))
         tags = meta.get("tags", [])
         ships = sorted(SHIPPING_MAP.get(key, []))
+        local_lbl = delivery_label(key)
         wa = ships_to_wa(key)
         in_stock = data.get("in_stock_count", 0)
         total = data.get("product_count", len(data.get("products", [])))
@@ -399,7 +401,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
         <p class="text-xs text-gray-500 mb-2">📍 {location}</p>
         <div class="mb-2 flex flex-wrap gap-1">{tag_badges}</div>
         <p class="text-xs text-gray-500 mb-1"><strong>{in_stock}</strong> in stock · {total} tracked</p>
-        <p class="text-xs text-gray-500 mb-0">Ships to: {ship_str}</p>
+        <p class="text-xs text-gray-500 mb-0">{'Delivers to: ' + local_lbl if local_lbl else 'Ships to: ' + ship_str}</p>
       </div>
       <div class="px-4 pb-4">
         <a href="/nursery/{key}.html" class="block text-center text-sm px-3 py-1.5 border border-green-600 text-green-700 rounded hover:bg-green-50 no-underline">View Nursery →</a>

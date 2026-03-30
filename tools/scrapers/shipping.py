@@ -52,6 +52,22 @@ NURSERY_NAMES = {
 }
 
 
+# Nurseries that only deliver locally, not statewide.
+# Absent nurseries are assumed to ship statewide within their SHIPPING_MAP states.
+LOCAL_DELIVERY = {
+    "primal-fruits":        {"area": "Perth metro", "state": "WA"},
+    "guildford":            {"area": "Perth metro", "state": "WA"},
+    "all-season-plants-wa": {"area": "Perth (pickup)", "state": "WA"},
+    "perth-mobile-nursery": {"area": "Perth metro", "state": "WA"},
+}
+
+
+def delivery_label(nursery_key: str) -> str:
+    """Return 'Perth metro only' for local nurseries, or '' for statewide shippers."""
+    local = LOCAL_DELIVERY.get(nursery_key)
+    return f"{local['area']} only" if local else ""
+
+
 def nursery_ships_to(nursery_key: str, state: str) -> bool:
     """Return True if this nursery ships to the given state code (e.g. 'WA')."""
     return state in SHIPPING_MAP.get(nursery_key, [])

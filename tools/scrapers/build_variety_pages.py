@@ -22,7 +22,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from collections import defaultdict
 
-from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
+from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 NURSERY_URLS = {
@@ -181,7 +181,8 @@ def build_variety_page(slug: str, data: dict) -> str:
             else '<span class="text-red-400 text-sm">Out of stock</span>'
         )
         restrict_note = f'<span class="text-xs text-red-600">{p["restrict"]}</span>' if p["restrict"] else ''
-        states = ", ".join(p["ships_states"]) if p["ships_states"] else "—"
+        local_lbl = delivery_label(p["nursery_key"])
+        states = local_lbl if local_lbl else (", ".join(p["ships_states"]) if p["ships_states"] else "—")
         nursery_url = NURSERY_URLS.get(p["nursery_key"], "#")
         product_link = p["url"] or nursery_url
         rows += f"""

@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
-from shipping import SHIPPING_MAP
+from shipping import SHIPPING_MAP, LOCAL_DELIVERY, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -186,7 +186,8 @@ def build_species_page(species: dict, products: list[dict]) -> str:
 
     nursery_rows = ""
     for nk, n in sorted(nurseries_seen.items(), key=lambda x: -x[1]["in_stock"]):
-        ships = ", ".join(n["ships_to"]) if n["ships_to"] else "Local only"
+        local_lbl = delivery_label(nk)
+        ships = local_lbl if local_lbl else (", ".join(n["ships_to"]) if n["ships_to"] else "Local only")
         in_s = n["in_stock"]
         total = n["total"]
         avail_text = f"{in_s} in stock" if in_s > 0 else "out of stock"

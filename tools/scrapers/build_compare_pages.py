@@ -19,7 +19,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from collections import defaultdict
 
-from shipping import SHIPPING_MAP, NURSERY_NAMES
+from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -207,7 +207,8 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
             title_link = '<span class="text-gray-400 text-xs">Out of stock</span>'
             avail_text = '<span class="text-gray-400">out of stock</span>'
 
-        ships = ", ".join(n["ships_to"]) if n["ships_to"] else "Local only"
+        local_lbl = delivery_label(nk)
+        ships = local_lbl if local_lbl else (", ".join(n["ships_to"]) if n["ships_to"] else "Local only")
         nursery_rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50">
         <td class="py-3 pr-3 font-medium text-sm">{n['name']}</td>
