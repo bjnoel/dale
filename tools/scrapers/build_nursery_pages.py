@@ -241,7 +241,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
         scraped_at_fmt = "recently"
 
     restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold ml-2">{restrict}</span>' if restrict else ''
-    tag_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded mr-1 mb-1">{t}</span>' for t in tags)
+    tag_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded mr-1 mb-1 whitespace-nowrap">{t}</span>' for t in tags)
     ship_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-600 text-white rounded mr-1">{s}</span>' for s in ships)
 
     # Rebuild species rows for Tailwind
@@ -302,7 +302,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
   <div class="mb-6">
     <h2 class="text-2xl font-bold text-gray-900 mb-1">{name} {restrict_badge}</h2>
     <p class="text-gray-500 text-sm mb-2">📍 {location}{(' · ' + url_link) if url_link else ''}</p>
-    <div class="mb-2">{tag_badges_tw}</div>
+    <div class="mb-2 flex flex-wrap gap-1">{tag_badges_tw}</div>
     <div class="text-sm text-gray-600">{'Delivers to:'  if local_label else 'Ships to:'}</div>
     <div class="mt-1">{'<span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded font-semibold">' + local_label + '</span>' if local_label else ship_badges_tw}</div>
   </div>
