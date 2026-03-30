@@ -303,7 +303,8 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
     <h2 class="text-2xl font-bold text-gray-900 mb-1">{name} {restrict_badge}</h2>
     <p class="text-gray-500 text-sm mb-2">📍 {location}{(' · ' + url_link) if url_link else ''}</p>
     <div class="mb-2">{tag_badges_tw}</div>
-    <div>{'Delivers to: <span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded font-semibold">' + local_label + '</span>' if local_label else 'Ships to: ' + ship_badges_tw}</div>
+    <div class="text-sm text-gray-600">{'Delivers to:'  if local_label else 'Ships to:'}</div>
+    <div class="mt-1">{'<span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded font-semibold">' + local_label + '</span>' if local_label else ship_badges_tw}</div>
   </div>
 
   <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
