@@ -147,6 +147,35 @@ def build_species_description(species: dict) -> str:
   </section>"""
 
 
+STATE_SLUGS = {
+    "WA": "western-australia",
+    "QLD": "queensland",
+    "NSW": "new-south-wales",
+    "VIC": "victoria",
+}
+STATE_FULL_NAMES = {
+    "WA": "Western Australia",
+    "QLD": "Queensland",
+    "NSW": "New South Wales",
+    "VIC": "Victoria",
+}
+MIN_COMBO_PRODUCTS = 3
+
+
+def compute_state_links(species_slug: str, products: list[dict]) -> dict[str, str]:
+    """Return state -> URL for states with enough in-stock products for this species."""
+    links = {}
+    for state, state_slug in STATE_SLUGS.items():
+        state_nurseries = {k for k, v in SHIPPING_MAP.items() if state in v}
+        count = sum(
+            1 for p in products
+            if p["available"] and p["nursery_key"] in state_nurseries
+        )
+        if count >= MIN_COMBO_PRODUCTS:
+            links[state] = f"/buy-{species_slug}-trees-{state_slug}.html"
+    return links
+
+
 def build_species_page(species: dict, products: list[dict]) -> str:
     """Generate HTML for a single species page."""
     name = species["common_name"]
@@ -223,6 +252,23 @@ def build_species_page(species: dict, products: list[dict]) -> str:
     nursery_count = len(nurseries_seen)
     total_nurseries = len(SHIPPING_MAP)
 
+    # State combo links (buy-[species]-trees-[state].html)
+    state_links = compute_state_links(slug, products)
+    state_links_html = ""
+    if state_links:
+        link_items = "".join(
+            f'<a href="{url}" class="inline-block text-sm text-green-700 hover:underline mr-4 mb-1">'
+            f'Buy {name} trees in {STATE_FULL_NAMES[state]} &rarr;</a>'
+            for state, url in state_links.items()
+        )
+        state_links_html = f"""
+  <!-- State combo links -->
+  <section class="mb-6">
+    <h3 class="text-base font-semibold text-gray-700 mb-2">Buy {name} trees by state</h3>
+    <div class="flex flex-wrap gap-y-1">{link_items}</div>
+  </section>
+"""
+
     head = render_head(
         title=f"Buy {name} Tree Online Australia — treestock.com.au",
         description=f"Find {name} ({latin}) trees for sale across {nursery_count} Australian nurseries. {in_stock_count} varieties in stock. Price from {price_range}. Compare prices and availability.",
@@ -284,6 +330,8 @@ def build_species_page(species: dict, products: list[dict]) -> str:
   </section>
 
   {build_species_description(species)}
+
+  {state_links_html}
 
   <!-- All Varieties -->
   <section class="mb-8">

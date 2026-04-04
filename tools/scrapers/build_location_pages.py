@@ -264,7 +264,7 @@ def get_nursery_stats(products: list[dict], state: str) -> list[dict]:
     return stats
 
 
-def build_page(state: str, products: list[dict], species_lookup: dict, today_str: str) -> str:
+def build_page(state: str, products: list[dict], species_lookup: dict, today_str: str, output_dir: Path = None) -> str:
     state_name = STATE_NAMES[state]
     state_abbr = state
     intro = STATE_INTROS[state]
@@ -295,6 +295,24 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
 
     shown = state_products[:60]
     shown_count = len(shown)
+
+    # Species combo links: count in-stock products per species for this state, build links
+    from collections import Counter
+    species_counts: Counter = Counter()
+    species_names: dict[str, str] = {}
+    for p in state_products:
+        sp = match_title_to_species(p["title"], species_lookup)
+        if sp:
+            sp_slug = sp["common_name"].lower().replace(" ", "-").replace("'", "")
+            species_counts[sp_slug] += 1
+            species_names[sp_slug] = sp["common_name"]
+    state_slug_str = {"WA": "western-australia", "QLD": "queensland", "NSW": "new-south-wales", "VIC": "victoria"}[state]
+    MIN_COMBO = 3
+    species_combo_links = [
+        (slug, species_names[slug], count)
+        for slug, count in species_counts.most_common()
+        if count >= MIN_COMBO
+    ]
 
     # Cross-state links
     cross_links = CROSS_LINKS[state]
@@ -381,6 +399,29 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     except Exception:
         date_display = today_str
 
+    # Species combo links section — only include links to pages that actually exist
+    species_combo_section_html = ""
+    valid_combo_links = [
+        (sp_slug, sp_name, count)
+        for sp_slug, sp_name, count in species_combo_links
+        if output_dir is None or (output_dir / f"buy-{sp_slug}-trees-{state_slug_str}.html").exists()
+    ]
+    if valid_combo_links:
+        link_items = "".join(
+            f'<a href="/buy-{sp_slug}-trees-{state_slug_str}.html" '
+            f'class="inline-block px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm '
+            f'text-green-700 hover:border-green-400 hover:bg-green-50 whitespace-nowrap">'
+            f'{sp_name} ({count})</a>\n'
+            for sp_slug, sp_name, count in valid_combo_links
+        )
+        species_combo_section_html = f"""
+  <!-- Species combo links -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">Browse by species in {state_name}</h2>
+    <div class="flex flex-wrap gap-2">{link_items}</div>
+  </section>
+"""
+
     slug = state.lower()
     other_states = [s for s in STATES if s != state]
     other_slugs_html = " &middot; ".join(
@@ -454,7 +495,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     </p>
   </section>
 
-{local_section_html}  <!-- Subscribe CTA -->
+{local_section_html}{species_combo_section_html}  <!-- Subscribe CTA -->
   <section class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
     <h2 class="text-lg font-semibold text-green-900 mb-2">Get daily stock alerts for {state_name}</h2>
     <p class="text-sm text-green-800 mb-4">Free daily email when rare varieties come back in stock or prices change. Unsubscribe anytime.</p>
@@ -506,7 +547,7 @@ def main():
 
     for state in STATES:
         print(f"\nBuilding {state} page...")
-        html = build_page(state, products, species_lookup, today)
+        html = build_page(state, products, species_lookup, today, output_dir)
         out_file = output_dir / f"buy-fruit-trees-{state.lower()}.html"
         out_file.write_text(html)
 

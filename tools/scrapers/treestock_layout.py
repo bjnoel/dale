@@ -187,6 +187,16 @@ def render_footer(max_width: str = "max-w-3xl", extra_text: str = "") -> str:
 
     nav_line = " &middot;\n    ".join(links)
 
+    state_links = (
+        '<a href="/buy-fruit-trees-wa.html" class="hover:text-gray-600">Buy in WA</a>'
+        ' &middot; '
+        '<a href="/buy-fruit-trees-qld.html" class="hover:text-gray-600">Buy in QLD</a>'
+        ' &middot; '
+        '<a href="/buy-fruit-trees-nsw.html" class="hover:text-gray-600">Buy in NSW</a>'
+        ' &middot; '
+        '<a href="/buy-fruit-trees-vic.html" class="hover:text-gray-600">Buy in VIC</a>'
+    )
+
     extra = ""
     if extra_text:
         extra = f"\n  <p class=\"mt-2\">{extra_text}</p>"
@@ -195,6 +205,7 @@ def render_footer(max_width: str = "max-w-3xl", extra_text: str = "") -> str:
 <footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
   <div class="{max_width} mx-auto px-4">
     {nav_line}
+    <p class="mt-2">{state_links}</p>
     <p class="mt-2">Data updated daily. Prices and availability may change.</p>
     <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>{extra}
   </div>

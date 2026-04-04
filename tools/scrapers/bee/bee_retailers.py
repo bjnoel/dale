@@ -32,6 +32,24 @@ RETAILERS = {
         "platform": "shopify",
         "location": "Byron Bay, NSW",
     },
+    "beekeeping-gear": {
+        "name": "Beekeeping Gear",
+        "domain": "beekeepinggear.com.au",
+        "platform": "shopify",
+        "location": "Australia",
+    },
+    "the-urban-beehive": {
+        "name": "The Urban Beehive",
+        "domain": "theurbanbeehive.com.au",
+        "platform": "shopify",
+        "location": "Australia",
+    },
+    "becs-beehive": {
+        "name": "Bec's BeeHive",
+        "domain": "www.becsbeehive.com.au",
+        "platform": "shopify",
+        "location": "Gembrook, VIC",
+    },
 }
 
 # Shipping: most beekeeping retailers ship nationally (no live quarantine issues
@@ -41,6 +59,9 @@ SHIPPING_MAP = {
     "the-bee-store": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
     "buzzbee": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
     "flow-hive": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
+    "beekeeping-gear": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
+    "the-urban-beehive": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
+    "becs-beehive": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
 }
 
 RETAILER_NAMES = {k: v["name"] for k, v in RETAILERS.items()}
