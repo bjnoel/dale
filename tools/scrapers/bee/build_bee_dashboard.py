@@ -65,6 +65,74 @@ def _variant_key(product_url: str, variant: dict) -> str:
     return f"{base}|v:{vtitle}"
 
 
+def load_price_history(data_dir: Path) -> dict[str, list[float | None]]:
+    """Load all daily snapshots and build price history per product URL.
+
+    Returns {product_url: [price_day0, price_day1, ...]} (chronological order).
+    Only includes products with at least 2 distinct prices (i.e., a price change occurred).
+    Prices are the cheapest available variant for that day, or None if not found.
+    """
+    # Collect all dated snapshots across all retailers
+    # date_data[date_str][product_url] = min_available_price
+    date_data: dict[str, dict[str, float | None]] = {}
+
+    for retailer_dir in sorted(data_dir.iterdir()):
+        if not retailer_dir.is_dir():
+            continue
+        snapshots = sorted(
+            f for f in retailer_dir.glob("*.json")
+            if re.match(r"\d{4}-\d{2}-\d{2}\.json$", f.name)
+        )
+        for snapshot_file in snapshots:
+            date_str = snapshot_file.stem
+            if date_str not in date_data:
+                date_data[date_str] = {}
+            with open(snapshot_file) as f:
+                try:
+                    data = json.load(f)
+                except json.JSONDecodeError:
+                    continue
+            for p in data.get("products", []):
+                url = p.get("url", "")
+                if not url:
+                    continue
+                variants = p.get("variants", [])
+                if variants:
+                    avail_prices = [
+                        float(v["price"]) for v in variants
+                        if v.get("available") and v.get("price")
+                    ]
+                    price = min(avail_prices) if avail_prices else None
+                else:
+                    raw = p.get("min_price") or p.get("price")
+                    price = float(raw) if raw else None
+                # Keep cheapest available price if multiple snapshots for same URL
+                if url not in date_data[date_str] or (
+                    price and (date_data[date_str][url] is None or price < date_data[date_str][url])
+                ):
+                    date_data[date_str][url] = price
+
+    if not date_data:
+        return {}
+
+    all_dates = sorted(date_data.keys())
+
+    # Collect all known URLs
+    all_urls: set[str] = set()
+    for day_data in date_data.values():
+        all_urls.update(day_data.keys())
+
+    # Build history per URL, only for URLs with 2+ distinct prices
+    history: dict[str, list[float | None]] = {}
+    for url in all_urls:
+        prices = [date_data[d].get(url) for d in all_dates]
+        distinct = {p for p in prices if p is not None}
+        if len(distinct) >= 2:
+            history[url] = prices
+
+    return history
+
+
 def load_previous_snapshot(retailer_dir: Path) -> dict:
     """Load the second-most-recent snapshot for variant-level price comparison."""
     snapshots = sorted(
@@ -98,11 +166,13 @@ def load_previous_snapshot(retailer_dir: Path) -> dict:
     return lookup
 
 
-def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
+def load_retailer_data(data_dir: Path, price_history: dict[str, list] | None = None) -> tuple[list[dict], list[dict], dict]:
     """Load latest.json from each retailer subdirectory and normalize products.
 
     Returns (products, retailers_loaded, category_counts).
     """
+    if price_history is None:
+        price_history = {}
     products = []
     retailers_loaded = []
     category_counts: dict[str, int] = {}
@@ -259,6 +329,13 @@ def load_retailer_data(data_dir: Path) -> tuple[list[dict], list[dict], dict]:
                         elif not available and prev_avail:
                             product_data["ch"] = "gone"
 
+            # Attach price history if this product has one
+            product_url = p.get("url", "")
+            if product_url and product_url in price_history:
+                ph = price_history[product_url]
+                # Round to 2dp, keep None as null
+                product_data["ph"] = [round(v, 2) if v is not None else None for v in ph]
+
             products.append(product_data)
 
         retailer_added = products[products_before:]
@@ -334,6 +411,8 @@ def build_html(products: list[dict], retailers: list[dict], category_counts: dic
   .price-up { color: #dc2626; }
   .in-stock { background: #d1fae5; color: #065f46; }
   .out-stock { background: #f3f4f6; color: #6b7280; }
+  .sparkline { display: inline-block; vertical-align: middle; cursor: default; }
+  .sparkline-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
   #results { min-height: 200px; }
   .product-row { border-bottom: 1px solid #f3f4f6; }
   .product-row:hover { background: #f9fafb; }
@@ -607,6 +686,35 @@ function updateRetailerCounts() {{
   }});
 }}
 
+function buildSparkline(ph) {{
+  // Build a 60x20 SVG sparkline from a price history array (may contain nulls).
+  // Returns an SVG string, or '' if not enough data.
+  const pts = ph.filter(v => v !== null);
+  if (pts.length < 2) return '';
+  const w = 60, h = 20, pad = 1;
+  const minV = Math.min(...pts), maxV = Math.max(...pts);
+  const range = maxV - minV || 1;
+  // Map data indices to x, y
+  const xStep = (w - pad * 2) / (ph.length - 1);
+  const points = [];
+  ph.forEach((v, i) => {{
+    if (v !== null) {{
+      const x = pad + i * xStep;
+      const y = pad + (h - pad * 2) * (1 - (v - minV) / range);
+      points.push(`${{x.toFixed(1)}},${{y.toFixed(1)}}`);
+    }}
+  }});
+  if (points.length < 2) return '';
+  // Color: green if last value <= first non-null, red if higher
+  const firstVal = pts[0], lastVal = pts[pts.length - 1];
+  const color = lastVal <= firstVal ? '#059669' : '#dc2626';
+  const polyline = `<polyline points="${{points.join(' ')}}" fill="none" stroke="${{color}}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  const loLabel = `${{minV.toFixed(0)}}`;
+  const hiLabel = `${{maxV.toFixed(0)}}`;
+  const tooltip = `${{loLabel}} - ${{hiLabel}} (${{ph.length}} days)`;
+  return `<svg class="sparkline" width="${{w}}" height="${{h}}" viewBox="0 0 ${{w}} ${{h}}" title="${{tooltip}}">${{polyline}}</svg>`;
+}}
+
 function render() {{
   const results = currentResults;
   const showing = results.slice(0, displayCount);
@@ -645,6 +753,7 @@ function render() {{
     if (p.ch === 'down' && p.pp) priceInfo = `<span class="price-down">${{minPrice}}</span> <span class="text-xs text-gray-400 line-through">${{('$' + p.pp.toFixed(2))}}</span>`;
     else if (p.ch === 'up' && p.pp) priceInfo = `<span class="price-up">${{minPrice}}</span> <span class="text-xs text-gray-400">was ${{('$' + p.pp.toFixed(2))}}</span>`;
 
+    const sparkline = p.ph ? buildSparkline(p.ph) : '';
     const utm = p.u ? (p.u.includes('?') ? '&' : '?') + 'utm_source=beestock&utm_medium=referral' : '';
     return `<a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row flex items-center gap-3 py-3 px-2 block">
       <div class="flex-1 min-w-0">
@@ -654,8 +763,9 @@ function render() {{
           ${{catBadge}} ${{frameBadge}} ${{depthBadge}} ${{stockBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
-      <div class="text-right flex-shrink-0">
+      <div class="text-right flex-shrink-0 sparkline-wrap">
         <div class="font-bold text-sm">${{priceInfo}}</div>
+        ${{sparkline}}
       </div>
     </a>`;
   }}).join('');
@@ -1007,9 +1117,14 @@ def main():
         print(f"Error: {data_dir} does not exist")
         sys.exit(1)
 
+    print(f"Loading price history from {data_dir}...")
+    price_history = load_price_history(data_dir)
+    print(f"  {len(price_history)} products with price change history")
+
     print(f"Loading retailer data from {data_dir}...")
-    products, retailers, category_counts = load_retailer_data(data_dir)
-    print(f"Loaded {len(products)} products from {len(retailers)} retailers")
+    products, retailers, category_counts = load_retailer_data(data_dir, price_history)
+    products_with_history = sum(1 for p in products if "ph" in p)
+    print(f"Loaded {len(products)} products from {len(retailers)} retailers ({products_with_history} with price history)")
 
     for r in retailers:
         print(f"  {r['name']}: {r['count']} products ({r['in_stock']} in stock)")

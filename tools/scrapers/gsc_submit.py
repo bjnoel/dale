@@ -7,6 +7,8 @@ Usage:
     python3 gsc_submit.py                          # Submit/refresh sitemap
     python3 gsc_submit.py --list                   # List submitted sitemaps
     python3 gsc_submit.py --check-url <url>        # Check if URL is indexed
+    python3 gsc_submit.py --bulk-check             # Check all new content pages
+    python3 gsc_submit.py --bulk-check --urls-file FILE  # Check URLs from file (one per line)
 
 Authentication: gsc-oauth-credentials.json (has refresh_token, no interactive auth needed)
 Quota project: dale-490702 (required for GSC API calls)
@@ -14,6 +16,8 @@ Quota project: dale-490702 (required for GSC API calls)
 
 import argparse
 import json
+import os
+import time
 import requests
 from urllib.parse import quote
 
@@ -85,9 +89,8 @@ def list_sitemaps(creds, project_id):
         print(f"Error {resp.status_code}: {resp.text[:300]}")
 
 
-def check_url(creds, project_id, page_url):
+def check_url(creds, project_id, page_url, verbose=True):
     """Use URL Inspection API to check indexing status of a URL."""
-    # URL Inspection API endpoint
     url = "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect"
     body = {
         "inspectionUrl": page_url,
@@ -102,18 +105,110 @@ def check_url(creds, project_id, page_url):
         coverage = index_status.get("coverageState", "unknown")
         verdict = index_status.get("verdict", "unknown")
         crawled = index_status.get("lastCrawlTime", "never")
-        print(f"URL: {page_url}")
-        print(f"  Verdict: {verdict}")
-        print(f"  Coverage: {coverage}")
-        print(f"  Last crawled: {crawled}")
+        if verbose:
+            print(f"URL: {page_url}")
+            print(f"  Verdict: {verdict}")
+            print(f"  Coverage: {coverage}")
+            print(f"  Last crawled: {crawled}")
+        return {"url": page_url, "verdict": verdict, "coverage": coverage, "crawled": crawled}
     else:
-        print(f"Error {resp.status_code}: {resp.text[:300]}")
+        if verbose:
+            print(f"Error {resp.status_code}: {resp.text[:300]}")
+        return {"url": page_url, "verdict": "ERROR", "coverage": str(resp.status_code), "crawled": "never"}
+
+
+DASHBOARD_DIR = "/opt/dale/dashboard"
+BASE_URL = "https://treestock.com.au"
+
+
+def discover_new_content_pages():
+    """Auto-discover new SEO content pages from the dashboard directory."""
+    pages = []
+
+    if not os.path.isdir(DASHBOARD_DIR):
+        return NEW_CONTENT_PAGES_FALLBACK
+
+    # All species+state combo pages
+    for fname in sorted(os.listdir(DASHBOARD_DIR)):
+        if fname.startswith("buy-") and fname.endswith(".html"):
+            pages.append(f"{BASE_URL}/{fname}")
+
+    # Special content pages
+    for fname in ["companion-planting-guide.html", "when-to-plant.html",
+                  "finger-lime-guide.html", "bare-root-2026.html"]:
+        path = os.path.join(DASHBOARD_DIR, fname)
+        if os.path.exists(path):
+            pages.append(f"{BASE_URL}/{fname}")
+
+    return pages
+
+
+# Fallback list if dashboard dir not accessible
+NEW_CONTENT_PAGES_FALLBACK = [
+    "https://treestock.com.au/companion-planting-guide.html",
+    "https://treestock.com.au/buy-fruit-trees-wa.html",
+    "https://treestock.com.au/buy-fruit-trees-qld.html",
+    "https://treestock.com.au/buy-fruit-trees-nsw.html",
+    "https://treestock.com.au/buy-fruit-trees-vic.html",
+]
+
+
+def bulk_check_urls(creds, project_id, urls, delay=0.5):
+    """Check indexing status of multiple URLs, return summary."""
+    results = []
+    indexed = []
+    not_indexed = []
+    errors = []
+
+    print(f"Checking {len(urls)} URLs (delay={delay}s between requests)...")
+    print()
+
+    for i, url in enumerate(urls, 1):
+        result = check_url(creds, project_id, url, verbose=False)
+        results.append(result)
+
+        verdict = result["verdict"]
+        coverage = result["coverage"]
+
+        if verdict == "PASS":
+            indexed.append(url)
+            status = "INDEXED"
+        elif verdict == "ERROR" or "Error" in coverage:
+            errors.append(url)
+            status = f"ERROR ({coverage})"
+        else:
+            not_indexed.append(url)
+            status = f"NOT INDEXED ({coverage})"
+
+        print(f"[{i:3d}/{len(urls)}] {status}: {url.replace('https://treestock.com.au/', '')}")
+
+        if i < len(urls):
+            time.sleep(delay)
+
+    print()
+    print("=" * 60)
+    print(f"SUMMARY: {len(indexed)} indexed, {len(not_indexed)} not indexed, {len(errors)} errors")
+    print("=" * 60)
+
+    if not_indexed:
+        print(f"\nNot indexed ({len(not_indexed)} pages):")
+        for url in not_indexed:
+            print(f"  {url}")
+
+    if errors:
+        print(f"\nErrors ({len(errors)}):")
+        for url in errors:
+            print(f"  {url}")
+
+    return results
 
 
 def main():
     parser = argparse.ArgumentParser(description="GSC URL/Sitemap submission tool")
     parser.add_argument("--list", action="store_true", help="List submitted sitemaps")
     parser.add_argument("--check-url", metavar="URL", help="Check indexing status of a URL")
+    parser.add_argument("--bulk-check", action="store_true", help="Check all new content pages")
+    parser.add_argument("--urls-file", metavar="FILE", help="File with URLs to check (one per line)")
     parser.add_argument("--sitemap", metavar="URL", default=SITEMAP_URL, help="Sitemap URL to submit")
     args = parser.parse_args()
 
@@ -124,6 +219,14 @@ def main():
         list_sitemaps(creds, project_id)
     elif args.check_url:
         check_url(creds, project_id, args.check_url)
+    elif args.bulk_check:
+        if args.urls_file:
+            with open(args.urls_file) as f:
+                urls = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+        else:
+            urls = discover_new_content_pages()
+            print(f"Discovered {len(urls)} content pages from {DASHBOARD_DIR}")
+        bulk_check_urls(creds, project_id, urls)
     else:
         submit_sitemap(creds, project_id, args.sitemap)
 

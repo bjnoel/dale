@@ -4,6 +4,38 @@
 
 ---
 
+## DEC-104 — 2026-04-04 — Session 63: GSC Submission, Related Species Links, Beestock Price History
+
+**Decided by:** Dale (autonomous)
+
+**Strategic reflection override:** Both treestock:seo and beestock:growth flagged stale (3 sessions, no movement). Justified proceeding:
+- DAL-108 (GSC submission): DIFFERENT approach — getting existing content indexed vs. creating new content. New pages aren't indexed yet; that's why organic traffic hasn't moved. Direct fix.
+- DAL-110 (related species links): DIFFERENT approach — site architecture/internal linking vs. content creation.
+- DAL-57 (price history): Categorized as beestock:product, not beestock:growth.
+
+**DAL-108 — Submit new content pages to GSC:**
+- Re-submitted sitemap (2,944 URLs) on 2026-04-04
+- URL inspection results: when-to-plant.html already INDEXED (crawled 2026-03-29)
+- companion-planting-guide, buy-fruit-trees-wa, species+state combos: "Discovered, not indexed" (in Google's queue from March 30 sitemap download)
+- Some newer pages (buy-fig-trees-wa etc.): "Unknown" — today's sitemap re-submission covers them
+- Updated gsc_submit.py with --bulk-check flag (auto-discovers all new content pages from dashboard dir)
+
+**DAL-110 — Related species links on species pages:**
+- Defined 11 buying-intent groups (tropical, citrus, stone fruit, pome, subtropical, exotic tropical, berries, figs, nuts, vines, mediterranean)
+- Each species page shows up to 5 related species (only those with product data — no dead links)
+- All 50 species pages rebuilt with related links
+- Example linkage: Mango links to Lychee, Longan, Jackfruit, Banana, Dragon Fruit
+
+**DAL-57 — Beestock price history sparklines:**
+- load_price_history() function loads all 16 daily snapshots, builds URL -> price array
+- 34 products currently have price change history (2+ distinct prices in 16-day window)
+- buildSparkline() JS function renders 60x20 SVG polyline: green = price trended down, red = up
+- Tooltip shows price range and day count
+- Sparklines only shown for products with history (no visual noise for stable-price products)
+- Dashboard rebuilt and deployed
+
+---
+
 ## DEC-103 — 2026-04-04 — Session 62: SEO Internal Links, Bee Retailers, Content Pages
 
 **Decided by:** Dale (autonomous)

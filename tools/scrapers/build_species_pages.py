@@ -25,6 +25,37 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
+# Related species groups for cross-linking — people who buy one often compare others in the group.
+# Ordered by popularity within each group (most popular first).
+RELATED_GROUPS = {
+    "tropical": ["mango", "lychee", "longan", "jackfruit", "banana", "dragon-fruit", "papaya", "rambutan", "starfruit"],
+    "citrus": ["lemon", "lime", "orange", "mandarin", "grapefruit", "pomelo", "finger-lime"],
+    "stone_fruit": ["peach", "nectarine", "apricot", "plum", "cherry"],
+    "pome": ["apple", "pear"],
+    "subtropical": ["avocado", "guava", "feijoa", "passionfruit", "loquat", "jaboticaba", "sapodilla", "custard-apple", "white-sapote", "black-sapote", "wax-jambu", "grumichama"],
+    "exotic_tropical": ["jackfruit", "cacao", "rollinia", "rambutan", "wax-jambu", "miracle-fruit"],
+    "berries": ["blueberry", "raspberry", "mulberry", "lilly-pilly", "grumichama", "jaboticaba"],
+    "figs": ["fig", "mulberry"],
+    "nuts": ["macadamia", "pecan"],
+    "vines": ["grape", "passionfruit"],
+    "mediterranean": ["olive", "fig", "pomegranate", "loquat", "grape"],
+}
+
+# Build reverse lookup: slug -> list of related slugs (from same group, excluding self)
+def build_related_lookup() -> dict[str, list[str]]:
+    related: dict[str, list[str]] = {}
+    for group_members in RELATED_GROUPS.values():
+        for slug in group_members:
+            others = [s for s in group_members if s != slug]
+            if slug not in related:
+                related[slug] = []
+            for other in others:
+                if other not in related[slug]:
+                    related[slug].append(other)
+    return related
+
+RELATED_LOOKUP = build_related_lookup()
+
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
 NON_PLANT_KEYWORDS = [
     "fertilizer", "fertiliser", "potting mix", "soil mix", "seaweed solution",
@@ -147,6 +178,25 @@ def build_species_description(species: dict) -> str:
   </section>"""
 
 
+def build_related_species_html(slug: str, slug_to_name: dict[str, str], max_links: int = 5) -> str:
+    """Render a 'Related species' section with links to up to max_links related species that have data."""
+    related_slugs = RELATED_LOOKUP.get(slug, [])
+    # Only link species we actually have pages for (i.e. in slug_to_name)
+    available = [(s, slug_to_name[s]) for s in related_slugs if s in slug_to_name][:max_links]
+    if not available:
+        return ""
+    links = "".join(
+        f'<a href="/species/{s}.html" class="inline-block text-sm text-green-700 hover:underline mr-4 mb-1">{name} &rarr;</a>'
+        for s, name in available
+    )
+    return f"""  <!-- Related species -->
+  <section class="mb-6">
+    <h3 class="text-base font-semibold text-gray-700 mb-2">Related species</h3>
+    <div class="flex flex-wrap gap-y-1">{links}</div>
+  </section>
+"""
+
+
 STATE_SLUGS = {
     "WA": "western-australia",
     "QLD": "queensland",
@@ -176,12 +226,14 @@ def compute_state_links(species_slug: str, products: list[dict]) -> dict[str, st
     return links
 
 
-def build_species_page(species: dict, products: list[dict]) -> str:
+def build_species_page(species: dict, products: list[dict], slug_to_name: dict[str, str] | None = None) -> str:
     """Generate HTML for a single species page."""
     name = species["common_name"]
     latin = species["latin_name"]
     slug = species["slug"]
     region = species.get("region", "")
+    if slug_to_name is None:
+        slug_to_name = {}
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     in_stock = [p for p in products if p["available"]]
@@ -269,6 +321,8 @@ def build_species_page(species: dict, products: list[dict]) -> str:
   </section>
 """
 
+    related_species_html = build_related_species_html(slug, slug_to_name)
+
     head = render_head(
         title=f"Buy {name} Tree Online Australia — treestock.com.au",
         description=f"Find {name} ({latin}) trees for sale across {nursery_count} Australian nurseries. {in_stock_count} varieties in stock. Price from {price_range}. Compare prices and availability.",
@@ -332,6 +386,8 @@ def build_species_page(species: dict, products: list[dict]) -> str:
   {build_species_description(species)}
 
   {state_links_html}
+
+  {related_species_html}
 
   <!-- All Varieties -->
   <section class="mb-8">
@@ -482,6 +538,12 @@ def main():
     by_species = group_by_species(products, lookup)
     print(f"  {len(by_species)} species matched")
 
+    # Build slug->name map for species that have product data (used for related links)
+    slug_to_name = {
+        slug: entry["species"]["common_name"]
+        for slug, entry in by_species.items()
+    }
+
     species_dir = output_dir / "species"
     species_dir.mkdir(parents=True, exist_ok=True)
 
@@ -507,7 +569,7 @@ def main():
             "price_range": price_range,
         })
 
-        html = build_species_page(species, prods)
+        html = build_species_page(species, prods, slug_to_name)
         out_file = species_dir / f"{slug}.html"
         out_file.write_text(html)
         generated += 1
