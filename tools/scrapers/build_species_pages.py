@@ -17,6 +17,7 @@ Usage:
 import json
 import re
 import sys
+from collections import defaultdict
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -147,6 +148,73 @@ def load_nursery_products(data_dir: Path) -> list[dict]:
     return products
 
 
+def compute_rarity_scores(data_dir: Path, by_species: dict, lookup: dict) -> dict[str, dict]:
+    """Compute rarity scores for each species using availability history.
+
+    Score formula (0 = common, 100 = extremely rare):
+      60% weight: nursery scarcity (fewer nurseries carry it = rarer)
+      40% weight: availability scarcity (out-of-stock more often = rarer)
+
+    Returns dict of {slug: {"score", "hard_to_find", "avg_availability", "nursery_count"}}
+    """
+    total_nurseries = len(SHIPPING_MAP)
+
+    # Aggregate availability per species: list of (in_stock_days, total_days)
+    species_avail: dict[str, list] = defaultdict(list)
+
+    for nursery_dir in sorted(data_dir.iterdir()):
+        if not nursery_dir.is_dir():
+            continue
+        avail_file = nursery_dir / "availability.json"
+        if not avail_file.exists():
+            continue
+        try:
+            with open(avail_file) as f:
+                avail_data = json.load(f)
+        except Exception:
+            continue
+
+        for prod_data in avail_data.get("products", {}).values():
+            title = prod_data.get("title", "")
+            if not title:
+                continue
+            species = match_title(title, lookup)
+            if not species:
+                continue
+            days = prod_data.get("days", {})
+            if not days:
+                continue
+            in_stock_days = sum(1 for d in days.values() if d.get("a", False))
+            species_avail[species["slug"]].append((in_stock_days, len(days)))
+
+    scores = {}
+    for slug, entry in by_species.items():
+        prods = entry["products"]
+        nursery_count = len({p["nursery_key"] for p in prods})
+
+        # Average availability from historical data
+        if species_avail.get(slug):
+            total_in = sum(x[0] for x in species_avail[slug])
+            total_days = sum(x[1] for x in species_avail[slug])
+            avg_avail = total_in / total_days if total_days > 0 else 0.5
+        else:
+            # No history — fall back to current stock ratio
+            in_stock = sum(1 for p in prods if p["available"])
+            avg_avail = in_stock / len(prods) if prods else 0.5
+
+        nursery_score = 1.0 - min(nursery_count / total_nurseries, 1.0)
+        avail_score = 1.0 - avg_avail
+        rarity_score = round((nursery_score * 0.6 + avail_score * 0.4) * 100, 1)
+
+        scores[slug] = {
+            "score": rarity_score,
+            "hard_to_find": rarity_score >= 65,
+            "avg_availability": round(avg_avail, 3),
+            "nursery_count": nursery_count,
+        }
+    return scores
+
+
 def group_by_species(products: list[dict], lookup: dict) -> dict:
     """Group products by matched species slug."""
     by_species = {}
@@ -226,7 +294,8 @@ def compute_state_links(species_slug: str, products: list[dict]) -> dict[str, st
     return links
 
 
-def build_species_page(species: dict, products: list[dict], slug_to_name: dict[str, str] | None = None) -> str:
+def build_species_page(species: dict, products: list[dict], slug_to_name: dict[str, str] | None = None,
+                       rarity: dict | None = None) -> str:
     """Generate HTML for a single species page."""
     name = species["common_name"]
     latin = species["latin_name"]
@@ -304,6 +373,15 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     nursery_count = len(nurseries_seen)
     total_nurseries = len(SHIPPING_MAP)
 
+    # Rarity badge
+    rarity_badge_html = ""
+    if rarity and rarity.get("hard_to_find"):
+        rarity_badge_html = (
+            '<span class="px-3 py-1 bg-amber-50 text-amber-800 rounded-full font-medium '
+            'border border-amber-200 text-sm" title="Found at fewer nurseries and often out of stock">'
+            '&#11088; Hard to find</span>'
+        )
+
     # State combo links (buy-[species]-trees-[state].html)
     state_links = compute_state_links(slug, products)
     state_links_html = ""
@@ -347,6 +425,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
       <span class="px-3 py-1 bg-green-50 text-green-800 rounded-full font-medium">{in_stock_count} varieties in stock</span>
       {f'<span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{price_range} AUD</span>' if price_range else ''}
       <span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{nursery_count} nurseries</span>
+      {rarity_badge_html}
     </div>
   </div>
 
@@ -465,6 +544,13 @@ def build_species_index(species_data: list[dict]) -> str:
         total = entry["total_count"]
         nurseries = entry["nursery_count"]
         price_range = entry["price_range"]
+        rarity = entry.get("rarity", {})
+        hard_to_find = rarity.get("hard_to_find", False)
+        rarity_cell = (
+            '<span class="text-xs px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full border border-amber-200 whitespace-nowrap">'
+            '&#11088; Hard to find</span>'
+            if hard_to_find else ""
+        )
         rows += f"""
     <tr class="border-b border-gray-100 hover:bg-gray-50">
       <td class="py-3 pr-4">
@@ -474,7 +560,8 @@ def build_species_index(species_data: list[dict]) -> str:
       <td class="py-3 pr-4 text-sm {'text-green-700 font-medium' if in_s > 0 else 'text-gray-400'}">{in_s} in stock</td>
       <td class="py-3 pr-4 text-sm text-gray-500">{total} varieties</td>
       <td class="py-3 pr-4 text-sm text-gray-500">{nurseries} nurseries</td>
-      <td class="py-3 text-sm text-gray-600">{price_range}</td>
+      <td class="py-3 pr-4 text-sm text-gray-600">{price_range}</td>
+      <td class="py-3">{rarity_cell}</td>
     </tr>"""
 
     head = render_head(
@@ -499,7 +586,8 @@ def build_species_index(species_data: list[dict]) -> str:
           <th class="pb-2 pr-4">In Stock</th>
           <th class="pb-2 pr-4">Varieties</th>
           <th class="pb-2 pr-4">Nurseries</th>
-          <th class="pb-2">Price Range</th>
+          <th class="pb-2 pr-4">Price Range</th>
+          <th class="pb-2">Rarity</th>
         </tr>
       </thead>
       <tbody>{rows}
@@ -538,6 +626,11 @@ def main():
     by_species = group_by_species(products, lookup)
     print(f"  {len(by_species)} species matched")
 
+    print("Computing rarity scores...")
+    rarity_scores = compute_rarity_scores(data_dir, by_species, lookup)
+    hard_to_find_count = sum(1 for r in rarity_scores.values() if r["hard_to_find"])
+    print(f"  {hard_to_find_count} species marked 'Hard to find'")
+
     # Build slug->name map for species that have product data (used for related links)
     slug_to_name = {
         slug: entry["species"]["common_name"]
@@ -561,20 +654,23 @@ def main():
             price_range = f"${min_p:.2f}" if min_p == max_p else f"${min_p:.2f}–${max_p:.2f}"
 
         nurseries = {p["nursery_key"] for p in prods}
+        rarity = rarity_scores.get(slug, {})
         index_data.append({
             "species": species,
             "in_stock_count": len(in_stock),
             "total_count": len(prods),
             "nursery_count": len(nurseries),
             "price_range": price_range,
+            "rarity": rarity,
         })
 
-        html = build_species_page(species, prods, slug_to_name)
+        html = build_species_page(species, prods, slug_to_name, rarity=rarity)
         out_file = species_dir / f"{slug}.html"
         out_file.write_text(html)
         generated += 1
         if generated <= 5 or generated % 10 == 0:
-            print(f"  {species['common_name']}: {len(in_stock)}/{len(prods)} in stock, {len(nurseries)} nurseries")
+            htf = " [Hard to find]" if rarity.get("hard_to_find") else ""
+            print(f"  {species['common_name']}: {len(in_stock)}/{len(prods)} in stock, {len(nurseries)} nurseries{htf}")
 
     # Build index
     index_html = build_species_index(index_data)

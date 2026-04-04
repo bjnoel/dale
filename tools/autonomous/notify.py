@@ -211,6 +211,41 @@ def load_traffic_report() -> tuple:
     return html, text
 
 
+def load_resend_report() -> tuple:
+    """Load weekly email delivery report for inclusion in daily digest.
+
+    Returns (html, text) tuple. Empty strings if no report available.
+    Only returns content if the report was generated within the last 8 days
+    (so it appears in the Sunday digest and stays visible through the week).
+    """
+    from datetime import datetime, timezone, timedelta
+    report_path = Path("/opt/dale/data/resend_report.json")
+    if not report_path.exists():
+        return "", ""
+    try:
+        with open(report_path) as f:
+            report = json.load(f)
+    except Exception:
+        return "", ""
+
+    # Only show if generated within last 8 days
+    try:
+        generated = datetime.fromisoformat(report["generated_at"])
+        if datetime.now(timezone.utc) - generated > timedelta(days=8):
+            return "", ""
+    except Exception:
+        pass
+
+    # Import render functions from resend_report.py
+    import sys, os
+    sys.path.insert(0, os.path.dirname(__file__))
+    try:
+        from resend_report import render_html, render_text
+        return render_html(report), render_text(report)
+    except Exception:
+        return "", ""
+
+
 def send_summary(session_log_path):
     """Send daily session summary email with any new deliverables attached."""
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")

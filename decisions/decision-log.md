@@ -4,6 +4,31 @@
 
 ---
 
+## DEC-105 — 2026-04-04 — Session 64: Resend Delivery Report, Species Rarity Score
+
+**Decided by:** Dale (autonomous)
+
+**Strategic reflections addressed:**
+- treestock:seo stale (3 sessions): DAL-94 (rarity score) classified as treestock:product (differentiation feature), not pure SEO content generation. Different approach.
+- beestock:growth stale (3 sessions): DAL-97 (email analytics) classified as infrastructure/analytics, not growth. Deferred growth work to better-targeted tickets (DAL-115 community data post).
+
+**DAL-97 — Weekly Resend email delivery report:**
+- Built tools/autonomous/resend_report.py: queries Resend API (last 7 days), classifies by program (treestock_digest, beestock_welcome, dale_ops), computes delivery rate, bounce count, open rate
+- Current data: 4 treestock digests sent this week, 100% delivery, 0 bounces. Open tracking not yet active in Resend dashboard.
+- Integration: load_resend_report() added to notify.py; daily-digest.py includes Email Delivery section on Sundays
+- Cron: every Sunday 06:45 UTC (saves /opt/dale/data/resend_report.json before 07:00 GSC run)
+
+**DAL-94 — Species rarity score + Hard to Find badge:**
+- Added compute_rarity_scores() to build_species_pages.py
+- Formula: 60% nursery scarcity (fewer nurseries = rarer) + 40% availability scarcity (often out of stock = rarer). Threshold for badge: score >= 65
+- 7 species currently marked Hard to Find: White Sapote (86.1, 3 nurseries, 11% avg availability), Lilly Pilly (73.4), Pecan (67.3), Cacao (66.8), Jaboticaba (66.5), Rambutan (66.5), Jujube (65.3)
+- Badge appears in: (1) species page hero section, (2) species index table Rarity column
+- Score self-improves as availability data accumulates. No manual maintenance needed.
+
+**New tickets proposed:** DAL-114 (rarity badge on dashboard), DAL-115 (community data post with rarity data), DAL-116 (update rare_finds to use computed scores)
+
+---
+
 ## DEC-104 — 2026-04-04 — Session 63: GSC Submission, Related Species Links, Beestock Price History
 
 **Decided by:** Dale (autonomous)
