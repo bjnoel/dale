@@ -32,6 +32,7 @@ STATIC_PAGES = [
     ("guide.html", "monthly", "0.7"),
     ("finger-lime-guide.html", "monthly", "0.8"),
     ("when-to-plant.html", "monthly", "0.8"),
+    ("companion-planting-guide.html", "monthly", "0.8"),
     ("advertise.html", "monthly", "0.4"),
 ]
 

@@ -139,6 +139,11 @@ echo "$LOG_PREFIX Building variety pages..."
 python3 "$SCRIPT_DIR/build_variety_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Variety page build failed (non-fatal)"
 echo "$LOG_PREFIX Variety pages complete."
 
+# Build companion planting guide (SEO content)
+echo "$LOG_PREFIX Building companion planting guide..."
+python3 "$SCRIPT_DIR/build_companion_guide.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Companion guide build failed (non-fatal)"
+echo "$LOG_PREFIX Companion guide complete."
+
 # Build sample digest preview page (subscriber conversion)
 echo "$LOG_PREFIX Building sample digest page..."
 python3 "$SCRIPT_DIR/build_sample_digest.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sample digest page build failed (non-fatal)"

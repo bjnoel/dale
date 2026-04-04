@@ -195,6 +195,8 @@ def render_footer(max_width: str = "max-w-3xl", extra_text: str = "") -> str:
         '<a href="/buy-fruit-trees-nsw.html" class="hover:text-gray-600">Buy in NSW</a>'
         ' &middot; '
         '<a href="/buy-fruit-trees-vic.html" class="hover:text-gray-600">Buy in VIC</a>'
+        ' &middot; '
+        '<a href="/companion-planting-guide.html" class="hover:text-gray-600">Companion Planting</a>'
     )
 
     extra = ""
