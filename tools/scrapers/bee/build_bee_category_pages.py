@@ -43,6 +43,24 @@ CATEGORY_SEO = {
         ),
         "keywords": "buy beehive Australia, Langstroth hive Australia, beehive price comparison",
         "groups": ["Langstroth", "Flow Hive", "Nucleus", "Brood Box", "Super", "Lid", "Base"],
+        "guide": (
+            "<h2>Buying a beehive in Australia: what to know</h2>"
+            "<p>The Langstroth hive is the standard in Australia. Most beekeeping equipment, "
+            "frames, and accessories are built around the 10-frame Langstroth standard. Unless "
+            "you have a specific reason to choose otherwise, start with a Langstroth brood box "
+            "and one super.</p>"
+            "<p>Flow Hives use a proprietary honey-harvesting mechanism. They cost more upfront "
+            "but allow honey extraction without removing frames. The bees and management are "
+            "identical to a standard Langstroth.</p>"
+            "<p>A nucleus hive (nuc) is a starter colony in a small 4-5 frame box. It is the "
+            "easiest way to start beekeeping with established brood, a laying queen, and bees "
+            "already working together. Nucleus hives are seasonal and sell out quickly. Most "
+            "Australian retailers supply nucs in spring (September to November).</p>"
+            "<p>Australian timber boxes are usually made from kiln-dried pine. Plastic hive "
+            "components are lighter and easier to clean but less popular among traditional "
+            "beekeepers. All boxes should be treated or painted on the outside to protect from "
+            "the weather.</p>"
+        ),
     },
     "frames-foundation": {
         "title": "Buy Beekeeping Frames & Foundation in Australia",
@@ -58,6 +76,24 @@ CATEGORY_SEO = {
         ),
         "keywords": "beekeeping frames Australia, langstroth frames, wax foundation Australia",
         "groups": ["Deep", "Medium", "Ideal", "Wired", "Unwired", "Wax", "Plastic"],
+        "guide": (
+            "<h2>Choosing beekeeping frames and foundation in Australia</h2>"
+            "<p>Langstroth frames come in three depths: deep (full depth), medium, and ideal "
+            "(WSP). In Australia, the deep frame is the most common for brood boxes. Medium "
+            "and ideal frames are popular for honey supers because they are lighter to lift "
+            "when full.</p>"
+            "<p>Foundation comes in wax or plastic. Wax foundation is traditional and well "
+            "accepted by bees. Plastic foundation is more durable and reusable, but takes "
+            "longer for bees to accept. Both are available wired (for structural strength) "
+            "and unwired.</p>"
+            "<p>Frames can be bought assembled or flat-packed. Flat-pack is cheaper but "
+            "requires assembly. If you are starting out, buy 20-30 frames for a standard "
+            "two-box hive setup. Always have spare drawn frames available for swarm "
+            "prevention and splits.</p>"
+            "<p>Australian beekeeping suppliers stock both 8-frame and 10-frame equipment. "
+            "10-frame Langstroth is the most common nationally. If you are buying second-hand "
+            "equipment, confirm the frame size before purchasing more boxes.</p>"
+        ),
     },
     "extractors-processing": {
         "title": "Buy Honey Extractors & Processing Equipment in Australia",
@@ -74,6 +110,24 @@ CATEGORY_SEO = {
         ),
         "keywords": "honey extractor Australia, buy honey extractor, honey extractor price comparison",
         "groups": ["2 Frame", "4 Frame", "6 Frame", "9 Frame", "Electric", "Manual", "Uncapping"],
+        "guide": (
+            "<h2>Buying a honey extractor in Australia</h2>"
+            "<p>Honey extractors spin frames to remove honey by centrifugal force without "
+            "destroying the comb. This allows frames to be reused, saving you significant "
+            "work and wax over time.</p>"
+            "<p>For a small hobby apiary (1-4 hives), a manual 2-frame extractor is "
+            "sufficient. For 5-10 hives, consider a 4-frame manual or a motorised 4-frame "
+            "model. Larger operations benefit from 6-frame or 9-frame electric models.</p>"
+            "<p>Extractors are available in radial (frames mounted like spokes) and "
+            "tangential (frames face the wall) designs. Radial extractors extract both sides "
+            "simultaneously and are preferred for larger operations. Tangential extractors "
+            "require flipping frames mid-spin but are typically cheaper.</p>"
+            "<p>Stainless steel extractors are food-safe and easiest to clean. Plastic "
+            "drum models are lighter and cheaper but harder to keep clean over time. "
+            "If you are new to beekeeping and unsure about long-term commitment, consider "
+            "borrowing a club extractor or sharing one with nearby beekeepers before "
+            "purchasing your own.</p>"
+        ),
     },
     "protective-gear": {
         "title": "Buy Beekeeping Suits, Jackets & Protective Gear in Australia",
@@ -90,6 +144,25 @@ CATEGORY_SEO = {
         ),
         "keywords": "bee suit Australia, beekeeping jacket Australia, beekeeper protective gear",
         "groups": ["Full Suit", "Jacket", "Veil", "Gloves", "Hat", "Ventilated", "Cotton"],
+        "guide": (
+            "<h2>Choosing beekeeping protective gear in Australia</h2>"
+            "<p>The right protective gear lets you inspect your hive calmly without rushing. "
+            "Rushing increases the chance of stings, which increases bee agitation, which "
+            "leads to more stings. Good gear is an investment in better beekeeping.</p>"
+            "<p>For beginners, a full suit (hood, jacket, and pants together) provides "
+            "the most confidence and protection. For experienced beekeepers who know their "
+            "hive's temperament, a jacket and veil combination is often sufficient.</p>"
+            "<p>Ventilated mesh suits are significantly cooler in Australian summers. "
+            "Cotton and polycotton suits are cheaper and suitable for temperate climates, "
+            "but hot in Queensland and northern WA summers. Round veils are easier to put "
+            "on and take off than fencing veils.</p>"
+            "<p>Gloves are personal preference. Some beekeepers work gloveless for better "
+            "dexterity. Leather gloves provide maximum protection but reduce feel. Nitrile "
+            "or latex gloves offer a compromise. Ensure your gloves attach securely to "
+            "jacket sleeves with no gap.</p>"
+            "<p>Always wash your suit regularly. Alarm pheromone builds up in fabric and "
+            "makes bees more defensive at subsequent inspections.</p>"
+        ),
     },
     "smokers-tools": {
         "title": "Buy Bee Smokers & Beekeeping Tools in Australia",
@@ -105,6 +178,24 @@ CATEGORY_SEO = {
         ),
         "keywords": "bee smoker Australia, hive tool Australia, beekeeping tools",
         "groups": ["Smoker", "Hive Tool", "J Hook", "Queen", "Frame Lifter", "Brush"],
+        "guide": (
+            "<h2>Essential beekeeping tools explained</h2>"
+            "<p>A smoker is the single most important beekeeping tool. Smoke triggers a "
+            "feeding response in bees, making them calmer and easier to inspect. Use dry "
+            "smoker fuel: hessian, wood shavings, or dried grass. Always smoke the entrance "
+            "before opening, then a light puff under the lid. Do not over-smoke.</p>"
+            "<p>The hive tool is used to separate boxes and frames that bees have glued "
+            "together with propolis. The J-hook hive tool is popular in Australia for "
+            "lifting frames cleanly without scraping adjacent frames. A standard flatbar "
+            "hive tool is the traditional alternative. Most experienced beekeepers carry both.</p>"
+            "<p>Queen marking pens allow you to mark the queen's thorax for easy "
+            "identification. The international colour code rotates by year (white, yellow, "
+            "red, green, blue). Marking makes requeening and queen checking significantly "
+            "faster.</p>"
+            "<p>Bee brushes are used to gently move bees off a frame. Use light strokes "
+            "from the side, not directly against the bee. Keep your brush clean and smoke "
+            "lightly before brushing to reduce agitation.</p>"
+        ),
     },
     "treatments": {
         "title": "Buy Varroa Mite Treatments & Beehive Health Products in Australia",
@@ -120,6 +211,24 @@ CATEGORY_SEO = {
         ),
         "keywords": "varroa mite treatment Australia, Apistan Australia, Apivar Australia, oxalic acid beekeeping",
         "groups": ["Apistan", "Apivar", "Oxalic", "Formic", "Beetle Trap", "Thymol"],
+        "guide": (
+            "<h2>Varroa mite treatment in Australia: what beekeepers need to know</h2>"
+            "<p>Varroa destructor arrived in NSW in 2022 and has spread significantly since. "
+            "Treatment is now a normal part of Australian beekeeping in most states.</p>"
+            "<p>Apistan (tau-fluvalinate strips) and Apivar (amitraz strips) are the most "
+            "widely used treatments. Both are placed between frames for a set number of "
+            "weeks. Resistance to these chemical treatments is a global concern, so rotate "
+            "between treatment classes each season.</p>"
+            "<p>Oxalic acid is an organic treatment that is highly effective against varroa "
+            "when applied during a broodless period (mid-winter or after a split). It can "
+            "be applied by drizzle, sublimation (vaporisation), or as a gel. Oxalic acid "
+            "does not penetrate capped brood, so timing is critical.</p>"
+            "<p>Small hive beetle (Aethina tumida) is a separate pest managed with in-hive "
+            "traps (oil or boric acid) and by maintaining strong colonies. SHB is most "
+            "problematic in warm, humid climates (QLD, northern NSW).</p>"
+            "<p>Always follow withholding periods on treatment labels before harvesting honey. "
+            "Check your state's biosecurity authority for current recommended protocols.</p>"
+        ),
     },
     "feeders": {
         "title": "Buy Bee Feeders & Supplement Feed in Australia",
@@ -135,6 +244,22 @@ CATEGORY_SEO = {
         ),
         "keywords": "bee feeder Australia, pollen substitute Australia, beekeeping feeder",
         "groups": ["Frame Feeder", "Entrance Feeder", "Top Feeder", "Pollen", "Boardman"],
+        "guide": (
+            "<h2>When and how to feed your bees in Australia</h2>"
+            "<p>Bees generally do not need supplemental feeding when there is a good nectar "
+            "flow. Feed when establishing a new colony, after a swarm, in late summer dearth, "
+            "or when a hive is light going into winter.</p>"
+            "<p>Sugar syrup (1:1 sugar to water by weight in spring/summer, 2:1 in autumn) "
+            "is the most common supplemental feed. Frame feeders sit inside the hive in place "
+            "of a frame and hold 1-2 litres. Entrance feeders are simpler but expose the "
+            "syrup to robbing. Top feeders hold more volume and are less disruptive to inspect.</p>"
+            "<p>Pollen substitutes provide protein when natural pollen is scarce. They are "
+            "especially useful for colonies building up in late winter before natural pollen "
+            "is available. Pollen patties are placed directly on the frames above the brood cluster.</p>"
+            "<p>Avoid feeding inside the hive during hot weather as fermentation can occur "
+            "quickly. Fermented syrup can cause dysentery. Feed in small quantities and check "
+            "daily during warm conditions.</p>"
+        ),
     },
     "honey-containers": {
         "title": "Buy Honey Jars, Bottles & Labels in Australia",
@@ -150,6 +275,25 @@ CATEGORY_SEO = {
         ),
         "keywords": "honey jars Australia, honey bottles Australia, honey containers buy",
         "groups": ["Hex Jar", "Round Jar", "Squeeze", "Label", "Lid", "Bulk"],
+        "guide": (
+            "<h2>Choosing honey jars and containers in Australia</h2>"
+            "<p>Presentation matters for selling or gifting honey. The jar is often the "
+            "first thing a customer notices. Standard options in Australia are hex (hexagonal) "
+            "glass jars, round glass jars, and plastic squeeze bottles.</p>"
+            "<p>Glass jars are preferred for premium honey. They are inert, preserve flavour "
+            "and aroma, and look professional. Hex jars in 250g, 500g, and 1kg sizes are "
+            "the most popular in Australia for retail and markets.</p>"
+            "<p>Plastic squeeze bottles are convenient for table use and popular with "
+            "customers who want an everyday honey container. They are lighter and cheaper "
+            "to ship but generally considered less premium than glass.</p>"
+            "<p>Labels must meet Australian Food Standards requirements if you are selling "
+            "commercially. You must include: product name (Australian Honey), net weight, "
+            "your name and address, country of origin, and lot identification. Buy labels "
+            "pre-designed or use online templates.</p>"
+            "<p>Buy jars in bulk to reduce per-unit cost. A carton of 48 jars is standard "
+            "for most Australian beekeeping suppliers. Lids are sold separately, so check "
+            "compatibility before ordering.</p>"
+        ),
     },
     "books-education": {
         "title": "Buy Beekeeping Books & Courses in Australia",
@@ -165,6 +309,26 @@ CATEGORY_SEO = {
         ),
         "keywords": "beekeeping books Australia, beekeeping guide buy, learn beekeeping Australia",
         "groups": ["Beginner", "Advanced", "Manual", "Guide"],
+        "guide": (
+            "<h2>Best beekeeping books for Australian beekeepers</h2>"
+            "<p>Books remain one of the best investments a new beekeeper can make. A good "
+            "reference manual lets you diagnose problems at 2am when forums are slow and "
+            "your mentor is unavailable.</p>"
+            "<p>For beginners, look for Australian-specific content. Many UK and US "
+            "beekeeping books reference pests, seasonal timing, and legal frameworks that "
+            "do not apply in Australia. The Beekeeping chapter timing in particular differs "
+            "significantly, since Australian seasons are the reverse of the northern "
+            "hemisphere.</p>"
+            "<p>Key topics to have covered in your library: colony inspection and record "
+            "keeping, swarm prevention and management, queen rearing and introduction, "
+            "disease and pest identification (AFB, EFB, varroa, SHB, chalkbrood), and "
+            "honey extraction and processing.</p>"
+            "<p>State beekeeping associations also produce their own guides and run "
+            "courses. The Victorian Apiarists Association, NSW Apiarists Association, "
+            "and Queensland Beekeepers Association all have member resources. Local "
+            "beekeeping clubs are an underrated source of hands-on mentoring that no "
+            "book fully replaces.</p>"
+        ),
     },
 }
 
@@ -378,6 +542,16 @@ def build_category_page(
 
     product_table = render_product_table(products, seo.get("groups", []))
 
+    # Buying guide section (appears below product table)
+    guide_html = ""
+    if seo.get("guide"):
+        guide_html = f"""
+  <!-- Buying guide -->
+  <section class="prose prose-sm max-w-2xl mb-8 text-gray-700">
+    {seo["guide"]}
+  </section>
+"""
+
     # All category links for breadcrumb/navigation
     cat_links = " &middot; ".join(
         f'<a href="/category/{c["slug"]}.html" class="hover:text-amber-700">{c["name"]}</a>'
@@ -418,6 +592,8 @@ def build_category_page(
   <div class="bg-white border border-gray-200 rounded-lg overflow-hidden mb-8">
     {product_table}
   </div>
+
+  {guide_html}
 
   <!-- All categories -->
   <div class="text-sm text-gray-500 mb-8">
@@ -593,18 +769,27 @@ def main():
 
     total_in_stock = sum(1 for p in all_products if p["available"])
 
-    # Group products by category
+    # Map from categorise_product parent slug -> CATEGORY_SEO page slug
+    # Some parent slugs differ from the page slug used in CATEGORY_SEO
+    PARENT_TO_PAGE = {
+        "hiveware": "hives-boxes",
+        "containers-packing": "honey-containers",
+    }
+
+    # Group products by CATEGORY_SEO page slug
+    # cat field is a (parent_slug, sub_slug) tuple from categorise_product
     by_cat: dict[str, list[dict]] = {}
     for p in all_products:
-        by_cat.setdefault(p["cat"], []).append(p)
+        parent_slug = p["cat"][0] if isinstance(p["cat"], tuple) else p["cat"]
+        page_slug = PARENT_TO_PAGE.get(parent_slug, parent_slug)
+        by_cat.setdefault(page_slug, []).append(p)
 
-    # Build one page per category (skip 'other')
+    # Build one page per CATEGORY_SEO entry (these are the actual page slugs)
     pages_written = 0
-    for cat in CATEGORIES:
-        slug = cat["slug"]
+    for slug in CATEGORY_SEO:
         products = by_cat.get(slug, [])
         if not products:
-            print(f"  {cat['name']}: no products, skipping")
+            print(f"  {slug}: no products, skipping")
             continue
 
         html = build_category_page(slug, products, total_in_stock, today)
@@ -613,7 +798,7 @@ def main():
         tmp_path.write_text(html)
         tmp_path.rename(out_path)
         in_stock = sum(1 for p in products if p["available"])
-        print(f"  {cat['name']}: {len(products)} products ({in_stock} in stock) -> {out_path}")
+        print(f"  {slug}: {len(products)} products ({in_stock} in stock) -> {out_path}")
         pages_written += 1
 
     print(f"\nWrote {pages_written} category pages to {category_dir}")
