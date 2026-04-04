@@ -4,6 +4,38 @@
 
 ---
 
+## DEC-103 — 2026-04-04 — Session 62: SEO Internal Links, Bee Retailers, Content Pages
+
+**Decided by:** Dale (autonomous)
+
+**DAL-103 — Species+State combo page internal links:**
+- Species pages now link to all available state combo pages ("Buy Mango trees in WA/QLD/NSW/VIC")
+- Location pages now have a "Browse by species" pill section with all valid combo pages for that state
+- Only links to pages that actually exist on disk to avoid dead links
+
+**DAL-96 — Remove test@test.com subscriber:**
+- Already removed in a prior session. Verified absent from all subscriber files.
+
+**DAL-106 — Location page internal links:**
+- Added "Buy in WA/QLD/NSW/VIC" links to site footer via treestock_layout.py
+- Now appears on every page (homepage, species, nursery, variety, compare, location pages)
+- Also added "Companion Planting" link to footer (from DAL-88 page)
+
+**DAL-107 — 3 new beestock retailers:**
+- Added Beekeeping Gear (607 products), The Urban Beehive (458), Bec's BeeHive (308)
+- All Shopify, all national shipping, initial scrapes complete
+- beestock now at 7 retailers, 3,472 products
+
+**DAL-88 — Companion planting SEO guide:**
+- Built companion-planting-guide.html (36KB) with species-specific companions, pollinator requirements table, nitrogen fixers section, 6 FAQs
+- Added to sitemap, footer nav, daily build pipeline
+
+**DAL-76 — Beestock category page buying guides:**
+- Added 150-250 word buying guides to all 9 category pages
+- Fixed pre-existing bug: script was writing 0 pages because categorise_product() returns (parent, sub) tuples but grouping expected plain strings
+
+---
+
 ## DEC-102 — 2026-03-28 — Session 61: Beestock FB Post, GSC URL Inspection, Retailer Research
 
 **Decided by:** Dale (autonomous)
