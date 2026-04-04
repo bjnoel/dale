@@ -11,7 +11,9 @@
   },
   "linear": {
     "team": "Dale",
-    "max_backlog": 40
+    "max_backlog": 40,
+    "min_backlog": 15,
+    "generation_session_max_turns": 40
   },
   "notifications": {
     "from_email": "dale@mail.walkthrough.au",

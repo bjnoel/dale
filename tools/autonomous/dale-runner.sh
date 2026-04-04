@@ -104,20 +104,33 @@ python3 "$SCRIPT_DIR/linear_poller.py" 2>>"$LOG_DIR/cron.log" || {
 # --- Check if there's work to do ---
 
 TODO_COUNT=0
+BACKLOG_COUNT=0
+MIN_BACKLOG=$(python3 -c "import json; print(json.load(open('$CONFIG')).get('linear', {}).get('min_backlog', 15))")
+
 if [ -f "$TASKS_FILE" ]; then
     TODO_COUNT=$(python3 -c "
-import json
-d = json.load(open('$TASKS_FILE'))
-print(len(d.get('todo', [])) + len(d.get('in_progress', [])))
-" 2>/dev/null || echo 0)
+import json; d = json.load(open('$TASKS_FILE'))
+print(len(d.get('todo', [])) + len(d.get('in_progress', [])))" 2>/dev/null || echo 0)
+    BACKLOG_COUNT=$(python3 -c "
+import json; d = json.load(open('$TASKS_FILE'))
+print(d.get('backlog_count', 0))" 2>/dev/null || echo 0)
 fi
 
-if [ "$TODO_COUNT" = "0" ]; then
-    log "No tickets to process, exiting"
+if [ "$TODO_COUNT" = "0" ] && [ "$BACKLOG_COUNT" -ge "$MIN_BACKLOG" ]; then
+    log "No todo tickets, backlog is healthy ($BACKLOG_COUNT/$MIN_BACKLOG). Exiting."
     exit 0
 fi
 
-log "=== Starting session ($TODO_COUNT ticket(s), ${MAX_MINUTES}min cap, ${MAX_TURNS} turns) ==="
+# Determine session type
+if [ "$TODO_COUNT" = "0" ]; then
+    SESSION_TYPE="generation"
+    GEN_TURNS=$(python3 -c "import json; print(json.load(open('$CONFIG')).get('linear', {}).get('generation_session_max_turns', 40))")
+    MAX_TURNS="$GEN_TURNS"
+    log "=== Starting GENERATION session (backlog $BACKLOG_COUNT/$MIN_BACKLOG, ${MAX_TURNS} turns) ==="
+else
+    SESSION_TYPE="normal"
+    log "=== Starting session ($TODO_COUNT ticket(s), ${MAX_MINUTES}min cap, ${MAX_TURNS} turns) ==="
+fi
 
 # --- Run Claude ---
 
@@ -128,7 +141,7 @@ if [ -f /opt/dale/secrets/claude.env ]; then
 fi
 
 # Build the session prompt
-PROMPT=$(python3 "$SCRIPT_DIR/session-prompt.py" 2>>"$LOG_DIR/prompt-errors.log") || {
+PROMPT=$(python3 "$SCRIPT_DIR/session-prompt.py" --session-type "$SESSION_TYPE" 2>>"$LOG_DIR/prompt-errors.log") || {
     log "Failed to build session prompt."
     python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "prompt-build-failed"
     exit 1

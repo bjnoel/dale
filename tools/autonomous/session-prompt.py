@@ -201,7 +201,7 @@ def _get_session_days(session_log):
 def _metric_moved(metric_name, start_val, end_val):
     """Check if a metric moved meaningfully between two snapshots."""
     if start_val is None or end_val is None:
-        return True  # Can't tell, assume it moved
+        return False  # Can't measure = assume stale, force Dale to fix metric collection
     if metric_name == "revenue_monthly":
         return end_val > 0
     if metric_name == "subscribers":
@@ -525,6 +525,24 @@ No Linear data available. Do read-only work only (research, analysis).
             lines.append(f"- {t['id']}: {t['title']}")
     lines.append("")
 
+    # Cancelled tickets (do not recreate)
+    cancelled = linear_data.get("cancelled", [])
+    if cancelled:
+        lines.append(f"### Cancelled/Rejected Tickets ({len(cancelled)})")
+        lines.append("**Do NOT recreate these. Benedict cancelled them for a reason.**")
+        for t in cancelled:
+            lines.append(f"- ~~{t['id']}: {t['title']}~~")
+        lines.append("")
+
+    # Recently completed tickets (already done, do not re-propose)
+    completed = linear_data.get("completed", [])
+    if completed:
+        lines.append(f"### Recently Completed ({len(completed)})")
+        lines.append("**Already done. Do not re-propose.**")
+        for t in completed:
+            lines.append(f"- {t['id']}: {t['title']}")
+        lines.append("")
+
     if not in_progress and not todo:
         lines.append("No approved tickets to work on. Do read-only work only (research, analysis).")
         lines.append("If you identify work that should be done, create a Backlog ticket and stop.")
@@ -644,26 +662,46 @@ deliverables/. Benedict reads tickets on his phone and needs everything in one p
 
 ### Proposing new work
 You should ALWAYS propose new tickets during every session, not just when idle.
-After finishing each ticket (or at the end of the session), think about:
-- What bugs or issues did you notice while working?
-- What follow-up work would make what you just built better?
-- What moonshots or experiments could move the business forward?
-- What's missing from Track A or Track B that nobody has thought of yet?
+After finishing each ticket (or at end of session), propose 2-3 new backlog tickets.
 
-**Moonshots are welcome.** Benedict wants ambitious ideas, not just incremental fixes.
-Think about new revenue streams, partnerships, community plays, content strategies,
-automation opportunities, or ways to 10x what already exists. If it's a long shot,
-that's fine. Label it appropriately and let Benedict decide.
+Use the Step-Back Thinking Ladder to decide WHAT to propose:
+
+| Level | Question |
+|-------|----------|
+| 3 - Strategic | "Is this the right track to invest in right now?" |
+| 2 - Channel | "Within this track, is this the right approach?" |
+| 1 - Approach | "Is this the right tactic within this approach?" |
+| 0 - Tactical | "Is this a specific improvement worth doing?" |
+
+For EVERY ticket you propose, include in the description:
+- Which thinking level it operates at
+- Which tracked metric it expects to move (from focus-tracker.json categories)
+- Why you believe it will move that metric (not just "it might help")
+
+DO NOT propose tickets that:
+- Only move count metrics (nurseries_monitored, products_tracked, retailers_monitored)
+- Have no clear path to moving visitors, subscribers, or revenue
+- Are "nice to have" with no measurable expected impact
+- Duplicate cancelled, completed, or existing backlog tickets
+
+GOOD ticket: "Write buying-intent content for top 5 rare fruit search terms"
+  (Level 1, moves weekly_organic_visitors, based on GSC showing impressions but no clicks)
+BAD ticket: "Add nursery X to treestock"
+  (only moves nurseries_monitored, no evidence it drives traffic)
 
 To propose work:
 `python3 /opt/dale/autonomous/linear_update.py create "Title" --description "Why this matters" --labels "SEO,Track B" --priority 3`
 This creates a Backlog ticket with a "Dale" label automatically added.
 Benedict will move it to Todo if approved.
 Do NOT create more tickets if the backlog is full (check the count above).
-**DUPLICATE CHECK (CRITICAL):** Before creating ANY ticket, read EVERY existing backlog
-title above and ask: "Does this overlap with an existing ticket?" Check for same nursery,
-same feature, same outreach target, or same concept with different wording. If in doubt,
-do NOT create it. Benedict wastes time triaging duplicates. This is a recurring problem.
+
+**DUPLICATE CHECK (CRITICAL):** Before creating ANY ticket:
+1. Read EVERY backlog title above.
+2. Read EVERY cancelled/rejected ticket above (these were rejected by Benedict).
+3. Read EVERY completed ticket above (this work is already done).
+4. Ask: "Does this overlap?" Check for same nursery, same feature, same target, same concept.
+5. If ANY overlap, do NOT create the ticket.
+
 When you assign a ticket to Benedict (for questions/review), remove the Dale label:
 the Dale label means "in Dale's court". Benedict re-adds it when passing back to you.
 
@@ -701,13 +739,106 @@ the Dale label means "in Dale's court". Benedict re-adds it when passing back to
 End your session with a structured summary (this gets emailed to Benedict each morning):
 
 **Tickets completed:** list ticket IDs and one-line summaries
-**Tickets proposed:** any new Backlog tickets you created (aim for at least 2-3 per session)
-**Moonshots:** any ambitious ideas worth exploring (even if they're long shots)
+**Tickets proposed:** any new Backlog tickets you created (with thinking level + expected metric)
 **Blockers:** anything blocking progress that needs Benedict's attention
 **Research notes:** any read-only findings worth noting
 """
     return prompt
 
 
+def build_generation_prompt():
+    """Build a focused prompt for ticket-generation-only sessions."""
+    config = load_config()
+    repo = config["paths"]["repo"]
+    data = config["paths"]["data"]
+    auto = config["paths"]["autonomous"]
+    min_backlog = config.get("linear", {}).get("min_backlog", 15)
+
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+    business_state = read_file(os.path.join(repo, "state", "business-state.json"))
+    recent_decisions = get_last_n_decisions(
+        os.path.join(repo, "decisions", "decision-log.md"), n=5
+    )
+    data_summary = get_data_summary(data)
+    linear_data = get_linear_tasks(data)
+    linear_block = format_linear_block(linear_data)
+
+    # Strategic reflection
+    tracker = load_focus_tracker(repo)
+    reflection_block = ""
+    if tracker:
+        reflection = compute_reflection(tracker, config)
+        reflection_block = build_reflection_block(reflection)
+
+    prompt = f"""This is a TICKET GENERATION session at {now}.
+You are Dale, the AI business agent. Your Todo queue is empty and the Backlog
+is below the target of {min_backlog} tickets. Your ONLY task this session is to
+propose new backlog tickets to bring the backlog up to {min_backlog}.
+
+You MUST NOT: write code, modify files, deploy anything, send emails, or do "real work."
+You MUST: create tickets using `python3 /opt/dale/autonomous/linear_update.py create`.
+
+{linear_block}
+
+{reflection_block}
+## Current Business State
+{business_state}
+
+## Recent Decisions
+{recent_decisions}
+
+## Today's Data Summary
+{data_summary}
+
+## Ticket Generation Rules
+
+Use the Step-Back Thinking Ladder for every ticket you propose:
+
+| Level | Question |
+|-------|----------|
+| 3 - Strategic | "Is this the right track to invest in right now?" |
+| 2 - Channel | "Within this track, is this the right approach?" |
+| 1 - Approach | "Is this the right tactic within this approach?" |
+| 0 - Tactical | "Is this a specific improvement worth doing?" |
+
+For EVERY ticket, include in the description:
+- Which thinking level it operates at
+- Which tracked metric it expects to move (from focus-tracker.json categories)
+- Why you believe it will move that metric
+
+DO NOT propose tickets that:
+- Only move count metrics (nurseries_monitored, products_tracked, retailers_monitored)
+- Have no clear path to moving visitors, subscribers, or revenue
+- Are "nice to have" with no measurable expected impact
+- Duplicate cancelled, completed, or existing backlog tickets
+
+Prioritize tickets that will move OUTPUT metrics (visitors, subscribers, revenue)
+over INPUT metrics (nurseries, products). Review the business state and data summary
+above to identify gaps and opportunities.
+
+**DUPLICATE CHECK (CRITICAL):** Before creating ANY ticket:
+1. Read EVERY backlog title in the Linear Work Queue above.
+2. Read EVERY cancelled/rejected ticket above (rejected by Benedict).
+3. Read EVERY completed ticket above (already done).
+4. Ask: "Does this overlap?" If ANY overlap, do NOT create it.
+
+To create a ticket:
+`python3 /opt/dale/autonomous/linear_update.py create "Title" --description "Level: X. Expected metric: Y. Rationale: Z" --labels "Track B" --priority 3`
+
+## Session Output
+End with:
+**Tickets proposed:** list all new tickets with thinking level and expected metric
+"""
+    return prompt
+
+
 if __name__ == "__main__":
-    print(build_prompt())
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--session-type", default="normal", choices=["normal", "generation"])
+    args = parser.parse_args()
+    if args.session_type == "generation":
+        print(build_generation_prompt())
+    else:
+        print(build_prompt())

@@ -129,6 +129,14 @@ def get_issues_by_state(team_id, state_type):
     return data["issues"]["nodes"]
 
 
+def format_issue_title_only(issue):
+    """Minimal format for cancelled/completed tickets -- just enough for duplicate detection."""
+    return {
+        "id": issue["identifier"],
+        "title": issue["title"],
+    }
+
+
 def format_issue(issue):
     """Convert a Linear issue node to a simplified dict."""
     labels = [l["name"] for l in issue.get("labels", {}).get("nodes", [])]
@@ -180,6 +188,10 @@ def main():
     in_progress_raw = get_issues_by_state(team_id, "started")  # In Progress
     backlog_raw = get_issues_by_state(team_id, "backlog")      # Backlog
 
+    # Fetch cancelled/completed for duplicate prevention
+    cancelled_raw = get_issues_by_state(team_id, "cancelled")
+    completed_raw = get_issues_by_state(team_id, "completed")
+
     # Filter Todo/In Progress to only tickets Dale should work on:
     # - Has "Dale" label, OR
     # - Is unassigned
@@ -199,6 +211,8 @@ def main():
     todo = [format_issue(i) for i in todo_raw]
     in_progress = [format_issue(i) for i in in_progress_raw]
     backlog = [format_issue(i) for i in backlog_raw]
+    cancelled = [format_issue_title_only(i) for i in cancelled_raw]
+    completed = [format_issue_title_only(i) for i in completed_raw]
 
     # Sort by priority (1=Urgent first)
     todo.sort(key=lambda x: x["priority_num"])
@@ -214,6 +228,8 @@ def main():
         "backlog_count": len(backlog),
         "max_backlog": max_backlog,
         "backlog_full": len(backlog) >= max_backlog,
+        "cancelled": cancelled,
+        "completed": completed,
     }
 
     if dry_run:
@@ -226,7 +242,7 @@ def main():
     with open(TASKS_FILE, "w") as f:
         json.dump(result, f, indent=2)
 
-    log(f"Saved: {len(todo)} todo, {len(in_progress)} in progress, {len(backlog)}/{max_backlog} backlog")
+    log(f"Saved: {len(todo)} todo, {len(in_progress)} in progress, {len(backlog)}/{max_backlog} backlog, {len(cancelled)} cancelled, {len(completed)} completed")
 
 
 if __name__ == "__main__":
