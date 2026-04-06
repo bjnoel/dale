@@ -78,12 +78,12 @@ def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -
       <h2 style="margin:0 0 12px;color:#065f46;font-size:1.1rem;">You're subscribed!</h2>
 
       <p style="margin:0 0 16px;color:#374151;font-size:0.95rem;line-height:1.5;">
-        Each morning you'll get a digest of what changed overnight across 12 Australian
+        Each Monday morning you'll get a weekly digest of what changed across 19 Australian
         fruit tree nurseries, including new listings, restocks, and price drops.
       </p>
 
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin-bottom:20px;">
-        <p style="margin:0 0 8px;font-weight:600;color:#065f46;font-size:0.9rem;">What's tracked:</p>
+        <p style="margin:0 0 8px;font-weight:600;color:#065f46;font-size:0.9rem;">19 nurseries tracked across Australia:</p>
         <ul style="margin:0;padding-left:20px;color:#374151;font-size:0.9rem;line-height:1.6;">
           <li>Daleys Fruit Trees (NSW)</li>
           <li>Ross Creek Tropicals (QLD)</li>
@@ -94,15 +94,23 @@ def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -
           <li>Fruit Salad Trees (NSW)</li>
           <li>The Diggers Club (VIC)</li>
           <li>Fruitopia (QLD)</li>
-          <li>and 3 more...</li>
+          <li>Perth Mobile Nursery (WA)</li>
+          <li>Fruit Tree Cottage (NSW)</li>
+          <li>Yalca Fruit Trees (VIC)</li>
+          <li>and 7 more</li>
         </ul>
       </div>
 
-      <p style="margin:0 0 16px;color:#374151;font-size:0.95rem;line-height:1.5;">
-        You can also set up <strong>species-specific alerts</strong> on any species page
-        (e.g. notify me when Sapodilla comes back in stock). Visit the
-        <a href="{SITE_URL}/species/" style="color:#065f46;">species directory</a> to set these up.
-      </p>
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;margin-bottom:20px;">
+        <p style="margin:0 0 6px;font-weight:600;color:#92400e;font-size:0.9rem;">Set species-specific alerts</p>
+        <p style="margin:0;color:#374151;font-size:0.875rem;line-height:1.5;">
+          Visit any <a href="{SITE_URL}/species/" style="color:#065f46;">species page</a> to get notified
+          the moment a specific fruit tree comes back in stock. For example, if you're after
+          <a href="{SITE_URL}/species/sapodilla.html" style="color:#065f46;">sapodilla</a> or
+          <a href="{SITE_URL}/species/lychee.html" style="color:#065f46;">lychee</a>,
+          you can set a targeted alert so you're first in line when stock appears.
+        </p>
+      </div>
 
       <div style="text-align:center;margin:24px 0;">
         <a href="{SITE_URL}" style="display:inline-block;background:#065f46;color:white;text-decoration:none;padding:10px 24px;border-radius:8px;font-weight:600;font-size:0.95rem;">

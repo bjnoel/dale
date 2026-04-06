@@ -433,9 +433,16 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
   <div id="watchBox" class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm mb-6">
     <p class="font-semibold text-amber-800 mb-1">&#9888; {name} trees are currently out of stock</p>
     <p class="text-gray-600 mb-3">We monitor {total_nurseries} nurseries daily. Enter your email and we'll alert you the moment any {name} variety comes back in stock.</p>
-    <form id="watchForm" class="flex flex-col sm:flex-row gap-2">
+    <form id="watchForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
       <input type="email" id="watchEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
+      <select id="watchState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
       <button type="submit"
         class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
         Alert me when back in stock
@@ -491,9 +498,16 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
   <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
     <p class="font-medium text-green-800 mb-1">Get restock alerts for {name}</p>
     <p class="text-gray-600 mb-3">We'll email you when new {name} varieties appear or prices drop at any of the {total_nurseries} nurseries we monitor. <a href="/sample-digest.html" class="text-green-700 underline">See sample &rarr;</a></p>
-    <form id="watchForm" class="flex flex-col sm:flex-row gap-2">
+    <form id="watchForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
       <input type="email" id="watchEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
+      <select id="watchState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
       <button type="submit"
         class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
         Notify me
@@ -506,11 +520,13 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
   document.getElementById('watchForm').addEventListener('submit', function(e) {{
     e.preventDefault();
     var email = document.getElementById('watchEmail').value.trim();
+    var stateEl = document.getElementById('watchState');
+    var state = stateEl ? stateEl.value : 'ALL';
     var msg = document.getElementById('watchMessage');
     fetch('/api/subscribe', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{email: email, action: 'watch', species: '{slug}'}})
+      body: JSON.stringify({{email: email, action: 'watch', species: '{slug}', state: state}})
     }})
     .then(function(r) {{ return r.json(); }})
     .then(function(d) {{

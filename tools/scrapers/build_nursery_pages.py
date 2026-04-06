@@ -176,7 +176,7 @@ def ships_to_wa(nursery_key: str) -> bool:
 
 
 
-def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> str:
+def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total_nurseries: int = 19) -> str:
     meta = NURSERY_META.get(nursery_key, {})
     name = NURSERY_NAMES.get(nursery_key, data.get("nursery_name", nursery_key))
     location = data.get("location", "Australia")
@@ -193,6 +193,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
 
     species_breakdown = build_species_breakdown(products, species_lookup)
     species_count = len(species_breakdown)
+    nursery_count_minus_one = max(total_nurseries - 1, 1)
 
     restrict = "" if local_label else restriction_warning(nursery_key)
     tag_badges = "".join(f'<span class="badge bg-light text-dark border me-1 mb-1">{t}</span>' for t in tags)
@@ -362,6 +363,52 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict) -> st
   </div>
 
   <p class="text-xs text-gray-400 mt-4">Data updated daily. Last checked: {scraped_at_fmt}.</p>
+
+  <!-- Subscribe CTA -->
+  <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-sm">
+    <p class="font-medium text-green-800 mb-1">Get restock alerts for {name}</p>
+    <p class="text-gray-600 mb-3">We monitor {name} and {nursery_count_minus_one} other nurseries daily. Free email when varieties restock or prices drop.</p>
+    <form id="nurserySubForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
+      <input type="email" id="nurserySubEmail" placeholder="your@email.com" required
+        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
+      <select id="nurserySubState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
+      <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
+        Get free alerts
+      </button>
+    </form>
+    <div id="nurserySubMessage" class="mt-2 text-sm hidden"></div>
+  </div>
+  <script>
+  document.getElementById('nurserySubForm').addEventListener('submit', function(e) {{
+    e.preventDefault();
+    var email = document.getElementById('nurserySubEmail').value.trim();
+    var state = document.getElementById('nurserySubState').value;
+    var msg = document.getElementById('nurserySubMessage');
+    fetch('/api/subscribe', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{email: email, state: state}})
+    }})
+    .then(function(r) {{ return r.json(); }})
+    .then(function(d) {{
+      msg.textContent = d.message && d.message.includes('already') ? 'You\'re already subscribed.' : '\u2713 Done! You\'ll get alerts when stock changes.';
+      msg.className = 'mt-2 text-sm text-green-700';
+      msg.classList.remove('hidden');
+      document.getElementById('nurserySubForm').style.display = 'none';
+    }})
+    .catch(function() {{
+      msg.textContent = 'Something went wrong \u2014 please try again.';
+      msg.className = 'mt-2 text-sm text-red-600';
+      msg.classList.remove('hidden');
+    }});
+  }});
+  </script>
 </main>
 
 {footer}
@@ -456,7 +503,7 @@ def main():
 
     for key, data in nurseries_data.items():
         name = NURSERY_NAMES.get(key, data.get("nursery_name", key))
-        page = build_nursery_page(key, data, species_lookup)
+        page = build_nursery_page(key, data, species_lookup, total_nurseries=len(nurseries_data))
         out = nursery_dir / f"{key}.html"
         out.write_text(page)
         in_stock = data.get("in_stock_count", 0)

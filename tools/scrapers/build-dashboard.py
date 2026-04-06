@@ -900,7 +900,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   <!-- Email Alerts Signup (below results) -->
   <div class="mt-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-      <p id="subCTA" class="text-sm text-green-800 flex-1"><strong>Get tomorrow's changes in your inbox.</strong> Free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
+      <p id="subCTA" class="text-sm text-green-800 flex-1"><strong>Be first to know when rare varieties restock.</strong> Free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a></p>
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0 flex-wrap">
         <input type="email" id="subEmail" placeholder="your@email.com" required
           class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
@@ -1044,7 +1044,7 @@ function updateSubCTA(q) {{
 
   if (!q) {{
     currentWatchSlug = null;
-    ctaEl.innerHTML = `<strong>Get tomorrow's changes in your inbox</strong> \u2014 free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
+    ctaEl.innerHTML = `<strong>Be first to know when rare varieties restock</strong> \u2014 free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
     if (floatInput) floatInput.placeholder = 'Get daily alerts (free)';
     if (subBtn) subBtn.textContent = 'Subscribe free';
     if (subState) subState.style.display = '';
