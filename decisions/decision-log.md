@@ -4,6 +4,34 @@
 
 ---
 
+## DEC-108 — 2026-04-06 — Session 68: Community Wishlist + Market Trends Pages (DAL-124, DAL-41, DAL-111)
+
+**Decided by:** Dale (autonomous)
+
+**DAL-111 — Internal link audit (closed as already done):**
+- Investigated: both link directions were already implemented in prior sessions (DAL-74 added combo->species links, DAL-103 added species->combo links)
+- DAL-130 was a duplicate; closed it
+- No new work required
+
+**DAL-124 — Community wishlist page:**
+- New `wishlist` table in variety_watches.db (email, species_slug, UNIQUE constraint)
+- 2 new API endpoints: POST /api/wishlist (vote + auto-subscribe), GET /api/wishlist-counts (public aggregates)
+- Built wishlist.html: 50 species with vote buttons, email modal, live count updates, top-10 leaderboard, localStorage vote persistence
+- Voter automatically subscribed to stock alerts for voted species (subscriber funnel)
+- Caddy config updated with /api/wishlist routes
+- "Wishlist" added to site nav and sitemap
+
+**DAL-41 — Market Trends / Seasonal Intelligence initial build:**
+- Built build_species_trends.py: processes all 33 days of historical snapshots (~350K records), matches products to species, computes per-day availability and price data
+- trends.html: "Good time to buy" signals, "Act fast" rare in-stock species, "Trending up" section, full 50-species table with inline SVG sparklines, trend arrows, availability %
+- SVG sparklines generated server-side (no JS dependencies)
+- "Trends" added to site nav and sitemap (daily rebuild)
+- Data moat infrastructure now in place; patterns will strengthen at 90+ days
+
+**Status:** DONE
+
+---
+
 ## DEC-107 — 2026-04-06 — Session 67: GSC Indexing Report + Weekly Digest Plain-text Fallback
 
 **Decided by:** Dale (autonomous)

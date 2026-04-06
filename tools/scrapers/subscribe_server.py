@@ -39,7 +39,7 @@ PORT = 8099
 
 
 def init_variety_watches_db():
-    """Initialise the SQLite DB for per-variety restock watches."""
+    """Initialise the SQLite DB for per-variety restock watches and wishlists."""
     VARIETY_WATCHES_DB.parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(VARIETY_WATCHES_DB)
     con.executescript("""
@@ -58,6 +58,13 @@ def init_variety_watches_db():
             variety_slug TEXT NOT NULL,
             sent_at TEXT NOT NULL,
             UNIQUE(email, variety_slug, sent_at)
+        );
+        CREATE TABLE IF NOT EXISTS wishlist (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            species_slug TEXT NOT NULL,
+            added_at TEXT NOT NULL,
+            UNIQUE(email, species_slug)
         );
     """)
     con.commit()
@@ -108,6 +115,20 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         email = params.get("email", "").strip().lower()
         token = params.get("token", "").strip()
 
+        if parsed.path in ("/wishlist-counts", "/api/wishlist-counts"):
+            try:
+                con = sqlite3.connect(VARIETY_WATCHES_DB)
+                rows = con.execute(
+                    "SELECT species_slug, COUNT(*) as cnt FROM wishlist GROUP BY species_slug ORDER BY cnt DESC"
+                ).fetchall()
+                con.close()
+            except sqlite3.Error as e:
+                self.send_json(500, {"error": f"DB error: {e}"})
+                return
+            counts = {r[0]: r[1] for r in rows}
+            self.send_json(200, counts)
+            return
+
         if parsed.path in ("/unsubscribe", "/api/unsubscribe"):
             if not email or not token or not verify_unsubscribe_token(email, token):
                 self.send_html(400, "<h2>Invalid unsubscribe link.</h2><p>Please contact us at treestock.com.au</p>")
@@ -142,7 +163,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path = self.path.split("?")[0]
-        if path not in ("/subscribe", "/api/subscribe", "/watch-variety", "/api/watch-variety", "/unwatch-variety", "/api/unwatch-variety"):
+        if path not in ("/subscribe", "/api/subscribe", "/watch-variety", "/api/watch-variety", "/unwatch-variety", "/api/unwatch-variety", "/wishlist", "/api/wishlist"):
             self.send_error(404)
             return
 
@@ -185,6 +206,66 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 self.send_json(201, {"message": "Alert set!", "variety_slug": variety_slug})
             else:
                 self.send_json(200, {"message": "Already watching", "variety_slug": variety_slug})
+            return
+
+        # Handle wishlist vote
+        if path in ("/wishlist", "/api/wishlist"):
+            try:
+                data = json.loads(body)
+            except json.JSONDecodeError:
+                self.send_json(400, {"error": "Invalid JSON"})
+                return
+            email = data.get("email", "").strip().lower()
+            species_slug = data.get("species_slug", "").strip().lower()
+            if not email or not is_valid_email(email):
+                self.send_json(400, {"error": "Valid email required"})
+                return
+            if not species_slug:
+                self.send_json(400, {"error": "species_slug required"})
+                return
+            added_at = datetime.now().isoformat()
+            try:
+                con = sqlite3.connect(VARIETY_WATCHES_DB)
+                cur = con.execute(
+                    "INSERT OR IGNORE INTO wishlist (email, species_slug, added_at) VALUES (?, ?, ?)",
+                    (email, species_slug, added_at),
+                )
+                con.commit()
+                inserted = cur.rowcount > 0
+                count = con.execute(
+                    "SELECT COUNT(*) FROM wishlist WHERE species_slug = ?", (species_slug,)
+                ).fetchone()[0]
+                con.close()
+            except sqlite3.Error as e:
+                self.send_json(500, {"error": f"DB error: {e}"})
+                return
+            # Also subscribe this person if not already subscribed
+            subscribers = load_subscribers()
+            existing = next((s for s in subscribers if s["email"] == email), None)
+            if not existing:
+                subscribers.append({
+                    "email": email,
+                    "subscribed_at": datetime.now().isoformat(),
+                    "state": "ALL",
+                    "watch_species": [species_slug],
+                })
+                save_subscribers(subscribers)
+                print(f"New subscriber via wishlist: {email}")
+                welcome_script = SCRIPT_DIR / "send_welcome_email.py"
+                if welcome_script.exists():
+                    try:
+                        subprocess.Popen(
+                            [sys.executable, str(welcome_script), email],
+                            stdout=subprocess.DEVNULL,
+                            stderr=subprocess.DEVNULL,
+                        )
+                    except Exception as ex:
+                        print(f"Warning: could not launch welcome email: {ex}")
+            if inserted:
+                print(f"Wishlist vote: {email} -> {species_slug} (total: {count})")
+                self.send_json(201, {"message": "Added to wishlist!", "species_slug": species_slug, "total": count})
+            else:
+                self.send_json(200, {"message": "Already on your wishlist", "species_slug": species_slug, "total": count})
             return
 
         # Handle per-variety unwatch

@@ -26,6 +26,8 @@ NAV_ITEMS = [
     ("Digest", "/digest.html"),
     ("History", "/history.html"),
     ("Planting Calendar", "/when-to-plant.html"),
+    ("Wishlist", "/wishlist.html"),
+    ("Trends", "/trends.html"),
 ]
 
 LOGO_SVG = """\
