@@ -211,6 +211,82 @@ def load_traffic_report() -> tuple:
     return html, text
 
 
+def load_indexing_report() -> tuple:
+    """Load GSC indexing progress for inclusion in the weekly Sunday email.
+
+    Returns (html, text) tuple. Empty strings if no report available or stale.
+    Only shown if the report was generated within the last 8 days (stays visible
+    through the week following each Sunday run).
+    """
+    from datetime import datetime, timezone, timedelta
+    report_path = Path("/opt/dale/data/gsc_report.json")
+    if not report_path.exists():
+        return "", ""
+    try:
+        with open(report_path) as f:
+            report = json.load(f)
+    except Exception:
+        return "", ""
+
+    indexing = report.get("indexing_progress")
+    if not indexing:
+        return "", ""
+
+    # Only show if generated within last 8 days
+    try:
+        generated = datetime.fromisoformat(indexing["collected_at"])
+        if generated.tzinfo is None:
+            generated = generated.replace(tzinfo=timezone.utc)
+        if datetime.now(timezone.utc) - generated > timedelta(days=8):
+            return "", ""
+    except Exception:
+        pass
+
+    page_types = indexing.get("page_types", {})
+    total_indexed = indexing.get("total_indexed", 0)
+    total_known = indexing.get("total_known", 0)
+    total_pct = indexing.get("total_pct", 0)
+
+    text_lines = [f"GSC Indexing Progress (90-day window)"]
+    html_rows = []
+
+    for ptype, stats in sorted(page_types.items()):
+        indexed = stats["indexed"]
+        total = stats["total"]
+        pct = stats["pct"]
+        bar = "#" * (pct // 10) + "." * (10 - pct // 10)
+        text_lines.append(f"  {ptype:<22} {indexed:>3}/{total:<3} [{bar}] {pct}%")
+
+        color = "#2e7d32" if pct >= 75 else "#e65100" if pct >= 25 else "#c62828"
+        html_rows.append(
+            f'<tr style="border-bottom: 1px solid #eee;">'
+            f'<td style="padding: 3px 8px; font-size: 12px;">{ptype}</td>'
+            f'<td style="padding: 3px 8px; text-align: right; font-size: 12px;">{indexed}/{total}</td>'
+            f'<td style="padding: 3px 8px; text-align: right; font-size: 12px; color: {color};">{pct}%</td>'
+            f'</tr>'
+        )
+
+    text_lines.append(f"  {'TOTAL':<22} {total_indexed:>3}/{total_known:<3}  {total_pct}%")
+    text_lines.append("")
+
+    html = (
+        f'<h4 style="margin: 12px 0 4px 0; font-size: 13px;">GSC Indexing Progress (90-day window)</h4>'
+        f'<table style="font-family: monospace; font-size: 12px; border-collapse: collapse; width: 100%;">'
+        f'<tr style="border-bottom: 1px solid #ddd; font-weight: bold;">'
+        f'<td style="padding: 3px 8px;">Page type</td>'
+        f'<td style="padding: 3px 8px; text-align: right;">Indexed</td>'
+        f'<td style="padding: 3px 8px; text-align: right;">%</td></tr>'
+        + "".join(html_rows)
+        + f'<tr style="border-top: 2px solid #ddd; font-weight: bold;">'
+        f'<td style="padding: 3px 8px; font-size: 12px;">TOTAL</td>'
+        f'<td style="padding: 3px 8px; text-align: right; font-size: 12px;">{total_indexed}/{total_known}</td>'
+        f'<td style="padding: 3px 8px; text-align: right; font-size: 12px;">{total_pct}%</td></tr>'
+        f'</table>'
+    )
+
+    return html, "\n".join(text_lines)
+
+
 def load_resend_report() -> tuple:
     """Load weekly email delivery report for inclusion in daily digest.
 
@@ -280,9 +356,10 @@ def send_summary(session_log_path):
     duration_min = duration_s / 60
 
     traffic_html, traffic_text = load_traffic_report()
+    indexing_html, indexing_text = load_indexing_report()
 
     html = f"""<h2>Dale Session &mdash; {today}</h2>
-{traffic_html}
+{traffic_html}{indexing_html}
 <h3>Session Output</h3>
 <pre style="white-space: pre-wrap; font-family: monospace; background: #f5f5f5; padding: 12px; border-radius: 4px;">{summary_text[:3000]}</pre>
 <h3>Usage</h3>
@@ -305,7 +382,7 @@ def send_summary(session_log_path):
     text = f"""Dale Session — {today}
 
 {traffic_text}
-
+{indexing_text}
 {summary_text[:2000]}
 
 Tokens: {tokens_in:,} in / {tokens_out:,} out

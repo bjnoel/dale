@@ -326,6 +326,96 @@ def format_weekly_html(all_changes: dict, end_date: str, state_filter: str = "")
 </html>"""
 
 
+def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "") -> str:
+    """Build a plain-text version of the weekly digest (fallback for non-HTML clients)."""
+    start = (date.fromisoformat(end_date) - timedelta(days=7)).strftime("%-d %b")
+    end_fmt = date.fromisoformat(end_date).strftime("%-d %b %Y")
+    date_range = f"{start} to {end_fmt}"
+    nursery_count = len(SHIPPING_MAP)
+    state_note = f" (filtered to {state_filter})" if state_filter else ""
+
+    top_price_drops = []
+    top_restocks = []
+    top_new_arrivals = []
+
+    for nursery_key, changes in sorted(all_changes.items()):
+        name = NURSERY_NAMES.get(nursery_key, nursery_key)
+        for item in changes["price_drops"]:
+            top_price_drops.append({**item, "nursery": name})
+        for item in changes["back_in_stock"]:
+            top_restocks.append({**item, "nursery": name})
+        for item in changes["new_products"]:
+            top_new_arrivals.append({**item, "nursery": name})
+
+    top_price_drops.sort(key=lambda x: -x.get("pct_drop", 0))
+    top_price_drops = top_price_drops[:MAX_PRICE_DROPS]
+    top_new_arrivals.sort(key=lambda x: x.get("price") or 999999)
+    top_new_arrivals = top_new_arrivals[:MAX_NEW_ARRIVALS]
+    top_restocks = top_restocks[:MAX_RESTOCKS]
+
+    total_drops = sum(len(c["price_drops"]) for c in all_changes.values())
+    total_restocks = sum(len(c["back_in_stock"]) for c in all_changes.values())
+    total_new = sum(len(c["new_products"]) for c in all_changes.values())
+
+    stats_parts = []
+    if total_drops:
+        stats_parts.append(f"{total_drops} price drop{'s' if total_drops != 1 else ''}")
+    if total_restocks:
+        stats_parts.append(f"{total_restocks} restock{'s' if total_restocks != 1 else ''}")
+    if total_new:
+        stats_parts.append(f"{total_new} new listing{'s' if total_new != 1 else ''}")
+    stats_str = ", ".join(stats_parts) if stats_parts else "no changes"
+
+    lines = [
+        "treestock.com.au — Weekly Stock Digest",
+        "=" * 40,
+        f"Week of {date_range}{state_note}",
+        f"{nursery_count} nurseries tracked — {stats_str}",
+        "",
+    ]
+
+    if top_price_drops:
+        lines.append("PRICE DROPS")
+        lines.append("-" * 30)
+        for item in top_price_drops:
+            pct = f" (-{item['pct_drop']}%)" if item.get("pct_drop") else ""
+            lines.append(f"  {item['title']}")
+            lines.append(f"  ${item['old_price']:.2f} -> ${item['new_price']:.2f}{pct}")
+            lines.append(f"  {item['nursery']}")
+            if item.get("url"):
+                lines.append(f"  {item['url']}")
+            lines.append("")
+
+    if top_restocks:
+        lines.append("BACK IN STOCK")
+        lines.append("-" * 30)
+        for item in top_restocks:
+            price_str = f" — ${item['price']:.2f}" if item.get("price") else ""
+            lines.append(f"  {item['title']}{price_str}")
+            lines.append(f"  {item['nursery']}")
+            if item.get("url"):
+                lines.append(f"  {item['url']}")
+            lines.append("")
+
+    if top_new_arrivals:
+        lines.append("NEW THIS WEEK")
+        lines.append("-" * 30)
+        for item in top_new_arrivals:
+            price_str = f" — ${item['price']:.2f}" if item.get("price") else ""
+            lines.append(f"  {item['title']}{price_str}")
+            lines.append(f"  {item['nursery']}")
+            if item.get("url"):
+                lines.append(f"  {item['url']}")
+            lines.append("")
+
+    if not (top_price_drops or top_restocks or top_new_arrivals):
+        lines.append("All quiet this week — no notable changes across the nurseries.")
+        lines.append("")
+
+    lines.append(f"Browse all current stock: {SITE_URL}")
+    return "\n".join(lines)
+
+
 def inject_footer(html: str, email: str, token: str, state: str) -> str:
     encoded_email = urllib.parse.quote(email)
     unsubscribe_url = f"{SITE_URL}/unsubscribe.html?email={encoded_email}&token={token}"
@@ -344,13 +434,29 @@ def inject_footer(html: str, email: str, token: str, state: str) -> str:
     return html + footer
 
 
-def send_email(api_key: str, to_email: str, subject: str, html_body: str) -> bool:
+def inject_text_footer(text: str, email: str, token: str, state: str) -> str:
+    encoded_email = urllib.parse.quote(email)
+    unsubscribe_url = f"{SITE_URL}/unsubscribe.html?email={encoded_email}&token={token}"
+    preferences_url = f"{SITE_URL}/api/preferences?email={encoded_email}&token={token}"
+    state_label = f"Filtered to: {state}" if state != "ALL" else "Showing: all states"
+    return (
+        text
+        + f"\n\n---\nYou're receiving this because you subscribed at {SITE_URL}.\n"
+        + f"{state_label}\n"
+        + f"Change state: {preferences_url}\n"
+        + f"Unsubscribe: {unsubscribe_url}\n"
+    )
+
+
+def send_email(api_key: str, to_email: str, subject: str, html_body: str, text_body: str = "") -> bool:
     payload = {
         "from": f"{FROM_NAME} <{FROM_EMAIL}>",
         "to": [to_email],
         "subject": subject,
         "html": html_body,
     }
+    if text_body:
+        payload["text"] = text_body
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
         "https://api.resend.com/emails",
@@ -445,6 +551,7 @@ def main():
     subject = f"Weekly Nursery Digest — {start_fmt} to {end_fmt}"
 
     html_cache: dict[str, str] = {}
+    text_cache: dict[str, str] = {}
     sent_emails = list(already_sent)
     failed = 0
 
@@ -453,14 +560,17 @@ def main():
             filter_state = "" if state == "ALL" else state
             all_changes = load_weekly_changes(end_date, state_filter=filter_state)
             html_cache[state] = format_weekly_html(all_changes, end_date, state_filter=filter_state)
+            text_cache[state] = format_weekly_text(all_changes, end_date, state_filter=filter_state)
 
         digest_html = html_cache[state]
+        digest_text = text_cache[state]
 
         for subscriber in state_subscribers:
             email = subscriber["email"]
             token = make_unsubscribe_token(email, secret)
             personalised_html = inject_footer(digest_html, email, token, state)
-            success = send_email(api_key, email, subject, personalised_html)
+            personalised_text = inject_text_footer(digest_text, email, token, state)
+            success = send_email(api_key, email, subject, personalised_html, personalised_text)
             if success:
                 sent_emails.append(email)
             else:

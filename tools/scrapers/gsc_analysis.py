@@ -162,6 +162,108 @@ def build_inspection_urls(top_gsc_pages=None):
     return urls
 
 
+def collect_indexing_progress(service, dashboard_dir=DASHBOARD_DIR):
+    """
+    Query GSC page data over 90 days to measure indexing progress.
+
+    Pages with any GSC impressions are counted as indexed (proxy, but reliable).
+    Compares against known page totals on disk.
+
+    Returns a dict with page type counts and totals.
+    """
+    end = datetime.utcnow().date() - timedelta(days=3)
+    start = end - timedelta(days=89)
+    start_str, end_str = str(start), str(end)
+
+    print(f"--- INDEXING PROGRESS ({start_str} to {end_str}, 90 days) ---")
+
+    page_rows = query_gsc(service, SITE_URL, start_str, end_str, ["page"], row_limit=2000)
+    indexed_urls = set()
+    for row in page_rows:
+        url = row["keys"][0]
+        if url.startswith(SITE_BASE):
+            indexed_urls.add(url)
+
+    def categorise(url):
+        path = url.replace(SITE_BASE, "").lstrip("/")
+        if path in ("", "index.html"):
+            return "homepage"
+        if path.startswith("species/"):
+            return "species pages"
+        if path.startswith("nursery/"):
+            return "nursery pages"
+        if path.startswith("variety/"):
+            return "variety pages"
+        if path.startswith("compare/"):
+            return "compare pages"
+        if path.startswith("buy-fruit-trees-"):
+            return "location pages"
+        if path.startswith("buy-") and path.endswith(".html"):
+            return "species+state pages"
+        return "other"
+
+    # Count known pages on disk by type
+    known = {
+        "homepage": 1,
+        "species pages": 0,
+        "nursery pages": 0,
+        "location pages": 0,
+        "species+state pages": 0,
+    }
+    if os.path.isdir(os.path.join(dashboard_dir, "species")):
+        known["species pages"] = len([
+            f for f in os.listdir(os.path.join(dashboard_dir, "species"))
+            if f.endswith(".html")
+        ])
+    if os.path.isdir(os.path.join(dashboard_dir, "nursery")):
+        known["nursery pages"] = len([
+            f for f in os.listdir(os.path.join(dashboard_dir, "nursery"))
+            if f.endswith(".html")
+        ])
+    known["location pages"] = len([
+        f for f in os.listdir(dashboard_dir)
+        if f.startswith("buy-fruit-trees-") and f.endswith(".html")
+    ])
+    known["species+state pages"] = len([
+        f for f in os.listdir(dashboard_dir)
+        if f.startswith("buy-") and f.endswith(".html")
+        and not f.startswith("buy-fruit-trees-")
+    ])
+
+    # Count indexed pages per type
+    indexed_counts = defaultdict(int)
+    for url in indexed_urls:
+        cat = categorise(url)
+        indexed_counts[cat] += 1
+
+    result = {
+        "collected_at": datetime.utcnow().isoformat(),
+        "period_days": 90,
+        "page_types": {},
+    }
+
+    total_indexed = 0
+    total_known = 0
+    for ptype, total in sorted(known.items()):
+        indexed = indexed_counts.get(ptype, 0)
+        pct = round(indexed / total * 100) if total else 0
+        result["page_types"][ptype] = {
+            "indexed": indexed,
+            "total": total,
+            "pct": pct,
+        }
+        total_indexed += indexed
+        total_known += total
+        print(f"  {ptype:<22} {indexed:>4}/{total:<4} ({pct:>3}%) indexed")
+
+    result["total_indexed"] = total_indexed
+    result["total_known"] = total_known
+    result["total_pct"] = round(total_indexed / total_known * 100) if total_known else 0
+    print(f"  {'TOTAL':<22} {total_indexed:>4}/{total_known:<4} ({result['total_pct']:>3}%)")
+    print()
+    return result
+
+
 def run_url_inspection(urls=None, top_gsc_pages=None, delay_seconds=0.5):
     """
     Inspect a list of URLs via GSC URL Inspection API.
@@ -499,7 +601,13 @@ def run_analysis(days=16, output_path=None, inspect=False):
         },
     }
 
-    # 6. URL Inspection (optional, requires OAuth creds)
+    # 6. Indexing progress (always run, uses same service account)
+    print("\n=== INDEXING PROGRESS ===")
+    indexing_progress = collect_indexing_progress(service)
+    if indexing_progress:
+        report["indexing_progress"] = indexing_progress
+
+    # 7. URL Inspection (optional, requires OAuth creds)
     if inspect:
         print("\n=== URL INSPECTION ===")
         inspection = run_url_inspection(

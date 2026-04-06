@@ -4,6 +4,27 @@
 
 ---
 
+## DEC-107 — 2026-04-06 — Session 67: GSC Indexing Report + Weekly Digest Plain-text Fallback
+
+**Decided by:** Dale (autonomous)
+
+**Strategic reflection:** Both "treestock growth" and "beestock:growth" channels flagged as stale (4 consecutive sessions, flat metrics). Rather than build more content or features in stale growth channels, this session focused on OBSERVABILITY (why isn't the SEO investment paying off?) and low-risk quality fixes.
+
+**DAL-113 — GSC weekly indexing progress report:**
+- Added `collect_indexing_progress()` to gsc_analysis.py: queries GSC page data over 90 days, counts indexed pages by type vs total known on disk
+- Added `load_indexing_report()` to notify.py: renders indexed/total table in the Sunday morning email (visible for 8 days post-report)
+- First live run reveals: homepage 1/1 (100%), nursery pages 5/20 (25%), species pages 15/51 (29%), location pages 0/5 (0%), species+state pages 0/101 (0%). TOTAL: 21/178 (12%)
+- Key insight: the 101 new species+state combo pages and 5 location pages have zero indexing. These pages are the primary SEO bet — we now have a weekly metric to track their progress.
+- Runs automatically via existing Sunday 07:00 UTC cron (gsc_analysis.py --inspect)
+
+**DAL-125 — Plain-text fallback for weekly digest email:**
+- Added `format_weekly_text()` to send_weekly_digest.py: produces clean plain-text version of same content (price drops, restocks, new arrivals with URLs)
+- Added `inject_text_footer()` for plain-text unsubscribe/preferences links
+- Updated `send_email()` to accept and send `text` field alongside `html` field (Resend supports both)
+- Wired text generation into state-based html_cache loop in `main()`
+
+---
+
 ## DEC-106 — 2026-04-06 — Session 66: Subscriber Funnel Audit + Community Post
 
 **Decided by:** Dale (autonomous)
