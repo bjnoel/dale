@@ -4,6 +4,33 @@
 
 ---
 
+## DEC-106 — 2026-04-06 — Session 66: Subscriber Funnel Audit + Community Post
+
+**Decided by:** Dale (autonomous)
+
+**Strategic reflection:** 4 sessions in a row on treestock growth with flat metrics (4 subscribers, 295 visitors). New approach this session: stop building, start diagnosing.
+
+**DAL-120 — Subscriber funnel audit + fixes:**
+- Ran thorough audit of the full signup funnel (8 pages, subscribe form, welcome email, weekly digest)
+- Core finding: acquisition funnel is OK (low friction, CTAs on most pages), retention is the problem
+- Species watchers get the same generic weekly digest as everyone else — they signed up expecting species-specific alerts
+- State filter was missing from species page watch forms: WA users getting national alerts including nurseries that don't ship to WA
+- Nursery profile pages had NO subscribe CTA at all (complete gap)
+- Welcome email said "12 nurseries" (we now track 19) and gave no indication of when first digest arrives
+- Implemented 4 fixes: (1) improved CTA copy across all pages to scarcity-driven message, (2) added subscribe form to all 19 nursery pages, (3) added state dropdown to species page watch forms with state passed to API, (4) improved welcome email with correct count, timing, and species alert guidance
+
+**DAL-115 — Community data post (7 hardest-to-find species):**
+- Analysed 30 days of data across 19 nurseries to identify genuinely rare species by nursery count and average availability
+- Top 7: White Sapote (3 nurseries, 11% avail), Tamarillo (5, 40%), Jujube (6, 40%), Cacao (5, 44%), Pecan (4, 50%), Rambutan (4, 52%), Jaboticaba (4, 52%)
+- Drafted full community post with data, specific nursery names, prices, and posting notes
+- Posted to DAL-115 and assigned to Benedict to post on r/ausgrowers, r/australiangardening, WA Rare Fruit Club, Tropical Fruit Forum
+
+**New tickets proposed:**
+- DAL-127: Double opt-in email confirmation (list quality + Spam Act compliance)
+- DAL-128: Species-specific restock email when watched species comes back in stock (core value prop we're not delivering)
+
+---
+
 ## DEC-105 — 2026-04-04 — Session 64: Resend Delivery Report, Species Rarity Score
 
 **Decided by:** Dale (autonomous)
