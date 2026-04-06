@@ -26,6 +26,7 @@ from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NA
 # - Ladybird: ships QLD/NSW/VIC/ACT only, NOT WA
 # - Fruitopia: unclear from policy, likely does NOT ship to WA (QLD-based, no WA mention)
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+RARITY_SCORES_FILE = Path("/opt/dale/data/rarity_scores.json")
 
 # Featured nurseries (paying partners). Products are visually highlighted and sorted first.
 # To activate a featured listing, add the nursery key here.
@@ -750,6 +751,17 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
                     species_slugs[syn.lower()] = entry
     species_slugs_json = json.dumps(species_slugs, separators=(",", ":"))
 
+    # Build hard-to-find slug set from computed rarity scores
+    hard_to_find_slugs: set[str] = set()
+    if RARITY_SCORES_FILE.exists():
+        try:
+            with open(RARITY_SCORES_FILE) as f:
+                rarity_data = json.load(f)
+            hard_to_find_slugs = {slug for slug, r in rarity_data.items() if r.get("hard_to_find")}
+        except Exception:
+            pass
+    hard_to_find_json = json.dumps(list(hard_to_find_slugs), separators=(",", ":"))
+
     # Server-render species strip for SEO (crawlable <a> tags)
     # data-q attribute drives JS filter; href preserved for crawlers/fallback
     species_strip_html = "\n".join(
@@ -778,6 +790,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .nursery-tag:hover { background: #c7d2fe; }
   .nursery-tag.featured-tag { background: #fef3c7; color: #92400e; font-weight: 600; }
   .featured-badge { font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #f59e0b; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .rare-badge { font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #fef3c7; color: #92400e; font-weight: 700; }
   .species-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; max-height: 34px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
   .species-strip.expanded { max-height: 500px; }
   .toggle-pills-btn { background: none; border: none; color: #059669; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
@@ -917,6 +930,7 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
 const P = {products_json};
 const N = {nurseries_json};
 const SPECIES_SLUGS = {species_slugs_json};
+const HARD_TO_FIND = new Set({hard_to_find_json});
 const SLUG_TO_NAME = {{}};
 Object.values(SPECIES_SLUGS).forEach(v => {{ SLUG_TO_NAME[v.slug] = v.name; }});
 
@@ -1170,12 +1184,13 @@ function render() {{
     const featuredClass = p.ft ? ' featured-row' : '';
     const nurseryTagClass = p.ft ? 'nursery-tag featured-tag' : 'nursery-tag';
     const featuredBadge = p.ft ? '<span class="featured-badge">Featured</span>' : '';
+    const rareBadge = (p.sl && HARD_TO_FIND.has(p.sl)) ? '<span class="stock-badge rare-badge">Hard to find</span>' : '';
     return `<a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row${{featuredClass}} flex items-center gap-3 py-3 px-2 block">
       <div class="flex-1 min-w-0">
         <div class="font-medium text-sm">${{p.t}}${{latinName}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
           <span class="${{nurseryTagClass}}" data-nk="${{p.nk}}">${{p.n}}</span>
-          ${{featuredBadge}} ${{stockBadge}} ${{shipsBadge}} ${{localBadge}} ${{saleBadge}} ${{changeBadge}}
+          ${{featuredBadge}} ${{rareBadge}} ${{stockBadge}} ${{shipsBadge}} ${{localBadge}} ${{saleBadge}} ${{changeBadge}}
         </div>
       </div>
       <div class="text-right flex-shrink-0">
