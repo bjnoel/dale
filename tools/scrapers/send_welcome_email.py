@@ -110,6 +110,14 @@ def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -
         </a>
       </div>
 
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 16px;margin-bottom:20px;">
+        <p style="margin:0 0 6px;font-weight:600;color:#065f46;font-size:0.9rem;">Know a fellow collector?</p>
+        <p style="margin:0;color:#374151;font-size:0.875rem;line-height:1.5;">
+          If treestock.com.au is useful, share it with other fruit tree enthusiasts.
+          Word-of-mouth from collectors is how this service grows.
+        </p>
+      </div>
+
       <p style="margin:0;color:#6b7280;font-size:0.85rem;line-height:1.5;">
         Questions? Just reply to this email. This is a small project built in Perth, WA.
         Feedback is very welcome.

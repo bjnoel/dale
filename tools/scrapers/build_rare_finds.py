@@ -23,6 +23,21 @@ from build_compare_pages import load_species, build_species_lookup, match_title
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
 from treestock_layout import render_head, render_header, render_footer
 
+# Rarity scores are computed daily by build_species_pages.py and saved here.
+# Fallback: empty (no badges shown) if file not yet generated.
+RARITY_SCORES_FILE = Path("/opt/dale/data/rarity_scores.json")
+
+
+def load_rarity_scores() -> dict:
+    if RARITY_SCORES_FILE.exists():
+        try:
+            with open(RARITY_SCORES_FILE) as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
 # Species the rare fruit community genuinely cares about
 # (not just apples, lemons, mangoes — those are covered on main dashboard)
 RARE_SPECIES = {
@@ -41,14 +56,6 @@ RARE_SPECIES = {
     'Banana', 'Passionfruit', 'Pawpaw',
 }
 
-# Species to highlight as especially rare/sought-after
-HIGHLIGHT_SPECIES = {
-    'Jaboticaba', 'Rambutan', 'Mangosteen', 'Rollinia', 'Sapodilla',
-    'White Sapote', 'Miracle Fruit', 'Wampee', 'Grumichama',
-    'Black Sapote', 'Canistel', 'Star Apple', 'Soursop',
-    'Abiu', 'Acerola',
-}
-
 
 def build_rare_page(data_dir: str, output_dir: str):
     data_dir = Path(data_dir)
@@ -57,6 +64,7 @@ def build_rare_page(data_dir: str, output_dir: str):
 
     species_list = load_species()
     lookup = build_species_lookup(species_list)
+    rarity_scores = load_rarity_scores()
 
     # Collect in-stock products matching rare species
     species_data = {}
@@ -85,6 +93,7 @@ def build_rare_page(data_dir: str, output_dir: str):
             if sname not in species_data:
                 species_data[sname] = {
                     'species': s,
+                    'slug': s.get('slug', sname.lower().replace(' ', '-')),
                     'products': [],
                     'nurseries': set(),
                 }
@@ -108,11 +117,12 @@ def build_rare_page(data_dir: str, output_dir: str):
     now = datetime.now(timezone.utc)
     date_str = now.strftime('%d %B %Y')
 
-    # Sort: highlighted first, then by number of in-stock products (descending)
+    # Sort: hard-to-find first (by rarity score desc), then by product count desc
     def sort_key(item):
         sname, data = item
-        is_highlight = sname in HIGHLIGHT_SPECIES
-        return (not is_highlight, -len(data['products']))
+        slug = data['slug']
+        score = rarity_scores.get(slug, {}).get("score", 0)
+        return (-score, -len(data['products']))
 
     sorted_species = sorted(species_data.items(), key=sort_key)
 
@@ -135,10 +145,14 @@ def build_rare_page(data_dir: str, output_dir: str):
         else:
             price_str = 'POA'
 
-        # Highlight badge
+        # Highlight badge: data-driven from computed rarity score
+        slug = data['slug']
+        rarity = rarity_scores.get(slug, {})
         highlight_badge = ''
-        if sname in HIGHLIGHT_SPECIES:
-            highlight_badge = '<span class="rare-badge">Rare find</span>'
+        if rarity.get('hard_to_find'):
+            score = rarity.get('score', 0)
+            label = 'Very rare' if score >= 80 else 'Hard to find'
+            highlight_badge = f'<span class="rare-badge">{label}</span>'
 
         # Product rows (up to 6 per species)
         show_products = sorted(products, key=lambda x: (x['price'] or 999))
@@ -156,10 +170,8 @@ def build_rare_page(data_dir: str, output_dir: str):
 
         more_html = ''
         if len(products) > 6:
-            slug = s.get('slug', sname.lower().replace(' ', '-'))
             more_html = f'<p class="more-link"><a href="/species/{slug}.html">See all {len(products)} listings →</a></p>'
 
-        slug = s.get('slug', sname.lower().replace(' ', '-'))
         sci_name = s.get('scientific_name', '')
 
         cards_html.append(f'''

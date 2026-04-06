@@ -631,6 +631,12 @@ def main():
     hard_to_find_count = sum(1 for r in rarity_scores.values() if r["hard_to_find"])
     print(f"  {hard_to_find_count} species marked 'Hard to find'")
 
+    # Save rarity scores for use by other build scripts (e.g. build_rare_finds.py)
+    rarity_scores_file = data_dir.parent / "rarity_scores.json"
+    with open(rarity_scores_file, "w") as f:
+        json.dump(rarity_scores, f, indent=2)
+    print(f"  Saved rarity scores to {rarity_scores_file}")
+
     # Build slug->name map for species that have product data (used for related links)
     slug_to_name = {
         slug: entry["species"]["common_name"]
