@@ -11,6 +11,12 @@ Usage:
     python3 send_variety_alerts.py <data-dir>
     python3 send_variety_alerts.py <data-dir> --dry-run
     python3 send_variety_alerts.py <data-dir> --date 2026-03-14
+    python3 send_variety_alerts.py <data-dir> --redirect-to me@example.com
+
+--redirect-to sends every alert to the given address (with the original
+recipient noted in the subject and a banner injected into the body) and
+does NOT record sends, so a real run later can still fire normally. Useful
+for previewing what would have gone out.
 
 Australian Spam Act compliance:
     - Every email includes a working unsubscribe link
@@ -285,6 +291,21 @@ def build_variety_alert_email(variety_title: str, variety_slug: str, products: l
 </html>"""
 
 
+def inject_preview_banner(html: str, original_email: str) -> str:
+    banner = (
+        '<div style="background:#fef3c7;border:1px solid #fbbf24;padding:12px 16px;'
+        'margin:0 0 16px;border-radius:6px;font-size:0.875em;color:#78350f">'
+        f'<strong>PREVIEW</strong> -- this email would have been sent to '
+        f'<code>{original_email}</code>. Sends were not recorded.'
+        '</div>'
+    )
+    body_open = html.find("<body")
+    if body_open == -1:
+        return banner + html
+    body_close = html.find(">", body_open)
+    return html[:body_close + 1] + banner + html[body_close + 1:]
+
+
 def inject_unsubscribe(html: str, email: str, token: str) -> str:
     unsubscribe_url = f"{UNSUBSCRIBE_BASE}?email={urllib.parse.quote(email)}&token={token}"
     manage_url = f"{SITE_URL}/api/preferences?email={urllib.parse.quote(email)}&token={token}"
@@ -333,10 +354,15 @@ def send_email(api_key: str, to_email: str, subject: str, html_body: str) -> boo
 def main():
     dry_run = "--dry-run" in sys.argv
     target_date = date.today().isoformat()
+    redirect_to = None
 
     if "--date" in sys.argv:
         idx = sys.argv.index("--date")
         target_date = sys.argv[idx + 1]
+
+    if "--redirect-to" in sys.argv:
+        idx = sys.argv.index("--redirect-to")
+        redirect_to = sys.argv[idx + 1]
 
     if len(sys.argv) < 2 or sys.argv[1].startswith("--"):
         print("Usage: send_variety_alerts.py <data-dir> [--dry-run] [--date YYYY-MM-DD]")
@@ -347,7 +373,12 @@ def main():
         print(f"ERROR: {data_dir} does not exist", file=sys.stderr)
         sys.exit(1)
 
-    print(f"send_variety_alerts.py -- {target_date}{' [DRY RUN]' if dry_run else ''}")
+    mode_tag = ""
+    if dry_run:
+        mode_tag = " [DRY RUN]"
+    elif redirect_to:
+        mode_tag = f" [PREVIEW -> {redirect_to}]"
+    print(f"send_variety_alerts.py -- {target_date}{mode_tag}")
 
     # Load all variety watches from SQLite
     watches = load_watches()
@@ -430,9 +461,17 @@ def main():
             email = w["email"]
             token = make_unsubscribe_token(email, secret)
             personalised = inject_unsubscribe(email_html, email, token)
-            success = send_email(api_key, email, subject, personalised)
+            if redirect_to:
+                personalised = inject_preview_banner(personalised, email)
+                actual_to = redirect_to
+                actual_subject = f"[PREVIEW -> {email}] {subject}"
+            else:
+                actual_to = email
+                actual_subject = subject
+            success = send_email(api_key, actual_to, actual_subject, personalised)
             if success:
-                record_send(email, slug, target_date)
+                if not redirect_to:
+                    record_send(email, slug, target_date)
                 total_sent += 1
             else:
                 total_failed += 1

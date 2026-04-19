@@ -50,12 +50,15 @@ fi
 # Build dashboard (atomic write + post-build verification built into script)
 echo "$LOG_PREFIX Building dashboard..."
 if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" 2>&1; then
-    # Verify JS syntax in the built dashboard
-    JS_CHECK=$(awk '/<script>/{p=1; next} /<\/script>/{p=0} p' "$DASHBOARD_FILE" | node --check /dev/stdin 2>&1)
-    if [ $? -eq 0 ]; then
+    # Verify JS syntax in the built dashboard. Use a temp file because
+    # `node --check /dev/stdin` is broken on Node 22 (ENOENT on /proc fd path).
+    JS_TMP=$(mktemp --suffix=.js)
+    awk '/<script>/{p=1; next} /<\/script>/{p=0} p' "$DASHBOARD_FILE" > "$JS_TMP"
+    JS_ERR_TMP=$(mktemp)
+    if node --check "$JS_TMP" >"$JS_ERR_TMP" 2>&1; then
         echo "$LOG_PREFIX Dashboard build complete. JS syntax verified."
     else
-        echo "$LOG_PREFIX ERROR: Dashboard JS syntax error: $JS_CHECK"
+        echo "$LOG_PREFIX ERROR: Dashboard JS syntax error: $(cat "$JS_ERR_TMP")"
         echo "$LOG_PREFIX Rolling back to backup."
         if [ -f "$DASHBOARD_BACKUP" ]; then
             cp "$DASHBOARD_BACKUP" "$DASHBOARD_FILE"
@@ -64,6 +67,7 @@ if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$
             echo "$LOG_PREFIX ERROR: No backup available. Dashboard may have broken JS!"
         fi
     fi
+    rm -f "$JS_TMP" "$JS_ERR_TMP"
 else
     BUILD_EXIT=$?
     echo "$LOG_PREFIX ERROR: Dashboard build failed (exit $BUILD_EXIT). Rolling back to backup."
