@@ -155,7 +155,7 @@ def group_by_cultivar(products: list[dict]) -> dict:
     return groups
 
 
-def build_variety_page(slug: str, data: dict) -> str:
+def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> str:
     """Build HTML for a single cultivar page."""
     title = data["title"]
     species = data["species"]
@@ -228,9 +228,10 @@ def build_variety_page(slug: str, data: dict) -> str:
         canonical_url=f"https://treestock.com.au/variety/{slug}.html",
     )
     header = render_header(active_path="/variety/")
+    species_href = f"/species/{species_slug}.html" if species_slug in valid_species_slugs else ""
     breadcrumb = render_breadcrumb([
         ("Home", "/"), ("Varieties", "/variety/"),
-        (species, f"/species/{species_slug}.html"), (variety, ""),
+        (species, species_href), (variety, ""),
     ])
     footer = render_footer()
 
@@ -312,10 +313,10 @@ def build_variety_page(slug: str, data: dict) -> str:
       online nurseries, updated daily. Data is scraped directly from nursery websites so you can compare
       without visiting each one individually.
     </p>
-    <p class="mt-2">
+    {f'''<p class="mt-2">
       Looking for other {species} varieties?
-      <a href="/species/{species_slug}.html" class="underline text-green-700">See all {species} options →</a>
-    </p>
+      <a href="/species/{species_slug}.html" class="underline text-green-700">See all {species} options &rarr;</a>
+    </p>''' if species_slug in valid_species_slugs else ''}
     <p class="mt-2 text-xs text-gray-400">
       Prices shown are the lowest available variant at time of last scrape. Always verify current pricing
       and shipping costs on the nursery's website before ordering.
@@ -389,8 +390,14 @@ document.getElementById('watchForm').addEventListener('submit', function(e) {{
 </html>"""
 
 
-def build_variety_index(entries: list[dict]) -> str:
-    """Build /variety/index.html listing all cultivar pages."""
+def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> str:
+    """Build /variety/index.html listing all cultivar pages.
+
+    valid_species_slugs is the set of species slugs that have a real
+    /species/<slug>.html page; anything else renders as plain text rather
+    than a broken link (e.g. "Sapodilla Grafted" — parse_cultivar can't
+    distinguish a propagation-method prefix from the canonical species name).
+    """
     # Group by species for easier browsing
     by_species = defaultdict(list)
     for e in entries:
@@ -406,7 +413,7 @@ def build_variety_index(entries: list[dict]) -> str:
             n_count = v["nursery_count"]
             price = f'${v["min_price"]:.2f}' if v["min_price"] else "—"
             var_lower = v['variety'].lower().replace('"', '&quot;')
-        rows += f"""
+            rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="{var_lower}">
         <td class="py-2 pr-4">
           <a href="/variety/{v['slug']}.html" class="text-green-800 hover:underline">{v['variety']}</a>
@@ -417,10 +424,14 @@ def build_variety_index(entries: list[dict]) -> str:
       </tr>"""
 
         in_stock_count = sum(v["in_stock"] for v in varieties)
+        sp_heading = (
+            f'<a href="/species/{sp_slug}.html" class="hover:underline">{sp}</a>'
+            if sp_slug in valid_species_slugs else sp
+        )
         species_sections += f"""
   <section class="mb-8" id="{sp_slug}" data-sp="{sp.lower()}">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      <a href="/species/{sp_slug}.html" class="hover:underline">{sp}</a>
+      {sp_heading}
       <span class="text-sm font-normal text-gray-500 ml-2">{len(varieties)} varieties · {in_stock_count} in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -558,6 +569,17 @@ def main():
     variety_dir = output_dir / "variety"
     variety_dir.mkdir(parents=True, exist_ok=True)
 
+    # Species pages are built before variety pages by run-all-scrapers.sh.
+    # Use the resulting filenames as the source of truth for which species
+    # slugs are linkable (parse_cultivar's species portion can include
+    # propagation prefixes like "Sapodilla Grafted" that have no species page).
+    species_dir = output_dir / "species"
+    valid_species_slugs = (
+        {p.stem for p in species_dir.glob("*.html") if p.stem != "index"}
+        if species_dir.exists() else set()
+    )
+    print(f"Loaded {len(valid_species_slugs)} valid species slugs from {species_dir}")
+
     products = load_all_products(data_dir)
     print(f"Loaded {len(products)} products")
 
@@ -573,7 +595,7 @@ def main():
         all_nurseries = set(p["nursery_key"] for p in prods)
         min_price = min((p["price"] for p in in_stock), default=None)
 
-        html = build_variety_page(slug, data)
+        html = build_variety_page(slug, data, valid_species_slugs)
         out_path = variety_dir / f"{slug}.html"
         with open(out_path, "w") as f:
             f.write(html)
@@ -590,7 +612,7 @@ def main():
         pages_written += 1
 
     # Write index
-    index_html = build_variety_index(index_entries)
+    index_html = build_variety_index(index_entries, valid_species_slugs)
     with open(variety_dir / "index.html", "w") as f:
         f.write(index_html)
 
