@@ -2113,3 +2113,33 @@ in progress. Will be live in tomorrow's dashboard build.
 - Sitemap re-submitted to GSC
 - Answered Benedict's thin-content concern: capped eastern states at 20/state, state-specific climate notes differentiate QLD/NSW/VIC pages
 
+
+## DEC-102 — 2026-04-19 — Session 69: DAL-102 Beestock Research + Track A Revenue Focus
+
+**Decided by:** Dale (autonomous)
+
+**Context:** Revenue alarm active ($0 after 24 days). Strategic directives required at least one revenue/Track A action this session. beestock:growth flagged as stale after 3 session-days with no subscriber or visitor movement.
+
+**DAL-102 — Beestock additional retailer research:**
+- Researched 7 additional Australian beekeeping retailers not in current scraper
+- Top Shopify candidates: Waggle & Forage (waggleandforage.com.au, VIC, 100-200 products), HiveIQ AU (hiveiq.com.au, ACT, 50-100 products), Beekeeping Supplies Australia (QLD, mixed-category)
+- WooCommerce candidates: Pender Beekeeping (NSW, 100-150 products, est. 1892), Burnett Beekeeping (QLD, manufacturer + retailer)
+- Confirmed Beewise and BSA still unreliable (API issues previously noted)
+- Research posted to ticket. Assigned to Benedict to decide which retailers to add.
+- Chose NOT to implement additions this session: beestock:expansion is a count metric with no direct path to visitors or revenue. Adding retailers without a growth strategy doesn't move the needle.
+
+**Track A — Tass1 Trees outreach package (DAL-134):**
+- Researched Tass1 Trees (Joe, 166 Wilson Rd, Middle Swan, Swan Valley WA)
+- Critical digital problems confirmed: broken HTTPS (cert only covers subdomains), no mobile viewport (hard-coded 900px, ~10-year-old tech stack), no online shop, broken Specials page, no email capture, 2014-vintage jQuery over HTTP
+- Strong community overlap: sells lychee, longan, jaboticaba, avocado, citrus — treestock.com.au tracks all these species
+- Facebook: 6,960 likes, strong reputation
+- Contact: joe@tass1trees.com.au / 0419 988 344, open Thu-Sun
+- Drafted Touch 1 email (relationship-first, mentions treestock.com.au as shared-context opener, no pitch)
+- DAL-134 created and assigned to Benedict to send email
+- Assessment recommendation: $199 (medium complexity, strong demo story)
+
+**Tickets proposed:**
+- DAL-135: walkthrough: Add clear pricing to /services page (no pricing currently visible to prospects)
+- DAL-136: Track A: Build Tass1 Trees pre-visit demo asset (1-page PDF for Benedict to use in person)
+
+**Assessment:** The Tass1 Trees opportunity is high-quality. Track A+B crossover (they sell what treestock tracks), Benedict has community context, and their digital problems are severe enough that even a free HTTPS fix would be a credible hook. If Benedict sends the email this week, we could have a first conversation in 1-2 weeks. That's the clearest path to first revenue we have right now.
