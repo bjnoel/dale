@@ -395,9 +395,15 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
       headers: {{'Content-Type': 'application/json'}},
       body: JSON.stringify({{email: email, state: state}})
     }})
-    .then(function(r) {{ return r.json(); }})
-    .then(function(d) {{
-      msg.textContent = d.message && d.message.includes('already') ? 'You\'re already subscribed.' : '\u2713 Done! You\'ll get alerts when stock changes.';
+    .then(function(r) {{ return r.json().then(function(d) {{ return {{status: r.status, data: d}}; }}); }})
+    .then(function(res) {{
+      if (res.status === 202) {{
+        msg.textContent = '\u2713 Check your email \u2014 we sent you a confirmation link.';
+      }} else if (res.data.message && res.data.message.includes('already')) {{
+        msg.textContent = 'You\'re already subscribed.';
+      }} else {{
+        msg.textContent = '\u2713 Done! You\'ll get alerts when stock changes.';
+      }}
       msg.className = 'mt-2 text-sm text-green-700';
       msg.classList.remove('hidden');
       document.getElementById('nurserySubForm').style.display = 'none';

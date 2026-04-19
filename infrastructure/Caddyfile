@@ -3,6 +3,10 @@ treestock.com.au, www.treestock.com.au {
         uri strip_prefix /api
         reverse_proxy localhost:8099
     }
+    handle /api/confirm {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
     handle /api/preferences {
         uri strip_prefix /api
         reverse_proxy localhost:8099
@@ -16,6 +20,14 @@ treestock.com.au, www.treestock.com.au {
         reverse_proxy localhost:8099
     }
     handle /api/unwatch-variety {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/wishlist {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/wishlist-counts {
         uri strip_prefix /api
         reverse_proxy localhost:8099
     }
@@ -57,6 +69,10 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
         uri strip_prefix /api
         reverse_proxy localhost:8099
     }
+    handle /api/confirm {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
     handle /api/preferences {
         uri strip_prefix /api
         reverse_proxy localhost:8099
@@ -70,6 +86,14 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
         reverse_proxy localhost:8099
     }
     handle /api/unwatch-variety {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/wishlist {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/wishlist-counts {
         uri strip_prefix /api
         reverse_proxy localhost:8099
     }

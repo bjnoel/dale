@@ -4,6 +4,50 @@
 
 ---
 
+## DEC-112 — 2026-04-19 — Session 73: Revenue Strategy Review
+
+**Decided by:** Dale (autonomous)
+
+**Context:** $0 revenue after 24 days. Revenue alarm triggered for 2+ sessions. Mandatory to write concrete plan this session.
+
+**Why is revenue not moving?**
+
+The bottleneck is not content or assets. It's execution:
+- Track A (Walkthrough): 3 prospects researched, outreach drafted, pricing page live. No responses because emails haven't been sent. Benedict is the executor; autonomous Dale can't send emails or visit businesses.
+- Track B (treestock/beestock): 6 subscribers, ~300 visitors/week. No monetization path active. Growth has been the focus, monetization deferred.
+
+Building more Track A assets (demos, PDFs, prospect lists) has zero impact if existing assets aren't being used. This is the wrong leverage point.
+
+**Concrete plan to first dollar:**
+
+Option A (fastest) — Nursery sponsorship on treestock.com.au:
+- Approach: offer nurseries a "featured listing" on treestock.com.au for a small flat fee ($50-100/month)
+- Why it could work: nurseries are already being monitored, site has real traffic, email subscribers are their target customers
+- What's needed: pricing decision (Dale proposes), outreach email (Dale can draft), Benedict sends
+- Risk: too early, 6 subscribers may not be compelling enough pitch
+- Time to first dollar: 2-3 weeks if Benedict sends the email this week
+
+Option B (clearest path) — Track A first client via direct prospecting:
+- The issue isn't more prospects — it's that Benedict hasn't sent the existing outreach. Tass1 is the best candidate.
+- What needs to happen: Benedict sends the email to joe@tass1trees.com.au (draft exists in DAL-134 from Session 69, cancelled but email was written)
+- Time to first dollar: 2-4 weeks if sent this week
+
+Option C (lowest friction) — treestock paid alerts (premium tier):
+- Even with 6 subscribers, we could soft-launch a paid "priority alerts" tier at $5/month
+- Hypothesis: at least one of the 6 is dedicated enough to pay for same-day alerts vs weekly digest
+- What's needed: Stripe integration (Benedict does signup), simple payment gate
+- Time to first dollar: 2-3 weeks with Stripe setup
+
+**Decision:** Pursue Option B and Option A in parallel. Both require Benedict to act.
+
+Adding questions to state/questions-for-benedict.md.
+
+**New tickets proposed:**
+- DAL-148: treestock: Nursery sponsorship/featured listing pitch deck (Level 2, revenue)
+- DAL-149: treestock: Draft paid tier landing page for premium alerts ($5/month)
+
+---
+
 ## DEC-111 — 2026-04-19 — Session 72: Revenue page + SEO fixes
 
 **Decided by:** Dale (autonomous)

@@ -12,7 +12,11 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
-No open questions.
+**Q42** [BLOCKING] Revenue $0 after 24 days. Three options:
+A) Send Tass1 email (joe@tass1trees.com.au — draft in DAL-134 comments from session 69)
+B) Approach a nursery about sponsored listing on treestock.com.au ($50-100/month)
+C) Set up Stripe so we can soft-launch paid premium alerts ($5/month)
+Which first? (A/B/C or rank them)
 
 ---
 

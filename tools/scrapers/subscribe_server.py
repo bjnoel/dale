@@ -33,9 +33,11 @@ from urllib.parse import parse_qs, parse_qsl, urlparse
 SCRIPT_DIR = Path(__file__).parent
 
 SUBSCRIBERS_FILE = Path("/opt/dale/data/subscribers.json")
+PENDING_FILE = Path("/opt/dale/data/pending_subscribers.json")
 APP_ENV = Path("/opt/dale/secrets/app.env")
 VARIETY_WATCHES_DB = Path("/opt/dale/data/variety_watches.db")
 PORT = 8099
+CONFIRM_EXPIRY_HOURS = 48
 
 
 def init_variety_watches_db():
@@ -91,6 +93,49 @@ def verify_unsubscribe_token(email: str, token: str) -> bool:
     return hmac.compare_digest(expected, token)
 
 
+def make_confirm_token(email: str, state: str) -> str:
+    """Generate a confirmation token bound to the email + chosen state."""
+    secret = get_unsubscribe_secret()
+    msg = f"confirm:{email.lower()}:{state.upper()}"
+    return hmac.new(
+        secret.encode(), msg.encode(), hashlib.sha256
+    ).hexdigest()[:32]
+
+
+def verify_confirm_token(email: str, state: str, token: str) -> bool:
+    expected = make_confirm_token(email, state)
+    return hmac.compare_digest(expected, token)
+
+
+def load_pending() -> list:
+    if PENDING_FILE.exists():
+        with open(PENDING_FILE) as f:
+            return json.load(f)
+    return []
+
+
+def save_pending(pending: list):
+    PENDING_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(PENDING_FILE, "w") as f:
+        json.dump(pending, f, indent=2)
+
+
+def purge_expired_pending(pending: list) -> list:
+    """Remove pending entries older than CONFIRM_EXPIRY_HOURS."""
+    now = datetime.now()
+    cutoff_hours = CONFIRM_EXPIRY_HOURS
+    fresh = []
+    for entry in pending:
+        try:
+            requested = datetime.fromisoformat(entry["requested_at"])
+            age_hours = (now - requested).total_seconds() / 3600
+            if age_hours <= cutoff_hours:
+                fresh.append(entry)
+        except Exception:
+            pass
+    return fresh
+
+
 def load_subscribers() -> list:
     if SUBSCRIBERS_FILE.exists():
         with open(SUBSCRIBERS_FILE) as f:
@@ -127,6 +172,67 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 return
             counts = {r[0]: r[1] for r in rows}
             self.send_json(200, counts)
+            return
+
+        if parsed.path in ("/confirm", "/api/confirm"):
+            state = params.get("state", "ALL").upper().strip()
+            valid_states = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
+            if state not in valid_states:
+                state = "ALL"
+
+            if not email or not token:
+                self.send_html(400, "<h2>Invalid confirmation link.</h2><p>The link is missing required parameters.</p>")
+                return
+
+            if not verify_confirm_token(email, state, token):
+                self.send_html(400, "<h2>Invalid or expired confirmation link.</h2><p>Please subscribe again at <a href='https://treestock.com.au'>treestock.com.au</a></p>")
+                return
+
+            # Check if pending entry exists
+            pending = load_pending()
+            pending = purge_expired_pending(pending)
+            entry = next((p for p in pending if p["email"] == email and p.get("state", "ALL") == state), None)
+            if not entry:
+                # May have already been confirmed — check active subscribers
+                subscribers = load_subscribers()
+                if any(s["email"] == email for s in subscribers):
+                    self.send_html(200, "<h2>Already subscribed!</h2><p>You're already receiving treestock.com.au stock alerts.</p>")
+                else:
+                    self.send_html(400, "<h2>Confirmation link expired.</h2><p>Please subscribe again at <a href='https://treestock.com.au'>treestock.com.au</a></p>")
+                return
+
+            # Move from pending to active
+            pending = [p for p in pending if not (p["email"] == email and p.get("state", "ALL") == state)]
+            save_pending(pending)
+
+            subscribers = load_subscribers()
+            if not any(s["email"] == email for s in subscribers):
+                subscribers.append({
+                    "email": email,
+                    "subscribed_at": datetime.now().isoformat(),
+                    "state": state,
+                })
+                save_subscribers(subscribers)
+                print(f"Confirmed subscriber: {email} (state={state}, total: {len(subscribers)})")
+
+                # Send welcome email (non-blocking)
+                welcome_script = SCRIPT_DIR / "send_welcome_email.py"
+                if welcome_script.exists():
+                    try:
+                        subprocess.Popen(
+                            [sys.executable, str(welcome_script), email],
+                            stdout=subprocess.DEVNULL,
+                            stderr=subprocess.DEVNULL,
+                        )
+                    except Exception as ex:
+                        print(f"Warning: could not launch welcome email: {ex}")
+
+            self.send_html(200, """
+<h2 style="color:#065f46">You're subscribed!</h2>
+<p>You'll receive your first stock digest next Monday morning.</p>
+<p>You can <a href="https://treestock.com.au/species/" style="color:#065f46">browse species pages</a>
+to set alerts for specific varieties.</p>
+""")
             return
 
         if parsed.path in ("/unsubscribe", "/api/unsubscribe"):
@@ -362,11 +468,9 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             self.send_json(200, {"message": "Preferences updated", "state": new_state})
             return
 
-        # Handle subscribe (default)
+        # Handle subscribe (default) — double opt-in flow
         subscribers = load_subscribers()
-        existing = [s for s in subscribers if s["email"] == email]
-
-        if existing:
+        if any(s["email"] == email for s in subscribers):
             self.send_json(200, {"message": "Already subscribed", "email": email})
             return
 
@@ -379,28 +483,37 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         if sub_state not in valid_states:
             sub_state = "ALL"
 
-        subscribers.append({
+        # Check for existing pending entry (don't spam confirmation emails)
+        pending = purge_expired_pending(load_pending())
+        if any(p["email"] == email and p.get("state", "ALL") == sub_state for p in pending):
+            self.send_json(200, {"message": "Check your email — confirmation link already sent", "email": email})
+            return
+
+        # Add to pending and send confirmation email
+        confirm_token = make_confirm_token(email, sub_state)
+        pending.append({
             "email": email,
-            "subscribed_at": datetime.now().isoformat(),
             "state": sub_state,
+            "token": confirm_token,
+            "requested_at": datetime.now().isoformat(),
         })
-        save_subscribers(subscribers)
+        save_pending(pending)
 
-        print(f"New subscriber: {email} (total: {len(subscribers)})")
+        print(f"Pending confirmation: {email} (state={sub_state})")
 
-        # Send welcome email (non-blocking)
-        welcome_script = SCRIPT_DIR / "send_welcome_email.py"
-        if welcome_script.exists():
+        # Send confirmation email (non-blocking)
+        confirm_script = SCRIPT_DIR / "send_confirmation_email.py"
+        if confirm_script.exists():
             try:
                 subprocess.Popen(
-                    [sys.executable, str(welcome_script), email],
+                    [sys.executable, str(confirm_script), email, confirm_token, sub_state],
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
             except Exception as ex:
-                print(f"Warning: could not launch welcome email: {ex}")
+                print(f"Warning: could not launch confirmation email: {ex}")
 
-        self.send_json(201, {"message": "Subscribed!", "email": email})
+        self.send_json(202, {"message": "Check your email to confirm your subscription", "email": email})
 
     def do_OPTIONS(self):
         self.send_response(200)

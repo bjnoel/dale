@@ -24,6 +24,7 @@ FROM_EMAIL = "alerts@mail.treestock.com.au"
 FROM_NAME = "treestock.com.au"
 SITE_URL = "https://treestock.com.au"
 UNSUBSCRIBE_BASE = "https://treestock.com.au/unsubscribe"
+UTM = "utm_source=treestock&utm_medium=email&utm_campaign=welcome"
 
 
 def get_resend_api_key() -> str:
@@ -104,16 +105,16 @@ def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -
       <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;margin-bottom:20px;">
         <p style="margin:0 0 6px;font-weight:600;color:#92400e;font-size:0.9rem;">Set species-specific alerts</p>
         <p style="margin:0;color:#374151;font-size:0.875rem;line-height:1.5;">
-          Visit any <a href="{SITE_URL}/species/" style="color:#065f46;">species page</a> to get notified
+          Visit any <a href="{SITE_URL}/species/?{UTM}" style="color:#065f46;">species page</a> to get notified
           the moment a specific fruit tree comes back in stock. For example, if you're after
-          <a href="{SITE_URL}/species/sapodilla.html" style="color:#065f46;">sapodilla</a> or
-          <a href="{SITE_URL}/species/lychee.html" style="color:#065f46;">lychee</a>,
+          <a href="{SITE_URL}/species/sapodilla.html?{UTM}" style="color:#065f46;">sapodilla</a> or
+          <a href="{SITE_URL}/species/lychee.html?{UTM}" style="color:#065f46;">lychee</a>,
           you can set a targeted alert so you're first in line when stock appears.
         </p>
       </div>
 
       <div style="text-align:center;margin:24px 0;">
-        <a href="{SITE_URL}" style="display:inline-block;background:#065f46;color:white;text-decoration:none;padding:10px 24px;border-radius:8px;font-weight:600;font-size:0.95rem;">
+        <a href="{SITE_URL}?{UTM}" style="display:inline-block;background:#065f46;color:white;text-decoration:none;padding:10px 24px;border-radius:8px;font-weight:600;font-size:0.95rem;">
           Browse current stock &rarr;
         </a>
       </div>

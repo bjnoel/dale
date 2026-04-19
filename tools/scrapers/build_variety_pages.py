@@ -304,11 +304,15 @@ document.getElementById('subscribeForm').addEventListener('submit', function(e) 
     headers: {{'Content-Type': 'application/json'}},
     body: JSON.stringify({{email: email, state: state, action: 'subscribe'}})
   }})
-  .then(function(r) {{ return r.json(); }})
-  .then(function(d) {{
-    msg.textContent = d.message === 'Already subscribed'
-      ? 'You\\'re already subscribed!'
-      : '✓ Subscribed! You\\'ll get daily stock updates.';
+  .then(function(r) {{ return r.json().then(function(d) {{ return {{status: r.status, data: d}}; }}); }})
+  .then(function(res) {{
+    if (res.status === 202) {{
+      msg.textContent = '\\u2713 Check your email \\u2014 we sent you a confirmation link.';
+    }} else if (res.data.message === 'Already subscribed') {{
+      msg.textContent = 'You\\'re already subscribed!';
+    }} else {{
+      msg.textContent = '\\u2713 Subscribed! You\\'ll get stock updates.';
+    }}
     msg.className = 'mt-2 text-sm text-green-700';
     msg.style.display = 'block';
     document.getElementById('subscribeForm').style.display = 'none';

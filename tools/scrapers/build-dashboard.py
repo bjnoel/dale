@@ -1466,6 +1466,9 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
       }} else if (watchSlug && resp.status === 200) {{
         const speciesName = SLUG_TO_NAME[watchSlug] || watchSlug;
         msg.textContent = `You\u2019re already watching ${{speciesName}}.`;
+      }} else if (resp.status === 202) {{
+        msg.textContent = `Check your email \u2014 we sent you a confirmation link.`;
+        document.getElementById('subEmail').value = '';
       }} else if (resp.status === 201) {{
         msg.textContent = `Subscribed! You'll get tomorrow\u2019s changes in your inbox.`;
       }} else {{
@@ -1556,7 +1559,10 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
         body: JSON.stringify(payload),
       }});
       const data = await resp.json();
-      if (resp.status === 201 || resp.status === 200) {{
+      if (resp.status === 202) {{
+        bar.innerHTML = `<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-white font-medium">Check your email \u2014 we sent a confirmation link.</div>`;
+        setTimeout(function() {{ bar.classList.add('translate-y-full'); }}, 4000);
+      }} else if (resp.status === 201 || resp.status === 200) {{
         localStorage.setItem('ts_subscribed', '1');
         const confirmMsg = watchSlug
           ? `Alert set! We\u2019ll email when ${{SLUG_TO_NAME[watchSlug] || watchSlug}} is back in stock.`
