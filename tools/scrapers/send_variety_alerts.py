@@ -87,57 +87,7 @@ def make_unsubscribe_token(email: str, secret: str) -> str:
     ).hexdigest()[:32]
 
 
-def slugify(title: str) -> str:
-    """Convert 'Avocado - Hass' to 'avocado-hass'. Must match build_variety_pages.py."""
-    s = title.lower()
-    s = re.sub(r'[®™()]', '', s)
-    s = re.sub(r'\s*[-–—]\s*', '-', s)
-    s = re.sub(r'[^a-z0-9-]', '-', s)
-    s = re.sub(r'-+', '-', s)
-    return s.strip('-')
-
-
-_SIZE_WORDS = frozenset({
-    'small', 'medium', 'large', 'xl', 'xxl', '75mm', '90mm',
-    '140mm', '200mm', '250mm', '300mm', 'tube', 'pot', 'pots',
-    'bag', 'bags', 'seedling', 'seedlings', 'grafted', 'cutting',
-    'cuttings', 'standard', 'dwarf', 'bareroot', 'bare', 'root',
-    'advanced', 'budget', 'self', 'fertile',
-})
-
-
-def parse_cultivar(title: str) -> tuple[str, str] | None:
-    """Parse 'Species - Variety' or "Species 'Variety'" into (species, variety).
-    Must match the logic in build_variety_pages.py."""
-    s = title.strip()
-    has_dash = bool(re.search(r'\s*[-\u2013\u2014]\s+', s))
-    quote_match = re.match(
-        r"^(.+?)\s+['\"\u2018\u201c]([^'\"\u2018\u2019\u201c\u201d]+)['\"\u2019\u201d]", s,
-    )
-    if quote_match and not has_dash:
-        species, variety = quote_match.group(1).strip(), quote_match.group(2).strip()
-    else:
-        m = re.match(r'^(.+?)\s*[-\u2013\u2014]\s*(.+)$', s)
-        if not m:
-            return None
-        species, variety = m.group(1).strip(), m.group(2).strip()
-    if re.match(r'^[A-Za-z]\s*$', variety):
-        return None
-    if re.match(r'^\d', species):
-        return None
-    variety_tokens = [t for t in re.split(r'[\s\-]+', variety.lower()) if t]
-    if variety_tokens and all(t in _SIZE_WORDS for t in variety_tokens):
-        return None
-    return (species, variety)
-
-
-def product_variety_slug(title: str) -> str | None:
-    """Return the variety slug for a product title, or None if not a cultivar."""
-    parsed = parse_cultivar(title)
-    if not parsed:
-        return None
-    species, variety = parsed
-    return slugify(f"{species}-{variety}")
+from cultivar_parsing import slugify, parse_cultivar, product_variety_slug  # noqa: E402
 
 
 def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:

@@ -26,43 +26,7 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
-# Mirror of parse_cultivar+slugify from build_variety_pages.py / send_variety_alerts.py.
-# Pinned in tests/test_parsing.py -- all three implementations must agree on the slug.
-_VARIETY_SIZE_WORDS = frozenset({
-    'small', 'medium', 'large', 'xl', 'xxl', '75mm', '90mm',
-    '140mm', '200mm', '250mm', '300mm', 'tube', 'pot', 'pots',
-    'bag', 'bags', 'seedling', 'seedlings', 'grafted', 'cutting',
-    'cuttings', 'standard', 'dwarf', 'bareroot', 'bare', 'root',
-    'advanced', 'budget', 'self', 'fertile',
-})
-
-
-def _variety_slug(title: str) -> str | None:
-    s_in = title.strip()
-    has_dash = bool(re.search(r'\s*[-\u2013\u2014]\s+', s_in))
-    quote_match = re.match(
-        r"^(.+?)\s+['\"\u2018\u201c]([^'\"\u2018\u2019\u201c\u201d]+)['\"\u2019\u201d]", s_in,
-    )
-    if quote_match and not has_dash:
-        species, variety = quote_match.group(1).strip(), quote_match.group(2).strip()
-    else:
-        m = re.match(r'^(.+?)\s*[-\u2013\u2014]\s*(.+)$', s_in)
-        if not m:
-            return None
-        species, variety = m.group(1).strip(), m.group(2).strip()
-    if re.match(r'^[A-Za-z]\s*$', variety):
-        return None
-    if re.match(r'^\d', species):
-        return None
-    variety_tokens = [t for t in re.split(r'[\s\-]+', variety.lower()) if t]
-    if variety_tokens and all(t in _VARIETY_SIZE_WORDS for t in variety_tokens):
-        return None
-    s = f"{species}-{variety}".lower()
-    s = re.sub(r'[®™()]', '', s)
-    s = re.sub(r'\s*[-\u2013\u2014]\s*', '-', s)
-    s = re.sub(r'[^a-z0-9-]', '-', s)
-    s = re.sub(r'-+', '-', s)
-    return s.strip('-') or None
+from cultivar_parsing import product_variety_slug as _variety_slug  # noqa: E402
 
 # Related species groups for cross-linking — people who buy one often compare others in the group.
 # Ordered by popularity within each group (most popular first).
