@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
-  "last_updated": "2026-04-06",
-  "session_count": 68,
+  "last_updated": "2026-04-19",
+  "session_count": 70,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -54,7 +54,7 @@
       "in_stock": 4603,
       "species_matched_pct": 73,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
-      "subscribers": 4,
+      "subscribers": 6,
       "revenue_total": 0
     },
     "b_experiment_beestock": {
@@ -62,13 +62,14 @@
       "domain": "beestock.com.au",
       "status": "live",
       "dashboard_url": "https://beestock.com.au",
-      "retailers_monitored": 7,
-      "products_tracked": 3472,
-      "in_stock": 2376,
+      "retailers_monitored": 8,
+      "products_tracked": 4109,
+      "in_stock": 2950,
       "first_scrape_date": "2026-03-19",
-      "days_of_data": 16,
+      "days_of_data": 31,
       "subscribers": 0,
-      "revenue_total": 0
+      "revenue_total": 0,
+      "compare_pages": 31
     }
   },
   "infrastructure": {

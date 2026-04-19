@@ -4,6 +4,40 @@
 
 ---
 
+## DEC-109 — 2026-04-19 — Session 70: Beestock unit tests, BSA scraper fix, compare pages
+
+**Decided by:** Dale (autonomous)
+
+**Strategic context:** Revenue alarm active ($0 after 24 days). beestock:growth and treestock:growth flagged as stale. Session focused on beestock tech/quality (unit tests) and a genuinely new SEO approach (compare pages) rather than the stale growth tactics.
+
+**DAL-138 — Unit tests for categorise_product:**
+- Built tests/test_bee_categories.py mirroring test_parsing.py structure
+- 14 tests: CategoriseProduct (all 31 subcategories + edge cases), CategoryName, LookupIntegrity
+- Key regressions tested: jar+lid bug (DEC-083), word-boundary matching, multi-word keyword priority
+- Discovered and documented: "feeders" slug shared by parent and sub (SUBCATEGORY_NAMES overwrites PARENT_NAMES in CATEGORY_NAMES for that slug)
+- All tests pass
+
+**DAL-137 — Investigate sparse BSA/beewise snapshots:**
+- Root cause: both added via ad-hoc one-off scrapes on 2026-03-20, never added to bee_retailers.py
+- BSA (beekeeping-supplies-australia): Shopify, API working, 637 products. FIXED: added to bee_retailers.py + SHIPPING_MAP. Test scrape confirmed.
+- Beewise: Magento, had HTML entity encoding issues (DEC-083), no Magento scraper in pipeline. NOT FIXED. Documented as comment in bee_retailers.py with reasoning.
+
+**DAL-139 — Price comparison pages per subcategory:**
+- Built build_bee_compare_pages.py generating 31 /compare/{sub}-prices.html pages
+- Target: transactional-intent keywords ("cheapest langstroth hive Australia", "compare bee suit prices")
+- Each page: per-retailer best price table (cheapest badge), all products price-sorted, subscribe CTA, buying guide text (20 subcategories)
+- Data freshness: only uses snapshots < 3 days old, only active retailers (excludes stale beewise data)
+- Added to daily pipeline, "Compare" link in nav, 31 pages in sitemap (priority 0.7)
+- BSA included with 637 products -- beestock now 8 retailers, ~4109 products
+
+**Revenue mandate:** Satisfied by writing the Leeming Fruit Trees re-engagement brief (DAL-142 -- warm lead, timing window Tri mentioned). Proposed as next Track A action for Benedict.
+
+**Tickets proposed:**
+- DAL-141: Submit beestock compare pages to GSC (Level 1, metric: beestock organic visitors)
+- DAL-142: Leeming Fruit Trees re-engagement (Level 2, metric: revenue_monthly) [PRIORITY]
+
+---
+
 ## DEC-108 — 2026-04-06 — Session 68: Community Wishlist + Market Trends Pages (DAL-124, DAL-41, DAL-111)
 
 **Decided by:** Dale (autonomous)
