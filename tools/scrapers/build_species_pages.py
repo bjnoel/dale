@@ -377,10 +377,10 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         <td class="py-2 text-xs text-gray-500">{ships}</td>
       </tr>"""
 
-    # Product listing (in-stock first). Title links to our internal variety
-    # page when one exists (so users can see all nurseries + sign up for
-    # variety alerts); nursery column links direct to the nursery's product
-    # page for buy-now intent.
+    # Product listing (in-stock first). Title links to the nursery (buy-now
+    # intent). For named cultivars that have a treestock variety page, append
+    # a small "Alerts" link to that page so users can set up restock alerts
+    # for the specific cultivar.
     product_rows = ""
     for p in sorted(products, key=lambda x: (not x["available"], x["price"] or 9999)):
         price_str = f"${p['price']:.2f}" if p["price"] else "—"
@@ -390,21 +390,19 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
             '<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">Out of stock</span>'
         )
         nursery_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=referral" if p["url"] else ""
+        title_link = (
+            f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>'
+            if nursery_url else p["title"]
+        )
         v_slug = _variety_slug(p["title"])
-        if v_slug:
-            title_link = f'<a href="/variety/{v_slug}.html" class="hover:text-green-700 hover:underline">{p["title"]}</a>'
-        elif nursery_url:
-            title_link = f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>'
-        else:
-            title_link = p["title"]
-        nursery_cell = (
-            f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["nursery_name"]}</a>'
-            if nursery_url else p["nursery_name"]
+        alert_link = (
+            f' <a href="/variety/{v_slug}.html" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" title="Get restock alerts for this variety">&#128276; Alerts</a>'
+            if v_slug else ''
         )
         product_rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50">
-        <td class="py-2 pr-3 text-sm">{title_link}</td>
-        <td class="py-2 pr-3 text-xs text-gray-500">{nursery_cell}</td>
+        <td class="py-2 pr-3 text-sm">{title_link}{alert_link}</td>
+        <td class="py-2 pr-3 text-xs text-gray-500">{p['nursery_name']}</td>
         <td class="py-2 pr-3 text-sm font-medium">{price_str}</td>
         <td class="py-2">{avail_badge}</td>
       </tr>"""
@@ -538,7 +536,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
   {f"""<!-- Variety-watch suggestion CTA (shown below results when stock exists) -->
   <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
     <p class="font-medium text-green-800 mb-1">Want alerts for a specific {name} variety?</p>
-    <p class="text-gray-600">Click a variety name above to open its page on treestock.com.au, where you can compare nurseries and sign up for restock alerts on that exact cultivar. (The nursery column links straight to the nursery if you want to buy now.)</p>
+    <p class="text-gray-600">Click the &#128276; Alerts link next to a named cultivar above to set up restock alerts on that exact variety. Variety titles themselves link straight to the nursery for buy-now.</p>
   </div>""" if in_stock_count > 0 else ''}
 
 </main>
