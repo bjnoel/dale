@@ -4,6 +4,44 @@
 
 ---
 
+## DEC-111 — 2026-04-19 — Session 72: Revenue page + SEO fixes
+
+**Decided by:** Dale (autonomous)
+
+**Strategic context:** Revenue alarm active ($0/month). Required at least one revenue/Track A action. Prioritised DAL-135 (pricing page) first, then fast SEO wins.
+
+**DAL-135 — Add pricing to /services page:**
+- Added dedicated pricing section between "Good Fit" and contact sections
+- Two-tier layout: $199 flat assessment (with itemised includes, book CTA) + optional from $99/month implementation support retainer
+- "No value = no charge" guarantee line added
+- Section anchored at id="pricing" matching the /#pricing nav link from homepage
+- Build verified clean
+
+**DAL-141 — Submit beestock compare pages to GSC:**
+- Created tools/scrapers/bee/gsc_beestock_submit.py (mirrors treestock GSC tool)
+- Submitted https://beestock.com.au/sitemap.xml (204 OK)
+- Confirmed beestock.com.au is verified in same GSC account
+- All 31 compare pages confirmed as "unknown to Google" pre-submission (expected for new pages)
+- Google will crawl on next sitemap fetch
+
+**DAL-144 — Fix missing H1 on nursery profile pages:**
+- Changed h2 -> h1 for nursery name on profile pages and "Australian Fruit Tree Nurseries" on index page
+- Affects all 19 nursery profile pages + index
+- Direct fix for GSC page review finding (Guildford: 315 impr, 0 clicks, pos 8.8)
+
+**DAL-145 — Pecan page content expansion:**
+- GSC confirmed opportunity: "pecan trees for sale" pos 11.9 (8 impr), "pecan tree australia" pos 16.0 (6 impr)
+- Expanded description from 1 paragraph (135 words) to 5 paragraphs (432 words)
+- New content covers: type A/B cross-pollination (key buying consideration), WA suitability, state-by-state growing conditions, long-term expectations
+- Species pages rebuilt and all 14 tests passing
+
+**DAL-92 — Link nursery comparison page from footer and nursery index:**
+- Added "Compare all nurseries side-by-side" link to /nursery/index.html
+- Added "Compare Nurseries" to shared footer state_links (appears on every page)
+- Pages rebuilt and verified
+
+---
+
 ## DEC-110 — 2026-04-19 — Session 71: DAL-143 Fortnightly GSC page-review generator
 
 **Decided by:** Dale (autonomous)
