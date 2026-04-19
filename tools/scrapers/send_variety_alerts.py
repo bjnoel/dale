@@ -97,26 +97,36 @@ def slugify(title: str) -> str:
     return s.strip('-')
 
 
+_SIZE_WORDS = frozenset({
+    'small', 'medium', 'large', 'xl', 'xxl', '75mm', '90mm',
+    '140mm', '200mm', '250mm', '300mm', 'tube', 'pot', 'pots',
+    'bag', 'bags', 'seedling', 'seedlings', 'grafted', 'cutting',
+    'cuttings', 'standard', 'dwarf', 'bareroot', 'bare', 'root',
+    'advanced', 'budget', 'self', 'fertile',
+})
+
+
 def parse_cultivar(title: str) -> tuple[str, str] | None:
-    """
-    Parse 'Species - Variety' into (species, variety).
-    Must match the logic in build_variety_pages.py.
-    """
-    m = re.match(r'^(.+?)\s*[-–—]\s*(.+)$', title.strip())
-    if not m:
-        return None
-    species = m.group(1).strip()
-    variety = m.group(2).strip()
-    size_words = ['small', 'medium', 'large', 'xl', 'xxl', '75mm', '90mm',
-                  '140mm', '200mm', '250mm', '300mm', 'tube', 'pot', 'bag',
-                  'seedling', 'grafted', 'cutting', 'standard', 'dwarf',
-                  'bare root', 'bareroot', 'advanced', 'budget',
-                  'self-fertile', 'self fertile']
-    if variety.lower() in size_words:
-        return None
+    """Parse 'Species - Variety' or "Species 'Variety'" into (species, variety).
+    Must match the logic in build_variety_pages.py."""
+    s = title.strip()
+    has_dash = bool(re.search(r'\s*[-\u2013\u2014]\s+', s))
+    quote_match = re.match(
+        r"^(.+?)\s+['\"\u2018\u201c]([^'\"\u2018\u2019\u201c\u201d]+)['\"\u2019\u201d]", s,
+    )
+    if quote_match and not has_dash:
+        species, variety = quote_match.group(1).strip(), quote_match.group(2).strip()
+    else:
+        m = re.match(r'^(.+?)\s*[-\u2013\u2014]\s*(.+)$', s)
+        if not m:
+            return None
+        species, variety = m.group(1).strip(), m.group(2).strip()
     if re.match(r'^[A-Za-z]\s*$', variety):
         return None
     if re.match(r'^\d', species):
+        return None
+    variety_tokens = [t for t in re.split(r'[\s\-]+', variety.lower()) if t]
+    if variety_tokens and all(t in _SIZE_WORDS for t in variety_tokens):
         return None
     return (species, variety)
 

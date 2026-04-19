@@ -85,10 +85,18 @@ PARSE_CULTIVAR_CASES = [
     ("Fig \u2013 Violette",               ("Fig", "Violette")),
     ("Fig \u2014 Violette",               ("Fig", "Violette")),
     ("Sapodilla Grafted - Krasuey",   ("Sapodilla Grafted", "Krasuey")),  # known limitation: doesn't canonicalise
+    # Quoted variety names (Tamarillo bug, 2026-04-19)
+    ("Tamarillo 'Red'",               ("Tamarillo", "Red")),
+    ("Tamarillo 'Red' (Advanced) PICK UP ONLY", ("Tamarillo", "Red")),
+    ('Tamarillo "Red"',               ("Tamarillo", "Red")),
+    ("Tamarillo \u2018Yellow\u2019 (Solanum betaceum)", ("Tamarillo", "Yellow")),  # curly quotes
     # Filtered out
     ("Sapodilla - Seedling",          None),                              # size word
     ("Mango - Grafted",               None),
     ("Apple - 90mm",                  None),
+    ("Apple - 90mm pots",             None),                              # multi-token size (Tamarillo bug)
+    ("Red Tamarillo Trees \u2013 90mm pots", None),                          # whole variety is size
+    ("Mango - Bare Root",             None),                              # multi-token size phrase
     ("Avocado - A",                   None),                              # single-letter variety (pollination type)
     ("1L Mango - Bowen",              None),                              # leading digit
     ("Sapodilla",                     None),                              # no separator
@@ -121,6 +129,10 @@ VARIETY_SLUG_CASES = [
     ("Sapodilla - Seedling",         None),                                 # filtered
     ("Sapodilla",                    None),                                 # no separator
     ("Mandarin (Imperial) - Late",   "mandarin-imperial-late"),
+    # Tamarillo bugs (2026-04-19)
+    ("Tamarillo 'Red'",              "tamarillo-red"),
+    ("Tamarillo 'Red' (Advanced)",   "tamarillo-red"),
+    ("Red Tamarillo Trees \u2013 90mm pots", None),                            # whole variety is size
 ]
 
 
