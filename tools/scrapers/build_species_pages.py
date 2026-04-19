@@ -26,6 +26,34 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
+# Match build_variety_pages.py so the slugs link to pages that actually exist.
+_VARIETY_SIZE_WORDS = {
+    'small', 'medium', 'large', 'xl', 'xxl', '75mm', '90mm',
+    '140mm', '200mm', '250mm', '300mm', 'tube', 'pot', 'bag',
+    'seedling', 'grafted', 'cutting', 'standard', 'dwarf',
+    'bare root', 'bareroot', 'advanced', 'budget',
+    'self-fertile', 'self fertile',
+}
+
+
+def _variety_slug(title: str) -> str | None:
+    m = re.match(r'^(.+?)\s*[-–—]\s*(.+)$', title.strip())
+    if not m:
+        return None
+    species, variety = m.group(1).strip(), m.group(2).strip()
+    if variety.lower() in _VARIETY_SIZE_WORDS:
+        return None
+    if re.match(r'^[A-Za-z]\s*$', variety):
+        return None
+    if re.match(r'^\d', species):
+        return None
+    s = f"{species}-{variety}".lower()
+    s = re.sub(r'[®™()]', '', s)
+    s = re.sub(r'\s*[-–—]\s*', '-', s)
+    s = re.sub(r'[^a-z0-9-]', '-', s)
+    s = re.sub(r'-+', '-', s)
+    return s.strip('-') or None
+
 # Related species groups for cross-linking — people who buy one often compare others in the group.
 # Ordered by popularity within each group (most popular first).
 RELATED_GROUPS = {
@@ -349,7 +377,10 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         <td class="py-2 text-xs text-gray-500">{ships}</td>
       </tr>"""
 
-    # Product listing (in-stock first)
+    # Product listing (in-stock first). Title links to our internal variety
+    # page when one exists (so users can see all nurseries + sign up for
+    # variety alerts); nursery column links direct to the nursery's product
+    # page for buy-now intent.
     product_rows = ""
     for p in sorted(products, key=lambda x: (not x["available"], x["price"] or 9999)):
         price_str = f"${p['price']:.2f}" if p["price"] else "—"
@@ -358,12 +389,22 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
             if p["available"] else
             '<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">Out of stock</span>'
         )
-        utm_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=referral" if p["url"] else ""
-        link = f'<a href="{utm_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>' if p["url"] else p["title"]
+        nursery_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=referral" if p["url"] else ""
+        v_slug = _variety_slug(p["title"])
+        if v_slug:
+            title_link = f'<a href="/variety/{v_slug}.html" class="hover:text-green-700 hover:underline">{p["title"]}</a>'
+        elif nursery_url:
+            title_link = f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>'
+        else:
+            title_link = p["title"]
+        nursery_cell = (
+            f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["nursery_name"]}</a>'
+            if nursery_url else p["nursery_name"]
+        )
         product_rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50">
-        <td class="py-2 pr-3 text-sm">{link}</td>
-        <td class="py-2 pr-3 text-xs text-gray-500">{p['nursery_name']}</td>
+        <td class="py-2 pr-3 text-sm">{title_link}</td>
+        <td class="py-2 pr-3 text-xs text-gray-500">{nursery_cell}</td>
         <td class="py-2 pr-3 text-sm font-medium">{price_str}</td>
         <td class="py-2">{avail_badge}</td>
       </tr>"""
@@ -497,7 +538,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
   {f"""<!-- Variety-watch suggestion CTA (shown below results when stock exists) -->
   <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
     <p class="font-medium text-green-800 mb-1">Want alerts for a specific {name} variety?</p>
-    <p class="text-gray-600">Click any variety above to open its page, then sign up for variety-level restock alerts. We email you the moment that exact cultivar comes back into stock at any monitored nursery.</p>
+    <p class="text-gray-600">Click a variety name above to open its page on treestock.com.au, where you can compare nurseries and sign up for restock alerts on that exact cultivar. (The nursery column links straight to the nursery if you want to buy now.)</p>
   </div>""" if in_stock_count > 0 else ''}
 
 </main>
