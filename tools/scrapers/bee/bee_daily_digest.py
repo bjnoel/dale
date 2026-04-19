@@ -18,7 +18,7 @@ import sys
 from datetime import date, timedelta
 from pathlib import Path
 
-from bee_retailers import SHIPPING_MAP, RETAILER_NAMES, retailer_ships_to
+from bee_retailers import SHIPPING_MAP, RETAILER_NAMES, RETAILERS, retailer_ships_to
 from bee_categories import categorise_product, category_name
 from beestock_layout import render_head, render_header, render_footer
 
@@ -446,6 +446,8 @@ def load_all_changes(data_dir: Path, target_date: str) -> tuple[dict, int]:
 
     for retailer_dir in sorted(data_dir.iterdir()):
         if not retailer_dir.is_dir():
+            continue
+        if retailer_dir.name not in RETAILERS:
             continue
         prev = load_snapshot(retailer_dir, prev_date)
         curr = load_snapshot(retailer_dir, target_date)

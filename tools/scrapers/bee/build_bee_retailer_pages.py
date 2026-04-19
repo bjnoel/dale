@@ -61,6 +61,8 @@ def load_retailer_data(data_dir: Path) -> dict:
     for retailer_dir in sorted(data_dir.iterdir()):
         if not retailer_dir.is_dir():
             continue
+        if retailer_dir.name not in RETAILERS:
+            continue
         latest = retailer_dir / "latest.json"
         if not latest.exists():
             continue

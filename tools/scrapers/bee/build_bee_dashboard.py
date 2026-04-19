@@ -14,7 +14,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from bee_retailers import SHIPPING_MAP, RETAILER_NAMES
+from bee_retailers import SHIPPING_MAP, RETAILER_NAMES, RETAILERS
 from bee_categories import (categorise_product, CATEGORIES, CATEGORY_NAMES,
                             PARENT_NAMES, SUBCATEGORY_NAMES, SUBS_BY_PARENT)
 from beestock_layout import render_head, render_header, render_footer, SITE_NAME, LOGO_SVG
@@ -78,6 +78,8 @@ def load_price_history(data_dir: Path) -> dict[str, list[float | None]]:
 
     for retailer_dir in sorted(data_dir.iterdir()):
         if not retailer_dir.is_dir():
+            continue
+        if retailer_dir.name not in RETAILERS:
             continue
         snapshots = sorted(
             f for f in retailer_dir.glob("*.json")
@@ -179,6 +181,8 @@ def load_retailer_data(data_dir: Path, price_history: dict[str, list] | None = N
 
     for retailer_dir in sorted(data_dir.iterdir()):
         if not retailer_dir.is_dir():
+            continue
+        if retailer_dir.name not in RETAILERS:
             continue
 
         latest = retailer_dir / "latest.json"

@@ -16,7 +16,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 from bee_categories import CATEGORIES, CATEGORY_NAMES, categorise_product
-from bee_retailers import RETAILER_NAMES
+from bee_retailers import RETAILER_NAMES, RETAILERS
 from beestock_layout import (
     render_head, render_header, render_footer,
     SITE_NAME, SITE_URL,
@@ -342,6 +342,8 @@ def load_products(data_dir: Path) -> list[dict]:
     products = []
     for retailer_dir in sorted(data_dir.iterdir()):
         if not retailer_dir.is_dir():
+            continue
+        if retailer_dir.name not in RETAILERS:
             continue
         latest = retailer_dir / "latest.json"
         if not latest.exists():
