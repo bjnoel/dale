@@ -301,7 +301,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
   {breadcrumb}
 
   <div class="mb-6">
-    <h2 class="text-2xl font-bold text-gray-900 mb-1">{name} {restrict_badge}</h2>
+    <h1 class="text-2xl font-bold text-gray-900 mb-1">{name} {restrict_badge}</h1>
     <p class="text-gray-500 text-sm mb-2">📍 {location}{(' · ' + url_link) if url_link else ''}</p>
     <div class="mb-2 flex flex-wrap gap-1">{tag_badges_tw}</div>
     <div class="text-sm text-gray-600">{'Delivers to:'  if local_label else 'Ships to:'}</div>
@@ -469,7 +469,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
 {header_html}
 
 <main class="max-w-3xl mx-auto px-4 py-6">
-  <h2 class="text-2xl font-bold text-gray-900 mb-1">Australian Fruit Tree Nurseries</h2>
+  <h1 class="text-2xl font-bold text-gray-900 mb-1">Australian Fruit Tree Nurseries</h1>
   <p class="text-gray-500 text-sm mb-6">Daily stock tracking across {count} nurseries. Updated {today}.</p>
 
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
