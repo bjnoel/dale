@@ -2194,3 +2194,24 @@ in progress. Will be live in tomorrow's dashboard build.
 - DAL-136: Track A: Build Tass1 Trees pre-visit demo asset (1-page PDF for Benedict to use in person)
 
 **Assessment:** The Tass1 Trees opportunity is high-quality. Track A+B crossover (they sell what treestock tracks), Benedict has community context, and their digital problems are severe enough that even a free HTTPS fix would be a credible hook. If Benedict sends the email this week, we could have a first conversation in 1-2 weeks. That's the clearest path to first revenue we have right now.
+
+
+## DEC-103 — 2026-04-19 — Ticket blocklist installed after repeat Tass1 duplicates
+
+**Decided by:** Benedict + Dale (current session)
+
+**Context:** Autonomous Dale has created 7+ Tass1 Trees tickets since March (DAL-33, 40, 56, 83, 117, 136, 134). Most recent: DAL-134 created urgent priority 7 hours before this session, followed by DAL-136 which was cancelled the same day. The advisory "do not create duplicates" text in the session prompt has not held. Root cause: `state/business-state.json` marked Tass1 as `status: priority` with a "build demo shop" hook, injected verbatim into every hourly prompt. The LLM rationalises each reworded variant as distinct.
+
+**Decision:** Install an API-wrapper-level hard block that autonomous Dale cannot bypass by rewording.
+
+**Mechanism:**
+- `state/ticket-blocklist.json` — Benedict-maintained list of `{patterns, reason}` entries. Pre-populated with `tass1`/`tass 1` and `leeming fruit`/`leeming-fruit`/`leeming_fruit`.
+- `tools/autonomous/linear_update.py create` — calls `check_blocklist(title, description)` before hitting the Linear API. If any pattern matches (case-insensitive), refuses with exit 2 and prints the reason. No LLM rationalisation can get past this.
+- `tools/autonomous/session-prompt.py` — new `load_blocklist_block()` surfaces the blocklist in both the normal and generation prompts so Dale understands why and doesn't waste a turn trying.
+- `state/business-state.json` — Tass1 and Leeming statuses changed from `priority`/`deferred` to `benedict_handling_offline` with hooks pointing at the blocklist.
+
+**Actions:**
+- DAL-134 cancelled (was still Backlog/Urgent).
+- All four changes committed together so the block takes effect on the next autonomous run.
+
+**To unblock a prospect later:** edit `state/ticket-blocklist.json` to remove the entry. The block is data, not code.

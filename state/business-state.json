@@ -22,12 +22,12 @@
           "hook": "Learning experience (DEC-050). Reports don't work, GBP already existed, attribution unclear."
         },
         "tass1_trees": {
-          "status": "priority",
-          "hook": "No HTTPS, no mobile, no online shop. Track A+B crossover. Build demo shop with treestock data."
+          "status": "benedict_handling_offline",
+          "hook": "BLOCKED for autonomous work (see state/ticket-blocklist.json). Benedict owns next touch. Do not propose any Tass1 Trees tickets."
         },
         "leeming_fruit_trees": {
-          "status": "deferred",
-          "hook": "Tri replied 2026-03-19: 'looks good' but busy, will revisit when timing is better. Not a rejection. Demo store stays up at leeming-fruit-trees.myshopify.com. Revisit late April or at next in-person encounter.",
+          "status": "benedict_handling_offline",
+          "hook": "BLOCKED for autonomous work (see state/ticket-blocklist.json). Benedict owns next touch. Do not propose any Leeming Fruit Trees tickets. Demo store stays up at leeming-fruit-trees.myshopify.com.",
           "demo_store": "leeming-fruit-trees.myshopify.com"
         },
         "wembley_cycles": {

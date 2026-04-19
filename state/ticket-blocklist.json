@@ -1,0 +1,15 @@
+{
+  "description": "Patterns that block autonomous ticket creation. linear_update.py create refuses if any pattern (case-insensitive) appears in the title or description. Benedict maintains this list. To remove a block, delete the entry.",
+  "blocks": [
+    {
+      "patterns": ["tass1", "tass 1"],
+      "reason": "Benedict is handling Tass1 Trees outreach offline. 6+ tickets cancelled since March (DAL-33, 40, 56, 83, 117, 136, 134). Do not propose any new Tass1 Trees work, including outreach, demo assets, demo stores, visits, or analysis, unless Benedict explicitly asks.",
+      "added": "2026-04-19"
+    },
+    {
+      "patterns": ["leeming fruit", "leeming-fruit", "leeming_fruit"],
+      "reason": "Leeming Fruit Trees is deferred. Tri replied 'looks good' but is busy. Benedict owns the next touch and will revisit in person. Do not propose any new Leeming outreach, demo work, or follow-up tickets unless Benedict explicitly asks.",
+      "added": "2026-04-19"
+    }
+  ]
+}

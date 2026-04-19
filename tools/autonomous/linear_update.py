@@ -22,6 +22,43 @@ GRAPHQL_URL = "https://api.linear.app/graphql"
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
 
 
+def _blocklist_path():
+    """Resolve state/ticket-blocklist.json via config.json's repo path.
+
+    Falls back to <three-dirs-up>/state/ticket-blocklist.json so the module
+    works both on the server (/opt/dale/autonomous/ + /opt/dale/repo/state/)
+    and in the dev repo (tools/autonomous/ + state/).
+    """
+    try:
+        with open(CONFIG_PATH) as f:
+            repo = json.load(f).get("paths", {}).get("repo")
+        if repo:
+            candidate = os.path.join(repo, "state", "ticket-blocklist.json")
+            if os.path.exists(candidate):
+                return candidate
+    except (FileNotFoundError, json.JSONDecodeError, KeyError):
+        pass
+    return os.path.join(
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        "state", "ticket-blocklist.json",
+    )
+
+
+def check_blocklist(title, description):
+    """Return (pattern, reason) if title+description matches a blocked pattern, else None."""
+    try:
+        with open(_blocklist_path()) as f:
+            blocklist = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+    haystack = f"{title}\n{description}".lower()
+    for entry in blocklist.get("blocks", []):
+        for pattern in entry.get("patterns", []):
+            if pattern.lower() in haystack:
+                return pattern, entry.get("reason", "(no reason given)")
+    return None
+
+
 def get_token():
     env_path = os.path.join(SECRETS_DIR, "linear.env")
     with open(env_path) as f:
@@ -243,6 +280,19 @@ def cmd_create(args):
             i += 2
         else:
             i += 1
+
+    # Hard block on prospects/topics Benedict has explicitly closed out.
+    # See state/ticket-blocklist.json. This cannot be bypassed by rewording.
+    blocked = check_blocklist(title, description)
+    if blocked:
+        pattern, reason = blocked
+        print(
+            f"BLOCKED: ticket title/description contains '{pattern}'.\n"
+            f"Reason: {reason}\n"
+            f"If you believe this is a mistake, ask Benedict to edit state/ticket-blocklist.json.",
+            file=sys.stderr,
+        )
+        sys.exit(2)
 
     config = load_config()
     team_name = config.get("linear", {}).get("team", "Dale")

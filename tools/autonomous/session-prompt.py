@@ -170,6 +170,30 @@ def load_focus_tracker(repo_path):
         return None
 
 
+def load_blocklist_block(repo_path):
+    """Read state/ticket-blocklist.json and render as a prompt section."""
+    path = os.path.join(repo_path, "state", "ticket-blocklist.json")
+    try:
+        with open(path) as f:
+            data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return ""
+    blocks = data.get("blocks", [])
+    if not blocks:
+        return ""
+    lines = ["## Ticket Blocklist (hard block — enforced by linear_update.py create)"]
+    lines.append("")
+    lines.append("Creating a ticket whose title or description contains any of these")
+    lines.append("patterns will be REJECTED at the API wrapper level. Do not try.")
+    lines.append("")
+    for entry in blocks:
+        patterns = ", ".join(f"`{p}`" for p in entry.get("patterns", []))
+        reason = entry.get("reason", "")
+        lines.append(f"- {patterns}: {reason}")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def _get_session_days(session_log):
     """Deduplicate session_log entries by date, merging categories.
 
@@ -585,6 +609,8 @@ def build_prompt():
             "Repair the JSON this session before other work.\n"
         )
 
+    blocklist_block = load_blocklist_block(repo)
+
     prompt = f"""This is an AUTONOMOUS ticket-processing session at {now}.
 You are Dale, the AI business agent. These sessions run hourly when tickets exist.
 Time limit: {max_min} minutes. Work through approved tickets sequentially. Do each
@@ -592,6 +618,7 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 {linear_block}
 
+{blocklist_block}
 {reflection_block}
 ## Current Business State (metrics only, work tracking is in Linear)
 {business_state}
@@ -771,6 +798,8 @@ def build_generation_prompt():
         reflection = compute_reflection(tracker, config)
         reflection_block = build_reflection_block(reflection)
 
+    blocklist_block = load_blocklist_block(repo)
+
     prompt = f"""This is a TICKET GENERATION session at {now}.
 You are Dale, the AI business agent. Your Todo queue is empty and the Backlog
 is below the target of {min_backlog} tickets. Your ONLY task this session is to
@@ -781,6 +810,7 @@ You MUST: create tickets using `python3 /opt/dale/autonomous/linear_update.py cr
 
 {linear_block}
 
+{blocklist_block}
 {reflection_block}
 ## Current Business State
 {business_state}
