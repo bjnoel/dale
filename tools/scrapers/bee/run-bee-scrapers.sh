@@ -33,16 +33,23 @@ fi
 # Build dashboard
 echo "$LOG_PREFIX Building bee dashboard..."
 if python3 "$SCRIPT_DIR/build_bee_dashboard.py" "$PROJECT_DIR/data/bee-stock" "$BEE_DASHBOARD_DIR" 2>&1; then
-    JS_CHECK=$(awk '/<script>/{p=1; next} /<\/script>/{p=0} p' "$DASHBOARD_FILE" | node --check /dev/stdin 2>&1)
-    if [ $? -eq 0 ]; then
+    # Use a temp file because `node --check /dev/stdin` is broken on Node 22
+    # (ENOENT on /proc/<pid>/fd/pipe:[...]). Under `set -euo pipefail` the
+    # failed command substitution silently killed the script, blocking every
+    # step below this (digest, category pages, retailer pages, Tailwind).
+    JS_TMP=$(mktemp --suffix=.js)
+    awk '/<script>/{p=1; next} /<\/script>/{p=0} p' "$DASHBOARD_FILE" > "$JS_TMP"
+    JS_ERR_TMP=$(mktemp)
+    if node --check "$JS_TMP" >"$JS_ERR_TMP" 2>&1; then
         echo "$LOG_PREFIX Dashboard build complete. JS syntax verified."
     else
-        echo "$LOG_PREFIX ERROR: Dashboard JS syntax error: $JS_CHECK"
+        echo "$LOG_PREFIX ERROR: Dashboard JS syntax error: $(cat "$JS_ERR_TMP")"
         if [ -f "$DASHBOARD_BACKUP" ]; then
             cp "$DASHBOARD_BACKUP" "$DASHBOARD_FILE"
             echo "$LOG_PREFIX Rollback complete."
         fi
     fi
+    rm -f "$JS_TMP" "$JS_ERR_TMP"
 else
     BUILD_EXIT=$?
     echo "$LOG_PREFIX ERROR: Dashboard build failed (exit $BUILD_EXIT)."
