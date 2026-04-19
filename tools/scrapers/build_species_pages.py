@@ -368,10 +368,12 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
             f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>'
             if nursery_url else p["title"]
         )
+        # Alerts link only on OOS rows -- no value nudging someone to an
+        # "alert me when it's back" page for something they can buy right now.
         v_slug = _variety_slug(p["title"])
         alert_link = (
             f' <a href="/variety/{v_slug}.html" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" title="Get restock alerts for this variety">&#128276; Alerts</a>'
-            if v_slug else ''
+            if v_slug and not p["available"] else ''
         )
         product_rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50">
@@ -510,7 +512,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
   {f"""<!-- Variety-watch suggestion CTA (shown below results when stock exists) -->
   <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
     <p class="font-medium text-green-800 mb-1">Want alerts for a specific {name} variety?</p>
-    <p class="text-gray-600">Click the &#128276; Alerts link next to a named cultivar above to set up restock alerts on that exact variety. Variety titles themselves link straight to the nursery for buy-now.</p>
+    <p class="text-gray-600">Out-of-stock rows have a &#128276; Alerts link -- click it to get emailed when that exact variety restocks at any monitored nursery. In-stock rows link straight to the nursery for buy-now.</p>
   </div>""" if in_stock_count > 0 else ''}
 
 </main>
