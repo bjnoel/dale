@@ -19,6 +19,10 @@ echo "$LOG_PREFIX Scraping Shopify bee retailers..."
 cd "$SCRIPT_DIR"
 python3 "$SCRIPT_DIR/shopify_bee_scraper.py" 2>&1
 
+# Magento retailers (beewise)
+echo "$LOG_PREFIX Scraping Magento bee retailers..."
+python3 "$SCRIPT_DIR/magento_bee_scraper.py" 2>&1 || echo "$LOG_PREFIX WARNING: Magento scrape failed (non-fatal)."
+
 echo "$LOG_PREFIX Scrape complete."
 
 # Backup previous dashboard before rebuilding
