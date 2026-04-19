@@ -50,6 +50,16 @@ RETAILERS = {
         "platform": "shopify",
         "location": "Gembrook, VIC",
     },
+    "beekeeping-supplies-australia": {
+        "name": "Beekeeping Supplies Australia",
+        "domain": "beekeepingsuppliesaustralia.com.au",
+        "platform": "shopify",
+        "location": "QLD",
+    },
+    # "beewise" - Magento store (Perth, WA). Had HTML entity encoding issues
+    # (DEC-083). One-off snapshot taken 2026-03-20 via ad-hoc Magento scraper
+    # that was never added to the daily pipeline. Would need a custom Magento
+    # scraper. Low priority given better Shopify alternatives (DAL-102).
 }
 
 # Shipping: most beekeeping retailers ship nationally (no live quarantine issues
@@ -62,6 +72,7 @@ SHIPPING_MAP = {
     "beekeeping-gear": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
     "the-urban-beehive": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
     "becs-beehive": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
+    "beekeeping-supplies-australia": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
 }
 
 RETAILER_NAMES = {k: v["name"] for k, v in RETAILERS.items()}
