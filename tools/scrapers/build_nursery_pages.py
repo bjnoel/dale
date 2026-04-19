@@ -470,7 +470,8 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
 
 <main class="max-w-3xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-bold text-gray-900 mb-1">Australian Fruit Tree Nurseries</h1>
-  <p class="text-gray-500 text-sm mb-6">Daily stock tracking across {count} nurseries. Updated {today}.</p>
+  <p class="text-gray-500 text-sm mb-2">Daily stock tracking across {count} nurseries. Updated {today}.</p>
+  <p class="text-sm mb-6"><a href="/compare/nurseries.html" class="text-green-700 hover:underline">Compare all nurseries side-by-side &rarr;</a></p>
 
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
     {cards}
