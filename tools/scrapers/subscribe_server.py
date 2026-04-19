@@ -247,7 +247,6 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                     "email": email,
                     "subscribed_at": datetime.now().isoformat(),
                     "state": "ALL",
-                    "watch_species": [species_slug],
                 })
                 save_subscribers(subscribers)
                 print(f"New subscriber via wishlist: {email}")
@@ -334,32 +333,6 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 self.send_html(200, "<h2>Not found</h2><p>That email wasn't in our subscriber list.</p>")
             return
 
-        # Handle watch (species restock alert)
-        if action == "watch":
-            species = data.get("species", "").strip().lower() if self.headers.get("Content-Type", "").startswith("application/json") else params.get("species", [""])[0].strip().lower()
-            if not species:
-                self.send_json(400, {"error": "Species slug required"})
-                return
-            subscribers = load_subscribers()
-            existing = next((s for s in subscribers if s["email"] == email), None)
-            if existing:
-                watch_list = existing.get("watch_species", [])
-                if species in watch_list:
-                    self.send_json(200, {"message": "Already watching", "email": email, "species": species})
-                    return
-                existing.setdefault("watch_species", []).append(species)
-            else:
-                subscribers.append({
-                    "email": email,
-                    "subscribed_at": datetime.now().isoformat(),
-                    "state": "ALL",
-                    "watch_species": [species],
-                })
-            save_subscribers(subscribers)
-            print(f"Watch added: {email} → {species}")
-            self.send_json(201, {"message": "Alert set!", "email": email, "species": species})
-            return
-
         # Handle preferences update
         if action == "update_preferences":
             if not verify_unsubscribe_token(email, token):
@@ -387,27 +360,6 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             save_subscribers(subscribers)
             print(f"Preferences updated: {email} → state={new_state}")
             self.send_json(200, {"message": "Preferences updated", "state": new_state})
-            return
-
-        # Handle unwatch species
-        if action == "unwatch_species":
-            if not verify_unsubscribe_token(email, token):
-                self.send_json(403, {"error": "Invalid token"})
-                return
-            species = data.get("species", "").strip().lower() if self.headers.get("Content-Type", "").startswith("application/json") else params.get("species", [""])[0].strip().lower()
-            if not species:
-                self.send_json(400, {"error": "Species slug required"})
-                return
-            subscribers = load_subscribers()
-            for s in subscribers:
-                if s["email"] == email:
-                    watch_list = s.get("watch_species", [])
-                    if species in watch_list:
-                        watch_list.remove(species)
-                    break
-            save_subscribers(subscribers)
-            print(f"Species watch removed: {email} → {species}")
-            self.send_json(200, {"message": "Watch removed", "species": species})
             return
 
         # Handle subscribe (default)
@@ -483,26 +435,6 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             for s in states
         )
 
-        # Get species watches from subscriber record
-        subscribers = load_subscribers()
-        subscriber = next((s for s in subscribers if s["email"] == email), None)
-        watch_species = subscriber.get("watch_species", []) if subscriber else []
-
-        species_items = ""
-        if watch_species:
-            for sp in watch_species:
-                display = sp.replace("-", " ").title()
-                species_items += (
-                    f'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;'
-                    f'border-bottom:1px solid #f3f4f6">'
-                    f'<span>{display}</span>'
-                    f'<button onclick="removeSpecies(\'{sp}\')" style="background:none;border:1px solid #d1d5db;'
-                    f'color:#6b7280;padding:4px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer">Remove</button>'
-                    f'</div>'
-                )
-        else:
-            species_items = '<p style="color:#9ca3af;font-size:0.85rem">None. Browse species pages to add watches.</p>'
-
         # Get variety watches from SQLite
         variety_watches = self._get_variety_watches(email)
         variety_items = ""
@@ -537,14 +469,6 @@ class SubscribeHandler(BaseHTTPRequestHandler):
   </button>
 </form>
 <p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:0 0 16px"></p>
-
-<h3 style="color:#374151;font-size:1rem;margin:0 0 8px">Species restock alerts</h3>
-<p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
-  Get emailed when any variety of these species comes back in stock.
-</p>
-<div id="speciesWatches" style="margin:0 0 24px">
-{species_items}
-</div>
 
 <h3 style="color:#374151;font-size:1rem;margin:0 0 8px">Variety restock alerts</h3>
 <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
@@ -593,24 +517,6 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
   btn.disabled = false;
   btn.textContent = 'Save';
 }});
-
-async function removeSpecies(slug) {{
-  if (!confirm('Stop watching ' + slug.replace(/-/g, ' ') + '?')) return;
-  try {{
-    const resp = await fetch('/api/subscribe', {{
-      method: 'POST',
-      headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{
-        email: '{email}',
-        token: '{token}',
-        action: 'unwatch_species',
-        species: slug
-      }})
-    }});
-    if (resp.ok) location.reload();
-    else alert('Failed to remove watch.');
-  }} catch (err) {{ alert('Network error.'); }}
-}}
 
 async function removeVariety(slug) {{
   if (!confirm('Stop watching this variety?')) return;

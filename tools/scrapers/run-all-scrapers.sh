@@ -168,12 +168,9 @@ echo "$LOG_PREFIX Sending digest to email subscribers..."
 python3 "$SCRIPT_DIR/send_digest.py" 2>&1 || echo "$LOG_PREFIX WARNING: Digest email send failed (non-fatal)"
 echo "$LOG_PREFIX Subscriber send complete."
 
-# Send species restock alerts to watchers
-echo "$LOG_PREFIX Sending species restock alerts..."
-python3 "$SCRIPT_DIR/send_species_alerts.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Species alert send failed (non-fatal)"
-echo "$LOG_PREFIX Species alert send complete."
-
 # Send per-variety restock alerts to watchers
+# (Species-level alerts deprecated 2026-04-19: trigger condition was too strict
+# to ever fire in practice, and only variety watches are meaningful.)
 echo "$LOG_PREFIX Sending variety restock alerts..."
 python3 "$SCRIPT_DIR/send_variety_alerts.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Variety alerts failed (non-fatal)"
 echo "$LOG_PREFIX Variety alert send complete."

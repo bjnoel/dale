@@ -246,8 +246,6 @@ def get_subscriber_stats():
 
     stats = {
         "total_subscribers": 0,
-        "with_species_watches": 0,
-        "species_watches": {},
         "variety_watch_count": 0,
         "variety_watch_emails": 0,
         "variety_watches": {},
@@ -258,12 +256,6 @@ def get_subscriber_stats():
         with open(subs_path) as f:
             subs = json.load(f)
         stats["total_subscribers"] = len(subs)
-        for s in subs:
-            watch_species = s.get("watch_species", [])
-            if watch_species:
-                stats["with_species_watches"] += 1
-                for sp in watch_species:
-                    stats["species_watches"][sp] = stats["species_watches"].get(sp, 0) + 1
     except (FileNotFoundError, json.JSONDecodeError):
         pass
 
@@ -379,12 +371,8 @@ def build_digest_html(completed, created, in_progress, session_stats,
     parts.append("<h3>Subscribers</h3>")
     parts.append(
         f"<p>{ss['total_subscribers']} subscribers | "
-        f"{ss['with_species_watches']} watching species | "
         f"{ss['variety_watch_count']} variety watches ({ss['variety_watch_emails']} users)</p>"
     )
-    if ss["species_watches"]:
-        sw = ", ".join(f"{sp} ({n})" for sp, n in sorted(ss["species_watches"].items(), key=lambda x: -x[1]))
-        parts.append(f"<p style='font-size:0.9em;color:#555'>Species: {sw}</p>")
     if ss["variety_watches"]:
         vw = ", ".join(f"{t} ({n})" for t, n in list(ss["variety_watches"].items())[:10])
         parts.append(f"<p style='font-size:0.9em;color:#555'>Varieties: {vw}</p>")
@@ -452,12 +440,8 @@ def build_digest_text(completed, created, in_progress, session_stats,
     lines.append("== Subscribers ==")
     lines.append(
         f"  {ss['total_subscribers']} subscribers | "
-        f"{ss['with_species_watches']} watching species | "
         f"{ss['variety_watch_count']} variety watches"
     )
-    if ss["species_watches"]:
-        sw = ", ".join(f"{sp} ({n})" for sp, n in sorted(ss["species_watches"].items(), key=lambda x: -x[1]))
-        lines.append(f"  Species: {sw}")
     if ss["variety_watches"]:
         vw = ", ".join(f"{t} ({n})" for t, n in list(ss["variety_watches"].items())[:10])
         lines.append(f"  Varieties: {vw}")
