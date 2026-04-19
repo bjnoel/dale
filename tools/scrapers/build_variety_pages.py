@@ -618,6 +618,18 @@ def main():
         })
         pages_written += 1
 
+    # Delete orphan variety pages from previous runs (e.g. when parse_cultivar
+    # tightens up and a slug stops being generated). Don't touch index.html.
+    current_slugs = {e["slug"] for e in index_entries}
+    orphans = [
+        p for p in variety_dir.glob("*.html")
+        if p.stem != "index" and p.stem not in current_slugs
+    ]
+    for p in orphans:
+        p.unlink()
+    if orphans:
+        print(f"Removed {len(orphans)} orphan variety page(s)")
+
     # Write index
     index_html = build_variety_index(index_entries, valid_species_slugs)
     with open(variety_dir / "index.html", "w") as f:
