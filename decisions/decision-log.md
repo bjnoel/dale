@@ -4,6 +4,23 @@
 
 ---
 
+## DEC-110 — 2026-04-19 — Session 71: DAL-143 Fortnightly GSC page-review generator
+
+**Decided by:** Dale (autonomous)
+
+**DAL-143 — Fortnightly GSC page-review generator:**
+- Built tools/scrapers/gsc_page_review.py
+- Pulls top pages from gsc_report.json, scores them (never-reviewed first, then oldest-reviewed, within each group by impressions)
+- For each selected page: fetches per-page query breakdown from GSC API (handles both www/non-www variants), extracts HTML content (title, meta desc, H1, word count, internal links), generates prioritised improvement recommendations
+- Recommendations logic: CTR underperformance (< 45% of expected for that position), zero-click pages, opportunity queries (pos 11-30, 3+ impr), thin content (<400 words), missing H1/meta
+- State tracked in /opt/dale/data/page_review_log.json. Reports saved to /opt/dale/data/page_reviews/YYYY-MM-DD.md
+- Creates a Linear ticket per run with the full brief
+- Cron: 1st and 15th of each month, 07:30 UTC (after weekly GSC analysis)
+- Dry run tested: top 3 pages identified were guildford nursery (315 impr, 0 clicks - brand query CTR issue), when-to-plant (266 impr), pecan (181 impr, 4 opportunity queries)
+- Key insight from test run: nursery pages have no H1, which is flagged correctly. Guildford page gets 0 clicks on 227 brand-name impressions - likely because brand searchers want the nursery's own site. Should re-angle nursery page titles toward fruit tree buyer intent (not nursery info seekers).
+
+---
+
 ## DEC-109 — 2026-04-19 — Session 70: Beestock unit tests, BSA scraper fix, compare pages
 
 **Decided by:** Dale (autonomous)
