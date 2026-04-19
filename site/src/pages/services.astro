@@ -279,6 +279,60 @@ import Base from '../layouts/Base.astro';
       </div>
     </section>
 
+    <section id="pricing" class="pricing">
+      <div class="container">
+        <div class="section-header">
+          <div class="field-label">Pricing / What It Costs</div>
+          <h2 class="section-title">Simple, no-surprise pricing</h2>
+        </div>
+        <p class="section-intro">
+          No discovery calls, no scopes of work, no proposals. One fixed price to see if there is value here. Then optional ongoing support if you want to act on the findings.
+        </p>
+
+        <div class="pricing-grid">
+
+          <div class="pricing-card pricing-main">
+            <div class="pricing-eyebrow">Step 1</div>
+            <div class="pricing-name">The Walkthrough Audit</div>
+            <div class="pricing-amount">$199</div>
+            <div class="pricing-freq">one-off, paid after the visit</div>
+            <div class="pricing-divider"></div>
+            <ul class="pricing-includes">
+              <li>One-hour in-person visit to your business</li>
+              <li>Full analysis of your operations and online presence</li>
+              <li>Written report (3-5 specific, prioritised findings)</li>
+              <li>30-minute walkthrough session to review findings</li>
+              <li>Yours to keep and share with your team</li>
+            </ul>
+            <a href="mailto:hello@walkthrough.au?subject=Booking%20an%20Assessment" class="pricing-cta">Book an assessment</a>
+          </div>
+
+          <div class="pricing-card pricing-optional">
+            <div class="pricing-eyebrow">Step 2 (optional)</div>
+            <div class="pricing-name">Implementation Support</div>
+            <div class="pricing-amount">from $99<span class="pricing-per">/month</span></div>
+            <div class="pricing-freq">no lock-in, cancel any time</div>
+            <div class="pricing-divider"></div>
+            <ul class="pricing-includes">
+              <li>We help you implement the report recommendations</li>
+              <li>Set up tools, configure software, train your team</li>
+              <li>Monthly check-in to review progress</li>
+              <li>Ongoing advice as your situation changes</li>
+              <li>Most clients need 1-3 months to act on findings</li>
+            </ul>
+            <div class="pricing-note">Only available after completing the audit. Price depends on scope.</div>
+          </div>
+
+        </div>
+
+        <div class="pricing-guarantee">
+          <span class="pg-label">Our guarantee</span>
+          If the audit does not surface at least one finding worth acting on, you pay nothing.
+        </div>
+
+      </div>
+    </section>
+
     <section class="good-fit">
       <div class="container">
         <div class="section-header">
@@ -720,6 +774,155 @@ import Base from '../layouts/Base.astro';
     line-height: 1.6;
   }
 
+  /* Pricing */
+  .pricing { background: var(--gray-bg); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--gray-border);
+    background: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .pricing-card {
+    padding: 32px 28px;
+  }
+
+  .pricing-main { border-right: 1px solid var(--gray-border); }
+
+  .pricing-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 8px;
+  }
+
+  .pricing-name {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+  }
+
+  .pricing-amount {
+    font-family: var(--font-mono);
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .pricing-per {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .pricing-freq {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-mid);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    margin-bottom: 0;
+  }
+
+  .pricing-divider {
+    border: none;
+    border-top: 1px solid var(--gray-border);
+    margin: 20px 0;
+  }
+
+  .pricing-includes {
+    list-style: none;
+    margin-bottom: 24px;
+  }
+
+  .pricing-includes li {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--gray-dark);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--gray-border);
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .pricing-includes li:last-child { border-bottom: none; }
+
+  .pricing-main .pricing-includes li::before {
+    content: '+';
+    font-family: var(--font-mono);
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .pricing-optional .pricing-includes li::before {
+    content: '+';
+    font-family: var(--font-mono);
+    color: var(--gray-mid);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .pricing-cta {
+    display: inline-block;
+    background: var(--green);
+    color: white !important;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border: 1px solid var(--green);
+    text-decoration: none !important;
+  }
+
+  .pricing-cta:hover { background: #0f3d22 !important; }
+
+  .pricing-note {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--gray-mid);
+    line-height: 1.5;
+    border-top: 1px solid var(--gray-border);
+    padding-top: 16px;
+  }
+
+  .pricing-guarantee {
+    border: 1px solid var(--green-rule);
+    background: var(--green-light);
+    padding: 14px 20px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--gray-dark);
+    line-height: 1.5;
+  }
+
+  .pg-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    display: block;
+    margin-bottom: 4px;
+  }
+
   /* Good fit */
   .fit-grid {
     display: grid;
@@ -863,11 +1066,12 @@ import Base from '../layouts/Base.astro';
   /* Responsive */
   @media (max-width: 768px) {
     .hero h1 { font-size: 26px; }
-    .example-grid, .fit-grid, .scope-grid { grid-template-columns: 1fr; }
+    .example-grid, .fit-grid, .scope-grid, .pricing-grid { grid-template-columns: 1fr; }
     .example-card, .fit-col + .fit-col { border-right: none !important; border-left: none !important; border-bottom: 1px solid var(--gray-border) !important; }
     .example-card:last-child { border-bottom: none !important; }
     .scope-item:nth-child(3n) { border-right: none !important; }
     .scope-item { border-right: none !important; }
+    .pricing-main { border-right: none; border-bottom: 1px solid var(--gray-border); }
     .timeline-item { grid-template-columns: 1fr; }
     .tl-marker { border-right: none; border-bottom: 1px solid var(--gray-border); justify-content: flex-start; padding: 12px 16px; }
     .report-field { grid-template-columns: 1fr; gap: 4px; }
