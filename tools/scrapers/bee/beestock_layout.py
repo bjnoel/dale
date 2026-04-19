@@ -26,6 +26,7 @@ PLAUSIBLE_SCRIPT = """\
 NAV_ITEMS = [
     ("Search", "/"),
     ("Categories", "/category/hives-boxes.html"),
+    ("Compare", "/compare/"),
     ("Retailers", "/retailer/"),
     ("Digest", "/digest.html"),
 ]

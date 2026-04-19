@@ -127,6 +127,14 @@ else
     echo "$LOG_PREFIX WARNING: Retailer page build failed (non-fatal)."
 fi
 
+# Build price comparison pages (SEO -- transactional intent)
+echo "$LOG_PREFIX Building compare pages..."
+if python3 "$SCRIPT_DIR/build_bee_compare_pages.py" "$PROJECT_DIR/data/bee-stock" "$BEE_DASHBOARD_DIR" 2>&1; then
+    echo "$LOG_PREFIX Compare pages complete."
+else
+    echo "$LOG_PREFIX WARNING: Compare page build failed (non-fatal)."
+fi
+
 # Build Tailwind CSS (purged, scans all generated HTML for used classes)
 echo "$LOG_PREFIX Building Tailwind CSS..."
 TREESTOCK_SCRIPT_DIR="$(dirname "$SCRIPT_DIR")"
