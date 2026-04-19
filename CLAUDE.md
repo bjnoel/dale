@@ -176,6 +176,25 @@ These are hard rules from Benedict. Do not override or "improve" past them.
 
 4. **No em dashes in copy.** Use commas, periods, or parentheses instead.
 
+## Testing
+
+Run before committing any change to `tools/scrapers/` (especially the
+parsing helpers, builders, or alert scripts):
+
+```
+python3 -m unittest discover tests/
+```
+
+Tests live in `tests/` and use only stdlib unittest (no pytest). They
+focus on pure functions where bugs have bitten us before -- particularly
+`parse_cultivar` / `slugify` / `_variety_slug`, which are duplicated
+across `build_variety_pages.py`, `build_species_pages.py`, and
+`send_variety_alerts.py` and MUST stay in sync (a drift = variety alert
+URLs that don't match the pages built for them, or alert links pointing
+to 404s on species pages).
+
+When you change one of those helpers, update the tests too.
+
 ## Automated Housekeeping
 
 - **After finishing a blog post for bjnoel.com**, always create or update the
