@@ -790,7 +790,8 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .nursery-tag:hover { background: #c7d2fe; }
   .nursery-tag.featured-tag { background: #fef3c7; color: #92400e; font-weight: 600; }
   .featured-badge { font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #f59e0b; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-  .rare-badge { font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #fef3c7; color: #92400e; font-weight: 700; }
+  .rare-badge { font-size: 0.6rem; padding: 1px 5px; border-radius: 4px; background: #fef3c7; color: #92400e; font-weight: 700; cursor: pointer; }
+  .rare-badge:hover { background: #fde68a; }
   .species-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; max-height: 34px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
   .species-strip.expanded { max-height: 500px; }
   .toggle-pills-btn { background: none; border: none; color: #059669; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
@@ -979,6 +980,7 @@ const stateFilter = document.getElementById('stateFilter');
 const changesOnly = document.getElementById('changesOnly');
 const sortBy = document.getElementById('sortBy');
 let activeSpeciesSlug = '';
+let rareOnly = false;
 const defaultPillsHTML = document.querySelector('.species-strip').innerHTML;
 
 function search() {{
@@ -996,6 +998,7 @@ function search() {{
   if (changesOnly.checked) results = results.filter(p => p.ch);
   if (nursery) results = results.filter(p => p.nk === nursery);
   if (activeSpeciesSlug) results = results.filter(p => p.sl === activeSpeciesSlug);
+  if (rareOnly) results = results.filter(p => p.sl && HARD_TO_FIND.has(p.sl));
 
   if (q && !activeSpeciesSlug) {{
     const terms = q.split(/\\s+/);
@@ -1184,7 +1187,7 @@ function render() {{
     const featuredClass = p.ft ? ' featured-row' : '';
     const nurseryTagClass = p.ft ? 'nursery-tag featured-tag' : 'nursery-tag';
     const featuredBadge = p.ft ? '<span class="featured-badge">Featured</span>' : '';
-    const rareBadge = (p.sl && HARD_TO_FIND.has(p.sl)) ? '<span class="stock-badge rare-badge">Hard to find</span>' : '';
+    const rareBadge = (p.sl && HARD_TO_FIND.has(p.sl)) ? '<span class="stock-badge rare-badge" data-rare="1" role="button" tabindex="0" title="Show only hard-to-find varieties">Hard to find</span>' : '';
     return `<a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row${{featuredClass}} flex items-center gap-3 py-3 px-2 block">
       <div class="flex-1 min-w-0">
         <div class="font-medium text-sm">${{p.t}}${{latinName}}</div>
@@ -1251,6 +1254,7 @@ function updateActiveFilters() {{
   const st = stateFilter.value;
   if (st) chips.push({{label: st, action: 'state'}});
   if (changesOnly.checked) chips.push({{label: 'Changes only', action: 'changes'}});
+  if (rareOnly) chips.push({{label: 'Hard to find', action: 'rare'}});
 
   if (chips.length === 0) {{
     el.style.display = 'none';
@@ -1278,6 +1282,8 @@ document.getElementById('activeFilters').addEventListener('click', function(e) {
     stateFilter.value = '';
   }} else if (action === 'changes') {{
     changesOnly.checked = false;
+  }} else if (action === 'rare') {{
+    rareOnly = false;
   }}
   search();
 }});
@@ -1411,13 +1417,22 @@ sortBy.addEventListener('change', search);
   updatePillCounts();
 }})();
 
-// Nursery tag click: filter by nursery
+// Nursery tag click: filter by nursery; Hard-to-find badge click: toggle rare filter
 document.getElementById('results').addEventListener('click', function(e) {{
   const tag = e.target.closest('.nursery-tag[data-nk]');
   if (tag) {{
     e.preventDefault();
     e.stopPropagation();
     nurserySelect.value = tag.getAttribute('data-nk');
+    search();
+    window.scrollTo({{ top: 0, behavior: 'smooth' }});
+    return;
+  }}
+  const rare = e.target.closest('.rare-badge[data-rare]');
+  if (rare) {{
+    e.preventDefault();
+    e.stopPropagation();
+    rareOnly = !rareOnly;
     search();
     window.scrollTo({{ top: 0, behavior: 'smooth' }});
   }}
