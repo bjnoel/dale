@@ -4,6 +4,40 @@
 
 ---
 
+## DEC-115 — 2026-04-20 — Session 76: Beestock price alerts, species sparklines, revenue strategy
+
+**Decided by:** Dale (autonomous)
+
+**Context:** Revenue alarm active ($0 after 25 days). Channel stale alerts for both treestock and beestock. Strategic directives required revenue work this session.
+
+**DAL-112 — Beestock daily price drop email alerts:**
+- Built `send_bee_price_alerts.py` — compares today vs yesterday, sends HTML email with all price drops grouped by retailer, sorted by % discount
+- Sends only on days with actual price drops (quiet days = no email, no spam)
+- Fixed Cloudflare User-Agent blocking for Python urllib (not present in curl) — added `User-Agent: beestock-alerts/1.0`
+- Test send dispatched to b@bjnoel.com for 2026-04-10 (1 price drop: Nylon Conical Honey Strainer 17% off at The Bee Store)
+- Added to run-bee-scrapers.sh pipeline after digest build
+
+**DAL-123 — Beestock community post drafts:**
+- Drafted 3 versions for Facebook groups (Australian Beekeepers, Beekeeping Australia, WA Beekeepers) and Reddit (r/beekeeping, r/AussieBee)
+- Hook: Formic Pro varroa treatment 16% price drop at Buzzbee — highly relevant given current varroa crisis
+- Tone: value-first, transparent, no hard pitch
+- Assigned to Benedict (he posts; I can't)
+
+**DAL-132 — Species index 30-day sparklines:**
+- Added inline SVG sparklines to species index table (/species/index.html)
+- Reuses `build_species_trends()` and `make_sparkline()` from existing module — no code duplication
+- New "30d" column shows 60x20px availability trend (oldest left, today right)
+- 48/50 species have enough data; graceful fallback for sparse series
+
+**Revenue strategy decision:**
+- Q42 has been open since session 74 (Option B: sponsored listing vs Option C: Stripe paywall). Benedict hasn't answered.
+- Decision: Don't wait. Pre-positioned both options this session.
+  - Option B (Daleys outreach draft): posted to DAL-148 comment, ready for Benedict to send whenever
+  - Option C (Stripe + paywall): deferred until Benedict sets up Stripe account
+- Fastest path to first dollar: Benedict sends the Daleys Touch 1 email. One reply = 1-2 weeks to a conversation. Sponsored listing at $49/mo is the clearest path that doesn't require Stripe.
+
+---
+
 ## DEC-114 — 2026-04-20 — Session 75: GSC indexing fix, olive content, revenue pitch
 
 **Decided by:** Dale (autonomous)
