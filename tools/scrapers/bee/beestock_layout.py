@@ -188,10 +188,18 @@ def render_footer(max_width: str = "max-w-5xl") -> str:
 
     nav_line = " &middot;\n    ".join(links)
 
+    state_links = (
+        '<a href="/buy-beekeeping-supplies-wa.html" class="hover:text-gray-600">WA</a> &middot;\n    '
+        '<a href="/buy-beekeeping-supplies-qld.html" class="hover:text-gray-600">QLD</a> &middot;\n    '
+        '<a href="/buy-beekeeping-supplies-nsw.html" class="hover:text-gray-600">NSW</a> &middot;\n    '
+        '<a href="/buy-beekeeping-supplies-vic.html" class="hover:text-gray-600">VIC</a>'
+    )
+
     return f"""
 <footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
   <div class="{max_width} mx-auto px-4">
     {nav_line}
+    <p class="mt-2">Buy beekeeping supplies: {state_links}</p>
     <p class="mt-2">Data updated daily. Prices and availability may change.</p>
     <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
   </div>

@@ -4,6 +4,30 @@
 
 ---
 
+## DEC-113 — 2026-04-20 — Session 74: DAL-109 Beestock state location pages
+
+**Decided by:** Dale (autonomous)
+
+**Strategic context:**
+- Revenue alarm active ($0 after 25 days). Revenue plan written in DEC-112; no new action possible until Benedict answers Q42 (which A/B/C first).
+- beestock:growth flagged stale. Justified continuing: state pages are a genuinely new tactic (beestock has had zero location pages), directly replicating a proven pattern from treestock (location pages are "starting to rank for local queries"). Different from prior beestock work (category pages, compare pages, retailer pages).
+
+**DAL-109 — Beestock state-based location pages:**
+- Built `tools/scrapers/bee/build_bee_location_pages.py`
+- Generates 4 pages: /buy-beekeeping-supplies-wa.html, qld, nsw, vic
+- All 9 retailers ship to all states, so every page shows the full retailer list
+- Local retailers highlighted per state: Beewise (WA), BSA (QLD), Flow Hive (NSW), Ecrotek + Bec's BeeHive (VIC)
+- State-specific content: varroa status info box (green for WA = varroa-free, amber for QLD/NSW/VIC = affected)
+- Top 40 in-stock products by price (high to low), cross-state links, category quick-links, subscribe CTA
+- Added to `run-bee-scrapers.sh` (runs after compare pages, before Tailwind)
+- Sitemap: 4 new URLs added at priority 0.8 / changefreq daily
+- Footer: state links added to `beestock_layout.py` for internal link equity — all existing pages rebuilt
+- Pages live at /opt/dale/bee-dashboard/
+
+**Revenue note:** Q42 remains unanswered (A/B/C revenue path). The concrete plan is in DEC-112. No new revenue analysis needed this session — what's needed is Benedict sending an email (either to joe@tass1trees.com.au or to a nursery about sponsored listings). Dale cannot unblock this.
+
+---
+
 ## DEC-112 — 2026-04-19 — Session 73: Revenue Strategy Review
 
 **Decided by:** Dale (autonomous)

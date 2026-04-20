@@ -139,6 +139,14 @@ else
     echo "$LOG_PREFIX WARNING: Compare page build failed (non-fatal)."
 fi
 
+# Build state-based location pages (SEO -- buy beekeeping supplies [state])
+echo "$LOG_PREFIX Building location pages..."
+if python3 "$SCRIPT_DIR/build_bee_location_pages.py" "$PROJECT_DIR/data/bee-stock" "$BEE_DASHBOARD_DIR" 2>&1; then
+    echo "$LOG_PREFIX Location pages complete."
+else
+    echo "$LOG_PREFIX WARNING: Location page build failed (non-fatal)."
+fi
+
 # Build Tailwind CSS (purged, scans all generated HTML for used classes)
 echo "$LOG_PREFIX Building Tailwind CSS..."
 TREESTOCK_SCRIPT_DIR="$(dirname "$SCRIPT_DIR")"
