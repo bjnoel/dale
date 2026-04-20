@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 
 from shipping import SHIPPING_MAP, LOCAL_DELIVERY, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
+from build_species_trends import build_species_trends, make_sparkline
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
@@ -523,8 +524,9 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
 </html>"""
 
 
-def build_species_index(species_data: list[dict]) -> str:
+def build_species_index(species_data: list[dict], trend_data: dict | None = None) -> str:
     """Build an index page listing all species with data."""
+    # trend_data: {slug: [in_stock_count_per_day, ...]} (30 values, oldest first)
     rows = ""
     for entry in sorted(species_data, key=lambda x: x["in_stock_count"], reverse=True):
         s = entry["species"]
@@ -539,6 +541,16 @@ def build_species_index(species_data: list[dict]) -> str:
             '&#11088; Hard to find</span>'
             if hard_to_find else ""
         )
+
+        sparkline_cell = ""
+        if trend_data and s["slug"] in trend_data:
+            series = trend_data[s["slug"]]
+            if len([v for v in series if v is not None]) >= 2:
+                svg = make_sparkline(series, width=60, height=20, color="#16a34a")
+                sparkline_cell = (
+                    f'<span title="30-day availability trend">{svg}</span>'
+                )
+
         rows += f"""
     <tr class="border-b border-gray-100 hover:bg-gray-50">
       <td class="py-3 pr-4">
@@ -549,8 +561,11 @@ def build_species_index(species_data: list[dict]) -> str:
       <td class="py-3 pr-4 text-sm text-gray-500">{total} varieties</td>
       <td class="py-3 pr-4 text-sm text-gray-500">{nurseries} nurseries</td>
       <td class="py-3 pr-4 text-sm text-gray-600">{price_range}</td>
+      <td class="py-3 pr-2">{sparkline_cell}</td>
       <td class="py-3">{rarity_cell}</td>
     </tr>"""
+
+    sparkline_th = '<th class="pb-2 pr-2">30d</th>' if trend_data else ""
 
     head = render_head(
         title="Buy Fruit Trees Online Australia — treestock.com.au",
@@ -575,6 +590,7 @@ def build_species_index(species_data: list[dict]) -> str:
           <th class="pb-2 pr-4">Varieties</th>
           <th class="pb-2 pr-4">Nurseries</th>
           <th class="pb-2 pr-4">Price Range</th>
+          {sparkline_th}
           <th class="pb-2">Rarity</th>
         </tr>
       </thead>
@@ -666,8 +682,24 @@ def main():
             htf = " [Hard to find]" if rarity.get("hard_to_find") else ""
             print(f"  {species['common_name']}: {len(in_stock)}/{len(prods)} in stock, {len(nurseries)} nurseries{htf}")
 
+    # Build 30-day sparkline trend data for index
+    print("Computing 30-day availability trends for sparklines...")
+    try:
+        all_dates, species_trend_raw = build_species_trends(data_dir)
+        # Convert to {slug: [in_stock per day]} list (last 30 days)
+        last_30 = all_dates[-30:]
+        trend_data = {}
+        for slug, date_map in species_trend_raw.items():
+            series = [date_map.get(d, {}).get("in_stock") for d in last_30]
+            if any(v is not None for v in series):
+                trend_data[slug] = series
+        print(f"  Trend data for {len(trend_data)} species")
+    except Exception as e:
+        print(f"  WARNING: Could not compute trend data: {e}")
+        trend_data = None
+
     # Build index
-    index_html = build_species_index(index_data)
+    index_html = build_species_index(index_data, trend_data=trend_data)
     index_file = species_dir / "index.html"
     index_file.write_text(index_html)
 

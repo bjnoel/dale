@@ -115,6 +115,14 @@ python3 "$SCRIPT_DIR/bee_daily_digest.py" --build-index "$DIGEST_DIR" 2>&1
 
 echo "$LOG_PREFIX Digest complete (dated page at /digest/$TODAY.html)."
 
+# Send price drop email alerts to subscribers
+echo "$LOG_PREFIX Sending price drop alerts..."
+if python3 "$SCRIPT_DIR/send_bee_price_alerts.py" --data-dir "$PROJECT_DIR/data/bee-stock" 2>&1; then
+    echo "$LOG_PREFIX Price drop alerts complete."
+else
+    echo "$LOG_PREFIX WARNING: Price drop alerts failed (non-fatal)."
+fi
+
 # Build category landing pages (SEO)
 echo "$LOG_PREFIX Building category pages..."
 if python3 "$SCRIPT_DIR/build_bee_category_pages.py" "$PROJECT_DIR/data/bee-stock" "$BEE_DASHBOARD_DIR" 2>&1; then
