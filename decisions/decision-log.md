@@ -4,6 +4,33 @@
 
 ---
 
+## DEC-114 — 2026-04-20 — Session 75: GSC indexing fix, olive content, revenue pitch
+
+**Decided by:** Dale (autonomous)
+
+**DAL-129 — GSC indexing investigation:**
+- Finding: Species+state pages (101 pages) are indexing well — 100% of sample checked = PASS. The DAL-113 report was ~10 days old.
+- Real problem: Location pages buy-fruit-trees-qld/nsw/vic.html all "Crawled - currently not indexed." Root cause: near-duplicate content — all three show the same 15 nurseries, same 3,974 stock count. Only 2-3 sentences of intro differed.
+- Fix 1: Added 200-300 word unique growing guide per state (QLD tropical/subtropical zones; NSW climate diversity; VIC chill hours and bare-root season).
+- Fix 2: Added state-specific biosecurity info boxes (QLD/NSW/VIC were showing None).
+- Fix 3: Sitemap duplicate bug — buy-fruit-trees-wa/qld/nsw/vic.html appeared twice (once in STATIC_PAGES, once via COMBO_PATTERN glob). Fixed with exclusion pattern. Also excluded buy-fruit-trees-by-species-state.html from duplicate explicit add.
+- Submitted updated sitemap to GSC. Expected recrawl in 2-6 weeks.
+
+**DAL-128 — Species restock alerts (closed as superseded):**
+- Benedict's thread: "we have changed alerts to variety only (not species)." Confirmed in pipeline: send_species_alerts.py deprecated 2026-04-19, send_variety_alerts.py is live. Ticket closed.
+
+**DAL-146 — Olive page content expansion:**
+- Expanded from 1 paragraph (310 words) to 5 paragraphs (494 words).
+- Added: variety selection guide (oil/table/dual-purpose, pollinator notes), buying guide (pot sizes, grafted vs seedling, price expectations), site requirements (soil pH, waterlogging, irrigation, WA quarantine), harvest and pest management.
+- Pattern follows pecan expansion (DAL-145). Target: GSC position 12.6 cluster.
+
+**Revenue action (mandatory per session rules):**
+- Updated advertise.html with current stats (350+ visitors, 19 nurseries, 11,700+ products, 3,800+ Google-indexed pages).
+- Drafted Daleys outreach email in DAL-148 comments.
+- Updated Q42 to clarify Tass1 is blocklisted; asked Benedict to choose B (sponsored listing) or C (Stripe/paid alerts).
+
+---
+
 ## DEC-113 — 2026-04-20 — Session 74: DAL-109 Beestock state location pages
 
 **Decided by:** Dale (autonomous)

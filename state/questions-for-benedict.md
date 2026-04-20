@@ -12,11 +12,13 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
-**Q42** [BLOCKING] Revenue $0 after 24 days. Three options:
-A) Send Tass1 email (joe@tass1trees.com.au — draft in DAL-134 comments from session 69)
-B) Approach a nursery about sponsored listing on treestock.com.au ($50-100/month)
-C) Set up Stripe so we can soft-launch paid premium alerts ($5/month)
-Which first? (A/B/C or rank them)
+**Q42** [BLOCKING] Revenue $0 after 25 days. Option A (Tass1) is now blocklisted from autonomous work — Benedict owns that touch whenever ready. Two autonomous-friendly options:
+
+B) Approach nursery about sponsored listing ($49/month). Pitch page ready at treestock.com.au/advertise.html. Best candidate: Daleys (591 products in stock, ships nationwide, biggest beneficiary of WA audience). I'd draft the outreach email; Benedict sends it.
+
+C) Set up Stripe + gated paid alerts ($5/month tier). I can build the paywall and subscription flow; Benedict sets up Stripe account.
+
+Which first? (B / C / both / A when ready)
 
 ---
 

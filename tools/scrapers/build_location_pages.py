@@ -67,16 +67,19 @@ STATE_INTROS = {
         "most nurseries are east coast only. These are the ones that do."
     ),
     "QLD": (
-        "Queensland's warm climate suits a wide range of fruit trees. "
-        "These nurseries ship to QLD, including tropical and subtropical varieties."
+        "Queensland's warm, subtropical climate supports year-round fruit tree growing. "
+        "Several of Australia's largest fruit nurseries are based here, with strong "
+        "selections of tropical and subtropical varieties."
     ),
     "NSW": (
-        "NSW has a huge range of climates, from subtropical to cool highlands. "
-        "These nurseries ship to New South Wales."
+        "NSW spans three distinct growing zones: subtropical north coast, temperate "
+        "Sydney basin, and cool Southern Highlands. Most of these nurseries ship statewide "
+        "so you can order from any zone."
     ),
     "VIC": (
-        "Victoria's cool climate is ideal for stone fruit, apples, and pears. "
-        "These nurseries ship to Victoria."
+        "Victoria's cool winters deliver the chill hours stone fruit and apples need. "
+        "Bare-root season (June to August) is when Victorian growers stock up. "
+        "These nurseries ship to VIC."
     ),
 }
 
@@ -86,9 +89,50 @@ STATE_INFO_BOX = {
         "WA has strict quarantine rules — only a handful of nurseries can legally "
         "ship fruit trees here. We track them all so you don't have to."
     ),
-    "QLD": None,
-    "NSW": None,
-    "VIC": None,
+    "QLD": (
+        "Queensland has its own biosecurity rules: some stone fruit and citrus stock "
+        "must be treated before crossing state borders. Nurseries listed below are "
+        "authorised to ship to QLD."
+    ),
+    "NSW": (
+        "NSW allows most fruit trees to be shipped in from other states, but "
+        "check with your local council if you live near any fruit fly exclusion zones "
+        "in the Riverina or Murray region."
+    ),
+    "VIC": (
+        "Victoria requires that all imported nursery stock comes with a "
+        "plant health certificate. The nurseries below are authorised suppliers "
+        "and handle all interstate compliance paperwork."
+    ),
+}
+
+# State-specific growing guide content (unique per state for SEO differentiation)
+STATE_GROWING_GUIDE = {
+    "WA": None,  # WA already has unique quarantine content
+    "QLD": """<section class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">Growing fruit trees in Queensland</h2>
+    <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
+      <p>Queensland's climate divides into three fruit-growing zones. The far north (Cairns, Townsville) is true tropical territory: mangoes, bananas, carambola, durian and rambutan thrive here with little fuss. The southeast (Brisbane, Gold Coast, Sunshine Coast) is subtropical, supporting avocados, lychees, custard apples, macadamias and most citrus. The Darling Downs and granite belt at elevation can grow stone fruit and even apples with adequate chill hours.</p>
+      <p>Key advantage in QLD: you don't need to wait for a planting window. Pot-grown trees can go in the ground any time of year as long as you water through the first summer. That said, bare-root stone fruit is still best planted during the winter dormancy period (June to August).</p>
+      <p>Species to prioritise for Brisbane and southeast QLD: avocado, lychee, mango (dwarf varieties do well in suburban yards), macadamia, dragon fruit, mulberry, fig, and feijoa. Species that struggle: cherries, apples, and pears — not enough chill hours except on the Granite Belt.</p>
+    </div>
+  </section>""",
+    "NSW": """<section class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">Growing fruit trees in New South Wales</h2>
+    <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
+      <p>NSW has more fruit-growing diversity than any other state. The north coast (Byron Bay, Coffs Harbour) is subtropical and suits avocados, macadamias, lychees and citrus. Sydney and the Central Coast are warm temperate, good for figs, citrus, stone fruit and subtropical exotics like feijoa and guava. The Southern Highlands and tablelands are cool enough for apples, pears, cherries and plums — the same varieties that thrive in Victoria.</p>
+      <p>In the Riverina and Murray basin, hot dry summers and cold winters create excellent conditions for stone fruit, almonds and table grapes. This is also commercial orchard country, so variety selection matters: choose low-chill stone fruit for coastal areas and high-chill varieties for the ranges.</p>
+      <p>Most NSW growers can plant pot-grown trees year-round. Bare-root stock (available June to August) is cheaper and transplants well for deciduous species. A useful guide: if your winter temperatures regularly drop below 7°C, you can grow temperate stone fruit; if they rarely do, stick to subtropical varieties.</p>
+    </div>
+  </section>""",
+    "VIC": """<section class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">Growing fruit trees in Victoria</h2>
+    <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
+      <p>Victoria is Australia's heartland for cool-climate fruit. The state's reliable cold winters deliver the chill hours that apples, pears, cherries, plums, peaches, nectarines and quinces need to fruit well. Heritage apple varieties that would struggle in Queensland or WA perform beautifully in the Yarra Ranges, Mornington Peninsula, and central highlands.</p>
+      <p>Bare-root season (June to August) is the most important buying window for Victorian growers. Bare-root trees are cheaper, establish faster, and give you access to the widest variety selection. Heritage Fruit Trees (VIC-based) and Aus Nurseries both carry extensive bare-root ranges during this window — set an alert so you don't miss it.</p>
+      <p>Melbourne and coastal Victoria can also support subtropical species in sheltered spots: figs, feijoas, persimmons and mulberries all do well. Avocados are marginal in Melbourne but succeed in frost-free microclimates on the Mornington Peninsula. The key limiting factor is frost: if your site gets regular frost below -3°C, stick to fully cold-hardy deciduous fruit.</p>
+    </div>
+  </section>""",
 }
 
 # Per-state, per-nursery special notes
@@ -399,6 +443,9 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     except Exception:
         date_display = today_str
 
+    # State-specific growing guide
+    growing_guide_html = STATE_GROWING_GUIDE.get(state) or ""
+
     # Species combo links section — only include links to pages that actually exist
     species_combo_section_html = ""
     valid_combo_links = [
@@ -495,7 +542,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     </p>
   </section>
 
-{local_section_html}{species_combo_section_html}  <!-- Subscribe CTA -->
+{local_section_html}{species_combo_section_html}{growing_guide_html}  <!-- Subscribe CTA -->
   <section class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
     <h2 class="text-lg font-semibold text-green-900 mb-2">Get daily stock alerts for {state_name}</h2>
     <p class="text-sm text-green-800 mb-4">Free daily email when rare varieties come back in stock or prices change. Unsubscribe anytime.</p>

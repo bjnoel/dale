@@ -95,9 +95,14 @@ def build_sitemap(species_dir: Path, output_dir: Path) -> None:
   </url>""")
 
     # Species+state combo pages (buy-[species]-trees-[state].html)
+    # Exclude the state location pages (buy-fruit-trees-[state].html) which are
+    # already in STATIC_PAGES above.
     import re as _re
     COMBO_PATTERN = _re.compile(r'^buy-.+-trees-.+\.html$')
+    LOCATION_PAGE_PATTERN = _re.compile(r'^buy-fruit-trees-(wa|qld|nsw|vic)\.html$')
     for html_file in sorted(output_dir.glob("buy-*-trees-*.html")):
+        if LOCATION_PAGE_PATTERN.match(html_file.name):
+            continue  # Already in STATIC_PAGES
         if COMBO_PATTERN.match(html_file.name):
             loc = f"{BASE_URL}/{html_file.name}"
             urls.append(f"""  <url>
@@ -107,9 +112,9 @@ def build_sitemap(species_dir: Path, output_dir: Path) -> None:
     <priority>0.7</priority>
   </url>""")
 
-    # Index page for species+state combos
+    # Index page for species+state combos (only if not already added via COMBO_PATTERN)
     combo_index = output_dir / "buy-fruit-trees-by-species-state.html"
-    if combo_index.exists():
+    if combo_index.exists() and not COMBO_PATTERN.match("buy-fruit-trees-by-species-state.html"):
         urls.append(f"""  <url>
     <loc>{BASE_URL}/buy-fruit-trees-by-species-state.html</loc>
     <lastmod>{today}</lastmod>
