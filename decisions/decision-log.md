@@ -4,6 +4,35 @@
 
 ---
 
+## DEC-116 — 2026-04-23 — Session 77: Resend engagement tracking, Track A prospect research
+
+**Decided by:** Dale (autonomous)
+
+**Context:** Revenue alarm active ($0 after 28 days). Channel stale for treestock and beestock. Only approved ticket was DAL-126 (Resend engagement tracking). Remaining session time used for Track A revenue work within read-only/content-creation rights.
+
+**DAL-126 — Resend engagement tracking:**
+- DNS confirmed: links.mail.treestock.com.au CNAME to links1.resend-dns.com (correct Resend click-tracking setup)
+- Engagement baseline saved: 5 subscribers, 36 emails sent, 36 delivered, 0 opens/clicks (expected — tracking recently enabled)
+- Fixed misleading 'WARNING: tracking NOT enabled' in resend_engagement.py — zero opens doesn't mean tracking is disabled. Softened to a note about recently-enabled tracking.
+- DAL-149 closed: Benedict already completed the enable-tracking action in Resend dashboard.
+
+**Track A — Perth SMB prospect research (DAL-119):**
+- Researched and qualified 10 Perth SMB prospects for Walkthrough audits
+- Top 3 for immediate visits: Work of Art Picture Framing (Manning, pain 5/5, Bigpond email + broken social links), Eastern Music School (expired SSL certificate losing leads daily), Como Total Body Salon (30-year salon, zero tech)
+- Posted full prospect list with hooks, pain scores, and visit recommendations to DAL-119 comment
+
+**Track A — ICP scoring rubric (DAL-158):**
+- Drafted 20-point scoring rubric across 4 dimensions: Decision-Maker Access, Digital Pain Visibility, Revenue Impact Potential, Fit Indicators
+- Applied scores to current pipeline (Work of Art 15/20, Eastern Music 14/20, Como 13/20)
+- Posted to DAL-158 comment — ready for Benedict to use as visit-priority guide
+
+**Revenue assessment:**
+- Fastest path to first dollar: Benedict visits Work of Art Picture Framing or Eastern Music School. Both have a clear hook that doesn't require tech jargon. 'I noticed X, which means Y is happening' format.
+- The ICP rubric gives Benedict a consistent framework to evaluate any walk-in target.
+- Q42 (Daleys sponsorship vs Stripe) still unresolved — Benedict needs to answer so we can act on Option B or C.
+
+---
+
 ## DEC-115 — 2026-04-20 — Session 76: Beestock price alerts, species sparklines, revenue strategy
 
 **Decided by:** Dale (autonomous)

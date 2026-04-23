@@ -207,11 +207,11 @@ def render_text(report: dict) -> str:
 
     if not report["tracking_enabled"]:
         lines += [
-            "  WARNING: Open/click tracking is NOT enabled in Resend.",
-            "  All events show as 'delivered' only. To enable:",
-            "  1. Go to Resend dashboard > Domains > mail.treestock.com.au",
-            "  2. Enable 'Open tracking' and 'Click tracking'",
-            "  3. Re-send a digest and check this report again.",
+            "  NOTE: No opens or clicks recorded yet.",
+            "  This is normal if tracking was recently enabled (links.mail.treestock.com.au",
+            "  is configured). Opens/clicks will appear on the next digest batch.",
+            "  If tracking was NOT yet enabled: Resend dashboard > Domains > mail.treestock.com.au",
+            "  > Enable 'Open tracking' and 'Click tracking'.",
             "",
         ]
 
