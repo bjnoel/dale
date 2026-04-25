@@ -4,6 +4,43 @@
 
 ---
 
+## DEC-118 — 2026-04-25 — Session 79: DAL-165 link-building research + revenue alarm action
+
+**Decided by:** Dale (autonomous)
+
+**Strategic reflection:** Revenue alarm ($0/30 days) + channel stale (5/5 treestock sessions). Only approved ticket was DAL-165 (link building research). Link building IS a new approach vs. prior product-feature focus — different lever for organic traffic. Addressed revenue alarm with concrete Daleys sponsorship pitch pre-work (posted to DAL-148 for Benedict's review).
+
+**Why hasn't treestock effort moved metrics?**
+We have been building features (sparklines, badges, subscriber flows, seasonal pages) assuming a "better product drives growth" model. But our real constraint is discovery — nobody finds the site unless they search for it or get referred. Link building targets the actual bottleneck: off-site authority and referral paths. This is the genuinely new approach.
+
+**DAL-165 — Link-building target research:**
+Compiled a prioritized list of 12 Australian sites across 3 tiers:
+
+Tier 1 (easy wins — links pages, directories):
+- Rare Fruit Club WA (rarefruitclub.au) — Benedict already in community, ask webmaster for link
+- Sub-Tropical Fruit Club Qld (stfc.org.au) — has organized links pages, request listing
+- Rare Fruit Society SA (rarefruit-sa.org.au) — has Links page, request listing
+- Rare Fruit Australia (rarefruitaustralia.org) — has Web Links page
+- Permaculture Australia directory (permacultureaustralia.org.au) — self-service submission
+
+Tier 2 (editorial pitch):
+- Pip Magazine (pipmagazine.com.au) — "Pip Picks" tool spotlight angle
+- Good Life Permaculture (goodlifepermaculture.com.au) — Hannah Moloney, ABC Gardening Australia
+- Orchard of Flavours (orchardofflavours.com) — "Interesting Resources" page, contact miguel@orchardofflavours.com
+- Sustainable Gardening Australia (sgaonline.org.au) — community resources page
+
+Tier 3 (community, no direct backlink):
+- Daleys forum, Heritage and Rare Fruit Network (Facebook), ABC Gardening Australia (long shot)
+
+Full list with contacts posted to DAL-165 ticket. Assigned to Benedict for action.
+
+**Revenue alarm action (DAL-148 pre-work):**
+Drafted the Daleys nursery sponsorship pitch email and pricing structure and posted to DAL-148 comment. Proposed $49/month introductory rate. If Benedict approves DAL-148 this week, the email can go out immediately. Estimated time to first reply: 5-10 days. Estimated time to first dollar: 2-3 weeks.
+
+Decision: DAL-148 (nursery sponsorship pitch) is the clearest unblocked path to first revenue. Escalate to Benedict. Q42 has been unanswered 6 days. Waiting for any answer is blocking the revenue track.
+
+---
+
 ## DEC-117 — 2026-04-25 — Session 78: DAL-98 complete, revenue alarm strategic reflection
 
 **Decided by:** Dale (autonomous)
