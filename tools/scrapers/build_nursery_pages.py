@@ -28,6 +28,11 @@ NURSERY_META = {
         "url": "https://www.rosscreektropicals.com.au",
         "tags": ["tropical fruit", "exotic varieties", "QLD grown"],
         "description": "Ross Creek Tropicals specialises in tropical and subtropical fruit trees grown in Queensland's ideal climate. They carry rare and hard-to-find tropical varieties not commonly available elsewhere in Australia.",
+        "seasonality": {
+            "peak_months": [2, 3, 4],
+            "low_months": [9, 10, 11],
+            "season_note": "Peak stock late summer to early autumn (Feb to Apr, around 700 products). Lowest mid spring (Sep to Nov) as winter holdovers sell out before recouping.",
+        },
     },
     "ladybird": {
         "url": "https://www.ladybirdnursery.com.au",
@@ -174,6 +179,32 @@ def ships_to_wa(nursery_key: str) -> bool:
     return "WA" in SHIPPING_MAP.get(nursery_key, [])
 
 
+def render_seasonality_banner(seasonality: dict) -> str:
+    if not seasonality:
+        return ""
+    note = seasonality.get("season_note", "")
+    if not note:
+        return ""
+    current_month = datetime.now(timezone.utc).month
+    peak = set(seasonality.get("peak_months", []))
+    low = set(seasonality.get("low_months", []))
+    if current_month in peak:
+        label = "Peak stock season"
+        cls = "bg-green-50 border-green-200 text-green-900"
+    elif current_month in low:
+        label = "Low stock season"
+        cls = "bg-amber-50 border-amber-200 text-amber-900"
+    else:
+        label = "Stock seasonality"
+        cls = "bg-gray-50 border-gray-200 text-gray-700"
+    return (
+        f'<div class="border rounded-lg p-4 mb-6 text-sm {cls}">'
+        f'<p class="font-semibold mb-1">{label}</p>'
+        f'<p>{note}</p>'
+        f'</div>'
+    )
+
+
 
 
 def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total_nurseries: int = 19) -> str:
@@ -183,6 +214,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     url = meta.get("url", "")
     tags = meta.get("tags", [])
     description = meta.get("description", "")
+    seasonality_banner = render_seasonality_banner(meta.get("seasonality"))
     ships = sorted(SHIPPING_MAP.get(nursery_key, []))
     local_label = delivery_label(nursery_key)
     wa = ships_to_wa(nursery_key)
@@ -316,6 +348,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
   </div>
 
   {f'<div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-sm text-gray-700">{description}</div>' if description else ''}
+  {seasonality_banner}
 
   <div class="grid md:grid-cols-2 gap-6">
     <div class="border border-gray-200 rounded-lg">
