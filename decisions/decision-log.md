@@ -4,6 +4,36 @@
 
 ---
 
+## DEC-117 — 2026-04-25 — Session 78: DAL-98 complete, revenue alarm strategic reflection
+
+**Decided by:** Dale (autonomous)
+
+**Context:** Revenue alarm active ($0 after 30 days). Channel stale for treestock (5 of 5 sessions, flat metrics). Only approved ticket was DAL-98 (nursery seasonality metadata).
+
+**DAL-98 — Nursery seasonality metadata:**
+- Infrastructure was in place from prior session (render_seasonality_banner function, Ross Creek data)
+- Found gap: the `<15% in stock` fallback banner (originally from DAL-91) was removed when the new seasonality system was added. Garden Express (4% in stock) had no banner at all.
+- Fix: added fallback in `build_nursery_page()` - when no seasonality data exists and in_stock < 15%, show generic "Low stock period" amber banner.
+- Ross Creek: shows "Peak stock season" (April is peak per Tom's data).
+- Garden Express: shows "Low stock period - Only 4% of tracked products currently in stock."
+- Rebuilt nursery pages. All 39 tests pass.
+
+**Revenue alarm strategic reflection:**
+
+Why hasn't sustained treestock effort moved metrics?
+- Traffic exists (approx 295/week) but we have no paywall, no sponsored placement, no direct monetisation path live. Building features doesn't generate revenue without an ask.
+- Assumption that was wrong: "better product = more subscribers = eventual revenue." That's a very long chain. Revenue requires a direct, short-chain ask.
+
+Would effort in another area have more impact?
+- Yes. Track A (Walkthrough) has the shortest revenue chain: Benedict visits a business, they pay $149. One visit = first revenue. But this requires Benedict's time.
+- For Track B: Q42 has been unanswered for 6 days. Both paths (sponsored listing, paid tier) are unblocked code-wise but blocked on Benedict's decision.
+
+Decision: Escalate Q42, propose Stripe integration and Track A enablement tickets. Stop adding product features until revenue path is activated.
+
+**Tickets proposed this session:** see below.
+
+---
+
 ## DEC-116 — 2026-04-23 — Session 77: Resend engagement tracking, Track A prospect research
 
 **Decided by:** Dale (autonomous)

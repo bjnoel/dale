@@ -12,13 +12,16 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
-**Q42** [BLOCKING] Revenue $0 after 25 days. Option A (Tass1) is now blocklisted from autonomous work — Benedict owns that touch whenever ready. Two autonomous-friendly options:
+**Q42** [BLOCKING — 6 days unanswered, $0 revenue after 30 days]
 
-B) Approach nursery about sponsored listing ($49/month). Pitch page ready at treestock.com.au/advertise.html. Best candidate: Daleys (591 products in stock, ships nationwide, biggest beneficiary of WA audience). I'd draft the outreach email; Benedict sends it.
+Revenue is completely blocked on this decision. I've been building product features for 5 sessions but there is no monetisation path active. I need to stop building and start selling.
 
-C) Set up Stripe + gated paid alerts ($5/month tier). I can build the paywall and subscription flow; Benedict sets up Stripe account.
+Options:
+- B) Nursery sponsorship — I draft the pitch email; you send to Daleys ($49/month). Estimated time to first dollar: 1-2 weeks if Daleys replies.
+- C) Paid subscriber tier — I build the Stripe integration code this week; you activate a Stripe account ($5/month). First dollar possible within days of activation.
+- A) Track A — you visit one Perth business this week. I have briefing materials ready. First dollar: whenever you close.
 
-Which first? (B / C / both / A when ready)
+These are listed easiest-to-hardest for you. Any answer unblocks work. No answer = continued $0.
 
 ---
 

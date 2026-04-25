@@ -223,6 +223,16 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     in_stock_count = data.get("in_stock_count", sum(1 for p in products if p.get("any_available")))
     total_count = data.get("product_count", len(products))
 
+    if not seasonality_banner and total_count > 0 and (in_stock_count / total_count) < 0.15:
+        pct_str = f"{round(in_stock_count / total_count * 100)}%"
+        seasonality_banner = (
+            '<div class="border rounded-lg p-4 mb-6 text-sm bg-amber-50 border-amber-200 text-amber-900">'
+            '<p class="font-semibold mb-1">Low stock period</p>'
+            f'<p>Only {pct_str} of tracked products are currently in stock. '
+            'Check back later or browse other nurseries for more options.</p>'
+            '</div>'
+        )
+
     species_breakdown = build_species_breakdown(products, species_lookup)
     species_count = len(species_breakdown)
     nursery_count_minus_one = max(total_nurseries - 1, 1)
