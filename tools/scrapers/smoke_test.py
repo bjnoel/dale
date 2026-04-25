@@ -24,7 +24,8 @@ PAGES = [
     ("/digest.html",      5_000, "treestock"),
     ("/guide.html",      10_000, "rare fruit"),
     ("/species/mango.html", 5_000, "mango"),
-    ("/sitemap.xml",      1_000, "treestock.com.au"),
+    ("/sitemap.xml",        500, "sitemaps/variety.xml"),
+    ("/sitemaps/variety.xml", 100_000, "treestock.com.au/variety/"),
 ]
 
 # Subscribe API: POST with invalid email should return 4xx (server is alive)
