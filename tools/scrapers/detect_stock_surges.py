@@ -3,9 +3,12 @@
 
 Compares today's in_stock_count with yesterday's for each nursery.
 Sends an alert email to Benedict when any nursery has a big swing
-(+/- 20% or absolute change of 10+).
+(both >= 20% AND >= 10 items in absolute terms).
 
 Runs as part of the post-scraper pipeline in run-all-scrapers.sh.
+Idempotent: a send marker prevents duplicate emails when the pipeline
+is re-run on the same day (e.g. by autonomous Dale rebuilding the
+dashboard).
 
 Usage:
     python3 detect_stock_surges.py /opt/dale/data/nursery-stock
@@ -17,11 +20,12 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-# Thresholds
-PCT_THRESHOLD = 20    # 20% change triggers alert
-ABS_THRESHOLD = 10    # or absolute change of 10+ items
+# Thresholds (both must be met to trigger the alert)
+PCT_THRESHOLD = 20    # 20% change AND
+ABS_THRESHOLD = 10    # absolute change of 10+ items
 
 SCRIPT_DIR = Path(__file__).parent
+SENDS_LOG_FILE = Path("/opt/dale/data/surge_alert_sends.json")
 
 
 def load_snapshot_header(path):
@@ -77,7 +81,7 @@ def detect_surges(data_dir):
         else:
             continue  # 0 -> 0, skip
 
-        if abs(pct_change) >= PCT_THRESHOLD or abs(abs_change) >= ABS_THRESHOLD:
+        if abs(pct_change) >= PCT_THRESHOLD and abs(abs_change) >= ABS_THRESHOLD:
             direction = "up" if abs_change > 0 else "down"
             surges.append({
                 "nursery_key": nursery_key,
@@ -138,7 +142,7 @@ def send_alert(surges):
 {rows_html}
 </table>
 <p style="font-size:0.85em;color:#888;margin-top:16px">
-Thresholds: {PCT_THRESHOLD}% change or {ABS_THRESHOLD}+ items.
+Thresholds: {PCT_THRESHOLD}% change and {ABS_THRESHOLD}+ items.
 <a href="https://treestock.com.au">treestock.com.au</a></p>"""
 
     text = f"Stock Movement Alert -- {today}\n\n" + "\n".join(rows_text)
@@ -146,6 +150,22 @@ Thresholds: {PCT_THRESHOLD}% change or {ABS_THRESHOLD}+ items.
     subject = f"Stock alert: {len(surges)} nursery changes -- {today}"
     send_email(subject, html, text)
     print(f"Stock surge alert sent: {len(surges)} nurseries")
+
+
+def load_sends_log() -> dict:
+    if not SENDS_LOG_FILE.exists():
+        return {}
+    try:
+        with open(SENDS_LOG_FILE) as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def save_sends_log(log: dict) -> None:
+    SENDS_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(SENDS_LOG_FILE, "w") as f:
+        json.dump(log, f, indent=2)
 
 
 def main():
@@ -169,7 +189,15 @@ def main():
         print(f"[DRY RUN] Would send alert for {len(surges)} nurseries")
         return
 
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    sends_log = load_sends_log()
+    if sends_log.get("last_sent") == today and "--force" not in sys.argv:
+        print(f"Stock surge alert already sent today ({today}), skipping.")
+        return
+
     send_alert(surges)
+    sends_log["last_sent"] = today
+    save_sends_log(sends_log)
 
 
 if __name__ == "__main__":
