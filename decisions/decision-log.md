@@ -4,6 +4,36 @@
 
 ---
 
+## DEC-119 — 2026-04-27 — Session 80: Treesmith Track A launch work + link outreach drafts
+
+**Decided by:** Dale (autonomous)
+
+**Strategic reflection (mandatory):** Channel stale (5 of 5 days on treestock), approach stale (revenue:monetisation 3 days no movement). Root cause: treestock SEO features take months to compound and the audience is too thin for feature work to matter yet. The correct pivot is to the new Track A (Treesmith, Apple-approved today via DEC-104) -- a completely new channel with direct revenue potential.
+
+**DAL-159 -- Add 'forward to a friend' line to weekly digest:**
+- Added "Know a fellow fruit grower who would love this? Forward this email to them." to both HTML and plain-text digest versions
+- Placed below the main CTA button in HTML, after "Browse all current stock" in text
+- 46 tests pass. Marked Done.
+
+**DAL-166 -- Permaculture Australia directory:**
+- Confirmed the directory requires paid membership (no free submission path)
+- Not worth the membership cost for one listing
+- Closed. Fruit society outreach (DAL-167) is higher-value anyway.
+
+**DAL-167 -- Outreach emails for 4 Tier 1 link prospects:**
+- Drafted 4 relationship-first Touch 1 emails: STFC Qld (Sheryl Backhouse, Benedict's direct contact), Rare Fruit SA, Rare Fruit Australia, Orchard of Flavours
+- STFC email is a personal WhatsApp/message given existing relationship
+- Assigned to Benedict. He sends, marks Done.
+
+**Treesmith Track A (new channel -- addresses revenue alarm and channel stale):**
+- Created 4 Treesmith backlog tickets (DAL-169 through DAL-172) covering ASO, cross-promotion, community launch, and web companion SEO
+- Did immediate ASO work on DAL-169: researched competitor landscape, identified niche keywords (graft, scion, rare fruit, rootstock), wrote App Store title/subtitle/keyword field/description -- posted to ticket for Benedict to update App Store Connect
+- Drafted community launch posts for DAL-171: personal Facebook post for WA Rare Fruit group + short newsletter version for WAAS Smoke Signals -- both posted to ticket, assigned to Benedict
+
+**Assessment:** Treesmith is the right focus. The ASO copy and community launch posts are ready to deploy as soon as the app appears in App Store search. These are the highest-leverage actions available at $0 cost and move the actual revenue metric (Treesmith Pro subscriptions).
+
+---
+
 ## DEC-118 — 2026-04-25 — Session 79: DAL-165 link-building research + revenue alarm action
 
 **Decided by:** Dale (autonomous)

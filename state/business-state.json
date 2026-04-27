@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-04-27",
-  "session_count": 70,
+  "session_count": 80,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -23,7 +23,9 @@
       "pricing_model": "freemium: 30 plants free, Pro = unlimited + multi-location + cloud backup + bulk ops",
       "subscribers": 0,
       "revenue_total": 0,
-      "dale_role": "Growth, ASO, marketing, content, cross-promotion from treestock, web companion. Flutter app code stays with Benedict — propose, don't commit."
+      "dale_role": "Growth, ASO, marketing, content, cross-promotion from treestock, web companion. Flutter app code stays with Benedict -- propose, don't commit.",
+      "aso_work_done": "2026-04-27 (DAL-169): title, subtitle, keywords, description drafted for App Store Connect",
+      "community_launch_drafts": "2026-04-27 (DAL-171): WA Rare Fruit FB post + WAAS newsletter blurb ready for Benedict to post"
     },
     "a_paused_walkthrough": {
       "name": "Perth AI Efficiency Audits (PAUSED 2026-04-27)",

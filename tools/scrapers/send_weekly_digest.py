@@ -318,6 +318,10 @@ def format_weekly_html(all_changes: dict, end_date: str, state_filter: str = "")
       </a>
     </div>
 
+    <p style="margin-top:24px;font-size:0.85rem;color:#6b7280;text-align:center;">
+      Know a fellow fruit grower who would love this? Forward this email to them.
+    </p>
+
   </div>
 
 </div>
@@ -413,6 +417,8 @@ def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "")
         lines.append("")
 
     lines.append(f"Browse all current stock: {SITE_URL}")
+    lines.append("")
+    lines.append("Know a fellow fruit grower who would love this? Forward this email to them.")
     return "\n".join(lines)
 
 

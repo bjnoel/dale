@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-04-25",
-  "last_session": 79,
+  "last_updated": "2026-04-27",
+  "last_session": 80,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -84,16 +84,58 @@
         "subscribers",
         "weekly_visitors"
       ]
+    },
+    "treesmith:growth": {
+      "parent": "treesmith",
+      "metrics": [
+        "treesmith_subscribers",
+        "revenue_monthly"
+      ]
     }
   },
   "parents": {
     "treestock": "treestock.com.au growth",
     "beestock": "beestock.com.au growth",
-    "walkthrough": "Track A (Walkthrough) revenue",
+    "treesmith": "Track A (Treesmith) revenue",
+    "walkthrough": "Track A (Walkthrough, paused) revenue",
     "revenue": "Direct monetisation",
     "infrastructure": "Infrastructure"
   },
   "session_log": [
+    {
+      "session": 80,
+      "date": "2026-04-27",
+      "categories_worked": [
+        "treesmith:growth",
+        "treestock:seo",
+        "treestock:subscriber_conversion"
+      ],
+      "tickets_completed": [
+        "DAL-159",
+        "DAL-166"
+      ],
+      "tickets_assigned_to_benedict": [
+        "DAL-167",
+        "DAL-169",
+        "DAL-171"
+      ],
+      "tickets_proposed": [
+        "DAL-169",
+        "DAL-170",
+        "DAL-171",
+        "DAL-172"
+      ],
+      "metric_snapshot": {
+        "nurseries_monitored": 19,
+        "products_tracked": 11785,
+        "in_stock": 4448,
+        "treestock_subscribers": 5,
+        "beestock_subscribers": 0,
+        "weekly_visitors": null,
+        "revenue_monthly": 0,
+        "treesmith_subscribers": 0
+      }
+    },
     {
       "session": 79,
       "date": "2026-04-25",
