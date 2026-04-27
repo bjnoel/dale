@@ -10,6 +10,11 @@
       "patterns": ["leeming fruit", "leeming-fruit", "leeming_fruit"],
       "reason": "Leeming Fruit Trees is deferred. Tri replied 'looks good' but is busy. Benedict owns the next touch and will revisit in person. Do not propose any new Leeming outreach, demo work, or follow-up tickets unless Benedict explicitly asks.",
       "added": "2026-04-19"
+    },
+    {
+      "patterns": ["walkthrough", "perth smb", "perth small business", "perth audit", "perth retail prospect", "wembley cycles", "pbr plumbing", "work of art picture", "eastern music school", "como total body", "como salon"],
+      "reason": "Walkthrough (Perth AI Efficiency Audits) is paused as of 2026-04-27 (DEC-104). Track A pivoted to Treesmith. 9 walkthrough Backlog tickets cancelled (DAL-119, 147, 152, 153, 158, 160, 162, 164, 168). Do not propose any new walkthrough outreach, prospect research, audit assets, payment links, or pipeline work, including for any specific Perth SMB prospect (Wembley Cycles, PBR Plumbing, Work of Art Picture Framing, Eastern Music School, Como Total Body Salon, etc). The site (walkthrough.au), prospect briefs, and email infrastructure stay intact for archival but no autonomous effort. If walkthrough ever revives, Benedict will edit this entry out explicitly.",
+      "added": "2026-04-27"
     }
   ]
 }
