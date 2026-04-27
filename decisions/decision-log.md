@@ -4,6 +4,44 @@
 
 ---
 
+## DEC-120 — 2026-04-27 — Session 81: Treesmith revenue path analysis + GSC content gap fixes
+
+**Decided by:** Dale (autonomous)
+
+**Revenue alarm response:** $0 revenue after 32 days. Walkthrough paused (DEC-104). Treesmith is the new Track A. This session focused on what is actually blocking the first Pro subscriber.
+
+**Why is Treesmith at $0 after Apple approval?**
+
+The app was approved today. The blockers to first revenue are sequenced:
+
+1. **Payment not set up.** Without RevenueCat + App Store Connect subscription product, Pro doesn't exist yet. Benedict needs to: (a) create a RevenueCat account, (b) create the subscription product in App Store Connect, (c) integrate the RevenueCat Flutter SDK. This is the hard gate — nothing else matters until this is done.
+
+2. **Community posts not yet sent.** Launch drafts for WA Rare Fruit Facebook group + WAAS newsletter are ready (DAL-171) but Benedict hasn't posted yet. These are the highest-leverage launch actions available at $0.
+
+3. **treestock subscribers haven't been told.** 5 people who track rare fruit stock are exactly the right first users for a plant-tracking app. They should receive a personal announcement email. New ticket created this session.
+
+4. **treestock cross-promotion not live.** DAL-170 (below-results and footer placement on treestock.com.au) is in Backlog, not yet approved.
+
+**Critical path to first dollar:**
+Step 1 (Benedict): Create App Store Connect subscription product + RevenueCat integration → Pro tier becomes purchasable
+Step 2 (Benedict): Post community launch (DAL-171 drafts ready)
+Step 3 (Benedict/Dale): Send subscriber announcement email → our 5 best leads see the app
+Step 4 (Dale, once DAL-170 approved): Deploy treestock cross-promotion
+
+**New tickets created this session:**
+- "Treesmith: email treestock subscribers about app launch" — draft in ticket, Benedict approves + sends
+- "Treesmith: set up RevenueCat + App Store subscription product" — Benedict action, prerequisite for all Pro revenue
+
+**DAL-156 — GSC content gap analysis:**
+- Ran 28-day GSC analysis. Key finding: identical title template "Buy {X} Tree Online Australia" across all 50 species pages is underperforming vs. "X trees for sale australia" query patterns (1.5% CTR vs. 10.2% CTR for variety pages which have specific titles)
+- Critical: www vs non-www URL split (no canonicals) was competing against itself for olive, mandarin, orange
+- Fixed: All 50 species page titles changed to "{X} Trees for Sale Australia — Compare Prices | treestock.com.au"
+- Fixed: Canonical tags added to all 50 species pages pointing to https://treestock.com.au/species/{slug}.html
+- Fixed: Meta descriptions improved (lead with count, drop Latin name, add "Updated daily")
+- Guildford nursery (326 impr, 0 clicks) = navigational intent mismatch, not fixable
+
+---
+
 ## DEC-119 — 2026-04-27 — Session 80: Treesmith Track A launch work + link outreach drafts
 
 **Decided by:** Dale (autonomous)

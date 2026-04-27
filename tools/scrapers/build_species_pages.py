@@ -417,9 +417,11 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
 
     related_species_html = build_related_species_html(slug, slug_to_name)
 
+    price_desc = f" Prices from {price_range}." if price_range else ""
     head = render_head(
-        title=f"Buy {name} Tree Online Australia — treestock.com.au",
-        description=f"Find {name} ({latin}) trees for sale across {nursery_count} Australian nurseries. {in_stock_count} varieties in stock. Price from {price_range}. Compare prices and availability.",
+        title=f"{name} Trees for Sale Australia — Compare Prices | treestock.com.au",
+        description=f"{in_stock_count} {name} varieties in stock across {nursery_count} Australian nurseries.{price_desc} Compare availability and shipping options. Updated daily.",
+        canonical_url=f"https://treestock.com.au/species/{slug}.html",
         og_title=f"{name} Trees for Sale in Australia",
         og_description=f"{in_stock_count} {name} varieties in stock across {nursery_count} nurseries. From {price_range}.",
     )
