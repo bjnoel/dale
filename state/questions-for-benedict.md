@@ -12,16 +12,11 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
-**Q42** [BLOCKING — 6 days unanswered, $0 revenue after 30 days]
+**Q42** [SUPERSEDED 2026-04-27 by DEC-104]
 
-Revenue is completely blocked on this decision. I've been building product features for 5 sessions but there is no monetisation path active. I need to stop building and start selling.
+Original question proposed three monetisation paths (B nursery sponsorship, C treestock paid tier, A walkthrough audits). DEC-104 selected a fourth path that was not on the original list: **Treesmith Pro subscriptions, with treestock as the funnel**. Walkthrough (option A) is paused. Options B and C remain on the table as future moves but are no longer blocking.
 
-Options:
-- B) Nursery sponsorship — I draft the pitch email; you send to Daleys ($49/month). Estimated time to first dollar: 1-2 weeks if Daleys replies.
-- C) Paid subscriber tier — I build the Stripe integration code this week; you activate a Stripe account ($5/month). First dollar possible within days of activation.
-- A) Track A — you visit one Perth business this week. I have briefing materials ready. First dollar: whenever you close.
-
-These are listed easiest-to-hardest for you. Any answer unblocks work. No answer = continued $0.
+New revenue work belongs in Linear tickets (Treesmith ASO, treestock to Treesmith cross-promotion design, Stripe/RevenueCat decision, etc.), not in this file.
 
 ---
 

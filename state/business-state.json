@@ -1,6 +1,6 @@
 {
-  "version": "3.0.0",
-  "last_updated": "2026-04-19",
+  "version": "3.1.0",
+  "last_updated": "2026-04-27",
   "session_count": 70,
   "phase": 0,
   "phase_name": "Setup",
@@ -9,11 +9,36 @@
   "expenses_monthly": 7.0,
   "tracks": {
     "a": {
-      "name": "Perth AI Efficiency Audits",
+      "name": "Treesmith",
+      "type": "mobile_app_freemium",
+      "platform": ["ios", "android"],
+      "package": "app.treesmith",
+      "repos": {
+        "app": "/Users/bjnoel/Projects/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web"
+      },
+      "status": "first-release-approved",
+      "release_version": "1.0.1+13",
+      "store_status": "Apple approved (2026-04-27)",
+      "pricing_model": "freemium: 30 plants free, Pro = unlimited + multi-location + cloud backup + bulk ops",
+      "subscribers": 0,
+      "revenue_total": 0,
+      "dale_role": "Growth, ASO, marketing, content, cross-promotion from treestock, web companion. Flutter app code stays with Benedict — propose, don't commit."
+    },
+    "a_paused_walkthrough": {
+      "name": "Perth AI Efficiency Audits (PAUSED 2026-04-27)",
       "brand": "Walkthrough",
       "domain": "walkthrough.au",
       "email": "hello@walkthrough.au",
-      "status": "approaching-prospects",
+      "status": "paused",
+      "paused_decision": "DEC-104",
+      "paused_reason": "Pivoted to Treesmith as primary revenue track. Site stays live, no new outreach. See feedback_walkthrough_paused memory.",
+      "do_not": [
+        "propose new walkthrough/audit tickets",
+        "research new Perth prospects",
+        "draft new outreach emails",
+        "revisit deprioritised prospects unprompted"
+      ],
       "clients": 0,
       "revenue_total": 0,
       "prospects": {
@@ -23,20 +48,20 @@
         },
         "tass1_trees": {
           "status": "benedict_handling_offline",
-          "hook": "BLOCKED for autonomous work (see state/ticket-blocklist.json). Benedict owns next touch. Do not propose any Tass1 Trees tickets."
+          "hook": "BLOCKED for autonomous work (see state/ticket-blocklist.json). Benedict owns next touch."
         },
         "leeming_fruit_trees": {
           "status": "benedict_handling_offline",
-          "hook": "BLOCKED for autonomous work (see state/ticket-blocklist.json). Benedict owns next touch. Do not propose any Leeming Fruit Trees tickets. Demo store stays up at leeming-fruit-trees.myshopify.com.",
+          "hook": "BLOCKED for autonomous work (see state/ticket-blocklist.json). Benedict owns next touch. Demo store stays up at leeming-fruit-trees.myshopify.com.",
           "demo_store": "leeming-fruit-trees.myshopify.com"
         },
         "wembley_cycles": {
           "status": "deprioritised",
-          "hook": "Old model (report). Revisit if implementation model proves out."
+          "hook": "Walkthrough paused (DEC-104). Brief preserved for archive."
         },
         "pbr_plumbing": {
           "status": "deprioritised",
-          "hook": "Old model (report). Revisit if implementation model proves out."
+          "hook": "Walkthrough paused (DEC-104). Brief preserved for archive."
         }
       }
     },
@@ -45,6 +70,7 @@
       "domain": "treestock.com.au",
       "domain_alt": "scion.exchange",
       "status": "live-in-community",
+      "monetisation_path": "Cross-promote Treesmith Pro to treestock audience (DEC-104). Standalone treestock paid tier remains a future option.",
       "dashboard_url": "https://treestock.com.au",
       "nurseries_monitored": 19,
       "nurseries_researched": 27,

@@ -2478,3 +2478,40 @@ in progress. Will be live in tomorrow's dashboard build.
 - All four changes committed together so the block takes effect on the next autonomous run.
 
 **To unblock a prospect later:** edit `state/ticket-blocklist.json` to remove the entry. The block is data, not code.
+
+
+## DEC-104 — 2026-04-27 — Track A pivot: Walkthrough paused, Treesmith becomes primary revenue track
+
+**Decided by:** Benedict (directive), Dale (execution)
+
+**Context:** Walkthrough has been Dale's primary revenue track since Sprint 0. After ~7 weeks of prospect work, no client has closed. Gather Ceramics rejected the report model (DEC-050). Tass1 Trees and Leeming Fruit Trees are blocklisted because Benedict is handling them offline (DEC-103). The reports-and-retainer model has not converted, and Benedict's in-person time is the bottleneck.
+
+In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious collectors) had its first release approved by Apple this week. Treesmith has a clean freemium model (30 plants free, Pro = unlimited + multi-location + cloud backup + bulk ops) and a target audience that overlaps almost perfectly with treestock's existing subscribers (rare fruit collectors who track grafts, sources, and activities).
+
+**Decision:** Pivot Track A from Walkthrough to Treesmith. Pause Walkthrough.
+
+**New track structure:**
+- **Track A — Treesmith (Revenue):** Freemium mobile app, monetised via Pro subscriptions. Dale handles growth, ASO, marketing, content, cross-promotion, and the Astro web companion. Benedict owns the Flutter codebase; Dale proposes rather than commits.
+- **Track B — treestock.com.au (Audience + Treesmith Funnel):** Same as before, but with a new explicit role: drive Pro signups for Treesmith via cross-promotion. Standalone treestock paid tier moves to "future option".
+- **Paused — Walkthrough:** Site stays live, prospect briefs preserved, but no new outreach, no new prospect research, no new audit ticket proposals. Tass1/Leeming blocklist remains.
+
+**Why now:**
+- Treesmith app was just approved (real, shippable product)
+- Audience overlap with treestock is exceptional (graft tracking is a niche fruit-collector feature)
+- Walkthrough is not converting and is gated on Benedict's time
+- Mobile app subscriptions scale better than 1-on-1 audits
+
+**Actions:**
+- Updated CLAUDE.md (Two Tracks section, Revenue Targets, Important Reminders)
+- Updated `state/business-state.json` (track A renamed to Treesmith, walkthrough moved to `a_paused_walkthrough`)
+- Memory: created `project_treesmith.md`, `project_treestock.md`, `project_walkthrough_paused.md`, `feedback_walkthrough_paused.md`. Removed `project_track_a.md`, `project_track_b.md`. Updated `MEMORY.md`.
+- Public ledger entry at `public-ledger/2026-04-27.md`
+- Updated Q42 in `state/questions-for-benedict.md` (Track A option no longer applies)
+
+**What this changes for autonomous Dale:**
+- Stop generating walkthrough/audit work
+- Treestock features that drive Treesmith installs are now higher priority than features that don't
+- Treesmith ASO, growth content, and the web companion are new fair game
+- Flutter app code changes go through Benedict, not autonomous commits
+
+**To revert:** Update CLAUDE.md track section, restore project_track_a.md from git, set business-state.json track A back to Walkthrough. Walkthrough infrastructure (site, email, briefs) is preserved untouched.

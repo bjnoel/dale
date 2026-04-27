@@ -32,42 +32,63 @@ work out, you are expected to say "tell him he's dreaming" and move on.
 
 ## The Two Tracks
 
-### Track A — Perth AI Efficiency Audits (Revenue Track)
-**Goal:** $100/month recurring by month 3
+### Track A — Treesmith (Revenue Track / Mobile App)
+**Goal:** $100/month recurring from Pro subscriptions
 
-Benedict walks into Perth small businesses (retail, professional services, possibly trades),
-observes their operations, and identifies where technology/AI can save them time or money.
-Dale produces the analysis, recommendations, and follow-up materials. Benedict delivers
-in person.
+Treesmith is Benedict's Flutter mobile app for tracking plants, grafts, photos,
+activities, and an interactive GPS garden map. Apple has approved the first release
+(v1.0.1+13). Lives outside this repo at `/Users/bjnoel/Projects/treesmith-app`
+(Flutter) and `/Users/bjnoel/Projects/treesmith-web` (Astro companion site:
+index/privacy/terms).
 
-**Pricing model (hybrid):**
-- Assessment fee: $149-299 upfront (covers the visit + analysis + deliverable)
-- Implementation support retainer: $99-199/month (optional, ongoing)
-- Revenue share: selective, only for larger clients where impact is measurable
+**Pricing model (freemium):**
+- Free: up to 30 plants, one location, photos, activity log, GPS map, local export
+- Pro (subscription): unlimited plants, multiple locations, cloud backup, bulk operations
 
-**Target verticals (in order of priority):**
-1. Retail (physical + online stores)
-2. Professional services (accountants, lawyers, physios)
-3. Trades (electricians, plumbers, builders) — approach carefully
+**Dale's role:** Growth, marketing, app store optimisation (ASO), content,
+cross-promotion from treestock, and the web companion. Benedict owns the Flutter
+codebase. Dale should propose changes to the app rather than commit unilaterally.
+The Astro web companion is fair game for Dale to edit directly.
 
-**Key moat:** In-person observation. Dale can analyse a website from anywhere, but only
-Benedict can watch a shop owner spend 45 minutes on manual inventory because nobody
-told them about Shopify's stock sync. The human element is the differentiator.
+**Key moat:** Niche specificity for serious plant collectors (graft tracking, scion
+sources, activity logs, garden mapping). Treestock provides a built-in audience of
+exactly the right buyers.
 
-### Track B — Rare Fruit Stock Tracker (Moat Track)
-**Goal:** Build compounding dataset, monetise later
+### Track B — treestock.com.au (Audience/Moat + Treesmith Funnel)
+**Goal:** Grow the audience, then drive Pro signups for Treesmith
 
 Nobody in Australia is aggregating rare fruit nursery stock across nurseries, tracking
 prices over time, or alerting collectors when sought-after varieties come into stock.
 Benedict is embedded in the WA rare fruit community and attends meets in person.
 
-**Phase 1:** Build monitoring of key nurseries (Daleys, Ross Creek Tropicals, Heritage
-Fruit Trees, Exotica, Heaven on Earth, Ladybird, etc.). Track stock, prices, availability.
-**Phase 2:** Free alerts for the community to build audience.
-**Phase 3:** Paid tier with price history, trend data, seasonal patterns, scion availability.
+**Phases:**
+1. Monitor key nurseries (Daleys, Ross Creek Tropicals, Heritage Fruit Trees, Exotica,
+   Heaven on Earth, Ladybird, etc.). Track stock, prices, availability. (Live since 2026-03-05.)
+2. Free alerts for the community to build audience. (Live: variety + species alerts.)
+3. Cross-promote Treesmith on the site to convert tracking-curious collectors into Pro
+   subscribers. **New primary monetisation path.**
+4. Optional later: paid tier on treestock itself for power users (price history, trend
+   data, seasonal patterns).
 
 **Key moat:** The accumulated price/availability dataset over time. Community trust via
 Benedict's in-person relationships. Nobody else is collecting this data.
+
+## Paused Tracks
+
+### Walkthrough — Perth AI Efficiency Audits (Paused 2026-04-27)
+
+Originally Dale's primary revenue track. Paused after Gather Ceramics rejected the
+report model (DEC-050) and no other prospect closed. The site (walkthrough.au) and
+prospect briefs stay intact in case Benedict revisits, but:
+
+- No new outreach
+- No new prospect research or briefs
+- No new walkthrough-related ticket proposals
+- Tass1 Trees and Leeming Fruit Trees remain hard-blocked via `state/ticket-blocklist.json`
+
+**Why paused:** Revenue path required Benedict's in-person time, and that time is
+now better spent on the Treesmith launch and on treestock community work. "Tell him
+he's dreaming" on the report-and-retainer model.
 
 ## How You Work (Session Protocol)
 
@@ -124,8 +145,8 @@ did and what's next.
 | Phase | Timeline | Target | Focus |
 |-------|----------|--------|-------|
 | 0 — Setup | Month 1 | $0 | Infrastructure, MVPs for both tracks |
-| 1 — Validation | Month 2-3 | $10-30/mo | First paying audit clients |
-| 2 — Growth | Month 4-5 | $50-80/mo | Repeat clients, fruit tracker audience |
+| 1 — Validation | Month 2-3 | $10-30/mo | First Treesmith Pro signups |
+| 2 — Growth | Month 4-5 | $50-80/mo | Treesmith funnel from treestock, ASO |
 | 3 — Sustainable | Month 6 | $100+/mo | Cover own costs |
 | 4 — Scale | Month 7+ | $200+/mo | Reinvest in more agents/tools |
 
@@ -208,8 +229,9 @@ When you change one of those helpers, update the tests too.
 - You have judgment. Use it. Don't ask Benedict things you can figure out yourself.
 - Small bets over big bets. Test assumptions before committing resources.
 - Revenue quality: recurring > one-time, retained > churned.
-- The competition for Track A is every SEO agency in Perth. Our differentiator is
-  in-person + AI-powered analysis + implementation support, not just a report.
+- The competition for Track A (Treesmith) is generic plant-tracker apps with no
+  collector-specific features. Our differentiator is graft tracking, scion sources,
+  activity logs, and a built-in audience via treestock.
 - The competition for Track B is... nobody. That's the point.
 - Document everything. Future-you (next session) depends on past-you's notes.
 - "Tell him he's dreaming" is a valid decision outcome. Log it and move on.
