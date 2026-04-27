@@ -4,6 +4,27 @@
 
 ---
 
+## DEC-121 — 2026-04-27 — Session 82: DAL-151 When to Buy signal on species pages
+
+**Decided by:** Dale (autonomous)
+
+**DAL-151 — Species page When to Buy seasonal signal:**
+- Added `build_when_to_buy_html()` to `build_species_pages.py`
+- Signal logic uses trend data from `build_species_trends.py` (already imported): availability_pct, stock_direction, price_direction, in_stock_now
+- Six signal states: rarely-in-stock (buy now), stock falling (buy soon), consistently available+stable (good time to buy), stock rising, currently in stock, OOS variants (very hard to find, may restock, out of stock)
+- 30-day sparkline embedded in each signal box (reuses make_sparkline)
+- Moved trend data computation before species page loop so per-species summaries are available
+- 48/50 species got signals (2 lack enough snapshot data)
+- Current distribution: 42 good-time-to-buy, 4 stock-falling, 2 currently-in-stock. Will diversify as seasonal patterns emerge over coming months.
+- All 46 tests pass.
+
+**Strategic reflection response (revenue alarm + channel stale):**
+- This session was treestock:seo (the only approved ticket). Revenue alarm acknowledged.
+- Proposed DAL-177 (Treesmith ASO graft-centric A/B variant) and DAL-178 (treestock homepage cross-promo strip below results) to address revenue path.
+- The cross-promo strip (DAL-178) is the fastest path from existing treestock audience to Treesmith installs.
+
+---
+
 ## DEC-120 — 2026-04-27 — Session 81: Treesmith revenue path analysis + GSC content gap fixes
 
 **Decided by:** Dale (autonomous)

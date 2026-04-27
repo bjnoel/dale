@@ -23,7 +23,7 @@ from datetime import datetime, timezone
 
 from shipping import SHIPPING_MAP, LOCAL_DELIVERY, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
-from build_species_trends import build_species_trends, make_sparkline
+from build_species_trends import build_species_trends, make_sparkline, trend_direction
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
@@ -268,6 +268,114 @@ def build_related_species_html(slug: str, slug_to_name: dict[str, str], max_link
 """
 
 
+def build_when_to_buy_html(name: str, trend_summary: dict) -> str:
+    """Render a 'When to buy' signal box for a species page.
+
+    trend_summary keys:
+        stock_series: list[int|None]  -- daily in-stock count, oldest first
+        availability_pct: int         -- % days tracked with any stock
+        stock_direction: up|down|flat
+        price_direction: up|down|flat
+        in_stock_now: int
+        min_price_now: float|None
+        days_tracked: int
+    """
+    days_tracked = trend_summary.get("days_tracked", 0)
+    if days_tracked < 7:
+        return ""
+
+    avail_pct = trend_summary.get("availability_pct", 0)
+    stock_dir = trend_summary.get("stock_direction", "flat")
+    price_dir = trend_summary.get("price_direction", "flat")
+    in_stock_now = trend_summary.get("in_stock_now", 0)
+    min_price_now = trend_summary.get("min_price_now")
+    stock_series = trend_summary.get("stock_series", [])
+
+    # Determine buying signal
+    if in_stock_now > 0 and avail_pct < 25:
+        bg = "bg-amber-50 border-amber-200"
+        icon = "&#9889;"  # lightning bolt
+        title = f"Rarely in stock - buy now if you can"
+        body = (
+            f"Available only {avail_pct}% of days tracked. "
+            f"When {name} appears, it often sells out quickly."
+        )
+    elif in_stock_now > 0 and stock_dir == "down":
+        bg = "bg-amber-50 border-amber-200"
+        icon = "&#8595;"  # down arrow
+        title = f"Stock is falling - consider buying soon"
+        body = (
+            f"Stock levels have dropped over the last week "
+            f"(available {avail_pct}% of days tracked overall)."
+        )
+    elif in_stock_now > 0 and avail_pct >= 60 and price_dir in ("down", "flat"):
+        bg = "bg-green-50 border-green-200"
+        icon = "&#10003;"  # check mark
+        title = f"Good time to buy"
+        body = (
+            f"Consistently available ({avail_pct}% of days) with stable supply. "
+            + ("Prices have been steady." if price_dir == "flat" else "Prices have been easing.")
+        )
+    elif in_stock_now > 0 and stock_dir == "up":
+        bg = "bg-green-50 border-green-200"
+        icon = "&#8593;"  # up arrow
+        title = f"Stock is rising"
+        body = f"More {name} varieties have been appearing recently. Available {avail_pct}% of days."
+    elif in_stock_now > 0:
+        bg = "bg-green-50 border-green-200"
+        icon = "&#10003;"
+        title = f"Currently in stock"
+        body = f"Available {avail_pct}% of days we've tracked."
+    elif avail_pct == 0:
+        bg = "bg-gray-50 border-gray-200"
+        icon = "&#63;"  # question mark
+        title = f"Stock history building"
+        body = f"No stock recorded yet in our {days_tracked}-day tracking window."
+    elif avail_pct < 15:
+        bg = "bg-red-50 border-red-200"
+        icon = "&#128269;"  # magnifier
+        title = f"Very hard to find"
+        body = (
+            f"In stock only {avail_pct}% of tracked days. "
+            f"Set an alert above to be notified when {name} returns."
+        )
+    elif stock_dir == "up":
+        bg = "bg-amber-50 border-amber-200"
+        icon = "&#8593;"
+        title = f"May restock soon"
+        body = (
+            f"Currently out of stock, but stock was trending upward before selling out "
+            f"(available {avail_pct}% of tracked days)."
+        )
+    else:
+        bg = "bg-gray-50 border-gray-200"
+        icon = "&#9203;"  # hourglass
+        title = f"Currently out of stock"
+        body = f"Available {avail_pct}% of days. Set an alert above to be notified when it returns."
+
+    price_note = f" Prices from ${min_price_now:.0f} AUD." if min_price_now else ""
+    dir_label = {"up": "rising", "down": "falling", "flat": "stable"}
+    trend_note = f"Stock {dir_label[stock_dir]} over the last 7 days. Based on {days_tracked} days of data."
+
+    spark = make_sparkline(stock_series, width=120, height=28, color="#16a34a")
+
+    return f"""  <!-- When to Buy -->
+  <section class="mb-6 p-4 {bg} border rounded-lg">
+    <div class="flex items-start justify-between gap-4 flex-wrap">
+      <div class="min-w-0">
+        <h3 class="text-base font-semibold text-gray-800 mb-1">{icon} {title}</h3>
+        <p class="text-sm text-gray-600">{body}{price_note}</p>
+        <p class="text-xs text-gray-400 mt-1">{trend_note}</p>
+      </div>
+      <div class="shrink-0 flex flex-col items-end gap-1">
+        <span class="text-xs text-gray-400 whitespace-nowrap">30-day stock trend</span>
+        {spark}
+      </div>
+    </div>
+  </section>
+"""
+
+
 STATE_SLUGS = {
     "WA": "western-australia",
     "QLD": "queensland",
@@ -298,7 +406,7 @@ def compute_state_links(species_slug: str, products: list[dict]) -> dict[str, st
 
 
 def build_species_page(species: dict, products: list[dict], slug_to_name: dict[str, str] | None = None,
-                       rarity: dict | None = None) -> str:
+                       rarity: dict | None = None, trend_summary: dict | None = None) -> str:
     """Generate HTML for a single species page."""
     name = species["common_name"]
     latin = species["latin_name"]
@@ -416,6 +524,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
 """
 
     related_species_html = build_related_species_html(slug, slug_to_name)
+    when_to_buy_html = build_when_to_buy_html(name, trend_summary) if trend_summary else ""
 
     price_desc = f" Prices from {price_range}." if price_range else ""
     head = render_head(
@@ -468,6 +577,8 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     </form>
     <div id="watchMessage" class="mt-2 text-sm hidden"></div>
   </div>""" if in_stock_count == 0 else ''}
+
+  {when_to_buy_html}
 
   <!-- Where to Buy -->
   <section class="mb-8">
@@ -643,6 +754,41 @@ def main():
         json.dump(rarity_scores, f, indent=2)
     print(f"  Saved rarity scores to {rarity_scores_file}")
 
+    # Build 30-day sparkline trend data for index + per-species 'When to buy' summaries
+    print("Computing 30-day availability trends for sparklines and When to Buy signals...")
+    try:
+        all_dates, species_trend_raw = build_species_trends(data_dir)
+        last_30 = all_dates[-30:]
+        trend_data = {}
+        trend_summaries: dict[str, dict] = {}
+        for slug, date_map in species_trend_raw.items():
+            stock_series = [date_map.get(d, {}).get("in_stock") for d in last_30]
+            price_series = [date_map.get(d, {}).get("min_price") for d in last_30]
+            if not any(v is not None for v in stock_series):
+                continue
+            trend_data[slug] = stock_series
+            latest = next((date_map[d] for d in reversed(last_30) if d in date_map), None)
+            in_stock_now = latest["in_stock"] if latest else 0
+            min_price_now = latest["min_price"] if latest else None
+            days_with_stock = sum(1 for v in stock_series if v is not None and v > 0)
+            days_tracked = sum(1 for v in stock_series if v is not None)
+            avail_pct = int(days_with_stock / days_tracked * 100) if days_tracked else 0
+            trend_summaries[slug] = {
+                "stock_series": stock_series,
+                "price_series": price_series,
+                "availability_pct": avail_pct,
+                "stock_direction": trend_direction(stock_series),
+                "price_direction": trend_direction(price_series),
+                "in_stock_now": in_stock_now,
+                "min_price_now": min_price_now,
+                "days_tracked": days_tracked,
+            }
+        print(f"  Trend data for {len(trend_data)} species, {len(trend_summaries)} with When to Buy signal")
+    except Exception as e:
+        print(f"  WARNING: Could not compute trend data: {e}")
+        trend_data = None
+        trend_summaries = {}
+
     # Build slug->name map for species that have product data (used for related links)
     slug_to_name = {
         slug: entry["species"]["common_name"]
@@ -676,29 +822,14 @@ def main():
             "rarity": rarity,
         })
 
-        html = build_species_page(species, prods, slug_to_name, rarity=rarity)
+        html = build_species_page(species, prods, slug_to_name, rarity=rarity,
+                                  trend_summary=trend_summaries.get(slug))
         out_file = species_dir / f"{slug}.html"
         out_file.write_text(html)
         generated += 1
         if generated <= 5 or generated % 10 == 0:
             htf = " [Hard to find]" if rarity.get("hard_to_find") else ""
             print(f"  {species['common_name']}: {len(in_stock)}/{len(prods)} in stock, {len(nurseries)} nurseries{htf}")
-
-    # Build 30-day sparkline trend data for index
-    print("Computing 30-day availability trends for sparklines...")
-    try:
-        all_dates, species_trend_raw = build_species_trends(data_dir)
-        # Convert to {slug: [in_stock per day]} list (last 30 days)
-        last_30 = all_dates[-30:]
-        trend_data = {}
-        for slug, date_map in species_trend_raw.items():
-            series = [date_map.get(d, {}).get("in_stock") for d in last_30]
-            if any(v is not None for v in series):
-                trend_data[slug] = series
-        print(f"  Trend data for {len(trend_data)} species")
-    except Exception as e:
-        print(f"  WARNING: Could not compute trend data: {e}")
-        trend_data = None
 
     # Build index
     index_html = build_species_index(index_data, trend_data=trend_data)
