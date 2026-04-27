@@ -204,11 +204,36 @@ def cmd_status(args):
     print(f"{issue['identifier']} -> {issue['state']['name']}")
 
 
+def _is_meaningful_comment(body):
+    """Reject empty or placeholder comment bodies (e.g. "", "-", "Dale: -", "...").
+
+    A 2026-04-27 autonomous session posted "Dale: -" comments to DAL-167,
+    DAL-169, DAL-171. The cmd_comment path had no validation, so a body of
+    "-" was prefixed and posted as if it were real content.
+    """
+    stripped = body.strip()
+    if stripped.startswith("Dale:"):
+        stripped = stripped[len("Dale:"):].strip()
+    if not stripped:
+        return False
+    if not any(c.isalnum() for c in stripped):
+        return False
+    return True
+
+
 def cmd_comment(args):
     if len(args) < 2:
         print("Usage: linear_update.py comment DAL-42 'Comment text'", file=sys.stderr)
         sys.exit(1)
     identifier, body = args[0], args[1]
+
+    if not _is_meaningful_comment(body):
+        print(
+            f"Refusing to post empty/placeholder comment to {identifier}: {body!r}",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
     issue_id = get_issue_id(identifier)
 
     # Always prefix Dale's comments so they're distinguishable from Benedict's
@@ -347,6 +372,106 @@ def cmd_create(args):
     print(f"Backlog: {len(backlog) + 1}/{max_backlog}")
 
 
+def cmd_archive_stale(args):
+    """Archive Done/Cancelled/Duplicate issues older than --days (default 30).
+
+    Default mode is dry-run; pass --execute to actually archive.
+
+    Safe because:
+    - linear_poller.py reads completed/cancelled with includeArchived:true and a
+      90-day updatedAt window, so archived recent tickets still appear in the
+      session prompt for duplicate prevention.
+    - Duplicate prevention also lives in state/ticket-blocklist.json (DEC-103).
+    - Archived issues remain readable via Linear API and UI.
+    """
+    from datetime import datetime, timedelta, timezone
+
+    days = 30
+    execute = False
+    i = 0
+    while i < len(args):
+        if args[i] == "--days" and i + 1 < len(args):
+            days = int(args[i + 1])
+            i += 2
+        elif args[i] == "--execute":
+            execute = True
+            i += 1
+        else:
+            i += 1
+
+    config = load_config()
+    team_name = config.get("linear", {}).get("team", "Dale")
+    team_id = get_team_id(team_name)
+    if not team_id:
+        print(f"Team '{team_name}' not found", file=sys.stderr)
+        sys.exit(1)
+
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+
+    issues = []
+    cursor = None
+    while True:
+        data = graphql("""
+            query($teamId: ID!, $cutoff: DateTimeOrDuration!, $after: String) {
+                issues(
+                    filter: {
+                        team: { id: { eq: $teamId } }
+                        state: { type: { in: ["completed", "canceled"] } }
+                        updatedAt: { lt: $cutoff }
+                    }
+                    first: 100
+                    after: $after
+                ) {
+                    nodes {
+                        id
+                        identifier
+                        title
+                        updatedAt
+                        archivedAt
+                        state { name }
+                    }
+                    pageInfo { hasNextPage endCursor }
+                }
+            }
+        """, {"teamId": team_id, "cutoff": cutoff, "after": cursor})
+        page = data["issues"]
+        for n in page["nodes"]:
+            if n["archivedAt"] is None:
+                issues.append(n)
+        if not page["pageInfo"]["hasNextPage"]:
+            break
+        cursor = page["pageInfo"]["endCursor"]
+
+    by_state = {}
+    for it in issues:
+        by_state.setdefault(it["state"]["name"], []).append(it)
+
+    print(f"Team: {team_name}")
+    print(f"Cutoff: {cutoff} ({days} days ago)")
+    print(f"Stale Done/Cancelled/Duplicate: {len(issues)}")
+    for sname, items in sorted(by_state.items()):
+        print(f"  {sname}: {len(items)}")
+
+    if not execute:
+        print("DRY RUN. Pass --execute to archive.")
+        return
+
+    if not issues:
+        print("Nothing to archive.")
+        return
+
+    ok = 0
+    for it in issues:
+        result = graphql("""
+            mutation($id: String!) { issueArchive(id: $id) { success } }
+        """, {"id": it["id"]})
+        if result["issueArchive"]["success"]:
+            ok += 1
+        else:
+            print(f"FAIL: {it['identifier']}", file=sys.stderr)
+    print(f"Archived {ok}/{len(issues)}")
+
+
 def cmd_label(args):
     """Add or remove a label from an issue."""
     if len(args) < 3 or args[0] not in ("add", "remove"):
@@ -399,6 +524,7 @@ COMMANDS = {
     "assign": cmd_assign,
     "create": cmd_create,
     "label": cmd_label,
+    "archive-stale": cmd_archive_stale,
 }
 
 

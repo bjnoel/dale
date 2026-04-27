@@ -13,7 +13,7 @@ import os
 import sys
 import urllib.request
 import urllib.error
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
@@ -89,19 +89,40 @@ def get_team_id(team_name):
     return data["teams"]["nodes"][0]["id"]
 
 
-def get_issues_by_state(team_id, state_type):
-    """Fetch issues for a team filtered by state type (backlog, unstarted, started, completed)."""
-    data = graphql("""
-        query($teamId: ID!, $stateType: String!) {
+def get_issues_by_state(team_id, state_type, since_days=None):
+    """Fetch issues for a team filtered by state type.
+
+    Valid state_type values (Linear WorkflowStateType enum, American spelling):
+    backlog, unstarted, started, completed, canceled.
+
+    When since_days is set, also include archived issues whose updatedAt is
+    within the last N days. This is used for completed/canceled lists so the
+    session prompt keeps seeing recent done/cancelled tickets even after the
+    auto-archiver runs.
+    """
+    variables = {"teamId": team_id, "stateType": state_type}
+    extra_filter = ""
+    extra_args = ""
+    if since_days is not None:
+        since = (datetime.now(timezone.utc) - timedelta(days=since_days)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+        variables["since"] = since
+        extra_filter = "updatedAt: { gte: $since }"
+        extra_args = ", $since: DateTimeOrDuration!"
+    include_archived = "true" if since_days is not None else "false"
+
+    data = graphql(f"""
+        query($teamId: ID!, $stateType: String!{extra_args}) {{
             issues(
-                filter: {
-                    team: { id: { eq: $teamId } }
-                    state: { type: { eq: $stateType } }
-                }
+                includeArchived: {include_archived}
+                filter: {{
+                    team: {{ id: {{ eq: $teamId }} }}
+                    state: {{ type: {{ eq: $stateType }} }}
+                    {extra_filter}
+                }}
                 orderBy: updatedAt
                 first: 50
-            ) {
-                nodes {
+            ) {{
+                nodes {{
                     id
                     identifier
                     title
@@ -109,20 +130,20 @@ def get_issues_by_state(team_id, state_type):
                     priority
                     createdAt
                     updatedAt
-                    state { name type }
-                    assignee { name email }
-                    labels { nodes { name } }
-                    comments(first: 10) {
-                        nodes {
+                    state {{ name type }}
+                    assignee {{ name email }}
+                    labels {{ nodes {{ name }} }}
+                    comments(first: 10) {{
+                        nodes {{
                             body
                             createdAt
-                            user { name }
-                        }
-                    }
-                }
-            }
-        }
-    """, {"teamId": team_id, "stateType": state_type})
+                            user {{ name }}
+                        }}
+                    }}
+                }}
+            }}
+        }}
+    """, variables)
 
     if not data or not data.get("issues"):
         return []
@@ -188,9 +209,13 @@ def main():
     in_progress_raw = get_issues_by_state(team_id, "started")  # In Progress
     backlog_raw = get_issues_by_state(team_id, "backlog")      # Backlog
 
-    # Fetch cancelled/completed for duplicate prevention
-    cancelled_raw = get_issues_by_state(team_id, "cancelled")
-    completed_raw = get_issues_by_state(team_id, "completed")
+    # Fetch cancelled/completed for duplicate prevention.
+    # Use "canceled" (American spelling — Linear's WorkflowStateType enum value).
+    # Pass since_days so the auto-archiver does not hide recent context from the
+    # session prompt: includeArchived is enabled and the window covers the
+    # archive horizon plus a margin.
+    cancelled_raw = get_issues_by_state(team_id, "canceled", since_days=90)
+    completed_raw = get_issues_by_state(team_id, "completed", since_days=90)
 
     # Filter Todo/In Progress to only tickets Dale should work on:
     # - Has "Dale" label, OR
