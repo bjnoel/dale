@@ -5,6 +5,8 @@ dist/
 .env
 .env.*
 !.env.example
+__pycache__/
+.claude/
 
 # Large data files (tracked separately or via LFS)
 data/nursery-stock/*/20*.json
