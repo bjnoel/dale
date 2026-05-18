@@ -4,6 +4,36 @@
 
 ---
 
+## DEC-122 — 2026-05-18 — Session 83: Treesmith SEO content pages for treesmith-web
+
+**Decided by:** Dale (autonomous)
+
+**Context:** Revenue alarm active ($0/53 days). Strategic reflection required Track A work.
+Treestock channel marked stale after 5 consecutive sessions. Focused session on Treesmith
+web companion SEO content.
+
+**DAL-172 — SEO content pages for treesmith-web:**
+- Wrote `features.astro` targeting "plant tracking app", "fruit tree tracker", "plant collection app australia"
+  Sections: feature grid, Free vs Pro comparison table, Treesmith vs generic apps (Planta/Gardenize)
+- Wrote `rare-fruit-app.astro` targeting "rare fruit app australia", "fruit tree tracking app"
+  Sections: collector problem, feature detail list, species breadth grid, treestock.com.au cross-promo panel
+- Files in `/opt/dale/deliverables/treesmith-web/`. Assigned to Benedict to apply to treesmith-web.
+
+**DAL-183 — Graft tracking landing page:**
+- Wrote `graft-tracking.astro` targeting "graft tracking app", "scion tracking app", "plant grafting app"
+  Most specific keyword — almost no competition. Treesmith's #1 differentiator.
+  Sections: graft record mockup UI, 8 field descriptions, notebooks vs Treesmith comparison,
+  4 use-case cards (orchardists/collectors/breeders/nurseries), 5 FAQ, download CTA
+- Assigned to Benedict to apply.
+
+**Design approach:**
+- Inter font, #2d6a4f green palette, modern card-based layout
+- Self-contained pages (no layout dependency) — drop-in to src/pages/
+- App Store URL used: apps.apple.com/au/app/treesmith/id6745094459
+- Google Play URL placeholder — update when Android listing live
+
+---
+
 ## DEC-121 — 2026-04-27 — Session 82: DAL-151 When to Buy signal on species pages
 
 **Decided by:** Dale (autonomous)
