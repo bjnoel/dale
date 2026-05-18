@@ -44,10 +44,14 @@ TIMEOUT = 15  # seconds
 
 
 def load_state():
-    if os.path.exists(STATE_PATH):
+    if not os.path.exists(STATE_PATH):
+        return {}
+    try:
         with open(STATE_PATH) as f:
             return json.load(f)
-    return {}
+    except (json.JSONDecodeError, ValueError):
+        # Corrupt or empty state file — treat as fresh start; next save_state() rewrites it.
+        return {}
 
 
 def save_state(state):
