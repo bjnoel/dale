@@ -546,7 +546,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
   <!-- Hero -->
   <div class="mb-6">
     {breadcrumb}
-    <h2 class="text-3xl font-bold text-green-900 mb-1">{name} Trees</h2>
+    <h1 class="text-3xl font-bold text-green-900 mb-1">{name} Trees</h1>
     <p class="text-gray-500 italic mb-3">{latin}{f' — {region}' if region else ''}</p>
     <div class="flex flex-wrap gap-3 text-sm">
       <span class="px-3 py-1 bg-green-50 text-green-800 rounded-full font-medium">{in_stock_count} varieties in stock</span>
@@ -691,7 +691,7 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
 {header}
 
 <main class="max-w-3xl mx-auto px-4 py-6">
-  <h2 class="text-2xl font-bold text-green-900 mb-2">Fruit Tree Species</h2>
+  <h1 class="text-2xl font-bold text-green-900 mb-2">Fruit Tree Species</h1>
   <p class="text-gray-500 text-sm mb-6">Browse by species to compare prices and availability across Australian nurseries. Updated daily.</p>
 
   <div class="overflow-x-auto">

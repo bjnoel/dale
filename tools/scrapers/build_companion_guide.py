@@ -38,12 +38,15 @@ SPECIES_COMPANIONS = [
         "name": "Mango",
         "slug": "mango",
         "icon": "🥭",
+        "intro": "The best companion plants for mango trees are low-growing, heat-tolerant species that suppress weeds, fix nitrogen, or deter pests without competing with the mango's deep roots. In Australian conditions (tropical Queensland, northern NSW, and parts of WA), mango tree companion planting focuses on maximising soil health and water retention under the canopy.",
         "good": [
             ("Turmeric", "Grown as a companion, turmeric suppresses weeds and the rhizomes are harvested separately. Suits the same tropical conditions."),
             ("Vetiver grass", "Deep-rooted grass that prevents erosion on slopes, doesn't compete heavily with tree roots, tolerates the same heat."),
             ("Sweet potato", "Low groundcover that suppresses weeds around young mangoes. Edible and easy to remove when no longer needed."),
             ("Lemongrass", "Repels some insects, tolerates tropical heat and humidity. Good border plant around mango groves."),
             ("Papaya", "Fast-growing companion that provides temporary shade for young mangoes while establishing. Harvest within 2 years."),
+            ("Marigold (African)", "Planted at the drip line, marigolds deter nematodes and attract beneficial insects. Replace annually."),
+            ("Basil", "Aromatic herb that may deter some fruit flies when flowering. Grows well in the same tropical heat. Harvest before it competes for space."),
         ],
         "avoid": ["Avocado (deep root competition at maturity)", "Other large trees within 8m (canopy competition)", "Lawn grass under canopy (nitrogen depletion)"],
         "pollinator": "Most mango varieties are not fully self-fertile. Two trees of different varieties significantly improve yield. Bowen (Kensington Pride) is more self-fertile than most. Honey Golds and B90 produce better with a cross-pollinator nearby. Bees are the primary pollinator.",
@@ -193,9 +196,10 @@ def build_species_card(sp: dict) -> str:
         f'<span class="inline-block bg-red-50 border border-red-200 text-red-700 text-xs px-2 py-0.5 rounded-full mr-1 mb-1">{a}</span>'
         for a in sp["avoid"]
     )
+    intro_html = f'\n  <p class="text-sm text-gray-600 mb-4">{sp["intro"]}</p>' if sp.get("intro") else ""
     return f"""
 <section class="mb-10" id="{sp['slug']}">
-  <h2 class="text-xl font-bold text-green-900 mb-3">{sp['icon']} {sp['name']}</h2>
+  <h2 class="text-xl font-bold text-green-900 mb-3">{sp['icon']} {sp['name']}</h2>{intro_html}
 
   <div class="grid md:grid-cols-2 gap-6">
     <div>

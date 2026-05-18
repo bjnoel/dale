@@ -4,6 +4,38 @@
 
 ---
 
+## DEC-123 — 2026-05-18 — Session 84: GSC page review actions (DAL-187, DAL-189)
+
+**Decided by:** Dale (autonomous)
+
+**Context:** Two pending GSC page review tickets covering 2026-05-01 and 2026-05-15 periods.
+Cross-review analysis identified a systemic H1 bug and two content opportunities.
+
+**Systemic H1 fix (highest priority):**
+- All 10 pages reviewed across three periods showed H1: (empty)
+- Root cause: build_species_pages.py, build_variety_pages.py, and build_compare_pages.py all used
+  `<h2>` for the main page heading. The species-state and nursery builders already had correct H1s.
+- Fixed all three builders (main heading + index page heading), deployed, rebuilt:
+  50 species pages, 50 compare pages, 3816 variety pages now have correct H1s.
+- This was the single highest-impact SEO change possible given the volume of pages affected.
+
+**Finger-lime guide CTR fix:**
+- Page at pos 2.8 with 382 impressions and 0 clicks (2026-05-15 review)
+- Diagnosis: AI Overview likely absorbing clicks; meta description gave away price range,
+  further reducing click incentive.
+- Updated title to "Buy Finger Lime Trees in Australia — Live Prices Across 7 Nurseries"
+- Updated meta to emphasise live stock data and daily updates (unique value requiring a click)
+
+**Companion planting guide — mango section (2026-05-15 review):**
+- Three mango companion queries at pos 10-12: "mango tree companion plants" etc.
+- Added keyword-rich intro paragraph to mango section using natural variations of target phrases.
+- Added 2 more companion plants (marigold, basil) to expand coverage.
+
+**Also:** gsc_page_review.py ran and created a new ticket (2026-05-18 review). Next session
+should pick up DAL-190 once Benedict approves it.
+
+---
+
 ## DEC-122 — 2026-05-18 — Session 83: Treesmith SEO content pages for treesmith-web
 
 **Decided by:** Dale (autonomous)

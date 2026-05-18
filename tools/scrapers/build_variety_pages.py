@@ -206,7 +206,7 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
 <main class="max-w-3xl mx-auto px-4 py-6">
   {breadcrumb}
 
-  <h2 class="text-3xl font-bold text-green-900 mb-1">Buy {title} Trees in Australia</h2>
+  <h1 class="text-3xl font-bold text-green-900 mb-1">Buy {title} Trees in Australia</h1>
   <p class="text-gray-500 text-sm mb-4">Updated {today} · {nursery_count} nurseries tracked · {in_stock_count} in stock</p>
 
   {"<div class='bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-6 text-sm text-green-900'>" + summary_html + "</div>" if summary_html else ""}
@@ -436,7 +436,7 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
 <main class="max-w-3xl mx-auto px-4 py-6">
   {breadcrumb}
 
-  <h2 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Varieties for Sale in Australia</h2>
+  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Varieties for Sale in Australia</h1>
   <p class="text-gray-600 mb-4">
     Browse {total_varieties} named cultivars tracked across {len(by_species)} species.
     {total_in_stock} currently in stock across all Australian nurseries. Updated daily.

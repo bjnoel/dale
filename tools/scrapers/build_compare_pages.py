@@ -262,7 +262,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
 
   <!-- Hero -->
   <div class="mb-6">
-    <h2 class="text-3xl font-bold text-green-900 mb-1">{name} Tree Prices</h2>
+    <h1 class="text-3xl font-bold text-green-900 mb-1">{name} Tree Prices</h1>
     <p class="text-gray-500 italic mb-1">{latin}</p>
     <p class="text-gray-600 text-sm mb-3">
       Comparing {name} tree prices across {total_nurseries} Australian online nurseries.
@@ -407,7 +407,7 @@ def build_compare_index(entries: list[dict]) -> str:
 <main class="max-w-3xl mx-auto px-4 py-6">
   {breadcrumb}
 
-  <h2 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Price Comparisons</h2>
+  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Price Comparisons</h1>
   <p class="text-gray-600 mb-4">
     Compare fruit tree prices across {len(entries)} species and multiple Australian nurseries.
     Find the cheapest price, check which nurseries ship to your state, and get alerts when prices drop.
