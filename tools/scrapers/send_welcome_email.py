@@ -120,6 +120,15 @@ def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -
       </div>
 
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 16px;margin-bottom:20px;">
+        <p style="margin:0 0 6px;font-weight:600;color:#065f46;font-size:0.9rem;">Track the trees you buy</p>
+        <p style="margin:0;color:#374151;font-size:0.875rem;line-height:1.5;">
+          treestock tells you where to buy a rare variety. <strong>Treesmith</strong>, our mobile app, helps you
+          catalog every plant, log grafts and harvests, and capture growth photos over time.
+          <a href="{SITE_URL}/treesmith.html?utm_source=treestock&amp;utm_medium=welcome_email&amp;utm_campaign=treesmith_launch" style="color:#065f46;">Learn more &rarr;</a>
+        </p>
+      </div>
+
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 16px;margin-bottom:20px;">
         <p style="margin:0 0 6px;font-weight:600;color:#065f46;font-size:0.9rem;">Know a fellow collector?</p>
         <p style="margin:0;color:#374151;font-size:0.875rem;line-height:1.5;">
           If treestock.com.au is useful, share it with other fruit tree enthusiasts.

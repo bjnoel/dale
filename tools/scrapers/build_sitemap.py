@@ -45,6 +45,7 @@ STATIC_PAGES = [
     ("when-to-plant.html", "monthly", "0.8"),
     ("companion-planting-guide.html", "monthly", "0.8"),
     ("wa-rare-fruit-guide.html", "monthly", "0.8"),
+    ("treesmith.html", "monthly", "0.5"),
     ("advertise.html", "monthly", "0.4"),
 ]
 

@@ -196,7 +196,16 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 # May have already been confirmed — check active subscribers
                 subscribers = load_subscribers()
                 if any(s["email"] == email for s in subscribers):
-                    self.send_html(200, "<h2>Already subscribed!</h2><p>You're already receiving treestock.com.au stock alerts.</p>")
+                    self.send_html(200, """<h2>Already subscribed!</h2>
+<p>You're already receiving treestock.com.au stock alerts.</p>
+<div style="margin-top:24px;padding:16px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:8px">
+  <p style="margin:0 0 6px 0;font-weight:600;color:#065f46">Track the trees you buy</p>
+  <p style="margin:0 0 10px 0;font-size:14px;color:#374151">
+    Have a look at <strong>Treesmith</strong>, our mobile app for plant collectors. Catalog every plant, log grafts and harvests, capture growth photos over time.
+  </p>
+  <a href="https://treestock.com.au/treesmith.html?utm_source=treestock&amp;utm_medium=confirm_page&amp;utm_campaign=treesmith_launch"
+     style="color:#065f46;font-weight:600">Learn more about Treesmith &rarr;</a>
+</div>""")
                 else:
                     self.send_html(400, "<h2>Confirmation link expired.</h2><p>Please subscribe again at <a href='https://treestock.com.au'>treestock.com.au</a></p>")
                 return
@@ -232,6 +241,14 @@ class SubscribeHandler(BaseHTTPRequestHandler):
 <p>You'll receive your first stock digest next Monday morning.</p>
 <p>You can <a href="https://treestock.com.au/species/" style="color:#065f46">browse species pages</a>
 to set alerts for specific varieties.</p>
+<div style="margin-top:24px;padding:16px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:8px">
+  <p style="margin:0 0 6px 0;font-weight:600;color:#065f46">Track the trees you buy</p>
+  <p style="margin:0 0 10px 0;font-size:14px;color:#374151">
+    treestock tells you where to buy a rare variety. <strong>Treesmith</strong>, our mobile app, helps you catalog every plant, log grafts and harvests, and capture growth photos over time.
+  </p>
+  <a href="https://treestock.com.au/treesmith.html?utm_source=treestock&amp;utm_medium=confirm_page&amp;utm_campaign=treesmith_launch"
+     style="color:#065f46;font-weight:600">Learn more about Treesmith &rarr;</a>
+</div>
 """)
             return
 

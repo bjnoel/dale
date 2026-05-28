@@ -153,6 +153,11 @@ echo "$LOG_PREFIX Building sample digest page..."
 python3 "$SCRIPT_DIR/build_sample_digest.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sample digest page build failed (non-fatal)"
 echo "$LOG_PREFIX Sample digest page complete."
 
+# Build Treesmith app landing page (cross-promotion)
+echo "$LOG_PREFIX Building Treesmith landing page..."
+python3 "$SCRIPT_DIR/build_treesmith_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Treesmith landing page build failed (non-fatal)"
+echo "$LOG_PREFIX Treesmith landing page complete."
+
 # Build sitemap
 echo "$LOG_PREFIX Building sitemap..."
 python3 "$SCRIPT_DIR/build_sitemap.py" "$DIGEST_DIR/species" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sitemap build failed (non-fatal)"
