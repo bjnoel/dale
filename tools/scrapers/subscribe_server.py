@@ -701,19 +701,6 @@ to set alerts for specific varieties.</p>
         except sqlite3.Error:
             return []
 
-    def _get_wishlist(self, email: str):
-        """Get wishlist species votes for an email from SQLite."""
-        try:
-            con = sqlite3.connect(VARIETY_WATCHES_DB)
-            rows = con.execute(
-                "SELECT species_slug FROM wishlist WHERE email = ? ORDER BY added_at",
-                (email.lower(),)
-            ).fetchall()
-            con.close()
-            return [r[0] for r in rows]
-        except sqlite3.Error:
-            return []
-
     def send_preferences_page(
         self,
         email: str,
@@ -788,22 +775,6 @@ to set alerts for specific varieties.</p>
         else:
             variety_items = '<p style="color:#9ca3af;font-size:0.85rem">None. Browse variety pages to add watches.</p>'
 
-        # Wishlist (read-only for now)
-        wishlist = self._get_wishlist(email)
-        if wishlist:
-            wishlist_items = "".join(
-                f'<li style="padding:4px 0;color:#374151">{slug.replace("-", " ").title()}</li>'
-                for slug in wishlist
-            )
-            wishlist_html = (
-                f'<ul style="list-style:none;padding:0;margin:0 0 12px">{wishlist_items}</ul>'
-                f'<p style="color:#9ca3af;font-size:0.8rem;margin:0">'
-                f'These are species you upvoted for nurseries to stock. They\'ll trigger variety alerts when a matching cultivar appears.'
-                f'</p>'
-            )
-        else:
-            wishlist_html = '<p style="color:#9ca3af;font-size:0.85rem">No wishlist items yet. Upvote a species from any species page.</p>'
-
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">Manage your alerts</h2>
 <p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{email}</p>
@@ -843,11 +814,6 @@ to set alerts for specific varieties.</p>
 </p>
 <div id="varietyWatches" style="margin:0 0 24px">
 {variety_items}
-</div>
-
-<h3 style="color:#374151;font-size:1rem;margin:24px 0 8px">Wishlist</h3>
-<div style="margin:0 0 24px">
-{wishlist_html}
 </div>
 
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
