@@ -186,6 +186,7 @@ def send_welcome(email: str, dry_run: bool = False) -> bool:
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            "User-Agent": "treestock-welcome/1.0",
         },
     )
     try:

@@ -143,6 +143,7 @@ def send_confirmation(email: str, token: str, state: str = "ALL", dry_run: bool 
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            "User-Agent": "treestock-confirmation/1.0",
         },
     )
     try:

@@ -91,6 +91,7 @@ def send(email: str, token: str, dry_run: bool = False) -> bool:
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            "User-Agent": "treestock-managelink/1.0",
         },
     )
     try:
