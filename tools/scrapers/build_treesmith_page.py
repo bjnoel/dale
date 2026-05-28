@@ -40,7 +40,8 @@ def build_body() -> str:
 
   <section class="text-center mb-10">
     <img src="/treesmith/icon.png" alt="Treesmith app icon"
-         class="w-20 h-20 mx-auto mb-4 rounded-2xl shadow">
+         width="80" height="80"
+         class="block w-20 h-20 mx-auto mb-4 rounded-2xl shadow">
     <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
       Track the trees you buy from treestock
     </h1>
@@ -51,11 +52,11 @@ def build_body() -> str:
     </p>
     <div class="flex gap-3 flex-wrap justify-center">
       <a href="{IOS_URL}"
-         class="inline-block bg-gray-900 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-gray-800">
+         class="inline-block bg-gray-900 text-white px-6 py-3 rounded-lg text-base font-semibold shadow hover:bg-gray-800">
         Get it on iOS
       </a>
       <a href="{ANDROID_BETA_URL}"
-         class="inline-block bg-white border border-gray-300 text-gray-800 px-5 py-2 rounded-md text-sm font-medium hover:bg-gray-50">
+         class="inline-block bg-white border border-gray-300 text-gray-800 px-6 py-3 rounded-lg text-base font-semibold hover:bg-gray-50">
         Android (beta)
       </a>
     </div>
@@ -133,8 +134,8 @@ def build_body() -> str:
 
   <section class="text-center mb-12">
     <a href="{APP_URL}"
-       class="inline-block bg-green-700 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-green-800">
-      See more at treesmith.app
+       class="inline-block bg-green-700 text-white px-8 py-4 rounded-lg text-lg font-semibold shadow hover:bg-green-800 hover:shadow-md">
+      See more at treesmith.app &rarr;
     </a>
   </section>
 
