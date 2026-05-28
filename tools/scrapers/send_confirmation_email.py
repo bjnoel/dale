@@ -116,7 +116,7 @@ No subscription will be created without clicking the link above.
 
 
 def send_confirmation(email: str, token: str, state: str = "ALL", dry_run: bool = False) -> bool:
-    params = urllib.parse.urlencode({"email": email, "token": token})
+    params = urllib.parse.urlencode({"email": email, "token": token, "state": state.upper()})
     confirm_url = f"{CONFIRM_BASE}?{params}"
     html = build_confirmation_html(email, confirm_url)
     text = build_confirmation_text(email, confirm_url)
