@@ -88,13 +88,20 @@ def get_unsubscribe_secret() -> str:
     return ""
 
 
-def verify_unsubscribe_token(email: str, token: str) -> bool:
+def make_unsubscribe_token(email: str) -> str:
+    """Same deterministic token used by every preferences/unsubscribe link."""
     secret = get_unsubscribe_secret()
     if not secret:
-        return False
-    expected = hmac.new(
+        return ""
+    return hmac.new(
         secret.encode(), email.lower().encode(), hashlib.sha256
     ).hexdigest()[:32]
+
+
+def verify_unsubscribe_token(email: str, token: str) -> bool:
+    expected = make_unsubscribe_token(email)
+    if not expected:
+        return False
     return hmac.compare_digest(expected, token)
 
 
@@ -257,20 +264,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                     except Exception as ex:
                         print(f"Warning: could not launch welcome email: {ex}")
 
-            self.send_html(200, """
-<h2 style="color:#065f46">You're subscribed!</h2>
-<p>You'll receive your first stock digest next Monday morning.</p>
-<p>You can <a href="https://treestock.com.au/species/" style="color:#065f46">browse species pages</a>
-to set alerts for specific varieties.</p>
-<div style="margin-top:24px;padding:16px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:8px">
-  <p style="margin:0 0 6px 0;font-weight:600;color:#065f46">Track the trees you buy</p>
-  <p style="margin:0 0 10px 0;font-size:14px;color:#374151">
-    treestock tells you where to buy a rare variety. <strong>Treesmith</strong>, our mobile app, helps you catalog every plant, log grafts and harvests, and capture growth photos over time.
-  </p>
-  <a href="https://treestock.com.au/treesmith.html?utm_source=treestock&amp;utm_medium=confirm_page&amp;utm_campaign=treesmith_launch"
-     style="color:#065f46;font-weight:600">Learn more about Treesmith &rarr;</a>
-</div>
-""")
+            self.send_confirm_success_page(email)
             return
 
         if parsed.path in ("/unsubscribe", "/api/unsubscribe"):
@@ -368,15 +362,12 @@ to set alerts for specific varieties.</p>
                 self.send_json(200, generic_ok)
                 return
 
-            secret = get_unsubscribe_secret()
-            if not secret:
+            token = make_unsubscribe_token(requested_email)
+            if not token:
                 # Misconfigured server — surface the error but still return generic OK to caller.
                 print(f"ERROR: UNSUBSCRIBE_SECRET missing; cannot send manage-link for {requested_email}", file=sys.stderr)
                 self.send_json(200, generic_ok)
                 return
-            token = hmac.new(
-                secret.encode(), requested_email.encode(), hashlib.sha256
-            ).hexdigest()[:32]
 
             # Launch the send script non-blocking so the HTTP response returns fast.
             send_script = SCRIPT_DIR / "send_manage_link_email.py"
@@ -700,6 +691,136 @@ to set alerts for specific varieties.</p>
             return [{"slug": r[0], "title": r[1], "species": r[2]} for r in rows]
         except sqlite3.Error:
             return []
+
+    def send_confirm_success_page(self, email: str):
+        """Confirmation success page with an embedded one-step preferences picker.
+
+        Token is generated server-side from the just-confirmed email, so the
+        picker submission is authenticated without anything sensitive in
+        client-rendered HTML.
+        """
+        token = make_unsubscribe_token(email)
+
+        body = f"""
+<h2 style="color:#065f46;margin:0 0 8px">You're subscribed!</h2>
+<p style="color:#374151;margin:0 0 20px">
+  Your first digest will arrive tomorrow morning. You can fine-tune things below — or close this tab and the defaults (daily, all categories) will be used.
+</p>
+
+<form id="prefsForm" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin:0 0 24px">
+
+  <h3 style="color:#065f46;font-size:0.95rem;margin:0 0 8px">How often?</h3>
+  <div style="margin:0 0 16px">
+    <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
+      <input type="radio" name="frequency" value="daily" checked style="margin-top:4px">
+      <span><strong>Daily</strong>
+        <br><span style="font-size:0.8rem;color:#6b7280">One email per day when any tracked change happens</span></span>
+    </label>
+    <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
+      <input type="radio" name="frequency" value="weekly" style="margin-top:4px">
+      <span><strong>Weekly summary</strong>
+        <br><span style="font-size:0.8rem;color:#6b7280">A single curated email on Sunday mornings</span></span>
+    </label>
+    <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
+      <input type="radio" name="frequency" value="off" style="margin-top:4px">
+      <span><strong>Off</strong>
+        <br><span style="font-size:0.8rem;color:#6b7280">No digest emails — but variety alerts still work</span></span>
+    </label>
+  </div>
+
+  <h3 style="color:#065f46;font-size:0.95rem;margin:0 0 8px">What to include?</h3>
+  <div style="margin:0 0 16px">
+    <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
+      <input type="checkbox" name="categories" value="new_products" checked style="margin-top:4px">
+      <span><strong>🆕 New listings</strong>
+        <br><span style="font-size:0.8rem;color:#6b7280">First time a product appears on a nursery website</span></span>
+    </label>
+    <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
+      <input type="checkbox" name="categories" value="price_drops" checked style="margin-top:4px">
+      <span><strong>📉 Price drops</strong>
+        <br><span style="font-size:0.8rem;color:#6b7280">Existing items that became cheaper</span></span>
+    </label>
+    <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
+      <input type="checkbox" name="categories" value="back_in_stock" checked style="margin-top:4px">
+      <span><strong>✅ Back in stock</strong>
+        <br><span style="font-size:0.8rem;color:#6b7280">Items that were sold out and have returned</span></span>
+    </label>
+  </div>
+
+  <button type="submit" style="background:#16a34a;color:white;border:none;padding:10px 24px;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer">
+    Save preferences
+  </button>
+  <p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:8px 0 0"></p>
+</form>
+
+<p style="color:#374151;margin:0 0 20px;font-size:0.95rem">
+  Want alerts for a specific variety? <a href="https://treestock.com.au/species/" style="color:#065f46">Browse species pages</a>
+  and click the bell on any cultivar.
+</p>
+
+<div style="margin-top:24px;padding:16px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:8px">
+  <p style="margin:0 0 6px 0;font-weight:600;color:#065f46">Track the trees you buy</p>
+  <p style="margin:0 0 10px 0;font-size:14px;color:#374151">
+    treestock tells you where to buy a rare variety. <strong>Treesmith</strong>, our mobile app, helps you catalog every plant, log grafts and harvests, and capture growth photos over time.
+  </p>
+  <a href="https://treestock.com.au/treesmith.html?utm_source=treestock&amp;utm_medium=confirm_page&amp;utm_campaign=treesmith_launch"
+     style="color:#065f46;font-weight:600">Learn more about Treesmith &rarr;</a>
+</div>
+
+<script>
+document.getElementById('prefsForm').addEventListener('submit', async function(e) {{
+  e.preventDefault();
+  var freqEl = document.querySelector('#prefsForm input[name=frequency]:checked');
+  var frequency = freqEl ? freqEl.value : 'daily';
+  var categories = Array.from(document.querySelectorAll('#prefsForm input[name=categories]:checked')).map(function(el) {{ return el.value; }});
+  var msg = document.getElementById('prefsMsg');
+  var btn = e.target.querySelector('button');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+  msg.style.color = '';
+  msg.textContent = '';
+  try {{
+    var resp = await fetch('/api/subscribe', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{
+        email: {json.dumps(email)},
+        token: {json.dumps(token)},
+        action: 'update_preferences',
+        state: {json.dumps(self._lookup_subscriber_state(email))},
+        categories: categories,
+        frequency: frequency
+      }})
+    }});
+    var data = await resp.json();
+    if (resp.ok) {{
+      msg.style.color = '#065f46';
+      msg.textContent = 'Saved. You can change these anytime via the link in any future email.';
+      btn.textContent = 'Saved';
+    }} else {{
+      msg.style.color = '#dc2626';
+      msg.textContent = data.error || 'Something went wrong.';
+      btn.disabled = false;
+      btn.textContent = 'Save preferences';
+    }}
+  }} catch (err) {{
+    msg.style.color = '#dc2626';
+    msg.textContent = 'Network error. Please try again.';
+    btn.disabled = false;
+    btn.textContent = 'Save preferences';
+  }}
+}});
+</script>"""
+        self.send_html(200, body)
+
+    def _lookup_subscriber_state(self, email: str) -> str:
+        """Read the current stored state for an email so we can echo it back in
+        update_preferences (the endpoint requires a state value)."""
+        subs = load_subscribers()
+        for s in subs:
+            if s["email"] == email:
+                return s.get("state") or ("WA" if s.get("wa_only") else "ALL")
+        return "ALL"
 
     def send_preferences_page(
         self,
