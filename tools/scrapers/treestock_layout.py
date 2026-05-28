@@ -8,12 +8,14 @@ Usage:
     from treestock_layout import render_head, render_header, render_footer, render_breadcrumb
 """
 
+from datetime import datetime
+
 # --- Constants ---
 
 SITE_NAME = "treestock.com.au"
 SITE_URL = "https://treestock.com.au"
 
-TAILWIND_CSS = "/styles.css"
+TAILWIND_CSS = f"/styles.css?v={datetime.utcnow().strftime('%Y%m%d')}"
 PLAUSIBLE_SCRIPT = '<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>'
 
 NAV_ITEMS = [
