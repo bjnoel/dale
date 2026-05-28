@@ -29,7 +29,7 @@ from pathlib import Path
 
 # Import digest generation for per-state filtering
 sys.path.insert(0, str(Path(__file__).parent))
-from daily_digest import load_all_changes, format_html
+from daily_digest import load_all_changes, format_html, has_any_changes, ALL_CATEGORIES
 
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
@@ -113,6 +113,26 @@ def get_subscriber_state(subscriber: dict) -> str:
     return "ALL"
 
 
+def get_subscriber_categories(subscriber: dict) -> frozenset:
+    """Categories the subscriber wants in their digest.
+
+    Default (missing field) is all three — preserves behaviour for legacy records.
+    Unknown values are dropped silently.
+    """
+    raw = subscriber.get("categories")
+    if raw is None:
+        return frozenset(ALL_CATEGORIES)
+    return frozenset(c for c in raw if c in ALL_CATEGORIES)
+
+
+def get_subscriber_frequency(subscriber: dict) -> str:
+    """'daily' | 'weekly' | 'off'. Default 'daily' preserves legacy behaviour."""
+    freq = subscriber.get("frequency", "daily")
+    if freq not in ("daily", "weekly", "off"):
+        return "daily"
+    return freq
+
+
 def inject_footer(html: str, email: str, token: str, state: str) -> str:
     """Add personalised footer with unsubscribe + preferences links."""
     encoded_email = urllib.parse.quote(email)
@@ -125,7 +145,7 @@ def inject_footer(html: str, email: str, token: str, state: str) -> str:
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.75em;color:#9ca3af;text-align:center">
   You're receiving this because you subscribed at <a href="{SITE_URL}" style="color:#6b7280">{SITE_URL}</a>.<br>
-  {state_label} · <a href="{preferences_url}" style="color:#6b7280">Change state</a> · <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
+  {state_label} · <a href="{preferences_url}" style="color:#6b7280">Manage your alerts</a> · <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
 </p>
 """
     # Insert before </body> if present, else append
@@ -187,13 +207,19 @@ def main():
     # Load subscribers
     all_subscribers = load_subscribers()
     if test_email:
-        # Look up actual state preference if subscriber exists, else default ALL
+        # Look up actual preferences if subscriber exists, else default
         existing = next((s for s in all_subscribers if s["email"] == test_email.lower()), None)
-        test_state = get_subscriber_state(existing) if existing else "ALL"
-        subscribers = [{"email": test_email, "state": test_state}]
-        print(f"TEST MODE: Sending only to {test_email} (state={test_state})")
+        if existing:
+            subscribers = [existing]
+        else:
+            subscribers = [{"email": test_email, "state": "ALL"}]
+        ts = get_subscriber_state(subscribers[0])
+        tc = sorted(get_subscriber_categories(subscribers[0]))
+        tf = get_subscriber_frequency(subscribers[0])
+        print(f"TEST MODE: Sending only to {test_email} (state={ts}, frequency={tf}, categories={','.join(tc)})")
     else:
-        subscribers = all_subscribers
+        # Daily run: only address subscribers whose frequency is "daily"
+        subscribers = [s for s in all_subscribers if get_subscriber_frequency(s) == "daily"]
 
     if not subscribers:
         print("No subscribers to send to.")
@@ -206,45 +232,71 @@ def main():
     to_send = [s for s in subscribers if s["email"] not in already_sent]
     skipped = len(subscribers) - len(to_send)
 
-    print(f"Subscribers: {len(subscribers)} total, {len(to_send)} to send, {skipped} already sent today")
+    print(f"Subscribers: {len(subscribers)} daily, {len(to_send)} to send, {skipped} already sent today")
 
     if not to_send:
         print("All subscribers already received today's digest.")
         return
 
-    # Group subscribers by state for efficient digest generation
-    by_state: dict[str, list] = {}
+    # Group subscribers by (state, categories) — same combo can reuse rendered HTML.
+    # Empty category sets fall through to the "skip" branch below.
+    by_bucket: dict[tuple, list] = {}
     for s in to_send:
         state = get_subscriber_state(s)
-        by_state.setdefault(state, []).append(s)
+        cats = get_subscriber_categories(s)
+        by_bucket.setdefault((state, cats), []).append(s)
 
-    print(f"States: {', '.join(f'{st}({len(subs)})' for st, subs in sorted(by_state.items()))}")
+    bucket_summary = ", ".join(
+        f"{st}/{','.join(sorted(cs)) or '(none)'}({len(subs)})"
+        for (st, cs), subs in sorted(by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1])))
+    )
+    print(f"Buckets: {bucket_summary}")
 
     if dry_run:
         for s in to_send:
             state = get_subscriber_state(s)
-            print(f"  Would send to: {s['email']} (state={state})")
+            cats = ",".join(sorted(get_subscriber_categories(s))) or "(none)"
+            print(f"  Would send to: {s['email']} (state={state}, categories={cats})")
         return
 
     api_key = get_resend_api_key()
     secret = get_unsubscribe_secret()
     subject = f"Nursery Stock Update — {target_date}"
 
-    # Cache generated HTML per state
-    html_cache: dict[str, str] = {}
+    # Cache generated HTML per (state, categories) bucket
+    html_cache: dict[tuple, str] = {}
 
     sent_emails = list(already_sent)
     failed = 0
+    empty_skipped = 0
 
-    for state, state_subscribers in sorted(by_state.items()):
-        # Generate digest HTML for this state (cached)
-        if state not in html_cache:
-            filter_state = "" if state == "ALL" else state
-            html_cache[state] = format_html(all_changes, target_date, state=filter_state)
+    for (state, cats), bucket_subscribers in sorted(
+        by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1]))
+    ):
+        filter_state = "" if state == "ALL" else state
 
-        digest_html = html_cache[state]
+        # Subscribers who muted every category — skip outright (variety alerts still
+        # reach them via send_variety_alerts.py).
+        if not cats:
+            empty_skipped += len(bucket_subscribers)
+            print(f"  Skipping {len(bucket_subscribers)} subscribers with no categories enabled")
+            continue
 
-        for subscriber in state_subscribers:
+        # Skip the whole bucket if there's nothing to show after filtering — no
+        # point emailing "No changes today" to people who explicitly narrowed scope.
+        if not has_any_changes(all_changes, state=filter_state, categories=cats):
+            empty_skipped += len(bucket_subscribers)
+            print(f"  Skipping {len(bucket_subscribers)} subscribers — no matching changes for {state}/{','.join(sorted(cats))}")
+            continue
+
+        cache_key = (state, cats)
+        if cache_key not in html_cache:
+            html_cache[cache_key] = format_html(
+                all_changes, target_date, state=filter_state, categories=cats
+            )
+        digest_html = html_cache[cache_key]
+
+        for subscriber in bucket_subscribers:
             email = subscriber["email"]
             token = make_unsubscribe_token(email, secret)
             personalised_html = inject_footer(digest_html, email, token, state)
@@ -260,7 +312,8 @@ def main():
         sends_log[target_date] = sent_emails
         save_sends_log(sends_log)
 
-    print(f"Done: {len(sent_emails) - len(already_sent)} sent, {failed} failed")
+    sent_count = len(sent_emails) - len(already_sent)
+    print(f"Done: {sent_count} sent, {empty_skipped} skipped (empty/muted), {failed} failed")
     if failed:
         sys.exit(1)
 

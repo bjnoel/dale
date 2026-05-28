@@ -36,8 +36,13 @@ SUBSCRIBERS_FILE = Path("/opt/dale/data/subscribers.json")
 PENDING_FILE = Path("/opt/dale/data/pending_subscribers.json")
 APP_ENV = Path("/opt/dale/secrets/app.env")
 VARIETY_WATCHES_DB = Path("/opt/dale/data/variety_watches.db")
+MANAGE_LINK_LOG = Path("/opt/dale/data/manage_link_sends.json")
 PORT = 8099
 CONFIRM_EXPIRY_HOURS = 48
+MANAGE_LINK_RATE_LIMIT_SECONDS = 3600  # one manage-link email per address per hour
+
+VALID_CATEGORIES = ("new_products", "price_drops", "back_in_stock")
+VALID_FREQUENCIES = ("daily", "weekly", "off")
 
 
 def init_variety_watches_db():
@@ -151,6 +156,22 @@ def save_subscribers(subscribers: list):
 
 def is_valid_email(email: str) -> bool:
     return bool(re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email))
+
+
+def _load_manage_link_log() -> dict:
+    if MANAGE_LINK_LOG.exists():
+        try:
+            with open(MANAGE_LINK_LOG) as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return {}
+    return {}
+
+
+def _save_manage_link_log(log: dict):
+    MANAGE_LINK_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with open(MANAGE_LINK_LOG, "w") as f:
+        json.dump(log, f, indent=2)
 
 
 class SubscribeHandler(BaseHTTPRequestHandler):
@@ -279,19 +300,103 @@ to set alerts for specific varieties.</p>
                 return
 
             current_state = subscriber.get("state", "WA" if subscriber.get("wa_only") else "ALL")
-            self.send_preferences_page(email, token, current_state)
+            current_categories = subscriber.get("categories")
+            if current_categories is None:
+                current_categories = list(VALID_CATEGORIES)
+            current_frequency = subscriber.get("frequency", "daily")
+            if current_frequency not in VALID_FREQUENCIES:
+                current_frequency = "daily"
+            self.send_preferences_page(email, token, current_state, current_categories, current_frequency)
             return
 
         self.send_error(404)
 
     def do_POST(self):
         path = self.path.split("?")[0]
-        if path not in ("/subscribe", "/api/subscribe", "/watch-variety", "/api/watch-variety", "/unwatch-variety", "/api/unwatch-variety", "/wishlist", "/api/wishlist"):
+        if path not in (
+            "/subscribe", "/api/subscribe",
+            "/watch-variety", "/api/watch-variety",
+            "/unwatch-variety", "/api/unwatch-variety",
+            "/wishlist", "/api/wishlist",
+            "/request-manage-link", "/api/request-manage-link",
+        ):
             self.send_error(404)
             return
 
         content_length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(content_length).decode()
+
+        # Self-serve magic-link request: any email gets a uniform 200 so we don't
+        # leak which addresses are subscribed. Only confirmed subscribers receive
+        # an actual email, and we rate-limit at most one per hour per address.
+        if path in ("/request-manage-link", "/api/request-manage-link"):
+            try:
+                if self.headers.get("Content-Type", "").startswith("application/json"):
+                    payload = json.loads(body)
+                    requested_email = payload.get("email", "")
+                else:
+                    requested_email = parse_qs(body).get("email", [""])[0]
+            except (json.JSONDecodeError, KeyError):
+                self.send_json(400, {"error": "Invalid request"})
+                return
+
+            requested_email = (requested_email or "").strip().lower()
+            if not requested_email or not is_valid_email(requested_email):
+                self.send_json(400, {"error": "Valid email required"})
+                return
+
+            generic_ok = {"message": "If that email is subscribed, a manage-alerts link is on its way."}
+
+            send_log = _load_manage_link_log()
+            last_sent_iso = send_log.get(requested_email)
+            if last_sent_iso:
+                try:
+                    last_sent = datetime.fromisoformat(last_sent_iso)
+                    if (datetime.now() - last_sent).total_seconds() < MANAGE_LINK_RATE_LIMIT_SECONDS:
+                        # Already sent recently — return the same generic response so
+                        # rate-limited and non-subscriber requests are indistinguishable.
+                        print(f"Manage-link request rate-limited: {requested_email}")
+                        self.send_json(200, generic_ok)
+                        return
+                except ValueError:
+                    pass
+
+            subscribers = load_subscribers()
+            subscriber = next((s for s in subscribers if s["email"] == requested_email), None)
+            if subscriber is None:
+                print(f"Manage-link request for non-subscriber (silent): {requested_email}")
+                self.send_json(200, generic_ok)
+                return
+
+            secret = get_unsubscribe_secret()
+            if not secret:
+                # Misconfigured server — surface the error but still return generic OK to caller.
+                print(f"ERROR: UNSUBSCRIBE_SECRET missing; cannot send manage-link for {requested_email}", file=sys.stderr)
+                self.send_json(200, generic_ok)
+                return
+            token = hmac.new(
+                secret.encode(), requested_email.encode(), hashlib.sha256
+            ).hexdigest()[:32]
+
+            # Launch the send script non-blocking so the HTTP response returns fast.
+            send_script = SCRIPT_DIR / "send_manage_link_email.py"
+            if send_script.exists():
+                try:
+                    subprocess.Popen(
+                        [sys.executable, str(send_script), requested_email, token],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                    )
+                except Exception as ex:
+                    print(f"Warning: could not launch manage-link email: {ex}", file=sys.stderr)
+            else:
+                print(f"ERROR: send_manage_link_email.py not found", file=sys.stderr)
+
+            send_log[requested_email] = datetime.now().isoformat()
+            _save_manage_link_log(send_log)
+            print(f"Manage-link email queued: {requested_email}")
+            self.send_json(200, generic_ok)
+            return
 
         # Handle per-variety watch
         if path in ("/watch-variety", "/api/watch-variety"):
@@ -461,28 +566,72 @@ to set alerts for specific varieties.</p>
             if not verify_unsubscribe_token(email, token):
                 self.send_json(403, {"error": "Invalid token"})
                 return
-            if self.headers.get("Content-Type", "").startswith("application/json"):
+            is_json = self.headers.get("Content-Type", "").startswith("application/json")
+            if is_json:
                 new_state = data.get("state", "").upper().strip()
+                raw_categories = data.get("categories")
+                raw_frequency = data.get("frequency")
             else:
                 new_state = params.get("state", [""])[0].upper().strip()
+                raw_categories = params.get("categories")
+                raw_frequency = params.get("frequency", [None])[0]
+
             valid_states = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
             if new_state not in valid_states:
                 self.send_json(400, {"error": f"Invalid state. Must be one of: {', '.join(sorted(valid_states))}"})
                 return
+
+            # Normalise categories: must be a list when provided.
+            new_categories = None
+            if raw_categories is not None:
+                if not isinstance(raw_categories, list):
+                    self.send_json(400, {"error": "categories must be a list"})
+                    return
+                seen = set()
+                new_categories = []
+                for c in raw_categories:
+                    if c in VALID_CATEGORIES and c not in seen:
+                        new_categories.append(c)
+                        seen.add(c)
+
+            # Normalise frequency.
+            new_frequency = None
+            if raw_frequency is not None:
+                raw_frequency = (raw_frequency or "").strip().lower()
+                if raw_frequency and raw_frequency not in VALID_FREQUENCIES:
+                    self.send_json(400, {"error": f"Invalid frequency. Must be one of: {', '.join(VALID_FREQUENCIES)}"})
+                    return
+                new_frequency = raw_frequency or None
+
             subscribers = load_subscribers()
             found = False
             for s in subscribers:
                 if s["email"] == email:
                     s["state"] = new_state
                     s.pop("wa_only", None)
+                    if new_categories is not None:
+                        s["categories"] = new_categories
+                    if new_frequency is not None:
+                        s["frequency"] = new_frequency
                     found = True
                     break
             if not found:
                 self.send_json(404, {"error": "Subscriber not found"})
                 return
             save_subscribers(subscribers)
-            print(f"Preferences updated: {email} → state={new_state}")
-            self.send_json(200, {"message": "Preferences updated", "state": new_state})
+            log_extras = []
+            if new_categories is not None:
+                log_extras.append(f"categories={','.join(new_categories) or '(none)'}")
+            if new_frequency is not None:
+                log_extras.append(f"frequency={new_frequency}")
+            extra = (" " + " ".join(log_extras)) if log_extras else ""
+            print(f"Preferences updated: {email} → state={new_state}{extra}")
+            self.send_json(200, {
+                "message": "Preferences updated",
+                "state": new_state,
+                "categories": new_categories,
+                "frequency": new_frequency,
+            })
             return
 
         # Handle subscribe (default) — double opt-in flow
@@ -552,7 +701,27 @@ to set alerts for specific varieties.</p>
         except sqlite3.Error:
             return []
 
-    def send_preferences_page(self, email: str, token: str, current_state: str):
+    def _get_wishlist(self, email: str):
+        """Get wishlist species votes for an email from SQLite."""
+        try:
+            con = sqlite3.connect(VARIETY_WATCHES_DB)
+            rows = con.execute(
+                "SELECT species_slug FROM wishlist WHERE email = ? ORDER BY added_at",
+                (email.lower(),)
+            ).fetchall()
+            con.close()
+            return [r[0] for r in rows]
+        except sqlite3.Error:
+            return []
+
+    def send_preferences_page(
+        self,
+        email: str,
+        token: str,
+        current_state: str,
+        current_categories,
+        current_frequency: str,
+    ):
         states = ["ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"]
         state_labels = {
             "ALL": "All states (no filter)",
@@ -565,15 +734,53 @@ to set alerts for specific varieties.</p>
             for s in states
         )
 
+        # Category checkboxes
+        current_cat_set = set(current_categories or [])
+        category_labels = [
+            ("new_products", "🆕 New listings", "First time a product appears on a nursery website"),
+            ("price_drops", "📉 Price drops", "Existing items that became cheaper"),
+            ("back_in_stock", "✅ Back in stock", "Items that were sold out and have returned"),
+        ]
+        category_rows = []
+        for key, label, hint in category_labels:
+            checked = " checked" if key in current_cat_set else ""
+            category_rows.append(
+                f'<label style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;cursor:pointer">'
+                f'<input type="checkbox" name="categories" value="{key}"{checked} style="margin-top:4px">'
+                f'<span><strong>{label}</strong>'
+                f'<br><span style="font-size:0.8rem;color:#6b7280">{hint}</span></span>'
+                f'</label>'
+            )
+        categories_html = "\n".join(category_rows)
+
+        # Frequency radio buttons
+        freq_options = [
+            ("daily", "Daily", "One email per day when any tracked change happens"),
+            ("weekly", "Weekly summary", "A single curated email on Sunday mornings"),
+            ("off", "Off", "No digest emails — but variety alerts still work"),
+        ]
+        freq_rows = []
+        for key, label, hint in freq_options:
+            checked = " checked" if key == current_frequency else ""
+            freq_rows.append(
+                f'<label style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;cursor:pointer">'
+                f'<input type="radio" name="frequency" value="{key}"{checked} style="margin-top:4px">'
+                f'<span><strong>{label}</strong>'
+                f'<br><span style="font-size:0.8rem;color:#6b7280">{hint}</span></span>'
+                f'</label>'
+            )
+        frequency_html = "\n".join(freq_rows)
+
         # Get variety watches from SQLite
         variety_watches = self._get_variety_watches(email)
         variety_items = ""
         if variety_watches:
             for vw in variety_watches:
+                safe_title = vw["title"].replace('"', "&quot;").replace("<", "&lt;")
                 variety_items += (
                     f'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;'
                     f'border-bottom:1px solid #f3f4f6">'
-                    f'<span>{vw["title"]}</span>'
+                    f'<span>{safe_title}</span>'
                     f'<button onclick="removeVariety(\'{vw["slug"]}\')" style="background:none;border:1px solid #d1d5db;'
                     f'color:#6b7280;padding:4px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer">Remove</button>'
                     f'</div>'
@@ -581,31 +788,66 @@ to set alerts for specific varieties.</p>
         else:
             variety_items = '<p style="color:#9ca3af;font-size:0.85rem">None. Browse variety pages to add watches.</p>'
 
+        # Wishlist (read-only for now)
+        wishlist = self._get_wishlist(email)
+        if wishlist:
+            wishlist_items = "".join(
+                f'<li style="padding:4px 0;color:#374151">{slug.replace("-", " ").title()}</li>'
+                for slug in wishlist
+            )
+            wishlist_html = (
+                f'<ul style="list-style:none;padding:0;margin:0 0 12px">{wishlist_items}</ul>'
+                f'<p style="color:#9ca3af;font-size:0.8rem;margin:0">'
+                f'These are species you upvoted for nurseries to stock. They\'ll trigger variety alerts when a matching cultivar appears.'
+                f'</p>'
+            )
+        else:
+            wishlist_html = '<p style="color:#9ca3af;font-size:0.85rem">No wishlist items yet. Upvote a species from any species page.</p>'
+
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">Manage your alerts</h2>
-<p style="color:#6b7280;font-size:0.9rem;margin:0 0 20px">{email}</p>
+<p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{email}</p>
 
-<h3 style="color:#374151;font-size:1rem;margin:0 0 8px">State filter</h3>
-<p style="color:#6b7280;font-size:0.85rem;margin:0 0 12px">
-  Only see stock updates from nurseries that ship to your state.
-</p>
-<form id="prefsForm" style="margin:0 0 24px">
-  <select id="stateSelect" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:0.9rem;width:100%;max-width:300px">
+<form id="prefsForm" style="margin:0">
+
+  <h3 style="color:#374151;font-size:1rem;margin:0 0 8px">State filter</h3>
+  <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
+    Only show updates from nurseries that ship to your state.
+  </p>
+  <select id="stateSelect" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:0.9rem;width:100%;max-width:320px;margin-bottom:24px">
     {options}
   </select>
-  <br>
-  <button type="submit" style="margin-top:8px;background:#16a34a;color:white;border:none;padding:8px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer">
-    Save
+
+  <h3 style="color:#374151;font-size:1rem;margin:0 0 8px">What to include</h3>
+  <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
+    Uncheck anything that's not useful to you. If you uncheck everything, you'll skip the digest entirely (variety alerts still work).
+  </p>
+  <div id="categoryGroup" style="margin:0 0 24px">
+    {categories_html}
+  </div>
+
+  <h3 style="color:#374151;font-size:1rem;margin:0 0 8px">How often</h3>
+  <div id="frequencyGroup" style="margin:0 0 24px">
+    {frequency_html}
+  </div>
+
+  <button type="submit" style="background:#16a34a;color:white;border:none;padding:10px 24px;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer">
+    Save preferences
   </button>
 </form>
-<p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:0 0 16px"></p>
+<p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:8px 0 24px"></p>
 
-<h3 style="color:#374151;font-size:1rem;margin:0 0 8px">Variety restock alerts</h3>
+<h3 style="color:#374151;font-size:1rem;margin:24px 0 8px">Variety restock alerts</h3>
 <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
-  Get emailed when these specific varieties come back in stock.
+  Get emailed when these specific varieties come back in stock anywhere.
 </p>
 <div id="varietyWatches" style="margin:0 0 24px">
 {variety_items}
+</div>
+
+<h3 style="color:#374151;font-size:1rem;margin:24px 0 8px">Wishlist</h3>
+<div style="margin:0 0 24px">
+{wishlist_html}
 </div>
 
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
@@ -617,6 +859,9 @@ to set alerts for specific varieties.</p>
 document.getElementById('prefsForm').addEventListener('submit', async function(e) {{
   e.preventDefault();
   const state = document.getElementById('stateSelect').value;
+  const categories = Array.from(document.querySelectorAll('#categoryGroup input[type=checkbox]:checked')).map(function(el) {{ return el.value; }});
+  const freqEl = document.querySelector('#frequencyGroup input[type=radio]:checked');
+  const frequency = freqEl ? freqEl.value : 'daily';
   const msg = document.getElementById('prefsMsg');
   const btn = e.target.querySelector('button');
   btn.disabled = true;
@@ -629,13 +874,27 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
         email: '{email}',
         token: '{token}',
         action: 'update_preferences',
-        state: state
+        state: state,
+        categories: categories,
+        frequency: frequency
       }})
     }});
     const data = await resp.json();
     if (resp.ok) {{
       msg.style.color = '#065f46';
-      msg.textContent = 'Saved! Next digest will show ' + (state === 'ALL' ? 'all states' : state) + '.';
+      let parts = [];
+      parts.push(state === 'ALL' ? 'all states' : state);
+      if (frequency === 'off') {{
+        parts.push('no digest emails');
+      }} else {{
+        parts.push(frequency + ' digest');
+      }}
+      if (categories.length === 0) {{
+        parts.push('all categories muted');
+      }} else if (categories.length < 3) {{
+        parts.push(categories.length + ' categor' + (categories.length === 1 ? 'y' : 'ies'));
+      }}
+      msg.textContent = 'Saved: ' + parts.join(', ') + '.';
     }} else {{
       msg.style.color = '#dc2626';
       msg.textContent = data.error || 'Something went wrong.';
@@ -645,7 +904,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
     msg.textContent = 'Network error. Please try again.';
   }}
   btn.disabled = false;
-  btn.textContent = 'Save';
+  btn.textContent = 'Save preferences';
 }});
 
 async function removeVariety(slug) {{

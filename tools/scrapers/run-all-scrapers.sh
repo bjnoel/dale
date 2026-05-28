@@ -168,10 +168,18 @@ echo "$LOG_PREFIX Checking for stock surges..."
 python3 "$SCRIPT_DIR/detect_stock_surges.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Stock surge detection failed (non-fatal)"
 echo "$LOG_PREFIX Stock surge check complete."
 
-# Send digest to email subscribers
+# Send digest to email subscribers (frequency=daily only — others handled below).
 echo "$LOG_PREFIX Sending digest to email subscribers..."
 python3 "$SCRIPT_DIR/send_digest.py" 2>&1 || echo "$LOG_PREFIX WARNING: Digest email send failed (non-fatal)"
 echo "$LOG_PREFIX Subscriber send complete."
+
+# On Sundays, also send the weekly summary to subscribers with frequency=weekly.
+# date +%u: 1=Mon ... 7=Sun
+if [ "$(date +%u)" = "7" ]; then
+    echo "$LOG_PREFIX Sending weekly digest to weekly subscribers..."
+    python3 "$SCRIPT_DIR/send_weekly_digest.py" 2>&1 || echo "$LOG_PREFIX WARNING: Weekly digest send failed (non-fatal)"
+    echo "$LOG_PREFIX Weekly digest send complete."
+fi
 
 # Send per-variety restock alerts to watchers
 # (Species-level alerts deprecated 2026-04-19: trigger condition was too strict

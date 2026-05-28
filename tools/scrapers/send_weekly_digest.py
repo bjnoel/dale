@@ -30,7 +30,8 @@ from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from daily_digest import load_snapshot, compare_snapshots, NURSERY_NAMES
+from daily_digest import load_snapshot, compare_snapshots, NURSERY_NAMES, ALL_CATEGORIES
+from send_digest import get_subscriber_categories, get_subscriber_frequency, get_subscriber_state
 from shipping import SHIPPING_MAP, nursery_ships_to
 
 SECRETS_DIR = Path("/opt/dale/secrets")
@@ -98,14 +99,6 @@ def save_sends_log(log: dict):
         json.dump(log, f, indent=2)
 
 
-def get_subscriber_state(subscriber: dict) -> str:
-    if "state" in subscriber:
-        return subscriber["state"]
-    if subscriber.get("wa_only"):
-        return "WA"
-    return "ALL"
-
-
 def load_weekly_changes(end_date: str, state_filter: str = "") -> dict:
     """
     Compare snapshot from 7 days ago vs end_date snapshot for all nurseries.
@@ -159,8 +152,9 @@ def load_weekly_changes(end_date: str, state_filter: str = "") -> dict:
     return all_changes
 
 
-def format_weekly_html(all_changes: dict, end_date: str, state_filter: str = "") -> str:
+def format_weekly_html(all_changes: dict, end_date: str, state_filter: str = "", categories=None) -> str:
     """Build a curated weekly digest HTML email."""
+    enabled = frozenset(c for c in (categories or ALL_CATEGORIES) if c in ALL_CATEGORIES)
     start = (date.fromisoformat(end_date) - timedelta(days=7)).strftime("%-d %b")
     end_fmt = date.fromisoformat(end_date).strftime("%-d %b %Y")
     date_range = f"{start} — {end_fmt}"
@@ -173,14 +167,17 @@ def format_weekly_html(all_changes: dict, end_date: str, state_filter: str = "")
     for nursery_key, changes in sorted(all_changes.items()):
         name = NURSERY_NAMES.get(nursery_key, nursery_key)
 
-        for item in changes["price_drops"]:
-            top_price_drops.append({**item, "nursery": name, "nursery_key": nursery_key})
+        if "price_drops" in enabled:
+            for item in changes["price_drops"]:
+                top_price_drops.append({**item, "nursery": name, "nursery_key": nursery_key})
 
-        for item in changes["back_in_stock"]:
-            top_restocks.append({**item, "nursery": name, "nursery_key": nursery_key})
+        if "back_in_stock" in enabled:
+            for item in changes["back_in_stock"]:
+                top_restocks.append({**item, "nursery": name, "nursery_key": nursery_key})
 
-        for item in changes["new_products"]:
-            top_new_arrivals.append({**item, "nursery": name, "nursery_key": nursery_key})
+        if "new_products" in enabled:
+            for item in changes["new_products"]:
+                top_new_arrivals.append({**item, "nursery": name, "nursery_key": nursery_key})
 
     # Sort globally and cap
     top_price_drops.sort(key=lambda x: -x.get("pct_drop", 0))
@@ -330,8 +327,19 @@ def format_weekly_html(all_changes: dict, end_date: str, state_filter: str = "")
 </html>"""
 
 
-def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "") -> str:
+def has_any_weekly_changes(all_changes: dict, categories=None) -> bool:
+    """True if at least one item survives the category filter."""
+    enabled = frozenset(c for c in (categories or ALL_CATEGORIES) if c in ALL_CATEGORIES)
+    for changes in all_changes.values():
+        for cat in enabled:
+            if changes.get(cat):
+                return True
+    return False
+
+
+def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "", categories=None) -> str:
     """Build a plain-text version of the weekly digest (fallback for non-HTML clients)."""
+    enabled = frozenset(c for c in (categories or ALL_CATEGORIES) if c in ALL_CATEGORIES)
     start = (date.fromisoformat(end_date) - timedelta(days=7)).strftime("%-d %b")
     end_fmt = date.fromisoformat(end_date).strftime("%-d %b %Y")
     date_range = f"{start} to {end_fmt}"
@@ -344,12 +352,15 @@ def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "")
 
     for nursery_key, changes in sorted(all_changes.items()):
         name = NURSERY_NAMES.get(nursery_key, nursery_key)
-        for item in changes["price_drops"]:
-            top_price_drops.append({**item, "nursery": name})
-        for item in changes["back_in_stock"]:
-            top_restocks.append({**item, "nursery": name})
-        for item in changes["new_products"]:
-            top_new_arrivals.append({**item, "nursery": name})
+        if "price_drops" in enabled:
+            for item in changes["price_drops"]:
+                top_price_drops.append({**item, "nursery": name})
+        if "back_in_stock" in enabled:
+            for item in changes["back_in_stock"]:
+                top_restocks.append({**item, "nursery": name})
+        if "new_products" in enabled:
+            for item in changes["new_products"]:
+                top_new_arrivals.append({**item, "nursery": name})
 
     top_price_drops.sort(key=lambda x: -x.get("pct_drop", 0))
     top_price_drops = top_price_drops[:MAX_PRICE_DROPS]
@@ -432,7 +443,7 @@ def inject_footer(html: str, email: str, token: str, state: str) -> str:
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.75em;color:#9ca3af;text-align:center">
   You're receiving this because you subscribed at <a href="{SITE_URL}" style="color:#6b7280">{SITE_URL}</a>.<br>
-  {state_label} &middot; <a href="{preferences_url}" style="color:#6b7280">Change state</a> &middot; <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
+  {state_label} &middot; <a href="{preferences_url}" style="color:#6b7280">Manage your alerts</a> &middot; <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
 </p>
 """
     if "</body>" in html:
@@ -449,7 +460,7 @@ def inject_text_footer(text: str, email: str, token: str, state: str) -> str:
         text
         + f"\n\n---\nYou're receiving this because you subscribed at {SITE_URL}.\n"
         + f"{state_label}\n"
-        + f"Change state: {preferences_url}\n"
+        + f"Manage your alerts: {preferences_url}\n"
         + f"Unsubscribe: {unsubscribe_url}\n"
     )
 
@@ -502,15 +513,19 @@ def main():
 
     print(f"send_weekly_digest.py — week ending {end_date}{' [DRY RUN]' if dry_run else ''}")
 
-    # Load subscribers
+    # Load subscribers — only those who opted into weekly cadence
     all_subscribers = load_subscribers()
     if test_email:
         existing = next((s for s in all_subscribers if s["email"] == test_email.lower()), None)
-        test_state = (existing or {}).get("state", "ALL")
-        subscribers = [{"email": test_email, "state": test_state}]
-        print(f"TEST MODE: Sending only to {test_email} (state={test_state})")
+        if existing:
+            subscribers = [existing]
+        else:
+            subscribers = [{"email": test_email, "state": "ALL"}]
+        ts = get_subscriber_state(subscribers[0])
+        tc = sorted(get_subscriber_categories(subscribers[0]))
+        print(f"TEST MODE: Sending only to {test_email} (state={ts}, categories={','.join(tc)})")
     else:
-        subscribers = all_subscribers
+        subscribers = [s for s in all_subscribers if get_subscriber_frequency(s) == "weekly"]
 
     if not subscribers:
         print("No subscribers.")
@@ -522,27 +537,30 @@ def main():
     to_send = [s for s in subscribers if s["email"] not in already_sent]
     skipped = len(subscribers) - len(to_send)
 
-    print(f"Subscribers: {len(subscribers)} total, {len(to_send)} to send, {skipped} already sent this week")
+    print(f"Subscribers: {len(subscribers)} weekly, {len(to_send)} to send, {skipped} already sent this week")
 
     if not to_send:
         print("All subscribers already received this week's digest.")
         return
 
-    # Group by state for efficient digest generation
-    by_state: dict[str, list] = {}
+    # Group by (state, categories) — same combo reuses rendered HTML.
+    by_bucket: dict[tuple, list] = {}
     for s in to_send:
-        state = s.get("state", "ALL")
-        if s.get("wa_only"):
-            state = "WA"
-        by_state.setdefault(state, []).append(s)
+        state = get_subscriber_state(s)
+        cats = get_subscriber_categories(s)
+        by_bucket.setdefault((state, cats), []).append(s)
 
-    print(f"States: {', '.join(f'{st}({len(subs)})' for st, subs in sorted(by_state.items()))}")
+    bucket_summary = ", ".join(
+        f"{st}/{','.join(sorted(cs)) or '(none)'}({len(subs)})"
+        for (st, cs), subs in sorted(by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1])))
+    )
+    print(f"Buckets: {bucket_summary}")
 
     if dry_run:
         for s in to_send:
-            state = s.get("state", "ALL")
-            print(f"  Would send to: {s['email']} (state={state})")
-            # Load and preview changes
+            state = get_subscriber_state(s)
+            cats = ",".join(sorted(get_subscriber_categories(s))) or "(none)"
+            print(f"  Would send to: {s['email']} (state={state}, categories={cats})")
         all_changes = load_weekly_changes(end_date)
         total_drops = sum(len(c["price_drops"]) for c in all_changes.values())
         total_restocks = sum(len(c["back_in_stock"]) for c in all_changes.values())
@@ -556,22 +574,49 @@ def main():
     end_fmt = date.fromisoformat(end_date).strftime("%-d %b %Y")
     subject = f"Weekly Nursery Digest — {start_fmt} to {end_fmt}"
 
-    html_cache: dict[str, str] = {}
-    text_cache: dict[str, str] = {}
+    # Cache weekly change data per state (network-of-snapshots load is the expensive bit).
+    state_changes_cache: dict[str, dict] = {}
+    # Cache rendered HTML/text per (state, categories).
+    html_cache: dict[tuple, str] = {}
+    text_cache: dict[tuple, str] = {}
+
     sent_emails = list(already_sent)
     failed = 0
+    empty_skipped = 0
 
-    for state, state_subscribers in sorted(by_state.items()):
-        if state not in html_cache:
-            filter_state = "" if state == "ALL" else state
-            all_changes = load_weekly_changes(end_date, state_filter=filter_state)
-            html_cache[state] = format_weekly_html(all_changes, end_date, state_filter=filter_state)
-            text_cache[state] = format_weekly_text(all_changes, end_date, state_filter=filter_state)
+    for (state, cats), bucket_subscribers in sorted(
+        by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1]))
+    ):
+        filter_state = "" if state == "ALL" else state
 
-        digest_html = html_cache[state]
-        digest_text = text_cache[state]
+        # Mute-all opt-out: keep variety alerts but skip the weekly digest.
+        if not cats:
+            empty_skipped += len(bucket_subscribers)
+            print(f"  Skipping {len(bucket_subscribers)} subscribers with no categories enabled")
+            continue
 
-        for subscriber in state_subscribers:
+        if state not in state_changes_cache:
+            state_changes_cache[state] = load_weekly_changes(end_date, state_filter=filter_state)
+        all_changes = state_changes_cache[state]
+
+        if not has_any_weekly_changes(all_changes, categories=cats):
+            empty_skipped += len(bucket_subscribers)
+            print(f"  Skipping {len(bucket_subscribers)} subscribers — no matching changes for {state}/{','.join(sorted(cats))}")
+            continue
+
+        cache_key = (state, cats)
+        if cache_key not in html_cache:
+            html_cache[cache_key] = format_weekly_html(
+                all_changes, end_date, state_filter=filter_state, categories=cats
+            )
+            text_cache[cache_key] = format_weekly_text(
+                all_changes, end_date, state_filter=filter_state, categories=cats
+            )
+
+        digest_html = html_cache[cache_key]
+        digest_text = text_cache[cache_key]
+
+        for subscriber in bucket_subscribers:
             email = subscriber["email"]
             token = make_unsubscribe_token(email, secret)
             personalised_html = inject_footer(digest_html, email, token, state)
@@ -586,7 +631,8 @@ def main():
         sends_log[week_key] = sent_emails
         save_sends_log(sends_log)
 
-    print(f"Done: {len(sent_emails) - len(already_sent)} sent, {failed} failed")
+    sent_count = len(sent_emails) - len(already_sent)
+    print(f"Done: {sent_count} sent, {empty_skipped} skipped (empty/muted), {failed} failed")
     if failed:
         sys.exit(1)
 

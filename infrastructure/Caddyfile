@@ -31,6 +31,10 @@ treestock.com.au, www.treestock.com.au {
         uri strip_prefix /api
         reverse_proxy localhost:8099
     }
+    handle /api/request-manage-link {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
 
     root * /opt/dale/dashboard
     encode zstd gzip
@@ -94,6 +98,10 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
         reverse_proxy localhost:8099
     }
     handle /api/wishlist-counts {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+    handle /api/request-manage-link {
         uri strip_prefix /api
         reverse_proxy localhost:8099
     }

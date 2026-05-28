@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage your alerts — treestock.com.au</title>
+  <meta name="description" content="Request a private link to manage your treestock.com.au email alerts: change categories, switch to weekly, or unsubscribe.">
+  <meta name="robots" content="noindex">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fafaf8; color: #2c3e50; line-height: 1.5; }
+    a { color: #065f46; }
+    header { background: #065f46; color: white; padding: 1rem 1.5rem; }
+    header a { color: white; text-decoration: none; font-weight: 600; font-size: 1.05rem; }
+    header a:hover { opacity: 0.9; }
+    main { max-width: 540px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem; }
+    p.lead { color: #4b5563; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    form { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; }
+    input[type=email] { width: 100%; padding: 0.6rem 0.75rem; font-size: 1rem; border: 1px solid #d1d5db; border-radius: 8px; }
+    input[type=email]:focus { outline: none; border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.12); }
+    button { margin-top: 0.85rem; width: 100%; background: #16a34a; color: white; border: none; padding: 0.7rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+    button[disabled] { opacity: 0.6; cursor: progress; }
+    #msg { margin-top: 0.85rem; font-size: 0.875rem; min-height: 1.2em; }
+    .ok { color: #065f46; }
+    .err { color: #b91c1c; }
+    .help { margin-top: 1.25rem; padding: 0.85rem 1rem; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 0.85rem; color: #065f46; }
+    .help strong { color: #064e3b; }
+    footer { text-align: center; padding: 1.25rem; font-size: 0.8rem; color: #6b7280; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/">treestock.com.au</a>
+  </header>
+  <main>
+    <h1>Manage your alerts</h1>
+    <p class="lead">
+      Enter the email you used to subscribe. We'll send you a private link
+      where you can change your alert categories, switch to weekly, or stop
+      everything. The link is the same one you'll find at the bottom of any
+      treestock email.
+    </p>
+    <form id="mgr">
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com">
+      <button type="submit">Send me the link</button>
+      <div id="msg" aria-live="polite"></div>
+    </form>
+    <div class="help">
+      <strong>Already have a treestock email open?</strong> Scroll to the
+      footer and click "Manage your alerts" — it goes straight to your
+      preferences page without needing to wait for another email.
+    </div>
+  </main>
+  <footer>
+    A small project from Perth, WA.
+  </footer>
+  <script>
+    document.getElementById('mgr').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var emailEl = document.getElementById('email');
+      var msg = document.getElementById('msg');
+      var btn = e.target.querySelector('button');
+      msg.className = '';
+      msg.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      try {
+        var resp = await fetch('/api/request-manage-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: emailEl.value.trim().toLowerCase() })
+        });
+        var data = {};
+        try { data = await resp.json(); } catch (_) {}
+        if (resp.ok) {
+          msg.className = 'ok';
+          msg.textContent = data.message || 'If that email is subscribed, a link is on its way.';
+        } else {
+          msg.className = 'err';
+          msg.textContent = data.error || 'Something went wrong. Please try again.';
+        }
+      } catch (err) {
+        msg.className = 'err';
+        msg.textContent = 'Network error. Please try again.';
+      }
+      btn.disabled = false;
+      btn.textContent = 'Send me the link';
+    });
+  </script>
+</body>
+</html>

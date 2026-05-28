@@ -56,6 +56,16 @@ NON_PLANT_KEYWORDS = [
 # Backwards-compat: set of nurseries that ship to WA (used by build_history.py)
 WA_NURSERIES = {k for k, states in SHIPPING_MAP.items() if "WA" in states}
 
+# All category keys a daily digest can contain. Order matters for rendering.
+ALL_CATEGORIES = ("back_in_stock", "price_drops", "new_products")
+
+
+def _resolve_categories(categories):
+    """Normalise a categories argument into a frozenset. None = all categories."""
+    if categories is None:
+        return frozenset(ALL_CATEGORIES)
+    return frozenset(c for c in categories if c in ALL_CATEGORIES)
+
 
 def is_fruit_product(product: dict, nursery_key: str) -> bool:
     """Check if product is fruit/edible (same logic as dashboard)."""
@@ -212,10 +222,11 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
     return changes
 
 
-def format_text(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "") -> str:
+def format_text(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
     """Format changes as plain text for FB groups."""
     # --wa-only is an alias for --state WA
     filter_state = "WA" if wa_only else state
+    enabled = _resolve_categories(categories)
 
     lines = []
     lines.append(f"🌱 Nursery Stock Update — {target_date}")
@@ -232,7 +243,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
 
         sections = []
 
-        if changes["back_in_stock"]:
+        if "back_in_stock" in enabled and changes["back_in_stock"]:
             items = []
             for item in changes["back_in_stock"]:
                 price_str = ""
@@ -244,14 +255,14 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
                 items.append(f"  ✅ {item['title']}{price_str}{link}")
             sections.append(("Back in stock", items))
 
-        if changes["price_drops"]:
+        if "price_drops" in enabled and changes["price_drops"]:
             items = []
             for item in changes["price_drops"]:
                 link = f"\n    {item['url']}" if item.get("url") else ""
                 items.append(f"  📉 {item['title']}: ${item['old_price']:.2f} → ${item['new_price']:.2f}{link}")
             sections.append(("Price drops", items))
 
-        if changes["new_products"]:
+        if "new_products" in enabled and changes["new_products"]:
             items = []
             for item in changes["new_products"][:10]:  # Cap at 10
                 price_str = f" — ${item['price']:.2f}" if item["price"] else ""
@@ -283,9 +294,10 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
     return "\n".join(lines)
 
 
-def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str = "") -> tuple[list[str], bool]:
+def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str = "", categories=None) -> tuple[list[str], bool]:
     """Build HTML sections for each nursery's changes. Returns (sections_html, has_any)."""
     filter_state = "WA" if wa_only else state
+    enabled = _resolve_categories(categories)
     sections_html = []
     has_any = False
 
@@ -297,34 +309,37 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
 
         items_html = []
 
-        for item in changes["back_in_stock"]:
-            price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
-            if item.get("old_price"):
-                price += f" (was ${item['old_price']:.2f})"
-            url = item.get("url", "")
-            utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
-            link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
-            items_html.append(f'<li style="color:#059669;padding:4px 0"><span title="Was out of stock, now available again" style="cursor:help">✅</span> {link}{price} <strong>Back in stock!</strong></li>')
+        if "back_in_stock" in enabled:
+            for item in changes["back_in_stock"]:
+                price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
+                if item.get("old_price"):
+                    price += f" (was ${item['old_price']:.2f})"
+                url = item.get("url", "")
+                utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
+                link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
+                items_html.append(f'<li style="color:#059669;padding:4px 0"><span title="Was out of stock, now available again" style="cursor:help">✅</span> {link}{price} <strong>Back in stock!</strong></li>')
 
-        for item in changes["price_drops"]:
-            url = item.get("url", "")
-            utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
-            link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
-            items_html.append(
-                f'<li style="padding:4px 0"><span title="Price decreased" style="cursor:help">📉</span> {link}: '
-                f'<span style="text-decoration:line-through;color:#999">${item["old_price"]:.2f}</span> '
-                f'→ <strong style="color:#059669">${item["new_price"]:.2f}</strong></li>'
-            )
+        if "price_drops" in enabled:
+            for item in changes["price_drops"]:
+                url = item.get("url", "")
+                utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
+                link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
+                items_html.append(
+                    f'<li style="padding:4px 0"><span title="Price decreased" style="cursor:help">📉</span> {link}: '
+                    f'<span style="text-decoration:line-through;color:#999">${item["old_price"]:.2f}</span> '
+                    f'→ <strong style="color:#059669">${item["new_price"]:.2f}</strong></li>'
+                )
 
-        for item in changes["new_products"][:10]:
-            price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
-            url = item.get("url", "")
-            utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
-            link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
-            items_html.append(f'<li style="padding:4px 0"><span title="Newly listed on the nursery website" style="cursor:help">🆕</span> {link}{price}</li>')
-        extra = len(changes["new_products"]) - 10
-        if extra > 0:
-            items_html.append(f'<li style="padding:4px 0">... and {extra} more new listings</li>')
+        if "new_products" in enabled:
+            for item in changes["new_products"][:10]:
+                price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
+                url = item.get("url", "")
+                utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
+                link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
+                items_html.append(f'<li style="padding:4px 0"><span title="Newly listed on the nursery website" style="cursor:help">🆕</span> {link}{price}</li>')
+            extra = len(changes["new_products"]) - 10
+            if extra > 0:
+                items_html.append(f'<li style="padding:4px 0">... and {extra} more new listings</li>')
 
         if not items_html:
             continue
@@ -338,9 +353,22 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
     return sections_html, has_any
 
 
-def format_html(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "") -> str:
+def has_any_changes(all_changes: dict, wa_only: bool = False, state: str = "", categories=None) -> bool:
+    """True if at least one item survives the state + category filter."""
+    filter_state = "WA" if wa_only else state
+    enabled = _resolve_categories(categories)
+    for nursery_key, changes in all_changes.items():
+        if filter_state and not nursery_ships_to(nursery_key, filter_state):
+            continue
+        for cat in enabled:
+            if changes.get(cat):
+                return True
+    return False
+
+
+def format_html(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
     """Format changes as HTML for email (inline styles, no external deps)."""
-    sections_html, has_any = _build_change_sections(all_changes, wa_only, state)
+    sections_html, has_any = _build_change_sections(all_changes, wa_only, state, categories)
 
     if not has_any:
         sections_html.append('<p>No changes today — all quiet across the nurseries.</p>')
@@ -359,10 +387,10 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False, stat
 </body></html>"""
 
 
-def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "") -> str:
+def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
     """Format changes as a shareable web page with proper styling and navigation."""
     filter_state = "WA" if wa_only else state
-    sections_html, has_any = _build_change_sections(all_changes, wa_only, state)
+    sections_html, has_any = _build_change_sections(all_changes, wa_only, state, categories)
 
     if not has_any:
         sections_html.append(
