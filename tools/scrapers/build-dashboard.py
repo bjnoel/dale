@@ -1027,13 +1027,19 @@ function search() {{
       || (b.a ? 1 : 0) - (a.a ? 1 : 0)
       || a.t.localeCompare(b.t));
   }} else {{
-    // Relevance with no search query: there is no text to score against, so
-    // surface what is actually in stock now (then A-Z within each group).
+    // Relevance with no search query: "newest in stock first". There is no
+    // text to score against, so rank by what changed recently: newly listed
+    // and back-in-stock items first, then price drops, then other in-stock
+    // items, with out-of-stock last (A-Z within each group).
     // Previously this fell through to a plain alphabetical sort, which made
     // "Relevance" identical to "Name: A-Z" on the default view.
-    results.sort((a, b) =>
-      (b.a ? 1 : 0) - (a.a ? 1 : 0)
-      || a.t.localeCompare(b.t));
+    const relScore = p => {{
+      if (!p.a) return 3;
+      if (p.ch === 'new' || p.ch === 'back') return 0;
+      if (p.ch === 'down') return 1;
+      return 2;
+    }};
+    results.sort((a, b) => relScore(a) - relScore(b) || a.t.localeCompare(b.t));
   }}
 
   // Featured nurseries bubble to top within current sort (only on default/name sort, not price sort)
