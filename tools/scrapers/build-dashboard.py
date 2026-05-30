@@ -18,6 +18,11 @@ from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS
 from cultivar_parsing import product_variety_slug
+# Reuse the variety builder's non-plant denylist so we never emit a variety
+# slug (vs) for a product it would refuse to build a /variety/ page for
+# (e.g. "Yates Apple": "yates" is a chemical brand in that list). Keeping a
+# single source avoids the two lists drifting and producing broken links.
+from build_variety_pages import NON_PLANT_KEYWORDS as _VARIETY_PAGE_DENY
 
 
 # Confirmed via nursery websites/policies:
@@ -599,7 +604,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "cat": p.get("product_type", p.get("category", "")),
             }
             _vs = product_variety_slug(title)
-            if _vs:
+            if _vs and not any(kw in title_lower for kw in _VARIETY_PAGE_DENY):
                 product_data["vs"] = _vs
                 product_data["vt"] = title
             if nursery_name in FEATURED_NURSERIES:
