@@ -137,3 +137,73 @@ class ProductVarietySlug(unittest.TestCase):
         for inp, expected in self.CASES:
             with self.subTest(input=inp):
                 self.assertEqual(cp.product_variety_slug(inp), expected)
+
+
+# ---------------------------------------------------------------------------
+# Relaxed pass -- titles the strict parser rejects but which still express a
+# cultivar once listing noise is stripped, plus multigraft and leading-quote
+# shapes. Added 2026-05-30 to widen variety-page coverage for OOS search rows.
+# These run through the same public parse_cultivar entry point.
+# ---------------------------------------------------------------------------
+
+class RelaxedParse(unittest.TestCase):
+    # Titles that should now parse via the relaxed pass.
+    PARSE = [
+        # Parenthetical / size / "tree" / bare-rooted noise stripped, then
+        # the strict species-first or variety-first shape is recovered.
+        ("Apricot Castlebrite (Bare rooted)",        ("Apricot", "Castlebrite")),
+        ("Albatross Peach tree (Bare-Rooted)",       ("Peach", "Albatross")),
+        ("Angelina Burdett Plum (Bare-Rooted)",      ("Plum", "Angelina Burdett")),
+        ("Alison Red Mango Tree",                    ("Mango", "Alison Red")),
+        ("Bendigo Beauty Peach",                     ("Peach", "Bendigo Beauty")),
+        # Variety-first with a cultivar synonym in the species lookup: must take
+        # the canonical species and keep the leading word as the variety.
+        ("Bacon Avocado",                            ("Avocado", "Bacon")),
+        ("Hass Avocado",                             ("Avocado", "Hass")),
+        # Leading-quote variety, fruit species following.
+        ('"Alstonville" Finger Lime 90mm Pots (Cutting Grown)',
+                                                     ("Finger Lime", "Alstonville")),
+        # Multigraft: one combo variety, components sorted so order collapses.
+        ("2-Way Apple 'Fuji + Pink Lady'",           ("Apple", "2way fuji pink lady")),
+        ("2-Way Apple 'Pink Lady + Fuji'",           ("Apple", "2way fuji pink lady")),
+    ]
+
+    # Titles that must REMAIN None: aromatic/foliage confusables, lookalikes,
+    # and structural-boundary cases the strict parser also rejects.
+    NONE = [
+        "Lemon Myrtle (Backhousia citriodora)",   # Backhousia, not Lemon
+        "Lemon Grass (Cymbopogon citratus)",
+        "Native Mulberry (Pipturus argenteus)",
+        "Fiddle Leaf Fig 200mm Pot",              # Ficus lyrata, foliage
+        "Bay Leaf Tree",
+        "Aloe Vera",
+        "Brazilian Cherry",                       # Grumichama lookalike qualifier
+        "Cedar Bay Cherry",
+        "Sapodilla / Chicku",                     # synonym, not a variety
+        "Fruit Tree Cottage | Tamarillo",         # left side not a species
+        "Sapodilla - Seedling",                   # size/seedling only
+        "Mango - Grafted",
+        "Apple - 90mm",
+        "Avocado - A",                            # single-letter pollination type
+    ]
+
+    def test_parse(self):
+        for inp, expected in self.PARSE:
+            with self.subTest(input=inp):
+                self.assertEqual(cp.parse_cultivar(inp), expected)
+
+    def test_none(self):
+        for inp in self.NONE:
+            with self.subTest(input=inp):
+                self.assertIsNone(cp.parse_cultivar(inp))
+
+    def test_multigraft_order_collapses_to_one_slug(self):
+        a = cp.product_variety_slug("2-Way Apple 'Fuji + Pink Lady'")
+        b = cp.product_variety_slug("2-Way Apple 'Pink Lady + Fuji'")
+        self.assertEqual(a, b)
+        self.assertEqual(a, "apple-2way-fuji-pink-lady")
+
+    def test_relaxed_never_overrides_strict(self):
+        # A title the strict parser handles must return the strict result
+        # unchanged (relaxed only runs on strict None).
+        self.assertEqual(cp.parse_cultivar("Avocado - Hass"), ("Avocado", "Hass"))
