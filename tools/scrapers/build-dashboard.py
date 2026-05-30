@@ -17,6 +17,7 @@ from pathlib import Path
 from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS
+from cultivar_parsing import product_variety_slug
 
 
 # Confirmed via nursery websites/policies:
@@ -597,6 +598,10 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "sale": bool(on_sale),
                 "cat": p.get("product_type", p.get("category", "")),
             }
+            _vs = product_variety_slug(title)
+            if _vs:
+                product_data["vs"] = _vs
+                product_data["vt"] = title
             if nursery_name in FEATURED_NURSERIES:
                 product_data["ft"] = True
 
@@ -790,7 +795,9 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .in-stock { background: #d1fae5; color: #065f46; }
   .out-stock { background: #f3f4f6; color: #6b7280; }
   #results { min-height: 200px; }
-  .product-row { border-bottom: 1px solid #f3f4f6; }
+  .product-row-wrap { border-bottom: 1px solid #f3f4f6; }
+  .notify-link { display: inline-block; margin: 0 0 8px 0.5rem; padding: 2px 10px; font-size: 0.75rem; color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 9999px; text-decoration: none; }
+  .notify-link:hover { background: #dcfce7; }
   .product-row:hover { background: #f9fafb; }
   .product-row.featured-row { border-left: 3px solid #f59e0b; background: #fffdf5; }
   .product-row.featured-row:hover { background: #fef9e7; }
@@ -869,7 +876,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
     <div id="activeFilters" class="flex flex-wrap gap-1.5" style="display:none"></div>
     <div class="flex flex-wrap gap-2 items-center text-sm">
       <label class="flex items-center gap-1 cursor-pointer">
-        <input type="checkbox" id="inStockOnly" checked class="rounded"> In stock only
+        <input type="checkbox" id="inStockOnly" class="rounded"> In stock only
       </label>
       <select id="stateFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
         <option value="">All states</option>
@@ -1220,7 +1227,11 @@ function render() {{
     const nurseryTagClass = p.ft ? 'nursery-tag featured-tag' : 'nursery-tag';
     const featuredBadge = p.ft ? '<span class="featured-badge">Featured</span>' : '';
     const rareBadge = (p.sl && HARD_TO_FIND.has(p.sl)) ? '<span class="stock-badge rare-badge" data-rare="1" role="button" tabindex="0" title="Show only hard-to-find varieties">Hard to find</span>' : '';
-    return `<a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row${{featuredClass}} flex items-center gap-3 py-3 px-2 block">
+    const notifyLink = (!p.a && p.vs)
+      ? `<a href="/variety/${{p.vs}}.html" class="notify-link">Notify me when it's back in stock</a>`
+      : '';
+    return `<div class="product-row-wrap">
+      <a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row${{featuredClass}} flex items-center gap-3 py-3 px-2 block">
       <div class="flex-1 min-w-0">
         <div class="font-medium text-sm">${{p.t}}${{latinName}}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
@@ -1231,7 +1242,7 @@ function render() {{
       <div class="text-right flex-shrink-0">
         <div class="font-bold text-sm">${{priceInfo}}</div>
       </div>
-    </a>`;
+    </a>${{notifyLink}}</div>`;
   }}).join('');
 
   // Watch CTA: show when search results all out of stock
