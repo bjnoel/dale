@@ -727,12 +727,18 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             s["min_p"] = round(min(prices), 2)
             s["max_p"] = round(max(prices), 2)
 
-    top_species = sorted(species_summary.values(), key=lambda x: -x["in_stock"])[:16]
+    # Full in-stock species list, ranked by current in-stock count (desc). The homepage
+    # strip server-renders all of these as crawlable <a> links; JS collapses the view to a
+    # default tier plus a progressive "Other" reveal for humans (see updatePillCounts).
+    ranked_species = [
+        s for s in sorted(species_summary.values(), key=lambda x: -x["in_stock"])
+        if s["in_stock"] > 0
+    ]
 
-    return products, nurseries_loaded, top_species
+    return products, nurseries_loaded, ranked_species
 
 
-def build_html(products: list[dict], nurseries: list[dict], top_species: list[dict], highlights_html: str = "") -> str:
+def build_html(products: list[dict], nurseries: list[dict], ranked_species: list[dict], highlights_html: str = "") -> str:
     """Generate the dashboard HTML with embedded data."""
     products_json = json.dumps(products, separators=(",", ":"))
     nurseries_json = json.dumps(nurseries, separators=(",", ":"))
@@ -762,13 +768,15 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
             pass
     hard_to_find_json = json.dumps(list(hard_to_find_slugs), separators=(",", ":"))
 
-    # Server-render species strip for SEO (crawlable <a> tags)
-    # data-q attribute drives JS filter; href preserved for crawlers/fallback
+    # Server-render the FULL in-stock species strip for SEO: every species page is linked
+    # from the homepage as a crawlable <a>. data-q drives the JS filter; href is the
+    # crawler / no-JS fallback. On load, JS (updatePillCounts) rebuilds this strip into a
+    # default tier plus a progressive "Other" pill, so humans see a compact strip. The
+    # static markup is served identically to everyone (no cloaking / no UA sniffing).
     species_strip_html = "\n".join(
         f'<a href="/species/{s["sl"]}.html" class="species-pill" data-q="{s["cn"]}" data-sl="{s["sl"]}">{s["cn"]} <span class="count">{s["in_stock"]}</span></a>'
-        for s in top_species
+        for s in ranked_species
     )
-    species_strip_html += '\n<span class="species-pill other-pill" id="otherPill" style="display:none">Other <span class="count" id="otherCount">0</span></span>'
 
     extra_style = """\
   .stock-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }
@@ -803,9 +811,9 @@ def build_html(products: list[dict], nurseries: list[dict], top_species: list[di
   .species-pill.active .count { color: #15803d; }
   .species-pill.dimmed { opacity: 0.4; }
   .species-pill.dimmed .count { color: #9ca3af; }
-  .other-pill { cursor: default; color: #9ca3af; border-color: #e5e7eb; }
-  .other-pill:hover { background: transparent; border-color: #e5e7eb; color: #9ca3af; }
-  .other-pill .count { color: #9ca3af; }
+  .other-pill { cursor: pointer; color: #6b7280; border-color: #e5e7eb; border-style: dashed; }
+  .other-pill:hover { background: #f9fafb; border-color: #9ca3af; color: #374151; }
+  .other-pill .count { color: #6b7280; }
   .filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
   .filter-chip button { background: none; border: none; color: #166534; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
   .filter-chip button:hover { color: #dc2626; }"""
@@ -981,10 +989,18 @@ const changesOnly = document.getElementById('changesOnly');
 const sortBy = document.getElementById('sortBy');
 let activeSpeciesSlug = '';
 let rareOnly = false;
-const defaultPillsHTML = document.querySelector('.species-strip').innerHTML;
+// Progressive species pills: show SPECIES_DEFAULT pills, reveal SPECIES_TIER more each
+// time the "Other" pill is clicked. Reset to default whenever a filter/search changes.
+const SPECIES_DEFAULT = 16;
+const SPECIES_TIER = 12;
+let speciesShown = SPECIES_DEFAULT;
 
 function search() {{
   displayCount = 50;
+  // A new filter/search view starts collapsed at the default tier. The "Other" pill click
+  // handler calls updatePillCounts() directly (not search()), so it preserves speciesShown.
+  speciesShown = SPECIES_DEFAULT;
+  document.querySelector('.species-strip').classList.remove('expanded');
   const q = searchInput.value.toLowerCase().trim();
   const nursery = nurserySelect.value;
   const stockOnly = inStockOnly.checked;
@@ -1310,7 +1326,6 @@ function updatePillCounts() {{
   const st = stateFilter.value;
   const nursery = nurserySelect.value;
   const changes = changesOnly.checked;
-  const hasFilter = nursery || st || changes;
 
   // Get the base filtered set (all filters except species)
   let base = P;
@@ -1325,45 +1340,28 @@ function updatePillCounts() {{
     if (p.sl) counts[p.sl] = (counts[p.sl] || 0) + 1;
   }});
 
+  // Rank species present in the current view (highest count first, then A-Z). Show the
+  // first `speciesShown`; the rest collapse into a clickable "Other (N)" pill that reveals
+  // the next tier on click. One render path for both filtered and unfiltered views.
+  const ranked = Object.entries(counts)
+    .filter(([, c]) => c > 0)
+    .sort((a, b) => b[1] - a[1]
+      || (SLUG_TO_NAME[a[0]] || a[0]).localeCompare(SLUG_TO_NAME[b[0]] || b[0]));
+
+  const shown = ranked.slice(0, speciesShown);
+  const remaining = ranked.slice(speciesShown);
+  const remainingProducts = remaining.reduce((sum, [, c]) => sum + c, 0);
+
   const strip = document.querySelector('.species-strip');
-  if (!hasFilter) {{
-    // No narrowing filter: restore original server-rendered pills, update counts
-    strip.innerHTML = defaultPillsHTML;
-    let pillTotal = 0;
-    strip.querySelectorAll('.species-pill[data-sl]').forEach(pill => {{
-      const sl = pill.getAttribute('data-sl');
-      const count = counts[sl] || 0;
-      pillTotal += count;
-      pill.querySelector('.count').textContent = count;
-      pill.classList.toggle('dimmed', count === 0);
-      if (sl === activeSpeciesSlug) pill.classList.add('active');
-    }});
-    const otherCount = base.length - pillTotal;
-    const otherPill = document.getElementById('otherPill');
-    if (otherPill) {{
-      if (otherCount > 0) {{
-        document.getElementById('otherCount').textContent = otherCount;
-        otherPill.style.display = '';
-      }} else {{
-        otherPill.style.display = 'none';
-      }}
-    }}
-  }} else {{
-    // Narrowing filter active: rebuild pills from this filtered set's top species
-    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 16);
-    let pillTotal = 0;
-    let html = sorted.map(([sl, count]) => {{
-      pillTotal += count;
-      const name = SLUG_TO_NAME[sl] || sl.replace(/-/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase());
-      const active = sl === activeSpeciesSlug ? ' active' : '';
-      return `<a href="/species/${{sl}}.html" class="species-pill${{active}}" data-q="${{name}}" data-sl="${{sl}}">${{name}} <span class="count">${{count}}</span></a>`;
-    }}).join('');
-    const otherCount = base.length - pillTotal;
-    if (otherCount > 0) {{
-      html += '<span class="species-pill other-pill" id="otherPill">Other <span class="count" id="otherCount">' + otherCount + '</span></span>';
-    }}
-    strip.innerHTML = html;
+  let html = shown.map(([sl, count]) => {{
+    const name = SLUG_TO_NAME[sl] || sl.replace(/-/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase());
+    const active = sl === activeSpeciesSlug ? ' active' : '';
+    return `<a href="/species/${{sl}}.html" class="species-pill${{active}}" data-q="${{name}}" data-sl="${{sl}}">${{name}} <span class="count">${{count}}</span></a>`;
+  }}).join('');
+  if (remaining.length > 0) {{
+    html += `<span class="species-pill other-pill" id="otherPill">Other <span class="count" id="otherCount">${{remainingProducts}}</span></span>`;
   }}
+  strip.innerHTML = html;
 
   // Re-bind pill click handlers after rebuild
   strip.querySelectorAll('.species-pill[data-sl]').forEach(function(pill) {{
@@ -1387,15 +1385,27 @@ function updatePillCounts() {{
     }});
   }});
 
-  // Re-check toggle button visibility
+  // "Other" pill reveals the next tier of species and keeps the strip expanded.
+  const otherPill = document.getElementById('otherPill');
+  if (otherPill) {{
+    otherPill.addEventListener('click', function() {{
+      speciesShown += SPECIES_TIER;
+      strip.classList.add('expanded');
+      updatePillCounts();
+    }});
+  }}
+
+  // Re-check toggle button: show it when the strip overflows OR is explicitly expanded
+  // (via "Show all" or "Other"); label is derived from state so it never fights an expand.
   const btn = document.getElementById('toggleSpecies');
   if (btn) {{
-    if (strip.scrollHeight > strip.clientHeight) {{
+    const expanded = strip.classList.contains('expanded');
+    const overflowing = strip.scrollHeight > strip.clientHeight;
+    if (expanded || overflowing) {{
       btn.style.display = 'inline';
+      btn.innerHTML = expanded ? 'Show less &#9652;' : 'Show all &#9662;';
     }} else {{
       btn.style.display = 'none';
-      strip.classList.remove('expanded');
-      btn.innerHTML = 'Show all &#9662;';
     }}
   }}
 }}
@@ -1657,19 +1667,19 @@ def main():
         print(f"Featured nursery override: {args.featured}")
 
     print(f"Loading nursery data from {data_dir}...")
-    products, nurseries, top_species = load_nursery_data(data_dir)
+    products, nurseries, ranked_species = load_nursery_data(data_dir)
     print(f"Loaded {len(products)} products from {len(nurseries)} nurseries")
 
     for n in nurseries:
         print(f"  {n['name']}: {n['count']} products ({n['in_stock']} in stock)")
-    print(f"  Top species for grid: {', '.join(s['cn'] for s in top_species[:5])}")
+    print(f"  Top species for grid: {', '.join(s['cn'] for s in ranked_species[:5])} ({len(ranked_species)} species linked)")
 
     print("Building recent highlights...")
     highlights_html = build_recent_highlights(data_dir)
     print(f"  Highlights section: {'generated' if highlights_html else 'empty (insufficient data)'}")
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    html = build_html(products, nurseries, top_species, highlights_html)
+    html = build_html(products, nurseries, ranked_species, highlights_html)
 
     # Atomic write: write to temp file then rename to avoid serving partial HTML
     out_file = output_dir / args.output_name
