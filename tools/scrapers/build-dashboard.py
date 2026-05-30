@@ -1227,9 +1227,12 @@ function render() {{
     const nurseryTagClass = p.ft ? 'nursery-tag featured-tag' : 'nursery-tag';
     const featuredBadge = p.ft ? '<span class="featured-badge">Featured</span>' : '';
     const rareBadge = (p.sl && HARD_TO_FIND.has(p.sl)) ? '<span class="stock-badge rare-badge" data-rare="1" role="button" tabindex="0" title="Show only hard-to-find varieties">Hard to find</span>' : '';
-    const notifyLink = (!p.a && p.vs)
-      ? `<a href="/variety/${{p.vs}}.html" class="notify-link">Notify me when it's back in stock</a>`
-      : '';
+    let notifyLink = '';
+    if (!p.a && p.vs) {{
+      notifyLink = VARIETY_IN_STOCK[p.vs]
+        ? `<a href="/variety/${{p.vs}}.html" class="notify-link">In stock elsewhere &rarr;</a>`
+        : `<a href="/variety/${{p.vs}}.html" class="notify-link">Notify me when it's back in stock</a>`;
+    }}
     return `<div class="product-row-wrap">
       <a href="${{p.u}}${{utm}}" target="_blank" rel="noopener" class="product-row${{featuredClass}} flex items-center gap-3 py-3 px-2 block">
       <div class="flex-1 min-w-0">
