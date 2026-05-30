@@ -944,6 +944,11 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
 <script>
 const P = {products_json};
+// Variety-level availability across ALL nurseries. The variety watch fires
+// globally (a row out of stock at one nursery but in stock at another is NOT
+// a restock target), so the per-row CTA branches on this, not on p.a.
+const VARIETY_IN_STOCK = {{}};
+for (const _p of P) {{ if (_p.vs) VARIETY_IN_STOCK[_p.vs] = VARIETY_IN_STOCK[_p.vs] || !!_p.a; }}
 const N = {nurseries_json};
 const SPECIES_SLUGS = {species_slugs_json};
 const HARD_TO_FIND = new Set({hard_to_find_json});
