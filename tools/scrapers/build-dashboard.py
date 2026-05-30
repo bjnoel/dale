@@ -1021,9 +1021,19 @@ function search() {{
   }} else if (sort === 'name') {{
     results.sort((a, b) => a.t.localeCompare(b.t));
   }} else if (q) {{
-    results.sort((a, b) => (a._score || 0) - (b._score || 0));
+    // Relevance with a search query: best title match first, then in-stock, then A-Z.
+    results.sort((a, b) =>
+      (a._score || 0) - (b._score || 0)
+      || (b.a ? 1 : 0) - (a.a ? 1 : 0)
+      || a.t.localeCompare(b.t));
   }} else {{
-    results.sort((a, b) => a.t.localeCompare(b.t));
+    // Relevance with no search query: there is no text to score against, so
+    // surface what is actually in stock now (then A-Z within each group).
+    // Previously this fell through to a plain alphabetical sort, which made
+    // "Relevance" identical to "Name: A-Z" on the default view.
+    results.sort((a, b) =>
+      (b.a ? 1 : 0) - (a.a ? 1 : 0)
+      || a.t.localeCompare(b.t));
   }}
 
   // Featured nurseries bubble to top within current sort (only on default/name sort, not price sort)
