@@ -26,6 +26,8 @@ from datetime import datetime, date
 from html.parser import HTMLParser
 from pathlib import Path
 
+from stocklib.model import validate_and_warn
+
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock" / "daleys"
 BASE_URL = "https://www.daleysfruit.com.au"
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
@@ -443,6 +445,7 @@ def save_snapshot(products, pre_purchase_products):
         "pre_purchase_count": len(pre_purchase_products),
         "products": all_products,
     }
+    validate_and_warn(snapshot)
 
     snapshot_file = DATA_DIR / f"{today}.json"
     with open(snapshot_file, "w") as f:

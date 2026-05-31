@@ -26,6 +26,8 @@ import urllib.error
 from datetime import datetime, date
 from pathlib import Path
 
+from stocklib.model import validate_and_warn
+
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent / "data")) / "nursery-stock"
 NURSERY_KEY = "heritage-fruit-trees"
 NURSERY_NAME = "Heritage Fruit Trees"
@@ -330,6 +332,7 @@ def save_snapshot(products):
         "out_of_stock_count": sum(1 for p in products if not p["any_available"]),
         "products": products,
     }
+    validate_and_warn(snapshot, NURSERY_KEY)
 
     snapshot_file = nursery_dir / f"{today}.json"
     with open(snapshot_file, "w") as f:
