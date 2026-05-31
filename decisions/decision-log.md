@@ -36,8 +36,14 @@ Australia-specific and scientific sourcing.
 **Process note:** done in an isolated git worktree and branch (PR #2, squash-merged) because a
 second agent was working the same repo concurrently. See memory feedback_parallel_agent_worktree.
 
-**Found, not fixed (needs its own ticket):** /when-to-plant.html is linked site-wide (nav,
-sitemap, GSC) but no builder produces it, so it is a 404. See memory project_when_to_plant_404.
+**Correction (2026-05-31, same day):** an earlier line here wrongly called
+/when-to-plant.html a 404. That was asserted from a code search without fetching the URL. The
+page is in fact live (HTTP 200, built Mar 2026 per DEC-100) and covers Australian climate
+zones, bare-root timing and a by-species calendar. The real issue is milder: it is an orphaned
+static page that no builder in the repo regenerates and the pipeline does not rebuild (mtime
+frozen at Mar 28). The companion-guide planting-calendar CTA was repointed to /rare.html on the
+false 404 premise; that link is in fact valid. See memory project_when_to_plant_orphaned and
+the brief docs/briefs/when-to-plant.md.
 
 **Commit:** 7f5c99a (PR #2).
 
