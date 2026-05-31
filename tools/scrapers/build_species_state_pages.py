@@ -21,6 +21,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
+from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -144,27 +145,14 @@ def is_non_plant(title: str) -> bool:
 
 
 def load_all_products(data_dir: Path) -> list[dict]:
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     products = []
-    for nursery_dir in sorted(data_dir.iterdir()):
-        if not nursery_dir.is_dir():
-            continue
-        snap = nursery_dir / f"{today}.json"
-        fallback = nursery_dir / "latest.json"
-        f = snap if snap.exists() else fallback
-        if not f.exists():
-            continue
-        with open(f) as fp:
-            data = json.load(fp)
-        nursery_key = nursery_dir.name
+    for nursery_key, data in iter_nursery_snapshots(data_dir):
         nursery_name = data.get("nursery_name") or NURSERY_NAMES.get(nursery_key, nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
             min_price = p.get("min_price")
             if min_price is None:
-                variants = p.get("variants", [])
-                prices = [float(v["price"]) for v in variants if v.get("price")]
-                min_price = min(prices) if prices else None
+                min_price = variant_min_price(p)
             products.append({
                 "title": title,
                 "url": p.get("url", ""),

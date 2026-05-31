@@ -21,6 +21,8 @@ from datetime import datetime, date
 from html import unescape
 from pathlib import Path
 
+from stocklib.model import validate_and_warn
+
 NURSERIES = {
     "guildford": {
         "name": "Guildford Garden Centre",
@@ -255,6 +257,7 @@ def save_snapshot(nursery_key, products, config):
         "out_of_stock_count": len(normalized) - in_stock,
         "products": normalized,
     }
+    validate_and_warn(snapshot, nursery_key)
 
     snapshot_file = nursery_dir / f"{today}.json"
     with open(snapshot_file, "w") as f:

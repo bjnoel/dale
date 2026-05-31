@@ -24,6 +24,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, date
 from pathlib import Path
 
+from stocklib.model import validate_and_warn
+
 NURSERIES = {
     "primal-fruits": {
         "name": "Primal Fruits Perth",
@@ -187,6 +189,7 @@ def save_snapshot(nursery_key, products, config):
         "out_of_stock_count": len(out_of_stock),
         "products": products,
     }
+    validate_and_warn(snapshot, nursery_key)
 
     snapshot_file = nursery_dir / f"{today}.json"
     with open(snapshot_file, "w") as f:

@@ -20,6 +20,7 @@ from datetime import datetime, timezone
 from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
+from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -82,19 +83,8 @@ def match_title(title: str, lookup: dict) -> dict | None:
 
 def load_all_products(data_dir: Path) -> list[dict]:
     """Load all products from today's snapshot (or latest.json fallback)."""
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     products = []
-    for nursery_dir in sorted(data_dir.iterdir()):
-        if not nursery_dir.is_dir():
-            continue
-        snap = nursery_dir / f"{today}.json"
-        fallback = nursery_dir / "latest.json"
-        f = snap if snap.exists() else fallback
-        if not f.exists():
-            continue
-        with open(f) as fp:
-            data = json.load(fp)
-        nursery_key = nursery_dir.name
+    for nursery_key, data in iter_nursery_snapshots(data_dir):
         nursery_name = data.get("nursery_name") or NURSERY_NAMES.get(nursery_key, nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
@@ -104,11 +94,8 @@ def load_all_products(data_dir: Path) -> list[dict]:
             if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
                 continue
             min_price = p.get("min_price")
-            variants = p.get("variants", [])
-            if min_price is None and variants:
-                avail_prices = [float(v["price"]) for v in variants if v.get("price") and v.get("available", True)]
-                all_prices = [float(v["price"]) for v in variants if v.get("price")]
-                min_price = min(avail_prices) if avail_prices else (min(all_prices) if all_prices else None)
+            if min_price is None:
+                min_price = variant_min_price(p, prefer_available=True)
             available = p.get("any_available", p.get("available", False))
             url = p.get("url", "")
             products.append({

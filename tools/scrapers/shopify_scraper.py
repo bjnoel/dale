@@ -20,6 +20,8 @@ import urllib.error
 from datetime import datetime, date
 from pathlib import Path
 
+from stocklib.model import validate_and_warn
+
 # Nursery configurations
 NURSERIES = {
     "ross-creek": {
@@ -193,17 +195,20 @@ def save_snapshot(nursery_key, products, config):
     normalized = [normalize_product(p, nursery_key, config) for p in products]
 
     # Save full snapshot
+    snapshot = {
+        "nursery": nursery_key,
+        "nursery_name": config["name"],
+        "scraped_at": datetime.now().isoformat(),
+        "product_count": len(normalized),
+        "in_stock_count": sum(1 for p in normalized if p["any_available"]),
+        "out_of_stock_count": sum(1 for p in normalized if not p["any_available"]),
+        "products": normalized,
+    }
+    validate_and_warn(snapshot, nursery_key)
+
     snapshot_file = nursery_dir / f"{today}.json"
     with open(snapshot_file, "w") as f:
-        json.dump({
-            "nursery": nursery_key,
-            "nursery_name": config["name"],
-            "scraped_at": datetime.now().isoformat(),
-            "product_count": len(normalized),
-            "in_stock_count": sum(1 for p in normalized if p["any_available"]),
-            "out_of_stock_count": sum(1 for p in normalized if not p["any_available"]),
-            "products": normalized,
-        }, f, indent=2)
+        json.dump(snapshot, f, indent=2)
 
     print(f"  Saved: {snapshot_file}")
     print(f"  In stock: {sum(1 for p in normalized if p['any_available'])}")

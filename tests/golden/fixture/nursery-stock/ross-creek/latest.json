@@ -1,0 +1,45 @@
+{
+  "nursery": "ross-creek",
+  "nursery_name": "Ross Creek Tropicals",
+  "scraped_at": "2026-03-05T04:10:00",
+  "product_count": 3,
+  "in_stock_count": 2,
+  "products": [
+    {
+      "nursery": "ross-creek",
+      "nursery_name": "Ross Creek Tropicals",
+      "title": "Lychee 'Kwai May Pink'",
+      "url": "https://rosscreek.com.au/p/lychee-kwai-may-pink",
+      "variants": [
+        {"title": "200mm", "price": 55.00, "available": true, "sku": "RC-LY-KMP"}
+      ],
+      "min_price": 55.0,
+      "max_price": 55.0,
+      "any_available": true
+    },
+    {
+      "nursery": "ross-creek",
+      "nursery_name": "Ross Creek Tropicals",
+      "title": "Longan - Kohala",
+      "url": "https://rosscreek.com.au/p/longan-kohala",
+      "variants": [
+        {"title": "200mm", "price": 60.00, "available": true, "sku": "RC-LO-K"}
+      ],
+      "min_price": 60.0,
+      "max_price": 60.0,
+      "any_available": true
+    },
+    {
+      "nursery": "ross-creek",
+      "nursery_name": "Ross Creek Tropicals",
+      "title": "Mango - R2E2",
+      "url": "https://rosscreek.com.au/p/mango-r2e2",
+      "variants": [
+        {"title": "200mm", "price": 45.00, "available": false, "sku": "RC-MG-R2E2"}
+      ],
+      "min_price": 45.0,
+      "max_price": 45.0,
+      "any_available": false
+    }
+  ]
+}
