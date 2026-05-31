@@ -46,6 +46,21 @@ FROM_NAME = "treestock.com.au"
 SITE_URL = "https://treestock.com.au"
 UNSUBSCRIBE_BASE = f"{SITE_URL}/unsubscribe.html"
 
+# Treesmith cross-promo, shown above the unsubscribe footer. Inline styles for
+# email clients. No em dashes (treestock copy rule).
+TREESMITH_PROMO = (
+    '<div style="margin:24px 0 0;padding:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px">'
+    '<p style="margin:0 0 6px;color:#14532d;font-weight:600;font-size:0.95em">Track your collection with Treesmith</p>'
+    '<p style="margin:0 0 10px;color:#166534;font-size:0.85em">'
+    'Treesmith is a mobile app for plant collectors. Catalog every tree, log grafts and harvests, '
+    'and capture growth photos over time. Built by the same person behind treestock.'
+    '</p>'
+    f'<a href="{SITE_URL}/treesmith.html?utm_source=treestock&utm_medium=email&utm_campaign=variety-alert" '
+    'style="display:inline-block;background:#15803d;color:white;padding:8px 16px;border-radius:6px;'
+    'text-decoration:none;font-size:0.85em;font-weight:500">See Treesmith</a>'
+    '</div>'
+)
+
 NON_PLANT_KEYWORDS = [
     "fertilizer", "fertiliser", "potting mix", "soil mix", "seaweed solution",
     "fish emulsion", "worm castings", "secateurs", "pruning", "garden gloves",
@@ -242,8 +257,10 @@ def build_variety_alert_email(variety_title: str, variety_slug: str, products: l
     </div>
 
     <p style="margin-top:16px;font-size:0.8em;color:#9ca3af">
-      Prices and availability updated daily. Act fast — nursery stock can sell out quickly.
+      Prices and availability updated daily. Act fast, nursery stock can sell out quickly.
     </p>
+
+    {TREESMITH_PROMO}
   </div>
 
 </div>

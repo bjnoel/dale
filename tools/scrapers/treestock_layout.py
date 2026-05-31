@@ -224,6 +224,40 @@ def render_footer(max_width: str = "max-w-3xl", extra_text: str = "") -> str:
 </footer>"""
 
 
+def render_treesmith_promo(context: str = "variety") -> str:
+    """Tasteful Treesmith cross-promo block for high-traffic pages.
+
+    Reuses the copy/styling from build_treesmith_page.py. Designed to sit below
+    the results and watch form (below the fold) so it never competes with the
+    primary CTA. `context` tweaks the lead line for variety vs species pages.
+    No em dashes (treestock copy rule).
+    """
+    lead = {
+        "variety": "Tracking a variety here? Keep a record of the one you actually buy.",
+        "species": "Found a tree to buy? Keep a record of the one you actually plant.",
+    }.get(context, "Keep a record of the trees you actually buy.")
+    return f"""
+  <!-- Treesmith cross-promo (below the fold) -->
+  <aside class="bg-green-50 border border-green-200 rounded-lg p-5 mb-8">
+    <div class="flex items-start gap-4">
+      <img src="/treesmith/icon.png" alt="Treesmith app icon" width="48" height="48"
+           class="w-12 h-12 rounded-xl shadow flex-shrink-0">
+      <div class="min-w-0">
+        <h3 class="font-semibold text-green-900 mb-1">Track your collection with Treesmith</h3>
+        <p class="text-sm text-green-900 mb-3">
+          {lead} Treesmith is a mobile app for plant collectors: catalog every tree,
+          log grafts and harvests, and capture growth photos over time. Built by the
+          same person behind treestock.
+        </p>
+        <a href="/treesmith.html"
+           class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-800 no-underline">
+          See Treesmith &rarr;
+        </a>
+      </div>
+    </div>
+  </aside>"""
+
+
 def render_page(
     title: str,
     body: str,

@@ -23,7 +23,7 @@ from datetime import datetime, timezone
 from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, delivery_label
-from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
 NURSERY_URLS = {
     "daleys": "https://www.daleysfruit.com.au",
@@ -270,6 +270,8 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
     <div id="subMsg" class="mt-2 text-sm hidden"></div>
   </div>
 
+  {render_treesmith_promo("variety")}
+
   <!-- SEO text -->
   <section class="text-sm text-gray-500 border-t border-gray-100 pt-6">
     <h3 class="font-medium text-gray-700 mb-2">About {title}</h3>
@@ -382,13 +384,24 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
             n_count = v["nursery_count"]
             price = f'${v["min_price"]:.2f}' if v["min_price"] else "—"
             var_lower = v['variety'].lower().replace('"', '&quot;')
+            # Out-of-stock entries are the prime watch targets: surface a
+            # "Notify me" link straight to the variety page (which carries the
+            # restock-alert form) instead of a dead "0 in stock".
+            if in_s > 0:
+                stock_cell = f'{in_s} in stock'
+            else:
+                stock_cell = (
+                    f'<a href="/variety/{v["slug"]}.html" '
+                    f'class="text-amber-700 hover:underline whitespace-nowrap">'
+                    f'&#128276; Notify me</a>'
+                )
             rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="{var_lower}">
         <td class="py-2 pr-4">
           <a href="/variety/{v['slug']}.html" class="text-green-800 hover:underline">{v['variety']}</a>
         </td>
         <td class="py-2 pr-4 text-sm text-gray-600">{n_count} nurseries</td>
-        <td class="py-2 pr-4 text-sm">{in_s} in stock</td>
+        <td class="py-2 pr-4 text-sm">{stock_cell}</td>
         <td class="py-2 text-sm font-medium">{price}</td>
       </tr>"""
 

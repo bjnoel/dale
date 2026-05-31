@@ -22,7 +22,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 from shipping import SHIPPING_MAP, LOCAL_DELIVERY, delivery_label
-from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 from build_species_trends import build_species_trends, make_sparkline, trend_direction
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -479,11 +479,22 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         )
         # Alerts link only on OOS rows -- no value nudging someone to an
         # "alert me when it's back" page for something they can buy right now.
+        # Named cultivars link to their variety page; OOS rows we can't parse
+        # into a cultivar (bare species names) fall back to the always-rendered
+        # species watch box on this page (#watchBox).
         v_slug = _variety_slug(p["title"])
-        alert_link = (
-            f' <a href="/variety/{v_slug}.html" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" title="Get restock alerts for this variety">&#128276; Alerts</a>'
-            if v_slug and not p["available"] else ''
-        )
+        if v_slug and not p["available"]:
+            alert_link = (
+                f' <a href="/variety/{v_slug}.html" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" '
+                f'title="Get restock alerts for this variety">&#128276; Alerts</a>'
+            )
+        elif not p["available"]:
+            alert_link = (
+                f' <a href="#watchBox" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" '
+                f'title="Get restock alerts for {name}">&#128276; Alerts</a>'
+            )
+        else:
+            alert_link = ''
         product_rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50">
         <td class="py-2 pr-3 text-sm">{title_link}{alert_link}</td>
@@ -496,6 +507,95 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     total_count = len(products)
     nursery_count = len(nurseries_seen)
     total_nurseries = len(SHIPPING_MAP)
+
+    # Restock-alert watch box. Shown on EVERY species page now (was OOS-only):
+    # in-stock visitors are exactly the audience for "tell me next time a variety
+    # restocks", and they are the funnel into per-variety watches + Treesmith.
+    if in_stock_count == 0:
+        watch_bg = "bg-amber-50 border-amber-200"
+        watch_heading_cls = "text-amber-800"
+        watch_heading = f"&#9888; {name} trees are currently out of stock"
+        watch_body = (
+            f"We monitor {total_nurseries} nurseries daily. Enter your email and we'll "
+            f"alert you the moment any {name} variety comes back in stock."
+        )
+        watch_btn = "Alert me when back in stock"
+    else:
+        watch_bg = "bg-green-50 border-green-200"
+        watch_heading_cls = "text-green-800"
+        watch_heading = f"&#128276; Get restock alerts for {name}"
+        watch_body = (
+            f"{name} is in stock now. Want a heads up next time a {name} variety "
+            f"restocks? We monitor {total_nurseries} nurseries daily, enter your email "
+            f"for alerts."
+        )
+        watch_btn = "Email me about restocks"
+
+    watch_box_html = f"""  <!-- Restock-alert watch box (always shown) -->
+  <div id="watchBox" class="p-4 {watch_bg} border rounded-lg text-sm mb-6">
+    <p class="font-semibold {watch_heading_cls} mb-1">{watch_heading}</p>
+    <p class="text-gray-600 mb-3">{watch_body}</p>
+    <form id="watchForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
+      <input type="email" id="watchEmail" placeholder="your@email.com" required
+        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
+      <select id="watchState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
+      <button type="submit"
+        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
+        {watch_btn}
+      </button>
+    </form>
+    <div id="watchMessage" class="mt-2 text-sm hidden"></div>
+  </div>"""
+
+    # Self-contained handler for the watch form. Species pages do not load the
+    # dashboard search bundle, so the form is wired up here. Mirrors the proven
+    # dashboard contract: POST /api/subscribe {action:'watch', species:<slug>},
+    # which subscribe_server records as a species-level watch (watch_species).
+    watch_script = r"""
+<script>
+(function() {
+  var watchForm = document.getElementById('watchForm');
+  if (!watchForm) return;
+  var m = location.pathname.match(/species\/([^\/.]+)/);
+  var speciesSlug = m ? m[1] : '';
+  var msg = document.getElementById('watchMessage');
+  watchForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = document.getElementById('watchEmail').value.trim();
+    var stateEl = document.getElementById('watchState');
+    var state = stateEl ? stateEl.value : 'ALL';
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email: email, state: state, action: 'watch', species: speciesSlug})
+    })
+    .then(function(r) { return r.json().then(function(d) { return {status: r.status, data: d}; }); })
+    .then(function(res) {
+      if (res.status === 202) {
+        msg.textContent = '✓ Check your email. We sent you a confirmation link.';
+      } else if (res.data && res.data.message === 'Already watching') {
+        msg.textContent = 'You are already watching this species.';
+      } else {
+        msg.textContent = '✓ Alert set. We will email you when it is back in stock.';
+      }
+      msg.className = 'mt-2 text-sm text-green-700';
+      msg.style.display = 'block';
+      watchForm.style.display = 'none';
+    })
+    .catch(function() {
+      msg.textContent = 'Something went wrong. Please try again.';
+      msg.className = 'mt-2 text-sm text-red-600';
+      msg.style.display = 'block';
+    });
+  });
+})();
+</script>"""
 
     # Rarity badge
     rarity_badge_html = ""
@@ -556,27 +656,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     </div>
   </div>
 
-  {f"""<!-- Out of stock: watch CTA shown prominently above results -->
-  <div id="watchBox" class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm mb-6">
-    <p class="font-semibold text-amber-800 mb-1">&#9888; {name} trees are currently out of stock</p>
-    <p class="text-gray-600 mb-3">We monitor {total_nurseries} nurseries daily. Enter your email and we'll alert you the moment any {name} variety comes back in stock.</p>
-    <form id="watchForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
-      <input type="email" id="watchEmail" placeholder="your@email.com" required
-        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
-      <select id="watchState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-        <option value="ALL">All states</option>
-        <option value="NSW">NSW</option><option value="VIC">VIC</option>
-        <option value="QLD">QLD</option><option value="WA">WA</option>
-        <option value="SA">SA</option><option value="TAS">TAS</option>
-        <option value="NT">NT</option><option value="ACT">ACT</option>
-      </select>
-      <button type="submit"
-        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
-        Alert me when back in stock
-      </button>
-    </form>
-    <div id="watchMessage" class="mt-2 text-sm hidden"></div>
-  </div>""" if in_stock_count == 0 else ''}
+{watch_box_html}
 
   {when_to_buy_html}
 
@@ -629,10 +709,12 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     <p class="text-gray-600">Out-of-stock rows have a &#128276; Alerts link -- click it to get emailed when that exact variety restocks at any monitored nursery. In-stock rows link straight to the nursery for buy-now.</p>
   </div>""" if in_stock_count > 0 else ''}
 
+  {render_treesmith_promo("species")}
+
 </main>
 
 {footer}
-
+{watch_script}
 </body>
 </html>"""
 
