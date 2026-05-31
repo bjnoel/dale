@@ -1,86 +1,19 @@
 """
 Shared shipping configuration for all nurseries.
 
-Single source of truth for which states each nursery ships to.
-Used by scrapers, dashboard builder, digest, history, and species pages.
+This module is now a thin re-export of stocklib.registry, which holds one
+Nursery record per nursery (the single source of truth for shipping states,
+display names, and local-delivery restrictions). Kept so existing callers can
+continue to `from shipping import SHIPPING_MAP, NURSERY_NAMES, ...` unchanged.
+
+New code should import from stocklib.registry directly.
 """
-
-# States each nursery ships to. Verified via nursery websites March 2026.
-# Quarantine states (WA, TAS, NT) require special permits; many QLD nurseries won't ship there.
-SHIPPING_MAP = {
-    "daleys": ["NSW", "VIC", "QLD", "SA", "WA", "ACT"],          # WA: seasonal window + extra fee
-    "ross-creek": ["NSW", "VIC", "QLD", "ACT"],                   # Confirmed: QLD/NSW/VIC/ACT only
-    "ladybird": ["NSW", "VIC", "QLD", "ACT"],                     # Confirmed 2026-03-16: ships to QLD/NSW/VIC/ACT only (not WA/NT/TAS)
-    "fruitopia": ["NSW", "VIC", "QLD", "SA", "ACT"],              # QLD-based estimate
-    "primal-fruits": ["WA"],                                       # WA-based, local only
-    "guildford": ["WA"],                                           # WA-based, Perth metro
-    "fruit-salad-trees": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],  # WA+TAS: 1st Tue/month
-    "diggers": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],      # Ships nationwide
-    "all-season-plants-wa": ["WA"],                                          # WA-based, pickup only (Perth)
-    "ausnurseries": ["NSW", "VIC", "QLD", "SA", "ACT"],           # Does not ship to WA, NT, or TAS
-    "fruit-tree-cottage": ["NSW", "VIC", "QLD", "SA", "ACT"],     # Does not ship to WA, NT, or TAS
-    "heritage-fruit-trees": ["NSW", "VIC", "QLD", "SA", "ACT"],  # VIC-based. No WA/TAS: accreditation discontinued (Mar 2026).
-    "perth-mobile-nursery": ["WA"],                                             # WA-based, Perth metro delivery only
-    "yalca-fruit-trees": ["NSW", "VIC", "QLD", "SA", "ACT"],                   # Does not ship to WA, NT, or TAS. Seasonal: late June to Sep 15 only.
-    "forever-seeds": ["NSW", "VIC", "QLD", "SA", "ACT"],                       # NSW-based. Does not ship to WA, NT, or TAS.
-    "garden-express": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],  # Ships nationwide; quarantine surcharge for WA/NT/TAS.
-    "plantnet": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],              # SA-based. Ships to WA via Olea Nurseries partner (Manjimup WA).
-    "fruit-tree-lane": ["NSW", "VIC", "QLD", "SA", "ACT"],                    # QLD-based (Helidon). Does not ship to WA, NT, or TAS (quarantine).
-    "engalls": ["NSW", "VIC", "QLD", "SA", "ACT"],                             # NSW-based (Dural). Does not ship to WA, NT, TAS, or some SA areas (quarantine).
-}
-
-NURSERY_NAMES = {
-    "daleys": "Daleys Fruit Trees",
-    "ross-creek": "Ross Creek Tropicals",
-    "ladybird": "Ladybird Nursery",
-    "fruitopia": "Fruitopia",
-    "primal-fruits": "Primal Fruits Perth",
-    "guildford": "Guildford Garden Centre",
-    "fruit-salad-trees": "Fruit Salad Trees",
-    "diggers": "The Diggers Club",
-    "all-season-plants-wa": "All Season Plants WA",
-    "ausnurseries": "Aus Nurseries",
-    "fruit-tree-cottage": "Fruit Tree Cottage",
-    "heritage-fruit-trees": "Heritage Fruit Trees",
-    "perth-mobile-nursery": "Perth Mobile Nursery",
-    "yalca-fruit-trees": "Yalca Fruit Trees",
-    "forever-seeds": "Forever Seeds",
-    "garden-express": "Garden Express",
-    "plantnet": "PlantNet",
-    "fruit-tree-lane": "Fruit Tree Lane",
-    "engalls": "Engall's Nursery",
-}
-
-
-# Nurseries that only deliver locally, not statewide.
-# Absent nurseries are assumed to ship statewide within their SHIPPING_MAP states.
-LOCAL_DELIVERY = {
-    "primal-fruits":        {"area": "Perth metro", "state": "WA"},
-    "guildford":            {"area": "Perth metro", "state": "WA"},
-    "all-season-plants-wa": {"area": "Perth (pickup)", "state": "WA"},
-    "perth-mobile-nursery": {"area": "Perth metro", "state": "WA"},
-}
-
-
-def delivery_label(nursery_key: str) -> str:
-    """Return 'Perth metro only' for local nurseries, or '' for statewide shippers."""
-    local = LOCAL_DELIVERY.get(nursery_key)
-    return f"{local['area']} only" if local else ""
-
-
-def nursery_ships_to(nursery_key: str, state: str) -> bool:
-    """Return True if this nursery ships to the given state code (e.g. 'WA')."""
-    return state in SHIPPING_MAP.get(nursery_key, [])
-
-
-# Quarantine states that are hard to ship to
-QUARANTINE_STATES = ["WA", "NT", "TAS"]
-
-
-def restriction_warning(nursery_key: str) -> str:
-    """Return a restriction warning like 'No WA/NT/TAS', or '' if ships everywhere."""
-    ships = set(SHIPPING_MAP.get(nursery_key, []))
-    excluded = [s for s in QUARANTINE_STATES if s not in ships]
-    if not excluded:
-        return ""
-    return "No " + "/".join(excluded)
+from stocklib.registry import (  # noqa: F401
+    SHIPPING_MAP,
+    NURSERY_NAMES,
+    LOCAL_DELIVERY,
+    QUARANTINE_STATES,
+    delivery_label,
+    nursery_ships_to,
+    restriction_warning,
+)
