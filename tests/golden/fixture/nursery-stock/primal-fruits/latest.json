@@ -1,0 +1,33 @@
+{
+  "nursery": "primal-fruits",
+  "nursery_name": "Primal Fruits Perth",
+  "scraped_at": "2026-03-05T05:00:00",
+  "product_count": 2,
+  "in_stock_count": 2,
+  "products": [
+    {
+      "nursery": "primal-fruits",
+      "nursery_name": "Primal Fruits Perth",
+      "title": "Avocado - Reed",
+      "url": "https://primalfruits.com.au/p/avocado-reed",
+      "variants": [
+        {"title": "Pot", "price": 40.00, "available": true, "sku": "PF-AV-R"}
+      ],
+      "min_price": 40.0,
+      "max_price": 40.0,
+      "any_available": true
+    },
+    {
+      "nursery": "primal-fruits",
+      "nursery_name": "Primal Fruits Perth",
+      "title": "Fig - Black Genoa",
+      "url": "https://primalfruits.com.au/p/fig-black-genoa",
+      "variants": [
+        {"title": "Pot", "price": 35.00, "available": true, "sku": "PF-FIG-BG"}
+      ],
+      "min_price": 35.0,
+      "max_price": 35.0,
+      "any_available": true
+    }
+  ]
+}
