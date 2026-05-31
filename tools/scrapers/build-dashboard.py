@@ -18,6 +18,7 @@ from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS
 from cultivar_parsing import product_variety_slug
+from stocklib.taxonomy import load_species
 # Reuse the variety builder's non-plant denylist so we never emit a variety
 # slug (vs) for a product it would refuse to build a /variety/ page for
 # (e.g. "Yates Apple": "yates" is a chemical brand in that list). Keeping a
@@ -41,11 +42,7 @@ FEATURED_NURSERIES: set[str] = set()  # e.g. {'primal-fruits'} when live
 
 def load_species_lookup() -> dict:
     """Load fruit species data and build a title-matching lookup."""
-    if not SPECIES_FILE.exists():
-        return {}
-
-    with open(SPECIES_FILE) as f:
-        species = json.load(f)
+    species = load_species()
 
     lookup = {}
     for s in species:
