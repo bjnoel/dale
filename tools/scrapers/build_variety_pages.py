@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, delivery_label
+from stocklib.snapshots import iter_nursery_snapshots
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
 NURSERY_URLS = {
@@ -58,19 +59,8 @@ from cultivar_parsing import slugify, parse_cultivar  # noqa: E402
 
 def load_all_products(data_dir: Path) -> list[dict]:
     """Load all products from today's or latest snapshot."""
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     products = []
-    for nursery_dir in sorted(data_dir.iterdir()):
-        if not nursery_dir.is_dir():
-            continue
-        snap = nursery_dir / f"{today}.json"
-        fallback = nursery_dir / "latest.json"
-        f = snap if snap.exists() else fallback
-        if not f.exists():
-            continue
-        with open(f) as fp:
-            data = json.load(fp)
-        nursery_key = nursery_dir.name
+    for nursery_key, data in iter_nursery_snapshots(data_dir):
         nursery_name = NURSERY_NAMES.get(nursery_key, nursery_key)
         restrict = "" if delivery_label(nursery_key) else restriction_warning(nursery_key)
 

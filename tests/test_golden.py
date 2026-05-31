@@ -31,6 +31,30 @@ GOLDEN_CASES = [
         "args": ["{DATA}", "{OUT}"],
         "outputs": ["index.html"],
     },
+    {
+        "name": "variety",
+        "script": "build_variety_pages.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["variety/*.html"],
+    },
+    {
+        "name": "compare",
+        "script": "build_compare_pages.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["compare/*.html"],
+    },
+    {
+        "name": "location",
+        "script": "build_location_pages.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["buy-fruit-trees-*.html"],
+    },
+    {
+        "name": "species_state",
+        "script": "build_species_state_pages.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["buy-fruit-trees-by-species-state.html"],
+    },
 ]
 
 

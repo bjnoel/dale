@@ -2,8 +2,8 @@
   "nursery": "primal-fruits",
   "nursery_name": "Primal Fruits Perth",
   "scraped_at": "2026-03-05T05:00:00",
-  "product_count": 2,
-  "in_stock_count": 2,
+  "product_count": 3,
+  "in_stock_count": 3,
   "products": [
     {
       "nursery": "primal-fruits",
@@ -15,6 +15,18 @@
       ],
       "min_price": 40.0,
       "max_price": 40.0,
+      "any_available": true
+    },
+    {
+      "nursery": "primal-fruits",
+      "nursery_name": "Primal Fruits Perth",
+      "title": "Avocado - Hass",
+      "url": "https://primalfruits.com.au/p/avocado-hass",
+      "variants": [
+        {"title": "Pot", "price": 42.00, "available": true, "sku": "PF-AV-H"}
+      ],
+      "min_price": 42.0,
+      "max_price": 42.0,
       "any_available": true
     },
     {
