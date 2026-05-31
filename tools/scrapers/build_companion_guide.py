@@ -5,196 +5,387 @@ Build companion planting guide page for treestock.com.au.
 Targets keywords: 'companion plants for citrus', 'companion planting mango',
 'fruit tree pollinator requirements', 'what to plant with avocado', etc.
 
+Every companion/avoidance claim carries an evidence grade (see EVIDENCE_GRADES)
+so the page is honest about what is research-backed versus traditional folklore.
+Content is Australia-specific (pests, climate zones, cultivars) and cited.
+
 Usage:
     python3 build_companion_guide.py /path/to/output/
 """
 
+import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
+SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+
+
+# ----- Evidence grading -----
+
+# Closed vocabulary. A test asserts every claim uses one of these.
+EVIDENCE_GRADES = {
+    "research-backed",       # peer-reviewed or university-extension support
+    "established-practice",  # broad horticultural consensus, low controversy
+    "traditional",           # folklore / anecdotal, plausible but little hard evidence
+    "context-dependent",     # true only for certain varieties, climates or conditions
+}
+
+# label + Tailwind classes per grade (single styling source of truth).
+GRADE_BADGE = {
+    "research-backed": ("Research-backed", "bg-green-100 text-green-800 border-green-300"),
+    "established-practice": ("Established practice", "bg-emerald-50 text-emerald-700 border-emerald-200"),
+    "traditional": ("Traditional, limited evidence", "bg-amber-50 text-amber-800 border-amber-200"),
+    "context-dependent": ("Depends on conditions", "bg-sky-50 text-sky-700 border-sky-200"),
+}
+
+
+def grade_badge(grade: str) -> str:
+    label, cls = GRADE_BADGE[grade]
+    return (
+        f'<span class="inline-block text-xs px-1.5 py-0.5 rounded border {cls} '
+        f'ml-1 align-middle whitespace-nowrap">{label}</span>'
+    )
+
 
 # ----- Content Data -----
+# good:  (name, description, evidence_grade)
+# avoid: (name, evidence_grade)
+# Researched and adversarially verified for Australian conditions; see git log.
 
 SPECIES_COMPANIONS = [
     {
-        "name": "Citrus (Lemon, Orange, Mandarin, Lime)",
-        "slug": "citrus",
-        "icon": "🍋",
+        "name": 'Citrus (Lemon, Orange, Mandarin, Lime)',
+        "slug": 'citrus',
+        "species_slugs": ['lemon', 'orange', 'mandarin', 'lime', 'grapefruit', 'pomelo', 'finger-lime'],
+        "icon": '🍋',
+        "intro": 'Citrus grows across most of Australia, from Mediterranean WA and SA to subtropical Queensland, but no companion plant will protect it from the pests that actually cost growers fruit (citrus gall wasp, Queensland fruit fly and Mediterranean fruit fly). The honest value of companions here is soil building, attracting bees and hosting beneficial insects, not pest control.',
         "good": [
-            ("Comfrey", "Deep roots mine nutrients from subsoil. Leaves make excellent mulch and liquid fertiliser. Plant 1m away to avoid root competition."),
-            ("Nasturtium", "Repels aphids and whitefly. Edible flowers and leaves. Self-sows readily as a living groundcover."),
-            ("Lavender", "Attracts beneficial insects including bees. Deters some pests. Suits the same Mediterranean climate as citrus."),
-            ("Borage", "Attracts bees and predatory wasps. Said to improve citrus flavour. Easy to grow from seed."),
-            ("Dill and fennel (NOT near citrus)", "Wait — see avoidances below. Fennel is allelopathic; dill is fine in moderation."),
+            ('Lavender', 'A reliable bee and beneficial-insect magnet that wants the same dry, sunny, well-drained spot as citrus, so it pairs naturally in Mediterranean and warm-temperate gardens (WA, SA, inland Victoria), though it tends to rot in humid subtropical and tropical coastal areas.', 'established-practice'),
+            ('Borage', 'An easy-from-seed flower that strongly draws bees and beneficial insects; grow it for the pollinators, not for the folklore claim that it improves citrus flavour, and pull most plants before they self-seed across the garden.', 'established-practice'),
+            ('Comfrey (Bocking 14)', 'Useful as a soil-builder for its biomass, not the debunked deep-root mining idea: chop its leaves several times a year for a potassium-rich mulch or liquid feed, and plant the sterile Bocking 14 strain about 1m out so it neither competes at the trunk nor seeds into a weed.', 'established-practice'),
+            ('White clover (as groundcover, kept off the trunk)', 'A low living mulch that fixes some nitrogen and protects the orchard floor, but keep it clear of the shallow feeder roots at the trunk and treat it as a bonus, not a substitute for feeding hungry citrus.', 'context-dependent'),
+            ('Nasturtium', 'Better understood as a possible trap crop than a repellent: plant it a metre or two away so aphids drawn to it do not simply move onto the tree, accept that the effect is inconsistent, and note it dies back in frosty temperate winters but self-sows as groundcover in warm and Mediterranean gardens.', 'traditional'),
+            ('Marigold (French/African)', 'Despite real science behind alpha-terthienyl suppressing root-knot nematodes, a few plants scattered at the drip line do not work (University of Florida is blunt on this) and marigolds even host some other nematode types, so near citrus they are mainly decorative with a minor pollinator bonus in flower.', 'research-backed'),
         ],
-        "avoid": ["Fennel (allelopathic — stunts growth)", "Other large citrus trees too close (root competition)", "Grass directly under canopy (competes for nitrogen)"],
-        "pollinator": "Most citrus is self-fertile. A single tree will fruit. Cross-pollination from multiple varieties improves yield. Mandarins and tangelos benefit most from a pollinator partner.",
-        "notes": "Citrus prefers well-drained, slightly acidic soil. Companions that fix nitrogen (like clover groundcover) reduce fertiliser needs.",
+        "avoid": [
+            ('Fennel (especially wild fennel)', 'traditional'),
+            ('Other large citrus trees too close (root and canopy competition)', 'established-practice'),
+            ('Grass or lawn growing up to the trunk', 'research-backed'),
+        ],
+        "pollinator": 'Most citrus is self-fertile, so a single lemon, orange, grapefruit or lime tree will crop on its own (Australian nurseries such as Daleys list Eureka lemon as self-pollinating, one tree). Mandarins and tangelos are the exception worth planning for: many hybrids, including Minneola, Orlando, Nova, Robinson, Sunburst and Page, are self-incompatible and set a poor crop unless a second, different variety is nearby, and bees are needed to move the heavy, sticky pollen. The catch for anyone chasing seedless mandarins like Imperial or Afourer (Murcott) is that the same cross-pollination that lifts fruit set also raises seed count, so an isolated tree gives fewer seeds but a lighter crop.',
+        "notes": 'Citrus are shallow-rooted, hungry feeders (feeder roots sit in roughly the top 30cm to 45cm), so keep a mulched, grass-free circle out to the drip line; trials on trees show grass competition cuts growth while mulch lifts it, and this matters most through dry Mediterranean and inland summers. Pull mulch back a hand-width from the trunk to prevent collar rot. They want free-draining, slightly acidic soil (around pH 6 to 6.5), so in heavy clay or high-rainfall coastal gardens plant on a mound or raised bed. None of the companions here control the real pests: prune out citrus gall wasp galls before adults emerge in spring (about September to November), destroy the prunings, ease off high-nitrogen feeding in late winter, and net or bait against Queensland fruit fly (eastern states) and Mediterranean fruit fly (WA).',
+        "sources": [
+            ('Citrus gall wasp (DPIRD Western Australia)', 'https://www.dpird.wa.gov.au/businesses/pests-weeds-and-diseases/animal-pests-diseases/pest-insects/citrus-gall-wasp/'),
+            ('How to prevent and treat bugs and citrus gall wasp (ABC Organic Gardener Magazine Australia)', 'https://www.organicgardener.com.au/blogs/how-prevent-and-treat-bugs-and-citrus-gall-wasp'),
+            ('Pollination of Citrus Hybrids (University of Florida IFAS Extension, CH082)', 'https://ask.ifas.ufl.edu/publication/CH082'),
+            ('Organic Mulch and Grass Competition Influence Tree Root Development (Arboriculture and Urban Forestry)', 'https://auf.isa-arbor.com/content/14/8/200'),
+        ],
     },
     {
-        "name": "Mango",
-        "slug": "mango",
-        "icon": "🥭",
-        "intro": "The best companion plants for mango trees are low-growing, heat-tolerant species that suppress weeds, fix nitrogen, or deter pests without competing with the mango's deep roots. In Australian conditions (tropical Queensland, northern NSW, and parts of WA), mango tree companion planting focuses on maximising soil health and water retention under the canopy.",
+        "name": 'Mango',
+        "slug": 'mango',
+        "species_slugs": ['mango'],
+        "icon": '🥭',
+        "intro": 'Mango (Mangifera indica) is a large tropical and subtropical tree, reliable in far north Queensland, the Northern Territory, southeast Queensland and northern New South Wales, and fruiting only in the warmest microclimates in Mediterranean Perth and warm-temperate southern areas. Honest companion planting for mango is mostly about living mulch, soil cover and pollinator habitat, not pest repellence, so most useful pairings sit at or just inside the drip line rather than against the trunk.',
         "good": [
-            ("Turmeric", "Grown as a companion, turmeric suppresses weeds and the rhizomes are harvested separately. Suits the same tropical conditions."),
-            ("Vetiver grass", "Deep-rooted grass that prevents erosion on slopes, doesn't compete heavily with tree roots, tolerates the same heat."),
-            ("Sweet potato", "Low groundcover that suppresses weeds around young mangoes. Edible and easy to remove when no longer needed."),
-            ("Lemongrass", "Repels some insects, tolerates tropical heat and humidity. Good border plant around mango groves."),
-            ("Papaya", "Fast-growing companion that provides temporary shade for young mangoes while establishing. Harvest within 2 years."),
-            ("Marigold (African)", "Planted at the drip line, marigolds deter nematodes and attract beneficial insects. Replace annually."),
-            ("Basil", "Aromatic herb that may deter some fruit flies when flowering. Grows well in the same tropical heat. Harvest before it competes for space."),
+            ('Vetiver grass (sterile Monto cultivar)', 'On a sloping site, vetiver hedges are a genuinely proven soil holder; Queensland research treats the deep roots as soil reinforcement, so plant the sterile Monto cultivar (no viable seed, no runners) on the contour above or below the mango. This is erosion control, not a pest or yield effect on the tree.', 'research-backed'),
+            ('French marigold (Tagetes patula), as a pre-plant cover crop', 'Marigolds suppress root-knot nematodes, but only as a dense cover crop grown in the same soil for at least two months before planting, not scattered under an established tree. Use a Tagetes patula green manure in a bed before planting a young mango; interplanting around a mature tree will not protect its deep roots.', 'research-backed'),
+            ('Turmeric (Curcuma longa)', 'A useful warm-season living groundcover under an established mango in tropical and subtropical gardens, shading out weeds and feeding soil life. It dies back over winter (the rhizome can survive in milder areas, including sheltered Perth gardens, if soil is well drained or you lift it), so treat it as seasonal cover, not pest control.', 'established-practice'),
+            ('Sweet potato (Ipomoea batatas)', 'A fast, edible summer living mulch that shades soil and smothers weeds around an established mango, a weed-suppression effect that holds up in trials. It is frost tender and dies back in cooler southern gardens, so keep runners off the trunk and away from young trees so it does not compete for water.', 'established-practice'),
+            ('Papaya (pawpaw), as a temporary nurse only', 'Sometimes used as a quick nurse plant to give a young mango light shade and biomass while it settles, but mangoes fruit best in full sun, so remove it as the tree grows. Papaya is frost tender and a known host of root-knot nematode, so do not plant it permanently hard against the mango.', 'traditional'),
+            ('Lemongrass (Cymbopogon)', 'A tidy, non-invasive clumping perennial that adds biodiversity at the garden edge, but do not rely on it to repel pests; its oils only deter insects when leaves are crushed, and a growing clump gives off too little to protect a mango from fruit fly.', 'traditional'),
         ],
-        "avoid": ["Avocado (deep root competition at maturity)", "Other large trees within 8m (canopy competition)", "Lawn grass under canopy (nitrogen depletion)"],
-        "pollinator": "Most mango varieties are not fully self-fertile. Two trees of different varieties significantly improve yield. Bowen (Kensington Pride) is more self-fertile than most. Honey Golds and B90 produce better with a cross-pollinator nearby. Bees are the primary pollinator.",
-        "notes": "Mango trees are large at maturity (6-10m). Allow plenty of space. Companion plants work best at the drip line, not under the canopy.",
+        "avoid": [
+            ('Avocado (spacing and disease isolation, not chemistry)', 'context-dependent'),
+            ('Other large trees within about 8m of a standard mango', 'established-practice'),
+            ('Lawn grass up to the trunk and within the drip line', 'established-practice'),
+            ('Basil (does not repel fruit fly and can attract it)', 'research-backed'),
+        ],
+        "pollinator": 'A single tree is usually enough. Yates states mangoes are self-pollinating, and Kensington Pride (the Bowen mango, the dominant Australian home and commercial variety, self-fertile and polyembryonic) needs no partner, though a nearby second variety such as R2E2, Calypso or Honey Gold can nudge fruit set up slightly. You do not need to buy a second tree. Both flies and bees do the pollinating (Yates notes flies are particularly effective, and in Northern Territory orchards native stingless bees are major contributors), and insect-pollinated flowers set far more fruit than excluded ones. The best move is a diversity of flowering plants nearby to draw in small pollinators.',
+        "notes": 'The biggest backyard pest threat is fruit fly, and no companion plant controls it. Queensland fruit fly (Bactrocera tryoni) responds to cuelure, and Mediterranean fruit fly (now endemic right across WA from Esperance to Carnarvon, with mango a high-susceptibility host per DPIRD) responds to protein bait; neither is fooled by basil. Control with exclusion netting, protein baiting, lure traps and prompt removal of fallen fruit. In humid eastern Australia the main disease is anthracnose, which is worse in still, crowded conditions, so airflow and the grass-free, mulched zone out to the drip line matter.',
+        "sources": [
+            ('How to Grow a Mango Tree in Australia - Yates', 'https://www.yates.com.au/how-to-grow/mango/'),
+            ('Companion Planting - Sustainable Gardening Australia', 'https://www.sgaonline.org.au/companion-planting/'),
+            ('Mediterranean fruit fly - DPIRD Western Australia', 'https://www.dpird.wa.gov.au/businesses/pests-weeds-and-diseases/animal-pests-diseases/pest-insects/mediterranean-fruit-fly/'),
+            ('Response of some mango-infesting fruit flies to aqueous solutions of the basil plant Ocimum tenuiflorum L. - Frontiers in Horticulture', 'https://www.frontiersin.org/journals/horticulture/articles/10.3389/fhort.2023.1139525/full'),
+        ],
     },
     {
-        "name": "Avocado",
-        "slug": "avocado",
-        "icon": "🥑",
+        "name": 'Avocado',
+        "slug": 'avocado',
+        "species_slugs": ['avocado'],
+        "icon": '🥑',
+        "intro": 'Avocado is a shallow, surface-rooted tree that, across Australia, lives or dies by drainage and Phytophthora root rot rather than by what you interplant. Most avocado companion pairings are folklore, so the honest wins are clearing grass, mulching well, sheltering young trees, and feeding pollinators, not planting a "helper" species.',
         "good": [
-            ("Comfrey", "Excellent nutrient accumulator. Mines potassium, calcium, and phosphorus from deep soil layers. Mulch leaves around the drip line."),
-            ("Passionfruit (on a fence)", "Vertical grower that doesn't compete at root level. Provides additional fruit from a small footprint."),
-            ("Citrus", "Compatible root systems, similar water and fertility needs. Plant at least 5m apart at maturity."),
-            ("Herbs (basil, chives, parsley)", "Aromatic herbs near avocado deter some pests and attract pollinators without competing for water."),
-            ("Banana (short-term)", "Provides wind protection and humidity for young avocados in hot climates. Remove as avocado matures."),
+            ('Coarse organic mulch (woodchip, sugarcane, lucerne)', 'Not a plant companion as such, but the single best thing under an avocado in Australia: a thick, open mulch out to the dripline (kept off the trunk) feeds the surface roots and builds soil microbes that suppress Phytophthora.', 'research-backed'),
+            ('Legume groundcover (pinto peanut, white clover)', 'A low legume cover is a recommended slow soil-builder under subtropical avocados, adding nitrogen gently as it breaks down rather than as a concentrated hit; an Australian trial measured pinto peanut fixing close to 150 kg N per hectare.', 'context-dependent'),
+            ('Flowering herbs (basil, chives, parsley)', 'Pleasant and harmless at the sunny edge of the canopy, and when allowed to flower they feed the hoverflies and bees that help avocado pollination; just do not expect them to repel pests, and no herb repels fruit fly.', 'traditional'),
+            ('Banana (subtropical, temporary nurse only)', 'A traditional northern NSW and SE Queensland trick for sheltering a young avocado from wind and sun, but bananas are thirsty and competitive, so site them a few metres away, keep water off the avocado collar, and remove them once the tree is established.', 'traditional'),
+            ('Passionfruit (on its own fence or trellis)', 'Fine as a separate vertical crop rather than a true helper: on its own support it competes little for root space, but keep it off a young avocado because it is vigorous enough to smother the canopy.', 'traditional'),
+            ('Comfrey (chop-and-drop, away from the trunk)', 'Useful as cut leaves laid as mulch or brewed into a potassium-rich liquid feed, not as a living nutrient pump (the deep-taproot accumulator story is largely unproven); keep crowns clear of the trunk so they do not hold moisture against the collar.', 'traditional'),
         ],
-        "avoid": ["Fennel", "Black walnut (juglone toxin)", "Grass or lawn directly under canopy", "Heavy nitrogen fixers (encourage vegetative growth over fruiting)"],
-        "pollinator": "Avocados have an unusual flowering pattern (Type A vs Type B). Type A flowers open as female in the morning and male in the afternoon; Type B flowers open as female in the afternoon and male the next morning. Planting one A and one B variety dramatically improves set. Common pairings: Hass (A) + Shepard (B) or Hass (A) + Fuerte (B).",
-        "notes": "Avocados are highly sensitive to root rot (Phytophthora). Companions that keep mulch thick and soil well-aerated are most beneficial.",
+        "avoid": [
+            ('Lawn and grass under the canopy', 'established-practice'),
+            ('Concentrated nitrogen sources or a large vigorous nitrogen-fixing tree', 'context-dependent'),
+            ('Fennel close to young trees (competition, and a weed in parts of Australia)', 'traditional'),
+            ('Black walnut (juglone; barely grown in Australia, avocado not a listed sensitive plant)', 'traditional'),
+        ],
+        "pollinator": 'Avocados have A-type and B-type flowering, where the female and male phases open at opposite times of day. Type A includes Hass, Reed, Pinkerton and Wurtz (Little Cado); Type B includes Fuerte, Bacon, Sharwill and Shepard. Pairing an A with a B (for example Hass with Fuerte or Bacon) can lift fruit set, most usefully in cooler spring weather. But Australian field research found a single Hass self-pollinates a good crop (about 52 percent of fruit overall), with self and cross fruit the same size and quality (cross-pollinated fruit had roughly 10 percent more calcium), so a second variety boosts yield rather than being essential for a backyard tree. Bees are the main pollinators (commonly 5 to 8 hives per hectare in orchards) and hoverflies are present in Australian orchards (though their value here has not been measured), so keep flowers nearby. Compact A-types like Wurtz (Little Cado) suit small gardens.',
+        "notes": "Phytophthora root rot (Phytophthora cinnamomi) is avocado's worst enemy in Australia and the most important point on this page. Plant on a mound in free-draining soil, water carefully (never waterlogged), and use a thick coarse organic mulch kept well clear of the trunk, since the mulch builds soil microbes that suppress the disease. Choose a Phytophthora-tolerant rootstock (Velvick is common in Australia, and clonal Dusa also performs well), add gypsum under the canopy, and buy certified disease-free trees. The same pathogen causes dieback in WA bushland, so never move soil from infected sites.",
+        "sources": [
+            ('Business Queensland (QLD DAF): Phytophthora root rot (integrated management, mulch off trunk, gypsum, drainage, tolerant rootstocks)', 'https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/diseases/horticultural/phytophthora-root-rot'),
+            ('BeeAware Australia: Avocados - Pollination (Type A/B flowering, both types planted together, honey bees, hive density, hoverflies)', 'https://beeaware.org.au/pollination/pollinator-reliant-crops/avocados/'),
+            ('Avocados Australia: Hass self-pollination field study (52 percent self-pollinated, no significant fruit-quality difference)', 'https://avocado.org.au/public-articles/ta32v1pollination/'),
+            ('UC ANR Ventura: FAQ about Avocados (shallow surface roots in top 8 inches, mulch versus grass, keep mulch off trunk)', 'https://ucanr.edu/sites/ucceventura/Gardening/Garden_Info/avocado_questions/'),
+        ],
     },
     {
-        "name": "Fig",
-        "slug": "fig",
-        "icon": "🫐",
+        "name": 'Fig',
+        "slug": 'fig',
+        "species_slugs": ['fig'],
+        "icon": '🌳',
+        "intro": 'Common figs grown in Australia (Black Genoa, Brown Turkey, White Adriatic, White Genoa, Preston Prolific) are self-fertile and need no pollinator, so most fig "companion" pairings are about the orchard floor rather than fruit set. Be honest about the evidence: the real fig problems here are fruit fly, blister mite, rust, birds and possums, and no companion plant controls any of them, so plant companions for soil, mulch and beneficial insects, not pest protection.',
         "good": [
-            ("Rue", "Traditional companion for figs. Said to deter some pest insects. Has strong scent."),
-            ("Marigold", "Deters nematodes in the soil, which can stress fig roots. French marigolds are most effective."),
-            ("Comfrey", "Mines nutrients for the hungry fig. Tolerates partial shade under the canopy."),
-            ("Strawberry", "Low groundcover that thrives in the dappled shade under figs in warm climates. Edible bonus."),
+            ('French marigold (Tagetes patula), as a pre-plant cover crop', 'The one companion claim with hard science behind it: French marigold roots release alpha-terthienyl that suppresses root-knot nematode (a genuine fig pest in warm, sandy Australian soils), but only when grown as a dense block (plants under about 18cm apart) over the planting site for roughly two months before you plant the fig, not as a few scattered plants, and note it can raise some other nematode species and attracts thrips and spider mites.', 'research-backed'),
+            ('Comfrey (sterile Russian comfrey, Bocking 14)', 'A sound chop-and-drop mulch and potassium cycler (a Cornell field trial confirmed it accumulates potassium), but it concentrates nutrients already in your soil rather than adding them, and the deep-mining folklore is overstated, so use the sterile cultivar (so it does not seed) and treat it as mulch and moisture retention, not fertiliser.', 'established-practice'),
+            ('Flowering insectary plants (yarrow, sweet alyssum, carrots or parsnips left to bloom)', 'Diverse flowering plantings reliably feed and retain bees and predatory and parasitoid insects, the one pest-related angle the strongest skeptics endorse, so frame these as feeding beneficials and pollinators rather than repelling fig pests (the fig itself needs no pollinator).', 'established-practice'),
+            ('Living groundcover or mulch layer', 'A groundcover and mulch layer conserves soil moisture through hot Australian summers and suppresses weeds, just keep it from being over-irrigated because figs dislike wet feet.', 'established-practice'),
+            ('Aromatic Mediterranean herbs (rosemary, thyme, oregano, sage)', "They share the fig's love of full sun and free-draining soil and flower for bees, but their pest-repellent reputation is folklore (controlled work found aromatic herbs had little effect on pest insect behaviour), so grow them for groundcover and bloom, not to protect the fig.", 'traditional'),
+            ('Strawberry (woodland or alpine, Fragaria vesca)', 'Works as a living mulch under a fig in cooler and subtropical gardens, but expect groundcover and a light pick rather than a heavy crop because strawberries fruit best in full sun, and in fruit fly areas the berries need the same netting or bagging as the figs.', 'context-dependent'),
         ],
-        "avoid": ["Fennel", "Other large trees within 4m (root competition is aggressive for figs)"],
-        "pollinator": "Most commercial fig varieties grown in Australia (Brown Turkey, Black Genoa, White Adriatic) are parthenocarpic — they set fruit without pollination. No companion required for fruit set. The Smyrna fig (traditional dried fig) requires a specific wasp (Blastophaga psenes) not present in Australia — grow the self-fertile types instead.",
-        "notes": "Figs have very invasive roots. Keep away from water pipes and house foundations. Companion plants near figs should be chosen for drought tolerance.",
+        "avoid": [
+            ('Fennel (Foeniculum vulgare)', 'context-dependent'),
+            ('Thirsty fruit-fly and nematode-host veg at the trunk (tomatoes and other nightshades, cucurbits)', 'established-practice'),
+            ('Other large trees within 4 to 5m', 'established-practice'),
+            ('Rue (Ruta graveolens)', 'traditional'),
+        ],
+        "pollinator": 'No pollinator partner is needed. The common Australian fig cultivars (Black Genoa, Brown Turkey, White Adriatic, White Genoa, Preston Prolific) are parthenocarpic and self-fertile, so a single tree sets fruit on its own. Only Smyrna and San Pedro type figs need the fig wasp (Blastophaga psenes), and that wasp is not established in mainland Australian fruit-growing areas, which is why those types are not grown as backyard figs here. Bees do not pollinate the common fig, so no bee-attracting companion is required for fruit set.',
+        "notes": 'Figs have vigorous, moisture-seeking roots that Australian arborists rank among the worst for lifting paving and invading sewer and stormwater pipes, so keep a full-size tree well clear of pipes and foundations, or grow it in a large pot or raised bed in a small yard; a vertical root barrier about a metre out (plastic or pavers buried on edge) helps direct roots downward. Ignore the very large "plant 15 to 25m away" figures online, those are for giant ornamental figs like the Moreton Bay, not a backyard eating fig. Figs also dislike wet feet and are best on a mound or raised bed for drainage, and they are not heavy nitrogen feeders, so do not push nitrogen-fixing legumes as "feeders".',
+        "sources": [
+            ('Sustainable Gardening Australia: Grow and prune fig trees (self-fertile cultivars; root-knot nematode, blister mite, rust, anthracnose)', 'https://www.sgaonline.org.au/figs/'),
+            ('Green Harvest: Fruit Fly Organic Control Information (exclusion, traps, baits, hygiene; no repellent companion plant listed)', 'https://greenharvest.com.au/blogs/pests-and-plant-diseases/fruit-fly-organic-control-information'),
+            ('UF/IFAS EDIS NG045: Marigolds (Tagetes spp.) for Nematode Management (interplanting ineffective; dense stand under 7in; 2 months pre-plant; increases some other nematodes)', 'https://ask.ifas.ufl.edu/publication/NG045'),
+            ('Weeds Australia: Fennel (Foeniculum vulgare) profile (declared/environmental weed; forms dense stands excluding other vegetation)', 'https://weeds.org.au/profiles/fennel-anise-aniseed/'),
+        ],
     },
     {
-        "name": "Stone Fruit (Peach, Plum, Apricot, Nectarine, Cherry)",
-        "slug": "stone-fruit",
-        "icon": "🍑",
+        "name": 'Stone Fruit (Peach, Plum, Apricot, Nectarine, Cherry)',
+        "slug": 'stone-fruit',
+        "species_slugs": ['peach', 'nectarine', 'apricot', 'plum', 'cherry'],
+        "icon": '🍑',
+        "intro": 'In Australia the pests that actually ruin stone fruit are fruit flies (Queensland fruit fly in the eastern states, Mediterranean fruit fly in WA), and no companion plant stops them, so treat companions as a way to feed pollinators and beneficial insects, not as crop protection. The one companion-planting idea with real evidence behind it, accepted even by researchers who debunk most pairings, is that diverse nectar-rich flowers attract predators and parasitoids, so that is what this list is built around.',
         "good": [
-            ("Garlic and chives", "Repel borers, curl leaf, and aphids. Plant densely around the drip line. Harvest bulbs annually."),
-            ("Comfrey", "Provides potassium critical for fruit quality. Mulch leaves around trees 3-4 times per year."),
-            ("Yarrow", "Attracts beneficial insects including hoverflies that predate aphids. Hardy and drought-tolerant."),
-            ("Borage", "Attracts bees at bloom time, which is critical for stone fruit pollination. Plant nearby in flower by spring."),
-            ("Tansy", "Historically used to repel flying insects. Use with caution — toxic to some animals, and spreads readily."),
+            ('Yarrow', 'Open, accessible flowers feed hoverflies (whose larvae eat aphids), lacewings, ladybirds and parasitic wasps, and it is drought-hardy so it suits hot dry gardens like Perth and much of SA; note it helps with aphids and soft pests, not fruit fly.', 'established-practice'),
+            ('Borage', 'A genuine heavy nectar producer that pulls in honeybees, native bees and hoverflies, though as a warm-season annual it flowers spring into summer and is usually not in bloom during the late-winter to early-spring stone fruit blossom, so grow it for whole-garden pollinator support rather than for fruit set.', 'established-practice'),
+            ('Alyssum and calendula (winter-flowering insectary plants)', 'Useful for the early blossom window because they flower through the cool season when summer annuals are not up yet, feeding the bees and beneficials active around mid-August when apricots and peaches open in southern Australia.', 'established-practice'),
+            ('Comfrey (sterile Russian, Bocking 14)', 'A chop-and-drop mulch around the drip line whose leaves genuinely test high in potassium, but understand it concentrates potassium already in your soil into leaf litter rather than creating fertility (the deep-root mineral-mining idea is mostly a myth), and use only the sterile Bocking 14 strain so it does not self-seed into a weed.', 'established-practice'),
+            ('Garlic and chives', "Field trials in vegetable crops show Allium plants lower aphid numbers on their neighbours by masking the plant's scent with sulfur compounds, so a ring may reduce aphids (including green peach aphid) on young trees, but treat it as plausible rather than proven for orchards and do not expect it to stop borers.", 'context-dependent'),
+            ('Marigolds (French or African, as a pre-plant cover crop)', 'The one nematode claim with science behind it, but only when grown as a dense block for a full season on the bare ground before you plant, not dotted under an established tree; genuinely useful for siting a new tree in warm sandy soils around Perth or the subtropics where root-knot nematode is a problem.', 'research-backed'),
         ],
-        "avoid": ["Potatoes and tomatoes (share some diseases)", "Grass under canopy (competes for water and nutrients during critical spring growth)", "Fennel"],
-        "pollinator": "Most peaches and nectarines are self-fertile. Plums, cherries, and apricots often need cross-pollinators. European plums are mostly self-fertile; Japanese plums need a cross-pollinator. Sweet cherries almost always need two different varieties. Check variety details before purchasing.",
-        "notes": "Stone fruit blooms early in spring when bees are still establishing. Planting borage and comfrey that flower in late winter ensures bee activity during critical pollination windows.",
+        "avoid": [
+            ('Tomatoes, potatoes, capsicum, strawberries and melons (and do not replant where they grew recently)', 'research-backed'),
+            ('Grass growing over the root zone, especially while the tree is young', 'research-backed'),
+            ('Tansy (toxic and an invasive weed, not a fruit fly repellent)', 'traditional'),
+            ('Fennel (self-seeding weed that competes in the understorey)', 'context-dependent'),
+        ],
+        "pollinator": 'Most peaches and nectarines fruit on their own, and apricots are mostly self-fertile (a second variety can still lift the crop). Japanese plums (Santa Rosa is partially self-fertile, Mariposa and Satsuma) usually need a compatible Japanese-plum partner, and Japanese and European plums do not pollinate each other. Sweet cherries generally need two compatible varieties, though self-fertile types like Stella, Lapins and Sunburst exist (and even those crop better with company, while S-allele incompatibility groups can block a cross between two sweet cherries). Always check the specific cultivar and pick a polliniser that flowers at the same time. Stone fruit, apricots especially, blossom early (around mid-August in southern Australia) in cold, wet weather when honeybees barely fly, so support native bees such as blue-banded bees that forage in cooler conditions, and plant winter-flowering nectar plants rather than relying on summer annuals.',
+        "notes": "Keep a mulched, grass-free circle out to the drip line while the tree establishes. Grass out-competes young trees for water and nitrogen in the topsoil and trials show turf to the trunk slows growth and delays cropping, with extra nitrogen failing to fix it, and the mulch also holds moisture, which matters most in Australia's drier and Mediterranean regions. Just mow any grass between the rows.",
+        "sources": [
+            ('Summerfruit: Pollination (BeeAware, Australia)', 'https://beeaware.org.au/pollination/pollinator-reliant-crops/summerfruit/'),
+            ('Verticillium wilt of deciduous fruit trees (Agriculture Victoria)', 'https://agriculture.vic.gov.au/biosecurity/plant-diseases/fruit-and-nut-diseases/stone-fruits/verticillium-wilt-of-deciduous-fruit-trees'),
+            ('Pollination (Heritage Fruit Trees, Australia)', 'https://www.heritagefruittrees.com.au/pollination/'),
+            ('Marigolds (Tagetes spp.) for Nematode Management (University of Florida IFAS, NG045)', 'https://edis.ifas.ufl.edu/publication/NG045'),
+        ],
     },
     {
-        "name": "Apple and Pear",
-        "slug": "apple-pear",
-        "icon": "🍏",
+        "name": 'Apple and Pear',
+        "slug": 'apple-pear',
+        "species_slugs": ['apple', 'pear'],
+        "icon": '🍏',
+        "intro": 'In Australia, the two things that actually decide whether you get clean apples and pears are matching the variety\'s winter chill to your district and managing fruit fly, not companion plants. Most companion pairings below are traditional folklore that is harmless to try; the genuinely useful "companions" are plants that feed pollinators and natural enemies, which is the part of companion planting the evidence supports.',
         "good": [
-            ("Chives and garlic", "Apple scab and codling moth deterrent. Allium roots release sulfur compounds into soil."),
-            ("Foxglove", "Traditionally grown under apple trees. Provides shelter for beneficial ground beetles."),
-            ("Nasturtium", "Groundcover that attracts aphids away from trees (trap crop). Also attracts hoverflies."),
-            ("Phacelia", "Excellent bee plant. Flowers in spring just as apples and pears bloom. Sow in autumn for spring flowers."),
-            ("Clover (as groundcover)", "Fixes nitrogen, feeds the orchard floor. Low-growing varieties like white clover suit the understory."),
+            ('Clover groundcover (white or subterranean)', 'A legume understorey that fixes nitrogen, suppresses weeds, holds moisture and feeds bees when flowering; the nitrogen boost is modest and slow, so treat it as a supplement, and keep a bare, mulched ring at the trunk to avoid collar rot and bark-chewing rabbits.', 'established-practice'),
+            ('Phacelia (Phacelia tanacetifolia)', "One of the best nectar plants for honey bees and a magnet for aphid-eating hoverflies; Yates lists it for bee-friendly Australian gardens, so time its bloom to overlap your trees' flowering since there are no bumblebees on the mainland.", 'established-practice'),
+            ('Flowering diversity (alyssum, umbellifers, native flowers)', "A mix of small flowers feeds the parasitoid wasps, hoverflies, ladybirds and lacewings that keep woolly apple aphid, mites and light brown apple moth in check; this beneficial-insect habitat is the defensible half of companion planting, far more reliable than any single 'pest-repelling' herb.", 'established-practice'),
+            ('Nasturtium (as a living mulch and aphid trap)', 'Draws certain aphids off nearby plants and feeds bees and hoverflies as a low-competition groundcover; the evidence is thin (the same plant is sold as both an aphid repellent and a trap), and the popular claim that it repels codling moth is folklore since the larvae bore straight into the fruit. Self-seeds readily in frost-free gardens.', 'traditional'),
+            ('Chives and garlic', 'Often claimed to deter apple scab and codling moth, but Australian authorities manage scab with resistant varieties, hygiene and fungicides, and codling moth with traps, bags and trunk banding, never alliums (and codling moth is absent from WA and the NT anyway); plant them if you like them, they are harmless and feed bees when flowering.', 'traditional'),
         ],
-        "avoid": ["Potatoes and tomatoes (blight risk in wet years)", "Walnut trees (juglone toxin, keep 15m apart)", "Tall grass (harbours codling moth pupae)"],
-        "pollinator": "Most apples and pears require cross-pollination. You need two different varieties that bloom at the same time. Crabapple trees are excellent universal pollinators for apples. For pears, Williams and Beurre Bosc are often used together. Check pollinators charts when buying.",
-        "notes": "Apples and pears have specific chilling hour requirements. Ensure your chosen varieties suit your climate zone before planting companions.",
+        "avoid": [
+            ("Potatoes and tomatoes crowding the root zone (the 'shared blight' fear is a myth)", 'traditional'),
+            ('Long grass and debris at the trunk (hides fallen fruit, invites collar rot and rodents)', 'established-practice'),
+            ('Foxglove (toxic, and a declared weed in Tasmania, an environmental weed in Victoria)', 'traditional'),
+            ("A mature black walnut's root zone (juglone, real chemistry but weak field evidence; black walnut is uncommon in Australia)", 'context-dependent'),
+        ],
+        "pollinator": "Most apples and pears need a second variety that flowers at the same time to set a good crop. Plant Health Australia's BeeAware confirms most apple varieties, most European pears (Pyrus communis) and most nashi are not self-fertile and need a compatible inter-planted donor. Apples pollinate apples and pears pollinate pears; the two groups cannot cross-pollinate each other. A long-flowering ornamental crabapple is a handy near-universal pollinizer for apples, as long as its bloom overlaps your eating variety. There are no bumblebees on mainland Australia, so honey bees and native bees do the work; plant for a calm, bee-friendly bloom. In warm, low-chill districts choose cultivars that flower together: Anna, Dorsett Golden and Tropic Sweet pollinate one another, and Anna is partly self-fertile.",
+        "notes": "Chilling hours are the make-or-break choice across Australia's climate range: each variety needs a set amount of winter chill (hours below about 7C) to flower and fruit evenly. Cool-temperate and Mediterranean uplands (Tasmania, the Adelaide Hills, Stanthorpe, the WA south-west, the Victorian and NSW ranges) suit standard high-chill varieties like Granny Smith, Pink Lady (Cripps Pink) and Fuji, while warm coastal and subtropical districts (coastal Queensland, northern NSW, the Perth coastal plain) need low-chill cultivars such as Anna, Dorsett Golden and Tropic Sweet (roughly 100 to 300 hours). On the pest front, fruit fly is the number one problem, Queensland fruit fly in the east and Mediterranean fruit fly (endemic to WA), and no companion plant stops it: use exclusion netting or fruit bags, protein or spinosad splash baits, and strict hygiene (destroy every fallen fruit, never compost it).",
+        "sources": [
+            ('Apples and pears: Pollination (BeeAware, Plant Health Australia)', 'https://beeaware.org.au/pollination/pollinator-reliant-crops/apples-pears/'),
+            ('Mediterranean fruit fly (DPIRD WA; endemic to WA, apples and pears are hosts, baiting plus netting plus hygiene)', 'https://www.dpird.wa.gov.au/businesses/pests-weeds-and-diseases/animal-pests-diseases/pest-insects/mediterranean-fruit-fly/'),
+            ('How to Get Rid of Codling Moth (Yates Australia; established all states except WA and NT, controls are traps, banding, bags, sanitation)', 'https://www.yates.com.au/garden-hub/codling-moth/'),
+            ('Venturia inaequalis: the causal agent of apple scab (peer-reviewed review; host range Rosaceae/Maloideae, not Solanaceae)', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6640350/'),
+        ],
     },
     {
-        "name": "Tropical Fruits (Lychee, Dragon Fruit, Banana, Longan)",
-        "slug": "tropical",
-        "icon": "🐉",
+        "name": 'Tropical Fruits (Lychee, Dragon Fruit, Banana, Longan)',
+        "slug": 'tropical',
+        "species_slugs": ['lychee', 'longan', 'dragon-fruit', 'banana', 'papaya'],
+        "icon": '🍍',
+        "intro": 'These are tropical and subtropical crops at home in the wet tropics, the NT Top End, SE Queensland and northern NSW; in Mediterranean and cool-temperate Australia they need a frost-free, wind-protected microclimate. Companion plants here earn their place by using the shaded ground productively, building soil and bringing in pollinators; they do not protect the crop from its real pests, which are managed by netting and monitoring.',
         "good": [
-            ("Ginger and turmeric", "Thrive in the same humid, warm conditions. Groundlevel plants that don't shade trees. Edible rhizomes as bonus harvest."),
-            ("Pawpaw (papaya)", "Fast-growing nurse plant for young tropical trees. Provides humidity and breaks strong winds while permanent trees establish."),
-            ("Heliconia", "Provides windbreak and habitat for beneficial insects in tropical gardens. Controlled spread keeps it manageable."),
-            ("Sweet potato", "Edible groundcover that suits tropical conditions. Suppresses weeds and retains soil moisture."),
+            ('French marigold (Tagetes patula)', 'The one companion with solid evidence: grown as a dense cover crop (rows and plants under about 18 cm apart) for a couple of months before planting in the same spot, its roots release alpha-terthienyl, which suppresses root-knot nematodes that stress young roots in sandy warm-climate soils; UF/IFAS extension is explicit that dotting a few plants between trees does not work, and that it suppresses rather than eradicates.', 'research-backed'),
+            ('Sweet potato (Ipomoea batatas)', 'One of the better living mulches for warm-climate fruit gardens, with field trials confirming its sprawling canopy suppresses weeds, conserves soil moisture and reduces erosion while giving an edible tuber crop; keep it off the trunk and pull it back if it climbs into young trees.', 'established-practice'),
+            ('Ginger and turmeric (Zingiber officinale, Curcuma longa)', 'A reliable understory layer under lychee, longan and banana in tropical and subtropical Australia: they want the same warm, humid, part-shade conditions, stay low so they never compete for light, and give an edible rhizome harvest (a space-stacking benefit, not pest control).', 'established-practice'),
+            ('Pawpaw (papaya, Carica papaya) as a temporary nurse plant', 'Fast-growing (bearing within about a year) and useful for side shade and humidity while a young lychee or longan establishes, then removed once the permanent tree fills out; note it is a confirmed fruit-fly host (both Queensland and Mediterranean fruit fly), so net or harvest promptly, and do not rely on it as a windbreak because it becomes top-heavy and topples.', 'established-practice'),
+            ('Insectary flowers (carrot and mustard families, alyssum, buckwheat, flowering herbs)', 'Small open flowers feed the hoverflies, lacewings and parasitic wasps that keep pest numbers down; Sustainable Gardening Australia identifies this biodiversity effect as the part of companion planting that genuinely holds up, so a mixed flowering border does more than any single pairing.', 'established-practice'),
+            ('Heliconia as a screen', 'Forms a dense clumping screen that can work as a low windbreak or visual barrier in frost-free gardens, but the beneficial-insect claim is folklore: its flowers are built for bird pollination (sunbirds here, hummingbirds in their native range), not the small beneficials that control orchard pests, and some species spread vigorously by rhizome, so treat it as a screen only.', 'traditional'),
         ],
-        "avoid": ["Cold-climate plants (root activity and soil chemistry differ)", "Heavy nitrogen fixers with lychee (can delay fruiting)", "Competing tall trees"],
-        "pollinator": "Lychee and longan are bee-pollinated. Dragon fruit flowers open only at night and are pollinated by moths and bats. Some dragon fruit varieties are self-fertile; others require two different varieties. Bananas do not require pollination — they fruit parthenocarpically.",
-        "notes": "Tropical fruit trees in subtropical or temperate climates need wind protection. Dense companion plantings on the southern side (in Australia) reduce frost and wind exposure.",
+        "avoid": [
+            ('Crowding with other tall trees', 'established-practice'),
+            ('Cold-climate plants (brassicas, temperate-orchard understory, cool-season herbs)', 'established-practice'),
+            ('A thick legume sward under mature lychee going into autumn', 'context-dependent'),
+        ],
+        "pollinator": "Lychee and longan are bee-pollinated and the honey bee is the principal pollinator. There is a real home-garden versus commercial conflict to know about: Yates calls a single lychee self-pollinating and says one tree will fruit, while BeeAware (Plant Health Australia) treats lychee as self-sterile and recommends at least two adjacent cultivars for good set (about 36 percent higher with two cultivars side by side, and fruit set roughly three times greater when flowers are open to bees versus bagged). For reliable crops, plant two cultivars. Dragon fruit flowers open at night and are worked by moths (and bats in their native range); some Australian-grown varieties are self-fertile (for example American Beauty) but others are self-sterile and need a second variety, and even self-fertile plants set larger fruit with cross or hand pollination, so confirm a variety's self-fertility with your supplier before relying on a single plant. Banana is parthenocarpic: triploid types like Cavendish and Lady Finger set fruit with no pollination and no seed.",
+        "notes": 'Be honest about pests: no companion plant protects these crops. The major insect threat to lychee and longan in eastern Australia is the fruit-spotting bug (Amblypelta nitida) and its relatives, which pierce developing fruit so that more than 90 percent of green fruit can be lost in heavy infestations; the tools that work are exclusion netting, monitoring and removing nearby alternative-host trees. Lychee is also genuinely sensitive to excess nitrogen, which drives vegetative flushing in autumn and suppresses flowering, so keep any nitrogen-fixing groundcover light and mowed under mature trees rather than letting a thick legume sward build up before flowering.',
+        "sources": [
+            ('Lychees: Pollination (BeeAware, Plant Health Australia)', 'https://beeaware.org.au/pollination/pollinator-reliant-crops/lychees/'),
+            ('Fruit-spotting bug (Business Queensland)', 'https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/insects/horticultural/fruit-spotting-bug'),
+            ('Marigolds (Tagetes spp.) for Nematode Management, ENY-056/NG045 (UF/IFAS Extension)', 'https://ask.ifas.ufl.edu/publication/NG045'),
+            ('Companion Planting (Sustainable Gardening Australia)', 'https://www.sgaonline.org.au/companion-planting/'),
+        ],
     },
 ]
 
+# (name, description, evidence_grade)
 AVOID_ALL = [
-    ("Fennel (Foeniculum vulgare)", "Highly allelopathic — releases chemicals that stunt many fruit trees. Keep at least 10m away from any orchard."),
-    ("Black walnut (Juglans nigra)", "Produces juglone, a chemical toxic to many species including apple, pear, and most stone fruit. Not commonly grown in Australia but worth knowing."),
-    ("Lawn grass (directly under canopy)", "Competes for nitrogen and water at the critical root zone. Keep a grass-free mulched circle at least 1m in diameter under all fruit trees."),
-    ("Brassicas (long-term)", "Short-term companions are fine, but brassica roots harbour club root disease which can persist in soil."),
+    ('Grass and turf right up to the trunk', 'The most reliable bad neighbour for any fruit tree, and the effect is competition (for water and nutrients), not allelopathy. Grass roots strip moisture and nutrients efficiently, slowing growth and delaying fruiting, and adding extra nitrogen does not overcome it. Keep a vegetation-free ring of roughly 0.6 to 1 m radius around young trees using woody mulch (kept off the trunk) or a clear circle. A larger cleared area gives no extra benefit. This is exactly what commercial Australian orchards do: a weed-free strip down the tree row with mown grass only in the alleyways. Applies Australia-wide.', 'research-backed'),
+    ('Black walnut (Juglans nigra) and its juglone', "A genuinely allelopathic tree: juglone in roots, hulls, leaves and buds inhibits germination and growth of sensitive species in controlled studies, the best-documented case of tree allelopathy. But it is largely academic for Australian gardens, Juglans nigra is uncommon here (a declared environmental weed in parts of Victoria and NSW), and the popular 'kills apples, tomatoes, blueberries' victim lists are weakly sourced and rarely show a consistent field effect (poor growth nearby is often just shade and dry soil). The common English/grafted walnut (Juglans regia) produces far less juglone, so backyard walnut fears are usually misplaced. Treat juglone as a real but situational risk (worst in heavy, poorly drained soil directly under a mature tree), not a guaranteed plant killer.", 'research-backed'),
+    ('Fennel (Foeniculum vulgare)', "Worth keeping away from an orchard, but for the right reason. The allelopathy evidence is in-vitro only (a petri-dish bioassay where 2.5 to 10 percent fennel extract suppressed germination of ryegrass, dandelion, wild barley and oat); there is no field evidence that living fennel harms fruit trees, and 'never plant fennel near anything' is folklore dressed as science. The genuine problem in Australia is that wild fennel is a serious declared weed across SA, Victoria, NSW and WA, so it escapes and competes. Discourage it near orchards on weediness and competition grounds, not on proven chemical harm.", 'context-dependent'),
+    ('Brassicas in clubroot-prone soil (interplanting/rotation, not the trees)', 'Clubroot (Plasmodiophora brassicae) is a real, persistent soil pathogen (resting spores survive up to about 20 years) that is established in Australia and favours warm, wet, acidic soils. Crucially it only attacks brassicas (cabbage, broccoli, cauliflower, kale, radish, canola, brassica weeds) and does NOT infect fruit trees. It matters only if you interplant or rotate brassicas, including brassica green manures like mustard, under or near the trees in soil that is or could become infested. Manage with liming to pH 7.0 to 7.5, long non-brassica rotations and hygiene. A separate, modest brassica-on-brassica allelopathy (glucosinolate breakdown from residues) is also brassica-only and harmless to trees. Listed here as a caution about understorey vegetables, not the trees themselves.', 'context-dependent'),
 ]
 
+# (name, description, evidence_grade)
 NITROGEN_FIXERS = [
-    ("White clover", "Best groundcover for orchard floors. Low-growing, bee-attracting, frost-hardy."),
-    ("Tagasaste (tree lucerne)", "Fast-growing nitrogen-fixing tree. Can be planted as a windbreak and slashed for mulch. Suits temperate climates."),
-    ("Pigeon pea", "Tropical and subtropical nitrogen fixer. Deep taproot mines phosphorus. Short-lived (3-5 years) so replant regularly."),
-    ("Comfrey (Bocking 14)", "Not a legume but mines nutrients from deep soil. Sterile variety won't spread. The single most useful companion for fruit trees."),
+    ('White clover (Trifolium repens)', 'A genuine nitrogen-fixing perennial groundcover and long-established orchard/pasture floor species. Like all legumes it fixes nitrogen via rhizobia in root nodules (Australian rule of thumb: about 20 to 38 kg N per tonne of legume shoot dry matter, plus roughly another 30 percent from roots), and the benefit reaches trees slowly via residue and root breakdown, not as a direct live donation. Its real limit is water: poor drought and heat tolerance. Australian data show it dominates pastures only above about 700 mm rainfall and declines fast once soil moisture drops below about 35 mm with weekly maxima over 20C. Suits cool-temperate, high-rainfall or irrigated sites (Tasmania, southern Victoria, NSW tablelands, southwest WA, Adelaide Hills); the heat-tolerant Haifa cultivar extends it toward subtropical and lower-rainfall (about 700 mm) zones. Not reliable as an unirrigated cover in hot, dry-summer regions.', 'research-backed'),
+    ('Tagasaste / tree lucerne (Chamaecytisus palmensis)', 'A fast-growing, deep-rooted leguminous shrub (roots to about 10 m on deep sands) that fixes nitrogen, yields abundant chop-and-drop mulch, and nurses frost-sensitive young trees. Best on deep, freely drained sandy soils; it dislikes waterlogging and heavy clay, and being deep-rooted it can draw down soil water, a real trade-off in low-rainfall alley cropping. Major Australian caveat: it is a recognised environmental weed in WA and Tasmania (in WA a serious invader of bushland on lateritic soils, naturalising from Badgingarra to Esperance, seedbank viable for over a decade, and by fixing N it raises soil nitrogen and encourages other weeds). Keep it well away from bushland, waterways and coastlines, and prune to prevent seed set. Where weediness is a concern, native nitrogen-fixers (some Acacia species) are alternatives.', 'established-practice'),
+    ('Pigeon pea (Cajanus cajan)', 'A drought-tolerant, deep-rooted legume used as a fast green manure, nurse plant and chop-and-drop mulch shrub, deriving a very high proportion (often 90 percent plus) of its nitrogen from the atmosphere. Measured field fixation ranges widely (under 20 kg N/ha in a single season up to roughly 37 to 117 kg N/ha/yr in longer intercrops), but those figures come from African and Indian agroforestry studies, not Australian orchards, so treat them as indicative. In Australia it suits tropical, subtropical and warm-temperate frost-free areas (coastal and northern Queensland, the NT, northern NSW, warmer subtropical gardens); it is frost-sensitive and short-lived, so in cooler southern Australia use it as a summer green-manure annual.', 'research-backed'),
+    ('Comfrey, ideally sterile Bocking 14 (NOT a nitrogen fixer)', "Include it for honesty: comfrey is not a legume and fixes NO nitrogen. The 'dynamic accumulator mining deep subsoil nutrients' claim is largely overstated folklore (most comfrey roots sit in the top foot of soil, and a plant cannot create nutrients that are not already there). What is real, from a single small Cornell field trial, is that comfrey foliage concentrates potassium (around 53,000 ppm) and silicon, so it is a useful fast-growing source of potassium-rich biomass for mulch and compost, recycling existing soil nutrients rather than generating fertility. Choose Bocking 14: it is sterile (sets no viable seed), spreading only by root division, so it is far less likely to become a weed than seeding types. Still divide clumps every few years and avoid letting root fragments escape.", 'context-dependent'),
+    ('Legume groundcovers in general (how the benefit actually arrives)', 'A framing entry for the soil chapter. Legumes (clovers, tagasaste, pigeon pea) fix atmospheric nitrogen via rhizobia, and the amount scales with shoot biomass, but most of that nitrogen stays in the plant: at maturity 30 to 40 percent is locked in seed, and the rest reaches the orchard slowly as residues and roots decompose, not as a live root-to-root gift to the tree. Live transfer is modest and depends on layout (genuinely interplanting among the trees transfers more than a legume off to one side). Inoculate with the correct rhizobia strain if that host legume has not grown on the site in the last few years. Practical line: a legume floor is a slow soil-building contribution realised through slashing and mulching, not an instant fertiliser hit. Australian extension figures (soilquality.org.au) apply nationwide.', 'research-backed'),
 ]
 
 POLLINATOR_SUMMARY = [
-    ("Mango", "Most need cross-pollinator for best yield. Bowen is most self-fertile."),
-    ("Avocado", "Plant one Type A + one Type B variety for best results."),
-    ("Apple", "Almost all need cross-pollinator. Crabapple works as universal partner."),
-    ("Pear", "Most need cross-pollinator. Match bloom times."),
-    ("Sweet cherry", "Almost all need cross-pollinator."),
-    ("Japanese plum", "Needs cross-pollinator."),
-    ("European plum", "Mostly self-fertile; cross-pollinator improves yield."),
-    ("Fig", "Most Australian commercial varieties are self-fertile."),
-    ("Citrus", "All self-fertile; cross-pollination improves yield."),
-    ("Peach / Nectarine", "Self-fertile."),
-    ("Apricot", "Mostly self-fertile; some varieties benefit from cross-pollinator."),
-    ("Lychee / Longan", "Self-fertile but cross-pollination improves set."),
-    ("Dragon fruit", "Varies by variety — check before buying."),
-    ("Banana", "No pollination required."),
+    ('Citrus', 'Self-fertile. One tree of any type fruits on its own.'),
+    ('Mandarin and tangelo hybrids', 'Many (Imperial, Afourer, Minneola) set a light crop alone; a second variety lifts yield but adds seeds.'),
+    ('Mango', 'Self-fertile. Kensington Pride (Bowen) crops reliably as a single tree.'),
+    ('Avocado', 'A single tree sets some fruit. One Type A plus one Type B lifts yield, but it is not strictly required.'),
+    ('Apple', 'Almost all need a different compatible apple flowering at the same time. Crabapple is a universal partner.'),
+    ('Pear (European and Nashi)', 'Treat as needing a partner; plant two compatible varieties or a multi-graft tree.'),
+    ('Sweet cherry', 'Most are self-infertile and fall into incompatibility groups; choose a known compatible pair.'),
+    ('Plum', 'Many Japanese plums need a partner. A Japanese plus European pairing often fails, so match within type.'),
+    ('Peach and nectarine', 'Self-fertile. One tree crops well.'),
+    ('Apricot', 'Mostly self-fertile; a few varieties benefit from a partner.'),
+    ('Fig', 'Common Australian varieties are parthenocarpic. No pollination or second tree needed.'),
+    ('Lychee', 'Largely self-sterile in practice; bees must move pollen, so a lone tree crops erratically.'),
+    ('Longan', 'Largely self-fertile; one tree usually crops (for example Biew Kiew).'),
+    ('Dragon fruit', 'Varies by variety; some self-fertile, some need cross-pollen and hand pollination at night.'),
+    ('Banana', 'No pollination required.'),
 ]
 
 FAQS = [
     (
-        "What is the best companion plant for all fruit trees?",
-        "Comfrey (Bocking 14 sterile variety) is widely considered the single most useful companion for fruit trees. It mines nutrients from deep soil, provides excellent mulch, and doesn't spread invasively. Plant 1-2 comfrey plants per tree at the drip line."
+        'What is the best companion plant for all fruit trees?',
+        'Comfrey (the sterile Bocking 14) is the most useful all-rounder. It mines nutrients from deep soil, makes excellent mulch, and does not spread by seed. Plant one or two per tree at the drip line. It does not fix nitrogen, so pair it with a legume groundcover for that.',
     ),
     (
-        "Do I need two fruit trees to get fruit?",
-        "It depends on the species and variety. Most citrus, peach, nectarine, fig, and banana are self-fertile. Apples, pears, sweet cherries, and avocados almost always need two different varieties. Check the pollinator requirements for your specific variety before purchasing."
+        'Do companion plants actually repel pests?',
+        "Mostly not in the way folklore claims. There is little evidence that a scattered herb repels a specific pest. What does work is biodiversity: a mix of flowering plants supports bees and natural predators (hoverflies, lacewings, parasitic wasps), and a few documented cases like dense marigolds suppressing soil nematodes. For Australia's main fruit pests, fruit fly and codling moth, rely on netting, bagging, traps and hygiene, not companions.",
     ),
     (
-        "Can I grow companion plants under a fruit tree?",
-        "Yes, but avoid grass and fennel. The best understory plants are comfrey, nasturtium, strawberry, or white clover. Keep a clear mulched circle immediately around the trunk to prevent collar rot and pest harbourage."
+        'Do I need two fruit trees to get fruit?',
+        'It depends on the species and variety. Most citrus, peaches, nectarines, figs and bananas are self-fertile. Apples, pears, sweet cherries and avocados crop far better with a second compatible variety. Check the pollinator requirements for your variety before buying.',
     ),
     (
-        "Why is fennel bad near fruit trees?",
-        "Fennel produces allelopathic chemicals from its roots that inhibit the growth of many plants, including most fruit trees. It's one of the few plants that is genuinely harmful as a companion — not just neutral. Keep fennel at least 10m from your orchard."
+        'Can I grow companion plants under a fruit tree?',
+        'Yes, but avoid grass and keep a clear mulched circle right around the trunk to prevent collar rot. The most useful understorey plants are comfrey, white clover, alyssum and nasturtium. Plant them at the drip line, not against the trunk.',
     ),
     (
-        "What can I plant to attract bees to my fruit trees?",
-        "Borage, phacelia, white clover, lavender, and comfrey all attract bees and other pollinators. Borage and phacelia are especially useful because they flower heavily in spring, when most fruit trees need pollination. Sow phacelia seeds in autumn for spring flowers."
+        'Why is fennel said to be bad near fruit trees?',
+        'Fennel is the classic bad companion. The evidence that it chemically harms established fruit trees in garden soil is actually thin, but fennel self-seeds aggressively into a weed, so it is still sensible to keep it out of the orchard.',
     ),
     (
-        "How close should companion plants be to fruit trees?",
-        "Most companion plants work best at the drip line (the outer edge of the canopy) rather than right against the trunk. Keep 30-50cm clear around the trunk with mulch. Tall companions (like tagasaste) should be planted 2-3m from the tree to avoid shading and root competition."
+        'What can I plant to attract bees to my fruit trees?',
+        'Borage, phacelia, alyssum, white clover and lavender all draw bees and other pollinators. Borage and phacelia are especially useful because they flower heavily in spring when most fruit trees bloom. Sow phacelia in autumn for spring flowers.',
+    ),
+    (
+        'How close should companion plants be to fruit trees?',
+        'Most companions work best at the drip line, the outer edge of the canopy, rather than against the trunk. Keep 30 to 50cm clear around the trunk with mulch. Tall companions like tagasaste should sit 2 to 3m out to avoid shading and root competition.',
     ),
 ]
 
+# Page-level references for the evidence framing (not tied to one species).
+GENERAL_SOURCES = [
+    ('The Myth of Companion Plantings (Linda Chalker-Scott, Washington State University Extension)', 'https://s3.wp.wsu.edu/uploads/sites/403/2015/03/companion-plantings.pdf'),
+    ('Companion Planting (Sustainable Gardening Australia)', 'https://www.sgaonline.org.au/companion-planting/'),
+    ('Marigolds (Tagetes spp.) for Nematode Management (UF/IFAS Extension)', 'https://ask.ifas.ufl.edu/publication/NG045'),
+    ('Flowering plants attract beneficial insects to vegetable farms (Cesar Australia)', 'https://cesaraustralia.com/blog/flowering-plants-attract-beneficial-insects-to-vegetable-farms/'),
+    ('Do Black Walnut Trees Have Allelopathic Effects on Other Plants? (WSU Extension, Linda Chalker-Scott)', 'https://pubs.extension.wsu.edu/product/do-black-walnut-trees-have-allelopathic-effects-on-other-plants-home-garden-series/'),
+    ('Managing Vegetation Around Fruit Trees (Utah State University Extension)', 'https://extension.usu.edu/yardandgarden/research/managing-vegetation-around-fruit-trees'),
+]
 
-def build_species_card(sp: dict) -> str:
-    good_rows = "".join(
-        f'<li class="mb-2"><strong class="text-green-800">{name}</strong> — {desc}</li>'
-        for name, desc in sp["good"]
-        if "Wait" not in name and "NOT" not in name
+
+# ----- Helpers -----
+
+def load_valid_species_slugs() -> set:
+    """Slugs that have a real /species/<slug>.html page. Empty set if the file is
+    missing so internal links are silently omitted rather than 404."""
+    try:
+        with open(SPECIES_FILE) as f:
+            return {s["slug"] for s in json.load(f)}
+    except (OSError, json.JSONDecodeError, KeyError, TypeError):
+        return set()
+
+
+def _species_link_html(sp: dict, valid_slugs: set) -> str:
+    links = [
+        f'<a href="/species/{s}.html" class="text-green-700 hover:underline">{s.replace("-", " ")}</a>'
+        for s in sp.get("species_slugs", []) if s in valid_slugs
+    ]
+    if not links:
+        return ""
+    return (
+        '<p class="text-xs text-gray-500 mt-3">Current stock and prices: '
+        + ", ".join(links)
+        + ".</p>"
     )
-    avoid_items = " ".join(
-        f'<span class="inline-block bg-red-50 border border-red-200 text-red-700 text-xs px-2 py-0.5 rounded-full mr-1 mb-1">{a}</span>'
-        for a in sp["avoid"]
+
+
+def _sources_html(sp: dict) -> str:
+    srcs = sp.get("sources") or []
+    if not srcs:
+        return ""
+    items = "".join(
+        f'<li><a href="{url}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{title}</a></li>'
+        for title, url in srcs
+    )
+    return (
+        '<details class="mt-3 text-xs text-gray-500">'
+        '<summary class="cursor-pointer hover:text-gray-700">Sources and further reading</summary>'
+        f'<ul class="list-disc pl-5 mt-1 space-y-0.5">{items}</ul></details>'
+    )
+
+
+def build_species_card(sp: dict, valid_slugs: set) -> str:
+    good_rows = "".join(
+        f'<li class="mb-2"><strong class="text-green-800">{name}</strong>. {desc}{grade_badge(grade)}</li>'
+        for name, desc, grade in sp["good"]
+    )
+    avoid_items = "".join(
+        '<span class="inline-flex items-center mr-2 mb-1">'
+        f'<span class="bg-red-50 border border-red-200 text-red-700 text-xs px-2 py-0.5 rounded-full">{name}</span>'
+        f"{grade_badge(grade)}</span>"
+        for name, grade in sp["avoid"]
     )
     intro_html = f'\n  <p class="text-sm text-gray-600 mb-4">{sp["intro"]}</p>' if sp.get("intro") else ""
     return f"""
@@ -210,7 +401,7 @@ def build_species_card(sp: dict) -> str:
     </div>
     <div>
       <h3 class="font-semibold text-gray-700 mb-2 text-sm uppercase tracking-wide">Avoid nearby</h3>
-      <div class="mb-4">{avoid_items}</div>
+      <div class="mb-4 flex flex-wrap">{avoid_items}</div>
 
       <h3 class="font-semibold text-gray-700 mb-2 text-sm uppercase tracking-wide">Pollination</h3>
       <p class="text-sm text-gray-600">{sp['pollinator']}</p>
@@ -220,14 +411,38 @@ def build_species_card(sp: dict) -> str:
   <div class="mt-3 p-3 bg-gray-50 rounded-lg text-xs text-gray-500 border border-gray-100">
     {sp['notes']}
   </div>
+  {_species_link_html(sp, valid_slugs)}
+  {_sources_html(sp)}
 </section>
 """
 
 
+def build_how_to_read() -> str:
+    legend = "".join(
+        f'<li class="flex items-start gap-2">{grade_badge(g)}<span class="text-gray-600">{meaning}</span></li>'
+        for g, meaning in [
+            ("research-backed", "Supported by peer-reviewed studies or university research."),
+            ("established-practice", "Broad horticultural consensus, low controversy."),
+            ("traditional", "Commonly recommended folklore with little hard evidence."),
+            ("context-dependent", "True only for certain varieties, climates or conditions."),
+        ]
+    )
+    return f"""
+<section class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 text-sm">
+  <p class="font-semibold text-amber-900 mb-1">How to read this guide</p>
+  <p class="text-gray-700 mb-3">Most companion planting advice online is tradition rather than tested science, so we grade every suggestion by how good the evidence is. The honest summary: a diverse, well-mulched garden that feeds bees and predatory insects helps your trees, while most specific "plant this to repel that" pairings are unproven.</p>
+  <ul class="space-y-1">
+    {legend}
+  </ul>
+</section>"""
+
+
 def build_avoid_section() -> str:
     rows = "".join(
-        f'<div class="flex gap-3 mb-3"><span class="text-red-500 mt-0.5 flex-shrink-0">&#10060;</span><div><strong class="text-gray-800">{name}</strong><p class="text-sm text-gray-600 mt-0.5">{desc}</p></div></div>'
-        for name, desc in AVOID_ALL
+        '<div class="flex gap-3 mb-3"><span class="text-red-500 mt-0.5 flex-shrink-0">&#10060;</span>'
+        f'<div><strong class="text-gray-800">{name}</strong>{grade_badge(grade)}'
+        f'<p class="text-sm text-gray-600 mt-0.5">{desc}</p></div></div>'
+        for name, desc, grade in AVOID_ALL
     )
     return f"""
 <section class="mb-10" id="avoid">
@@ -239,8 +454,10 @@ def build_avoid_section() -> str:
 
 def build_nitrogen_fixers_section() -> str:
     rows = "".join(
-        f'<div class="flex gap-3 mb-3"><span class="text-green-500 mt-0.5 flex-shrink-0">&#9679;</span><div><strong class="text-gray-800">{name}</strong><p class="text-sm text-gray-600 mt-0.5">{desc}</p></div></div>'
-        for name, desc in NITROGEN_FIXERS
+        '<div class="flex gap-3 mb-3"><span class="text-green-500 mt-0.5 flex-shrink-0">&#9679;</span>'
+        f'<div><strong class="text-gray-800">{name}</strong>{grade_badge(grade)}'
+        f'<p class="text-sm text-gray-600 mt-0.5">{desc}</p></div></div>'
+        for name, desc, grade in NITROGEN_FIXERS
     )
     return f"""
 <section class="mb-10" id="nitrogen">
@@ -293,6 +510,21 @@ def build_faq_section() -> str:
 """
 
 
+def build_references_section() -> str:
+    items = "".join(
+        f'<li><a href="{url}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{title}</a></li>'
+        for title, url in GENERAL_SOURCES
+    )
+    return f"""
+<section class="mb-10" id="references">
+  <h2 class="text-xl font-bold text-green-900 mb-3">References and Further Reading</h2>
+  <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+    {items}
+  </ul>
+</section>
+"""
+
+
 def build_toc() -> str:
     species_links = "".join(
         f'<li><a href="#{sp["slug"]}" class="text-green-700 hover:underline text-sm">{sp["icon"]} {sp["name"]}</a></li>'
@@ -307,22 +539,44 @@ def build_toc() -> str:
     <li><a href="#nitrogen" class="text-green-700 hover:underline text-sm">Nitrogen fixers and soil builders</a></li>
     <li><a href="#pollinators" class="text-green-700 hover:underline text-sm">Pollinator requirements quick reference</a></li>
     <li><a href="#faq" class="text-green-700 hover:underline text-sm">FAQs</a></li>
+    <li><a href="#references" class="text-green-700 hover:underline text-sm">References and further reading</a></li>
   </ul>
 </div>
 """
 
 
+def build_faq_jsonld() -> str:
+    """schema.org FAQPage structured data, kept in sync with FAQS."""
+    data = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": q,
+                "acceptedAnswer": {"@type": "Answer", "text": a},
+            }
+            for q, a in FAQS
+        ],
+    }
+    return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + "</script>"
+
+
 def build_page() -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    valid_slugs = load_valid_species_slugs()
 
-    species_sections = "".join(build_species_card(sp) for sp in SPECIES_COMPANIONS)
+    species_sections = "".join(build_species_card(sp, valid_slugs) for sp in SPECIES_COMPANIONS)
 
     head = render_head(
-        title="Companion Planting Guide for Fruit Trees — treestock.com.au",
-        description="What to plant near citrus, mango, avocado, fig, stone fruit, apple and pear. Pollinator requirements, nitrogen fixers, and plants to avoid. Australian conditions.",
+        title="Companion Planting Guide for Fruit Trees (Australia) | treestock.com.au",
+        description="Evidence-graded companion planting for citrus, mango, avocado, fig, stone fruit, apple and pear in Australia. Pollinator requirements, soil builders, plants to avoid, and which pest claims actually hold up.",
         canonical_url="https://treestock.com.au/companion-planting-guide.html",
-        og_title="Companion Planting for Fruit Trees — Complete Australian Guide",
-        og_description="Which plants grow well with citrus, mango, avocado, fig, and stone fruit? Pollinator requirements, soil builders, and plants to avoid near fruit trees.",
+        og_title="Companion Planting for Fruit Trees, an Evidence-Graded Australian Guide",
+        og_description="Which companions actually help citrus, mango, avocado, fig and stone fruit in Australia, which are folklore, and what your trees really need for pollination.",
+        og_type="article",
+        og_image="https://treestock.com.au/og-image.png",
+        extra_head=build_faq_jsonld(),
     )
     header = render_header()
     breadcrumb = render_breadcrumb([("Home", "/"), ("Companion Planting Guide", "")])
@@ -335,12 +589,14 @@ def build_page() -> str:
   {breadcrumb}
 
   <h1 class="text-2xl font-bold text-green-900 mb-2">Companion Planting Guide for Fruit Trees</h1>
-  <p class="text-gray-600 text-sm mb-6">What to grow near citrus, mango, avocado, fig, and stone fruit. Includes pollinator requirements and plants to avoid. Updated {today}.</p>
+  <p class="text-gray-600 text-sm mb-6">What to grow near citrus, mango, avocado, fig, stone fruit, apple and pear in Australian conditions, with honest evidence grades and pollinator requirements. Updated {today}.</p>
 
   <div class="prose prose-sm text-gray-700 mb-6 max-w-2xl">
-    <p>Companion planting is the practice of growing plants near each other for mutual benefit. For fruit trees, the right companions can attract pollinators, suppress weeds, build soil fertility, deter pests, and reduce water needs. The wrong companions, like fennel planted too close, can actively harm your trees.</p>
-    <p>This guide covers the most common fruit trees grown in Australian gardens. Use the pollinator table before buying any single tree, and the avoidance list before planting anything new near your orchard.</p>
+    <p>Companion planting means growing other plants near your fruit trees for some benefit: attracting pollinators and predatory insects, building soil, suppressing weeds, or holding moisture. It is genuinely useful, but it is also one of the most myth-laden topics in gardening.</p>
+    <p>This guide covers the fruit trees most commonly grown in Australian gardens. We grade every suggestion by how good the evidence is, check the pollination advice carefully (getting it wrong can cost you years of fruit), and note the Australian pests and climates that actually matter. Use the pollinator table before you buy a single tree.</p>
   </div>
+
+  {build_how_to_read()}
 
   {build_toc()}
 
@@ -354,14 +610,16 @@ def build_page() -> str:
 
   {build_faq_section()}
 
+  {build_references_section()}
+
   <!-- CTA -->
   <section class="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
     <h2 class="text-lg font-semibold text-green-900 mb-2">Find fruit trees for sale in Australia</h2>
-    <p class="text-sm text-green-800 mb-4">treestock.com.au tracks stock and prices across 19 nurseries daily. Search by species, filter by your state.</p>
+    <p class="text-sm text-green-800 mb-4">treestock.com.au tracks stock and prices across nurseries daily. Search by species, filter by your state.</p>
     <div class="flex gap-3 flex-wrap">
       <a href="/" class="inline-block bg-green-700 text-white px-4 py-2 rounded text-sm font-medium hover:bg-green-800">Search all nurseries</a>
       <a href="/species/" class="inline-block bg-white border border-green-300 text-green-700 px-4 py-2 rounded text-sm font-medium hover:bg-green-50">Browse by species</a>
-      <a href="/when-to-plant.html" class="inline-block bg-white border border-green-300 text-green-700 px-4 py-2 rounded text-sm font-medium hover:bg-green-50">Planting calendar</a>
+      <a href="/rare.html" class="inline-block bg-white border border-green-300 text-green-700 px-4 py-2 rounded text-sm font-medium hover:bg-green-50">Rare and unusual finds</a>
     </div>
   </section>
 </main>
