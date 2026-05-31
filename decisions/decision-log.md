@@ -4,6 +4,45 @@
 
 ---
 
+## DEC-124 — 2026-05-31 — Companion planting guide: evidence-graded, Australia-specific rewrite
+
+**Decided by:** Dale (interactive session with Benedict)
+
+**Context:** /companion-planting-guide.html ranks moderately but had a wrong fig icon (the
+blueberry emoji), uncited generic advice, and folklore presented as fact. Benedict asked to
+make it genuinely good and accurate, explicitly wanting research agents fanned out for
+Australia-specific and scientific sourcing.
+
+**Decided:**
+- Keep the existing builder and the 7 fruit groups; deepen rather than add species.
+- Grade every claim (research-backed, established-practice, traditional, context-dependent)
+  with a visible badge and an honest "how to read this guide" framing. Most companion-planting
+  pairings are folklore; only a few (marigold against root-knot nematode, walnut juglone) are
+  research-backed.
+- Fix icons with emoji (fig becomes a tree, no fig emoji exists; tropical a pineapple), not SVG.
+- Generate the verified content with a 26-agent workflow: per group gather, then adversarially
+  verify, then synthesize, plus theme agents for pollination, allelopathy, soil nitrogen and pests.
+
+**Shipped (merged to main, deployed, verified live):**
+- Rewrote build_companion_guide.py: graded data, badges, internal /species/ deep-links validated
+  against fruit_species.json, per-species and page-level citations, FAQ JSON-LD, OG tags, removed
+  dead data and all em dashes, repointed the broken planting-calendar CTA.
+- New tests/test_companion_guide.py (11 cases); full unittest suite green.
+- Research corrected live misinformation: mango Kensington Pride is self-fertile (was "needs two
+  varieties"), the avocado "Type A plus Type B or no fruit" myth, basil attracting rather than
+  repelling fruit fly, marigold only as a dense pre-plant cover crop. All rendered source URLs
+  were checked to resolve.
+
+**Process note:** done in an isolated git worktree and branch (PR #2, squash-merged) because a
+second agent was working the same repo concurrently. See memory feedback_parallel_agent_worktree.
+
+**Found, not fixed (needs its own ticket):** /when-to-plant.html is linked site-wide (nav,
+sitemap, GSC) but no builder produces it, so it is a 404. See memory project_when_to_plant_404.
+
+**Commit:** 7f5c99a (PR #2).
+
+---
+
 ## DEC-123 — 2026-05-18 — Session 84: GSC page review actions (DAL-187, DAL-189)
 
 **Decided by:** Dale (autonomous)
