@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from daily_digest import load_snapshot, compare_snapshots, NURSERY_NAMES, ALL_CATEGORIES
 from send_digest import get_subscriber_categories, get_subscriber_frequency, get_subscriber_state
 from shipping import SHIPPING_MAP, nursery_ships_to
+from stocklib.email_footer import inject_footer, inject_text_footer
 
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
@@ -431,38 +432,6 @@ def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "",
     lines.append("")
     lines.append("Know a fellow fruit grower who would love this? Forward this email to them.")
     return "\n".join(lines)
-
-
-def inject_footer(html: str, email: str, token: str, state: str) -> str:
-    encoded_email = urllib.parse.quote(email)
-    unsubscribe_url = f"{SITE_URL}/unsubscribe.html?email={encoded_email}&token={token}"
-    preferences_url = f"{SITE_URL}/api/preferences?email={encoded_email}&token={token}"
-    state_label = f"Filtered to: {state}" if state != "ALL" else "Showing: all states"
-
-    footer = f"""
-<hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
-<p style="font-size:0.75em;color:#9ca3af;text-align:center">
-  You're receiving this because you subscribed at <a href="{SITE_URL}" style="color:#6b7280">{SITE_URL}</a>.<br>
-  {state_label} &middot; <a href="{preferences_url}" style="color:#6b7280">Manage your alerts</a> &middot; <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
-</p>
-"""
-    if "</body>" in html:
-        return html.replace("</body>", footer + "</body>", 1)
-    return html + footer
-
-
-def inject_text_footer(text: str, email: str, token: str, state: str) -> str:
-    encoded_email = urllib.parse.quote(email)
-    unsubscribe_url = f"{SITE_URL}/unsubscribe.html?email={encoded_email}&token={token}"
-    preferences_url = f"{SITE_URL}/api/preferences?email={encoded_email}&token={token}"
-    state_label = f"Filtered to: {state}" if state != "ALL" else "Showing: all states"
-    return (
-        text
-        + f"\n\n---\nYou're receiving this because you subscribed at {SITE_URL}.\n"
-        + f"{state_label}\n"
-        + f"Manage your alerts: {preferences_url}\n"
-        + f"Unsubscribe: {unsubscribe_url}\n"
-    )
 
 
 def send_email(api_key: str, to_email: str, subject: str, html_body: str, text_body: str = "") -> bool:

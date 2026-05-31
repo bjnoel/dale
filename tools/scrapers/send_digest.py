@@ -30,6 +30,7 @@ from pathlib import Path
 # Import digest generation for per-state filtering
 sys.path.insert(0, str(Path(__file__).parent))
 from daily_digest import load_all_changes, format_html, has_any_changes, ALL_CATEGORIES
+from stocklib.email_footer import inject_footer
 
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
@@ -41,9 +42,6 @@ APP_ENV = SECRETS_DIR / "app.env"
 
 FROM_EMAIL = "alerts@mail.treestock.com.au"
 FROM_NAME = "treestock.com.au"
-SITE_URL = "https://treestock.com.au"
-UNSUBSCRIBE_BASE = f"{SITE_URL}/unsubscribe.html"
-PREFERENCES_BASE = f"{SITE_URL}/api/preferences"
 
 
 def get_resend_api_key() -> str:
@@ -131,27 +129,6 @@ def get_subscriber_frequency(subscriber: dict) -> str:
     if freq not in ("daily", "weekly", "off"):
         return "daily"
     return freq
-
-
-def inject_footer(html: str, email: str, token: str, state: str) -> str:
-    """Add personalised footer with unsubscribe + preferences links."""
-    encoded_email = urllib.parse.quote(email)
-    unsubscribe_url = f"{UNSUBSCRIBE_BASE}?email={encoded_email}&token={token}"
-    preferences_url = f"{PREFERENCES_BASE}?email={encoded_email}&token={token}"
-
-    state_label = f"Filtered to: {state}" if state != "ALL" else "Showing: all states"
-
-    footer = f"""
-<hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
-<p style="font-size:0.75em;color:#9ca3af;text-align:center">
-  You're receiving this because you subscribed at <a href="{SITE_URL}" style="color:#6b7280">{SITE_URL}</a>.<br>
-  {state_label} · <a href="{preferences_url}" style="color:#6b7280">Manage your alerts</a> · <a href="{unsubscribe_url}" style="color:#6b7280">Unsubscribe</a>
-</p>
-"""
-    # Insert before </body> if present, else append
-    if "</body>" in html:
-        return html.replace("</body>", footer + "</body>", 1)
-    return html + footer
 
 
 def send_email(api_key: str, to_email: str, subject: str, html_body: str) -> bool:
