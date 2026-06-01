@@ -8,8 +8,9 @@ was two copies).
 If this test fails, you copied a shared definition into a module instead of
 importing it from stocklib. Move it back to the package.
 
-Scope: top-level tools/scrapers/*.py plus stocklib/*.py. The bee/ subsite still
-forks some of this (de-fork pending) and is intentionally not scanned yet.
+Scope: top-level tools/scrapers/*.py plus stocklib/*.py for the constant guards.
+The de-forked items (the stock-change engine, and the page <head>/<header>
+chrome) additionally scan bee/, since that is where they had forked.
 
 Run from repo root with:
     python3 -m unittest discover tests/
@@ -73,6 +74,24 @@ class NoForkingTest(unittest.TestCase):
         self.assertEqual(definers(r"^def compare_snapshots\b"), ["stocklib/changes.py"])
         # the underscore-aliased forks are gone (all import `variant_key as _variant_key`)
         self.assertEqual(definers(r"^def _variant_key\b"), [])
+
+    def test_layout_chrome_not_re_forked(self):
+        """The page <head> and the site <header> live only in stocklib/layout.py.
+        treestock_layout and bee/beestock_layout bind them to a SiteConfig (via
+        functools.partial) rather than redefining them. Scans bee/ too, since
+        that is where the layout had forked (logo colour, nav, Plausible)."""
+        files = _scanned_files() + sorted((SCRAPERS / "bee").glob("*.py"))
+
+        def definers(pattern):
+            rx = re.compile(pattern)
+            return sorted(
+                str(f.relative_to(SCRAPERS))
+                for f in files
+                if any(rx.search(line) for line in f.read_text().splitlines())
+            )
+
+        self.assertEqual(definers(r"^def render_head\b"), ["stocklib/layout.py"])
+        self.assertEqual(definers(r"^def render_header\b"), ["stocklib/layout.py"])
 
 
 if __name__ == "__main__":
