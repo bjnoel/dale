@@ -52,17 +52,9 @@ def extract_box_depth(title: str) -> str | None:
     return None
 
 
-def _variant_key(product_url: str, variant: dict) -> str:
-    """Generate a unique key for a specific variant within a product."""
-    base = product_url or ""
-    sku = variant.get("sku")
-    if sku:
-        return f"{base}|sku:{sku}"
-    vid = variant.get("id")
-    if vid:
-        return f"{base}|id:{vid}"
-    vtitle = variant.get("title", "Default")
-    return f"{base}|v:{vtitle}"
+# _variant_key lives in stocklib.changes (shared engine).
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # reach stocklib
+from stocklib.changes import variant_key as _variant_key
 
 
 def load_price_history(data_dir: Path) -> dict[str, list[float | None]]:

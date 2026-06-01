@@ -21,114 +21,20 @@ from pathlib import Path
 from bee_retailers import SHIPPING_MAP, RETAILER_NAMES, RETAILERS, retailer_ships_to
 from bee_categories import categorise_product, category_name
 from beestock_layout import render_head, render_header, render_footer
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # reach stocklib in parent
+from stocklib import changes as _changes
+from stocklib.changes import variant_key as _variant_key, variant_display_title as _variant_display_title, compare_snapshots
 
 
-def _variant_key(product_url: str, variant: dict) -> str:
-    """Generate a unique key for a specific variant within a product."""
-    base = product_url or ""
-    sku = variant.get("sku")
-    if sku:
-        return f"{base}|sku:{sku}"
-    vid = variant.get("id")
-    if vid:
-        return f"{base}|id:{vid}"
-    vtitle = variant.get("title", "Default")
-    return f"{base}|v:{vtitle}"
 
 
-def _variant_display_title(product_title: str, variant_title: str) -> str:
-    """Build a display title for a variant."""
-    if not variant_title or variant_title in ("Default", "Default Title"):
-        return product_title
-    return f"{product_title} ({variant_title})"
 
 
 def load_snapshot(retailer_dir: Path, target_date: str) -> dict:
-    """Load a snapshot for a specific date, return product lookup by variant key."""
-    snapshot = retailer_dir / f"{target_date}.json"
-    if not snapshot.exists():
-        return {}
-    with open(snapshot) as f:
-        data = json.load(f)
-    products = {}
-
-    for p in data.get("products", []):
-        url = p.get("url", "")
-        title = p.get("title", "")
-        variants = p.get("variants", [])
-
-        if not variants:
-            key = url or title
-            products[key] = p
-        else:
-            for v in variants:
-                vkey = _variant_key(url, v)
-                vprice = v.get("price")
-                if isinstance(vprice, str):
-                    try:
-                        vprice = float(vprice)
-                    except (ValueError, TypeError):
-                        vprice = None
-
-                products[vkey] = {
-                    "title": _variant_display_title(title, v.get("title", "")),
-                    "url": url,
-                    "min_price": vprice,
-                    "any_available": bool(v.get("available", False)),
-                }
-
-    return products
+    """beestock snapshot load: keeps all products. Engine in stocklib.changes."""
+    return _changes.load_snapshot(retailer_dir, target_date)
 
 
-def compare_snapshots(prev: dict, curr: dict) -> dict:
-    """Compare two snapshots and return categorized changes."""
-    changes = {
-        "price_drops": [],
-        "back_in_stock": [],
-        "new_products": [],
-    }
-
-    for key, product in curr.items():
-        title = product.get("title", "")
-        price = product.get("min_price")
-        available = product.get("any_available", product.get("available", False))
-
-        if key not in prev:
-            if available:
-                changes["new_products"].append({
-                    "title": title,
-                    "price": price,
-                    "url": product.get("url", ""),
-                })
-            continue
-
-        prev_product = prev[key]
-        prev_price = prev_product.get("min_price")
-        prev_available = prev_product.get("any_available", prev_product.get("available", False))
-
-        back_in_stock = available and not prev_available
-
-        if back_in_stock:
-            entry = {
-                "title": title,
-                "price": price,
-                "url": product.get("url", ""),
-            }
-            if price and prev_price and abs(price - prev_price) > 0.01:
-                entry["old_price"] = prev_price
-            changes["back_in_stock"].append(entry)
-
-        if price and prev_price and available and not back_in_stock:
-            diff = price - prev_price
-            if diff < -0.01:
-                changes["price_drops"].append({
-                    "title": title,
-                    "old_price": prev_price,
-                    "new_price": price,
-                    "url": product.get("url", ""),
-                })
-
-    return changes
 
 
 def format_text(all_changes: dict, target_date: str, state: str = "") -> str:
@@ -439,26 +345,8 @@ def build_digest_index(digest_dir: "Path") -> str:
 
 
 def load_all_changes(data_dir: Path, target_date: str) -> tuple[dict, int]:
-    """Load and compare snapshots for a given date."""
-    prev_date = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
-    all_changes = {}
-    total_changes = 0
-
-    for retailer_dir in sorted(data_dir.iterdir()):
-        if not retailer_dir.is_dir():
-            continue
-        if retailer_dir.name not in RETAILERS:
-            continue
-        prev = load_snapshot(retailer_dir, prev_date)
-        curr = load_snapshot(retailer_dir, target_date)
-        if not prev or not curr:
-            continue
-        changes = compare_snapshots(prev, curr)
-        retailer_key = retailer_dir.name
-        all_changes[retailer_key] = changes
-        total_changes += sum(len(v) for v in changes.values())
-
-    return all_changes, total_changes
+    """beestock changes: all products, RETAILERS dirs only. Engine in stocklib.changes."""
+    return _changes.load_all_changes(data_dir, target_date, keys=set(RETAILERS))
 
 
 def _update_sitemap_for_digests(digest_dir: "Path") -> None:
