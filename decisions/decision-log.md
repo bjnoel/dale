@@ -4,6 +4,22 @@
 
 ---
 
+## DEC-125 — 2026-06-01 — Re-home /when-to-plant.html as a server-rendered, cited builder
+
+**Decided by:** Dale (interactive session with Benedict)
+
+**Context:** /when-to-plant.html was built once in March 2026 (DEC-100) but no builder regenerated it (its file mtime had been frozen since 28 March). Its 50-species planting calendar was rendered entirely in client-side JS, so search crawlers saw an empty table. It also had no citations, an unversioned styles.css, only four climate zones, and em/en dashes.
+
+**Decision:** Rebuild it as `tools/scrapers/build_when_to_plant.py` (modelled on build_companion_guide.py) and wire it into run-all-scrapers.sh so it regenerates daily. The calendar is now server-rendered (crawlable), uses the shared treestock_layout, adds a fifth (arid/dry-inland) zone with a no-JS filter, carries per-section citations plus a References block from verified AU sources, FAQPage JSON-LD, and /species/ links validated against fruit_species.json. No em or en dashes.
+
+**Content provenance:** Researched and adversarially verified against AU authorities (state ag departments, ABC Gardening Australia, SGA, BOM, Daleys) via a 17-agent fan-out workflow. The species table was audited: no tree-killing errors found. Applied fixes for a dragon-fruit frost warning, apple subtropical low-chill, arid tags (loquat, apricot), and the blueberry bare-root note.
+
+**Shipped:** PR #11, merged to main. Deployed and verified live (HTTP 200, fresh mtime, 50 server-rendered rows, zero dashes). tests/test_when_to_plant.py (20 tests); full suite 178 green.
+
+**To revert:** remove build_when_to_plant.py and its run-all-scrapers.sh step. The prior static when-to-plant.html remains in git history.
+
+---
+
 ## DEC-124 — 2026-05-31 — Companion planting guide: evidence-graded, Australia-specific rewrite
 
 **Decided by:** Dale (interactive session with Benedict)
