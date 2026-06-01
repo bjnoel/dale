@@ -55,6 +55,25 @@ class NoForkingTest(unittest.TestCase):
                 f"{definers}. Shared logic lives in stocklib/ -- import it, don't copy it.",
             )
 
+    def test_comparison_engine_not_re_forked(self):
+        """The stock-change engine (variant_key / compare_snapshots) lives only in
+        stocklib.changes; treestock AND beestock import it. Scans bee/ too, since
+        that is where it had forked."""
+        files = _scanned_files() + sorted((SCRAPERS / "bee").glob("*.py"))
+
+        def definers(pattern):
+            rx = re.compile(pattern)
+            return sorted(
+                str(f.relative_to(SCRAPERS))
+                for f in files
+                if any(rx.search(line) for line in f.read_text().splitlines())
+            )
+
+        self.assertEqual(definers(r"^def variant_key\b"), ["stocklib/changes.py"])
+        self.assertEqual(definers(r"^def compare_snapshots\b"), ["stocklib/changes.py"])
+        # the underscore-aliased forks are gone (all import `variant_key as _variant_key`)
+        self.assertEqual(definers(r"^def _variant_key\b"), [])
+
 
 if __name__ == "__main__":
     unittest.main()
