@@ -27,8 +27,7 @@ DATA_DIR = Path("/opt/dale/data/nursery-stock")
 FRUIT_SPECIES = Path(__file__).parent / "fruit_species.json"
 OUTPUT_DIR = Path("/opt/dale/dashboard")
 
-NON_PLANT_KEYWORDS = {"fertiliser", "fertilizer", "potting mix", "soil", "spray", "book", "guide",
-                      "label", "tool", "bag", "pot", "glove", "support", "stake", "wire"}
+from stocklib.classify import NON_PLANT_KEYWORDS
 
 
 def load_species():

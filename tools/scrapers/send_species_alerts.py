@@ -63,18 +63,7 @@ TREESMITH_PROMO = (
     '</div>'
 )
 
-NON_PLANT_KEYWORDS = [
-    "fertilizer", "fertiliser", "potting mix", "soil mix", "seaweed solution",
-    "fish emulsion", "worm castings", "secateurs", "pruning", "garden gloves",
-    "plant label", "grafting tape", "grafting knife", "budding tape",
-    "grow bag", "terracotta", "saucer", "pest spray", "insecticide", "fungicide",
-    "neem oil", "insect killer", "insect control", "white oil", "weed killer",
-    "herbicide", "concentrate spray", "shipping", "postage", "freight",
-    "delivery charge", "gift card", "gift voucher", "gift certificate",
-    "sharp shooter", "searles liquid", "ecofend",
-    "ornamental",  # ornamental trees/shrubs are not fruit trees
-    "asparagus",   # vegetable, not a fruit tree
-]
+from stocklib.classify import NON_PLANT_KEYWORDS
 
 
 def get_resend_api_key() -> str:
