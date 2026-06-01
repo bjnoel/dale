@@ -29,9 +29,13 @@ EXPECTED_DIR = GOLDEN_DIR / "expected"
 # Tokens that vary by the run date/time (not by input). Normalised on both sides
 # so the goldens stay stable across days. Keep this list tight: over-normalising
 # would mask real output changes.
+_MONTHS = (r"January|February|March|April|May|June|July|August|"
+           r"September|October|November|December")
 _NORMALISERS = [
     (re.compile(r"\?v=\d{8}"), "?v=DATE"),                            # CSS cache-buster
-    (re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC"), "TIMESTAMP"),  # "now" stamp
+    (re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC"), "TIMESTAMP"),  # "now" UTC stamp
+    (re.compile(r"\b\d{1,2} (?:" + _MONTHS + r") \d{4}"), "DATE"),    # "1 June 2026"
+    (re.compile(r"\d{4}-\d{2}-\d{2}(?!T)"), "DATE"),                 # ISO "Updated YYYY-MM-DD" (not datetimes like scraped_at)
 ]
 
 

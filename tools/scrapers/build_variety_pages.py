@@ -40,18 +40,7 @@ NURSERY_URLS = {
     "fruit-tree-cottage": "https://www.fruittreecottage.com.au",
 }
 
-NON_PLANT_KEYWORDS = [
-    "fertilizer", "fertiliser", "potting mix", "soil mix", "seaweed",
-    "fish emulsion", "worm castings", "secateurs", "pruning", "gloves",
-    "plant label", "grafting tape", "grafting knife", "grow bag",
-    "pest spray", "insecticide", "fungicide", "neem oil", "white oil",
-    "weed killer", "herbicide", "gift card", "gift voucher", "shipping",
-    "postage", "freight", "delivery", "sharp shooter", "searles",
-    "richgro", "poss-off", "eco-oil", "eco oil", "seasol", "powerfeed",
-    "yates", "osmocote", "dynamic lifter",
-    "ornamental",  # ornamental trees/shrubs are not fruit trees
-    "asparagus",   # vegetable, not a fruit tree
-]
+from stocklib.classify import NON_PLANT_KEYWORDS
 
 
 from cultivar_parsing import slugify, parse_cultivar  # noqa: E402

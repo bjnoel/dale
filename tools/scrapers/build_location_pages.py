@@ -26,29 +26,7 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
 # Non-plant keywords to exclude regardless of species match
-NON_PLANT_KEYWORDS = [
-    "fertilizer", "fertiliser", "potting mix", "soil mix", "seaweed solution",
-    "fish emulsion", "worm castings", "secateurs", "pruning", "garden gloves",
-    "plant label", "grafting tape", "grafting knife", "budding tape",
-    "grow bag", "saucer", "pest spray", "insecticide", "fungicide",
-    "neem oil", "insect killer", "insect control", "white oil", "weed killer",
-    "herbicide", "concentrate spray", "shipping", "postage", "freight",
-    "delivery charge", "gift card", "gift voucher", "gift certificate",
-    "irrigation", "connector", "tree guard", "rubber hook", "biochar",
-    "banana bunch cover", "bonsai bag", "tree tube", "tree stake",
-    "orchard kit", "gropod", "searles", "ecofend", "sharp shooter",
-    # Ornamental/non-fruit species Daleys sells
-    "eucalyptus", "melaleuca", "callistemon", "banksia", "sheoak",
-    "cordyline", "brachychiton", "lomandra", "allocasuarina",
-    "acacia", "wattle", "bottlebrush", "kurrajong", "red bean",
-    "white beech", "white cedar", "ivory curl", "flame tree",
-    "swamp turpentine", "forest mat rush", "brown tamarind",
-    "swamp paperbark", "river red gum", "lemon scented gum",
-    "narrow-leaved ironbark", "flooded gum", "blackbutt",
-    "resource book", "catalogue",
-    "ornamental",  # ornamental trees/shrubs are not fruit trees
-    "asparagus",   # vegetable, not a fruit tree
-]
+from stocklib.classify import NON_PLANT_KEYWORDS
 
 # States to generate pages for
 STATES = ["WA", "QLD", "NSW", "VIC"]

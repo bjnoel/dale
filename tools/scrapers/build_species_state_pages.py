@@ -96,18 +96,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "strawberry": "temperate", "grape": "temperate",
 }
 
-NON_PLANT_KEYWORDS = [
-    "fertilizer", "fertiliser", "potting mix", "soil mix", "seaweed",
-    "fish emulsion", "worm castings", "secateurs", "pruning", "garden gloves",
-    "plant label", "grafting tape", "grafting knife", "budding tape",
-    "grow bag", "saucer", "pest spray", "insecticide", "fungicide",
-    "neem oil", "insect killer", "white oil", "weed killer",
-    "herbicide", "shipping", "postage", "freight",
-    "delivery charge", "gift card", "gift voucher", "gift certificate",
-    "irrigation", "connector", "tree guard", "rubber hook", "biochar",
-    "banana bunch cover", "bonsai bag", "tree tube", "tree stake",
-    "ornamental", "asparagus", "resource book", "catalogue",
-]
+from stocklib.classify import NON_PLANT_KEYWORDS
 
 
 def load_species() -> list[dict]:
