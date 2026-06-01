@@ -51,13 +51,7 @@ SKIP_SLUGS = {
 }
 
 # Title keywords that indicate non-plant items to skip
-NON_PLANT_KEYWORDS = [
-    "label", "labels", "workshop", "class", "ticket",
-    "fertilizer", "fertiliser", "secateur", "pruning",
-    "shipping", "postage", "freight", "delivery",
-    "gift card", "gift voucher", "gift certificate",
-    "orchard kit", "grafting tape", "budding tape",
-]
+from stocklib.classify import NON_PLANT_KEYWORDS
 
 REQUEST_DELAY = 1.5  # seconds between requests (be polite)
 
