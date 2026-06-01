@@ -38,6 +38,8 @@ FRUIT_FILTERS = {
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib import changes as _changes
+from stocklib.changes import variant_key as _variant_key, variant_display_title as _variant_display_title, compare_snapshots
 
 # Backwards-compat: set of nurseries that ship to WA (used by build_history.py)
 WA_NURSERIES = {k for k, states in SHIPPING_MAP.items() if "WA" in states}
@@ -82,130 +84,15 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
     return True
 
 
-def _variant_key(product_url: str, variant: dict) -> str:
-    """Generate a unique key for a specific variant within a product."""
-    base = product_url or ""
-    # Prefer SKU (Daleys, Ecwid) — most stable identifier
-    sku = variant.get("sku")
-    if sku:
-        return f"{base}|sku:{sku}"
-    # Prefer variant ID (Shopify)
-    vid = variant.get("id")
-    if vid:
-        return f"{base}|id:{vid}"
-    # Fallback: variant title
-    vtitle = variant.get("title", "Default")
-    return f"{base}|v:{vtitle}"
 
 
-def _variant_display_title(product_title: str, variant_title: str) -> str:
-    """Build a display title for a variant, e.g. 'Acerola (Large)'."""
-    if not variant_title or variant_title in ("Default", "Default Title"):
-        return product_title
-    return f"{product_title} ({variant_title})"
 
 
 def load_snapshot(nursery_dir: Path, target_date: str) -> dict:
-    """Load a snapshot for a specific date, return product lookup by variant key.
-
-    Multi-variant products are flattened so each variant is tracked independently.
-    This prevents false price changes when one variant goes out of stock and the
-    min_price shifts to a different-priced variant.
-    """
-    snapshot = nursery_dir / f"{target_date}.json"
-    if not snapshot.exists():
-        return {}
-    with open(snapshot) as f:
-        data = json.load(f)
-    products = {}
-    nursery_key = nursery_dir.name
-    for p in data.get("products", []):
-        if not is_fruit_product(p, nursery_key):
-            continue
-
-        url = p.get("url", "")
-        title = p.get("title", "")
-        variants = p.get("variants", [])
-
-        if not variants:
-            # No variants at all (e.g. Ecwid flat products) — key by URL
-            key = url or title
-            products[key] = p
-        else:
-            # Always flatten to variant level, even single-variant products.
-            # This ensures consistent keys when a product gains/loses variants.
-            for v in variants:
-                vkey = _variant_key(url, v)
-                vprice = v.get("price")
-                if isinstance(vprice, str):
-                    try:
-                        vprice = float(vprice)
-                    except (ValueError, TypeError):
-                        vprice = None
-
-                products[vkey] = {
-                    "title": _variant_display_title(title, v.get("title", "")),
-                    "url": url,
-                    "min_price": vprice,
-                    "any_available": bool(v.get("available", False)),
-                }
-
-    return products
+    """treestock snapshot load: fruit-filtered. Engine in stocklib.changes."""
+    return _changes.load_snapshot(nursery_dir, target_date, product_filter=is_fruit_product)
 
 
-def compare_snapshots(prev: dict, curr: dict) -> dict:
-    """Compare two snapshots and return categorized changes."""
-    changes = {
-        "price_drops": [],
-        "back_in_stock": [],
-        "new_products": [],
-    }
-
-    for key, product in curr.items():
-        title = product.get("title", "")
-        price = product.get("min_price")
-        available = product.get("any_available", product.get("available", False))
-
-        if key not in prev:
-            if available:
-                changes["new_products"].append({
-                    "title": title,
-                    "price": price,
-                    "url": product.get("url", ""),
-                })
-            continue
-
-        prev_product = prev[key]
-        prev_price = prev_product.get("min_price")
-        prev_available = prev_product.get("any_available", prev_product.get("available", False))
-
-        # Stock changes first (affects how we report price changes)
-        back_in_stock = available and not prev_available
-
-        if back_in_stock:
-            entry = {
-                "title": title,
-                "price": price,
-                "url": product.get("url", ""),
-            }
-            # Include old price if it changed (so we can show "back at $X, was $Y")
-            if price and prev_price and abs(price - prev_price) > 0.01:
-                entry["old_price"] = prev_price
-            changes["back_in_stock"].append(entry)
-
-        # Price changes (only for items that stayed available — back-in-stock
-        # items already show their price change above)
-        if price and prev_price and available and not back_in_stock:
-            diff = price - prev_price
-            if diff < -0.01:
-                changes["price_drops"].append({
-                    "title": title,
-                    "old_price": prev_price,
-                    "new_price": price,
-                    "url": product.get("url", ""),
-                })
-
-    return changes
 
 
 def format_text(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
@@ -460,24 +347,8 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
 
 
 def load_all_changes(data_dir: Path, target_date: str) -> tuple[dict, int]:
-    """Load and compare snapshots for a given date. Returns (all_changes, total_changes)."""
-    prev_date = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
-    all_changes = {}
-    total_changes = 0
-
-    for nursery_dir in sorted(data_dir.iterdir()):
-        if not nursery_dir.is_dir():
-            continue
-        prev = load_snapshot(nursery_dir, prev_date)
-        curr = load_snapshot(nursery_dir, target_date)
-        if not prev or not curr:
-            continue
-        changes = compare_snapshots(prev, curr)
-        nursery_key = nursery_dir.name
-        all_changes[nursery_key] = changes
-        total_changes += sum(len(v) for v in changes.values())
-
-    return all_changes, total_changes
+    """treestock changes: fruit-filtered, all nursery dirs. Engine in stocklib.changes."""
+    return _changes.load_all_changes(data_dir, target_date, product_filter=is_fruit_product)
 
 
 def main():
