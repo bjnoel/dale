@@ -216,6 +216,34 @@ to 404s on species pages).
 
 When you change one of those helpers, update the tests too.
 
+## Shared code (stocklib)
+
+Shared logic lives in the `tools/scrapers/stocklib/` package. It ships via the
+existing rsync deploy (no infra change); scripts in `tools/scrapers/` import it
+for free, scripts in `tools/scrapers/bee/` add the parent dir to `sys.path`
+first. Do NOT copy these into a builder or scraper -- import from the package,
+or `tests/test_no_forking.py` fails:
+
+- `stocklib.classify` -- `NON_PLANT_KEYWORDS` / `is_real_product`, the
+  "is this junk, not a tree?" filter (was once 10 drifted copies).
+- `stocklib.registry` -- one `Nursery` record per nursery; `SHIPPING_MAP`,
+  `NURSERY_NAMES`, `LOCAL_DELIVERY` are derived. `shipping.py` re-exports them.
+- `stocklib.snapshots.iter_nursery_snapshots` -- the today/latest snapshot walk.
+- `stocklib.model` -- typed Product/Variant/Snapshot + `validate_snapshot`.
+- `stocklib.taxonomy` -- species + `category`; `ENABLED_CATEGORIES` is the switch.
+- `stocklib.email_footer.inject_footer` -- the subscriber email footer.
+
+Conventions:
+- Add a nursery = one record in `stocklib/registry.py` (plus its scraper config).
+- Add a plant category (e.g. ornamentals) = species records carrying that
+  `category` in `fruit_species.json`, then add it to
+  `stocklib.taxonomy.ENABLED_CATEGORIES`. Today it is `("fruit",)`.
+- `tests/test_golden.py` fails if a builder's page output changes unexpectedly;
+  regenerate with `GOLDEN_UPDATE=1` ONLY for an intended change, and review the
+  diff first.
+
+Not yet migrated: the `bee/` subsite still forks some of this (de-fork pending).
+
 ## Automated Housekeeping
 
 - **After finishing a blog post for bjnoel.com**, always create or update the
