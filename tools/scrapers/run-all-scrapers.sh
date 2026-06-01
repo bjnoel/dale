@@ -50,10 +50,11 @@ fi
 # Build dashboard (atomic write + post-build verification built into script)
 echo "$LOG_PREFIX Building dashboard..."
 if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" 2>&1; then
-    # Verify JS syntax in the built dashboard. Use a temp file because
-    # `node --check /dev/stdin` is broken on Node 22 (ENOENT on /proc fd path).
+    # Verify JS syntax of the dashboard client app (now external: static/dashboard.js,
+    # copied to the dashboard dir by deploy.sh). Temp copy because `node --check
+    # /dev/stdin` is broken on Node 22 (ENOENT on /proc fd path).
     JS_TMP=$(mktemp --suffix=.js)
-    awk '/<script>/{p=1; next} /<\/script>/{p=0} p' "$DASHBOARD_FILE" > "$JS_TMP"
+    cp "$SCRIPT_DIR/static/dashboard.js" "$JS_TMP"
     JS_ERR_TMP=$(mktemp)
     if node --check "$JS_TMP" >"$JS_ERR_TMP" 2>&1; then
         echo "$LOG_PREFIX Dashboard build complete. JS syntax verified."
