@@ -1,0 +1,109 @@
+{
+  "slug": "olive",
+  "common_name": "Olive",
+  "sources": [
+    {"id": "australis-selection", "name": "Australis Plants: olive variety selection guide", "short": "Australis selection guide", "url": "https://australisplants.com/olives/varietySelection.htm"},
+    {"id": "australis-varieties", "name": "Australis Plants: olive variety descriptions", "short": "Australis varieties", "url": "https://australisplants.com/olives/varieties.htm"},
+    {"id": "jumanga", "name": "Jumanga Olives (WA): olive variety information", "short": "Jumanga Olives", "url": "https://www.jumangaolives.com.au/technicalinfo/olive-variety-information/"},
+    {"id": "agrifutures-pollination", "name": "AgriFutures: cross-pollination in olive cultivars", "short": "AgriFutures pollination", "url": "https://agrifutures.com.au/product/cross-pollination-in-olive-cultivars/"},
+    {"id": "cogs", "name": "Canberra Organic Growers Society: growing olives", "short": "COGS", "url": "https://cogs.asn.au/growing-olives/"},
+    {"id": "aoa-pick", "name": "Australian Olive Association: know when to pick", "short": "AOA harvest guide", "url": "https://australianolives.com.au/know-when-to-pick-planning-ahead-for-a-well-timed-harvest/"},
+    {"id": "aoa-water", "name": "Australian Olive Association: water use and yield of olive trees (review)", "short": "AOA water and yield", "url": "https://australianolives.com.au/water-use-and-yield-of-young-and-mature-olive-trees-a-review/"},
+    {"id": "aoa-weather", "name": "Australian Olive Association: productivity in a land of weather extremes", "short": "AOA growing conditions", "url": "https://australianolives.com.au/productivity-and-profitability-for-olive-growers-in-a-land-of-weather-extremes/"},
+    {"id": "aoa-snapshot", "name": "Australian Olive Association: industry snapshot", "short": "AOA industry snapshot", "url": "https://australianolives.com.au/about-us/industry-snapshot/"},
+    {"id": "csiro-preserve", "name": "CSIRO: preservation of vegetables and herbs in oil (botulism safety)", "short": "CSIRO food safety", "url": "https://www.csiro.au/en/research/health-medical/nutrition/vegetable-preservation"},
+    {"id": "cdc-botulism", "name": "US CDC: home-canned foods and botulism (pH 4.6 threshold)", "short": "CDC botulism", "url": "https://www.cdc.gov/botulism/prevention/home-canned-foods.html"},
+    {"id": "anthracnose-review", "name": "Olive anthracnose (Colletotrichum) review, peer-reviewed", "short": "anthracnose review", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6638118/"},
+    {"id": "olivecentre-lacebug", "name": "The Olive Centre: managing olive lace bug (Froggattia olivinia)", "short": "Olive Centre lace bug", "url": "https://theolivecentre.com/knowledge/comprehensive-guide-to-managing-olive-lace-bug-froggattia-olivina-the-olive-centre"},
+    {"id": "dpird-132", "name": "DPIRD Western Australia: growing olives in WA (Bulletin 132)", "short": "DPIRD olive bulletin", "url": "https://library.dpird.wa.gov.au/bulletins/132/"},
+    {"id": "dpird-irrigation", "name": "DPIRD Western Australia: irrigation of olives (Bulletin 88)", "short": "DPIRD irrigation", "url": "https://library.dpird.wa.gov.au/bulletins/88/"},
+    {"id": "dpird-medfly", "name": "DPIRD Western Australia: Mediterranean fruit fly", "short": "DPIRD medfly", "url": "https://www.dpird.wa.gov.au/businesses/pests-weeds-and-diseases/animal-pests-diseases/pest-insects/mediterranean-fruit-fly/"},
+    {"id": "dpird-import", "name": "DPIRD Western Australia: importing plants and plant products (Quarantine WA)", "short": "Quarantine WA", "url": "https://www.dpird.wa.gov.au/businesses/biosecurity/importing-and-exporting-quarantine-wa/importing-plants-and-plant-products/"},
+    {"id": "daleys-chill", "name": "Daleys Fruit Tree Nursery: chill factor guide", "short": "Daleys chill guide", "url": "https://www.daleysfruit.com.au/fruit%20pages/chillfactor.htm"},
+    {"id": "bq-blackscale", "name": "Business Queensland: black scale", "short": "Business Queensland", "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/insects/horticultural/black-scale"},
+    {"id": "bq-qff", "name": "Business Queensland: Queensland fruit fly", "short": "Business Qld fruit fly", "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/insects/horticultural/queensland-fruit-fly"},
+    {"id": "oin-cominos", "name": "Olive Industry Network: Cominos Olive Groves (Darling Downs, QLD)", "short": "Olive Industry Network", "url": "https://www.oliveindustrynetwork.com.au/directory/cominos-olive-groves-listing-643.aspx"},
+    {"id": "nsw-feralolive", "name": "NSW WeedWise: feral olive distribution", "short": "NSW WeedWise", "url": "https://weeds.dpi.nsw.gov.au/Weeds/Feralolive"},
+    {"id": "farmer-nsw", "name": "The Farmer: Australia's olive industry (NSW regions)", "short": "The Farmer", "url": "https://thefarmermagazine.com.au/australias-olive-industry-continues-to-roll-on/"},
+    {"id": "gfv-harvest", "name": "Good Fruit and Vegetables: Australian olive harvest outlook", "short": "harvest outlook", "url": "https://www.goodfruitandvegetables.com.au/story/4563150/australian-olive-industry-harvest-outlook-2017/"},
+    {"id": "wollundry", "name": "Wollundry Grove Olives (Riverina, NSW): production process", "short": "Wollundry Grove", "url": "https://wollundrygroveolives.com.au/the-production-process"},
+    {"id": "mountzero", "name": "Mount Zero Olives (Grampians, VIC): harvest notes", "short": "Mount Zero Olives", "url": "https://mountzeroolives.com.au/blogs/news/extra-virgin-olive-oil-harvest-2021"},
+    {"id": "grampians-olive", "name": "Grampians Olive Co (VIC): about", "short": "Grampians Olive Co", "url": "https://grampiansoliveco.com.au/pages/about-us"},
+    {"id": "greenolive-redhill", "name": "Green Olive at Red Hill (Mornington Peninsula, VIC)", "short": "Green Olive Red Hill", "url": "https://www.greenolive.com.au/farm/"}
+  ],
+  "core": {
+    "intro": "Across Australia the basics of growing olives are the same: full sun, free-draining soil, the right variety, and a little patience for the first few years. The state sections cover the climate, regions, harvest timing and pests where you are; the notes below apply anywhere in the country.",
+    "sections": [
+      {"heading": "Choosing a variety", "body": "Olives fall into three groups: oil varieties (small fruit, high oil) such as Frantoio, Koroneiki, Arbequina and Picual; table varieties (large fruit for pickling) such as Kalamata; and dual-purpose types such as Manzanillo and Verdale that do both. Decide what you want to make, then pick a named variety to match. Climate matters too: Arbequina and Koroneiki cope with a wide range of conditions, while some classic varieties prefer a cooler Mediterranean climate.", "cites": ["australis-selection", "australis-varieties"]},
+      {"heading": "Pollination: do you need two trees?", "body": "Several popular varieties (Arbequina, Koroneiki, Manzanillo and Picual) will set a useful crop on their own, but almost all olives fruit more heavily with a second compatible variety nearby, because cross-pollination lifts fruit set even on self-fertile trees. A few varieties, including Leccino and Pendolino, are self-incompatible and must have a pollinator to crop (Pendolino is grown mainly as a pollinator for other trees, not for its own fruit). If you only have room for one tree, choose a self-fertile variety.", "cites": ["jumanga", "agrifutures-pollination"]},
+      {"heading": "Planting and soil", "body": "Olives need full sun and free-draining soil. They tolerate poor, stony, sandy and mildly alkaline soils that defeat other fruit trees, but they will not tolerate waterlogging, so avoid any spot where water pools and plant on a low mound if your soil is heavy. On sandy soils, add organic matter and mulch, feed lightly and often, and use a soil wetting agent if the sand has turned water-repellent. Container-grown trees can go in for most of the year as long as you water them through summer (see our guide on <a href=\"/when-to-plant.html\" class=\"text-green-700 hover:underline\">when to plant</a>).", "cites": ["aoa-weather", "aoa-water", "cogs"]},
+      {"heading": "Water and feeding", "body": "Olives are drought-hardy once established, but young trees through their first two or three summers, and any tree carrying a crop, need deep watering through the dry season for good fruit and oil. Do not overwater: soggy soil leaches nutrients and can rot the roots. Olives are light feeders, so apply nitrogen in spring when the tree is growing and avoid heavy feeding, which pushes leafy growth at the expense of fruit.", "cites": ["aoa-water"]},
+      {"heading": "Harvest", "body": "Olives flower in spring and the fruit ripens through late summer and autumn, so the Australian harvest runs from about March in the warm north to June or July in the cool south. Pick green olives while they are full-sized but still firm and pale; leave fruit destined for oil until most of it has turned black. A grafted or cutting-grown named variety usually starts bearing within three to five years.", "cites": ["aoa-pick", "aoa-water"]},
+      {"heading": "Curing: never eat them raw", "body": "Raw olives are intensely bitter and cannot be eaten off the tree. They must be cured first, by repeated soaking in water, in brine, in dry salt, or with food-grade lye. This is also a food-safety step, not just a flavour one: brined and fermented olives must reach a pH below 4.6 to be safe to store, and sealing under-acidified olives in oil creates the low-oxygen, low-acid conditions that can grow botulism toxin. Follow a tested recipe, weigh your salt, and acidify before bottling.", "cites": ["csiro-preserve", "cdc-botulism"]},
+      {"heading": "Buying tips", "body": "Buy a named, grafted or cutting-grown tree rather than an unnamed seedling. Olives do not come true from seed, so seedlings give unpredictable fruit and take much longer to bear, while named stock fruits sooner and to type. Check the label for the cultivar name and its pollination needs. The in-stock table above shows the named varieties available right now and what they cost.", "cites": ["aoa-water", "australis-varieties"]}
+    ],
+    "faqs": [
+      {"q": "Do I need two olive trees to get fruit?", "a": "Many olives (Arbequina, Koroneiki, Manzanillo, Picual) will set a crop on their own, but almost all fruit more heavily with a second compatible variety nearby. Leccino and Pendolino must have a pollinator. If you only have room for one tree, choose a self-fertile variety."},
+      {"q": "How long until an olive tree fruits?", "a": "A grafted or cutting-grown named variety usually starts bearing within three to five years. Seedlings can take seven to ten years and the fruit is unpredictable, which is why named, propagated stock is worth paying for."},
+      {"q": "Can you eat olives straight off the tree?", "a": "No. Raw olives are intensely bitter and must be cured first, in water, brine, dry salt or lye. Brined and fermented olives also need to reach a pH below 4.6 to be safe to store, so follow a tested recipe."},
+      {"q": "What soil do olives need?", "a": "Full sun and free-draining soil. Olives tolerate poor, stony, sandy and mildly alkaline soils, but they will not tolerate waterlogging, so avoid spots where water pools and plant on a mound if your soil is heavy."}
+    ]
+  },
+  "states": {
+    "WA": {
+      "intro": "Growing olives in Western Australia. The south-west has a Mediterranean climate that is close to ideal for olives, and they are a long-established WA crop, concentrated in the districts north of Perth.",
+      "sections": [
+        {"heading": "Climate fit", "body": "The south-west of WA has hot dry summers and mild wet winters that closely match the olive's natural home, with an optimum growing range of roughly 15 to 34 degrees. Olives need only a low winter chill to flower, far less than stone fruit, and the south-west clears that easily. The hot dry inland and the north can pass the heat-stress threshold near 40 degrees, so trees there need irrigation and, in extreme spells, some shade.", "cites": ["dpird-132"]},
+        {"heading": "Where olives grow in WA", "body": "The Moore River region in the Shire of Gingin, north of Perth, holds the great majority of WA's olive trees. Other districts include the Great Southern around Mount Barker and Frankland, the Margaret River and Cape Naturaliste area, and scattered plantings through the Wheatbelt and Mid West. Many Perth backyards also carry heavy-bearing trees.", "cites": ["dpird-132"]},
+        {"heading": "Harvest window in WA", "body": "WA's summer heat brings on the earliest harvest in the country, from about mid-April. Take green pickling olives first, while they are firm and pale, and leave fruit for oil until it has mostly blackened, often through May into June.", "cites": ["aoa-pick"]},
+        {"heading": "Water in WA", "body": "Olives can crop in the south-west on rainfall alone, but irrigated trees can yield roughly twice as much, so water young and fruiting trees deeply through the dry summer.", "cites": ["dpird-irrigation"]},
+        {"heading": "Pests and diseases in WA", "body": "WA's dry summers keep the worst fungal diseases (anthracnose and peacock spot) in check compared with the humid east, though they can appear in the wetter south coast. Watch for olive lace bug and black scale. Mediterranean fruit fly is established across much of WA and will use olives as a minor host when its preferred fruit is scarce.", "cites": ["anthracnose-review", "olivecentre-lacebug", "dpird-medfly"]},
+        {"heading": "Buying and shipping to WA", "body": "WA's strict quarantine means live plants from other states must be permitted on the WA Organism List and usually certified and treated before entry. Many eastern nurseries therefore will not post plants to WA, so the in-stock table above is filtered to sellers that can ship here.", "cites": ["dpird-import"]}
+      ],
+      "faqs": [
+        {"q": "When do you harvest olives in WA?", "a": "From about mid-April, the earliest in Australia, because WA's summer heat ripens the fruit early. Green pickling olives come first, with oil fruit following as it blackens into late autumn."},
+        {"q": "Why won't some nurseries post olive trees to WA?", "a": "WA quarantine law requires live plants to be permitted on the WA Organism List and usually certified and treated before they cross the border, so many eastern-states nurseries choose not to ship plants here."}
+      ]
+    },
+    "QLD": {
+      "intro": "Growing olives in Queensland. Olives want a dry Mediterranean climate, so in Queensland they are a crop for the cooler, drier inland and the elevated south, not the humid coast or the tropics.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Olives need a modest winter chill to flower well and dislike summer humidity. Coastal and subtropical south-east Queensland, including Brisbane, is low in winter chill and humid, so traditional varieties often flower poorly and fruit unreliably, and fungal disease pressure is high. The wet tropics are unsuitable. On the coast, treat olives as ornamental or experimental and stick to low-chill varieties such as Arbequina and Manzanillo.", "cites": ["australis-selection", "daleys-chill", "anthracnose-review"]},
+        {"heading": "Where olives grow in QLD", "body": "The dependable areas are elevated and drier. The Granite Belt around Stanthorpe sits near 800 metres with real winter chill and frost, and the Darling Downs foothills south of Toowoomba carry commercial groves. Production thins out quickly as you move toward the coast.", "cites": ["oin-cominos", "australis-selection"]},
+        {"heading": "Harvest window in QLD", "body": "Queensland opens the national harvest, from about mid-March in its warmer districts, ahead of the southern states.", "cites": ["gfv-harvest", "aoa-pick"]},
+        {"heading": "Pests and diseases in QLD", "body": "Humidity is the main problem. Anthracnose and peacock spot are the key fungal risks and are worse under Queensland's summer rainfall than in a Mediterranean climate. Black scale is found throughout Queensland on olives, and Queensland fruit fly is endemic and can use olives as a host, with its fruit wounds also letting anthracnose in.", "cites": ["anthracnose-review", "bq-blackscale", "bq-qff"]}
+      ],
+      "faqs": [
+        {"q": "Can you grow olives in Brisbane or coastal Queensland?", "a": "You can grow the tree, but reliable fruit is hard: the coast is too humid and too low in winter chill for most varieties to flower and ripen well. Treat it as ornamental or experimental, choose low-chill types like Arbequina, and expect to manage fungal disease."},
+        {"q": "Where in Queensland do olives actually fruit?", "a": "In the cooler, drier, elevated south: the Granite Belt around Stanthorpe and the Darling Downs foothills, which get genuine winter chill and drier air."}
+      ]
+    },
+    "NSW": {
+      "intro": "Growing olives in New South Wales. NSW grows a lot of olives, but in its warm, dry inland and tableland districts rather than on the humid coast.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Olives do best where summers are hot and dry and winters are cool, which is why feral olives have naturalised across the Central West, Central Tablelands and Riverina but not the coast. The humid north coast is marginal for fungal-disease reasons, and the coldest tablelands can frost young trees, so choose your site and variety to suit your district.", "cites": ["nsw-feralolive", "anthracnose-review"]},
+        {"heading": "Where olives grow in NSW", "body": "The Riverina around Griffith, Hillston and Wagga Wagga is the heart of the NSW industry, with large plantings. Other districts include the Central West (Mudgee, Cowra and Orange), the Hunter Valley, and the Southern Tablelands.", "cites": ["farmer-nsw", "wollundry"]},
+        {"heading": "Harvest window in NSW", "body": "Harvest runs roughly April to June, with the Riverina peaking in April and May and cooler, higher districts a little later.", "cites": ["gfv-harvest", "wollundry"]},
+        {"heading": "Pests and diseases in NSW", "body": "Dry inland districts have low fungal pressure, which is an advantage. In the wetter Hunter Valley and on the coast, anthracnose and peacock spot are the main risks. Olive lace bug, a native insect originally from NSW, and black scale occur statewide, and Queensland fruit fly is a host risk in the warmer north and along the coast.", "cites": ["anthracnose-review", "olivecentre-lacebug"]}
+      ],
+      "faqs": [
+        {"q": "When do you harvest olives in NSW?", "a": "Roughly April to June. The Riverina peaks in April and May, while cooler tableland districts run a few weeks later."},
+        {"q": "Where are olives grown in NSW?", "a": "Mainly the warm, dry inland: the Riverina around Griffith and Hillston, plus the Central West (Mudgee, Cowra), the Hunter Valley and the Southern Tablelands."}
+      ]
+    },
+    "VIC": {
+      "intro": "Growing olives in Victoria. Victoria is one of Australia's main olive states, with a cool climate that ripens the fruit slowly and makes excellent oil.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Victoria's cool winters easily supply the modest chill olives need, and its warm dry summers, especially inland, suit them well. The cool season ripens fruit later, which growers value for oil quality. The main watch-outs are frost on young trees and higher fungal pressure in the wetter south.", "cites": ["aoa-snapshot", "cogs"]},
+        {"heading": "Where olives grow in VIC", "body": "The largest plantings are in the warm, dry north-west around Sunraysia (Mildura) and in the Wimmera and Grampians. Cooler districts include the Goulburn Valley, central Victoria around Bendigo and Heathcote, and the maritime Mornington Peninsula.", "cites": ["aoa-snapshot", "mountzero", "grampians-olive", "greenolive-redhill"]},
+        {"heading": "Harvest window in VIC", "body": "Victoria harvests later than the northern states, mainly through May and June, because the cooler season slows ripening.", "cites": ["gfv-harvest", "mountzero"]},
+        {"heading": "Pests and diseases in VIC", "body": "Dry inland Sunraysia has low fungal pressure but must manage black scale, olive lace bug and Queensland fruit fly. Cooler, wetter southern and elevated districts such as the Mornington Peninsula and the Grampians see more peacock spot and anthracnose in wet autumns and springs.", "cites": ["anthracnose-review", "olivecentre-lacebug"]},
+        {"heading": "Frost on young trees", "body": "Young olives are far more frost-sensitive than established trees. In central and elevated districts, protect new trees over their first winters with frost cloth and a sheltered, north-facing spot, and lean on hardier varieties such as Arbequina and Leccino.", "cites": ["cogs"]}
+      ],
+      "faqs": [
+        {"q": "When do you harvest olives in Victoria?", "a": "Mainly May and June, later than the northern states, because Victoria's cooler season ripens the fruit more slowly."},
+        {"q": "Are olives frost hardy in Victoria?", "a": "Established trees take cold well, but young trees are frost-sensitive. In cold inland and elevated districts, protect them for their first few winters and choose hardier varieties like Arbequina or Leccino."}
+      ]
+    }
+  }
+}

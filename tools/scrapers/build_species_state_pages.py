@@ -22,7 +22,14 @@ from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
-from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
+from treestock_layout import (
+    render_head,
+    render_header,
+    render_breadcrumb,
+    render_footer,
+    render_treesmith_promo,
+)
+import growing_guides
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 MIN_PRODUCTS = 3
@@ -42,13 +49,16 @@ STATE_SLUGS = {
     "VIC": "victoria",
 }
 
-# State-specific climate context per species category
+# State-specific climate context per species category.
+# Copy rule: no em or en dashes (use commas, periods, parentheses). The "mediterranean"
+# category exists so olive and grape stop inheriting the stone/pome-fruit chill-hours note.
 STATE_CLIMATE_NOTES = {
     "WA": {
-        "tropical": "Perth and northern WA have a warm, dry climate that suits many tropical species — though summer heat requires regular watering. WA's strict quarantine rules mean only a handful of eastern states nurseries can ship here.",
+        "tropical": "Perth and northern WA have a warm, dry climate that suits many tropical species, though summer heat requires regular watering. WA's strict quarantine rules mean only a handful of eastern states nurseries can ship here.",
         "subtropical": "Perth's Mediterranean climate suits subtropical species well, especially with summer irrigation. WA quarantine restrictions limit which nurseries can ship here.",
-        "citrus": "Citrus trees thrive in Perth's warm, dry climate. WA has strict biosecurity rules — not all eastern nurseries can ship here, so local options are especially valuable.",
-        "temperate": "South-west WA's mild winters suit temperate stone fruit and pome fruit, though winters are less cold than eastern states. Chilling hours may be lower — choose low-chill varieties. WA quarantine rules apply.",
+        "citrus": "Citrus trees thrive in Perth's warm, dry climate. WA has strict biosecurity rules, so not all eastern nurseries can ship here, which makes local options especially valuable.",
+        "temperate": "South-west WA's mild winters suit temperate stone fruit and pome fruit, though winters are less cold than eastern states. Chilling hours may be lower, so choose low-chill varieties. WA quarantine rules apply.",
+        "mediterranean": "South-west WA's Mediterranean climate (hot dry summers, mild wet winters) is close to ideal for olives and grapes, which need summer heat to ripen and have only a low winter-chill requirement, far less than stone fruit. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -56,20 +66,23 @@ STATE_CLIMATE_NOTES = {
         "subtropical": "Southeast Queensland's subtropical climate suits a huge range of fruit trees, from mangoes and avocados to citrus and figs.",
         "citrus": "Queensland's warm climate produces excellent citrus. Summer humidity can cause some fungal issues, but most varieties do well with good air circulation.",
         "temperate": "Southern Queensland can grow many temperate fruit trees, though chilling hours are lower than further south. Choose low-chill apple, pear, and stone fruit varieties.",
+        "mediterranean": "Olives and grapes prefer a drier, Mediterranean-style climate, so in Queensland they do best in the cooler, drier inland and elevated districts (such as the Granite Belt) rather than the humid coast and tropics.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
         "tropical": "Coastal NSW has a warm temperate to subtropical climate that suits many tropical species, particularly in the north. Frost risk in inland and high-altitude areas.",
-        "subtropical": "Coastal and northern NSW suits subtropical fruit trees well. Inland and southern areas have cooler winters — choose frost-tolerant varieties.",
+        "subtropical": "Coastal and northern NSW suits subtropical fruit trees well. Inland and southern areas have cooler winters, so choose frost-tolerant varieties.",
         "citrus": "Citrus does well across most of NSW, from the warm north coast to the cooler tablelands. Most popular citrus varieties suit NSW conditions.",
         "temperate": "NSW's diverse climate supports a wide range of temperate fruit trees, from the cool tablelands to the warmer coastal plains.",
-        "default": "NSW has a wide range of climates — most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
+        "mediterranean": "Olives and grapes suit NSW's warmer inland and temperate districts with hot dry summers, and they have little winter-chill requirement. Young trees can be frost-sensitive in the coldest tableland areas.",
+        "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
         "tropical": "Victoria's cool temperate climate is challenging for tropical species. Stick to cold-hardy varieties and sheltered positions. Most tropical nurseries do not ship to VIC.",
         "subtropical": "Victoria's cool winters suit subtropical varieties in sheltered, north-facing positions. Many subtropical nurseries do not ship to VIC.",
         "citrus": "Citrus can be grown in Victoria in warm, sheltered spots. Frost protection is essential in most areas. Choose cold-tolerant varieties like Meyer Lemon or Lisbon.",
         "temperate": "Victoria's cool temperate climate is ideal for stone fruit, apples, and pears. Cold winters provide the chilling hours these trees need. Heritage varieties do particularly well.",
+        "mediterranean": "Victoria's warm dry summers and mild winters suit olives and grapes, which have little winter-chill requirement. Cooler districts simply ripen the fruit later, and frost can set back young trees.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -91,9 +104,12 @@ SPECIES_CLIMATE_CATEGORY = {
     "cumquat": "citrus", "pomelo": "citrus", "finger lime": "citrus",
     "apple": "temperate", "pear": "temperate", "plum": "temperate",
     "cherry": "temperate", "peach": "temperate", "nectarine": "temperate",
-    "apricot": "temperate", "quince": "temperate", "olive": "temperate",
+    "apricot": "temperate", "quince": "temperate",
     "blueberry": "temperate", "raspberry": "temperate", "blackberry": "temperate",
-    "strawberry": "temperate", "grape": "temperate",
+    "strawberry": "temperate",
+    # Mediterranean-climate crops: no winter-chill requirement, so they must not
+    # inherit the stone/pome-fruit chill-hours note.
+    "olive": "mediterranean", "grape": "mediterranean",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
@@ -205,6 +221,12 @@ def get_climate_note(species_name: str, state: str) -> str:
     return notes.get(category, notes.get("default", ""))
 
 
+def _no_dash(text: str) -> str:
+    """Strip en and em dashes from external strings (nursery product titles and
+    names) so passthrough data never breaks the treestock copy rule on the page."""
+    return text.replace("—", "-").replace("–", "-")
+
+
 def build_combo_page(
     state: str,
     species_slug: str,
@@ -231,7 +253,7 @@ def build_combo_page(
     price_str = ""
     if prices:
         lo, hi = min(prices), max(prices)
-        price_str = f"${lo:.0f}" if lo == hi else f"${lo:.0f}–${hi:.0f}"
+        price_str = f"${lo:.0f}" if lo == hi else f"${lo:.0f}-${hi:.0f}"
 
     # Other states that have this species (for cross-links)
     other_states = [s for s in ["WA", "QLD", "NSW", "VIC"] if s != state]
@@ -242,9 +264,9 @@ def build_combo_page(
     rows = ""
     for p in sorted_products:
         price_cell = f"${p['price']:.0f}" if p["price"] else ""
-        nursery_name = p["nursery_name"]
+        nursery_name = _no_dash(p["nursery_name"])
         rows += f"""      <tr>
-        <td class="py-2 px-3 text-sm"><a href="{p['url']}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{p['title']}</a></td>
+        <td class="py-2 px-3 text-sm"><a href="{p['url']}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{_no_dash(p['title'])}</a></td>
         <td class="py-2 px-3 text-sm text-gray-600">{nursery_name}</td>
         <td class="py-2 px-3 text-sm text-gray-600 text-right">{price_cell}</td>
       </tr>\n"""
@@ -252,7 +274,7 @@ def build_combo_page(
     # Summary of nurseries carrying this species to this state
     nursery_list_items = ""
     for key, prods in sorted(nurseries.items(), key=lambda x: -len(x[1])):
-        nname = prods[0]["nursery_name"]
+        nname = _no_dash(prods[0]["nursery_name"])
         count = len(prods)
         nursery_list_items += f'<li><a href="/nursery/{key}.html" class="text-green-700 hover:underline">{nname}</a> ({count} {species_name.lower()} varieties)</li>\n'
 
@@ -275,7 +297,22 @@ def build_combo_page(
 
     canonical = f"https://treestock.com.au/buy-{species_slug}-trees-{state_slug}.html"
 
-    head = render_head(page_title, meta_desc, canonical)
+    # Rich, cited per-state growing guide when this species has one; otherwise the
+    # existing generic fruit_species.json blurb (graceful, additive fallback).
+    # faq_ld feeds FAQPage JSON-LD into <head> to match the visible FAQ.
+    has_rich_guide = growing_guides.has_guide(species_slug)
+    faq_ld = growing_guides.faq_jsonld(species_slug, state) if has_rich_guide else ""
+
+    head = render_head(
+        page_title,
+        meta_desc,
+        canonical,
+        extra_head=faq_ld,
+        og_title=f"Buy {species_name} Trees in {state_full}",
+        og_description=meta_desc,
+        og_image="https://treestock.com.au/og-image.png",
+        og_type="article",
+    )
     header = render_header()
     breadcrumb = render_breadcrumb([
         ("Home", "/"),
@@ -289,6 +326,14 @@ def build_combo_page(
     desc_para = ""
     if description:
         desc_para = f'<div class="prose prose-sm text-gray-700 mt-3 mb-4 max-w-2xl">{description}</div>'
+
+    # State-unique cited guide when available, else the generic blurb. This is what
+    # makes the WA/QLD/NSW/VIC pages stop sharing a byte-identical editorial body.
+    guide_body = (
+        growing_guides.render_combo_guide(species_slug, state)
+        if has_rich_guide else desc_para
+    )
+    treesmith_promo = render_treesmith_promo("species")
 
     climate_para = ""
     if climate_note:
@@ -333,12 +378,14 @@ def build_combo_page(
   </div>
 
   <h2 class="text-lg font-semibold text-gray-800 mb-3">Growing {species_name} in {state_full}</h2>
-  {desc_para}
+  {guide_body}
 
-  <div class="mt-6">
+  <div class="mt-6 mb-8">
     <p class="text-sm text-gray-500 font-medium mb-2">{species_name} trees in other states:</p>
     <div>{cross_links}</div>
   </div>
+
+  {treesmith_promo}
 
 </main>
 {footer}
