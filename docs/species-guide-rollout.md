@@ -16,7 +16,7 @@ How it works:
 ## The prompt (substitute one line per run)
 
 ```text
-SPECIES = mango        # <-- change ONLY this line each run (use the common name as in fruit_species.json)
+SPECIES = lychee
 
 You are building a comprehensive, evidence-backed, per-state growing guide for {{SPECIES}} on
 treestock.com.au, matching the olive implementation we already shipped, and shipping it via PR.
