@@ -1,0 +1,16 @@
+{% for sec in sections %}
+{%- if not loop.first %}{{ "" }}{% endif -%}
+<h3 style="margin:16px 0 8px">{{ sec.name }}</h3><ul style="list-style:none;padding:0;margin:0">
+{%- for it in sec.entries -%}
+{%- if it.kind == 'back' -%}
+<li style="color:#059669;padding:4px 0"><span title="Was out of stock, now available again" style="cursor:help">✅</span> {% if it.has_url %}<a href="{{ it.utm_url }}" target="_blank">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}{% if it.price %} &mdash; ${{ '%.2f'|format(it.price) }}{% endif %}{% if it.old_price %} (was ${{ '%.2f'|format(it.old_price) }}){% endif %} <strong>Back in stock!</strong></li>
+{%- elif it.kind == 'price' -%}
+<li style="padding:4px 0"><span title="Price decreased" style="cursor:help">📉</span> {% if it.has_url %}<a href="{{ it.utm_url }}" target="_blank">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}: <span style="text-decoration:line-through;color:#999">${{ '%.2f'|format(it.old_price) }}</span> → <strong style="color:#059669">${{ '%.2f'|format(it.new_price) }}</strong></li>
+{%- elif it.kind == 'new' -%}
+<li style="padding:4px 0"><span title="Newly listed on the nursery website" style="cursor:help">🆕</span> {% if it.has_url %}<a href="{{ it.utm_url }}" target="_blank">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}{% if it.price %} &mdash; ${{ '%.2f'|format(it.price) }}{% endif %}</li>
+{%- elif it.kind == 'more' -%}
+<li style="padding:4px 0">... and {{ it.extra }} more new listings</li>
+{%- endif -%}
+{%- endfor -%}
+</ul>
+{%- endfor -%}

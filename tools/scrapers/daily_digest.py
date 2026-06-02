@@ -20,6 +20,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, nursery_ships_to
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_footer
 
 # Fruit species lookup for filtering non-fruit products
@@ -167,63 +168,64 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
     return "\n".join(lines)
 
 
-def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str = "", categories=None) -> tuple[list[str], bool]:
-    """Build HTML sections for each nursery's changes. Returns (sections_html, has_any)."""
+def _utm(url: str) -> str:
+    return url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
+
+
+def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str = "", categories=None) -> list[dict]:
+    """Build per-nursery change sections as view-data: a list of
+    {name, entries}. The digest_sections template renders these and autoescapes
+    the scraped product title and the utm URL (which carries a raw &)."""
     filter_state = "WA" if wa_only else state
     enabled = _resolve_categories(categories)
-    sections_html = []
-    has_any = False
+    sections = []
 
     for nursery_key, changes in sorted(all_changes.items()):
         if filter_state and not nursery_ships_to(nursery_key, filter_state):
             continue
 
         name = NURSERY_NAMES.get(nursery_key, nursery_key)
-
-        items_html = []
+        entries = []
 
         if "back_in_stock" in enabled:
             for item in changes["back_in_stock"]:
-                price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
-                if item.get("old_price"):
-                    price += f" (was ${item['old_price']:.2f})"
                 url = item.get("url", "")
-                utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
-                link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
-                items_html.append(f'<li style="color:#059669;padding:4px 0"><span title="Was out of stock, now available again" style="cursor:help">✅</span> {link}{price} <strong>Back in stock!</strong></li>')
+                entries.append({
+                    "kind": "back", "has_url": bool(url), "utm_url": _utm(url),
+                    "title": item["title"], "price": item["price"],
+                    "old_price": item.get("old_price"),
+                })
 
         if "price_drops" in enabled:
             for item in changes["price_drops"]:
                 url = item.get("url", "")
-                utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
-                link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
-                items_html.append(
-                    f'<li style="padding:4px 0"><span title="Price decreased" style="cursor:help">📉</span> {link}: '
-                    f'<span style="text-decoration:line-through;color:#999">${item["old_price"]:.2f}</span> '
-                    f'→ <strong style="color:#059669">${item["new_price"]:.2f}</strong></li>'
-                )
+                entries.append({
+                    "kind": "price", "has_url": bool(url), "utm_url": _utm(url),
+                    "title": item["title"], "old_price": item["old_price"],
+                    "new_price": item["new_price"],
+                })
 
         if "new_products" in enabled:
             for item in changes["new_products"][:10]:
-                price = f" &mdash; ${item['price']:.2f}" if item["price"] else ""
                 url = item.get("url", "")
-                utm_url = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
-                link = f'<a href="{utm_url}" target="_blank">{item["title"]}</a>' if url else item["title"]
-                items_html.append(f'<li style="padding:4px 0"><span title="Newly listed on the nursery website" style="cursor:help">🆕</span> {link}{price}</li>')
+                entries.append({
+                    "kind": "new", "has_url": bool(url), "utm_url": _utm(url),
+                    "title": item["title"], "price": item["price"],
+                })
             extra = len(changes["new_products"]) - 10
             if extra > 0:
-                items_html.append(f'<li style="padding:4px 0">... and {extra} more new listings</li>')
+                entries.append({"kind": "more", "extra": extra})
 
-        if not items_html:
+        if not entries:
             continue
+        sections.append({"name": name, "entries": entries})
 
-        has_any = True
-        sections_html.append(
-            f'<h3 style="margin:16px 0 8px">{name}</h3>'
-            f'<ul style="list-style:none;padding:0;margin:0">{"".join(items_html)}</ul>'
-        )
+    return sections
 
-    return sections_html, has_any
+
+def _render_sections(sections: list[dict]) -> str:
+    """Render the change sections to (autoescaped) HTML."""
+    return render_template("digest_sections.html.j2", sections=sections)
 
 
 def has_any_changes(all_changes: dict, wa_only: bool = False, state: str = "", categories=None) -> bool:
@@ -241,35 +243,20 @@ def has_any_changes(all_changes: dict, wa_only: bool = False, state: str = "", c
 
 def format_html(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
     """Format changes as HTML for email (inline styles, no external deps)."""
-    sections_html, has_any = _build_change_sections(all_changes, wa_only, state, categories)
-
-    if not has_any:
-        sections_html.append('<p>No changes today — all quiet across the nurseries.</p>')
-
-    return f"""<!DOCTYPE html>
-<html><head><meta charset="UTF-8"></head>
-<body style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;padding:16px">
-<h2 style="color:#065f46">🌱 Nursery Stock Update — {target_date}</h2>
-{"".join(sections_html)}
-<hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
-<p style="font-size:0.9em;color:#6b7280">
-  <a href="https://treestock.com.au">Full dashboard</a> &bull;
-  Tracking {len(SHIPPING_MAP)} nurseries daily.<br>
-  Built by <a href="https://treestock.com.au">treestock.com.au</a>
-</p>
-</body></html>"""
+    sections = _build_change_sections(all_changes, wa_only, state, categories)
+    body_html = _render_sections(sections) if sections else \
+        '<p>No changes today — all quiet across the nurseries.</p>'
+    return render_template(
+        "digest_email.html.j2",
+        target_date=target_date, body_html=body_html,
+        nursery_count=len(SHIPPING_MAP),
+    )
 
 
 def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
     """Format changes as a shareable web page with proper styling and navigation."""
     filter_state = "WA" if wa_only else state
-    sections_html, has_any = _build_change_sections(all_changes, wa_only, state, categories)
-
-    if not has_any:
-        sections_html.append(
-            '<div style="text-align:center;padding:48px 0;color:#9ca3af">'
-            'No changes today — all quiet across the nurseries.</div>'
-        )
+    sections = _build_change_sections(all_changes, wa_only, state, categories)
 
     title_suffix = f" (Ships to {filter_state})" if filter_state else ""
 
@@ -319,31 +306,15 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
     )
     footer = render_footer(max_width="max-w-2xl")
 
-    return f"""{head}
-{header}
-
-<main class="max-w-2xl mx-auto px-4 py-6">
-  <div class="mb-6">
-    <h2 class="text-2xl font-bold text-green-900 mb-2">🌱 {target_date}</h2>
-    <div class="flex flex-wrap gap-2">{pills_html}</div>
-  </div>
-
-  {"".join(sections_html)}
-
-  <div class="mt-8 p-4 bg-green-50 rounded-lg text-sm text-green-800">
-    <p class="font-medium mb-1">Get daily updates</p>
-    <p>We track {len(SHIPPING_MAP)} Australian nurseries every day — price drops, restocks, new arrivals.</p>
-    <p class="mt-2">
-      <a href="/" class="font-medium">Search the dashboard →</a> &nbsp;|&nbsp;
-      <a href="/history.html" class="font-medium">View price history →</a>
-    </p>
-  </div>
-</main>
-
-{footer}
-
-</body>
-</html>"""
+    body_html = _render_sections(sections) if sections else \
+        ('<div style="text-align:center;padding:48px 0;color:#9ca3af">'
+         'No changes today — all quiet across the nurseries.</div>')
+    return render_template(
+        "digest_page.html.j2",
+        head=head, header=header, footer=footer,
+        target_date=target_date, pills_html=pills_html,
+        body_html=body_html, nursery_count=len(SHIPPING_MAP),
+    )
 
 
 def load_all_changes(data_dir: Path, target_date: str) -> tuple[dict, int]:

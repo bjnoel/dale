@@ -68,6 +68,15 @@ GOLDEN_CASES = [
         "outputs": ["species/*.html"],
     },
     {
+        # The fixture has no dated snapshots, so this pins the no-changes page
+        # (shell + empty state). The change-item escaping is verified separately
+        # against a crafted 2-date dataset (see the PR).
+        "name": "daily_digest",
+        "script": "daily_digest.py",
+        "args": ["{DATA}", "--page", "--save", "{OUT}/digest.html"],
+        "outputs": ["digest.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],

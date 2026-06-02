@@ -1,0 +1,25 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="max-w-2xl mx-auto px-4 py-6">
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-green-900 mb-2">🌱 {{ target_date }}</h2>
+    <div class="flex flex-wrap gap-2">{{ pills_html|safe }}</div>
+  </div>
+
+  {{ body_html|safe }}
+
+  <div class="mt-8 p-4 bg-green-50 rounded-lg text-sm text-green-800">
+    <p class="font-medium mb-1">Get daily updates</p>
+    <p>We track {{ nursery_count }} Australian nurseries every day — price drops, restocks, new arrivals.</p>
+    <p class="mt-2">
+      <a href="/" class="font-medium">Search the dashboard →</a> &nbsp;|&nbsp;
+      <a href="/history.html" class="font-medium">View price history →</a>
+    </p>
+  </div>
+</main>
+
+{{ footer|safe }}
+
+</body>
+</html>
