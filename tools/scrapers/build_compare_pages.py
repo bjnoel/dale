@@ -21,6 +21,7 @@ from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -169,55 +170,50 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
     nursery_count = len([nk for nk, n in nursery_best.items() if n["in_stock_count"] > 0])
     total_nurseries = len(nursery_best)
 
-    # Build nursery comparison table rows
-    nursery_rows = ""
-    for i, (nk, n) in enumerate(sorted_nurseries):
-        if n["best_price"] and n["in_stock_count"] > 0:
-            cheapest_badge = ' <span class="text-xs px-1.5 py-0.5 bg-green-100 text-green-800 rounded font-semibold">Cheapest</span>' if i == 0 else ""
-            price_cell = f'${n["best_price"]:.2f}{cheapest_badge}'
-            utm_url = n["best_url"] + ("&" if "?" in n["best_url"] else "?") + "utm_source=treestock&utm_medium=compare" if n["best_url"] else ""
-            title_link = f'<a href="{utm_url}" target="_blank" rel="noopener" class="text-green-700 hover:underline text-xs">{n["best_title"]}</a>' if n["best_url"] else f'<span class="text-xs">{n["best_title"]}</span>'
-            avail_text = f'<span class="text-green-700">{n["in_stock_count"]} in stock</span>'
+    # Per-nursery comparison rows as view-data. The template autoescapes the
+    # scraped title and the utm URL (which carries the & that f-strings left raw).
+    nursery_view = []
+    for nk, n in sorted_nurseries:
+        in_stock_row = bool(n["best_price"] and n["in_stock_count"] > 0)
+        if in_stock_row and n["best_url"]:
+            utm_url = n["best_url"] + ("&" if "?" in n["best_url"] else "?") + "utm_source=treestock&utm_medium=compare"
         else:
-            price_cell = '<span class="text-gray-400">—</span>'
-            title_link = '<span class="text-gray-400 text-xs">Out of stock</span>'
-            avail_text = '<span class="text-gray-400">out of stock</span>'
-
+            utm_url = ""
         local_lbl = delivery_label(nk)
         ships = local_lbl if local_lbl else (", ".join(n["ships_to"]) if n["ships_to"] else "Local only")
-        nursery_rows += f"""
-      <tr class="border-b border-gray-100 hover:bg-gray-50">
-        <td class="py-3 pr-3 font-medium text-sm">{n['name']}</td>
-        <td class="py-3 pr-3 text-sm font-semibold">{price_cell}</td>
-        <td class="py-3 pr-3 text-sm">{title_link}</td>
-        <td class="py-3 pr-3 text-sm">{avail_text}</td>
-        <td class="py-3 text-xs text-gray-400">{ships}</td>
-      </tr>"""
+        nursery_view.append({
+            "name": n["name"],
+            "in_stock_row": in_stock_row,
+            "best_price": n["best_price"],
+            "best_title": n["best_title"],
+            "utm_url": utm_url,
+            "in_stock_count": n["in_stock_count"],
+            "ships": ships,
+        })
 
-    # Build full product listing (in-stock, price-sorted)
+    # Full product listing (in-stock first, then price-sorted) as view-data.
     sorted_products = sorted(products, key=lambda x: (not x["available"], x["price"] or 9999, x["title"]))
-    product_rows = ""
+    product_view = []
     for p in sorted_products:
-        price_str = f"${p['price']:.2f}" if p["price"] else "—"
-        avail_badge = (
-            '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">In stock</span>'
-            if p["available"] else
-            '<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">Out of stock</span>'
-        )
-        utm_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=compare" if p["url"] else ""
-        link = f'<a href="{utm_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>' if p["url"] else p["title"]
-        product_rows += f"""
-      <tr class="border-b border-gray-100 hover:bg-gray-50">
-        <td class="py-2 pr-3 text-sm">{link}</td>
-        <td class="py-2 pr-3 text-xs text-gray-500">{p['nursery_name']}</td>
-        <td class="py-2 pr-3 text-sm font-medium">{price_str}</td>
-        <td class="py-2">{avail_badge}</td>
-      </tr>"""
+        if p["url"]:
+            utm_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=compare"
+        else:
+            utm_url = ""
+        product_view.append({
+            "url": p["url"],
+            "utm_url": utm_url,
+            "title": p["title"],
+            "nursery_name": p["nursery_name"],
+            "price": p["price"],
+            "available": p["available"],
+        })
 
-    cheapest_summary = ""
+    cheapest = None
     if sorted_nurseries and sorted_nurseries[0][1]["best_price"] and sorted_nurseries[0][1]["in_stock_count"] > 0:
-        cheapest_nk, cheapest_n = sorted_nurseries[0]
-        cheapest_summary = f'<p class="text-sm text-gray-600 mt-2">Cheapest in stock: <strong>{cheapest_n["name"]}</strong> from <strong>${cheapest_n["best_price"]:.2f}</strong>.</p>'
+        cheapest_n = sorted_nurseries[0][1]
+        cheapest = {"name": cheapest_n["name"], "best_price": cheapest_n["best_price"]}
+
+    seo_nurseries = [n["name"] for _, n in sorted_nurseries]
 
     head = render_head(
         title=f"{name} Tree Price Comparison Australia — treestock.com.au",
@@ -229,145 +225,30 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
     breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "/compare/"), (name, "")])
     footer = render_footer()
 
-    return f"""{head}
-{header}
-
-<main class="max-w-3xl mx-auto px-4 py-6">
-
-  {breadcrumb}
-
-  <!-- Hero -->
-  <div class="mb-6">
-    <h1 class="text-3xl font-bold text-green-900 mb-1">{name} Tree Prices</h1>
-    <p class="text-gray-500 italic mb-1">{latin}</p>
-    <p class="text-gray-600 text-sm mb-3">
-      Comparing {name} tree prices across {total_nurseries} Australian online nurseries.
-      Updated {now}.
-    </p>
-    <div class="flex flex-wrap gap-3 text-sm">
-      {f'<span class="px-3 py-1 bg-green-50 text-green-800 rounded-full font-medium">{len(in_stock)} in stock</span>' if in_stock else '<span class="px-3 py-1 bg-amber-50 text-amber-700 rounded-full font-medium">Currently out of stock</span>'}
-      {f'<span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{price_range_str} AUD</span>' if price_range_str else ''}
-      <span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{total_nurseries} nurseries tracked</span>
-    </div>
-    {cheapest_summary}
-  </div>
-
-  <!-- Price Comparison Table -->
-  <section class="mb-8">
-    <h3 class="text-lg font-semibold text-gray-800 mb-3">Price comparison by nursery</h3>
-    <p class="text-sm text-gray-500 mb-3">Showing lowest available price per nursery. <a href="/species/{slug}.html" class="text-green-700 underline">View full {name} species page →</a></p>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
-            <th class="pb-2 pr-3">Nursery</th>
-            <th class="pb-2 pr-3">Best price</th>
-            <th class="pb-2 pr-3">Cheapest variety</th>
-            <th class="pb-2 pr-3">Stock</th>
-            <th class="pb-2">Ships to</th>
-          </tr>
-        </thead>
-        <tbody>{nursery_rows}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- All Varieties (price sorted) -->
-  <section class="mb-8">
-    <h3 class="text-lg font-semibold text-gray-800 mb-3">All {name} varieties — sorted by price</h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
-            <th class="pb-2 pr-3">Variety</th>
-            <th class="pb-2 pr-3">Nursery</th>
-            <th class="pb-2 pr-3">Price</th>
-            <th class="pb-2">Status</th>
-          </tr>
-        </thead>
-        <tbody>{product_rows}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Email alert CTA -->
-  <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
-    <p class="font-medium text-green-800 mb-1">Get price drop alerts for {name}</p>
-    <p class="text-gray-600 mb-3">We monitor {total_nurseries} nurseries daily. Get emailed when {name} prices drop or new varieties appear. <a href="/sample-digest.html" class="text-green-700 underline">See sample &rarr;</a></p>
-    <form id="watchForm" class="flex flex-col sm:flex-row gap-2">
-      <input type="email" id="watchEmail" placeholder="your@email.com" required
-        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
-      <button type="submit"
-        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
-        Alert me
-      </button>
-    </form>
-    <div id="watchMessage" class="mt-2 text-sm hidden"></div>
-  </div>
-
-  <script>
-  document.getElementById('watchForm').addEventListener('submit', function(e) {{
-    e.preventDefault();
-    var email = document.getElementById('watchEmail').value.trim();
-    var msg = document.getElementById('watchMessage');
-    fetch('/api/subscribe', {{
-      method: 'POST',
-      headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{email: email, action: 'watch', species: '{slug}'}})
-    }})
-    .then(function(r) {{ return r.json(); }})
-    .then(function(d) {{
-      msg.textContent = d.message === 'Already watching'
-        ? 'You\'re already set up for {name} price alerts.'
-        : '✓ Done! We\'ll email you when {name} prices change.';
-      msg.className = 'mt-2 text-sm text-green-700';
-      msg.style.display = 'block';
-      document.getElementById('watchForm').style.display = 'none';
-    }})
-    .catch(function() {{
-      msg.textContent = 'Something went wrong — please try again.';
-      msg.className = 'mt-2 text-sm text-red-600';
-      msg.style.display = 'block';
-    }});
-  }});
-  </script>
-
-  <!-- SEO text -->
-  <section class="mt-8 text-sm text-gray-500 border-t border-gray-100 pt-6">
-    <h3 class="font-medium text-gray-700 mb-2">About this comparison</h3>
-    <p>This page compares {name} tree prices across {total_nurseries} Australian online nurseries, updated daily by treestock.com.au. We track stock levels, prices, and availability so you can find the best deal without visiting each nursery website individually.</p>
-    <p class="mt-2">Nurseries monitored: {", ".join(n["name"] for _, n in sorted_nurseries)}.</p>
-    <p class="mt-2">Note: Prices shown are the lowest available variant per nursery at time of last scrape. Always verify current price and shipping costs on the nursery's website before ordering.</p>
-  </section>
-
-</main>
-
-{footer}
-
-</body>
-</html>"""
+    return render_template(
+        "compare_page.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        name=name, latin=latin, slug=slug, now=now,
+        total_nurseries=total_nurseries, in_stock_count=len(in_stock),
+        price_range_str=price_range_str, cheapest=cheapest,
+        nursery_view=nursery_view, product_view=product_view,
+        seo_nurseries=seo_nurseries,
+    )
 
 
 def build_compare_index(entries: list[dict]) -> str:
     """Build /compare/index.html listing all compare pages."""
-    rows = ""
+    entries_view = []
     for e in sorted(entries, key=lambda x: -x["nursery_count"]):
         sp = e["species"]
-        in_s = e["in_stock"]
-        nurseries = e["nursery_count"]
-        price = f'${e["min_price"]:.2f}' if e["min_price"] else "—"
-        rows += f"""
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
-      <td class="py-3 pr-4">
-        <a href="/compare/{sp['slug']}-prices.html" class="font-medium text-green-800 hover:underline">{sp['common_name']}</a>
-        <div class="text-xs text-gray-400 italic">{sp['latin_name']}</div>
-      </td>
-      <td class="py-3 pr-4 text-sm">{nurseries} nurseries</td>
-      <td class="py-3 pr-4 text-sm">{in_s} in stock</td>
-      <td class="py-3 text-sm font-medium">{price}</td>
-    </tr>"""
+        entries_view.append({
+            "slug": sp["slug"],
+            "common_name": sp["common_name"],
+            "latin_name": sp["latin_name"],
+            "nursery_count": e["nursery_count"],
+            "in_stock": e["in_stock"],
+            "min_price": e["min_price"],
+        })
 
     head = render_head(
         title="Fruit Tree Price Comparisons — Australian Nurseries — treestock.com.au",
@@ -377,47 +258,11 @@ def build_compare_index(entries: list[dict]) -> str:
     breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "")])
     footer = render_footer()
 
-    return f"""{head}
-{header}
-
-<main class="max-w-3xl mx-auto px-4 py-6">
-  {breadcrumb}
-
-  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Price Comparisons</h1>
-  <p class="text-gray-600 mb-4">
-    Compare fruit tree prices across {len(entries)} species and multiple Australian nurseries.
-    Find the cheapest price, check which nurseries ship to your state, and get alerts when prices drop.
-    Updated daily.
-  </p>
-
-  <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-center justify-between">
-    <div>
-      <p class="font-semibold text-green-900 text-sm">Compare nurseries side-by-side</p>
-      <p class="text-xs text-gray-600 mt-0.5">Which nursery has the most stock? Who ships to WA? See all 18 nurseries in one table.</p>
-    </div>
-    <a href="/compare/nurseries.html" class="ml-4 flex-shrink-0 text-sm px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800 no-underline">Compare nurseries &rarr;</a>
-  </div>
-
-  <div class="overflow-x-auto">
-    <table class="w-full text-left">
-      <thead>
-        <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
-          <th class="pb-2 pr-4">Species</th>
-          <th class="pb-2 pr-4">Coverage</th>
-          <th class="pb-2 pr-4">In stock</th>
-          <th class="pb-2">From</th>
-        </tr>
-      </thead>
-      <tbody>{rows}
-      </tbody>
-    </table>
-  </div>
-</main>
-
-{footer}
-
-</body>
-</html>"""
+    return render_template(
+        "compare_index.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        entry_count=len(entries), entries_view=entries_view,
+    )
 
 
 def main():
