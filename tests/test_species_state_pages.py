@@ -78,11 +78,28 @@ def _mango_products():
     ]
 
 
-# Render once: olive in every state, plus a species with no guide (mango).
+def _unenriched_products():
+    # A species with NO growing guide, to prove the graceful fallback still works.
+    # Starfruit is deliberately low-priority on the rollout (unlikely to be enriched
+    # soon) yet has RFCA archive_links entries, which the archive-fallback test needs.
+    sp = {"common_name": "Starfruit", "latin_name": "Averrhoa carambola",
+          "description": "Generic starfruit blurb.", "slug": "starfruit"}
+    return [
+        {"title": f"Starfruit {i}", "url": f"https://nursery.example/starfruit-{i}",
+         "nursery_key": "daleys", "nursery_name": "Daleys", "price": 30.0 + i,
+         "available": True, "species": sp}
+        for i in range(4)
+    ]
+
+
+# Render once: olive and mango (both enriched) in every state, plus a species with
+# no guide (starfruit) to exercise the graceful fallback.
 PAGES = {st: bssp.build_combo_page(st, "olive", _olive_products(), TODAY) for st in STATES}
-MANGO_PAGE = bssp.build_combo_page("QLD", "mango", _mango_products(), TODAY)
+MANGO_PAGES = {st: bssp.build_combo_page(st, "mango", _mango_products(), TODAY) for st in STATES}
+UNENRICHED_PAGE = bssp.build_combo_page("QLD", "starfruit", _unenriched_products(), TODAY)
 
 OLIVE_JSON = json.loads((SCRAPERS / "growing_guides" / "olive.json").read_text(encoding="utf-8"))
+MANGO_JSON = json.loads((SCRAPERS / "growing_guides" / "mango.json").read_text(encoding="utf-8"))
 VALID_SLUGS = {s["slug"] for s in json.loads((SCRAPERS / "fruit_species.json").read_text()) if s.get("slug")}
 
 # State-specific region tokens that must appear on exactly one state's page.
@@ -91,6 +108,14 @@ STATE_REGION_TOKENS = {
     "QLD": ["Granite Belt", "Darling Downs"],
     "NSW": ["Riverina"],
     "VIC": ["Sunraysia", "Grampians"],
+}
+
+# Mango equivalents (different crop, different regions) for the mango guide tests.
+MANGO_REGION_TOKENS = {
+    "WA": ["Kununurra", "Carnarvon"],
+    "QLD": ["Mareeba", "Dimbulah", "Burdekin"],
+    "NSW": ["Northern Rivers", "Tweed"],
+    "VIC": ["Melbourne", "greenhouse"],
 }
 
 
@@ -164,7 +189,10 @@ class PerStateUniquenessTests(unittest.TestCase):
 
 class CopyRuleTests(unittest.TestCase):
     def test_no_em_or_en_dashes_in_pages(self):
-        for st, html in {**PAGES, "mango": MANGO_PAGE}.items():
+        pages = {**PAGES,
+                 **{f"mango-{st}": p for st, p in MANGO_PAGES.items()},
+                 "unenriched": UNENRICHED_PAGE}
+        for st, html in pages.items():
             self.assertNotIn(EM_DASH, html, f"em dash on {st} page")
             self.assertNotIn(EN_DASH, html, f"en dash on {st} page (guards the price-range bug)")
 
@@ -246,7 +274,7 @@ class FaqJsonLdTests(unittest.TestCase):
                 self.assertTrue(ent["acceptedAnswer"]["text"])
 
     def test_no_faq_jsonld_for_unenriched_species(self):
-        self.assertNotIn("FAQPage", MANGO_PAGE)
+        self.assertNotIn("FAQPage", UNENRICHED_PAGE)
 
 
 class SourcesTests(unittest.TestCase):
@@ -321,14 +349,15 @@ class SpeciesLinkTests(unittest.TestCase):
 class FallbackTests(unittest.TestCase):
     def test_has_guide(self):
         self.assertTrue(gg.has_guide("olive"))
-        self.assertFalse(gg.has_guide("mango"))
+        self.assertTrue(gg.has_guide("mango"))
+        self.assertFalse(gg.has_guide("starfruit"))
 
     def test_unenriched_species_uses_blurb_and_stays_clean(self):
-        self.assertIn("Generic mango blurb.", MANGO_PAGE)
-        self.assertNotIn('id="sources"', MANGO_PAGE)
-        self.assertIn("Track your collection with Treesmith", MANGO_PAGE)
-        self.assertNotIn(EM_DASH, MANGO_PAGE)
-        self.assertNotIn(EN_DASH, MANGO_PAGE)
+        self.assertIn("Generic starfruit blurb.", UNENRICHED_PAGE)
+        self.assertNotIn('id="sources"', UNENRICHED_PAGE)
+        self.assertIn("Track your collection with Treesmith", UNENRICHED_PAGE)
+        self.assertNotIn(EM_DASH, UNENRICHED_PAGE)
+        self.assertNotIn(EN_DASH, UNENRICHED_PAGE)
 
 
 class GrowingGuidesModuleTests(unittest.TestCase):
@@ -388,7 +417,7 @@ class FurtherReadingTests(unittest.TestCase):
         self.assertEqual(self._fr(PAGES["WA"]).count("<li>"), len(merged))
 
     def test_unenriched_species_has_no_further_reading(self):
-        self.assertNotIn('id="further-reading"', MANGO_PAGE)
+        self.assertNotIn('id="further-reading"', UNENRICHED_PAGE)
 
 
 class ArchiveIndexTests(unittest.TestCase):
@@ -421,9 +450,101 @@ class ArchiveIndexTests(unittest.TestCase):
         self.assertLessEqual(len(gg.get_further_reading("olive", cap=2)), 2)
 
     def test_unguided_species_with_archive_has_links_available(self):
-        # mango has no guide yet, but the index has candidates ready for when it does.
-        self.assertFalse(gg.has_guide("mango"))
-        self.assertGreater(len(gg._archive_links().get("mango", [])), 0)
+        # starfruit has no guide yet, but the index has candidates ready for when it does.
+        self.assertFalse(gg.has_guide("starfruit"))
+        self.assertGreater(len(gg._archive_links().get("starfruit", [])), 0)
+
+
+class MangoGuideTests(unittest.TestCase):
+    """Mango is the second enriched species (after olive); the same guarantees apply,
+    on a different crop with different regions, pests and harvest windows."""
+
+    def test_pages_build_and_replace_blurb(self):
+        for st, html in MANGO_PAGES.items():
+            self.assertGreater(len(html), 5000, f"{st} mango page too small")
+            self.assertNotIn("Generic mango blurb", html, f"{st} still shows the blurb")
+
+    def test_state_pages_mutually_distinct(self):
+        bodies = list(MANGO_PAGES.values())
+        for i in range(len(bodies)):
+            for j in range(i + 1, len(bodies)):
+                self.assertNotEqual(bodies[i], bodies[j], "two mango state pages are identical")
+
+    def test_each_state_has_its_own_region_tokens(self):
+        for st, tokens in MANGO_REGION_TOKENS.items():
+            self.assertTrue(any(t in MANGO_PAGES[st] for t in tokens),
+                            f"{st} mango page missing its region tokens {tokens}")
+
+    def test_region_tokens_do_not_leak_across_states(self):
+        for owner, tokens in MANGO_REGION_TOKENS.items():
+            for other in STATES:
+                if other == owner:
+                    continue
+                for t in tokens:
+                    self.assertNotIn(t, MANGO_PAGES[other],
+                                     f"{owner} mango token '{t}' leaked onto {other} page")
+
+    def test_stock_table_stays_above_guide(self):
+        qld = MANGO_PAGES["QLD"]
+        self.assertLess(qld.index("<table"), qld.index("Growing Mango in Queensland"),
+                        "stock table must precede the mango guide")
+
+    def test_faq_jsonld_parses_on_each_state(self):
+        for st in STATES:
+            m = re.search(r'<script type="application/ld\+json">\s*(\{.*?\})\s*</script>',
+                          MANGO_PAGES[st], re.S)
+            self.assertIsNotNone(m, f"{st} mango page missing FAQPage JSON-LD")
+            data = json.loads(m.group(1))
+            self.assertEqual(data["@type"], "FAQPage")
+            expected = len(MANGO_JSON["core"]["faqs"]) + len(MANGO_JSON["states"][st].get("faqs", []))
+            self.assertEqual(len(data["mainEntity"]), expected, f"{st} mango FAQ count mismatch")
+
+    def test_sources_present_https_nofollow(self):
+        for st in STATES:
+            block = re.search(r'id="sources".*?</section>', MANGO_PAGES[st], re.S)
+            self.assertIsNotNone(block, f"{st} mango page missing Sources section")
+            refs = re.findall(r'<li><a href="(https://[^"]+)"([^>]*)>', block.group(0))
+            self.assertTrue(refs, f"{st} mango Sources has no links")
+            for url, attrs in refs:
+                self.assertIn("noopener", attrs, url)
+                self.assertIn("nofollow", attrs, url)
+
+    def test_guide_sources_https_and_cited_ids_resolve(self):
+        for s in MANGO_JSON["sources"]:
+            self.assertTrue(s["url"].startswith("https://"), f"non-https source: {s['url']}")
+        src_ids = {s["id"] for s in MANGO_JSON["sources"]}
+        cited = set()
+        for block in [MANGO_JSON["core"]] + list(MANGO_JSON["states"].values()):
+            for sec in block.get("sections", []):
+                cited.update(sec.get("cites", []))
+        self.assertEqual(cited - src_ids, set(), "mango guide cites an unknown source id")
+
+    def test_authoritative_domains_present(self):
+        domains = " ".join(s["url"] for s in MANGO_JSON["sources"])
+        for d in ("business.qld.gov.au", "nt.gov.au", "dpird.wa.gov.au", "mangoes.net.au"):
+            self.assertIn(d, domains, f"expected a {d} source")
+
+    def test_species_links_resolve(self):
+        for st in STATES:
+            linked = set(re.findall(r'/species/([a-z0-9-]+)\.html', MANGO_PAGES[st]))
+            self.assertIn("mango", linked, f"{st} should link to /species/mango.html")
+            self.assertEqual(linked - VALID_SLUGS, set(), f"{st} has /species/ links that 404")
+
+    def test_further_reading_owned_and_followed(self):
+        fr = re.search(r'id="further-reading".*?</section>', MANGO_PAGES["WA"], re.S)
+        self.assertIsNotNone(fr, "mango WA page missing Further reading")
+        block = fr.group(0)
+        self.assertIn("wanatca.org.au", block)
+        self.assertIn("rfcarchives.org.au", block)
+        for url, attrs in re.findall(r'<a href="(https://[^"]+)"([^>]*)>', block):
+            self.assertIn("noopener", attrs, url)
+            self.assertNotIn("nofollow", attrs, f"owned cross-link should be followed: {url}")
+
+    def test_further_reading_merges_curated_and_archive(self):
+        urls = [e["url"] for e in gg.get_further_reading("mango")]
+        self.assertTrue(any("wanatca.org.au" in u for u in urls), "curated WANATCA missing")
+        self.assertTrue(any("rfcarchives.org.au/Next/Fruits/Mango" in u for u in urls), "RFCA missing")
+        self.assertEqual(len(urls), len(set(urls)), "mango further reading not deduped")
 
 
 if __name__ == "__main__":
