@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 
 from shipping import SHIPPING_MAP, LOCAL_DELIVERY, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
+import growing_guides
 from build_species_trends import build_species_trends, make_sparkline, trend_direction
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -222,11 +223,23 @@ def group_by_species(products: list[dict], lookup: dict) -> dict:
 
 
 def build_species_description(species: dict) -> str:
-    """Render the optional growing/description section for a species page."""
+    """Render the growing-guide section for a species page.
+
+    When a cited growing guide exists (growing_guides/<slug>.json), render its
+    state-invariant core (scannable, cited sections plus FAQ and Sources) instead
+    of the generic fruit_species.json blurb. Falls back to the blurb otherwise.
+    """
+    name = species["common_name"]
+    slug = species.get("slug", "")
+    if slug and growing_guides.has_guide(slug):
+        return f"""  <!-- Growing Guide (cited) -->
+  <section class="mb-8" id="growing">
+    <h3 class="text-lg font-semibold text-gray-800 mb-3">Growing {name} in Australia</h3>
+{growing_guides.render_species_guide(slug)}
+  </section>"""
     description = species.get("description", "")
     if not description:
         return ""
-    name = species["common_name"]
     paragraphs = [p.strip() for p in description.strip().split("\n\n") if p.strip()]
     paras_html = "\n".join(f'      <p class="text-gray-700 text-sm leading-relaxed mb-3">{p}</p>' for p in paragraphs)
     return f"""  <!-- Growing Guide -->
@@ -417,7 +430,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         if min_price == max_price:
             price_range = f"${min_price:.2f}"
         else:
-            price_range = f"${min_price:.2f} – ${max_price:.2f}"
+            price_range = f"${min_price:.2f} to ${max_price:.2f}"
 
     # Which nurseries stock it
     nurseries_seen = {}
@@ -455,7 +468,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     # for the specific cultivar.
     product_rows = ""
     for p in sorted(products, key=lambda x: (not x["available"], x["price"] or 9999)):
-        price_str = f"${p['price']:.2f}" if p["price"] else "—"
+        price_str = f"${p['price']:.2f}" if p["price"] else "-"
         avail_badge = (
             '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">In stock</span>'
             if p["available"] else
@@ -619,9 +632,10 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
 
     price_desc = f" Prices from {price_range}." if price_range else ""
     head = render_head(
-        title=f"{name} Trees for Sale Australia — Compare Prices | treestock.com.au",
+        title=f"{name} Trees for Sale Australia, Compare Prices | treestock.com.au",
         description=f"{in_stock_count} {name} varieties in stock across {nursery_count} Australian nurseries.{price_desc} Compare availability and shipping options. Updated daily.",
         canonical_url=f"https://treestock.com.au/species/{slug}.html",
+        extra_head=growing_guides.faq_jsonld(slug) if growing_guides.has_guide(slug) else "",
         og_title=f"{name} Trees for Sale in Australia",
         og_description=f"{in_stock_count} {name} varieties in stock across {nursery_count} nurseries. From {price_range}.",
     )
@@ -638,7 +652,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
   <div class="mb-6">
     {breadcrumb}
     <h1 class="text-3xl font-bold text-green-900 mb-1">{name} Trees</h1>
-    <p class="text-gray-500 italic mb-3">{latin}{f' — {region}' if region else ''}</p>
+    <p class="text-gray-500 italic mb-3">{latin}{f' ({region})' if region else ''}</p>
     <div class="flex flex-wrap gap-3 text-sm">
       <span class="px-3 py-1 bg-green-50 text-green-800 rounded-full font-medium">{in_stock_count} varieties in stock</span>
       {f'<span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{price_range} AUD</span>' if price_range else ''}
@@ -754,7 +768,7 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
     sparkline_th = '<th class="pb-2 pr-2">30d</th>' if trend_data else ""
 
     head = render_head(
-        title="Buy Fruit Trees Online Australia — treestock.com.au",
+        title="Buy Fruit Trees Online Australia | treestock.com.au",
         description="Find fruit trees for sale across Australian nurseries. Track prices, availability, and shipping for 50+ species including mango, avocado, fig, lychee and more.",
     )
     header = render_header(active_path="/species/")
@@ -882,7 +896,7 @@ def main():
         max_p = max(prices) if prices else None
         price_range = ""
         if min_p and max_p:
-            price_range = f"${min_p:.2f}" if min_p == max_p else f"${min_p:.2f}–${max_p:.2f}"
+            price_range = f"${min_p:.2f}" if min_p == max_p else f"${min_p:.2f}-${max_p:.2f}"
 
         nurseries = {p["nursery_key"] for p in prods}
         rarity = rarity_scores.get(slug, {})

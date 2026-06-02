@@ -4,6 +4,28 @@
 
 ---
 
+## DEC-126 — 2026-06-01 — Per-state-unique cited growing guides for combo pages (olive flagship, scalable to all species)
+
+**Decided by:** Dale (interactive session with Benedict)
+
+**Context:** The buy-[species]-trees-[state] combo pages (`build_species_state_pages.py`, roughly 100 to 188 pages, among treestock's top SEO entrances) shared a byte-identical editorial body across WA, QLD, NSW and VIC: the generic `fruit_species.json` blurb, uncited, under a coarse and partly-wrong climate note (olive was tagged "temperate" and inherited a stone-fruit chill-hours note), with an en-dash price-range bug. Near-identical editorial across many state URLs is thin, doorway-style content. Benedict asked that each state's page be genuinely unique with state-specific researched content, and that the design scale to every species (mango and the rest), not just olive.
+
+**Decision:** Build a shared, additive growing-guide content layer (state-invariant CORE plus a per-state OVERLAY) and ship olive across all four states as the flagship, enrich `/species/olive.html`, and fix the dash and climate-category bugs template-wide. Architect as one JSON file per species so future species need no code change.
+
+**What shipped:**
+- `tools/scrapers/growing_guides.py` (loader plus renderers, mirroring the when-to-plant citation/FAQ/References style) and `tools/scrapers/growing_guides/olive.json` (28 verified sources, core plus WA/QLD/NSW/VIC overlays).
+- `build_species_state_pages.py`: renders overlay then core when a guide exists, with FAQ JSON-LD, article OG, a cited Sources block, and a Treesmith promo below the guide; stock table stays on top. Fixed the price-range en dash, removed em dashes from the climate notes, added a "mediterranean" category so olive and grape drop the chill-hours note, and dash-sanitised external product titles.
+- `build_species_pages.py`: renders the core guide (no overlay) on `/species/olive.html`.
+- `tests/test_species_state_pages.py` (new) guards per-state uniqueness, no dashes, the corrected climate note, FAQ JSON-LD, cited https sources, and the graceful fallback.
+
+**Verification:** 210 unittests green; built against live stock, the four olive pages render unique per state (region tokens do not leak across states), 0 dashes, FAQ JSON-LD, article OG and cited Sources present; all 28 cited URLs return HTTP 200. PR branch `dale/olive-state-guides`.
+
+**To revert:** delete `growing_guides.py` and `growing_guides/`, revert the two builders and the test. `has_guide()` returns false for every other species, so nothing else is affected.
+
+**Next:** enrich the next species by GSC entrance traffic (mango, flagship state QLD) by adding one `growing_guides/<slug>.json`, no code change. Optional: a local corpus of scholarly and rare-fruit references under `research/library/<species>/` to supplement the open web for rarer species.
+
+---
+
 ## DEC-125 — 2026-06-01 — Re-home /when-to-plant.html as a server-rendered, cited builder
 
 **Decided by:** Dale (interactive session with Benedict)

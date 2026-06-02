@@ -1,5 +1,61 @@
 # Brief: rebuild the "Buy Olive Trees in Western Australia" page into an evidence-backed olive growing guide
 
+## Update (2026-06-01): shipped, and generalised to per-state-unique guides for every species
+
+Benedict's added requirement: each state's combo page must be genuinely UNIQUE, with
+state-specific researched content, and the design must scale to every species (mango and the
+rest), not just olive. That is now built and tested on branch `dale/olive-state-guides`.
+
+What shipped:
+- A shared growing-guide content layer: `tools/scrapers/growing_guides.py` (loader plus
+  renderers) reading one declarative file per species, `tools/scrapers/growing_guides/<slug>.json`.
+- `growing_guides/olive.json`: researched, cited content with a state-invariant CORE (variety
+  choice, pollination, planting, water, harvest, curing, buying) plus a per-state OVERLAY for
+  WA, QLD, NSW and VIC (climate fit, growing regions, harvest window, pests, and for WA the
+  quarantine and shipping context). 28 sources, all verified to return HTTP 200.
+- `build_species_state_pages.py` renders core plus the matching state overlay (overlay first,
+  so the page leads with local specifics), with FAQ JSON-LD, an article OG card, a Sources block
+  limited to what was cited, and a Treesmith promo below the guide. The live stock table stays
+  on top.
+- `build_species_pages.py` renders the core guide (no overlay) on `/species/olive.html`.
+- Template-wide fixes that lift every combo page: the price-range en dash is gone, the climate
+  notes have no em dashes, olive and grape moved to a new "mediterranean" climate category so
+  they stop getting the stone and pome-fruit chill-hours note, and external nursery product
+  titles are dash-sanitised on render.
+- `tests/test_species_state_pages.py`: guards per-state uniqueness (state region tokens must
+  not leak across states), no dashes in our copy or the guide JSON, the corrected climate note,
+  FAQ JSON-LD, cited https sources, and the graceful fallback.
+
+Content model (core vs overlay):
+- CORE is state-invariant, researched once per species.
+- `states.<ST>` OVERLAY is state-specific, researched per state.
+- Graceful fallback: `has_guide(slug)` is false for any species with no JSON file, so the ~180
+  un-enriched pages keep their current behaviour. Enrich a new species by adding one JSON file,
+  with no code change.
+
+How to add the next species (the repeatable process):
+1. Pick the next species by GSC entrance traffic with `tools/scrapers/gsc_analysis.py` (it
+   already ranks `buy-*-trees-*.html` entrances).
+2. The flagship state differs per species: olive points to WA (Mediterranean); mango points to
+   QLD (tropical), and mango's WA page barely exists because most QLD and NSW nurseries cannot
+   ship live plants to WA. Research the highest-traffic state deepest, but give every generated
+   state a genuine overlay.
+3. Run the per-theme research fan-out (state-invariant themes once, state-variant themes per
+   state), adversarially verify each claim against .gov.au and industry bodies, confirm every
+   cited URL returns 200, then write `growing_guides/<slug>.json`.
+
+Per-state authorities to prefer: DPIRD WA (agric.wa.gov.au, library.dpird.wa.gov.au), Business
+Queensland and QLD DAF, NSW DPI, Agriculture Victoria; plus national bodies (Australian Olive
+Association, AgriFutures) and BOM for climate. Down-weight forums and retail blogs.
+
+Optional enrichment (Benedict's suggestion, 2026-06-01): a local corpus of scholarly articles
+and niche rare-fruit books can supplement the open web, which is thin for rare species. Plan:
+keep them under `research/library/<species>/`, have the research step read them first, paraphrase
+facts (never reproduce long verbatim text), and cite the work's public canonical URL (a DOI or
+publisher page). Most valuable for the rarer species, less so for olive where the web is strong.
+
+The original diagnosis and rebuild brief that this update delivers follows below.
+
 ## Status (verified 2026-06-01)
 
 `treestock.com.au/buy-olive-trees-western-australia.html` is LIVE (HTTP 200, ~17 KB, rebuilt
