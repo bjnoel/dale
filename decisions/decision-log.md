@@ -4,6 +4,30 @@
 
 ---
 
+## DEC-130 — 2026-06-02 — Guava growing guide (Queensland flagship)
+
+**Decided by:** Dale (interactive session with Benedict)
+
+**Context:** Following the olive flagship (DEC-126) and the reusable archive index (DEC-127), guava is the next species enriched with a per-state-unique, cited growing guide on the buy-guava-trees-[state] combo pages and /species/guava.html. Guava is a strong fit: it is in stock across all four generated states (WA 9, QLD/NSW/VIC 29 each) and is a tropical-to-subtropical fruit whose Australian heartland is Queensland, so QLD is the flagship. GSC and Plausible need server credentials not available in this local session, so the flagship call rests on climate reality, the live stock spread, and the known Australian guava geography (the approach the rollout prompt allows).
+
+**Decision:** Author tools/scrapers/growing_guides/guava.json mirroring olive.json (state-invariant core plus WA/QLD/NSW/VIC overlays), QLD researched deepest, every state genuinely unique. Keep the change set minimal: a new guide JSON plus a dedicated test file, no builder edits. Guava already sits in the existing "subtropical" climate category, which fits, so no new category was added.
+
+**What shipped (PR branch dale/guava-guide):**
+- tools/scrapers/growing_guides/guava.json: 29 verified sources, a 7-section core (variety, pollination, planting and soil, water and feeding, harvest and ripening, eating and storing, buying) plus distinct WA/QLD/NSW/VIC overlays (climate fit, regions, harvest window, pests, plus a responsible-growing weed note), 4 core FAQs plus 2 per state, and a curated Further reading (WANATCA "Guava wilt disease" ACOTANC paper, followed; rarefruitclub.au psidium-guajava, nofollow) with the RFCA guava articles auto-merged from the archive index.
+- tests/test_guava_guide.py (new, 27 tests): per-state uniqueness and no region-token leak, no em or en dashes (pages and JSON), FAQ JSON-LD counts, cited https Sources, every cited id resolves, the /species/feijoa cross-link, the WANATCA/RFCA Further reading (owned followed, third-party nofollow), and a guard on the correct fruit fly per state.
+
+**Accuracy notes (adversarially verified):** facts were fan-out researched and cross-checked against Australian authorities (DPIRD WA, Business Queensland, federal DAFF, NT Government, NSW WeedWise, Invasive Species Council), each cited URL confirmed HTTP 200. Two corrections worth recording: (1) WA's fruit fly is the Mediterranean fruit fly and Queensland fruit fly is NOT established in WA (the guide says so); (2) contrary to the older fruit_species.json blurb, strawberry guava (Psidium cattleianum) is NOT alert-listed in WA. The WA Organism List shows both common and strawberry guava as Permitted (s11). Strawberry/cherry guava IS an environmental weed in coastal QLD and NSW (though not legally declared), which the guide flags responsibly.
+
+**Verification:** full unittest suite 253 green; built against live stock, the four guava combo pages render unique per state (region tokens do not leak), 0 dashes, with FAQ JSON-LD, article OG, cited Sources and merged Further reading; all 29 cited URLs plus the Further-reading URLs return HTTP 200. One pre-existing dash on /species/guava.html comes from an unsanitised nursery product title in build_species_pages.py (the "/species/ builder dash leak" a separate in-flight PR is fixing); not touched here.
+
+**Process note:** done in an isolated git worktree and branch because several species guides are in flight concurrently (lychee DEC-128/PR #25, fig PR #28, peach PR #29, tamarillo DEC-129/PR #31). Guava takes DEC-130 to avoid a number collision; the change set is purely additive to minimise merge pain. See memory feedback_parallel_agent_worktree.
+
+**To revert:** delete growing_guides/guava.json and tests/test_guava_guide.py. has_guide("guava") returns false, so the combo and species pages fall back to the fruit_species.json blurb.
+
+**Next:** mango (QLD flagship) and the other top-traffic species, one growing_guides/<slug>.json each.
+
+---
+
 ## DEC-127 — 2026-06-02 — First-party archive integration: WANATCA + RFCA citations, cross-links, reusable index
 
 **Decided by:** Dale (interactive session with Benedict)
