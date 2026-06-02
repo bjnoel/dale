@@ -21,6 +21,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_footer, render_breadcrumb
 
 DATA_DIR = Path("/opt/dale/data/nursery-stock")
@@ -262,29 +263,27 @@ def build_page(all_dates: list[str], species_data: dict, output_dir: Path):
     act_fast_html = "".join(signal_card(s) for s in act_fast) if act_fast else "<p class='text-sm text-gray-400'>No rare in-stock species right now.</p>"
     trending_html = "".join(signal_card(s) for s in trending_up) if trending_up else "<p class='text-sm text-gray-400'>No species with notably rising stock right now.</p>"
 
-    # Full species table
-    rows = []
+    # Table row view-data. The template autoescapes the species name; the
+    # sparklines are prebuilt SVG (|safe) and the rest are computed classes,
+    # arrows and price strings. No scraped/untrusted strings reach this page.
+    rows_view = []
     for s in summaries_by_stock:
-        stock_spark = make_sparkline(s["stock_series"], width=80, height=22)
         price_spark_color = "#dc2626" if s["price_direction"] == "up" else "#16a34a"
-        price_spark = make_sparkline(s["price_series"], width=60, height=22, color=price_spark_color)
-        stock_arrow = arrow[s["stock_direction"]]
-        stock_class = arrow_color[s["stock_direction"]]
-        price_arrow = arrow[s["price_direction"]]
-        price_class = arrow_color[s["price_direction"]]
-        avail_class = "text-green-700" if s["availability_pct"] >= 70 else ("text-amber-600" if s["availability_pct"] >= 30 else "text-red-500")
-        price_str = f"${s['min_price_now']:.0f}" if s["min_price_now"] else "—"
-        rows.append(f"""
-        <tr class="border-b border-gray-100 hover:bg-gray-50">
-          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/{s['slug']}.html" class="text-gray-900 hover:text-green-700 no-underline">{s['name']}</a></td>
-          <td class="py-2 pr-3 text-sm text-right font-semibold {'text-green-700' if s['in_stock_now'] > 0 else 'text-gray-400'}">{s['in_stock_now']}</td>
-          <td class="py-2 pr-3">{stock_spark} <span class="text-xs {stock_class}">{stock_arrow}</span></td>
-          <td class="py-2 pr-3 text-sm text-gray-600">{price_str} <span class="text-xs {price_class}">{price_arrow}</span></td>
-          <td class="py-2 pr-3">{price_spark}</td>
-          <td class="py-2 text-xs {avail_class}">{s['availability_pct']}%</td>
-        </tr>""")
-
-    table_html = "\n".join(rows)
+        rows_view.append({
+            "slug": s["slug"],
+            "name": s["name"],
+            "in_stock_now": s["in_stock_now"],
+            "in_stock_class": "text-green-700" if s["in_stock_now"] > 0 else "text-gray-400",
+            "stock_spark": make_sparkline(s["stock_series"], width=80, height=22),
+            "stock_arrow": arrow[s["stock_direction"]],
+            "stock_class": arrow_color[s["stock_direction"]],
+            "price_str": f"${s['min_price_now']:.0f}" if s["min_price_now"] else "—",
+            "price_arrow": arrow[s["price_direction"]],
+            "price_class": arrow_color[s["price_direction"]],
+            "price_spark": make_sparkline(s["price_series"], width=60, height=22, color=price_spark_color),
+            "availability_pct": s["availability_pct"],
+            "avail_class": "text-green-700" if s["availability_pct"] >= 70 else ("text-amber-600" if s["availability_pct"] >= 30 else "text-red-500"),
+        })
 
     head = render_head(
         title="Species Trends — treestock.com.au Market Intelligence",
@@ -295,87 +294,14 @@ def build_page(all_dates: list[str], species_data: dict, output_dir: Path):
     breadcrumb = render_breadcrumb([("Home", "/"), ("Market Trends", "/trends.html")])
     footer = render_footer()
 
-    html = f"""{head}
-{header}
-<main class="max-w-3xl mx-auto px-4 py-6">
-{breadcrumb}
-  <div class="mb-6">
-    <h1 class="text-3xl font-bold text-green-900 mb-2">Market Trends</h1>
-    <p class="text-gray-600 mb-3">
-      Availability and price trends for 50 species across 19 Australian nurseries.
-      Updated daily. {days_count} days of data ({date_range}).
-    </p>
-    <p class="text-xs text-gray-400">
-      Trends compare last 7 days vs prior 7 days. ↑ = rising, ↓ = falling, → = stable.
-      Availability % = days this species had any stock in the tracked period.
-    </p>
-  </div>
-
-  <!-- Buy now signals -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold text-gray-800 mb-1">Good time to buy</h2>
-    <p class="text-sm text-gray-500 mb-3">Well-stocked species with stable or falling prices.</p>
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      {buy_now_html}
-    </div>
-  </section>
-
-  <!-- Act fast -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold text-gray-800 mb-1">Act fast</h2>
-    <p class="text-sm text-gray-500 mb-3">Rare species that are in stock now but hard to find (in stock less than 30% of tracked days).</p>
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      {act_fast_html}
-    </div>
-  </section>
-
-  <!-- Trending up -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold text-gray-800 mb-1">Stock trending up</h2>
-    <p class="text-sm text-gray-500 mb-3">Species with more stock available recently than last week.</p>
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      {trending_html}
-    </div>
-  </section>
-
-  <!-- Full table -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold text-gray-800 mb-3">All species</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
-            <th class="pb-2 pr-3">Species</th>
-            <th class="pb-2 pr-3 text-right">In stock</th>
-            <th class="pb-2 pr-3">30-day stock</th>
-            <th class="pb-2 pr-3">Price</th>
-            <th class="pb-2 pr-3">30-day price</th>
-            <th class="pb-2">Avail.</th>
-          </tr>
-        </thead>
-        <tbody>
-          {table_html}
-        </tbody>
-      </table>
-    </div>
-    <p class="text-xs text-gray-400 mt-3">
-      Availability = % of days tracked that species had at least one product in stock.
-      Price shown is current lowest available price across all nurseries.
-    </p>
-  </section>
-
-  <section class="p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600">
-    <p class="font-medium text-gray-700 mb-1">About this data</p>
-    <p>
-      treestock.com.au scrapes 19 Australian nurseries daily. This page shows {days_count} days of accumulated
-      data (since {all_dates[0] if all_dates else 'launch'}). Seasonal patterns become clearer with 90+ days.
-      Check back monthly for stronger signals.
-    </p>
-  </section>
-</main>
-{footer}
-</html>
-"""
+    html = render_template(
+        "species_trends_page.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        days_count=days_count, date_range=date_range,
+        since_str=all_dates[0] if all_dates else "launch",
+        buy_now_html=buy_now_html, act_fast_html=act_fast_html,
+        trending_html=trending_html, rows=rows_view,
+    )
 
     out = output_dir / "trends.html"
     out.write_text(html, encoding="utf-8")

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="30-day availability and price trends for 50 fruit tree species across 19 Australian nurseries. Data from N/A.">
+<link rel="canonical" href="https://treestock.com.au/trends.html">
+<meta property="og:url" content="https://treestock.com.au/trends.html">
+<title>Species Trends — treestock.com.au Market Intelligence</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="/styles.css?v=DATE" rel="stylesheet">
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  #nav-menu.open { display: flex; }
+</style>
+
+</head>
+
+<body class="bg-white text-gray-900">
+
+<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
+  <div class="max-w-3xl mx-auto px-4 py-2">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7 flex-shrink-0"><rect width="64" height="64" rx="12" fill="#065f46"/><path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/><path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/><circle cx="44" cy="44" r="8" fill="#f59e0b"/><text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text></svg>
+        <span class="text-lg font-bold text-green-800">treestock.com.au</span>
+      </a>
+      <nav id="nav-menu" class="hidden sm:flex sm:items-center sm:gap-4 text-sm
+                                flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0
+                                border-t sm:border-0 border-gray-100 pt-2 sm:pt-0">
+        <a href="/species/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Species</a>
+        <a href="/nursery/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Nurseries</a>
+        <a href="/variety/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Varieties</a>
+        <a href="/compare/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Compare</a>
+        <a href="/rare.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Rare Finds</a>
+        <a href="/digest.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Digest</a>
+        <a href="/history.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">History</a>
+        <a href="/when-to-plant.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Planting Calendar</a>
+        <a href="/wishlist.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Wishlist</a>
+        <a href="/trends.html" class="hover:text-green-700 no-underline whitespace-nowrap text-green-800 font-semibold">Trends</a>
+      </nav>
+      <button id="nav-toggle" class="sm:hidden p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', function() {
+  document.getElementById('nav-menu').classList.toggle('open');
+});
+</script>
+<main class="max-w-3xl mx-auto px-4 py-6">
+
+  <nav class="text-xs text-gray-400 mb-4">
+    <a href="/" class="hover:underline">Home</a> &#8250; Market Trends
+  </nav>
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-green-900 mb-2">Market Trends</h1>
+    <p class="text-gray-600 mb-3">
+      Availability and price trends for 50 species across 19 Australian nurseries.
+      Updated daily. 0 days of data (N/A).
+    </p>
+    <p class="text-xs text-gray-400">
+      Trends compare last 7 days vs prior 7 days. ↑ = rising, ↓ = falling, → = stable.
+      Availability % = days this species had any stock in the tracked period.
+    </p>
+  </div>
+
+  <!-- Buy now signals -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-800 mb-1">Good time to buy</h2>
+    <p class="text-sm text-gray-500 mb-3">Well-stocked species with stable or falling prices.</p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <p class='text-sm text-gray-400'>No clear signals yet. Check back as more data accumulates.</p>
+    </div>
+  </section>
+
+  <!-- Act fast -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-800 mb-1">Act fast</h2>
+    <p class="text-sm text-gray-500 mb-3">Rare species that are in stock now but hard to find (in stock less than 30% of tracked days).</p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <p class='text-sm text-gray-400'>No rare in-stock species right now.</p>
+    </div>
+  </section>
+
+  <!-- Trending up -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-800 mb-1">Stock trending up</h2>
+    <p class="text-sm text-gray-500 mb-3">Species with more stock available recently than last week.</p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <p class='text-sm text-gray-400'>No species with notably rising stock right now.</p>
+    </div>
+  </section>
+
+  <!-- Full table -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-800 mb-3">All species</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
+            <th class="pb-2 pr-3">Species</th>
+            <th class="pb-2 pr-3 text-right">In stock</th>
+            <th class="pb-2 pr-3">30-day stock</th>
+            <th class="pb-2 pr-3">Price</th>
+            <th class="pb-2 pr-3">30-day price</th>
+            <th class="pb-2">Avail.</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/apple.html" class="text-gray-900 hover:text-green-700 no-underline">Apple</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/apricot.html" class="text-gray-900 hover:text-green-700 no-underline">Apricot</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/avocado.html" class="text-gray-900 hover:text-green-700 no-underline">Avocado</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/banana.html" class="text-gray-900 hover:text-green-700 no-underline">Banana</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/black-sapote.html" class="text-gray-900 hover:text-green-700 no-underline">Black Sapote</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/blueberry.html" class="text-gray-900 hover:text-green-700 no-underline">Blueberry</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/cacao.html" class="text-gray-900 hover:text-green-700 no-underline">Cacao</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/cherry.html" class="text-gray-900 hover:text-green-700 no-underline">Cherry</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/custard-apple.html" class="text-gray-900 hover:text-green-700 no-underline">Custard Apple</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/dragon-fruit.html" class="text-gray-900 hover:text-green-700 no-underline">Dragon Fruit</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/feijoa.html" class="text-gray-900 hover:text-green-700 no-underline">Feijoa</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/fig.html" class="text-gray-900 hover:text-green-700 no-underline">Fig</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/finger-lime.html" class="text-gray-900 hover:text-green-700 no-underline">Finger Lime</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/grape.html" class="text-gray-900 hover:text-green-700 no-underline">Grape</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/grapefruit.html" class="text-gray-900 hover:text-green-700 no-underline">Grapefruit</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/grumichama.html" class="text-gray-900 hover:text-green-700 no-underline">Grumichama</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/guava.html" class="text-gray-900 hover:text-green-700 no-underline">Guava</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/jaboticaba.html" class="text-gray-900 hover:text-green-700 no-underline">Jaboticaba</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/jackfruit.html" class="text-gray-900 hover:text-green-700 no-underline">Jackfruit</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/jujube.html" class="text-gray-900 hover:text-green-700 no-underline">Jujube</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/lemon.html" class="text-gray-900 hover:text-green-700 no-underline">Lemon</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/lilly-pilly.html" class="text-gray-900 hover:text-green-700 no-underline">Lilly Pilly</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/lime.html" class="text-gray-900 hover:text-green-700 no-underline">Lime</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/longan.html" class="text-gray-900 hover:text-green-700 no-underline">Longan</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/loquat.html" class="text-gray-900 hover:text-green-700 no-underline">Loquat</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/lychee.html" class="text-gray-900 hover:text-green-700 no-underline">Lychee</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/macadamia.html" class="text-gray-900 hover:text-green-700 no-underline">Macadamia</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/mandarin.html" class="text-gray-900 hover:text-green-700 no-underline">Mandarin</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/mango.html" class="text-gray-900 hover:text-green-700 no-underline">Mango</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/miracle-fruit.html" class="text-gray-900 hover:text-green-700 no-underline">Miracle Fruit</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/mulberry.html" class="text-gray-900 hover:text-green-700 no-underline">Mulberry</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/nectarine.html" class="text-gray-900 hover:text-green-700 no-underline">Nectarine</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/olive.html" class="text-gray-900 hover:text-green-700 no-underline">Olive</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/orange.html" class="text-gray-900 hover:text-green-700 no-underline">Orange</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/papaya.html" class="text-gray-900 hover:text-green-700 no-underline">Papaya</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/passionfruit.html" class="text-gray-900 hover:text-green-700 no-underline">Passionfruit</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/peach.html" class="text-gray-900 hover:text-green-700 no-underline">Peach</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/pear.html" class="text-gray-900 hover:text-green-700 no-underline">Pear</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/pecan.html" class="text-gray-900 hover:text-green-700 no-underline">Pecan</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/plum.html" class="text-gray-900 hover:text-green-700 no-underline">Plum</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/pomegranate.html" class="text-gray-900 hover:text-green-700 no-underline">Pomegranate</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/pomelo.html" class="text-gray-900 hover:text-green-700 no-underline">Pomelo</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/rambutan.html" class="text-gray-900 hover:text-green-700 no-underline">Rambutan</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/raspberry.html" class="text-gray-900 hover:text-green-700 no-underline">Raspberry</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/rollinia.html" class="text-gray-900 hover:text-green-700 no-underline">Rollinia</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/sapodilla.html" class="text-gray-900 hover:text-green-700 no-underline">Sapodilla</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/starfruit.html" class="text-gray-900 hover:text-green-700 no-underline">Starfruit</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/tamarillo.html" class="text-gray-900 hover:text-green-700 no-underline">Tamarillo</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/wax-jambu.html" class="text-gray-900 hover:text-green-700 no-underline">Wax Jambu</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50">
+          <td class="py-2 pr-3 text-sm font-medium"><a href="/species/white-sapote.html" class="text-gray-900 hover:text-green-700 no-underline">White Sapote</a></td>
+          <td class="py-2 pr-3 text-sm text-right font-semibold text-gray-400">0</td>
+          <td class="py-2 pr-3"><svg width="80" height="22"></svg> <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3 text-sm text-gray-600">— <span class="text-xs text-gray-400">→</span></td>
+          <td class="py-2 pr-3"><svg width="60" height="22"></svg></td>
+          <td class="py-2 text-xs text-red-500">0%</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-gray-400 mt-3">
+      Availability = % of days tracked that species had at least one product in stock.
+      Price shown is current lowest available price across all nurseries.
+    </p>
+  </section>
+
+  <section class="p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600">
+    <p class="font-medium text-gray-700 mb-1">About this data</p>
+    <p>
+      treestock.com.au scrapes 19 Australian nurseries daily. This page shows 0 days of accumulated
+      data (since launch). Seasonal patterns become clearer with 90+ days.
+      Check back monthly for stronger signals.
+    </p>
+  </section>
+</main>
+
+<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
+  <div class="max-w-3xl mx-auto px-4">
+    <a href="/" class="hover:text-gray-600">Home</a> &middot;
+    <a href="/species/" class="hover:text-gray-600">Species</a> &middot;
+    <a href="/nursery/" class="hover:text-gray-600">Nurseries</a> &middot;
+    <a href="/variety/" class="hover:text-gray-600">Varieties</a> &middot;
+    <a href="/compare/" class="hover:text-gray-600">Compare</a> &middot;
+    <a href="/rare.html" class="hover:text-gray-600">Rare Finds</a> &middot;
+    <a href="/digest.html" class="hover:text-gray-600">Digest</a> &middot;
+    <a href="/history.html" class="hover:text-gray-600">History</a> &middot;
+    <a href="/when-to-plant.html" class="hover:text-gray-600">Planting Calendar</a> &middot;
+    <a href="/wishlist.html" class="hover:text-gray-600">Wishlist</a> &middot;
+    <a href="/trends.html" class="hover:text-gray-600">Trends</a>
+    <p class="mt-2"><a href="/buy-fruit-trees-wa.html" class="hover:text-gray-600">Buy in WA</a> &middot; <a href="/buy-fruit-trees-qld.html" class="hover:text-gray-600">Buy in QLD</a> &middot; <a href="/buy-fruit-trees-nsw.html" class="hover:text-gray-600">Buy in NSW</a> &middot; <a href="/buy-fruit-trees-vic.html" class="hover:text-gray-600">Buy in VIC</a> &middot; <a href="/companion-planting-guide.html" class="hover:text-gray-600">Companion Planting</a> &middot; <a href="/compare/nurseries.html" class="hover:text-gray-600">Compare Nurseries</a> &middot; <a href="/treesmith.html" class="hover:text-gray-600">Treesmith app</a> &middot; <a href="/manage.html" class="hover:text-gray-600">Manage email alerts</a></p>
+    <p class="mt-2">Data updated daily. Prices and availability may change.</p>
+    <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
+  </div>
+</footer>
+</html>

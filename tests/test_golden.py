@@ -56,6 +56,12 @@ GOLDEN_CASES = [
         "outputs": ["rare.html"],
     },
     {
+        "name": "species_trends",
+        "script": "build_species_trends.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["trends.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],
