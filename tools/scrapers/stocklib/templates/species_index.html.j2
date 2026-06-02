@@ -1,0 +1,42 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="max-w-3xl mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold text-green-900 mb-2">Fruit Tree Species</h1>
+  <p class="text-gray-500 text-sm mb-6">Browse by species to compare prices and availability across Australian nurseries. Updated daily.</p>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
+          <th class="pb-2 pr-4">Species</th>
+          <th class="pb-2 pr-4">In Stock</th>
+          <th class="pb-2 pr-4">Varieties</th>
+          <th class="pb-2 pr-4">Nurseries</th>
+          <th class="pb-2 pr-4">Price Range</th>
+          {{ sparkline_th|safe }}
+          <th class="pb-2">Rarity</th>
+        </tr>
+      </thead>
+      <tbody>
+{% for e in index_view %}
+    <tr class="border-b border-gray-100 hover:bg-gray-50">
+      <td class="py-3 pr-4">
+        <a href="/species/{{ e.slug }}.html" class="font-medium text-green-700 hover:underline">{{ e.common_name }}</a>
+        <div class="text-xs text-gray-400 italic">{{ e.latin_name }}</div>
+      </td>
+      <td class="py-3 pr-4 text-sm {{ e.in_s_class }}">{{ e.in_s }} in stock</td>
+      <td class="py-3 pr-4 text-sm text-gray-500">{{ e.total }} varieties</td>
+      <td class="py-3 pr-4 text-sm text-gray-500">{{ e.nurseries }} nurseries</td>
+      <td class="py-3 pr-4 text-sm text-gray-600">{{ e.price_range }}</td>
+      <td class="py-3 pr-2">{{ e.sparkline_cell|safe }}</td>
+      <td class="py-3">{{ e.rarity_cell|safe }}</td>
+    </tr>
+{% endfor %}      </tbody>
+    </table>
+  </div>
+</main>
+
+{{ footer|safe }}
+</body>
+</html>

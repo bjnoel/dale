@@ -22,6 +22,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 from shipping import SHIPPING_MAP, LOCAL_DELIVERY, delivery_label
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 import growing_guides
 from build_species_trends import build_species_trends, make_sparkline, trend_direction
@@ -37,7 +38,6 @@ def _no_dash(text: str) -> str:
     Mirrors build_species_state_pages._no_dash; raw titles are kept for matching
     and slugs, this is applied only where the value is rendered into HTML."""
     return text.replace("—", "-").replace("–", "-")
-
 
 # Related species groups for cross-linking — people who buy one often compare others in the group.
 # Ordered by popularity within each group (most popular first).
@@ -237,6 +237,9 @@ def build_species_description(species: dict) -> str:
     When a cited growing guide exists (growing_guides/<slug>.json), render its
     state-invariant core (scannable, cited sections plus FAQ and Sources) instead
     of the generic fruit_species.json blurb. Falls back to the blurb otherwise.
+
+    The returned HTML is curated, first-party content (no untrusted scraped data),
+    so the template renders it through the {{ description_html|safe }} slot.
     """
     name = species["common_name"]
     slug = species.get("slug", "")
@@ -456,39 +459,29 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         if p["available"]:
             nurseries_seen[nk]["in_stock"] += 1
 
-    nursery_rows = ""
+    nursery_view = []
     for nk, n in sorted(nurseries_seen.items(), key=lambda x: -x[1]["in_stock"]):
         local_lbl = delivery_label(nk)
         ships = local_lbl if local_lbl else (", ".join(n["ships_to"]) if n["ships_to"] else "Local only")
         in_s = n["in_stock"]
-        total = n["total"]
-        avail_text = f"{in_s} in stock" if in_s > 0 else "out of stock"
-        avail_color = "text-green-700 font-semibold" if in_s > 0 else "text-gray-400"
-        nursery_rows += f"""
-      <tr class="border-b border-gray-100">
-        <td class="py-2 pr-4 font-medium text-sm">{_no_dash(n['name'])}</td>
-        <td class="py-2 pr-4 text-sm {avail_color}">{avail_text} ({total} varieties)</td>
-        <td class="py-2 text-xs text-gray-500">{ships}</td>
-      </tr>"""
+        nursery_view.append({
+            "name": _no_dash(n["name"]),
+            "avail_text": f"{in_s} in stock" if in_s > 0 else "out of stock",
+            "avail_color": "text-green-700 font-semibold" if in_s > 0 else "text-gray-400",
+            "total": n["total"],
+            "ships": ships,
+        })
 
     # Product listing (in-stock first). Title links to the nursery (buy-now
     # intent). For named cultivars that have a treestock variety page, append
     # a small "Alerts" link to that page so users can set up restock alerts
     # for the specific cultivar.
-    product_rows = ""
+    # Product row view-data. The template autoescapes the scraped title, the
+    # utm URL (the & target) and the nursery name. alert_link is a prebuilt
+    # fragment (a clean variety slug or the #subscribeBox anchor) -> |safe.
+    product_view = []
     for p in sorted(products, key=lambda x: (not x["available"], x["price"] or 9999)):
-        price_str = f"${p['price']:.2f}" if p["price"] else "-"
-        avail_badge = (
-            '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">In stock</span>'
-            if p["available"] else
-            '<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">Out of stock</span>'
-        )
         nursery_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=referral" if p["url"] else ""
-        disp_title = _no_dash(p["title"])
-        title_link = (
-            f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{disp_title}</a>'
-            if nursery_url else disp_title
-        )
         # Alerts link only on OOS rows -- no value nudging someone to an
         # "alert me when it's back" page for something they can buy right now.
         # Named cultivars get a per-variety watch (the kept, low-noise feature)
@@ -509,13 +502,15 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
             )
         else:
             alert_link = ''
-        product_rows += f"""
-      <tr class="border-b border-gray-100 hover:bg-gray-50">
-        <td class="py-2 pr-3 text-sm">{title_link}{alert_link}</td>
-        <td class="py-2 pr-3 text-xs text-gray-500">{_no_dash(p['nursery_name'])}</td>
-        <td class="py-2 pr-3 text-sm font-medium">{price_str}</td>
-        <td class="py-2">{avail_badge}</td>
-      </tr>"""
+        product_view.append({
+            "has_url": bool(nursery_url),
+            "nursery_url": nursery_url,
+            "title": _no_dash(p["title"]),
+            "alert_link": alert_link,
+            "nursery_name": _no_dash(p["nursery_name"]),
+            "price": p["price"],
+            "available": p["available"],
+        })
 
     in_stock_count = len(in_stock)
     total_count = len(products)
@@ -653,103 +648,46 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     breadcrumb = render_breadcrumb([("Home", "/"), ("Species", "/species/"), (name, "")])
     footer = render_footer()
 
-    return f"""{head}
-{header}
+    price_badge = (
+        f'<span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{price_range} AUD</span>'
+        if price_range else ''
+    )
+    description_html = build_species_description(species)
+    treesmith_promo = render_treesmith_promo("species")
+    variety_cta = (
+        '<!-- Variety-watch suggestion CTA (shown below results when stock exists) -->\n'
+        '  <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">\n'
+        f'    <p class="font-medium text-green-800 mb-1">Want alerts for a specific {name} variety?</p>\n'
+        '    <p class="text-gray-600">Out-of-stock rows have a &#128276; Alerts link -- click it to get emailed when that exact variety restocks at any monitored nursery. In-stock rows link straight to the nursery for buy-now.</p>\n'
+        '  </div>'
+    ) if in_stock_count > 0 else ''
 
-<main class="max-w-3xl mx-auto px-4 py-6">
-
-  <!-- Hero -->
-  <div class="mb-6">
-    {breadcrumb}
-    <h1 class="text-3xl font-bold text-green-900 mb-1">{name} Trees</h1>
-    <p class="text-gray-500 italic mb-3">{latin}{f' ({region})' if region else ''}</p>
-    <div class="flex flex-wrap gap-3 text-sm">
-      <span class="px-3 py-1 bg-green-50 text-green-800 rounded-full font-medium">{in_stock_count} varieties in stock</span>
-      {f'<span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{price_range} AUD</span>' if price_range else ''}
-      <span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{nursery_count} nurseries</span>
-      {rarity_badge_html}
-    </div>
-  </div>
-
-{watch_box_html}
-
-  {when_to_buy_html}
-
-  <!-- Where to Buy -->
-  <section class="mb-8">
-    <h3 class="text-lg font-semibold text-gray-800 mb-3">Where to buy {name} trees in Australia</h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
-            <th class="pb-2 pr-4">Nursery</th>
-            <th class="pb-2 pr-4">Availability</th>
-            <th class="pb-2">Ships to</th>
-          </tr>
-        </thead>
-        <tbody>{nursery_rows}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  {build_species_description(species)}
-
-  {state_links_html}
-
-  {related_species_html}
-
-  <!-- All Varieties -->
-  <section class="mb-8">
-    <h3 class="text-lg font-semibold text-gray-800 mb-3">All {name} varieties ({total_count} listed)</h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
-            <th class="pb-2 pr-3">Variety</th>
-            <th class="pb-2 pr-3">Nursery</th>
-            <th class="pb-2 pr-3">Price</th>
-            <th class="pb-2">Status</th>
-          </tr>
-        </thead>
-        <tbody>{product_rows}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  {f"""<!-- Variety-watch suggestion CTA (shown below results when stock exists) -->
-  <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
-    <p class="font-medium text-green-800 mb-1">Want alerts for a specific {name} variety?</p>
-    <p class="text-gray-600">Out-of-stock rows have a &#128276; Alerts link -- click it to get emailed when that exact variety restocks at any monitored nursery. In-stock rows link straight to the nursery for buy-now.</p>
-  </div>""" if in_stock_count > 0 else ''}
-
-  {render_treesmith_promo("species")}
-
-</main>
-
-{footer}
-{watch_script}
-</body>
-</html>"""
+    return render_template(
+        "species_page.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        name=name, latin=latin, region=region,
+        in_stock_count=in_stock_count, nursery_count=nursery_count,
+        total_count=total_count, price_badge=price_badge,
+        rarity_badge_html=rarity_badge_html, watch_box_html=watch_box_html,
+        when_to_buy_html=when_to_buy_html, description_html=description_html,
+        state_links_html=state_links_html, related_species_html=related_species_html,
+        variety_cta=variety_cta, treesmith_promo=treesmith_promo,
+        watch_script=watch_script, nursery_view=nursery_view, product_view=product_view,
+    )
 
 
 def build_species_index(species_data: list[dict], trend_data: dict | None = None) -> str:
     """Build an index page listing all species with data."""
     # trend_data: {slug: [in_stock_count_per_day, ...]} (30 values, oldest first)
-    rows = ""
+    index_view = []
     for entry in sorted(species_data, key=lambda x: x["in_stock_count"], reverse=True):
         s = entry["species"]
         in_s = entry["in_stock_count"]
-        total = entry["total_count"]
-        nurseries = entry["nursery_count"]
-        price_range = entry["price_range"]
         rarity = entry.get("rarity", {})
-        hard_to_find = rarity.get("hard_to_find", False)
         rarity_cell = (
             '<span class="text-xs px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full border border-amber-200 whitespace-nowrap">'
             '&#11088; Hard to find</span>'
-            if hard_to_find else ""
+            if rarity.get("hard_to_find", False) else ""
         )
 
         sparkline_cell = ""
@@ -757,23 +695,20 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
             series = trend_data[s["slug"]]
             if len([v for v in series if v is not None]) >= 2:
                 svg = make_sparkline(series, width=60, height=20, color="#16a34a")
-                sparkline_cell = (
-                    f'<span title="30-day availability trend">{svg}</span>'
-                )
+                sparkline_cell = f'<span title="30-day availability trend">{svg}</span>'
 
-        rows += f"""
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
-      <td class="py-3 pr-4">
-        <a href="/species/{s['slug']}.html" class="font-medium text-green-700 hover:underline">{s['common_name']}</a>
-        <div class="text-xs text-gray-400 italic">{s['latin_name']}</div>
-      </td>
-      <td class="py-3 pr-4 text-sm {'text-green-700 font-medium' if in_s > 0 else 'text-gray-400'}">{in_s} in stock</td>
-      <td class="py-3 pr-4 text-sm text-gray-500">{total} varieties</td>
-      <td class="py-3 pr-4 text-sm text-gray-500">{nurseries} nurseries</td>
-      <td class="py-3 pr-4 text-sm text-gray-600">{price_range}</td>
-      <td class="py-3 pr-2">{sparkline_cell}</td>
-      <td class="py-3">{rarity_cell}</td>
-    </tr>"""
+        index_view.append({
+            "slug": s["slug"],
+            "common_name": s["common_name"],
+            "latin_name": s["latin_name"],
+            "in_s": in_s,
+            "in_s_class": "text-green-700 font-medium" if in_s > 0 else "text-gray-400",
+            "total": entry["total_count"],
+            "nurseries": entry["nursery_count"],
+            "price_range": entry["price_range"],
+            "sparkline_cell": sparkline_cell,
+            "rarity_cell": rarity_cell,
+        })
 
     sparkline_th = '<th class="pb-2 pr-2">30d</th>' if trend_data else ""
 
@@ -784,35 +719,11 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
     header = render_header(active_path="/species/")
     footer = render_footer()
 
-    return f"""{head}
-{header}
-
-<main class="max-w-3xl mx-auto px-4 py-6">
-  <h1 class="text-2xl font-bold text-green-900 mb-2">Fruit Tree Species</h1>
-  <p class="text-gray-500 text-sm mb-6">Browse by species to compare prices and availability across Australian nurseries. Updated daily.</p>
-
-  <div class="overflow-x-auto">
-    <table class="w-full text-left">
-      <thead>
-        <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
-          <th class="pb-2 pr-4">Species</th>
-          <th class="pb-2 pr-4">In Stock</th>
-          <th class="pb-2 pr-4">Varieties</th>
-          <th class="pb-2 pr-4">Nurseries</th>
-          <th class="pb-2 pr-4">Price Range</th>
-          {sparkline_th}
-          <th class="pb-2">Rarity</th>
-        </tr>
-      </thead>
-      <tbody>{rows}
-      </tbody>
-    </table>
-  </div>
-</main>
-
-{footer}
-</body>
-</html>"""
+    return render_template(
+        "species_index.html.j2",
+        head=head, header=header, footer=footer,
+        sparkline_th=sparkline_th, index_view=index_view,
+    )
 
 
 def main():
