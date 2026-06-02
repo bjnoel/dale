@@ -4,6 +4,25 @@
 
 ---
 
+## DEC-128 — 2026-06-02 — Lychee growing guide (second enriched species; per-state-unique, archives-first)
+
+**Decided by:** Dale (interactive session with Benedict)
+
+**Context:** Following the olive flagship (DEC-126) and the archive integration (DEC-127), lychee is the second species to get the rich, per-state-unique, cited growing guide. Lychee is a strong choice: it has the richest Rare Fruit Council archive of any species (26 articles), and its states differ sharply, which is exactly what the overlay layer is built to express. Traffic told an interesting story: GSC and Plausible show `/species/lychee.html` as the top lychee entrance and `/buy-lychee-trees-western-australia.html` as the strongest combo page (best CTR), even though Queensland is where lychees actually grow commercially. So Queensland is the horticultural flagship (deepest research) while Western Australia got an especially careful overlay (top-traffic, underserved searchers).
+
+**Decision:** Ship `growing_guides/lychee.json` mirroring olive.json. No code change was needed to add the species (the additive design held); a small pre-existing bug was fixed along the way (see below).
+
+**What shipped (PR, pending Benedict review/merge/deploy):**
+- `growing_guides/lychee.json`: 15 verified sources, a state-invariant `core` (variety choice, the unusual seed-size/"chicken tongue" quality angle, pollination, planting, water, harvest, buying) and genuinely distinct WA/QLD/NSW/VIC overlays (climate fit, regions, harvest window, pests, WA quarantine). Variety advice is tied to live stock (Kwai May Pink, Wai Chee, Tai So, Salathiel, Bengal, Erdon Lee). Honest framing for Victoria (frost-bound, a container/hothouse curiosity, not a crop).
+- Archives first: the key facts (lychee needs several weeks of nights below ~20C to flower; Kwai May Pink = Bosworth No. 3; Salathiel sets the most reliable, near-seedless crop; propagation is by marcot/air-layer) are grounded in Benedict's RFCA and WANATCA archives, then cross-checked against FAO/Menzel, the Australian Lychee Growers Association, Business Queensland and DPIRD WA. Further reading curates two WANATCA yearbook articles (Cull and Paxton; the Erickson pollination paper) plus the auto-merged RFCA index; rarefruitclub.au is cited nofollow (third-party).
+- Correctness note: the lychee erinose mite is framed accurately as an established eastern-states pest spread on planting material (buy clean stock), NOT as a 2019 quarantine incursion (that was Florida, USA, not Australia).
+- Bug fix (incidental, needed for the dash-free definition of done): `build_species_pages.py` did not strip en/em dashes from passthrough nursery product titles and names, so `/species/lychee.html` and `/species/olive.html` showed titles like "Lychee - Jean Hang" with a U+2013 en dash. Added `_no_dash` at the display points (mirroring `build_species_state_pages.py`) plus a regression test. This fixes every species page, not just lychee.
+- Tests: added `LycheeGuideTests` (14, mirroring the olive guards) and `SpeciesPagePassthroughDashTests` (1 regression). Full suite 237 green. All 18 cited and further-reading URLs verified live (HTTP 200). No em or en dashes anywhere.
+
+**To revert:** delete `growing_guides/lychee.json` (the page falls back to the generic blurb). The `build_species_pages.py` dash fix is independent and worth keeping.
+
+---
+
 ## DEC-127 — 2026-06-02 — First-party archive integration: WANATCA + RFCA citations, cross-links, reusable index
 
 **Decided by:** Dale (interactive session with Benedict)
