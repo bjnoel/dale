@@ -255,8 +255,13 @@ class SourcesTests(unittest.TestCase):
             self.assertIn('id="sources"', PAGES[st], f"{st} missing Sources section")
 
     def test_reference_links_are_https_noopener_nofollow(self):
+        # Scope to the Sources block only. Third-party citations must be nofollow;
+        # Further-reading links to owned sites are deliberately followed (see
+        # FurtherReadingTests), so a page-wide scan would wrongly flag them.
         for st in STATES:
-            refs = re.findall(r'<li><a href="(https://[^"]+)"([^>]*)>', PAGES[st])
+            block = re.search(r'id="sources".*?</section>', PAGES[st], re.S)
+            self.assertIsNotNone(block, f"{st} missing Sources section")
+            refs = re.findall(r'<li><a href="(https://[^"]+)"([^>]*)>', block.group(0))
             self.assertTrue(refs, f"{st} has no reference links")
             for url, attrs in refs:
                 self.assertIn("noopener", attrs, f"{st} ref missing noopener: {url}")
@@ -331,6 +336,46 @@ class GrowingGuidesModuleTests(unittest.TestCase):
         combo_n = gg.render_combo_guide("olive", "WA").count('rel="noopener nofollow"')
         self.assertGreater(combo_n, species_n,
                            "the WA overlay should add cited sources beyond the core")
+
+
+class FurtherReadingTests(unittest.TestCase):
+    """First-party cross-links to Benedict's WANATCA and RFCA archives."""
+
+    def _fr(self, html):
+        m = re.search(r'id="further-reading".*?</section>', html, re.S)
+        return m.group(0) if m else ""
+
+    def test_present_on_every_state_and_species_guide(self):
+        for st in STATES:
+            self.assertIn('id="further-reading"', PAGES[st], f"{st} missing Further reading")
+        self.assertIn('id="further-reading"', gg.render_species_guide("olive"))
+
+    def test_links_point_to_owned_archives(self):
+        fr = self._fr(PAGES["WA"])
+        self.assertIn("wanatca.org.au", fr)
+        self.assertIn("rfcarchives.org.au", fr)
+
+    def test_further_reading_links_are_followed_not_nofollow(self):
+        # Owned cross-links should pass authority: rel=noopener but NOT nofollow.
+        fr = self._fr(PAGES["WA"])
+        links = re.findall(r'<a href="(https://[^"]+)"([^>]*)>', fr)
+        self.assertTrue(links, "no further-reading links found")
+        for url, attrs in links:
+            self.assertIn("noopener", attrs, url)
+            self.assertNotIn("nofollow", attrs, f"owned cross-link should be followed: {url}")
+
+    def test_kailis_first_party_source_cited(self):
+        # The WANATCA Kailis article is a first-party WA citation in the Sources block.
+        self.assertIn("Kailis", PAGES["WA"])
+        self.assertIn("wanatca.org.au/yearbooks/Y22all.pdf", PAGES["WA"])
+
+    def test_further_reading_count_matches_data(self):
+        n = len(OLIVE_JSON.get("further_reading", []))
+        self.assertGreaterEqual(n, 2, "expected at least two further-reading links")
+        self.assertEqual(self._fr(PAGES["WA"]).count("<li>"), n)
+
+    def test_unenriched_species_has_no_further_reading(self):
+        self.assertNotIn('id="further-reading"', MANGO_PAGE)
 
 
 if __name__ == "__main__":

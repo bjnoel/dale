@@ -195,6 +195,36 @@ def _render_references(guide: dict, used_ids: set) -> str:
     )
 
 
+def render_further_reading(slug: str) -> str:
+    """First-party "Further reading" cross-links to Benedict's WANATCA and Rare Fruit
+    Council of Australia archives. These are owned sites, so the links are followed
+    (rel=noopener, deliberately no nofollow) to share authority within the network."""
+    guide = _load(slug)
+    if not guide:
+        return ""
+    items = guide.get("further_reading") or []
+    if not items:
+        return ""
+    lis = ""
+    for it in items:
+        title = it.get("title", "")
+        url = it.get("url", "").replace("&", "&amp;")
+        source = it.get("source", "")
+        src_html = f' <span class="text-gray-400">({source})</span>' if source else ""
+        lis += (f'<li><a href="{url}" rel="noopener" target="_blank" '
+                f'class="text-green-700 hover:underline">{title}</a>{src_html}</li>')
+    return (
+        '\n<section class="mb-8" id="further-reading">\n'
+        '  <h2 class="text-lg font-semibold text-gray-800 mb-2">Further reading</h2>\n'
+        '  <p class="text-gray-600 text-xs mb-2">In-depth articles from the WANATCA and Rare Fruit '
+        'Council of Australia archives.</p>\n'
+        '  <ul class="text-sm space-y-1 list-disc pl-5">\n'
+        f'    {lis}\n'
+        '  </ul>\n'
+        '</section>\n'
+    )
+
+
 def render_combo_guide(slug: str, state: str) -> str:
     """Full editorial block for a buy-<species>-trees-<state> page: the state overlay
     first (so the page leads with state specifics), then the shared core, then the
@@ -211,6 +241,7 @@ def render_combo_guide(slug: str, state: str) -> str:
         f'<div class="max-w-2xl">\n{body}\n</div>\n'
         f'{render_faq_section(slug, state)}'
         f'{_render_references(guide, used)}'
+        f'{render_further_reading(slug)}'
     )
 
 
@@ -226,4 +257,5 @@ def render_species_guide(slug: str) -> str:
         f'<div class="prose prose-sm max-w-none">\n{core}\n</div>\n'
         f'{render_faq_section(slug)}'
         f'{_render_references(guide, used)}'
+        f'{render_further_reading(slug)}'
     )
