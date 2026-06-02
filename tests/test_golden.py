@@ -84,6 +84,14 @@ GOLDEN_CASES = [
         "outputs": ["history.html"],
     },
     {
+        # All-curated content (no data dir); pinned to lock the FAQPage ld+json
+        # and the section assembly.
+        "name": "companion_guide",
+        "script": "build_companion_guide.py",
+        "args": ["{OUT}"],
+        "outputs": ["companion-planting-guide.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],

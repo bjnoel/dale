@@ -18,6 +18,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -582,51 +583,17 @@ def build_page() -> str:
     breadcrumb = render_breadcrumb([("Home", "/"), ("Companion Planting Guide", "")])
     footer = render_footer()
 
-    return f"""{head}
-{header}
-
-<main class="max-w-3xl mx-auto px-4 py-8">
-  {breadcrumb}
-
-  <h1 class="text-2xl font-bold text-green-900 mb-2">Companion Planting Guide for Fruit Trees</h1>
-  <p class="text-gray-600 text-sm mb-6">What to grow near citrus, mango, avocado, fig, stone fruit, apple and pear in Australian conditions, with honest evidence grades and pollinator requirements. Updated {today}.</p>
-
-  <div class="prose prose-sm text-gray-700 mb-6 max-w-2xl">
-    <p>Companion planting means growing other plants near your fruit trees for some benefit: attracting pollinators and predatory insects, building soil, suppressing weeds, or holding moisture. It is genuinely useful, but it is also one of the most myth-laden topics in gardening.</p>
-    <p>This guide covers the fruit trees most commonly grown in Australian gardens. We grade every suggestion by how good the evidence is, check the pollination advice carefully (getting it wrong can cost you years of fruit), and note the Australian pests and climates that actually matter. Use the pollinator table before you buy a single tree.</p>
-  </div>
-
-  {build_how_to_read()}
-
-  {build_toc()}
-
-  {species_sections}
-
-  {build_avoid_section()}
-
-  {build_nitrogen_fixers_section()}
-
-  {build_pollinator_table()}
-
-  {build_faq_section()}
-
-  {build_references_section()}
-
-  <!-- CTA -->
-  <section class="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
-    <h2 class="text-lg font-semibold text-green-900 mb-2">Find fruit trees for sale in Australia</h2>
-    <p class="text-sm text-green-800 mb-4">treestock.com.au tracks stock and prices across nurseries daily. Search by species, filter by your state.</p>
-    <div class="flex gap-3 flex-wrap">
-      <a href="/" class="inline-block bg-green-700 text-white px-4 py-2 rounded text-sm font-medium hover:bg-green-800">Search all nurseries</a>
-      <a href="/species/" class="inline-block bg-white border border-green-300 text-green-700 px-4 py-2 rounded text-sm font-medium hover:bg-green-50">Browse by species</a>
-      <a href="/rare.html" class="inline-block bg-white border border-green-300 text-green-700 px-4 py-2 rounded text-sm font-medium hover:bg-green-50">Rare and unusual finds</a>
-    </div>
-  </section>
-</main>
-
-{footer}
-</body>
-</html>"""
+    return render_template(
+        "companion_guide_page.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        today=today, species_sections=species_sections,
+        how_to_read=build_how_to_read(), toc=build_toc(),
+        avoid_section=build_avoid_section(),
+        nitrogen_fixers=build_nitrogen_fixers_section(),
+        pollinator_table=build_pollinator_table(),
+        faq_section=build_faq_section(),
+        references_section=build_references_section(),
+    )
 
 
 def main():
