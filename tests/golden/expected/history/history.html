@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Daily price changes and stock updates across Australian fruit nurseries.">
+<title>Price &amp; Stock History — treestock.com.au</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="/styles.css?v=DATE" rel="stylesheet">
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  #nav-menu.open { display: flex; }
+  .change-card { border-left: 3px solid #d1d5db; }
+  .change-card.has-changes { border-left-color: #059669; }
+  .wa-badge { background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 9999px; font-size: 0.7rem; }
+  .day-header { cursor: pointer; }
+  .day-header:hover { background: #f9fafb; }
+  .change-item { padding: 4px 0; border-bottom: 1px solid #f3f4f6; }
+  .change-item:last-child { border-bottom: none; }
+  .back-in-stock { color: #059669; }
+  .price-drop { color: #059669; }
+  .price-up { color: #dc2626; }
+  .sold-out { color: #6b7280; }
+  .new-product { color: #1e40af; }
+  .stat-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
+    border-radius: 9999px; font-size: 0.75rem; background: #f3f4f6; }
+</style>
+
+</head>
+
+<body class="bg-white text-gray-900">
+
+<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
+  <div class="max-w-3xl mx-auto px-4 py-2">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7 flex-shrink-0"><rect width="64" height="64" rx="12" fill="#065f46"/><path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/><path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/><circle cx="44" cy="44" r="8" fill="#f59e0b"/><text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text></svg>
+        <span class="text-lg font-bold text-green-800">treestock.com.au</span>
+      </a>
+      <nav id="nav-menu" class="hidden sm:flex sm:items-center sm:gap-4 text-sm
+                                flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0
+                                border-t sm:border-0 border-gray-100 pt-2 sm:pt-0">
+        <a href="/species/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Species</a>
+        <a href="/nursery/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Nurseries</a>
+        <a href="/variety/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Varieties</a>
+        <a href="/compare/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Compare</a>
+        <a href="/rare.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Rare Finds</a>
+        <a href="/digest.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Digest</a>
+        <a href="/history.html" class="hover:text-green-700 no-underline whitespace-nowrap text-green-800 font-semibold">History</a>
+        <a href="/when-to-plant.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Planting Calendar</a>
+        <a href="/wishlist.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Wishlist</a>
+        <a href="/trends.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Trends</a>
+      </nav>
+      <button id="nav-toggle" class="sm:hidden p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', function() {
+  document.getElementById('nav-menu').classList.toggle('open');
+});
+</script>
+
+<main class="max-w-3xl mx-auto px-4 py-6">
+  <div class="mb-4 flex flex-wrap gap-2 items-center text-sm">
+    <label class="flex items-center gap-1 cursor-pointer">
+      <input type="checkbox" id="expandAll" class="rounded"> Expand all days
+    </label>
+    <label class="flex items-center gap-1 cursor-pointer">
+      <input type="checkbox" id="hideEmpty" checked class="rounded"> Hide quiet days
+    </label>
+    <span id="summary" class="text-gray-400 ml-auto"></span>
+  </div>
+
+  <div id="timeline"></div>
+</main>
+
+
+<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
+  <div class="max-w-3xl mx-auto px-4">
+    <a href="/" class="hover:text-gray-600">Home</a> &middot;
+    <a href="/species/" class="hover:text-gray-600">Species</a> &middot;
+    <a href="/nursery/" class="hover:text-gray-600">Nurseries</a> &middot;
+    <a href="/variety/" class="hover:text-gray-600">Varieties</a> &middot;
+    <a href="/compare/" class="hover:text-gray-600">Compare</a> &middot;
+    <a href="/rare.html" class="hover:text-gray-600">Rare Finds</a> &middot;
+    <a href="/digest.html" class="hover:text-gray-600">Digest</a> &middot;
+    <a href="/history.html" class="hover:text-gray-600">History</a> &middot;
+    <a href="/when-to-plant.html" class="hover:text-gray-600">Planting Calendar</a> &middot;
+    <a href="/wishlist.html" class="hover:text-gray-600">Wishlist</a> &middot;
+    <a href="/trends.html" class="hover:text-gray-600">Trends</a>
+    <p class="mt-2"><a href="/buy-fruit-trees-wa.html" class="hover:text-gray-600">Buy in WA</a> &middot; <a href="/buy-fruit-trees-qld.html" class="hover:text-gray-600">Buy in QLD</a> &middot; <a href="/buy-fruit-trees-nsw.html" class="hover:text-gray-600">Buy in NSW</a> &middot; <a href="/buy-fruit-trees-vic.html" class="hover:text-gray-600">Buy in VIC</a> &middot; <a href="/companion-planting-guide.html" class="hover:text-gray-600">Companion Planting</a> &middot; <a href="/compare/nurseries.html" class="hover:text-gray-600">Compare Nurseries</a> &middot; <a href="/treesmith.html" class="hover:text-gray-600">Treesmith app</a> &middot; <a href="/manage.html" class="hover:text-gray-600">Manage email alerts</a></p>
+    <p class="mt-2">Data updated daily. Prices and availability may change.</p>
+    <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
+  </div>
+</footer>
+
+<script>
+const H = [];
+
+const expandAll = document.getElementById('expandAll');
+const hideEmpty = document.getElementById('hideEmpty');
+const timeline = document.getElementById('timeline');
+const summary = document.getElementById('summary');
+
+const CATEGORY_CONFIG = {
+  back_in_stock: { icon: '✅', label: 'Back in stock', cls: 'back-in-stock', tip: 'Was out of stock, now available again' },
+  price_drops: { icon: '📉', label: 'Price drops', cls: 'price-drop', tip: 'Price decreased' },
+  new_products: { icon: '🆕', label: 'New listings', cls: 'new-product', tip: 'Newly listed on the nursery website' },
+};
+
+function formatPrice(p) {
+  return p != null ? '$' + p.toFixed(2) : '';
+}
+
+function renderItem(item, category) {
+  const title = item.title || '';
+  const url = item.url || '';
+  const utmUrl = url ? url + (url.includes('?') ? '&' : '?') + 'utm_source=treestock&utm_medium=referral' : '';
+  const link = url ? `<a href="${utmUrl}" target="_blank" class="underline">${title}</a>` : title;
+
+  switch (category) {
+    case 'back_in_stock':
+      let priceNote = item.price ? ` — ${formatPrice(item.price)}` : '';
+      if (item.old_price) priceNote += ` (was ${formatPrice(item.old_price)})`;
+      return `<span class="back-in-stock">${link}${priceNote}</span>`;
+    case 'price_drops':
+      return `<span class="price-drop">${link}: ${formatPrice(item.old_price)} → ${formatPrice(item.new_price)}</span>`;
+    case 'new_products':
+      const np = item.price ? ` — ${formatPrice(item.price)}` : '';
+      return `<span class="new-product">${link}${np}</span>`;
+    default:
+      return title;
+  }
+}
+
+function renderDay(day, expanded) {
+  if (day.total === 0 && hideEmpty.checked) return '';
+
+  const dateObj = new Date(day.date + 'T00:00:00');
+  const dayName = dateObj.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+
+  // Summary pills
+  let pills = [];
+  let totalByCategory = {};
+  for (const n of day.nurseries) {
+    for (const [cat, items] of Object.entries(n.changes)) {
+      totalByCategory[cat] = (totalByCategory[cat] || 0) + items.length;
+    }
+  }
+  for (const [cat, count] of Object.entries(totalByCategory)) {
+    const cfg = CATEGORY_CONFIG[cat];
+    if (cfg) pills.push(`<span class="stat-pill">${cfg.icon} ${count}</span>`);
+  }
+
+  let details = '';
+  if (expanded && day.nurseries.length > 0) {
+    details = day.nurseries.map(n => {
+      const waBadge = n.wa ? ' <span class="wa-badge">WA</span>' : '';
+      const categories = Object.entries(n.changes).map(([cat, items]) => {
+        const cfg = CATEGORY_CONFIG[cat] || { icon: '', label: cat, cls: '', tip: '' };
+        const tip = cfg.tip ? ` title="${cfg.tip}"` : '';
+        const itemsHtml = items.map(item =>
+          `<div class="change-item text-sm"><span${tip} style="cursor:help">${cfg.icon}</span> ${renderItem(item, cat)}</div>`
+        ).join('');
+        return itemsHtml;
+      }).join('');
+      return `<div class="ml-4 mb-3">
+        <div class="font-medium text-sm text-gray-700">${n.name}${waBadge}</div>
+        <div class="ml-2">${categories}</div>
+      </div>`;
+    }).join('');
+  }
+
+  const chevron = day.total > 0 ? (expanded ? '▼' : '▶') : '';
+  const borderClass = day.total > 0 ? 'has-changes' : '';
+
+  return `<div class="change-card ${borderClass} mb-3 rounded-r-lg bg-white border border-gray-100">
+    <div class="day-header flex items-center gap-3 px-4 py-3" onclick="toggleDay('${day.date}')">
+      <span class="text-gray-400 text-xs w-4">${chevron}</span>
+      <div class="flex-1">
+        <span class="font-medium">${dayName}</span>
+        <span class="text-gray-400 text-sm ml-2">${day.total} change${day.total !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="flex gap-1 flex-wrap">${pills.join('')}</div>
+    </div>
+    ${details ? `<div class="px-4 pb-3 border-t border-gray-100">${details}</div>` : ''}
+  </div>`;
+}
+
+const expandedDays = new Set();
+
+function toggleDay(dateStr) {
+  if (expandedDays.has(dateStr)) expandedDays.delete(dateStr);
+  else expandedDays.add(dateStr);
+  render();
+}
+
+function render() {
+  const isExpandAll = expandAll.checked;
+
+  // Summary stats
+  const totalDays = H.length;
+  const activeDays = H.filter(d => d.total > 0).length;
+  const totalChanges = H.reduce((s, d) => s + d.total, 0);
+  summary.textContent = `${totalChanges} changes across ${activeDays} active day${activeDays !== 1 ? 's' : ''} (${totalDays} total)`;
+
+  timeline.innerHTML = H.map(day => {
+    const expanded = isExpandAll || expandedDays.has(day.date);
+    return renderDay(day, expanded);
+  }).join('') || '<div class="text-center py-12 text-gray-400">No history data yet. Check back after a few days of tracking.</div>';
+}
+
+expandAll.addEventListener('change', render);
+hideEmpty.addEventListener('change', render);
+
+// Auto-expand first day with changes
+const firstActive = H.find(d => d.total > 0);
+if (firstActive) expandedDays.add(firstActive.date);
+
+render();
+</script>
+</body>
+</html>

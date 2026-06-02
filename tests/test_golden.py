@@ -77,6 +77,13 @@ GOLDEN_CASES = [
         "outputs": ["digest.html"],
     },
     {
+        # No dated snapshots in the fixture -> the empty-timeline page (const H = []).
+        "name": "history",
+        "script": "build_history.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["history.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],
