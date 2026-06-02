@@ -369,13 +369,49 @@ class FurtherReadingTests(unittest.TestCase):
         self.assertIn("Kailis", PAGES["WA"])
         self.assertIn("wanatca.org.au/yearbooks/Y22all.pdf", PAGES["WA"])
 
-    def test_further_reading_count_matches_data(self):
-        n = len(OLIVE_JSON.get("further_reading", []))
-        self.assertGreaterEqual(n, 2, "expected at least two further-reading links")
-        self.assertEqual(self._fr(PAGES["WA"]).count("<li>"), n)
+    def test_further_reading_count_matches_merged(self):
+        # Rendered links = curated guide entries merged with the RFCA archive index.
+        merged = gg.get_further_reading("olive")
+        self.assertGreaterEqual(len(merged), len(OLIVE_JSON.get("further_reading", [])))
+        self.assertEqual(self._fr(PAGES["WA"]).count("<li>"), len(merged))
 
     def test_unenriched_species_has_no_further_reading(self):
         self.assertNotIn('id="further-reading"', MANGO_PAGE)
+
+
+class ArchiveIndexTests(unittest.TestCase):
+    """The generated RFCA archive index (build_archive_index.py -> archive_links.json)."""
+
+    INDEX = json.loads((SCRAPERS / "growing_guides" / "archive_links.json").read_text())
+
+    def test_index_well_formed(self):
+        self.assertIsInstance(self.INDEX, dict)
+        self.assertGreater(len(self.INDEX), 0)
+        for slug, entries in self.INDEX.items():
+            self.assertIsInstance(entries, list)
+            for e in entries:
+                self.assertTrue(e["url"].startswith("https://"), e["url"])
+                self.assertTrue(e.get("title"))
+                self.assertNotIn(EM_DASH, e["title"])
+                self.assertNotIn(EN_DASH, e["title"])
+
+    def test_index_slugs_are_real_species(self):
+        self.assertEqual(set(self.INDEX) - VALID_SLUGS, set(),
+                         "archive index references unknown species slugs")
+
+    def test_olive_merges_curated_and_archive(self):
+        urls = [e["url"] for e in gg.get_further_reading("olive")]
+        self.assertTrue(any("wanatca.org.au" in u for u in urls), "curated WANATCA missing")
+        self.assertTrue(any("rfcarchives.org.au/Next/Fruits/Olive" in u for u in urls), "RFCA missing")
+        self.assertEqual(len(urls), len(set(urls)), "further reading not deduped")
+
+    def test_cap_respected(self):
+        self.assertLessEqual(len(gg.get_further_reading("olive", cap=2)), 2)
+
+    def test_unguided_species_with_archive_has_links_available(self):
+        # mango has no guide yet, but the index has candidates ready for when it does.
+        self.assertFalse(gg.has_guide("mango"))
+        self.assertGreater(len(gg._archive_links().get("mango", [])), 0)
 
 
 if __name__ == "__main__":

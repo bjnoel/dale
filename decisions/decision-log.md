@@ -4,6 +4,26 @@
 
 ---
 
+## DEC-127 — 2026-06-02 — First-party archive integration: WANATCA + RFCA citations, cross-links, reusable index
+
+**Decided by:** Dale (interactive session with Benedict)
+
+**Context:** Benedict hosts two horticultural archives: WANATCA (wanatca.org.au, his father David Noel's organisation, with yearbooks, Quandong and ACOTANC papers) and the Rare Fruit Council of Australia archives (rfcarchives.org.au, roughly 1,492 species-organised articles). Both are live and publicly addressable, so they serve as first-party (owned-domain) citations and cross-links on the treestock growing guides. This solves the "citations need a public URL" constraint, keeps authority and traffic inside Benedict's network, and covers rare-fruit and WA-specific olive content the open web is thin on.
+
+**Decision:** Use the archives on the guides in two layers, and build a reusable index so the rare-fruit rollout (mango next) benefits automatically.
+
+**What shipped:**
+- `growing_guides.py`: `render_further_reading` merges hand-curated guide `further_reading` with a generated RFCA index (dedup, cap). Owned-site links are followed (rel=noopener); a per-entry `nofollow` flag supports third-party sources.
+- `olive.json`: cite Stan Kailis, "Growing Olives in Western Australia" (WANATCA Yearbook 22, 1998) as a first-party WA source; curated Further reading to the Kailis PDF and the RFCA olive articles. (PR #17.)
+- `build_archive_index.py` (local generator) + `growing_guides/archive_links.json`: RFCA folders map cleanly to species (high precision: 30 species, 167 links) and feed the rendered index. WANATCA yearbook matches are keyword-based (lower precision, e.g. "Chinese olive" is Canarium, not Olea), so they are printed as a curation aid only and added to guides by hand.
+- tests: `FurtherReadingTests` + `ArchiveIndexTests`; full suite 221 green.
+
+**Third-party note:** rarefruitclub.au (WA Rare Fruit Club) is NOT owned, so it is a third-party citation (Sources, nofollow), not a followed Further-reading link, plus a community-relationship opportunity. If Benedict hosts it later it becomes first-party.
+
+**To revert:** delete `archive_links.json` and `build_archive_index.py`, revert the `render_further_reading` merge; guides keep their curated `further_reading`.
+
+---
+
 ## DEC-126 — 2026-06-01 — Per-state-unique cited growing guides for combo pages (olive flagship, scalable to all species)
 
 **Decided by:** Dale (interactive session with Benedict)
