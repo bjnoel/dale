@@ -22,6 +22,7 @@ from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
+from stocklib.templates import render as render_template
 from treestock_layout import (
     render_head,
     render_header,
@@ -262,15 +263,14 @@ def build_combo_page(
     # Build product rows (limit to 60, sorted by price desc)
     sorted_products = sorted(products, key=lambda x: x["price"] or 0, reverse=True)[:60]
 
-    rows = ""
+    product_view = []
     for p in sorted_products:
-        price_cell = f"${p['price']:.0f}" if p["price"] else ""
-        nursery_name = _no_dash(p["nursery_name"])
-        rows += f"""      <tr>
-        <td class="py-2 px-3 text-sm"><a href="{p['url']}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{_no_dash(p['title'])}</a></td>
-        <td class="py-2 px-3 text-sm text-gray-600">{nursery_name}</td>
-        <td class="py-2 px-3 text-sm text-gray-600 text-right">{price_cell}</td>
-      </tr>\n"""
+        product_view.append({
+            "url": p["url"],
+            "title": _no_dash(p["title"]),
+            "nursery_name": _no_dash(p["nursery_name"]),
+            "price_cell": f"${p['price']:.0f}" if p["price"] else "",
+        })
 
     # Summary of nurseries carrying this species to this state
     nursery_list_items = ""
@@ -330,6 +330,7 @@ def build_combo_page(
 
     # State-unique cited guide when available, else the generic blurb. This is what
     # makes the WA/QLD/NSW/VIC pages stop sharing a byte-identical editorial body.
+    # Both are curated, first-party HTML, so the template renders the slot |safe.
     guide_body = (
         growing_guides.render_combo_guide(species_slug, state)
         if has_rich_guide else desc_para
@@ -340,58 +341,17 @@ def build_combo_page(
     if climate_note:
         climate_para = f'<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-sm text-amber-900">{climate_note}</div>'
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-{head}
-<body class="bg-gray-50 text-gray-900">
-{header}
-<main class="max-w-3xl mx-auto px-4 py-8">
-{breadcrumb}
-
-  <h1 class="text-2xl font-bold text-gray-900 mb-1">Buy {species_name} Trees in {state_full}{latin_note}</h1>
-  <p class="text-gray-500 text-sm mb-4">Updated {today_str} &nbsp;&middot;&nbsp; {total_products} in stock across {nursery_count} nurseries{(' &nbsp;&middot;&nbsp; ' + price_str) if price_str else ''}</p>
-
-  {climate_para}
-
-  <h2 class="text-lg font-semibold text-gray-800 mt-6 mb-3">In-stock {species_name} trees{shown_note}</h2>
-  <div class="overflow-x-auto rounded-lg border border-gray-200 mb-6">
-    <table class="w-full bg-white text-left">
-      <thead class="bg-gray-50 border-b border-gray-200">
-        <tr>
-          <th class="py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Variety</th>
-          <th class="py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Nursery</th>
-          <th class="py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide text-right">Price</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-100">
-{rows}      </tbody>
-    </table>
-  </div>
-
-  <h2 class="text-lg font-semibold text-gray-800 mb-3">Nurseries shipping {species_name} trees to {state_full}</h2>
-  <ul class="list-disc pl-5 mb-6 text-sm text-gray-700 space-y-1">
-    {nursery_list_items}
-  </ul>
-
-  <div class="border-t border-gray-200 pt-6 mb-6">
-    <a href="/species/{species_slug}.html" class="inline-block text-sm text-green-700 hover:underline mr-4">&larr; All {species_name} trees Australia-wide</a>
-    <a href="/buy-fruit-trees-{state.lower()}.html" class="inline-block text-sm text-green-700 hover:underline">&larr; All fruit trees in {state}</a>
-  </div>
-
-  <h2 class="text-lg font-semibold text-gray-800 mb-3">Growing {species_name} in {state_full}</h2>
-  {guide_body}
-
-  <div class="mt-6 mb-8">
-    <p class="text-sm text-gray-500 font-medium mb-2">{species_name} trees in other states:</p>
-    <div>{cross_links}</div>
-  </div>
-
-  {treesmith_promo}
-
-</main>
-{footer}
-</body>
-</html>"""
+    return render_template(
+        "species_state_combo.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        species_name=species_name, state_full=state_full, state=state,
+        state_lower=state.lower(), species_slug=species_slug,
+        latin_note=latin_note, today_str=today_str, total_products=total_products,
+        nursery_count=nursery_count, price_str=price_str, shown_note=shown_note,
+        climate_para=climate_para, guide_body=guide_body, treesmith_promo=treesmith_promo,
+        nursery_list_items=nursery_list_items, cross_links=cross_links,
+        product_view=product_view,
+    )
 
 
 def build_index_page(
@@ -399,19 +359,18 @@ def build_index_page(
     today_str: str,
 ) -> str:
     """Build a simple index page listing all combo pages."""
-    rows = ""
+    index_view = []
     for state in ["WA", "QLD", "NSW", "VIC"]:
         state_full = STATE_FULL_NAMES[state]
         state_slug = STATE_SLUGS[state]
-        combos = selected.get(state, [])
-        for species_slug, products in combos:
-            species_name = products[0]["species"]["common_name"]
-            count = len(products)
-            rows += f"""  <tr>
-    <td class="py-2 px-3 text-sm"><a href="/buy-{species_slug}-trees-{state_slug}.html" class="text-green-700 hover:underline">Buy {species_name} trees in {state_full}</a></td>
-    <td class="py-2 px-3 text-sm text-gray-500">{state_full}</td>
-    <td class="py-2 px-3 text-sm text-gray-500 text-right">{count}</td>
-  </tr>\n"""
+        for species_slug, products in selected.get(state, []):
+            index_view.append({
+                "species_slug": species_slug,
+                "state_slug": state_slug,
+                "species_name": products[0]["species"]["common_name"],
+                "state_full": state_full,
+                "count": len(products),
+            })
 
     total_pages = sum(len(v) for v in selected.values())
 
@@ -424,32 +383,11 @@ def build_index_page(
     breadcrumb = render_breadcrumb([("Home", "/"), ("Fruit trees by species and state", "")])
     footer = render_footer()
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-{head}
-<body class="bg-gray-50 text-gray-900">
-{header}
-<main class="max-w-3xl mx-auto px-4 py-8">
-{breadcrumb}
-  <h1 class="text-2xl font-bold text-gray-900 mb-2">Fruit Trees by Species and State</h1>
-  <p class="text-gray-500 text-sm mb-6">Updated {today_str} &nbsp;&middot;&nbsp; {total_pages} pages</p>
-  <div class="overflow-x-auto rounded-lg border border-gray-200">
-    <table class="w-full bg-white text-left">
-      <thead class="bg-gray-50 border-b border-gray-200">
-        <tr>
-          <th class="py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Page</th>
-          <th class="py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">State</th>
-          <th class="py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide text-right">In Stock</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-100">
-{rows}      </tbody>
-    </table>
-  </div>
-</main>
-{footer}
-</body>
-</html>"""
+    return render_template(
+        "species_state_index.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        today_str=today_str, total_pages=total_pages, index_view=index_view,
+    )
 
 
 def main():
