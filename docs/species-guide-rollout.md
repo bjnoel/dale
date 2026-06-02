@@ -158,7 +158,7 @@ black-sapote, loquat, starfruit, rollinia, miracle-fruit. (50 species have some 
 ## Progress
 
 - [x] olive (DEC-126 per-state guide; DEC-127 archive citations + Further reading)
-- [ ] fig
+- [x] fig (per-state guide shipped via PR; flagship WA on climate, QLD highest impressions)
 - [ ] lychee
 - [ ] guava
 - [ ] mango

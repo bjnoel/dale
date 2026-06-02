@@ -58,7 +58,7 @@ STATE_CLIMATE_NOTES = {
         "subtropical": "Perth's Mediterranean climate suits subtropical species well, especially with summer irrigation. WA quarantine restrictions limit which nurseries can ship here.",
         "citrus": "Citrus trees thrive in Perth's warm, dry climate. WA has strict biosecurity rules, so not all eastern nurseries can ship here, which makes local options especially valuable.",
         "temperate": "South-west WA's mild winters suit temperate stone fruit and pome fruit, though winters are less cold than eastern states. Chilling hours may be lower, so choose low-chill varieties. WA quarantine rules apply.",
-        "mediterranean": "South-west WA's Mediterranean climate (hot dry summers, mild wet winters) is close to ideal for olives and grapes, which need summer heat to ripen and have only a low winter-chill requirement, far less than stone fruit. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
+        "mediterranean": "South-west WA's Mediterranean climate (hot dry summers, mild wet winters) is close to ideal for olives, grapes and figs, which need summer heat to ripen and have only a low winter-chill requirement, far less than stone fruit. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -66,7 +66,7 @@ STATE_CLIMATE_NOTES = {
         "subtropical": "Southeast Queensland's subtropical climate suits a huge range of fruit trees, from mangoes and avocados to citrus and figs.",
         "citrus": "Queensland's warm climate produces excellent citrus. Summer humidity can cause some fungal issues, but most varieties do well with good air circulation.",
         "temperate": "Southern Queensland can grow many temperate fruit trees, though chilling hours are lower than further south. Choose low-chill apple, pear, and stone fruit varieties.",
-        "mediterranean": "Olives and grapes prefer a drier, Mediterranean-style climate, so in Queensland they do best in the cooler, drier inland and elevated districts (such as the Granite Belt) rather than the humid coast and tropics.",
+        "mediterranean": "Olives, grapes and figs prefer a drier, Mediterranean-style climate, so in Queensland they do best in the cooler, drier inland and elevated districts (such as the Granite Belt) rather than the humid coast and tropics.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -74,7 +74,7 @@ STATE_CLIMATE_NOTES = {
         "subtropical": "Coastal and northern NSW suits subtropical fruit trees well. Inland and southern areas have cooler winters, so choose frost-tolerant varieties.",
         "citrus": "Citrus does well across most of NSW, from the warm north coast to the cooler tablelands. Most popular citrus varieties suit NSW conditions.",
         "temperate": "NSW's diverse climate supports a wide range of temperate fruit trees, from the cool tablelands to the warmer coastal plains.",
-        "mediterranean": "Olives and grapes suit NSW's warmer inland and temperate districts with hot dry summers, and they have little winter-chill requirement. Young trees can be frost-sensitive in the coldest tableland areas.",
+        "mediterranean": "Olives, grapes and figs suit NSW's warmer inland and temperate districts with hot dry summers, and they have little winter-chill requirement. Young trees can be frost-sensitive in the coldest tableland areas.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -82,7 +82,7 @@ STATE_CLIMATE_NOTES = {
         "subtropical": "Victoria's cool winters suit subtropical varieties in sheltered, north-facing positions. Many subtropical nurseries do not ship to VIC.",
         "citrus": "Citrus can be grown in Victoria in warm, sheltered spots. Frost protection is essential in most areas. Choose cold-tolerant varieties like Meyer Lemon or Lisbon.",
         "temperate": "Victoria's cool temperate climate is ideal for stone fruit, apples, and pears. Cold winters provide the chilling hours these trees need. Heritage varieties do particularly well.",
-        "mediterranean": "Victoria's warm dry summers and mild winters suit olives and grapes, which have little winter-chill requirement. Cooler districts simply ripen the fruit later, and frost can set back young trees.",
+        "mediterranean": "Victoria's warm dry summers and mild winters suit olives, grapes and figs, which have little winter-chill requirement. Cooler districts simply ripen the fruit later, and frost can set back young trees.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -96,7 +96,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "banana": "tropical", "papaya": "tropical", "carambola": "tropical",
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
     "dragon fruit": "tropical",
-    "avocado": "subtropical", "fig": "subtropical", "guava": "subtropical",
+    "avocado": "subtropical", "guava": "subtropical",
     "feijoa": "subtropical", "loquat": "subtropical", "mulberry": "subtropical",
     "persimmon": "temperate", "pawpaw": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
@@ -108,8 +108,9 @@ SPECIES_CLIMATE_CATEGORY = {
     "blueberry": "temperate", "raspberry": "temperate", "blackberry": "temperate",
     "strawberry": "temperate",
     # Mediterranean-climate crops: no winter-chill requirement, so they must not
-    # inherit the stone/pome-fruit chill-hours note.
-    "olive": "mediterranean", "grape": "mediterranean",
+    # inherit the stone/pome-fruit chill-hours note. Figs are a common fig
+    # (Ficus carica) Mediterranean crop too, not a humid subtropical one.
+    "olive": "mediterranean", "grape": "mediterranean", "fig": "mediterranean",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
