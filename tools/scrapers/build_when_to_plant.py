@@ -28,6 +28,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -631,42 +632,22 @@ def build_page() -> str:
     breadcrumb = render_breadcrumb([("Home", "/"), ("When to Plant", "")])
     footer = render_footer()
 
-    return f"""{head}
-{header}
-
-<main class="max-w-3xl mx-auto px-4 py-8">
-  {breadcrumb}
-
-  <h1 class="text-2xl font-bold text-green-900 mb-2">When to Plant Fruit Trees in Australia</h1>
-  <p class="text-gray-600 text-sm mb-6">The best planting time depends on your climate zone and whether you are buying potted or bare-root stock. This calendar covers 50 species across five Australian growing zones. Updated {today}.</p>
-
-  <div class="bg-amber-50 border border-amber-300 rounded-lg p-4 mb-8">
-    <p class="font-semibold text-amber-800 mb-1">Bare-root season: June to August</p>
-    <p class="text-sm text-amber-900">Deciduous fruit trees (apples, pears, plums, peaches, cherries, grapes and more) are sold bare-root through winter while dormant. It is the cheapest way to buy them and they establish well when planted before spring. Most nurseries ship bare-root stock in June and July, and popular varieties sell out fast.{inline_cite("ABC Gardening Australia", "https://www.gardeningaustraliamag.com.au/bare-rooted-plants/")}</p>
-  </div>
-
-  {build_zone_cards()}
-
-  {build_category_guidance()}
-
-  {build_calendar_table(valid_slugs)}
-
-  {build_cta()}
-
-  {build_faq_section()}
-
-  {build_references()}
-
-  {build_related_guides()}
-
-  {render_treesmith_promo("species")}
-</main>
-
-{footer}
-{FILTER_SCRIPT}
-{SUBSCRIBE_SCRIPT}
-</body>
-</html>"""
+    return render_template(
+        "when_to_plant_page.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        today=today,
+        bareroot_cite=inline_cite("ABC Gardening Australia", "https://www.gardeningaustraliamag.com.au/bare-rooted-plants/"),
+        zone_cards=build_zone_cards(),
+        category_guidance=build_category_guidance(),
+        calendar_table=build_calendar_table(valid_slugs),
+        cta=build_cta(),
+        faq_section=build_faq_section(),
+        references=build_references(),
+        related_guides=build_related_guides(),
+        treesmith_promo=render_treesmith_promo("species"),
+        filter_script=FILTER_SCRIPT,
+        subscribe_script=SUBSCRIBE_SCRIPT,
+    )
 
 
 def main():

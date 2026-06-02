@@ -92,6 +92,13 @@ GOLDEN_CASES = [
         "outputs": ["companion-planting-guide.html"],
     },
     {
+        # All-curated planting calendar (no data dir); pins the FAQPage ld+json.
+        "name": "when_to_plant",
+        "script": "build_when_to_plant.py",
+        "args": ["{OUT}"],
+        "outputs": ["when-to-plant.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],
