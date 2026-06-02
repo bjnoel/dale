@@ -183,11 +183,14 @@ def _render_references(guide: dict, used_ids: set) -> str:
         f'target="_blank" class="text-green-700 hover:underline">{s["name"]}</a></li>'
         for s in cited
     )
+    note = guide.get("sources_note") or (
+        "Growing guidance on this page draws on Australian state agriculture "
+        "departments, horticultural research, and industry sources."
+    )
     return (
         '\n<section class="mb-8" id="sources">\n'
         '  <h2 class="text-lg font-semibold text-gray-800 mb-2">Sources</h2>\n'
-        '  <p class="text-gray-600 text-xs mb-2">Growing guidance on this page draws on Australian '
-        'state agriculture departments and recognised olive-industry bodies.</p>\n'
+        f'  <p class="text-gray-600 text-xs mb-2">{note}</p>\n'
         '  <ul class="text-xs space-y-1 list-disc pl-5">\n'
         f'    {items}\n'
         '  </ul>\n'

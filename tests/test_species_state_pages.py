@@ -290,6 +290,18 @@ class SourcesTests(unittest.TestCase):
                 cited.update(sec.get("cites", []))
         self.assertEqual(cited - src_ids, set(), "guide cites an unknown source id")
 
+    def test_sources_note_generic_by_default_overridable_per_guide(self):
+        # Regression: the shared Sources renderer hardcoded "olive-industry bodies",
+        # which would render wrongly for fig and every other species.
+        fake = {"sources": [{"id": "x", "name": "Test", "url": "https://example.gov.au/"}]}
+        generic = gg._render_references(fake, {"x"})
+        self.assertNotIn("olive-industry", generic, "Sources note leaks olive-specific copy")
+        self.assertIn("horticultural research", generic)
+        custom = gg._render_references({**fake, "sources_note": "Fig note here."}, {"x"})
+        self.assertIn("Fig note here.", custom)
+        # olive keeps its specific wording via its own sources_note override.
+        self.assertIn("olive-industry bodies", PAGES["WA"])
+
     def test_references_filtered_to_cited_only(self):
         # The species (core-only) guide cites fewer sources than the WA combo
         # (core + WA overlay), proving the Sources block is filtered, not dumped.
