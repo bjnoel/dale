@@ -54,6 +54,14 @@ keep them under `research/library/<species>/`, have the research step read them 
 facts (never reproduce long verbatim text), and cite the work's public canonical URL (a DOI or
 publisher page). Most valuable for the rarer species, less so for olive where the web is strong.
 
+Archive integration (2026-06-02, DEC-127): the guides now use Benedict's owned WANATCA and RFCA
+archives as first-party citations and "Further reading" cross-links (followed links; a per-entry
+nofollow flag handles third-party sources such as rarefruitclub.au). A local generator,
+`build_archive_index.py`, writes `growing_guides/archive_links.json` (RFCA, species-keyed, high
+precision); `render_further_reading` merges that with each guide's curated links, so future species
+(mango next) auto-pull cross-links. WANATCA yearbook articles are surfaced as a curation aid and
+added by hand. See the `reference_owned_content_archives` memory.
+
 The original diagnosis and rebuild brief that this update delivers follows below.
 
 ## Status (verified 2026-06-01)

@@ -195,14 +195,44 @@ def _render_references(guide: dict, used_ids: set) -> str:
     )
 
 
-def render_further_reading(slug: str) -> str:
-    """First-party "Further reading" cross-links to Benedict's WANATCA and Rare Fruit
-    Council of Australia archives. These are owned sites, so the links are followed
-    (rel=noopener, deliberately no nofollow) to share authority within the network."""
+ARCHIVE_LINKS_FILE = GUIDES_DIR / "archive_links.json"
+_ARCHIVE_CACHE: dict | None = None
+
+
+def _archive_links() -> dict:
+    """The generated per-species RFCA index (build_archive_index.py). slug -> [entries]."""
+    global _ARCHIVE_CACHE
+    if _ARCHIVE_CACHE is None:
+        try:
+            _ARCHIVE_CACHE = json.loads(ARCHIVE_LINKS_FILE.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            _ARCHIVE_CACHE = {}
+    return _ARCHIVE_CACHE
+
+
+def get_further_reading(slug: str, cap: int = 6) -> list:
+    """Merge a guide's hand-curated further_reading with the generated RFCA archive
+    index for this slug. Curated entries win and come first; deduped by URL; capped."""
     guide = _load(slug)
-    if not guide:
-        return ""
-    items = guide.get("further_reading") or []
+    curated = (guide.get("further_reading") if guide else None) or []
+    out, seen = [], set()
+    for e in list(curated) + list(_archive_links().get(slug, [])):
+        url = e.get("url", "")
+        if not url or url in seen:
+            continue
+        seen.add(url)
+        out.append(e)
+        if len(out) >= cap:
+            break
+    return out
+
+
+def render_further_reading(slug: str) -> str:
+    """"Further reading" cross-links: hand-curated first-party links from a species
+    guide merged with the generated RFCA archive index. Owned-site links are followed
+    (rel=noopener); set "nofollow": true on an entry for third-party sources (e.g.
+    rarefruitclub.au, which Benedict does not host) so they are not endorsed."""
+    items = get_further_reading(slug)
     if not items:
         return ""
     lis = ""
@@ -210,8 +240,9 @@ def render_further_reading(slug: str) -> str:
         title = it.get("title", "")
         url = it.get("url", "").replace("&", "&amp;")
         source = it.get("source", "")
+        rel = "noopener nofollow" if it.get("nofollow") else "noopener"
         src_html = f' <span class="text-gray-400">({source})</span>' if source else ""
-        lis += (f'<li><a href="{url}" rel="noopener" target="_blank" '
+        lis += (f'<li><a href="{url}" rel="{rel}" target="_blank" '
                 f'class="text-green-700 hover:underline">{title}</a>{src_html}</li>')
     return (
         '\n<section class="mb-8" id="further-reading">\n'
