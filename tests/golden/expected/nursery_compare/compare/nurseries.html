@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Side-by-side comparison of 3 Australian fruit tree nurseries. See stock levels, species range, prices, and shipping to WA and all states.">
+<link rel="canonical" href="https://treestock.com.au/compare/nurseries.html">
+<meta property="og:title" content="Compare Australian Fruit Tree Nurseries">
+<meta property="og:description" content="Compare 3 nurseries: stock levels, species range, and shipping to your state. Updated daily.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://treestock.com.au/compare/nurseries.html">
+<title>Compare Australian Fruit Tree Nurseries | treestock.com.au</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="/styles.css?v=DATE" rel="stylesheet">
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  #nav-menu.open { display: flex; }
+  table { border-collapse: collapse; width: 100%; }
+  .filter-btn { cursor: pointer; }
+  .filter-btn.active { background-color: #065f46; color: white; }
+  tr.hidden-row { display: none; }
+</style>
+
+</head>
+
+<body class="bg-white text-gray-900">
+
+<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
+  <div class="max-w-3xl mx-auto px-4 py-2">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7 flex-shrink-0"><rect width="64" height="64" rx="12" fill="#065f46"/><path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/><path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/><circle cx="44" cy="44" r="8" fill="#f59e0b"/><text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text></svg>
+        <span class="text-lg font-bold text-green-800">treestock.com.au</span>
+      </a>
+      <nav id="nav-menu" class="hidden sm:flex sm:items-center sm:gap-4 text-sm
+                                flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0
+                                border-t sm:border-0 border-gray-100 pt-2 sm:pt-0">
+        <a href="/species/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Species</a>
+        <a href="/nursery/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Nurseries</a>
+        <a href="/variety/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Varieties</a>
+        <a href="/compare/" class="hover:text-green-700 no-underline whitespace-nowrap text-green-800 font-semibold">Compare</a>
+        <a href="/rare.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Rare Finds</a>
+        <a href="/digest.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Digest</a>
+        <a href="/history.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">History</a>
+        <a href="/when-to-plant.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Planting Calendar</a>
+        <a href="/wishlist.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Wishlist</a>
+        <a href="/trends.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Trends</a>
+      </nav>
+      <button id="nav-toggle" class="sm:hidden p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', function() {
+  document.getElementById('nav-menu').classList.toggle('open');
+});
+</script>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+  
+  <nav class="text-xs text-gray-400 mb-4">
+    <a href="/" class="hover:underline">Home</a> &#8250; <a href="/compare/" class="hover:underline">Compare</a> &#8250; Nurseries
+  </nav>
+
+  <h1 class="text-2xl font-bold text-gray-900 mb-1">Compare Australian Fruit Tree Nurseries</h1>
+  <p class="text-gray-500 text-sm mb-4">
+    3 nurseries tracked, 9 products in stock across 11 tracked.
+    2 nurseries ship to WA. Updated DATE.
+  </p>
+
+  <div class="flex flex-wrap gap-2 mb-4">
+    <button class="filter-btn active text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterNurseries('all', this)">All nurseries</button>
+    <button class="filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterNurseries('wa', this)">Ships to WA</button>
+    <button class="filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterNurseries('instock', this)">50+ in stock</button>
+  </div>
+
+  <div class="overflow-x-auto rounded-lg border border-gray-200">
+    <table id="nursery-table" class="w-full text-left">
+      <thead>
+        <tr class="bg-gray-50 border-b border-gray-200 text-xs text-gray-500 uppercase">
+          <th class="py-2 px-3">Nursery</th>
+          <th class="py-2 px-3 text-center">In Stock / Total</th>
+          <th class="py-2 px-3 text-center">Species</th>
+          <th class="py-2 px-3 text-center">Ships to WA</th>
+          <th class="py-2 px-3">States</th>
+        </tr>
+      </thead>
+      <tbody id="nursery-tbody">
+        
+        <tr class="bg-white hover:bg-green-50 border-b border-gray-100">
+          <td class="py-2 px-3 text-sm">
+            <a href="/nursery/daleys.html" class="text-green-700 hover:underline font-medium">Daleys Fruit Trees</a>
+            <br><span class="text-xs text-gray-400">Australia</span>
+          </td>
+          <td class="py-2 px-3 text-center">
+            <span class="font-semibold text-green-700">4</span>
+            <span class="text-xs text-gray-400"> / 5</span>
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-green-500 h-1.5 rounded-full" style="width:80%"></div></div>
+          </td>
+          <td class="py-2 px-3 text-center text-sm">4</td>
+          <td class="py-2 px-3 text-center text-sm"><span class="text-green-700 font-semibold">Yes</span></td>
+          <td class="py-2 px-3 text-xs text-gray-600">ACT, NSW, QLD, SA, VIC, WA <span class="text-xs text-red-700">No NT/TAS</span></td>
+        </tr>
+        <tr class="bg-gray-50 hover:bg-green-50 border-b border-gray-100">
+          <td class="py-2 px-3 text-sm">
+            <a href="/nursery/primal-fruits.html" class="text-green-700 hover:underline font-medium">Primal Fruits Perth</a>
+            <br><span class="text-xs text-gray-400">Australia</span>
+          </td>
+          <td class="py-2 px-3 text-center">
+            <span class="font-semibold text-green-700">3</span>
+            <span class="text-xs text-gray-400"> / 3</span>
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-green-500 h-1.5 rounded-full" style="width:100%"></div></div>
+          </td>
+          <td class="py-2 px-3 text-center text-sm">2</td>
+          <td class="py-2 px-3 text-center text-sm"><span class="text-amber-700 font-semibold">Perth metro only</span></td>
+          <td class="py-2 px-3 text-xs text-gray-600">Perth metro only </td>
+        </tr>
+        <tr class="bg-white hover:bg-green-50 border-b border-gray-100">
+          <td class="py-2 px-3 text-sm">
+            <a href="/nursery/ross-creek.html" class="text-green-700 hover:underline font-medium">Ross Creek Tropicals</a>
+            <br><span class="text-xs text-gray-400">Australia</span>
+          </td>
+          <td class="py-2 px-3 text-center">
+            <span class="font-semibold text-green-700">2</span>
+            <span class="text-xs text-gray-400"> / 3</span>
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-green-500 h-1.5 rounded-full" style="width:67%"></div></div>
+          </td>
+          <td class="py-2 px-3 text-center text-sm">3</td>
+          <td class="py-2 px-3 text-center text-sm"><span class="text-red-600">No</span></td>
+          <td class="py-2 px-3 text-xs text-gray-600">ACT, NSW, QLD, VIC <span class="text-xs text-red-700">No WA/NT/TAS</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm text-gray-700">
+    <h2 class="font-semibold mb-2">About this comparison</h2>
+    <p class="mb-2">This table compares all nurseries tracked by treestock.com.au on stock depth, species range, and shipping reach. Data is updated daily from each nursery's website.</p>
+    <p class="mb-2"><strong>In Stock / Total:</strong> How many products are currently available vs the full range tracked. The progress bar shows the in-stock percentage.</p>
+    <p class="mb-2"><strong>Species:</strong> The number of distinct fruit species (e.g., mango, avocado, lychee) stocked by that nursery, regardless of variety count.</p>
+    <p><strong>Ships to WA:</strong> Western Australia has strict biosecurity requirements, so not all interstate nurseries can ship there. Nurseries marked Yes either ship directly to WA or have a WA partner arrangement.</p>
+  </div>
+
+  <div class="mt-4 text-xs text-gray-400">
+    See also: <a href="/compare/" class="text-green-700 hover:underline">price comparisons by species</a> |
+    <a href="/nursery/" class="text-green-700 hover:underline">individual nursery profiles</a>
+  </div>
+</main>
+
+<script>
+function filterNurseries(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = document.querySelectorAll('#nursery-tbody tr');
+  rows.forEach(row => {
+    const wa = row.querySelector('td:nth-child(4)')?.textContent.trim().toLowerCase() === 'yes';
+    const instock = parseInt(row.querySelector('td:nth-child(2) .font-semibold')?.textContent || '0');
+    if (filter === 'all') row.classList.remove('hidden-row');
+    else if (filter === 'wa') row.classList.toggle('hidden-row', !wa);
+    else if (filter === 'instock') row.classList.toggle('hidden-row', instock < 50);
+  });
+}
+</script>
+
+
+<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
+  <div class="max-w-3xl mx-auto px-4">
+    <a href="/" class="hover:text-gray-600">Home</a> &middot;
+    <a href="/species/" class="hover:text-gray-600">Species</a> &middot;
+    <a href="/nursery/" class="hover:text-gray-600">Nurseries</a> &middot;
+    <a href="/variety/" class="hover:text-gray-600">Varieties</a> &middot;
+    <a href="/compare/" class="hover:text-gray-600">Compare</a> &middot;
+    <a href="/rare.html" class="hover:text-gray-600">Rare Finds</a> &middot;
+    <a href="/digest.html" class="hover:text-gray-600">Digest</a> &middot;
+    <a href="/history.html" class="hover:text-gray-600">History</a> &middot;
+    <a href="/when-to-plant.html" class="hover:text-gray-600">Planting Calendar</a> &middot;
+    <a href="/wishlist.html" class="hover:text-gray-600">Wishlist</a> &middot;
+    <a href="/trends.html" class="hover:text-gray-600">Trends</a>
+    <p class="mt-2"><a href="/buy-fruit-trees-wa.html" class="hover:text-gray-600">Buy in WA</a> &middot; <a href="/buy-fruit-trees-qld.html" class="hover:text-gray-600">Buy in QLD</a> &middot; <a href="/buy-fruit-trees-nsw.html" class="hover:text-gray-600">Buy in NSW</a> &middot; <a href="/buy-fruit-trees-vic.html" class="hover:text-gray-600">Buy in VIC</a> &middot; <a href="/companion-planting-guide.html" class="hover:text-gray-600">Companion Planting</a> &middot; <a href="/compare/nurseries.html" class="hover:text-gray-600">Compare Nurseries</a> &middot; <a href="/treesmith.html" class="hover:text-gray-600">Treesmith app</a> &middot; <a href="/manage.html" class="hover:text-gray-600">Manage email alerts</a></p>
+    <p class="mt-2">Data updated daily. Prices and availability may change.</p>
+    <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
+  </div>
+</footer>
+
+</body>
+</html>

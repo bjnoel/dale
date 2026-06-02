@@ -16,6 +16,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, LOCAL_DELIVERY, delivery_label
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -97,36 +98,25 @@ def build_compare_page(nurseries_data: dict, species_lookup: dict, today: str) -
 
     total_nurseries = len(rows)
 
-    # Build table rows
-    table_rows = ""
-    for i, r in enumerate(rows):
+    # Row view-data. The template autoescapes the nursery name and location;
+    # the wa/restriction/ship cells are built from our own curated state data.
+    row_view = []
+    for r in rows:
         local_lbl = delivery_label(r["key"])
-        if r["wa"] and local_lbl:
-            wa_cell = f'<span class="text-amber-700 font-semibold">{local_lbl}</span>'
-        elif r["wa"]:
-            wa_cell = '<span class="text-green-700 font-semibold">Yes</span>'
-        else:
-            wa_cell = '<span class="text-red-600">No</span>'
-        restrict_cell = "" if local_lbl else (f'<span class="text-xs text-red-700">{r["restrict"]}</span>' if r["restrict"] else "")
         ship_str = local_lbl if local_lbl else (", ".join(r["ships"]) if r["ships"] else "Unknown")
-        pct_bar = f'<div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-green-500 h-1.5 rounded-full" style="width:{r["pct"]}%"></div></div>'
-        row_bg = "bg-white" if i % 2 == 0 else "bg-gray-50"
-
-        table_rows += f"""
-        <tr class="{row_bg} hover:bg-green-50 border-b border-gray-100">
-          <td class="py-2 px-3 text-sm">
-            <a href="/nursery/{r['key']}.html" class="text-green-700 hover:underline font-medium">{r['name']}</a>
-            {('<br><span class="text-xs text-gray-400">' + r['location'] + '</span>') if r['location'] else ''}
-          </td>
-          <td class="py-2 px-3 text-center">
-            <span class="font-semibold text-green-700">{r['in_stock']}</span>
-            <span class="text-xs text-gray-400"> / {r['total']}</span>
-            {pct_bar}
-          </td>
-          <td class="py-2 px-3 text-center text-sm">{r['species']}</td>
-          <td class="py-2 px-3 text-center text-sm">{wa_cell}</td>
-          <td class="py-2 px-3 text-xs text-gray-600">{ship_str} {restrict_cell}</td>
-        </tr>"""
+        row_view.append({
+            "key": r["key"],
+            "name": r["name"],
+            "location": r["location"],
+            "in_stock": r["in_stock"],
+            "total": r["total"],
+            "pct": r["pct"],
+            "species": r["species"],
+            "wa": r["wa"],
+            "local_lbl": local_lbl,
+            "ship_str": ship_str,
+            "restrict": r["restrict"],
+        })
 
     # Summary stats
     wa_count = sum(1 for r in rows if r["wa"])
@@ -152,77 +142,14 @@ def build_compare_page(nurseries_data: dict, species_lookup: dict, today: str) -
     breadcrumb = render_breadcrumb([("Home", "/"), ("Compare", "/compare/"), ("Nurseries", "")])
     footer = render_footer()
 
-    return f"""{head}
-{header_html}
-
-<main class="max-w-5xl mx-auto px-4 py-6">
-  {breadcrumb}
-
-  <h1 class="text-2xl font-bold text-gray-900 mb-1">Compare Australian Fruit Tree Nurseries</h1>
-  <p class="text-gray-500 text-sm mb-4">
-    {total_nurseries} nurseries tracked, {total_in_stock:,} products in stock across {total_products:,} tracked.
-    {wa_count} nurseries ship to WA. Updated {today}.
-  </p>
-
-  <div class="flex flex-wrap gap-2 mb-4">
-    <button class="filter-btn active text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
-            onclick="filterNurseries('all', this)">All nurseries</button>
-    <button class="filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
-            onclick="filterNurseries('wa', this)">Ships to WA</button>
-    <button class="filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
-            onclick="filterNurseries('instock', this)">50+ in stock</button>
-  </div>
-
-  <div class="overflow-x-auto rounded-lg border border-gray-200">
-    <table id="nursery-table" class="w-full text-left">
-      <thead>
-        <tr class="bg-gray-50 border-b border-gray-200 text-xs text-gray-500 uppercase">
-          <th class="py-2 px-3">Nursery</th>
-          <th class="py-2 px-3 text-center">In Stock / Total</th>
-          <th class="py-2 px-3 text-center">Species</th>
-          <th class="py-2 px-3 text-center">Ships to WA</th>
-          <th class="py-2 px-3">States</th>
-        </tr>
-      </thead>
-      <tbody id="nursery-tbody">
-        {table_rows}
-      </tbody>
-    </table>
-  </div>
-
-  <div class="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm text-gray-700">
-    <h2 class="font-semibold mb-2">About this comparison</h2>
-    <p class="mb-2">This table compares all nurseries tracked by treestock.com.au on stock depth, species range, and shipping reach. Data is updated daily from each nursery's website.</p>
-    <p class="mb-2"><strong>In Stock / Total:</strong> How many products are currently available vs the full range tracked. The progress bar shows the in-stock percentage.</p>
-    <p class="mb-2"><strong>Species:</strong> The number of distinct fruit species (e.g., mango, avocado, lychee) stocked by that nursery, regardless of variety count.</p>
-    <p><strong>Ships to WA:</strong> Western Australia has strict biosecurity requirements, so not all interstate nurseries can ship there. Nurseries marked Yes either ship directly to WA or have a WA partner arrangement.</p>
-  </div>
-
-  <div class="mt-4 text-xs text-gray-400">
-    See also: <a href="/compare/" class="text-green-700 hover:underline">price comparisons by species</a> |
-    <a href="/nursery/" class="text-green-700 hover:underline">individual nursery profiles</a>
-  </div>
-</main>
-
-<script>
-function filterNurseries(filter, btn) {{
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const rows = document.querySelectorAll('#nursery-tbody tr');
-  rows.forEach(row => {{
-    const wa = row.querySelector('td:nth-child(4)')?.textContent.trim().toLowerCase() === 'yes';
-    const instock = parseInt(row.querySelector('td:nth-child(2) .font-semibold')?.textContent || '0');
-    if (filter === 'all') row.classList.remove('hidden-row');
-    else if (filter === 'wa') row.classList.toggle('hidden-row', !wa);
-    else if (filter === 'instock') row.classList.toggle('hidden-row', instock < 50);
-  }});
-}}
-</script>
-
-{footer}
-
-</body>
-</html>"""
+    return render_template(
+        "nursery_compare.html.j2",
+        head=head, header_html=header_html, breadcrumb=breadcrumb, footer=footer,
+        total_nurseries=total_nurseries,
+        total_in_stock_fmt=f"{total_in_stock:,}",
+        total_products_fmt=f"{total_products:,}",
+        wa_count=wa_count, today=today, row_view=row_view,
+    )
 
 
 def main():

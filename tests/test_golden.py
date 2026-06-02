@@ -44,6 +44,12 @@ GOLDEN_CASES = [
         "outputs": ["compare/*.html"],
     },
     {
+        "name": "nursery_compare",
+        "script": "build_nursery_compare.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["compare/nurseries.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],
