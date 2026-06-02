@@ -50,6 +50,12 @@ GOLDEN_CASES = [
         "outputs": ["compare/nurseries.html"],
     },
     {
+        "name": "rare_finds",
+        "script": "build_rare_finds.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["rare.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],
