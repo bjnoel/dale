@@ -1,6 +1,7 @@
 {
   "slug": "olive",
   "common_name": "Olive",
+  "sources_note": "Growing guidance on this page draws on Australian state agriculture departments and recognised olive-industry bodies.",
   "sources": [
     {"id": "australis-selection", "name": "Australis Plants: olive variety selection guide", "short": "Australis selection guide", "url": "https://australisplants.com/olives/varietySelection.htm"},
     {"id": "australis-varieties", "name": "Australis Plants: olive variety descriptions", "short": "Australis varieties", "url": "https://australisplants.com/olives/varieties.htm"},
