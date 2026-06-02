@@ -1,0 +1,133 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="max-w-3xl mx-auto px-4 py-8">
+
+  {{ breadcrumb|safe }}
+
+  <h1 class="text-2xl font-bold mb-2">Buy Fruit Trees Online in {{ state_name }}</h1>
+  <p class="text-gray-600 mb-1">Updated {{ date_display }} &middot; {{ total_in_stock }} varieties in stock across {{ nursery_count }} nurseries</p>
+  <p class="text-gray-600 text-sm mb-6">{{ intro }}</p>
+
+{% if info_box %}  <div class="bg-green-50 border-green-200 text-green-900 border rounded-lg p-4 mb-8">
+    <p class="text-sm">{{ info_box }}</p>
+  </div>
+
+{% endif %}  <!-- Nursery summary -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">Nurseries that ship to {{ state_name }}</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide">
+            <th class="pb-2 pr-4">Nursery</th>
+            <th class="pb-2 pr-4">In stock</th>
+            <th class="pb-2">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+{% for n in nursery_stats %}
+        <tr class="border-b border-gray-100">
+          <td class="py-2 pr-4 font-medium text-sm"><a href="/nursery/{{ n.key }}.html" class="text-green-700 hover:underline">{{ n.name }}</a></td>
+          <td class="py-2 pr-4 text-sm text-green-700 font-semibold">{{ n.in_stock }} in stock</td>
+          <td class="py-2 text-sm text-gray-500">{{ n.total }} varieties tracked{% if n.note %}<span class="text-xs text-amber-600 ml-1">({{ n.note }})</span>{% endif %}</td>
+        </tr>
+{% endfor %}        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-gray-500 mt-2">
+      Stock counts update daily after our morning scrape. <a href="/" class="text-green-700 underline">Filter by nursery on the dashboard</a>
+    </p>
+  </section>
+
+  <!-- In-stock products -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">In stock now, ships to {{ state_abbr }} (top {{ shown_count }} by price)</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide">
+            <th class="pb-2 pr-4">Variety</th>
+            <th class="pb-2 pr-4">Price</th>
+            <th class="pb-2">Nursery</th>
+          </tr>
+        </thead>
+        <tbody>
+{% for p in products %}
+        <tr class="border-b border-gray-100">
+          <td class="py-2 pr-4 text-sm"><a href="{{ p.url }}" class="hover:text-green-700" target="_blank" rel="noopener">{{ p.title }}</a></td>
+          <td class="py-2 pr-4 text-sm font-semibold text-green-700">{{ p.price_str }}</td>
+          <td class="py-2 text-sm text-gray-500">{{ p.nursery_name }}</td>
+        </tr>
+{% endfor %}        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-gray-500 mt-2">Showing {{ shown_count }} of {{ total_in_stock }} in-stock varieties.
+      <a href="/" class="text-green-700 underline">See all {{ total_in_stock }} on the dashboard</a>
+    </p>
+  </section>
+
+{% if local_nurseries %}
+
+  <!-- Local pickup nurseries -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold mb-1">Local nurseries ({{ state_abbr }} pickup only)</h2>
+    <p class="text-sm text-gray-500 mb-3">These nurseries don't ship online but are worth visiting in person.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide">
+            <th class="pb-2 pr-4">Nursery</th>
+            <th class="pb-2 pr-4">Speciality</th>
+            <th class="pb-2">Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+{% for n in local_nurseries %}
+        <tr class="border-b border-gray-100">
+          <td class="py-2 pr-4 text-sm">
+            <div class="font-medium">{{ n.name }}</div>
+            <div class="text-xs text-gray-500">{{ n.address }}</div>
+            <div class="text-xs text-gray-500">{{ n.hours }}</div>
+          </td>
+          <td class="py-2 pr-4 text-xs text-gray-600">{{ n.specialty }}</td>
+          <td class="py-2 text-xs">{% if n.phone %}<a href="tel:{{ n.phone }}" class="hover:text-green-700">{{ n.phone }}</a>{% endif %}{% if n.phone and n.facebook %} &middot; {% endif %}{% if n.facebook %}<a href="{{ n.facebook }}" class="text-green-700 hover:underline" target="_blank" rel="noopener">Facebook</a>{% endif %}</td>
+        </tr>
+{% endfor %}        </tbody>
+      </table>
+    </div>
+  </section>
+{% endif %}{% if combo_links %}
+
+  <!-- Species combo links -->
+  <section class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">Browse by species in {{ state_name }}</h2>
+    <div class="flex flex-wrap gap-2">{% for c in combo_links %}<a href="/buy-{{ c.slug }}-trees-{{ state_slug_str }}.html" class="inline-block px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-green-700 hover:border-green-400 hover:bg-green-50 whitespace-nowrap">{{ c.name }} ({{ c.count }})</a>
+{% endfor %}</div>
+  </section>
+{% endif %}{{ growing_guide_html|safe }}  <!-- Subscribe CTA -->
+  <section class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+    <h2 class="text-lg font-semibold text-green-900 mb-2">Get daily stock alerts for {{ state_name }}</h2>
+    <p class="text-sm text-green-800 mb-4">Free daily email when rare varieties come back in stock or prices change. Unsubscribe anytime.</p>
+    <form action="https://treestock.com.au/api/subscribe" method="post" class="flex flex-col sm:flex-row gap-2">
+      <input type="email" name="email" placeholder="your@email.com" required
+        class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-green-500">
+      <input type="hidden" name="state" value="{{ state_abbr }}">
+      <button type="submit"
+        class="bg-green-700 text-white px-4 py-2 rounded text-sm font-medium hover:bg-green-800">
+        Get alerts
+      </button>
+    </form>
+  </section>
+
+  <!-- Cross-state links -->
+  <section class="mb-8">
+    <p class="text-sm text-gray-600">Also available: {{ cross_html|safe }}</p>
+  </section>
+
+</main>
+
+{{ footer|safe }}
+
+</body>
+</html>
