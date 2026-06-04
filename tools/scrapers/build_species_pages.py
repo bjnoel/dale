@@ -30,6 +30,15 @@ SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
 from cultivar_parsing import product_variety_slug as _variety_slug  # noqa: E402
 
+
+def _no_dash(text: str) -> str:
+    """Strip en and em dashes from external strings (nursery product titles and
+    names) so passthrough data never breaks the treestock copy rule on the page.
+    Mirrors build_species_state_pages._no_dash; raw titles are kept for matching
+    and slugs, this is applied only where the value is rendered into HTML."""
+    return text.replace("—", "-").replace("–", "-")
+
+
 # Related species groups for cross-linking — people who buy one often compare others in the group.
 # Ordered by popularity within each group (most popular first).
 RELATED_GROUPS = {
@@ -457,7 +466,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         avail_color = "text-green-700 font-semibold" if in_s > 0 else "text-gray-400"
         nursery_rows += f"""
       <tr class="border-b border-gray-100">
-        <td class="py-2 pr-4 font-medium text-sm">{n['name']}</td>
+        <td class="py-2 pr-4 font-medium text-sm">{_no_dash(n['name'])}</td>
         <td class="py-2 pr-4 text-sm {avail_color}">{avail_text} ({total} varieties)</td>
         <td class="py-2 text-xs text-gray-500">{ships}</td>
       </tr>"""
@@ -475,9 +484,10 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
             '<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">Out of stock</span>'
         )
         nursery_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=referral" if p["url"] else ""
+        disp_title = _no_dash(p["title"])
         title_link = (
-            f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{p["title"]}</a>'
-            if nursery_url else p["title"]
+            f'<a href="{nursery_url}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{disp_title}</a>'
+            if nursery_url else disp_title
         )
         # Alerts link only on OOS rows -- no value nudging someone to an
         # "alert me when it's back" page for something they can buy right now.
@@ -502,7 +512,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         product_rows += f"""
       <tr class="border-b border-gray-100 hover:bg-gray-50">
         <td class="py-2 pr-3 text-sm">{title_link}{alert_link}</td>
-        <td class="py-2 pr-3 text-xs text-gray-500">{p['nursery_name']}</td>
+        <td class="py-2 pr-3 text-xs text-gray-500">{_no_dash(p['nursery_name'])}</td>
         <td class="py-2 pr-3 text-sm font-medium">{price_str}</td>
         <td class="py-2">{avail_badge}</td>
       </tr>"""
