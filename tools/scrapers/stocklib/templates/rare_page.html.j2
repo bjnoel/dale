@@ -1,0 +1,123 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="max-w-3xl mx-auto px-4 py-6">
+
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-green-900 mb-2">Rare &amp; Exotic Fruit Trees In Stock</h1>
+    <p class="text-gray-600 text-sm">
+      {{ species_count }} unusual species currently available across Australian nurseries — updated daily.
+      <strong>{{ total_products }} total listings</strong>.
+      Last updated: {{ date_str }}.
+    </p>
+  </div>
+
+  <div class="subscribe-box mb-6">
+    <p class="font-semibold text-green-900 mb-1">Get rare restock alerts by email — free.</p>
+    <p class="text-sm text-gray-600 mb-3">Be first to know when hard-to-find species come back into stock. Daily digest of price drops and new arrivals. <a href="/sample-digest.html" class="text-green-700 underline">See what a digest looks like &rarr;</a></p>
+    <form id="subscribeForm" class="flex gap-2 flex-wrap">
+      <input type="email" id="emailInput" placeholder="your@email.com"
+        class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+      <select id="stateInput" class="px-2 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
+      <button type="submit" id="subscribeBtn"
+        class="bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-800">
+        Subscribe
+      </button>
+    </form>
+    <p id="subscribeMsg" class="text-sm mt-2 text-gray-600"></p>
+  </div>
+
+{% for card in cards %}
+
+  <div class="species-card" id="{{ card.slug }}">
+    <div class="species-header">
+      <div class="species-title-row">
+        <h2 class="species-name"><a href="/species/{{ card.slug }}.html">{{ card.sname }}</a></h2>
+        {{ card.highlight_badge|safe }}
+      </div>
+      <div class="species-meta">
+        {{ card.sci_html|safe }}
+        <span class="stock-count">{{ card.product_count }} in stock</span>
+        <span class="nursery-count">{{ card.nursery_count }} {{ card.nursery_noun }}</span>
+        <span class="price-range">{{ card.price_str }}</span>
+      </div>
+    </div>
+    <table class="prod-table">
+      <tbody>
+        {%+ for p in card.prod_rows %}<tr><td class="prod-title"><a href="{{ p.url }}" target="_blank" rel="noopener">{{ p.title }}</a></td><td class="prod-nursery"><a href="{{ p.nursery_url }}">{{ p.nursery_name }}</a> {% if p.restrict %}<span class="restrict-badge">{{ p.restrict }}</span>{% endif %}</td><td class="prod-price">{% if p.price %}${{ '%.2f'|format(p.price) }}{% else %}—{% endif %}</td></tr>{% endfor %}
+
+      </tbody>
+    </table>
+    {{ card.more_html|safe }}
+  </div>
+{% endfor %}
+
+  <div class="subscribe-box mt-8">
+    <p class="font-semibold text-green-900 mb-1">Want alerts when rare species restock?</p>
+    <p class="text-sm text-gray-600 mb-3">Subscribe free — get daily emails with price drops, new arrivals, and rare restocks across {{ nursery_total }} Australian nurseries.</p>
+    <form id="subscribeForm2" class="flex gap-2 flex-wrap">
+      <input type="email" id="emailInput2" placeholder="your@email.com"
+        class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+      <select id="stateInput2" class="px-2 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
+      <button type="submit" id="subscribeBtn2"
+        class="bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-800">
+        Subscribe
+      </button>
+    </form>
+    <p id="subscribeMsg2" class="text-sm mt-2 text-gray-600"></p>
+  </div>
+
+</main>
+
+{{ footer|safe }}
+
+<script>
+async function handleSubscribe(formId, inputId, stateId, btnId, msgId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById(inputId).value.trim();
+    const stateEl = document.getElementById(stateId);
+    const state = stateEl ? stateEl.value : 'ALL';
+    const btn = document.getElementById(btnId);
+    const msg = document.getElementById(msgId);
+    if (!email) return;
+    btn.disabled = true;
+    btn.textContent = 'Subscribing...';
+    try {
+      const resp = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, state})
+      });
+      const data = await resp.json();
+      msg.textContent = data.message || 'Subscribed!';
+      msg.className = 'text-sm mt-2 ' + (resp.ok ? 'text-green-700' : 'text-red-600');
+      if (resp.ok) { form.reset(); }
+    } catch(err) {
+      msg.textContent = 'Error. Please try again.';
+      msg.className = 'text-sm mt-2 text-red-600';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Subscribe';
+  });
+}
+handleSubscribe('subscribeForm', 'emailInput', 'stateInput', 'subscribeBtn', 'subscribeMsg');
+handleSubscribe('subscribeForm2', 'emailInput2', 'stateInput2', 'subscribeBtn2', 'subscribeMsg2');
+</script>
+
+</body>
+</html>

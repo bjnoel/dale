@@ -21,6 +21,7 @@ SCRAPERS_DIR = Path(__file__).parent
 sys.path.insert(0, str(SCRAPERS_DIR))
 from build_compare_pages import load_species, build_species_lookup, match_title
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_footer
 
 # Rarity scores are computed daily by build_species_pages.py and saved here.
@@ -129,12 +130,17 @@ def build_rare_page(data_dir: str, output_dir: str):
     # Stats
     total_products = sum(len(d['products']) for d in species_data.values())
 
-    # Build species cards HTML
-    cards_html = []
+    # Card view-data. The template autoescapes each scraped product title and
+    # URL (the escaping targets) plus the species/nursery names. highlight_badge
+    # (data-driven rarity, populated on the VPS) and the more-link are prebuilt
+    # safe HTML; sci_html is always empty today (the species data has no
+    # scientific_name field) but kept faithful to the original.
+    cards = []
     for sname, data in sorted_species:
         s = data['species']
         products = data['products']
         nursery_count = len(data['nurseries'])
+        slug = data['slug']
 
         # Price range
         prices = [p['price'] for p in products if p['price']]
@@ -146,7 +152,6 @@ def build_rare_page(data_dir: str, output_dir: str):
             price_str = 'POA'
 
         # Highlight badge: data-driven from computed rarity score
-        slug = data['slug']
         rarity = rarity_scores.get(slug, {})
         highlight_badge = ''
         if rarity.get('hard_to_find'):
@@ -154,49 +159,40 @@ def build_rare_page(data_dir: str, output_dir: str):
             label = 'Very rare' if score >= 80 else 'Hard to find'
             highlight_badge = f'<span class="rare-badge">{label}</span>'
 
-        # Product rows (up to 6 per species)
+        # Product rows (up to 6 per species), price-sorted
         show_products = sorted(products, key=lambda x: (x['price'] or 999))
-        prod_rows = []
-        for p in show_products[:6]:
-            restrict_note = f'<span class="restrict-badge">{p["restrict"]}</span>' if p['restrict'] else ''
-            price_disp = f'${p["price"]:.2f}' if p['price'] else '—'
-            prod_rows.append(
-                f'<tr>'
-                f'<td class="prod-title"><a href="{p["url"]}" target="_blank" rel="noopener">{p["title"]}</a></td>'
-                f'<td class="prod-nursery"><a href="{p["nursery_url"]}">{p["nursery_name"]}</a> {restrict_note}</td>'
-                f'<td class="prod-price">{price_disp}</td>'
-                f'</tr>'
-            )
+        prod_rows = [
+            {
+                'url': p['url'],
+                'title': p['title'],
+                'nursery_url': p['nursery_url'],
+                'nursery_name': p['nursery_name'],
+                'restrict': p['restrict'],
+                'price': p['price'],
+            }
+            for p in show_products[:6]
+        ]
 
         more_html = ''
         if len(products) > 6:
             more_html = f'<p class="more-link"><a href="/species/{slug}.html">See all {len(products)} listings →</a></p>'
 
         sci_name = s.get('scientific_name', '')
+        sci_html = f'<span class="sci-name">{sci_name}</span>' if sci_name else ''
 
-        cards_html.append(f'''
-  <div class="species-card" id="{slug}">
-    <div class="species-header">
-      <div class="species-title-row">
-        <h2 class="species-name"><a href="/species/{slug}.html">{sname}</a></h2>
-        {highlight_badge}
-      </div>
-      <div class="species-meta">
-        {f'<span class="sci-name">{sci_name}</span>' if sci_name else ''}
-        <span class="stock-count">{len(products)} in stock</span>
-        <span class="nursery-count">{nursery_count} {"nursery" if nursery_count == 1 else "nurseries"}</span>
-        <span class="price-range">{price_str}</span>
-      </div>
-    </div>
-    <table class="prod-table">
-      <tbody>
-        {"".join(prod_rows)}
-      </tbody>
-    </table>
-    {more_html}
-  </div>''')
+        cards.append({
+            'slug': slug,
+            'sname': sname,
+            'highlight_badge': highlight_badge,
+            'sci_html': sci_html,
+            'product_count': len(products),
+            'nursery_count': nursery_count,
+            'nursery_noun': 'nursery' if nursery_count == 1 else 'nurseries',
+            'price_str': price_str,
+            'prod_rows': prod_rows,
+            'more_html': more_html,
+        })
 
-    all_cards = '\n'.join(cards_html)
     species_count = len(species_data)
 
     extra_style = """\
@@ -245,106 +241,12 @@ def build_rare_page(data_dir: str, output_dir: str):
     )
     footer = render_footer()
 
-    html = f'''{head}
-{header}
-
-<main class="max-w-3xl mx-auto px-4 py-6">
-
-  <div class="mb-6">
-    <h1 class="text-2xl font-bold text-green-900 mb-2">Rare &amp; Exotic Fruit Trees In Stock</h1>
-    <p class="text-gray-600 text-sm">
-      {species_count} unusual species currently available across Australian nurseries — updated daily.
-      <strong>{total_products} total listings</strong>.
-      Last updated: {date_str}.
-    </p>
-  </div>
-
-  <div class="subscribe-box mb-6">
-    <p class="font-semibold text-green-900 mb-1">Get rare restock alerts by email — free.</p>
-    <p class="text-sm text-gray-600 mb-3">Be first to know when hard-to-find species come back into stock. Daily digest of price drops and new arrivals. <a href="/sample-digest.html" class="text-green-700 underline">See what a digest looks like &rarr;</a></p>
-    <form id="subscribeForm" class="flex gap-2 flex-wrap">
-      <input type="email" id="emailInput" placeholder="your@email.com"
-        class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-      <select id="stateInput" class="px-2 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-        <option value="ALL">All states</option>
-        <option value="NSW">NSW</option><option value="VIC">VIC</option>
-        <option value="QLD">QLD</option><option value="WA">WA</option>
-        <option value="SA">SA</option><option value="TAS">TAS</option>
-        <option value="NT">NT</option><option value="ACT">ACT</option>
-      </select>
-      <button type="submit" id="subscribeBtn"
-        class="bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-800">
-        Subscribe
-      </button>
-    </form>
-    <p id="subscribeMsg" class="text-sm mt-2 text-gray-600"></p>
-  </div>
-
-{all_cards}
-
-  <div class="subscribe-box mt-8">
-    <p class="font-semibold text-green-900 mb-1">Want alerts when rare species restock?</p>
-    <p class="text-sm text-gray-600 mb-3">Subscribe free — get daily emails with price drops, new arrivals, and rare restocks across {len(NURSERY_NAMES)} Australian nurseries.</p>
-    <form id="subscribeForm2" class="flex gap-2 flex-wrap">
-      <input type="email" id="emailInput2" placeholder="your@email.com"
-        class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-      <select id="stateInput2" class="px-2 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-        <option value="ALL">All states</option>
-        <option value="NSW">NSW</option><option value="VIC">VIC</option>
-        <option value="QLD">QLD</option><option value="WA">WA</option>
-        <option value="SA">SA</option><option value="TAS">TAS</option>
-        <option value="NT">NT</option><option value="ACT">ACT</option>
-      </select>
-      <button type="submit" id="subscribeBtn2"
-        class="bg-green-700 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-800">
-        Subscribe
-      </button>
-    </form>
-    <p id="subscribeMsg2" class="text-sm mt-2 text-gray-600"></p>
-  </div>
-
-</main>
-
-{footer}
-
-<script>
-async function handleSubscribe(formId, inputId, stateId, btnId, msgId) {{
-  const form = document.getElementById(formId);
-  if (!form) return;
-  form.addEventListener('submit', async (e) => {{
-    e.preventDefault();
-    const email = document.getElementById(inputId).value.trim();
-    const stateEl = document.getElementById(stateId);
-    const state = stateEl ? stateEl.value : 'ALL';
-    const btn = document.getElementById(btnId);
-    const msg = document.getElementById(msgId);
-    if (!email) return;
-    btn.disabled = true;
-    btn.textContent = 'Subscribing...';
-    try {{
-      const resp = await fetch('/api/subscribe', {{
-        method: 'POST',
-        headers: {{'Content-Type': 'application/json'}},
-        body: JSON.stringify({{email, state}})
-      }});
-      const data = await resp.json();
-      msg.textContent = data.message || 'Subscribed!';
-      msg.className = 'text-sm mt-2 ' + (resp.ok ? 'text-green-700' : 'text-red-600');
-      if (resp.ok) {{ form.reset(); }}
-    }} catch(err) {{
-      msg.textContent = 'Error. Please try again.';
-      msg.className = 'text-sm mt-2 text-red-600';
-    }}
-    btn.disabled = false;
-    btn.textContent = 'Subscribe';
-  }});
-}}
-handleSubscribe('subscribeForm', 'emailInput', 'stateInput', 'subscribeBtn', 'subscribeMsg');
-handleSubscribe('subscribeForm2', 'emailInput2', 'stateInput2', 'subscribeBtn2', 'subscribeMsg2');
-</script>
-
-</body>
-</html>'''
+    html = render_template(
+        "rare_page.html.j2",
+        head=head, header=header, footer=footer,
+        species_count=species_count, total_products=total_products,
+        date_str=date_str, cards=cards, nursery_total=len(NURSERY_NAMES),
+    )
 
     out_path = output_dir / 'rare.html'
     with open(out_path, 'w') as f:

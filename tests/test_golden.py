@@ -44,6 +44,24 @@ GOLDEN_CASES = [
         "outputs": ["compare/*.html"],
     },
     {
+        "name": "nursery_compare",
+        "script": "build_nursery_compare.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["compare/nurseries.html"],
+    },
+    {
+        "name": "rare_finds",
+        "script": "build_rare_finds.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["rare.html"],
+    },
+    {
+        "name": "species_trends",
+        "script": "build_species_trends.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["trends.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],
