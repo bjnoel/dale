@@ -4,6 +4,356 @@
 
 ---
 
+## DEC-140 — 2026-06-04 — Sapodilla growing guide (per-state-unique, archives-first; QLD flagship)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Following the olive flagship (DEC-126), the archive integration (DEC-127) and the
+lychee/fig/peach/tamarillo/guava/mango/plum/longan guides, sapodilla (Manilkara zapota; also chico,
+chiku, sapota, naseberry) is the next species to get the rich, per-state-unique, cited growing guide
+on the buy-sapodilla-trees-[state] combo pages and /species/sapodilla.html. Sapodilla is a genuinely
+rare, hard-to-source tropical fruit with a deep, owned Rare Fruit Council archive (a "Sapodilla in
+Australia" culture article with North Queensland flowering and harvest timing, a full fact sheet,
+and a clonal-propagation article), and the live stock matches the research: the named grafted
+varieties on sale (Krasuey, Sawo Manila and Ponderosa at Ross Creek) are the Asian selections the
+guide recommends, alongside the international standards (Alano, Prolific, Brown Sugar) and the dwarf
+Makok for pots. Flagship was chosen data-driven: GSC shows /species/sapodilla.html earning about 160
+impressions a month (9 clicks, position 9.8, indexed) but NO buy-sapodilla-trees-[state] combo
+entrances at all, so traffic does not pick a state; climate does. Sapodilla is strictly tropical, so
+the Australian heartland is far north Queensland (the Northern Territory around Darwin grows the
+most but is not a generated state), making QLD the horticultural flagship, researched deepest.
+
+**Decision:** Ship `growing_guides/sapodilla.json` mirroring olive.json/mango.json. The additive
+design held again: one new guide JSON plus a dedicated test file, no builder edits. Sapodilla already
+sits in the existing "tropical" climate category (no new category needed, unlike olive's
+"mediterranean"), and it was already present in the shared `growing_guides/archive_links.json` (its
+RFCA folder predates this work), so neither shared-edit conflict point was touched.
+
+**What shipped (PR branch dale/sapodilla-guide, pending Benedict review/merge/deploy):**
+- `growing_guides/sapodilla.json`: 16 verified sources, a state-invariant `core` (choosing a
+  variety; seedling vs grafted; the "do you need two trees?" pollination nuance; planting and soil;
+  water and feeding with the long-used Australian 10:2:17 plus dolomite schedule; harvest and
+  ripening, which is sapodilla's defining grower challenge because the fruit gives so few signs of
+  maturity; pruning and size; buying tips) plus genuinely distinct WA/QLD/NSW/VIC overlays (climate
+  fit, regions, harvest window, pests, and WA quarantine/shipping). Variety advice ties to live stock
+  (Krasuey, Sawo Manila, Ponderosa, dwarf Makok).
+- Two correctness wins over the generic blurb, both cited and adversarially cross-checked:
+  - Pollination: the guide does NOT repeat the blurb's flat "sapodilla is self-fertile". UF/IFAS is
+    explicit that some cultivars are self-incompatible (need a second tree/seedling) while others
+    fruit alone but crop more heavily cross-pollinated, so the guide says exactly that.
+  - Pests: sapodilla IS a Queensland fruit fly host (Business Queensland's commercial host list and
+    Plant Health Australia's fruit-fly resource both name it). The "latex skin makes it resistant"
+    idea is a sapote/sapodilla naming confusion (it refers to mamey sapote, Pouteria sapota) and was
+    deliberately kept off the page; the QLD/NSW overlays tell growers to bag or bait.
+- Archives first: the Australian-specific facts (North Queensland flowering November to February,
+  fruit maturing seven to nine months later, main northern harvest around September to November, the
+  scratch-and-scurf maturity test, the pollen-sterility caveat for seedlings, grafting by side
+  veneer) are grounded in Benedict's RFCA sapodilla articles, then cross-checked against UF/IFAS and
+  Morton (Fruits of Warm Climates) for the cold-tolerance numbers (young trees killed near minus 1
+  degree, mature trees take brief cold to about minus 3 degrees) and cultivars, the NT Government
+  fruit-availability page (sapodilla grown around Darwin, picked year-round), DPIRD WA (Carnarvon,
+  Kununurra/Ord, Mediterranean fruit fly, Quarantine WA), the Gascoyne Development Commission, RDA
+  Northern Rivers and the Bureau of Meteorology (Melbourne winter minima, to anchor "not a Victorian
+  crop"). Further reading leads with the WANATCA yearbook article "The Sapodilla in Southeast Asia"
+  (Coronel, Vol 23) and Benedict's RFCA sapodilla archives.
+
+**Verification:**
+- Full test suite green (374 tests), including the per-state uniqueness, no-dash, FAQ-overlap and
+  FAQ-JSON-LD guards, plus a new `tests/test_guide_sapodilla.py` with sapodilla-specific anchors
+  (the pollination nuance, the QFF host flag, and the stocked cultivars).
+- The four state pages build unique per state with no region names leaking across states, zero em or
+  en dashes, FAQ structured data, article OG, cited Sources and a Further reading list. The species
+  page renders the cited core, FAQ and Sources. Every cited and further-reading link returns HTTP 200
+  (re-checked on the rendered pages).
+- With today's local stock the species page renders immediately; the QLD/NSW/VIC/WA combo overlays
+  switch on automatically as soon as in-stock sapodilla crosses the per-state threshold (the overlays
+  themselves were verified by force-building all four from real stock).
+
+**Status:** PR open, awaiting Benedict review. Do not merge unilaterally.
+
+**To revert:** delete `tools/scrapers/growing_guides/sapodilla.json` and
+`tests/test_guide_sapodilla.py`; the species and combo pages fall back to the generic blurb with no
+code change.
+
+## DEC-139 — 2026-06-04 — Papaya growing guide (Queensland flagship)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Continuing the per-species growing-guide rollout (olive DEC-126, the reusable archive index DEC-127, then lychee/fig/peach/tamarillo/guava/mango/plum/longan/dragon-fruit/sapodilla), papaya is the next species enriched with a per-state-unique, cited guide on the buy-papaya-trees-[state] combo pages and /species/papaya.html. Papaya (also sold as pawpaw, the same plant, Carica papaya) is a strongly tropical crop: far north Queensland grows about 85 per cent of the national crop and over 90 per cent of that is in the north, so QLD is the natural flagship (mirroring the mango call). Live stock today only generates the WA combo page (6 papaya products from nurseries that ship to WA; QLD/NSW/VIC currently have 0 from shippable nurseries), but all four overlays were authored so the pages are correct the moment stock appears. GSC and Plausible returned no papaya rows in this local session (the pages are not live yet), so the flagship call rests on climate reality and the live stock spread, as the rollout prompt allows.
+
+**Decision:** Author tools/scrapers/growing_guides/papaya.json mirroring olive.json and mango.json (state-invariant core plus WA/QLD/NSW/VIC overlays), QLD researched deepest, WA a thorough secondary, every state genuinely unique. Keep the change set minimal: a new guide JSON plus a dedicated test file, no builder edits. Papaya already sits in the existing "tropical" climate category, which fits, so no new category was added.
+
+**What shipped (PR branch dale/papaya-guide):**
+- tools/scrapers/growing_guides/papaya.json: 23 sources (all curl-verified HTTP 200), a 6-section core (papaya vs pawpaw and red vs yellow; the male/female/bisexual sex types that decide whether a single plant fruits; planting and Phytophthora-safe drainage; water and feeding; harvest at colour break, ripening and papain; buying) plus distinct WA/QLD/NSW/VIC overlays (climate fit, regions, harvest window, pests), 4 core FAQs plus 2 per state. Variety advice is tied to the live stock table (Red Lady, RB4, Sunrise Solo, Yellow H13, Broad Leaf, Red Army all surface on the WA page).
+- First-party archives preferenced: Further reading curates four RFCA papaya articles plus the WANATCA ACOTANC "Exotic fruits in Perth" paper (both followed), and one WA Rare Fruit Club Carica papaya page (nofollow). The six curated entries fill the cap so the off-topic babaco articles in the shared RFCA Papaya folder do not surface (the same mixed-folder gotcha seen on dragon fruit's Pitaya folder).
+- tests/test_guide_papaya.py: a dedicated test file (parallel-merge isolation) with the standard guarantees plus a stronger further-reading guard that asserts the owned RFCA/WANATCA links stay followed while the RFCWA link stays nofollow, and that babaco never leaks in.
+- Avoided citing dpi.nsw.gov.au and agriculture.vic.gov.au (both 403 to automated checkers); the NSW and VIC climate claims rest on the tropical/frost-tender facts from UF/IFAS, NT and the DPIRD pawpaw bulletin, the same pattern the mango guide used.
+
+**Verification:** full suite green (371 tests, including the cross-cutting FAQ-overlap guard over papaya.json); all 24 cited and further-reading URLs return HTTP 200; no em or en dashes anywhere; only the WA combo page and /species/papaya.html generate from current stock, both rendering the guide with FAQ JSON-LD, article OG, Sources and merged Further reading; region tokens (Kununurra/Carnarvon for WA, Mareeba/Atherton/Tully for QLD, the Northern Rivers/Tweed for NSW, Melbourne/greenhouse for VIC) verified present on their own state page and absent from the other three. archive_links.json regenerated byte-identical, not committed.
+
+**Status:** shipped via PR on branch dale/papaya-guide, pending Benedict review and deploy. No DEC number yet (assigned by tools/fold_pending_decisions.py at batch close-out).
+
+**To revert:** revert the PR; papaya falls back to the generic fruit_species.json blurb and the dedicated test is removed.
+
+## DEC-138 — 2026-06-04 — Longan growing guide (per-state-unique, archives-first; QLD flagship, strong WA overlay)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Following the olive flagship (DEC-126), the archive integration (DEC-127) and the
+lychee/fig/peach/tamarillo/guava/mango/plum guides, longan is the next species to get the rich,
+per-state-unique, cited growing guide on the buy-longan-trees-[state] combo pages and
+/species/longan.html. Longan is the lychee's close cousin (both Sapindaceae) and a strong fit: it
+has a deep, owned Rare Fruit Council archive (the Walkamin variety trial, the 1980 Thai-industry
+notes, the botany article, rootstocks and post-harvest storage), and the live stock matches that
+research exactly (the named varieties on sale, Kohala, Haew, Chompoo and Biew Kiew, are the same
+cultivars the Atherton Tableland trials rated best). Flagship was chosen data-driven: GSC shows
+negligible longan traffic and Plausible shows the only longan combo page with any traffic (and the
+only one that currently generates) is the WA page, while the commercial heartland by climate is
+Queensland (Atherton Tableland, Cairns). So QLD is the horticultural flagship (researched deepest)
+and WA got an especially careful overlay (the live, top-traffic page, and Dale's home audience;
+Ladybird carries the richest WA range). This mirrors the lychee approach.
+
+**Decision:** Ship `growing_guides/longan.json` mirroring olive.json/lychee.json. The additive
+design held again: a new guide JSON plus a dedicated test file, no builder edits. Longan already
+sits in the existing "tropical" climate category (matching lychee), which fits, so no climate
+category was added; the cool-dry-winter flowering nuance lives in the overlay, as it does for lychee.
+
+**What shipped (PR branch dale/longan-guide, pending Benedict review/merge/deploy):**
+- `growing_guides/longan.json`: 14 verified sources, a state-invariant `core` (variety choice;
+  pollination and bees; planting and soil with the brittle-wood staking point; water and feeding;
+  a distinctive "Irregular and biennial bearing" section, which is longan's defining grower
+  challenge; harvest, storing and drying, since longan keeps and dries far better than lychee; and
+  buying with the graft-incompatibility/matched-rootstock point) plus genuinely distinct WA/QLD/
+  NSW/VIC overlays (climate fit, regions, harvest window, pests, WA quarantine). Variety advice ties
+  to live stock (Kohala, Haew, Chompoo, Biew Kiew), with an honest caution that Daw, the Thai
+  favourite, sets badly in Australia, and that seedlings are poor.
+- Archives first: the core facts (the cool-dry-winter flowering trigger; Kohala is the least
+  chill-demanding and most cold-tolerant selection; Biew Kiew is the heaviest, most regular cropper;
+  irregular/biennial bearing; harvest from about late January into autumn; propagation by marcot or
+  graft) are grounded in Benedict's RFCA longan articles (Walkamin trial, the 1980 Thai notes, the
+  longan botany article, rootstocks, storage), then cross-checked against UF/IFAS, Business
+  Queensland (fruit-piercing moth and macadamia nutborer both name longan; crop protection),
+  DPIRD WA (Ord/Kununurra, Carnarvon/Gascoyne, Quarantine WA), BeeAware (honey bee the principal
+  pollinator) and AgriFutures (longan is one of five named priority emerging tropical fruits).
+  Further reading curates the WANATCA Yearbook 21 article (Partridge, "Lychee and longan become
+  major industry in Australia", followed) plus the RFCA longan articles auto-merged from the index.
+- Correctness notes (adversarially verified): (1) the lychee erinose mite is lychee-specific
+  (genus Litchi) and is deliberately NOT carried over to longan; a test guards against it.
+  (2) The cool-winter flowering requirement is cross-confirmed by two independent sources, UF/IFAS
+  (flowering needs temperatures of 15C or less plus a dry period; warm wet winters push vegetative
+  growth) and the RFCA Walkamin record (the unusually mild 1986 winter failed the crop except for
+  Kohala). (3) The Darwin NT and PlantHealthAustralia PDFs are image-only and could not be text-
+  verified, and the ISHS abstract is subscription-gated, so none were cited; QLD regions/harvest
+  rest on the owned RFCA articles instead. (4) longan is framed as marginally more cold-tolerant
+  than lychee (a mature tree to about minus 4 C per UF/IFAS), which is the documented difference.
+- Stock reality: with current stock longan reaches the 3-in-stock threshold only in WA (so only
+  `buy-longan-trees-western-australia.html` renders today); QLD/NSW/VIC have 16 listings each but
+  sit below the top-20 per-state cap. The guide powers `/species/longan.html` immediately, and each
+  state overlay activates automatically the moment longan crosses the threshold (stock is seasonal),
+  exactly as the olive/lychee/tamarillo overlays do.
+- Tests: added `tests/test_guide_longan.py` (mirroring the lychee guards: per-state uniqueness,
+  region-token non-leak, no dashes, FAQ JSON-LD counts, cited https Sources, every cited id resolves,
+  the lychee/feijoa/loquat cross-links, owned-followed Further reading, plus a guard that the
+  lychee-only erinose mite never appears). Did not touch the shared test file. Full suite 373 green.
+  Regenerated only the `/species/longan.html` golden (the intended blurb-to-guide change; reviewed
+  the diff, no other golden moved). All 17 cited and further-reading URLs verified live (HTTP 200).
+  No em or en dashes anywhere.
+
+**To revert:** delete `growing_guides/longan.json` and `tests/test_guide_longan.py`, and revert the
+`/species/longan.html` golden. `has_guide("longan")` returns false, so the combo and species pages
+fall back to the fruit_species.json blurb.
+
+## DEC-137 — 2026-06-04 — Jackfruit per-state growing guide shipped to treestock (flagship QLD)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Per-species growing-guide rollout (see [[project_growing_guides]]). Jackfruit was
+next in the tropical/rare-fruit set. It was already mapped as "tropical" in
+`SPECIES_CLIMATE_CATEGORY` and already present in `growing_guides/archive_links.json` (the RFCA
+"Jakfruit" folder, 8 articles), so it needed only one declarative JSON file plus a test file, no
+code change and no archive-index regeneration.
+
+**Decision:** Add `tools/scrapers/growing_guides/jackfruit.json` (state-invariant `core` plus
+WA/QLD/NSW/VIC overlays) and `tests/test_guide_jackfruit.py`. Flagship is QLD by climate (the
+humid wet tropics are jackfruit's natural home). Per-state framing: QLD = wet tropics and Cassowary
+Coast strongholds; WA = the tropical north (Ord/Kununurra, Kimberley, Carnarvon) plus a Perth
+pot/glasshouse note, and currently the only combo page that actually generates (WA builds all
+3-plus-in-stock combos); NSW = the frost-limited Northern Rivers margin; VIC = not a field crop
+(frost kills it, glasshouse only).
+
+**Why:** Each state page is now genuinely unique and cited instead of sharing one generic blurb,
+which earns search traffic and community trust, the audience that feeds the Treesmith funnel
+(Track B). 22 sources, first-party archives preferenced.
+
+**Actions:**
+- 22 cited sources, all verified HTTP 200. First-party owned sources lead: RFCA (cultivation,
+  eating qualities, seeds) and WANATCA (Goebel "Jak fruit, what to look for" Yearbook 16; Griffiths
+  "Artocarpus" Yearbook 13), all owned and followed in Further reading. Third-party authorities
+  (NT Government and NT DAF, UF/IFAS, FSHS, Sub-Tropical Fruit Club Qld, CRFG, Pacific Pests/UQ,
+  USDA APHIS, Fruit Fly ID Australia, AgriFutures, DPIRD WA, BOM) cited nofollow.
+- Cited feeding figure (rollout v2 rule): UF/IFAS home-garden rate (about 113 g of 6:6:6 with minor
+  elements every eight weeks in year one, bearing trees 2 to 3 times with 6:6:6 or 8:3:9) plus the
+  NT direction. No invented NPK numbers.
+- Adversarial findings locked into the guide and test guards: Queensland fruit fly is NOT a recorded
+  pest of jackfruit (APHIS pest list and the B. tryoni host list both omit it; thick rind resists
+  it), so unlike the olive/mango guides it is not listed as a pest. Jackfruit is monoecious and
+  self-fruitful, so one tree fruits. J33 and NS1 are distinct Malaysian clones (not conflated).
+- Did NOT regenerate `archive_links.json` (jackfruit already indexed) and did NOT touch
+  `decision-log.md`, the shared daily `public-ledger/2026-06-04.md`, or the Progress checklist, per
+  the parallel-run merge convention.
+
+**Status:** PR open on branch `dale/jackfruit-guide`, pending Benedict review, merge and deploy.
+Full test suite green (374 tests). Only the WA combo page and `/species/jackfruit.html` generate on
+current stock; QLD/NSW/VIC overlays light up when stock crosses the per-state thresholds.
+
+**To revert:** delete `tools/scrapers/growing_guides/jackfruit.json` and
+`tests/test_guide_jackfruit.py`. The species falls back to the generic `fruit_species.json` blurb.
+
+## DEC-136 — 2026-06-04 — Jaboticaba per-state growing guide (treestock), archives-first and adversarially verified
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Continuing the per-species growing-guide rollout (olive, lychee, fig, peach, tamarillo,
+guava, mango, plum already shipped). Jaboticaba is a strong treestock fit: a rare-fruit collector
+tree with deep, citable coverage in Benedict's owned RFCA archive (40 articles) and a WANATCA
+ACOTANC paper, plus heavy live stock across Ross Creek, Daleys, Ladybird and Fruitopia.
+
+**Decision:** Add `tools/scrapers/growing_guides/jaboticaba.json` (one declarative file, the
+established pattern) with a state-invariant `core` (7 cited sections + 4 net-new FAQs) and four
+genuinely unique state overlays (WA, QLD, NSW, VIC). Reclassify jaboticaba from "tropical" to
+"subtropical" in `SPECIES_CLIMATE_CATEGORY` (it is frost-tolerant once mature and most productive in
+subtropical/warm-temperate zones, not the hot lowland tropics, per RFCA and Yates), so the per-state
+climate notes are accurate. Add `tests/test_guide_jaboticaba.py`.
+
+**Why:** Each `buy-jaboticaba-trees-<state>` page now carries unique, cited, state-aware guidance
+instead of a shared blurb. Flagship by climate/evidence is the NSW Northern Rivers (the Australian
+jaboticaba belt; best-sourced via RFCA + Daleys), but WA gets the standout overlay because it has
+the most distinctive, true story: jaboticaba's thick skin makes it largely fruit-fly resistant (a
+rare win in Medfly-ridden WA), it is a Permitted organism on the WA Organism List, and WA is still
+almost free of myrtle rust. Archives-first sourcing keeps authority and traffic in-network.
+
+**Actions:**
+- Researched state-invariant vs state-variant facts; ground-truthed against the owned RFCA articles
+  (pH 5.5 to 6.5, shallow roots, rust risk, polyembryonic true-from-seed but slow, frost-tolerant
+  expanding to warm-temperate) and the WANATCA Passmore paper (grows well in Perth, 4 to 5 crops a
+  year, fruit-fly-proof thick skin).
+- Adversarially cross-checked every key claim against current authorities (CRFG, Morton, UF/IFAS,
+  Yates, Business Queensland, DPIRD WA, DCCEEW, DBCA). Honored the corrections that came back:
+  yellow jaboticaba framed as "sold as Plinia aureana" (authorities call it Myrciaria glazioviana);
+  fruit-fly resistance stated as "largely resistant" (horticultural support only, no gov source),
+  never "fruit fly proof"; followed CRFG (not the lone wallum anecdote) that it dislikes poorly
+  drained soil; cited the UF/IFAS 4-3-4 NPK feeding figure rather than inventing numbers.
+- Verified every cited and further-reading URL returns HTTP 200.
+
+**Status:** PR open, pending Benedict review. Did not touch the shared decision log, daily ledger,
+or `archive_links.json` (jaboticaba was already indexed there with 8 RFCA entries); parallel-safe
+fragments used instead.
+
+**To revert:** delete `growing_guides/jaboticaba.json` and `tests/test_guide_jaboticaba.py`, and
+move "jaboticaba" back to the tropical line in `SPECIES_CLIMATE_CATEGORY`. The page falls back to
+the generic `fruit_species.json` blurb (graceful, no code change needed).
+
+## DEC-135 — 2026-06-04 — Dragon fruit per-state growing guide on treestock (flagship Queensland)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** treestock's buy-dragon-fruit-trees-<state> combo pages and /species/dragon-fruit.html shared the generic, uncited fruit_species.json blurb. Dragon fruit (Selenicereus undatus, formerly Hylocereus undatus) is a climbing cactus and one of treestock's tracked rare-fruit lines, in stock across five nurseries (28 of 77 listings available, flagged hard to find).
+
+**Decision:** Add a cited, per-state growing guide through the existing growing_guides content layer (one JSON file, no code change), matching the olive gold standard, with QLD as the flagship state. Every generated state (WA, QLD, NSW, VIC) gets a genuinely unique overlay.
+
+**Why QLD:** Climate and commercial reality put Australia's dragon fruit in Queensland and the Northern Territory (NT is not a generated state), with northern NSW and pockets of WA. Search Console over the 90 days to 2 June 2026 showed diffuse, species-page-dominated traffic (species page 97 impressions; the state combos all low and close, NSW 46, QLD 31 with the only combo click, VIC 23, WA 21) and generic national queries ("dragon fruit tree for sale", "australian dragon fruit"), so no state's traffic contradicts the climate flagship. QLD was researched deepest; WA, NSW and VIC each got a distinct, local overlay.
+
+**What changed:**
+- tools/scrapers/growing_guides/dragon-fruit.json: 16 cited sources; a state-invariant core (choosing a variety and species, pollination and self-fertility, support and planting, water and feeding, harvest, eating, buying tips); unique WA/QLD/NSW/VIC overlays (climate fit, growing regions, harvest window, pests and diseases, plus WA quarantine and shipping); four net-new core FAQs and two per state; and a hand-curated owned further_reading (WANATCA Yearbooks 25 and 27, four RFCA Pitaya articles).
+- tests/test_guide_dragon_fruit.py: 16 guards mirroring the lychee suite (per-state uniqueness, region-token no-leak, no dashes, FAQ JSON-LD counts, https authoritative sources, cites resolve, species links resolve, owned-followed merged further reading, combo cites more than species), plus a key-horticulture-fact lock and an off-topic-cactus guard (the RFCA Pitaya folder also holds Opuntia and skin-cancer articles, which the curated further_reading keeps out).
+- No code change needed: dragon fruit was already "tropical" in SPECIES_CLIMATE_CATEGORY, and archive_links.json already carried the RFCA Pitaya entries (regenerated byte-identical, not committed, per the parallel-merge rule).
+
+**Verification:** full test suite green (373 tests). Built against real stock into a tmp dir: all four combo pages and the species page render per-state-unique, cited, dash-free, with FAQ JSON-LD, article OG, Sources and Further reading; /species/dragon-fruit.html confirmed. Every cited and further-reading URL (19 unique) returns HTTP 200. Sources lead with first-party owned archives (RFCA, WANATCA) then AU government and university extension (NT Agnote D42 and NT.gov, NT DAF, DPIRD WA Carnarvon and quarantine and medfly, Business Queensland fruit fly, UF/IFAS). The unverified Carnarvon "February to July" claim from a non-authoritative source was deliberately not cited; WA is anchored on the DPIRD Carnarvon page (which names dragon fruit) plus the quarantine page.
+
+**Status:** shipped via PR on branch dale/dragon-fruit-guide, pending Benedict review and deploy. No DEC number yet (parallel run; folded into the log at batch close-out by tools/fold_pending_decisions.py).
+
+**To revert:** delete tools/scrapers/growing_guides/dragon-fruit.json and tests/test_guide_dragon_fruit.py; the combo and species pages fall back to the generic fruit_species.json blurb automatically (has_guide returns False with no JSON file).
+
+## DEC-134 — 2026-06-04 — Custard apple growing guide (Queensland flagship, atemoya-led)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Following the olive flagship (DEC-126), the reusable archive index (DEC-127), the rollout (mango, lychee, fig, peach, guava, plum, tamarillo) and rollout v2 (DEC-131), custard apple is the next species enriched with a per-state-unique, cited growing guide on the buy-custard-apple-trees-[state] combo pages and /species/custard-apple.html. The defining fact for this crop is that the "custard apple" sold in Australian nurseries is almost always the atemoya (a sugar apple x cherimoya hybrid), not the strict-botanical Annona reticulata; the guide leads with that so growers buy and grow the right thing. GSC has no custard-apple rows (below the top-N threshold) and Plausible shows only a tiny sample (/species/custard-apple.html, 11 visitors over 6 months), so the flagship rests on industry reality: production splits Northern NSW ~47% and the Queensland regions ~49% (Sunshine Coast 26%, Atherton Tablelands 11%, Wide Bay 9%, Central Qld 3%), with Custard Apples Australia Inc based in QLD. QLD is the flagship (matching the mango precedent); NSW gets an equally deep overlay because the Northern Rivers is the single largest region.
+
+**Decision:** Author tools/scrapers/growing_guides/custard-apple.json mirroring olive/mango (state-invariant core plus WA/QLD/NSW/VIC overlays), QLD researched deepest, every state genuinely unique. Minimal change set: a new guide JSON plus a dedicated test file, no builder edits. Custard apple already sits in the existing "subtropical" climate category, which fits (frost-tender, no winter-chill requirement, but not a no-chill Mediterranean crop like olive), so no category change.
+
+**What shipped (PR branch dale/custard-apple-guide):**
+- tools/scrapers/growing_guides/custard-apple.json: 15 verified sources, a 6-section core (variety, pollination and hand pollination, planting and soil, water and feeding, harvest and ripening, buying) plus distinct WA/QLD/NSW/VIC overlays (climate fit, regions, harvest window, pests, plus WA quarantine/shipping), 4 net-new core FAQs plus 2 per state, and a curated Further reading (the WANATCA ACOTANC paper "Annonas and Carambolas" by Rosemary du Preez, followed; the RFCA atemoya / hand-pollination / North Queensland articles auto-merged from the archive index, followed). No rarefruitclub link: the site (rarefruitclub.org.au) was unreachable (curl 000) at author time.
+- tests/test_guide_custard_apple.py (new, 14 tests): per-state uniqueness and no region-token leak (Carnarvon/Kununurra/Gingin, Sunshine Coast/Atherton/Yeppoon/Wide Bay, Lismore/Alstonville/Coffs Harbour/Stuarts Point, Melbourne/greenhouse), no em or en dashes (pages and JSON), FAQ JSON-LD counts, cited https Sources with nofollow, every cited id resolves, authoritative-domain presence, the /species/rollinia and /species/feijoa cross-links resolve, and the WANATCA+RFCA owned-followed Further reading. The file uses an underscore (test_guide_custard_apple.py) because a Python module name cannot contain the slug's dash; the slug passed to the builders stays hyphenated. This is the first hyphenated-slug guide.
+
+**Accuracy notes (adversarially verified):** facts were fan-out researched, archives first, and cross-checked against Australian authorities, each cited URL confirmed HTTP 200. Key correctness calls: (1) the Australian custard apple is the atemoya (Annona squamosa x A. cherimola); cherimoya and sugar apple are related but distinct, and the guide says so. (2) Pollination: custard apple flowers are protogynous (female-stage before male) so natural self-set is poor and leans on nitidulid beetles, not bees; a single tree still sets some fruit (you do not need two trees). Hand pollination is essential for Pinks Mammoth and Hillary White, optional on the self-fertile African Pride (also the preferred pollen source), and largely unnecessary on the naturally fruitful KJ Pink and Geffner (QLD DAF report cu16002 records KJ Pink natural set above 40% vs Pinks Mammoth below 3%). (3) WA's fruit fly is the Mediterranean fruit fly (Queensland fruit fly is not established in WA); WA is a minor area (~4% of production), frost-free but dry in the Gascoyne and Kimberley, marginal in the cooler south-west.
+
+**Verification:** full unittest suite 371 green (includes the cross-cutting FAQ-overlap guard; worst custard-apple Jaccard 0.29). Built against live stock; the four combo pages render unique per state with no region-token leak, 0 dashes, FAQ JSON-LD, article OG, cited Sources and merged Further reading; /species/custard-apple.html builds (60 KB) and carries the core guide. All 15 cited URLs plus the rendered Further-reading URLs return HTTP 200. Locally custard apple is gated out of the combo build (only 11 nurseries in the local data subset: WA 1 in-stock shipping, QLD/NSW/VIC rank 42 of 47, outside the top-20), so the combo pages were verified via the test harness; in production's fuller stock the layer is graceful and generates the pages when stock supports it.
+
+**Process note:** done in an isolated git worktree and branch because several species guides are in flight concurrently (avocado, longan, sapodilla worktrees off the same base). Logged parallel-safe (this `decisions/pending/` fragment plus a per-entry `public-ledger/2026-06-04-custard-apple-guide.md`, no DEC number and no `decision-log.md` / `archive_links.json` edit), so `fold_pending_decisions.py` assigns the DEC number at close-out. See memory feedback_parallel_agent_worktree.
+
+**To revert:** delete growing_guides/custard-apple.json and tests/test_guide_custard_apple.py. has_guide("custard-apple") returns false, so the combo and species pages fall back to the fruit_species.json blurb.
+
+## DEC-133 — 2026-06-04 — Banana growing guide (per-state, cited, flagship QLD) added to treestock
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** treestock's growing-guide layer (olive, lychee, fig, peach, tamarillo, guava, mango, plum) makes each buy-[species]-trees-[state] page genuinely unique and cited. Banana is the next species by traffic: /species/banana.html is a top-20 entrance (386 GSC impressions over 90 days, average position 17.8), and all four state combo pages are already live. Banana's biosecurity reality (Panama disease, banana bunchy top virus, and a Western Australian import restriction) makes the old generic blurb actively misleading, so it needed a proper guide.
+
+**Decision:** Added tools/scrapers/growing_guides/banana.json (24 cited sources, a state-invariant core plus WA/QLD/NSW/VIC overlays and net-new FAQs) and gave banana its own SPECIES_CLIMATE_CATEGORY ("banana") with accurate per-state climate notes. The generic "tropical" WA note understated the truth (live banana planting material cannot simply be brought into WA), so banana now carries the real story. Flagship state is QLD (climate plus 94% of national production), with a deliberately strong WA overlay (Carnarvon, the Gascoyne and the Ord, plus the quarantine and disease-freedom story) because WA growers have the most acute information need.
+
+**Why:** Correctness first. Variety advice is tied to the Panama-race reality (Cavendish resists race 1 but is the prime victim of tropical race 4, while Lady Finger, Ducasse and Sugar bananas are hit by race 1); the pollination question is answered honestly (edible bananas are parthenocarpic, so one plant fruits on its own with no pollinator); and banana bunchy top virus is flagged as the New South Wales backyard headline. Sources preference Benedict's owned archives first (the RFCA banana folder and a WANATCA Quandong issue), then government and industry authorities (Business Queensland, DPIRD WA, the Australian Banana Growers' Council, the OGTR banana biology, outbreak.gov.au). Better, trustworthy guides earn search traffic and community trust, which feeds the Treesmith funnel.
+
+**Actions:** Authored banana.json; added the "banana" climate category and four STATE_CLIMATE_NOTES entries in build_species_state_pages.py; added tests/test_guide_banana.py (32 tests). Full suite green (389 tests). Built all four combo pages and /species/banana.html against real stock (per-state-unique, dash-free, with FAQ JSON-LD, article OG, Sources and Further reading). Curl-verified that all 28 cited and further-reading URLs return HTTP 200. archive_links.json already carried banana's RFCA entries, so it was left unchanged per the parallel-merge rule. PR opened for Benedict's review.
+
+**Status:** Pending review, merge and deploy.
+
+**To revert:** Delete tools/scrapers/growing_guides/banana.json and tests/test_guide_banana.py, and revert the "banana" entry in SPECIES_CLIMATE_CATEGORY plus the four banana STATE_CLIMATE_NOTES in build_species_state_pages.py. has_guide("banana") then returns False and the pages fall back to the generic fruit_species.json blurb.
+
+## DEC-132 — 2026-06-04 — treestock avocado per-state growing guide (Track B)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Avocado is next in the growing-guide rollout (docs/species-guide-rollout.md): 8 GSC
+clicks and 589 impressions in 28 days, RFCA-rich, and a genuine commercial crop in every mainland
+state. Its buy-avocado-trees-<state> combo pages and /species/avocado.html previously shared a
+generic, uncited fruit_species.json blurb.
+
+**Decision:** Ship a comprehensive, cited, per-state avocado growing guide as a single JSON file
+(tools/scrapers/growing_guides/avocado.json), matching the olive and guava gold standard and the
+rollout-v2 bar (net-new FAQs, deep cited water-and-feeding, hand-escaped inline HTML, no dashes).
+
+**Why:**
+- Avocado is unusual in being a real crop in all four generated states (WA Southern Forests around
+  Pemberton and Manjimup; QLD Bundaberg and Childers plus the Atherton Tableland; NSW Northern
+  Rivers and the Mid North Coast Comboyne plateau; VIC Sunraysia around Mildura), so each state
+  earns a genuinely distinct overlay rather than a token one. The GSC traffic leader is NSW, QLD is
+  the production heartland, and WA carries the distinctive quarantine and shipping angle. All four
+  were researched deeply.
+- Correctness focus: drainage and Phytophthora root rot, Type A and Type B flowering and
+  cross-pollination, dry-matter maturity (Hass 23 percent, Shepard 21 percent, fruit ripens off the
+  tree), salinity sensitivity, and cited feeding (nitrogen and potassium dominant, about 110 kg N
+  and 80 kg K per hectare for a mature Hass, little-and-often for the shallow feeder roots, plus
+  zinc, boron and iron). Research fanned out to three subagents, key claims adversarially
+  cross-checked, and every cited URL verified HTTP 200.
+
+**Actions:**
+- New: tools/scrapers/growing_guides/avocado.json (37 sources, all cited and 200-verified; core plus
+  WA, QLD, NSW and VIC overlays; 5 core plus 2-per-state net-new FAQs).
+- New: tests/test_guide_avocado.py (uniqueness, no-dash, region-leak, FAQ JSON-LD, sources,
+  further-reading, and avocado-specific A/B plus Phytophthora correctness guards).
+- Regenerated goldens: species/avocado.html and buy-avocado-trees-western-australia.html (avocado is
+  in tests/golden/fixture/; the diff was confirmed to be only the two avocado pages).
+- No SPECIES_CLIMATE_CATEGORY change (avocado is already "subtropical"); archive_links.json was NOT
+  regenerated (avocado already has its 4 RFCA entries, which auto-merge into Further reading).
+- First-party archives preferenced: RFCA (auto-merged) plus WANATCA (Whiley, Yearbook Vol 8)
+  followed; rarefruitclub.au third-party (nofollow).
+
+**Status:** PR open on branch dale/avocado-guide, pending Benedict review. Full suite green (372 tests).
+
+**To revert:** delete avocado.json and test_guide_avocado.py and restore the two golden files; the
+pages fall back to the generic fruit_species.json blurb automatically (has_guide returns False).
+
 ## DEC-131 — 2026-06-04 — Growing-guide rollout v2: net-new FAQs, deeper cited feeding, Jinja2-accurate doc
 
 **Decided by:** Dale (interactive session with Benedict)

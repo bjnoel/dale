@@ -278,11 +278,16 @@ black-sapote, loquat, starfruit, rollinia, miracle-fruit. (50 species have some 
 - [x] tamarillo (DEC-129, NSW flagship, frost-tender subtropical)
 - All eight above were retrofitted to the step-3a FAQ rule + step-3b feeding depth in the
   guide-rollout-v2 PR (the FAQ-overlap guard was added in the same change).
-- [ ] avocado
-- [ ] sapodilla
-- [ ] longan
-- [ ] custard-apple
-- [ ] jaboticaba
+- [x] avocado (DEC-132)
+- [x] sapodilla (DEC-140, QLD flagship)
+- [x] longan (DEC-138, QLD flagship)
+- [x] custard-apple (DEC-134, QLD flagship, atemoya-led)
+- [x] jaboticaba (DEC-136, subtropical, own climate category)
+- [x] dragon-fruit (DEC-135, QLD flagship)
+- [x] papaya (DEC-139, QLD flagship)
+- [x] jackfruit (DEC-137, QLD flagship)
+- [x] banana (DEC-133, QLD flagship, biosecurity-accurate, own climate category)
+- The nine above shipped as a parallel batch, all merged 2026-06-04 (PRs #37 to #45).
 - [ ] (continue down the priority order)
 
 ## Notes
