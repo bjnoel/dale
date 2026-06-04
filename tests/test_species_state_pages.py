@@ -1201,5 +1201,110 @@ class SpeciesPagePassthroughDashTests(unittest.TestCase):
         self.assertIn("Some - Nursery", html)
 
 
+# ---------------------------------------------------------------------------
+# FAQ-overlap guard. The FAQ must add a NET-NEW question, not recap a body
+# section (docs/species-guide-rollout.md step 3a). Historically ~half of all
+# FAQs restated a section: "Do I need two X trees to get fruit?" duplicating the
+# "Pollination" section, "When do you harvest in <state>?" duplicating "Harvest
+# window in <state>", "Why won't nurseries post to WA?" duplicating "Buying and
+# shipping to WA". This guard fails the build when an FAQ answer substantially
+# restates a section body, or an FAQ question restates a section heading, across
+# EVERY growing_guides/*.json (so it covers species with no dedicated class).
+# FAQs are only compared against sections in the SAME block (core FAQs vs core
+# sections; a state's FAQs vs that state's overlay), which is the right scope:
+# a state FAQ should be net-new relative to that state's overlay.
+# ---------------------------------------------------------------------------
+
+GUIDES_DIR = SCRAPERS / "growing_guides"
+
+# Stopwords include the high-frequency question scaffold ("do you need two trees
+# to get fruit") so a shared topic alone does not flag; the real signal is the
+# distinctive content words (variety names, regions, mechanisms) an FAQ reuses
+# verbatim from a section.
+_FAQ_STOP = frozenset("""
+a an and are as at be been but by can could did do does for from get got had has have how if in into is
+it its may might must need no nor not of off on or our out over should so than that the their them then
+they this to under until up was were what when where which who why will with you your i more most less
+two tree trees fruit yes also some any one each per
+""".split())
+
+_WORD_RE = re.compile(r"[a-z0-9]+")
+
+
+def _content_words(text):
+    """Lowercased content-word set: strip HTML tags, drop stopwords and <=2-char tokens."""
+    text = re.sub(r"<[^>]+>", " ", text or "")
+    return {w for w in _WORD_RE.findall(text.lower()) if len(w) > 2 and w not in _FAQ_STOP}
+
+
+def _jaccard(a, b):
+    if not a or not b:
+        return 0.0
+    return len(a & b) / len(a | b)
+
+
+class FaqBodyOverlapTests(unittest.TestCase):
+    """Every FAQ must be net-new, not a recap of a body section/heading."""
+
+    # Tuned against the de-duplicated guides (which sit <= ~0.35) with margin,
+    # while still catching the historical recaps (0.45 to 0.81). Do NOT raise
+    # these to make a failing guide pass; rewrite the FAQ per step 3a instead.
+    ANSWER_VS_BODY_MAX = 0.45
+    QUESTION_VS_HEADING_MAX = 0.45
+
+    def _blocks(self, guide):
+        yield "core", guide.get("core") or {}
+        for st, overlay in (guide.get("states") or {}).items():
+            yield st, overlay or {}
+
+    def _overlaps(self, guide):
+        """Yield (kind, score, block, faq_question, section_heading) for every
+        FAQ x section pair in a guide."""
+        for block_name, block in self._blocks(guide):
+            sections = block.get("sections", [])
+            bodies = [(s.get("heading", ""), _content_words(s.get("body", ""))) for s in sections]
+            heads = [(s.get("heading", ""), _content_words(s.get("heading", ""))) for s in sections]
+            for f in block.get("faqs", []):
+                ans, ques = _content_words(f.get("a", "")), _content_words(f.get("q", ""))
+                for heading, body_words in bodies:
+                    yield ("answer", _jaccard(ans, body_words), block_name, f.get("q", ""), heading)
+                for heading, head_words in heads:
+                    yield ("question", _jaccard(ques, head_words), block_name, f.get("q", ""), heading)
+
+    def test_no_faq_recaps_a_section(self):
+        guides = sorted(p for p in GUIDES_DIR.glob("*.json") if p.name != "archive_links.json")
+        self.assertTrue(guides, "no growing-guide JSON files found")
+        for path in guides:
+            guide = json.loads(path.read_text(encoding="utf-8"))
+            for kind, score, block, question, heading in self._overlaps(guide):
+                limit = self.ANSWER_VS_BODY_MAX if kind == "answer" else self.QUESTION_VS_HEADING_MAX
+                self.assertLess(
+                    score, limit,
+                    f"{path.name} [{block}]: FAQ {question!r} {kind}-overlaps section "
+                    f"{heading!r} at {score:.2f} (limit {limit}). This FAQ recaps the body; "
+                    f"rewrite it to ask something the body does not already headline "
+                    f"(docs/species-guide-rollout.md step 3a).",
+                )
+
+    def test_guard_catches_a_synthetic_duplicate(self):
+        # Prove the guard bites, independent of the live guides: an FAQ whose
+        # answer is lifted from a section body must exceed the threshold.
+        body = ("Several popular varieties such as Arbequina, Koroneiki, Manzanillo and Picual "
+                "will set a useful crop on their own, but almost all olives fruit more heavily "
+                "with a second compatible variety nearby, and Leccino must have a pollinator.")
+        dup = {"core": {
+            "sections": [{"heading": "Pollination: do you need two trees?", "body": body}],
+            "faqs": [{"q": "Do I need two olive trees to get fruit?",
+                      "a": ("Several popular varieties such as Arbequina, Koroneiki, Manzanillo "
+                            "and Picual set a useful crop on their own, but almost all olives "
+                            "fruit more heavily with a second compatible variety nearby, and "
+                            "Leccino must have a pollinator.")}]}}
+        answer_scores = [s for kind, s, *_ in self._overlaps(dup) if kind == "answer"]
+        self.assertGreaterEqual(
+            max(answer_scores), self.ANSWER_VS_BODY_MAX,
+            "the synthetic duplicate FAQ should trip the overlap guard but did not",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

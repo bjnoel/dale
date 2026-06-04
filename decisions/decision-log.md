@@ -4,6 +4,26 @@
 
 ---
 
+## DEC-131 — 2026-06-04 — Growing-guide rollout v2: net-new FAQs, deeper cited feeding, Jinja2-accurate doc
+
+**Decided by:** Dale (interactive session with Benedict)
+
+**Context:** The per-species growing guides (olive, lychee, fig, peach, tamarillo, guava, mango, plum) and the rollout template `docs/species-guide-rollout.md` were working, but Benedict flagged three weaknesses: (a) the doc predated the Jinja2 autoescape template migration (PR10b) and no longer described how content is rendered; (b) the FAQ sections largely restated the body, with nearly half of all 97 FAQs (peak Jaccard 0.81) recapping a section heading (the "Do I need two trees?" / "When do you harvest in <state>?" / "Why won't nurseries post to WA?" pattern); (c) the Water and feeding sections were generic ("apply nitrogen in spring") with no NPK ratios, rates, frequency or cited evidence, except tamarillo.
+
+**Decision:** Retrofit all eight shipped guides and the rollout doc to a higher bar, and add a regression guard so future guides cannot backslide. Benedict chose the fullest scope (retrofit all guides, not just the doc), an automated FAQ-overlap test guard, and a single combined "Water and feeding" section (deepened, not split).
+
+**What changed:**
+- `docs/species-guide-rollout.md`: documented the real rendering boundary (guides are string-built by `growing_guides.py` and injected `|safe` into the Jinja2 autoescape page templates, so JSON authors write valid HTML and escape literal ampersands); added the `test_golden.py` gate (fig/lychee/mango are in the fixture); added step 3a (FAQs must be net-new, never recap a body heading, with a menu of buyer/long-tail archetypes) and step 3b (a Water-and-feeding depth checklist: fertiliser type, NPK direction/ratio when cited, rate, frequency/timing, soil pH, with a hard "do not invent numbers" correctness rule).
+- `tests/test_species_state_pages.py`: new `FaqBodyOverlapTests` runs over every `growing_guides/*.json` and fails the build when an FAQ answer (or question) substantially restates a section body (or heading), with a synthetic-duplicate proof. Thresholds 0.45, tuned with margin (retrofitted guides now sit <= 0.36).
+- All 8 guide JSONs: every duplicative FAQ replaced with a net-new buyer/troubleshooting question (pot growing, mature size, time to fruit, ripening, frost protection, variety-for-region, pollination-for-one-tree); Water and feeding deepened with cited specifics (olive 4 kg of 17:7:9 + RFCA; lychee FAO/RFCA program 350/170/210 g + boron + pH; mango DAF 15:4:11 rate-by-age + pre-flowering water-stress + B/Zn; peach DAF 12:5:14 + three water windows; guava UF/IFAS feed schedule + pH 4.5 to 8.2; plum Ag Vic fruit-fill window + PlantNet N/K; fig RHS/UGA pot-feed exception; tamarillo verified NPK 5:6:6 + pH).
+- Regenerated the fig/lychee/mango golden species pages (the only fixture species).
+
+**Verification:** full suite green (355 tests, including the new guard and the synthetic positive); 10 of 11 newly cited URLs return HTTP 200; the 11th (Agriculture Victoria stone-fruit) is the known WAF-403 exception (live in browsers, already the precedent for the existing `agvic-dryseason` cite) and is paired with a 200-returning PlantNet source for the same plum claim. No em/en dashes; `|safe` injection renders cleanly (the one `&` in a source URL is single-escaped).
+
+**Status:** shipped via PR on branch `dale/guide-rollout-v2`, pending Benedict review and deploy. Lychee's RFCA fertilising citation was added as `https` (not the `http` the source serves) since the site supports it and the test guard requires https sources.
+
+**To revert:** revert the PR; the guides return to their previous FAQ/feeding text and the overlap guard is removed.
+
 ## DEC-130 — 2026-06-02 — Guava growing guide (Queensland flagship)
 
 **Decided by:** Dale (interactive session with Benedict)

@@ -6,9 +6,19 @@ as the reference implementation; this doc tracks the rest.
 
 How it works:
 - The content layer is `tools/scrapers/growing_guides/<slug>.json` (state-invariant `core` plus
-  per-state overlays), rendered by `growing_guides.py` into the combo and species pages. See the
-  `project_growing_guides` and `reference_owned_content_archives` memories, and `olive.json` as the
-  gold standard.
+  per-state overlays). See the `project_growing_guides` and `reference_owned_content_archives`
+  memories, and `olive.json` as the gold standard.
+- Rendering boundary (read this, it changed): `growing_guides.py` turns the JSON into a
+  pre-rendered HTML fragment using Python string-building (NOT a Jinja2 template). The page
+  builders then inject that fragment into the autoescaping Jinja2 page templates through a `|safe`
+  slot (`stocklib/templates/species_state_combo.html.j2` `{{ guide_body|safe }}`,
+  `species_page.html.j2` `{{ description_html|safe }}`); the FAQ JSON-LD goes to the head via
+  `growing_guides.faq_jsonld()`. Because the block is `|safe`, your JSON strings are emitted
+  VERBATIM (not escaped), which means: inline HTML in a `body`/`intro` is intentional and works
+  (e.g. internal `<a href="/species/longan.html" class="text-green-700 hover:underline">longan</a>`
+  links), but any literal `&`, `<`, `>` in prose MUST be hand-escaped (`&amp;`, `&lt;`, `&gt;`),
+  and the no-dash rule still applies. Adding a species is still just one JSON file: no template
+  or code change.
 - Run the prompt below in a fresh session, changing only the species, and work down the priority
   order. Each run opens a PR; merge + deploy stays a human gate.
 - Re-check traffic periodically (the priority order is a snapshot, not fixed).
@@ -36,10 +46,14 @@ treestock.com.au, matching the olive implementation we already shipped, and ship
   three archive sites and how to use them).
 - Mirror these reference files exactly (structure, depth, tone):
   - `tools/scrapers/growing_guides/olive.json`  (gold-standard schema + writing quality)
-  - `tools/scrapers/growing_guides.py`  (has_guide, render_combo_guide, render_further_reading merge)
+  - `tools/scrapers/growing_guides.py`  (has_guide, render_combo_guide, render_further_reading merge;
+    string-built fragment, injected `|safe` into the templates below)
+  - `tools/scrapers/stocklib/templates/{species_page,species_state_combo}.html.j2` and
+    `tools/scrapers/stocklib/templates.py` (the autoescape Jinja2 env; invariants pinned by
+    `tests/test_templates.py`) - you do NOT edit these to add a species, but understand the boundary
   - `tools/scrapers/build_species_state_pages.py`  (core/overlay, SPECIES_CLIMATE_CATEGORY, STATE_CLIMATE_NOTES)
   - `tools/scrapers/build_species_pages.py`, `tools/scrapers/build_archive_index.py`
-  - `tests/test_species_state_pages.py`  (the bar to keep green)
+  - `tests/test_species_state_pages.py`  (the bar to keep green; includes the FAQ-overlap guard, see step 5)
 - Resolve the slug: find {{SPECIES}} in `tools/scrapers/fruit_species.json` and use its `slug`
   (call it {{SLUG}}). If {{SPECIES}} is not there, stop and ask before proceeding.
 
@@ -55,7 +69,9 @@ treestock.com.au, matching the olive implementation we already shipped, and ship
 ## 2. Research - fan out, adversarially verified, archives first
 Split the work:
 - State-INVARIANT (research once -> `core`): variety/cultivar choice, pollination/self-fertility,
-  planting & soil, water & feeding, harvest, post-harvest/ripening or eating, buying tips.
+  planting & soil, water & feeding (research this to the DEPTH CHECKLIST in step 3, with cited
+  fertiliser specifics, not a generic "feed in spring" line), harvest, post-harvest/ripening or
+  eating, buying tips.
 - State-VARIANT (research per state -> `states.<ST>`): climate fit, named growing regions, harvest
   window, pests & diseases, and for WA the quarantine/shipping context.
 
@@ -88,6 +104,57 @@ varieties actually in the live stock table.
 - `further_reading`: hand-curate the best WANATCA yearbook articles + optionally one rarefruitclub.au
   link with `"nofollow": true`. (RFCA links auto-merge from the index in step 4 - don't list them all.)
 
+### 3a. FAQs: every question must be NET-NEW (do not recap the body)
+The body sections already tell the full agronomic story. The FAQ is NOT a summary of it. Each FAQ
+must answer a question the body does NOT already headline, so the page covers MORE long-tail queries
+in its FAQPage rich result and a reader never re-reads a fact they just read. (The old guides failed
+this: nearly half the FAQs restated a section, e.g. "Do I need two trees to get fruit?" duplicating a
+"Pollination" section, or "When do you harvest in <state>?" duplicating a "Harvest window in <state>"
+overlay section. An automated guard now fails the build on this; see step 5.)
+
+- HARD RULE: never pose an FAQ whose answer is the subject of a body-section heading. If a section is
+  "Pollination: do you need two trees?", do NOT also add a "Do I need two trees?" FAQ. Likewise drop
+  the per-state "When do you harvest in <state>?" and "Where are <species> grown in <state>?" and
+  "Why won't nurseries post to WA?" FAQs when an overlay section already covers them.
+- Instead, draw FAQs from these NET-NEW archetypes (pick the ~4-6 core + 1-2 per state that a real
+  buyer of THIS species would still ask):
+  - Commerce / sizing: "How much does a <species> tree cost?" (point at the live table), "Can I grow
+    it in a pot / a small garden / a courtyard?", "How big does it get and can I keep it small?"
+  - Decision / disambiguation: "Which variety is best for <fresh eating vs drying vs cold districts vs
+    containers>?", "What is the difference between <X> and <Y>?", "Grafted vs seedling, does it matter?"
+  - Troubleshooting / expectations: "Why is it flowering but not setting fruit?", "Why is it dropping
+    fruit?", "How long until it fruits?" (ONLY if no body section already leads with this), "Does it
+    need winter chill / frost protection?", a species-specific quirk (e.g. lychee "chicken tongue"
+    seed, mango sap burn, fig roots and pipes).
+  - State FAQs stay genuinely state-specific but must NOT echo an overlay section: prefer a buying or
+    siting angle ("Can I bring a tree into WA myself?", "Which local nurseries stock it?") over a
+    harvest-timing recap.
+- Keep roughly 4-6 core + 1-2 per state for the JSON-LD, but every one must earn its place.
+
+### 3b. Water and feeding: the DEPTH CHECKLIST (keep it ONE "Water and feeding" section, but deepen it)
+The old guides were generic here ("apply nitrogen in spring", "a balanced fertiliser"). tamarillo is
+the model to beat ("a complete fruit fertiliser, around NPK 5:6:6, in spring and again in summer ...
+up to a kilogram for a mature plant"). The "Water and feeding" core section (and any state water note)
+must cover, WHERE SOURCES SUPPORT IT:
+- Water: need by growth stage (establishing vs bearing); the critical water-stress window for THIS
+  species (e.g. flowering to fruit-swell drop; mango's pre-flowering dry period); rainfall vs
+  irrigation; mulch; waterlogging/drainage sensitivity; a quantified water->yield figure when one is
+  cited (model: olive WA "irrigated trees yield roughly twice as much").
+- Feeding: name the fertiliser TYPE (complete/balanced, citrus or fruit-and-flower formulations,
+  organic options like blood and bone / well-rotted manure / compost, sulphate of potash for fruit,
+  trace elements where the species is deficiency-prone, e.g. iron or zinc chlorosis on alkaline soil);
+  NPK DIRECTION (e.g. higher K than N for fruiting, low N to avoid leafy growth at the expense of
+  fruit) and an approximate RATIO only when cited; a RATE per tree scaled by age when cited; the
+  FREQUENCY and TIMING (split feeds across the warm season; what to ease off and when, e.g. cut
+  nitrogen in late summer/autumn so wood hardens); soil pH where it drives nutrition.
+- CORRECTNESS RULE (this is where wrong advice harms growers): do NOT invent NPK ratios, rates or
+  frequencies. State a number ONLY when a cited authority (DPIRD WA, Business Queensland, NSW DPI,
+  Agriculture Victoria, AgriFutures, the industry body, or a peer-reviewed / university-extension
+  source) gives it, and cross-check it against a second source. If no source gives a number, stay
+  specific-but-qualitative ("a complete fertiliser higher in potassium than nitrogen, fed little and
+  often through the warm season") and still name the TYPE and TIMING. Wire each new claim to a
+  `cites` id and add the source to `sources[]`.
+
 ## 4. Refresh the RFCA index + climate category
 - Run `python3 tools/scrapers/build_archive_index.py`; confirm {{SLUG}} now has entries in
   `growing_guides/archive_links.json`. Its printed "WANATCA candidates" are your curation shortlist
@@ -98,6 +165,17 @@ varieties actually in the live stock table.
 ## 5. Test + build locally
 - Keep `python3 -m unittest discover tests/` green (extend tests if the species needs it; reuse the
   uniqueness / no-dash / FAQ-JSON-LD / sources / further-reading guards).
+- The FAQ-overlap guard (`FaqBodyOverlapTests` in `tests/test_species_state_pages.py`) runs over
+  every `growing_guides/*.json` and FAILS if an FAQ answer substantially restates a section body, or
+  an FAQ question restates a section heading. If it fails on your species, your FAQs are recapping the
+  body: rewrite them per step 3a, do not raise the threshold.
+- Golden gate: `tests/test_golden.py` runs `build_species_pages` and `build_species_state_pages`
+  against the committed fixture and diffs the output. If your species is present in
+  `tests/golden/fixture/` (today that is fig, lychee and mango; most species are NOT), enriching it
+  changes the rendered page and the golden test will fail. That is EXPECTED: review the diff, confirm
+  it is only your intended content change, then regenerate with
+  `GOLDEN_UPDATE=1 python3 -m unittest tests.test_golden` and re-run the suite green. Commit the
+  regenerated `tests/golden/expected/...` files with your change.
 - Build against real stock into a tmp dir and open the {{SLUG}} pages: per-state-unique, cited,
   dash-free, with FAQ JSON-LD, article OG, Sources, and Further reading (RFCA merged + curated).
   Confirm /species/{{SLUG}}.html. curl every cited + further-reading URL -> 200.
@@ -112,7 +190,9 @@ varieties actually in the live stock table.
 
 Definition of done: a guide as thorough and accurate as olive.json, each state genuinely unique,
 first-party archives preferenced (RFC archives > WANATCA > RFCWA), every URL resolving, no dashes,
-full test suite green, PR open.
+FAQs all net-new (the overlap guard is green, no FAQ recaps a body section), the Water-and-feeding
+section meets the step-3b depth checklist with cited fertiliser specifics, goldens regenerated if the
+species is in the fixture, full test suite green, PR open.
 ```
 
 ## Priority order (data-driven)
@@ -158,10 +238,15 @@ black-sapote, loquat, starfruit, rollinia, miracle-fruit. (50 species have some 
 ## Progress
 
 - [x] olive (DEC-126 per-state guide; DEC-127 archive citations + Further reading)
-- [x] fig (per-state guide shipped via PR; flagship WA on climate, QLD highest impressions)
-- [ ] lychee
-- [ ] guava
-- [ ] mango
+- [x] fig (per-state guide; flagship WA on climate, QLD highest impressions)
+- [x] lychee (DEC-128, flagship QLD by climate, WA strongest overlay)
+- [x] guava (QLD flagship)
+- [x] mango (QLD flagship)
+- [x] peach (temperate, reuses the existing chill note; no RFCA Further reading)
+- [x] plum (WA flagship)
+- [x] tamarillo (DEC-129, NSW flagship, frost-tender subtropical)
+- All eight above were retrofitted to the step-3a FAQ rule + step-3b feeding depth in the
+  guide-rollout-v2 PR (the FAQ-overlap guard was added in the same change).
 - [ ] avocado
 - [ ] sapodilla
 - [ ] longan
