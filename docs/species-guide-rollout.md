@@ -158,7 +158,9 @@ must cover, WHERE SOURCES SUPPORT IT:
 ## 4. Refresh the RFCA index + climate category
 - Run `python3 tools/scrapers/build_archive_index.py`; confirm {{SLUG}} now has entries in
   `growing_guides/archive_links.json`. Its printed "WANATCA candidates" are your curation shortlist
-  for step 3's further_reading.
+  for step 3's further_reading. In a parallel batch, run it locally for the candidate list but do NOT
+  commit the regenerated `archive_links.json` in your branch (it is regenerated once at close-out;
+  see step 6).
 - If {{SPECIES}} has special climate needs (as olive/grape use "mediterranean"), add/adjust its entry
   in `SPECIES_CLIMATE_CATEGORY` and the matching `STATE_CLIMATE_NOTES` per state (no dashes).
 
@@ -186,7 +188,31 @@ must cover, WHERE SOURCES SUPPORT IT:
   `tools/deploy.sh`, run `build_species_state_pages.py` + `build_species_pages.py` into
   /opt/dale/dashboard, rebuild purged Tailwind, verify live (200, fresh mtime, dash-free,
   per-state-unique). NEVER scp.
-- Log a DEC entry and a public-ledger note.
+
+### Logging in a PARALLEL batch (this is what stops the end-of-run merge pile-up)
+Guide runs are usually several agents at once, so do NOT, in your branch, touch any file that every
+run edits at the same place: that is exactly what makes the second and later branches conflict on
+merge. Specifically, in your branch:
+- Decision: write ONE fragment `decisions/pending/{{DATE}}-{{SLUG}}-guide.md` (a `# title` line then
+  the body, same shape as a log entry; see `decisions/pending/README.md`). Do NOT edit
+  `decisions/decision-log.md`, and do NOT choose a DEC number (two agents would pick the same one).
+- Public ledger: write a per-entry file `public-ledger/{{DATE}}-{{SLUG}}-guide.md`, NOT the shared
+  daily `public-ledger/{{DATE}}.md`.
+- Do NOT tick the Progress list in this doc, and do NOT commit a regenerated
+  `growing_guides/archive_links.json` (both are shared-edit conflict points; your guide's curated
+  `further_reading` carries it until close-out).
+- Keep species-specific tests out of the shared file where you can: the generic `FaqBodyOverlapTests`
+  already guards FAQ overlap for every guide, so you rarely need to edit
+  `tests/test_species_state_pages.py`; if you do add bespoke assertions, a new
+  `tests/test_guide_{{SLUG}}.py` will not collide with other branches.
+These artifacts are uniquely named, so any number of guide branches merge cleanly.
+
+### Close-out (ONE serialized step, AFTER the batch has merged)
+Run once for the whole batch (Benedict, or a single coordinating session):
+- `python3 tools/fold_pending_decisions.py` folds every `decisions/pending/*.md` into the log with
+  fresh sequential DEC numbers and deletes the fragments (use `--dry-run` to preview).
+- `python3 tools/scrapers/build_archive_index.py` regenerates the archive index once.
+- Tick the Progress list below for the species that landed.
 
 Definition of done: a guide as thorough and accurate as olive.json, each state genuinely unique,
 first-party archives preferenced (RFC archives > WANATCA > RFCWA), every URL resolving, no dashes,
