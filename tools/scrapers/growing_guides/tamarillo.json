@@ -1,0 +1,106 @@
+{
+  "slug": "tamarillo",
+  "common_name": "Tamarillo",
+  "sources_note": "Growing guidance on this page draws on Australian and New Zealand horticultural research, state agriculture departments, and rare-fruit archives.",
+  "sources": [
+    {"id": "crfg", "name": "California Rare Fruit Growers: Tamarillo Fruit Facts", "short": "CRFG Fruit Facts", "url": "https://crfg.org/homepage/library/fruitfacts/tamarillo/"},
+    {"id": "morton", "name": "Julia Morton, Fruits of Warm Climates: Tree Tomato (Purdue NewCROP)", "short": "Morton, Fruits of Warm Climates", "url": "https://hort.purdue.edu/newcrop/morton/tree_tomato.html"},
+    {"id": "nztca", "name": "New Zealand Tree Crops Association: growing tamarillos", "short": "NZ Tree Crops Association", "url": "https://treecrops.org.nz/your-backyard-fruit-bowl-tamarillos/"},
+    {"id": "foods-cultivars", "name": "Diep et al., Tamarillo composition and New Zealand cultivars, Foods (MDPI), 2020", "short": "Foods journal (2020)", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7353566/"},
+    {"id": "organicgardener", "name": "ABC Organic Gardener: Tangy tamarillo", "short": "ABC Organic Gardener", "url": "https://www.organicgardener.com.au/tangy-tamarillo/"},
+    {"id": "greenharvest", "name": "Green Harvest: tamarillo growing information", "short": "Green Harvest", "url": "https://greenharvest.com.au/blogs/growing-information/tamarillo-growing-information"},
+    {"id": "yates", "name": "Yates Australia: how to grow tamarillo", "short": "Yates", "url": "https://www.yates.com.au/how-to-grow/tamarillo/"},
+    {"id": "daleys", "name": "Daleys Fruit Tree Nursery: tamarillo (tree tomato)", "short": "Daleys Fruit", "url": "https://www.daleysfruit.com.au/plant/Tamarillo-Tree-Tomato.htm"},
+    {"id": "rnzih", "name": "Royal New Zealand Institute of Horticulture: growing tamarillos (Plant Doctor)", "short": "RNZIH Plant Doctor", "url": "https://www.rnzih.org.nz/Plant_Doctor/Growing_tamarillos.htm"},
+    {"id": "tharfield", "name": "Tharfield Nursery (NZ): tamarillo crop guide", "short": "Tharfield Nursery", "url": "https://www.tharfield.co.nz/crop.php?fruitid=14_Tamarillo"},
+    {"id": "bq-qff", "name": "Business Queensland: Queensland fruit fly (host list includes tamarillo)", "short": "Business Qld fruit fly", "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/insects/horticultural/queensland-fruit-fly"},
+    {"id": "granitebelt", "name": "Granite Belt Growers Association (Stanthorpe, QLD): our region", "short": "Granite Belt Growers", "url": "https://granitebeltgrowers.com.au/granite-belt-growers-our-region/"},
+    {"id": "dpird-medfly", "name": "DPIRD Western Australia: Mediterranean fruit fly", "short": "DPIRD medfly", "url": "https://www.dpird.wa.gov.au/businesses/pests-weeds-and-diseases/animal-pests-diseases/pest-insects/mediterranean-fruit-fly/"},
+    {"id": "dpird-tpp", "name": "DPIRD Western Australia: Candidatus Liberibacter solanacearum and tomato potato psyllid (tamarillo is a host; psyllid in WA since 2017)", "short": "DPIRD psyllid", "url": "https://www.dpird.wa.gov.au/businesses/pests-weeds-and-diseases/plant/plant-diseases/candidatus-liberibacter-solanacearum/"},
+    {"id": "dpird-import", "name": "DPIRD Western Australia: importing plants and plant products (Quarantine WA)", "short": "Quarantine WA", "url": "https://www.dpird.wa.gov.au/businesses/biosecurity/importing-and-exporting-quarantine-wa/importing-plants-and-plant-products/"},
+    {"id": "rfca-treetomato", "name": "Rare Fruit Council of Australia archives: The Tree Tomato or Tamarillo", "short": "RFC archives (tree tomato)", "url": "https://rfcarchives.org.au/Next/Fruits/SolanumFamily/Tamarillo11-90.htm"},
+    {"id": "rfca-beaut", "name": "Rare Fruit Council of Australia archives: Brazenly Beautiful Tamarillo", "short": "RFC archives (tamarillo)", "url": "https://rfcarchives.org.au/Next/Fruits/SolanumFamily/BeautTamarillo3-97.htm"},
+    {"id": "rfca-rellies", "name": "Rare Fruit Council of Australia archives: The Tamarillo and its Relatives", "short": "RFC archives (relatives)", "url": "https://rfcarchives.org.au/Next/Fruits/SolanumFamily/TamarilloRellies7-92.htm"},
+    {"id": "wanatca-pruning", "name": "Pat Sale, Pruning Tamarillos: influencing yield, fruit size and season of maturity, WANATCA Yearbook Vol 21 (1997), p.43", "short": "Sale, WANATCA Yearbook 21", "url": "https://wanatca.org.au/yearbooks/Y21all.pdf"}
+  ],
+  "core": {
+    "intro": "Tamarillo (the tree tomato, Solanum betaceum, once classed as Cyphomandra betacea) is a fast-growing, soft-wooded shrub from the Andes that can be picking fruit within about 18 months of planting. The state sections below cover the climate, harvest timing and pests where you are. The notes here apply anywhere in Australia: tamarillo is frost tender, wind sensitive and short lived, so the trick is a warm, sheltered, free-draining spot, steady water, and a fresh plant every several years.",
+    "sections": [
+      {"heading": "Choosing a variety: red or gold", "body": "Tamarillos come in two broad types. Red types (deep red skin, orange-red flesh) are the common market fruit and are sharper and more tart; gold or yellow types (skin and flesh ranging from orange to yellow) are milder and sweeter, and many home growers prefer them for fresh eating. Almost all named selections were bred in New Zealand: reds such as Oratia Red, Ted's Red, Mulligan and Laird's Large, and golds such as Goldmine, Bold Gold and Amber. Tamarillo grows readily from seed and comes reasonably true if you save seed from good fruit, but a named, cutting-grown plant fruits to type and to a lower, bushier shape.", "cites": ["crfg", "nztca", "foods-cultivars"]},
+      {"heading": "Pollination: one plant is enough", "body": "Tamarillo is self fertile, so a single plant will set fruit on its own. The flowers are normally self pollinating, but they set more heavily when bees and a little air movement stir the branches, and a second plant nearby can lift the crop further. You do not need a separate pollinator variety the way you do with many fruit trees.", "cites": ["crfg", "morton", "nztca"]},
+      {"heading": "Planting and soil", "body": "Tamarillo wants full sun, shelter from wind, and a fertile, free-draining soil rich in organic matter. It will not tolerate waterlogging: the roots are shallow and water standing for even a few days can kill the plant, so avoid low, wet spots and plant on a mound if your soil is heavy. Dig in compost and a handful of blood and bone at planting. Container-grown plants establish fastest going in through the warm months, so they can grow away quickly (see our guide on <a href=\"/when-to-plant.html\" class=\"text-green-700 hover:underline\">when to plant</a>).", "cites": ["crfg", "morton", "nztca"]},
+      {"heading": "Water and feeding", "body": "Because the roots are shallow, tamarillo wilts quickly in dry spells and needs steady moisture through summer, especially while it is carrying fruit, so mulch heavily and water deeply rather than letting it swing between bone dry and flooded. It is a hungry, fast grower that responds to regular feeding: apply a complete fruit fertiliser (around NPK 5:6:6) in spring and again in summer, keeping the yearly total modest, roughly up to a kilogram for a mature plant.", "cites": ["morton", "nztca", "rfca-beaut"]},
+      {"heading": "Shape and support: the wood is brittle", "body": "The wood is soft and brittle and the leaves are large, so a tamarillo is easily rocked loose or snapped by wind, especially when heavy with fruit at the branch tips. Give it a permanent windbreak or a sheltered corner and stake it firmly. Pinch out the leader at about a metre on a young plant to force a sturdy, branching framework. Tamarillo fruits on the current season's growth, so prune after harvest to keep that framework compact and renew the fruiting wood; the timing and severity of pruning can be used to shift yield, fruit size and when the crop matures.", "cites": ["morton", "wanatca-pruning", "rfca-treetomato"]},
+      {"heading": "Harvest", "body": "Tamarillo flowers in spring and the fruit colours up and ripens through autumn and winter, ready to eat on into spring. A plant does not ripen all at once, so you pick over several weeks as fruit reach full red or gold. Expect a first crop about a year and a half after planting.", "cites": ["daleys", "nztca", "rfca-rellies"]},
+      {"heading": "Eating: leave the skin behind", "body": "The skin is tough and unpleasant to eat, so it is left behind: halve the fruit and scoop the flesh with a spoon, or cover the fruit with boiling water for a few minutes, then slip the skins off before using. Tamarillo is good fresh with a little sugar and excellent cooked into chutneys, sauces and desserts, anywhere you might use a tomato.", "cites": ["morton", "crfg"]},
+      {"heading": "Buying tips", "body": "Buy a named, cutting-grown plant if you want fruit true to a known type, the earliest crop and a lower, bushier shape; seedlings are cheaper and fruit reasonably true from good seed but vary more and branch higher before they fruit. Tamarillo is short lived, most productive in its first several years and rarely worth keeping past ten or twelve, so plan to replace it. The in-stock table above shows the named varieties available right now and what they cost.", "cites": ["nztca", "crfg"]}
+    ],
+    "faqs": [
+      {"q": "Do I need two tamarillo plants to get fruit?", "a": "No. Tamarillo is self fertile and a single plant will fruit on its own, though bees and a little air movement improve fruit set and a second plant nearby can lift the crop."},
+      {"q": "How long until a tamarillo fruits?", "a": "Usually about 18 months to two years from planting, which is fast for a fruiting plant. It is short lived in return, cropping best in its first several years and seldom worth keeping beyond ten to twelve."},
+      {"q": "Can you eat tamarillo skin?", "a": "No, the skin is tough and unpleasant in flavour. Halve the fruit and scoop the flesh, or pour boiling water over the fruit, stand it for a few minutes and peel the skin off."},
+      {"q": "Why does my tamarillo keep snapping in the wind?", "a": "The wood is soft and brittle and the big leaves catch the wind, so plants break easily, especially when laden with fruit. Plant in a sheltered spot with a windbreak, stake firmly, and prune to a compact framework."}
+    ]
+  },
+  "states": {
+    "WA": {
+      "intro": "Growing tamarillo in Western Australia. Perth's warm, dry summers and mild, near-frost-free coast suit tamarillo well as long as you keep the water up. The main extra job in WA is getting a plant in past the state's strict quarantine.",
+      "sections": [
+        {"heading": "Climate fit", "body": "The frost-free Swan Coastal Plain around Perth and the milder parts of the South West suit tamarillo, which dislikes hard frost but takes WA's dry summer heat in its stride provided it is sheltered from hot winds and watered well. Inland districts and the frost-prone hills need a warm, protected spot or a pot that can be moved under cover.", "cites": ["organicgardener", "crfg"]},
+        {"heading": "Water on Perth sands", "body": "On Perth's free-draining sands the shallow roots dry out fast, so tamarillo needs frequent, reliable watering through the dry season, along with heavy mulch and added organic matter to hold moisture. It still will not tolerate waterlogged soil, so improve the sand rather than planting into a hollow that puddles.", "cites": ["morton", "crfg"]},
+        {"heading": "Harvest window in WA", "body": "Plants flower in spring and ripen their fruit through autumn and winter, with Perth's warmth tending to bring the crop on a little earlier than in the cooler southern states.", "cites": ["daleys"]},
+        {"heading": "Pests and diseases in WA", "body": "Two WA watch-outs come with tamarillo being a member of the tomato family. Mediterranean fruit fly is endemic across the WA coast and wheatbelt and will sting the fruit, so baiting is usually needed. WA is also the only state with tomato potato psyllid, found here since 2017, and tamarillo is one of its hosts, so follow current DPIRD advice. Powdery mildew can appear in humid spells.", "cites": ["dpird-medfly", "dpird-tpp", "rnzih"]},
+        {"heading": "Buying and shipping to WA", "body": "WA quarantine means live plants from other states must be permitted on the WA Organism List and are usually certified and treated before entry, so many eastern nurseries will not post plants here. The in-stock table above is filtered to sellers that can ship to WA.", "cites": ["dpird-import"]}
+      ],
+      "faqs": [
+        {"q": "Does tamarillo grow well in Perth?", "a": "Yes. Perth's frost-free coast and warm summers suit it, as long as you water frequently on sandy soils and shelter it from hot, drying winds."},
+        {"q": "Why won't some nurseries send tamarillo to WA?", "a": "WA quarantine law requires live plants to be permitted on the WA Organism List and usually certified and treated before they cross the border, so many eastern-states nurseries choose not to ship plants to WA."}
+      ]
+    },
+    "QLD": {
+      "intro": "Growing tamarillo in Queensland. Tamarillo is a cooler-climate cousin of the tomato, so in Queensland it does best up in the elevated, less humid country, not down on the steamy tropical coast.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Tamarillo is subtropical, not tropical: it dislikes both hard frost and prolonged tropical heat and humidity. In the hot, humid lowlands it grows leafily but crops poorly and is hit hard by disease, so in Queensland it is a plant for the cooler, higher, drier districts rather than the coast and the wet tropics.", "cites": ["greenharvest", "nztca"]},
+        {"heading": "Where it grows in QLD", "body": "The dependable areas are elevated. The Granite Belt around Stanthorpe, at 800 to 1000 metres with cool summers, low humidity and real winter cold, suits it well, as do the Sunshine Coast hinterland ranges, the Blackall Range and the Atherton Tableland inland from the tropical coast. The same upland cold that suits the plant also brings frost, so protect young plants from spring frosts.", "cites": ["granitebelt", "greenharvest"]},
+        {"heading": "Harvest window in QLD", "body": "In the warmer elevated districts the crop tends to colour up earlier than down south, ripening through autumn and into winter.", "cites": ["daleys"]},
+        {"heading": "Pests and diseases in QLD", "body": "Queensland fruit fly is a native, endemic pest right through eastern Queensland and a major one for soft fruit like tamarillo, so baiting or netting is usually needed. Humidity is the other problem: powdery mildew, and root rot in wet, poorly drained ground, are far worse here than in a dry climate, so plant high on a mound, keep the soil free-draining and water at the base rather than over the leaves.", "cites": ["bq-qff", "tharfield", "rnzih"]}
+      ],
+      "faqs": [
+        {"q": "Can you grow tamarillo in Brisbane or the tropics?", "a": "You can grow the plant, but in the humid lowlands it fruits poorly and suffers disease. Tamarillo does much better in Queensland's cooler, higher, drier districts such as the Granite Belt and the hinterland ranges."},
+        {"q": "Where in Queensland does tamarillo fruit best?", "a": "In the elevated, less humid country: the Granite Belt around Stanthorpe, the Sunshine Coast hinterland and Blackall Range, and the Atherton Tableland, where cooler nights and lower humidity suit it."}
+      ]
+    },
+    "NSW": {
+      "intro": "Growing tamarillo in New South Wales. NSW has more tamarillo-friendly country than any other state: a long, frost-free coastal strip and warm valleys where this Andean fruit feels at home, grading into colder tablelands where it needs real frost protection.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Tamarillo grows across NSW from the frost-free coast to the warmer inland valleys, and fruits best in the milder, cooler-subtropical districts rather than in hard frost or relentless dry heat. Mature plants take only light frost, down to about minus 2 to 3 degrees for a short spell, while young plants are killed outright, so cold tableland and inland gardens need a frost-free microclimate or winter protection.", "cites": ["organicgardener", "crfg"]},
+        {"heading": "Where it grows in NSW", "body": "The easiest results are on the North Coast and in the Northern Rivers, where the warm-temperate-to-subtropical climate suits it, along with the mid-north coast, the coastal hinterland, and sheltered, frost-free pockets of the Sydney basin. Further inland and up on the tablelands, grow it against a warm, sun-facing wall or in a courtyard that traps heat and keeps the frost off.", "cites": ["organicgardener", "yates"]},
+        {"heading": "Harvest window in NSW", "body": "Plants flower in spring and the fruit ripens through autumn and winter, with warm coastal gardens picking from about May and cooler districts a little later, on into spring.", "cites": ["daleys", "nztca"]},
+        {"heading": "Pests and diseases in NSW", "body": "Queensland fruit fly is endemic along the NSW coast and ranges and will sting tamarillo fruit, so bait or net where it is active. Watch also for aphids and green vegetable bug, which can carry virus, and for powdery mildew in humid spells. Good airflow, and watering at the base rather than over the foliage, help keep mildew down.", "cites": ["bq-qff", "rnzih", "yates"]}
+      ],
+      "faqs": [
+        {"q": "When do you harvest tamarillo in NSW?", "a": "Mainly autumn and winter, on into spring. Warm coastal gardens start picking around May, while cooler inland and tableland gardens ripen later."},
+        {"q": "Will tamarillo survive frost in NSW?", "a": "Established plants take only light frost (a degree or two). On the tablelands and cold inland, young plants are easily killed, so give them a frost-free spot against a warm wall or protect them over winter."}
+      ]
+    },
+    "VIC": {
+      "intro": "Growing tamarillo in Victoria. Victoria's limit is frost, not heat: tamarillo crops well in the state's mild, frost-free coastal and bayside pockets, but it needs protection from cold inland winters.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Tamarillo is frost tender, and that is the deciding factor in Victoria. It grows happily where winters are mild and close to frost free, but a hard frost cuts young plants down and even mature plants drop their leaves, so the colder inland and elevated districts are marginal without protection.", "cites": ["crfg", "organicgardener"]},
+        {"heading": "Where it grows in VIC", "body": "The best chances are in the milder maritime pockets: bayside and inner Melbourne suburbs that rarely frost, the Mornington Peninsula, and the warmer coastal parts of Gippsland. In frostier districts grow tamarillo in a large pot that can shift under cover for winter, or train it against a sun-warmed, north-facing wall.", "cites": ["organicgardener", "crfg"]},
+        {"heading": "Harvest window in VIC", "body": "Victoria's cooler season ripens the fruit later, mostly through late autumn and winter into spring, and a sharp cold snap can stop a late crop before it finishes colouring.", "cites": ["nztca", "daleys"]},
+        {"heading": "Pests and diseases in VIC", "body": "Queensland fruit fly occurs through eastern Australia, including parts of Victoria, and will sting tamarillo fruit, so check your area's status and bait or net if it is active. Frost damage is the bigger issue for the plant itself, and frost-injured tissue then invites fungal disease, so shelter plants well and avoid wetting the foliage.", "cites": ["bq-qff", "yates", "crfg"]}
+      ],
+      "faqs": [
+        {"q": "Does tamarillo survive Melbourne winters?", "a": "In frost-free bayside and inner suburbs, yes. Where frosts are sharp, grow it in a pot to move under cover, or against a warm north-facing wall, because frost is what limits tamarillo in Victoria."},
+        {"q": "When is tamarillo ready to pick in Victoria?", "a": "Later than the warmer states: mostly late autumn and winter into spring, and a hard frost can cut a late crop short before it colours."}
+      ]
+    }
+  },
+  "further_reading": [
+    {"title": "Pruning Tamarillos: influencing yield, fruit size and season (Pat Sale)", "url": "https://wanatca.org.au/yearbooks/Y21all.pdf", "source": "WANATCA Yearbook"},
+    {"title": "The Tree Tomato or Tamarillo", "url": "https://rfcarchives.org.au/Next/Fruits/SolanumFamily/Tamarillo11-90.htm", "source": "Rare Fruit Council archives"},
+    {"title": "Brazenly Beautiful Tamarillo", "url": "https://rfcarchives.org.au/Next/Fruits/SolanumFamily/BeautTamarillo3-97.htm", "source": "Rare Fruit Council archives"},
+    {"title": "The Tamarillo and its Relatives", "url": "https://rfcarchives.org.au/Next/Fruits/SolanumFamily/TamarilloRellies7-92.htm", "source": "Rare Fruit Council archives"}
+  ]
+}

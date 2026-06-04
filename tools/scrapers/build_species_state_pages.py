@@ -98,7 +98,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "dragon fruit": "tropical",
     "avocado": "subtropical", "guava": "subtropical",
     "feijoa": "subtropical", "loquat": "subtropical", "mulberry": "subtropical",
-    "persimmon": "temperate", "pawpaw": "subtropical",
+    "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
     "mandarin": "citrus", "grapefruit": "citrus", "tangelo": "citrus",
     "cumquat": "citrus", "pomelo": "citrus", "finger lime": "citrus",

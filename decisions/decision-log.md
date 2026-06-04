@@ -4,6 +4,28 @@
 
 ---
 
+## DEC-129 — 2026-06-02 — Tamarillo growing guide (third enriched species; NSW flagship, frost-tender subtropical)
+
+**Decided by:** Dale (interactive session with Benedict)
+
+**Context:** Following the olive flagship (DEC-126), the archive integration (DEC-127) and the lychee guide (DEC-128), tamarillo is the third species to get the rich, per-state-unique, cited growing guide. GSC and Plausible were not reachable from the local machine (their credentials live on the server), so the flagship was chosen on climate reality plus live stock and shipping, which the rollout brief explicitly allows. Tamarillo is a frost-tender, wind-sensitive, cool-subtropical crop with the broadest suitable envelope in New South Wales (frost-free coast and warm valleys), and all four nurseries that currently stock it (Diggers, Fruitopia, Ladybird, Ross Creek) ship to NSW, so NSW is the flagship (deepest research), with Queensland (elevated districts only), Victoria (frost-free maritime pockets) and WA (frost-free coast plus quarantine) each given a genuinely distinct overlay.
+
+**Decision:** Ship `growing_guides/tamarillo.json` mirroring olive.json. The additive design held again: adding the species needed only the JSON file plus a one-line climate-category entry, no renderer change.
+
+**Worth recording (stock reality):** with current stock tamarillo reaches the 3-in-stock threshold in no single state (six available listings; QLD/NSW/VIC are capped at the top 20 species and tamarillo sits below that line, and only Diggers ships it to WA, giving one product there). So no `buy-tamarillo-trees-<state>` combo page renders today. The guide still powers `/species/tamarillo.html` immediately, and each state overlay activates automatically the moment tamarillo crosses the threshold (tamarillo stock is seasonal), exactly as the olive overlays do.
+
+**What shipped (PR, pending Benedict review/merge/deploy):**
+- `growing_guides/tamarillo.json`: 19 verified sources, a state-invariant `core` (red vs gold types, self-fertile pollination, planting and free-draining soil, water and feeding, the brittle-wood shape and support point, harvest by colour, eating without the bitter skin, buying) and distinct WA/QLD/NSW/VIC overlays (climate fit, regions, harvest window, pests, WA quarantine). Variety advice ties to live stock (Red, Orange, Yellow plus named NZ selections).
+- Archives first: the core cultivation facts are grounded in Benedict's RFCA articles (The Tree Tomato or Tamarillo; Brazenly Beautiful Tamarillo; The Tamarillo and its Relatives) and the WANATCA Yearbook 21 (1997) article by Pat Sale, "Pruning Tamarillos", then cross-checked against CRFG, Morton (Purdue NewCROP), the NZ Tree Crops Association, a peer-reviewed Foods review, Business Queensland (Queensland fruit fly host list names tamarillo), DPIRD WA (Mediterranean fruit fly endemic; tomato potato psyllid host, in WA since 2017; Quarantine WA imports), Granite Belt Growers, ABC Organic Gardener, Green Harvest, Yates, Daleys, RNZIH and Tharfield. Tamarillo lives in the RFCA mixed-genus `SolanumFamily` folder, which `build_archive_index.py` does not map to a single slug, so its archive links are hand-curated in `further_reading` (the same way olive curates its WANATCA link); `archive_links.json` is unchanged.
+- Correctness guardrails: no NSW DPI tamarillo factsheet exists, so NSW is framed by the climate envelope rather than invented district citations; Morton's 1987 "no named cultivars" line is outdated, so cultivars are cited to CRFG, the NZ Tree Crops Association and the Foods review; "Phytophthora" by name and the "Oidium" genus could not be verified for tamarillo, so the copy says "root rot" and "powdery mildew"; the dead agric.wa.gov.au TPP URL was dropped in favour of the live DPIRD CLso/psyllid page; Agriculture Victoria pages hard-block automated fetchers (HTTP 403), so the eastern-states fruit fly facts are sourced from the Business Queensland page instead.
+- Climate category: added `tamarillo` as `subtropical` in `SPECIES_CLIMATE_CATEGORY` (the default note wrongly cast Victoria as stone-fruit and apple country), mirroring the olive to "mediterranean" fix. No new state climate notes were needed.
+- Tests: added `TamarilloGuideTests` (14 guards mirroring the olive and lychee guards: per-state uniqueness, region-token non-leak, no dashes, FAQ JSON-LD, cited Sources, owned-followed Further reading, resolving species links). Did not duplicate lychee's `SpeciesPagePassthroughDashTests`, which depends on the `build_species_pages.py` dash fix in the open lychee PR. Full suite 236 green. All 19 cited and 4 further-reading URLs verified live (HTTP 200). No em or en dashes anywhere.
+- Coordination with the open lychee PR: this branch was cut from origin/main and leaves `build_species_pages.py` untouched (the lychee PR owns the `/species/` dash fix, and tamarillo product titles carry no en/em dashes anyway). The decision log and the 2026-06-02 public ledger will trivially conflict with the lychee PR (both append entries); resolve by keeping both (DEC-129 stacks above DEC-128).
+
+**To revert:** delete `growing_guides/tamarillo.json` (the page falls back to the generic blurb) and remove the one `tamarillo` line from `SPECIES_CLIMATE_CATEGORY`.
+
+---
+
 ## DEC-127 — 2026-06-02 — First-party archive integration: WANATCA + RFCA citations, cross-links, reusable index
 
 **Decided by:** Dale (interactive session with Benedict)
