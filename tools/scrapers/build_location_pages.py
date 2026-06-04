@@ -21,6 +21,7 @@ from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
@@ -331,117 +332,27 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
         for s, label in cross_links
     )
 
-    # Nursery rows
-    nursery_rows = ""
-    for n in nursery_stats:
-        note_html = (
-            f'<span class="text-xs text-amber-600 ml-1">({n["note"]})</span>'
-            if n["note"] else ""
-        )
-        nursery_rows += f"""        <tr class="border-b border-gray-100">
-          <td class="py-2 pr-4 font-medium text-sm"><a href="/nursery/{n['key']}.html" class="text-green-700 hover:underline">{n['name']}</a></td>
-          <td class="py-2 pr-4 text-sm text-green-700 font-semibold">{n['in_stock']} in stock</td>
-          <td class="py-2 text-sm text-gray-500">{n['total']} varieties tracked{note_html}</td>
-        </tr>\n"""
-
-    # Product rows
-    product_rows = ""
-    for p in shown:
-        price_str = f"${p['price']:.2f}" if p["price"] else "N/A"
-        product_rows += f"""        <tr class="border-b border-gray-100">
-          <td class="py-2 pr-4 text-sm"><a href="{p['url']}" class="hover:text-green-700" target="_blank" rel="noopener">{p['title']}</a></td>
-          <td class="py-2 pr-4 text-sm font-semibold text-green-700">{price_str}</td>
-          <td class="py-2 text-sm text-gray-500">{p['nursery_name']}</td>
-        </tr>\n"""
-
-    info_box_html = ""
-    if info_box:
-        info_box_html = f"""  <div class="bg-green-50 border-green-200 text-green-900 border rounded-lg p-4 mb-8">
-    <p class="text-sm">{info_box}</p>
-  </div>\n\n"""
-
-    # Local pickup nurseries section (manual, non-scraped)
+    # Local pickup nurseries (manual, non-scraped) -- rendered in the template
     local_nurseries = LOCAL_NURSERIES.get(state, [])
-    local_section_html = ""
-    if local_nurseries:
-        local_rows = ""
-        for n in local_nurseries:
-            contact_parts = []
-            if n.get("phone"):
-                contact_parts.append(f'<a href="tel:{n["phone"]}" class="hover:text-green-700">{n["phone"]}</a>')
-            if n.get("facebook"):
-                contact_parts.append(f'<a href="{n["facebook"]}" class="text-green-700 hover:underline" target="_blank" rel="noopener">Facebook</a>')
-            contact_html = " &middot; ".join(contact_parts) if contact_parts else ""
-            local_rows += f"""        <tr class="border-b border-gray-100">
-          <td class="py-2 pr-4 text-sm">
-            <div class="font-medium">{n['name']}</div>
-            <div class="text-xs text-gray-500">{n['address']}</div>
-            <div class="text-xs text-gray-500">{n['hours']}</div>
-          </td>
-          <td class="py-2 pr-4 text-xs text-gray-600">{n['specialty']}</td>
-          <td class="py-2 text-xs">{contact_html}</td>
-        </tr>\n"""
-        local_section_html = f"""
-  <!-- Local pickup nurseries -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold mb-1">Local nurseries ({state_abbr} pickup only)</h2>
-    <p class="text-sm text-gray-500 mb-3">These nurseries don't ship online but are worth visiting in person.</p>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide">
-            <th class="pb-2 pr-4">Nursery</th>
-            <th class="pb-2 pr-4">Speciality</th>
-            <th class="pb-2">Contact</th>
-          </tr>
-        </thead>
-        <tbody>
-{local_rows}        </tbody>
-      </table>
-    </div>
-  </section>
-"""
 
-    # Build canonical date string
+    # Canonical date string
     try:
         dt = datetime.strptime(today_str, "%Y-%m-%d")
         date_display = dt.strftime("%-d %B %Y")
     except Exception:
         date_display = today_str
 
-    # State-specific growing guide
+    # State-specific growing guide (pre-built HTML, rendered |safe in the template)
     growing_guide_html = STATE_GROWING_GUIDE.get(state) or ""
 
-    # Species combo links section — only include links to pages that actually exist
-    species_combo_section_html = ""
+    # Species combo links -- only to species/state pages that actually exist
     valid_combo_links = [
         (sp_slug, sp_name, count)
         for sp_slug, sp_name, count in species_combo_links
         if output_dir is None or (output_dir / f"buy-{sp_slug}-trees-{state_slug_str}.html").exists()
     ]
-    if valid_combo_links:
-        link_items = "".join(
-            f'<a href="/buy-{sp_slug}-trees-{state_slug_str}.html" '
-            f'class="inline-block px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm '
-            f'text-green-700 hover:border-green-400 hover:bg-green-50 whitespace-nowrap">'
-            f'{sp_name} ({count})</a>\n'
-            for sp_slug, sp_name, count in valid_combo_links
-        )
-        species_combo_section_html = f"""
-  <!-- Species combo links -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold mb-3">Browse by species in {state_name}</h2>
-    <div class="flex flex-wrap gap-2">{link_items}</div>
-  </section>
-"""
 
     slug = state.lower()
-    other_states = [s for s in STATES if s != state]
-    other_slugs_html = " &middot; ".join(
-        f'<a href="/buy-fruit-trees-{s.lower()}.html" class="hover:text-green-700">'
-        f'Buy in {STATE_NAMES[s]}</a>'
-        for s in other_states
-    )
 
     head = render_head(
         title=f"Buy Fruit Trees Online — {state_name} | treestock.com.au",
@@ -455,86 +366,28 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     breadcrumb = render_breadcrumb([("Home", "/"), (f"Fruit trees for sale, {state_name}", "")])
     footer = render_footer()
 
-    return f"""{head}
-{header}
+    shown_view = [
+        {
+            "url": p["url"],
+            "title": p["title"],
+            "price_str": f"${p['price']:.2f}" if p["price"] else "N/A",
+            "nursery_name": p["nursery_name"],
+        }
+        for p in shown
+    ]
+    combo_view = [{"slug": s, "name": n, "count": c} for s, n, c in valid_combo_links]
 
-<main class="max-w-3xl mx-auto px-4 py-8">
-
-  {breadcrumb}
-
-  <h1 class="text-2xl font-bold mb-2">Buy Fruit Trees Online in {state_name}</h1>
-  <p class="text-gray-600 mb-1">Updated {date_display} &middot; {total_in_stock} varieties in stock across {nursery_count} nurseries</p>
-  <p class="text-gray-600 text-sm mb-6">{intro}</p>
-
-{info_box_html}  <!-- Nursery summary -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold mb-3">Nurseries that ship to {state_name}</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide">
-            <th class="pb-2 pr-4">Nursery</th>
-            <th class="pb-2 pr-4">In stock</th>
-            <th class="pb-2">Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-{nursery_rows}        </tbody>
-      </table>
-    </div>
-    <p class="text-xs text-gray-500 mt-2">
-      Stock counts update daily after our morning scrape. <a href="/" class="text-green-700 underline">Filter by nursery on the dashboard</a>
-    </p>
-  </section>
-
-  <!-- In-stock products -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold mb-3">In stock now, ships to {state_abbr} (top {shown_count} by price)</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide">
-            <th class="pb-2 pr-4">Variety</th>
-            <th class="pb-2 pr-4">Price</th>
-            <th class="pb-2">Nursery</th>
-          </tr>
-        </thead>
-        <tbody>
-{product_rows}        </tbody>
-      </table>
-    </div>
-    <p class="text-xs text-gray-500 mt-2">Showing {shown_count} of {total_in_stock} in-stock varieties.
-      <a href="/" class="text-green-700 underline">See all {total_in_stock} on the dashboard</a>
-    </p>
-  </section>
-
-{local_section_html}{species_combo_section_html}{growing_guide_html}  <!-- Subscribe CTA -->
-  <section class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
-    <h2 class="text-lg font-semibold text-green-900 mb-2">Get daily stock alerts for {state_name}</h2>
-    <p class="text-sm text-green-800 mb-4">Free daily email when rare varieties come back in stock or prices change. Unsubscribe anytime.</p>
-    <form action="https://treestock.com.au/api/subscribe" method="post" class="flex flex-col sm:flex-row gap-2">
-      <input type="email" name="email" placeholder="your@email.com" required
-        class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-green-500">
-      <input type="hidden" name="state" value="{state_abbr}">
-      <button type="submit"
-        class="bg-green-700 text-white px-4 py-2 rounded text-sm font-medium hover:bg-green-800">
-        Get alerts
-      </button>
-    </form>
-  </section>
-
-  <!-- Cross-state links -->
-  <section class="mb-8">
-    <p class="text-sm text-gray-600">Also available: {cross_html}</p>
-  </section>
-
-</main>
-
-{footer}
-
-</body>
-</html>
-"""
+    return render_template(
+        "location_page.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        state_name=state_name, state_abbr=state_abbr,
+        date_display=date_display, total_in_stock=total_in_stock,
+        nursery_count=nursery_count, intro=intro, info_box=info_box,
+        nursery_stats=nursery_stats, products=shown_view, shown_count=shown_count,
+        local_nurseries=local_nurseries, combo_links=combo_view,
+        state_slug_str=state_slug_str, growing_guide_html=growing_guide_html,
+        cross_html=cross_html,
+    )
 
 
 def main():
