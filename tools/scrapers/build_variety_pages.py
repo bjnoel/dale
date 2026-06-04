@@ -24,6 +24,7 @@ from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, delivery_label
 from stocklib.snapshots import iter_nursery_snapshots
+from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
 NURSERY_URLS = {
@@ -116,30 +117,26 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
     cheapest = in_stock[0] if in_stock else None
 
     # Build product rows
-    rows = ""
+    # Row view-data. The template autoescapes the scraped nursery name, the
+    # product URL and the ships-to states; restrict_div is a prebuilt fragment
+    # over the curated restriction warning (|safe).
+    product_view = []
     for p in in_stock + out_stock:
-        price_str = f"${p['price']:.2f}" if p["price"] else "—"
-        avail_badge = (
-            '<span class="text-green-700 font-medium text-sm">✓ In stock</span>'
-            if p["available"]
-            else '<span class="text-red-400 text-sm">Out of stock</span>'
-        )
-        restrict_note = f'<span class="text-xs text-red-600">{p["restrict"]}</span>' if p["restrict"] else ''
         local_lbl = delivery_label(p["nursery_key"])
         states = local_lbl if local_lbl else (", ".join(p["ships_states"]) if p["ships_states"] else "—")
         nursery_url = NURSERY_URLS.get(p["nursery_key"], "#")
-        product_link = p["url"] or nursery_url
-        rows += f"""
-      <tr class="border-b border-gray-100 hover:bg-gray-50">
-        <td class="py-3 pr-4">
-          <a href="{product_link}" target="_blank" rel="nofollow noopener"
-             class="font-medium text-green-800 hover:underline">{p["nursery_name"]}</a>
-          {f'<div class="text-xs">{restrict_note}</div>' if restrict_note else ''}
-        </td>
-        <td class="py-3 pr-4 font-semibold text-gray-900">{price_str}</td>
-        <td class="py-3 pr-4">{avail_badge}</td>
-        <td class="py-3 text-xs text-gray-400">{states}</td>
-      </tr>"""
+        restrict_div = (
+            f'<div class="text-xs"><span class="text-xs text-red-600">{p["restrict"]}</span></div>'
+            if p["restrict"] else ""
+        )
+        product_view.append({
+            "product_link": p["url"] or nursery_url,
+            "nursery_name": p["nursery_name"],
+            "restrict_div": restrict_div,
+            "price_str": f"${p['price']:.2f}" if p["price"] else "—",
+            "available": p["available"],
+            "states": states,
+        })
 
     # Summary callouts
     summary_parts = []
@@ -150,6 +147,10 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
         )
 
     summary_html = " &nbsp;·&nbsp; ".join(summary_parts) if summary_parts else ""
+    summary_callout = (
+        "<div class='bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-6 text-sm text-green-900'>"
+        + summary_html + "</div>"
+    ) if summary_html else ""
 
     in_stock_count = len(in_stock)
     nursery_count = len(set(p["nursery_key"] for p in products))
@@ -179,165 +180,22 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
     ])
     footer = render_footer()
 
-    return f"""{head}
-{header}
-
-<main class="max-w-3xl mx-auto px-4 py-6">
-  {breadcrumb}
-
-  <h1 class="text-3xl font-bold text-green-900 mb-1">Buy {title} Trees in Australia</h1>
-  <p class="text-gray-500 text-sm mb-4">Updated {today} · {nursery_count} nurseries tracked · {in_stock_count} in stock</p>
-
-  {"<div class='bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-6 text-sm text-green-900'>" + summary_html + "</div>" if summary_html else ""}
-
-  <div class="overflow-x-auto mb-8">
-    <table class="w-full text-left">
-      <thead>
-        <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
-          <th class="pb-2 pr-4">Nursery</th>
-          <th class="pb-2 pr-4">Price</th>
-          <th class="pb-2 pr-4">Status</th>
-          <th class="pb-2">Ships to</th>
-        </tr>
-      </thead>
-      <tbody>{rows}
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Per-variety restock alert -->
-  <div id="watchSection" class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
-    <h3 class="font-semibold text-gray-900 mb-1">
-      {"Notify me next time this comes back" if in_stock else "Get notified when this comes back in stock"}
-    </h3>
-    <p class="text-sm text-gray-600 mb-3">
-      {"This variety is currently in stock. You can still set an alert for next time." if in_stock else "This specific variety is currently out of stock. Enter your email to get an alert the moment it's available again."}
-    </p>
-    <form id="watchForm" class="flex gap-2 flex-wrap">
-      <input type="email" id="watchEmail" placeholder="your@email.com" required
-        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 flex-1 max-w-xs">
-      <button type="submit"
-        class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 text-sm font-medium whitespace-nowrap">
-        Notify me
-      </button>
-    </form>
-    <div id="watchMsg" class="mt-2 text-sm hidden"></div>
-  </div>
-
-  <!-- Email signup -->
-  <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-8">
-    <h3 class="font-semibold text-gray-900 mb-1">Get daily stock updates</h3>
-    <p class="text-sm text-gray-600 mb-3">
-      Subscibe to the treestock.com.au daily digest — stock changes, price drops,
-      and new arrivals across all nurseries.
-    </p>
-    <form id="subscribeForm" class="flex gap-2 flex-wrap">
-      <input type="email" id="subEmail" placeholder="your@email.com" required
-        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
-      <select id="subState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-        <option value="ALL">All states</option>
-        <option value="NSW">NSW</option><option value="VIC">VIC</option>
-        <option value="QLD">QLD</option><option value="WA">WA</option>
-        <option value="SA">SA</option><option value="TAS">TAS</option>
-        <option value="NT">NT</option><option value="ACT">ACT</option>
-      </select>
-      <button type="submit"
-        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
-        Subscribe free
-      </button>
-    </form>
-    <div id="subMsg" class="mt-2 text-sm hidden"></div>
-  </div>
-
-  {render_treesmith_promo("variety")}
-
-  <!-- SEO text -->
-  <section class="text-sm text-gray-500 border-t border-gray-100 pt-6">
-    <h3 class="font-medium text-gray-700 mb-2">About {title}</h3>
-    <p>
-      This page tracks <strong>{title}</strong> tree availability and prices across {nursery_count} Australian
-      online nurseries, updated daily. Data is scraped directly from nursery websites so you can compare
-      without visiting each one individually.
-    </p>
-    {f'''<p class="mt-2">
+    other_varieties_html = (f'''<p class="mt-2">
       Looking for other {species} varieties?
       <a href="/species/{species_slug}.html" class="underline text-green-700">See all {species} options &rarr;</a>
-    </p>''' if species_slug in valid_species_slugs else ''}
-    <p class="mt-2 text-xs text-gray-400">
-      Prices shown are the lowest available variant at time of last scrape. Always verify current pricing
-      and shipping costs on the nursery's website before ordering.
-    </p>
-  </section>
+    </p>''' if species_slug in valid_species_slugs else "")
 
-</main>
-
-{footer}
-
-<script>
-document.getElementById('subscribeForm').addEventListener('submit', function(e) {{
-  e.preventDefault();
-  var email = document.getElementById('subEmail').value.trim();
-  var stateEl = document.getElementById('subState');
-  var state = stateEl ? stateEl.value : 'ALL';
-  var msg = document.getElementById('subMsg');
-  fetch('/api/subscribe', {{
-    method: 'POST',
-    headers: {{'Content-Type': 'application/json'}},
-    body: JSON.stringify({{email: email, state: state, action: 'subscribe'}})
-  }})
-  .then(function(r) {{ return r.json().then(function(d) {{ return {{status: r.status, data: d}}; }}); }})
-  .then(function(res) {{
-    if (res.status === 202) {{
-      msg.textContent = '\\u2713 Check your email \\u2014 we sent you a confirmation link.';
-    }} else if (res.data.message === 'Already subscribed') {{
-      msg.textContent = 'You\\'re already subscribed!';
-    }} else {{
-      msg.textContent = '\\u2713 Subscribed! You\\'ll get stock updates.';
-    }}
-    msg.className = 'mt-2 text-sm text-green-700';
-    msg.style.display = 'block';
-    document.getElementById('subscribeForm').style.display = 'none';
-  }})
-  .catch(function() {{
-    msg.textContent = 'Something went wrong — please try again.';
-    msg.className = 'mt-2 text-sm text-red-600';
-    msg.style.display = 'block';
-  }});
-}});
-
-document.getElementById('watchForm').addEventListener('submit', function(e) {{
-  e.preventDefault();
-  var email = document.getElementById('watchEmail').value.trim();
-  var msg = document.getElementById('watchMsg');
-  fetch('/api/watch-variety', {{
-    method: 'POST',
-    headers: {{'Content-Type': 'application/json'}},
-    body: JSON.stringify({{
-      email: email,
-      variety_slug: '{slug_js}',
-      species_slug: '{species_slug_js}',
-      variety_title: '{variety_title_js}'
-    }})
-  }})
-  .then(function(r) {{ return r.json(); }})
-  .then(function(d) {{
-    msg.textContent = d.message === 'Already watching'
-      ? 'You\\'re already watching this variety!'
-      : '✓ Alert set! You\\'ll be notified when {variety_title_js} is back in stock.';
-    msg.className = 'mt-2 text-sm text-amber-700';
-    msg.style.display = 'block';
-    document.getElementById('watchForm').style.display = 'none';
-  }})
-  .catch(function() {{
-    msg.textContent = 'Something went wrong — please try again.';
-    msg.className = 'mt-2 text-sm text-red-600';
-    msg.style.display = 'block';
-  }});
-}});
-</script>
-
-</body>
-</html>"""
+    return render_template(
+        "variety_page.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        treesmith_promo=render_treesmith_promo("variety"),
+        title=title, today=today, nursery_count=nursery_count, in_stock_count=in_stock_count,
+        summary_callout=summary_callout, product_view=product_view,
+        watch_heading=("Notify me next time this comes back" if in_stock else "Get notified when this comes back in stock"),
+        watch_body=("This variety is currently in stock. You can still set an alert for next time." if in_stock else "This specific variety is currently out of stock. Enter your email to get an alert the moment it's available again."),
+        other_varieties_html=other_varieties_html,
+        slug_js=slug_js, species_slug_js=species_slug_js, variety_title_js=variety_title_js,
+    )
 
 
 def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> str:
@@ -353,63 +211,37 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
     for e in entries:
         by_species[e["species"]].append(e)
 
-    species_sections = ""
+    # Per-species section view-data. The template autoescapes the scraped
+    # variety and species names in both the visible links and the data-var /
+    # data-sp filter attributes (the manual &quot; escaping is gone -- autoescape
+    # now covers ", & and < in those attributes).
+    species_view = []
     for sp in sorted(by_species.keys()):
         varieties = sorted(by_species[sp], key=lambda x: x["variety"])
         sp_slug = slugify(sp)
-        rows = ""
-        for v in varieties:
-            in_s = v["in_stock"]
-            n_count = v["nursery_count"]
-            price = f'${v["min_price"]:.2f}' if v["min_price"] else "—"
-            var_lower = v['variety'].lower().replace('"', '&quot;')
-            # Out-of-stock entries are the prime watch targets: surface a
-            # "Notify me" link straight to the variety page (which carries the
-            # restock-alert form) instead of a dead "0 in stock".
-            if in_s > 0:
-                stock_cell = f'{in_s} in stock'
-            else:
-                stock_cell = (
-                    f'<a href="/variety/{v["slug"]}.html" '
-                    f'class="text-amber-700 hover:underline whitespace-nowrap">'
-                    f'&#128276; Notify me</a>'
-                )
-            rows += f"""
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="{var_lower}">
-        <td class="py-2 pr-4">
-          <a href="/variety/{v['slug']}.html" class="text-green-800 hover:underline">{v['variety']}</a>
-        </td>
-        <td class="py-2 pr-4 text-sm text-gray-600">{n_count} nurseries</td>
-        <td class="py-2 pr-4 text-sm">{stock_cell}</td>
-        <td class="py-2 text-sm font-medium">{price}</td>
-      </tr>"""
-
-        in_stock_count = sum(v["in_stock"] for v in varieties)
+        row_view = [
+            {
+                "var_lower": v["variety"].lower(),
+                "slug": v["slug"],
+                "variety": v["variety"],
+                "n_count": v["nursery_count"],
+                "in_s": v["in_stock"],
+                "price": f'${v["min_price"]:.2f}' if v["min_price"] else "—",
+            }
+            for v in varieties
+        ]
         sp_heading = (
             f'<a href="/species/{sp_slug}.html" class="hover:underline">{sp}</a>'
             if sp_slug in valid_species_slugs else sp
         )
-        species_sections += f"""
-  <section class="mb-8" id="{sp_slug}" data-sp="{sp.lower()}">
-    <h3 class="text-lg font-semibold text-green-900 mb-1">
-      {sp_heading}
-      <span class="text-sm font-normal text-gray-500 ml-2">{len(varieties)} varieties · {in_stock_count} in stock</span>
-    </h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b border-gray-200 text-xs text-gray-400 uppercase">
-            <th class="pb-1 pr-4">Variety</th>
-            <th class="pb-1 pr-4">Coverage</th>
-            <th class="pb-1 pr-4">Stock</th>
-            <th class="pb-1">From</th>
-          </tr>
-        </thead>
-        <tbody>{rows}
-        </tbody>
-      </table>
-    </div>
-  </section>"""
+        species_view.append({
+            "sp_heading": sp_heading,
+            "sp_slug": sp_slug,
+            "sp_lower": sp.lower(),
+            "variety_count": len(varieties),
+            "in_stock_count": sum(v["in_stock"] for v in varieties),
+            "rows": row_view,
+        })
 
     total_varieties = len(entries)
     total_in_stock = sum(e["in_stock"] for e in entries)
@@ -422,102 +254,12 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
     breadcrumb = render_breadcrumb([("Home", "/"), ("Varieties", "")])
     footer = render_footer()
 
-    return f"""{head}
-{header}
-
-<main class="max-w-3xl mx-auto px-4 py-6">
-  {breadcrumb}
-
-  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Varieties for Sale in Australia</h1>
-  <p class="text-gray-600 mb-4">
-    Browse {total_varieties} named cultivars tracked across {len(by_species)} species.
-    {total_in_stock} currently in stock across all Australian nurseries. Updated daily.
-  </p>
-
-  <div class="mb-6">
-    <input id="varietySearch" type="search" placeholder="Search varieties or species (e.g. Hass, Bowen, Valencia...)"
-      class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-      autocomplete="off">
-    <p id="varietyCount" class="text-xs text-gray-400 mt-1">{total_varieties} varieties across {len(by_species)} species</p>
-  </div>
-
-  <div id="noResults" class="hidden text-center py-12 text-gray-500">
-    <p class="text-lg">No varieties found matching your search.</p>
-    <p class="text-sm mt-1">Try a different spelling or species name.</p>
-  </div>
-
-  {species_sections}
-
-</main>
-
-<script>
-(function() {{
-  const input = document.getElementById('varietySearch');
-  const countEl = document.getElementById('varietyCount');
-  const noResultsEl = document.getElementById('noResults');
-  const sections = document.querySelectorAll('section[data-sp]');
-  const totalVarieties = {total_varieties};
-  const totalSpecies = {len(by_species)};
-
-  input.addEventListener('input', function() {{
-    const q = this.value.toLowerCase().trim();
-    let visibleVarieties = 0;
-    let visibleSpecies = 0;
-
-    sections.forEach(function(section) {{
-      const sp = section.getAttribute('data-sp');
-      const rows = section.querySelectorAll('tr[data-var]');
-      let sectionMatch = false;
-
-      if (!q) {{
-        // No filter: show everything
-        rows.forEach(r => r.style.display = '');
-        section.style.display = '';
-        sectionMatch = true;
-        visibleVarieties += rows.length;
-        visibleSpecies++;
-      }} else {{
-        // Filter rows by variety name or species name
-        const spMatch = sp.includes(q);
-        let rowsShown = 0;
-        rows.forEach(function(row) {{
-          const varName = row.getAttribute('data-var');
-          if (spMatch || varName.includes(q)) {{
-            row.style.display = '';
-            rowsShown++;
-          }} else {{
-            row.style.display = 'none';
-          }}
-        }});
-        if (rowsShown > 0) {{
-          section.style.display = '';
-          visibleVarieties += rowsShown;
-          visibleSpecies++;
-          sectionMatch = true;
-        }} else {{
-          section.style.display = 'none';
-        }}
-      }}
-    }});
-
-    if (!q) {{
-      countEl.textContent = totalVarieties + ' varieties across ' + totalSpecies + ' species';
-      noResultsEl.classList.add('hidden');
-    }} else if (visibleVarieties === 0) {{
-      countEl.textContent = 'No matches found';
-      noResultsEl.classList.remove('hidden');
-    }} else {{
-      countEl.textContent = visibleVarieties + ' varieties across ' + visibleSpecies + ' species';
-      noResultsEl.classList.add('hidden');
-    }}
-  }});
-}})();
-</script>
-
-{footer}
-
-</body>
-</html>"""
+    return render_template(
+        "variety_index.html.j2",
+        head=head, header=header, breadcrumb=breadcrumb, footer=footer,
+        total_varieties=total_varieties, total_in_stock=total_in_stock,
+        species_count=len(by_species), species_view=species_view,
+    )
 
 
 def main():

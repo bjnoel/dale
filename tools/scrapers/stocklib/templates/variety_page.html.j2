@@ -1,0 +1,167 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="max-w-3xl mx-auto px-4 py-6">
+  {{ breadcrumb|safe }}
+
+  <h1 class="text-3xl font-bold text-green-900 mb-1">Buy {{ title }} Trees in Australia</h1>
+  <p class="text-gray-500 text-sm mb-4">Updated {{ today }} · {{ nursery_count }} nurseries tracked · {{ in_stock_count }} in stock</p>
+
+  {{ summary_callout|safe }}
+
+  <div class="overflow-x-auto mb-8">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
+          <th class="pb-2 pr-4">Nursery</th>
+          <th class="pb-2 pr-4">Price</th>
+          <th class="pb-2 pr-4">Status</th>
+          <th class="pb-2">Ships to</th>
+        </tr>
+      </thead>
+      <tbody>
+{% for p in product_view %}
+      <tr class="border-b border-gray-100 hover:bg-gray-50">
+        <td class="py-3 pr-4">
+          <a href="{{ p.product_link }}" target="_blank" rel="nofollow noopener"
+             class="font-medium text-green-800 hover:underline">{{ p.nursery_name }}</a>
+          {{ p.restrict_div|safe }}
+        </td>
+        <td class="py-3 pr-4 font-semibold text-gray-900">{{ p.price_str }}</td>
+        <td class="py-3 pr-4">{% if p.available %}<span class="text-green-700 font-medium text-sm">✓ In stock</span>{% else %}<span class="text-red-400 text-sm">Out of stock</span>{% endif %}</td>
+        <td class="py-3 text-xs text-gray-400">{{ p.states }}</td>
+      </tr>
+{% endfor %}      </tbody>
+    </table>
+  </div>
+
+  <!-- Per-variety restock alert -->
+  <div id="watchSection" class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
+    <h3 class="font-semibold text-gray-900 mb-1">
+      {{ watch_heading|safe }}
+    </h3>
+    <p class="text-sm text-gray-600 mb-3">
+      {{ watch_body|safe }}
+    </p>
+    <form id="watchForm" class="flex gap-2 flex-wrap">
+      <input type="email" id="watchEmail" placeholder="your@email.com" required
+        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 flex-1 max-w-xs">
+      <button type="submit"
+        class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 text-sm font-medium whitespace-nowrap">
+        Notify me
+      </button>
+    </form>
+    <div id="watchMsg" class="mt-2 text-sm hidden"></div>
+  </div>
+
+  <!-- Email signup -->
+  <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-8">
+    <h3 class="font-semibold text-gray-900 mb-1">Get daily stock updates</h3>
+    <p class="text-sm text-gray-600 mb-3">
+      Subscibe to the treestock.com.au daily digest — stock changes, price drops,
+      and new arrivals across all nurseries.
+    </p>
+    <form id="subscribeForm" class="flex gap-2 flex-wrap">
+      <input type="email" id="subEmail" placeholder="your@email.com" required
+        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
+      <select id="subState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="ALL">All states</option>
+        <option value="NSW">NSW</option><option value="VIC">VIC</option>
+        <option value="QLD">QLD</option><option value="WA">WA</option>
+        <option value="SA">SA</option><option value="TAS">TAS</option>
+        <option value="NT">NT</option><option value="ACT">ACT</option>
+      </select>
+      <button type="submit"
+        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
+        Subscribe free
+      </button>
+    </form>
+    <div id="subMsg" class="mt-2 text-sm hidden"></div>
+  </div>
+
+  {{ treesmith_promo|safe }}
+
+  <!-- SEO text -->
+  <section class="text-sm text-gray-500 border-t border-gray-100 pt-6">
+    <h3 class="font-medium text-gray-700 mb-2">About {{ title }}</h3>
+    <p>
+      This page tracks <strong>{{ title }}</strong> tree availability and prices across {{ nursery_count }} Australian
+      online nurseries, updated daily. Data is scraped directly from nursery websites so you can compare
+      without visiting each one individually.
+    </p>
+    {{ other_varieties_html|safe }}
+    <p class="mt-2 text-xs text-gray-400">
+      Prices shown are the lowest available variant at time of last scrape. Always verify current pricing
+      and shipping costs on the nursery's website before ordering.
+    </p>
+  </section>
+
+</main>
+
+{{ footer|safe }}
+
+<script>
+document.getElementById('subscribeForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var email = document.getElementById('subEmail').value.trim();
+  var stateEl = document.getElementById('subState');
+  var state = stateEl ? stateEl.value : 'ALL';
+  var msg = document.getElementById('subMsg');
+  fetch('/api/subscribe', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email: email, state: state, action: 'subscribe'})
+  })
+  .then(function(r) { return r.json().then(function(d) { return {status: r.status, data: d}; }); })
+  .then(function(res) {
+    if (res.status === 202) {
+      msg.textContent = '\u2713 Check your email \u2014 we sent you a confirmation link.';
+    } else if (res.data.message === 'Already subscribed') {
+      msg.textContent = 'You\'re already subscribed!';
+    } else {
+      msg.textContent = '\u2713 Subscribed! You\'ll get stock updates.';
+    }
+    msg.className = 'mt-2 text-sm text-green-700';
+    msg.style.display = 'block';
+    document.getElementById('subscribeForm').style.display = 'none';
+  })
+  .catch(function() {
+    msg.textContent = 'Something went wrong — please try again.';
+    msg.className = 'mt-2 text-sm text-red-600';
+    msg.style.display = 'block';
+  });
+});
+
+document.getElementById('watchForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var email = document.getElementById('watchEmail').value.trim();
+  var msg = document.getElementById('watchMsg');
+  fetch('/api/watch-variety', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      email: email,
+      variety_slug: '{{ slug_js|safe }}',
+      species_slug: '{{ species_slug_js|safe }}',
+      variety_title: '{{ variety_title_js|safe }}'
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    msg.textContent = d.message === 'Already watching'
+      ? 'You\'re already watching this variety!'
+      : '✓ Alert set! You\'ll be notified when {{ variety_title_js|safe }} is back in stock.';
+    msg.className = 'mt-2 text-sm text-amber-700';
+    msg.style.display = 'block';
+    document.getElementById('watchForm').style.display = 'none';
+  })
+  .catch(function() {
+    msg.textContent = 'Something went wrong — please try again.';
+    msg.className = 'mt-2 text-sm text-red-600';
+    msg.style.display = 'block';
+  });
+});
+</script>
+
+</body>
+</html>
