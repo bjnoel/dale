@@ -77,16 +77,25 @@ GOLDEN_CASES = [
         "outputs": ["digest.html"],
     },
     {
+        # No dated snapshots in the fixture -> the empty-timeline page (const H = []).
+        "name": "history",
+        "script": "build_history.py",
+        "args": ["{DATA}", "{OUT}"],
+        "outputs": ["history.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],
         "outputs": ["buy-fruit-trees-*.html"],
     },
     {
+        # Index + the combo pages (the fixture yields one, avocado-WA). The
+        # combo pages carry the scraped product titles the migration escapes.
         "name": "species_state",
         "script": "build_species_state_pages.py",
         "args": ["{DATA}", "{OUT}"],
-        "outputs": ["buy-fruit-trees-by-species-state.html"],
+        "outputs": ["buy-*-trees-*.html"],
     },
     {
         # static page, no data dir; pinned here so the Jinja2 migration's only
