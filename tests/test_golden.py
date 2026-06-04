@@ -55,6 +55,14 @@ GOLDEN_CASES = [
         "args": ["{DATA}", "{OUT}"],
         "outputs": ["buy-fruit-trees-by-species-state.html"],
     },
+    {
+        # static page, no data dir; pinned here so the Jinja2 migration's only
+        # golden diff is the entity-escaping (the & in the UTM hrefs).
+        "name": "treesmith",
+        "script": "build_treesmith_page.py",
+        "args": ["{OUT}"],
+        "outputs": ["treesmith.html"],
+    },
 ]
 
 

@@ -1,0 +1,15 @@
+# Runtime dependencies for the tools/scrapers/ pipeline.
+#
+# This file documents the third-party packages the builders and scrapers import,
+# and is what a local dev venv installs (`pip install -r requirements.txt`).
+#
+# The production VPS runs system Python (/usr/bin/python3) with these installed
+# as apt packages, because the environment is externally managed (PEP 668) and
+# the cron jobs use system Python. There is deliberately no `pip install` step in
+# run-all-scrapers.sh; on the VPS, install with apt (e.g. `sudo apt install
+# python3-jinja2`) rather than pip. jinja2 3.1.2 is already present there.
+
+jinja2>=3.1            # autoescaping page templates (stocklib/templates.py)
+requests>=2.28         # nursery scrapers (HTTP)
+google-api-python-client>=2.0   # Google Search Console analytics (gsc_analysis.py)
+google-auth>=2.0                # service-account auth for the GSC client
