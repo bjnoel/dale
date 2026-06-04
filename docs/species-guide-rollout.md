@@ -288,6 +288,12 @@ black-sapote, loquat, starfruit, rollinia, miracle-fruit. (50 species have some 
 - [x] jackfruit (DEC-137, QLD flagship)
 - [x] banana (DEC-133, QLD flagship, biosecurity-accurate, own climate category)
 - The nine above shipped as a parallel batch, all merged 2026-06-04 (PRs #37 to #45).
+- [x] apple (DEC-141, WA flagship, Pink Lady plus codling-moth-free WA story; golden fixture regenerated)
+- [x] lemon (DEC-142, citrus)
+- [x] lime (DEC-143, NSW flagship, citrus, warmer overlays than orange)
+- [x] mandarin (DEC-144, QLD flagship, citrus, all four states live)
+- [x] orange (DEC-145, NSW flagship, first citrus guide; mixed-genus RFCA Citrus folder hand-curated)
+- The five above (the citrus quartet plus apple) shipped as a parallel batch, all merged 2026-06-04 (PRs #47 to #51).
 - [ ] (continue down the priority order)
 
 ## Notes
