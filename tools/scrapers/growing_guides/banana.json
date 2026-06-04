@@ -1,0 +1,442 @@
+{
+  "slug": "banana",
+  "common_name": "Banana",
+  "sources_note": "Growing guidance on this page draws on Australian state agriculture departments, the Australian Banana Growers' Council, and biosecurity and horticultural authorities.",
+  "sources": [
+    {
+      "id": "ogtr-musa",
+      "name": "Office of the Gene Technology Regulator (Australian Government): The Biology of Musa L. (banana)",
+      "short": "OGTR banana biology",
+      "url": "https://www.ogtr.gov.au/sites/default/files/files/2021-06/the_biology_of_musa_l_banana.pdf"
+    },
+    {
+      "id": "bq-panama",
+      "name": "Business Queensland: Panama disease tropical race 4",
+      "short": "Business Qld Panama TR4",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/priority-pest-disease/panama-disease"
+    },
+    {
+      "id": "bq-bunchytop",
+      "name": "Business Queensland: banana bunchy top",
+      "short": "Business Qld bunchy top",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/priority-pest-disease/banana-bunchy-top"
+    },
+    {
+      "id": "bq-blacksigatoka",
+      "name": "Business Queensland: black sigatoka (banana leaf spot)",
+      "short": "Business Qld sigatoka",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/priority-pest-disease/black-sigatoka-banana"
+    },
+    {
+      "id": "bq-weevil",
+      "name": "Business Queensland: banana weevil borer",
+      "short": "Business Qld weevil borer",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/insects/horticultural/banana-weevil-borer"
+    },
+    {
+      "id": "bq-rustthrips",
+      "name": "Business Queensland: banana rust thrips",
+      "short": "Business Qld rust thrips",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/insects/horticultural/banana-rust-thrips"
+    },
+    {
+      "id": "bq-spidermite",
+      "name": "Business Queensland: banana spider mite",
+      "short": "Business Qld spider mite",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/insects/horticultural/banana-spider-mite"
+    },
+    {
+      "id": "bq-growing",
+      "name": "Business Queensland: growing bananas in Queensland (industry and regions)",
+      "short": "Business Qld bananas",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/crops/fruit-veg/bananas/industry"
+    },
+    {
+      "id": "bq-moving",
+      "name": "Business Queensland: restrictions on moving banana plant material within Queensland",
+      "short": "Business Qld plant movement",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/moving/restrictions/within-qld"
+    },
+    {
+      "id": "daf-banana-gc",
+      "name": "Queensland DAF: subtropical banana grower's handbook (site, soil and nutrition)",
+      "short": "DAF banana handbook",
+      "url": "https://era.dpi.qld.gov.au/id/eprint/1966/12/4_subtrop-banana-gc.pdf"
+    },
+    {
+      "id": "daf-banana-cq",
+      "name": "Queensland DAF: subtropical banana grower's handbook (harvest and crop timing)",
+      "short": "DAF banana harvest",
+      "url": "https://era.dpi.qld.gov.au/id/eprint/1966/11/3_subtrop-banana-cq.pdf"
+    },
+    {
+      "id": "abgc-nmp",
+      "name": "Australian Banana Growers' Council: nutrient management plan for the banana industry",
+      "short": "ABGC nutrient plan",
+      "url": "https://abgc.org.au/wp-content/uploads/2018/04/Ban-NMP_submit-R1.pdf"
+    },
+    {
+      "id": "abgc-industry",
+      "name": "Australian Banana Growers' Council: our industry (production and regions)",
+      "short": "ABGC industry",
+      "url": "https://abgc.org.au/our-industry/"
+    },
+    {
+      "id": "abgc-history",
+      "name": "Australian Banana Growers' Council: Australian banana history",
+      "short": "ABGC history",
+      "url": "https://abgc.org.au/australian-banana-history/"
+    },
+    {
+      "id": "abgc-bunchytop",
+      "name": "Australian Banana Growers' Council: banana bunchy top and the national program",
+      "short": "ABGC bunchy top",
+      "url": "https://abgc.org.au/banana-bunchy-top/"
+    },
+    {
+      "id": "abgc-bits",
+      "name": "Australian Banana Growers' Council: the biosecurity risk of sharing bits and suckers",
+      "short": "ABGC clean planting material",
+      "url": "https://abgc.org.au/biosecurity-risk-sharing-bits-and-suckers/"
+    },
+    {
+      "id": "dpird-prop",
+      "name": "DPIRD Western Australia: propagation of bananas (tissue culture and quarantine)",
+      "short": "DPIRD banana propagation",
+      "url": "https://library.dpird.wa.gov.au/hc_factsheets/2/"
+    },
+    {
+      "id": "dpird-ord",
+      "name": "DPIRD Western Australia: banana management in the Ord River Irrigation Area",
+      "short": "DPIRD Ord bananas",
+      "url": "https://library.dpird.wa.gov.au/hc_factsheets/4/"
+    },
+    {
+      "id": "dpird-import",
+      "name": "DPIRD Western Australia: importing plants and plant products (Quarantine WA)",
+      "short": "Quarantine WA",
+      "url": "https://www.dpird.wa.gov.au/businesses/biosecurity/importing-and-exporting-quarantine-wa/importing-plants-and-plant-products/"
+    },
+    {
+      "id": "outbreak-freckle",
+      "name": "Australian Government Outbreak: banana freckle (Phyllosticta cavendishii)",
+      "short": "banana freckle response",
+      "url": "https://www.outbreak.gov.au/current-outbreaks/banana-freckle"
+    },
+    {
+      "id": "sweeter-banana",
+      "name": "Sweeter Banana Co-operative (Carnarvon, WA): about the Gascoyne growers",
+      "short": "Sweeter Banana Carnarvon",
+      "url": "https://www.sweeterbanana.com/about"
+    },
+    {
+      "id": "rfca-all",
+      "name": "Rare Fruit Council of Australia archives: All About Bananas",
+      "short": "RFCA all about bananas",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Banana/BananasAll5-97.htm"
+    },
+    {
+      "id": "rfca-backyard",
+      "name": "Rare Fruit Council of Australia archives: disease resistant banana varieties for backyards",
+      "short": "RFCA backyard varieties",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Banana/DiseaseResistBananas11-91.htm"
+    },
+    {
+      "id": "rfca-prop",
+      "name": "Rare Fruit Council of Australia archives: propagating bananas (Hard Graft)",
+      "short": "RFCA propagation",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Banana/BananaProp118-1-01.htm"
+    }
+  ],
+  "core": {
+    "intro": "Across Australia the basics of growing a banana are the same: a warm, frost-free, wind-sheltered spot, rich and free-draining soil, plenty of water and feed, and clean, disease-free planting stock. Bananas are giant herbs rather than trees, and they crop fastest where it stays warm. The state sections below cover the climate, growing regions, season and the pests that matter where you are; the notes here apply anywhere in the country.",
+    "sections": [
+      {
+        "heading": "Choosing a variety",
+        "body": "Most backyard bananas in Australia fall into a few groups. Cavendish types (Williams, plus the shorter Dwarf and Super Dwarf Cavendish) are the familiar supermarket banana and crop heavily, though the tall forms catch the wind. Lady Finger is a favourite home banana, sweeter with a thinner skin, while Ducasse (also sold as Sugar banana or Pisang Awak) and the compact Dwarf Ducasse are rich and full flavoured. Goldfinger is a hybrid valued for its disease resistance. Specialty types include Blue Java (Ice Cream), Red Dacca, Pisang Ceylon and the starchy cooking plantains. Disease is worth weighing up when you choose: Cavendish resists Panama disease race 1 but is the main victim of tropical race 4, whereas Lady Finger, Ducasse and Sugar bananas are all attacked by race 1, so where Panama disease is in the soil a resistant type is the safer pick.",
+        "cites": [
+          "bq-panama",
+          "rfca-backyard",
+          "rfca-all"
+        ]
+      },
+      {
+        "heading": "How a banana grows, fruits and spreads",
+        "body": "A banana is one of the world's largest herbs, not a tree. What looks like a trunk is a pseudostem of tightly wrapped leaf bases growing from an underground corm. Each pseudostem grows for most of a year, throws a single flower stalk that becomes one bunch, and then dies. Before it does, it sends up suckers (followers) from the corm, and you keep one or two of these to carry the next crop, so a single planting becomes a long-lived clump that fruits year after year. Edible bananas are propagated this way, from suckers, corm pieces or laboratory tissue culture, rather than from seed, so every plant is a clone of its parent.",
+        "cites": [
+          "ogtr-musa",
+          "rfca-all",
+          "rfca-prop"
+        ]
+      },
+      {
+        "heading": "Planting, soil and site",
+        "body": "Give a banana the warmest, most wind-sheltered, frost-free position you have, in full sun. The big soft leaves shred in strong wind and tall plants blow over, so plant against a sunny wall or behind a windbreak. Bananas are gross feeders with shallow roots, so they want deep, rich, free-draining soil with plenty of compost and a thick mulch, and they dislike both drought and waterlogging. They make a fast leafy screen and grow well alongside other tropical fruit such as <a href=\"/species/mango.html\" class=\"text-green-700 hover:underline\">mango</a>. Plant or pot them on through the warm months when the soil is warm (see our guide on <a href=\"/when-to-plant.html\" class=\"text-green-700 hover:underline\">when to plant</a>).",
+        "cites": [
+          "daf-banana-gc"
+        ]
+      },
+      {
+        "heading": "Water and feeding",
+        "body": "Bananas are thirsty and hungry. The large leaf canopy uses a lot of water, so they are best grown with regular irrigation and will not fill a good bunch if they dry out. They are also among the heaviest feeders you can grow: the main requirements are potassium and nitrogen, given little and often right through the warm growing season, backed up with generous compost or well-rotted manure and mulch. Commercial crops run on roughly 250 to 350 kg of nitrogen per hectare a year, with nitrogen and potassium applied regularly rather than in one hit; in the backyard the same principle holds, so feed steadily and keep the potassium up while the bunch is filling, guided by your soil rather than guesswork.",
+        "cites": [
+          "daf-banana-gc",
+          "abgc-nmp"
+        ]
+      },
+      {
+        "heading": "Harvest and ripening",
+        "body": "A banana bunch is cut while it is still green. As the fruit fills, the sharp ridges along each finger round off and the fingers plump up, and that loss of angularity is the signal the bunch is mature enough to cut even though it is green. Bananas ripen better off the plant, so cut the whole bunch, hang it somewhere warm, shady and airy, and let it colour up (a ripe banana nearby speeds things along). Slipping a loose bag or proper bunch cover over the developing bunch improves the fruit and keeps birds and flying foxes off. Once the bunch is off, cut that pseudostem out at the base, since it will not fruit again, and let a follower take over.",
+        "cites": [
+          "daf-banana-cq"
+        ]
+      },
+      {
+        "heading": "Pests and diseases to know",
+        "body": "Two diseases matter most. Banana bunchy top virus is spread by the banana aphid, cannot be cured and kills the plant, so infected plants must be destroyed, and in the affected parts of the eastern states there is a national program and a legal duty to report it. Panama disease is a soil fungus with no cure that survives for decades: race 1 attacks Lady Finger, Ducasse and Sugar bananas, while the newer tropical race 4 also brings down Cavendish. Leaf-spot diseases (yellow and black Sigatoka) are the main leaf trouble, and stripping off old or spotted leaves helps; insect pests include the banana weevil borer, rust thrips and spider mites. The best defence a home grower has is to start with clean, certified, disease-free plants and never bring in suckers from an unknown garden.",
+        "cites": [
+          "abgc-bunchytop",
+          "bq-panama",
+          "bq-blacksigatoka",
+          "bq-weevil",
+          "bq-rustthrips",
+          "bq-spidermite"
+        ]
+      },
+      {
+        "heading": "Buying healthy plants",
+        "body": "Always buy named, certified disease-free plants, ideally tissue-cultured stock, from a reputable nursery. Tissue-cultured plants are true to type and begin life free of the pests and diseases that ride along on backyard suckers, which is exactly why swapping bits and suckers between gardens is the classic way bunchy top and Panama disease spread. Moving banana plants is regulated in the banana states, so the plant you buy should carry the right clean-stock credentials. Check the label for the variety name and choose a type that suits your space and your disease risk; the in-stock table above shows the named varieties available right now and what they cost.",
+        "cites": [
+          "abgc-bits",
+          "bq-moving"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Do you need two banana plants to get fruit?",
+        "a": "No. Edible bananas set their fruit without pollination (they are self-producing and seedless), so a single plant crops perfectly well on its own and never needs a second one as a pollinator. All it asks is to be left to replace itself for the following season."
+      },
+      {
+        "q": "How long until a banana plant produces its first bunch?",
+        "a": "Usually about 12 to 18 months from planting for the first bunch, then roughly a bunch a year as each follower takes its turn. It is driven by warmth more than by the calendar, so a plant in the tropical north fruits faster than the same one in a cool-winter southern garden."
+      },
+      {
+        "q": "Can I grow a banana in a pot?",
+        "a": "Yes, if you choose a dwarf variety and a large pot. A potted banana is hungry and thirsty, so give it a rich mix, frequent feeding and daily watering in summer, and it will reward you with a lighter bunch than the same plant in open ground. A pot also lets you shift a tender plant under cover for winter."
+      },
+      {
+        "q": "How big does a banana plant get, and can I keep it smaller?",
+        "a": "A tall Williams or Lady Finger can reach four or five metres to the top of the bunch, while Dwarf and Super Dwarf types stay around two metres, which is far easier to net, pick and shelter from wind. You cannot prune a banana down like a tree, so the way to keep it low is simply to plant a dwarf variety."
+      }
+    ]
+  },
+  "states": {
+    "WA": {
+      "intro": "Growing bananas in Western Australia. Bananas are a long-established crop in WA's warm north, and the state's strict quarantine, which keeps the worst banana diseases out, shapes both how you buy them and how well they grow.",
+      "sections": [
+        {
+          "heading": "Climate fit",
+          "body": "Bananas need warmth and freedom from frost, which keeps them to WA's warmer districts and to sheltered, frost-free coastal pockets further south. They grow as a backyard plant in the warmest parts of the south-west, but cool winters slow them right down and a hard frost will cut them back, so give them the hottest, most sheltered spot you have and keep the wind off the leaves.",
+          "cites": [
+            "daf-banana-gc"
+          ]
+        },
+        {
+          "heading": "Where bananas grow in WA",
+          "body": "WA's banana country is the warm north. Carnarvon, on the Gascoyne River, is the main growing area and the source of most West Australian bananas; it is also where bananas were first grown in Australia, back in the 1840s. Bananas are grown commercially in the Ord River Irrigation Area in the far north as well, near Kununurra. Around the south-west coast they are a backyard novelty for the warmest, most sheltered gardens.",
+          "cites": [
+            "sweeter-banana",
+            "abgc-industry",
+            "dpird-ord"
+          ]
+        },
+        {
+          "heading": "Season in WA",
+          "body": "In the warm north, an irrigated plant can carry and ripen fruit for much of the year, though bunches fill more slowly through the cooler months. In a southern backyard a plant may take many months to ripen a bunch and will often hold it over winter to colour up once the weather warms.",
+          "cites": [
+            "daf-banana-cq"
+          ]
+        },
+        {
+          "heading": "Pests, diseases and quarantine in WA",
+          "body": "WA is free of banana bunchy top virus and of Panama tropical race 4, and works hard to stay that way, so you cannot simply carry a banana plant over from the eastern states. Live banana planting material has to meet WA's quarantine import conditions (it must be a permitted organism and is generally allowed in only as treated, certified tissue culture), so check with a DPIRD quarantine officer before bringing any in. The easy and safe path is to buy WA-grown, certified disease-free plants. This freedom from bunchy top, Panama race 4 and banana freckle is a genuine advantage for WA growers.",
+          "cites": [
+            "dpird-import",
+            "dpird-prop",
+            "abgc-bunchytop",
+            "outbreak-freckle"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Will bananas crop in the Perth area and the south-west?",
+          "a": "They can, in the right spot. Pick the warmest, most sheltered, frost-free position you have (a sunny north-facing wall or courtyard is ideal), keep the water and feed up, and accept a slower, later bunch than the warm north gives. In a frosty or very windy garden expect lush leaves but unreliable fruit."
+        },
+        {
+          "q": "Which banana suits a small or windy WA backyard?",
+          "a": "Go for a dwarf type. Dwarf or Super Dwarf Cavendish and Dwarf Ducasse stay low enough to shrug off coastal wind and fit a courtyard, where a tall variety would tower and catch every gust."
+        }
+      ]
+    },
+    "QLD": {
+      "intro": "Growing bananas in Queensland. Queensland is the home of the Australian banana, and its warm, humid, frost-free climate grows them better than anywhere else in the country.",
+      "sections": [
+        {
+          "heading": "Climate fit",
+          "body": "Queensland's warm, frost-free, humid climate is ideal banana country, which is why the state grows almost all of Australia's crop. Bananas fruit year-round here, filling fastest through the warm, wet months. The flip side of that humidity is leaf-spot disease, so spacing, air flow and leaf hygiene earn their keep.",
+          "cites": [
+            "abgc-industry",
+            "bq-blacksigatoka"
+          ]
+        },
+        {
+          "heading": "Where bananas grow in QLD",
+          "body": "About 94 per cent of Australia's bananas are grown in Far North Queensland. The main districts are the Cassowary Coast around Tully and Innisfail, the Atherton Tableland inland from Cairns, and Lakeland to the north, with smaller plantings through the south-east. Tully and Innisfail are among the wettest towns in the country, which is exactly the steamy warmth bananas love.",
+          "cites": [
+            "abgc-industry",
+            "bq-growing"
+          ]
+        },
+        {
+          "heading": "Season in QLD",
+          "body": "In the tropical north there is no single banana season; plantings are staggered so fruit is cut all year round, and a backyard plant will ripen its bunch faster here than anywhere else in Australia thanks to the constant heat.",
+          "cites": [
+            "bq-growing"
+          ]
+        },
+        {
+          "heading": "Pests and diseases in QLD",
+          "body": "Queensland carries the diseases other states fear. Panama tropical race 4, which kills Cavendish, was found in the Tully Valley in 2015 and is held to a handful of properties by strict on-farm biosecurity. For home growers the everyday worries are banana bunchy top in the south-east, leaf spot (yellow and black Sigatoka), banana weevil borer and rust thrips. Buy clean planting material and follow the movement rules, which restrict shifting banana plants between biosecurity zones.",
+          "cites": [
+            "bq-panama",
+            "bq-bunchytop",
+            "bq-blacksigatoka",
+            "bq-weevil",
+            "bq-moving"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Will bananas fruit in Brisbane and the south-east?",
+          "a": "Yes. The south-east is warm enough to grow and ripen bananas well, though it is cooler and a little less humid than the tropical north, so bunches take a touch longer. The main local catch is banana bunchy top virus, so start with certified plants and learn to spot it."
+        },
+        {
+          "q": "Do backyard growers in Queensland need to worry about Panama TR4?",
+          "a": "Less than the headlines suggest. Tropical race 4 is mainly a commercial-farm biosecurity problem, contained to a small number of properties, and since there is no cure the rule is simply to never bring in soil or suckers from an unknown source. In a backyard, bunchy top virus and, on Lady Finger and Ducasse, Panama race 1 are the likelier troubles."
+        }
+      ]
+    },
+    "NSW": {
+      "intro": "Growing bananas in New South Wales. NSW was the birthplace of the Australian banana industry and still grows them along its warm, subtropical north coast.",
+      "sections": [
+        {
+          "heading": "Climate fit",
+          "body": "The warm, frost-free north coast of NSW is good banana country, while frost and cold winters limit them further south and inland. Coastal humidity suits the plant, and a sheltered, sunny, frost-free position is the key to fruit, because cold snaps check growth and can spoil a developing bunch.",
+          "cites": [
+            "daf-banana-gc",
+            "abgc-history"
+          ]
+        },
+        {
+          "heading": "Where bananas grow in NSW",
+          "body": "Northern New South Wales was home to Australia's first commercial banana plantations. The Coffs Harbour district was the heart of the industry through most of the twentieth century, and although it shrank as the tropics took over, bananas are still grown there and, increasingly, across the Northern Rivers around Murwillumbah, the Tweed, Lismore and Ballina near the Queensland border.",
+          "cites": [
+            "abgc-history",
+            "abgc-industry"
+          ]
+        },
+        {
+          "heading": "Season in NSW",
+          "body": "Bananas here bunch over the warmer months and fill through summer and autumn. A bunch that emerges late often sits over winter and ripens slowly as the weather warms, so the subtropical crop is later and more seasonal than the year-round tropical north.",
+          "cites": [
+            "daf-banana-cq"
+          ]
+        },
+        {
+          "heading": "Pests and diseases in NSW",
+          "body": "Banana bunchy top virus is the defining problem for NSW growers, and especially for backyards: it is spread by the banana aphid, has no cure, and infected plants must be destroyed. Northern NSW sits inside the national bunchy top program and there is a legal duty to report it, so never move plants or suckers between gardens. Lady Finger, the popular local variety, is also susceptible to Panama disease race 1.",
+          "cites": [
+            "abgc-bunchytop",
+            "bq-bunchytop",
+            "bq-panama"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "My banana has a bunched rosette of narrow, upright leaves. What is wrong?",
+          "a": "That is the classic look of banana bunchy top virus: each new leaf comes up shorter, narrower and more upright, crowded into a rosette at the top, often with dark green dot-and-dash streaks on the stalks. There is no cure. Report it to the bunchy top program and do not move the plant or its suckers anywhere."
+        },
+        {
+          "q": "Can I grow a banana inland or on the cooler south coast?",
+          "a": "It is harder away from the warm northern coast. Frost and cold winters knock bananas about and bunches may not ripen, so grow them only in the warmest, most sheltered frost-free pocket you have, or in a large pot you can protect, and treat any fruit as a bonus."
+        }
+      ]
+    },
+    "VIC": {
+      "intro": "Growing bananas in Victoria. Victoria is too cold for bananas to crop reliably, so here they are grown more for their lush tropical foliage than for a harvest.",
+      "sections": [
+        {
+          "heading": "Climate fit",
+          "body": "Bananas need a long, warm, frost-free season, and across most of Victoria, including Melbourne, the cool climate and winter frosts simply do not provide it. Frost kills the leaves and can kill the plant outright, and even after a warm summer the season is rarely long enough to fill and ripen a bunch. Even in milder pockets such as parts of Gippsland, fruit is a gamble rather than a given.",
+          "cites": [
+            "daf-banana-gc",
+            "abgc-industry"
+          ]
+        },
+        {
+          "heading": "Where bananas grow in VIC",
+          "body": "Nowhere commercially. Bananas are not part of Victorian horticulture and the state does not appear among Australia's banana-growing regions, so a Victorian banana is always a home-garden curiosity rather than a paddock crop.",
+          "cites": [
+            "abgc-industry"
+          ]
+        },
+        {
+          "heading": "Growing a banana for foliage or fruit in VIC",
+          "body": "If you want to try, grow a dwarf variety in the hottest, most sheltered, frost-free corner you have, or in a large tub that can be wheeled under cover for winter, and feed and water it hard right through summer. Expect a handsome, tropical-looking plant, and treat any fruit as a rare reward after a long, hot season.",
+          "cites": [
+            "daf-banana-gc"
+          ]
+        },
+        {
+          "heading": "Cold, not disease, is the limit",
+          "body": "The upside of the cold is that Victoria's climate keeps the serious banana diseases away: bunchy top virus and Panama disease are problems of the warm banana states, not the Victorian backyard. Your real enemies here are frost, cold and wind, so all of your effort goes into warmth and shelter rather than spraying.",
+          "cites": [
+            "abgc-bunchytop",
+            "bq-panama"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can I grow a banana plant in Melbourne?",
+          "a": "Yes, as a foliage plant. A banana will throw up big tropical leaves over a warm Melbourne summer, especially in a sheltered courtyard or a tub, but frost will cut it down in winter unless you protect it, and it will rarely if ever ripen fruit."
+        },
+        {
+          "q": "Will a banana ever fruit in Victoria?",
+          "a": "Only in the most favoured spots, and only after a long, hot summer. The cool season usually stops a bunch filling and ripening, so most Victorian gardeners grow bananas for the look of them and count any fruit as a happy accident."
+        }
+      ]
+    }
+  },
+  "further_reading": [
+    {
+      "title": "Bananas: seedlessness and growing them in southern Australia (Quandong magazine)",
+      "url": "https://wanatca.org.au/yearbooks/Q07-3.pdf",
+      "source": "WANATCA Quandong"
+    },
+    {
+      "title": "All About Bananas",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Banana/BananasAll5-97.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Disease resistant banana varieties for backyards",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Banana/DiseaseResistBananas11-91.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ]
+}
