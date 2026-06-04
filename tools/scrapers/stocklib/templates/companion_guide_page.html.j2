@@ -1,0 +1,45 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="max-w-3xl mx-auto px-4 py-8">
+  {{ breadcrumb|safe }}
+
+  <h1 class="text-2xl font-bold text-green-900 mb-2">Companion Planting Guide for Fruit Trees</h1>
+  <p class="text-gray-600 text-sm mb-6">What to grow near citrus, mango, avocado, fig, stone fruit, apple and pear in Australian conditions, with honest evidence grades and pollinator requirements. Updated {{ today }}.</p>
+
+  <div class="prose prose-sm text-gray-700 mb-6 max-w-2xl">
+    <p>Companion planting means growing other plants near your fruit trees for some benefit: attracting pollinators and predatory insects, building soil, suppressing weeds, or holding moisture. It is genuinely useful, but it is also one of the most myth-laden topics in gardening.</p>
+    <p>This guide covers the fruit trees most commonly grown in Australian gardens. We grade every suggestion by how good the evidence is, check the pollination advice carefully (getting it wrong can cost you years of fruit), and note the Australian pests and climates that actually matter. Use the pollinator table before you buy a single tree.</p>
+  </div>
+
+  {{ how_to_read|safe }}
+
+  {{ toc|safe }}
+
+  {{ species_sections|safe }}
+
+  {{ avoid_section|safe }}
+
+  {{ nitrogen_fixers|safe }}
+
+  {{ pollinator_table|safe }}
+
+  {{ faq_section|safe }}
+
+  {{ references_section|safe }}
+
+  <!-- CTA -->
+  <section class="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
+    <h2 class="text-lg font-semibold text-green-900 mb-2">Find fruit trees for sale in Australia</h2>
+    <p class="text-sm text-green-800 mb-4">treestock.com.au tracks stock and prices across nurseries daily. Search by species, filter by your state.</p>
+    <div class="flex gap-3 flex-wrap">
+      <a href="/" class="inline-block bg-green-700 text-white px-4 py-2 rounded text-sm font-medium hover:bg-green-800">Search all nurseries</a>
+      <a href="/species/" class="inline-block bg-white border border-green-300 text-green-700 px-4 py-2 rounded text-sm font-medium hover:bg-green-50">Browse by species</a>
+      <a href="/rare.html" class="inline-block bg-white border border-green-300 text-green-700 px-4 py-2 rounded text-sm font-medium hover:bg-green-50">Rare and unusual finds</a>
+    </div>
+  </section>
+</main>
+
+{{ footer|safe }}
+</body>
+</html>
