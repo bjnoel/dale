@@ -19,5 +19,9 @@ data/analyses/*.json
 # Deliverables (generated, contain client data)
 deliverables/
 
+# Generated rarity scores. build_species_pages.py writes this next to the data
+# dir; the species_pages golden test writes it into tests/golden/fixture/.
+rarity_scores.json
+
 # Secrets
 state/secrets/
