@@ -1,0 +1,18 @@
+# Wax jambu gets a cited, per-state growing guide on treestock (flagship QLD, standout WA overlay)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Wax jambu is next in the `docs/species-guide-rollout.md` priority order (7 GSC clicks, 169 impressions, topState WA, RFCA archive depth). It is a true lowland humid-tropical Syzygium (Syzygium samarangense), frost-tender, and is sold under a tangle of overlapping names (wax apple, Java apple, and, confusingly, rose apple), so getting the botany and the climate right matters. GSC's topState is WA, but the climate heartland is the tropical north, so this is the mango/lychee/papaya pattern: research QLD deepest, give WA the standout overlay (the acute "can I even grow it here?" question plus the top-traffic entrance).
+
+**Decision:** Ship `tools/scrapers/growing_guides/wax-jambu.json` (state-invariant core plus four genuinely distinct WA/QLD/NSW/VIC overlays), add `"wax jambu": "tropical"` to `SPECIES_CLIMATE_CATEGORY`, and add `tests/test_guide_wax_jambu.py`. Flagship QLD (wet-tropics heartland), WA carries the standout overlay.
+
+**Why:** Matches the rollout (better, trustworthy guides for exactly the rare fruit the community collects earn search traffic and trust, which feeds the Treesmith funnel). Correctness was the priority: wrong variety, climate, pest or naming advice wastes a grower's years.
+
+**Actions:**
+- Authored the guide archives-first from Benedict's owned sources (WANATCA Yearbook 14, Wilson, "Syzygium as a source of edible fruits"; the ACOTANC Coronel paper on Southeast Asian fruits; the RFCA Rose Apple and Malay Apple articles), then cross-checked against Morton (Purdue NewCROP), the World Agroforestry/PROSEA monograph, a Taiwan industry monograph, Useful Tropical Plants, Business Queensland, DPIRD WA, the NT Government, and Fruit Fly ID Australia.
+- Correctness anchors guarded by tests: self-compatible (one tree fruits, contra a flat "needs two trees"); non-climacteric (must ripen on the tree); the four Syzygium lookalikes kept distinct (samarangense vs aqueum vs jambos vs malaccense); Queensland fruit fly is a listed host in the east while Western Australia's pest is the Mediterranean fruit fly; WA is essentially free of myrtle rust (a genuine WA advantage); frost-tender (killed near 0 degrees). Feeding section meets the depth checklist with the one cited commercial fertiliser figure (Taiwan), framed as commercial and not invented.
+- No dedicated RFCA wax-jambu folder exists (the Syzygium content lives in the mixed-genus MyrtaceaeFamily folder, which `build_archive_index.py` does not auto-map to a slug), so the RFCA further-reading links are hand-curated and `archive_links.json` is unchanged. The rarefruitclub.au page is cited only as a third-party Source (nofollow), not as a followed Further-reading link.
+
+**Status:** PR open on branch `dale/wax-jambu-guide`, pending Benedict review. With current stock wax jambu is below the combo-page generation cut (WA has 2 WA-shippable, under the 3 minimum; QLD/NSW/VIC have ~10 each but below the top-20 cap), so only `/species/wax-jambu.html` renders the guide live today; the four state overlays are authored and tested (force-built in the test suite) and light up automatically when stock crosses the threshold. Full suite green (627 tests). Every cited and further-reading URL verified live (HTTP 200). No em or en dashes.
+
+**To revert:** delete `tools/scrapers/growing_guides/wax-jambu.json` and `tests/test_guide_wax_jambu.py`, and remove the `"wax jambu": "tropical"` entry from `SPECIES_CLIMATE_CATEGORY` in `build_species_state_pages.py`. The species page falls back to the generic `fruit_species.json` blurb.
