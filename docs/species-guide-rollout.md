@@ -53,7 +53,12 @@ treestock.com.au, matching the olive implementation we already shipped, and ship
     `tests/test_templates.py`) - you do NOT edit these to add a species, but understand the boundary
   - `tools/scrapers/build_species_state_pages.py`  (core/overlay, SPECIES_CLIMATE_CATEGORY, STATE_CLIMATE_NOTES)
   - `tools/scrapers/build_species_pages.py`, `tools/scrapers/build_archive_index.py`
-  - `tests/test_species_state_pages.py`  (the bar to keep green; includes the FAQ-overlap guard, see step 5)
+  - Tests are split so parallel runs do not collide: `tests/test_guide_<slug>.py` (one file per
+    species, the per-species bar), `tests/guide_helpers.py` (shared setup), and
+    `tests/test_species_state_pages.py` (cross-cutting guards: climate mapping, the unenriched
+    fallback, the archive index, the growing_guides module API, and the FAQ-overlap guard over every
+    guide). Add your species as a NEW `tests/test_guide_<slug>.py` (copy an existing one); keep the
+    full suite green.
 - Resolve the slug: find {{SPECIES}} in `tools/scrapers/fruit_species.json` and use its `slug`
   (call it {{SLUG}}). If {{SPECIES}} is not there, stop and ask before proceeding.
 
