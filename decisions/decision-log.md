@@ -4,6 +4,244 @@
 
 ---
 
+## DEC-145 — 2026-06-04 — Orange growing guide (per-state-unique, NSW flagship; citrus rootstock and biosecurity researched archives-first)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Continuing the per-species growing-guide rollout (olive DEC-126 flagship, the archive
+integration DEC-127, and the batch through DEC-140), orange (Citrus sinensis) is the next species to
+get a rich, per-state-unique, cited growing guide on the buy-orange-trees-[state] combo pages and
+/species/orange.html. Orange is the most popular backyard citrus in Australia and a high-value SEO
+target, and it is genuinely a multi-state crop, so every generated state earns a real overlay. With
+56 orange products in stock across the monitored nurseries, all four states (WA 29, QLD/NSW/VIC 51
+shippable each) cross the in-stock threshold, so all four combo pages render live now plus the
+species page.
+
+**Decision:** Add `tools/scrapers/growing_guides/orange.json` (39 sources, a state-invariant core of
+eight sections, four genuinely distinct state overlays, four core and eight state FAQs, and a curated
+owned "Further reading" list) plus `tests/test_guide_orange.py`. No builder code change was needed:
+orange is already `citrus` in `SPECIES_CLIMATE_CATEGORY` (the citrus climate notes already exist for
+all four states) and `build_archive_index.py` already aliases `oranges -> orange`.
+
+Flagship is **New South Wales**: GSC/Plausible produced nothing locally (no creds, as on recent
+runs), so the flagship was chosen on production reality and climate. The Riverina (Murrumbidgee
+Irrigation Area, Griffith and Leeton) is the single largest citrus district in Australia and the
+country's biggest orange-producing region (Citrus Australia, Murrumbidgee Irrigation), so NSW was
+researched deepest. VIC (Sunraysia navels plus the cool-night blood-orange advantage), QLD (Central
+Burnett heartland, the Emerald canker history) and WA (Mediterranean south-west, Medfly, quarantine)
+all got strong, unique overlays.
+
+**Why:** Each combo page used to share a byte-identical generic blurb. The guide makes WA/QLD/NSW/VIC
+genuinely different and cited, lifts the SEO value of the highest-traffic citrus species, and feeds
+the Treesmith funnel by being the kind of page a serious citrus grower trusts. Built archives-first
+on Benedict's owned Rare Fruit Council "Citrus" articles (rootstocks, fruit characteristics, blood
+oranges) and a WANATCA ACOTANC paper, which keeps first-party authority in-network.
+
+**Actions:**
+- `growing_guides/orange.json` + `tests/test_guide_orange.py` (mirrors the olive/lychee guards plus
+  orange-specific correctness guards). Full suite green (536 tests). All 40 cited and further-reading
+  URLs return HTTP 200. Pages build per-state-unique, dash-free, with FAQ JSON-LD, article OG,
+  Sources and Further reading; no region tokens leak across states (verified on the real pages).
+- `archive_links.json` deliberately NOT changed: the RFCA `Citrus` folder is a mixed-genus bucket
+  (lemon, lime, cumquat, pummelo as well as orange), so aliasing it to orange would surface the wrong
+  fruit. Instead the orange-specific RFCA Citrus articles are hand-curated into `further_reading`
+  (the dragon-fruit / papaya mixed-folder pattern).
+- Two correctness calls the research corrected, each pinned by a test so a future edit cannot
+  reintroduce them: (1) Queensland's citrus canker outbreak was at **Emerald in 2004** (eradicated;
+  Australia declared free in 2021), NOT a 2018 Emerald outbreak (2018 was Darwin NT and WA);
+  (2) WA is **not** free of citrus gall wasp (it has been in Perth backyards since 2013) but is free
+  of it in commercial orchards and country districts, and Medfly, not Queensland fruit fly, is the
+  WA citrus pest.
+- Sources avoid `dpi.nsw.gov.au` and `agriculture.vic.gov.au` (both 403 to curl, so they would fail
+  the URL-200 gate); the NSW and VIC facts are anchored on Citrus Australia, Murrumbidgee Irrigation,
+  USDA FAS, SGA, Business Queensland, DPIRD WA, IPPC/DAFF and university extension instead. A test
+  guards against reintroducing the bot-blocked domains.
+
+**Status:** PR open on branch `dale/orange-guide`, pending Benedict review. On approval: merge,
+`ssh dale-server`, `git pull`, `tools/deploy.sh`, rebuild combo + species pages into the dashboard,
+rebuild purged Tailwind, verify live.
+
+**To revert:** delete `growing_guides/orange.json` and `tests/test_guide_orange.py`. `has_guide("orange")`
+returns False again and both builders fall back to the generic `fruit_species.json` blurb. No other
+code touched.
+
+## DEC-144 — 2026-06-04 — Per-state mandarin growing guide for treestock (citrus, QLD flagship, all four states live)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Mandarin was next in the treestock growing-guide rollout (GSC: 8 clicks, 546
+impressions over 28 days; tier 4 "high traffic, citrus, lean on .gov.au + WANATCA + web"). Until now
+the buy-mandarin-trees-<state> pages and /species/mandarin.html shared one short, uncited blurb.
+Mandarin is already classed `citrus` in `SPECIES_CLIMATE_CATEGORY`, so this needed only a new JSON
+file plus its test, no builder change.
+
+**Decision:** Ship `tools/scrapers/growing_guides/mandarin.json` (a cited, per-state guide) and
+`tests/test_guide_mandarin.py`. Flagship QLD by production and climate (the Central Burnett around
+Gayndah and Mundubbera is Australia's largest mandarin district, the Imperial heartland), but mandarin
+is a genuine four-state crop, so every state earns a first-class overlay: WA (the citrus-import
+quarantine and the WA Organism List, Gascoyne and the south-west belt, Medfly not Queensland fruit
+fly, citrus gall wasp in Perth backyards but not commercial orchards), QLD (Central Burnett, the
+citrus canker history at Emerald in 2004 and the 2021 national freedom, Queensland fruit fly), NSW
+(the Riverina around Griffith and Leeton, citrus gall wasp as the headline pest), and VIC (Sunraysia
+around Mildura and Robinvale, cool nights for deeper rind colour, the cold-hardy Satsumas for frosty
+districts). All four combo pages generate on current stock.
+
+**Why:** The defining mandarin facts are unusual and worth getting right: a single tree fruits without
+a pollinator (parthenocarpy), yet self-incompatible varieties (Clementine, Afourer, Imperial) turn
+seedy when bees bring pollen from other citrus nearby, so seedlessness is about isolation, not a
+partner tree. The guide leads on that, plus the heavy-nitrogen feeding (with cited rates), the
+non-climacteric harvest and why mandarins puff and dry if left too long, grafting onto a rootstock
+(Flying Dragon for pots), and the citrus canker biosecurity that explains the many "pickup only" and
+"QLD only" listings. Deeper, cited, per-state-unique guides earn search traffic and community trust,
+the Track B audience that feeds the Treesmith funnel.
+
+**Actions:**
+- Authored `growing_guides/mandarin.json`: 36 sources (gov: DPIRD WA, Business Queensland,
+  Queensland Agrilink, Gascoyne Development Commission, WA Government; industry: Citrus Australia, WA
+  Citrus, Farm Biosecurity, Sustainable Gardening Australia, Bayer; university: UC Riverside, UF/IFAS,
+  UC ANR; owned: RFCA citrus articles and a WANATCA ACOTANC citrus paper). Variety advice tied to live
+  stock (Imperial, Emperor, Hickson, Afourer, Honey Murcott, Ellendale, Satsuma, Clementine, Daisy,
+  Fremont, Pixie, Sumo).
+- Added `tests/test_guide_mandarin.py`; full suite green (533 tests), including the FAQ-overlap guard.
+- Curl-verified all 36 cited and further-reading URLs return 200; built against live stock and
+  reviewed all four combo pages plus the species page (dash-free, per-state-unique, FAQ JSON-LD,
+  article OG, Sources, Further reading).
+
+**Status:** PR open, pending Benedict review. Parallel-safe logging (this fragment plus a per-entry
+public-ledger file); decision-log.md and archive_links.json left untouched (the RFCA Citrus folder is
+mixed-genus, so it is not auto-indexed to mandarin; the further_reading links are hand-curated).
+
+**To revert:** delete `growing_guides/mandarin.json` and `tests/test_guide_mandarin.py`; the combo and
+species pages fall back to the generic `fruit_species.json` blurb (graceful, no code change).
+
+## DEC-143 — 2026-06-04 — Per-state lime growing guide shipped for treestock (citrus)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Continuing the species growing-guide rollout (docs/species-guide-rollout.md) down the
+priority order. Lime is the next high-traffic species in the citrus/temperate band (GSC: 7 clicks,
+522 impressions, top state NSW), one of the citrus guides of the rollout (the orange guide,
+PR #47, is its parallel sibling, so it shares the citrus climate notes and the RFCA Citrus archive
+approach). The generic
+fruit_species.json blurb was byte-identical across the WA/QLD/NSW/VIC combo pages and uncited.
+
+**Decision:** Authored tools/scrapers/growing_guides/lime.json plus tests/test_guide_lime.py,
+matching the olive gold standard: a cited, state-invariant core (variety choice, pollination,
+planting and soil, a deep water-and-feeding section, harvest, buying) and four genuinely distinct
+state overlays, mirroring the parallel orange guide's citrus approach but with lime-specific,
+warmer-climate overlays (tropical north for QLD/WA, the subtropical coast for NSW, the cold limit
+for VIC). Flagship is NSW (GSC traffic leader and a real citrus state: the Riverina is
+Australia's largest citrus region, the subtropical Northern Rivers is the best lime coast), with QLD
+as the warm-climate co-lead (it grows most of Australia's limes; the Atherton Tableland is the
+biggest lime district), WA as the biosecurity standout (citrus import control via the WA Organism
+List, canker-free status, Medfly), and VIC as the cold limit (pot-and-shelter country, Sunraysia
+the one warm district). No code change: lime is already "citrus" in SPECIES_CLIMATE_CATEGORY, so
+the shared citrus climate note already fits.
+
+**Why:** Per-state-unique, cited content lifts these combo pages out of thin/duplicate-content
+territory and supports the Treesmith funnel. Citrus is the right band to lean on .gov.au + industry
++ the owned RFCA Citrus archives rather than rare-fruit RFCA folders.
+
+**Correctness notes (research, adversarially verified, every cited URL HTTP 200):**
+- Tahitian (Persian/Bearss) lime is the standard: large, seedless, parthenocarpic, thornless, the
+  hardiest true lime, with good TOLERANCE of tristeza (not "resistant", a guarded distinction).
+- Rangpur and sweet lime are flagged as NOT true limes (Rangpur is a mandarin hybrid). Australian
+  native limes (desert, round) and the CSIRO Blood/Red Centre and Sunrise hybrids are covered;
+  finger lime is kept as the separate species it is, with a link to its page.
+- WA is correctly NOT claimed free of citrus gall wasp (it is established across Perth since 2013);
+  the WA pest story is Medfly + gall wasp established, Qfly a prohibited pest under active
+  eradication. WA import control is framed via the WAOL/permit system and canker-free status (no
+  single "citrus banned" gov sentence exists, so it is not asserted).
+- Feeding meets the step-3b depth checklist: complete citrus fertiliser high in nitrogen (drives the
+  spring flush), scaled to tree age and fed little and often, zinc foliar and iron/magnesium on
+  alkaline soils, pH 6 to 6.5, cited to Citrus Australia, the QLD DAF citrus kit, the NT fact sheet
+  and UF/IFAS.
+
+**Sources:** owned RFCA Citrus archives (Improved Lemon and Lime Varieties, Citrus Rootstocks,
+Citrus) cited and used as the Further reading block; plus DPIRD WA, Business Queensland, QLD DAF
+citrus kit, Citrus Australia, CSIRO, UC Riverside and UF/IFAS. There is no clean RFCA "Lime" folder
+and no lime-specific WANATCA yearbook article, so archive_links.json is unchanged (the regenerated
+index is byte-identical) and Further reading is the hand-curated owned RFCA citrus articles.
+
+**Actions:**
+- Added growing_guides/lime.json (27 sources, core + 4 overlays, net-new FAQs).
+- Added tests/test_guide_lime.py (uniqueness, no-dash, region-token leak, FAQ JSON-LD, sources,
+  further-reading, plus correctness guards for tristeza wording, Rangpur, and the WA gall-wasp fact).
+- Built against real stock: all four combo pages plus /species/lime.html render unique, cited,
+  dash-free, with FAQ structured data, article OG, Sources and Further reading.
+
+**Status:** PR open on branch dale/lime-guide, pending Benedict review and deploy. Logged
+parallel-safe per docs/species-guide-rollout.md step 6 (pending fragment + per-entry ledger, no DEC
+number, no decision-log.md or archive_links.json edit).
+
+**To revert:** delete growing_guides/lime.json and tests/test_guide_lime.py; the species and combo
+pages fall back to the generic fruit_species.json blurb automatically (has_guide returns False).
+
+## DEC-142 — 2026-06-04 — treestock lemon per-state growing guide (Track B)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Lemon is next down the growing-guide rollout (docs/species-guide-rollout.md): it is the
+most widely planted fruit tree in Australian backyards and a genuine crop in every mainland state,
+yet its buy-lemon-trees-<state> combo pages and /species/lemon.html shared a generic, uncited
+fruit_species.json blurb. Lemon sits in the rollout's citrus group, where the guidance is to lean on
+.gov.au, Citrus Australia and the web rather than RFCA (citrus is not a rare fruit), though the RFCA
+Citrus folder turned out to carry two genuinely lemon-relevant owned articles.
+
+**Decision:** Ship a comprehensive, cited, per-state lemon growing guide as a single JSON file
+(tools/scrapers/growing_guides/lemon.json), matching the olive gold standard and the rollout-v2 bar
+(net-new FAQs, deep cited water-and-feeding, hand-escaped inline HTML, no dashes).
+
+**Why:**
+- Flagship WA: the dry Mediterranean south-west is well suited to citrus, WA carries the distinctive
+  quarantine and shipping angle (citrus is one of the hardest things to bring into WA), and the
+  citrus topState pattern leans WA. All four states still earn a genuinely distinct overlay (WA the
+  Gingin-to-Albany belt, Gascoyne and Medfly; QLD the Central Burnett around Gayndah and Mundubbera,
+  melanose and lemon scab; NSW the Riverina, Australia's largest citrus region, and citrus gall
+  wasp; VIC the Murray Valley around Mildura and frost as the real limit, with Meyer the cold-hardy
+  pick).
+- Correctness focus: variety choice tied to live stock (Eureka, Lisbon, Meyer, Villa Franca, Fino,
+  Verna, Yuzu are all actually in the table); lemons are self-fertile and non-climacteric (the tree
+  is the best store); cited feeding from NSW DPI (a complete citrus fertiliser about 10:4:6 at 500 g
+  per year of tree age up to about 5 kg, late winter, with a sulphate of ammonia top-up in November,
+  plus magnesium, zinc and manganese trace elements); and accurate biosecurity (citrus canker
+  eradicated and Australia declared free April 2021; citrus gall wasp native to QLD and northern NSW
+  but established in Perth suburbs, not WA orchards; Queensland fruit fly now established across
+  Greater Sunraysia after the pest-free area ceased in 2024; Medfly endemic in WA). Research fanned
+  out to three subagents, key claims adversarially cross-checked, and every cited URL verified
+  (22 returned HTTP 200 directly; 6 NSW DPI pages are Cloudflare-blocked to bots but confirmed live
+  in a browser via a reader proxy, the same domain peach.json already cites).
+
+**Actions:**
+- New: tools/scrapers/growing_guides/lemon.json (28 sources, all cited and verified; core plus WA,
+  QLD, NSW and VIC overlays; 4 core plus 2-per-state net-new FAQs).
+- New: tests/test_guide_lemon.py (uniqueness, region-leak, no-dash, FAQ JSON-LD, sources,
+  further-reading, and a lemon-specific check that further reading is the curated RFCA Citrus links).
+- No SPECIES_CLIMATE_CATEGORY change (lemon is already "citrus" with accurate per-state notes);
+  archive_links.json was NOT regenerated (the RFCA "Citrus" folder does not map to the lemon slug,
+  so there is no auto-merge, and lemon's Further reading is hand-curated owned RFCA Citrus articles).
+- First-party archives preferenced: two owned RFCA Citrus articles (improved lemon and lime
+  varieties; citrus rootstocks) curated as followed Further reading. No citable WANATCA lemon article
+  exists, and rarefruitclub.au was not used (lemon is not a rare fruit).
+
+**Status:** PR open on branch dale/lemon-guide, pending Benedict review. Full suite green (529 tests).
+
+## DEC-141 — 2026-06-04 — Apple growing guide (per-state, cited, flagship WA) added to treestock
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** treestock's growing-guide layer (olive, lychee, fig, peach, tamarillo, guava, mango, plum, plus the recent batch of avocado, banana, custard-apple, dragon-fruit, jaboticaba, jackfruit, longan, papaya and sapodilla) makes each buy-[species]-trees-[state] page genuinely unique and cited. Apple is a high-value temperate species: all four state combo pages (WA, QLD, NSW, VIC) generate from current stock, and the old generic blurb was not just thin but in one place misleading (it lumped Sundowner in with Anna as a "low-chill" coastal apple, when Cripps Red is a low-chill but very-late, long-season variety, not a subtropical one). It needed a proper, accurate, per-state guide.
+
+**Decision:** Added tools/scrapers/growing_guides/apple.json (35 cited sources, a state-invariant core plus genuinely distinct WA/QLD/NSW/VIC overlays and net-new FAQs). No code change was needed: apple was already mapped to the existing "temperate" SPECIES_CLIMATE_CATEGORY, and there is no Rare Fruit Council Apple folder (apple is not a rare fruit), so archive_links.json is unchanged. Flagship state is WA: it is treestock's core audience, its combo page is always generated, and the standout Australian apple story is WA's (the Cripps breeding program at the WA Department of Agriculture that produced Cripps Pink, sold worldwide as Pink Lady, Cripps Red, sold as Sundowner, and used the local Lady Williams as a parent). VIC (national number one producer, the Goulburn Valley and the Tatura Trellis), NSW (Batlow, Orange and Bilpin, and the birthplace of the Granny Smith at Ryde in 1868) and QLD (the high-altitude Granite Belt plus low-chill subtropics) each get a first-class overlay, because apple is a genuine four-state crop.
+
+**Why:** Correctness first, because wrong variety, chill, pollination or pest advice wastes a grower's years. The guide matches varieties to winter chill (low-chill Anna, Dorsett Golden and Tropic Sweet for warm districts; mainstream Gala, Fuji, Jonathan, Granny Smith and the Delicious types for cold winters; the WA-bred trio as a distinct modest-chill but very-late group), explains apple self-incompatibility and warns that triploids such as Gravenstein, Jonagold and Mutsu need two pollinators, gives a cited per-tree nitrogen guide without inventing an NPK ratio, and gets the biosecurity story exactly right: WA is one of the last apple regions on earth free of codling moth (the headline WA fact), the fruit fly differs by state (Mediterranean fruit fly in WA, Queensland fruit fly in the east), and Australia as a whole is free of fire blight. Sources lead with Benedict's owned WANATCA archive (the Granny Smith and Tatura Trellis yearbook article) for Further reading, then government and industry authorities (DPIRD WA, Pomewest, Business Queensland, the Australian apple industry, university extension and a peer-reviewed bitter pit review). Trustworthy guides earn search traffic and community trust, which feeds the Treesmith funnel.
+
+**Actions:** Authored apple.json; added tests/test_guide_apple.py (20 tests, including codling-moth-free-in-WA-only, the fruit fly split, triploids, and the per-state marquee facts). Full suite green (535 tests). Regenerated the one affected golden (tests/golden/expected/species_pages/species/apple.html, which now renders the rich guide); reviewed the diff and confirmed no other golden changed. Built all four combo pages and /species/apple.html against real stock (per-state-unique, dash-free, with FAQ JSON-LD, article OG, Sources and Further reading). Curl-verified that all 35 cited and further-reading URLs return HTTP 200. Logged parallel-safe (this fragment plus a per-entry public-ledger note; no decision-log.md or archive_links.json edit). PR opened for Benedict's review.
+
+**Status:** Pending review, merge and deploy.
+
+**To revert:** Delete tools/scrapers/growing_guides/apple.json and tests/test_guide_apple.py, and restore the previous tests/golden/expected/species_pages/species/apple.html. has_guide("apple") then returns False and the pages fall back to the generic fruit_species.json blurb. No other code or data change is involved.
+
 ## DEC-140 — 2026-06-04 — Sapodilla growing guide (per-state-unique, archives-first; QLD flagship)
 
 **Decided by:** Dale (parallel guide run)
