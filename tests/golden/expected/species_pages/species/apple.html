@@ -16,7 +16,46 @@
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   #nav-menu.open { display: flex; }
 </style>
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I grow an apple tree in a pot or on a balcony?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, if you start with a tree on a dwarfing rootstock or a slim columnar variety. Use a large container of free-draining potting mix, water often because pots dry out fast (and uneven watering spoils the fruit), and feed regularly through the growing season since nutrients wash out of containers. Refresh the top of the mix or pot up every couple of years, and stand the pot in the sunniest spot you have."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do apple trees lose their leaves in winter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Apples are deciduous, dropping their leaves in autumn and resting through winter, and it is that cold rest that lets them flower in spring, which is why they need a cold-enough winter to crop. Bare-rooted trees are sold and planted in this dormant season, which is the cheapest and often the best way to buy one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my apple tree healthy but not fruiting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The usual reasons are that the tree is still too young (many take three to four years to settle into bearing), that there is no compatible variety flowering nearby to pollinate it, or that it is taking an off year after a heavy crop. A variety that needs more winter chill than your district provides, or a tree fed too much nitrogen, will also grow leaves instead of fruit, so check the variety suits your climate and feed sparingly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I thin the fruit on my apple tree?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually yes. Apples often set far more fruit than they can size up, so thinning each cluster to one or two of the best fruit in early summer, after the natural fruit drop, gives larger, better apples and stops branches breaking. Thinning also helps prevent biennial bearing, the habit of cropping heavily one year and barely at all the next."
+      }
+    }
+  ]
+}
+</script>
 </head>
 
 <body class="bg-white text-gray-900">
@@ -121,12 +160,63 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
     </div>
   </section>
 
-    <!-- Growing Guide -->
-  <section class="mb-8">
+    <!-- Growing Guide (cited) -->
+  <section class="mb-8" id="growing">
     <h3 class="text-lg font-semibold text-gray-800 mb-3">Growing Apple in Australia</h3>
-    <div class="prose prose-sm max-w-none">
-      <p class="text-gray-700 text-sm leading-relaxed mb-3">Apples are one of Australia's most widely grown temperate fruits, thriving in regions with sufficient winter chill: the Adelaide Hills, Granite Belt, Yarra Valley, Orange NSW, and the Perth Hills. Most varieties need 500-1000 chill hours (below 7°C) to break dormancy and set fruit reliably. Low-chill varieties like Anna and Sundowner suit milder coastal climates, while Akane, McIntosh, Jonathan, Mutsu, and Snow (Yalca) perform best in genuinely cold winters. Heritage growers can access over 100 named varieties through specialist heritage fruit tree suppliers. Most apples require cross-pollination, so plant at least two compatible varieties. Apples prefer deep, well-drained loam with a pH of 6.0-6.5. Water consistently during fruit development to prevent bitter pit and cracking. Prune during winter dormancy to maintain an open vase or central leader shape. Expect fruit from January to May depending on variety and region. In WA, all apple plant material is subject to biosecurity controls; purchase only from certified interstate nurseries or local licensed propagators. Codling moth is the primary pest; use exclusion bags or approved sprays.</p>
-    </div>
+<div class="prose prose-sm max-w-none">
+<p class="text-sm text-gray-700 mb-4">Wherever you are in Australia, the basics of growing apples are the same: a sunny, open spot, free-draining soil, a variety matched to your local winter chill, and usually a second variety nearby to pollinate it. The state sections cover the climate, regions, harvest timing and pests where you live; the notes below apply anywhere in the country.</p>
+<h3 class="font-semibold text-gray-800 mt-4 mb-1">Choosing a variety</h3>
+<p class="text-sm text-gray-700">The first choice, and the one most likely to make or break your tree, is matching the variety to your winter chill. Mainstream apples such as Gala, Fuji, Jonathan, Granny Smith and the Red and Golden Delicious types need a properly cold winter (around 600 hours below about 7 degrees) to flower and fruit well, so they are reliable only in genuinely cold districts. For warm, coastal and subtropical gardens, choose low-chill varieties such as Anna, Dorsett Golden and Tropic Sweet, which fruit on only a few hundred chill hours. The West Australian-bred Cripps Pink (sold as Pink Lady), Cripps Red (sold as Sundowner) and their parent Lady Williams sit in their own group: they take only modest winter chill but ripen very late and need a long, warm to hot growing season, so they suit warm-temperate and Mediterranean districts rather than cold, short-season ones. Work out what your climate can ripen first, then pick a named variety to match. <a href="https://www.daleysfruit.com.au/Shop/Deciduous_FruitsApples.html" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Daleys apple varieties]</a> <a href="https://www.daleysfruit.com.au/fruit%20pages/chillfactor.htm" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Daleys chill guide]</a> <a href="https://www.heritagefruittrees.com.au/john-cripps/" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Heritage Fruit Trees: John Cripps]</a></p>
+<h3 class="font-semibold text-gray-800 mt-4 mb-1">Pollination: do you need two trees?</h3>
+<p class="text-sm text-gray-700">Most apples are self-incompatible, meaning a tree sets little or no fruit with its own pollen and crops properly only when a different variety flowers nearby at the same time, within bee range. A few, including Granny Smith, have a high degree of self-fertility and will set some fruit alone, but even these crop more heavily with a partner, while varieties like Pink Lady simply need cross-pollination. Pick two varieties whose flowering overlaps (most mid-season apples overlap happily). Watch out for triploid varieties such as Gravenstein, Jonagold and Mutsu (Crispin): their pollen is effectively sterile, so they cannot pollinate other trees and in fact need two other varieties to pollinate them. If you have room for only one tree, plant a self-fertile variety, a multi-graft tree that carries several varieties on one trunk, or a flowering crab-apple as a near-universal pollinator. <a href="https://www.yates.com.au/how-to-grow/apples/" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Yates apples]</a> <a href="https://www.daleysfruit.com.au/fruit%20pages/apple.htm" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Daleys: growing apples]</a> <a href="https://www.orangepippintrees.com/articles/fruit-tree-advice/triploid-apple-varieties" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Orange Pippin Trees triploids]</a></p>
+<h3 class="font-semibold text-gray-800 mt-4 mb-1">Rootstocks and tree size</h3>
+<p class="text-sm text-gray-700">Apples are grafted onto a rootstock that sets the tree's eventual size, and this choice matters more for apples than for almost any other fruit tree. Fully dwarfing stocks such as M9 hold a tree to about two or three metres and bring it into bearing in two to three years, but need a permanent stake. M26 is a slightly larger semi-dwarf. MM106 is the popular backyard stock, semi-vigorous, quick to crop, resistant to woolly apple aphid and able to stand without permanent staking. Vigorous stocks such as MM111 or a seedling rootstock make large, long-lived trees that can take four or five years to fruit and suit only big gardens or orchards. For a courtyard, a balcony, a pot or an espalier, choose a dwarfing rootstock or a naturally compact columnar type such as the Ballerina apples. <a href="https://www.orangepippintrees.com/articles/fruit-tree-advice/rootstocks-for-apple-trees" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Orange Pippin Trees rootstocks]</a> <a href="https://wanatca.org.au/yearbooks/Y27all.pdf" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[van den Ende, WANATCA Yearbook 27]</a></p>
+<h3 class="font-semibold text-gray-800 mt-4 mb-1">Planting and soil</h3>
+<p class="text-sm text-gray-700">Apples want a sunny, open position (full sun for most of the day) and a deep, free-draining soil with a pH of about 6 to 7. They dislike waterlogging, so avoid any spot where water sits, and plant on a low mound if your soil is heavy. Space trees to suit the rootstock, from a couple of metres for dwarf trees up to four to six metres for vigorous ones. Apples are deciduous and are usually sold and planted bare-rooted in winter while dormant, though potted trees can go in through much of the year as long as you keep the water up over their first summer (see our guide on <a href="/when-to-plant.html" class="text-green-700 hover:underline">when to plant</a>). <a href="https://extension.umn.edu/fruit/growing-apples" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[UMN Extension]</a> <a href="https://www.yates.com.au/how-to-grow/apples/" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Yates apples]</a></p>
+<h3 class="font-semibold text-gray-800 mt-4 mb-1">Water and feeding</h3>
+<p class="text-sm text-gray-700">Young trees need regular water to establish, and any bearing tree needs steady, even moisture while the fruit is filling. Inconsistent watering is a common cause of bitter pit, the small brown spots in the flesh, which is linked to too little calcium reaching the fruit and is made worse when dry spells slow the movement of calcium into the apple, so water evenly and add calcium as dolomite if your soil is low in it. Aim for roughly 25mm of water a week through the growing season from rain or irrigation. Apples are light to moderate feeders and nitrogen is usually the main nutrient to add each year, as a complete fertiliser or as compost. Go easy: a useful guide is only about 5 to 18 grams of actual nitrogen per tree for each year of the tree's age, up to roughly 140 grams a year, because too much nitrogen drives soft leafy growth at the expense of fruit, gives poorly coloured apples and hurts storage life. Feed in late winter to early spring before growth starts and again after harvest if needed, but not late in the season, which delays the tree hardening off for winter. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11228315/" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[bitter pit review]</a> <a href="https://www.daleysfruit.com.au/fruit%20pages/apple.htm" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Daleys: growing apples]</a> <a href="https://extension.umn.edu/fruit/growing-apples" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[UMN Extension]</a> <a href="https://agresearch.montana.edu/warc/guides/apples/apple_orchard_nutrition.html" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Montana State nutrition]</a></p>
+<h3 class="font-semibold text-gray-800 mt-4 mb-1">Harvest and storage</h3>
+<p class="text-sm text-gray-700">Apples flower in spring and ripen from summer into autumn, so the Australian harvest runs from about February for early varieties like Gala through to May, and into June for the very late Cripps Pink, Cripps Red and Lady Williams. An apple is ready when its green background colour warms towards yellow, the pips inside turn brown, and a ripe fruit lifts off easily when you cup it and twist upward rather than tugging it down; keen growers confirm timing with a starch-iodine test, since starch turns to sugar as the fruit matures. Apples are climacteric, so they keep ripening after picking and store well: hold sound, unbruised fruit somewhere cold and dark (close to 0 degrees is ideal, the crisper drawer works at home), and firm late keepers such as Granny Smith and Pink Lady will last for weeks to months. <a href="https://www.aussieapples.com.au/about/" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Aussie Apples]</a> <a href="https://extension.oregonstate.edu/sites/extd8/files/catalog/auto/FS147.pdf" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Oregon State harvest]</a> <a href="https://www.croptracker.com/blog/all-about-starch-apple-qc-and-harvest-timing.html" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Croptracker starch test]</a> <a href="https://extension.umd.edu/resource/ethylene-and-regulation-fruit-ripening" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[UMD fruit ripening]</a></p>
+<h3 class="font-semibold text-gray-800 mt-4 mb-1">Buying tips</h3>
+<p class="text-sm text-gray-700">Buy a named, grafted tree rather than an unnamed seedling, because apples do not come true from seed and a seedling can take many years to fruit, if it ever fruits well. Check the label for the variety, the rootstock and the pollination needs, and plan a pollination partner from the start: a second compatible variety, a multi-graft tree, or a flowering crab-apple. Apples and their pome-fruit cousin the <a href="/species/pear.html" class="text-green-700 hover:underline">pear</a> share much the same care and pests, so they make natural companions in a garden. The in-stock table above lists the named varieties, sizes and prices available right now, including low-chill types for warm districts and dwarf and columnar trees for pots and small gardens. <a href="https://www.daleysfruit.com.au/Shop/Deciduous_FruitsApples.html" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Daleys apple varieties]</a> <a href="https://www.yates.com.au/how-to-grow/apples/" rel="noopener nofollow" target="_blank" class="text-xs text-green-700 hover:underline whitespace-nowrap">[Yates apples]</a></p>
+</div>
+
+<section class="mb-8" id="faq">
+  <h2 class="text-lg font-semibold text-gray-800 mb-3">Frequently asked questions</h2>
+  <div class="mb-4">
+    <h3 class="font-semibold text-gray-800 mb-1">Can I grow an apple tree in a pot or on a balcony?</h3>
+    <p class="text-sm text-gray-600">Yes, if you start with a tree on a dwarfing rootstock or a slim columnar variety. Use a large container of free-draining potting mix, water often because pots dry out fast (and uneven watering spoils the fruit), and feed regularly through the growing season since nutrients wash out of containers. Refresh the top of the mix or pot up every couple of years, and stand the pot in the sunniest spot you have.</p>
+  </div>
+  <div class="mb-4">
+    <h3 class="font-semibold text-gray-800 mb-1">Do apple trees lose their leaves in winter?</h3>
+    <p class="text-sm text-gray-600">Yes. Apples are deciduous, dropping their leaves in autumn and resting through winter, and it is that cold rest that lets them flower in spring, which is why they need a cold-enough winter to crop. Bare-rooted trees are sold and planted in this dormant season, which is the cheapest and often the best way to buy one.</p>
+  </div>
+  <div class="mb-4">
+    <h3 class="font-semibold text-gray-800 mb-1">Why is my apple tree healthy but not fruiting?</h3>
+    <p class="text-sm text-gray-600">The usual reasons are that the tree is still too young (many take three to four years to settle into bearing), that there is no compatible variety flowering nearby to pollinate it, or that it is taking an off year after a heavy crop. A variety that needs more winter chill than your district provides, or a tree fed too much nitrogen, will also grow leaves instead of fruit, so check the variety suits your climate and feed sparingly.</p>
+  </div>
+  <div class="mb-4">
+    <h3 class="font-semibold text-gray-800 mb-1">Should I thin the fruit on my apple tree?</h3>
+    <p class="text-sm text-gray-600">Usually yes. Apples often set far more fruit than they can size up, so thinning each cluster to one or two of the best fruit in early summer, after the natural fruit drop, gives larger, better apples and stops branches breaking. Thinning also helps prevent biennial bearing, the habit of cropping heavily one year and barely at all the next.</p>
+  </div>
+</section>
+
+<section class="mb-8" id="sources">
+  <h2 class="text-lg font-semibold text-gray-800 mb-2">Sources</h2>
+  <p class="text-gray-600 text-xs mb-2">Growing guidance on this page draws on Australian state agriculture departments, the Australian apple and pear industry, and horticultural research.</p>
+  <ul class="text-xs space-y-1 list-disc pl-5">
+    <li><a href="https://www.daleysfruit.com.au/fruit%20pages/apple.htm" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Daleys Fruit Tree Nursery: growing apples</a></li><li><a href="https://www.daleysfruit.com.au/Shop/Deciduous_FruitsApples.html" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Daleys Fruit Tree Nursery: apple varieties and chill needs</a></li><li><a href="https://www.daleysfruit.com.au/fruit%20pages/chillfactor.htm" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Daleys Fruit Tree Nursery: chill factor guide</a></li><li><a href="https://www.yates.com.au/how-to-grow/apples/" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Yates Australia: how to grow apples</a></li><li><a href="https://www.orangepippintrees.com/articles/fruit-tree-advice/rootstocks-for-apple-trees" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Orange Pippin Trees: rootstocks for apple trees</a></li><li><a href="https://www.orangepippintrees.com/articles/fruit-tree-advice/triploid-apple-varieties" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Orange Pippin Trees: triploid apple varieties</a></li><li><a href="https://agresearch.montana.edu/warc/guides/apples/apple_orchard_nutrition.html" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Montana State University WARC: apple orchard nutrition</a></li><li><a href="https://extension.umn.edu/fruit/growing-apples" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">University of Minnesota Extension: growing apples</a></li><li><a href="https://extension.oregonstate.edu/sites/extd8/files/catalog/auto/FS147.pdf" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Oregon State University Extension: harvesting and storing apples and pears (FS 147)</a></li><li><a href="https://www.croptracker.com/blog/all-about-starch-apple-qc-and-harvest-timing.html" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Croptracker: starch testing and apple harvest timing</a></li><li><a href="https://extension.umd.edu/resource/ethylene-and-regulation-fruit-ripening" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">University of Maryland Extension: ethylene and the ripening of fruit</a></li><li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11228315/" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Bitter pit and fruit calcium in apple: a peer-reviewed review</a></li><li><a href="https://www.aussieapples.com.au/about/" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Aussie Apples (Apple and Pear Australia): about Australian apples</a></li><li><a href="https://www.heritagefruittrees.com.au/john-cripps/" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">Heritage Fruit Trees: John Cripps and the breeding of Cripps Pink and Cripps Red</a></li><li><a href="https://wanatca.org.au/yearbooks/Y27all.pdf" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">van den Ende, The Granny Smith apple and Tatura Trellis, WANATCA Yearbook Vol 27 (2004), p.38</a></li>
+  </ul>
+</section>
+
+<section class="mb-8" id="further-reading">
+  <h2 class="text-lg font-semibold text-gray-800 mb-2">Further reading</h2>
+  <p class="text-gray-600 text-xs mb-2">In-depth articles from the WANATCA and Rare Fruit Council of Australia archives.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li><a href="https://wanatca.org.au/yearbooks/Y27all.pdf" rel="noopener" target="_blank" class="text-green-700 hover:underline">The Granny Smith Apple and the Tatura Trellis (Bas van den Ende)</a> <span class="text-gray-400">(WANATCA Yearbook)</span></li>
+  </ul>
+</section>
+
   </section>
 
   
