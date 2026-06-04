@@ -1,0 +1,51 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="max-w-3xl mx-auto px-4 py-6">
+  {{ breadcrumb|safe }}
+
+  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Price Comparisons</h1>
+  <p class="text-gray-600 mb-4">
+    Compare fruit tree prices across {{ entry_count }} species and multiple Australian nurseries.
+    Find the cheapest price, check which nurseries ship to your state, and get alerts when prices drop.
+    Updated daily.
+  </p>
+
+  <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-center justify-between">
+    <div>
+      <p class="font-semibold text-green-900 text-sm">Compare nurseries side-by-side</p>
+      <p class="text-xs text-gray-600 mt-0.5">Which nursery has the most stock? Who ships to WA? See all 18 nurseries in one table.</p>
+    </div>
+    <a href="/compare/nurseries.html" class="ml-4 flex-shrink-0 text-sm px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800 no-underline">Compare nurseries &rarr;</a>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
+          <th class="pb-2 pr-4">Species</th>
+          <th class="pb-2 pr-4">Coverage</th>
+          <th class="pb-2 pr-4">In stock</th>
+          <th class="pb-2">From</th>
+        </tr>
+      </thead>
+      <tbody>
+{% for e in entries_view %}
+    <tr class="border-b border-gray-100 hover:bg-gray-50">
+      <td class="py-3 pr-4">
+        <a href="/compare/{{ e.slug }}-prices.html" class="font-medium text-green-800 hover:underline">{{ e.common_name }}</a>
+        <div class="text-xs text-gray-400 italic">{{ e.latin_name }}</div>
+      </td>
+      <td class="py-3 pr-4 text-sm">{{ e.nursery_count }} nurseries</td>
+      <td class="py-3 pr-4 text-sm">{{ e.in_stock }} in stock</td>
+      <td class="py-3 text-sm font-medium">{% if e.min_price %}${{ '%.2f'|format(e.min_price) }}{% else %}—{% endif %}</td>
+    </tr>
+{% endfor %}      </tbody>
+    </table>
+  </div>
+</main>
+
+{{ footer|safe }}
+
+</body>
+</html>
