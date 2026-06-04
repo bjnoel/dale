@@ -144,6 +144,16 @@ class MandarinGuideTests(unittest.TestCase):
             "expected at least one gov/industry authority among the mandarin sources",
         )
 
+    def test_no_bot_blocked_gov_sources(self):
+        # dpi.nsw.gov.au and agriculture.vic.gov.au 403 to a plain fetch, so they cannot
+        # satisfy the URL-200 gate (docs/species-guide-rollout.md step 5). The NSW/VIC
+        # facts here are anchored on Citrus Australia (region pages return 200) and other
+        # clean-200 authorities instead. Same guard the orange guide uses.
+        for s in MANDARIN_JSON["sources"]:
+            for blocked in ("dpi.nsw.gov.au", "agriculture.vic.gov.au"):
+                self.assertNotIn(blocked, s["url"],
+                                 f"{blocked} 403s to fetch and fails the URL-200 gate: {s['id']}")
+
     def test_every_cited_id_resolves_to_a_source(self):
         src_ids = {s["id"] for s in MANDARIN_JSON["sources"]}
         cited = set()
