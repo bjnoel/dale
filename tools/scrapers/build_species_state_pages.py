@@ -74,6 +74,7 @@ STATE_CLIMATE_NOTES = {
         "lilly-pilly": "Lilly pilly is not a Western Australian native, but it is one of the most popular evergreen hedge plants in Perth and the dry south-west, where it needs only summer water to thrive. Because it is a myrtle, and WA is working to keep out the myrtle rust disease established in the east, live plants face strict import conditions, so locally grown stock is the easiest to buy.",
         "pomelo": "Pomelo is the most heat-loving of the citrus, so in WA it crops best on the warm Perth coastal plain and through the warm north (the Gascoyne around Carnarvon and the Ord at Kununurra), but it is also the most frost-tender citrus, so cold inland and hill-district winters set young trees back. WA's strict citrus quarantine means only a few interstate nurseries can ship live pomelo trees here.",
         "grapefruit": "Grapefruit needs more summer heat than any other common citrus to shed its bitterness and turn sweet, and WA's warm, dry climate supplies it, from Perth to the early citrus district of the Gascoyne around Carnarvon and the hot far north, which give high-sugar, well-coloured fruit. WA's strict quarantine rules limit which interstate nurseries can ship live citrus here, so locally grown stock is especially useful.",
+        "miracle-fruit": "Miracle fruit needs strongly acid soil and humidity, the opposite of Perth's alkaline sandy soils and hard, limey scheme water, so in Western Australia it is grown almost entirely in pots of acidic mix that can be kept moist, humid and frost-free. WA's strict quarantine also means most interstate nurseries will not post this plant here, so local stock and seedlings are the easiest source.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -96,6 +97,7 @@ STATE_CLIMATE_NOTES = {
         "lilly-pilly": "Queensland is part of lilly pilly's native range, and its warm, humid climate grows the fastest, densest hedges in the country. That same warmth and humidity bring the heaviest pimple psyllid and myrtle rust pressure, so a resistant variety is worth seeking out.",
         "pomelo": "Pomelo is the citrus best suited to Queensland's warm, humid climate, handling tropical heat and humidity better than oranges or grapefruit, which is why most of Australia's named pummelo varieties are grown here. It crops from the subtropical south-east to the tropical far north, and only the cold inland frost pockets are a poor fit.",
         "grapefruit": "Grapefruit loves heat, so Queensland's long, warm season ripens it superbly, with the sweetest, fullest-flavoured fruit coming from the warm inland citrus districts. On the humid coast and through the tropics the rind blemishes more and disease pressure is higher, but the heat still drives the high sugars that make grapefruit worth growing.",
+        "miracle-fruit": "The humid, frost-free tropical north of Queensland is the one part of Australia where miracle fruit grows and fruits outdoors much as it does in West Africa. In the cooler, drier south-east it does best in a pot of acidic mix in a warm, sheltered, shaded spot, and it needs strongly acid soil (about pH 4.5 to 5.8) wherever it is grown.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -118,6 +120,7 @@ STATE_CLIMATE_NOTES = {
         "lilly-pilly": "New South Wales is the heartland of the lilly pilly group: every common species grows wild here, the rare magenta lilly pilly is found nowhere else, and it is the default hedge plant of coastal gardens. The humid north coast carries more pimple psyllid and myrtle rust than the cooler south.",
         "pomelo": "Pomelo suits the warm, frost-free subtropical north coast of New South Wales best. It is the most frost-tender of the citrus, so the cold tablelands and the frosty inland (including the big Riverina orange district) are marginal, and a young tree needs a warm, sheltered, sun-facing spot.",
         "grapefruit": "Grapefruit needs a long, hot summer to lose its bitterness and sweeten, so in New South Wales it crops best in the hot, irrigated inland citrus districts. On the cooler tablelands and the milder, more humid coast the fruit tends to stay sharper and thicker skinned, so a warm, open position gives the best result.",
+        "miracle-fruit": "Miracle fruit is frost-tender and humidity-loving, so in New South Wales it grows outdoors only on the warm, near frost-free far north coast. Everywhere south and inland it is a potted shrub of acidic mix that is sheltered or brought under cover for winter, and it wants strongly acid soil wherever it lives.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -140,6 +143,7 @@ STATE_CLIMATE_NOTES = {
         "lilly-pilly": "Lilly pilly is hardier than its tropical cousins and is grown right across Victoria as an evergreen hedge, with the common lilly pilly taking moderate frost once established. The cool climate slows growth but also eases psyllid and disease pressure, though young plants still want protection from hard frost.",
         "pomelo": "Pomelo is the most frost-tender of the common citrus, so cool, frosty Victoria is marginal for it. Grow it in the warmest, most sheltered, sun-facing spot you have, or in a pot that can be moved under cover, and expect lighter, later fruit than it makes in the subtropics.",
         "grapefruit": "Grapefruit is the citrus least suited to a cool climate, because it needs sustained summer heat to lose its bitterness and sweeten. Victoria's warm, dry northern Murray districts grow good grapefruit under irrigation, but around Melbourne and through the cool south the fruit tends to stay acidic and thick skinned, so a hot, sheltered north-facing spot is essential.",
+        "miracle-fruit": "Victoria is too cold for miracle fruit outdoors. It is grown here as an indoor or heated-glasshouse pot plant in acidic mix, kept warm and humid and stood outside only through the warm months, so expect a novelty plant with light crops rather than a garden tree.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -149,7 +153,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "mango": "tropical", "lychee": "tropical", "longan": "tropical",
     "rambutan": "tropical", "durian": "tropical", "mangosteen": "tropical",
     "abiu": "tropical", "sapodilla": "tropical", "black sapote": "tropical",
-    "rollinia": "tropical", "canistel": "tropical", "miracle fruit": "tropical",
+    "rollinia": "tropical", "canistel": "tropical",
     "papaya": "tropical", "carambola": "tropical", "starfruit": "tropical",
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
     "dragon fruit": "tropical", "wax jambu": "tropical",
@@ -273,6 +277,15 @@ SPECIES_CLIMATE_CATEGORY = {
     # growers to "cold-tolerant varieties like Meyer Lemon", which is irrelevant to a
     # grapefruit buyer. Its own per-state notes lead with the heat-to-sweeten story.
     "grapefruit": "grapefruit",
+    # Miracle fruit gets its own category. The generic "tropical" note is wrong for it:
+    # it is not a heat-and-sun crop but a humidity-loving, strongly acid-soil understorey
+    # shrub (pH 4.5 to 5.8, like a blueberry) that is frost-tender and sold only as
+    # seedlings, so the VIC "stick to cold-hardy varieties" line and the WA "warm dry
+    # suits tropical species" line both mislead. Across most of Australia it is a pot
+    # plant, and the per-state notes below tell that story: humid tropical QLD grows it
+    # outdoors, WA fights alkaline soil and water, NSW is a warm-coast-or-pot split, and
+    # VIC is indoor/glasshouse only.
+    "miracle fruit": "miracle-fruit",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
