@@ -110,7 +110,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
     "dragon fruit": "tropical", "wax jambu": "tropical",
     "avocado": "subtropical", "guava": "subtropical", "jaboticaba": "subtropical",
-    "feijoa": "subtropical", "loquat": "subtropical",
+    "feijoa": "subtropical", "loquat": "subtropical", "macadamia": "subtropical",
     "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
     "mandarin": "citrus", "grapefruit": "citrus", "tangelo": "citrus",
