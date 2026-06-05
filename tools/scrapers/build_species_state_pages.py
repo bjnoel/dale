@@ -63,6 +63,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Bananas grow in the warm, frost-free parts of WA, but live banana plants cannot simply be brought in from interstate. WA quarantine rules require planting material to meet strict import conditions, so source WA-grown, certified disease-free plants.",
         "cherry": "Cherries are the most chill-demanding of the common stone fruits, needing a long, cold winter that almost no part of WA reliably provides, so they crop only in the coldest southern hill and forest districts, and low-chill types are the realistic backyard option. WA's strict quarantine rules also limit which interstate nurseries can ship live cherry trees here.",
         "mulberry": "Mulberries are tough, widely adapted trees that grow across most of WA, from Perth gardens to the Wheatbelt and the warm Gascoyne. They need no winter chill and are very drought-tolerant once established, so they suit WA well with a little summer water. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
+        "blueberry": "Blueberries are acid-soil shrubs, not chill-hungry stone fruit: the make-or-break factor is a strongly acidic soil (pH 4.5 to 5.5), which Perth's alkaline sands and hard bore water work against, so most WA growers raise them in beds or pots of acidic mix. Warm districts suit low-chill southern highbush and rabbiteye, while the cooler south coast can also ripen the deciduous northern highbush. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -74,6 +75,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Queensland's warm, humid, frost-free climate is ideal for bananas, which is why the far north grows almost all of Australia's crop. Biosecurity rules restrict moving banana plants between zones.",
         "cherry": "Cherries need far more winter chill than almost all of Queensland provides, so they are limited to the coldest, highest part of the state. Across the warm coast, the subtropics and the tropics, winters are too mild for sweet cherries to flower and fruit reliably.",
         "mulberry": "Mulberries are among the easiest fruit trees to grow in Queensland, cropping heavily from the subtropical south-east to the tropical north. They tolerate heat and humidity far better than most deciduous fruit trees and need no winter chill.",
+        "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) far more than they need winter chill, so in Queensland choose low-chill, often evergreen southern highbush and rabbiteye and skip the cold-climate northern highbush. In the warm subtropics the bushes crop earlier and a vigorous plant can give a second, lighter flush, though humidity lifts disease pressure.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -85,6 +87,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Warm, frost-free parts of coastal NSW, mainly the subtropical north, suit bananas. Banana bunchy top virus is a serious local risk, so plant only certified material and never move suckers between gardens.",
         "cherry": "Cherries are the most chill-demanding stone fruit and crop only where winters are genuinely cold, so in New South Wales they are a tree for the cool tablelands, not the warm coast or the hot inland plains.",
         "mulberry": "Mulberries grow almost anywhere in New South Wales, from the warm coast to the cold tablelands, and are one of the most reliable backyard fruit trees in the state. They need no winter chill and shrug off frost once established.",
+        "blueberry": "Blueberries are acid-soil shrubs (they want a soil pH of 4.5 to 5.5, not lime), and New South Wales grows more of them than any other state. Evergreen low-chill southern highbush suit the warm coast, while the cold tablelands also ripen the deciduous northern highbush. Plant two of the same type for the heaviest crops.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -96,6 +99,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Victoria is too cold and frost-prone for bananas to crop reliably. They can be grown as a foliage plant or in a warm, sheltered courtyard or pot, but expect little or no fruit.",
         "cherry": "Victoria's cold winters give cherries the deep chill they need, which is why it is one of Australia's main cherry states. They crop best in the cool hill and high-country districts, while the warmest lowland areas are more marginal.",
         "mulberry": "Mulberries are fully cold-hardy and crop reliably right across Victoria, including the cool central and southern districts. They need no winter chill, tolerate frost once established, and simply ripen a little later where summers are cooler.",
+        "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) above all else, and Victoria's reliably cold winters also let it grow the full range, including the deciduous, high-chill northern highbush that warmer states struggle with. Cool conditions ripen the fruit later and larger, and birds are the main pest.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -118,7 +122,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "apple": "temperate", "pear": "temperate", "plum": "temperate",
     "peach": "temperate", "nectarine": "temperate",
     "apricot": "temperate", "quince": "temperate",
-    "blueberry": "temperate", "raspberry": "temperate", "blackberry": "temperate",
+    "raspberry": "temperate", "blackberry": "temperate",
     "strawberry": "temperate",
     # Mediterranean-climate crops: no winter-chill requirement, so they must not
     # inherit the stone/pome-fruit chill-hours note. Figs are a common fig
@@ -140,6 +144,13 @@ SPECIES_CLIMATE_CATEGORY = {
     # "subtropical" note that wrongly implies it is marginal and frost-tender in the
     # cooler south. The per-state notes below tell the real story.
     "mulberry": "mulberry",
+    # Blueberry gets its own category. Unlike a stone or pome fruit, its defining need
+    # is not winter chill but a strongly acidic soil (pH 4.5 to 5.5), and it splits into
+    # low-chill (southern highbush, rabbiteye) types for warm areas and high-chill
+    # (northern highbush) types for cool ones. The generic "temperate / choose low-chill
+    # varieties" note misses both points, so each state note leads with the acid-soil
+    # rule and names the blueberry type that suits that climate.
+    "blueberry": "blueberry",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
