@@ -1,0 +1,23 @@
+# Rollinia (biriba) per-state growing guide on treestock (QLD flagship)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Rollinia (Annona mucosa, the accepted name for the old Rollinia deliciosa / mucosa; also biriba or Brazilian custard apple) is on the species-guide rollout list (docs/species-guide-rollout.md), in the indexed, low-click tail. treestock tracks it at Daleys, Ladybird and Ross Creek Tropicals, sold mostly as seedlings with a few named grafted selections (Picone, Limberlost, Sputnik). Until now the species page showed the single generic fruit_species.json blurb. This continues the per-species growing-guide rollout (olive is the reference; custard apple is the closest already-shipped relative, and it already cross-links to rollinia, now reciprocated).
+
+**Decision:** Ship a rollinia growing guide (tools/scrapers/growing_guides/rollinia.json) matching the olive gold standard: a state-invariant core (choosing a variety, pollination, planting and soil, water and feeding and humidity, harvest and eating, buying tips) plus four genuinely distinct state overlays. Queensland is the flagship, because the warm, humid, frost-free far north is the only part of Australia where rollinia is genuinely at home, on both the wet tropical coast (Cairns, Innisfail, Tully, Cardwell) and the elevated Atherton Tablelands (Julatten, Mareeba); New South Wales covers the subtropical Northern Rivers (Murwillumbah, the Tweed, Lismore, Alstonville) as the southern outdoor limit; Western Australia is framed honestly as a collector's challenge (a dry tropical north plus a Mediterranean Perth, neither giving the heat-and-humidity combination it wants) behind WA's quarantine wall; Victoria covers growing it under glass, because frost kills it outdoors.
+
+**Climate category:** kept rollinia as "tropical" (already mapped in SPECIES_CLIMATE_CATEGORY); no new category was added. Unlike olive/grape (mediterranean) or feijoa/loquat, the generic tropical climate notes are accurate exactly where a rollinia combo page would ever generate (QLD and the warm NSW coast), and the species-specific story lives in the overlays. This matches how its closest relative, custard apple, is handled.
+
+**Why:** Correct, trustworthy guides for exactly the rare fruit our community collects earn search traffic and trust, the audience that feeds the Treesmith funnel (Track B supporting Track A). Rollinia also carries facts the generic blurb glossed: its flowers are protogynous (female phase first), so one tree fruits but natural set is often poor and hand pollination lifts the crop; it is NOT frost tolerant (a light frost around 3 degrees on the grass kills young trees, correcting an inverted reading of the old archive note); and the ripe fruit is too perishable to market (it softens almost to a liquid within a day or two), which is why it is a backyard-only tree.
+
+**Actions:**
+- New tools/scrapers/growing_guides/rollinia.json (core + WA/QLD/NSW/VIC overlays, 18 sources, curated WANATCA further_reading; RFCA Rollinia archive links auto-merge).
+- New tests/test_guide_rollinia.py with rollinia-specific correctness and uniqueness anchors (QLD flagship region tokens).
+- Sourced archives-first from Benedict's owned RFC archives (the North Queensland / Julatten grower accounts) and the WANATCA ACOTANC papers (du Preez "Annonas and Carambolas"; Coronel "Underexploited Nuts and Fruits of the Philippines", which lists biriba), then cross-checked against UF/IFAS EDIS (HS1523), University of Hawaii CTAHR, Morton/Purdue, Custard Apples Australia, Business Queensland, DPIRD WA and Daleys.
+- No code change to the builders and no SPECIES_CLIMATE_CATEGORY edit (rollinia was already "tropical"); archive_links.json already carried the four RFCA Rollinia entries, so re-running build_archive_index.py produced no diff (not committed, per the parallel-run convention).
+
+**Status:** PR #80 open, pending Benedict review. Full test suite green (1119 tests). Every cited and further-reading URL verified HTTP 200. No em or en dashes. Logged parallel-safe (this pending fragment plus a per-entry public-ledger file), so no DEC number is claimed here; fold_pending_decisions.py assigns it at close-out.
+
+**Note on live surface:** with current stock rollinia sits below the top-20 cut for QLD/NSW/VIC buy pages, and only one seller ships it to WA (below the 3-in-stock minimum), so no combo page generates today. The live change is a much better /species/rollinia.html. The four state overlays are built and tested and switch on automatically as stock grows.
+
+**To revert:** delete growing_guides/rollinia.json (the page falls back to the generic blurb) and remove tests/test_guide_rollinia.py. No other files change.
