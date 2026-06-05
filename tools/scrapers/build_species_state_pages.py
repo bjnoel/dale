@@ -61,6 +61,7 @@ STATE_CLIMATE_NOTES = {
         "temperate": "South-west WA's mild winters suit temperate stone fruit and pome fruit, though winters are less cold than eastern states. Chilling hours may be lower, so choose low-chill varieties. WA quarantine rules apply.",
         "mediterranean": "South-west WA's Mediterranean climate (hot dry summers, mild wet winters) is close to ideal for olives, grapes and figs, which need summer heat to ripen and have only a low winter-chill requirement, far less than stone fruit. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "banana": "Bananas grow in the warm, frost-free parts of WA, but live banana plants cannot simply be brought in from interstate. WA quarantine rules require planting material to meet strict import conditions, so source WA-grown, certified disease-free plants.",
+        "mulberry": "Mulberries are tough, widely adapted trees that grow across most of WA, from Perth gardens to the Wheatbelt and the warm Gascoyne. They need no winter chill and are very drought-tolerant once established, so they suit WA well with a little summer water. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -70,6 +71,7 @@ STATE_CLIMATE_NOTES = {
         "temperate": "Southern Queensland can grow many temperate fruit trees, though chilling hours are lower than further south. Choose low-chill apple, pear, and stone fruit varieties.",
         "mediterranean": "Olives, grapes and figs prefer a drier, Mediterranean-style climate, so in Queensland they do best in the cooler, drier inland and elevated districts (such as the Granite Belt) rather than the humid coast and tropics.",
         "banana": "Queensland's warm, humid, frost-free climate is ideal for bananas, which is why the far north grows almost all of Australia's crop. Biosecurity rules restrict moving banana plants between zones.",
+        "mulberry": "Mulberries are among the easiest fruit trees to grow in Queensland, cropping heavily from the subtropical south-east to the tropical north. They tolerate heat and humidity far better than most deciduous fruit trees and need no winter chill.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -79,6 +81,7 @@ STATE_CLIMATE_NOTES = {
         "temperate": "NSW's diverse climate supports a wide range of temperate fruit trees, from the cool tablelands to the warmer coastal plains.",
         "mediterranean": "Olives, grapes and figs suit NSW's warmer inland and temperate districts with hot dry summers, and they have little winter-chill requirement. Young trees can be frost-sensitive in the coldest tableland areas.",
         "banana": "Warm, frost-free parts of coastal NSW, mainly the subtropical north, suit bananas. Banana bunchy top virus is a serious local risk, so plant only certified material and never move suckers between gardens.",
+        "mulberry": "Mulberries grow almost anywhere in New South Wales, from the warm coast to the cold tablelands, and are one of the most reliable backyard fruit trees in the state. They need no winter chill and shrug off frost once established.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -88,6 +91,7 @@ STATE_CLIMATE_NOTES = {
         "temperate": "Victoria's cool temperate climate is ideal for stone fruit, apples, and pears. Cold winters provide the chilling hours these trees need. Heritage varieties do particularly well.",
         "mediterranean": "Victoria's warm dry summers and mild winters suit olives, grapes and figs, which have little winter-chill requirement. Cooler districts simply ripen the fruit later, and frost can set back young trees.",
         "banana": "Victoria is too cold and frost-prone for bananas to crop reliably. They can be grown as a foliage plant or in a warm, sheltered courtyard or pot, but expect little or no fruit.",
+        "mulberry": "Mulberries are fully cold-hardy and crop reliably right across Victoria, including the cool central and southern districts. They need no winter chill, tolerate frost once established, and simply ripen a little later where summers are cooler.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -102,7 +106,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
     "dragon fruit": "tropical", "wax jambu": "tropical",
     "avocado": "subtropical", "guava": "subtropical", "jaboticaba": "subtropical",
-    "feijoa": "subtropical", "loquat": "subtropical", "mulberry": "subtropical",
+    "feijoa": "subtropical", "loquat": "subtropical",
     "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
     "mandarin": "citrus", "grapefruit": "citrus", "tangelo": "citrus",
@@ -120,6 +124,12 @@ SPECIES_CLIMATE_CATEGORY = {
     # banana planting material cannot simply be brought into WA (quarantine), and
     # banana bunchy top virus is the headline backyard risk in the eastern states.
     "banana": "banana",
+    # Mulberry gets its own category. It is one of the most climate-flexible fruit
+    # trees grown here (subtropical Queensland through to cold-climate Victoria), needs
+    # no winter chill, and is very frost and drought hardy, so it must NOT inherit the
+    # "subtropical" note that wrongly implies it is marginal and frost-tender in the
+    # cooler south. The per-state notes below tell the real story.
+    "mulberry": "mulberry",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
