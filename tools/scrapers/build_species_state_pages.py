@@ -159,6 +159,14 @@ SPECIES_CLIMATE_CATEGORY = {
     "dragon fruit": "tropical", "wax jambu": "tropical",
     "avocado": "subtropical", "guava": "subtropical", "jaboticaba": "subtropical",
     "macadamia": "subtropical",
+    # Grumichama (Eugenia brasiliensis, the Brazil cherry) is a subtropical to
+    # tropical myrtle-family fruit, the close kin of jaboticaba, so it takes the
+    # shared "subtropical" note rather than a dedicated category. Its real per-state
+    # nuances (low drought tolerance, a thin-skinned fruit-fly host unlike its
+    # thick-skinned cousin, and being cold-hardier than most subtropicals) live in
+    # growing_guides/grumichama.json. The entry matters: without it grumichama fell
+    # back to the stone/pome-fruit "default" note, wrong for it in VIC especially.
+    "grumichama": "subtropical",
     "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
     "mandarin": "citrus", "tangelo": "citrus",
