@@ -104,7 +104,7 @@ STATE_CLIMATE_NOTES = {
 SPECIES_CLIMATE_CATEGORY = {
     "mango": "tropical", "lychee": "tropical", "longan": "tropical",
     "rambutan": "tropical", "durian": "tropical", "mangosteen": "tropical",
-    "abiu": "tropical", "sapodilla": "tropical",
+    "abiu": "tropical", "sapodilla": "tropical", "black sapote": "tropical",
     "rollinia": "tropical", "canistel": "tropical", "miracle fruit": "tropical",
     "papaya": "tropical", "carambola": "tropical",
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
