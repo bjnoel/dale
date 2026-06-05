@@ -70,6 +70,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs, not chill-hungry stone fruit: the make-or-break factor is a strongly acidic soil (pH 4.5 to 5.5), which Perth's alkaline sands and hard bore water work against, so most WA growers raise them in beds or pots of acidic mix. Warm districts suit low-chill southern highbush and rabbiteye, while the cooler south coast can also ripen the deciduous northern highbush. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "feijoa": "Feijoa is one of the most cold-tolerant of the exotic fruits and grows well right across the cooler south-west, needing only the light winter chill the region easily provides. Give it summer water for a good crop and net against Mediterranean fruit fly. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "loquat": "Loquats are an easy, long-established backyard tree in Perth and the mild South West, where near frost-free winters let their unusual autumn-to-winter flowers set a reliable late-winter crop. Unlike many fruit trees, loquat is a permitted plant in WA with no loquat-specific quarantine restriction, so it ships in more freely. Mediterranean fruit fly is the pest to plan around.",
+        "grapefruit": "Grapefruit needs more summer heat than any other common citrus to shed its bitterness and turn sweet, and WA's warm, dry climate supplies it, from Perth to the early citrus district of the Gascoyne around Carnarvon and the hot far north, which give high-sugar, well-coloured fruit. WA's strict quarantine rules limit which interstate nurseries can ship live citrus here, so locally grown stock is especially useful.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -88,6 +89,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) far more than they need winter chill, so in Queensland choose low-chill, often evergreen southern highbush and rabbiteye and skip the cold-climate northern highbush. In the warm subtropics the bushes crop earlier and a vigorous plant can give a second, lighter flush, though humidity lifts disease pressure.",
         "feijoa": "Feijoa needs a cool winter to fruit, so in Queensland it is a tree for the cool, elevated south (the Granite Belt and the Darling Downs) rather than the warm, humid coast or the tropics, where mild winters give plenty of leaf but little fruit. Queensland fruit fly is the main pest, so net the tree or bait for it.",
         "loquat": "Loquats need a cool season to flower and fruit well, so in Queensland they crop best in the cooler, drier south and the southern uplands, and grow mainly as a handsome evergreen ornamental in the humid tropical lowlands, where winters are too warm and wet for reliable fruit set. Queensland fruit fly is the pest to manage.",
+        "grapefruit": "Grapefruit loves heat, so Queensland's long, warm season ripens it superbly, with the sweetest, fullest-flavoured fruit coming from the warm inland citrus districts. On the humid coast and through the tropics the rind blemishes more and disease pressure is higher, but the heat still drives the high sugars that make grapefruit worth growing.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -106,6 +108,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs (they want a soil pH of 4.5 to 5.5, not lime), and New South Wales grows more of them than any other state. Evergreen low-chill southern highbush suit the warm coast, while the cold tablelands also ripen the deciduous northern highbush. Plant two of the same type for the heaviest crops.",
         "feijoa": "Feijoa is frost-hardy and cool-loving, so it crops reliably across the cool NSW tablelands and the temperate coast and Sydney basin, while the warm, humid far north coast is more marginal for fruit set. Queensland fruit fly is the main pest to manage.",
         "loquat": "Loquats are a classic, easy backyard tree across coastal and temperate New South Wales, flowering in autumn and ripening one of the first crops of the year in late winter to spring. On the coldest tablelands, winter frost can nip the blossom, so a warm, sheltered spot gives the best fruit. Queensland fruit fly is the main pest.",
+        "grapefruit": "Grapefruit needs a long, hot summer to lose its bitterness and sweeten, so in New South Wales it crops best in the hot, irrigated inland citrus districts. On the cooler tablelands and the milder, more humid coast the fruit tends to stay sharper and thicker skinned, so a warm, open position gives the best result.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -124,6 +127,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) above all else, and Victoria's reliably cold winters also let it grow the full range, including the deciduous, high-chill northern highbush that warmer states struggle with. Cool conditions ripen the fruit later and larger, and birds are the main pest.",
         "feijoa": "Victoria's cool winters and mild summers are close to ideal for feijoa, which is fully frost-hardy once established and develops its best flavour in cooler districts. It crops well right across the south, and Queensland fruit fly is established in only parts of the state, so net where it occurs.",
         "loquat": "Loquats are hardy and widely grown across Melbourne and milder Victoria, ripening latest of the mainland states. The tree itself shrugs off frost, but because it flowers and sets fruit through autumn and winter, hard frosts can cut the crop, so coastal, bayside and sheltered north-facing gardens fruit most reliably.",
+        "grapefruit": "Grapefruit is the citrus least suited to a cool climate, because it needs sustained summer heat to lose its bitterness and sweeten. Victoria's warm, dry northern Murray districts grow good grapefruit under irrigation, but around Melbourne and through the cool south the fruit tends to stay acidic and thick skinned, so a hot, sheltered north-facing spot is essential.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -141,7 +145,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "macadamia": "subtropical",
     "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
-    "mandarin": "citrus", "grapefruit": "citrus", "tangelo": "citrus",
+    "mandarin": "citrus", "tangelo": "citrus",
     "cumquat": "citrus", "pomelo": "citrus", "finger lime": "citrus",
     "apple": "temperate", "pear": "temperate", "plum": "temperate",
     "peach": "temperate", "nectarine": "temperate",
@@ -219,6 +223,16 @@ SPECIES_CLIMATE_CATEGORY = {
     # below carry the real story: mild-winter coast crops reliably, humid tropics fruit
     # poorly, and cold inland frost-hollows lose the winter blossom.
     "loquat": "loquat",
+    # Grapefruit gets its own category rather than sitting in the generic "citrus"
+    # group. Of all the common citrus it is the OUTLIER: it needs the most summer heat
+    # to shed its bitterness and sweeten, so it is superb in hot inland and subtropical
+    # districts and genuinely marginal (sour, thick-skinned) in cool, short-summer areas
+    # like Melbourne and the cold tablelands. The shared "citrus" note tells the wrong
+    # story for it twice over: it implies frost is the limiting factor (the tree is hardy
+    # enough; the FRUIT failing to sweeten is the real issue) and it steers cool-climate
+    # growers to "cold-tolerant varieties like Meyer Lemon", which is irrelevant to a
+    # grapefruit buyer. Its own per-state notes lead with the heat-to-sweeten story.
+    "grapefruit": "grapefruit",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
