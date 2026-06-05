@@ -294,6 +294,17 @@ black-sapote, loquat, starfruit, rollinia, miracle-fruit. (50 species have some 
 - [x] mandarin (DEC-144, QLD flagship, citrus, all four states live)
 - [x] orange (DEC-145, NSW flagship, first citrus guide; mixed-genus RFCA Citrus folder hand-curated)
 - The five above (the citrus quartet plus apple) shipped as a parallel batch, all merged 2026-06-04 (PRs #47 to #51).
+- [x] apricot (DEC-146, WA flagship, self-fertile and summer-pruning correctness pinned)
+- [x] cherry (DEC-147, NSW/VIC flagship, its own high-chill climate category)
+- [x] finger-lime (DEC-148, native rainforest citrus, archives-first)
+- [x] mulberry (DEC-149, WA flagship, its own climate-flexible category)
+- [x] nectarine (DEC-150, VIC flagship, smooth-skin stone-fruit agronomy)
+- [x] pear (DEC-151, VIC flagship, the pick-firm-ripen-off-tree pome story)
+- [x] rambutan (DEC-152, archives-first, pollination story corrected)
+- [x] wax-jambu (DEC-153, QLD flagship, standout WA overlay)
+- The eight above shipped as a parallel batch, all merged 2026-06-05 (PRs #53 to #60). cherry and
+  mulberry each added their own climate category to build_species_state_pages.py; pear and apricot
+  were normalised to the pending-fragment convention at merge (they had edited decision-log.md directly).
 - [ ] (continue down the priority order)
 
 ## Notes
