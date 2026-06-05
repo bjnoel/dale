@@ -70,6 +70,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs, not chill-hungry stone fruit: the make-or-break factor is a strongly acidic soil (pH 4.5 to 5.5), which Perth's alkaline sands and hard bore water work against, so most WA growers raise them in beds or pots of acidic mix. Warm districts suit low-chill southern highbush and rabbiteye, while the cooler south coast can also ripen the deciduous northern highbush. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "feijoa": "Feijoa is one of the most cold-tolerant of the exotic fruits and grows well right across the cooler south-west, needing only the light winter chill the region easily provides. Give it summer water for a good crop and net against Mediterranean fruit fly. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "loquat": "Loquats are an easy, long-established backyard tree in Perth and the mild South West, where near frost-free winters let their unusual autumn-to-winter flowers set a reliable late-winter crop. Unlike many fruit trees, loquat is a permitted plant in WA with no loquat-specific quarantine restriction, so it ships in more freely. Mediterranean fruit fly is the pest to plan around.",
+        "cacao": "Cacao is an equatorial rainforest tree that needs constant warmth and humidity, so it sits beyond what Western Australia can offer. Even the tropical far north was trialled (at Broome and Kununurra) and grew poorly, while Perth and the south west are far too dry and cool. WA's strict quarantine also limits which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -88,6 +89,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) far more than they need winter chill, so in Queensland choose low-chill, often evergreen southern highbush and rabbiteye and skip the cold-climate northern highbush. In the warm subtropics the bushes crop earlier and a vigorous plant can give a second, lighter flush, though humidity lifts disease pressure.",
         "feijoa": "Feijoa needs a cool winter to fruit, so in Queensland it is a tree for the cool, elevated south (the Granite Belt and the Darling Downs) rather than the warm, humid coast or the tropics, where mild winters give plenty of leaf but little fruit. Queensland fruit fly is the main pest, so net the tree or bait for it.",
         "loquat": "Loquats need a cool season to flower and fruit well, so in Queensland they crop best in the cooler, drier south and the southern uplands, and grow mainly as a handsome evergreen ornamental in the humid tropical lowlands, where winters are too warm and wet for reliable fruit set. Queensland fruit fly is the pest to manage.",
+        "cacao": "Queensland's wet tropical far north (roughly Cardwell to the Daintree) is the only part of Australia warm and humid enough to grow cacao as a crop, and the small Australian cocoa industry is centred there. The cooler, drier subtropical south east can keep a tree alive in a sheltered spot but will not crop it reliably.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -106,6 +108,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs (they want a soil pH of 4.5 to 5.5, not lime), and New South Wales grows more of them than any other state. Evergreen low-chill southern highbush suit the warm coast, while the cold tablelands also ripen the deciduous northern highbush. Plant two of the same type for the heaviest crops.",
         "feijoa": "Feijoa is frost-hardy and cool-loving, so it crops reliably across the cool NSW tablelands and the temperate coast and Sydney basin, while the warm, humid far north coast is more marginal for fruit set. Queensland fruit fly is the main pest to manage.",
         "loquat": "Loquats are a classic, easy backyard tree across coastal and temperate New South Wales, flowering in autumn and ripening one of the first crops of the year in late winter to spring. On the coldest tablelands, winter frost can nip the blossom, so a warm, sheltered spot gives the best fruit. Queensland fruit fly is the main pest.",
+        "cacao": "Cacao is strictly equatorial, and even the warm far north coast of New South Wales has winters far too cool for it. Here it is a heated glasshouse curiosity rather than a garden tree, and there is no commercial cacao in the state.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -124,6 +127,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) above all else, and Victoria's reliably cold winters also let it grow the full range, including the deciduous, high-chill northern highbush that warmer states struggle with. Cool conditions ripen the fruit later and larger, and birds are the main pest.",
         "feijoa": "Victoria's cool winters and mild summers are close to ideal for feijoa, which is fully frost-hardy once established and develops its best flavour in cooler districts. It crops well right across the south, and Queensland fruit fly is established in only parts of the state, so net where it occurs.",
         "loquat": "Loquats are hardy and widely grown across Melbourne and milder Victoria, ripening latest of the mainland states. The tree itself shrugs off frost, but because it flowers and sets fruit through autumn and winter, hard frosts can cut the crop, so coastal, bayside and sheltered north-facing gardens fruit most reliably.",
+        "cacao": "Victoria is far too cold for cacao, which is killed by frost and set back by any cool spell. It can only be kept alive in a heated, humid glasshouse and will not fruit, so treat it as a specimen plant rather than a crop.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -219,6 +223,15 @@ SPECIES_CLIMATE_CATEGORY = {
     # below carry the real story: mild-winter coast crops reliably, humid tropics fruit
     # poorly, and cold inland frost-hollows lose the winter blossom.
     "loquat": "loquat",
+    # Cacao (the chocolate tree) gets its own category because it is the most
+    # climate-restricted species in the set: a true equatorial rainforest tree that
+    # needs constant warmth and humidity, no frost, and no long dry season, so it crops
+    # in Australia ONLY on the wet tropical coast of far north Queensland. The generic
+    # "tropical" note is wrong for it twice over: it implies warm dry Perth/northern WA
+    # suits it (the WA cocoa trials at Broome and Kununurra were discontinued), and it
+    # understates how completely the subtropics and the cool south rule it out (a
+    # glasshouse curiosity at best). Each per-state note tells that real story.
+    "cacao": "cacao",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
