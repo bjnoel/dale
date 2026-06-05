@@ -66,6 +66,7 @@ STATE_CLIMATE_NOTES = {
         "jujube": "Western Australia is one of Australia's main jujube regions. Its hot, dry summers, mild winters and free-draining soils suit this deciduous, intensely drought and heat hardy tree, which also copes with the salty and alkaline ground that defeats most fruit trees. Quarantine rules apply to live trees sent in from other states, so locally grown stock is often the easiest to buy, and Mediterranean fruit fly is the pest to net against.",
         "passionfruit": "Passionfruit grows well on Perth's frost-free coastal plain and through the warm south-west, with a small industry in the hot north. Western Australia has Mediterranean fruit fly rather than Queensland fruit fly, and strict quarantine means only a handful of interstate nurseries can ship live vines here, so local stock and seed-grown plants are especially useful.",
         "pecan": "Pecans are large deciduous nut trees that need a long, hot summer to fill their kernels rather than much winter chill, so in Western Australia they suit the warm inland and the hotter parts of the south-west where summer water is on hand, not the cool, wet far south. WA's strict quarantine rules also limit which interstate nurseries can ship live pecan trees here.",
+        "pomegranate": "South-west WA's Mediterranean climate (hot dry summers, mild wet winters) suits pomegranates, which need summer heat to ripen and have only a low winter-chill requirement. The dry WA summer also means far less of the fruit splitting and rot that humidity causes. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -80,6 +81,7 @@ STATE_CLIMATE_NOTES = {
         "jujube": "Jujube is a hot, dry climate tree, so in Queensland it belongs in the warm, dry inland rather than the humid coast or the wet tropics, where damp weather near harvest spoils the fruit and raises disease pressure. It needs a hot summer to ripen and only a little winter chill, both of which the inland supplies.",
         "passionfruit": "Queensland's warm, humid, largely frost-free climate is the heartland of Australian passionfruit, and the state grows most of the national crop. Purple and black types suit the cooler south-east, while larger Panama and golden types handle the humid tropical north.",
         "pecan": "Pecans need a long, hot growing season and deep, well-drained soil with plenty of summer water, so in Queensland they crop best in the warm inland and southern districts under irrigation rather than on the humid tropical coast. Australia is free of the pecan scab disease that troubles humid overseas regions, which is a real advantage here.",
+        "pomegranate": "Pomegranates want hot dry summers, so in Queensland they fruit best in the cooler, drier inland and elevated districts rather than the humid coast, subtropics or tropics, where humidity and summer rain make the fruit split, rot and ripen poorly.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -94,6 +96,7 @@ STATE_CLIMATE_NOTES = {
         "jujube": "Jujube thrives on long, hot, dry summers and tolerates drought, frost and poor soils, so in New South Wales it suits the warm inland far better than the humid coast. A little winter chill and a dry ripening autumn give the best fruit.",
         "passionfruit": "The warm subtropical north coast of New South Wales suits passionfruit well, especially the purple and black types. Frost limits it on the cold tablelands and through the inland, so pick a sheltered, sunny spot away from cold hollows and choose a hardy grafted vine in cooler districts.",
         "pecan": "Pecans are a major inland New South Wales nut crop, suited to districts with hot summers, cool winters and reliable irrigation water, which is why the warm, irrigated northern valleys grow most of Australia's crop. They are very large, long-lived trees, so give them plenty of room.",
+        "pomegranate": "Pomegranates suit the hot, dry inland of New South Wales. On the humid coast the fruit is prone to splitting and rot, and in the coldest tablelands frost can set back young plants, so the warm, dry interior is the reliable choice.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -108,6 +111,7 @@ STATE_CLIMATE_NOTES = {
         "jujube": "Victoria's hot, dry northern inland suits jujube well, while the cooler, wetter south is more marginal because the fruit ripens late and damp autumn weather can spoil it. The tree is very frost hardy when dormant and needs a hot summer to ripen its fruit.",
         "passionfruit": "Victoria is cool and frost-prone for a subtropical vine, so passionfruit is a marginal, short-lived crop here. A grafted Nellie Kelly on hardy blue passionflower rootstock, grown against a hot sheltered wall, is the dependable choice, and some nurseries will not post perishable vines this far south.",
         "pecan": "Pecans need a long, hot summer to ripen and fill their nuts, which makes Victoria marginal for them. They crop best in the warm, irrigated northern districts and are unreliable in the cool, frost-prone south, where the season is often too short to finish the nuts.",
+        "pomegranate": "Victoria's warm, dry inland summers and mild winters suit pomegranates, which have a low winter-chill requirement. Cooler southern and coastal districts ripen the fruit later and less reliably, and frost can set back young plants.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -172,6 +176,12 @@ SPECIES_CLIMATE_CATEGORY = {
     # varieties" note is the wrong story for it. Its own category lets each state
     # note lead with summer heat, irrigation and the scab-free advantage instead.
     "pecan": "pecan",
+    # Pomegranate gets its own category rather than joining "mediterranean". It shares
+    # the low winter-chill, hot-dry-summer profile of olive/grape/fig, but its decisive
+    # per-state story is fruit SPLITTING and rot in humidity (a non-issue for olives),
+    # so the eastern-state notes below need to say that plainly instead of inheriting
+    # the olive/grape mediterranean wording.
+    "pomegranate": "pomegranate",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
