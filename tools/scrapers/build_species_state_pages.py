@@ -63,6 +63,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Bananas grow in the warm, frost-free parts of WA, but live banana plants cannot simply be brought in from interstate. WA quarantine rules require planting material to meet strict import conditions, so source WA-grown, certified disease-free plants.",
         "cherry": "Cherries are the most chill-demanding of the common stone fruits, needing a long, cold winter that almost no part of WA reliably provides, so they crop only in the coldest southern hill and forest districts, and low-chill types are the realistic backyard option. WA's strict quarantine rules also limit which interstate nurseries can ship live cherry trees here.",
         "mulberry": "Mulberries are tough, widely adapted trees that grow across most of WA, from Perth gardens to the Wheatbelt and the warm Gascoyne. They need no winter chill and are very drought-tolerant once established, so they suit WA well with a little summer water. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
+        "feijoa": "Feijoa is one of the most cold-tolerant of the exotic fruits and grows well right across the cooler south-west, needing only the light winter chill the region easily provides. Give it summer water for a good crop and net against Mediterranean fruit fly. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -74,6 +75,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Queensland's warm, humid, frost-free climate is ideal for bananas, which is why the far north grows almost all of Australia's crop. Biosecurity rules restrict moving banana plants between zones.",
         "cherry": "Cherries need far more winter chill than almost all of Queensland provides, so they are limited to the coldest, highest part of the state. Across the warm coast, the subtropics and the tropics, winters are too mild for sweet cherries to flower and fruit reliably.",
         "mulberry": "Mulberries are among the easiest fruit trees to grow in Queensland, cropping heavily from the subtropical south-east to the tropical north. They tolerate heat and humidity far better than most deciduous fruit trees and need no winter chill.",
+        "feijoa": "Feijoa needs a cool winter to fruit, so in Queensland it is a tree for the cool, elevated south (the Granite Belt and the Darling Downs) rather than the warm, humid coast or the tropics, where mild winters give plenty of leaf but little fruit. Queensland fruit fly is the main pest, so net the tree or bait for it.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -85,6 +87,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Warm, frost-free parts of coastal NSW, mainly the subtropical north, suit bananas. Banana bunchy top virus is a serious local risk, so plant only certified material and never move suckers between gardens.",
         "cherry": "Cherries are the most chill-demanding stone fruit and crop only where winters are genuinely cold, so in New South Wales they are a tree for the cool tablelands, not the warm coast or the hot inland plains.",
         "mulberry": "Mulberries grow almost anywhere in New South Wales, from the warm coast to the cold tablelands, and are one of the most reliable backyard fruit trees in the state. They need no winter chill and shrug off frost once established.",
+        "feijoa": "Feijoa is frost-hardy and cool-loving, so it crops reliably across the cool NSW tablelands and the temperate coast and Sydney basin, while the warm, humid far north coast is more marginal for fruit set. Queensland fruit fly is the main pest to manage.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -96,6 +99,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Victoria is too cold and frost-prone for bananas to crop reliably. They can be grown as a foliage plant or in a warm, sheltered courtyard or pot, but expect little or no fruit.",
         "cherry": "Victoria's cold winters give cherries the deep chill they need, which is why it is one of Australia's main cherry states. They crop best in the cool hill and high-country districts, while the warmest lowland areas are more marginal.",
         "mulberry": "Mulberries are fully cold-hardy and crop reliably right across Victoria, including the cool central and southern districts. They need no winter chill, tolerate frost once established, and simply ripen a little later where summers are cooler.",
+        "feijoa": "Victoria's cool winters and mild summers are close to ideal for feijoa, which is fully frost-hardy once established and develops its best flavour in cooler districts. It crops well right across the south, and Queensland fruit fly is established in only parts of the state, so net where it occurs.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -110,7 +114,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
     "dragon fruit": "tropical", "wax jambu": "tropical",
     "avocado": "subtropical", "guava": "subtropical", "jaboticaba": "subtropical",
-    "feijoa": "subtropical", "loquat": "subtropical",
+    "loquat": "subtropical",
     "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
     "mandarin": "citrus", "grapefruit": "citrus", "tangelo": "citrus",
@@ -140,6 +144,14 @@ SPECIES_CLIMATE_CATEGORY = {
     # "subtropical" note that wrongly implies it is marginal and frost-tender in the
     # cooler south. The per-state notes below tell the real story.
     "mulberry": "mulberry",
+    # Feijoa (pineapple guava) gets its own category, and it is the OPPOSITE of the
+    # generic "subtropical" note. Feijoa is one of the most cold-hardy of the exotic
+    # fruits (to about minus 10C), it NEEDS a modest winter chill (~50 hours) to fruit
+    # well, and it develops its best flavour in cooler areas, so it crops best in the
+    # cool south (Victoria, the NSW tablelands, cooler WA) and only poorly in the warm,
+    # humid tropics. The old "subtropical" VIC note (sheltered north-facing spot,
+    # nurseries that "do not ship to VIC") is exactly wrong for it.
+    "feijoa": "feijoa",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
