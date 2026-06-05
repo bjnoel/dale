@@ -106,7 +106,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "rambutan": "tropical", "durian": "tropical", "mangosteen": "tropical",
     "abiu": "tropical", "sapodilla": "tropical", "black sapote": "tropical",
     "rollinia": "tropical", "canistel": "tropical", "miracle fruit": "tropical",
-    "papaya": "tropical", "carambola": "tropical",
+    "papaya": "tropical", "carambola": "tropical", "starfruit": "tropical",
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
     "dragon fruit": "tropical", "wax jambu": "tropical",
     "avocado": "subtropical", "guava": "subtropical", "jaboticaba": "subtropical",
