@@ -67,6 +67,7 @@ STATE_CLIMATE_NOTES = {
         "passionfruit": "Passionfruit grows well on Perth's frost-free coastal plain and through the warm south-west, with a small industry in the hot north. Western Australia has Mediterranean fruit fly rather than Queensland fruit fly, and strict quarantine means only a handful of interstate nurseries can ship live vines here, so local stock and seed-grown plants are especially useful.",
         "pecan": "Pecans are large deciduous nut trees that need a long, hot summer to fill their kernels rather than much winter chill, so in Western Australia they suit the warm inland and the hotter parts of the south-west where summer water is on hand, not the cool, wet far south. WA's strict quarantine rules also limit which interstate nurseries can ship live pecan trees here.",
         "pomegranate": "South-west WA's Mediterranean climate (hot dry summers, mild wet winters) suits pomegranates, which need summer heat to ripen and have only a low winter-chill requirement. The dry WA summer also means far less of the fruit splitting and rot that humidity causes. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
+        "blueberry": "Blueberries are acid-soil shrubs, not chill-hungry stone fruit: the make-or-break factor is a strongly acidic soil (pH 4.5 to 5.5), which Perth's alkaline sands and hard bore water work against, so most WA growers raise them in beds or pots of acidic mix. Warm districts suit low-chill southern highbush and rabbiteye, while the cooler south coast can also ripen the deciduous northern highbush. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -82,6 +83,7 @@ STATE_CLIMATE_NOTES = {
         "passionfruit": "Queensland's warm, humid, largely frost-free climate is the heartland of Australian passionfruit, and the state grows most of the national crop. Purple and black types suit the cooler south-east, while larger Panama and golden types handle the humid tropical north.",
         "pecan": "Pecans need a long, hot growing season and deep, well-drained soil with plenty of summer water, so in Queensland they crop best in the warm inland and southern districts under irrigation rather than on the humid tropical coast. Australia is free of the pecan scab disease that troubles humid overseas regions, which is a real advantage here.",
         "pomegranate": "Pomegranates want hot dry summers, so in Queensland they fruit best in the cooler, drier inland and elevated districts rather than the humid coast, subtropics or tropics, where humidity and summer rain make the fruit split, rot and ripen poorly.",
+        "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) far more than they need winter chill, so in Queensland choose low-chill, often evergreen southern highbush and rabbiteye and skip the cold-climate northern highbush. In the warm subtropics the bushes crop earlier and a vigorous plant can give a second, lighter flush, though humidity lifts disease pressure.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -97,6 +99,7 @@ STATE_CLIMATE_NOTES = {
         "passionfruit": "The warm subtropical north coast of New South Wales suits passionfruit well, especially the purple and black types. Frost limits it on the cold tablelands and through the inland, so pick a sheltered, sunny spot away from cold hollows and choose a hardy grafted vine in cooler districts.",
         "pecan": "Pecans are a major inland New South Wales nut crop, suited to districts with hot summers, cool winters and reliable irrigation water, which is why the warm, irrigated northern valleys grow most of Australia's crop. They are very large, long-lived trees, so give them plenty of room.",
         "pomegranate": "Pomegranates suit the hot, dry inland of New South Wales. On the humid coast the fruit is prone to splitting and rot, and in the coldest tablelands frost can set back young plants, so the warm, dry interior is the reliable choice.",
+        "blueberry": "Blueberries are acid-soil shrubs (they want a soil pH of 4.5 to 5.5, not lime), and New South Wales grows more of them than any other state. Evergreen low-chill southern highbush suit the warm coast, while the cold tablelands also ripen the deciduous northern highbush. Plant two of the same type for the heaviest crops.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -112,6 +115,7 @@ STATE_CLIMATE_NOTES = {
         "passionfruit": "Victoria is cool and frost-prone for a subtropical vine, so passionfruit is a marginal, short-lived crop here. A grafted Nellie Kelly on hardy blue passionflower rootstock, grown against a hot sheltered wall, is the dependable choice, and some nurseries will not post perishable vines this far south.",
         "pecan": "Pecans need a long, hot summer to ripen and fill their nuts, which makes Victoria marginal for them. They crop best in the warm, irrigated northern districts and are unreliable in the cool, frost-prone south, where the season is often too short to finish the nuts.",
         "pomegranate": "Victoria's warm, dry inland summers and mild winters suit pomegranates, which have a low winter-chill requirement. Cooler southern and coastal districts ripen the fruit later and less reliably, and frost can set back young plants.",
+        "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) above all else, and Victoria's reliably cold winters also let it grow the full range, including the deciduous, high-chill northern highbush that warmer states struggle with. Cool conditions ripen the fruit later and larger, and birds are the main pest.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -134,7 +138,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "apple": "temperate", "pear": "temperate", "plum": "temperate",
     "peach": "temperate", "nectarine": "temperate",
     "apricot": "temperate", "quince": "temperate",
-    "blueberry": "temperate", "raspberry": "temperate", "blackberry": "temperate",
+    "raspberry": "temperate", "blackberry": "temperate",
     "strawberry": "temperate",
     # Mediterranean-climate crops: no winter-chill requirement, so they must not
     # inherit the stone/pome-fruit chill-hours note. Figs are a common fig
@@ -182,6 +186,13 @@ SPECIES_CLIMATE_CATEGORY = {
     # so the eastern-state notes below need to say that plainly instead of inheriting
     # the olive/grape mediterranean wording.
     "pomegranate": "pomegranate",
+    # Blueberry gets its own category. Unlike a stone or pome fruit, its defining need
+    # is not winter chill but a strongly acidic soil (pH 4.5 to 5.5), and it splits into
+    # low-chill (southern highbush, rabbiteye) types for warm areas and high-chill
+    # (northern highbush) types for cool ones. The generic "temperate / choose low-chill
+    # varieties" note misses both points, so each state note leads with the acid-soil
+    # rule and names the blueberry type that suits that climate.
+    "blueberry": "blueberry",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
