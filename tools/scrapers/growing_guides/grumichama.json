@@ -1,0 +1,393 @@
+{
+  "slug": "grumichama",
+  "common_name": "Grumichama",
+  "sources_note": "Growing guidance on this page draws on the Rare Fruit Council of Australia archive, Australian nurseries and growers, state biosecurity departments, and horticultural references.",
+  "sources": [
+    {
+      "id": "rfca-overview",
+      "name": "Rare Fruit Council of Australia archives: Grumichama (Eugenia brasiliensis) overview",
+      "short": "RFCA grumichama",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Grumichama/Grumichama.htm"
+    },
+    {
+      "id": "rfca-joyner",
+      "name": "Rare Fruit Council of Australia archives: The Grumichama, quick to grow (Gene Joyner, 1989)",
+      "short": "RFCA Joyner",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Grumichama/Grumichama1-89.htm"
+    },
+    {
+      "id": "rfca-gray",
+      "name": "Rare Fruit Council of Australia archives: The Grumichama, a tropical cherry (Christine Gray, 1981)",
+      "short": "RFCA Gray",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Grumichama/Grumichama11-81.htm"
+    },
+    {
+      "id": "rfca-ingham",
+      "name": "Rare Fruit Council of Australia archives: The Grumichama (Ingham Branch, 1994)",
+      "short": "RFCA Ingham Branch",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Grumichama/Grumichama11-94.htm"
+    },
+    {
+      "id": "daleys",
+      "name": "Daleys Fruit Tree Nursery: Grumichama (Eugenia brasiliensis)",
+      "short": "Daleys grumichama",
+      "url": "https://www.daleysfruit.com.au/Grumichama-Eugenia-brasiliensis.htm"
+    },
+    {
+      "id": "theferns",
+      "name": "Useful Tropical Plants: Eugenia brasiliensis (grumichama)",
+      "short": "Useful Tropical Plants",
+      "url": "https://tropical.theferns.info/viewtropical.php?id=Eugenia+brasiliensis"
+    },
+    {
+      "id": "robpyne",
+      "name": "Cairns and Tropical Gardening: grumichama tree care (tropical north Queensland)",
+      "short": "Cairns Tropical Gardening",
+      "url": "https://www.robpyne.com.au/grumichama-tree/"
+    },
+    {
+      "id": "bq-qff",
+      "name": "Business Queensland: Queensland fruit fly",
+      "short": "Business Qld fruit fly",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/insects/horticultural/queensland-fruit-fly"
+    },
+    {
+      "id": "bq-myrtlerust",
+      "name": "Business Queensland: myrtle rust (a Myrtaceae-family disease)",
+      "short": "Business Qld myrtle rust",
+      "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/priority-pest-disease/myrtle-rust"
+    },
+    {
+      "id": "daff-myrtlerust",
+      "name": "Australian Government Department of Agriculture: myrtle rust (infects the Myrtaceae family)",
+      "short": "DAFF myrtle rust",
+      "url": "https://www.agriculture.gov.au/biosecurity-trade/pests-diseases-weeds/plant/identify/myrtle-rust"
+    },
+    {
+      "id": "dcceew-myrtlerust",
+      "name": "Australian Government DCCEEW: myrtle rust (first detected NSW central coast, 2010)",
+      "short": "DCCEEW myrtle rust",
+      "url": "https://www.dcceew.gov.au/environment/invasive-species/diseases-fungi-and-parasites/myrtle-rust"
+    },
+    {
+      "id": "dbca-myrtlerust",
+      "name": "Parks and Wildlife Service WA (DBCA): myrtle rust (first WA detection, northern WA, 2022)",
+      "short": "DBCA myrtle rust",
+      "url": "https://www.dbca.wa.gov.au/management/threat-management/plant-diseases/myrtle-rust"
+    },
+    {
+      "id": "dpird-myrtlerust",
+      "name": "DPIRD Western Australia: myrtle rust",
+      "short": "DPIRD myrtle rust",
+      "url": "https://www.dpird.wa.gov.au/businesses/pests-weeds-and-diseases/plant/plant-diseases/myrtle-rust/"
+    },
+    {
+      "id": "dpird-medfly",
+      "name": "DPIRD Western Australia: Mediterranean fruit fly",
+      "short": "DPIRD Medfly",
+      "url": "https://www.dpird.wa.gov.au/businesses/pests-weeds-and-diseases/animal-pests-diseases/pest-insects/mediterranean-fruit-fly/"
+    },
+    {
+      "id": "dpird-import",
+      "name": "DPIRD Western Australia: importing plants and plant products (Quarantine WA)",
+      "short": "Quarantine WA",
+      "url": "https://www.dpird.wa.gov.au/businesses/biosecurity/importing-and-exporting-quarantine-wa/importing-plants-and-plant-products/"
+    },
+    {
+      "id": "waol",
+      "name": "DPIRD Western Australia: Western Australian Organism List (legal status of plants entering WA)",
+      "short": "WA Organism List",
+      "url": "https://www.dpird.wa.gov.au/online-tools/western-australian-organism-list/"
+    }
+  ],
+  "core": {
+    "intro": "Across Australia the basics of growing grumichama, the Brazilian cherry, are the same: a warm, frost-light spot out of strong wind, a rich, acid soil kept constantly moist, patience for a naturally slow tree, and the reward of a short, generous flush of sweet, cherry-like fruit. The state sections below cover the climate, regions, harvest timing and pests where you are; the notes here apply anywhere in the country.",
+    "sections": [
+      {
+        "heading": "Choosing a variety",
+        "body": "Grumichama (Eugenia brasiliensis) is sold mostly as one of two fruit colours. The common black form carries dark purple-black fruit with sweet, melting, pale flesh and is the reliable, best-flavoured choice for a first tree. A rarer yellow-fruited form, sold as Yellow or Orange, ripens to gold and has a milder, slightly different flavour. There are also compact dwarf selections, grown from cuttings, that stay small and start fruiting sooner, which suits pots and small gardens. Grumichama is a close relative of the jaboticaba and the guava (see our <a href=\"/species/jaboticaba.html\" class=\"text-green-700 hover:underline\">jaboticaba</a> and <a href=\"/species/guava.html\" class=\"text-green-700 hover:underline\">guava</a> guides), all members of the myrtle family. Older plants were usually unnamed seedlings, which vary a little in size and quality, so for a known fruit choose a named form from the table above.",
+        "cites": [
+          "rfca-overview",
+          "daleys",
+          "rfca-ingham",
+          "theferns"
+        ]
+      },
+      {
+        "heading": "Pollination: one tree or two?",
+        "body": "Grumichama is self-fertile, so a single tree will set fruit on its own; you do not have to plant a second tree or a particular partner. The small white flowers carry no scent but are rich in pollen and are worked by bees, and good bee activity in the garden lifts fruit set, so a second tree or a healthy bee population will increase the crop without being essential. If you have room for only one tree, you will still get fruit.",
+        "cites": [
+          "rfca-gray",
+          "daleys"
+        ]
+      },
+      {
+        "heading": "Planting and soil",
+        "body": "Plant grumichama in full sun for the heaviest crop, though it tolerates part shade and young plants actually do better with some shade until they establish. Give it a deep, rich, moist but free-draining soil with plenty of organic matter. The non-negotiable is acidity: grumichama wants a slightly acid soil and is intolerant of alkaline or limy ground, where the leaves yellow with iron, manganese and magnesium deficiency. It is shallow-rooted, so mulch thickly and never let it dry out, and it is not salt-tolerant and resents strong wind, which knocks off flowers and fruit, so give it a sheltered spot. It is slow-growing, so plant it in the warm months, about two metres clear of buildings and other trees, and pick its position for the long term (see our guide on <a href=\"/when-to-plant.html\" class=\"text-green-700 hover:underline\">when to plant</a>).",
+        "cites": [
+          "rfca-joyner",
+          "rfca-ingham",
+          "theferns",
+          "daleys"
+        ]
+      },
+      {
+        "heading": "Water and feeding",
+        "body": "Steady moisture is the heart of growing grumichama well. Its drought tolerance is low, a long dry season sets it back, and water stress while the fruit is filling makes the tree shed its crop, so water year round and deeply through fruiting, and keep a thick organic mulch over the shallow roots to hold moisture. Feed it lightly but often through the warm season with a good fruit-tree fertiliser or organic matter such as well-rotted poultry manure, blood and bone or compost. Keep the soil on the acid side: on alkaline or sandy ground use an acidic (azalea and camellia) fertiliser, keep the mulch up, and correct any leaf yellowing with iron and trace-element sprays.",
+        "cites": [
+          "theferns",
+          "robpyne",
+          "rfca-joyner",
+          "rfca-ingham"
+        ]
+      },
+      {
+        "heading": "Harvest and ripening",
+        "body": "Grumichama flowers in late winter and spring, and the fruit ripens fast, only about four to five weeks after flowering. In the subtropics the tree flowers all at once and the whole crop ripens together within about a month, so the harvest is short and concentrated, often over in a week or two, mostly through spring and early summer. In the warm tropics flowering and fruiting spread over several months and a tree may flower more than once a year. The fruit colours from green to red to glossy purple-black and is picked dead-ripe, when it is fully black and gives slightly. The thin skin bruises easily and the fruit keeps only a few days, which is why it is a backyard and local-market fruit rather than a supermarket one. Net the tree, because birds love the ripe fruit.",
+        "cites": [
+          "theferns",
+          "daleys",
+          "robpyne",
+          "rfca-gray"
+        ]
+      },
+      {
+        "heading": "Eating and using",
+        "body": "Grumichama is at its best eaten fresh off the tree. Hold the three little petals at the base of the berry and squeeze, and the soft, sweet, melting flesh slips into your mouth, tasting like a mild, aromatic cherry around one large seed (sometimes two or three). The thin skin is edible and most people eat it, though it has a faint resinous note. A glut turns into excellent jam, jelly, pie and juice: the fruit is high in pectin, so preserves set well, and cooking is the usual way to keep a crop that will not store fresh.",
+        "cites": [
+          "rfca-gray",
+          "rfca-ingham",
+          "daleys",
+          "theferns"
+        ]
+      },
+      {
+        "heading": "Buying tips",
+        "body": "Grumichama is a slow tree, so what you buy decides how long you wait. A seedling can take roughly four to six years to bear its first fruit and seedlings vary a little in quality, so a cheap seedling is a long-term project. A cutting-grown or grafted plant of a selected form, and a dwarf selection especially, fruits sooner and comes true to type, which is what an advanced or dwarf plant in the table above is really buying you. Pick a named form (black, yellow or dwarf) so you know what you are getting, and check it is grown for fruit rather than as an ornamental hedge plant.",
+        "cites": [
+          "rfca-joyner",
+          "theferns",
+          "robpyne",
+          "daleys"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Can you grow a grumichama in a pot?",
+        "a": "Yes, and it suits one well. Grumichama is naturally slow and compact, and dwarf selections especially so, which makes it a good long-term tub plant for a courtyard or balcony. Use a large pot and a free-draining acidic mix, never let it dry out, feed regularly because containers leach nutrients, and in cold districts move the pot to a warm, sheltered spot or under cover for winter."
+      },
+      {
+        "q": "How big does a grumichama get, and can you keep it small?",
+        "a": "In an Australian garden it usually makes a dense, slow evergreen shrub or small tree of about two to five metres, though over decades in the warm tropics it can reach eight metres or more. It clips well and is often grown as a hedge or screen, and because it is slow it is easy to keep low. Prune it lightly to shape after the fruit is finished."
+      },
+      {
+        "q": "Is grumichama actually a cherry?",
+        "a": "No. Grumichama is also called the Brazil cherry or Brazilian cherry, but it is an Eugenia in the myrtle family, a relative of the jaboticaba, guava and lilly pilly, not a true cherry, which is a Prunus. The name comes from the cherry-like look and sweet flavour of the fruit, not from any botanical kinship."
+      },
+      {
+        "q": "How much cold can a grumichama take?",
+        "a": "Established trees are surprisingly hardy for a tropical fruit and handle a light frost of about minus 3 degrees for short spells, which is why grumichama grows further into cool districts than most of its relatives. Young plants, though, are frost-tender and need protecting through their first winters, and in cold areas the safest approach is a pot you can move under cover."
+      }
+    ]
+  },
+  "states": {
+    "WA": {
+      "intro": "Growing grumichama in Western Australia. The Brazilian cherry is a warm-climate tree for the frost-light Perth coast and the warm north, where the make-or-break factor is keeping the water up to it through the long dry summer.",
+      "sections": [
+        {
+          "heading": "Climate fit",
+          "body": "Grumichama suits the milder, frost-light parts of WA rather than the hot, dry inland. Around Perth the coastal plain is warm enough and frost is light, so it grows in a sheltered, sunny garden, and mature trees take a brief light frost to about minus 3 degrees. The real WA challenge is dryness, because grumichama has low drought tolerance and will drop its fruit if it dries out, so it needs steady summer water and a wind-sheltered spot. Young plants are frost-tender, so the cold inland and frost hollows are marginal for them.",
+          "cites": [
+            "theferns",
+            "rfca-joyner"
+          ]
+        },
+        {
+          "heading": "Where grumichama grows in WA",
+          "body": "The dependable ground is the frost-light coast. Gardens on the Swan Coastal Plain around Perth grow grumichama in warm, sheltered positions with summer water, and the warm, frost-free Gascoyne around Carnarvon, which ripens a wide range of subtropical fruit, suits it too. Inland and the colder hill districts are harder, because young trees resent frost and the dry heat, so they need a protected microclimate and reliable irrigation.",
+          "cites": [
+            "theferns",
+            "rfca-ingham"
+          ]
+        },
+        {
+          "heading": "Harvest window in WA",
+          "body": "Grumichama flowers in spring and, as a subtropical-climate crop here, ripens its fruit all together about four to five weeks later, so expect a short, concentrated picking through late spring and early summer, roughly November into December. Water the tree hard while the fruit is filling so the crop does not drop in the dry heat, and pick the berries when they are fully purple-black.",
+          "cites": [
+            "daleys",
+            "theferns"
+          ]
+        },
+        {
+          "heading": "Pests, myrtle rust and getting a tree to WA",
+          "body": "Western Australia has Mediterranean fruit fly rather than Queensland fruit fly, and grumichama's thin, soft skin makes it an easy target, so plan to net the tree or bait for the fly. The better news is myrtle rust, the disease of the myrtle family to which grumichama belongs: WA is still almost free of it, with only a remote northern detection in 2022, so the pressure here is far lower than in the humid east. Because it is a myrtle-family plant, though, live nursery stock still needs treatment and certification under WA's import rules, so several eastern nurseries will not post it across the border. The in-stock table above is filtered to sellers that can ship to WA.",
+          "cites": [
+            "dpird-medfly",
+            "dbca-myrtlerust",
+            "dpird-myrtlerust",
+            "dpird-import",
+            "waol"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Which grumichama should I plant in Perth?",
+          "a": "For the best fruit, plant the common black form; it is the reliable, sweetest type and grows happily in a warm, sheltered Perth garden. A dwarf selection is worth it if you want a pot or a small courtyard tree that fruits sooner. Whichever you choose, the key in Perth is steady summer water and a spot out of the wind."
+        },
+        {
+          "q": "Will grumichama grow in Perth's sandy soils?",
+          "a": "It can, but Perth's coastal sand is often alkaline and low in iron, which grumichama dislikes, so the leaves can yellow. Dig in plenty of compost, mulch thickly to keep the shallow roots cool and moist, use an acidic (azalea) fertiliser to bring the pH down, and treat any yellowing with an iron and trace-element spray."
+        }
+      ]
+    },
+    "QLD": {
+      "intro": "Growing grumichama in Queensland. Warm, humid Queensland is prime grumichama country, from the subtropical south east up to the tropical far north, and the rare-fruit branches of the north grew it for decades.",
+      "sections": [
+        {
+          "heading": "Climate fit",
+          "body": "Grumichama thrives in Queensland's warmth and humidity and is happiest in the coastal lowlands. In the humid subtropical south east it grows into an easy, productive tree, while in the tropical far north it fruits even more freely, flowering more than once a year. The main trade-off for all that warmth and moisture is disease pressure from myrtle rust on the humid coast, which is the one thing to watch.",
+          "cites": [
+            "theferns",
+            "robpyne",
+            "bq-myrtlerust"
+          ]
+        },
+        {
+          "heading": "Where grumichama grows in QLD",
+          "body": "The tree has a long Queensland history with the rare-fruit community. It is grown through the subtropical south east, including the Sunshine Coast hinterland and the Wide Bay around Gympie, and further north it crops on the Atherton Tableland behind Cairns and through the wet tropics where the Ingham and Cardwell branches trialled it. In a suburban yard it makes a handsome evergreen specimen or a productive clipped hedge.",
+          "cites": [
+            "rfca-ingham",
+            "robpyne"
+          ]
+        },
+        {
+          "heading": "Harvest window in QLD",
+          "body": "In the subtropical south east grumichama flowers synchronously in spring and the crop ripens together about four to five weeks later, so the main harvest is a short, concentrated flush in spring and early summer, around October to December. In the tropical north the tree flowers several times a year and fruiting can spread over several months, from the end of the dry season into the wet. Pick the berries fully purple-black and use them within a few days.",
+          "cites": [
+            "theferns",
+            "robpyne",
+            "daleys"
+          ]
+        },
+        {
+          "heading": "Pests and diseases in QLD",
+          "body": "Myrtle rust is the disease to know. It thrives on the humid Queensland coast and attacks the soft new growth of myrtle-family plants like grumichama, so space and prune trees for airflow and watch the new flushes. Queensland fruit fly is endemic here, and unlike its thick-skinned relative the jaboticaba, grumichama has thin, soft skin that the fly will sting, so net the tree or bait for it as the fruit colours. Birds are the other competitor for the ripe crop.",
+          "cites": [
+            "bq-myrtlerust",
+            "bq-qff",
+            "robpyne"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Which grumichama variety suits Queensland?",
+          "a": "Almost any does well in the Queensland warmth, so choose by what you want on the plate: the black form for reliable, sweet fruit, the yellow (or orange) form for something unusual, or a dwarf for a pot or a low hedge. All cope with the humidity, and all share the same myrtle-rust and fruit-fly watch."
+        },
+        {
+          "q": "Does grumichama make a good hedge in Queensland?",
+          "a": "Yes. It is naturally dense, slow and evergreen, with glossy leaves and reddish new growth, and it takes clipping well, so it is often grown as a productive hedge or screen in south-east Queensland gardens. A single plant becomes a feature; a row makes a screen that also fruits, which is a fair reward for the wait."
+        }
+      ]
+    },
+    "NSW": {
+      "intro": "Growing grumichama in New South Wales. The subtropical Northern Rivers is the heart of grumichama growing in the state, but the tree's cold-hardiness lets it reach well down the coast, even into sheltered Sydney gardens.",
+      "sections": [
+        {
+          "heading": "Climate fit",
+          "body": "Grumichama is well suited to coastal New South Wales. The warm, humid far north coast grows it easily, and because mature trees take a light frost the tree also succeeds further south and inland than most subtropical fruit, down to warm, sheltered pockets of the Sydney basin. Growth slows over winter, and the cold tableland frost hollows will nip young plants, while the humid coast lifts myrtle-rust pressure, so match your site and shelter to your district.",
+          "cites": [
+            "theferns",
+            "rfca-joyner",
+            "dcceew-myrtlerust"
+          ]
+        },
+        {
+          "heading": "Where grumichama grows in NSW",
+          "body": "The established district is the Northern Rivers around the Tweed, Lismore and Alstonville, the warm, humid country where most of the state's subtropical fruit is grown. The tree carries on down the mid-north coast around Coffs Harbour, and keen gardeners fruit it in frost-free corners of the Sydney basin, more slowly than on the warm north coast. Cold, frosty inland and tableland sites are marginal, especially for young plants.",
+          "cites": [
+            "rfca-joyner",
+            "theferns"
+          ]
+        },
+        {
+          "heading": "Harvest window in NSW",
+          "body": "On the warm coast grumichama flowers in spring and the crop ripens together about four to five weeks later, giving a short, concentrated picking through late spring and early summer, mostly November into December. Cooler and more southerly districts run a little later. Pick the berries when they are fully purple-black and soft, and eat or preserve them within a couple of days, because the thin skin will not keep.",
+          "cites": [
+            "theferns",
+            "daleys"
+          ]
+        },
+        {
+          "heading": "Pests and diseases in NSW",
+          "body": "Myrtle rust matters most here. It was first found in Australia on the New South Wales central coast in 2010, and it attacks the soft new growth of myrtle-family plants like grumichama, hitting hardest in the humid coastal districts where the tree grows best, so prune for airflow and watch the new flushes. Queensland fruit fly is native to the north east of the state, and grumichama's thin skin makes it a host, so net or bait the tree. Birds are the other competitor for the fruit.",
+          "cites": [
+            "dcceew-myrtlerust",
+            "daff-myrtlerust",
+            "bq-qff"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can you grow grumichama in Sydney?",
+          "a": "Yes, more readily than many subtropical fruits, because mature grumichama takes a light frost. Give it a warm, sheltered, north-facing, frost-free spot, protect young plants through their first winters, keep the water up in summer, and accept that it will grow and fruit more slowly than it does on the warm north coast."
+        },
+        {
+          "q": "Which grumichama variety suits the NSW north coast?",
+          "a": "The warm north coast grows them all, so pick by fruit. The black form is the dependable, sweet, reliable cropper, the yellow or orange form is a fun rarity, and a dwarf suits a pot or a small garden. Give any of them a sunny, sheltered spot and steady moisture."
+        }
+      ]
+    },
+    "VIC": {
+      "intro": "Growing grumichama in Victoria. Victoria is cool for a Brazilian fruit, but grumichama is among the hardiest of the tropical cherries, so with a warm microclimate or a pot it is one of the more achievable rare subtropicals for a Melbourne garden.",
+      "sections": [
+        {
+          "heading": "Climate fit",
+          "body": "Most subtropical fruit will not take a Victorian winter, but grumichama is unusually cold-tolerant: mature trees handle a light frost to about minus 3 degrees and will grow, slowly, in mild temperate districts. In practice that means a warm, sheltered, north-facing spot in or around Melbourne, or a large pot you can move, rather than an exposed, frost-prone garden. A cool spring can upset the tree's all-at-once flowering, and a cool season may leave the late fruit short of fully ripening.",
+          "cites": [
+            "theferns",
+            "rfca-joyner"
+          ]
+        },
+        {
+          "heading": "Where grumichama grows in VIC",
+          "body": "The best chances are the mild microclimates: warm, north-facing corners of Melbourne, the bayside suburbs and the Mornington Peninsula, and the milder coastal pockets of Gippsland. Many Victorian growers sidestep the cold entirely and keep grumichama in a large tub that spends winter in a warm, sheltered spot or under cover. Either way, expect slow growth and a long wait for the first fruit.",
+          "cites": [
+            "theferns",
+            "daleys"
+          ]
+        },
+        {
+          "heading": "Harvest window in VIC",
+          "body": "Victoria harvests latest of the states, where the tree fruits at all. Expect a short, concentrated crop in early summer, around December into January, in the warmest spots. Let the berries colour right through to glossy purple-black on the tree, since they do not ripen well once picked, and in a cool season be ready for some late fruit that never finishes.",
+          "cites": [
+            "theferns",
+            "daleys"
+          ]
+        },
+        {
+          "heading": "Frost, pests and pots in VIC",
+          "body": "Cold, not pests, is the limiting factor in Victoria. Protect young plants from frost with cloth and a warm wall through their first winters, while mature trees are tougher. Myrtle rust is established in eastern Australia, including Victoria, and can affect grumichama as a myrtle-family plant, and Queensland fruit fly is present in parts of the state, where grumichama's thin skin makes it a host. A frost-hardier myrtle relative to fall back on, if grumichama proves too tender, is the feijoa (see our <a href=\"/species/feijoa.html\" class=\"text-green-700 hover:underline\">feijoa guide</a>).",
+          "cites": [
+            "dcceew-myrtlerust",
+            "bq-qff"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "How do I protect a grumichama from frost in Victoria?",
+          "a": "Young plants are the vulnerable ones. Grow the tree in the warmest, most sheltered, north-facing spot you have, or in a pot you can move under cover, wrap it in frost cloth on cold nights through its first winters, and mulch the roots well. Ease off the water in the cold so it is not pushing tender new growth. Established trees shrug off a light frost."
+        },
+        {
+          "q": "How long will a grumichama take to fruit in Victoria?",
+          "a": "Longer than anywhere warmer. The cool climate slows an already slow tree, so a seedling could take many years to bear. To have any hope of fruit in a reasonable time, start with an advanced, cutting-grown or dwarf plant rather than a seedling, keep it in a warm spot or a pot, and treat it as a long-term project."
+        }
+      ]
+    }
+  },
+  "further_reading": []
+}
