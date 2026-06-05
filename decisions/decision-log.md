@@ -4,6 +4,433 @@
 
 ---
 
+## DEC-164 — 2026-06-05 — Starfruit (carambola) gets a comprehensive, cited, per-state growing guide on treestock
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** treestock tracks starfruit (carambola, Averrhoa carambola) across five nurseries (Daleys, Ladybird, Ross Creek Tropicals, Fruitopia and others), with named cultivars including Sweet Gold, Kembangan, Thai Knight, Arkin, Kary and Fwang Tung in or recently in stock. Until now the species page and any state page showed the single generic fruit_species.json blurb. This continues the per-species growing-guide rollout (olive was the reference; see docs/species-guide-rollout.md), working into the indexed-but-low-click tail.
+
+**Decision:** Ship a starfruit growing guide (tools/scrapers/growing_guides/starfruit.json) matching the olive gold standard: a state-invariant core (choosing a variety, pollination, planting and soil, water and feeding to the depth checklist, harvest and ripening, eating and food safety, buying tips) plus four genuinely distinct state overlays. Queensland is the flagship, because the warm, frost-free coast (the Wet Tropics around Innisfail, Tully and the Atherton Tableland) is the real Australian home of carambola; Western Australia gets the deepest secondary overlay (the tropical north around Kununurra, the Ord, Carnarvon and the Gascoyne, with Perth marginal on alkaline sand and a wall of quarantine rules); New South Wales covers the subtropical Northern Rivers as the southern outdoor limit; Victoria covers growing it under glass or in a pot, because frost kills it outdoors.
+
+**Why:** Correct, trustworthy guides for exactly the rare fruit our community collects earn search traffic and trust, which is the audience that feeds the Treesmith funnel (Track B supporting Track A). Starfruit also carries several facts the generic blurb got wrong or glossed: the flowers are heterostylous (short-style cultivars like Kembangan and Fwang Tung set best with a long-style pollinator like Arkin or Kary, but a single self-fruitful tree still crops), the fruit does NOT sweeten after picking so it must be picked ripe, it is a fruit-fly host (Queensland fruit fly in the east, Mediterranean fruit fly in WA), and there is a genuine kidney-disease eating caution (oxalates and caramboxin).
+
+**Actions:**
+- New tools/scrapers/growing_guides/starfruit.json (core + WA/QLD/NSW/VIC overlays, sources, curated further_reading).
+- Added "starfruit": "tropical" to SPECIES_CLIMATE_CATEGORY in build_species_state_pages.py.
+- Sourced archives-first from Benedict's owned RFC archives (QDPI carambola culture, the fruit-set/heterostyly paper, the varieties chart, the fact sheet and the oxalic-acid paper) and the WANATCA ACOTANC "Annonas and Carambolas" paper, then cross-checked against UF/IFAS, the Northern Territory Government, Business Queensland, DPIRD WA and a peer-reviewed star-fruit toxicity review.
+- Moved the cross-cutting "unenriched species" test fixture off starfruit (now enriched) onto jujube; added tests/test_guide_starfruit.py with starfruit-specific correctness anchors.
+
+**Status:** PR open, pending Benedict review. Full test suite green (823 tests). Every cited and further-reading URL verified HTTP 200. No em or en dashes.
+
+**Note on live surface:** with current stock, starfruit ranks below the top-20 cut that generates QLD/NSW/VIC buy pages, so today the live change is a much better species page plus the Western Australia buy page (WA builds all species with 3+ in stock). The other three state overlays are built and tested and switch on automatically as stock grows.
+
+**To revert:** delete growing_guides/starfruit.json (the page falls back to the generic blurb), revert the one SPECIES_CLIMATE_CATEGORY line, and restore the starfruit test fixture.
+
+## DEC-163 — 2026-06-05 — Pomegranate per-state growing guide on treestock (WA flagship), with its own climate category
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Pomegranate is on the species-guide rollout list (docs/species-guide-rollout.md). It is a
+Mediterranean-climate fruit (hot dry summers, low winter chill) whose Australian commercial heartland
+is South Australia's Riverland and Victoria's inland (the country's single largest grower is in the
+Goulburn Valley, not SA as first assumed). But treestock's owned archives for pomegranate are
+overwhelmingly Western Australian: the Agriculture WA cultivar trial at Medina, a grower account from
+Yarloop, and an ACOTANC orchard paper from Yallingup. GSC and Plausible (queried on the server) show
+pomegranate demand is variety-led (the dwarf-parfianka variety page earns the most search interest)
+with only a thin Queensland combo-page signal, so flagship choice fell to climate plus the depth of
+first-party WA material. Pomegranate also had no climate category yet, so it would have inherited the
+generic note, which misses its decisive per-state story: fruit splitting and rot in humidity.
+
+**Decision:** Ship a cited, per-state pomegranate guide (tools/scrapers/growing_guides/pomegranate.json)
+matching the olive implementation, flagship WA, with every state given a genuine, unique overlay. Give
+pomegranate its OWN climate category ("pomegranate") in build_species_state_pages.py with accurate,
+dash-free per-state notes, rather than fold it into the shared "mediterranean" note (which a parallel
+grape run may also be editing, and which says nothing about splitting).
+
+**Why:** Correctness is the rollout's first rule. The headline fact for pomegranate is fruit splitting:
+a dry-climate crop cracks when rain or erratic watering hits near-ripe fruit, so the core and every
+state note lead with it. The guide also corrects three things the generic copy could not: pomegranates
+are self-fruitful (one tree crops; a second only lifts the set), they are non-climacteric (they do not
+ripen after picking, so they must be picked fully ripe), and the fruit fly differs by region
+(Mediterranean fruit fly in WA, where pomegranate's thick rind keeps it off DPIRD's host list, versus
+Queensland fruit fly in the east, where pomegranate IS a listed host). Variety advice is tied to live
+stock (Wonderful, Gulosha Rosavaya, Azerbaijani, Midnight Velvet, Red Velvet, Elche, Parfianka, Veles)
+and, for WA, to the Medina trial's actual verdicts (Gulosha Rosavaya best, Wonderful next).
+
+**Actions:**
+- New growing_guides/pomegranate.json: 22 sources (Diggers, City of Darwin gov fact sheet, AgriFutures
+  management guide + industry overview, UGA / USU / Purdue NewCROP / UC ANR / UC IPM extension, DPIRD
+  medfly + import quarantine, Business Queensland fruit fly, Green Harvest, Talga Estate, Rare Fruit
+  Society SA, plus the owned RFCA Burt / Loeffler / Burmistrov / 1987 articles and the Cohen ACOTANC
+  paper), a shared core + WA/QLD/NSW/VIC overlays, and WANATCA-yearbook + ACOTANC Further reading that
+  auto-merges with the five RFCA pomegranate archive links.
+- build_species_state_pages.py: added SPECIES_CLIMATE_CATEGORY["pomegranate"] = "pomegranate" and
+  matching STATE_CLIMATE_NOTES for all four states (the notes carry no named regions, so nothing leaks
+  across state pages).
+- New tests/test_guide_pomegranate.py (24 tests): per-state uniqueness and no region-token leaks, no
+  dashes, FAQ JSON-LD, Sources, WANATCA + RFCA Further reading followed, dedicated climate category, and
+  correctness guards (splitting flagged everywhere, non-climacteric harvest, one-tree pollination, the
+  right fruit fly per region).
+
+**Status:** PR open (branch dale/pomegranate-guide), pending Benedict review. Full suite green (827
+tests); all 24 cited and further-reading URLs return HTTP 200; worst FAQ/section overlap 0.33 (limit
+0.45). With current stock all four combo pages generate (WA has enough WA-shipping stock; pomegranate
+makes the top-20 in QLD/NSW/VIC). Per the parallel-batch protocol, this branch does not edit
+decision-log.md, the shared daily ledger, the rollout Progress list, or archive_links.json; those are
+folded at batch close-out.
+
+**To revert:** delete tools/scrapers/growing_guides/pomegranate.json and tests/test_guide_pomegranate.py,
+and remove the pomegranate entries from SPECIES_CLIMATE_CATEGORY and STATE_CLIMATE_NOTES in
+build_species_state_pages.py. The species and combo pages fall back to the generic fruit_species.json
+blurb automatically (has_guide returns False).
+
+## DEC-162 — 2026-06-05 — Pecan per-state growing guide (Carya illinoinensis), flagship NSW
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Next species down the growing-guide rollout priority order after the batch-3 tail
+(pecan, then macadamia, grape, pomegranate, passionfruit, feijoa). Pecan is a large deciduous nut
+tree with healthy stock on treestock (daleys carries 7 varieties, conveniently labelled by
+pollination type; fruitopia, ladybird, ross-creek and primal also list it). GSC and Plausible
+produced nothing locally (no creds, the macOS `requests`-missing pattern), so the flagship was chosen
+by climate plus production reality plus stock, like the recent batch.
+
+**Decision:** Shipped `tools/scrapers/growing_guides/pecan.json` (one JSON file) with a state-invariant
+`core` plus genuinely unique WA/QLD/NSW/VIC overlays, matching the olive gold standard. Flagship NSW
+(the Gwydir Valley east of Moree grows the bulk of the national crop, and Stahmann's Trawalla is the
+largest pecan operation in the southern hemisphere), with WA as the standout overlay: it is the only
+combo page that renders from current stock, and it is the best-sourced state because pecan is a WA nut
+tree with deep owned archive coverage (the WANATCA Stoneville variety trial + RFCA WA notes).
+
+Pecan gets its OWN `SPECIES_CLIMATE_CATEGORY` ("pecan") plus four town-free `STATE_CLIMATE_NOTES`,
+the banana/cherry/mulberry precedent: its limiting factor is a long, hot summer (heat units fill the
+kernels), NOT winter chill, so the generic "temperate / choose low-chill varieties" note is the wrong
+story for it. Added `tests/test_guide_pecan.py` (37 tests).
+
+**Three corrections to the old `fruit_species.json` framing, each pinned by a test:**
+1. Australia is currently FREE of pecan scab (Fusicladium effusum), the major overseas disease, so
+   pecans here are grown largely without fungicides. This is a grower advantage and a quarantine
+   reason, the OPPOSITE of the old "scab is the main disease in humid regions here" framing.
+2. No pecan is reliably self-fruitful as a lone tree. The "self-pollinating" labels (Pabst, Western
+   Schley) are nursery marketing, not extension science, so the guide says a single tree gives a
+   light, unreliable crop and to plant a Type A (protandrous) plus a Type B (protogynous) for a full
+   one. All 10 cultivar type assignments verified against UGA/NMSU (daleys' (A)=Type I / (B)=Type II
+   labelling is correct).
+3. WA quarantine is real (WAOL listing, certification, treatment); the old draft's "no quarantine
+   restrictions apply to pecan entering WA" is false and was dropped for the standard DPIRD framing.
+
+**Archives:** the RFCA pecan articles sit in the mixed-genus `Nuts` folder (macadamia, pili, saba,
+pecan...), which `build_archive_index.py` does NOT map to a slug, so `archive_links.json` stays
+byte-identical (no pecan key) and the owned Further reading (3 RFCA `Nuts` pecan articles + WANATCA
+yearbooks Y16/Y5/Y6/Y17) is hand-curated, the dragon-fruit / finger-lime mixed-folder pattern. Both
+WANATCA (the WA nut-tree association covers pecans richly) and RFCA appear in Further reading.
+
+**Sources:** 25, all 26 cited + Further-reading URLs return HTTP 200 to a browser UA. Owned RFCA +
+WANATCA first; then the Australian Pecan Growers, DPIRD WA, Queensland DAF, Gwydir Valley Irrigators,
+Business Queensland, and US university pecan extension (UGA / NMSU, the global reference for the crop).
+NSW DPI, Agriculture Victoria and APHIS were avoided because they 403/000 to the curl-200 gate; a test
+guard locks those domains out, so the NSW heartland claims are anchored on Australian Pecan Growers +
+Gwydir Valley Irrigators + Queensland DAF/Country Life instead.
+
+**Actions:** Added `growing_guides/pecan.json`, the `pecan` climate category + 4 state notes in
+`build_species_state_pages.py`, and `tests/test_guide_pecan.py`. Full suite green (840 tests). Built
+against real stock: the WA combo page and `/species/pecan.html` render cited, dash-free, per-state
+unique, with FAQ JSON-LD, Sources and Further reading; QLD/NSW/VIC overlays are authored and
+force-verified but currently sit below the QLD/NSW/VIC top-20 in-stock cut, so they light up when
+stock climbs (judge done on the species page, the tamarillo rule).
+
+**Status:** PR open on `dale/pecan-guide`, pending Benedict review. Not merged.
+
+**To revert:** delete `growing_guides/pecan.json` (the species falls back to the generic blurb via
+`has_guide`), remove the `pecan` entries from `SPECIES_CLIMATE_CATEGORY` and `STATE_CLIMATE_NOTES`,
+and delete `tests/test_guide_pecan.py`.
+
+## DEC-161 — 2026-06-05 — Passionfruit per-state growing guide added to treestock (own climate category)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Passionfruit is on the species-guide rollout list (docs/species-guide-rollout.md). Its treestock pages drew steady but low traffic over the last 90 days (the /species/passionfruit.html page is the main entrance at 104 impressions; among state pages WA led on impressions at 42 with 0 clicks, VIC next at 18 with the only state-page click). That is the same pattern as mango: WA over-indexes on impressions, but the real climate flagship is elsewhere. Passionfruit's commercial and backyard heartland is subtropical Queensland and northern New South Wales (Queensland grows about 60% of the national crop). Until now passionfruit shared the generic, uncited fruit_species.json blurb and was about to inherit the generic "subtropical" climate note, which misses the three things that actually matter for this crop: Queensland is the heartland, WA has Mediterranean (not Queensland) fruit fly plus a quarantine hurdle on live vines, and Victoria leans on a grafted, cold-tolerant rootstock.
+
+**Decision:** Ship a fully cited, per-state passionfruit growing guide matching the olive gold standard, with QLD as the climate flagship and a standout WA overlay, and give passionfruit its OWN climate category rather than inheriting "subtropical".
+
+**Why:**
+- Correctness and trust earn search traffic and community credibility, which is the Track B audience that feeds the Treesmith funnel.
+- Passionfruit has genuine per-state stories (QLD heartland and disease pressure; WA medfly and quarantine; cool-climate Victoria on grafted Nellie Kelly rootstock), so a single shared blurb undersells every state.
+- A dedicated climate category lets each state's amber note tell the real story (this mirrors what banana, cherry, mulberry and jaboticaba did).
+
+**What shipped (pending review):**
+- `tools/scrapers/growing_guides/passionfruit.json`: a shared core (choosing a variety, pollination and self-fertility, planting and support, water and feeding with cited specifics, harvest and eating, woodiness virus and short vine life, buying grafted vs seedling) plus genuinely distinct overlays for QLD, NSW, WA and VIC. 23 sources, all checked live (HTTP 200).
+- Advice tied to live stock and told straight: purple and black types (Misty Gem, Sweetheart, Pandora, Nellie Kelly) for flavour and cooler gardens vs Panama and golden types (Panama Red, Panama Gold) for size and heat. Pollination corrected to the evidence: Australian purple hybrids are self-fertile (a single vine crops), the golden and Panama types are more self-incompatible and want a second vine; carpenter bees are the most efficient pollinators and honeybees are effective too (not "poor"). Feeding depth meets the step-3b checklist with cited numbers (about 200 g/vine/month of a balanced 10:3:10 plus boron; up to 140 litres/vine/week at peak; pH 5.5 to 6.5), and the grafted-rootstock sucker warning and woodiness-virus short-life story are both included.
+- Passionfruit added to `SPECIES_CLIMATE_CATEGORY` and `STATE_CLIMATE_NOTES` as its own `passionfruit` category in `build_species_state_pages.py`.
+- New `tests/test_guide_passionfruit.py` (26 tests) covering per-state uniqueness, no region-token leakage, dash-free copy, FAQ JSON-LD, sources, owned-archive further reading, the dedicated climate category, and passionfruit-specific correctness guards (self-fertility, woodiness virus, the rootstock-sucker warning, banana-passionfruit weed disambiguation, carpenter-bee pollinator).
+- Further reading preferences owned archives first: the RFCA passionfruit articles auto-merge from the archive index and one WANATCA yearbook article (Beal and Farlow, Vol 7) is curated.
+
+**Sourcing note:** Anchored on the Queensland DAF Passionfruit Growing Guide (Rigden, 2011), the NT DAF Panama Red growing note (the cited fertiliser and water numbers), Passionfruit Australia (industry body and statistics), BeeAware (pollination), DPIRD WA (medfly, quarantine, WA cultivation history), Lucidcentral (woodiness virus and the banana-passionfruit weed profile), plus the owned RFCA and WANATCA archives. NSW DPI and Agriculture Victoria block automated fetchers, so verifiable-200 sources were preferred over them.
+
+**Status:** PR open, awaiting Benedict's review. Not merged. With current stock only the WA combo page and the species page render the guide (passionfruit sits one rank below the top-20 cap for QLD, NSW and VIC); those three overlays are written, validated by tests, and appear automatically as stock grows.
+
+**To revert:** delete `tools/scrapers/growing_guides/passionfruit.json` and `tests/test_guide_passionfruit.py`, and remove the `passionfruit` entries from `SPECIES_CLIMATE_CATEGORY` and the four `STATE_CLIMATE_NOTES` blocks in `build_species_state_pages.py`. The pages fall back to the generic blurb automatically (has_guide returns False).
+
+## DEC-160 — 2026-06-05 — Macadamia growing guide: the native Australian nut, with the phosphorus and pest myths corrected
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Continuing the per-species growing-guide rollout (olive infrastructure, see the
+shipped olive/citrus/stone-fruit batches). Macadamia is next down the priority order after the
+pecan/macadamia/grape/pomegranate/passionfruit/feijoa group. The generic fruit_species.json blurb
+for macadamia carried two outright errors and one oversimplification that a real guide had to fix.
+
+**Decision:** Ship a full, per-state, evidence-backed macadamia guide (one
+`growing_guides/macadamia.json` plus a one-line `SPECIES_CLIMATE_CATEGORY` entry mapping macadamia
+to the existing `subtropical` note, plus `tests/test_guide_macadamia.py`). Flagship state is WA: it
+is the only state that generates a combo page from current stock (Guildford WA carries it, plus
+Daleys), and the standout owned source is WANATCA Yearbook 17, "The future for macadamia nuts in
+Western Australia" by David Noel (WANATCA's founder). QLD/NSW/VIC overlays are authored and tested
+and light up when stock crosses the top-20 cut (the tamarillo "judge done on the species page" rule).
+
+**Why:** /species/macadamia.html and the buy-macadamia-trees-[state] pages shared a generic,
+uncited blurb. Macadamia is a high-value native crop with a strong rare-fruit/heritage angle and
+good owned archive coverage (WANATCA has ~20 yearbook articles; the RFCA "Nuts" folder has owned
+macadamia content), so it is a strong candidate for a richer, more trustworthy page.
+
+**Three corrections the research forced (each pinned by a test):**
+- The old blurb called the **macadamia felted coccid "the main pest in Australia."** It is not: the
+  felted coccid is a NATIVE Australian scale, usually minor here (held down by native parasitoids),
+  and is the destructive INVADER only overseas (Hawaii 2005, South Africa 2017). The real flagship
+  insect pest is the macadamia nut borer (Business Queensland; peer-reviewed felted-coccid study).
+- The blurb implied macadamia **is a fruit fly pest** by analogy with other crops. It is NOT a fruit
+  fly host: the hard woody shell excludes it, and it is absent from the Queensland fruit fly
+  commercial host list. Framed as an advantage on the QLD/NSW pages.
+- The blurb said macadamia is **"sensitive to phosphorus; use low-phosphorus native-plant
+  fertiliser."** Honest balance: the AMS does recommend a low-P native blend for backyard trees, so
+  the practical advice is kept, but the BIOLOGY is corrected. Macadamia IS fed phosphorus in
+  commercial orchards (Stephenson et al. 2002, Qld DPI; "high rates of P were being applied
+  throughout the Australian industry"); the real hazard is a large EXCESS of P (iron-deficiency
+  chlorosis, depressed yield, cluster-root suppression), and it tolerates field rates that would
+  harm an ornamental banksia. The guide says exactly that.
+
+**Sourcing:** owned first (WANATCA Yearbooks 5/9/17/26 incl. the Cull fertiliser and Stephenson
+agronomy papers, and the David Noel WA article; RFCA "Nuts" folder articles for home preparation and
+cultivars), then verified-200 authorities: Australian Macadamia Society, Business Queensland, Qld DPI
+grower's handbook, DPIRD WA (the plant-import/quarantine reality, which the blurb wrongly waved away),
+ASPCA (toxic to dogs), BeeAware (self-incompatibility + cross-pollination), QAAFI (husk spot), ANPSA
+and DCCEEW (the threatened wild-macadamia heritage angle), Hidden Valley Plantations + the A4 plant
+patent (the Bell "A" series). Every cited and further-reading URL returns HTTP 200 under a browser
+UA. No RFCA "Macadamia" folder exists, so `archive_links.json` is byte-identical (not committed) and
+further reading is hand-curated owned links only.
+
+**Actions:**
+- Added `tools/scrapers/growing_guides/macadamia.json` (34 sources, 8 core sections + 4 FAQs, four
+  unique state overlays + 2 FAQs each, 4 curated owned further-reading links).
+- Added `"macadamia": "subtropical"` to `SPECIES_CLIMATE_CATEGORY` in
+  `build_species_state_pages.py` (the existing subtropical WA/QLD/NSW/VIC notes are accurate for
+  macadamia, including the WA quarantine line; no new category, low merge-conflict risk).
+- Added `tests/test_guide_macadamia.py` (21 tests: per-state uniqueness, region-token leak guard,
+  no dashes, the three correctness corrections, pollination, two species, dog toxicity, FAQ JSON-LD,
+  sources, further reading). Full suite green (824 tests).
+
+**Status:** PR open, pending Benedict review. Not yet merged or deployed.
+
+**To revert:** delete `growing_guides/macadamia.json` and `tests/test_guide_macadamia.py`, and
+remove the one `SPECIES_CLIMATE_CATEGORY` line. has_guide("macadamia") returns False and both pages
+fall back to the generic fruit_species.json blurb.
+
+## DEC-159 — 2026-06-05 — Loquat gets a cited, per-state growing guide on treestock (flagship WA, dedicated climate category)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Loquat is next in the rollout. GSC over the last 90 days shows the species page is the main loquat entrance (about 129 impressions, position 16) and `buy-loquat-trees-western-australia.html` is the only loquat combo page with impressions, alongside the query "loquat tree perth". The species blurb and climate reality agree: loquat is widely grown in Perth gardens, has no special WA quarantine restriction, and is a classic backyard tree across NSW, VIC and southern QLD. Loquat is botanically unusual: it flowers in autumn and ripens fruit in late winter to spring (the reverse of most fruit trees), so the limiting factor is frost on the blossom, not the hardiness of the tree (which takes about minus 10 degrees).
+
+**Decision:** Ship `tools/scrapers/growing_guides/loquat.json` (state-invariant core plus four genuinely distinct WA/QLD/NSW/VIC overlays), give loquat its OWN `"loquat"` climate category in `SPECIES_CLIMATE_CATEGORY` with verified per-state notes (rather than inheriting "subtropical"), and add `tests/test_guide_loquat.py`. Flagship WA.
+
+**Why:** Matches the rollout (better, trustworthy guides for exactly the rare fruit the community collects earn search traffic and trust, which feeds the Treesmith funnel). The generic "subtropical" note was wrong for loquat twice over: it implied a frost-tender tree marginal in the cool south (the tree is hardy and widely grown in Melbourne), and it implied the usual WA quarantine wall (loquat is a permitted WA plant with no loquat-specific restriction). Correctness was the priority: wrong variety, climate, pest or harvest advice wastes a grower's years.
+
+**Actions:**
+- Authored the guide archives-first from Benedict's owned sources (the RFCA loquat article; the WANATCA Yearbook 20 article "The Loquat: A Fruit of Quality" by C.A. Schroeder; the WANATCA ACOTANC "Exotic Fruits in Perth" paper by Neville Passmore), then cross-checked against DPIRD WA (Mediterranean fruit fly host list and the WA Organism List), Business Queensland (Queensland fruit fly), the California Rare Fruit Growers and Clemson HGIC factsheets, Brisbane City Council, Yates and Bunnings.
+- Correctness anchors guarded by tests: self-fertile (one tree fruits, a second variety only improves the crop); the autumn-to-winter flowering and spring-ripening habit, with frost the risk to the blossom not the tree; loquat is a DPIRD-listed high-susceptibility Mediterranean fruit fly host in WA and a Queensland fruit fly host in the east, and its winter-ripening crop helps carry fruit fly through the cold season; it fruits poorly as an ornamental in the humid tropical lowlands; thinning each cluster to a few fruit is the job that makes loquats worthwhile. Variety picks tied to live stock (Bessell Brown, Nagasakiwase, Champagne, Enormity, Herds Mammoth, Honey Dew, Sewells Prolific).
+- Further reading carries the two owned WANATCA loquat links (Schroeder, Passmore), followed; the two RFCA loquat archive links auto-merge from `archive_links.json` (unchanged, already indexed). No rarefruitclub.au link was added (no verified loquat page).
+
+**Status:** PR open on branch `dale/loquat-guide`, pending Benedict review. With current stock loquat is below the combo-page generation cut (WA has 2 WA-shippable in stock, under the 3 minimum; QLD/NSW/VIC have 12 each but sit outside the top-20 cap), so only `/species/loquat.html` renders the guide live today; the four state overlays are authored and tested (force-built in the test suite) and light up automatically when stock crosses the threshold (the WA combo page is one in-stock loquat away, and GSC shows it has rendered within the last 90 days). Full suite green (830 tests). Every cited and further-reading URL verified live (HTTP 200). No em or en dashes.
+
+**To revert:** delete `tools/scrapers/growing_guides/loquat.json` and `tests/test_guide_loquat.py`, and in `build_species_state_pages.py` remove the `"loquat": "loquat"` entry plus the four `"loquat"` notes from `STATE_CLIMATE_NOTES`, restoring `"loquat": "subtropical"` in `SPECIES_CLIMATE_CATEGORY`. The species page falls back to the generic `fruit_species.json` blurb.
+
+## DEC-158 — 2026-06-05 — Jujube per-state growing guide (Ziziphus jujuba), flagship WA
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Continuing the per-species growing-guide rollout (olive infrastructure, DEC-126), jujube was next off the priority list. Jujube has unusually deep live stock on treestock (about 80 product rows across five nurseries: Daleys, Ross Creek, Ladybird, Fruitopia, Aus Nurseries), and Daleys ships it bare-rooted to WA, so all four states (WA, QLD, NSW, VIC) generate a combo page from current stock.
+
+**Decision:** Shipped `tools/scrapers/growing_guides/jujube.json` (a state-invariant core plus genuinely distinct WA/QLD/NSW/VIC overlays), gave jujube its OWN climate category, and added `tests/test_guide_jujube.py`. Flagship is WA: research confirms WA (with SA) is one of Australia's two leading jujube producers, so it has the strongest evidence base and a live combo page.
+
+**Why:**
+- Jujube fits no existing climate category. It is a hot-dry-climate deciduous tree, intensely heat and drought hardy, tolerant of alkaline and saline soils, needs a hot summer plus only a low winter chill, and does poorly in humid climates. "temperate / choose low-chill" understates its heat and drought love; "mediterranean" is about olives/grapes/figs; and the generic WA note wrongly implies jujube is hard to get here when WA is a leading producer. So it gets its own `jujube` category with four town-free `STATE_CLIMATE_NOTES` (the banana/cherry/mulberry precedent).
+- Archives-first sourcing preferenced Benedict's owned sites: RFCA ("My Favourite Fruit Tree, the Jujube", "Intercropping with Jujube in China") and WANATCA (Roger Meyer's ACOTANC "Jujube Orchards", Phil Ciminata's Yearbook 20 "The Chinese Jujube", a Perth author, and Martin Crawford's Yearbook 26). Filled gaps with NMSU/CRFG/UC ANR extension, DPIRD WA, Business Queensland, DAFF biosecurity, NT DAF, AgriFutures and Australian growers.
+- Correctness calls (each pinned by a test): Chinese jujube (Z. jujuba) is NOT the evergreen tropical Indian jujube (Z. mauritiana), and the RFCA "Indian Jujube" article is kept OUT of further reading; WA's fly is Mediterranean fruit fly and jujube IS a registered Medfly host there (DPIRD lists sprays for it), so the old "no serious pests" claim was dropped; WA has no established Qfly; in the east, Chinese jujube is NOT on the official Qfly host list and is at most a minor host (do not conflate with Z. mauritiana), but growers still net; largely self-fertile but crops better with a second cultivar; suckers are wild sour-jujube rootstock, not the grafted cultivar; no jujube-specific NPK rate exists, so none was invented.
+- Also corrected the `fruit_species.json` framing that jujube faces "no significant quarantine restrictions in WA": WA regulates interstate live plants (WAOL permit, soil-free washed bare roots, treatment, certification), which the WA overlay now explains accurately while noting WA-grown stock is the easy path.
+
+**Actions:**
+- New `tools/scrapers/growing_guides/jujube.json` (24 cited sources, all curl-200 with a browser UA; 5 curated owned further-reading links plus the auto-merged RFCA index).
+- `tools/scrapers/build_species_state_pages.py`: added the `jujube` `SPECIES_CLIMATE_CATEGORY` entry and four `jujube` `STATE_CLIMATE_NOTES`.
+- New `tests/test_guide_jujube.py` (37 guards); full suite green at 840 tests.
+- `archive_links.json` regenerated byte-identical (jujube already indexed), so NOT committed.
+
+**Status:** PR open, pending Benedict review. Not merged or deployed.
+
+**To revert:** delete `growing_guides/jujube.json` and `tests/test_guide_jujube.py`, and remove the `jujube` entries from `SPECIES_CLIMATE_CATEGORY` and `STATE_CLIMATE_NOTES`. `has_guide("jujube")` then returns False and the pages fall back to the generic `fruit_species.json` blurb.
+
+## DEC-157 — 2026-06-05 — Grape gets a real, cited, per-state growing guide on treestock
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Grape (Vitis vinifera) is one of the most widely grown backyard fruits in Australia and was next on the species-guide rollout priority list (docs/species-guide-rollout.md) after the apple and citrus batches. Until now the buy-grape-trees-<state> pages shared a single generic, uncited blurb across WA, QLD, NSW and VIC. Grape was already wired into the "mediterranean" climate category alongside olive and fig, so it could be enriched with one JSON file and no code change.
+
+**Decision:** Author tools/scrapers/growing_guides/grape.json (the olive schema: cited core plus four genuinely different state overlays plus owned Further reading) and tests/test_guide_grape.py, and ship via PR. Flagship WA, with the per-state phylloxera story as the spine that keeps the four states distinct.
+
+**Why:**
+- Flagship WA mirrors olive (the gold-standard guide): the Mediterranean south-west is close to ideal for grapes, the WA combo page is always-on, and the most distinctive, highest-information-need hook is biosecurity. WA is free of grape phylloxera, so own-rooted vines are fine, but strict quarantine controls bringing vines in. Every state still gets a real, unique overlay.
+- Phylloxera differentiates the states cleanly and accurately: WA is free (declared pest, kept out by quarantine); Queensland is not known to carry it and is a phylloxera exclusion zone; New South Wales has infested zones around Albury and Corowa and the Sydney region; Victoria carries Australia's main infestations (North East covering Rutherglen and the King Valley, Nagambie, the Maroondah zone in the Yarra Valley found in 2006, Mooroopna, Upton, Whitebridge) where growers must plant on resistant rootstock and follow strict hygiene.
+- Correctness facts pinned by tests so the states never blur: grapes are self-fertile (one vine crops alone); grapes are non-climacteric (they do not ripen after picking); cane versus spur pruning (Thompson Seedless is cane-pruned); WA's fruit fly is the Mediterranean fruit fly, not Queensland fruit fly; QLD is an exclusion zone, not simply "free".
+
+**Actions:**
+- Added tools/scrapers/growing_guides/grape.json: 45 sources, state-invariant core (variety, pollination, planting and soil, water and feeding, pruning and training, harvest, buying) plus WA/QLD/NSW/VIC overlays (climate, regions, harvest window, pests, phylloxera) plus four curated owned Rare Fruit Council archive Further-reading links.
+- Added tests/test_guide_grape.py mirroring the olive guards (per-state uniqueness, no dashes, FAQ JSON-LD, cited https sources, owned followed Further reading) plus grape-specific correctness guards.
+- No code change: grape was already "mediterranean" in SPECIES_CLIMATE_CATEGORY and the RFCA Grapes folder already auto-maps via the grapes->grape alias, so archive_links.json regenerated byte-identical and is NOT committed.
+
+**Status:** Built and tested. Full suite green (838 tests). Every cited and Further-reading URL verified live (HTTP 200, browser UA). No em or en dashes. With current stock grape is rank 21 (one product below the QLD/NSW/VIC top-20 cut), so the live pages are the WA combo page plus a much richer /species/grape.html; the QLD/NSW/VIC overlays are authored and tested and switch on automatically as stock grows. PR open, pending Benedict review.
+
+**To revert:** delete tools/scrapers/growing_guides/grape.json and tests/test_guide_grape.py. has_guide("grape") returns False and the pages fall back to the generic fruit_species.json blurb. No other files change.
+
+## DEC-156 — 2026-06-05 — Per-state feijoa growing guide (own cool-climate category, archives-first)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Continuing the per-species growing-guide rollout (docs/species-guide-rollout.md).
+Feijoa (Acca sellowiana, "pineapple guava") is well stocked across the monitored nurseries
+(Daleys, Ladybird, Ross Creek, Fruitopia, Diggers) with named varieties Apollo, Unique, Duffy,
+Mammoth, Nazemetz, Triumph, White Goose and Large Oval. Only the WA combo page generates from
+live stock today (feijoa sits below the top-20 cap in QLD/NSW/VIC), so WA is the data-driven
+flagship; it is also Benedict's home turf, where the WA-owned WANATCA ACOTANC source and the
+quarantine angle carry the most weight, and feijoa genuinely thrives in the cooler south-west.
+
+**Decision:** Ship a feijoa guide matching the olive gold standard: `growing_guides/feijoa.json`
+with a state-invariant core (variety choice, bird pollination and self-fertility, planting and
+brittle-wood shelter, water and feeding, harvest, eating, buying) plus four genuinely distinct
+state overlays (WA flagship deepest, then QLD, NSW, VIC). Feijoa gets its OWN climate category in
+`SPECIES_CLIMATE_CATEGORY` rather than inheriting "subtropical", because the generic subtropical
+note is exactly wrong for it: feijoa is one of the most cold-hardy exotic fruits (to about minus
+10 degrees), it NEEDS a modest winter chill (~50 hours) to fruit well, and it develops its best
+flavour in cooler areas, so it crops best in the cool south (Victoria, the NSW tablelands, cooler
+WA) and only poorly in the warm, humid tropics.
+
+**Why:**
+- Correctness: the "subtropical" VIC note implied feijoa is frost-tender and that nurseries will
+  not ship to VIC, the opposite of the truth. A dedicated category lets each state tell the real
+  cool-climate story (same pattern as cherry, mulberry, banana).
+- Archives-first: cites Benedict's owned WANATCA Yearbook (Crawford, Vol 25) and ACOTANC (Passmore,
+  "Exotic Fruits in Perth": "Feijoa is a superb fruit for the Perth area. It is one of the most
+  cold-tolerant of all the exotic fruits.") plus the RFCA feijoa archive, keeping authority in-network.
+- Every cited and further-reading URL was opened and confirmed to return HTTP 200 and support its
+  claim; key facts cross-checked across a second source (Daleys, UF/IFAS, NZ Tree Crops, Tui).
+
+**Actions:**
+- Added `tools/scrapers/growing_guides/feijoa.json` (15 sources, all verified 200; core + WA/QLD/NSW/VIC).
+- Added a dedicated `feijoa` climate category and per-state notes in `build_species_state_pages.py`.
+- Added `tests/test_guide_feijoa.py` (uniqueness, no-dash, FAQ JSON-LD, sources, owned further-reading,
+  dedicated-category, and feijoa-specific correctness guards). Full suite green (826 tests).
+- archive_links.json regeneration was a no-op (feijoa RFCA entries already indexed).
+
+**Status:** PR open for Benedict's review. Not merged. Only the WA combo page generates from live
+stock now; the QLD/NSW/VIC overlays render on the species page and will generate combo pages when
+feijoa stock rises into those states' top 20.
+
+**To revert:** delete `growing_guides/feijoa.json` and `tests/test_guide_feijoa.py`, and restore
+`feijoa` to "subtropical" in `SPECIES_CLIMATE_CATEGORY` (removing the four `feijoa` state notes).
+The species/combo builders fall back to the generic blurb with no code change.
+
+## DEC-155 — 2026-06-05 — Blueberry gets a cited, per-state growing guide on treestock (flagship WA, acid-soil and chill-split corrected)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Blueberry is on the `docs/species-guide-rollout.md` list and is well stocked on treestock (around 36 in-stock products, with all four states clearing the combo-page threshold on the server). GSC over the last 90 days shows the WA combo page leading (43 impressions, position 9.4, 4 clicks), ahead of NSW (36), QLD (27) and VIC (26), and Plausible agrees (WA the only state combo page with visits); "blueberry plants perth" is a live query. Flagship is therefore WA, the same as olive, even though the commercial heartland is the NSW north coast. Blueberry is not a stone or pome fruit: its make-or-break need is a strongly acidic soil (pH 4.5 to 5.5), and it splits into low-chill (southern highbush, rabbiteye) and high-chill (northern highbush) types, so the generic "temperate / choose low-chill varieties" climate note was wrong for it.
+
+**Decision:** Ship `tools/scrapers/growing_guides/blueberry.json` (state-invariant core plus four genuinely distinct WA/QLD/NSW/VIC overlays), give blueberry its OWN climate category (`"blueberry"` in `SPECIES_CLIMATE_CATEGORY`, moved off `"temperate"`) with a per-state `STATE_CLIMATE_NOTES` note that leads with the acid-soil rule and names the type that suits each climate, and add `tests/test_guide_blueberry.py`. Flagship WA (top traffic plus the acute alkaline-sand and bore-water question); NSW carries the industry-heartland overlay.
+
+**Why:** Matches the rollout (better, trustworthy guides for exactly the plants the community buys earn search traffic and trust, which feeds the Treesmith funnel). Correctness was the priority: wrong soil pH, variety type, pollination, pest or climate advice wastes a grower's years and money.
+
+**Actions:**
+- Authored archives-first from Benedict's owned sources (the RFCA Blueberry Production Part I and II articles for the three groups, chill ranges, acid-soil pH, water and pollination; the two Ridley Bell WANATCA Yearbook articles, vols 8 and 9, as followed Further reading), then filled modern, state-specific gaps with Berries Australia (regions, seasons, variety types and pollination pairings), the Canberra Organic Growers Society (home soil prep, ammonium feeding, lime to avoid, pruning, birds), NRE Tasmania (blueberry rust identity and spread), UF IFAS (the evergreen production system), DPIRD WA (quarantine) and Business Queensland (Queensland fruit fly).
+- Correctness anchors guarded by tests: the three types and their chill (northern highbush 750 to 1000 hours, southern highbush 250 to 600, rabbiteye 450 to 600); the acid-soil pH 4.5 to 5.5; rabbiteye are self-incompatible and must be planted in pairs of the same type while highbush are self-fertile (triple-confirmed by RFCA, the Berries Australia variety pairings, and the in-stock "Rabbiteye Pollinating Combo"); blueberry rust is Thekopsora minima, NOT myrtle rust (Austropuccinia psidii), and the test bans both wrong terms; WA's fruit fly is the Mediterranean fruit fly, not the Queensland fruit fly; feed with ammonium-based nitrogen and never lime.
+- Each state overlay is genuinely unique (WA: Perth plain, Great Southern, Manjimup, the alkaline-sand and bore-water problem, rust reaching WA in 2022, quarantine; QLD: low-chill evergreen only, Bundaberg and the Atherton Tablelands, earliest national harvest, humidity and rust; NSW: the Coffs Harbour protected-cropping heartland, the rust stronghold, June to February season; VIC: the full range including deciduous northern highbush, Yarra Valley and Gippsland, late December to March harvest, spring frost). Region tokens are guarded against cross-state leakage.
+- Blueberry already had RFCA folder entries in `archive_links.json` (re-running `build_archive_index.py` left it unchanged), so Further reading auto-merges the curated WANATCA articles with the RFCA links.
+
+**Status:** PR open on branch `dale/blueberry-guide`, pending Benedict review. Full suite green (836 tests). Every cited and further-reading URL verified live (HTTP 200). No em or en dashes. Built locally against real stock: `/species/blueberry.html` and the WA combo page render the guide today; the QLD/NSW/VIC overlays are authored and tested and render live on the server, where all four states clear the threshold.
+
+**To revert:** delete `tools/scrapers/growing_guides/blueberry.json` and `tests/test_guide_blueberry.py`, and in `build_species_state_pages.py` revert blueberry to `"temperate"` in `SPECIES_CLIMATE_CATEGORY` and remove the four `"blueberry"` `STATE_CLIMATE_NOTES` entries. The species page falls back to the generic `fruit_species.json` blurb.
+
+## DEC-154 — 2026-06-05 — Black sapote growing guide (per-state-unique, QLD flagship; the chocolate pudding fruit, archives-first)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Continuing the per-species growing-guide rollout (olive DEC-126 flagship, the archive
+integration DEC-127, and the batches through DEC-153). Black sapote (Diospyros nigra, syn. D. digyna)
+is next down the docs/species-guide-rollout.md priority tail. It is a tropical persimmon, the
+"chocolate pudding fruit", grown in Australia mainly in the far-north Queensland wet tropics and the
+NT Top End, and (because it shrugs off a light frost once established) on down through the subtropical
+south-east. Like sapodilla, jackfruit and rambutan it sits below the QLD/NSW/VIC top-20 in-stock cut
+and has only one WA-shippable seller (Daleys, one product), so no combo page renders from live stock
+yet; the live deliverable is /species/black-sapote.html plus four authored, tested overlays that
+switch on when stock climbs.
+
+**Decision:** Ship a black sapote guide (tools/scrapers/growing_guides/black-sapote.json +
+tests/test_guide_black_sapote.py) mirroring the olive/sapodilla gold standard: a state-invariant core
+(choosing a variety, the seedless-vs-pollination question, planting and soil, water and the
+shy-bearer trap, the calyx harvest test, eating and the unripe warning, buying tips) plus four
+genuinely distinct state overlays. Flagship is **Queensland** (the wet-tropics coast around Cairns,
+Innisfail, the Atherton Tableland and Mareeba, north to the Daintree and the Mackay sugar country,
+and the warmer subtropical south-east). Built archives-first on Benedict's OWNED sources: the Rare
+Fruit Council of Australia black-sapote articles (the fact sheet, the flower-biology piece, and the
+drier-culture "chocolate pudding fruit" article) and two WANATCA ACOTANC 2001 papers (Roger Meyer's
+"Fruits Called Sapotes" and Neville Passmore's "Exotic Fruits in Perth", which supplies the WA
+Carnarvon/Perth account). Cross-checked against the City of Darwin community-orchard sheet (a
+government source covering the Australian cultivars, the calyx test and the pest picture), Morton's
+Fruits of Warm Climates (cold tolerance, astringency), Plant Health Australia's Queensland fruit fly
+host range, DPIRD WA (medfly and quarantine), the Bureau of Meteorology (Melbourne winter), and
+Daleys for the Australian-cultivar detail. Variety advice is tied to cultivars actually in live stock
+(Maher, Bernecker, Mossman, Superb, Ricks Late, Colossal, plus Tahiti and Cocktail).
+
+**Why:** treestock's moat is accurate, first-party rare-fruit content the open web is thin on, and
+each combo page used to share a byte-identical generic blurb. The guide makes WA/QLD/NSW/VIC genuinely
+different and cited, and it corrects several things the generic copy gets wrong for this species.
+Correctness matters most: wrong variety, climate, pest or harvest advice wastes a grower's years.
+
+**Actions:**
+- New growing_guides/black-sapote.json (12 sources, 7 core sections + 4 FAQs, four state overlays with
+  their own regions/harvest windows/pests) and tests/test_guide_black_sapote.py (mirrors the
+  olive/sapodilla guards plus black-sapote correctness guards).
+- One-line builder change: black sapote added to SPECIES_CLIMATE_CATEGORY as "tropical" (same as
+  sapodilla; the shared tropical note is accurate and no special category was needed).
+  archive_links.json regenerated byte-identical (the RFCA folder was already indexed), so it is NOT
+  committed.
+- Four correctness calls pinned by tests: (1) seedlessness is NOT a flat "self-fertile" story, a
+  female-flowered selection (Superb) sets seedless fruit only when isolated, and a nearby pollinator
+  lifts yield but brings seeds (RFCA flowering article, Daleys, City of Darwin); (2) black sapote is
+  NOT a listed Queensland fruit fly host (Plant Health Australia), the opposite of sapodilla, so the
+  QLD page says so rather than copying a false warning; (3) it is a true persimmon (Diospyros) and the
+  unripe fruit is astringent, caustic and an irritant, so the eating note carries that warning;
+  (4) the maturity signal is the lifting calyx and the fruit is picked hard and never tree-ripened.
+
+**Status:** PR open, pending Benedict review. Full suite green (822 tests). Every cited and
+further-reading URL returns HTTP 200 (the BOM Melbourne table needs a browser UA; all others answer a
+bare curl). Species page and all four overlays verified by building against real nursery stock
+(15 in-stock products): per-state unique with no region names leaking across states, dash-free, FAQ
+JSON-LD, article OG, cited Sources, and a Further reading list merging the owned RFCA articles with
+the two WANATCA ACOTANC papers.
+
+**To revert:** delete growing_guides/black-sapote.json and tests/test_guide_black_sapote.py, and
+remove the one "black sapote": "tropical" line from SPECIES_CLIMATE_CATEGORY;
+/species/black-sapote.html falls back to the generic fruit_species.json blurb (has_guide returns
+False), no other page changes.
+
 ## DEC-153 — 2026-06-04 — Wax jambu gets a cited, per-state growing guide on treestock (flagship QLD, standout WA overlay)
 
 **Decided by:** Dale (parallel guide run)
