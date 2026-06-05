@@ -1,0 +1,19 @@
+# Public Ledger — 2026-06-04
+
+## Mulberry growing guide added to treestock, with the climate range told straight
+
+Mulberry is one of the easiest and most-loved backyard fruit trees in Australia, and the buy-mulberry-trees pages draw steady interest, but until now they shared a generic blurb and, worse, mulberry was filed under the "subtropical" climate label whose Victorian note implied it was frost-tender and marginal in the cool south. That is the opposite of the truth. This change gives mulberry the same cited, per-state growing guide the other species have, and fixes the climate story.
+
+### Shipped (pending review)
+- A new, fully cited mulberry guide (10 sources) with a shared core (choosing a variety, why one tree is enough, planting and soil, watering, feeding and pruning, birds as the main challenge, harvest and the staining fruit, eating and storing, and buying tips) plus a genuinely different overlay for Western Australia, Queensland, New South Wales and Victoria.
+- The advice is tied to reality. Varieties are matched to what is actually in stock and split into the two real camps: black mulberries (Black English, Hicks Fancy, Beenleigh Black, Lena and the popular dwarf black, Morus nigra) for the classic rich, tangy berry on a smaller tree, and the white and Shahtoot types (Morus alba and Morus macroura, sold as White Shahtoot and Red Shahtoot) for very sweet, low-staining fruit on a larger tree. Pollination is told straight: mulberries are wind pollinated and self-fertile, so a single tree crops, with no second tree or pollinator needed.
+- Mulberry now has its OWN climate category instead of inheriting "subtropical". The old subtropical note told Victorian growers to find a "sheltered, north-facing position" and warned that nurseries would not ship to Victoria, both wrong for a tree that is fully cold-hardy and crops reliably right across the state. The new per-state notes say plainly that mulberries need no winter chill, are very frost and drought hardy, and grow from subtropical Queensland through to cold-climate Victoria.
+- Each state gets its own story: WA leads (drought-hardy in Perth sand, earliest fruit in the warm Gascoyne, Mediterranean fruit fly endemic but mulberry well down its host list, plus the quarantine and shipping context); Queensland is the warmest and earliest, with the Beenleigh Black a popular local variety; New South Wales is the classic backyard mulberry from the coast to the cold tablelands; and Victoria ripens latest, from December into February, and is fully hardy.
+- Birds are named as the one real pest (netting and bagging, not sprays), which is the honest headline for mulberry. Queensland fruit fly is covered accurately as a secondary host that takes soft ripe fruit when its preferred fruits are scarce.
+- Further reading links to the Rare Fruit Council of Australia archives (the Shahtoot and "Making use of the mulberry" articles), keeping authority in network. There is no WANATCA yearbook article on mulberry, so none is invented.
+
+### Verification
+- Full test suite green (628 tests), including a new 21-test mulberry file and the shared guard that fails the build if any FAQ just repeats a body section (worst overlap 0.17 against a 0.45 limit). Each state page is unique with no region names leaking across states, there are no em or en dashes, and all cited and further-reading links were checked live and return HTTP 200.
+- With current stock only the WA combo page generates (mulberry sits just outside the top-20 cap for QLD, NSW and VIC); the other three overlays are written, validated by the tests, and will appear automatically as stock grows.
+
+This is Track B (treestock) work: an accurate, trustworthy mulberry guide earns search traffic and community trust, the audience that feeds the Treesmith funnel.
