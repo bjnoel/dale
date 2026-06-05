@@ -321,6 +321,25 @@ black-sapote, loquat, starfruit, rollinia, miracle-fruit. (50 species have some 
   pomegranate each added their own climate category to build_species_state_pages.py; blueberry and
   loquat were normalised to the pending-fragment convention at merge (they had edited decision-log.md
   directly); starfruit moved the unenriched-fallback test fixture from jujube to white-sapote.
+- [x] cacao (DEC-165, QLD flagship, own climate category, climate-restricted to the wet tropical far north)
+- [x] grapefruit (DEC-166, WA flagship, own climate category, the heat-to-sweeten story off the shared citrus note)
+- [x] grumichama (DEC-167, Brazil cherry, QLD flagship, subtropical category like its kin jaboticaba)
+- [x] lilly-pilly (DEC-168, native hedge/bush-food, own climate category, myrtle-rust quarantine into WA)
+- [x] miracle-fruit (DEC-169, archives-first, own climate category, acid-soil pot plant not a heat crop)
+- [x] pomelo (DEC-170, QLD flagship, own climate category, the grapefruit's parent)
+- [x] raspberry (DEC-171, WA flagship, own cool-climate category, Atherton raspberry the warm-climate twist)
+- [x] rollinia (DEC-172, biriba, QLD flagship, kept "tropical" like its kin custard apple)
+- [x] white-sapote (DEC-173, WA flagship, own climate category, citrus-relative WA import rules)
+- The nine above shipped as a parallel batch, all merged 2026-06-05 (PRs #75 to #83). Seven added their own
+  climate category to build_species_state_pages.py (cacao, grapefruit, lilly-pilly, miracle-fruit, pomelo,
+  raspberry, white-sapote; grumichama reused "subtropical" and rollinia reused "tropical"); grumichama was
+  normalised to the pending-fragment convention at merge (it had edited decision-log.md directly and grabbed
+  a DEC number), and grapefruit was given its missing pending fragment plus public-ledger entry at close-out.
+  This batch enriched every remaining species that still carried RFCA archive_links, so NO real tracked
+  species is left unenriched: the unenriched-fallback test fixture (tests/test_species_state_pages.py) was
+  therefore repointed from a real species (cacao) to a permanent SYNTHETIC slug ("example-unenriched") with an
+  inline blurb, and the old "unguided species that still has archive links" test was repurposed to assert a
+  now-guided species (cacao) still has archive-index entries. Future enrichments no longer move the fixture.
 - [ ] (continue down the priority order)
 
 ## Notes
