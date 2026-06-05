@@ -70,6 +70,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs, not chill-hungry stone fruit: the make-or-break factor is a strongly acidic soil (pH 4.5 to 5.5), which Perth's alkaline sands and hard bore water work against, so most WA growers raise them in beds or pots of acidic mix. Warm districts suit low-chill southern highbush and rabbiteye, while the cooler south coast can also ripen the deciduous northern highbush. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "feijoa": "Feijoa is one of the most cold-tolerant of the exotic fruits and grows well right across the cooler south-west, needing only the light winter chill the region easily provides. Give it summer water for a good crop and net against Mediterranean fruit fly. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "loquat": "Loquats are an easy, long-established backyard tree in Perth and the mild South West, where near frost-free winters let their unusual autumn-to-winter flowers set a reliable late-winter crop. Unlike many fruit trees, loquat is a permitted plant in WA with no loquat-specific quarantine restriction, so it ships in more freely. Mediterranean fruit fly is the pest to plan around.",
+        "raspberry": "Raspberries are a cool-climate cane fruit, not a low-chill one: they want a genuinely cold winter and a mild summer, so in Western Australia they crop in the cool, higher-rainfall south (the Great Southern, Donnybrook and the Perth Hills), while the warm Perth coastal plain and its alkaline sands are marginal. WA's strict quarantine rules limit which interstate nurseries can ship live canes here, and Mediterranean fruit fly, not Queensland fruit fly, is the local pest.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -88,6 +89,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) far more than they need winter chill, so in Queensland choose low-chill, often evergreen southern highbush and rabbiteye and skip the cold-climate northern highbush. In the warm subtropics the bushes crop earlier and a vigorous plant can give a second, lighter flush, though humidity lifts disease pressure.",
         "feijoa": "Feijoa needs a cool winter to fruit, so in Queensland it is a tree for the cool, elevated south (the Granite Belt and the Darling Downs) rather than the warm, humid coast or the tropics, where mild winters give plenty of leaf but little fruit. Queensland fruit fly is the main pest, so net the tree or bait for it.",
         "loquat": "Loquats need a cool season to flower and fruit well, so in Queensland they crop best in the cooler, drier south and the southern uplands, and grow mainly as a handsome evergreen ornamental in the humid tropical lowlands, where winters are too warm and wet for reliable fruit set. Queensland fruit fly is the pest to manage.",
+        "raspberry": "Raspberries are a cool-climate cane fruit, so the common raspberry only crops in Queensland's high, cold Granite Belt around Stanthorpe; the warm, humid coast, subtropics and tropics give it too little winter chill. In those warmer districts the native Atherton raspberry (Rubus probus), a vigorous prickly rainforest cane, is the realistic home-grown choice, and Queensland fruit fly is the pest to manage.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -106,6 +108,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs (they want a soil pH of 4.5 to 5.5, not lime), and New South Wales grows more of them than any other state. Evergreen low-chill southern highbush suit the warm coast, while the cold tablelands also ripen the deciduous northern highbush. Plant two of the same type for the heaviest crops.",
         "feijoa": "Feijoa is frost-hardy and cool-loving, so it crops reliably across the cool NSW tablelands and the temperate coast and Sydney basin, while the warm, humid far north coast is more marginal for fruit set. Queensland fruit fly is the main pest to manage.",
         "loquat": "Loquats are a classic, easy backyard tree across coastal and temperate New South Wales, flowering in autumn and ripening one of the first crops of the year in late winter to spring. On the coldest tablelands, winter frost can nip the blossom, so a warm, sheltered spot gives the best fruit. Queensland fruit fly is the main pest.",
+        "raspberry": "Raspberries are a cool-climate cane fruit that needs real winter chill, so in New South Wales they belong on the cool tablelands and highlands (the Southern Highlands, the Central and Northern Tablelands and the Blue Mountains), not the warm coast or the hot western plains. Queensland fruit fly is established through eastern NSW, so net or bait soft ripe fruit.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -124,6 +127,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) above all else, and Victoria's reliably cold winters also let it grow the full range, including the deciduous, high-chill northern highbush that warmer states struggle with. Cool conditions ripen the fruit later and larger, and birds are the main pest.",
         "feijoa": "Victoria's cool winters and mild summers are close to ideal for feijoa, which is fully frost-hardy once established and develops its best flavour in cooler districts. It crops well right across the south, and Queensland fruit fly is established in only parts of the state, so net where it occurs.",
         "loquat": "Loquats are hardy and widely grown across Melbourne and milder Victoria, ripening latest of the mainland states. The tree itself shrugs off frost, but because it flowers and sets fruit through autumn and winter, hard frosts can cut the crop, so coastal, bayside and sheltered north-facing gardens fruit most reliably.",
+        "raspberry": "Raspberries are a cool-climate cane fruit, and Victoria is the mainland's heartland for them: cold winters supply the chill they need and mild summers ripen the fruit slowly, which is why the Dandenong Ranges and Yarra Valley grow most of the mainland crop. Queensland fruit fly is established in parts of the state, so net or bait where it occurs.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -146,7 +150,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "apple": "temperate", "pear": "temperate", "plum": "temperate",
     "peach": "temperate", "nectarine": "temperate",
     "apricot": "temperate", "quince": "temperate",
-    "raspberry": "temperate", "blackberry": "temperate",
+    "blackberry": "temperate",
     "strawberry": "temperate",
     # Mediterranean-climate crops: no winter-chill requirement, so they must not
     # inherit the stone/pome-fruit chill-hours note. Figs are a common fig
@@ -219,6 +223,14 @@ SPECIES_CLIMATE_CATEGORY = {
     # below carry the real story: mild-winter coast crops reliably, humid tropics fruit
     # poorly, and cold inland frost-hollows lose the winter blossom.
     "loquat": "loquat",
+    # Raspberry gets its own category. It is a COOL-climate cane fruit, the OPPOSITE of
+    # the generic "temperate / choose low-chill varieties" note: most raspberries want a
+    # genuinely cold winter (high chill) and a mild summer, and they crop poorly in warm,
+    # humid or hot-summer districts. The real per-state story is "only the cool south /
+    # cold tablelands / cool hills", plus two species-specific twists the generic note
+    # misses entirely: the native Atherton raspberry (Rubus probus) as the warm-climate
+    # alternative for Queensland, and Victoria (not WA) as the mainland heartland.
+    "raspberry": "raspberry",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
