@@ -25,22 +25,26 @@ from guide_helpers import (  # noqa: E402
 
 def _unenriched_products():
     # A species with NO growing guide, to prove the graceful fallback still works.
-    # Cacao is deliberately low-priority on the rollout (a marginal Australian crop,
-    # grown only in the wettest tropics, so unlikely to be enriched soon) yet has RFCA
-    # archive_links entries, which the archive-fallback test needs. (White sapote used
-    # to play this role until it was enriched; it now has its own
-    # tests/test_guide_white_sapote.py. Starfruit played the role before white sapote.)
-    sp = {"common_name": "Cacao", "latin_name": "Theobroma cacao",
-          "description": "Generic cacao blurb.", "slug": "cacao"}
+    # This uses a SYNTHETIC slug ("example-unenriched") rather than a real species:
+    # after the 2026-06-05 guide batch (PRs #75-#83) every real tracked species that had
+    # archive_links is now guided, so there is no real unguided species left to point
+    # this at. build_combo_page renders the fallback from the product's inline species
+    # dict (common_name/description) and does not require a real or registered slug, so a
+    # synthetic slug keeps has_guide(slug) False and exercises the same blurb path.
+    # (This role was played by starfruit, then white sapote, then cacao, each until it
+    # was enriched; it is now permanently synthetic.)
+    sp = {"common_name": "Example Unenriched", "latin_name": "Exemplum ineditum",
+          "description": "Generic unenriched blurb.", "slug": "example-unenriched"}
     return [
-        {"title": f"Cacao {i}", "url": f"https://nursery.example/cacao-{i}",
+        {"title": f"Example Unenriched {i}",
+         "url": f"https://nursery.example/example-unenriched-{i}",
          "nursery_key": "daleys", "nursery_name": "Daleys", "price": 30.0 + i,
          "available": True, "species": sp}
         for i in range(4)
     ]
 
 
-UNENRICHED_PAGE = bssp.build_combo_page("QLD", "cacao", _unenriched_products(), TODAY)
+UNENRICHED_PAGE = bssp.build_combo_page("QLD", "example-unenriched", _unenriched_products(), TODAY)
 
 
 class ClimateNoteTests(unittest.TestCase):
@@ -70,10 +74,11 @@ class FallbackTests(unittest.TestCase):
         self.assertTrue(gg.has_guide("mango"))
         self.assertTrue(gg.has_guide("starfruit"))
         self.assertTrue(gg.has_guide("white-sapote"))
-        self.assertFalse(gg.has_guide("cacao"))
+        self.assertTrue(gg.has_guide("cacao"))
+        self.assertFalse(gg.has_guide("example-unenriched"))
 
     def test_unenriched_species_uses_blurb_and_stays_clean(self):
-        self.assertIn("Generic cacao blurb.", UNENRICHED_PAGE)
+        self.assertIn("Generic unenriched blurb.", UNENRICHED_PAGE)
         self.assertNotIn('id="sources"', UNENRICHED_PAGE)
         self.assertIn("Track your collection with Treesmith", UNENRICHED_PAGE)
         self.assertNotIn(EM_DASH, UNENRICHED_PAGE)
@@ -136,9 +141,13 @@ class ArchiveIndexTests(unittest.TestCase):
     def test_cap_respected(self):
         self.assertLessEqual(len(gg.get_further_reading("olive", cap=2)), 2)
 
-    def test_unguided_species_with_archive_has_links_available(self):
-        # cacao has no guide yet, but the index has candidates ready for when it does.
-        self.assertFalse(gg.has_guide("cacao"))
+    def test_guided_species_still_has_archive_index_entries(self):
+        # After the 2026-06-05 batch (PRs #75-#83) every archived species is also guided,
+        # so the old "unguided species that still has archive links" premise is extinct.
+        # This now guards the other half: the archive index must still carry entries for a
+        # guided species (cacao), which get_further_reading merges into the guide's
+        # "further reading". (test_olive_merges_curated_and_archive covers the merge.)
+        self.assertTrue(gg.has_guide("cacao"))
         self.assertGreater(len(gg._archive_links().get("cacao", [])), 0)
 
 

@@ -76,6 +76,7 @@ STATE_CLIMATE_NOTES = {
         "grapefruit": "Grapefruit needs more summer heat than any other common citrus to shed its bitterness and turn sweet, and WA's warm, dry climate supplies it, from Perth to the early citrus district of the Gascoyne around Carnarvon and the hot far north, which give high-sugar, well-coloured fruit. WA's strict quarantine rules limit which interstate nurseries can ship live citrus here, so locally grown stock is especially useful.",
         "miracle-fruit": "Miracle fruit needs strongly acid soil and humidity, the opposite of Perth's alkaline sandy soils and hard, limey scheme water, so in Western Australia it is grown almost entirely in pots of acidic mix that can be kept moist, humid and frost-free. WA's strict quarantine also means most interstate nurseries will not post this plant here, so local stock and seedlings are the easiest source.",
         "white-sapote": "South-west WA's Mediterranean climate (hot dry summers, mild wet winters) suits white sapote well, and the tree is hardy enough to take the region's light frosts. White sapote is a citrus relative, though, so WA's strict rules on importing the citrus family limit which interstate nurseries can send live trees here.",
+        "cacao": "Cacao is an equatorial rainforest tree that needs constant warmth and humidity, so it sits beyond what Western Australia can offer. Even the tropical far north was trialled (at Broome and Kununurra) and grew poorly, while Perth and the south west are far too dry and cool. WA's strict quarantine also limits which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -100,6 +101,7 @@ STATE_CLIMATE_NOTES = {
         "grapefruit": "Grapefruit loves heat, so Queensland's long, warm season ripens it superbly, with the sweetest, fullest-flavoured fruit coming from the warm inland citrus districts. On the humid coast and through the tropics the rind blemishes more and disease pressure is higher, but the heat still drives the high sugars that make grapefruit worth growing.",
         "miracle-fruit": "The humid, frost-free tropical north of Queensland is the one part of Australia where miracle fruit grows and fruits outdoors much as it does in West Africa. In the cooler, drier south-east it does best in a pot of acidic mix in a warm, sheltered, shaded spot, and it needs strongly acid soil (about pH 4.5 to 5.8) wherever it is grown.",
         "white-sapote": "White sapote is a highland subtropical fruit that dislikes humidity, so in Queensland it crops best in the cooler, drier south-east and on elevated inland sites, rather than the wet tropical coast where the tree grows but fruits poorly.",
+        "cacao": "Queensland's wet tropical far north (roughly Cardwell to the Daintree) is the only part of Australia warm and humid enough to grow cacao as a crop, and the small Australian cocoa industry is centred there. The cooler, drier subtropical south east can keep a tree alive in a sheltered spot but will not crop it reliably.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -124,6 +126,7 @@ STATE_CLIMATE_NOTES = {
         "grapefruit": "Grapefruit needs a long, hot summer to lose its bitterness and sweeten, so in New South Wales it crops best in the hot, irrigated inland citrus districts. On the cooler tablelands and the milder, more humid coast the fruit tends to stay sharper and thicker skinned, so a warm, open position gives the best result.",
         "miracle-fruit": "Miracle fruit is frost-tender and humidity-loving, so in New South Wales it grows outdoors only on the warm, near frost-free far north coast. Everywhere south and inland it is a potted shrub of acidic mix that is sheltered or brought under cover for winter, and it wants strongly acid soil wherever it lives.",
         "white-sapote": "White sapote is one of the more cold-hardy subtropical fruits and has long been grown across coastal and inland New South Wales, taking light frost once established, so it suits a wide range of gardens here.",
+        "cacao": "Cacao is strictly equatorial, and even the warm far north coast of New South Wales has winters far too cool for it. Here it is a heated glasshouse curiosity rather than a garden tree, and there is no commercial cacao in the state.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -148,6 +151,7 @@ STATE_CLIMATE_NOTES = {
         "grapefruit": "Grapefruit is the citrus least suited to a cool climate, because it needs sustained summer heat to lose its bitterness and sweeten. Victoria's warm, dry northern Murray districts grow good grapefruit under irrigation, but around Melbourne and through the cool south the fruit tends to stay acidic and thick skinned, so a hot, sheltered north-facing spot is essential.",
         "miracle-fruit": "Victoria is too cold for miracle fruit outdoors. It is grown here as an indoor or heated-glasshouse pot plant in acidic mix, kept warm and humid and stood outside only through the warm months, so expect a novelty plant with light crops rather than a garden tree.",
         "white-sapote": "White sapote is hardier than most subtropical fruit, with mature trees taking light frosts, so it can be grown in the milder, sheltered parts of Victoria, ripening later than in the warmer states. Protect young trees from frost.",
+        "cacao": "Victoria is far too cold for cacao, which is killed by frost and set back by any cool spell. It can only be kept alive in a heated, humid glasshouse and will not fruit, so treat it as a specimen plant rather than a crop.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -307,6 +311,15 @@ SPECIES_CLIMATE_CATEGORY = {
     # the real reason eastern nurseries cannot ship it here: WA's citrus-family import
     # rules, not just the generic quarantine line.
     "white sapote": "white-sapote",
+    # Cacao (the chocolate tree) gets its own category because it is the most
+    # climate-restricted species in the set: a true equatorial rainforest tree that
+    # needs constant warmth and humidity, no frost, and no long dry season, so it crops
+    # in Australia ONLY on the wet tropical coast of far north Queensland. The generic
+    # "tropical" note is wrong for it twice over: it implies warm dry Perth/northern WA
+    # suits it (the WA cocoa trials at Broome and Kununurra were discontinued), and it
+    # understates how completely the subtropics and the cool south rule it out (a
+    # glasshouse curiosity at best). Each per-state note tells that real story.
+    "cacao": "cacao",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
