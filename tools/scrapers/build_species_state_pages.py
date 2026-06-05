@@ -70,6 +70,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs, not chill-hungry stone fruit: the make-or-break factor is a strongly acidic soil (pH 4.5 to 5.5), which Perth's alkaline sands and hard bore water work against, so most WA growers raise them in beds or pots of acidic mix. Warm districts suit low-chill southern highbush and rabbiteye, while the cooler south coast can also ripen the deciduous northern highbush. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "feijoa": "Feijoa is one of the most cold-tolerant of the exotic fruits and grows well right across the cooler south-west, needing only the light winter chill the region easily provides. Give it summer water for a good crop and net against Mediterranean fruit fly. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "loquat": "Loquats are an easy, long-established backyard tree in Perth and the mild South West, where near frost-free winters let their unusual autumn-to-winter flowers set a reliable late-winter crop. Unlike many fruit trees, loquat is a permitted plant in WA with no loquat-specific quarantine restriction, so it ships in more freely. Mediterranean fruit fly is the pest to plan around.",
+        "pomelo": "Pomelo is the most heat-loving of the citrus, so in WA it crops best on the warm Perth coastal plain and through the warm north (the Gascoyne around Carnarvon and the Ord at Kununurra), but it is also the most frost-tender citrus, so cold inland and hill-district winters set young trees back. WA's strict citrus quarantine means only a few interstate nurseries can ship live pomelo trees here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -88,6 +89,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) far more than they need winter chill, so in Queensland choose low-chill, often evergreen southern highbush and rabbiteye and skip the cold-climate northern highbush. In the warm subtropics the bushes crop earlier and a vigorous plant can give a second, lighter flush, though humidity lifts disease pressure.",
         "feijoa": "Feijoa needs a cool winter to fruit, so in Queensland it is a tree for the cool, elevated south (the Granite Belt and the Darling Downs) rather than the warm, humid coast or the tropics, where mild winters give plenty of leaf but little fruit. Queensland fruit fly is the main pest, so net the tree or bait for it.",
         "loquat": "Loquats need a cool season to flower and fruit well, so in Queensland they crop best in the cooler, drier south and the southern uplands, and grow mainly as a handsome evergreen ornamental in the humid tropical lowlands, where winters are too warm and wet for reliable fruit set. Queensland fruit fly is the pest to manage.",
+        "pomelo": "Pomelo is the citrus best suited to Queensland's warm, humid climate, handling tropical heat and humidity better than oranges or grapefruit, which is why most of Australia's named pummelo varieties are grown here. It crops from the subtropical south-east to the tropical far north, and only the cold inland frost pockets are a poor fit.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -106,6 +108,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs (they want a soil pH of 4.5 to 5.5, not lime), and New South Wales grows more of them than any other state. Evergreen low-chill southern highbush suit the warm coast, while the cold tablelands also ripen the deciduous northern highbush. Plant two of the same type for the heaviest crops.",
         "feijoa": "Feijoa is frost-hardy and cool-loving, so it crops reliably across the cool NSW tablelands and the temperate coast and Sydney basin, while the warm, humid far north coast is more marginal for fruit set. Queensland fruit fly is the main pest to manage.",
         "loquat": "Loquats are a classic, easy backyard tree across coastal and temperate New South Wales, flowering in autumn and ripening one of the first crops of the year in late winter to spring. On the coldest tablelands, winter frost can nip the blossom, so a warm, sheltered spot gives the best fruit. Queensland fruit fly is the main pest.",
+        "pomelo": "Pomelo suits the warm, frost-free subtropical north coast of New South Wales best. It is the most frost-tender of the citrus, so the cold tablelands and the frosty inland (including the big Riverina orange district) are marginal, and a young tree needs a warm, sheltered, sun-facing spot.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -124,6 +127,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) above all else, and Victoria's reliably cold winters also let it grow the full range, including the deciduous, high-chill northern highbush that warmer states struggle with. Cool conditions ripen the fruit later and larger, and birds are the main pest.",
         "feijoa": "Victoria's cool winters and mild summers are close to ideal for feijoa, which is fully frost-hardy once established and develops its best flavour in cooler districts. It crops well right across the south, and Queensland fruit fly is established in only parts of the state, so net where it occurs.",
         "loquat": "Loquats are hardy and widely grown across Melbourne and milder Victoria, ripening latest of the mainland states. The tree itself shrugs off frost, but because it flowers and sets fruit through autumn and winter, hard frosts can cut the crop, so coastal, bayside and sheltered north-facing gardens fruit most reliably.",
+        "pomelo": "Pomelo is the most frost-tender of the common citrus, so cool, frosty Victoria is marginal for it. Grow it in the warmest, most sheltered, sun-facing spot you have, or in a pot that can be moved under cover, and expect lighter, later fruit than it makes in the subtropics.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -142,7 +146,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
     "mandarin": "citrus", "grapefruit": "citrus", "tangelo": "citrus",
-    "cumquat": "citrus", "pomelo": "citrus", "finger lime": "citrus",
+    "cumquat": "citrus", "finger lime": "citrus",
     "apple": "temperate", "pear": "temperate", "plum": "temperate",
     "peach": "temperate", "nectarine": "temperate",
     "apricot": "temperate", "quince": "temperate",
@@ -219,6 +223,15 @@ SPECIES_CLIMATE_CATEGORY = {
     # below carry the real story: mild-winter coast crops reliably, humid tropics fruit
     # poorly, and cold inland frost-hollows lose the winter blossom.
     "loquat": "loquat",
+    # Pomelo gets its own category rather than sharing the generic "citrus" note. It is a
+    # true citrus, but it sits at BOTH extremes of the citrus climate range: it is the most
+    # heat- and humidity-tolerant citrus (it actively thrives in the humid tropics, unlike
+    # the generic "humidity can cause fungal issues" note) and the MOST frost-tender (more
+    # cold-sensitive than orange/lemon/mandarin). The generic citrus VIC note even
+    # recommends lemon cultivars ("Meyer Lemon or Lisbon"), which is wrong on a pomelo page.
+    # Its own per-state notes carry the real story: QLD heartland, warm-north WA (not just
+    # Perth), warm coastal NSW (not the frosty inland), and marginal pot-and-shelter in VIC.
+    "pomelo": "pomelo",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
