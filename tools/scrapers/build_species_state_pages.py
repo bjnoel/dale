@@ -73,6 +73,7 @@ STATE_CLIMATE_NOTES = {
         "raspberry": "Raspberries are a cool-climate cane fruit, not a low-chill one: they want a genuinely cold winter and a mild summer, so in Western Australia they crop in the cool, higher-rainfall south (the Great Southern, Donnybrook and the Perth Hills), while the warm Perth coastal plain and its alkaline sands are marginal. WA's strict quarantine rules limit which interstate nurseries can ship live canes here, and Mediterranean fruit fly, not Queensland fruit fly, is the local pest.",
         "lilly-pilly": "Lilly pilly is not a Western Australian native, but it is one of the most popular evergreen hedge plants in Perth and the dry south-west, where it needs only summer water to thrive. Because it is a myrtle, and WA is working to keep out the myrtle rust disease established in the east, live plants face strict import conditions, so locally grown stock is the easiest to buy.",
         "pomelo": "Pomelo is the most heat-loving of the citrus, so in WA it crops best on the warm Perth coastal plain and through the warm north (the Gascoyne around Carnarvon and the Ord at Kununurra), but it is also the most frost-tender citrus, so cold inland and hill-district winters set young trees back. WA's strict citrus quarantine means only a few interstate nurseries can ship live pomelo trees here.",
+        "grapefruit": "Grapefruit needs more summer heat than any other common citrus to shed its bitterness and turn sweet, and WA's warm, dry climate supplies it, from Perth to the early citrus district of the Gascoyne around Carnarvon and the hot far north, which give high-sugar, well-coloured fruit. WA's strict quarantine rules limit which interstate nurseries can ship live citrus here, so locally grown stock is especially useful.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -94,6 +95,7 @@ STATE_CLIMATE_NOTES = {
         "raspberry": "Raspberries are a cool-climate cane fruit, so the common raspberry only crops in Queensland's high, cold Granite Belt around Stanthorpe; the warm, humid coast, subtropics and tropics give it too little winter chill. In those warmer districts the native Atherton raspberry (Rubus probus), a vigorous prickly rainforest cane, is the realistic home-grown choice, and Queensland fruit fly is the pest to manage.",
         "lilly-pilly": "Queensland is part of lilly pilly's native range, and its warm, humid climate grows the fastest, densest hedges in the country. That same warmth and humidity bring the heaviest pimple psyllid and myrtle rust pressure, so a resistant variety is worth seeking out.",
         "pomelo": "Pomelo is the citrus best suited to Queensland's warm, humid climate, handling tropical heat and humidity better than oranges or grapefruit, which is why most of Australia's named pummelo varieties are grown here. It crops from the subtropical south-east to the tropical far north, and only the cold inland frost pockets are a poor fit.",
+        "grapefruit": "Grapefruit loves heat, so Queensland's long, warm season ripens it superbly, with the sweetest, fullest-flavoured fruit coming from the warm inland citrus districts. On the humid coast and through the tropics the rind blemishes more and disease pressure is higher, but the heat still drives the high sugars that make grapefruit worth growing.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -115,6 +117,7 @@ STATE_CLIMATE_NOTES = {
         "raspberry": "Raspberries are a cool-climate cane fruit that needs real winter chill, so in New South Wales they belong on the cool tablelands and highlands (the Southern Highlands, the Central and Northern Tablelands and the Blue Mountains), not the warm coast or the hot western plains. Queensland fruit fly is established through eastern NSW, so net or bait soft ripe fruit.",
         "lilly-pilly": "New South Wales is the heartland of the lilly pilly group: every common species grows wild here, the rare magenta lilly pilly is found nowhere else, and it is the default hedge plant of coastal gardens. The humid north coast carries more pimple psyllid and myrtle rust than the cooler south.",
         "pomelo": "Pomelo suits the warm, frost-free subtropical north coast of New South Wales best. It is the most frost-tender of the citrus, so the cold tablelands and the frosty inland (including the big Riverina orange district) are marginal, and a young tree needs a warm, sheltered, sun-facing spot.",
+        "grapefruit": "Grapefruit needs a long, hot summer to lose its bitterness and sweeten, so in New South Wales it crops best in the hot, irrigated inland citrus districts. On the cooler tablelands and the milder, more humid coast the fruit tends to stay sharper and thicker skinned, so a warm, open position gives the best result.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -136,6 +139,7 @@ STATE_CLIMATE_NOTES = {
         "raspberry": "Raspberries are a cool-climate cane fruit, and Victoria is the mainland's heartland for them: cold winters supply the chill they need and mild summers ripen the fruit slowly, which is why the Dandenong Ranges and Yarra Valley grow most of the mainland crop. Queensland fruit fly is established in parts of the state, so net or bait where it occurs.",
         "lilly-pilly": "Lilly pilly is hardier than its tropical cousins and is grown right across Victoria as an evergreen hedge, with the common lilly pilly taking moderate frost once established. The cool climate slows growth but also eases psyllid and disease pressure, though young plants still want protection from hard frost.",
         "pomelo": "Pomelo is the most frost-tender of the common citrus, so cool, frosty Victoria is marginal for it. Grow it in the warmest, most sheltered, sun-facing spot you have, or in a pot that can be moved under cover, and expect lighter, later fruit than it makes in the subtropics.",
+        "grapefruit": "Grapefruit is the citrus least suited to a cool climate, because it needs sustained summer heat to lose its bitterness and sweeten. Victoria's warm, dry northern Murray districts grow good grapefruit under irrigation, but around Melbourne and through the cool south the fruit tends to stay acidic and thick skinned, so a hot, sheltered north-facing spot is essential.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -153,7 +157,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "macadamia": "subtropical",
     "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
-    "mandarin": "citrus", "grapefruit": "citrus", "tangelo": "citrus",
+    "mandarin": "citrus", "tangelo": "citrus",
     "cumquat": "citrus", "finger lime": "citrus",
     "apple": "temperate", "pear": "temperate", "plum": "temperate",
     "peach": "temperate", "nectarine": "temperate",
@@ -259,6 +263,16 @@ SPECIES_CLIMATE_CATEGORY = {
     # Its own per-state notes carry the real story: QLD heartland, warm-north WA (not just
     # Perth), warm coastal NSW (not the frosty inland), and marginal pot-and-shelter in VIC.
     "pomelo": "pomelo",
+    # Grapefruit gets its own category rather than sitting in the generic "citrus"
+    # group. Of all the common citrus it is the OUTLIER: it needs the most summer heat
+    # to shed its bitterness and sweeten, so it is superb in hot inland and subtropical
+    # districts and genuinely marginal (sour, thick-skinned) in cool, short-summer areas
+    # like Melbourne and the cold tablelands. The shared "citrus" note tells the wrong
+    # story for it twice over: it implies frost is the limiting factor (the tree is hardy
+    # enough; the FRUIT failing to sweeten is the real issue) and it steers cool-climate
+    # growers to "cold-tolerant varieties like Meyer Lemon", which is irrelevant to a
+    # grapefruit buyer. Its own per-state notes lead with the heat-to-sweeten story.
+    "grapefruit": "grapefruit",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
