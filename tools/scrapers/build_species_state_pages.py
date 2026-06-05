@@ -70,6 +70,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs, not chill-hungry stone fruit: the make-or-break factor is a strongly acidic soil (pH 4.5 to 5.5), which Perth's alkaline sands and hard bore water work against, so most WA growers raise them in beds or pots of acidic mix. Warm districts suit low-chill southern highbush and rabbiteye, while the cooler south coast can also ripen the deciduous northern highbush. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "feijoa": "Feijoa is one of the most cold-tolerant of the exotic fruits and grows well right across the cooler south-west, needing only the light winter chill the region easily provides. Give it summer water for a good crop and net against Mediterranean fruit fly. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "loquat": "Loquats are an easy, long-established backyard tree in Perth and the mild South West, where near frost-free winters let their unusual autumn-to-winter flowers set a reliable late-winter crop. Unlike many fruit trees, loquat is a permitted plant in WA with no loquat-specific quarantine restriction, so it ships in more freely. Mediterranean fruit fly is the pest to plan around.",
+        "miracle-fruit": "Miracle fruit needs strongly acid soil and humidity, the opposite of Perth's alkaline sandy soils and hard, limey scheme water, so in Western Australia it is grown almost entirely in pots of acidic mix that can be kept moist, humid and frost-free. WA's strict quarantine also means most interstate nurseries will not post this plant here, so local stock and seedlings are the easiest source.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -88,6 +89,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) far more than they need winter chill, so in Queensland choose low-chill, often evergreen southern highbush and rabbiteye and skip the cold-climate northern highbush. In the warm subtropics the bushes crop earlier and a vigorous plant can give a second, lighter flush, though humidity lifts disease pressure.",
         "feijoa": "Feijoa needs a cool winter to fruit, so in Queensland it is a tree for the cool, elevated south (the Granite Belt and the Darling Downs) rather than the warm, humid coast or the tropics, where mild winters give plenty of leaf but little fruit. Queensland fruit fly is the main pest, so net the tree or bait for it.",
         "loquat": "Loquats need a cool season to flower and fruit well, so in Queensland they crop best in the cooler, drier south and the southern uplands, and grow mainly as a handsome evergreen ornamental in the humid tropical lowlands, where winters are too warm and wet for reliable fruit set. Queensland fruit fly is the pest to manage.",
+        "miracle-fruit": "The humid, frost-free tropical north of Queensland is the one part of Australia where miracle fruit grows and fruits outdoors much as it does in West Africa. In the cooler, drier south-east it does best in a pot of acidic mix in a warm, sheltered, shaded spot, and it needs strongly acid soil (about pH 4.5 to 5.8) wherever it is grown.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -106,6 +108,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries are acid-soil shrubs (they want a soil pH of 4.5 to 5.5, not lime), and New South Wales grows more of them than any other state. Evergreen low-chill southern highbush suit the warm coast, while the cold tablelands also ripen the deciduous northern highbush. Plant two of the same type for the heaviest crops.",
         "feijoa": "Feijoa is frost-hardy and cool-loving, so it crops reliably across the cool NSW tablelands and the temperate coast and Sydney basin, while the warm, humid far north coast is more marginal for fruit set. Queensland fruit fly is the main pest to manage.",
         "loquat": "Loquats are a classic, easy backyard tree across coastal and temperate New South Wales, flowering in autumn and ripening one of the first crops of the year in late winter to spring. On the coldest tablelands, winter frost can nip the blossom, so a warm, sheltered spot gives the best fruit. Queensland fruit fly is the main pest.",
+        "miracle-fruit": "Miracle fruit is frost-tender and humidity-loving, so in New South Wales it grows outdoors only on the warm, near frost-free far north coast. Everywhere south and inland it is a potted shrub of acidic mix that is sheltered or brought under cover for winter, and it wants strongly acid soil wherever it lives.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -124,6 +127,7 @@ STATE_CLIMATE_NOTES = {
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) above all else, and Victoria's reliably cold winters also let it grow the full range, including the deciduous, high-chill northern highbush that warmer states struggle with. Cool conditions ripen the fruit later and larger, and birds are the main pest.",
         "feijoa": "Victoria's cool winters and mild summers are close to ideal for feijoa, which is fully frost-hardy once established and develops its best flavour in cooler districts. It crops well right across the south, and Queensland fruit fly is established in only parts of the state, so net where it occurs.",
         "loquat": "Loquats are hardy and widely grown across Melbourne and milder Victoria, ripening latest of the mainland states. The tree itself shrugs off frost, but because it flowers and sets fruit through autumn and winter, hard frosts can cut the crop, so coastal, bayside and sheltered north-facing gardens fruit most reliably.",
+        "miracle-fruit": "Victoria is too cold for miracle fruit outdoors. It is grown here as an indoor or heated-glasshouse pot plant in acidic mix, kept warm and humid and stood outside only through the warm months, so expect a novelty plant with light crops rather than a garden tree.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -133,7 +137,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "mango": "tropical", "lychee": "tropical", "longan": "tropical",
     "rambutan": "tropical", "durian": "tropical", "mangosteen": "tropical",
     "abiu": "tropical", "sapodilla": "tropical", "black sapote": "tropical",
-    "rollinia": "tropical", "canistel": "tropical", "miracle fruit": "tropical",
+    "rollinia": "tropical", "canistel": "tropical",
     "papaya": "tropical", "carambola": "tropical", "starfruit": "tropical",
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
     "dragon fruit": "tropical", "wax jambu": "tropical",
@@ -219,6 +223,15 @@ SPECIES_CLIMATE_CATEGORY = {
     # below carry the real story: mild-winter coast crops reliably, humid tropics fruit
     # poorly, and cold inland frost-hollows lose the winter blossom.
     "loquat": "loquat",
+    # Miracle fruit gets its own category. The generic "tropical" note is wrong for it:
+    # it is not a heat-and-sun crop but a humidity-loving, strongly acid-soil understorey
+    # shrub (pH 4.5 to 5.8, like a blueberry) that is frost-tender and sold only as
+    # seedlings, so the VIC "stick to cold-hardy varieties" line and the WA "warm dry
+    # suits tropical species" line both mislead. Across most of Australia it is a pot
+    # plant, and the per-state notes below tell that story: humid tropical QLD grows it
+    # outdoors, WA fights alkaline soil and water, NSW is a warm-coast-or-pot split, and
+    # VIC is indoor/glasshouse only.
+    "miracle fruit": "miracle-fruit",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
