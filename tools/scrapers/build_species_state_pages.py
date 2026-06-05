@@ -68,6 +68,7 @@ STATE_CLIMATE_NOTES = {
         "pecan": "Pecans are large deciduous nut trees that need a long, hot summer to fill their kernels rather than much winter chill, so in Western Australia they suit the warm inland and the hotter parts of the south-west where summer water is on hand, not the cool, wet far south. WA's strict quarantine rules also limit which interstate nurseries can ship live pecan trees here.",
         "pomegranate": "South-west WA's Mediterranean climate (hot dry summers, mild wet winters) suits pomegranates, which need summer heat to ripen and have only a low winter-chill requirement. The dry WA summer also means far less of the fruit splitting and rot that humidity causes. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "blueberry": "Blueberries are acid-soil shrubs, not chill-hungry stone fruit: the make-or-break factor is a strongly acidic soil (pH 4.5 to 5.5), which Perth's alkaline sands and hard bore water work against, so most WA growers raise them in beds or pots of acidic mix. Warm districts suit low-chill southern highbush and rabbiteye, while the cooler south coast can also ripen the deciduous northern highbush. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
+        "feijoa": "Feijoa is one of the most cold-tolerant of the exotic fruits and grows well right across the cooler south-west, needing only the light winter chill the region easily provides. Give it summer water for a good crop and net against Mediterranean fruit fly. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -84,6 +85,7 @@ STATE_CLIMATE_NOTES = {
         "pecan": "Pecans need a long, hot growing season and deep, well-drained soil with plenty of summer water, so in Queensland they crop best in the warm inland and southern districts under irrigation rather than on the humid tropical coast. Australia is free of the pecan scab disease that troubles humid overseas regions, which is a real advantage here.",
         "pomegranate": "Pomegranates want hot dry summers, so in Queensland they fruit best in the cooler, drier inland and elevated districts rather than the humid coast, subtropics or tropics, where humidity and summer rain make the fruit split, rot and ripen poorly.",
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) far more than they need winter chill, so in Queensland choose low-chill, often evergreen southern highbush and rabbiteye and skip the cold-climate northern highbush. In the warm subtropics the bushes crop earlier and a vigorous plant can give a second, lighter flush, though humidity lifts disease pressure.",
+        "feijoa": "Feijoa needs a cool winter to fruit, so in Queensland it is a tree for the cool, elevated south (the Granite Belt and the Darling Downs) rather than the warm, humid coast or the tropics, where mild winters give plenty of leaf but little fruit. Queensland fruit fly is the main pest, so net the tree or bait for it.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -100,6 +102,7 @@ STATE_CLIMATE_NOTES = {
         "pecan": "Pecans are a major inland New South Wales nut crop, suited to districts with hot summers, cool winters and reliable irrigation water, which is why the warm, irrigated northern valleys grow most of Australia's crop. They are very large, long-lived trees, so give them plenty of room.",
         "pomegranate": "Pomegranates suit the hot, dry inland of New South Wales. On the humid coast the fruit is prone to splitting and rot, and in the coldest tablelands frost can set back young plants, so the warm, dry interior is the reliable choice.",
         "blueberry": "Blueberries are acid-soil shrubs (they want a soil pH of 4.5 to 5.5, not lime), and New South Wales grows more of them than any other state. Evergreen low-chill southern highbush suit the warm coast, while the cold tablelands also ripen the deciduous northern highbush. Plant two of the same type for the heaviest crops.",
+        "feijoa": "Feijoa is frost-hardy and cool-loving, so it crops reliably across the cool NSW tablelands and the temperate coast and Sydney basin, while the warm, humid far north coast is more marginal for fruit set. Queensland fruit fly is the main pest to manage.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -116,6 +119,7 @@ STATE_CLIMATE_NOTES = {
         "pecan": "Pecans need a long, hot summer to ripen and fill their nuts, which makes Victoria marginal for them. They crop best in the warm, irrigated northern districts and are unreliable in the cool, frost-prone south, where the season is often too short to finish the nuts.",
         "pomegranate": "Victoria's warm, dry inland summers and mild winters suit pomegranates, which have a low winter-chill requirement. Cooler southern and coastal districts ripen the fruit later and less reliably, and frost can set back young plants.",
         "blueberry": "Blueberries need a strongly acidic soil (pH 4.5 to 5.5) above all else, and Victoria's reliably cold winters also let it grow the full range, including the deciduous, high-chill northern highbush that warmer states struggle with. Cool conditions ripen the fruit later and larger, and birds are the main pest.",
+        "feijoa": "Victoria's cool winters and mild summers are close to ideal for feijoa, which is fully frost-hardy once established and develops its best flavour in cooler districts. It crops well right across the south, and Queensland fruit fly is established in only parts of the state, so net where it occurs.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -130,7 +134,7 @@ SPECIES_CLIMATE_CATEGORY = {
     "jackfruit": "tropical", "soursop": "tropical", "custard apple": "subtropical",
     "dragon fruit": "tropical", "wax jambu": "tropical",
     "avocado": "subtropical", "guava": "subtropical", "jaboticaba": "subtropical",
-    "feijoa": "subtropical", "loquat": "subtropical", "macadamia": "subtropical",
+    "loquat": "subtropical", "macadamia": "subtropical",
     "persimmon": "temperate", "pawpaw": "subtropical", "tamarillo": "subtropical",
     "lemon": "citrus", "lime": "citrus", "orange": "citrus",
     "mandarin": "citrus", "grapefruit": "citrus", "tangelo": "citrus",
@@ -193,6 +197,14 @@ SPECIES_CLIMATE_CATEGORY = {
     # varieties" note misses both points, so each state note leads with the acid-soil
     # rule and names the blueberry type that suits that climate.
     "blueberry": "blueberry",
+    # Feijoa (pineapple guava) gets its own category, and it is the OPPOSITE of the
+    # generic "subtropical" note. Feijoa is one of the most cold-hardy of the exotic
+    # fruits (to about minus 10C), it NEEDS a modest winter chill (~50 hours) to fruit
+    # well, and it develops its best flavour in cooler areas, so it crops best in the
+    # cool south (Victoria, the NSW tablelands, cooler WA) and only poorly in the warm,
+    # humid tropics. The old "subtropical" VIC note (sheltered north-facing spot,
+    # nurseries that "do not ship to VIC") is exactly wrong for it.
+    "feijoa": "feijoa",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS

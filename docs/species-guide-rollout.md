@@ -302,6 +302,7 @@ black-sapote, loquat, starfruit, rollinia, miracle-fruit. (50 species have some 
 - [x] pear (DEC-151, VIC flagship, the pick-firm-ripen-off-tree pome story)
 - [x] rambutan (DEC-152, archives-first, pollination story corrected)
 - [x] wax-jambu (DEC-153, QLD flagship, standout WA overlay)
+- [x] feijoa (WA flagship, its own cool-climate category: cold-hardy and chill-needing, not frost-tender subtropical; DEC assigned at fold)
 - The eight above shipped as a parallel batch, all merged 2026-06-05 (PRs #53 to #60). cherry and
   mulberry each added their own climate category to build_species_state_pages.py; pear and apricot
   were normalised to the pending-fragment convention at merge (they had edited decision-log.md directly).
