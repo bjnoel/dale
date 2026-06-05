@@ -4,6 +4,27 @@
 
 ---
 
+## DEC-154 — 2026-06-05 — Loquat gets a cited, per-state growing guide on treestock (flagship WA, dedicated climate category)
+
+**Decided by:** Dale (parallel guide run)
+
+**Context:** Loquat is next in the rollout. GSC over the last 90 days shows the species page is the main loquat entrance (about 129 impressions, position 16) and `buy-loquat-trees-western-australia.html` is the only loquat combo page with impressions, alongside the query "loquat tree perth". The species blurb and climate reality agree: loquat is widely grown in Perth gardens, has no special WA quarantine restriction, and is a classic backyard tree across NSW, VIC and southern QLD. Loquat is botanically unusual: it flowers in autumn and ripens fruit in late winter to spring (the reverse of most fruit trees), so the limiting factor is frost on the blossom, not the hardiness of the tree (which takes about minus 10 degrees).
+
+**Decision:** Ship `tools/scrapers/growing_guides/loquat.json` (state-invariant core plus four genuinely distinct WA/QLD/NSW/VIC overlays), give loquat its OWN `"loquat"` climate category in `SPECIES_CLIMATE_CATEGORY` with verified per-state notes (rather than inheriting "subtropical"), and add `tests/test_guide_loquat.py`. Flagship WA.
+
+**Why:** Matches the rollout (better, trustworthy guides for exactly the rare fruit the community collects earn search traffic and trust, which feeds the Treesmith funnel). The generic "subtropical" note was wrong for loquat twice over: it implied a frost-tender tree marginal in the cool south (the tree is hardy and widely grown in Melbourne), and it implied the usual WA quarantine wall (loquat is a permitted WA plant with no loquat-specific restriction). Correctness was the priority: wrong variety, climate, pest or harvest advice wastes a grower's years.
+
+**Actions:**
+- Authored the guide archives-first from Benedict's owned sources (the RFCA loquat article; the WANATCA Yearbook 20 article "The Loquat: A Fruit of Quality" by C.A. Schroeder; the WANATCA ACOTANC "Exotic Fruits in Perth" paper by Neville Passmore), then cross-checked against DPIRD WA (Mediterranean fruit fly host list and the WA Organism List), Business Queensland (Queensland fruit fly), the California Rare Fruit Growers and Clemson HGIC factsheets, Brisbane City Council, Yates and Bunnings.
+- Correctness anchors guarded by tests: self-fertile (one tree fruits, a second variety only improves the crop); the autumn-to-winter flowering and spring-ripening habit, with frost the risk to the blossom not the tree; loquat is a DPIRD-listed high-susceptibility Mediterranean fruit fly host in WA and a Queensland fruit fly host in the east, and its winter-ripening crop helps carry fruit fly through the cold season; it fruits poorly as an ornamental in the humid tropical lowlands; thinning each cluster to a few fruit is the job that makes loquats worthwhile. Variety picks tied to live stock (Bessell Brown, Nagasakiwase, Champagne, Enormity, Herds Mammoth, Honey Dew, Sewells Prolific).
+- Further reading carries the two owned WANATCA loquat links (Schroeder, Passmore), followed; the two RFCA loquat archive links auto-merge from `archive_links.json` (unchanged, already indexed). No rarefruitclub.au link was added (no verified loquat page).
+
+**Status:** PR open on branch `dale/loquat-guide`, pending Benedict review. With current stock loquat is below the combo-page generation cut (WA has 2 WA-shippable in stock, under the 3 minimum; QLD/NSW/VIC have 12 each but sit outside the top-20 cap), so only `/species/loquat.html` renders the guide live today; the four state overlays are authored and tested (force-built in the test suite) and light up automatically when stock crosses the threshold (the WA combo page is one in-stock loquat away, and GSC shows it has rendered within the last 90 days). Full suite green (830 tests). Every cited and further-reading URL verified live (HTTP 200). No em or en dashes.
+
+**To revert:** delete `tools/scrapers/growing_guides/loquat.json` and `tests/test_guide_loquat.py`, and in `build_species_state_pages.py` remove the `"loquat": "loquat"` entry plus the four `"loquat"` notes from `STATE_CLIMATE_NOTES`, restoring `"loquat": "subtropical"` in `SPECIES_CLIMATE_CATEGORY`. The species page falls back to the generic `fruit_species.json` blurb.
+
+---
+
 ## DEC-153 — 2026-06-04 — Wax jambu gets a cited, per-state growing guide on treestock (flagship QLD, standout WA overlay)
 
 **Decided by:** Dale (parallel guide run)
