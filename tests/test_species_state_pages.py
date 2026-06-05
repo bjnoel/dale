@@ -25,19 +25,21 @@ from guide_helpers import (  # noqa: E402
 
 def _unenriched_products():
     # A species with NO growing guide, to prove the graceful fallback still works.
-    # Starfruit is deliberately low-priority on the rollout (unlikely to be enriched
-    # soon) yet has RFCA archive_links entries, which the archive-fallback test needs.
-    sp = {"common_name": "Starfruit", "latin_name": "Averrhoa carambola",
-          "description": "Generic starfruit blurb.", "slug": "starfruit"}
+    # Jujube is deliberately low-priority on the rollout (indexed but ~0 clicks,
+    # unlikely to be enriched soon) yet has RFCA archive_links entries, which the
+    # archive-fallback test needs. (Starfruit used to play this role until it was
+    # enriched; it now has its own tests/test_guide_starfruit.py.)
+    sp = {"common_name": "Jujube", "latin_name": "Ziziphus jujuba",
+          "description": "Generic jujube blurb.", "slug": "jujube"}
     return [
-        {"title": f"Starfruit {i}", "url": f"https://nursery.example/starfruit-{i}",
+        {"title": f"Jujube {i}", "url": f"https://nursery.example/jujube-{i}",
          "nursery_key": "daleys", "nursery_name": "Daleys", "price": 30.0 + i,
          "available": True, "species": sp}
         for i in range(4)
     ]
 
 
-UNENRICHED_PAGE = bssp.build_combo_page("QLD", "starfruit", _unenriched_products(), TODAY)
+UNENRICHED_PAGE = bssp.build_combo_page("QLD", "jujube", _unenriched_products(), TODAY)
 
 
 class ClimateNoteTests(unittest.TestCase):
@@ -65,10 +67,11 @@ class FallbackTests(unittest.TestCase):
     def test_has_guide(self):
         self.assertTrue(gg.has_guide("olive"))
         self.assertTrue(gg.has_guide("mango"))
-        self.assertFalse(gg.has_guide("starfruit"))
+        self.assertTrue(gg.has_guide("starfruit"))
+        self.assertFalse(gg.has_guide("jujube"))
 
     def test_unenriched_species_uses_blurb_and_stays_clean(self):
-        self.assertIn("Generic starfruit blurb.", UNENRICHED_PAGE)
+        self.assertIn("Generic jujube blurb.", UNENRICHED_PAGE)
         self.assertNotIn('id="sources"', UNENRICHED_PAGE)
         self.assertIn("Track your collection with Treesmith", UNENRICHED_PAGE)
         self.assertNotIn(EM_DASH, UNENRICHED_PAGE)
@@ -132,9 +135,9 @@ class ArchiveIndexTests(unittest.TestCase):
         self.assertLessEqual(len(gg.get_further_reading("olive", cap=2)), 2)
 
     def test_unguided_species_with_archive_has_links_available(self):
-        # starfruit has no guide yet, but the index has candidates ready for when it does.
-        self.assertFalse(gg.has_guide("starfruit"))
-        self.assertGreater(len(gg._archive_links().get("starfruit", [])), 0)
+        # jujube has no guide yet, but the index has candidates ready for when it does.
+        self.assertFalse(gg.has_guide("jujube"))
+        self.assertGreater(len(gg._archive_links().get("jujube", [])), 0)
 
 
 class SpeciesPagePassthroughDashTests(unittest.TestCase):
