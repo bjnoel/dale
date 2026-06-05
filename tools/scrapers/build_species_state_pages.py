@@ -63,6 +63,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Bananas grow in the warm, frost-free parts of WA, but live banana plants cannot simply be brought in from interstate. WA quarantine rules require planting material to meet strict import conditions, so source WA-grown, certified disease-free plants.",
         "cherry": "Cherries are the most chill-demanding of the common stone fruits, needing a long, cold winter that almost no part of WA reliably provides, so they crop only in the coldest southern hill and forest districts, and low-chill types are the realistic backyard option. WA's strict quarantine rules also limit which interstate nurseries can ship live cherry trees here.",
         "mulberry": "Mulberries are tough, widely adapted trees that grow across most of WA, from Perth gardens to the Wheatbelt and the warm Gascoyne. They need no winter chill and are very drought-tolerant once established, so they suit WA well with a little summer water. WA's strict quarantine rules limit which interstate nurseries can ship live plants here.",
+        "jujube": "Western Australia is one of Australia's main jujube regions. Its hot, dry summers, mild winters and free-draining soils suit this deciduous, intensely drought and heat hardy tree, which also copes with the salty and alkaline ground that defeats most fruit trees. Quarantine rules apply to live trees sent in from other states, so locally grown stock is often the easiest to buy, and Mediterranean fruit fly is the pest to net against.",
         "default": "WA's strict quarantine rules limit which nurseries can legally ship fruit trees here. These are the options that can.",
     },
     "QLD": {
@@ -74,6 +75,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Queensland's warm, humid, frost-free climate is ideal for bananas, which is why the far north grows almost all of Australia's crop. Biosecurity rules restrict moving banana plants between zones.",
         "cherry": "Cherries need far more winter chill than almost all of Queensland provides, so they are limited to the coldest, highest part of the state. Across the warm coast, the subtropics and the tropics, winters are too mild for sweet cherries to flower and fruit reliably.",
         "mulberry": "Mulberries are among the easiest fruit trees to grow in Queensland, cropping heavily from the subtropical south-east to the tropical north. They tolerate heat and humidity far better than most deciduous fruit trees and need no winter chill.",
+        "jujube": "Jujube is a hot, dry climate tree, so in Queensland it belongs in the warm, dry inland rather than the humid coast or the wet tropics, where damp weather near harvest spoils the fruit and raises disease pressure. It needs a hot summer to ripen and only a little winter chill, both of which the inland supplies.",
         "default": "Queensland nurseries and those that ship to QLD offer a wide selection suited to warm and subtropical climates.",
     },
     "NSW": {
@@ -85,6 +87,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Warm, frost-free parts of coastal NSW, mainly the subtropical north, suit bananas. Banana bunchy top virus is a serious local risk, so plant only certified material and never move suckers between gardens.",
         "cherry": "Cherries are the most chill-demanding stone fruit and crop only where winters are genuinely cold, so in New South Wales they are a tree for the cool tablelands, not the warm coast or the hot inland plains.",
         "mulberry": "Mulberries grow almost anywhere in New South Wales, from the warm coast to the cold tablelands, and are one of the most reliable backyard fruit trees in the state. They need no winter chill and shrug off frost once established.",
+        "jujube": "Jujube thrives on long, hot, dry summers and tolerates drought, frost and poor soils, so in New South Wales it suits the warm inland far better than the humid coast. A little winter chill and a dry ripening autumn give the best fruit.",
         "default": "NSW has a wide range of climates, so most fruit tree varieties available here are suited to warm temperate to subtropical conditions.",
     },
     "VIC": {
@@ -96,6 +99,7 @@ STATE_CLIMATE_NOTES = {
         "banana": "Victoria is too cold and frost-prone for bananas to crop reliably. They can be grown as a foliage plant or in a warm, sheltered courtyard or pot, but expect little or no fruit.",
         "cherry": "Victoria's cold winters give cherries the deep chill they need, which is why it is one of Australia's main cherry states. They crop best in the cool hill and high-country districts, while the warmest lowland areas are more marginal.",
         "mulberry": "Mulberries are fully cold-hardy and crop reliably right across Victoria, including the cool central and southern districts. They need no winter chill, tolerate frost once established, and simply ripen a little later where summers are cooler.",
+        "jujube": "Victoria's hot, dry northern inland suits jujube well, while the cooler, wetter south is more marginal because the fruit ripens late and damp autumn weather can spoil it. The tree is very frost hardy when dormant and needs a hot summer to ripen its fruit.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
     },
 }
@@ -140,6 +144,14 @@ SPECIES_CLIMATE_CATEGORY = {
     # "subtropical" note that wrongly implies it is marginal and frost-tender in the
     # cooler south. The per-state notes below tell the real story.
     "mulberry": "mulberry",
+    # Jujube gets its own category. It is a hot-dry-climate deciduous tree that is
+    # intensely heat and drought hardy, tolerates alkaline and saline soils, needs a
+    # hot summer plus only a low winter chill, and does poorly in humid climates. No
+    # existing category fits: "temperate / choose low-chill varieties" understates its
+    # heat and drought love, "mediterranean" is about olives/grapes/figs, and the
+    # generic WA note wrongly implies jujube is hard to get here when WA is in fact
+    # one of Australia's two leading jujube-producing states.
+    "jujube": "jujube",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
