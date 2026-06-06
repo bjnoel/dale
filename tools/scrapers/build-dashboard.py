@@ -16,7 +16,7 @@ from pathlib import Path
 
 from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
-from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS
+from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
 from stocklib.taxonomy import load_species
 # Reuse the variety builder's non-plant denylist so we never emit a variety
@@ -834,12 +834,10 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .filter-chip button { background: none; border: none; color: #166534; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
   .filter-chip button:hover { color: #dc2626; }"""
 
+    # Twitter Card + og:title/description/image/type are emitted by render_head;
+    # only the og:image dimensions (which render_head does not model) are added here.
     extra_head_tags = """<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="treestock.com.au - Australian Nursery Stock Tracker">
-<meta name="twitter:description" content="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
-<meta name="twitter:image" content="https://treestock.com.au/og-image.png">"""
+<meta property="og:image:height" content="630">"""
 
     head = render_head(
         title="treestock.com.au - Australian Nursery Stock Tracker",
@@ -849,6 +847,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         og_description="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.",
         og_image="https://treestock.com.au/og-image.png",
         og_type="website",
+        jsonld=[organization_jsonld(), website_jsonld()],
         extra_head=extra_head_tags,
         extra_style=extra_style,
     )

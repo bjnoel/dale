@@ -24,8 +24,9 @@ from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, delivery_label
 from stocklib.snapshots import iter_nursery_snapshots
+from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
-from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo, SITE_URL
 
 NURSERY_URLS = {
     "daleys": "https://www.daleysfruit.com.au",
@@ -171,6 +172,15 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
         title=f"Buy {title} Trees in Australia — Prices & Availability — treestock.com.au",
         description=meta_desc,
         canonical_url=f"https://treestock.com.au/variety/{slug}.html",
+        og_title=f"Buy {title} Trees in Australia",
+        og_description=meta_desc,
+        og_type="product",
+        jsonld=product_offer_jsonld(
+            name=title,
+            url=f"https://treestock.com.au/variety/{slug}.html",
+            products=products,
+            description=meta_desc,
+        ),
     )
     header = render_header(active_path="/variety/")
     species_href = f"/species/{species_slug}.html" if species_slug in valid_species_slugs else ""
@@ -249,6 +259,7 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
     head = render_head(
         title="Fruit Tree Varieties for Sale in Australia — treestock.com.au",
         description=f"Browse {total_varieties} named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.",
+        canonical_url=f"{SITE_URL}/variety/",
     )
     header = render_header(active_path="/variety/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Varieties", "")])

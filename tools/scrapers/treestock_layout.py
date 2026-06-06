@@ -14,12 +14,17 @@ import functools
 from datetime import datetime
 
 from stocklib import layout
+from stocklib import structured_data as _sd
 from stocklib.layout import SiteConfig
 
 # --- Constants ---
 
 SITE_NAME = "treestock.com.au"
 SITE_URL = "https://treestock.com.au"
+ORG_DESCRIPTION = (
+    "treestock.com.au tracks fruit and rare plant stock, prices, and "
+    "availability across Australian nurseries, updated daily."
+)
 
 TAILWIND_CSS = f"/styles.css?v={datetime.utcnow().strftime('%Y%m%d')}"
 PLAUSIBLE_SCRIPT = '<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>'
@@ -62,6 +67,7 @@ TREESTOCK = SiteConfig(
     logo_svg=LOGO_SVG,
     nav_items=NAV_ITEMS,
     accent="green",
+    default_og_image=f"{SITE_URL}/og-image.png",
     default_max_width="max-w-3xl",
     base_style=BASE_STYLE,
 )
@@ -74,10 +80,24 @@ render_head = functools.partial(layout.render_head, TREESTOCK)
 render_header = functools.partial(layout.render_header, TREESTOCK)
 
 
+def organization_jsonld() -> str:
+    """Organization JSON-LD (emit once, on the homepage)."""
+    return _sd.organization_jsonld(
+        SITE_URL, SITE_NAME, description=ORG_DESCRIPTION, same_as=["https://bjnoel.com"]
+    )
+
+
+def website_jsonld() -> str:
+    """WebSite JSON-LD (emit once, on the homepage)."""
+    return _sd.website_jsonld(SITE_URL, SITE_NAME)
+
+
 def render_breadcrumb(crumbs: list[tuple[str, str]], max_width: str = "max-w-3xl") -> str:
-    """Render breadcrumb navigation.
+    """Render breadcrumb navigation plus its BreadcrumbList JSON-LD.
 
     crumbs: list of (label, url) tuples. Last item has no link (current page).
+    The JSON-LD is appended after the <nav> (valid anywhere in the body), so
+    every breadcrumbed page emits BreadcrumbList structured data for free.
     """
     parts = []
     for i, (label, url) in enumerate(crumbs):
@@ -85,10 +105,11 @@ def render_breadcrumb(crumbs: list[tuple[str, str]], max_width: str = "max-w-3xl
             parts.append(label)
         else:
             parts.append(f'<a href="{url}" class="hover:underline">{label}</a>')
-    return f"""
+    nav = f"""
   <nav class="text-xs text-gray-400 mb-4">
     {" &#8250; ".join(parts)}
   </nav>"""
+    return nav + "\n" + _sd.breadcrumb_jsonld(crumbs, SITE_URL)
 
 
 def render_footer(max_width: str = "max-w-3xl", extra_text: str = "") -> str:
@@ -187,6 +208,9 @@ def render_page(
     og_description: str = "",
     og_image: str = "",
     og_type: str = "",
+    twitter_card: str = "summary_large_image",
+    robots: str = "",
+    jsonld="",
 ) -> str:
     """Convenience wrapper: renders a complete page."""
     head = render_head(
@@ -198,6 +222,9 @@ def render_page(
         og_description=og_description,
         og_image=og_image,
         og_type=og_type,
+        twitter_card=twitter_card,
+        robots=robots,
+        jsonld=jsonld,
         extra_style=extra_style,
     )
     header = render_header(

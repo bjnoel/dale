@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 
 from shipping import SHIPPING_MAP, LOCAL_DELIVERY, delivery_label
 from stocklib.templates import render as render_template
+from stocklib.structured_data import product_offer_jsonld
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 import growing_guides
 from build_species_trends import build_species_trends, make_sparkline, trend_direction
@@ -643,6 +644,12 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         extra_head=growing_guides.faq_jsonld(slug) if growing_guides.has_guide(slug) else "",
         og_title=f"{name} Trees for Sale in Australia",
         og_description=f"{in_stock_count} {name} varieties in stock across {nursery_count} nurseries. From {price_range}.",
+        jsonld=product_offer_jsonld(
+            name=f"{name} Tree",
+            url=f"https://treestock.com.au/species/{slug}.html",
+            products=products,
+            description=f"Compare {name} tree prices and availability across {nursery_count} Australian nurseries.",
+        ),
     )
     header = render_header(active_path="/species/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Species", "/species/"), (name, "")])

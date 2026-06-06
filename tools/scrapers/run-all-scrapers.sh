@@ -164,10 +164,20 @@ echo "$LOG_PREFIX Building Treesmith landing page..."
 python3 "$SCRIPT_DIR/build_treesmith_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Treesmith landing page build failed (non-fatal)"
 echo "$LOG_PREFIX Treesmith landing page complete."
 
+# Build community wishlist page (demand signal + subscriber funnel)
+echo "$LOG_PREFIX Building wishlist page..."
+python3 "$SCRIPT_DIR/build_wishlist_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Wishlist page build failed (non-fatal)"
+echo "$LOG_PREFIX Wishlist page complete."
+
 # Build sitemap
 echo "$LOG_PREFIX Building sitemap..."
 python3 "$SCRIPT_DIR/build_sitemap.py" "$DIGEST_DIR/species" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sitemap build failed (non-fatal)"
 echo "$LOG_PREFIX Sitemap complete."
+
+# Build llms.txt (curated AI/LLM site map; robots.txt ships as a static asset)
+echo "$LOG_PREFIX Building llms.txt..."
+python3 "$SCRIPT_DIR/build_llms.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: llms.txt build failed (non-fatal)"
+echo "$LOG_PREFIX llms.txt complete."
 
 # Detect significant stock count changes (surges/drops) across nurseries
 echo "$LOG_PREFIX Checking for stock surges..."

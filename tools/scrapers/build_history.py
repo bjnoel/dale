@@ -23,7 +23,7 @@ from daily_digest import (
     load_snapshot,
 )
 from stocklib.templates import render as render_template
-from treestock_layout import render_head, render_header, render_footer
+from treestock_layout import render_head, render_header, render_footer, SITE_URL
 
 
 def get_available_dates(data_dir: Path) -> list[str]:
@@ -115,6 +115,7 @@ def build_html(history: list[dict], wa_only: bool = False) -> str:
     head = render_head(
         title=f"Price &amp; Stock History{title_suffix} — treestock.com.au",
         description="Daily price changes and stock updates across Australian fruit nurseries.",
+        canonical_url=f"{SITE_URL}/history.html",
         extra_style=extra_style,
     )
     header = render_header(
