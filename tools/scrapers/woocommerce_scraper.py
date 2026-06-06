@@ -99,6 +99,24 @@ NURSERIES = {
         "location": "Dural, NSW",
         "fruit_categories": ["citrus", "dwarf-citrus"],
     },
+    "rayners": {
+        # Rayners Orchard, Yarra Valley VIC. Deep range of dwarf/multi-graft stone
+        # fruit, pears, citrus, dozens of finger-lime cultivars, feijoas. ~290 trees.
+        # Delivers within Victoria only (interstate for bulk 50+ orders).
+        # Products are mostly UNcategorized (some tagged grow-your-own), so we do
+        # NOT include-filter by category; instead we exclude the non-tree categories
+        # (wines, preserves, gifts, tours, classes) and the one uncategorised
+        # "Preserved Cherries" jar. Title-keyword junk filters can't be used here:
+        # "wine" hits the Winesap apple, "honey" hits the Honey Murcott mandarin.
+        "name": "Rayners Orchard",
+        "domain": "www.raynersorchard.com.au",
+        "location": "Yarra Valley, VIC",
+        "exclude_categories": [
+            "local-wines", "preserves-sauces-jams-honeys", "preserved-fruit",
+            "preserving-goods", "gifts", "tour-operators", "classes",
+        ],
+        "exclude_title_keywords": ["preserved"],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
@@ -127,6 +145,8 @@ def scrape_woocommerce(nursery_key, config):
     """Scrape all products from a WooCommerce store."""
     domain = config["domain"]
     fruit_cats = config.get("fruit_categories", [])
+    excl_cats = set(config.get("exclude_categories", []))
+    excl_kw = [k.lower() for k in config.get("exclude_title_keywords", [])]
     use_category_api = config.get("category_api", False)
 
     print(f"Scraping {config['name']} ({domain})...")
@@ -157,6 +177,12 @@ def scrape_woocommerce(nursery_key, config):
             if fruit_cats:
                 if not any(fc in cats or any(fc in c for c in cats) for fc in fruit_cats):
                     continue
+            # Exclude non-tree categories / titles (for stores without an
+            # include-filter, e.g. Rayners: drop wines, preserves, gifts, tours).
+            if excl_cats and any(c in excl_cats for c in cats):
+                continue
+            if excl_kw and any(k in product.get("name", "").lower() for k in excl_kw):
+                continue
             all_products.append(product)
 
         print(f"{len(data)} products ({len(all_products)} fruit/edible)")

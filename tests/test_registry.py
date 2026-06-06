@@ -43,6 +43,7 @@ EXPECTED_SHIPPING = {
     "plantnet": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"],
     "fruit-tree-lane": ["NSW", "VIC", "QLD", "SA", "ACT"],
     "engalls": ["NSW", "VIC", "QLD", "SA", "ACT"],
+    "rayners": ["VIC"],
 }
 
 EXPECTED_NAMES = {
@@ -65,6 +66,7 @@ EXPECTED_NAMES = {
     "plantnet": "PlantNet",
     "fruit-tree-lane": "Fruit Tree Lane",
     "engalls": "Engall's Nursery",
+    "rayners": "Rayners Orchard",
 }
 
 EXPECTED_LOCAL = {
@@ -72,6 +74,7 @@ EXPECTED_LOCAL = {
     "guildford": {"area": "Perth metro", "state": "WA"},
     "all-season-plants-wa": {"area": "Perth (pickup)", "state": "WA"},
     "perth-mobile-nursery": {"area": "Perth metro", "state": "WA"},
+    "rayners": {"area": "Victoria", "state": "VIC"},
 }
 
 

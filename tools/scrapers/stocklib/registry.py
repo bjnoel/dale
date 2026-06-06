@@ -97,6 +97,10 @@ NURSERIES: list[Nursery] = [
     Nursery("engalls", "Engall's Nursery",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             note="NSW-based (Dural). Does not ship to WA, NT, TAS, or some SA areas (quarantine)."),
+    Nursery("rayners", "Rayners Orchard",
+            ("VIC",),
+            local_delivery={"area": "Victoria", "state": "VIC"},
+            note="VIC-based (Yarra Valley). Delivers within Victoria only; interstate only for bulk orders (50+)."),
 ]
 
 _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}
