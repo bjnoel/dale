@@ -348,7 +348,7 @@ def build_recent_highlights(data_dir: Path) -> str:
             <span class="font-medium">{d['title']}</span>
             <span class="text-gray-500"> ({d['nursery']})</span>
           </span>
-          <span class="text-sm flex-shrink-0"><span class="line-through text-gray-400">${d['old_price']:.0f}</span> <span class="font-semibold text-blue-700">${d['new_price']:.0f}</span> <span class="text-blue-600">&minus;{d['pct']}%</span></span>
+          <span class="text-sm flex-shrink-0"><span class="line-through text-gray-500">${d['old_price']:.0f}</span> <span class="font-semibold text-blue-700">${d['new_price']:.0f}</span> <span class="text-blue-600">&minus;{d['pct']}%</span></span>
         </li>"""
 
     total_restocks = len(restocks)
@@ -358,7 +358,7 @@ def build_recent_highlights(data_dir: Path) -> str:
   <div class="mb-4 rounded-lg border border-gray-200 overflow-hidden">
     <div class="bg-gray-50 px-4 py-2.5 border-b border-gray-200 flex items-center justify-between">
       <span class="text-sm font-semibold text-gray-700">📬 What subscribers got alerted to this week</span>
-      <span class="text-xs text-gray-400">{total_restocks} restocks · {total_drops} price drops detected</span>
+      <span class="text-xs text-gray-600">{total_restocks} restocks · {total_drops} price drops detected</span>
     </div>
     <div class="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
       <div class="px-4 py-3">
@@ -804,6 +804,11 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .in-stock { background: #d1fae5; color: #065f46; }
   .out-stock { background: #f3f4f6; color: #6b7280; }
   #results { min-height: 200px; }
+  /* Reserve a screen of height while the results container is empty (pre-JS), so the
+     rows dashboard.js injects on load fill reserved space instead of shoving the
+     subscribe block / footer down. Kills the load-time layout shift (was CLS 0.945).
+     :empty stops matching the instant JS sets innerHTML, so it never gaps a filled view. */
+  #results:empty { min-height: 100vh; }
   .product-row-wrap { border-bottom: 1px solid #f3f4f6; }
   .notify-link { display: inline-block; margin: 0 0 8px 0.5rem; padding: 2px 10px; font-size: 0.75rem; color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 9999px; text-decoration: none; }
   .notify-link:hover { background: #dcfce7; }
@@ -823,7 +828,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .species-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; text-decoration: none; transition: border-color 0.15s, background 0.15s; cursor: pointer; }
   .species-pill:hover { border-color: #22c55e; background: #f0fdf4; color: #065f46; }
   .species-pill.active { border-color: #16a34a; background: #dcfce7; color: #166534; font-weight: 600; }
-  .species-pill .count { color: #059669; font-weight: 600; font-size: 0.7rem; }
+  .species-pill .count { color: #047857; font-weight: 600; font-size: 0.7rem; }
   .species-pill.active .count { color: #15803d; }
   .species-pill.dimmed { opacity: 0.4; }
   .species-pill.dimmed .count { color: #9ca3af; }
@@ -862,7 +867,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         {LOGO_SVG}
         <span class="text-lg font-bold text-green-800">{SITE_NAME}</span>
       </a>
-      <div class="text-right text-xs text-gray-400">
+      <div class="text-right text-xs text-gray-500">
         <div id="stats" class="hidden sm:block"></div>
         <div id="statsSmall" class="sm:hidden"></div>
         <div class="hidden sm:block">Updated {now}</div>
@@ -886,7 +891,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="inStockOnly" class="rounded"> In stock only
       </label>
-      <select id="stateFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
+      <select id="stateFilter" aria-label="Filter by state" class="border border-gray-300 rounded px-2 py-1 text-sm">
         <option value="">All states</option>
         <option value="NSW">NSW</option>
         <option value="VIC">VIC</option>
@@ -900,16 +905,16 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="changesOnly" class="rounded"> Changes only
       </label>
-      <select id="nurseryFilter" class="border border-gray-300 rounded px-2 py-1 text-sm">
+      <select id="nurseryFilter" aria-label="Filter by nursery" class="border border-gray-300 rounded px-2 py-1 text-sm">
         <option value="">All nurseries</option>
       </select>
-      <select id="sortBy" class="border border-gray-300 rounded px-2 py-1 text-sm">
+      <select id="sortBy" aria-label="Sort results" class="border border-gray-300 rounded px-2 py-1 text-sm">
         <option value="relevance">Sort: Relevance</option>
         <option value="price-asc">Price: Low to High</option>
         <option value="price-desc">Price: High to Low</option>
         <option value="name">Name: A-Z</option>
       </select>
-      <span id="resultCount" class="text-gray-400 ml-auto"></span>
+      <span id="resultCount" class="text-gray-500 ml-auto"></span>
     </div>
   </div>
 
@@ -928,7 +933,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
       <form id="subscribeForm" class="flex gap-2 flex-shrink-0 flex-wrap">
         <input type="email" id="subEmail" placeholder="your@email.com" required
           class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
-        <select id="subState" class="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+        <select id="subState" aria-label="State for stock alerts" class="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
           <option value="ALL">All states</option>
           <option value="NSW">NSW</option><option value="VIC">VIC</option>
           <option value="QLD">QLD</option><option value="WA">WA</option>
