@@ -175,11 +175,14 @@ function updateSubCTA(q) {
   if (matched) {
     const name = matched.name;
     const slug = matched.slug;
-    currentWatchSlug = slug;
-    ctaEl.innerHTML = `<strong>Alert me when ${name} comes back in stock.</strong> Free, unsubscribe any time. <a href="/species/${slug}.html" class="text-green-700 underline whitespace-nowrap">See all ${name} &rarr;</a>`;
-    if (floatInput) floatInput.placeholder = `Alert me when ${name} is available`;
-    if (subBtn) subBtn.textContent = `Watch ${name}`;
-    if (subState) subState.style.display = 'none';
+    // Species-level watches were removed (variety watches only, see commit 3f89a09).
+    // A species pill/search subscribes to the general daily digest (which includes this
+    // species); the link points to the species page where the per-variety watches live.
+    currentWatchSlug = null;
+    ctaEl.innerHTML = `<strong>Get free daily restock and price alerts.</strong> Unsubscribe any time. <a href="/species/${slug}.html" class="text-green-700 underline whitespace-nowrap">See all ${name} &rarr;</a>`;
+    if (floatInput) floatInput.placeholder = 'Get daily alerts (free)';
+    if (subBtn) subBtn.textContent = 'Subscribe free';
+    if (subState) subState.style.display = '';
   } else {
     currentWatchSlug = null;
     const displayQ = q.length > 20 ? q.slice(0, 20) + '...' : q;
