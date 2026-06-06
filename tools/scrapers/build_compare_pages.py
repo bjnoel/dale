@@ -272,6 +272,7 @@ def build_compare_index(entries: list[dict]) -> str:
         "compare_index.html.j2",
         head=head, header=header, breadcrumb=breadcrumb, footer=footer,
         entry_count=len(entries), entries_view=entries_view,
+        nursery_count=len(SHIPPING_MAP),
     )
 
 

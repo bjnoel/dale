@@ -299,6 +299,7 @@ def build_page(all_dates: list[str], species_data: dict, output_dir: Path):
         "species_trends_page.html.j2",
         head=head, header=header, breadcrumb=breadcrumb, footer=footer,
         days_count=days_count, date_range=date_range,
+        nursery_count=len(SHIPPING_MAP),
         since_str=all_dates[0] if all_dates else "launch",
         buy_now_html=buy_now_html, act_fast_html=act_fast_html,
         trending_html=trending_html, rows=rows_view,
