@@ -120,6 +120,16 @@ GOLDEN_CASES = [
         "args": ["{OUT}"],
         "outputs": ["treesmith.html"],
     },
+    {
+        # Community wishlist. No data dir; the watches DB is absent in the
+        # fixture so all vote counts render as zero (deterministic). Pinned now
+        # that the page uses the shared chrome (render_page) instead of a
+        # hand-rolled head/nav/footer.
+        "name": "wishlist",
+        "script": "build_wishlist_page.py",
+        "args": ["{OUT}"],
+        "outputs": ["wishlist.html"],
+    },
 ]
 
 

@@ -2,15 +2,32 @@
 """
 Build the community wishlist page for treestock.com.au.
 Shows what species collectors most want to find, with live vote counts.
+
+Uses the shared site chrome (render_page) so the head, nav, and footer stay in
+sync with the rest of the site instead of drifting in a hand-rolled copy.
+
+Usage:
+    python3 build_wishlist_page.py [output_dir]   # default /opt/dale/dashboard
 """
 
 import json
 import sqlite3
+import sys
 from pathlib import Path
 
-FRUIT_SPECIES = Path("/opt/dale/scrapers/fruit_species.json")
+from treestock_layout import render_page, render_breadcrumb, SITE_URL
+
+FRUIT_SPECIES = Path(__file__).parent / "fruit_species.json"
 VARIETY_WATCHES_DB = Path("/opt/dale/data/variety_watches.db")
-OUTPUT = Path("/opt/dale/dashboard/wishlist.html")
+DEFAULT_OUTPUT_DIR = Path("/opt/dale/dashboard")
+
+# Page-specific styles only. The body font and the #nav-menu.open rule come from
+# the shared base style in stocklib.layout, so they are not repeated here.
+WISHLIST_STYLE = """\
+  .vote-btn.voted { background: #d1fae5; border-color: #059669; color: #065f46; cursor: default; }
+  .vote-btn:disabled { opacity: 0.6; cursor: default; }
+  #voteModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50; align-items: center; justify-content: center; }
+  #voteModal.open { display: flex; }"""
 
 
 def get_wish_counts():
@@ -27,7 +44,7 @@ def get_wish_counts():
         return {}
 
 
-def build():
+def build(output_dir=DEFAULT_OUTPUT_DIR):
     with open(FRUIT_SPECIES) as f:
         species_list = json.load(f)
 
@@ -84,7 +101,7 @@ def build():
     </div>
   </section>"""
     else:
-        top_html = f"""
+        top_html = """
   <section class="mb-8">
     <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
       <p class="text-green-800 font-medium mb-1">No votes yet.</p>
@@ -96,64 +113,9 @@ def build():
 
     species_js = json.dumps([{"slug": s[0], "name": s[1]} for s in species_sorted])
 
-    html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Vote for the fruit tree species you most want to find in Australian nurseries. Community wishlist tracking demand for rare and popular varieties.">
-<title>Most Wanted Species — treestock.com.au Community Wishlist</title>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link href="/styles.css" rel="stylesheet">
-<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
-<style>
-  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
-  #nav-menu.open {{ display: flex; }}
-  .vote-btn.voted {{ background: #d1fae5; border-color: #059669; color: #065f46; cursor: default; }}
-  .vote-btn:disabled {{ opacity: 0.6; cursor: default; }}
-  #voteModal {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50; align-items: center; justify-content: center; }}
-  #voteModal.open {{ display: flex; }}
-</style>
-</head>
-<body class="bg-white text-gray-900">
+    breadcrumb = render_breadcrumb([("Home", "/"), ("Most Wanted", "")])
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-3xl mx-auto px-4 py-2">
-    <div class="flex items-center justify-between gap-3 flex-wrap">
-      <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7 flex-shrink-0"><rect width="64" height="64" rx="12" fill="#065f46"/><path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/><path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/><circle cx="44" cy="44" r="8" fill="#f59e0b"/><text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text></svg>
-        <span class="text-lg font-bold text-green-800">treestock.com.au</span>
-      </a>
-      <nav id="nav-menu" class="hidden sm:flex sm:items-center sm:gap-4 text-sm
-                                flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0
-                                border-t sm:border-0 border-gray-100 pt-2 sm:pt-0">
-        <a href="/species/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Species</a>
-        <a href="/nursery/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Nurseries</a>
-        <a href="/variety/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Varieties</a>
-        <a href="/compare/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Compare</a>
-        <a href="/rare.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Rare Finds</a>
-        <a href="/wishlist.html" class="hover:text-green-700 no-underline whitespace-nowrap text-green-800 font-semibold">Wishlist</a>
-        <a href="/when-to-plant.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Planting Calendar</a>
-      </nav>
-      <button id="nav-toggle" class="sm:hidden p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-</header>
-<script>
-document.getElementById('nav-toggle').addEventListener('click', function() {{
-  document.getElementById('nav-menu').classList.toggle('open');
-}});
-</script>
-
-<main class="max-w-3xl mx-auto px-4 py-6">
-
-  <nav class="text-xs text-gray-400 mb-4">
-    <a href="/" class="hover:underline">Home</a> &rsaquo; Most Wanted
-  </nav>
+    body = f"""{breadcrumb}
 
   <div class="mb-6">
     <h1 class="text-3xl font-bold text-green-900 mb-2">Most Wanted Species</h1>
@@ -188,23 +150,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {{
       <li>Help us prioritise which nurseries to add next</li>
       <li>Show nurseries where the demand is</li>
     </ul>
-  </section>
+  </section>"""
 
-</main>
-
-<footer class="mt-12 border-t border-gray-100 py-6 text-xs text-gray-400">
-  <div class="max-w-3xl mx-auto px-4 flex flex-wrap gap-4">
-    <a href="/" class="hover:text-gray-600 no-underline">Home</a>
-    <a href="/species/" class="hover:text-gray-600 no-underline">Species</a>
-    <a href="/nursery/" class="hover:text-gray-600 no-underline">Nurseries</a>
-    <a href="/wishlist.html" class="hover:text-gray-600 no-underline">Wishlist</a>
-    <a href="/when-to-plant.html" class="hover:text-gray-600 no-underline">Planting Calendar</a>
-    <span class="text-gray-300">|</span>
-    <span>Updated daily. Data from 19 Australian nurseries.</span>
-  </div>
-</footer>
-
-<!-- Vote modal -->
+    extra_body_end = f"""<!-- Vote modal -->
 <div id="voteModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="bg-white rounded-xl shadow-xl max-w-sm w-full mx-4 p-6">
     <h2 id="modalTitle" class="text-lg font-semibold text-gray-900 mb-1">I want <span id="modalSpeciesName"></span></h2>
@@ -342,14 +290,25 @@ searchInput.addEventListener('input', () => {{
 
 // Refresh counts on load
 refreshCounts();
-</script>
-</body>
-</html>
-"""
+</script>"""
 
-    OUTPUT.write_text(html, encoding="utf-8")
-    print(f"Built wishlist.html ({total_votes} total votes, {len(species_list)} species)")
+    html = render_page(
+        title="Most Wanted Species - treestock.com.au Community Wishlist",
+        body=body,
+        description="Vote for the fruit tree species you most want to find in Australian nurseries. Community wishlist tracking demand for rare and popular varieties.",
+        canonical_url=f"{SITE_URL}/wishlist.html",
+        active_path="/wishlist.html",
+        extra_style=WISHLIST_STYLE,
+        extra_body_end=extra_body_end,
+    )
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    out_path = output_dir / "wishlist.html"
+    out_path.write_text(html, encoding="utf-8")
+    print(f"Built {out_path} ({total_votes} total votes, {len(species_list)} species)")
 
 
 if __name__ == "__main__":
-    build()
+    out = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_OUTPUT_DIR
+    build(out)

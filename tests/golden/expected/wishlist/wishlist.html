@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vote for the fruit tree species you most want to find in Australian nurseries. Community wishlist tracking demand for rare and popular varieties.">
+<link rel="canonical" href="https://treestock.com.au/wishlist.html">
+<meta property="og:url" content="https://treestock.com.au/wishlist.html">
+<title>Most Wanted Species - treestock.com.au Community Wishlist</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="/styles.css?v=DATE" rel="stylesheet">
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  #nav-menu.open { display: flex; }
+  .vote-btn.voted { background: #d1fae5; border-color: #059669; color: #065f46; cursor: default; }
+  .vote-btn:disabled { opacity: 0.6; cursor: default; }
+  #voteModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50; align-items: center; justify-content: center; }
+  #voteModal.open { display: flex; }
+</style>
+
+</head>
+
+<body class="bg-white text-gray-900">
+
+<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
+  <div class="max-w-3xl mx-auto px-4 py-2">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7 flex-shrink-0"><rect width="64" height="64" rx="12" fill="#065f46"/><path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/><path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/><circle cx="44" cy="44" r="8" fill="#f59e0b"/><text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text></svg>
+        <span class="text-lg font-bold text-green-800">treestock.com.au</span>
+      </a>
+      <nav id="nav-menu" class="hidden sm:flex sm:items-center sm:gap-4 text-sm
+                                flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0
+                                border-t sm:border-0 border-gray-100 pt-2 sm:pt-0">
+        <a href="/species/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Species</a>
+        <a href="/nursery/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Nurseries</a>
+        <a href="/variety/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Varieties</a>
+        <a href="/compare/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Compare</a>
+        <a href="/rare.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Rare Finds</a>
+        <a href="/digest.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Digest</a>
+        <a href="/history.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">History</a>
+        <a href="/when-to-plant.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Planting Calendar</a>
+        <a href="/wishlist.html" class="hover:text-green-700 no-underline whitespace-nowrap text-green-800 font-semibold">Wishlist</a>
+        <a href="/trends.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Trends</a>
+      </nav>
+      <button id="nav-toggle" class="sm:hidden p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', function() {
+  document.getElementById('nav-menu').classList.toggle('open');
+});
+</script>
+
+<main class="max-w-3xl mx-auto px-4 py-6">
+
+  <nav class="text-xs text-gray-400 mb-4">
+    <a href="/" class="hover:underline">Home</a> &#8250; Most Wanted
+  </nav>
+
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-green-900 mb-2">Most Wanted Species</h1>
+    <p class="text-gray-600 mb-3">
+      We track what's <em>in stock</em> across 19 Australian nurseries. But we also want to know
+      what you're <em>looking for</em>. Vote for the species you want to find, and we'll
+      notify you when they come into stock.
+    </p>
+    <div class="flex flex-wrap gap-3 text-sm">
+      <span class="px-3 py-1 bg-green-50 text-green-800 rounded-full font-medium">50 species tracked</span>
+      <span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">No votes yet. Be the first.</span>
+    </div>
+  </div>
+
+  
+  <section class="mb-8">
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+      <p class="text-green-800 font-medium mb-1">No votes yet.</p>
+      <p class="text-sm text-gray-600">Be the first to tell us what you're looking for.</p>
+    </div>
+  </section>
+
+  <section class="mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold text-gray-800">All species</h2>
+      <input type="search" id="speciesSearch" placeholder="Filter..." class="px-3 py-1 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 w-32">
+    </div>
+    <div id="speciesGrid" class="flex flex-col gap-2">
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="apple">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/apple.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Apple</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="apple">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="apple" data-name="Apple">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="apricot">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/apricot.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Apricot</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="apricot">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="apricot" data-name="Apricot">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="avocado">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/avocado.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Avocado</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="avocado">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="avocado" data-name="Avocado">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="banana">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/banana.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Banana</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="banana">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="banana" data-name="Banana">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="black-sapote">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/black-sapote.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Black Sapote</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="black-sapote">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="black-sapote" data-name="Black Sapote">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="blueberry">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/blueberry.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Blueberry</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="blueberry">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="blueberry" data-name="Blueberry">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="cacao">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/cacao.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Cacao</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="cacao">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="cacao" data-name="Cacao">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="cherry">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/cherry.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Cherry</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="cherry">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="cherry" data-name="Cherry">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="custard-apple">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/custard-apple.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Custard Apple</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="custard-apple">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="custard-apple" data-name="Custard Apple">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="dragon-fruit">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/dragon-fruit.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Dragon Fruit</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="dragon-fruit">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="dragon-fruit" data-name="Dragon Fruit">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="feijoa">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/feijoa.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Feijoa</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="feijoa">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="feijoa" data-name="Feijoa">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="fig">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/fig.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Fig</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="fig">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="fig" data-name="Fig">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="finger-lime">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/finger-lime.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Finger Lime</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="finger-lime">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="finger-lime" data-name="Finger Lime">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="grape">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/grape.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Grape</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="grape">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="grape" data-name="Grape">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="grapefruit">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/grapefruit.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Grapefruit</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="grapefruit">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="grapefruit" data-name="Grapefruit">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="grumichama">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/grumichama.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Grumichama</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="grumichama">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="grumichama" data-name="Grumichama">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="guava">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/guava.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Guava</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="guava">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="guava" data-name="Guava">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="jaboticaba">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/jaboticaba.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Jaboticaba</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="jaboticaba">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="jaboticaba" data-name="Jaboticaba">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="jackfruit">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/jackfruit.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Jackfruit</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="jackfruit">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="jackfruit" data-name="Jackfruit">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="jujube">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/jujube.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Jujube</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="jujube">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="jujube" data-name="Jujube">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="lemon">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/lemon.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Lemon</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="lemon">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="lemon" data-name="Lemon">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="lilly-pilly">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/lilly-pilly.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Lilly Pilly</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="lilly-pilly">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="lilly-pilly" data-name="Lilly Pilly">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="lime">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/lime.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Lime</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="lime">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="lime" data-name="Lime">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="longan">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/longan.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Longan</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="longan">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="longan" data-name="Longan">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="loquat">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/loquat.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Loquat</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="loquat">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="loquat" data-name="Loquat">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="lychee">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/lychee.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Lychee</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="lychee">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="lychee" data-name="Lychee">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="macadamia">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/macadamia.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Macadamia</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="macadamia">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="macadamia" data-name="Macadamia">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="mandarin">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/mandarin.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Mandarin</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="mandarin">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="mandarin" data-name="Mandarin">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="mango">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/mango.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Mango</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="mango">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="mango" data-name="Mango">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="miracle-fruit">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/miracle-fruit.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Miracle Fruit</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="miracle-fruit">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="miracle-fruit" data-name="Miracle Fruit">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="mulberry">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/mulberry.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Mulberry</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="mulberry">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="mulberry" data-name="Mulberry">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="nectarine">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/nectarine.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Nectarine</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="nectarine">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="nectarine" data-name="Nectarine">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="olive">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/olive.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Olive</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="olive">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="olive" data-name="Olive">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="orange">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/orange.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Orange</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="orange">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="orange" data-name="Orange">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="papaya">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/papaya.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Papaya</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="papaya">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="papaya" data-name="Papaya">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="passionfruit">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/passionfruit.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Passionfruit</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="passionfruit">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="passionfruit" data-name="Passionfruit">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="peach">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/peach.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Peach</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="peach">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="peach" data-name="Peach">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="pear">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/pear.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Pear</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="pear">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="pear" data-name="Pear">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="pecan">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/pecan.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Pecan</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="pecan">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="pecan" data-name="Pecan">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="plum">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/plum.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Plum</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="plum">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="plum" data-name="Plum">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="pomegranate">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/pomegranate.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Pomegranate</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="pomegranate">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="pomegranate" data-name="Pomegranate">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="pomelo">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/pomelo.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Pomelo</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="pomelo">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="pomelo" data-name="Pomelo">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="rambutan">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/rambutan.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Rambutan</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="rambutan">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="rambutan" data-name="Rambutan">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="raspberry">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/raspberry.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Raspberry</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="raspberry">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="raspberry" data-name="Raspberry">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="rollinia">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/rollinia.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Rollinia</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="rollinia">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="rollinia" data-name="Rollinia">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="sapodilla">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/sapodilla.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Sapodilla</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="sapodilla">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="sapodilla" data-name="Sapodilla">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="starfruit">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/starfruit.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Starfruit</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="starfruit">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="starfruit" data-name="Starfruit">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="tamarillo">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/tamarillo.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Tamarillo</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="tamarillo">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="tamarillo" data-name="Tamarillo">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="wax-jambu">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/wax-jambu.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">Wax Jambu</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="wax-jambu">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="wax-jambu" data-name="Wax Jambu">
+          + I want this
+        </button>
+      </div>
+    </div>
+
+    <div class="species-card border border-gray-200 rounded-lg p-3 flex items-center justify-between gap-2 hover:border-green-300 transition-colors" data-slug="white-sapote">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="/species/white-sapote.html" class="font-medium text-gray-900 hover:text-green-700 no-underline truncate">White Sapote</a>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="count-label text-xs text-gray-400" data-slug="white-sapote">Be first to vote</span>
+        <button class="vote-btn px-3 py-1 text-xs font-semibold rounded-full border border-green-600 text-green-700 hover:bg-green-50 transition-colors whitespace-nowrap" data-slug="white-sapote" data-name="White Sapote">
+          + I want this
+        </button>
+      </div>
+    </div>
+    </div>
+    <p id="noResults" class="text-sm text-gray-400 mt-4 hidden">No species match your search.</p>
+  </section>
+
+  <section class="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600">
+    <p class="font-medium text-gray-700 mb-1">Why vote?</p>
+    <ul class="list-disc list-inside space-y-1">
+      <li>Get notified when your wanted species comes into stock</li>
+      <li>Help us prioritise which nurseries to add next</li>
+      <li>Show nurseries where the demand is</li>
+    </ul>
+  </section>
+</main>
+
+
+<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
+  <div class="max-w-3xl mx-auto px-4">
+    <a href="/" class="hover:text-gray-600">Home</a> &middot;
+    <a href="/species/" class="hover:text-gray-600">Species</a> &middot;
+    <a href="/nursery/" class="hover:text-gray-600">Nurseries</a> &middot;
+    <a href="/variety/" class="hover:text-gray-600">Varieties</a> &middot;
+    <a href="/compare/" class="hover:text-gray-600">Compare</a> &middot;
+    <a href="/rare.html" class="hover:text-gray-600">Rare Finds</a> &middot;
+    <a href="/digest.html" class="hover:text-gray-600">Digest</a> &middot;
+    <a href="/history.html" class="hover:text-gray-600">History</a> &middot;
+    <a href="/when-to-plant.html" class="hover:text-gray-600">Planting Calendar</a> &middot;
+    <a href="/wishlist.html" class="hover:text-gray-600">Wishlist</a> &middot;
+    <a href="/trends.html" class="hover:text-gray-600">Trends</a>
+    <p class="mt-2"><a href="/buy-fruit-trees-wa.html" class="hover:text-gray-600">Buy in WA</a> &middot; <a href="/buy-fruit-trees-qld.html" class="hover:text-gray-600">Buy in QLD</a> &middot; <a href="/buy-fruit-trees-nsw.html" class="hover:text-gray-600">Buy in NSW</a> &middot; <a href="/buy-fruit-trees-vic.html" class="hover:text-gray-600">Buy in VIC</a> &middot; <a href="/companion-planting-guide.html" class="hover:text-gray-600">Companion Planting</a> &middot; <a href="/compare/nurseries.html" class="hover:text-gray-600">Compare Nurseries</a> &middot; <a href="/treesmith.html" class="hover:text-gray-600">Treesmith app</a> &middot; <a href="/manage.html" class="hover:text-gray-600">Manage email alerts</a></p>
+    <p class="mt-2">Data updated daily. Prices and availability may change.</p>
+    <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
+  </div>
+</footer>
+<!-- Vote modal -->
+<div id="voteModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="bg-white rounded-xl shadow-xl max-w-sm w-full mx-4 p-6">
+    <h2 id="modalTitle" class="text-lg font-semibold text-gray-900 mb-1">I want <span id="modalSpeciesName"></span></h2>
+    <p class="text-sm text-gray-500 mb-4">
+      Enter your email to vote and get notified when this species comes into stock.
+    </p>
+    <form id="voteForm" class="flex flex-col gap-3">
+      <input type="email" id="voteEmail" placeholder="your@email.com" required
+        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+      <div class="flex gap-2">
+        <button type="submit" id="voteSubmitBtn" class="flex-1 bg-green-700 text-white font-semibold py-2 rounded-lg text-sm hover:bg-green-800 transition-colors">
+          Vote + notify me
+        </button>
+        <button type="button" id="voteCancel" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50">
+          Cancel
+        </button>
+      </div>
+    </form>
+    <p id="voteMsg" class="text-sm mt-3 hidden"></p>
+    <p class="text-xs text-gray-400 mt-3">No spam. One email when your species comes into stock.</p>
+  </div>
+</div>
+
+<script>
+const SPECIES = [{"slug": "apple", "name": "Apple"}, {"slug": "apricot", "name": "Apricot"}, {"slug": "avocado", "name": "Avocado"}, {"slug": "banana", "name": "Banana"}, {"slug": "black-sapote", "name": "Black Sapote"}, {"slug": "blueberry", "name": "Blueberry"}, {"slug": "cacao", "name": "Cacao"}, {"slug": "cherry", "name": "Cherry"}, {"slug": "custard-apple", "name": "Custard Apple"}, {"slug": "dragon-fruit", "name": "Dragon Fruit"}, {"slug": "feijoa", "name": "Feijoa"}, {"slug": "fig", "name": "Fig"}, {"slug": "finger-lime", "name": "Finger Lime"}, {"slug": "grape", "name": "Grape"}, {"slug": "grapefruit", "name": "Grapefruit"}, {"slug": "grumichama", "name": "Grumichama"}, {"slug": "guava", "name": "Guava"}, {"slug": "jaboticaba", "name": "Jaboticaba"}, {"slug": "jackfruit", "name": "Jackfruit"}, {"slug": "jujube", "name": "Jujube"}, {"slug": "lemon", "name": "Lemon"}, {"slug": "lilly-pilly", "name": "Lilly Pilly"}, {"slug": "lime", "name": "Lime"}, {"slug": "longan", "name": "Longan"}, {"slug": "loquat", "name": "Loquat"}, {"slug": "lychee", "name": "Lychee"}, {"slug": "macadamia", "name": "Macadamia"}, {"slug": "mandarin", "name": "Mandarin"}, {"slug": "mango", "name": "Mango"}, {"slug": "miracle-fruit", "name": "Miracle Fruit"}, {"slug": "mulberry", "name": "Mulberry"}, {"slug": "nectarine", "name": "Nectarine"}, {"slug": "olive", "name": "Olive"}, {"slug": "orange", "name": "Orange"}, {"slug": "papaya", "name": "Papaya"}, {"slug": "passionfruit", "name": "Passionfruit"}, {"slug": "peach", "name": "Peach"}, {"slug": "pear", "name": "Pear"}, {"slug": "pecan", "name": "Pecan"}, {"slug": "plum", "name": "Plum"}, {"slug": "pomegranate", "name": "Pomegranate"}, {"slug": "pomelo", "name": "Pomelo"}, {"slug": "rambutan", "name": "Rambutan"}, {"slug": "raspberry", "name": "Raspberry"}, {"slug": "rollinia", "name": "Rollinia"}, {"slug": "sapodilla", "name": "Sapodilla"}, {"slug": "starfruit", "name": "Starfruit"}, {"slug": "tamarillo", "name": "Tamarillo"}, {"slug": "wax-jambu", "name": "Wax Jambu"}, {"slug": "white-sapote", "name": "White Sapote"}];
+
+// Update counts from live API
+async function refreshCounts() {
+  try {
+    const resp = await fetch('/api/wishlist-counts');
+    if (!resp.ok) return;
+    const counts = await resp.json();
+    document.querySelectorAll('.count-label').forEach(el => {
+      const slug = el.dataset.slug;
+      const count = counts[slug] || 0;
+      el.textContent = count > 0 ? count + (count === 1 ? ' wants this' : ' want this') : 'Be first to vote';
+      el.className = 'count-label text-xs ' + (count > 0 ? 'text-green-700 font-semibold' : 'text-gray-400');
+    });
+  } catch (e) { /* API unavailable, show pre-rendered counts */ }
+}
+
+// Vote modal logic
+let currentSlug = '';
+const modal = document.getElementById('voteModal');
+const modalName = document.getElementById('modalSpeciesName');
+const voteForm = document.getElementById('voteForm');
+const voteMsg = document.getElementById('voteMsg');
+const voteSubmitBtn = document.getElementById('voteSubmitBtn');
+const voteCancel = document.getElementById('voteCancel');
+
+// Load previous votes from localStorage
+const voted = new Set(JSON.parse(localStorage.getItem('ts_wishlist_votes') || '[]'));
+voted.forEach(slug => markVoted(slug));
+
+function markVoted(slug) {
+  const btn = document.querySelector(`.vote-btn[data-slug="${slug}"]`);
+  const label = document.querySelector(`.count-label[data-slug="${slug}"]`);
+  if (btn) { btn.textContent = 'Voted'; btn.classList.add('voted'); btn.disabled = true; }
+}
+
+document.querySelectorAll('.vote-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.disabled) return;
+    currentSlug = btn.dataset.slug;
+    modalName.textContent = btn.dataset.name;
+    voteMsg.classList.add('hidden');
+    voteMsg.textContent = '';
+    document.getElementById('voteEmail').value = '';
+    modal.classList.add('open');
+    setTimeout(() => document.getElementById('voteEmail').focus(), 50);
+  });
+});
+
+voteCancel.addEventListener('click', () => modal.classList.remove('open'));
+modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+
+voteForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('voteEmail').value.trim();
+  if (!email) return;
+  voteSubmitBtn.disabled = true;
+  voteSubmitBtn.textContent = 'Saving...';
+  try {
+    const resp = await fetch('/api/wishlist', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email, species_slug: currentSlug })
+    });
+    const data = await resp.json();
+    if (resp.ok) {
+      voteMsg.textContent = data.message + ' We will email you when ' + data.species_slug.replace(/-/g, ' ') + ' comes into stock.';
+      voteMsg.style.color = '#065f46';
+      voteMsg.classList.remove('hidden');
+      // Update count display
+      const label = document.querySelector(`.count-label[data-slug="${currentSlug}"]`);
+      if (label && data.total) {
+        label.textContent = data.total + (data.total === 1 ? ' wants this' : ' want this');
+        label.className = 'count-label text-xs text-green-700 font-semibold';
+      }
+      markVoted(currentSlug);
+      const votes = JSON.parse(localStorage.getItem('ts_wishlist_votes') || '[]');
+      if (!votes.includes(currentSlug)) votes.push(currentSlug);
+      localStorage.setItem('ts_wishlist_votes', JSON.stringify(votes));
+      setTimeout(() => modal.classList.remove('open'), 2000);
+    } else {
+      voteMsg.textContent = data.error || 'Something went wrong.';
+      voteMsg.style.color = '#dc2626';
+      voteMsg.classList.remove('hidden');
+    }
+  } catch (err) {
+    voteMsg.textContent = 'Network error. Please try again.';
+    voteMsg.style.color = '#dc2626';
+    voteMsg.classList.remove('hidden');
+  }
+  voteSubmitBtn.disabled = false;
+  voteSubmitBtn.textContent = 'Vote + notify me';
+});
+
+// Filter by search
+const searchInput = document.getElementById('speciesSearch');
+const cards = document.querySelectorAll('.species-card');
+const noResults = document.getElementById('noResults');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase();
+  let visible = 0;
+  cards.forEach(card => {
+    const slug = card.dataset.slug;
+    const name = card.querySelector('a').textContent.toLowerCase();
+    const match = !q || name.includes(q) || slug.includes(q);
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  noResults.classList.toggle('hidden', visible > 0);
+});
+
+// Refresh counts on load
+refreshCounts();
+</script>
+</body>
+</html>

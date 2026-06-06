@@ -22,7 +22,7 @@ from collections import defaultdict
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.templates import render as render_template
-from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, SITE_URL
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
@@ -218,6 +218,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
     head = render_head(
         title=f"{name} Tree Price Comparison Australia — treestock.com.au",
         description=f"Compare {name} ({latin}) tree prices across {total_nurseries} Australian nurseries. {len(in_stock)} varieties in stock. {'Prices from ' + price_range_str + ' AUD.' if price_range_str else ''} Updated daily.",
+        canonical_url=f"{SITE_URL}/compare/{slug}-prices.html",
         og_title=f"{name} Tree Prices — Compare {total_nurseries} Australian Nurseries",
         og_description=f"{'From ' + price_range_str if price_range_str else str(len(in_stock)) + ' varieties in stock'} across {nursery_count} nurseries. Compare prices and availability at treestock.com.au",
     )
@@ -253,6 +254,7 @@ def build_compare_index(entries: list[dict]) -> str:
     head = render_head(
         title="Fruit Tree Price Comparisons — Australian Nurseries — treestock.com.au",
         description=f"Compare fruit tree prices across Australian online nurseries. Find the cheapest mango, fig, avocado, lemon and more. Updated daily from {len(entries)} species.",
+        canonical_url=f"{SITE_URL}/compare/",
     )
     header = render_header(active_path="/compare/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "")])
