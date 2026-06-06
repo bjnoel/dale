@@ -27,7 +27,12 @@ ORG_DESCRIPTION = (
 )
 
 TAILWIND_CSS = f"/styles.css?v={datetime.utcnow().strftime('%Y%m%d')}"
-PLAUSIBLE_SCRIPT = '<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>'
+# Preconnect to the analytics origin before the deferred script needs it. PageSpeed
+# estimated ~840ms mobile LCP savings from warming this connection early. No crossorigin:
+# the script tag is a non-CORS request, so the warmed connection must match it.
+PLAUSIBLE_SCRIPT = ('<link rel="preconnect" href="https://data.bjnoel.com">'
+                    '<link rel="dns-prefetch" href="https://data.bjnoel.com">'
+                    '<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>')
 
 NAV_ITEMS = [
     ("Search", "/"),
