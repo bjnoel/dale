@@ -117,28 +117,28 @@ def render_footer(max_width: str = "max-w-3xl", extra_text: str = "") -> str:
     links = []
     for label, path in NAV_ITEMS:
         if path == "/":
-            links.append(f'<a href="/" class="hover:text-gray-600">Home</a>')
+            links.append(f'<a href="/" class="inline-block py-1.5 px-1 hover:text-gray-900">Home</a>')
         else:
-            links.append(f'<a href="{path}" class="hover:text-gray-600">{label}</a>')
+            links.append(f'<a href="{path}" class="inline-block py-1.5 px-1 hover:text-gray-900">{label}</a>')
 
     nav_line = " &middot;\n    ".join(links)
 
     state_links = (
-        '<a href="/buy-fruit-trees-wa.html" class="hover:text-gray-600">Buy in WA</a>'
+        '<a href="/buy-fruit-trees-wa.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in WA</a>'
         ' &middot; '
-        '<a href="/buy-fruit-trees-qld.html" class="hover:text-gray-600">Buy in QLD</a>'
+        '<a href="/buy-fruit-trees-qld.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in QLD</a>'
         ' &middot; '
-        '<a href="/buy-fruit-trees-nsw.html" class="hover:text-gray-600">Buy in NSW</a>'
+        '<a href="/buy-fruit-trees-nsw.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in NSW</a>'
         ' &middot; '
-        '<a href="/buy-fruit-trees-vic.html" class="hover:text-gray-600">Buy in VIC</a>'
+        '<a href="/buy-fruit-trees-vic.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in VIC</a>'
         ' &middot; '
-        '<a href="/companion-planting-guide.html" class="hover:text-gray-600">Companion Planting</a>'
+        '<a href="/companion-planting-guide.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Companion Planting</a>'
         ' &middot; '
-        '<a href="/compare/nurseries.html" class="hover:text-gray-600">Compare Nurseries</a>'
+        '<a href="/compare/nurseries.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare Nurseries</a>'
         ' &middot; '
-        '<a href="/treesmith.html" class="hover:text-gray-600">Treesmith app</a>'
+        '<a href="/treesmith.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Treesmith app</a>'
         ' &middot; '
-        '<a href="/manage.html" class="hover:text-gray-600">Manage email alerts</a>'
+        '<a href="/manage.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Manage email alerts</a>'
     )
 
     extra = ""
@@ -146,7 +146,7 @@ def render_footer(max_width: str = "max-w-3xl", extra_text: str = "") -> str:
         extra = f"\n  <p class=\"mt-2\">{extra_text}</p>"
 
     return f"""
-<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-400">
+<footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-600">
   <div class="{max_width} mx-auto px-4">
     {nav_line}
     <p class="mt-2">{state_links}</p>

@@ -799,10 +799,10 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .sale-badge { background: #fee2e2; color: #991b1b; }
   .new-badge { background: #dbeafe; color: #1e40af; }
   .back-badge { background: #d1fae5; color: #065f46; font-weight: 600; }
-  .price-down { color: #059669; font-weight: 600; }
-  .price-up { color: #dc2626; }
+  .price-down { color: #047857; font-weight: 600; }
+  .price-up { color: #b91c1c; }
   .in-stock { background: #d1fae5; color: #065f46; }
-  .out-stock { background: #f3f4f6; color: #6b7280; }
+  .out-stock { background: #f3f4f6; color: #4b5563; }
   #results { min-height: 200px; }
   /* Reserve a screen of height while the results container is empty (pre-JS), so the
      rows dashboard.js injects on load fill reserved space instead of shoving the
@@ -823,7 +823,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .rare-badge:hover { background: #fde68a; }
   .species-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; max-height: 34px; overflow: hidden; padding-bottom: 4px; transition: max-height 0.2s ease; }
   .species-strip.expanded { max-height: 500px; }
-  .toggle-pills-btn { background: none; border: none; color: #059669; font-size: 0.75rem; cursor: pointer; padding: 4px 0 0; }
+  .toggle-pills-btn { background: none; border: none; color: #047857; font-size: 0.75rem; cursor: pointer; padding: 8px 6px; margin-top: 2px; }
   .toggle-pills-btn:hover { text-decoration: underline; }
   .species-pill { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 9999px; font-size: 0.8125rem; color: #374151; white-space: nowrap; text-decoration: none; transition: border-color 0.15s, background 0.15s; cursor: pointer; }
   .species-pill:hover { border-color: #22c55e; background: #f0fdf4; color: #065f46; }
