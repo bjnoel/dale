@@ -649,6 +649,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
             url=f"https://treestock.com.au/species/{slug}.html",
             products=products,
             description=f"Compare {name} tree prices and availability across {nursery_count} Australian nurseries.",
+            include_offers=False,  # species pages aggregate many cultivars: summary only
         ),
     )
     header = render_header(active_path="/species/")

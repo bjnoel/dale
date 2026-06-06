@@ -80,6 +80,16 @@ class ProductOfferTest(unittest.TestCase):
         self.assertEqual(o["url"], "https://daleys.test/hass")
         self.assertEqual(o["seller"]["name"], "Daleys")
 
+    def test_summary_only_omits_offers_array(self):
+        # Aggregation pages (species/compare) emit the summary without the
+        # potentially-hundreds-long individual Offer list.
+        agg = parse(sd.product_offer_jsonld("X", "u", PRODUCTS, include_offers=False))["offers"]
+        self.assertEqual(agg["@type"], "AggregateOffer")
+        self.assertEqual(agg["offerCount"], 3)
+        self.assertEqual(agg["lowPrice"], "34.95")
+        self.assertEqual(agg["highPrice"], "42.00")
+        self.assertNotIn("offers", agg)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -123,12 +123,18 @@ def _product_offers(products: list, currency: str = "AUD") -> tuple[list, list]:
 
 
 def product_offer_jsonld(name: str, url: str, products: list, description: str = "",
-                         currency: str = "AUD") -> str:
+                         currency: str = "AUD", include_offers: bool = True) -> str:
     """Product + AggregateOffer JSON-LD for a cultivar/species page.
 
     lowPrice/highPrice/offerCount are computed from the per-nursery offers (each
     at the price the page shows). Returns "" when no listing has a price (so no
     empty offer block triggers a Search Console "missing price" warning).
+
+    include_offers=True embeds the individual Offer list (right for a cultivar
+    page with a handful of sellers). Set it False on aggregation pages (a species
+    or compare page can span hundreds of listings) to emit the AggregateOffer
+    summary only (priceCurrency/lowPrice/highPrice/offerCount), which avoids
+    bloating the page with hundreds of Offer objects.
     """
     offers, prices = _product_offers(products, currency)
     if not offers or not prices:
@@ -142,12 +148,14 @@ def product_offer_jsonld(name: str, url: str, products: list, description: str =
         data["description"] = description
     if url:
         data["url"] = url
-    data["offers"] = {
+    agg = {
         "@type": "AggregateOffer",
         "priceCurrency": currency,
         "lowPrice": f"{min(prices):.2f}",
         "highPrice": f"{max(prices):.2f}",
         "offerCount": len(offers),
-        "offers": offers,
     }
+    if include_offers:
+        agg["offers"] = offers
+    data["offers"] = agg
     return _script(data)
