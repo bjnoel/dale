@@ -229,6 +229,14 @@ else
     echo "$LOG_PREFIX WARNING: Tailwind CSS build failed (non-fatal)"
 fi
 
+# Purge Cloudflare edge cache so the rebuilt pages go live immediately. HTML is
+# edge-cached for 1 day via a Cache Rule; without this the edge would keep serving
+# yesterday's pages until the TTL expires. Runs before the smoke test so that
+# re-warms the cache with the fresh pages.
+echo "$LOG_PREFIX Purging Cloudflare cache..."
+bash "$SCRIPT_DIR/purge_cloudflare.sh" 2>&1 || echo "$LOG_PREFIX WARNING: Cloudflare purge failed (non-fatal)"
+echo "$LOG_PREFIX Cloudflare purge complete."
+
 # Post-deploy smoke test — check key pages are up and correct size
 echo "$LOG_PREFIX Running post-deploy smoke test..."
 python3 "$SCRIPT_DIR/smoke_test.py" --quiet 2>&1 || echo "$LOG_PREFIX WARNING: Smoke test failed — alert sent to Benedict"
