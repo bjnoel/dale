@@ -73,4 +73,20 @@ else
     log "WARNING: dashboard index.html not found after deploy!"
 fi
 
+# Purge the Cloudflare edge cache when a NEW commit was deployed, so static-asset,
+# robots.txt and page changes go live immediately instead of waiting out the 1-day
+# edge TTL. Gated on the deployed commit SHA so dale-runner's hourly no-op deploys
+# don't flush the edge every hour. (The nightly run-all-scrapers.sh purges on its
+# own after rebuilding pages.)
+SHA_FILE="/opt/dale/.cf-last-deploy-sha"
+NEW_SHA="$(git -C /opt/dale/repo rev-parse HEAD 2>/dev/null || echo unknown)"
+OLD_SHA="$(cat "$SHA_FILE" 2>/dev/null || echo none)"
+if [ "$NEW_SHA" != "unknown" ] && [ "$NEW_SHA" != "$OLD_SHA" ]; then
+    log "New deploy ($OLD_SHA -> $NEW_SHA): purging Cloudflare cache"
+    bash "$REPO_TOOLS/scrapers/purge_cloudflare.sh" >>"$LOG" 2>&1
+    echo "$NEW_SHA" > "$SHA_FILE"
+else
+    log "No new commit since last deploy ($NEW_SHA): skipping Cloudflare purge"
+fi
+
 log "Deploy complete"

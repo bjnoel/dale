@@ -7,7 +7,8 @@
 # and simplest: the next request re-warms each page from the freshly built origin.
 #
 # Reads secrets from /opt/dale/secrets/cloudflare.env (override with CLOUDFLARE_ENV):
-#   CLOUDFLARE_API_TOKEN          token with Zone.Cache Purge
+#   CLOUDFLARE_PURGE_TOKEN        preferred: a token scoped to just Zone.Cache Purge
+#   CLOUDFLARE_API_TOKEN          fallback if no dedicated purge token is set
 #   CLOUDFLARE_ZONE_ID_TREESTOCK  the treestock zone id (falls back to CLOUDFLARE_ZONE_ID)
 #
 # Non-fatal by design: a missing secret or an API error logs a warning and exits
@@ -25,9 +26,9 @@ fi
 set -a; . "$SECRET"; set +a
 
 ZONE="${1:-${CLOUDFLARE_ZONE_ID_TREESTOCK:-${CLOUDFLARE_ZONE_ID:-}}}"
-TOKEN="${CLOUDFLARE_API_TOKEN:-}"
+TOKEN="${CLOUDFLARE_PURGE_TOKEN:-${CLOUDFLARE_API_TOKEN:-}}"
 if [ -z "$TOKEN" ] || [ -z "$ZONE" ]; then
-    echo "purge_cloudflare: CLOUDFLARE_API_TOKEN or zone id missing in $SECRET; skipping" >&2
+    echo "purge_cloudflare: purge token or zone id missing in $SECRET; skipping" >&2
     exit 0
 fi
 
