@@ -47,10 +47,10 @@ treestock.com.au, www.treestock.com.au {
     }
 
     # Versioned static assets (?v=YYYYMMDD cache-busted) can cache forever.
-    @versioned path /styles.css /dashboard.js
+    @versioned path /styles.css /dashboard.js /data.js
     header @versioned Cache-Control "public, max-age=31536000, immutable"
     # Everything else (HTML) stays short-lived so daily rebuilds show up.
-    @unversioned not path /styles.css /dashboard.js
+    @unversioned not path /styles.css /dashboard.js /data.js
     header @unversioned Cache-Control "public, max-age=3600"
 }
 
@@ -126,10 +126,10 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
     }
 
     # Versioned static assets (?v=YYYYMMDD cache-busted) can cache forever.
-    @versioned path /styles.css /dashboard.js
+    @versioned path /styles.css /dashboard.js /data.js
     header @versioned Cache-Control "public, max-age=31536000, immutable"
     # Everything else (HTML) stays short-lived so daily rebuilds show up.
-    @unversioned not path /styles.css /dashboard.js
+    @unversioned not path /styles.css /dashboard.js /data.js
     header @unversioned Cache-Control "public, max-age=3600"
 }
 

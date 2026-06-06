@@ -59,18 +59,21 @@ if [ -d "$REPO_UPDATES" ]; then
     log "Synced weekly updates from repo"
 fi
 
-# Post-deploy verification: check live dashboard is still healthy
+# Post-deploy verification: check live dashboard is still healthy. The dataset now
+# lives in data.js (the big file); index.html is small by design, so sanity-check both.
 DASHBOARD="/opt/dale/dashboard/index.html"
-if [ -f "$DASHBOARD" ]; then
-    DASHBOARD_SIZE=$(stat -c%s "$DASHBOARD" 2>/dev/null || stat -f%z "$DASHBOARD" 2>/dev/null || echo 0)
-    if [ "$DASHBOARD_SIZE" -lt 500000 ]; then
-        log "WARNING: dashboard index.html is only ${DASHBOARD_SIZE} bytes after deploy — may be corrupt!"
-        echo "WARNING: treestock.com.au dashboard is suspiciously small (${DASHBOARD_SIZE} bytes). Check immediately." >&2
+DATA_JS="/opt/dale/dashboard/data.js"
+if [ -f "$DASHBOARD" ] && [ -f "$DATA_JS" ]; then
+    HTML_SIZE=$(stat -c%s "$DASHBOARD" 2>/dev/null || stat -f%z "$DASHBOARD" 2>/dev/null || echo 0)
+    DATA_SIZE=$(stat -c%s "$DATA_JS" 2>/dev/null || stat -f%z "$DATA_JS" 2>/dev/null || echo 0)
+    if [ "$HTML_SIZE" -lt 8000 ] || [ "$DATA_SIZE" -lt 500000 ]; then
+        log "WARNING: dashboard looks corrupt after deploy (index.html ${HTML_SIZE}b, data.js ${DATA_SIZE}b)!"
+        echo "WARNING: treestock.com.au dashboard suspiciously small (html ${HTML_SIZE}b, data ${DATA_SIZE}b). Check immediately." >&2
     else
-        log "Deploy verified: dashboard ${DASHBOARD_SIZE} bytes OK"
+        log "Deploy verified: index.html ${HTML_SIZE}b, data.js ${DATA_SIZE}b OK"
     fi
 else
-    log "WARNING: dashboard index.html not found after deploy!"
+    log "WARNING: dashboard index.html or data.js not found after deploy!"
 fi
 
 # Purge the Cloudflare edge cache when a NEW commit was deployed, so static-asset,
