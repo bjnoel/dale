@@ -16,10 +16,10 @@ from pathlib import Path
 from treestock_layout import render_page
 
 # --- Copy (swap these two lines to change the message) ------------------------
-HEADLINE = "A find too rare, even for us"
+HEADLINE = "This branch didn't take"
 MESSAGE = (
-    "We track rare fruit stock across Australian nurseries, but this page is "
-    "one we cannot locate. The link may be out of date. Try a search instead."
+    "The page you were after has been pruned, moved, or never took root. "
+    "Let's get you back to something fruitful."
 )
 # -----------------------------------------------------------------------------
 
