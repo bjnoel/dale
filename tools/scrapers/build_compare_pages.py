@@ -21,6 +21,7 @@ from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
+from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, SITE_URL
 
@@ -221,6 +222,12 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
         canonical_url=f"{SITE_URL}/compare/{slug}-prices.html",
         og_title=f"{name} Tree Prices — Compare {total_nurseries} Australian Nurseries",
         og_description=f"{'From ' + price_range_str if price_range_str else str(len(in_stock)) + ' varieties in stock'} across {nursery_count} nurseries. Compare prices and availability at treestock.com.au",
+        jsonld=product_offer_jsonld(
+            name=f"{name} Tree",
+            url=f"{SITE_URL}/compare/{slug}-prices.html",
+            products=products,
+            description=f"Compare {name} ({latin}) tree prices across {total_nurseries} Australian nurseries.",
+        ),
     )
     header = render_header(active_path="/compare/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "/compare/"), (name, "")])

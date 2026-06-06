@@ -80,3 +80,74 @@ def website_jsonld(site_url: str, site_name: str) -> str:
         "url": site_url + "/",
         "publisher": {"@type": "Organization", "name": site_name},
     })
+
+
+def _product_offers(products: list, currency: str = "AUD") -> tuple[list, list]:
+    """Build one Offer per nursery listing, using the price the page displays.
+
+    The variety/species/compare pages show a single price per nursery (the
+    cheapest variant), so each nursery becomes one Offer at that visible price.
+    Emitting per-pot-size offers would put prices in the markup that are not shown
+    on the page, which Google flags as inconsistent. Deduped by product URL.
+    Returns (offers, prices) with prices as floats for the AggregateOffer range.
+    """
+    seen = set()
+    offers: list = []
+    prices: list = []
+    for p in products:
+        price = p.get("price")
+        if not price:
+            continue
+        url = p.get("url", "")
+        if url and url in seen:
+            continue
+        if url:
+            seen.add(url)
+        price_f = round(float(price), 2)
+        prices.append(price_f)
+        offer = {
+            "@type": "Offer",
+            "price": f"{price_f:.2f}",
+            "priceCurrency": currency,
+            "availability": (
+                "https://schema.org/InStock" if p.get("available") else "https://schema.org/OutOfStock"
+            ),
+        }
+        if url:
+            offer["url"] = url
+        seller = p.get("nursery_name", "")
+        if seller:
+            offer["seller"] = {"@type": "Organization", "name": seller}
+        offers.append(offer)
+    return offers, prices
+
+
+def product_offer_jsonld(name: str, url: str, products: list, description: str = "",
+                         currency: str = "AUD") -> str:
+    """Product + AggregateOffer JSON-LD for a cultivar/species page.
+
+    lowPrice/highPrice/offerCount are computed from the per-nursery offers (each
+    at the price the page shows). Returns "" when no listing has a price (so no
+    empty offer block triggers a Search Console "missing price" warning).
+    """
+    offers, prices = _product_offers(products, currency)
+    if not offers or not prices:
+        return ""
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": name,
+    }
+    if description:
+        data["description"] = description
+    if url:
+        data["url"] = url
+    data["offers"] = {
+        "@type": "AggregateOffer",
+        "priceCurrency": currency,
+        "lowPrice": f"{min(prices):.2f}",
+        "highPrice": f"{max(prices):.2f}",
+        "offerCount": len(offers),
+        "offers": offers,
+    }
+    return _script(data)

@@ -24,6 +24,7 @@ from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, delivery_label
 from stocklib.snapshots import iter_nursery_snapshots
+from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo, SITE_URL
 
@@ -174,6 +175,12 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
         og_title=f"Buy {title} Trees in Australia",
         og_description=meta_desc,
         og_type="product",
+        jsonld=product_offer_jsonld(
+            name=title,
+            url=f"https://treestock.com.au/variety/{slug}.html",
+            products=products,
+            description=meta_desc,
+        ),
     )
     header = render_header(active_path="/variety/")
     species_href = f"/species/{species_slug}.html" if species_slug in valid_species_slugs else ""
