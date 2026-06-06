@@ -4,6 +4,55 @@
 
 ---
 
+## DEC-174 — 2026-06-06 — Add Rayners Orchard (VIC) as 20th nursery; reject Flemings
+
+**Decided by:** Dale (interactive session, Benedict directed)
+
+**Context:** Benedict asked whether two nurseries could be added to treestock's
+scraper set: Flemings Nurseries and Rayners Orchard.
+
+**Decision:**
+- **Flemings — rejected.** Flemings is a wholesale grower that does not sell direct
+  to the public, the site (Magento) shows no prices, and a collector cannot buy from
+  it (it dead-ends at "find a stockist"). That breaks treestock's core price-tracking
+  model and would be a misleading row on a "where can I buy this" site. Tell him he's
+  dreaming. (One possible future angle noted: tracking Flemings' wholesale in/out-of-
+  stock as a "coming to retail soon" signal, separate from the price dashboard. Not
+  built.)
+- **Rayners Orchard — added.** WooCommerce store with a live public Store API, so it
+  plugs into the existing woocommerce_scraper. Real prices ($19.50-$195), genuine
+  stock signal, deep collector range (dozens of finger-lime cultivars, multi-graft
+  stone fruit, pears, citrus, feijoas). ~297 trees after junk filtering.
+
+**Why Rayners fits and Flemings does not:** treestock's value and moat is price +
+availability over time for stock collectors can actually buy. Rayners has both; Flemings
+has neither.
+
+**Implementation notes:**
+- Rayners' tree products are mostly uncategorised (some `grow-your-own`), so an
+  include-by-category filter would miss most trees. Added two general, optional
+  WooCommerce config knobs (`exclude_categories`, `exclude_title_keywords`) to strip
+  non-tree stock at scrape time (wines, preserves x3, gifts, tours, classes, plus one
+  stray "Preserved Cherries" jar). Title-keyword filtering alone is unsafe here:
+  "wine" hits Winesap (apple), "honey" hits Honey Murcott (mandarin). Live scrape
+  verified 0 residual junk and both real trees kept.
+- Ships within Victoria only (interstate for bulk 50+) -> `ships_to=("VIC",)` with a
+  "Victoria only" delivery label (suppresses the misleading "No WA/NT/TAS" badge; the
+  state filter still excludes it correctly from other states).
+
+**Actions:**
+- `tools/scrapers/woocommerce_scraper.py`: rayners config + exclude-filter logic.
+- `tools/scrapers/stocklib/registry.py`: Nursery("rayners", ...) record.
+- `tests/test_registry.py`: oracle dicts updated; golden pages regenerated for the
+  "19 -> 20 nurseries we monitor" copy (count-only diff, reviewed). Full suite green.
+- Shipped via PR #93 (not merged unilaterally; awaiting Benedict's merge, after which
+  the server auto-deploys and the nightly scraper picks Rayners up).
+
+**To revert:** remove the rayners config block, the registry record, and the three
+test_registry oracle lines; regenerate goldens.
+
+---
+
 ## DEC-173 — 2026-06-05 — White sapote per-state growing guide (treestock.com.au)
 
 **Decided by:** Dale (parallel guide run)
