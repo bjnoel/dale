@@ -239,7 +239,7 @@ function render() {
       const slug = q.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
       container.innerHTML =
         '<div class="py-10 px-4">' +
-        '<p class="text-center text-gray-400 mb-5">Nothing found for <strong class="text-gray-600">' + esc(q) + '</strong></p>' +
+        '<p class="text-center text-gray-500 mb-5">Nothing found for <strong class="text-gray-600">' + esc(q) + '</strong></p>' +
         '<div class="max-w-sm mx-auto bg-green-50 border border-green-200 rounded-xl p-5">' +
         '<p class="text-sm font-semibold text-green-800 mb-1">Watch <span class="text-green-900">' + esc(q) + '</span></p>' +
         '<p class="text-xs text-gray-500 mb-3">Get an email when it comes into stock at any monitored nursery. Free.</p>' +
@@ -251,7 +251,7 @@ function render() {
         '</div></div>';
       setupWatchForm('watchForm', 'watchEmail', 'watchMsg');
     } else {
-      container.innerHTML = '<div class="text-center py-12 text-gray-400">No plants found matching your filters.</div>';
+      container.innerHTML = '<div class="text-center py-12 text-gray-500">No plants found matching your filters.</div>';
     }
     loadMoreEl.classList.add('hidden');
     return;
@@ -275,7 +275,7 @@ function render() {
           : '';
     const localBadge = localArea ? `<span class="stock-badge local-badge">${localArea} only</span>` : '';
     const saleBadge = p.sale ? '<span class="stock-badge sale-badge">Sale</span>' : '';
-    const latinName = p.ln ? `<span class="text-xs text-gray-400 italic ml-1">${p.ln}</span>` : '';
+    const latinName = p.ln ? `<span class="text-xs text-gray-500 italic ml-1">${p.ln}</span>` : '';
     const cultivar = p.cv ? ` '${p.cv}'` : '';
 
     // Change indicators
@@ -285,8 +285,8 @@ function render() {
     else if (p.ch === 'gone') changeBadge = '<span class="stock-badge out-stock">Just sold out</span>';
 
     let priceInfo = price;
-    if (p.ch === 'down' && p.pp) priceInfo = `<span class="price-down">${price}</span> <span class="text-xs text-gray-400 line-through">${('$' + p.pp.toFixed(2))}</span>`;
-    else if (p.ch === 'up' && p.pp) priceInfo = `<span class="price-up">${price}</span> <span class="text-xs text-gray-400">was ${('$' + p.pp.toFixed(2))}</span>`;
+    if (p.ch === 'down' && p.pp) priceInfo = `<span class="price-down">${price}</span> <span class="text-xs text-gray-500 line-through">${('$' + p.pp.toFixed(2))}</span>`;
+    else if (p.ch === 'up' && p.pp) priceInfo = `<span class="price-up">${price}</span> <span class="text-xs text-gray-500">was ${('$' + p.pp.toFixed(2))}</span>`;
 
     const utm = p.u ? (p.u.includes('?') ? '&' : '?') + 'utm_source=treestock&utm_medium=referral' : '';
     const featuredClass = p.ft ? ' featured-row' : '';

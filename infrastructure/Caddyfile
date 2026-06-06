@@ -46,9 +46,12 @@ treestock.com.au, www.treestock.com.au {
         file_server
     }
 
-    header {
-        Cache-Control "public, max-age=3600"
-    }
+    # Versioned static assets (?v=YYYYMMDD cache-busted) can cache forever.
+    @versioned path /styles.css /dashboard.js
+    header @versioned Cache-Control "public, max-age=31536000, immutable"
+    # Everything else (HTML) stays short-lived so daily rebuilds show up.
+    @unversioned not path /styles.css /dashboard.js
+    header @unversioned Cache-Control "public, max-age=3600"
 }
 
 beestock.com.au, www.beestock.com.au {
@@ -122,9 +125,12 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
         file_server
     }
 
-    header {
-        Cache-Control "public, max-age=3600"
-    }
+    # Versioned static assets (?v=YYYYMMDD cache-busted) can cache forever.
+    @versioned path /styles.css /dashboard.js
+    header @versioned Cache-Control "public, max-age=31536000, immutable"
+    # Everything else (HTML) stays short-lived so daily rebuilds show up.
+    @unversioned not path /styles.css /dashboard.js
+    header @unversioned Cache-Control "public, max-age=3600"
 }
 
 data.bjnoel.com {
