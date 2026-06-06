@@ -1,6 +1,6 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-04-27",
+  "last_updated": "2026-06-06",
   "session_count": 80,
   "phase": 0,
   "phase_name": "Setup",
@@ -74,8 +74,8 @@
       "status": "live-in-community",
       "monetisation_path": "Cross-promote Treesmith Pro to treestock audience (DEC-104). Standalone treestock paid tier remains a future option.",
       "dashboard_url": "https://treestock.com.au",
-      "nurseries_monitored": 19,
-      "nurseries_researched": 27,
+      "nurseries_monitored": 20,
+      "nurseries_researched": 28,
       "first_scrape_date": "2026-03-05",
       "days_of_data": 23,
       "products_tracked": 11798,
