@@ -44,6 +44,8 @@ EXPECTED_SHIPPING = {
     "fruit-tree-lane": ["NSW", "VIC", "QLD", "SA", "ACT"],
     "engalls": ["NSW", "VIC", "QLD", "SA", "ACT"],
     "rayners": ["VIC"],
+    "garden-world": ["VIC"],
+    "diacos": ["VIC"],
 }
 
 EXPECTED_NAMES = {
@@ -67,6 +69,8 @@ EXPECTED_NAMES = {
     "fruit-tree-lane": "Fruit Tree Lane",
     "engalls": "Engall's Nursery",
     "rayners": "Rayners Orchard",
+    "garden-world": "Garden World",
+    "diacos": "Diaco's Garden Nursery",
 }
 
 EXPECTED_LOCAL = {
@@ -75,6 +79,8 @@ EXPECTED_LOCAL = {
     "all-season-plants-wa": {"area": "Perth (pickup)", "state": "WA"},
     "perth-mobile-nursery": {"area": "Perth metro", "state": "WA"},
     "rayners": {"area": "Victoria", "state": "VIC"},
+    "garden-world": {"area": "Melbourne metro", "state": "VIC"},
+    "diacos": {"area": "Melbourne metro", "state": "VIC"},
 }
 
 

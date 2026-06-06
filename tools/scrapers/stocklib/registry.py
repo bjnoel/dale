@@ -101,6 +101,14 @@ NURSERIES: list[Nursery] = [
             ("VIC",),
             local_delivery={"area": "Victoria", "state": "VIC"},
             note="VIC-based (Yarra Valley). Delivers within Victoria only; interstate only for bulk orders (50+)."),
+    Nursery("garden-world", "Garden World",
+            ("VIC",),
+            local_delivery={"area": "Melbourne metro", "state": "VIC"},
+            note="VIC-based (Braeside). Melbourne metro delivery (in-house vans) + in-store pickup; no interstate (no WA/NT/TAS)."),
+    Nursery("diacos", "Diaco's Garden Nursery",
+            ("VIC",),
+            local_delivery={"area": "Melbourne metro", "state": "VIC"},
+            note="VIC-based (Heatherton + other Melbourne stores). Melbourne metro delivery + in-store pickup; no interstate (no WA/NT/TAS)."),
 ]
 
 _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}

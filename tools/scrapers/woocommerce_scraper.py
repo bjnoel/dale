@@ -117,6 +117,18 @@ NURSERIES = {
         ],
         "exclude_title_keywords": ["preserved"],
     },
+    "diacos": {
+        # Diaco's Garden Nursery, Melbourne (Heatherton + other VIC stores).
+        # Large general garden centre (~900 SKUs: ornamentals, hardware,
+        # chemicals, pots). Fruit/edibles sit in one category, so we use
+        # category_api mode to fetch only it rather than paginating the lot.
+        # Melbourne-metro delivery + in-store pickup; no interstate (no WA/NT/TAS).
+        "name": "Diaco's Garden Nursery",
+        "domain": "diacos.com.au",
+        "location": "Heatherton, VIC",
+        "category_api": True,
+        "fruit_categories": ["fruit-trees-and-edibles"],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

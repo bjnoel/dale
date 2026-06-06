@@ -76,6 +76,18 @@ NURSERIES = {
         "location": "NSW",
         "fruit_tags": ["Fruit", "edible", "citrus"],
     },
+    "garden-world": {
+        # Full-service garden centre with 3,400+ SKUs (bulbs, pots, hardware,
+        # ornamentals). Every fruit/nut/berry/olive product carries the
+        # product_type "FOOD PLANTS", which is the clean fruit filter here: the
+        # "*Online" tags are inconsistently applied (some fruit trees have no
+        # tags at all), so tag filtering would miss ~60 trees.
+        # Melbourne-metro delivery only (in-house vans) + in-store pickup.
+        "name": "Garden World",
+        "domain": "gardenworld.au",
+        "location": "Braeside, VIC",
+        "product_types": ["FOOD PLANTS"],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
@@ -126,6 +138,16 @@ def scrape_shopify(nursery_key, config):
         all_products.extend(products)
         page += 1
         time.sleep(REQUEST_DELAY)
+
+    # Filter by product type if configured (e.g. Garden World stocks all fruit
+    # under product_type "FOOD PLANTS"; the rest of the store is non-fruit).
+    product_types = config.get("product_types")
+    if product_types:
+        wanted = {pt.lower() for pt in product_types}
+        before = len(all_products)
+        all_products = [p for p in all_products
+                        if p.get("product_type", "").lower() in wanted]
+        print(f"  Filtered to product types {product_types}: {before} -> {len(all_products)}")
 
     # Filter by fruit tags if configured
     fruit_tags = config.get("fruit_tags")

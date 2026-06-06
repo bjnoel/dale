@@ -4,6 +4,55 @@
 
 ---
 
+## DEC-175 — 2026-06-07 — Add Garden World + Diaco's (VIC) as nurseries 21 & 22; defer 3 others
+
+**Decided by:** Dale (interactive session, Benedict directed)
+
+**Context:** Benedict offered five candidate sites to potentially scrape:
+diacos.com.au, heavenonearthfruittrees.com.au, citrusmen.com.au, gardenworld.au,
+and plantnet.com.au.
+
+**Triage:**
+- **PlantNet — already monitored** (DAL-44, since 2026-03-24). No action.
+- **Heaven on Earth — deferred again.** Still on Wix (re-confirmed). No clean JSON
+  API, FNQ tropical, does not ship to WA. Same blocker as DEC-019 (deferred 3x now).
+- **Citrus Men — deferred again.** Still on Squarespace (re-confirmed). Not cleanly
+  scrapeable, no WA shipping. Same blocker as the 2026-03-21 / 2026-03-28 research.
+- **Garden World — added (21st).** Shopify; the public products.json works, so it
+  drops into the existing shopify_scraper. 213 fruit/nut/berry/olive products
+  (108 in stock at add time): citrus, stone fruit, bare-root deciduous, dwarf and
+  grafted varieties, figs, olives, berries, avocados.
+- **Diaco's Garden Nursery — added (22nd).** WooCommerce with a live public Store
+  API; plugs into woocommerce_scraper. 71 products in its fruit-trees-and-edibles
+  category (citrus, plum, persimmon, peach, olive, mulberry, guava, passionfruit).
+
+**Caveat (logged honestly):** Garden World and Diaco's are mainstream Melbourne
+garden centres, not rare-fruit specialists, and both are Melbourne-metro delivery
+only (no interstate). This is the same profile we skipped "Nursery Near Me" for.
+Benedict's call was to add both, noting an intent to expand treestock beyond fruit
+trees to ALL nursery stock (ornamentals etc.) in the near future, which makes
+general garden centres more valuable, not less. They also add price-comparison
+depth for common varieties (the cross-nursery price dataset is the moat) and VIC
+local coverage. Both flagged ships_to=("VIC",) with a "Melbourne metro" delivery
+label, so the dashboard shows "No WA/NT/TAS".
+
+**Implementation notes:**
+- Garden World's whole store is 3,476 SKUs (bulbs, pots, hardware, ornamentals).
+  All fruit carries product_type "FOOD PLANTS"; the "*Online" tags are
+  inconsistently applied (some fruit trees have empty tags), so tag filtering would
+  have missed ~60 trees (Peacharine, Quince, Cherry/Apple Dwarf, Currants...).
+  Added a general optional product_types filter to shopify_scraper for this; a
+  live scrape confirmed it captures exactly those previously-missed items and
+  stocklib.classify flagged 0 junk.
+- Diaco's full catalog is ~900 SKUs, so used category_api mode (like Garden
+  Express / PlantNet) to fetch only the fruit category rather than paginating all.
+- Registry records, NURSERY_META profile pages, the pinned test_registry oracle,
+  and business-state (nurseries_monitored 20 -> 22) all updated. Golden output
+  changed only by the "20 nurseries" -> "22 nurseries" count in copy; goldens
+  regenerated, full suite green (1386 tests).
+
+---
+
 ## DEC-174 — 2026-06-06 — Add Rayners Orchard (VIC) as 20th nursery; reject Flemings
 
 **Decided by:** Dale (interactive session, Benedict directed)

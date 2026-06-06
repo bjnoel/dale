@@ -109,6 +109,16 @@ NURSERY_META = {
         "tags": ["dwarf fruit trees", "SA grown", "pears", "peaches", "citrus"],
         "description": "PlantNet is a South Australian nursery specialising in dwarf and compact fruit tree varieties. They carry a good range of pears, peaches, nectarines, plums, and citrus in pot-friendly sizes. WA orders are fulfilled via their Olea Nurseries partner based in Manjimup WA (not direct interstate shipping), so WA buyers receive locally grown stock with no interstate quarantine issues.",
     },
+    "garden-world": {
+        "url": "https://gardenworld.au",
+        "tags": ["fruit trees", "citrus", "stone fruit", "VIC", "garden centre"],
+        "description": "Garden World is a large garden centre in Braeside, Melbourne carrying a broad range of fruit trees: citrus, stone fruit, bare-root deciduous, dwarf and grafted varieties, plus figs, olives, berries, and avocados. Delivery is Melbourne metro only (their own vans) with in-store pickup available. Does not ship to WA, NT, or TAS.",
+    },
+    "diacos": {
+        "url": "https://diacos.com.au",
+        "tags": ["fruit trees", "edibles", "VIC", "garden centre"],
+        "description": "Diaco's Garden Nursery is a Melbourne garden centre group (Heatherton and other Victorian stores) carrying fruit trees and edibles alongside a large general garden range. Delivery is Melbourne metro with in-store pickup available. Does not ship to WA, NT, or TAS.",
+    },
 }
 
 
