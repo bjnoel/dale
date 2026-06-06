@@ -148,7 +148,7 @@ def render_faq_section(slug: str, state: str | None = None) -> str:
         for q, a in faqs
     )
     return (
-        '\n<section class="mb-8" id="faq">\n'
+        '\n<section class="mt-8 mb-8" id="faq">\n'
         '  <h2 class="text-lg font-semibold text-gray-800 mb-3">Frequently asked questions</h2>\n'
         f'{items}</section>\n'
     )
