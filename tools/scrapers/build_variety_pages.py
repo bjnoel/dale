@@ -171,6 +171,9 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
         title=f"Buy {title} Trees in Australia — Prices & Availability — treestock.com.au",
         description=meta_desc,
         canonical_url=f"https://treestock.com.au/variety/{slug}.html",
+        og_title=f"Buy {title} Trees in Australia",
+        og_description=meta_desc,
+        og_type="product",
     )
     header = render_header(active_path="/variety/")
     species_href = f"/species/{species_slug}.html" if species_slug in valid_species_slugs else ""

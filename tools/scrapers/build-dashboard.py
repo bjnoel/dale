@@ -834,12 +834,10 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .filter-chip button { background: none; border: none; color: #166534; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
   .filter-chip button:hover { color: #dc2626; }"""
 
+    # Twitter Card + og:title/description/image/type are emitted by render_head;
+    # only the og:image dimensions (which render_head does not model) are added here.
     extra_head_tags = """<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="treestock.com.au - Australian Nursery Stock Tracker">
-<meta name="twitter:description" content="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
-<meta name="twitter:image" content="https://treestock.com.au/og-image.png">"""
+<meta property="og:image:height" content="630">"""
 
     head = render_head(
         title="treestock.com.au - Australian Nursery Stock Tracker",

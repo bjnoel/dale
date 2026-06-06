@@ -52,6 +52,8 @@ class SiteConfig:
     logo_svg: str            # inline brand SVG shown in the header
     nav_items: list          # [(label, path), ...]; the "/" entry is the logo and is skipped
     accent: str = "green"
+    default_og_image: str = ""   # absolute URL used for og:image/twitter:image when a page passes none
+    default_og_type: str = "website"
     default_max_width: str = "max-w-3xl"
     base_style: str = DEFAULT_BASE_STYLE
 
@@ -66,46 +68,73 @@ def render_head(
     og_description: str = "",
     og_image: str = "",
     og_type: str = "",
+    twitter_card: str = "summary_large_image",
+    robots: str = "",
+    jsonld="",
     extra_style: str = "",
 ) -> str:
     """Render the <head> block: meta, title, favicon, stylesheet, Plausible, styles.
 
     Bound to a SiteConfig per site (treestock_layout / beestock_layout).
+
+    Open Graph and Twitter Card tags are always emitted, falling back to the
+    page title/description and the site's default image/type, so every page is
+    shareable without each builder repeating the tags. Pass og_* to override;
+    set twitter_card="" to suppress the Twitter tags.
+
+    robots:  emitted as <meta name="robots"> only when non-empty (noindex hook).
+    jsonld:  a ready <script type="application/ld+json"> string, or a list of
+             them, injected just before </head> (each entry emitted as-is).
     """
     meta_desc = f'\n<meta name="description" content="{description}">' if description else ""
     canonical = f'\n<link rel="canonical" href="{canonical_url}">' if canonical_url else ""
+    robots_meta = f'\n<meta name="robots" content="{robots}">' if robots else ""
 
-    og_parts = []
-    if og_title:
-        og_parts.append(f'<meta property="og:title" content="{og_title}">')
-    if og_description:
-        og_parts.append(f'<meta property="og:description" content="{og_description}">')
-    if og_image:
-        og_parts.append(f'<meta property="og:image" content="{og_image}">')
-    if og_type:
-        og_parts.append(f'<meta property="og:type" content="{og_type}">')
+    # Open Graph: always present, with sensible fallbacks. og:url only when canonical.
+    eff_title = og_title or title
+    eff_desc = og_description or description
+    eff_type = og_type or config.default_og_type
+    eff_image = og_image or config.default_og_image
+    og_parts = [f'<meta property="og:title" content="{eff_title}">']
+    if eff_desc:
+        og_parts.append(f'<meta property="og:description" content="{eff_desc}">')
+    og_parts.append(f'<meta property="og:type" content="{eff_type}">')
+    if eff_image:
+        og_parts.append(f'<meta property="og:image" content="{eff_image}">')
     if canonical_url:
         og_parts.append(f'<meta property="og:url" content="{canonical_url}">')
-    og_html = "\n".join(og_parts)
-    if og_html:
-        og_html = "\n" + og_html
+
+    # Twitter Card: derived from the Open Graph values (no separate inputs).
+    if twitter_card:
+        og_parts.append(f'<meta name="twitter:card" content="{twitter_card}">')
+        og_parts.append(f'<meta name="twitter:title" content="{eff_title}">')
+        if eff_desc:
+            og_parts.append(f'<meta name="twitter:description" content="{eff_desc}">')
+        if eff_image:
+            og_parts.append(f'<meta name="twitter:image" content="{eff_image}">')
+    og_html = "\n" + "\n".join(og_parts)
 
     style_block = f"<style>\n{config.base_style}"
     if extra_style:
         style_block += f"\n{extra_style}"
     style_block += "\n</style>"
 
+    if isinstance(jsonld, (list, tuple)):
+        jsonld_block = "".join(f"\n{s}" for s in jsonld if s)
+    else:
+        jsonld_block = f"\n{jsonld}" if jsonld else ""
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">{meta_desc}{canonical}{og_html}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">{meta_desc}{canonical}{robots_meta}{og_html}
 <title>{title}</title>
 {config.favicon_html}
 <link href="{config.tailwind_href}" rel="stylesheet">
 {config.plausible_script}
 {style_block}
-{extra_head}
+{extra_head}{jsonld_block}
 </head>"""
 
 

@@ -62,6 +62,7 @@ TREESTOCK = SiteConfig(
     logo_svg=LOGO_SVG,
     nav_items=NAV_ITEMS,
     accent="green",
+    default_og_image=f"{SITE_URL}/og-image.png",
     default_max_width="max-w-3xl",
     base_style=BASE_STYLE,
 )
@@ -187,6 +188,9 @@ def render_page(
     og_description: str = "",
     og_image: str = "",
     og_type: str = "",
+    twitter_card: str = "summary_large_image",
+    robots: str = "",
+    jsonld="",
 ) -> str:
     """Convenience wrapper: renders a complete page."""
     head = render_head(
@@ -198,6 +202,9 @@ def render_page(
         og_description=og_description,
         og_image=og_image,
         og_type=og_type,
+        twitter_card=twitter_card,
+        robots=robots,
+        jsonld=jsonld,
         extra_style=extra_style,
     )
     header = render_header(
