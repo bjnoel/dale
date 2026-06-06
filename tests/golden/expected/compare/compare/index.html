@@ -67,6 +67,25 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   <nav class="text-xs text-gray-400 mb-4">
     <a href="/" class="hover:underline">Home</a> &#8250; Compare Prices
   </nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://treestock.com.au/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Compare Prices"
+    }
+  ]
+}
+</script>
 
   <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Price Comparisons</h1>
   <p class="text-gray-600 mb-4">

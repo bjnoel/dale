@@ -16,7 +16,7 @@ from pathlib import Path
 
 from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
-from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS
+from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
 from stocklib.taxonomy import load_species
 # Reuse the variety builder's non-plant denylist so we never emit a variety
@@ -847,6 +847,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         og_description="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.",
         og_image="https://treestock.com.au/og-image.png",
         og_type="website",
+        jsonld=[organization_jsonld(), website_jsonld()],
         extra_head=extra_head_tags,
         extra_style=extra_style,
     )

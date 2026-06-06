@@ -109,6 +109,31 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   <nav class="text-xs text-gray-400 mb-4">
     <a href="/" class="hover:underline">Home</a> &#8250; <a href="/species/" class="hover:underline">Species</a> &#8250; Lychee
   </nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://treestock.com.au/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Species",
+      "item": "https://treestock.com.au/species/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Lychee"
+    }
+  ]
+}
+</script>
     <h1 class="text-3xl font-bold text-green-900 mb-1">Lychee Trees</h1>
     <p class="text-gray-500 italic mb-3">Litchi chinensis (South China)</p>
     <div class="flex flex-wrap gap-3 text-sm">

@@ -71,6 +71,25 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   <nav class="text-xs text-gray-400 mb-4">
     <a href="/" class="hover:underline">Home</a> &#8250; Most Wanted
   </nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://treestock.com.au/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Most Wanted"
+    }
+  ]
+}
+</script>
 
   <div class="mb-6">
     <h1 class="text-3xl font-bold text-green-900 mb-2">Most Wanted Species</h1>
