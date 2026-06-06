@@ -16,6 +16,9 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+from shipping import SHIPPING_MAP
+
 SECRETS_DIR = Path("/opt/dale/secrets")
 RESEND_ENV = SECRETS_DIR / "resend.env"
 APP_ENV = SECRETS_DIR / "app.env"
@@ -55,6 +58,8 @@ def make_unsubscribe_token(email: str, secret: str) -> str:
 
 
 def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -> str:
+    nursery_count = len(SHIPPING_MAP)
+    extra = nursery_count - 12  # list below shows 12 nurseries explicitly
     return f"""<!DOCTYPE html>
 <html>
 <head>
@@ -79,12 +84,12 @@ def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -
       <h2 style="margin:0 0 12px;color:#065f46;font-size:1.1rem;">You're subscribed!</h2>
 
       <p style="margin:0 0 16px;color:#374151;font-size:0.95rem;line-height:1.5;">
-        Each Monday morning you'll get a weekly digest of what changed across 19 Australian
+        Each Monday morning you'll get a weekly digest of what changed across {nursery_count} Australian
         fruit tree nurseries, including new listings, restocks, and price drops.
       </p>
 
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin-bottom:20px;">
-        <p style="margin:0 0 8px;font-weight:600;color:#065f46;font-size:0.9rem;">19 nurseries tracked across Australia:</p>
+        <p style="margin:0 0 8px;font-weight:600;color:#065f46;font-size:0.9rem;">{nursery_count} nurseries tracked across Australia:</p>
         <ul style="margin:0;padding-left:20px;color:#374151;font-size:0.9rem;line-height:1.6;">
           <li>Daleys Fruit Trees (NSW)</li>
           <li>Ross Creek Tropicals (QLD)</li>
@@ -98,7 +103,7 @@ def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -
           <li>Perth Mobile Nursery (WA)</li>
           <li>Fruit Tree Cottage (NSW)</li>
           <li>Yalca Fruit Trees (VIC)</li>
-          <li>and 7 more</li>
+          <li>and {extra} more</li>
         </ul>
       </div>
 

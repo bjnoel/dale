@@ -23,6 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_footer, render_breadcrumb
+from shipping import SHIPPING_MAP
 
 DATA_DIR = Path("/opt/dale/data/nursery-stock")
 FRUIT_SPECIES = Path(__file__).parent / "fruit_species.json"
@@ -287,7 +288,7 @@ def build_page(all_dates: list[str], species_data: dict, output_dir: Path):
 
     head = render_head(
         title="Species Trends — treestock.com.au Market Intelligence",
-        description=f"30-day availability and price trends for 50 fruit tree species across 19 Australian nurseries. Data from {date_range}.",
+        description=f"30-day availability and price trends for 50 fruit tree species across {len(SHIPPING_MAP)} Australian nurseries. Data from {date_range}.",
         canonical_url="https://treestock.com.au/trends.html",
     )
     header = render_header(active_path="/trends.html")

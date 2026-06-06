@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 
 from treestock_layout import render_page, render_breadcrumb, SITE_URL
+from shipping import SHIPPING_MAP
 
 FRUIT_SPECIES = Path(__file__).parent / "fruit_species.json"
 VARIETY_WATCHES_DB = Path("/opt/dale/data/variety_watches.db")
@@ -120,7 +121,7 @@ def build(output_dir=DEFAULT_OUTPUT_DIR):
   <div class="mb-6">
     <h1 class="text-3xl font-bold text-green-900 mb-2">Most Wanted Species</h1>
     <p class="text-gray-600 mb-3">
-      We track what's <em>in stock</em> across 19 Australian nurseries. But we also want to know
+      We track what's <em>in stock</em> across {len(SHIPPING_MAP)} Australian nurseries. But we also want to know
       what you're <em>looking for</em>. Vote for the species you want to find, and we'll
       notify you when they come into stock.
     </p>

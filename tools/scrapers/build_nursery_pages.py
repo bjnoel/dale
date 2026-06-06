@@ -207,7 +207,7 @@ def render_seasonality_banner(seasonality: dict) -> str:
 
 
 
-def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total_nurseries: int = 19) -> str:
+def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total_nurseries: int = len(SHIPPING_MAP)) -> str:
     meta = NURSERY_META.get(nursery_key, {})
     name = NURSERY_NAMES.get(nursery_key, data.get("nursery_name", nursery_key))
     location = data.get("location", "Australia")
