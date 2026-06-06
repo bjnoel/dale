@@ -1,9 +1,11 @@
 // treestock.com.au dashboard client app.
 // Extracted from build-dashboard.py (was embedded in a Python f-string -- the
-// DEC-066 escaping hazard). Data is injected via the <script type="application/json"
-// id="dashboard-data"> island and read below. Served static (browser-cacheable).
+// DEC-066 escaping hazard). The dataset is loaded from an external data.js
+// (window.__DATA) with `defer` BEFORE this file, so it is available synchronously
+// here -- defer preserves execution order. Keeping it out of the HTML shrinks the
+// document ~70x for a faster FCP. Both files are static and browser-cacheable.
 
-const _DATA = JSON.parse(document.getElementById("dashboard-data").textContent);
+const _DATA = window.__DATA;
 const P = _DATA.products;
 // Variety-level availability across ALL nurseries. The variety watch fires
 // globally (a row out of stock at one nursery but in stock at another is NOT

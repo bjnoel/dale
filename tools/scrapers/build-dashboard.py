@@ -774,12 +774,15 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         except Exception:
             pass
     hard_to_find_json = json.dumps(list(hard_to_find_slugs), separators=(",", ":"))
-    # Single JSON blob for the externalized dashboard.js (read via the
-    # <script type="application/json"> island).
+    # Single JSON blob, written to an external data.js (window.__DATA) that loads
+    # `defer` before dashboard.js. Keeping it out of the HTML shrinks the document
+    # ~70x for a much faster FCP; JSON.parse of a string literal keeps the parse fast
+    # so TBT stays flat. dashboard.js reads window.__DATA synchronously (defer order).
     dashboard_data_json = json.dumps({
         "products": products, "nurseries": nurseries,
         "species_slugs": species_slugs, "hard_to_find": list(hard_to_find_slugs),
     }, separators=(",", ":"))
+    data_js = "window.__DATA=JSON.parse(" + json.dumps(dashboard_data_json) + ");"
     cache_v = datetime.now(timezone.utc).strftime("%Y%m%d")
 
     # Server-render the FULL in-stock species strip for SEO: every species page is linked
@@ -857,7 +860,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         extra_style=extra_style,
     )
 
-    return f"""{head}
+    html = f"""{head}
 <body class="bg-white text-gray-900">
 
 <header class="border-b border-gray-200 bg-white sticky top-0 z-10">
@@ -955,7 +958,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
 {render_footer(max_width="max-w-5xl", extra_text='<a href="/advertise.html" class="underline">Nursery partnerships</a>')}
 
-<script type="application/json" id="dashboard-data">{dashboard_data_json}</script>
+<script src="/data.js?v={cache_v}" defer></script>
 <script src="/dashboard.js?v={cache_v}" defer></script>
 
 <!-- Floating subscribe bar (mobile only) -->
@@ -975,6 +978,8 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
 </body>
 </html>"""
+
+    return html, data_js
 
 
 def main():
@@ -1012,7 +1017,7 @@ def main():
     print(f"  Highlights section: {'generated' if highlights_html else 'empty (insufficient data)'}")
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    html = build_html(products, nurseries, ranked_species, highlights_html)
+    html, data_js = build_html(products, nurseries, ranked_species, highlights_html)
 
     # Atomic write: write to temp file then rename to avoid serving partial HTML
     out_file = output_dir / args.output_name
@@ -1021,15 +1026,28 @@ def main():
     tmp_file.rename(out_file)
     print(f"Dashboard written to {out_file} ({len(html):,} bytes)")
 
-    # Post-build verification
-    actual_size = out_file.stat().st_size
-    if actual_size < 500_000:
-        print(f"WARNING: Output file is suspiciously small ({actual_size:,} bytes). Expected >500KB.", file=sys.stderr)
+    # The dataset now lives in an external data.js (window.__DATA), loaded defer
+    # before dashboard.js. This is where the bulk of the bytes are (was inline HTML).
+    data_file = output_dir / "data.js"
+    data_tmp = output_dir / "data.js.tmp"
+    data_tmp.write_text(data_js)
+    data_tmp.rename(data_file)
+    print(f"Data written to {data_file} ({len(data_js):,} bytes)")
+
+    # Post-build verification. data.js is now the big file; the HTML is small by
+    # design, so guard each against its own floor (a corrupt build trips one of them).
+    html_size = out_file.stat().st_size
+    data_size = data_file.stat().st_size
+    if html_size < 8_000:
+        print(f"WARNING: index.html is suspiciously small ({html_size:,} bytes). Expected >8KB.", file=sys.stderr)
+        sys.exit(2)
+    if data_size < 500_000:
+        print(f"WARNING: data.js is suspiciously small ({data_size:,} bytes). Expected >500KB.", file=sys.stderr)
         sys.exit(2)
     if len(products) < 1000:
         print(f"WARNING: Only {len(products)} products loaded. Expected >1000. Check scrapers.", file=sys.stderr)
         sys.exit(2)
-    print(f"Verification passed: {actual_size:,} bytes, {len(products)} products")
+    print(f"Verification passed: index.html {html_size:,} bytes, data.js {data_size:,} bytes, {len(products)} products")
 
 
 if __name__ == "__main__":

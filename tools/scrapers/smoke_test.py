@@ -20,7 +20,8 @@ SITE = "https://treestock.com.au"
 
 # (path, min_bytes, expected_content_snippet)
 PAGES = [
-    ("/",               400_000, "treestock"),
+    ("/",                15_000, "treestock"),
+    ("/data.js",        400_000, "__DATA"),
     ("/digest.html",      5_000, "treestock"),
     ("/guide.html",      10_000, "rare fruit"),
     ("/species/mango.html", 5_000, "mango"),
