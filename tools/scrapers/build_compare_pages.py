@@ -227,6 +227,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
             url=f"{SITE_URL}/compare/{slug}-prices.html",
             products=products,
             description=f"Compare {name} ({latin}) tree prices across {total_nurseries} Australian nurseries.",
+            include_offers=False,  # compare aggregates a whole species: summary only
         ),
     )
     header = render_header(active_path="/compare/")
