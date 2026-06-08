@@ -2,6 +2,74 @@
   "species_slug": "lemon",
   "schema_version": 1,
   "varieties": {
+    "lemon-bush": {
+      "slug": "lemon-bush",
+      "species": "Lemon",
+      "variety": "Bush",
+      "paragraphs": [
+        "The Bush lemon is the naturalised rough lemon (Citrus jambhiri), a vigorous citrus hybrid of mandarin and citron that escaped cultivation and grows wild across subtropical Australia. Hardy, drought resistant and cold tolerant, it adapted to tough conditions and now grows feral, which is how it earned the bush lemon name. It forms a large, often thorny tree.",
+        "Its fruit has a thick, rough, knobbly rind and is seedy, making it mostly rind and less suited to eating than selected lemons like Eureka or Lisbon. Its main historical value is as a rootstock, valued for vigour and drought tolerance, onto which finer lemon and citrus cultivars are budded. The fruit is still used at home for juice and zest."
+      ],
+      "claims": [
+        {
+          "text": "Bush lemon is the rough lemon, Citrus jambhiri, a cross of mandarin orange and citron",
+          "type": "origin",
+          "cites": [
+            "wiki-rough",
+            "daleys-bush"
+          ]
+        },
+        {
+          "text": "Naturalised and growing wild (feral) across subtropical Australia",
+          "type": "origin",
+          "cites": [
+            "daleys-bush",
+            "wiki-rough"
+          ]
+        },
+        {
+          "text": "Hardy, drought resistant and cold-hardy, forming a large tree",
+          "type": "growing",
+          "cites": [
+            "wiki-rough",
+            "daleys-bush"
+          ]
+        },
+        {
+          "text": "Fruit is mostly rough rind and seedy, less edible than selected lemons",
+          "type": "appearance",
+          "cites": [
+            "wiki-rough"
+          ]
+        },
+        {
+          "text": "Mainly used as a citrus rootstock, valued for drought tolerance",
+          "type": "use",
+          "cites": [
+            "wiki-rough",
+            "daleys-bush"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-rough",
+          "name": "Wikipedia: Rough lemon",
+          "url": "https://en.wikipedia.org/wiki/Rough_lemon",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-bush",
+          "name": "Daleys Fruit: Bush Lemon (Citrus jambhiri)",
+          "url": "https://www.daleysfruit.com.au/buy/bush-lemon-tree-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "lemon-eureka": {
       "slug": "lemon-eureka",
       "species": "Lemon",
@@ -60,6 +128,146 @@
       ],
       "confidence": "high",
       "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lemon-fino": {
+      "slug": "lemon-fino",
+      "species": "Lemon",
+      "variety": "Fino",
+      "paragraphs": [
+        "Fino is a leading Spanish commercial lemon, the most widely grown cultivar in Spain, probably arising as a seedling of a common Murcia-region lemon. It is an early to mid-season (mainly winter) lemon. The tree is exceptionally vigorous, large, very thorny and highly productive, with dense foliage.",
+        "Compared with the other major Spanish lemon, Berna (Verna), Fino fruit is paler, with a smoother and thinner rind, and is higher in juice and acid content, though more seedy. The fruit is spherical to oval with a small, sharp-pointed nipple. Its high juice yield and acidity make it a favourite of processors."
+      ],
+      "claims": [
+        {
+          "text": "Fino probably originated as a seedling of a common Murcia-region lemon and is a major Spanish cultivar",
+          "type": "origin",
+          "cites": [
+            "ucr-fino",
+            "frutas-hort"
+          ]
+        },
+        {
+          "text": "Crop comes mainly in winter (early to mid season)",
+          "type": "season",
+          "cites": [
+            "ucr-fino"
+          ]
+        },
+        {
+          "text": "Tree is exceptionally vigorous, large, very thorny and highly productive",
+          "type": "growing",
+          "cites": [
+            "ucr-fino"
+          ]
+        },
+        {
+          "text": "Fruit is paler with smoother, thinner rind and higher juice and acid content than Berna, but more seedy",
+          "type": "appearance",
+          "cites": [
+            "ucr-fino"
+          ]
+        },
+        {
+          "text": "Fruit is spherical to oval with a small, sharp-pointed nipple",
+          "type": "appearance",
+          "cites": [
+            "ucr-fino"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-fino",
+          "name": "Givaudan Citrus Variety Collection at UCR: Limonero Fino 49 lemon",
+          "url": "https://citrusvariety.ucr.edu/crc3970",
+          "tier": "authoritative"
+        },
+        {
+          "id": "frutas-hort",
+          "name": "Frutas y Hortalizas: Lemon types and varieties",
+          "url": "https://www.frutas-hortalizas.com/Fruits/Types-varieties-Lemon.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lemon-lemonade": {
+      "slug": "lemon-lemonade",
+      "species": "Lemon",
+      "variety": "Lemonade",
+      "paragraphs": [
+        "Lemonade is not a true lemon but a sweet, low-acid hybrid widely believed to be a cross of lemon and mandarin, discovered as a chance seedling in New Zealand in the early 1980s and now grown across Australia. Its exact parentage remains uncertain. The low acidity lets the natural sugars come through, giving a mild, sweet, faintly tangy flavour quite unlike a sour lemon.",
+        "Unlike a cooking lemon, ripe Lemonade fruit can be peeled and eaten fresh straight off the tree, segmenting easily thanks to its mandarin heritage. The fruit has a glossy yellow rind and juicy yellow flesh, sweetens the longer it hangs on the tree, and is also juiced for a naturally sweet drink. The tree is heavy bearing and often thorny."
+      ],
+      "claims": [
+        {
+          "text": "Sweet, low-acid hybrid generally regarded as a lemon by mandarin cross",
+          "type": "origin",
+          "cites": [
+            "wiki-lemonade",
+            "viccitrus"
+          ]
+        },
+        {
+          "text": "Discovered as a chance seedling in New Zealand in the early 1980s",
+          "type": "origin",
+          "cites": [
+            "wiki-lemonade",
+            "goodharvest"
+          ]
+        },
+        {
+          "text": "Low acidity gives a sweet, mild flavour rather than sour",
+          "type": "flavour",
+          "cites": [
+            "wiki-lemonade",
+            "viccitrus",
+            "goodharvest"
+          ]
+        },
+        {
+          "text": "Can be peeled and eaten fresh off the tree, segmenting like a mandarin",
+          "type": "use",
+          "cites": [
+            "viccitrus",
+            "wiki-lemonade"
+          ]
+        },
+        {
+          "text": "Tree is heavy bearing and often thorny",
+          "type": "growing",
+          "cites": [
+            "viccitrus"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-lemonade",
+          "name": "Wikipedia: Lemonade fruit",
+          "url": "https://en.wikipedia.org/wiki/Lemonade_fruit",
+          "tier": "third_party"
+        },
+        {
+          "id": "viccitrus",
+          "name": "Victorian Citrus Farms: Lemonade lemons",
+          "url": "https://viccitrus.com.au/lemonade-lemons/",
+          "tier": "third_party"
+        },
+        {
+          "id": "goodharvest",
+          "name": "Good Harvest: Lemonade Fruit",
+          "url": "https://www.goodharvest.com.au/blogs/news/lemonade-fruit-your-new-favourite-citrus",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -199,6 +407,274 @@
       "confidence_score": 0.93,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lemon-seedless-eureka": {
+      "slug": "lemon-seedless-eureka",
+      "species": "Lemon",
+      "variety": "Seedless Eureka",
+      "paragraphs": [
+        "Seedless Eureka is a selection of the classic Eureka lemon that arose as a limb sport (bud mutation) and is distinguished from ordinary Eureka by its consistently seedless fruit. In other respects it closely resembles its parent, carrying the same bright, tart, high-acid lemon flavour collectors expect from a Eureka.",
+        "The fruit is medium to large with smooth, thin yellow skin that zests and slices cleanly, and like the Eureka the tree tends to be near everbearing, cropping over much of the year rather than in one short flush. The seedlessness makes it convenient for juicing and cooking without picking out pips."
+      ],
+      "claims": [
+        {
+          "text": "Seedless Eureka is a selection of Eureka that arose as a limb sport (bud mutation)",
+          "type": "origin",
+          "cites": [
+            "stclements",
+            "viccitrus-se"
+          ]
+        },
+        {
+          "text": "Distinguished from ordinary Eureka by consistently seedless fruit, otherwise similar",
+          "type": "appearance",
+          "cites": [
+            "stclements",
+            "viccitrus-se"
+          ]
+        },
+        {
+          "text": "Retains the classic tart, high-acid Eureka lemon flavour",
+          "type": "flavour",
+          "cites": [
+            "stclements"
+          ]
+        },
+        {
+          "text": "Eureka type tends to be near everbearing, cropping over much of the year",
+          "type": "season",
+          "cites": [
+            "viccitrus-se",
+            "stclements"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "stclements",
+          "name": "St Clements Citrus: Discovering the Lemon Seedless Eureka",
+          "url": "https://www.stclementscitrus.com/post/discovering-the-lemon-seedless-eureka-a-citrus-wonder",
+          "tier": "third_party"
+        },
+        {
+          "id": "viccitrus-se",
+          "name": "Victorian Citrus Farms: Eureka Seedless lemons",
+          "url": "https://viccitrus.com.au/eureka-seedless-lemons/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lemon-variegated-eureka": {
+      "slug": "lemon-variegated-eureka",
+      "species": "Lemon",
+      "variety": "Variegated Eureka",
+      "paragraphs": [
+        "The Variegated Eureka, also called the variegated pink lemon or pink-fleshed Eureka, is an ornamental sport that appeared on an ordinary Eureka lemon tree in Burbank, California, in 1931. It is prized as much for its looks as its fruit, with green-and-cream variegated foliage and immature fruit that is striped green and yellow before ripening to yellow.",
+        "Inside, the flesh is a soft pink (similar in look to a pink grapefruit), though the juice runs clear rather than pink. The flavour is a true acidic lemon, useful in the kitchen wherever a standard Eureka would be, so the variety offers the novelty of pink flesh and striped, variegated growth without losing classic lemon tartness."
+      ],
+      "claims": [
+        {
+          "text": "Variegated Eureka is the variegated pink lemon, a sport on a Eureka tree in Burbank, California, in 1931",
+          "type": "origin",
+          "cites": [
+            "wiki-varpink",
+            "ucr-varpink"
+          ]
+        },
+        {
+          "text": "Has green-and-cream variegated foliage and green-striped rind before ripening",
+          "type": "appearance",
+          "cites": [
+            "wiki-varpink",
+            "gardenia-varpink"
+          ]
+        },
+        {
+          "text": "Flesh is pink while the juice is clear rather than pink",
+          "type": "appearance",
+          "cites": [
+            "gardenia-varpink"
+          ]
+        },
+        {
+          "text": "Flavour is a true acidic lemon, used like a standard Eureka",
+          "type": "flavour",
+          "cites": [
+            "gardenia-varpink"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-varpink",
+          "name": "Wikipedia: Variegated pink lemon",
+          "url": "https://en.wikipedia.org/wiki/Variegated_pink_lemon",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-varpink",
+          "name": "Givaudan Citrus Variety Collection at UCR: Variegated Pink Fleshed Eureka lemon",
+          "url": "https://citrusvariety.ucr.edu/crc2367",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenia-varpink",
+          "name": "Gardenia.net: Citrus x limon Eureka Pink Variegated",
+          "url": "https://www.gardenia.net/plant/citrus-limon-eureka-pink-variegated",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lemon-verna": {
+      "slug": "lemon-verna",
+      "species": "Lemon",
+      "variety": "Verna",
+      "paragraphs": [
+        "Verna (also spelt Berna) is a major Spanish lemon of unknown origin, historically the dominant lemon of the Spanish Levant and still the second most grown Spanish cultivar after Fino. It is a distinctly late-season variety, ripening from late winter into summer and holding well on the tree, which extends the supply beyond earlier lemons.",
+        "The fruit is medium sized, oval to broad-elliptical, with a short neck, a well developed nipple and bright yellow rind at maturity. The medium-thick rind is somewhat pebbled and rough, and seed content is variable but usually few to none. It is grown primarily as a fresh-market table lemon."
+      ],
+      "claims": [
+        {
+          "text": "Verna is also spelt Berna, a major Spanish lemon of unknown origin",
+          "type": "origin",
+          "cites": [
+            "todoli",
+            "frutas-hort",
+            "ucr-berna"
+          ]
+        },
+        {
+          "text": "Historically the most important Spanish variety in the Levant, now second to Fino",
+          "type": "origin",
+          "cites": [
+            "ucr-berna",
+            "frutas-hort"
+          ]
+        },
+        {
+          "text": "Late-season variety ripening from late winter into summer and holding well",
+          "type": "season",
+          "cites": [
+            "ucr-berna",
+            "frutas-hort"
+          ]
+        },
+        {
+          "text": "Fruit medium, oval to broad-elliptical, bright yellow, with somewhat rough medium-thick rind",
+          "type": "appearance",
+          "cites": [
+            "ucr-berna"
+          ]
+        },
+        {
+          "text": "Seed content variable but usually few to none",
+          "type": "appearance",
+          "cites": [
+            "ucr-berna",
+            "frutas-hort"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-berna",
+          "name": "Givaudan Citrus Variety Collection at UCR: Berna lemon",
+          "url": "https://citrusvariety.ucr.edu/crc3590",
+          "tier": "authoritative"
+        },
+        {
+          "id": "todoli",
+          "name": "Todoli Citrus Fundacio: Berna - Verna",
+          "url": "https://todolicitrusfundacio.org/en/variedades-citricos/berna-verna-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "frutas-hort",
+          "name": "Frutas y Hortalizas: Lemon types and varieties",
+          "url": "https://www.frutas-hortalizas.com/Fruits/Types-varieties-Lemon.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lemon-yuzu": {
+      "slug": "lemon-yuzu",
+      "species": "Lemon",
+      "variety": "Yuzu",
+      "paragraphs": [
+        "Yuzu (Citrus junos) is a distinct cold-hardy citrus, not a true lemon. It is an F1 hybrid of a mandarin and the ichang papeda, originating in central China and long cultivated in Japan and Korea. Its papeda ancestry makes it unusually frost tolerant, growing where more sensitive citrus would fail (winters down to around minus 7 degrees Celsius). The fruit resembles a small, bumpy yellow to green mandarin with uneven skin.",
+        "Yuzu is prized for its intensely aromatic rind and tart, seedy juice rather than for fresh eating, which it is rarely used for. The zest and juice carry a complex fragrance blending lemon, mandarin and grapefruit with herbal notes, and feature heavily in Japanese and Korean cooking, including the citrus sauce ponzu and the chilli paste yuzu kosho."
+      ],
+      "claims": [
+        {
+          "text": "Yuzu is Citrus junos, an F1 hybrid of a mandarin and the ichang papeda",
+          "type": "origin",
+          "cites": [
+            "wiki-yuzu"
+          ]
+        },
+        {
+          "text": "Originated in central China and is cultivated in Japan and Korea",
+          "type": "origin",
+          "cites": [
+            "wiki-yuzu",
+            "gardenia-yuzu"
+          ]
+        },
+        {
+          "text": "One of the most cold-hardy citrus, tolerating winters to about minus 7 degrees Celsius",
+          "type": "growing",
+          "cites": [
+            "wiki-yuzu",
+            "gardenia-yuzu"
+          ]
+        },
+        {
+          "text": "Valued for aromatic rind and tart juice, rarely eaten fresh",
+          "type": "use",
+          "cites": [
+            "wiki-yuzu",
+            "gardenia-yuzu"
+          ]
+        },
+        {
+          "text": "Used in ponzu and yuzu kosho in Japanese and Korean cooking",
+          "type": "use",
+          "cites": [
+            "wiki-yuzu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-yuzu",
+          "name": "Wikipedia: Yuzu",
+          "url": "https://en.wikipedia.org/wiki/Yuzu",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenia-yuzu",
+          "name": "Gardenia.net: Citrus x junos (Yuzu)",
+          "url": "https://www.gardenia.net/plant/citrus-juno-yuzu",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": []
 }
