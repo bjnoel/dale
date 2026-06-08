@@ -1,0 +1,540 @@
+{
+  "species_slug": "guava",
+  "schema_version": 1,
+  "varieties": {
+    "guava-china-pear": {
+      "slug": "guava-china-pear",
+      "species": "Guava",
+      "variety": "China Pear",
+      "paragraphs": [
+        "China Pear is a common guava, Psidium guajava, of the pear-shaped (pyriferum) type. The fruit is large and pear-shaped with light yellow skin, distinguishing it from the rounder apple-guava forms. The pear-shaped guavas are sometimes grouped under the name pear guava.",
+        "The flesh is white, thick, creamy and finely textured with small seeds and a smooth, very sweet guava flavour. It is mainly eaten fresh. The tree is a small subtropical to tropical guava that can be pruned to keep it compact."
+      ],
+      "claims": [
+        {
+          "text": "China Pear is a pear-shaped (pyriferum-type) Psidium guajava common guava.",
+          "type": "origin",
+          "cites": [
+            "rhs",
+            "tradewinds"
+          ]
+        },
+        {
+          "text": "The fruit is large and pear-shaped with light yellow skin and white flesh.",
+          "type": "appearance",
+          "cites": [
+            "rhs",
+            "tradewinds"
+          ]
+        },
+        {
+          "text": "The white flesh has small seeds and a smooth, sweet guava flavour and is eaten fresh.",
+          "type": "flavour",
+          "cites": [
+            "tradewinds"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs",
+          "name": "RHS: Psidium guajava pyriferum (pear-shaped guava)",
+          "url": "https://www.rhs.org.uk/plants/160731/psidium-guajava-pyriferum/details",
+          "tier": "third_party"
+        },
+        {
+          "id": "tradewinds",
+          "name": "Tradewinds Fruit: Pear Guava (Psidium guajava ssp pyriferum)",
+          "url": "https://www.tradewindsfruit.com/psidium-guajava-ssp-pyriferum-pear-guava-seeds",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "guava-egyptian-long-neck": {
+      "slug": "guava-egyptian-long-neck",
+      "species": "Guava",
+      "variety": "Egyptian Long Neck",
+      "paragraphs": [
+        "Egyptian Long Neck is a common guava, Psidium guajava, named for its distinctive shape. The fruit is oval to pyriform with a bulbous base that tapers to a slender, sometimes curved neck, giving it the long-necked look. The thin, tender skin ripens from green to yellow, occasionally with a faint blush where sun-exposed.",
+        "Inside, the flesh is white, thick and juicy, becoming soft and succulent when ripe, with a sweet, mildly tart and floral flavour and a musky aroma. It is enjoyed fresh and also used in juices and preserves. Egyptian guavas are grown commercially in Egypt and valued there for their fragrance and heavy cropping."
+      ],
+      "claims": [
+        {
+          "text": "Egyptian Long Neck is a Psidium guajava (common guava) variety grown in Egypt.",
+          "type": "origin",
+          "cites": [
+            "specialty",
+            "tradewinds"
+          ]
+        },
+        {
+          "text": "The fruit is oval to pyriform with a bulbous base tapering to a slender neck and thin yellow skin.",
+          "type": "appearance",
+          "cites": [
+            "specialty",
+            "tradewinds"
+          ]
+        },
+        {
+          "text": "The white flesh is thick, juicy and sweet with a mildly tart, floral flavour and musky aroma.",
+          "type": "flavour",
+          "cites": [
+            "specialty",
+            "tradewinds"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty",
+          "name": "Specialty Produce: Egyptian Guavas",
+          "url": "https://specialtyproduce.com/produce/Egyptian_Guavas_24562.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "tradewinds",
+          "name": "Tradewinds Fruit: Egyptian Guava",
+          "url": "https://tradewindsfruit.com/psidium-guajava-egyptian-guava-seeds",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "guava-hawaiian": {
+      "slug": "guava-hawaiian",
+      "species": "Guava",
+      "variety": "Hawaiian",
+      "paragraphs": [
+        "Hawaiian guava is a pink fleshed selection of common guava (Psidium guajava), the type behind Hawaii's commercial guava industry. The fruit is large and round with yellow skin and soft, juicy, pink to deep pink flesh. Its aroma is strongly tropical, often compared to passionfruit, with a sweet flavour carrying a mild tang. It is a vigorous, heavy cropper, which is part of why pink Hawaiian lines became the backbone of island plantings.",
+        "The pink flesh holds its colour well, so Hawaiian guava is prized as much for processing as for eating fresh. In Hawaii these guavas are widely turned into juice, nectar, jam and jelly, and the rich pink pulp is valued for the colour it lends finished products. Eaten out of hand the fruit is aromatic and soft when fully ripe."
+      ],
+      "claims": [
+        {
+          "text": "Hawaiian guava is a pink fleshed form of common guava, Psidium guajava.",
+          "type": "origin",
+          "cites": [
+            "lacademie",
+            "daleys"
+          ]
+        },
+        {
+          "text": "It has yellow skin with large, juicy pink flesh.",
+          "type": "appearance",
+          "cites": [
+            "daleys",
+            "lacademie"
+          ]
+        },
+        {
+          "text": "Pink Hawaiian guava is a leading commercial guava in Hawaii and is widely used for processing into juice and other products.",
+          "type": "use",
+          "cites": [
+            "lacademie"
+          ]
+        },
+        {
+          "text": "The aroma recalls tropical fruits such as passionfruit, with sweet flavour and mild acidity.",
+          "type": "flavour",
+          "cites": [
+            "lacademie"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "lacademie",
+          "name": "Lacademie: Types of Guava",
+          "url": "https://www.lacademie.com/types-of-guava/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery: Guava Hawaiian",
+          "url": "https://www.daleysfruit.com.au/buy/guava-hawaiian-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "guava-hawaiian-pink": {
+      "slug": "guava-hawaiian-pink",
+      "species": "Guava",
+      "variety": "Hawaiian Pink",
+      "paragraphs": [
+        "Hawaiian Pink is a pink-fleshed common guava, Psidium guajava. The medium-sized fruit has smooth skin that ripens to yellow, enclosing juicy, aromatic pink flesh dotted with small seeds. The flavour is sweet and fragrant with a hint of citrus, making it popular for eating fresh as well as for juices, smoothies and desserts.",
+        "Like other common guavas it is a small to medium evergreen tree that crops prolifically and can be kept compact for pots. Pink-fleshed guavas such as this are valued for their rich colour and tropical aroma."
+      ],
+      "claims": [
+        {
+          "text": "Hawaiian Pink is a pink-fleshed Psidium guajava (common guava) with yellow skin at ripeness.",
+          "type": "appearance",
+          "cites": [
+            "tradewinds",
+            "permaculturehaven"
+          ]
+        },
+        {
+          "text": "The flesh is juicy, aromatic and sweet with a citrus note, used fresh and in juices and desserts.",
+          "type": "flavour",
+          "cites": [
+            "tradewinds",
+            "permaculturehaven"
+          ]
+        },
+        {
+          "text": "It grows as a small to medium evergreen tree that crops prolifically.",
+          "type": "habit",
+          "cites": [
+            "tradewinds",
+            "permaculturehaven"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "tradewinds",
+          "name": "Tradewinds Fruit: Hawaiian Pink Guava",
+          "url": "https://www.tradewindsfruit.com/psidium-guajava-hawaiian-pink-guava-seeds",
+          "tier": "third_party"
+        },
+        {
+          "id": "permaculturehaven",
+          "name": "Permaculture Haven Australia: Hawaiian Pink Guava",
+          "url": "https://www.permaculturehaven.com/intro/hawaiian-pink-guava-psidium-guajava/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "guava-mexican-cream": {
+      "slug": "guava-mexican-cream",
+      "species": "Guava",
+      "variety": "Mexican Cream",
+      "paragraphs": [
+        "Mexican Cream is a white fleshed cultivar of common guava (Psidium guajava), named for its pale yellow skin and soft, creamy interior. The fruit is small, roughly bite sized and round, ripening to a yellowish green exterior with thick, juicy, cream coloured flesh. The texture is soft and succulent, sometimes likened to a ripe pear.",
+        "It is noted for being unusually sweet for a guava, with an aromatic flavour that carries notes of strawberry, pineapple, passionfruit and papaya. That sweetness makes it a favourite for eating fresh and for blended drinks, juices and desserts, where its mild creamy pulp needs little added to it."
+      ],
+      "claims": [
+        {
+          "text": "Mexican Cream is a white, cream coloured fleshed cultivar of Psidium guajava with pale yellow skin.",
+          "type": "appearance",
+          "cites": [
+            "tastingtable",
+            "specialtyproduce-mc"
+          ]
+        },
+        {
+          "text": "The fruit is small and round with soft, creamy, pear like flesh.",
+          "type": "appearance",
+          "cites": [
+            "tastingtable",
+            "specialtyproduce-mc"
+          ]
+        },
+        {
+          "text": "It is notably sweet with aromatic notes of strawberry, pineapple, passionfruit and papaya.",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce-mc",
+            "tastingtable"
+          ]
+        },
+        {
+          "text": "It is used fresh and in juices, blended drinks and desserts.",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-mc",
+            "tastingtable"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "tastingtable",
+          "name": "Tasting Table: What Makes Mexican Cream Guava Unique",
+          "url": "https://www.tastingtable.com/1276857/what-makes-mexican-cream-unique-guava/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-mc",
+          "name": "Specialty Produce: Mexican Cream Guavas",
+          "url": "https://specialtyproduce.com/produce/Mexican_Cream_Guavas_6536.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "guava-red-cherry": {
+      "slug": "guava-red-cherry",
+      "species": "Guava",
+      "variety": "Red Cherry",
+      "paragraphs": [
+        "Red Cherry guava is the red-fruited form of Psidium cattleianum, also sold as red strawberry guava, purple guava or red cattley guava. This is a different species from the common guava (Psidium guajava). The fruit is small and round, roughly the size of a small plum, ripening through green and mottled shades to a deep wine red or purple. The skin is thin, soft and edible.",
+        "Inside, the translucent whitish flesh is juicy and sweet-tart, often described as having one of the finest flavours among guavas, and is studded with hard pale seeds. The fruit is eaten fresh or made into jam and juice. In parts of Australia the species is regarded as a weed where it naturalises."
+      ],
+      "claims": [
+        {
+          "text": "Red Cherry guava is the red-fruited form of Psidium cattleianum (cherry or strawberry guava), a different species from common guava.",
+          "type": "origin",
+          "cites": [
+            "wikipedia",
+            "nswdpi"
+          ]
+        },
+        {
+          "text": "The fruit is a small round berry that ripens to a deep wine red or purple with thin edible skin.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "greenharvest",
+            "specialty"
+          ]
+        },
+        {
+          "text": "The whitish flesh is juicy and sweet-tart and is used fresh or for jam and juice.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia",
+            "specialty"
+          ]
+        },
+        {
+          "text": "In Australia the species naturalises and is treated as a weed in some areas.",
+          "type": "climate",
+          "cites": [
+            "nswdpi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Psidium cattleyanum",
+          "url": "https://en.wikipedia.org/wiki/Psidium_cattleyanum",
+          "tier": "third_party"
+        },
+        {
+          "id": "nswdpi",
+          "name": "NSW DPI WeedWise: Cherry guava",
+          "url": "https://weeds.dpi.nsw.gov.au/Weed/Cherryguava",
+          "tier": "authoritative"
+        },
+        {
+          "id": "greenharvest",
+          "name": "Green Harvest: Cherry / Strawberry Guava Growing Information",
+          "url": "https://greenharvest.com.au/blogs/growing-information/cherry-strawberry-guava-growing-information",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce: Strawberry Guavas",
+          "url": "https://specialtyproduce.com/produce/Strawberry_Guavas_8731.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "guava-strawberry": {
+      "slug": "guava-strawberry",
+      "species": "Guava",
+      "variety": "Strawberry",
+      "paragraphs": [
+        "Strawberry guava is a different species from common guava: it is Psidium cattleianum, also called cattley guava or cherry guava, a small evergreen tree native to Brazil. It bears small round to pear shaped fruit, around three to four centimetres across, that ripen from green to a dark red. Inside, the whitish flesh is juicy and not mealy, with a sweet tart flavour and a distinct strawberry like aroma. A yellow fruited form, sometimes sold as lemon guava, also exists.",
+        "Beyond the fruit, strawberry guava is notorious as an aggressive weed. It has escaped cultivation in many tropical regions and is regarded as one of the most invasive plants in Hawaii, forming dense thickets that crowd out native vegetation. The small fruits are eaten fresh or made into jams and jellies."
+      ],
+      "claims": [
+        {
+          "text": "Strawberry guava is Psidium cattleianum, a separate species from common guava, native to Brazil.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cattley",
+            "ufifas-st529"
+          ]
+        },
+        {
+          "text": "It bears small round to pear shaped fruit, around three to four centimetres across, ripening to dark red, with white flesh and a sweet tart, strawberry like flavour.",
+          "type": "measurement",
+          "cites": [
+            "ufifas-st529"
+          ]
+        },
+        {
+          "text": "A yellow fruited form, known as lemon guava, also exists.",
+          "type": "naming",
+          "cites": [
+            "wikipedia-cattley"
+          ]
+        },
+        {
+          "text": "It is considered one of the most invasive plants in Hawaii, forming dense thickets that displace native species.",
+          "type": "climate",
+          "cites": [
+            "wikipedia-cattley",
+            "ufifas-st529"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-st529",
+          "name": "UF/IFAS: Psidium cattleianum, Strawberry Guava (ENH-687/ST529)",
+          "url": "https://ask.ifas.ufl.edu/publication/ST529",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-cattley",
+          "name": "Wikipedia: Psidium cattleyanum",
+          "url": "https://en.wikipedia.org/wiki/Psidium_cattleyanum",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "guava-thai-white": {
+      "slug": "guava-thai-white",
+      "species": "Guava",
+      "variety": "Thai White",
+      "paragraphs": [
+        "Thai White is an apple guava type of common guava (Psidium guajava), widely grown in Thailand and known for its crisp texture. The fruits are large and round with pale green skin and dense, white flesh. Unlike the soft, juicy tropical guavas, this variety stays firm and crunchy even when ripe, closer in bite to an apple, with relatively few seeds clustered toward the centre.",
+        "The flavour is mild, sweet and lightly tart with a fresh floral note rather than the heavy musky aroma of softer guavas. In Thailand and across Southeast Asia it is typically eaten green and crunchy, sliced and dipped in a mix of chilli, salt or sugar, and sold as a street snack. It also suits fresh eating and fruit salads."
+      ],
+      "claims": [
+        {
+          "text": "Thai White is an apple guava type of Psidium guajava with pale green skin and crisp white flesh.",
+          "type": "appearance",
+          "cites": [
+            "exoticfv",
+            "mddproduce"
+          ]
+        },
+        {
+          "text": "The flesh stays firm and crunchy when ripe, closer to an apple than to soft tropical guavas.",
+          "type": "appearance",
+          "cites": [
+            "exoticfv",
+            "mddproduce"
+          ]
+        },
+        {
+          "text": "It is commonly eaten green with chilli, salt or sugar as a snack in Thailand and Southeast Asia.",
+          "type": "use",
+          "cites": [
+            "exoticfv",
+            "mddproduce"
+          ]
+        },
+        {
+          "text": "The flavour is mild, sweet and lightly tart with a floral note.",
+          "type": "flavour",
+          "cites": [
+            "mddproduce",
+            "exoticfv"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "exoticfv",
+          "name": "Exotic Fruits and Vegetables: Thai Guava",
+          "url": "https://exoticfruitsandvegetables.com/guava/thai-guava/",
+          "tier": "third_party"
+        },
+        {
+          "id": "mddproduce",
+          "name": "Specialty Produce: Thai Guavas / Bangkok Giant White Guavas",
+          "url": "https://specialtyproduce.com/produce/Thai_Guavas_8440.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "guava-yellow-cherry": {
+      "slug": "guava-yellow-cherry",
+      "species": "Guava",
+      "variety": "Yellow Cherry",
+      "paragraphs": [
+        "Yellow Cherry guava is the yellow-fruited form of Psidium cattleianum, the same species as red cherry guava but distinct from common guava (Psidium guajava). It goes by several names, including yellow strawberry guava, yellow cattley guava and lemon guava, and in Hawaii it is called waiawi. The small, marble-sized fruit ripens to a golden yellow with thin, soft skin.",
+        "The flesh is juicy and fragrant with a sweet, slightly acidic flavour that some compare to a mix of lemon and passionfruit, and it carries small seeds. The yellow form tends to bear heavily and generally produces somewhat larger fruit than the red form. It is eaten fresh or used for juices, jams and desserts."
+      ],
+      "claims": [
+        {
+          "text": "Yellow Cherry guava is the yellow-fruited form of Psidium cattleianum, also called lemon guava, yellow strawberry guava and waiawi.",
+          "type": "naming",
+          "cites": [
+            "wikipedia",
+            "specialty"
+          ]
+        },
+        {
+          "text": "The fruit is small and ripens to golden yellow with thin soft skin.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "specialty"
+          ]
+        },
+        {
+          "text": "The flesh is juicy, fragrant and sweet with a slightly acidic, lemon and passionfruit-like flavour.",
+          "type": "flavour",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "The yellow form generally bears more heavily and produces larger fruit than the red form.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Psidium cattleyanum",
+          "url": "https://en.wikipedia.org/wiki/Psidium_cattleyanum",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce: Lemon Guavas",
+          "url": "https://specialtyproduce.com/produce/Lemon_Guavas_9488.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "guava-pineapple",
+    "guava-thai-pink"
+  ]
+}

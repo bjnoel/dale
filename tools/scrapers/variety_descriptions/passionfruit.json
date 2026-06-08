@@ -1,0 +1,603 @@
+{
+  "species_slug": "passionfruit",
+  "schema_version": 1,
+  "varieties": {
+    "passionfruit-banana": {
+      "slug": "passionfruit-banana",
+      "species": "Passionfruit",
+      "variety": "Banana",
+      "paragraphs": [
+        "Banana passionfruit is a distinct species, Passiflora tarminiana (long confused with Passiflora mollissima and P. mixta), not the round purple Passiflora edulis. The fruit is elongated, yellow to light orange and shaped like a small, straight banana, with edible orange pulp inside. It is native to the high uplands of tropical South America, cultivated in the Andes, and is sometimes used as a cold tolerant rootstock for grafting other passionfruit.",
+        "Its real notoriety is as a weed. In Hawaii the vines, known there as banana poka, smother large areas of native forest, and in New Zealand it is so invasive that selling, cultivating or distributing the plant is illegal. Seeds are spread by birds, feral pigs and people, which has helped it naturalise widely, including in Australia."
+      ],
+      "claims": [
+        {
+          "text": "Banana passionfruit is Passiflora tarminiana, with elongated yellow to light orange banana-shaped fruit, native to the South American Andes.",
+          "type": "appearance",
+          "cites": [
+            "wiki_tarm",
+            "nzpcn_tarm"
+          ]
+        },
+        {
+          "text": "It is a serious invasive weed in Hawaii and New Zealand, and is illegal to sell, cultivate or distribute in New Zealand.",
+          "type": "climate",
+          "cites": [
+            "wiki_tarm",
+            "nzpcn_tarm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_tarm",
+          "name": "Wikipedia, Passiflora tarminiana",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_tarminiana",
+          "tier": "third_party"
+        },
+        {
+          "id": "nzpcn_tarm",
+          "name": "New Zealand Plant Conservation Network, Passiflora tarminiana",
+          "url": "https://www.nzpcn.org.nz/flora/species/passiflora-tarminiana/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-black": {
+      "slug": "passionfruit-black",
+      "species": "Passionfruit",
+      "variety": "Black",
+      "paragraphs": [
+        "Black passionfruit is the common purple passionfruit (Passiflora edulis), the classic Australian backyard type and the most popular style grown in the country. The fruit is medium sized with deep purple to purple-black skin that wrinkles as it ripens, surrounding rich orange-yellow pulp and small black seeds.",
+        "Unlike the yellow Panama types, the purple form is self-compatible, so a single vine can set fruit on its own. It suits subtropical and temperate gardens, preferring warm, frost-free, sheltered positions, and tends to be less acidic with a richer aroma than the yellow-fruited form."
+      ],
+      "claims": [
+        {
+          "text": "Black passionfruit is the purple Passiflora edulis, the most popular style grown in Australia, with deep purple skin and orange-yellow pulp.",
+          "type": "appearance",
+          "cites": [
+            "pfa",
+            "wiki"
+          ]
+        },
+        {
+          "text": "The purple-fruited form is self-compatible and can self-pollinate, while the yellow form is self-sterile.",
+          "type": "pollination",
+          "cites": [
+            "wiki",
+            "beeaware"
+          ]
+        },
+        {
+          "text": "The purple form suits subtropical and temperate regions and is less acidic with a richer aroma than the yellow form.",
+          "type": "climate",
+          "cites": [
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pfa",
+          "name": "Passionfruit Australia Inc - Varieties",
+          "url": "https://passionfruitaustralia.org.au/home-2/grow-fruit/varieties/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia - Passiflora edulis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_edulis",
+          "tier": "third_party"
+        },
+        {
+          "id": "beeaware",
+          "name": "BeeAware - Passionfruit Pollination",
+          "url": "https://beeaware.org.au/pollination/pollinator-reliant-crops/passionfruit/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-giant-granadilla": {
+      "slug": "passionfruit-giant-granadilla",
+      "species": "Passionfruit",
+      "variety": "Giant Granadilla",
+      "paragraphs": [
+        "Giant granadilla is Passiflora quadrangularis, a separate species from the common passionfruit and the one that produces the largest fruit of the entire Passiflora genus. The large, oblong fruit reaches up to about 30 cm long and is greenish yellow, holding numerous seeds in a subacid, mild, melon-like pulp. It is also known as barbadine, grenadine, giant tumbo and badea.",
+        "It is a fast growing perennial climber native to the Neotropics that thrives in warm, humid tropical conditions. As well as being juiced when ripe, the immature fruit is treated as a vegetable, cooked in curries or soups, which sets it apart from passionfruit grown only for their sweet pulp."
+      ],
+      "claims": [
+        {
+          "text": "Giant granadilla is Passiflora quadrangularis, which bears very large oblong greenish yellow fruit, the largest in the genus Passiflora, with mild melon-like pulp.",
+          "type": "appearance",
+          "cites": [
+            "wiki_quad",
+            "pfaf_quad"
+          ]
+        },
+        {
+          "text": "Its immature fruit is cooked and eaten as a vegetable.",
+          "type": "use",
+          "cites": [
+            "wiki_quad",
+            "pfaf_quad"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_quad",
+          "name": "Wikipedia, Passiflora quadrangularis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_quadrangularis",
+          "tier": "third_party"
+        },
+        {
+          "id": "pfaf_quad",
+          "name": "Plants For A Future, Passiflora quadrangularis",
+          "url": "https://pfaf.org/user/Plant.aspx?LatinName=Passiflora+quadrangularis",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-misty-gem": {
+      "slug": "passionfruit-misty-gem",
+      "species": "Passionfruit",
+      "variety": "Misty Gem",
+      "paragraphs": [
+        "Misty Gem is one of the two main purple passionfruit varieties grown commercially in Australia, alongside Sweetheart. It is a Passiflora edulis type with glossy, dark purple fruit and pulp that ranges from bright yellow to a deeper pumpkin colour, with a tangy, guava like flavour.",
+        "It is a commercial selection managed within the Australian passionfruit industry rather than a freely propagated seed line. As a purple type it benefits from the species self-compatibility, distinguishing it from the yellow Panama varieties that generally need cross-pollination."
+      ],
+      "claims": [
+        {
+          "text": "Misty Gem is one of the two main purple passionfruit varieties grown in Australia, alongside Sweetheart.",
+          "type": "naming",
+          "cites": [
+            "beeaware",
+            "pfa"
+          ]
+        },
+        {
+          "text": "Misty Gem is a purple Passiflora edulis type with dark purple fruit and yellow to pumpkin coloured pulp with a tangy, guava like flavour.",
+          "type": "flavour",
+          "cites": [
+            "pfa",
+            "beeaware"
+          ]
+        },
+        {
+          "text": "The purple-fruited form is self-compatible, unlike the yellow Panama types which need cross-pollination.",
+          "type": "pollination",
+          "cites": [
+            "wiki",
+            "beeaware"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "beeaware",
+          "name": "BeeAware - Passionfruit Pollination",
+          "url": "https://beeaware.org.au/pollination/pollinator-reliant-crops/passionfruit/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pfa",
+          "name": "Passionfruit Australia Inc - Varieties",
+          "url": "https://passionfruitaustralia.org.au/home-2/grow-fruit/varieties/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia - Passiflora edulis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_edulis",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-nellie-kelly": {
+      "slug": "passionfruit-nellie-kelly",
+      "species": "Passionfruit",
+      "variety": "Nellie Kelly",
+      "paragraphs": [
+        "Nellie Kelly is a well known Australian grafted passionfruit brand rather than a single fruit type. The vines are grafted onto blue passionflower (Passiflora caerulea) rootstock, which makes the plant more resistant to disease, pests and frost and helps it withstand cooler temperatures, making it a popular choice for the southern states.",
+        "The brand traces back to Victoria, where Clarence Walter Kelly began grafting passionfruit in 1921. Because the rootstock is a vigorous species, suckers can shoot from below the graft and should be removed promptly, as the blue passionflower is a known spreading weed if left unchecked."
+      ],
+      "claims": [
+        {
+          "text": "Nellie Kelly grafts its passionfruit onto blue passionflower (Passiflora caerulea) rootstock for resistance to disease, pests and frost and to withstand cooler temperatures.",
+          "type": "naming",
+          "cites": [
+            "nelliekelly",
+            "bhg"
+          ]
+        },
+        {
+          "text": "Nellie Kelly originated in Victoria, where Clarence Walter Kelly began grafting passionfruit in 1921.",
+          "type": "origin",
+          "cites": [
+            "nelliekelly",
+            "newidea"
+          ]
+        },
+        {
+          "text": "Suckers can shoot from below the graft and should be removed, as the blue passionflower rootstock is a known spreading weed.",
+          "type": "climate",
+          "cites": [
+            "bhg",
+            "nelliekelly"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nelliekelly",
+          "name": "Nellie Kelly - Passionfruit",
+          "url": "https://nelliekelly.com.au/passionfruit/",
+          "tier": "nursery"
+        },
+        {
+          "id": "bhg",
+          "name": "Better Homes and Gardens - Grafted vs Non-grafted Passionfruit",
+          "url": "https://www.bhg.com.au/garden/gardening/grafted-vs-non-grafted-passionfruit/",
+          "tier": "third_party"
+        },
+        {
+          "id": "newidea",
+          "name": "New Idea - Tips for Growing Passionfruit",
+          "url": "https://www.newidea.com.au/passion-fruit-vines-tips-for-growing-passionfruit",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-panama-gold": {
+      "slug": "passionfruit-panama-gold",
+      "species": "Passionfruit",
+      "variety": "Panama Gold",
+      "paragraphs": [
+        "Panama Gold is a large fruited, yellow skinned Panama type passionfruit, much bigger than the ordinary purple varieties. It produces golden, soft skinned fruit with juicy, aromatic pulp that is generally sweeter and less acidic than the black passionfruit.",
+        "It performs in subtropical and tropical conditions and is noted as cold hardy enough to grow as far south as Tasmania, bringing tropical growth to cooler southern gardens. As a yellow Panama type it is largely self-incompatible, so cross-pollination with another vine improves fruit set."
+      ],
+      "claims": [
+        {
+          "text": "Panama Gold is a large fruited, yellow skinned passionfruit, larger than the ordinary purple varieties, with pulp generally sweeter than black passionfruit.",
+          "type": "appearance",
+          "cites": [
+            "newidea",
+            "wiki"
+          ]
+        },
+        {
+          "text": "Panama Gold is cold hardy and can be grown as far south as Tasmania.",
+          "type": "climate",
+          "cites": [
+            "newidea"
+          ]
+        },
+        {
+          "text": "Yellow Panama types are largely self-incompatible and benefit from cross-pollination.",
+          "type": "pollination",
+          "cites": [
+            "beeaware",
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "newidea",
+          "name": "New Idea - Tips for Growing Passionfruit",
+          "url": "https://www.newidea.com.au/passion-fruit-vines-tips-for-growing-passionfruit",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia - Passiflora edulis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_edulis",
+          "tier": "third_party"
+        },
+        {
+          "id": "beeaware",
+          "name": "BeeAware - Passionfruit Pollination",
+          "url": "https://beeaware.org.au/pollination/pollinator-reliant-crops/passionfruit/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-panama-red": {
+      "slug": "passionfruit-panama-red",
+      "species": "Passionfruit",
+      "variety": "Panama Red",
+      "paragraphs": [
+        "Panama Red is one of the large fruited Panama style passionfruit, the warm climate group whose skin ranges from light yellow through to a rich red. It produces large, soft skinned fruit with a red to burgundy skin, and the flavour is milder and less tart than the purple black passionfruit.",
+        "Suited to backyards across southern Australia as well as subtropical and temperate regions, Panama Red is valued for its size and sweetness. As a Panama type it is largely self-incompatible, so planting more than one vine or another variety nearby helps with cross-pollination and fruit set."
+      ],
+      "claims": [
+        {
+          "text": "Panama Red is one of the major Panama passionfruit varieties grown in Australia.",
+          "type": "naming",
+          "cites": [
+            "beeaware"
+          ]
+        },
+        {
+          "text": "Panama Red produces large, soft skinned red fruit with a milder, less tart taste than black passionfruit, and suits southern, subtropical and temperate regions.",
+          "type": "flavour",
+          "cites": [
+            "newidea",
+            "pfa"
+          ]
+        },
+        {
+          "text": "Panama and yellow types are largely self-incompatible and benefit from cross-pollination, unlike the self-compatible purple form.",
+          "type": "pollination",
+          "cites": [
+            "beeaware",
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "beeaware",
+          "name": "BeeAware - Passionfruit Pollination",
+          "url": "https://beeaware.org.au/pollination/pollinator-reliant-crops/passionfruit/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "newidea",
+          "name": "New Idea - Tips for Growing Passionfruit",
+          "url": "https://www.newidea.com.au/passion-fruit-vines-tips-for-growing-passionfruit",
+          "tier": "third_party"
+        },
+        {
+          "id": "pfa",
+          "name": "Passionfruit Australia Inc - Varieties",
+          "url": "https://passionfruitaustralia.org.au/home-2/grow-fruit/varieties/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia - Passiflora edulis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_edulis",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-pandora": {
+      "slug": "passionfruit-pandora",
+      "species": "Passionfruit",
+      "variety": "Pandora",
+      "paragraphs": [
+        "Pandora is one of the Panama style passionfruit grown in Australia, classed with the yellow-skinned Passiflora flavicarpa group rather than the small black purple type. Panama style vines carry large, juicy fruit with skin ranging from light yellow through to a rich red, and Pandora itself bears red-skinned fruit. The flavour is sweeter and more tropical tasting than the common black passionfruit, which is why some growers prefer it.",
+        "Pandora is a newer selection often described as a reselection of Panama Red, and it tends to sell better than the older line. It is promoted as a cold climate passionfruit, though its skin colour can vary depending on where it is grown. Like other red types it shows good resistance to woodiness virus and fruit fly compared with yellow varieties."
+      ],
+      "claims": [
+        {
+          "text": "Pandora is a Panama style variety in the yellow-skinned Passiflora flavicarpa group, with red skin.",
+          "type": "appearance",
+          "cites": [
+            "pfa",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Pandora is a newer reselection often linked to Panama Red and is promoted as a cold climate passionfruit.",
+          "type": "naming",
+          "cites": [
+            "stfc"
+          ]
+        },
+        {
+          "text": "Red types such as Pandora show good resistance to woodiness virus and fruit fly relative to yellow varieties.",
+          "type": "climate",
+          "cites": [
+            "stfc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pfa",
+          "name": "Passionfruit Australia Inc, Varieties",
+          "url": "https://passionfruitaustralia.org.au/home-2/grow-fruit/varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Don Ellison talk on growing passionfruit",
+          "url": "https://stfc.org.au/articles/talk-by-don-ellison-on-growing-passionfruit/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit, Passionfruit Panama Red Pandora",
+          "url": "https://www.daleysfruit.com.au/buy/passionfruit-panama-red-pandora-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-sweet-calabash": {
+      "slug": "passionfruit-sweet-calabash",
+      "species": "Passionfruit",
+      "variety": "Sweet Calabash",
+      "paragraphs": [
+        "Sweet calabash is Passiflora maliformis, a separate species from the common passionfruit, also known as conch apple, sweet cup and wild purple passionfruit. The fruit is small and round, roughly apple sized, with skin that can be purple, yellow or green. Its standout feature is the rind, which is unusually hard and tough, harder than most passionfruit, so a hammer or similar is often needed to crack it open.",
+        "Inside is a fragrant, greyish yellow to orange pulp with small black seeds, sweet and aromatic with a flavour likened to grape. It is native to the Caribbean, Central America and northern South America, and the pulp is eaten fresh or used to flavour drinks. In Jamaica it is scooped from the shell and served with wine and sugar."
+      ],
+      "claims": [
+        {
+          "text": "Sweet calabash is Passiflora maliformis, a small round fruit with an unusually hard rind that often needs a hammer to open.",
+          "type": "appearance",
+          "cites": [
+            "wiki_mali",
+            "toptrop_mali"
+          ]
+        },
+        {
+          "text": "Its aromatic pulp has a flavour likened to grape and it is native to the Caribbean and northern South America.",
+          "type": "flavour",
+          "cites": [
+            "wiki_mali",
+            "toptrop_mali"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_mali",
+          "name": "Wikipedia, Passiflora maliformis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_maliformis",
+          "tier": "third_party"
+        },
+        {
+          "id": "toptrop_mali",
+          "name": "Top Tropicals, Passiflora maliformis (Sweet Calabash)",
+          "url": "https://toptropicals.com/catalog/uid/passiflora_maliformis.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-sweet-granadilla": {
+      "slug": "passionfruit-sweet-granadilla",
+      "species": "Passionfruit",
+      "variety": "Sweet Granadilla",
+      "paragraphs": [
+        "Sweet granadilla is a distinct species, Passiflora ligularis, not the common purple passionfruit (Passiflora edulis). The fruit is round to oval and ripens from green to a yellowish orange flecked with small white dots, wrapped in a hard, slippery shell with soft padding inside. The aril surrounding the black seeds is soft, jelly-like and very aromatic, with a mild, floral, sweet flavour that is gentler than the tart edulis types.",
+        "It is native to the mountains of Central and northwestern South America, growing in the cool, high altitude Andes. It has since spread to tropical highlands elsewhere, including parts of Africa, Asia, New Zealand and Australia. In Papua New Guinea it is sold in local markets as sugar fruit, and it also goes by the names granadia and sugarfruit."
+      ],
+      "claims": [
+        {
+          "text": "Sweet granadilla is Passiflora ligularis, with a hard yellowish orange shell speckled with white dots and sweet aromatic pulp.",
+          "type": "appearance",
+          "cites": [
+            "wiki_lig",
+            "gardenia_lig"
+          ]
+        },
+        {
+          "text": "It is native to Central and northwestern South America and is grown in cool, high altitude Andean and highland regions.",
+          "type": "origin",
+          "cites": [
+            "wiki_lig",
+            "gardenia_lig"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_lig",
+          "name": "Wikipedia, Passiflora ligularis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_ligularis",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenia_lig",
+          "name": "Gardenia.net, Passiflora ligularis (Sweet Granadilla)",
+          "url": "https://www.gardenia.net/plant/passiflora-ligularis-sweet-granadilla",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "passionfruit-sweetheart": {
+      "slug": "passionfruit-sweetheart",
+      "species": "Passionfruit",
+      "variety": "Sweetheart",
+      "paragraphs": [
+        "Sweetheart is one of the two main purple passionfruit varieties grown commercially in Australia, alongside Misty Gem. It is a Passiflora edulis type with deep purple, burgundy toned skin, rich orange-yellow pulp and black seeds, known for a high pulp content and a sweet, intense flavour.",
+        "As a purple type it benefits from the self-compatibility of the species, and it is a commercial selection managed within the Australian passionfruit industry rather than a freely propagated seed line. It produces fruit through most of the year apart from the cooler months."
+      ],
+      "claims": [
+        {
+          "text": "Sweetheart is one of the two main purple passionfruit varieties grown in Australia, alongside Misty Gem.",
+          "type": "naming",
+          "cites": [
+            "beeaware",
+            "pfa"
+          ]
+        },
+        {
+          "text": "Sweetheart is a purple Passiflora edulis type with deep purple skin, orange-yellow pulp and a sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "pfa",
+            "beeaware"
+          ]
+        },
+        {
+          "text": "The purple-fruited form is self-compatible.",
+          "type": "pollination",
+          "cites": [
+            "wiki",
+            "beeaware"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "beeaware",
+          "name": "BeeAware - Passionfruit Pollination",
+          "url": "https://beeaware.org.au/pollination/pollinator-reliant-crops/passionfruit/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pfa",
+          "name": "Passionfruit Australia Inc - Varieties",
+          "url": "https://passionfruitaustralia.org.au/home-2/grow-fruit/varieties/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia - Passiflora edulis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_edulis",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "passionfruit-flamenco"
+  ]
+}

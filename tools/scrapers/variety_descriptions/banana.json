@@ -2,6 +2,132 @@
   "species_slug": "banana",
   "schema_version": 1,
   "varieties": {
+    "banana-ambul-kesel": {
+      "slug": "banana-ambul-kesel",
+      "species": "Banana",
+      "variety": "Ambul Kesel",
+      "paragraphs": [
+        "Ambul Kesel is a Sri Lankan banana famous for being slightly sour while still sweet, a tangy profile that sets it apart from ordinary dessert bananas. It belongs to the Mysore (AAB) group. The fruit is petite and slender with sharp, tapered ends and a thin pale yellow skin when ripe, revealing soft, creamy flesh. At maturity it gives off a distinctive pungent, fruity aroma.",
+        "Its acidity makes Ambul a favourite for both fresh eating and cooking, including use when unripe and in banana chips. In Sri Lankan tradition it is regarded as a digestive aid and a cooling fruit. The name translates roughly as sour banana, reflecting the tang that defines it."
+      ],
+      "claims": [
+        {
+          "text": "Ambul Kesel is a Sri Lankan banana that is slightly sour yet sweet.",
+          "type": "flavour",
+          "cites": [
+            "b4fn",
+            "roar"
+          ]
+        },
+        {
+          "text": "It belongs to the Mysore (AAB) group.",
+          "type": "origin",
+          "cites": [
+            "roar"
+          ]
+        },
+        {
+          "text": "The fruit is petite and slender with sharp ends, thin skin and soft creamy flesh.",
+          "type": "appearance",
+          "cites": [
+            "b4fn",
+            "roar"
+          ]
+        },
+        {
+          "text": "It emits a distinctive pungent aroma at maturity.",
+          "type": "appearance",
+          "cites": [
+            "roar"
+          ]
+        },
+        {
+          "text": "It is used both ripe and unripe, including for cooking and chips, and is regarded in Sri Lanka as a cooling, digestion-aiding fruit.",
+          "type": "use",
+          "cites": [
+            "roar",
+            "b4fn"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "b4fn",
+          "name": "Biodiversity for Food and Nutrition - Ambul banana",
+          "url": "https://www.b4fn.org/resources/species-database/detail/musa-spp-ambul/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "roar",
+          "name": "Roar Media - Guide to Sri Lankan Bananas",
+          "url": "https://archive.roar.media/english/life/food/banana-nation-comprehensive-guide-sri-lankan-bananas",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "banana-blue-java": {
+      "slug": "banana-blue-java",
+      "species": "Banana",
+      "variety": "Blue Java",
+      "paragraphs": [
+        "Blue Java is a triploid ABB hybrid of Musa balbisiana and Musa acuminata, widely known as the Ice Cream banana and also called the Hawaiian banana, Vanilla banana, Ney Mannan, Krie, or Cenizo. Its standout feature is the unripe fruit, which shows a silvery blue green colour caused by a heavy coat of wax, fading to pale yellow as it ripens.",
+        "The cultivar is named for its fruit, which has a sweet, aromatic, ice cream like consistency and a flavour reminiscent of vanilla. It is also valued for being cold tolerant and wind resistant, thanks to strong pseudostems and root systems, which makes it a popular choice in cooler subtropical gardens."
+      ],
+      "claims": [
+        {
+          "text": "Blue Java is a triploid ABB hybrid of Musa balbisiana and Musa acuminata, also called the Ice Cream banana, Hawaiian banana, Ney Mannan, Krie, or Cenizo.",
+          "type": "naming",
+          "cites": [
+            "wiki_blue"
+          ]
+        },
+        {
+          "text": "The unripe fruit shows a silvery blue green colour caused by a heavy coat of wax.",
+          "type": "appearance",
+          "cites": [
+            "wiki_blue"
+          ]
+        },
+        {
+          "text": "The fruit has a sweet, aromatic, ice cream like consistency with a flavour reminiscent of vanilla.",
+          "type": "flavour",
+          "cites": [
+            "wiki_blue",
+            "sp_blue"
+          ]
+        },
+        {
+          "text": "It is cold tolerant and wind resistant due to strong pseudostems and root systems.",
+          "type": "climate",
+          "cites": [
+            "wiki_blue",
+            "sp_blue"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_blue",
+          "name": "Blue Java banana - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Blue_Java_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp_blue",
+          "name": "Blue Java Ice Cream banana, nursery grounding",
+          "url": "https://letsgrowflorida.com/products/musa-acuminata-x-balbisiana-blue-java-ice-cream-banana",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "banana-cavendish": {
       "slug": "banana-cavendish",
       "species": "Banana",
@@ -83,6 +209,71 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "banana-ducasse": {
+      "slug": "banana-ducasse",
+      "species": "Banana",
+      "variety": "Ducasse",
+      "paragraphs": [
+        "Ducasse is the Australian name for Pisang Awak, a triploid ABB banana also called the sugar banana and known as kluai nam wa in Thailand. It is one of the most widely grown bananas across Southeast Asia, valued for its sweet, fragrant flavour. The fruit is small and ripens to a bright yellow, and the plant suits backyard gardens at a moderate height.",
+        "The flesh is firm and resists browning, which makes Ducasse suitable for both fresh eating and cooking or processing. It tends to be a little more acid than Cavendish, and shows some tolerance to cooler growing areas, though frost should be avoided."
+      ],
+      "claims": [
+        {
+          "text": "Ducasse is the Australian name for Pisang Awak, a triploid ABB banana also called the sugar banana and kluai nam wa in Thailand.",
+          "type": "naming",
+          "cites": [
+            "wiki_thai",
+            "daleys_duc"
+          ]
+        },
+        {
+          "text": "The fruit is small, sweet and fragrant, and ripens to bright yellow.",
+          "type": "flavour",
+          "cites": [
+            "daleys_duc",
+            "sp_duc"
+          ]
+        },
+        {
+          "text": "The flesh is firm and resists browning, making it suitable for fresh eating and cooking.",
+          "type": "use",
+          "cites": [
+            "wiki_thai"
+          ]
+        },
+        {
+          "text": "It shows some tolerance to cooler growing areas, though frost should be avoided.",
+          "type": "climate",
+          "cites": [
+            "daleys_duc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_thai",
+          "name": "Thai banana (Pisang Awak/Ducasse) - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Thai_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp_duc",
+          "name": "Ducasse Bananas - Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Ducasse_Bananas_25134.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys_duc",
+          "name": "Dwarf Banana Ducasse, Daleys, nursery grounding",
+          "url": "https://www.daleysfruit.com.au/Dwarf-Banana-Ducasse-Musa-acuminata.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "banana-dwarf-cavendish": {
       "slug": "banana-dwarf-cavendish",
       "species": "Banana",
@@ -145,6 +336,194 @@
       ],
       "confidence": "high",
       "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "banana-dwarf-duccase-sugar-banana": {
+      "slug": "banana-dwarf-duccase-sugar-banana",
+      "species": "Banana",
+      "variety": "Dwarf Duccase / Sugar Banana",
+      "paragraphs": [
+        "Dwarf Ducasse is a compact form of the Ducasse, the Australian name for the Thai banana Pisang Awak (an ABB triploid). Widely called the sugar banana, it was introduced to northern Australia from Thailand in the 1880s and proved more adaptable than Cavendish. The fruit is small to medium with a thin, smooth, angular peel and rich, sweet flesh that is firm and starchy, turning soft and dense when fully ripe.",
+        "The dwarf form is a stout natural mutant of Pisang Awak (known overseas as Dwarf Namwah), making a shorter, more wind tolerant plant suited to home gardens. In Australia the Dwarf Ducasse is restricted to the south east Queensland banana growing region under quarantine rules."
+      ],
+      "claims": [
+        {
+          "text": "Ducasse is the Australian name for the Thai banana Pisang Awak, an ABB triploid.",
+          "type": "naming",
+          "cites": [
+            "wiki_thai",
+            "specialty"
+          ]
+        },
+        {
+          "text": "It is commonly called the sugar banana and was introduced to northern Australia from Thailand in the 1880s.",
+          "type": "origin",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "The flesh is sweet, firm and starchy with a thin smooth peel.",
+          "type": "flavour",
+          "cites": [
+            "specialty",
+            "wiki_thai"
+          ]
+        },
+        {
+          "text": "The dwarf form is a stout mutant of Pisang Awak, known overseas as Dwarf Namwah.",
+          "type": "appearance",
+          "cites": [
+            "wiki_thai"
+          ]
+        },
+        {
+          "text": "In Australia the Dwarf Ducasse is restricted to the south east Queensland banana growing region.",
+          "type": "climate",
+          "cites": [
+            "fruitopia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_thai",
+          "name": "Wikipedia - Thai banana (Pisang Awak)",
+          "url": "https://en.wikipedia.org/wiki/Thai_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce - Ducasse Bananas",
+          "url": "https://specialtyproduce.com/produce/Ducasse_Bananas_25134.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "fruitopia",
+          "name": "Fruitopia Nursery - Dwarf Duccase / Sugar Banana",
+          "url": "https://fruitopianursery.com.au/products/dwarf-duccase-sugar-banana-restricted-to-se-qld-banana-region",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "banana-gold-finger": {
+      "slug": "banana-gold-finger",
+      "species": "Banana",
+      "variety": "Gold Finger",
+      "paragraphs": [
+        "Gold Finger, formally FHIA-01, is a tetraploid AAAB hybrid dessert banana developed at the Honduran Foundation for Agricultural Research (FHIA) by a team led by Phillip Rowe and Franklin Rosales, with the subacid Brazilian clone Prata-ana in its parentage. It was bred specifically as a more disease resistant alternative to vulnerable varieties like Cavendish.",
+        "Its main appeal is resilience: it is resistant to black Sigatoka, Race 4 of Panama disease and burrowing nematode, and is more tolerant of cold and wind than most bananas. This makes it well suited to subtropical conditions. The ripe fruit is sweet with a slightly tart, apple like flavour, and the plant takes longer than many bananas to mature."
+      ],
+      "claims": [
+        {
+          "text": "Gold Finger (FHIA-01) is a tetraploid AAAB hybrid dessert banana developed at the Honduran Foundation for Agricultural Research (FHIA) by a team led by Phillip Rowe and Franklin Rosales.",
+          "type": "breeding",
+          "cites": [
+            "wiki_gold"
+          ]
+        },
+        {
+          "text": "It is resistant to black Sigatoka, Race 4 of Panama disease and burrowing nematode, and is more tolerant of cold and wind than most bananas.",
+          "type": "climate",
+          "cites": [
+            "wiki_gold"
+          ]
+        },
+        {
+          "text": "The ripe fruit is sweet with a slightly tart, apple like flavour.",
+          "type": "flavour",
+          "cites": [
+            "wiki_gold",
+            "tropguide_gold"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_gold",
+          "name": "Goldfinger banana - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Goldfinger_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "tropguide_gold",
+          "name": "Goldfinger (FHIA-01) Banana Grow Guide, nursery grounding",
+          "url": "https://tropicaltreeguide.com/goldfinger-banana-grow-guide/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "banana-horn-plantain": {
+      "slug": "banana-horn-plantain",
+      "species": "Banana",
+      "variety": "Horn Plantain",
+      "paragraphs": [
+        "Horn Plantain belongs to the AAB plantain group, one of four plantain bunch types (French, French Horn, False Horn and Horn). It is a true cooking banana, not a dessert type, with the classic starchy plantain character that is eaten cooked rather than raw. The fruit is large and the male bud degenerates as the bunch matures, a trait shared with the related False Horn group.",
+        "Horn types are known for sparse bunches, typically carrying very few large fingers spread across only one to five hands (occasionally up to eight or ten). The starchy flesh is versatile in the kitchen, fried, boiled or roasted, and can be used green or ripe. Related Horn cultivars from Asia include Tanduk and Pisang Tandok."
+      ],
+      "claims": [
+        {
+          "text": "Horn Plantain is an AAB plantain, one of four plantain bunch types (French, French Horn, False Horn, Horn).",
+          "type": "origin",
+          "cites": [
+            "promusa"
+          ]
+        },
+        {
+          "text": "In Horn plantains the male bud degenerates at maturity.",
+          "type": "appearance",
+          "cites": [
+            "promusa"
+          ]
+        },
+        {
+          "text": "Horn types carry very few fruit spread over one to five hands (exceptionally eight to ten).",
+          "type": "appearance",
+          "cites": [
+            "promusa"
+          ]
+        },
+        {
+          "text": "Plantains are starchy and normally eaten cooked rather than raw.",
+          "type": "use",
+          "cites": [
+            "wiki_plantain"
+          ]
+        },
+        {
+          "text": "Related Horn cultivars include Tanduk and Pisang Tandok.",
+          "type": "naming",
+          "cites": [
+            "promusa",
+            "wiki_plantain"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "promusa",
+          "name": "ProMusa - Plantain subgroup",
+          "url": "https://www.promusa.org/Plantain+subgroup",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki_plantain",
+          "name": "Wikipedia - True plantains",
+          "url": "https://en.wikipedia.org/wiki/True_plantains",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -226,6 +605,130 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "banana-pisang-ceylon": {
+      "slug": "banana-pisang-ceylon",
+      "species": "Banana",
+      "variety": "Pisang Ceylon",
+      "paragraphs": [
+        "Pisang Ceylon is a Mysore type banana, part of the AAB Mysore subgroup that originates from India and Pakistan. Mysore bananas are among the most widely grown cultivars in India, traditionally valued there as a fresh eating variety. The fruit is small and thin skinned, in the lady finger style.",
+        "The flesh is sweet, and the small fruits are borne in dense bunches on a tall, sturdy plant. Like other Mysore types it is a dessert banana eaten fresh rather than a cooking banana."
+      ],
+      "claims": [
+        {
+          "text": "Pisang Ceylon is a Mysore type banana in the AAB Mysore subgroup, originating from India and Pakistan.",
+          "type": "origin",
+          "cites": [
+            "wiki_list",
+            "borg_mysore"
+          ]
+        },
+        {
+          "text": "The fruit is small, thin skinned and sweet, in the lady finger style.",
+          "type": "appearance",
+          "cites": [
+            "borg_mysore",
+            "sp_mysore"
+          ]
+        },
+        {
+          "text": "Mysore types are among the most widely grown bananas in India and are eaten fresh.",
+          "type": "use",
+          "cites": [
+            "sp_mysore"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_list",
+          "name": "List of banana cultivars (Mysore subgroup, AAB) - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/List_of_banana_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "borg_mysore",
+          "name": "Musa Mysore - Bananas.org wiki",
+          "url": "https://www.bananas.org/w/index.php?title=Musa_Mysore",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp_mysore",
+          "name": "Mysore Bananas - Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Mysore_Bananas_23655.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "banana-red-dacca": {
+      "slug": "banana-red-dacca",
+      "species": "Banana",
+      "variety": "Red Dacca",
+      "paragraphs": [
+        "Red Dacca is a red-skinned dessert banana, a triploid cultivar of Musa acuminata in the AAA group. Where most supermarket bananas are yellow Cavendish, Red Dacca ripens to a deep red or maroon rind, making it instantly recognisable. The fruit is often shorter and plumper than a Cavendish, with a slightly thicker skin. It is also known by names such as Cuban Red and Jamaican Red.",
+        "The creamy flesh is softer and sweeter than Cavendish, and the flavour is sometimes described as carrying a tangy raspberry note. It is eaten fresh and used in desserts and smoothies, prized more for its colour and dessert quality than for cooking."
+      ],
+      "claims": [
+        {
+          "text": "Red Dacca is a red-skinned dessert banana, a triploid cultivar of Musa acuminata in the AAA group.",
+          "type": "breeding",
+          "cites": [
+            "wiki_red"
+          ]
+        },
+        {
+          "text": "It ripens to a deep red or maroon rind and is often shorter and plumper than a Cavendish.",
+          "type": "appearance",
+          "cites": [
+            "wiki_red",
+            "sp_red"
+          ]
+        },
+        {
+          "text": "The flesh is softer and sweeter than Cavendish, sometimes with a tangy raspberry note.",
+          "type": "flavour",
+          "cites": [
+            "wiki_red",
+            "sp_red"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_red",
+          "name": "Red banana - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Red_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp_red",
+          "name": "Red Dacca Banana, nursery grounding",
+          "url": "https://www.grosmichelbanana.net/product/red-dacca-banana/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "banana-fruit-cover",
+    "banana-goldfinger",
+    "banana-horned-plantain",
+    "banana-ken-mango-tree",
+    "banana-nathan",
+    "banana-passionfruit",
+    "banana-pitanga",
+    "banana-stock-4-pack",
+    "banana-super-cavendish",
+    "banana-tree-blue-java",
+    "banana-tree-goldfinger",
+    "banana-tree-musa-nathan"
+  ]
 }
