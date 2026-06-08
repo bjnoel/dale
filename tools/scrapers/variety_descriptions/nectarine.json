@@ -2,6 +2,217 @@
   "species_slug": "nectarine",
   "schema_version": 1,
   "varieties": {
+    "nectarine-arctic-rose": {
+      "slug": "nectarine-arctic-rose",
+      "species": "Nectarine",
+      "variety": "Arctic Rose",
+      "paragraphs": [
+        "Arctic Rose is a white-fleshed freestone nectarine bred by Zaiger Genetics at their orchard near Modesto, California (US Plant Patent 7889). The skin is a mottled red over a chalk-white to pale-yellow ground, and the white flesh shows pale red streaks near the pit. Its flavour is sub-acid, mild and sweet.",
+        "Unusually for a white nectarine, the fruit is firm enough to be handled like a yellow-fleshed variety, and it holds firm on the tree for several days after ripening. It is self-fruitful and ripens in early to mid summer."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Zaiger Genetics near Modesto, California, under US Plant Patent 7889",
+          "type": "breeding",
+          "cites": ["patent-arcticrose", "davewilson-arcticrose"]
+        },
+        {
+          "text": "White-fleshed freestone with mottled red over chalk-white to pale-yellow skin",
+          "type": "appearance",
+          "cites": ["patent-arcticrose"]
+        },
+        {
+          "text": "Sub-acid, mild, sweet flavour",
+          "type": "flavour",
+          "cites": ["patent-arcticrose", "davewilson-arcticrose"]
+        },
+        {
+          "text": "Firm enough to handle like a yellow nectarine and holds firm on the tree after ripening",
+          "type": "storage",
+          "cites": ["patent-arcticrose"]
+        },
+        {
+          "text": "Self-fruitful",
+          "type": "pollination",
+          "cites": ["davewilson-arcticrose"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent-arcticrose",
+          "name": "US Plant Patent PP7889 (Arctic Rose nectarine), Zaiger et al.",
+          "url": "https://patents.google.com/patent/USPP7889P/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson-arcticrose",
+          "name": "Dave Wilson Nursery: Arctic Rose White Nectarine",
+          "url": "https://www.wheretobuy.davewilson.com/product-information-commercial/product/arctic-rose-white-nectarine",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-crimson-baby": {
+      "slug": "nectarine-crimson-baby",
+      "species": "Nectarine",
+      "variety": "Crimson Baby",
+      "paragraphs": [
+        "Crimson Baby is a nectarine bred by David W. Ramming (with retired colleague Owen L. Tanner) at the USDA stone fruit breeding program in Fresno, California. It is an early-season variety, popular in Australia where it is widely sold in a dwarf form for pots and small gardens.",
+        "The fruit is large and round with clear yellow flesh. A bright red overcolour can tint nearly 90 percent of the skin, sometimes lightly dusted with pale speckles. It is a clingstone, so the flesh holds to the stone rather than parting freely."
+      ],
+      "claims": [
+        {
+          "text": "Bred by David W. Ramming, with colleague Owen L. Tanner, at the USDA stone fruit breeding program in Fresno, California",
+          "type": "breeding",
+          "cites": ["usda-crimson-baby"]
+        },
+        {
+          "text": "Large, round fruit with clear yellow flesh",
+          "type": "appearance",
+          "cites": ["usda-crimson-baby"]
+        },
+        {
+          "text": "Red overcolour can tint nearly 90 percent of the skin, sometimes lightly dusted with speckles",
+          "type": "appearance",
+          "cites": ["usda-crimson-baby"]
+        },
+        {
+          "text": "Clingstone, with flesh that holds to the stone",
+          "type": "appearance",
+          "cites": ["usda-crimson-baby", "blerick-crimson-baby"]
+        },
+        {
+          "text": "Early-ripening and sold in Australia as a dwarf tree",
+          "type": "season",
+          "cites": ["blerick-crimson-baby"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "usda-crimson-baby",
+          "name": "USDA AgResearch Magazine: Mouth-Watering New Fruit (Aug 1997)",
+          "url": "https://agresearchmag.ars.usda.gov/1997/aug/fruit/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "blerick-crimson-baby",
+          "name": "Blerick Tree Farm: Nectarine Crimson Baby Dwarf",
+          "url": "https://www.blericktreefarm.com.au/product/nectarine-crimson-baby/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-early-rivers": {
+      "slug": "nectarine-early-rivers",
+      "species": "Nectarine",
+      "variety": "Early Rivers",
+      "paragraphs": [
+        "Early Rivers is an old British nectarine bred in the nineteenth century by the noted nurseryman Thomas Rivers of Sawbridgeworth, Hertfordshire. It is valued as one of the best early-ripening nectarines, cropping in early to mid summer (early to mid July in the UK).",
+        "The fruit is roundish and usually large, with greenish-yellow skin almost wholly covered by a scarlet flush. The pale yellow flesh is very soft and juicy with excellent flavour. The tree is compact, bushy and self-fertile, so it fruits without a pollination partner."
+      ],
+      "claims": [
+        {
+          "text": "Bred in the nineteenth century by nurseryman Thomas Rivers",
+          "type": "origin",
+          "cites": ["pomona-early-rivers"]
+        },
+        {
+          "text": "British-raised, self-fertile and early-ripening",
+          "type": "origin",
+          "cites": ["rhs-early-rivers"]
+        },
+        {
+          "text": "One of the best early nectarines, ripening early to mid July (UK)",
+          "type": "season",
+          "cites": ["pomona-early-rivers"]
+        },
+        {
+          "text": "Greenish-yellow skin flushed scarlet, with pale yellow, soft, juicy flesh",
+          "type": "appearance",
+          "cites": ["pomona-early-rivers", "rhs-early-rivers"]
+        },
+        {
+          "text": "Compact, bushy, self-fertile tree",
+          "type": "pollination",
+          "cites": ["rhs-early-rivers"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-early-rivers",
+          "name": "RHS: Prunus persica var. nectarina 'Early Rivers'",
+          "url": "https://www.rhs.org.uk/plants/133330/prunus-persica-var-nectarina-early-rivers-(f)/details",
+          "tier": "third_party"
+        },
+        {
+          "id": "pomona-early-rivers",
+          "name": "Pomona Fruits: Grow Your Own Peaches and Nectarines",
+          "url": "https://www.pomonafruits.co.uk/blog/grow-your-own-peaches-nectarines/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-fairlane": {
+      "slug": "nectarine-fairlane",
+      "species": "Nectarine",
+      "variety": "Fairlane",
+      "paragraphs": [
+        "Fairlane is a late-season, yellow-fleshed nectarine from California. The fruit is large and firm with red over yellow skin, and it is a clingstone, meaning the flesh holds tightly to the stone rather than separating cleanly.",
+        "Its very late ripening extends the nectarine season well past mid-season varieties, making it useful for spreading out a home harvest. The tree is vigorous and productive."
+      ],
+      "claims": [
+        {
+          "text": "Late-season yellow-fleshed nectarine from California",
+          "type": "origin",
+          "cites": ["harvesttotable-nectarines", "battistini-fairlane"]
+        },
+        {
+          "text": "Large, firm fruit with red over yellow skin",
+          "type": "appearance",
+          "cites": ["harvesttotable-nectarines", "battistini-fairlane"]
+        },
+        {
+          "text": "Clingstone (flesh clings to the stone)",
+          "type": "appearance",
+          "cites": ["harvesttotable-nectarines", "battistini-fairlane"]
+        },
+        {
+          "text": "Very late ripening",
+          "type": "season",
+          "cites": ["harvesttotable-nectarines", "battistini-fairlane"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "harvesttotable-nectarines",
+          "name": "Harvest to Table: Nectarine varieties",
+          "url": "https://harvesttotable.com/nectarine_varieties_nectarines/",
+          "tier": "third_party"
+        },
+        {
+          "id": "battistini-fairlane",
+          "name": "Battistini Vivai: Fairlane nectarine",
+          "url": "https://battistinivivai.com/en/products/Fairlane-nectarine",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "nectarine-fantasia": {
       "slug": "nectarine-fantasia",
       "species": "Nectarine",
@@ -76,6 +287,131 @@
       "confidence_score": 0.84,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "nectarine-flavortop": {
+      "slug": "nectarine-flavortop",
+      "species": "Nectarine",
+      "variety": "Flavortop",
+      "paragraphs": [
+        "Flavortop is a yellow-fleshed freestone nectarine developed by the USDA in Fresno, California, and introduced in 1969. The fruit has red over yellow skin and very flavourful flesh, and it consistently rates among the top-scoring nectarines in taste comparisons. It ripens in mid to late summer.",
+        "The tree carries showy pink spring blossoms and is self-fertile, so a single tree will set fruit without a separate pollinator. Suited to fresh eating, baking and canning."
+      ],
+      "claims": [
+        {
+          "text": "Developed by the USDA in Fresno, California, and introduced in 1969",
+          "type": "origin",
+          "cites": ["ncstate-flavortop", "frutas-flavortop"]
+        },
+        {
+          "text": "Yellow-fleshed freestone with red over yellow skin",
+          "type": "appearance",
+          "cites": ["ncstate-flavortop", "harvesttotable-nectarines"]
+        },
+        {
+          "text": "Ripens mid to late summer",
+          "type": "season",
+          "cites": ["ncstate-flavortop"]
+        },
+        {
+          "text": "Self-fertile, so one tree sets fruit on its own",
+          "type": "pollination",
+          "cites": ["ncstate-flavortop"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncstate-flavortop",
+          "name": "NC State Extension Gardener Plant Toolbox: Prunus persica 'Flavortop'",
+          "url": "https://plants.ces.ncsu.edu/plants/prunus-persica-flavortop/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "frutas-flavortop",
+          "name": "Frutas-Hortalizas: Nectarine types and varieties",
+          "url": "https://www.frutas-hortalizas.com/Fruits/Types-varieties-Nectarine.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "harvesttotable-nectarines",
+          "name": "Harvest to Table: Nectarine varieties",
+          "url": "https://harvesttotable.com/nectarine_varieties_nectarines/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-goldmine": {
+      "slug": "nectarine-goldmine",
+      "species": "Nectarine",
+      "variety": "Goldmine",
+      "paragraphs": [
+        "Goldmine is a heritage white nectarine that began as a chance seedling found in an Auckland garden in New Zealand in the 1890s. It went on to become a leading commercial nectarine in both New Zealand and Australia, and is still grown today as a prized heirloom.",
+        "The fruit has red skin over a yellow-green base and aromatic, sweet, juicy white flesh. It is a freestone, so the stone lifts cleanly from the flesh, and the tree is self-fertile, meaning a single tree will set fruit on its own."
+      ],
+      "claims": [
+        {
+          "text": "Originated as a chance seedling found in an Auckland garden, New Zealand, in the 1890s",
+          "type": "origin",
+          "cites": ["teara-goldmine", "diggers-goldmine"]
+        },
+        {
+          "text": "Became a leading commercial nectarine variety in New Zealand and Australia",
+          "type": "origin",
+          "cites": ["teara-goldmine"]
+        },
+        {
+          "text": "White-fleshed, aromatic, sweet and juicy with red over yellow-green skin",
+          "type": "flavour",
+          "cites": ["toa-goldmine", "diggers-goldmine"]
+        },
+        {
+          "text": "Freestone, with the stone separating cleanly from the flesh",
+          "type": "appearance",
+          "cites": ["toa-goldmine"]
+        },
+        {
+          "text": "Self-fertile, so one tree will set fruit alone",
+          "type": "pollination",
+          "cites": ["toa-goldmine", "diggers-goldmine"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "teara-goldmine",
+          "name": "Te Ara: The Encyclopedia of New Zealand, Goldmine nectarines",
+          "url": "https://teara.govt.nz/en/photograph/18783/goldmine-nectarines",
+          "tier": "authoritative"
+        },
+        {
+          "id": "diggers-goldmine",
+          "name": "The Diggers Club: Nectarine Goldmine",
+          "url": "https://www.diggers.com.au/products/nectarine-goldmine",
+          "tier": "third_party"
+        },
+        {
+          "id": "toa-goldmine",
+          "name": "Trees of Antiquity: Goldmine Nectarine",
+          "url": "https://www.treesofantiquity.com/products/goldmine-nectarine",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "nectarine-necta-red",
+    "nectarine-nectared",
+    "nectarine-royal-gem",
+    "nectarine-sun-snow",
+    "nectarine-sundowner",
+    "nectarine-sunset",
+    "nectarine-tuscany",
+    "nectarine-white-satin"
+  ]
 }
