@@ -4,6 +4,53 @@
 
 ---
 
+## DEC-177 — 2026-06-08 — Per-nursery "type" pill on variety pages (treestock.com.au)
+
+**Decided by:** Dale (interactive session, Benedict directed)
+
+**Context:** Follow-up to DEC-176. That change strips form/rootstock/propagation noise
+(Dwarf, Bare rooted, Tubestock, ...) from cultivar names so size/rootstock variants group
+onto one /variety page. Useful for grouping, but it erased the very detail a shopper needs
+to tell otherwise-identical nursery rows apart. On apple-gala, Yalca's tree is Dwarf, Aus
+Nurseries' is Bare rooted, Guildford lists both a Standard and a Dwarf, all now looking the
+same. Benedict asked for that detail back as a per-row label.
+
+**Decision:** Show a small neutral pill under the nursery name, only when the type is not
+the default. Labels (form/rootstock/propagation only): Super Dwarf, Semi Dwarf, Dwarf, Bare
+rooted, Tubestock, Cutting grown, Advanced. NO pill for Grafted/Standard (the defaults) and
+NO pot size (5L/20cm). Multiples combine deduped + ordered (form, then propagation, then
+Advanced), e.g. "Super Dwarf, Bare rooted". A pill whose text already appears in the variety
+name is suppressed, so the banana "Dwarf Cavendish" page shows no redundant Dwarf pill.
+
+**Implementation:** New extract_type_label() in cultivar_parsing.py and the DEC-176 cleaner
+now share ONE ordered (regex, label) list (_TYPE_LABELS), so the strip set and the label set
+can never drift (a new form added in one place is stripped AND labelled). "Super Dwarf" wins
+over "Dwarf": the extractor consumes a match before testing the next pattern, so the shorter
+form can't re-fire inside the longer. The cleaner refactor is output-preserving (it now
+references the shared regexes; same patterns, same order). build_variety_pages computes the
+label per product in load_all_products and suppresses per-row in build_variety_page via
+visible_type_label(). The pill is a rounded gray-100/gray-700 span (contrast ~9:1), in the
+existing nursery cell so it adds no column and wraps on mobile. Variety pages only (not
+species/compare). "Seedling" stays part of the variety name, not a pill (unchanged).
+
+**Tests:** Tests-first per feedback_regression_tests_on_bugfix. New ExtractTypeLabel +
+SuppressTypeLabel classes in test_parsing.py (failing, then green). Golden
+apple-dorsett-golden.html regenerated: Daleys shows "Super Dwarf, Bare rooted", Primal
+"Dwarf", Ross Creek none; no other golden changed (cleaner output unchanged, banana
+suppression holds). Full suite 1389 green.
+
+**Impact (live):** Verified on https://treestock.com.au/variety/apple-gala.html: Yalca ->
+Dwarf, Aus Nurseries -> Bare rooted, Guildford -> a Standard (no pill) row + a Dwarf row,
+plus combos like "Semi Dwarf, Bare rooted". Suppression confirmed on banana-super-dwarf-
+cavendish and banana-dwarf-red-dacca (no redundant pill). Rebuilt species + variety pages,
+tailwind, and purged Cloudflare (no scrape, no subscriber emails).
+
+**To revert:** Remove the extract_type_label call + product_view "type_label" in
+build_variety_pages.py and the pill block in variety_page.html.j2, regenerate the golden.
+The shared _TYPE_LABELS list can stay (the cleaner uses it harmlessly).
+
+---
+
 ## DEC-176 — 2026-06-08 — Strip listing noise from cultivar names so variety pages group (treestock.com.au)
 
 **Decided by:** Dale (interactive session, Benedict directed)
