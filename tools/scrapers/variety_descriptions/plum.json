@@ -2,6 +2,901 @@
   "species_slug": "plum",
   "schema_version": 1,
   "varieties": {
+    "plum-amber-jewel": {
+      "slug": "plum-amber-jewel",
+      "species": "Plum",
+      "variety": "Amber Jewel",
+      "paragraphs": [
+        "Amber Jewel is an Australian-bred Japanese-type plum (Prunus salicina) that began as a chance seedling found in 1978 in the garden of R. A. Yates at Capel River, Western Australia. It was originally named Teak Gold, patented under that name, then renamed Amber Jewel for market. The fruit is large and conical with red skin over a cream to yellow background.",
+        "Its standout feature is amber to golden-yellow flesh that is very sweet, meaty, and crisp with low acidity. Amber Jewel matures late, about a month after Santa Rosa, and is partially self-fertile, pairing well with pollinators such as Santa Rosa or Laroda. It also has notably good storage and shelf life."
+      ],
+      "claims": [
+        {
+          "text": "Australian-bred Japanese plum (Prunus salicina) that began as a chance seedling found in 1978 by R. A. Yates at Capel River, Western Australia, originally named Teak Gold",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce-amberjewel-search",
+            "uspto-teakgold"
+          ]
+        },
+        {
+          "text": "Large conical fruit with red skin over a cream to yellow background",
+          "type": "appearance",
+          "cites": [
+            "anfic-amberjewel",
+            "specialtyproduce-amberjewel-search"
+          ]
+        },
+        {
+          "text": "Amber to golden-yellow flesh that is very sweet, meaty, and crisp with low acidity",
+          "type": "flavour",
+          "cites": [
+            "anfic-amberjewel",
+            "specialtyproduce-amberjewel-search"
+          ]
+        },
+        {
+          "text": "Matures late, about a month after Santa Rosa, and is partially self-fertile with pollinators such as Santa Rosa or Laroda",
+          "type": "pollination",
+          "cites": [
+            "anfic-amberjewel"
+          ]
+        },
+        {
+          "text": "Notably good storage and shelf life",
+          "type": "storage",
+          "cites": [
+            "anfic-amberjewel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic-amberjewel",
+          "name": "ANFIC: Amber Jewel Plum",
+          "url": "https://anfic.com.au/variety/amber-jewel-plum/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-amberjewel-search",
+          "name": "Specialty Produce: Amber Jewel Plums",
+          "url": "https://specialtyproduce.com/produce/Amber_Jewel_Plums_22419.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "uspto-teakgold",
+          "name": "US Plant Patent PP10277: Plum tree Teak Gold",
+          "url": "https://www.freepatentsonline.com/PP10277.html",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-angelina": {
+      "slug": "plum-angelina",
+      "species": "Plum",
+      "variety": "Angelina",
+      "paragraphs": [
+        "Angelina is the late-season Japanese plum (Prunus salicina) widely marketed as Angeleno or Angelino. It was released in the United States in 1995 by Sunworld International and has become one of the dominant very late plums in commercial markets worldwide.",
+        "The skin colours from green to a dark, almost black purple when ripe, over firm pale-yellow to amber flesh. The flavour is sweet and well balanced, with dense, crunchy flesh rather than soft and juicy. It ripens very late and stores and ships exceptionally well, keeping firm in the bowl for a long time."
+      ],
+      "claims": [
+        {
+          "text": "Late-season Japanese plum (Prunus salicina) marketed as Angeleno or Angelino, released in the United States in 1995 by Sunworld International",
+          "type": "origin",
+          "cites": [
+            "goodfruitguide-angelino",
+            "toughkraut-angeleno-search"
+          ]
+        },
+        {
+          "text": "Skin ripens from green to dark, almost black purple, over firm pale-yellow to amber flesh",
+          "type": "appearance",
+          "cites": [
+            "goodfruitguide-angelino",
+            "toughkraut-angeleno-search"
+          ]
+        },
+        {
+          "text": "Sweet, well-balanced flavour with dense, firm, crunchy flesh rather than soft and juicy",
+          "type": "flavour",
+          "cites": [
+            "goodfruitguide-angelino",
+            "toughkraut-angeleno-search"
+          ]
+        },
+        {
+          "text": "Ripens very late and stores and ships exceptionally well",
+          "type": "storage",
+          "cites": [
+            "goodfruitguide-angelino",
+            "toughkraut-angeleno-search"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "goodfruitguide-angelino",
+          "name": "Good Fruit Guide: Angelino plum",
+          "url": "https://goodfruitguide.co.uk/product/angelino/",
+          "tier": "third_party"
+        },
+        {
+          "id": "toughkraut-angeleno-search",
+          "name": "Tough Kraut: Prunus salicina 'Angeleno' care guide",
+          "url": "https://www.toughkraut.com/post/prunus-salicina-angeleno",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-angelina-burdett": {
+      "slug": "plum-angelina-burdett",
+      "species": "Plum",
+      "variety": "Angelina Burdett",
+      "paragraphs": [
+        "Angelina Burdett is a heritage English dessert plum (Prunus domestica), raised by Mr Dowling of Woolston, Southampton, in about 1850 and first described in 1853. It is a completely separate variety from the modern Angeleno (Angelina) plum.",
+        "The fruit is medium sized and round-oval with purple to blue-black skin carrying a heavy bloom, over firm, juicy, yellowish-green flesh with good flavour. It is grown mainly as a dessert plum, has a semi-freestone stone, hangs and keeps well after picking, and ripens from late August into early September."
+      ],
+      "claims": [
+        {
+          "text": "Heritage English dessert plum (Prunus domestica) raised by Mr Dowling of Woolston, Southampton, about 1850 and first described in 1853",
+          "type": "origin",
+          "cites": [
+            "nationalfruitcollection-angelina-burdett",
+            "gardenorg-angelina-burdett-search"
+          ]
+        },
+        {
+          "text": "Medium round-oval fruit with purple to blue-black bloomed skin over firm, juicy, yellowish-green flesh",
+          "type": "appearance",
+          "cites": [
+            "nationalfruitcollection-angelina-burdett",
+            "gardenorg-angelina-burdett-search"
+          ]
+        },
+        {
+          "text": "Grown mainly as a dessert plum",
+          "type": "use",
+          "cites": [
+            "nationalfruitcollection-angelina-burdett",
+            "gardenorg-angelina-burdett-search"
+          ]
+        },
+        {
+          "text": "Semi-freestone, hangs and keeps well after picking, ripening late August into early September",
+          "type": "storage",
+          "cites": [
+            "nationalfruitcollection-angelina-burdett",
+            "gardenorg-angelina-burdett-search"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nationalfruitcollection-angelina-burdett",
+          "name": "National Fruit Collection: Angelina Burdett",
+          "url": "https://www.nationalfruitcollection.org.uk/full2.php?id=8003&fruit=plum",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenorg-angelina-burdett-search",
+          "name": "Garden.org: Dessert Plum 'Angelina Burdett'",
+          "url": "https://garden.org/plants/view/710410/Dessert-Plum-Prunus-domestica-Angelina-Burdett/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-coe-s-golden-drop": {
+      "slug": "plum-coe-s-golden-drop",
+      "species": "Plum",
+      "variety": "Coe's Golden Drop",
+      "paragraphs": [
+        "Coe's Golden Drop is a heritage English European plum (Prunus domestica), raised by Jervaise Coe in Suffolk at the end of the 18th century, said to be a cross between Green Gage and White Magnum Bonum. It is one of the historic European dessert plums and considered among the best of the late-season varieties.",
+        "The fruit has golden yellow skin, often flecked with reddish brown and carrying a cinnamon-like bloom, over tender, juicy golden flesh. The flavour is rich and sweet with a distinctive apricot character, balanced by some acidity from its Magnum parent. It is a large freestone plum that ripens late, around mid-September, and needs a pollinator such as Green Gage or D'Agen to set fruit."
+      ],
+      "claims": [
+        {
+          "text": "Heritage English European plum (Prunus domestica) raised by Jervaise Coe in Suffolk at the end of the 18th century, reputedly Green Gage crossed with White Magnum Bonum",
+          "type": "origin",
+          "cites": [
+            "gardeningknowhow-coes",
+            "orangepippin-coes"
+          ]
+        },
+        {
+          "text": "A historic European dessert plum, regarded as one of the best late-season varieties",
+          "type": "use",
+          "cites": [
+            "orangepippin-coes",
+            "gardeningknowhow-coes"
+          ]
+        },
+        {
+          "text": "Golden yellow skin with reddish brown flecks and a cinnamon bloom over tender golden flesh",
+          "type": "appearance",
+          "cites": [
+            "orangepippin-coes"
+          ]
+        },
+        {
+          "text": "Rich, sweet flavour with a distinctive apricot character, balanced by some acidity",
+          "type": "flavour",
+          "cites": [
+            "gardeningknowhow-coes",
+            "orangepippin-coes"
+          ]
+        },
+        {
+          "text": "Large freestone fruit that ripens late, around mid-September",
+          "type": "season",
+          "cites": [
+            "gardeningknowhow-coes"
+          ]
+        },
+        {
+          "text": "Needs a pollinator such as Green Gage or D'Agen to set fruit",
+          "type": "pollination",
+          "cites": [
+            "gardeningknowhow-coes"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin-coes",
+          "name": "Orange Pippin: Coe's Golden Drop (gage)",
+          "url": "https://www.orangepippin.com/varieties/plums/coes-golden-drop",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeningknowhow-coes",
+          "name": "Gardening Know How: Coe's Golden Drop Gage",
+          "url": "https://www.gardeningknowhow.com/edible/fruits/plum/coes-golden-drop-gage-fruit.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-d-agen-prune": {
+      "slug": "plum-d-agen-prune",
+      "species": "Plum",
+      "variety": "D'Agen Prune",
+      "paragraphs": [
+        "The D'Agen prune (Prune d'Agen, also called Petite d'Agen, Ente or the California French prune) is a European plum (Prunus domestica) originating in the Agen region of southwestern France, the classic plum grown for drying into prunes. In California it is known simply as the French prune, and what Europeans call d'Agen is the same variety.",
+        "It is a small to medium purple to blue-skinned plum with firm, sweet, yellow-green flesh, prized for its dense flesh and high sugar that concentrate beautifully when dried. The variety was introduced to California by Louis Pellier in the 1850s, founding the Californian prune industry. It is best known for drying and prune making rather than fresh dessert use."
+      ],
+      "claims": [
+        {
+          "text": "European plum (Prunus domestica) from the Agen region of southwestern France, the classic drying/prune plum",
+          "type": "origin",
+          "cites": [
+            "californiaprunes-history",
+            "tasteoffrance-agen"
+          ]
+        },
+        {
+          "text": "Also called Petite d'Agen, Ente, and the California French prune; the French prune in California equals the d'Agen of Europe",
+          "type": "naming",
+          "cites": [
+            "californiaprunes-history",
+            "tasteoffrance-agen"
+          ]
+        },
+        {
+          "text": "Small to medium plum with purple to blue skin and firm, sweet yellow-green flesh",
+          "type": "appearance",
+          "cites": [
+            "tasteoffrance-agen"
+          ]
+        },
+        {
+          "text": "Grown chiefly for drying into prunes, with flesh and sugar that concentrate well when dried",
+          "type": "use",
+          "cites": [
+            "californiaprunes-history",
+            "tasteoffrance-agen"
+          ]
+        },
+        {
+          "text": "Introduced to California by Louis Pellier in the 1850s, founding the Californian prune industry",
+          "type": "origin",
+          "cites": [
+            "californiaprunes-history"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "californiaprunes-history",
+          "name": "California Prunes: History",
+          "url": "https://californiaprunes.org/history/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tasteoffrance-agen",
+          "name": "Taste of France: What exactly is an Agen prune?",
+          "url": "https://tasteoffrancemag.com/trending/what-exactly-is-an-agen-prune/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-damson": {
+      "slug": "plum-damson",
+      "species": "Plum",
+      "variety": "Damson",
+      "paragraphs": [
+        "The Damson is a small European plum (Prunus domestica subsp. insititia) whose name derives from the Latin for plum of Damascus. It is a traditional cooking plum long grown in Britain, with skin ranging from dark blue through indigo to near black over yellow-green flesh, and a typically ovoid shape pointed at one end.",
+        "Damsons are distinctive for being both high in sugar and highly astringent, giving a rich flavour that is usually considered too tart for fresh eating. Most are clingstone, with the flesh adhering to the stone. They are grown mainly for cooking and preserving, going into jam, fruit preserves, and damson gin, and ripen in late summer to autumn."
+      ],
+      "claims": [
+        {
+          "text": "Small European plum, Prunus domestica subsp. insititia, named from the Latin for plum of Damascus",
+          "type": "origin",
+          "cites": [
+            "wikipedia-damson",
+            "specialtyproduce-damson"
+          ]
+        },
+        {
+          "text": "Dark blue to near-black skin over yellow-green flesh, ovoid and pointed at one end",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-damson",
+            "specialtyproduce-damson"
+          ]
+        },
+        {
+          "text": "Both high in sugar and highly astringent, with a rich tart flavour usually too tart for fresh eating",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-damson",
+            "specialtyproduce-damson"
+          ]
+        },
+        {
+          "text": "Most are clingstone, with flesh adhering to the stone",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-damson",
+            "specialtyproduce-damson"
+          ]
+        },
+        {
+          "text": "Grown mainly for cooking and preserving, including jam and damson gin",
+          "type": "use",
+          "cites": [
+            "wikipedia-damson",
+            "specialtyproduce-damson"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-damson",
+          "name": "Wikipedia: Damson",
+          "url": "https://en.wikipedia.org/wiki/Damson",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-damson",
+          "name": "Specialty Produce: Blue Damson Plums",
+          "url": "https://specialtyproduce.com/produce/Blue_Damson_Plums_12826.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-elephant-heart": {
+      "slug": "plum-elephant-heart",
+      "species": "Plum",
+      "variety": "Elephant Heart",
+      "paragraphs": [
+        "Elephant Heart is a large Japanese-type plum (Prunus salicina) raised by Luther Burbank in California in the early 1920s and released after his death. The fruit is big and heart-shaped with thick bronze-green skin that turns reddish-purple when fully ripe.",
+        "It is best known for its juicy, blood-red, freestone flesh and rich, sweet, distinctive flavour, which is why it is grouped among the blood plums. Elephant Heart ripens very late in the season, one of the last plums to mature, and crops better with a pollinator such as Santa Rosa. It is excellent fresh and also used for canning and freezing."
+      ],
+      "claims": [
+        {
+          "text": "Large Japanese plum (Prunus salicina) raised by Luther Burbank in California in the early 1920s and released after his death",
+          "type": "origin",
+          "cites": [
+            "treesofantiquity-elephantheart",
+            "specialtyproduce-elephantheart-search"
+          ]
+        },
+        {
+          "text": "Large heart-shaped fruit with thick bronze-green skin turning reddish-purple when ripe",
+          "type": "appearance",
+          "cites": [
+            "treesofantiquity-elephantheart",
+            "specialtyproduce-elephantheart-search"
+          ]
+        },
+        {
+          "text": "Juicy blood-red freestone flesh with a rich sweet distinctive flavour",
+          "type": "flavour",
+          "cites": [
+            "treesofantiquity-elephantheart",
+            "specialtyproduce-elephantheart-search"
+          ]
+        },
+        {
+          "text": "Ripens very late, among the last plums to mature, and crops better with a pollinator such as Santa Rosa",
+          "type": "season",
+          "cites": [
+            "treesofantiquity-elephantheart",
+            "specialtyproduce-elephantheart-search"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "treesofantiquity-elephantheart",
+          "name": "Trees of Antiquity: Elephant Heart Plum",
+          "url": "https://www.treesofantiquity.com/products/elephant-heart-plum",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-elephantheart-search",
+          "name": "Specialty Produce: Elephant Heart Plums",
+          "url": "https://specialtyproduce.com/produce/Elephant_Heart_Plums_5681.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-flavour-supreme": {
+      "slug": "plum-flavour-supreme",
+      "species": "Plum",
+      "variety": "Flavour Supreme",
+      "paragraphs": [
+        "Flavour Supreme (sold as Flavor Supreme) is a pluot, an interspecific plum and apricot hybrid developed by Floyd Zaiger of Zaiger Genetics in California. Dave Wilson Nursery, the introducer of Zaiger's interspecific fruit, records it as the first pluot Zaiger released, in 1988.",
+        "The fruit has mottled green skin with red speckling, an unassuming look that hides intensely sweet, juicy, red (Bordeaux) flesh. It is one of the earlier pluots to ripen and is not self-fertile, so it needs a polleniser such as another pluot or a Japanese plum nearby to set a crop."
+      ],
+      "claims": [
+        {
+          "text": "A pluot (interspecific plum and apricot hybrid) developed by Floyd Zaiger of Zaiger Genetics",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-pluot",
+            "davewilson-flavor-supreme"
+          ]
+        },
+        {
+          "text": "Introduced by Dave Wilson Nursery as the first pluot Zaiger released, in 1988",
+          "type": "origin",
+          "cites": [
+            "davewilson-flavor-supreme"
+          ]
+        },
+        {
+          "text": "Mottled green skin with red speckling over juicy red (Bordeaux) flesh",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-pluot",
+            "davewilson-flavor-supreme",
+            "groworganic-flavor-supreme-search"
+          ]
+        },
+        {
+          "text": "Intensely sweet, rich, juicy flesh",
+          "type": "flavour",
+          "cites": [
+            "davewilson-flavor-supreme",
+            "groworganic-flavor-supreme-search"
+          ]
+        },
+        {
+          "text": "Not self-fertile, requires a polleniser such as another pluot variety",
+          "type": "pollination",
+          "cites": [
+            "davewilson-flavor-supreme"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-pluot",
+          "name": "Wikipedia: Pluot",
+          "url": "https://en.wikipedia.org/wiki/Pluot",
+          "tier": "third_party"
+        },
+        {
+          "id": "davewilson-flavor-supreme",
+          "name": "Dave Wilson Nursery: Flavor Supreme Pluot",
+          "url": "https://www.davewilson.com/growers/products/fruit-trees/pluot-interspecific/flavor_supreme/",
+          "tier": "nursery"
+        },
+        {
+          "id": "groworganic-flavor-supreme-search",
+          "name": "Grow Organic: Flavor Supreme Pluot",
+          "url": "https://www.groworganic.com/products/flavor-supreme-plumcot-tree",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-green-gage": {
+      "slug": "plum-green-gage",
+      "species": "Plum",
+      "variety": "Green Gage",
+      "paragraphs": [
+        "Green Gage is a European plum (Prunus domestica), the type known in France as Reine Claude after Queen Claude, wife of Francis I. The English name honours the Gage family, credited with introducing it to England in the early 18th century. The fruit is small and round-oval with green to yellowish-green skin and smooth pale green flesh.",
+        "Gages are prized as one of the finest dessert plums, with a rich, sweet, confectionery flavour, though they are also eaten unripe when they are crisp and pleasantly tart. Green Gage ripens in late summer and is not self-fertile, so it needs a compatible plum, gage, or damson nearby to pollinate it. It is eaten fresh and also stewed or made into jam."
+      ],
+      "claims": [
+        {
+          "text": "European plum (Prunus domestica), known in France as Reine Claude after Queen Claude, with the English name honouring the Gage family",
+          "type": "origin",
+          "cites": [
+            "wikipedia-greengage",
+            "orangepippin-greengage"
+          ]
+        },
+        {
+          "text": "Small round-oval fruit with green to yellowish skin and smooth pale green flesh",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-greengage",
+            "orangepippin-greengage"
+          ]
+        },
+        {
+          "text": "Among the finest dessert plums, with a rich sweet confectionery flavour, also eaten unripe when tart",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-greengage",
+            "orangepippin-greengage"
+          ]
+        },
+        {
+          "text": "Not self-fertile, needing another plum, gage, or damson as a pollinator",
+          "type": "pollination",
+          "cites": [
+            "orangepippin-greengage"
+          ]
+        },
+        {
+          "text": "Eaten fresh and also stewed or made into jam",
+          "type": "use",
+          "cites": [
+            "wikipedia-greengage",
+            "orangepippin-greengage"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-greengage",
+          "name": "Wikipedia: Greengage",
+          "url": "https://en.wikipedia.org/wiki/Greengage",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-greengage",
+          "name": "Orange Pippin: Old Green Gage",
+          "url": "https://www.orangepippin.com/varieties/plums/old-greengage",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-gulf-beauty": {
+      "slug": "plum-gulf-beauty",
+      "species": "Plum",
+      "variety": "Gulf Beauty",
+      "paragraphs": [
+        "Gulf Beauty (Gulfbeauty) is a low-chill Japanese plum (Prunus salicina) released by the University of Florida in 1998, part of the Gulf series bred by Wayne Sherman for mild-winter, subtropical regions with high disease pressure. All UF plum cultivars carry the Gulf prefix.",
+        "It is one of the earliest ripening plums in the series, with dark reddish purple skin over yellow flesh tinged green, sweet and sub-acid when ripe (the skin itself is sour). It is noted as very resistant to bacterial canker and moderately resistant to plum leaf scald, and benefits from a Gulf series pollinator."
+      ],
+      "claims": [
+        {
+          "text": "Low-chill Japanese plum (Prunus salicina) released by the University of Florida in 1998, part of the Gulf series bred by Wayne Sherman",
+          "type": "breeding",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Bred for mild-winter, subtropical regions; low-chill",
+          "type": "climate",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "One of the earliest ripening plums of the series",
+          "type": "season",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Dark reddish purple skin over yellow flesh with a green hue",
+          "type": "appearance",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "Sweet and sub-acid flesh, firm when ripe, with a sour skin",
+          "type": "flavour",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "Very resistant to bacterial canker and moderately resistant to plum leaf scald",
+          "type": "growing",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-hs250",
+          "name": "UF/IFAS EDIS HS250: Growing Plums in Florida",
+          "url": "https://ask.ifas.ufl.edu/publication/HS250",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufifas-news-2003",
+          "name": "UF/IFAS News: Four New Plum Varieties Developed By UF Researcher",
+          "url": "https://blogs.ifas.ufl.edu/news/2003/10/28/four-new-plum-varieties-developed-by-uf-researcher/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-gulf-blaze": {
+      "slug": "plum-gulf-blaze",
+      "species": "Plum",
+      "variety": "Gulf Blaze",
+      "paragraphs": [
+        "Gulf Blaze (Gulfblaze) is a low-chill Japanese plum (Prunus salicina) bred and patented by the University of Florida as part of the Gulf series, developed by Wayne Sherman for warm, subtropical climates with high disease pressure.",
+        "The fruit has dark red to purple skin over orange flesh that is sweet and sub-acid. It ripens in the middle of the Florida plum season, roughly 8 to 14 days after Gulf Beauty. The flesh is semi-freestone, weakly attached to the pit when ripe, and the fruit is firm and round."
+      ],
+      "claims": [
+        {
+          "text": "Low-chill Japanese plum (Prunus salicina) bred and patented by the University of Florida Gulf series, developed by Wayne Sherman",
+          "type": "breeding",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Bred for warm, subtropical climates; low-chill",
+          "type": "climate",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Dark red to purple skin over orange flesh",
+          "type": "appearance",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Flesh is sweet and sub-acid",
+          "type": "flavour",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "Ripens mid-season, about 8 to 14 days after Gulf Beauty",
+          "type": "season",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "Semi-freestone, with flesh weakly attached to the pit when ripe",
+          "type": "use",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-hs250",
+          "name": "UF/IFAS EDIS HS250: Growing Plums in Florida",
+          "url": "https://ask.ifas.ufl.edu/publication/HS250",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufifas-news-2003",
+          "name": "UF/IFAS News: Four New Plum Varieties Developed By UF Researcher",
+          "url": "https://blogs.ifas.ufl.edu/news/2003/10/28/four-new-plum-varieties-developed-by-uf-researcher/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-gulf-gold": {
+      "slug": "plum-gulf-gold",
+      "species": "Plum",
+      "variety": "Gulf Gold",
+      "paragraphs": [
+        "Gulf Gold (Gulfgold) is a low-chill Japanese plum (Prunus salicina) from the University of Florida stone fruit breeding program, part of the Gulf series bred for mild-winter, subtropical climates. Unlike the patented members of the series, it is not patented.",
+        "It is a yellow-skinned plum, often with a red blush, over yellow flesh that turns semi-soft when ripe, and is regarded as the sweetest of the Gulf series. It ripens late in the series, from late May into mid-June. A drawback is its susceptibility to plum leaf scald, which generally limits tree life in Florida."
+      ],
+      "claims": [
+        {
+          "text": "Low-chill Japanese plum (Prunus salicina) from the University of Florida Gulf series; not patented",
+          "type": "breeding",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Bred for mild-winter, subtropical climates; low-chill",
+          "type": "climate",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Yellow skin with a red blush over yellow, semi-soft flesh",
+          "type": "appearance",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "Sweetest of the Gulf series",
+          "type": "flavour",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "Ripens late in the series, late May to mid-June",
+          "type": "season",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "Susceptible to plum leaf scald, which generally limits tree life in Florida",
+          "type": "growing",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-hs250",
+          "name": "UF/IFAS EDIS HS250: Growing Plums in Florida",
+          "url": "https://ask.ifas.ufl.edu/publication/HS250",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufifas-news-2003",
+          "name": "UF/IFAS News: Four New Plum Varieties Developed By UF Researcher",
+          "url": "https://blogs.ifas.ufl.edu/news/2003/10/28/four-new-plum-varieties-developed-by-uf-researcher/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-gulf-ruby": {
+      "slug": "plum-gulf-ruby",
+      "species": "Plum",
+      "variety": "Gulf Ruby",
+      "paragraphs": [
+        "Gulf Ruby (Gulfruby) is a low-chill Japanese plum (Prunus salicina) from the University of Florida stone fruit breeding program led by Wayne Sherman, part of the Gulf series bred for warm, subtropical climates with high disease pressure. It was selected and propagated in the early 1980s and, unlike most of the series, is not patented and may be freely propagated.",
+        "The fruit has red to purple skin over sweet yellow flesh with a greenish tinge. It ripens early in the Florida plum season, roughly 7 to 10 days before Gulf Blaze. A noted quirk is that Gulf Ruby has more trouble with bacterial canker than other low-chill cultivars, which can shorten tree life."
+      ],
+      "claims": [
+        {
+          "text": "Low-chill Japanese plum (Prunus salicina) from the University of Florida Gulf series, bred by Wayne Sherman; selected/propagated in the early 1980s and not patented",
+          "type": "breeding",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Low-chill cultivar bred for warm, subtropical climates",
+          "type": "climate",
+          "cites": [
+            "ufifas-hs250",
+            "ufifas-news-2003"
+          ]
+        },
+        {
+          "text": "Red to purple skin over sweet yellow flesh with a greenish tinge",
+          "type": "appearance",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "Ripens early in the Florida plum season, about 7 to 10 days before Gulf Blaze",
+          "type": "season",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        },
+        {
+          "text": "More prone to bacterial canker than other low-chill cultivars",
+          "type": "growing",
+          "cites": [
+            "ufifas-hs250"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-hs250",
+          "name": "UF/IFAS EDIS HS250: Growing Plums in Florida",
+          "url": "https://ask.ifas.ufl.edu/publication/HS250",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufifas-news-2003",
+          "name": "UF/IFAS News: Four New Plum Varieties Developed By UF Researcher",
+          "url": "https://blogs.ifas.ufl.edu/news/2003/10/28/four-new-plum-varieties-developed-by-uf-researcher/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "plum-mariposa": {
       "slug": "plum-mariposa",
       "species": "Plum",
@@ -74,6 +969,225 @@
       ],
       "confidence": "medium",
       "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-narrabeen": {
+      "slug": "plum-narrabeen",
+      "species": "Plum",
+      "variety": "Narrabeen",
+      "paragraphs": [
+        "Narrabeen is an Australian Japanese-type plum (Prunus salicina) that arose as a chance seedling in the Narrabeen area near Sydney. It produces large, round fruit with red skin over a yellow background.",
+        "The flesh is yellow to cream, sweet, firm, and juicy, and the stone separates cleanly, making it a freestone variety. Narrabeen ripens mid season (around January to February in Australia) and crops best with a pollinator such as Santa Rosa, Satsuma, or Mariposa. It is good eaten fresh and also stewed, bottled, or made into jam."
+      ],
+      "claims": [
+        {
+          "text": "Australian Japanese-type plum (Prunus salicina) that arose as a chance seedling in the Narrabeen area near Sydney",
+          "type": "origin",
+          "cites": [
+            "heritagerarefruits-plums",
+            "heritagefruittrees-narrabeen",
+            "daleys-narrabeen"
+          ]
+        },
+        {
+          "text": "Large round fruit with red skin over a yellow background",
+          "type": "appearance",
+          "cites": [
+            "heritagefruittrees-narrabeen",
+            "daleys-narrabeen"
+          ]
+        },
+        {
+          "text": "Yellow to cream flesh that is sweet, firm, and juicy, and freestone",
+          "type": "flavour",
+          "cites": [
+            "heritagefruittrees-narrabeen",
+            "daleys-narrabeen"
+          ]
+        },
+        {
+          "text": "Ripens mid season and crops best with a pollinator such as Santa Rosa, Satsuma, or Mariposa",
+          "type": "pollination",
+          "cites": [
+            "heritagefruittrees-narrabeen",
+            "daleys-narrabeen"
+          ]
+        },
+        {
+          "text": "Good fresh and also stewed, bottled, or made into jam",
+          "type": "use",
+          "cites": [
+            "daleys-narrabeen"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagerarefruits-plums",
+          "name": "Heritage & Rare Fruit Network: Plums",
+          "url": "https://heritageandrarefruits.weebly.com/plums.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagefruittrees-narrabeen",
+          "name": "Heritage Fruit Trees: Narrabeen Japanese Plum",
+          "url": "https://www.heritagefruittrees.com.au/narrabeen-japanese-plum/",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-narrabeen",
+          "name": "Daleys Fruit: Plum Narrabeen",
+          "url": "https://www.daleysfruit.com.au/buy/plum-narabeen-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-president": {
+      "slug": "plum-president",
+      "species": "Plum",
+      "variety": "President",
+      "paragraphs": [
+        "President is a European plum (Prunus domestica) raised by the Rivers Nursery at Sawbridgeworth, Hertfordshire, England, and introduced around 1901. It was valued as one of the latest plums to ripen, providing fresh fruit when most other plums had finished.",
+        "The fruit is very large and oval with dark blue to purple-black skin and greenish-yellow flesh, and it suits both eating fresh and culinary use such as jam and preserves. It ripens late, in mid September in the UK. President is not self-fertile, so it needs another plum variety nearby for pollination."
+      ],
+      "claims": [
+        {
+          "text": "European plum (Prunus domestica) raised by the Rivers Nursery, Sawbridgeworth, Hertfordshire, introduced around 1901",
+          "type": "origin",
+          "cites": [
+            "orangepippin-president-search",
+            "rhs-president"
+          ]
+        },
+        {
+          "text": "Very large oval fruit with dark blue to purple-black skin and greenish-yellow flesh",
+          "type": "appearance",
+          "cites": [
+            "rhs-president",
+            "orangepippin-president-search"
+          ]
+        },
+        {
+          "text": "Used both as a dessert plum and for culinary purposes such as preserves",
+          "type": "use",
+          "cites": [
+            "orangepippin-president-search",
+            "rhs-president"
+          ]
+        },
+        {
+          "text": "A very late-ripening plum, ripening in mid September in the UK",
+          "type": "season",
+          "cites": [
+            "rhs-president",
+            "orangepippin-president-search"
+          ]
+        },
+        {
+          "text": "Not self-fertile, requires another plum variety nearby for pollination",
+          "type": "pollination",
+          "cites": [
+            "rhs-president"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-president",
+          "name": "RHS: Prunus domestica 'President' plum",
+          "url": "https://www.rhs.org.uk/plants/61654/prunus-domestica-president-(c)/details",
+          "tier": "authoritative"
+        },
+        {
+          "id": "orangepippin-president-search",
+          "name": "Orange Pippin: Plum President",
+          "url": "https://www.orangepippin.com/varieties/plums/president",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-ruby-blood": {
+      "slug": "plum-ruby-blood",
+      "species": "Plum",
+      "variety": "Ruby Blood",
+      "paragraphs": [
+        "Ruby Blood is a Japanese-type blood plum (Prunus salicina) grown widely in Australia. The fruit is medium to large and round to heart-shaped, with dark red mottled skin over deep red, juicy flesh, which is what marks it out as a blood plum.",
+        "The flesh is sweet and the stone separates cleanly, making it a freestone variety. Ruby Blood ripens late in the season (late summer into autumn in Australia) and needs a cross-pollinator such as Narrabeen, Mariposa, or Satsuma. It is used fresh and also for preserves and jam."
+      ],
+      "claims": [
+        {
+          "text": "Japanese-type blood plum (Prunus salicina) grown widely in Australia",
+          "type": "origin",
+          "cites": [
+            "heritagerarefruits-plums",
+            "blerick-rubyblood",
+            "heritagefruittrees-ruby"
+          ]
+        },
+        {
+          "text": "Medium to large round to heart-shaped fruit with dark red mottled skin over deep red juicy flesh",
+          "type": "appearance",
+          "cites": [
+            "blerick-rubyblood",
+            "heritagefruittrees-ruby"
+          ]
+        },
+        {
+          "text": "Sweet flesh, freestone with the stone separating cleanly",
+          "type": "flavour",
+          "cites": [
+            "blerick-rubyblood",
+            "heritagefruittrees-ruby"
+          ]
+        },
+        {
+          "text": "Ripens late in the season and needs a cross-pollinator such as Narrabeen, Mariposa, or Satsuma",
+          "type": "pollination",
+          "cites": [
+            "blerick-rubyblood",
+            "heritagefruittrees-ruby"
+          ]
+        },
+        {
+          "text": "Used fresh and also for preserves and jam",
+          "type": "use",
+          "cites": [
+            "blerick-rubyblood",
+            "heritagefruittrees-ruby"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagerarefruits-plums",
+          "name": "Heritage & Rare Fruit Network: Plums",
+          "url": "https://heritageandrarefruits.weebly.com/plums.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "blerick-rubyblood",
+          "name": "Blerick Tree Farm: Plum Ruby Blood",
+          "url": "https://www.blericktreefarm.com.au/product/plum-ruby-blood/",
+          "tier": "nursery"
+        },
+        {
+          "id": "heritagefruittrees-ruby",
+          "name": "Heritage Fruit Trees: Ruby Japanese Blood Plum",
+          "url": "https://www.heritagefruittrees.com.au/ruby-japanese-blood-plum/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -218,6 +1332,145 @@
       "confidence_score": 0.86,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "plum-sugar": {
+      "slug": "plum-sugar",
+      "species": "Plum",
+      "variety": "Sugar",
+      "paragraphs": [
+        "The Sugar prune is a European plum (Prunus domestica) introduced by Luther Burbank in 1899, raised as a seedling of the French (Agen) prune. It quickly took on commercial importance in the Californian prune districts in the early 1900s.",
+        "The fruit is medium to large, larger than the French prune, oval and slightly flattened, with dark reddish purple skin under a thick white bloom. It is freestone, with golden yellow flesh that is juicy, tender and sweet with high sugar content. Despite its name, it tended to dry into a coarse, stringy product, so it was shipped extensively as a fresh plum and used for canning rather than as a top-quality dried prune."
+      ],
+      "claims": [
+        {
+          "text": "European plum (Prunus domestica) introduced by Luther Burbank in 1899 as a seedling of the French (Agen) prune",
+          "type": "origin",
+          "cites": [
+            "ashs-burbank-plums",
+            "researchgate-burbank-plums"
+          ]
+        },
+        {
+          "text": "Took on commercial importance in Californian prune districts from 1903",
+          "type": "naming",
+          "cites": [
+            "ashs-burbank-plums"
+          ]
+        },
+        {
+          "text": "Medium to large, oval and slightly flattened, with dark reddish purple skin and a thick white bloom; freestone",
+          "type": "appearance",
+          "cites": [
+            "ashs-burbank-plums"
+          ]
+        },
+        {
+          "text": "Golden yellow flesh that is juicy, tender and sweet with high sugar content",
+          "type": "flavour",
+          "cites": [
+            "ashs-burbank-plums"
+          ]
+        },
+        {
+          "text": "Intended as a prune but dries coarse and stringy, so shipped mainly as a fresh plum and used for canning",
+          "type": "use",
+          "cites": [
+            "ashs-burbank-plums"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ashs-burbank-plums",
+          "name": "HortScience (ASHS): Luther Burbank's Plums, Vol. 50 Issue 2 (2015)",
+          "url": "https://journals.ashs.org/view/journals/hortsci/50/2/article-p189.xml",
+          "tier": "authoritative"
+        },
+        {
+          "id": "researchgate-burbank-plums",
+          "name": "ResearchGate: Luther Burbank's Plums (Karp, HortScience 2015)",
+          "url": "https://www.researchgate.net/publication/279335189_Luther_Burbank's_Plums",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-victoria-european": {
+      "slug": "plum-victoria-european",
+      "species": "Plum",
+      "variety": "Victoria European",
+      "paragraphs": [
+        "Victoria is the famous English plum (Prunus domestica), found as a seedling at Alderton, England, and introduced by the nurseryman Denyer in the 1840s as Denyer's Victoria. It went on to become the most popular plum variety in the UK.",
+        "The fruit has pale red, lightly speckled skin over golden-yellow flesh, and it is unusually versatile, good both fresh and cooked, where it makes excellent jam and pie fillings. Victoria is reliably self-fertile, so it crops without a pollinator, and ripens in late summer to early autumn."
+      ],
+      "claims": [
+        {
+          "text": "English plum (Prunus domestica) found at Alderton, England, and introduced by the nurseryman Denyer in the 1840s as Denyer's Victoria",
+          "type": "origin",
+          "cites": [
+            "wikipedia-victoria-plum",
+            "brickfieldspark-victoria"
+          ]
+        },
+        {
+          "text": "Pale red, lightly speckled skin over golden-yellow flesh",
+          "type": "appearance",
+          "cites": [
+            "brickfieldspark-victoria",
+            "wikipedia-victoria-plum"
+          ]
+        },
+        {
+          "text": "Versatile for both dessert and culinary use, including jam and pie fillings",
+          "type": "use",
+          "cites": [
+            "brickfieldspark-victoria",
+            "wikipedia-victoria-plum"
+          ]
+        },
+        {
+          "text": "Reliably self-fertile, so it crops without a pollinator",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-victoria-plum",
+            "brickfieldspark-victoria"
+          ]
+        },
+        {
+          "text": "Ripens in late summer to early autumn (August to September)",
+          "type": "season",
+          "cites": [
+            "brickfieldspark-victoria",
+            "wikipedia-victoria-plum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-victoria-plum",
+          "name": "Wikipedia: Victoria plum",
+          "url": "https://en.wikipedia.org/wiki/Victoria_plum",
+          "tier": "third_party"
+        },
+        {
+          "id": "brickfieldspark-victoria",
+          "name": "Brickfields Park: Victoria Plum (Prunus domestica Victoria)",
+          "url": "https://www.brickfieldspark.org/data/plumvictoria.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "plum-king-billy",
+    "plum-luisa",
+    "plum-october-purple"
+  ]
 }
