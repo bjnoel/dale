@@ -84,6 +84,760 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "pear-beurre-hardy": {
+      "slug": "pear-beurre-hardy",
+      "species": "Pear",
+      "variety": "Beurre Hardy",
+      "paragraphs": [
+        "Beurre Hardy is a classic French dessert pear (Pyrus communis) raised around 1820 by M. Bonnet at Boulogne in northern France, and named after M. Hardy, the director of arboriculture at the Luxembourg Gardens in Paris. It reached England in the 1840s and has long been valued as one of the great traditional French butter pears.",
+        "Its standout feature is flavour: the buttery, melting, juicy flesh carries a distinctive rosewater or floral aroma that sets it apart from other pears. The medium to large, conical fruit has greenish-yellow skin heavily overlaid with a fine bronze russet. It ripens in mid-season. Beurre Hardy is generally grown with a pollinator rather than relied upon as self-fertile."
+      ],
+      "claims": [
+        {
+          "text": "Beurre Hardy was raised around 1820 by M. Bonnet at Boulogne, France, and named after M. Hardy, director of arboriculture at the Luxembourg Gardens, reaching England in the 1840s.",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce-frenchbutter",
+            "treesofantiquity-beurrehardy"
+          ]
+        },
+        {
+          "text": "It is a European pear (Pyrus communis) and one of the traditional French butter pears.",
+          "type": "naming",
+          "cites": [
+            "specialtyproduce-frenchbutter",
+            "treesofantiquity-beurrehardy"
+          ]
+        },
+        {
+          "text": "Its buttery, melting, juicy flesh has a distinctive rosewater or floral aroma.",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce-frenchbutter",
+            "treesofantiquity-beurrehardy"
+          ]
+        },
+        {
+          "text": "The medium to large conical fruit has greenish-yellow skin heavily covered with fine bronze russet.",
+          "type": "characteristic",
+          "cites": [
+            "specialtyproduce-frenchbutter",
+            "treesofantiquity-beurrehardy"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialtyproduce-frenchbutter",
+          "name": "Specialty Produce: French Butter (Beurre Hardy) Pears",
+          "url": "https://specialtyproduce.com/produce/French_Butter_Pears_1910.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "treesofantiquity-beurrehardy",
+          "name": "Trees of Antiquity: Beurre Hardy Pear",
+          "url": "https://www.treesofantiquity.com/products/beurre-hardy-pear",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-conference": {
+      "slug": "pear-conference",
+      "species": "Pear",
+      "variety": "Conference",
+      "paragraphs": [
+        "Conference is an English dessert pear (Pyrus communis) raised by Thomas Francis Rivers at Rivers Nursery in Sawbridgeworth, Hertfordshire. Its name comes from the National British Pear Conference held in London in 1885, where it won first prize. It is by far the most widely grown pear in the United Kingdom, valued for reliable cropping and good scab resistance.",
+        "The fruit has a distinctive long, narrow, bottle shape with thick greenish-brown skin that is often heavily russeted, turning pale yellow when ripe. The flesh is fine, soft and sweet. Conference is unusually self-fertile for a pear and can set a crop on its own, though yields improve with a nearby pollinator such as Williams. It can also set seedless fruit without pollination."
+      ],
+      "claims": [
+        {
+          "text": "Conference was raised by Thomas Francis Rivers at Rivers Nursery in Sawbridgeworth, Hertfordshire, and named after the National British Pear Conference in London in 1885, where it won first prize.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-conference",
+            "orangepippin-conference"
+          ]
+        },
+        {
+          "text": "It is a European pear (Pyrus communis) and the most widely grown pear in the UK, noted for scab resistance.",
+          "type": "naming",
+          "cites": [
+            "wikipedia-conference",
+            "orangepippin-conference"
+          ]
+        },
+        {
+          "text": "The fruit is long and bottle-shaped with greenish-brown, often russeted skin and fine, soft, sweet flesh.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-conference"
+          ]
+        },
+        {
+          "text": "Conference is unusually self-fertile and can crop on its own, but yields improve with a pollinator such as Williams.",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-conference"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-conference",
+          "name": "Wikipedia: Conference pear",
+          "url": "https://en.wikipedia.org/wiki/Conference_pear",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-conference",
+          "name": "Orange Pippin: Conference pear",
+          "url": "https://www.orangepippin.com/varieties/pears/conference",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-corella": {
+      "slug": "pear-corella",
+      "species": "Pear",
+      "variety": "Corella",
+      "paragraphs": [
+        "Corella is a small Australian dessert pear (Pyrus communis) of the blush, or Forelle, type, sometimes called Australia's prettiest pear after the native parrot. It is grown widely in Australia, with early plantings associated with German settlers in South Australia's Barossa Valley.",
+        "Its appeal is its looks and eating quality at a small size: smooth green-yellow skin develops a striking rosy-red blush on the sunny side as it ripens. The flesh is creamy, fragrant, sweet and juicy with a slightly firm bite, making it popular eaten fresh, sliced into salads, or served with cheese."
+      ],
+      "claims": [
+        {
+          "text": "Corella is a small Australian blush (Forelle-type) Pyrus communis dessert pear, with early plantings linked to German settlers in the Barossa Valley",
+          "type": "origin",
+          "cites": [
+            "australianpears-varieties",
+            "specialtyproduce-corella"
+          ]
+        },
+        {
+          "text": "It has smooth green-yellow skin that develops a rosy-red blush, with creamy, fragrant, sweet, juicy, slightly firm flesh eaten fresh",
+          "type": "description",
+          "cites": [
+            "australianpears-varieties",
+            "specialtyproduce-corella"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "australianpears-varieties",
+          "name": "Australian Pears: About Australian Pears",
+          "url": "https://www.australianpears.com.au/about-australian-pears/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-corella",
+          "name": "Specialty Produce: Corella Pears",
+          "url": "https://specialtyproduce.com/produce/Corella_Pears_12822.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-doyenne-du-comice": {
+      "slug": "pear-doyenne-du-comice",
+      "species": "Pear",
+      "variety": "Doyenne Du Comice",
+      "paragraphs": [
+        "Doyenne du Comice is a French dessert pear (Pyrus communis) raised in 1849 to 1850 at the Comice Horticole garden in Angers by the gardener Dhomme and Millet de la Turtaudiere. Widely regarded as one of the finest eating pears ever bred, it was famously praised in 19th century England, with the London Horticultural Journal calling it the best pear in the world in 1894. It has twice received the Royal Horticultural Society's Award of Garden Merit.",
+        "The large fruit is greenish-yellow, often with a red blush and some russet, ripening late in the season. Its flesh is pale, exceptionally sweet, melting, buttery and very juicy, which is the source of its reputation. The skin is delicate and bruises easily, so the fruit needs careful handling. It is not reliably self-fertile and is best grown with a compatible pollinator."
+      ],
+      "claims": [
+        {
+          "text": "Doyenne du Comice was raised in 1849 to 1850 at the Comice Horticole in Angers, France, by the gardener Dhomme and Millet de la Turtaudiere.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-comice"
+          ]
+        },
+        {
+          "text": "It is a European pear (Pyrus communis) celebrated as one of the finest dessert pears, called the best pear in the world by the London Horticultural Journal in 1894 and awarded the RHS Award of Garden Merit.",
+          "type": "naming",
+          "cites": [
+            "wikipedia-comice"
+          ]
+        },
+        {
+          "text": "The large greenish-yellow fruit often carries a red blush and some russet, with pale, sweet, melting, buttery and very juicy flesh.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-comice",
+            "specialtyproduce-comice"
+          ]
+        },
+        {
+          "text": "Its skin is delicate and bruises easily, requiring careful handling.",
+          "type": "characteristic",
+          "cites": [
+            "wikipedia-comice"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-comice",
+          "name": "Wikipedia: Doyenne du Comice",
+          "url": "https://en.wikipedia.org/wiki/Doyenn%C3%A9_du_Comice",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-comice",
+          "name": "Specialty Produce: Doyenne du Comice Pears",
+          "url": "https://specialtyproduce.com/produce/Doyenne_du_Comice_Pears_18455.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-flemish-beauty": {
+      "slug": "pear-flemish-beauty",
+      "species": "Pear",
+      "variety": "Flemish Beauty",
+      "paragraphs": [
+        "Flemish Beauty is an old Belgian dessert pear (Pyrus communis) believed to descend from a chance seedling found in the woods of East Flanders around 1800, originally called Bosc Peer, or pear of the woods. The prolific Belgian breeder Jean-Baptiste Van Mons took up its propagation and renamed it Fondante des bois, loosely melt of the woods, under which name it became widely known across Europe. It later became one of the most common commercial pears in the United States.",
+        "The medium-sized fruit has yellow skin marked with russet, often with an attractive blush, and soft, buttery, juicy yellow flesh. The flavour is rich, sweet and notably musky, with a balance of sugar and acidity. For a European pear it is unusually self-fertile, though it crops more heavily with a pollinator. It is, however, quite susceptible to pear scab."
+      ],
+      "claims": [
+        {
+          "text": "Flemish Beauty descends from a chance seedling found in the woods of East Flanders, Belgium, around 1800, originally called Bosc Peer, and was renamed Fondante des bois by Jean-Baptiste Van Mons.",
+          "type": "origin",
+          "cites": [
+            "orangepippin-flemishbeauty",
+            "silvercreek-flemishbeauty"
+          ]
+        },
+        {
+          "text": "It is a European pear (Pyrus communis) that became one of the most common commercial pears in the United States.",
+          "type": "naming",
+          "cites": [
+            "orangepippin-flemishbeauty",
+            "silvercreek-flemishbeauty"
+          ]
+        },
+        {
+          "text": "The fruit has yellow, russeted skin and soft, buttery, juicy flesh with a rich, sweet, musky flavour.",
+          "type": "flavour",
+          "cites": [
+            "orangepippin-flemishbeauty",
+            "silvercreek-flemishbeauty"
+          ]
+        },
+        {
+          "text": "For a European pear it is unusually self-fertile but is susceptible to pear scab.",
+          "type": "characteristic",
+          "cites": [
+            "orangepippin-flemishbeauty",
+            "silvercreek-flemishbeauty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin-flemishbeauty",
+          "name": "Orange Pippin: Flemish Beauty pear",
+          "url": "https://www.orangepippin.com/varieties/pears/flemish-beauty",
+          "tier": "third_party"
+        },
+        {
+          "id": "silvercreek-flemishbeauty",
+          "name": "Silver Creek Nursery: Flemish Beauty European Pear",
+          "url": "https://silvercreeknursery.ca/products/flemish-beauty-pear",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-flordahome": {
+      "slug": "pear-flordahome",
+      "species": "Pear",
+      "variety": "Flordahome",
+      "paragraphs": [
+        "Flordahome is a low-chill pear developed by the University of Florida for warm, subtropical climates where most pears fail to get enough winter cold. It is a hybrid pear (a cross involving European Pyrus communis and Asian Pyrus pyrifolia) and needs only about 150 chill hours, making it one of the few pears that fruit reliably in mild-winter regions.",
+        "The fruit is soft-fleshed, sweet and juicy with smooth green to yellow skin, ripening early in summer (around July to August in Florida). It is good for fresh eating and canning, carries useful fire blight and leaf spot resistance, and is only partially self-fertile, so it crops better with a compatible pollinator such as Hood."
+      ],
+      "claims": [
+        {
+          "text": "Flordahome is a low-chill (about 150 chill hours) pear developed by the University of Florida, a Pyrus communis x Pyrus pyrifolia hybrid for warm climates",
+          "type": "origin",
+          "cites": [
+            "ufifas-hs1393",
+            "treevitalize-flordahome"
+          ]
+        },
+        {
+          "text": "It ripens early (July to August), has soft sweet juicy flesh and green-yellow skin, is fire blight and leaf spot resistant, and is only partially self-fertile",
+          "type": "description",
+          "cites": [
+            "ufifas-hs1393",
+            "treevitalize-flordahome"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-hs1393",
+          "name": "UF/IFAS: The Pear (Pyrus spp.) in Florida Home Gardens (HS1393)",
+          "url": "https://edis.ifas.ufl.edu/publication/hs1393",
+          "tier": "authoritative"
+        },
+        {
+          "id": "treevitalize-flordahome",
+          "name": "Tree Vitalize: Pear Trees in Florida",
+          "url": "https://treevitalize.com/pear-trees-in-florida/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-hood": {
+      "slug": "pear-hood",
+      "species": "Pear",
+      "variety": "Hood",
+      "paragraphs": [
+        "Hood is a very low-chill pear released by the University of Florida for warm, subtropical growing where winters are too mild for traditional European pears. Needing only a low number of chill hours, it is one of the standard low-chill choices for Florida and similar climates, and it is interfruitful with Flordahome as a pollinating partner.",
+        "The fruit is large and early, ripening in mid-summer, with yellow-green skin and soft, sweet, mild flesh often compared to a Bartlett. It also carries moderate fire blight resistance, a key trait for humid, warm-climate orchards."
+      ],
+      "claims": [
+        {
+          "text": "Hood is a very low-chill pear released for warm climates by the University of Florida, interfruitful with Flordahome and with moderate fire blight resistance",
+          "type": "origin",
+          "cites": [
+            "ufifas-hs1393-hood",
+            "treevitalize-hood"
+          ]
+        },
+        {
+          "text": "It produces large, early fruit ripening mid-summer with yellow-green skin and soft, sweet, mild Bartlett-like flesh",
+          "type": "description",
+          "cites": [
+            "treevitalize-hood",
+            "growingfruit-hood"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-hs1393-hood",
+          "name": "UF/IFAS: The Pear (Pyrus spp.) in Florida Home Gardens (HS1393)",
+          "url": "https://edis.ifas.ufl.edu/publication/hs1393",
+          "tier": "authoritative"
+        },
+        {
+          "id": "treevitalize-hood",
+          "name": "Tree Vitalize: Pear Trees in Florida",
+          "url": "https://treevitalize.com/pear-trees-in-florida/",
+          "tier": "third_party"
+        },
+        {
+          "id": "growingfruit-hood",
+          "name": "Growing Fruit forum: Hood Pear",
+          "url": "https://growingfruit.org/t/hood-pear/4970",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-josephine-de-malines": {
+      "slug": "pear-josephine-de-malines",
+      "species": "Pear",
+      "variety": "Josephine de Malines",
+      "paragraphs": [
+        "Josephine de Malines is an old Belgian winter pear (Pyrus communis) raised in the early 1800s by Major Pierre Joseph Esperen at Malines (Mechelen), who named it after his wife, Josephine. It is a late, long-keeping dessert pear, traditionally picked in autumn for eating through winter once it has mellowed in store.",
+        "The flesh is the draw: rich, buttery and melting, sweet and perfumed, often rated among the finest-flavoured of all pears. The small to medium fruit are conical and greenish-yellow, sometimes with a dull red flush. It is not self-fertile, so it needs a compatible pollinator nearby."
+      ],
+      "claims": [
+        {
+          "text": "Josephine de Malines is a Belgian winter pear raised in the early 1800s by Major Pierre Joseph Esperen at Malines (Mechelen), named after his wife Josephine",
+          "type": "naming",
+          "cites": [
+            "orangepippin-josephine",
+            "specialtyproduce-josephine"
+          ]
+        },
+        {
+          "text": "It is a late, long-keeping pear with rich, buttery, melting, perfumed flesh, greenish-yellow fruit sometimes with a red flush, and needs a pollinator",
+          "type": "description",
+          "cites": [
+            "orangepippin-josephine",
+            "specialtyproduce-josephine"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin-josephine",
+          "name": "Orange Pippin: Josephine de Malines",
+          "url": "https://www.orangepippin.com/varieties/pears/josephine-de-malines",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-josephine",
+          "name": "Specialty Produce: Josephine Pears",
+          "url": "https://specialtyproduce.com/produce/Josephine_Pears_15907.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-nashi-nijisseiki": {
+      "slug": "pear-nashi-nijisseiki",
+      "species": "Pear",
+      "variety": "Nashi Nijisseiki",
+      "paragraphs": [
+        "Nijisseiki, whose name means 20th Century, is a Japanese nashi or Asian pear (Pyrus pyrifolia), not a European pear. It traces to a chance seedling discovered on a rubbish heap in Japan in the late 1890s, and went on to become one of the most popular and widely grown Asian pear cultivars in Japan and the United States. Unlike the soft, buttery European pears, nashi are eaten crisp and apple-like straight from the tree.",
+        "The fruit is round and apple-shaped with smooth, thin, yellow to greenish-yellow skin. Its white flesh is clean, crisp, very juicy and sweet, the qualities that made it famous. It ripens in late summer. As a smooth-skinned yellow nashi it is more prone to fire blight than russeted types, and at least two compatible cultivars are usually needed for reliable pollination."
+      ],
+      "claims": [
+        {
+          "text": "Nijisseiki means 20th Century and is a Japanese nashi (Asian pear, Pyrus pyrifolia) that arose from a chance seedling found on a rubbish heap in Japan in the late 1890s.",
+          "type": "origin",
+          "cites": [
+            "ncsu-nijisseiki",
+            "victoriana-nijisseiki"
+          ]
+        },
+        {
+          "text": "It is one of the most popular Asian pear cultivars, eaten crisp and apple-like rather than soft like European pears.",
+          "type": "naming",
+          "cites": [
+            "ncsu-nijisseiki",
+            "victoriana-nijisseiki"
+          ]
+        },
+        {
+          "text": "The round fruit has smooth yellow to greenish-yellow skin and white flesh that is crisp, very juicy and sweet, ripening in late summer.",
+          "type": "flavour",
+          "cites": [
+            "ncsu-nijisseiki",
+            "victoriana-nijisseiki"
+          ]
+        },
+        {
+          "text": "As a smooth yellow nashi it is more susceptible to fire blight than russeted types and usually needs at least two cultivars for pollination.",
+          "type": "characteristic",
+          "cites": [
+            "ncsu-nijisseiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncsu-nijisseiki",
+          "name": "NC State Extension: Pyrus pyrifolia 'Nijisseiki'",
+          "url": "https://plants.ces.ncsu.edu/plants/pyrus-pyrifolia-nijisseiki/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "victoriana-nijisseiki",
+          "name": "Victoriana Nursery: Nijisseiki Asian Pear (Pyrus pyrifolia)",
+          "url": "https://victoriananursery.co.uk/Asian-Pear-Tree-Nijisseiki/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-packham-s-triumph": {
+      "slug": "pear-packham-s-triumph",
+      "species": "Pear",
+      "variety": "Packham's Triumph",
+      "paragraphs": [
+        "Packham's Triumph is a famous Australian-bred pear (Pyrus communis), raised in 1896 by orchardist Charles Packham at Molong in the New South Wales central west, as a cross between the old English variety Uvedale's St Germain and Williams' Bon Chretien. Packham proposed the name Packham's Seedling, but the agriculture department suggested Packham's Triumph. It went on to become Australia's leading commercial and export pear.",
+        "The fruit has a classic pear shape with thin green skin (often lightly russeted) that fades to pale yellow as it ripens. The ivory flesh is fine-grained, juicy and creamy with a sweet, mildly musky, aromatic flavour, ripening softly rather than staying crisp."
+      ],
+      "claims": [
+        {
+          "text": "Packham's Triumph is an Australian pear bred in 1896 by Charles Packham at Molong, NSW, from a cross of Uvedale's St Germain and Williams' Bon Chretien, and named Packham's Triumph by the agriculture department",
+          "type": "origin",
+          "cites": [
+            "adb-packham",
+            "australianfoodtimeline-packham",
+            "specialtyproduce-packham"
+          ]
+        },
+        {
+          "text": "It has thin green skin with some russet fading to pale yellow, and fine-grained, juicy, creamy, sweet, mildly musky flesh",
+          "type": "description",
+          "cites": [
+            "specialtyproduce-packham",
+            "australianpears-varieties"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "adb-packham",
+          "name": "Australian Dictionary of Biography: Charles Henry Packham",
+          "url": "https://adb.anu.edu.au/biography/packham-charles-henry-13142",
+          "tier": "authoritative"
+        },
+        {
+          "id": "australianfoodtimeline-packham",
+          "name": "Australian Food Timeline: Packham pear developed in NSW",
+          "url": "https://australianfoodtimeline.com.au/packham-pear-developed/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-packham",
+          "name": "Specialty Produce: Packham Pears",
+          "url": "https://specialtyproduce.com/produce/Packham_Pears_1540.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "australianpears-varieties",
+          "name": "Australian Pears: About Australian Pears",
+          "url": "https://www.australianpears.com.au/about-australian-pears/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-williams": {
+      "slug": "pear-williams",
+      "species": "Pear",
+      "variety": "Williams",
+      "paragraphs": [
+        "Williams (full name Williams' Bon Chretien) is the classic European pear (Pyrus communis), thought to have arisen around 1765 to 1770 in the garden of a schoolmaster named John Stair at Aldermaston, England, and later spread by a nurseryman named Williams. In the United States and Canada the same variety is known as Bartlett, after Enoch Bartlett, who sold it without knowing its origin. The two were not recognised as identical until 1828.",
+        "Its flavour is so characteristic it is often called the definitive pear taste: aromatic and musky, with white to pale-yellow flesh that ripens soft, juicy and sweet. The skin turns from green to yellow as it ripens. Williams is hugely versatile, eaten fresh, widely canned, and distilled into the pear brandy Poire Williams."
+      ],
+      "claims": [
+        {
+          "text": "Williams (Williams' Bon Chretien) is a Pyrus communis European pear that arose around 1765 to 1770 at Aldermaston, England, and is known as Bartlett in the US and Canada, the two not recognised as the same until 1828",
+          "type": "naming",
+          "cites": [
+            "wikipedia-williams",
+            "orangepippin-williams"
+          ]
+        },
+        {
+          "text": "It has aromatic, musky flesh that ripens soft, juicy and sweet with skin turning green to yellow, and is used fresh, canned, and for Poire Williams brandy",
+          "type": "description",
+          "cites": [
+            "wikipedia-williams",
+            "specialtyproduce-williams"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-williams",
+          "name": "Wikipedia: Williams pear",
+          "url": "https://en.wikipedia.org/wiki/Williams_pear",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-williams",
+          "name": "Orange Pippin: Bartlett (Williams)",
+          "url": "https://www.orangepippin.com/varieties/pears/bartlett-williams",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-williams",
+          "name": "Specialty Produce: Williams Pears",
+          "url": "https://specialtyproduce.com/produce/Williams_Pears_12883.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-winter-cole": {
+      "slug": "pear-winter-cole",
+      "species": "Pear",
+      "variety": "Winter Cole",
+      "paragraphs": [
+        "Winter Cole is an Australian heritage pear, a seedling of the Belgian winter keeper Winter Nelis raised by J.C. Cole at Richmond, Victoria, and introduced by the nurseryman J. Brunning and Sons in the late 1880s. Like its parent it is a European pear (Pyrus communis) rather than an Asian nashi, and it inherits Winter Nelis's reputation for late ripening and long storage, holding well into winter.",
+        "It is a medium-sized, cool-climate dessert pear with green skin marked by brown russet, and flesh that is juicy and rich in flavour. As a late-season variety it is valued as a keeper, picked in late autumn and eaten through the colder months. It is not self-fertile and crops best alongside other European pears such as Beurre Bosc, Williams or Doyenne du Comice."
+      ],
+      "claims": [
+        {
+          "text": "Winter Cole is a seedling of Winter Nelis raised by J.C. Cole at Richmond, Victoria, and introduced by J. Brunning and Sons in the late 1880s.",
+          "type": "origin",
+          "cites": [
+            "heritage-wintercole",
+            "woodbridge-wintercole"
+          ]
+        },
+        {
+          "text": "Its parent Winter Nelis is a European pear (Pyrus communis) and a late-season variety prized for long storage into winter.",
+          "type": "naming",
+          "cites": [
+            "wikipedia-winternelis"
+          ]
+        },
+        {
+          "text": "Winter Cole has green, russeted skin and juicy, richly flavoured flesh, and is a late-season keeper.",
+          "type": "flavour",
+          "cites": [
+            "heritage-wintercole",
+            "woodbridge-wintercole"
+          ]
+        },
+        {
+          "text": "It is not self-fertile and crops best with other European pear pollinators.",
+          "type": "pollination",
+          "cites": [
+            "heritage-wintercole",
+            "woodbridge-wintercole"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-winternelis",
+          "name": "Wikipedia: Winter Nelis pear",
+          "url": "https://en.wikipedia.org/wiki/Winter_Nelis_pear",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage-wintercole",
+          "name": "Heritage Fruit Trees: Winter Cole Pear",
+          "url": "https://www.heritagefruittrees.com.au/winter-cole-pear/",
+          "tier": "nursery"
+        },
+        {
+          "id": "woodbridge-wintercole",
+          "name": "Woodbridge Fruit Trees: Winter Cole",
+          "url": "https://www.woodbridgefruittrees.com.au/dwarf-pears/194-winter-cole.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-winter-nelis": {
+      "slug": "pear-winter-nelis",
+      "species": "Pear",
+      "variety": "Winter Nelis",
+      "paragraphs": [
+        "Winter Nelis is an old Belgian late pear (Pyrus communis) raised from seed in the early 1800s by the amateur horticulturist Jean-Charles de Nelis, near Brussels, and also known as Bonne de Malines. Picked in late autumn, it is one of the better-keeping pears, storing for a couple of months for use through winter.",
+        "Despite its modest, often russeted skin (which kept it from large commercial production), it is prized for eating quality: yellowish, fine-grained flesh that is buttery and melting, with a rich, sugary, vinous flavour and fine aroma. The small to medium fruit suits both fresh eating and cooking."
+      ],
+      "claims": [
+        {
+          "text": "Winter Nelis is a Belgian late pear (also called Bonne de Malines) raised from seed in the early 1800s by Jean-Charles de Nelis, and stores well into winter",
+          "type": "naming",
+          "cites": [
+            "wikipedia-winternelis",
+            "specialtyproduce-winternelis"
+          ]
+        },
+        {
+          "text": "It has russeted skin and yellowish, fine-grained, buttery, melting flesh with a rich, sugary, vinous flavour, used fresh and cooked",
+          "type": "description",
+          "cites": [
+            "wikipedia-winternelis",
+            "specialtyproduce-winternelis"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-winternelis",
+          "name": "Wikipedia: Winter Nelis pear",
+          "url": "https://en.wikipedia.org/wiki/Winter_Nelis_pear",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-winternelis",
+          "name": "Specialty Produce: Winter Nellis Pears",
+          "url": "https://specialtyproduce.com/produce/Winter_Nellis_Pears_14207.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-ya-li-nashi": {
+      "slug": "pear-ya-li-nashi",
+      "species": "Pear",
+      "variety": "Ya Li Nashi",
+      "paragraphs": [
+        "Ya Li is a Chinese white pear, a cultivar of Pyrus x bretschneideri native to north China and grown there for centuries. Its name means duck pear, after a shape that, unusually for an Asian pear, is elongated and narrow toward the stem like a European pear rather than round like a typical nashi.",
+        "Like other Asian pears it eats crisp rather than soft and buttery: the white to pale-yellow flesh is very juicy and crunchy, often compared to a mild Bosc but with higher water content and lower sugar. It is eaten fresh while firm, prized for its refreshing, watery crunch."
+      ],
+      "claims": [
+        {
+          "text": "Ya Li is a cultivar of the Chinese white pear Pyrus x bretschneideri, native to north China, whose name means duck pear and which is elongated like a European pear rather than round like a typical nashi",
+          "type": "origin",
+          "cites": [
+            "wikipedia-bretschneideri",
+            "wikipedia-asianpear"
+          ]
+        },
+        {
+          "text": "It has crisp, very juicy white to pale-yellow flesh compared to a mild Bosc but with higher water content and lower sugar, eaten fresh while firm",
+          "type": "description",
+          "cites": [
+            "wikipedia-bretschneideri",
+            "wikipedia-asianpear"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-bretschneideri",
+          "name": "Wikipedia: Pyrus x bretschneideri",
+          "url": "https://en.wikipedia.org/wiki/Pyrus_%C3%97_bretschneideri",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-asianpear",
+          "name": "Wikipedia: Asian pear",
+          "url": "https://en.wikipedia.org/wiki/Asian_pear",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "pear-bonza",
+    "pear-red-princess"
+  ]
 }

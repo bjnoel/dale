@@ -1,0 +1,259 @@
+{
+  "species_slug": "tamarillo",
+  "schema_version": 1,
+  "varieties": {
+    "tamarillo-orange": {
+      "slug": "tamarillo-orange",
+      "species": "Tamarillo",
+      "variety": "Orange",
+      "paragraphs": [
+        "The orange (gold) tamarillo has golden-orange skin over pale orange to yellow flesh. Like the yellow form, it is milder, sweeter and less acidic than the tart red type, which makes it very good for eating fresh, simply halved and the soft pulp scooped out (often lightly sugared). The bitter skin and the tissue just beneath it are not eaten and are removed first, a trait shared by all tamarillos.",
+        "Tamarillo (Solanum betaceum) is a fast-growing subtropical small tree or shrub in the nightshade family, producing egg-shaped fruit within about one and a half to two years of planting. The orange form sits among the sweeter, gentler colour types alongside the yellow, in contrast to the sharper red."
+      ],
+      "claims": [
+        {
+          "text": "Orange tamarillos have golden-orange skin over pale orange to yellow flesh.",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The orange form is milder, sweeter and less acidic than the red form.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia",
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "The orange form's lower acidity makes it good for eating fresh out of hand.",
+          "type": "use",
+          "cites": [
+            "specialtyproduce",
+            "crfg"
+          ]
+        },
+        {
+          "text": "The bitter skin and tissue beneath it are removed and not eaten.",
+          "type": "use",
+          "cites": [
+            "wikipedia",
+            "crfg"
+          ]
+        },
+        {
+          "text": "Tamarillo (Solanum betaceum) is a fast-growing subtropical tree or shrub in the nightshade family with egg-shaped fruit, bearing within about 1.5 to 2 years.",
+          "type": "plant",
+          "cites": [
+            "wikipedia",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Tamarillo - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Tamarillo",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg",
+          "name": "Tamarillo - California Rare Fruit Growers",
+          "url": "https://crfg.org/homepage/library/fruitfacts/tamarillo/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Gold Tamarillos - Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Gold_Tamarillos_877.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "tamarillo-red": {
+      "slug": "tamarillo-red",
+      "species": "Tamarillo",
+      "variety": "Red",
+      "paragraphs": [
+        "The red tamarillo is the most widely grown colour form and the one most people picture. It has glossy red to red-brown skin over orange to yellow-orange flesh studded with edible black seeds. The flavour leans sharper, tarter and more savoury than the gold and orange forms, with tangy, almost tomato-like acidity, which is why it shines in cooking as much as fresh. As with all tamarillos, the skin and the tissue just beneath it carry a bitter, tannin-rich taste and are scooped away rather than eaten.",
+        "The red form's acidity makes it the most versatile in the kitchen, working across sweet and savoury dishes: jams, jellies and chutneys, salsas and sauces for fish, chicken or curries. Tamarillo (Solanum betaceum) is a fast-growing subtropical small tree or shrub in the nightshade family, bearing egg-shaped fruit within about one and a half to two years of planting."
+      ],
+      "claims": [
+        {
+          "text": "Red is the most widely cultivated and common tamarillo colour form.",
+          "type": "general",
+          "cites": [
+            "wikipedia",
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "Red tamarillos have red to red-brown skin over orange to yellow-orange flesh with edible black seeds.",
+          "type": "appearance",
+          "cites": [
+            "nztca",
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "The red form is sharper, more acidic and more savoury than the yellow and orange forms.",
+          "type": "flavour",
+          "cites": [
+            "crfg",
+            "nztca",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The skin and tissue just under it are bitter and not eaten.",
+          "type": "use",
+          "cites": [
+            "wikipedia",
+            "crfg"
+          ]
+        },
+        {
+          "text": "Red tamarillo's acidity suits jams, chutneys, salsas and sauces across sweet and savoury dishes.",
+          "type": "use",
+          "cites": [
+            "specialtyproduce",
+            "rfca"
+          ]
+        },
+        {
+          "text": "Tamarillo (Solanum betaceum) is a fast-growing subtropical tree or shrub in the nightshade family with egg-shaped fruit, bearing within about 1.5 to 2 years.",
+          "type": "plant",
+          "cites": [
+            "wikipedia",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Tamarillo - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Tamarillo",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg",
+          "name": "Tamarillo - California Rare Fruit Growers",
+          "url": "https://crfg.org/homepage/library/fruitfacts/tamarillo/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nztca",
+          "name": "Tamarillos - New Zealand Tree Crops Association",
+          "url": "https://treecrops.org.nz/your-backyard-fruit-bowl-tamarillos/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Red Tamarillos - Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Red_Tamarillos_876.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca",
+          "name": "Brazenly Beautiful Tamarillo - RFCA Archives",
+          "url": "https://rfcarchives.org.au/Next/Fruits/SolanumFamily/BeautTamarillo3-97.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "tamarillo-yellow": {
+      "slug": "tamarillo-yellow",
+      "species": "Tamarillo",
+      "variety": "Yellow",
+      "paragraphs": [
+        "The yellow (gold) tamarillo carries the colour right through: yellow skin over yellow flesh, a noticeably milder, sweeter and less astringent profile than the tart red form. That softer acidity makes the yellow form a favourite for eating fresh, scooped straight from a halved fruit, and it is also valued for processing. As with every tamarillo, the bitter skin and the layer just beneath it are not eaten and are removed before serving.",
+        "Tamarillo (Solanum betaceum) is a fast-growing subtropical small tree or shrub in the nightshade family. It bears its egg-shaped fruit early, within about one and a half to two years of planting. The yellow form is one of the long-established colour types in cultivation and is prized where a gentler, sweeter tamarillo is wanted."
+      ],
+      "claims": [
+        {
+          "text": "Yellow (gold) tamarillos have yellow skin and yellow flesh.",
+          "type": "appearance",
+          "cites": [
+            "nztca",
+            "crfg"
+          ]
+        },
+        {
+          "text": "The yellow form is milder, sweeter and less astringent than the red form.",
+          "type": "flavour",
+          "cites": [
+            "crfg",
+            "nztca",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Yellow-fruited cultivars are preferred for eating fresh and for processing.",
+          "type": "use",
+          "cites": [
+            "crfg",
+            "rfca"
+          ]
+        },
+        {
+          "text": "The bitter skin and tissue beneath it are removed and not eaten.",
+          "type": "use",
+          "cites": [
+            "crfg",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Tamarillo (Solanum betaceum) is a fast-growing subtropical tree or shrub in the nightshade family with egg-shaped fruit, bearing within about 1.5 to 2 years.",
+          "type": "plant",
+          "cites": [
+            "nztca",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Tamarillo - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Tamarillo",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg",
+          "name": "Tamarillo - California Rare Fruit Growers",
+          "url": "https://crfg.org/homepage/library/fruitfacts/tamarillo/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nztca",
+          "name": "Tamarillos - New Zealand Tree Crops Association",
+          "url": "https://treecrops.org.nz/your-backyard-fruit-bowl-tamarillos/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca",
+          "name": "Brazenly Beautiful Tamarillo - RFCA Archives",
+          "url": "https://rfcarchives.org.au/Next/Fruits/SolanumFamily/BeautTamarillo3-97.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

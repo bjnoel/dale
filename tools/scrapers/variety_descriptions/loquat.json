@@ -1,0 +1,197 @@
+{
+  "species_slug": "loquat",
+  "schema_version": 1,
+  "varieties": {
+    "loquat-champagne": {
+      "slug": "loquat-champagne",
+      "species": "Loquat",
+      "variety": "Champagne",
+      "paragraphs": [
+        "Champagne is an old white fleshed loquat introduced into cultivation in California around 1908 by the grower C.P. Taft, who selected it from seedlings and considered it among his best introductions. It sits in the white fleshed group of loquats (named cultivars carry either orange or white flesh), which are generally better suited to cooler coastal districts than the orange fleshed types.",
+        "The fruit is medium to large with pale golden to deep yellow skin and white, translucent, melting and very juicy flesh. The flavour is mildly subacid, bright and pleasant, of very good quality. Champagne is self infertile, so it crops best with another loquat nearby, but it is noted as prolific and ripens late in the season."
+      ],
+      "claims": [
+        {
+          "text": "Old white fleshed loquat introduced in California around 1908 by C.P. Taft, considered among his best selections",
+          "type": "origin",
+          "cites": [
+            "crfg-loquat",
+            "pacifichort-loquat"
+          ]
+        },
+        {
+          "text": "White fleshed loquats are better adapted to cool coastal areas, and named cultivars have either orange or white flesh",
+          "type": "climate",
+          "cites": [
+            "crfg-loquat",
+            "pacifichort-loquat"
+          ]
+        },
+        {
+          "text": "Medium to large fruit with pale golden to deep yellow skin and white, translucent, melting, very juicy flesh",
+          "type": "appearance",
+          "cites": [
+            "crfg-loquat",
+            "pacifichort-loquat"
+          ]
+        },
+        {
+          "text": "Flavour mildly subacid, bright and pleasant, of very good quality",
+          "type": "flavour",
+          "cites": [
+            "crfg-loquat"
+          ]
+        },
+        {
+          "text": "Self infertile but prolific, ripens late in the season",
+          "type": "pollination",
+          "cites": [
+            "crfg-loquat"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "crfg-loquat",
+          "name": "California Rare Fruit Growers: Loquat Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/loquat/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pacifichort-loquat",
+          "name": "Pacific Horticulture: Orchard Trees of Rancho Los Cerritos, Loquats",
+          "url": "https://pacifichorticulture.org/articles/orchard-trees-of-rancho-los-cerritos-loquats/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "loquat-herds-mammoth": {
+      "slug": "loquat-herds-mammoth",
+      "species": "Loquat",
+      "variety": "Herds Mammoth",
+      "paragraphs": [
+        "Herds Mammoth (Herd's Mammoth) is a large fruited loquat in the white fleshed group. The fruit is large with yellow orange skin and white to cream coloured flesh of good quality, distinguishing it from the deep orange fleshed Japanese types. Loquat flesh can be white, yellow or orange depending on the cultivar, and white fleshed selections like this one are generally better suited to cooler coastal districts.",
+        "It is an early ripening variety, maturing earlier than Victory, which extends the picking window at the start of the loquat season. The tree is hardy and cold tolerant, which suits it to cooler parts of southern Australia, and it is widely grown there for its large fruit."
+      ],
+      "claims": [
+        {
+          "text": "Large fruited loquat with yellow orange skin and white to cream coloured flesh of good quality",
+          "type": "appearance",
+          "cites": [
+            "crfg-loquat",
+            "blerick-herds-mammoth"
+          ]
+        },
+        {
+          "text": "A white fleshed type; loquat flesh ranges across white, yellow and orange, with white fleshed cultivars better suited to cooler coastal areas",
+          "type": "climate",
+          "cites": [
+            "crfg-loquat"
+          ]
+        },
+        {
+          "text": "Ripens early, earlier than the Victory cultivar",
+          "type": "season",
+          "cites": [
+            "crfg-loquat"
+          ]
+        },
+        {
+          "text": "Hardy and cold tolerant, suited to cooler parts of southern Australia",
+          "type": "climate",
+          "cites": [
+            "blerick-herds-mammoth"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "crfg-loquat",
+          "name": "California Rare Fruit Growers: Loquat Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/loquat/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "blerick-herds-mammoth",
+          "name": "Blerick Tree Farm: Loquat Herds Mammoth",
+          "url": "https://www.blericktreefarm.com.au/product/loquat-herds-mammoth-eriobotrya-japonica/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "loquat-nagasakiwase": {
+      "slug": "loquat-nagasakiwase",
+      "species": "Loquat",
+      "variety": "Nagasakiwase",
+      "paragraphs": [
+        "Nagasakiwase (Nagasaki Wase) is a Japanese loquat cultivar, regarded as the earliest maturing variety in Japan, ripening even earlier than the well known Mogi. It carries deep orange flesh and a very sweet flavour, with a high flesh to seed ratio, putting it among the orange or yellow fleshed group of loquats rather than the white fleshed types.",
+        "Loquats are largely self fertile and do not need a pollination partner, though cropping is improved by cross pollination. In warmer subtropical districts Nagasakiwase can carry two crops a year, a first picking around autumn and a second later in the season, which makes it a productive choice for early fruit."
+      ],
+      "claims": [
+        {
+          "text": "Japanese loquat cultivar, the earliest maturing variety in Japan, even earlier than Mogi",
+          "type": "origin",
+          "cites": [
+            "rfca-loquat",
+            "daleys-nagasakiwase"
+          ]
+        },
+        {
+          "text": "Deep orange flesh, very sweet flavour, high flesh to seed ratio (an orange/yellow fleshed type)",
+          "type": "flavour",
+          "cites": [
+            "daleys-nagasakiwase"
+          ]
+        },
+        {
+          "text": "Loquats are self fertile and do not require cross pollination, though cropping is improved by it",
+          "type": "pollination",
+          "cites": [
+            "rfca-loquat",
+            "daleys-nagasakiwase"
+          ]
+        },
+        {
+          "text": "Can carry two crops a year in subtropical areas",
+          "type": "season",
+          "cites": [
+            "daleys-nagasakiwase"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-loquat",
+          "name": "RFCA Archives: The Loquat (Rare Fruit Council of Australia)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Loquat/Loquat11-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys-nagasakiwase",
+          "name": "Daleys Fruit: Loquat Nagasakiwase",
+          "url": "https://www.daleysfruit.com.au/buy/loquat-nagasakiwase-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "loquat-bessell-brown",
+    "loquat-enormity",
+    "loquat-honey-dew",
+    "loquat-sewells-prolific",
+    "loquat-springtime"
+  ]
+}
