@@ -63,6 +63,150 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "fig-black-mission": {
+      "slug": "fig-black-mission",
+      "species": "Fig",
+      "variety": "Black Mission",
+      "paragraphs": [
+        "Black Mission, also called Mission or Franciscan, is one of the most historic figs in cultivation. It came from Spain and was planted by Franciscan missionaries at San Diego in 1768, then spread up the California coast as new missions were built. The fruit has a dark purple to almost black skin and a strawberry to amber red interior. A telltale trait is that the skin often cracks or checks at full maturity.",
+        "It is a reliable two crop fig: a large, pyriform breba crop early, then a medium sized main crop later in the season. The flavour is rich and distinctly figgy, and the quality is rated excellent both fresh and dried, which made it a commercial mainstay in California. Its sweet, jammy flesh dries well, and it remains a benchmark dark fig for fresh eating."
+      ],
+      "claims": [
+        {
+          "text": "Black Mission (Mission, Franciscan) came from Spain and was planted by Franciscan missionaries at San Diego in 1768, then spread up the California coast.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-mission",
+            "specialtyproduce-blackmission"
+          ]
+        },
+        {
+          "text": "The skin is dark purple to almost black and the interior is strawberry to amber red.",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce-blackmission",
+            "figdatabase-blackmission"
+          ]
+        },
+        {
+          "text": "The skin often cracks or checks at full maturity.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-mission",
+            "figdatabase-blackmission"
+          ]
+        },
+        {
+          "text": "It produces two crops, a large breba crop early and a medium sized main crop later.",
+          "type": "season",
+          "cites": [
+            "wikipedia-mission",
+            "specialtyproduce-blackmission"
+          ]
+        },
+        {
+          "text": "Quality is excellent both fresh and dried.",
+          "type": "use",
+          "cites": [
+            "figdatabase-blackmission",
+            "specialtyproduce-blackmission"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-mission",
+          "name": "Wikipedia: Mission fig",
+          "url": "https://en.wikipedia.org/wiki/Mission_fig",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-blackmission",
+          "name": "Specialty Produce: Black Mission Figs",
+          "url": "https://specialtyproduce.com/produce/Black_Mission_Figs_6571.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "figdatabase-blackmission",
+          "name": "Fig Database: Black Mission",
+          "url": "https://www.figdatabase.com/variety-details/578/black-mission",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-bourjassotte-noire": {
+      "slug": "fig-bourjassotte-noire",
+      "species": "Fig",
+      "variety": "Bourjassotte Noire",
+      "paragraphs": [
+        "Bourjassotte Noire is an old Mediterranean fig whose name traces to Burjassot near Valencia in Spain, though it has been grown around the western Mediterranean for centuries. In France it is the variety behind the Sollies figs of Provence, which carry a Protected Designation of Origin (PDO). The skin is a dark purple to near black with violet tones at the neck and a bluish bloom, and it is ribbed, often checking and cracking as it ripens.",
+        "Inside, the flesh is a deep red, dense and tender. The flavour is rich and sweet with a balancing tartness, giving it a floral, berry like character that fig growers prize. The skin cracking at full ripeness is a classic sign of a sweet, well ripened fig. It is grown mainly as a premium fresh eating fig, the same fruit marketed in France as the Sollies violette."
+      ],
+      "claims": [
+        {
+          "text": "Bourjassotte Noire takes its name from Burjassot near Valencia, Spain, and has been grown around the western Mediterranean for centuries.",
+          "type": "origin",
+          "cites": [
+            "figdatabase-bourjassotte",
+            "specialtyproduce-bourjassotte"
+          ]
+        },
+        {
+          "text": "In France it is the variety behind the Sollies PDO figs of Provence.",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce-bourjassotte",
+            "figdatabase-bourjassotte"
+          ]
+        },
+        {
+          "text": "The skin is dark purple to near black with violet neck tones and a bluish bloom, ribbed and checking or cracking when ripe.",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce-bourjassotte",
+            "figdatabase-bourjassotte"
+          ]
+        },
+        {
+          "text": "The flesh is deep red, dense and tender.",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce-bourjassotte",
+            "figdatabase-bourjassotte"
+          ]
+        },
+        {
+          "text": "The flavour is rich and sweet with balancing tartness and floral, berry like notes.",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce-bourjassotte",
+            "figdatabase-bourjassotte"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialtyproduce-bourjassotte",
+          "name": "Specialty Produce: Bourjasotte Noire Sollies Figs",
+          "url": "https://specialtyproduce.com/produce/Bourjasotte_Noire_Sollies_Figs_23061.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "figdatabase-bourjassotte",
+          "name": "Fig Database: Bourjassotte Noire",
+          "url": "https://www.figdatabase.com/variety-details/600/bourjassotte-noire",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "fig-brown-turkey": {
       "slug": "fig-brown-turkey",
       "species": "Fig",
@@ -121,6 +265,647 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "fig-cape-white": {
+      "slug": "fig-cape-white",
+      "species": "Fig",
+      "variety": "Cape White",
+      "paragraphs": [
+        "Cape White is a very old white fig long associated with South Africa, where it is one of the oldest cultivars and the name by which it is best known. It is a small to medium, early ripening fig with green skin that turns only slightly yellow when fully ripe, and pale flesh (described as cream to light straw). In Australia it is grown across the eastern state fruit collections.",
+        "It is an early variety, ripening from about January in the southern hemisphere summer, well ahead of many other figs. The fruit has a sweet, delicate flavour and is especially popular for jam, while also being used fresh and for drying."
+      ],
+      "claims": [
+        {
+          "text": "Cape White is a very old fig cultivar long associated with South Africa, where the name originates",
+          "type": "naming",
+          "cites": [
+            "givingtrees-capewhite",
+            "southafrica-figvarieties"
+          ]
+        },
+        {
+          "text": "It is a small to medium, early ripening fig with green skin and pale (cream to light straw) flesh",
+          "type": "appearance",
+          "cites": [
+            "givingtrees-capewhite",
+            "foodforest-figs"
+          ]
+        },
+        {
+          "text": "It ripens from about January in the southern hemisphere summer",
+          "type": "season",
+          "cites": [
+            "givingtrees-capewhite",
+            "foodforest-figs"
+          ]
+        },
+        {
+          "text": "It has a sweet, delicate flavour and is especially popular for jam",
+          "type": "use",
+          "cites": [
+            "givingtrees-capewhite",
+            "southafrica-figvarieties"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "givingtrees-capewhite",
+          "name": "Giving Trees (South Africa): Cape White",
+          "url": "https://givingtrees.co.za/database/figs/cape-white/",
+          "tier": "third_party"
+        },
+        {
+          "id": "southafrica-figvarieties",
+          "name": "SouthAfrica.co.za: Fig Varieties",
+          "url": "https://southafrica.co.za/fig-varieties.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "foodforest-figs",
+          "name": "The Food Forest: Figs fact sheet",
+          "url": "https://www.foodforest.com.au/fact-sheets/fruit-and-nut-trees/figs/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-celeste": {
+      "slug": "fig-celeste",
+      "species": "Fig",
+      "variety": "Celeste",
+      "paragraphs": [
+        "Celeste, widely known as the Sugar fig, is a small to medium fig long grown across the south eastern United States. It is often listed under the synonyms Celestial, Malta and Sugar fig. The skin ripens to a purplish bronze over light brown, and the flesh is rose to pink. Its standout trait is a tightly closed eye that resists insects and souring, which suits humid climates and keeps the fruit from splitting.",
+        "Flavour is the other draw. Celeste is intensely sweet and honeyed, smooth and rich, which is exactly why it earned the Sugar fig name. It is a common fig and self pollinating, so it sets fruit without a wasp. The crop ripens early, from late summer, making it one of the first figs of the season. Good eaten fresh or made into preserves."
+      ],
+      "claims": [
+        {
+          "text": "Celeste is a small to medium fig also called the Sugar fig, with synonyms including Celestial, Malta and Sugar fig.",
+          "type": "naming",
+          "cites": [
+            "ncsu-celeste",
+            "specialtyproduce-celeste"
+          ]
+        },
+        {
+          "text": "The skin ripens to a purplish bronze over light brown and the flesh is rose to pink.",
+          "type": "appearance",
+          "cites": [
+            "ncsu-celeste",
+            "specialtyproduce-celeste"
+          ]
+        },
+        {
+          "text": "Celeste has a tightly closed eye that resists insects and souring and helps it not split.",
+          "type": "growing",
+          "cites": [
+            "ncsu-celeste",
+            "specialtyproduce-celeste"
+          ]
+        },
+        {
+          "text": "The fruit is intensely sweet and honeyed with a smooth, rich flavour, the reason it is called the Sugar fig.",
+          "type": "flavour",
+          "cites": [
+            "ncsu-celeste",
+            "specialtyproduce-celeste"
+          ]
+        },
+        {
+          "text": "Celeste is a common fig, self pollinating, and ripens early in the season.",
+          "type": "season",
+          "cites": [
+            "ncsu-celeste",
+            "specialtyproduce-celeste"
+          ]
+        },
+        {
+          "text": "It is good eaten fresh or made into preserves.",
+          "type": "use",
+          "cites": [
+            "ncsu-celeste",
+            "figboss-celeste"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncsu-celeste",
+          "name": "NC State Extension: Ficus carica 'Celeste'",
+          "url": "https://plants.ces.ncsu.edu/plants/ficus-carica-celeste/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-celeste",
+          "name": "Specialty Produce: Celeste Figs",
+          "url": "https://specialtyproduce.com/produce/Celeste_Figs_11287.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "figboss-celeste",
+          "name": "Fig Boss: The Celeste Fig",
+          "url": "https://www.figboss.com/post/the-celeste-fig",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-panache": {
+      "slug": "fig-panache",
+      "species": "Fig",
+      "variety": "Panache",
+      "paragraphs": [
+        "Panache, also sold as Tiger or Striped fig, is a striking variegated cultivar. It is a sport (a natural mutation) of the Spanish fig Bordissot Blanca, recorded in fig literature as far back as Risso in 1826. The unripe fruit shows alternating green and yellow lengthwise stripes, the feature that earns it the tiger name. As the fig ripens the stripes soften and the skin yellows, while inside the flesh is strawberry pink.",
+        "On flavour, Panache is prized for a rich, sweet, berry taste often likened to raspberry or strawberry jam. It is a unifera type, meaning it makes a single main crop and no early breba crop. The fruit ripens late in the season, so it does best where summers are long. The striped skin and jammy red flesh make it a sought after fresh eating fig rather than a drying variety."
+      ],
+      "claims": [
+        {
+          "text": "Panache, also called Tiger or Striped fig, is a sport (natural mutation) of the Spanish variety Bordissot Blanca, recorded since Risso in 1826.",
+          "type": "origin",
+          "cites": [
+            "figdatabase-panache",
+            "figboss-panache"
+          ]
+        },
+        {
+          "text": "Unripe fruit has alternating green and yellow lengthwise stripes that fade as it ripens.",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-panache",
+            "figboss-panache"
+          ]
+        },
+        {
+          "text": "The flesh is strawberry pink.",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-panache",
+            "figboss-panache"
+          ]
+        },
+        {
+          "text": "The flavour is rich and sweet with a berry, raspberry or strawberry jam character.",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-panache",
+            "figboss-panache"
+          ]
+        },
+        {
+          "text": "Panache is a unifera type producing a single main crop with no breba, and ripens late in the season.",
+          "type": "season",
+          "cites": [
+            "figdatabase-panache",
+            "figboss-panache"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-panache",
+          "name": "Fig Database: Panache",
+          "url": "https://www.figdatabase.com/variety-details/306/panache",
+          "tier": "third_party"
+        },
+        {
+          "id": "figboss-panache",
+          "name": "Fig Boss: The Panache Fig",
+          "url": "https://www.figboss.com/post/the-panache-fig",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-preston-prolific": {
+      "slug": "fig-preston-prolific",
+      "species": "Fig",
+      "variety": "Preston Prolific",
+      "paragraphs": [
+        "Preston Prolific is an Australian fig thought to be a seedling of Black Genoa that originated in Victoria, and it has been sold in Australia for decades. It is a vigorous tree with large leaves bearing large fruit on a short stalk. The skin is green when immature and changes from straw to a purplish brown when fully ripe.",
+        "Inside, the flesh is thick and juicy, described as creamy white to amber and sometimes tinted red. It is a late maturing variety, ripening through summer into autumn, and is used fresh as well as for jam and drying."
+      ],
+      "claims": [
+        {
+          "text": "Preston Prolific is thought to be a seedling of Black Genoa that originated in Victoria",
+          "type": "origin",
+          "cites": [
+            "figdatabase-genoa-white",
+            "heritage-preston"
+          ]
+        },
+        {
+          "text": "It has been grown and sold in Australia for decades",
+          "type": "origin",
+          "cites": [
+            "heritage-preston",
+            "foodforest-figs"
+          ]
+        },
+        {
+          "text": "The skin is green when immature and changes from straw to purplish brown when ripe",
+          "type": "appearance",
+          "cites": [
+            "heritage-preston"
+          ]
+        },
+        {
+          "text": "The flesh is thick and juicy, described as creamy white to amber and sometimes tinted red",
+          "type": "appearance",
+          "cites": [
+            "heritage-preston",
+            "foodforest-figs"
+          ]
+        },
+        {
+          "text": "It is late maturing, ripening through summer into autumn",
+          "type": "season",
+          "cites": [
+            "heritage-preston"
+          ]
+        },
+        {
+          "text": "It is used fresh and for jam and drying",
+          "type": "use",
+          "cites": [
+            "heritage-preston"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritage-preston",
+          "name": "Heritage Fruit Trees: Preston Prolific Fig",
+          "url": "https://www.heritagefruittrees.com.au/preston-prolific-fig/",
+          "tier": "nursery"
+        },
+        {
+          "id": "foodforest-figs",
+          "name": "The Food Forest: Figs fact sheet",
+          "url": "https://www.foodforest.com.au/fact-sheets/fruit-and-nut-trees/figs/",
+          "tier": "third_party"
+        },
+        {
+          "id": "figdatabase-genoa-white",
+          "name": "Fig Database: Genoa White",
+          "url": "https://www.figdatabase.com/variety-details/159/genoa-white",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-violette-de-bordeaux": {
+      "slug": "fig-violette-de-bordeaux",
+      "species": "Fig",
+      "variety": "Violette de Bordeaux",
+      "paragraphs": [
+        "Violette de Bordeaux is an old French fig, documented in France since the 1700s and also known as Negronne, Petite Aubique and Petite Negri, among other names. Genetic testing has shown that figs sold as Beer's Black and Vista are synonyms of it. The fruit is small to medium and pear shaped, with dark purple to black skin and deep red, jam like flesh.",
+        "It is one of the most highly rated figs for flavour, rich and sweet with a berry character that gives its name to the Bordeaux taste category. It produces an excellent early (breba) crop as well as a main crop, and despite a dwarf reputation the tree is actually vigorous and upright with deeply cut leaves."
+      ],
+      "claims": [
+        {
+          "text": "Violette de Bordeaux is an old French fig documented since the 1700s, also called Negronne, Petite Aubique and Petite Negri",
+          "type": "naming",
+          "cites": [
+            "figdatabase-vdb",
+            "figboss-vdb"
+          ]
+        },
+        {
+          "text": "Genetic testing showed Beer's Black and Vista are synonyms of Violette de Bordeaux",
+          "type": "naming",
+          "cites": [
+            "figdatabase-vdb"
+          ]
+        },
+        {
+          "text": "The fruit is small to medium, pear shaped, with dark purple to black skin and deep red flesh",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-vdb",
+            "figboss-vdb"
+          ]
+        },
+        {
+          "text": "The flavour is rich and sweet with a berry character, giving its name to the Bordeaux taste category",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-vdb",
+            "figboss-vdb"
+          ]
+        },
+        {
+          "text": "It produces an excellent early (breba) crop as well as a main crop",
+          "type": "season",
+          "cites": [
+            "figdatabase-vdb",
+            "figboss-vdb"
+          ]
+        },
+        {
+          "text": "Despite a dwarf reputation the tree is vigorous and upright with deeply cut leaves",
+          "type": "growing",
+          "cites": [
+            "figdatabase-vdb",
+            "figboss-vdb"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-vdb",
+          "name": "Fig Database: Violette de Bordeaux",
+          "url": "https://www.figdatabase.com/variety-details/453/violette-de-bordeaux",
+          "tier": "third_party"
+        },
+        {
+          "id": "figboss-vdb",
+          "name": "Fig Boss: Violette de Bordeaux review",
+          "url": "https://www.figboss.com/post/violette-de-bordeaux",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-white-adriatic": {
+      "slug": "fig-white-adriatic",
+      "species": "Fig",
+      "variety": "White Adriatic",
+      "paragraphs": [
+        "White Adriatic is an old Italian fig long known in its homeland as Verdone (greenfinch) for its green skin, and also called Strawberry Fig and Fico di Fragola. The fruit keeps a light greenish to yellow skin even when ripe, but splits open to reveal striking strawberry-red flesh. The flavour is balanced and sweet with light berry notes, prized when fully ripened on the tree.",
+        "Adriatic has long been the principal drying fig of California, valued for its high sugar and concentrated flavour when dehydrated, and it also makes excellent jam. In Australia it is grown as an early variety suited to cooler areas, carrying a light early (breba) crop ahead of the main crop, with fruit ripening around February in southern districts."
+      ],
+      "claims": [
+        {
+          "text": "White Adriatic is an old Italian fig also known as Verdone, Strawberry Fig and Fico di Fragola",
+          "type": "naming",
+          "cites": [
+            "figdatabase-adriatic",
+            "specialtyproduce-adriatic"
+          ]
+        },
+        {
+          "text": "The skin stays light greenish to yellow while the flesh is strawberry red",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-adriatic",
+            "specialtyproduce-adriatic"
+          ]
+        },
+        {
+          "text": "The flavour is balanced and sweet with light berry notes",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-adriatic",
+            "specialtyproduce-adriatic"
+          ]
+        },
+        {
+          "text": "Adriatic has been the principal drying fig of California and is good for jam",
+          "type": "use",
+          "cites": [
+            "figdatabase-adriatic",
+            "specialtyproduce-adriatic"
+          ]
+        },
+        {
+          "text": "It carries a light early (breba) crop ahead of the main crop",
+          "type": "season",
+          "cites": [
+            "figdatabase-adriatic"
+          ]
+        },
+        {
+          "text": "In Australia it is an early variety suited to cooler areas, ripening around February",
+          "type": "season",
+          "cites": [
+            "foodforest-figs"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-adriatic",
+          "name": "Fig Database: Adriatic",
+          "url": "https://www.figdatabase.com/variety-details/1942/adriatic",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-adriatic",
+          "name": "Specialty Produce: Adriatic Figs",
+          "url": "https://specialtyproduce.com/produce/Adriatic_Figs_5272.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "foodforest-figs",
+          "name": "The Food Forest: Figs fact sheet",
+          "url": "https://www.foodforest.com.au/fact-sheets/fruit-and-nut-trees/figs/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-white-genoa": {
+      "slug": "fig-white-genoa",
+      "species": "Fig",
+      "variety": "White Genoa",
+      "paragraphs": [
+        "White Genoa is an old, widely grown white fig described in literature as far back as the 18th century and imported into California in the 19th century. It carries greenish to yellow skin and amber flesh, often tinged strawberry, with the early (breba) crop showing lighter, more strawberry pulp than the main crop. In Australia it is valued as an adaptable variety that suits cooler and temperate areas.",
+        "It typically produces two crops where summers are warm enough, a smaller early crop followed by the main crop, in Australia often a light December crop with more fruit in February and March. The flavour is mild and sweet, and the fruit is good both fresh and for drying, though large soft fruit can be prone to spoilage."
+      ],
+      "claims": [
+        {
+          "text": "White Genoa is an old white fig described since the 18th century and imported to California in the 19th century",
+          "type": "origin",
+          "cites": [
+            "figdatabase-genoa-white"
+          ]
+        },
+        {
+          "text": "It has greenish to yellow skin and amber flesh tinged with strawberry",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-genoa-white",
+            "foodforest-figs"
+          ]
+        },
+        {
+          "text": "It produces both an early (breba) crop and a main crop where summers are warm enough",
+          "type": "season",
+          "cites": [
+            "figdatabase-genoa-white",
+            "foodforest-figs"
+          ]
+        },
+        {
+          "text": "In Australia it gives a light December crop with more fruit in February and March",
+          "type": "season",
+          "cites": [
+            "foodforest-figs"
+          ]
+        },
+        {
+          "text": "The flavour is mild and sweet and the fruit is good fresh and for drying",
+          "type": "use",
+          "cites": [
+            "figdatabase-genoa-white"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-genoa-white",
+          "name": "Fig Database: Genoa White",
+          "url": "https://www.figdatabase.com/variety-details/159/genoa-white",
+          "tier": "third_party"
+        },
+        {
+          "id": "foodforest-figs",
+          "name": "The Food Forest: Figs fact sheet",
+          "url": "https://www.foodforest.com.au/fact-sheets/fruit-and-nut-trees/figs/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-yellow-excel": {
+      "slug": "fig-yellow-excel",
+      "species": "Fig",
+      "variety": "Yellow Excel",
+      "paragraphs": [
+        "Excel is a yellow fig that came out of the University of California fig breeding program at Riverside, the work associated with Ira Condit and colleagues, and was introduced in 1975. It is sometimes listed as a Kadota hybrid. The fruit is medium sized with yellow to greenish yellow skin and amber pulp, and it carries a small, tight eye. That small eye plus a tough skin make it notably resistant to cracking and splitting, even in adverse weather.",
+        "Flavour is sweet and rich, and Excel is regarded as one of the better flavoured yellow figs and a more dependable cropper than the Kadota it resembles. The split resistance and dense flesh make it a genuine all purpose fig, good fresh and also suited to drying and canning."
+      ],
+      "claims": [
+        {
+          "text": "Excel is a yellow fig from the University of California breeding program at Riverside, associated with Ira Condit, introduced in 1975 and sometimes listed as a Kadota hybrid.",
+          "type": "origin",
+          "cites": [
+            "figdatabase-excel",
+            "ocfruit-excel"
+          ]
+        },
+        {
+          "text": "The fruit is medium sized with yellow to greenish yellow skin and amber pulp, and a small, tight eye.",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-excel",
+            "ocfruit-excel"
+          ]
+        },
+        {
+          "text": "It is resistant to cracking and splitting even under adverse conditions.",
+          "type": "growing",
+          "cites": [
+            "figdatabase-excel",
+            "ocfruit-excel"
+          ]
+        },
+        {
+          "text": "The flavour is sweet and rich.",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-excel",
+            "ocfruit-excel"
+          ]
+        },
+        {
+          "text": "It is an all purpose fig, good fresh and suited to drying and canning.",
+          "type": "use",
+          "cites": [
+            "figdatabase-excel",
+            "ocfruit-excel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-excel",
+          "name": "Fig Database: Excel",
+          "url": "https://www.figdatabase.com/variety-details/133/excel",
+          "tier": "third_party"
+        },
+        {
+          "id": "ocfruit-excel",
+          "name": "OC Fruit: Figs in Coastal Southern California",
+          "url": "https://ocfruit.com/files/Figs_Coastal_SC.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "fig-audrey-banyan",
+    "fig-blue-province",
+    "fig-celeste-sugar",
+    "fig-climbing",
+    "fig-conadria-red",
+    "fig-conadria-red-sweet-temptation",
+    "fig-deanna",
+    "fig-deanne",
+    "fig-excel",
+    "fig-excel-yellow",
+    "fig-figalicious",
+    "fig-flash-2ft-standards",
+    "fig-flash-3ft-standards",
+    "fig-ivan-s-brown",
+    "fig-leaved",
+    "fig-midnight-petite",
+    "fig-panache-tiger-stripe",
+    "fig-picone-black",
+    "fig-piconi",
+    "fig-prestons-prolific",
+    "fig-red-conadria",
+    "fig-sandpaper",
+    "fig-sandpaper-birds-eye",
+    "fig-sweet-temptation",
+    "fig-tree-black-adam",
+    "fig-tree-black-coronata",
+    "fig-tree-black-genoa",
+    "fig-tree-brown-bell",
+    "fig-tree-brown-turkey",
+    "fig-tree-clancy",
+    "fig-tree-collins-white",
+    "fig-tree-deanne",
+    "fig-tree-italian-honey",
+    "fig-tree-lisbon",
+    "fig-tree-mrs-williams",
+    "fig-tree-panache-tiger-stripe",
+    "fig-tree-purple-heart",
+    "fig-tree-purple-prince",
+    "fig-tree-purple-vigilante",
+    "fig-tree-st-dominique-de-violette",
+    "fig-tree-strawberry-kungasava",
+    "fig-tree-sweet-temptation",
+    "fig-tree-tena",
+    "fig-tree-vardigo",
+    "fig-tree-white-adriatic",
+    "fig-tree-white-genoa",
+    "fig-tucker-bush-sandpaper",
+    "fig-white-adriatic-big-size"
+  ]
 }

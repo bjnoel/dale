@@ -1,0 +1,170 @@
+{
+  "species_slug": "rollinia",
+  "schema_version": 1,
+  "varieties": {
+    "rollinia-biriba": {
+      "slug": "rollinia-biriba",
+      "species": "Rollinia",
+      "variety": "Biriba",
+      "paragraphs": [
+        "Biriba (Rollinia deliciosa, also classified as Annona mucosa) is the best known edible member of its genus in the custard apple family, Annonaceae. That places it alongside soursop, cherimoya, custard apple and sugar apple as a close relative. It is native to tropical South America, ranging through the western Amazon basin from Peru and Brazil north to the Guianas, Venezuela and Colombia, and it is a favourite fruit of western Amazonia, much grown around Iquitos in Peru and in Brazil.",
+        "The tree is fast growing. The fruit is conical to heart shaped, with a yellow rind made up of segments, each tipped with a soft, wart like or spiky protrusion. A telltale quirk is that handling causes those conical projections to blacken quickly, so fruit is often picked green and hard for transport. Inside, the pulp is white, translucent, juicy and subacid to sweet, eaten fresh and sometimes fermented into wine in Brazil."
+      ],
+      "claims": [
+        {
+          "text": "Best known edible species of its genus, in the custard apple family Annonaceae, related to soursop, cherimoya, custard apple and sugar apple",
+          "type": "origin",
+          "cites": [
+            "purdue",
+            "wikipedia",
+            "growables"
+          ]
+        },
+        {
+          "text": "Native to tropical South America, ranging through the western Amazon from Peru and Brazil north to the Guianas, Venezuela and Colombia, a favourite of western Amazonia grown around Iquitos",
+          "type": "origin",
+          "cites": [
+            "purdue",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Fast growing tree",
+          "type": "growing",
+          "cites": [
+            "purdue",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Fruit conical to heart shaped with a yellow rind of segments, each tipped with a soft wart like or spiky protrusion that blackens with handling",
+          "type": "appearance",
+          "cites": [
+            "purdue",
+            "wikipedia",
+            "growables"
+          ]
+        },
+        {
+          "text": "Pulp is white, translucent, juicy and subacid to sweet, eaten fresh and fermented into wine in Brazil",
+          "type": "use",
+          "cites": [
+            "purdue",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "purdue",
+          "name": "Purdue NewCROP, Julia Morton, Biriba",
+          "url": "https://hort.purdue.edu/newcrop/morton/biriba.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Rollinia deliciosa / Annona mucosa",
+          "url": "https://en.wikipedia.org/wiki/Rollinia_deliciosa",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables, Biriba (Rollinia mucosa)",
+          "url": "https://www.growables.org/information/TropicalFruit/annonadeliciosanew.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "rollinia-brazilian-custard-apple": {
+      "slug": "rollinia-brazilian-custard-apple",
+      "species": "Rollinia",
+      "variety": "Brazilian Custard Apple",
+      "paragraphs": [
+        "Brazilian custard apple is a common name for Rollinia deliciosa (Annona mucosa), also called biriba, wild sugar apple and lemon meringue pie fruit. The fruit is large and conical to heart shaped, ripening from green to yellow, with a knobbly rind whose soft conical protuberances bruise and blacken with handling. This perishability is its biggest quirk: once fully ripe it keeps only a day or two before fermenting, with a total shelf life of less than a week, which is why it stays a regional fruit rather than a supermarket one.",
+        "What sets it apart is the eating quality. The pulp is white, translucent, juicy and creamy, with a mild subacid to sweet flavour widely likened to lemon meringue pie. It is usually eaten fresh out of hand, scooped from the rind, and the small dark seeds are not eaten. As a member of the custard apple family (Annonaceae), it sits beside soursop, cherimoya and the true custard apple, and the pulp has been blended into drinks and fermented into wine in Brazil."
+      ],
+      "claims": [
+        {
+          "text": "Common names include biriba, Brazilian custard apple, wild sugar apple and lemon meringue pie fruit",
+          "type": "naming",
+          "cites": [
+            "wikipedia",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Fruit large, conical to heart shaped, ripening green to yellow, with a knobbly rind whose soft protuberances bruise and blacken with handling",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "purdue"
+          ]
+        },
+        {
+          "text": "Very perishable: keeps only a day or two once fully ripe before fermenting, total shelf life less than a week, limiting commercial cultivation",
+          "type": "storage",
+          "cites": [
+            "wikipedia",
+            "growables"
+          ]
+        },
+        {
+          "text": "Pulp white, translucent, juicy and creamy with a subacid to sweet flavour likened to lemon meringue pie",
+          "type": "flavour",
+          "cites": [
+            "purdue",
+            "growables"
+          ]
+        },
+        {
+          "text": "Eaten fresh out of hand; member of the custard apple family Annonaceae alongside soursop, cherimoya and custard apple; blended into drinks and fermented into wine in Brazil",
+          "type": "use",
+          "cites": [
+            "purdue",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "purdue",
+          "name": "Purdue NewCROP, Julia Morton, Biriba",
+          "url": "https://hort.purdue.edu/newcrop/morton/biriba.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Rollinia deliciosa / Annona mucosa",
+          "url": "https://en.wikipedia.org/wiki/Rollinia_deliciosa",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables, Biriba (Rollinia mucosa)",
+          "url": "https://www.growables.org/information/TropicalFruit/annonadeliciosanew.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Brazilian Custard Apple (Biriba)",
+          "url": "https://www.daleysfruit.com.au/plant/Brazilian-Custard-Apple-Biriba.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "rollinia-custard-apple",
+    "rollinia-limberlost",
+    "rollinia-picone",
+    "rollinia-sputnik"
+  ]
+}
