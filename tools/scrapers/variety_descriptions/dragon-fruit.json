@@ -1,0 +1,532 @@
+{
+  "species_slug": "dragon-fruit",
+  "schema_version": 1,
+  "varieties": {
+    "dragon-fruit-american-beauty": {
+      "slug": "dragon-fruit-american-beauty",
+      "species": "Dragon Fruit",
+      "variety": "American Beauty",
+      "paragraphs": [
+        "American Beauty is a Hylocereus guatemalensis type dragon fruit that was introduced from Guatemala to Florida and then to California. The fruit has reddish to pink skin with green fins and a thin rind, over soft, juicy pulp that bruises easily.",
+        "Its standout feature is the deep magenta to fuchsia flesh, coloured by betacyanin, the same pigment found in beetroot. The flavour is rated very good for the type, and it is self-fertile, so one plant can set fruit on its own."
+      ],
+      "claims": [
+        {
+          "text": "American Beauty is a Hylocereus guatemalensis type introduced from Guatemala to Florida then California.",
+          "type": "origin",
+          "cites": [
+            "ucanr",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "The fruit has reddish to pink skin and deep magenta to fuchsia flesh.",
+          "type": "appearance",
+          "cites": [
+            "ucanr",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "American Beauty is self-fertile and can set fruit on its own.",
+          "type": "pollination",
+          "cites": [
+            "calpoly",
+            "gardenerspath"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucanr",
+          "name": "UC ANR San Diego County Small Farms, Hylocereus guatemalensis (American Beauty)",
+          "url": "https://ucanr.edu/site/san-diego-county-small-farms/hylocereus-guatemalensis-american-beauty",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenerspath",
+          "name": "Gardener's Path, Best Dragon Fruit Varieties",
+          "url": "https://gardenerspath.com/plants/succulents/best-dragon-fruit-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "calpoly",
+          "name": "Cal Poly Pomona Nursery, Dragon Fruit Variety Resource",
+          "url": "https://calpolypomonanursery.com/dragon-fruit-variety-resource-page/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-dark-star": {
+      "slug": "dragon-fruit-dark-star",
+      "species": "Dragon Fruit",
+      "variety": "Dark Star",
+      "paragraphs": [
+        "Dark Star is a Hylocereus hybrid (H. guatemalensis crossed with H. undatus) that traces to the California breeding work of Paul Thomson. It carries deep purple flesh and dark pink toned skin with long, thin fins, which suit its name.",
+        "The flavour is well regarded, with mild grape-like undertones. Dark Star is self-sterile, meaning it needs pollen from a compatible variety to set fruit, so it is best grown alongside another dragon fruit."
+      ],
+      "claims": [
+        {
+          "text": "Dark Star is a Hylocereus guatemalensis by undatus hybrid from Paul Thomson's California breeding.",
+          "type": "origin",
+          "cites": [
+            "gardenerspath",
+            "calpoly"
+          ]
+        },
+        {
+          "text": "It has deep purple flesh and dark pink toned skin, with a mild grape-like flavour.",
+          "type": "appearance",
+          "cites": [
+            "gardenerspath",
+            "calpoly"
+          ]
+        },
+        {
+          "text": "Dark Star is self-sterile and needs cross pollination to set fruit.",
+          "type": "pollination",
+          "cites": [
+            "calpoly",
+            "gardenerspath"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gardenerspath",
+          "name": "Gardener's Path, Best Dragon Fruit Varieties",
+          "url": "https://gardenerspath.com/plants/succulents/best-dragon-fruit-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "calpoly",
+          "name": "Cal Poly Pomona Nursery, Dragon Fruit Variety Resource",
+          "url": "https://calpolypomonanursery.com/dragon-fruit-variety-resource-page/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-delight": {
+      "slug": "dragon-fruit-delight",
+      "species": "Dragon Fruit",
+      "variety": "Delight",
+      "paragraphs": [
+        "Delight is a Hylocereus hybrid (H. undatus crossed with H. guatemalensis) associated with the California breeding work of Paul Thomson. The fruit is medium sized with light pink flesh, the feature that gives the variety its name.",
+        "It is a sweet, flavourful cultivar and is self-fertile, so a single plant can set fruit without another pollinator. That makes it an easier choice than the self-sterile purple fleshed hybrids."
+      ],
+      "claims": [
+        {
+          "text": "Delight is a Hylocereus undatus by guatemalensis hybrid linked to Paul Thomson's breeding.",
+          "type": "origin",
+          "cites": [
+            "gardenerspath",
+            "calpoly"
+          ]
+        },
+        {
+          "text": "The fruit has light pink flesh and a sweet flavour.",
+          "type": "appearance",
+          "cites": [
+            "gardenerspath",
+            "calpoly"
+          ]
+        },
+        {
+          "text": "Delight is self-fertile and sets fruit on its own.",
+          "type": "pollination",
+          "cites": [
+            "calpoly",
+            "gardenerspath"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gardenerspath",
+          "name": "Gardener's Path, Best Dragon Fruit Varieties",
+          "url": "https://gardenerspath.com/plants/succulents/best-dragon-fruit-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "calpoly",
+          "name": "Cal Poly Pomona Nursery, Dragon Fruit Variety Resource",
+          "url": "https://calpolypomonanursery.com/dragon-fruit-variety-resource-page/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-purple-haze": {
+      "slug": "dragon-fruit-purple-haze",
+      "species": "Dragon Fruit",
+      "variety": "Purple Haze",
+      "paragraphs": [
+        "Purple Haze is a Hylocereus hybrid (H. guatemalensis crossed with H. undatus) developed by Paul Thomson in California, where it is also known as the 5-S seedling. The fruit is large with pink skin and green fins.",
+        "Its defining trait is the bright purple, sweet flesh, with a flavour carrying grape and kiwi notes. Purple Haze is self-sterile, so it needs pollen from another variety to set fruit reliably."
+      ],
+      "claims": [
+        {
+          "text": "Purple Haze is a Hylocereus guatemalensis by undatus hybrid bred by Paul Thomson in California, also called 5-S.",
+          "type": "origin",
+          "cites": [
+            "whatplantisthatpaul",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "The fruit has pink skin and bright purple, sweet flesh with grape and kiwi notes.",
+          "type": "appearance",
+          "cites": [
+            "gardenerspath",
+            "whatplantisthatpaul"
+          ]
+        },
+        {
+          "text": "Purple Haze is self-sterile and needs cross pollination.",
+          "type": "pollination",
+          "cites": [
+            "calpoly",
+            "gardenerspath"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gardenerspath",
+          "name": "Gardener's Path, Best Dragon Fruit Varieties",
+          "url": "https://gardenerspath.com/plants/succulents/best-dragon-fruit-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "calpoly",
+          "name": "Cal Poly Pomona Nursery, Dragon Fruit Variety Resource",
+          "url": "https://calpolypomonanursery.com/dragon-fruit-variety-resource-page/",
+          "tier": "third_party"
+        },
+        {
+          "id": "whatplantisthatpaul",
+          "name": "Exotic Plants in Southern California, Purple Haze",
+          "url": "https://sites.google.com/view/whatplantisthatpaul/dragon-fruit/purple-haze-h-guatemalensis-x-h-undatus",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-red": {
+      "slug": "dragon-fruit-red",
+      "species": "Dragon Fruit",
+      "variety": "Red",
+      "paragraphs": [
+        "Red dragon fruit refers to the red and magenta-fleshed types, mainly Hylocereus costaricensis (also classed as Selenicereus costaricensis), the red-fleshed pitaya. It has red skin and deeply coloured red to magenta flesh, sweeter and more intensely flavoured than the white-fleshed type, with tangy notes. The vivid pigment comes from betalains and readily stains.",
+        "A key difference from the common white type is pollination. Red-fleshed plants are generally self-sterile and rely on cross pollination with a genetically distinct plant, or hand pollination, to set a good crop. The species is native to Central America and northwestern South America."
+      ],
+      "claims": [
+        {
+          "text": "Red dragon fruit is mainly Hylocereus costaricensis, the red-fleshed pitaya, with red skin and red flesh.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "spicy"
+          ]
+        },
+        {
+          "text": "The red and magenta flesh is sweeter and more intensely coloured than white-fleshed types.",
+          "type": "flavour",
+          "cites": [
+            "spicy"
+          ]
+        },
+        {
+          "text": "Red-fleshed plants are typically self-sterile and need cross or hand pollination to set fruit.",
+          "type": "pollination",
+          "cites": [
+            "spicy",
+            "ntgov"
+          ]
+        },
+        {
+          "text": "Hylocereus costaricensis is native to Central America and northwestern South America.",
+          "type": "origin",
+          "cites": [
+            "spicy"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Pitaya - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Pitaya",
+          "tier": "third_party"
+        },
+        {
+          "id": "spicy",
+          "name": "Hylocereus costaricensis - Spicy Exotics",
+          "url": "https://spicyexotics.com/product/hylocereus-costaricensis/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ntgov",
+          "name": "Pitaya: dragon fruit - NT Government",
+          "url": "https://nt.gov.au/environment/home-gardens/growing-vegetables-at-home/pitaya-dragon-fruit",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-sugar-dragon": {
+      "slug": "dragon-fruit-sugar-dragon",
+      "species": "Dragon Fruit",
+      "variety": "Sugar Dragon",
+      "paragraphs": [
+        "Sugar Dragon, also coded S8, is a small magenta-fleshed dragon fruit prized as one of the sweetest selections. The skin is red with small dark fins, and the purplish-red flesh is semi-firm and succulent with berry or rosewater notes. It was bred by Paul Thomson in California from a cross of the Houghton and Rixford varieties.",
+        "Unlike many red and magenta-fleshed cactus fruit, Sugar Dragon is self-fertile and sets fruit without hand pollination. Its compact size and intense sweetness have made it a popular collector and small-scale commercial variety rather than a mass-market export type."
+      ],
+      "claims": [
+        {
+          "text": "Sugar Dragon (S8) has red skin and purplish-red, magenta flesh and is among the sweetest selections.",
+          "type": "flavour",
+          "cites": [
+            "exoticfv"
+          ]
+        },
+        {
+          "text": "It was bred by Paul Thomson from a cross of the Houghton and Rixford varieties.",
+          "type": "origin",
+          "cites": [
+            "exoticfv"
+          ]
+        },
+        {
+          "text": "Sugar Dragon is self-fertile and self-pollinating.",
+          "type": "pollination",
+          "cites": [
+            "exoticfv",
+            "specialty"
+          ]
+        },
+        {
+          "text": "It is a small fruit with berry or rosewater flavour notes.",
+          "type": "appearance",
+          "cites": [
+            "exoticfv"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "exoticfv",
+          "name": "S8 Sugar Dragon - Exotic Fruits and Vegetables",
+          "url": "https://exoticfruitsandvegetables.com/dragon-fruit/s8-sugar-dragon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty",
+          "name": "Sugar Dragon Fruit - Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Sugar_Dragon_Fruit_22808.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-vietnamese-white": {
+      "slug": "dragon-fruit-vietnamese-white",
+      "species": "Dragon Fruit",
+      "variety": "Vietnamese White",
+      "paragraphs": [
+        "Vietnamese White is a white-fleshed dragon fruit of the species Hylocereus undatus, the most commonly grown commercial type. It has vibrant pink to red skin with green-tipped scales and firm white flesh dotted with tiny edible black seeds. The flavour is mild and gently sweet, lighter and less intense than the red and magenta-fleshed types.",
+        "It is self-fertile, setting fruit without hand or cross pollination, which makes it a reliable, easy cropper. The variety traces to Vietnam, which is the lead exporter of dragon fruit, so this white-flesh, pink-skin type is the one most often seen in shops and export markets."
+      ],
+      "claims": [
+        {
+          "text": "Vietnamese White is a white-fleshed Hylocereus undatus, the most commonly seen commercial dragon fruit, with pink skin and white flesh.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The white flesh is mildly sweet with lower sugar than red and magenta types.",
+          "type": "flavour",
+          "cites": [
+            "zenyr"
+          ]
+        },
+        {
+          "text": "It is self-fertile and sets fruit without hand pollination.",
+          "type": "pollination",
+          "cites": [
+            "zenyr"
+          ]
+        },
+        {
+          "text": "Vietnam is the lead exporter of dragon fruit, so this type is often called Vietnamese dragon fruit.",
+          "type": "naming",
+          "cites": [
+            "wikipedia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Pitaya - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Pitaya",
+          "tier": "third_party"
+        },
+        {
+          "id": "zenyr",
+          "name": "Dragon Fruit Varieties Selection Guide - Zenyr Garden",
+          "url": "https://zenyrgarden.com/dragon-fruit-varieties-selection-guide/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-white": {
+      "slug": "dragon-fruit-white",
+      "species": "Dragon Fruit",
+      "variety": "White",
+      "paragraphs": [
+        "White dragon fruit is the species Hylocereus undatus (also classed as Selenicereus undatus), the white-fleshed pitaya and the most commonly seen dragon fruit. It has bright pink, crimson or red skin with fleshy green scales, and white flesh studded with many small black seeds. The flavour is mild and lightly sweet, gentler than the red and magenta-fleshed types.",
+        "This is the standard commercial and supermarket type, widely grown in Vietnam and other tropical regions. White-fleshed selections are typically self-fertile, setting fruit without hand pollination, which contributes to their reliability and broad cultivation."
+      ],
+      "claims": [
+        {
+          "text": "White dragon fruit is Hylocereus undatus, the white-fleshed pitaya and the most commonly seen dragon fruit.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "ntgov"
+          ]
+        },
+        {
+          "text": "It has bright pink, crimson or red skin with green scales and white flesh with small black seeds.",
+          "type": "appearance",
+          "cites": [
+            "ntgov"
+          ]
+        },
+        {
+          "text": "The white flesh is mildly sweet, lighter than red types.",
+          "type": "flavour",
+          "cites": [
+            "zenyr"
+          ]
+        },
+        {
+          "text": "White-fleshed types are typically self-fertile and set fruit without hand pollination.",
+          "type": "pollination",
+          "cites": [
+            "zenyr"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Pitaya - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Pitaya",
+          "tier": "third_party"
+        },
+        {
+          "id": "ntgov",
+          "name": "Pitaya: dragon fruit - NT Government",
+          "url": "https://nt.gov.au/environment/home-gardens/growing-vegetables-at-home/pitaya-dragon-fruit",
+          "tier": "authoritative"
+        },
+        {
+          "id": "zenyr",
+          "name": "Dragon Fruit Varieties Selection Guide - Zenyr Garden",
+          "url": "https://zenyrgarden.com/dragon-fruit-varieties-selection-guide/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-yellow": {
+      "slug": "dragon-fruit-yellow",
+      "species": "Dragon Fruit",
+      "variety": "Yellow",
+      "paragraphs": [
+        "Yellow dragon fruit is usually Selenicereus megalanthus, a different species from the common red and pink skinned types (Hylocereus). It is native to northern South America and carries a bumpy yellow skin dotted with small spines, which sets it apart visually from the smooth finned fruit of other dragon fruit. The flesh is white with small black seeds.",
+        "Its main distinction is flavour. The white flesh is notably sweet, often described as the sweetest of the dragon fruit, with a mild, pleasant taste. Yellow pitayas are also self-fertile, so a single plant can set fruit without cross pollination, unlike many purple fleshed Hylocereus hybrids."
+      ],
+      "claims": [
+        {
+          "text": "Yellow dragon fruit is usually Selenicereus megalanthus, native to northern South America, with bumpy yellow spiny skin and white flesh.",
+          "type": "origin",
+          "cites": [
+            "wikipedia",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "The white flesh is very sweet, often described as the sweetest of the dragon fruit.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "Yellow pitayas are self-fertile and need no cross pollination.",
+          "type": "pollination",
+          "cites": [
+            "wikipedia",
+            "gardenerspath"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Selenicereus megalanthus",
+          "url": "https://en.wikipedia.org/wiki/Selenicereus_megalanthus",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenerspath",
+          "name": "Gardener's Path, Best Dragon Fruit Varieties",
+          "url": "https://gardenerspath.com/plants/succulents/best-dragon-fruit-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "dragon-fruit-aussie-gold",
+    "dragon-fruit-aztec-gem",
+    "dragon-fruit-cosmic-charlie"
+  ]
+}

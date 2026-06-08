@@ -1,0 +1,163 @@
+{
+  "species_slug": "sapodilla",
+  "schema_version": 1,
+  "varieties": {
+    "sapodilla-krasuey": {
+      "slug": "sapodilla-krasuey",
+      "species": "Sapodilla",
+      "variety": "Krasuey",
+      "paragraphs": [
+        "Krasuey (sometimes spelt Crasuey) is a small fruited Thai sapodilla, long admired by collectors who toured Thai markets and wondered why it was not yet grown in Australia. The fruit is modest in size, typically around 75 to 100 grams, with thin, light brown skin over dark brown flesh.",
+        "Its appeal is the eating quality rather than the size. The flesh is juicy and intensely sweet, almost syrupy, with the characteristic slightly grainy sapodilla texture. It is prized as one of the better flavoured Thai selections and carries a heavy crop of small fruit."
+      ],
+      "claims": [
+        {
+          "text": "Krasuey is a Thai sapodilla cultivar.",
+          "type": "origin",
+          "cites": [
+            "rfca-thailand"
+          ]
+        },
+        {
+          "text": "Krasuey fruit are small, roughly 75 to 100 grams, with light brown skin and dark brown flesh.",
+          "type": "measurement",
+          "cites": [
+            "rfca-sapodilla96"
+          ]
+        },
+        {
+          "text": "The flesh is juicy, very sweet and syrupy with a slightly grainy texture.",
+          "type": "flavour",
+          "cites": [
+            "rfca-sapodilla96"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-sapodilla96",
+          "name": "Sapodilla, Rare Fruit Council of Australia archives",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Sapodilla/Sapodilla9-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rfca-thailand",
+          "name": "Fruit Tasting Tour of S.E. Asia, Thailand, RFCA archives",
+          "url": "https://www.rfcarchives.org.au/Next/PeoplePlaces/FruitTourThailand9-85.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "sapodilla-ponderosa": {
+      "slug": "sapodilla-ponderosa",
+      "species": "Sapodilla",
+      "variety": "Ponderosa",
+      "paragraphs": [
+        "Ponderosa is the heavyweight of the sapodilla world. It is a large fruited variety whose individual fruit can reach about 350 grams, well above the 120 to 200 grams typical of most other cultivars. The skin is light brown over light to mid brown flesh.",
+        "Despite its size the eating quality holds up. The flesh is described as sweet, juicy and smooth, with the usual rusty brown sapodilla skin and a flavour often likened to pear and brown sugar. Its scale makes it a standout among collector varieties."
+      ],
+      "claims": [
+        {
+          "text": "Ponderosa is a large fruited sapodilla, with fruit weighing up to about 350 grams compared with 120 to 200 grams for most varieties.",
+          "type": "measurement",
+          "cites": [
+            "rfca-culture83",
+            "rfca-sapodilla96"
+          ]
+        },
+        {
+          "text": "The flesh is sweet, juicy and smooth, with light brown skin.",
+          "type": "flavour",
+          "cites": [
+            "rfca-sapodilla96"
+          ]
+        },
+        {
+          "text": "Sapodilla flesh has a sweet flavour likened to a combination of pear and brown sugar.",
+          "type": "flavour",
+          "cites": [
+            "britannica-sapodilla"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-culture83",
+          "name": "Sapodilla in Australia, RFCA archives",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Sapodilla/SapodillaCulture3-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rfca-sapodilla96",
+          "name": "Sapodilla, Rare Fruit Council of Australia archives",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Sapodilla/Sapodilla9-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "britannica-sapodilla",
+          "name": "Sapodilla, Encyclopaedia Britannica",
+          "url": "https://www.britannica.com/plant/sapodilla",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "sapodilla-sawo-manilla": {
+      "slug": "sapodilla-sawo-manilla",
+      "species": "Sapodilla",
+      "variety": "Sawo Manilla",
+      "paragraphs": [
+        "Sawo Manila is a long established sapodilla selection grown across South East Asia, where sawo is the local name for the fruit. It carries medium sized fruit of roughly 100 to 150 grams, with light brown skin over flesh that ranges from light to dark brown.",
+        "The flesh is juicy and sweet with only a slight graininess, true to the species character that pairs a malty, brown sugar sweetness with a soft, well ripened pear texture. A reliable, widely planted variety rather than a novelty."
+      ],
+      "claims": [
+        {
+          "text": "Sawo Manila fruit are medium sized, roughly 100 to 150 grams, with light brown skin and light to dark brown flesh.",
+          "type": "measurement",
+          "cites": [
+            "rfca-sapodilla96"
+          ]
+        },
+        {
+          "text": "The flesh is juicy and sweet with a slightly grainy texture.",
+          "type": "flavour",
+          "cites": [
+            "rfca-sapodilla96"
+          ]
+        },
+        {
+          "text": "Sapodilla flesh has a sweet, brown sugar like flavour and a grainy texture similar to a ripe pear.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-sapodilla"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-sapodilla96",
+          "name": "Sapodilla, Rare Fruit Council of Australia archives",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Sapodilla/Sapodilla9-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "wikipedia-sapodilla",
+          "name": "Manilkara zapota, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Manilkara_zapota",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

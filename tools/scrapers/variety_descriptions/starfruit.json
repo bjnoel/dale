@@ -1,0 +1,172 @@
+{
+  "species_slug": "starfruit",
+  "schema_version": 1,
+  "varieties": {
+    "starfruit-arkin": {
+      "slug": "starfruit-arkin",
+      "species": "Starfruit",
+      "variety": "Arkin",
+      "paragraphs": [
+        "Arkin is the benchmark commercial carambola, selected in Coral Gables, Florida by backyard horticulturalist Morris Arkin. It became the standard of the Florida industry and the dominant commercial variety grown in South Florida.",
+        "It is a sweet, low acid type that ripens to a yellow to deep yellow orange with crisp flesh. Much of its success comes from holding up to picking, packing and shipping better than other cultivars, making it the variety most people picture when they think of starfruit."
+      ],
+      "claims": [
+        {
+          "text": "Arkin was selected by Morris Arkin in Coral Gables, Florida.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-carambola"
+          ]
+        },
+        {
+          "text": "Arkin became the dominant commercial carambola grown in South Florida.",
+          "type": "naming",
+          "cites": [
+            "wikipedia-carambola"
+          ]
+        },
+        {
+          "text": "Arkin is a sweet, low acid cultivar that resists the stresses of picking, packing and shipping.",
+          "type": "flavour",
+          "cites": [
+            "ufifas-carambola"
+          ]
+        },
+        {
+          "text": "Its fruit ripen yellow to deep yellow orange and are medium to large.",
+          "type": "appearance",
+          "cites": [
+            "ufifas-carambola"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-carambola",
+          "name": "Carambola Growing in the Florida Home Landscape, UF/IFAS",
+          "url": "https://ask.ifas.ufl.edu/publication/MG269",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-carambola",
+          "name": "Carambola, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Carambola",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "starfruit-fwang-tung": {
+      "slug": "starfruit-fwang-tung",
+      "species": "Starfruit",
+      "variety": "Fwang Tung",
+      "paragraphs": [
+        "Fwang Tung is a sweet carambola from Thailand, valued for its very good flavour. Unlike the deep gold of many starfruit, its fruit ripen to a paler white to light yellow colour, a useful way to tell it apart on the tree.",
+        "The fruit are medium to large with the classic five angled, star in cross section shape. It is self pollinating and noted for cropping abundantly, even when planted in solid blocks rather than mixed with other types."
+      ],
+      "claims": [
+        {
+          "text": "Fwang Tung is a sweet carambola originating in Thailand with very good flavour.",
+          "type": "flavour",
+          "cites": [
+            "ufifas-carambola",
+            "gardenoracle-carambola"
+          ]
+        },
+        {
+          "text": "Its fruit ripen to a white to light yellow colour and are medium to large.",
+          "type": "appearance",
+          "cites": [
+            "ufifas-carambola"
+          ]
+        },
+        {
+          "text": "It is self pollinating and produces abundant crops even when planted in solid blocks.",
+          "type": "pollination",
+          "cites": [
+            "ufifas-carambola",
+            "gardenoracle-carambola"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-carambola",
+          "name": "Carambola Growing in the Florida Home Landscape, UF/IFAS",
+          "url": "https://ask.ifas.ufl.edu/publication/MG269",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenoracle-carambola",
+          "name": "Growing Starfruit, Averrhoa carambola, Garden Oracle",
+          "url": "https://gardenoracle.com/images/averrhoa-carambola.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "starfruit-kary": {
+      "slug": "starfruit-kary",
+      "species": "Starfruit",
+      "variety": "Kary",
+      "paragraphs": [
+        "Kary is a sweet carambola developed in Hawaii, where it was selected for local growing conditions. It is regarded as one of the better quality sweet types, with very good flavour and reliable cropping.",
+        "The fruit are medium to large and ripen to a yellow to deep yellow orange, with the familiar crisp, juicy, star shaped flesh. It is self pollinating, which makes it a practical choice for a single backyard tree."
+      ],
+      "claims": [
+        {
+          "text": "Kary is a sweet carambola that originated in Hawaii.",
+          "type": "origin",
+          "cites": [
+            "ufifas-carambola",
+            "gardenoracle-carambola"
+          ]
+        },
+        {
+          "text": "It has very good quality and flavour and is self pollinating.",
+          "type": "pollination",
+          "cites": [
+            "ufifas-carambola",
+            "gardenoracle-carambola"
+          ]
+        },
+        {
+          "text": "Its fruit are medium to large and ripen yellow to deep yellow orange.",
+          "type": "appearance",
+          "cites": [
+            "ufifas-carambola"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-carambola",
+          "name": "Carambola Growing in the Florida Home Landscape, UF/IFAS",
+          "url": "https://ask.ifas.ufl.edu/publication/MG269",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenoracle-carambola",
+          "name": "Growing Starfruit, Averrhoa carambola, Garden Oracle",
+          "url": "https://gardenoracle.com/images/averrhoa-carambola.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "starfruit-carambola-balimbing-fruit-tree",
+    "starfruit-giant-siam",
+    "starfruit-thai-knight"
+  ]
+}
