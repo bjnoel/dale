@@ -2,6 +2,1469 @@
   "species_slug": "cherry",
   "schema_version": 1,
   "varieties": {
+    "cherry-bing": {
+      "slug": "cherry-bing",
+      "species": "Cherry",
+      "variety": "Bing",
+      "paragraphs": [
+        "Bing is the classic large dark sweet cherry, created in 1875 in Milwaukie, Oregon, by horticulturist Seth Lewelling from an open pollination cross of Black Republican and Royal Ann (Napoleon). It was named for Lewelling's Chinese foreman, Ah Bing. The fruit is large and uniform with deep red to mahogany, near black skin, and firm, intensely sweet, juicy flesh with very little tartness.",
+        "Bing is not self fertile and needs a compatible pollinator of a different variety to set fruit. It cannot be reliably cross pollinated by Lambert or Royal Ann (Napoleon), as these are cross incompatible with it. It ripens in the mid part of the cherry season."
+      ],
+      "claims": [
+        {
+          "text": "Bing was created in 1875 in Milwaukie, Oregon, by Seth Lewelling from an open pollination cross of Black Republican and Royal Ann (Napoleon).",
+          "type": "origin",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "It was named for Lewelling's Chinese foreman, Ah Bing.",
+          "type": "naming",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The fruit is large and uniform with deep red to mahogany, near black skin.",
+          "type": "appearance",
+          "cites": [
+            "starkbros"
+          ]
+        },
+        {
+          "text": "The flesh is firm, intensely sweet and juicy with very little tartness.",
+          "type": "flavour",
+          "cites": [
+            "starkbros"
+          ]
+        },
+        {
+          "text": "Bing is not self fertile and requires cross pollination by a different variety.",
+          "type": "pollination",
+          "cites": [
+            "starkbros"
+          ]
+        },
+        {
+          "text": "It cannot be reliably cross pollinated by Lambert or Royal Ann (Napoleon).",
+          "type": "pollination",
+          "cites": [
+            "wikipedia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Bing cherry",
+          "url": "https://en.wikipedia.org/wiki/Bing_cherry",
+          "tier": "third_party"
+        },
+        {
+          "id": "starkbros",
+          "name": "Stark Bro's: Bing Sweet Cherry Tree",
+          "url": "https://www.starkbros.com/products/fruit-trees/cherry-trees/bing-sweet-cherry",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-burgsdorf": {
+      "slug": "cherry-burgsdorf",
+      "species": "Cherry",
+      "variety": "Burgsdorf",
+      "paragraphs": [
+        "Burgsdorf, sometimes listed as Burgsdorf's Seedling, is an Australian heritage sweet cherry described as being of colonial origin, raised by a Mr Burgsdorf at Harcourt. It has been grown in Australia since early settlement and survives today mainly through heritage orchard and rare fruit collections.",
+        "It is prized as one of the earliest cherries of the season, ripening from about November in Australian conditions. The fruit is large and dark red with sweet flavour, making it a useful early fresh cherry and a living piece of Australian orchard history."
+      ],
+      "claims": [
+        {
+          "text": "An Australian heritage sweet cherry of colonial origin, raised by a Mr Burgsdorf at Harcourt and grown since early settlement.",
+          "type": "origin",
+          "cites": [
+            "heritagerarefruit",
+            "rfssa"
+          ]
+        },
+        {
+          "text": "One of the earliest cherries of the season, ripening from about November in Australia.",
+          "type": "season",
+          "cites": [
+            "heritagerarefruit",
+            "rfssa"
+          ]
+        },
+        {
+          "text": "Large, dark red fruit with sweet flavour.",
+          "type": "appearance",
+          "cites": [
+            "rfssa",
+            "heritagerarefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Cherries",
+          "url": "https://heritageandrarefruits.weebly.com/cherries.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfssa",
+          "name": "Rare Fruit Society of South Australia: Burgsdorf",
+          "url": "https://rarefruit-sa.org.au/members/fruit-information/cherry/burgsdorf/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-capulin": {
+      "slug": "cherry-capulin",
+      "species": "Cherry",
+      "variety": "Capulin",
+      "paragraphs": [
+        "Capulin is a different species from the common sweet cherry. It is Prunus salicifolia, the capulin or Mexican bird cherry, a true cherry native to the highlands of Mexico and Central America (and naturalised through the Andes) that has been cultivated there since pre-Columbian times. Unlike the shrubby orchard cherry, it is an evergreen tending tree with narrow, willow like leaves, which is what the name salicifolia refers to.",
+        "The round fruit is red to nearly black with thin, tender skin and pale green, juicy pulp, tasting sweet to sub acid with a slightly astringent aftertaste that varies by seedling. It is eaten fresh or stewed and made into preserves and jam, and in Mexico is used as a filling for special tamales. Because it suits cooler highland elevations, it sits apart from typical warm climate fruit."
+      ],
+      "claims": [
+        {
+          "text": "A distinct species, Prunus salicifolia (capulin or Mexican bird cherry), not the common sweet cherry.",
+          "type": "naming",
+          "cites": [
+            "capulin_purdue",
+            "capulin_pfaf"
+          ]
+        },
+        {
+          "text": "Native to the highlands of Mexico and Central America and naturalised southward through the Andes, cultivated since early times.",
+          "type": "origin",
+          "cites": [
+            "capulin_purdue",
+            "capulin_pfaf"
+          ]
+        },
+        {
+          "text": "Has narrow, willow like leaves, reflected in the species name salicifolia.",
+          "type": "appearance",
+          "cites": [
+            "capulin_pfaf"
+          ]
+        },
+        {
+          "text": "Round fruit, red to nearly black, with thin tender skin and pale green juicy pulp.",
+          "type": "appearance",
+          "cites": [
+            "capulin_purdue"
+          ]
+        },
+        {
+          "text": "Flavour is sweet to sub acid with a slightly astringent aftertaste.",
+          "type": "flavour",
+          "cites": [
+            "capulin_purdue",
+            "capulin_pfaf"
+          ]
+        },
+        {
+          "text": "Eaten fresh or stewed and made into preserves and jam, and used as a tamale filling in Mexico.",
+          "type": "use",
+          "cites": [
+            "capulin_purdue"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "capulin_purdue",
+          "name": "Capulin, Morton, Purdue University NewCROP",
+          "url": "https://hort.purdue.edu/newcrop/morton/capulin.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "capulin_pfaf",
+          "name": "Prunus salicifolia, Plants For A Future",
+          "url": "https://pfaf.org/user/Plant.aspx?LatinName=Prunus+salicifolia",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-early-burlat": {
+      "slug": "cherry-early-burlat",
+      "species": "Cherry",
+      "variety": "Early Burlat",
+      "paragraphs": [
+        "Early Burlat, often just called Burlat, is the benchmark early season sweet cherry of Europe, originating in France with a grower named Burlat in the Lyon region in the early 20th century. It is prized as one of the very first cherries of the season, harvested from around late May into June. The fruit is large and glossy with dark red skin and juicy flesh.",
+        "Because it opens the cherry season, Burlat is grown widely across France and Europe. It is not self fertile and needs a pollinator such as Stella or other compatible varieties. As an early, softer cherry it can be susceptible to cracking and needs careful handling."
+      ],
+      "claims": [
+        {
+          "text": "Early Burlat (Burlat) originated in France, found by a grower named Burlat in the Lyon region in the early 20th century.",
+          "type": "origin",
+          "cites": [
+            "cherrytimes",
+            "vdberk"
+          ]
+        },
+        {
+          "text": "It is one of the earliest sweet cherries of the season, harvested from around late May into June.",
+          "type": "season",
+          "cites": [
+            "cherrytimes",
+            "vdberk"
+          ]
+        },
+        {
+          "text": "The fruit is large and glossy with dark red skin and juicy flesh.",
+          "type": "appearance",
+          "cites": [
+            "vdberk",
+            "heritage"
+          ]
+        },
+        {
+          "text": "It is not self fertile and needs a pollinator such as Stella.",
+          "type": "pollination",
+          "cites": [
+            "heritage"
+          ]
+        },
+        {
+          "text": "As an early softer cherry it is susceptible to cracking and needs careful handling.",
+          "type": "growing",
+          "cites": [
+            "heritage"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cherrytimes",
+          "name": "Cherry Times: the sweet history of Burlat cherries",
+          "url": "https://cherrytimes.it/en/news/Monts-du-Lyonnais-the-sweet-history-of-Burlat-cherries",
+          "tier": "third_party"
+        },
+        {
+          "id": "vdberk",
+          "name": "Van den Berk Nurseries: Prunus avium BURLAT (Bigarreau Burlat)",
+          "url": "https://www.vdberk.com/trees/prunus-avium-burlat-bigarreau-burlat/",
+          "tier": "nursery"
+        },
+        {
+          "id": "heritage",
+          "name": "Heritage Fruit Trees: Early Burlat Cherry",
+          "url": "https://www.heritagefruittrees.com.au/early-burlat/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-lambert": {
+      "slug": "cherry-lambert",
+      "species": "Cherry",
+      "variety": "Lambert",
+      "paragraphs": [
+        "Lambert is an old, large dark sweet cherry developed by Joseph Hamilton Lambert, who grafted a volunteer seedling found in 1848 under a Napoleon cherry tree in Oregon, introducing it commercially in 1876. It has been grown in the Pacific Northwest for over 150 years and ranks second only to Bing as a commercial cultivar. The fruit is large, firm, heart shaped, with dark red to near black skin and very dark, sweet flesh.",
+        "Lambert is a late season variety, ripening one to two weeks after Bing, which helps make it more resistant to late spring frost and less prone to cracking. It is not self fertile and needs a compatible pollinator, but note that Lambert and Bing are cross incompatible and cannot pollinate each other."
+      ],
+      "claims": [
+        {
+          "text": "Lambert was developed by Joseph Hamilton Lambert from a volunteer seedling found in 1848 under a Napoleon cherry tree in Oregon, introduced commercially in 1876.",
+          "type": "origin",
+          "cites": [
+            "fps_lambert"
+          ]
+        },
+        {
+          "text": "It has been grown in the Pacific Northwest for over 150 years and ranks second only to Bing as a commercial cultivar.",
+          "type": "growing",
+          "cites": [
+            "fps_lambert",
+            "onegreenworld"
+          ]
+        },
+        {
+          "text": "The fruit is large, firm, heart shaped, with dark red to near black skin and dark sweet flesh.",
+          "type": "appearance",
+          "cites": [
+            "fps_lambert",
+            "onegreenworld"
+          ]
+        },
+        {
+          "text": "Lambert is a late season variety, ripening one to two weeks after Bing.",
+          "type": "season",
+          "cites": [
+            "fps_lambert",
+            "onegreenworld"
+          ]
+        },
+        {
+          "text": "It is not self fertile and needs a pollinator, and it is cross incompatible with Bing.",
+          "type": "pollination",
+          "cites": [
+            "fps_lambert",
+            "onegreenworld"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fps_lambert",
+          "name": "UC Davis Foundation Plant Services: Lambert cherry",
+          "url": "https://fps.ucdavis.edu/treedetails.cfm?v=879",
+          "tier": "authoritative"
+        },
+        {
+          "id": "onegreenworld",
+          "name": "One Green World: Lambert Cherry",
+          "url": "https://onegreenworld.com/product/lambert-cherry-tree/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-lapins": {
+      "slug": "cherry-lapins",
+      "species": "Cherry",
+      "variety": "Lapins",
+      "paragraphs": [
+        "Lapins is a sweet cherry bred at the Summerland Research Station in British Columbia, Canada, from a Van by Stella cross made in 1965. It was named for the Latvian agronomist Karlis Lapins, a pioneer of self fertile cherry breeding, and released in 1983 after his retirement. Like its Stella parent it is self fertile, so a single tree sets fruit without a pollinating partner, and it also pollinates other varieties.",
+        "The fruit is large, firm and deep red, regarded as very high quality and noted for good resistance to rain splitting. It turns dark red and tastes sweet before it is fully ready to pick. Lapins is a late season cherry, ripening roughly a fortnight after Bing."
+      ],
+      "claims": [
+        {
+          "text": "Bred at the Summerland Research Station in British Columbia, Canada, from a Van by Stella cross.",
+          "type": "breeding",
+          "cites": [
+            "wiki-lapins",
+            "sp-lapins"
+          ]
+        },
+        {
+          "text": "Named for Latvian agronomist Karlis Lapins and released in 1983 after his retirement.",
+          "type": "naming",
+          "cites": [
+            "wiki-lapins",
+            "sp-lapins"
+          ]
+        },
+        {
+          "text": "Self fertile, sets fruit without a partner and pollinates other varieties.",
+          "type": "pollination",
+          "cites": [
+            "wiki-lapins",
+            "sp-lapins"
+          ]
+        },
+        {
+          "text": "Fruit is large, firm and deep red with good split resistance, high quality.",
+          "type": "appearance",
+          "cites": [
+            "wiki-lapins",
+            "sp-lapins"
+          ]
+        },
+        {
+          "text": "A late season cherry, ripening about two weeks after Bing.",
+          "type": "season",
+          "cites": [
+            "wiki-lapins"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-lapins",
+          "name": "Wikipedia: Lapins cherry",
+          "url": "https://en.wikipedia.org/wiki/Lapins_cherry",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-lapins",
+          "name": "Specialty Produce: Lapins Cherries",
+          "url": "https://specialtyproduce.com/produce/Lapins_Cherries_7064.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-merchant": {
+      "slug": "cherry-merchant",
+      "species": "Cherry",
+      "variety": "Merchant",
+      "paragraphs": [
+        "Merchant is an English sweet cherry raised at the John Innes Institute in Norwich and introduced around 1970. It is valued as one of the most reliable early croppers, carrying heavy yields of large, dark, almost black fruit with a rich, sweet flavour in early summer.",
+        "It holds the Royal Horticultural Society Award of Garden Merit, given in 1995. Merchant is not self-fertile, so it needs a compatible pollinator, but it sits in pollination group 3 and works as a universal pollen donor for many other sweet cherries. The fruit is at its best eaten fresh."
+      ],
+      "claims": [
+        {
+          "text": "Merchant is an English sweet cherry raised at the John Innes Institute, Norwich, and introduced around 1970.",
+          "type": "origin",
+          "cites": [
+            "fpmatthews",
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "A reliable, heavy early cropper bearing large, dark, almost black fruit with rich sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "orangepippin",
+            "rhs"
+          ]
+        },
+        {
+          "text": "Holds the Royal Horticultural Society Award of Garden Merit, given in 1995.",
+          "type": "award",
+          "cites": [
+            "rhs",
+            "fpmatthews"
+          ]
+        },
+        {
+          "text": "Not self-fertile (pollination group 3) and acts as a universal pollen donor for other sweet cherries.",
+          "type": "pollination",
+          "cites": [
+            "fpmatthews",
+            "rhs"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs",
+          "name": "Royal Horticultural Society: Prunus avium 'Merchant'",
+          "url": "https://www.rhs.org.uk/plants/43108/prunus-avium-merchant-(f)/details",
+          "tier": "authoritative"
+        },
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: Merchant cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/merchant",
+          "tier": "third_party"
+        },
+        {
+          "id": "fpmatthews",
+          "name": "Frank P Matthews: Merchant cherry",
+          "url": "https://www.frankpmatthews.com/catalogue/fruit-trees/cherry/merchant/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-minnie-royal": {
+      "slug": "cherry-minnie-royal",
+      "species": "Cherry",
+      "variety": "Minnie Royal",
+      "paragraphs": [
+        "Minnie Royal is a low chill sweet cherry from Zaiger Genetics, granted U.S. Plant Patent 12942 in 2002. The patent records a breeding line tracing back to a cross between a Bing derived selection and an unnamed low chilling cherry. It is an early bloomer, opening roughly 10 days before Early Burlat with fruit maturing about 2 days after it.",
+        "Minnie Royal is not self fruitful and is the classic companion pollinator pair with Royal Lee, the two being planted together so each sets a crop. It bears medium sized fruit with attractive red to wine red skin and firm, crisp flesh."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Zaiger Genetics and granted U.S. Plant Patent 12942.",
+          "type": "breeding",
+          "cites": [
+            "uspp12942"
+          ]
+        },
+        {
+          "text": "Breeding line traces to a cross between a Bing derived selection and an unnamed low chilling cherry.",
+          "type": "breeding",
+          "cites": [
+            "uspp12942"
+          ]
+        },
+        {
+          "text": "Early bloomer, opening about 10 days before Early Burlat with fruit maturing roughly 2 days after it.",
+          "type": "season",
+          "cites": [
+            "uspp12942"
+          ]
+        },
+        {
+          "text": "Not self fruitful; the standard companion pollinator pair with Royal Lee.",
+          "type": "pollination",
+          "cites": [
+            "uspp12942",
+            "sdhort"
+          ]
+        },
+        {
+          "text": "Low chill variety suited to mild winter climates.",
+          "type": "climate",
+          "cites": [
+            "sdhort"
+          ]
+        },
+        {
+          "text": "Medium sized fruit with red to wine red skin and firm, crisp flesh.",
+          "type": "appearance",
+          "cites": [
+            "uspp12942"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uspp12942",
+          "name": "U.S. Plant Patent 12942 - Cherry tree named 'Minnie Royal' (Google Patents)",
+          "url": "https://patents.google.com/patent/USPP12942P2/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sdhort",
+          "name": "San Diego Horticultural Society, 'Trees, Please! Can You Bake A Cherry Pie?' by Robin Rivet",
+          "url": "https://www.sdhortnews.org/post/trees-please-can-you-bake-a-cherry-pie",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-morello": {
+      "slug": "cherry-morello",
+      "species": "Cherry",
+      "variety": "Morello",
+      "paragraphs": [
+        "Morello is the classic sour or acid cherry, a cultivar of Prunus cerasus rather than the sweet Prunus avium, and the most widely planted sour cherry in central Europe. The fruit is roundish, with skin that ripens from red to a dark blackish red, and soft, very juicy, dark red flesh. Despite a high sugar content it tastes distinctly sour, a sharpness that intensifies with cooking.",
+        "Because it is too tart to enjoy fresh, Morello is grown as a cooking and processing cherry, used in pies, jams, preserves and liqueurs such as kirsch. It is usually self fertile, so it sets fruit without a partner and can pollinate other late flowering cherries. It ripens later than sweet cherries, around July in the northern hemisphere."
+      ],
+      "claims": [
+        {
+          "text": "A sour cherry cultivar of Prunus cerasus, the most widely planted sour cherry in central Europe.",
+          "type": "origin",
+          "cites": [
+            "wiki-morello",
+            "ws-morello"
+          ]
+        },
+        {
+          "text": "Fruit ripens from red to dark blackish red, with soft, very juicy dark red flesh.",
+          "type": "appearance",
+          "cites": [
+            "wiki-morello",
+            "ws-morello"
+          ]
+        },
+        {
+          "text": "Distinctly sour despite high sugar, with sourness intensified by cooking.",
+          "type": "flavour",
+          "cites": [
+            "wiki-morello",
+            "ws-morello"
+          ]
+        },
+        {
+          "text": "Too tart to eat fresh, used for pies, jams, preserves and liqueurs such as kirsch.",
+          "type": "use",
+          "cites": [
+            "wiki-morello",
+            "ws-morello"
+          ]
+        },
+        {
+          "text": "Usually self fertile, sets fruit without a partner and can pollinate other late flowering cherries.",
+          "type": "pollination",
+          "cites": [
+            "wiki-morello",
+            "ws-morello"
+          ]
+        },
+        {
+          "text": "Ripens later than sweet cherries, around July.",
+          "type": "season",
+          "cites": [
+            "wiki-morello",
+            "ws-morello"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-morello",
+          "name": "Wikipedia: Morello cherry",
+          "url": "https://en.wikipedia.org/wiki/Morello_cherry",
+          "tier": "third_party"
+        },
+        {
+          "id": "ws-morello",
+          "name": "Woodland Trust: Sour Cherry (Prunus cerasus)",
+          "url": "https://www.woodlandtrust.org.uk/trees-woods-and-wildlife/british-trees/a-z-of-british-trees/sour-cherry/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-nanking": {
+      "slug": "cherry-nanking",
+      "species": "Cherry",
+      "variety": "Nanking",
+      "paragraphs": [
+        "Nanking cherry is not the orchard sweet cherry but Prunus tomentosa, a hardy bush cherry (also called Manchu or downy cherry) native to northern and western China, Korea, and Mongolia. It grows as a dense, multi stemmed deciduous shrub rather than a tall tree, and is named tomentosa for the downy hairs that coat its leaves, stems, and fruit. It is prized as much for ornament as for fruit.",
+        "In early spring it carries profuse white to pink flowers, followed in early summer by small scarlet drupes that are sweet but slightly tart, used fresh and for juice, jam, and wine. It is exceptionally cold hardy, tolerating very harsh winters. A quirk worth noting is that despite the cherry name it is botanically closer to the plums than to true cherries."
+      ],
+      "claims": [
+        {
+          "text": "A distinct species, Prunus tomentosa (Nanking, Manchu, or downy cherry), not the common sweet cherry.",
+          "type": "naming",
+          "cites": [
+            "nanking_wiki",
+            "nanking_ncsu"
+          ]
+        },
+        {
+          "text": "Native to northern and western China, Korea, and Mongolia.",
+          "type": "origin",
+          "cites": [
+            "nanking_wiki"
+          ]
+        },
+        {
+          "text": "Grows as a dense, multi stemmed deciduous shrub, with down covering leaves, stems, and fruit.",
+          "type": "appearance",
+          "cites": [
+            "nanking_wiki",
+            "nanking_ncsu"
+          ]
+        },
+        {
+          "text": "Bears profuse white to pink flowers in early spring.",
+          "type": "appearance",
+          "cites": [
+            "nanking_wiki",
+            "nanking_ncsu"
+          ]
+        },
+        {
+          "text": "Small scarlet fruit, sweet but slightly tart, ripening in early summer and used for juice, jam, and wine.",
+          "type": "use",
+          "cites": [
+            "nanking_wiki",
+            "nanking_ncsu"
+          ]
+        },
+        {
+          "text": "Exceptionally cold hardy.",
+          "type": "climate",
+          "cites": [
+            "nanking_wiki"
+          ]
+        },
+        {
+          "text": "Botanically more closely related to plums than to true cherries.",
+          "type": "naming",
+          "cites": [
+            "nanking_wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nanking_wiki",
+          "name": "Prunus tomentosa, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Prunus_tomentosa",
+          "tier": "third_party"
+        },
+        {
+          "id": "nanking_ncsu",
+          "name": "Prunus tomentosa, NC State Extension Gardener Plant Toolbox",
+          "url": "https://plants.ces.ncsu.edu/plants/prunus-tomentosa/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-napoleon": {
+      "slug": "cherry-napoleon",
+      "species": "Cherry",
+      "variety": "Napoleon",
+      "paragraphs": [
+        "Napoleon is an old European blush cherry, also known as Royal Ann, Napoleon Bigarreau and Queen Anne, with references dating back centuries before it was named around 1820. It belongs to the Bigarreau group of firm fleshed sweet cherries. The large heart shaped fruit has pale yellow skin with a red blush where the sun strikes it, over firm, cream coloured flesh, similar in look and taste to Rainier.",
+        "Brought to Oregon in the 1840s, it was renamed Royal Ann there in 1850. Its sweet, mildly acidic flavour and firm texture make it a classic dual purpose cherry, eaten fresh but especially valued for canning, preserves and maraschino cherries."
+      ],
+      "claims": [
+        {
+          "text": "An old European blush cherry also known as Royal Ann, Napoleon Bigarreau and Queen Anne; the Napoleon name dates from around 1820.",
+          "type": "naming",
+          "cites": [
+            "wiki-royalann",
+            "sp-napoleon"
+          ]
+        },
+        {
+          "text": "Belongs to the Bigarreau group of firm fleshed sweet cherries.",
+          "type": "origin",
+          "cites": [
+            "wiki-royalann",
+            "sp-napoleon"
+          ]
+        },
+        {
+          "text": "Large heart shaped fruit with pale yellow skin, a sun side red blush, and firm cream coloured flesh.",
+          "type": "appearance",
+          "cites": [
+            "wiki-royalann",
+            "sp-napoleon"
+          ]
+        },
+        {
+          "text": "Brought to Oregon in the 1840s and renamed Royal Ann there in 1850.",
+          "type": "origin",
+          "cites": [
+            "wiki-royalann",
+            "sp-napoleon"
+          ]
+        },
+        {
+          "text": "Sweet, mildly acidic and firm; valued for fresh eating and for canning, preserves and maraschino cherries.",
+          "type": "use",
+          "cites": [
+            "wiki-royalann",
+            "sp-napoleon"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-royalann",
+          "name": "Wikipedia: Royal Ann cherry",
+          "url": "https://en.wikipedia.org/wiki/Royal_Ann_cherry",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-napoleon",
+          "name": "Specialty Produce: Napoleon Cherries",
+          "url": "https://specialtyproduce.com/produce/Napoleon_Cherries_22756.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-rainier": {
+      "slug": "cherry-rainier",
+      "species": "Cherry",
+      "variety": "Rainier",
+      "paragraphs": [
+        "Rainier is a sweet cherry (Prunus avium) bred by Harold Fogle at Washington State University's research station in Prosser, crossing Bing with Van in 1952 and releasing it in 1960. It is named after Mount Rainier. The famous bicolour look came as a surprise: both red parents carried a recessive gene, so Fogle said he was as shocked as anyone when pale fruit appeared.",
+        "The fruit is a creamy yellow blushed with pink to bright red, with thin skin and firm, sweet, gently floral yellow flesh, and is treated as a premium cherry. That delicacy is also its quirk: the thin skinned fruit bruises easily and is sensitive to rain, wind, and heat, and birds favour it. Rainier is not self fertile and needs a pollinizer such as Bing, Van, or Lapins."
+      ],
+      "claims": [
+        {
+          "text": "Sweet cherry (Prunus avium) bred by Harold Fogle at Washington State University, Prosser, a Bing x Van cross made in 1952.",
+          "type": "origin",
+          "cites": [
+            "rainier_wiki",
+            "wsu_news",
+            "wsu_mag"
+          ]
+        },
+        {
+          "text": "Released in 1960 and named after Mount Rainier.",
+          "type": "naming",
+          "cites": [
+            "wsu_news",
+            "rainier_wiki"
+          ]
+        },
+        {
+          "text": "The pale bicolour colour was unexpected because both red parents carried a recessive gene.",
+          "type": "breeding",
+          "cites": [
+            "wsu_mag"
+          ]
+        },
+        {
+          "text": "Creamy yellow fruit with a pink to red blush and thin skin, with firm sweet yellow flesh.",
+          "type": "appearance",
+          "cites": [
+            "rainier_wiki",
+            "wsu_mag"
+          ]
+        },
+        {
+          "text": "Considered a premium cherry but bruises easily and is sensitive to temperature, wind, and rain.",
+          "type": "growing",
+          "cites": [
+            "rainier_wiki"
+          ]
+        },
+        {
+          "text": "Not self pollinating; needs a pollenizer such as Bing, Van, or Lapins.",
+          "type": "pollination",
+          "cites": [
+            "rainier_wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rainier_wiki",
+          "name": "Rainier cherry, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Rainier_cherry",
+          "tier": "third_party"
+        },
+        {
+          "id": "wsu_news",
+          "name": "Rainier cherry developer dies at 88, WSU Insider",
+          "url": "https://news.wsu.edu/news/2006/10/25/rainier-cherry-developer-dies-at-88/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wsu_mag",
+          "name": "Rainier cherries, Washington State Magazine (WSU)",
+          "url": "https://magazine.wsu.edu/2019/08/02/rainier-cherries/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-ron-s": {
+      "slug": "cherry-ron-s",
+      "species": "Cherry",
+      "variety": "Ron s",
+      "paragraphs": [
+        "Ron's, also recorded as Ron's Seedling, is a sweet cherry grown in Australia. The fruit has firm, slightly fibrous, juicy flesh with very good flavour and a small, nearly free stone, and the tree crops well, ripening in the early to middle part of the cherry season.",
+        "It stands out in research on Australian grown cherries. A published study found Ron's had the highest total flavonoid content of the cultivars tested and no detectable condensed tannins. It is not self-fertile, so it needs a compatible pollinator to set a crop."
+      ],
+      "claims": [
+        {
+          "text": "A sweet cherry grown in Australia, also recorded as Ron's Seedling.",
+          "type": "origin",
+          "cites": [
+            "orangepippin",
+            "acsomega"
+          ]
+        },
+        {
+          "text": "Firm, slightly fibrous, juicy flesh with very good flavour and a small, nearly free stone.",
+          "type": "flavour",
+          "cites": [
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "A study of Australian grown sweet cherries found Ron's had the highest total flavonoid content of the cultivars tested and no detectable condensed tannins.",
+          "type": "superlative",
+          "cites": [
+            "acsomega"
+          ]
+        },
+        {
+          "text": "Not self-fertile; needs a compatible pollinator.",
+          "type": "pollination",
+          "cites": [
+            "orangepippin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: Ron's Seedling cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/rons-seedling",
+          "tier": "third_party"
+        },
+        {
+          "id": "acsomega",
+          "name": "ACS Omega: Phenolic Compounds from Australia-Grown Sweet Cherries",
+          "url": "https://pubs.acs.org/doi/10.1021/acsomega.1c05112",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-royal-crimson": {
+      "slug": "cherry-royal-crimson",
+      "species": "Cherry",
+      "variety": "Royal Crimson",
+      "paragraphs": [
+        "Royal Crimson is a low chill sweet cherry released by Zaiger Genetics, tested under the selection code 6GM25. Its standout trait among the Zaiger low chill cherries is that it is self fruitful, so it can set a crop without a partner, unlike Royal Lee and Minnie Royal which both need a pollinator.",
+        "Beyond fruiting on its own, Royal Crimson also works as a pollinator for either Royal Lee or Minnie Royal, making it a useful single tree or anchor choice in warm, mild winter gardens. It carries a low chill requirement (around 200 to 300 hours), bears large crimson red fruit, and harvests early to mid May in its home climate."
+      ],
+      "claims": [
+        {
+          "text": "Released by Zaiger Genetics and trialled under the selection code 6GM25.",
+          "type": "origin",
+          "cites": [
+            "sdhort",
+            "dwn_crimson"
+          ]
+        },
+        {
+          "text": "Self fruitful, setting a crop without a separate pollinator.",
+          "type": "pollination",
+          "cites": [
+            "sdhort",
+            "dwn_crimson"
+          ]
+        },
+        {
+          "text": "Can act as a pollinator for either Royal Lee or Minnie Royal.",
+          "type": "pollination",
+          "cites": [
+            "sdhort",
+            "dwn_crimson"
+          ]
+        },
+        {
+          "text": "Low chill variety suited to mild winter climates.",
+          "type": "climate",
+          "cites": [
+            "sdhort"
+          ]
+        },
+        {
+          "text": "Bears large crimson red fruit harvesting early to mid May.",
+          "type": "appearance",
+          "cites": [
+            "dwn_crimson"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sdhort",
+          "name": "San Diego Horticultural Society, 'Trees, Please! Can You Bake A Cherry Pie?' by Robin Rivet",
+          "url": "https://www.sdhortnews.org/post/trees-please-can-you-bake-a-cherry-pie",
+          "tier": "third_party"
+        },
+        {
+          "id": "dwn_crimson",
+          "name": "Dave Wilson Nursery - Royal Crimson cherry",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/cherry/royal_crimson/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-royal-lee": {
+      "slug": "cherry-royal-lee",
+      "species": "Cherry",
+      "variety": "Royal Lee",
+      "paragraphs": [
+        "Royal Lee is a low chill sweet cherry from Zaiger Genetics (Modesto, California). It was patented in 2002 under the name Regal Lee (U.S. Plant Patent 12417), the name that later morphed into the commercial Royal Lee. The patent records its parentage as an open pollinated seedling tracing back to a cross involving a Bing seedling and a lower chilling seedling of unknown parentage.",
+        "Royal Lee is self sterile, so it needs a low chill pollinator. Minnie Royal is the standard companion, though the two do not always bloom together. It is an early, very productive variety bearing medium to large fruit with attractive red to garnet red skin and very firm flesh that holds well on the tree after maturity."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Zaiger Genetics and patented in 2002 as 'Regal Lee', the name later marketed as Royal Lee.",
+          "type": "naming",
+          "cites": [
+            "uspp12417",
+            "sdhort"
+          ]
+        },
+        {
+          "text": "Parentage traces to a cross involving a Bing seedling and a lower chilling seedling of unknown parentage.",
+          "type": "breeding",
+          "cites": [
+            "uspp12417"
+          ]
+        },
+        {
+          "text": "Self sterile, requiring a pollinator; Minnie Royal is the standard low chill partner.",
+          "type": "pollination",
+          "cites": [
+            "uspp12417",
+            "sdhort"
+          ]
+        },
+        {
+          "text": "Low chill sweet cherry suited to mild winter climates.",
+          "type": "climate",
+          "cites": [
+            "sdhort"
+          ]
+        },
+        {
+          "text": "Early ripening with medium to large, firm, red to garnet red fruit.",
+          "type": "appearance",
+          "cites": [
+            "uspp12417"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uspp12417",
+          "name": "U.S. Plant Patent 12417 - Cherry tree named 'Regal Lee' (Google Patents)",
+          "url": "https://patents.google.com/patent/USPP12417P2/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sdhort",
+          "name": "San Diego Horticultural Society, 'Trees, Please! Can You Bake A Cherry Pie?' by Robin Rivet",
+          "url": "https://www.sdhortnews.org/post/trees-please-can-you-bake-a-cherry-pie",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-royal-rainier": {
+      "slug": "cherry-royal-rainier",
+      "species": "Cherry",
+      "variety": "Royal Rainier",
+      "paragraphs": [
+        "Royal Rainier is a yellow blush sweet cherry from Zaiger Genetics, covered by U.S. Plant Patent 10790 (issued 1999). It is distinct from the famous Rainier cherry: the patent records it as an open pollinated seedling of selection 32G153, itself descended from Stella, with yellowish white skin carrying an attractive red blush where the sun strikes it, plus firm flesh that holds on the tree several days after maturity.",
+        "Royal Rainier ripens early, about 3 to 5 days ahead of standard Rainier, and is noted for excellent flavour as a taste test winner. It is not self fertile and needs a pollinator; suitable partners include Bing, Black Tartarian and Lapins."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Zaiger Genetics and covered by U.S. Plant Patent 10790.",
+          "type": "breeding",
+          "cites": [
+            "uspp10790"
+          ]
+        },
+        {
+          "text": "Originated as an open pollinated seedling of selection 32G153, descended from Stella, and is distinct from the standard Rainier cherry.",
+          "type": "origin",
+          "cites": [
+            "uspp10790"
+          ]
+        },
+        {
+          "text": "Yellowish white skin with an attractive red blush in the sun and firm flesh.",
+          "type": "appearance",
+          "cites": [
+            "uspp10790",
+            "dwn_rainier"
+          ]
+        },
+        {
+          "text": "Ripens early, about 3 to 5 days ahead of Rainier.",
+          "type": "season",
+          "cites": [
+            "dwn_rainier"
+          ]
+        },
+        {
+          "text": "Noted for excellent flavour as a taste test winner.",
+          "type": "flavour",
+          "cites": [
+            "dwn_rainier"
+          ]
+        },
+        {
+          "text": "Not self fertile, requiring a pollinator such as Bing, Black Tartarian or Lapins.",
+          "type": "pollination",
+          "cites": [
+            "uspp10790",
+            "dwn_rainier"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uspp10790",
+          "name": "U.S. Plant Patent 10790 - Cherry tree named 'Royal Rainier' (Google Patents)",
+          "url": "https://patents.google.com/patent/USPP10790P/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "dwn_rainier",
+          "name": "Dave Wilson Nursery - Royal Rainier cherry",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/cherry/royal_rainier/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-saint-margaret": {
+      "slug": "cherry-saint-margaret",
+      "species": "Cherry",
+      "variety": "Saint Margaret",
+      "paragraphs": [
+        "Saint Margaret, also written St Margaret, is an old, large, dark sweet cherry valued as a late season variety. The heart shaped fruit has dark red, almost black skin over firm, juicy, deeply coloured flesh, and the tree is a good cropper that also makes an attractive ornamental.",
+        "It ripens late, from about late December into early January in Australian gardens, well after the main early cherries. Beyond fresh eating it is traditionally used for jam and preserving. It is not self-fertile and sets best with pollinators such as Napoleon, Stella or Bing nearby."
+      ],
+      "claims": [
+        {
+          "text": "A large, dark, almost black, heart shaped sweet cherry with firm, juicy, deeply coloured flesh.",
+          "type": "appearance",
+          "cites": [
+            "orangepippin",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "A late season cherry, ripening from about late December into early January in Australia.",
+          "type": "season",
+          "cites": [
+            "orangepippin",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "Valued for fresh eating and traditionally for jam and preserving.",
+          "type": "use",
+          "cites": [
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "Not self-fertile; pollinated by varieties such as Napoleon, Stella and Bing.",
+          "type": "pollination",
+          "cites": [
+            "orangepippin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: St Margaret cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/st-margaret",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Cherries",
+          "url": "https://heritageandrarefruits.weebly.com/cherries.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-simone": {
+      "slug": "cherry-simone",
+      "species": "Cherry",
+      "variety": "Simone",
+      "paragraphs": [
+        "Simone is a black sweet cherry that is one of the best performing and most widely grown varieties in the Australian cherry industry. The fruit is large, almost the size of a small plum, with dark, succulent, firm flesh and a sweet flavour. It is similar in appearance and timing to Lapins, and the trees are precocious, cropping young.",
+        "Its standout trait is that Simone is self fertile, setting a good crop planted on its own, so it does not require a separate pollinator. It also pollinates well with Ron's Seedling and Lapins. Simone is valued for being crack resistant, holding up when rained on near harvest, and it ripens around December to early January in Australia."
+      ],
+      "claims": [
+        {
+          "text": "Simone is among the best performing and most widely grown cherry varieties in Australia.",
+          "type": "growing",
+          "cites": [
+            "cherrygrowers",
+            "specialitytrees"
+          ]
+        },
+        {
+          "text": "The fruit is large, almost the size of a small plum, black and succulent.",
+          "type": "appearance",
+          "cites": [
+            "specialitytrees",
+            "yalca"
+          ]
+        },
+        {
+          "text": "It is similar in appearance to Lapins.",
+          "type": "naming",
+          "cites": [
+            "specialitytrees",
+            "cherrygrowers"
+          ]
+        },
+        {
+          "text": "Simone is self fertile and sets a good crop on its own.",
+          "type": "pollination",
+          "cites": [
+            "specialitytrees",
+            "yalca"
+          ]
+        },
+        {
+          "text": "It pollinates with Ron's Seedling and Lapins.",
+          "type": "pollination",
+          "cites": [
+            "yalca"
+          ]
+        },
+        {
+          "text": "Simone ripens around December to early January.",
+          "type": "season",
+          "cites": [
+            "specialitytrees",
+            "yalca"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cherrygrowers",
+          "name": "Cherry Growers Australia: Cherry Varieties",
+          "url": "https://www.cherrygrowers.org.au/cherry-industry-essentials/cherry-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialitytrees",
+          "name": "Speciality Trees: Prunus avium Simone",
+          "url": "https://www.specialitytrees.com.au/trees/prunus-avium-simone-qjzam",
+          "tier": "nursery"
+        },
+        {
+          "id": "yalca",
+          "name": "Yalca Fruit Trees: Simone cherry",
+          "url": "https://www.yalcafruittrees.com.au/shop/cherry-trees/simone-cherry/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-sir-don": {
+      "slug": "cherry-sir-don",
+      "species": "Cherry",
+      "variety": "Sir don",
+      "paragraphs": [
+        "Sir Don is an Australian sweet cherry from a Black Douglas by Stella cross, protected under Plant Breeder's Rights and assessed through national evaluation trials across Australia. It is self fertile, so a single tree will crop without a separate pollinator. It reaches full bloom about seven days after Stella and matures late in the season.",
+        "The fruit is large and kidney to heart shaped with mahogany to almost black skin, a long stem, and firm flesh with red juice and a rich, sweet flavour. A standout trait is its resistance to rain cracking. It suits fresh eating as well as jams and preserves."
+      ],
+      "claims": [
+        {
+          "text": "Australian sweet cherry from a Black Douglas by Stella cross, protected under Plant Breeder's Rights.",
+          "type": "breeding",
+          "cites": [
+            "anfic-sirdon",
+            "ge-sirdon"
+          ]
+        },
+        {
+          "text": "Self fertile (self pollinating), so one tree crops without a separate pollinator.",
+          "type": "pollination",
+          "cites": [
+            "anfic-sirdon",
+            "ge-sirdon"
+          ]
+        },
+        {
+          "text": "Reaches full bloom about seven days after Stella and matures late in the season.",
+          "type": "season",
+          "cites": [
+            "anfic-sirdon",
+            "ge-sirdon"
+          ]
+        },
+        {
+          "text": "Large kidney to heart shaped fruit with mahogany to almost black skin and firm flesh, rich and sweet.",
+          "type": "appearance",
+          "cites": [
+            "anfic-sirdon",
+            "ge-sirdon"
+          ]
+        },
+        {
+          "text": "Notable for resistance to rain cracking.",
+          "type": "growing",
+          "cites": [
+            "anfic-sirdon",
+            "ge-sirdon"
+          ]
+        },
+        {
+          "text": "Suits fresh eating as well as jams and preserves.",
+          "type": "use",
+          "cites": [
+            "ge-sirdon"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic-sirdon",
+          "name": "ANFIC: Sir Don cherry variety",
+          "url": "https://anfic.com.au/variety/sir-don-cherry/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ge-sirdon",
+          "name": "Garden Express: Cherry Sir Don (PBR)",
+          "url": "https://www.gardenexpress.com.au/product/cherry-sir-don-pbr/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-st-margaret": {
+      "slug": "cherry-st-margaret",
+      "species": "Cherry",
+      "variety": "St Margaret",
+      "paragraphs": [
+        "St Margaret, also written Saint Margaret, is an old, large, dark sweet cherry valued as a late season variety. The heart shaped fruit has dark red, almost black skin over firm, juicy, deeply coloured flesh, and the tree is a good cropper that also makes an attractive ornamental.",
+        "It ripens late, from about late December into early January in Australian gardens, well after the main early cherries. Beyond fresh eating it is traditionally used for jam and preserving. It is not self-fertile and sets best with pollinators such as Napoleon, Stella or Bing nearby."
+      ],
+      "claims": [
+        {
+          "text": "A large, dark, almost black, heart shaped sweet cherry with firm, juicy, deeply coloured flesh.",
+          "type": "appearance",
+          "cites": [
+            "orangepippin",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "A late season cherry, ripening from about late December into early January in Australia.",
+          "type": "season",
+          "cites": [
+            "orangepippin",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "Valued for fresh eating and traditionally for jam and preserving.",
+          "type": "use",
+          "cites": [
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "Not self-fertile; pollinated by varieties such as Napoleon, Stella and Bing.",
+          "type": "pollination",
+          "cites": [
+            "orangepippin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: St Margaret cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/st-margaret",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Cherries",
+          "url": "https://heritageandrarefruits.weebly.com/cherries.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-starkrimson": {
+      "slug": "cherry-starkrimson",
+      "species": "Cherry",
+      "variety": "Starkrimson",
+      "paragraphs": [
+        "Starkrimson is the trade name under which the Lapins sweet cherry is sold by Stark Bro's of Missouri. It is a compact, productive tree well suited to smaller spaces, bearing large, firm, meaty dark red cherries with a bright, sweet taste that resemble Bing. The fruit resists cracking.",
+        "Its key advantage is that Starkrimson is self fertile, so a single tree will set a crop without a separate pollinator, and it also serves as a good pollinator for other cherry varieties that are not self fertile. It ripens in late June (early summer in the northern hemisphere)."
+      ],
+      "claims": [
+        {
+          "text": "Starkrimson is the trade name for the Lapins sweet cherry, an introduction from Stark Bro's.",
+          "type": "naming",
+          "cites": [
+            "mobot",
+            "starkbros_sk"
+          ]
+        },
+        {
+          "text": "It is a compact, productive tree bearing large, firm dark red cherries with a sweet taste, resembling Bing.",
+          "type": "appearance",
+          "cites": [
+            "mobot",
+            "starkbros_sk"
+          ]
+        },
+        {
+          "text": "The fruit resists cracking.",
+          "type": "growing",
+          "cites": [
+            "starkbros_sk"
+          ]
+        },
+        {
+          "text": "Starkrimson is self fertile and is also a good pollinator for non self fertile varieties.",
+          "type": "pollination",
+          "cites": [
+            "mobot",
+            "starkbros_sk"
+          ]
+        },
+        {
+          "text": "It ripens in late June (early summer).",
+          "type": "season",
+          "cites": [
+            "mobot",
+            "starkbros_sk"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mobot",
+          "name": "Missouri Botanical Garden Plant Finder: Prunus avium 'Lapins' STARKRIMSON SWEET",
+          "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?taxonid=252665&isprofile=0&pt=7",
+          "tier": "third_party"
+        },
+        {
+          "id": "starkbros_sk",
+          "name": "Stark Bro's: Starkrimson Sweet Cherry Tree",
+          "url": "https://www.starkbros.com/products/fruit-trees/cherry-trees/starkrimson-sweet-cherry",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "cherry-stella": {
       "slug": "cherry-stella",
       "species": "Cherry",
@@ -62,6 +1525,239 @@
       "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "cherry-sunburst": {
+      "slug": "cherry-sunburst",
+      "species": "Cherry",
+      "variety": "Sunburst",
+      "paragraphs": [
+        "Sunburst is a sweet cherry from the Summerland Research Station in British Columbia, Canada, derived from a Van by Stella cross. Like its Stella parent it is self fertile, so a single tree crops without a pollinator, and it also pollinates other varieties. The large fruit is firm, juicy and very sweet, with skin so deep red it can look almost black.",
+        "It is a mid to late season cherry and is noted for resistance to rain splitting, a useful trait in wet ripening weather. The combination of large size, dark colour and self fertility makes it a popular choice for home and small orchard fresh eating."
+      ],
+      "claims": [
+        {
+          "text": "A sweet cherry from the Summerland Research Station in British Columbia, Canada, from a Van by Stella cross.",
+          "type": "breeding",
+          "cites": [
+            "pp-sunburst",
+            "gf-sunburst"
+          ]
+        },
+        {
+          "text": "Self fertile, so a single tree crops without a pollinator, and it also pollinates other varieties.",
+          "type": "pollination",
+          "cites": [
+            "pp-sunburst",
+            "gf-sunburst"
+          ]
+        },
+        {
+          "text": "Large fruit, firm and very sweet, with deep red, nearly black skin.",
+          "type": "appearance",
+          "cites": [
+            "pp-sunburst",
+            "gf-sunburst"
+          ]
+        },
+        {
+          "text": "Mid to late season, noted for resistance to rain splitting.",
+          "type": "season",
+          "cites": [
+            "pp-sunburst",
+            "gf-sunburst"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pp-sunburst",
+          "name": "Paramount Plants: Prunus avium Sunburst",
+          "url": "https://www.paramountplants.co.uk/plant/pas/prunus-avium-sunburst.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "gf-sunburst",
+          "name": "GardenFocused: Cherry variety Sunburst",
+          "url": "https://gardenfocused.co.uk/fruitarticles/cherry/variety-sunburst.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-van": {
+      "slug": "cherry-van",
+      "species": "Cherry",
+      "variety": "Van",
+      "paragraphs": [
+        "Van is a sweet cherry (Prunus avium) raised at the Summerland Research Station in British Columbia, Canada. It came from open pollination of an Empress Eugenie tree (crossed 1936, introduced 1944) and was named for horticulturist J. R. Van Haarlen. The fruit is medium sized with dark red, sweet flesh and near black skin, ripening in the mid season a few days ahead of Bing.",
+        "Van is best known as a workhorse pollinizer. It is self incompatible but flowers freely and slightly early, so it is widely planted to pollinate other sweet cherries such as Bing, Stella, and Lambert. It also passed its genes on directly, sitting in the parentage of both the Rainier and Lapins cherries."
+      ],
+      "claims": [
+        {
+          "text": "Sweet cherry (Prunus avium) bred at the Summerland Research Station, British Columbia, crossed 1936 and introduced 1944.",
+          "type": "origin",
+          "cites": [
+            "van_wiki"
+          ]
+        },
+        {
+          "text": "Arose from open pollination of an Empress Eugenie tree and was named after horticulturist J. R. Van Haarlen.",
+          "type": "naming",
+          "cites": [
+            "van_wiki"
+          ]
+        },
+        {
+          "text": "Medium sized fruit with dark red sweet flesh and near black skin.",
+          "type": "appearance",
+          "cites": [
+            "van_wiki"
+          ]
+        },
+        {
+          "text": "Ripens mid season, a few days before Bing.",
+          "type": "season",
+          "cites": [
+            "van_wiki"
+          ]
+        },
+        {
+          "text": "Self incompatible but a widely used pollinizer for other sweet cherries.",
+          "type": "pollination",
+          "cites": [
+            "van_wiki"
+          ]
+        },
+        {
+          "text": "A parent of both the Rainier and Lapins cherries.",
+          "type": "breeding",
+          "cites": [
+            "van_wiki",
+            "wsu_mag"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "van_wiki",
+          "name": "Van cherry, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Van_cherry",
+          "tier": "third_party"
+        },
+        {
+          "id": "wsu_mag",
+          "name": "Rainier cherries, Washington State Magazine (WSU)",
+          "url": "https://magazine.wsu.edu/2019/08/02/rainier-cherries/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-vista": {
+      "slug": "cherry-vista",
+      "species": "Cherry",
+      "variety": "Vista",
+      "paragraphs": [
+        "Vista is an early season sweet cherry raised in Ontario, Canada, from a cross of Hedelfingen with a Victor seedling. It bears large, glossy, firm, dark red fruit, giving collectors the deep colour and bite of a main season cherry right at the start of the season.",
+        "Its defining trait is timing rather than durability. Vista ripens among the first dark cherries of the year, but the fruit is well known for being very prone to splitting after rain, which limits it commercially and suits it best to a home tree picked promptly in drier districts."
+      ],
+      "claims": [
+        {
+          "text": "Vista is an early season sweet cherry from Ontario, Canada, bred from Hedelfingen crossed with a Victor seedling.",
+          "type": "origin",
+          "cites": [
+            "msu",
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "Large, glossy, firm, dark red fruit ripening early in the season.",
+          "type": "appearance",
+          "cites": [
+            "msu",
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "Very susceptible to fruit cracking after rain, which limits its commercial use.",
+          "type": "growing",
+          "cites": [
+            "msu",
+            "orangepippin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "msu",
+          "name": "Michigan State University Extension: Dark Sweet Cherry Varieties",
+          "url": "https://www.canr.msu.edu/uploads/files/Research_Center/NW_Mich_Hort/Training_Pruning_Varities/Dark_Sweet_Cherry_Varieties.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: Vista cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/vista",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "cherry-2way-bing-simone",
+    "cherry-2way-bing-stella",
+    "cherry-2way-bing-sunburst-early",
+    "cherry-2way-minnie-royal-royal-crimson",
+    "cherry-2way-minnie-royal-royal-lee",
+    "cherry-2way-royal-rainier-stella",
+    "cherry-2way-trixzie-minnie-royal-royal-crimsom",
+    "cherry-acerola",
+    "cherry-australian-beach",
+    "cherry-black",
+    "cherry-black-boy",
+    "cherry-black-cherree",
+    "cherry-black-cherree-minature",
+    "cherry-blackboy",
+    "cherry-brush",
+    "cherry-cornelian",
+    "cherry-country-red",
+    "cherry-double",
+    "cherry-double-mini-royal-royal-lee",
+    "cherry-guava",
+    "cherry-guava-red",
+    "cherry-guava-yellow",
+    "cherry-lapin",
+    "cherry-laurel",
+    "cherry-ligustrina",
+    "cherry-mini-royal",
+    "cherry-minnie-royal-p",
+    "cherry-morello-sour",
+    "cherry-of-rio-grande",
+    "cherry-of-the-rio-grande",
+    "cherry-pie-scentropia-dark-blue",
+    "cherry-plum",
+    "cherry-pretty-gully",
+    "cherry-royal-crimson-minature",
+    "cherry-royal-crimson-trixzie",
+    "cherry-royal-rainier-p",
+    "cherry-spanish",
+    "cherry-tomato",
+    "cherry-tree-2-way",
+    "cherry-trixi-black-10",
+    "cherry-trixie-black",
+    "cherry-trixzie-black-cherree",
+    "cherry-trixzie-royal-crimson",
+    "cherry-trixzie-white-cherree",
+    "cherry-white-cherree"
+  ]
 }

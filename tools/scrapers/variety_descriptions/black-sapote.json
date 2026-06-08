@@ -2,6 +2,125 @@
   "species_slug": "black-sapote",
   "schema_version": 1,
   "varieties": {
+    "black-sapote-bernecker": {
+      "slug": "black-sapote-bernecker",
+      "species": "Black Sapote",
+      "variety": "Bernecker",
+      "paragraphs": [
+        "Bernecker (also spelt Bernicker) is an Australian black sapote cultivar known as a prolific producer of nearly spherical, medium to large fruit with few seeds and of superior eating quality. It is widely grafted and is also grown in Florida. The reliable cropping and clean, low seed fruit make it a popular choice.",
+        "Black sapote (Diospyros nigra, also written D. digyna) is a persimmon relative whose ripe pulp has the colour, texture and flavour of chocolate pudding. The skin ripens from olive green to a muddy near black as the fruit softens, hence the common name chocolate pudding fruit."
+      ],
+      "claims": [
+        {
+          "text": "Bernecker is an Australian black sapote cultivar and a prolific producer.",
+          "type": "growing",
+          "cites": [
+            "wikipedia",
+            "baag"
+          ]
+        },
+        {
+          "text": "Its fruit is nearly spherical, medium to large, with few seeds and of superior quality.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "baag"
+          ]
+        },
+        {
+          "text": "Ripe black sapote flesh resembles chocolate pudding; the skin ripens from olive green to a muddy near black.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Diospyros nigra",
+          "url": "https://en.wikipedia.org/wiki/Diospyros_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "baag",
+          "name": "Bulleen Art Garden: Black Sapote",
+          "url": "https://baag.com.au/black-sapote/",
+          "tier": "nursery"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Black Sapote",
+          "url": "https://www.growables.org/information/TropicalFruit/BlackSapote.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "black-sapote-maher": {
+      "slug": "black-sapote-maher",
+      "species": "Black Sapote",
+      "variety": "Maher",
+      "paragraphs": [
+        "Maher is an Australian black sapote selection prized for its compact habit. It is described as a small yet prolific tree (to around 4 metres), unusual among black sapotes, which suits it to home gardens. The fruit is very large and flattened, of good to very good eating quality, with few seeds.",
+        "Like all black sapote (Diospyros nigra, also written D. digyna), the ripe flesh has the colour, texture and flavour of chocolate pudding. The skin ripens from olive green to a muddy near black when soft and ready to eat, which is why it is called the chocolate pudding fruit."
+      ],
+      "claims": [
+        {
+          "text": "Maher is an Australian cultivar that forms a small, prolific tree (up to about 4 metres).",
+          "type": "growing",
+          "cites": [
+            "wikipedia",
+            "baag"
+          ]
+        },
+        {
+          "text": "Its fruit is very large and flattened, of good to very good quality, with few seeds.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "baag",
+            "growables"
+          ]
+        },
+        {
+          "text": "Ripe black sapote flesh resembles chocolate pudding; the skin ripens from olive green to a muddy near black.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Diospyros nigra",
+          "url": "https://en.wikipedia.org/wiki/Diospyros_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "baag",
+          "name": "Bulleen Art Garden: Black Sapote",
+          "url": "https://baag.com.au/black-sapote/",
+          "tier": "nursery"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Black Sapote",
+          "url": "https://www.growables.org/information/TropicalFruit/BlackSapote.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "black-sapote-mossman": {
       "slug": "black-sapote-mossman",
       "species": "Black Sapote",
@@ -68,6 +187,132 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "black-sapote-ricks-late": {
+      "slug": "black-sapote-ricks-late",
+      "species": "Black Sapote",
+      "variety": "Ricks Late",
+      "paragraphs": [
+        "Ricks Late (Rick's Late) is an Australian black sapote cultivar that originated in New South Wales. It is valued for producing heavy, late crops of excellent quality fruit, extending the harvest beyond the usual season. That late, reliable cropping is its defining trait.",
+        "Black sapote (Diospyros nigra, also written D. digyna) is a persimmon relative whose ripe pulp has the colour, texture and flavour of chocolate pudding. The skin ripens from olive green to a muddy near black as the fruit softens, hence the common name chocolate pudding fruit."
+      ],
+      "claims": [
+        {
+          "text": "Ricks Late is an Australian black sapote cultivar that originated in New South Wales.",
+          "type": "origin",
+          "cites": [
+            "wikipedia",
+            "baag"
+          ]
+        },
+        {
+          "text": "It produces heavy, late crops of excellent quality fruit, extending the harvest.",
+          "type": "season",
+          "cites": [
+            "wikipedia",
+            "baag"
+          ]
+        },
+        {
+          "text": "Ripe black sapote flesh resembles chocolate pudding; the skin ripens from olive green to a muddy near black.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Diospyros nigra",
+          "url": "https://en.wikipedia.org/wiki/Diospyros_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "baag",
+          "name": "Bulleen Art Garden: Black Sapote",
+          "url": "https://baag.com.au/black-sapote/",
+          "tier": "nursery"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Black Sapote",
+          "url": "https://www.growables.org/information/TropicalFruit/BlackSapote.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "black-sapote-superb": {
+      "slug": "black-sapote-superb",
+      "species": "Black Sapote",
+      "variety": "Superb",
+      "paragraphs": [
+        "Superb is a black sapote selection from north Queensland, Australia. It bears large quantities of superb quality, small fruit that may be completely seedless if it is not cross pollinated. The combination of heavy bearing and small, often seedless fruit is what sets this cultivar apart.",
+        "Like all black sapote (Diospyros nigra, also written D. digyna), the ripe flesh has the colour, texture and flavour of chocolate pudding. The skin ripens from olive green to a muddy near black when the fruit is soft and ready to eat."
+      ],
+      "claims": [
+        {
+          "text": "Superb is a black sapote selection from north Queensland, Australia.",
+          "type": "origin",
+          "cites": [
+            "wikipedia",
+            "baag"
+          ]
+        },
+        {
+          "text": "It bears large quantities of small fruit that may be completely seedless if not cross pollinated.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "baag",
+            "growables"
+          ]
+        },
+        {
+          "text": "Ripe black sapote flesh resembles chocolate pudding; the skin ripens from olive green to a muddy near black.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Diospyros nigra",
+          "url": "https://en.wikipedia.org/wiki/Diospyros_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "baag",
+          "name": "Bulleen Art Garden: Black Sapote",
+          "url": "https://baag.com.au/black-sapote/",
+          "tier": "nursery"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Black Sapote",
+          "url": "https://www.growables.org/information/TropicalFruit/BlackSapote.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "black-sapote-bernicker",
+    "black-sapote-chocolate-pudding-fruit-tree",
+    "black-sapote-collosal",
+    "black-sapote-seedling",
+    "black-sapote-tahiti"
+  ]
 }
