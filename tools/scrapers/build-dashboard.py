@@ -16,7 +16,7 @@ from pathlib import Path
 
 from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
-from treestock_layout import render_head, render_footer, SITE_NAME, LOGO_SVG, NAV_ITEMS, organization_jsonld, website_jsonld
+from treestock_layout import render_head, render_header, render_footer, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
 from stocklib.taxonomy import load_species
 # Reuse the variety builder's non-plant denylist so we never emit a variety
@@ -860,26 +860,22 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         extra_style=extra_style,
     )
 
+    # Shared site header/nav (same chrome as every other page). The "Updated"
+    # timestamp rides along on the right via extra_right; the in-stock stat now
+    # lives in the footer (see render_footer below). ml-auto keeps the date
+    # right-aligned if the long nav wraps it to a second row at narrow widths.
+    header = render_header(
+        max_width=CONTENT_MAX_WIDTH,
+        show_nav=True,
+        active_path="/",
+        extra_right=f'<div class="text-right text-xs text-gray-500 ml-auto">'
+                    f'<div class="hidden sm:block">Updated {now}</div></div>',
+    )
+
     html = f"""{head}
-<body class="bg-white text-gray-900">
+{header}
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-10">
-  <div class="max-w-5xl mx-auto px-4 py-2">
-    <div class="flex items-center justify-between gap-3">
-      <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
-        {LOGO_SVG}
-        <span class="text-lg font-bold text-green-800">{SITE_NAME}</span>
-      </a>
-      <div class="text-right text-xs text-gray-500">
-        <div id="stats" class="hidden sm:block"></div>
-        <div id="statsSmall" class="sm:hidden"></div>
-        <div class="hidden sm:block">Updated {now}</div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<main class="max-w-5xl mx-auto px-4 py-4">
+<main class="{CONTENT_MAX_WIDTH} mx-auto px-4 py-4">
   <!-- Search & Filters -->
   <div class="mb-4 space-y-3">
     <input type="text" id="search" placeholder="Search plants... (e.g. sapodilla, mango, fig)"
@@ -956,7 +952,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
 </main>
 
-{render_footer(max_width="max-w-5xl", extra_text='<a href="/advertise.html" class="underline">Nursery partnerships</a>')}
+{render_footer(max_width=CONTENT_MAX_WIDTH, extra_text='<span id="stats" class="block mb-1"></span><a href="/advertise.html" class="underline">Nursery partnerships</a>')}
 
 <script src="/data.js?v={cache_v}" defer></script>
 <script src="/dashboard.js?v={cache_v}" defer></script>

@@ -16,6 +16,7 @@ from datetime import datetime
 from stocklib import layout
 from stocklib import structured_data as _sd
 from stocklib.layout import SiteConfig
+from stocklib.templates import get_env
 
 # --- Constants ---
 
@@ -44,7 +45,6 @@ NAV_ITEMS = [
     ("Digest", "/digest.html"),
     ("History", "/history.html"),
     ("Planting Calendar", "/when-to-plant.html"),
-    ("Wishlist", "/wishlist.html"),
     ("Trends", "/trends.html"),
 ]
 
@@ -61,6 +61,16 @@ BASE_STYLE = """\
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   #nav-menu.open { display: flex; }"""
 
+# Responsive content width: a comfortable 768px column by default, widening to
+# 1024px only on large external monitors (Tailwind's 2xl breakpoint, >=1536px).
+# A 13" laptop reports just under 1536px, so it stays at 768px. One token drives
+# every page's header, main, breadcrumb, and footer so the widths never drift.
+CONTENT_MAX_WIDTH = "max-w-3xl 2xl:max-w-5xl"
+
+# Make the width token available to the Jinja templates (treestock env only; the
+# bee site renders its own inline HTML and never loads these templates).
+get_env().globals["content_max_width"] = CONTENT_MAX_WIDTH
+
 # --- Site config: head + header are shared via stocklib.layout ---
 
 TREESTOCK = SiteConfig(
@@ -73,7 +83,7 @@ TREESTOCK = SiteConfig(
     nav_items=NAV_ITEMS,
     accent="green",
     default_og_image=f"{SITE_URL}/og-image.png",
-    default_max_width="max-w-3xl",
+    default_max_width=CONTENT_MAX_WIDTH,
     base_style=BASE_STYLE,
 )
 
@@ -97,7 +107,7 @@ def website_jsonld() -> str:
     return _sd.website_jsonld(SITE_URL, SITE_NAME)
 
 
-def render_breadcrumb(crumbs: list[tuple[str, str]], max_width: str = "max-w-3xl") -> str:
+def render_breadcrumb(crumbs: list[tuple[str, str]], max_width: str = CONTENT_MAX_WIDTH) -> str:
     """Render breadcrumb navigation plus its BreadcrumbList JSON-LD.
 
     crumbs: list of (label, url) tuples. Last item has no link (current page).
@@ -117,7 +127,7 @@ def render_breadcrumb(crumbs: list[tuple[str, str]], max_width: str = "max-w-3xl
     return nav + "\n" + _sd.breadcrumb_jsonld(crumbs, SITE_URL)
 
 
-def render_footer(max_width: str = "max-w-3xl", extra_text: str = "") -> str:
+def render_footer(max_width: str = CONTENT_MAX_WIDTH, extra_text: str = "") -> str:
     """Render the site footer with nav links and attribution."""
     links = []
     for label, path in NAV_ITEMS:
@@ -201,7 +211,7 @@ def render_page(
     description: str = "",
     subtitle: str = "",
     canonical_url: str = "",
-    max_width: str = "max-w-3xl",
+    max_width: str = CONTENT_MAX_WIDTH,
     show_nav: bool = True,
     active_path: str = "",
     extra_head: str = "",

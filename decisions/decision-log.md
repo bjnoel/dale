@@ -4,6 +4,50 @@
 
 ---
 
+## DEC-179 — 2026-06-08 — Consistent responsive page width + shared homepage nav; remove community wishlist page (treestock.com.au)
+
+**Decided by:** Dale (interactive session, Benedict directed)
+
+**Context:** On desktop the homepage hand-rolled its own header with no site nav at
+max-w-5xl (1024px), while every other page used the shared render_header (Species,
+Nurseries, Varieties, ... nav plus a mobile hamburger) at max-w-3xl (768px). The
+homepage looked like a different site (no nav, wider column). Separately, Benedict
+flagged that the standalone /wishlist.html community voting page should not be in the
+nav. He recalled removing it; what was actually removed earlier (commit dd41656) was a
+wishlist section on the email-prefs/manage page, a different thing. The standalone page
+was still live, in the nav, built nightly, and backed by a SQLite wishlist table.
+
+**Decision:** (1) One responsive width token, CONTENT_MAX_WIDTH = "max-w-3xl
+2xl:max-w-5xl": a comfortable 768px column by default, widening to 1024px only on large
+external monitors (Tailwind 2xl, >=1536px). A 13" laptop reports just under 1536px, so it
+stays at 768px. The token drives header, main, breadcrumb, and footer across all
+browseable pages. Digest pages stay max-w-2xl (they mirror the email layout). (2) The
+homepage now uses the shared render_header (identical nav plus hamburger); the "Updated
+..." timestamp stays top-right via extra_right; the "X in stock across N nurseries" stat
+moves into the footer (kept #stats id, so dashboard.js needs no change; #statsSmall
+dropped, already guarded). (3) Remove the Wishlist nav link and stop building
+/wishlist.html. The backend (wishlist SQLite table, /api/wishlist endpoints, stored
+votes) and build_wishlist_page.py are kept, so re-enabling is two lines.
+
+**Implementation:** treestock_layout.py defines CONTENT_MAX_WIDTH, sets it as the
+SiteConfig default_max_width, updates render_breadcrumb/render_footer/render_page
+defaults, and registers it as the `content_max_width` Jinja global (treestock env only;
+bee renders its own inline HTML and never loads these templates). 16 templates switched
+their <main> width to {{ content_max_width }}. build-dashboard.py uses render_header and
+moves the stat into the footer; build_nursery_pages.py (two inline <main> tags),
+build_treesmith_page.py, and build_404_page.py use CONTENT_MAX_WIDTH. Wishlist removed
+from NAV_ITEMS and from run-all-scrapers.sh. No new Tailwind config (v4 default 2xl =
+96rem); the build confirms the 2xl:max-w-5xl utility generates behind min-width:96rem.
+
+**Tests:** golden fixtures regenerated twice (once for the width token, once for the nav
+removal), each diff reviewed (uniform +42-char width change; dashboard = the intended
+header swap; Wishlist link absent site-wide). Full suite 1400 green. Bee output confirmed
+untouched.
+
+**To revert:** Restore default_max_width and the four function defaults to "max-w-3xl",
+revert the templates' <main> to max-w-3xl, restore the hand-rolled homepage header, and
+re-add the two Wishlist lines (NAV_ITEMS + run-all-scrapers.sh), then regenerate golden.
+
 ## DEC-178 — 2026-06-08 — Variety descriptions: verified "what's unique" blurbs on /variety pages (treestock.com.au)
 
 **Decided by:** Dale (interactive session, Benedict directed)

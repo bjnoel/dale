@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 from stocklib.templates import render as render_template
-from treestock_layout import render_page
+from treestock_layout import render_page, CONTENT_MAX_WIDTH
 
 
 TITLE = "Treesmith, the plant-tracking app for collectors"
@@ -54,7 +54,7 @@ def build_page() -> str:
         description=DESCRIPTION,
         subtitle="",
         canonical_url=CANONICAL,
-        max_width="max-w-3xl",
+        max_width=CONTENT_MAX_WIDTH,
         show_nav=True,
         active_path="",
         og_title="Treesmith, the plant-tracking app for collectors",

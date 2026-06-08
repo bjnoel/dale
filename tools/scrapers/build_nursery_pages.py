@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label, restriction_warning
-from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
+from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
@@ -349,7 +349,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     return f"""{head}
 {header_html}
 
-<main class="max-w-3xl mx-auto px-4 py-6">
+<main class="{CONTENT_MAX_WIDTH} mx-auto px-4 py-6">
   {breadcrumb}
 
   <div class="mb-6">
@@ -527,7 +527,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
     return f"""{head}
 {header_html}
 
-<main class="max-w-3xl mx-auto px-4 py-6">
+<main class="{CONTENT_MAX_WIDTH} mx-auto px-4 py-6">
   <h1 class="text-2xl font-bold text-gray-900 mb-1">Australian Fruit Tree Nurseries</h1>
   <p class="text-gray-500 text-sm mb-2">Daily stock tracking across {count} nurseries. Updated {today}.</p>
   <p class="text-sm mb-6"><a href="/compare/nurseries.html" class="text-green-700 hover:underline">Compare all nurseries side-by-side &rarr;</a></p>

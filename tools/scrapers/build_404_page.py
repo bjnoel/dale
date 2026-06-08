@@ -13,7 +13,7 @@ Usage:
 import sys
 from pathlib import Path
 
-from treestock_layout import render_page
+from treestock_layout import render_page, CONTENT_MAX_WIDTH
 
 # --- Copy (swap these two lines to change the message) ------------------------
 HEADLINE = "This branch didn't take"
@@ -63,7 +63,7 @@ def build_page() -> str:
         body=build_body(),
         description=DESCRIPTION,
         canonical_url="",
-        max_width="max-w-3xl",
+        max_width=CONTENT_MAX_WIDTH,
         show_nav=True,
         active_path="",
         extra_head=NOINDEX,
