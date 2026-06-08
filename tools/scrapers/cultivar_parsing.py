@@ -296,18 +296,143 @@ def _relaxed_parse(title: str) -> tuple[str, str] | None:
     return (species, v) if v else None
 
 
+# --- Post-parse cleaning --------------------------------------------------
+# The strict parser keeps clean separator shapes verbatim, so listing noise
+# riding INSIDE the species/variety (pot sizes, "(grafted)", "QLD ONLY",
+# "Super Dwarf", "Tubestock", ...) survives into the slug and fragments one
+# cultivar across many variety pages. This pass runs on the FINAL (species,
+# variety) tuple from EITHER parser and strips that noise so the variants
+# collapse to one slug. Size/form words (super/semi/dwarf) are stripped
+# EXCEPT for bananas, where "Dwarf Cavendish"/"Dwarf Ducasse" are real
+# cultivars, not sizes (Benedict's call, 2026-06-08).
+
+# A parenthetical group is pure noise (and gets deleted) when every alpha word
+# inside it is one of these; otherwise the parens are unwrapped and the inner
+# text kept, so "(grafted)" -> removed but "(Imperial)" -> "Imperial".
+_NOISE_PAREN_WORDS = frozenset({
+    'grafted', 'bare', 'bareroot', 'bear', 'rooted', 'root', 'cutting', 'grown',
+    'qld', 'only', 'pick', 'pickup', 'up', 'dwarf', 'super', 'semi', 'standard',
+    'advanced', 'size', 'orchard', 'tubestock', 'tube', 'stock', 'pot', 'pots',
+    'restricted', 'to', 'se', 'south', 'east',
+})
+
+# Multi-word noise phrases stripped from both sides, all species (longest /
+# most specific first). Shipping restrictions, "Advanced Size", bare-rooted
+# (and the common "bear rooted" typo).
+_CLEAN_PHRASE_RES = [
+    re.compile(p, re.I) for p in (
+        r'restricted to (?:south[\s-]?east|s\.?\s*e\.?|se)\s*qld(?:\s*\[?\s*banana region\s*\]?)?',
+        r'restricted to [a-z/.\s]*?qld(?:\s*\[?\s*banana region\s*\]?)?',
+        r's\.?\s*e\.?\s*qld\s*only',
+        r'south\s*east\s*qld',
+        r's\.?\s*e\.?\s*qld',
+        r'\bqld\s*only\b',
+        r'\bpick\s*up only\b',
+        r'\bpickup only\b',
+        r'\badvanced size\b',
+        r'\borchard size\b',
+        r'\bbare[\s-]?root(?:ed)?\b',
+        r'\bbear[\s-]?root(?:ed)?\b',
+    )
+]
+
+# Single-word noise stripped from both sides, all species.
+_CLEAN_WORD_RES = [
+    re.compile(r'\b' + p + r'\b', re.I) for p in (
+        'grafted', 'bareroot', 'advanced', 'tubestock', 'standard',
+    )
+]
+
+# Size/form words stripped EXCEPT for bananas. "super"/"semi" alone catch
+# "Dorsett Golden - Super" (the trailing "Dwarf" already gone); the combined
+# forms run first so "Super Dwarf" goes in one shot.
+_CLEAN_SIZEFORM_RES = [
+    re.compile(p, re.I) for p in (
+        r'\bsuper[\s-]?dwarf\b', r'\bsemi[\s-]?dwarf\b',
+        r'\bsuper\b', r'\bsemi\b', r'\bdwarf\b',
+    )
+]
+
+# Volume / pot tokens stripped anywhere. Verified NOT to match "2way" or "R2E2"
+# (no word boundary before the digits there).
+_CLEAN_VOLUME_RE = re.compile(r'\b\d+\s*(?:l|lt|ltr|litre|liter)\b', re.I)
+_CLEAN_POTMM_RE = re.compile(r'\b\d+(?:\s*/\s*\d+)*\s*mm\b', re.I)
+
+# A cleaned variety made of nothing but these is not a real cultivar -> reject.
+_SIZEFORM_ONLY = frozenset({
+    'dwarf', 'super', 'semi', 'standard', 'advanced', 'grafted', 'tubestock',
+    'bareroot', 'bare', 'rooted', 'root', 'size', 'orchard', 'pot', 'pots', 'tube',
+})
+
+
+def _strip_noise_parens(s: str) -> str:
+    """Delete parenthetical groups whose inner text is pure listing noise
+    (e.g. "(grafted)", "(QLD ONLY)"); unwrap groups carrying a real qualifier
+    (e.g. "(Imperial)" -> "Imperial")."""
+    def repl(m: "re.Match[str]") -> str:
+        inner = m.group(1)
+        words = [w.lower().strip('.,') for w in re.findall(r'[A-Za-z]+', inner)]
+        if words and all(w in _NOISE_PAREN_WORDS for w in words):
+            return ' '
+        return ' ' + inner + ' '
+    return re.sub(r'\(([^)]*)\)', repl, s)
+
+
+def _clean_part(text: str, *, strip_sizeform: bool) -> str:
+    """Strip listing noise from one side (species or variety). Order matters:
+    embedded en/em-dashes must collapse to spaces BEFORE the phrase regexes, or
+    "Dorsett Golden - Super Dwarf" never matches the "Super Dwarf" phrase (the
+    strict parser only splits on the FIRST dash)."""
+    s = _strip_noise_parens(text)
+    s = re.sub(r'[®™*]', ' ', s)            # trademark marks + **PICKUP** stars
+    s = s.replace('(', ' ').replace(')', ' ')
+    s = re.sub(r'[:;]', ' ', s)                       # "Blue Java: RESTRICTED..."
+    s = re.sub(r'\s*[–—]\s*', ' ', s)       # embedded en/em-dash -> space
+    for rx in _CLEAN_PHRASE_RES:
+        s = rx.sub(' ', s)
+    for rx in _CLEAN_WORD_RES:
+        s = rx.sub(' ', s)
+    if strip_sizeform:
+        for rx in _CLEAN_SIZEFORM_RES:
+            s = rx.sub(' ', s)
+    s = _CLEAN_VOLUME_RE.sub(' ', s)
+    s = _CLEAN_POTMM_RE.sub(' ', s)
+    s = re.sub(r'\s+', ' ', s).strip(" -'\"")
+    return s
+
+
+def _clean_cultivar_parts(species: str, variety: str) -> tuple[str, str] | None:
+    """Post-parse cleanup applied to BOTH strict and relaxed results. Returns a
+    cleaned (species, variety) or None if cleaning leaves nothing real."""
+    is_banana = species.strip().lower() == 'banana'
+    sp = _clean_part(species, strip_sizeform=not is_banana)
+    var = _clean_part(variety, strip_sizeform=not is_banana)
+    if not sp or not var:
+        return None
+    if re.match(r'^[A-Za-z]\s*$', var):              # single-letter pollination type
+        return None
+    var_tokens = [t for t in re.split(r'[\s\-]+', var.lower()) if t]
+    if var_tokens and all(t in _SIZEFORM_ONLY for t in var_tokens):
+        return None
+    return (sp, var)
+
+
 def parse_cultivar(title: str) -> tuple[str, str] | None:
     """Return (species, variety) or None if the title doesn't express a cultivar.
 
     Tries the strict parser first (clean separator / quote / taxonomy shapes),
     then a relaxed pass for noisy titles, multigrafts, and leading-quote titles.
     The relaxed pass runs only when strict returns None, so strict behaviour is
-    unchanged.
+    unchanged. Both results then pass through _clean_cultivar_parts, which strips
+    listing noise (pot sizes, "(grafted)", "QLD ONLY", "Super Dwarf", ...) so
+    size/rootstock variants of one cultivar collapse to a single slug.
     """
     r = _strict_parse(title)
-    if r is not None:
-        return r
-    return _relaxed_parse(title)
+    if r is None:
+        r = _relaxed_parse(title)
+    if r is None:
+        return None
+    return _clean_cultivar_parts(*r)
 
 
 def _strict_parse(title: str) -> tuple[str, str] | None:

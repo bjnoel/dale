@@ -2,8 +2,8 @@
   "nursery": "daleys",
   "nursery_name": "Daleys Fruit Trees",
   "scraped_at": "2026-03-05T03:12:48",
-  "product_count": 5,
-  "in_stock_count": 4,
+  "product_count": 8,
+  "in_stock_count": 7,
   "products": [
     {
       "nursery": "daleys",
@@ -56,6 +56,45 @@
       ],
       "min_price": 49.95,
       "max_price": 49.95,
+      "any_available": true
+    },
+    {
+      "nursery": "daleys",
+      "nursery_name": "Daleys Fruit Trees",
+      "title": "Black Sapote Mossman 5l",
+      "url": "https://daleysfruit.com.au/p/black-sapote-mossman",
+      "category": "Fruit and Nut Trees",
+      "variants": [
+        {"title": "5L", "price": 39.95, "available": true, "sku": "D-BS-M5"}
+      ],
+      "min_price": 39.95,
+      "max_price": 39.95,
+      "any_available": true
+    },
+    {
+      "nursery": "daleys",
+      "nursery_name": "Daleys Fruit Trees",
+      "title": "Apple - Dorsett Golden Super Dwarf - Bare Root",
+      "url": "https://daleysfruit.com.au/p/apple-dorsett-golden",
+      "category": "Fruit and Nut Trees",
+      "variants": [
+        {"title": "Bare Root", "price": 32.00, "available": true, "sku": "D-AP-DG"}
+      ],
+      "min_price": 32.00,
+      "max_price": 32.00,
+      "any_available": true
+    },
+    {
+      "nursery": "daleys",
+      "nursery_name": "Daleys Fruit Trees",
+      "title": "Banana - Dwarf Cavendish",
+      "url": "https://daleysfruit.com.au/p/banana-dwarf-cavendish",
+      "category": "Fruit and Nut Trees",
+      "variants": [
+        {"title": "Pot", "price": 25.00, "available": true, "sku": "D-BAN-DC"}
+      ],
+      "min_price": 25.00,
+      "max_price": 25.00,
       "any_available": true
     },
     {

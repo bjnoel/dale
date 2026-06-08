@@ -2,8 +2,8 @@
   "nursery": "ross-creek",
   "nursery_name": "Ross Creek Tropicals",
   "scraped_at": "2026-03-05T04:10:00",
-  "product_count": 3,
-  "in_stock_count": 2,
+  "product_count": 5,
+  "in_stock_count": 4,
   "products": [
     {
       "nursery": "ross-creek",
@@ -27,6 +27,30 @@
       ],
       "min_price": 60.0,
       "max_price": 60.0,
+      "any_available": true
+    },
+    {
+      "nursery": "ross-creek",
+      "nursery_name": "Ross Creek Tropicals",
+      "title": "Black Sapote - Mossman (grafted)",
+      "url": "https://rosscreek.com.au/p/black-sapote-mossman",
+      "variants": [
+        {"title": "200mm", "price": 42.00, "available": true, "sku": "RC-BS-M"}
+      ],
+      "min_price": 42.0,
+      "max_price": 42.0,
+      "any_available": true
+    },
+    {
+      "nursery": "ross-creek",
+      "nursery_name": "Ross Creek Tropicals",
+      "title": "Apple - Dorsett Golden",
+      "url": "https://rosscreek.com.au/p/apple-dorsett-golden",
+      "variants": [
+        {"title": "200mm", "price": 38.00, "available": true, "sku": "RC-AP-DG"}
+      ],
+      "min_price": 38.0,
+      "max_price": 38.0,
       "any_available": true
     },
     {

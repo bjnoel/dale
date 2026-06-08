@@ -93,7 +93,10 @@ def group_by_cultivar(products: list[dict]) -> dict:
         # Normalize key
         key = slugify(f"{species}-{variety}")
         if not groups[key]["title"]:
-            groups[key]["title"] = p["title"]
+            # Use the cleaned parsed parts, not the raw first product title, so
+            # the page H1/meta read "Black Sapote - Mossman" rather than the
+            # messy "Black Sapote Mossman 5l" that happened to land first.
+            groups[key]["title"] = f"{species} - {variety}"
             groups[key]["species"] = species
             groups[key]["variety"] = variety
         groups[key]["products"].append(p)

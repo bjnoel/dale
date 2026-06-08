@@ -73,7 +73,7 @@ class ParseCultivar(unittest.TestCase):
         ("Fig - Violette De Bordeaux",          ("Fig", "Violette De Bordeaux")),
         ("Fig \u2013 Violette",                     ("Fig", "Violette")),
         ("Fig \u2014 Violette",                     ("Fig", "Violette")),
-        ("Sapodilla Grafted - Krasuey",         ("Sapodilla Grafted", "Krasuey")),
+        ("Sapodilla Grafted - Krasuey",         ("Sapodilla", "Krasuey")),  # 2026-06-08: "Grafted" is propagation, strip from species so it groups with "Sapodilla - Krasuey"
         # Quoted variety (Tamarillo bug, 2026-04-19)
         ("Tamarillo 'Red'",                     ("Tamarillo", "Red")),
         ("Tamarillo 'Red' (Advanced) PICK UP ONLY", ("Tamarillo", "Red")),
@@ -89,6 +89,19 @@ class ParseCultivar(unittest.TestCase):
         # Trailing size words stripped (2026-04-19)
         ("Tamarillo - Red Advanced",            ("Tamarillo", "Red")),
         ("Mango - Kensington Grafted",          ("Mango", "Kensington")),
+        # Listing noise stripped so size/rootstock variants group (2026-06-08)
+        ("Black Sapote Mossman 5l",             ("Black Sapote", "Mossman")),
+        ("Black Sapote - Mossman (grafted)",    ("Black Sapote", "Mossman")),
+        ("Apple – Dorsett Golden – Super Dwarf", ("Apple", "Dorsett Golden")),
+        ("Apple – Dorsett Golden Super Dwarf – Bare Root", ("Apple", "Dorsett Golden")),
+        ("Dwarf Apple - Dorsett Golden",        ("Apple", "Dorsett Golden")),  # "Dwarf" on species side
+        ("Banana - Blue Java: RESTRICTED TO S.E. QLD", ("Banana", "Blue Java")),
+        ("Banana - Horn Plantain QLD ONLY",     ("Banana", "Horn Plantain")),
+        ("Blueberry - Biloxi 140 mm",           ("Blueberry", "Biloxi")),
+        ("Apple - Anna 2l",                     ("Apple", "Anna")),
+        ("Plum - Santa Rosa (Bear Rooted)",     ("Plum", "Santa Rosa")),  # "bear" typo for "bare"
+        # Banana keeps "Dwarf": Dwarf Cavendish is a real cultivar, not a size
+        ("Banana - Dwarf Cavendish",            ("Banana", "Dwarf Cavendish")),
         # Filters
         ("Sapodilla - Seedling",                None),
         ("Mango - Grafted",                     None),
@@ -119,7 +132,7 @@ class ProductVarietySlug(unittest.TestCase):
     CASES = [
         ("Avocado - Hass",                        "avocado-hass"),
         ("Mango - R2E2",                          "mango-r2e2"),
-        ("Sapodilla Grafted - Krasuey",           "sapodilla-grafted-krasuey"),
+        ("Sapodilla Grafted - Krasuey",           "sapodilla-krasuey"),  # 2026-06-08: groups with "Sapodilla - Krasuey"
         ("Fig - Violette De Bordeaux",            "fig-violette-de-bordeaux"),
         ("Sapodilla - Seedling",                  None),
         ("Sapodilla",                             None),
@@ -137,6 +150,32 @@ class ProductVarietySlug(unittest.TestCase):
         for inp, expected in self.CASES:
             with self.subTest(input=inp):
                 self.assertEqual(cp.product_variety_slug(inp), expected)
+
+    def test_messy_variants_collapse_to_one_slug(self):
+        # The core bug: size/rootstock/pot/shipping noise must not fragment one
+        # cultivar across multiple variety pages (2026-06-08).
+        mossman = [
+            "Black Sapote Mossman 5l",
+            "Black Sapote - Mossman (grafted)",
+            "Black Sapote - Mossman",
+        ]
+        self.assertEqual(
+            {cp.product_variety_slug(t) for t in mossman}, {"black-sapote-mossman"}
+        )
+        dorsett = [
+            "Apple – Dorsett Golden – Super Dwarf",
+            "Apple – Dorsett Golden Super Dwarf – Bare Root",
+            "Apple – Dorsett Golden",
+            "Dwarf Apple - Dorsett Golden",
+        ]
+        self.assertEqual(
+            {cp.product_variety_slug(t) for t in dorsett}, {"apple-dorsett-golden"}
+        )
+        # Banana keeps "Dwarf" -- Dwarf Cavendish stays distinct from Cavendish.
+        self.assertNotEqual(
+            cp.product_variety_slug("Banana - Dwarf Cavendish"),
+            cp.product_variety_slug("Banana - Cavendish"),
+        )
 
 
 # ---------------------------------------------------------------------------

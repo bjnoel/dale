@@ -2,8 +2,8 @@
   "nursery": "primal-fruits",
   "nursery_name": "Primal Fruits Perth",
   "scraped_at": "2026-03-05T05:00:00",
-  "product_count": 3,
-  "in_stock_count": 3,
+  "product_count": 6,
+  "in_stock_count": 6,
   "products": [
     {
       "nursery": "primal-fruits",
@@ -27,6 +27,42 @@
       ],
       "min_price": 42.0,
       "max_price": 42.0,
+      "any_available": true
+    },
+    {
+      "nursery": "primal-fruits",
+      "nursery_name": "Primal Fruits Perth",
+      "title": "Black Sapote - Mossman",
+      "url": "https://primalfruits.com.au/p/black-sapote-mossman",
+      "variants": [
+        {"title": "Pot", "price": 44.00, "available": true, "sku": "PF-BS-M"}
+      ],
+      "min_price": 44.0,
+      "max_price": 44.0,
+      "any_available": true
+    },
+    {
+      "nursery": "primal-fruits",
+      "nursery_name": "Primal Fruits Perth",
+      "title": "Dwarf Apple - Dorsett Golden",
+      "url": "https://primalfruits.com.au/p/apple-dorsett-golden",
+      "variants": [
+        {"title": "Pot", "price": 36.00, "available": true, "sku": "PF-AP-DG"}
+      ],
+      "min_price": 36.0,
+      "max_price": 36.0,
+      "any_available": true
+    },
+    {
+      "nursery": "primal-fruits",
+      "nursery_name": "Primal Fruits Perth",
+      "title": "Banana - Cavendish",
+      "url": "https://primalfruits.com.au/p/banana-cavendish",
+      "variants": [
+        {"title": "Pot", "price": 22.00, "available": true, "sku": "PF-BAN-C"}
+      ],
+      "min_price": 22.0,
+      "max_price": 22.0,
       "any_available": true
     },
     {
