@@ -95,6 +95,24 @@ class VarietyDescriptionFileTests(unittest.TestCase):
                 self.assertNotIn(EM_DASH, text, f"em dash in {path.name}")
                 self.assertNotIn(EN_DASH, text, f"en dash in {path.name}")
 
+    def test_optional_skipped_list_is_clean(self):
+        """A species file may record thin-source skips in an optional top-level "skipped"
+        array (per-species so concurrent rollout windows never touch a shared skip-list).
+        If present it must be a clean list of slug strings, disjoint from the described
+        varieties (a slug can't be both described and skipped)."""
+        for path in _iter_files():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            if "skipped" not in data:
+                continue
+            with self.subTest(file=path.name):
+                sk = data["skipped"]
+                self.assertIsInstance(sk, list)
+                self.assertTrue(all(isinstance(s, str) and s.strip() for s in sk),
+                                "skipped must be a list of slug strings")
+                self.assertEqual(len(sk), len(set(sk)), "duplicate slugs in skipped")
+                overlap = set(sk) & set(data.get("varieties") or {})
+                self.assertFalse(overlap, f"slugs both described and skipped: {overlap}")
+
 
 class VarietyDescriptionEntryTests(unittest.TestCase):
     """Per-entry guards run over every committed description."""
