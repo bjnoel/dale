@@ -4,6 +4,53 @@
 
 ---
 
+## DEC-176 — 2026-06-08 — Strip listing noise from cultivar names so variety pages group (treestock.com.au)
+
+**Decided by:** Dale (interactive session, Benedict directed)
+
+**Context:** Benedict flagged that /variety/ was fragmenting one cultivar across many
+pages. "Black Sapote Mossman 5l", "Black Sapote - Mossman (grafted)" and "Black Sapote -
+Mossman" were three separate pages; Dorsett Golden split four ways; pot sizes,
+"(PICK UP ONLY)", "QLD ONLY", "Tubestock", and the "bear rooted" typo all leaked into
+slugs. He asked for a smart way to strip size/rootstock/shipping noise and group by the
+real variety, tests-first.
+
+**Root cause:** Variety pages key on slugify(species-variety) from parse_cultivar.
+Noise-stripping lived only in the RELAXED parser pass, which never runs once the STRICT
+pass succeeds, and the messy titles all parse via strict.
+
+**Decision:** Add a post-parse cleaner in cultivar_parsing.py applied to BOTH strict and
+relaxed results (cleans species + variety, re-validates to None). Strips: pot sizes
+(L/mm/cm/ml), shipping restrictions (QLD ONLY / RESTRICTED TO ... / PICK UP ONLY, with or
+without a trailing "only"), Tubestock (spaced or joined), (grafted)/bare-rooted (plus the
+"bear rooted" typo), cutting grown, low chill, advanced, large/medium/small, pot/pots, and
+size/form words (super/semi/dwarf, standard). Size/form words are stripped EXCEPT for
+bananas, where Dwarf Cavendish / Dwarf Ducasse are real cultivars (Benedict's call). Bare
+"qld" is kept (Davidson Plum QLD is a real botanical form), as are Mammoth/Giant/Jumbo
+(real cultivar names). build_variety_pages now titles pages from the cleaned
+"Species - Variety" instead of the messy first product title.
+
+**Impact (live):** Variety pages dropped from ~5,266 to 3,971 as 1,295 fragmented
+duplicates merged into their canonical cultivar; multi-nursery groups rose to 786. A
+residual-noise scan of all 3,971 slugs came back clean. The fix cascades to species pages,
+compare pages, and variety alerts (shared parser).
+
+**Watches migration:** Existing restock watches keyed to old fragmented slugs would have
+stopped matching, so migrate_variety_watch_slugs.py re-slugged 10 watches and deduped 1
+(e.g. sapodilla-grafted-* -> sapodilla-*, feijoa-mammoth-5l -> feijoa-mammoth); the DB was
+backed up first to variety_watches.db.pre-reslug.bak.
+
+**Tests:** Tests-first per Benedict. New ParseCultivar + collapse cases (failing, then
+passing), two "Sapodilla Grafted" pins updated, golden fixtures gained messy products to
+lock grouping end-to-end. Full suite 1387 green. Shipped in three commits as live rebuilds
+surfaced residual cm/large/underscore cases.
+
+**To revert:** Remove the _clean_cultivar_parts call (and helper block) in
+cultivar_parsing.py, revert the build_variety_pages title line, regenerate goldens. Old
+fragmented slugs return on the next build.
+
+---
+
 ## DEC-175 — 2026-06-07 — Add Garden World + Diaco's (VIC) as nurseries 21 & 22; defer 3 others
 
 **Decided by:** Dale (interactive session, Benedict directed)

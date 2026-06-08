@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 One-shot migration: re-slug variety watches after the 2026-06-08 cultivar
-parsing cleanup (DEC-175).
+parsing cleanup (DEC-176).
 
 parse_cultivar now strips listing noise (pot sizes, "(grafted)", "QLD ONLY",
 "Super Dwarf", the "bear rooted" typo, ...) from cultivar names so size and
