@@ -2,6 +2,734 @@
   "species_slug": "apricot",
   "schema_version": 1,
   "varieties": {
+    "apricot-bentley": {
+      "slug": "apricot-bentley",
+      "species": "Apricot",
+      "variety": "Bentley",
+      "paragraphs": [
+        "Bentley is a local apricot selection from the Northern Rivers of New South Wales, found just outside Kyogle. It is closely compared to Glengarry, another regional selection, and shares its hardy, early-fruiting habit. The variety suits warm-temperate and subtropical gardens, needing only a modest winter chill.",
+        "A hardy tree that comes into bearing early, Bentley produces good crops of good quality, medium-sized apricots. It is grouped with low to moderate chill apricots, which is why it is offered chiefly in the warmer growing districts of eastern Australia rather than the cold inland."
+      ],
+      "claims": [
+        {
+          "text": "A local selection from just outside Kyogle in the Northern Rivers of New South Wales.",
+          "type": "origin",
+          "cites": [
+            "rfcawa"
+          ]
+        },
+        {
+          "text": "Closely compared to the regional Glengarry selection and shares its hardy, early-fruiting habit.",
+          "type": "growing",
+          "cites": [
+            "rfcawa",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Hardy tree that comes into fruiting early and produces good crops of good quality, medium-sized apricots.",
+          "type": "growing",
+          "cites": [
+            "rfcawa"
+          ]
+        },
+        {
+          "text": "A low to moderate chill apricot suited to warmer growing districts.",
+          "type": "growing",
+          "cites": [
+            "daleys"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcawa",
+          "name": "Rare Fruit Club WA, Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Apricot Bentley",
+          "url": "https://www.daleysfruit.com.au/buy/apricot-bentley-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-bulida": {
+      "slug": "apricot-bulida",
+      "species": "Apricot",
+      "variety": "Bulida",
+      "paragraphs": [
+        "Bulida (Spanish Bulida or Bulida) is a traditional Spanish apricot associated with the south-east of Spain, the regions of Murcia, Alicante and Valencia, and dating to around 1940. It is prized in Spain as a hardy, heavy-cropping commercial variety that is frost and drought resistant and adapts to a wide range of soils.",
+        "The fruit is large with firm, yellow-orange skin (typically without a red blush) and yellow-orange flesh that is very sweet, juicy and melting. It is a freestone, with the flesh lifting cleanly from the stone. These qualities, plus its firmness and good keeping, make Bulida a favourite for fresh eating, canning, drying and the preserving and confectionery industries."
+      ],
+      "claims": [
+        {
+          "text": "Traditional Spanish apricot from around 1940, associated with south-east Spain (Murcia, Alicante, Valencia)",
+          "type": "origin",
+          "cites": [
+            "rfcwa-apricots",
+            "jardineriaon-apricots",
+            "csic-bulida"
+          ]
+        },
+        {
+          "text": "Hardy, heavy-cropping variety that is frost and drought resistant and adapts to many soils",
+          "type": "habit",
+          "cites": [
+            "rfcwa-apricots",
+            "jardineriaon-apricots"
+          ]
+        },
+        {
+          "text": "Large fruit with firm yellow-orange skin (no red blush) and yellow-orange flesh",
+          "type": "appearance",
+          "cites": [
+            "rfcwa-apricots",
+            "jardineriaon-apricots"
+          ]
+        },
+        {
+          "text": "Very sweet, juicy, melting flesh that is freestone",
+          "type": "flavour",
+          "cites": [
+            "rfcwa-apricots",
+            "jardineriaon-apricots"
+          ]
+        },
+        {
+          "text": "Used for fresh eating, canning, drying and the preserving and confectionery industries",
+          "type": "uses",
+          "cites": [
+            "jardineriaon-apricots",
+            "rfcwa-apricots"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-apricots",
+          "name": "Rare Fruit Club WA: Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "jardineriaon-apricots",
+          "name": "Jardineria On: Apricot Varieties (Bulida)",
+          "url": "https://en.jardineriaon.com/the-different-varieties-of-apricot.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "csic-bulida",
+          "name": "CSIC: Growth and phenological stages of Bulida apricot trees in south-east Spain",
+          "url": "https://digital.csic.es/handle/10261/17057",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-castlebrite": {
+      "slug": "apricot-castlebrite",
+      "species": "Apricot",
+      "variety": "Castlebrite",
+      "paragraphs": [
+        "Castlebrite is an early season Californian apricot that originated in Fresno through the work of J.H. Weinberger of the USDA Agricultural Research Service. It came from open pollinated seed of the selection B60-12, itself a cross of Perfection and Castleton, and was developed and recommended as an early shipping variety for San Joaquin Valley conditions.",
+        "The fruit is medium sized, firm, and bright orange with a slight red blush. Flavour is semi sweet but can be quite tart unless the fruit is fully ripe, so it is best left to sweeten on the tree. Castlebrite is self fruitful, meaning it does not need a separate pollinator, and it ripens roughly four weeks ahead of Blenheim, making it one of the earliest apricots of the season."
+      ],
+      "claims": [
+        {
+          "text": "Originated in Fresno, California, by J.H. Weinberger of the USDA Agricultural Research Service",
+          "type": "origin",
+          "cites": [
+            "ucdavis-castlebrite"
+          ]
+        },
+        {
+          "text": "Came from an open pollinated seedling of B60-12, a cross of Perfection and Castleton",
+          "type": "origin",
+          "cites": [
+            "ucdavis-castlebrite"
+          ]
+        },
+        {
+          "text": "Recommended as an early shipping variety productive under San Joaquin Valley conditions",
+          "type": "breeding",
+          "cites": [
+            "ucdavis-castlebrite"
+          ]
+        },
+        {
+          "text": "Medium sized, firm fruit, bright orange with a slight red blush",
+          "type": "appearance",
+          "cites": [
+            "ucdavis-castlebrite",
+            "davewilson-castlebrite"
+          ]
+        },
+        {
+          "text": "Semi sweet flavour that is very tart unless fully ripe",
+          "type": "flavour",
+          "cites": [
+            "ucdavis-castlebrite",
+            "davewilson-castlebrite"
+          ]
+        },
+        {
+          "text": "Self fruitful, ripening about four weeks before Blenheim, one of the earliest apricots",
+          "type": "season",
+          "cites": [
+            "ucdavis-castlebrite",
+            "davewilson-castlebrite"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucdavis-castlebrite",
+          "name": "UC Davis Foundation Plant Services: Castlebrite apricot",
+          "url": "https://fps.ucdavis.edu/treedetails.cfm?v=392",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson-castlebrite",
+          "name": "Dave Wilson Nursery: Castlebrite apricot",
+          "url": "https://www.davewilson.com/growers/products/fruit-trees/apricot/castlebrite/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-cot-n-candy-interspecific": {
+      "slug": "apricot-cot-n-candy-interspecific",
+      "species": "Apricot",
+      "variety": "Cot N Candy interspecific",
+      "paragraphs": [
+        "Cot N Candy is an interspecific apricot, marketed as a white aprium, bred by Gary, Grant, and Leith Zaiger of Zaiger Genetics and protected under US Plant Patent 17827. Rather than being a pure apricot, its parentage weaves together apricot, plum, and plumcot, described in the patent as apricot crossed with ((plum by plumcot) by plumcot) by apricot. That mixed lineage is the whole point of the variety.",
+        "Unusually for an apricot, the flesh is white rather than orange, set behind velvety orange yellow skin with a reddish pink blush. The patent describes a regular, productive tree bearing medium sized, white fleshed fruit of excellent eating quality, and growers note a sweet, juicy flavour with melon and plum notes alongside the apricot. It is self fruitful and ripens in the early to middle part of summer."
+      ],
+      "claims": [
+        {
+          "text": "An interspecific apricot, sold as a white aprium, bred by Gary, Grant, and Leith Zaiger of Zaiger Genetics",
+          "type": "origin",
+          "cites": [
+            "patent-cotncandy",
+            "davewilson-cotncandy"
+          ]
+        },
+        {
+          "text": "Protected under US Plant Patent 17827",
+          "type": "origin",
+          "cites": [
+            "patent-cotncandy"
+          ]
+        },
+        {
+          "text": "Parentage combines apricot, plum, and plumcot: apricot by ((plum by plumcot) by plumcot) by apricot",
+          "type": "hybrid",
+          "cites": [
+            "patent-cotncandy"
+          ]
+        },
+        {
+          "text": "Has white flesh rather than the usual orange, with skin carrying a reddish pink blush",
+          "type": "appearance",
+          "cites": [
+            "patent-cotncandy",
+            "davewilson-cotncandy"
+          ]
+        },
+        {
+          "text": "Sweet, juicy fruit of excellent eating quality",
+          "type": "flavour",
+          "cites": [
+            "patent-cotncandy",
+            "davewilson-cotncandy"
+          ]
+        },
+        {
+          "text": "Self fruitful and ripens early to mid summer",
+          "type": "season",
+          "cites": [
+            "davewilson-cotncandy"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent-cotncandy",
+          "name": "US Plant Patent 17827: Interspecific tree named Cot-N-Candy",
+          "url": "https://patents.google.com/patent/USPP17827P2/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson-cotncandy",
+          "name": "Dave Wilson Nursery: Cot-N-Candy aprium",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/aprium-interspecific/cot-n-candy/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-divinity": {
+      "slug": "apricot-divinity",
+      "species": "Apricot",
+      "variety": "Divinity",
+      "paragraphs": [
+        "Divinity is a South Australian apricot that has been grown in Australia since the 1950s. It is valued as an early-season variety, ripening from late November into early December, well ahead of the classic Moorpark. The fruit is firm and slightly oval (oblong) with a light to deep orange flesh and an attractive red blush on the skin.",
+        "The flavour is sweet and juicy with a slightly acid skin, making it good for eating fresh as well as for jam, stewing, drying and preserving. A useful trait for the home grower is that Divinity is self-fertile, so it sets fruit without needing a second apricot nearby for pollination."
+      ],
+      "claims": [
+        {
+          "text": "South Australian variety developed in the 1950s and long established in Australia since that decade",
+          "type": "origin",
+          "cites": [
+            "rfcwa-apricots",
+            "heritagefruittrees-divinity",
+            "lawn-apricots"
+          ]
+        },
+        {
+          "text": "Early-season variety ripening from late November to early December (before Moorpark)",
+          "type": "season",
+          "cites": [
+            "lawn-apricots",
+            "heritagefruittrees-divinity"
+          ]
+        },
+        {
+          "text": "Fruit is firm and slightly oval (oblong) with light to deep orange flesh and a red blush",
+          "type": "appearance",
+          "cites": [
+            "rfcwa-apricots",
+            "heritagefruittrees-divinity",
+            "flemings-divinity"
+          ]
+        },
+        {
+          "text": "Sweet, juicy flavour with a slightly acid skin; used fresh and for jam, stewing, drying and preserving",
+          "type": "flavour",
+          "cites": [
+            "flemings-divinity",
+            "rfcwa-apricots"
+          ]
+        },
+        {
+          "text": "Self-fertile, so no separate pollinator is required",
+          "type": "pollination",
+          "cites": [
+            "heritagefruittrees-divinity",
+            "lawn-apricots"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-apricots",
+          "name": "Rare Fruit Club WA: Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagefruittrees-divinity",
+          "name": "Heritage Fruit Trees: Divinity Apricot",
+          "url": "https://www.heritagefruittrees.com.au/divinity-apricot/",
+          "tier": "nursery"
+        },
+        {
+          "id": "flemings-divinity",
+          "name": "Fleming's Nurseries: Divinity Apricot",
+          "url": "https://www.flemings.com.au/nurseries/divinity-apricot.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "lawn-apricots",
+          "name": "Lawn.com.au: Apricot Tree Varieties in Australia",
+          "url": "https://lawn.com.au/apricot-tree-varieties-in-australia/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-fireball": {
+      "slug": "apricot-fireball",
+      "species": "Apricot",
+      "variety": "Fireball",
+      "paragraphs": [
+        "Fireball is one of the earliest apricots grown in Australia, with fruit ready from late November into December. It is a low-chill variety, which lets it crop in warm temperate and Mediterranean climates where many traditional apricots will not, and it is widely sold in a compact dwarf form for small gardens.",
+        "The fruit has vibrant orange to orange-red skin and sweet, juicy flesh that lifts cleanly from the stone, making it a freestone apricot. Fireball is only partially self-fertile, so while it can set some fruit alone, a second apricot nearby or hand pollination improves the crop."
+      ],
+      "claims": [
+        {
+          "text": "One of the earliest-ripening apricots in Australia, ready from late November into December",
+          "type": "season",
+          "cites": [
+            "rfcwa-apricots",
+            "lawn-apricots",
+            "daleys-fireball"
+          ]
+        },
+        {
+          "text": "Low-chill variety suited to warm temperate and Mediterranean climates",
+          "type": "climate",
+          "cites": [
+            "lawn-apricots",
+            "rfcwa-apricots"
+          ]
+        },
+        {
+          "text": "Vibrant orange to orange-red skin with sweet, juicy flesh",
+          "type": "appearance",
+          "cites": [
+            "lawn-apricots",
+            "daleys-fireball"
+          ]
+        },
+        {
+          "text": "Flesh separates cleanly from the stone (freestone)",
+          "type": "stone",
+          "cites": [
+            "daleys-fireball"
+          ]
+        },
+        {
+          "text": "Only partially self-fertile; cross-pollination improves yield",
+          "type": "pollination",
+          "cites": [
+            "lawn-apricots"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-apricots",
+          "name": "Rare Fruit Club WA: Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "lawn-apricots",
+          "name": "Lawn.com.au: Apricot Tree Varieties in Australia",
+          "url": "https://lawn.com.au/apricot-tree-varieties-in-australia/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-fireball",
+          "name": "Daleys Fruit: Apricot Fireball",
+          "url": "https://www.daleysfruit.com.au/plant/Apricot-Fireball.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-glengarry": {
+      "slug": "apricot-glengarry",
+      "species": "Apricot",
+      "variety": "Glengarry",
+      "paragraphs": [
+        "Glengarry stands out as a low-chill apricot, one of the few that will crop in subtropical and warm-temperate parts of Australia where most apricots fail to get enough winter cold. It is among the earliest to ripen, fruiting through spring into early summer, and it is self-fertile, so a single tree will set a crop.",
+        "The tree is large, vigorous and a heavy bearer. Its fruit is small to medium and pale golden with a slight blush, with light apricot-coloured flesh, good flavour and a freestone. That makes Glengarry well suited to fresh eating as well as jams and preserves, especially for growers in milder climates."
+      ],
+      "claims": [
+        {
+          "text": "Low-chill variety, one of the few apricots that will crop in subtropical and warm-temperate regions",
+          "type": "climate",
+          "cites": [
+            "rfcwa-apricots",
+            "daleys-glengarry",
+            "specialitytrees-glengarry"
+          ]
+        },
+        {
+          "text": "One of the earliest apricots to ripen, fruiting through spring into early summer",
+          "type": "season",
+          "cites": [
+            "daleys-glengarry"
+          ]
+        },
+        {
+          "text": "Self-fertile, setting a crop without a separate pollinator",
+          "type": "pollination",
+          "cites": [
+            "rfcwa-apricots",
+            "daleys-glengarry"
+          ]
+        },
+        {
+          "text": "Large, vigorous, heavy-bearing tree",
+          "type": "habit",
+          "cites": [
+            "rfcwa-apricots",
+            "daleys-glengarry"
+          ]
+        },
+        {
+          "text": "Small to medium pale golden fruit with a slight blush, light apricot flesh and a freestone",
+          "type": "appearance",
+          "cites": [
+            "rfcwa-apricots",
+            "specialitytrees-glengarry"
+          ]
+        },
+        {
+          "text": "Good for fresh eating, jams and preserves",
+          "type": "uses",
+          "cites": [
+            "rfcwa-apricots",
+            "daleys-glengarry"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-apricots",
+          "name": "Rare Fruit Club WA: Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-glengarry",
+          "name": "Daleys Fruit: Apricot Glengarry",
+          "url": "https://www.daleysfruit.com.au/buy/apricot-glengarry-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "specialitytrees-glengarry",
+          "name": "Speciality Trees: Glengarry Apricot (Low-chill)",
+          "url": "https://www.specialitytrees.com.au/trees/prunus-armeniaca-glengarry-wahsr",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-goldrich": {
+      "slug": "apricot-goldrich",
+      "species": "Apricot",
+      "variety": "Goldrich",
+      "paragraphs": [
+        "Goldrich is an apricot introduced by Washington State University, bred in the cooler apricot country of the Pacific Northwest and long used as a benchmark for large, firm, good flavoured fruit. Virginia Cooperative Extension trials recorded it as a mid season bloomer that ripens early, carrying large fruit of around two and a half ounces.",
+        "The fruit is distinctive for its flattened, oblong shape and smooth suture, with an orange red blush over an orange yellow background. The flesh is orange, moderately firm, juicy, aromatic, and mildly subacid, and the fruit was rated attractive and good for fresh use. Goldrich is not self fertile: it requires a pollinator, and notably it cannot be pollinated by Perfection, so a compatible second variety is needed for a crop."
+      ],
+      "claims": [
+        {
+          "text": "Introduced by Washington State University",
+          "type": "origin",
+          "cites": [
+            "vce-goldrich"
+          ]
+        },
+        {
+          "text": "Blooms in mid season and ripens early, bearing large fruit of about 2.3 to 2.5 ounces",
+          "type": "season",
+          "cites": [
+            "vce-goldrich"
+          ]
+        },
+        {
+          "text": "Fruit is flattened and oblong with a smooth suture and an orange red blush over an orange yellow background",
+          "type": "appearance",
+          "cites": [
+            "vce-goldrich"
+          ]
+        },
+        {
+          "text": "Flesh is orange, moderately firm, juicy, aromatic, and mildly subacid, rated good for fresh use",
+          "type": "flavour",
+          "cites": [
+            "vce-goldrich"
+          ]
+        },
+        {
+          "text": "Not self fertile: requires a pollinator and cannot be pollinated by Perfection",
+          "type": "pollination",
+          "cites": [
+            "vanwell-goldrich"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "vce-goldrich",
+          "name": "Virginia Cooperative Extension (Virginia Tech): 1988-1995 Apricot Variety Evaluations in Virginia, Publication 422-761",
+          "url": "https://vtechworks.lib.vt.edu/bitstreams/543f4654-b378-4eee-9bb7-6e712c70b8da/download",
+          "tier": "authoritative"
+        },
+        {
+          "id": "vanwell-goldrich",
+          "name": "Van Well Nursery: Apricot varieties (Goldrich)",
+          "url": "https://www.vanwell.net/apricots",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-hunter": {
+      "slug": "apricot-hunter",
+      "species": "Apricot",
+      "variety": "Hunter",
+      "paragraphs": [
+        "Hunter is an Australian apricot, reported to have originated in South Australia around 1966. Its main claim to distinction is timing: it is one of the latest apricots to ripen, cropping from mid to late January and so extending the season after most other varieties have finished.",
+        "The fruit is large, firm, and plump, with deep orange flesh that is sweet, juicy, and full flavoured. It is well regarded both for fresh eating and especially for home drying, and it is self pollinating, so it does not need another variety nearby to set a crop."
+      ],
+      "claims": [
+        {
+          "text": "Australian apricot reported to have originated in South Australia around 1966",
+          "type": "origin",
+          "cites": [
+            "rfcwa-hunter"
+          ]
+        },
+        {
+          "text": "One of the latest ripening apricots, cropping mid to late January and extending the season",
+          "type": "season",
+          "cites": [
+            "rfcwa-hunter",
+            "heritage-hunter"
+          ]
+        },
+        {
+          "text": "Large, firm, plump fruit with deep orange, sweet, juicy flesh",
+          "type": "appearance",
+          "cites": [
+            "rfcwa-hunter",
+            "heritage-hunter"
+          ]
+        },
+        {
+          "text": "Valued for fresh eating and especially for home drying",
+          "type": "uses",
+          "cites": [
+            "heritage-hunter"
+          ]
+        },
+        {
+          "text": "Self pollinating, needing no separate pollinator",
+          "type": "pollination",
+          "cites": [
+            "rfcwa-hunter",
+            "heritage-hunter"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-hunter",
+          "name": "Rare Fruit Club WA: Apricot Varieties (Hunter)",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage-hunter",
+          "name": "Heritage Fruit Trees: Hunter apricot",
+          "url": "https://www.heritagefruittrees.com.au/hunter-apricot/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-katy": {
+      "slug": "apricot-katy",
+      "species": "Apricot",
+      "variety": "Katy",
+      "paragraphs": [
+        "Katy is a low chill apricot bred by Zaiger Genetics and prized as a favourite for warm winter climates where many apricots fail to set. It needs only around 200 to 300 chill hours, and is self fruitful, so a single tree will crop without a separate pollinator. It ripens early, roughly three to four weeks ahead of Blenheim (Royal).",
+        "The fruit is large, firm, and freestone, so the flesh parts cleanly from the stone. Tree ripened Katy is subacid rather than tart, with a sweet, juicy, low acid flavour, and it is an all purpose apricot used fresh as well as for cooking, canning, drying, and preserves."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Zaiger Genetics and favoured for warm winter, low chill climates",
+          "type": "origin",
+          "cites": [
+            "davewilson-katy"
+          ]
+        },
+        {
+          "text": "Requires only about 200 to 300 chill hours",
+          "type": "quirk",
+          "cites": [
+            "davewilson-katy",
+            "greengenie-katy"
+          ]
+        },
+        {
+          "text": "Self fruitful, needing no separate pollinator",
+          "type": "pollination",
+          "cites": [
+            "davewilson-katy",
+            "greengenie-katy"
+          ]
+        },
+        {
+          "text": "Large, firm, freestone fruit",
+          "type": "appearance",
+          "cites": [
+            "davewilson-katy",
+            "greengenie-katy"
+          ]
+        },
+        {
+          "text": "Tree ripe fruit is subacid rather than tart, sweet and juicy",
+          "type": "flavour",
+          "cites": [
+            "davewilson-katy",
+            "greengenie-katy"
+          ]
+        },
+        {
+          "text": "Ripens early, about three to four weeks before Blenheim (Royal)",
+          "type": "season",
+          "cites": [
+            "davewilson-katy"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "davewilson-katy",
+          "name": "Dave Wilson Nursery: Katy apricot",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/apricot/katy/",
+          "tier": "nursery"
+        },
+        {
+          "id": "greengenie-katy",
+          "name": "Ask The Green Genie: Low Chill Apricots (Katy)",
+          "url": "https://askthegreengenie.com/fruit-trees/low-chill-apricots/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "apricot-moorpark": {
       "slug": "apricot-moorpark",
       "species": "Apricot",
@@ -69,6 +797,463 @@
           "id": "growgreatfruit-apricots",
           "name": "Grow Great Fruit: Apricot tree varieties",
           "url": "https://growgreatfruit.com/growing-apricot-trees/apricot-tree-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-newcastle": {
+      "slug": "apricot-newcastle",
+      "species": "Apricot",
+      "variety": "Newcastle",
+      "paragraphs": [
+        "Newcastle is a low-chill apricot that, despite its standing as an Australian heritage favourite, began as a California seedling. It originated in the orchard of O. M. Silva and Son at Newcastle, Placer County, and was first noticed in 1881. Its tolerance of mild winters has made it a long-running choice for warm-temperate and some subtropical gardens where higher-chill apricots struggle.",
+        "It is an early variety, cropping well before the old standard Oullins. The fruit is rounded and yellow-orange, a regular freestone with soft, juicy orange flesh, and old catalogue notes describe a rich golden yellow with a red cheek. A heavy bearer, it usually needs thinning, and the fruit suits fresh eating, drying, preserves and canning."
+      ],
+      "claims": [
+        {
+          "text": "A California seedling that originated in the orchard of O. M. Silva and Son at Newcastle, Placer County, first noticed in 1881.",
+          "type": "origin",
+          "cites": [
+            "rfcawa"
+          ]
+        },
+        {
+          "text": "Low-chill apricot suited to warm-temperate and some subtropical climates.",
+          "type": "growing",
+          "cites": [
+            "spectrees"
+          ]
+        },
+        {
+          "text": "Early variety that crops before Oullins.",
+          "type": "season",
+          "cites": [
+            "hrfn"
+          ]
+        },
+        {
+          "text": "Old catalogue descriptions note a rich golden yellow fruit with a red cheek.",
+          "type": "appearance",
+          "cites": [
+            "hrfn"
+          ]
+        },
+        {
+          "text": "Rounded yellow-orange freestone fruit with soft, juicy orange flesh.",
+          "type": "appearance",
+          "cites": [
+            "spectrees"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcawa",
+          "name": "Rare Fruit Club WA, Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "hrfn",
+          "name": "Heritage and Rare Fruit Network, Apricots",
+          "url": "https://heritageandrarefruits.weebly.com/apricots.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "spectrees",
+          "name": "Speciality Trees, Prunus armeniaca 'Newcastle'",
+          "url": "https://www.specialitytrees.com.au/trees/prunus-armeniaca-newcastle-3jivc",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-patterson": {
+      "slug": "apricot-patterson",
+      "species": "Apricot",
+      "variety": "Patterson",
+      "paragraphs": [
+        "Patterson is a California apricot from the breeding program of Fred Anderson at Le Grand, often called the father of the modern nectarine. It began as an F2 open pollinated seedling of Perfection, selected for testing in 1959 and released in 1968 to Burchell Nursery. Anderson and Irvin Burchell set out to develop a canning apricot that was a regular, reliable bearer and would resist pit burning, and it was named for Patterson, California, a town long associated with the crop.",
+        "Bred first for canning, Patterson is also well suited to drying, concentrate, and the fresh market, which made it a workhorse commercial variety. It produces medium to large, firm, uniform orange fruit that ships well, so it is one of the apricots most often found in supermarkets. Harvest falls in the mid to late part of the apricot season."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Fred Anderson at Le Grand, California, as an F2 open pollinated seedling of Perfection, selected for testing in 1959",
+          "type": "origin",
+          "cites": [
+            "goodfruit-patterson",
+            "davewilson-patterson"
+          ]
+        },
+        {
+          "text": "Released in 1968 to Burchell Nursery, a California wholesale nursery",
+          "type": "origin",
+          "cites": [
+            "goodfruit-patterson"
+          ]
+        },
+        {
+          "text": "Bred chiefly as a canning apricot that was a regular bearer and resisted pit burning",
+          "type": "breeding",
+          "cites": [
+            "goodfruit-patterson"
+          ]
+        },
+        {
+          "text": "All purpose fruit suited to canning, drying, concentrate, and the fresh market",
+          "type": "uses",
+          "cites": [
+            "goodfruit-patterson",
+            "davewilson-patterson"
+          ]
+        },
+        {
+          "text": "Medium to large, firm, uniform orange fruit that ships well and is common in supermarkets",
+          "type": "appearance",
+          "cites": [
+            "davewilson-patterson",
+            "heritage-patterson"
+          ]
+        },
+        {
+          "text": "Named after the town of Patterson, California, long associated with apricot growing",
+          "type": "quirk",
+          "cites": [
+            "goodfruit-patterson",
+            "davewilson-patterson"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "goodfruit-patterson",
+          "name": "Good Fruit Grower: Patterson, an all-round apricot",
+          "url": "https://goodfruit.com/patterson-an-all-round-apricot/",
+          "tier": "third_party"
+        },
+        {
+          "id": "davewilson-patterson",
+          "name": "Dave Wilson Nursery: Patterson apricot",
+          "url": "https://www.davewilson.com/growers/products/fruit-trees/apricot/patterson/",
+          "tier": "nursery"
+        },
+        {
+          "id": "heritage-patterson",
+          "name": "Heritage Fruit Trees: Patterson apricot",
+          "url": "https://www.heritagefruittrees.com.au/patterson-apricot/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-rival": {
+      "slug": "apricot-rival",
+      "species": "Apricot",
+      "variety": "Rival",
+      "paragraphs": [
+        "Rival is an apricot often described as similar to Goldrich and is best known for producing a large tree carrying heavy crops of large, superior fruit. The fruit is large and oval, with light orange skin flushed or speckled red and deep orange flesh that is aromatic and slightly tart. It is typically a midseason to late variety.",
+        "A key point for growers is that Rival is not reliably self-fertile and needs cross-pollination from an early-blooming apricot to set a good crop. Sources differ on its exact origin (some describe it as Canadian), so the country of breeding is treated as uncertain here, but it is documented as a parent of later Washington-bred apricots such as Tomcot."
+      ],
+      "claims": [
+        {
+          "text": "Similar to Goldrich and produces a large tree with heavy crops of large, superior fruit",
+          "type": "habit",
+          "cites": [
+            "rfcwa-apricots",
+            "davewilson-rival"
+          ]
+        },
+        {
+          "text": "Large, oval fruit with light orange skin flushed or speckled red and deep orange flesh",
+          "type": "appearance",
+          "cites": [
+            "rfcwa-apricots",
+            "davewilson-rival",
+            "harmony-rival"
+          ]
+        },
+        {
+          "text": "Aromatic, slightly tart flavour",
+          "type": "flavour",
+          "cites": [
+            "davewilson-rival"
+          ]
+        },
+        {
+          "text": "Needs cross-pollination from an early-blooming pollinator (not reliably self-fertile)",
+          "type": "pollination",
+          "cites": [
+            "davewilson-rival"
+          ]
+        },
+        {
+          "text": "Used as a parent of the Washington-bred Tomcot apricot",
+          "type": "breeding",
+          "cites": [
+            "cultivarguide-apricot"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-apricots",
+          "name": "Rare Fruit Club WA: Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "davewilson-rival",
+          "name": "Dave Wilson Nursery: Rival Apricot",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/apricot/rival/",
+          "tier": "nursery"
+        },
+        {
+          "id": "harmony-rival",
+          "name": "Harmony Orchards: Apricots (Rival)",
+          "url": "https://harmonyorchards.com/apricots-cherries/",
+          "tier": "third_party"
+        },
+        {
+          "id": "cultivarguide-apricot",
+          "name": "Cultivar Guide: Apricot (Tomcot parentage)",
+          "url": "https://cultivar.guide/apricot",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-storeys": {
+      "slug": "apricot-storeys",
+      "species": "Apricot",
+      "variety": "Storeys",
+      "paragraphs": [
+        "Storeys (also written Storey, and known as Early Moorpark or Moorpark Early) is an Australian apricot best understood as a faster-growing, earlier-fruiting version of the much-loved Moorpark. It ripens roughly three weeks before Moorpark, from about mid-December into January, which extends the apricot season at the early end.",
+        "The fruit is large with deep golden colouring and some red blush, and firm, deep-yellow flesh with good flavour. It is self-fertile, so it does not need a pollination partner, and it is a versatile all-rounder used for eating fresh, jam, bottling, canning, preserving and drying."
+      ],
+      "claims": [
+        {
+          "text": "Australian apricot, a faster-growing, earlier-fruiting version of Moorpark, also called Early Moorpark / Moorpark Early",
+          "type": "origin",
+          "cites": [
+            "rfcwa-apricots",
+            "heritagefruittrees-storeys",
+            "lawn-apricots"
+          ]
+        },
+        {
+          "text": "Ripens about three weeks before Moorpark, roughly mid-December into January",
+          "type": "season",
+          "cites": [
+            "heritagefruittrees-storeys",
+            "lawn-apricots"
+          ]
+        },
+        {
+          "text": "Large fruit with deep golden colour and some red blush, and firm deep-yellow flesh",
+          "type": "appearance",
+          "cites": [
+            "rfcwa-apricots",
+            "heritagefruittrees-storeys"
+          ]
+        },
+        {
+          "text": "Self-fertile, needing no separate pollinator",
+          "type": "pollination",
+          "cites": [
+            "heritagefruittrees-storeys"
+          ]
+        },
+        {
+          "text": "Used for eating fresh, jam, bottling, canning, preserving and drying",
+          "type": "uses",
+          "cites": [
+            "heritagefruittrees-storeys"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-apricots",
+          "name": "Rare Fruit Club WA: Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagefruittrees-storeys",
+          "name": "Heritage Fruit Trees: Storeys Apricot (dwarf)",
+          "url": "https://www.heritagefruittrees.com.au/storeys-apricot-dwarf/",
+          "tier": "nursery"
+        },
+        {
+          "id": "lawn-apricots",
+          "name": "Lawn.com.au: Apricot Tree Varieties in Australia",
+          "url": "https://lawn.com.au/apricot-tree-varieties-in-australia/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-tardif-de-bordaneil": {
+      "slug": "apricot-tardif-de-bordaneil",
+      "species": "Apricot",
+      "variety": "Tardif de Bordaneil",
+      "paragraphs": [
+        "Tardif de Bordaneil is a French apricot from a chance seedling found in the Eastern Pyrenees Orientales around 1970. Tardif means late, and that is its defining trait: it is among the latest known apricots, both in flowering and in ripening. The very late bloom helps it escape spring frosts, while harvest comes well into late summer, extending the apricot season at its tail end.",
+        "The fruit is large to very large and slightly oblong, with light orange skin overlaid by an intense red flush. The flesh is firm, juicy, sweet, and fragrant, making it a good quality eating apricot. It is self fertile, vigorous, and productive, so a single tree will crop on its own."
+      ],
+      "claims": [
+        {
+          "text": "French apricot from a seedling found in the Eastern Pyrenees Orientales around 1970",
+          "type": "origin",
+          "cites": [
+            "rfcwa-bordaneil",
+            "heritage-bordaneil"
+          ]
+        },
+        {
+          "text": "One of the latest known apricots in both flowering and ripening, helping it escape spring frosts",
+          "type": "season",
+          "cites": [
+            "rfcwa-bordaneil",
+            "heritage-bordaneil"
+          ]
+        },
+        {
+          "text": "Large to very large, slightly oblong fruit with light orange skin and an intense red flush",
+          "type": "appearance",
+          "cites": [
+            "rfcwa-bordaneil",
+            "heritage-bordaneil"
+          ]
+        },
+        {
+          "text": "Firm, juicy, sweet, and fragrant flesh",
+          "type": "flavour",
+          "cites": [
+            "rfcwa-bordaneil",
+            "heritage-bordaneil"
+          ]
+        },
+        {
+          "text": "Self fertile, vigorous, and productive",
+          "type": "pollination",
+          "cites": [
+            "rfcwa-bordaneil",
+            "heritage-bordaneil"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-bordaneil",
+          "name": "Rare Fruit Club WA: Apricot Varieties (Tardif de Bordaneil)",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage-bordaneil",
+          "name": "Heritage Fruit Trees: Tardif de Bordaneil apricot",
+          "url": "https://www.heritagefruittrees.com.au/tardif-de-bordaneil-apricot/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-tilton": {
+      "slug": "apricot-tilton",
+      "species": "Apricot",
+      "variety": "Tilton",
+      "paragraphs": [
+        "Tilton is a classic American apricot that began as a chance seedling discovered by J.E. Tilton in California in 1885, at a time when the state's dried-apricot trade was expanding. It quickly became a commercial standard, partly because the tree proved hardy and relatively tolerant of stormy weather and late frosts. It is also cold hardy and self-fertile.",
+        "The fruit is medium to large and heart-shaped, with glowing golden-yellow skin, a sunny blush and a distinct suture. The flesh is firm, fine-textured and aromatic, with a good balance of sweetness and acidity, and it is freestone at maturity. Tilton holds its colour and shape when preserved, which is why it is rated one of the best varieties for canning and drying as well as for fresh eating."
+      ],
+      "claims": [
+        {
+          "text": "Chance seedling found by J.E. Tilton in California in 1885",
+          "type": "origin",
+          "cites": [
+            "rfcwa-apricots",
+            "minnetonka-tilton",
+            "treesofantiquity-tilton"
+          ]
+        },
+        {
+          "text": "Hardy tree, tolerant of stormy weather and late frosts, and cold hardy",
+          "type": "habit",
+          "cites": [
+            "minnetonka-tilton",
+            "treesofantiquity-tilton"
+          ]
+        },
+        {
+          "text": "Fruit is medium to large, heart-shaped, golden-yellow with a blush and a distinct suture",
+          "type": "appearance",
+          "cites": [
+            "rfcwa-apricots",
+            "treesofantiquity-tilton",
+            "minnetonka-tilton"
+          ]
+        },
+        {
+          "text": "Firm, fine-textured, aromatic flesh with a balance of sweetness and acidity; freestone",
+          "type": "flavour",
+          "cites": [
+            "minnetonka-tilton",
+            "rfcwa-apricots"
+          ]
+        },
+        {
+          "text": "Rated one of the best varieties for canning and drying as well as fresh eating",
+          "type": "uses",
+          "cites": [
+            "rfcwa-apricots",
+            "treesofantiquity-tilton"
+          ]
+        },
+        {
+          "text": "Self-fertile",
+          "type": "pollination",
+          "cites": [
+            "rfcwa-apricots"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcwa-apricots",
+          "name": "Rare Fruit Club WA: Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "treesofantiquity-tilton",
+          "name": "Trees of Antiquity: Tilton Apricot",
+          "url": "https://www.treesofantiquity.com/products/tilton-apricot",
+          "tier": "third_party"
+        },
+        {
+          "id": "minnetonka-tilton",
+          "name": "Minneopa Orchards: The Tilton Apricot Tree",
+          "url": "https://minnetonkaorchards.com/tilton-apricot-tree/",
           "tier": "third_party"
         }
       ],
@@ -146,5 +1331,23 @@
       "verified": true,
       "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "apricot-2way-early-moorpark-trevatt",
+    "apricot-2way-moorpark-trevatt",
+    "apricot-divinity-advance-size",
+    "apricot-frangipani",
+    "apricot-fruit-tree",
+    "apricot-heuchera",
+    "apricot-patson",
+    "apricot-sal",
+    "apricot-storey",
+    "apricot-storey-s",
+    "apricot-story",
+    "apricot-story-storey",
+    "apricot-tardi-de-bourdonel",
+    "apricot-tilton-stone-fruit",
+    "apricot-trevatt-advance",
+    "apricot-tropical"
+  ]
 }

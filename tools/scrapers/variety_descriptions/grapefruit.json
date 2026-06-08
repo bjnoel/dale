@@ -2,6 +2,63 @@
   "species_slug": "grapefruit",
   "schema_version": 1,
   "varieties": {
+    "grapefruit-flame": {
+      "slug": "grapefruit-flame",
+      "species": "Grapefruit",
+      "variety": "Flame",
+      "paragraphs": [
+        "Flame is a red grapefruit that arose as a sport of Ruby Red in the Houston, Texas grove of C. Henderson, with the final selection made by C. J. Hearn and the variety released in 1987. It has a smooth yellow rind, usually with a pink blush, and tender, juicy flesh whose internal colour is almost as dark as Star Ruby, making it one of the deepest-coloured grapefruits available.",
+        "The red pigmentation comes from lycopene, the carotenoid responsible for the colour of red grapefruit flesh. Flame is a mid to late-season variety (ripening around February to June at Riverside) that holds well on the tree, though the internal colour fades somewhat when held past maturity. It is reported to be more cold-tolerant than Star Ruby."
+      ],
+      "claims": [
+        {
+          "text": "Flame arose as a sport of Ruby Red grapefruit in the Houston, Texas grove of C. Henderson, was selected by C. J. Hearn, and was released in 1987.",
+          "type": "origin",
+          "cites": [
+            "ucr-flame"
+          ]
+        },
+        {
+          "text": "Flame has a smooth yellow rind, usually a pink blush, and tender juicy flesh with internal colour almost as dark as Star Ruby.",
+          "type": "description",
+          "cites": [
+            "ucr-flame"
+          ]
+        },
+        {
+          "text": "Flame is a mid to late-season variety that holds well on the tree and is reported to be more cold-tolerant than Star Ruby.",
+          "type": "season",
+          "cites": [
+            "ucr-flame"
+          ]
+        },
+        {
+          "text": "The red flesh pigment in red grapefruit is lycopene.",
+          "type": "health",
+          "cites": [
+            "acs-pigment"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-flame",
+          "name": "UC Riverside Citrus Variety Collection: Flame grapefruit",
+          "url": "https://citrusvariety.ucr.edu/crc3993",
+          "tier": "authoritative"
+        },
+        {
+          "id": "acs-pigment",
+          "name": "Pigmentation and color comparison of Ruby Red and Star Ruby grapefruit juice, Journal of Agricultural and Food Chemistry",
+          "url": "https://pubs.acs.org/doi/10.1021/jf60223a029",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "grapefruit-marsh": {
       "slug": "grapefruit-marsh",
       "species": "Grapefruit",
@@ -69,6 +126,59 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "grapefruit-oro-blanco": {
+      "slug": "grapefruit-oro-blanco",
+      "species": "Grapefruit",
+      "variety": "Oro Blanco",
+      "paragraphs": [
+        "Oro Blanco (Oroblanco) is not a true grapefruit but a triploid hybrid bred at UC Riverside by James W. Cameron and Robert K. Soost. The original cross, made in 1958, paired an acidless pummelo with a seedy white grapefruit, and the selection was released in 1980. Its triploid genetics make it essentially seedless, and the flesh is very pale yellow.",
+        "Its defining trait is flavour: Oro Blanco is mild and sweet with low acid and lacks the bitterness usually associated with grapefruit, which led to its Sweetie brand name in some markets. A notable quirk is that the rind stays greenish-yellow well after the fruit is mature, so a green peel does not mean it is unripe."
+      ],
+      "claims": [
+        {
+          "text": "Oro Blanco is a triploid hybrid bred at UC Riverside by Cameron and Soost from a cross of acidless pummelo and white grapefruit made in 1958, released in 1980.",
+          "type": "origin",
+          "cites": [
+            "ucr-oroblanco",
+            "wiki-oroblanco"
+          ]
+        },
+        {
+          "text": "Oro Blanco is essentially seedless with very pale yellow flesh, and a mild, sweet, low-acid flavour that lacks the bitterness of grapefruit.",
+          "type": "description",
+          "cites": [
+            "ucr-oroblanco",
+            "wiki-oroblanco"
+          ]
+        },
+        {
+          "text": "The rind stays greenish-yellow well after the fruit matures.",
+          "type": "description",
+          "cites": [
+            "ucr-oroblanco",
+            "wiki-oroblanco"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-oroblanco",
+          "name": "UC Riverside Citrus Variety Collection: Oroblanco grapefruit hybrid",
+          "url": "https://citrusvariety.ucr.edu/crc3602",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-oroblanco",
+          "name": "Wikipedia: Oroblanco",
+          "url": "https://en.wikipedia.org/wiki/Oroblanco",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "grapefruit-rio-red": {
       "slug": "grapefruit-rio-red",
       "species": "Grapefruit",
@@ -127,6 +237,263 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "grapefruit-ruby-red": {
+      "slug": "grapefruit-ruby-red",
+      "species": "Grapefruit",
+      "variety": "Ruby Red",
+      "paragraphs": [
+        "Ruby Red (also known as Redblush) originated as a limb sport of Thompson grapefruit found in McAllen, Texas, by A. E. Henninger in 1929 and patented in 1934. It was the first citrus variety ever to receive a plant patent. The flesh is more deeply pigmented than Thompson, ranging from light to medium pink, and the fruit is relatively few-seeded.",
+        "Thanks to its attractive rind and flesh colour, Ruby Red rapidly superseded Thompson and became the leading pigmented grapefruit and one of the major commercial grapefruit varieties. Its pink-to-red colour comes from lycopene, the carotenoid that pigments red grapefruit flesh. The variety is so identified with Texas that it was named the official state fruit in 1993."
+      ],
+      "claims": [
+        {
+          "text": "Ruby Red (Redblush) originated as a limb sport of Thompson grapefruit found by A. E. Henninger in McAllen, Texas in 1929 and patented in 1934, the first citrus variety to receive a patent.",
+          "type": "origin",
+          "cites": [
+            "ucr-redblush",
+            "wiki-grapefruit"
+          ]
+        },
+        {
+          "text": "Redblush has deeper pigmentation than Thompson, light to medium pink flesh, and relatively few seeds.",
+          "type": "description",
+          "cites": [
+            "ucr-redblush"
+          ]
+        },
+        {
+          "text": "Redblush rapidly superseded Thompson and became the leading pigmented grapefruit variety.",
+          "type": "superlative",
+          "cites": [
+            "ucr-redblush"
+          ]
+        },
+        {
+          "text": "The pink-to-red flesh colour comes from lycopene.",
+          "type": "health",
+          "cites": [
+            "acs-pigment"
+          ]
+        },
+        {
+          "text": "Ruby Red was named the official state fruit of Texas in 1993.",
+          "type": "description",
+          "cites": [
+            "wiki-grapefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-redblush",
+          "name": "UC Riverside Citrus Variety Collection: Redblush grapefruit",
+          "url": "https://citrusvariety.ucr.edu/crc2850",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-grapefruit",
+          "name": "Wikipedia: Grapefruit",
+          "url": "https://en.wikipedia.org/wiki/Grapefruit",
+          "tier": "third_party"
+        },
+        {
+          "id": "acs-pigment",
+          "name": "Pigmentation and color comparison of Ruby Red and Star Ruby grapefruit juice, Journal of Agricultural and Food Chemistry",
+          "url": "https://pubs.acs.org/doi/10.1021/jf60223a029",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grapefruit-star-ruby": {
+      "slug": "grapefruit-star-ruby",
+      "species": "Grapefruit",
+      "variety": "Star Ruby",
+      "paragraphs": [
+        "Star Ruby is a product of mutation breeding: it was developed from irradiated Hudson grapefruit seed in the programme of R. A. Hensz at Texas A&I University, Weslaco, Texas. UC Riverside records it as the darkest of the pigmented grapefruits, with very darkly pigmented, juicy flesh that is low-seeded or seedless. The intense red colour comes from lycopene, the carotenoid that gives red grapefruit its flesh colour.",
+        "Despite its prized appearance, Star Ruby is harder to grow than other grapefruits, being more sensitive to cold, phytophthora, nutrient deficiencies and herbicides. It has found only limited commercial success for that reason, but when grown well it produces strikingly coloured, nearly seedless fruit."
+      ],
+      "claims": [
+        {
+          "text": "Star Ruby was developed from irradiated Hudson grapefruit seed in the breeding programme of R. A. Hensz at Texas A&I University, Weslaco, Texas.",
+          "type": "origin",
+          "cites": [
+            "ucr-starruby",
+            "wiki-grapefruit"
+          ]
+        },
+        {
+          "text": "Star Ruby is the darkest of the pigmented grapefruits, with very darkly pigmented flesh that is low-seeded or seedless.",
+          "type": "superlative",
+          "cites": [
+            "ucr-starruby"
+          ]
+        },
+        {
+          "text": "The red flesh colour comes from lycopene, the main pigment of red grapefruit.",
+          "type": "health",
+          "cites": [
+            "acs-pigment"
+          ]
+        },
+        {
+          "text": "Star Ruby is more difficult to grow than other grapefruits and has had limited commercial success.",
+          "type": "description",
+          "cites": [
+            "ucr-starruby",
+            "wiki-grapefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-starruby",
+          "name": "UC Riverside Citrus Variety Collection: Star Ruby grapefruit",
+          "url": "https://citrusvariety.ucr.edu/crc3770",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-grapefruit",
+          "name": "Wikipedia: Grapefruit",
+          "url": "https://en.wikipedia.org/wiki/Grapefruit",
+          "tier": "third_party"
+        },
+        {
+          "id": "acs-pigment",
+          "name": "Pigmentation and color comparison of Ruby Red and Star Ruby grapefruit juice, Journal of Agricultural and Food Chemistry",
+          "url": "https://pubs.acs.org/doi/10.1021/jf60223a029",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grapefruit-thompson-s-pink": {
+      "slug": "grapefruit-thompson-s-pink",
+      "species": "Grapefruit",
+      "variety": "Thompson's Pink",
+      "paragraphs": [
+        "Thompson (also called Pink Marsh) is a pink-fleshed bud sport of Marsh, discovered in 1913 by S. A. Collins in the W. B. Thompson orchard at Oneco, Florida, and marketed from 1924 by Royal Palms Nurseries. It is historically important as the first seedless pigmented grapefruit, and it gave rise by further bud mutation to the more deeply coloured Redblush (Ruby Red) and Burgundy.",
+        "Like its Marsh parent it is seedless or nearly so, with tender, juicy flesh and a flavour similar to Marsh. The flesh is light pink under favourable conditions (though the colour does not carry into the juice) and tends to fade as the fruit holds on the tree or in storage. Redblush, its own deeper-coloured descendant, eventually superseded it commercially."
+      ],
+      "claims": [
+        {
+          "text": "Thompson (Pink Marsh) is a bud sport of Marsh discovered in 1913 by S. A. Collins in the W. B. Thompson orchard at Oneco, Florida, and marketed from 1924.",
+          "type": "origin",
+          "cites": [
+            "ucr-thompson"
+          ]
+        },
+        {
+          "text": "Thompson was the first seedless pigmented grapefruit and gave rise by bud mutation to Redblush and Burgundy.",
+          "type": "superlative",
+          "cites": [
+            "ucr-thompson",
+            "wiki-grapefruit"
+          ]
+        },
+        {
+          "text": "Thompson is seedless or nearly so, with light pink flesh that fades, and a flavour similar to Marsh.",
+          "type": "description",
+          "cites": [
+            "ucr-thompson"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-thompson",
+          "name": "UC Riverside Citrus Variety Collection: Marsh Pink (Thompson) grapefruit",
+          "url": "https://citrusvariety.ucr.edu/crc2010",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-grapefruit",
+          "name": "Wikipedia: Grapefruit",
+          "url": "https://en.wikipedia.org/wiki/Grapefruit",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grapefruit-wheeny": {
+      "slug": "grapefruit-wheeny",
+      "species": "Grapefruit",
+      "variety": "Wheeny",
+      "paragraphs": [
+        "Wheeny is an Australian grapefruit that originated as a chance seedling at Wheeny Creek near Kurrajong, New South Wales, and was named by R. J. Benton, a government citrus specialist. Although grapefruit-like in most respects, the monoembryonic nature of its seeds and other characters suggest it is probably a pummelo hybrid. The flesh is straw-coloured and very juicy, with a distinct, somewhat lemon-like flavour, and the fruit is moderately seedy.",
+        "Its standout quirk is cool-climate adaptability. Wheeny has a lower total heat requirement than true grapefruits, ripening satisfactorily in places like New Zealand and coastal southern California that are too cool for ordinary grapefruit. That cold tolerance makes it well suited to subtropical and warm-temperate parts of Australia, and even sheltered cool-temperate gardens."
+      ],
+      "claims": [
+        {
+          "text": "Wheeny originated as a chance seedling at Wheeny Creek near Kurrajong, New South Wales, and was named by R. J. Benton, government citrus specialist.",
+          "type": "origin",
+          "cites": [
+            "ucr-wheeny",
+            "urbanfoodgarden-wheeny"
+          ]
+        },
+        {
+          "text": "The monoembryonic nature of its seeds and other characters suggest Wheeny is probably a pummelo hybrid.",
+          "type": "description",
+          "cites": [
+            "ucr-wheeny"
+          ]
+        },
+        {
+          "text": "Wheeny has straw-coloured, juicy flesh and is moderately seedy.",
+          "type": "description",
+          "cites": [
+            "ucr-wheeny"
+          ]
+        },
+        {
+          "text": "Wheeny has a lower total heat requirement than true grapefruits and ripens in climates too cool for any of the true grapefruits.",
+          "type": "description",
+          "cites": [
+            "ucr-wheeny",
+            "urbanfoodgarden-wheeny"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-wheeny",
+          "name": "UC Riverside Citrus Variety Collection: Wheeny grapefruit",
+          "url": "https://citrusvariety.ucr.edu/crc2885",
+          "tier": "authoritative"
+        },
+        {
+          "id": "urbanfoodgarden-wheeny",
+          "name": "Urban Food Garden: Wheeny Grapefruit",
+          "url": "https://urbanfoodgarden.org/2024/06/30/wheeny-grapefruit/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "grapefruit-honneffs-surprise",
+    "grapefruit-marsh-8",
+    "grapefruit-marshs-seedless",
+    "grapefruit-oroblanco",
+    "grapefruit-pomello",
+    "grapefruit-ruby",
+    "grapefruit-ruby-blush",
+    "grapefruit-thompson-pink",
+    "grapefruit-tree-2meters-high"
+  ]
 }
