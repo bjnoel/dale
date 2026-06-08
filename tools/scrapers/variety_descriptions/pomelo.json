@@ -1,0 +1,87 @@
+{
+  "species_slug": "pomelo",
+  "schema_version": 1,
+  "varieties": {
+    "pomelo-nam-roi": {
+      "slug": "pomelo-nam-roi",
+      "species": "Pomelo",
+      "variety": "Nam Roi",
+      "paragraphs": [
+        "Nam Roi is a Vietnamese pomelo cultivar grown mainly in the Mekong Delta provinces of Vinh Long and Hau Giang. It is prized for being nearly seedless, which made it one of Vietnam's most popular pomelos before newer export varieties rose to prominence.",
+        "The fruit is pear-shaped with a yellowish rough rind, and the flesh is pale (white to light yellow). Unlike the bitterness of grapefruit, Nam Roi has a sweet, juicy taste balanced by a mild acidity, with segments that separate easily. It is eaten fresh and also used in pomelo salads."
+      ],
+      "claims": [
+        {
+          "text": "Nam Roi is a Vietnamese pomelo grown mainly in Vinh Long and Hau Giang provinces",
+          "type": "origin",
+          "cites": [
+            "greatfarmer-pomelo",
+            "vietnamonline-pomelo"
+          ]
+        },
+        {
+          "text": "It is nearly seedless and was once one of Vietnam's most popular pomelos",
+          "type": "appearance",
+          "cites": [
+            "vietnamonline-pomelo",
+            "greatfarmer-pomelo"
+          ]
+        },
+        {
+          "text": "Pear-shaped fruit with pale white-to-yellow flesh",
+          "type": "appearance",
+          "cites": [
+            "greatfarmer-pomelo",
+            "vietnamonline-pomelo"
+          ]
+        },
+        {
+          "text": "Sweet and juicy with a mild acidity, segments separating easily",
+          "type": "flavour",
+          "cites": [
+            "vietnamonline-pomelo",
+            "greatfarmer-pomelo"
+          ]
+        },
+        {
+          "text": "Eaten fresh and used in pomelo salad",
+          "type": "use",
+          "cites": [
+            "greatfarmer-pomelo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "vietnamonline-pomelo",
+          "name": "Vietnam Online: Vietnamese Pomelo Fruit Types and Benefits",
+          "url": "https://www.vietnamonline.com/entry/pomelo.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "greatfarmer-pomelo",
+          "name": "Great Farmer: Vietnamese Pomelo Origins, Characteristics and Varieties",
+          "url": "https://greatfarmer.com.vn/vietnamese-pomelo-origins-characteristics-and-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "pomelo-carter-s-red",
+    "pomelo-carters-red",
+    "pomelo-k15",
+    "pomelo-red",
+    "pomelo-rouge-red",
+    "pomelo-tang-pink",
+    "pomelo-tangelo",
+    "pomelo-thai-gold",
+    "pomelo-thai-sun",
+    "pomelo-watsons",
+    "pomelo-white"
+  ]
+}
