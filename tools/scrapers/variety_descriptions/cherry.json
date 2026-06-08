@@ -73,6 +73,59 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "cherry-burgsdorf": {
+      "slug": "cherry-burgsdorf",
+      "species": "Cherry",
+      "variety": "Burgsdorf",
+      "paragraphs": [
+        "Burgsdorf, sometimes listed as Burgsdorf's Seedling, is an Australian heritage sweet cherry described as being of colonial origin, raised by a Mr Burgsdorf at Harcourt. It has been grown in Australia since early settlement and survives today mainly through heritage orchard and rare fruit collections.",
+        "It is prized as one of the earliest cherries of the season, ripening from about November in Australian conditions. The fruit is large and dark red with sweet flavour, making it a useful early fresh cherry and a living piece of Australian orchard history."
+      ],
+      "claims": [
+        {
+          "text": "An Australian heritage sweet cherry of colonial origin, raised by a Mr Burgsdorf at Harcourt and grown since early settlement.",
+          "type": "origin",
+          "cites": [
+            "heritagerarefruit",
+            "rfssa"
+          ]
+        },
+        {
+          "text": "One of the earliest cherries of the season, ripening from about November in Australia.",
+          "type": "season",
+          "cites": [
+            "heritagerarefruit",
+            "rfssa"
+          ]
+        },
+        {
+          "text": "Large, dark red fruit with sweet flavour.",
+          "type": "appearance",
+          "cites": [
+            "rfssa",
+            "heritagerarefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Cherries",
+          "url": "https://heritageandrarefruits.weebly.com/cherries.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfssa",
+          "name": "Rare Fruit Society of South Australia: Burgsdorf",
+          "url": "https://rarefruit-sa.org.au/members/fruit-information/cherry/burgsdorf/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "cherry-capulin": {
       "slug": "cherry-capulin",
       "species": "Cherry",
@@ -353,6 +406,73 @@
       ],
       "confidence": "high",
       "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-merchant": {
+      "slug": "cherry-merchant",
+      "species": "Cherry",
+      "variety": "Merchant",
+      "paragraphs": [
+        "Merchant is an English sweet cherry raised at the John Innes Institute in Norwich and introduced around 1970. It is valued as one of the most reliable early croppers, carrying heavy yields of large, dark, almost black fruit with a rich, sweet flavour in early summer.",
+        "It holds the Royal Horticultural Society Award of Garden Merit, given in 1995. Merchant is not self-fertile, so it needs a compatible pollinator, but it sits in pollination group 3 and works as a universal pollen donor for many other sweet cherries. The fruit is at its best eaten fresh."
+      ],
+      "claims": [
+        {
+          "text": "Merchant is an English sweet cherry raised at the John Innes Institute, Norwich, and introduced around 1970.",
+          "type": "origin",
+          "cites": [
+            "fpmatthews",
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "A reliable, heavy early cropper bearing large, dark, almost black fruit with rich sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "orangepippin",
+            "rhs"
+          ]
+        },
+        {
+          "text": "Holds the Royal Horticultural Society Award of Garden Merit, given in 1995.",
+          "type": "award",
+          "cites": [
+            "rhs",
+            "fpmatthews"
+          ]
+        },
+        {
+          "text": "Not self-fertile (pollination group 3) and acts as a universal pollen donor for other sweet cherries.",
+          "type": "pollination",
+          "cites": [
+            "fpmatthews",
+            "rhs"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs",
+          "name": "Royal Horticultural Society: Prunus avium 'Merchant'",
+          "url": "https://www.rhs.org.uk/plants/43108/prunus-avium-merchant-(f)/details",
+          "tier": "authoritative"
+        },
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: Merchant cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/merchant",
+          "tier": "third_party"
+        },
+        {
+          "id": "fpmatthews",
+          "name": "Frank P Matthews: Merchant cherry",
+          "url": "https://www.frankpmatthews.com/catalogue/fruit-trees/cherry/merchant/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -737,6 +857,64 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "cherry-ron-s": {
+      "slug": "cherry-ron-s",
+      "species": "Cherry",
+      "variety": "Ron s",
+      "paragraphs": [
+        "Ron's, also recorded as Ron's Seedling, is a sweet cherry grown in Australia. The fruit has firm, slightly fibrous, juicy flesh with very good flavour and a small, nearly free stone, and the tree crops well, ripening in the early to middle part of the cherry season.",
+        "It stands out in research on Australian grown cherries. A published study found Ron's had the highest total flavonoid content of the cultivars tested and no detectable condensed tannins. It is not self-fertile, so it needs a compatible pollinator to set a crop."
+      ],
+      "claims": [
+        {
+          "text": "A sweet cherry grown in Australia, also recorded as Ron's Seedling.",
+          "type": "origin",
+          "cites": [
+            "orangepippin",
+            "acsomega"
+          ]
+        },
+        {
+          "text": "Firm, slightly fibrous, juicy flesh with very good flavour and a small, nearly free stone.",
+          "type": "flavour",
+          "cites": [
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "A study of Australian grown sweet cherries found Ron's had the highest total flavonoid content of the cultivars tested and no detectable condensed tannins.",
+          "type": "superlative",
+          "cites": [
+            "acsomega"
+          ]
+        },
+        {
+          "text": "Not self-fertile; needs a compatible pollinator.",
+          "type": "pollination",
+          "cites": [
+            "orangepippin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: Ron's Seedling cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/rons-seedling",
+          "tier": "third_party"
+        },
+        {
+          "id": "acsomega",
+          "name": "ACS Omega: Phenolic Compounds from Australia-Grown Sweet Cherries",
+          "url": "https://pubs.acs.org/doi/10.1021/acsomega.1c05112",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "cherry-royal-crimson": {
       "slug": "cherry-royal-crimson",
       "species": "Cherry",
@@ -943,6 +1121,65 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "cherry-saint-margaret": {
+      "slug": "cherry-saint-margaret",
+      "species": "Cherry",
+      "variety": "Saint Margaret",
+      "paragraphs": [
+        "Saint Margaret, also written St Margaret, is an old, large, dark sweet cherry valued as a late season variety. The heart shaped fruit has dark red, almost black skin over firm, juicy, deeply coloured flesh, and the tree is a good cropper that also makes an attractive ornamental.",
+        "It ripens late, from about late December into early January in Australian gardens, well after the main early cherries. Beyond fresh eating it is traditionally used for jam and preserving. It is not self-fertile and sets best with pollinators such as Napoleon, Stella or Bing nearby."
+      ],
+      "claims": [
+        {
+          "text": "A large, dark, almost black, heart shaped sweet cherry with firm, juicy, deeply coloured flesh.",
+          "type": "appearance",
+          "cites": [
+            "orangepippin",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "A late season cherry, ripening from about late December into early January in Australia.",
+          "type": "season",
+          "cites": [
+            "orangepippin",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "Valued for fresh eating and traditionally for jam and preserving.",
+          "type": "use",
+          "cites": [
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "Not self-fertile; pollinated by varieties such as Napoleon, Stella and Bing.",
+          "type": "pollination",
+          "cites": [
+            "orangepippin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: St Margaret cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/st-margaret",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Cherries",
+          "url": "https://heritageandrarefruits.weebly.com/cherries.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "cherry-simone": {
       "slug": "cherry-simone",
       "species": "Cherry",
@@ -1098,6 +1335,65 @@
       ],
       "confidence": "high",
       "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "cherry-st-margaret": {
+      "slug": "cherry-st-margaret",
+      "species": "Cherry",
+      "variety": "St Margaret",
+      "paragraphs": [
+        "St Margaret, also written Saint Margaret, is an old, large, dark sweet cherry valued as a late season variety. The heart shaped fruit has dark red, almost black skin over firm, juicy, deeply coloured flesh, and the tree is a good cropper that also makes an attractive ornamental.",
+        "It ripens late, from about late December into early January in Australian gardens, well after the main early cherries. Beyond fresh eating it is traditionally used for jam and preserving. It is not self-fertile and sets best with pollinators such as Napoleon, Stella or Bing nearby."
+      ],
+      "claims": [
+        {
+          "text": "A large, dark, almost black, heart shaped sweet cherry with firm, juicy, deeply coloured flesh.",
+          "type": "appearance",
+          "cites": [
+            "orangepippin",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "A late season cherry, ripening from about late December into early January in Australia.",
+          "type": "season",
+          "cites": [
+            "orangepippin",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "Valued for fresh eating and traditionally for jam and preserving.",
+          "type": "use",
+          "cites": [
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "Not self-fertile; pollinated by varieties such as Napoleon, Stella and Bing.",
+          "type": "pollination",
+          "cites": [
+            "orangepippin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: St Margaret cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/st-margaret",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Cherries",
+          "url": "https://heritageandrarefruits.weebly.com/cherries.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -1362,6 +1658,59 @@
       "confidence_score": 0.93,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "cherry-vista": {
+      "slug": "cherry-vista",
+      "species": "Cherry",
+      "variety": "Vista",
+      "paragraphs": [
+        "Vista is an early season sweet cherry raised in Ontario, Canada, from a cross of Hedelfingen with a Victor seedling. It bears large, glossy, firm, dark red fruit, giving collectors the deep colour and bite of a main season cherry right at the start of the season.",
+        "Its defining trait is timing rather than durability. Vista ripens among the first dark cherries of the year, but the fruit is well known for being very prone to splitting after rain, which limits it commercially and suits it best to a home tree picked promptly in drier districts."
+      ],
+      "claims": [
+        {
+          "text": "Vista is an early season sweet cherry from Ontario, Canada, bred from Hedelfingen crossed with a Victor seedling.",
+          "type": "origin",
+          "cites": [
+            "msu",
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "Large, glossy, firm, dark red fruit ripening early in the season.",
+          "type": "appearance",
+          "cites": [
+            "msu",
+            "orangepippin"
+          ]
+        },
+        {
+          "text": "Very susceptible to fruit cracking after rain, which limits its commercial use.",
+          "type": "growing",
+          "cites": [
+            "msu",
+            "orangepippin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "msu",
+          "name": "Michigan State University Extension: Dark Sweet Cherry Varieties",
+          "url": "https://www.canr.msu.edu/uploads/files/Research_Center/NW_Mich_Hort/Training_Pruning_Varities/Dark_Sweet_Cherry_Varieties.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "orangepippin",
+          "name": "Orange Pippin: Vista cherry",
+          "url": "https://www.orangepippin.com/varieties/cherries/vista",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
   },
   "skipped": [
@@ -1381,6 +1730,7 @@
     "cherry-blackboy",
     "cherry-brush",
     "cherry-cornelian",
+    "cherry-country-red",
     "cherry-double",
     "cherry-double-mini-royal-royal-lee",
     "cherry-guava",
@@ -1396,6 +1746,7 @@
     "cherry-of-the-rio-grande",
     "cherry-pie-scentropia-dark-blue",
     "cherry-plum",
+    "cherry-pretty-gully",
     "cherry-royal-crimson-minature",
     "cherry-royal-crimson-trixzie",
     "cherry-royal-rainier-p",

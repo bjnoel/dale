@@ -2,6 +2,59 @@
   "species_slug": "peach",
   "schema_version": 1,
   "varieties": {
+    "peach-albatross": {
+      "slug": "peach-albatross",
+      "species": "Peach",
+      "variety": "Albatross",
+      "paragraphs": [
+        "Albatross is an Australian heritage clingstone peach known for its very large, almost round fruit. The light yellow skin is marked with crimson tinges and darker crimson speckles, and the flesh is white with red colouring next to the stone.",
+        "It is an early ripening peach with juicy, melt in the mouth flesh and a distinctive sharp tang, which sets it apart from sweeter early peaches. It survives today mainly through Australian heritage fruit collections."
+      ],
+      "claims": [
+        {
+          "text": "A very large, almost round clingstone with light yellow skin marked with crimson tinges and speckles, and white flesh coloured red near the stone.",
+          "type": "appearance",
+          "cites": [
+            "werribee",
+            "heritagefruittrees"
+          ]
+        },
+        {
+          "text": "An early ripening peach.",
+          "type": "season",
+          "cites": [
+            "werribee",
+            "heritagefruittrees"
+          ]
+        },
+        {
+          "text": "Juicy, melt in the mouth flesh with a distinctive sharp tang.",
+          "type": "flavour",
+          "cites": [
+            "heritagefruittrees",
+            "werribee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "werribee",
+          "name": "Werribee Park Heritage Orchard: Albatross",
+          "url": "https://werribeeparkheritageorchard.org.au/shop/ols/products/albatross-peach",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagefruittrees",
+          "name": "Heritage Fruit Trees: Albatross Peach",
+          "url": "https://www.heritagefruittrees.com.au/albatross-peach/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "peach-anzac": {
       "slug": "peach-anzac",
       "species": "Peach",
@@ -71,6 +124,132 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "peach-aztec-gold": {
+      "slug": "peach-aztec-gold",
+      "species": "Peach",
+      "variety": "Aztec Gold",
+      "paragraphs": [
+        "Aztec Gold is a yellow fleshed freestone peach suited to warm, low chill districts and the subtropics. It ripens in the mid to late part of the season, with golden, melting, sweet flesh and very good eating quality.",
+        "It is valued in warm climates for its good resistance to bacterial spot, a common problem for stone fruit in humid areas. Aztec Gold has also served as a parent in low chill peach breeding, including at the University of Florida, where it stands behind the variety Gulfprince."
+      ],
+      "claims": [
+        {
+          "text": "A yellow fleshed freestone peach with golden, melting, sweet flesh and very good eating quality.",
+          "type": "appearance",
+          "cites": [
+            "sapo",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Suited to warm, low chill districts and the subtropics, ripening mid to late season.",
+          "type": "climate",
+          "cites": [
+            "sapo",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Has good resistance to bacterial spot, valuable in humid, warm climates.",
+          "type": "growing",
+          "cites": [
+            "sapo",
+            "auburn"
+          ]
+        },
+        {
+          "text": "Has served as a parent in low chill peach breeding, including at the University of Florida, behind the variety Gulfprince.",
+          "type": "breeding",
+          "cites": [
+            "auburn"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sapo",
+          "name": "SAPO Trust: Aztec Gold peach",
+          "url": "https://www.saplant.co.za/varieties/peaches/aztec-gold/",
+          "tier": "third_party"
+        },
+        {
+          "id": "auburn",
+          "name": "Auburn University ACES: Release of New Peach Varieties (1998)",
+          "url": "https://ssl.acesag.auburn.edu/department/peaches/newpchvar98.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Trees: Aztec Gold peach",
+          "url": "https://www.daleysfruit.com.au/buy/peach-aztec-gold-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-bendigo-beauty": {
+      "slug": "peach-bendigo-beauty",
+      "species": "Peach",
+      "variety": "Bendigo Beauty",
+      "paragraphs": [
+        "Bendigo Beauty is an Australian heritage peach named after the old goldfields city of Bendigo in Victoria. It is a medium, round, white fleshed peach with cream skin flushed red, juicy and full flavoured, ripening around the first week of January.",
+        "The tree is precocious and a good cropper, and it ripens its fruit gradually over several weeks rather than all at once. It is self pollinating, and the fruit is used fresh as well as for drying and stewing."
+      ],
+      "claims": [
+        {
+          "text": "An Australian heritage peach named after the goldfields city of Bendigo, Victoria.",
+          "type": "origin",
+          "cites": [
+            "heritagerarefruit",
+            "werribee"
+          ]
+        },
+        {
+          "text": "A medium, round, white fleshed peach with cream skin flushed red, juicy and full flavoured.",
+          "type": "appearance",
+          "cites": [
+            "heritagerarefruit",
+            "werribee"
+          ]
+        },
+        {
+          "text": "Ripens around the first week of January, gradually over several weeks.",
+          "type": "season",
+          "cites": [
+            "heritagerarefruit",
+            "werribee"
+          ]
+        },
+        {
+          "text": "Self pollinating; the fruit is used fresh and for drying and stewing.",
+          "type": "use",
+          "cites": [
+            "heritagerarefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Peaches & Nectarines",
+          "url": "https://heritageandrarefruits.weebly.com/peaches--nectarines.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "werribee",
+          "name": "Werribee Park Heritage Orchard: Bendigo Beauty",
+          "url": "https://werribeeparkheritageorchard.org.au/shop/ols/products/bendigo-beauty-peach",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "peach-blackboy": {
       "slug": "peach-blackboy",
       "species": "Peach",
@@ -133,6 +312,66 @@
       ],
       "confidence": "high",
       "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-briggs-red-may": {
+      "slug": "peach-briggs-red-may",
+      "species": "Peach",
+      "variety": "Briggs Red May",
+      "paragraphs": [
+        "Briggs Red May arose about 1870 as a chance seedling on the farm of John G. Briggs near Yuba City, California, and it has long since become an Australian heritage favourite. It is one of the earliest peaches of the season, prized for ripening when few other peaches are ready.",
+        "The medium to large, round fruit has white skin flushed with a rich red cheek and white, melting, juicy flesh with a slight green tinge near the skin. It is a freestone with a notably rich flavour, regarded as one of the best of the very early peaches."
+      ],
+      "claims": [
+        {
+          "text": "Arose about 1870 as a chance seedling on John G. Briggs's farm near Yuba City, California, and is now an Australian heritage variety.",
+          "type": "origin",
+          "cites": [
+            "heritagerarefruit",
+            "werribee"
+          ]
+        },
+        {
+          "text": "One of the earliest peaches of the season.",
+          "type": "season",
+          "cites": [
+            "heritagerarefruit",
+            "werribee"
+          ]
+        },
+        {
+          "text": "Medium to large round fruit, white skin with a rich red cheek and white, melting, juicy flesh.",
+          "type": "appearance",
+          "cites": [
+            "heritagerarefruit",
+            "werribee"
+          ]
+        },
+        {
+          "text": "A freestone peach with a rich flavour.",
+          "type": "flavour",
+          "cites": [
+            "heritagerarefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Peaches & Nectarines",
+          "url": "https://heritageandrarefruits.weebly.com/peaches--nectarines.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "werribee",
+          "name": "Werribee Park Heritage Orchard: Briggs Red May",
+          "url": "https://werribeeparkheritageorchard.org.au/shop/ols/products/briggs-red-may-peach",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -215,6 +454,59 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "peach-coronet": {
+      "slug": "peach-coronet",
+      "species": "Peach",
+      "variety": "Coronet",
+      "paragraphs": [
+        "Coronet is an older peach grown as an early to mid season variety. It bears red skinned fruit with sweet, juicy flesh and a semi-freestone stone, meaning the flesh parts from the pit more readily than a clingstone but not as cleanly as a true freestone.",
+        "It ripens ahead of many main season peaches and is grown in Australia as a heritage variety. The mix of early timing, good colour and sweet flavour makes it a useful fresh eating peach for the start of the stone fruit season."
+      ],
+      "claims": [
+        {
+          "text": "An early to mid season peach, ripening ahead of many main season varieties.",
+          "type": "season",
+          "cites": [
+            "pickyourown",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "Red skinned fruit with sweet, juicy flesh.",
+          "type": "appearance",
+          "cites": [
+            "pickyourown",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "A semi-freestone peach, with flesh that parts from the stone more readily than a clingstone.",
+          "type": "stone",
+          "cites": [
+            "pickyourown",
+            "heritagerarefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pickyourown",
+          "name": "PickYourOwn.org: Peach Varieties Guide",
+          "url": "https://www.pickyourown.org/peachvarieties.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Peaches & Nectarines",
+          "url": "https://heritageandrarefruits.weebly.com/peaches--nectarines.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "peach-crimson-rocket": {
       "slug": "peach-crimson-rocket",
       "species": "Peach",
@@ -277,6 +569,66 @@
       ],
       "confidence": "high",
       "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-double-jewel": {
+      "slug": "peach-double-jewel",
+      "species": "Peach",
+      "variety": "Double Jewel",
+      "paragraphs": [
+        "Double Jewel, cultivar name Zaiwel, is an ornamental and fruiting peach introduced by the Californian breeder Zaiger Genetics under US Plant Patent 6410. It is grown as much for its display as its crop, carrying profuse, double, pink blossoms in spring.",
+        "Unusually for such a heavily flowering peach, it also sets a worthwhile crop: large, richly flavoured, yellow fleshed freestone fruit with red skin in mid season. The tree is self fruitful, so it does not need a second peach nearby to set fruit."
+      ],
+      "claims": [
+        {
+          "text": "An ornamental and fruiting peach (cultivar Zaiwel) introduced by Zaiger Genetics under US Plant Patent 6410.",
+          "type": "origin",
+          "cites": [
+            "usppdj",
+            "davewilson"
+          ]
+        },
+        {
+          "text": "Carries profuse double pink blossoms in spring.",
+          "type": "appearance",
+          "cites": [
+            "davewilson",
+            "usppdj"
+          ]
+        },
+        {
+          "text": "Sets large, richly flavoured, yellow fleshed freestone fruit with red skin in mid season.",
+          "type": "fruit",
+          "cites": [
+            "davewilson",
+            "usppdj"
+          ]
+        },
+        {
+          "text": "Self fruitful, so it does not require a second peach to set fruit.",
+          "type": "pollination",
+          "cites": [
+            "davewilson"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "usppdj",
+          "name": "US Plant Patent PP6410 (Double Jewel)",
+          "url": "https://patents.google.com/patent/USPP6410P/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson",
+          "name": "Dave Wilson Nursery: Double Jewel peach",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/peach-yellow/double_jewel/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -604,6 +956,133 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "peach-j-h-hale-million-dollar": {
+      "slug": "peach-j-h-hale-million-dollar",
+      "species": "Peach",
+      "variety": "J.H. Hale Million Dollar",
+      "paragraphs": [
+        "J.H. Hale, often sold as the Million Dollar Peach, is a famous American heirloom that appeared as a single chance tree on J.H. Hale's farm at South Glastonbury, Connecticut, around 1912. It became one of the most celebrated yellow fleshed freestone peaches of its era.",
+        "The fruit is exceptionally large, round and uniform, with smooth, almost fuzzless skin and firm, fine grained, stringless flesh of rich flavour. A well known quirk is that its pollen is poor, so unlike most peaches it needs a different peach variety nearby to pollinate it and set a crop."
+      ],
+      "claims": [
+        {
+          "text": "An American heirloom that arose as a chance tree on J.H. Hale's farm at South Glastonbury, Connecticut, around 1912.",
+          "type": "origin",
+          "cites": [
+            "chatham",
+            "treesofantiquity"
+          ]
+        },
+        {
+          "text": "Widely sold as the Million Dollar Peach.",
+          "type": "naming",
+          "cites": [
+            "chatham",
+            "treesofantiquity"
+          ]
+        },
+        {
+          "text": "Exceptionally large, round, uniform yellow freestone with smooth, nearly fuzzless skin and firm, fine grained, stringless flesh.",
+          "type": "appearance",
+          "cites": [
+            "chatham",
+            "treesofantiquity"
+          ]
+        },
+        {
+          "text": "Has poor pollen, so unlike most peaches it needs another peach variety nearby to set a crop.",
+          "type": "pollination",
+          "cites": [
+            "treesofantiquity",
+            "chatham"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "chatham",
+          "name": "Chatham Apples: 1937 Peaches (historical pomology)",
+          "url": "https://www.chathamapples.com/PNY/1937Peaches.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "treesofantiquity",
+          "name": "Trees of Antiquity: J.H. Hale Peach",
+          "url": "https://www.treesofantiquity.com/products/j-h-hale-peach",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-late-italian-red": {
+      "slug": "peach-late-italian-red",
+      "species": "Peach",
+      "variety": "Late Italian Red",
+      "paragraphs": [
+        "Late Italian Red, also recorded as Late Red Italian, is an Australian heritage clingstone peach documented in catalogues from around 1914. As its name suggests, it ripens late in the season, well after the early summer peaches.",
+        "The large, almost round fruit has greenish yellow skin with a deep red cheek over firm, juicy, sweet yellow flesh. A strong growing, heavy bearing tree, it is valued for cooking and preserving as well as fresh eating."
+      ],
+      "claims": [
+        {
+          "text": "An Australian heritage clingstone peach, also recorded as Late Red Italian, documented in catalogues from around 1914.",
+          "type": "origin",
+          "cites": [
+            "werribee",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "Ripens late in the season, after the early summer peaches.",
+          "type": "season",
+          "cites": [
+            "werribee",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "Large, almost round fruit with greenish yellow skin, a deep red cheek and firm, juicy, sweet yellow flesh.",
+          "type": "appearance",
+          "cites": [
+            "heritagerarefruit",
+            "pickyourown"
+          ]
+        },
+        {
+          "text": "A strong growing, heavy bearing tree valued for cooking, preserving and fresh eating.",
+          "type": "use",
+          "cites": [
+            "werribee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "werribee",
+          "name": "Werribee Park Heritage Orchard: Late Red Italian",
+          "url": "https://werribeeparkheritageorchard.org.au/shop/ols/products/late-italian-peach-budwood",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Peaches & Nectarines",
+          "url": "https://heritageandrarefruits.weebly.com/peaches--nectarines.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "pickyourown",
+          "name": "PickYourOwn.org: Peach Varieties Guide",
+          "url": "https://www.pickyourown.org/peachvarieties.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "peach-loring": {
       "slug": "peach-loring",
       "species": "Peach",
@@ -659,6 +1138,50 @@
       ],
       "confidence": "high",
       "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-maycrest": {
+      "slug": "peach-maycrest",
+      "species": "Peach",
+      "variety": "Maycrest",
+      "paragraphs": [
+        "Maycrest is an early season peach from California, long used in the trade as a benchmark for very early ripening, with fruit coming in around the middle of May in California's San Joaquin Valley. Later varieties are often described by how their timing compares to Maycrest.",
+        "It is a vigorous tree bearing firm fleshed fruit with good eating quality, valued for arriving at the very start of the peach season. Its early ripening and firmness made it a long standing commercial early peach."
+      ],
+      "claims": [
+        {
+          "text": "An early season Californian peach used as a trade benchmark for very early ripening, fruiting about mid May in the San Joaquin Valley.",
+          "type": "season",
+          "cites": [
+            "googlepatents",
+            "pickyourowndates"
+          ]
+        },
+        {
+          "text": "A vigorous tree bearing firm fleshed fruit with good eating quality.",
+          "type": "appearance",
+          "cites": [
+            "googlepatents"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "googlepatents",
+          "name": "Google Patents: USPP6229 (Early Maycrest, describing the Maycrest peach)",
+          "url": "https://patents.google.com/patent/USPP6229P/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pickyourowndates",
+          "name": "PickYourOwn.org: Peach Varieties in order of Ripening",
+          "url": "https://www.pickyourown.org/peachripeningdates.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -791,6 +1314,73 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "peach-pullar-s-cling": {
+      "slug": "peach-pullar-s-cling",
+      "species": "Peach",
+      "variety": "Pullar s Cling",
+      "paragraphs": [
+        "Pullar's Cling is an Australian heritage canning peach raised by a Mr P Pullar of Ardmona in Victoria, and listed in nursery catalogues as early as 1914. It was the clingstone preferred above all others by the old canning factories.",
+        "It is one of the last peaches to ripen, bearing large, round fruit with a pointed tip, a red blush over yellow skin, and firm, golden, clingstone flesh stained red around the stone. A heavy bearer, it is valued for bottling and preserving as well as fresh eating."
+      ],
+      "claims": [
+        {
+          "text": "An Australian heritage canning peach raised by Mr P Pullar of Ardmona, Victoria, and listed in catalogues by 1914.",
+          "type": "origin",
+          "cites": [
+            "werribee",
+            "heritagerarefruit"
+          ]
+        },
+        {
+          "text": "A clingstone long preferred by canning factories, used for bottling, preserving and fresh eating.",
+          "type": "use",
+          "cites": [
+            "werribee",
+            "diggers"
+          ]
+        },
+        {
+          "text": "One of the last peaches to ripen.",
+          "type": "season",
+          "cites": [
+            "heritagerarefruit",
+            "diggers"
+          ]
+        },
+        {
+          "text": "Large round fruit with a pointed tip, red blush over yellow skin, and firm golden flesh stained red around the stone.",
+          "type": "appearance",
+          "cites": [
+            "heritagerarefruit",
+            "werribee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "werribee",
+          "name": "Werribee Park Heritage Orchard: Pullar Cling",
+          "url": "https://werribeeparkheritageorchard.org.au/shop/ols/products/pullar-cling-peach-budwood",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagerarefruit",
+          "name": "Heritage & Rare Fruit Network: Peaches & Nectarines",
+          "url": "https://heritageandrarefruits.weebly.com/peaches--nectarines.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "diggers",
+          "name": "The Diggers Club: Pullar Cling peach",
+          "url": "https://www.diggers.com.au/products/peach-cling-pullar",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "peach-red-haven": {
       "slug": "peach-red-haven",
       "species": "Peach",
@@ -867,6 +1457,58 @@
       ],
       "confidence": "high",
       "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-stark-earliglo": {
+      "slug": "peach-stark-earliglo",
+      "species": "Peach",
+      "variety": "Stark Earliglo",
+      "paragraphs": [
+        "Stark EarliGlo is an early season freestone peach introduced by the long established American nursery Stark Bro's. It is closely related to the popular Redhaven peach and shares its bright red skin and firm, good flavoured flesh, but ripens earlier in the season.",
+        "Its main appeal is hardiness and timing: it is notably winter hardy, which suits it to colder districts, and it is self fertile, so a single tree can set a crop without another peach nearby."
+      ],
+      "claims": [
+        {
+          "text": "An early season freestone peach introduced by Stark Bro's, closely related to the Redhaven peach.",
+          "type": "origin",
+          "cites": [
+            "starkbros",
+            "digthedirt"
+          ]
+        },
+        {
+          "text": "Bright red skin with firm, good flavoured flesh, ripening earlier than Redhaven.",
+          "type": "appearance",
+          "cites": [
+            "starkbros",
+            "digthedirt"
+          ]
+        },
+        {
+          "text": "Notably winter hardy, suiting it to colder districts, and self fertile.",
+          "type": "growing",
+          "cites": [
+            "starkbros"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "starkbros",
+          "name": "Stark Bro's: Stark EarliGlo Peach",
+          "url": "https://www.starkbros.com/products/fruit-trees/peach-trees/stark-earliglo-peach",
+          "tier": "nursery"
+        },
+        {
+          "id": "digthedirt",
+          "name": "DigTheDirt: Prunus persica 'Stark EarliGlo'",
+          "url": "https://www.digthedirt.com/plants/13489-peach-and-nectarine-prunus-persica-stark-earliglo",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.8,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -1141,21 +1783,57 @@
     }
   },
   "skipped": [
+    "peach-2-way-double-jewel",
+    "peach-2way-anzac-red-haven",
+    "peach-2way-double-jewel-tasty-zee",
+    "peach-angel",
+    "peach-angel-donut",
+    "peach-angel-flat",
+    "peach-angel-subtropical-donut",
+    "peach-anzac-sweet-17",
+    "peach-brigg-s-red-may",
     "peach-clivia",
     "peach-crimson-rocket-columnar",
+    "peach-delight-ful",
+    "peach-delightful",
+    "peach-donut",
+    "peach-double-jewel-cv-zaiwel",
+    "peach-early-beauty",
     "peach-flor-da-prince",
     "peach-florda-gold",
     "peach-florda-prince",
     "peach-flordagold",
+    "peach-fragar",
     "peach-fresno",
     "peach-fruit-tree",
     "peach-glossy-abelia-suntastic",
+    "peach-late-red-italian",
+    "peach-loring-stone-fruit",
+    "peach-maravilha",
+    "peach-melodie",
+    "peach-okee-dokee-flat",
+    "peach-okeedokee",
+    "peach-okeedokee-donut",
+    "peach-orion",
+    "peach-orion-stone-fruit",
     "peach-paper-daisy-kimba",
+    "peach-peachcot",
     "peach-red-noonan",
     "peach-redhaven",
+    "peach-ruby-sensation",
+    "peach-rubysensation",
+    "peach-silvan-sunset",
+    "peach-silvan-sunset-four-seasons-peach",
+    "peach-spring-gold",
+    "peach-stark-earilglo",
+    "peach-subtropical-angel",
     "peach-sunset",
+    "peach-sunset-backyard-beauty",
+    "peach-tasty-zee",
     "peach-tropical-snow",
+    "peach-valley-red",
     "peach-white-gold",
-    "peach-white-opal"
+    "peach-white-opal",
+    "peach-wiggins"
   ]
 }

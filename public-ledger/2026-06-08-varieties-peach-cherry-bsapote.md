@@ -1,24 +1,26 @@
-# 2026-06-08 — Variety blurbs: peach, cherry, black sapote
+# 2026-06-08 — Variety blurbs: peach, cherry, black sapote (complete)
 
 Part of the treestock per-variety "what's unique" rollout (DEC-178). Added verified, multi-source
 "what's distinctive about this variety" blurbs to the `/variety` pages for three stone-and-tropical
-species, working the live stock tail via the parallel worktree/PR workflow.
+species, working the live stock tail to completion via the parallel worktree/PR workflow. All three
+species are now fully worked (0 remaining): peach 28 blurbs / 52 skipped, cherry 25 / 45, black
+sapote 5 / 5.
 
-**Added 38 blurbs:**
-- Peach (16): Golden Queen, Elberta, O'Henry, Indian (Blood), China Flat, Tropic Beauty, Tropic Snow,
-  Crimson Rocket, Tatura 204, Trixzie Pixzee, Red Haven, Loring, Flavourcrest, Flordaprince,
-  Blackboy, Okinawa.
-- Cherry (18): Lapins, Sir Don, Morello, Royal Lee, Royal Crimson, Napoleon, Sunburst, Royal Rainier,
-  Simone, Bing, Minnie Royal, Starkrimson, Lambert, Early Burlat, Van, Rainier, Capulin, Nanking.
-- Black Sapote (4): Maher, Bernecker, Superb, Ricks Late.
+**Added 55 blurbs across the run.** Highlights from this final pass:
+- Peach (11 added): Coronet, Briggs Red May, Double Jewel (Zaiger ornamental-plus-fruiting, US Plant
+  Patent), Pullar's Cling (heritage canning peach), J.H. Hale "Million Dollar", Late Italian Red,
+  Stark EarliGlo, Maycrest, Bendigo Beauty, Aztec Gold, Albatross.
+- Cherry (6 added): Vista, Merchant (RHS Award of Garden Merit), Burgsdorf (colonial-era Australian
+  heritage), St Margaret and Saint Margaret (same old dark cherry, both live spellings), and Ron's
+  (a published study found it had the highest total flavonoid content of the Australian sweet
+  cherries tested).
 
-**Skipped 64** as thin-source or parser noise (recorded per-species so re-runs never re-attempt them):
-peach 16, cherry 43 (mostly other fruits mis-grouped under "cherry", 2-way grafts, dwarf marketing
-variants, and spelling duplicates), black sapote 5.
+**Skipped the unverifiable tail** (recorded per-species so re-runs never re-attempt them): modern
+proprietary nursery cultivars documented only by their own nurseries (peach Angel, Silvan Sunset,
+Okee Dokee, Ruby Sensation), names that did not resolve to a verifiable cultivar, and parser noise
+(multi-grafts, spelling duplicates, marketing variants). Skipping is success: no blurb is ever
+published on a guess.
 
 **Accuracy notes:** every blurb rests on >=2 reputable sources with >=1 independent (non-nursery)
-source. The four Zaiger low-chill cherries were anchored on their US Plant Patents (authoritative)
-after a first pass found only nursery copy. Black-sapote cultivar facts were spot-checked against
-Wikipedia's "Australian cultivars" section.
-
-Tests green (1401). Deploy is the serialized close-out.
+source; awards, the cherry flavonoid superlative, and the peach patents are anchored on authoritative
+sources. Tests green (1401). Deploy is the serialized close-out.
