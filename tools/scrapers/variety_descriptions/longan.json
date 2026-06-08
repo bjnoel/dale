@@ -2,6 +2,187 @@
   "species_slug": "longan",
   "schema_version": 1,
   "varieties": {
+    "longan-biew-kiew": {
+      "slug": "longan-biew-kiew",
+      "species": "Longan",
+      "variety": "Biew Kiew",
+      "paragraphs": [
+        "Biew Kiew (also spelled Biu Kiew or Biew Khiew) is one of Thailand's leading longan cultivars. The fruit is round and large with a brownish green skin and good aril recovery. The flesh is crisp, sweet and pleasantly scented, rated as excellent quality, with high sugar measured at around 21 to 22 percent total soluble solids.",
+        "It is a late-maturing selection in Thailand, flowering in late summer and harvesting toward the end of the season. Like several top Thai cultivars it bears irregularly, with strong crops in some years and lighter ones in others."
+      ],
+      "claims": [
+        {
+          "text": "A leading Thai cultivar with round, large fruit, brownish green skin and good aril recovery.",
+          "type": "appearance",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        },
+        {
+          "text": "The aril is crisp, sweet and pleasantly scented, of excellent quality.",
+          "type": "flavour",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        },
+        {
+          "text": "High sugar content, around 21 to 22 percent total soluble solids.",
+          "type": "flavour",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        },
+        {
+          "text": "Late-maturing with an irregular bearing habit.",
+          "type": "season",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao",
+          "name": "FAO, Cultivars of Main Longan Centres in Asia",
+          "url": "https://www.fao.org/4/x6908e/x6908e0l.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council Australia Archives, Performance of Longan",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Longan/LonganPerformance3-89.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "longan-chompoo": {
+      "slug": "longan-chompoo",
+      "species": "Longan",
+      "variety": "Chompoo",
+      "paragraphs": [
+        "Chompoo (also written Choompoo or Sri Chompoo) is a Thai cultivar whose name means pink, a reference to the faint pink tinge of its flesh. The fruit is medium sized and oval with a small seed, which yields a high proportion of edible aril. It is very sweet, recorded at around 21 to 22 percent total soluble solids, with a pleasant aroma.",
+        "It is a mid-season selection, flowering in early winter and ripening from about midsummer. The cultivar is well regarded in Thailand but tends toward irregular cropping as a result of poor or inconsistent flowering."
+      ],
+      "claims": [
+        {
+          "text": "Thai cultivar whose name means pink, referring to the slightly pink aril.",
+          "type": "naming",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        },
+        {
+          "text": "Fruit is medium sized and oval with a small seed and high aril recovery.",
+          "type": "appearance",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        },
+        {
+          "text": "Very sweet, with total soluble solids of about 21 to 22 percent, and a pleasant aroma.",
+          "type": "flavour",
+          "cites": [
+            "fao"
+          ]
+        },
+        {
+          "text": "Mid-maturing, and shows irregular cropping due to poor flowering.",
+          "type": "season",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao",
+          "name": "FAO, Cultivars of Main Longan Centres in Asia",
+          "url": "https://www.fao.org/4/x6908e/x6908e0l.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council Australia Archives, Performance of Longan",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Longan/LonganPerformance3-89.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "longan-haew": {
+      "slug": "longan-haew",
+      "species": "Longan",
+      "variety": "Haew",
+      "paragraphs": [
+        "Haew is a Thai longan cultivar valued for fruit that runs medium to large with a relatively small seed, which gives a good proportion of edible aril. The flesh is firm and crisp with a sweet, good flavour, and the rind is rather rough and thick, a trait that helps the fruit hold up in storage and transit.",
+        "It is a late-maturing selection in Thailand, flowering in late summer and harvesting toward the end of the season. Its main weakness is an alternate (irregular) bearing habit, so heavy crops tend to be followed by lighter ones."
+      ],
+      "claims": [
+        {
+          "text": "Thai cultivar with medium to large fruit and a relatively small seed, giving good aril recovery.",
+          "type": "appearance",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        },
+        {
+          "text": "The aril is firm and crisp with a sweet, good flavour.",
+          "type": "flavour",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        },
+        {
+          "text": "The rind is rather rough and thick, aiding shelf life.",
+          "type": "appearance",
+          "cites": [
+            "fao"
+          ]
+        },
+        {
+          "text": "It is late-maturing and shows an alternate (irregular) bearing habit.",
+          "type": "season",
+          "cites": [
+            "fao",
+            "rfca"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao",
+          "name": "FAO, Cultivars of Main Longan Centres in Asia",
+          "url": "https://www.fao.org/4/x6908e/x6908e0l.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council Australia Archives, Performance of Longan",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Longan/LonganPerformance3-89.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "longan-kohala": {
       "slug": "longan-kohala",
       "species": "Longan",
@@ -60,5 +241,8 @@
       "verified": true,
       "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "longan-fijian"
+  ]
 }

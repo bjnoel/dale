@@ -71,6 +71,316 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "lime-rangpur": {
+      "slug": "lime-rangpur",
+      "species": "Lime",
+      "variety": "Rangpur",
+      "paragraphs": [
+        "The Rangpur lime (Citrus x limonia) is a lime in name only. Genomic work shows it is an F1 hybrid of a female citron (Citrus medica) and a male mandarin (Citrus reticulata), so it is really a mandarin-lime. Named for Rangpur in Bangladesh, it is also called the mandarin-lime in the United States and limao-cravo (cravo lemon) in Brazil. The fruit is unusual for a lime: it has an orange, yellowish to reddish-orange rind and orange flesh.",
+        "Despite the orange colour, the tender, juicy flesh is strongly acidic with a sour, lime-like flavour, which makes it useful in cooking and drinks. Its biggest role, however, is horticultural: it is a vigorous, hardy citrus rootstock tolerant of the tristeza virus and soil-borne disease, used heavily in Brazil. In cooler areas it is also grown as an ornamental."
+      ],
+      "claims": [
+        {
+          "text": "Rangpur lime (Citrus x limonia) is an F1 hybrid of a female citron and a male mandarin, also called mandarin-lime and limao-cravo.",
+          "type": "origin",
+          "cites": [
+            "wiki-rangpur",
+            "ucr-rangpur"
+          ]
+        },
+        {
+          "text": "The fruit has an orange to reddish-orange rind and orange flesh.",
+          "type": "appearance",
+          "cites": [
+            "wiki-rangpur",
+            "ucr-rangpur"
+          ]
+        },
+        {
+          "text": "The flesh is tender, juicy, and strongly acidic with a sour, lime-like flavour.",
+          "type": "flavour",
+          "cites": [
+            "ucr-rangpur"
+          ]
+        },
+        {
+          "text": "It is widely used as a hardy citrus rootstock tolerant of tristeza virus, especially in Brazil.",
+          "type": "use",
+          "cites": [
+            "wiki-rangpur",
+            "ucr-rangpur"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-rangpur",
+          "name": "Rangpur lime, Givaudan Citrus Variety Collection at UC Riverside",
+          "url": "https://citrusvariety.ucr.edu/usa-rangpur-lime",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-rangpur",
+          "name": "Rangpur (fruit), Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Citrus_limonia",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lime-red-centre": {
+      "slug": "lime-red-centre",
+      "species": "Lime",
+      "variety": "Red Centre",
+      "paragraphs": [
+        "The Red Centre Lime is a CSIRO-bred native citrus hybrid of the Australian finger lime (Citrus australasica) and an acid mandarin (described in some accounts as the Rangpur lime, Citrus x limonia). It is closely associated with, and often sold alongside, the Australian Blood Lime. The striking fruit has a deep red, glossy, slightly dimpled skin in a small oval to teardrop shape, with flesh edged or tinged in pink and red.",
+        "Like its finger lime parent it carries juice vesicles (caviar-like pearls), but the juice is also spread through the fruit, so it is easier to juice than a pure finger lime. The flavour combines the spicy zing of the finger lime with the aromatic acidity of the mandarin parent for a sweet-sour profile. It suits sauces, preserves, condiments, beverages, and fresh garnish, and was granted Plant Breeder's Rights in 2004."
+      ],
+      "claims": [
+        {
+          "text": "The Red Centre Lime is a CSIRO hybrid of the finger lime and an acid mandarin, associated with the Australian Blood Lime, with some sources naming the Rangpur lime (Citrus x limonia) as the second parent.",
+          "type": "origin",
+          "cites": [
+            "wiki-auslime",
+            "angus-redcentre",
+            "csiro-limes"
+          ]
+        },
+        {
+          "text": "The fruit has a deep red, glossy, slightly dimpled skin in a small oval to teardrop shape, with pink to red tinged flesh.",
+          "type": "appearance",
+          "cites": [
+            "angus-redcentre",
+            "csiro-limes"
+          ]
+        },
+        {
+          "text": "It contains finger-lime-style juice pearls but juice is also spread through the fruit, making it easier to juice.",
+          "type": "appearance",
+          "cites": [
+            "angus-redcentre"
+          ]
+        },
+        {
+          "text": "The flavour is a sweet-sour combination of finger lime zing and mandarin aromatics, used in sauces and preserves.",
+          "type": "flavour",
+          "cites": [
+            "csiro-limes"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "csiro-limes",
+          "name": "A taste of the outback, CSIRO lime varieties, CSIROpedia",
+          "url": "https://csiropedia.csiro.au/limes/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-auslime",
+          "name": "Australian lime, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Australian_lime",
+          "tier": "third_party"
+        },
+        {
+          "id": "angus-redcentre",
+          "name": "Native lime, Citrus hybrid Red Centre Lime, Gardening With Angus",
+          "url": "https://gardeningwithangus.com.au/native-lime-citrus-hybrid-red-centre-lime/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lime-sudachi": {
+      "slug": "lime-sudachi",
+      "species": "Lime",
+      "variety": "Sudachi",
+      "paragraphs": [
+        "Sudachi (Citrus sudachi) is a small Japanese acid citrus, the specialty and symbol of Tokushima Prefecture, which grows about 98 per cent of Japan's crop. Genetic analysis confirms it is a hybrid rather than a true species, with one parent being yuzu and the other an unidentified relative of Japanese citrus such as koji and tachibana. The fruit is round and small (roughly 20 to 40 grams) and turns yellow-orange when mature.",
+        "It is almost always harvested and used while still green, when its sharp, clean acidity and intense aroma are most pronounced (often likened to lime with herbal, peppery notes). The tart juice and zest replace lemon or lime in sauces, marinades, dressings, and drinks, and halved sudachi is a traditional garnish for grilled fish, soba, and udon. It is not eaten as a table fruit."
+      ],
+      "claims": [
+        {
+          "text": "Sudachi (Citrus sudachi) is a hybrid, with yuzu as one parent and an unidentified Japanese citrus relative as the other.",
+          "type": "origin",
+          "cites": [
+            "wiki-sudachi",
+            "ucr-sudachi"
+          ]
+        },
+        {
+          "text": "It is the specialty of Tokushima Prefecture, which produces about 98 per cent of Japan's sudachi.",
+          "type": "origin",
+          "cites": [
+            "wiki-sudachi"
+          ]
+        },
+        {
+          "text": "The fruit is small and round and is harvested and used while still green.",
+          "type": "appearance",
+          "cites": [
+            "wiki-sudachi"
+          ]
+        },
+        {
+          "text": "It has sharp acidity and intense aroma, and its juice and zest replace lemon or lime in sauces, marinades, and as a garnish for fish, soba, and udon.",
+          "type": "use",
+          "cites": [
+            "wiki-sudachi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-sudachi",
+          "name": "Sudachi, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Sudachi",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-sudachi",
+          "name": "Sudachi ichandrin (papeda hybrid), Givaudan Citrus Variety Collection at UC Riverside",
+          "url": "https://citrusvariety.ucr.edu/crc3471",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lime-sunrise": {
+      "slug": "lime-sunrise",
+      "species": "Lime",
+      "variety": "Sunrise",
+      "paragraphs": [
+        "The Sunrise Lime (often Australian Sunrise Lime) is a CSIRO-bred native citrus hybrid, a cross between the Australian finger lime (Citrus australasica) and a calamondin (itself a mandarin and cumquat cross). It was selected from a faustrimedin, with the parent tree chosen in 1990 at CSIRO. The result is a distinctive small fruit shaped like a pear in golden orange hues, appearing in winter.",
+        "Unlike its finger lime parent, the Sunrise can be eaten whole because the rind and pith are sweet, much like a kumquat, while the juice inside is tangy and fresh with a delicate floral note. It works fresh as a garnish or in sauces, marmalade, beverages, and preserves. It is one of three CSIRO native lime varieties (with Australian Blood and Australian Outback) granted Plant Breeder's Rights in 2004."
+      ],
+      "claims": [
+        {
+          "text": "The Sunrise Lime is a CSIRO-bred cross between the finger lime (Citrus australasica) and a calamondin, selected from a faustrimedin.",
+          "type": "origin",
+          "cites": [
+            "csiro-limes",
+            "angus-sunrise"
+          ]
+        },
+        {
+          "text": "The parent tree was selected in 1990 at CSIRO.",
+          "type": "origin",
+          "cites": [
+            "csiro-limes"
+          ]
+        },
+        {
+          "text": "The fruit is pear-shaped and golden/orange, appearing in winter.",
+          "type": "appearance",
+          "cites": [
+            "angus-sunrise",
+            "csiro-limes"
+          ]
+        },
+        {
+          "text": "The fruit can be eaten whole because the rind and pith are sweet, with tangy juice and a floral note.",
+          "type": "flavour",
+          "cites": [
+            "angus-sunrise"
+          ]
+        },
+        {
+          "text": "It is one of three CSIRO native lime varieties used in sauces and marmalade.",
+          "type": "use",
+          "cites": [
+            "csiro-limes"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "csiro-limes",
+          "name": "A taste of the outback, CSIRO lime varieties, CSIROpedia",
+          "url": "https://csiropedia.csiro.au/limes/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "angus-sunrise",
+          "name": "Citrus Sunrise Lime, Gardening With Angus",
+          "url": "https://gardeningwithangus.com.au/citrus-sunrise-lime/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lime-sweet": {
+      "slug": "lime-sweet",
+      "species": "Lime",
+      "variety": "Sweet",
+      "paragraphs": [
+        "The sweet lime, best known as the Palestine sweet lime (Citrus limettioides, sometimes placed under Citrus limetta), is an oddity among limes: a low-acid citrus that lacks the sharp bite of ordinary limes and lemons. The small, round to slightly oblong fruits have a thin, smooth rind with prominent oil glands that ripens from pale green to orange-yellow, and a pale yellow, very juicy, tender flesh.",
+        "Its defining trait is the near absence of acidity. Reference descriptions call the flavour insipid or bland because of the lack of acid, sometimes with a slightly bitter aftertaste, which makes it appealing to people who want citrus flavour without tartness. Long grown across India, the Near East, Egypt, and the Mediterranean as a fresh juice fruit, it is also used as a citrus rootstock."
+      ],
+      "claims": [
+        {
+          "text": "The Palestine sweet lime is a low-acid lime, scientific name Citrus limettioides (also referred to as Citrus limetta).",
+          "type": "origin",
+          "cites": [
+            "ucr-sweetlime",
+            "wiki-sweetlime"
+          ]
+        },
+        {
+          "text": "Fruits are small and round to oblong with a thin smooth rind ripening pale green to orange-yellow, and pale yellow very juicy flesh.",
+          "type": "appearance",
+          "cites": [
+            "ucr-sweetlime"
+          ]
+        },
+        {
+          "text": "Its flavour is insipid or bland due to a lack of acid, sometimes with a slightly bitter aftertaste.",
+          "type": "flavour",
+          "cites": [
+            "ucr-sweetlime",
+            "wiki-sweetlime"
+          ]
+        },
+        {
+          "text": "It is grown in India, the Near East, Egypt, and the Mediterranean as a fresh juice fruit and is also used as a rootstock.",
+          "type": "use",
+          "cites": [
+            "ucr-sweetlime",
+            "wiki-sweetlime"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-sweetlime",
+          "name": "Palestine sweet lime, Givaudan Citrus Variety Collection at UC Riverside",
+          "url": "https://citrusvariety.ucr.edu/crc1482",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-sweetlime",
+          "name": "Palestinian sweet lime, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Palestinian_sweet_lime",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "lime-tahitian": {
       "slug": "lime-tahitian",
       "species": "Lime",
@@ -145,6 +455,82 @@
       "confidence_score": 0.93,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lime-west-indian": {
+      "slug": "lime-west-indian",
+      "species": "Lime",
+      "variety": "West Indian",
+      "paragraphs": [
+        "The West Indian lime (Citrus aurantiifolia), also called the Key, Mexican, or true lime, is the small, intensely aromatic lime behind Key lime pie. Wikipedia describes it as a natural hybrid of Citrus micrantha (a wild papeda) and citron (Citrus medica), and it is widely treated as its own species. Fruits are small (roughly 3 to 6 cm across), almost round, and ripen from green to yellow with an exceptionally thin, fragrant rind.",
+        "Compared with the larger seedless Persian (Tahitian) lime, it is smaller, seedier, more acidic, and more aromatic. The greenish-yellow flesh is very juicy, highly acidic, and prized for its complex sour fragrance, which is why it is favoured for drinks, dressings, marinades, and ceviche. The trees are cold sensitive and the seeds are strongly polyembryonic, so they often grow true to type."
+      ],
+      "claims": [
+        {
+          "text": "It is a natural hybrid of Citrus micrantha (a wild papeda) and citron, treated botanically as a species.",
+          "type": "origin",
+          "cites": [
+            "wiki-keylime"
+          ]
+        },
+        {
+          "text": "Also known as Key lime, Mexican lime, and West Indian lime.",
+          "type": "naming",
+          "cites": [
+            "wiki-keylime",
+            "ucr-mexican"
+          ]
+        },
+        {
+          "text": "Fruits are small, almost round, with a thin fragrant rind, ripening green to yellow.",
+          "type": "appearance",
+          "cites": [
+            "ucr-mexican",
+            "wiki-keylime"
+          ]
+        },
+        {
+          "text": "It is smaller, seedier, more acidic, and more aromatic than the Persian lime.",
+          "type": "flavour",
+          "cites": [
+            "wiki-keylime"
+          ]
+        },
+        {
+          "text": "Flesh is greenish-yellow, very juicy, and highly acidic; seeds are strongly polyembryonic.",
+          "type": "appearance",
+          "cites": [
+            "ucr-mexican"
+          ]
+        },
+        {
+          "text": "It is the flavouring ingredient in Key lime pie.",
+          "type": "use",
+          "cites": [
+            "wiki-keylime"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-mexican",
+          "name": "Mexican lime, Givaudan Citrus Variety Collection at UC Riverside",
+          "url": "https://citrusvariety.ucr.edu/crc1710",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-keylime",
+          "name": "Key lime, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Key_lime",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "lime-australian"
+  ]
 }

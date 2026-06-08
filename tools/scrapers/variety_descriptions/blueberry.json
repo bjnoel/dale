@@ -1,0 +1,877 @@
+{
+  "species_slug": "blueberry",
+  "schema_version": 1,
+  "varieties": {
+    "blueberry-biloxi": {
+      "slug": "blueberry-biloxi",
+      "species": "Blueberry",
+      "variety": "Biloxi",
+      "paragraphs": [
+        "Biloxi is a southern highbush blueberry released in 1998 from the USDA-ARS programme in Mississippi (with Mississippi State University). Like other southern highbush types it carries low-chill native ancestry (Vaccinium darrowii), which gives it a low chilling requirement and a semi-evergreen habit, letting it crop in regions where higher-chill northern types fail. The bushes are vigorous and upright.",
+        "It is one of the earliest-ripening blueberries: its fruit precedes the earliest rabbiteye cultivars by roughly two to three weeks. Berries are medium-sized, light blue and very firm, with a sweet, distinct flavour. Because it blooms early, Biloxi is best interplanted with other southern highbush varieties to aid fruit set, and early bloom can put it at risk in late spring frosts."
+      ],
+      "claims": [
+        {
+          "text": "Biloxi is a southern highbush cultivar released in 1998 from the USDA-ARS programme in Mississippi",
+          "type": "origin",
+          "cites": [
+            "msstate_ext",
+            "usda_ars"
+          ]
+        },
+        {
+          "text": "Like other southern highbush types it carries low-chill native (Vaccinium darrowii) ancestry",
+          "type": "origin",
+          "cites": [
+            "onegreenworld"
+          ]
+        },
+        {
+          "text": "It is low-chill and semi-evergreen",
+          "type": "classification",
+          "cites": [
+            "onegreenworld",
+            "msstate_ext"
+          ]
+        },
+        {
+          "text": "Its fruit ripens early, preceding the earliest rabbiteye cultivars by about two to three weeks",
+          "type": "season",
+          "cites": [
+            "usda_ars",
+            "onegreenworld"
+          ]
+        },
+        {
+          "text": "Berries are medium-sized, light blue, very firm with sweet distinct flavour",
+          "type": "flavour",
+          "cites": [
+            "onegreenworld",
+            "msstate_ext"
+          ]
+        },
+        {
+          "text": "It blooms early and is best interplanted with other southern highbush for fruit set",
+          "type": "habit",
+          "cites": [
+            "msstate_ext"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "msstate_ext",
+          "name": "Mississippi State University Extension - Blueberry Varieties",
+          "url": "https://extension.msstate.edu/agriculture/crops/commercial-horticulture/commercial-fruit-and-nuts/what-varieties-blueberries-should-be-grown",
+          "tier": "authoritative"
+        },
+        {
+          "id": "usda_ars",
+          "name": "USDA ARS Poplarville - Blueberry Plant Releases",
+          "url": "https://www.ars.usda.gov/southeast-area/poplarville-ms/tcshl/docs/plant-releases/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "onegreenworld",
+          "name": "One Green World - Biloxi Southern Highbush Blueberry",
+          "url": "https://onegreenworld.com/product/biloxi-southern-highbush-blueberry/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-brightwell": {
+      "slug": "blueberry-brightwell",
+      "species": "Blueberry",
+      "variety": "Brightwell",
+      "paragraphs": [
+        "Brightwell is a rabbiteye blueberry developed by the University of Georgia with the USDA-ARS and released in 1983. It was named for Dr W.T. Brightwell, a long-serving UGA rabbiteye breeder. It is an early to mid-season type, with berries that are medium to large, good colour and flavour, and small dry stem scars that suit fresh eating and handling.",
+        "A useful quirk is that Brightwell is partially self-fertile, so it can set some fruit on its own, though yields are better with a second early-blooming rabbiteye nearby. Its fruit can be sensitive to wet conditions and splitting. It carries a lower chilling requirement than later rabbiteyes, which broadens where it can be grown."
+      ],
+      "claims": [
+        {
+          "text": "Brightwell is a rabbiteye cultivar developed by the University of Georgia with the USDA-ARS and released in 1983.",
+          "type": "origin",
+          "cites": [
+            "uga-ext",
+            "agrilife"
+          ]
+        },
+        {
+          "text": "It was named for Dr W.T. Brightwell, a University of Georgia rabbiteye breeder.",
+          "type": "naming",
+          "cites": [
+            "uga-ext"
+          ]
+        },
+        {
+          "text": "It is an early to mid-season type with medium to large berries and small dry stem scars.",
+          "type": "season",
+          "cites": [
+            "uga-ext",
+            "minnetonka"
+          ]
+        },
+        {
+          "text": "Brightwell is partially (semi) self-fertile but yields better with a second rabbiteye polleniser.",
+          "type": "pollination",
+          "cites": [
+            "agrilife",
+            "minnetonka"
+          ]
+        },
+        {
+          "text": "Its fruit can be sensitive to wet conditions and splitting.",
+          "type": "trait",
+          "cites": [
+            "agrilife"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agrilife",
+          "name": "Texas A&M AgriLife Extension, Rabbiteye Blueberries",
+          "url": "https://galveston.agrilife.org/files/2012/03/Fruit-Nut-Production-Rabbiteye-Blueberries.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "uga-ext",
+          "name": "University of Georgia / eXtension (Brightwell rabbiteye variety)",
+          "url": "https://blueberries.extension.org/brightwell-rabbiteye-blueberry-variety/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "minnetonka",
+          "name": "Minnetonka Orchards, The Brightwell Blueberry",
+          "url": "https://minnetonkaorchards.com/the-brightwell-blueberry/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-climax": {
+      "slug": "blueberry-climax",
+      "species": "Blueberry",
+      "variety": "Climax",
+      "paragraphs": [
+        "Climax is a rabbiteye blueberry released jointly by the University of Georgia and the USDA-ARS in 1974 and long used as a standard early rabbiteye. Its signature trait is a concentrated ripening season: the crop comes off over a short window (handy for a single big pick), with small to medium, firm fruit.",
+        "Because Climax blooms early most years, it is more exposed to late frosts than later-blooming types. It is not self-fertile, so it needs another early-blooming rabbiteye nearby (Brightwell, Premier and Tifblue are commonly suggested) to set a good crop."
+      ],
+      "claims": [
+        {
+          "text": "Climax is a rabbiteye cultivar released jointly by the University of Georgia and the USDA-ARS in 1974.",
+          "type": "origin",
+          "cites": [
+            "uga-ext",
+            "ifas"
+          ]
+        },
+        {
+          "text": "It has a concentrated ripening season and small to medium, firm fruit.",
+          "type": "season",
+          "cites": [
+            "agrilife",
+            "uga-ext"
+          ]
+        },
+        {
+          "text": "It blooms early, which makes it more exposed to late frosts.",
+          "type": "trait",
+          "cites": [
+            "uga-ext",
+            "ifas"
+          ]
+        },
+        {
+          "text": "It is not self-fertile and needs another early-blooming rabbiteye as a polleniser.",
+          "type": "pollination",
+          "cites": [
+            "uga-ext",
+            "agrilife"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agrilife",
+          "name": "Texas A&M AgriLife Extension, Rabbiteye Blueberries",
+          "url": "https://galveston.agrilife.org/files/2012/03/Fruit-Nut-Production-Rabbiteye-Blueberries.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "uga-ext",
+          "name": "University of Georgia / eXtension (Climax rabbiteye variety)",
+          "url": "https://blueberries.extension.org/climax-rabbiteye-blueberry-variety/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ifas",
+          "name": "UF/IFAS Extension, Blueberry cultivars for Florida",
+          "url": "https://hos.ifas.ufl.edu/media/hosifasufledu/fruit-crops-diversification/documents/2.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-gulf-coast": {
+      "slug": "blueberry-gulf-coast",
+      "species": "Blueberry",
+      "variety": "Gulf Coast",
+      "paragraphs": [
+        "Gulf Coast (Gulfcoast) is a southern highbush blueberry, a 1987 Mississippi release from the USDA breeding programme based at Poplarville. It was developed for the warm, humid conditions of the US Gulf Coast region, where mild winters suit its modest chill requirement. The bush is semi-evergreen in mild climates.",
+        "It ripens around mid-season (mid-May in south Mississippi) and produces medium-sized, light blue, firm berries with a small stem scar and good flavour. Extension sources note a recurring quirk, a tendency toward stemminess (fruit retaining bits of stem) where it has been grown commercially."
+      ],
+      "claims": [
+        {
+          "text": "Gulf Coast (Gulfcoast) is a southern highbush cultivar, a Mississippi release of 1987 from the USDA programme at Poplarville",
+          "type": "origin",
+          "cites": [
+            "msstate_ext",
+            "usda_ars"
+          ]
+        },
+        {
+          "text": "It ripens around mid-May in south Mississippi",
+          "type": "season",
+          "cites": [
+            "msstate_ext"
+          ]
+        },
+        {
+          "text": "Berries are medium-sized, light blue and firm with a small stem scar and good flavour",
+          "type": "flavour",
+          "cites": [
+            "msstate_ext"
+          ]
+        },
+        {
+          "text": "It has shown a stemminess problem where grown commercially",
+          "type": "quirk",
+          "cites": [
+            "msstate_ext"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "msstate_ext",
+          "name": "Mississippi State University Extension - Blueberry Varieties",
+          "url": "https://extension.msstate.edu/agriculture/crops/commercial-horticulture/commercial-fruit-and-nuts/what-varieties-blueberries-should-be-grown",
+          "tier": "authoritative"
+        },
+        {
+          "id": "usda_ars",
+          "name": "USDA ARS Poplarville - Blueberry Plant Releases",
+          "url": "https://www.ars.usda.gov/southeast-area/poplarville-ms/tcshl/docs/plant-releases/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-legacy": {
+      "slug": "blueberry-legacy",
+      "species": "Blueberry",
+      "variety": "Legacy",
+      "paragraphs": [
+        "Legacy is a highbush blueberry released in 1993 by the USDA and Rutgers (NJAES), with the parentage 'Elizabeth' x US75. Though grown as a northern highbush, it carries some southern (Vaccinium darrowii) ancestry, giving it broad adaptability; it is vigorous with an upright, open habit. Its chill requirement is on the high side, so it suits cooler regions rather than the mildest ones.",
+        "It ripens late in the season and is prized for fruit quality: light blue, firm berries with a small dry stem scar and a sweet, low-acid flavour often rated above most other cultivars. One drawback noted by sources is susceptibility to stem canker (Botryosphaeria), which growers manage with irrigation and pruning."
+      ],
+      "claims": [
+        {
+          "text": "Legacy is a highbush blueberry released in 1993 by the USDA and Rutgers (NJAES)",
+          "type": "origin",
+          "cites": [
+            "ncbj_legacy",
+            "foodforest_legacy"
+          ]
+        },
+        {
+          "text": "Its parentage is 'Elizabeth' x US75 and it carries some Vaccinium darrowii (southern) ancestry",
+          "type": "origin",
+          "cites": [
+            "ncbj_legacy"
+          ]
+        },
+        {
+          "text": "It is grown as a northern highbush with a relatively high chill requirement",
+          "type": "classification",
+          "cites": [
+            "ncbj_legacy",
+            "foodforest_legacy"
+          ]
+        },
+        {
+          "text": "It ripens late in the season",
+          "type": "season",
+          "cites": [
+            "ncbj_legacy"
+          ]
+        },
+        {
+          "text": "Berries are light blue, firm, sweet and low in acidity with excellent flavour",
+          "type": "flavour",
+          "cites": [
+            "ncbj_legacy",
+            "foodforest_legacy"
+          ]
+        },
+        {
+          "text": "It is susceptible to stem canker (Botryosphaeria corticis)",
+          "type": "quirk",
+          "cites": [
+            "ncbj_legacy"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncbj_legacy",
+          "name": "NC Blueberry Journal - Blueberry cultivar 'Legacy'",
+          "url": "https://ncblueberryjournal.blogspot.com/2011/08/blueberry-cultivar-legacy.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "foodforest_legacy",
+          "name": "Food Forest Nursery - Legacy Blueberry",
+          "url": "https://www.foodforestnursery.com/product/legacy-blueberry/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-misty": {
+      "slug": "blueberry-misty",
+      "species": "Blueberry",
+      "variety": "Misty",
+      "paragraphs": [
+        "Misty is a southern highbush blueberry released by the University of Florida, bred for low-latitude, mild-winter regions. The bush is upright and vigorous, carrying pink-to-white flowers and deep green, semi-evergreen foliage; leaves take on red-purple tones in autumn and stems can redden in winter, giving it ornamental appeal across the seasons.",
+        "It is an early-ripening, low-chill variety producing attractive light blue, firm berries with a sweet, slightly spicy flavour. Misty can set some fruit on its own but performs best cross-pollinated with another southern highbush such as Sharpblue or Biloxi, which improves yield and berry size."
+      ],
+      "claims": [
+        {
+          "text": "Misty is a southern highbush cultivar from the University of Florida",
+          "type": "origin",
+          "cites": [
+            "msu_garden",
+            "ifas_hs1245"
+          ]
+        },
+        {
+          "text": "The bush is upright and vigorous with pink-to-white flowers and semi-evergreen foliage",
+          "type": "appearance",
+          "cites": [
+            "msu_garden",
+            "clemson_misty"
+          ]
+        },
+        {
+          "text": "Foliage turns red-purple in autumn and stems can redden in winter",
+          "type": "appearance",
+          "cites": [
+            "msu_garden"
+          ]
+        },
+        {
+          "text": "It is a low-chill, early-ripening variety",
+          "type": "season",
+          "cites": [
+            "msu_garden",
+            "ifas_hs1245"
+          ]
+        },
+        {
+          "text": "Berries are light blue, firm, sweet with a slightly spicy flavour",
+          "type": "flavour",
+          "cites": [
+            "msu_garden",
+            "clemson_misty"
+          ]
+        },
+        {
+          "text": "It produces a better crop when cross-pollinated with another southern highbush such as Sharpblue or Biloxi",
+          "type": "habit",
+          "cites": [
+            "msu_garden"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "msu_garden",
+          "name": "MyGardenLife - Southern Highbush Blueberry 'Misty'",
+          "url": "https://mygardenlife.com/plant-library/southern-highbush-blueberry-misty-vaccinium-hybrid/",
+          "tier": "third_party"
+        },
+        {
+          "id": "clemson_misty",
+          "name": "Clemson University - Highbush Blueberry 'Misty'",
+          "url": "https://www.clemson.edu/cafls/demo/plant_profiles/vaccinium-corymbosum-highbush-blueberry-misty.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ifas_hs1245",
+          "name": "UF/IFAS HS1245 - Southern Highbush Blueberry Cultivars from the University of Florida",
+          "url": "https://ask.ifas.ufl.edu/publication/HS1245",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-peach-sorbet": {
+      "slug": "blueberry-peach-sorbet",
+      "species": "Blueberry",
+      "variety": "Peach Sorbet",
+      "paragraphs": [
+        "Peach Sorbet is a patented dwarf highbush blueberry in the Bushel and Berry range (bred by Fall Creek Nursery, US patent PP23325). Its main appeal is ornamental foliage: new leaves emerge in shades of peach, pink and orange before greening, then turn a rich red-purple, and in milder climates the plant is semi-evergreen. It stays very compact, around 0.6m tall and wide with a mounded habit, so it suits pots and small spaces.",
+        "Despite the showy leaves it still fruits, carrying mildly sweet, dark-blue berries about 1cm across in summer. It is self-pollinating, so a single plant will crop, though, as with most blueberries, a second variety improves yield. The dwarf, decorative form is the point of difference rather than heavy production."
+      ],
+      "claims": [
+        {
+          "text": "Peach Sorbet is a patented dwarf highbush blueberry in the Bushel and Berry range, US patent PP23325.",
+          "type": "origin",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        },
+        {
+          "text": "New foliage emerges peach, pink and orange before greening and turns red-purple, semi-evergreen in mild climates.",
+          "type": "appearance",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        },
+        {
+          "text": "It is very compact, around 0.6m (2 feet) tall and wide with a mounded habit.",
+          "type": "appearance",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        },
+        {
+          "text": "Berries are mildly sweet, dark blue and about 1cm wide, ripening in summer.",
+          "type": "flavour",
+          "cites": [
+            "mobot"
+          ]
+        },
+        {
+          "text": "It is self-pollinating.",
+          "type": "pollination",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mobot",
+          "name": "Missouri Botanical Garden Plant Finder, Bushel and Berry Peach Sorbet",
+          "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?taxonid=445374",
+          "tier": "authoritative"
+        },
+        {
+          "id": "bushelandberry",
+          "name": "Bushel and Berry, Peach Sorbet",
+          "url": "https://www.bushelandberry.com/peach-sorbet",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-pink-icing": {
+      "slug": "blueberry-pink-icing",
+      "species": "Blueberry",
+      "variety": "Pink Icing",
+      "paragraphs": [
+        "Pink Icing is a patented compact highbush blueberry in the Bushel and Berry range (a Toro x FLX-2 cross, US patent PP23336). Its standout feature is colourful foliage: leaves emerge with pink and red tones before maturing to dark green, then take on dark lavender-blue, almost iridescent tones in the cooler months, giving year-round ornamental value.",
+        "It is more substantial than the smallest Bushel and Berry types, reaching roughly 1 to 1.2m tall and wide with a mounded habit, and still produces plenty of large, mildly sweet, juicy berries in mid-summer. It is self-pollinating, so a single bush will fruit, making it a good dual-purpose plant for a pot or border."
+      ],
+      "claims": [
+        {
+          "text": "Pink Icing is a patented compact highbush blueberry in the Bushel and Berry range, a Toro x FLX-2 cross, US patent PP23336.",
+          "type": "origin",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        },
+        {
+          "text": "Foliage emerges pink and red, matures dark green, then turns dark lavender-blue and iridescent in cooler months.",
+          "type": "appearance",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        },
+        {
+          "text": "It reaches roughly 1 to 1.2m (3 to 4 feet) tall and wide with a mounded habit.",
+          "type": "appearance",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        },
+        {
+          "text": "It produces large, mildly sweet, juicy berries in mid-summer.",
+          "type": "flavour",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        },
+        {
+          "text": "It is self-pollinating.",
+          "type": "pollination",
+          "cites": [
+            "mobot",
+            "bushelandberry"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mobot",
+          "name": "Missouri Botanical Garden Plant Finder, Pink Icing (Vaccinium 'ZF06-079')",
+          "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?taxonid=446177",
+          "tier": "authoritative"
+        },
+        {
+          "id": "bushelandberry",
+          "name": "Bushel and Berry, Pink Icing",
+          "url": "https://www.bushelandberry.com/pink-icing",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-powder-blue": {
+      "slug": "blueberry-powder-blue",
+      "species": "Blueberry",
+      "variety": "Powder Blue",
+      "paragraphs": [
+        "Powder Blue (Powderblue) is a rabbiteye blueberry (Vaccinium ashei/virgatum) released jointly by North Carolina State University and the USDA-ARS in 1978. It is a late-season type, ripening roughly late June into late July, well after the early rabbiteyes, which makes it useful for stretching out a planting's harvest. The berries are medium sized and a distinctive light, powdery blue, with good production and a relatively crack-resistant skin.",
+        "As a rabbiteye it has a higher chilling requirement (around 600 hours) than southern highbush types, so it suits warm-temperate areas with a real winter. It is not reliably self-fertile and crops best with a second compatible rabbiteye nearby (Tifblue and Brightwell are common pollenisers), so plant it in groups rather than singly."
+      ],
+      "claims": [
+        {
+          "text": "Powder Blue is a rabbiteye cultivar released jointly by North Carolina State University and the USDA-ARS in 1978.",
+          "type": "origin",
+          "cites": [
+            "ncsu-ext",
+            "ifas"
+          ]
+        },
+        {
+          "text": "It is a late-season rabbiteye, ripening roughly late June to late July.",
+          "type": "season",
+          "cites": [
+            "agrilife",
+            "ifas"
+          ]
+        },
+        {
+          "text": "Berries are medium sized and light blue with good production.",
+          "type": "appearance",
+          "cites": [
+            "agrilife",
+            "ifas"
+          ]
+        },
+        {
+          "text": "It has a high chilling requirement (around 600 hours) for a rabbiteye.",
+          "type": "trait",
+          "cites": [
+            "agrilife",
+            "ifas"
+          ]
+        },
+        {
+          "text": "It is not reliably self-fertile and crops best with a compatible rabbiteye polleniser such as Tifblue or Brightwell.",
+          "type": "pollination",
+          "cites": [
+            "agrilife",
+            "ncsu-ext"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agrilife",
+          "name": "Texas A&M AgriLife Extension, Rabbiteye Blueberries",
+          "url": "https://galveston.agrilife.org/files/2012/03/Fruit-Nut-Production-Rabbiteye-Blueberries.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ncsu-ext",
+          "name": "eXtension / NC State (Powderblue rabbiteye variety)",
+          "url": "https://blueberries.extension.org/powderblue-rabbiteye-blueberry-variety/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ifas",
+          "name": "UF/IFAS Extension, Blueberry cultivars for Florida",
+          "url": "https://hos.ifas.ufl.edu/media/hosifasufledu/fruit-crops-diversification/documents/2.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-premier": {
+      "slug": "blueberry-premier",
+      "species": "Blueberry",
+      "variety": "Premier",
+      "paragraphs": [
+        "Premier is a rabbiteye blueberry released jointly by North Carolina State University and the USDA-ARS in 1978. It is an early-ripening type valued for high yields of medium to large, light-blue fruit, and is a long-established home-garden favourite.",
+        "One practical quirk noted by extension growers is that the young limbs can be too limber to carry heavy crops, so the bush may need support or careful pruning. Like most rabbiteyes it crops best with a second compatible variety nearby (Climax, Tifblue and Powder Blue are common partners)."
+      ],
+      "claims": [
+        {
+          "text": "Premier is a rabbiteye cultivar released jointly by North Carolina State University and the USDA-ARS in 1978.",
+          "type": "origin",
+          "cites": [
+            "ncsu-ext",
+            "ifas"
+          ]
+        },
+        {
+          "text": "It is an early-ripening rabbiteye with high yields of medium to large, light-blue fruit.",
+          "type": "season",
+          "cites": [
+            "ncsu-ext",
+            "agrilife"
+          ]
+        },
+        {
+          "text": "Its young limbs can be too limber for heavy fruiting.",
+          "type": "trait",
+          "cites": [
+            "agrilife"
+          ]
+        },
+        {
+          "text": "It crops best with a second compatible rabbiteye polleniser nearby.",
+          "type": "pollination",
+          "cites": [
+            "agrilife",
+            "ncsu-ext"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agrilife",
+          "name": "Texas A&M AgriLife Extension, Rabbiteye Blueberries",
+          "url": "https://galveston.agrilife.org/files/2012/03/Fruit-Nut-Production-Rabbiteye-Blueberries.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ncsu-ext",
+          "name": "NC State / eXtension (Premier rabbiteye variety)",
+          "url": "https://blueberries.extension.org/premier-rabbiteye-blueberry-variety/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ifas",
+          "name": "UF/IFAS Extension, Blueberry cultivars for Florida",
+          "url": "https://hos.ifas.ufl.edu/media/hosifasufledu/fruit-crops-diversification/documents/2.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-sharpe-blue": {
+      "slug": "blueberry-sharpe-blue",
+      "species": "Blueberry",
+      "variety": "Sharpe Blue",
+      "paragraphs": [
+        "Sharpe Blue (commonly spelled Sharpblue) is a landmark southern highbush blueberry. Released by Ralph Sharpe and Wayne Sherman at the University of Florida in 1976, it was among the first low-chill highbush blueberries bred for commercial production, created by crossing northern highbush types with low-chill native species such as Vaccinium darrowii. It effectively launched the Florida blueberry industry and remains a parent of many later southern highbush cultivars.",
+        "Because of its low chilling requirement, Sharpblue suits mild-winter regions and ripens early. It is largely self-fertile, so a single plant will crop, and it bears dark blue berries praised for good flavour and texture."
+      ],
+      "claims": [
+        {
+          "text": "Sharpblue is a southern highbush cultivar released by the University of Florida in 1976",
+          "type": "origin",
+          "cites": [
+            "aps_sharpblue",
+            "ifas_hs1245"
+          ]
+        },
+        {
+          "text": "It was among the first low-chill highbush blueberries released for commercial production",
+          "type": "origin",
+          "cites": [
+            "aps_sharpblue",
+            "ifas_hs1245"
+          ]
+        },
+        {
+          "text": "It was bred by crossing northern highbush types with low-chill native species such as Vaccinium darrowii",
+          "type": "origin",
+          "cites": [
+            "aps_sharpblue"
+          ]
+        },
+        {
+          "text": "It is low-chill, early-ripening and largely self-fertile",
+          "type": "habit",
+          "cites": [
+            "aps_sharpblue",
+            "ediblelandscaping_sb"
+          ]
+        },
+        {
+          "text": "Berries are dark blue with good flavour and texture",
+          "type": "flavour",
+          "cites": [
+            "ediblelandscaping_sb"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "aps_sharpblue",
+          "name": "American Pomological Society - The 'Sharpblue' Southern Highbush Blueberry",
+          "url": "https://www.pubhort.org/aps/46/v46_n4_a1.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ifas_hs1245",
+          "name": "UF/IFAS HS1245 - Southern Highbush Blueberry Cultivars from the University of Florida",
+          "url": "https://ask.ifas.ufl.edu/publication/HS1245",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ediblelandscaping_sb",
+          "name": "Edible Landscaping - Sharpblue Blueberry",
+          "url": "https://ediblelandscaping.com/products/sharpblue-blueberry",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "blueberry-sunshine-blue": {
+      "slug": "blueberry-sunshine-blue",
+      "species": "Blueberry",
+      "variety": "Sunshine Blue",
+      "paragraphs": [
+        "Sunshine Blue is a southern highbush blueberry valued as much for looks as for fruit. It forms a compact, semi-dwarf bush, roughly 1 to 1.2 metres tall and wide, with blue-green, semi-evergreen foliage that turns red and purple in cooler weather. In spring it carries showy hot-pink flowers that fade to white, making it a popular ornamental and container plant.",
+        "It is a low-chill variety suited to mild-winter regions, and it is self-fertile, so a single plant will set a crop (though a compatible partner can improve yield). Sources note it also tolerates slightly higher soil pH than many blueberries, which are otherwise fussy about acidic soil. The berries are medium-sized and sweet."
+      ],
+      "claims": [
+        {
+          "text": "Sunshine Blue is a southern highbush cultivar",
+          "type": "classification",
+          "cites": [
+            "monrovia",
+            "plantlust"
+          ]
+        },
+        {
+          "text": "It is a compact, semi-dwarf bush about 3 to 4 feet (roughly 1 to 1.2 m) tall and wide",
+          "type": "appearance",
+          "cites": [
+            "monrovia",
+            "wayside"
+          ]
+        },
+        {
+          "text": "Foliage is blue-green and semi-evergreen, turning red and purple in cool weather",
+          "type": "appearance",
+          "cites": [
+            "monrovia",
+            "wayside"
+          ]
+        },
+        {
+          "text": "It bears showy pink flowers that fade to white and is used ornamentally",
+          "type": "appearance",
+          "cites": [
+            "wayside",
+            "plantlust"
+          ]
+        },
+        {
+          "text": "It is low-chill and self-fertile, setting fruit without a second plant",
+          "type": "habit",
+          "cites": [
+            "monrovia",
+            "wayside"
+          ]
+        },
+        {
+          "text": "It tolerates higher soil pH than many blueberries",
+          "type": "quirk",
+          "cites": [
+            "wayside"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "monrovia",
+          "name": "Monrovia - Sunshine Blue Blueberry",
+          "url": "https://www.monrovia.com/sunshine-blue-blueberry.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "wayside",
+          "name": "Wayside Gardens - Vaccinium 'Sunshine Blue'",
+          "url": "https://www.waysidegardens.com/products/vaccinium-sunshine-blue-dwarf-blueberry-v1070",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantlust",
+          "name": "Plant Lust - Vaccinium 'Sunshine Blue'",
+          "url": "https://plantlust.com/plants/658/vaccinium-sunshine-blue/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "blueberry-burst",
+    "blueberry-northland"
+  ]
+}

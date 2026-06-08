@@ -75,6 +75,264 @@
       "confidence_score": 0.88,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "finger-lime-byron-sunrise": {
+      "slug": "finger-lime-byron-sunrise",
+      "species": "Finger Lime",
+      "variety": "Byron Sunrise",
+      "paragraphs": [
+        "Byron Sunrise is a named Australian finger lime cultivar held in the UC Riverside citrus collection, where it is recorded as one of a group of finger lime cultivars selected by Judy Viola (or colleagues) and used as a parent for further open-pollinated selections such as Rubirosa and Ruby My Dear.",
+        "It is grown chiefly for its colour: nursery sources consistently describe dark maroon skin and bright red to orange-red pearls, the sunrise tones that give the selection its name. The flesh is reported as comparatively mild and low in acidity, which suits it as an ornamental garnish for seafood, desserts and drinks."
+      ],
+      "claims": [
+        {
+          "text": "Byron Sunrise is a named finger lime cultivar selected by Judy Viola or colleagues and is held at the UC Riverside citrus collection, where it is a parent of seedling selections such as Rubirosa.",
+          "type": "origin",
+          "cites": [
+            "ucr-rubirosa",
+            "ucr-misterioso"
+          ]
+        },
+        {
+          "text": "It is described as having dark maroon skin and bright red to orange-red juice pearls.",
+          "type": "appearance",
+          "cites": [
+            "daleys-bs"
+          ]
+        },
+        {
+          "text": "The flesh is reported as comparatively mild with low acidity.",
+          "type": "flavour",
+          "cites": [
+            "daleys-bs"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-rubirosa",
+          "name": "Givaudan Citrus Variety Collection, UC Riverside - Rubirosa finger lime (CRC4296)",
+          "url": "https://citrusvariety.ucr.edu/crc4296",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ucr-misterioso",
+          "name": "Givaudan Citrus Variety Collection, UC Riverside - finger lime (CRC4295)",
+          "url": "https://citrusvariety.ucr.edu/crc4295",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-bs",
+          "name": "Daleys Fruit - Grafted Finger Lime Byron Sunrise",
+          "url": "https://www.daleysfruit.com.au/Finger-Lime-Byron-Sunrise-Microcitrus-australasica.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "finger-lime-judy-s-everbearing": {
+      "slug": "finger-lime-judy-s-everbearing",
+      "species": "Finger Lime",
+      "variety": "Judy's Everbearing",
+      "paragraphs": [
+        "Judy's Everbearing is a prolific finger lime selected by Judy Viola (or colleagues). Its name reflects an unusually long cropping habit: it carries a heavy crop from summer to autumn and produces fruit sporadically through the rest of the year, where most finger limes fruit in a single tighter window. The dark fruit holds clear, light green to pink pearls with few seeds.",
+        "It is one of the cultivars used in peer-reviewed chemotype work, where its peel oil was characterised by a distinctive limonene, citronellal and isomenthone profile, a combination not previously reported in other citrus. The aromatic lemon-lime pearls are used as for any finger lime, with seafood, in drinks, or in place of lemon and lime."
+      ],
+      "claims": [
+        {
+          "text": "Judy's Everbearing was selected by Judy Viola or colleagues.",
+          "type": "origin",
+          "cites": [
+            "ucr-misterioso"
+          ]
+        },
+        {
+          "text": "It crops heavily from summer to autumn and also produces fruit sporadically through the year, an everbearing habit.",
+          "type": "season",
+          "cites": [
+            "gwa-je",
+            "daleys-je"
+          ]
+        },
+        {
+          "text": "The pearls are clear, light green to pink with few seeds.",
+          "type": "appearance",
+          "cites": [
+            "daleys-je"
+          ]
+        },
+        {
+          "text": "Its peel oil has a distinctive limonene, citronellal and isomenthone chemotype not previously reported in other citrus.",
+          "type": "flavour",
+          "cites": [
+            "pubmed-chemotype"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-je",
+          "name": "Gardening With Angus - Citrus australasica 'Judy's Everbearing'",
+          "url": "https://gardeningwithangus.com.au/citrus-australasica-judys-everbearing/",
+          "tier": "third_party"
+        },
+        {
+          "id": "pubmed-chemotype",
+          "name": "Delort & Jaquier, Comparative analysis of three Australian finger lime cultivars (Phytochemistry, PubMed 25468539)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25468539/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ucr-misterioso",
+          "name": "Givaudan Citrus Variety Collection, UC Riverside - finger lime (CRC4295)",
+          "url": "https://citrusvariety.ucr.edu/crc4295",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-je",
+          "name": "Daleys Fruit - Finger Lime Judy's Everbearing",
+          "url": "https://www.daleysfruit.com.au/buy/finger-lime-judys-everbearing-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "finger-lime-pink-ice": {
+      "slug": "finger-lime-pink-ice",
+      "species": "Finger Lime",
+      "variety": "Pink Ice",
+      "paragraphs": [
+        "Pink Ice is one of the first commercialised finger lime varieties. It produces red to burgundy coloured fruit with clear to pink pearls of juice inside, giving a striking colour contrast when the fruit is opened.",
+        "Its distinctive draw is aroma: the pearls carry a scent likened to ruby grapefruit, which makes Pink Ice popular for cocktails, drinks and desserts as well as savoury dishes. Fruit is borne from summer to autumn and is ready when it comes away easily from the branch."
+      ],
+      "claims": [
+        {
+          "text": "Pink Ice was one of the first commercialised finger lime varieties.",
+          "type": "origin",
+          "cites": [
+            "gwa-pi"
+          ]
+        },
+        {
+          "text": "The fruit is red to burgundy coloured with clear to pink juice pearls inside.",
+          "type": "appearance",
+          "cites": [
+            "gwa-pi",
+            "gardenexpress-pi"
+          ]
+        },
+        {
+          "text": "The aroma of the pearls is similar to ruby grapefruit.",
+          "type": "flavour",
+          "cites": [
+            "gwa-pi"
+          ]
+        },
+        {
+          "text": "Fruit is borne from summer to autumn and is ripe when it comes away easily from the branch.",
+          "type": "season",
+          "cites": [
+            "gwa-pi",
+            "gardenexpress-pi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-pi",
+          "name": "Gardening With Angus - Citrus australasica 'Pink Ice'",
+          "url": "https://gardeningwithangus.com.au/citrus-australasica-pink-ice/",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenexpress-pi",
+          "name": "Garden Express - Finger Lime Pink Ice",
+          "url": "https://www.gardenexpress.com.au/product/finger-lime-pink-ice/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "finger-lime-rainforest-pearl": {
+      "slug": "finger-lime-rainforest-pearl",
+      "species": "Finger Lime",
+      "variety": "Rainforest Pearl",
+      "paragraphs": [
+        "Rainforest Pearl is a pink-fleshed finger lime classified as Citrus australasica var. sanguinea, selected for its pink pulp, ease of propagation and ornamental garden value. The aromatic, finger-shaped fruit has skin that is green tinged with red, and inside sit small pearls of tangy juice with a pink cast.",
+        "Fruit is produced in autumn (late summer to autumn on the NSW north coast). Plants are usually grafted to make them hardier and more tolerant of frost and dry conditions, forming an upright tree. The tangy pearls suit seafood, Asian cooking and cocktails."
+      ],
+      "claims": [
+        {
+          "text": "Rainforest Pearl is a pink-pulped selection classified as Citrus australasica var. sanguinea, chosen for its pink pulp and ornamental qualities.",
+          "type": "origin",
+          "cites": [
+            "gwa-rfp",
+            "anpsa"
+          ]
+        },
+        {
+          "text": "The aromatic skin is green tinged with red and the fruit is finger shaped.",
+          "type": "appearance",
+          "cites": [
+            "gwa-rfp",
+            "anpsa"
+          ]
+        },
+        {
+          "text": "The juice pearls are pink and tangy, suiting seafood, Asian cooking and cocktails.",
+          "type": "flavour",
+          "cites": [
+            "gwa-rfp",
+            "anpsa"
+          ]
+        },
+        {
+          "text": "Fruit is produced in autumn.",
+          "type": "season",
+          "cites": [
+            "gwa-rfp"
+          ]
+        },
+        {
+          "text": "Plants are grafted to improve hardiness and tolerance of frost and dry conditions.",
+          "type": "cultivation",
+          "cites": [
+            "gwa-rfp"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-rfp",
+          "name": "Gardening With Angus - Citrus australasica var. sanguinea 'Rainforest Pearl'",
+          "url": "https://gardeningwithangus.com.au/citrus-australasica-var-sanguinea-rainforest-pearl/",
+          "tier": "third_party"
+        },
+        {
+          "id": "anpsa",
+          "name": "Australian Native Plants Society - Citrus australasica",
+          "url": "https://anpsa.org.au/plant_profiles/citrus-australasica/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "finger-lime-collette",
+    "finger-lime-crystal",
+    "finger-lime-tom-thumb"
+  ]
 }
