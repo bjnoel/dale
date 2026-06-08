@@ -178,8 +178,10 @@ def render_header(
 
         # Nav links live on their own row: a horizontal wrapping row on desktop,
         # a vertical list (revealed by the hamburger) on mobile.
+        # On mobile the menu opens as a right-aligned column under the hamburger
+        # (items-end); on desktop it is a horizontal wrapping row (sm:items-center).
         nav_menu = f"""
-    <nav id="nav-menu" class="hidden sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-center
+    <nav id="nav-menu" class="hidden sm:flex flex-col sm:flex-row sm:flex-wrap items-end sm:items-center
                               gap-2 sm:gap-4 w-full mt-2 pt-2 sm:pt-0
                               border-t sm:border-0 border-gray-100 text-sm">
         {links_html}
