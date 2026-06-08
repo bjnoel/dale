@@ -53,20 +53,20 @@ def main() -> None:
     con = sqlite3.connect(DB)
     con.row_factory = sqlite3.Row
     watches = con.execute(
-        "SELECT rowid, email, variety_slug, species_slug, variety_title FROM watches"
+        "SELECT id, email, variety_slug, species_slug, variety_title FROM watches"
     ).fetchall()
 
     slug_map: dict[str, str] = {}                  # old -> new (for the sends table)
-    plan: list[tuple[int, str, str, str, str]] = []  # rowid, email, old, new_v, new_sp
+    plan: list[tuple[int, str, str, str, str]] = []  # id, email, old, new_v, new_sp
     for w in watches:
         new_v, new_sp = recompute(w["variety_title"])
         if not new_v or new_v == w["variety_slug"]:
             continue
-        plan.append((w["rowid"], w["email"], w["variety_slug"], new_v, new_sp))
+        plan.append((w["id"], w["email"], w["variety_slug"], new_v, new_sp))
         slug_map[w["variety_slug"]] = new_v
 
     print(f"{len(watches)} watches; {len(plan)} need re-slugging:")
-    for _rowid, email, old, new_v, _new_sp in plan:
+    for _id, email, old, new_v, _new_sp in plan:
         print(f"  [{email}] {old}  ->  {new_v}")
 
     if not apply:
@@ -79,15 +79,15 @@ def main() -> None:
 
     existing = {(w["email"], w["variety_slug"]) for w in watches}
     updated = deduped = 0
-    for rowid, email, _old, new_v, new_sp in plan:
+    for wid, email, _old, new_v, new_sp in plan:
         if (email, new_v) in existing:
             # This email already watches the merged slug -> drop the duplicate.
-            con.execute("DELETE FROM watches WHERE rowid = ?", (rowid,))
+            con.execute("DELETE FROM watches WHERE id = ?", (wid,))
             deduped += 1
         else:
             con.execute(
-                "UPDATE watches SET variety_slug = ?, species_slug = ? WHERE rowid = ?",
-                (new_v, new_sp, rowid),
+                "UPDATE watches SET variety_slug = ?, species_slug = ? WHERE id = ?",
+                (new_v, new_sp, wid),
             )
             existing.add((email, new_v))
             updated += 1
