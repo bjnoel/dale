@@ -2,6 +2,64 @@
   "species_slug": "apricot",
   "schema_version": 1,
   "varieties": {
+    "apricot-bentley": {
+      "slug": "apricot-bentley",
+      "species": "Apricot",
+      "variety": "Bentley",
+      "paragraphs": [
+        "Bentley is a local apricot selection from the Northern Rivers of New South Wales, found just outside Kyogle. It is closely compared to Glengarry, another regional selection, and shares its hardy, early-fruiting habit. The variety suits warm-temperate and subtropical gardens, needing only a modest winter chill.",
+        "A hardy tree that comes into bearing early, Bentley produces good crops of good quality, medium-sized apricots. It is grouped with low to moderate chill apricots, which is why it is offered chiefly in the warmer growing districts of eastern Australia rather than the cold inland."
+      ],
+      "claims": [
+        {
+          "text": "A local selection from just outside Kyogle in the Northern Rivers of New South Wales.",
+          "type": "origin",
+          "cites": [
+            "rfcawa"
+          ]
+        },
+        {
+          "text": "Closely compared to the regional Glengarry selection and shares its hardy, early-fruiting habit.",
+          "type": "growing",
+          "cites": [
+            "rfcawa",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Hardy tree that comes into fruiting early and produces good crops of good quality, medium-sized apricots.",
+          "type": "growing",
+          "cites": [
+            "rfcawa"
+          ]
+        },
+        {
+          "text": "A low to moderate chill apricot suited to warmer growing districts.",
+          "type": "growing",
+          "cites": [
+            "daleys"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcawa",
+          "name": "Rare Fruit Club WA, Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Apricot Bentley",
+          "url": "https://www.daleysfruit.com.au/buy/apricot-bentley-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "apricot-bulida": {
       "slug": "apricot-bulida",
       "species": "Apricot",
@@ -747,6 +805,76 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "apricot-newcastle": {
+      "slug": "apricot-newcastle",
+      "species": "Apricot",
+      "variety": "Newcastle",
+      "paragraphs": [
+        "Newcastle is a low-chill apricot that, despite its standing as an Australian heritage favourite, began as a California seedling. It originated in the orchard of O. M. Silva and Son at Newcastle, Placer County, and was first noticed in 1881. Its tolerance of mild winters has made it a long-running choice for warm-temperate and some subtropical gardens where higher-chill apricots struggle.",
+        "It is an early variety, cropping well before the old standard Oullins. The fruit is rounded and yellow-orange, a regular freestone with soft, juicy orange flesh, and old catalogue notes describe a rich golden yellow with a red cheek. A heavy bearer, it usually needs thinning, and the fruit suits fresh eating, drying, preserves and canning."
+      ],
+      "claims": [
+        {
+          "text": "A California seedling that originated in the orchard of O. M. Silva and Son at Newcastle, Placer County, first noticed in 1881.",
+          "type": "origin",
+          "cites": [
+            "rfcawa"
+          ]
+        },
+        {
+          "text": "Low-chill apricot suited to warm-temperate and some subtropical climates.",
+          "type": "growing",
+          "cites": [
+            "spectrees"
+          ]
+        },
+        {
+          "text": "Early variety that crops before Oullins.",
+          "type": "season",
+          "cites": [
+            "hrfn"
+          ]
+        },
+        {
+          "text": "Old catalogue descriptions note a rich golden yellow fruit with a red cheek.",
+          "type": "appearance",
+          "cites": [
+            "hrfn"
+          ]
+        },
+        {
+          "text": "Rounded yellow-orange freestone fruit with soft, juicy orange flesh.",
+          "type": "appearance",
+          "cites": [
+            "spectrees"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcawa",
+          "name": "Rare Fruit Club WA, Apricot Varieties",
+          "url": "https://rarefruitclub.au/wp/members/apricot-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "hrfn",
+          "name": "Heritage and Rare Fruit Network, Apricots",
+          "url": "https://heritageandrarefruits.weebly.com/apricots.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "spectrees",
+          "name": "Speciality Trees, Prunus armeniaca 'Newcastle'",
+          "url": "https://www.specialitytrees.com.au/trees/prunus-armeniaca-newcastle-3jivc",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "apricot-patterson": {
       "slug": "apricot-patterson",
       "species": "Apricot",
@@ -1203,5 +1331,23 @@
       "verified": true,
       "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "apricot-2way-early-moorpark-trevatt",
+    "apricot-2way-moorpark-trevatt",
+    "apricot-divinity-advance-size",
+    "apricot-frangipani",
+    "apricot-fruit-tree",
+    "apricot-heuchera",
+    "apricot-patson",
+    "apricot-sal",
+    "apricot-storey",
+    "apricot-storey-s",
+    "apricot-story",
+    "apricot-story-storey",
+    "apricot-tardi-de-bourdonel",
+    "apricot-tilton-stone-fruit",
+    "apricot-trevatt-advance",
+    "apricot-tropical"
+  ]
 }

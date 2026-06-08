@@ -486,6 +486,14 @@
     }
   },
   "skipped": [
-    "grapefruit-honneffs-surprise"
+    "grapefruit-honneffs-surprise",
+    "grapefruit-marsh-8",
+    "grapefruit-marshs-seedless",
+    "grapefruit-oroblanco",
+    "grapefruit-pomello",
+    "grapefruit-ruby",
+    "grapefruit-ruby-blush",
+    "grapefruit-thompson-pink",
+    "grapefruit-tree-2meters-high"
   ]
 }

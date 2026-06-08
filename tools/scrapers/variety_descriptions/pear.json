@@ -85,6 +85,128 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pear-beurre-diel": {
+      "slug": "pear-beurre-diel",
+      "species": "Pear",
+      "variety": "Beurre Diel",
+      "paragraphs": [
+        "Beurre Diel is a historic Belgian dessert pear from the Van Mons era. The chance seedling was found around 1800 at the Chateau of Perck near Vilvoorde by Meuris, head gardener to Dr Jean-Baptiste Van Mons, who named it after the German pomologist Augustin Diel. It is a large fruit with a yellowish green to orange skin marked by patches of russet and sometimes a faint flush.",
+        "The flesh is creamy white, melting and juicy, with a rich, sweet, aromatic flavour, though it can be a little gritty near the core and needs a warm season to ripen well. It is a mid season pear, harvested in October and used through to about December as a dessert fruit. The tree is a triploid and is self sterile, so it needs a compatible pollinator."
+      ],
+      "claims": [
+        {
+          "text": "Beurre Diel was found around 1800 near Vilvoorde, Belgium by Van Mons's gardener Meuris and named after the pomologist Diel.",
+          "type": "origin",
+          "cites": [
+            "hortus-diel",
+            "keepers-diel"
+          ]
+        },
+        {
+          "text": "The skin is yellowish green to orange with patches of russet, sometimes a slight flush, on a large fruit.",
+          "type": "appearance",
+          "cites": [
+            "hortus-diel",
+            "keepers-diel"
+          ]
+        },
+        {
+          "text": "The flesh is creamy white, melting and juicy with a rich, sweet, aromatic flavour.",
+          "type": "flavour",
+          "cites": [
+            "hortus-diel",
+            "keepers-diel"
+          ]
+        },
+        {
+          "text": "It is a triploid that is self sterile and needs a pollinator.",
+          "type": "pollination",
+          "cites": [
+            "keepers-diel",
+            "hortus-diel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hortus-diel",
+          "name": "Hortus Camdenensis: Pyrus communis 'Beurre Diel'",
+          "url": "https://hortuscamden.com/plants/view/pyrus-communis-l.-var.-beurre-diel",
+          "tier": "third_party"
+        },
+        {
+          "id": "keepers-diel",
+          "name": "Keepers Nursery: Beurre Diel",
+          "url": "https://www.keepers-nursery.co.uk/fruit-trees/pear/mid-season-eating-pear/beurre-diel",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-beurre-easter": {
+      "slug": "pear-beurre-easter",
+      "species": "Pear",
+      "variety": "Beurre Easter",
+      "paragraphs": [
+        "Beurre Easter, known in French as Doyenne d'Hiver and often called Easter Beurre, is an old pear of Belgian origin, traced to an aged tree at the Capucin monastery at Louvain that was recorded around 1823 as the Pastorale de Louvain. English and American authorities later settled on the name Easter Beurre, reflecting its very late season.",
+        "Its defining quality is keeping: it is one of the finest of the long storing pears, ripening in storage long after autumn pears are finished and lasting into April or May. The large fruit has melting, juicy flesh with a bright, vinous flavour, and unusually it will ripen in a cool cellar without special care."
+      ],
+      "claims": [
+        {
+          "text": "Beurre Easter, the French Doyenne d'Hiver, is of Belgian origin, traced to the Capucin monastery at Louvain around 1823.",
+          "type": "origin",
+          "cites": [
+            "chestofbooks-easter",
+            "promesse-doyenne"
+          ]
+        },
+        {
+          "text": "It is also called Easter Beurre and Doyenne d'Hiver.",
+          "type": "naming",
+          "cites": [
+            "chestofbooks-easter",
+            "promesse-doyenne"
+          ]
+        },
+        {
+          "text": "It is a very late, long keeping pear that ripens in storage and keeps into April or May.",
+          "type": "storage",
+          "cites": [
+            "chestofbooks-easter",
+            "promesse-doyenne"
+          ]
+        },
+        {
+          "text": "The large fruit has melting, juicy flesh with a bright, vinous flavour.",
+          "type": "flavour",
+          "cites": [
+            "chestofbooks-easter",
+            "promesse-doyenne"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "chestofbooks-easter",
+          "name": "ChestOfBooks (horticultural journal): The Easter Beurre Pear",
+          "url": "https://chestofbooks.com/gardening-horticulture/Journal-7/The-Easter-Beurre-Pear-Doyenne-d-hiver-the-popular-French-name.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "promesse-doyenne",
+          "name": "Promesse de Fleurs: Doyenne d'Hiver Pear",
+          "url": "https://en.promessedefleurs.eu/fruit-trees/fruit-trees-by-variety/pear-trees/pyrus-communis-doyenne-d-hiver-pear-tree.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "pear-beurre-hardy": {
       "slug": "pear-beurre-hardy",
       "species": "Pear",
@@ -143,6 +265,213 @@
       ],
       "confidence": "high",
       "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-beurre-superfin": {
+      "slug": "pear-beurre-superfin",
+      "species": "Pear",
+      "variety": "Beurre Superfin",
+      "paragraphs": [
+        "Beurre Superfin is a French dessert pear raised by M. Goubault at Mille Pieds near Angers in 1837, first fruiting around 1844. It is a medium to large fruit with a slightly rough, russet patched skin that ripens from mid green to yellow.",
+        "It is celebrated for flavour: the pale yellow flesh is melting, juicy and sweet with a delicate, scented, slightly tart character, ranking among the most outstanding flavoured pears. An autumn variety, it is picked in late September and keeps into October."
+      ],
+      "claims": [
+        {
+          "text": "Beurre Superfin was raised by M. Goubault near Angers, France in 1837, first fruiting around 1844.",
+          "type": "origin",
+          "cites": [
+            "orangepippin-superfin",
+            "fpm-superfin"
+          ]
+        },
+        {
+          "text": "The pale yellow flesh is melting, juicy and sweet with a delicate, scented, slightly tart flavour.",
+          "type": "flavour",
+          "cites": [
+            "orangepippin-superfin",
+            "fpm-superfin"
+          ]
+        },
+        {
+          "text": "It is an autumn pear, picked late September and kept into October.",
+          "type": "season",
+          "cites": [
+            "orangepippin-superfin",
+            "fpm-superfin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "orangepippin-superfin",
+          "name": "Orange Pippin: Beurre Superfin",
+          "url": "https://www.orangepippin.com/varieties/pears/beurre-superfin",
+          "tier": "third_party"
+        },
+        {
+          "id": "fpm-superfin",
+          "name": "Frank P Matthews: Beurre Superfin",
+          "url": "https://www.frankpmatthews.com/catalogue/fruit-trees/pear/beurre-superfin/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-chojuro-nashi": {
+      "slug": "pear-chojuro-nashi",
+      "species": "Pear",
+      "variety": "Chojuro Nashi",
+      "paragraphs": [
+        "Chojuro is a classic Japanese nashi (Asian pear) that arose as a chance seedling in Japan around the 1890s. It is one of the russet nashi, with yellow to brownish, russeted skin rather than the smooth green or yellow of many other Japanese pears. The flesh is crisp and juicy but a little coarse in texture, and like all nashi it is eaten firm and crunchy, more like a crisp apple than a soft European pear.",
+        "Its standout quality is flavour: Chojuro is widely noted for a rich, sweet taste with distinctive butterscotch and caramel notes, a result of high sugar and low acidity. It ripens in late summer (around late August in the northern hemisphere) and was historically a very productive, disease-tolerant orchard variety, though its market share in Japan declined as smoother-skinned cultivars rose in popularity."
+      ],
+      "claims": [
+        {
+          "text": "Chojuro arose as a chance seedling in Japan around the 1890s",
+          "type": "origin",
+          "cites": [
+            "pmc_jp_pear"
+          ]
+        },
+        {
+          "text": "It is a russet nashi with yellow to brownish russeted skin",
+          "type": "appearance",
+          "cites": [
+            "ncstate_chojuro",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "The flesh is crisp and juicy but a little coarse in texture",
+          "type": "flavour",
+          "cites": [
+            "ncstate_chojuro"
+          ]
+        },
+        {
+          "text": "It is noted for a sweet flavour with butterscotch and caramel notes",
+          "type": "flavour",
+          "cites": [
+            "ncstate_chojuro",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "It ripens in late summer, around late August",
+          "type": "season",
+          "cites": [
+            "ncstate_chojuro",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "It was a productive, disease-tolerant variety whose Japanese market share later declined",
+          "type": "growing",
+          "cites": [
+            "pmc_jp_pear"
+          ]
+        },
+        {
+          "text": "Like all nashi it is eaten firm and crisp rather than soft",
+          "type": "use",
+          "cites": [
+            "gardenerspath"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc_jp_pear",
+          "name": "Advances in Japanese pear breeding in Japan (Saito, PMC/NIH)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4780802/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ncstate_chojuro",
+          "name": "NC State Extension Gardener Plant Toolbox: Pyrus pyrifolia 'Chojuro'",
+          "url": "https://plants.ces.ncsu.edu/plants/pyrus-pyrifolia-chojuro/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenerspath",
+          "name": "Gardener's Path: 9 of the Best Asian Pear Cultivars",
+          "url": "https://gardenerspath.com/plants/fruit-trees/best-asian-pears/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-clapp": {
+      "slug": "pear-clapp",
+      "species": "Pear",
+      "variety": "Clapp",
+      "paragraphs": [
+        "Clapp's Favourite is an old American dessert pear raised by the Clapp family of Dorchester, Massachusetts in the mid 19th century and introduced around 1860. It is generally regarded as a cross of Bartlett and Flemish Beauty, and it resembles Bartlett in shape but ripens noticeably earlier, roughly a week to two weeks ahead of it.",
+        "The white flesh is fine grained, very juicy and sweet with a refreshing hint of acidity, making it a prized fresh eating pear. Its main quirk is poor keeping: the fruit should be picked while still firm and ripened off the tree, because left on the branch the core can break down, and ripe fruit lasts only a few days."
+      ],
+      "claims": [
+        {
+          "text": "Clapp's Favourite was raised by the Clapp family in Dorchester, Massachusetts and introduced around 1860.",
+          "type": "origin",
+          "cites": [
+            "dorchester-atheneum",
+            "specialty-clapp"
+          ]
+        },
+        {
+          "text": "It is generally considered a cross of Bartlett and Flemish Beauty.",
+          "type": "breeding",
+          "cites": [
+            "dorchester-atheneum",
+            "orangepippin-clapp"
+          ]
+        },
+        {
+          "text": "It ripens earlier than Bartlett, with white, fine grained, juicy, sweet flesh.",
+          "type": "flavour",
+          "cites": [
+            "specialty-clapp",
+            "orangepippin-clapp"
+          ]
+        },
+        {
+          "text": "It keeps poorly, so fruit is picked firm and ripened off the tree to avoid core breakdown.",
+          "type": "storage",
+          "cites": [
+            "specialty-clapp",
+            "orangepippin-clapp"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "dorchester-atheneum",
+          "name": "Dorchester Atheneum: Clapp's Favorite Pear",
+          "url": "https://www.dorchesteratheneum.org/project/clapps-favorite-pear-frederick-clapp-pear-sarah-clapp-pear/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-clapp",
+          "name": "Specialty Produce: Clapp's Favorite Pears",
+          "url": "https://specialtyproduce.com/produce/Clapps_Favorite_Pears_12960.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-clapp",
+          "name": "Orange Pippin: Clapp's Favourite",
+          "url": "https://www.orangepippin.com/varieties/pears/clapps-favourite",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -308,6 +637,134 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pear-duchess-d-anglouleme-european": {
+      "slug": "pear-duchess-d-anglouleme-european",
+      "species": "Pear",
+      "variety": "Duchess D Anglouleme European",
+      "paragraphs": [
+        "Duchesse d'Angouleme arose as a chance seedling in a garden near Angers, in the Maine-et-Loire region of France. The nurseryman M. Audusson began propagating it, and in 1820 he sent fruit to the Duchesse d'Angouleme seeking permission to name the pear in her honour.",
+        "It is one of the largest of the dessert pears, often attaining great size, with an irregular, bumpy surface. The thin skin ripens to a warm yellow netted with russet. When well grown the white flesh becomes buttery and melting, with a rich, sweet flavour."
+      ],
+      "claims": [
+        {
+          "text": "Duchesse d'Angouleme arose as a chance seedling in a garden near Angers, Maine-et-Loire, France.",
+          "type": "origin",
+          "cites": [
+            "slowfood",
+            "specialty"
+          ]
+        },
+        {
+          "text": "The nurseryman M. Audusson propagated it and in 1820 sent fruit to the Duchesse d'Angouleme to gain permission to name it in her honour.",
+          "type": "naming",
+          "cites": [
+            "slowfood",
+            "specialty"
+          ]
+        },
+        {
+          "text": "It is one of the largest dessert pears, with an irregular, bumpy surface.",
+          "type": "appearance",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "The thin skin ripens to a warm yellow netted with russet.",
+          "type": "appearance",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "When well grown the white flesh becomes buttery and melting, with a rich, sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "specialty",
+            "slowfood"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "slowfood",
+          "name": "Slow Food Foundation Ark of Taste - Duchesse d'Angouleme Pear",
+          "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/duchesse-dangouleme-pear/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce - Duchesse d'Angouleme Pears",
+          "url": "https://specialtyproduce.com/produce/Duchesse_dAngouleme_Pears_15502.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-durondeau": {
+      "slug": "pear-durondeau",
+      "species": "Pear",
+      "variety": "Durondeau",
+      "paragraphs": [
+        "Durondeau is a Belgian dessert pear raised in 1811 by M. Durondeau at Tongre-Notre-Dame, near Tournai. It is a handsome fruit with a golden to yellow green skin overlaid by red to brown russet and attractive lenticels, often with a flush on the sunny side.",
+        "The flesh is sweet and juicy with a pronounced, aromatic flavour carried by a little underlying acidity. It is an autumn pear, picked around late September and at its peak through October, with a short season. The tree has an upright, compact habit suited to small gardens and turns a fiery red in autumn."
+      ],
+      "claims": [
+        {
+          "text": "Durondeau is a Belgian pear raised in 1811 by M. Durondeau at Tongre-Notre-Dame near Tournai.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-durondeau",
+            "fpm-durondeau"
+          ]
+        },
+        {
+          "text": "The skin is golden to yellow green with red to brown russet and a flush on the exposed side.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-durondeau",
+            "fpm-durondeau"
+          ]
+        },
+        {
+          "text": "The flesh is sweet and juicy with an aromatic, fresh sweet sour flavour.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-durondeau",
+            "fpm-durondeau"
+          ]
+        },
+        {
+          "text": "It is an autumn pear with a short season, picked late September and best in October.",
+          "type": "season",
+          "cites": [
+            "wikipedia-durondeau",
+            "fpm-durondeau"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-durondeau",
+          "name": "Wikipedia: Durondeau pear",
+          "url": "https://en.wikipedia.org/wiki/Durondeau_pear",
+          "tier": "third_party"
+        },
+        {
+          "id": "fpm-durondeau",
+          "name": "Frank P Matthews: Durondeau",
+          "url": "https://www.frankpmatthews.com/catalogue/fruit-trees/pear/durondeau/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "pear-flemish-beauty": {
       "slug": "pear-flemish-beauty",
       "species": "Pear",
@@ -414,6 +871,323 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pear-gin-perry": {
+      "slug": "pear-gin-perry",
+      "species": "Pear",
+      "variety": "Gin Perry",
+      "paragraphs": [
+        "Gin is an English perry pear (Pyrus communis) from west Gloucestershire, particularly the Newent area, first recorded as a vintage perry fruit in 1886. It bears heavy crops of small, almost round fruit, green with a slight orange or red flush at full ripeness.",
+        "It is grown for perry (pear cider) and is prized as a high-quality variety. Its name comes from the perry's aromatic, juniper-like character, which gives it a gin-like quality, with floral and herbal notes. The juice is classed as bittersharp, with medium acidity and medium tannin, and the variety is also valued for good resistance to scab and canker. It is sometimes blended with Blakeney Red."
+      ],
+      "claims": [
+        {
+          "text": "Gin is a west Gloucestershire perry pear from the Newent area, first recorded as a vintage fruit in 1886",
+          "type": "origin",
+          "cites": [
+            "nppc_gin_search",
+            "ciderreview_gin"
+          ]
+        },
+        {
+          "text": "It bears heavy crops of small, almost round fruit, green with a slight orange or red flush at ripeness",
+          "type": "appearance",
+          "cites": [
+            "nppc_gin_search",
+            "ciderreview_gin"
+          ]
+        },
+        {
+          "text": "It is grown for perry and rated a high-quality variety",
+          "type": "use",
+          "cites": [
+            "nppc_gin_search"
+          ]
+        },
+        {
+          "text": "Its name reflects the perry's aromatic, juniper-like, gin character with floral and herbal notes",
+          "type": "naming",
+          "cites": [
+            "nppc_gin_search",
+            "ciderreview_gin"
+          ]
+        },
+        {
+          "text": "The juice is bittersharp with medium acidity and medium tannin",
+          "type": "use",
+          "cites": [
+            "nppc_gin_search"
+          ]
+        },
+        {
+          "text": "The variety has good resistance to scab and canker",
+          "type": "growing",
+          "cites": [
+            "nppc_gin_search"
+          ]
+        },
+        {
+          "text": "It is sometimes blended with Blakeney Red",
+          "type": "use",
+          "cites": [
+            "nppc_gin_search"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nppc_gin_search",
+          "name": "National Perry Pear Centre: Gin",
+          "url": "https://www.nationalperrypearcentre.org.uk/pear/gin/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ciderreview_gin",
+          "name": "Cider Review: The Gin Pear",
+          "url": "https://cider-review.com/2022/10/10/the-gin-pear/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-glou-morceau-european": {
+      "slug": "pear-glou-morceau-european",
+      "species": "Pear",
+      "variety": "Glou Morceau European",
+      "paragraphs": [
+        "Glou Morceau was bred by the Abbe Hardenpont at Mons in Belgium around 1750, which is why it also goes by the name Beurre d'Hardenpont. It reached England in 1820 and became a prized Victorian dessert pear. The name translates roughly as 'delicious morsel'.",
+        "This is a late season pear with fine, melting, juicy flesh, very sweet and richly flavoured, though it needs warm conditions to ripen fully. The fruit is medium to large and oval to pear-shaped, with smooth greenish-yellow skin carrying very little russet. It hangs well on the tree and keeps into winter."
+      ],
+      "claims": [
+        {
+          "text": "Glou Morceau was bred by the Abbe Hardenpont at Mons, Belgium, around 1750.",
+          "type": "origin",
+          "cites": [
+            "specialty",
+            "keepers"
+          ]
+        },
+        {
+          "text": "It is also known as Beurre d'Hardenpont.",
+          "type": "naming",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "It reached England in 1820.",
+          "type": "origin",
+          "cites": [
+            "keepers"
+          ]
+        },
+        {
+          "text": "The name translates as 'delicious morsel'.",
+          "type": "naming",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "The flesh is fine, melting and juicy, very sweet and rich, but needs warm conditions to develop fully.",
+          "type": "flavour",
+          "cites": [
+            "specialty",
+            "keepers"
+          ]
+        },
+        {
+          "text": "It is a late season pear that hangs well on the tree and keeps into winter.",
+          "type": "season",
+          "cites": [
+            "specialty",
+            "keepers"
+          ]
+        },
+        {
+          "text": "The fruit is medium to large, oval to pear-shaped, with smooth greenish-yellow skin and very little russet.",
+          "type": "appearance",
+          "cites": [
+            "keepers",
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty",
+          "name": "Specialty Produce - Glou Morceau Pears",
+          "url": "https://specialtyproduce.com/produce/Glou_Morceau_Pears_14261.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "keepers",
+          "name": "Keepers Nursery - Glou Morceau pear",
+          "url": "https://www.keepers-nursery.co.uk/fruit-trees/pear/late-season-eating-pear/glou-morceau",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-green-horse-perry": {
+      "slug": "pear-green-horse-perry",
+      "species": "Pear",
+      "variety": "Green Horse Perry",
+      "paragraphs": [
+        "Green Horse is a very old English perry pear (Pyrus communis) long associated with the orchards of Gloucestershire and the Three Counties, recorded in the 1800s. The fruit is round and green to yellowish green, sometimes with a light orange flush, often carrying russet around the stem and eye spreading onto the cheeks.",
+        "It is grown chiefly for perry (pear cider), where it is rated a best-quality variety producing a high-acid, low-tannin juice. It ripens in mid to late autumn (around October in England) on a large, vigorous, reliable-cropping tree. Beyond perry, the hard fruit has historically also been stewed or pickled."
+      ],
+      "claims": [
+        {
+          "text": "Green Horse is a very old Gloucestershire perry pear recorded in the 1800s",
+          "type": "origin",
+          "cites": [
+            "nppc_gh_search",
+            "slowfood_gh"
+          ]
+        },
+        {
+          "text": "The fruit is round and green to yellowish green, sometimes with a light orange flush, with russet around the stem and eye",
+          "type": "appearance",
+          "cites": [
+            "nppc_gh_search",
+            "slowfood_gh"
+          ]
+        },
+        {
+          "text": "It is grown chiefly for perry and is rated a best-quality variety",
+          "type": "use",
+          "cites": [
+            "nppc_gh_search"
+          ]
+        },
+        {
+          "text": "It produces a high-acid, low-tannin perry",
+          "type": "use",
+          "cites": [
+            "nppc_gh_search"
+          ]
+        },
+        {
+          "text": "It ripens in mid to late autumn, around October in England",
+          "type": "season",
+          "cites": [
+            "nppc_gh_search"
+          ]
+        },
+        {
+          "text": "The fruit can also be stewed or pickled",
+          "type": "use",
+          "cites": [
+            "nppc_gh_search",
+            "slowfood_gh"
+          ]
+        },
+        {
+          "text": "It grows into a large, vigorous, reliable-cropping tree",
+          "type": "growing",
+          "cites": [
+            "nppc_gh_search"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nppc_gh_search",
+          "name": "National Perry Pear Centre: Green Horse",
+          "url": "https://www.nationalperrypearcentre.org.uk/pear/green-horse/",
+          "tier": "third_party"
+        },
+        {
+          "id": "slowfood_gh",
+          "name": "Slow Food Foundation Ark of Taste: Green Horse Perry Pear",
+          "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/green-horse-perry-pear/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-henry-s-red-longdon-perry": {
+      "slug": "pear-henry-s-red-longdon-perry",
+      "species": "Pear",
+      "variety": "Henry s Red Longdon Perry",
+      "paragraphs": [
+        "Red Longdon is a traditional English perry pear (Pyrus communis) from the Three Counties region of England. The fruit is turbinate to pyriform, green or yellowish green with a strong red or red-orange flush spreading from the eye and russet around the stem, a colouring that gives the variety its name. In Australia the same variety is grown as Henry's Red Longdon, after Henry of Harcourt near Bendigo, where perry pears were introduced during the gold rush from 1850.",
+        "It is grown for perry (pear cider) rather than fresh eating, producing a good-quality perry of medium acidity and medium tannin. It is a vigorous, scab-resistant, midseason-harvesting tree. The Henry's Red Longdon name was adopted in Australia partly because no original index tree survived for direct comparison."
+      ],
+      "claims": [
+        {
+          "text": "Red Longdon is a traditional English perry pear from the Three Counties region",
+          "type": "origin",
+          "cites": [
+            "nppc_rl_search",
+            "slowfood_rl"
+          ]
+        },
+        {
+          "text": "The fruit is turbinate to pyriform, green or yellowish green with a strong red or red-orange flush from the eye and russet around the stem",
+          "type": "appearance",
+          "cites": [
+            "slowfood_rl"
+          ]
+        },
+        {
+          "text": "In Australia it is grown as Henry's Red Longdon, after Henry of Harcourt near Bendigo",
+          "type": "naming",
+          "cites": [
+            "slowfood_rl"
+          ]
+        },
+        {
+          "text": "Perry pears were introduced to Harcourt during the Bendigo gold rush from 1850",
+          "type": "origin",
+          "cites": [
+            "slowfood_rl"
+          ]
+        },
+        {
+          "text": "It is grown for perry, producing a good-quality perry of medium acidity and medium tannin",
+          "type": "use",
+          "cites": [
+            "nppc_rl_search",
+            "slowfood_rl"
+          ]
+        },
+        {
+          "text": "It is a vigorous, scab-resistant tree",
+          "type": "growing",
+          "cites": [
+            "slowfood_rl"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nppc_rl_search",
+          "name": "National Perry Pear Centre: Red Longdon",
+          "url": "https://www.nationalperrypearcentre.org.uk/pear/red-longdon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "slowfood_rl",
+          "name": "Slow Food Foundation Ark of Taste: Red Longdon Perry Pear",
+          "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/red-longdon-perry-pear/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "pear-hood": {
       "slug": "pear-hood",
       "species": "Pear",
@@ -465,6 +1239,85 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pear-jargonelle-european": {
+      "slug": "pear-jargonelle-european",
+      "species": "Pear",
+      "variety": "Jargonelle European",
+      "paragraphs": [
+        "Jargonelle is one of the oldest pear varieties known, thought to have originated in the former French region of Anjou and first recorded in England by John Parkinson in 1629. Its hardiness, longevity and reliable cropping saw it planted widely throughout northern Britain.",
+        "It is one of the earliest summer pears to ripen. The fruit is medium-sized and long conical, with greenish-yellow skin flushed brownish-red and dotted with small russet patches. The pale yellow flesh is tender and juicy with a very sweet, slightly musky flavour. It is a tip bearer, so it is not suited to training as cordons or espaliers."
+      ],
+      "claims": [
+        {
+          "text": "Jargonelle is one of the oldest pear varieties, thought to have originated in Anjou, France.",
+          "type": "origin",
+          "cites": [
+            "forestry"
+          ]
+        },
+        {
+          "text": "It was first recorded in England by John Parkinson in 1629.",
+          "type": "origin",
+          "cites": [
+            "keepers"
+          ]
+        },
+        {
+          "text": "Its hardiness, longevity and reliable cropping led to it being planted throughout northern Britain.",
+          "type": "growing",
+          "cites": [
+            "forestry"
+          ]
+        },
+        {
+          "text": "It is one of the earliest summer pears to ripen.",
+          "type": "season",
+          "cites": [
+            "keepers",
+            "forestry"
+          ]
+        },
+        {
+          "text": "The fruit is medium-sized and long conical, with greenish-yellow skin flushed brownish-red and small russet patches.",
+          "type": "appearance",
+          "cites": [
+            "keepers"
+          ]
+        },
+        {
+          "text": "The flesh is pale yellow, tender and juicy with a very sweet, slightly musky flavour.",
+          "type": "flavour",
+          "cites": [
+            "keepers"
+          ]
+        },
+        {
+          "text": "It is a tip bearer and not suitable for training into cordons or espaliers.",
+          "type": "growing",
+          "cites": [
+            "keepers"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "forestry",
+          "name": "Forestry Journal - Jethart pears (Jargonelle)",
+          "url": "https://www.forestryjournal.co.uk/features/19055330.jethart-pears/",
+          "tier": "third_party"
+        },
+        {
+          "id": "keepers",
+          "name": "Keepers Nursery - Jargonelle pear",
+          "url": "https://www.keepers-nursery.co.uk/fruit-trees/pear/early-season-eating-pear/jargonelle",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "pear-josephine-de-malines": {
       "slug": "pear-josephine-de-malines",
       "species": "Pear",
@@ -502,6 +1355,255 @@
           "id": "specialtyproduce-josephine",
           "name": "Specialty Produce: Josephine Pears",
           "url": "https://specialtyproduce.com/produce/Josephine_Pears_15907.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-ko-sui-nashi": {
+      "slug": "pear-ko-sui-nashi",
+      "species": "Pear",
+      "variety": "Ko Sui nashi",
+      "paragraphs": [
+        "Kosui is a Japanese nashi (Asian pear) bred from a cross of Kikusui and Wasekozo, released in Japan in 1959 from the national pear breeding program. It produces medium-sized, rounded fruit largely covered in golden-brown russet, on a background ranging from light green to bronze. The name Kosui means good water, a nod to its juiciness.",
+        "The flesh is soft for a nashi yet crisp and very juicy, with a fine texture and a sweet, low-acid flavour. Kosui is an early-ripening variety, maturing in mid to late summer ahead of many other nashi, and for decades it was one of the most widely grown pears in Japan. Like other nashi it is eaten firm and crunchy rather than ripened soft."
+      ],
+      "claims": [
+        {
+          "text": "Kosui originated from a cross between Kikusui and Wasekozo and was released in 1959",
+          "type": "breeding",
+          "cites": [
+            "pmc_jp_pear",
+            "websearch_kosui"
+          ]
+        },
+        {
+          "text": "The fruit is medium-sized and rounded, largely covered with golden-brown russet",
+          "type": "appearance",
+          "cites": [
+            "pmc_jp_pear",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "The name Kosui means good water",
+          "type": "naming",
+          "cites": [
+            "websearch_kosui"
+          ]
+        },
+        {
+          "text": "The flesh is soft yet juicy with a very fine texture and sweet, low-acid flavour",
+          "type": "flavour",
+          "cites": [
+            "pmc_jp_pear",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "It is an early-ripening nashi, maturing ahead of many other varieties",
+          "type": "season",
+          "cites": [
+            "gardenerspath",
+            "websearch_kosui"
+          ]
+        },
+        {
+          "text": "It was for decades one of the principal pear cultivars grown in Japan",
+          "type": "growing",
+          "cites": [
+            "pmc_jp_pear"
+          ]
+        },
+        {
+          "text": "Like other nashi it is eaten firm and crunchy",
+          "type": "use",
+          "cites": [
+            "gardenerspath"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc_jp_pear",
+          "name": "Advances in Japanese pear breeding in Japan (Saito, PMC/NIH)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4780802/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenerspath",
+          "name": "Gardener's Path: 9 of the Best Asian Pear Cultivars",
+          "url": "https://gardenerspath.com/plants/fruit-trees/best-asian-pears/",
+          "tier": "third_party"
+        },
+        {
+          "id": "websearch_kosui",
+          "name": "CooksInfo: Kosui Asian pear",
+          "url": "https://www.cooksinfo.com/kosui-pears",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-mirandino-rosso": {
+      "slug": "pear-mirandino-rosso",
+      "species": "Pear",
+      "variety": "Mirandino Rosso",
+      "paragraphs": [
+        "Mirandino Rosso is an old Italian summer pear from the Mantua district of northern Italy, where it was recorded in the hunting reserves of the Guerrini Gonzaga marquises near Moglia from the 1700s. The same pear is known as Bella di Giugno and as Precoce di Moglia, the latter pointing to its place of origin, with Mirandino Rosso the name favoured in Emilia Romagna. It ranks among the earliest of all pears.",
+        "The fruit is small and typically piriform, with a yellow skin that flushes red on the parts most exposed to the sun. The flesh is white, melting and fairly juicy, with a sweet, aromatic character. Picking begins from the last third of June, so it is eaten fresh in the height of summer rather than stored. The Book of Pears lists it simply as an Italian summer pear."
+      ],
+      "claims": [
+        {
+          "text": "Old Italian summer pear from the Mantua district, recorded in the Guerrini Gonzaga hunting reserves near Moglia from the 1700s.",
+          "type": "origin",
+          "cites": [
+            "angys"
+          ]
+        },
+        {
+          "text": "Also known as Bella di Giugno and Precoce di Moglia, with Mirandino Rosso the name used in Emilia Romagna.",
+          "type": "naming",
+          "cites": [
+            "angys"
+          ]
+        },
+        {
+          "text": "Small piriform fruit with yellow skin flushed red where exposed to the sun.",
+          "type": "appearance",
+          "cites": [
+            "angys",
+            "nannini"
+          ]
+        },
+        {
+          "text": "White, melting, fairly juicy flesh with a sweet, aromatic flavour.",
+          "type": "flavour",
+          "cites": [
+            "angys"
+          ]
+        },
+        {
+          "text": "Very early pear, picked from the last third of June and eaten fresh in summer.",
+          "type": "season",
+          "cites": [
+            "angys",
+            "nannini"
+          ]
+        },
+        {
+          "text": "Listed in The Book of Pears as an Italian summer pear.",
+          "type": "naming",
+          "cites": [
+            "bookofpears"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "angys",
+          "name": "Angys, Pera Bella di Giugno",
+          "url": "https://www.angys.net/pera-bella-di-giugno-la-pera-dellestate/",
+          "tier": "third_party"
+        },
+        {
+          "id": "bookofpears",
+          "name": "The Book of Pears (Fruit Forum directory)",
+          "url": "https://www.thebookofpears.fruitforum.net/directory/mirandino-rosso",
+          "tier": "third_party"
+        },
+        {
+          "id": "nannini",
+          "name": "Vivai Nannini, Mirandino Rosso pear",
+          "url": "https://vivainannini.com/en/mirandino-rosso-pear/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-moorcroft-perry": {
+      "slug": "pear-moorcroft-perry",
+      "species": "Pear",
+      "variety": "Moorcroft Perry",
+      "paragraphs": [
+        "Moorcroft is a traditional English perry pear (Pyrus communis) believed to have originated at Moorcroft Farm in Colwall, in the Malvern Hills, in the early 1800s. East of the River Severn it is widely known as Malvern Hills, and it carries several other names including Malvern Pear, Choke Pear and Choker. It is famously linked to the cheese Stinking Bishop, which is washed in perry made from this pear and named after a former Moorcroft Farm occupant.",
+        "As its Choke Pear names suggest, the fruit is not for eating fresh but for perry (pear cider). It is regarded as a fine vintage perry variety, yielding a juice of medium acidity and medium tannin, with little or no citric acid, that ferments to a good-quality perry. It grows into a large, long-lived, oak-like tree."
+      ],
+      "claims": [
+        {
+          "text": "Moorcroft is believed to have originated at Moorcroft Farm in Colwall, in the Malvern Hills, in the early 1800s",
+          "type": "origin",
+          "cites": [
+            "wiki_stinking_bishop",
+            "malverntrail"
+          ]
+        },
+        {
+          "text": "East of the Severn it is known as Malvern Hills, with other names including Malvern Pear, Choke Pear and Choker",
+          "type": "naming",
+          "cites": [
+            "wiki_stinking_bishop",
+            "nppc_search"
+          ]
+        },
+        {
+          "text": "It is linked to Stinking Bishop cheese, which is washed in perry from this pear and named after a former Moorcroft Farm occupant",
+          "type": "naming",
+          "cites": [
+            "wiki_stinking_bishop",
+            "malverntrail"
+          ]
+        },
+        {
+          "text": "The fruit is grown for perry, not for eating fresh",
+          "type": "use",
+          "cites": [
+            "wiki_stinking_bishop",
+            "nppc_search"
+          ]
+        },
+        {
+          "text": "It is regarded as a fine vintage perry variety giving a medium acid, medium tannin juice",
+          "type": "use",
+          "cites": [
+            "wiki_stinking_bishop",
+            "nppc_search"
+          ]
+        },
+        {
+          "text": "It grows into a large, oak-like tree",
+          "type": "growing",
+          "cites": [
+            "nppc_search"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_stinking_bishop",
+          "name": "Wikipedia: Stinking Bishop (pear) / Moorcroft",
+          "url": "https://en.wikipedia.org/wiki/Stinking_Bishop_(pear)",
+          "tier": "third_party"
+        },
+        {
+          "id": "malverntrail",
+          "name": "Malvern Trail: Cider and Perry",
+          "url": "https://www.malverntrail.co.uk/wp/cider-perry/",
+          "tier": "third_party"
+        },
+        {
+          "id": "nppc_search",
+          "name": "National Perry Pear Centre: Moorcroft",
+          "url": "https://www.nationalperrypearcentre.org.uk/pear/moorcroft/",
           "tier": "third_party"
         }
       ],
@@ -625,6 +1727,299 @@
       ],
       "confidence": "high",
       "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-paradise": {
+      "slug": "pear-paradise",
+      "species": "Pear",
+      "variety": "Paradise",
+      "paragraphs": [
+        "The Paradise pear traces back to Sicily, Italy, and has since been taken up in Australia. It is also sold under the names Faccia Bella (Italian for beautiful face), sugar pear and crystal pear, and is classed as a cocktail pear for its very small size, roughly that of a golf ball. The fruit is squat and round with smooth skin that shifts from green to gold with a red blush as it ripens.",
+        "Inside, the white flesh is crisp, moist and juicy, staying firm and crunchy even when fully ripe, with a sweet, fragrant taste. The small size suits cheese plates, salads and lunch boxes, and the fruit also takes well to poaching, baking, preserving and pickling. In Australia it is an early-season pear, ripening around January to February."
+      ],
+      "claims": [
+        {
+          "text": "The Paradise pear originated in Sicily, Italy, and is now grown in Australia.",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "It is also known as Faccia Bella, sugar pear and crystal pear.",
+          "type": "naming",
+          "cites": [
+            "specialtyproduce",
+            "heritage"
+          ]
+        },
+        {
+          "text": "It is a cocktail pear, small and round, about the size of a golf ball, with skin that turns from green to gold with a red blush.",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce",
+            "heritage"
+          ]
+        },
+        {
+          "text": "The white flesh is crisp, moist and juicy, staying firm and crunchy even when fully ripe, with a sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "It is used fresh in salads and on cheese plates and also for cooking, preserving and pickling.",
+          "type": "use",
+          "cites": [
+            "specialtyproduce",
+            "heritage"
+          ]
+        },
+        {
+          "text": "In Australia it is an early-season pear ripening around January to February.",
+          "type": "season",
+          "cites": [
+            "heritage"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce - Paradise Pears",
+          "url": "https://specialtyproduce.com/produce/Paradise_Pears_15905.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage",
+          "name": "Heritage Fruit Trees - Paradise Pear",
+          "url": "https://www.heritagefruittrees.com.au/paradise-pear-1/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-red-sensation": {
+      "slug": "pear-red-sensation",
+      "species": "Pear",
+      "variety": "Red Sensation",
+      "paragraphs": [
+        "Red Sensation (also sold as Sensation or Williams Red) is a red sport of the Williams pear that arose in Australia around 1940. It is one of several red mutant clones derived from Williams by spontaneous mutation, alongside Max Red Bartlett and Rosired. The fruit ripens from yellow green to an all over ruby red, giving it the showy skin that sets it apart from the parent.",
+        "Because it is a Williams sport, it shares the parent's eating qualities: melting, juicy, creamy white flesh with a fine texture. It is an early season pear, harvested in summer (around February in Australia). The tree also carries striking red tinted foliage, adding ornamental value to its dual role as a dessert pear."
+      ],
+      "claims": [
+        {
+          "text": "Red Sensation is a red skinned sport of the Williams pear that originated in Australia around 1940.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-williams",
+            "heritage-williams-red"
+          ]
+        },
+        {
+          "text": "The skin ripens from yellow green to an all over red, and it is also known as Sensation or Williams Red.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-williams",
+            "keepers-red-williams"
+          ]
+        },
+        {
+          "text": "As a Williams sport it shares the parent's melting, juicy flesh and ripens early in the season.",
+          "type": "flavour",
+          "cites": [
+            "heritage-williams-red",
+            "keepers-red-williams"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-williams",
+          "name": "Wikipedia: Williams pear",
+          "url": "https://en.wikipedia.org/wiki/Williams_pear",
+          "tier": "third_party"
+        },
+        {
+          "id": "keepers-red-williams",
+          "name": "Keepers Nursery: Red Williams",
+          "url": "https://www.keepers-nursery.co.uk/fruit-trees/pear/early-season-eating-pear/red-williams",
+          "tier": "nursery"
+        },
+        {
+          "id": "heritage-williams-red",
+          "name": "Heritage Fruit Trees: Williams Red",
+          "url": "https://www.heritagefruittrees.com.au/williams-red-pear-standard/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-san-giovanni-european": {
+      "slug": "pear-san-giovanni-european",
+      "species": "Pear",
+      "variety": "San Giovanni European",
+      "paragraphs": [
+        "San Giovanni is a very old Italian summer pear. Its name refers to the feast day of Saint John (San Giovanni) in late June, the time when the fruit ripens.",
+        "It is an early ripening variety bearing small, pear-shaped fruit with a pale, light yellow-green skin. The white flesh is firm and juicy with a pleasant aromatic flavour. Like most early summer pears it does not store well and is best eaten fresh."
+      ],
+      "claims": [
+        {
+          "text": "San Giovanni is a very old Italian summer pear.",
+          "type": "origin",
+          "cites": [
+            "bookofpears",
+            "verde"
+          ]
+        },
+        {
+          "text": "Its name refers to the feast day of Saint John (San Giovanni) in late June, when the fruit ripens.",
+          "type": "naming",
+          "cites": [
+            "verde"
+          ]
+        },
+        {
+          "text": "It is an early ripening variety, ripening towards the end of June.",
+          "type": "season",
+          "cites": [
+            "verde"
+          ]
+        },
+        {
+          "text": "The fruit is small and pear-shaped (pyriform) with a pale light yellow-green skin.",
+          "type": "appearance",
+          "cites": [
+            "verde"
+          ]
+        },
+        {
+          "text": "The white flesh is firm and juicy with a pleasant aromatic flavour.",
+          "type": "flavour",
+          "cites": [
+            "verde"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "bookofpears",
+          "name": "The Book of Pears (Fruit Forum) - San Giovanni",
+          "url": "https://www.thebookofpears.fruitforum.net/directory/san-giovanni",
+          "tier": "third_party"
+        },
+        {
+          "id": "verde",
+          "name": "Verde Commerce - Pero San Giovanni (Pyrus communis)",
+          "url": "https://verde-commerce.it/en/shop/piante-da-frutto/alberi-da-frutto/pero-pyrus-communis-san-giovanni/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pear-shinseiki": {
+      "slug": "pear-shinseiki",
+      "species": "Pear",
+      "variety": "Shinseiki",
+      "paragraphs": [
+        "Shinseiki, whose name means new century, is a Japanese nashi (Asian pear) released in 1945 from the Okayama prefecture breeding program, with Nijisseiki (Twentieth Century) in its parentage. Unlike the russet nashi such as Chojuro, Shinseiki is a smooth-skinned, bright pale-yellow pear, round to slightly flattened in shape.",
+        "The white flesh is crisp, very juicy and sweet with a slight tartness, and it is eaten firm like other nashi. It is an early to mid-season variety, ripening around late August, and is valued in warm-winter regions for its low chilling requirement and reliable, precocious cropping. Several sources describe it as self-fertile, though some recommend a second cultivar nearby for best fruit set."
+      ],
+      "claims": [
+        {
+          "text": "Shinseiki means new century and was released in 1945 from the Okayama prefecture breeding program",
+          "type": "origin",
+          "cites": [
+            "pmc_jp_pear",
+            "websearch_shinseiki"
+          ]
+        },
+        {
+          "text": "It has Nijisseiki (Twentieth Century) in its parentage",
+          "type": "breeding",
+          "cites": [
+            "websearch_shinseiki"
+          ]
+        },
+        {
+          "text": "It is a smooth-skinned, bright pale-yellow pear, round to slightly flattened",
+          "type": "appearance",
+          "cites": [
+            "ncstate_shinseiki",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "The white flesh is crisp, juicy and sweet with a slight tartness",
+          "type": "flavour",
+          "cites": [
+            "ncstate_shinseiki",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "It ripens around late August",
+          "type": "season",
+          "cites": [
+            "ncstate_shinseiki",
+            "gardenerspath"
+          ]
+        },
+        {
+          "text": "It is valued in warm-winter regions for its low chilling requirement and precocious cropping",
+          "type": "growing",
+          "cites": [
+            "websearch_shinseiki"
+          ]
+        },
+        {
+          "text": "It is described as self-fertile, though some sources advise a second cultivar for best set",
+          "type": "pollination",
+          "cites": [
+            "websearch_shinseiki",
+            "ncstate_shinseiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc_jp_pear",
+          "name": "Advances in Japanese pear breeding in Japan (Saito, PMC/NIH)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4780802/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ncstate_shinseiki",
+          "name": "NC State Extension Gardener Plant Toolbox: Pyrus pyrifolia 'Shinseiki'",
+          "url": "https://plants.ces.ncsu.edu/plants/pyrus-pyrifolia-shinseiki/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenerspath",
+          "name": "Gardener's Path: 9 of the Best Asian Pear Cultivars",
+          "url": "https://gardenerspath.com/plants/fruit-trees/best-asian-pears/",
+          "tier": "third_party"
+        },
+        {
+          "id": "websearch_shinseiki",
+          "name": "Fedco Seeds: Shinseiki (New Century) Asian pear",
+          "url": "https://fedcoseeds.com/trees/shinseiki-asian-pear-7354",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -837,7 +2232,65 @@
     }
   },
   "skipped": [
+    "pear-2way-beurre-bosc-williams",
+    "pear-2way-nashi-nijisseiki-shinseiki",
+    "pear-2way-packham-s-triumph-williams",
+    "pear-2way-packhams-williams",
+    "pear-3way-beurre-bosc-packham-williams",
+    "pear-baby-face",
+    "pear-baby-face-traditional",
     "pear-bonza",
-    "pear-red-princess"
+    "pear-buerre-bosc",
+    "pear-cleveland-select",
+    "pear-cool-crisp",
+    "pear-cool-crisp-european",
+    "pear-cool-crisp-regular",
+    "pear-faccia-rosa",
+    "pear-golden-globe",
+    "pear-grosse-louise-european",
+    "pear-henrys-red-longdon-perry",
+    "pear-josephine",
+    "pear-l-inconnue",
+    "pear-manchurian",
+    "pear-nashi",
+    "pear-nashi-china",
+    "pear-nashi-chojuro",
+    "pear-nashi-country-wide",
+    "pear-nashi-sunshu",
+    "pear-nejisseiki",
+    "pear-nijiseiki-20th-century-nashi",
+    "pear-nijisseiki-nashi",
+    "pear-nijisseki-20th-century",
+    "pear-packam-s-trumph",
+    "pear-packham",
+    "pear-packham-pollinating",
+    "pear-packham-selection",
+    "pear-packham-triumph",
+    "pear-packhams-triumph",
+    "pear-pretty-face",
+    "pear-red-princess",
+    "pear-red-princess-regular",
+    "pear-rootstock-d6",
+    "pear-sensation",
+    "pear-sensation-traditional",
+    "pear-shepherds-flat-pound",
+    "pear-shinseki-nashi",
+    "pear-snow",
+    "pear-sungold",
+    "pear-sungold-european",
+    "pear-sunshine",
+    "pear-sweet-reward",
+    "pear-sweet-reward-european",
+    "pear-tree-2-way",
+    "pear-trixzie-privet",
+    "pear-trixzie-pyvert",
+    "pear-tropical-bonza",
+    "pear-william-bon-chretian",
+    "pear-william-bon-chretien",
+    "pear-williams-bon-chretien",
+    "pear-williams-bon-chretien-syn-bartlett",
+    "pear-williams-syn-bartlett",
+    "pear-winter-nellis",
+    "pear-ya-li"
   ]
 }

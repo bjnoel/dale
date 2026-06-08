@@ -188,10 +188,16 @@
     }
   },
   "skipped": [
+    "loquat-bessel-brown",
+    "loquat-bessell",
     "loquat-bessell-brown",
+    "loquat-enority",
     "loquat-enormity",
+    "loquat-heards-mammoth",
     "loquat-honey-dew",
+    "loquat-sewells",
     "loquat-sewells-prolific",
-    "loquat-springtime"
+    "loquat-springtime",
+    "loquat-tree"
   ]
 }
