@@ -7,6 +7,8 @@
   <h1 class="text-3xl font-bold text-green-900 mb-1">Buy {{ title }} Trees in Australia</h1>
   <p class="text-gray-500 text-sm mb-4">Updated {{ today }} · {{ nursery_count }} nurseries tracked · {{ in_stock_count }} in stock</p>
 
+  {{ blurb_html|safe }}
+
   {{ summary_callout|safe }}
 
   <div class="overflow-x-auto mb-8">

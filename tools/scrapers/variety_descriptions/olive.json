@@ -1,0 +1,124 @@
+{
+  "species_slug": "olive",
+  "schema_version": 1,
+  "varieties": {
+    "olive-kalamata": {
+      "slug": "olive-kalamata",
+      "species": "Olive",
+      "variety": "Kalamata",
+      "paragraphs": [
+        "Kalamata is a Greek table olive cultivar from the Messenia region of the southern Peloponnese, around the city of Kalamata. The fruit is large, almond-shaped and a deep purple-black, harvested fully ripe in late autumn rather than green.",
+        "Because the raw fruit is bitter, Kalamata olives are cured in brine and typically preserved in wine vinegar or olive oil, giving them their meaty texture and rich, savoury flavour. In the EU the name carries Protected Designation of Origin (PDO) status."
+      ],
+      "claims": [
+        {
+          "text": "Greek table olive cultivar from the Messenia region around Kalamata in the Peloponnese",
+          "type": "origin",
+          "cites": [
+            "wikipedia-kalamata",
+            "mani-kalamata"
+          ]
+        },
+        {
+          "text": "Large, almond-shaped, deep purple-black fruit harvested ripe in late autumn",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-kalamata",
+            "mani-kalamata"
+          ]
+        },
+        {
+          "text": "Used as a table olive; cured in brine and preserved in wine vinegar or olive oil",
+          "type": "use",
+          "cites": [
+            "wikipedia-kalamata",
+            "mani-kalamata"
+          ]
+        },
+        {
+          "text": "The name has Protected Designation of Origin (PDO) status in the EU",
+          "type": "naming",
+          "cites": [
+            "wikipedia-kalamata"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-kalamata",
+          "name": "Wikipedia: Kalamata olive",
+          "url": "https://en.wikipedia.org/wiki/Kalamata_olive",
+          "tier": "third_party"
+        },
+        {
+          "id": "mani-kalamata",
+          "name": "MANI Bio: Kalamata Olives origin and characteristics",
+          "url": "https://mani.bio/en/blogs/olive-facts/kalamata-oliven",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-manzanillo": {
+      "slug": "olive-manzanillo",
+      "species": "Olive",
+      "variety": "Manzanillo",
+      "paragraphs": [
+        "Manzanillo (Manzanilla) is a Spanish olive cultivar originating around Seville. It is a dual-purpose variety, valued both as a table olive and for oil, with medium to large, rounded fruit.",
+        "It is one of the most widely grown table olives and is a leading commercial table-olive variety in California, prized for its plump flesh and high flesh-to-pit ratio."
+      ],
+      "claims": [
+        {
+          "text": "Spanish olive cultivar originating around Seville",
+          "type": "origin",
+          "cites": [
+            "wikipedia-manzanilla"
+          ]
+        },
+        {
+          "text": "Dual-purpose cultivar used as both a table olive and for oil",
+          "type": "use",
+          "cites": [
+            "wikipedia-manzanilla"
+          ]
+        },
+        {
+          "text": "Medium to large, rounded (ovoid) fruit",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-manzanilla"
+          ]
+        },
+        {
+          "text": "A leading commercial table-olive variety grown widely in California",
+          "type": "use",
+          "cites": [
+            "wikipedia-manzanilla",
+            "novavine-olives"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-manzanilla",
+          "name": "Wikipedia: Manzanilla olive",
+          "url": "https://en.wikipedia.org/wiki/Manzanilla_olive",
+          "tier": "third_party"
+        },
+        {
+          "id": "novavine-olives",
+          "name": "Novavine: Olive Varieties",
+          "url": "https://www.novavine.com/olives/olive-varieties/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

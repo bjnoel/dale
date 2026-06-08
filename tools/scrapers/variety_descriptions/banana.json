@@ -1,0 +1,231 @@
+{
+  "species_slug": "banana",
+  "schema_version": 1,
+  "varieties": {
+    "banana-cavendish": {
+      "slug": "banana-cavendish",
+      "species": "Banana",
+      "variety": "Cavendish",
+      "paragraphs": [
+        "Cavendish is the subgroup of triploid AAA bananas that dominates world trade and Australian production. It rose to prominence from the 1950s after Panama disease (race 1) destroyed the previous export banana, Gros Michel. The name traces to William Cavendish, 6th Duke of Devonshire, whose gardener grew imported plants at Chatsworth in the 1830s. Named clones in the group include Dwarf Cavendish, Grand Nain and Williams.",
+        "Because Cavendish plants are grown as genetically identical clones with almost no genetic diversity, the whole crop shares the same weaknesses. It has no resistance to Fusarium wilt Tropical Race 4 (TR4), which is under active containment in North Queensland. In Australia over 95 percent of commercial plantation bananas are Cavendish, the bulk grown in North Queensland."
+      ],
+      "claims": [
+        {
+          "text": "Triploid AAA subgroup that dominates global banana trade and replaced Gros Michel after Panama disease race 1",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cavendish",
+            "qaafi-cavendish"
+          ]
+        },
+        {
+          "text": "Named after William Cavendish, 6th Duke of Devonshire, whose gardener grew imported plants at Chatsworth in the 1830s",
+          "type": "naming",
+          "cites": [
+            "wikipedia-cavendish"
+          ]
+        },
+        {
+          "text": "Subgroup includes named clones such as Dwarf Cavendish, Grand Nain and Williams",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-cavendish",
+            "wikipedia-banana-cultivars"
+          ]
+        },
+        {
+          "text": "Grown as genetically identical clones with very low genetic diversity",
+          "type": "growing",
+          "cites": [
+            "wikipedia-cavendish",
+            "qaafi-cavendish"
+          ]
+        },
+        {
+          "text": "No resistance to Fusarium wilt Tropical Race 4, under containment in North Queensland",
+          "type": "growing",
+          "cites": [
+            "qaafi-cavendish",
+            "wikipedia-cavendish"
+          ]
+        },
+        {
+          "text": "Over 95 percent of Australian commercial plantation bananas are Cavendish, mostly grown in North Queensland",
+          "type": "growing",
+          "cites": [
+            "qaafi-cavendish"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-cavendish",
+          "name": "Wikipedia: Cavendish banana",
+          "url": "https://en.wikipedia.org/wiki/Cavendish_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "qaafi-cavendish",
+          "name": "University of Queensland QAAFI: The world's favourite fruit needs a genetic boost",
+          "url": "https://qaafi.uq.edu.au/blog/2021/05/world%E2%80%99s-favourite-fruit-needs-genetic-boost",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-banana-cultivars",
+          "name": "Wikipedia: List of banana cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_banana_cultivars",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "banana-dwarf-cavendish": {
+      "slug": "banana-dwarf-cavendish",
+      "species": "Banana",
+      "variety": "Dwarf Cavendish",
+      "paragraphs": [
+        "Dwarf Cavendish is a specific short cultivar within the Cavendish (AAA) subgroup. The word dwarf refers to the height of the pseudostem, not the fruit, which is normal Cavendish size. Its compact, stable, wind-resistant habit makes it easier to manage and popular both for plantations and for home and container growing. The cultivar is associated with the Canary Islands and is one of the most widely planted Cavendish types.",
+        "An easy identifying trait is that the male bracts and flowers are retained on the plant rather than being shed. Young plants often show maroon or purple blotches on the leaves that fade with maturity."
+      ],
+      "claims": [
+        {
+          "text": "A specific short cultivar within the Cavendish AAA subgroup",
+          "type": "origin",
+          "cites": [
+            "wikipedia-dwarf-cavendish",
+            "wikipedia-banana-cultivars"
+          ]
+        },
+        {
+          "text": "Dwarf refers to pseudostem height, not fruit, which is normal Cavendish size",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-dwarf-cavendish"
+          ]
+        },
+        {
+          "text": "Compact, stable and wind-resistant habit suits plantations and home or container growing",
+          "type": "growing",
+          "cites": [
+            "wikipedia-dwarf-cavendish"
+          ]
+        },
+        {
+          "text": "Associated with the Canary Islands",
+          "type": "origin",
+          "cites": [
+            "wikipedia-dwarf-cavendish"
+          ]
+        },
+        {
+          "text": "Male bracts and flowers are retained rather than shed",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-dwarf-cavendish"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-dwarf-cavendish",
+          "name": "Wikipedia: Dwarf Cavendish banana",
+          "url": "https://en.wikipedia.org/wiki/Dwarf_Cavendish_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-banana-cultivars",
+          "name": "Wikipedia: List of banana cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_banana_cultivars",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "banana-lady-finger": {
+      "slug": "banana-lady-finger",
+      "species": "Banana",
+      "variety": "Lady Finger",
+      "paragraphs": [
+        "In Australia the name Lady Finger refers to a Pome subgroup banana (AAB group, a Musa acuminata by balbisiana hybrid), not the AA Sucrier sold under that name elsewhere. Pome bananas have a sub-acid, apple-like character, and Lady Finger is prized as sweeter and more flavoursome than Cavendish. It is the second most popular banana in Australia after Cavendish, grown mainly in NSW with more recent plantings on the Atherton Tablelands.",
+        "Its main drawback is disease. Lady Finger is highly susceptible to Panama disease (Fusarium wilt race 1), which Cavendish resists, and it is also affected by subtropical race 4."
+      ],
+      "claims": [
+        {
+          "text": "In Australia Lady Finger is a Pome subgroup banana (AAB group, Musa acuminata x balbisiana hybrid)",
+          "type": "naming",
+          "cites": [
+            "wikipedia-lady-finger",
+            "promusa-pome"
+          ]
+        },
+        {
+          "text": "Pome bananas have a sub-acid, apple-like character",
+          "type": "flavour",
+          "cites": [
+            "promusa-pome",
+            "wikipedia-banana-cultivars"
+          ]
+        },
+        {
+          "text": "Regarded as sweeter and more flavoursome than Cavendish",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-lady-finger"
+          ]
+        },
+        {
+          "text": "Second most popular banana in Australia after Cavendish, grown mainly in NSW with plantings on the Atherton Tablelands",
+          "type": "growing",
+          "cites": [
+            "promusa-pome"
+          ]
+        },
+        {
+          "text": "Highly susceptible to Panama disease (Fusarium wilt race 1), which Cavendish resists, and affected by subtropical race 4",
+          "type": "growing",
+          "cites": [
+            "betterbananas-panama",
+            "wikipedia-lady-finger"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-lady-finger",
+          "name": "Wikipedia: Lady finger banana",
+          "url": "https://en.wikipedia.org/wiki/Lady_finger_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "promusa-pome",
+          "name": "ProMusa: Pome subgroup",
+          "url": "https://www.promusa.org/Pome+subgroup",
+          "tier": "third_party"
+        },
+        {
+          "id": "betterbananas-panama",
+          "name": "Better Bananas (Australian banana industry): Panama disease research and development",
+          "url": "https://betterbananas.com.au/2018/01/15/panama-disease-research-and-development/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-banana-cultivars",
+          "name": "Wikipedia: List of banana cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_banana_cultivars",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

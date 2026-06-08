@@ -1,0 +1,58 @@
+{
+  "species_slug": "mulberry",
+  "schema_version": 1,
+  "varieties": {
+    "mulberry-black": {
+      "slug": "mulberry-black",
+      "species": "Mulberry",
+      "variety": "Black",
+      "paragraphs": [
+        "The black mulberry (Morus nigra) is native to south-western Asia and has been cultivated so long its exact wild range is unknown. Its fruit ripens to a dark purple, almost black, and is richly flavoured, with an intense sweetness balanced by a pleasant tartness that is generally regarded as the best tasting of the mulberries.",
+        "The berries are relatively large and juicy and stain readily, so they are usually eaten fresh or made into jams, pies and cordials rather than shipped."
+      ],
+      "claims": [
+        {
+          "text": "Morus nigra is native to south-western Asia, long cultivated",
+          "type": "origin",
+          "cites": [
+            "wikipedia-morus-nigra"
+          ]
+        },
+        {
+          "text": "Fruit is dark purple, almost black when ripe",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-morus-nigra",
+            "daleys-black-mulberry"
+          ]
+        },
+        {
+          "text": "Richly flavoured, sweet with a slightly acidic tang, considered the best-flavoured mulberry",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-morus-nigra",
+            "daleys-black-mulberry"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-morus-nigra",
+          "name": "Wikipedia: Morus nigra",
+          "url": "https://en.wikipedia.org/wiki/Morus_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-black-mulberry",
+          "name": "Daleys Fruit: Black Mulberry",
+          "url": "https://www.daleysfruit.com.au/plant/Black-Mulberry.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

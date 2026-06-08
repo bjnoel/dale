@@ -1,0 +1,73 @@
+{
+  "species_slug": "black-sapote",
+  "schema_version": 1,
+  "varieties": {
+    "black-sapote-mossman": {
+      "slug": "black-sapote-mossman",
+      "species": "Black Sapote",
+      "variety": "Mossman",
+      "paragraphs": [
+        "Mossman is an Australian selection of black sapote (Diospyros nigra, also written digyna), the chocolate pudding fruit whose ripe flesh turns dark brown with a soft, sweet, mild, custard-like character. The species is native to Mexico and Central America, and the green fruit ripens to olive or near-black.",
+        "The Mossman cultivar is known for very large, round fruit with few seeds and high pulp content, which suits both fresh eating and processing. Its flavour is generally rated as medium, and it is a vigorous, heavy-yielding tree."
+      ],
+      "claims": [
+        {
+          "text": "Australian selection of black sapote (Diospyros nigra/digyna), the chocolate pudding fruit",
+          "type": "origin",
+          "cites": [
+            "wikipedia-black-sapote",
+            "daleys-mossman"
+          ]
+        },
+        {
+          "text": "Ripe flesh turns dark brown with a soft, sweet, mild, custard-like character",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-black-sapote"
+          ]
+        },
+        {
+          "text": "Species native to Mexico and Central America; green fruit ripens to olive or near-black",
+          "type": "origin",
+          "cites": [
+            "wikipedia-black-sapote"
+          ]
+        },
+        {
+          "text": "Very large, round fruit with few seeds and high pulp content",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-black-sapote",
+            "daleys-mossman"
+          ]
+        },
+        {
+          "text": "Flavour rated as medium; vigorous, heavy-yielding tree",
+          "type": "flavour",
+          "cites": [
+            "daleys-mossman",
+            "wikipedia-black-sapote"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-black-sapote",
+          "name": "Wikipedia: Diospyros nigra (black sapote)",
+          "url": "https://en.wikipedia.org/wiki/Diospyros_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-mossman",
+          "name": "Daleys Fruit: Black Sapote Mossman",
+          "url": "https://www.daleysfruit.com.au/buy/black-sapote-mossman-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "species_slug": "orange",
+  "schema_version": 1,
+  "varieties": {
+    "orange-cara-cara": {
+      "slug": "orange-cara-cara",
+      "species": "Orange",
+      "variety": "Cara Cara",
+      "paragraphs": [
+        "Cara Cara is a pink-fleshed navel orange that arose as a bud mutation on a Washington navel tree, discovered in 1976 at Hacienda Cara Cara in Venezuela. Most tree and fruit traits reflect its Washington navel ancestry, but the flesh is deep pink. Unlike blood oranges, which get their colour from anthocyanins, the pink comes from the carotenoid lycopene.",
+        "The fruit is seedless, sweet and notably low in acid, with the rich navel flavour plus berry-like notes often described as cranberry or rose. It is a mid-to-late season orange, ripe at Riverside roughly from November to January."
+      ],
+      "claims": [
+        {
+          "text": "Pink-fleshed navel that arose as a bud mutation on a Washington navel tree, discovered 1976 at Hacienda Cara Cara, Venezuela",
+          "type": "origin",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Deep pink flesh coloured by the carotenoid lycopene, not anthocyanins as in blood oranges",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Seedless, sweet and low in acid",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Berry-like notes (cranberry, rose) over the navel flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-caracara"
+          ]
+        },
+        {
+          "text": "Mid-to-late season; ripe at Riverside roughly November to January",
+          "type": "season",
+          "cites": [
+            "ucr-caracara"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-caracara",
+          "name": "Wikipedia: Cara Cara navel orange",
+          "url": "https://en.wikipedia.org/wiki/Cara_Cara_navel_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-caracara",
+          "name": "UC Riverside Citrus Variety Collection: Cara Cara navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3994",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-valencia": {
+      "slug": "orange-valencia",
+      "species": "Orange",
+      "variety": "Valencia",
+      "paragraphs": [
+        "The Valencia orange was developed in mid-19th century California by agronomist William Wolfskill on his farm in the Santa Ana area, and named after Valencia, Spain, for that city's reputation for sweet oranges. It went on to become the most popular juice orange in the United States.",
+        "It is a late-season variety, prized worldwide as the orange in season through summer (the Florida harvest runs roughly March to June). The fruit is thin-skinned, very juicy and sweet, the mainstay orange for juicing, and can carry anywhere from zero to about nine seeds."
+      ],
+      "claims": [
+        {
+          "text": "Developed in mid-19th century California by William Wolfskill near Santa Ana, named after Valencia, Spain",
+          "type": "origin",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Became the most popular juice orange in the United States",
+          "type": "use",
+          "cites": [
+            "wikipedia-valencia"
+          ]
+        },
+        {
+          "text": "Late-season variety, prized as the orange in season during summer; Florida harvest runs March to June",
+          "type": "season",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Thin-skinned, very juicy and sweet, the primary juicing orange",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Carries from zero to about nine seeds per fruit",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-valencia",
+          "name": "Wikipedia: Valencia orange",
+          "url": "https://en.wikipedia.org/wiki/Valencia_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-valencia",
+          "name": "Specialty Produce: Valencia Oranges",
+          "url": "https://specialtyproduce.com/produce/Valencia_Oranges_121.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-washington-navel": {
+      "slug": "orange-washington-navel",
+      "species": "Orange",
+      "variety": "Washington Navel",
+      "paragraphs": [
+        "The Washington Navel arose from a single bud mutation on an orange tree in Bahia, Brazil in the 1810s or 1820s. The USDA imported trees from Brazil in the 1870s, and cuttings sent to Eliza Tibbets in Riverside, California, in 1873 founded the Californian industry. Because the mutation made the fruit seedless, every tree is propagated by grafting and is effectively a clone of the original.",
+        "It is a large, seedless, easy-peeling winter orange named for the small secondary fruit (the navel) at its blossom end. The flesh is rich-flavoured and best eaten fresh, as it contains limonin that turns bitter in standing juice."
+      ],
+      "claims": [
+        {
+          "text": "Arose as a bud mutation in Bahia, Brazil in the 1810s or 1820s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-navel",
+            "specialtyproduce-navel"
+          ]
+        },
+        {
+          "text": "USDA imported trees from Brazil in the 1870s; cuttings sent to Eliza Tibbets in Riverside, California in 1873",
+          "type": "origin",
+          "cites": [
+            "wikipedia-navel",
+            "specialtyproduce-navel"
+          ]
+        },
+        {
+          "text": "Seedless, so it can only be propagated by cutting and grafting (all trees are clones)",
+          "type": "growing",
+          "cites": [
+            "wikipedia-navel"
+          ]
+        },
+        {
+          "text": "Large, easy-to-peel winter orange with a navel at the blossom end, best eaten fresh",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-navel",
+            "wikipedia-navel"
+          ]
+        },
+        {
+          "text": "Juice contains limonin that becomes bitter when exposed to air",
+          "type": "use",
+          "cites": [
+            "wikipedia-navel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-navel",
+          "name": "Wikipedia: Navel orange",
+          "url": "https://en.wikipedia.org/wiki/Navel_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-navel",
+          "name": "Specialty Produce: Navel Oranges",
+          "url": "https://specialtyproduce.com/produce/Navel_Oranges_8521.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

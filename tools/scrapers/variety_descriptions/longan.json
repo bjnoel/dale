@@ -1,0 +1,64 @@
+{
+  "species_slug": "longan",
+  "schema_version": 1,
+  "varieties": {
+    "longan-kohala": {
+      "slug": "longan-kohala",
+      "species": "Longan",
+      "variety": "Kohala",
+      "paragraphs": [
+        "Kohala is a longan cultivar selected in Hawaii and introduced to Florida in 1954, where it became the dominant variety. It produces medium to large fruit of good to very good quality with sweet, translucent flesh and a single seed, in the manner of its relative the lychee. It is an early to mid-season longan.",
+        "Despite being the leading cultivar, Kohala does not crop reliably every year. University of Florida horticulturists describe its bearing as erratic, reflecting that inconsistent bearing is the major production problem for longan worldwide."
+      ],
+      "claims": [
+        {
+          "text": "Longan cultivar selected in Hawaii and introduced to Florida in 1954, the dominant Florida variety",
+          "type": "origin",
+          "cites": [
+            "uf-ifas-longan"
+          ]
+        },
+        {
+          "text": "Medium to large fruit of good to very good quality with sweet, translucent flesh and a single seed",
+          "type": "flavour",
+          "cites": [
+            "uf-ifas-longan",
+            "wikipedia-longan"
+          ]
+        },
+        {
+          "text": "Early to mid-season longan",
+          "type": "season",
+          "cites": [
+            "uf-ifas-longan"
+          ]
+        },
+        {
+          "text": "Bearing described by University of Florida as erratic; inconsistent bearing is the major production problem for longan worldwide",
+          "type": "growing",
+          "cites": [
+            "uf-ifas-longan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uf-ifas-longan",
+          "name": "University of Florida IFAS: Longan Growing in the Florida Home Landscape (MG049)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG049",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-longan",
+          "name": "Wikipedia: Longan",
+          "url": "https://en.wikipedia.org/wiki/Longan",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "species_slug": "mango",
+  "schema_version": 1,
+  "varieties": {
+    "mango-keitt": {
+      "slug": "mango-keitt",
+      "species": "Mango",
+      "variety": "Keitt",
+      "paragraphs": [
+        "Keitt is a Florida cultivar that arose as a seedling on the property of Mrs J. N. Keitt at Homestead, Florida, around 1939. Unlike many Asian mangoes it has a monoembryonic seed.",
+        "It is one of the most valued late-season mangoes, often the last picked, with large oval green fruit that may carry a light blush. The flesh is firm, juicy and notably low in fibre with a sweet, mildly tangy flavour."
+      ],
+      "claims": [
+        {
+          "text": "Florida cultivar; seedling on the property of Mrs J. N. Keitt at Homestead, Florida, around 1939",
+          "type": "origin",
+          "cites": [
+            "wikipedia-keitt",
+            "specialtyproduce-keitt"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "growing",
+          "cites": [
+            "wikipedia-keitt",
+            "specialtyproduce-keitt"
+          ]
+        },
+        {
+          "text": "Late-season variety, often the last mango harvested",
+          "type": "season",
+          "cites": [
+            "wikipedia-keitt",
+            "specialtyproduce-keitt"
+          ]
+        },
+        {
+          "text": "Large oval green fruit, sometimes with a light blush",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-keitt",
+            "specialtyproduce-keitt"
+          ]
+        },
+        {
+          "text": "Firm, juicy, low-fibre flesh with sweet, mildly tangy flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-keitt",
+            "specialtyproduce-keitt"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-keitt",
+          "name": "Wikipedia: Keitt (mango)",
+          "url": "https://en.wikipedia.org/wiki/Keitt_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-keitt",
+          "name": "Specialty Produce: Keitt Mangoes (variety database)",
+          "url": "https://specialtyproduce.com/produce/Keitt_Mangoes_24031.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-kensington-pride": {
+      "slug": "mango-kensington-pride",
+      "species": "Mango",
+      "variety": "Kensington Pride",
+      "paragraphs": [
+        "Kensington Pride, also called Bowen mango or Pride of Bowen, originated from a tree in Bowen, Queensland in the late 1880s and is Australia's most widely grown commercial mango. Its polyembryonic seed (multiple seedlings per stone) points to a South-East Asian background.",
+        "The fruit has a yellow to orange-yellow flesh with little to moderate fibre, and a sweet, aromatic, slightly spicy flavour that made it the benchmark Australian mango. It ripens through the spring and summer season."
+      ],
+      "claims": [
+        {
+          "text": "Also called Bowen mango / Pride of Bowen; originated in Bowen, Queensland, in the late 1880s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-kensington",
+            "ufifas-kensington"
+          ]
+        },
+        {
+          "text": "Polyembryonic seed",
+          "type": "growing",
+          "cites": [
+            "wikipedia-kensington",
+            "ufifas-kensington"
+          ]
+        },
+        {
+          "text": "Yellow to orange-yellow flesh with little to moderate fibre",
+          "type": "appearance",
+          "cites": [
+            "ufifas-kensington",
+            "wikipedia-kensington"
+          ]
+        },
+        {
+          "text": "Sweet, aromatic, slightly spicy flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-kensington",
+            "ufifas-kensington"
+          ]
+        },
+        {
+          "text": "Australia's most widely grown commercial mango",
+          "type": "use",
+          "cites": [
+            "wikipedia-kensington"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-kensington",
+          "name": "Wikipedia: Kensington Pride",
+          "url": "https://en.wikipedia.org/wiki/Kensington_Pride",
+          "tier": "third_party"
+        },
+        {
+          "id": "ufifas-kensington",
+          "name": "University of Florida IFAS Mango: Kensington Pride",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/kensington-pride/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-nam-doc-mai": {
+      "slug": "mango-nam-doc-mai",
+      "species": "Mango",
+      "variety": "Nam Doc Mai",
+      "paragraphs": [
+        "Nam Doc Mai is a Thai cultivar and one of the most popular mangoes in Thailand. The fruit is elongated with a prominent beak and a yellow skin, often retaining a little green even when ripe. It has a polyembryonic seed.",
+        "It is celebrated as one of the sweetest mangoes, with very little fibre and a strong, honeyed, floral aroma. The flesh is fine-grained and silky, and the fruit is eaten both green and fully ripe."
+      ],
+      "claims": [
+        {
+          "text": "Thai cultivar, one of the most popular mangoes in Thailand",
+          "type": "origin",
+          "cites": [
+            "wikipedia-namdokmai",
+            "specialtyproduce-namdocmai"
+          ]
+        },
+        {
+          "text": "Elongated fruit with a prominent beak; yellow skin sometimes keeping green",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-namdokmai",
+            "specialtyproduce-namdocmai"
+          ]
+        },
+        {
+          "text": "Polyembryonic seed",
+          "type": "growing",
+          "cites": [
+            "wikipedia-namdokmai",
+            "specialtyproduce-namdocmai"
+          ]
+        },
+        {
+          "text": "Very little fibre and very sweet, aromatic flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-namdokmai",
+            "specialtyproduce-namdocmai"
+          ]
+        },
+        {
+          "text": "Eaten both green and ripe",
+          "type": "use",
+          "cites": [
+            "wikipedia-namdokmai",
+            "specialtyproduce-namdocmai"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-namdokmai",
+          "name": "Wikipedia: Nam Dok Mai",
+          "url": "https://en.wikipedia.org/wiki/Nam_Dok_Mai",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-namdocmai",
+          "name": "Specialty Produce: Nam Doc Mai Mangoes",
+          "url": "https://specialtyproduce.com/produce/Nam_Doc_Mai_Mangoes_24064.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-r2e2": {
+      "slug": "mango-r2e2",
+      "species": "Mango",
+      "variety": "R2E2",
+      "paragraphs": [
+        "R2E2 is a Queensland Department of Primary Industries selection raised from seedlings of the Florida cultivar Kent at the Bowen research station (planted 1978). It keeps the code name R2E2 that the original seedling was given in the research program.",
+        "It is prized for large to very large, well-coloured fruit with a yellow-green skin and orange-red blush, firm flesh, and a sweet flavour. It is a mid-to-late season mango, cropping a couple of weeks after Kensington Pride, and stores and travels well."
+      ],
+      "claims": [
+        {
+          "text": "Queensland DPI selection from Kent seedlings at the Bowen research station (planted 1978)",
+          "type": "breeding",
+          "cites": [
+            "rfcarchives-r2e2",
+            "qldgov-r2e2"
+          ]
+        },
+        {
+          "text": "Keeps the code name R2E2 that the original seedling was given in the research program",
+          "type": "naming",
+          "cites": [
+            "rfcarchives-r2e2",
+            "qldgov-r2e2"
+          ]
+        },
+        {
+          "text": "Large to very large fruit",
+          "type": "appearance",
+          "cites": [
+            "rfcarchives-r2e2",
+            "qldgov-r2e2"
+          ]
+        },
+        {
+          "text": "Yellow-green skin with an orange-red blush",
+          "type": "appearance",
+          "cites": [
+            "rfcarchives-r2e2"
+          ]
+        },
+        {
+          "text": "Mid-to-late season, cropping after Kensington Pride",
+          "type": "season",
+          "cites": [
+            "rfcarchives-r2e2",
+            "qldgov-r2e2"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfcarchives-r2e2",
+          "name": "Rare Fruit Council Australia archive: R2E2, a new mango cultivar",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Mango/R2E2_11-89.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "qldgov-r2e2",
+          "name": "Business Queensland (DAF): R2E2 mango variety",
+          "url": "https://www.daf.qld.gov.au/business-priorities/agriculture/plants/fruit-vegetable/fruit-vegetable-crops/mangoes/mango-varieties/r2e2",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

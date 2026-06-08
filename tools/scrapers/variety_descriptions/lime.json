@@ -1,0 +1,150 @@
+{
+  "species_slug": "lime",
+  "schema_version": 1,
+  "varieties": {
+    "lime-kaffir": {
+      "slug": "lime-kaffir",
+      "species": "Lime",
+      "variety": "Kaffir",
+      "paragraphs": [
+        "The Kaffir lime (Citrus hystrix), increasingly called makrut lime (a more neutral name, as kaffir derives from an ethnic slur), is native to tropical Southeast Asia. It is instantly recognisable by its distinctive double, hourglass-shaped leaves, which are actually a leaf blade plus a winged, leaf-like petiole.",
+        "The small fruit has a bumpy, warty rind and yields little juice, so the plant is grown chiefly for its intensely aromatic leaves and zest, which are central to Thai and other Southeast Asian curries, pastes and soups."
+      ],
+      "claims": [
+        {
+          "text": "Citrus hystrix, increasingly called makrut lime (a more neutral name, as kaffir derives from an ethnic slur)",
+          "type": "naming",
+          "cites": [
+            "wikipedia-kaffir",
+            "gardenia-kaffir"
+          ]
+        },
+        {
+          "text": "Native to tropical Southeast Asia",
+          "type": "origin",
+          "cites": [
+            "wikipedia-kaffir",
+            "gardenia-kaffir"
+          ]
+        },
+        {
+          "text": "Recognisable by distinctive double, hourglass-shaped leaves (a leaf blade plus a winged, leaf-like petiole)",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-kaffir",
+            "gardenia-kaffir"
+          ]
+        },
+        {
+          "text": "Small fruit with a bumpy, warty rind that yields little juice",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-kaffir",
+            "gardenia-kaffir"
+          ]
+        },
+        {
+          "text": "Grown chiefly for its aromatic leaves and zest, central to Thai and Southeast Asian cooking",
+          "type": "use",
+          "cites": [
+            "wikipedia-kaffir",
+            "gardenia-kaffir"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-kaffir",
+          "name": "Wikipedia: Kaffir lime",
+          "url": "https://en.wikipedia.org/wiki/Kaffir_lime",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenia-kaffir",
+          "name": "Gardenia.net: Kaffir Lime (Citrus hystrix)",
+          "url": "https://www.gardenia.net/plant/citrus-hystrix",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lime-tahitian": {
+      "slug": "lime-tahitian",
+      "species": "Lime",
+      "variety": "Tahitian",
+      "paragraphs": [
+        "The Tahitian lime is the Persian lime (Citrus latifolia), also sold as Bearss or seedless lime. It is a triploid hybrid, generally regarded as a cross of Key lime with lemon; the Bearss selection arose around 1895 from a seedling of Tahitian origin at Porterville, California.",
+        "Being triploid, the tree is essentially sterile, so the fruit is reliably seedless. It is larger and thicker-skinned than the Key lime, with juicy, acidic flesh that lacks the Key lime's bitterness, and it is the most widely grown lime worldwide."
+      ],
+      "claims": [
+        {
+          "text": "Is the Persian lime (Citrus latifolia), also known as Bearss or seedless lime",
+          "type": "naming",
+          "cites": [
+            "wikipedia-persianlime",
+            "ucr-bearss"
+          ]
+        },
+        {
+          "text": "A triploid hybrid generally regarded as a cross of Key lime with lemon",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-persianlime",
+            "ucr-bearss"
+          ]
+        },
+        {
+          "text": "The Bearss selection arose around 1895 from a seedling of Tahitian origin at Porterville, California",
+          "type": "origin",
+          "cites": [
+            "ucr-bearss"
+          ]
+        },
+        {
+          "text": "Being triploid the tree is essentially sterile, so the fruit is reliably seedless",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-persianlime",
+            "ucr-bearss"
+          ]
+        },
+        {
+          "text": "Larger and thicker-skinned than the Key lime, with juicy acidic flesh that lacks the Key lime's bitterness",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-persianlime",
+            "ucr-bearss"
+          ]
+        },
+        {
+          "text": "The most widely grown lime worldwide",
+          "type": "use",
+          "cites": [
+            "wikipedia-persianlime"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-persianlime",
+          "name": "Wikipedia: Persian lime",
+          "url": "https://en.wikipedia.org/wiki/Persian_lime",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-bearss",
+          "name": "Givaudan Citrus Variety Collection (UC Riverside): Bearss lime",
+          "url": "https://citrusvariety.ucr.edu/crc3772",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

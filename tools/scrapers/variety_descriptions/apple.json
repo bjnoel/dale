@@ -1,0 +1,418 @@
+{
+  "species_slug": "apple",
+  "schema_version": 1,
+  "varieties": {
+    "apple-anna": {
+      "slug": "apple-anna",
+      "species": "Apple",
+      "variety": "Anna",
+      "paragraphs": [
+        "Anna is a low-chill apple bred by Abba Stein at the Ein Shemer kibbutz in Israel in 1959, descended from Golden Delicious and developed specifically for warm climates. Its very low chill requirement, far below what most apples need, makes it a popular choice for subtropical Australian gardens.",
+        "It is very early ripening and crops heavily, with crisp creamy flesh, a sweet balanced flavour, and green to greenish-yellow skin flushed with red. Anna needs cross-pollination and is commonly grown alongside Dorsett Golden or Ein Shemer."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Abba Stein at the Ein Shemer kibbutz in Israel in 1959, descended from Golden Delicious",
+          "type": "origin",
+          "cites": [
+            "wikipedia-anna",
+            "orangepippin-anna"
+          ]
+        },
+        {
+          "text": "Has a very low chill requirement, far below what most apples need",
+          "type": "climate",
+          "cites": [
+            "wikipedia-anna",
+            "orangepippin-anna"
+          ]
+        },
+        {
+          "text": "Very early ripening, heavy cropping, with crisp creamy flesh and a sweet balanced flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-anna",
+            "orangepippin-anna"
+          ]
+        },
+        {
+          "text": "Skin green to greenish-yellow flushed with red",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-anna"
+          ]
+        },
+        {
+          "text": "Needs cross-pollination, commonly grown with Dorsett Golden or Ein Shemer",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-anna",
+            "orangepippin-anna"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-anna",
+          "name": "Wikipedia: Anna (apple)",
+          "url": "https://en.wikipedia.org/wiki/Anna_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-anna",
+          "name": "Orange Pippin: Anna apple",
+          "url": "https://www.orangepippin.com/varieties/apples/anna",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-dorsett-golden": {
+      "slug": "apple-dorsett-golden",
+      "species": "Apple",
+      "variety": "Dorsett Golden",
+      "paragraphs": [
+        "Dorsett Golden is a low-chill apple that originated in the Bahamas around 1953 as a seedling at the home of Mrs Irene Dorsett in Nassau. Its very low chill requirement makes it one of the best apples for warm, subtropical parts of Australia where standard apples will not fruit.",
+        "The fruit is yellow to yellow-green, often with a pink blush, with firm white flesh and a sweet, lightly aromatic flavour. It is largely self-fertile but crops better with a pollinator, and pairs well with the similarly low-chill Anna apple, which flowers at the same time."
+      ],
+      "claims": [
+        {
+          "text": "Originated in the Bahamas around 1953 as a seedling at the home of Mrs Irene Dorsett, Nassau",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce-dorsett",
+            "orangepippin-dorsett"
+          ]
+        },
+        {
+          "text": "Has a low chill requirement, suiting warm and subtropical climates",
+          "type": "climate",
+          "cites": [
+            "specialtyproduce-dorsett",
+            "daleys-dorsett"
+          ]
+        },
+        {
+          "text": "Yellow to yellow-green skin, often with a pink blush, firm white flesh, sweet lightly aromatic flavour",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce-dorsett",
+            "daleys-dorsett"
+          ]
+        },
+        {
+          "text": "Largely self-fertile but crops better with a pollinator such as Anna",
+          "type": "pollination",
+          "cites": [
+            "daleys-dorsett",
+            "orangepippin-dorsett"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialtyproduce-dorsett",
+          "name": "Specialty Produce: Golden Dorsett Apples",
+          "url": "https://specialtyproduce.com/produce/Golden_Dorsett_Apples_10915.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-dorsett",
+          "name": "Orange Pippin: Dorsett Golden apple",
+          "url": "https://www.orangepippin.com/varieties/apples/dorsett-golden",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-dorsett",
+          "name": "Daleys Fruit: Apple Dorsett Golden",
+          "url": "https://www.daleysfruit.com.au/buy/apple-dorsett-golden-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-gala": {
+      "slug": "apple-gala",
+      "species": "Apple",
+      "variety": "Gala",
+      "paragraphs": [
+        "Gala was raised by orchardist J.H. Kidd at Greytown, New Zealand in the 1930s, a cross of Kidd's Orange Red with Golden Delicious. It was selected in 1939 and introduced commercially around 1960, going on to become one of the most widely grown apples in the world.",
+        "The fruit is sweet and mild with a crisp but not hard texture and a fragrant, aromatic flavour. Its skin is non-uniform, usually striped or mottled with an overall orange to reddish colour. It is mainly an eating apple and ripens in late summer to autumn."
+      ],
+      "claims": [
+        {
+          "text": "Raised by J.H. Kidd at Greytown, New Zealand in the 1930s; selected 1939, introduced around 1960",
+          "type": "origin",
+          "cites": [
+            "wikipedia-gala",
+            "specialtyproduce-gala"
+          ]
+        },
+        {
+          "text": "A cross of Kidd's Orange Red and Golden Delicious",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-gala",
+            "specialtyproduce-gala"
+          ]
+        },
+        {
+          "text": "Sweet, mild, aromatic flavour with a crisp but not hard texture",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-gala",
+            "specialtyproduce-gala"
+          ]
+        },
+        {
+          "text": "Skin non-uniform, usually striped or mottled with an overall orange to reddish colour",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-gala"
+          ]
+        },
+        {
+          "text": "Became one of the most widely grown apple varieties worldwide",
+          "type": "use",
+          "cites": [
+            "wikipedia-gala",
+            "specialtyproduce-gala"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-gala",
+          "name": "Wikipedia: Gala (apple)",
+          "url": "https://en.wikipedia.org/wiki/Gala_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-gala",
+          "name": "Specialty Produce: Gala Apples",
+          "url": "https://specialtyproduce.com/produce/Gala_Apples_20111.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-granny-smith": {
+      "slug": "apple-granny-smith",
+      "species": "Apple",
+      "variety": "Granny Smith",
+      "paragraphs": [
+        "Granny Smith is an Australian apple discovered in 1868 by Maria Ann Smith at Eastwood, New South Wales. It grew as a chance seedling near a creek where she had discarded the remains of French crab-apples grown in Tasmania, and is thought to be a cross of the domestic apple with a wild apple species.",
+        "The fruit has bright green skin, hard firm flesh, and a tart, sour, acidic flavour. It is valued for both cooking (pies, crumbles) and fresh eating, and its excellent shelf life made it a major export variety worldwide."
+      ],
+      "claims": [
+        {
+          "text": "Discovered in 1868 by Maria Ann Smith at Eastwood, New South Wales, Australia",
+          "type": "origin",
+          "cites": [
+            "wikipedia-granny-smith",
+            "adb-maria-smith"
+          ]
+        },
+        {
+          "text": "Arose as a chance seedling near a creek where discarded French crab-apples from Tasmania had been dumped",
+          "type": "origin",
+          "cites": [
+            "wikipedia-granny-smith",
+            "ryde-granny-smith"
+          ]
+        },
+        {
+          "text": "Thought to be a hybrid of domestic apple (M. domestica) with European wild apple (M. sylvestris)",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-granny-smith"
+          ]
+        },
+        {
+          "text": "Bright green skin, hard firm flesh, tart and acidic flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-granny-smith",
+            "ryde-granny-smith"
+          ]
+        },
+        {
+          "text": "Used for cooking and fresh eating, with excellent shelf life suiting long-distance export",
+          "type": "use",
+          "cites": [
+            "wikipedia-granny-smith",
+            "ryde-granny-smith"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-granny-smith",
+          "name": "Wikipedia: Granny Smith",
+          "url": "https://en.wikipedia.org/wiki/Granny_Smith",
+          "tier": "third_party"
+        },
+        {
+          "id": "adb-maria-smith",
+          "name": "Australian Dictionary of Biography: Maria Ann Smith",
+          "url": "https://adb.anu.edu.au/biography/smith-maria-ann-13199",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ryde-granny-smith",
+          "name": "City of Ryde: Granny Smith",
+          "url": "https://www.ryde.nsw.gov.au/Library/Local-and-Family-History/Historic-Ryde/Historic-Figures/Granny-Smith",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-pink-lady": {
+      "slug": "apple-pink-lady",
+      "species": "Apple",
+      "variety": "Pink Lady",
+      "paragraphs": [
+        "Pink Lady is the trademark name for fruit of the Cripps Pink cultivar, which was bred in Western Australia. John Cripps, working at the state Department of Agriculture, crossed the Australian apple Lady Williams with the American Golden Delicious in 1973, aiming to combine the long storage life of one parent with the sweetness of the other. It became one of the first apples sold under a trademarked brand, with only fruit that meets a set quality standard sold as Pink Lady.",
+        "The fruit has crisp, dense flesh and a high balance of sugar and acid that gives it a sweet-tart, almost effervescent flavour, with a pink blush over greenish-yellow skin. It is one of the last apples picked each season and needs a long, warm growing period, so it performs better in warmer districts than on cold sites. The signature pink colour develops best where warm autumn days are followed by cool nights."
+      ],
+      "claims": [
+        {
+          "text": "Cripps Pink was bred in Western Australia by John Cripps at the WA Department of Agriculture, crossing Lady Williams with Golden Delicious in 1973",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cripps-pink",
+            "orangepippin-pinklady"
+          ]
+        },
+        {
+          "text": "Pink Lady is a trademark brand; only Cripps Pink fruit meeting a quality standard is sold under it, and it was among the first apples sold under a trademarked name",
+          "type": "naming",
+          "cites": [
+            "wikipedia-cripps-pink",
+            "orangepippin-pinklady"
+          ]
+        },
+        {
+          "text": "Crisp dense flesh with a high sugar and acid balance, sweet-tart effervescent flavour, pink blush over greenish-yellow skin",
+          "type": "flavour",
+          "cites": [
+            "orangepippin-pinklady",
+            "wikipedia-cripps-pink"
+          ]
+        },
+        {
+          "text": "One of the last apples harvested each season",
+          "type": "season",
+          "cites": [
+            "wikipedia-cripps-pink",
+            "orangepippin-pinklady"
+          ]
+        },
+        {
+          "text": "Needs a long, warm growing season; the pink blush develops where warm autumn days are followed by cool nights",
+          "type": "growing",
+          "cites": [
+            "wikipedia-cripps-pink"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-cripps-pink",
+          "name": "Wikipedia: Cripps Pink",
+          "url": "https://en.wikipedia.org/wiki/Cripps_Pink",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-pinklady",
+          "name": "Orange Pippin: Pink Lady apple variety",
+          "url": "https://www.orangepippin.com/varieties/apples/pinklady",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-red-delicious": {
+      "slug": "apple-red-delicious",
+      "species": "Apple",
+      "variety": "Red Delicious",
+      "paragraphs": [
+        "Red Delicious began as a chance seedling found by Iowa farmer Jesse Hiatt, who first fruited it in the 1870s and named it Hawkeye after his home state. Stark Nurseries bought the rights, renamed it Stark Delicious, and from 1914 it became known as Red Delicious.",
+        "The original fruit was prized for its sweetness, but decades of selecting strains for deep red colour, storage life, and cosmetic appeal rather than taste left the modern apple widely criticised for blander flavour. It is a sweet, mild eating apple with thick skin and crisp flesh."
+      ],
+      "claims": [
+        {
+          "text": "Originated as a chance seedling found by Jesse Hiatt, a farmer in Peru, Iowa, USA",
+          "type": "origin",
+          "cites": [
+            "wikipedia-red-delicious",
+            "notesoniowa-hiatt"
+          ]
+        },
+        {
+          "text": "Originally named Hawkeye after Hiatt's home state of Iowa",
+          "type": "naming",
+          "cites": [
+            "wikipedia-red-delicious",
+            "notesoniowa-hiatt"
+          ]
+        },
+        {
+          "text": "Bought by Stark Nurseries, renamed Stark Delicious, then Red Delicious from 1914",
+          "type": "naming",
+          "cites": [
+            "wikipedia-red-delicious",
+            "starkbros-delicious"
+          ]
+        },
+        {
+          "text": "Selection for colour, storage and appearance over flavour led to a widely noted decline in taste",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-red-delicious",
+            "starkbros-delicious"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-red-delicious",
+          "name": "Wikipedia: Red Delicious",
+          "url": "https://en.wikipedia.org/wiki/Red_Delicious",
+          "tier": "third_party"
+        },
+        {
+          "id": "notesoniowa-hiatt",
+          "name": "Notes on Iowa: Jesse Hiatt and Red Delicious Apples",
+          "url": "https://www.notesoniowa.com/post/iowa-history-daily-jesse-hiatt-red-delicious-apples",
+          "tier": "third_party"
+        },
+        {
+          "id": "starkbros-delicious",
+          "name": "Stark Bro's: A Delicious Discovery",
+          "url": "https://www.starkbros.com/growing-guide/article/a-delicious-discovery",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

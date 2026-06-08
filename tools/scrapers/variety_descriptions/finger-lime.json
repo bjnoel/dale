@@ -1,0 +1,80 @@
+{
+  "species_slug": "finger-lime",
+  "schema_version": 1,
+  "varieties": {
+    "finger-lime-alstonville": {
+      "slug": "finger-lime-alstonville",
+      "species": "Finger Lime",
+      "variety": "Alstonville",
+      "paragraphs": [
+        "Alstonville is a selected, named cultivar of the finger lime (Citrus australasica), the thorny rainforest citrus native to the coastal border region of Queensland and New South Wales. It is one of the green-fleshed selections and was among the earliest finger limes available commercially, grown grafted for reliable cropping.",
+        "The cylindrical fruit has dark green to greenish-black skin and pale green flesh made up of caviar-like juice vesicles (pearls) that burst with a tangy, lime-like flavour. The pearls are mostly seedless and prized as a fresh garnish and in preserves."
+      ],
+      "claims": [
+        {
+          "text": "Finger lime is Citrus australasica, a thorny rainforest citrus native to the Queensland and New South Wales border region",
+          "type": "origin",
+          "cites": [
+            "wikipedia-australasica",
+            "sga-fingerlime"
+          ]
+        },
+        {
+          "text": "Alstonville is a named, selected green-fleshed cultivar of finger lime, grown grafted",
+          "type": "breeding",
+          "cites": [
+            "sga-fingerlime",
+            "daleys-alstonville"
+          ]
+        },
+        {
+          "text": "Dark green to greenish-black skin with pale green flesh",
+          "type": "appearance",
+          "cites": [
+            "sga-fingerlime",
+            "daleys-alstonville"
+          ]
+        },
+        {
+          "text": "Fruit holds caviar-like juice vesicles (pearls) that burst with a tangy, lime-like flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-australasica"
+          ]
+        },
+        {
+          "text": "Pearls are mostly seedless and used fresh as a garnish and in preserves",
+          "type": "use",
+          "cites": [
+            "daleys-alstonville",
+            "wikipedia-australasica"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-australasica",
+          "name": "Wikipedia: Citrus australasica",
+          "url": "https://en.wikipedia.org/wiki/Citrus_australasica",
+          "tier": "third_party"
+        },
+        {
+          "id": "sga-fingerlime",
+          "name": "Sustainable Gardening Australia: Finger Limes",
+          "url": "https://www.sgaonline.org.au/finger-limes/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-alstonville",
+          "name": "Daleys Fruit: Finger Lime Alstonville",
+          "url": "https://www.daleysfruit.com.au/buy/finger-lime-alstonville-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

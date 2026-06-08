@@ -1,0 +1,67 @@
+{
+  "species_slug": "cherry",
+  "schema_version": 1,
+  "varieties": {
+    "cherry-stella": {
+      "slug": "cherry-stella",
+      "species": "Cherry",
+      "variety": "Stella",
+      "paragraphs": [
+        "Stella is a sweet cherry bred at the Summerland Research Station in British Columbia, Canada, from a 1956 cross (Lambert with a John Innes seedling) and named in 1968. It is historically important as the first named self-fertile sweet cherry.",
+        "The fruit is large, heart-shaped and dark red with good quality, and it ripens about a week before Bing (mid to late season). Because Stella is self-fertile, a single tree will set fruit and it can also pollinate other sweet cherries."
+      ],
+      "claims": [
+        {
+          "text": "Sweet cherry bred at Summerland, British Columbia, from a 1956 cross of Lambert with a John Innes seedling, named 1968",
+          "type": "origin",
+          "cites": [
+            "wikipedia-stella",
+            "specialtyproduce-stella-search"
+          ]
+        },
+        {
+          "text": "The first named self-fertile sweet cherry",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-stella",
+            "specialtyproduce-stella-search"
+          ]
+        },
+        {
+          "text": "Large, heart-shaped, dark red fruit",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-stella",
+            "specialtyproduce-stella-search"
+          ]
+        },
+        {
+          "text": "Ripens about a week before Bing (mid to late season)",
+          "type": "season",
+          "cites": [
+            "wikipedia-stella",
+            "specialtyproduce-stella-search"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-stella",
+          "name": "Wikipedia: Stella cherry",
+          "url": "https://en.wikipedia.org/wiki/Stella_cherry",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-stella-search",
+          "name": "Specialty Produce: Stella Cherries",
+          "url": "https://specialtyproduce.com/produce/Stella_Cherries_22761.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

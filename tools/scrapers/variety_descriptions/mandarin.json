@@ -1,0 +1,336 @@
+{
+  "species_slug": "mandarin",
+  "schema_version": 1,
+  "varieties": {
+    "mandarin-afourer": {
+      "slug": "mandarin-afourer",
+      "species": "Mandarin",
+      "variety": "Afourer",
+      "paragraphs": [
+        "Afourer, also marketed as Nadorcott, is a late mandarin discovered in Morocco (a chance seedling thought to derive from a Murcott tree) and imported to California in 1985. It is classed as a tangor of uncertain parentage.",
+        "The flattened fruit has a thin, smooth, easy-to-peel rind and rich, sweet, juicy flesh with a refreshing acidity. It is low-seeded when grown in isolation but becomes seedy if cross-pollinated, and it holds well on the tree late into the season."
+      ],
+      "claims": [
+        {
+          "text": "Discovered as a chance seedling in Morocco, thought to derive from a Murcott tree, and imported to California in 1985",
+          "type": "origin",
+          "cites": [
+            "ucr-afourer",
+            "specialtyproduce-afourer"
+          ]
+        },
+        {
+          "text": "Also marketed as Nadorcott",
+          "type": "naming",
+          "cites": [
+            "specialtyproduce-afourer",
+            "goodfruit-nadorcott"
+          ]
+        },
+        {
+          "text": "Classed as a tangor of uncertain parentage",
+          "type": "breeding",
+          "cites": [
+            "ucr-afourer",
+            "specialtyproduce-afourer"
+          ]
+        },
+        {
+          "text": "Flattened fruit with a thin, smooth, easy-to-peel rind",
+          "type": "appearance",
+          "cites": [
+            "ucr-afourer",
+            "goodfruit-nadorcott"
+          ]
+        },
+        {
+          "text": "Rich, sweet, juicy flesh with refreshing acidity, a late-season mandarin",
+          "type": "flavour",
+          "cites": [
+            "ucr-afourer",
+            "specialtyproduce-afourer"
+          ]
+        },
+        {
+          "text": "Low-seeded in isolation but seedy when cross-pollinated, and holds well on the tree late in the season",
+          "type": "pollination",
+          "cites": [
+            "ucr-afourer",
+            "specialtyproduce-afourer"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-afourer",
+          "name": "Givaudan Citrus Variety Collection (UC Riverside): W. Murcott Afourer",
+          "url": "https://citrusvariety.ucr.edu/crc3953",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-afourer",
+          "name": "Specialty Produce: Afourer Mandarins",
+          "url": "https://specialtyproduce.com/produce/Afourer_Mandarins_24621.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "goodfruit-nadorcott",
+          "name": "Good Fruit Guide: Nadorcott (Afourer)",
+          "url": "https://goodfruitguide.co.uk/product/nadorcott-afourer/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mandarin-emperor": {
+      "slug": "mandarin-emperor",
+      "species": "Mandarin",
+      "variety": "Emperor",
+      "paragraphs": [
+        "Emperor is an old Australian mandarin thought to have originated as a seedling from fruit imported from the Orient, and it was once a leading commercial mandarin in Australia. It has served as a parent or source for other varieties, including the South African Empress.",
+        "It is a mid-season mandarin with large, oblate fruit and a puffy, loosely adherent rind that is extremely easy to peel. The light-orange flesh is tender, juicy and pleasantly sweet, though the fruit is moderately seedy and loses quality if left on the tree past maturity."
+      ],
+      "claims": [
+        {
+          "text": "Old Australian mandarin thought to have originated as a seedling from fruit imported from the Orient",
+          "type": "origin",
+          "cites": [
+            "ucr-emperor",
+            "citrusaustralia-emperor"
+          ]
+        },
+        {
+          "text": "Was once a leading commercial mandarin in Australia",
+          "type": "use",
+          "cites": [
+            "citrusaustralia-emperor",
+            "daleys-emperor"
+          ]
+        },
+        {
+          "text": "Mid-season maturity",
+          "type": "season",
+          "cites": [
+            "ucr-emperor",
+            "daleys-emperor"
+          ]
+        },
+        {
+          "text": "Large oblate fruit with a puffy, loosely adherent rind that is extremely easy to peel",
+          "type": "appearance",
+          "cites": [
+            "ucr-emperor",
+            "daleys-emperor"
+          ]
+        },
+        {
+          "text": "Tender, juicy, pleasantly sweet light-orange flesh",
+          "type": "flavour",
+          "cites": [
+            "ucr-emperor",
+            "daleys-emperor"
+          ]
+        },
+        {
+          "text": "Moderately seedy and loses quality if left on the tree past maturity",
+          "type": "storage",
+          "cites": [
+            "ucr-emperor",
+            "daleys-emperor"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-emperor",
+          "name": "Givaudan Citrus Variety Collection (UC Riverside): Scarlet Emperor mandarin",
+          "url": "https://citrusvariety.ucr.edu/crc3226",
+          "tier": "authoritative"
+        },
+        {
+          "id": "citrusaustralia-emperor",
+          "name": "Citrus Australia: Emperor mandarin variety fact sheet",
+          "url": "https://citrusaustralia.com.au/wp-content/uploads/Emperor.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-emperor",
+          "name": "Daleys Fruit: Mandarin Emperor",
+          "url": "https://www.daleysfruit.com.au/buy/mandarin-emperor-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mandarin-honey-murcott": {
+      "slug": "mandarin-honey-murcott",
+      "species": "Mandarin",
+      "variety": "Honey Murcott",
+      "paragraphs": [
+        "Honey Murcott is a selection of the Murcott, a tangor (mandarin crossed with sweet orange) that traces to a USDA hybrid given to growers in Florida and named after Charles Murcott Smith, who propagated it in the 1920s. It is also known as the Honey tangerine.",
+        "It is a late-season mandarin prized for its very sweet, rich, honey-like flavour and high juice content, often considered one of the sweetest mandarins. The trade-off is that it is seeded and not as easy to peel as earlier varieties such as Imperial."
+      ],
+      "claims": [
+        {
+          "text": "A selection of the Murcott, a tangor (mandarin crossed with sweet orange) traced to a USDA hybrid propagated in Florida and named after Charles Murcott Smith in the 1920s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-murcott",
+            "goodfruit-murcott"
+          ]
+        },
+        {
+          "text": "Also known as the Honey tangerine",
+          "type": "naming",
+          "cites": [
+            "goodfruit-murcott",
+            "westridge-mandarins"
+          ]
+        },
+        {
+          "text": "Late-season mandarin",
+          "type": "season",
+          "cites": [
+            "goodfruit-murcott",
+            "westridge-mandarins"
+          ]
+        },
+        {
+          "text": "Very sweet, rich, honey-like flavour with high juice content, among the sweetest mandarins",
+          "type": "flavour",
+          "cites": [
+            "westridge-mandarins",
+            "goodfruit-murcott"
+          ]
+        },
+        {
+          "text": "Seeded and not as easy to peel as earlier varieties",
+          "type": "appearance",
+          "cites": [
+            "westridge-mandarins",
+            "goodfruit-murcott"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-murcott",
+          "name": "Wikipedia: Murcott (fruit)",
+          "url": "https://en.wikipedia.org/wiki/Murcott_(fruit)",
+          "tier": "third_party"
+        },
+        {
+          "id": "goodfruit-murcott",
+          "name": "Good Fruit Guide: Murcott (Honey Tangerine)",
+          "url": "https://goodfruitguide.co.uk/product/murcott/",
+          "tier": "third_party"
+        },
+        {
+          "id": "westridge-mandarins",
+          "name": "Westridge Fruit & Vegetables: Australian Mandarin Varieties",
+          "url": "https://www.westridgefruit.com.au/news/australian-mandarins",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mandarin-imperial": {
+      "slug": "mandarin-imperial",
+      "species": "Mandarin",
+      "variety": "Imperial",
+      "paragraphs": [
+        "Imperial is an Australian mandarin that arose around 1890 at Emu Plains, west of Sydney, believed to be a chance hybrid (possibly of a Willowleaf-type mandarin with another mandarin such as Emperor). It became one of Australia's most popular commercial mandarins.",
+        "It is very early maturing, typically the first mandarin of the Australian season (around April onwards), with a thin, smooth, glossy skin that peels easily and segments that separate cleanly. The flesh is sweet and pleasantly subacid with few seeds (usually four or fewer). The tree tends toward alternate (biennial) bearing."
+      ],
+      "claims": [
+        {
+          "text": "Australian mandarin that arose around 1890 at Emu Plains, NSW, as a chance hybrid possibly involving a Willowleaf-type mandarin and another mandarin such as Emperor",
+          "type": "origin",
+          "cites": [
+            "ucr-imperial",
+            "specialtyproduce-imperial"
+          ]
+        },
+        {
+          "text": "One of the most popular commercial mandarins in Australia",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-imperial",
+            "hillstreet-imperial"
+          ]
+        },
+        {
+          "text": "Very early maturing, typically the first mandarin of the Australian season (around April onwards)",
+          "type": "season",
+          "cites": [
+            "ucr-imperial",
+            "hillstreet-imperial"
+          ]
+        },
+        {
+          "text": "Thin, smooth, glossy skin that peels easily with cleanly separable segments",
+          "type": "appearance",
+          "cites": [
+            "ucr-imperial",
+            "westridge-mandarins"
+          ]
+        },
+        {
+          "text": "Sweet, pleasantly subacid flesh with few seeds (usually four or fewer)",
+          "type": "flavour",
+          "cites": [
+            "ucr-imperial",
+            "specialtyproduce-imperial"
+          ]
+        },
+        {
+          "text": "Tree tends toward alternate (biennial) bearing",
+          "type": "growing",
+          "cites": [
+            "ucr-imperial",
+            "specialtyproduce-imperial"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-imperial",
+          "name": "Givaudan Citrus Variety Collection (UC Riverside): Imperial mandarin",
+          "url": "https://citrusvariety.ucr.edu/crc4160",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-imperial",
+          "name": "Specialty Produce: Imperial Mandarins",
+          "url": "https://specialtyproduce.com/produce/Imperial_Mandarins_25176.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "hillstreet-imperial",
+          "name": "Hill Street Grocer: All you need to know about Imperial Mandarins",
+          "url": "https://hillstreetgrocer.com/featured-content/articles/all-you-need-know-about-imperial-mandarins",
+          "tier": "third_party"
+        },
+        {
+          "id": "westridge-mandarins",
+          "name": "Westridge Fruit & Vegetables: Australian Mandarin Varieties",
+          "url": "https://www.westridgefruit.com.au/news/australian-mandarins",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

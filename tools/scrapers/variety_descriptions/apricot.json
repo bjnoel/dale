@@ -1,0 +1,150 @@
+{
+  "species_slug": "apricot",
+  "schema_version": 1,
+  "varieties": {
+    "apricot-moorpark": {
+      "slug": "apricot-moorpark",
+      "species": "Apricot",
+      "variety": "Moorpark",
+      "paragraphs": [
+        "Moorpark is an old English apricot, taking its name from the Moor Park estate in Hertfordshire and first sold under that name in the late 1700s. It has long been regarded as a benchmark for apricot flavour.",
+        "The fruit is large with deep orange skin, a heady aroma and rich, sweet flavour, and the flesh is freestone when fully ripe. It is a late-ripening variety. Moorpark is self-fertile, so a single tree will set fruit."
+      ],
+      "claims": [
+        {
+          "text": "Old English apricot named after the Moor Park estate in Hertfordshire, first sold under that name in the late 1700s",
+          "type": "origin",
+          "cites": [
+            "treesofantiquity-moorpark",
+            "specialtyproduce-moorpark-search"
+          ]
+        },
+        {
+          "text": "Large fruit, deep orange skin, heady aroma and rich sweet flavour",
+          "type": "flavour",
+          "cites": [
+            "treesofantiquity-moorpark",
+            "specialtyproduce-moorpark-search"
+          ]
+        },
+        {
+          "text": "Freestone flesh when fully ripe",
+          "type": "appearance",
+          "cites": [
+            "growgreatfruit-apricots",
+            "specialtyproduce-moorpark-search"
+          ]
+        },
+        {
+          "text": "Late-ripening variety",
+          "type": "season",
+          "cites": [
+            "treesofantiquity-moorpark",
+            "specialtyproduce-moorpark-search"
+          ]
+        },
+        {
+          "text": "Self-fertile",
+          "type": "pollination",
+          "cites": [
+            "treesofantiquity-moorpark",
+            "growgreatfruit-apricots"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "treesofantiquity-moorpark",
+          "name": "Trees of Antiquity: Moorpark Apricot",
+          "url": "https://www.treesofantiquity.com/products/moorpark-apricot",
+          "tier": "nursery"
+        },
+        {
+          "id": "specialtyproduce-moorpark-search",
+          "name": "Specialty Produce: Moorpark Apricots",
+          "url": "https://specialtyproduce.com/produce/Moorpark_Apricots_10862.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "growgreatfruit-apricots",
+          "name": "Grow Great Fruit: Apricot tree varieties",
+          "url": "https://growgreatfruit.com/growing-apricot-trees/apricot-tree-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apricot-trevatt": {
+      "slug": "apricot-trevatt",
+      "species": "Apricot",
+      "variety": "Trevatt",
+      "paragraphs": [
+        "Trevatt is an Australian heirloom apricot dating to the early 1900s and long grown as a commercial variety. It is one of the classic old Australian apricots.",
+        "The fruit is large and rounded with light yellow skin, deeper orange flesh and a highly aromatic, flavourful taste. It ripens early to mid season, before Moorpark, and its firm flesh makes it popular for drying and preserving as well as fresh eating. Trevatt is self-fertile, though a second tree can improve cropping."
+      ],
+      "claims": [
+        {
+          "text": "Australian heirloom apricot from the early 1900s, grown commercially",
+          "type": "origin",
+          "cites": [
+            "heritagefruittrees-trevatt",
+            "diggers-trevatt"
+          ]
+        },
+        {
+          "text": "Large rounded fruit, light yellow skin with deeper orange flesh, highly aromatic and flavourful",
+          "type": "flavour",
+          "cites": [
+            "heritagefruittrees-trevatt",
+            "diggers-trevatt"
+          ]
+        },
+        {
+          "text": "Ripens early to mid season, before Moorpark",
+          "type": "season",
+          "cites": [
+            "heritagefruittrees-trevatt",
+            "diggers-trevatt"
+          ]
+        },
+        {
+          "text": "Firm flesh suited to drying and preserving",
+          "type": "use",
+          "cites": [
+            "heritagefruittrees-trevatt",
+            "diggers-trevatt"
+          ]
+        },
+        {
+          "text": "Self-fertile, with cropping improved by a second tree",
+          "type": "pollination",
+          "cites": [
+            "heritagefruittrees-trevatt",
+            "diggers-trevatt"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagefruittrees-trevatt",
+          "name": "Heritage Fruit Trees: Trevatt Apricot",
+          "url": "https://www.heritagefruittrees.com.au/trevatt/",
+          "tier": "nursery"
+        },
+        {
+          "id": "diggers-trevatt",
+          "name": "The Diggers Club: Apricot Trevatt",
+          "url": "https://www.diggers.com.au/products/apricot-trevatt",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

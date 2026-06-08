@@ -1,0 +1,204 @@
+{
+  "species_slug": "lemon",
+  "schema_version": 1,
+  "varieties": {
+    "lemon-eureka": {
+      "slug": "lemon-eureka",
+      "species": "Lemon",
+      "variety": "Eureka",
+      "paragraphs": [
+        "Eureka originated in Los Angeles, California, selected from seedlings grown from Italian seed and introduced around 1877 as Garey's Eureka. Along with Lisbon it became one of the world's principal lemon varieties.",
+        "The tree is largely thornless and strongly everbearing, producing fruit at the ends of long branches, which makes it a popular choice for home gardens. The acidic fruit has a fairly rough, prominently ridged rind and only a small nipple."
+      ],
+      "claims": [
+        {
+          "text": "Originated in Los Angeles, California, from seedlings of Italian seed and introduced around 1877 as Garey's Eureka",
+          "type": "origin",
+          "cites": [
+            "ucr-eureka",
+            "specialtyproduce-eureka"
+          ]
+        },
+        {
+          "text": "Along with Lisbon, became one of the world's principal lemon varieties",
+          "type": "use",
+          "cites": [
+            "ucr-eureka",
+            "specialtyproduce-eureka"
+          ]
+        },
+        {
+          "text": "Tree is largely thornless and strongly everbearing, fruiting at the ends of long branches",
+          "type": "growing",
+          "cites": [
+            "ucr-eureka",
+            "specialtyproduce-eureka"
+          ]
+        },
+        {
+          "text": "Acidic fruit with a fairly rough, prominently ridged rind and a small nipple",
+          "type": "appearance",
+          "cites": [
+            "ucr-eureka",
+            "specialtyproduce-eureka"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-eureka",
+          "name": "Givaudan Citrus Variety Collection (UC Riverside): Frost nucellar Eureka lemon",
+          "url": "https://citrusvariety.ucr.edu/crc3005",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-eureka",
+          "name": "Specialty Produce: Eureka Lemons",
+          "url": "https://specialtyproduce.com/produce/Eureka_Lemons_7395.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lemon-lisbon": {
+      "slug": "lemon-lisbon",
+      "species": "Lemon",
+      "variety": "Lisbon",
+      "paragraphs": [
+        "Lisbon is a lemon of Portuguese origin, believed to be a Gallego seedling selection, and was introduced to Australia early in the 1800s. It became one of the leading commercial lemons in both Australia and the United States.",
+        "The tree is vigorous, large, thorny and densely foliated, and is notably resistant to frost, heat, wind and neglect, more so than Eureka. Because much of the fruit is borne within the canopy it is well protected, and the oblong, very acidic fruit carries a prominent nipple."
+      ],
+      "claims": [
+        {
+          "text": "Lemon of Portuguese origin, believed to be a Gallego seedling selection, introduced to Australia early in the 1800s",
+          "type": "origin",
+          "cites": [
+            "ucr-lisbon",
+            "specialtyproduce-lisbon"
+          ]
+        },
+        {
+          "text": "Became a leading commercial lemon in Australia and the United States",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-lisbon",
+            "ucr-lisbon"
+          ]
+        },
+        {
+          "text": "Tree is vigorous, large, thorny and densely foliated, and notably resistant to frost, heat, wind and neglect, more so than Eureka",
+          "type": "growing",
+          "cites": [
+            "ucr-lisbon",
+            "specialtyproduce-lisbon"
+          ]
+        },
+        {
+          "text": "Much of the fruit is borne within the canopy, providing protection",
+          "type": "growing",
+          "cites": [
+            "ucr-lisbon",
+            "specialtyproduce-lisbon"
+          ]
+        },
+        {
+          "text": "Oblong, very acidic fruit with a prominent nipple",
+          "type": "appearance",
+          "cites": [
+            "ucr-lisbon",
+            "specialtyproduce-lisbon"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-lisbon",
+          "name": "Givaudan Citrus Variety Collection (UC Riverside): Frost nucellar Lisbon lemon",
+          "url": "https://citrusvariety.ucr.edu/crc3176",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-lisbon",
+          "name": "Specialty Produce: Lisbon Lemons",
+          "url": "https://specialtyproduce.com/produce/Lisbon_Lemons_7993.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lemon-meyer": {
+      "slug": "lemon-meyer",
+      "species": "Lemon",
+      "variety": "Meyer",
+      "paragraphs": [
+        "The Meyer lemon is native to China and was introduced to the United States in 1908 by USDA plant explorer Frank Meyer. It is not a true lemon but a hybrid, generally described as a cross of citron with a mandarin/pomelo type.",
+        "Its fruit is sweeter and less acidic than standard Eureka or Lisbon lemons, with thin, deep-yellow to faintly orange skin and a subtle floral, almost orange-like character. A virus-free selection was released by the University of California in 1975 as the Improved Meyer lemon."
+      ],
+      "claims": [
+        {
+          "text": "Native to China and introduced to the United States in 1908 by USDA plant explorer Frank Meyer",
+          "type": "origin",
+          "cites": [
+            "wikipedia-meyer",
+            "specialtyproduce-meyer"
+          ]
+        },
+        {
+          "text": "Not a true lemon but a hybrid, generally a cross of citron with a mandarin/pomelo type",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-meyer",
+            "specialtyproduce-meyer"
+          ]
+        },
+        {
+          "text": "Sweeter and less acidic than Eureka or Lisbon lemons, with a subtle orange-like character",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-meyer",
+            "specialtyproduce-meyer"
+          ]
+        },
+        {
+          "text": "Thin, deep-yellow to faintly orange skin",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-meyer",
+            "specialtyproduce-meyer"
+          ]
+        },
+        {
+          "text": "A virus-free selection was released by the University of California in 1975 as the Improved Meyer lemon",
+          "type": "naming",
+          "cites": [
+            "wikipedia-meyer"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-meyer",
+          "name": "Wikipedia: Meyer lemon",
+          "url": "https://en.wikipedia.org/wiki/Meyer_lemon",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-meyer",
+          "name": "Specialty Produce: Meyer Lemons",
+          "url": "https://specialtyproduce.com/produce/Meyer_Lemons_219.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

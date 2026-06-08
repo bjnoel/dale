@@ -1,0 +1,81 @@
+{
+  "species_slug": "nectarine",
+  "schema_version": 1,
+  "varieties": {
+    "nectarine-fantasia": {
+      "slug": "nectarine-fantasia",
+      "species": "Nectarine",
+      "variety": "Fantasia",
+      "paragraphs": [
+        "Fantasia is a popular yellow-fleshed nectarine introduced from California breeding work. It is widely grown both commercially and in home gardens.",
+        "The fruit is large with a red-blushed yellow skin and firm, freestone yellow flesh. The flavour is sweet-tart and aromatic, becoming sweeter and juicier the longer it hangs on the tree. It ripens mid to late season and is self-fertile, so one tree will crop on its own."
+      ],
+      "claims": [
+        {
+          "text": "Yellow-fleshed nectarine from California breeding, widely grown",
+          "type": "origin",
+          "cites": [
+            "starkbros-fantasia",
+            "onegreenworld-fantasia"
+          ]
+        },
+        {
+          "text": "Large fruit, red-blushed yellow skin, firm freestone yellow flesh",
+          "type": "appearance",
+          "cites": [
+            "starkbros-fantasia",
+            "onegreenworld-fantasia"
+          ]
+        },
+        {
+          "text": "Sweet-tart, aromatic flavour that sweetens the longer it hangs",
+          "type": "flavour",
+          "cites": [
+            "starkbros-fantasia",
+            "onegreenworld-fantasia"
+          ]
+        },
+        {
+          "text": "Ripens mid to late season",
+          "type": "season",
+          "cites": [
+            "onegreenworld-fantasia",
+            "ifa-nectarines"
+          ]
+        },
+        {
+          "text": "Self-fertile",
+          "type": "pollination",
+          "cites": [
+            "starkbros-fantasia",
+            "onegreenworld-fantasia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "starkbros-fantasia",
+          "name": "Stark Bro's: Fantasia Nectarine",
+          "url": "https://www.starkbros.com/products/fruit-trees/nectarine-trees/fantasia-nectarine",
+          "tier": "nursery"
+        },
+        {
+          "id": "onegreenworld-fantasia",
+          "name": "One Green World: Fantasia Nectarine",
+          "url": "https://onegreenworld.com/product/fantasia-nectarine/",
+          "tier": "nursery"
+        },
+        {
+          "id": "ifa-nectarines",
+          "name": "IFA Country Stores: Nectarine Tree Varieties",
+          "url": "https://info.ifa.coop/nectarine-tree-varieties",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

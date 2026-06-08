@@ -1,0 +1,387 @@
+{
+  "species_slug": "avocado",
+  "schema_version": 1,
+  "varieties": {
+    "avocado-bacon": {
+      "slug": "avocado-bacon",
+      "species": "Avocado",
+      "variety": "Bacon",
+      "paragraphs": [
+        "Bacon is a cold-hardy avocado named after James Bacon of Buena Park, California, where the original seed was planted around 1928 and the variety was later registered with the California Avocado Society in 1948.",
+        "It is a Type B flowering variety, often planted as a pollinator for Type A trees such as Hass. The flesh is smooth and creamy but milder and less oily than Hass, and it is one of the more frost-tolerant avocados, cropping through the cooler months."
+      ],
+      "claims": [
+        {
+          "text": "Named after James Bacon of Buena Park, California; seed planted around 1928, registered 1948",
+          "type": "origin",
+          "cites": [
+            "gregalder-bacon",
+            "specialtyproduce-bacon"
+          ]
+        },
+        {
+          "text": "Type B flowering variety",
+          "type": "pollination",
+          "cites": [
+            "gregalder-bacon",
+            "groworganic-avocado-ab"
+          ]
+        },
+        {
+          "text": "Smooth, creamy flesh, milder and less oily than Hass",
+          "type": "flavour",
+          "cites": [
+            "gregalder-bacon",
+            "specialtyproduce-bacon"
+          ]
+        },
+        {
+          "text": "One of the more cold-hardy avocados",
+          "type": "climate",
+          "cites": [
+            "gregalder-bacon",
+            "specialtyproduce-bacon"
+          ]
+        },
+        {
+          "text": "Crops through the cooler/winter months",
+          "type": "season",
+          "cites": [
+            "gregalder-bacon",
+            "specialtyproduce-bacon"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gregalder-bacon",
+          "name": "Greg Alder's Yard Posts: The Bacon avocado tree",
+          "url": "https://gregalder.com/yardposts/the-bacon-avocado-tree-a-profile/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-bacon",
+          "name": "Specialty Produce: Bacon Avocados",
+          "url": "https://specialtyproduce.com/produce/Bacon_Avocados_6658.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "groworganic-avocado-ab",
+          "name": "Grow Organic: Avocado Type A and B flowers",
+          "url": "https://www.groworganic.com/blogs/articles/avocado-flowers-a-and-b",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-fuerte": {
+      "slug": "avocado-fuerte",
+      "species": "Avocado",
+      "variety": "Fuerte",
+      "paragraphs": [
+        "Fuerte is a Mexican-Guatemalan hybrid that came from a tree found at Atlixco in Puebla, Mexico, and was introduced to California from cuttings sent in 1911. It earned the name Fuerte, Spanish for strong, after young trees survived a severe freeze in 1913.",
+        "It is a Type B flowering variety, making it a classic pollination partner for Type A trees such as Hass. The fruit is pear-shaped with relatively smooth green skin that peels easily, and the flesh has a rich, nutty, buttery flavour. It crops mainly through the cooler months."
+      ],
+      "claims": [
+        {
+          "text": "Originated from a tree at Atlixco, Puebla, Mexico; introduced to California from cuttings sent in 1911",
+          "type": "origin",
+          "cites": [
+            "wikipedia-fuerte"
+          ]
+        },
+        {
+          "text": "Named Fuerte (Spanish for strong) after surviving a 1913 freeze",
+          "type": "naming",
+          "cites": [
+            "wikipedia-fuerte"
+          ]
+        },
+        {
+          "text": "Type B flowering variety",
+          "type": "pollination",
+          "cites": [
+            "groworganic-avocado-ab",
+            "ucanr-abs-avocado"
+          ]
+        },
+        {
+          "text": "Pear-shaped with relatively smooth green skin that peels easily",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-fuerte"
+          ]
+        },
+        {
+          "text": "Rich, nutty, buttery flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-fuerte"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-fuerte",
+          "name": "Wikipedia: Fuerte avocado",
+          "url": "https://en.wikipedia.org/wiki/Fuerte_avocado",
+          "tier": "third_party"
+        },
+        {
+          "id": "groworganic-avocado-ab",
+          "name": "Grow Organic: Avocado Type A and B flowers",
+          "url": "https://www.groworganic.com/blogs/articles/avocado-flowers-a-and-b",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucanr-abs-avocado",
+          "name": "UC ANR: The AB's of Avocado",
+          "url": "https://ucanr.edu/blog/under-solano-sun/article/abs-avocado",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-hass": {
+      "slug": "avocado-hass",
+      "species": "Avocado",
+      "variety": "Hass",
+      "paragraphs": [
+        "Hass is the world's most widely grown avocado, traced to a single seedling raised by postman Rudolph Hass at La Habra Heights, California in 1926 and patented in 1935. Every commercial Hass tree descends from grafts of that one mother tree.",
+        "It is a Type A flowering variety. The fruit has pebbly skin that turns from dark green to purplish-black as it ripens, with rich, nutty, high-oil flesh that yields to gentle pressure when ready."
+      ],
+      "claims": [
+        {
+          "text": "Raised by Rudolph Hass at La Habra Heights, California, in 1926",
+          "type": "origin",
+          "cites": [
+            "wikipedia-hass",
+            "ucr-hass-history"
+          ]
+        },
+        {
+          "text": "Patented in 1935; all commercial trees descend from one mother tree",
+          "type": "origin",
+          "cites": [
+            "wikipedia-hass",
+            "ucr-hass-history"
+          ]
+        },
+        {
+          "text": "Type A flowering variety",
+          "type": "pollination",
+          "cites": [
+            "groworganic-avocado-ab",
+            "ucanr-abs-avocado"
+          ]
+        },
+        {
+          "text": "Pebbly skin turns dark green to purplish-black when ripe",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-hass"
+          ]
+        },
+        {
+          "text": "Rich, nutty flesh with higher oil content",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-hass"
+          ]
+        },
+        {
+          "text": "Most consumed avocado worldwide",
+          "type": "use",
+          "cites": [
+            "wikipedia-hass"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-hass",
+          "name": "Wikipedia: Hass avocado",
+          "url": "https://en.wikipedia.org/wiki/Hass_avocado",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-hass-history",
+          "name": "UC Riverside: A Short History of the Hass Avocado",
+          "url": "https://avocado.ucr.edu/short-history-hass-avocado",
+          "tier": "authoritative"
+        },
+        {
+          "id": "groworganic-avocado-ab",
+          "name": "Grow Organic: Avocado Type A and B flowers",
+          "url": "https://www.groworganic.com/blogs/articles/avocado-flowers-a-and-b",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucanr-abs-avocado",
+          "name": "UC ANR: The AB's of Avocado",
+          "url": "https://ucanr.edu/blog/under-solano-sun/article/abs-avocado",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.96,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-reed": {
+      "slug": "avocado-reed",
+      "species": "Avocado",
+      "variety": "Reed",
+      "paragraphs": [
+        "Reed is a Guatemalan-type avocado that began as a seedling germinated by James Reed at Carlsbad, California in 1948. It is a Type A flowering variety known for setting fruit reliably even when grown on its own.",
+        "The fruit is unusually large, round and heavy, and the thick, pebbled skin stays green rather than darkening as it ripens. The pale flesh is among the creamiest and smoothest of any avocado, and it is a summer-bearing variety that holds well on the tree."
+      ],
+      "claims": [
+        {
+          "text": "Germinated by James Reed at Carlsbad, California, in 1948",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce-reed",
+            "gregalder-reed"
+          ]
+        },
+        {
+          "text": "Type A flowering variety that sets fruit reliably on its own",
+          "type": "pollination",
+          "cites": [
+            "gregalder-reed",
+            "groworganic-avocado-ab"
+          ]
+        },
+        {
+          "text": "Large, round, heavy fruit",
+          "type": "appearance",
+          "cites": [
+            "gregalder-reed",
+            "specialtyproduce-reed"
+          ]
+        },
+        {
+          "text": "Thick pebbled skin stays green when ripe",
+          "type": "appearance",
+          "cites": [
+            "gregalder-reed",
+            "specialtyproduce-reed"
+          ]
+        },
+        {
+          "text": "Creamy, smooth, buttery flesh",
+          "type": "flavour",
+          "cites": [
+            "gregalder-reed",
+            "specialtyproduce-reed"
+          ]
+        },
+        {
+          "text": "Summer-bearing season",
+          "type": "season",
+          "cites": [
+            "specialtyproduce-reed",
+            "gregalder-reed"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gregalder-reed",
+          "name": "Greg Alder's Yard Posts: The Reed avocado tree",
+          "url": "https://gregalder.com/yardposts/the-reed-avocado-tree-a-profile/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-reed",
+          "name": "Specialty Produce: Reed Avocados",
+          "url": "https://specialtyproduce.com/produce/Reed_Avocados_7521.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "groworganic-avocado-ab",
+          "name": "Grow Organic: Avocado Type A and B flowers",
+          "url": "https://www.groworganic.com/blogs/articles/avocado-flowers-a-and-b",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-wurtz": {
+      "slug": "avocado-wurtz",
+      "species": "Avocado",
+      "variety": "Wurtz",
+      "paragraphs": [
+        "Wurtz, widely sold as Little Cado, is a Guatemalan-Mexican hybrid and one of the few genuinely dwarf avocados. Its compact size and weeping, spreading habit make it well suited to large containers and small gardens.",
+        "It is a Type A flowering variety. The flesh is creamy with a rich, nutty flavour often compared to Hass, and the tree typically crops over the warmer months."
+      ],
+      "claims": [
+        {
+          "text": "Guatemalan x Mexican hybrid",
+          "type": "origin",
+          "cites": [
+            "tropicaltreeguide-wurtz"
+          ]
+        },
+        {
+          "text": "One of the few true dwarf avocados, with a weeping spreading habit suited to containers",
+          "type": "growing",
+          "cites": [
+            "tropicaltreeguide-wurtz",
+            "avocadotreegrowers-littlecado"
+          ]
+        },
+        {
+          "text": "Type A flowering variety",
+          "type": "pollination",
+          "cites": [
+            "tropicaltreeguide-wurtz",
+            "groworganic-avocado-ab"
+          ]
+        },
+        {
+          "text": "Creamy, rich, nutty flavour likened to Hass",
+          "type": "flavour",
+          "cites": [
+            "tropicaltreeguide-wurtz",
+            "avocadotreegrowers-littlecado"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "tropicaltreeguide-wurtz",
+          "name": "Tropical Tree Guide: Wurtz Avocado",
+          "url": "https://tropicaltreeguide.com/wurtz-avocado-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "groworganic-avocado-ab",
+          "name": "Grow Organic: Avocado Type A and B flowers",
+          "url": "https://www.groworganic.com/blogs/articles/avocado-flowers-a-and-b",
+          "tier": "third_party"
+        },
+        {
+          "id": "avocadotreegrowers-littlecado",
+          "name": "Avocado Tree Growers: Little Cado (Wurtz)",
+          "url": "https://www.avocadotreegrowers.com/post/little-cado-avocado-also-known-as-wertz-or-wurtz",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

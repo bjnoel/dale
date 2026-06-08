@@ -4,6 +4,55 @@
 
 ---
 
+## DEC-178 — 2026-06-08 — Variety descriptions: verified "what's unique" blurbs on /variety pages (treestock.com.au)
+
+**Decided by:** Dale (interactive session, Benedict directed)
+
+**Context:** treestock has ~2,900 /variety/<slug>.html pages, but each was just a price and
+availability table with no editorial depth: thin for readers and SEO, and undifferentiated
+from a raw price scraper. Benedict asked for a short paragraph or two on what is unique about
+each variety, placed directly under the "Updated ... N nurseries tracked ... M in stock" line.
+Hard constraint is accuracy: the site's moat is community trust, so a fabricated cultivar fact
+is worse than no fact, and content must be cross-checked against multiple reputable sources.
+
+**Decision (from planning Q&A):** (1) Pilot ~50 highest-value varieties first, then scale.
+(2) Dale researches and writes the blurbs in-session (web search/fetch), no Anthropic-API
+spend and no new VPS infra. (3) Skip varieties with fewer than 2 reputable sources (graceful
+fallback, no blurb); expect ~60-80% coverage on the long tail. (4) Clean prose on-page;
+sources plus per-claim verification stored in the JSON for audit, not rendered (the blurb sits
+above the price table, so it stays tight).
+
+**Implementation:** Mirrors the growing_guides pattern (committed JSON + dumb renderer +
+tests); generation is dev-time, the nightly build only reads committed JSON (no LLM in the
+build path, so a wrong fact can only ship past research, the >=2-source gate, AND a human
+commit). New stocklib/variety_descriptions.py loader (lazy, cached, per-species file, graceful
+"" fallback). build_variety_pages.py loads blurb_html via has_description/render_blurb;
+variety_page.html.j2 gets one {{ blurb_html|safe }} slot between the meta line and the summary
+callout. Content lives in tools/scrapers/variety_descriptions/<species>.json keyed by the
+slugify(species-variety) slug the builder already computes (shared cultivar_parsing functions,
+no fork). Each entry: 1-2 plain-text paragraphs, a claims ledger binding each fact to sources,
+source tiers (owned/authoritative/third_party/nursery), confidence, verified. No em or en
+dashes; Australian spelling. No new Tailwind classes (reuses the species-page body styling).
+
+**Pilot content:** 53 varieties across 24 species (all 12 golden-fixture varieties included).
+Researched via 7 parallel agents, each verifying every fact against 2+ reputable sources (UC
+Riverside Citrus Variety Collection, UF/IFAS, Business Queensland DAF, NC State Extension,
+NMSU, the Benedict-owned RFCA archive, Wikipedia, Orange Pippin). Spot-checked R2E2 / Imperial
+mandarin / Kensington Pride against their cited sources. Dropped tangelo-minneola (tangelo is
+not a tracked species, so the anti-noise guard rejects it). Softened the R2E2 name claim to
+what the source verifies.
+
+**Tests:** New tests/test_variety_descriptions.py (11 guards over every committed entry):
+schema, no em/en dashes, anti-noise (key == slugify(species-variety) and species is a real
+/species page), https sources, cites resolve, no orphan sources, gate-as-invariant (>=2
+sources, >=1 non-nursery source, confidence_score >= 0.80), no-invention rule for
+specific-fact claim types, and render smoke. Golden variety pages regenerated (diff = only the
+new blurb block). Full suite 1400 green.
+
+**To revert:** Delete tools/scrapers/variety_descriptions/, remove the loader import and
+blurb_html line in build_variety_pages.py, remove the {{ blurb_html|safe }} slot, regenerate
+golden. The loader returns "" with no data, so pages fall back to today's output.
+
 ## DEC-177 — 2026-06-08 — Per-nursery "type" pill on variety pages (treestock.com.au)
 
 **Decided by:** Dale (interactive session, Benedict directed)

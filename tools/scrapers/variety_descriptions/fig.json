@@ -1,0 +1,126 @@
+{
+  "species_slug": "fig",
+  "schema_version": 1,
+  "varieties": {
+    "fig-black-genoa": {
+      "slug": "fig-black-genoa",
+      "species": "Fig",
+      "variety": "Black Genoa",
+      "paragraphs": [
+        "Black Genoa is a large, pear-shaped fig with dark purple, almost black skin and deep red flesh. It has a very sweet, rich flavour and good keeping quality, which is why it is one of the leading commercial fresh-fig varieties grown in Australia.",
+        "Like most figs it can bear two crops a year, a small early breba crop on old wood and a heavier main crop on new growth, ripening through summer and autumn in Australia."
+      ],
+      "claims": [
+        {
+          "text": "Large pear-shaped fruit with dark purple to near-black skin and red flesh",
+          "type": "appearance",
+          "cites": [
+            "daleys-black-genoa",
+            "ultimatebackyard-figs"
+          ]
+        },
+        {
+          "text": "Very sweet, rich flavour with good storage quality",
+          "type": "flavour",
+          "cites": [
+            "daleys-black-genoa",
+            "ultimatebackyard-figs"
+          ]
+        },
+        {
+          "text": "A leading commercial fresh-fig variety in Australia, grown for high yields",
+          "type": "use",
+          "cites": [
+            "daleys-black-genoa",
+            "ultimatebackyard-figs"
+          ]
+        },
+        {
+          "text": "Bears two crops a year (a spring breba crop and a main crop)",
+          "type": "season",
+          "cites": [
+            "ultimatebackyard-figs",
+            "daleys-black-genoa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daleys-black-genoa",
+          "name": "Daleys Fruit: Fig Black Genoa",
+          "url": "https://www.daleysfruit.com.au/buy/fig-black-genoa-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "ultimatebackyard-figs",
+          "name": "Ultimate Backyard: Fig Tree Varieties in Australia",
+          "url": "https://ultimatebackyard.com.au/fig-tree-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "fig-brown-turkey": {
+      "slug": "fig-brown-turkey",
+      "species": "Fig",
+      "variety": "Brown Turkey",
+      "paragraphs": [
+        "Brown Turkey is a popular, adaptable fig whose fruit ripens to a coppery purple-brown skin with pink to amber pulp and a mild, sweet flavour. It is a reliable, prolific cropper often grown both commercially and in home gardens, and is sometimes sold as Texas Everbearing.",
+        "It can produce two crops in a season, an early breba crop and a later main crop, and the fruit is good eaten fresh or used for cooking and preserving."
+      ],
+      "claims": [
+        {
+          "text": "Ripens to coppery purple-brown skin with pink to amber pulp",
+          "type": "appearance",
+          "cites": [
+            "ncextension-brown-turkey",
+            "daleys-brown-turkey"
+          ]
+        },
+        {
+          "text": "Mild, sweet flavour, good eaten fresh or dried",
+          "type": "flavour",
+          "cites": [
+            "ncextension-brown-turkey",
+            "daleys-brown-turkey"
+          ]
+        },
+        {
+          "text": "Also known as Texas Everbearing",
+          "type": "naming",
+          "cites": [
+            "ncextension-brown-turkey"
+          ]
+        },
+        {
+          "text": "Can produce two harvests a year, an early breba crop and a main crop",
+          "type": "season",
+          "cites": [
+            "ncextension-brown-turkey"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncextension-brown-turkey",
+          "name": "NC State Extension: Ficus carica Brown Turkey",
+          "url": "https://plants.ces.ncsu.edu/plants/ficus-carica-brown-turkey/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-brown-turkey",
+          "name": "Daleys Fruit: Fig Brown Turkey",
+          "url": "https://www.daleysfruit.com.au/buy/fig-brown-turkey-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

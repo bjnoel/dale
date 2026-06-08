@@ -1,0 +1,89 @@
+{
+  "species_slug": "pear",
+  "schema_version": 1,
+  "varieties": {
+    "pear-beurre-bosc": {
+      "slug": "pear-beurre-bosc",
+      "species": "Pear",
+      "variety": "Beurre Bosc",
+      "paragraphs": [
+        "Beurre Bosc is a European pear that emerged in the early 1800s, with sources differing on whether it began in Belgium or France. It is named after the French horticulturist Louis Bosc, and Beurre means buttery in French, a nod to its rich texture.",
+        "It is easily recognised by its long tapering neck and warm cinnamon-brown russeted skin. The flesh is dense, crisp and sweet with a woodsy, spicy note, and because it holds its shape well when heated it is a favourite for baking, poaching and broiling as well as fresh eating. The season runs from autumn into spring."
+      ],
+      "claims": [
+        {
+          "text": "European pear that emerged in the early 1800s, in either Belgium or France",
+          "type": "origin",
+          "cites": [
+            "wikipedia-bosc",
+            "specialtyproduce-bosc"
+          ]
+        },
+        {
+          "text": "Named after French horticulturist Louis Bosc; Beurre means buttery",
+          "type": "naming",
+          "cites": [
+            "wikipedia-bosc",
+            "specialtyproduce-bosc"
+          ]
+        },
+        {
+          "text": "Distinctive long tapering neck and cinnamon-brown russeted skin",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-bosc",
+            "usapears-bosc"
+          ]
+        },
+        {
+          "text": "Dense, crisp, sweet flesh with a woodsy spicy flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-bosc",
+            "usapears-bosc"
+          ]
+        },
+        {
+          "text": "Holds its shape when cooked, ideal for baking, poaching and broiling",
+          "type": "use",
+          "cites": [
+            "usapears-bosc",
+            "specialtyproduce-bosc"
+          ]
+        },
+        {
+          "text": "Season runs from autumn into spring",
+          "type": "season",
+          "cites": [
+            "wikipedia-bosc",
+            "specialtyproduce-bosc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-bosc",
+          "name": "Wikipedia: Bosc pear",
+          "url": "https://en.wikipedia.org/wiki/Bosc_pear",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-bosc",
+          "name": "Specialty Produce: Bosc Pears",
+          "url": "https://specialtyproduce.com/produce/Bosc_Pears_334.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "usapears-bosc",
+          "name": "USA Pears: Bosc",
+          "url": "https://www.usapears.org/bosc/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

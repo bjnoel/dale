@@ -1,0 +1,140 @@
+{
+  "species_slug": "lychee",
+  "schema_version": 1,
+  "varieties": {
+    "lychee-kwai-may-pink": {
+      "slug": "lychee-kwai-may-pink",
+      "species": "Lychee",
+      "variety": "Kwai May Pink",
+      "paragraphs": [
+        "Kwai May Pink (also sold in Australia as Bosworth 3) is a Chinese lychee cultivar believed to have been brought from southern China to Australia in the 1930s. The fruit is small to medium, heart-shaped with blotchy red and yellow skin. The leaflets carry a characteristic twist towards the tip.",
+        "Its main appeal is eating quality and a small seed. The seeds are nearly all small (chicken tongue) in most seasons, which lifts the proportion of edible flesh, and the fruit quality is rated excellent."
+      ],
+      "claims": [
+        {
+          "text": "Chinese cultivar sold in Australia as Bosworth 3, believed brought from southern China to Australia in the 1930s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-kwai-mai",
+            "rfca-lychee"
+          ]
+        },
+        {
+          "text": "Small to medium, heart-shaped fruit with blotchy red and yellow skin; leaflets twist towards the tip",
+          "type": "appearance",
+          "cites": [
+            "rfca-lychee",
+            "wikipedia-kwai-mai"
+          ]
+        },
+        {
+          "text": "Seeds nearly all small (chicken tongue) in most seasons, giving a high flesh proportion",
+          "type": "appearance",
+          "cites": [
+            "rfca-lychee",
+            "wikipedia-kwai-mai"
+          ]
+        },
+        {
+          "text": "Fruit quality rated excellent",
+          "type": "flavour",
+          "cites": [
+            "rfca-lychee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-kwai-mai",
+          "name": "Wikipedia: Kwai Mai (lychee)",
+          "url": "https://en.wikipedia.org/wiki/Kwai_Mai_(lychee)",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-lychee",
+          "name": "RFCA Archives: Lychee cultivar names",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lychee-tai-so": {
+      "slug": "lychee-tai-so",
+      "species": "Lychee",
+      "variety": "Tai So",
+      "paragraphs": [
+        "Tai So is a vigorous Chinese lychee cultivar and the most commonly grown variety in Australia. It is widely known as Mauritius in the western trade, with other names including Hong Huey and Da Zao (big crop). The fruit is medium to large, ripening pink to red, with sweet, aromatic, juicy flesh.",
+        "It is valued as a consistent, regular bearer. The main drawbacks are that the tree is prone to limb breakage and the fruit quality is rated only fair compared with the best eating cultivars."
+      ],
+      "claims": [
+        {
+          "text": "Vigorous Chinese cultivar and the most commonly grown lychee variety in Australia",
+          "type": "origin",
+          "cites": [
+            "canarius-taiso",
+            "rfca-lychee"
+          ]
+        },
+        {
+          "text": "Widely known as Mauritius in the western trade, with names including Hong Huey and Da Zao",
+          "type": "naming",
+          "cites": [
+            "canarius-taiso",
+            "rfca-lychee"
+          ]
+        },
+        {
+          "text": "Medium to large fruit, ripening pink to red, with sweet, aromatic, juicy flesh",
+          "type": "appearance",
+          "cites": [
+            "canarius-taiso",
+            "daleys-taiso"
+          ]
+        },
+        {
+          "text": "Consistent, regular bearer",
+          "type": "growing",
+          "cites": [
+            "rfca-lychee",
+            "canarius-taiso"
+          ]
+        },
+        {
+          "text": "Prone to limb breakage and fruit quality rated only fair",
+          "type": "growing",
+          "cites": [
+            "rfca-lychee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "canarius-taiso",
+          "name": "Canarius: Litchi chinensis Tai So",
+          "url": "https://www.canarius.com/en/plants/litchi-chinensis-tai-so-.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-lychee",
+          "name": "RFCA Archives: Lychee cultivar names",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys-taiso",
+          "name": "Daleys Fruit: Lychee Tai So",
+          "url": "https://www.daleysfruit.com.au/Lychee-Tai-So-Litchi-Chinensis.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

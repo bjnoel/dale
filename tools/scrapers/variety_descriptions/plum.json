@@ -1,0 +1,223 @@
+{
+  "species_slug": "plum",
+  "schema_version": 1,
+  "varieties": {
+    "plum-mariposa": {
+      "slug": "plum-mariposa",
+      "species": "Plum",
+      "variety": "Mariposa",
+      "paragraphs": [
+        "Mariposa is a Japanese-type blood plum that originated as a seedling at Pasadena, California, around 1923. It is sometimes sold as Improved Satsuma.",
+        "The fruit has deep red, juicy flesh and a rich, sweet, aromatic flavour with a tart skin, and the stone separates almost cleanly (nearly freestone). It ripens mid season (late summer in Australia). Mariposa crops best with a compatible pollinator such as Santa Rosa or Satsuma."
+      ],
+      "claims": [
+        {
+          "text": "Japanese-type blood plum originating as a seedling at Pasadena, California, around 1923",
+          "type": "origin",
+          "cites": [
+            "treesofantiquity-mariposa",
+            "daleys-mariposa"
+          ]
+        },
+        {
+          "text": "A Japanese blood plum, also called Improved Satsuma",
+          "type": "naming",
+          "cites": [
+            "vioskitchen-mariposa",
+            "daleys-mariposa"
+          ]
+        },
+        {
+          "text": "Deep red juicy flesh, rich sweet aromatic flavour, nearly freestone",
+          "type": "flavour",
+          "cites": [
+            "treesofantiquity-mariposa",
+            "daleys-mariposa"
+          ]
+        },
+        {
+          "text": "Ripens mid season",
+          "type": "season",
+          "cites": [
+            "treesofantiquity-mariposa",
+            "daleys-mariposa"
+          ]
+        },
+        {
+          "text": "Best cropped with a compatible pollinator such as Santa Rosa or Satsuma",
+          "type": "pollination",
+          "cites": [
+            "treesofantiquity-mariposa",
+            "daleys-mariposa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "treesofantiquity-mariposa",
+          "name": "Trees of Antiquity: Mariposa Plum",
+          "url": "https://www.treesofantiquity.com/products/mariposa-plum",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-mariposa",
+          "name": "Daleys Fruit: Plum Mariposa",
+          "url": "https://www.daleysfruit.com.au/buy/plum-mariposa-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "vioskitchen-mariposa",
+          "name": "Vio's Kitchen: Mariposa Plums",
+          "url": "https://www.vioskitchen.com/blog/mariposa-plums",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-santa-rosa": {
+      "slug": "plum-santa-rosa",
+      "species": "Plum",
+      "variety": "Santa Rosa",
+      "paragraphs": [
+        "Santa Rosa is a Japanese plum (Prunus salicina) bred by Luther Burbank and introduced in 1906 from his nursery at Santa Rosa, California. It became Burbank's most celebrated plum and was once the dominant commercial plum in California.",
+        "The fruit has purple-red skin over amber to yellow flesh, with a sweet, slightly tart flavour. It ripens mid season. Santa Rosa is self-fertile and is widely used as a pollinator for other Japanese plums, though crops improve when grown near a second variety."
+      ],
+      "claims": [
+        {
+          "text": "Japanese plum (Prunus salicina) bred by Luther Burbank, introduced 1906 from Santa Rosa, California",
+          "type": "origin",
+          "cites": [
+            "wikipedia-prunus-salicina",
+            "treesofantiquity-santarosa"
+          ]
+        },
+        {
+          "text": "Purple-red skin over yellow to amber flesh, sweet and slightly tart",
+          "type": "flavour",
+          "cites": [
+            "treesofantiquity-santarosa",
+            "specialtyproduce-santarosa-search"
+          ]
+        },
+        {
+          "text": "Ripens mid season",
+          "type": "season",
+          "cites": [
+            "treesofantiquity-santarosa",
+            "specialtyproduce-santarosa-search"
+          ]
+        },
+        {
+          "text": "Self-fertile and a widely used pollinator for Japanese plums",
+          "type": "pollination",
+          "cites": [
+            "treesofantiquity-santarosa",
+            "specialtyproduce-santarosa-search"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-prunus-salicina",
+          "name": "Wikipedia: Prunus salicina",
+          "url": "https://en.wikipedia.org/wiki/Prunus_salicina",
+          "tier": "third_party"
+        },
+        {
+          "id": "treesofantiquity-santarosa",
+          "name": "Trees of Antiquity: Santa Rosa Plum",
+          "url": "https://www.treesofantiquity.com/products/santa-rosa-plum",
+          "tier": "nursery"
+        },
+        {
+          "id": "specialtyproduce-santarosa-search",
+          "name": "Specialty Produce: Santa Rosa Plums",
+          "url": "https://specialtyproduce.com/produce/Santa_Rosa_Plums_9877.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "plum-satsuma": {
+      "slug": "plum-satsuma",
+      "species": "Plum",
+      "variety": "Satsuma",
+      "paragraphs": [
+        "Satsuma is a Japanese plum (Prunus salicina) introduced to the United States by Luther Burbank in the late 1800s and named after the Satsuma province of Japan. It was an early and influential blood plum in commercial cultivation.",
+        "It is known as a blood plum for its dark red skin and deep red flesh, with sweet, juicy fruit. It ripens mid season. Satsuma is at most partially self-fertile and crops far better with a pollinator such as Santa Rosa or Shiro."
+      ],
+      "claims": [
+        {
+          "text": "Japanese plum introduced to the US by Luther Burbank in the late 1800s, named after the Satsuma province of Japan",
+          "type": "origin",
+          "cites": [
+            "treesofantiquity-satsuma",
+            "minnetonka-satsuma"
+          ]
+        },
+        {
+          "text": "A blood plum with dark red skin and deep red flesh",
+          "type": "appearance",
+          "cites": [
+            "treesofantiquity-satsuma",
+            "minnetonka-satsuma"
+          ]
+        },
+        {
+          "text": "Sweet, juicy fruit",
+          "type": "flavour",
+          "cites": [
+            "minnetonka-satsuma",
+            "gardeningknowhow-satsuma"
+          ]
+        },
+        {
+          "text": "Ripens mid season",
+          "type": "season",
+          "cites": [
+            "treesofantiquity-satsuma",
+            "minnetonka-satsuma"
+          ]
+        },
+        {
+          "text": "At most partially self-fertile, crops better with a pollinator such as Santa Rosa or Shiro",
+          "type": "pollination",
+          "cites": [
+            "minnetonka-satsuma",
+            "gardeningknowhow-satsuma"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "treesofantiquity-satsuma",
+          "name": "Trees of Antiquity: Satsuma Plum",
+          "url": "https://www.treesofantiquity.com/products/satsuma-plum",
+          "tier": "nursery"
+        },
+        {
+          "id": "minnetonka-satsuma",
+          "name": "Minneopa Orchards: The Satsuma Plum",
+          "url": "https://minnetonkaorchards.com/satsuma-plum/",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeningknowhow-satsuma",
+          "name": "Gardening Know How: How To Grow Satsuma Plums",
+          "url": "https://www.gardeningknowhow.com/edible/fruits/plum/satsuma-plum-care.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

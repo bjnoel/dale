@@ -1,0 +1,74 @@
+{
+  "species_slug": "jujube",
+  "schema_version": 1,
+  "varieties": {
+    "jujube-li": {
+      "slug": "jujube-li",
+      "species": "Jujube",
+      "variety": "Li",
+      "paragraphs": [
+        "Li is a Chinese jujube (Ziziphus jujuba) cultivar imported to the United States from China by plant explorer Frank Meyer. It is one of the largest jujube varieties, bearing big, rounded fruit that is among the best for fresh eating.",
+        "Eaten fresh while the skin is still reddish-brown, the fruit is crisp and sweet with a texture often compared to an apple. Left to dry, jujubes wrinkle and become chewy and date-like."
+      ],
+      "claims": [
+        {
+          "text": "Chinese jujube cultivar imported from China to the US by Frank Meyer",
+          "type": "origin",
+          "cites": [
+            "nmsu-jujube",
+            "specialtyproduce-li",
+            "wikipedia-jujube"
+          ]
+        },
+        {
+          "text": "One of the largest jujube cultivars, with large rounded fruit",
+          "type": "appearance",
+          "cites": [
+            "nmsu-jujube",
+            "specialtyproduce-li"
+          ]
+        },
+        {
+          "text": "Bred and favoured for fresh eating; crisp and sweet like an apple",
+          "type": "use",
+          "cites": [
+            "nmsu-jujube",
+            "specialtyproduce-li"
+          ]
+        },
+        {
+          "text": "Fresh fruit is crisp and apple-like; dried fruit becomes wrinkled and date-like",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-jujube",
+            "nmsu-jujube"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nmsu-jujube",
+          "name": "New Mexico State University Extension: Jujube, Chinese Date in New Mexico",
+          "url": "https://pubs.nmsu.edu/_h/H330/index.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-li",
+          "name": "Specialty Produce: Li Jujube",
+          "url": "https://specialtyproduce.com/produce/Li_Jujube_14133.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-jujube",
+          "name": "Wikipedia: Jujube",
+          "url": "https://en.wikipedia.org/wiki/Jujube",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

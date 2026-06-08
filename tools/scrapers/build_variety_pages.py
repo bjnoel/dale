@@ -26,6 +26,7 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, delivery_
 from stocklib.snapshots import iter_nursery_snapshots
 from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
+from stocklib.variety_descriptions import has_description, render_blurb
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo, SITE_URL
 
 NURSERY_URLS = {
@@ -174,6 +175,9 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
     in_stock_count = len(in_stock)
     nursery_count = len(set(p["nursery_key"] for p in products))
     species_slug = slugify(species)
+    # Optional verified "what's unique about this variety" blurb, rendered under the
+    # meta line and above the price table. Empty string for un-enriched varieties.
+    blurb_html = render_blurb(slug, species_slug) if has_description(slug, species_slug) else ""
     variety_title = f"{species} - {variety}"
     # Escape single quotes for safe embedding in JS string literals
     variety_title_js = variety_title.replace("'", "\\'")
@@ -218,6 +222,7 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
         head=head, header=header, breadcrumb=breadcrumb, footer=footer,
         treesmith_promo=render_treesmith_promo("variety"),
         title=title, today=today, nursery_count=nursery_count, in_stock_count=in_stock_count,
+        blurb_html=blurb_html,
         summary_callout=summary_callout, product_view=product_view,
         watch_heading=("Notify me next time this comes back" if in_stock else "Get notified when this comes back in stock"),
         watch_body=("This variety is currently in stock. You can still set an alert for next time." if in_stock else "This specific variety is currently out of stock. Enter your email to get an alert the moment it's available again."),

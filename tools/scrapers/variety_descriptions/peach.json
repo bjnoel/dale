@@ -1,0 +1,75 @@
+{
+  "species_slug": "peach",
+  "schema_version": 1,
+  "varieties": {
+    "peach-anzac": {
+      "slug": "peach-anzac",
+      "species": "Peach",
+      "variety": "Anzac",
+      "paragraphs": [
+        "Anzac is an Australian heritage peach released in 1915 and named in honour of the Anzacs. It is a classic old white-fleshed home-garden peach now more than a century old.",
+        "The fruit has pale white to greenish flesh, a freestone stone, and a juicy, sweet to slightly tart flavour that is best when fully soft and tree-ripened. It is an early-season peach, cropping heavily from late December into January in Australia, and is self-fertile."
+      ],
+      "claims": [
+        {
+          "text": "Australian heritage peach released in 1915 and named in honour of the Anzacs",
+          "type": "origin",
+          "cites": [
+            "heritagefruittrees-anzac",
+            "diggers-anzac"
+          ]
+        },
+        {
+          "text": "White to greenish flesh, freestone, juicy and sweet to slightly tart",
+          "type": "flavour",
+          "cites": [
+            "heritagefruittrees-anzac",
+            "diggers-anzac"
+          ]
+        },
+        {
+          "text": "Freestone stone",
+          "type": "appearance",
+          "cites": [
+            "heritagefruittrees-anzac",
+            "diggers-anzac"
+          ]
+        },
+        {
+          "text": "Early-season peach cropping heavily from late December into January",
+          "type": "season",
+          "cites": [
+            "heritagefruittrees-anzac",
+            "diggers-anzac"
+          ]
+        },
+        {
+          "text": "Self-fertile",
+          "type": "pollination",
+          "cites": [
+            "heritagefruittrees-anzac",
+            "diggers-anzac"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagefruittrees-anzac",
+          "name": "Heritage Fruit Trees: Anzac Peach",
+          "url": "https://www.heritagefruittrees.com.au/anzac-peach/",
+          "tier": "nursery"
+        },
+        {
+          "id": "diggers-anzac",
+          "name": "The Diggers Club: Peach Anzac",
+          "url": "https://www.diggers.com.au/products/peach-anzac",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

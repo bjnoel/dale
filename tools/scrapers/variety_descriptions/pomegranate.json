@@ -1,0 +1,65 @@
+{
+  "species_slug": "pomegranate",
+  "schema_version": 1,
+  "varieties": {
+    "pomegranate-wonderful": {
+      "slug": "pomegranate-wonderful",
+      "species": "Pomegranate",
+      "variety": "Wonderful",
+      "paragraphs": [
+        "Wonderful is the leading commercial pomegranate cultivar in California, grown widely in the San Joaquin Valley and the variety behind the POM Wonderful brand. It is a prolific, ornamental and hardy tree producing large, red, thick-skinned fruit.",
+        "It is a main-season cultivar whose fruit ripens in late autumn (roughly October into winter). The arils are super-juicy with soft seeds and a sub-acid, sweet-tart, cherry-like, wine-like flavour, which makes it especially well suited to juicing."
+      ],
+      "claims": [
+        {
+          "text": "Leading commercial pomegranate cultivar in California, grown in the San Joaquin Valley; the variety behind POM Wonderful",
+          "type": "origin",
+          "cites": [
+            "wikipedia-pomwonderful",
+            "crfg-pomegranate"
+          ]
+        },
+        {
+          "text": "Prolific, ornamental, hardy tree with large, red, thick-skinned fruit",
+          "type": "appearance",
+          "cites": [
+            "crfg-pomegranate"
+          ]
+        },
+        {
+          "text": "Main-season cultivar ripening in late autumn",
+          "type": "season",
+          "cites": [
+            "crfg-pomegranate"
+          ]
+        },
+        {
+          "text": "Super-juicy arils with soft seeds and a sub-acid, sweet-tart, cherry-like, wine-like flavour, well suited to juicing",
+          "type": "flavour",
+          "cites": [
+            "crfg-pomegranate",
+            "wikipedia-pomwonderful"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-pomwonderful",
+          "name": "Wikipedia: POM Wonderful",
+          "url": "https://en.wikipedia.org/wiki/POM_Wonderful",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg-pomegranate",
+          "name": "California Rare Fruit Growers: Pomegranate Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/pomegranate/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}

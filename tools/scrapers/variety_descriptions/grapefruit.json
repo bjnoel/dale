@@ -1,0 +1,132 @@
+{
+  "species_slug": "grapefruit",
+  "schema_version": 1,
+  "varieties": {
+    "grapefruit-marsh": {
+      "slug": "grapefruit-marsh",
+      "species": "Grapefruit",
+      "variety": "Marsh",
+      "paragraphs": [
+        "Marsh originated as a chance seedling planted around 1860 near Lakeland, Florida, and was named after C. M. Marsh, who acquired the Lakeland Nursery and propagated it. It was the first seedless grapefruit to be promoted commercially and went on to become the leading variety planted in Florida and around the world.",
+        "The fruit is round with a smooth, pale to light yellow rind and tender, very juicy, buff-coloured (white) flesh with few or no seeds. Its flavour is good though milder than the older seedy grapefruits. At Riverside it ripens roughly January to May."
+      ],
+      "claims": [
+        {
+          "text": "Originated as a chance seedling around 1860 near Lakeland, Florida; named after C. M. Marsh of the Lakeland Nursery",
+          "type": "origin",
+          "cites": [
+            "ucr-marsh",
+            "specialtyproduce-marsh"
+          ]
+        },
+        {
+          "text": "First seedless grapefruit to be promoted commercially; became the leading variety worldwide",
+          "type": "origin",
+          "cites": [
+            "ucr-marsh",
+            "specialtyproduce-marsh"
+          ]
+        },
+        {
+          "text": "Round fruit with smooth pale yellow rind and tender, juicy, pale (white) flesh with few or no seeds",
+          "type": "appearance",
+          "cites": [
+            "ucr-marsh",
+            "specialtyproduce-marsh"
+          ]
+        },
+        {
+          "text": "Flavour good but milder than seedy varieties",
+          "type": "flavour",
+          "cites": [
+            "ucr-marsh"
+          ]
+        },
+        {
+          "text": "Ripens roughly January to May at Riverside",
+          "type": "season",
+          "cites": [
+            "ucr-marsh"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-marsh",
+          "name": "UC Riverside Citrus Variety Collection: Frost Marsh grapefruit",
+          "url": "https://citrusvariety.ucr.edu/crc3184",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-marsh",
+          "name": "Specialty Produce: Marsh Ruby Grapefruit",
+          "url": "https://specialtyproduce.com/produce/Marsh_Ruby_Grapefruit_17192.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grapefruit-rio-red": {
+      "slug": "grapefruit-rio-red",
+      "species": "Grapefruit",
+      "variety": "Rio Red",
+      "paragraphs": [
+        "Rio Red is a deep red-fleshed grapefruit developed in Texas through mutation breeding, by treating budwood (from the Ruby Red line) with thermal neutrons. It was registered in 1984 and is marketed under names such as Rio Star and Ruby-Sweet. Its sister variety Star Ruby, the darkest red, came from irradiated Hudson grapefruit.",
+        "The deep red colour of the flesh comes from lycopene, the same pigment that makes tomatoes red, and the variety holds its intense colour better than the older red grapefruits. It is a sweeter, less bitter grapefruit than the classic white types."
+      ],
+      "claims": [
+        {
+          "text": "Developed in Texas by mutation breeding, treating budwood with thermal neutrons; registered 1984",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-grapefruit",
+            "specialtyproduce-riored"
+          ]
+        },
+        {
+          "text": "Marketed under trademarks including Rio Star and Ruby-Sweet",
+          "type": "naming",
+          "cites": [
+            "wikipedia-grapefruit"
+          ]
+        },
+        {
+          "text": "Sister variety Star Ruby is the darkest red, developed from an irradiated Hudson grapefruit",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-grapefruit"
+          ]
+        },
+        {
+          "text": "Deep red flesh colour comes from lycopene",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce-riored",
+            "wikipedia-grapefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-grapefruit",
+          "name": "Wikipedia: Grapefruit",
+          "url": "https://en.wikipedia.org/wiki/Grapefruit",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-riored",
+          "name": "Specialty Produce: Rio Red Grapefruit",
+          "url": "https://specialtyproduce.com/produce/Rio_Red_Grapefruit_24658.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  }
+}
