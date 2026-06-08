@@ -314,21 +314,24 @@ _NOISE_PAREN_WORDS = frozenset({
     'qld', 'only', 'pick', 'pickup', 'up', 'dwarf', 'super', 'semi', 'standard',
     'advanced', 'size', 'orchard', 'tubestock', 'tube', 'stock', 'pot', 'pots',
     'restricted', 'to', 'se', 'south', 'east',
+    'small', 'medium', 'large', 'low', 'chill',
 })
 
 # Multi-word noise phrases stripped from both sides, all species (longest /
-# most specific first). Shipping restrictions, "Advanced Size", bare-rooted
-# (and the common "bear rooted" typo).
+# most specific first). Shipping restrictions (with or without a leading
+# "restricted to" and an optional trailing "only"), container/propagation and
+# chill-requirement noise, bare-rooted (and the common "bear rooted" typo).
+# NOTE: the bare "qld" (no "only") is deliberately NOT stripped -- it marks a
+# real botanical form for some plants (Davidson Plum QLD, QLD Arrowroot).
 _CLEAN_PHRASE_RES = [
     re.compile(p, re.I) for p in (
-        r'restricted to (?:south[\s-]?east|s\.?\s*e\.?|se)\s*qld(?:\s*\[?\s*banana region\s*\]?)?',
-        r'restricted to [a-z/.\s]*?qld(?:\s*\[?\s*banana region\s*\]?)?',
-        r's\.?\s*e\.?\s*qld\s*only',
-        r'south\s*east\s*qld',
-        r's\.?\s*e\.?\s*qld',
-        r'\bqld\s*only\b',
-        r'\bpick\s*up only\b',
-        r'\bpickup only\b',
+        r'restricted to [a-z/.\s]*?qld(?:\s*\[?\s*banana region\s*\]?)?(?:\s+only)?',
+        r'\b(?:south[\s-]?east|s\.?\s*e\.?|se)\s*qld(?:\s+only)?\b',
+        r'\bqld\s+only\b',
+        r'\bpick\s*up(?:\s+only)?\b',
+        r'\btube[\s-]?stock\b',
+        r'\bcutting grown\b',
+        r'\blow[\s-]?chill\b',
         r'\badvanced size\b',
         r'\borchard size\b',
         r'\bbare[\s-]?root(?:ed)?\b',
@@ -336,10 +339,13 @@ _CLEAN_PHRASE_RES = [
     )
 ]
 
-# Single-word noise stripped from both sides, all species.
+# Single-word noise stripped from both sides, all species. "large/medium/small"
+# and "pot/pots" are pure size/container words; cultivar size names that ARE
+# meaningful (Mammoth, Giant, Jumbo) are deliberately NOT here.
 _CLEAN_WORD_RES = [
     re.compile(r'\b' + p + r'\b', re.I) for p in (
-        'grafted', 'bareroot', 'advanced', 'tubestock', 'standard',
+        'grafted', 'bareroot', 'advanced', 'standard',
+        'large', 'medium', 'small', 'pot', 'pots',
     )
 ]
 
@@ -353,15 +359,17 @@ _CLEAN_SIZEFORM_RES = [
     )
 ]
 
-# Volume / pot tokens stripped anywhere. Verified NOT to match "2way" or "R2E2"
-# (no word boundary before the digits there).
+# Volume / pot tokens stripped anywhere. Litres ("2L", "45Ltr") and pot
+# dimensions in mm/cm/ml ("90mm", "20 cm", "100/130mm", "140ml"). Verified NOT
+# to match "2way" or "R2E2" (no word boundary before the digits there).
 _CLEAN_VOLUME_RE = re.compile(r'\b\d+\s*(?:l|lt|ltr|litre|liter)\b', re.I)
-_CLEAN_POTMM_RE = re.compile(r'\b\d+(?:\s*/\s*\d+)*\s*mm\b', re.I)
+_CLEAN_POTMM_RE = re.compile(r'\b\d+(?:\s*/\s*\d+)*\s*(?:mm|cm|ml)\b', re.I)
 
 # A cleaned variety made of nothing but these is not a real cultivar -> reject.
 _SIZEFORM_ONLY = frozenset({
     'dwarf', 'super', 'semi', 'standard', 'advanced', 'grafted', 'tubestock',
     'bareroot', 'bare', 'rooted', 'root', 'size', 'orchard', 'pot', 'pots', 'tube',
+    'large', 'medium', 'small',
 })
 
 

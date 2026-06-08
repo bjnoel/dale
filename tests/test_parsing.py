@@ -102,6 +102,15 @@ class ParseCultivar(unittest.TestCase):
         ("Plum - Santa Rosa (Bear Rooted)",     ("Plum", "Santa Rosa")),  # "bear" typo for "bare"
         # Banana keeps "Dwarf": Dwarf Cavendish is a real cultivar, not a size
         ("Banana - Dwarf Cavendish",            ("Banana", "Dwarf Cavendish")),
+        # Size/container/propagation noise, batch 2 (2026-06-08, real live titles)
+        ("Apple Pink Lady 25cm dwarf",          ("Apple", "Pink Lady")),     # cm + dwarf
+        ("Feijoa Mammoth 20 cm pot",            ("Feijoa", "Mammoth")),      # "20 cm" + pot; keep "Mammoth"
+        ("Loquat Heards Mammoth 25cm",          ("Loquat", "Heards Mammoth")),  # keep "Mammoth" (cultivar)
+        ("Avocado - Bacon (Small)",             ("Avocado", "Bacon")),       # (Small)
+        ("Banana - Cavendish Tube Stock",       ("Banana", "Cavendish")),    # spaced "Tube Stock"
+        ("Banana - Goldfinger SOUTH EAST QLD ONLY", ("Banana", "Goldfinger")),  # SE QLD ONLY (no "restricted to")
+        ("Apple - Anna (Low Chill) Pot",        ("Apple", "Anna")),          # low chill + pot
+        ("Black Sapote - Seedling 140ml",       ("Black Sapote", "Seedling")),  # 140ml stripped
         # Filters
         ("Sapodilla - Seedling",                None),
         ("Mango - Grafted",                     None),
@@ -175,6 +184,11 @@ class ProductVarietySlug(unittest.TestCase):
         self.assertNotEqual(
             cp.product_variety_slug("Banana - Dwarf Cavendish"),
             cp.product_variety_slug("Banana - Cavendish"),
+        )
+        # cm / litre / plain all collapse to one (the live data had ~150 cm fragments).
+        feijoa = ["Feijoa - Mammoth", "Feijoa Mammoth 20 cm pot", "Feijoa - Mammoth 5l"]
+        self.assertEqual(
+            {cp.product_variety_slug(t) for t in feijoa}, {"feijoa-mammoth"}
         )
 
 
