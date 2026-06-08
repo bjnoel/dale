@@ -14,27 +14,39 @@
         {
           "text": "Bred by Zaiger Genetics near Modesto, California, under US Plant Patent 7889",
           "type": "breeding",
-          "cites": ["patent-arcticrose", "davewilson-arcticrose"]
+          "cites": [
+            "patent-arcticrose",
+            "davewilson-arcticrose"
+          ]
         },
         {
           "text": "White-fleshed freestone with mottled red over chalk-white to pale-yellow skin",
           "type": "appearance",
-          "cites": ["patent-arcticrose"]
+          "cites": [
+            "patent-arcticrose"
+          ]
         },
         {
           "text": "Sub-acid, mild, sweet flavour",
           "type": "flavour",
-          "cites": ["patent-arcticrose", "davewilson-arcticrose"]
+          "cites": [
+            "patent-arcticrose",
+            "davewilson-arcticrose"
+          ]
         },
         {
           "text": "Firm enough to handle like a yellow nectarine and holds firm on the tree after ripening",
           "type": "storage",
-          "cites": ["patent-arcticrose"]
+          "cites": [
+            "patent-arcticrose"
+          ]
         },
         {
           "text": "Self-fruitful",
           "type": "pollination",
-          "cites": ["davewilson-arcticrose"]
+          "cites": [
+            "davewilson-arcticrose"
+          ]
         }
       ],
       "sources": [
@@ -68,27 +80,38 @@
         {
           "text": "Bred by David W. Ramming, with colleague Owen L. Tanner, at the USDA stone fruit breeding program in Fresno, California",
           "type": "breeding",
-          "cites": ["usda-crimson-baby"]
+          "cites": [
+            "usda-crimson-baby"
+          ]
         },
         {
           "text": "Large, round fruit with clear yellow flesh",
           "type": "appearance",
-          "cites": ["usda-crimson-baby"]
+          "cites": [
+            "usda-crimson-baby"
+          ]
         },
         {
           "text": "Red overcolour can tint nearly 90 percent of the skin, sometimes lightly dusted with speckles",
           "type": "appearance",
-          "cites": ["usda-crimson-baby"]
+          "cites": [
+            "usda-crimson-baby"
+          ]
         },
         {
           "text": "Clingstone, with flesh that holds to the stone",
           "type": "appearance",
-          "cites": ["usda-crimson-baby", "blerick-crimson-baby"]
+          "cites": [
+            "usda-crimson-baby",
+            "blerick-crimson-baby"
+          ]
         },
         {
           "text": "Early-ripening and sold in Australia as a dwarf tree",
           "type": "season",
-          "cites": ["blerick-crimson-baby"]
+          "cites": [
+            "blerick-crimson-baby"
+          ]
         }
       ],
       "sources": [
@@ -122,27 +145,103 @@
         {
           "text": "Bred in the nineteenth century by nurseryman Thomas Rivers",
           "type": "origin",
-          "cites": ["pomona-early-rivers"]
+          "cites": [
+            "pomona-early-rivers"
+          ]
         },
         {
           "text": "British-raised, self-fertile and early-ripening",
           "type": "origin",
-          "cites": ["rhs-early-rivers"]
+          "cites": [
+            "rhs-early-rivers"
+          ]
         },
         {
           "text": "One of the best early nectarines, ripening early to mid July (UK)",
           "type": "season",
-          "cites": ["pomona-early-rivers"]
+          "cites": [
+            "pomona-early-rivers"
+          ]
         },
         {
           "text": "Greenish-yellow skin flushed scarlet, with pale yellow, soft, juicy flesh",
           "type": "appearance",
-          "cites": ["pomona-early-rivers", "rhs-early-rivers"]
+          "cites": [
+            "pomona-early-rivers",
+            "rhs-early-rivers"
+          ]
         },
         {
           "text": "Compact, bushy, self-fertile tree",
           "type": "pollination",
-          "cites": ["rhs-early-rivers"]
+          "cites": [
+            "rhs-early-rivers"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-early-rivers",
+          "name": "RHS: Prunus persica var. nectarina 'Early Rivers'",
+          "url": "https://www.rhs.org.uk/plants/133330/prunus-persica-var-nectarina-early-rivers-(f)/details",
+          "tier": "third_party"
+        },
+        {
+          "id": "pomona-early-rivers",
+          "name": "Pomona Fruits: Grow Your Own Peaches and Nectarines",
+          "url": "https://www.pomonafruits.co.uk/blog/grow-your-own-peaches-nectarines/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-early-rivers-high-chill": {
+      "slug": "nectarine-early-rivers-high-chill",
+      "species": "Nectarine",
+      "variety": "Early Rivers High Chill",
+      "paragraphs": [
+        "Early Rivers is an old British nectarine bred in the nineteenth century by the noted nurseryman Thomas Rivers of Sawbridgeworth, Hertfordshire. It is valued as one of the best early-ripening nectarines, cropping in early to mid summer (early to mid July in the UK).",
+        "The fruit is roundish and usually large, with greenish-yellow skin almost wholly covered by a scarlet flush. The pale yellow flesh is very soft and juicy with excellent flavour. The tree is compact, bushy and self-fertile, so it fruits without a pollination partner."
+      ],
+      "claims": [
+        {
+          "text": "Bred in the nineteenth century by nurseryman Thomas Rivers",
+          "type": "origin",
+          "cites": [
+            "pomona-early-rivers"
+          ]
+        },
+        {
+          "text": "British-raised, self-fertile and early-ripening",
+          "type": "origin",
+          "cites": [
+            "rhs-early-rivers"
+          ]
+        },
+        {
+          "text": "One of the best early nectarines, ripening early to mid July (UK)",
+          "type": "season",
+          "cites": [
+            "pomona-early-rivers"
+          ]
+        },
+        {
+          "text": "Greenish-yellow skin flushed scarlet, with pale yellow, soft, juicy flesh",
+          "type": "appearance",
+          "cites": [
+            "pomona-early-rivers",
+            "rhs-early-rivers"
+          ]
+        },
+        {
+          "text": "Compact, bushy, self-fertile tree",
+          "type": "pollination",
+          "cites": [
+            "rhs-early-rivers"
+          ]
         }
       ],
       "sources": [
@@ -176,22 +275,34 @@
         {
           "text": "Late-season yellow-fleshed nectarine from California",
           "type": "origin",
-          "cites": ["harvesttotable-nectarines", "battistini-fairlane"]
+          "cites": [
+            "harvesttotable-nectarines",
+            "battistini-fairlane"
+          ]
         },
         {
           "text": "Large, firm fruit with red over yellow skin",
           "type": "appearance",
-          "cites": ["harvesttotable-nectarines", "battistini-fairlane"]
+          "cites": [
+            "harvesttotable-nectarines",
+            "battistini-fairlane"
+          ]
         },
         {
           "text": "Clingstone (flesh clings to the stone)",
           "type": "appearance",
-          "cites": ["harvesttotable-nectarines", "battistini-fairlane"]
+          "cites": [
+            "harvesttotable-nectarines",
+            "battistini-fairlane"
+          ]
         },
         {
           "text": "Very late ripening",
           "type": "season",
-          "cites": ["harvesttotable-nectarines", "battistini-fairlane"]
+          "cites": [
+            "harvesttotable-nectarines",
+            "battistini-fairlane"
+          ]
         }
       ],
       "sources": [
@@ -288,6 +399,67 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "nectarine-firebrite": {
+      "slug": "nectarine-firebrite",
+      "species": "Nectarine",
+      "variety": "Firebrite",
+      "paragraphs": [
+        "Firebrite (also written Fire Brite) is a yellow fleshed nectarine of Californian origin, grown widely as an early to midseason commercial variety. The flesh is firm, smooth and juicy, and it is usually described as semi cling (semi freestone), so the flesh parts from the stone only fairly readily.",
+        "The skin carries a bright red blush over a golden yellow background, giving the fruit a vivid appearance. It ripens around the same window as the Redhaven peach, making it one of the earlier nectarines of its season."
+      ],
+      "claims": [
+        {
+          "text": "Firebrite is a yellow fleshed nectarine originating in California",
+          "type": "origin",
+          "cites": [
+            "harvesttotable-nectarines",
+            "grandpas-firebrite"
+          ]
+        },
+        {
+          "text": "The flesh is firm, smooth and juicy and is semi cling (semi freestone)",
+          "type": "flavour",
+          "cites": [
+            "harvesttotable-nectarines",
+            "grandpas-firebrite"
+          ]
+        },
+        {
+          "text": "Bright red skin over a golden yellow background",
+          "type": "appearance",
+          "cites": [
+            "grandpas-firebrite",
+            "harvesttotable-nectarines"
+          ]
+        },
+        {
+          "text": "Early to midseason ripening, around Redhaven peach time",
+          "type": "season",
+          "cites": [
+            "grandpas-firebrite",
+            "harvesttotable-nectarines"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "harvesttotable-nectarines",
+          "name": "Harvest to Table: Nectarine Varieties",
+          "url": "https://harvesttotable.com/nectarine_varieties_nectarines/",
+          "tier": "third_party"
+        },
+        {
+          "id": "grandpas-firebrite",
+          "name": "Grandpa's Orchard: Firebrite Nectarine",
+          "url": "https://www.grandpasorchard.com/Tree/Prunus-Firebrite",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "nectarine-flavortop": {
       "slug": "nectarine-flavortop",
       "species": "Nectarine",
@@ -300,22 +472,97 @@
         {
           "text": "Developed by the USDA in Fresno, California, and introduced in 1969",
           "type": "origin",
-          "cites": ["ncstate-flavortop", "frutas-flavortop"]
+          "cites": [
+            "ncstate-flavortop",
+            "frutas-flavortop"
+          ]
         },
         {
           "text": "Yellow-fleshed freestone with red over yellow skin",
           "type": "appearance",
-          "cites": ["ncstate-flavortop", "harvesttotable-nectarines"]
+          "cites": [
+            "ncstate-flavortop",
+            "harvesttotable-nectarines"
+          ]
         },
         {
           "text": "Ripens mid to late summer",
           "type": "season",
-          "cites": ["ncstate-flavortop"]
+          "cites": [
+            "ncstate-flavortop"
+          ]
         },
         {
           "text": "Self-fertile, so one tree sets fruit on its own",
           "type": "pollination",
-          "cites": ["ncstate-flavortop"]
+          "cites": [
+            "ncstate-flavortop"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncstate-flavortop",
+          "name": "NC State Extension Gardener Plant Toolbox: Prunus persica 'Flavortop'",
+          "url": "https://plants.ces.ncsu.edu/plants/prunus-persica-flavortop/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "frutas-flavortop",
+          "name": "Frutas-Hortalizas: Nectarine types and varieties",
+          "url": "https://www.frutas-hortalizas.com/Fruits/Types-varieties-Nectarine.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "harvesttotable-nectarines",
+          "name": "Harvest to Table: Nectarine varieties",
+          "url": "https://harvesttotable.com/nectarine_varieties_nectarines/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-flavourtop": {
+      "slug": "nectarine-flavourtop",
+      "species": "Nectarine",
+      "variety": "Flavourtop",
+      "paragraphs": [
+        "Flavortop is a yellow-fleshed freestone nectarine developed by the USDA in Fresno, California, and introduced in 1969. The fruit has red over yellow skin and very flavourful flesh, and it consistently rates among the top-scoring nectarines in taste comparisons. It ripens in mid to late summer.",
+        "The tree carries showy pink spring blossoms and is self-fertile, so a single tree will set fruit without a separate pollinator. Suited to fresh eating, baking and canning."
+      ],
+      "claims": [
+        {
+          "text": "Developed by the USDA in Fresno, California, and introduced in 1969",
+          "type": "origin",
+          "cites": [
+            "ncstate-flavortop",
+            "frutas-flavortop"
+          ]
+        },
+        {
+          "text": "Yellow-fleshed freestone with red over yellow skin",
+          "type": "appearance",
+          "cites": [
+            "ncstate-flavortop",
+            "harvesttotable-nectarines"
+          ]
+        },
+        {
+          "text": "Ripens mid to late summer",
+          "type": "season",
+          "cites": [
+            "ncstate-flavortop"
+          ]
+        },
+        {
+          "text": "Self-fertile, so one tree sets fruit on its own",
+          "type": "pollination",
+          "cites": [
+            "ncstate-flavortop"
+          ]
         }
       ],
       "sources": [
@@ -355,27 +602,40 @@
         {
           "text": "Originated as a chance seedling found in an Auckland garden, New Zealand, in the 1890s",
           "type": "origin",
-          "cites": ["teara-goldmine", "diggers-goldmine"]
+          "cites": [
+            "teara-goldmine",
+            "diggers-goldmine"
+          ]
         },
         {
           "text": "Became a leading commercial nectarine variety in New Zealand and Australia",
           "type": "origin",
-          "cites": ["teara-goldmine"]
+          "cites": [
+            "teara-goldmine"
+          ]
         },
         {
           "text": "White-fleshed, aromatic, sweet and juicy with red over yellow-green skin",
           "type": "flavour",
-          "cites": ["toa-goldmine", "diggers-goldmine"]
+          "cites": [
+            "toa-goldmine",
+            "diggers-goldmine"
+          ]
         },
         {
           "text": "Freestone, with the stone separating cleanly from the flesh",
           "type": "appearance",
-          "cites": ["toa-goldmine"]
+          "cites": [
+            "toa-goldmine"
+          ]
         },
         {
           "text": "Self-fertile, so one tree will set fruit alone",
           "type": "pollination",
-          "cites": ["toa-goldmine", "diggers-goldmine"]
+          "cites": [
+            "toa-goldmine",
+            "diggers-goldmine"
+          ]
         }
       ],
       "sources": [
@@ -402,16 +662,763 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "nectarine-may-grand": {
+      "slug": "nectarine-may-grand",
+      "species": "Nectarine",
+      "variety": "May grand",
+      "paragraphs": [
+        "Maygrand (May Grand) is an early-season nectarine cultivar covered by US Plant Patent 2,794. The patent credits Frederic W. Anderson, working in an experimental orchard near Le Grand, Merced County, California, and records the parents as Red Grand crossed with Early Sun Grand nectarines.",
+        "The patent describes a productive tree bearing large, yellow-fleshed fruit of globose to oblong shape, with a yellow ground colour heavily overspread by red. It ripens very early, around ten days before the Grand River and Sunrise nectarines. May Grand later served as a parent of other early low-chill nectarines such as May Glo."
+      ],
+      "claims": [
+        {
+          "text": "Maygrand (May Grand) is covered by US Plant Patent 2,794, bred by Frederic W. Anderson near Le Grand, California, from Red Grand crossed with Early Sun Grand nectarines",
+          "type": "breeding",
+          "cites": [
+            "patent-maygrand",
+            "patent-mayglo"
+          ]
+        },
+        {
+          "text": "Large, yellow-fleshed fruit of globose to oblong shape with yellow ground colour heavily overspread by red",
+          "type": "appearance",
+          "cites": [
+            "patent-maygrand"
+          ]
+        },
+        {
+          "text": "Very early ripening, around ten days before Grand River and Sunrise nectarines, and later used as a parent of May Glo",
+          "type": "season",
+          "cites": [
+            "patent-maygrand",
+            "patent-mayglo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent-maygrand",
+          "name": "US Plant Patent PP2794: Nectarine tree (Red Grand x Early Sun Grand)",
+          "url": "https://patents.google.com/patent/USPP2794",
+          "tier": "authoritative"
+        },
+        {
+          "id": "patent-mayglo",
+          "name": "US Plant Patent PP5245: Nectarine tree 'May Glo' (cites May Grand, PP2,794)",
+          "url": "https://patents.google.com/patent/USPP5245P/en",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-maygrand": {
+      "slug": "nectarine-maygrand",
+      "species": "Nectarine",
+      "variety": "Maygrand",
+      "paragraphs": [
+        "Maygrand (May Grand) is an early-season nectarine cultivar covered by US Plant Patent 2,794. The patent credits Frederic W. Anderson, working in an experimental orchard near Le Grand, Merced County, California, and records the parents as Red Grand crossed with Early Sun Grand nectarines.",
+        "The patent describes a productive tree bearing large, yellow-fleshed fruit of globose to oblong shape, with a yellow ground colour heavily overspread by red. It ripens very early, around ten days before the Grand River and Sunrise nectarines. May Grand later served as a parent of other early low-chill nectarines such as May Glo."
+      ],
+      "claims": [
+        {
+          "text": "Maygrand (May Grand) is covered by US Plant Patent 2,794, bred by Frederic W. Anderson near Le Grand, California, from Red Grand crossed with Early Sun Grand nectarines",
+          "type": "breeding",
+          "cites": [
+            "patent-maygrand",
+            "patent-mayglo"
+          ]
+        },
+        {
+          "text": "Large, yellow-fleshed fruit of globose to oblong shape with yellow ground colour heavily overspread by red",
+          "type": "appearance",
+          "cites": [
+            "patent-maygrand"
+          ]
+        },
+        {
+          "text": "Very early ripening, around ten days before Grand River and Sunrise nectarines, and later used as a parent of May Glo",
+          "type": "season",
+          "cites": [
+            "patent-maygrand",
+            "patent-mayglo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent-maygrand",
+          "name": "US Plant Patent PP2794: Nectarine tree (Red Grand x Early Sun Grand)",
+          "url": "https://patents.google.com/patent/USPP2794",
+          "tier": "authoritative"
+        },
+        {
+          "id": "patent-mayglo",
+          "name": "US Plant Patent PP5245: Nectarine tree 'May Glo' (cites May Grand, PP2,794)",
+          "url": "https://patents.google.com/patent/USPP5245P/en",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-okee-dokee-flat-style": {
+      "slug": "nectarine-okee-dokee-flat-style",
+      "species": "Nectarine",
+      "variety": "Okee Dokee Flat Style",
+      "paragraphs": [
+        "OkeeDokee is the trademark name for the cultivar Mesembrine, a flat (doughnut or saturn shaped) nectarine. It has firm, juicy yellow flesh and a sweet flavour, with red skin over a yellow background. The stone is semi freestone, so the flesh comes away from the pit fairly easily.",
+        "It is a self pollinating, midseason variety, ripening around February in Australia, and is often marketed as a neat lunchbox fruit because of its squat flat shape."
+      ],
+      "claims": [
+        {
+          "text": "OkeeDokee is the trademark name for the cultivar Mesembrine, a flat (doughnut) nectarine",
+          "type": "naming",
+          "cites": [
+            "shootgardening-mesembrine",
+            "flemings-okeedokee",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Firm juicy yellow flesh, sweet flavour, red over yellow skin",
+          "type": "flavour",
+          "cites": [
+            "flemings-okeedokee",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Semi freestone, flesh separates fairly easily from the stone",
+          "type": "appearance",
+          "cites": [
+            "shootgardening-mesembrine",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Self pollinating, midseason, ripens around February",
+          "type": "pollination",
+          "cites": [
+            "flemings-okeedokee",
+            "daleys-okeedokee",
+            "shootgardening-mesembrine"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "shootgardening-mesembrine",
+          "name": "Shoot Gardening: Prunus persica var. nectarina 'Mesembrine'",
+          "url": "https://www.shootgardening.com/plants/prunus-persica-var-nectarina-mesembrine",
+          "tier": "third_party"
+        },
+        {
+          "id": "flemings-okeedokee",
+          "name": "Fleming's Nurseries: OkeeDokee cv. Mesembrine Flat-style Nectarine",
+          "url": "https://www.flemings.com.au/nurseries/okeedokeer-cv-mesembrine-flat-style-nectarine.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-okeedokee",
+          "name": "Daleys Fruit: Nectarine OkeeDokee cv. Mesembrine",
+          "url": "https://www.daleysfruit.com.au/Buy-Nectarine-Okee-Dokee-Prunus-Persica.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-okeedokee": {
+      "slug": "nectarine-okeedokee",
+      "species": "Nectarine",
+      "variety": "OkeeDokee",
+      "paragraphs": [
+        "OkeeDokee is the trademark name for the cultivar Mesembrine, a flat (doughnut or saturn shaped) nectarine. It has firm, juicy yellow flesh and a sweet flavour, with red skin over a yellow background. The stone is semi freestone, so the flesh comes away from the pit fairly easily.",
+        "It is a self pollinating, midseason variety, ripening around February in Australia, and is often marketed as a neat lunchbox fruit because of its squat flat shape."
+      ],
+      "claims": [
+        {
+          "text": "OkeeDokee is the trademark name for the cultivar Mesembrine, a flat (doughnut) nectarine",
+          "type": "naming",
+          "cites": [
+            "shootgardening-mesembrine",
+            "flemings-okeedokee",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Firm juicy yellow flesh, sweet flavour, red over yellow skin",
+          "type": "flavour",
+          "cites": [
+            "flemings-okeedokee",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Semi freestone, flesh separates fairly easily from the stone",
+          "type": "appearance",
+          "cites": [
+            "shootgardening-mesembrine",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Self pollinating, midseason, ripens around February",
+          "type": "pollination",
+          "cites": [
+            "flemings-okeedokee",
+            "daleys-okeedokee",
+            "shootgardening-mesembrine"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "shootgardening-mesembrine",
+          "name": "Shoot Gardening: Prunus persica var. nectarina 'Mesembrine'",
+          "url": "https://www.shootgardening.com/plants/prunus-persica-var-nectarina-mesembrine",
+          "tier": "third_party"
+        },
+        {
+          "id": "flemings-okeedokee",
+          "name": "Fleming's Nurseries: OkeeDokee cv. Mesembrine Flat-style Nectarine",
+          "url": "https://www.flemings.com.au/nurseries/okeedokeer-cv-mesembrine-flat-style-nectarine.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-okeedokee",
+          "name": "Daleys Fruit: Nectarine OkeeDokee cv. Mesembrine",
+          "url": "https://www.daleysfruit.com.au/Buy-Nectarine-Okee-Dokee-Prunus-Persica.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-okeedokee-mesembrine": {
+      "slug": "nectarine-okeedokee-mesembrine",
+      "species": "Nectarine",
+      "variety": "OkeeDokee Mesembrine",
+      "paragraphs": [
+        "OkeeDokee is the trademark name for the cultivar Mesembrine, a flat (doughnut or saturn shaped) nectarine. It has firm, juicy yellow flesh and a sweet flavour, with red skin over a yellow background. The stone is semi freestone, so the flesh comes away from the pit fairly easily.",
+        "It is a self pollinating, midseason variety, ripening around February in Australia, and is often marketed as a neat lunchbox fruit because of its squat flat shape."
+      ],
+      "claims": [
+        {
+          "text": "OkeeDokee is the trademark name for the cultivar Mesembrine, a flat (doughnut) nectarine",
+          "type": "naming",
+          "cites": [
+            "shootgardening-mesembrine",
+            "flemings-okeedokee",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Firm juicy yellow flesh, sweet flavour, red over yellow skin",
+          "type": "flavour",
+          "cites": [
+            "flemings-okeedokee",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Semi freestone, flesh separates fairly easily from the stone",
+          "type": "appearance",
+          "cites": [
+            "shootgardening-mesembrine",
+            "daleys-okeedokee"
+          ]
+        },
+        {
+          "text": "Self pollinating, midseason, ripens around February",
+          "type": "pollination",
+          "cites": [
+            "flemings-okeedokee",
+            "daleys-okeedokee",
+            "shootgardening-mesembrine"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "shootgardening-mesembrine",
+          "name": "Shoot Gardening: Prunus persica var. nectarina 'Mesembrine'",
+          "url": "https://www.shootgardening.com/plants/prunus-persica-var-nectarina-mesembrine",
+          "tier": "third_party"
+        },
+        {
+          "id": "flemings-okeedokee",
+          "name": "Fleming's Nurseries: OkeeDokee cv. Mesembrine Flat-style Nectarine",
+          "url": "https://www.flemings.com.au/nurseries/okeedokeer-cv-mesembrine-flat-style-nectarine.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-okeedokee",
+          "name": "Daleys Fruit: Nectarine OkeeDokee cv. Mesembrine",
+          "url": "https://www.daleysfruit.com.au/Buy-Nectarine-Okee-Dokee-Prunus-Persica.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-spicezee": {
+      "slug": "nectarine-spicezee",
+      "species": "Nectarine",
+      "variety": "Spicezee",
+      "paragraphs": [
+        "Spicezee (Spice Zee NectaPlum) is a white-fleshed interspecific cross of nectarine and plum, the first NectaPlum from the Zaiger Hybrids breeding program in Modesto, California. The US plant patent (PP13503) lists Gary Zaiger, Leith Gardner and Grant Zaiger as breeders, with parents tracing to nectarine, peach and plum (including Red Beaut plum).",
+        "The fruit is a freestone with unusual maroon-red skin and white flesh, and its flavour shows traits of both parents. The tree is self-fertile and notably ornamental, opening pink blossom in spring followed by reddish new foliage that matures to green over summer. It ripens in early to mid summer."
+      ],
+      "claims": [
+        {
+          "text": "Spicezee is the first NectaPlum from Zaiger Hybrids, a nectarine x plum interspecific cross bred by Gary Zaiger, Leith Gardner and Grant Zaiger, with nectarine, peach and plum (Red Beaut) ancestry",
+          "type": "breeding",
+          "cites": [
+            "patent-spicezee",
+            "davewilson-spicezee"
+          ]
+        },
+        {
+          "text": "White flesh, freestone, with maroon-red skin and a flavour combining nectarine and plum traits",
+          "type": "flavour",
+          "cites": [
+            "patent-spicezee",
+            "davewilson-spicezee"
+          ]
+        },
+        {
+          "text": "Self-fertile, with ornamental pink spring bloom and reddish new foliage that matures to green; ripens early to mid summer",
+          "type": "pollination",
+          "cites": [
+            "patent-spicezee",
+            "davewilson-spicezee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent-spicezee",
+          "name": "US Plant Patent PP13503: Interspecific tree 'Spicezee'",
+          "url": "https://patents.google.com/patent/USPP13503",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson-spicezee",
+          "name": "Dave Wilson Nursery: Spice Zee NectaPlum",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/nectaplum-interspecific/spice_zee/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-spicezee-interspecific": {
+      "slug": "nectarine-spicezee-interspecific",
+      "species": "Nectarine",
+      "variety": "Spicezee interspecific",
+      "paragraphs": [
+        "Spicezee (Spice Zee NectaPlum) is a white-fleshed interspecific cross of nectarine and plum, the first NectaPlum from the Zaiger Hybrids breeding program in Modesto, California. The US plant patent (PP13503) lists Gary Zaiger, Leith Gardner and Grant Zaiger as breeders, with parents tracing to nectarine, peach and plum (including Red Beaut plum).",
+        "The fruit is a freestone with unusual maroon-red skin and white flesh, and its flavour shows traits of both parents. The tree is self-fertile and notably ornamental, opening pink blossom in spring followed by reddish new foliage that matures to green over summer. It ripens in early to mid summer."
+      ],
+      "claims": [
+        {
+          "text": "Spicezee is the first NectaPlum from Zaiger Hybrids, a nectarine x plum interspecific cross bred by Gary Zaiger, Leith Gardner and Grant Zaiger, with nectarine, peach and plum (Red Beaut) ancestry",
+          "type": "breeding",
+          "cites": [
+            "patent-spicezee",
+            "davewilson-spicezee"
+          ]
+        },
+        {
+          "text": "White flesh, freestone, with maroon-red skin and a flavour combining nectarine and plum traits",
+          "type": "flavour",
+          "cites": [
+            "patent-spicezee",
+            "davewilson-spicezee"
+          ]
+        },
+        {
+          "text": "Self-fertile, with ornamental pink spring bloom and reddish new foliage that matures to green; ripens early to mid summer",
+          "type": "pollination",
+          "cites": [
+            "patent-spicezee",
+            "davewilson-spicezee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent-spicezee",
+          "name": "US Plant Patent PP13503: Interspecific tree 'Spicezee'",
+          "url": "https://patents.google.com/patent/USPP13503",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson-spicezee",
+          "name": "Dave Wilson Nursery: Spice Zee NectaPlum",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/nectaplum-interspecific/spice_zee/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-sugar-and-spice-interspecific": {
+      "slug": "nectarine-sugar-and-spice-interspecific",
+      "species": "Nectarine",
+      "variety": "Sugar and Spice interspecific",
+      "paragraphs": [
+        "Sugar and Spice (sold as Sugar N Spice in Fleming's F2 Fruit range) is an interspecific nectarine, a cross between a nectarine and a plum, the type of hybrid often called a nectaplum. These crosses were pioneered by the Californian breeder Floyd Zaiger and combine nectarine smoothness with plum sweetness.",
+        "The fruit has crisp white flesh and a rustic red over yellow skin, with a sweet flavour balanced by mild acidity. It is a clingstone, self fertile, and ripens midsummer (around January to March in Australia)."
+      ],
+      "claims": [
+        {
+          "text": "It is an interspecific nectarine, a nectarine x plum hybrid (a nectaplum), a hybrid type developed by Floyd Zaiger",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-nectaplum",
+            "flemings-sugarnspice"
+          ]
+        },
+        {
+          "text": "Sold in Fleming's F2 Fruit range as Sugar N Spice",
+          "type": "naming",
+          "cites": [
+            "flemings-sugarnspice",
+            "daleys-sugarnspice"
+          ]
+        },
+        {
+          "text": "Crisp white flesh, rustic red over yellow skin, sweet with mild acidity",
+          "type": "flavour",
+          "cites": [
+            "flemings-sugarnspice",
+            "daleys-sugarnspice"
+          ]
+        },
+        {
+          "text": "Clingstone, self fertile, ripens around January to March in Australia",
+          "type": "pollination",
+          "cites": [
+            "daleys-sugarnspice",
+            "flemings-sugarnspice"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-nectaplum",
+          "name": "Wikipedia: Nectaplum",
+          "url": "https://en.wikipedia.org/wiki/Nectaplum",
+          "tier": "third_party"
+        },
+        {
+          "id": "flemings-sugarnspice",
+          "name": "Fleming's Nurseries: F2 Fruit Sugar N Spice Nectarine x Plum",
+          "url": "https://www.flemings.com.au/nurseries/f2-fruitr-sugar-n-spice-pbr-nectarine-x-plum.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-sugarnspice",
+          "name": "Daleys Fruit: Sugar N Spice Nectarine x Plum",
+          "url": "https://www.daleysfruit.com.au/Sugar-N-Spice-Nectarine-x-Plum.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-sunlite": {
+      "slug": "nectarine-sunlite",
+      "species": "Nectarine",
+      "variety": "Sunlite",
+      "paragraphs": [
+        "Sunlite is a low-chill, yellow-fleshed nectarine of US origin, registered in the South African variety system maintained by SAPO Trust. SAPO lists it as a low-chill variety with strong, semi-upright vigour, dark red skin marked with many lenticels, and fine, melting, semi-acid flesh.",
+        "It produces medium fruit (around 115 grams on SAPO's record) of long shape, and Australian growers describe it as a self-fertile, freestone variety that ripens mid-season. The low chill requirement suits coastal and warm-temperate gardens."
+      ],
+      "claims": [
+        {
+          "text": "Sunlite is a low-chill, yellow-fleshed nectarine of US origin, registered with SAPO Trust, with dark red lenticel-marked skin and fine melting semi-acid flesh",
+          "type": "origin",
+          "cites": [
+            "sapo-sunlite"
+          ]
+        },
+        {
+          "text": "Produces medium fruit averaging about 115 grams of long shape",
+          "type": "measurement",
+          "cites": [
+            "sapo-sunlite"
+          ]
+        },
+        {
+          "text": "Self-fertile and freestone, ripening mid-season and suited to low-chill coastal and warm-temperate areas",
+          "type": "climate",
+          "cites": [
+            "sapo-sunlite",
+            "gsnursery-sunlite"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sapo-sunlite",
+          "name": "SAPO Trust: Sunlite nectarine variety record",
+          "url": "https://www.saplant.co.za/varieties/nectarines/sunlite/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gsnursery-sunlite",
+          "name": "Great Southern Nurseries: Sunlite Nectarine",
+          "url": "https://www.greatsouthernnurseries.com.au/product-page/prunus-persica-nucipersica-sunlite-nectarine",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-sunraycer": {
+      "slug": "nectarine-sunraycer",
+      "species": "Nectarine",
+      "variety": "Sunraycer",
+      "paragraphs": [
+        "Sunraycer is a low-chill, yellow-fleshed nectarine released in 1993 and documented by the University of Florida (UF/IFAS), which lists it as a non-patented melting-flesh cultivar with a chill requirement of about 275 chill units. That low requirement makes it suited to warm-winter and subtropical districts where standard nectarines struggle.",
+        "UF/IFAS records describe large, semi-clingstone fruit with an extensive bright red blush over a yellow ground colour and good resistance to bacterial spot. It is an early-ripening variety, and Australian growers report a self-fertile tree fruiting in the low-chill season from spring into early summer."
+      ],
+      "claims": [
+        {
+          "text": "Sunraycer is a non-patented melting-flesh nectarine released in 1993 with a chill requirement of about 275 chill units",
+          "type": "chill",
+          "cites": [
+            "ufifas-sunraycer"
+          ]
+        },
+        {
+          "text": "Yellow-fleshed, large, semi-clingstone fruit with an extensive bright red blush over yellow and good resistance to bacterial spot",
+          "type": "appearance",
+          "cites": [
+            "ufifas-sunraycer",
+            "daleys-sunraycer"
+          ]
+        },
+        {
+          "text": "Low-chill and early-ripening, self-fertile in cultivation, suiting subtropical and warm-temperate districts",
+          "type": "climate",
+          "cites": [
+            "ufifas-sunraycer",
+            "daleys-sunraycer"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-sunraycer",
+          "name": "UF/IFAS MG374: Florida Peach and Nectarine Varieties",
+          "url": "https://ask.ifas.ufl.edu/publication/MG374",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-sunraycer",
+          "name": "Daleys Fruit: Nectarine Sunraycer",
+          "url": "https://www.daleysfruit.com.au/buy/nectarine-sunraycer-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-trixzie-nactazee": {
+      "slug": "nectarine-trixzie-nactazee",
+      "species": "Nectarine",
+      "variety": "Trixzie Nactazee",
+      "paragraphs": [
+        "Trixzie Nectazee is the Australian (Flemings) brand name for Necta Zee, a genetic-dwarf yellow nectarine from Floyd Zaiger's breeding program in Modesto, California (US plant patent PP6283). It was selected from a cross involving Early Sun Grand nectarine and a dwarf nectarine seedling, and its compact size is genetic rather than rootstock-driven.",
+        "The tree stays naturally small, around 1.5 to 2 metres, which suits pots and small gardens, yet it carries full-size fruit. The nectarines are yellow-fleshed and freestone with red skin. It is self-fertile, so a single tree will set fruit, and it ripens in summer."
+      ],
+      "claims": [
+        {
+          "text": "Trixzie Nectazee is the Flemings brand name for Necta Zee, a genetic-dwarf nectarine bred by Zaiger in Modesto, California, covered by US Plant Patent PP6283 and selected from a cross involving Early Sun Grand nectarine and a dwarf nectarine seedling",
+          "type": "breeding",
+          "cites": [
+            "patent-nectazee",
+            "davewilson-nectazee",
+            "flemings-nectazee"
+          ]
+        },
+        {
+          "text": "Naturally compact tree of roughly 1.5 to 2 metres that bears full-size yellow-fleshed, freestone, red-skinned fruit",
+          "type": "appearance",
+          "cites": [
+            "flemings-nectazee",
+            "daleys-nectazee"
+          ]
+        },
+        {
+          "text": "Self-fertile, fruiting on a single tree, ripening in summer",
+          "type": "pollination",
+          "cites": [
+            "flemings-nectazee",
+            "daleys-nectazee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent-nectazee",
+          "name": "US Plant Patent PP6283: Nectarine tree 'Necta Zee'",
+          "url": "https://patents.google.com/patent/USPP6283",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson-nectazee",
+          "name": "Dave Wilson Nursery: Necta Zee Miniature Nectarine",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/nectarine-yellow/necta_zee/",
+          "tier": "nursery"
+        },
+        {
+          "id": "flemings-nectazee",
+          "name": "Flemings Nurseries: Trixzie Nectazee Miniature Nectarine",
+          "url": "https://www.flemings.com.au/nurseries/trixzier-nectazee-pbr-miniature-nectarine.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-nectazee",
+          "name": "Daleys Fruit: Dwarf Nectarine Trixzie Nectazee",
+          "url": "https://www.daleysfruit.com.au/buy/dwarf-nectarine-nectazee-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "nectarine-trixzie-nectazee": {
+      "slug": "nectarine-trixzie-nectazee",
+      "species": "Nectarine",
+      "variety": "Trixzie Nectazee",
+      "paragraphs": [
+        "Trixzie Nectazee is the Australian (Flemings) brand name for Necta Zee, a genetic-dwarf yellow nectarine from Floyd Zaiger's breeding program in Modesto, California (US plant patent PP6283). It was selected from a cross involving Early Sun Grand nectarine and a dwarf nectarine seedling, and its compact size is genetic rather than rootstock-driven.",
+        "The tree stays naturally small, around 1.5 to 2 metres, which suits pots and small gardens, yet it carries full-size fruit. The nectarines are yellow-fleshed and freestone with red skin. It is self-fertile, so a single tree will set fruit, and it ripens in summer."
+      ],
+      "claims": [
+        {
+          "text": "Trixzie Nectazee is the Flemings brand name for Necta Zee, a genetic-dwarf nectarine bred by Zaiger in Modesto, California, covered by US Plant Patent PP6283 and selected from a cross involving Early Sun Grand nectarine and a dwarf nectarine seedling",
+          "type": "breeding",
+          "cites": [
+            "patent-nectazee",
+            "davewilson-nectazee",
+            "flemings-nectazee"
+          ]
+        },
+        {
+          "text": "Naturally compact tree of roughly 1.5 to 2 metres that bears full-size yellow-fleshed, freestone, red-skinned fruit",
+          "type": "appearance",
+          "cites": [
+            "flemings-nectazee",
+            "daleys-nectazee"
+          ]
+        },
+        {
+          "text": "Self-fertile, fruiting on a single tree, ripening in summer",
+          "type": "pollination",
+          "cites": [
+            "flemings-nectazee",
+            "daleys-nectazee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent-nectazee",
+          "name": "US Plant Patent PP6283: Nectarine tree 'Necta Zee'",
+          "url": "https://patents.google.com/patent/USPP6283",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson-nectazee",
+          "name": "Dave Wilson Nursery: Necta Zee Miniature Nectarine",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/nectarine-yellow/necta_zee/",
+          "tier": "nursery"
+        },
+        {
+          "id": "flemings-nectazee",
+          "name": "Flemings Nurseries: Trixzie Nectazee Miniature Nectarine",
+          "url": "https://www.flemings.com.au/nurseries/trixzier-nectazee-pbr-miniature-nectarine.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-nectazee",
+          "name": "Daleys Fruit: Dwarf Nectarine Trixzie Nectazee",
+          "url": "https://www.daleysfruit.com.au/buy/dwarf-nectarine-nectazee-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
   },
   "skipped": [
+    "nectarine-2way-goldmine-maygrand",
+    "nectarine-2way-goldmine-nectared",
+    "nectarine-2way-nectared-peach-goldmine",
+    "nectarine-2way-okee-dokee-peach",
+    "nectarine-cannon-ball",
+    "nectarine-cannonball",
+    "nectarine-donut",
+    "nectarine-earliglo",
+    "nectarine-emillie",
+    "nectarine-emily-kirsten",
+    "nectarine-flat-tango-s",
     "nectarine-necta-red",
     "nectarine-nectared",
+    "nectarine-nectarina",
+    "nectarine-no-bubble-no-trouble",
+    "nectarine-peacharine",
+    "nectarine-peachcot",
+    "nectarine-queen-giant",
     "nectarine-royal-gem",
+    "nectarine-sun-bob",
     "nectarine-sun-snow",
+    "nectarine-sun-wright",
+    "nectarine-sunbob",
     "nectarine-sundowner",
+    "nectarine-sunny-belle",
+    "nectarine-sunnybelle",
     "nectarine-sunset",
+    "nectarine-sunset-backyard-beauty",
+    "nectarine-sunsnow",
+    "nectarine-sunwright",
+    "nectarine-sweet-sensation-p-white-flesh",
+    "nectarine-sweetsensation",
+    "nectarine-tango-s-flat",
     "nectarine-tuscany",
+    "nectarine-valley-gold-tm",
     "nectarine-white-satin"
   ]
 }

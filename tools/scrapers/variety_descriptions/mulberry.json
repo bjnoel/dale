@@ -54,6 +54,58 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mulberry-black-classic": {
+      "slug": "mulberry-black-classic",
+      "species": "Mulberry",
+      "variety": "Black Classic",
+      "paragraphs": [
+        "The black mulberry (Morus nigra) is native to south-western Asia and has been cultivated so long its exact wild range is unknown. Its fruit ripens to a dark purple, almost black, and is richly flavoured, with an intense sweetness balanced by a pleasant tartness that is generally regarded as the best tasting of the mulberries.",
+        "The berries are relatively large and juicy and stain readily, so they are usually eaten fresh or made into jams, pies and cordials rather than shipped."
+      ],
+      "claims": [
+        {
+          "text": "Morus nigra is native to south-western Asia, long cultivated",
+          "type": "origin",
+          "cites": [
+            "wikipedia-morus-nigra"
+          ]
+        },
+        {
+          "text": "Fruit is dark purple, almost black when ripe",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-morus-nigra",
+            "daleys-black-mulberry"
+          ]
+        },
+        {
+          "text": "Richly flavoured, sweet with a slightly acidic tang, considered the best-flavoured mulberry",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-morus-nigra",
+            "daleys-black-mulberry"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-morus-nigra",
+          "name": "Wikipedia: Morus nigra",
+          "url": "https://en.wikipedia.org/wiki/Morus_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-black-mulberry",
+          "name": "Daleys Fruit: Black Mulberry",
+          "url": "https://www.daleysfruit.com.au/plant/Black-Mulberry.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "mulberry-black-english": {
       "slug": "mulberry-black-english",
       "species": "Mulberry",
@@ -66,27 +118,38 @@
         {
           "text": "Black English is a common name for the true black mulberry, Morus nigra",
           "type": "naming",
-          "cites": ["sba-hicks", "wiki-nigra"]
+          "cites": [
+            "sba-hicks",
+            "wiki-nigra"
+          ]
         },
         {
           "text": "Morus nigra is native to south-west Asia (Mesopotamia and Persia)",
           "type": "origin",
-          "cites": ["wiki-nigra"]
+          "cites": [
+            "wiki-nigra"
+          ]
         },
         {
           "text": "Black English is one of the main M. nigra varieties grown in Australia, alongside Hicks Fancy",
           "type": "origin",
-          "cites": ["sba-hicks"]
+          "cites": [
+            "sba-hicks"
+          ]
         },
         {
           "text": "Black mulberry has the best-flavoured fruit of the mulberry species",
           "type": "flavour",
-          "cites": ["wiki-nigra"]
+          "cites": [
+            "wiki-nigra"
+          ]
         },
         {
           "text": "The berries are large and dark purple to almost black, balancing sweetness and tartness",
           "type": "appearance",
-          "cites": ["wiki-nigra"]
+          "cites": [
+            "wiki-nigra"
+          ]
         }
       ],
       "sources": [
@@ -108,6 +171,255 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mulberry-black-plant": {
+      "slug": "mulberry-black-plant",
+      "species": "Mulberry",
+      "variety": "BLACK Plant",
+      "paragraphs": [
+        "The black mulberry (Morus nigra) is native to south-western Asia and has been cultivated so long its exact wild range is unknown. Its fruit ripens to a dark purple, almost black, and is richly flavoured, with an intense sweetness balanced by a pleasant tartness that is generally regarded as the best tasting of the mulberries.",
+        "The berries are relatively large and juicy and stain readily, so they are usually eaten fresh or made into jams, pies and cordials rather than shipped."
+      ],
+      "claims": [
+        {
+          "text": "Morus nigra is native to south-western Asia, long cultivated",
+          "type": "origin",
+          "cites": [
+            "wikipedia-morus-nigra"
+          ]
+        },
+        {
+          "text": "Fruit is dark purple, almost black when ripe",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-morus-nigra",
+            "daleys-black-mulberry"
+          ]
+        },
+        {
+          "text": "Richly flavoured, sweet with a slightly acidic tang, considered the best-flavoured mulberry",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-morus-nigra",
+            "daleys-black-mulberry"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-morus-nigra",
+          "name": "Wikipedia: Morus nigra",
+          "url": "https://en.wikipedia.org/wiki/Morus_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-black-mulberry",
+          "name": "Daleys Fruit: Black Mulberry",
+          "url": "https://www.daleysfruit.com.au/plant/Black-Mulberry.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mulberry-english-black": {
+      "slug": "mulberry-english-black",
+      "species": "Mulberry",
+      "variety": "English Black",
+      "paragraphs": [
+        "Black English is a common name for the true black mulberry (Morus nigra), native to south-west Asia (the highlands of Mesopotamia and Persia). It is one of the main black mulberry varieties grown in Australia, alongside Hicks Fancy.",
+        "Black mulberry produces the best-flavoured fruit of the mulberries, with large, juicy, dark purple to almost black berries that balance rich sweetness and tartness. It is prized for fresh eating and cooking, though the dark juice stains readily."
+      ],
+      "claims": [
+        {
+          "text": "Black English is a common name for the true black mulberry, Morus nigra",
+          "type": "naming",
+          "cites": [
+            "sba-hicks",
+            "wiki-nigra"
+          ]
+        },
+        {
+          "text": "Morus nigra is native to south-west Asia (Mesopotamia and Persia)",
+          "type": "origin",
+          "cites": [
+            "wiki-nigra"
+          ]
+        },
+        {
+          "text": "Black English is one of the main M. nigra varieties grown in Australia, alongside Hicks Fancy",
+          "type": "origin",
+          "cites": [
+            "sba-hicks"
+          ]
+        },
+        {
+          "text": "Black mulberry has the best-flavoured fruit of the mulberry species",
+          "type": "flavour",
+          "cites": [
+            "wiki-nigra"
+          ]
+        },
+        {
+          "text": "The berries are large and dark purple to almost black, balancing sweetness and tartness",
+          "type": "appearance",
+          "cites": [
+            "wiki-nigra"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-nigra",
+          "name": "Wikipedia: Morus nigra",
+          "url": "https://en.wikipedia.org/wiki/Morus_nigra",
+          "tier": "third_party"
+        },
+        {
+          "id": "sba-hicks",
+          "name": "SBA's Kitchen: Mulberry Hicks Fancy (Morus nigra)",
+          "url": "https://sbaskitchen.com/the-garden/trees/mulberry-hicks-fancy-morus-nigra/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mulberry-hick-s-fancy": {
+      "slug": "mulberry-hick-s-fancy",
+      "species": "Mulberry",
+      "variety": "Hick s Fancy",
+      "paragraphs": [
+        "Hicks Fancy is a black mulberry (Morus nigra) and, along with Black English, is one of the main M. nigra varieties grown in Australia. It is a smaller tree than the standard black mulberry, which makes it more manageable in suburban gardens.",
+        "It is valued for very good, consistent crops of slightly smaller but still large, luscious berries. When fully ripe the fruit is very sweet and juicy with a slight tartness, picked fresh over an extended season."
+      ],
+      "claims": [
+        {
+          "text": "Hicks Fancy is a Morus nigra (black mulberry)",
+          "type": "naming",
+          "cites": [
+            "sba-hicks",
+            "daleys-hicks"
+          ]
+        },
+        {
+          "text": "Along with Black English it is one of the main M. nigra varieties grown in Australia",
+          "type": "origin",
+          "cites": [
+            "sba-hicks"
+          ]
+        },
+        {
+          "text": "It is a smaller tree than the standard black mulberry",
+          "type": "growing",
+          "cites": [
+            "sba-hicks",
+            "daleys-hicks"
+          ]
+        },
+        {
+          "text": "It bears very good crops of slightly smaller but still large berries",
+          "type": "appearance",
+          "cites": [
+            "sba-hicks"
+          ]
+        },
+        {
+          "text": "Ripe fruit is very sweet and juicy with a slight tartness",
+          "type": "flavour",
+          "cites": [
+            "sba-hicks"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sba-hicks",
+          "name": "SBA's Kitchen: Mulberry Hicks Fancy (Morus nigra)",
+          "url": "https://sbaskitchen.com/the-garden/trees/mulberry-hicks-fancy-morus-nigra/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-hicks",
+          "name": "Daleys Fruit: Mulberry Hicks Fancy Tree",
+          "url": "https://www.daleysfruit.com.au/buy/mulberry-hicks-fancy-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mulberry-hicks": {
+      "slug": "mulberry-hicks",
+      "species": "Mulberry",
+      "variety": "Hicks",
+      "paragraphs": [
+        "Hicks Fancy is a black mulberry (Morus nigra) and, along with Black English, is one of the main M. nigra varieties grown in Australia. It is a smaller tree than the standard black mulberry, which makes it more manageable in suburban gardens.",
+        "It is valued for very good, consistent crops of slightly smaller but still large, luscious berries. When fully ripe the fruit is very sweet and juicy with a slight tartness, picked fresh over an extended season."
+      ],
+      "claims": [
+        {
+          "text": "Hicks Fancy is a Morus nigra (black mulberry)",
+          "type": "naming",
+          "cites": [
+            "sba-hicks",
+            "daleys-hicks"
+          ]
+        },
+        {
+          "text": "Along with Black English it is one of the main M. nigra varieties grown in Australia",
+          "type": "origin",
+          "cites": [
+            "sba-hicks"
+          ]
+        },
+        {
+          "text": "It is a smaller tree than the standard black mulberry",
+          "type": "growing",
+          "cites": [
+            "sba-hicks",
+            "daleys-hicks"
+          ]
+        },
+        {
+          "text": "It bears very good crops of slightly smaller but still large berries",
+          "type": "appearance",
+          "cites": [
+            "sba-hicks"
+          ]
+        },
+        {
+          "text": "Ripe fruit is very sweet and juicy with a slight tartness",
+          "type": "flavour",
+          "cites": [
+            "sba-hicks"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sba-hicks",
+          "name": "SBA's Kitchen: Mulberry Hicks Fancy (Morus nigra)",
+          "url": "https://sbaskitchen.com/the-garden/trees/mulberry-hicks-fancy-morus-nigra/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-hicks",
+          "name": "Daleys Fruit: Mulberry Hicks Fancy Tree",
+          "url": "https://www.daleysfruit.com.au/buy/mulberry-hicks-fancy-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "mulberry-hicks-fancy": {
       "slug": "mulberry-hicks-fancy",
       "species": "Mulberry",
@@ -120,27 +432,39 @@
         {
           "text": "Hicks Fancy is a Morus nigra (black mulberry)",
           "type": "naming",
-          "cites": ["sba-hicks", "daleys-hicks"]
+          "cites": [
+            "sba-hicks",
+            "daleys-hicks"
+          ]
         },
         {
           "text": "Along with Black English it is one of the main M. nigra varieties grown in Australia",
           "type": "origin",
-          "cites": ["sba-hicks"]
+          "cites": [
+            "sba-hicks"
+          ]
         },
         {
           "text": "It is a smaller tree than the standard black mulberry",
           "type": "growing",
-          "cites": ["sba-hicks", "daleys-hicks"]
+          "cites": [
+            "sba-hicks",
+            "daleys-hicks"
+          ]
         },
         {
           "text": "It bears very good crops of slightly smaller but still large berries",
           "type": "appearance",
-          "cites": ["sba-hicks"]
+          "cites": [
+            "sba-hicks"
+          ]
         },
         {
           "text": "Ripe fruit is very sweet and juicy with a slight tartness",
           "type": "flavour",
-          "cites": ["sba-hicks"]
+          "cites": [
+            "sba-hicks"
+          ]
         }
       ],
       "sources": [
@@ -174,22 +498,34 @@
         {
           "text": "King White is Morus macroura, the shahtoot or king mulberry",
           "type": "naming",
-          "cites": ["wiki-macroura", "gf-kingwhite"]
+          "cites": [
+            "wiki-macroura",
+            "gf-kingwhite"
+          ]
         },
         {
           "text": "Morus macroura is native to Tibet and the Himalayas",
           "type": "origin",
-          "cites": ["wiki-macroura"]
+          "cites": [
+            "wiki-macroura"
+          ]
         },
         {
           "text": "Fruit is very long, far longer than common mulberries",
           "type": "appearance",
-          "cites": ["specialty-kingwhite", "gf-kingwhite"]
+          "cites": [
+            "specialty-kingwhite",
+            "gf-kingwhite"
+          ]
         },
         {
           "text": "Ripe fruit is white or pale and honey sweet with low acidity",
           "type": "flavour",
-          "cites": ["wiki-macroura", "specialty-kingwhite", "gf-kingwhite"]
+          "cites": [
+            "wiki-macroura",
+            "specialty-kingwhite",
+            "gf-kingwhite"
+          ]
         }
       ],
       "sources": [
@@ -217,6 +553,79 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mulberry-pakistan": {
+      "slug": "mulberry-pakistan",
+      "species": "Mulberry",
+      "variety": "Pakistan",
+      "paragraphs": [
+        "Pakistan (often sold as Pakistan Black) is a long-fruited Morus macroura, selected in Islamabad and sometimes mislabelled as Morus alba. Its berries are exceptionally long, far longer than common mulberries, and ripen from red to a dark purple, almost black.",
+        "The flavour is sweet and complex, good in the red stage as well as when fully dark. The fruit is firmer than most mulberries and reported to stain less than other dark cultivars, helped by a slightly thicker skin, making it cleaner to eat fresh."
+      ],
+      "claims": [
+        {
+          "text": "Pakistan is a Morus macroura selected in Islamabad, sometimes mislabelled as Morus alba",
+          "type": "origin",
+          "cites": [
+            "cricket-hill",
+            "crfg-cultivar"
+          ]
+        },
+        {
+          "text": "The fruit is exceptionally long, far longer than common mulberries",
+          "type": "appearance",
+          "cites": [
+            "cricket-hill",
+            "specialty-pakistan"
+          ]
+        },
+        {
+          "text": "Fruit ripens from red to dark purple, almost black",
+          "type": "appearance",
+          "cites": [
+            "specialty-pakistan"
+          ]
+        },
+        {
+          "text": "The flavour is sweet and fairly low in acid",
+          "type": "flavour",
+          "cites": [
+            "crfg-cultivar",
+            "specialty-pakistan"
+          ]
+        },
+        {
+          "text": "The fruit is firmer and stains less than other dark mulberries due to a thicker skin",
+          "type": "appearance",
+          "cites": [
+            "specialty-pakistan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cricket-hill",
+          "name": "Cricket Hill Garden: Morus macroura 'Pakistan' mulberry",
+          "url": "https://www.treepeony.com/products/mulberry-pakistan",
+          "tier": "nursery"
+        },
+        {
+          "id": "specialty-pakistan",
+          "name": "Specialty Produce: Pakistan Mulberries",
+          "url": "https://specialtyproduce.com/produce/Pakistan_Mulberries_6972.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg-cultivar",
+          "name": "Cultivar Guide: Mulberry ('Pakistan' Morus macroura)",
+          "url": "https://cultivar.guide/mulberry",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "mulberry-pakistan-black": {
       "slug": "mulberry-pakistan-black",
       "species": "Mulberry",
@@ -229,27 +638,40 @@
         {
           "text": "Pakistan is a Morus macroura selected in Islamabad, sometimes mislabelled as Morus alba",
           "type": "origin",
-          "cites": ["cricket-hill", "crfg-cultivar"]
+          "cites": [
+            "cricket-hill",
+            "crfg-cultivar"
+          ]
         },
         {
           "text": "The fruit is exceptionally long, far longer than common mulberries",
           "type": "appearance",
-          "cites": ["cricket-hill", "specialty-pakistan"]
+          "cites": [
+            "cricket-hill",
+            "specialty-pakistan"
+          ]
         },
         {
           "text": "Fruit ripens from red to dark purple, almost black",
           "type": "appearance",
-          "cites": ["specialty-pakistan"]
+          "cites": [
+            "specialty-pakistan"
+          ]
         },
         {
           "text": "The flavour is sweet and fairly low in acid",
           "type": "flavour",
-          "cites": ["crfg-cultivar", "specialty-pakistan"]
+          "cites": [
+            "crfg-cultivar",
+            "specialty-pakistan"
+          ]
         },
         {
           "text": "The fruit is firmer and stains less than other dark mulberries due to a thicker skin",
           "type": "appearance",
-          "cites": ["specialty-pakistan"]
+          "cites": [
+            "specialty-pakistan"
+          ]
         }
       ],
       "sources": [
@@ -289,27 +711,40 @@
         {
           "text": "Red Shahtoot belongs to Morus macroura, the long shahtoot mulberries",
           "type": "naming",
-          "cites": ["wiki-macroura", "gallifrey", "daleys-red-shahtoot"]
+          "cites": [
+            "wiki-macroura",
+            "gallifrey",
+            "daleys-red-shahtoot"
+          ]
         },
         {
           "text": "Morus macroura is native to Tibet and the Himalayas",
           "type": "origin",
-          "cites": ["wiki-macroura"]
+          "cites": [
+            "wiki-macroura"
+          ]
         },
         {
           "text": "Fruit is very long, far longer than common mulberries",
           "type": "appearance",
-          "cites": ["gallifrey", "daleys-red-shahtoot"]
+          "cites": [
+            "gallifrey",
+            "daleys-red-shahtoot"
+          ]
         },
         {
           "text": "The red shahtoot has red fruit that stains, unlike the non-staining white shahtoot",
           "type": "appearance",
-          "cites": ["gallifrey"]
+          "cites": [
+            "gallifrey"
+          ]
         },
         {
           "text": "Shahtoot mulberries are described as honey sweet, with flavour rated close to the black mulberry",
           "type": "flavour",
-          "cites": ["gallifrey"]
+          "cites": [
+            "gallifrey"
+          ]
         }
       ],
       "sources": [
@@ -337,6 +772,146 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mulberry-tree-red-shahtoot": {
+      "slug": "mulberry-tree-red-shahtoot",
+      "species": "Mulberry",
+      "variety": "Tree Red Shahtoot",
+      "paragraphs": [
+        "Red Shahtoot is a long-fruited mulberry of the Morus macroura group (the shahtoot or king mulberries), native to Tibet and the Himalayas. Its berries are notably elongated, far longer than common mulberries, and ripen to a deep red.",
+        "Unlike the white shahtoot, the red shahtoot has red fruit that will stain. Shahtoot mulberries are described as honey sweet, with the flavour rated close to that of the black mulberry, and the long berries make for easy fresh picking."
+      ],
+      "claims": [
+        {
+          "text": "Red Shahtoot belongs to Morus macroura, the long shahtoot mulberries",
+          "type": "naming",
+          "cites": [
+            "wiki-macroura",
+            "gallifrey",
+            "daleys-red-shahtoot"
+          ]
+        },
+        {
+          "text": "Morus macroura is native to Tibet and the Himalayas",
+          "type": "origin",
+          "cites": [
+            "wiki-macroura"
+          ]
+        },
+        {
+          "text": "Fruit is very long, far longer than common mulberries",
+          "type": "appearance",
+          "cites": [
+            "gallifrey",
+            "daleys-red-shahtoot"
+          ]
+        },
+        {
+          "text": "The red shahtoot has red fruit that stains, unlike the non-staining white shahtoot",
+          "type": "appearance",
+          "cites": [
+            "gallifrey"
+          ]
+        },
+        {
+          "text": "Shahtoot mulberries are described as honey sweet, with flavour rated close to the black mulberry",
+          "type": "flavour",
+          "cites": [
+            "gallifrey"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-macroura",
+          "name": "Wikipedia: Morus macroura",
+          "url": "https://en.wikipedia.org/wiki/Morus_macroura",
+          "tier": "third_party"
+        },
+        {
+          "id": "gallifrey",
+          "name": "Gallifrey Forest Farm: Plant profile, mulberry",
+          "url": "https://gallifreypermaculture.com.au/2016/06/june-11-plant-profile-mulberry/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-red-shahtoot",
+          "name": "Daleys Fruit: Mulberry Dwarf Red Shahtoot (Morus macroura)",
+          "url": "https://www.daleysfruit.com.au/Dwarf-Mulberry-Tree-Red-Shahtoot.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mulberry-tree-white-king-shahtoot": {
+      "slug": "mulberry-tree-white-king-shahtoot",
+      "species": "Mulberry",
+      "variety": "Tree White King Shahtoot",
+      "paragraphs": [
+        "King White is a name for Morus macroura, the shahtoot or king mulberry, native to Tibet and the Himalayas. It bears very long, pale fruit, several times the length of a common mulberry, that softens and becomes honey sweet when ripe.",
+        "The fruit is white to pale and described as honey sweet with low acidity and fruity notes. The long berries hang clear of the foliage, making them quick and easy to pick fresh."
+      ],
+      "claims": [
+        {
+          "text": "King White is Morus macroura, the shahtoot or king mulberry",
+          "type": "naming",
+          "cites": [
+            "wiki-macroura",
+            "gf-kingwhite"
+          ]
+        },
+        {
+          "text": "Morus macroura is native to Tibet and the Himalayas",
+          "type": "origin",
+          "cites": [
+            "wiki-macroura"
+          ]
+        },
+        {
+          "text": "Fruit is very long, far longer than common mulberries",
+          "type": "appearance",
+          "cites": [
+            "specialty-kingwhite",
+            "gf-kingwhite"
+          ]
+        },
+        {
+          "text": "Ripe fruit is white or pale and honey sweet with low acidity",
+          "type": "flavour",
+          "cites": [
+            "wiki-macroura",
+            "specialty-kingwhite",
+            "gf-kingwhite"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-macroura",
+          "name": "Wikipedia: Morus macroura",
+          "url": "https://en.wikipedia.org/wiki/Morus_macroura",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-kingwhite",
+          "name": "Specialty Produce: King White Mulberries",
+          "url": "https://specialtyproduce.com/produce/King_White_Mulberries_10435.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "gf-kingwhite",
+          "name": "Growing Fruit forum: Morus macroura King White / Shahtoot",
+          "url": "https://growingfruit.org/t/morus-alba-pakistan-alba-pakistan-white-mulberry-vs-morus-macroura-king-white-shahtoot-mulberry/51025",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "mulberry-weeping": {
       "slug": "mulberry-weeping",
       "species": "Mulberry",
@@ -349,27 +924,39 @@
         {
           "text": "Weeping mulberry is Morus alba 'Pendula', a dwarf weeping cultivar of the white mulberry",
           "type": "naming",
-          "cites": ["mobot-pendula", "wiki-alba"]
+          "cites": [
+            "mobot-pendula",
+            "wiki-alba"
+          ]
         },
         {
           "text": "White mulberry is native to China",
           "type": "origin",
-          "cites": ["wiki-alba", "mobot-pendula"]
+          "cites": [
+            "wiki-alba",
+            "mobot-pendula"
+          ]
         },
         {
           "text": "It is typically top-grafted onto a standard, with branches weeping to the ground",
           "type": "growing",
-          "cites": ["mobot-pendula"]
+          "cites": [
+            "mobot-pendula"
+          ]
         },
         {
           "text": "It is a small tree grown chiefly as an ornamental",
           "type": "growing",
-          "cites": ["mobot-pendula"]
+          "cites": [
+            "mobot-pendula"
+          ]
         },
         {
           "text": "Female trees bear sweet, blackberry-like fruit",
           "type": "flavour",
-          "cites": ["mobot-pendula"]
+          "cites": [
+            "mobot-pendula"
+          ]
         }
       ],
       "sources": [
@@ -403,22 +990,32 @@
         {
           "text": "White mulberry is Morus alba, native to China",
           "type": "origin",
-          "cites": ["wiki-alba", "mobot-pendula"]
+          "cites": [
+            "wiki-alba",
+            "mobot-pendula"
+          ]
         },
         {
           "text": "It has long been cultivated to feed silkworms in silk production",
           "type": "use",
-          "cites": ["wiki-alba"]
+          "cites": [
+            "wiki-alba"
+          ]
         },
         {
           "text": "Cultivated fruit ranges white to pink (deep purple in the wild)",
           "type": "appearance",
-          "cites": ["wiki-alba"]
+          "cites": [
+            "wiki-alba"
+          ]
         },
         {
           "text": "The flavour is sweet but often insipid, milder than black or red mulberry",
           "type": "flavour",
-          "cites": ["wiki-alba", "wiki-nigra"]
+          "cites": [
+            "wiki-alba",
+            "wiki-nigra"
+          ]
         }
       ],
       "sources": [
@@ -458,22 +1055,33 @@
         {
           "text": "White Shahtoot is Morus macroura, native to Tibet and the Himalayas",
           "type": "origin",
-          "cites": ["wiki-macroura", "gallifrey"]
+          "cites": [
+            "wiki-macroura",
+            "gallifrey"
+          ]
         },
         {
           "text": "The fruit is genuinely white or pale pink and will not stain, unlike the red shahtoot",
           "type": "appearance",
-          "cites": ["gallifrey"]
+          "cites": [
+            "gallifrey"
+          ]
         },
         {
           "text": "The berries are very long, several times longer than a common mulberry",
           "type": "appearance",
-          "cites": ["gallifrey", "specialty-kingwhite"]
+          "cites": [
+            "gallifrey",
+            "specialty-kingwhite"
+          ]
         },
         {
           "text": "The flavour is honey sweet with low acidity",
           "type": "flavour",
-          "cites": ["specialty-kingwhite", "wiki-macroura"]
+          "cites": [
+            "specialty-kingwhite",
+            "wiki-macroura"
+          ]
         }
       ],
       "sources": [
@@ -500,10 +1108,81 @@
       "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "mulberry-white-shahtoot-king-white": {
+      "slug": "mulberry-white-shahtoot-king-white",
+      "species": "Mulberry",
+      "variety": "White Shahtoot / King White",
+      "paragraphs": [
+        "King White is a name for Morus macroura, the shahtoot or king mulberry, native to Tibet and the Himalayas. It bears very long, pale fruit, several times the length of a common mulberry, that softens and becomes honey sweet when ripe.",
+        "The fruit is white to pale and described as honey sweet with low acidity and fruity notes. The long berries hang clear of the foliage, making them quick and easy to pick fresh."
+      ],
+      "claims": [
+        {
+          "text": "King White is Morus macroura, the shahtoot or king mulberry",
+          "type": "naming",
+          "cites": [
+            "wiki-macroura",
+            "gf-kingwhite"
+          ]
+        },
+        {
+          "text": "Morus macroura is native to Tibet and the Himalayas",
+          "type": "origin",
+          "cites": [
+            "wiki-macroura"
+          ]
+        },
+        {
+          "text": "Fruit is very long, far longer than common mulberries",
+          "type": "appearance",
+          "cites": [
+            "specialty-kingwhite",
+            "gf-kingwhite"
+          ]
+        },
+        {
+          "text": "Ripe fruit is white or pale and honey sweet with low acidity",
+          "type": "flavour",
+          "cites": [
+            "wiki-macroura",
+            "specialty-kingwhite",
+            "gf-kingwhite"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-macroura",
+          "name": "Wikipedia: Morus macroura",
+          "url": "https://en.wikipedia.org/wiki/Morus_macroura",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-kingwhite",
+          "name": "Specialty Produce: King White Mulberries",
+          "url": "https://specialtyproduce.com/produce/King_White_Mulberries_10435.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "gf-kingwhite",
+          "name": "Growing Fruit forum: Morus macroura King White / Shahtoot",
+          "url": "https://growingfruit.org/t/morus-alba-pakistan-alba-pakistan-white-mulberry-vs-morus-macroura-king-white-shahtoot-mulberry/51025",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
   },
   "skipped": [
+    "mulberry-angela",
+    "mulberry-giant-yellow",
     "mulberry-lena",
-    "mulberry-majestic"
+    "mulberry-lena-black",
+    "mulberry-majestic",
+    "mulberry-pink"
   ]
 }

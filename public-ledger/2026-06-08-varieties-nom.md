@@ -1,20 +1,27 @@
-# 2026-06-08 — Variety descriptions: nectarine, orange, mulberry
+# 2026-06-08 — Variety descriptions: nectarine, orange, mulberry (complete)
 
-Extended treestock's per-variety "what's unique" blurbs (DEC-178) to three more species in a
-parallel worktree window (branch `dale/varieties-nom`). Five research subagents verified each
+Finished treestock's per-variety "what's unique" blurbs (DEC-178) for three more species in a
+parallel worktree window (branch `dale/varieties-nom`, two passes). Research subagents verified each
 candidate variety against multiple reputable sources before anything was written; thin or
 nursery-only candidates were skipped rather than guessed.
 
-**Added 26 verified blurbs:**
-- Nectarine (6): Arctic Rose, Crimson Baby, Early Rivers, Fairlane, Flavortop, Goldmine
-- Orange (12): Arnold Blood, Bergamot, Blood, Chinotto, Hamlin, Lane's Late Navel, Navelina,
-  Newhall Navel, Pineapple, Salustiana, Seville, Tarocco Blood
-- Mulberry (8): Black English, Hicks Fancy, King White Shahtoot, Pakistan Black, Red Shahtoot,
-  Weeping, White, White Shahtoot
+**All three species now complete (0 remaining live varieties):**
+- Nectarine: 22 verified blurbs, 36 skipped
+- Orange: 43 verified blurbs, 36 skipped
+- Mulberry: 18 verified blurbs, 6 skipped
 
-**Skipped 12** as too thinly sourced to publish (Australian nursery trademarks or single-source):
-Sundowner, Sunset, Royal Gem, Tuscany, Sun Snow, White Satin, Necta Red, Nectared (nectarine);
-Mediterranean Sweet, Joppa (orange); Lena, Majestic (mulberry).
+The second pass added 52 entries: 13 newly researched distinct cultivars (e.g. Spicezee NectaPlum,
+Trixzie Nectazee dwarf, Sunraycer and Sunlite low-chill nectarines, Maygrand, Firebrite, OkeeDokee;
+the Jaffa/Shamouti and Maltese blood oranges, Delta and Midknight seedless Valencias) plus 39 clones
+that attach an already-verified variety's content to its spelling/format variants so the blurb shows
+on every real page (Flavortop/Flavourtop, the Lane's Late Navel cluster, the Tarocco clones, the
+mulberry Shahtoot variants, and so on).
 
-Tests green (1401). No deploy this run; folding the decision, ticking progress, and the single
-rebuild/deploy happen at the serialized close-out once the batch of variety PRs has merged.
+**Skipped** entries were either nursery-trademark-only (no independent source), generic terms,
+multi-graft tree listings, marketing names, a not-an-orange (Lemonade), wrong-fruit parses (Giant
+Yellow "mulberry" is Myrianthus, not Morus), or the block of ornamental colour mis-parses on the
+orange page (canna, clivia, hibiscus, bougainvillea, rose, and similar).
+
+Tests green (1401). No deploy this run; folding the decision, ticking progress (nectarine, orange,
+mulberry all DONE), and the single rebuild/deploy happen at the serialized close-out once the batch
+of variety PRs has merged.
