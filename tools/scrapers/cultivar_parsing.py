@@ -395,6 +395,7 @@ def _clean_part(text: str, *, strip_sizeform: bool) -> str:
     s = re.sub(r'[®™*]', ' ', s)            # trademark marks + **PICKUP** stars
     s = s.replace('(', ' ').replace(')', ' ')
     s = re.sub(r'[:;]', ' ', s)                       # "Blue Java: RESTRICTED..."
+    s = s.replace('_', ' ')                           # "Navel_17cm" -> "Navel 17cm"
     s = re.sub(r'\s*[–—]\s*', ' ', s)       # embedded en/em-dash -> space
     for rx in _CLEAN_PHRASE_RES:
         s = rx.sub(' ', s)

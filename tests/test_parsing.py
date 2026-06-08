@@ -111,6 +111,7 @@ class ParseCultivar(unittest.TestCase):
         ("Banana - Goldfinger SOUTH EAST QLD ONLY", ("Banana", "Goldfinger")),  # SE QLD ONLY (no "restricted to")
         ("Apple - Anna (Low Chill) Pot",        ("Apple", "Anna")),          # low chill + pot
         ("Black Sapote - Seedling 140ml",       ("Black Sapote", "Seedling")),  # 140ml stripped
+        ("Orange Washington Navel_17cm",        ("Orange", "Washington Navel")),  # underscore-joined size
         # Filters
         ("Sapodilla - Seedling",                None),
         ("Mango - Grafted",                     None),
