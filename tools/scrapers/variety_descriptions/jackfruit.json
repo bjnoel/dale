@@ -1,0 +1,160 @@
+{
+  "species_slug": "jackfruit",
+  "schema_version": 1,
+  "varieties": {
+    "jackfruit-black-gold": {
+      "slug": "jackfruit-black-gold",
+      "species": "Jackfruit",
+      "variety": "Black Gold",
+      "paragraphs": [
+        "Black Gold is an Australian selection from Queensland, valued for soft, deep orange flesh with a strong, sweet flavour and aroma. The flesh separates from the fruit more easily than in many other cultivars, and the variety carries low latex. It is a late-season type, ripening roughly September to October in the Northern Hemisphere references that document it.",
+        "One quirk sets it apart at harvest. The skin spines do not flatten or open as the fruit matures, so judging the right picking time is harder than with cultivars whose spines spread when ripe. The tree is naturally vigorous but responds well to pruning, and is commonly kept to a compact two to two and a half metres, making it a manageable choice for smaller gardens."
+      ],
+      "claims": [
+        {
+          "text": "Black Gold was selected in Queensland, Australia.",
+          "type": "origin",
+          "cites": [
+            "uf-ifas-hs882",
+            "ftbg-vh"
+          ]
+        },
+        {
+          "text": "The flesh is deep orange and soft, with a strong, sweet flavour and aroma.",
+          "type": "flavour",
+          "cites": [
+            "uf-ifas-hs882",
+            "ftbg-vh"
+          ]
+        },
+        {
+          "text": "The flesh separates from the fruit more easily than in many other cultivars.",
+          "type": "use",
+          "cites": [
+            "uf-ifas-hs882",
+            "ftbg-vh"
+          ]
+        },
+        {
+          "text": "It is a late-season cultivar, ripening around September to October.",
+          "type": "season",
+          "cites": [
+            "uf-ifas-hs882"
+          ]
+        },
+        {
+          "text": "The skin spines do not flatten or open at maturity, making harvest timing harder to judge.",
+          "type": "appearance",
+          "cites": [
+            "ftbg-vh",
+            "uf-ifas-hs882"
+          ]
+        },
+        {
+          "text": "The tree can be pruned and kept to a compact height of about two to two and a half metres.",
+          "type": "growing",
+          "cites": [
+            "ftbg-vh",
+            "uf-ifas-hs882"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uf-ifas-hs882",
+          "name": "UF/IFAS Extension, Jackfruit Growing in the Florida Home Landscape (HS-882/MG370), Crane et al.",
+          "url": "https://ask.ifas.ufl.edu/publication/MG370",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ftbg-vh",
+          "name": "Fairchild Tropical Botanic Garden Virtual Herbarium, Jackfruit Cultivars",
+          "url": "https://www.growables.org/information/TropicalFruit/JackfruitFTBGVH3.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jackfruit-honey-gold": {
+      "slug": "jackfruit-honey-gold",
+      "species": "Jackfruit",
+      "variety": "Honey Gold",
+      "paragraphs": [
+        "Honey Gold is an Australian cultivar grown for its firm flesh, which sets it apart from the softer, melting jackfruit types. The flesh is dark yellow to orange with a sweet, rich flavour and aroma, and the bulbs are thick walled with a texture rated as excellent. It is a mid-season variety, ripening around July to August in the Northern Hemisphere references that document it.",
+        "It is a relatively compact, small-fruited type. UF/IFAS records the fruit as small to medium-small, in the order of 10 to 12 pounds, which is modest for a species famous for the largest tree-borne fruit in the world. That smaller fruit size, combined with firm flesh and a tree that prunes back readily, makes it a practical pick for home growers who want crisp jackfruit without wrestling a giant."
+      ],
+      "claims": [
+        {
+          "text": "Honey Gold is an Australian cultivar.",
+          "type": "origin",
+          "cites": [
+            "uf-ifas-hs882",
+            "growables-uf-table"
+          ]
+        },
+        {
+          "text": "The flesh is firm, dark yellow to orange, with a sweet, rich flavour and aroma.",
+          "type": "flavour",
+          "cites": [
+            "uf-ifas-hs882",
+            "growables-uf-table"
+          ]
+        },
+        {
+          "text": "The bulbs are thick walled with an excellent texture.",
+          "type": "appearance",
+          "cites": [
+            "uf-ifas-hs882",
+            "growables-uf-table"
+          ]
+        },
+        {
+          "text": "It is a mid-season cultivar, ripening around July to August.",
+          "type": "season",
+          "cites": [
+            "uf-ifas-hs882",
+            "growables-uf-table"
+          ]
+        },
+        {
+          "text": "The fruit is small to medium-small, about 10 to 12 pounds.",
+          "type": "measurement",
+          "cites": [
+            "uf-ifas-hs882"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uf-ifas-hs882",
+          "name": "UF/IFAS Extension, Jackfruit Growing in the Florida Home Landscape (HS-882/MG370), Crane et al.",
+          "url": "https://ask.ifas.ufl.edu/publication/MG370",
+          "tier": "authoritative"
+        },
+        {
+          "id": "growables-uf-table",
+          "name": "Growables, Jackfruit Varieties (reproducing the UF/IFAS HS-882 selected cultivars table)",
+          "url": "https://www.growables.org/information/TropicalFruit/jackfruitvarieties.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "jackfruit-amber",
+    "jackfruit-berry",
+    "jackfruit-cosmic-gold",
+    "jackfruit-crunchy",
+    "jackfruit-galaxy",
+    "jackfruit-j36",
+    "jackfruit-plant",
+    "jackfruit-tree"
+  ]
+}

@@ -1,0 +1,313 @@
+{
+  "species_slug": "lilly-pilly",
+  "schema_version": 1,
+  "varieties": {
+    "lilly-pilly-brush-cherry": {
+      "slug": "lilly-pilly-brush-cherry",
+      "species": "Lilly Pilly",
+      "variety": "Brush Cherry",
+      "paragraphs": [
+        "Brush Cherry is the common name for Syzygium australe, a rainforest tree native to the east coast of Australia, growing in New South Wales and into Queensland, often near streams. It is one of the most widely planted lilly pillies and the parent of many named hedging cultivars. The reddish to pink new growth is attractive for much of the year, maturing to glossy green foliage.",
+        "Cream to white flowers are produced in large numbers, about 15 mm across with long stamens, creating a fluffy flowering effect. These are followed by red-pink, somewhat pear-shaped edible berries that can be used to make jam. Brush Cherry is valued as a dense hedge and screen and is attractive to birds."
+      ],
+      "claims": [
+        {
+          "text": "Brush Cherry is the common name for Syzygium australe, a rainforest tree native to the east coast of Australia in New South Wales and Queensland",
+          "type": "naming",
+          "cites": [
+            "wikipedia-australe",
+            "austplants-australe"
+          ]
+        },
+        {
+          "text": "Reddish to pink new growth is attractive for much of the year, maturing to glossy green",
+          "type": "appearance",
+          "cites": [
+            "austplants-australe"
+          ]
+        },
+        {
+          "text": "Cream to white flowers are produced in large numbers with a fluffy flowering effect",
+          "type": "appearance",
+          "cites": [
+            "austplants-australe"
+          ]
+        },
+        {
+          "text": "Red-pink, somewhat pear-shaped edible berries can be used to make jam",
+          "type": "use",
+          "cites": [
+            "wikipedia-australe",
+            "austplants-australe"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-australe",
+          "name": "Wikipedia: Syzygium australe",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_australe",
+          "tier": "third_party"
+        },
+        {
+          "id": "austplants-australe",
+          "name": "Australian Plants Society: Syzygium australe",
+          "url": "https://resources.austplants.com.au/plant/syzygium-australe/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lilly-pilly-bush-christmas": {
+      "slug": "lilly-pilly-bush-christmas",
+      "species": "Lilly Pilly",
+      "variety": "Bush Christmas",
+      "paragraphs": [
+        "Bush Christmas is a compact, dense cultivar of Syzygium australe grown for its tidy form and colourful new growth. It is well suited to clipping, hedging, screening, topiary and pots, and pruning encourages a fresh flush of bright new foliage.",
+        "The new growth emerges in orange to red tones against glossy dark green mature leaves. White powder-puff flowers, which can appear around Christmas, are followed by pinkish edible fruit that is pleasantly tart. It prefers a warm, well-drained position and is frost sensitive, so it is best protected from heavy frost."
+      ],
+      "claims": [
+        {
+          "text": "Bush Christmas is a compact, dense cultivar of Syzygium australe suited to hedging, screening, topiary and pots",
+          "type": "growing",
+          "cites": [
+            "angus-bushchristmas",
+            "australianplantsonline-bushchristmas"
+          ]
+        },
+        {
+          "text": "New growth emerges in orange to red tones against glossy dark green mature leaves",
+          "type": "appearance",
+          "cites": [
+            "angus-bushchristmas",
+            "australianplantsonline-bushchristmas"
+          ]
+        },
+        {
+          "text": "White powder-puff flowers are followed by pinkish edible fruit that is pleasantly tart",
+          "type": "use",
+          "cites": [
+            "angus-bushchristmas"
+          ]
+        },
+        {
+          "text": "It is frost sensitive and best protected from heavy frost",
+          "type": "climate",
+          "cites": [
+            "angus-bushchristmas",
+            "australianplantsonline-bushchristmas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "angus-bushchristmas",
+          "name": "Gardening With Angus: Syzygium australe Bush Christmas",
+          "url": "https://gardeningwithangus.com.au/syzygium-australe-bush-christmas-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "australianplantsonline-bushchristmas",
+          "name": "Australian Plants Online: Syzygium Bush Christmas",
+          "url": "https://www.australianplantsonline.com.au/syzygium-bush-christmas.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lilly-pilly-cherry-surprise": {
+      "slug": "lilly-pilly-cherry-surprise",
+      "species": "Lilly Pilly",
+      "variety": "Cherry Surprise",
+      "paragraphs": [
+        "Cherry Surprise is a lilly pilly cultivar of Acmena smithii (the genus, not Syzygium), bred from the naturally compact minor form. It is a compact, dense small shrub valued for vivid new growth, growing well as a clipped hedge, screen or topiary specimen and responding readily to pruning.",
+        "The standout feature is its bright red to burgundy new foliage, which matures to deep green. White flowers appear in spring, and the plant is noted as psyllid resistant and rarely troubled by pests, which is a key advantage over older lilly pillies. It tolerates a wide range of soils in a sunny to semi-shaded position."
+      ],
+      "claims": [
+        {
+          "text": "Cherry Surprise is a cultivar of Acmena smithii, bred from the compact minor form",
+          "type": "breeding",
+          "cites": [
+            "angus-cherrysurprise",
+            "plantsforspaces-cherrysurprise"
+          ]
+        },
+        {
+          "text": "It is a compact, dense small shrub used as a clipped hedge, screen or topiary",
+          "type": "growing",
+          "cites": [
+            "angus-cherrysurprise"
+          ]
+        },
+        {
+          "text": "New foliage is bright red to burgundy, maturing to deep green, with white spring flowers",
+          "type": "appearance",
+          "cites": [
+            "angus-cherrysurprise"
+          ]
+        },
+        {
+          "text": "Noted as psyllid resistant and rarely troubled by pests",
+          "type": "growing",
+          "cites": [
+            "angus-cherrysurprise",
+            "plantsforspaces-cherrysurprise"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "angus-cherrysurprise",
+          "name": "Gardening With Angus: Acmena smithii Cherry Surprise",
+          "url": "https://gardeningwithangus.com.au/acmena-smithii-cherry-surprise-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantsforspaces-cherrysurprise",
+          "name": "Plants for Spaces: Lilly Pilly Cherry Surprise",
+          "url": "https://www.plantsforspaces.com.au/lilly-pilly-cherry-surprise/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lilly-pilly-resilience": {
+      "slug": "lilly-pilly-resilience",
+      "species": "Lilly Pilly",
+      "variety": "Resilience",
+      "paragraphs": [
+        "Resilience is a cultivar of Syzygium australe selected for strong psyllid resistance, the leaf-distorting pest that disfigures many older lilly pillies. It is a fast-growing, compact selection used mainly for hedging, screening, topiary and bonsai, with dense evergreen foliage that holds clean leaves without chemical treatment.",
+        "The new growth emerges in reddish bronze tones against glossy green mature leaves. Cream to white flowers appear in spring and are followed by edible, decorative fruit that attracts bees and nectar-feeding birds. Its dense habit and pest tolerance make it a reliable choice for low-maintenance screens."
+      ],
+      "claims": [
+        {
+          "text": "Resilience is a Syzygium australe cultivar selected for psyllid resistance",
+          "type": "breeding",
+          "cites": [
+            "angus-resilience",
+            "australianplantshop-resilience"
+          ]
+        },
+        {
+          "text": "It is a fast-growing, compact selection used for hedging, screening, topiary and bonsai",
+          "type": "growing",
+          "cites": [
+            "angus-resilience"
+          ]
+        },
+        {
+          "text": "New growth emerges reddish bronze against glossy green mature leaves, with cream to white spring flowers",
+          "type": "appearance",
+          "cites": [
+            "angus-resilience"
+          ]
+        },
+        {
+          "text": "Followed by edible, decorative fruit that attracts bees and nectar-feeding birds",
+          "type": "use",
+          "cites": [
+            "angus-resilience"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "angus-resilience",
+          "name": "Gardening With Angus: Syzygium australe Resilience",
+          "url": "https://gardeningwithangus.com.au/syzygium-australe-resilience-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "australianplantshop-resilience",
+          "name": "The Australian Plant Shop: Syzygium australe Resilience",
+          "url": "https://www.theaustralianplantshop.com.au/products/syzygium-australe-resilience",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "lilly-pilly-riberry": {
+      "slug": "lilly-pilly-riberry",
+      "species": "Lilly Pilly",
+      "variety": "Riberry",
+      "paragraphs": [
+        "Riberry is the bush-food lilly pilly, botanically Syzygium luehmannii, a coastal rainforest tree native to eastern Australia from New South Wales into Queensland. It is grown as much for its fruit as its looks. The young foliage flushes pink to red before maturing to glossy green, and clusters of small white to cream flowers appear in late spring or early summer.",
+        "The pear-shaped berries ripen red over summer and have a tart, cranberry-like flavour with a hint of cloves. Riberry has been a popular gourmet bush food since the early 1980s, used in jams, sauces, syrups and confectionery, and the tree also serves well as an ornamental and street tree."
+      ],
+      "claims": [
+        {
+          "text": "Riberry is Syzygium luehmannii, a coastal rainforest tree native to eastern Australia from New South Wales into Queensland",
+          "type": "origin",
+          "cites": [
+            "wikipedia-luehmannii",
+            "naturally-native"
+          ]
+        },
+        {
+          "text": "Young foliage flushes pink to red before maturing to glossy green, with white to cream flowers",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-luehmannii"
+          ]
+        },
+        {
+          "text": "The pear-shaped berries ripen red and have a tart, cranberry-like flavour with a hint of cloves",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-luehmannii",
+            "naturally-native"
+          ]
+        },
+        {
+          "text": "Popular as a gourmet bush food since the early 1980s, used in jams, sauces, syrups and confectionery",
+          "type": "use",
+          "cites": [
+            "wikipedia-luehmannii",
+            "naturally-native"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-luehmannii",
+          "name": "Wikipedia: Syzygium luehmannii",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_luehmannii",
+          "tier": "third_party"
+        },
+        {
+          "id": "naturally-native",
+          "name": "Naturally Native: What is Riberry",
+          "url": "https://naturallynative.au/blogs/resources/what-is-riberry",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "lilly-pilly-aussie-boomer-topiary",
+    "lilly-pilly-aussie-compact",
+    "lilly-pilly-baby-boomer-topiary-standards",
+    "lilly-pilly-backyard-bliss",
+    "lilly-pilly-backyard-bliss-standards",
+    "lilly-pilly-select",
+    "lilly-pilly-select-form",
+    "lilly-pilly-standards",
+    "lilly-pilly-straight-and-narrow"
+  ]
+}

@@ -2,6 +2,501 @@
   "species_slug": "olive",
   "schema_version": 1,
   "varieties": {
+    "olive-arbequina": {
+      "slug": "olive-arbequina",
+      "species": "Olive",
+      "variety": "Arbequina",
+      "paragraphs": [
+        "Arbequina is a small-fruited Spanish oil olive from Catalonia, named after the village of Arbeca and historically linked to Aragon and Andalusia. It is grown as a primary oil cultivar worldwide and has become a mainstay of intensive, super high density plantings thanks to its weak vigour and early entry into production. The IOC catalogue lists it as self-compatible, so a single tree can set fruit without a pollinating partner.",
+        "Its oil is prized for being soft and approachable: buttery, fruity, and very mild, low in bitterness and pungency. The trade-off is low oxidative stability and a shorter shelf life than more robust varieties, a consequence of low polyphenol levels. Although occasionally sold as a table olive, Arbequina is grown mostly for its high oil yield."
+      ],
+      "claims": [
+        {
+          "text": "Arbequina is a Spanish oil olive originating in Catalonia, named after the village of Arbeca.",
+          "type": "origin",
+          "cites": [
+            "ioc-arbequina",
+            "wiki-arbequina"
+          ]
+        },
+        {
+          "text": "It is self-compatible, so a single tree can set fruit on its own.",
+          "type": "pollination",
+          "cites": [
+            "ioc-arbequina"
+          ]
+        },
+        {
+          "text": "Its weak vigour suits it to intensive, super high density plantings with early entry into production.",
+          "type": "growing",
+          "cites": [
+            "ioc-arbequina",
+            "wiki-arbequina"
+          ]
+        },
+        {
+          "text": "The oil is buttery, fruity, and very mild, low in polyphenols.",
+          "type": "flavour",
+          "cites": [
+            "wiki-arbequina"
+          ]
+        },
+        {
+          "text": "It has relatively low oxidative stability and a shorter shelf life.",
+          "type": "storage",
+          "cites": [
+            "ioc-arbequina",
+            "wiki-arbequina"
+          ]
+        },
+        {
+          "text": "Although also sold as a table olive, it is grown mostly for oil.",
+          "type": "use",
+          "cites": [
+            "wiki-arbequina"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ioc-arbequina",
+          "name": "IOC World Catalogue of Olive Varieties: Arbequina",
+          "url": "https://worldolivecatalogue.internationaloliveoil.org/en/variety/spain/arbequina",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-arbequina",
+          "name": "Wikipedia: Arbequina",
+          "url": "https://en.wikipedia.org/wiki/Arbequina",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-arbosana": {
+      "slug": "olive-arbosana",
+      "species": "Olive",
+      "variety": "Arbosana",
+      "paragraphs": [
+        "Arbosana is a Spanish oil olive native to the Penedes area of Catalonia, where it was once so scarce that only a couple of hundred trees remained in the 1990s. Like its Catalan relative Arbequina, it has a compact, low-vigour habit that suits it perfectly to hedgerow and super high density orchards with mechanical harvesting, and it carries higher planting densities than most other varieties while staying highly and consistently productive.",
+        "It is grown for oil and comes into bearing very early. The oil is well regarded for its organoleptic qualities, with a green, fresh-cut profile when picked early. Its reduced vigour has also made it a valued low-vigour parent in international olive breeding programmes."
+      ],
+      "claims": [
+        {
+          "text": "Arbosana is a Spanish oil olive native to the Penedes area of Catalonia.",
+          "type": "origin",
+          "cites": [
+            "wiki-arbosana",
+            "search-arbosana"
+          ]
+        },
+        {
+          "text": "It has a compact, low-vigour habit suited to hedgerow and super high density orchards.",
+          "type": "growing",
+          "cites": [
+            "wiki-arbosana",
+            "search-arbosana"
+          ]
+        },
+        {
+          "text": "It withstands higher planting densities than most other varieties while staying highly productive.",
+          "type": "growing",
+          "cites": [
+            "search-arbosana"
+          ]
+        },
+        {
+          "text": "It is grown for oil and enters bearing very early.",
+          "type": "use",
+          "cites": [
+            "wiki-arbosana",
+            "search-arbosana"
+          ]
+        },
+        {
+          "text": "Its low vigour has made it a valued parent in olive breeding programmes.",
+          "type": "breeding",
+          "cites": [
+            "search-arbosana"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-arbosana",
+          "name": "Wikipedia: Arbosana",
+          "url": "https://en.wikipedia.org/wiki/Arbosana",
+          "tier": "third_party"
+        },
+        {
+          "id": "search-arbosana",
+          "name": "Livita+ / Buccelletti: Arbosana olive tree profile",
+          "url": "https://livitaplus.com/varieta/arbosana/?lang=en",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-ascolana-tenera": {
+      "slug": "olive-ascolana-tenera",
+      "species": "Olive",
+      "variety": "Ascolana Tenera",
+      "paragraphs": [
+        "Ascolana Tenera is the celebrated large green table olive of Ascoli Piceno in Italy's Marche region, known since Roman times. The fruit is very large with tender, meaty, mild flesh, and it is picked green before full ripening.",
+        "It is the variety behind olive all'ascolana, the regional speciality where the olives are pitted, stuffed with seasoned minced meat, breaded, and deep fried. Both the table olive and the stuffed dish carry protected geographic status, underlining the variety's strong link to its home district."
+      ],
+      "claims": [
+        {
+          "text": "Ascolana Tenera is a large green table olive from Ascoli Piceno in the Marche region of Italy.",
+          "type": "origin",
+          "cites": [
+            "cooksinfo-ascolana",
+            "wiki-ascolana"
+          ]
+        },
+        {
+          "text": "The fruit is very large with tender, meaty, mild flesh and is picked green before full ripening.",
+          "type": "appearance",
+          "cites": [
+            "cooksinfo-ascolana",
+            "wiki-ascolana"
+          ]
+        },
+        {
+          "text": "It is the variety used for olive all'ascolana, pitted, stuffed with minced meat, breaded, and fried.",
+          "type": "use",
+          "cites": [
+            "wiki-ascolana",
+            "cooksinfo-ascolana"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cooksinfo-ascolana",
+          "name": "CooksInfo: Ascolane Olives",
+          "url": "https://www.cooksinfo.com/ascolane-olives",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-ascolana",
+          "name": "Wikipedia: Olive all'ascolana",
+          "url": "https://en.wikipedia.org/wiki/Olive_all'ascolana",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-azapa": {
+      "slug": "olive-azapa",
+      "species": "Olive",
+      "variety": "Azapa",
+      "paragraphs": [
+        "Azapa is a Chilean table olive grown in the Azapa Valley of northern Chile, descended from the Spanish Sevillana variety brought to the region in the 16th century. It is harvested as a violet to black olive and ranges from medium to large.",
+        "The fruit has a thin skin over very fleshy meat, giving a high flesh to pit ratio that suits it well for table use. It is traditionally prepared in a simple water and salt brine to draw out bitterness before being conserved for table consumption."
+      ],
+      "claims": [
+        {
+          "text": "Azapa is a Chilean table olive from the Azapa Valley, descended from the Spanish Sevillana variety introduced in the 16th century.",
+          "type": "origin",
+          "cites": [
+            "slowfood-azapa",
+            "recipetips-azapa"
+          ]
+        },
+        {
+          "text": "It is harvested violet to black and ranges from medium to large, with thin skin over very fleshy meat.",
+          "type": "appearance",
+          "cites": [
+            "recipetips-azapa"
+          ]
+        },
+        {
+          "text": "It is traditionally cured in a water and salt brine to remove bitterness for table use.",
+          "type": "use",
+          "cites": [
+            "slowfood-azapa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "slowfood-azapa",
+          "name": "Slow Food Foundation, Ark of Taste: Azapa Olive",
+          "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/azapa-olive/",
+          "tier": "third_party"
+        },
+        {
+          "id": "recipetips-azapa",
+          "name": "RecipeTips: Azapa Olive",
+          "url": "https://www.recipetips.com/glossary-term/t--34215/azapa-olive.asp",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-barouni": {
+      "slug": "olive-barouni",
+      "species": "Olive",
+      "variety": "Barouni",
+      "paragraphs": [
+        "Barouni is a Tunisian heirloom variety famous for producing exceptionally large fruit, counted among the largest table olives in the world. It is one of the handful of cultivars long grown commercially for table olives in California.",
+        "It is valued chiefly as a table olive, with the big, meaty fruit picked and cured rather than pressed for oil. Its size and firm flesh make it a popular pickling olive, well suited to hand harvesting."
+      ],
+      "claims": [
+        {
+          "text": "Barouni is a Tunisian heirloom variety known for exceptionally large table fruit.",
+          "type": "origin",
+          "cites": [
+            "lizplants-barouni",
+            "wiki-mission-barouni"
+          ]
+        },
+        {
+          "text": "Barouni is one of the cultivars grown commercially for table olives in California.",
+          "type": "use",
+          "cites": [
+            "wiki-mission-barouni"
+          ]
+        },
+        {
+          "text": "It is grown chiefly as a large, meaty table and pickling olive rather than for oil.",
+          "type": "use",
+          "cites": [
+            "lizplants-barouni"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "lizplants-barouni",
+          "name": "LizPlants growing guide: Barouni Olive",
+          "url": "https://lizplants.com/grow/barouni-olive",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-mission-barouni",
+          "name": "Wikipedia: Mission olive (lists Barouni among California table cultivars)",
+          "url": "https://en.wikipedia.org/wiki/Mission_olive",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-coratina": {
+      "slug": "olive-coratina",
+      "species": "Olive",
+      "variety": "coratina",
+      "paragraphs": [
+        "Coratina is the great oil olive of Puglia in southern Italy, taking its name from the town of Corato near Bari. It is one of the region's most important cultivars, with deep roots in the local olive-growing tradition. The tree is of weak to medium vigour and cold tolerant, though the IOC catalogue notes it has low self-fertility, so cross-pollination helps fruit set.",
+        "Its signature is an oil exceptionally rich in polyphenols, among the highest of any variety, which gives an intensely fruity, bitter, and pungent taste with a peppery throat catch. Fruit ripening and oil accumulation are late and staggered. The oil also carries a high content of oleic acid, and it is grown for oil rather than the table."
+      ],
+      "claims": [
+        {
+          "text": "Coratina is a Puglian oil olive named after the town of Corato near Bari.",
+          "type": "origin",
+          "cites": [
+            "ioc-coratina",
+            "wiki-coratina"
+          ]
+        },
+        {
+          "text": "The tree is of weak to medium vigour and cold tolerant, but has low self-fertility.",
+          "type": "pollination",
+          "cites": [
+            "ioc-coratina"
+          ]
+        },
+        {
+          "text": "Its oil is exceptionally rich in polyphenols, giving an intensely fruity, bitter, and pungent taste.",
+          "type": "flavour",
+          "cites": [
+            "wiki-coratina",
+            "ioc-coratina"
+          ]
+        },
+        {
+          "text": "Fruit ripening and oil accumulation are late and staggered.",
+          "type": "season",
+          "cites": [
+            "ioc-coratina"
+          ]
+        },
+        {
+          "text": "The oil has a high content of oleic acid.",
+          "type": "use",
+          "cites": [
+            "ioc-coratina"
+          ]
+        },
+        {
+          "text": "It is grown for oil rather than as a table olive.",
+          "type": "use",
+          "cites": [
+            "ioc-coratina",
+            "wiki-coratina"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ioc-coratina",
+          "name": "IOC World Catalogue of Olive Varieties: Coratina",
+          "url": "https://worldolivecatalogue.internationaloliveoil.org/en/variety/italy/coratina",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-coratina",
+          "name": "Wikipedia: Coratina",
+          "url": "https://en.wikipedia.org/wiki/Coratina",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-correggiola": {
+      "slug": "olive-correggiola",
+      "species": "Olive",
+      "variety": "Correggiola",
+      "paragraphs": [
+        "Correggiola is a Tuscan oil olive long considered the same as Frantoio, and the two are extremely close, though it carries a slightly different genetic fingerprint and ripens later. It is also known as Raggiolo and is grown across Tuscany, Umbria, and the Marche.",
+        "It produces small to medium fruit with a high oil content, yielding a spicy, fruity oil. In Australia it is one of the leading oil varieties chosen for commercial groves, valued for heavy cropping and quality oil."
+      ],
+      "claims": [
+        {
+          "text": "Correggiola is a Tuscan oil olive very close to Frantoio but with a slightly different genetic fingerprint, ripening later; also known as Raggiolo.",
+          "type": "origin",
+          "cites": [
+            "cooksinfo-correggiola"
+          ]
+        },
+        {
+          "text": "It produces small to medium fruit with high oil content, yielding a spicy, fruity oil.",
+          "type": "flavour",
+          "cites": [
+            "cooksinfo-correggiola"
+          ]
+        },
+        {
+          "text": "In Australia it is one of the leading oil olive varieties chosen for commercial groves.",
+          "type": "use",
+          "cites": [
+            "fruittreelane-correggiola",
+            "cooksinfo-correggiola"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cooksinfo-correggiola",
+          "name": "CooksInfo: Correggiolo Olives",
+          "url": "https://www.cooksinfo.com/correggiolo-olives",
+          "tier": "third_party"
+        },
+        {
+          "id": "fruittreelane-correggiola",
+          "name": "Fruit Tree Lane: Olive variety selection for commercial groves",
+          "url": "https://fruittreelane.com.au/olives/olives/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-frantoio": {
+      "slug": "olive-frantoio",
+      "species": "Olive",
+      "variety": "frantoio",
+      "paragraphs": [
+        "Frantoio is a classic Tuscan oil olive, one of the principal raw materials behind central Italian oils and now extensively grown across Tuscany, Umbria, Liguria, and Puglia. The tree is strong-growing with a spreading habit. The IOC catalogue records a high rate of self-fertility, and Frantoio is widely valued as a reliable pollinator for other cultivars, so it often anchors mixed plantings.",
+        "The oil is its calling card: fresh and green-fruity with a fuller, more bitter and peppery finish than milder varieties, carried by a high content of oleic acid and total phenols. Fruit ripening is medium-late and staggered, which helps spread the harvest. It is an oil cultivar rather than a table olive."
+      ],
+      "claims": [
+        {
+          "text": "Frantoio is a Tuscan oil olive, widely grown across Tuscany, Umbria, Liguria, and Puglia.",
+          "type": "origin",
+          "cites": [
+            "ioc-frantoio",
+            "wiki-frantoio"
+          ]
+        },
+        {
+          "text": "It is self-fertile and is also used to pollinate other cultivars.",
+          "type": "pollination",
+          "cites": [
+            "ioc-frantoio",
+            "wiki-frantoio"
+          ]
+        },
+        {
+          "text": "The tree is strong-growing with a spreading habit.",
+          "type": "growing",
+          "cites": [
+            "ioc-frantoio"
+          ]
+        },
+        {
+          "text": "Its oil is fruity with a bitter and peppery finish, backed by high oleic acid and phenol content.",
+          "type": "flavour",
+          "cites": [
+            "wiki-frantoio",
+            "ioc-frantoio"
+          ]
+        },
+        {
+          "text": "Fruit ripening is medium-late and staggered.",
+          "type": "season",
+          "cites": [
+            "ioc-frantoio"
+          ]
+        },
+        {
+          "text": "It is grown for oil rather than as a table olive.",
+          "type": "use",
+          "cites": [
+            "ioc-frantoio"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ioc-frantoio",
+          "name": "IOC World Catalogue of Olive Varieties: Frantoio",
+          "url": "https://worldolivecatalogue.internationaloliveoil.org/en/variety/italy/frantoio",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-frantoio",
+          "name": "Wikipedia: Frantoio",
+          "url": "https://en.wikipedia.org/wiki/Frantoio",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "olive-kalamata": {
       "slug": "olive-kalamata",
       "species": "Olive",
@@ -62,6 +557,124 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "olive-koroneiki": {
+      "slug": "olive-koroneiki",
+      "species": "Olive",
+      "variety": "Koroneiki",
+      "paragraphs": [
+        "Koroneiki is Greece's most widespread oil olive, the backbone of Greek production, with most plantings in Crete and the Peloponnese. Its fruit is notably small (low weight, moderately elongated), but it is highly and consistently productive and prized for high oil yield. It is grown exclusively for oil, not as a table olive, and ripens early to intermediate in the season.",
+        "The oil is celebrated for a very high content of oleic acid and a strong stability index, so it keeps well. Flavour tends green and herbaceous with a peppery, pleasantly bitter edge driven by its high polyphenol content. Early-harvest Koroneiki oils push those phenolic and aromatic qualities further."
+      ],
+      "claims": [
+        {
+          "text": "Koroneiki is Greece's most widespread oil olive, concentrated in Crete and the Peloponnese.",
+          "type": "origin",
+          "cites": [
+            "ioc-koroneiki",
+            "wiki-koroneiki"
+          ]
+        },
+        {
+          "text": "Its fruit is small but highly productive, with high oil yield, and it is grown exclusively for oil.",
+          "type": "appearance",
+          "cites": [
+            "ioc-koroneiki",
+            "wiki-koroneiki"
+          ]
+        },
+        {
+          "text": "It ripens early to intermediate in the season.",
+          "type": "season",
+          "cites": [
+            "ioc-koroneiki"
+          ]
+        },
+        {
+          "text": "The oil has a very high content of oleic acid and a strong stability index.",
+          "type": "storage",
+          "cites": [
+            "ioc-koroneiki"
+          ]
+        },
+        {
+          "text": "Flavour is green and herbaceous with a peppery, pleasantly bitter edge from high polyphenols.",
+          "type": "flavour",
+          "cites": [
+            "wiki-koroneiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ioc-koroneiki",
+          "name": "IOC World Catalogue of Olive Varieties: Koroneiki",
+          "url": "https://worldolivecatalogue.internationaloliveoil.org/en/variety/greece/koroneiki",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-koroneiki",
+          "name": "Wikipedia: Koroneiki",
+          "url": "https://en.wikipedia.org/wiki/Koroneiki",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-leccino": {
+      "slug": "olive-leccino",
+      "species": "Olive",
+      "variety": "Leccino",
+      "paragraphs": [
+        "Leccino is one of Italy's most widely planted oil olives, native to Tuscany and closely related to the Frantoio cultivar. It ripens early, with fruit colour and oil accumulation developing ahead of many other Italian varieties.",
+        "Its oil is prized for being mild, delicate, and low in bitterness, which is exactly why growers often blend it with stronger cultivars such as Frantoio, Coratina, Moraiolo, and Pendolino to build flavour. The same gentleness makes single-variety Leccino oil approachable and smooth."
+      ],
+      "claims": [
+        {
+          "text": "Leccino is a widely grown Italian oil olive native to Tuscany and closely related to Frantoio.",
+          "type": "origin",
+          "cites": [
+            "ioc-leccino",
+            "wiki-leccino"
+          ]
+        },
+        {
+          "text": "Leccino ripens early, with fruit colour and oil accumulation developing early.",
+          "type": "season",
+          "cites": [
+            "ioc-leccino"
+          ]
+        },
+        {
+          "text": "Leccino oil is mild and delicate, so it is commonly blended with Frantoio, Coratina, Moraiolo, and Pendolino.",
+          "type": "use",
+          "cites": [
+            "wiki-leccino",
+            "ioc-leccino"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ioc-leccino",
+          "name": "IOC World Catalogue of Olive Varieties: Leccino",
+          "url": "https://worldolivecatalogue.internationaloliveoil.org/en/variety/italy/leccino",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-leccino",
+          "name": "Wikipedia: Leccino",
+          "url": "https://en.wikipedia.org/wiki/Leccino",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "olive-manzanillo": {
       "slug": "olive-manzanillo",
       "species": "Olive",
@@ -119,6 +732,203 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "olive-mission": {
+      "slug": "olive-mission",
+      "species": "Olive",
+      "variety": "mission",
+      "paragraphs": [
+        "Mission is the heritage olive developed in California by Spanish missions along El Camino Real in the late 18th century, and it is the only American cultivar listed in the International Olive Council's world catalogue. Recent DNA work suggests it may be related to the Moroccan variety Picholine Marocaine.",
+        "It is a dual-purpose olive, used both as a ripe black table olive and for oil. In Western Australia the Mission name is linked to New Norcia, the Benedictine monastery town where monks have grown olives from Spanish cuttings since the 1850s and still press an award-winning oil."
+      ],
+      "claims": [
+        {
+          "text": "Mission is a heritage olive developed in California by Spanish missions along El Camino Real in the late 18th century, and the only American cultivar in the IOC world catalogue.",
+          "type": "origin",
+          "cites": [
+            "wiki-mission"
+          ]
+        },
+        {
+          "text": "Recent DNA testing suggests Mission may be related to the Moroccan variety Picholine Marocaine.",
+          "type": "breeding",
+          "cites": [
+            "wiki-mission"
+          ]
+        },
+        {
+          "text": "It is dual-purpose, used both as a ripe black table olive and for oil.",
+          "type": "use",
+          "cites": [
+            "wiki-mission"
+          ]
+        },
+        {
+          "text": "In Western Australia, Benedictine monks at New Norcia have grown olives from Spanish cuttings since the 1850s and still produce an award-winning oil.",
+          "type": "naming",
+          "cites": [
+            "nvnews-newnorcia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-mission",
+          "name": "Wikipedia: Mission olive",
+          "url": "https://en.wikipedia.org/wiki/Mission_olive",
+          "tier": "third_party"
+        },
+        {
+          "id": "nvnews-newnorcia",
+          "name": "Northern Valleys News: Hand-picked heritage (New Norcia olives)",
+          "url": "https://nvnews.com.au/hand-picked-heritage/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-picholine": {
+      "slug": "olive-picholine",
+      "species": "Olive",
+      "variety": "Picholine",
+      "paragraphs": [
+        "Picholine is the classic French table olive, originally from the Gard region in southern France and now common across Provence. The fruit is medium, ovoid, and slightly asymmetrical, picked while still bright green.",
+        "It is best known as a cocktail olive: lye cured then fermented in brine, giving a crisp, firm bite and a lightly salty, lemony character. Picholine is dual purpose, also pressed for a fruity oil with a hint of bitterness, though it is celebrated far more as a table olive."
+      ],
+      "claims": [
+        {
+          "text": "Picholine is a French olive originally from the Gard region in southern France, now common in Provence and Languedoc.",
+          "type": "origin",
+          "cites": [
+            "wiki-picholine",
+            "calanquet-picholine"
+          ]
+        },
+        {
+          "text": "The fruit is medium, ovoid, slightly asymmetrical, and harvested green.",
+          "type": "appearance",
+          "cites": [
+            "wiki-picholine"
+          ]
+        },
+        {
+          "text": "Picholine is prized as a green table and cocktail olive, lye cured then brine fermented, with firm crisp flesh.",
+          "type": "use",
+          "cites": [
+            "wiki-picholine",
+            "calanquet-picholine"
+          ]
+        },
+        {
+          "text": "It also yields a fruity oil with a hint of bitterness.",
+          "type": "flavour",
+          "cites": [
+            "wiki-picholine"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-picholine",
+          "name": "Wikipedia: Picholine",
+          "url": "https://en.wikipedia.org/wiki/Picholine",
+          "tier": "third_party"
+        },
+        {
+          "id": "calanquet-picholine",
+          "name": "Moulin du Calanquet: Picholine",
+          "url": "https://www.moulinducalanquet.fr/2024/10/picholine-en.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "olive-picual": {
+      "slug": "olive-picual",
+      "species": "Olive",
+      "variety": "picual",
+      "paragraphs": [
+        "Picual is the dominant oil olive of Andalusia in southern Spain, centred on the province of Jaen, and the most widely planted olive variety in Spain. Easy to cultivate and heavy bearing, it is grown for oil rather than as a table fruit.",
+        "Its oil is prized for stability: a high oleic acid content and strong resistance to oxidation give it a long shelf life. The flavour is robust and slightly bitter, with green, grassy, and woody notes, though quality drops noticeably if the fruit is left to over-ripen before pressing."
+      ],
+      "claims": [
+        {
+          "text": "Picual is the dominant oil olive of Andalusia, centred on Jaen, and the most widely planted olive variety in Spain.",
+          "type": "origin",
+          "cites": [
+            "ioc-picual",
+            "wiki-picual"
+          ]
+        },
+        {
+          "text": "It is easy to cultivate and heavy bearing, grown for oil rather than as a table olive.",
+          "type": "use",
+          "cites": [
+            "ioc-picual",
+            "wiki-picual"
+          ]
+        },
+        {
+          "text": "Its oil has a high oleic acid content and strong oxidative stability, giving a long shelf life.",
+          "type": "storage",
+          "cites": [
+            "ioc-picual",
+            "wiki-picual"
+          ]
+        },
+        {
+          "text": "The flavour is robust and slightly bitter with green, grassy, and woody notes, declining if the fruit over-ripens.",
+          "type": "flavour",
+          "cites": [
+            "wiki-picual",
+            "ioc-picual"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ioc-picual",
+          "name": "IOC World Catalogue of Olive Varieties: Picual",
+          "url": "https://worldolivecatalogue.internationaloliveoil.org/en/variety/spain/picual",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-picual",
+          "name": "Wikipedia: Picual",
+          "url": "https://en.wikipedia.org/wiki/Picual",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "olive-aberquina",
+    "olive-bambalina-pbr",
+    "olive-bambalino",
+    "olive-borouni",
+    "olive-california-queen",
+    "olive-del-morocco",
+    "olive-del-morroco",
+    "olive-heritage-frantoio",
+    "olive-in-a-wine-barrel-style",
+    "olive-mediterranean",
+    "olive-menzanillo",
+    "olive-miniolea-tm",
+    "olive-pucal-green",
+    "olive-rhododendron",
+    "olive-tolley",
+    "olive-tolley-s-upright",
+    "olive-tolleys-upright",
+    "olive-tree"
+  ]
 }
