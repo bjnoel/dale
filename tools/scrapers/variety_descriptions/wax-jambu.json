@@ -1,0 +1,99 @@
+{
+  "species_slug": "wax-jambu",
+  "schema_version": 1,
+  "varieties": {
+    "wax-jambu-pink": {
+      "slug": "wax-jambu-pink",
+      "species": "Wax Jambu",
+      "variety": "Pink",
+      "paragraphs": [
+        "Pink is the familiar, representative colour form of the wax jambu (Syzygium samarangense), a glossy, bell shaped fruit also called wax apple, java apple, water apple and rose apple. The thin, waxy skin ripens to a rosy pink over white, spongy, juicy flesh, and the fruit carries a light, mildly sweet, faintly rose scented flavour. The high water content (often likened to watermelon) makes it a popular thirst quenching, fresh eating fruit.",
+        "Compared with the other colour forms, pink fruit is generally regarded as juicier and more flavourful. Several of the best known commercial cultivars are pink fruited, including Malaysian selections such as Masam Manis Pink, reflecting how the pink form has been selected and grown for quality rather than being a single wild type."
+      ],
+      "claims": [
+        {"text": "The pink wax jambu is a glossy, bell shaped fruit with thin waxy skin and white, spongy, juicy flesh, eaten fresh.", "type": "appearance", "cites": ["wiki-samarangense", "growables-waxjambu"]},
+        {"text": "It is also known as wax apple, java apple, water apple and rose apple.", "type": "naming", "cites": ["wiki-samarangense", "growables-waxjambu"]},
+        {"text": "Pink fruit is regarded as juicier and more flavourful than other colour forms.", "type": "flavour", "cites": ["growables-waxjambu"]},
+        {"text": "Named pink fruited cultivars include Masam Manis Pink.", "type": "breeding", "cites": ["growables-waxjambu", "wiki-samarangense"]}
+      ],
+      "sources": [
+        {"id": "wiki-samarangense", "name": "Wikipedia: Syzygium samarangense", "url": "https://en.wikipedia.org/wiki/Syzygium_samarangense", "tier": "third_party"},
+        {"id": "growables-waxjambu", "name": "Growables: Wax Jambu (Syzygium samarangense)", "url": "https://www.growables.org/information/TropicalFruit/waxjambu.htm", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "wax-jambu-purple": {
+      "slug": "wax-jambu-purple",
+      "species": "Wax Jambu",
+      "variety": "Purple",
+      "paragraphs": [
+        "The purple wax jambu (Syzygium samarangense) is the darkest end of the colour spectrum, ripening to deep purple, purplish red or nearly black. In Southeast Asia these dark fruited types are nicknamed Black Pearl and Black Diamond, and the purplish red Black Pearl is among the most highly prized wax apples in Taiwan.",
+        "Following the species rule that darker colour means greater sweetness, the deep purple forms are valued as sweet, premium fruit. They keep the same glossy waxy skin, bell shape and white spongy flesh as the lighter forms, but their intense colour sets them apart visually and commercially."
+      ],
+      "claims": [
+        {"text": "The wax apple colour range extends to deep purple and even black, the darkest of the colour forms.", "type": "appearance", "cites": ["wiki-samarangense", "growables-waxjambu"]},
+        {"text": "Dark fruited types are nicknamed Black Pearl and Black Diamond in Southeast Asia, and the purplish red Black Pearl is highly prized in Taiwan.", "type": "naming", "cites": ["wiki-samarangense", "growables-waxjambu"]},
+        {"text": "Under the rule that darker colour means sweeter fruit, the deep purple forms are valued as sweet, premium fruit.", "type": "flavour", "cites": ["wiki-samarangense", "growables-waxjambu"]}
+      ],
+      "sources": [
+        {"id": "wiki-samarangense", "name": "Wikipedia: Syzygium samarangense", "url": "https://en.wikipedia.org/wiki/Syzygium_samarangense", "tier": "third_party"},
+        {"id": "growables-waxjambu", "name": "Growables: Wax Jambu (Syzygium samarangense)", "url": "https://www.growables.org/information/TropicalFruit/waxjambu.htm", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "wax-jambu-red": {
+      "slug": "wax-jambu-red",
+      "species": "Wax Jambu",
+      "variety": "Red",
+      "paragraphs": [
+        "Red wax jambu (Syzygium samarangense) is the colour form most associated with sweetness. The skin ranges from rose red to crimson over the typical white, crisp to juicy flesh, and as a general rule the deeper the colour the sweeter the fruit, so the reddest fruits are considered the sweetest of the colour forms.",
+        "Because colour tracks quality so closely in this species, red selections are commercially prized, and named red fruited cultivars (such as Malaysian Jambu Madu Red types) are grown specifically for their sweet, deeply coloured fruit. The fruit keeps the same glossy, waxy, bell shape and refreshing, watery texture as the paler forms."
+      ],
+      "claims": [
+        {"text": "Red and crimson are part of the documented wax apple skin colour range, over white crisp to juicy flesh.", "type": "appearance", "cites": ["wiki-samarangense", "growables-waxjambu"]},
+        {"text": "As a general rule the darker the colour the sweeter the fruit, and the reddest fruits are the sweetest.", "type": "flavour", "cites": ["growables-waxjambu", "wiki-samarangense"]},
+        {"text": "Named red fruited cultivars are grown for their sweet, deeply coloured fruit.", "type": "breeding", "cites": ["growables-waxjambu"]}
+      ],
+      "sources": [
+        {"id": "wiki-samarangense", "name": "Wikipedia: Syzygium samarangense", "url": "https://en.wikipedia.org/wiki/Syzygium_samarangense", "tier": "third_party"},
+        {"id": "growables-waxjambu", "name": "Growables: Wax Jambu (Syzygium samarangense)", "url": "https://www.growables.org/information/TropicalFruit/waxjambu.htm", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "wax-jambu-white": {
+      "slug": "wax-jambu-white",
+      "species": "Wax Jambu",
+      "variety": "White",
+      "paragraphs": [
+        "The white wax jambu (Syzygium samarangense) is the palest colour form, with skin ripening to greenish white, ivory or cream rather than the usual pink to red. The very pale greenish white selections, sold under the name Pearl, are among the highest priced wax apples in fruit markets, so the white form is a premium type rather than an unripe looking one.",
+        "Like the coloured forms it has white, spongy, watery flesh, but the pale fruit is often noted for a crisp, almost crunchy texture and a clean, mild flavour. Under the species rule that the palest as well as the darkest fruits tend to be sweeter, the white Pearl form sits at the sweet, high quality end alongside the dark purple types."
+      ],
+      "claims": [
+        {"text": "White, greenish white, ivory and cream are the palest documented wax apple skin colours, with white spongy flesh.", "type": "appearance", "cites": ["wiki-samarangense", "growables-waxjambu"]},
+        {"text": "Very pale greenish white selections, called Pearl, are among the highest priced wax apples in fruit markets.", "type": "naming", "cites": ["wiki-samarangense", "growables-waxjambu"]},
+        {"text": "Pale fruit is noted for a crisp, almost crunchy texture, and under the rule that the palest fruits tend to be sweeter it sits at the sweet, high quality end.", "type": "flavour", "cites": ["growables-waxjambu", "wiki-samarangense"]}
+      ],
+      "sources": [
+        {"id": "wiki-samarangense", "name": "Wikipedia: Syzygium samarangense", "url": "https://en.wikipedia.org/wiki/Syzygium_samarangense", "tier": "third_party"},
+        {"id": "growables-waxjambu", "name": "Growables: Wax Jambu (Syzygium samarangense)", "url": "https://www.growables.org/information/TropicalFruit/waxjambu.htm", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "wax-jambu-pink-fruit-tree",
+    "wax-jambu-water-roseapple"
+  ]
+}

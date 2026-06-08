@@ -2,6 +2,123 @@
   "species_slug": "jujube",
   "schema_version": 1,
   "varieties": {
+    "jujube-admiral-wilkes": {
+      "slug": "jujube-admiral-wilkes",
+      "species": "Jujube",
+      "variety": "Admiral Wilkes",
+      "paragraphs": [
+        "Admiral Wilkes traces back to a US South Seas expedition of the late 1830s and 1840s, and is one of the very last jujubes to ripen. The elongated, tiger tooth shaped fruit has a good sweet flavour but is best dried or used for processing rather than eaten fresh.",
+        "The tree is very vigorous, growing tall and productive with a slightly weeping habit. Because it crops so late (in Australia around March to May), it is useful for extending the jujube harvest into late autumn."
+      ],
+      "claims": [
+        {"text": "Collected during a US South Seas expedition of the late 1830s to 1840s.", "type": "origin", "cites": ["tso"]},
+        {"text": "Elongated, tiger tooth shaped fruit with a good sweet flavour; best dried or processed.", "type": "flavour", "cites": ["cultivarguide", "daleys_aw"]},
+        {"text": "One of the very last jujubes to ripen, extending harvest into late autumn.", "type": "season", "cites": ["tso", "daleys_aw"]},
+        {"text": "Very vigorous, tall, productive tree with a slightly weeping habit.", "type": "habit", "cites": ["daleys_aw"]}
+      ],
+      "sources": [
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "cultivarguide", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"},
+        {"id": "daleys_aw", "name": "Daleys Fruit: Jujube Admiral Wilkes", "url": "https://www.daleysfruit.com.au/buy/jujube-admiral-wilkes-fruit-trees-ziziphus-jujuba.htm", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-chico": {
+      "slug": "jujube-chico",
+      "species": "Jujube",
+      "variety": "Chico",
+      "paragraphs": [
+        "Chico (also known as GI 7-62) was developed at the USDA plant introduction station at Chico, California, as a seedling related to old Chinese clones. The fruit is medium to large and oblate (round but flattened on the bottom, like a little pumpkin or small apple), often with a rounded or even absent seed.",
+        "Chico has a tart sweet, balanced flavour and fine, crisp texture. It is a mid season cultivar with a long harvest period, holding its texture well, and is enjoyed fresh and can also be dried. It is popular in Australia."
+      ],
+      "claims": [
+        {"text": "Chico (GI 7-62) was developed at the USDA station at Chico, California, with medium to large oblate fruit around 15 to 17 grams and a tart sweet flavour.", "type": "measurement", "cites": ["nmsu"]},
+        {"text": "Chico has small to medium round fruit (rather than elongated), often with a round or absent seed, good raw with a piquant acidity and remaining crisp, and is popular in Australia.", "type": "flavour", "cites": ["tso"]},
+        {"text": "The fruit is round and flattened on the bottom like little pumpkins, sweet tart, ripening early to mid season, good fresh and dried.", "type": "flavour", "cites": ["cultivar"]}
+      ],
+      "sources": [
+        {"id": "nmsu", "name": "New Mexico State University Jujube Project: Varieties for Fresh Eating", "url": "https://jujube.nmsu.edu/varieties/eating.html", "tier": "authoritative"},
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "cultivar", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-ga866": {
+      "slug": "jujube-ga866",
+      "species": "Jujube",
+      "variety": "GA866",
+      "paragraphs": [
+        "GA866 is a US selection from the Chico Plant Introduction Station in California, made during the most extensive jujube trials run in the country. The fruit is midsize and elongated, sometimes slightly curved, on an almost thornless tree, and it ripens late in the season.",
+        "It is best known for being outstandingly sweet, one of the highest sugar jujubes recorded by New Mexico State University at 36 to 39.5 degrees Brix. The dense, crisp flesh is excellent fresh, and the fruit also dries well into chewy, date like pieces."
+      ],
+      "claims": [
+        {"text": "US selection from the Chico Plant Introduction Station, California.", "type": "origin", "cites": ["nmsu_eat", "tso"]},
+        {"text": "Midsize, elongated, sometimes slightly curved fruit; ripens late.", "type": "appearance", "cites": ["nmsu_eat", "tso"]},
+        {"text": "Very sweet, recorded at 36 to 39.5 degrees Brix.", "type": "measurement", "cites": ["nmsu_eat"]},
+        {"text": "Good for both fresh eating and drying.", "type": "use", "cites": ["nmsu_eat", "cultivarguide"]}
+      ],
+      "sources": [
+        {"id": "nmsu_eat", "name": "New Mexico State University Jujube Project: Varieties for Fresh Eating", "url": "https://jujube.nmsu.edu/varieties/eating.html", "tier": "authoritative"},
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "cultivarguide", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-honey-jar": {
+      "slug": "jujube-honey-jar",
+      "species": "Jujube",
+      "variety": "Honey Jar",
+      "paragraphs": [
+        "Honey Jar is a small Chinese cultivar imported to the US in 1995 (its name translates as something close to honey pot). The fruit is short and obovate with thin skin and fine, very juicy flesh, and it is widely regarded as one of the sweetest and juiciest jujubes grown. It is among the earliest to ripen, which makes it useful in regions with short seasons.",
+        "The small fruit size limits commercial appeal but suits home growers well. Honey Jar is excellent eaten fresh for its crisp, sweet, juicy bite and can also be dried."
+      ],
+      "claims": [
+        {"text": "Honey Jar is a small cultivar from China imported to the US in 1995, with fruit around 6.5 to 7.8 grams.", "type": "measurement", "cites": ["nmsu"]},
+        {"text": "It is among the earliest ripening jujubes, with very juicy fine textured flesh and excellent fresh eating quality.", "type": "superlative", "cites": ["nmsu"]},
+        {"text": "The fruit is short and obovate with thin skin and is noted for being very sweet, crisp and juicy.", "type": "flavour", "cites": ["cultivar", "jujubetrees"]}
+      ],
+      "sources": [
+        {"id": "nmsu", "name": "New Mexico State University Jujube Project: Varieties for Fresh Eating", "url": "https://jujube.nmsu.edu/varieties/eating.html", "tier": "authoritative"},
+        {"id": "cultivar", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"},
+        {"id": "jujubetrees", "name": "Jujube Trees Australia: Cultivars", "url": "https://jujubetrees.com.au/jujube-tree-cultivars/", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-lang": {
+      "slug": "jujube-lang",
+      "species": "Jujube",
+      "variety": "Lang",
+      "paragraphs": [
+        "Lang is a classic old Chinese cultivar, imported to the US in 1908 from Shanxi Province by plant explorer F.N. Meyer. The fruit is medium to large and pear shaped (pyriform) with dark red brown skin, on an upright, almost thornless tree. It is self fertile, so it can set a crop without a separate pollinator.",
+        "Its flavour is mild rather than intense, and Lang is grown above all for drying. Fruit is best harvested at the full red stage and left to dry, which gives chewy, date like results. It remains one of the major commercial drying jujubes."
+      ],
+      "claims": [
+        {"text": "Old Chinese cultivar imported to the US in 1908 from Shanxi Province by F.N. Meyer.", "type": "origin", "cites": ["nmsu_dry"]},
+        {"text": "Medium to large, pear shaped (pyriform) fruit with dark red brown skin.", "type": "appearance", "cites": ["nmsu_dry", "ntdaf"]},
+        {"text": "Self fertile.", "type": "pollination", "cites": ["ntdaf"]},
+        {"text": "Mild flavour; grown chiefly for drying, harvested at full red stage.", "type": "flavour", "cites": ["nmsu_dry", "ntdaf"]}
+      ],
+      "sources": [
+        {"id": "nmsu_dry", "name": "New Mexico State University Jujube Project: Varieties for Drying", "url": "https://jujube.nmsu.edu/varieties/drying.html", "tier": "authoritative"},
+        {"id": "ntdaf", "name": "NT Department of Agriculture and Fisheries: Jujube", "url": "https://daf.nt.gov.au/plants/research-and-development/horticulture/jujube", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "jujube-li": {
       "slug": "jujube-li",
       "species": "Jujube",
@@ -11,64 +128,213 @@
         "Eaten fresh while the skin is still reddish-brown, the fruit is crisp and sweet with a texture often compared to an apple. Left to dry, jujubes wrinkle and become chewy and date-like."
       ],
       "claims": [
-        {
-          "text": "Chinese jujube cultivar imported from China to the US by Frank Meyer",
-          "type": "origin",
-          "cites": [
-            "nmsu-jujube",
-            "specialtyproduce-li",
-            "wikipedia-jujube"
-          ]
-        },
-        {
-          "text": "One of the largest jujube cultivars, with large rounded fruit",
-          "type": "appearance",
-          "cites": [
-            "nmsu-jujube",
-            "specialtyproduce-li"
-          ]
-        },
-        {
-          "text": "Bred and favoured for fresh eating; crisp and sweet like an apple",
-          "type": "use",
-          "cites": [
-            "nmsu-jujube",
-            "specialtyproduce-li"
-          ]
-        },
-        {
-          "text": "Fresh fruit is crisp and apple-like; dried fruit becomes wrinkled and date-like",
-          "type": "flavour",
-          "cites": [
-            "wikipedia-jujube",
-            "nmsu-jujube"
-          ]
-        }
+        {"text": "Chinese jujube cultivar imported from China to the US by Frank Meyer", "type": "origin", "cites": ["nmsu-jujube", "specialtyproduce-li", "wikipedia-jujube"]},
+        {"text": "One of the largest jujube cultivars, with large rounded fruit", "type": "appearance", "cites": ["nmsu-jujube", "specialtyproduce-li"]},
+        {"text": "Bred and favoured for fresh eating; crisp and sweet like an apple", "type": "use", "cites": ["nmsu-jujube", "specialtyproduce-li"]},
+        {"text": "Fresh fruit is crisp and apple-like; dried fruit becomes wrinkled and date-like", "type": "flavour", "cites": ["wikipedia-jujube", "nmsu-jujube"]}
       ],
       "sources": [
-        {
-          "id": "nmsu-jujube",
-          "name": "New Mexico State University Extension: Jujube, Chinese Date in New Mexico",
-          "url": "https://pubs.nmsu.edu/_h/H330/index.html",
-          "tier": "authoritative"
-        },
-        {
-          "id": "specialtyproduce-li",
-          "name": "Specialty Produce: Li Jujube",
-          "url": "https://specialtyproduce.com/produce/Li_Jujube_14133.php",
-          "tier": "third_party"
-        },
-        {
-          "id": "wikipedia-jujube",
-          "name": "Wikipedia: Jujube",
-          "url": "https://en.wikipedia.org/wiki/Jujube",
-          "tier": "third_party"
-        }
+        {"id": "nmsu-jujube", "name": "New Mexico State University Extension: Jujube, Chinese Date in New Mexico", "url": "https://pubs.nmsu.edu/_h/H330/index.html", "tier": "authoritative"},
+        {"id": "specialtyproduce-li", "name": "Specialty Produce: Li Jujube", "url": "https://specialtyproduce.com/produce/Li_Jujube_14133.php", "tier": "third_party"},
+        {"id": "wikipedia-jujube", "name": "Wikipedia: Jujube", "url": "https://en.wikipedia.org/wiki/Jujube", "tier": "third_party"}
       ],
       "confidence": "high",
       "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "jujube-porterville": {
+      "slug": "jujube-porterville",
+      "species": "Jujube",
+      "variety": "Porterville",
+      "paragraphs": [
+        "Porterville is a Californian seedling selection, originally found at Porterville, California. Its standout trait is the fruit shape: large, unusually lumpy and pumpkin like, with lobes, which makes it one of the more visually distinctive jujubes. It is broadly similar to Chico in shape and taste but larger.",
+        "The fruit has very good apple and date flavour and is crisp when green. Porterville ripens early to mid season and suits both fresh eating and drying. The tree is vigorous with moderate spines."
+      ],
+      "claims": [
+        {"text": "Porterville is a Californian seedling with large, unusually lumpy and pumpkin shaped fruit.", "type": "appearance", "cites": ["tso"]},
+        {"text": "Porterville is like Chico in shape and taste but larger and with lobes like a pumpkin, ripening early to mid season, good for both fresh eating and drying.", "type": "flavour", "cites": ["jujubetrees"]},
+        {"text": "It has a uniquely irregular apple shape with apple and date flavours, crisp when green, fruiting January to March in Australia.", "type": "flavour", "cites": ["daleys"]}
+      ],
+      "sources": [
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "jujubetrees", "name": "Jujube Trees Australia: Cultivars", "url": "https://jujubetrees.com.au/jujube-tree-cultivars/", "tier": "nursery"},
+        {"id": "daleys", "name": "Daleys Fruit: Jujube Porterville", "url": "https://www.daleysfruit.com.au/buy/jujube-porterville-fruit-trees-ziziphus-jujuba.htm", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-redlands": {
+      "slug": "jujube-redlands",
+      "species": "Jujube",
+      "variety": "Redlands",
+      "paragraphs": [
+        "Redlands is a Californian selection, found at an old homestead in Redlands, California, and belongs to the Li family of jujubes. It produces large, sweet, round fruit, reportedly even larger than Li, with crisp texture and rich flavour. It is similar to Li and Shanxi Li in shape and taste, though some note a slightly better texture and a hint of acidity that Li lacks.",
+        "Redlands ripens mid season and is productive. It is best eaten fresh when the fruit is around half brown, and it also dries well."
+      ],
+      "claims": [
+        {"text": "Redlands is a Californian selection found at an old homestead in Redlands, California, and is one of the Li family of jujubes.", "type": "origin", "cites": ["tso"]},
+        {"text": "It produces large round fruit, even larger than Li, with rich flavour and crisp texture.", "type": "flavour", "cites": ["tso"]},
+        {"text": "Redlands is large, sweet and round, similar to Li and Shanxi Li, ripens mid season, and is best eaten fresh when about 50 percent brown.", "type": "flavour", "cites": ["daleys", "jujubetrees"]}
+      ],
+      "sources": [
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "daleys", "name": "Daleys Fruit: Jujube Redlands", "url": "https://www.daleysfruit.com.au/buy/jujube-redlands-fruit-trees-ziziphus-jujuba.htm", "tier": "nursery"},
+        {"id": "jujubetrees", "name": "Jujube Trees Australia: Cultivars", "url": "https://jujubetrees.com.au/jujube-tree-cultivars/", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-shanxi-li": {
+      "slug": "jujube-shanxi-li",
+      "species": "Jujube",
+      "variety": "Shanxi Li",
+      "paragraphs": [
+        "Shanxi Li originates from Shanxi Province in China and is one of the Li family of jujubes. It is among the largest fruited jujubes, producing big, round to ovoid fruit that is crisp and sweet. It is valued as a fresh eating cultivar and was once a dominant variety in the United States.",
+        "Shanxi Li ripens mid season (described as early in some climates, which helps in areas with shorter seasons). The crisp fruit is excellent eaten fresh when about half brown, and it can also be dried."
+      ],
+      "claims": [
+        {"text": "Shanxi Li originates from Shanxi Province, China, and produces large fruit (around 25 to 30 grams) with good fresh eating quality.", "type": "measurement", "cites": ["nmsu"]},
+        {"text": "It is among the largest fruited jujubes, crisp and tasty, on a compact tree.", "type": "flavour", "cites": ["tso"]},
+        {"text": "Shanxi Li is a large, round, sweet fruit of the Li family from Shanxi province, best eaten fresh when around 50 percent brown.", "type": "flavour", "cites": ["jujubetrees"]}
+      ],
+      "sources": [
+        {"id": "nmsu", "name": "New Mexico State University Jujube Project: Varieties for Fresh Eating", "url": "https://jujube.nmsu.edu/varieties/eating.html", "tier": "authoritative"},
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "jujubetrees", "name": "Jujube Trees Australia: Cultivars", "url": "https://jujubetrees.com.au/jujube-tree-cultivars/", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-si-hong": {
+      "slug": "jujube-si-hong",
+      "species": "Jujube",
+      "variety": "Si Hong",
+      "paragraphs": [
+        "Si Hong (also spelled Sihong) comes from Sihong County in Jiangsu Province, China. The fruit is medium to large and ovoid to slightly lopsided, with attractive brown red skin, ripening mid season. The flesh is thick, crisp and airy, with an apple like snap when fresh.",
+        "It is very sweet with a subtle tang, and is rated among the best jujubes for both fresh eating and drying. New Mexico State University records its sugar at 34 to 36.8 degrees Brix. When dried, the fruit develops fine, attractive wrinkles."
+      ],
+      "claims": [
+        {"text": "Originates in Sihong County, Jiangsu Province, China.", "type": "origin", "cites": ["nmsu_multi", "specialty"]},
+        {"text": "Medium to large ovoid fruit with brown red skin, ripening mid season.", "type": "appearance", "cites": ["nmsu_multi", "specialty"]},
+        {"text": "Very sweet with subtle tang, crisp apple like flesh; excellent fresh and dried.", "type": "flavour", "cites": ["specialty", "cultivarguide"]},
+        {"text": "Sugar recorded at 34 to 36.8 degrees Brix.", "type": "measurement", "cites": ["nmsu_multi"]}
+      ],
+      "sources": [
+        {"id": "nmsu_multi", "name": "New Mexico State University Jujube Project: Varieties for Multipurpose Use", "url": "https://jujube.nmsu.edu/varieties/multipurpose.html", "tier": "authoritative"},
+        {"id": "specialty", "name": "Specialty Produce: Sihong Jujube", "url": "https://specialtyproduce.com/produce/Sihong_Jujube_14132.php", "tier": "third_party"},
+        {"id": "cultivarguide", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-silverhill": {
+      "slug": "jujube-silverhill",
+      "species": "Jujube",
+      "variety": "Silverhill",
+      "paragraphs": [
+        "Silverhill is a late ripening jujube selection from the United States (Georgia or Alabama), often listed as a Tigertooth type. The fruit is elongated and tooth like, sometimes likened to a molar, and turns reddish brown as it matures. It carries very few thorns or suckers compared with many jujubes.",
+        "What sets Silverhill apart is its very sweet, crisp flesh, which makes it one of the better varieties for fresh eating rather than processing. It can also be dried for storage. In Australian gardens it crops in autumn (around March to May), at the tail end of the jujube season."
+      ],
+      "claims": [
+        {"text": "Elongated, tooth like fruit, a Tigertooth type selection from the US (Georgia or Alabama).", "type": "appearance", "cites": ["tso", "cultivarguide"]},
+        {"text": "Very sweet, crisp flesh; best suited to fresh eating, also able to be dried.", "type": "flavour", "cites": ["cultivarguide", "americangardener"]},
+        {"text": "Carries very few thorns or suckers.", "type": "habit", "cites": ["tso"]},
+        {"text": "Late season; in Australia it crops around March to May.", "type": "season", "cites": ["daleys", "cultivarguide"]}
+      ],
+      "sources": [
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "cultivarguide", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"},
+        {"id": "americangardener", "name": "American Gardener: Types of Jujube", "url": "https://americangardener.net/types-of-jujube-ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "daleys", "name": "Daleys Fruit: Jujube Silverhill", "url": "https://www.daleysfruit.com.au/Jujube-Silverhill-Ziziphus-jujuba.htm", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-sugar-cane": {
+      "slug": "jujube-sugar-cane",
+      "species": "Jujube",
+      "variety": "Sugar Cane",
+      "paragraphs": [
+        "Sugar Cane is one of the earliest jujubes to fruit, ripening from early to mid season. The fruit is midsize and ovoid with reddish brown skin. It is prized for being very sweet and crunchy, with a crisp, apple like snap when eaten fresh.",
+        "Both its fresh eating and drying quality are rated very good, so a single tree gives you crisp fruit early in the season and chewy dried fruit later. New Mexico State University records its sugar level at roughly 25 to 30 degrees Brix."
+      ],
+      "claims": [
+        {"text": "One of the earliest jujubes to fruit; ripens early to mid season.", "type": "season", "cites": ["nmsu_multi", "tso"]},
+        {"text": "Midsize ovoid fruit with reddish brown skin, very sweet and crunchy.", "type": "appearance", "cites": ["nmsu_multi", "cultivarguide"]},
+        {"text": "Both fresh eating and drying quality rated very good.", "type": "use", "cites": ["nmsu_multi", "cultivarguide"]},
+        {"text": "Sugar level recorded at roughly 25 to 30 degrees Brix.", "type": "measurement", "cites": ["nmsu_multi"]}
+      ],
+      "sources": [
+        {"id": "nmsu_multi", "name": "New Mexico State University Jujube Project: Varieties for Multipurpose Use", "url": "https://jujube.nmsu.edu/varieties/multipurpose.html", "tier": "authoritative"},
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "cultivarguide", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-ta-jan": {
+      "slug": "jujube-ta-jan",
+      "species": "Jujube",
+      "variety": "Ta Jan",
+      "paragraphs": [
+        "Ta Jan (also written Ta-Jan) is a Chinese cultivar whose name points to a large fruit. It produces large, oval to pear shaped fruit, broadly similar to Lang, with sweet, mild flesh. It ripens through the mid to late part of the season.",
+        "The fruit is fairly good eaten fresh once it has coloured fully to red brown, but it is at its best dried or used for processing into soups and candied preparations, where its size and sweetness suit long keeping products."
+      ],
+      "claims": [
+        {"text": "Chinese cultivar producing large, oval to pear shaped fruit similar to Lang.", "type": "appearance", "cites": ["cultivarguide", "americangardener"]},
+        {"text": "Sweet, mild flesh; good fresh when fully coloured but best dried or processed.", "type": "flavour", "cites": ["cultivarguide", "americangardener"]},
+        {"text": "Ripens mid to late season.", "type": "season", "cites": ["cultivarguide"]}
+      ],
+      "sources": [
+        {"id": "cultivarguide", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"},
+        {"id": "americangardener", "name": "American Gardener: Types of Jujube", "url": "https://americangardener.net/types-of-jujube-ziziphus-jujuba/", "tier": "third_party"}
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jujube-tiger-tooth-early": {
+      "slug": "jujube-tiger-tooth-early",
+      "species": "Jujube",
+      "variety": "Tiger Tooth Early",
+      "paragraphs": [
+        "Tiger Tooth jujubes are known for their distinctive very elongated fruit, long and slender like an animal's canine tooth, which sets them apart from the round and oval jujube types. The Tiger Tooth Early selection is grown in Australia for its earlier ripening, with a long wide oval shape that is more incisor like, and a sweetness compared to Honey Jar.",
+        "The fruit is crisp and sweet when fresh and develops a chewy, date like character when dried, making it suitable for both fresh eating and drying."
+      ],
+      "claims": [
+        {"text": "Tiger Tooth jujubes have very elongated fruit, distinctly long and slender compared to the round and oval jujube types.", "type": "appearance", "cites": ["tso"]},
+        {"text": "The fruit is elongated and tooth shaped, crisp and sweet fresh and date like when dried.", "type": "flavour", "cites": ["cultivar", "jujubetrees"]},
+        {"text": "The Tiger Tooth Early selection ripens early season, is quite sweet (similar to Honey Jar) and is good for both fresh eating and drying.", "type": "flavour", "cites": ["jujubetrees"]}
+      ],
+      "sources": [
+        {"id": "tso", "name": "Trees and Shrubs Online: Ziziphus jujuba", "url": "https://www.treesandshrubsonline.org/articles/ziziphus/ziziphus-jujuba/", "tier": "third_party"},
+        {"id": "cultivar", "name": "Cultivar Guide: Jujube Varieties", "url": "https://cultivar.guide/jujube", "tier": "third_party"},
+        {"id": "jujubetrees", "name": "Jujube Trees Australia: Cultivars", "url": "https://jujubetrees.com.au/jujube-tree-cultivars/", "tier": "nursery"}
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "jujube-hulu",
+    "jujube-li-chinese-dates-fruit-tree",
+    "jujube-rootstock",
+    "jujube-thornless"
+  ]
 }
