@@ -2,6 +2,421 @@
   "species_slug": "orange",
   "schema_version": 1,
   "varieties": {
+    "orange-arnold-blood": {
+      "slug": "orange-arnold-blood",
+      "species": "Orange",
+      "variety": "Arnold Blood",
+      "paragraphs": [
+        "Arnold blood orange is an Australian blood orange named after Mike Arnold, a citrus grower at Waikerie in the Riverland region of South Australia. Arnold had a particular interest in niche varieties, and the blood orange that carries his family name became one of his successes. He was inducted into the Citrus Australia Hall of Fame in 2023.",
+        "Like other blood oranges it has red, anthocyanin-pigmented flesh that develops its colour in suitable cool-night, Mediterranean-style climates. It is reported to be a sport of the Moro blood orange and is one of the better-known blood oranges in Australian markets."
+      ],
+      "claims": [
+        {
+          "text": "Named after Mike Arnold, a citrus grower at Waikerie in the Riverland region of South Australia, who had a special interest in niche varieties",
+          "type": "origin",
+          "cites": [
+            "treecrop-arnold",
+            "sp-arnold"
+          ]
+        },
+        {
+          "text": "Mike Arnold was inducted into the Citrus Australia Hall of Fame in 2023",
+          "type": "naming",
+          "cites": [
+            "treecrop-arnold",
+            "sp-arnold"
+          ]
+        },
+        {
+          "text": "Reported to be a sport of the Moro blood orange and one of the better-known blood oranges in Australian markets",
+          "type": "breeding",
+          "cites": [
+            "sp-arnold"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "treecrop-arnold",
+          "name": "Tree Crop: Visionary Mike Arnold in Citrus Hall of Fame",
+          "url": "https://www.treecrop.com.au/news/visionary-mike-arnold-citrus-hall-fame/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-arnold",
+          "name": "Specialty Produce: Arnold Blood Oranges",
+          "url": "https://specialtyproduce.com/produce/Arnold_Blood_Oranges_9469.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-bergamot": {
+      "slug": "orange-bergamot",
+      "species": "Orange",
+      "variety": "Bergamot",
+      "paragraphs": [
+        "Bergamot (Citrus bergamia) is not a true sweet orange but a probable hybrid of lemon and bitter orange. It is grown mainly along the Ionian coast of Reggio di Calabria in Italy, where most of the world's bergamot is produced, and its aromatic rind oil flavours Earl Grey and Lady Grey teas.",
+        "The fruit is grown for its fragrant oil rather than for eating. The juice tastes less sour than lemon but more bitter than grapefruit, and the fruit is not suitable for raw consumption. Bergamot oil is also one of the most widely used ingredients in perfumery."
+      ],
+      "claims": [
+        {
+          "text": "Citrus bergamia is a probable hybrid of lemon and bitter orange, not a true sweet orange",
+          "type": "breeding",
+          "cites": [
+            "wiki-bergamot"
+          ]
+        },
+        {
+          "text": "Grown mainly in the Reggio di Calabria province of Italy, where most Italian bergamot is produced",
+          "type": "origin",
+          "cites": [
+            "wiki-bergamot"
+          ]
+        },
+        {
+          "text": "Aromatic rind oil flavours Earl Grey and Lady Grey teas and is widely used in perfumery",
+          "type": "use",
+          "cites": [
+            "wiki-bergamot",
+            "wiki-earlgrey"
+          ]
+        },
+        {
+          "text": "Grown for its fragrant oil; the juice is less sour than lemon but more bitter than grapefruit, and the fruit is not suitable for raw eating",
+          "type": "flavour",
+          "cites": [
+            "wiki-bergamot"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-bergamot",
+          "name": "Wikipedia: Bergamot orange",
+          "url": "https://en.wikipedia.org/wiki/Bergamot_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-earlgrey",
+          "name": "Wikipedia: Earl Grey tea",
+          "url": "https://en.wikipedia.org/wiki/Earl_Grey_tea",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-blood": {
+      "slug": "orange-blood",
+      "species": "Orange",
+      "variety": "Blood",
+      "paragraphs": [
+        "Blood oranges owe their crimson flesh to anthocyanins, a family of pigments common in flowers and many fruits but unusual in citrus. The colour develops when fruit ripens under low night temperatures, so the deepest colour comes from regions with cool nights. The pigment can keep accumulating in cold storage after harvest.",
+        "Flavour is distinctive, with a raspberry-like note alongside the usual citrus character. Flesh ranges from orange streaked with red to deep crimson, and sometimes the rind shows dark colouring too. The main cultivars are Moro, Tarocco and Sanguinello, long associated with Sicily and the Mediterranean."
+      ],
+      "claims": [
+        {
+          "text": "Red flesh is due to anthocyanin pigments, common in flowers and fruit but uncommon in citrus",
+          "type": "appearance",
+          "cites": [
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "Pigmentation develops when fruit ripens under low night temperatures and continues to accumulate in cold storage",
+          "type": "appearance",
+          "cites": [
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "Distinctive raspberry-like flavour in addition to usual citrus notes",
+          "type": "flavour",
+          "cites": [
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "Main cultivars are Moro, Tarocco and Sanguinello, associated with Sicily and the Mediterranean",
+          "type": "naming",
+          "cites": [
+            "wiki-blood",
+            "sp-sicilian"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-sicilian",
+          "name": "Specialty Produce: Sicilian Blood Oranges",
+          "url": "https://specialtyproduce.com/produce/Sicilian_Blood_Oranges_24612.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-blood-arnold": {
+      "slug": "orange-blood-arnold",
+      "species": "Orange",
+      "variety": "Blood Arnold",
+      "paragraphs": [
+        "Arnold blood orange is an Australian blood orange named after Mike Arnold, a citrus grower at Waikerie in the Riverland region of South Australia. Arnold had a particular interest in niche varieties, and the blood orange that carries his family name became one of his successes. He was inducted into the Citrus Australia Hall of Fame in 2023.",
+        "Like other blood oranges it has red, anthocyanin-pigmented flesh that develops its colour in suitable cool-night, Mediterranean-style climates. It is reported to be a sport of the Moro blood orange and is one of the better-known blood oranges in Australian markets."
+      ],
+      "claims": [
+        {
+          "text": "Named after Mike Arnold, a citrus grower at Waikerie in the Riverland region of South Australia, who had a special interest in niche varieties",
+          "type": "origin",
+          "cites": [
+            "treecrop-arnold",
+            "sp-arnold"
+          ]
+        },
+        {
+          "text": "Mike Arnold was inducted into the Citrus Australia Hall of Fame in 2023",
+          "type": "naming",
+          "cites": [
+            "treecrop-arnold",
+            "sp-arnold"
+          ]
+        },
+        {
+          "text": "Reported to be a sport of the Moro blood orange and one of the better-known blood oranges in Australian markets",
+          "type": "breeding",
+          "cites": [
+            "sp-arnold"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "treecrop-arnold",
+          "name": "Tree Crop: Visionary Mike Arnold in Citrus Hall of Fame",
+          "url": "https://www.treecrop.com.au/news/visionary-mike-arnold-citrus-hall-fame/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-arnold",
+          "name": "Specialty Produce: Arnold Blood Oranges",
+          "url": "https://specialtyproduce.com/produce/Arnold_Blood_Oranges_9469.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-blood-maltese": {
+      "slug": "orange-blood-maltese",
+      "species": "Orange",
+      "variety": "Blood Maltese",
+      "paragraphs": [
+        "The Maltese blood orange (Maltaise Sanguine, also Maltaise demi sanguine) is a Mediterranean blood orange most associated with Tunisia, where it is prized as a top eating orange despite the name pointing to Malta. It is a half-blood (demi-sanguine) type: it develops red blood colour mainly on the side of the fruit exposed to the sun, so the flesh ranges from lightly to moderately pigmented rather than deep crimson throughout.",
+        "The flesh is tender, juicy and virtually seedless, with a sweetness balanced by gentle acidity that has earned it the nickname Queen of Oranges. The skin is deep orange, thick but easy to peel, and the fruit is relatively small. It is a late-season orange, typically picked around March and April, with most production exported to France."
+      ],
+      "claims": [
+        {
+          "text": "The Maltese blood orange (Maltaise Sanguine) is a half-blood/demi-sanguine type most associated with Tunisia",
+          "type": "origin",
+          "cites": [
+            "ucr-maltaise",
+            "gfg-maltaise"
+          ]
+        },
+        {
+          "text": "Red blood colour develops mainly on the sun-exposed side, so flesh is light to medium pigmented rather than full blood",
+          "type": "appearance",
+          "cites": [
+            "ucr-maltaise"
+          ]
+        },
+        {
+          "text": "Tender, juicy, virtually seedless flesh, sweet with balanced acidity, nicknamed Queen of Oranges",
+          "type": "flavour",
+          "cites": [
+            "ucr-maltaise",
+            "gfg-maltaise"
+          ]
+        },
+        {
+          "text": "Late-season variety picked around March and April, mostly exported to France",
+          "type": "season",
+          "cites": [
+            "gfg-maltaise"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-maltaise",
+          "name": "UC Riverside Citrus Variety Collection: Maltaise demi sanguine blood orange",
+          "url": "https://citrusvariety.ucr.edu/crc4224",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gfg-maltaise",
+          "name": "Good Fruit Guide: Maltaise Sanguine",
+          "url": "https://goodfruitguide.co.uk/product/maltaise-sanguine/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-blood-tarocco-ippolito": {
+      "slug": "orange-blood-tarocco-ippolito",
+      "species": "Orange",
+      "variety": "Blood Tarocco Ippolito",
+      "paragraphs": [
+        "Tarocco is a famous Italian blood orange, widely regarded as one of the sweetest and most flavourful blood oranges and a leading table orange in Italy. It is often called a 'half-blood' because its flesh shows less red pigmentation than Moro or Sanguinello, and at Riverside the rind develops very little colour. It is essentially seedless.",
+        "The red colour comes from anthocyanins (the same pigments in pomegranates) and develops properly only with chilly winter nights, so colour varies by climate. At Riverside the fruit ripens around December to February, similar to Moro. The tree is vigorous but only moderately productive."
+      ],
+      "claims": [
+        {
+          "text": "Tarocco is an Italian blood orange and a leading table orange in Italy",
+          "type": "origin",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is regarded as one of the sweetest, most flavourful blood oranges and is called a 'half-blood' for its lower flesh pigmentation than Moro and Sanguinello",
+          "type": "flavour",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is essentially seedless, with very little rind colouration at Riverside",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "The red colour is from anthocyanins (as in pomegranates) and requires a chilly winter to develop properly",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens around December to February, similar to Moro, and the tree is vigorous but only moderately productive",
+          "type": "season",
+          "cites": [
+            "ucr-tarocco"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-tarocco",
+          "name": "UC Riverside Citrus Variety Collection: Tarocco blood orange",
+          "url": "https://citrusvariety.ucr.edu/crc3596",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-blood-tarocco-rosso": {
+      "slug": "orange-blood-tarocco-rosso",
+      "species": "Orange",
+      "variety": "Blood Tarocco Rosso",
+      "paragraphs": [
+        "Tarocco is a famous Italian blood orange, widely regarded as one of the sweetest and most flavourful blood oranges and a leading table orange in Italy. It is often called a 'half-blood' because its flesh shows less red pigmentation than Moro or Sanguinello, and at Riverside the rind develops very little colour. It is essentially seedless.",
+        "The red colour comes from anthocyanins (the same pigments in pomegranates) and develops properly only with chilly winter nights, so colour varies by climate. At Riverside the fruit ripens around December to February, similar to Moro. The tree is vigorous but only moderately productive."
+      ],
+      "claims": [
+        {
+          "text": "Tarocco is an Italian blood orange and a leading table orange in Italy",
+          "type": "origin",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is regarded as one of the sweetest, most flavourful blood oranges and is called a 'half-blood' for its lower flesh pigmentation than Moro and Sanguinello",
+          "type": "flavour",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is essentially seedless, with very little rind colouration at Riverside",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "The red colour is from anthocyanins (as in pomegranates) and requires a chilly winter to develop properly",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens around December to February, similar to Moro, and the tree is vigorous but only moderately productive",
+          "type": "season",
+          "cites": [
+            "ucr-tarocco"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-tarocco",
+          "name": "UC Riverside Citrus Variety Collection: Tarocco blood orange",
+          "url": "https://citrusvariety.ucr.edu/crc3596",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "orange-cara-cara": {
       "slug": "orange-cara-cara",
       "species": "Orange",
@@ -66,6 +481,1638 @@
       ],
       "confidence": "high",
       "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-cara-cara-blood-navel": {
+      "slug": "orange-cara-cara-blood-navel",
+      "species": "Orange",
+      "variety": "Cara Cara Blood Navel",
+      "paragraphs": [
+        "Cara Cara is a pink-fleshed navel orange that arose as a bud mutation on a Washington navel tree, discovered in 1976 at Hacienda Cara Cara in Venezuela. Most tree and fruit traits reflect its Washington navel ancestry, but the flesh is deep pink. Unlike blood oranges, which get their colour from anthocyanins, the pink comes from the carotenoid lycopene.",
+        "The fruit is seedless, sweet and notably low in acid, with the rich navel flavour plus berry-like notes often described as cranberry or rose. It is a mid-to-late season orange, ripe at Riverside roughly from November to January."
+      ],
+      "claims": [
+        {
+          "text": "Pink-fleshed navel that arose as a bud mutation on a Washington navel tree, discovered 1976 at Hacienda Cara Cara, Venezuela",
+          "type": "origin",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Deep pink flesh coloured by the carotenoid lycopene, not anthocyanins as in blood oranges",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Seedless, sweet and low in acid",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Berry-like notes (cranberry, rose) over the navel flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-caracara"
+          ]
+        },
+        {
+          "text": "Mid-to-late season; ripe at Riverside roughly November to January",
+          "type": "season",
+          "cites": [
+            "ucr-caracara"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-caracara",
+          "name": "Wikipedia: Cara Cara navel orange",
+          "url": "https://en.wikipedia.org/wiki/Cara_Cara_navel_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-caracara",
+          "name": "UC Riverside Citrus Variety Collection: Cara Cara navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3994",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-cara-cara-navel": {
+      "slug": "orange-cara-cara-navel",
+      "species": "Orange",
+      "variety": "Cara Cara Navel",
+      "paragraphs": [
+        "Cara Cara is a pink-fleshed navel orange that arose as a bud mutation on a Washington navel tree, discovered in 1976 at Hacienda Cara Cara in Venezuela. Most tree and fruit traits reflect its Washington navel ancestry, but the flesh is deep pink. Unlike blood oranges, which get their colour from anthocyanins, the pink comes from the carotenoid lycopene.",
+        "The fruit is seedless, sweet and notably low in acid, with the rich navel flavour plus berry-like notes often described as cranberry or rose. It is a mid-to-late season orange, ripe at Riverside roughly from November to January."
+      ],
+      "claims": [
+        {
+          "text": "Pink-fleshed navel that arose as a bud mutation on a Washington navel tree, discovered 1976 at Hacienda Cara Cara, Venezuela",
+          "type": "origin",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Deep pink flesh coloured by the carotenoid lycopene, not anthocyanins as in blood oranges",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Seedless, sweet and low in acid",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Berry-like notes (cranberry, rose) over the navel flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-caracara"
+          ]
+        },
+        {
+          "text": "Mid-to-late season; ripe at Riverside roughly November to January",
+          "type": "season",
+          "cites": [
+            "ucr-caracara"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-caracara",
+          "name": "Wikipedia: Cara Cara navel orange",
+          "url": "https://en.wikipedia.org/wiki/Cara_Cara_navel_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-caracara",
+          "name": "UC Riverside Citrus Variety Collection: Cara Cara navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3994",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-chinotto": {
+      "slug": "orange-chinotto",
+      "species": "Orange",
+      "variety": "Chinotto",
+      "paragraphs": [
+        "Chinotto is the myrtle-leaved orange (Citrus myrtifolia), a sour citrus whose small leaves resemble common myrtle. It is a compact, thornless tree growing to about three metres and is found in Malta, Libya, southern France and Italy (especially Liguria around Savona, and also Tuscany, Sicily and Calabria).",
+        "The small, bitter fruit is not eaten fresh but is prized as a flavouring. It is an essential ingredient of most Italian amari and of Campari, lends its name to chinotto soft drinks, and is also made into jams, candied fruit and syrups."
+      ],
+      "claims": [
+        {
+          "text": "Citrus myrtifolia, the myrtle-leaved orange, is a sour citrus with foliage resembling common myrtle",
+          "type": "naming",
+          "cites": [
+            "wiki-myrtifolia"
+          ]
+        },
+        {
+          "text": "Compact thornless tree reaching about three metres, found in Malta, Libya, southern France and Italy (Liguria around Savona, Tuscany, Sicily, Calabria)",
+          "type": "growing",
+          "cites": [
+            "wiki-myrtifolia"
+          ]
+        },
+        {
+          "text": "Small bitter fruit is an essential flavouring of most Italian amari and Campari, gives its name to chinotto soft drinks, and is made into jams, candied fruit and syrups",
+          "type": "use",
+          "cites": [
+            "wiki-myrtifolia",
+            "wiki-chinotto-drink"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-myrtifolia",
+          "name": "Wikipedia: Citrus myrtifolia",
+          "url": "https://en.wikipedia.org/wiki/Citrus_myrtifolia",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-chinotto-drink",
+          "name": "Wikipedia: Chinotto (drink)",
+          "url": "https://en.wikipedia.org/wiki/Chinotto_(drink)",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-hamlin": {
+      "slug": "orange-hamlin",
+      "species": "Orange",
+      "variety": "Hamlin",
+      "paragraphs": [
+        "Hamlin is an early-season sweet orange that began as a chance seedling in an orchard near Glenwood, Florida (planted in 1879) and was named for the owner, A. G. Hamlin. Its cold tolerance helped it rise to prominence after Florida's freeze of 1894 to 1895, and it became one of Florida's leading juice oranges.",
+        "It is one of the earliest oranges to mature, with well-coloured fruit that has very few seeds or none. The juicy flesh is sweet and low in acid, which suits it to juicing, though in humid climates the fresh-eating quality can be underwhelming."
+      ],
+      "claims": [
+        {
+          "text": "A chance seedling in an orchard near Glenwood, Florida (planted 1879), named for the owner A. G. Hamlin",
+          "type": "origin",
+          "cites": [
+            "ucr-hamlin"
+          ]
+        },
+        {
+          "text": "More cold-tolerant than most, which contributed to its prominence after Florida's 1894 to 1895 freeze",
+          "type": "climate",
+          "cites": [
+            "ucr-hamlin"
+          ]
+        },
+        {
+          "text": "One of the earliest oranges to mature",
+          "type": "season",
+          "cites": [
+            "ucr-hamlin",
+            "sp-hamlin"
+          ]
+        },
+        {
+          "text": "Well-coloured fruit with very few seeds or none",
+          "type": "appearance",
+          "cites": [
+            "ucr-hamlin"
+          ]
+        },
+        {
+          "text": "Flesh is juicy, sweet and lacking in acid; fresh-eating quality can be disappointing in humid climates",
+          "type": "flavour",
+          "cites": [
+            "ucr-hamlin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-hamlin",
+          "name": "UC Riverside Citrus Variety Collection: Hamlin sweet orange",
+          "url": "https://citrusvariety.ucr.edu/crc3862",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-hamlin",
+          "name": "Specialty Produce: Hamlin Oranges",
+          "url": "https://specialtyproduce.com/produce/Hamlin_Oranges_26082.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-jaffa": {
+      "slug": "orange-jaffa",
+      "species": "Orange",
+      "variety": "Jaffa",
+      "paragraphs": [
+        "Jaffa is the Shamouti orange, a sweet orange that arose around the 1840s as a limb sport (bud mutation) on a local Baladi tree in an orchard near Jaffa, in what was then Ottoman Palestine. It became known as Jaffa in Europe, where the name stuck as a brand for the export trade.",
+        "The fruit is oval, medium to large, and practically seedless, with a thick, tough, leathery rind that peels easily and ships well. The flesh is sweet, fragrant and firm. It yields relatively little juice and tends toward delayed bitterness, so it suits fresh eating and storage rather than juicing. It is a midseason variety and notably cold tolerant."
+      ],
+      "claims": [
+        {
+          "text": "Jaffa is the Shamouti orange, originating as a limb sport on a Baladi tree near Jaffa around the 1840s",
+          "type": "origin",
+          "cites": [
+            "ucr-shamouti",
+            "wikipedia-jaffa"
+          ]
+        },
+        {
+          "text": "Known as Jaffa in Europe though Shamouti is the preferred name",
+          "type": "naming",
+          "cites": [
+            "ucr-shamouti"
+          ]
+        },
+        {
+          "text": "Oval, nearly seedless, with a thick leathery rind that peels well",
+          "type": "appearance",
+          "cites": [
+            "ucr-shamouti",
+            "wikipedia-jaffa"
+          ]
+        },
+        {
+          "text": "Sweet and fragrant flesh, low juice yield with delayed bitterness, unsuited to juicing",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-jaffa"
+          ]
+        },
+        {
+          "text": "Midseason maturity and notably cold tolerant",
+          "type": "season",
+          "cites": [
+            "ucr-shamouti",
+            "wikipedia-jaffa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-shamouti",
+          "name": "UC Riverside Citrus Variety Collection: Shamouti sweet orange",
+          "url": "https://citrusvariety.ucr.edu/crc3746",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-jaffa",
+          "name": "Wikipedia: Jaffa orange",
+          "url": "https://en.wikipedia.org/wiki/Jaffa_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-lane": {
+      "slug": "orange-lane",
+      "species": "Orange",
+      "variety": "Lane",
+      "paragraphs": [
+        "Lane's Late is an Australian-bred navel, discovered in 1950 as a bud mutation of the Washington navel and named for the tree's owner. It was the first of several late-maturing Australian navel bud sports later imported into California, and is now the predominant late-season navel grown in Australia.",
+        "It matures roughly four to six weeks later than Washington navel and holds well, storing on the tree for several months after reaching maturity before quality declines. Compared with Washington navel it has a smoother peel and a slightly smaller navel, with very few or no seeds."
+      ],
+      "claims": [
+        {
+          "text": "Discovered in Australia in 1950 as a bud sport of Washington navel, named for the tree's owner",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "First of several late-maturing Australian navel bud sport selections imported into California; predominant late-season navel grown in Australia",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate",
+            "nswdpi-orange"
+          ]
+        },
+        {
+          "text": "Matures four to six weeks later than Washington navel and stores on the tree for several months after maturity before quality deteriorates",
+          "type": "season",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "Has a smoother peel and slightly smaller navel than Washington navel, with very few or no seeds",
+          "type": "appearance",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-lanelate",
+          "name": "UC Riverside Citrus Variety Collection: Lane Late navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3803",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nswdpi-orange",
+          "name": "NSW DPI: Orange scions and varieties",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0005/1290182/Orange-scions-and-varieties.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-lane-s-late-navel": {
+      "slug": "orange-lane-s-late-navel",
+      "species": "Orange",
+      "variety": "Lane’s Late Navel",
+      "paragraphs": [
+        "Lane's Late is an Australian-bred navel, discovered in 1950 as a bud mutation of the Washington navel and named for the tree's owner. It was the first of several late-maturing Australian navel bud sports later imported into California, and is now the predominant late-season navel grown in Australia.",
+        "It matures roughly four to six weeks later than Washington navel and holds well, storing on the tree for several months after reaching maturity before quality declines. Compared with Washington navel it has a smoother peel and a slightly smaller navel, with very few or no seeds."
+      ],
+      "claims": [
+        {
+          "text": "Discovered in Australia in 1950 as a bud sport of Washington navel, named for the tree's owner",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "First of several late-maturing Australian navel bud sport selections imported into California; predominant late-season navel grown in Australia",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate",
+            "nswdpi-orange"
+          ]
+        },
+        {
+          "text": "Matures four to six weeks later than Washington navel and stores on the tree for several months after maturity before quality deteriorates",
+          "type": "season",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "Has a smoother peel and slightly smaller navel than Washington navel, with very few or no seeds",
+          "type": "appearance",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-lanelate",
+          "name": "UC Riverside Citrus Variety Collection: Lane Late navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3803",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nswdpi-orange",
+          "name": "NSW DPI: Orange scions and varieties",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0005/1290182/Orange-scions-and-varieties.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-lane-s-navel": {
+      "slug": "orange-lane-s-navel",
+      "species": "Orange",
+      "variety": "Lane’s Navel",
+      "paragraphs": [
+        "Lane's Late is an Australian-bred navel, discovered in 1950 as a bud mutation of the Washington navel and named for the tree's owner. It was the first of several late-maturing Australian navel bud sports later imported into California, and is now the predominant late-season navel grown in Australia.",
+        "It matures roughly four to six weeks later than Washington navel and holds well, storing on the tree for several months after reaching maturity before quality declines. Compared with Washington navel it has a smoother peel and a slightly smaller navel, with very few or no seeds."
+      ],
+      "claims": [
+        {
+          "text": "Discovered in Australia in 1950 as a bud sport of Washington navel, named for the tree's owner",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "First of several late-maturing Australian navel bud sport selections imported into California; predominant late-season navel grown in Australia",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate",
+            "nswdpi-orange"
+          ]
+        },
+        {
+          "text": "Matures four to six weeks later than Washington navel and stores on the tree for several months after maturity before quality deteriorates",
+          "type": "season",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "Has a smoother peel and slightly smaller navel than Washington navel, with very few or no seeds",
+          "type": "appearance",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-lanelate",
+          "name": "UC Riverside Citrus Variety Collection: Lane Late navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3803",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nswdpi-orange",
+          "name": "NSW DPI: Orange scions and varieties",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0005/1290182/Orange-scions-and-varieties.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-lanes-late": {
+      "slug": "orange-lanes-late",
+      "species": "Orange",
+      "variety": "Lanes Late",
+      "paragraphs": [
+        "Lane's Late is an Australian-bred navel, discovered in 1950 as a bud mutation of the Washington navel and named for the tree's owner. It was the first of several late-maturing Australian navel bud sports later imported into California, and is now the predominant late-season navel grown in Australia.",
+        "It matures roughly four to six weeks later than Washington navel and holds well, storing on the tree for several months after reaching maturity before quality declines. Compared with Washington navel it has a smoother peel and a slightly smaller navel, with very few or no seeds."
+      ],
+      "claims": [
+        {
+          "text": "Discovered in Australia in 1950 as a bud sport of Washington navel, named for the tree's owner",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "First of several late-maturing Australian navel bud sport selections imported into California; predominant late-season navel grown in Australia",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate",
+            "nswdpi-orange"
+          ]
+        },
+        {
+          "text": "Matures four to six weeks later than Washington navel and stores on the tree for several months after maturity before quality deteriorates",
+          "type": "season",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "Has a smoother peel and slightly smaller navel than Washington navel, with very few or no seeds",
+          "type": "appearance",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-lanelate",
+          "name": "UC Riverside Citrus Variety Collection: Lane Late navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3803",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nswdpi-orange",
+          "name": "NSW DPI: Orange scions and varieties",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0005/1290182/Orange-scions-and-varieties.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-lanes-late-navel": {
+      "slug": "orange-lanes-late-navel",
+      "species": "Orange",
+      "variety": "Lanes Late Navel",
+      "paragraphs": [
+        "Lane's Late is an Australian-bred navel, discovered in 1950 as a bud mutation of the Washington navel and named for the tree's owner. It was the first of several late-maturing Australian navel bud sports later imported into California, and is now the predominant late-season navel grown in Australia.",
+        "It matures roughly four to six weeks later than Washington navel and holds well, storing on the tree for several months after reaching maturity before quality declines. Compared with Washington navel it has a smoother peel and a slightly smaller navel, with very few or no seeds."
+      ],
+      "claims": [
+        {
+          "text": "Discovered in Australia in 1950 as a bud sport of Washington navel, named for the tree's owner",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "First of several late-maturing Australian navel bud sport selections imported into California; predominant late-season navel grown in Australia",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate",
+            "nswdpi-orange"
+          ]
+        },
+        {
+          "text": "Matures four to six weeks later than Washington navel and stores on the tree for several months after maturity before quality deteriorates",
+          "type": "season",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "Has a smoother peel and slightly smaller navel than Washington navel, with very few or no seeds",
+          "type": "appearance",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-lanelate",
+          "name": "UC Riverside Citrus Variety Collection: Lane Late navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3803",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nswdpi-orange",
+          "name": "NSW DPI: Orange scions and varieties",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0005/1290182/Orange-scions-and-varieties.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-navel-lanes-late": {
+      "slug": "orange-navel-lanes-late",
+      "species": "Orange",
+      "variety": "Navel Lanes Late",
+      "paragraphs": [
+        "Lane's Late is an Australian-bred navel, discovered in 1950 as a bud mutation of the Washington navel and named for the tree's owner. It was the first of several late-maturing Australian navel bud sports later imported into California, and is now the predominant late-season navel grown in Australia.",
+        "It matures roughly four to six weeks later than Washington navel and holds well, storing on the tree for several months after reaching maturity before quality declines. Compared with Washington navel it has a smoother peel and a slightly smaller navel, with very few or no seeds."
+      ],
+      "claims": [
+        {
+          "text": "Discovered in Australia in 1950 as a bud sport of Washington navel, named for the tree's owner",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "First of several late-maturing Australian navel bud sport selections imported into California; predominant late-season navel grown in Australia",
+          "type": "origin",
+          "cites": [
+            "ucr-lanelate",
+            "nswdpi-orange"
+          ]
+        },
+        {
+          "text": "Matures four to six weeks later than Washington navel and stores on the tree for several months after maturity before quality deteriorates",
+          "type": "season",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        },
+        {
+          "text": "Has a smoother peel and slightly smaller navel than Washington navel, with very few or no seeds",
+          "type": "appearance",
+          "cites": [
+            "ucr-lanelate"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-lanelate",
+          "name": "UC Riverside Citrus Variety Collection: Lane Late navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3803",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nswdpi-orange",
+          "name": "NSW DPI: Orange scions and varieties",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0005/1290182/Orange-scions-and-varieties.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-navel-newhall": {
+      "slug": "orange-navel-newhall",
+      "species": "Orange",
+      "variety": "Navel Newhall",
+      "paragraphs": [
+        "Newhall is an early ripening navel orange that arose as a limb sport of the Washington navel in the Duarte area of California, selected by Paul Hackney of the Newhall Land and Water Company. Like other navels it is essentially seedless. Its main appeal is timing: it ripens earlier than the standard Washington navel, reaching markets ahead of it.",
+        "Compared with Washington navel, Newhall fruit tends to be slightly smaller, more oblong, and deeper orange in both rind and flesh colour. The trees are somewhat less vigorous, with slightly darker leaves. At Riverside the fruit ripens roughly November to January."
+      ],
+      "claims": [
+        {
+          "text": "Newhall arose as a limb sport of the Washington navel orange in the Duarte area of California, selected by Paul Hackney of the Newhall Land and Water Company",
+          "type": "origin",
+          "cites": [
+            "ucr-newhall"
+          ]
+        },
+        {
+          "text": "It is an early-ripening navel that matures earlier than the standard Washington navel",
+          "type": "season",
+          "cites": [
+            "ucr-newhall",
+            "sp-newhall"
+          ]
+        },
+        {
+          "text": "The fruit is slightly smaller, more oblong, and deeper in rind and flesh colour than Washington navel",
+          "type": "appearance",
+          "cites": [
+            "ucr-newhall",
+            "sp-newhall"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens November to January and the trees are somewhat less vigorous with slightly darker leaves",
+          "type": "growing",
+          "cites": [
+            "ucr-newhall"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-newhall",
+          "name": "UC Riverside Citrus Variety Collection: Newhall navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3014",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-newhall",
+          "name": "Specialty Produce: Newhall Navel Oranges",
+          "url": "https://specialtyproduce.com/produce/Newhall_Navel_Oranges_15576.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-navel-washington": {
+      "slug": "orange-navel-washington",
+      "species": "Orange",
+      "variety": "Navel Washington",
+      "paragraphs": [
+        "The Washington Navel arose from a single bud mutation on an orange tree in Bahia, Brazil in the 1810s or 1820s. The USDA imported trees from Brazil in the 1870s, and cuttings sent to Eliza Tibbets in Riverside, California, in 1873 founded the Californian industry. Because the mutation made the fruit seedless, every tree is propagated by grafting and is effectively a clone of the original.",
+        "It is a large, seedless, easy-peeling winter orange named for the small secondary fruit (the navel) at its blossom end. The flesh is rich-flavoured and best eaten fresh, as it contains limonin that turns bitter in standing juice."
+      ],
+      "claims": [
+        {
+          "text": "Arose as a bud mutation in Bahia, Brazil in the 1810s or 1820s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-navel",
+            "specialtyproduce-navel"
+          ]
+        },
+        {
+          "text": "USDA imported trees from Brazil in the 1870s; cuttings sent to Eliza Tibbets in Riverside, California in 1873",
+          "type": "origin",
+          "cites": [
+            "wikipedia-navel",
+            "specialtyproduce-navel"
+          ]
+        },
+        {
+          "text": "Seedless, so it can only be propagated by cutting and grafting (all trees are clones)",
+          "type": "growing",
+          "cites": [
+            "wikipedia-navel"
+          ]
+        },
+        {
+          "text": "Large, easy-to-peel winter orange with a navel at the blossom end, best eaten fresh",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-navel",
+            "wikipedia-navel"
+          ]
+        },
+        {
+          "text": "Juice contains limonin that becomes bitter when exposed to air",
+          "type": "use",
+          "cites": [
+            "wikipedia-navel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-navel",
+          "name": "Wikipedia: Navel orange",
+          "url": "https://en.wikipedia.org/wiki/Navel_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-navel",
+          "name": "Specialty Produce: Navel Oranges",
+          "url": "https://specialtyproduce.com/produce/Navel_Oranges_8521.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-navelina": {
+      "slug": "orange-navelina",
+      "species": "Orange",
+      "variety": "Navelina",
+      "paragraphs": [
+        "Navelina is an early-season navel with an interesting trans-Atlantic history. It began as a budsport called Smith's Early, selected at Riverside, California around 1910, was exported to Spain in 1933, then reintroduced to California from Spain in 1990 under the Spanish name Navelina. In Portugal it is grown as Dalmau.",
+        "The fruit is slightly pear-shaped with a small navel and a very smooth, reddish orange rind. It matures very early (around November to January in California), and the juicy flesh is sweet, though less sprightly than Washington navel. Trees are not very vigorous and tend to be semi-dwarf."
+      ],
+      "claims": [
+        {
+          "text": "Began as a budsport called Smith's Early selected at Riverside around 1910, exported to Spain in 1933, reintroduced to California from Spain in 1990 as Navelina, grown in Portugal as Dalmau",
+          "type": "origin",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Early-season navel, maturing around November to January at Riverside",
+          "type": "season",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Flesh is juicy and sweet, less sprightly than Washington navel",
+          "type": "flavour",
+          "cites": [
+            "ucr-navelina",
+            "sp-navelina"
+          ]
+        },
+        {
+          "text": "Slightly pear-shaped with a small navel and very smooth reddish orange rind",
+          "type": "appearance",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Trees are not very vigorous and semi-dwarf in size",
+          "type": "growing",
+          "cites": [
+            "ucr-navelina"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-navelina",
+          "name": "UC Riverside Citrus Variety Collection: Navelina navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc4015",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-navelina",
+          "name": "Specialty Produce: Navelina Oranges",
+          "url": "https://specialtyproduce.com/produce/Navelina_Oranges_12183.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-navelina-7-5-spain": {
+      "slug": "orange-navelina-7-5-spain",
+      "species": "Orange",
+      "variety": "Navelina 7.5 Spain",
+      "paragraphs": [
+        "Navelina is an early-season navel with an interesting trans-Atlantic history. It began as a budsport called Smith's Early, selected at Riverside, California around 1910, was exported to Spain in 1933, then reintroduced to California from Spain in 1990 under the Spanish name Navelina. In Portugal it is grown as Dalmau.",
+        "The fruit is slightly pear-shaped with a small navel and a very smooth, reddish orange rind. It matures very early (around November to January in California), and the juicy flesh is sweet, though less sprightly than Washington navel. Trees are not very vigorous and tend to be semi-dwarf."
+      ],
+      "claims": [
+        {
+          "text": "Began as a budsport called Smith's Early selected at Riverside around 1910, exported to Spain in 1933, reintroduced to California from Spain in 1990 as Navelina, grown in Portugal as Dalmau",
+          "type": "origin",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Early-season navel, maturing around November to January at Riverside",
+          "type": "season",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Flesh is juicy and sweet, less sprightly than Washington navel",
+          "type": "flavour",
+          "cites": [
+            "ucr-navelina",
+            "sp-navelina"
+          ]
+        },
+        {
+          "text": "Slightly pear-shaped with a small navel and very smooth reddish orange rind",
+          "type": "appearance",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Trees are not very vigorous and semi-dwarf in size",
+          "type": "growing",
+          "cites": [
+            "ucr-navelina"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-navelina",
+          "name": "UC Riverside Citrus Variety Collection: Navelina navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc4015",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-navelina",
+          "name": "Specialty Produce: Navelina Oranges",
+          "url": "https://specialtyproduce.com/produce/Navelina_Oranges_12183.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-navelina-square": {
+      "slug": "orange-navelina-square",
+      "species": "Orange",
+      "variety": "Navelina Square",
+      "paragraphs": [
+        "Navelina is an early-season navel with an interesting trans-Atlantic history. It began as a budsport called Smith's Early, selected at Riverside, California around 1910, was exported to Spain in 1933, then reintroduced to California from Spain in 1990 under the Spanish name Navelina. In Portugal it is grown as Dalmau.",
+        "The fruit is slightly pear-shaped with a small navel and a very smooth, reddish orange rind. It matures very early (around November to January in California), and the juicy flesh is sweet, though less sprightly than Washington navel. Trees are not very vigorous and tend to be semi-dwarf."
+      ],
+      "claims": [
+        {
+          "text": "Began as a budsport called Smith's Early selected at Riverside around 1910, exported to Spain in 1933, reintroduced to California from Spain in 1990 as Navelina, grown in Portugal as Dalmau",
+          "type": "origin",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Early-season navel, maturing around November to January at Riverside",
+          "type": "season",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Flesh is juicy and sweet, less sprightly than Washington navel",
+          "type": "flavour",
+          "cites": [
+            "ucr-navelina",
+            "sp-navelina"
+          ]
+        },
+        {
+          "text": "Slightly pear-shaped with a small navel and very smooth reddish orange rind",
+          "type": "appearance",
+          "cites": [
+            "ucr-navelina"
+          ]
+        },
+        {
+          "text": "Trees are not very vigorous and semi-dwarf in size",
+          "type": "growing",
+          "cites": [
+            "ucr-navelina"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-navelina",
+          "name": "UC Riverside Citrus Variety Collection: Navelina navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc4015",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-navelina",
+          "name": "Specialty Produce: Navelina Oranges",
+          "url": "https://specialtyproduce.com/produce/Navelina_Oranges_12183.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-newhall": {
+      "slug": "orange-newhall",
+      "species": "Orange",
+      "variety": "Newhall",
+      "paragraphs": [
+        "Newhall is an early ripening navel orange that arose as a limb sport of the Washington navel in the Duarte area of California, selected by Paul Hackney of the Newhall Land and Water Company. Like other navels it is essentially seedless. Its main appeal is timing: it ripens earlier than the standard Washington navel, reaching markets ahead of it.",
+        "Compared with Washington navel, Newhall fruit tends to be slightly smaller, more oblong, and deeper orange in both rind and flesh colour. The trees are somewhat less vigorous, with slightly darker leaves. At Riverside the fruit ripens roughly November to January."
+      ],
+      "claims": [
+        {
+          "text": "Newhall arose as a limb sport of the Washington navel orange in the Duarte area of California, selected by Paul Hackney of the Newhall Land and Water Company",
+          "type": "origin",
+          "cites": [
+            "ucr-newhall"
+          ]
+        },
+        {
+          "text": "It is an early-ripening navel that matures earlier than the standard Washington navel",
+          "type": "season",
+          "cites": [
+            "ucr-newhall",
+            "sp-newhall"
+          ]
+        },
+        {
+          "text": "The fruit is slightly smaller, more oblong, and deeper in rind and flesh colour than Washington navel",
+          "type": "appearance",
+          "cites": [
+            "ucr-newhall",
+            "sp-newhall"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens November to January and the trees are somewhat less vigorous with slightly darker leaves",
+          "type": "growing",
+          "cites": [
+            "ucr-newhall"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-newhall",
+          "name": "UC Riverside Citrus Variety Collection: Newhall navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3014",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-newhall",
+          "name": "Specialty Produce: Newhall Navel Oranges",
+          "url": "https://specialtyproduce.com/produce/Newhall_Navel_Oranges_15576.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-newhall-navel": {
+      "slug": "orange-newhall-navel",
+      "species": "Orange",
+      "variety": "Newhall Navel",
+      "paragraphs": [
+        "Newhall is an early ripening navel orange that arose as a limb sport of the Washington navel in the Duarte area of California, selected by Paul Hackney of the Newhall Land and Water Company. Like other navels it is essentially seedless. Its main appeal is timing: it ripens earlier than the standard Washington navel, reaching markets ahead of it.",
+        "Compared with Washington navel, Newhall fruit tends to be slightly smaller, more oblong, and deeper orange in both rind and flesh colour. The trees are somewhat less vigorous, with slightly darker leaves. At Riverside the fruit ripens roughly November to January."
+      ],
+      "claims": [
+        {
+          "text": "Newhall arose as a limb sport of the Washington navel orange in the Duarte area of California, selected by Paul Hackney of the Newhall Land and Water Company",
+          "type": "origin",
+          "cites": [
+            "ucr-newhall"
+          ]
+        },
+        {
+          "text": "It is an early-ripening navel that matures earlier than the standard Washington navel",
+          "type": "season",
+          "cites": [
+            "ucr-newhall",
+            "sp-newhall"
+          ]
+        },
+        {
+          "text": "The fruit is slightly smaller, more oblong, and deeper in rind and flesh colour than Washington navel",
+          "type": "appearance",
+          "cites": [
+            "ucr-newhall",
+            "sp-newhall"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens November to January and the trees are somewhat less vigorous with slightly darker leaves",
+          "type": "growing",
+          "cites": [
+            "ucr-newhall"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-newhall",
+          "name": "UC Riverside Citrus Variety Collection: Newhall navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3014",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-newhall",
+          "name": "Specialty Produce: Newhall Navel Oranges",
+          "url": "https://specialtyproduce.com/produce/Newhall_Navel_Oranges_15576.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-pineapple": {
+      "slug": "orange-pineapple",
+      "species": "Orange",
+      "variety": "Pineapple",
+      "paragraphs": [
+        "Pineapple is a Florida sweet orange that originated as a seedling near Citra, Florida, around 1860 on J. B. Owens' property. It was first propagated about 1873 under the name Hickory and later renamed Pineapple for its delicate fragrance. The flesh is light orange, tender, and juicy, with a rich yet sweet flavour, and it is well coloured.",
+        "It is a midseason variety and is moderately seedy, though virtually seedless limb sports have been found. After the freeze of 1894 to 1895 forced extensive replanting it became Florida's principal midseason orange. The tree is highly productive, more frost-sensitive than most, and the fruit is excellent for processing."
+      ],
+      "claims": [
+        {
+          "text": "Pineapple originated as a seedling near Citra, Florida around 1860 on J. B. Owens' property",
+          "type": "origin",
+          "cites": [
+            "ucr-pineapple"
+          ]
+        },
+        {
+          "text": "It was first propagated about 1873 as 'Hickory' and renamed Pineapple for its delicate fragrance",
+          "type": "naming",
+          "cites": [
+            "ucr-pineapple"
+          ]
+        },
+        {
+          "text": "The flesh is light orange, tender, juicy, with a rich yet sweet flavour and good colour",
+          "type": "flavour",
+          "cites": [
+            "ucr-pineapple",
+            "uscn-pineapple"
+          ]
+        },
+        {
+          "text": "It is a midseason variety, moderately seedy, with virtually seedless limb sports found",
+          "type": "season",
+          "cites": [
+            "ucr-pineapple"
+          ]
+        },
+        {
+          "text": "After the 1894 to 1895 freeze it became Florida's principal midseason orange; the tree is highly productive, frost-sensitive, and the fruit is excellent for processing",
+          "type": "growing",
+          "cites": [
+            "ucr-pineapple"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-pineapple",
+          "name": "UC Riverside Citrus Variety Collection: Pineapple sweet orange",
+          "url": "https://citrusvariety.ucr.edu/crc3858",
+          "tier": "authoritative"
+        },
+        {
+          "id": "uscn-pineapple",
+          "name": "US Citrus: Pineapple Orange Tree",
+          "url": "https://uscitrusnursery.com/blogs/citrus-simplified/pineapple-orange-tree",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-pineapple-sweet": {
+      "slug": "orange-pineapple-sweet",
+      "species": "Orange",
+      "variety": "Pineapple Sweet",
+      "paragraphs": [
+        "Pineapple is a Florida sweet orange that originated as a seedling near Citra, Florida, around 1860 on J. B. Owens' property. It was first propagated about 1873 under the name Hickory and later renamed Pineapple for its delicate fragrance. The flesh is light orange, tender, and juicy, with a rich yet sweet flavour, and it is well coloured.",
+        "It is a midseason variety and is moderately seedy, though virtually seedless limb sports have been found. After the freeze of 1894 to 1895 forced extensive replanting it became Florida's principal midseason orange. The tree is highly productive, more frost-sensitive than most, and the fruit is excellent for processing."
+      ],
+      "claims": [
+        {
+          "text": "Pineapple originated as a seedling near Citra, Florida around 1860 on J. B. Owens' property",
+          "type": "origin",
+          "cites": [
+            "ucr-pineapple"
+          ]
+        },
+        {
+          "text": "It was first propagated about 1873 as 'Hickory' and renamed Pineapple for its delicate fragrance",
+          "type": "naming",
+          "cites": [
+            "ucr-pineapple"
+          ]
+        },
+        {
+          "text": "The flesh is light orange, tender, juicy, with a rich yet sweet flavour and good colour",
+          "type": "flavour",
+          "cites": [
+            "ucr-pineapple",
+            "uscn-pineapple"
+          ]
+        },
+        {
+          "text": "It is a midseason variety, moderately seedy, with virtually seedless limb sports found",
+          "type": "season",
+          "cites": [
+            "ucr-pineapple"
+          ]
+        },
+        {
+          "text": "After the 1894 to 1895 freeze it became Florida's principal midseason orange; the tree is highly productive, frost-sensitive, and the fruit is excellent for processing",
+          "type": "growing",
+          "cites": [
+            "ucr-pineapple"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-pineapple",
+          "name": "UC Riverside Citrus Variety Collection: Pineapple sweet orange",
+          "url": "https://citrusvariety.ucr.edu/crc3858",
+          "tier": "authoritative"
+        },
+        {
+          "id": "uscn-pineapple",
+          "name": "US Citrus: Pineapple Orange Tree",
+          "url": "https://uscitrusnursery.com/blogs/citrus-simplified/pineapple-orange-tree",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-salustiana": {
+      "slug": "orange-salustiana",
+      "species": "Orange",
+      "variety": "Salustiana",
+      "paragraphs": [
+        "Salustiana is a Spanish sweet orange that originated around 1950 as a limb sport on a Comuna (common sweet orange) tree in Enova, Valencia, named after Don Salustiano Pallas who propagated it. It is prized chiefly as a juice orange: the flesh is melting and very juicy, with a rich, sweet flavour, and the fruit is virtually seedless.",
+        "It is the earliest of the Spanish sweet orange varieties, ripening from about December, and the fruit holds well on the tree without much loss of quality. The combination of early maturity, low seed count and juice quality led to extensive planting in Spain and parts of North Africa."
+      ],
+      "claims": [
+        {
+          "text": "Salustiana originated around 1950 as a limb sport on a Comuna sweet orange tree at Enova, Valencia, Spain, named after Don Salustiano Pallas",
+          "type": "origin",
+          "cites": [
+            "ucr-salustiana"
+          ]
+        },
+        {
+          "text": "It is virtually seedless with melting, juicy flesh and a rich, sweet flavour, valued for juice",
+          "type": "flavour",
+          "cites": [
+            "ucr-salustiana",
+            "gfg-salustiana"
+          ]
+        },
+        {
+          "text": "It is the earliest of the Spanish varieties and the fruit holds well on the tree",
+          "type": "season",
+          "cites": [
+            "ucr-salustiana"
+          ]
+        },
+        {
+          "text": "Its early maturity, low seed count and quality led to extensive planting in Spain and North Africa",
+          "type": "growing",
+          "cites": [
+            "ucr-salustiana"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-salustiana",
+          "name": "UC Riverside Citrus Variety Collection: Salustiana sweet orange",
+          "url": "https://citrusvariety.ucr.edu/crc3868",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gfg-salustiana",
+          "name": "Good Fruit Guide: Salustiana",
+          "url": "https://goodfruitguide.co.uk/product/salustiana/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-seedless-valencia": {
+      "slug": "orange-seedless-valencia",
+      "species": "Orange",
+      "variety": "Seedless Valencia",
+      "paragraphs": [
+        "Seedless Valencia is a Valencia selection in the UC Riverside collection (budwood taken in 1942 from a tree at Riverside) and is also sold in Australia as a bud sport of Valencia chosen for low seed count. Standard Valencias carry seeds (zero to nine per fruit), so a near-seedless Valencia is the point of difference, though the name overstates it: collection notes record variable seediness across seasons rather than a reliably seedless fruit.",
+        "Like other Valencias it is a late, summer-maturing orange grown mainly for juice, and it is a heavy cropper favoured for juicing. Compared with standard clones the fruit tends to be slightly larger, coarser and more elongate, with a pebbly rind, and it clusters on the tree."
+      ],
+      "claims": [
+        {
+          "text": "Seedless Valencia is a UC Riverside Valencia selection from budwood taken in 1942 at Riverside, also sold as a low-seed bud sport of Valencia",
+          "type": "origin",
+          "cites": [
+            "ucr-seedless-valencia",
+            "daleys-orange"
+          ]
+        },
+        {
+          "text": "Standard Valencias carry zero to nine seeds per fruit, so near-seedlessness is the distinction",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-valencia"
+          ]
+        },
+        {
+          "text": "Collection notes record variable seediness rather than reliably seedless fruit",
+          "type": "appearance",
+          "cites": [
+            "ucr-seedless-valencia"
+          ]
+        },
+        {
+          "text": "Late, summer-maturing Valencia grown mainly for juice",
+          "type": "season",
+          "cites": [
+            "wikipedia-valencia"
+          ]
+        },
+        {
+          "text": "Slightly larger, coarser and more elongate than standard clones, with a pebbly rind, clustering on the tree",
+          "type": "appearance",
+          "cites": [
+            "ucr-seedless-valencia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-seedless-valencia",
+          "name": "UC Riverside Citrus Variety Collection: Seedless Valencia orange",
+          "url": "https://citrusvariety.ucr.edu/crc2776",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-valencia",
+          "name": "Wikipedia: Valencia orange",
+          "url": "https://en.wikipedia.org/wiki/Valencia_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-orange",
+          "name": "Daleys Fruit: Orange varieties",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/orange.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-seville": {
+      "slug": "orange-seville",
+      "species": "Orange",
+      "variety": "Seville",
+      "paragraphs": [
+        "Seville is the classic bitter (sour) orange, Citrus aurantium, not a sweet orange. Its fruit is seedy, bitter and acidic, which makes it unsuitable for eating fresh but ideal for cooking. It is the orange traditionally used for British orange marmalade, being higher in pectin than the sweet orange, so it gives a better set and a higher yield.",
+        "Beyond marmalade, the fruit is valued for its oil and juice, and the fragrant flowers are distilled to yield neroli oil and orange flower water for perfumery. At Riverside the fruit matures over winter, roughly January to March. The tree is vigorous and cold tolerant, with medium to large, round fruit and a pebbled dark orange rind."
+      ],
+      "claims": [
+        {
+          "text": "Seville is the bitter (sour) orange Citrus aurantium, with seedy, bitter, acidic fruit",
+          "type": "appearance",
+          "cites": [
+            "ucr-seville",
+            "wiki-bitter"
+          ]
+        },
+        {
+          "text": "It is traditionally used to make orange marmalade and is higher in pectin than the sweet orange, giving a better set and higher yield",
+          "type": "use",
+          "cites": [
+            "wiki-bitter",
+            "ucr-seville"
+          ]
+        },
+        {
+          "text": "The fruit is valued for its oil and juice, and the fragrant flowers are the source of neroli oil and orange flower water",
+          "type": "use",
+          "cites": [
+            "ucr-seville",
+            "wiki-bitter"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit matures in winter, January to March",
+          "type": "season",
+          "cites": [
+            "ucr-seville"
+          ]
+        },
+        {
+          "text": "The tree is vigorous and cold tolerant, with medium-large round fruit and a pebbled dark orange rind",
+          "type": "appearance",
+          "cites": [
+            "ucr-seville"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-seville",
+          "name": "UC Riverside Citrus Variety Collection: Seville sour orange",
+          "url": "https://citrusvariety.ucr.edu/crc3856",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-bitter",
+          "name": "Wikipedia: Bitter orange",
+          "url": "https://en.wikipedia.org/wiki/Bitter_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-seville-smooth": {
+      "slug": "orange-seville-smooth",
+      "species": "Orange",
+      "variety": "Seville Smooth",
+      "paragraphs": [
+        "Seville is the classic bitter (sour) orange, Citrus aurantium, not a sweet orange. Its fruit is seedy, bitter and acidic, which makes it unsuitable for eating fresh but ideal for cooking. It is the orange traditionally used for British orange marmalade, being higher in pectin than the sweet orange, so it gives a better set and a higher yield.",
+        "Beyond marmalade, the fruit is valued for its oil and juice, and the fragrant flowers are distilled to yield neroli oil and orange flower water for perfumery. At Riverside the fruit matures over winter, roughly January to March. The tree is vigorous and cold tolerant, with medium to large, round fruit and a pebbled dark orange rind."
+      ],
+      "claims": [
+        {
+          "text": "Seville is the bitter (sour) orange Citrus aurantium, with seedy, bitter, acidic fruit",
+          "type": "appearance",
+          "cites": [
+            "ucr-seville",
+            "wiki-bitter"
+          ]
+        },
+        {
+          "text": "It is traditionally used to make orange marmalade and is higher in pectin than the sweet orange, giving a better set and higher yield",
+          "type": "use",
+          "cites": [
+            "wiki-bitter",
+            "ucr-seville"
+          ]
+        },
+        {
+          "text": "The fruit is valued for its oil and juice, and the fragrant flowers are the source of neroli oil and orange flower water",
+          "type": "use",
+          "cites": [
+            "ucr-seville",
+            "wiki-bitter"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit matures in winter, January to March",
+          "type": "season",
+          "cites": [
+            "ucr-seville"
+          ]
+        },
+        {
+          "text": "The tree is vigorous and cold tolerant, with medium-large round fruit and a pebbled dark orange rind",
+          "type": "appearance",
+          "cites": [
+            "ucr-seville"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-seville",
+          "name": "UC Riverside Citrus Variety Collection: Seville sour orange",
+          "url": "https://citrusvariety.ucr.edu/crc3856",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-bitter",
+          "name": "Wikipedia: Bitter orange",
+          "url": "https://en.wikipedia.org/wiki/Bitter_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-smooth-seville": {
+      "slug": "orange-smooth-seville",
+      "species": "Orange",
+      "variety": "Smooth Seville",
+      "paragraphs": [
+        "Seville is the classic bitter (sour) orange, Citrus aurantium, not a sweet orange. Its fruit is seedy, bitter and acidic, which makes it unsuitable for eating fresh but ideal for cooking. It is the orange traditionally used for British orange marmalade, being higher in pectin than the sweet orange, so it gives a better set and a higher yield.",
+        "Beyond marmalade, the fruit is valued for its oil and juice, and the fragrant flowers are distilled to yield neroli oil and orange flower water for perfumery. At Riverside the fruit matures over winter, roughly January to March. The tree is vigorous and cold tolerant, with medium to large, round fruit and a pebbled dark orange rind."
+      ],
+      "claims": [
+        {
+          "text": "Seville is the bitter (sour) orange Citrus aurantium, with seedy, bitter, acidic fruit",
+          "type": "appearance",
+          "cites": [
+            "ucr-seville",
+            "wiki-bitter"
+          ]
+        },
+        {
+          "text": "It is traditionally used to make orange marmalade and is higher in pectin than the sweet orange, giving a better set and higher yield",
+          "type": "use",
+          "cites": [
+            "wiki-bitter",
+            "ucr-seville"
+          ]
+        },
+        {
+          "text": "The fruit is valued for its oil and juice, and the fragrant flowers are the source of neroli oil and orange flower water",
+          "type": "use",
+          "cites": [
+            "ucr-seville",
+            "wiki-bitter"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit matures in winter, January to March",
+          "type": "season",
+          "cites": [
+            "ucr-seville"
+          ]
+        },
+        {
+          "text": "The tree is vigorous and cold tolerant, with medium-large round fruit and a pebbled dark orange rind",
+          "type": "appearance",
+          "cites": [
+            "ucr-seville"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-seville",
+          "name": "UC Riverside Citrus Variety Collection: Seville sour orange",
+          "url": "https://citrusvariety.ucr.edu/crc3856",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-bitter",
+          "name": "Wikipedia: Bitter orange",
+          "url": "https://en.wikipedia.org/wiki/Bitter_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-tarocco-blood": {
+      "slug": "orange-tarocco-blood",
+      "species": "Orange",
+      "variety": "Tarocco Blood",
+      "paragraphs": [
+        "Tarocco is a famous Italian blood orange, widely regarded as one of the sweetest and most flavourful blood oranges and a leading table orange in Italy. It is often called a 'half-blood' because its flesh shows less red pigmentation than Moro or Sanguinello, and at Riverside the rind develops very little colour. It is essentially seedless.",
+        "The red colour comes from anthocyanins (the same pigments in pomegranates) and develops properly only with chilly winter nights, so colour varies by climate. At Riverside the fruit ripens around December to February, similar to Moro. The tree is vigorous but only moderately productive."
+      ],
+      "claims": [
+        {
+          "text": "Tarocco is an Italian blood orange and a leading table orange in Italy",
+          "type": "origin",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is regarded as one of the sweetest, most flavourful blood oranges and is called a 'half-blood' for its lower flesh pigmentation than Moro and Sanguinello",
+          "type": "flavour",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is essentially seedless, with very little rind colouration at Riverside",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "The red colour is from anthocyanins (as in pomegranates) and requires a chilly winter to develop properly",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens around December to February, similar to Moro, and the tree is vigorous but only moderately productive",
+          "type": "season",
+          "cites": [
+            "ucr-tarocco"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-tarocco",
+          "name": "UC Riverside Citrus Variety Collection: Tarocco blood orange",
+          "url": "https://citrusvariety.ucr.edu/crc3596",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -137,6 +2184,397 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "orange-valencia-delta": {
+      "slug": "orange-valencia-delta",
+      "species": "Orange",
+      "variety": "Valencia Delta",
+      "paragraphs": [
+        "Delta (Delta Seedless) is a Valencia orange selection that arose in South Africa, found in 1952 as a dooryard seedling of presumed Valencia parentage near Rustenburg. It is grown as a juicing and all-round orange and is valued for being completely seedless, unlike most standard Valencias.",
+        "The fruit has an attractive smooth rind and can be slightly elongated with a shoulder on vigorous growth. It matures a little earlier than standard Valencia, allowing harvest roughly two to three weeks ahead, because its acid drops early. Soluble solids run slightly lower than other Valencias, so eating and juice quality depend on the rootstock."
+      ],
+      "claims": [
+        {
+          "text": "Delta (Delta Seedless) is a Valencia selection found in South Africa in 1952 as a dooryard seedling",
+          "type": "origin",
+          "cites": [
+            "ucr-delta",
+            "gfg-delta"
+          ]
+        },
+        {
+          "text": "Completely seedless",
+          "type": "appearance",
+          "cites": [
+            "ucr-delta"
+          ]
+        },
+        {
+          "text": "Matures somewhat earlier than standard Valencia, harvestable two to three weeks earlier as acid drops early",
+          "type": "season",
+          "cites": [
+            "ucr-delta"
+          ]
+        },
+        {
+          "text": "Soluble solids slightly lower than other Valencias, eating quality depends on rootstock",
+          "type": "flavour",
+          "cites": [
+            "ucr-delta"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-delta",
+          "name": "UC Riverside Citrus Variety Collection: Delta Valencia orange",
+          "url": "https://citrusvariety.ucr.edu/crc3963",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gfg-delta",
+          "name": "Good Fruit Guide: Delta Seedless",
+          "url": "https://goodfruitguide.co.uk/product/delta-seedless/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-valencia-espalier": {
+      "slug": "orange-valencia-espalier",
+      "species": "Orange",
+      "variety": "Valencia Espalier",
+      "paragraphs": [
+        "The Valencia orange was developed in mid-19th century California by agronomist William Wolfskill on his farm in the Santa Ana area, and named after Valencia, Spain, for that city's reputation for sweet oranges. It went on to become the most popular juice orange in the United States.",
+        "It is a late-season variety, prized worldwide as the orange in season through summer (the Florida harvest runs roughly March to June). The fruit is thin-skinned, very juicy and sweet, the mainstay orange for juicing, and can carry anywhere from zero to about nine seeds."
+      ],
+      "claims": [
+        {
+          "text": "Developed in mid-19th century California by William Wolfskill near Santa Ana, named after Valencia, Spain",
+          "type": "origin",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Became the most popular juice orange in the United States",
+          "type": "use",
+          "cites": [
+            "wikipedia-valencia"
+          ]
+        },
+        {
+          "text": "Late-season variety, prized as the orange in season during summer; Florida harvest runs March to June",
+          "type": "season",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Thin-skinned, very juicy and sweet, the primary juicing orange",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Carries from zero to about nine seeds per fruit",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-valencia",
+          "name": "Wikipedia: Valencia orange",
+          "url": "https://en.wikipedia.org/wiki/Valencia_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-valencia",
+          "name": "Specialty Produce: Valencia Oranges",
+          "url": "https://specialtyproduce.com/produce/Valencia_Oranges_121.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-valencia-late": {
+      "slug": "orange-valencia-late",
+      "species": "Orange",
+      "variety": "Valencia Late",
+      "paragraphs": [
+        "The Valencia orange was developed in mid-19th century California by agronomist William Wolfskill on his farm in the Santa Ana area, and named after Valencia, Spain, for that city's reputation for sweet oranges. It went on to become the most popular juice orange in the United States.",
+        "It is a late-season variety, prized worldwide as the orange in season through summer (the Florida harvest runs roughly March to June). The fruit is thin-skinned, very juicy and sweet, the mainstay orange for juicing, and can carry anywhere from zero to about nine seeds."
+      ],
+      "claims": [
+        {
+          "text": "Developed in mid-19th century California by William Wolfskill near Santa Ana, named after Valencia, Spain",
+          "type": "origin",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Became the most popular juice orange in the United States",
+          "type": "use",
+          "cites": [
+            "wikipedia-valencia"
+          ]
+        },
+        {
+          "text": "Late-season variety, prized as the orange in season during summer; Florida harvest runs March to June",
+          "type": "season",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Thin-skinned, very juicy and sweet, the primary juicing orange",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        },
+        {
+          "text": "Carries from zero to about nine seeds per fruit",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-valencia",
+            "specialtyproduce-valencia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-valencia",
+          "name": "Wikipedia: Valencia orange",
+          "url": "https://en.wikipedia.org/wiki/Valencia_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-valencia",
+          "name": "Specialty Produce: Valencia Oranges",
+          "url": "https://specialtyproduce.com/produce/Valencia_Oranges_121.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-valencia-midnight-seedless": {
+      "slug": "orange-valencia-midnight-seedless",
+      "species": "Orange",
+      "variety": "Valencia Midnight Seedless",
+      "paragraphs": [
+        "Midknight (often sold as Midnight or Valencia Midnight Seedless) is a South African Valencia selection. It traces to budded trees planted in 1927 at A.P. Knight's property at Addo in the Eastern Cape, where it was noticed growing among Valencia trees and later named after Knight. Its main attraction over standard Valencia is that it is virtually seedless.",
+        "The fruit is medium to large and somewhat oblong, with a very smooth rind and excellent internal quality, high juice content and good sugar levels. The rag is slightly tougher and it can be a little harder to peel. In the Southern Hemisphere it has a short late season (around August to October) that brings the citrus year to a close."
+      ],
+      "claims": [
+        {
+          "text": "Midknight is a South African Valencia selection from budded trees planted in 1927 at A.P. Knight's property at Addo, named after Knight",
+          "type": "origin",
+          "cites": [
+            "ucr-midknight",
+            "wikipedia-midknight"
+          ]
+        },
+        {
+          "text": "Virtually seedless",
+          "type": "appearance",
+          "cites": [
+            "ucr-midknight",
+            "wikipedia-midknight"
+          ]
+        },
+        {
+          "text": "Medium-large, somewhat oblong, smooth rind, high juice content and good sugar levels, slightly harder to peel",
+          "type": "appearance",
+          "cites": [
+            "ucr-midknight"
+          ]
+        },
+        {
+          "text": "Short late season around August to October in the Southern Hemisphere, bringing the citrus season to a close",
+          "type": "season",
+          "cites": [
+            "wikipedia-midknight"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-midknight",
+          "name": "UC Riverside Citrus Variety Collection: Midknight Valencia orange",
+          "url": "https://citrusvariety.ucr.edu/crc3955",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-midknight",
+          "name": "Wikipedia: Midknight Valencia Orange",
+          "url": "https://en.wikipedia.org/wiki/Midknight_Valencia_Orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-valencia-seedless": {
+      "slug": "orange-valencia-seedless",
+      "species": "Orange",
+      "variety": "Valencia Seedless",
+      "paragraphs": [
+        "Seedless Valencia is a Valencia selection in the UC Riverside collection (budwood taken in 1942 from a tree at Riverside) and is also sold in Australia as a bud sport of Valencia chosen for low seed count. Standard Valencias carry seeds (zero to nine per fruit), so a near-seedless Valencia is the point of difference, though the name overstates it: collection notes record variable seediness across seasons rather than a reliably seedless fruit.",
+        "Like other Valencias it is a late, summer-maturing orange grown mainly for juice, and it is a heavy cropper favoured for juicing. Compared with standard clones the fruit tends to be slightly larger, coarser and more elongate, with a pebbly rind, and it clusters on the tree."
+      ],
+      "claims": [
+        {
+          "text": "Seedless Valencia is a UC Riverside Valencia selection from budwood taken in 1942 at Riverside, also sold as a low-seed bud sport of Valencia",
+          "type": "origin",
+          "cites": [
+            "ucr-seedless-valencia",
+            "daleys-orange"
+          ]
+        },
+        {
+          "text": "Standard Valencias carry zero to nine seeds per fruit, so near-seedlessness is the distinction",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-valencia"
+          ]
+        },
+        {
+          "text": "Collection notes record variable seediness rather than reliably seedless fruit",
+          "type": "appearance",
+          "cites": [
+            "ucr-seedless-valencia"
+          ]
+        },
+        {
+          "text": "Late, summer-maturing Valencia grown mainly for juice",
+          "type": "season",
+          "cites": [
+            "wikipedia-valencia"
+          ]
+        },
+        {
+          "text": "Slightly larger, coarser and more elongate than standard clones, with a pebbly rind, clustering on the tree",
+          "type": "appearance",
+          "cites": [
+            "ucr-seedless-valencia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-seedless-valencia",
+          "name": "UC Riverside Citrus Variety Collection: Seedless Valencia orange",
+          "url": "https://citrusvariety.ucr.edu/crc2776",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-valencia",
+          "name": "Wikipedia: Valencia orange",
+          "url": "https://en.wikipedia.org/wiki/Valencia_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-orange",
+          "name": "Daleys Fruit: Orange varieties",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/orange.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "orange-washington": {
+      "slug": "orange-washington",
+      "species": "Orange",
+      "variety": "Washington",
+      "paragraphs": [
+        "The Washington Navel arose from a single bud mutation on an orange tree in Bahia, Brazil in the 1810s or 1820s. The USDA imported trees from Brazil in the 1870s, and cuttings sent to Eliza Tibbets in Riverside, California, in 1873 founded the Californian industry. Because the mutation made the fruit seedless, every tree is propagated by grafting and is effectively a clone of the original.",
+        "It is a large, seedless, easy-peeling winter orange named for the small secondary fruit (the navel) at its blossom end. The flesh is rich-flavoured and best eaten fresh, as it contains limonin that turns bitter in standing juice."
+      ],
+      "claims": [
+        {
+          "text": "Arose as a bud mutation in Bahia, Brazil in the 1810s or 1820s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-navel",
+            "specialtyproduce-navel"
+          ]
+        },
+        {
+          "text": "USDA imported trees from Brazil in the 1870s; cuttings sent to Eliza Tibbets in Riverside, California in 1873",
+          "type": "origin",
+          "cites": [
+            "wikipedia-navel",
+            "specialtyproduce-navel"
+          ]
+        },
+        {
+          "text": "Seedless, so it can only be propagated by cutting and grafting (all trees are clones)",
+          "type": "growing",
+          "cites": [
+            "wikipedia-navel"
+          ]
+        },
+        {
+          "text": "Large, easy-to-peel winter orange with a navel at the blossom end, best eaten fresh",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-navel",
+            "wikipedia-navel"
+          ]
+        },
+        {
+          "text": "Juice contains limonin that becomes bitter when exposed to air",
+          "type": "use",
+          "cites": [
+            "wikipedia-navel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-navel",
+          "name": "Wikipedia: Navel orange",
+          "url": "https://en.wikipedia.org/wiki/Navel_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-navel",
+          "name": "Specialty Produce: Navel Oranges",
+          "url": "https://specialtyproduce.com/produce/Navel_Oranges_8521.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "orange-washington-navel": {
       "slug": "orange-washington-navel",
       "species": "Orange",
@@ -203,6 +2641,111 @@
       "confidence_score": 0.95,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "orange-washington-navel-square": {
+      "slug": "orange-washington-navel-square",
+      "species": "Orange",
+      "variety": "Washington Navel Square",
+      "paragraphs": [
+        "The Washington Navel arose from a single bud mutation on an orange tree in Bahia, Brazil in the 1810s or 1820s. The USDA imported trees from Brazil in the 1870s, and cuttings sent to Eliza Tibbets in Riverside, California, in 1873 founded the Californian industry. Because the mutation made the fruit seedless, every tree is propagated by grafting and is effectively a clone of the original.",
+        "It is a large, seedless, easy-peeling winter orange named for the small secondary fruit (the navel) at its blossom end. The flesh is rich-flavoured and best eaten fresh, as it contains limonin that turns bitter in standing juice."
+      ],
+      "claims": [
+        {
+          "text": "Arose as a bud mutation in Bahia, Brazil in the 1810s or 1820s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-navel",
+            "specialtyproduce-navel"
+          ]
+        },
+        {
+          "text": "USDA imported trees from Brazil in the 1870s; cuttings sent to Eliza Tibbets in Riverside, California in 1873",
+          "type": "origin",
+          "cites": [
+            "wikipedia-navel",
+            "specialtyproduce-navel"
+          ]
+        },
+        {
+          "text": "Seedless, so it can only be propagated by cutting and grafting (all trees are clones)",
+          "type": "growing",
+          "cites": [
+            "wikipedia-navel"
+          ]
+        },
+        {
+          "text": "Large, easy-to-peel winter orange with a navel at the blossom end, best eaten fresh",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-navel",
+            "wikipedia-navel"
+          ]
+        },
+        {
+          "text": "Juice contains limonin that becomes bitter when exposed to air",
+          "type": "use",
+          "cites": [
+            "wikipedia-navel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-navel",
+          "name": "Wikipedia: Navel orange",
+          "url": "https://en.wikipedia.org/wiki/Navel_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-navel",
+          "name": "Specialty Produce: Navel Oranges",
+          "url": "https://specialtyproduce.com/produce/Navel_Oranges_8521.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "orange-aussie-sunset-seedless",
+    "orange-berry",
+    "orange-blood-aussie-sunset",
+    "orange-bougainvillea-bengal",
+    "orange-bougainvillea-jamaican",
+    "orange-canna-south-pacific",
+    "orange-canna-south-pacific-bronze",
+    "orange-canna-wyoming",
+    "orange-chlorophytum-green",
+    "orange-clivia",
+    "orange-clivia-hybrid",
+    "orange-clivia-variegated",
+    "orange-coneflower-magic-vintage",
+    "orange-costus",
+    "orange-grevillea-blood",
+    "orange-hibiscus-flamenco-adonicus",
+    "orange-hibiscus-petite",
+    "orange-ixora",
+    "orange-joppa-sweet",
+    "orange-lemonade",
+    "orange-mediterranean-sweet",
+    "orange-ninebark-nishiki",
+    "orange-paper-daisy-mohave",
+    "orange-philodendron-prince-of",
+    "orange-pineapple-valencia",
+    "orange-prince-of",
+    "orange-red-hot-poker-poco",
+    "orange-rose-jewel-miniature",
+    "orange-rose-showpiece",
+    "orange-spice-poinsettia",
+    "orange-spider-plant",
+    "orange-spider-plant-green",
+    "orange-the-footy-navel",
+    "orange-trumpet-vine",
+    "orange-twinspur",
+    "orange-winter-sunrise"
+  ]
 }
