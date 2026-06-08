@@ -2,6 +2,649 @@
   "species_slug": "pomegranate",
   "schema_version": 1,
   "varieties": {
+    "pomegranate-angel-red": {
+      "slug": "pomegranate-angel-red",
+      "species": "Pomegranate",
+      "variety": "Angel Red",
+      "paragraphs": [
+        "Angel Red is a Californian cultivar (plant patent Smith, sold by Monrovia as Angel Red) prized as an early ripener, maturing from late summer into autumn ahead of many other pomegranates. It arose as a chance selection and was protected under the Plant Patent Act, so it cannot be propagated without permission.",
+        "The fruit is large and vivid red with red arils whose seeds are soft enough to eat fresh. Angel Red is noted for having less pulp and a higher juice content than many varieties, which makes it a strong choice for both fresh eating and juicing."
+      ],
+      "claims": [
+        {
+          "text": "Angel Red is an early-ripening cultivar, maturing late summer to autumn",
+          "type": "season",
+          "cites": [
+            "cultivar_guide",
+            "monrovia"
+          ]
+        },
+        {
+          "text": "It is a Californian patented selection sold by Monrovia (plant patent Smith)",
+          "type": "breeding",
+          "cites": [
+            "monrovia"
+          ]
+        },
+        {
+          "text": "The arils are red with soft seeds that can be eaten fresh",
+          "type": "appearance",
+          "cites": [
+            "cultivar_guide",
+            "monrovia"
+          ]
+        },
+        {
+          "text": "It has less pulp and higher juice content than many varieties, suiting it to juicing",
+          "type": "use",
+          "cites": [
+            "monrovia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cultivar_guide",
+          "name": "Cultivar.guide: Pomegranate variety comparison",
+          "url": "https://cultivar.guide/pomegranate",
+          "tier": "third_party"
+        },
+        {
+          "id": "monrovia",
+          "name": "Monrovia: Angel Red Pomegranate (Punica granatum Smith)",
+          "url": "https://www.monrovia.com/angel-red-pomegranate.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-azerbaijani": {
+      "slug": "pomegranate-azerbaijani",
+      "species": "Pomegranate",
+      "variety": "Azerbaijani",
+      "paragraphs": [
+        "Azerbaijani, sold in full as Gulosha Azerbaijani, takes its name from its origin in Azerbaijan and is one of the cultivars grown in Australian pomegranate evaluation trials. The skin carries a pinkish hue rather than the deep crimson of varieties like Wonderful.",
+        "Its appeal is the eating quality inside: the arils are deep red and very juicy. It is grown as a fresh-eating and juicing pomegranate."
+      ],
+      "claims": [
+        {
+          "text": "Gulosha Azerbaijani takes its name from Azerbaijan and is one of the cultivars grown in Australian pomegranate variety trials.",
+          "type": "origin",
+          "cites": [
+            "rfca-pom",
+            "sga"
+          ]
+        },
+        {
+          "text": "The skin has a pinkish hue.",
+          "type": "appearance",
+          "cites": [
+            "sga"
+          ]
+        },
+        {
+          "text": "The arils are deep red and very juicy.",
+          "type": "appearance",
+          "cites": [
+            "sga"
+          ]
+        },
+        {
+          "text": "It is grown as a fresh-eating and juicing pomegranate.",
+          "type": "use",
+          "cites": [
+            "sga",
+            "daleys-azer"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-pom",
+          "name": "RFCA Archives, Pomegranate Variety Research Results",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Pomegranate/PomVarieties7-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "sga",
+          "name": "Sustainable Gardening Australia",
+          "url": "https://www.sgaonline.org.au/pomegranates/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-azer",
+          "name": "Daleys Fruit Tree Nursery",
+          "url": "https://www.daleysfruit.com.au/buy/pomegranate-azerbaijani-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-ben-hur": {
+      "slug": "pomegranate-ben-hur",
+      "species": "Pomegranate",
+      "variety": "Ben Hur",
+      "paragraphs": [
+        "Ben Hur is an Australian-bred pomegranate developed for the home garden and grown above all for size: the fruit is unusually large, resembling cricket balls, with the heaviest specimens reported to reach around 1.2 kilograms.",
+        "Inside, Ben Hur carries plump deep red arils reported to be juicy, sweet and flavoursome. The vigorous, adaptable shrub crops heavily, making it a popular novelty choice for backyard growers who want oversized, eating-quality fruit."
+      ],
+      "claims": [
+        {
+          "text": "Ben Hur is an Australian-bred pomegranate developed for the home garden.",
+          "type": "breeding",
+          "cites": [
+            "sga",
+            "daleys-benhur"
+          ]
+        },
+        {
+          "text": "The fruit is unusually large, resembling cricket balls, with the heaviest reported around 1.2 kilograms.",
+          "type": "appearance",
+          "cites": [
+            "sga",
+            "daleys-benhur"
+          ]
+        },
+        {
+          "text": "The deep red arils are reported to be juicy, sweet and flavoursome.",
+          "type": "flavour",
+          "cites": [
+            "sga",
+            "daleys-benhur"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sga",
+          "name": "Sustainable Gardening Australia",
+          "url": "https://www.sgaonline.org.au/pomegranates/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-benhur",
+          "name": "Daleys Fruit Tree Nursery",
+          "url": "https://www.daleysfruit.com.au/buy/pomegranate-ben-hur-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-elche": {
+      "slug": "pomegranate-elche",
+      "species": "Pomegranate",
+      "variety": "Elche",
+      "paragraphs": [
+        "Elche refers to the Spanish soft-seed cultivar properly called Mollar de Elche, named for the town of Elche in Alicante where it has long been grown. In 2016 the European Union granted it Protected Designation of Origin status, recognising it as a regional speciality.",
+        "It is best known for soft, edible seeds and a notably sweet flavour, which makes it an easy fresh-eating pomegranate. Fruit are large with dark red arils, while the skin ranges from cream to deep red depending on sun exposure. The main harvest falls in October."
+      ],
+      "claims": [
+        {
+          "text": "Elche is the Spanish Mollar de Elche cultivar from Elche in Alicante, granted EU Protected Designation of Origin status in 2016.",
+          "type": "naming",
+          "cites": [
+            "fruitnet-pdo",
+            "fascinating-spain"
+          ]
+        },
+        {
+          "text": "It has soft, edible seeds and a sweet flavour suited to fresh eating.",
+          "type": "flavour",
+          "cites": [
+            "fascinating-spain",
+            "sga"
+          ]
+        },
+        {
+          "text": "Fruit are large with dark red arils and skin ranging from cream to deep red, harvested in October.",
+          "type": "appearance",
+          "cites": [
+            "fruitnet-pdo",
+            "fascinating-spain"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fruitnet-pdo",
+          "name": "Fruitnet, Mollar de Elche pomegranates to get PDO",
+          "url": "https://www.fruitnet.com/eurofruit/mollar-de-elche-pomegranates-to-get-pdo/167696.article",
+          "tier": "third_party"
+        },
+        {
+          "id": "fascinating-spain",
+          "name": "Fascinating Spain, Mollar Pomegranate of Elche",
+          "url": "https://www.fascinatingspain.com/articulo/denomination-of-origin/mollar-pomegranate-of-elche/20180613161636068730.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "sga",
+          "name": "Sustainable Gardening Australia",
+          "url": "https://www.sgaonline.org.au/pomegranates/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-eversweet": {
+      "slug": "pomegranate-eversweet",
+      "species": "Pomegranate",
+      "variety": "Eversweet",
+      "paragraphs": [
+        "Eversweet is a Californian cultivar best known for being sweet very early, with arils that taste sweet even before the fruit is fully ripe. The seeds are soft, and the variety is one of the sweetest pomegranates grown for fresh eating.",
+        "Its standout quirk is the juice, which is clear and non-staining rather than the deep red of most pomegranates, paired with pale pink to almost translucent arils under a light-coloured skin. That makes it a tidy choice for eating out of hand and for juicing without the usual red stains."
+      ],
+      "claims": [
+        {
+          "text": "Eversweet is a Californian cultivar",
+          "type": "origin",
+          "cites": [
+            "cultivar_guide"
+          ]
+        },
+        {
+          "text": "The arils are sweet even before the fruit is fully ripe",
+          "type": "flavour",
+          "cites": [
+            "cultivar_guide",
+            "davewilson"
+          ]
+        },
+        {
+          "text": "The seeds are soft",
+          "type": "appearance",
+          "cites": [
+            "cultivar_guide",
+            "davewilson"
+          ]
+        },
+        {
+          "text": "The juice is clear and non-staining",
+          "type": "appearance",
+          "cites": [
+            "davewilson"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cultivar_guide",
+          "name": "Cultivar.guide: Pomegranate variety comparison",
+          "url": "https://cultivar.guide/pomegranate",
+          "tier": "third_party"
+        },
+        {
+          "id": "davewilson",
+          "name": "Dave Wilson Nursery: Eversweet pomegranate",
+          "url": "https://www.davewilson.com/nurseries/products/fruit-trees/pomegranate/eversweet/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-gayusha-rosavaya": {
+      "slug": "pomegranate-gayusha-rosavaya",
+      "species": "Pomegranate",
+      "variety": "Gayusha Rosavaya",
+      "paragraphs": [
+        "Gayusha Rosavaya, more correctly Gulosha Rosavaya, is a Russian cultivar that rates among the top performers in Australian pomegranate variety trials. The fruit is large with attractive light pink skin and a slightly elongated, angular shape.",
+        "It is grown for flavour: the deep red arils are juicy and soft-seeded, with a sweetness lifted by gentle acidity that many growers rate the best of the balanced types. The fruit ripens through autumn, and the bush carries a distinctive slightly ruffled foliage."
+      ],
+      "claims": [
+        {
+          "text": "Gulosha Rosavaya is a Russian cultivar that rates among the top performers in Australian variety trials.",
+          "type": "origin",
+          "cites": [
+            "rfca-pom",
+            "sga"
+          ]
+        },
+        {
+          "text": "The large fruit has light pink skin and a slightly elongated, angular shape.",
+          "type": "appearance",
+          "cites": [
+            "rfca-pom",
+            "hanbury"
+          ]
+        },
+        {
+          "text": "The deep red arils are juicy and soft-seeded, with sweetness balanced by gentle acidity.",
+          "type": "flavour",
+          "cites": [
+            "rfca-pom",
+            "hanbury"
+          ]
+        },
+        {
+          "text": "The bush carries a distinctive slightly ruffled foliage and ripens in autumn.",
+          "type": "appearance",
+          "cites": [
+            "hanbury",
+            "sga"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-pom",
+          "name": "RFCA Archives, Pomegranate Variety Research Results",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Pomegranate/PomVarieties7-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "sga",
+          "name": "Sustainable Gardening Australia",
+          "url": "https://www.sgaonline.org.au/pomegranates/",
+          "tier": "third_party"
+        },
+        {
+          "id": "hanbury",
+          "name": "Hanbury House, Pomegranate from Down Under: Gulosha Rosavaya",
+          "url": "https://hanburyhouse.com/2019/01/12/pomegranate-from-down-under-gulosha-rosavaya/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-jodhpur-red": {
+      "slug": "pomegranate-jodhpur-red",
+      "species": "Pomegranate",
+      "variety": "Jodhpur Red",
+      "paragraphs": [
+        "Jodhpur Red is a favourite cultivar of the arid and semi-arid tracts of Rajasthan in northwest India, well adapted to hot, dry growing conditions. The tree is spreading and evergreen in habit. Fruit is round and smooth with pink skin carrying a reddish tinge, the kind of appearance suited to its desert home rather than the deep crimson of cooler-climate types.",
+        "Inside, the arils are pink and sweet in taste. Indian varietal reviews describe the seeds within those arils as firm rather than soft, so this is a fresh-eating and table fruit prized in its native region for sweetness rather than a melt-in-the-mouth soft-seeded type."
+      ],
+      "claims": [
+        {
+          "text": "Jodhpur Red is a favourite cultivar of the arid and semi-arid tracts of Rajasthan, India",
+          "type": "origin",
+          "cites": [
+            "pharma_innovation"
+          ]
+        },
+        {
+          "text": "The tree has a spreading, evergreen growth habit",
+          "type": "growing",
+          "cites": [
+            "pharma_innovation"
+          ]
+        },
+        {
+          "text": "Fruit is round and smooth with pink skin and a reddish tinge",
+          "type": "appearance",
+          "cites": [
+            "pharma_innovation",
+            "woodside"
+          ]
+        },
+        {
+          "text": "The arils are pink and sweet in taste",
+          "type": "flavour",
+          "cites": [
+            "pharma_innovation"
+          ]
+        },
+        {
+          "text": "The seeds within the arils are hard rather than soft",
+          "type": "appearance",
+          "cites": [
+            "pharma_innovation"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pharma_innovation",
+          "name": "The Pharma Innovation Journal: Varieties of pomegranate (Punica granatum) in India (2023)",
+          "url": "https://www.thepharmajournal.com/archives/2023/vol12issue12/PartAJ/12-12-311-220.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "woodside",
+          "name": "Woodside Plants and Design: Punica granatum Jodhpur Red",
+          "url": "https://woodsideplantsanddesign.com.au/products/punica-granatum-jodhpur-red",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-kazake": {
+      "slug": "pomegranate-kazake",
+      "species": "Pomegranate",
+      "variety": "Kazake",
+      "paragraphs": [
+        "Kazake is a Central Asian selection, usually traced to Uzbekistan, that became known in the West as one of the most cold hardy pomegranates in trial. That hardiness makes it a choice for cooler gardens where many pomegranates struggle.",
+        "The fruit is lighter coloured, with yellow-green to pink skin over dark red arils that are very juicy. The flavour is a crisp sweet-tart, and unlike the soft-seed Spanish types its seeds are firm. A closed calyx helps it resist splitting, and it stores and keeps better than most, ripening around October."
+      ],
+      "claims": [
+        {
+          "text": "Kazake is a Central Asian selection usually traced to Uzbekistan.",
+          "type": "origin",
+          "cites": [
+            "cultivar-guide",
+            "ogw-kazake"
+          ]
+        },
+        {
+          "text": "It is noted as one of the most cold hardy pomegranates in trial.",
+          "type": "climate",
+          "cites": [
+            "cultivar-guide",
+            "ogw-kazake"
+          ]
+        },
+        {
+          "text": "The skin is lighter, yellow-green to pink, over very juicy dark red arils.",
+          "type": "appearance",
+          "cites": [
+            "cultivar-guide",
+            "ogw-kazake"
+          ]
+        },
+        {
+          "text": "The flavour is sweet-tart and the seeds are firm rather than soft.",
+          "type": "flavour",
+          "cites": [
+            "cultivar-guide",
+            "ogw-kazake"
+          ]
+        },
+        {
+          "text": "A closed calyx helps it resist splitting and it stores well.",
+          "type": "storage",
+          "cites": [
+            "cultivar-guide",
+            "ogw-kazake"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cultivar-guide",
+          "name": "Cultivar Guide, Pomegranate Varieties",
+          "url": "https://cultivar.guide/pomegranate",
+          "tier": "third_party"
+        },
+        {
+          "id": "ogw-kazake",
+          "name": "One Green World, Kazake Pomegranate",
+          "url": "https://onegreenworld.com/product/kazake-pomegranate/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-mollar-de-elche": {
+      "slug": "pomegranate-mollar-de-elche",
+      "species": "Pomegranate",
+      "variety": "Mollar de Elche",
+      "paragraphs": [
+        "Mollar de Elche is the famous Spanish soft-seed pomegranate from the Elche district of Alicante. The European Union recognised it with Protected Designation of Origin status in 2016, tying the name to fruit grown in that specific region of eastern Spain.",
+        "Its defining trait is very small, soft, edible seeds inside large dark red arils, paired with a sweet flavour that suits eating fresh out of hand. The skin colour varies from cream to deep red with sun exposure, and the crop is harvested through October."
+      ],
+      "claims": [
+        {
+          "text": "Mollar de Elche is the Spanish soft-seed pomegranate from Elche in Alicante, granted EU Protected Designation of Origin in 2016.",
+          "type": "naming",
+          "cites": [
+            "fruitnet-pdo",
+            "fascinating-spain"
+          ]
+        },
+        {
+          "text": "It has very small, soft, edible seeds within large dark red arils.",
+          "type": "appearance",
+          "cites": [
+            "fascinating-spain",
+            "sga"
+          ]
+        },
+        {
+          "text": "The flavour is sweet, suited to fresh eating, and skin ranges from cream to deep red.",
+          "type": "flavour",
+          "cites": [
+            "fruitnet-pdo",
+            "fascinating-spain"
+          ]
+        },
+        {
+          "text": "The crop is harvested in October.",
+          "type": "season",
+          "cites": [
+            "fruitnet-pdo",
+            "fascinating-spain"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fruitnet-pdo",
+          "name": "Fruitnet, Mollar de Elche pomegranates to get PDO",
+          "url": "https://www.fruitnet.com/eurofruit/mollar-de-elche-pomegranates-to-get-pdo/167696.article",
+          "tier": "third_party"
+        },
+        {
+          "id": "fascinating-spain",
+          "name": "Fascinating Spain, Mollar Pomegranate of Elche",
+          "url": "https://www.fascinatingspain.com/articulo/denomination-of-origin/mollar-pomegranate-of-elche/20180613161636068730.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "sga",
+          "name": "Sustainable Gardening Australia",
+          "url": "https://www.sgaonline.org.au/pomegranates/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pomegranate-parfianka": {
+      "slug": "pomegranate-parfianka",
+      "species": "Pomegranate",
+      "variety": "Parfianka",
+      "paragraphs": [
+        "Parfianka originated in Turkmenistan, collected by botanist Dr Gregory Levin and introduced to the United States through UC Davis. Like the other Levin selections it is a soft-seeded variety, with small, tender, edible seeds set in deep burgundy to cranberry-red arils.",
+        "Its reputation rests on flavour: a sweet-tart, somewhat wine-like taste that has seen it rated among the best in California Rare Fruit Growers tasting trials. It is widely grown for fresh eating and juicing, with juice as deeply coloured as the arils."
+      ],
+      "claims": [
+        {
+          "text": "Parfianka originated in Turkmenistan, collected by Dr Gregory Levin and introduced via UC Davis",
+          "type": "origin",
+          "cites": [
+            "cultivar_guide",
+            "raygardenday"
+          ]
+        },
+        {
+          "text": "It has small, soft, edible seeds",
+          "type": "appearance",
+          "cites": [
+            "cultivar_guide",
+            "raygardenday"
+          ]
+        },
+        {
+          "text": "The arils are deep burgundy to cranberry red",
+          "type": "appearance",
+          "cites": [
+            "cultivar_guide",
+            "raygardenday"
+          ]
+        },
+        {
+          "text": "It has a sweet-tart, somewhat wine-like flavour rated among the best by California Rare Fruit Growers tasters",
+          "type": "flavour",
+          "cites": [
+            "organic_garden_club",
+            "cultivar_guide"
+          ]
+        },
+        {
+          "text": "It is grown for fresh eating and juicing",
+          "type": "use",
+          "cites": [
+            "pharma_innovation"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cultivar_guide",
+          "name": "Cultivar.guide: Pomegranate variety comparison",
+          "url": "https://cultivar.guide/pomegranate",
+          "tier": "third_party"
+        },
+        {
+          "id": "raygardenday",
+          "name": "Ray Garden Day: Choosing varieties of pomegranate",
+          "url": "https://raygardenday.com/garden/fruits/pomegranate/choosing-varieties-of-pomegranate/",
+          "tier": "third_party"
+        },
+        {
+          "id": "organic_garden_club",
+          "name": "Organic Garden Club of Ventura County: Pomegranate taste test",
+          "url": "https://organicgardenclubofventuracounty.org/2024/11/23/pomegranate-taste-test/",
+          "tier": "third_party"
+        },
+        {
+          "id": "pharma_innovation",
+          "name": "The Pharma Innovation Journal: Varieties of pomegranate (Punica granatum) in India (2023)",
+          "url": "https://www.thepharmajournal.com/archives/2023/vol12issue12/PartAJ/12-12-311-220.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "pomegranate-wonderful": {
       "slug": "pomegranate-wonderful",
       "species": "Pomegranate",
@@ -61,5 +704,17 @@
       "verified": true,
       "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "pomegranate-azerbaijani-fruit-tree",
+    "pomegranate-fruit-plant",
+    "pomegranate-midnight-velvet",
+    "pomegranate-parafanka",
+    "pomegranate-red-velvet",
+    "pomegranate-red-velvet-tm",
+    "pomegranate-rosavaya",
+    "pomegranate-rosavoya",
+    "pomegranate-spanish",
+    "pomegranate-wonderful-fruit-tree"
+  ]
 }

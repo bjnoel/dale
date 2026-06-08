@@ -1,0 +1,640 @@
+{
+  "species_slug": "feijoa",
+  "schema_version": 1,
+  "varieties": {
+    "feijoa-apollo": {
+      "slug": "feijoa-apollo",
+      "species": "Feijoa",
+      "variety": "Apollo",
+      "paragraphs": [
+        "Apollo is one of the small number of feijoa cultivars that is self fertile, so it can fruit on its own, though it sets bigger and heavier crops when planted with another variety. That self fertility, shared with Unique, sets it apart from most feijoas, which need a pollinator partner.",
+        "It is a mid to late season variety bearing large fruit, some uneven in shape, with smooth, thin, light green skin that bruises easily. The flesh is mild, sweet and juicy with good eating quality, making it a popular, productive choice."
+      ],
+      "claims": [
+        {
+          "text": "Apollo is one of the few self fertile feijoa cultivars but crops better with a pollinator",
+          "type": "pollination",
+          "cites": [
+            "auckland-botanic-apollo",
+            "feijoafeijoa-cultivars"
+          ]
+        },
+        {
+          "text": "It ripens mid to late season and bears large fruit, some uneven in shape",
+          "type": "season",
+          "cites": [
+            "nzfga-varieties",
+            "feijoafeijoa-cultivars"
+          ]
+        },
+        {
+          "text": "The fruit has smooth, thin, light green skin that bruises easily, with mild, sweet, juicy flesh",
+          "type": "appearance",
+          "cites": [
+            "feijoafeijoa-cultivars",
+            "nzfga-varieties"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "auckland-botanic-apollo",
+          "name": "Auckland Botanic Gardens: Acca sellowiana Apollo",
+          "url": "https://www.aucklandbotanicgardens.co.nz/plants-for-auckland/plants/acca-sellowiana-apollo/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "feijoafeijoa-cultivars",
+          "name": "Feijoa Feijoa: Cultivars",
+          "url": "https://feijoafeijoa.wordpress.com/cultivars/",
+          "tier": "third_party"
+        },
+        {
+          "id": "nzfga-varieties",
+          "name": "NZ Feijoa Growers Association: Varieties",
+          "url": "https://www.feijoa.org.nz/resources/varieties",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "feijoa-kaiteri": {
+      "slug": "feijoa-kaiteri",
+      "species": "Feijoa",
+      "variety": "Kaiteri",
+      "paragraphs": [
+        "Kaiteri is a New Zealand cultivar bred by Roy Hart. It is prized as an early cropper that carries large, smooth fruit on a vigorous tree, starting to ripen before the popular Unique but continuing to crop for longer. The flesh is sweet, and the skin is thin enough to eat. It is partially self-fertile, so it will set some fruit alone, but yields are noticeably better with a second variety planted nearby as a pollinator.",
+        "Among the larger feijoas in cultivation, Kaiteri is sold as a standout for size and flavour, which is why it is propagated under exclusive arrangements and plant variety protection in New Zealand."
+      ],
+      "claims": [
+        {
+          "text": "Kaiteri is a New Zealand cultivar bred by Roy Hart.",
+          "type": "breeding",
+          "cites": [
+            "nzfga",
+            "waimea"
+          ]
+        },
+        {
+          "text": "It is an early-ripening cropper with large, smooth fruit on a vigorous tree, starting to ripen before Unique.",
+          "type": "season",
+          "cites": [
+            "nzfga",
+            "feijoafeijoa",
+            "waimea"
+          ]
+        },
+        {
+          "text": "Like feijoas generally, it is only partly self-fertile and produces larger crops of bigger fruit when another variety is planted nearby.",
+          "type": "pollination",
+          "cites": [
+            "nzfga",
+            "waimea"
+          ]
+        },
+        {
+          "text": "The fruit is sweet with a thin, edible skin.",
+          "type": "flavour",
+          "cites": [
+            "waimea",
+            "onegreenworld"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nzfga",
+          "name": "NZ Feijoa Growers Association, Varieties",
+          "url": "https://www.feijoa.org.nz/resources/varieties",
+          "tier": "third_party"
+        },
+        {
+          "id": "feijoafeijoa",
+          "name": "Feijoa Feijoa, Cultivars",
+          "url": "https://feijoafeijoa.wordpress.com/cultivars/",
+          "tier": "third_party"
+        },
+        {
+          "id": "waimea",
+          "name": "Waimea Nurseries, Feijoa Variety Brochure (commercial growers)",
+          "url": "https://commercial.waimeanurseries.co.nz/assets/Uploads/Comm-Feijoas/WAIMEA-Feijoa-Brochure.pdf",
+          "tier": "third_party"
+        },
+        {
+          "id": "onegreenworld",
+          "name": "One Green World, Kaiteri Pineapple Guava",
+          "url": "https://onegreenworld.com/product/kaiteri-pineapple-guava/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "feijoa-mammoth": {
+      "slug": "feijoa-mammoth",
+      "species": "Feijoa",
+      "variety": "Mammoth",
+      "paragraphs": [
+        "Mammoth is a New Zealand selection raised from seedlings of the Choiceana cultivar, and it is named for its relatively large fruit. The fruit is round to oval with a thick, somewhat wrinkled skin, and is smoother and more rounded than Triumph. It is self fertile but bears larger fruit when cross pollinated.",
+        "It matures early to mid season and tends to be softer than Triumph, so it needs careful handling. The flesh is moderately soft, juicy and grainy, with good flavour, though fruit can show a high incidence of empty segments inside."
+      ],
+      "claims": [
+        {
+          "text": "Mammoth is a New Zealand selection from Choiceana seedlings, named for its large fruit",
+          "type": "naming",
+          "cites": [
+            "wikipedia-feijoa",
+            "feijoafeijoa-cultivars"
+          ]
+        },
+        {
+          "text": "The round to oval fruit has a thick, somewhat wrinkled skin and is smoother and more rounded than Triumph",
+          "type": "appearance",
+          "cites": [
+            "feijoafeijoa-cultivars",
+            "rfca-feijoa"
+          ]
+        },
+        {
+          "text": "It is self fertile but bears larger fruit with cross pollination",
+          "type": "pollination",
+          "cites": [
+            "feijoafeijoa-cultivars",
+            "crfg-feijoa"
+          ]
+        },
+        {
+          "text": "It matures early to mid season, is softer than Triumph, and the grainy flesh can show empty segments",
+          "type": "season",
+          "cites": [
+            "nzfga-varieties",
+            "rfca-feijoa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-feijoa",
+          "name": "Wikipedia: Feijoa",
+          "url": "https://en.wikipedia.org/wiki/Feijoa",
+          "tier": "third_party"
+        },
+        {
+          "id": "feijoafeijoa-cultivars",
+          "name": "Feijoa Feijoa: Cultivars",
+          "url": "https://feijoafeijoa.wordpress.com/cultivars/",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg-feijoa",
+          "name": "California Rare Fruit Growers: Feijoa Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/feijoa/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nzfga-varieties",
+          "name": "NZ Feijoa Growers Association: Varieties",
+          "url": "https://www.feijoa.org.nz/resources/varieties",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-feijoa",
+          "name": "RFCA Archive: Feijoa (1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Feijoa/Feijoa7-83.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "feijoa-nazematze": {
+      "slug": "feijoa-nazematze",
+      "species": "Feijoa",
+      "variety": "Nazematze",
+      "paragraphs": [
+        "Nazematze is a vendor spelling of Nazemetz, a Californian cultivar raised in San Diego by Alexander Nazemetz. It is self-fertile, so a single tree will set a crop, but it bears most heavily when cross-pollinated, and it works well as a pollinator for other varieties. The fruit is large and pear-shaped with moderately thin side walls, and the flavour and quality are rated excellent. It ripens late in the season, from roughly late October into mid-December in California (autumn to early winter).",
+        "Its standout quirk is the flesh. Unlike many feijoas, the translucent, sweet pulp does not darken after the fruit is cut or as it ripens, instead holding its clear colour. The cultivar is also sold under the correct spelling Nazemetz and as Nazimet."
+      ],
+      "claims": [
+        {
+          "text": "Nazemetz originated in San Diego, California, raised by Alexander Nazemetz.",
+          "type": "origin",
+          "cites": [
+            "crfg"
+          ]
+        },
+        {
+          "text": "The tree is self-fertile but bears most heavily when cross-pollinated, and is a good pollinator for Trask.",
+          "type": "pollination",
+          "cites": [
+            "crfg"
+          ]
+        },
+        {
+          "text": "Fruit is large and pear-shaped with moderately thin side walls and translucent, sweet pulp of excellent quality.",
+          "type": "appearance",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        },
+        {
+          "text": "The pulp does not darken after being cut or as it ripens, retaining its clear colour, unlike many other cultivars.",
+          "type": "appearance",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        },
+        {
+          "text": "Fruit ripens late in the season, around late October to mid-December.",
+          "type": "season",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Feijoa Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/feijoa/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "feijoafeijoa",
+          "name": "Feijoa Feijoa, Cultivars",
+          "url": "https://feijoafeijoa.wordpress.com/cultivars/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "feijoa-nazemetz": {
+      "slug": "feijoa-nazemetz",
+      "species": "Feijoa",
+      "variety": "Nazemetz",
+      "paragraphs": [
+        "Nazemetz is a Californian cultivar raised in San Diego by Alexander Nazemetz. It is self-fertile, so a single tree will set a crop, but it bears most heavily when cross-pollinated, and it works well as a pollinator for other varieties. The fruit is large and pear-shaped with moderately thin side walls, and the flavour and quality are rated excellent. It ripens late in the season, from roughly late October into mid-December in California (autumn to early winter).",
+        "Its standout quirk is the flesh. Unlike many feijoas, the translucent, sweet pulp does not darken after the fruit is cut or as it ripens, instead holding its clear colour. The name is sometimes listed under variant spellings such as Nazimet or Nazematze, but these refer to the same cultivar."
+      ],
+      "claims": [
+        {
+          "text": "Nazemetz originated in San Diego, California, raised by Alexander Nazemetz.",
+          "type": "origin",
+          "cites": [
+            "crfg"
+          ]
+        },
+        {
+          "text": "The tree is self-fertile but bears most heavily when cross-pollinated, and is a good pollinator for Trask.",
+          "type": "pollination",
+          "cites": [
+            "crfg"
+          ]
+        },
+        {
+          "text": "Fruit is large and pear-shaped with moderately thin side walls and translucent, sweet pulp of excellent quality.",
+          "type": "appearance",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        },
+        {
+          "text": "The pulp does not darken after being cut or as it ripens, retaining its clear colour, unlike many other cultivars.",
+          "type": "appearance",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        },
+        {
+          "text": "Fruit ripens late in the season, around late October to mid-December.",
+          "type": "season",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Feijoa Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/feijoa/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "feijoafeijoa",
+          "name": "Feijoa Feijoa, Cultivars",
+          "url": "https://feijoafeijoa.wordpress.com/cultivars/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "feijoa-nazimet": {
+      "slug": "feijoa-nazimet",
+      "species": "Feijoa",
+      "variety": "Nazimet",
+      "paragraphs": [
+        "Nazimet is a vendor spelling of Nazemetz, a Californian cultivar raised in San Diego by Alexander Nazemetz. It is self-fertile, so a single tree will set a crop, but it bears most heavily when cross-pollinated, and it works well as a pollinator for other varieties. The fruit is large and pear-shaped with moderately thin side walls, and the flavour and quality are rated excellent. It ripens late in the season, from roughly late October into mid-December in California (autumn to early winter).",
+        "Its standout quirk is the flesh. Unlike many feijoas, the translucent, sweet pulp does not darken after the fruit is cut or as it ripens, instead holding its clear colour. The cultivar is also sold under the correct spelling Nazemetz and as Nazematze."
+      ],
+      "claims": [
+        {
+          "text": "Nazemetz originated in San Diego, California, raised by Alexander Nazemetz.",
+          "type": "origin",
+          "cites": [
+            "crfg"
+          ]
+        },
+        {
+          "text": "The tree is self-fertile but bears most heavily when cross-pollinated, and is a good pollinator for Trask.",
+          "type": "pollination",
+          "cites": [
+            "crfg"
+          ]
+        },
+        {
+          "text": "Fruit is large and pear-shaped with moderately thin side walls and translucent, sweet pulp of excellent quality.",
+          "type": "appearance",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        },
+        {
+          "text": "The pulp does not darken after being cut or as it ripens, retaining its clear colour, unlike many other cultivars.",
+          "type": "appearance",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        },
+        {
+          "text": "Fruit ripens late in the season, around late October to mid-December.",
+          "type": "season",
+          "cites": [
+            "crfg",
+            "feijoafeijoa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Feijoa Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/feijoa/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "feijoafeijoa",
+          "name": "Feijoa Feijoa, Cultivars",
+          "url": "https://feijoafeijoa.wordpress.com/cultivars/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "feijoa-triumph": {
+      "slug": "feijoa-triumph",
+      "species": "Feijoa",
+      "variety": "Triumph",
+      "paragraphs": [
+        "Triumph is a New Zealand selection raised from seedlings of the Choiceana cultivar, and it became the variety most favoured for commercial plantings there. The fruit is medium sized and oval, often with uneven halves, and carries an uneven but firm skin that handles and stores better than softer types.",
+        "It ripens late in the season and keeps well. The flesh is moderately soft, juicy and slightly gritty or grainy, with a sharp, tangy flavour that gives it a strong reputation for eating quality. Triumph is also a useful pollinator for other late cultivars such as Mammoth."
+      ],
+      "claims": [
+        {
+          "text": "Triumph is a New Zealand selection raised from Choiceana seedlings and was the favoured commercial variety there",
+          "type": "origin",
+          "cites": [
+            "feijoafeijoa-cultivars",
+            "rfca-feijoa"
+          ]
+        },
+        {
+          "text": "The fruit is medium, oval with often uneven halves, with an uneven but firm skin",
+          "type": "appearance",
+          "cites": [
+            "nzfga-varieties",
+            "rfca-feijoa"
+          ]
+        },
+        {
+          "text": "It ripens late in the season and stores well",
+          "type": "season",
+          "cites": [
+            "nzfga-varieties"
+          ]
+        },
+        {
+          "text": "The flesh is moderately soft, juicy and slightly gritty with a sharp, tangy flavour",
+          "type": "flavour",
+          "cites": [
+            "nzfga-varieties",
+            "rfca-feijoa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "feijoafeijoa-cultivars",
+          "name": "Feijoa Feijoa: Cultivars",
+          "url": "https://feijoafeijoa.wordpress.com/cultivars/",
+          "tier": "third_party"
+        },
+        {
+          "id": "nzfga-varieties",
+          "name": "NZ Feijoa Growers Association: Varieties",
+          "url": "https://www.feijoa.org.nz/resources/varieties",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-feijoa",
+          "name": "RFCA Archive: Feijoa (1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Feijoa/Feijoa7-83.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "feijoa-unique": {
+      "slug": "feijoa-unique",
+      "species": "Feijoa",
+      "variety": "Unique",
+      "paragraphs": [
+        "Unique is a New Zealand selection notable as one of the very few feijoas that is reliably self fertile, so a single tree will set a crop without a pollinator partner. Most other feijoa cultivars need a second variety nearby for good fruit set, which makes Unique a practical choice for small gardens with room for only one plant.",
+        "It ripens very early in the feijoa season and stores well. The medium fruit has a distinctive split at the calyx base, with smooth, soft, juicy flesh and a mildly aromatic, sub acid flavour that many find less tart than older varieties."
+      ],
+      "claims": [
+        {
+          "text": "Unique is a New Zealand selection that is reliably self fertile and crops without a pollinator",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-feijoa",
+            "waimea-unique",
+            "nzfga-varieties"
+          ]
+        },
+        {
+          "text": "It ripens very early in the season and is a good keeper",
+          "type": "season",
+          "cites": [
+            "nzfga-varieties",
+            "waimea-unique"
+          ]
+        },
+        {
+          "text": "The medium fruit has a split at the calyx base with smooth, soft, juicy, mildly aromatic, sub acid flesh",
+          "type": "flavour",
+          "cites": [
+            "nzfga-varieties",
+            "feijoafeijoa-cultivars"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-feijoa",
+          "name": "Wikipedia: Feijoa",
+          "url": "https://en.wikipedia.org/wiki/Feijoa",
+          "tier": "third_party"
+        },
+        {
+          "id": "waimea-unique",
+          "name": "Waimea Nurseries: Feijoa Unique",
+          "url": "https://www.waimeanurseries.co.nz/our-products/fruit-trees/feijoas/unique-/",
+          "tier": "nursery"
+        },
+        {
+          "id": "nzfga-varieties",
+          "name": "NZ Feijoa Growers Association: Varieties",
+          "url": "https://www.feijoa.org.nz/resources/varieties",
+          "tier": "third_party"
+        },
+        {
+          "id": "feijoafeijoa-cultivars",
+          "name": "Feijoa Feijoa: Cultivars",
+          "url": "https://feijoafeijoa.wordpress.com/cultivars/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "feijoa-white-goose": {
+      "slug": "feijoa-white-goose",
+      "species": "Feijoa",
+      "variety": "White Goose",
+      "paragraphs": [
+        "White Goose is a New Zealand cultivar, bred by A. and J. Firmin and protected under plant variety rights. It is an early-season variety, cropping from around mid-autumn and carrying on for several weeks. The fruit is large, with semi-smooth, light green skin and smooth, soft flesh that is sweet, juicy and mildly aromatic.",
+        "It is partially self-fertile, setting some fruit on its own, but crops are much heavier when another variety is planted nearby as a pollinator. The variety is propagated under licence rather than from seed, which is why it appears in catalogues with a trademark and rights notice."
+      ],
+      "claims": [
+        {
+          "text": "White Goose is a New Zealand cultivar bred by A. and J. Firmin and protected by plant variety rights.",
+          "type": "breeding",
+          "cites": [
+            "anfic",
+            "edible"
+          ]
+        },
+        {
+          "text": "It is an early-season cropper, starting around mid-autumn and continuing for several weeks.",
+          "type": "season",
+          "cites": [
+            "anfic",
+            "edible"
+          ]
+        },
+        {
+          "text": "Fruit is large with semi-smooth, light green skin and smooth, soft flesh.",
+          "type": "appearance",
+          "cites": [
+            "anfic",
+            "edible"
+          ]
+        },
+        {
+          "text": "The flavour is sweet, juicy and mildly aromatic.",
+          "type": "flavour",
+          "cites": [
+            "edible",
+            "rosscreek"
+          ]
+        },
+        {
+          "text": "Like feijoas generally, it is only partly self-fertile and crops more heavily when another variety is planted nearby as a pollinator.",
+          "type": "pollination",
+          "cites": [
+            "nzfga",
+            "rosscreek"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic",
+          "name": "ANFIC, White Goose Feijoa",
+          "url": "https://anfic.com.au/variety/white-goose-feijoa/",
+          "tier": "third_party"
+        },
+        {
+          "id": "edible",
+          "name": "Incredible Edibles, Feijoa White Goose",
+          "url": "https://www.edible.co.nz/range/search/p/feijoas-white-goose",
+          "tier": "nursery"
+        },
+        {
+          "id": "nzfga",
+          "name": "NZ Feijoa Growers Association, Varieties",
+          "url": "https://www.feijoa.org.nz/resources/varieties",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek",
+          "name": "Ross Creek Tropicals, Feijoa White Goose",
+          "url": "https://www.rosscreektropicals.com.au/products/feijoa-white-goose-5l",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "feijoa-anatoki-new-variety",
+    "feijoa-duffy",
+    "feijoa-mercedes",
+    "feijoa-nazematze-guava",
+    "feijoa-oval",
+    "feijoa-sellowiana"
+  ]
+}
