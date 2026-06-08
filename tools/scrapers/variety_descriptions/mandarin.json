@@ -85,6 +85,173 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mandarin-amigo": {
+      "slug": "mandarin-amigo",
+      "species": "Mandarin",
+      "variety": "Amigo",
+      "paragraphs": [
+        "Amigo is an Australian mandarin, a probable natural hybrid of Imperial mandarin and Ellendale tangor. It arose as a seedling growing beneath an Ellendale tree on the property of Bill Foreman. It is an early to mid season variety that overlaps the Imperial season, maturing about one to two weeks after Imperial and extending into late August in the Sunraysia and Riverland districts.",
+        "The fruit is larger and more uniform in size than Imperial, with soft, juicy flesh, low to moderate rag and segments that separate easily. The skin is easy to remove and lacks the off aromas that can affect some Ellendale hybrids. Flavour is sweet, and seed counts vary from zero to more than ten per fruit, with most fruit tending to the low end."
+      ],
+      "claims": [
+        {
+          "text": "Australian variety, a probable natural hybrid of Imperial mandarin and Ellendale tangor that arose as a seedling beneath an Ellendale tree on Bill Foreman's property",
+          "type": "origin",
+          "cites": [
+            "ca-amigo"
+          ]
+        },
+        {
+          "text": "Early to mid season, maturing about one to two weeks after Imperial and extending into late August in Sunraysia and Riverland",
+          "type": "season",
+          "cites": [
+            "ca-amigo"
+          ]
+        },
+        {
+          "text": "Larger, more uniform fruit than Imperial; easy to peel, sweet, low to moderate rag, seed number varying from zero to more than ten",
+          "type": "flavour",
+          "cites": [
+            "ca-amigo",
+            "vcf-amigo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ca-amigo",
+          "name": "Citrus Australia: Amigo mandarin variety fact sheet",
+          "url": "https://citrusaustralia.com.au/wp-content/uploads/amigo.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "vcf-amigo",
+          "name": "Victorian Citrus Farms: Mandarins",
+          "url": "https://viccitrus.com.au/mandarins/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mandarin-avana": {
+      "slug": "mandarin-avana",
+      "species": "Mandarin",
+      "variety": "Avana",
+      "paragraphs": [
+        "Avana is the Italian name for the common Mediterranean or Willowleaf mandarin group (Citrus deliciosa), the traditional small mandarins long grown in Sicily. The best known selection, Tardivo di Ciaculli, arose as a spontaneous late-ripening mutation near Palermo and matures up to two months later than other Avana mandarins.",
+        "The fruit is somewhat flat with a pale orange to yellow rind that peels easily. The flesh is sweet and low in seeds, with reduced central columns (bores). Maturity is very late, from January to March in the northern hemisphere, which sets the Ciaculli selection apart from the rest of the group."
+      ],
+      "claims": [
+        {
+          "text": "Avana is the Italian name for the common Mediterranean or Willowleaf mandarin group",
+          "type": "origin",
+          "cites": [
+            "ucr-avana",
+            "wiki-mandvar"
+          ]
+        },
+        {
+          "text": "The Willowleaf/common mandarin group is classified as Citrus deliciosa",
+          "type": "taxonomy",
+          "cites": [
+            "wiki-mandvar"
+          ]
+        },
+        {
+          "text": "The Tardivo di Ciaculli selection matures up to two months later than other Avana selections",
+          "type": "ripening",
+          "cites": [
+            "ucr-avana"
+          ]
+        },
+        {
+          "text": "Fruit is somewhat flat with a pale orange or yellow rind, sweet, low seeded, with reduced central columns",
+          "type": "flavour",
+          "cites": [
+            "ucr-avana"
+          ]
+        },
+        {
+          "text": "Maturity is January to March",
+          "type": "ripening",
+          "cites": [
+            "ucr-avana"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-avana",
+          "name": "UC Riverside Citrus Variety Collection: Avana tardivo di Ciaculli mandarin",
+          "url": "https://citrusvariety.ucr.edu/crc4162",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-mandvar",
+          "name": "Wikipedia: Mandarin orange varieties",
+          "url": "https://en.wikipedia.org/wiki/Mandarin_orange_varieties",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mandarin-clauselliana": {
+      "slug": "mandarin-clauselliana",
+      "species": "Mandarin",
+      "variety": "Clauselliana",
+      "paragraphs": [
+        "Clausellina (also written Clauselliana) is an early satsuma mandarin from Spain, a bud mutation of Owari satsuma found in 1962 at Almazora in Castellon. Its defining trait is early maturity, ripening roughly two to three weeks ahead of Owari, which made it commercially important in Spain as an early season satsuma.",
+        "Like other satsumas it is seedless and easy to peel, with sweet flesh carried on a compact tree. At full maturity it is slightly less sweet than Owari but very similar in other respects, and like many early satsumas the rind can puff if the fruit hangs too long."
+      ],
+      "claims": [
+        {
+          "text": "Early satsuma mandarin, a bud mutation of Owari satsuma found in 1962 at Almazora, Castellon, Spain",
+          "type": "origin",
+          "cites": [
+            "ucr-clausellina"
+          ]
+        },
+        {
+          "text": "Matures roughly two to three weeks earlier than Owari, making it commercially important in Spain as an early satsuma",
+          "type": "season",
+          "cites": [
+            "gfg-clausellina"
+          ]
+        },
+        {
+          "text": "Seedless, with sweet flesh on a compact tree, slightly less sweet than Owari at full maturity",
+          "type": "flavour",
+          "cites": [
+            "ucr-clausellina",
+            "gfg-clausellina"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-clausellina",
+          "name": "UC Riverside Citrus Variety Collection: Clausellina Satsuma mandarin",
+          "url": "https://citrusvariety.ucr.edu/crc4012",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gfg-clausellina",
+          "name": "Good Fruit Guide: Clausellina",
+          "url": "https://goodfruitguide.co.uk/product/clausellina/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "mandarin-clementine": {
       "slug": "mandarin-clementine",
       "species": "Mandarin",
@@ -144,6 +311,59 @@
           "id": "goodfruit-clemenules",
           "name": "Good Fruit Guide: Clemenules (Nules)",
           "url": "https://goodfruitguide.co.uk/product/clemenules/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mandarin-clementine-marisol": {
+      "slug": "mandarin-clementine-marisol",
+      "species": "Mandarin",
+      "variety": "Clementine Marisol",
+      "paragraphs": [
+        "Marisol is an early clementine from Spain, a bud mutation of the Oroval clementine found at Bechi in Castellon in 1970. It is valued for ripening early, about two weeks ahead of Oroval, reaching colour break around late September to early October in Spain. Because it colours before it is fully ripe, it is often harvested soon after colour break and de greened.",
+        "The fruit is juicy and tender with bright colour, though it can be a little acidic when picked early. The pale skin is relatively easy to peel but tends to break. Seediness is variable. A notable quirk is that the fruit puffs and granulates if left hanging too long, so timely picking matters."
+      ],
+      "claims": [
+        {
+          "text": "Early clementine, a bud mutation of Oroval clementine found at Bechi, Castellon, Spain in 1970",
+          "type": "origin",
+          "cites": [
+            "ucr-marisol",
+            "gfg-marisol"
+          ]
+        },
+        {
+          "text": "Ripens about two weeks earlier than Oroval, around late September to early October in Spain; often harvested at colour break and de greened",
+          "type": "season",
+          "cites": [
+            "ucr-marisol",
+            "gfg-marisol"
+          ]
+        },
+        {
+          "text": "Juicy and tender but can be a little acidic; pale skin peels relatively easily but breaks; variable seediness; puffs and granulates if hung too long",
+          "type": "flavour",
+          "cites": [
+            "ucr-marisol",
+            "gfg-marisol"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-marisol",
+          "name": "UC Riverside Citrus Variety Collection: Marisol clementine",
+          "url": "https://citrusvariety.ucr.edu/crc4055",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gfg-marisol",
+          "name": "Good Fruit Guide: Marisol",
+          "url": "https://goodfruitguide.co.uk/product/marisol/",
           "tier": "third_party"
         }
       ],
@@ -431,6 +651,63 @@
       ],
       "confidence": "high",
       "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mandarin-fallglo": {
+      "slug": "mandarin-fallglo",
+      "species": "Mandarin",
+      "variety": "Fallglo",
+      "paragraphs": [
+        "Fallglo is a US mandarin hybrid from a 1962 cross of Bower and Temple made by P. C. Reese, released by C. J. Hearn in 1987. Its parentage works out to about five eighths tangerine, one quarter orange and one eighth grapefruit, so it grows and markets as a tangerine. It is one of the earliest mandarins, maturing from late September into November, with best eating around late November.",
+        "The fruit is fairly large, usually about 2.75 to 3.25 inches across, with a deep reddish orange rind that peels with moderate ease. The flesh is sweet and juicy. The main drawback is heavy seediness, typically 20 to 40 seeds per fruit."
+      ],
+      "claims": [
+        {
+          "text": "US hybrid from a 1962 Bower x Temple cross by P. C. Reese, released by C. J. Hearn in 1987; genetic makeup about five eighths tangerine, one quarter orange, one eighth grapefruit",
+          "type": "origin",
+          "cites": [
+            "ifas-fallglo"
+          ]
+        },
+        {
+          "text": "Matures late September into November, an early mandarin, with best palatability near late November",
+          "type": "season",
+          "cites": [
+            "ifas-fallglo"
+          ]
+        },
+        {
+          "text": "Fruit about 2.75 to 3.25 inches across with deep reddish orange rind, peels with moderate ease, and typically holds 20 to 40 seeds",
+          "type": "appearance",
+          "cites": [
+            "ifas-fallglo"
+          ]
+        },
+        {
+          "text": "Sweet, juicy flesh",
+          "type": "flavour",
+          "cites": [
+            "oo-fallglo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ifas-fallglo",
+          "name": "UF/IFAS EDIS: Fallglo Tangerine (HS173/CH075)",
+          "url": "https://ask.ifas.ufl.edu/publication/CH075",
+          "tier": "authoritative"
+        },
+        {
+          "id": "oo-fallglo",
+          "name": "Oranges Online: Buyers Guide to Fallglo Tangerines",
+          "url": "https://www.orangesonline.com/buyers_guide/fallglo_tangerines/index.cfm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -1209,6 +1486,137 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mandarin-shiranui-dekupon": {
+      "slug": "mandarin-shiranui-dekupon",
+      "species": "Mandarin",
+      "variety": "Shiranui Dekupon",
+      "paragraphs": [
+        "Shiranui is a Japanese mandarin hybrid of Kiyomi tangor and Ponkan, developed in Japan in 1972. It is most famous under its market name Dekopon, and is sold as Sumo Citrus in the United States and as Hallabong in South Korea. The fruit is easily recognised by a large protruding bump or knob at the stem end, the feature that gives Dekopon its name (deko meaning convex, plus pon from Ponkan).",
+        "The fruit is large and very sweet, with quality standards typically requiring a sugar level above 13 Brix and citric acid below 1.0 percent. After picking it is usually rested for 20 to 40 days so acidity falls and sugar rises before sale. It is widely sold as seedless when trees are grown away from pollen sources, although some plantings remain seedy. The rind peels readily and the season runs through winter, roughly December to February."
+      ],
+      "claims": [
+        {
+          "text": "Hybrid of Kiyomi tangor and Ponkan, developed in Japan in 1972",
+          "type": "origin",
+          "cites": [
+            "ucr-shiranui",
+            "wiki-dekopon"
+          ]
+        },
+        {
+          "text": "Sold as Dekopon in Japan, Sumo Citrus in the USA and Hallabong in South Korea; distinctive protruding bump at the stem end",
+          "type": "appearance",
+          "cites": [
+            "ucr-shiranui",
+            "wiki-dekopon"
+          ]
+        },
+        {
+          "text": "Large and very sweet, quality standard above 13 Brix with citric acid below 1.0 percent; rested 20 to 40 days post harvest to lower acidity",
+          "type": "flavour",
+          "cites": [
+            "wiki-dekopon",
+            "ucr-shiranui"
+          ]
+        },
+        {
+          "text": "Seedless when grown away from pollen sources, easy peeling, ripening December to February",
+          "type": "flavour",
+          "cites": [
+            "ucr-shiranui"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-shiranui",
+          "name": "UC Riverside Citrus Variety Collection: Shiranui mandarin",
+          "url": "https://citrusvariety.ucr.edu/crc4249",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-dekopon",
+          "name": "Wikipedia: Dekopon",
+          "url": "https://en.wikipedia.org/wiki/Dekopon",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mandarin-silverhill-satsuma": {
+      "slug": "mandarin-silverhill-satsuma",
+      "species": "Mandarin",
+      "variety": "Silverhill - Satsuma",
+      "paragraphs": [
+        "Silverhill is an early Satsuma mandarin (Citrus reticulata), a nucellar seedling selection of Owari raised by W. T. Swingle of the USDA around 1908 and introduced about 1931. It was field tested at Silverhill, Alabama, where it proved notably cold resistant, surviving freezes that damaged standard Satsumas.",
+        "The fruit is medium sized and slightly oblate with a thin, smooth rind, and is seedless or nearly so. The juicy flesh is high in sugars and low in acid, giving a very sweet, mild flavour. It ripens early, around November, and the tree is more upright when young than the more drooping Owari."
+      ],
+      "claims": [
+        {
+          "text": "Silverhill is a nucellar seedling selection of Owari raised by W. T. Swingle of the USDA around 1908 and introduced about 1931",
+          "type": "origin",
+          "cites": [
+            "ucr-silverhill"
+          ]
+        },
+        {
+          "text": "Field tested at Silverhill, Alabama, and notably cold resistant, surviving freezes that damaged standard Satsumas",
+          "type": "quirk",
+          "cites": [
+            "ucr-silverhill"
+          ]
+        },
+        {
+          "text": "Fruit medium sized, slightly oblate, thin smooth rind, seedless or nearly so",
+          "type": "appearance",
+          "cites": [
+            "ucr-silverhill"
+          ]
+        },
+        {
+          "text": "Juice abundant, high in sugars and low in acid, very sweet",
+          "type": "flavour",
+          "cites": [
+            "ucr-silverhill"
+          ]
+        },
+        {
+          "text": "Ripens early, around November",
+          "type": "ripening",
+          "cites": [
+            "ucr-silverhill"
+          ]
+        },
+        {
+          "text": "Owari Satsuma is a well known cultivar ripening in late autumn",
+          "type": "origin",
+          "cites": [
+            "wiki-mandvar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-silverhill",
+          "name": "UC Riverside Citrus Variety Collection: Silverhill Satsuma mandarin",
+          "url": "https://citrusvariety.ucr.edu/crc4072",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-mandvar",
+          "name": "Wikipedia: Mandarin orange varieties",
+          "url": "https://en.wikipedia.org/wiki/Mandarin_orange_varieties",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "mandarin-sunburst": {
       "slug": "mandarin-sunburst",
       "species": "Mandarin",
@@ -1270,5 +1678,32 @@
       "verified": true,
       "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "mandarin-afourer-murcott",
+    "mandarin-avana-late-imperial",
+    "mandarin-clementine-nules",
+    "mandarin-dekapon",
+    "mandarin-eloise",
+    "mandarin-eloise-seedless",
+    "mandarin-emperor-square",
+    "mandarin-engall-seedless",
+    "mandarin-glen-retreat",
+    "mandarin-green-pigeon",
+    "mandarin-imperial-espalier",
+    "mandarin-japanese-seedless",
+    "mandarin-late-imperial-avana",
+    "mandarin-maestro",
+    "mandarin-miho-satsuma",
+    "mandarin-miho-satsuma-japanese",
+    "mandarin-nules",
+    "mandarin-okitsu-japanese",
+    "mandarin-okitsu-satsuma",
+    "mandarin-okitsu-wase",
+    "mandarin-ponkanomi",
+    "mandarin-robbie-engalls",
+    "mandarin-seedless-eloise",
+    "mandarin-shiranui-dekupon-2",
+    "mandarin-sugar-bubba"
+  ]
 }
