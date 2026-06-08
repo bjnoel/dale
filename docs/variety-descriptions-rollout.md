@@ -162,7 +162,16 @@ nectarine, olive, orange, peach, pear, plum, pomegranate. The remaining fruit sp
 remaining counts to decide assignments (biggest catalogues: mango, apple, orange, plum, peach,
 avocado, cherry, fig, pear, grape, mandarin, nectarine).
 
-- [ ] (assign species to windows and tick here as each completes)
+- [x] **2026-06-08 batch (DEC-180..191, 12 windows merged + deployed):** apple, pomelo,
+  finger-lime, lemon, lime, blueberry, longan, cacao, rambutan, miracle-fruit, jaboticaba,
+  white-sapote, custard-apple, fig, avocado, rollinia, grape, raspberry, pecan, jujube,
+  wax-jambu, grumichama, mango, nectarine, orange, mulberry, olive, pomegranate, feijoa,
+  lilly-pilly, jackfruit, peach, cherry, black-sapote, pear, loquat, apricot, grapefruit,
+  tamarillo, plum, mandarin, dragon-fruit, passionfruit, guava, banana, starfruit, sapodilla.
+  Reported remaining=0 (DONE): apple, pomelo, nectarine, orange, mulberry, peach, cherry,
+  black-sapote. macadamia deferred (window grape-nut-berry). Others landed their top varieties;
+  re-run the rank script for live per-species remaining before assigning a tail pass.
+- [ ] (assign remaining species/tails to windows and tick here as each completes)
 
 ## Notes / guardrails
 - Skipping is success; never publish a guess. Clean prose on-page; sources stored, not rendered.

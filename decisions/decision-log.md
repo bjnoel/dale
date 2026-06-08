@@ -4,6 +4,582 @@
 
 ---
 
+## DEC-191 — 2026-06-08 — Variety descriptions: tropical six (dragon fruit, passionfruit, guava, banana, starfruit, sapodilla)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-tropfruit)
+**Context:** Continuing the per-variety "what's unique" blurb rollout (DEC-178) on treestock
+`/variety/<slug>.html` pages. This window owns six tropical/subtropical species:
+dragon-fruit, passionfruit, guava, banana, starfruit, sapodilla. REMAINING was computed from
+live server stock minus each species file's existing `varieties` and `skipped`.
+**Decision:** Researched the top demand-ranked, verifiable cultivars per species via fan-out
+subagents (>=2 reputable sources each, >=1 non-nursery; skip on thin sources, never guess), then
+committed verified blurbs into each species' `variety_descriptions/<species>.json` (`varieties`
+plus a per-species `skipped` array). 43 varieties added, 21 skipped this run.
+
+**Added (43):**
+- banana (8): red-dacca, ducasse, blue-java, gold-finger, pisang-ceylon, horn-plantain,
+  ambul-kesel, dwarf-duccase-sugar-banana
+- dragon-fruit (9): yellow, american-beauty, dark-star, delight, purple-haze, vietnamese-white,
+  sugar-dragon, red, white
+- guava (9): hawaiian, mexican-cream, strawberry, thai-white, red-cherry, yellow-cherry,
+  egyptian-long-neck, hawaiian-pink, china-pear
+- passionfruit (11): black, panama-red, panama-gold, nellie-kelly, sweetheart, misty-gem, pandora,
+  sweet-granadilla, giant-granadilla, banana, sweet-calabash
+- sapodilla (3): krasuey, ponderosa, sawo-manilla
+- starfruit (3): fwang-tung, arkin, kary
+
+**Skipped (21):** thin/conflicting sources or parser noise. Notable: dragon-fruit aztec-gem and
+aussie-gold (nursery-only, conflicting species/origin), dragon-fruit cosmic-charlie (nursery-only,
+conflicting pollination), passionfruit flamenco (one non-nursery source, generic), guava thai-pink
+(only nursery confirms a distinct cultivar) and guava pineapple (name usually means feijoa, a
+different genus), starfruit thai-knight and giant-siam (named only in NT DAF Agnote, no descriptive
+detail), plus banana parser noise (passionfruit, ken-mango-tree, pitanga, stock-4-pack, fruit-cover)
+and duplicate-spelling banana pages (tree-blue-java, tree-goldfinger, goldfinger, tree-musa-nathan,
+horned-plantain), and banana nathan / super-cavendish (Cavendish selections, nursery-only sourcing).
+
+**Why:** Accuracy over coverage. Each blurb clears the test gate (>=2 sources, >=1 non-nursery,
+confidence >= 0.80, specific figures need authoritative/owned backing). Sapodilla measurements rest
+on the RFCA archive (owned tier, Benedict-owned); starfruit on UF/IFAS (authoritative).
+**Actions:** Wrote/extended banana, dragon-fruit, guava, passionfruit, sapodilla, starfruit JSON.
+`python3 -m unittest discover tests/` green (1401 tests). No golden change (new banana varieties are
+not in the golden fixture pages).
+**Status:** sapodilla and starfruit are DONE (0 remaining). banana, dragon-fruit, guava and
+passionfruit have a verified tail remaining for a later pass (re-run the same command in this window).
+**To revert:** remove the added entries (and this run's skip slugs) from the six species JSON files.
+
+## DEC-190 — 2026-06-08 — Variety descriptions: plum + mandarin batch (treestock /variety pages)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-plum-mandarin)
+**Context:** Continuing the DEC-178 variety-descriptions rollout (verified "what's unique"
+blurbs on treestock `/variety/<slug>.html`). This window owned two species files,
+`variety_descriptions/plum.json` and `variety_descriptions/mandarin.json`, and worked their
+full live-stock variety lists (ranked by nursery count then in-stock) across two passes until
+REMAINING reached 0 for both.
+
+**Decision:** Describe 67 verified variety blurbs total (42 plum, 25 mandarin) and record the
+rest of each species' live varieties as per-species skips. Both species are now COMPLETE
+(0 remaining = every live-stock variety slug is either described or skipped). Each blurb clears
+the gate: 2+ sources, 1+ independent (non-nursery) source, confidence_score >= 0.80, no em/en
+dashes, Australian spelling, claims bound to sources. Mandarins are anchored mostly on UC
+Riverside's Citrus Variety Collection, UF/IFAS and Citrus Australia (authoritative); plums on a
+US plant patent, AgriFutures, ANBG, SANBI, the National Fruit Collection, Slow Food, and
+third-party references (Wikipedia, Orange Pippin, Specialty Produce, Good Fruit Guide), with
+nurseries used only for grounding.
+
+**Why:** Plum and mandarin are two of the largest live catalogues on treestock and were
+pilot-seeded but left with a long tail. Describing every genuinely-real variety adds unique,
+citable content to high-traffic pages and strengthens the Treesmith funnel, while the obscure,
+mis-parsed and duplicate tail is deliberately skipped (skipping is success). A notable subset of
+the "Plum" catalogue is not botanically Prunus (Kakadu, Burdekin, Illawarra, Natal, Jambolan,
+Java, Kaffir, Hog, Governor's plums); those blurbs open by clarifying the true species, which is
+the single most useful thing such a page can say.
+
+**Actions:**
+- `tools/scrapers/variety_descriptions/plum.json`: 3 -> 42 described, skipped 71.
+- `tools/scrapers/variety_descriptions/mandarin.json`: 4 -> 25 described, skipped 25.
+- Pass-1 (earlier commit on this branch): +18 plum, +14 mandarin, 3 plum skips.
+- Pass-2 (this run): +21 plum (incl. 9 non-Prunus "plum" clarifications), +7 mandarin; bulk
+  skips folded in for multigraft trees, rootstock codes, typos, "type"-suffix duplicates of an
+  already-described cultivar, nectarine mis-parses, and ornamentals mis-grouped under Plum.
+- Accuracy calls during review: dropped a research draft for `plum-teagan-blue` (its only
+  non-nursery source, freshfruitpalace.com, is a dead/unresolvable domain, so it could not clear
+  the >=1 non-nursery gate); skipped `plum-sunrise-gulf` (no "Gulfsunrise"/"Sunrise" cultivar in
+  the authoritative UF/IFAS Gulf-series list); corrected `mandarin-ponkanomi` (a proprietary
+  Kiyomi x Ponkan trade name documented only by nurseries, NOT plain Ponkan). Re-pointed the
+  Purdue Morton "Fruits of Warm Climates" citation for jambolan/java to its stable Internet
+  Archive snapshot after the live NewCROP URL began serving a generic landing page.
+
+**Status:** Shipped as a PR (updates existing PR #96). Not deployed (deploy + decision-log fold +
+Progress tick happen at the serialized close-out, per docs/variety-descriptions-rollout.md).
+
+**To revert:** Restore the prior `plum.json` / `mandarin.json`; the renderer falls back to no
+blurb for any slug not present.
+
+## DEC-189 — 2026-06-08 — Variety descriptions rollout: pear, loquat, apricot, grapefruit, tamarillo (batch plt-grt)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-plt-grt)
+**Context:** Continuing the DEC-178 per-variety "what's unique" blurb layer on treestock
+`/variety/<slug>.html` pages, following `docs/variety-descriptions-rollout.md`. This window
+owned five species files (pear, loquat, apricot, grapefruit, tamarillo) and ran in two passes
+(re-run in the same worktree after a context clear). REMAINING was recomputed each pass from
+live server stock minus each species file's existing `varieties` and `skipped`.
+
+**Decision:** Researched the live catalogue for all five species with non-overlapping subagents
+(>=2 reputable sources each, >=1 non-nursery; nursery copy is grounding only). Added 61 verified
+blurbs in total and recorded the remainder of every species' live tail as `skipped`, so all five
+species now reach REMAINING 0 (fully triaged). Accuracy was the rule: anything that could not
+clear the >=2-source / >=1-independent / confidence >= 0.80 gate was skipped, not guessed.
+
+Final per-species state (cumulative across both passes):
+- pear: 34 varieties, 60 skipped, REMAINING 0.
+- apricot: 18 varieties, 16 skipped, REMAINING 0.
+- grapefruit: 8 varieties, 9 skipped, REMAINING 0.
+- loquat: 3 varieties, 11 skipped, REMAINING 0.
+- tamarillo: 3 varieties, 0 skipped, REMAINING 0.
+
+Added in pass 2 (21 new entries):
+- pear (19): beurre-diel, beurre-easter, beurre-superfin, chojuro-nashi, clapp,
+  duchess-d-anglouleme-european, durondeau, gin-perry, glou-morceau-european, green-horse-perry,
+  henry-s-red-longdon-perry, jargonelle-european, ko-sui-nashi, mirandino-rosso, moorcroft-perry,
+  paradise, red-sensation, san-giovanni-european, shinseiki. (Classic European heritage pears,
+  Japanese nashi, English perry pears, and two Italian cocktail/summer pears.)
+- apricot (2): newcastle, bentley (low-chill Australian heritage selections).
+
+Skipped in pass 2 on thin/ambiguous sources (recorded in each file's `skipped` array): pear
+cool-crisp, grosse-louise-european, sungold, golden-globe, faccia-rosa, l-inconnue, snow,
+shepherds-flat-pound, nashi-sunshu; grapefruit ruby-blush. The remainder of each tail
+(multigraft listings, rootstocks, ornamental Callery/Manchurian pears, nursery-brand genetic
+dwarfs, misspellings, and spelling variants or synonyms of already-covered varieties) was added
+to the per-species `skipped` arrays as mechanical noise so re-runs do not re-attempt them.
+
+**Why:** A fabricated cultivar fact is worse than no blurb. Pass 1 leaned on the UC Riverside
+Citrus Variety Collection (citrus), USA Pears / UF-IFAS / NC State / Orange Pippin / Wikipedia
+(pears), UC Davis FPS / a US plant patent / Virginia Cooperative Extension / CSIC / Rare Fruit
+Club WA (apricots), and CRFG / the RFCA archive (loquat, tamarillo). Pass 2 added a PMC
+Japanese-pear breeding review and NC State Extension (authoritative) plus The Book of Pears, the
+National Perry Pear Centre and Slow Food Ark of Taste (third_party). Trademarked nursery-brand
+pears (PlantNet Cool Crisp / SunGold, Flemings genetic dwarfs) were skipped because their only
+sources are the breeder and resellers, failing the >=1-non-nursery rule.
+
+**Actions:** Wrote tools/scrapers/variety_descriptions/{pear,apricot,grapefruit,loquat,tamarillo}.json
+only. `python3 -m unittest discover tests/` green (1401 tests). No golden regen needed (none of
+these are golden-fixture species). No deploy, no decision-log/shared-ledger edits, no Progress
+tick (all serialized close-out).
+
+**Status:** Shipped as PR #99 from dale/varieties-plt-grt. All five species DONE (REMAINING 0).
+
+**To revert:** Remove the added entries from the five species JSON files (or drop loquat.json
+and tamarillo.json entirely). The renderer falls back to no blurb, so pages are unaffected.
+
+## DEC-188 — 2026-06-08 — Variety descriptions rollout: peach, cherry, black sapote (complete)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-peach-cherry-bsapote)
+
+**Context:** Continuing the per-variety "what's unique" blurb rollout (DEC-178) on treestock
+`/variety/<slug>.html` pages. Pilot seeded peach, cherry and black-sapote with one top variety
+each (Anzac, Stella, Mossman). This window worked the full live tail for all three species via the
+worktree/PR workflow in `docs/variety-descriptions-rollout.md` across multiple passes, researching
+each remaining variety against >=2 reputable sources (>=1 non-nursery), skip-if-thin, never guess.
+All three species are now at 0 remaining (DONE).
+
+**Decision:** Across the run, added 55 verified variety blurbs and recorded 102 thin-source/mis-parse
+skips across the three species files (no shared-file edits; per-species `varieties` + `skipped`
+ledgers only). Final per-species state (live slugs = varieties + skipped, 0 remaining):
+
+- Peach: 28 blurbs, 52 skipped. Pass 1 added the top 16 (golden-queen, elberta, o-henry, indian,
+  china-flat, tropic-beauty, tropic-snow, crimson-rocket, tatura-204, trixzie-pixzee, red-haven,
+  loring, flavourcrest, flordaprince, blackboy, okinawa) plus the pilot Anzac. Pass 2 added the
+  heritage/documented tail: coronet, briggs-red-may, double-jewel (US Plant Patent PP6410),
+  pullar-s-cling, j-h-hale-million-dollar, late-italian-red, stark-earliglo, maycrest (USPP6229),
+  bendigo-beauty, aztec-gold, albatross.
+- Cherry: 25 blurbs, 45 skipped. Pass 2 added vista (Hedelfingen x Victor, Ontario), merchant
+  (RHS AGM, John Innes), burgsdorf (colonial-era Australian heritage), st-margaret AND
+  saint-margaret (same variety, both live slugs given the same verified blurb), and ron-s
+  (Ron's Seedling; ACS Omega study found the highest total flavonoid content of the Australian
+  cultivars tested).
+- Black sapote: 5 blurbs, 5 skipped (completed in pass 1; unchanged this pass).
+
+**Why:** Accuracy over coverage. Specific-fact claims (awards, the cherry flavonoid superlative, the
+patents) are anchored on authoritative sources per the test gate. Modern proprietary Australian
+nursery cultivars with only nursery sources (peach Angel, Silvan Sunset, Okee Dokee, Ruby Sensation,
+Early Beauty, Maravilha) were SKIPPED rather than blurbed on marketing copy alone, as were varieties
+that could not be resolved to a verifiable cultivar (peach Orion, Tasty Zee, Valley Red, Wiggins,
+Spring Gold, Melodie) and obvious noise (2-way grafts, spelling dups, marketing variants, generic
+"Donut"). Cherry Country Red and Pretty Gully skipped for lack of an independent reputable source.
+
+**Actions:** Wrote `tools/scrapers/variety_descriptions/{peach,cherry,black-sapote}.json`.
+`python3 -m unittest discover tests/` green (1401 tests). No golden regeneration needed: peach and
+cherry are not golden-fixture species, and black-sapote (a fixture species) was unchanged this pass.
+
+**Status:** Shipped via PR. Deploy + progress-tick (peach, cherry, black-sapote all DONE) are the
+serialized close-out.
+
+**To revert:** Drop the added entries from the three species JSON files (renderer falls back to no
+blurb gracefully).
+
+## DEC-187 — 2026-06-08 — Variety descriptions rollout: olive, pomegranate, feijoa, lilly-pilly, jackfruit (39 added)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-olive-set)
+
+**Context:** Continuation of the per-variety "what's unique" blurb layer on treestock
+`/variety/<slug>.html` (DEC-178, see `docs/variety-descriptions-rollout.md`). This window
+owned five species files: olive, pomegranate, feijoa, lilly-pilly, jackfruit. Olive and
+pomegranate already held the DEC-178 pilot entries (2 and 1 respectively); feijoa, lilly-pilly,
+and jackfruit were new files. REMAINING was computed from live server stock minus each file's
+`varieties` and `skipped`.
+
+**Decision:** Add 39 verified blurbs across the five species and record 51 thin-source or
+noise skips, all gated by `tests/test_variety_descriptions.py` (>=2 sources, >=1 non-nursery,
+confidence >= 0.80, every claim cited, no dashes, Australian spelling).
+
+**Per-species result (added / skipped / remaining):**
+- olive: +13 (15 total incl. pilot) / 18 skipped / 12 remaining
+- pomegranate: +10 (11 total incl. pilot) / 10 skipped / 9 remaining
+- feijoa: +9 / 6 skipped / 2 remaining
+- lilly-pilly: +5 / 9 skipped / 29 remaining
+- jackfruit: +2 / 8 skipped / 15 remaining
+
+**Why:** Olive, pomegranate, and feijoa are well documented by authoritative and reputable
+sources (IOC world catalogue, CRFG fruit facts, Auckland Botanic Gardens, the RFCA owned
+archive). Lilly pilly and jackfruit have many nursery-trade-name cultivars with no independent
+documentation, so most of their live varieties were correctly skipped (accuracy over coverage).
+
+**Notes on accuracy review:**
+- olive-picual: dropped a Wikipedia-only superlative ("~25% of world oil") and a ppm figure;
+  reworded to qualitative claims confirmed by the IOC authoritative catalogue.
+- olive-mission: replaced an unreachable Olive Oil Times link with the Northern Valleys News
+  New Norcia article (verified); New Norcia heritage facts stated, no over-claim that the
+  New Norcia trees are genetically Mission.
+- pomegranate-azerbaijani and ben-hur: tightened to facts actually confirmed by Sustainable
+  Gardening Australia and the RFCA archive (RFCA lists Azerbaijani in a yield table only, with
+  no descriptive text, so appearance cites were re-scoped); dropped unconfirmed PBR and
+  soft-seed specifics.
+
+**Actions:**
+- Wrote `tools/scrapers/variety_descriptions/{olive,pomegranate,feijoa,lilly-pilly,jackfruit}.json`
+- `python3 -m unittest discover tests/` green (1401 tests). No golden regen (none of these are
+  golden-fixture species).
+- Public ledger fragment: `public-ledger/2026-06-08-varieties-olive-set.md`
+
+**Status:** Shipped as a PR. Deploy and progress-ticking are the serialized close-out (not this
+branch). None of the five species reached 0 remaining; re-run the command per species to finish
+the tails.
+
+**To revert:** Remove the 39 added keys (and this window's skip entries) from the five JSON
+files; the renderer falls back to no blurb.
+
+## DEC-186 — 2026-06-08 — Variety descriptions rollout: nectarine, orange, mulberry COMPLETE (window nom)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-nom)
+**Context:** Continuing the per-variety "what's unique" blurb rollout (DEC-178). This window owned
+nectarine, orange and mulberry and ran in two passes (the worktree is reused across `/clear`).
+REMAINING was recomputed each pass from live server stock (build_variety_pages.group_by_cultivar)
+minus each species file's `varieties` and `skipped`. Non-overlapping general-purpose research
+subagents verified each candidate against multiple reputable sources (UC Riverside Citrus Variety
+Collection, UF/IFAS, US plant patents, SAPO Trust variety registry, Dave Wilson, Wikipedia, Orange
+Pippin, Good Fruit Guide; nurseries for grounding only).
+
+**Decision:** All three species are now finished (0 remaining live slugs). The branch holds, across
+the three species files only (`tools/scrapers/variety_descriptions/{nectarine,orange,mulberry}.json`):
+- nectarine: 22 verified blurbs, 36 skipped (DONE)
+- orange: 43 verified blurbs, 36 skipped (DONE)
+- mulberry: 18 verified blurbs, 6 skipped (DONE)
+
+This second pass added 52 entries (nectarine +15, orange +28, mulberry +9). Of those, 13 were newly
+researched distinct cultivars and 39 were clones: spelling/format variants of an already-verified
+variety carry that variety's verified content under the live slug (the documented lychee
+kwai-may/kwai-mai pattern), so the blurb renders on every real page. Examples: Flavortop/Flavourtop,
+the Lane's Late Navel cluster (Lane, Lane's Navel, Navel Lanes Late), Cara Cara Navel/Blood Navel,
+the Tarocco Rosso/Ippolito clones, Washington/Newhall/Navelina label variants, Pakistan(=Pakistan
+Black), the Shahtoot variants, OkeeDokee(=cv Mesembrine). New research this pass: nectarine Spicezee,
+Trixzie Nectazee, Sunraycer, Sunlite, Maygrand, Firebrite, OkeeDokee, Sugar-and-Spice; orange Jaffa
+(Shamouti), Maltese blood, Delta and Midknight Valencia, Seedless Valencia.
+
+**Why:** Accuracy over coverage. Each kept entry clears the gate (>=2 sources, >=1 non-nursery,
+confidence_score >= 0.80, every claim cited, no orphan sources, no dashes, Australian spelling).
+Anything resting only on Australian nursery trademarks (Sunbob, Sunwright, Queen Giant, Sweet
+Sensation, Sunny Belle, Cannonball, Flat Tango, Aussie Sunset blood orange, mulberry Angela) was
+skipped, not guessed. Genuine mis-parses were skipped with reasons: generic terms (Nectarina,
+Peacharine, Donut), wrong-fruit parses (Peachcot is peach x apricot, mulberry Giant Yellow is
+Myrianthus not Morus), multi-graft "2-way" tree listings, marketing slogans (No Bubble No Trouble),
+not-a-sweet-orange (Lemonade is a lemon x mandarin), and the large block of ornamental colour
+mis-parses on the orange species page (canna, clivia, bougainvillea, hibiscus, grevillea, rose,
+spider plant, etc.). All skips are recorded in each file's `skipped` array so a future rank shows 0.
+
+**Actions:** Wrote the three species JSON files; `python3 -m unittest discover tests/` green (1401
+tests). No golden regen (none of nectarine/orange/mulberry is a golden-fixture species). No deploy,
+no decision-log edit, no progress tick (all of that is the serialized close-out).
+
+**Status:** Shipped via PR #97 from dale/varieties-nom. All three species reached 0 remaining, so
+nectarine, orange and mulberry can be ticked DONE on the rollout Progress list at close-out.
+
+**To revert:** Restore the three species files to their pre-run state and rebuild the variety pages.
+The renderer falls back to no blurb for any removed entry.
+
+## DEC-185 — 2026-06-08 — Variety descriptions: mango batch (78 added, 52 skipped)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-mango)
+**Context:** Mango is the largest treestock catalogue (161 live variety slugs). The DEC-178
+pilot seeded only 4 mango blurbs (Keitt, Kensington Pride, Nam Doc Mai, R2E2). This branch
+extends the per-variety "what's unique" blurb layer (see DEC-178) over two passes, following
+docs/variety-descriptions-rollout.md.
+
+**Decision:** Add 74 verified per-variety blurbs (4 pilot -> 78 total) to
+`tools/scrapers/variety_descriptions/mango.json` and record 52 skips in that file's
+`skipped` array. Pass 1 added 42 blurbs / 8 skips (Florida classics, Zill boutique cultivars,
+Indian and SE-Asian cultivars). Pass 2 added 32 more and 44 skips: Australian cultivars
+(Honey Gold, Titan, Beverley, Gulliver's Triumph, Bowen, Lady Grace), more Florida cultivars
+(Brooks, Cushman, Graham, Van Dyke, Duncan, Anderson, Lemon Meringue, Orange Sherbet, Spirit
+of '76, Harvest Moon, Parvin, Pico), Indian/Sri Lankan (Manjeera, Kalapadi, Red Mulgoba,
+Willard), Indonesian/Vietnamese (Gedong, Golek, Cat Hoa Loc) and Thai/Hawaiian/Mexican (Hong
+Sa, Kaew, Tong Dum, Okrong, Manzanillo, Little Gem, Ah Ping).
+
+**Why:** Accuracy over coverage. Every blurb clears the gate: >=2 reputable sources, >=1
+non-nursery, confidence >= 0.80, claims bound to sources, no em/en dashes, Australian spelling.
+Notable QC in pass 2: two web sources surfaced by research agents, mangopedia.org and
+biolens-ai.com, were spot-checked and found to be thin AI-generated content farms, so they were
+dropped as sources. Entries that had rested on them were re-verified against reliable sources
+(Wikipedia dedicated cultivar pages, Philippine government PCAARRD, the National Mango Board
+FSHS Zill paper, UF/IFAS, ISHS, University of Hawaii CTAHR, the Sri Lanka Dept of Agriculture,
+Good Fruit Guide, Specialty Produce) or skipped. Chandrakaran, Chereku Rasam and Rosa were
+skipped because no reliable non-AI second source could be confirmed. One Lady Grace measurement
+(Brix, fruit weight) whose source page was access-blocked was softened to qualitative prose.
+
+**Actions:**
+- mango.json: 46 -> 78 varieties; `skipped` array 8 -> 52 slugs (10 thin-source/quality skips
+  plus 34 confident parser-noise skips: pot-size-suffix variants like keitt-s/florigon-s,
+  misspellings of covered varieties like choc-anan/neelum/beverly, and synonym duplicates like
+  bowen-kensington-pride/golden-queen-taiwan-gold/tuong).
+- `python3 -m unittest discover tests/` green (1401 tests). Mango is a golden-fixture species,
+  but the fixture variety pages (Kensington Pride, R2E2) were unchanged, so no golden page moved.
+
+**Status:** Shipped via PR (not deployed). Deploy happens at the serialized rollout close-out.
+
+**Remaining:** 31 of 161 live mango slugs are still uncovered: the lowest-ranked single-nursery
+long tail (e.g. Rupee, Spychala, Batawi, Rad, Cat Thom, Mangga Madu, Springfels, Crimson Blush,
+Senorita, Kamerunga White, Royal Red). Mango is NOT done; a future collision-free re-run of the
+same file can continue or skip these.
+
+**To revert:** restore mango.json to its 4-variety pilot state; remove this fragment.
+
+## DEC-184 — 2026-06-08 — Variety descriptions rollout: grape, raspberry, pecan, jujube, wax-jambu, grumichama (macadamia deferred)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-grape-nut-berry)
+**Context:** Continuing the per-variety "what's unique" blurb layer (DEC-178) to more of the
+stock-ranked tail. This window owned seven species: grape, raspberry, macadamia, pecan, jujube,
+wax-jambu, grumichama. Research was fanned out to non-overlapping subagents (>=2 reputable sources
+each, >=1 non-nursery, skip-if-thin, no guessing), then assembled per-species with claim types
+normalised so any specific figure (Brix, percent kernel) keeps an authoritative/owned source.
+
+**Decision:** Added 39 new verified variety blurbs across six species and recorded 18 thin-source or
+noise skips. grumichama is complete (0 remaining). macadamia was deferred (its research subagent hit
+the account session limit before returning), so macadamia has 0 added this run and stays fully
+remaining for a follow-up pass in the same window.
+
+Per-species result (described / skipped / remaining of live ranked slugs):
+- jujube: 13 added (joins the pilot's jujube-li, 14 described total), 4 skipped, 14 remaining.
+- grape: 11 added, 4 skipped, 35 remaining.
+- raspberry: 7 added, 4 skipped, 8 remaining.
+- pecan: 2 added (Wichita, Pawnee), 2 skipped, 14 remaining.
+- wax-jambu: 4 added (colour forms pink/red/purple/white), 2 skipped, 1 remaining.
+- grumichama: 2 added (black, yellow), 2 skipped, 0 remaining (DONE).
+- macadamia: 0 added (deferred), 28 remaining.
+
+**Why:** Accuracy over coverage. Grape, raspberry, pecan and the documented colour-forms verified
+cleanly against authoritative sources (USDA-ARS, Plantgrape/IFV-INRAE, OSU/Cornell extension, US Plant
+Patents, NMSU, Morton/Purdue, UF-IFAS). Jujube leaned on the NMSU Jujube Project (authoritative) plus
+Trees and Shrubs Online and the NT DAF. Thin entries (nursery-only or contradictory sources) were
+skipped, not guessed: jujube-hulu; raspberry-golden-glitz and raspberry-rocket (nursery-only
+trademarks); grumichama-orange (no non-nursery source separates it from the yellow leucocarpa form).
+Noise/dupe listing slugs (rootstock, ivy houseplant mis-parses, "potted" relistings, common-name
+synonyms) were also skipped so re-runs do not re-attempt them.
+
+**Actions:**
+- Wrote tools/scrapers/variety_descriptions/{jujube,grape,raspberry,pecan,wax-jambu,grumichama}.json
+  (varieties map + a per-species skipped array of slug strings).
+- `python3 -m unittest discover tests/` green (1401 tests). No golden regen needed (none of these are
+  golden-fixture species).
+- Spot-checked one authoritative source per agent (NMSU jujube/pecan, USDA-ARS grape, Plantgrape,
+  OSU PNW655, Morton/Purdue, growables) for existence and content.
+
+**Status:** Shipped as PR for serialized close-out (fold this fragment, tick the rollout Progress list,
+single deploy via build_variety_pages.py + purge_cloudflare.sh). Not deployed from this branch.
+
+**To revert:** delete the six JSON files (or the specific entries); the renderer falls back to no blurb.
+
+## DEC-183 — 2026-06-08 — Variety descriptions: fig, avocado, rollinia (rollout window fig-avo-roll)
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-fig-avo-roll)
+
+**Context:** Continuing the per-variety "what's unique" blurb rollout (DEC-178,
+`docs/variety-descriptions-rollout.md`) for three assigned species: fig, avocado, rollinia.
+Each blurb is 1-2 short paragraphs rendered above the price table on `/variety/<slug>.html`,
+verified against 2+ reputable sources (>=1 non-nursery), with a stored claims/sources ledger
+and confidence score. Accuracy over coverage: a thin or unresolved variety is skipped, not guessed.
+
+**Decision:** Added 27 verified variety blurbs and recorded deliberate skips, owning only the
+three assigned species files (collision-free with other rollout windows):
+
+- **avocado** (now DONE, 0 remaining): added 15 (sharwill, shepard, edranol, sir-prize, linda,
+  pinkerton, lamb-hass, rincon, russell, mexicola, choquette, zutano, gwen, nabal, ryan) on top
+  of the 5 pilot entries; skip-listed 41 (Hazzard and Ramona could not be verified against 2
+  non-nursery sources; the rest are A/B flower-type duplicates, spelling variants, rootstock or
+  nursery-brand noise, and obscure unverifiable selections).
+- **rollinia** (new file, DONE, 0 remaining): added 2 (biriba, brazilian-custard-apple, both
+  framed on the species since Rollinia has no widely documented true cultivars); skip-listed 4
+  (limberlost, sputnik, picone are nursery selections with no independent sourcing; custard-apple
+  is a generic mis-parse).
+- **fig** (partial): added 10 (white-adriatic, preston-prolific, white-genoa, cape-white,
+  violette-de-bordeaux, celeste, panache, bourjassotte-noire, black-mission, yellow-excel) on top
+  of the 2 pilot entries; skip-listed 48 (Sweet Temptation and Figalicious have unresolved or
+  trademarked cultivar identities, Red Conadria/Picone Black/Midnight Petite/Deanna lacked 2
+  independent non-nursery sources, plus a large tail of "Tree X" parser artifacts, exact
+  duplicates, and non-carica Ficus species). 37 obscure long-tail fig cultivars remain for a
+  later pass.
+
+**Why:** Verified, distinctive blurbs make variety pages genuinely useful (origin, flavour,
+season, flower type for avocados, breba vs main crop for figs) and unique per page, strengthening
+the treestock audience moat without any change to the nightly build (generation is dev-time only).
+
+**Actions:**
+- `tools/scrapers/variety_descriptions/{fig,avocado,rollinia}.json` updated/created (varieties +
+  per-species skipped arrays).
+- `python3 -m unittest discover tests/` green (1401 tests). No golden regen needed: the pinned
+  variety fixtures (avocado-hass, avocado-reed, fig-black-genoa) were not modified, so output is
+  unchanged.
+
+**Status:** Shipped via PR on branch dale/varieties-fig-avo-roll. avocado and rollinia are DONE;
+fig has 37 remaining (re-run `/variety-rollout fig` later to continue, collision-free).
+
+**To revert:** Drop the added entries from the three JSON files (or revert this branch). The
+renderer falls back to no blurb for any missing slug, so there is no build dependency to unwind.
+
+## DEC-182 — 2026-06-08 — Variety descriptions: 6 tropical/exotic species completed (cacao, rambutan, miracle-fruit, jaboticaba, white-sapote, custard-apple)
+
+**Decided by:** Dale (parallel variety-descriptions rollout, window exotic8)
+**Context:** Continuing the per-variety "what's unique" blurb layer (DEC-178) to the next
+stock-ranked batch. This window owned 8 assigned species (lychee, papaya, white-sapote,
+custard-apple, jaboticaba, cacao, miracle-fruit, rambutan). One pass caps at ~50 varieties,
+so it finished the 6 smaller species fully and deferred the two large catalogues (lychee tail,
+papaya) to a re-run in the same worktree.
+**Decision:** Added 30 verified variety blurbs and recorded 27 thin-source/noise skips across
+cacao, rambutan, miracle-fruit, jaboticaba, white-sapote and custard-apple. Each species file's
+`varieties` + `skipped` now covers 100% of that species' live stock (REMAINING = 0 for all six).
+
+**Why:** Accuracy over coverage. Every blurb clears the gate (>=2 sources, >=1 independent
+non-nursery, confidence >= 0.80, claims bound to sources). Skipping is success: nursery-only or
+single-commercial-source varieties (cacao SG2, jaboticaba Scarlet/White, white sapote
+Hawaiian Supreme/Aztec/Rainbow/Wilson/Chris/Kampong/Vista, custard apple Golden Emperor/Late
+Gold/Mexican) and generic parser noise (miracle-fruit "Plant", rambutan "marcot" = a
+propagation method, custard-apple "Plant"/Rollinia/Sugar Apple/seedling, jaboticaba
+"Leaf"/Z4/AXP/ESALQ Red) were skip-listed rather than guessed.
+
+**Notable accuracy calls (all verified against the cited source, not just the agent's word):**
+- Geffner: stripped a Brix/grams `measurement` claim that rested only on Wikipedia (the gate
+  bars specific figures without an authoritative source); kept the qualitative facts.
+- Hilary White / Hillary White: re-sourced off the QLD DPI custard apple PDF (unreadable,
+  could not confirm it supports the claims) to Wikipedia (atemoya parentage + hand pollination,
+  verified) + Specialty Produce (lists Hilary White) + Daleys (Pink's Mammoth strain specifics).
+- White sapote Mac's Golden and Lemon Gold: confirmed verbatim against the RFCA archive
+  (rfcarchives.org.au); Smathers confirmed (8-9 oz, greenish-yellow, fair flavour) against
+  UF/IFAS HS304 Table 1. Tropic Sun confirmed against STFC; Maroochydore Gold origin against
+  FreshFruitPortal.
+- Tier hygiene: only rfcarchives.org.au URLs are tier `owned`; growables.org reproductions of
+  RFCA/CRFG content were set to `third_party`.
+- Cacao Mocambo accurately flagged as Theobroma bicolor (a cacao relative, not T. cacao);
+  jaboticaba Yellow/Giant Yellow flagged as Myrciaria glazioviana.
+
+**Actions:** Wrote `tools/scrapers/variety_descriptions/{cacao,rambutan,miracle-fruit,jaboticaba,white-sapote,custard-apple}.json`.
+`python3 -m unittest discover tests/` green (1401 tests). No golden regen needed (lychee, the only
+golden-fixture species in the assignment, was not touched this pass).
+**Status:** Shipped via PR on branch dale/varieties-exotic8. Not deployed (deploy is the
+serialized close-out).
+**To revert:** delete/restore the six JSON files; the renderer falls back to no blurb.
+
+## DEC-181 — 2026-06-08 — Variety descriptions rollout: finger-lime, lemon, lime, blueberry, longan
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-citrus-berry)
+**Context:** Continuing the per-variety "what's unique" blurb layer (DEC-178) on treestock
+/variety pages. This window owned five species' files: finger-lime, lemon, lime, blueberry
+(new file), and longan. blueberry had no descriptions file before this run.
+
+**Decision:** Added 30 verified variety blurbs and recorded 7 thin-source skips across the
+five species, each blurb backed by >=2 reputable sources (>=1 non-nursery), authored under
+the runbook gate (accuracy over coverage; skip rather than guess).
+
+- blueberry (new file): +12 added, 2 skipped. Southern highbush (Sunshine Blue, Misty,
+  Biloxi, Gulf Coast, Sharpe Blue/Sharpblue), northern highbush (Legacy), rabbiteye
+  (Powder Blue, Brightwell, Climax, Premier), and ornamental dwarf Bushel-and-Berry types
+  (Peach Sorbet, Pink Icing). Backed mainly by US university extension (UF/IFAS, UGA, NCSU,
+  Texas A&M, MSU), USDA-ARS, Missouri Botanical Garden, American Pomological Society.
+- finger-lime: +4 (Rainforest Pearl, Pink Ice, Judy's Everbearing, Byron Sunrise), 3 skipped.
+  Judy's Everbearing and Byron Sunrise corroborated by the UC Riverside citrus collection and
+  a peer-reviewed chemotype paper; nursery-coined names (Collette, Crystal, Tom Thumb) skipped.
+- lemon: +7 (Lemonade, Yuzu, Bush, Fino, Verna, Seedless Eureka, Variegated Eureka), 0 skipped.
+  Several are not true lemons (Yuzu = Citrus junos; Lemonade = NZ low-acid hybrid; Bush = rough
+  lemon rootstock), described as such. Fino/Verna/Variegated-Eureka via UC Riverside CVC.
+- lime: +6 (West Indian, Sweet, Sunrise, Red Centre, Rangpur, Sudachi), 1 skipped. Spans the
+  true/Key lime, Palestine sweet lime, two CSIRO native hybrids (Sunrise, Red Centre), the
+  mandarin-lime Rangpur, and Japanese Sudachi. Bare "Australian" lime skipped as ambiguous.
+- longan: +3 (Haew, Chompoo, Biew Kiew), 1 skipped. Thai cultivars via FAO + the RFCA archive
+  (tier "owned"). "Fijian longan" skipped: it is Pometia pinnata, a different species.
+
+**Why:** Unique, verified per-variety copy makes /variety pages genuinely informative (and
+distinct for SEO / AI answers) without inventing facts. Blueberry was a sizeable uncovered
+catalogue; the citrus species extend the DEC-178 pilot tails.
+
+**Actions:**
+- Wrote tools/scrapers/variety_descriptions/{blueberry,finger-lime,lemon,lime,longan}.json
+  (varieties + per-species skipped slug arrays).
+- `python3 -m unittest discover tests/` green (1401 tests, incl. the 12 variety-description
+  guards and golden). longan is a golden-fixture species but its golden output is unchanged
+  (the new longan cultivars are not in the golden fixture stock; longan-kohala was already
+  committed), so no golden regen was needed.
+- Spot-checked cited sources (FAO longan TSS figures, UC Riverside Fino, the finger-lime
+  chemotype paper) against the live pages; all resolve and support the claims.
+
+**Status:** Shipped via PR from branch dale/varieties-citrus-berry. Deploy is the serialized
+close-out (build_variety_pages.py + purge_cloudflare.sh), not this branch.
+
+**To revert:** remove the added entries from the five species JSON files (or delete
+blueberry.json entirely) and rebuild variety pages.
+
+## DEC-180 — 2026-06-08 — Variety descriptions rollout: apple (+64) and pomelo (+1), both species DONE
+
+**Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-apple-pomelo, two passes)
+**Context:** Continuing the DEC-178 per-variety "what's unique" blurb layer on treestock
+`/variety/<slug>.html` pages, per `docs/variety-descriptions-rollout.md`. This window owned the
+apple and pomelo species files. Apple is a large catalogue (150 live cultivar slugs, only 6 had
+blurbs from the pilot); pomelo is small (12 live slugs, none described, mostly nursery trade names).
+Worked in two passes in the same worktree (pass 1: top apple varieties + Nam Roi; pass 2: the apple
+heritage/cider/columnar tail, then classify the remainder), each REMAINING recomputed from the branch.
+
+**Decision:** Researched and committed 64 verified apple blurbs and 1 pomelo blurb (70 apple
+described in total counting the pilot's 6, 1 pomelo), and recorded 91 skips (80 apple, 11 pomelo) in
+the per-species `skipped` arrays. Both species now have 0 remaining (DONE). Accuracy over coverage:
+every entry has >=2 reputable sources (>=1 non-nursery), claims bound to sources, no fabricated
+figures. Twelve non-overlapping research subagents across the two passes each verified >=2 sources
+per variety against the gate; thin or unidentifiable cultivars were skipped, not guessed.
+
+**Why:**
+- Apple is the second-biggest catalogue on the site. Pass 1 covered the famous commercial, low-chill
+  and heritage core. Pass 2 added the well-documented long tail: English/American heritage dessert and
+  cooking apples (Bramley's Seedling, Golden Harvey, Hubbardston Nonsuch, Tydeman's Early Worcester,
+  the Flower of Kent "Isaac Newton's", Five Crown Pippin, Freyberg), traditional English and French
+  cider apples (Sweet Alford, Sweet Coppin, Improved Foxwhelp, Frequin Rouge, Belle Cacheuse,
+  Chataignier, Reine des Hâtives, Fenouillet Gris, Forfar Pippin), low-chill and Australian/NZ
+  (Ein Shemer, Jerseymac, Vista Bella, Wandin Pride, Magnus Summer Surprise), red-fleshed (Redlove),
+  highly-coloured sports (Royal Gala, Red Fuji) and the columnar/dwarf lines (Bolero and Flamenco
+  Ballerina, the Holovousy columnar Cumulus and Herald, dwarf Pinkabelle and Leprechaun). The NSW DPI
+  cider page (.gov.au, authoritative) and the Czech Holovousy journal were spot-checked by direct fetch.
+- The rest of the apple catalogue is parser noise rather than distinct cultivars: multigraft combo
+  trees (2way/3way/tree-3-way), alternate spellings of varieties already described (Coxs Orange Pippin,
+  Gravensteins, Golden Dorsett, Jonothan, Lady William, Einshimer, Montys Surprise), form variants of
+  described varieties (columnar/stepover/pome-fruit/PBR/Trixzie duplicates) and ambiguous one-word
+  fragments (Star, Black, Winter, Velvet, Rose, Quince, Snow, Sweet Cheeks). These are recorded as
+  skips so the species reads as complete and is never re-attempted.
+- Pomelo is dominated by nursery trade names (Thai Sun, Watsons, Rouge Red, Carter's Red, K15) with no
+  independent corroboration, so only the well-documented Vietnamese Nam Roi cleared the bar. Skipping
+  the rest (including the tangelo mis-parse and the generic "Red"/"White" colour fragments) is the
+  correct, expected outcome.
+
+**Actions:**
+- `tools/scrapers/variety_descriptions/apple.json`: 70 described varieties, 80 slugs in `skipped`,
+  0 remaining of the 150 live cultivar slugs. Pass 2 added 30 entries (heritage/cider/columnar tail)
+  and skipped 4 unverifiable cultivars (Peau d'Âne, Antoinette, Easy Care, Harmony) plus 67 noise
+  slugs (multigraft / alternate-spelling / form-variant / ambiguous).
+- `tools/scrapers/variety_descriptions/pomelo.json`: 1 described (Nam Roi), 11 skipped, 0 remaining.
+- Apple is a golden-fixture species, but the pinned variety pages are apple-pink-lady and
+  apple-dorsett-golden (both already blurbed), and none of the new entries overlaps them, so no golden
+  regeneration was needed.
+- `python3 -m unittest discover tests/` green.
+
+**Status:** Shipped via PR #95 (not deployed). Apple and pomelo both 0 remaining (DONE; tick the
+Progress list for both at close-out). Deploy + progress-tick are the serialized close-out.
+
+**To revert:** Drop the new apple/pomelo entries and skips; the renderer falls back to no blurb for
+un-enriched varieties (graceful).
+
 ## DEC-179 — 2026-06-08 — Consistent responsive page width + shared homepage nav; remove community wishlist page (treestock.com.au)
 
 **Decided by:** Dale (interactive session, Benedict directed)
