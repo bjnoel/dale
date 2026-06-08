@@ -38,12 +38,19 @@ cultivar fact is worse than no blurb.
 ## 0. Start from origin/main in your OWN worktree (do this FIRST)
 The variety-descriptions infra (stocklib/variety_descriptions.py, the variety_descriptions/
 dir, build_variety_pages.py slot, tests/test_variety_descriptions.py) is MERGED to origin/main;
-the local main may be stale. Create and work inside a worktree off origin/main:
-  git -C /Users/bjnoel/Projects/dale fetch origin
-  git -C /Users/bjnoel/Projects/dale worktree add ../dale-varieties-{{LABEL}} -b dale/varieties-{{LABEL}} origin/main
-  cd /Users/bjnoel/Projects/dale/../dale-varieties-{{LABEL}}
+the local main may be stale. Work inside ONE persistent worktree per window/species-set.
+- FIRST pass (worktree does not exist yet): create it off origin/main:
+    git -C /Users/bjnoel/Projects/dale fetch origin
+    git -C /Users/bjnoel/Projects/dale worktree add ../dale-varieties-{{LABEL}} -b dale/varieties-{{LABEL}} origin/main
+- LATER pass (you cleared context and re-ran this command in the SAME window): the worktree and
+  branch already exist from the last pass. Do NOT recreate them. Just continue in it:
+    git -C /Users/bjnoel/Projects/dale fetch origin
+  (the branch already carries your earlier passes, so REMAINING in step 1 is computed from these
+  files and automatically picks up where you left off).
+Either way, then work here for the whole pass:
+    cd /Users/bjnoel/Projects/dale/../dale-varieties-{{LABEL}}
 Sanity check: `tools/scrapers/variety_descriptions/apple.json` MUST exist here. If not, you are
-not on origin/main; fix that before continuing.
+not in the worktree off origin/main; fix that before continuing.
 Orient: read `memory/project_variety_descriptions.md`; skim `variety_descriptions/apple.json`
 (schema/house style), `stocklib/variety_descriptions.py`, and `tests/test_variety_descriptions.py`.
 
@@ -115,7 +122,9 @@ For each assigned species, update `tools/scrapers/variety_descriptions/<species>
   species' golden pages actually change, so branches for different species merge cleanly.)
 
 ## 5. Ship as a PR with uniquely-named fragments (do NOT merge, deploy, or tick progress)
-You are in the dale/varieties-{{LABEL}} worktree. Commit, push, open a PR. In your branch:
+You are in the dale/varieties-{{LABEL}} worktree. Commit and push. On the FIRST pass open a PR;
+on a LATER pass just push to the same branch (it updates the existing PR, do not open a second)
+and update your fragment files in place. In your branch:
 - Decision: write ONE fragment `decisions/pending/{{DATE}}-varieties-{{LABEL}}.md` (a `# title`
   line then the body; see `decisions/pending/README.md`). Do NOT edit decision-log.md or pick a
   DEC number.
