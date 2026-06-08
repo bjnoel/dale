@@ -1,0 +1,412 @@
+{
+  "species_slug": "jaboticaba",
+  "schema_version": 1,
+  "varieties": {
+    "jaboticaba-costada": {
+      "slug": "jaboticaba-costada",
+      "species": "Jaboticaba",
+      "variety": "Costada",
+      "paragraphs": [
+        "Costada is a selection of Plinia phitrantha, a jaboticaba species native to the south-eastern Brazilian states of Sao Paulo and Minas Gerais. The name comes from the Portuguese for ribbed, a nod to the fruit's distinctive lengthwise ribs or grooves that set it apart from the smooth, round common jaboticaba. The skin ripens a deep purple-red, and the small fruit holds the sweet, grape-like jaboticaba flavour collectors prize.",
+        "It is a compact, bushy grower often sold as a dwarf, which makes it well suited to pots and small gardens. Unlike the famously slow common jaboticaba, this species is reported to be faster growing and earlier to bear, fruiting in around two years in tropical conditions. It remains uncommon in cultivation, so it is mostly a collector's plant rather than a mainstream nursery line."
+      ],
+      "claims": [
+        {
+          "text": "Costada is a selection of Plinia phitrantha, native to Sao Paulo and Minas Gerais in south-eastern Brazil",
+          "type": "origin",
+          "cites": ["wikipedia-phitrantha"]
+        },
+        {
+          "text": "The name 'costada' is Portuguese for ribbed, referring to the fruit's lengthwise ribs or grooves",
+          "type": "naming",
+          "cites": ["daleys-costada", "tradewinds-costada"]
+        },
+        {
+          "text": "The fruit ripens a deep purple-red",
+          "type": "appearance",
+          "cites": ["tradewinds-costada"]
+        },
+        {
+          "text": "It is a compact, bushy, often dwarf plant well suited to pots",
+          "type": "growing",
+          "cites": ["daleys-costada", "tradewinds-costada"]
+        },
+        {
+          "text": "Reported to grow faster and bear earlier than the common jaboticaba, fruiting in around two years in the tropics",
+          "type": "season",
+          "cites": ["tradewinds-costada"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-phitrantha",
+          "name": "Wikipedia: Plinia phitrantha",
+          "url": "https://en.wikipedia.org/wiki/Plinia_phitrantha",
+          "tier": "third_party"
+        },
+        {
+          "id": "tradewinds-costada",
+          "name": "Trade Winds Fruit: Plinia phitrantha Costada Jaboticaba",
+          "url": "https://www.tradewindsfruit.com/plinia-phitrantha-costada-jaboticaba-seeds",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-costada",
+          "name": "Daleys Fruit: Jaboticaba Costada (Plinia phitrantha)",
+          "url": "https://www.daleysfruit.com.au/Jaboticaba-Costada-Myrciaria-phitrantha.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jaboticaba-giant-yellow": {
+      "slug": "jaboticaba-giant-yellow",
+      "species": "Jaboticaba",
+      "variety": "Giant yellow",
+      "paragraphs": [
+        "Giant yellow is a large-fruited form of the yellow jaboticaba, Myrciaria glazioviana (also called cabeluda), a Myrtaceae species native to south-eastern Brazil around Rio de Janeiro and Minas Gerais. Unlike the familiar dark purple-black jaboticaba, its round fruit ripens golden-yellow and carries a fine fuzzy, pubescent skin, so the berries look more like large gooseberries. The flavour is sweet and aromatic and is often likened to apricot, with one or two seeds inside.",
+        "The 'Giant' selection is valued for fruit larger than the standard yellow form. The plant grows as a large shrub or small tree and is notably precocious for the genus, reported to begin bearing in only a few years while still small, rather than the long wait common jaboticabas are known for."
+      ],
+      "claims": [
+        {
+          "text": "Giant yellow is a large-fruited form of the yellow jaboticaba, Myrciaria glazioviana (cabeluda), native to south-eastern Brazil",
+          "type": "origin",
+          "cites": ["wikipedia-glazioviana", "growables-yellow"]
+        },
+        {
+          "text": "The round fruit ripens golden-yellow with a fuzzy, pubescent skin, resembling large gooseberries",
+          "type": "appearance",
+          "cites": ["wikipedia-glazioviana", "growables-yellow"]
+        },
+        {
+          "text": "The flavour is sweet and aromatic, likened to apricot, with one or two seeds",
+          "type": "flavour",
+          "cites": ["growables-yellow", "wikipedia-glazioviana"]
+        },
+        {
+          "text": "The 'Giant' selection produces fruit larger than the standard yellow form",
+          "type": "appearance",
+          "cites": ["rosscreek-giantyellow"]
+        },
+        {
+          "text": "It grows as a large shrub or small tree and is precocious, bearing within a few years",
+          "type": "growing",
+          "cites": ["growables-yellow", "wikipedia-glazioviana"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-glazioviana",
+          "name": "Wikipedia: Myrciaria glazioviana",
+          "url": "https://en.wikipedia.org/wiki/Myrciaria_glazioviana",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables-yellow",
+          "name": "Growables: Cabelluda / Yellow Jaboticaba (Myrciaria glazioviana)",
+          "url": "https://www.growables.org/information/TropicalFruit/JaboticabaYellow.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-giantyellow",
+          "name": "Ross Creek Tropicals: Jaboticaba Giant yellow",
+          "url": "https://www.rosscreektropicals.com.au/products/jaboticaba-giant-yellow",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jaboticaba-grimal": {
+      "slug": "jaboticaba-grimal",
+      "species": "Jaboticaba",
+      "variety": "Grimal",
+      "paragraphs": [
+        "Grimal is a selected large-fruited jaboticaba named after Adolph Grimal, the eccentric fruit collector who established a grove on Big Pine Key in the Florida Keys and propagated it there. It produces purple-black fruit that is noticeably larger than Sabara, with thick pulp and a sweet flavour carrying Concord-grape notes, which is why it is often rated among the best eating jaboticabas.",
+        "Compared with Sabara it grows more upright and tends to fruit later in the season, making the two complementary if you want a longer harvest. Like other jaboticabas the fruit is borne directly on the trunk and main branches."
+      ],
+      "claims": [
+        {
+          "text": "Grimal is a large-fruited jaboticaba named after fruit collector Adolph Grimal, who propagated it in the Florida Keys",
+          "type": "origin",
+          "cites": ["floridafruitgeek-cousins", "ediblesouthflorida-grimal"]
+        },
+        {
+          "text": "Its purple-black fruit is larger than Sabara, with thick pulp and a sweet, Concord-grape-like flavour",
+          "type": "flavour",
+          "cites": ["floridafruitgeek-cousins", "savoursoil-jaboticaba"]
+        },
+        {
+          "text": "It has a more upright growth habit and fruits later in the season than Sabara",
+          "type": "growing",
+          "cites": ["floridafruitgeek-cousins", "savoursoil-jaboticaba"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "floridafruitgeek-cousins",
+          "name": "Florida Fruit Geek: Jaboticaba has some tasty cousins",
+          "url": "https://floridafruitgeek.com/2018/04/21/jaboticaba-has-some-tasty-cousins/",
+          "tier": "third_party"
+        },
+        {
+          "id": "savoursoil-jaboticaba",
+          "name": "Savour Soil Permaculture: Jaboticaba Plant Profile",
+          "url": "https://savoursoilpermaculture.com/plant-profile-jaboticaba-plinia-cauliflora/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ediblesouthflorida-grimal",
+          "name": "Edible South Florida: Digging up the Past, Grimal Grove",
+          "url": "https://ediblesouthflorida.ediblecommunities.com/eat/digging-past-grimal-grove/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jaboticaba-phitrantha-costada": {
+      "slug": "jaboticaba-phitrantha-costada",
+      "species": "Jaboticaba",
+      "variety": "Phitrantha Costada",
+      "paragraphs": [
+        "Phitrantha Costada is the same ribbed jaboticaba as Costada, listed here under its full botanical name Plinia phitrantha 'Costada'. The species is native to the south-eastern Brazilian states of Sao Paulo and Minas Gerais. 'Costada' is Portuguese for ribbed, describing the fruit's distinctive lengthwise ribs or grooves, a clear point of difference from the smooth, round common jaboticaba. The skin ripens a deep purple-red over the usual sweet, grape-like jaboticaba flesh.",
+        "It tends to form a compact, bushy plant, often offered as a dwarf, so it suits pots and smaller gardens. Reports suggest it grows faster and bears earlier than the notoriously slow common jaboticaba, with fruiting in around two years under tropical conditions. It stays an uncommon collector's variety rather than a widely stocked nursery line."
+      ],
+      "claims": [
+        {
+          "text": "Phitrantha Costada is Plinia phitrantha 'Costada', the ribbed jaboticaba, native to Sao Paulo and Minas Gerais in south-eastern Brazil",
+          "type": "origin",
+          "cites": ["wikipedia-phitrantha"]
+        },
+        {
+          "text": "'Costada' is Portuguese for ribbed, referring to the fruit's lengthwise ribs or grooves",
+          "type": "naming",
+          "cites": ["daleys-costada", "tradewinds-costada"]
+        },
+        {
+          "text": "The fruit ripens a deep purple-red",
+          "type": "appearance",
+          "cites": ["tradewinds-costada"]
+        },
+        {
+          "text": "It is a compact, bushy, often dwarf plant well suited to pots",
+          "type": "growing",
+          "cites": ["daleys-costada", "tradewinds-costada"]
+        },
+        {
+          "text": "Reported to grow faster and bear earlier than the common jaboticaba, fruiting in around two years in the tropics",
+          "type": "season",
+          "cites": ["tradewinds-costada"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-phitrantha",
+          "name": "Wikipedia: Plinia phitrantha",
+          "url": "https://en.wikipedia.org/wiki/Plinia_phitrantha",
+          "tier": "third_party"
+        },
+        {
+          "id": "tradewinds-costada",
+          "name": "Trade Winds Fruit: Plinia phitrantha Costada Jaboticaba",
+          "url": "https://www.tradewindsfruit.com/plinia-phitrantha-costada-jaboticaba-seeds",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-costada",
+          "name": "Daleys Fruit: Jaboticaba Costada (Plinia phitrantha)",
+          "url": "https://www.daleysfruit.com.au/Jaboticaba-Costada-Myrciaria-phitrantha.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jaboticaba-red-hybrid": {
+      "slug": "jaboticaba-red-hybrid",
+      "species": "Jaboticaba",
+      "variety": "Red Hybrid",
+      "paragraphs": [
+        "Red Hybrid is a jaboticaba bred from Plinia cauliflora crossed with the red-fruited Plinia aureana. Its standout trait is speed: where ordinary jaboticabas can take six to eight years (or much longer from seed) to bear, the red hybrid often fruits in about three to five years, earning it the nickname Precocious.",
+        "The fruit is red rather than the usual purple-black, smaller than purple jaboticaba, with a sweet-tart, grape-like flavour that suits palates used to temperate fruit. Once established it bears repeatedly, with multiple crops through the year, and new growth and honey-scented trunk flowers add ornamental appeal."
+      ],
+      "claims": [
+        {
+          "text": "Red Hybrid is a cross of Plinia cauliflora and the red-fruited Plinia aureana",
+          "type": "origin",
+          "cites": ["livebettergarden-red", "daleys-redhybrid"]
+        },
+        {
+          "text": "It comes into bearing much earlier than standard jaboticaba, around three to five years rather than six to eight",
+          "type": "season",
+          "cites": ["floridafruitgeek-cousins", "livebettergarden-red"]
+        },
+        {
+          "text": "The fruit is red, smaller than purple jaboticaba, with a sweet-tart grape-like flavour, and the tree bears multiple crops per year",
+          "type": "flavour",
+          "cites": ["floridafruitgeek-cousins"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "floridafruitgeek-cousins",
+          "name": "Florida Fruit Geek: Jaboticaba has some tasty cousins",
+          "url": "https://floridafruitgeek.com/2018/04/21/jaboticaba-has-some-tasty-cousins/",
+          "tier": "third_party"
+        },
+        {
+          "id": "livebettergarden-red",
+          "name": "Live Better Garden: Red Jaboticaba (Plinia cauliflora x aureana)",
+          "url": "https://www.livebettergarden.com/2020/05/red-jaboticaba-plinia-cauliflora-x.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-redhybrid",
+          "name": "Daleys Fruit: Jaboticaba Red Hybrid (Plinia cauliflora x aureana)",
+          "url": "https://www.daleysfruit.com.au/Jaboticaba-Red-Hybrid-Plinia-cauliflora-x-aureana.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jaboticaba-sabar": {
+      "slug": "jaboticaba-sabar",
+      "species": "Jaboticaba",
+      "variety": "Sabará",
+      "paragraphs": [
+        "Sabara (Plinia cauliflora) is the classic Brazilian jaboticaba and the most prized, most often planted selection for commercial production. It bears small, thin-skinned, intensely sweet purple-black fruit directly on the trunk and branches, the cauliflorous habit jaboticabas are known for. Sabara flavour is widely treated as the benchmark for the fruit.",
+        "It is valued above all for productivity and speed. The tree is precocious and very productive, with reports of up to four flowering and fruiting cycles a year, well ahead of the single-crop, larger-fruited types. That fast, repeat-bearing habit on a compact tree is what makes it the standard choice for both growers and home gardens."
+      ],
+      "claims": [
+        {
+          "text": "Sabara is a selection of Plinia cauliflora with small, thin-skinned, very sweet purple-black fruit borne on the trunk (cauliflory)",
+          "type": "appearance",
+          "cites": ["growables-varieties", "tradewinds-sabara", "wikipedia-jabuticaba"]
+        },
+        {
+          "text": "It is the most prized and most commonly planted jaboticaba for commercial production",
+          "type": "naming",
+          "cites": ["growables-varieties", "tradewinds-sabara"]
+        },
+        {
+          "text": "Sabara is precocious and very productive, bearing multiple (up to four) crops a year",
+          "type": "season",
+          "cites": ["growables-varieties", "savoursoil-jaboticaba"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "growables-varieties",
+          "name": "Growables: Jaboticaba Varieties",
+          "url": "https://www.growables.org/information/TropicalFruit/JaboticabaVarieties.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "tradewinds-sabara",
+          "name": "Trade Winds Fruit: Sabara Jaboticaba",
+          "url": "https://www.tradewindsfruit.com/myrciaria-cauliflora-sabara-jaboticaba-seeds",
+          "tier": "third_party"
+        },
+        {
+          "id": "savoursoil-jaboticaba",
+          "name": "Savour Soil Permaculture: Jaboticaba Plant Profile",
+          "url": "https://savoursoilpermaculture.com/plant-profile-jaboticaba-plinia-cauliflora/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-jabuticaba",
+          "name": "Wikipedia: Jabuticaba",
+          "url": "https://en.wikipedia.org/wiki/Jabuticaba",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "jaboticaba-yellow": {
+      "slug": "jaboticaba-yellow",
+      "species": "Jaboticaba",
+      "variety": "Yellow",
+      "paragraphs": [
+        "The yellow jaboticaba is a different species, Myrciaria glazioviana (known in Brazil as cabeludinha or cabeluda), native to south-eastern Brazil around Rio de Janeiro and Minas Gerais. Unlike the smooth purple jaboticabas, its round fruit ripens yellow to yellow-orange with a distinctive fuzzy, pubescent skin, so it looks more like a hairy gooseberry than a grape.",
+        "Flavour is its main draw, a sweet, aromatic, apricot to peach character (with hints of tangerine) wrapped around translucent juicy pulp. The trade-off is small fruit with relatively little flesh, one or two largish seeds, and a slightly tough, resinous skin. It grows as a slow, multi-trunked shrub or small tree."
+      ],
+      "claims": [
+        {
+          "text": "Yellow jaboticaba is the species Myrciaria glazioviana (cabeludinha/cabeluda), native to south-eastern Brazil",
+          "type": "origin",
+          "cites": ["wikipedia-glazioviana", "growables-yellow"]
+        },
+        {
+          "text": "Its round fruit ripens yellow to yellow-orange with a fuzzy, pubescent skin",
+          "type": "appearance",
+          "cites": ["wikipedia-glazioviana", "growables-yellow", "floridafruitgeek-cousins"]
+        },
+        {
+          "text": "The flavour is sweet and aromatic, likened to apricot or peach",
+          "type": "flavour",
+          "cites": ["tradewinds-yellow", "growables-yellow", "floridafruitgeek-cousins"]
+        },
+        {
+          "text": "Fruit is small with little flesh and one or two seeds, on a slow multi-trunked shrub or small tree",
+          "type": "appearance",
+          "cites": ["growables-yellow", "floridafruitgeek-cousins"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-glazioviana",
+          "name": "Wikipedia: Myrciaria glazioviana",
+          "url": "https://en.wikipedia.org/wiki/Myrciaria_glazioviana",
+          "tier": "third_party"
+        },
+        {
+          "id": "tradewinds-yellow",
+          "name": "Trade Winds Fruit: Yellow Jaboticaba (Myrciaria glazioviana)",
+          "url": "https://www.tradewindsfruit.com/myrciaria-glazioviana-yellow-jaboticaba-seeds",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables-yellow",
+          "name": "Growables: Yellow Jaboticaba (Cabelluda)",
+          "url": "https://www.growables.org/information/TropicalFruit/JaboticabaYellow.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "floridafruitgeek-cousins",
+          "name": "Florida Fruit Geek: Jaboticaba has some tasty cousins",
+          "url": "https://floridafruitgeek.com/2018/04/21/jaboticaba-has-some-tasty-cousins/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "jaboticaba-axp",
+    "jaboticaba-esalq-red",
+    "jaboticaba-leaf",
+    "jaboticaba-red",
+    "jaboticaba-scarlet",
+    "jaboticaba-white",
+    "jaboticaba-z4"
+  ]
+}
