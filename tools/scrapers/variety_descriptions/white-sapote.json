@@ -1,0 +1,580 @@
+{
+  "species_slug": "white-sapote",
+  "schema_version": 1,
+  "varieties": {
+    "white-sapote-blumenthal": {
+      "slug": "white-sapote-blumenthal",
+      "species": "White Sapote",
+      "variety": "Blumenthal",
+      "paragraphs": [
+        "Blumenthal is a Californian white sapote variety. The fruit has pale yellow skin over creamy white flesh, with the sweet, custard like flavour the species is known for.",
+        "Unlike some self fruitful cultivars, Blumenthal is one of the white sapotes documented as needing cross pollination to set a good crop, so a compatible pollinator nearby helps. Cultivars such as Ortega and Vernon, which shed abundant pollen over a long flowering period, are noted as useful pollinators for varieties of this type."
+      ],
+      "claims": [
+        {
+          "text": "Californian variety with pale yellow skin and creamy white flesh",
+          "type": "origin",
+          "cites": ["daleys-blumenthal", "prosea"]
+        },
+        {
+          "text": "Documented as requiring cross pollination rather than being self fruitful",
+          "type": "pollination",
+          "cites": ["prosea"]
+        },
+        {
+          "text": "Ortega and Vernon, which produce abundant pollen over an extended flowering period, are noted as useful pollinators",
+          "type": "pollination",
+          "cites": ["prosea"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "prosea",
+          "name": "PROSEA (Plant Resources of South-East Asia), Casimiroa edulis",
+          "url": "https://plantuse.plantnet.org/en/Casimiroa_edulis_(PROSEA)",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-blumenthal",
+          "name": "Daleys Fruit, White Sapote Blumenthal",
+          "url": "https://www.daleysfruit.com.au/White-Sapote-Bluementhol-Casimiroa-edulis.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-golden-globe": {
+      "slug": "white-sapote-golden-globe",
+      "species": "White Sapote",
+      "variety": "Golden Globe",
+      "paragraphs": [
+        "Golden Globe produces a small, round, symmetrical fruit noted for its excellent flavour. Ripeness is easy to judge, since the skin changes from green to pale yellow as the fruit matures.",
+        "It is one of the white sapote cultivars documented as benefiting from cross pollination, so a compatible pollinator nearby improves cropping. The flesh is the sweet, smooth, custard like pulp typical of a good white sapote."
+      ],
+      "claims": [
+        {
+          "text": "Small, round, symmetrical fruit with excellent flavour; skin changes from green to pale yellow at maturity",
+          "type": "appearance",
+          "cites": ["rfca-casimiroa", "daleys-goldenglobe"]
+        },
+        {
+          "text": "Documented as requiring cross pollination rather than being self fruitful",
+          "type": "pollination",
+          "cites": ["prosea-gg"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-casimiroa",
+          "name": "RFCA Archives, Casimiroa (white sapote varieties)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/WhiteSapote/Casimiroa1-87.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "prosea-gg",
+          "name": "PROSEA (Plant Resources of South-East Asia), Casimiroa edulis",
+          "url": "https://plantuse.plantnet.org/en/Casimiroa_edulis_(PROSEA)",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-goldenglobe",
+          "name": "Daleys Fruit, White Sapote Golden Globe",
+          "url": "https://www.daleysfruit.com.au/buy/white-sapote-golden-globe-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-lemon-gold": {
+      "slug": "white-sapote-lemon-gold",
+      "species": "White Sapote",
+      "variety": "Lemon Gold",
+      "paragraphs": [
+        "Lemon Gold is a California selection of the common white sapote (Casimiroa edulis). The fruit is nearly round to slightly flattened, weighs roughly four to six ounces, and turns a light yellow as it matures. It is prized for excellent eating and keeping qualities, and unusually for the species it can be picked while still immature and will ripen well off the tree.",
+        "The tree is less vigorous than many cultivars and is a moderate cropper, typically maturing late in the season (often around November). It is very self-fertile."
+      ],
+      "claims": [
+        {
+          "text": "Lemon Gold is a California-origin selection of Casimiroa edulis.",
+          "type": "origin",
+          "cites": ["rfca-whitesapote", "wagrimes-whitesapote"]
+        },
+        {
+          "text": "The fruit is nearly round to slightly flattened, about four to six ounces, and light yellow when mature.",
+          "type": "appearance",
+          "cites": ["rfca-whitesapote"]
+        },
+        {
+          "text": "It has excellent eating and keeping qualities and can be picked immature and ripened off the tree.",
+          "type": "use",
+          "cites": ["rfca-whitesapote", "wagrimes-whitesapote"]
+        },
+        {
+          "text": "The tree is less vigorous, a moderate cropper, and ripens late (often November).",
+          "type": "growing",
+          "cites": ["wagrimes-whitesapote", "stfc-tips"]
+        },
+        {
+          "text": "Lemon Gold is very self-fertile.",
+          "type": "pollination",
+          "cites": ["stfc-tips"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-whitesapote",
+          "name": "Rare Fruit Council of Australia archive: The White Sapote and Wooly-Leaf White Sapote",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/WhiteSapote/WhiteSapote8-81.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "wagrimes-whitesapote",
+          "name": "CRFG Fruit Facts: White Sapote (reproduced at wagrimes.net)",
+          "url": "https://www.wagrimes.net/whitesapote.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "stfc-tips",
+          "name": "Sub-Tropical Fruit Club of Qld: White Sapote Tips",
+          "url": "https://stfc.org.au/tips/white-sapote-tips/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-mac-s-golden": {
+      "slug": "white-sapote-mac-s-golden",
+      "species": "White Sapote",
+      "variety": "Mac's Golden",
+      "paragraphs": [
+        "Mac's Golden is a cultivar of the woolly-leaf white sapote (Casimiroa tetrameria), the felted-leaf relative of the common white sapote. It carries good-sized fruit (around 6 to 7 ounces) with thick skin and firm flesh, and the flesh is a deep, dark yellow.",
+        "It is low-seeded, and the flavour is described as strong, aromatic and spicy. It is rated as one of the cultivars best suited to commercial production among the woolly-leaf white sapotes, and keeps well."
+      ],
+      "claims": [
+        {
+          "text": "Mac's Golden is a cultivar of the woolly-leaf white sapote, Casimiroa tetrameria.",
+          "type": "origin",
+          "cites": ["rfca-whitesapote", "wagrimes-whitesapote"]
+        },
+        {
+          "text": "The fruit is a good size (about 6 to 7 ounces) with thick skin, firm flesh, deep dark-yellow flesh, and is low-seeded.",
+          "type": "appearance",
+          "cites": ["rfca-whitesapote", "wagrimes-whitesapote"]
+        },
+        {
+          "text": "The flavour is strong, aromatic and spicy, and the fruit keeps well.",
+          "type": "flavour",
+          "cites": ["rfca-whitesapote"]
+        },
+        {
+          "text": "It is rated among the cultivars best suited to commercial production of the woolly-leaf white sapotes.",
+          "type": "use",
+          "cites": ["rfca-whitesapote"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-whitesapote",
+          "name": "Rare Fruit Council of Australia archive: The White Sapote and Wooly-Leaf White Sapote",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/WhiteSapote/WhiteSapote8-81.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "wagrimes-whitesapote",
+          "name": "CRFG Fruit Facts: White Sapote (reproduced at wagrimes.net)",
+          "url": "https://www.wagrimes.net/whitesapote.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-macs-golden": {
+      "slug": "white-sapote-macs-golden",
+      "species": "White Sapote",
+      "variety": "Macs Golden",
+      "paragraphs": [
+        "Mac's Golden is a cultivar of the woolly-leaf white sapote (Casimiroa tetrameria), the felted-leaf relative of the common white sapote. It carries good-sized fruit (around 6 to 7 ounces) with thick skin and firm flesh, and the flesh is a deep, dark yellow.",
+        "It is low-seeded, and the flavour is described as strong, aromatic and spicy. It is rated as one of the cultivars best suited to commercial production among the woolly-leaf white sapotes, and keeps well."
+      ],
+      "claims": [
+        {
+          "text": "Mac's Golden is a cultivar of the woolly-leaf white sapote, Casimiroa tetrameria.",
+          "type": "origin",
+          "cites": ["rfca-whitesapote", "wagrimes-whitesapote"]
+        },
+        {
+          "text": "The fruit is a good size (about 6 to 7 ounces) with thick skin, firm flesh, deep dark-yellow flesh, and is low-seeded.",
+          "type": "appearance",
+          "cites": ["rfca-whitesapote", "wagrimes-whitesapote"]
+        },
+        {
+          "text": "The flavour is strong, aromatic and spicy, and the fruit keeps well.",
+          "type": "flavour",
+          "cites": ["rfca-whitesapote"]
+        },
+        {
+          "text": "It is rated among the cultivars best suited to commercial production of the woolly-leaf white sapotes.",
+          "type": "use",
+          "cites": ["rfca-whitesapote"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-whitesapote",
+          "name": "Rare Fruit Council of Australia archive: The White Sapote and Wooly-Leaf White Sapote",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/WhiteSapote/WhiteSapote8-81.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "wagrimes-whitesapote",
+          "name": "CRFG Fruit Facts: White Sapote (reproduced at wagrimes.net)",
+          "url": "https://www.wagrimes.net/whitesapote.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-ortega": {
+      "slug": "white-sapote-ortega",
+      "species": "White Sapote",
+      "variety": "Ortega",
+      "paragraphs": [
+        "Ortega (also spelt Ortego) is a California selection of the common white sapote (Casimiroa edulis). The fruit is oval, averaging about four to five ounces, with good eating and keeping qualities, and is notable for usually carrying only a single seed. It ripens in the late mid-season.",
+        "Ortega is self-fertile and does not require cross-pollination, and growers value it as a reliable pollen source for other cultivars because it flowers over a long period. It is often grown as a more compact tree, which suits smaller spaces."
+      ],
+      "claims": [
+        {
+          "text": "Ortega (Ortego) is a California-origin selection of Casimiroa edulis.",
+          "type": "origin",
+          "cites": ["rfca-whitesapote"]
+        },
+        {
+          "text": "The fruit is oval, averages about four to five ounces, and usually has only a single seed.",
+          "type": "appearance",
+          "cites": ["rfca-whitesapote"]
+        },
+        {
+          "text": "It ripens in the late mid-season.",
+          "type": "season",
+          "cites": ["rfca-whitesapote"]
+        },
+        {
+          "text": "Ortega is self-fertile, does not require cross-pollination, and is a valued pollinator for other varieties.",
+          "type": "pollination",
+          "cites": ["stfc-tips", "rosscreek-ortega"]
+        },
+        {
+          "text": "It tends to grow as a more compact tree.",
+          "type": "growing",
+          "cites": ["rosscreek-ortega"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-whitesapote",
+          "name": "Rare Fruit Council of Australia archive: The White Sapote and Wooly-Leaf White Sapote",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/WhiteSapote/WhiteSapote8-81.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "stfc-tips",
+          "name": "Sub-Tropical Fruit Club of Qld: White Sapote Tips",
+          "url": "https://stfc.org.au/tips/white-sapote-tips/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-ortega",
+          "name": "Ross Creek Tropicals: White Sapote Ortega Grafted",
+          "url": "https://www.rosscreektropicals.com.au/products/white-sapote-ortega-grafted",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-pike": {
+      "slug": "white-sapote-pike",
+      "species": "White Sapote",
+      "variety": "Pike",
+      "paragraphs": [
+        "Pike is a Californian selection (origin Santa Barbara, introduced by the USDA in 1928) and was one of the three most popular white sapote cultivars of the mid twentieth century, still found in commercial plantings. The tree is medium sized and a heavy cropper, carrying large fruit that stay green at maturity rather than turning yellow.",
+        "The flesh is sweet and custard like, typical of white sapote, with taste rated fairly good, though the skin is noticeably bitter. It is a mid season variety. Pike is also commonly grown as a vigorous seedling rootstock for grafting other cultivars."
+      ],
+      "claims": [
+        {
+          "text": "Californian selection originating in Santa Barbara, introduced by the USDA in 1928",
+          "type": "origin",
+          "cites": ["wagrimes-crfg"]
+        },
+        {
+          "text": "One of the three most popular white sapote cultivars of the mid twentieth century, still found commercially",
+          "type": "naming",
+          "cites": ["wagrimes-crfg", "growables-crfg"]
+        },
+        {
+          "text": "Medium sized tree and heavy cropper bearing large green fruit, mid season; taste fairly good but skin bitter",
+          "type": "appearance",
+          "cites": ["growables-crfg", "wagrimes-crfg"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "growables-crfg",
+          "name": "Growables (CRFG Fruit Facts reproduction), White Sapote",
+          "url": "https://www.growables.org/information/TropicalFruit/SapoteWCRFG.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "wagrimes-crfg",
+          "name": "WA Grimes (CRFG Fruit Facts reproduction), White Sapote",
+          "url": "https://www.wagrimes.net/whitesapote.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-reinecke-commercial": {
+      "slug": "white-sapote-reinecke-commercial",
+      "species": "White Sapote",
+      "variety": "Reinecke Commercial",
+      "paragraphs": [
+        "Reinecke Commercial is a Californian variety (origin San Diego). The fruit is irregular in shape, weighing around 5 ounces (about 140 grams), with an attractive golden orange skin when ripe and a moderate number of seeds.",
+        "Flavour is good and the fruit has excellent keeping qualities. Even if picked prematurely it will soften and become fairly good eating, a useful trait for handling and transport. The trade off is that the tree is a relatively poor yielder."
+      ],
+      "claims": [
+        {
+          "text": "Californian variety originating in San Diego",
+          "type": "origin",
+          "cites": ["growables-crfg-r", "wagrimes-crfg-r"]
+        },
+        {
+          "text": "Fruit irregular in shape, about 5 ounces, with golden orange skin when ripe and a moderate number of seeds",
+          "type": "appearance",
+          "cites": ["growables-crfg-r", "wagrimes-crfg-r"]
+        },
+        {
+          "text": "Good flavour and excellent keeping qualities; softens to fairly good eating even if picked early, but the tree is a relatively poor yielder",
+          "type": "use",
+          "cites": ["growables-crfg-r", "wagrimes-crfg-r"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "growables-crfg-r",
+          "name": "Growables (CRFG Fruit Facts reproduction), White Sapote",
+          "url": "https://www.growables.org/information/TropicalFruit/SapoteWCRFG.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "wagrimes-crfg-r",
+          "name": "WA Grimes (CRFG Fruit Facts reproduction), White Sapote",
+          "url": "https://www.wagrimes.net/whitesapote.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.91,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-smathers": {
+      "slug": "white-sapote-smathers",
+      "species": "White Sapote",
+      "variety": "Smathers",
+      "paragraphs": [
+        "Smathers is a Florida white sapote variety, grouped with the woolly-leaf white sapotes (Casimiroa tetrameria), the felted-leaf relatives of the common white sapote. It is one of the more commonly available named selections in Florida.",
+        "The fruit is on the large side, around eight to nine ounces, with greenish-yellow skin and yellow pulp. University of Florida references rate its flavour as only fair, so it is grown more for reliability and fruit size than for top eating quality."
+      ],
+      "claims": [
+        {
+          "text": "Smathers is a Florida white sapote grouped with the woolly-leaf white sapotes (Casimiroa tetrameria).",
+          "type": "origin",
+          "cites": ["rfca-whitesapote", "uf-ifas-hs304"]
+        },
+        {
+          "text": "It is one of the commonly available named white sapote varieties.",
+          "type": "naming",
+          "cites": ["uf-ifas-hs304"]
+        },
+        {
+          "text": "The fruit is large (about eight to nine ounces) with greenish-yellow skin and yellow pulp.",
+          "type": "appearance",
+          "cites": ["uf-ifas-hs304"]
+        },
+        {
+          "text": "Its flavour is rated as fair.",
+          "type": "flavour",
+          "cites": ["uf-ifas-hs304"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-whitesapote",
+          "name": "Rare Fruit Council of Australia archive: The White Sapote and Wooly-Leaf White Sapote",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/WhiteSapote/WhiteSapote8-81.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "uf-ifas-hs304",
+          "name": "UF/IFAS Extension HS304: White Sapote Growing in the Home Landscape",
+          "url": "https://ask.ifas.ufl.edu/publication/HS304",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-suebelle": {
+      "slug": "white-sapote-suebelle",
+      "species": "White Sapote",
+      "variety": "Suebelle",
+      "paragraphs": [
+        "Suebelle (sometimes spelled with the synonym Hubbell) is the best known white sapote cultivar, originating in Encinitas, California, with Susan Hubbell and dating to about 1931. The fruit is on the small to medium side, yellow to yellow-orange when ripe, often slightly asymmetrical, with sweet, creamy, custard-like flesh of excellent flavour. It has long been a benchmark variety and remains common in the nursery trade.",
+        "Its standout trait is habit: Suebelle is a compact, semi-dwarf tree that stays smaller than many seedling white sapotes, making it a popular home-garden choice. It is also valued as an ever-bearing selection, producing fruit over a very long, almost year-round season with reliable, consistent yields rather than a single concentrated crop."
+      ],
+      "claims": [
+        {
+          "text": "Suebelle originated in Encinitas, California, with Susan Hubbell, around 1931, and is the best known white sapote cultivar.",
+          "type": "origin",
+          "cites": ["crfg-fruitfacts"]
+        },
+        {
+          "text": "Fruit is small to medium, yellow to yellow-orange, often asymmetrical, with sweet custard-like flesh of excellent flavour.",
+          "type": "flavour",
+          "cites": ["crfg-fruitfacts", "ucanr-ventura"]
+        },
+        {
+          "text": "The tree is compact and semi-dwarf, staying smaller than many seedling white sapotes, suiting home gardens.",
+          "type": "growing",
+          "cites": ["ucanr-ventura", "rfca-archive"]
+        },
+        {
+          "text": "Suebelle is ever-bearing, fruiting over an almost year-round season with reliable yields.",
+          "type": "season",
+          "cites": ["ucanr-ventura", "rfca-archive"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucanr-ventura",
+          "name": "University of California Cooperative Extension, Ventura County - White Sapote",
+          "url": "https://ucanr.edu/county/cooperative-extension-ventura-county/white-sapote",
+          "tier": "authoritative"
+        },
+        {
+          "id": "crfg-fruitfacts",
+          "name": "California Rare Fruit Growers - White Sapote Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/white-sapote/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-archive",
+          "name": "Rare Fruit Council Australia archive (via Growables) - White Sapote",
+          "url": "https://www.growables.org/information/TropicalFruit/SapoteWArcRFC3.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "white-sapote-vernon": {
+      "slug": "white-sapote-vernon",
+      "species": "White Sapote",
+      "variety": "Vernon",
+      "paragraphs": [
+        "Vernon is a Californian white sapote selection associated with Vista, California, and recorded by the California Rare Fruit Growers as a seedling of the older Suebelle cultivar. It produces a round, green to greenish fruit of medium size with smooth thin skin and creamy white custard-like flesh. The flavour is sweet, rich and creamy in the typical white sapote style (often likened to banana, peach and vanilla), and a frequently noted quirk is that the flesh does not turn bitter when overripe, unlike some other selections.",
+        "The tree is vigorous with a rounded form and is regarded as productive. Vernon tends to ripen late, carrying its crop into the cooler months, though it is often described as an alternate (biennial) bearer rather than a steady year-round cropper. It is one of the more widely grown grafted white sapotes."
+      ],
+      "claims": [
+        {
+          "text": "Vernon is associated with Vista, California, and is recorded by CRFG as a seedling of Suebelle.",
+          "type": "origin",
+          "cites": ["crfg-fruitfacts", "rfca-archive"]
+        },
+        {
+          "text": "Fruit is round and green to greenish with white custard-like flesh and a sweet, rich, creamy flavour.",
+          "type": "flavour",
+          "cites": ["ucanr-ventura", "fruitwood"]
+        },
+        {
+          "text": "A distinctive quirk is that the flesh does not become bitter when overripe.",
+          "type": "flavour",
+          "cites": ["ucanr-ventura", "fruitwood"]
+        },
+        {
+          "text": "The tree is vigorous with a rounded form and ripens late, into the cooler months.",
+          "type": "growing",
+          "cites": ["fruitwood", "ucanr-ventura"]
+        },
+        {
+          "text": "Vernon is often described as an alternate (biennial) bearer.",
+          "type": "yield",
+          "cites": ["ucanr-ventura"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucanr-ventura",
+          "name": "University of California Cooperative Extension, Ventura County - White Sapote",
+          "url": "https://ucanr.edu/county/cooperative-extension-ventura-county/white-sapote",
+          "tier": "authoritative"
+        },
+        {
+          "id": "crfg-fruitfacts",
+          "name": "California Rare Fruit Growers - White Sapote Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/white-sapote/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-archive",
+          "name": "Rare Fruit Council Australia archive (via Growables) - White Sapote",
+          "url": "https://www.growables.org/information/TropicalFruit/SapoteWArcRFC3.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "fruitwood",
+          "name": "Fruitwood Nursery - Vernon White Sapote",
+          "url": "https://www.fruitwoodnursery.com/fruit-tree-scion-and-cuttings-wood/white-sapote-scionwood/vernon-white-sapote-scionwood-detail",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "white-sapote-aztec",
+    "white-sapote-chris",
+    "white-sapote-hawaiian-supreme",
+    "white-sapote-kampong",
+    "white-sapote-rainbow",
+    "white-sapote-vista",
+    "white-sapote-wilson"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "species_slug": "rambutan",
+  "schema_version": 1,
+  "varieties": {
+    "rambutan-yellow": {
+      "slug": "rambutan-yellow",
+      "species": "Rambutan",
+      "variety": "Yellow",
+      "paragraphs": [
+        "Most rambutan ripens to a bright red, but the fruit also occurs in yellow-skinned forms, and yellow rambutan refers to these golden selections. The familiar soft spines (hairs) and the white, sweet, juicy aril surrounding a single woody seed are the same; only the rind colour differs. The best documented yellow type is 'Amarillo', the first yellow rambutan registered with the Philippines' National Seed Industry Council, named for its golden colour resembling a marigold flower.",
+        "'Amarillo' produces oblong fruit with white, smooth flesh that separates easily from the seed, and it is recorded as very sweet. Its fruiting season runs roughly July to September. Yellow rambutans are uncommon next to the standard red types, so they are mainly grown as a novelty and collector's fruit rather than a commercial mainstay."
+      ],
+      "claims": [
+        {
+          "text": "Rambutan fruit occurs in both red and yellow skinned forms, with the same white, sweet, juicy aril around a single woody seed.",
+          "type": "appearance",
+          "cites": ["nparks-rambutan"]
+        },
+        {
+          "text": "'Amarillo' is the first yellow rambutan variety registered with the Philippines' National Seed Industry Council, named for its golden marigold-like colour.",
+          "type": "origin",
+          "cites": ["uplb-amarillo"]
+        },
+        {
+          "text": "'Amarillo' has oblong fruit with white smooth flesh that separates easily from the seed and is recorded as very sweet, fruiting around July to September.",
+          "type": "flavour",
+          "cites": ["uplb-amarillo"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nparks-rambutan",
+          "name": "NParks (Singapore) Flora & Fauna Web: Nephelium lappaceum",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/0/3042",
+          "tier": "authoritative"
+        },
+        {
+          "id": "uplb-amarillo",
+          "name": "UPLB: 'Amarillo', the first Philippine yellow variety of rambutan",
+          "url": "https://www.ukdr.uplb.edu.ph/journal-articles/4508/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "rambutan-marcot"
+  ]
+}

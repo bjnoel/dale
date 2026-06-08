@@ -1,0 +1,556 @@
+{
+  "species_slug": "custard-apple",
+  "schema_version": 1,
+  "varieties": {
+    "custard-apple-african-pride": {
+      "slug": "custard-apple-african-pride",
+      "species": "Custard Apple",
+      "variety": "African Pride",
+      "paragraphs": [
+        "African Pride is the main commercial atemoya (sugar apple x cherimoya hybrid) grown in Australia. It crops early and consistently on a smaller, productive tree, and it is the easiest cultivar to fruit because it is highly self compatible and does not generally require hand pollination. That reliability is why it became the workhorse variety, even though its fruit carries more seeds than the larger Pink's Mammoth type.",
+        "The heart shaped fruit is medium sized with a medium thick green skin and the sweet, custard like flesh of the type. Because it sets readily on its own, African Pride pollen is also used as the preferred pollen source when hand pollinating other, self incompatible cultivars. Its trade off is seediness: more seeds than premium lines, in exchange for early, dependable yields."
+      ],
+      "claims": [
+        {
+          "text": "African Pride is an atemoya, a hybrid of sugar apple (Annona squamosa) and cherimoya (Annona cherimola).",
+          "type": "origin",
+          "cites": ["growables-rfc", "plantneeds-custardapple"]
+        },
+        {
+          "text": "African Pride is the main commercial custard apple cultivar grown in Australia.",
+          "type": "origin",
+          "cites": ["daleys-custardapple", "growables-rfc"]
+        },
+        {
+          "text": "African Pride is highly self compatible and does not generally require hand pollination, and its pollen is the preferred source for hand pollinating other varieties.",
+          "type": "pollination",
+          "cites": ["growables-rfc"]
+        },
+        {
+          "text": "African Pride crops early and consistently and is an early maturing cultivar.",
+          "type": "season",
+          "cites": ["daleys-custardapple", "plantneeds-custardapple"]
+        },
+        {
+          "text": "African Pride fruit is heart shaped and medium sized with a medium thick skin, carrying more seeds than Pink's Mammoth.",
+          "type": "appearance",
+          "cites": ["daleys-custardapple", "growables-rfc"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "growables-rfc",
+          "name": "Custard Apple Pollination, Archives RFC Australia (Growables)",
+          "url": "https://www.growables.org/information/TropicalFruit/CustardAppleArcRFC.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantneeds-custardapple",
+          "name": "Custard Apple Farming in Australia: Varieties",
+          "url": "https://plantneeds.com.au/blog/2025/09/29/custard-apple-farming-in-australia-climate-varieties-and-orchard-establishment/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-custardapple",
+          "name": "Custard Apple - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/custardapple.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "custard-apple-geffner": {
+      "slug": "custard-apple-geffner",
+      "species": "Custard Apple",
+      "variety": "Geffner",
+      "paragraphs": [
+        "Geffner is an atemoya, the hybrid of sugar apple (Annona squamosa) and cherimoya (Annona cherimola). It was selected in Israel and is valued as a productive cultivar that sets fruit reliably without hand pollination, a real advantage since many atemoyas struggle to self-set. The well-formed fruit is heart shaped with the bumpy green skin typical of the type.",
+        "The flesh is sweet and creamy, and the fruit is well formed and a good size. Its self-fruitful habit makes Geffner a popular, low-fuss choice for home growers who want a dependable crop from a single tree, rather than the hand pollination that premium Australian cultivars often demand."
+      ],
+      "claims": [
+        {
+          "text": "Geffner is an atemoya, a hybrid of sugar apple (Annona squamosa) and cherimoya (Annona cherimola).",
+          "type": "origin",
+          "cites": ["wikipedia-atemoya", "hortiforum-atemoya"]
+        },
+        {
+          "text": "Geffner is an Israeli cultivar and a productive one.",
+          "type": "origin",
+          "cites": ["wikipedia-atemoya"]
+        },
+        {
+          "text": "Geffner sets fruit well without the need for hand pollination.",
+          "type": "pollination",
+          "cites": ["hortiforum-atemoya", "wikipedia-atemoya"]
+        },
+        {
+          "text": "The flesh is sweet and creamy and the fruit is well formed and a good size.",
+          "type": "flavour",
+          "cites": ["wikipedia-atemoya", "hortiforum-atemoya"]
+        },
+        {
+          "text": "The fruit is heart shaped with bumpy green skin typical of atemoya.",
+          "type": "appearance",
+          "cites": ["daleys-custardapple"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-atemoya",
+          "name": "Atemoya - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Atemoya",
+          "tier": "third_party"
+        },
+        {
+          "id": "hortiforum-atemoya",
+          "name": "Atemoya - Hortiforum",
+          "url": "https://hortiforum.com/atemoya/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-custardapple",
+          "name": "Custard Apple - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/custardapple.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "custard-apple-hilary-white": {
+      "slug": "custard-apple-hilary-white",
+      "species": "Custard Apple",
+      "variety": "Hilary White",
+      "paragraphs": [
+        "Hilary White (also spelt Hillary White) is an Australian atemoya and one of the main commercial custard apples grown here, alongside African Pride and Pink's Mammoth. The Australian custard apple is an atemoya, a hybrid of cherimoya (Annona cherimola) and sugar apple (Annona squamosa). Hilary White is a strain of Pink's Mammoth and carries that line's large, sweet, aromatic fruit with soft, creamy white flesh, but on a noticeably smoother skin than standard Pink's Mammoth.",
+        "Its main point of difference is reliability. Hilary White crops more consistently than Pink's Mammoth, with bearing performance sitting between Pink's Mammoth and the heavier-cropping African Pride. Like others in the Pink's Mammoth line it still benefits from hand pollination to set well shaped, good-quality fruit, the usual trade-off for the premium, large-fruited atemoyas."
+      ],
+      "claims": [
+        {
+          "text": "Hilary White is one of the main commercial custard apple varieties grown in Australia, alongside African Pride and Pink's Mammoth.",
+          "type": "origin",
+          "cites": ["specialtyproduce", "daleys-hilary"]
+        },
+        {
+          "text": "The Australian custard apple is an atemoya, a hybrid of cherimoya (Annona cherimola) and sugar apple (Annona squamosa).",
+          "type": "origin",
+          "cites": ["wikipedia-atemoya", "specialtyproduce"]
+        },
+        {
+          "text": "Hilary White is a strain of Pink's Mammoth with a smoother skin than standard Pink's Mammoth and sweet, aromatic, creamy white flesh.",
+          "type": "appearance",
+          "cites": ["daleys-hilary"]
+        },
+        {
+          "text": "Its cropping is more consistent than Pink's Mammoth, with bearing between Pink's Mammoth and African Pride.",
+          "type": "growing",
+          "cites": ["daleys-hilary"]
+        },
+        {
+          "text": "Atemoyas generally need hand pollination to set good-quality fruit.",
+          "type": "pollination",
+          "cites": ["wikipedia-atemoya"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-atemoya",
+          "name": "Atemoya - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Atemoya",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce: Australian Custard Apples",
+          "url": "https://specialtyproduce.com/produce/Custard_Apples_Austrailian_15912.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-hilary",
+          "name": "Custard Apple Hilary White - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/buy/custard-apple-hilary-white-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "custard-apple-hillary-white": {
+      "slug": "custard-apple-hillary-white",
+      "species": "Custard Apple",
+      "variety": "Hillary White",
+      "paragraphs": [
+        "Hillary White (also spelt Hilary White) is an Australian atemoya and one of the main commercial custard apples grown here, alongside African Pride and Pink's Mammoth. The Australian custard apple is an atemoya, a hybrid of cherimoya (Annona cherimola) and sugar apple (Annona squamosa). Hillary White is a strain of Pink's Mammoth and carries that line's large, sweet, aromatic fruit with soft, creamy white flesh, but on a noticeably smoother skin than standard Pink's Mammoth.",
+        "Its main point of difference is reliability. Hillary White crops more consistently than Pink's Mammoth, with bearing performance sitting between Pink's Mammoth and the heavier-cropping African Pride. Like others in the Pink's Mammoth line it still benefits from hand pollination to set well shaped, good-quality fruit, the usual trade-off for the premium, large-fruited atemoyas."
+      ],
+      "claims": [
+        {
+          "text": "Hillary White is one of the main commercial custard apple varieties grown in Australia, alongside African Pride and Pink's Mammoth.",
+          "type": "origin",
+          "cites": ["specialtyproduce", "daleys-hilary"]
+        },
+        {
+          "text": "The Australian custard apple is an atemoya, a hybrid of cherimoya (Annona cherimola) and sugar apple (Annona squamosa).",
+          "type": "origin",
+          "cites": ["wikipedia-atemoya", "specialtyproduce"]
+        },
+        {
+          "text": "Hillary White is a strain of Pink's Mammoth with a smoother skin than standard Pink's Mammoth and sweet, aromatic, creamy white flesh.",
+          "type": "appearance",
+          "cites": ["daleys-hilary"]
+        },
+        {
+          "text": "Its cropping is more consistent than Pink's Mammoth, with bearing between Pink's Mammoth and African Pride.",
+          "type": "growing",
+          "cites": ["daleys-hilary"]
+        },
+        {
+          "text": "Atemoyas generally need hand pollination to set good-quality fruit.",
+          "type": "pollination",
+          "cites": ["wikipedia-atemoya"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-atemoya",
+          "name": "Atemoya - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Atemoya",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce: Australian Custard Apples",
+          "url": "https://specialtyproduce.com/produce/Custard_Apples_Austrailian_15912.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-hilary",
+          "name": "Custard Apple Hilary White - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/buy/custard-apple-hilary-white-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "custard-apple-maroochydore-gold": {
+      "slug": "custard-apple-maroochydore-gold",
+      "species": "Custard Apple",
+      "variety": "Maroochydore Gold",
+      "paragraphs": [
+        "Maroochydore Gold (also sold as Maroochy Gold) is an Australian atemoya custard apple from Queensland's Maroochy Research Station, home to a long-running custard apple breeding program (around 25 years, and described as the world's largest for the crop). The name reflects its Maroochy (Sunshine Coast) research origin.",
+        "Unlike the older Pink's Mammoth and Hillary White, which need hand pollination, Maroochydore Gold is grown as a self-pollinating variety, making it easier for home gardeners. The fruit has sweet, flavoursome, pale flesh and is prized for its eating quality."
+      ],
+      "claims": [
+        {
+          "text": "Australian atemoya custard apple from Queensland's Maroochy Research Station custard apple breeding program.",
+          "type": "origin",
+          "cites": ["freshfruitportal", "daleys-maroochy"]
+        },
+        {
+          "text": "The Maroochy Research Station program ran for about 25 years and is described as the world's largest custard apple breeding program.",
+          "type": "origin",
+          "cites": ["freshfruitportal"]
+        },
+        {
+          "text": "Also sold under the name Maroochy Gold, it is one of the recognised Australian custard apple varieties.",
+          "type": "naming",
+          "cites": ["specialtyproduce", "daleys-maroochy"]
+        },
+        {
+          "text": "Grown as a self-pollinating variety, unlike hand-pollinated Pink's Mammoth and Hillary White.",
+          "type": "pollination",
+          "cites": ["daleys-maroochy"]
+        },
+        {
+          "text": "Has sweet, flavoursome pale flesh prized for eating quality.",
+          "type": "flavour",
+          "cites": ["daleys-maroochy"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "freshfruitportal",
+          "name": "FreshFruitPortal, Australia forges custard apples' future",
+          "url": "https://www.freshfruitportal.com/news/2019/07/31/australia-forges-custard-apples-future-tests-promising-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce: Australian Custard Apples",
+          "url": "https://specialtyproduce.com/produce/Custard_Apples_Austrailian_15912.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-maroochy",
+          "name": "Custard Apple Maroochydore Gold - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/Custard-Apple--Maroochydore-Gold-Annona-atemoya.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "custard-apple-paxton-prolific": {
+      "slug": "custard-apple-paxton-prolific",
+      "species": "Custard Apple",
+      "variety": "Paxton Prolific",
+      "paragraphs": [
+        "Paxton Prolific (also sold as KJ Pinks) is an Australian atemoya, a seedling selection out of the Pink's Mammoth line. Its standout trait is that, unlike most atemoyas, it sets heavy crops naturally without hand pollination, the same self fruitful behaviour noted for Geffner. That makes it a productive, low effort choice that keeps Pink's Mammoth style fruit quality without the labour of hand pollination.",
+        "The fruit is a good size with relatively few seeds, and is effectively seedless when not pollinated. As a named selection it is protected by Plant Breeder Rights. For growers it combines large, sweet fruit with reliable natural fruit set, which is the main reason it is grown as a commercial and home garden cultivar."
+      ],
+      "claims": [
+        {
+          "text": "Paxton Prolific is an atemoya and a seedling selection from the Pink's Mammoth line, also known as KJ Pinks.",
+          "type": "origin",
+          "cites": ["daleys-paxton", "hortiforum-atemoya"]
+        },
+        {
+          "text": "Also known as KJ Pinks, it is one of the recognised Australian custard apple varieties.",
+          "type": "naming",
+          "cites": ["specialtyproduce", "daleys-paxton"]
+        },
+        {
+          "text": "Paxton Prolific sets fruit well naturally without the need for hand pollination.",
+          "type": "pollination",
+          "cites": ["hortiforum-atemoya", "daleys-paxton"]
+        },
+        {
+          "text": "The fruit is a good size with relatively few seeds and is seedless when not pollinated.",
+          "type": "appearance",
+          "cites": ["daleys-paxton"]
+        },
+        {
+          "text": "Paxton Prolific is protected by Plant Breeder Rights.",
+          "type": "naming",
+          "cites": ["daleys-paxton"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hortiforum-atemoya",
+          "name": "Atemoya - Hortiforum",
+          "url": "https://hortiforum.com/atemoya/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce: Australian Custard Apples",
+          "url": "https://specialtyproduce.com/produce/Custard_Apples_Austrailian_15912.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-paxton",
+          "name": "Paxton Prolific Custard Apple - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/Custard-Apple-Paxton-Prolific-Annona-atemoya.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "custard-apple-pink-mammoth": {
+      "slug": "custard-apple-pink-mammoth",
+      "species": "Custard Apple",
+      "variety": "Pink Mammoth",
+      "paragraphs": [
+        "Pink Mammoth (also spelled Pink's Mammoth or Pinks Mammoth) was the first custard apple cultivar grown in Australia, named after Mr Pink, the man who introduced it. It is an atemoya, the sugar apple x cherimoya hybrid, and is prized as a premium variety: the fruit is among the largest of any custard apple, very large and virtually seedless with rich, melting flesh.",
+        "Quality comes at the cost of convenience. Pink Mammoth is highly self incompatible, so it produces few flowers when young and needs hand pollination to set a commercial crop and well shaped fruit. Yields run lower than African Pride, but it earns top marks for size and flavour, which is why it remains a benchmark for premium fruit despite the extra work."
+      ],
+      "claims": [
+        {
+          "text": "Pink Mammoth was the first custard apple cultivar grown in Australia, named after Mr Pink who introduced it.",
+          "type": "naming",
+          "cites": ["daleys-custardapple"]
+        },
+        {
+          "text": "Pink Mammoth is an atemoya, a hybrid of sugar apple and cherimoya.",
+          "type": "origin",
+          "cites": ["growables-rfc", "plantneeds-custardapple"]
+        },
+        {
+          "text": "The fruit is among the largest custard apples, very large and virtually seedless.",
+          "type": "appearance",
+          "cites": ["plantneeds-custardapple", "daleys-custardapple"]
+        },
+        {
+          "text": "Pink Mammoth is highly self incompatible and requires hand pollination to produce a commercial crop and well shaped fruit, producing few flowers when young.",
+          "type": "pollination",
+          "cites": ["growables-rfc", "plantneeds-custardapple"]
+        },
+        {
+          "text": "Pink Mammoth has top quality fruit but lower yields than African Pride.",
+          "type": "use",
+          "cites": ["daleys-custardapple"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "growables-rfc",
+          "name": "Custard Apple Pollination, Archives RFC Australia (Growables)",
+          "url": "https://www.growables.org/information/TropicalFruit/CustardAppleArcRFC.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantneeds-custardapple",
+          "name": "Custard Apple Farming in Australia: Varieties",
+          "url": "https://plantneeds.com.au/blog/2025/09/29/custard-apple-farming-in-australia-climate-varieties-and-orchard-establishment/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-custardapple",
+          "name": "Custard Apple - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/custardapple.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "custard-apple-pinks-mammoth": {
+      "slug": "custard-apple-pinks-mammoth",
+      "species": "Custard Apple",
+      "variety": "Pinks Mammoth",
+      "paragraphs": [
+        "Pinks Mammoth (also spelled Pink's Mammoth or Pink Mammoth) was the first custard apple cultivar grown in Australia, named after Mr Pink, the man who introduced it. It is an atemoya, the sugar apple x cherimoya hybrid, and is prized as a premium variety: the fruit is among the largest of any custard apple, very large and virtually seedless with rich, melting flesh.",
+        "Quality comes at the cost of convenience. Pinks Mammoth is highly self incompatible, so it produces few flowers when young and needs hand pollination to set a commercial crop and well shaped fruit. Yields run lower than African Pride, but it earns top marks for size and flavour, which is why it remains a benchmark for premium fruit despite the extra work."
+      ],
+      "claims": [
+        {
+          "text": "Pinks Mammoth was the first custard apple cultivar grown in Australia, named after Mr Pink who introduced it.",
+          "type": "naming",
+          "cites": ["daleys-custardapple"]
+        },
+        {
+          "text": "Pinks Mammoth is an atemoya, a hybrid of sugar apple and cherimoya.",
+          "type": "origin",
+          "cites": ["growables-rfc", "plantneeds-custardapple"]
+        },
+        {
+          "text": "The fruit is among the largest custard apples, very large and virtually seedless.",
+          "type": "appearance",
+          "cites": ["plantneeds-custardapple", "daleys-custardapple"]
+        },
+        {
+          "text": "Pinks Mammoth is highly self incompatible and requires hand pollination to produce a commercial crop and well shaped fruit, producing few flowers when young.",
+          "type": "pollination",
+          "cites": ["growables-rfc", "plantneeds-custardapple"]
+        },
+        {
+          "text": "Pinks Mammoth has top quality fruit but lower yields than African Pride.",
+          "type": "use",
+          "cites": ["daleys-custardapple"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "growables-rfc",
+          "name": "Custard Apple Pollination, Archives RFC Australia (Growables)",
+          "url": "https://www.growables.org/information/TropicalFruit/CustardAppleArcRFC.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantneeds-custardapple",
+          "name": "Custard Apple Farming in Australia: Varieties",
+          "url": "https://plantneeds.com.au/blog/2025/09/29/custard-apple-farming-in-australia-climate-varieties-and-orchard-establishment/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-custardapple",
+          "name": "Custard Apple - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/custardapple.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "custard-apple-tropic-sun": {
+      "slug": "custard-apple-tropic-sun",
+      "species": "Custard Apple",
+      "variety": "Tropic Sun",
+      "paragraphs": [
+        "Tropic Sun is a relatively recent Australian atemoya custard apple selection, released as a compact, home-garden option. It has a semi-dwarf habit (roughly two-thirds normal size and prunable to about 2 metres), which sets it apart from the very large traditional commercial trees like Pink's Mammoth.",
+        "Tropic Sun is grown as a self-pollinating variety on dwarfing rootstock. Its ripe fruit has sweet, creamy pulp and a moderate seed count, reported as a few more seeds than Pink's Mammoth but well below African Pride. It suits warm tropical to subtropical regions along Australia's eastern seaboard."
+      ],
+      "claims": [
+        {
+          "text": "Tropic Sun is a relatively recent Australian atemoya selection released as a compact home-garden variety.",
+          "type": "origin",
+          "cites": ["stfc", "specialtyproduce", "daleys-tropicsun"]
+        },
+        {
+          "text": "It has a semi-dwarf habit, roughly two-thirds normal size and prunable to about 2 metres, unlike the large traditional commercial trees.",
+          "type": "growing",
+          "cites": ["daleys-tropicsun"]
+        },
+        {
+          "text": "It is grown as a self-pollinating variety on dwarfing rootstock.",
+          "type": "pollination",
+          "cites": ["stfc", "daleys-tropicsun"]
+        },
+        {
+          "text": "Ripe fruit has sweet creamy pulp with a moderate seed count, a few more than Pink's Mammoth but well below African Pride.",
+          "type": "flavour",
+          "cites": ["stfc", "daleys-tropicsun"]
+        },
+        {
+          "text": "Suited to warm tropical to subtropical regions along Australia's eastern seaboard.",
+          "type": "growing",
+          "cites": ["daleys-tropicsun"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Custard Apple Tips",
+          "url": "https://stfc.org.au/tips/custard-apple-tips/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce: Australian Custard Apples",
+          "url": "https://specialtyproduce.com/produce/Custard_Apples_Austrailian_15912.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-tropicsun",
+          "name": "Dwarf Custard Apple Tropic Sun - Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/buy/dwarf-custard-apple-tropic-sun-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "custard-apple-african-pride-seedling",
+    "custard-apple-golden-emperor",
+    "custard-apple-late-gold",
+    "custard-apple-mexican",
+    "custard-apple-pink-ilama",
+    "custard-apple-plant",
+    "custard-apple-rollinia-brazilian",
+    "custard-apple-sugar-apple-fruit-tree"
+  ]
+}
