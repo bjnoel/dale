@@ -2,6 +2,2512 @@
   "species_slug": "mango",
   "schema_version": 1,
   "varieties": {
+    "mango-ah-ping": {
+      "slug": "mango-ah-ping",
+      "species": "Mango",
+      "variety": "Ah Ping",
+      "paragraphs": [
+        "Ah Ping is a Hawaiian cultivar that originated as a seedling planted by Mrs Chun Ah Ping of Mapulehu, Molokai, and is one of the varieties recommended for growing in Hawaii.",
+        "The fruit is medium-large with attractive skin colour similar to Haden, good appearance and good eating quality, and generally ripens in June and July. It is monoembryonic, so it does not come true from seed and is propagated by grafting."
+      ],
+      "claims": [
+        {
+          "text": "Originated as a seedling planted by Mrs Chun Ah Ping of Mapulehu, Molokai, Hawaii",
+          "type": "origin",
+          "cites": [
+            "ctahr-hamilton",
+            "wiki-cv-ahping"
+          ]
+        },
+        {
+          "text": "A recommended mango variety for Hawaii",
+          "type": "growing",
+          "cites": [
+            "ctahr-hamilton"
+          ]
+        },
+        {
+          "text": "Medium-large fruit with skin colour similar to Haden, ripening in June and July",
+          "type": "season",
+          "cites": [
+            "ctahr-hamilton"
+          ]
+        },
+        {
+          "text": "Monoembryonic, propagated by grafting rather than true from seed",
+          "type": "pollination",
+          "cites": [
+            "ctahr-hamilton"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ctahr-hamilton",
+          "name": "University of Hawaii CTAHR: Origin and Classification of Mango Varieties in Hawaii (Hamilton)",
+          "url": "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/HITAHR_04-06-93_28-33.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-cv-ahping",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-alphonso": {
+      "slug": "mango-alphonso",
+      "species": "Mango",
+      "variety": "Alphonso",
+      "paragraphs": [
+        "Alphonso, known in India as Hapus, is grown mainly in the Konkan region of western India, especially the Ratnagiri, Devgad and Sindhudurg districts of Maharashtra. The cultivar is named after Afonso de Albuquerque, a Portuguese viceroy of India, and Alphonso fruit from the Konkan region received Geographical Indication protection in 2018.",
+        "It is among the most prized and most expensive Indian mangoes, widely called the king of mangoes. The saffron coloured pulp is rich, creamy and non-fibrous, prized for export, and the fruit is harvested roughly from the end of March through the end of June."
+      ],
+      "claims": [
+        {
+          "text": "Known in India as Hapus; grown mainly in the Konkan region of Maharashtra (Ratnagiri, Devgad, Sindhudurg)",
+          "type": "origin",
+          "cites": [
+            "wikipedia-alphonso",
+            "ncbi-alphonso"
+          ]
+        },
+        {
+          "text": "Named after Afonso de Albuquerque, a Portuguese viceroy of India",
+          "type": "naming",
+          "cites": [
+            "wikipedia-alphonso"
+          ]
+        },
+        {
+          "text": "Alphonso from the Konkan region received Geographical Indication protection in 2018",
+          "type": "origin",
+          "cites": [
+            "wikipedia-alphonso"
+          ]
+        },
+        {
+          "text": "Saffron coloured, rich, creamy, non-fibrous pulp",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-alphonso",
+            "ncbi-alphonso"
+          ]
+        },
+        {
+          "text": "Among the most prized and most expensive Indian mangoes, the king of mangoes, highly exported",
+          "type": "superlative",
+          "cites": [
+            "ncbi-alphonso",
+            "wikipedia-alphonso"
+          ]
+        },
+        {
+          "text": "Harvested roughly from end of March through end of June",
+          "type": "season",
+          "cites": [
+            "wikipedia-alphonso"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-alphonso",
+          "name": "Wikipedia: Alphonso (mango)",
+          "url": "https://en.wikipedia.org/wiki/Alphonso_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ncbi-alphonso",
+          "name": "Deshpande et al., Front. Plant Sci. (PMC5562913): Transcriptional transitions in Alphonso mango during fruit development and ripening",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5562913/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-anderson": {
+      "slug": "mango-anderson",
+      "species": "Mango",
+      "variety": "Anderson",
+      "paragraphs": [
+        "Anderson grew from a Sandersha seed sent from Jamaica in 1926 and planted on L. F. Anderson's property in Miami, Florida. The tree fruited in 1931 and was named in 1948; a 2005 analysis pointed to a Sandersha by Haden cross. It carries a monoembryonic seed.",
+        "Like its Sandersha parent the fruit is large and elongated with a small lateral beak, with green to yellow skin and some crimson blush. The yellow flesh is fibreless with a mild, slightly acidic flavour. A tendency to split on the tree kept it out of commercial production, and it ripens July to August in Florida."
+      ],
+      "claims": [
+        {
+          "text": "Grew from a Sandersha seed sent from Jamaica in 1926, planted on L. F. Anderson's property in Miami; fruited 1931, named 1948",
+          "type": "origin",
+          "cites": [
+            "wikipedia-anderson"
+          ]
+        },
+        {
+          "text": "A 2005 analysis indicated a Sandersha by Haden cross",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-anderson"
+          ]
+        },
+        {
+          "text": "Seedling of Sandersha planted in Miami, Florida",
+          "type": "origin",
+          "cites": [
+            "wikipedia-listcultivars-anderson"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-anderson"
+          ]
+        },
+        {
+          "text": "Large, elongated fruit with a small lateral beak, green-to-yellow skin with crimson blush, and fibreless yellow flesh with a mild, slightly acidic flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-anderson"
+          ]
+        },
+        {
+          "text": "Tendency to split on the tree prevented commercial success",
+          "type": "growing",
+          "cites": [
+            "wikipedia-anderson"
+          ]
+        },
+        {
+          "text": "Ripens July to August in Florida",
+          "type": "season",
+          "cites": [
+            "wikipedia-anderson"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-anderson",
+          "name": "Wikipedia: Anderson (mango)",
+          "url": "https://en.wikipedia.org/wiki/Anderson_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-listcultivars-anderson",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-ataulfo": {
+      "slug": "mango-ataulfo",
+      "species": "Mango",
+      "variety": "Ataulfo",
+      "paragraphs": [
+        "Ataulfo is a Mexican cultivar from Soconusco in Chiapas, named for grower Ataulfo Morales Gordillo. It descends from the Philippine (Manila type) mango brought to Mexico via the Manila-Acapulco galleon trade before 1779, then crossed with other varieties. In the United States it is marketed under the trade names champagne mango, honey mango, and Manila mango.",
+        "Being a Philippine-type mango, it is polyembryonic, unlike Indian-type cultivars which are monoembryonic. The fruit is small and golden yellow, weighing roughly 170 to 280 grams, with a somewhat S-shaped (sigmoid) form, a thin pit, and flesh that is not fibrous. Since 2003 it has held a Mexican Designation of Origin for Chiapas."
+      ],
+      "claims": [
+        {
+          "text": "Ataulfo is a Mexican cultivar from Chiapas, named for grower Ataulfo Morales Gordillo.",
+          "type": "origin",
+          "cites": [
+            "wiki-ataulfo",
+            "sp-ataulfo"
+          ]
+        },
+        {
+          "text": "It descends from the Philippine mango and is sold as champagne, honey, or Manila mango.",
+          "type": "synonym",
+          "cites": [
+            "wiki-ataulfo",
+            "sp-ataulfo"
+          ]
+        },
+        {
+          "text": "It is polyembryonic, golden yellow, S-shaped, and has non-fibrous flesh with a thin pit.",
+          "type": "appearance",
+          "cites": [
+            "wiki-ataulfo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-ataulfo",
+          "name": "Ataulfo (mango), Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Ataulfo_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-ataulfo",
+          "name": "Ataulfo Mangoes, Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Ataulfo_Mangoes_5634.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-banganapalli": {
+      "slug": "mango-banganapalli",
+      "species": "Mango",
+      "variety": "Banganapalli",
+      "paragraphs": [
+        "Banganapalli (also spelt Banaganapalle) is a major South Indian cultivar whose primary centre of origin is the Kurnool district of Andhra Pradesh. It is widely known by the synonyms Beneshan, Baneshan, Benishan, Safeda and Chappatai. Banaganapalle mangoes received a Geographical Indication tag, with Andhra Pradesh recognised as the source.",
+        "The fruit has skin with very light spots, an oblong stone with a thin seed, and only sparse, soft fibre, giving a high flesh ratio. It keeps well, reportedly retaining quality in cold storage for up to three months, which suits long-distance and export markets."
+      ],
+      "claims": [
+        {
+          "text": "Originates in Kurnool district, Andhra Pradesh; GI-tagged; also called Beneshan, Safeda, Benishan, Chappatai.",
+          "type": "origin",
+          "cites": [
+            "banganapalli-ssrana",
+            "banganapalli-getfarms"
+          ]
+        },
+        {
+          "text": "Skin has light spots, oblong stone, thin seed, sparse soft fibre; keeps in cold storage up to three months.",
+          "type": "appearance",
+          "cites": [
+            "banganapalli-ssrana"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "banganapalli-ssrana",
+          "name": "S.S. Rana & Co.: Banaganapalle Mangoes Get GI Tag",
+          "url": "https://ssrana.in/articles/india-banaganapalle-mangoes-gets-a-geographical-indication-gi-tag/",
+          "tier": "third_party"
+        },
+        {
+          "id": "banganapalli-getfarms",
+          "name": "Getfarms: Banganapalle Mango GI-Tagged",
+          "url": "https://getfarms.in/banganapalle-mango-in-andhra-pradesh-now-gi-tagged",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-beverley": {
+      "slug": "mango-beverley",
+      "species": "Mango",
+      "variety": "Beverley",
+      "paragraphs": [
+        "Beverley (usually spelled Beverly) is a Florida cultivar, selected by the Zill family of Boynton Beach. Long thought to be a Haden seedling, a 2005 pedigree analysis estimated Cushman as the parent. It never gained wide commercial acceptance because the fruit stays dull green to yellow at maturity rather than colouring up.",
+        "It is prized as a late-season, almost fibreless dooryard mango, ripening in Florida around July to August (after most other varieties have finished). The flesh is firm, rich and aromatic, and the round to oval fruit can be large."
+      ],
+      "claims": [
+        {
+          "text": "A Florida cultivar selected by the Zill family of Boynton Beach, long thought a Haden seedling but estimated by a 2005 pedigree analysis to descend from Cushman",
+          "type": "origin",
+          "cites": [
+            "wikipedia-beverly",
+            "pineisland-beverly"
+          ]
+        },
+        {
+          "text": "Almost fibreless, late-season mango ripening in Florida around July to August",
+          "type": "season",
+          "cites": [
+            "wikipedia-beverly",
+            "pineisland-beverly"
+          ]
+        },
+        {
+          "text": "Firm, rich, aromatic flesh on round to oval fruit",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-beverly",
+            "pineisland-beverly"
+          ]
+        },
+        {
+          "text": "Stays dull green to yellow at maturity, which limited commercial acceptance",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-beverly",
+            "pineisland-beverly"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-beverly",
+          "name": "Wikipedia: Beverly (mango)",
+          "url": "https://en.wikipedia.org/wiki/Beverly_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "pineisland-beverly",
+          "name": "Pine Island Nursery: Beverly mango",
+          "url": "https://www.tropicalfruitnursery.com/variety-selected-name-beverly-informacion-72",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-bowen": {
+      "slug": "mango-bowen",
+      "species": "Mango",
+      "variety": "Bowen",
+      "paragraphs": [
+        "Bowen is not a separate cultivar but another name for Kensington Pride, Australia's most widely grown mango. The variety was identified in the 1880s at Bowen in north Queensland, which is why it is also sold as Bowen, Bowen Special, KP Bowen and Pride of Bowen.",
+        "As Kensington Pride, the fruit has yellow to orange-yellow flesh, little to moderate fibre and a sweet, aromatic, slightly spicy flavour, ripening through spring and summer. So a Bowen mango and a Kensington Pride are the same fruit under different trade names."
+      ],
+      "claims": [
+        {
+          "text": "Bowen, Bowen Special and Pride of Bowen are alternative names for Kensington Pride",
+          "type": "naming",
+          "cites": [
+            "redrich-bowen",
+            "wikipedia-kensington2"
+          ]
+        },
+        {
+          "text": "Kensington Pride was identified in the 1880s at Bowen, north Queensland",
+          "type": "origin",
+          "cites": [
+            "redrich-bowen",
+            "wikipedia-kensington2"
+          ]
+        },
+        {
+          "text": "Sweet, aromatic, slightly spicy flavour with little to moderate fibre",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-kensington2"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "redrich-bowen",
+          "name": "Red Rich Fruits: Are Bowen mangoes the same as Kensington Pride?",
+          "url": "https://redrichfruits.com.au/are-bowen-mangoes-the-same-as-kensington-pride-blog/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-kensington2",
+          "name": "Wikipedia: Kensington Pride",
+          "url": "https://en.wikipedia.org/wiki/Kensington_Pride",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-brooks": {
+      "slug": "mango-brooks",
+      "species": "Mango",
+      "variety": "Brooks",
+      "paragraphs": [
+        "Brooks is a historic Florida cultivar that grew from a seed of the Indian 'Totapuri' (also called 'Sandersha'), planted in Miami in 1910. The tree first fruited in 1916, making it one of the earliest named Florida selections after Haden. It went on to become an important parent, lying behind Kent, Sensation, Hatcher and probably Keitt.",
+        "Brooks ripens late, from August into early October in Florida, which sets it apart from the mid season crowd. The fruit is oblong and lacks a beak, with skin that turns green-yellow when ripe and yellow flesh carrying a medium amount of fibre. The flavour is mild and sweet rather than rich or spicy. The seed is monoembryonic, so seedlings do not come true to type."
+      ],
+      "claims": [
+        {
+          "text": "Brooks grew from a Totapuri (Sandersha) seed planted in Miami in 1910 and first fruited in 1916",
+          "type": "origin",
+          "cites": [
+            "brooks-wiki",
+            "brooks-kiddle"
+          ]
+        },
+        {
+          "text": "Brooks is a parent of Kent, Sensation, Hatcher and probably Keitt",
+          "type": "breeding",
+          "cites": [
+            "brooks-wiki",
+            "brooks-kiddle"
+          ]
+        },
+        {
+          "text": "In Florida the fruit ripens from August to early October, making it a late season cultivar",
+          "type": "season",
+          "cites": [
+            "brooks-wiki",
+            "brooks-kiddle"
+          ]
+        },
+        {
+          "text": "The fruit is oblong and lacks a beak, with green-yellow skin when ripe and yellow flesh of medium fibre",
+          "type": "appearance",
+          "cites": [
+            "brooks-wiki",
+            "brooks-kiddle"
+          ]
+        },
+        {
+          "text": "The flavour is mild and sweet",
+          "type": "flavour",
+          "cites": [
+            "brooks-wiki",
+            "brooks-kiddle"
+          ]
+        },
+        {
+          "text": "The seed is monoembryonic",
+          "type": "pollination",
+          "cites": [
+            "brooks-wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "brooks-wiki",
+          "name": "Wikipedia: Brooks (mango)",
+          "url": "https://en.wikipedia.org/wiki/Brooks_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "brooks-kiddle",
+          "name": "Kiddle Encyclopedia: Brooks (mango)",
+          "url": "https://kids.kiddle.co/Brooks_(mango)",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-brooks-late": {
+      "slug": "mango-brooks-late",
+      "species": "Mango",
+      "variety": "Brooks Late",
+      "paragraphs": [
+        "Brooks Late, usually just called Brooks, is a late-season Florida mango. It grew from a seed of the Indian Sandersha (Totapuri) mango planted in Miami in 1910, first fruited in 1916, and after Haden was the second Florida cultivar to be named. The seed is monoembryonic. Brooks went on to parent several Florida mangoes, including Kent.",
+        "The oblong fruit lacks a beak and ripens to a green-yellow skin over yellow flesh that carries medium fibre and a mild, sweet flavour. In Florida it typically ripens from August into early October, well after the main-season cultivars, which is the source of the Late name."
+      ],
+      "claims": [
+        {
+          "text": "Brooks grew from a seed of the Sandersha (Totapuri) mango planted in Miami, Florida in 1910, first fruited in 1916, and after Haden was the second Florida cultivar named.",
+          "type": "origin",
+          "cites": [
+            "wiki-brooks"
+          ]
+        },
+        {
+          "text": "It was a parent of several Florida mangoes, including Kent.",
+          "type": "significance",
+          "cites": [
+            "wiki-brooks"
+          ]
+        },
+        {
+          "text": "The seed is monoembryonic.",
+          "type": "botany",
+          "cites": [
+            "wiki-brooks"
+          ]
+        },
+        {
+          "text": "The oblong fruit ripens green-yellow over yellow flesh with medium fibre and a mild, sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "wiki-brooks",
+            "itfnet-mango-b"
+          ]
+        },
+        {
+          "text": "In Florida it typically ripens from August into early October, a late-season cultivar.",
+          "type": "season",
+          "cites": [
+            "wiki-brooks"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-brooks",
+          "name": "Wikipedia, Brooks (mango)",
+          "url": "https://en.wikipedia.org/wiki/Brooks_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "itfnet-mango-b",
+          "name": "International Tropical Fruits Network, common mango varieties",
+          "url": "https://www.itfnet.org/v1/2016/05/mango-common-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-carabao": {
+      "slug": "mango-carabao",
+      "species": "Mango",
+      "variety": "Carabao",
+      "paragraphs": [
+        "Carabao is the leading mango of the Philippines, also known internationally as the Philippine or Manila mango. It is named after the carabao, the country's national animal. The famous Guimaras strain became the first Philippine product granted a Geographical Indication, reputed for exceptional sweetness.",
+        "Like other South East Asian mangoes it carries a polyembryonic seed, in contrast to Indian type mangoes. The flesh is very sweet and aromatic with a tender, melting consistency. It ripens from green to a yellow or yellow orange skin and is a popular ripe eating and export mango."
+      ],
+      "claims": [
+        {
+          "text": "Carabao is a leading Philippine mango, also called the Philippine or Manila mango, named after the carabao, the national animal.",
+          "type": "origin",
+          "cites": [
+            "wiki-carabao"
+          ]
+        },
+        {
+          "text": "The Guimaras strain was the first Philippine product granted a Geographical Indication and is reputed as exceptionally sweet.",
+          "type": "quirk",
+          "cites": [
+            "ipophl-gi",
+            "philstar-gi"
+          ]
+        },
+        {
+          "text": "It carries a polyembryonic seed, unlike Indian type mangoes.",
+          "type": "quirk",
+          "cites": [
+            "wiki-carabao"
+          ]
+        },
+        {
+          "text": "The flesh is very sweet and aromatic with a tender, melting consistency.",
+          "type": "flavour",
+          "cites": [
+            "wiki-carabao",
+            "philstar-gi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-carabao",
+          "name": "Wikipedia: Carabao (mango)",
+          "url": "https://en.wikipedia.org/wiki/Carabao_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ipophl-gi",
+          "name": "IPOPHL: Registered Geographical Indications",
+          "url": "https://www.ipophil.gov.ph/geographical-indications/registered-geographical-indications/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "philstar-gi",
+          "name": "Philstar: Guimaras mango first Philippine GI",
+          "url": "https://www.philstar.com/business/2023/06/03/2271012/sweetest-guimaras-mango-becomes-first-geographical-indication-philippines",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-carrie": {
+      "slug": "mango-carrie",
+      "species": "Mango",
+      "variety": "Carrie",
+      "paragraphs": [
+        "Carrie is a Florida dooryard mango raised by Laurence H. Zill in Boynton Beach, where it first fruited in 1940. Originally reported as a seedling of Sophie Fry, a 2005 pedigree analysis named Julie as its most likely parent. It was named after Zill's mother, Carrie Zill, and carries a monoembryonic seed.",
+        "The flesh is orange, not fibrous, and rich in flavour with a strong aroma, which has made it a favourite for home growers. Unusually, the small fruit does not develop the red blush seen on many Florida mangoes, ripening green to yellow instead. Carrie also has a reputation for good disease resistance, with fruit described as highly resistant to fungus."
+      ],
+      "claims": [
+        {
+          "text": "Carrie was raised by Laurence H. Zill in Boynton Beach, Florida, first fruited in 1940, and is named after his mother Carrie Zill.",
+          "type": "origin",
+          "cites": [
+            "wiki-carrie"
+          ]
+        },
+        {
+          "text": "Reported as a seedling of Sophie Fry, with a 2005 pedigree analysis naming Julie as the most likely parent.",
+          "type": "breeding",
+          "cites": [
+            "wiki-carrie"
+          ]
+        },
+        {
+          "text": "The seed is monoembryonic.",
+          "type": "botany",
+          "cites": [
+            "wiki-carrie"
+          ]
+        },
+        {
+          "text": "The flesh is orange, not fibrous, and rich in flavour with a strong aroma; the fruit ripens green to yellow without a red blush.",
+          "type": "flavour",
+          "cites": [
+            "wiki-carrie",
+            "ttg-carrie"
+          ]
+        },
+        {
+          "text": "Carrie has a reputation for good disease resistance, with fruit highly resistant to fungus.",
+          "type": "quirk",
+          "cites": [
+            "wiki-carrie"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-carrie",
+          "name": "Wikipedia, Carrie (mango)",
+          "url": "https://en.wikipedia.org/wiki/Carrie_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ttg-carrie",
+          "name": "Tropical Tree Guide, Carrie mango grow guide",
+          "url": "https://tropicaltreeguide.com/carrie-mango-grow-guide/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-cat-chu": {
+      "slug": "mango-cat-chu",
+      "species": "Mango",
+      "variety": "Cat Chu",
+      "paragraphs": [
+        "Cat Chu (Xoai Cat Chu) is a premium Vietnamese dessert mango from the Cao Lanh area of Dong Thap province in the Mekong Delta, where it is a regional point of pride. It is smaller than its cousin Cat Hoa Loc, with an elongated shape and thin skin that ripens from green to golden yellow.",
+        "The variety is prized for a small seed, thick flesh, and very low fibre. The ripe flesh is soft and fragrant, with a rich sweetness balanced by a gentle tang. Both ripe and green Cat Chu are exported, including to Australia, Japan and the United States."
+      ],
+      "claims": [
+        {
+          "text": "Cat Chu is a Vietnamese mango from the Cao Lanh area of Dong Thap province.",
+          "type": "origin",
+          "cites": [
+            "vietnamnews-catchu",
+            "vietnamnet-catchu"
+          ]
+        },
+        {
+          "text": "It is smaller than Cat Hoa Loc and ripens from green to golden yellow.",
+          "type": "appearance",
+          "cites": [
+            "vietnamnews-catchu",
+            "thvietnam-catchu"
+          ]
+        },
+        {
+          "text": "It is valued for a small seed, thick flesh and low fibre, with soft, sweet, fragrant flesh.",
+          "type": "flavour",
+          "cites": [
+            "vietnamnet-catchu",
+            "thvietnam-catchu"
+          ]
+        },
+        {
+          "text": "Both ripe and green Cat Chu are exported, including to Australia, Japan and the United States.",
+          "type": "use",
+          "cites": [
+            "vietnamnews-catchu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "vietnamnews-catchu",
+          "name": "Vietnam News: Cao Lanh's Cat Chu mango",
+          "url": "https://vietnamnews.vn/life-style/1505880/cao-lanh-s-cat-chu-mango-the-pride-of-dong-thap-province.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "vietnamnet-catchu",
+          "name": "VietnamNet: Cao Lanh's Cat Chu mango",
+          "url": "https://vietnamnet.vn/en/cao-lanh-s-cat-chu-mango-the-pride-of-dong-thap-province-2128320.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "thvietnam-catchu",
+          "name": "TH Vietnam: Distinguishing Vietnam mango varieties",
+          "url": "https://thglobalvietnam.com/how-to-distinguish-vietnam-kaew-mango-cat-chu-mango-hoa-loc-mango/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-cat-hoa-loc": {
+      "slug": "mango-cat-hoa-loc",
+      "species": "Mango",
+      "variety": "Cat Hoa Loc",
+      "paragraphs": [
+        "Cat Hoa Loc is widely regarded as Vietnam's premium mango, originating from Hoa Loc commune in the Mekong Delta and centred on the Cai Be district of Tien Giang province. The fruit is elongated and oblong with thin skin that turns light yellow when ripe. The flesh is firm, smooth, fibreless and aromatic, with a rich, naturally sweet flavour.",
+        "It is treated as a luxury and gift fruit in Vietnam and carries Geographical Indication protection tied to its origin. Because the fruit is delicate with a short shelf life, it is usually exported in limited volumes to premium markets. Harvest peaks roughly from April to July."
+      ],
+      "claims": [
+        {
+          "text": "Premium Vietnamese mango from Hoa Loc commune, Cai Be district, Tien Giang, in the Mekong Delta",
+          "type": "origin",
+          "cites": [
+            "mekong-chl"
+          ]
+        },
+        {
+          "text": "Elongated, oblong fruit with thin skin that ripens light yellow",
+          "type": "appearance",
+          "cites": [
+            "mekong-chl"
+          ]
+        },
+        {
+          "text": "Firm, smooth, fibreless and aromatic flesh",
+          "type": "flavour",
+          "cites": [
+            "mekong-chl"
+          ]
+        },
+        {
+          "text": "Carries Geographical Indication protection for its origin",
+          "type": "naming",
+          "cites": [
+            "mekong-chl",
+            "navinuts-chl"
+          ]
+        },
+        {
+          "text": "Harvest peaks roughly April to July",
+          "type": "season",
+          "cites": [
+            "navinuts-chl"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mekong-chl",
+          "name": "Mekong Delta Tours: Hoa Loc Mango, Cai Be Specialty",
+          "url": "https://www.mekong-delta-tours.com/travel-guide/hoa-loc-mango-cai-be-s-specialty.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "navinuts-chl",
+          "name": "Navinuts: Cat Hoa Loc Mango, Vietnam's Premium Mango Variety",
+          "url": "https://navinuts.com/cat-hoa-loc-mango-vietnams-premium-mango-variety/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-chok-anan": {
+      "slug": "mango-chok-anan",
+      "species": "Mango",
+      "variety": "Chok Anan",
+      "paragraphs": [
+        "Chok Anan (also spelled Choc Anan or Chokanon) is a sweet mango from Thailand, often nicknamed the Miracle Mango. Its claim to fame is off season cropping: it can flower and fruit outside the normal season and sometimes carries two crops in one year, in both summer and winter. This ever bearing habit is unusual among mangoes and is the variety's signature trait.",
+        "The medium sized fruit ripens to a golden yellow skin. The light yellow flesh is firm and fibreless, and the flavour is intensely sweet, frequently described as honey like with a hint of coconut. It is eaten ripe as a dessert mango."
+      ],
+      "claims": [
+        {
+          "text": "Chok Anan is a sweet mango originating in Thailand.",
+          "type": "origin",
+          "cites": [
+            "wiki-chokanan",
+            "mangopedia-chokanan"
+          ]
+        },
+        {
+          "text": "It is nicknamed the Miracle Mango and can fruit off season, sometimes producing two crops a year in both summer and winter.",
+          "type": "quirk",
+          "cites": [
+            "wiki-cultivars",
+            "mangopedia-chokanan",
+            "toptropicals"
+          ]
+        },
+        {
+          "text": "The ripe skin is golden yellow and the light yellow flesh is firm and fibreless.",
+          "type": "appearance",
+          "cites": [
+            "mangopedia-chokanan",
+            "wiki-chokanan"
+          ]
+        },
+        {
+          "text": "The flavour is intensely sweet, described as honey like with a hint of coconut.",
+          "type": "flavour",
+          "cites": [
+            "mangopedia-chokanan",
+            "toptropicals"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-chokanan",
+          "name": "Wikipedia: Chok Anan",
+          "url": "https://en.wikipedia.org/wiki/Chok_Anan",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-cultivars",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "mangopedia-chokanan",
+          "name": "Mangopedia: Chok Anan",
+          "url": "https://mangopedia.org/chok-anan/",
+          "tier": "third_party"
+        },
+        {
+          "id": "toptropicals",
+          "name": "Top Tropicals: Mango Varieties Guide",
+          "url": "https://toptropicals.com/html/toptropicals/articles/fruit/varieties_mango.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-coconut-cream": {
+      "slug": "mango-coconut-cream",
+      "species": "Mango",
+      "variety": "Coconut Cream",
+      "paragraphs": [
+        "Coconut Cream is a named Florida cultivar developed by the Zill family at Boynton Beach, Florida. Its defining trait, noted by UF/IFAS, is the fruit's rich, sweet, pronounced coconut flavour, set in light yellow, completely fiberless pulp of excellent quality.",
+        "The fruit are roundish, medium to large, with a light yellow green peel and a pinkish blush, and the seed is polyembryonic. UF/IFAS classes it as an early to mid season cultivar with moderate to good disease resistance. The unusual coconut note is what sets it apart from other mangoes."
+      ],
+      "claims": [
+        {
+          "text": "Florida cultivar developed by the Zill family, Boynton Beach",
+          "type": "origin",
+          "cites": [
+            "wikipedia",
+            "fshs"
+          ]
+        },
+        {
+          "text": "Fiberless light yellow pulp with rich, sweet, pronounced coconut flavour",
+          "type": "flavour",
+          "cites": [
+            "ufifas",
+            "fshs"
+          ]
+        },
+        {
+          "text": "Roundish, light yellow green peel with pinkish blush, polyembryonic",
+          "type": "appearance",
+          "cites": [
+            "ufifas"
+          ]
+        },
+        {
+          "text": "Early to mid season cultivar",
+          "type": "season",
+          "cites": [
+            "ufifas",
+            "fshs"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS Mango Science, Coconut Cream",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/coconut-cream/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Coconut Cream (mango)",
+          "url": "https://en.wikipedia.org/wiki/Coconut_Cream_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "fshs",
+          "name": "Crane, mango cultivars developed by Gary Zill (FSHS / mango.org)",
+          "url": "https://www.mango.org/wp-content/uploads/2025/07/2-Crane-Summit-FSHS-Zill-mango.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-cotton-candy": {
+      "slug": "mango-cotton-candy",
+      "species": "Mango",
+      "variety": "Cotton Candy",
+      "paragraphs": [
+        "Cotton Candy is a modern Florida cultivar from the breeding program of Gary Zill at Boynton Beach, Florida. It was selected as a seedling of the well known late season mango Keitt and was released to growers in 2016, partly as a late season alternative to its parent.",
+        "Despite the name it does not taste of spun sugar. It is prized for an intensely sweet, classic flavour (some find it almost too sweet), with completely fiberless, creamy yellow flesh and a polyembryonic seed. The fruit are medium to large and ripen late in the season, around July and August in Florida."
+      ],
+      "claims": [
+        {
+          "text": "Gary Zill cultivar from Boynton Beach, Florida",
+          "type": "origin",
+          "cites": [
+            "mangopedia",
+            "fshs"
+          ]
+        },
+        {
+          "text": "Keitt seedling released in 2016",
+          "type": "origin",
+          "cites": [
+            "mangopedia"
+          ]
+        },
+        {
+          "text": "Intensely sweet, fiberless flesh, polyembryonic seed",
+          "type": "flavour",
+          "cites": [
+            "mangopedia"
+          ]
+        },
+        {
+          "text": "Late season mango (July to August)",
+          "type": "season",
+          "cites": [
+            "mangopedia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mangopedia",
+          "name": "Mangopedia",
+          "url": "https://mangopedia.org/cotton-candy/",
+          "tier": "third_party"
+        },
+        {
+          "id": "fshs",
+          "name": "Crane, mango cultivars developed by Gary Zill (FSHS / mango.org)",
+          "url": "https://www.mango.org/wp-content/uploads/2025/07/2-Crane-Summit-FSHS-Zill-mango.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-cushman": {
+      "slug": "mango-cushman",
+      "species": "Mango",
+      "variety": "Cushman",
+      "paragraphs": [
+        "Cushman originated in Miami, Florida, from a seed planted in 1936 on the property of E. L. Cushman. A 2005 pedigree analysis suggested it is likely a cross of Haden and Amini. It carries a monoembryonic seed and ripens midseason, from July to August in Florida.",
+        "The fruit is round and yellow when ripe, resembling a grapefruit more than a typical mango, and shows a distinctive orange halo near the skin when cut. The flesh is completely fibreless with a sweet, rich flavour and aroma. The trees are poor bearers, so the variety stayed a dooryard tree rather than a commercial one."
+      ],
+      "claims": [
+        {
+          "text": "Originated in Miami, Florida from a seed planted in 1936 on the property of E. L. Cushman",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cushman"
+          ]
+        },
+        {
+          "text": "A 2005 pedigree analysis suggested a likely cross of Haden and Amini",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-cushman"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-cushman"
+          ]
+        },
+        {
+          "text": "Ripens midseason, July to August in Florida",
+          "type": "season",
+          "cites": [
+            "wikipedia-cushman"
+          ]
+        },
+        {
+          "text": "Round and yellow when ripe with an orange halo near the skin; completely fibreless with a sweet, rich flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-cushman"
+          ]
+        },
+        {
+          "text": "Trees are poor bearers, leaving it a dooryard rather than commercial variety",
+          "type": "growing",
+          "cites": [
+            "wikipedia-cushman",
+            "tropicalacres-cushman"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-cushman",
+          "name": "Wikipedia: Cushman (mango)",
+          "url": "https://en.wikipedia.org/wiki/Cushman_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "tropicalacres-cushman",
+          "name": "Tropical Acres Farms: Cushman",
+          "url": "https://www.tropicalacresfarms.com/product-page/cushman",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-dasheri": {
+      "slug": "mango-dasheri",
+      "species": "Mango",
+      "variety": "Dasheri",
+      "paragraphs": [
+        "Dasheri (also spelt Dussehri) is a classic North Indian cultivar that originated in a village near Malihabad in the Lucknow district of Uttar Pradesh. The original Mother Dasehri tree, in the orchard of the Nawab of Kakori, is about 185 years old and reportedly still bears fruit. Malihabad in Uttar Pradesh is the largest producer.",
+        "Dasheri is prized as a sweet, fragrant mango. The flesh is tender and almost fibreless, and the fruit is elongated with a slightly curved, pointed tip. It is one of India's most important commercial cultivars."
+      ],
+      "claims": [
+        {
+          "text": "Originated in a village near Malihabad in Lucknow district, Uttar Pradesh, with the ~185-year-old Mother Dasehri tree.",
+          "type": "origin",
+          "cites": [
+            "dasheri-wikipedia",
+            "dasheri-americangardener"
+          ]
+        },
+        {
+          "text": "A sweet and fragrant variety.",
+          "type": "flavour",
+          "cites": [
+            "dasheri-wikipedia",
+            "dasheri-americangardener"
+          ]
+        },
+        {
+          "text": "Flesh is tender and nearly fibreless; fruit elongated with a pointed tip.",
+          "type": "texture",
+          "cites": [
+            "dasheri-americangardener"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "dasheri-wikipedia",
+          "name": "Wikipedia: Dasheri",
+          "url": "https://en.wikipedia.org/wiki/Dasheri",
+          "tier": "third_party"
+        },
+        {
+          "id": "dasheri-americangardener",
+          "name": "American Gardener: Dasheri Mangoes",
+          "url": "https://americangardener.net/dasheri-mangoes/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-duncan": {
+      "slug": "mango-duncan",
+      "species": "Mango",
+      "variety": "Duncan",
+      "paragraphs": [
+        "Duncan was grown by David Sturrock of West Palm Beach, Florida, from a seed planted in 1956; it first fruited in 1960 and was named after Ralph V. Duncan of Boynton Beach. Sturrock reported it as an Edward by Pico cross, while a 2005 analysis suggested Nam Doc Mai as the likely parent. The variety carries a monoembryonic seed.",
+        "The fruit is oblong, turns yellow when ripe, and has orange, fibreless flesh with a sweet, mild flavour. It ripens in July in Florida, and both the trees and fruit are noted for very good disease resistance."
+      ],
+      "claims": [
+        {
+          "text": "Grown by David Sturrock of West Palm Beach from a seed planted in 1956, first fruited 1960, named after Ralph V. Duncan of Boynton Beach",
+          "type": "origin",
+          "cites": [
+            "wikipedia-duncan"
+          ]
+        },
+        {
+          "text": "Sturrock reported an Edward by Pico cross; a 2005 analysis suggested Nam Doc Mai as likely parent",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-duncan",
+            "ufifas-duncan"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-duncan"
+          ]
+        },
+        {
+          "text": "Oblong fruit, yellow when ripe, with orange fibreless flesh and a sweet, mild flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-duncan",
+            "ufifas-duncan"
+          ]
+        },
+        {
+          "text": "Ripens in July in Florida",
+          "type": "season",
+          "cites": [
+            "wikipedia-duncan"
+          ]
+        },
+        {
+          "text": "Both trees and fruit have very good disease resistance",
+          "type": "growing",
+          "cites": [
+            "wikipedia-duncan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-duncan",
+          "name": "Wikipedia: Duncan (mango)",
+          "url": "https://en.wikipedia.org/wiki/Duncan_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ufifas-duncan",
+          "name": "UF/IFAS Mango Science: Duncan",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/duncan/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-elephant-tusk": {
+      "slug": "mango-elephant-tusk",
+      "species": "Mango",
+      "variety": "Elephant Tusk",
+      "paragraphs": [
+        "Elephant Tusk is the Vietnamese green-eating mango Xoai Tuong (also written Xoai Tong, Tuong or Green Elephant), thought to have arisen in the Phu Cat district of Binh Dinh Province on the central Vietnamese coast. It is one of the largest mangoes grown in Vietnam, with a long, slightly curved, elongated shape that gives it the elephant-tusk name. The skin is green when unripe and turns yellow as it matures.",
+        "Unlike dessert mangoes prized at full ripeness, Elephant Tusk is grown mainly to eat green. Picked unripe it has a firm, crunchy, succulent texture and a refreshing sweet-sour, tangy flavour that becomes milder and sweeter with age. In Vietnam it is traditionally sliced and dipped in salty, sweet and spicy condiments, commonly a sugar-and-fish-sauce dip, and used in green-mango salads rather than eaten soft and ripe."
+      ],
+      "claims": [
+        {
+          "text": "Elephant Tusk is the Vietnamese mango Xoai Tuong, also called Green Elephant or Tuong mango, thought to have arisen in the Phu Cat district of Binh Dinh Province in central Vietnam.",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce",
+            "vnxanh"
+          ]
+        },
+        {
+          "text": "It is one of the largest mangoes grown in Vietnam, with an elongated, slightly curved tusk-like shape.",
+          "type": "appearance",
+          "cites": [
+            "vnxanh",
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "The skin is green when unripe and turns yellow as the fruit ripens.",
+          "type": "appearance",
+          "cites": [
+            "vnxanh"
+          ]
+        },
+        {
+          "text": "Eaten green it has a crunchy texture and a refreshing sweet-sour, tangy flavour that becomes milder and sweeter with age.",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce",
+            "vnxanh"
+          ]
+        },
+        {
+          "text": "In Vietnam it is traditionally sliced and dipped in salty, sweet and spicy condiments such as a sugar-and-fish-sauce dip.",
+          "type": "uses",
+          "cites": [
+            "specialtyproduce"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce, Green Elephant Mangoes",
+          "url": "https://specialtyproduce.com/produce/Green_Elephant_Mangoes_25220.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "vnxanh",
+          "name": "VN Xanh, Vietnamese mango",
+          "url": "https://vnxanh.com.vn/en/vietnamese-mango-a-taste-of-tropical-bliss-and-culinary-ingenuity/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-falan": {
+      "slug": "mango-falan",
+      "species": "Mango",
+      "variety": "Falan",
+      "paragraphs": [
+        "Falan (sometimes spelled Fralan or Falang) is a Thai mango grown chiefly for eating green and unripe. Unlike most mangoes it stays predominantly green at maturity, with small to medium, oblong fruit that lack the usual yellow or red blush.",
+        "The pale, firm flesh is fibreless and eaten while still crisp, with a sweet, mildly tangy flavour rather like a crunchy apple. In Thailand it is sliced fresh or used in green mango salads. The tree has a slow, spreading, dwarf like habit."
+      ],
+      "claims": [
+        {
+          "text": "Falan (Fralan, Falang) is a Thai mango grown mainly for eating green and unripe.",
+          "type": "origin",
+          "cites": [
+            "mangopedia-falan",
+            "toptropicals"
+          ]
+        },
+        {
+          "text": "It stays predominantly green at maturity, with small to medium oblong fruit lacking the usual blush.",
+          "type": "appearance",
+          "cites": [
+            "mangopedia-falan",
+            "toptropicals"
+          ]
+        },
+        {
+          "text": "The firm flesh is fibreless and eaten crisp, sweet and mildly tangy like a crunchy apple.",
+          "type": "flavour",
+          "cites": [
+            "mangopedia-falan",
+            "toptropicals"
+          ]
+        },
+        {
+          "text": "The tree has a slow, spreading, dwarf like habit.",
+          "type": "quirk",
+          "cites": [
+            "mangopedia-falan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mangopedia-falan",
+          "name": "Mangopedia: Falan",
+          "url": "https://mangopedia.org/falan/",
+          "tier": "third_party"
+        },
+        {
+          "id": "toptropicals",
+          "name": "Top Tropicals: Mango Varieties Guide",
+          "url": "https://toptropicals.com/html/toptropicals/articles/fruit/varieties_mango.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-florigon": {
+      "slug": "mango-florigon",
+      "species": "Mango",
+      "variety": "Florigon",
+      "paragraphs": [
+        "Florigon is a Florida cultivar that grew from a seed planted in 1932 on the property of John G. Kaiser of Fort Lauderdale, first fruiting in 1936. It was long believed to be a seedling of the Saigon mango (the name combines Florida and Saigon), though a 2005 pedigree analysis suggested Haden as the likely parent. Unusually for a named Florida mango, Florigon has a polyembryonic seed.",
+        "It is an early-season mango, maturing from roughly late May to July in Florida. The fruit is small and ovate, averaging less than a pound, ripening to an almost entirely yellow skin sometimes with a light blush. The yellow flesh is sweet, mild and fibreless. Florigon is valued for its good anthracnose tolerance and adaptation to humid conditions, which made it a reliable home grower."
+      ],
+      "claims": [
+        {
+          "text": "Florigon grew from a seed planted in 1932 on the property of John G. Kaiser of Fort Lauderdale, Florida, first fruiting in 1936.",
+          "type": "origin",
+          "cites": [
+            "wiki-florigon",
+            "mangopedia-florigon"
+          ]
+        },
+        {
+          "text": "It was believed to be a seedling of Saigon (the name combines Florida and Saigon); a 2005 analysis suggested Haden as the likely parent.",
+          "type": "breeding",
+          "cites": [
+            "wiki-florigon"
+          ]
+        },
+        {
+          "text": "Florigon has a polyembryonic seed.",
+          "type": "seed",
+          "cites": [
+            "wiki-florigon",
+            "mangopedia-florigon"
+          ]
+        },
+        {
+          "text": "It is an early-season mango maturing from roughly late May to July in Florida.",
+          "type": "season",
+          "cites": [
+            "wiki-florigon",
+            "mangopedia-florigon"
+          ]
+        },
+        {
+          "text": "The fruit is small and ovate, averaging less than a pound, ripening to an almost entirely yellow skin with a light blush.",
+          "type": "appearance",
+          "cites": [
+            "wiki-florigon",
+            "mangopedia-florigon"
+          ]
+        },
+        {
+          "text": "The flesh is sweet, mild and fibreless.",
+          "type": "flavour",
+          "cites": [
+            "wiki-florigon",
+            "mangopedia-florigon"
+          ]
+        },
+        {
+          "text": "Florigon is valued for good anthracnose tolerance and adaptation to humid conditions.",
+          "type": "disease",
+          "cites": [
+            "mangopedia-florigon"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-florigon",
+          "name": "Wikipedia: Florigon",
+          "url": "https://en.wikipedia.org/wiki/Florigon",
+          "tier": "third_party"
+        },
+        {
+          "id": "mangopedia-florigon",
+          "name": "Mangopedia: Florigon",
+          "url": "https://mangopedia.org/florigon/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-fruit-punch": {
+      "slug": "mango-fruit-punch",
+      "species": "Mango",
+      "variety": "Fruit Punch",
+      "paragraphs": [
+        "Fruit Punch is one of the boutique Florida cultivars from Gary Zill's breeding program at Boynton Beach. It is a recent selection, distinctive for its colourful skin that ripens in a blend of pink, red, purple and yellow tones, with numerous lenticels, on a medium to large ovoid fruit.",
+        "The pulp is aromatic, light orange and fiberless but firm, carrying a moderately intense Indian style flavour of excellent quality, with measured sugar levels (Brix) running roughly 13 to 17. True to its name, tasters describe a medley of tropical fruit notes. It is an early to mid season mango."
+      ],
+      "claims": [
+        {
+          "text": "Gary Zill cultivar from Boynton Beach, Florida",
+          "type": "origin",
+          "cites": [
+            "fshs",
+            "mangopedia"
+          ]
+        },
+        {
+          "text": "Colourful pink-red-purple-yellow skin with numerous lenticels, medium to large ovoid",
+          "type": "appearance",
+          "cites": [
+            "fshs"
+          ]
+        },
+        {
+          "text": "Aromatic, light orange, fiberless but firm pulp, moderately intense Indian flavour, Brix 13.2 to 16.8",
+          "type": "measurement",
+          "cites": [
+            "fshs"
+          ]
+        },
+        {
+          "text": "Early to mid season mango",
+          "type": "season",
+          "cites": [
+            "fshs"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fshs",
+          "name": "Crane, mango cultivars developed by Gary Zill (FSHS / mango.org)",
+          "url": "https://www.mango.org/wp-content/uploads/2025/07/2-Crane-Summit-FSHS-Zill-mango.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "mangopedia",
+          "name": "Mangopedia",
+          "url": "https://mangopedia.org/fruit-punch/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-gedong": {
+      "slug": "mango-gedong",
+      "species": "Mango",
+      "variety": "Gedong",
+      "paragraphs": [
+        "Gedong, usually sold as Gedong Gincu, is an Indonesian cultivar from West Java, mostly grown around Cirebon and Majalengka. Its standout feature is the skin, which ripens to an orange base with a natural red blush, paired with a strongly fragrant aroma. Fruit are on the smaller side with a slightly flat shape, and the flesh is yellow.",
+        "The variety is grown as a premium and export commodity in Indonesia, valued for its scent and colour. The red blush develops more strongly under full sun, which is part of why it commands a premium in the Indonesian market."
+      ],
+      "claims": [
+        {
+          "text": "Indonesian cultivar from West Java, around Cirebon and Majalengka",
+          "type": "origin",
+          "cites": [
+            "indoindians-gg",
+            "alamy-gg"
+          ]
+        },
+        {
+          "text": "Skin ripens to orange with a natural red blush",
+          "type": "appearance",
+          "cites": [
+            "alamy-gg",
+            "specialty-gg"
+          ]
+        },
+        {
+          "text": "Strongly fragrant aroma",
+          "type": "flavour",
+          "cites": [
+            "indoindians-gg",
+            "alamy-gg"
+          ]
+        },
+        {
+          "text": "Smaller, slightly flat fruit with yellow flesh",
+          "type": "appearance",
+          "cites": [
+            "indoindians-gg"
+          ]
+        },
+        {
+          "text": "Grown as a premium and export commodity in Indonesia",
+          "type": "use",
+          "cites": [
+            "ishs-gg",
+            "specialty-gg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "indoindians-gg",
+          "name": "Indoindians: 7 Popular Indonesian Mangoes",
+          "url": "https://www.indoindians.com/7-popular-indonesian-mangoes-you-musttry/",
+          "tier": "third_party"
+        },
+        {
+          "id": "alamy-gg",
+          "name": "Alamy editorial caption: Mangga Gedong Gincu",
+          "url": "https://www.alamy.com/mangga-gedong-gincu-ripe-of-mango-varian-mostly-cultivated-in-majalengka-and-cirebon-west-java-gedong-gincu-mango-has-red-skin-and-fragrant-aroma-image473200131.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-gg",
+          "name": "Specialty Produce: Gedong Gincu Mangoes",
+          "url": "https://specialtyproduce.com/produce/Gedong_Gincu_Mangoes_16680.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "ishs-gg",
+          "name": "ISHS: Marketing and value chain of Gedong Gincu mango",
+          "url": "https://www.ishs.org/ishs-article/1183_53",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-glenn": {
+      "slug": "mango-glenn",
+      "species": "Mango",
+      "variety": "Glenn",
+      "paragraphs": [
+        "Glenn is a Florida cultivar, reportedly a seedling planted in Miami around 1940. Though originally publicised as a Haden seedling, a 1995 analysis disputed the Haden parentage while a 2005 analysis found Haden to be the most likely parent. The fruit has a monoembryonic seed. UF/IFAS lists Glenn among the cultivars recommended for fruit quality in Florida home landscapes.",
+        "It is an early to midseason cultivar, ripening 2 to 3 weeks before Haden. The pulp is deep yellow and fibreless with a pleasant aroma and a rich, spicy flavour of excellent quality. The peel is yellow with an orange-red blush dotted with numerous small yellow and white dots, and fruit weighs about 373 to 620 grams. The tree is low to moderately vigorous with a rounded canopy."
+      ],
+      "claims": [
+        {
+          "text": "Glenn is a Florida cultivar reportedly planted in Miami around 1940; publicised as a Haden seedling, a 1995 analysis disputed this while a 2005 analysis found Haden the most likely parent.",
+          "type": "breeding",
+          "cites": [
+            "wiki-glenn"
+          ]
+        },
+        {
+          "text": "The fruit has a monoembryonic seed.",
+          "type": "seed",
+          "cites": [
+            "uf-glenn"
+          ]
+        },
+        {
+          "text": "UF/IFAS lists Glenn among recommended cultivars for fruit quality in Florida.",
+          "type": "uses",
+          "cites": [
+            "uf-glenn"
+          ]
+        },
+        {
+          "text": "It is an early to midseason cultivar, ripening about 2 to 3 weeks before Haden.",
+          "type": "season",
+          "cites": [
+            "uf-glenn",
+            "wiki-glenn"
+          ]
+        },
+        {
+          "text": "The pulp is deep yellow and fibreless with a rich, spicy flavour of excellent quality.",
+          "type": "flavour",
+          "cites": [
+            "uf-glenn"
+          ]
+        },
+        {
+          "text": "The peel is yellow with an orange-red blush and numerous small dots; fruit weighs about 373 to 620 grams.",
+          "type": "appearance",
+          "cites": [
+            "uf-glenn"
+          ]
+        },
+        {
+          "text": "The tree is low to moderately vigorous with a rounded canopy.",
+          "type": "habit",
+          "cites": [
+            "uf-glenn"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uf-glenn",
+          "name": "UF/IFAS Mango Science: Glenn",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/glenn/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-glenn",
+          "name": "Wikipedia: Glenn (mango)",
+          "url": "https://en.wikipedia.org/wiki/Glenn_(mango)",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-golek": {
+      "slug": "mango-golek",
+      "species": "Mango",
+      "variety": "Golek",
+      "paragraphs": [
+        "Golek is a traditional Indonesian cultivar, instantly recognisable for its slender, elongated shape. The skin is greenish yellow, often flecked with light brown dots, and the flesh is deep yellow to orange. It is sweet with little fibre, and the thick flesh is soft rather than watery.",
+        "Golek is widely grown across Indonesia and also appears in Malaysia. The young, less ripe fruit is used in rujak (an Indonesian fruit salad), while ripe fruit is eaten fresh for its sweet, aromatic flavour."
+      ],
+      "claims": [
+        {
+          "text": "Traditional Indonesian cultivar, also grown in Malaysia",
+          "type": "origin",
+          "cites": [
+            "wiki-list-golek"
+          ]
+        },
+        {
+          "text": "Slender, elongated shape",
+          "type": "appearance",
+          "cites": [
+            "indoindians-golek"
+          ]
+        },
+        {
+          "text": "Greenish yellow skin with light brown dots",
+          "type": "appearance",
+          "cites": [
+            "indoindians-golek"
+          ]
+        },
+        {
+          "text": "Deep yellow to orange flesh, sweet with little fibre",
+          "type": "flavour",
+          "cites": [
+            "indoindians-golek"
+          ]
+        },
+        {
+          "text": "Young fruit used in rujak",
+          "type": "use",
+          "cites": [
+            "indoindians-golek"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "indoindians-golek",
+          "name": "Indoindians: 7 Popular Indonesian Mangoes",
+          "url": "https://www.indoindians.com/7-popular-indonesian-mangoes-you-musttry/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-list-golek",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-graham": {
+      "slug": "mango-graham",
+      "species": "Mango",
+      "variety": "Graham",
+      "paragraphs": [
+        "Graham originated in Trinidad as a seedling of the Julie mango and was introduced to the United States by the USDA through Florida in 1932. Unlike its compact Julie parent, Graham is a vigorous grower forming a round, dense canopy, and it carries a monoembryonic seed.",
+        "The fruit has yellow, bumpy skin and deep orange, fibreless flesh with a sweet, rich, aromatic flavour. It ripens from June to August in Florida and has become a popular dooryard tree thanks to its fine flavour and good disease resistance."
+      ],
+      "claims": [
+        {
+          "text": "Originated in Trinidad as a seedling of the Julie mango, introduced to the USA by the USDA through Florida in 1932",
+          "type": "origin",
+          "cites": [
+            "wikipedia-graham"
+          ]
+        },
+        {
+          "text": "Originated in Trinidad",
+          "type": "origin",
+          "cites": [
+            "ufifas-graham"
+          ]
+        },
+        {
+          "text": "Vigorous grower forming a round, dense canopy, unlike the compact Julie parent",
+          "type": "growing",
+          "cites": [
+            "wikipedia-graham"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-graham"
+          ]
+        },
+        {
+          "text": "Deep orange, fibreless flesh with a sweet, rich, aromatic flavour",
+          "type": "flavour",
+          "cites": [
+            "ufifas-graham",
+            "wikipedia-graham"
+          ]
+        },
+        {
+          "text": "Ripens June to August in Florida",
+          "type": "season",
+          "cites": [
+            "wikipedia-graham"
+          ]
+        },
+        {
+          "text": "Popular as a dooryard tree for its fine flavour and good disease resistance",
+          "type": "growing",
+          "cites": [
+            "wikipedia-graham"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-graham",
+          "name": "Wikipedia: Graham (mango)",
+          "url": "https://en.wikipedia.org/wiki/Graham_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ufifas-graham",
+          "name": "UF/IFAS Mango Science: Graham",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/graham/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-gullivers-triumph": {
+      "slug": "mango-gullivers-triumph",
+      "species": "Mango",
+      "variety": "Gullivers Triumph",
+      "paragraphs": [
+        "Gulliver's Triumph is a historic Australian mango bred by Thomas Allen Gulliver, who experimented with tropical crops including mangoes at his Roseneath property near Townsville, north Queensland. The Gulliver family ran the Acacia Vale Gardens and Nursery from the 1880s, and this is recorded as one of his most successful bred varieties.",
+        "In cultivation today it is offered as a dwarf to semi-dwarf, pot-friendly tree. The fruit is large with golden-yellow skin and a rich, sweet flavour carrying a light citrus note, making it a tree valued for fresh eating in home gardens."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Thomas Allen Gulliver, who experimented with mangoes at Roseneath near Townsville, Queensland; recorded as one of his most successful varieties",
+          "type": "origin",
+          "cites": [
+            "eoas-gulliver",
+            "fruittreecottage-gulliverstriumph"
+          ]
+        },
+        {
+          "text": "The Gulliver family ran the Acacia Vale Gardens and Nursery in Townsville from the 1880s",
+          "type": "breeding",
+          "cites": [
+            "eoas-gulliver"
+          ]
+        },
+        {
+          "text": "Offered as a dwarf to semi-dwarf, pot-friendly tree",
+          "type": "growing",
+          "cites": [
+            "fruittreecottage-gulliverstriumph"
+          ]
+        },
+        {
+          "text": "Large golden-yellow fruit with a rich, sweet flavour and a light citrus note",
+          "type": "flavour",
+          "cites": [
+            "fruittreecottage-gulliverstriumph"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "eoas-gulliver",
+          "name": "Encyclopedia of Australian Science and Innovation: Thomas Allen Gulliver",
+          "url": "https://www.eoas.info/biogs/P002375b.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "fruittreecottage-gulliverstriumph",
+          "name": "Fruit Tree Cottage: Gullivers Triumph mango",
+          "url": "https://www.fruittreecottage.com.au/products/mango-florigon-copy",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-haden": {
+      "slug": "mango-haden",
+      "species": "Mango",
+      "variety": "Haden",
+      "paragraphs": [
+        "Haden is the foundational Florida mango. Captain John J. Haden of Coconut Grove planted seeds from a Mulgoba mango in 1902, and the standout tree first fruited in 1910. It is thought to be a cross between the Indian Mulgoba and a local Turpentine mango. The seed is monoembryonic, so it does not breed true and trees are grafted.",
+        "Rich and aromatic in flavour, the fruit has firm flesh that carries some fibre, and the skin ripens to a bright red over green and yellow. Haden dominated the Florida mango industry for roughly its first 25 years and became the parent of many later Florida cultivars, including the line that leads to Kent and Zill."
+      ],
+      "claims": [
+        {
+          "text": "Captain John J. Haden of Coconut Grove, Florida planted Mulgoba mango seeds in 1902 and the standout tree first fruited in 1910.",
+          "type": "origin",
+          "cites": [
+            "wiki-haden"
+          ]
+        },
+        {
+          "text": "Haden is likely a cross between Mulgoba and a local Turpentine mango.",
+          "type": "breeding",
+          "cites": [
+            "wiki-haden"
+          ]
+        },
+        {
+          "text": "The seed is monoembryonic.",
+          "type": "botany",
+          "cites": [
+            "wiki-haden"
+          ]
+        },
+        {
+          "text": "The flavour is rich and aromatic, the flesh firm with some fibre, and the skin ripens red over green and yellow.",
+          "type": "flavour",
+          "cites": [
+            "wiki-haden",
+            "itfnet-mango"
+          ]
+        },
+        {
+          "text": "Haden dominated the early Florida mango industry and became the parent of many later Florida cultivars.",
+          "type": "significance",
+          "cites": [
+            "wiki-haden"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-haden",
+          "name": "Wikipedia, Haden (mango)",
+          "url": "https://en.wikipedia.org/wiki/Haden_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "itfnet-mango",
+          "name": "International Tropical Fruits Network, common mango varieties",
+          "url": "https://www.itfnet.org/v1/2016/05/mango-common-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-harumanis": {
+      "slug": "mango-harumanis",
+      "species": "Mango",
+      "variety": "Harumanis",
+      "paragraphs": [
+        "Harumanis (also spelt Arumanis or Harum Manis, meaning fragrant and sweet) is an Indonesian cultivar that first appeared in the late 1950s, reached Malaysia about a decade later, and became famous in the state of Perlis from the early 1980s. Since 2011 the Harumanis name is reserved for fruit grown in Perlis, whose lime-rich soil and climate suit it.",
+        "Its standout trait is that the skin stays green even when fully ripe, so ripeness is judged by aroma and a slight softening rather than colour. The elongated fruit has thick, juicy, almost fibreless golden flesh that is richly sweet with an intense, distinctive perfume that people tend to either love or dislike."
+      ],
+      "claims": [
+        {
+          "text": "Harumanis (Arumanis, Harum Manis) means fragrant and sweet and is an Indonesian cultivar from the late 1950s, later famous in Perlis, Malaysia.",
+          "type": "origin",
+          "cites": [
+            "sp-arumanis",
+            "tatler-harumanis"
+          ]
+        },
+        {
+          "text": "Since 2011 the Harumanis name is reserved for fruit grown in Perlis.",
+          "type": "quirk",
+          "cites": [
+            "sp-arumanis",
+            "tatler-harumanis"
+          ]
+        },
+        {
+          "text": "The skin stays green when ripe and the flesh is juicy, almost fibreless, very sweet and intensely perfumed.",
+          "type": "appearance",
+          "cites": [
+            "sp-arumanis",
+            "tatler-harumanis"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sp-arumanis",
+          "name": "Arumanis Mangoes, Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Arumanis_Mangoes_11705.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "tatler-harumanis",
+          "name": "6 things you might not know about Harumanis mangoes, Tatler Asia",
+          "url": "https://www.tatlerasia.com/dining/food/harumanis-mango-harumango-perlis",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-harvest-moon": {
+      "slug": "mango-harvest-moon",
+      "species": "Mango",
+      "variety": "Harvest Moon",
+      "paragraphs": [
+        "Harvest Moon is a Florida selection bred by Gary Zill at Boynton Beach (originally designated 4-20). It is a seedling of Edward, with Carrie, Val-Carrie or Gary suspected as the pollen parent.",
+        "It produces large, round, Kent-shaped fruit, ripening greenish-yellow with a light orange-red blush. The flesh is yellow, fibreless, juicy, creamy and somewhat firm. The flavour is a rich classic mango, sweet with a balancing acidity that gives a slight citrus edge and, depending on ripeness, notes of stone fruit such as plum and pear. It ripens mid to late season (July to August) and, being a vigorous upright tree, is not considered a condo mango."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Gary Zill at Boynton Beach, Florida, originally designated 4-20",
+          "type": "origin",
+          "cites": [
+            "ttg-hm",
+            "taf-hm"
+          ]
+        },
+        {
+          "text": "A seedling of Edward",
+          "type": "breeding",
+          "cites": [
+            "ttg-hm"
+          ]
+        },
+        {
+          "text": "Large, round, Kent-shaped fruit",
+          "type": "appearance",
+          "cites": [
+            "ttg-hm",
+            "taf-hm"
+          ]
+        },
+        {
+          "text": "Yellow, fibreless, juicy and creamy flesh",
+          "type": "flavour",
+          "cites": [
+            "ttg-hm",
+            "taf-hm"
+          ]
+        },
+        {
+          "text": "Rich classic mango flavour with citrus and stone-fruit (plum, pear) notes",
+          "type": "flavour",
+          "cites": [
+            "ttg-hm",
+            "taf-hm"
+          ]
+        },
+        {
+          "text": "Mid to late season ripening (July to August)",
+          "type": "season",
+          "cites": [
+            "ttg-hm"
+          ]
+        },
+        {
+          "text": "Vigorous upright tree, not considered a condo mango",
+          "type": "use",
+          "cites": [
+            "ttg-hm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ttg-hm",
+          "name": "Tropical Tree Guide: Harvest Moon Mango Grow Guide",
+          "url": "https://tropicaltreeguide.com/harvest-moon-mango-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "taf-hm",
+          "name": "Tropical Acres Farms: Harvest Moon",
+          "url": "https://www.tropicalacresfarms.com/product-page/harvest-moon",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-honey-gold": {
+      "slug": "mango-honey-gold",
+      "species": "Mango",
+      "variety": "Honey Gold",
+      "paragraphs": [
+        "Honey Gold is an Australian mango that arose by chance in Queensland's Rockhampton region in 1991, from a Kensington Pride off-type pollinated by an unknown variety. Pinata Farms acquired the plant breeders' rights in 2002 and sent the first commercial fruit to market in 2009, and the company owns and markets the variety under its own brand.",
+        "The fruit has glossy yellow-orange skin and smooth, orange, fibreless flesh with an intense, distinctive flavour, and it holds its shape when cut. The Australian season runs roughly October to March, starting in the north in spring and finishing in the southern states in autumn."
+      ],
+      "claims": [
+        {
+          "text": "Arose by chance near Rockhampton, Queensland in 1991 from a Kensington Pride off-type pollinated by an unknown variety",
+          "type": "origin",
+          "cites": [
+            "wikipedia-honeygold",
+            "pinata-honeygold"
+          ]
+        },
+        {
+          "text": "Pinata Farms acquired the plant breeders' rights in 2002 and first marketed the fruit in 2009; the company owns the variety",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-honeygold",
+            "pinata-honeygold"
+          ]
+        },
+        {
+          "text": "Glossy yellow-orange skin with smooth, fibreless orange flesh",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-honeygold",
+            "pinata-honeygold"
+          ]
+        },
+        {
+          "text": "Intense, distinctive flavour; flesh holds its shape when cut",
+          "type": "flavour",
+          "cites": [
+            "pinata-honeygold"
+          ]
+        },
+        {
+          "text": "Australian season roughly October to March, north to south",
+          "type": "season",
+          "cites": [
+            "pinata-honeygold"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-honeygold",
+          "name": "Wikipedia: Honey Gold",
+          "url": "https://en.wikipedia.org/wiki/Honey_Gold",
+          "tier": "third_party"
+        },
+        {
+          "id": "pinata-honeygold",
+          "name": "Pinata Farms: Honey Gold mangoes",
+          "url": "https://www.pinata.com.au/our-fruits/honey-gold-mangoes",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-hong-sa": {
+      "slug": "mango-hong-sa",
+      "species": "Mango",
+      "variety": "Hong Sa",
+      "paragraphs": [
+        "Hong Sa (also written Hong-sa) is one of the old Thai mango cultivars, named in lists of heritage varieties grown in Chachoengsao province, a major mango-growing region east of Bangkok.",
+        "It is a regional heirloom rather than a modern commercial variety, and features each year among the ancient cultivars showcased at Chachoengsao's long-running mango festival alongside names like Thong Dam and Nang Klang Wan."
+      ],
+      "claims": [
+        {
+          "text": "Hong Sa is a Thai mango cultivar",
+          "type": "origin",
+          "cites": [
+            "wiki-cv-hongsa",
+            "bkk-mango-hongsa"
+          ]
+        },
+        {
+          "text": "Listed among ancient heritage varieties at the Chachoengsao mango festival",
+          "type": "naming",
+          "cites": [
+            "bkk-mango-hongsa",
+            "holidify-mango-hongsa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-cv-hongsa",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "bkk-mango-hongsa",
+          "name": "Bangkok Post: In praise of mangoes",
+          "url": "https://www.bangkokpost.com/life/social-and-lifestyle/1449094/in-praise-of-mangoes",
+          "tier": "third_party"
+        },
+        {
+          "id": "holidify-mango-hongsa",
+          "name": "Holidify: Mangoes in Thailand",
+          "url": "https://www.holidify.com/pages/mangoes-in-thailand-1823.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-irwin": {
+      "slug": "mango-irwin",
+      "species": "Mango",
+      "variety": "Irwin",
+      "paragraphs": [
+        "Irwin is a Florida cultivar, a seedling of Lippens open-pollinated with Haden, planted on the property of F.D. Irwin in Miami in 1939. The tree first fruited in 1945 and was named and described in 1949. The fruit contains a monoembryonic seed. It is ovate with a rounded base and pointed apex, lacking a beak, and develops an eye-catching dark red blush at maturity, often borne in clusters.",
+        "It is an early-season cultivar, maturing from roughly June to July in Florida. The flesh is yellow and fibreless with a mild but sweet flavour and a pleasant aroma. While only modestly grown in Florida, Irwin became a major commercial variety in Asia, prized in markets such as Taiwan, Japan and South Korea (notably Jeju Island), as well as Australia."
+      ],
+      "claims": [
+        {
+          "text": "Irwin is a seedling of Lippens open-pollinated with Haden, planted on the property of F.D. Irwin in Miami in 1939, first fruiting in 1945 and named in 1949.",
+          "type": "breeding",
+          "cites": [
+            "wiki-irwin"
+          ]
+        },
+        {
+          "text": "The fruit contains a monoembryonic seed.",
+          "type": "seed",
+          "cites": [
+            "wiki-irwin"
+          ]
+        },
+        {
+          "text": "It is ovate with a rounded base and pointed apex, lacking a beak, with a dark red blush at maturity, often borne in clusters.",
+          "type": "appearance",
+          "cites": [
+            "wiki-irwin",
+            "specialtyproduce-irwin"
+          ]
+        },
+        {
+          "text": "It is an early-season cultivar maturing from roughly June to July in Florida.",
+          "type": "season",
+          "cites": [
+            "wiki-irwin"
+          ]
+        },
+        {
+          "text": "The flesh is yellow and fibreless with a mild but sweet flavour and a pleasant aroma.",
+          "type": "flavour",
+          "cites": [
+            "wiki-irwin"
+          ]
+        },
+        {
+          "text": "Irwin became a major commercial variety in Asian markets such as Taiwan, Japan and South Korea (Jeju Island), and Australia.",
+          "type": "uses",
+          "cites": [
+            "wiki-irwin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-irwin",
+          "name": "Wikipedia: Irwin (mango)",
+          "url": "https://en.wikipedia.org/wiki/Irwin_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-irwin",
+          "name": "Specialty Produce: Irwin Mangoes",
+          "url": "https://specialtyproduce.com/produce/Irwin_Mangoes_24972.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-julie": {
+      "slug": "mango-julie",
+      "species": "Mango",
+      "variety": "Julie",
+      "paragraphs": [
+        "Julie (also called Saint Julian) is a West Indian cultivar of likely Indian ancestry that became a Caribbean staple, particularly popular in Trinidad, Jamaica and across the West Indies. The U.S. Virgin Islands legislature even named it the territory's fruit of choice. Its monoembryonic seed points to Indian mango lineage.",
+        "It is famous as a dwarf, slow-growing tree well suited to small gardens, often holding around three metres in South Florida. The fruit is small, oval with a flattened side and green skin blushed crimson. The deep orange flesh is juicy and fibreless with a rich, sweet flavour. It is prone to fungal disease, which limits commercial growing."
+      ],
+      "claims": [
+        {
+          "text": "Julie (Saint Julian) is a West Indian cultivar popular across the Caribbean, with a monoembryonic seed indicating Indian ancestry.",
+          "type": "origin",
+          "cites": [
+            "wiki-julie"
+          ]
+        },
+        {
+          "text": "It is a dwarf, slow-growing tree suited to small gardens.",
+          "type": "quirk",
+          "cites": [
+            "wiki-julie",
+            "mp-julie-list"
+          ]
+        },
+        {
+          "text": "The small oval fruit has deep orange, juicy, fibreless flesh with a rich sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "wiki-julie"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-julie",
+          "name": "Julie (mango), Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Julie_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "mp-julie-list",
+          "name": "List of mango cultivars, Wikipedia (Julie entry)",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-jumbo-kesar": {
+      "slug": "mango-jumbo-kesar",
+      "species": "Mango",
+      "variety": "Jumbo Kesar",
+      "paragraphs": [
+        "Jumbo Kesar is the Kesar cultivar sold as a large-fruited grade, so it carries the same story as Gujarat's famous Kesar. The GI-tagged Gir Kesar grows in the Girnar foothills near Junagadh. It was grown in 1931 by Junagadh Wazir Sale Bhai, and in 1934 the Nawab of Junagadh named it Kesar (saffron) for the colour of its pulp. Gir Kesar received GI status in 2011.",
+        "Like all Kesar, it is prized for bright saffron-orange pulp, a rich perfumed aroma, and smooth, low-fibre flesh, often called the queen of mangoes in Gujarat. Crops typically reach market around April and May."
+      ],
+      "claims": [
+        {
+          "text": "Jumbo Kesar is the same Kesar cultivar; Gujarat origin, grown 1931 near Junagadh, named by the Nawab in 1934 for its saffron pulp, Gir Kesar GI-tagged 2011.",
+          "type": "origin",
+          "cites": [
+            "kesar-wikipedia"
+          ]
+        },
+        {
+          "text": "Bright saffron-orange pulp, intense perfumed aroma, smooth low-fibre flesh.",
+          "type": "flavour",
+          "cites": [
+            "kesar-americangardener"
+          ]
+        },
+        {
+          "text": "Marketed around April to May.",
+          "type": "season",
+          "cites": [
+            "kesar-wikipedia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "kesar-wikipedia",
+          "name": "Wikipedia: Gir Kesar",
+          "url": "https://en.wikipedia.org/wiki/Gir_Kesar",
+          "tier": "third_party"
+        },
+        {
+          "id": "kesar-americangardener",
+          "name": "American Gardener: Kesar Mangoes",
+          "url": "https://americangardener.net/kesar-mangoes/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-kaew": {
+      "slug": "mango-kaew",
+      "species": "Mango",
+      "variety": "Kaew",
+      "paragraphs": [
+        "Kaew (also spelt Keaw or Kaeo) is a Thai cultivar grown widely across the country and is one of the most important mangoes for Thai processing, used heavily for pickling and preserved products.",
+        "It is typically eaten while still green and unripe, when the small to medium green fruit has a crunchy, firm texture and a refreshing sourness, often served raw with chilli and salt rather than ripened for sweetness."
+      ],
+      "claims": [
+        {
+          "text": "Kaew is a Thai mango cultivar",
+          "type": "origin",
+          "cites": [
+            "wiki-cv-kaew",
+            "chaichada-kaew"
+          ]
+        },
+        {
+          "text": "Commonly eaten green and unripe, crunchy and sour, served with chilli-salt",
+          "type": "use",
+          "cites": [
+            "chaichada-kaew"
+          ]
+        },
+        {
+          "text": "Widely used in Thai processing and for pickling",
+          "type": "use",
+          "cites": [
+            "sciencedirect-thai",
+            "chaichada-kaew"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-cv-kaew",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "chaichada-kaew",
+          "name": "Chaichada: Mango (Kaew)",
+          "url": "https://chaichada.com/herbal-hub/mango-kaew/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sciencedirect-thai",
+          "name": "Fruit quality and antioxidant capacity of six Thai mango cultivars (ScienceDirect)",
+          "url": "https://www.sciencedirect.com/science/article/pii/S2452316X17302156",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-kalapadi": {
+      "slug": "mango-kalapadi",
+      "species": "Mango",
+      "variety": "Kalapadi",
+      "paragraphs": [
+        "Kalapadi (also spelt Kalapad or Kalapady) is a traditional South Indian cultivar from the orchards around Salem in Tamil Nadu, and is closely tied to the Dharmapuri, Krishnagiri and Salem mango belts. Less famous than cultivars such as Banganapalli, it has long been a favoured home garden and regional market mango across southern India.",
+        "The fruit is small to medium and oval to oblong, easy to eat out of hand. Beneath the thick skin the flesh is dark orange to yellow-orange, dense and aqueous, with a tender, succulent, soft texture and very little fibre. It is prized as one of the sweeter, juicier southern Indian mangoes, eaten fresh rather than processed."
+      ],
+      "claims": [
+        {
+          "text": "Kalapadi (Kalapad, Kalapady) is a traditional cultivar from the Salem area of Tamil Nadu, South India",
+          "type": "origin",
+          "cites": [
+            "kal-sp",
+            "kal-salem"
+          ]
+        },
+        {
+          "text": "It is a small to medium, oval to oblong mango easily eaten out of hand",
+          "type": "appearance",
+          "cites": [
+            "kal-sp",
+            "kal-salem"
+          ]
+        },
+        {
+          "text": "The dark orange to yellow-orange flesh is dense and aqueous with a tender, soft texture and very little fibre",
+          "type": "flavour",
+          "cites": [
+            "kal-sp",
+            "kal-salem"
+          ]
+        },
+        {
+          "text": "It is eaten fresh as a sweet table mango",
+          "type": "use",
+          "cites": [
+            "kal-sp"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "kal-sp",
+          "name": "Specialty Produce: Kalapadi Mangoes",
+          "url": "https://specialtyproduce.com/produce/Kalapadi_Mangoes_23818.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "kal-salem",
+          "name": "Salem Mango: Kalapadi Mango",
+          "url": "https://www.salemmango.com/blog/kalapadi-mango-online-benefits",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-kasturi": {
+      "slug": "mango-kasturi",
+      "species": "Mango",
+      "variety": "Kasturi",
+      "paragraphs": [
+        "Kasturi is not a selection of the common mango but a distinct species, Mangifera casturi, native to the Kalimantan region of Borneo, where it is a mascot of South Kalimantan province. The IUCN lists it as extinct in the wild, surviving only in cultivation, after deforestation linked to mining and palm oil destroyed its native habitat.",
+        "The fruit is small, usually under 80 grams, ovoid, with thin green skin speckled and flushed purple-black to maroon, and young leaves that emerge dark purple. The dark orange flesh is intensely fragrant and somewhat fibrous, with a flavour that is less sweet but stronger and more aromatic than the common mango. Its seeds are polyembryonic."
+      ],
+      "claims": [
+        {
+          "text": "Kasturi is the distinct species Mangifera casturi, native to Kalimantan, Borneo, and a mascot of South Kalimantan.",
+          "type": "origin",
+          "cites": [
+            "wiki-casturi",
+            "sf-casturi"
+          ]
+        },
+        {
+          "text": "The IUCN lists it as extinct in the wild, surviving only in cultivation.",
+          "type": "quirk",
+          "cites": [
+            "wiki-casturi",
+            "sf-casturi"
+          ]
+        },
+        {
+          "text": "The small fruit has green skin flushed purple-black, dark orange fragrant fibrous flesh, and polyembryonic seeds.",
+          "type": "appearance",
+          "cites": [
+            "wiki-casturi",
+            "sf-casturi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-casturi",
+          "name": "Mangifera casturi, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Mangifera_casturi",
+          "tier": "third_party"
+        },
+        {
+          "id": "sf-casturi",
+          "name": "Casturi Mango, Slow Food Foundation Ark of Taste",
+          "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/casturi-mango/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "mango-keitt": {
       "slug": "mango-keitt",
       "species": "Mango",
@@ -139,6 +2645,793 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mango-kent": {
+      "slug": "mango-kent",
+      "species": "Mango",
+      "variety": "Kent",
+      "paragraphs": [
+        "Kent is a late-season Florida mango planted on 1 January 1933 by Leith D. Kent in Coconut Grove. It came from a seedling of the Brooks cultivar and is generally regarded as a Brooks by Haden cross, a parentage supported by a 2005 pedigree analysis. The tree first fruited in 1938 and the cultivar was named in 1945. The seed is monoembryonic.",
+        "Kent is known for sweet, rich flavour and smooth, nearly fibreless flesh. The oval fruit ripens to a greenish-yellow with some red blush. The tree is susceptible to anthracnose and the fruit has a relatively short shelf life, yet Kent became one of the most widely planted commercial mangoes in the Western Hemisphere, especially across Latin America."
+      ],
+      "claims": [
+        {
+          "text": "Kent was planted on 1 January 1933 by Leith D. Kent in Coconut Grove, Florida, from a seedling of Brooks, first fruited in 1938, and was named in 1945.",
+          "type": "origin",
+          "cites": [
+            "wiki-kent"
+          ]
+        },
+        {
+          "text": "It is generally regarded as a Brooks by Haden cross, supported by a 2005 pedigree analysis.",
+          "type": "breeding",
+          "cites": [
+            "wiki-kent"
+          ]
+        },
+        {
+          "text": "The seed is monoembryonic.",
+          "type": "botany",
+          "cites": [
+            "wiki-kent"
+          ]
+        },
+        {
+          "text": "Kent has sweet, rich flavour and nearly fibreless flesh, with oval fruit ripening greenish-yellow with some red blush.",
+          "type": "flavour",
+          "cites": [
+            "wiki-kent",
+            "ifas-kent"
+          ]
+        },
+        {
+          "text": "The tree is susceptible to anthracnose and the fruit has short shelf life, yet Kent is one of the most widely planted commercial mangoes in the Western Hemisphere.",
+          "type": "quirk",
+          "cites": [
+            "wiki-kent"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-kent",
+          "name": "Wikipedia, Kent (mango)",
+          "url": "https://en.wikipedia.org/wiki/Kent_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ifas-kent",
+          "name": "UF/IFAS Mango Science, Kent phenology",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/kent/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-keow-savoey": {
+      "slug": "mango-keow-savoey",
+      "species": "Mango",
+      "variety": "Keow Savoey",
+      "paragraphs": [
+        "Keow Savoey (also spelled Khiew Sawoey, meaning roughly green eat) is regarded as one of the premier green eating mangoes of Thailand. Rather than waiting for it to soften, the fruit is picked mature but still green and eaten crisp, when it is often compared to a juicy granny smith apple.",
+        "It keeps a bright green skin even when mature, with thin, easily peeled skin and firm yellow flesh that has little fibre. The flavour is crisp and sweet with a fresh, slightly citrus note. It is commonly shredded into Thai green mango salads such as som tum."
+      ],
+      "claims": [
+        {
+          "text": "Keow Savoey (Khiew Sawoey) is a premier green eating mango of Thailand, eaten crisp while still green.",
+          "type": "origin",
+          "cites": [
+            "rfca-greenthai",
+            "toptropicals"
+          ]
+        },
+        {
+          "text": "Eaten green it is crisp and juicy, often compared to a granny smith apple.",
+          "type": "flavour",
+          "cites": [
+            "rfca-greenthai"
+          ]
+        },
+        {
+          "text": "It keeps a bright green skin when mature and has firm yellow flesh with little fibre.",
+          "type": "appearance",
+          "cites": [
+            "toptropicals",
+            "thaifruit-keow"
+          ]
+        },
+        {
+          "text": "It is commonly shredded into Thai green mango salads such as som tum.",
+          "type": "use",
+          "cites": [
+            "thaifruit-keow"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-greenthai",
+          "name": "RFCA Archives: The Green Thai Mangoes",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Mango/GreenThaiMango1-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "toptropicals",
+          "name": "Top Tropicals: Mango Varieties Guide",
+          "url": "https://toptropicals.com/html/toptropicals/articles/fruit/varieties_mango.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "thaifruit-keow",
+          "name": "SAG Thai Fruit Exporter: Keow Savoey",
+          "url": "https://www.thaifruitexporter.com/thai-fruits/mango/keow-savoey",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-kesar": {
+      "slug": "mango-kesar",
+      "species": "Mango",
+      "variety": "Kesar",
+      "paragraphs": [
+        "Kesar is the famous Gujarat cultivar, with the GI-tagged Gir Kesar grown in the foothills of Girnar near Junagadh. It was grown in 1931 by Junagadh Wazir Sale Bhai, and the name dates to 1934 when the Nawab of Junagadh, on seeing the orange pulp, declared it Kesar (saffron in Gujarati and Hindi). Gir Kesar earned GI status in 2011.",
+        "Kesar is known for its bright, saffron-orange pulp and an intense, perfumed aroma. The flesh is smooth, creamy and low in fibre, and the fruit is often called the queen of mangoes in Gujarat. Crops typically come to market around April and May."
+      ],
+      "claims": [
+        {
+          "text": "Gujarat cultivar grown in 1931 near Junagadh; named Kesar in 1934 by the Nawab for its saffron-coloured pulp; Gir Kesar GI-tagged in 2011.",
+          "type": "origin",
+          "cites": [
+            "kesar-wikipedia"
+          ]
+        },
+        {
+          "text": "Bright saffron-orange pulp, intense perfumed aroma, smooth low-fibre flesh.",
+          "type": "flavour",
+          "cites": [
+            "kesar-americangardener"
+          ]
+        },
+        {
+          "text": "Marketed around April to May, harvested at the green mature stage.",
+          "type": "season",
+          "cites": [
+            "kesar-wikipedia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "kesar-wikipedia",
+          "name": "Wikipedia: Gir Kesar",
+          "url": "https://en.wikipedia.org/wiki/Gir_Kesar",
+          "tier": "third_party"
+        },
+        {
+          "id": "kesar-americangardener",
+          "name": "American Gardener: Kesar Mangoes",
+          "url": "https://americangardener.net/kesar-mangoes/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-king-thai": {
+      "slug": "mango-king-thai",
+      "species": "Mango",
+      "variety": "King Thai",
+      "paragraphs": [
+        "King Thai is the Australian trade name for Mahachanok (Maha Chanok), a Thai mango bred in the 20th century and named in honour of the Mahajanaka story associated with the late King Bhumibol Adulyadej. It is a hybrid of the Sunset and Nang Klang Wan varieties.",
+        "The fruit is long, slender and curved, with a yellowish skin carrying a distinctive pinkish red blush when ripe. The seed is monoembryonic. The orange yellow flesh is fibreless and sweet with a pleasant floral aroma, and it is eaten ripe rather than green."
+      ],
+      "claims": [
+        {
+          "text": "King Thai is the Australian trade name for the Thai mango Mahachanok (Maha Chanok).",
+          "type": "origin",
+          "cites": [
+            "wiki-mahachanok",
+            "ifas-mahachanok"
+          ]
+        },
+        {
+          "text": "Mahachanok is a hybrid of the Sunset and Nang Klang Wan varieties, named after the Mahajanaka story linked to King Bhumibol Adulyadej.",
+          "type": "origin",
+          "cites": [
+            "wiki-mahachanok"
+          ]
+        },
+        {
+          "text": "The ripe peel is yellowish with a distinctive pinkish red blush and the seed is monoembryonic.",
+          "type": "appearance",
+          "cites": [
+            "ifas-mahachanok"
+          ]
+        },
+        {
+          "text": "The flesh is fibreless, orange yellow and sweet with a pleasant floral aroma, eaten ripe.",
+          "type": "flavour",
+          "cites": [
+            "ifas-mahachanok",
+            "wiki-mahachanok"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ifas-mahachanok",
+          "name": "UF/IFAS Mango: Mahachanok",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/mahachanok/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-mahachanok",
+          "name": "Wikipedia: Mahachanok (mango)",
+          "url": "https://en.wikipedia.org/wiki/Mahachanok_(mango)",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-lady-grace": {
+      "slug": "mango-lady-grace",
+      "species": "Mango",
+      "variety": "Lady Grace",
+      "paragraphs": [
+        "Lady Grace is an Australian cultivar. It was selected by K. Rayner and P. Lu from open-pollinated Irwin seedlings, chosen for its small tree size, precocious bearing and good fruit quality, and described in an International Society for Horticultural Science paper alongside Lady Jane.",
+        "The tree is semi-dwarf and very symmetrical, which suits smaller gardens. The fruit has red to purple skin that turns deep orange-red when ripe, with rich apricot-coloured flesh that is firm, fine-textured, juicy and free of fibre. It carries an Irwin and Kent type flavour."
+      ],
+      "claims": [
+        {
+          "text": "Australian cultivar selected by K. Rayner and P. Lu from open-pollinated Irwin seedlings",
+          "type": "origin",
+          "cites": [
+            "ishs-lg",
+            "actahort-lg"
+          ]
+        },
+        {
+          "text": "Selected for small tree size, precociousness and good fruit quality",
+          "type": "breeding",
+          "cites": [
+            "ishs-lg",
+            "actahort-lg"
+          ]
+        },
+        {
+          "text": "Semi-dwarf, very symmetrical tree",
+          "type": "growing",
+          "cites": [
+            "ishs-lg",
+            "actahort-lg"
+          ]
+        },
+        {
+          "text": "Red to purple skin turning deep orange-red when ripe",
+          "type": "appearance",
+          "cites": [
+            "ishs-lg",
+            "actahort-lg"
+          ]
+        },
+        {
+          "text": "Rich apricot-coloured flesh, firm, fine-textured and fibreless",
+          "type": "flavour",
+          "cites": [
+            "ishs-lg",
+            "actahort-lg"
+          ]
+        },
+        {
+          "text": "Irwin and Kent type flavour",
+          "type": "flavour",
+          "cites": [
+            "ishs-lg",
+            "actahort-lg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ishs-lg",
+          "name": "ISHS: Two new mango cultivars from Australia, Lady Jane and Lady Grace (Rayner & Lu, Acta Horticulturae 1183)",
+          "url": "https://www.ishs.org/ishs-article/1183_13",
+          "tier": "authoritative"
+        },
+        {
+          "id": "actahort-lg",
+          "name": "Acta Horticulturae 1183.13: Two new mango cultivars from Australia, Lady Jane and Lady Grace",
+          "url": "https://www.actahort.org/books/1183/1183_13.htm",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-langra": {
+      "slug": "mango-langra",
+      "species": "Mango",
+      "variety": "Langra",
+      "paragraphs": [
+        "Langra, also called Banarasi Langra, is a North Indian cultivar first grown around Banaras (Varanasi) in Uttar Pradesh some 250 to 300 years ago. Langra is Hindi for lame, a name traditionally linked to a lame man in whose orchard the original tree is said to have grown. The Banarasi Langra holds a Geographical Indication tag.",
+        "Its hallmark is the skin, which keeps a greenish tinge even when fully ripe, unlike most mangoes that turn yellow or orange. The pulp is lemon-yellow, juicy and sweet with a sub-acid tang. It is harvested in the second half of the season, roughly mid-June into July."
+      ],
+      "claims": [
+        {
+          "text": "North Indian cultivar first grown near Banaras/Varanasi 250 to 300 years ago; name means lame in Hindi; Banarasi Langra is GI-tagged.",
+          "type": "origin",
+          "cites": [
+            "langra-wikipedia",
+            "langra-mangodose"
+          ]
+        },
+        {
+          "text": "Skin retains a greenish tinge even when ripe; harvested mid-June into July.",
+          "type": "appearance",
+          "cites": [
+            "langra-wikipedia"
+          ]
+        },
+        {
+          "text": "Lemon-yellow, juicy, sweet pulp with a sub-acid tang.",
+          "type": "flavour",
+          "cites": [
+            "langra-mangodose"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "langra-wikipedia",
+          "name": "Wikipedia: Langra",
+          "url": "https://en.wikipedia.org/wiki/Langra",
+          "tier": "third_party"
+        },
+        {
+          "id": "langra-mangodose",
+          "name": "Mango Dose: Langra Mango Origin and Characteristics",
+          "url": "https://mangodose.com/langra-mango/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-lemon-meringue": {
+      "slug": "mango-lemon-meringue",
+      "species": "Mango",
+      "variety": "Lemon Meringue",
+      "paragraphs": [
+        "Lemon Meringue (also called Po Pyu Kalay) is a Myanmar cultivar, introduced to the United States in 1995 by Maurice Kong of the Miami Rare Fruit Council. Gary Zill gave it the Lemon Meringue nickname and used it as a parent in his citrus-mango breeding line (it is the seed parent of Lemon Zest and Orange Sherbet).",
+        "The small, elongated fruit ripens to a golden yellow with pale, fibreless, juicy flesh. It is prized for a mild, sugary-sweet flavour carrying a clear lemon-citrus note, one of the early citrus-flavoured mangoes in the US. It is an early-season variety (May to June) and is not regarded as a container or condo mango."
+      ],
+      "claims": [
+        {
+          "text": "Also known as Po Pyu Kalay, a Myanmar cultivar introduced to the US in 1995 by Maurice Kong",
+          "type": "origin",
+          "cites": [
+            "ttg-lm",
+            "taf-lm"
+          ]
+        },
+        {
+          "text": "Gary Zill gave it the Lemon Meringue name and used it as a breeding parent of Lemon Zest and Orange Sherbet",
+          "type": "breeding",
+          "cites": [
+            "ttg-lm",
+            "taf-lm"
+          ]
+        },
+        {
+          "text": "Pale, fibreless, juicy flesh",
+          "type": "flavour",
+          "cites": [
+            "ttg-lm",
+            "taf-lm"
+          ]
+        },
+        {
+          "text": "Mild, sugary-sweet flavour with a lemon-citrus note",
+          "type": "flavour",
+          "cites": [
+            "ttg-lm",
+            "taf-lm"
+          ]
+        },
+        {
+          "text": "Small, elongated fruit ripening to golden yellow",
+          "type": "appearance",
+          "cites": [
+            "ttg-lm",
+            "taf-lm"
+          ]
+        },
+        {
+          "text": "Early-season variety (May to June)",
+          "type": "season",
+          "cites": [
+            "ttg-lm"
+          ]
+        },
+        {
+          "text": "Not regarded as a container or condo mango",
+          "type": "use",
+          "cites": [
+            "ttg-lm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ttg-lm",
+          "name": "Tropical Tree Guide: Lemon Meringue (Po Pyu Kalay) Mango Grow Guide",
+          "url": "https://tropicaltreeguide.com/lemon-meringue-mango-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "taf-lm",
+          "name": "Tropical Acres Farms: Lemon Meringue / Po Pyu Kalay",
+          "url": "https://www.tropicalacresfarms.com/product-page/lemon-meringue-po-pyu-kalay",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-lemon-zest": {
+      "slug": "mango-lemon-zest",
+      "species": "Mango",
+      "variety": "Lemon Zest",
+      "paragraphs": [
+        "Lemon Zest is a Florida cultivar from the breeding program of Gary Zill in Boynton Beach, selected from the Po Pyu Kalay lineage (also called Lemon Meringue). It is one of the best-known of the citrus-flavoured mangoes, with intense sweetness carrying candied orange and tangelo citrus notes. The fruit has a polyembryonic seed.",
+        "The peel is bright yellow with irregular splotches of light green, and the deep yellow to orange-yellow pulp carries some non-objectionable fibre with a pleasant aroma and rich flavour of excellent quality. Fruit typically weighs around 361 to 577 grams. It is an early to midseason cultivar on a vigorous, upright tree."
+      ],
+      "claims": [
+        {
+          "text": "Lemon Zest is a Florida cultivar from Gary Zill's breeding program in Boynton Beach, selected from the Po Pyu Kalay (Lemon Meringue) lineage.",
+          "type": "breeding",
+          "cites": [
+            "uf-lemonzest",
+            "mangopedia-lemonzest"
+          ]
+        },
+        {
+          "text": "It is a citrus-flavoured mango with intense sweetness and candied orange and tangelo notes.",
+          "type": "flavour",
+          "cites": [
+            "uf-lemonzest",
+            "mangopedia-lemonzest"
+          ]
+        },
+        {
+          "text": "The fruit has a polyembryonic seed.",
+          "type": "seed",
+          "cites": [
+            "uf-lemonzest",
+            "mangopedia-lemonzest"
+          ]
+        },
+        {
+          "text": "The peel is bright yellow with irregular splotches of light green; the pulp is deep yellow to orange-yellow with some non-objectionable fibre.",
+          "type": "appearance",
+          "cites": [
+            "uf-lemonzest"
+          ]
+        },
+        {
+          "text": "Fruit weighs around 361 to 577 grams.",
+          "type": "appearance",
+          "cites": [
+            "uf-lemonzest"
+          ]
+        },
+        {
+          "text": "It is an early to midseason cultivar on a vigorous, upright tree.",
+          "type": "season",
+          "cites": [
+            "uf-lemonzest"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uf-lemonzest",
+          "name": "UF/IFAS Mango Science: Lemon Zest",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/lemon-zest/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "mangopedia-lemonzest",
+          "name": "Mangopedia: Lemon Zest",
+          "url": "https://mangopedia.org/lemon-zest/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-little-gem": {
+      "slug": "mango-little-gem",
+      "species": "Mango",
+      "variety": "Little Gem",
+      "paragraphs": [
+        "Little Gem is a named semi-dwarf cultivar from Gary Zill's Florida breeding program, originally numbered 29-26 and propagated at Boynton Beach. It is a seedling of Julie, with Gary the suspected pollen parent. The trees are low to moderately vigorous and compact, with a very dense canopy that can be held to a small size, which makes Little Gem a popular condo or container mango.",
+        "Little Gem is highly precocious and a heavy bearer of small, rounded fruit that turn orange near maturity, sometimes with a pinkish blush. The skin is thick and the flesh firm yet essentially fibre free, carrying a medium bodied Indian and West Indian type flavour described as a rich, gently spicy sweetness. It is a late season variety, ripening from late July into August."
+      ],
+      "claims": [
+        {
+          "text": "Little Gem is a Gary Zill selection (number 29-26) from Boynton Beach, a seedling of Julie with Gary the suspected pollen parent",
+          "type": "breeding",
+          "cites": [
+            "lg-ttg",
+            "lg-fshs"
+          ]
+        },
+        {
+          "text": "The trees are low to moderately vigorous and compact with a dense canopy, suiting condo or container growing",
+          "type": "growing",
+          "cites": [
+            "lg-ttg",
+            "lg-fshs"
+          ]
+        },
+        {
+          "text": "It is highly precocious and a heavy bearer of small, rounded fruit that turn orange, sometimes with a pinkish blush",
+          "type": "appearance",
+          "cites": [
+            "lg-ttg",
+            "lg-fshs"
+          ]
+        },
+        {
+          "text": "The flesh is firm and essentially fibre free with a medium bodied, gently spicy sweet flavour",
+          "type": "flavour",
+          "cites": [
+            "lg-ttg",
+            "lg-fshs"
+          ]
+        },
+        {
+          "text": "It is a late season variety ripening from late July into August",
+          "type": "season",
+          "cites": [
+            "lg-ttg",
+            "lg-fshs"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "lg-ttg",
+          "name": "Tropical Tree Guide: Little Gem Mango Grow Guide",
+          "url": "https://tropicaltreeguide.com/little-gem-mango-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "lg-fshs",
+          "name": "Crane et al, Selected mango cultivars developed by Gary Zill (FSHS), National Mango Board",
+          "url": "https://www.mango.org/wp-content/uploads/2025/07/2-Crane-Summit-FSHS-Zill-mango.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-mallika": {
+      "slug": "mango-mallika",
+      "species": "Mango",
+      "variety": "Mallika",
+      "paragraphs": [
+        "Mallika is an Indian hybrid mango, a cross of Neelum and Dasheri introduced by Dr R. N. (Ramnath) Singh. It combines Neelum's late ripening with Dasheri's sweetness and typically harvests around June to July.",
+        "The fruit is fibreless with deep, rich orange flesh and an exceptionally sweet flavour carrying citrus, melon and honey notes. It is valued both for fresh eating and for processing into juices, nectar and canned slices."
+      ],
+      "claims": [
+        {
+          "text": "A hybrid of Neelum and Dasheri introduced by Dr R. N. Singh.",
+          "type": "origin",
+          "cites": [
+            "mallika-wikipedia",
+            "mallika-pmc"
+          ]
+        },
+        {
+          "text": "Fibreless flesh, exceptionally sweet with citrus, melon and honey notes; harvests June to July.",
+          "type": "flavour",
+          "cites": [
+            "mallika-wikipedia"
+          ]
+        },
+        {
+          "text": "High pulp content, suited to processing into juice, nectar and canned slices.",
+          "type": "uses",
+          "cites": [
+            "mallika-pmc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mallika-wikipedia",
+          "name": "Wikipedia: Mallika (mango)",
+          "url": "https://en.wikipedia.org/wiki/Mallika_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "mallika-pmc",
+          "name": "J Food Sci Technol (PMC): processing of Sindura, Mallika and Totapuri cultivars",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4325023/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-manjeera": {
+      "slug": "mango-manjeera",
+      "species": "Mango",
+      "variety": "Manjeera",
+      "paragraphs": [
+        "Manjeera is an Indian hybrid mango bred by crossing the cultivars Rumani and Neelum, released from the Fruit Research Station at Sangareddy in the Telangana region of South India. The fruit is described as attractive and large, resembling its Rumani parent, and the tree is noted as a dwarf, regular and prolific bearer that suits high density planting.",
+        "Its flesh is reported as firm, very sweet and free of fibre, traits inherited from its parent cultivars. Because the tree stays compact and crops reliably, it is favoured for closer spacing than many traditional Indian mangoes."
+      ],
+      "claims": [
+        {
+          "text": "Hybrid bred by crossing Rumani and Neelum",
+          "type": "breeding",
+          "cites": [
+            "kisaan-manjeera",
+            "frs-sangareddy"
+          ]
+        },
+        {
+          "text": "Released from the Fruit Research Station, Sangareddy, in the Telangana region of South India",
+          "type": "origin",
+          "cites": [
+            "kisaan-manjeera",
+            "frs-sangareddy"
+          ]
+        },
+        {
+          "text": "Fruit is attractive and large, resembling the Rumani parent",
+          "type": "appearance",
+          "cites": [
+            "kisaan-manjeera"
+          ]
+        },
+        {
+          "text": "Tree is a dwarf, regular and prolific bearer suited to high density planting",
+          "type": "growing",
+          "cites": [
+            "kisaan-manjeera"
+          ]
+        },
+        {
+          "text": "Flesh is firm, very sweet and free of fibre",
+          "type": "flavour",
+          "cites": [
+            "kisaan-manjeera"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "kisaan-manjeera",
+          "name": "Kisaan Helpline: Manjeera (Rumani x Neelum) mango variety",
+          "url": "https://www.kisaanhelpline.com/variety/manjeera-rumani-x-neelum-manjira-rumani-x-nilama",
+          "tier": "third_party"
+        },
+        {
+          "id": "frs-sangareddy",
+          "name": "SKLTSHU: Fruit Research Station, Sangareddy",
+          "url": "https://skltshu.ac.in/research_station_fruit_sangareddy.html",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-manzanillo": {
+      "slug": "mango-manzanillo",
+      "species": "Mango",
+      "variety": "Manzanillo",
+      "paragraphs": [
+        "Manzanillo (the cultivar Manzanillo-Nunez) originated as a chance seedling, of possible Indian-race ancestry, in Manzanillo, Colima, Mexico, where the tree was first observed in 1972 and later described as a new Mexican cultivar in 1984.",
+        "The fruit is large and showy, averaging about 660 g with roughly 75 percent red blush over the skin. Its flesh is almost fibreless, bright yellow and juicy, with a pleasant aroma and around 15 degrees Brix. Trees show little alternate bearing, flowering January to April and ripening June to July."
+      ],
+      "claims": [
+        {
+          "text": "Originated as a chance seedling in Manzanillo, Colima, Mexico, first observed 1972",
+          "type": "origin",
+          "cites": [
+            "eureka-manz",
+            "semschol-manz"
+          ]
+        },
+        {
+          "text": "Described as a new Mexican cultivar in 1984 (Proc. Florida State Horticultural Society)",
+          "type": "breeding",
+          "cites": [
+            "semschol-manz",
+            "eureka-manz"
+          ]
+        },
+        {
+          "text": "Average fruit weight about 660 g",
+          "type": "measurement",
+          "cites": [
+            "eureka-manz",
+            "semschol-manz"
+          ]
+        },
+        {
+          "text": "About 75 percent red blush on the skin",
+          "type": "measurement",
+          "cites": [
+            "eureka-manz",
+            "semschol-manz"
+          ]
+        },
+        {
+          "text": "Almost fibreless, bright yellow, juicy flesh at about 15 degrees Brix",
+          "type": "measurement",
+          "cites": [
+            "eureka-manz",
+            "semschol-manz"
+          ]
+        },
+        {
+          "text": "Flowers January to April, harvests June to July with little alternate bearing",
+          "type": "season",
+          "cites": [
+            "eureka-manz",
+            "semschol-manz"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "eureka-manz",
+          "name": "EurekaMag: Manzanillo-Nunez, a new Mexican mango cultivar",
+          "url": "https://eurekamag.com/research/016/323/016323845.php",
+          "tier": "authoritative"
+        },
+        {
+          "id": "semschol-manz",
+          "name": "Semantic Scholar: Manzanillo-Nunez, A New Mexican Mango Cultivar (Nunez-Elisea, Proc. FSHS)",
+          "url": "https://www.semanticscholar.org/paper/'Manzanillo-Nunez':-A-New-Mexican-Mango-Cultivar-N%C3%BA%C3%B1ez-Elisea/ca0ef6cc2857878de8f539d9e889ad156ec40ab1",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "mango-nam-doc-mai": {
       "slug": "mango-nam-doc-mai",
       "species": "Mango",
@@ -205,6 +3498,599 @@
       ],
       "confidence": "high",
       "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-neelam": {
+      "slug": "mango-neelam",
+      "species": "Mango",
+      "variety": "Neelam",
+      "paragraphs": [
+        "Neelam (also spelt Neelum) is a South Indian cultivar grown commercially on a large scale, notably across Tamil Nadu and Andhra Pradesh. It is a true late-season mango, ripening well after most varieties have finished, and is a reliable, regular bearer. The seed is monoembryonic, so a seedling will not come true to the parent.",
+        "The fruit is small and oval, smooth-skinned and bright yellow when ripe, with deep yellow to orange flesh that is firm and fibreless. The flavour is rich and aromatic with a sub-acid edge and a distinct resinous, spicy note."
+      ],
+      "claims": [
+        {
+          "text": "South Indian cultivar grown commercially; a very late-season, regular-bearing mango with a monoembryonic seed.",
+          "type": "season",
+          "cites": [
+            "neelum-tropicaltreeguide",
+            "neelam-pureaam"
+          ]
+        },
+        {
+          "text": "Small oval fruit, bright yellow skin, firm fibreless flesh with a sub-acid, resinous, aromatic flavour.",
+          "type": "flavour",
+          "cites": [
+            "neelum-tropicaltreeguide"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "neelum-tropicaltreeguide",
+          "name": "Tropical Tree Guide: Neelum Mango Grow Guide",
+          "url": "https://tropicaltreeguide.com/neelum-mango-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "neelam-pureaam",
+          "name": "Pure Aam: Neelam Mango Complete Guide",
+          "url": "https://www.pureaam.com/blog/neelam-mango-complete-guide",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-okrong": {
+      "slug": "mango-okrong",
+      "species": "Mango",
+      "variety": "Okrong",
+      "paragraphs": [
+        "Okrong (also written Ok Rong or Okrung) is one of the most popular Thai dessert cultivars, a small to medium fruit with smooth green to green-yellow skin that takes on a yellow-orange hue when ripe.",
+        "It belongs to the Indo-Chinese group with a sweet, fragrant, slightly fibrous flesh, and is the variety traditionally paired with sticky rice in Thailand's classic mango sticky rice dessert. A prized regional strain, Ok Rong Damnoen from Ratchaburi, is noted for being especially sweet and fragrant."
+      ],
+      "claims": [
+        {
+          "text": "Okrong (Ok Rong) is a popular Thai mango cultivar",
+          "type": "origin",
+          "cites": [
+            "wiki-cv-okrong",
+            "huahin-thai-okrong"
+          ]
+        },
+        {
+          "text": "Sweet, fragrant dessert mango eaten ripe",
+          "type": "flavour",
+          "cites": [
+            "huahin-thai-okrong",
+            "holidify-mango-okrong"
+          ]
+        },
+        {
+          "text": "Traditionally served with sticky rice in Thai mango sticky rice",
+          "type": "use",
+          "cites": [
+            "huahin-thai-okrong",
+            "holidify-mango-okrong"
+          ]
+        },
+        {
+          "text": "Ok Rong Damnoen from Ratchaburi is a prized, especially sweet strain",
+          "type": "naming",
+          "cites": [
+            "holidify-mango-okrong"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-cv-okrong",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "huahin-thai-okrong",
+          "name": "Hua Hin Thai Culinary School: The Thai Mango",
+          "url": "https://huahinthaicookingacademy.com/the-thai-mango-a-luscious-and-precious-staple/",
+          "tier": "third_party"
+        },
+        {
+          "id": "holidify-mango-okrong",
+          "name": "Holidify: Mangoes in Thailand",
+          "url": "https://www.holidify.com/pages/mangoes-in-thailand-1823.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-orange-sherbet": {
+      "slug": "mango-orange-sherbet",
+      "species": "Mango",
+      "variety": "Orange Sherbet",
+      "paragraphs": [
+        "Orange Sherbet is a Florida selection bred by Gary Zill at Boynton Beach (originally designated G-32). It is a seedling of Lemon Meringue and a sibling of Lemon Zest, part of Zill's citrus-flavoured mango line.",
+        "The medium oval fruit ripens yellow over orange with smooth flesh. It is celebrated for an intensely rich, sweet flavour with complex orange-citrus candy notes (often likened to an orange push pop or creamsicle) and a near-fibreless, melt-in-the-mouth texture. It ripens mid-season (June to July). Despite the small fruit, it forms a large tree and is not considered a condo mango."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Gary Zill at Boynton Beach, Florida, originally designated G-32",
+          "type": "origin",
+          "cites": [
+            "ttg-os",
+            "taf-os"
+          ]
+        },
+        {
+          "text": "A seedling of Lemon Meringue and sibling of Lemon Zest",
+          "type": "breeding",
+          "cites": [
+            "ttg-os",
+            "taf-os"
+          ]
+        },
+        {
+          "text": "Rich, sweet flavour with complex orange-citrus candy notes likened to an orange push pop or creamsicle",
+          "type": "flavour",
+          "cites": [
+            "ttg-os",
+            "taf-os"
+          ]
+        },
+        {
+          "text": "Near-fibreless, melt-in-the-mouth flesh",
+          "type": "flavour",
+          "cites": [
+            "ttg-os",
+            "taf-os"
+          ]
+        },
+        {
+          "text": "Medium oval fruit ripening yellow over orange",
+          "type": "appearance",
+          "cites": [
+            "ttg-os",
+            "taf-os"
+          ]
+        },
+        {
+          "text": "Mid-season ripening (June to July)",
+          "type": "season",
+          "cites": [
+            "ttg-os"
+          ]
+        },
+        {
+          "text": "Forms a large tree and is not considered a condo mango",
+          "type": "use",
+          "cites": [
+            "ttg-os"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ttg-os",
+          "name": "Tropical Tree Guide: Orange Sherbet Mango Grow Guide",
+          "url": "https://tropicaltreeguide.com/orange-sherbet-mango-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "taf-os",
+          "name": "Tropical Acres Farms: Orange Sherbet",
+          "url": "https://www.tropicalacresfarms.com/product-page/orange-sherbet",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-osteen": {
+      "slug": "mango-osteen",
+      "species": "Mango",
+      "variety": "Osteen",
+      "paragraphs": [
+        "Osteen is a Florida mango that grew from a seed planted in 1935 on the Merritt Island property of S. A. Osteen, the first County Commissioner of Brevard County. The tree first fruited in 1940. It was reportedly a seedling of Haden, a link later supported by pedigree analysis, and it carries a monoembryonic seed.",
+        "The flesh is nearly fibreless with a mild, sweet flavour, and the oblong fruit has yellow skin that usually turns dark purple as it ripens. Though only a minor commercial mango in Florida, Osteen became the dominant variety in Spain: trade figures put it at around 85 per cent of Spanish shipments, grown mainly on the subtropical coast of Andalucia."
+      ],
+      "claims": [
+        {
+          "text": "Osteen grew from a seed planted in 1935 on the Merritt Island, Florida property of S. A. Osteen, and the tree first fruited in 1940.",
+          "type": "origin",
+          "cites": [
+            "wiki-osteen"
+          ]
+        },
+        {
+          "text": "It was reportedly a seedling of Haden, supported by pedigree analysis.",
+          "type": "breeding",
+          "cites": [
+            "wiki-osteen"
+          ]
+        },
+        {
+          "text": "The seed is monoembryonic.",
+          "type": "botany",
+          "cites": [
+            "wiki-osteen"
+          ]
+        },
+        {
+          "text": "The flesh is nearly fibreless with a mild, sweet flavour and the skin turns dark purple at maturity.",
+          "type": "flavour",
+          "cites": [
+            "wiki-osteen"
+          ]
+        },
+        {
+          "text": "Osteen is the dominant mango variety in Spain, around 85 per cent of Spanish shipments, grown mainly in Andalucia.",
+          "type": "significance",
+          "cites": [
+            "fruitrop-spain",
+            "wiki-osteen"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-osteen",
+          "name": "Wikipedia, Osteen (mango)",
+          "url": "https://en.wikipedia.org/wiki/Osteen_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "fruitrop-spain",
+          "name": "Fruitrop, Spanish mango country profile",
+          "url": "https://www.fruitrop.com/en/Articles-by-subject/Full-country-profile/2016/Spanish-mango",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-pairi": {
+      "slug": "mango-pairi",
+      "species": "Mango",
+      "variety": "Pairi",
+      "paragraphs": [
+        "Pairi (also spelt Payri or Paheri) is an early-season Indian cultivar associated with the Konkan coast of Maharashtra, where it ripens ahead of most other varieties. It is closely related to, and often confused with, the Raspuri mango of southern India, though many growers treat the two as distinct selections.",
+        "The fruit is prized less for sweetness than for its juicy, aromatic, somewhat fibrous pulp with a tangy edge. In western India it is a traditional base for aam ras (mango pulp), frequently blended with Alphonso. The skin turns yellow with a saffron-toned interior, and the season is short."
+      ],
+      "claims": [
+        {
+          "text": "Pairi (Payri, Paheri) is an Indian cultivar from Maharashtra.",
+          "type": "origin",
+          "cites": [
+            "wiki-list",
+            "sp-raspuri"
+          ]
+        },
+        {
+          "text": "It is an early-season mango with juicy, somewhat fibrous, tangy pulp used for aam ras.",
+          "type": "flavour",
+          "cites": [
+            "sp-raspuri",
+            "wiki-list"
+          ]
+        },
+        {
+          "text": "Pairi is closely related to and often conflated with the Raspuri cultivar.",
+          "type": "synonym",
+          "cites": [
+            "sp-raspuri",
+            "wiki-raspuri"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-list",
+          "name": "List of mango cultivars, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-raspuri",
+          "name": "Raspuri Mangoes, Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Raspuri_Mangoes_23819.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-raspuri",
+          "name": "Raspuri, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Raspuri",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-palmer": {
+      "slug": "mango-palmer",
+      "species": "Mango",
+      "variety": "Palmer",
+      "paragraphs": [
+        "Palmer is a Florida mango cultivar that grew from a seed planted around 1925 on the Miami property of Victor Mell. It was first propagated in 1945 and named in 1949, and a 2005 pedigree analysis found it was most likely a seedling of Haden. The seed is monoembryonic.",
+        "It is a late season mango, ripening from about July to early September. The skin can colour up to a purple or red blush well before the flesh is ripe, which can lead to fruit being picked early. The flesh is orange-yellow and nearly fibreless with a mild, aromatic flavour. It is grown commercially in Florida, Spain, Africa and Australia."
+      ],
+      "claims": [
+        {
+          "text": "Florida cultivar; grew from a seed planted around 1925 on Victor Mell's Miami property; first propagated 1945, named 1949",
+          "type": "origin",
+          "cites": [
+            "wikipedia-palmer"
+          ]
+        },
+        {
+          "text": "A 2005 pedigree analysis found Palmer was most likely a seedling of Haden",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-palmer"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "growing",
+          "cites": [
+            "ufifas-palmer",
+            "wikipedia-palmer"
+          ]
+        },
+        {
+          "text": "Late season mango, ripening from about July to early September",
+          "type": "season",
+          "cites": [
+            "ufifas-palmer",
+            "wikipedia-palmer"
+          ]
+        },
+        {
+          "text": "Skin can colour up to a purple or red blush before the flesh is ripe, sometimes leading to early picking",
+          "type": "appearance",
+          "cites": [
+            "ufifas-palmer",
+            "wikipedia-palmer"
+          ]
+        },
+        {
+          "text": "Orange-yellow, nearly fibreless flesh with a mild, aromatic flavour",
+          "type": "flavour",
+          "cites": [
+            "ufifas-palmer",
+            "wikipedia-palmer"
+          ]
+        },
+        {
+          "text": "Grown commercially in Florida, Spain, Africa and Australia",
+          "type": "use",
+          "cites": [
+            "wikipedia-palmer"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-palmer",
+          "name": "Wikipedia: Palmer (mango)",
+          "url": "https://en.wikipedia.org/wiki/Palmer_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ufifas-palmer",
+          "name": "University of Florida IFAS Mango: Palmer",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/palmer/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-parvin": {
+      "slug": "mango-parvin",
+      "species": "Mango",
+      "variety": "Parvin",
+      "paragraphs": [
+        "Parvin is an older Florida cultivar, a chance seedling of Haden discovered in the 1940s on the property of Clint Fisk Parvin at Bradenton, Florida. It saw only limited commercial planting in Florida, but is now grown commercially in Puerto Rico and parts of Latin America.",
+        "The fruit is oval to oblong with a rounded apex and no beak, wrapped in thick, waxy skin that is yellow with a red to crimson blush over much of its surface at maturity. The deep orange flesh is sweet and rich, with little to no fibre. Parvin ripens in the mid to late summer, typically July to August in Florida."
+      ],
+      "claims": [
+        {
+          "text": "Parvin is a Haden seedling discovered in the 1940s on Clint Fisk Parvin's property in Bradenton, Florida",
+          "type": "origin",
+          "cites": [
+            "parvin-wiki",
+            "parvin-gfg"
+          ]
+        },
+        {
+          "text": "It saw only limited commercial planting in Florida but is grown commercially in Puerto Rico",
+          "type": "growing",
+          "cites": [
+            "parvin-wiki",
+            "parvin-gfg"
+          ]
+        },
+        {
+          "text": "The fruit is oval to oblong with a rounded apex and no beak, with thick yellow skin and a red to crimson blush",
+          "type": "appearance",
+          "cites": [
+            "parvin-wiki",
+            "parvin-gfg"
+          ]
+        },
+        {
+          "text": "The flesh is sweet and rich with little to no fibre",
+          "type": "flavour",
+          "cites": [
+            "parvin-wiki",
+            "parvin-gfg"
+          ]
+        },
+        {
+          "text": "It typically ripens July to August in Florida",
+          "type": "season",
+          "cites": [
+            "parvin-wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "parvin-wiki",
+          "name": "Wikipedia: Parvin (mango)",
+          "url": "https://en.wikipedia.org/wiki/Parvin_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "parvin-gfg",
+          "name": "Good Fruit Guide: Parvin",
+          "url": "https://goodfruitguide.co.uk/product/parvin/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-pickering": {
+      "slug": "mango-pickering",
+      "species": "Mango",
+      "variety": "Pickering",
+      "paragraphs": [
+        "Pickering is a Florida mango prized as a condo or dwarf variety. UF/IFAS describes it as a low vigour tree, which lets it be kept compact and grown in containers, making it a favourite for small gardens. The seed is monoembryonic, so seedlings will not come true to type and trees are grafted.",
+        "Its flesh is yellow with low fibre, and the flavour is distinctive: UF/IFAS records a mild coconut-like flavour of good quality, the trait Pickering is best known for. The skin ripens to light green or light yellow with a pinkish-red splotchy blush."
+      ],
+      "claims": [
+        {
+          "text": "Pickering originated in Florida and is a low vigour (dwarf, condo) tree suited to containers and small spaces.",
+          "type": "origin",
+          "cites": [
+            "ifas-pickering",
+            "fairchild-pickering"
+          ]
+        },
+        {
+          "text": "The seed is monoembryonic.",
+          "type": "botany",
+          "cites": [
+            "ifas-pickering"
+          ]
+        },
+        {
+          "text": "The flesh is yellow with low fibre and a mild coconut-like flavour.",
+          "type": "flavour",
+          "cites": [
+            "ifas-pickering",
+            "fairchild-pickering"
+          ]
+        },
+        {
+          "text": "The skin ripens light green to light yellow with a pinkish-red splotchy blush.",
+          "type": "appearance",
+          "cites": [
+            "ifas-pickering"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ifas-pickering",
+          "name": "UF/IFAS Mango Science, Pickering phenology",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/pickering/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fairchild-pickering",
+          "name": "Fairchild Tropical Botanic Garden, Pickering dwarf condo mango",
+          "url": "https://orders.fairchildgarden.org/products/mangifera-indica-pickering",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-pico": {
+      "slug": "mango-pico",
+      "species": "Mango",
+      "variety": "Pico",
+      "paragraphs": [
+        "Pico (also spelt piko, and known as padero) is a Philippine cultivar that, alongside the Carabao, is one of the most widely grown mangoes in the Philippines, generally ranked second to it commercially. Unlike the monoembryonic Indian types, Pico is polyembryonic, so a single seed can raise several seedlings that come true to the parent.",
+        "The fruit is elongated and noticeably flattened compared with the Carabao, with a distinct beak at the apex. The flesh is light orange-yellow and fibrous, with a classic sweet mango taste. It ripens through the middle of the year, roughly May to July. The fibrous flesh and beaked shape are its clearest points of difference from the smoother, plumper Carabao."
+      ],
+      "claims": [
+        {
+          "text": "Pico (piko, padero) is a Philippine cultivar and, with Carabao, one of the most commonly grown mangoes there",
+          "type": "origin",
+          "cites": [
+            "pico-wiki",
+            "pico-pcaarrd"
+          ]
+        },
+        {
+          "text": "Pico is polyembryonic, in contrast to Indian-type mangoes",
+          "type": "pollination",
+          "cites": [
+            "pico-wiki"
+          ]
+        },
+        {
+          "text": "The fruit is elongated and flattened relative to Carabao, with a distinct beak at the apex",
+          "type": "appearance",
+          "cites": [
+            "pico-wiki",
+            "pico-pcaarrd"
+          ]
+        },
+        {
+          "text": "The flesh is light orange-yellow and fibrous with a sweet taste",
+          "type": "flavour",
+          "cites": [
+            "pico-pcaarrd",
+            "pico-wiki"
+          ]
+        },
+        {
+          "text": "The fruiting season runs roughly from May to July",
+          "type": "season",
+          "cites": [
+            "pico-wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pico-wiki",
+          "name": "Wikipedia: Pico (mango)",
+          "url": "https://en.wikipedia.org/wiki/Pico_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "pico-pcaarrd",
+          "name": "Mango ISP, PCAARRD (DOST, Philippine Government)",
+          "url": "https://ispweb.pcaarrd.dost.gov.ph/isp-commodities/mango/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -275,6 +4161,971 @@
       "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "mango-red-mulgoba": {
+      "slug": "mango-red-mulgoba",
+      "species": "Mango",
+      "variety": "Red Mulgoba",
+      "paragraphs": [
+        "Mulgoba (also spelt Mulgoa or Malgova) is a classic mango from South India, grown mainly in Tamil Nadu, Kerala and Karnataka. Twelve grafted trees were sent from India to the United States in 1889, where the cultivar became prized for its eating quality and colour. The Florida grown fruit is yellow with a crimson blush, and the Red Mulgoba name reflects this reddish skin colour.",
+        "The flesh is yellow, soft and fibreless with a rich, spicy and sweet flavour, and it ripens late in the season. Mulgoba is historically important as a parent of the Haden mango (a Mulgoba seedling), which in turn founded much of the Florida mango lineage."
+      ],
+      "claims": [
+        {
+          "text": "Classic South Indian mango grown mainly in Tamil Nadu, Kerala and Karnataka",
+          "type": "origin",
+          "cites": [
+            "wiki-mulgoba"
+          ]
+        },
+        {
+          "text": "Sent from India to the United States in 1889 as grafted trees",
+          "type": "origin",
+          "cites": [
+            "wiki-mulgoba"
+          ]
+        },
+        {
+          "text": "Fruit is yellow with a crimson blush",
+          "type": "appearance",
+          "cites": [
+            "wiki-mulgoba"
+          ]
+        },
+        {
+          "text": "Flesh is yellow, soft and fibreless with a rich, spicy, sweet flavour",
+          "type": "flavour",
+          "cites": [
+            "wiki-mulgoba"
+          ]
+        },
+        {
+          "text": "Late ripening",
+          "type": "season",
+          "cites": [
+            "wiki-mulgoba"
+          ]
+        },
+        {
+          "text": "Parent of the Haden mango, which it was raised as a seedling of",
+          "type": "breeding",
+          "cites": [
+            "wiki-mulgoba",
+            "wiki-cultivars-list-mulgoba"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-mulgoba",
+          "name": "Wikipedia: Mulgoba",
+          "url": "https://en.wikipedia.org/wiki/Mulgoba",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-cultivars-list-mulgoba",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-sabre": {
+      "slug": "mango-sabre",
+      "species": "Mango",
+      "variety": "Sabre",
+      "paragraphs": [
+        "Sabre is a South African mango best known not as dessert fruit but as a rootstock. Its seed is polyembryonic, meaning seedlings come up largely true to type, which makes it valuable for raising uniform nursery trees. It is the most widely used rootstock in South Africa.",
+        "The fruit itself is a traditional fibre mango: small to medium, oblong, with attractive pink to red blushed skin over yellow, and notably fibrous flesh of modest eating quality. As a rootstock it tends toward low vigour, producing smaller canopies, with a dwarfing effect reported in trials in Israel and South Africa."
+      ],
+      "claims": [
+        {
+          "text": "South African cultivar, most widely used rootstock in South Africa",
+          "type": "origin",
+          "cites": [
+            "mangorootstock",
+            "southafrica"
+          ]
+        },
+        {
+          "text": "Polyembryonic seed giving true to type seedlings",
+          "type": "quirk",
+          "cites": [
+            "mangorootstock"
+          ]
+        },
+        {
+          "text": "Small to medium, oblong, pink to red blushed skin, fibrous flesh",
+          "type": "appearance",
+          "cites": [
+            "southafrica"
+          ]
+        },
+        {
+          "text": "Low vigour rootstock with a dwarfing effect in Israel and South Africa",
+          "type": "quirk",
+          "cites": [
+            "mangorootstock"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mangorootstock",
+          "name": "Mango Rootstocks Literature Review (mango.org / National Mango Board)",
+          "url": "https://www.mango.org/wp-content/uploads/2017/10/Mango_rootstock_Final_Report_Eng.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "southafrica",
+          "name": "South Africa Mango Cultivars",
+          "url": "https://southafrica.co.za/mango-cultivars.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-saigon": {
+      "slug": "mango-saigon",
+      "species": "Mango",
+      "variety": "Saigon",
+      "paragraphs": [
+        "Saigon originated in Vietnam, and its seeds were shipped to the USDA plant introduction station in Miami, Florida, in 1902, making it one of the early founding mangoes of Florida horticulture. It later became a parent of other cultivars, including Florigon, whose name blends Florida and Saigon.",
+        "The seed is polyembryonic, a South East Asian trait. The skin is greenish yellow to bright yellow, rarely with a pink blush, and the pale yellow flesh is completely fibreless. The flavour is mild and pleasantly sweet, and it ripens early to mid season."
+      ],
+      "claims": [
+        {
+          "text": "Saigon originated in Vietnam and its seeds were sent to the USDA station in Miami, Florida, in 1902.",
+          "type": "origin",
+          "cites": [
+            "wiki-saigon",
+            "ifas-saigon"
+          ]
+        },
+        {
+          "text": "It became a parent of other Florida cultivars including Florigon, a name blending Florida and Saigon.",
+          "type": "quirk",
+          "cites": [
+            "wiki-saigon"
+          ]
+        },
+        {
+          "text": "The seed is polyembryonic and the yellow flesh is completely fibreless.",
+          "type": "quirk",
+          "cites": [
+            "wiki-saigon",
+            "ifas-saigon"
+          ]
+        },
+        {
+          "text": "The skin is greenish yellow to bright yellow, the flavour mild and sweet, ripening early to mid season.",
+          "type": "flavour",
+          "cites": [
+            "ifas-saigon"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ifas-saigon",
+          "name": "UF/IFAS Mango: Saigon",
+          "url": "https://mango.ifas.ufl.edu/research/phenology/saigon/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-saigon",
+          "name": "Wikipedia: Saigon (mango)",
+          "url": "https://en.wikipedia.org/wiki/Saigon_(mango)",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-spirit-of-76": {
+      "slug": "mango-spirit-of-76",
+      "species": "Mango",
+      "variety": "Spirit of '76",
+      "paragraphs": [
+        "Spirit of '76 originated in south Florida on the property of Laurence Zill at Boynton Beach, where the original tree first fruited during the US bicentennial, giving it its name. A 2005 pedigree analysis estimated it to be a Haden by Zill cross.",
+        "The oblong fruit averages about a pound, with yellow flesh and a bright red blush that develops well before harvest. It is completely fibreless, soft, smooth and very sweet, with a rich aromatic mango flavour balanced by acidity and notes of peach and nectarine. It ripens June to July in Florida. Its soft flesh kept it from commercial acceptance, so it remains a dooryard variety."
+      ],
+      "claims": [
+        {
+          "text": "Originated on Laurence Zill's property at Boynton Beach, Florida",
+          "type": "origin",
+          "cites": [
+            "wiki-s76",
+            "ttg-s76"
+          ]
+        },
+        {
+          "text": "Named for first fruiting during the US bicentennial in 1976",
+          "type": "naming",
+          "cites": [
+            "wiki-s76",
+            "ttg-s76"
+          ]
+        },
+        {
+          "text": "A 2005 pedigree analysis estimated it to be a Haden by Zill cross",
+          "type": "breeding",
+          "cites": [
+            "wiki-s76"
+          ]
+        },
+        {
+          "text": "Completely fibreless, soft, smooth and very sweet flesh",
+          "type": "flavour",
+          "cites": [
+            "wiki-s76",
+            "ttg-s76"
+          ]
+        },
+        {
+          "text": "Rich aromatic mango flavour with notes of peach and nectarine",
+          "type": "flavour",
+          "cites": [
+            "ttg-s76"
+          ]
+        },
+        {
+          "text": "Oblong fruit with a bright red blush developing before harvest",
+          "type": "appearance",
+          "cites": [
+            "wiki-s76",
+            "ttg-s76"
+          ]
+        },
+        {
+          "text": "Ripens June to July in Florida",
+          "type": "season",
+          "cites": [
+            "wiki-s76"
+          ]
+        },
+        {
+          "text": "Did not gain commercial acceptance due to soft flesh; remains a dooryard variety",
+          "type": "use",
+          "cites": [
+            "wiki-s76"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-s76",
+          "name": "Wikipedia: Spirit of '76 (mango)",
+          "url": "https://en.wikipedia.org/wiki/Spirit_of_'76_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ttg-s76",
+          "name": "Tropical Tree Guide: Spirit of 76 Mango Grow Guide",
+          "url": "https://tropicaltreeguide.com/spirit-of-76-mango-grow-guide/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-sweet-tart": {
+      "slug": "mango-sweet-tart",
+      "species": "Mango",
+      "variety": "Sweet Tart",
+      "paragraphs": [
+        "Sweet Tart is a boutique Florida cultivar from Gary Zill's breeding program at Boynton Beach. The fruit is small to medium, oblong ovoid with a prominent beak, and is grown for its flavour rather than its size.",
+        "Its signature is a rich, complex flavour that swings from tart to very sweet, an intense Southeast Asian style profile that, as UF/IFAS notes, intensifies the longer the fruit hangs on the tree. The acidity gives it a candy like, almost cola syrup character when fully ripe. It is a mid season mango."
+      ],
+      "claims": [
+        {
+          "text": "Gary Zill cultivar from Boynton Beach, Florida",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce",
+            "fshs"
+          ]
+        },
+        {
+          "text": "Small to medium, oblong ovoid with a prominent beak",
+          "type": "appearance",
+          "cites": [
+            "fshs"
+          ]
+        },
+        {
+          "text": "Rich, complex tart to very sweet intense Southeast Asian flavour that intensifies on the tree",
+          "type": "flavour",
+          "cites": [
+            "fshs"
+          ]
+        },
+        {
+          "text": "Mid season harvest",
+          "type": "season",
+          "cites": [
+            "fshs"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fshs",
+          "name": "Crane, mango cultivars developed by Gary Zill (FSHS / mango.org)",
+          "url": "https://www.mango.org/wp-content/uploads/2025/07/2-Crane-Summit-FSHS-Zill-mango.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce, Sweet Tart Mangoes",
+          "url": "https://specialtyproduce.com/produce/Sweet_Tart_Mangoes_24056.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-taiwan-gold": {
+      "slug": "mango-taiwan-gold",
+      "species": "Mango",
+      "variety": "Taiwan Gold",
+      "paragraphs": [
+        "Taiwan Gold is better known as Golden Queen or Jin Huang, a Taiwanese cultivar reported to be a hybrid of the Ivory and Keitt mangoes. It also circulates in Southeast Asia under names such as Kiew Yai, and is now grown commercially in Thailand and the Philippines as well as Taiwan.",
+        "The fruit is notably large and oblong, with skin that turns radiant golden yellow at maturity, sometimes with a pinkish blush near the stem. The flesh is deep yellow, creamy and fibreless. The flavour sits in the Thai class, sweet with floral and honey notes, and the variety is valued for vigorous, productive growth."
+      ],
+      "claims": [
+        {
+          "text": "Taiwan Gold is also called Golden Queen or Jin Huang, a Taiwanese cultivar reported as an Ivory x Keitt hybrid.",
+          "type": "origin",
+          "cites": [
+            "mp-goldenqueen",
+            "sp-jinhuang"
+          ]
+        },
+        {
+          "text": "It is also known as Kiew Yai and grown in Thailand and the Philippines.",
+          "type": "synonym",
+          "cites": [
+            "mp-goldenqueen",
+            "sp-jinhuang"
+          ]
+        },
+        {
+          "text": "The fruit is large and oblong, golden yellow with deep yellow, creamy, fibreless flesh.",
+          "type": "appearance",
+          "cites": [
+            "mp-goldenqueen"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mp-goldenqueen",
+          "name": "Golden Queen, Mangopedia",
+          "url": "https://mangopedia.org/golden-queen/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-jinhuang",
+          "name": "Jinhuang Mangoes, Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Jinhuang_Mangoes_24961.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-titan": {
+      "slug": "mango-titan",
+      "species": "Mango",
+      "variety": "Titan",
+      "paragraphs": [
+        "Titan is an Australian mango bred by hobbyist breeder Gordon Tait (also spelled Tate) on his property in the Bundaberg region of southern Queensland. It is grown by collectors as much for novelty as for fruit, and a community planting describes the variety as huge in every part: the leaves, the branches and the fruit.",
+        "The fruit is notably large, commonly over a kilogram and reported up to two or three kilograms, with juicy, low-fibre flesh. Nursery sources describe its flavour as sitting between Kensington Pride and R2E2. Mature trees carry very long leaves."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Gordon Tait (Tate) in the Bundaberg region of southern Queensland",
+          "type": "origin",
+          "cites": [
+            "lennox-titan",
+            "rosscreek-titan",
+            "ladybird-titan"
+          ]
+        },
+        {
+          "text": "Whole tree is oversized: leaves, branches and fruit are all large",
+          "type": "appearance",
+          "cites": [
+            "lennox-titan",
+            "ladybird-titan"
+          ]
+        },
+        {
+          "text": "Notably large fruit, commonly over a kilogram and reported to two or three kilograms",
+          "type": "appearance",
+          "cites": [
+            "lennox-titan"
+          ]
+        },
+        {
+          "text": "Juicy, low-fibre flesh with a flavour between Kensington Pride and R2E2",
+          "type": "flavour",
+          "cites": [
+            "rosscreek-titan",
+            "ladybird-titan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "lennox-titan",
+          "name": "Lennox Community Gardens: Mango Kasturi & Titan",
+          "url": "https://www.lennoxcommunitygardens.com.au/mango-kasturi--titan.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-titan",
+          "name": "Ross Creek Tropicals: Titan Mango",
+          "url": "https://www.rosscreektropicals.com.au/products/mango-titan-5l",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-titan",
+          "name": "Ladybird Nursery: Giant Titan Mango",
+          "url": "https://www.ladybirdnursery.com.au/mango-titan/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-tommy-atkins": {
+      "slug": "mango-tommy-atkins",
+      "species": "Mango",
+      "variety": "Tommy Atkins",
+      "paragraphs": [
+        "Tommy Atkins is the dominant commercial mango of the Americas. The original tree reportedly grew from a Haden seed planted around 1922 on the property of Thomas H. Atkins in Broward County, Florida. The Florida Mango Forum's variety committee rejected it during the 1950s for unremarkable eating quality and considerable fibre.",
+        "It succeeded commercially anyway on the strength of its appearance and durability. The large oval fruit has dark red skin with green and yellow accents, firm fibrous flesh, and a mild, sweet flavour. Its long shelf life and tolerance of handling and transport made it the most widely planted commercial mango, a position it still holds."
+      ],
+      "claims": [
+        {
+          "text": "Grew from a Haden seed planted around 1922 on Thomas H. Atkins property in Broward County, Florida",
+          "type": "origin",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Rejected by the Florida Mango Forum variety committee in the 1950s for unremarkable eating quality and fibre",
+          "type": "origin",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Dark red skin with green and yellow accents, large oval, firm fibrous flesh, mild sweet flavour",
+          "type": "appearance",
+          "cites": [
+            "southafrica"
+          ]
+        },
+        {
+          "text": "Long shelf life and shipping tolerance made it the most widely planted commercial mango",
+          "type": "use",
+          "cites": [
+            "wikipedia",
+            "southafrica"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Tommy Atkins (mango)",
+          "url": "https://en.wikipedia.org/wiki/Tommy_Atkins_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "southafrica",
+          "name": "South Africa Mango Cultivars",
+          "url": "https://southafrica.co.za/mango-cultivars.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-tong-dum": {
+      "slug": "mango-tong-dum",
+      "species": "Mango",
+      "variety": "Tong Dum",
+      "paragraphs": [
+        "Tong Dum (also written Thong Dam) is a Thai cultivar whose name translates as 'black gold', a reference to its unusually dark green skin that stays green even when the fruit is fully mature.",
+        "Despite the green exterior, the flesh ripens to a yellow-orange and is eaten ripe as a sweet dessert mango. It belongs to the Indo-Chinese group and is one of the traditional varieties served at peak ripeness, including at the Chachoengsao mango festival."
+      ],
+      "claims": [
+        {
+          "text": "Tong Dum (Thong Dam) is a Thai mango cultivar",
+          "type": "origin",
+          "cites": [
+            "wiki-cv-tongdum",
+            "huahin-thai-tongdum"
+          ]
+        },
+        {
+          "text": "Name means 'black gold'; skin stays dark green at maturity",
+          "type": "naming",
+          "cites": [
+            "huahin-thai-tongdum",
+            "bkk-mango-tongdum"
+          ]
+        },
+        {
+          "text": "Eaten ripe as a sweet dessert mango with yellow-orange flesh",
+          "type": "use",
+          "cites": [
+            "huahin-thai-tongdum",
+            "holidify-mango-tongdum"
+          ]
+        },
+        {
+          "text": "Featured among heritage varieties at the Chachoengsao mango festival",
+          "type": "naming",
+          "cites": [
+            "bkk-mango-tongdum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-cv-tongdum",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "huahin-thai-tongdum",
+          "name": "Hua Hin Thai Culinary School: The Thai Mango",
+          "url": "https://huahinthaicookingacademy.com/the-thai-mango-a-luscious-and-precious-staple/",
+          "tier": "third_party"
+        },
+        {
+          "id": "bkk-mango-tongdum",
+          "name": "Bangkok Post: In praise of mangoes",
+          "url": "https://www.bangkokpost.com/life/social-and-lifestyle/1449094/in-praise-of-mangoes",
+          "tier": "third_party"
+        },
+        {
+          "id": "holidify-mango-tongdum",
+          "name": "Holidify: Mangoes in Thailand",
+          "url": "https://www.holidify.com/pages/mangoes-in-thailand-1823.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-totapuri": {
+      "slug": "mango-totapuri",
+      "species": "Mango",
+      "variety": "Totapuri",
+      "paragraphs": [
+        "Totapuri is a South Indian cultivar known for its oblong fruit with a prominent, pointed beak at the non-stem end. The name translates as parrot face (gini meaning parrot), and it carries synonyms including Bangalora, Sandersha, Ginimoothi and Kili Mooku. It was imported to Florida as Sandersha in 1901 and again as Totapuri in the 1960s.",
+        "It is the main processing variety, valued for high pulp recovery, a stable bright yellow colour and balanced sugar and acidity that give a sweet-tart taste. Most Totapuri is processed into pulp, juice and canned slices rather than eaten fresh. Notably, its skin lacks the usual bitterness, so it is often eaten with the flesh."
+      ],
+      "claims": [
+        {
+          "text": "Parrot-beak shaped South Indian mango; synonyms include Bangalora, Sandersha, Ginimoothi, Kili Mooku; imported to Florida as Sandersha in 1901.",
+          "type": "origin",
+          "cites": [
+            "totapuri-wikipedia"
+          ]
+        },
+        {
+          "text": "The main processing variety, used for canned juice and pulp.",
+          "type": "uses",
+          "cites": [
+            "totapuri-pmc",
+            "totapuri-wikipedia"
+          ]
+        },
+        {
+          "text": "Skin lacks the usual bitterness and is traditionally eaten with the flesh.",
+          "type": "quirk",
+          "cites": [
+            "totapuri-wikipedia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "totapuri-wikipedia",
+          "name": "Wikipedia: Totapuri",
+          "url": "https://en.wikipedia.org/wiki/Totapuri",
+          "tier": "third_party"
+        },
+        {
+          "id": "totapuri-pmc",
+          "name": "J Food Sci Technol (PMC): processing of Sindura, Mallika and Totapuri cultivars",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4325023/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-valencia-pride": {
+      "slug": "mango-valencia-pride",
+      "species": "Mango",
+      "variety": "Valencia pride",
+      "paragraphs": [
+        "Valencia Pride is a Florida cultivar grown from a Haden mango seed planted in 1937 on the property of Charles Brown in Miami, with the tree first fruiting in 1941. A 2005 pedigree analysis confirmed Haden as the parent. The fruit contains a monoembryonic seed in an elongated husk. The mango has a distinctive long, slender sigmoid shape with a rounded base and apex and a large apical beak.",
+        "It is a late-season cultivar, ripening from roughly July to August in Florida. The skin is yellow, much of it usually covered in a brilliant crimson blush, and the flesh is yellow, nearly fibreless, firm and juicy with a sweet flavour and aroma. The tree is a very vigorous, fast grower with a large, open, spreading canopy, with a reputation as one of the fastest-growing Florida mangoes."
+      ],
+      "claims": [
+        {
+          "text": "Valencia Pride grew from a Haden mango seed planted in 1937 on the property of Charles Brown in Miami, first fruiting in 1941.",
+          "type": "origin",
+          "cites": [
+            "wiki-vp"
+          ]
+        },
+        {
+          "text": "A 2005 pedigree analysis confirmed Haden as the parent.",
+          "type": "breeding",
+          "cites": [
+            "wiki-vp"
+          ]
+        },
+        {
+          "text": "The fruit contains a monoembryonic seed in an elongated husk.",
+          "type": "seed",
+          "cites": [
+            "wiki-vp"
+          ]
+        },
+        {
+          "text": "The fruit has a long, slender sigmoid shape with a rounded base and apex and a large apical beak.",
+          "type": "appearance",
+          "cites": [
+            "wiki-vp",
+            "specialtyproduce-vp"
+          ]
+        },
+        {
+          "text": "It is a late-season cultivar ripening from roughly July to August in Florida.",
+          "type": "season",
+          "cites": [
+            "wiki-vp"
+          ]
+        },
+        {
+          "text": "The skin is yellow with much covered in a brilliant crimson blush; the flesh is yellow, nearly fibreless, firm and juicy with a sweet flavour and aroma.",
+          "type": "flavour",
+          "cites": [
+            "wiki-vp",
+            "specialtyproduce-vp"
+          ]
+        },
+        {
+          "text": "The tree is a very vigorous, fast grower with a large open spreading canopy, among the fastest-growing Florida mangoes.",
+          "type": "habit",
+          "cites": [
+            "wiki-vp"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-vp",
+          "name": "Wikipedia: Valencia Pride",
+          "url": "https://en.wikipedia.org/wiki/Valencia_Pride",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-vp",
+          "name": "Specialty Produce: Valencia Pride Mangoes",
+          "url": "https://specialtyproduce.com/produce/Valencia_Pride_Mangoes_9274.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-van-dyke": {
+      "slug": "mango-van-dyke",
+      "species": "Mango",
+      "variety": "Van Dyke",
+      "paragraphs": [
+        "Van Dyke arose from a seed planted around the 1930s on the property of Madeline Van Dyke in Miami, Florida, fruiting in the 1940s. A 2005 pedigree analysis estimated Haden as its likely parent, and the variety carries a monoembryonic seed.",
+        "The fruit is oval with smooth yellow skin and a bright red blush, with yellow, near fibreless flesh and a rich, sweet flavour and aroma. It ripens from June to July in Florida. Better suited to export than the home Florida market, it found commercial success in Brazil and eastern Africa."
+      ],
+      "claims": [
+        {
+          "text": "Grew from a seed planted around the 1930s on the property of Madeline Van Dyke in Miami, Florida, fruiting in the 1940s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-vandyke"
+          ]
+        },
+        {
+          "text": "A 2005 pedigree analysis estimated Haden as the likely parent",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-vandyke"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-vandyke"
+          ]
+        },
+        {
+          "text": "Oval fruit with smooth yellow skin and bright red blush; yellow near-fibreless flesh with a rich, sweet flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-vandyke",
+            "toptropicals-vandyke"
+          ]
+        },
+        {
+          "text": "Ripens June to July in Florida",
+          "type": "season",
+          "cites": [
+            "wikipedia-vandyke"
+          ]
+        },
+        {
+          "text": "Found commercial success as an export crop in Brazil and eastern Africa",
+          "type": "use",
+          "cites": [
+            "wikipedia-vandyke"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-vandyke",
+          "name": "Wikipedia: Van Dyke (mango)",
+          "url": "https://en.wikipedia.org/wiki/Van_Dyke_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "toptropicals-vandyke",
+          "name": "Top Tropicals: Mangifera indica Van Dyke",
+          "url": "https://toptropicals.com/catalog/uid/mangifera_indica_van_dyke.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-willard": {
+      "slug": "mango-willard",
+      "species": "Mango",
+      "variety": "Willard",
+      "paragraphs": [
+        "Willard is a native Sri Lankan mango recommended by the country's Department of Agriculture for cultivation in the dry zone. It is a round fruit with a soft skin that carries a red blush, the peel being yellow with red colour towards the stem end, a look prized in markets that favour red toned mangoes.",
+        "The flesh is low in fibre and the variety is widely appreciated in Sri Lanka for its distinctive taste and aroma. It is one of the island's better known dessert mangoes, valued for fruit quality alongside cultivars such as Karthacolomban and Velleicolomban."
+      ],
+      "claims": [
+        {
+          "text": "Native Sri Lankan mango recommended for the dry zone by the Department of Agriculture",
+          "type": "origin",
+          "cites": [
+            "doa-willard"
+          ]
+        },
+        {
+          "text": "Round fruit with soft skin and a red peel colour",
+          "type": "appearance",
+          "cites": [
+            "doa-willard",
+            "ishs-willard"
+          ]
+        },
+        {
+          "text": "Flesh is low in fibre",
+          "type": "flavour",
+          "cites": [
+            "doa-willard"
+          ]
+        },
+        {
+          "text": "Widely appreciated in Sri Lanka for its distinctive taste and aroma",
+          "type": "flavour",
+          "cites": [
+            "doa-willard"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "doa-willard",
+          "name": "Department of Agriculture Sri Lanka: Fruit Crops, Mango",
+          "url": "https://doa.gov.lk/fruit-crops-mango-e/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ishs-willard",
+          "name": "ISHS: Fruit Quality of Karthacolomban, Ampalavi and Willard Mangoes in Jaffna, Sri Lanka",
+          "url": "https://www.ishs.org/ishs-article/632_46",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "mango-zill": {
+      "slug": "mango-zill",
+      "species": "Mango",
+      "variety": "Zill",
+      "paragraphs": [
+        "Zill is a Florida mango that grew from a Haden seed planted in 1922 by Carl King of Lake Worth. The tree first fruited in 1930, and Laurence Zill began propagating it in 1940, with the cultivar named and described in 1945. A 2005 pedigree study suggests it may be a cross of Haden and Bombay. The seed is monoembryonic.",
+        "The flesh is yellow and fibreless, with a sweet flavour and strong aroma sometimes compared to pineapple. The thin skin is yellow with a dark red blush covering much of the fruit, which averages just under a pound. In Florida it typically ripens from May to July."
+      ],
+      "claims": [
+        {
+          "text": "Zill grew from a Haden seed planted in 1922 by Carl King of Lake Worth, Florida; the tree first fruited in 1930.",
+          "type": "origin",
+          "cites": [
+            "wiki-zill"
+          ]
+        },
+        {
+          "text": "Laurence Zill began propagating it in 1940, and it was named and described in 1945; a 2005 pedigree study suggests a Haden x Bombay cross.",
+          "type": "breeding",
+          "cites": [
+            "wiki-zill"
+          ]
+        },
+        {
+          "text": "The seed is monoembryonic.",
+          "type": "botany",
+          "cites": [
+            "wiki-zill"
+          ]
+        },
+        {
+          "text": "The flesh is yellow and fibreless with a sweet, strongly aromatic flavour compared to pineapple, and the skin is yellow with a dark red blush.",
+          "type": "flavour",
+          "cites": [
+            "wiki-zill",
+            "mangopedia-zill"
+          ]
+        },
+        {
+          "text": "In Florida it typically ripens from May to July.",
+          "type": "season",
+          "cites": [
+            "wiki-zill"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-zill",
+          "name": "Wikipedia, Zill (mango)",
+          "url": "https://en.wikipedia.org/wiki/Zill_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "mangopedia-zill",
+          "name": "Mangopedia, Zill",
+          "url": "https://mangopedia.org/zill/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "mango-alison-red",
+    "mango-allison-red",
+    "mango-alphonso-fruit-tree",
+    "mango-alphonso-mango-m",
+    "mango-ataulfo-honey-mango",
+    "mango-bali-apple",
+    "mango-bambaroo",
+    "mango-bambaroo-kp-l",
+    "mango-bamberoo",
+    "mango-banana",
+    "mango-beverly",
+    "mango-bowen-kensington-pride",
+    "mango-brooks-s",
+    "mango-bullocks-heart",
+    "mango-carabao-filipino-mango",
+    "mango-chandrakaran",
+    "mango-chereku-rasam",
+    "mango-choc-anan",
+    "mango-choc-anon",
+    "mango-early-gold",
+    "mango-elephant-xoai-tuong",
+    "mango-florigon-s",
+    "mango-giant-titan",
+    "mango-golden-queen-taiwan-gold",
+    "mango-gulliver-s-triumph",
+    "mango-harum-wangi",
+    "mango-keitt-s",
+    "mango-kensington-red",
+    "mango-keow-savoy",
+    "mango-khiew-savoy-m",
+    "mango-khiew-savoy-s",
+    "mango-khiew-sawoey",
+    "mango-king-thai-maha-chanook",
+    "mango-kwan",
+    "mango-lucinda",
+    "mango-m-odourata",
+    "mango-mangga-golek",
+    "mango-nam-doc-mai-s",
+    "mango-neelum",
+    "mango-ok-rong",
+    "mango-ono",
+    "mango-orange-sherbert",
+    "mango-picco-pico",
+    "mango-pineapple",
+    "mango-r2e2-huge-mango-plant",
+    "mango-red-harumanis",
+    "mango-rosa",
+    "mango-smith",
+    "mango-tuong",
+    "mango-xo-i-t-ng",
+    "mango-zillate",
+    "mango-zilllate"
+  ]
 }
