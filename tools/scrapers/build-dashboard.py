@@ -861,15 +861,14 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
     )
 
     # Shared site header/nav (same chrome as every other page). The "Updated"
-    # timestamp rides along on the right via extra_right; the in-stock stat now
-    # lives in the footer (see render_footer below). ml-auto keeps the date
-    # right-aligned if the long nav wraps it to a second row at narrow widths.
+    # timestamp sits top-right on the logo row via extra_right (hidden on mobile,
+    # where the hamburger takes that spot); the in-stock stat now lives in the
+    # footer (see render_footer below).
     header = render_header(
         max_width=CONTENT_MAX_WIDTH,
         show_nav=True,
         active_path="/",
-        extra_right=f'<div class="text-right text-xs text-gray-500 ml-auto">'
-                    f'<div class="hidden sm:block">Updated {now}</div></div>',
+        extra_right=f'<span class="text-xs text-gray-500 hidden sm:block">Updated {now}</span>',
     )
 
     html = f"""{head}

@@ -148,6 +148,12 @@ def render_header(
 ) -> str:
     """Render the sticky site header: brand logo, desktop nav, mobile hamburger.
 
+    Layout is two rows. The TOP row holds the logo (left) and a right-aligned
+    group containing the desktop `extra_right` content (e.g. an "Updated ..."
+    stamp, hidden on mobile) and the mobile hamburger button. The nav links sit
+    on their OWN row beneath, so they wrap (desktop) or expand via the toggle
+    (mobile) without ever displacing the logo or the hamburger.
+
     `subtitle` is accepted for call compatibility but unused (matches the prior
     treestock behaviour). `max_width` falls back to config.default_max_width when
     not given. Bound to a SiteConfig per site.
@@ -155,7 +161,8 @@ def render_header(
     max_width = max_width or config.default_max_width
     accent = config.accent
 
-    nav_section = ""
+    nav_menu = ""
+    hamburger = ""
     nav_script = ""
     if show_nav:
         links = []
@@ -169,32 +176,43 @@ def render_header(
             )
         links_html = "\n        ".join(links)
 
-        nav_section = f"""
-      <nav id="nav-menu" class="hidden sm:flex sm:items-center sm:gap-4 text-sm
-                                flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0
-                                border-t sm:border-0 border-gray-100 pt-2 sm:pt-0">
+        # Nav links live on their own row: a horizontal wrapping row on desktop,
+        # a vertical list (revealed by the hamburger) on mobile.
+        nav_menu = f"""
+    <nav id="nav-menu" class="hidden sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-center
+                              gap-2 sm:gap-4 w-full mt-2 pt-2 sm:pt-0
+                              border-t sm:border-0 border-gray-100 text-sm">
         {links_html}
-      </nav>
-      <button id="nav-toggle" class="sm:hidden p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>"""
+      </nav>"""
+        hamburger = """<button id="nav-toggle" class="sm:hidden -mr-1 p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>"""
         nav_script = NAV_TOGGLE_SCRIPT
 
     right_section = extra_right or ""
+
+    # Top-row right group: desktop extra_right (e.g. "Updated ...") + mobile
+    # hamburger, kept together and pinned right. Omitted entirely when neither
+    # exists (e.g. show_nav=False with no extra_right).
+    right_group = ""
+    if right_section or hamburger:
+        right_group = (
+            f'<div class="flex items-center gap-3 flex-shrink-0">{right_section}{hamburger}</div>'
+        )
 
     return f"""
 <body class="bg-white text-gray-900">
 
 <header class="border-b border-gray-200 bg-white sticky top-0 z-10">
   <div class="{max_width} mx-auto px-4 py-2">
-    <div class="flex items-center justify-between gap-3 flex-wrap">
+    <div class="flex items-center justify-between gap-3">
       <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
         {config.logo_svg}
         <span class="text-lg font-bold text-{accent}-800">{config.site_name}</span>
-      </a>{nav_section}{right_section}
-    </div>
+      </a>{right_group}
+    </div>{nav_menu}
   </div>
 </header>
 {nav_script}"""

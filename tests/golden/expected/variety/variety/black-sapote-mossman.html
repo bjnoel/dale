@@ -80,14 +80,19 @@
 
 <header class="border-b border-gray-200 bg-white sticky top-0 z-10">
   <div class="max-w-3xl 2xl:max-w-5xl mx-auto px-4 py-2">
-    <div class="flex items-center justify-between gap-3 flex-wrap">
+    <div class="flex items-center justify-between gap-3">
       <a href="/" class="flex items-center gap-2 no-underline flex-shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7 flex-shrink-0"><rect width="64" height="64" rx="12" fill="#065f46"/><path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/><path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/><circle cx="44" cy="44" r="8" fill="#f59e0b"/><text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text></svg>
         <span class="text-lg font-bold text-green-800">treestock.com.au</span>
-      </a>
-      <nav id="nav-menu" class="hidden sm:flex sm:items-center sm:gap-4 text-sm
-                                flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0
-                                border-t sm:border-0 border-gray-100 pt-2 sm:pt-0">
+      </a><div class="flex items-center gap-3 flex-shrink-0"><button id="nav-toggle" class="sm:hidden -mr-1 p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button></div>
+    </div>
+    <nav id="nav-menu" class="hidden sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-center
+                              gap-2 sm:gap-4 w-full mt-2 pt-2 sm:pt-0
+                              border-t sm:border-0 border-gray-100 text-sm">
         <a href="/species/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Species</a>
         <a href="/nursery/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Nurseries</a>
         <a href="/variety/" class="hover:text-green-700 no-underline whitespace-nowrap text-green-800 font-semibold">Varieties</a>
@@ -98,12 +103,6 @@
         <a href="/when-to-plant.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Planting Calendar</a>
         <a href="/trends.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Trends</a>
       </nav>
-      <button id="nav-toggle" class="sm:hidden p-1 text-gray-500 hover:text-gray-800" aria-label="Menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-    </div>
   </div>
 </header>
 <script>
