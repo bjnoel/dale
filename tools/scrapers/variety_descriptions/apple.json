@@ -2,6 +2,74 @@
   "species_slug": "apple",
   "schema_version": 1,
   "varieties": {
+    "apple-akane": {
+      "slug": "apple-akane",
+      "species": "Apple",
+      "variety": "Akane",
+      "paragraphs": [
+        "Akane is a Japanese apple developed at the Morioka research station from a cross of Jonathan and Worcester Pearmain. It is also known as Tokyo Rose, Tohoku No.3 and Prime Red, and was introduced to the United States in the late 1930s.",
+        "It is a bright-red, flattish to heart-shaped apple with crisp white flesh that does not brown quickly. The flavour is a lively sweet-sharp balance carrying the zesty character of Jonathan, often with strawberry and floral notes. It is one of the better early-season apples and keeps its shape when cooked."
+      ],
+      "claims": [
+        {
+          "text": "Developed at the Morioka research station in Japan from a cross of Jonathan and Worcester Pearmain; introduced to the United States in 1937",
+          "type": "origin",
+          "cites": [
+            "wikipedia-akane",
+            "specialtyproduce-akane"
+          ]
+        },
+        {
+          "text": "Also known as Tokyo Rose, Tohoku No.3 and Prime Red",
+          "type": "naming",
+          "cites": [
+            "wikipedia-akane",
+            "specialtyproduce-akane"
+          ]
+        },
+        {
+          "text": "Bright-red, flattish to heart-shaped fruit with crisp white flesh that does not brown quickly",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-akane",
+            "specialtyproduce-akane"
+          ]
+        },
+        {
+          "text": "Lively sweet-sharp flavour with the zesty character of Jonathan, with strawberry and floral notes",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce-akane"
+          ]
+        },
+        {
+          "text": "An early-season apple that keeps its shape when cooked",
+          "type": "season",
+          "cites": [
+            "wikipedia-akane",
+            "specialtyproduce-akane"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-akane",
+          "name": "Wikipedia: Akane (apple)",
+          "url": "https://en.wikipedia.org/wiki/Akane_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-akane",
+          "name": "Specialty Produce: Akane Apples",
+          "url": "https://specialtyproduce.com/produce/Akane_Apples_13926.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.91,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "apple-anna": {
       "slug": "apple-anna",
       "species": "Apple",
@@ -67,6 +135,505 @@
       ],
       "confidence": "high",
       "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-bonza": {
+      "slug": "apple-bonza",
+      "species": "Apple",
+      "variety": "Bonza",
+      "paragraphs": [
+        "Bonza is an Australian apple that arose as a chance seedling in the late 1950s, found by Ben Atkinson in his orchard in the Batlow area of the Snowy Mountains region of New South Wales. Unusually for an Australian apple, it is a relatively high-chill variety, reflecting its cool mountain origins.",
+        "The fruit is medium to large and flat-conic, ripening to cream with a crimson blush over much of the skin. The flesh is white, firm, crisp and juicy with a sweet flavour, and it keeps for several months in cold storage. It is grown mainly as a fresh-eating apple."
+      ],
+      "claims": [
+        {
+          "text": "Arose as a chance seedling in the late 1950s, found by Ben Atkinson in the Batlow area of New South Wales",
+          "type": "origin",
+          "cites": [
+            "pomiferous-bonza",
+            "nswdpi-bonza"
+          ]
+        },
+        {
+          "text": "A relatively high-chill variety, unusual among Australian apples, reflecting its cool mountain origins",
+          "type": "climate",
+          "cites": [
+            "nswdpi-bonza"
+          ]
+        },
+        {
+          "text": "Medium to large, flat-conic; ripens to cream with a crimson blush over much of the skin",
+          "type": "appearance",
+          "cites": [
+            "pomiferous-bonza",
+            "nswdpi-bonza"
+          ]
+        },
+        {
+          "text": "White, firm, crisp and juicy flesh with a sweet flavour",
+          "type": "flavour",
+          "cites": [
+            "pomiferous-bonza",
+            "nswdpi-bonza"
+          ]
+        },
+        {
+          "text": "Keeps for several months in cold storage and is grown mainly for fresh eating",
+          "type": "storage",
+          "cites": [
+            "pomiferous-bonza"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pomiferous-bonza",
+          "name": "Pomiferous: Bonza",
+          "url": "https://pomiferous.com/applebyname/bonza-id-890",
+          "tier": "third_party"
+        },
+        {
+          "id": "nswdpi-bonza",
+          "name": "NSW Department of Primary Industries: Bonza",
+          "url": "https://www.dpi.nsw.gov.au/agriculture/horticulture/pomes/apples/varieties/bonza",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-brown-snout": {
+      "slug": "apple-brown-snout",
+      "species": "Apple",
+      "variety": "Brown Snout",
+      "paragraphs": [
+        "Brown Snout is a 19th century bittersweet cider apple from Herefordshire, discovered around 1850 as a chance seedling on Mr Dent's farm at Yarkhill and later propagated widely by the H. P. Bulmer company of Hereford. Its name comes from the heavy patch of brown russet around the calyx end of the fruit, which resembles a snout.",
+        "It is a late-flowering variety with relatively high tannins and low malic acid, giving a mild bittersweet, dark cider with soft tannins. It can stand alone or be blended for added acidity."
+      ],
+      "claims": [
+        {
+          "text": "19th century bittersweet cider apple discovered around 1850 as a chance seedling on Mr Dent's farm at Yarkhill, Herefordshire, and propagated widely by H. P. Bulmer of Hereford",
+          "type": "origin",
+          "cites": [
+            "wikipedia-brownsnout",
+            "pomiferous-brownsnout"
+          ]
+        },
+        {
+          "text": "Name derives from the brown russet patch around the calyx end resembling a snout",
+          "type": "naming",
+          "cites": [
+            "wikipedia-brownsnout"
+          ]
+        },
+        {
+          "text": "Late-flowering bittersweet with high tannins and low malic acid, giving a mild, dark cider with soft tannins",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-brownsnout",
+            "pomiferous-brownsnout"
+          ]
+        },
+        {
+          "text": "Late-flowering variety",
+          "type": "season",
+          "cites": [
+            "wikipedia-brownsnout",
+            "pomiferous-brownsnout"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-brownsnout",
+          "name": "Wikipedia: Brown Snout",
+          "url": "https://en.wikipedia.org/wiki/Brown_Snout",
+          "tier": "third_party"
+        },
+        {
+          "id": "pomiferous-brownsnout",
+          "name": "Pomiferous: Brown Snout",
+          "url": "https://pomiferous.com/applebyname/brown-snout-id-6954",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-bulmer-s-norman": {
+      "slug": "apple-bulmer-s-norman",
+      "species": "Apple",
+      "variety": "Bulmer s Norman",
+      "paragraphs": [
+        "Bulmer's Norman is a French-origin bittersweet cider apple found growing in Normandy and brought to England by H. P. Bulmer & Co. of Hereford in the early 1890s. On its own it makes a mild bittersweet cider, with a golden, sweet, astringent juice that ferments quickly.",
+        "It is grown for its hard, bitter tannin, which adds body and texture in blends. The tree is large, vigorous and spreading, and a dependable but biennial cropper. It is also valued as a sturdy rootstock and interstem onto which other varieties are grafted."
+      ],
+      "claims": [
+        {
+          "text": "French-origin bittersweet cider apple found in Normandy and introduced to England by H. P. Bulmer of Hereford in the early 1890s",
+          "type": "origin",
+          "cites": [
+            "pomiferous-bulmersnorman",
+            "cooksinfo-bulmersnorman"
+          ]
+        },
+        {
+          "text": "Makes a mild bittersweet cider with a sweet, astringent juice that ferments quickly",
+          "type": "flavour",
+          "cites": [
+            "pomiferous-bulmersnorman"
+          ]
+        },
+        {
+          "text": "Hard, bitter tannin adds body and texture in blends",
+          "type": "use",
+          "cites": [
+            "pomiferous-bulmersnorman"
+          ]
+        },
+        {
+          "text": "Large, vigorous, spreading tree that crops biennially; also used as a sturdy rootstock and interstem",
+          "type": "growing",
+          "cites": [
+            "pomiferous-bulmersnorman",
+            "cooksinfo-bulmersnorman"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pomiferous-bulmersnorman",
+          "name": "Pomiferous: Bulmer's Norman",
+          "url": "https://pomiferous.com/applebyname/bulmers-norman-id-6958",
+          "tier": "third_party"
+        },
+        {
+          "id": "cooksinfo-bulmersnorman",
+          "name": "CooksInfo: Bulmer's Norman Apples",
+          "url": "https://www.cooksinfo.com/bulmers-norman-apples",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-cornish-aromatic": {
+      "slug": "apple-cornish-aromatic",
+      "species": "Apple",
+      "variety": "Cornish Aromatic",
+      "paragraphs": [
+        "Cornish Aromatic is a heritage dessert apple from Cornwall, England, first recorded in 1813 when Sir Christopher Hawkins brought it to notice by sending fruit to the London Horticultural Society, though it is thought to be far older. It became a popular apple of country estates and cottage gardens.",
+        "The fruit is handsome and bright red with patches of grey-brown russet and darker red striping. The firm, fine-textured flesh has a crisp, nutty, aromatic and lightly spicy flavour. It is a late-season apple, picked in mid-autumn and good for eating through the winter."
+      ],
+      "claims": [
+        {
+          "text": "Heritage Cornwall dessert apple first recorded in 1813, brought to notice by Sir Christopher Hawkins via the London Horticultural Society",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cornish",
+            "orangepippin-cornish"
+          ]
+        },
+        {
+          "text": "Bright red skin with grey-brown russet patches and darker red striping",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-cornish",
+            "orangepippin-cornish"
+          ]
+        },
+        {
+          "text": "Firm, fine-textured flesh with a crisp, nutty, aromatic and lightly spicy flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-cornish",
+            "orangepippin-cornish"
+          ]
+        },
+        {
+          "text": "Late-season dessert apple picked in mid-autumn and kept through winter",
+          "type": "season",
+          "cites": [
+            "wikipedia-cornish"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-cornish",
+          "name": "Wikipedia: Cornish Aromatic",
+          "url": "https://en.wikipedia.org/wiki/Cornish_Aromatic",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-cornish",
+          "name": "Orange Pippin: Cornish Aromatic",
+          "url": "https://www.orangepippin.com/varieties/apples/cornish-aromatic",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-cox-orange-pippin": {
+      "slug": "apple-cox-orange-pippin",
+      "species": "Apple",
+      "variety": "Cox Orange Pippin",
+      "paragraphs": [
+        "Cox's Orange Pippin was first grown around 1825 to 1830 at Colnbrook in Buckinghamshire, England, by Richard Cox, a retired brewer turned horticulturist. It became England's leading dessert apple and by the early 2000s accounted for more than half the UK dessert apple acreage. DNA analysis points to Margil as a parent.",
+        "The medium-sized fruit is orange-red over a yellow background, mottled with carmine. The yellow-white flesh is fine-grained, crisp, very juicy and highly aromatic, with a sprightly subacid flavour carrying hints of cherry and anise that softens with age. It is celebrated as a richly flavoured eating apple."
+      ],
+      "claims": [
+        {
+          "text": "First grown around 1825 to 1830 at Colnbrook, Buckinghamshire, England, by retired brewer Richard Cox",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cox",
+            "orangepippin-cox"
+          ]
+        },
+        {
+          "text": "DNA analysis points to Margil as a parent",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-cox"
+          ]
+        },
+        {
+          "text": "Became England's leading dessert apple, over half the UK dessert apple acreage by the early 2000s",
+          "type": "use",
+          "cites": [
+            "wikipedia-cox"
+          ]
+        },
+        {
+          "text": "Orange-red over yellow, mottled with carmine; aromatic yellow-white flesh, crisp and very juicy",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-cox",
+            "orangepippin-cox"
+          ]
+        },
+        {
+          "text": "Sprightly subacid flavour with hints of cherry and anise that softens with age",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-cox",
+            "orangepippin-cox"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-cox",
+          "name": "Wikipedia: Cox's Orange Pippin",
+          "url": "https://en.wikipedia.org/wiki/Cox's_Orange_Pippin",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-cox",
+          "name": "Orange Pippin: Cox's Orange Pippin",
+          "url": "https://www.orangepippin.com/varieties/apples/coxs-orange-pippin",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-crimson-crisp": {
+      "slug": "apple-crimson-crisp",
+      "species": "Apple",
+      "variety": "Crimson Crisp",
+      "paragraphs": [
+        "Crimson Crisp, originally trialled as Co-op 39, came from the cooperative apple breeding program run by the Indiana (Purdue), Illinois and New Jersey (Rutgers) experiment stations. The original seedling traces back to a 1971 cross at Cream Ridge, New Jersey, and carries scab resistance bred in from the crabapple Malus floribunda. The trade name highlights its red colour and crisp flesh.",
+        "It is a midseason dessert apple with an attractive crimson-red skin and yellow flesh. The texture is very crisp and breaking, and the flavour is rich and subacid. The fruit holds on the tree without dropping when mature, and keeps well in storage."
+      ],
+      "claims": [
+        {
+          "text": "Originally Co-op 39, from the cooperative breeding program of the Indiana, Illinois and New Jersey experiment stations; original seedling from a 1971 cross at Cream Ridge, New Jersey",
+          "type": "origin",
+          "cites": [
+            "hortscience-coop39",
+            "pomiferous-crimsoncrisp"
+          ]
+        },
+        {
+          "text": "Scab resistance derived from the crabapple Malus floribunda; rated as scab-immune with field immunity to apple scab",
+          "type": "breeding",
+          "cites": [
+            "hortscience-coop39"
+          ]
+        },
+        {
+          "text": "Midseason dessert apple with crimson-red skin and yellow flesh",
+          "type": "appearance",
+          "cites": [
+            "hortscience-coop39",
+            "pomiferous-crimsoncrisp"
+          ]
+        },
+        {
+          "text": "Very crisp and breaking texture with a rich, subacid flavour",
+          "type": "flavour",
+          "cites": [
+            "hortscience-coop39"
+          ]
+        },
+        {
+          "text": "Fruit does not drop when mature and holds on the tree",
+          "type": "growing",
+          "cites": [
+            "hortscience-coop39"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hortscience-coop39",
+          "name": "Janick, Goffreda & Korban, 'Co-op 39 (CrimsonCrisp) Apple', HortScience 41(2), 2006 (Purdue)",
+          "url": "https://www.hort.purdue.edu/newcrop/pri/coop39.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pomiferous-crimsoncrisp",
+          "name": "Pomiferous: Co-op 39 (Crimson Crisp)",
+          "url": "https://pomiferous.com/applebyname/co-op-39-id-8560",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-dabinett": {
+      "slug": "apple-dabinett",
+      "species": "Apple",
+      "variety": "Dabinett",
+      "paragraphs": [
+        "Dabinett is a traditional English bittersweet cider apple from Somerset, found by William Dabinett growing as a wilding in a hedge at Middle Lambrook, South Petherton, around the early 1900s. One probable parent was the late bittersweet variety Chisel Jersey.",
+        "It is prized as a vintage cider variety, capable of making a soft, full-bodied, high quality single varietal cider. As a bittersweet it carries high tannin with low acidity, giving a sweet, astringent juice. The tree is a weak, spreading grower and fruit ripens late, usually November in Britain."
+      ],
+      "claims": [
+        {
+          "text": "Bittersweet cider apple found by William Dabinett as a wilding hedge seedling at Middle Lambrook, South Petherton, Somerset, around the early 1900s",
+          "type": "origin",
+          "cites": [
+            "nfc-dabinett",
+            "wikipedia-dabinett"
+          ]
+        },
+        {
+          "text": "One probable parent was the late bittersweet variety Chisel Jersey",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-dabinett"
+          ]
+        },
+        {
+          "text": "Makes a soft, full-bodied, high quality cider with a sweet, astringent juice (high tannin, low acidity)",
+          "type": "flavour",
+          "cites": [
+            "nfc-dabinett",
+            "wikipedia-dabinett"
+          ]
+        },
+        {
+          "text": "Weak, spreading grower; fruit ripens late, usually November in the UK",
+          "type": "season",
+          "cites": [
+            "nfc-dabinett",
+            "wikipedia-dabinett"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nfc-dabinett",
+          "name": "National Fruit Collection: Dabinett (cider apple)",
+          "url": "https://www.nationalfruitcollection.org.uk/full2.php?id=1438&fruit=apple",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-dabinett",
+          "name": "Wikipedia: Dabinett",
+          "url": "https://en.wikipedia.org/wiki/Dabinett",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-democrat": {
+      "slug": "apple-democrat",
+      "species": "Apple",
+      "variety": "Democrat",
+      "paragraphs": [
+        "Democrat is a Tasmanian heritage apple found growing about 1900 in the orchard of J. Duffy near Hobart, and originally known as Duffy's Seedling. It was briefly renamed Tasma in 1913 to avoid confusion with an American apple, though that name did not endure. It is possibly a seedling of Hoover.",
+        "The fruit is medium to large and conic, maturing to a dull dark red over a greenish-yellow base, with very firm, crisp, juicy flesh that is sweet and mild. Democrat is best known for ripening very late and then keeping for many months in cold storage, which made it a mainstay of the Tasmanian export trade for decades."
+      ],
+      "claims": [
+        {
+          "text": "Found about 1900 in the orchard of J. Duffy near Hobart, Tasmania; originally Duffy's Seedling, briefly renamed Tasma in 1913",
+          "type": "origin",
+          "cites": [
+            "pomiferous-democrat",
+            "saltspring-democrat"
+          ]
+        },
+        {
+          "text": "Possibly a seedling of Hoover",
+          "type": "breeding",
+          "cites": [
+            "pomiferous-democrat"
+          ]
+        },
+        {
+          "text": "Medium to large, conic, dull dark red over a greenish-yellow base; very firm, crisp, juicy flesh, sweet and mild",
+          "type": "flavour",
+          "cites": [
+            "pomiferous-democrat",
+            "saltspring-democrat"
+          ]
+        },
+        {
+          "text": "Ripens very late and keeps for many months in cold storage",
+          "type": "storage",
+          "cites": [
+            "pomiferous-democrat",
+            "saltspring-democrat"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pomiferous-democrat",
+          "name": "Pomiferous: Democrat",
+          "url": "https://pomiferous.com/applebyname/democrat-id-2369",
+          "tier": "third_party"
+        },
+        {
+          "id": "saltspring-democrat",
+          "name": "Salt Spring Apple Company: Democrat",
+          "url": "https://www.saltspringapplecompany.com/democrat",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -137,6 +704,134 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "apple-empire": {
+      "slug": "apple-empire",
+      "species": "Apple",
+      "variety": "Empire",
+      "paragraphs": [
+        "Empire is a McIntosh-type apple from Cornell University's New York State Agricultural Experiment Station at Geneva. It grew from a seed sown in 1945 by Lester C. Anderson and was released in 1966, named for the Empire State of New York. Its parents are McIntosh and Red Delicious.",
+        "The fruit combines the crisp, tangy McIntosh character with the sweetness and deep crimson colour of Red Delicious, over creamy white flesh. It is crisp, juicy and sweet-tart, slower to brown than most, and a good all-purpose apple. It is harvested in early autumn and stores well."
+      ],
+      "claims": [
+        {
+          "text": "Bred at Cornell University's New York State Agricultural Experiment Station at Geneva; from a seed sown in 1945 by Lester C. Anderson and released in 1966, named for New York the Empire State",
+          "type": "origin",
+          "cites": [
+            "wikipedia-empire",
+            "usapple-empire"
+          ]
+        },
+        {
+          "text": "A cross of McIntosh and Red Delicious",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-empire",
+            "usapple-empire"
+          ]
+        },
+        {
+          "text": "Crimson skin over creamy white flesh; crisp, juicy and sweet-tart, and slower to brown than most",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-empire",
+            "usapple-empire"
+          ]
+        },
+        {
+          "text": "Harvested in early October, after McIntosh and before Red Delicious",
+          "type": "season",
+          "cites": [
+            "wikipedia-empire"
+          ]
+        },
+        {
+          "text": "A good all-purpose apple that stores well",
+          "type": "use",
+          "cites": [
+            "wikipedia-empire",
+            "usapple-empire"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-empire",
+          "name": "Wikipedia: Empire (apple)",
+          "url": "https://en.wikipedia.org/wiki/Empire_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "usapple-empire",
+          "name": "U.S. Apple Association: Empire",
+          "url": "https://usapple.org/apple-variety/empire",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-fuji": {
+      "slug": "apple-fuji",
+      "species": "Apple",
+      "variety": "Fuji",
+      "paragraphs": [
+        "Fuji was developed by growers at the Tohoku Research Station in Fujisaki, Aomori, Japan, from a cross of the American varieties Ralls Janet and Red Delicious. It was named and brought to market in 1962, with its name taken from the town of Fujisaki where it was bred.",
+        "The fruit is prized for dense flesh that is notably sweet, crisp and very juicy, with cream-coloured flesh and a flavour that can carry hints of honey and pear. It is a late-season apple that stores exceptionally well, staying fresh for many months in refrigerated storage, which is part of why it became a global supermarket staple."
+      ],
+      "claims": [
+        {
+          "text": "Fuji was developed at the Tohoku Research Station in Fujisaki, Aomori, Japan, from a Ralls Janet x Red Delicious cross, and named and brought to market in 1962",
+          "type": "origin",
+          "cites": [
+            "wikipedia-fuji",
+            "nyaa-fuji"
+          ]
+        },
+        {
+          "text": "Its name derives from the town of Fujisaki where it was bred",
+          "type": "naming",
+          "cites": [
+            "wikipedia-fuji"
+          ]
+        },
+        {
+          "text": "Dense flesh that is sweet, crisp and very juicy, cream-coloured, with honey and pear notes",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-fuji",
+            "nyaa-fuji"
+          ]
+        },
+        {
+          "text": "A late-season apple that stores exceptionally well for many months in refrigerated storage",
+          "type": "storage",
+          "cites": [
+            "wikipedia-fuji",
+            "nyaa-fuji"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-fuji",
+          "name": "Wikipedia: Fuji (apple)",
+          "url": "https://en.wikipedia.org/wiki/Fuji_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "nyaa-fuji",
+          "name": "New York Apple Association: Fuji",
+          "url": "https://www.applesfromny.com/varieties/fuji/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "apple-gala": {
       "slug": "apple-gala",
       "species": "Apple",
@@ -202,6 +897,125 @@
       ],
       "confidence": "high",
       "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-geeveston-fanny": {
+      "slug": "apple-geeveston-fanny",
+      "species": "Apple",
+      "variety": "Geeveston Fanny",
+      "paragraphs": [
+        "Geeveston Fanny is a Tasmanian heritage apple thought to have originated at Geeveston in the Huon Valley, where the oldest known tree grew in James Evans's orchard in 1880. It was a popular commercial variety in Tasmania before modern supermarket apples pushed it aside.",
+        "The medium fruit has a pale lemon and light green base, with much of the skin flushed pale red and marked with darker stripes. The flesh is crisp with a subacid, aromatic flavour, and it is a late-season dessert apple."
+      ],
+      "claims": [
+        {
+          "text": "Tasmanian apple thought to have originated at Geeveston, with the oldest known tree in James Evans's orchard in 1880",
+          "type": "origin",
+          "cites": [
+            "nfc-geeveston",
+            "pomiferous-geeveston"
+          ]
+        },
+        {
+          "text": "Medium fruit, pale lemon and light green ground flushed pale red with darker stripes",
+          "type": "appearance",
+          "cites": [
+            "nfc-geeveston"
+          ]
+        },
+        {
+          "text": "Crisp flesh with a subacid, aromatic flavour; late-season dessert apple",
+          "type": "flavour",
+          "cites": [
+            "nfc-geeveston",
+            "pomiferous-geeveston"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nfc-geeveston",
+          "name": "National Fruit Collection: Geeveston Fanny",
+          "url": "https://www.nationalfruitcollection.org.uk/full2.php?id=2216&fruit=apple",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pomiferous-geeveston",
+          "name": "Pomiferous: Geeveston Fanny",
+          "url": "https://pomiferous.com/applebyname/geeveston-fanny-id-2880",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-golden-delicious": {
+      "slug": "apple-golden-delicious",
+      "species": "Apple",
+      "variety": "Golden Delicious",
+      "paragraphs": [
+        "Golden Delicious arose as a chance seedling on the Mullins family farm in Clay County, West Virginia, and was discovered in the early twentieth century. Stark Brothers Nurseries bought the original tree and its propagation rights and began marketing it alongside Red Delicious in 1914. It is the official state fruit of West Virginia.",
+        "The fruit has thin yellowish-green skin and very sweet, crisp, juicy flesh, often with a honeyed, almost floral note. It is versatile for fresh eating, salads, sauce and baking, where it holds together well. The skin bruises and shrivels easily, so it needs gentle handling. It is also a parent of later cultivars including Gala."
+      ],
+      "claims": [
+        {
+          "text": "Golden Delicious arose as a chance seedling on the Mullins farm in Clay County, West Virginia, and Stark Brothers bought the tree and propagation rights, marketing it from 1914",
+          "type": "origin",
+          "cites": [
+            "wikipedia-golden-delicious",
+            "wvenc-golden-delicious"
+          ]
+        },
+        {
+          "text": "It is the official state fruit of West Virginia",
+          "type": "naming",
+          "cites": [
+            "wvenc-golden-delicious",
+            "wikipedia-golden-delicious"
+          ]
+        },
+        {
+          "text": "Thin yellowish-green skin, very sweet, crisp, juicy flesh with a honeyed note",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-golden-delicious",
+            "wvenc-golden-delicious"
+          ]
+        },
+        {
+          "text": "Versatile for fresh eating, salads, sauce and baking; the skin bruises and shrivels easily",
+          "type": "use",
+          "cites": [
+            "wikipedia-golden-delicious"
+          ]
+        },
+        {
+          "text": "It is a parent of later cultivars including Gala",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-golden-delicious"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-golden-delicious",
+          "name": "Wikipedia: Golden Delicious",
+          "url": "https://en.wikipedia.org/wiki/Golden_Delicious",
+          "tier": "third_party"
+        },
+        {
+          "id": "wvenc-golden-delicious",
+          "name": "e-WV: The West Virginia Encyclopedia, Golden Delicious",
+          "url": "https://www.wvencyclopedia.org/entries/2066",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -279,6 +1093,724 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "apple-gravenstein": {
+      "slug": "apple-gravenstein",
+      "species": "Apple",
+      "variety": "Gravenstein",
+      "paragraphs": [
+        "Gravenstein is an old triploid apple linked to Graasten Palace in southern Denmark, where it was recorded by 1669, though it likely originated earlier in Germany or Italy. Because it is triploid, it needs another apple to pollinate it and is itself a poor pollinator. In 2005 the Danish food minister declared it the national apple of Denmark.",
+        "The fruit has waxy yellow-green skin with crimson spots and reddish lines, and juicy, light yellow flesh with a lively, tart flavour. It is prized for cooking, especially applesauce and cider, but does not keep well, so it is mostly available only in season."
+      ],
+      "claims": [
+        {
+          "text": "Old triploid apple associated with Graasten Palace in Denmark, recorded by 1669, likely originating earlier in Germany or Italy",
+          "type": "origin",
+          "cites": [
+            "wikipedia-gravenstein",
+            "orangepippin-gravenstein"
+          ]
+        },
+        {
+          "text": "Triploid, so it needs another tree to pollinate it and is a poor pollinator itself",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-gravenstein"
+          ]
+        },
+        {
+          "text": "Declared the national apple of Denmark in 2005",
+          "type": "naming",
+          "cites": [
+            "wikipedia-gravenstein"
+          ]
+        },
+        {
+          "text": "Waxy yellow-green skin with crimson spots and reddish lines, juicy light yellow flesh, lively tart flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-gravenstein",
+            "orangepippin-gravenstein"
+          ]
+        },
+        {
+          "text": "Valued as a cooking apple for applesauce and cider but does not keep well",
+          "type": "use",
+          "cites": [
+            "wikipedia-gravenstein"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-gravenstein",
+          "name": "Wikipedia: Gravenstein",
+          "url": "https://en.wikipedia.org/wiki/Gravenstein",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-gravenstein",
+          "name": "Orange Pippin: Gravenstein",
+          "url": "https://www.orangepippin.com/varieties/apples/gravenstein",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-jonagold": {
+      "slug": "apple-jonagold",
+      "species": "Apple",
+      "variety": "Jonagold",
+      "paragraphs": [
+        "Jonagold was bred in 1943 at the New York State Agricultural Experiment Station in Geneva, New York, and released in 1968. It is a cross of Golden Delicious and Jonathan, and its name is a portmanteau of its two parents.",
+        "The fruit is large with yellow-green skin streaked or blushed with crimson, and creamy-yellow flesh with a breaking, crisp texture. The flavour combines honeyed sweetness with a tart edge, more complex than either parent. It is a triploid with sterile pollen, so it cannot pollinate other apples and needs a separate pollinator variety nearby. It suits fresh eating, sauces and baking."
+      ],
+      "claims": [
+        {
+          "text": "Jonagold was bred in 1943 at the New York State Agricultural Experiment Station in Geneva, released in 1968, from Golden Delicious x Jonathan, with a portmanteau name",
+          "type": "origin",
+          "cites": [
+            "wikipedia-jonagold",
+            "nyaa-jonagold"
+          ]
+        },
+        {
+          "text": "Large fruit with yellow-green skin streaked with crimson and creamy-yellow, crisp, breaking flesh",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-jonagold",
+            "nyaa-jonagold"
+          ]
+        },
+        {
+          "text": "Honeyed sweetness with a tart edge",
+          "type": "flavour",
+          "cites": [
+            "nyaa-jonagold",
+            "wikipedia-jonagold"
+          ]
+        },
+        {
+          "text": "It is a triploid with sterile pollen that cannot pollinate other apples and needs a separate pollinator",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-jonagold"
+          ]
+        },
+        {
+          "text": "Suits fresh eating, sauces and baking",
+          "type": "use",
+          "cites": [
+            "nyaa-jonagold"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-jonagold",
+          "name": "Wikipedia: Jonagold",
+          "url": "https://en.wikipedia.org/wiki/Jonagold",
+          "tier": "third_party"
+        },
+        {
+          "id": "nyaa-jonagold",
+          "name": "New York Apple Association: Jonagold",
+          "url": "https://www.applesfromny.com/varieties/jonagold/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-jonathan": {
+      "slug": "apple-jonathan",
+      "species": "Apple",
+      "variety": "Jonathan",
+      "paragraphs": [
+        "Jonathan is an American heirloom that grew as a seedling of Esopus Spitzenburg on Philip Rick's farm near Woodstock in Ulster County, New York, and was named in 1826. It became one of the most important nineteenth century commercial apples and is now more of a specialty variety.",
+        "The fruit is medium-sized with tough, smooth, deep-red skin over a paler background, and white to cream flesh that is crisp and juicy. The flavour is a lively sweet-tart balance with a hint of spice, leaning sharper early in the season and mellowing later. It suits fresh eating and cooking, and is a parent of Jonagold and other cultivars. It is notably susceptible to apple scab and fire blight."
+      ],
+      "claims": [
+        {
+          "text": "Jonathan is an American heirloom, a seedling of Esopus Spitzenburg from Philip Rick's farm near Woodstock, Ulster County, New York, named in 1826",
+          "type": "origin",
+          "cites": [
+            "wikipedia-jonathan",
+            "hfh-jonathan"
+          ]
+        },
+        {
+          "text": "Medium-sized fruit with tough deep-red skin and white to cream crisp, juicy flesh",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-jonathan",
+            "hfh-jonathan"
+          ]
+        },
+        {
+          "text": "Lively sweet-tart flavour with a hint of spice, sharper early in the season and mellowing later; suits fresh eating and cooking",
+          "type": "flavour",
+          "cites": [
+            "hfh-jonathan",
+            "wikipedia-jonathan"
+          ]
+        },
+        {
+          "text": "It is a parent of Jonagold and other cultivars",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-jonathan",
+            "hfh-jonathan"
+          ]
+        },
+        {
+          "text": "It is notably susceptible to apple scab and fire blight",
+          "type": "growing",
+          "cites": [
+            "wikipedia-jonathan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-jonathan",
+          "name": "Wikipedia: Jonathan (apple)",
+          "url": "https://en.wikipedia.org/wiki/Jonathan_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "hfh-jonathan",
+          "name": "Home for the Harvest: Jonathan apple",
+          "url": "https://homefortheharvest.com/jonathan-apple/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-king-david": {
+      "slug": "apple-king-david",
+      "species": "Apple",
+      "variety": "King David",
+      "paragraphs": [
+        "King David is an American heritage apple found in 1893 as a chance seedling along a fence row on Ben Frost's farm in Washington County, Arkansas. It was introduced commercially in 1902 by Stark Brothers Nursery of Missouri. Its parentage is uncertain, with Jonathan generally accepted as one parent and Winesap or Arkansas Black as the other.",
+        "The fruit is deep, dark red, often almost covering the skin, over firm yellow flesh. The flavour is spicy, slightly sweet and tart with a cidery, Winesap-like character that is far spicier than its Jonathan parent. It suits fresh eating, pies, sauce and cider, and turns a rich yellow when cooked."
+      ],
+      "claims": [
+        {
+          "text": "Found in 1893 as a chance seedling on Ben Frost's farm in Washington County, Arkansas; introduced commercially in 1902 by Stark Brothers Nursery of Missouri",
+          "type": "origin",
+          "cites": [
+            "cooksinfo-kingdavid",
+            "pomiferous-kingdavid"
+          ]
+        },
+        {
+          "text": "Parentage uncertain; Jonathan is the accepted seed parent, with Winesap or Arkansas Black as the other",
+          "type": "breeding",
+          "cites": [
+            "cooksinfo-kingdavid",
+            "pomiferous-kingdavid"
+          ]
+        },
+        {
+          "text": "Deep dark red skin, often nearly solid, over firm yellow flesh",
+          "type": "appearance",
+          "cites": [
+            "cooksinfo-kingdavid",
+            "pomiferous-kingdavid"
+          ]
+        },
+        {
+          "text": "Spicy, slightly sweet and tart, cidery flavour reminiscent of Winesap",
+          "type": "flavour",
+          "cites": [
+            "cooksinfo-kingdavid",
+            "pomiferous-kingdavid"
+          ]
+        },
+        {
+          "text": "Used fresh, in pies, sauce and cider; turns yellow when cooked",
+          "type": "use",
+          "cites": [
+            "cooksinfo-kingdavid",
+            "pomiferous-kingdavid"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cooksinfo-kingdavid",
+          "name": "CooksInfo: King David Apples",
+          "url": "https://www.cooksinfo.com/king-david-apples",
+          "tier": "third_party"
+        },
+        {
+          "id": "pomiferous-kingdavid",
+          "name": "Pomiferous: King David",
+          "url": "https://pomiferous.com/applebyname/king-david-id-3746",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-lady-williams": {
+      "slug": "apple-lady-williams",
+      "species": "Apple",
+      "variety": "Lady Williams",
+      "paragraphs": [
+        "Lady Williams is a Western Australian heritage apple that began as a chance seedling at Boronia Farm in Donnybrook, thought to have come from a Granny Smith, with Rokewood as a likely pollen parent. It is named after Maud Williams, who recognised the tree's value and protected it, and it was introduced commercially in 1968.",
+        "The fruit matures very late in the season and is firm and crisp with good keeping qualities, which suited it to long storage and export. Lady Williams is best known as the pollen parent of Cripps Pink (sold as Pink Lady), as well as Cripps Red, after John Cripps crossed it with Golden Delicious in his WA breeding program."
+      ],
+      "claims": [
+        {
+          "text": "Began as a chance seedling at Boronia Farm, Donnybrook, Western Australia, likely from Granny Smith with Rokewood as pollen parent",
+          "type": "origin",
+          "cites": [
+            "wikipedia-lady-williams",
+            "conversation-lady-williams"
+          ]
+        },
+        {
+          "text": "Named after Maud Williams, who recognised and protected the tree; introduced commercially in 1968",
+          "type": "naming",
+          "cites": [
+            "conversation-lady-williams",
+            "wikipedia-lady-williams"
+          ]
+        },
+        {
+          "text": "Matures very late in the season",
+          "type": "season",
+          "cites": [
+            "wikipedia-lady-williams",
+            "conversation-lady-williams"
+          ]
+        },
+        {
+          "text": "Firm and crisp with good keeping qualities, suited to long storage",
+          "type": "storage",
+          "cites": [
+            "conversation-lady-williams"
+          ]
+        },
+        {
+          "text": "Pollen parent of Cripps Pink (Pink Lady) and Cripps Red, via crosses with Golden Delicious by John Cripps",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-lady-williams",
+            "conversation-lady-williams"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-lady-williams",
+          "name": "Wikipedia: Lady Williams (apple)",
+          "url": "https://en.wikipedia.org/wiki/Lady_Williams_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "conversation-lady-williams",
+          "name": "The Conversation: How 'Lady' Williams founded a great Australian apple",
+          "url": "https://theconversation.com/hidden-women-of-history-how-lady-williams-founded-a-great-australian-apple-189788",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-mcintosh": {
+      "slug": "apple-mcintosh",
+      "species": "Apple",
+      "variety": "McIntosh",
+      "paragraphs": [
+        "McIntosh is a Canadian heirloom discovered as a chance seedling by John McIntosh on his Dundela farm in Upper Canada, now Ontario, in 1811. Its parentage is uncertain, but it may have descended from the Fameuse, or Snow apple. The family began grafting and selling it in the 1830s, and it became the most popular apple in eastern Canada and the northeastern United States.",
+        "The fruit has red and green skin that is tender and easy to peel, with white, juicy flesh and an aromatic, sweet-tart flavour reminiscent of cider. It softens readily during storage and cooking, so it is handled gently. It is a hugely important breeding parent, behind cultivars such as Cortland, Spartan and Macoun, and it lent its name to the Macintosh computer."
+      ],
+      "claims": [
+        {
+          "text": "McIntosh is a Canadian heirloom found as a chance seedling by John McIntosh on his Dundela farm in Upper Canada (Ontario) in 1811, with uncertain parentage possibly descending from the Fameuse (Snow) apple",
+          "type": "origin",
+          "cites": [
+            "wikipedia-mcintosh",
+            "canenc-mcintosh"
+          ]
+        },
+        {
+          "text": "It became the most popular apple in eastern Canada and the northeastern United States",
+          "type": "naming",
+          "cites": [
+            "wikipedia-mcintosh",
+            "canenc-mcintosh"
+          ]
+        },
+        {
+          "text": "Red and green tender, easy-to-peel skin with white juicy flesh and an aromatic sweet-tart, cider-like flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-mcintosh",
+            "canenc-mcintosh"
+          ]
+        },
+        {
+          "text": "It softens readily during storage and cooking",
+          "type": "use",
+          "cites": [
+            "wikipedia-mcintosh"
+          ]
+        },
+        {
+          "text": "It is a major breeding parent of cultivars including Cortland, Spartan and Macoun, and lent its name to the Macintosh computer",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-mcintosh"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-mcintosh",
+          "name": "Wikipedia: McIntosh (apple)",
+          "url": "https://en.wikipedia.org/wiki/McIntosh_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "canenc-mcintosh",
+          "name": "The Canadian Encyclopedia: McIntosh Apple",
+          "url": "https://www.thecanadianencyclopedia.ca/en/article/mcintosh-apple",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-michelin": {
+      "slug": "apple-michelin",
+      "species": "Apple",
+      "variety": "Michelin",
+      "paragraphs": [
+        "Michelin is a French bittersweet cider apple raised by nurseryman Legrand of Yvetot in Normandy, first fruiting in 1872 and named after the French cider pomologist Henri Michelin. It was brought to Herefordshire by the Woolhope Naturalists Club in the mid-1880s and went on to become one of the most widely planted cider varieties in England.",
+        "It is valued more for reliability than for its juice on its own. Michelin is a dependable, heavy cropper that largely avoids biennial bearing, but the cider it yields, with soft tannins and a mild aromatic character, is fairly undistinguished alone and is best used for blending."
+      ],
+      "claims": [
+        {
+          "text": "French bittersweet cider apple raised by Legrand of Yvetot, Normandy, first fruiting in 1872, named after Henri Michelin",
+          "type": "origin",
+          "cites": [
+            "wikipedia-michelin",
+            "pomiferous-michelin"
+          ]
+        },
+        {
+          "text": "Introduced to England (Herefordshire) by the Woolhope Naturalists Club in the mid-1880s and became one of the most planted English cider varieties",
+          "type": "origin",
+          "cites": [
+            "wikipedia-michelin",
+            "pomiferous-michelin"
+          ]
+        },
+        {
+          "text": "Reliable heavy cropper that avoids biennial bearing",
+          "type": "season",
+          "cites": [
+            "wikipedia-michelin"
+          ]
+        },
+        {
+          "text": "Bittersweet with soft tannins and mild aromatic character; undistinguished alone, best for blending",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-michelin",
+            "pomiferous-michelin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-michelin",
+          "name": "Wikipedia: Michelin (apple)",
+          "url": "https://en.wikipedia.org/wiki/Michelin_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "pomiferous-michelin",
+          "name": "Pomiferous: Michelin",
+          "url": "https://pomiferous.com/applebyname/michelin-id-7411",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-monty-s-surprise": {
+      "slug": "apple-monty-s-surprise",
+      "species": "Apple",
+      "variety": "Monty's Surprise",
+      "paragraphs": [
+        "Monty's Surprise is a New Zealand heritage apple, rediscovered in April 2000 when a large old seedling tree was found in a remote part of the central North Island. The fruit is big, notably disease resistant, crisp and well flavoured, and the cultivar has become a focus of phytochemical and cancer-prevention research by the Heritage Food Crops Research Trust.",
+        "In a published feeding study, phytochemicals from Monty's Surprise apple were absorbed in humans and significantly raised plasma antioxidant response. In laboratory (in vitro) testing, the apple's metabolites inhibited the proliferation of lung and breast cancer cells, which has made it one of the most studied heritage apples for potential health benefits."
+      ],
+      "claims": [
+        {
+          "text": "A New Zealand heritage apple rediscovered in April 2000 as a large old seedling tree in a remote part of the central North Island, noted as big, disease resistant and crisp",
+          "type": "origin",
+          "cites": [
+            "heritagefoodcrops-montys"
+          ]
+        },
+        {
+          "text": "It has become a focus of phytochemical and cancer-prevention research",
+          "type": "use",
+          "cites": [
+            "heritagefoodcrops-montys",
+            "nutritionsoc-montys"
+          ]
+        },
+        {
+          "text": "In a published study, phytochemicals from Monty's Surprise apple were absorbed in humans and significantly increased plasma antioxidant response, and in vitro the apple's metabolites inhibited lung and breast cancer cell proliferation",
+          "type": "health",
+          "cites": [
+            "nutritionsoc-montys",
+            "heritagefoodcrops-montys"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritagefoodcrops-montys",
+          "name": "Heritage Food Crops Research Trust: Monty's Surprise Apple",
+          "url": "https://www.heritagefoodcrops.org.nz/montys-surprise-apple/",
+          "tier": "third_party"
+        },
+        {
+          "id": "nutritionsoc-montys",
+          "name": "Proceedings of the Nutrition Society (Cambridge): Phytochemicals from Monty's Surprise apple are absorbed in humans, increase plasma antioxidant response, and inhibit lung and breast cancer proliferation in vitro",
+          "url": "https://www.cambridge.org/core/journals/proceedings-of-the-nutrition-society/article/phytochemicals-from-montys-surprise-apple-are-absorbed-in-humans-increase-plasma-antioxidant-response-and-inhibit-lung-and-breast-cancer-proliferation-in-vitro/D58D87BC4AAAC84649622F5233B22F5B",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-mutsu": {
+      "slug": "apple-mutsu",
+      "species": "Apple",
+      "variety": "Mutsu",
+      "paragraphs": [
+        "Mutsu, also sold as Crispin, was introduced from Aomori Prefecture, Japan, in 1949. It is a cross of Golden Delicious and the Japanese cultivar Indo, and is a triploid, which makes it self-sterile and a poor pollinator for other trees.",
+        "It is a medium to large green to greenish-yellow apple with creamy, crisp, very juicy flesh and a spicy-sweet, slightly sharp flavour that has more depth than its Golden Delicious parent. It holds its shape well when cooked, so it works for both fresh eating and baking, and it keeps for several months in cool storage. It is prone to blister spot."
+      ],
+      "claims": [
+        {
+          "text": "Mutsu (Crispin) was introduced from Aomori Prefecture, Japan, in 1949, from a Golden Delicious x Indo cross",
+          "type": "origin",
+          "cites": [
+            "wikipedia-mutsu",
+            "ncsu-mutsu"
+          ]
+        },
+        {
+          "text": "It is a triploid, self-sterile, and a poor pollinator for other trees",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-mutsu",
+            "ncsu-mutsu"
+          ]
+        },
+        {
+          "text": "Medium to large green to greenish-yellow apple with creamy, crisp, juicy flesh and a spicy-sweet, slightly sharp flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-mutsu",
+            "ncsu-mutsu"
+          ]
+        },
+        {
+          "text": "Holds its shape well when cooked, suits fresh eating and baking, and keeps for several months in cool storage",
+          "type": "use",
+          "cites": [
+            "wikipedia-mutsu",
+            "ncsu-mutsu"
+          ]
+        },
+        {
+          "text": "It is prone to blister spot",
+          "type": "growing",
+          "cites": [
+            "wikipedia-mutsu",
+            "ncsu-mutsu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-mutsu",
+          "name": "Wikipedia: Mutsu (apple)",
+          "url": "https://en.wikipedia.org/wiki/Mutsu_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "ncsu-mutsu",
+          "name": "NC State Extension Gardener Plant Toolbox: Malus domestica 'Mutsu'",
+          "url": "https://plants.ces.ncsu.edu/plants/malus-domestica-mutsu/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-orleans-reinette": {
+      "slug": "apple-orleans-reinette",
+      "species": "Apple",
+      "variety": "Orleans Reinette",
+      "paragraphs": [
+        "Orleans Reinette is a French dessert apple first recorded around 1776 and named for the city of Orleans. Long valued across Europe as a high-quality variety, it received a Royal Horticultural Society Award of Merit in 1914 and again in 1921. DNA work points to Reinette de Hollande and Court Pendu Plat as parents.",
+        "The skin is golden yellow overlaid with bronze russet and a red-orange blush, giving a rough, sandy texture. The firm, fine-textured, creamy flesh has a rich flavour often described as orange and nuts, making it a connoisseur's eating apple at the end of the season."
+      ],
+      "claims": [
+        {
+          "text": "French dessert apple first recorded around 1776, named for the city of Orleans",
+          "type": "origin",
+          "cites": [
+            "nfc-orleans",
+            "specialtyproduce-orleans"
+          ]
+        },
+        {
+          "text": "Received an RHS Award of Merit in 1914 and 1921",
+          "type": "award",
+          "cites": [
+            "nfc-orleans"
+          ]
+        },
+        {
+          "text": "DNA points to Reinette de Hollande and Court Pendu Plat as parents",
+          "type": "breeding",
+          "cites": [
+            "specialtyproduce-orleans"
+          ]
+        },
+        {
+          "text": "Golden yellow skin with bronze russet and red-orange blush, rough sandy texture",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce-orleans"
+          ]
+        },
+        {
+          "text": "Firm, fine-textured creamy flesh with a rich orange-and-nut flavour",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce-orleans",
+            "nfc-orleans"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nfc-orleans",
+          "name": "National Fruit Collection: Orleans Reinette",
+          "url": "https://www.nationalfruitcollection.org.uk/full2.php?id=4427&fruit=apple",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-orleans",
+          "name": "Specialty Produce: Orleans Reinette Apples",
+          "url": "https://specialtyproduce.com/produce/Orleans_Reinette_Apples_8623.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-peasgood-s-nonsuch": {
+      "slug": "apple-peasgood-s-nonsuch",
+      "species": "Apple",
+      "variety": "Peasgood s Nonsuch",
+      "paragraphs": [
+        "Peasgood's Nonsuch was raised by Mrs Peasgood at Stamford, Lincolnshire, England, from seed sown about 1858. A basket of the fruit won first prize at the Burghley Park agricultural show, and the variety received a First Class Certificate from the Royal Horticultural Society in 1872, which helped launch it as a garden favourite.",
+        "It is a large, handsome culinary apple, pale yellow-green flushing to orange-yellow with red striping and some russet. The flesh is a little coarse and moderately juicy, cooking down well to a sweet, well-flavoured puree, though good specimens are pleasant enough to eat fresh."
+      ],
+      "claims": [
+        {
+          "text": "Raised by Mrs Peasgood at Stamford, Lincolnshire, England, from seed sown about 1858",
+          "type": "origin",
+          "cites": [
+            "nfc-peasgood",
+            "wikipedia-peasgood"
+          ]
+        },
+        {
+          "text": "Received a First Class Certificate from the Royal Horticultural Society in 1872",
+          "type": "award",
+          "cites": [
+            "nfc-peasgood"
+          ]
+        },
+        {
+          "text": "Large culinary apple, pale yellow-green to orange-yellow with red striping and some russet",
+          "type": "appearance",
+          "cites": [
+            "orangepippin-peasgood",
+            "nfc-peasgood"
+          ]
+        },
+        {
+          "text": "Coarse, moderately juicy flesh that cooks well to a sweet puree",
+          "type": "use",
+          "cites": [
+            "nfc-peasgood",
+            "orangepippin-peasgood"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nfc-peasgood",
+          "name": "National Fruit Collection: Peasgood's Nonsuch",
+          "url": "https://www.nationalfruitcollection.org.uk/full2.php?varid=4552&fruit=apple",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-peasgood",
+          "name": "Wikipedia: Peasgood's Nonsuch",
+          "url": "https://en.wikipedia.org/wiki/Peasgood's_Nonsuch",
+          "tier": "third_party"
+        },
+        {
+          "id": "orangepippin-peasgood",
+          "name": "Orange Pippin: Peasgood's Nonsuch",
+          "url": "https://www.orangepippin.com/varieties/apples/peasgood-nonsuch",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "apple-pink-lady": {
       "slug": "apple-pink-lady",
       "species": "Apple",
@@ -344,6 +1876,74 @@
       ],
       "confidence": "high",
       "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-pixie-crunch": {
+      "slug": "apple-pixie-crunch",
+      "species": "Apple",
+      "variety": "Pixie Crunch",
+      "paragraphs": [
+        "Pixie Crunch, trialled as Co-op 33, is a modern disease-resistant apple from the cooperative breeding program of the Indiana, Illinois and New Jersey research stations, with the cross made in 1971 and selected at West Lafayette, Indiana. Golden Delicious and Rome both appear in its pedigree. It is genetically resistant to apple scab.",
+        "It is a small, deep-red dessert apple known above all for its exceptionally crisp, breaking texture, comparable to Honeycrisp. The flavour is sweet with a mild, slightly spicy character. It ripens around mid-September, a week or two after Gala, and hangs on the tree in good condition for several weeks."
+      ],
+      "claims": [
+        {
+          "text": "Trialled as Co-op 33, from the cooperative breeding program of the Indiana, Illinois and New Jersey research stations; cross made in 1971, selected at West Lafayette, Indiana",
+          "type": "origin",
+          "cites": [
+            "purdue-fff-pixie",
+            "pomiferous-coop33"
+          ]
+        },
+        {
+          "text": "Golden Delicious and Rome both appear in the pedigree",
+          "type": "breeding",
+          "cites": [
+            "purdue-fff-pixie",
+            "pomiferous-coop33"
+          ]
+        },
+        {
+          "text": "Genetically resistant to apple scab",
+          "type": "breeding",
+          "cites": [
+            "pomiferous-coop33"
+          ]
+        },
+        {
+          "text": "Small deep-red dessert apple with exceptionally crisp, breaking texture comparable to Honeycrisp",
+          "type": "flavour",
+          "cites": [
+            "purdue-fff-pixie",
+            "pomiferous-coop33"
+          ]
+        },
+        {
+          "text": "Ripens around mid-September, about a week or two after Gala, and holds on the tree for several weeks",
+          "type": "season",
+          "cites": [
+            "purdue-fff-pixie",
+            "pomiferous-coop33"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "purdue-fff-pixie",
+          "name": "Purdue University, Facts for Fancy Fruit: Pixy Crunch Apple",
+          "url": "https://fff.hort.purdue.edu/article/1549/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pomiferous-coop33",
+          "name": "Pomiferous: Co-op 33 (Pixie Crunch)",
+          "url": "https://pomiferous.com/applebyname/co-op-33-id-1492",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -413,6 +2013,596 @@
       "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "apple-rome-beauty": {
+      "slug": "apple-rome-beauty",
+      "species": "Apple",
+      "variety": "Rome Beauty",
+      "paragraphs": [
+        "Rome Beauty traces to a chance seedling found in 1817 by Joel Gillet in a nursery shipment, planted on the banks of the Ohio River in Rome Township, Ohio. Originally called Gillett's Seedling, it was renamed Rome Beauty in 1832 in honour of the township and went on to become a staple of American commerce.",
+        "The fruit is rounded, glossy and deep red with a thick skin and firm flesh. It is mainly a baking apple, holding its shape well when cooked while its flavour develops with heat. Fresh, its taste is milder and less sweet or tart than many dessert varieties, so it is favoured more for the kitchen than the fruit bowl."
+      ],
+      "claims": [
+        {
+          "text": "Chance seedling found in 1817 by Joel Gillet, planted in Rome Township, Ohio; renamed Rome Beauty in 1832",
+          "type": "origin",
+          "cites": [
+            "wikipedia-rome",
+            "specialtyproduce-rome"
+          ]
+        },
+        {
+          "text": "Rounded, glossy, deep red with thick skin and firm flesh",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-rome"
+          ]
+        },
+        {
+          "text": "Primarily a baking apple that holds its shape when cooked, with flavour developing with heat",
+          "type": "use",
+          "cites": [
+            "wikipedia-rome",
+            "specialtyproduce-rome"
+          ]
+        },
+        {
+          "text": "Milder, less sweet or tart flavour fresh than many dessert apples",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-rome"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-rome",
+          "name": "Wikipedia: Rome apple",
+          "url": "https://en.wikipedia.org/wiki/Rome_apple",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-rome",
+          "name": "Specialty Produce: Rome Apples",
+          "url": "https://specialtyproduce.com/produce/Rome_Apples_412.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-somerset-redstreak": {
+      "slug": "apple-somerset-redstreak",
+      "species": "Apple",
+      "variety": "Somerset Redstreak",
+      "paragraphs": [
+        "Somerset Redstreak is a traditional English cider apple from Somerset, dating from before 1900. It is a late, mild bittersweet variety with deep red stripes over green skin, yielding a sweet, astringent juice of vintage quality.",
+        "It remains one of the main commercial cider cultivars. The vigorous trees crop well but often biennially, and the fruit needs to be pressed promptly after harvest rather than stored."
+      ],
+      "claims": [
+        {
+          "text": "Traditional Somerset cider apple dating from before 1900",
+          "type": "origin",
+          "cites": [
+            "pomiferous-somersetredstreak",
+            "rhs-somersetredstreak"
+          ]
+        },
+        {
+          "text": "Late, mild bittersweet variety with a sweet, astringent juice",
+          "type": "flavour",
+          "cites": [
+            "rhs-somersetredstreak",
+            "pomiferous-somersetredstreak"
+          ]
+        },
+        {
+          "text": "Vintage quality cider apple and one of the main commercial cider cultivars",
+          "type": "use",
+          "cites": [
+            "pomiferous-somersetredstreak",
+            "rhs-somersetredstreak"
+          ]
+        },
+        {
+          "text": "Vigorous trees that crop well but often biennially",
+          "type": "season",
+          "cites": [
+            "rhs-somersetredstreak"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-somersetredstreak",
+          "name": "RHS: Malus domestica Somerset Redstreak (Cider)",
+          "url": "https://www.rhs.org.uk/plants/139178/malus-domestica-somerset-redstreak-(cider)/details",
+          "tier": "third_party"
+        },
+        {
+          "id": "pomiferous-somersetredstreak",
+          "name": "Pomiferous: Somerset Redstreak",
+          "url": "https://pomiferous.com/applebyname/somerset-redstreak-id-7631",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-spartan": {
+      "slug": "apple-spartan",
+      "species": "Apple",
+      "variety": "Spartan",
+      "paragraphs": [
+        "Spartan is a Canadian apple developed by R.C. Palmer at the federal research station in Summerland, British Columbia, and introduced in 1936. It is a McIntosh-type apple, long thought to be a McIntosh cross with Yellow Newtown Pippin, though later genetic analysis ruled out Newtown Pippin and left the second parent a mystery.",
+        "The fruit is deep red, sometimes almost purple-red, over a snowy-white flesh. It is crisp and juicy off the tree with a sweet, slightly wine-like (vinous) flavour, softening a little after picking. It is regarded as a good all-purpose apple for fresh eating and cooking."
+      ],
+      "claims": [
+        {
+          "text": "Developed by R.C. Palmer at the federal research station in Summerland, British Columbia, Canada, and introduced in 1936",
+          "type": "origin",
+          "cites": [
+            "wikipedia-spartan",
+            "dchp-spartan"
+          ]
+        },
+        {
+          "text": "A McIntosh-type apple; long thought to be McIntosh x Newtown Pippin, but genetic analysis ruled out Newtown Pippin and the second parent is unknown",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-spartan",
+            "dchp-spartan"
+          ]
+        },
+        {
+          "text": "Deep red skin over snowy-white flesh",
+          "type": "appearance",
+          "cites": [
+            "dchp-spartan",
+            "wikipedia-spartan"
+          ]
+        },
+        {
+          "text": "Crisp and juicy with a sweet, slightly vinous flavour",
+          "type": "flavour",
+          "cites": [
+            "dchp-spartan"
+          ]
+        },
+        {
+          "text": "Considered a good all-purpose apple for eating and cooking",
+          "type": "use",
+          "cites": [
+            "wikipedia-spartan",
+            "dchp-spartan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-spartan",
+          "name": "Wikipedia: Spartan (apple)",
+          "url": "https://en.wikipedia.org/wiki/Spartan_(apple)",
+          "tier": "third_party"
+        },
+        {
+          "id": "dchp-spartan",
+          "name": "Dictionary of Canadianisms (DCHP-3), University of British Columbia: Spartan",
+          "url": "https://dchp.arts.ubc.ca/entries/Spartan",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-stoke-red": {
+      "slug": "apple-stoke-red",
+      "species": "Apple",
+      "variety": "Stoke Red",
+      "paragraphs": [
+        "Stoke Red is a bittersharp English cider apple from Somerset, named after the village of Rodney Stoke where it rose to prominence in the 1920s after dairy farmer Herbert Sealey entered it in the Long Ashton Research Station competition. The small fruit is red striped over yellow and ripens very late, usually November.",
+        "It is regarded as a vintage quality variety, high in both tannin and acid, often compared to Kingston Black. That tannin and acid balance lets it make a good single varietal cider on its own, and it is highly resistant to scab, though the tree has an unruly growth habit."
+      ],
+      "claims": [
+        {
+          "text": "Bittersharp Somerset cider apple named after Rodney Stoke, rising to prominence in the 1920s via the Long Ashton Research Station competition (entered by Herbert Sealey)",
+          "type": "origin",
+          "cites": [
+            "pomiferous-stokered",
+            "cidercraft-stokered"
+          ]
+        },
+        {
+          "text": "Vintage quality variety, high in both tannin and acid, often compared to Kingston Black",
+          "type": "use",
+          "cites": [
+            "cidercraft-stokered",
+            "pomiferous-stokered"
+          ]
+        },
+        {
+          "text": "Tannin and acid balance suits single varietal cider",
+          "type": "flavour",
+          "cites": [
+            "cidercraft-stokered",
+            "pomiferous-stokered"
+          ]
+        },
+        {
+          "text": "Very late ripening (November) with an unruly growth habit",
+          "type": "season",
+          "cites": [
+            "pomiferous-stokered",
+            "cidercraft-stokered"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pomiferous-stokered",
+          "name": "Pomiferous: Stoke's Red",
+          "url": "https://pomiferous.com/applebyname/stokes-red-id-7644",
+          "tier": "third_party"
+        },
+        {
+          "id": "cidercraft-stokered",
+          "name": "Cidercraft Magazine: Stoke Red",
+          "url": "https://cidercraftmag.com/apple-tales-stoke-red/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.91,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-sundowner": {
+      "slug": "apple-sundowner",
+      "species": "Apple",
+      "variety": "Sundowner",
+      "paragraphs": [
+        "Sundowner is the trademark name for fruit of the Cripps Red cultivar, bred by John Cripps at the Stoneville Research Station in Western Australia in 1973 from a cross of Golden Delicious and Lady Williams. It shares its parentage with Cripps Pink, sold as Pink Lady, and is also marketed as Joya in Europe.",
+        "It is a red-blushed apple with distinctive white lenticels, and crisp, dense, very juicy flesh that balances good acidity with sweetness, giving a tangy yet sweet flavour. It ripens very late in the season and is a warm-climate, low-chill apple, which is why it grows well in places like Western Australia. It is mainly eaten fresh."
+      ],
+      "claims": [
+        {
+          "text": "Sundowner is the trademark for the Cripps Red cultivar, bred by John Cripps at Stoneville Research Station, Western Australia, in 1973 from Golden Delicious x Lady Williams",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cripps-red",
+            "goodfruit-cripps-red"
+          ]
+        },
+        {
+          "text": "It shares parentage with Cripps Pink (Pink Lady) and is also marketed as Joya in Europe",
+          "type": "naming",
+          "cites": [
+            "wikipedia-cripps-red",
+            "goodfruit-cripps-red"
+          ]
+        },
+        {
+          "text": "Red-blushed apple with distinctive white lenticels and crisp, dense, very juicy flesh balancing acidity and sweetness",
+          "type": "flavour",
+          "cites": [
+            "goodfruit-cripps-red"
+          ]
+        },
+        {
+          "text": "Ripens very late in the season and is a warm-climate, low-chill apple; mainly eaten fresh",
+          "type": "climate",
+          "cites": [
+            "wikipedia-cripps-red",
+            "goodfruit-cripps-red"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-cripps-red",
+          "name": "Wikipedia: Cripps Red",
+          "url": "https://en.wikipedia.org/wiki/Cripps_Red",
+          "tier": "third_party"
+        },
+        {
+          "id": "goodfruit-cripps-red",
+          "name": "Good Fruit Guide: Cripps Red (Sundowner; Joya)",
+          "url": "https://goodfruitguide.co.uk/product/cripps_red/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-tremlett-s-bitter": {
+      "slug": "apple-tremlett-s-bitter",
+      "species": "Apple",
+      "variety": "Tremlett s Bitter",
+      "paragraphs": [
+        "Tremlett's Bitter is a classic English bittersweet cider apple from Devon, dating to around 1880. The deep red, conical fruit is famous for its very robust, almost brutal tannins, earning it a reputation as a heavyweight bittersweet.",
+        "Because the bitterness is so pronounced, it is usually used in blends with sweeter or sharper varieties, where its structure and tannin add body. It tends to bear biennially, with heavy crops every second year."
+      ],
+      "claims": [
+        {
+          "text": "Classic English bittersweet cider apple from Devon, dating to around 1880",
+          "type": "origin",
+          "cites": [
+            "pomiferous-tremletts",
+            "ciderreview-tremletts"
+          ]
+        },
+        {
+          "text": "Known for very robust, pronounced tannins and a strongly bitter character",
+          "type": "flavour",
+          "cites": [
+            "ciderreview-tremletts",
+            "pomiferous-tremletts"
+          ]
+        },
+        {
+          "text": "Usually used in blends because of its strong bitterness and tannic structure",
+          "type": "use",
+          "cites": [
+            "ciderreview-tremletts"
+          ]
+        },
+        {
+          "text": "Tends to bear biennially, with heavy crops every second year",
+          "type": "season",
+          "cites": [
+            "pomiferous-tremletts"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pomiferous-tremletts",
+          "name": "Pomiferous: Tremlett's Bitter",
+          "url": "https://pomiferous.com/applebyname/tremletts-bitter-id-7690",
+          "tier": "third_party"
+        },
+        {
+          "id": "ciderreview-tremletts",
+          "name": "Cider Review: Spotlight on Tremlett's Bitter",
+          "url": "https://cider-review.com/2021/08/01/40059/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-tropic-sweet": {
+      "slug": "apple-tropic-sweet",
+      "species": "Apple",
+      "variety": "Tropic Sweet",
+      "paragraphs": [
+        "Tropic Sweet (selection Fla. 90-3) is a low-chill apple from the University of Florida breeding program at Gainesville, selected in 1990 and patented in 1995. It traces back to a cross involving Anna, and it is bred specifically for warm subtropical climates where high-chill apples will not set fruit.",
+        "The fruit is sweeter, firmer, and less red than Anna, with low acidity giving a very sweet taste and a crisp texture often compared to Gala. It carries a partial red blush over a yellow-green skin and ripens early in the season. The trees are not self-fruitful, so they need a pollinator such as Anna or Dorsett Golden."
+      ],
+      "claims": [
+        {
+          "text": "Bred at the University of Florida (Gainesville), selected in 1990 from a cross involving Anna, and patented in 1995",
+          "type": "origin",
+          "cites": [
+            "ifas-mg368",
+            "uspto-pp9708"
+          ]
+        },
+        {
+          "text": "Low-chill cultivar developed for warm subtropical climates",
+          "type": "climate",
+          "cites": [
+            "ifas-mg368",
+            "uspto-pp9708"
+          ]
+        },
+        {
+          "text": "Sweeter, firmer and less red than Anna, with low acidity and a crisp Gala-like texture",
+          "type": "flavour",
+          "cites": [
+            "ifas-mg368",
+            "uspto-pp9708"
+          ]
+        },
+        {
+          "text": "Ripens early in the season",
+          "type": "season",
+          "cites": [
+            "ifas-mg368"
+          ]
+        },
+        {
+          "text": "Not self-fruitful; needs a pollinator such as Anna or Dorsett Golden",
+          "type": "pollination",
+          "cites": [
+            "uspto-pp9708",
+            "ifas-mg368"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ifas-mg368",
+          "name": "UF/IFAS Extension: Low-Chill Apple Cultivars for North Florida",
+          "url": "https://ask.ifas.ufl.edu/publication/MG368",
+          "tier": "authoritative"
+        },
+        {
+          "id": "uspto-pp9708",
+          "name": "USPTO Plant Patent PP9708: Apple tree Fla. 90-3 (TropicSweet)",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/PP9708",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-tropical-beauty": {
+      "slug": "apple-tropical-beauty",
+      "species": "Apple",
+      "variety": "Tropical Beauty",
+      "paragraphs": [
+        "Tropical Beauty is a warm-climate dessert apple raised around 1930 by Meredith B. Strapp in Maidstone, South Africa, from a seedling of unknown parentage. It was named and introduced in Australia in 1958 by Longbecker Nurseries, and it is valued as a low-chill variety that fruits in subtropical conditions where most apples will not.",
+        "The fruit is medium sized and round-conic with ribbed, angular sides, showing a dark red wash over a greenish-yellow base. The flesh is yellowish white, firm and rather coarse, with a dry, sweet flavour. It is only partly self-fertile and crops best with a compatible pollinator nearby."
+      ],
+      "claims": [
+        {
+          "text": "Raised around 1930 by Meredith B. Strapp in Maidstone, South Africa, from a seedling of unknown parentage",
+          "type": "origin",
+          "cites": [
+            "pomiferous-tropical-beauty",
+            "hft-tropical-beauty"
+          ]
+        },
+        {
+          "text": "Named and introduced in Australia in 1958 by Longbecker Nurseries",
+          "type": "naming",
+          "cites": [
+            "pomiferous-tropical-beauty",
+            "hft-tropical-beauty"
+          ]
+        },
+        {
+          "text": "Low-chill variety suited to warm, subtropical climates",
+          "type": "climate",
+          "cites": [
+            "pomiferous-tropical-beauty",
+            "hft-tropical-beauty"
+          ]
+        },
+        {
+          "text": "Medium, round-conic with ribbed sides; dark red wash over a greenish-yellow base",
+          "type": "appearance",
+          "cites": [
+            "pomiferous-tropical-beauty"
+          ]
+        },
+        {
+          "text": "Yellowish-white, firm, coarse flesh with a dry, sweet flavour",
+          "type": "flavour",
+          "cites": [
+            "pomiferous-tropical-beauty",
+            "hft-tropical-beauty"
+          ]
+        },
+        {
+          "text": "Only partly self-fertile; crops best with a compatible pollinator",
+          "type": "pollination",
+          "cites": [
+            "pomiferous-tropical-beauty",
+            "hft-tropical-beauty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pomiferous-tropical-beauty",
+          "name": "Pomiferous: Tropical Beauty",
+          "url": "https://pomiferous.com/applebyname/tropical-beauty-id-6436",
+          "tier": "third_party"
+        },
+        {
+          "id": "hft-tropical-beauty",
+          "name": "Heritage Fruit Trees: Tropical Beauty Apple",
+          "url": "https://www.heritagefruittrees.com.au/tropical-beauty-apple-medium/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "apple-twenty-ounce": {
+      "slug": "apple-twenty-ounce",
+      "species": "Apple",
+      "variety": "Twenty Ounce",
+      "paragraphs": [
+        "Twenty Ounce is an American heritage apple believed to come from Cayuga County, New York, discovered as a chance seedling in the early 19th century and first exhibited in 1843. Its parentage is unknown. The name reflects its remarkable size, with fruit that can grow very large and heavy.",
+        "It is a large apple with a yellow-green base overlaid by red blush, striations and striping, and firm, dense, pale flesh. The flavour is mildly tart, and it was prized for generations as a premier cooking apple, especially for pies and sauce. Today it is rare, kept going mainly by heirloom growers."
+      ],
+      "claims": [
+        {
+          "text": "American heritage apple believed native to Cayuga County, New York; a chance seedling of unknown parentage from the early 19th century, first exhibited in 1843",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce-twentyounce",
+            "pomiferous-twentyounce"
+          ]
+        },
+        {
+          "text": "Named for its large size; fruit can grow very large and heavy",
+          "type": "naming",
+          "cites": [
+            "specialtyproduce-twentyounce",
+            "pomiferous-twentyounce"
+          ]
+        },
+        {
+          "text": "Yellow-green skin with red blush, striations and striping over firm, dense, pale flesh",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce-twentyounce",
+            "pomiferous-twentyounce"
+          ]
+        },
+        {
+          "text": "Mildly tart flavour, long valued as a premier cooking apple for pies and sauce",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-twentyounce",
+            "pomiferous-twentyounce"
+          ]
+        },
+        {
+          "text": "Now rare, preserved mainly by heirloom growers",
+          "type": "naming",
+          "cites": [
+            "specialtyproduce-twentyounce"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialtyproduce-twentyounce",
+          "name": "Specialty Produce: Twenty Ounce Apples",
+          "url": "https://specialtyproduce.com/produce/Twenty_Ounce_Apples_9748.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "pomiferous-twentyounce",
+          "name": "Pomiferous: Twenty Ounce",
+          "url": "https://pomiferous.com/applebyname/twenty-ounce-id-8462",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "apple-fraser-island",
+    "apple-giants-green-seedless-green-wax",
+    "apple-haitian-star",
+    "apple-kampong-mauve-sugar",
+    "apple-kei",
+    "apple-malay",
+    "apple-purple-sugar",
+    "apple-sugar",
+    "apple-wood"
+  ]
 }
