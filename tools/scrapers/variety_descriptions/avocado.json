@@ -77,6 +77,146 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "avocado-choquette": {
+      "slug": "avocado-choquette",
+      "species": "Avocado",
+      "variety": "Choquette",
+      "paragraphs": [
+        "Choquette is a Florida avocado, grown from a seed planted in 1929 on the Miami property of Remi D. Choquette Sr. and likely a cross between Guatemalan and West Indian types. It carries A type flowers. The fruit is very large, oval, with glossy, smooth green skin that stays green when ripe rather than darkening like Hass.",
+        "The skin peels easily to reveal golden flesh that is silky and creamy, firmer than many varieties so it holds its shape. In Florida the fruit matures from about October to January, and Choquette remains one of the more important commercially grown Florida avocados."
+      ],
+      "claims": [
+        {
+          "text": "Choquette grew from a seed planted in 1929 on Remi D. Choquette Sr.'s property in Miami, Florida.",
+          "type": "origin",
+          "cites": [
+            "wiki-choquette"
+          ]
+        },
+        {
+          "text": "It is likely a cross between Guatemalan and West Indian types.",
+          "type": "breeding",
+          "cites": [
+            "wiki-choquette"
+          ]
+        },
+        {
+          "text": "Choquette has A type flowers.",
+          "type": "pollination",
+          "cites": [
+            "wiki-choquette"
+          ]
+        },
+        {
+          "text": "Fruit are very large, oval, with glossy smooth green skin that stays green when ripe.",
+          "type": "appearance",
+          "cites": [
+            "wiki-choquette",
+            "sp-choquette"
+          ]
+        },
+        {
+          "text": "The skin peels easily, the flesh is creamy, and the fruit matures October to January in Florida.",
+          "type": "season",
+          "cites": [
+            "wiki-choquette",
+            "sp-choquette"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-choquette",
+          "name": "Wikipedia: Choquette (avocado)",
+          "url": "https://en.wikipedia.org/wiki/Choquette_(avocado)",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-choquette",
+          "name": "Specialty Produce: Choquette Avocados",
+          "url": "https://specialtyproduce.com/produce/Choquette_Avocados_23102.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-edranol": {
+      "slug": "avocado-edranol",
+      "species": "Avocado",
+      "variety": "Edranol",
+      "paragraphs": [
+        "Edranol is a Guatemalan-race hybrid that originated in Vista, California, from a seedling raised by E.R. Mullen and introduced in 1932. It carries a B-type flower, so it sets best alongside an A-type pollinator such as Hass. The pear-shaped fruit is medium to large with thin but rough, leathery, pebbly green skin that stays green (sometimes darkening) as it ripens.",
+        "The flesh is rich, fibreless and of high quality with a small seed, traits typical of good Guatemalan-race selections. Edranol matures in the spring window in California, making it a useful companion to fill out a longer harvest spread rather than a peak-summer variety."
+      ],
+      "claims": [
+        {
+          "text": "Edranol originated in Vista, California, from a seedling by E.R. Mullen and was introduced in 1932.",
+          "type": "origin",
+          "cites": [
+            "ucr",
+            "specialty"
+          ]
+        },
+        {
+          "text": "It is a Guatemalan-race hybrid.",
+          "type": "origin",
+          "cites": [
+            "ucr",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Edranol has a B-type flower.",
+          "type": "pollination",
+          "cites": [
+            "ucr",
+            "specialty"
+          ]
+        },
+        {
+          "text": "The fruit is pear-shaped with thin, rough, leathery, green skin that stays green when ripe.",
+          "type": "appearance",
+          "cites": [
+            "specialty",
+            "alder"
+          ]
+        },
+        {
+          "text": "Edranol matures in the spring season in California.",
+          "type": "season",
+          "cites": [
+            "alder"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr",
+          "name": "UC Riverside Avocado Variety Collection, variety list",
+          "url": "https://avocado.ucr.edu/variety-list",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Edranol Avocados",
+          "url": "https://specialtyproduce.com/produce/Edranol_Avocados_22618.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "alder",
+          "name": "Greg Alder's Yard Posts, Avocado varieties for year-round harvest",
+          "url": "https://gregalder.com/yardposts/avocado-varieties-for-year-round-harvest/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "avocado-fuerte": {
       "slug": "avocado-fuerte",
       "species": "Avocado",
@@ -145,6 +285,79 @@
       ],
       "confidence": "high",
       "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-gwen": {
+      "slug": "avocado-gwen",
+      "species": "Avocado",
+      "variety": "Gwen",
+      "paragraphs": [
+        "Gwen was bred by Bob Bergh at the University of California, Riverside, and released in 1983, named after his wife. It is a descendant of Hass (a Guatemalan type line) selected as a green skinned, Hass like fruit, and it carries A type flowers. The skin is pebbled and stays green when ripe rather than blackening like Hass.",
+        "The fruit is small to medium and Hass like in flavour, on a notably compact, dwarf tree that suits small gardens and containers. Despite its quality Gwen was a commercial flop, because the market had settled on the black skinned Hass, but it remains valued by home growers and as breeding stock."
+      ],
+      "claims": [
+        {
+          "text": "Gwen was bred by Bob Bergh at UC Riverside and released in 1983, named after his wife.",
+          "type": "breeding",
+          "cites": [
+            "uc-gwen"
+          ]
+        },
+        {
+          "text": "Gwen is a descendant of Hass selected as a green skinned, Hass like fruit, and is a Guatemalan type.",
+          "type": "origin",
+          "cites": [
+            "uc-gwen",
+            "sp-gwen"
+          ]
+        },
+        {
+          "text": "Gwen carries A type flowers.",
+          "type": "pollination",
+          "cites": [
+            "sp-gwen"
+          ]
+        },
+        {
+          "text": "The skin stays green when ripe rather than blackening like Hass.",
+          "type": "appearance",
+          "cites": [
+            "uc-gwen",
+            "sp-gwen"
+          ]
+        },
+        {
+          "text": "It grows on a compact dwarf tree suited to small spaces and containers.",
+          "type": "growing",
+          "cites": [
+            "sp-gwen"
+          ]
+        },
+        {
+          "text": "Gwen was a commercial flop because the market favoured the black skinned Hass.",
+          "type": "naming",
+          "cites": [
+            "uc-gwen"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uc-gwen",
+          "name": "University of California: UC Riverside releases a new avocado tree",
+          "url": "https://www.universityofcalifornia.edu/news/uc-riverside-releases-new-avocado-tree-world-marketplace",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-gwen",
+          "name": "Specialty Produce: Gwen Avocados",
+          "url": "https://specialtyproduce.com/produce/Gwen_Avocados_10956.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
     },
@@ -234,6 +447,371 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "avocado-lamb-hass": {
+      "slug": "avocado-lamb-hass",
+      "species": "Avocado",
+      "variety": "Lamb Hass",
+      "paragraphs": [
+        "Lamb Hass is a University of California selection (originally BL122) bred by Gray Martin and B.O. Bergh and patented in 1996. It arose as an open-pollinated seedling of Gwen, itself a descendant of Hass, and was named for the Bob Lamb ranch where it was grown. Like Hass, it carries an A-type flower and its green skin turns black as the fruit ripens, giving an easy ripeness cue.",
+        "The fruit runs larger than standard Hass (often sold as jumbo Hass) and matures later in the season, extending supply past the main Hass window. The upright, vigorous tree shows good heat tolerance, holding fruit through hot spells, which makes it a workhorse for warmer growing districts."
+      ],
+      "claims": [
+        {
+          "text": "Lamb Hass was bred in the University of California program by Gray Martin and B.O. Bergh, originally designated BL122, and patented in 1996.",
+          "type": "breeding",
+          "cites": [
+            "patent",
+            "ucr"
+          ]
+        },
+        {
+          "text": "It is an open-pollinated seedling of Gwen, a descendant of Hass, and named for the Bob Lamb ranch.",
+          "type": "naming",
+          "cites": [
+            "patent",
+            "alder"
+          ]
+        },
+        {
+          "text": "Lamb Hass has an A-type flower, the same as Hass.",
+          "type": "pollination",
+          "cites": [
+            "patent",
+            "ucr"
+          ]
+        },
+        {
+          "text": "Its green skin turns black as the fruit ripens.",
+          "type": "appearance",
+          "cites": [
+            "patent",
+            "alder"
+          ]
+        },
+        {
+          "text": "Fruit is typically larger than Hass.",
+          "type": "appearance",
+          "cites": [
+            "patent",
+            "alder"
+          ]
+        },
+        {
+          "text": "It matures later in the season than Hass.",
+          "type": "season",
+          "cites": [
+            "patent",
+            "alder"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent",
+          "name": "US Plant Patent PP9753, Avocado tree called Lamb/Hass (Martin & Bergh, UC)",
+          "url": "https://patents.google.com/patent/USPP9753P/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ucr",
+          "name": "UC Riverside Avocado Variety Collection, variety list",
+          "url": "https://avocado.ucr.edu/variety-list",
+          "tier": "authoritative"
+        },
+        {
+          "id": "alder",
+          "name": "Greg Alder's Yard Posts, The Lamb/Hass avocado tree profile",
+          "url": "https://gregalder.com/yardposts/the-lamb-hass-avocado-tree-a-profile/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-linda": {
+      "slug": "avocado-linda",
+      "species": "Avocado",
+      "variety": "Linda",
+      "paragraphs": [
+        "Linda is a Guatemalan-race avocado introduced to the continental United States around 1914 by E.E. Knight, from Guatemalan stock. It carries a B-type flower, so it benefits from an A-type partner for reliable fruit set. The fruit is notably large, round to oblong, with thick, rough-textured skin that ripens to a deep purple, distinguishing it from the green and black skins of most commercial varieties.",
+        "The flesh is light yellow (greener near the rind), buttery and mild-flavoured, over a small to medium seed. Linda is sometimes called the dieter's avocado for its lower oil content than many varieties while keeping good texture and flavour. It ripens in the late winter through spring window."
+      ],
+      "claims": [
+        {
+          "text": "Linda is a Guatemalan-race avocado introduced to the continental US around 1914 by E.E. Knight, from Guatemalan stock.",
+          "type": "origin",
+          "cites": [
+            "specialty",
+            "wiki"
+          ]
+        },
+        {
+          "text": "It carries a B-type flower.",
+          "type": "pollination",
+          "cites": [
+            "specialty",
+            "wiki"
+          ]
+        },
+        {
+          "text": "The fruit is large, round to oblong, with thick, rough skin that ripens to a deep purple.",
+          "type": "appearance",
+          "cites": [
+            "specialty",
+            "wiki"
+          ]
+        },
+        {
+          "text": "The flesh is light yellow, buttery and mild, with a small to medium seed.",
+          "type": "flavour",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "Linda is called the dieter's avocado because of its lower oil content than many varieties.",
+          "type": "flavour",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "It ripens from late winter through spring.",
+          "type": "season",
+          "cites": [
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Linda Avocados",
+          "url": "https://specialtyproduce.com/produce/Linda_Avocados_14676.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Avocado (list of cultivars)",
+          "url": "https://en.wikipedia.org/wiki/Avocado",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-mexicola": {
+      "slug": "avocado-mexicola",
+      "species": "Avocado",
+      "variety": "Mexicola",
+      "paragraphs": [
+        "Mexicola is a pure Mexican race avocado prized as one of the most cold hardy cultivars, with mature trees reported to recover quickly from hard frosts. Like other Mexican race avocados its leaves are anise scented when crushed. The fruit is small with a paper thin, shiny purplish black skin and a very large seed, traits typical of the Mexican race.",
+        "The flesh is regarded as high quality with rich flavour. Because the skin is so thin it is sometimes eaten with the fruit. Mexicola ripens in the autumn and, being a Mexican race selection, is suited to cooler avocado climates than the Guatemalan types."
+      ],
+      "claims": [
+        {
+          "text": "Mexicola is a Mexican race avocado and one of the hardiest known cultivars, recovering rapidly from freezes.",
+          "type": "origin",
+          "cites": [
+            "itfnet",
+            "sp-mexicola"
+          ]
+        },
+        {
+          "text": "Mexican race avocados, including Mexicola, have anise scented leaves.",
+          "type": "appearance",
+          "cites": [
+            "sp-mexicola",
+            "britannica-mex"
+          ]
+        },
+        {
+          "text": "The fruit is small with paper thin, purplish black skin and a very large seed.",
+          "type": "appearance",
+          "cites": [
+            "itfnet",
+            "sp-mexicola"
+          ]
+        },
+        {
+          "text": "The flesh is high quality with rich flavour.",
+          "type": "flavour",
+          "cites": [
+            "itfnet",
+            "sp-mexicola"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "itfnet",
+          "name": "International Tropical Fruits Network: Avocado Common Varieties",
+          "url": "https://www.itfnet.org/v1/2016/05/avocado-common-varities/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-mexicola",
+          "name": "Specialty Produce: Mexicola Grande Avocados",
+          "url": "https://specialtyproduce.com/produce/Mexicola_Grande_Avocados_6643.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "britannica-mex",
+          "name": "Encyclopaedia Britannica: Mexican avocado",
+          "url": "https://www.britannica.com/plant/Mexican-avocado",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-nabal": {
+      "slug": "avocado-nabal",
+      "species": "Avocado",
+      "variety": "Nabal",
+      "paragraphs": [
+        "Nabal is a Guatemalan race avocado brought to the United States from Antigua, Guatemala, by plant explorer Wilson Popenoe in 1916. It is distinctive for being almost perfectly round, with thick, hard green skin that stays green even when ripe, sometimes developing speckling, over a large seed cavity.",
+        "The fruit is large, with dense, smooth, fibreless flesh and a rich, nutty flavour. Nabal is known for high quality fruit, though it tends to bear in alternate years."
+      ],
+      "claims": [
+        {
+          "text": "Nabal is a Guatemalan race avocado brought from Antigua, Guatemala, by Wilson Popenoe in 1916.",
+          "type": "origin",
+          "cites": [
+            "sp-nabal",
+            "itfnet"
+          ]
+        },
+        {
+          "text": "The fruit is round with thick green skin that stays green when ripe.",
+          "type": "appearance",
+          "cites": [
+            "sp-nabal"
+          ]
+        },
+        {
+          "text": "Fruit are large, with dense, smooth, fibreless flesh and a rich nutty flavour.",
+          "type": "appearance",
+          "cites": [
+            "sp-nabal",
+            "itfnet"
+          ]
+        },
+        {
+          "text": "Nabal is high quality but tends toward alternate bearing.",
+          "type": "growing",
+          "cites": [
+            "itfnet"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sp-nabal",
+          "name": "Specialty Produce: Nabal Avocados",
+          "url": "https://specialtyproduce.com/produce/Nabal_Avocados_11226.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "itfnet",
+          "name": "International Tropical Fruits Network: Avocado Common Varieties",
+          "url": "https://www.itfnet.org/v1/2016/05/avocado-common-varities/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-pinkerton": {
+      "slug": "avocado-pinkerton",
+      "species": "Avocado",
+      "variety": "Pinkerton",
+      "paragraphs": [
+        "Pinkerton is a Guatemalan-race hybrid that began as a chance seedling on the Pinkerton ranch in Saticoy, California, in the 1960s to early 1970s, from a Hass by Rincon cross. It carries an A-type flower, so it needs a B-type variety nearby for good fruit set. The fruit is distinctive for its long-necked, pear shape, with thin, leathery green skin that peels easily.",
+        "Its standout feature is a notably small seed paired with thick, smooth, creamy pale-green flesh of high oil content and good flavour, giving a high edible yield. Pinkerton ripens through winter into spring, filling an earlier window than Hass."
+      ],
+      "claims": [
+        {
+          "text": "Pinkerton began as a chance seedling on the Pinkerton ranch in Saticoy, California, from a Hass by Rincon cross.",
+          "type": "origin",
+          "cites": [
+            "wiki",
+            "meadows"
+          ]
+        },
+        {
+          "text": "It is a Guatemalan-race hybrid.",
+          "type": "origin",
+          "cites": [
+            "wiki",
+            "ucr"
+          ]
+        },
+        {
+          "text": "Pinkerton has an A-type flower.",
+          "type": "pollination",
+          "cites": [
+            "ucr",
+            "meadows"
+          ]
+        },
+        {
+          "text": "The fruit is long-necked and pear-shaped with thin, leathery green skin that peels easily.",
+          "type": "appearance",
+          "cites": [
+            "meadows",
+            "wiki"
+          ]
+        },
+        {
+          "text": "It has a notably small seed with thick, smooth, creamy pale-green flesh.",
+          "type": "appearance",
+          "cites": [
+            "wiki",
+            "meadows"
+          ]
+        },
+        {
+          "text": "Pinkerton ripens through winter into spring.",
+          "type": "season",
+          "cites": [
+            "meadows"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr",
+          "name": "UC Riverside Avocado Variety Collection, variety list",
+          "url": "https://avocado.ucr.edu/variety-list",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Avocado (list of cultivars)",
+          "url": "https://en.wikipedia.org/wiki/Avocado",
+          "tier": "third_party"
+        },
+        {
+          "id": "meadows",
+          "name": "Laurie Meadows, Pinkerton Avocado",
+          "url": "https://www.lauriemeadows.info/food_garden/fruit/Avocado_cv_Pinkerton.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "avocado-reed": {
       "slug": "avocado-reed",
       "species": "Avocado",
@@ -317,6 +895,480 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "avocado-rincon": {
+      "slug": "avocado-rincon",
+      "species": "Avocado",
+      "variety": "Rincon",
+      "paragraphs": [
+        "Rincon is a hybrid avocado that originated in Carlsbad, California, in the 1940s. It carries an A-type flower, so it sets best with a B-type partner nearby. The tree is small and compact, which makes it handy where space is limited, and it bears small to medium, pear-shaped fruit with smooth green skin that resembles Fuerte.",
+        "The flesh is rich and buttery with good eating quality. Rincon crops early, through the winter into spring window, ahead of the main-season varieties. It is also notable as a parent of Pinkerton (Hass by Rincon), passing on its compact habit and early bearing."
+      ],
+      "claims": [
+        {
+          "text": "Rincon is a hybrid avocado that originated in Carlsbad, California, in the 1940s.",
+          "type": "origin",
+          "cites": [
+            "specialty",
+            "ucr"
+          ]
+        },
+        {
+          "text": "Rincon has an A-type flower.",
+          "type": "pollination",
+          "cites": [
+            "ucr"
+          ]
+        },
+        {
+          "text": "The tree is small and compact, bearing small to medium green, Fuerte-like fruit.",
+          "type": "appearance",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "It crops early, in the winter to spring window.",
+          "type": "season",
+          "cites": [
+            "wiki",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Rincon is a parent of Pinkerton, the cross being Hass by Rincon.",
+          "type": "breeding",
+          "cites": [
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr",
+          "name": "UC Riverside Avocado Variety Collection, variety list",
+          "url": "https://avocado.ucr.edu/variety-list",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Rincon Avocados",
+          "url": "https://specialtyproduce.com/produce/Rincon_Avocados_25632.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Avocado (list of cultivars)",
+          "url": "https://en.wikipedia.org/wiki/Avocado",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-russell": {
+      "slug": "avocado-russell",
+      "species": "Avocado",
+      "variety": "Russell",
+      "paragraphs": [
+        "Russell is a pure West Indian avocado that originated in Islamorada in the Florida Keys, and it is the best known of the long neck avocados. The fruit is striking: pear shaped at the base with a long, gourd like neck, giving an excellent flesh to seed ratio from its small seed. The thin, smooth, glossy skin stays bright green when ripe and the flesh is yellow green, smooth and buttery.",
+        "Russell is an early season type, maturing roughly through July and August, and individual fruit are notably large. As a West Indian variety it has low cold tolerance and is very susceptible to frost damage, so it suits warm, near frost free climates."
+      ],
+      "claims": [
+        {
+          "text": "Russell is a West Indian avocado that originated in Islamorada, Florida, in the Florida Keys.",
+          "type": "origin",
+          "cites": [
+            "sp-longneck",
+            "ttg-russell"
+          ]
+        },
+        {
+          "text": "It is a long neck avocado, pear shaped at the base with an elongated neck and a small seed giving a high flesh to seed ratio.",
+          "type": "appearance",
+          "cites": [
+            "sp-longneck",
+            "ttg-russell"
+          ]
+        },
+        {
+          "text": "The skin is thin, smooth and glossy bright green, staying green when ripe, over yellow green buttery flesh.",
+          "type": "appearance",
+          "cites": [
+            "ttg-russell"
+          ]
+        },
+        {
+          "text": "Fruit are notably large.",
+          "type": "appearance",
+          "cites": [
+            "sp-longneck",
+            "ttg-russell"
+          ]
+        },
+        {
+          "text": "Russell is an early season variety, maturing about July to August.",
+          "type": "season",
+          "cites": [
+            "sp-longneck",
+            "ttg-russell"
+          ]
+        },
+        {
+          "text": "As a West Indian type it has low cold tolerance and is very susceptible to frost.",
+          "type": "climate",
+          "cites": [
+            "ttg-russell"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sp-longneck",
+          "name": "Specialty Produce: Long Neck (Russell) Avocados",
+          "url": "https://specialtyproduce.com/produce/Long_Neck_Avocados_20348.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "ttg-russell",
+          "name": "Tropical Tree Guide: Russell Avocado Grow Guide",
+          "url": "https://tropicaltreeguide.com/russell-avocado-grow-guide/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-ryan": {
+      "slug": "avocado-ryan",
+      "species": "Avocado",
+      "variety": "Ryan",
+      "paragraphs": [
+        "Ryan is a Mexican by Guatemalan hybrid developed by nurseryman Albert Rideout in Whittier, California, in 1927, where it was first sold as Summer Fuerte before being renamed for Edward Ryan, who later bought the property. It is a B type flowering variety, so it pairs well with an A type such as Hass.",
+        "The skin is green, fairly thick and slightly rough, and stays green when ripe over firm flesh that holds its shape. Ryan is prized as a late season variety, often cropping after other types have finished, and it is regarded as cold resistant."
+      ],
+      "claims": [
+        {
+          "text": "Ryan is a Mexican by Guatemalan hybrid developed by Albert Rideout in Whittier, California, in 1927, first sold as Summer Fuerte and later renamed for Edward Ryan.",
+          "type": "origin",
+          "cites": [
+            "sp-ryan",
+            "gfg-ryan"
+          ]
+        },
+        {
+          "text": "Ryan is a B type avocado that benefits from an A type pollinator.",
+          "type": "pollination",
+          "cites": [
+            "sp-ryan"
+          ]
+        },
+        {
+          "text": "The skin is green, fairly thick and slightly rough, staying green when ripe, over firm flesh.",
+          "type": "appearance",
+          "cites": [
+            "gfg-ryan",
+            "sp-ryan"
+          ]
+        },
+        {
+          "text": "Ryan is a late season variety, often available after other types have finished.",
+          "type": "season",
+          "cites": [
+            "gfg-ryan",
+            "sp-ryan"
+          ]
+        },
+        {
+          "text": "Ryan is regarded as cold resistant.",
+          "type": "climate",
+          "cites": [
+            "gfg-ryan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sp-ryan",
+          "name": "Specialty Produce: Ryan Avocados",
+          "url": "https://specialtyproduce.com/produce/Ryan_Avocados_25188.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "gfg-ryan",
+          "name": "Good Fruit Guide: Ryan",
+          "url": "https://goodfruitguide.co.uk/product/ryan-2/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-sharwill": {
+      "slug": "avocado-sharwill",
+      "species": "Avocado",
+      "variety": "Sharwill",
+      "paragraphs": [
+        "Sharwill (correctly spelled Sharwil) is an Australian cultivar selected in Queensland in the early 1950s, its name combining the surnames of growers Frank Sharpe and James Wilson. It is predominantly Guatemalan race with some Mexican genes, and carries a B-type flower, so it pairs well with an A-type variety such as Hass for cross-pollination. The fruit is pear-shaped with smooth, green, slightly pebbly skin that stays green when ripe and peels well, over a small seed.",
+        "The flesh is fibreless with excellent eating quality and a flavour many describe as milder and richer than Hass. Sharwill matures mid-season, after Fuerte and ahead of Hass, and it is sensitive to cool temperatures during flowering. It went on to become the most important commercial avocado in Hawaii, where warm nights suit its B-type bloom."
+      ],
+      "claims": [
+        {
+          "text": "Sharwil was selected as a cultivar in Queensland, Australia, in the early 1950s; its name combines the surnames Sharpe and Wilson.",
+          "type": "origin",
+          "cites": [
+            "fao",
+            "alder"
+          ]
+        },
+        {
+          "text": "It is predominantly Guatemalan race with some Mexican genes.",
+          "type": "origin",
+          "cites": [
+            "fao",
+            "wiki"
+          ]
+        },
+        {
+          "text": "Sharwil has a B-type flower.",
+          "type": "pollination",
+          "cites": [
+            "wiki",
+            "fao",
+            "alder"
+          ]
+        },
+        {
+          "text": "The skin is green and pebbly, stays green when ripe, peels well, and the seed is small.",
+          "type": "appearance",
+          "cites": [
+            "alder",
+            "fao"
+          ]
+        },
+        {
+          "text": "Flesh is fibreless with excellent eating quality and a flavour milder than Hass.",
+          "type": "flavour",
+          "cites": [
+            "alder",
+            "fao"
+          ]
+        },
+        {
+          "text": "It matures mid-season, after Fuerte and before Hass.",
+          "type": "season",
+          "cites": [
+            "alder",
+            "fao"
+          ]
+        },
+        {
+          "text": "Sharwil became the most important commercial avocado cultivar in Hawaii.",
+          "type": "superlative",
+          "cites": [
+            "fao",
+            "alder"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao",
+          "name": "FAO, Avocado Production in Australia (A.W. Whiley)",
+          "url": "https://www.fao.org/4/x6902e/x6902e04.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Avocado (list of cultivars)",
+          "url": "https://en.wikipedia.org/wiki/Avocado",
+          "tier": "third_party"
+        },
+        {
+          "id": "alder",
+          "name": "Greg Alder's Yard Posts, The Sharwil avocado tree profile",
+          "url": "https://gregalder.com/yardposts/the-sharwil-avocado-tree-a-profile/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-shepard": {
+      "slug": "avocado-shepard",
+      "species": "Avocado",
+      "variety": "Shepard",
+      "paragraphs": [
+        "Shepard is a green-skin avocado grown commercially almost exclusively in Australia, where it and Hass together define the local season. It is an early-maturing, semi-dwarf, heavy-cropping tree with a B-type flower, making it a useful pollination partner for A-type Hass. Unlike Hass, the smooth green skin stays green even when the fruit is fully ripe, so colour is not a ripeness guide; the tip should yield slightly instead.",
+        "Its standout trait is flesh that browns much more slowly than Hass once cut, which suits slices, garnishes and platters. The texture is firm, buttery and creamy, holding its shape when sliced, with a flavour often called milder and slightly sweeter than Hass. In Australia, Shepard typically fills the earlier part of the season (around February to April) before the main Hass crop."
+      ],
+      "claims": [
+        {
+          "text": "Shepard is grown commercially almost exclusively in Australia and, with Hass, defines the Australian avocado season.",
+          "type": "origin",
+          "cites": [
+            "uow",
+            "specialty"
+          ]
+        },
+        {
+          "text": "It is an early-maturing, semi-dwarf, heavy-cropping cultivar.",
+          "type": "growing",
+          "cites": [
+            "fao"
+          ]
+        },
+        {
+          "text": "Shepard has a B-type flower.",
+          "type": "pollination",
+          "cites": [
+            "fao"
+          ]
+        },
+        {
+          "text": "The smooth green skin stays green even when the fruit is fully ripe.",
+          "type": "appearance",
+          "cites": [
+            "uow",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Cut flesh browns much more slowly than Hass.",
+          "type": "storage",
+          "cites": [
+            "uow"
+          ]
+        },
+        {
+          "text": "The flavour is milder and slightly sweeter than Hass, with a firm, buttery, creamy texture.",
+          "type": "flavour",
+          "cites": [
+            "uow"
+          ]
+        },
+        {
+          "text": "In Australia, Shepard fills the earlier part of the season, around February to April, before Hass.",
+          "type": "season",
+          "cites": [
+            "uow",
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uow",
+          "name": "University of Wollongong, What's the difference between Hass and Shepard avocados?",
+          "url": "https://www.uow.edu.au/media/2025/whats-the-difference-between-hass-and-shepard-avocados-its-not-just-the-colour.php",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fao",
+          "name": "FAO, Avocado Production in Australia (A.W. Whiley)",
+          "url": "https://www.fao.org/4/x6902e/x6902e04.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Shepard Avocados",
+          "url": "https://specialtyproduce.com/produce/Shepard_Avocados_24602.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "avocado-sir-prize": {
+      "slug": "avocado-sir-prize",
+      "species": "Avocado",
+      "variety": "Sir Prize",
+      "paragraphs": [
+        "Sir Prize (officially SirPrize) came out of the University of California avocado breeding program led by B.O. Bergh, patented in 1997 with Bergh and Gray Martin as inventors. It is an open-pollinated seedling related to Hass and carries a B-type flower, which makes it a popular winter pollination partner for A-type Hass. Like Hass, and unusually for a green-bred Californian variety, its skin turns black as the fruit ripens to eating softness, and the pliable skin separates easily from the flesh.",
+        "The interior is buttery and yellow-green with a flavour and quality close to Hass, over a notably small seed. Sir Prize matures several weeks earlier than Hass (a winter variety), and its Mexican-influenced parentage gives it good cold tolerance, letting it crop in cooler sites than Hass."
+      ],
+      "claims": [
+        {
+          "text": "Sir Prize was developed in the University of California avocado breeding program and patented with B.O. Bergh and Gray Martin as inventors.",
+          "type": "breeding",
+          "cites": [
+            "patent",
+            "specialty"
+          ]
+        },
+        {
+          "text": "It carries a B-type flower.",
+          "type": "pollination",
+          "cites": [
+            "specialty",
+            "alder"
+          ]
+        },
+        {
+          "text": "Its skin turns black as the fruit ripens, unusual for a Californian green-bred variety, and the pliable skin peels easily from the flesh.",
+          "type": "appearance",
+          "cites": [
+            "patent",
+            "specialty"
+          ]
+        },
+        {
+          "text": "The flesh is buttery and yellow-green with quality close to Hass, over a small seed.",
+          "type": "flavour",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "Sir Prize matures earlier than Hass, in the winter window.",
+          "type": "season",
+          "cites": [
+            "patent",
+            "alder"
+          ]
+        },
+        {
+          "text": "Its Mexican-race influence gives it good cold tolerance, cropping in cooler sites than Hass.",
+          "type": "climate",
+          "cites": [
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent",
+          "name": "US Plant Patent PP9709, Avocado tree called Sir-Prize (Bergh & Martin, UC)",
+          "url": "https://patents.google.com/patent/USPP9709P/en",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Sir Prize Avocados",
+          "url": "https://specialtyproduce.com/produce/Sir_Prize_Avocados_12030.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "alder",
+          "name": "Greg Alder's Yard Posts, Avocado varieties for year-round harvest",
+          "url": "https://gregalder.com/yardposts/avocado-varieties-for-year-round-harvest/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "avocado-wurtz": {
       "slug": "avocado-wurtz",
       "species": "Avocado",
@@ -382,6 +1434,117 @@
       "confidence_score": 0.88,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "avocado-zutano": {
+      "slug": "avocado-zutano",
+      "species": "Avocado",
+      "variety": "Zutano",
+      "paragraphs": [
+        "Zutano is a mainly Mexican race avocado that arose as a seedling in Fallbrook, California, in the 1920s. It is a B type flowering variety, which is why it is widely planted as a polleniser for the A type Hass. The fruit is green and pear shaped with thin, shiny skin that stays green when ripe.",
+        "Compared with oilier Guatemalan types Zutano has lower oil and a lighter, sometimes slightly fibrous flesh, so it is valued more as a hardy polleniser and early season fruit than as a premium eating avocado. It is cold tolerant and vigorous, and ripens early, opening the avocado season."
+      ],
+      "claims": [
+        {
+          "text": "Zutano is a mainly Mexican race avocado that arose as a seedling in Fallbrook, California, in the 1920s.",
+          "type": "origin",
+          "cites": [
+            "greg-zutano",
+            "sp-zutano"
+          ]
+        },
+        {
+          "text": "Zutano is a B type avocado and is commonly used to pollinate the A type Hass.",
+          "type": "pollination",
+          "cites": [
+            "greg-zutano",
+            "sp-zutano"
+          ]
+        },
+        {
+          "text": "The fruit is green and pear shaped with thin, shiny green skin.",
+          "type": "appearance",
+          "cites": [
+            "greg-zutano",
+            "sp-zutano"
+          ]
+        },
+        {
+          "text": "It has lower oil and a lighter, sometimes fibrous flesh than oilier Guatemalan types.",
+          "type": "flavour",
+          "cites": [
+            "greg-zutano"
+          ]
+        },
+        {
+          "text": "Zutano is cold tolerant, vigorous and ripens early, opening the season.",
+          "type": "season",
+          "cites": [
+            "greg-zutano",
+            "sp-zutano"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "greg-zutano",
+          "name": "Greg Alder's Yard Posts: Zutano avocado, a profile",
+          "url": "https://gregalder.com/yardposts/zutano-avocado-a-profile/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-zutano",
+          "name": "Specialty Produce: Zutano Avocados",
+          "url": "https://specialtyproduce.com/produce/Zutano_Avocados_13338.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "avocado-allsop",
+    "avocado-bundy-mill",
+    "avocado-bundy-mill-a-type",
+    "avocado-choquette-a",
+    "avocado-choquette-type-a",
+    "avocado-dickinson",
+    "avocado-edranol-b",
+    "avocado-edranol-b-type",
+    "avocado-giant",
+    "avocado-gwen-a",
+    "avocado-gwen-a-type",
+    "avocado-hass-a",
+    "avocado-hass-type-a",
+    "avocado-hazzard",
+    "avocado-hazzard-a",
+    "avocado-jala",
+    "avocado-jala-giant",
+    "avocado-janelle",
+    "avocado-julia",
+    "avocado-linda-xlarge",
+    "avocado-mcmartins-special",
+    "avocado-mexicola-grande",
+    "avocado-mexicola-grande-a-type",
+    "avocado-noela",
+    "avocado-penguin",
+    "avocado-pinkerton-a",
+    "avocado-ramona",
+    "avocado-reed-a",
+    "avocado-secondo",
+    "avocado-secondo-a",
+    "avocado-sharp-velvick-rootstock",
+    "avocado-sharpe",
+    "avocado-sharpe-type-a",
+    "avocado-sharwil",
+    "avocado-sharwil-b",
+    "avocado-shepard-b-type",
+    "avocado-shepard-type-b",
+    "avocado-willard",
+    "avocado-willard-velvick-rootstock",
+    "avocado-wurtz-a",
+    "avocado-zutano-b"
+  ]
 }
