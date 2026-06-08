@@ -70,6 +70,1092 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "peach-blackboy": {
+      "slug": "peach-blackboy",
+      "species": "Peach",
+      "variety": "Blackboy",
+      "paragraphs": [
+        "Blackboy is a heritage red fleshed (blood) peach, the name used in New Zealand and Australia for a group of dark, wine coloured peaches. The Heritage Food Crops Research Trust notes Blackboy is a collective name for around six red fleshed varieties imported predominantly from France in the early 20th century, related to the European blood peach types.",
+        "It is a late maturing freestone with pale purple to dark skin and deep wine red, melting flesh, prized for its rich flavour and striking colour for fresh eating, cooking, jam and bottling. It is self fertile, and is often sold as a dwarf in Australia."
+      ],
+      "claims": [
+        {
+          "text": "Blackboy is the name used in New Zealand and Australia for heritage red fleshed (blood) peaches.",
+          "type": "naming",
+          "cites": [
+            "hfcrt"
+          ]
+        },
+        {
+          "text": "Blackboy is a collective name for around six red fleshed varieties imported predominantly from France in the early 20th century.",
+          "type": "origin",
+          "cites": [
+            "hfcrt"
+          ]
+        },
+        {
+          "text": "It is a late maturing freestone peach with wine red, melting flesh and dark skin, rich in flavour.",
+          "type": "flavour",
+          "cites": [
+            "heritageft",
+            "hfcrt"
+          ]
+        },
+        {
+          "text": "Uses include fresh eating, cooking, jam and bottling.",
+          "type": "use",
+          "cites": [
+            "heritageft"
+          ]
+        },
+        {
+          "text": "Blackboy is self fertile and is often sold in Australia on a dwarf form.",
+          "type": "pollination",
+          "cites": [
+            "heritageft"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hfcrt",
+          "name": "Heritage Food Crops Research Trust (Plums and Peaches)",
+          "url": "https://www.heritagefoodcrops.org.nz/plums-and-peaches/",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritageft",
+          "name": "Heritage Fruit Trees (Blackboy Peach)",
+          "url": "https://www.heritagefruittrees.com.au/blackboy-peach-dwarf/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-china-flat": {
+      "slug": "peach-china-flat",
+      "species": "Peach",
+      "variety": "China Flat",
+      "paragraphs": [
+        "China Flat is a flat (peento or pan tao type) peach, oblate and saucer shaped like a small UFO or doughnut rather than the usual round form. Flat peaches originated in China, where they were known by names meaning coiled or flat peach. The skin is yellow flushed with red and tends to be less fuzzy than standard peaches.",
+        "The flesh is white and juicy, and flat peaches are often noted as sweeter and more complex than round types, sometimes with almond undertones. The China Flat sold by Australian nurseries is a white fleshed, low chill, self fertile variety suited to subtropical and warm temperate gardens."
+      ],
+      "claims": [
+        {
+          "text": "Flat peaches (peento or pan tao type) are oblate, saucer or doughnut shaped rather than round.",
+          "type": "appearance",
+          "cites": [
+            "wiki-flat"
+          ]
+        },
+        {
+          "text": "Flat peaches originated in China, where the name meant coiled or flat peach.",
+          "type": "origin",
+          "cites": [
+            "wiki-flat"
+          ]
+        },
+        {
+          "text": "The skin is yellow flushed with red and less fuzzy than many standard peaches.",
+          "type": "appearance",
+          "cites": [
+            "wiki-flat"
+          ]
+        },
+        {
+          "text": "Flat peaches are often sweeter and more complex than round types, sometimes with almond undertones.",
+          "type": "flavour",
+          "cites": [
+            "wiki-flat"
+          ]
+        },
+        {
+          "text": "China Flat has white flesh.",
+          "type": "appearance",
+          "cites": [
+            "heritage-chinaflat",
+            "daleys-chinaflat"
+          ]
+        },
+        {
+          "text": "China Flat is low chill and self fertile (self pollinating).",
+          "type": "pollination",
+          "cites": [
+            "heritage-chinaflat",
+            "daleys-chinaflat"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-flat",
+          "name": "Wikipedia: Flat peach",
+          "url": "https://en.wikipedia.org/wiki/Flat_peach",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage-chinaflat",
+          "name": "Heritage Fruit Trees: China Flat Peach",
+          "url": "https://www.heritagefruittrees.com.au/china-flat-peach/",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-chinaflat",
+          "name": "Daleys Fruit Trees: Peach China Flat",
+          "url": "https://www.daleysfruit.com.au/buy/peach-china-flat-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-crimson-rocket": {
+      "slug": "peach-crimson-rocket",
+      "species": "Peach",
+      "variety": "Crimson rocket",
+      "paragraphs": [
+        "Crimson Rocket is a columnar or pillar peach developed by USDA Agricultural Research Service horticulturist Ralph Scorza and colleagues at the Appalachian Fruit Research Station in Kearneysville, West Virginia, and patented and released in 2001. Its narrow, upright habit comes from two copies of a naturally occurring gene that sends the branches skyward.",
+        "Because the tree stays slim, with a spread of only about five feet, it suits small gardens and high density orchard planting. The fruit is yellow fleshed, firm, sweet and aromatic, a dessert type that stores well and softens when fully ripe."
+      ],
+      "claims": [
+        {
+          "text": "Crimson Rocket was developed by USDA ARS horticulturist Ralph Scorza and colleagues at the Appalachian Fruit Research Station, Kearneysville, West Virginia.",
+          "type": "breeding",
+          "cites": [
+            "usda-crimsonrocket"
+          ]
+        },
+        {
+          "text": "It was patented and released in 2001.",
+          "type": "naming",
+          "cites": [
+            "usda-crimsonrocket"
+          ]
+        },
+        {
+          "text": "Its columnar or pillar habit comes from two copies of a naturally occurring gene that sends branches skyward.",
+          "type": "growing",
+          "cites": [
+            "usda-crimsonrocket"
+          ]
+        },
+        {
+          "text": "The narrow, upright pillar tree can be planted much more densely than standard peach trees.",
+          "type": "growing",
+          "cites": [
+            "usda-crimsonrocket",
+            "goodfruit-pillar"
+          ]
+        },
+        {
+          "text": "The fruit is yellow fleshed, firm, sweet and aromatic, and stores well.",
+          "type": "flavour",
+          "cites": [
+            "usda-crimsonrocket"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "usda-crimsonrocket",
+          "name": "USDA ARS: Crimson Rocket Peach Making Its Way to Market",
+          "url": "https://www.ars.usda.gov/news-events/news/research-news/2007/crimson-rocket-peach-making-its-way-to-market/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "goodfruit-pillar",
+          "name": "Good Fruit Grower: Upright peach plantings are productive",
+          "url": "https://www.goodfruit.com/upright-peach-plantings-are-productive/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-elberta": {
+      "slug": "peach-elberta",
+      "species": "Peach",
+      "variety": "Elberta",
+      "paragraphs": [
+        "Elberta is a famous American heirloom raised by Samuel H. Rumph at Marshallville, Georgia, from seed planted in 1870, and named after his wife Clara Elberta Moore. It is a large, golden skinned freestone with juicy, firm, sweet yellow flesh.",
+        "Valued for its good handling and shipping qualities, Elberta became the most widely planted peach in the United States and helped establish the Southern peach industry. It suits fresh eating, canning and preserving."
+      ],
+      "claims": [
+        {
+          "text": "Elberta was raised by Samuel H. Rumph at Marshallville, Georgia, from seed planted in 1870, and named after his wife Clara Elberta Moore.",
+          "type": "origin",
+          "cites": [
+            "uga",
+            "specialty"
+          ]
+        },
+        {
+          "text": "It is a large, golden skinned freestone peach with sweet yellow flesh.",
+          "type": "appearance",
+          "cites": [
+            "uga",
+            "specialty"
+          ]
+        },
+        {
+          "text": "It was noted for good handling and shipping qualities and became very widely planted in the United States.",
+          "type": "use",
+          "cites": [
+            "uga"
+          ]
+        },
+        {
+          "text": "It is used for fresh eating, canning and preserving.",
+          "type": "use",
+          "cites": [
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uga",
+          "name": "University of Georgia, Peaches history",
+          "url": "https://peaches.caes.uga.edu/history.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Fay Elberta Peaches",
+          "url": "https://specialtyproduce.com/produce/Fay_Elberta_Peaches_24147.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-flavourcrest": {
+      "slug": "peach-flavourcrest",
+      "species": "Peach",
+      "variety": "Flavourcrest",
+      "paragraphs": [
+        "Flavourcrest (Flavorcrest) is a yellow fleshed Californian peach that ripens early, a handful of days before Redhaven. It produces medium to large fruit, mostly covered in dark crimson red over a yellow ground, with very firm flesh and very good flavour, and it has been a mainstay commercial variety for its consistency and shelf life.",
+        "It is generally classed as a semi freestone (the stone parts fairly cleanly from the ripe flesh). A notable drawback is its high susceptibility to bacterial spot, which matters in humid climates. The fruit suits fresh eating and handles shipping well."
+      ],
+      "claims": [
+        {
+          "text": "Flavorcrest is a yellow fleshed Californian peach that ripens early, about six days before Redhaven.",
+          "type": "season",
+          "cites": [
+            "njaes",
+            "davewilson"
+          ]
+        },
+        {
+          "text": "Fruit is medium to large with 70 to 90 percent dark crimson red over a yellow ground, very firm flesh and very good flavour.",
+          "type": "appearance",
+          "cites": [
+            "njaes",
+            "davewilson"
+          ]
+        },
+        {
+          "text": "It is classed as a semi freestone peach.",
+          "type": "growing",
+          "cites": [
+            "njaes"
+          ]
+        },
+        {
+          "text": "Flavorcrest has high susceptibility to bacterial spot.",
+          "type": "growing",
+          "cites": [
+            "njaes"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "njaes",
+          "name": "Rutgers NJAES FS1201 Yellow-Fleshed Peach Varieties",
+          "url": "https://njaes.rutgers.edu/fs1201/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "davewilson",
+          "name": "Dave Wilson Nursery Flavorcrest",
+          "url": "https://www.davewilson.com/growers/products/fruit-trees/peach-yellow/flavorcrest/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-flordaprince": {
+      "slug": "peach-flordaprince",
+      "species": "Peach",
+      "variety": "Flordaprince",
+      "paragraphs": [
+        "Flordaprince is a very early, low chill peach released by the University of Florida in 1982. UF/IFAS records a chilling requirement of about 150 units, making it one of the lowest chill peaches and well suited to warm, mild winter regions where standard peaches fail. The fruit ripens very early in the season and develops roughly 80 percent red blush with dark red stripes over a yellow ground colour.",
+        "Inside, Flordaprince has yellow flesh and a semi clingstone pit, with medium to large, firm fruit. It is widely grown as a dependable early cropper, including in subtropical and coastal Australian gardens where it is offered as a popular low chill choice."
+      ],
+      "claims": [
+        {
+          "text": "Released by the University of Florida in 1982 with a chilling requirement of about 150 units.",
+          "type": "origin",
+          "cites": [
+            "ufifas_mg374"
+          ]
+        },
+        {
+          "text": "Very early ripening, low chill peach suited to warm, mild winter regions.",
+          "type": "climate",
+          "cites": [
+            "ufifas_mg374",
+            "daleys_flordaprince"
+          ]
+        },
+        {
+          "text": "Develops about 80 percent red blush with dark red stripes over a yellow ground colour.",
+          "type": "appearance",
+          "cites": [
+            "ufifas_mg374"
+          ]
+        },
+        {
+          "text": "Yellow flesh with a semi clingstone pit.",
+          "type": "appearance",
+          "cites": [
+            "ufifas_mg374",
+            "daleys_flordaprince"
+          ]
+        },
+        {
+          "text": "Grown in subtropical and coastal Australian gardens as a popular early low chill peach.",
+          "type": "growing",
+          "cites": [
+            "daleys_flordaprince"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas_mg374",
+          "name": "UF/IFAS - Florida Peach and Nectarine Varieties (MG374)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG374",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys_flordaprince",
+          "name": "Daleys Fruit Tree Nursery - Peach Flordaprince",
+          "url": "https://www.daleysfruit.com.au/buy/peach-florda-prince-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-golden-queen": {
+      "slug": "peach-golden-queen",
+      "species": "Peach",
+      "variety": "Golden Queen",
+      "paragraphs": [
+        "Golden Queen is a New Zealand heirloom that arose around 1908 as a chance seedling in Edwin Reeve's garden at Greerton, Tauranga, and was propagated and introduced commercially by the Auckland nursery D. Hay and Son. It is a late ripening clingstone with firm, deep yellow flesh and yellow orange skin.",
+        "Prized as a bottling and canning peach because the firm clingstone flesh holds its shape and the flavour intensifies when preserved, it is also eaten fresh. It remains a long standing favourite in Australian and New Zealand home orchards."
+      ],
+      "claims": [
+        {
+          "text": "Golden Queen arose as a seedling around 1908 in Edwin Reeve's garden at Greerton, Tauranga, New Zealand.",
+          "type": "origin",
+          "cites": [
+            "teara"
+          ]
+        },
+        {
+          "text": "It was propagated and introduced commercially by the Auckland nursery D. Hay and Son.",
+          "type": "origin",
+          "cites": [
+            "teara"
+          ]
+        },
+        {
+          "text": "It is a clingstone peach with firm yellow flesh.",
+          "type": "appearance",
+          "cites": [
+            "teara",
+            "heritage"
+          ]
+        },
+        {
+          "text": "It ripens late in the season.",
+          "type": "season",
+          "cites": [
+            "teara",
+            "woodbridge"
+          ]
+        },
+        {
+          "text": "It is favoured for bottling and canning as well as fresh eating.",
+          "type": "use",
+          "cites": [
+            "teara",
+            "woodbridge"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "teara",
+          "name": "Te Ara, Encyclopedia of New Zealand",
+          "url": "https://teara.govt.nz/en/photograph/18782/golden-queen-peaches",
+          "tier": "authoritative"
+        },
+        {
+          "id": "heritage",
+          "name": "Heritage Fruit Trees: Golden Queen Peach",
+          "url": "https://www.heritagefruittrees.com.au/golden-queen-peach-dwarf/",
+          "tier": "nursery"
+        },
+        {
+          "id": "woodbridge",
+          "name": "Woodbridge Fruit Trees: Golden Queen Peach",
+          "url": "https://www.woodbridgefruittrees.com.au/peach/276-golden-queen-peach.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-indian": {
+      "slug": "peach-indian",
+      "species": "Peach",
+      "variety": "Indian",
+      "paragraphs": [
+        "The Indian peach, also called Indian Blood or Blood Cling, is a red fleshed heirloom whose flesh and skin are stained deep crimson. The Spanish brought red fleshed peaches to the Americas in the sixteenth century, after which Native American peoples, including Cherokee and Muskogee growers, cultivated it widely across the South.",
+        "Unusually for stone fruit, it grows readily true enough from seed rather than only by grafting, which helped it spread through trade. The large clingstone fruit is sweet when fully ripe and was long valued for pickling and canning, where the red flesh looks striking in the jar."
+      ],
+      "claims": [
+        {
+          "text": "The Indian peach, also known as Indian Blood or Blood Cling, has red flesh and crimson skin.",
+          "type": "appearance",
+          "cites": [
+            "specialty",
+            "slowfood"
+          ]
+        },
+        {
+          "text": "Spanish colonists brought red fleshed peaches to the Americas in the sixteenth century, and Native American peoples, including Cherokee and Muskogee growers, cultivated it across the South.",
+          "type": "origin",
+          "cites": [
+            "slowfood",
+            "monticello"
+          ]
+        },
+        {
+          "text": "Unlike most stone fruit it can be grown from seed rather than only by grafting, which aided its spread.",
+          "type": "growing",
+          "cites": [
+            "specialty",
+            "slowfood"
+          ]
+        },
+        {
+          "text": "It is a large clingstone fruit, sweet when ripe, long used for pickling and canning.",
+          "type": "use",
+          "cites": [
+            "specialty",
+            "monticello"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Indian Blood Peaches",
+          "url": "https://www.specialtyproduce.com/produce/Indian_Blood_Peaches_7182.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "slowfood",
+          "name": "Slow Food Foundation, Ark of Taste, Indian Blood Peach",
+          "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/indian-blood-peach/",
+          "tier": "third_party"
+        },
+        {
+          "id": "monticello",
+          "name": "Monticello, Indian Blood Cling Peach",
+          "url": "https://www.monticello.org/encyclopedia/indian-blood-cling-peach",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-loring": {
+      "slug": "peach-loring",
+      "species": "Peach",
+      "variety": "Loring",
+      "paragraphs": [
+        "Loring is a large to very large yellow fleshed freestone peach that ripens in mid season, roughly a couple of weeks after Redhaven. It is valued for firm flesh and very good flavour, and it is a long standing favourite for fresh eating, pies, canning and preserves.",
+        "The tree is described as very vigorous but only moderately productive, with medium susceptibility to bacterial spot. Loring is self fruitful, so it does not require a separate pollinator, though it can crop more heavily when other peaches are nearby."
+      ],
+      "claims": [
+        {
+          "text": "Loring is a large to very large yellow fleshed freestone peach ripening in mid season, after Redhaven.",
+          "type": "season",
+          "cites": [
+            "njaes"
+          ]
+        },
+        {
+          "text": "It has firm flesh and very good flavour, used for fresh eating, pies, canning and preserves.",
+          "type": "flavour",
+          "cites": [
+            "njaes",
+            "grandpas"
+          ]
+        },
+        {
+          "text": "The tree is very vigorous but only moderately productive, with medium susceptibility to bacterial spot.",
+          "type": "growing",
+          "cites": [
+            "njaes"
+          ]
+        },
+        {
+          "text": "Loring is self fruitful and does not require a pollinator.",
+          "type": "pollination",
+          "cites": [
+            "grandpas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "njaes",
+          "name": "Rutgers NJAES FS1201 Yellow-Fleshed Peach Varieties",
+          "url": "https://njaes.rutgers.edu/fs1201/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "grandpas",
+          "name": "Grandpa's Orchard Loring Peach",
+          "url": "https://www.grandpasorchard.com/Tree/Prunus-Loring",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-o-henry": {
+      "slug": "peach-o-henry",
+      "species": "Peach",
+      "variety": "O Henry",
+      "paragraphs": [
+        "O'Henry is a late season freestone peach developed by the private Californian breeder Grant Merrill, who patented it in the early 1970s. The golden yellow flesh is streaked with red around a freestone pit, and the skin carries a dark red blush over an orange yellow base.",
+        "It balances sweetness with a slightly tangy aftertaste and is firm enough to ship well, which made it a major commercial variety from the mid 1980s. It is enjoyed fresh and for cooking."
+      ],
+      "claims": [
+        {
+          "text": "O'Henry is a freestone peach developed by the private Californian breeder Grant Merrill, who patented it in the early 1970s.",
+          "type": "breeding",
+          "cites": [
+            "specialty",
+            "patent"
+          ]
+        },
+        {
+          "text": "The flesh is golden yellow with red streaks around a freestone pit, and the skin has a dark red blush over an orange yellow base.",
+          "type": "appearance",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "It is firm with good shipping quality and became a major commercial variety from the mid 1980s.",
+          "type": "use",
+          "cites": [
+            "specialty",
+            "goodfruit"
+          ]
+        },
+        {
+          "text": "It is a late season peach.",
+          "type": "season",
+          "cites": [
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, O'Henry Peaches",
+          "url": "https://specialtyproduce.com/produce/OHenry_Peaches_7168.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "goodfruit",
+          "name": "Good Fruit Grower",
+          "url": "https://goodfruit.com/last-bite-a-peach-with-longevity/",
+          "tier": "third_party"
+        },
+        {
+          "id": "patent",
+          "name": "US Plant Patent PP4399 (Merrill)",
+          "url": "https://www.freepatentsonline.com/PP04399.html",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-okinawa": {
+      "slug": "peach-okinawa",
+      "species": "Peach",
+      "variety": "Okinawa",
+      "paragraphs": [
+        "Okinawa is a low chill peach (about 150 chill units) better known as a seedling rootstock than as a fresh fruit variety. Introduced as seed from Japan, it was resistant to the historically important root knot nematodes Meloidogyne incognita and M. javanica and was widely used to graft peaches in warm climates such as Florida.",
+        "Its low chilling also caused early blooming. After a new nematode species (M. floridensis) was found on Okinawa rootstock in Gainesville in 1966, it is no longer recommended in Florida. Okinawa was a parent of the UF Flordaguard rootstock, which combined its nematode resistance with other peach material."
+      ],
+      "claims": [
+        {
+          "text": "Okinawa is a low chill peach with a chilling requirement of about 150 units.",
+          "type": "chill",
+          "cites": [
+            "ufhs366"
+          ]
+        },
+        {
+          "text": "It was introduced as seed from Japan and used as a peach rootstock in warm climates.",
+          "type": "origin",
+          "cites": [
+            "edis_nematode"
+          ]
+        },
+        {
+          "text": "Okinawa rootstock was resistant to root knot nematodes M. incognita and M. javanica but is susceptible to M. floridensis.",
+          "type": "growing",
+          "cites": [
+            "ufhs366"
+          ]
+        },
+        {
+          "text": "After M. floridensis was detected on Okinawa rootstock in Gainesville in 1966, it is no longer recommended in Florida.",
+          "type": "growing",
+          "cites": [
+            "ufhs366"
+          ]
+        },
+        {
+          "text": "Okinawa contributed nematode resistance to the UF Flordaguard peach rootstock.",
+          "type": "breeding",
+          "cites": [
+            "edis_nematode"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufhs366",
+          "name": "UF/IFAS Rootstocks for Florida Stone Fruit (HS366)",
+          "url": "https://ask.ifas.ufl.edu/publication/HS366",
+          "tier": "authoritative"
+        },
+        {
+          "id": "edis_nematode",
+          "name": "UF/IFAS EDIS Peach Root-knot Nematode (HS1320)",
+          "url": "https://edis.ifas.ufl.edu/hs1320",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-red-haven": {
+      "slug": "peach-red-haven",
+      "species": "Peach",
+      "variety": "Red Haven",
+      "paragraphs": [
+        "Redhaven was bred by Stanley Johnston at Michigan State University's South Haven station and introduced in 1940, part of the famous Haven series selected from tens of thousands of seedlings. It became the most widely planted freestone peach in the world and is still treated as the standard for its early to mid season slot, against which other varieties are dated.",
+        "The fruit is medium to large with firm, melting yellow flesh, near fuzzless red blushed skin and good flavour. It is a yellow fleshed, semi freestone peach (the stone separates more cleanly as it fully ripens), and it suits fresh eating, canning and freezing. The tree is noted as vigorous, productive and relatively low in susceptibility to bacterial spot."
+      ],
+      "claims": [
+        {
+          "text": "Redhaven was bred by Stanley Johnston at Michigan State University and introduced in 1940 as part of the Haven series.",
+          "type": "origin",
+          "cites": [
+            "hmdb",
+            "goodfruit"
+          ]
+        },
+        {
+          "text": "It became the most widely planted freestone peach variety in the world and remains the standard for its season.",
+          "type": "naming",
+          "cites": [
+            "njaes",
+            "goodfruit"
+          ]
+        },
+        {
+          "text": "The fruit has firm, melting yellow flesh with red blushed, nearly fuzzless skin and good flavour.",
+          "type": "flavour",
+          "cites": [
+            "njaes",
+            "starkbros"
+          ]
+        },
+        {
+          "text": "Redhaven is a yellow fleshed semi freestone peach in the early to mid season slot.",
+          "type": "season",
+          "cites": [
+            "njaes"
+          ]
+        },
+        {
+          "text": "Uses include fresh eating, canning and freezing.",
+          "type": "use",
+          "cites": [
+            "starkbros"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hmdb",
+          "name": "Historical Marker Database (Haven Peaches marker)",
+          "url": "https://www.hmdb.org/m.asp?m=182953",
+          "tier": "third_party"
+        },
+        {
+          "id": "goodfruit",
+          "name": "Good Fruit Grower",
+          "url": "https://goodfruit.com/breeding-peaches/",
+          "tier": "third_party"
+        },
+        {
+          "id": "njaes",
+          "name": "Rutgers NJAES FS1201 Yellow-Fleshed Peach Varieties",
+          "url": "https://njaes.rutgers.edu/fs1201/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "starkbros",
+          "name": "Stark Bro's Redhaven Peach",
+          "url": "https://www.starkbros.com/products/fruit-trees/peach-trees/redhaven-peach",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-tatura-204": {
+      "slug": "peach-tatura-204",
+      "species": "Peach",
+      "variety": "Tatura 204",
+      "paragraphs": [
+        "Tatura 204 is an Australian bred clingstone peach developed at the Tatura research station in Victoria, from a cross of Babygold 7 and Oom Sarel. It became an industry standard canning peach, valued for consistent heavy yields and reliable fruit quality.",
+        "The fruit is medium to large with firm, sweet, yellow flesh and golden yellow skin. Because it holds its shape so well and is naturally sweet, it is a favourite for bottling and canning, and it ripens around midsummer."
+      ],
+      "claims": [
+        {
+          "text": "Tatura 204 was bred at the DPI Tatura breeding program in Victoria, Australia, from a cross of Babygold 7 and Oom Sarel.",
+          "type": "breeding",
+          "cites": [
+            "hortinn-cf10003",
+            "yalca-tatura204"
+          ]
+        },
+        {
+          "text": "It is a clingstone canning peach that became an industry standard.",
+          "type": "use",
+          "cites": [
+            "hortinn-cf10003",
+            "heritage-tatura204"
+          ]
+        },
+        {
+          "text": "The fruit is medium to large with firm, sweet, yellow flesh and golden yellow skin.",
+          "type": "appearance",
+          "cites": [
+            "yalca-tatura204",
+            "werribee-tatura204"
+          ]
+        },
+        {
+          "text": "It holds its shape well and is favoured for bottling and canning.",
+          "type": "use",
+          "cites": [
+            "yalca-tatura204",
+            "heritage-tatura204"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hortinn-cf10003",
+          "name": "Hort Innovation: Canning Peach Breeding and Evaluation Program (CF10003)",
+          "url": "https://www.horticulture.com.au/globalassets/hort-innovation/historic-reports/canning-peach-breeding-and-evaluation-program-cf10003.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "heritage-tatura204",
+          "name": "Heritage Fruit Trees: Tatura 204 Peach",
+          "url": "https://www.heritagefruittrees.com.au/tatura-204-peach/",
+          "tier": "nursery"
+        },
+        {
+          "id": "yalca-tatura204",
+          "name": "Yalca Fruit Trees: Tatura 204 Peach",
+          "url": "https://www.yalcafruittrees.com.au/shop/peach-trees/tatura-204-peach/",
+          "tier": "nursery"
+        },
+        {
+          "id": "werribee-tatura204",
+          "name": "Werribee Park Heritage Orchard: Tatura 204 Peach (Scion)",
+          "url": "https://werribeeparkheritageorchard.org.au/shop/ols/products/tatura-204-peach-scion",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-trixzie-pixzee": {
+      "slug": "peach-trixzie-pixzee",
+      "species": "Peach",
+      "variety": "Trixzie Pixzee",
+      "paragraphs": [
+        "Trixzie Pixzee is the Pix Zee peach (bred by Zaiger Genetics, US Plant Patent 6364) marketed in Australia within the Trixzie dwarf fruit range. It is a genetic dwarf, staying naturally compact at roughly two metres, which makes it well suited to pots, patios and small gardens without needing heavy pruning.",
+        "Despite its small size it carries full sized fruit with yellow, freestone flesh and red blushed skin. The tree is self fertile, so a single plant will set a crop without a pollinating partner."
+      ],
+      "claims": [
+        {
+          "text": "Trixzie Pixzee is the Pix Zee cultivar, bred by Zaiger Genetics under US Plant Patent 6364, sold within the Trixzie dwarf range.",
+          "type": "naming",
+          "cites": [
+            "baylaurel-pixzee",
+            "daleys-pixzee"
+          ]
+        },
+        {
+          "text": "It is a genetic dwarf that stays compact at around two metres.",
+          "type": "growing",
+          "cites": [
+            "gkh-pixzee",
+            "newmans-pixzee"
+          ]
+        },
+        {
+          "text": "It bears full sized fruit with yellow, freestone flesh and red blushed skin.",
+          "type": "appearance",
+          "cites": [
+            "daleys-pixzee",
+            "newmans-pixzee"
+          ]
+        },
+        {
+          "text": "The tree is self fertile and sets a crop without a pollinator.",
+          "type": "pollination",
+          "cites": [
+            "gkh-pixzee",
+            "baylaurel-pixzee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gkh-pixzee",
+          "name": "Gardening Know How: Pix Zee Peach Tree Care",
+          "url": "https://www.gardeningknowhow.com/edible/fruits/peach/pix-zee-peach-tree-care.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "baylaurel-pixzee",
+          "name": "Bay Laurel Nursery: Pix Zee Miniature Peach",
+          "url": "https://www.baylaurelnursery.com/peaches/pix-zee-miniature-peach-detail.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-pixzee",
+          "name": "Daleys Fruit Trees: Dwarf Peach Trixzie Pixzee",
+          "url": "https://www.daleysfruit.com.au/Buy-Dwarf-Peach-Trixzie-Pixzee-Prunus-Persica.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "newmans-pixzee",
+          "name": "Newmans Nursery: Dwarf Peach Trixzie Pixzee",
+          "url": "https://newmansnursery.com.au/product/dwarf-peach-trixzie-miniature-pixzee-yellow-flesh/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-tropic-beauty": {
+      "slug": "peach-tropic-beauty",
+      "species": "Peach",
+      "variety": "Tropic Beauty",
+      "paragraphs": [
+        "Tropic Beauty (UFBeauty) is a low chill peach released jointly by the University of Florida and Texas A&M in 1989. It needs only about 150 chill units, which makes it one of the standout choices for mild winter and subtropical gardens where most peaches will not set fruit.",
+        "It carries medium sized fruit with yellow, melting flesh and a semi freestone pit. The skin develops a heavy red blush over a yellow ground. In Florida it ripens early, roughly 89 days after bloom, giving an early season harvest."
+      ],
+      "claims": [
+        {
+          "text": "Tropic Beauty was released jointly by the University of Florida and Texas A&M in 1989.",
+          "type": "origin",
+          "cites": [
+            "ifas-mg374"
+          ]
+        },
+        {
+          "text": "Tropic Beauty needs about 150 chill units, making it a low chill variety.",
+          "type": "chill",
+          "cites": [
+            "ifas-mg374"
+          ]
+        },
+        {
+          "text": "The fruit is medium sized with yellow, melting flesh and a semi freestone pit.",
+          "type": "appearance",
+          "cites": [
+            "ifas-mg374",
+            "chestnut-tropicbeauty"
+          ]
+        },
+        {
+          "text": "It ripens early, about 89 days after bloom in Gainesville.",
+          "type": "season",
+          "cites": [
+            "ifas-mg374"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ifas-mg374",
+          "name": "UF/IFAS: Florida Peach and Nectarine Varieties (MG374)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG374",
+          "tier": "authoritative"
+        },
+        {
+          "id": "chestnut-tropicbeauty",
+          "name": "Chestnut Hill Nursery: Tropic Beauty Peach",
+          "url": "https://chestnuthilltreefarm.com/shop/tropic-beauty-peach/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "peach-tropic-snow": {
+      "slug": "peach-tropic-snow",
+      "species": "Peach",
+      "variety": "Tropic Snow",
+      "paragraphs": [
+        "Tropic Snow (TropicSnow) is a low chill, white fleshed peach released jointly by the University of Florida and Texas A&M in 1989. It needs only about 225 chill units, so it fruits reliably in mild winter regions where higher chill peaches fail.",
+        "The melting white flesh is very low in acid with excellent sweetness, sitting behind a 40 to 50 percent red blush over a creamy white background. The pit is semi freestone. It is an early season peach with a fruit development period of about 90 to 97 days."
+      ],
+      "claims": [
+        {
+          "text": "Tropic Snow was released jointly by the University of Florida and Texas A&M in 1989.",
+          "type": "origin",
+          "cites": [
+            "ifas-mg374"
+          ]
+        },
+        {
+          "text": "Tropic Snow needs about 225 chill units, making it a low chill variety.",
+          "type": "chill",
+          "cites": [
+            "ifas-mg374"
+          ]
+        },
+        {
+          "text": "It has white, melting flesh that is very low in acid with excellent sweetness.",
+          "type": "flavour",
+          "cites": [
+            "ifas-mg374"
+          ]
+        },
+        {
+          "text": "The skin shows a 40 to 50 percent red blush over a creamy white background, and the pit is semi freestone.",
+          "type": "appearance",
+          "cites": [
+            "ifas-mg374",
+            "dwn-tropicsnow"
+          ]
+        },
+        {
+          "text": "Fruit development period is about 90 to 97 days, giving an early season harvest.",
+          "type": "season",
+          "cites": [
+            "ifas-mg374"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ifas-mg374",
+          "name": "UF/IFAS: Florida Peach and Nectarine Varieties (MG374)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG374",
+          "tier": "authoritative"
+        },
+        {
+          "id": "dwn-tropicsnow",
+          "name": "Dave Wilson Nursery Variety Finder: Tropic Snow White Peach",
+          "url": "https://www.wheretobuy.davewilson.com/product-information/product/tropic-snow-white-peach",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "peach-clivia",
+    "peach-crimson-rocket-columnar",
+    "peach-flor-da-prince",
+    "peach-florda-gold",
+    "peach-florda-prince",
+    "peach-flordagold",
+    "peach-fresno",
+    "peach-fruit-tree",
+    "peach-glossy-abelia-suntastic",
+    "peach-paper-daisy-kimba",
+    "peach-red-noonan",
+    "peach-redhaven",
+    "peach-sunset",
+    "peach-tropical-snow",
+    "peach-white-gold",
+    "peach-white-opal"
+  ]
 }
