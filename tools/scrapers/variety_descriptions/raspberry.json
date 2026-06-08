@@ -1,0 +1,175 @@
+{
+  "species_slug": "raspberry",
+  "schema_version": 1,
+  "varieties": {
+    "raspberry-atherton": {
+      "slug": "raspberry-atherton",
+      "species": "Raspberry",
+      "variety": "Atherton",
+      "paragraphs": [
+        "The Atherton raspberry is Rubus probus, a species native to Australia, found in the upland rainforests of Queensland (including the Atherton Tableland in far north Queensland). It is a scrambling, prickly shrub that can grow to around 2 metres and form dense thickets. This is a true native bushfood, not a cultivar of the introduced European raspberry (Rubus idaeus).",
+        "It bears bright red aggregate fruit roughly 10 to 20 mm across, ripening mainly in summer and early autumn. The edible berries are generally described as milder and sweeter than the common raspberry, used fresh or in jams and desserts. As a tropical and subtropical native, it suits warmer climates where standard raspberries can struggle."
+      ],
+      "claims": [
+        {"text": "Rubus probus, the Atherton raspberry, is native to Queensland, Australia, including the Atherton Tableland rainforests.", "type": "native", "cites": ["wiki-probus", "aussiegt"]},
+        {"text": "It is a scrambling, prickly shrub that can grow to about 2 metres and form thickets.", "type": "habit", "cites": ["wiki-probus", "aussiegt"]},
+        {"text": "It bears bright red aggregate fruit about 10 to 20 mm in diameter.", "type": "appearance", "cites": ["aussiegt", "wiki-probus"]},
+        {"text": "The edible berries are milder and sweeter in flavour than the common raspberry.", "type": "flavour", "cites": ["aussiegt"]},
+        {"text": "It fruits mainly in summer and early autumn.", "type": "season", "cites": ["aussiegt"]}
+      ],
+      "sources": [
+        {"id": "wiki-probus", "name": "Wikipedia: Rubus probus", "url": "https://en.wikipedia.org/wiki/Rubus_probus", "tier": "third_party"},
+        {"id": "aussiegt", "name": "Aussie Green Thumb: Rubus probus (Atherton Raspberry) Growing Guide", "url": "https://aussiegreenthumb.com/atherton-raspberry-rubus-probus/", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "raspberry-autumn-bliss": {
+      "slug": "raspberry-autumn-bliss",
+      "species": "Raspberry",
+      "variety": "Autumn Bliss",
+      "paragraphs": [
+        "Autumn Bliss is a primocane-fruiting (autumn or fall-bearing) red raspberry bred at the East Malling Research Station in Kent, England, from a cross made in 1973 and released in 1984. It was the first primocane raspberry bred for UK conditions and a major breakthrough, fruiting on the tips of its first-year canes.",
+        "It ripens early for a fall-bearing type, roughly ten to fourteen days before Heritage, which concentrates much of the crop early (an advantage in cooler climates). Oregon State University and Cornell describe the fruit as large, oval to conical, attractive and medium to dark red, with a mild flavour, and note that it can be soft and darken with storage."
+      ],
+      "claims": [
+        {"text": "Autumn Bliss is a primocane-fruiting (fall-bearing) red raspberry bred at the East Malling Research Station in Kent, England.", "type": "origin", "cites": ["usptp-autumnbliss", "cornell-review"]},
+        {"text": "It originated from a cross made in 1973 and was released in 1984 as the first primocane raspberry bred for UK conditions.", "type": "breeding", "cites": ["usptp-autumnbliss"]},
+        {"text": "It ripens about ten to fourteen days before Heritage.", "type": "season", "cites": ["cornell-review"]},
+        {"text": "Its fruit is large, oval to conical, attractive, medium to dark red, with a mild flavour, and can darken in storage.", "type": "appearance", "cites": ["osu-pnw655", "cornell-review"]}
+      ],
+      "sources": [
+        {"id": "usptp-autumnbliss", "name": "US Plant Patent PP6597: Raspberry plant 'Autumn Bliss'", "url": "https://patents.google.com/patent/USPP6597P/en", "tier": "authoritative"},
+        {"id": "cornell-review", "name": "Cornell Cooperative Extension: Raspberry Variety Review (Weber)", "url": "https://www.fruit.cornell.edu/berry/", "tier": "authoritative"},
+        {"id": "osu-pnw655", "name": "OSU/WSU/U Idaho Extension PNW 655: Raspberry Cultivars for the Pacific Northwest", "url": "https://ir.library.oregonstate.edu/downloads/bn999697q", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "raspberry-chilcotin": {
+      "slug": "raspberry-chilcotin",
+      "species": "Raspberry",
+      "variety": "Chilcotin",
+      "paragraphs": [
+        "Chilcotin is a summer-fruiting (floricane) red raspberry developed by the Agriculture Canada breeding program in British Columbia, named (in the program's tradition) after a British Columbian place. It is an older cultivar from this program that helped supply the fresh market.",
+        "Oregon State University lists it among floricane (summer-bearing) cultivars, describing medium-sized, medium-firmness fruit that is attractive and bright light red with good flavour and a non-darkening colour. It is grown by home gardeners across a range of climates, including in Australia."
+      ],
+      "claims": [
+        {"text": "Chilcotin is a floricane (summer-bearing) red raspberry from the Agriculture Canada breeding program in British Columbia.", "type": "origin", "cites": ["osu-pnw655", "heritage-ft-chilcotin"]},
+        {"text": "Its fruit is medium-sized, of medium firmness, attractive, bright light red, with good flavour.", "type": "appearance", "cites": ["osu-pnw655"]}
+      ],
+      "sources": [
+        {"id": "osu-pnw655", "name": "OSU/WSU/U Idaho Extension PNW 655: Raspberry Cultivars for the Pacific Northwest", "url": "https://ir.library.oregonstate.edu/downloads/bn999697q", "tier": "authoritative"},
+        {"id": "heritage-ft-chilcotin", "name": "Heritage Fruit Trees: Chilcotin Raspberry", "url": "https://www.heritagefruittrees.com.au/chilcotin-raspberry/", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "raspberry-chilliwack": {
+      "slug": "raspberry-chilliwack",
+      "species": "Raspberry",
+      "variety": "Chilliwack",
+      "paragraphs": [
+        "Chilliwack is a summer-fruiting (floricane) red raspberry from the Pacific Agri-Food Research Centre program of Agriculture and Agri-Food Canada in British Columbia. It was selected from a cross between the selection BC 64-10-198 and Skeena, and released by H.A. Daubeny in 1987, taking its name (like other cultivars from the program) from a British Columbian place.",
+        "As a floricane variety it crops on second-year canes in summer, producing firm fruit. It was bred within the same British Columbian program that produced widely grown cultivars such as Tulameen, and it is grown in Australia by collectors and home gardeners."
+      ],
+      "claims": [
+        {"text": "Chilliwack was bred at the Pacific Agri-Food Research Centre program of Agriculture and Agri-Food Canada in British Columbia.", "type": "origin", "cites": ["usda-saanich"]},
+        {"text": "It was selected from a cross of BC 64-10-198 and Skeena, and released by Daubeny in 1987.", "type": "breeding", "cites": ["usda-saanich"]},
+        {"text": "It is a summer-fruiting (floricane) red raspberry.", "type": "habit", "cites": ["usda-saanich", "heritage-ft-chilliwack"]}
+      ],
+      "sources": [
+        {"id": "usda-saanich", "name": "Kempler et al., HortScience (USDA-ARS): 'Saanich' Red Raspberry", "url": "https://www.ars.usda.gov/ARSUserFiles/1718/PDF/2007/SaanichRedRaspberry(Kempleretal2007).pdf", "tier": "authoritative"},
+        {"id": "heritage-ft-chilliwack", "name": "Heritage Fruit Trees: Chilliwack Raspberry", "url": "https://www.heritagefruittrees.com.au/chilliwack/", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "raspberry-heritage": {
+      "slug": "raspberry-heritage",
+      "species": "Raspberry",
+      "variety": "Heritage",
+      "paragraphs": [
+        "Heritage is a primocane-fruiting (autumn or fall-bearing) red raspberry from the Cornell University New York State Agricultural Experiment Station breeding program, released in 1969. It was a landmark variety, long considered the standard for fall-bearing raspberries, and it can be double-cropped (a summer crop on second-year canes plus an autumn crop on first-year primocanes).",
+        "Oregon State University describes its fruit as medium-sized, firm, attractive and bright red, with a mild flavour, ripening late so that it has a short fruiting season in cold climates. Its late primocane ripening means it does best where autumns are warm enough to ripen the crop before frost."
+      ],
+      "claims": [
+        {"text": "Heritage is a primocane-fruiting (fall-bearing) red raspberry from the Cornell University New York State Agricultural Experiment Station program.", "type": "origin", "cites": ["cornell-review", "osu-pnw655"]},
+        {"text": "It was released in 1969 and is considered the standard for fall-bearing raspberries.", "type": "breeding", "cites": ["cornell-review", "cornell-cals"]},
+        {"text": "Its fruit is medium-sized, firm, attractive and bright red, with a mild flavour.", "type": "appearance", "cites": ["osu-pnw655", "cornell-review"]},
+        {"text": "It ripens late, giving a short fruiting season in cold climates.", "type": "season", "cites": ["osu-pnw655", "cornell-review"]}
+      ],
+      "sources": [
+        {"id": "cornell-review", "name": "Cornell Cooperative Extension: Raspberry Variety Review (Weber)", "url": "https://www.fruit.cornell.edu/berry/", "tier": "authoritative"},
+        {"id": "osu-pnw655", "name": "OSU/WSU/U Idaho Extension PNW 655: Raspberry Cultivars for the Pacific Northwest", "url": "https://ir.library.oregonstate.edu/downloads/bn999697q", "tier": "authoritative"},
+        {"id": "cornell-cals", "name": "Cornell CALS: New high-yield strawberry, raspberry varieties released", "url": "https://cals.cornell.edu/news/new-high-yield-strawberry-raspberry-varieties-released", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "raspberry-molucca": {
+      "slug": "raspberry-molucca",
+      "species": "Raspberry",
+      "variety": "Molucca",
+      "paragraphs": [
+        "The Molucca raspberry is Rubus moluccanus (also called the Molucca bramble), a wild scrambling shrub or climber native to eastern Australia, ranging from tropical north Queensland to Victoria in wet forests and rainforests. Its range also extends through Asia, Malesia and the Pacific Islands. It is a vigorous bramble that can form thickets, and it is not a bred cultivar.",
+        "It is recognised by its simple, lobed leaves (typically with three to five lobes) that are softly hairy beneath, and white or pink flowers in spring and summer. These are followed by bright red edible fruit. It is one of several Australian native Rubus species used as a wild bushfood rather than a commercial raspberry variety."
+      ],
+      "claims": [
+        {"text": "Rubus moluccanus, the Molucca raspberry or bramble, is native to eastern Australia from Queensland to Victoria, in wet forests and rainforests.", "type": "native", "cites": ["wiki-moluccanus", "anpsa-moluccanus"]},
+        {"text": "It is a scrambling shrub or climber that can form thickets.", "type": "habit", "cites": ["wiki-moluccanus", "anpsa-moluccanus"]},
+        {"text": "It has simple leaves with three to five lobes, hairy on the underside.", "type": "appearance", "cites": ["wiki-moluccanus", "anpsa-moluccanus"]},
+        {"text": "It bears white or pink flowers in spring and summer, followed by bright red fruit.", "type": "appearance", "cites": ["wiki-moluccanus", "anpsa-moluccanus"]},
+        {"text": "The fruit is edible.", "type": "use", "cites": ["wiki-moluccanus", "anpsa-moluccanus"]}
+      ],
+      "sources": [
+        {"id": "wiki-moluccanus", "name": "Wikipedia: Rubus moluccanus", "url": "https://en.wikipedia.org/wiki/Rubus_moluccanus", "tier": "third_party"},
+        {"id": "anpsa-moluccanus", "name": "Australian Native Plants Society: Rubus moluccanus", "url": "https://anpsa.org.au/plant_profiles/rubus-moluccanus/", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "raspberry-tulameen": {
+      "slug": "raspberry-tulameen",
+      "species": "Raspberry",
+      "variety": "Tulameen",
+      "paragraphs": [
+        "Tulameen is a summer-fruiting (floricane) red raspberry from the Pacific Agri-Food Research Centre breeding program of Agriculture and Agri-Food Canada in British Columbia. It was selected from the cross of Nootka and Glen Prosen and released in 1991, following the program's tradition of naming cultivars after British Columbian places.",
+        "It is prized for its fruit quality, producing large to very large, firm, bright red berries with excellent flavour, and it has a notably long harvest season. Oregon State University lists it among floricane (summer-bearing) cultivars, where the fruit ripens later in the summer season. It has become widely planted internationally, including in Australia."
+      ],
+      "claims": [
+        {"text": "Tulameen was bred at the Pacific Agri-Food Research Centre of Agriculture and Agri-Food Canada in British Columbia.", "type": "origin", "cites": ["usda-saanich", "osu-pnw655"]},
+        {"text": "It was selected from the cross of Nootka and Glen Prosen, released in 1991.", "type": "breeding", "cites": ["usda-saanich"]},
+        {"text": "It is a floricane (summer-bearing) red raspberry.", "type": "habit", "cites": ["osu-pnw655", "usda-saanich"]},
+        {"text": "It produces large to very large, firm, attractive bright red fruit with excellent flavour.", "type": "appearance", "cites": ["osu-pnw655"]},
+        {"text": "It ripens in the later part of the summer-bearing season.", "type": "season", "cites": ["osu-pnw655", "usda-saanich"]}
+      ],
+      "sources": [
+        {"id": "osu-pnw655", "name": "OSU/WSU/U Idaho Extension PNW 655: Raspberry Cultivars for the Pacific Northwest", "url": "https://ir.library.oregonstate.edu/downloads/bn999697q", "tier": "authoritative"},
+        {"id": "usda-saanich", "name": "Kempler et al., HortScience (USDA-ARS): 'Saanich' Red Raspberry", "url": "https://www.ars.usda.gov/ARSUserFiles/1718/PDF/2007/SaanichRedRaspberry(Kempleretal2007).pdf", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "raspberry-chilcotin-potted",
+    "raspberry-golden-glitz",
+    "raspberry-heritage-potted",
+    "raspberry-rocket"
+  ]
+}

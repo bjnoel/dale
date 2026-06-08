@@ -1,0 +1,267 @@
+{
+  "species_slug": "grape",
+  "schema_version": 1,
+  "varieties": {
+    "grape-autumn-royal": {
+      "slug": "grape-autumn-royal",
+      "species": "Grape",
+      "variety": "Autumn Royal",
+      "paragraphs": [
+        "Autumn Royal is a black seedless table grape bred by David Ramming and Ron Tarailo at the USDA-ARS lab in California from the cross Autumn Black by C74-1, and released in 1996. It was developed to extend the table grape season into late autumn.",
+        "The berries are large and ovaloid with purple to black skin, among the bigger seedless table grapes. It is a late maturing variety with firm, crisp flesh and a sweet, mild flavour."
+      ],
+      "claims": [
+        {"text": "Autumn Royal was bred by David Ramming and Ron Tarailo at USDA-ARS from Autumn Black by C74-1 and released in 1996.", "type": "breeding", "cites": ["wiki-autumnroyal"]},
+        {"text": "It is a late maturing, black seedless table grape with large, ovaloid berries.", "type": "appearance", "cites": ["wiki-autumnroyal", "plantgrape-autumnroyal"]}
+      ],
+      "sources": [
+        {"id": "wiki-autumnroyal", "name": "Wikipedia: Autumn Royal", "url": "https://en.wikipedia.org/wiki/Autumn_Royal", "tier": "third_party"},
+        {"id": "plantgrape-autumnroyal", "name": "Plantgrape (IFV / INRAE): Autumn Royal table grape variety", "url": "https://www.plantgrape.fr/en/varieties/fruit-varieties/353", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-black-muscat": {
+      "slug": "grape-black-muscat",
+      "species": "Grape",
+      "variety": "Black Muscat",
+      "paragraphs": [
+        "Black Muscat is another name for Muscat Hamburg (Muscat of Hamburg), a black skinned Vitis vinifera grape. It arose from a cross of Schiava Grossa (also known as Frankenthal) and Muscat of Alexandria, raised by head gardener Seward Snow at Wrest Park, Bedfordshire, England, around 1850. The dark, ellipsoid berries grow in medium to large bunches with a moderately thick skin.",
+        "Its defining trait is a pronounced muscat flavoured pulp, aromatic and sweet. The variety is dual purpose, grown as a table grape and used for wine, including richly coloured, aromatic dessert wines, plus sparkling wine and grape juice. Authoritative ampelography notes it has relatively low sugar and colour potential for red winemaking."
+      ],
+      "claims": [
+        {"text": "Black Muscat is another name for Muscat Hamburg (Muscat of Hamburg), a black skinned Vitis vinifera grape.", "type": "naming", "cites": ["wikipedia-blackmuscat", "plantgrape-hambourg"]},
+        {"text": "It is a cross of Schiava Grossa (Frankenthal) and Muscat of Alexandria, raised by Seward Snow at Wrest Park, Bedfordshire, England, around 1850.", "type": "breeding", "cites": ["wikipedia-blackmuscat", "plantgrape-hambourg"]},
+        {"text": "Schiava Grossa is also known as Frankenthal.", "type": "naming", "cites": ["winesearcher-schiava"]},
+        {"text": "The dark, ellipsoid berries grow in medium to large bunches with a moderately thick skin.", "type": "appearance", "cites": ["plantgrape-hambourg"]},
+        {"text": "It has a distinctive muscat flavoured pulp, aromatic and sweet.", "type": "flavour", "cites": ["wikipedia-blackmuscat", "plantgrape-hambourg"]},
+        {"text": "It is dual purpose, used as a table grape and for wine, including aromatic, richly coloured dessert wines.", "type": "use", "cites": ["wikipedia-blackmuscat", "plantgrape-hambourg"]},
+        {"text": "Ampelography notes it has low sugar and colour potential for winemaking.", "type": "use", "cites": ["plantgrape-hambourg"]}
+      ],
+      "sources": [
+        {"id": "wikipedia-blackmuscat", "name": "Wikipedia: Black Muscat", "url": "https://en.wikipedia.org/wiki/Black_Muscat", "tier": "third_party"},
+        {"id": "plantgrape-hambourg", "name": "Plantgrape (IFV-INRAE): Muscat de Hambourg", "url": "https://www.plantgrape.fr/en/varieties/fruit-varieties/188", "tier": "authoritative"},
+        {"id": "winesearcher-schiava", "name": "Wine-Searcher: Schiava grape variety", "url": "https://www.wine-searcher.com/grape-936-schiava", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-chambourcin": {
+      "slug": "grape-chambourcin",
+      "species": "Grape",
+      "variety": "Chambourcin",
+      "paragraphs": [
+        "Chambourcin is a French American interspecific hybrid red wine grape, produced by Joannes Seyve in France and made available in 1963. It carries several North American Vitis species in its background, which gives it good tolerance to fungal disease, useful in humid climates. This is a relatively modern variety compared with the classic European grapes.",
+        "It is a teinturier grape, meaning the juice is pink to red rather than the clear juice of most black grapes, so it yields a deeply coloured, aromatic red wine. In Australia it is grown in New South Wales, including the Hunter Valley, where it is often blended with Shiraz to add colour and depth."
+      ],
+      "claims": [
+        {"text": "Chambourcin is a French American interspecific hybrid red wine grape produced by Joannes Seyve and available from 1963.", "type": "breeding", "cites": ["wikipedia-chambourcin", "winetraveler-chambourcin"]},
+        {"text": "It carries North American Vitis species in its background, giving good resistance to fungal disease.", "type": "breeding", "cites": ["wikipedia-chambourcin", "winetraveler-chambourcin"]},
+        {"text": "It is a teinturier grape with pink to red juice rather than the clear juice of most black grapes.", "type": "appearance", "cites": ["wikipedia-chambourcin", "winetraveler-chambourcin"]},
+        {"text": "It produces a deeply coloured, aromatic red wine.", "type": "use", "cites": ["wikipedia-chambourcin", "winetraveler-chambourcin"]},
+        {"text": "In Australia it is grown in New South Wales, including the Hunter Valley, and is often blended with Shiraz.", "type": "use", "cites": ["wikipedia-chambourcin", "winetraveler-chambourcin"]}
+      ],
+      "sources": [
+        {"id": "wikipedia-chambourcin", "name": "Wikipedia: Chambourcin", "url": "https://en.wikipedia.org/wiki/Chambourcin", "tier": "third_party"},
+        {"id": "winetraveler-chambourcin", "name": "Winetraveler: Chambourcin grape profile", "url": "https://www.winetraveler.com/grape/chambourcin/", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-crimson-seedless": {
+      "slug": "grape-crimson-seedless",
+      "species": "Grape",
+      "variety": "Crimson Seedless",
+      "paragraphs": [
+        "Crimson Seedless is a red seedless table grape bred by the USDA-ARS grape program at Fresno, California, from an Emperor cross, and released to industry in 1989. It is one of the most widely planted table grapes in California and is also a major variety in Australia.",
+        "The berries are firm and crisp with a sweet, fairly neutral flavour and a bright to brick red skin, sometimes showing greenish streaks. It is one of the latest ripening seedless varieties, maturing in mid to late autumn, and is valued for its long shelf life and good shipping."
+      ],
+      "claims": [
+        {"text": "Crimson Seedless was bred by the USDA-ARS grape breeding program and released in 1989.", "type": "origin", "cites": ["usda-ars-100yr", "atga-crimson"]},
+        {"text": "It is a red, seedless table grape with firm, crisp berries.", "type": "appearance", "cites": ["atga-crimson", "usda-ars-100yr"]}
+      ],
+      "sources": [
+        {"id": "usda-ars-100yr", "name": "USDA ARS: 100th Anniversary of Grapevine Breeding Research Program", "url": "https://www.ars.usda.gov/pacific-west-area/parlier/sjvasc/about/100th-anniversary-of-grapevine-breeding-research-program/", "tier": "authoritative"},
+        {"id": "atga-crimson", "name": "Australian Table Grape Association: Crimson Seedless", "url": "https://australiangrapes.com.au/varieties/crimson-seedless/", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-flame-seedless": {
+      "slug": "grape-flame-seedless",
+      "species": "Grape",
+      "variety": "Flame Seedless",
+      "paragraphs": [
+        "Flame Seedless is a red seedless table grape developed by the USDA-ARS grape breeding program in California and grown by ARS scientists from 1973. Red seedless grapes were essentially unknown to US consumers before the Flame release, making it a market pioneer.",
+        "It produces large clusters of medium to large round red berries with firm, crisp flesh and a sweet flavour. It is a complex Vitis vinifera hybrid (its parentage includes Thompson Seedless and Cardinal) and is one of the most popular red seedless table grapes grown."
+      ],
+      "claims": [
+        {"text": "Flame Seedless is a USDA-ARS red seedless table grape, grown by ARS scientists from 1973, and red seedless grapes were unknown to US consumers before its release.", "type": "origin", "cites": ["usda-ars-100yr", "wiki-flame"]},
+        {"text": "It is a Vitis vinifera hybrid whose parentage includes Thompson Seedless and Cardinal, producing large clusters of red seedless berries.", "type": "breeding", "cites": ["wiki-flame"]}
+      ],
+      "sources": [
+        {"id": "usda-ars-100yr", "name": "USDA ARS: 100th Anniversary of Grapevine Breeding Research Program", "url": "https://www.ars.usda.gov/pacific-west-area/parlier/sjvasc/about/100th-anniversary-of-grapevine-breeding-research-program/", "tier": "authoritative"},
+        {"id": "wiki-flame", "name": "Wikipedia: Flame Seedless", "url": "https://en.wikipedia.org/wiki/Flame_Seedless", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-gordo-blanco": {
+      "slug": "grape-gordo-blanco",
+      "species": "Grape",
+      "variety": "Gordo Blanco",
+      "paragraphs": [
+        "Gordo Blanco is the Australian name for Muscat of Alexandria, one of the oldest grape varieties still grown. It is a white (yellow-green) seeded grape carrying a strong, sweet muscat aroma, and is prized as an aromatic all-rounder.",
+        "It is a true multipurpose variety, eaten fresh as a table grape, dried (its dried form is sold in Australia as the Lexia raisin), and used for wine. In Australia it is grown for commercial winemaking, often used in Moscato style and to lift the muscat character of blends."
+      ],
+      "claims": [
+        {"text": "Gordo Blanco is the Australian name for Muscat of Alexandria, a very old white seeded grape with a strong muscat aroma.", "type": "naming", "cites": ["wiki-muscat", "grapevinevariety-gordo"]},
+        {"text": "It is multipurpose: a table grape, dried as the Australian Lexia raisin, and used for wine.", "type": "use", "cites": ["wiki-muscat", "grapevinevariety-gordo"]}
+      ],
+      "sources": [
+        {"id": "wiki-muscat", "name": "Wikipedia: Muscat of Alexandria", "url": "https://en.wikipedia.org/wiki/Muscat_of_Alexandria", "tier": "third_party"},
+        {"id": "grapevinevariety-gordo", "name": "Wine Grape Variety Selector: Muscat Gordo Blanco", "url": "https://grapevinevariety.com/details/show/4756", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-isabella-black": {
+      "slug": "grape-isabella-black",
+      "species": "Grape",
+      "variety": "Isabella Black",
+      "paragraphs": [
+        "Isabella is an old American grape derived from Vitis labrusca (the fox grape), a natural hybrid with Vitis vinifera. It was popularised in the early 1800s and is named after Isabella Gibbs of South Carolina, where it was recorded around 1816. DNA analysis published in 2023 identified its labrusca parent as the cultivar Ives.",
+        "When ripe the skin is dark purple, almost black, over tender green-yellow flesh, and it is a slip-skin grape (the skin separates easily from the pulp). It carries the distinctive musky, grapey foxy aroma of labrusca grapes and is used for table fruit, juice and wine."
+      ],
+      "claims": [
+        {"text": "Isabella is derived from Vitis labrusca and is a natural hybrid with Vitis vinifera, recorded in South Carolina around 1816 and named after Isabella Gibbs.", "type": "origin", "cites": ["wiki-isabella", "wiki-labrusca"]},
+        {"text": "It has dark purple to black skin, is a slip-skin variety, and has the foxy labrusca aroma; used for table, juice and wine.", "type": "appearance", "cites": ["wiki-isabella", "wiki-labrusca"]}
+      ],
+      "sources": [
+        {"id": "wiki-isabella", "name": "Wikipedia: Isabella (grape)", "url": "https://en.wikipedia.org/wiki/Isabella_(grape)", "tier": "third_party"},
+        {"id": "wiki-labrusca", "name": "Wikipedia: Vitis labrusca", "url": "https://en.wikipedia.org/wiki/Vitis_labrusca", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-red-globe": {
+      "slug": "grape-red-globe",
+      "species": "Grape",
+      "variety": "Red Globe",
+      "paragraphs": [
+        "Red Globe is a large, seeded red table grape bred in California by H.P. Olmo and A.T. Koyama at the University of California, and released in 1981. It is one of the most widely planted table grapes in the world.",
+        "The berries are round and among the largest of any table grape, with firm, crisp flesh, a thick skin carrying a waxy bloom, and a mild, sweet, neutral flavour. The large berry size and good shipping and storage tolerance make it popular for fresh eating."
+      ],
+      "claims": [
+        {"text": "Red Globe was bred in California by H.P. Olmo and A.T. Koyama and released in 1981.", "type": "origin", "cites": ["plantgrape-redglobe", "specialty-redglobe"]},
+        {"text": "It is a large, seeded red table grape with round berries among the largest of table grapes.", "type": "appearance", "cites": ["plantgrape-redglobe", "wiki-redglobe", "specialty-redglobe"]}
+      ],
+      "sources": [
+        {"id": "plantgrape-redglobe", "name": "Plantgrape (IFV / INRAE): Red Globe table grape variety", "url": "https://www.plantgrape.fr/en/varieties/fruit-varieties/293", "tier": "authoritative"},
+        {"id": "wiki-redglobe", "name": "Wikipedia: Red Globe", "url": "https://en.wikipedia.org/wiki/Red_Globe", "tier": "third_party"},
+        {"id": "specialty-redglobe", "name": "Specialty Produce: Red Globe Grapes", "url": "https://specialtyproduce.com/produce/Red_Globe_Grapes_25683.php", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-thompson-seedless": {
+      "slug": "grape-thompson-seedless",
+      "species": "Grape",
+      "variety": "Thompson Seedless",
+      "paragraphs": [
+        "Thompson Seedless is the same grape as Sultanina and the Sultana, an ancient white (pale green) variety that traces to Asia Minor, in the region now covered by Turkey and Iran. The Thompson Seedless name honours William Thompson, an early Californian grower credited with introducing the variety, and US federal regulations treat the two names as synonymous. The berries are oval and genuinely seedless.",
+        "Often called a three way grape, it is used as a table grape, dried into raisins, and used in winemaking. It dominates Californian production, accounting for the large majority of raisin output, and as a wine grape it is known for a sweet, mild, low acid character rather than strong flavour."
+      ],
+      "claims": [
+        {"text": "Thompson Seedless is synonymous with Sultanina and the Sultana grape, with US federal regulations treating the names as the same.", "type": "naming", "cites": ["wikipedia-sultana", "britannica-thompson"]},
+        {"text": "The variety originates from Asia Minor, in the region now divided between Turkey and Iran.", "type": "origin", "cites": ["wikipedia-sultana"]},
+        {"text": "The Thompson Seedless name honours William Thompson, an early Californian grower credited with introducing the variety.", "type": "naming", "cites": ["wikipedia-sultana", "britannica-thompson"]},
+        {"text": "It is a white (pale green) seedless variety.", "type": "appearance", "cites": ["wikipedia-sultana", "britannica-thompson"]},
+        {"text": "It is used three ways: as a table grape, for raisins, and for winemaking.", "type": "use", "cites": ["wikipedia-sultana"]},
+        {"text": "As a wine grape it is known for a sweet, mild, bland character.", "type": "flavour", "cites": ["wikipedia-sultana"]}
+      ],
+      "sources": [
+        {"id": "wikipedia-sultana", "name": "Wikipedia: Sultana (grape)", "url": "https://en.wikipedia.org/wiki/Sultana_(grape)", "tier": "third_party"},
+        {"id": "britannica-thompson", "name": "Encyclopaedia Britannica: Thompson Seedless grape", "url": "https://www.britannica.com/plant/Thompson-Seedless-grape", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-waltham-cross": {
+      "slug": "grape-waltham-cross",
+      "species": "Grape",
+      "variety": "Waltham Cross",
+      "paragraphs": [
+        "Waltham Cross is the Australian name for the white grape known internationally as Dattier de Beyrouth (also Afus Ali and Rosaki). The variety originates from the Middle East, possibly Lebanon, and its roughly 220 synonyms reflect its great age and wide distribution. It is a seeded grape, not a seedless one.",
+        "It is a white multi purpose grape, used as a fresh table grape and also for drying and winemaking. In Australia it is a leading white multi purpose variety: together with Sunglo it makes up about 85 percent of the area planted to white multi purpose grapes in South Australia."
+      ],
+      "claims": [
+        {"text": "Waltham Cross is a synonym for Dattier de Beyrouth (also Afus Ali and Rosaki), a white grape.", "type": "naming", "cites": ["weinplus-waltham", "weinplus-afusali"]},
+        {"text": "The variety originates from the Middle East, possibly Lebanon.", "type": "origin", "cites": ["weinplus-afusali", "vinehealth-waltham"]},
+        {"text": "It has roughly 220 synonyms reflecting its age and wide distribution.", "type": "naming", "cites": ["weinplus-afusali"]},
+        {"text": "It is a seeded variety.", "type": "appearance", "cites": ["vinehealth-waltham"]},
+        {"text": "It is a white multi purpose grape used as a table grape and for drying and winemaking.", "type": "use", "cites": ["vinehealth-waltham"]},
+        {"text": "In South Australia, Waltham Cross together with Sunglo makes up about 85 percent of the area planted to white multi purpose grapes.", "type": "use", "cites": ["vinehealth-waltham"]}
+      ],
+      "sources": [
+        {"id": "weinplus-waltham", "name": "wein.plus Lexicon: Waltham Cross", "url": "https://glossary.wein.plus/waltham-cross", "tier": "third_party"},
+        {"id": "weinplus-afusali", "name": "wein.plus Lexicon: Afus Ali", "url": "https://glossary.wein.plus/afus-ali", "tier": "third_party"},
+        {"id": "vinehealth-waltham", "name": "Vinehealth Australia: Multi-purpose and table grape insights", "url": "https://vinehealth.com.au/2022/11/multi-purpose-and-table-grape-insights/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "grape-zante-currant": {
+      "slug": "grape-zante-currant",
+      "species": "Grape",
+      "variety": "Zante Currant",
+      "paragraphs": [
+        "Zante currant is the dried fruit of Black Corinth, a tiny seedless Vitis vinifera grape native to Greece. The berries are very small, in the wild smaller than a pea, and they are easy to sun dry into the dark, intensely flavoured dried currants of commerce. Despite the name, the grape is unrelated to the Ribes shrubs that bear blackcurrants and redcurrants.",
+        "The name comes from the Anglo French raisins de Corinthe (grapes of Corinth) and the Ionian island of Zakynthos (Zante), once the major exporter. The grape has a long recorded history, described by Pliny the Elder in 75 AD, and Greece still produces about 80 percent of the world's Zante currants."
+      ],
+      "claims": [
+        {"text": "Zante currant is the dried fruit of the small, seedless Black Corinth grape (Vitis vinifera), native to Greece.", "type": "origin", "cites": ["wikipedia-zante", "specialtyproduce-champagne"]},
+        {"text": "The berries are very small, smaller than a pea in the wild.", "type": "appearance", "cites": ["specialtyproduce-champagne"]},
+        {"text": "It is grown for drying into dark, intensely flavoured dried currants.", "type": "use", "cites": ["wikipedia-zante", "specialtyproduce-champagne"]},
+        {"text": "It is unrelated to the Ribes shrub currants (blackcurrant, redcurrant, whitecurrant).", "type": "naming", "cites": ["wikipedia-zante"]},
+        {"text": "The name derives from the Anglo French raisins de Corinthe and the island of Zakynthos (Zante).", "type": "naming", "cites": ["wikipedia-zante", "specialtyproduce-champagne"]},
+        {"text": "It was described by Pliny the Elder in 75 AD.", "type": "naming", "cites": ["wikipedia-zante", "specialtyproduce-champagne"]},
+        {"text": "Greece produces about 80 percent of the world's Zante currants.", "type": "use", "cites": ["wikipedia-zante", "specialtyproduce-champagne"]}
+      ],
+      "sources": [
+        {"id": "wikipedia-zante", "name": "Wikipedia: Zante currant", "url": "https://en.wikipedia.org/wiki/Zante_currant", "tier": "third_party"},
+        {"id": "specialtyproduce-champagne", "name": "Specialty Produce: Champagne (Black Corinth) Grapes", "url": "https://specialtyproduce.com/produce/Champagne_Grapes_225.php", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "grape-fruit-wheeny",
+    "grape-ivy",
+    "grape-ivy-ellen-danica",
+    "grape-vines-fruiting"
+  ]
+}

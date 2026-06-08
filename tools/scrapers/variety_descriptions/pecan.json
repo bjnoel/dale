@@ -1,0 +1,56 @@
+{
+  "species_slug": "pecan",
+  "schema_version": 1,
+  "varieties": {
+    "pecan-pawnee": {
+      "slug": "pecan-pawnee",
+      "species": "Pecan",
+      "variety": "Pawnee",
+      "paragraphs": [
+        "Pawnee is a USDA pecan (Carya illinoinensis) cultivar from a controlled cross of Mohawk by Starking Hardy Giant, made by the USDA Pecan Breeding Program in 1963 and released in 1984. Like other USDA cultivars it carries a Native American tribe name.",
+        "Its standout feature is large nuts combined with very early ripening, several weeks ahead of older western cultivars, which lets growers in cooler, shorter season areas harvest before autumn frosts. Pawnee produces large, good quality kernels with a high percentage of kernel, and is protandrous (a type I pollinator)."
+      ],
+      "claims": [
+        {"text": "Pawnee came from a controlled cross of Mohawk by Starking Hardy Giant by the USDA Pecan Breeding Program, made in 1963 and released in 1984.", "type": "breeding", "cites": ["nmsu-pecan-h659", "ncsu-pawnee"]},
+        {"text": "Its standout feature is large nuts with very early ripening, several weeks ahead of older western cultivars.", "type": "season", "cites": ["nmsu-pecan-h659", "ncsu-pawnee"]},
+        {"text": "It produces large nuts with a high percentage, good quality kernel.", "type": "appearance", "cites": ["ncsu-pawnee"]},
+        {"text": "Pawnee is protandrous, a type I pollinator.", "type": "pollination", "cites": ["nmsu-pecan-h659", "ncsu-pawnee"]}
+      ],
+      "sources": [
+        {"id": "nmsu-pecan-h659", "name": "New Mexico State University Extension: Pecan Cultivars for New Mexico (H659)", "url": "https://pubs.nmsu.edu/_h/H659/index.html", "tier": "authoritative"},
+        {"id": "ncsu-pawnee", "name": "North Carolina Extension Gardener Plant Toolbox: Carya illinoinensis Pawnee", "url": "https://plants.ces.ncsu.edu/plants/carya-illinoinensis-pawnee/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
+    "pecan-wichita": {
+      "slug": "pecan-wichita",
+      "species": "Pecan",
+      "variety": "Wichita",
+      "paragraphs": [
+        "Wichita is a USDA pecan (Carya illinoinensis) cultivar from a controlled cross of Halbert by Mahan made by L.D. Romberg at the USDA Pecan Field Station, Brownwood, Texas, in 1940, and named and released in 1959. It became one of the most widely planted USDA cultivars, a mainstay in Arizona, California and Sonora, Mexico.",
+        "It produces medium sized nuts with a high percent kernel and good fill, and is valued for heavy yields in hot, arid climates. Wichita is protogynous (a type II pollinator), so it is paired with a protandrous cultivar for cross pollination. It is very susceptible to scab, which limits it in humid regions."
+      ],
+      "claims": [
+        {"text": "Wichita came from a controlled cross of Halbert by Mahan made by L.D. Romberg at the USDA station in Brownwood, Texas, in 1940, and was released in 1959.", "type": "breeding", "cites": ["nmsu-pecan-h659", "usda-cgru-wichita"]},
+        {"text": "It is a protogynous, type II pecan, paired with a protandrous cultivar for cross pollination.", "type": "pollination", "cites": ["nmsu-pecan-h659"]},
+        {"text": "It yields medium sized nuts with a high percent kernel and is a main cultivar in arid regions such as Arizona, California and Sonora.", "type": "use", "cites": ["nmsu-pecan-h659", "usda-cgru-wichita"]},
+        {"text": "Wichita is very susceptible to pecan scab and water stage fruit split, limiting it in humid areas.", "type": "appearance", "cites": ["usda-cgru-wichita"]}
+      ],
+      "sources": [
+        {"id": "nmsu-pecan-h659", "name": "New Mexico State University Extension: Pecan Cultivars for New Mexico (H659)", "url": "https://pubs.nmsu.edu/_h/H659/index.html", "tier": "authoritative"},
+        {"id": "usda-cgru-wichita", "name": "USDA-ARS Carya (Pecan) Cultivars: Wichita", "url": "https://cgru.usda.gov/CARYA/PECANS/wichita.htm", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    }
+  },
+  "skipped": [
+    "pecan-pair",
+    "pecan-plant"
+  ]
+}
