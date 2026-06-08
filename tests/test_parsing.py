@@ -30,8 +30,9 @@ def _load(path: Path):
 
 cp = _load(SCRAPERS / "cultivar_parsing.py")
 # Also load the three callers to make sure they still import cleanly (catches
-# accidental leftover references to removed helpers).
-_load(SCRAPERS / "build_variety_pages.py")
+# accidental leftover references to removed helpers). bvp is kept bound so the
+# per-row type-pill suppression helper (DEC-177) can be unit-tested directly.
+bvp = _load(SCRAPERS / "build_variety_pages.py")
 _load(SCRAPERS / "build_species_pages.py")
 _load(SCRAPERS / "send_variety_alerts.py")
 
@@ -261,3 +262,62 @@ class RelaxedParse(unittest.TestCase):
         # A title the strict parser handles must return the strict result
         # unchanged (relaxed only runs on strict None).
         self.assertEqual(cp.parse_cultivar("Avocado - Hass"), ("Avocado", "Hass"))
+
+
+# ---------------------------------------------------------------------------
+# extract_type_label -- the per-row "type" pill on variety pages (DEC-177).
+# DEC-176 strips form/rootstock/propagation noise from the cultivar NAME so the
+# rows group onto one page; this brings that info back as a per-row label so
+# shoppers can tell otherwise-identical nursery rows apart. Standard / grafted /
+# pot sizes are the default -> no label. Uses the SAME regexes the cleaner
+# strips with, so strip and label can never drift.
+# ---------------------------------------------------------------------------
+
+class ExtractTypeLabel(unittest.TestCase):
+    CASES = [
+        ("Apple - Gala Dwarf",                  "Dwarf"),
+        ("Apple Gala (Bare Rooted)",            "Bare rooted"),
+        ("Apple - Gala",                        ""),
+        ("Sapodilla Grafted - Krasuey",         ""),     # grafted is the default form
+        ("Apple - Gala Standard",               ""),     # standard is the default form
+        ("Apple - Dorsett Golden Super Dwarf - Bare Root", "Super Dwarf, Bare rooted"),
+        ("Banana - Cavendish Tube Stock",       "Tubestock"),
+        ('"Alstonville" Finger Lime 90mm Pots (Cutting Grown)', "Cutting grown"),
+        ("Mango - Kensington Pride Advanced",   "Advanced"),
+        # Canonicalisation of spelling / spacing / typo variants
+        ("Apple - Gala Semi-Dwarf",             "Semi Dwarf"),
+        ("Apple - Gala (Bear Rooted)",          "Bare rooted"),   # "bear" typo -> "Bare rooted"
+        ("Banana - Cavendish Tubestock",        "Tubestock"),     # joined "tubestock"
+        ("Plum - Santa Rosa (Bare-Rooted)",     "Bare rooted"),
+        # "Super Dwarf" wins over "Dwarf" (longest match first, no duplicate pill)
+        ("Apple - Dorsett Super Dwarf",         "Super Dwarf"),
+        # Combine deduped + ordered: form, then propagation, then Advanced
+        ("Plum - Santa Rosa Dwarf Bare Root Advanced", "Dwarf, Bare rooted, Advanced"),
+        # Pot sizes are NOT type labels
+        ("Apple - Gala 5L 200mm",               ""),
+    ]
+
+    def test_cases(self):
+        for inp, expected in self.CASES:
+            with self.subTest(input=inp):
+                self.assertEqual(cp.extract_type_label(inp), expected)
+
+
+class SuppressTypeLabel(unittest.TestCase):
+    """build_variety_pages.visible_type_label drops a pill whose text already
+    appears in the variety name, so the banana 'Dwarf Cavendish' page shows no
+    redundant Dwarf pill (DEC-177)."""
+
+    def test_suppress(self):
+        self.assertEqual(bvp.visible_type_label("Dwarf", "Dwarf Cavendish"), "")
+        self.assertEqual(bvp.visible_type_label("Dwarf", "Gala"), "Dwarf")
+        self.assertEqual(bvp.visible_type_label("", "Gala"), "")
+        # Per-part: keep the part not in the name, drop the one that is.
+        self.assertEqual(
+            bvp.visible_type_label("Super Dwarf, Bare rooted", "Dorsett Golden"),
+            "Super Dwarf, Bare rooted",
+        )
+        self.assertEqual(
+            bvp.visible_type_label("Dwarf, Bare rooted", "Dwarf Cavendish"),
+            "Bare rooted",
+        )

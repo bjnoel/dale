@@ -45,7 +45,20 @@ NURSERY_URLS = {
 from stocklib.classify import NON_PLANT_KEYWORDS
 
 
-from cultivar_parsing import slugify, parse_cultivar  # noqa: E402
+from cultivar_parsing import slugify, parse_cultivar, extract_type_label  # noqa: E402
+
+
+def visible_type_label(type_label: str, variety: str) -> str:
+    """Drop pill parts whose text already appears in the variety name, so the
+    banana 'Dwarf Cavendish' page shows no redundant Dwarf pill (DEC-177)."""
+    if not type_label:
+        return ""
+    vlow = variety.lower()
+    parts = [
+        p for p in (s.strip() for s in type_label.split(","))
+        if p and p.lower() not in vlow
+    ]
+    return ", ".join(parts)
 
 
 def load_all_products(data_dir: Path) -> list[dict]:
@@ -69,6 +82,7 @@ def load_all_products(data_dir: Path) -> list[dict]:
                 "nursery_key": nursery_key,
                 "nursery_name": nursery_name,
                 "title": title,
+                "type_label": extract_type_label(title),
                 "url": p.get("url", ""),
                 "price": p.get("min_price") or 0,
                 "available": p.get("any_available", False),
@@ -136,6 +150,7 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
         product_view.append({
             "product_link": p["url"] or nursery_url,
             "nursery_name": p["nursery_name"],
+            "type_label": visible_type_label(p["type_label"], variety),
             "restrict_div": restrict_div,
             "price_str": f"${p['price']:.2f}" if p["price"] else "—",
             "available": p["available"],

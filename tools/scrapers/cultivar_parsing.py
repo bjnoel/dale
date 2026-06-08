@@ -317,47 +317,85 @@ _NOISE_PAREN_WORDS = frozenset({
     'small', 'medium', 'large', 'low', 'chill',
 })
 
+# --- Displayable type labels (DEC-177) ------------------------------------
+# Form / rootstock / propagation tokens a shopper cares about when telling two
+# otherwise-identical nursery rows apart (Yalca's Dwarf vs Aus Nurseries' Bare
+# rooted on one /variety/apple-gala.html page). DEC-176 strips these from the
+# cultivar NAME so the rows group onto a single page; extract_type_label() below
+# brings the info back as a per-row pill.
+#
+# This ONE ordered (regex, Display Label) list is the single source of truth:
+# the cleaner strips exactly these tokens AND extract_type_label surfaces exactly
+# these labels (both reference these same compiled regexes), so the strip set and
+# the label set can never drift. "grafted"/"standard" and pot sizes are NOT here
+# -- they're stripped as noise but are the default form, so they get no pill.
+#
+# Output order is form, then propagation, then Advanced. Form is listed
+# longest-first so "Super Dwarf" wins over "Dwarf": extract_type_label consumes a
+# match before testing the next pattern, so bare "Dwarf" can't re-fire inside it.
+_RE_SUPER_DWARF = re.compile(r'\bsuper[\s-]?dwarf\b', re.I)
+_RE_SEMI_DWARF = re.compile(r'\bsemi[\s-]?dwarf\b', re.I)
+_RE_DWARF = re.compile(r'\bdwarf\b', re.I)
+_RE_BARE_ROOTED = re.compile(r'\bbare[\s-]?root(?:ed)?\b', re.I)
+_RE_BEAR_ROOTED = re.compile(r'\bbear[\s-]?root(?:ed)?\b', re.I)   # common "bear rooted" typo
+_RE_TUBESTOCK = re.compile(r'\btube[\s-]?stock\b', re.I)
+_RE_CUTTING_GROWN = re.compile(r'\bcutting grown\b', re.I)
+_RE_ADVANCED = re.compile(r'\badvanced\b', re.I)
+
+_TYPE_LABELS = [
+    (_RE_SUPER_DWARF, "Super Dwarf"),
+    (_RE_SEMI_DWARF, "Semi Dwarf"),
+    (_RE_DWARF, "Dwarf"),
+    (_RE_BARE_ROOTED, "Bare rooted"),
+    (_RE_BEAR_ROOTED, "Bare rooted"),
+    (_RE_TUBESTOCK, "Tubestock"),
+    (_RE_CUTTING_GROWN, "Cutting grown"),
+    (_RE_ADVANCED, "Advanced"),
+]
+
+# Bare "super"/"semi" (no "dwarf"): used only by the cleaner, to catch a leftover
+# "Dorsett Golden - Super" fragment. Not standalone pill labels.
+_RE_SUPER = re.compile(r'\bsuper\b', re.I)
+_RE_SEMI = re.compile(r'\bsemi\b', re.I)
+
 # Multi-word noise phrases stripped from both sides, all species (longest /
 # most specific first). Shipping restrictions (with or without a leading
 # "restricted to" and an optional trailing "only"), container/propagation and
-# chill-requirement noise, bare-rooted (and the common "bear rooted" typo).
+# chill-requirement noise, bare-rooted (and the common "bear rooted" typo). The
+# tubestock / cutting-grown / bare-rooted entries reference the shared
+# _TYPE_LABELS regexes so the strip and the pill stay in lockstep.
 # NOTE: the bare "qld" (no "only") is deliberately NOT stripped -- it marks a
 # real botanical form for some plants (Davidson Plum QLD, QLD Arrowroot).
 _CLEAN_PHRASE_RES = [
-    re.compile(p, re.I) for p in (
-        r'restricted to [a-z/.\s]*?qld(?:\s*\[?\s*banana region\s*\]?)?(?:\s+only)?',
-        r'\b(?:south[\s-]?east|s\.?\s*e\.?|se)\s*qld(?:\s+only)?\b',
-        r'\bqld\s+only\b',
-        r'\bpick\s*up(?:\s+only)?\b',
-        r'\btube[\s-]?stock\b',
-        r'\bcutting grown\b',
-        r'\blow[\s-]?chill\b',
-        r'\badvanced size\b',
-        r'\borchard size\b',
-        r'\bbare[\s-]?root(?:ed)?\b',
-        r'\bbear[\s-]?root(?:ed)?\b',
-    )
+    re.compile(r'restricted to [a-z/.\s]*?qld(?:\s*\[?\s*banana region\s*\]?)?(?:\s+only)?', re.I),
+    re.compile(r'\b(?:south[\s-]?east|s\.?\s*e\.?|se)\s*qld(?:\s+only)?\b', re.I),
+    re.compile(r'\bqld\s+only\b', re.I),
+    re.compile(r'\bpick\s*up(?:\s+only)?\b', re.I),
+    _RE_TUBESTOCK,
+    _RE_CUTTING_GROWN,
+    re.compile(r'\blow[\s-]?chill\b', re.I),
+    re.compile(r'\badvanced size\b', re.I),
+    re.compile(r'\borchard size\b', re.I),
+    _RE_BARE_ROOTED,
+    _RE_BEAR_ROOTED,
 ]
 
 # Single-word noise stripped from both sides, all species. "large/medium/small"
 # and "pot/pots" are pure size/container words; cultivar size names that ARE
-# meaningful (Mammoth, Giant, Jumbo) are deliberately NOT here.
+# meaningful (Mammoth, Giant, Jumbo) are deliberately NOT here. "advanced" is the
+# shared _TYPE_LABELS regex (runs after the "advanced size" phrase above).
 _CLEAN_WORD_RES = [
     re.compile(r'\b' + p + r'\b', re.I) for p in (
-        'grafted', 'bareroot', 'advanced', 'standard',
+        'grafted', 'bareroot', 'standard',
         'large', 'medium', 'small', 'pot', 'pots',
     )
-]
+] + [_RE_ADVANCED]
 
 # Size/form words stripped EXCEPT for bananas. "super"/"semi" alone catch
 # "Dorsett Golden - Super" (the trailing "Dwarf" already gone); the combined
-# forms run first so "Super Dwarf" goes in one shot.
-_CLEAN_SIZEFORM_RES = [
-    re.compile(p, re.I) for p in (
-        r'\bsuper[\s-]?dwarf\b', r'\bsemi[\s-]?dwarf\b',
-        r'\bsuper\b', r'\bsemi\b', r'\bdwarf\b',
-    )
-]
+# forms run first so "Super Dwarf" goes in one shot. super-dwarf / semi-dwarf /
+# dwarf are the shared _TYPE_LABELS regexes.
+_CLEAN_SIZEFORM_RES = [_RE_SUPER_DWARF, _RE_SEMI_DWARF, _RE_SUPER, _RE_SEMI, _RE_DWARF]
 
 # Volume / pot tokens stripped anywhere. Litres ("2L", "45Ltr") and pot
 # dimensions in mm/cm/ml ("90mm", "20 cm", "100/130mm", "140ml"). Verified NOT
@@ -525,3 +563,24 @@ def product_variety_slug(title: str) -> str | None:
         return None
     species, variety = parsed
     return slugify(f"{species}-{variety}") or None
+
+
+def extract_type_label(title: str) -> str:
+    """Form / rootstock / propagation label(s) for a raw nursery title, for the
+    per-row pill on variety pages (DEC-177).
+
+    Returns a comma-joined, deduped, ordered label like "Super Dwarf, Bare rooted"
+    (form, then propagation, then Advanced), or "" for a standard / grafted /
+    plain listing. Uses _TYPE_LABELS -- the SAME patterns the post-parse cleaner
+    strips with -- so a pill always names noise removed from the cultivar name,
+    and the strip set and label set can never drift.
+    """
+    s = title
+    labels: list[str] = []
+    for rx, label in _TYPE_LABELS:
+        if label in labels:
+            continue
+        if rx.search(s):
+            labels.append(label)
+            s = rx.sub(' ', s)   # consume so a shorter form (Dwarf) can't re-fire inside Super Dwarf
+    return ', '.join(labels)
