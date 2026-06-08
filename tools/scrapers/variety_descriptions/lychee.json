@@ -2,6 +2,66 @@
   "species_slug": "lychee",
   "schema_version": 1,
   "varieties": {
+    "lychee-kwai-mai-pink": {
+      "slug": "lychee-kwai-mai-pink",
+      "species": "Lychee",
+      "variety": "Kwai Mai Pink",
+      "paragraphs": [
+        "Kwai Mai Pink (also sold in Australia as Bosworth 3) is a Chinese lychee cultivar believed to have been brought from southern China to Australia in the 1930s. The fruit is small to medium, heart-shaped with blotchy red and yellow skin. The leaflets carry a characteristic twist towards the tip.",
+        "Its main appeal is eating quality and a small seed. The seeds are nearly all small (chicken tongue) in most seasons, which lifts the proportion of edible flesh, and the fruit quality is rated excellent."
+      ],
+      "claims": [
+        {
+          "text": "Chinese cultivar sold in Australia as Bosworth 3, believed brought from southern China to Australia in the 1930s",
+          "type": "origin",
+          "cites": [
+            "wikipedia-kwai-mai",
+            "rfca-lychee"
+          ]
+        },
+        {
+          "text": "Small to medium, heart-shaped fruit with blotchy red and yellow skin; leaflets twist towards the tip",
+          "type": "appearance",
+          "cites": [
+            "rfca-lychee",
+            "wikipedia-kwai-mai"
+          ]
+        },
+        {
+          "text": "Seeds nearly all small (chicken tongue) in most seasons, giving a high flesh proportion",
+          "type": "appearance",
+          "cites": [
+            "rfca-lychee",
+            "wikipedia-kwai-mai"
+          ]
+        },
+        {
+          "text": "Fruit quality rated excellent",
+          "type": "flavour",
+          "cites": [
+            "rfca-lychee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-kwai-mai",
+          "name": "Wikipedia: Kwai Mai (lychee)",
+          "url": "https://en.wikipedia.org/wiki/Kwai_Mai_(lychee)",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-lychee",
+          "name": "RFCA Archives: Lychee cultivar names",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-08"
+    },
     "lychee-kwai-may-pink": {
       "slug": "lychee-kwai-may-pink",
       "species": "Lychee",
