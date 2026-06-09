@@ -248,7 +248,7 @@ def format_html_page(
   li:last-child { border-bottom: none; }"""
 
     head = render_head(
-        title=f"Beekeeping Supply Update \u2014 {target_date} \u2014 beestock.com.au",
+        title=f"Beekeeping Supply Update for {target_date} | beestock.com.au",
         description=f"Daily beekeeping supply price changes for {target_date}. Price drops, back in stock alerts, and new listings.",
         canonical_url=f"https://beestock.com.au/digest/{target_date}.html",
         extra_style=extra_style,
@@ -319,7 +319,7 @@ def build_digest_index(digest_dir: "Path") -> str:
   a:hover { text-decoration: underline; }"""
 
     head = render_head(
-        title="Daily Digest Archive \u2014 beestock.com.au",
+        title="Daily Digest Archive | beestock.com.au",
         description="Archive of daily beekeeping supply price change digests.",
         canonical_url="https://beestock.com.au/digest/",
         extra_style=extra_style,
