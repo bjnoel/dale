@@ -228,10 +228,10 @@ def build_rare_page(data_dir: str, output_dir: str):
   }"""
 
     head = render_head(
-        title="Rare &amp; Exotic Fruit Trees In Stock — treestock.com.au",
+        title="Rare &amp; Exotic Fruit Trees In Stock | treestock.com.au",
         description=f"Find rare and exotic fruit trees in stock at Australian nurseries right now. {species_count} unusual species tracked including jaboticaba, rambutan, sapodilla and more. Updated daily.",
         canonical_url="https://treestock.com.au/rare.html",
-        og_title=f"Rare Fruit Trees In Stock in Australia — {date_str}",
+        og_title=f"Rare Fruit Trees In Stock in Australia ({date_str})",
         og_description=f"{total_products} rare &amp; exotic fruit trees in stock across {species_count} species. Updated daily at treestock.com.au",
         og_image="https://treestock.com.au/og-image.png",
         extra_style=extra_style,

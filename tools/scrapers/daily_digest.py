@@ -293,9 +293,9 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
   li:last-child { border-bottom: none; }"""
 
     head = render_head(
-        title=f"Nursery Stock Update — {target_date}{title_suffix} — treestock.com.au",
+        title=f"Nursery Stock Update for {target_date}{title_suffix} | treestock.com.au",
         description=f"Daily fruit nursery stock changes for {target_date}. Price drops, back in stock alerts, and new listings.",
-        og_title=f"Nursery Stock Update — {target_date}",
+        og_title=f"Nursery Stock Update for {target_date}",
         og_description="Daily price and stock changes across Australian fruit nurseries.",
         og_type="article",
         extra_style=extra_style,

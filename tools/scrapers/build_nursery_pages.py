@@ -331,10 +331,10 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
   .scrollable-table thead { position: sticky; top: 0; background: #f9fafb; }"""
 
     head = render_head(
-        title=f"{name} — Stock, Prices &amp; Shipping | treestock.com.au",
+        title=f"{name}: Stock, Prices &amp; Shipping | treestock.com.au",
         description=f"Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. {('Delivers to: ' + local_label + '.') if local_label else ('Ships to: ' + ', '.join(ships) + '.')}",
         canonical_url=f"https://treestock.com.au/nursery/{nursery_key}.html",
-        og_title=f"{name} — Stock, Prices &amp; Shipping",
+        og_title=f"{name}: Stock, Prices &amp; Shipping",
         og_description=f"Browse {name}'s current fruit tree stock. {total_count} products tracked, {in_stock_count} in stock. {('Delivers to: ' + local_label + '.') if local_label else ('Ships to: ' + ', '.join(ships) + '.')}",
         og_type="website",
         extra_style=extra_style,
@@ -516,10 +516,10 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
     </div>"""
 
     head = render_head(
-        title="Australian Fruit Tree Nurseries — Stock &amp; Shipping | treestock.com.au",
+        title="Australian Fruit Tree Nurseries: Stock &amp; Shipping | treestock.com.au",
         description=f"Browse all {count} Australian fruit tree nurseries tracked by treestock.com.au. Compare stock, prices, and shipping to your state including WA.",
         canonical_url="https://treestock.com.au/nursery/",
-        og_title="Australian Fruit Tree Nurseries — treestock.com.au",
+        og_title="Australian Fruit Tree Nurseries | treestock.com.au",
     )
     header_html = render_header(active_path="/nursery/")
     footer = render_footer()

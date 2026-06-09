@@ -113,7 +113,7 @@ def build_html(history: list[dict], wa_only: bool = False) -> str:
     border-radius: 9999px; font-size: 0.75rem; background: #f3f4f6; }"""
 
     head = render_head(
-        title=f"Price &amp; Stock History{title_suffix} — treestock.com.au",
+        title=f"Price &amp; Stock History{title_suffix} | treestock.com.au",
         description="Daily price changes and stock updates across Australian fruit nurseries.",
         canonical_url=f"{SITE_URL}/history.html",
         extra_style=extra_style,

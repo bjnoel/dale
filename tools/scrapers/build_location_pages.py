@@ -355,7 +355,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     slug = state.lower()
 
     head = render_head(
-        title=f"Buy Fruit Trees Online — {state_name} | treestock.com.au",
+        title=f"Buy Fruit Trees Online in {state_name} | treestock.com.au",
         description=f"Find fruit trees for sale online that ship to {state_name}. {total_in_stock} varieties in stock across {nursery_count} nurseries, updated daily. Compare prices and check availability.",
         canonical_url=f"https://treestock.com.au/buy-fruit-trees-{slug}.html",
         og_title=f"Fruit Trees for Sale Online in {state_name}",

@@ -287,7 +287,7 @@ def build_page(all_dates: list[str], species_data: dict, output_dir: Path):
         })
 
     head = render_head(
-        title="Species Trends — treestock.com.au Market Intelligence",
+        title="Fruit Tree Species Trends | treestock.com.au",
         description=f"30-day availability and price trends for 50 fruit tree species across {len(SHIPPING_MAP)} Australian nurseries. Data from {date_range}.",
         canonical_url="https://treestock.com.au/trends.html",
     )

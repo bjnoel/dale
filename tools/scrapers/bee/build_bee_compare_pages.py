@@ -395,7 +395,7 @@ def build_compare_page(sub_slug: str, sub_name: str, parent_slug: str,
         meta_desc += f" Prices from {price_range_str} AUD."
 
     head = render_head(
-        title=f"{meta_title} — {SITE_NAME}",
+        title=f"{meta_title} | {SITE_NAME}",
         description=meta_desc,
         og_title=meta_title,
         og_description=meta_desc,
@@ -560,9 +560,9 @@ def build_compare_index(entries: list[dict]) -> str:
 
     n = len(entries)
     head = render_head(
-        title=f"Beekeeping Supply Price Comparisons Australia — {SITE_NAME}",
+        title=f"Beekeeping Supply Price Comparisons Australia | {SITE_NAME}",
         description=f"Compare beekeeping supply prices across {n} product categories from Australian retailers. Find the cheapest hives, extractors, bee suits, frames, and more. Updated daily.",
-        og_title="Beekeeping Price Comparisons — Australia",
+        og_title="Beekeeping Price Comparisons in Australia",
         og_description=f"Compare prices across {n} beekeeping categories from Australian retailers. Updated daily.",
     )
     header = render_header()

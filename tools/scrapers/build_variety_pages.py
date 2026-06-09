@@ -191,7 +191,7 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
     )
 
     head = render_head(
-        title=f"Buy {title} Trees in Australia — Prices & Availability — treestock.com.au",
+        title=f"Buy {title} Trees in Australia, Prices & Availability | treestock.com.au",
         description=meta_desc,
         canonical_url=f"https://treestock.com.au/variety/{slug}.html",
         og_title=f"Buy {title} Trees in Australia",
@@ -280,7 +280,7 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
     total_in_stock = sum(e["in_stock"] for e in entries)
 
     head = render_head(
-        title="Fruit Tree Varieties for Sale in Australia — treestock.com.au",
+        title="Fruit Tree Varieties for Sale in Australia | treestock.com.au",
         description=f"Browse {total_varieties} named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.",
         canonical_url=f"{SITE_URL}/variety/",
     )
