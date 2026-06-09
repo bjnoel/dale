@@ -148,7 +148,7 @@ def build_report(nursery_key):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>treestock.com.au — Nursery Partnership Report: {meta['name']}</title>
+<title>Nursery Partnership Report: {meta['name']} | treestock.com.au</title>
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; background: #f8f5f0; }}
@@ -205,7 +205,7 @@ def build_report(nursery_key):
 
 <div class="header">
   <div class="logo">treestock<span>.com.au</span></div>
-  <h1>Nursery Partnership — {meta['name']}</h1>
+  <h1>Nursery Partnership: {meta['name']}</h1>
   <p>How treestock.com.au promotes your business to serious fruit tree buyers</p>
 </div>
 
