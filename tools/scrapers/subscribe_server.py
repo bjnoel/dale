@@ -199,6 +199,18 @@ def _read_app_env(key: str) -> str:
     return ""
 
 
+def _normalize_cf_team_domain(value: str) -> str:
+    """Accept either a full URL (https://team.cloudflareaccess.com) or a bare
+    team slug (team) and return the full Access domain used as both the JWKS
+    endpoint base and the expected JWT issuer."""
+    value = (value or "").strip().rstrip("/")
+    if not value:
+        return ""
+    if not value.startswith(("http://", "https://")):
+        value = f"https://{value}.cloudflareaccess.com"
+    return value
+
+
 _cf_jwks_client = None
 
 
@@ -234,7 +246,7 @@ def verify_cf_access(headers) -> bool:
     if jwt is None:
         print("CF Access check failed: PyJWT not installed", file=sys.stderr)
         return False
-    team_domain = _read_app_env("CF_ACCESS_TEAM_DOMAIN").rstrip("/")
+    team_domain = _normalize_cf_team_domain(_read_app_env("CF_ACCESS_TEAM_DOMAIN"))
     aud = _read_app_env("CF_ACCESS_AUD")
     if not team_domain or not aud:
         print(
