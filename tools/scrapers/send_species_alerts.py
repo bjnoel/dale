@@ -41,7 +41,7 @@ SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 ALERT_SENDS_LOG = DATA_DIR / "species_alert_sends.json"
 RESEND_ENV = SECRETS_DIR / "resend.env"
 APP_ENV = SECRETS_DIR / "app.env"
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+from stocklib.taxonomy import enabled_species
 
 FROM_EMAIL = "alerts@mail.treestock.com.au"
 FROM_NAME = "treestock.com.au"
@@ -115,10 +115,7 @@ def save_sends_log(log: dict):
 
 def load_species_lookup() -> dict:
     """Build lowercase name → species entry lookup."""
-    if not SPECIES_FILE.exists():
-        return {}
-    with open(SPECIES_FILE) as f:
-        species_list = json.load(f)
+    species_list = enabled_species()
     lookup = {}
     for s in species_list:
         key = s["common_name"].lower()

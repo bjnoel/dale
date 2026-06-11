@@ -25,17 +25,16 @@ from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, SITE_URL
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.taxonomy import enabled_species
 
 # Minimum nurseries for a compare page to be useful
 MIN_NURSERIES = 3
 
 
 def load_species() -> list[dict]:
-    with open(SPECIES_FILE) as f:
-        return json.load(f)
+    return enabled_species()
 
 
 def build_species_lookup(species_list: list[dict]) -> dict:

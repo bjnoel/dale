@@ -24,10 +24,10 @@ from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
 # Non-plant keywords to exclude regardless of species match
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.taxonomy import enabled_species
 
 # States to generate pages for
 STATES = ["WA", "QLD", "NSW", "VIC"]
@@ -176,8 +176,7 @@ LOCAL_NURSERIES = {
 
 def load_species() -> set[str]:
     """Load all known fruit species names and synonyms."""
-    with open(SPECIES_FILE) as f:
-        species_list = json.load(f)
+    species_list = enabled_species()
     names = set()
     for s in species_list:
         names.add(s["common_name"].lower())
@@ -402,8 +401,7 @@ def main():
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     print("Loading species...")
-    with open(SPECIES_FILE) as f:
-        species_list = json.load(f)
+    species_list = enabled_species()
     species_lookup = build_species_lookup(species_list)
     print(f"  {len(species_lookup)} species/synonyms loaded")
 

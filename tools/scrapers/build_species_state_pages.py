@@ -32,7 +32,6 @@ from treestock_layout import (
 )
 import growing_guides
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 MIN_PRODUCTS = 3
 MAX_COMBOS_PER_STATE = 20  # Limit for QLD/NSW/VIC to avoid thin content
 
@@ -323,11 +322,11 @@ SPECIES_CLIMATE_CATEGORY = {
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.taxonomy import enabled_species
 
 
 def load_species() -> list[dict]:
-    with open(SPECIES_FILE) as f:
-        return json.load(f)
+    return enabled_species()
 
 
 def build_species_lookup(species_list: list[dict]) -> dict:
