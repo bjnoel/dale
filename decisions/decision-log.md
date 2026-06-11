@@ -4,6 +4,27 @@
 
 ---
 
+## DEC-200 — 2026-06-11 — treestock category expansion: bush tucker pilot, landing-page IA, observability alongside
+
+**Decided by:** Benedict (four scope decisions) + Dale (design, evidence)
+
+**Context:** Benedict wants treestock to expand beyond rare fruit (bush tucker and natives next, eventually all plant categories nurseries sell), with categorisation correctness as the top priority ("no one wants to see cinnamon rose under fruit trees"), an IA that keeps the rare-fruit identity, and scraper observability in /admin. An earlier plan proposed writing a prompt file so a future session could plan this. That plan was reviewed and superseded: its facts were sound but it deferred every decision. This session did the planning directly.
+
+**Evidence that reshaped the plan (verified against code and snapshots):**
+- Most scrapers fetch whole stores and filter post-fetch; bush tucker (roughly 120-280 products, 9 nurseries, all passing the junk filter, 8 species already in the registry) and natives (roughly 750 products, 311 deliberately junk-filtered, ~186 grevilleas already sitting unmatched in the dashboard) are largely already in our snapshots. "Scrape scaling" was a misdiagnosis; the missing piece is observability (zero health records today, silent 403/429/zero-product failures).
+- Flipping ENABLED_CATEGORIES does nothing by itself: ~15 builders read fruit_species.json directly. The real work is a behaviour-preserving migration onto stocklib.taxonomy, then a one-line enable.
+- category_raw (each store's own category string, e.g. Daleys "Bush Food Plants") is stored on every product and consumed by nothing; it becomes the mid-confidence classification signal.
+
+**Decisions (Benedict, this session):**
+1. Produce the concrete plan now; no prompt file.
+2. Pilot category: bush tucker (rejected: natives first, both at once).
+3. IA: category landing pages (/bush-tucker/), homepage untouched (rejected: homepage category filter, separate subsite).
+4. Pilot emails: labelled section in the existing digest (rejected: opt-in-only plumbing, site-only pilot).
+
+**Design (full doc: docs/category-expansion.md):** species records gain primary `category` + cross-listing `tags` (the 8 bush-tucker-adjacent fruits keep category=fruit, so their URLs and watches never move); a build-time classification ladder (registry match, per-nursery category_raw mapping, keyword hint, else unclassified and counted into an /admin needs-review queue); the junk filter splits into TRUE_JUNK plus CATEGORY_KEYWORDS with NON_PLANT_KEYWORDS derived, so enabling a category automatically un-junks its plants; the DEC-195 variety gate gets a vocabulary-scoped ornamental check (fixes the "Lemon Myrtle" vs _ORNAMENTAL_WORDS 'myrtle' collision while keeping the "Hibiscus Petite Orange" guard); scrape-health JSONL records + anomaly alerts + /admin panel.
+
+**Actions:** design doc committed; DAL-193 (P0 observability) and DAL-194 (P1 plumbing) filed as umbrella Backlog tickets with step-by-step specs (P2 pilot and P3 natives tickets get filed at P1 closeout, chained via a comment on DAL-194); pilot success criteria set (30+ organic clicks/week on bush tucker surfaces by week 6, 5+ watches/digest interactions, <10% unclassified for lead nurseries, zero fruit regression, health grid green). "Tell him he's dreaming" remains a valid outcome at the P2.8 checkpoint.
+
 ## DEC-199 — 2026-06-11 — treestock OOS Alerts links: land on the watch form, parse the titles that fell back to the digest
 
 **Decided by:** Benedict (bug report), Dale (diagnosis + implementation)

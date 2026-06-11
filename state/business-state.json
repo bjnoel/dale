@@ -1,6 +1,6 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-06-08",
+  "last_updated": "2026-06-11",
   "session_count": 80,
   "phase": 0,
   "phase_name": "Setup",
@@ -83,7 +83,15 @@
       "species_matched_pct": 73,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
       "subscribers": 6,
-      "revenue_total": 0
+      "revenue_total": 0,
+      "category_expansion": {
+        "status": "planned",
+        "decision": "DEC-200",
+        "design_doc": "docs/category-expansion.md",
+        "pilot": "bush_tucker",
+        "tickets": "DAL-193 (P0 observability), DAL-194 (P1 plumbing); P2/P3 filed at P1 closeout",
+        "sequence": "P0 observability and P1 plumbing in parallel, P2 bush tucker pilot gated on P1, P3 natives gated on P2.8 review"
+      }
     },
     "b_experiment_beestock": {
       "name": "Beekeeping Supply Price Tracker",
