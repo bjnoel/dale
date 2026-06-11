@@ -17,7 +17,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 sys.path.insert(0, str(SCRAPERS))
 
-from stocklib.classify import NON_PLANT_KEYWORDS, is_real_product, is_seed_packet
+from stocklib.classify import (
+    CATEGORY_KEYWORDS, NON_PLANT_KEYWORDS, TRUE_JUNK,
+    derived_non_plant_keywords, is_real_product, is_seed_packet,
+)
+from stocklib.taxonomy import KNOWN_CATEGORIES
 
 
 class FalsePositivesRemovedTest(unittest.TestCase):
@@ -57,6 +61,44 @@ class RealFruitKeptTest(unittest.TestCase):
         for t in ("Mango - Kensington Pride", "Avocado - Hass",
                   "Lychee 'Kwai May Pink'", "Fig - Black Genoa", "Apple Pink Lady"):
             self.assertTrue(is_real_product(t), t)
+
+
+class JunkPartitionTest(unittest.TestCase):
+    """The DEC-200 split: TRUE_JUNK (junk forever) + CATEGORY_KEYWORDS (real
+    plants of disabled categories). NON_PLANT_KEYWORDS is derived from them
+    and must stay set-equal to the pre-split list while only fruit is enabled."""
+
+    def test_partition_is_disjoint(self):
+        overlap = TRUE_JUNK & set(CATEGORY_KEYWORDS)
+        self.assertFalse(overlap, f"keywords in both halves: {overlap}")
+
+    def test_union_equals_public_set_today(self):
+        # Only "fruit" is enabled, so every category keyword is still junk.
+        self.assertEqual(NON_PLANT_KEYWORDS, TRUE_JUNK | set(CATEGORY_KEYWORDS))
+
+    def test_category_hints_are_known_non_fruit_categories(self):
+        for kw, cat in CATEGORY_KEYWORDS.items():
+            self.assertIn(cat, KNOWN_CATEGORIES, f"{kw}: unknown category {cat}")
+            self.assertNotEqual(cat, "fruit", f"{kw}: a fruit keyword cannot be junk")
+
+    def test_enabling_native_unjunks_its_keywords(self):
+        derived = derived_non_plant_keywords(("fruit", "native"))
+        for kw in ("banksia", "eucalyptus", "melaleuca", "wattle", "acacia",
+                   "callistemon", "lomandra"):
+            self.assertNotIn(kw, derived, kw)
+        # Other disabled categories and true junk stay filtered.
+        self.assertIn("cordyline", derived)
+        self.assertIn("asparagus", derived)
+        self.assertIn("fertiliser", derived)
+        self.assertIn("gift voucher", derived)
+
+    def test_native_keyword_evidence_pinned(self):
+        # The natives enable should return the ~311 junk-filtered products via
+        # these keywords (design doc section 2); pin which keywords are native.
+        native = {kw for kw, cat in CATEGORY_KEYWORDS.items() if cat == "native"}
+        for kw in ("banksia", "callistemon", "melaleuca", "eucalyptus",
+                   "wattle", "acacia", "lomandra", "sheoak", "kurrajong"):
+            self.assertIn(kw, native)
 
 
 class SeedPacketTest(unittest.TestCase):

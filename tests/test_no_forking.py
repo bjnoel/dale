@@ -34,6 +34,8 @@ def _scanned_files():
 # with `from`/`import`, so they never match these anchors.
 GUARDS = [
     (re.compile(r"^NON_PLANT_KEYWORDS\s*[:=]"), "stocklib/classify.py"),
+    (re.compile(r"^TRUE_JUNK\s*[:=]"), "stocklib/classify.py"),
+    (re.compile(r"^CATEGORY_KEYWORDS\s*[:=]"), "stocklib/classify.py"),
     (re.compile(r"^def inject_footer\b"), "stocklib/email_footer.py"),
     (re.compile(r"^SHIPPING_MAP\s*[:=]"), "stocklib/registry.py"),
     (re.compile(r"^NURSERY_NAMES\s*[:=]"), "stocklib/registry.py"),
