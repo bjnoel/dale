@@ -195,6 +195,103 @@ class ProductVarietySlug(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
+# Taxonomy scope gate (DEC-195) -- /variety/ pages and variety alerts only
+# cover the fruit/nut/berry taxonomy. Ornamentals and veg parse fine
+# ("Rose - Iceberg") but must not get pages or alerts.
+# ---------------------------------------------------------------------------
+
+class SpeciesInScope(unittest.TestCase):
+    IN = [
+        "Apple",                       # canonical
+        "apple",                       # case-insensitive
+        "Grapes",                      # synonym
+        "Cumquat",                     # synonym of a DEC-195 addition
+        "Persimmon",                   # DEC-195 addition
+        "Davidson’s Plum",        # curly-apostrophe synonym
+        "Apple Multi Graft",           # known species leads the text
+        "Avocado Pollinating Duo",
+        "Cherry Trixzie Multi Graft",
+        "Jackfruit Marcott",
+        "Papaya Bisexual",
+        "Mandarin (Imperial)",         # parenthesized qualifier
+        "Mandarin Imperial",           # cultivar word in the species slot
+        "Persimmon Fuyu",
+        "Guava Hawaiian",
+        "Plum x Apricot",              # cross led by a known species
+        "Peach x Nectarine",
+    ]
+    OUT = [
+        "African Daisy",
+        "Rose",
+        "Kangaroo Paw",
+        "Lavender",
+        "Chilli",                      # edible but out of fruit/nut/berry scope
+        "Tomato",
+        "Flowering Cherry",            # ornamental prunus: species doesn't lead
+        "Lemon Myrtle",                # borrows a fruit name, different plant
+        "Apple Cactus",
+        "Peanut Tree",
+        "Heliconia bihai x caribaea",  # cross of unknown species
+        "Exclusion Net",
+        "",
+    ]
+
+    def test_in_scope(self):
+        for s in self.IN:
+            with self.subTest(species=s):
+                self.assertTrue(cp.species_in_scope(s))
+
+    def test_out_of_scope(self):
+        for s in self.OUT:
+            with self.subTest(species=s):
+                self.assertFalse(cp.species_in_scope(s))
+
+    def test_product_variety_slug_gates_non_fruit(self):
+        # Parses cleanly, but no slug => no page, no alert
+        self.assertIsNone(cp.product_variety_slug("Rose - Iceberg"))
+        self.assertIsNone(cp.product_variety_slug("Kangaroo Paw - Bush Pearl"))
+        # Fruit still works end-to-end
+        self.assertEqual(cp.product_variety_slug("Persimmon - Fuyu"), "persimmon-fuyu")
+
+    def test_title_catches_fruit_as_color_ornamentals(self):
+        # The relaxed parser reads the COLOR word as the species here; only the
+        # raw title reveals the real (ornamental) genus.
+        leaks = [
+            "Hibiscus Petite Orange",
+            "Bougainvillea Bengal Orange (Bougainvillea glabra)",
+            "Heuchera Sugar Plum (Heuchera)",
+            "Frangipani Apricot (Plumeria rubra)",
+            "Rose Showpiece Orange (Rosa)",        # genus only in the parens
+            "Lemon Myrtle",
+            "Strawberry Begonia Hanging plants",
+        ]
+        for t in leaks:
+            with self.subTest(title=t):
+                self.assertIsNone(cp.product_variety_slug(t))
+
+    def test_title_check_spares_real_fruit(self):
+        # 'rosa' is paren-only: Santa Rosa is a plum, not a rose.
+        self.assertEqual(cp.product_variety_slug("Plum - Santa Rosa"), "plum-santa-rosa")
+        self.assertEqual(
+            cp.product_variety_slug("Nectarine - Arctic Rose"), "nectarine-arctic-rose"
+        )
+        self.assertEqual(
+            cp.product_variety_slug("Blueberry Magnolia 15cm"), "blueberry-magnolia"
+        )
+
+    def test_grandfathered_watched_slugs_stay_alive(self):
+        # Active watches from before the gate (DEC-195). The species is out of
+        # scope but the exact watched slug keeps its page and alerts.
+        self.assertFalse(cp.species_in_scope("Mandevilla"))
+        self.assertTrue(cp.cultivar_in_scope("Mandevilla", "mandevilla-peach-sunrise"))
+        self.assertEqual(
+            cp.product_variety_slug("Mandevilla - Peach Sunrise"),
+            "mandevilla-peach-sunrise",
+        )
+        self.assertIsNone(cp.product_variety_slug("Mandevilla - White Fantasy"))
+
+
+# ---------------------------------------------------------------------------
 # Relaxed pass -- titles the strict parser rejects but which still express a
 # cultivar once listing noise is stripped, plus multigraft and leading-quote
 # shapes. Added 2026-05-30 to widen variety-page coverage for OOS search rows.

@@ -556,13 +556,112 @@ def _strict_parse(title: str) -> tuple[str, str] | None:
     return (species, variety)
 
 
+# --- Taxonomy scope gate (DEC-195) ----------------------------------------
+#
+# /variety/ pages and variety alerts only cover the fruit/nut/berry taxonomy.
+# General nurseries (Ladybird especially) sell ornamentals and veg whose titles
+# parse cleanly ("Rose - Iceberg"), so parse success alone is not a scope test.
+
+# Plant-form / other-plant words: a known species followed by one of these is
+# a DIFFERENT plant that borrows the fruit's name ("Lemon Myrtle", "Apple
+# Cactus", "Pineapple Lily", "Peanut Tree"), not a cultivar of the fruit.
+_NON_FRUIT_FORM_WORDS = frozenset({
+    'tree', 'palm', 'vine', 'bush', 'shrub', 'grass', 'fern', 'lily',
+    'daisy', 'cactus', 'laurel', 'pine', 'myrtle', 'jessamine', 'gum',
+    'wattle', 'ivy', 'creeper', 'berry', 'mint', 'thyme', 'sage', 'basil',
+    'balm', 'verbena', 'melon', 'cucumber', 'gourd',
+})
+
+# Ornamental genus words. Needed because the relaxed parser can read a
+# fruit-as-COLOR word as the species: "Hibiscus Petite Orange" parses to
+# species "Orange". The species gate can't catch that, but the raw title
+# names the real genus. Checked against whole-title tokens. Verified against
+# the live catalogue 2026-06-11: every title carrying one of these is a true
+# ornamental (incl. "Frangipani Mango Delight", "Leucadendron 'Strawberry and
+# Cream'"). 'rosa'/'nerium' stay paren-only: "Plum - Santa Rosa" is a plum.
+_ORNAMENTAL_WORDS = frozenset({
+    'bougainvillea', 'grevillea', 'canna', 'heuchera', 'hibiscus',
+    'philodendron', 'oleander', 'frangipani', 'plumeria', 'begonia',
+    'bracteantha', 'leucospermum', 'leucadendron', 'nephrolepis',
+    'saxifraga', 'fern', 'myrtle',
+})
+# Latin genus in parentheses ("Rose Showpiece Orange (Rosa)") is authoritative.
+_ORNAMENTAL_PAREN_WORDS = _ORNAMENTAL_WORDS | frozenset({'rosa', 'nerium'})
+
+# Active variety watches that predate the gate and point at non-fruit pages
+# (kawakawa x2, maroon bush x2, mandevilla, begonia, cinnamon myrtle as of
+# 2026-06-11). Their pages and alerts stay alive until the taxonomy grows a
+# natives/ornamentals category (stocklib.taxonomy.ENABLED_CATEGORIES). Closed
+# list: the pages' species stay out of scope, so no NEW watches can be added.
+GRANDFATHERED_VARIETY_SLUGS = frozenset({
+    'piper-excelsum-kawakawa',
+    'maroon-bush-scaevola-spinescens',
+    'mandevilla-peach-sunrise',
+    'begonia-bewitched-red-black',
+    'cinnamon-myrtle-mini',
+})
+
+
+def species_in_scope(species: str) -> bool:
+    """True if a parsed species name belongs to the fruit taxonomy: a common
+    name or synonym, directly, or leading the text ("Mandarin Imperial",
+    "Apple Multi Graft", "Plum x Apricot" all lead with a known species).
+    A leading match is rejected when the remainder names a different plant
+    form ("Lemon Myrtle", "Apple Cactus" are not lemons or apples).
+
+    Gates which cultivars get /variety/ pages and variety alerts (DEC-195).
+    Fails open when the species file is missing, matching the loaders'
+    graceful behaviour."""
+    lookup = _load_species_lookup()
+    if not lookup:
+        return True
+    s = species.lower().strip()
+    if not s:
+        return False
+    if s in lookup:
+        return True
+    # Parenthesized qualifiers: "Mandarin (Imperial)" is still a mandarin
+    bare = re.sub(r'\s*\([^)]*\)', '', s).strip()
+    if bare:
+        if bare in lookup:
+            return True
+        s = bare
+    words = s.split()
+    for n in range(min(len(words) - 1, 4), 0, -1):
+        if ' '.join(words[:n]) in lookup:
+            rest = (w.strip('\'"‘’“”()') for w in words[n:])
+            return not any(w in _NON_FRUIT_FORM_WORDS for w in rest)
+    return False
+
+
+def cultivar_in_scope(species: str, slug: str = "", title: str = "") -> bool:
+    """Full scope gate for one product: grandfathered watched slugs always
+    pass, titles naming an ornamental genus always fail, then species_in_scope
+    decides. Pass the RAW title when available; it catches ornamentals whose
+    parse looks fruity ("Hibiscus Petite Orange" -> species "Orange")."""
+    if slug in GRANDFATHERED_VARIETY_SLUGS:
+        return True
+    if title:
+        tl = title.lower()
+        if set(re.findall(r'[a-z]+', tl)) & _ORNAMENTAL_WORDS:
+            return False
+        parens = ' '.join(re.findall(r'\(([^)]*)\)', tl))
+        if set(re.findall(r'[a-z]+', parens)) & _ORNAMENTAL_PAREN_WORDS:
+            return False
+    return species_in_scope(species)
+
+
 def product_variety_slug(title: str) -> str | None:
-    """Parse + slugify in one step. Returns None when the title isn't a cultivar."""
+    """Parse + slugify in one step. Returns None when the title isn't a cultivar
+    or its species is outside the fruit taxonomy (DEC-195)."""
     parsed = parse_cultivar(title)
     if not parsed:
         return None
     species, variety = parsed
-    return slugify(f"{species}-{variety}") or None
+    slug = slugify(f"{species}-{variety}") or None
+    if slug and not cultivar_in_scope(species, slug, title):
+        return None
+    return slug
 
 
 def extract_type_label(title: str) -> str:

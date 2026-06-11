@@ -4,6 +4,59 @@
 
 ---
 
+## DEC-195 — 2026-06-11 — treestock /variety/ taxonomy gate: drop non-fruit listings, add missing fruit/nut/berry species
+
+**Decided by:** Benedict (scope), Dale (audit + implementation)
+
+**Context:** Benedict spotted African Daisy on /variety/ and asked whether species is stored
+and whether listings are categorised correctly. Audit found: the variety builder parses
+species straight out of product titles (left of the dash) and never validates dash-separated
+titles against the fruit taxonomy. Of 621 species groups on /variety/, only 73 matched
+fruit_species.json (50 species + synonyms). The other 548 groups (~1,268 pages) were:
+ornamentals/houseplants from general nurseries (Rose 59, Lavender 48, Kangaroo Paw 45,
+Grevillea 42, mostly Ladybird), legit fruit missing from the taxonomy (Persimmon 14,
+Strawberry 16, nuts, Kiwifruit, Kumquat), spelling/parse variants (Dragonfruit,
+"Apple Multi Graft"), veg/herbs (Chilli 33, Tomato 13), and non-plant junk leaking past
+the classifier (Exclusion Net, Mushroom Kit).
+
+**Decision (Benedict):** Scope /variety/ to fruit, nuts, and berries. Veg/herbs/ornamentals
+wait until other categories are considered (stocklib.taxonomy ENABLED_CATEGORIES is the
+designed switch for that).
+
+**Implementation:**
+- New `species_in_scope()` gate in cultivar_parsing.py: parsed species must be a taxonomy
+  common name or synonym, directly, after stripping trailing qualifier words
+  ("Apple Multi Graft", "Avocado Pollinating Duo", "Jackfruit Marcott"), or as a cross of
+  two known species ("Plum x Apricot"). Applied in build_variety_pages.group_by_cultivar
+  AND product_variety_slug (so variety alerts, dashboard links, and species-page links all
+  stay in sync; CLAUDE.md sync rule).
+- ~37 new fruit/nut/berry species records added to fruit_species.json (Persimmon, Strawberry,
+  Chestnut, Hazelnut, Almond, Walnut, Pistachio, Kiwifruit, Kumquat, Coconut, Pineapple,
+  Quince, Medlar, Blackberry, Currant, Gooseberry, Elderberry, Goji Berry, Tangelo, Citron,
+  Coffee, Mangosteen, Soursop, Star Apple, Abiu, Acerola, Tamarind, Wampee, Pepino, Babaco,
+  Cherry of the Rio Grande, Chinese Bayberry, Davidson's Plum, Kakadu Plum, Muntries,
+  Midyim Berry, Desert Lime), no descriptions yet (species pages render cleanly without;
+  enrich later via the growing-guides batch pipeline). Synonyms added to existing records
+  for spelling variants (Dragonfruit, Carambola Starfruit, Tangerine/Satsuma, Plumcot/Pluot,
+  Cider Apple, Plantain, Chempejack, Weeping Mulberry, Membrillo, ...).
+- Junk keywords added to stocklib.classify: exclusion net, mushroom kit, planter bag,
+  staking kit, naturalure.
+- **Grandfathered watched slugs:** 5 active variety watches (7 subscribers) point at
+  non-fruit pages: piper-excelsum-kawakawa (2), maroon-bush-scaevola-spinescens (2),
+  mandevilla-peach-sunrise, begonia-bewitched-red-black, cinnamon-myrtle-mini. These exact
+  slugs keep their pages and alerts via GRANDFATHERED_VARIETY_SLUGS in cultivar_parsing.py.
+  They are also demand evidence for a future natives/ornamentals category.
+- Long tail NOT covered this pass (follow-up batch proposed in Linear): ~30 one-count
+  rare exotics (Bignay, Lakoocha, Kwai Muk, Ice Cream Bean, Amla, Ambarella, Burdekin Plum,
+  Blue Quandong, ...) and rootstocks (M9, MM106, Trifoliata, Flying Dragon). These are
+  genuinely on-brand rare fruit; they need taxonomy records to come back.
+
+**Why not just NON_PLANT_KEYWORDS:** the junk list is for non-plants. Ornamentals are real
+plants; the taxonomy (with its category dimension) is the designed place for scope decisions.
+
+**To revert:** remove the gate calls in group_by_cultivar/product_variety_slug; the
+taxonomy additions are harmless either way.
+
 ## DEC-194 — 2026-06-11 — Beestock: beewise WAF block since May 24 + latest.json symlink corruption
 
 **Decided by:** Dale (discovered while remediating DEC-192)

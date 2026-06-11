@@ -46,7 +46,7 @@ NURSERY_URLS = {
 from stocklib.classify import NON_PLANT_KEYWORDS
 
 
-from cultivar_parsing import slugify, parse_cultivar, extract_type_label  # noqa: E402
+from cultivar_parsing import slugify, parse_cultivar, extract_type_label, cultivar_in_scope  # noqa: E402
 
 
 def visible_type_label(type_label: str, variety: str) -> str:
@@ -107,6 +107,10 @@ def group_by_cultivar(products: list[dict]) -> dict:
         species, variety = parsed
         # Normalize key
         key = slugify(f"{species}-{variety}")
+        # Fruit/nut/berry taxonomy gate (DEC-195): ornamentals, veg, and
+        # unrecognised species parse fine but get no /variety/ page.
+        if not cultivar_in_scope(species, key, p["title"]):
+            continue
         if not groups[key]["title"]:
             # Use the cleaned parsed parts, not the raw first product title, so
             # the page H1/meta read "Black Sapote - Mossman" rather than the
