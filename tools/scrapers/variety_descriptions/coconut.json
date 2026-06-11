@@ -1,0 +1,274 @@
+{
+  "species_slug": "coconut",
+  "schema_version": 1,
+  "varieties": {
+    "coconut-green": {
+      "slug": "coconut-green",
+      "species": "Coconut",
+      "variety": "Green",
+      "paragraphs": [
+        "The green Malayan Dwarf is placed in the colour series by its vibrant green nuts and green petioles. It is one of three Malayan Dwarf forms (green, yellow and red), all named for the Malay Peninsula, and the colour refers chiefly to the fruit and its ornamental value.",
+        "It is widely cultivated for tender coconut water, the young green nuts drunk fresh, which makes it a popular home-garden palm. Like its siblings it is compact and precocious, starting to fruit in roughly 3 to 5 years rather than the 6 to 10 of tall palms."
+      ],
+      "claims": [
+        {
+          "text": "The Malayan Dwarf is classified by nut colour into green, yellow and red forms.",
+          "type": "taxonomy",
+          "cites": [
+            "wiki",
+            "leafy"
+          ]
+        },
+        {
+          "text": "The green form bears green nuts and green petioles.",
+          "type": "appearance",
+          "cites": [
+            "missgreens",
+            "ttg"
+          ]
+        },
+        {
+          "text": "It is widely cultivated for tender coconut water, the young green nuts drunk fresh.",
+          "type": "use",
+          "cites": [
+            "missgreens",
+            "nurseriesonline"
+          ]
+        },
+        {
+          "text": "It is compact and early bearing, fruiting in about 3 to 5 years versus 6 to 10 for tall palms.",
+          "type": "habit",
+          "cites": [
+            "laisla",
+            "ttg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki",
+          "name": "Dwarf coconut, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Dwarf_coconut",
+          "tier": "third_party"
+        },
+        {
+          "id": "leafy",
+          "name": "Types of Coconuts, Leafy Place",
+          "url": "https://leafyplace.com/types-of-coconuts/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ttg",
+          "name": "Malayan Dwarf Coconut Grow Guide, Tropical Tree Guide",
+          "url": "https://tropicaltreeguide.com/malayan-dwarf-coconut-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "missgreens",
+          "name": "Types of Coconuts, Mississippi Greens",
+          "url": "https://mississippigreens.com/types-of-coconuts/",
+          "tier": "third_party"
+        },
+        {
+          "id": "nurseriesonline",
+          "name": "Dwarf Coconuts, Nurseries Online",
+          "url": "https://www.nurseriesonline.com.au/gardening-articles/dwarf-coconuts-cocos-nucifera/",
+          "tier": "third_party"
+        },
+        {
+          "id": "laisla",
+          "name": "The Malayan Dwarf Coconut Palm, La Isla Tree",
+          "url": "https://laislatree.com/malayan-dwarf-coconut-palm/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "coconut-malay-red": {
+      "slug": "coconut-malay-red",
+      "species": "Coconut",
+      "variety": "Malay Red",
+      "paragraphs": [
+        "The red Malayan Dwarf is the colour form distinguished by apricot-red nuts and reddish coloration, the pigment strongest on the younger fronds, which makes it a favoured ornamental for tropical gardens and landscaping. It is sold in Australia as Malay Red.",
+        "It stays compact, around 6 to 9 m, and bears early, in about 3 to 5 years. The red form is also noted for its resistance to lethal yellowing disease, the trait that made the Malayan Dwarfs valued worldwide."
+      ],
+      "claims": [
+        {
+          "text": "The red form is distinguished by apricot-red nuts and reddish coloration, favoured as an ornamental.",
+          "type": "appearance",
+          "cites": [
+            "wiki",
+            "lizplants",
+            "leafy"
+          ]
+        },
+        {
+          "text": "It is compact, around 6 to 9 m, and bears early in about 3 to 5 years.",
+          "type": "habit",
+          "cites": [
+            "lizplants",
+            "laisla"
+          ]
+        },
+        {
+          "text": "The red form is noted for resistance to lethal yellowing disease.",
+          "type": "resistance",
+          "cites": [
+            "leafy",
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki",
+          "name": "Dwarf coconut, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Dwarf_coconut",
+          "tier": "third_party"
+        },
+        {
+          "id": "leafy",
+          "name": "Types of Coconuts, Leafy Place",
+          "url": "https://leafyplace.com/types-of-coconuts/",
+          "tier": "third_party"
+        },
+        {
+          "id": "lizplants",
+          "name": "How to Grow Malayan Dwarf Red Coconut, LizPlants",
+          "url": "https://lizplants.com/grow/malayan-dwarf-red",
+          "tier": "third_party"
+        },
+        {
+          "id": "laisla",
+          "name": "The Malayan Dwarf Coconut Palm, La Isla Tree",
+          "url": "https://laislatree.com/malayan-dwarf-coconut-palm/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "coconut-yellow": {
+      "slug": "coconut-yellow",
+      "species": "Coconut",
+      "variety": "Yellow",
+      "paragraphs": [
+        "The Malayan Dwarf coconut group, named for the Malay Peninsula, is sorted by nut colour into yellow, green and red forms. The yellow form carries ivory-yellow to golden (bright yellow) nuts, with petioles and seedling sprouts running green to golden-yellow, so it earns its place mainly on ornamental appeal. Australian nurseries also list this golden form as Malay Gold or Golden Malay.",
+        "It is a compact, precocious palm, bearing in roughly 3 to 5 years against the 6 to 10 of tall coconuts, and is grown for sweet, refreshing coconut water as much as for looks. Like the rest of the Malayan Dwarf group, it is valued for its resistance to lethal yellowing disease."
+      ],
+      "claims": [
+        {
+          "text": "The Malayan Dwarf group is classified by nut colour into yellow, green and red forms.",
+          "type": "taxonomy",
+          "cites": [
+            "wiki",
+            "leafy"
+          ]
+        },
+        {
+          "text": "The yellow form bears ivory-yellow to golden (bright yellow) nuts.",
+          "type": "appearance",
+          "cites": [
+            "wiki",
+            "missgreens"
+          ]
+        },
+        {
+          "text": "Its petioles and seedling sprouts range from green to golden-yellow.",
+          "type": "appearance",
+          "cites": [
+            "ttg",
+            "leafy"
+          ]
+        },
+        {
+          "text": "Australian nurseries also sell this golden form as Malay Gold or Golden Malay.",
+          "type": "trade",
+          "cites": [
+            "nurseriesonline",
+            "leafy"
+          ]
+        },
+        {
+          "text": "It is compact and early bearing, fruiting in about 3 to 5 years versus 6 to 10 for tall coconuts.",
+          "type": "habit",
+          "cites": [
+            "laisla",
+            "missgreens"
+          ]
+        },
+        {
+          "text": "It is grown for sweet, refreshing coconut water.",
+          "type": "use",
+          "cites": [
+            "missgreens",
+            "nurseriesonline"
+          ]
+        },
+        {
+          "text": "Malayan Dwarfs are noted for resistance to lethal yellowing disease.",
+          "type": "resistance",
+          "cites": [
+            "wiki",
+            "leafy"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki",
+          "name": "Dwarf coconut, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Dwarf_coconut",
+          "tier": "third_party"
+        },
+        {
+          "id": "leafy",
+          "name": "Types of Coconuts, Leafy Place",
+          "url": "https://leafyplace.com/types-of-coconuts/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ttg",
+          "name": "Malayan Dwarf Coconut Grow Guide, Tropical Tree Guide",
+          "url": "https://tropicaltreeguide.com/malayan-dwarf-coconut-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "missgreens",
+          "name": "Types of Coconuts, Mississippi Greens",
+          "url": "https://mississippigreens.com/types-of-coconuts/",
+          "tier": "third_party"
+        },
+        {
+          "id": "laisla",
+          "name": "The Malayan Dwarf Coconut Palm, La Isla Tree",
+          "url": "https://laislatree.com/malayan-dwarf-coconut-palm/",
+          "tier": "third_party"
+        },
+        {
+          "id": "nurseriesonline",
+          "name": "Dwarf Coconuts, Nurseries Online",
+          "url": "https://www.nurseriesonline.com.au/gardening-articles/dwarf-coconuts-cocos-nucifera/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "coconut-bronze",
+    "coconut-gold-malay",
+    "coconut-malay-bronze",
+    "coconut-malay-gold",
+    "coconut-malay-green",
+    "coconut-tree"
+  ]
+}
