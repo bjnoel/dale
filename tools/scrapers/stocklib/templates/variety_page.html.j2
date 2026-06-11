@@ -40,9 +40,10 @@
     </table>
   </div>
 
-  <!-- Per-variety restock alert. scroll-margin keeps the heading clear of the
-       viewport edge when species-page Alerts links land on #watchSection. -->
-  <div id="watchSection" class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6" style="scroll-margin-top:1rem">
+  <!-- Per-variety restock alert. Species-page Alerts links land on this anchor;
+       the sticky-header clearance is the global scroll-padding-top rule in
+       tailwind-input.css. -->
+  <div id="watchSection" class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
     <h3 class="font-semibold text-gray-900 mb-1">
       {{ watch_heading }}
     </h3>

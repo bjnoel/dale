@@ -8,3 +8,16 @@
    widening silently produces no CSS and every page stays at 768px. Keep this
    list in sync with CONTENT_MAX_WIDTH. */
 @source inline("max-w-3xl lg:max-w-5xl 2xl:max-w-7xl");
+
+/* The site header (stocklib/layout.py) is sticky, so without scroll padding it
+   overlaps the target of every anchor jump (#watchSection on variety pages,
+   #subscribeBox and #listings on species pages). Mobile shows one header row
+   (the nav collapses behind the hamburger); sm+ adds the nav row. */
+html {
+  scroll-padding-top: 4.5rem;
+}
+@media (min-width: 640px) {
+  html {
+    scroll-padding-top: 7.5rem;
+  }
+}
