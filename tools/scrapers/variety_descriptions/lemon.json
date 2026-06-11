@@ -131,6 +131,215 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "lemon-eureka-seedless": {
+      "slug": "lemon-eureka-seedless",
+      "species": "Lemon",
+      "variety": "Eureka Seedless",
+      "paragraphs": [
+        "Eureka Seedless is a seedless selection of the Eureka lemon, the cultivar that originated in California around 1858 from seedlings raised in Los Angeles from fruit of Sicilian origin. The parent Eureka is a thornless, highly productive tree that fruits across much of the year, with the main crop running from late winter into early summer.",
+        "The defining feature of this selection is fruit that is virtually free of seeds, developed to meet demand for a clean, easy to use lemon. The juice is sharp and acidic in true Eureka style, and the fruit is oblong with a thin, bright yellow rind. Several seedless Eureka lines are grown in Australia, all chosen for that near seedless quality."
+      ],
+      "claims": [
+        {
+          "text": "Eureka originated in California around 1858 from seedlings raised in Los Angeles from fruit of Sicilian origin.",
+          "type": "origin",
+          "cites": [
+            "sp-eureka",
+            "auscitrus-eureka"
+          ]
+        },
+        {
+          "text": "The parent Eureka is thornless and highly productive, fruiting much of the year with the main crop from late winter to early summer.",
+          "type": "quirk",
+          "cites": [
+            "sp-eureka",
+            "auscitrus-eureka"
+          ]
+        },
+        {
+          "text": "This selection produces fruit that is virtually seedless.",
+          "type": "quirk",
+          "cites": [
+            "gardenclinic-seedless",
+            "viccitrus-seedless"
+          ]
+        },
+        {
+          "text": "The fruit is oblong with a thin bright yellow rind and sharp, acidic juice.",
+          "type": "flavour",
+          "cites": [
+            "sp-eureka",
+            "gardenclinic-seedless"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sp-eureka",
+          "name": "Specialty Produce: Eureka Lemons",
+          "url": "https://specialtyproduce.com/produce/Eureka_Lemons_7395.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "auscitrus-eureka",
+          "name": "Auscitrus Eureka variety fact sheet",
+          "url": "https://auscitrus.com.au/app/uploads/2022/07/Eureka.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gardenclinic-seedless",
+          "name": "The Garden Clinic: Eureka Seedless Lemon",
+          "url": "https://www.gardenclinic.com.au/how-to-grow-article/plant-of-the-month-september-seedless-lemon",
+          "tier": "third_party"
+        },
+        {
+          "id": "viccitrus-seedless",
+          "name": "Victorian Citrus Farms: Eureka Seedless Lemons",
+          "url": "https://viccitrus.com.au/eureka-seedless-lemons/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lemon-eureka-variegated": {
+      "slug": "lemon-eureka-variegated",
+      "species": "Lemon",
+      "variety": "Eureka Variegated",
+      "paragraphs": [
+        "Eureka Variegated, also sold as Variegated Pink, is an ornamental sport of the Eureka lemon that originated in California. It is grown above all for its variegated foliage, green leaves marbled with cream, and for young fruit carrying distinct green and cream stripes.",
+        "When the fruit ripens the striping fades to a yellow rind marked with pink oil glands, and inside the flesh is tinged pink rather than the usual pale lemon. The juice stays sharply acidic with few seeds, true to Eureka, so the tree offers both a usable crop and year round decorative appeal."
+      ],
+      "claims": [
+        {
+          "text": "It is an ornamental, pink-fleshed sport of the Eureka lemon that originated in California.",
+          "type": "breeding",
+          "cites": [
+            "wiki-varpink",
+            "ucr-varpink"
+          ]
+        },
+        {
+          "text": "The foliage is variegated green and cream, and young fruit is striped green and cream.",
+          "type": "appearance",
+          "cites": [
+            "wiki-varpink",
+            "ucr-varpink",
+            "fourwinds-varpink"
+          ]
+        },
+        {
+          "text": "On ripening the stripes fade to a yellow rind with pink oil glands, and the flesh is tinged pink.",
+          "type": "appearance",
+          "cites": [
+            "wiki-varpink",
+            "ucr-varpink"
+          ]
+        },
+        {
+          "text": "The juice is sharply acidic with few seeds, like standard Eureka.",
+          "type": "flavour",
+          "cites": [
+            "wiki-varpink",
+            "fourwinds-varpink"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-varpink",
+          "name": "Wikipedia: Variegated pink lemon",
+          "url": "https://en.wikipedia.org/wiki/Variegated_pink_lemon",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-varpink",
+          "name": "UC Riverside Citrus Variety Collection: Variegated Pink Fleshed Eureka lemon",
+          "url": "https://citrusvariety.ucr.edu/crc2367",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fourwinds-varpink",
+          "name": "Four Winds Growers: Variegated Pink Lemon Tree",
+          "url": "https://www.fourwindsgrowers.com/products/variegated-pink-lemon-tree",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lemon-eureka-variegated-pink": {
+      "slug": "lemon-eureka-variegated-pink",
+      "species": "Lemon",
+      "variety": "Eureka Variegated Pink",
+      "paragraphs": [
+        "Eureka Variegated Pink is the variegated, pink fleshed sport of the Eureka lemon, which arose in California early in the twentieth century. Its standout trait is ornamental: leaves splashed and edged with cream, and young fruit boldly striped in green and cream.",
+        "As the fruit ripens the green stripes fade and the rind turns yellow, often dotted with pink oil glands, while the flesh matures to a light pink. The fruit stays low in seeds and very acidic in classic Eureka style, making this a cultivar valued as much for its decorative foliage and striped fruit as for the lemons themselves."
+      ],
+      "claims": [
+        {
+          "text": "It is a variegated, pink-fleshed sport of the Eureka lemon that arose in California.",
+          "type": "breeding",
+          "cites": [
+            "wiki-varpink",
+            "ucr-varpink"
+          ]
+        },
+        {
+          "text": "The foliage is variegated with cream, and young fruit is striped green and cream.",
+          "type": "appearance",
+          "cites": [
+            "wiki-varpink",
+            "ucr-varpink",
+            "fourwinds-varpink"
+          ]
+        },
+        {
+          "text": "As fruit ripens the stripes fade to a yellow rind marked with pink oil glands, and the flesh is light pink.",
+          "type": "appearance",
+          "cites": [
+            "wiki-varpink",
+            "ucr-varpink"
+          ]
+        },
+        {
+          "text": "The flesh is low in seeds and very acidic, like standard Eureka.",
+          "type": "flavour",
+          "cites": [
+            "wiki-varpink",
+            "fourwinds-varpink"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-varpink",
+          "name": "Wikipedia: Variegated pink lemon",
+          "url": "https://en.wikipedia.org/wiki/Variegated_pink_lemon",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-varpink",
+          "name": "UC Riverside Citrus Variety Collection: Variegated Pink Fleshed Eureka lemon",
+          "url": "https://citrusvariety.ucr.edu/crc2367",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fourwinds-varpink",
+          "name": "Four Winds Growers: Variegated Pink Lemon Tree",
+          "url": "https://www.fourwindsgrowers.com/products/variegated-pink-lemon-tree",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lemon-fino": {
       "slug": "lemon-fino",
       "species": "Lemon",
@@ -195,6 +404,198 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lemon-heaven": {
+      "slug": "lemon-heaven",
+      "species": "Lemon",
+      "variety": "Heaven",
+      "paragraphs": [
+        "Lemon Heaven is a branded seedless selection of the classic Eureka lemon (the same product is often listed as Heaven Seedless Eureka), sold in Australia under plant breeder rights through PlantNet, which credits its development to the citrus breeding program of South Africa's Agricultural Research Council. Its claim to fame is fruit that is all lemon and no seeds, so juice goes straight in without straining or picking out pips.",
+        "In the garden it behaves like a vigorous Eureka: a self fertile tree of around 4 metres that crops prolifically in large bunches of medium to large, thick skinned, juicy and sour fruit. Harvest begins around March in warmer districts and April or May in cooler ones and can continue for several months, and PlantNet also offers the variety on dwarf rootstock for pots."
+      ],
+      "claims": [
+        {
+          "text": "A seedless selection of the Eureka lemon, PBR protected and bred by the citrus breeding program of the Agricultural Research Council of South Africa",
+          "type": "breeding",
+          "cites": [
+            "plantnet",
+            "guildford"
+          ]
+        },
+        {
+          "text": "Also marketed as Heaven Seedless Eureka; exclusive to the PlantNet brand",
+          "type": "naming",
+          "cites": [
+            "plantnet",
+            "guildford"
+          ]
+        },
+        {
+          "text": "Fruit is seedless, so juice needs no straining or seed picking",
+          "type": "quirk",
+          "cites": [
+            "plantnet",
+            "guildford",
+            "lakeside",
+            "northcote"
+          ]
+        },
+        {
+          "text": "Prolific bearer producing large bunches of medium to large, thick skinned, juicy sour fruit",
+          "type": "flavour",
+          "cites": [
+            "plantnet",
+            "guildford",
+            "lakeside"
+          ]
+        },
+        {
+          "text": "Harvest from about March in warmer areas and April or May in cooler regions, continuing for several months",
+          "type": "season",
+          "cites": [
+            "lakeside",
+            "northcote"
+          ]
+        },
+        {
+          "text": "Vigorous, self fertile tree growing to roughly 4 metres, with a dwarf rootstock version available for containers",
+          "type": "appearance",
+          "cites": [
+            "plantnet",
+            "guildford",
+            "northcote"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "plantnet",
+          "name": "PlantNet Australia, Lemon Heaven (seedless Eureka)",
+          "url": "https://plantnet.com.au/shop/fruit-trees/citrus/lemon-heaven/",
+          "tier": "third_party"
+        },
+        {
+          "id": "guildford",
+          "name": "Guildford Garden Centre, Lemon Heaven Seedless Eureka",
+          "url": "https://guildfordgardencentre.com.au/product/lemon-lemon-heaven-seedless-eureka/",
+          "tier": "nursery"
+        },
+        {
+          "id": "lakeside",
+          "name": "Lakeside Plants and Nursery, Lemon Heaven Seedless Eureka Lemon",
+          "url": "https://lakesideplants.com/product/lemon-heaven-seedless-eureka-lemon/",
+          "tier": "nursery"
+        },
+        {
+          "id": "northcote",
+          "name": "Northcote Nursery, Lemon Heaven Seedless Eureka",
+          "url": "https://northcotenursery.com.au/products/lemon-heaven-seedless-eureka",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lemon-heaven-seedless-eureka": {
+      "slug": "lemon-heaven-seedless-eureka",
+      "species": "Lemon",
+      "variety": "Heaven Seedless Eureka",
+      "paragraphs": [
+        "Lemon Heaven is a branded seedless selection of the classic Eureka lemon, sold in Australia under plant breeder rights through PlantNet, which credits its development to the citrus breeding program of South Africa's Agricultural Research Council. The selling point is fruit that is all lemon and no seeds, so juice can be squeezed straight in without straining or picking out pips.",
+        "Otherwise it behaves like a vigorous Eureka: a self fertile tree of around 4 metres that crops prolifically in large bunches, with medium to large, thick skinned, juicy and sour fruit. Harvest begins around March in warmer districts and April or May in cooler ones and can stretch on for several months, and PlantNet also offers the same variety on dwarf rootstock for pots."
+      ],
+      "claims": [
+        {
+          "text": "A seedless selection of the Eureka lemon, PBR protected and bred by the citrus breeding program of the Agricultural Research Council of South Africa",
+          "type": "breeding",
+          "cites": [
+            "plantnet",
+            "guildford"
+          ]
+        },
+        {
+          "text": "Fruit is seedless, so juice needs no straining or seed picking",
+          "type": "quirk",
+          "cites": [
+            "plantnet",
+            "guildford",
+            "lakeside",
+            "northcote"
+          ]
+        },
+        {
+          "text": "Prolific bearer producing large bunches of medium to large, thick skinned, juicy sour fruit",
+          "type": "flavour",
+          "cites": [
+            "plantnet",
+            "guildford",
+            "lakeside"
+          ]
+        },
+        {
+          "text": "Harvest from about March in warmer areas and April or May in cooler regions, continuing for several months",
+          "type": "season",
+          "cites": [
+            "lakeside",
+            "northcote"
+          ]
+        },
+        {
+          "text": "Vigorous tree growing to roughly 4 metres",
+          "type": "appearance",
+          "cites": [
+            "plantnet",
+            "guildford",
+            "northcote"
+          ]
+        },
+        {
+          "text": "Self fertile, so a single tree crops on its own",
+          "type": "quirk",
+          "cites": [
+            "guildford"
+          ]
+        },
+        {
+          "text": "Also sold on dwarf rootstock for container growing, exclusive to the PlantNet brand",
+          "type": "naming",
+          "cites": [
+            "plantnet"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "plantnet",
+          "name": "PlantNet Australia, Lemon Heaven (seedless Eureka)",
+          "url": "https://plantnet.com.au/shop/fruit-trees/citrus/lemon-heaven/",
+          "tier": "third_party"
+        },
+        {
+          "id": "guildford",
+          "name": "Guildford Garden Centre, Lemon Heaven Seedless Eureka",
+          "url": "https://guildfordgardencentre.com.au/product/lemon-lemon-heaven-seedless-eureka/",
+          "tier": "nursery"
+        },
+        {
+          "id": "lakeside",
+          "name": "Lakeside Plants and Nursery, Lemon Heaven Seedless Eureka Lemon",
+          "url": "https://lakesideplants.com/product/lemon-heaven-seedless-eureka-lemon/",
+          "tier": "nursery"
+        },
+        {
+          "id": "northcote",
+          "name": "Northcote Nursery, Lemon Heaven Seedless Eureka",
+          "url": "https://northcotenursery.com.au/products/lemon-heaven-seedless-eureka",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "lemon-lemonade": {
       "slug": "lemon-lemonade",
@@ -271,6 +672,88 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "lemon-lemonicious": {
+      "slug": "lemon-lemonicious",
+      "species": "Lemon",
+      "variety": "Lemonicious",
+      "paragraphs": [
+        "Lemonicious is an Australian retail selection of the Meyer lemon, the naturally sweet lemon and mandarin orange hybrid, picked out for an unusually small habit. It is marketed as a super dwarf or patio lemon, topping out at roughly 1.5 to 2 metres, which makes it one of the most compact lemon options sold in Australia and a natural fit for pots on balconies, courtyards and decks.",
+        "The medium sized, thin skinned fruit carries typical Meyer character: noticeably less acidic and a touch sweeter than a true lemon such as Eureka or Lisbon. Retailers describe fragrant white flowers over a long season and a hardy constitution for a citrus, with listings claiming tolerance of frost, humidity and coastal positions."
+      ],
+      "claims": [
+        {
+          "text": "Lemonicious is sold as a dwarf selection of the Meyer lemon, a lemon and mandarin orange hybrid",
+          "type": "naming",
+          "cites": [
+            "gardensonline",
+            "queensgarden"
+          ]
+        },
+        {
+          "text": "Compact habit of roughly 1.5 to 2 metres, marketed for pots, patios and courtyards",
+          "type": "appearance",
+          "cites": [
+            "gardensonline",
+            "flowerpower"
+          ]
+        },
+        {
+          "text": "Fruit is less acidic and sweeter than a true lemon, in the Meyer style",
+          "type": "flavour",
+          "cites": [
+            "gardensonline",
+            "queensgarden"
+          ]
+        },
+        {
+          "text": "Medium sized, thin skinned fruit",
+          "type": "appearance",
+          "cites": [
+            "queensgarden"
+          ]
+        },
+        {
+          "text": "Fragrant white flowers over a long season",
+          "type": "season",
+          "cites": [
+            "gardensonline",
+            "flowerpower"
+          ]
+        },
+        {
+          "text": "Hardy for a citrus, with claimed tolerance of frost, humidity and coastal conditions",
+          "type": "quirk",
+          "cites": [
+            "gardensonline",
+            "flowerpower"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gardensonline",
+          "name": "GardensOnline plant finder, Citrus Meyer Dwarf Lemonicious",
+          "url": "https://www.gardensonline.com.au/gardenshed/plantfinder/show_3766.aspx",
+          "tier": "third_party"
+        },
+        {
+          "id": "flowerpower",
+          "name": "Flower Power, Lemonicious Dwarf Patio Lemon",
+          "url": "https://www.flowerpower.com.au/lemonicious-dwarf-patio-lemon-9007060200p",
+          "tier": "nursery"
+        },
+        {
+          "id": "queensgarden",
+          "name": "Queens Garden Centre, Citrus Meyer dwarf Lemonicious",
+          "url": "https://queensgardencentre.com.au/products/citrus-meyer-dwarf-lemonicious",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lemon-lisbon": {
       "slug": "lemon-lisbon",
       "species": "Lemon",
@@ -340,6 +823,88 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "lemon-lots-o-lemons": {
+      "slug": "lemon-lots-o-lemons",
+      "species": "Lemon",
+      "variety": "Lots O’ Lemons",
+      "paragraphs": [
+        "Sold in Australia as Lots A Lemons, this is a dwarf form of the Meyer lemon, the small growing citrus thought to be a cross between a lemon and an orange. The compact bush stays around 1.5 metres tall and wide yet bears full sized, very juicy fruit, which is the whole point of the variety: a tub sized tree producing normal Meyer lemons.",
+        "The fruit has classic Meyer character, sweeter and less acidic than a true lemon, and the bush carries fragrant creamy white blossom. Yates specifically recommends growing it in a pot to guarantee drainage, and it inherits Meyer's cold tolerance, making it one of the more reliable lemon choices for cooler regions and frost prone areas."
+      ],
+      "claims": [
+        {
+          "text": "Lots A Lemons is a dwarf form of the Meyer lemon",
+          "type": "naming",
+          "cites": [
+            "yates",
+            "gardenexpress"
+          ]
+        },
+        {
+          "text": "Meyer is a small grower thought to be a cross between a lemon and an orange",
+          "type": "breeding",
+          "cites": [
+            "yates"
+          ]
+        },
+        {
+          "text": "Grows to about 1.5 metres tall and wide but bears full sized, very juicy fruit",
+          "type": "appearance",
+          "cites": [
+            "gardenexpress"
+          ]
+        },
+        {
+          "text": "Fruit is sweeter and less acidic than a true lemon",
+          "type": "flavour",
+          "cites": [
+            "gardenexpress",
+            "yates"
+          ]
+        },
+        {
+          "text": "Recommended for pot culture; Yates advises growing it in a pot to guarantee drainage",
+          "type": "use",
+          "cites": [
+            "yates",
+            "gardenexpress"
+          ]
+        },
+        {
+          "text": "Meyer cold tolerance makes it suited to cooler regions and frosty areas",
+          "type": "quirk",
+          "cites": [
+            "yates",
+            "gardenexpress"
+          ]
+        },
+        {
+          "text": "Fragrant creamy white flowers",
+          "type": "appearance",
+          "cites": [
+            "gardenexpress"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "yates",
+          "name": "Yates Australia, How to Grow Lemons",
+          "url": "https://www.yates.com.au/how-to-grow/lemons/",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenexpress",
+          "name": "Garden Express, Lots A Lemons",
+          "url": "https://www.gardenexpress.com.au/product/lots-a-lemons/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lemon-meyer": {
       "slug": "lemon-meyer",
       "species": "Lemon",
@@ -407,6 +972,249 @@
       "confidence_score": 0.93,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lemon-myer": {
+      "slug": "lemon-myer",
+      "species": "Lemon",
+      "variety": "Myer",
+      "paragraphs": [
+        "Myer is the common Australian spelling of the Meyer lemon, named after Frank N. Meyer, a USDA plant explorer who collected it in China and introduced it to the United States in 1908. It is not a true lemon but a hybrid, a cross between a citron and a mandarin/pomelo hybrid, which gives it its mild character.",
+        "The fruit is rounder than a true lemon, with thin skin that ripens to deep yellow with a slight orange tint. The flesh is juicy, noticeably sweeter and far less acidic than a Eureka or Lisbon, almost tangerine-like. A virus-free clone, the Improved Meyer lemon, is the form most widely grown today, having replaced earlier stock that carried tristeza virus."
+      ],
+      "claims": [
+        {
+          "text": "Myer is the Australian spelling of the Meyer lemon, named after USDA plant explorer Frank N. Meyer.",
+          "type": "naming",
+          "cites": [
+            "wiki-meyer",
+            "sp-meyer"
+          ]
+        },
+        {
+          "text": "It was collected in China and introduced to the United States in 1908 by Frank N. Meyer.",
+          "type": "origin",
+          "cites": [
+            "wiki-meyer",
+            "sp-meyer",
+            "ucr-meyer"
+          ]
+        },
+        {
+          "text": "It is not a true lemon but a cross between a citron and a mandarin/pomelo hybrid.",
+          "type": "breeding",
+          "cites": [
+            "wiki-meyer",
+            "sp-meyer"
+          ]
+        },
+        {
+          "text": "The fruit is rounder than a true lemon, deep yellow with an orange tint, sweeter and less acidic.",
+          "type": "flavour",
+          "cites": [
+            "wiki-meyer",
+            "sp-meyer"
+          ]
+        },
+        {
+          "text": "A virus-free Improved Meyer selection has replaced earlier virus-carrying stock and is the form widely grown today.",
+          "type": "quirk",
+          "cites": [
+            "ucr-meyer",
+            "wiki-meyer"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-meyer",
+          "name": "Wikipedia: Meyer lemon",
+          "url": "https://en.wikipedia.org/wiki/Meyer_lemon",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-meyer",
+          "name": "Specialty Produce: Meyer Lemons",
+          "url": "https://specialtyproduce.com/produce/Meyer_Lemons_219.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-meyer",
+          "name": "UC Riverside Citrus Variety Collection: Improved Meyer lemon",
+          "url": "https://citrusvariety.ucr.edu/citrus/improvedmeyer.html",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lemon-pinky": {
+      "slug": "lemon-pinky",
+      "species": "Lemon",
+      "variety": "Pinky",
+      "paragraphs": [
+        "Pinky is the Australian trade name for the variegated pink fleshed Eureka lemon, a chance sport found on an ordinary Eureka tree in Burbank, California, and selected in 1931. It is grown as much for looks as for fruit: the foliage is splashed green and cream, young fruit are striped green and yellow, and the stripes fade as the lemons ripen. Inside, the flesh matures to a light rosy pink, the trait behind overseas names like Pink Lemonade.",
+        "The fruit itself is still a proper acid lemon, sharp and juicy with very few seeds, so it works anywhere a standard Eureka would. Australian sellers describe a tree of around 3 to 4 metres that also suits large containers, where the variegated leaves and striped fruit make it a striking feature plant."
+      ],
+      "claims": [
+        {
+          "text": "Originated as a spontaneous sport on a Eureka lemon in Burbank, California, selected in 1931",
+          "type": "origin",
+          "cites": [
+            "wikipedia-vpl",
+            "ucr-vpe",
+            "motherearth"
+          ]
+        },
+        {
+          "text": "Sold in Australia under the trade name Pinky; the same variety is marketed overseas as Pink Lemonade",
+          "type": "naming",
+          "cites": [
+            "citrusmen",
+            "motherearth",
+            "ucr-vpe"
+          ]
+        },
+        {
+          "text": "Variegated green and cream foliage and green striped fruit, with the striping fading as fruit ripens",
+          "type": "appearance",
+          "cites": [
+            "ucr-vpe",
+            "wikipedia-vpl",
+            "motherearth"
+          ]
+        },
+        {
+          "text": "Flesh develops a light pink colour at maturity",
+          "type": "appearance",
+          "cites": [
+            "ucr-vpe",
+            "wikipedia-vpl",
+            "citrusmen"
+          ]
+        },
+        {
+          "text": "Sharp, acidic, juicy fruit",
+          "type": "flavour",
+          "cites": [
+            "ucr-vpe",
+            "citrusmen"
+          ]
+        },
+        {
+          "text": "Low seeded fruit",
+          "type": "quirk",
+          "cites": [
+            "ucr-vpe",
+            "citrusmen",
+            "motherearth"
+          ]
+        },
+        {
+          "text": "Tree grows to around 3 to 4 metres and suits pots and containers",
+          "type": "appearance",
+          "cites": [
+            "citrusmen"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-vpe",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside, Variegated Pink Fleshed Eureka lemon",
+          "url": "https://citrusvariety.ucr.edu/crc2367",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-vpl",
+          "name": "Wikipedia, Variegated pink lemon",
+          "url": "https://en.wikipedia.org/wiki/Variegated_pink_lemon",
+          "tier": "third_party"
+        },
+        {
+          "id": "citrusmen",
+          "name": "Citrus Men, Lemon Pinky",
+          "url": "https://www.citrusmen.com.au/shop/p/lemon-pinky-the-lemon-with-a-pink-heart-b6rnc",
+          "tier": "nursery"
+        },
+        {
+          "id": "motherearth",
+          "name": "Mother Earth Nursery, Citrus Lemon Pinky",
+          "url": "https://www.motherearthnursery.com.au/products/citrus-lemon-pinky-pink-centred-lemon",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lemon-prior-lisbon": {
+      "slug": "lemon-prior-lisbon",
+      "species": "Lemon",
+      "variety": "Prior Lisbon",
+      "paragraphs": [
+        "Prior Lisbon is one of the many named selections of the Lisbon lemon, a vigorous true lemon believed to be a Gallego seedling of Portuguese origin. Lisbon reached Australia as early as 1824 before being carried on to California, and numerous distinct Lisbon clones, Prior among them, have since been propagated.",
+        "Lisbon trees grow into large, thorny, upright but spreading specimens, so the fruit often sits within the canopy. The fruit is medium and oblong with a prominent nipple, a slightly textured yellow rind, and pale greenish yellow flesh that is low in seeds and very acidic. Lisbon is hardier than Eureka, tolerating both heat and cold, with the main crop in winter and early spring."
+      ],
+      "claims": [
+        {
+          "text": "Lisbon is believed to be a Gallego seedling of Portuguese origin and reached Australia as early as 1824 before going on to California.",
+          "type": "origin",
+          "cites": [
+            "ucr-priorlisbon",
+            "sp-lisbon"
+          ]
+        },
+        {
+          "text": "Prior Lisbon is one of many named selections of the Lisbon lemon.",
+          "type": "naming",
+          "cites": [
+            "ucr-priorlisbon"
+          ]
+        },
+        {
+          "text": "Lisbon trees are large, thorny and upright but spreading; fruit is medium, oblong, with a prominent nipple, textured yellow rind and pale greenish yellow, low-seeded, very acidic flesh.",
+          "type": "appearance",
+          "cites": [
+            "ucr-priorlisbon",
+            "sp-lisbon"
+          ]
+        },
+        {
+          "text": "Lisbon is hardier than Eureka, tolerant of heat and cold, with the main crop in winter and early spring.",
+          "type": "quirk",
+          "cites": [
+            "sp-lisbon",
+            "ucr-lisbon"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-priorlisbon",
+          "name": "UC Riverside Citrus Variety Collection: Prior Lisbon lemon",
+          "url": "https://citrusvariety.ucr.edu/crc3505",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-lisbon",
+          "name": "Specialty Produce: Lisbon Lemons",
+          "url": "https://specialtyproduce.com/produce/Lisbon_Lemons_7993.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-lisbon",
+          "name": "UC Riverside Citrus Variety Collection: Frost nucellar Lisbon lemon",
+          "url": "https://citrusvariety.ucr.edu/crc3176",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "lemon-seedless-eureka": {
       "slug": "lemon-seedless-eureka",
@@ -608,6 +1416,73 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "lemon-villa-franca": {
+      "slug": "lemon-villa-franca",
+      "species": "Lemon",
+      "variety": "Villa Franca",
+      "paragraphs": [
+        "Villa Franca is an old lemon of Sicilian origin, introduced to Florida around 1875 and soon after brought to California. The tree resembles Lisbon but grows more open and less upright, with few or no persistent thorns and sparser foliage.",
+        "Its fruit is essentially indistinguishable from Eureka, oval and low in seeds with juicy, intensely lemony flesh, yet the cropping pattern follows Lisbon, falling mainly in winter. This combination of Eureka-like fruit on a Lisbon-like seasonal habit is what sets Villa Franca apart."
+      ],
+      "claims": [
+        {
+          "text": "Villa Franca is of Sicilian origin, introduced to Florida around 1875 and soon after to California.",
+          "type": "origin",
+          "cites": [
+            "ucr-villa",
+            "todoli-villa"
+          ]
+        },
+        {
+          "text": "The tree resembles Lisbon but is more open and less upright, with few or no persistent thorns and sparser foliage.",
+          "type": "appearance",
+          "cites": [
+            "ucr-villa",
+            "citrusid-villa"
+          ]
+        },
+        {
+          "text": "The fruit is indistinguishable from Eureka, oval and low-seeded with juicy, intensely lemony flesh.",
+          "type": "flavour",
+          "cites": [
+            "ucr-villa",
+            "citrusid-villa"
+          ]
+        },
+        {
+          "text": "The cropping pattern follows Lisbon, with fruit mainly in winter.",
+          "type": "season",
+          "cites": [
+            "ucr-villa",
+            "todoli-villa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-villa",
+          "name": "UC Riverside Citrus Variety Collection: Villafranca lemon (CRC 390)",
+          "url": "https://citrusvariety.ucr.edu/crc390",
+          "tier": "authoritative"
+        },
+        {
+          "id": "todoli-villa",
+          "name": "Todoli Citrus Fundacio: Villafranca",
+          "url": "https://todolicitrusfundacio.org/en/variedades-citricos/villafranca-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "citrusid-villa",
+          "name": "Citrus ID (idtools.org): Villafranca",
+          "url": "https://idtools.org/citrus_id/index.cfm?packageID=1179&entityID=8900",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lemon-yuzu": {
       "slug": "lemon-yuzu",
       "species": "Lemon",
@@ -674,7 +1549,166 @@
       "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lemon-yuzu-japanese": {
+      "slug": "lemon-yuzu-japanese",
+      "species": "Lemon",
+      "variety": "Yuzu Japanese",
+      "paragraphs": [
+        "Yuzu Japanese is the yuzu, Citrus junos, a citrus of Chinese origin that is a hybrid of mandarin orange and the Ichang papeda. That papeda parentage makes it one of the hardiest of all citrus, able to grow and fruit where frost would kill most lemons.",
+        "The fruit resembles a small, uneven, bumpy lemon, ripening from green to yellow, with a thick rind packed with aromatic oils. It is rarely eaten fresh, prized instead for its fragrant zest and tart juice, which are central to Japanese and Korean cooking and to ponzu sauce. The flavour is tart and aromatic, recalling grapefruit with mandarin overtones."
+      ],
+      "claims": [
+        {
+          "text": "Yuzu (Citrus junos) is of Chinese origin and a hybrid of mandarin orange and the Ichang papeda.",
+          "type": "breeding",
+          "cites": [
+            "ucr-yuzu",
+            "wiki-yuzu"
+          ]
+        },
+        {
+          "text": "Its papeda ancestry makes it one of the hardiest citrus, tolerating frost that kills most lemons.",
+          "type": "quirk",
+          "cites": [
+            "ucr-yuzu",
+            "wiki-yuzu"
+          ]
+        },
+        {
+          "text": "The fruit has a bumpy, uneven rind and ripens from green to yellow.",
+          "type": "appearance",
+          "cites": [
+            "ucr-yuzu",
+            "wiki-yuzu"
+          ]
+        },
+        {
+          "text": "It is rarely eaten fresh; the aromatic zest and tart juice are used in Japanese and Korean cooking and in ponzu.",
+          "type": "use",
+          "cites": [
+            "ucr-yuzu",
+            "wiki-yuzu"
+          ]
+        },
+        {
+          "text": "The flavour is tart and fragrant, resembling grapefruit with mandarin overtones.",
+          "type": "flavour",
+          "cites": [
+            "wiki-yuzu",
+            "ucr-yuzu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-yuzu",
+          "name": "UC Riverside Citrus Variety Collection: Yuzu ichandrin",
+          "url": "https://citrusvariety.ucr.edu/crc1216",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-yuzu",
+          "name": "Wikipedia: Yuzu",
+          "url": "https://en.wikipedia.org/wiki/Yuzu",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lemon-yuzu-japanese-citron": {
+      "slug": "lemon-yuzu-japanese-citron",
+      "species": "Lemon",
+      "variety": "Yuzu Japanese Citron",
+      "paragraphs": [
+        "Yuzu Japanese Citron refers to yuzu, Citrus junos, a hybrid of mandarin and the Ichang papeda that originated in central China. Despite the citron in this nursery name, it is a papeda cross, and that ancestry gives it unusual cold tolerance for a citrus, fruiting where frost would harm most lemons.",
+        "Its bumpy, clementine-like fruit turns yellow or green with ripeness and carries a heavily aromatic rind. Seldom eaten as fresh fruit, yuzu is valued for the perfumed zest and sharp juice used much like lemon across Japanese and Korean cuisine, including ponzu. The taste is tart and aromatic, close to grapefruit with notes of mandarin."
+      ],
+      "claims": [
+        {
+          "text": "Yuzu (Citrus junos) originated in central China and is a hybrid of mandarin and the Ichang papeda, not a true citron.",
+          "type": "breeding",
+          "cites": [
+            "ucr-yuzu",
+            "wiki-yuzu"
+          ]
+        },
+        {
+          "text": "Its papeda ancestry gives it unusual cold tolerance for a citrus.",
+          "type": "quirk",
+          "cites": [
+            "ucr-yuzu",
+            "wiki-yuzu"
+          ]
+        },
+        {
+          "text": "The fruit is bumpy and clementine-like, turning yellow or green with ripeness, with a heavily aromatic rind.",
+          "type": "appearance",
+          "cites": [
+            "wiki-yuzu",
+            "ucr-yuzu"
+          ]
+        },
+        {
+          "text": "It is seldom eaten fresh; the zest and juice are used in Japanese and Korean cuisine, including ponzu.",
+          "type": "use",
+          "cites": [
+            "ucr-yuzu",
+            "wiki-yuzu"
+          ]
+        },
+        {
+          "text": "The taste is tart and aromatic, close to grapefruit with mandarin notes.",
+          "type": "flavour",
+          "cites": [
+            "wiki-yuzu",
+            "ucr-yuzu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-yuzu",
+          "name": "UC Riverside Citrus Variety Collection: Yuzu ichandrin",
+          "url": "https://citrusvariety.ucr.edu/crc1216",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-yuzu",
+          "name": "Wikipedia: Yuzu",
+          "url": "https://en.wikipedia.org/wiki/Yuzu",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
-  "skipped": []
+  "skipped": [
+    "lemon-2way-eureka-lime-tahitian-jumbo",
+    "lemon-2way-lime-tahitian-jumbo-meyer",
+    "lemon-aspen",
+    "lemon-balm",
+    "lemon-citron-etrog",
+    "lemon-citrus-eureka",
+    "lemon-drop-mangosteen",
+    "lemon-eureka-fruit-tree-seeded",
+    "lemon-ironbark",
+    "lemon-lemon-heaven-seedless-eureka",
+    "lemon-lemonade-tree",
+    "lemon-limoncello",
+    "lemon-lisbon-citrus-fruit-tree",
+    "lemon-lisbon-jumbo",
+    "lemon-meyer-jumbo",
+    "lemon-n-lime-rubber-plant",
+    "lemon-scented-conifer",
+    "lemon-sherbert-coleus",
+    "lemon-thornless",
+    "lemon-verbena"
+  ]
 }
