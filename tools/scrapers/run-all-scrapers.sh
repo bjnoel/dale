@@ -236,3 +236,9 @@ echo "$LOG_PREFIX Cloudflare purge complete."
 echo "$LOG_PREFIX Running post-deploy smoke test..."
 python3 "$SCRIPT_DIR/smoke_test.py" --quiet 2>&1 || echo "$LOG_PREFIX WARNING: Smoke test failed — alert sent to Benedict"
 echo "$LOG_PREFIX Smoke test complete."
+
+# Scrape-health anomaly check (failed runs, zero-product days, 403/429 blocks,
+# failure streaks) — alerts Benedict, idempotent per day
+echo "$LOG_PREFIX Checking scrape health..."
+python3 "$SCRIPT_DIR/detect_scrape_anomalies.py" 2>&1 || echo "$LOG_PREFIX WARNING: Scrape anomaly check failed (non-fatal)"
+echo "$LOG_PREFIX Scrape health check complete."
