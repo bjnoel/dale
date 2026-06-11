@@ -48,7 +48,8 @@ class CategoryTest(unittest.TestCase):
         self.assertEqual(taxonomy.categories(), {"fruit", "bush_tucker"})
 
     def test_enabled_categories_switch(self):
-        self.assertEqual(taxonomy.ENABLED_CATEGORIES, ("fruit",))
+        # DAL-197 (P2.3) enabled the bush tucker pilot.
+        self.assertEqual(taxonomy.ENABLED_CATEGORIES, ("fruit", "bush_tucker"))
 
     def test_category_of_known_species(self):
         self.assertEqual(taxonomy.category_of("Mango"), "fruit")
@@ -57,16 +58,16 @@ class CategoryTest(unittest.TestCase):
     def test_category_of_unknown(self):
         self.assertIsNone(taxonomy.category_of("Eucalyptus"))
 
-    def test_enabled_species_is_fruit_only_today(self):
-        # bush_tucker records exist (DAL-195) but are disabled until DAL-197,
-        # so enabled_species is the fruit subset, not every record. This keeps
-        # the builders (which read enabled_species) and their goldens unchanged.
+    def test_enabled_species_today(self):
+        # DAL-197 enabled bush_tucker, so enabled_species now spans both the
+        # fruit and bush_tucker records (every category present is enabled).
         enabled = taxonomy.enabled_species()
-        self.assertTrue(all(r["category"] == "fruit" for r in enabled))
-        fruit_count = sum(1 for r in taxonomy.load_species()
-                          if r["category"] == "fruit")
-        self.assertEqual(len(enabled), fruit_count)
-        self.assertLess(len(enabled), len(taxonomy.load_species()))
+        self.assertTrue(all(r["category"] in ("fruit", "bush_tucker")
+                            for r in enabled))
+        cats = {r["category"] for r in enabled}
+        self.assertEqual(cats, {"fruit", "bush_tucker"})
+        # nothing disabled remains, so the enabled set is every record
+        self.assertEqual(len(enabled), len(taxonomy.load_species()))
 
     def test_is_enabled(self):
         self.assertTrue(taxonomy.is_enabled("Mango"))

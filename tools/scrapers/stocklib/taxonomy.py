@@ -24,7 +24,10 @@ from pathlib import Path
 SPECIES_FILE = Path(__file__).parent.parent / "fruit_species.json"
 
 DEFAULT_CATEGORY = "fruit"
-ENABLED_CATEGORIES: tuple[str, ...] = ("fruit",)
+# bush_tucker enabled 2026-06-11 (DEC-200 / DAL-197, the P2 pilot). Adding a
+# category here un-disables its species records everywhere (species/variety/
+# landing surfaces) and, via stocklib.classify, stops junk-filtering its plants.
+ENABLED_CATEGORIES: tuple[str, ...] = ("fruit", "bush_tucker")
 
 # Every category a species record may carry. Only ENABLED_CATEGORIES are
 # rendered anywhere; the others exist as classification hints until their
