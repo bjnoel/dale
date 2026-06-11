@@ -22,7 +22,7 @@ SIZE_WORDS = frozenset({
     'small', 'medium', 'large', 'xl', 'xxl', '75mm', '90mm',
     '140mm', '200mm', '250mm', '300mm', 'tube', 'pot', 'pots',
     'bag', 'bags', 'seedling', 'seedlings', 'grafted', 'cutting',
-    'cuttings', 'standard', 'dwarf', 'bareroot', 'bare', 'root',
+    'cuttings', 'standard', 'dwarf', 'semi', 'bareroot', 'bare', 'root',
     'advanced', 'budget', 'self', 'fertile',
 })
 
@@ -143,6 +143,7 @@ _NOISE_RES = [
         r'\btrees?\b',
         r'\bpots?\b',
         r'\blow chill\b',
+        r'\bsemi[\s-]?dwarf\b',                        # before bare dwarf, or it leaves "Semi-"
         r'\bdwarf\b',
         r'\b\d+\s*mm\b',
         r'(?<=\s)\d+\s*(?:l|lt|ltr|litre|liter)\b',    # trailing volume only (space before)
@@ -150,8 +151,12 @@ _NOISE_RES = [
 ]
 
 
-def _strip_listing_noise(s: str) -> str:
+def _strip_listing_noise(s: str, *, keep_dwarf: bool = False) -> str:
+    """keep_dwarf: banana titles keep dwarf/semi-dwarf -- "Dwarf Cavendish" is a
+    cultivar, not a size (same exception _clean_cultivar_parts applies)."""
     for rx in _NOISE_RES:
+        if keep_dwarf and rx.pattern in (r'\bsemi[\s-]?dwarf\b', r'\bdwarf\b'):
+            continue
         s = rx.sub(' ', s)
     s = re.sub(r'\s+', ' ', s).strip()
     return s
@@ -185,23 +190,49 @@ def _find_species_anywhere(cleaned: str) -> tuple[str, list[str], list[str]] | N
     return (canon_name, words[:i], words[i + n:])
 
 
-def _variety_ok(variety_tokens: list[str]) -> str | None:
+def _variety_ok(variety_tokens: list[str], species: str = '') -> str | None:
     """Clean + validate a candidate variety. Returns the variety string or None."""
-    # If any structural separator survived (- / | : etc.), a boundary was crossed
+    # A STANDALONE dash followed by nothing but size/noise words is trailing
+    # listing noise ("Anna - Medium" after the cleaners ran): truncate there.
+    # Anything substantive after the dash, or any other standalone separator
+    # (| / : ; delimit foreign content like nursery names), still rejects.
+    dashes = {'-', '–', '—'}
+    sep_idx = next((i for i, t in enumerate(variety_tokens) if t in dashes), None)
+    if sep_idx is not None:
+        tail = [t for t in variety_tokens[sep_idx + 1:] if t not in dashes]
+        if all(t.lower().strip('.,') in SIZE_WORDS for t in tail):
+            variety_tokens = variety_tokens[:sep_idx]
+        else:
+            return None
+    # If any embedded separator survived (- / | : etc.), a boundary was crossed
     # (e.g. "Sapodilla / Chicku", "Fruit Tree Cottage | Tamarillo"). Reject: the
     # token run is not a clean single variety.
     if any(re.search(r'[\-–—/|:;]', t) for t in variety_tokens):
         return None
-    toks = [t for t in variety_tokens if t.lower().strip('.,') not in SIZE_WORDS]
+    # Bananas keep dwarf/super/semi: "Dwarf Cavendish" is a cultivar, not a size.
+    drop = SIZE_WORDS if species.strip().lower() != 'banana' else (SIZE_WORDS - {'dwarf', 'super', 'semi'})
+    toks = [t for t in variety_tokens if t.lower().strip('.,') not in drop]
+    # Strip a trailing restatement of the species the caller already found, so
+    # "Pink Lady Apple" (species Apple) validates as "Pink Lady" instead of being
+    # rejected for containing a species word.
+    if species:
+        sp_words = species.lower().split()
+        while (len(toks) > len(sp_words)
+               and [t.lower().strip(".,'\"()") for t in toks[-len(sp_words):]] == sp_words):
+            toks = toks[:-len(sp_words)]
     # Drop pure-punctuation / non-alphanumeric leftovers.
     toks = [t for t in toks if re.search(r'[A-Za-z0-9]', t)]
     if not toks or len(toks) > 5:
         return None
     lookup = _load_species_lookup()
     low = [t.lower().strip(".,'\"()") for t in toks]
-    # Reject foliage/lookalike qualifiers, and varieties that themselves contain
-    # another species word (usually a lookalike or a mis-joined multi-species title).
-    if any(t in _VARIETY_TOKEN_DENY or t in lookup for t in low):
+    # Reject foliage/lookalike qualifiers anywhere in the candidate.
+    if any(t in _VARIETY_TOKEN_DENY for t in low):
+        return None
+    # A species word at either END is a lookalike or a mis-joined multi-species
+    # title -> reject. MID-phrase species words are real cultivar names ("Cox
+    # Orange Pippin") and pass.
+    if low and (low[0] in lookup or low[-1] in lookup):
         return None
     variety = ' '.join(toks)
     # Reject single-letter (pollination type) and digit-leading varieties.
@@ -282,7 +313,7 @@ def _relaxed_parse(title: str) -> tuple[str, str] | None:
     lq = _parse_leading_quote(s)
     if lq:
         return lq
-    cleaned = _strip_listing_noise(s)
+    cleaned = _strip_listing_noise(s, keep_dwarf=('banana' in s.lower()))
     if not cleaned:
         return None
     fs = _find_species_anywhere(cleaned)
@@ -291,9 +322,15 @@ def _relaxed_parse(title: str) -> tuple[str, str] | None:
     species, before, after = fs
     # Species must sit cleanly at one end: words on exactly one side are the
     # variety. Species in the middle (words both sides) is ambiguous -> reject.
+    # Banana exception: a dwarf/super/semi prefix BELONGS to the cultivar
+    # ("Dwarf Banana Ducasse" is Dwarf Ducasse), so fold it into the variety.
     if before and after:
-        return None
-    v = _variety_ok(before or after)
+        if (species.lower() == 'banana'
+                and all(t.lower() in ('dwarf', 'super', 'semi') for t in before)):
+            before, after = [], before + after
+        else:
+            return None
+    v = _variety_ok(before or after, species=species)
     return (species, v) if v else None
 
 
@@ -316,6 +353,7 @@ _NOISE_PAREN_WORDS = frozenset({
     'advanced', 'size', 'orchard', 'tubestock', 'tube', 'stock', 'pot', 'pots',
     'restricted', 'to', 'se', 'south', 'east',
     'small', 'medium', 'large', 'low', 'chill',
+    'stone', 'fruit',                       # "(stone fruit)" category tag
 })
 
 # --- Displayable type labels (DEC-177) ------------------------------------
@@ -470,17 +508,20 @@ def parse_cultivar(title: str) -> tuple[str, str] | None:
 
     Tries the strict parser first (clean separator / quote / taxonomy shapes),
     then a relaxed pass for noisy titles, multigrafts, and leading-quote titles.
-    The relaxed pass runs only when strict returns None, so strict behaviour is
-    unchanged. Both results then pass through _clean_cultivar_parts, which strips
-    listing noise (pot sizes, "(grafted)", "QLD ONLY", "Super Dwarf", ...) so
-    size/rootstock variants of one cultivar collapse to a single slug.
+    The relaxed pass runs only when strict yields nothing, so a successful strict
+    parse is never overridden. Both results pass through _clean_cultivar_parts,
+    which strips listing noise (pot sizes, "(grafted)", "QLD ONLY", "Super
+    Dwarf", ...) so size/rootstock variants of one cultivar collapse to a single
+    slug. A strict result whose parts CLEAN to nothing (the cultivar sat inside
+    the pre-dash segment, e.g. "Dwarf Apple 'Anna' - Medium") also falls through
+    to the relaxed pass instead of failing outright.
     """
     r = _strict_parse(title)
-    if r is None:
+    cleaned = _clean_cultivar_parts(*r) if r else None
+    if cleaned is None:
         r = _relaxed_parse(title)
-    if r is None:
-        return None
-    return _clean_cultivar_parts(*r)
+        cleaned = _clean_cultivar_parts(*r) if r else None
+    return cleaned
 
 
 def _strict_parse(title: str) -> tuple[str, str] | None:

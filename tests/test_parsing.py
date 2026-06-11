@@ -196,6 +196,47 @@ class ProductVarietySlug(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
+# Alert-fallback titles (2026-06-11). ~10% of OOS "Alerts" links sitewide fell
+# back to the generic digest box because these real nursery titles did not
+# parse. Each case is a live title from that audit, pinned to the variety page
+# its alert link must reach.
+# ---------------------------------------------------------------------------
+
+class AlertFallbackTitles(unittest.TestCase):
+    CASES = [
+        ("Semi dwarf Apple Pink Lady Apple tree (Bare rooted)",      "apple-pink-lady"),
+        ("Semi Dwarf Apple granny smith (Bare rooted)",              "apple-granny-smith"),
+        ("Semi Dwarf Apple Cox Orange Pippin(stone fruit)",          "apple-cox-orange-pippin"),
+        ("Semi Dwarf Apple Gala(stone fruit)",                       "apple-gala"),
+        ("Semi Dwarf Apple pink Lady(stone fruit)",                  "apple-pink-lady"),
+        ("Semi Dwarf Apple Red Fuji(stone fruit)",                   "apple-red-fuji"),
+        ("Apple Bite Size Semi-Dwarf",                               "apple-bite-size"),
+        ("Dwarf Apple 'Anna' - Medium (Low Chill)",                  "apple-anna"),
+        ("Dwarf Apple 'Anna' - 300mm pot PICK UP ONLY (Low Chill)",  "apple-anna"),
+        ("Avocado Reed - Medium",                                    "avocado-reed"),
+        ("Mulberry 'Black' - Large",                                 "mulberry-black"),
+        # An ornamental that merely contains a species word must stay unparsed
+        # (Angophora hispida is a gum the trade calls Dwarf Apple, not a Malus).
+        ("Dwarf Apple (Angophora hispida)",                          None),
+        # Nursery-name headers must stay unparsed.
+        ("Fruit Tree Cottage | Tamarillo",                           None),
+    ]
+
+    def test_cases(self):
+        for inp, expected in self.CASES:
+            with self.subTest(input=inp):
+                self.assertEqual(cp.product_variety_slug(inp), expected)
+
+    def test_banana_relaxed_keeps_dwarf(self):
+        # The banana rule (Dwarf Cavendish is a cultivar, not a size) now holds
+        # on the relaxed path too, wherever the form word sits in the title.
+        self.assertEqual(cp.product_variety_slug("Banana Dwarf DUCASSE 5l (QLD ONLY)"), "banana-dwarf-ducasse")
+        self.assertEqual(cp.product_variety_slug("Dwarf Banana Ducasse (QLD Only)"), "banana-dwarf-ducasse")
+        self.assertEqual(cp.product_variety_slug("Banana Super Dwarf Cavendish (QLD ONLY)"), "banana-super-dwarf-cavendish")
+        self.assertEqual(cp.product_variety_slug("Dwarf Cavendish Banana (QLD Only)"), "banana-dwarf-cavendish")
+
+
+# ---------------------------------------------------------------------------
 # group_by_cultivar -- THE shared grouping for variety surfaces. The variety
 # builder writes /variety/<slug>.html for every group; the species builder
 # renders its chip cloud from the same groups, so a chip can never link to a

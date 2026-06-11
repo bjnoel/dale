@@ -497,8 +497,10 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         # covers back-in-stock items.
         v_slug = _variety_slug(p["title"])
         if v_slug and not p["available"]:
+            # #watchSection lands the click ON the variety page's restock-alert
+            # form instead of the top of the page (Benedict, 2026-06-11).
             alert_link = (
-                f' <a href="/variety/{v_slug}.html" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" '
+                f' <a href="/variety/{v_slug}.html#watchSection" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" '
                 f'title="Get restock alerts for this variety">&#128276; Alerts</a>'
             )
         elif not p["available"]:

@@ -4,6 +4,51 @@
 
 ---
 
+## DEC-199 — 2026-06-11 — treestock OOS Alerts links: land on the watch form, parse the titles that fell back to the digest
+
+**Decided by:** Benedict (bug report), Dale (diagnosis + implementation)
+
+**Context:** Benedict reported that clicking "Alerts" on an out-of-stock species-page
+row took him to the top of the page to sign up for general alerts instead of
+subscribing to that variety's restock alert, and suspected a site-wide issue. The
+audit found two causes. (1) Cultivar rows linked to /variety/<slug>.html with no
+fragment, landing at the top of the variety page with the restock form below the
+stock table. (2) Sitewide, 263 of 2,600 OOS alert links (10%, on 69 of 88 species
+pages) were the #subscribeBox fallback because their titles did not parse: "Semi
+Dwarf" prefixes, "(stone fruit)" category tags, quoted cultivars in the pre-dash
+segment ("Dwarf Apple 'Anna' - Medium"), trailing species restatements ("Pink Lady
+Apple tree"), and mid-name species words ("Cox Orange Pippin"). The watch
+plumbing itself (variety-page form, /api/watch-variety, watches DB) was healthy.
+
+**Implementation:**
+- Alert links now point at /variety/<slug>.html#watchSection, landing the click on
+  the restock-alert form. The id has shipped on every variety page since the watch
+  section existed, so no variety rebuild was needed for the anchor to work.
+- cultivar_parsing.py (all pinned by tests/test_parsing.py AlertFallbackTitles):
+  - "semi dwarf"/"semi-dwarf" stripped as listing noise on the relaxed path;
+    'semi' added to SIZE_WORDS; 'stone'/'fruit' added to noise-paren words.
+  - parse_cultivar: a strict parse whose parts CLEAN to nothing now falls through
+    to the relaxed pass instead of failing (the Anna case).
+  - _variety_ok: a standalone dash followed only by size words truncates ("Anna -
+    Medium"); other standalone separators (| / : ;) still reject (nursery-name
+    headers). Trailing species restatements are stripped given the found species
+    ("Pink Lady Apple" -> "Pink Lady"). Species words only reject at the ends of
+    a candidate; mid-name ones pass ("Cox Orange Pippin").
+  - Banana rule extended to the relaxed path: dwarf/super/semi prefixes fold into
+    the cultivar ("Dwarf Banana Ducasse" -> Dwarf Ducasse) instead of being
+    stripped (strict path already did this).
+- Net effect on live titles (12-nursery local set): 52 titles gain a variety link,
+  0 lose one, 9 banana titles regroup to their correct dwarf cultivar pages.
+- **Watch migration needed on server:** banana-super-cavendish merges into
+  banana-super-dwarf-cavendish (it only ever existed because the relaxed path
+  stripped "Dwarf" out of "Super Dwarf Cavendish"). Run
+  migrate_variety_watch_slugs.py (dry run, then --apply) for that slug; the page
+  itself is orphan-deleted by the next variety build.
+
+**To revert:** the parser changes are individually revertible; the anchor is a
+one-line change in build_species_pages.py. Reverting the banana relaxed rule
+restores the (incorrect) dwarf-stripped grouping.
+
 ## DEC-198 — 2026-06-11 — Beestock: beewise removed at owner's request
 
 **Decided by:** Benedict (beewise replied to the Q43 outreach email declining to be listed)
