@@ -1,0 +1,510 @@
+{
+  "species_slug": "quince",
+  "schema_version": 1,
+  "varieties": {
+    "quince-champion": {
+      "slug": "quince-champion",
+      "species": "Quince",
+      "variety": "Champion",
+      "paragraphs": [
+        "Champion is a North American quince introduced in 1870 by the Berckmans (Fruitland) nursery in Augusta, Georgia, and it became one of the most widely grown quinces on the continent. The fruit is large and obtuse pear-shaped, green overspread with bright yellow, and the variety was selected for unusually tender, good-quality flesh by the standards of the quinces grown at the time.",
+        "It is prized for a delicate, lemon-like fragrance and flavour, and it crops later in the autumn. As with other quinces the fruit is used cooked, in jellies, jams and chutneys, where the flesh develops a deep rose colour. It is self-fertile, so a single tree will set fruit."
+      ],
+      "claims": [
+        {
+          "text": "Champion was introduced in 1870 by the Berckmans (Fruitland) nursery in Augusta, Georgia.",
+          "type": "origin",
+          "cites": [
+            "plotmygarden",
+            "ahm"
+          ]
+        },
+        {
+          "text": "The fruit is large, obtuse pear-shaped, green overspread with bright yellow, with tender, good-quality flesh.",
+          "type": "appearance",
+          "cites": [
+            "ahm"
+          ]
+        },
+        {
+          "text": "It became one of the most widely grown quince varieties in North America.",
+          "type": "notable",
+          "cites": [
+            "ahm",
+            "gardeningknowhow"
+          ]
+        },
+        {
+          "text": "It is known for a delicate, lemon-like flavour and crops later in the autumn.",
+          "type": "flavour",
+          "cites": [
+            "gardeningknowhow"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ahm",
+          "name": "American Horticultural Manual Vol. 2 (Budd & Hansen)",
+          "url": "https://chestofbooks.com/gardening-horticulture/American-Horticultural-Manual-Vol2/Leading-Varieties-Of-The-Quince.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeningknowhow",
+          "name": "Gardening Know How",
+          "url": "https://www.gardeningknowhow.com/edible/fruits/quince/quince-tree-types-for-landscapes.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "plotmygarden",
+          "name": "PlotMyGarden",
+          "url": "https://plotmygarden.com/en/plants/quince-champion",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "quince-chinese": {
+      "slug": "quince-chinese",
+      "species": "Quince",
+      "variety": "Chinese",
+      "paragraphs": [
+        "Chinese quince is not a true quince. It is Pseudocydonia sinensis, the sole species of its genus, native to central and southern China, and sold in the nursery trade alongside true quince (Cydonia oblonga). It differs from Cydonia by having serrated, fuzz-free leaves, and from flowering quince (Chaenomeles) by its lack of thorns and single rather than clustered flowers. Mature trunks carry flaky, sycamore-like bark that exfoliates into a patchwork of grey, green and brown.",
+        "The large, oval, citron-yellow fruits (roughly 12 to 17 cm long) ripen in late autumn and give off an intense, sweet fragrance. The flesh is hard and astringent, softening and becoming less astringent after frost. It is too tough to eat raw, so it is cooked into jam, syrups and jellies (it is high in pectin) and brewed into preserves and teas. In Korea it is made into mogwa-cheong (preserved quince) and mogwa-cha (quince tea), and it is also used in traditional Chinese medicine."
+      ],
+      "claims": [
+        {
+          "text": "Chinese quince is Pseudocydonia sinensis, the sole species of its genus, native to central and southern China, distinct from true quince (Cydonia).",
+          "type": "origin",
+          "cites": [
+            "wikipedia-pseudo",
+            "ncsu-pseudo"
+          ]
+        },
+        {
+          "text": "It differs from Cydonia by serrated, fuzz-free leaves and from Chaenomeles by lacking thorns and having single rather than clustered flowers.",
+          "type": "botany",
+          "cites": [
+            "wikipedia-pseudo"
+          ]
+        },
+        {
+          "text": "Mature trunks have flaky, exfoliating bark in a patchwork of grey, green and brown.",
+          "type": "appearance",
+          "cites": [
+            "ncsu-pseudo"
+          ]
+        },
+        {
+          "text": "The large oval citron-yellow fruits (about 12 to 17 cm long) ripen in late autumn with an intense sweet fragrance.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-pseudo",
+            "ncsu-pseudo"
+          ]
+        },
+        {
+          "text": "The flesh is hard and astringent, softening and becoming less astringent after frost.",
+          "type": "texture",
+          "cites": [
+            "wikipedia-pseudo"
+          ]
+        },
+        {
+          "text": "The fruit is high in pectin and cooked into jam, syrups, jellies, preserves and teas, including Korean mogwa-cheong and mogwa-cha.",
+          "type": "uses",
+          "cites": [
+            "wikipedia-pseudo",
+            "ncsu-pseudo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-pseudo",
+          "name": "Wikipedia: Pseudocydonia",
+          "url": "https://en.wikipedia.org/wiki/Pseudocydonia",
+          "tier": "third_party"
+        },
+        {
+          "id": "ncsu-pseudo",
+          "name": "NC State Extension Gardener Plant Toolbox: Pseudocydonia sinensis",
+          "url": "https://plants.ces.ncsu.edu/plants/pseudocydonia-sinensis/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "quince-de-bourgeaut": {
+      "slug": "quince-de-bourgeaut",
+      "species": "Quince",
+      "variety": "De Bourgeaut",
+      "paragraphs": [
+        "De Bourgeaut (also spelled Bourgeault) is an old French culinary quince, imported into the United States from France around 1885. The tree is vigorous and upright with notably large leaves, a distinctive feature among quinces.",
+        "The fruit is medium to large and pear-shaped, with a deep eye, a small calyx, a sunken stalk and a slight neck. The flesh is juicy and yellow with a good flavour. Like other true quinces it is grown for cooking and preserving rather than fresh eating."
+      ],
+      "claims": [
+        {
+          "text": "De Bourgeaut (also spelled Bourgeault) is an old French culinary quince imported into the United States from France around 1885.",
+          "type": "origin",
+          "cites": [
+            "cricket-hill",
+            "hrfn-quince"
+          ]
+        },
+        {
+          "text": "The tree is vigorous and upright with large leaves.",
+          "type": "appearance",
+          "cites": [
+            "hrfn-quince",
+            "cricket-hill"
+          ]
+        },
+        {
+          "text": "The fruit is medium to large and pear-shaped with a deep eye, small calyx, sunken stalk and a slight neck.",
+          "type": "appearance",
+          "cites": [
+            "hrfn-quince"
+          ]
+        },
+        {
+          "text": "The flesh is juicy and yellow with a good flavour.",
+          "type": "flavour",
+          "cites": [
+            "cricket-hill"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hrfn-quince",
+          "name": "Heritage & Rare Fruit Network: Quinces",
+          "url": "https://heritageandrarefruits.weebly.com/quinces.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "cricket-hill",
+          "name": "Cricket Hill Garden: Bourgeault Heirloom French Quince",
+          "url": "https://www.treepeony.com/products/bourgeault-quince",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "quince-missouri-mammoth": {
+      "slug": "quince-missouri-mammoth",
+      "species": "Quince",
+      "variety": "Missouri Mammoth",
+      "paragraphs": [
+        "Missouri Mammoth is an American heirloom quince grown for its very large fruit. The American Horticultural Manual describes it as very large and roundish-oblate, green mostly overspread with orange-yellow, with flesh of very good quality and texture, and notes it became a popular commercial variety especially in Utah and parts of Colorado.",
+        "Like other quinces it is a cooking fruit, valued for the size and quality of its crop rather than for eating fresh. It is preserved today in heritage and rare-fruit collections."
+      ],
+      "claims": [
+        {
+          "text": "Missouri Mammoth is described as very large and roundish-oblate, green overspread with orange-yellow, with very good flesh quality and texture.",
+          "type": "appearance",
+          "cites": [
+            "ahm"
+          ]
+        },
+        {
+          "text": "It became a popular commercial quince variety, especially in Utah and parts of Colorado.",
+          "type": "notable",
+          "cites": [
+            "ahm",
+            "heritagefruits"
+          ]
+        },
+        {
+          "text": "It is preserved in heritage and rare-fruit collections.",
+          "type": "notable",
+          "cites": [
+            "heritagefruits"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ahm",
+          "name": "American Horticultural Manual Vol. 2 (Budd & Hansen)",
+          "url": "https://chestofbooks.com/gardening-horticulture/American-Horticultural-Manual-Vol2/Leading-Varieties-Of-The-Quince.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritagefruits",
+          "name": "Heritage Fruits Society (Quinces)",
+          "url": "https://www.heritagefruitssociety.org/page-1766149",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "quince-pineapple": {
+      "slug": "quince-pineapple",
+      "species": "Quince",
+      "variety": "Pineapple",
+      "paragraphs": [
+        "Pineapple quince is a seedling raised by the famed breeder Luther Burbank in California in the late 1800s, deliberately selected for a milder, more pleasant fruit. The American Horticultural Manual describes it as large and yellow, much like the Orange quince but said to cook tender like an apple, and it takes its name from a distinct pineapple-like flavour.",
+        "The flesh is pale and, while still astringent raw, develops a sweeter, fruity, tropical character once cooked, turning a light pink with heat. It is used for jelly, preserves and added to applesauce or cider, and it is one of the more commonly grown quince cultivars."
+      ],
+      "claims": [
+        {
+          "text": "Pineapple quince is a seedling raised by Luther Burbank in California in the late 1800s.",
+          "type": "origin",
+          "cites": [
+            "treesofantiquity",
+            "ahm"
+          ]
+        },
+        {
+          "text": "It is large and yellow, much like the Orange quince, and is said to cook tender like an apple.",
+          "type": "appearance",
+          "cites": [
+            "ahm"
+          ]
+        },
+        {
+          "text": "It is named for a pineapple-like flavour and was bred for improved flavour and shorter cooking time.",
+          "type": "flavour",
+          "cites": [
+            "treesofantiquity",
+            "gardeningknowhow"
+          ]
+        },
+        {
+          "text": "It is used for jelly, preserves, applesauce and cider, and is one of the more commonly grown cultivars.",
+          "type": "uses",
+          "cites": [
+            "gardeningknowhow",
+            "treesofantiquity"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ahm",
+          "name": "American Horticultural Manual Vol. 2 (Budd & Hansen)",
+          "url": "https://chestofbooks.com/gardening-horticulture/American-Horticultural-Manual-Vol2/Leading-Varieties-Of-The-Quince.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeningknowhow",
+          "name": "Gardening Know How",
+          "url": "https://www.gardeningknowhow.com/edible/fruits/quince/quince-tree-types-for-landscapes.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "treesofantiquity",
+          "name": "Trees of Antiquity",
+          "url": "https://www.treesofantiquity.com/products/pineapple-quince",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "quince-powell-s-prize": {
+      "slug": "quince-powell-s-prize",
+      "species": "Quince",
+      "variety": "Powell S Prize",
+      "paragraphs": [
+        "Powell's Prize is a quince of medium to strong vigour with a spreading habit and small to medium leaves. It flowers early and crops in the early to mid season.",
+        "The fruit is small and pear-shaped (pyriform) with a bit of a neck. It is a culinary quince, used for stewing, poaching, roasting and preserving into jams, jellies and pastes, and the flesh turns pink when cooked. The variety is self-pollinating, so it does not require another quince nearby to set fruit."
+      ],
+      "claims": [
+        {
+          "text": "Powell's Prize is of medium to strong vigour, spreading, with small to medium leaves, flowering early and cropping early to mid season.",
+          "type": "habit",
+          "cites": [
+            "hrfn-quince",
+            "heritage-ft-powell"
+          ]
+        },
+        {
+          "text": "The fruit is small and pear-shaped (pyriform) with a slight neck.",
+          "type": "appearance",
+          "cites": [
+            "hrfn-quince",
+            "heritage-ft-powell"
+          ]
+        },
+        {
+          "text": "The flesh turns pink when cooked, and the fruit is used for stewing, poaching, roasting and preserving into jams, jellies and pastes.",
+          "type": "uses",
+          "cites": [
+            "heritage-ft-powell"
+          ]
+        },
+        {
+          "text": "The variety is self-pollinating.",
+          "type": "horticulture",
+          "cites": [
+            "heritage-ft-powell"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hrfn-quince",
+          "name": "Heritage & Rare Fruit Network: Quinces",
+          "url": "https://heritageandrarefruits.weebly.com/quinces.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage-ft-powell",
+          "name": "Heritage Fruit Trees: Powell's Prize Quince",
+          "url": "https://www.heritagefruittrees.com.au/powells-prize-quince/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "quince-rea-s-mammoth": {
+      "slug": "quince-rea-s-mammoth",
+      "species": "Quince",
+      "variety": "Rea S Mammoth",
+      "paragraphs": [
+        "Rea's Mammoth (also written Rea Mammoth) is an American heirloom quince that originated in New York State in the 1870s. The American Horticultural Manual describes it as large to very large and roundish, yellow with pinkish shades, and records it as a leading commercial variety in the Eastern and Southeastern states and California. It is named Mammoth for the size of its fruit, not the tree.",
+        "The big, pear-shaped fruit is fragrant and ripens to a rich golden yellow in autumn. As with other quinces it is a cooking fruit, used for jellies and jams, and it is valued for the size and quality of its crop."
+      ],
+      "claims": [
+        {
+          "text": "Rea's Mammoth originated in New York State in the 1870s.",
+          "type": "origin",
+          "cites": [
+            "ahm",
+            "chrisbowers"
+          ]
+        },
+        {
+          "text": "It is described as large to very large, roundish, yellow with pinkish shades, and was a leading commercial variety in the Eastern and Southeastern states and California.",
+          "type": "appearance",
+          "cites": [
+            "ahm"
+          ]
+        },
+        {
+          "text": "It is named Mammoth for the size of its large, fragrant, pear-shaped fruit, which ripens to golden yellow in autumn.",
+          "type": "notable",
+          "cites": [
+            "chrisbowers"
+          ]
+        },
+        {
+          "text": "It is a cooking fruit used for jellies and jams.",
+          "type": "uses",
+          "cites": [
+            "chrisbowers"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ahm",
+          "name": "American Horticultural Manual Vol. 2 (Budd & Hansen)",
+          "url": "https://chestofbooks.com/gardening-horticulture/American-Horticultural-Manual-Vol2/Leading-Varieties-Of-The-Quince.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "chrisbowers",
+          "name": "Chris Bowers & Sons",
+          "url": "https://www.chrisbowers.co.uk/product/reas-mammoth-quince-tree/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "quince-smyrna": {
+      "slug": "quince-smyrna",
+      "species": "Quince",
+      "variety": "Smyrna",
+      "paragraphs": [
+        "Smyrna is a large-fruited quince taking its name from Smyrna (modern Izmir, Turkey), the region it traces back to. It bears very large, furrowed, pear-shaped fruit that ripens to bright lemon-yellow in autumn, with smooth, pale yellow flesh. The Royal Horticultural Society notes the flesh turns pale pink when cooked but stays firm, and that the leaves are notably large compared with other quinces, with downy silver-grey undersides.",
+        "Like most quince it is a cooking fruit, too hard and astringent to enjoy raw, but strongly aromatic and high in pectin, which suits it to jellies, jams, preserves and pastes. It is valued for its size and fragrance, and the fruit is reported to store well."
+      ],
+      "claims": [
+        {
+          "text": "Smyrna takes its name from Smyrna (modern Izmir, Turkey), the region it traces back to.",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce",
+            "rarefruitsa"
+          ]
+        },
+        {
+          "text": "It bears very large, furrowed, pear-shaped fruit ripening to lemon-yellow in autumn, with pale yellow flesh that turns pink but stays firm when cooked.",
+          "type": "appearance",
+          "cites": [
+            "rhs"
+          ]
+        },
+        {
+          "text": "Its leaves are large compared with other quinces, with downy silver-grey undersides.",
+          "type": "appearance",
+          "cites": [
+            "rhs"
+          ]
+        },
+        {
+          "text": "It is a cooking fruit, aromatic and high in pectin, suited to jellies, preserves and pastes, and stores well.",
+          "type": "uses",
+          "cites": [
+            "specialtyproduce",
+            "rarefruitsa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs",
+          "name": "Royal Horticultural Society",
+          "url": "https://www.rhs.org.uk/plants/316987/cydonia-oblonga-smyrna-(f)/details",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce (Turkish/Smyrna Quince)",
+          "url": "https://specialtyproduce.com/produce/Turkish_Quince_22504.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "rarefruitsa",
+          "name": "Rare Fruit Society of South Australia",
+          "url": "https://rarefruit-sa.org.au/syrna-quince-web/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "quince-champion-pome-fruit",
+    "quince-heaven-lotus",
+    "quince-master-s-early",
+    "quince-smyrma",
+    "quince-smyrna-pome-fruit"
+  ]
+}
