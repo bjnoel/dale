@@ -18,6 +18,7 @@ from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_header, render_footer, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
+from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK
 from stocklib.taxonomy import enabled_species
 # Reuse the variety builder's non-plant denylist so we never emit a variety
 # slug (vs) for a product it would refuse to build a /variety/ page for
@@ -33,6 +34,16 @@ from build_variety_pages import NON_PLANT_KEYWORDS as _VARIETY_PAGE_DENY
 # - Ladybird: ships QLD/NSW/VIC/ACT only, NOT WA
 # - Fruitopia: unclear from policy, likely does NOT ship to WA (QLD-based, no WA mention)
 RARITY_SCORES_FILE = Path("/opt/dale/data/rarity_scores.json")
+
+# Dashboard junk filter (DEC-200 P1.5): the shared true-junk list plus the
+# ornamental and vegetable plant keywords. Native keywords are deliberately
+# EXCLUDED: the dashboard has always shown the handful of live melaleuca /
+# wattle rows and they must stay visible (as unclassified search results)
+# rather than vanish at the de-fork. The variety/species/compare surfaces
+# keep using the stricter NON_PLANT_KEYWORDS.
+DASHBOARD_JUNK_KEYWORDS = TRUE_JUNK | {
+    kw for kw, cat in CATEGORY_KEYWORDS.items() if cat in ("ornamental", "vegetable")
+}
 
 # Featured nurseries (paying partners). Products are visually highlighted and sorted first.
 # To activate a featured listing, add the nursery key here.
@@ -517,24 +528,9 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             if product_type in non_plant_types:
                 continue
 
-            # Skip items matching non-plant keywords in title
-            non_plant_keywords = [
-                "fertilizer", "fertiliser", "potting mix", "soil mix",
-                "seaweed solution", "fish emulsion", "worm castings",
-                "secateurs", "pruning", "garden gloves", "plant label",
-                "grafting tape", "grafting knife", "budding tape",
-                "grow bag", "terracotta", "saucer",
-                "pest spray", "insecticide", "fungicide", "neem oil",
-                "insect killer", "insect control", "white oil",
-                "weed killer", "herbicide", "concentrate spray",
-                "shipping", "postage", "freight", "delivery charge",
-                "combo pack", "starter kit",
-                "sharp shooter", "searles liquid",
-                "irrigation", "tree sealant", "end stop terminator",
-                "ornamental",  # ornamental trees/shrubs are not fruit trees
-                "asparagus",   # vegetable, not a fruit tree
-            ]
-            if any(kw in title_lower for kw in non_plant_keywords):
+            # Skip items matching non-plant keywords in title (shared list;
+            # natives deliberately exempt, see DASHBOARD_JUNK_KEYWORDS)
+            if any(kw in title_lower for kw in DASHBOARD_JUNK_KEYWORDS):
                 continue
 
             # Skip seed packets (not nursery-grown trees/plants)
