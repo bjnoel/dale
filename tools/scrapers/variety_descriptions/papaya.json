@@ -1,0 +1,806 @@
+{
+  "species_slug": "papaya",
+  "schema_version": 1,
+  "varieties": {
+    "papaya-berry-oak-leaf": {
+      "slug": "papaya-berry-oak-leaf",
+      "species": "Papaya",
+      "variety": "Berry Oak Leaf",
+      "paragraphs": [
+        "Berry Oak Leaf is the oak-leaved papaya, Vasconcellea quercifolia (syn. Carica quercifolia), a papaya relative from subtropical South America. It is named for its distinctive lobed, oak-shaped leaves, which give it an ornamental look unlike the broad foliage of common papaya. The berry part of the name reflects its fruit: small, bright orange and roughly 50 mm long, ripening with a sweet smell and juicy, sweet pulp rather than the large melon-like fruit of Carica papaya.",
+        "It is one of the more cold-hardy members of the papaya family, which suits cooler subtropical gardens, though it dislikes wet feet in winter. The plant is dioecious, so male and female trees are needed to set fruit. It is also valued horticulturally as a rootstock for babaco."
+      ],
+      "claims": [
+        {
+          "text": "Berry Oak Leaf is Vasconcellea quercifolia (syn. Carica quercifolia), the oak-leaved papaya, named for its lobed oak-shaped leaves",
+          "type": "origin",
+          "cites": ["specialty-oakleaf", "daleys-oakleaf", "agromarket-berryoak"]
+        },
+        {
+          "text": "Bears small, bright orange fruit about 50 mm long with sweet, juicy pulp",
+          "type": "appearance",
+          "cites": ["specialty-oakleaf", "daleys-oakleaf"]
+        },
+        {
+          "text": "Unusually cold-hardy for a papaya relative and native to subtropical South America",
+          "type": "climate",
+          "cites": ["specialty-oakleaf", "daleys-oakleaf"]
+        },
+        {
+          "text": "Dioecious, needing separate male and female plants",
+          "type": "pollination",
+          "cites": ["daleys-oakleaf"]
+        },
+        {
+          "text": "Used as a rootstock for babaco",
+          "type": "use",
+          "cites": ["daleys-oakleaf"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty-oakleaf",
+          "name": "Specialty Produce, Oak Leaf Papayas",
+          "url": "https://specialtyproduce.com/produce/Oak_Leaf_Papayas_13000.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-oakleaf",
+          "name": "Daleys Fruit Tree Nursery, Oak Leaved Papaya",
+          "url": "https://www.daleysfruit.com.au/buy/oak-leaved-papaya-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "agromarket-berryoak",
+          "name": "Agromarket Hellas, Papaya Berry Oak Leaf (Carica quercifolia)",
+          "url": "https://www.agromarket-hellas.gr/en/c/Tropical_Plants-685/Agromarket-Hellas-Kolovos-1/Papaya_Berry_Oak_Leaf_Carica_quercifolia-1545",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-col-de-monte": {
+      "slug": "papaya-col-de-monte",
+      "species": "Papaya",
+      "variety": "Col De Monte",
+      "paragraphs": [
+        "Col De Monte is a highland relative of papaya, Vasconcellea monoica (often sold as Carica monoica), from the Andes of South America. Its standout trait is being monoecious: male and female flowers sit on the same plant, so a single tree is self-fertile, unusual in a family where most species are dioecious. It stays compact, reaching only about 1 to 3 m, making it one of the smaller-growing papaya relatives.",
+        "The name col de monte means mountain cabbage, a nod to its young seedlings and leaves being cooked as greens. It bears small, fragrant fruit with orange to yellow-green skin whose flavour is highly variable, sometimes sweet and apple-like, sometimes astringent. Cooked with sugar and lemon it has been likened to stewed apricots, and the firm fruit also suits drying and candying."
+      ],
+      "claims": [
+        {
+          "text": "Col De Monte is Vasconcellea monoica (syn. Carica monoica), an Andean highland papaya relative",
+          "type": "origin",
+          "cites": ["specialty-andina", "daleys-coldemonte"]
+        },
+        {
+          "text": "Monoecious, carrying male and female flowers on one plant, so a single tree is self-fertile",
+          "type": "pollination",
+          "cites": ["daleys-coldemonte", "specialty-andina"]
+        },
+        {
+          "text": "Compact, reaching only about 1 to 3 m",
+          "type": "habit",
+          "cites": ["daleys-coldemonte"]
+        },
+        {
+          "text": "The name means mountain cabbage; young seedlings and leaves are cooked as greens",
+          "type": "naming",
+          "cites": ["specialty-andina", "daleys-coldemonte"]
+        },
+        {
+          "text": "Fruit flavour is highly variable, from sweet and apple-like to astringent, and is likened to stewed apricots when cooked",
+          "type": "flavour",
+          "cites": ["specialty-andina", "daleys-coldemonte"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty-andina",
+          "name": "Specialty Produce, Papaya Andina (Col de Monte)",
+          "url": "https://specialtyproduce.com/produce/Papaya_Andina_17690.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-coldemonte",
+          "name": "Daleys Fruit Tree Nursery, Col de Monte Papaya",
+          "url": "https://www.daleysfruit.com.au/buy/col-de-monte-papaya-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-paw-paw-red-lady": {
+      "slug": "papaya-paw-paw-red-lady",
+      "species": "Papaya",
+      "variety": "Paw Paw Red Lady",
+      "paragraphs": [
+        "Paw Paw Red Lady is the Australian nursery name for Red Lady (sold by its breeder as 786), an F1 hybrid red papaya from the Taiwanese seed company Known-You. It is grown commercially around the world and is listed by University of Florida extension among the common papaya varieties in Florida. The flesh is red and sweet, on oblong fruit that typically reach around 2 kg.",
+        "The tree is a compact dwarf with high yields and a reputation for disease resistance, which makes it a popular backyard papaya. Plants are self-pollinating, so a single tree can set fruit on its own, it is quick to bear from seed, and Australian sellers rate it among the more cold tolerant papayas available."
+      ],
+      "claims": [
+        {
+          "text": "Red Lady (786) is an F1 hybrid red papaya bred by Known-You Seed of Taiwan",
+          "type": "origin",
+          "cites": ["knownyou", "itfnet"]
+        },
+        {
+          "text": "Red flesh on oblong fruit typically around 2 kg; listed among common papaya varieties in Florida",
+          "type": "appearance",
+          "cites": ["knownyou", "ufifas-sarasota"]
+        },
+        {
+          "text": "Compact dwarf tree with high yield and disease resistance",
+          "type": "habit",
+          "cites": ["ufifas-sarasota", "diggers"]
+        },
+        {
+          "text": "Self-pollinating, so a single tree can set fruit, and quick to bear from seed",
+          "type": "pollination",
+          "cites": ["diggers", "knownyou"]
+        },
+        {
+          "text": "Rated by Australian sellers among the more cold tolerant papaya varieties",
+          "type": "climate",
+          "cites": ["diggers"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "knownyou",
+          "name": "Known-You Seed (breeder), Red Lady papaya",
+          "url": "https://knownyouseed.com/product/red-lady/",
+          "tier": "nursery"
+        },
+        {
+          "id": "ufifas-sarasota",
+          "name": "UF/IFAS Extension Sarasota County, papaya varieties",
+          "url": "https://blogs.ifas.ufl.edu/sarasotaco/2025/02/20/suncoast-grown-and-gathered-february-papaya-a-fruitful-florida-native/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "itfnet",
+          "name": "International Tropical Fruits Network: Papaya Common Varieties",
+          "url": "https://www.itfnet.org/v1/2016/05/papaya-common-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "diggers",
+          "name": "The Diggers Club, Paw Paw Red Lady",
+          "url": "https://www.diggers.com.au/products/paw-paw-red-lady",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-rb4-hybrid": {
+      "slug": "papaya-rb4-hybrid",
+      "species": "Papaya",
+      "variety": "RB4 Hybrid",
+      "paragraphs": [
+        "RB4 is a red-fleshed papaya from the Australian breeding program, with a hybrid code that follows a colour-and-sex convention (R for red flesh, B for bisexual). Peer-reviewed Australian variety testing put its red flesh at about 10.6 Brix, mid-range for sweetness among the red types trialled.",
+        "Because it is bisexual (hermaphrodite), RB4 is self-fruitful and a single tree can bear, though planting several improves pollination and yield. It belongs to the sweet, deeply coloured red papaya group rather than the yellow paw paw types."
+      ],
+      "claims": [
+        {
+          "text": "RB4 is a red-fleshed papaya evaluated in Australian variety testing",
+          "type": "appearance",
+          "cites": ["pmc", "rosscreek-rb4", "daleys"]
+        },
+        {
+          "text": "Australian hybrid code convention: R denotes red flesh, B denotes bisexual",
+          "type": "naming",
+          "cites": ["stfc"]
+        },
+        {
+          "text": "Red flesh measured about 10.6 Brix, mid-range among the red varieties trialled",
+          "type": "flavour",
+          "cites": ["pmc"]
+        },
+        {
+          "text": "Bisexual and self-fruitful, so a single tree can set fruit; more trees lift yield",
+          "type": "pollination",
+          "cites": ["rosscreek-rb4", "daleys", "stfc"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc",
+          "name": "Biochemical, Sensory, and Molecular Evaluation of Flavour in Australian Papaya Varieties (PMC9181177)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9181177/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Papaya Seed Australia",
+          "url": "https://stfc.org.au/articles/papaya-seed-australia/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-rb4",
+          "name": "Ross Creek Tropicals, Papaya RB4 Hybrid",
+          "url": "https://www.rosscreektropicals.com.au/products/papaya-rb4-hybrid",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit, Paw Paw / Papaya varieties",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/pawpaw.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-rb4-hybrid-bi-sexual": {
+      "slug": "papaya-rb4-hybrid-bi-sexual",
+      "species": "Papaya",
+      "variety": "RB4' Hybrid Bi Sexual",
+      "paragraphs": [
+        "RB4 is a red-fleshed papaya from the Australian breeding program. Its hybrid code reflects a colour-and-sex convention, R for red flesh and B for bisexual, and in peer-reviewed Australian variety testing the flesh measured about 10.6 Brix, mid-range for sweetness among the red types trialled.",
+        "The bisexual (hermaphrodite) habit is the defining trait of this listing: the tree carries self-fertile flowers, so one plant can set fruit on its own, unlike the dioecious yellow paw paws that need separate male and female trees. Planting more than one still improves pollination and yield."
+      ],
+      "claims": [
+        {
+          "text": "RB4 is a red-fleshed papaya evaluated in Australian variety testing",
+          "type": "appearance",
+          "cites": ["pmc", "rosscreek-rb4", "daleys"]
+        },
+        {
+          "text": "Hybrid code convention: R denotes red flesh, B denotes bisexual",
+          "type": "naming",
+          "cites": ["stfc"]
+        },
+        {
+          "text": "Flesh measured about 10.6 Brix, mid-range among the red varieties trialled",
+          "type": "flavour",
+          "cites": ["pmc"]
+        },
+        {
+          "text": "Bisexual and self-fruitful, so one tree can set fruit without a separate pollinator",
+          "type": "pollination",
+          "cites": ["rosscreek-rb4", "daleys", "stfc"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc",
+          "name": "Biochemical, Sensory, and Molecular Evaluation of Flavour in Australian Papaya Varieties (PMC9181177)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9181177/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Papaya Seed Australia",
+          "url": "https://stfc.org.au/articles/papaya-seed-australia/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-rb4",
+          "name": "Ross Creek Tropicals, Papaya RB4 Bi Sexual Red",
+          "url": "https://www.rosscreektropicals.com.au/products/papaya-rb4-bi-sexual-red",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit, Paw Paw / Papaya varieties",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/pawpaw.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-red-lady": {
+      "slug": "papaya-red-lady",
+      "species": "Papaya",
+      "variety": "Red Lady",
+      "paragraphs": [
+        "Red Lady (sold by its breeder as 786) is an F1 hybrid red papaya from the Taiwanese seed company Known-You, grown commercially around the world and listed by University of Florida extension among the common papaya varieties in Florida. The flesh is red and sweet, on oblong fruit that typically reach around 2 kg.",
+        "The tree is a compact dwarf with high yields and a reputation for disease resistance, which makes it a popular backyard papaya. Plants are self-pollinating, so a single tree can set fruit on its own, it is quick to bear from seed, and Australian sellers rate it among the more cold tolerant papayas available."
+      ],
+      "claims": [
+        {
+          "text": "Red Lady (786) is an F1 hybrid red papaya bred by Known-You Seed of Taiwan",
+          "type": "origin",
+          "cites": ["knownyou", "itfnet"]
+        },
+        {
+          "text": "Red flesh on oblong fruit typically around 2 kg; listed among common papaya varieties in Florida",
+          "type": "appearance",
+          "cites": ["knownyou", "ufifas-sarasota"]
+        },
+        {
+          "text": "Compact dwarf tree with high yield and disease resistance",
+          "type": "habit",
+          "cites": ["ufifas-sarasota", "diggers"]
+        },
+        {
+          "text": "Self-pollinating, so a single tree can set fruit, and quick to bear from seed",
+          "type": "pollination",
+          "cites": ["diggers", "knownyou"]
+        },
+        {
+          "text": "Rated by Australian sellers among the more cold tolerant papaya varieties",
+          "type": "climate",
+          "cites": ["diggers"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "knownyou",
+          "name": "Known-You Seed (breeder), Red Lady papaya",
+          "url": "https://knownyouseed.com/product/red-lady/",
+          "tier": "nursery"
+        },
+        {
+          "id": "ufifas-sarasota",
+          "name": "UF/IFAS Extension Sarasota County, papaya varieties",
+          "url": "https://blogs.ifas.ufl.edu/sarasotaco/2025/02/20/suncoast-grown-and-gathered-february-papaya-a-fruitful-florida-native/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "itfnet",
+          "name": "International Tropical Fruits Network: Papaya Common Varieties",
+          "url": "https://www.itfnet.org/v1/2016/05/papaya-common-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "diggers",
+          "name": "The Diggers Club, Paw Paw Red Lady",
+          "url": "https://www.diggers.com.au/products/paw-paw-red-lady",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-red-rb4-hybrid": {
+      "slug": "papaya-red-rb4-hybrid",
+      "species": "Papaya",
+      "variety": "Red RB4 Hybrid",
+      "paragraphs": [
+        "RB4 is a red-fleshed papaya from the Australian breeding program, where the hybrid code follows a colour-and-sex convention (R for red flesh, B for bisexual). In peer-reviewed Australian variety testing its red flesh measured about 10.6 Brix, mid-range for sweetness among the red types trialled.",
+        "Being bisexual (hermaphrodite), RB4 is self-fruitful, so a single tree can set fruit, though planting more than one lifts pollination and yield. Red-fleshed selections like this sit at the sweet, deep-coloured papaya end of the Australian market, as distinct from the yellow paw paw types."
+      ],
+      "claims": [
+        {
+          "text": "RB4 is a red-fleshed papaya evaluated in Australian variety testing",
+          "type": "appearance",
+          "cites": ["pmc", "rosscreek-rb4", "daleys"]
+        },
+        {
+          "text": "Australian hybrid code convention: R denotes red flesh, B denotes bisexual",
+          "type": "naming",
+          "cites": ["stfc"]
+        },
+        {
+          "text": "Red flesh measured about 10.6 Brix, mid-range among the red varieties trialled",
+          "type": "flavour",
+          "cites": ["pmc"]
+        },
+        {
+          "text": "Bisexual and self-fruitful, so a single tree can set fruit; more trees lift yield",
+          "type": "pollination",
+          "cites": ["rosscreek-rb4", "daleys", "stfc"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc",
+          "name": "Biochemical, Sensory, and Molecular Evaluation of Flavour in Australian Papaya Varieties (PMC9181177)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9181177/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Papaya Seed Australia",
+          "url": "https://stfc.org.au/articles/papaya-seed-australia/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-rb4",
+          "name": "Ross Creek Tropicals, Papaya RB4 Hybrid",
+          "url": "https://www.rosscreektropicals.com.au/products/papaya-rb4-hybrid",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit, Paw Paw / Papaya varieties",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/pawpaw.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-richter-gold": {
+      "slug": "papaya-richter-gold",
+      "species": "Papaya",
+      "variety": "Richter Gold",
+      "paragraphs": [
+        "Richter Gold is an Australian yellow-fleshed pawpaw, one of the dioecious yellow-fruited types listed in the Queensland DAF papaw kit among varieties grown in south-east Queensland. Being dioecious, it carries male and female flowers on separate trees, so a planting needs both to set fruit. In Australian usage the yellow-fleshed forms like this are called pawpaw, as distinct from the red-fleshed papaya, and the yellow market segment it belongs to favours broad, round fruit of about 1 to 2 kg.",
+        "Rather than a single fixed clone, Richter Gold covers many local seedling selections raised under that name, which is why fruit can vary between growers. It is noted for some tolerance to ripe-fruit rots and tends to perform better in subtropical districts than the bisexual (self-pollinating) papaya types."
+      ],
+      "claims": [
+        {
+          "text": "Richter Gold is a dioecious, yellow-fleshed pawpaw listed in the Queensland DAF papaw kit among varieties grown in south-east Queensland",
+          "type": "origin",
+          "cites": ["daf-papaw-kit", "daleys-richtergold"]
+        },
+        {
+          "text": "Dioecious, with male and female flowers on separate trees, so both are needed to set fruit",
+          "type": "pollination",
+          "cites": ["daf-papaw-kit", "daleys-richtergold"]
+        },
+        {
+          "text": "Yellow-fleshed pawpaws of about 1 to 2 kg, usually round or oblong, are an established Australian market segment that includes Richter Gold selections",
+          "type": "use",
+          "cites": ["daf-papaw-kit"]
+        },
+        {
+          "text": "Produces yellow, broad, round fruit with some tolerance to ripe fruit rots",
+          "type": "appearance",
+          "cites": ["daleys-richtergold"]
+        },
+        {
+          "text": "Covers many local selections rather than one fixed clone, and performs better in the subtropics than bisexual papayas",
+          "type": "growing",
+          "cites": ["daleys-richtergold", "daf-papaw-kit"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daf-papaw-kit",
+          "name": "Queensland DAF Papaw Information Kit (Agrilink, growing guide)",
+          "url": "https://era.dpi.qld.gov.au/id/eprint/1646/4/3growpap.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-richtergold",
+          "name": "Daleys Fruit Tree Nursery, Papaya Richter Gold",
+          "url": "https://www.daleysfruit.com.au/buy/papaya-hawain-bisexual-yellow-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-sunrise-solo": {
+      "slug": "papaya-sunrise-solo",
+      "species": "Papaya",
+      "variety": "Sunrise Solo",
+      "paragraphs": [
+        "Sunrise Solo is a Hawaiian Solo-type papaya developed from a 1961 cross at the University of Hawaii's Poamoho farm, between Line 9 (a strain with orange-red flesh) and Kariya Solo (a high-quality yellow-fleshed strain). It is the red-fleshed member of the Solo group, with sweet reddish-orange flesh and the mild, classic Solo flavour.",
+        "Fruit are small, single-serve, weighing about 350 to 500 g, a size originally bred for export. Plants are hermaphrodite (bisexual) and self-pollinating, the typical Solo habit, so they fruit reliably without a separate pollinator tree."
+      ],
+      "claims": [
+        {
+          "text": "Sunrise Solo was developed from a 1961 cross at the University of Hawaii's Poamoho farm between Line 9 (orange-red flesh) and Kariya Solo (yellow flesh)",
+          "type": "origin",
+          "cites": ["hawaii"]
+        },
+        {
+          "text": "It has reddish-orange flesh and is the red-fleshed line of the Solo group",
+          "type": "appearance",
+          "cites": ["hawaii", "itfnet"]
+        },
+        {
+          "text": "Solo papayas bear small single-serve fruit of about 350 to 500 g",
+          "type": "appearance",
+          "cites": ["itfnet"]
+        },
+        {
+          "text": "Sunrise Solo plants are hermaphrodite (bisexual) and self-pollinating",
+          "type": "pollination",
+          "cites": ["itfnet"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hawaii",
+          "name": "University of Hawaii ScholarSpace: Sunrise Solo, a Different Colored Solo Papaya (Hamilton and Ito, 1968)",
+          "url": "https://scholarspace.manoa.hawaii.edu/items/f6ecc9d3-2691-4d32-9c70-26673b655278",
+          "tier": "authoritative"
+        },
+        {
+          "id": "itfnet",
+          "name": "International Tropical Fruits Network: Papaya Common Varieties",
+          "url": "https://www.itfnet.org/v1/2016/05/papaya-common-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-sunrise-solo-hybrid-bi-sexual": {
+      "slug": "papaya-sunrise-solo-hybrid-bi-sexual",
+      "species": "Papaya",
+      "variety": "Sunrise Solo Hybrid Bi Sexual",
+      "paragraphs": [
+        "Sunrise Solo is a Hawaiian Solo-type papaya developed from a 1961 cross at the University of Hawaii's Poamoho farm, between Line 9 (a strain with orange-red flesh) and Kariya Solo (a high-quality yellow-fleshed strain). It is the red-fleshed member of the Solo group, with sweet reddish-orange flesh and the mild, classic Solo flavour.",
+        "Sold here as a bisexual line, it carries the typical Solo habit: plants are hermaphrodite (bisexual) and self-pollinating, so they fruit reliably from a single tree. Fruit are small and single-serve, weighing about 350 to 500 g."
+      ],
+      "claims": [
+        {
+          "text": "Sunrise Solo was developed from a 1961 cross at the University of Hawaii's Poamoho farm between Line 9 (orange-red flesh) and Kariya Solo (yellow flesh)",
+          "type": "origin",
+          "cites": ["hawaii"]
+        },
+        {
+          "text": "It has reddish-orange flesh and is the red-fleshed line of the Solo group",
+          "type": "appearance",
+          "cites": ["hawaii", "itfnet"]
+        },
+        {
+          "text": "Sunrise Solo plants are hermaphrodite (bisexual) and self-pollinating",
+          "type": "pollination",
+          "cites": ["itfnet"]
+        },
+        {
+          "text": "Solo papayas bear small single-serve fruit of about 350 to 500 g",
+          "type": "appearance",
+          "cites": ["itfnet"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hawaii",
+          "name": "University of Hawaii ScholarSpace: Sunrise Solo, a Different Colored Solo Papaya (Hamilton and Ito, 1968)",
+          "url": "https://scholarspace.manoa.hawaii.edu/items/f6ecc9d3-2691-4d32-9c70-26673b655278",
+          "tier": "authoritative"
+        },
+        {
+          "id": "itfnet",
+          "name": "International Tropical Fruits Network: Papaya Common Varieties",
+          "url": "https://www.itfnet.org/v1/2016/05/papaya-common-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-torpedo": {
+      "slug": "papaya-torpedo",
+      "species": "Papaya",
+      "variety": "Torpedo",
+      "paragraphs": [
+        "Torpedo is the Thai papaya known as Khaek Dam (also written Khak-dam or Kaek Dam), named for its long, tapered, torpedo-shaped fruit. Unlike the rounder Australian yellow pawpaws, it forms slender, elongated fruit with red to red-orange flesh that is firm and sweet. Khaek Dam is a recognised Thai variety group, the subject of formal horticultural study, rather than a one-off nursery name.",
+        "In Thailand the fruit is used at two stages: harvested green and shredded for som tam (green papaya salad), and eaten ripe as a sweet dessert fruit. The skin ripens from green toward golden and red-orange tones. As sold in Australia it is a dioecious selection, so male and female plants are needed to crop."
+      ],
+      "claims": [
+        {
+          "text": "Torpedo is the Thai papaya Khaek Dam (Khak-dam), named for its long, tapered torpedo shape",
+          "type": "naming",
+          "cites": ["daleys-torpedo", "specialty-bangkok"]
+        },
+        {
+          "text": "Produces slender, elongated fruit with red to red-orange flesh",
+          "type": "appearance",
+          "cites": ["daleys-torpedo", "specialty-bangkok"]
+        },
+        {
+          "text": "Khaek Dam is a recognised Thai papaya variety group studied horticulturally",
+          "type": "origin",
+          "cites": ["khaekdam-study", "specialty-bangkok"]
+        },
+        {
+          "text": "In Thailand it is used green for som tam (green papaya salad) and eaten ripe as a dessert fruit",
+          "type": "use",
+          "cites": ["specialty-bangkok"]
+        },
+        {
+          "text": "As sold in Australia, it is dioecious, needing male and female plants",
+          "type": "pollination",
+          "cites": ["daleys-torpedo"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daleys-torpedo",
+          "name": "Daleys Fruit Tree Nursery, Dwarf Papaya Torpedo",
+          "url": "https://www.daleysfruit.com.au/Papaya-Torpedo-Carica-papaya.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "specialty-bangkok",
+          "name": "Specialty Produce, Bangkok Papayas (Khaek Dam)",
+          "url": "https://specialtyproduce.com/produce/Bangkok_Papayas_17895.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "khaekdam-study",
+          "name": "Growth and fruit quality of 7 Khaek Dam papaya varieties (ResearchGate)",
+          "url": "https://www.researchgate.net/publication/262388197_Growth_and_fruit_quality_of_7_'Khaek_Dam'_papaya_varieties",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-yellow-h13": {
+      "slug": "papaya-yellow-h13",
+      "species": "Papaya",
+      "variety": "Yellow H13",
+      "paragraphs": [
+        "H13 (Hybrid 13) is a yellow-fleshed Australian papaw line, listed in the Queensland DAF papaw kit among the yellow dioecious hybrids grown in south-east and central Queensland. In peer-reviewed Queensland variety testing it sat at the lower end for sweetness, around 9 Brix (the lowest of the varieties trialled), but carried a strong aroma high in citrus and sweet-fruit notes, alongside some musty and bitter undertones. Glucose makes up a larger share of its sugars than in red types such as Skybury.",
+        "Like most yellow paw paws, H13 is dioecious, carrying male and female flowers on separate plants, so several trees are planted together to guarantee a fruiting female and good pollination. Nurseries describe it as vigorous and heavy-cropping, and note that yellow types tend to handle cooler conditions better than red papaya."
+      ],
+      "claims": [
+        {
+          "text": "H13 (Hybrid 13) is a yellow-fleshed papaw listed in the Queensland DAF papaw kit among yellow dioecious hybrids grown in south-east and central Queensland",
+          "type": "origin",
+          "cites": ["daf-papaw-kit", "pmc"]
+        },
+        {
+          "text": "Measured around 9 Brix in Australian variety testing, the lowest sweetness of the varieties trialled",
+          "type": "flavour",
+          "cites": ["pmc"]
+        },
+        {
+          "text": "Strong aroma high in citrus and sweet-fruit notes with musty and bitter undertones",
+          "type": "flavour",
+          "cites": ["pmc"]
+        },
+        {
+          "text": "Higher proportion of glucose in its sugars than the red variety Skybury",
+          "type": "flavour",
+          "cites": ["pmc"]
+        },
+        {
+          "text": "Dioecious, with male and female flowers on separate plants, so multiple trees are needed",
+          "type": "pollination",
+          "cites": ["daf-papaw-kit", "rosscreek-h13", "daleys"]
+        },
+        {
+          "text": "Yellow paw paw types tend to tolerate cooler conditions better than red papaya",
+          "type": "growing",
+          "cites": ["rosscreek-h13", "daleys"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc",
+          "name": "Biochemical, Sensory, and Molecular Evaluation of Flavour in Australian Papaya Varieties (PMC9181177)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9181177/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daf-papaw-kit",
+          "name": "Queensland DAF Papaw Information Kit (Agrilink, growing guide)",
+          "url": "https://era.dpi.qld.gov.au/id/eprint/1646/4/3growpap.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-h13",
+          "name": "Ross Creek Tropicals, Papaya Yellow H13",
+          "url": "https://www.rosscreektropicals.com.au/products/papaya-yellow-h13",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit, Paw Paw / Papaya varieties",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/pawpaw.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "papaya-yellow-yd1b-hybrid": {
+      "slug": "papaya-yellow-yd1b-hybrid",
+      "species": "Papaya",
+      "variety": "Yellow YD1B Hybrid",
+      "paragraphs": [
+        "YD1B is a yellow-fleshed paw paw from the Australian breeding program; its code marks it as yellow flesh (Y) and dioecious (D). The Sub-Tropical Fruit Club of Queensland describes it as the most widely grown of all the Australian hybrids, bearing oblong, very clean fruit with firm flesh on a medium-yielding tree.",
+        "As a dioecious line, it carries male and female flowers on separate plants, so several seedlings are grown together to ensure a fruiting female and adequate pollination. It is valued for uniform, consistent fruit, which suits both commercial growers and home gardens."
+      ],
+      "claims": [
+        {
+          "text": "YD1B is yellow-fleshed",
+          "type": "appearance",
+          "cites": ["stfc", "daleys", "ladybird-yd1b"]
+        },
+        {
+          "text": "Hybrid code: Y denotes yellow flesh, D denotes dioecious",
+          "type": "naming",
+          "cites": ["stfc"]
+        },
+        {
+          "text": "Described by the Sub-Tropical Fruit Club of Queensland as the most widely grown of all the Australian papaya hybrids",
+          "type": "origin",
+          "cites": ["stfc", "daleys"]
+        },
+        {
+          "text": "Bears oblong, very clean fruit with firm flesh on a medium-yielding tree",
+          "type": "appearance",
+          "cites": ["stfc", "daleys"]
+        },
+        {
+          "text": "Dioecious, with male and female flowers on separate plants, so multiple plants are needed",
+          "type": "pollination",
+          "cites": ["stfc", "ladybird-yd1b"]
+        },
+        {
+          "text": "Produces uniform, consistent fruit",
+          "type": "appearance",
+          "cites": ["ladybird-yd1b", "daleys"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Papaya Seed Australia",
+          "url": "https://stfc.org.au/articles/papaya-seed-australia/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit, Paw Paw / Papaya varieties",
+          "url": "https://www.daleysfruit.com.au/fruit%20pages/pawpaw.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-yd1b",
+          "name": "Ladybird Nursery, Papaya Yellow YD1B Hybrid",
+          "url": "https://www.ladybirdnursery.com.au/papaya-yellow-yd1b-hybrid/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "papaya-bi-sexual-red",
+    "papaya-bi-sexual-yellow",
+    "papaya-bisexual-red",
+    "papaya-bisexual-southern-red",
+    "papaya-bisexual-yellow",
+    "papaya-broad-leaf",
+    "papaya-fruit-tree",
+    "papaya-gold",
+    "papaya-paw-paw-bisexual-red",
+    "papaya-paw-paw-red-army",
+    "papaya-paw-paw-red-army-frutee",
+    "papaya-paw-paw-southern-red",
+    "papaya-red-army",
+    "papaya-red-army-bi-sexual",
+    "papaya-red-self-pollinating",
+    "papaya-southern-red-bi-sexual",
+    "papaya-sri-lankan-red",
+    "papaya-sunny-red",
+    "papaya-thai-red-lady",
+    "papaya-yellow",
+    "papaya-yellow-self-pollinating-f1"
+  ]
+}
