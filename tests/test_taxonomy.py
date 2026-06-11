@@ -27,17 +27,25 @@ class LoadSpeciesTest(unittest.TestCase):
         self.assertEqual(len(species), len(raw))
 
     def test_every_record_gets_a_category(self):
+        # Fruit records carry no explicit category and default to "fruit";
+        # the bush_tucker records (DAL-195 / P2.1) set it explicitly. Every
+        # category present must be a known one.
+        cats = set()
         for r in taxonomy.load_species():
-            self.assertIn("category", r)
-            self.assertEqual(r["category"], "fruit")  # default applied
+            self.assertIn("category", r)  # default applied when the key is absent
+            self.assertIn(r["category"], taxonomy.KNOWN_CATEGORIES)
+            cats.add(r["category"])
+        self.assertIn("fruit", cats)  # the fruit records still default to fruit
 
     def test_missing_file_returns_empty(self):
         self.assertEqual(taxonomy.load_species(SCRAPERS / "nope.json"), [])
 
 
 class CategoryTest(unittest.TestCase):
-    def test_categories_is_fruit_only_today(self):
-        self.assertEqual(taxonomy.categories(), {"fruit"})
+    def test_categories_today(self):
+        # P2.1 (DAL-195) added bush_tucker records: the category is present in
+        # the taxonomy. It is not yet enabled (that is DAL-197 / P2.3).
+        self.assertEqual(taxonomy.categories(), {"fruit", "bush_tucker"})
 
     def test_enabled_categories_switch(self):
         self.assertEqual(taxonomy.ENABLED_CATEGORIES, ("fruit",))
@@ -49,8 +57,16 @@ class CategoryTest(unittest.TestCase):
     def test_category_of_unknown(self):
         self.assertIsNone(taxonomy.category_of("Eucalyptus"))
 
-    def test_enabled_species_is_all_today(self):
-        self.assertEqual(len(taxonomy.enabled_species()), len(taxonomy.load_species()))
+    def test_enabled_species_is_fruit_only_today(self):
+        # bush_tucker records exist (DAL-195) but are disabled until DAL-197,
+        # so enabled_species is the fruit subset, not every record. This keeps
+        # the builders (which read enabled_species) and their goldens unchanged.
+        enabled = taxonomy.enabled_species()
+        self.assertTrue(all(r["category"] == "fruit" for r in enabled))
+        fruit_count = sum(1 for r in taxonomy.load_species()
+                          if r["category"] == "fruit")
+        self.assertEqual(len(enabled), fruit_count)
+        self.assertLess(len(enabled), len(taxonomy.load_species()))
 
     def test_is_enabled(self):
         self.assertTrue(taxonomy.is_enabled("Mango"))
@@ -123,9 +139,23 @@ class LandingSpeciesTest(unittest.TestCase):
         path = self._write([{"common_name": "Mango", "slug": "mango"}])
         self.assertEqual(taxonomy.landing_species("native", path), [])
 
-    def test_live_file_bush_tucker_is_empty_today(self):
-        # No records are tagged yet; P2.1 authors them. This flips at P2.1.
-        self.assertEqual(taxonomy.landing_species("bush_tucker"), [])
+    def test_live_file_bush_tucker_landing(self):
+        # DAL-195 (P2.1) authored 20 bush_tucker records and tagged 8 adjacent
+        # fruits. landing_species cross-lists by category OR tag regardless of
+        # enablement, so the /bush-tucker/ page has content ready before the
+        # DAL-197 enable. Every returned record must qualify one of those ways.
+        land = taxonomy.landing_species("bush_tucker")
+        self.assertTrue(land)
+        for r in land:
+            self.assertTrue(
+                r.get("category") == "bush_tucker"
+                or "bush_tucker" in r.get("tags", []),
+                f"{r.get('common_name')} on the bush_tucker landing without "
+                "the category or tag",
+            )
+        # the 8 cross-listed fruits keep category fruit (their URLs never move)
+        tagged = [r for r in land if r.get("category") == "fruit"]
+        self.assertEqual(len(tagged), 8)
 
 
 if __name__ == "__main__":

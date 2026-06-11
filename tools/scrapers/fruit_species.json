@@ -108,7 +108,10 @@
       "Australian Finger Lime",
       "Caviar Lime"
     ],
-    "description": "Finger lime is a native Australian rainforest citrus prized for its caviar-like juice vesicles and intense citrus flavour. It is native to the subtropical and warm temperate rainforests of southeast Queensland and northern NSW but adapts well across a broad range of Australian climates. Tracked varieties include Sunshine Yellow and Wauchope, plus various colour forms ranging from green to red to black skin and pink, yellow, or clear flesh. Finger lime grows as a dense, thorny shrub or small tree. It tolerates shade but produces heavier crops in full sun. Soil must be free-draining; finger lime dislikes waterlogged conditions. Fertilise lightly with a citrus-specific fertiliser during the growing season. Trees are slow-growing and may take 5-7 years from seed to first fruit. Grafted trees fruit in 2-3 years. Fruit is typically ready from autumn through winter. In WA, finger lime is increasingly grown commercially and in home gardens. It is subject to standard citrus biosecurity protocols in WA, which restrict the importation of citrus plants from other states. Purchase only from certified WA-registered suppliers or those holding appropriate state permits. Armoured scale and bronze orange bug are the primary pests to monitor."
+    "description": "Finger lime is a native Australian rainforest citrus prized for its caviar-like juice vesicles and intense citrus flavour. It is native to the subtropical and warm temperate rainforests of southeast Queensland and northern NSW but adapts well across a broad range of Australian climates. Tracked varieties include Sunshine Yellow and Wauchope, plus various colour forms ranging from green to red to black skin and pink, yellow, or clear flesh. Finger lime grows as a dense, thorny shrub or small tree. It tolerates shade but produces heavier crops in full sun. Soil must be free-draining; finger lime dislikes waterlogged conditions. Fertilise lightly with a citrus-specific fertiliser during the growing season. Trees are slow-growing and may take 5-7 years from seed to first fruit. Grafted trees fruit in 2-3 years. Fruit is typically ready from autumn through winter. In WA, finger lime is increasingly grown commercially and in home gardens. It is subject to standard citrus biosecurity protocols in WA, which restrict the importation of citrus plants from other states. Purchase only from certified WA-registered suppliers or those holding appropriate state permits. Armoured scale and bronze orange bug are the primary pests to monitor.",
+    "tags": [
+      "bush_tucker"
+    ]
   },
   {
     "common_name": "Grapefruit",
@@ -334,7 +337,10 @@
     "synonyms": [
       "Macadamia Nut"
     ],
-    "description": "Macadamia is a native Australian tree that produces the only commercially significant nut indigenous to Australia. It is commercially grown in coastal Queensland and northern NSW but is suitable for home gardens across subtropical and warm temperate regions. Tracked varieties include A4 (a high-yielding variety with excellent nut quality, widely used in commercial orchards), A16 (another commercial standard with good cracking characteristics), and Gouros (a productive variety suited to both commercial and home garden production). Macadamia trees prefer a subtropical climate with warm summers and mild winters. They are sensitive to frost when young but become hardier with age. Plant in well-drained, slightly acidic soil (pH 5.5-6.5) in full sun. Macadamias have proteoid roots that are sensitive to phosphorus; use low-phosphorus fertilisers specifically formulated for Australian native plants. Trees begin producing nuts from 4-6 years of age, with full production from 10-12 years. Nuts fall naturally when ripe from autumn to spring. In WA, macadamia is grown in the southern coastal regions and in Gingin. No significant quarantine restrictions apply. The main pest in Australia is the macadamia felted coccid; monitor and treat with approved sprays as required. Macadamia twig girdler can also cause stem dieback."
+    "description": "Macadamia is a native Australian tree that produces the only commercially significant nut indigenous to Australia. It is commercially grown in coastal Queensland and northern NSW but is suitable for home gardens across subtropical and warm temperate regions. Tracked varieties include A4 (a high-yielding variety with excellent nut quality, widely used in commercial orchards), A16 (another commercial standard with good cracking characteristics), and Gouros (a productive variety suited to both commercial and home garden production). Macadamia trees prefer a subtropical climate with warm summers and mild winters. They are sensitive to frost when young but become hardier with age. Plant in well-drained, slightly acidic soil (pH 5.5-6.5) in full sun. Macadamias have proteoid roots that are sensitive to phosphorus; use low-phosphorus fertilisers specifically formulated for Australian native plants. Trees begin producing nuts from 4-6 years of age, with full production from 10-12 years. Nuts fall naturally when ripe from autumn to spring. In WA, macadamia is grown in the southern coastal regions and in Gingin. No significant quarantine restrictions apply. The main pest in Australia is the macadamia felted coccid; monitor and treat with approved sprays as required. Macadamia twig girdler can also cause stem dieback.",
+    "tags": [
+      "bush_tucker"
+    ]
   },
   {
     "common_name": "Pecan",
@@ -462,7 +468,10 @@
       "Lilly Pilly",
       "Blue Lilly Pilly"
     ],
-    "description": "Lilly pilly is a genus of native Australian rainforest trees (Syzygium and Acmena) that produce small, edible, tart berries and serve double duty as ornamental screening plants. They are extremely well-adapted to Australian conditions and require minimal care once established. Tracked varieties include Aussie Compact (dense, tidy growth habit, reliable fruiting), Cherry Puff (pendulous clusters of cherry-sized magenta berries), and Broad-leaved (a larger-leafed species with substantial purple fruit). Lilly pilly grows across a wide range of climates, from tropical Queensland to temperate Victoria and WA's south coast. It tolerates both moderate frost and tropical heat, though specific varieties have different limits. Plant in well-drained soil in full sun to part shade. Lilly pilly responds well to fertilising and pruning and can be maintained as a hedge or allowed to develop as a small tree. Berries ripen in autumn and winter and are suitable for jams, sauces, and desserts. Raw berries are tart with a spicy, clove-like aftertaste. Psyllid insects (lerps) cause the characteristic bubble-like deformations on new growth. Control with white oil sprays or by selecting resistant varieties. Lilly pilly has no quarantine restrictions across Australian states and is widely available."
+    "description": "Lilly pilly is a genus of native Australian rainforest trees (Syzygium and Acmena) that produce small, edible, tart berries and serve double duty as ornamental screening plants. They are extremely well-adapted to Australian conditions and require minimal care once established. Tracked varieties include Aussie Compact (dense, tidy growth habit, reliable fruiting), Cherry Puff (pendulous clusters of cherry-sized magenta berries), and Broad-leaved (a larger-leafed species with substantial purple fruit). Lilly pilly grows across a wide range of climates, from tropical Queensland to temperate Victoria and WA's south coast. It tolerates both moderate frost and tropical heat, though specific varieties have different limits. Plant in well-drained soil in full sun to part shade. Lilly pilly responds well to fertilising and pruning and can be maintained as a hedge or allowed to develop as a small tree. Berries ripen in autumn and winter and are suitable for jams, sauces, and desserts. Raw berries are tart with a spicy, clove-like aftertaste. Psyllid insects (lerps) cause the characteristic bubble-like deformations on new growth. Control with white oil sprays or by selecting resistant varieties. Lilly pilly has no quarantine restrictions across Australian states and is widely available.",
+    "tags": [
+      "bush_tucker"
+    ]
   },
   {
     "common_name": "Grumichama",
@@ -855,6 +864,9 @@
       "Davidsonia jerseyana",
       "Davidsonia johnsonii",
       "Davidsonia pruriens"
+    ],
+    "tags": [
+      "bush_tucker"
     ]
   },
   {
@@ -865,6 +877,9 @@
     "synonyms": [
       "Gubinge",
       "Billygoat Plum"
+    ],
+    "tags": [
+      "bush_tucker"
     ]
   },
   {
@@ -875,6 +890,9 @@
     "synonyms": [
       "Muntrie",
       "Emu Apple"
+    ],
+    "tags": [
+      "bush_tucker"
     ]
   },
   {
@@ -885,6 +903,9 @@
     "synonyms": [
       "Midyim",
       "Midgen Berry"
+    ],
+    "tags": [
+      "bush_tucker"
     ]
   },
   {
@@ -892,7 +913,10 @@
     "latin_name": "Citrus glauca",
     "slug": "desert-lime",
     "region": "Australia (inland)",
-    "synonyms": []
+    "synonyms": [],
+    "tags": [
+      "bush_tucker"
+    ]
   },
   {
     "common_name": "Sugar Apple",
@@ -903,5 +927,268 @@
       "Annona squamosa",
       "Sweetsop"
     ]
+  },
+  {
+    "common_name": "Lemon Myrtle",
+    "latin_name": "Backhousia citriodora",
+    "slug": "lemon-myrtle",
+    "region": "Australia (QLD subtropical rainforest)",
+    "synonyms": [
+      "Lemon-scented Myrtle",
+      "Sweet Verbena Tree",
+      "Lemon Ironwood"
+    ],
+    "category": "bush_tucker",
+    "description": "Lemon myrtle (Backhousia citriodora) is one of the best known bush tucker plants, a dense rainforest shrub or small tree whose leaves carry the highest natural citral content of any plant. The crushed foliage smells intensely of lemon and is dried for tea, baking, and seasoning. It is native to the subtropical rainforests of southeast Queensland but grows well across warm temperate and subtropical gardens, and in sheltered, frost-free spots further south. Plant in moist, well-drained soil in full sun to part shade. Lemon myrtle responds to regular tip pruning, which keeps the bush compact and encourages the soft new growth used for harvest. It can be grown in a large pot. Myrtle rust is the main disease to watch in humid areas."
+  },
+  {
+    "common_name": "Aniseed Myrtle",
+    "latin_name": "Syzygium anisatum",
+    "slug": "aniseed-myrtle",
+    "region": "Australia (NSW subtropical rainforest)",
+    "synonyms": [
+      "Anise Myrtle",
+      "Ringwood",
+      "Aniseed Tree"
+    ],
+    "category": "bush_tucker",
+    "description": "Aniseed myrtle (Syzygium anisatum) is a rainforest tree from a small area of northern New South Wales, now widely cultivated for its aromatic leaves which taste strongly of aniseed and liquorice. The dried leaf is used in teas, desserts, and spice blends. In the garden it forms a handsome, glossy-leaved tree with attractive weeping new growth flushed pink and bronze. It prefers a frost-free, subtropical to warm temperate climate, moist well-drained soil, and protection from harsh afternoon sun when young. Like other myrtles it is susceptible to myrtle rust, so choose an airy position and avoid overhead watering."
+  },
+  {
+    "common_name": "Cinnamon Myrtle",
+    "latin_name": "Backhousia myrtifolia",
+    "slug": "cinnamon-myrtle",
+    "region": "Australia (QLD/NSW rainforest)",
+    "synonyms": [
+      "Carrol",
+      "Grey Myrtle",
+      "Ironwood"
+    ],
+    "category": "bush_tucker",
+    "description": "Cinnamon myrtle (Backhousia myrtifolia) is a hardy rainforest shrub whose leaves carry a warm, sweet, cinnamon and clove aroma used in baking and spice blends. It is more cold tolerant and adaptable than its relatives lemon and aniseed myrtle, which makes it a good choice for cooler or drier gardens. Masses of small creamy star-shaped flowers appear in spring and summer. Grow in well-drained soil in full sun to part shade. Tip prune to keep it bushy and to produce the tender leaves used for harvest. It tolerates light frost once established."
+  },
+  {
+    "common_name": "Mountain Pepper",
+    "latin_name": "Tasmannia lanceolata",
+    "slug": "mountain-pepper",
+    "region": "Australia (Tasmania/SE highlands)",
+    "synonyms": [
+      "Mountain Pepperberry",
+      "Pepperberry",
+      "Tasmanian Pepperberry",
+      "Cornish Pepper Leaf"
+    ],
+    "category": "bush_tucker",
+    "description": "Mountain pepper (Tasmannia lanceolata) is a cool-climate shrub from the highlands of Tasmania, Victoria, and southern New South Wales, valued for both its peppery leaf and its intensely hot dark berries. Female plants set the berries, so a male is needed nearby for fruit, though the leaf is harvested from any plant. It suits cool temperate and mountain gardens, tolerating frost and preferring a moist, humus-rich, slightly acidic soil in dappled shade. It dislikes hot dry exposure and drought. The leaf and berry are dried and ground as a native pepper substitute with a slow building heat."
+  },
+  {
+    "common_name": "Riberry",
+    "latin_name": "Syzygium luehmannii",
+    "slug": "riberry",
+    "region": "Australia (QLD/NSW coastal rainforest)",
+    "synonyms": [
+      "Cherry Satinash",
+      "Small-leaved Water Gum",
+      "Clove Lilli Pilli",
+      "Cherry Alder"
+    ],
+    "category": "bush_tucker",
+    "description": "Riberry (Syzygium luehmannii) is a coastal rainforest tree that produces heavy crops of small, pear-shaped, pinkish-red berries with a tart, clove-and-cinnamon flavour, popular for jams, sauces, and the bush food trade. It is one of the most ornamental and reliable bush tucker trees, with brilliant pink-red new growth and a naturally tidy form that also makes a good hedge or screen. It grows across subtropical and warm temperate coastal areas, preferring well-drained soil, full sun to part shade, and protection from heavy frost when young. Berries ripen from late spring into summer. Psyllid lerps can mark new growth as on other lilly pillies."
+  },
+  {
+    "common_name": "Quandong",
+    "latin_name": "Santalum acuminatum",
+    "slug": "quandong",
+    "region": "Australia (arid and semi-arid inland)",
+    "synonyms": [
+      "Desert Quandong",
+      "Sweet Quandong",
+      "Native Peach",
+      "Wild Peach"
+    ],
+    "category": "bush_tucker",
+    "description": "Quandong (Santalum acuminatum) is an iconic inland bush tucker tree bearing bright red, tangy fruit rich in vitamin C, traditionally dried and used in pies, jams, and sauces. It is a hemiparasite: its roots tap a host plant for water and nutrients, so it is grown alongside a companion such as an acacia or saltbush. It thrives in hot, dry, alkaline soils and full sun, tolerating drought and frost once established, but resents humidity, waterlogging, and rich soils. Seed is famously slow and erratic to germinate. The hard nut inside the fruit is also edible. Quandong suits arid and Mediterranean climate gardens better than the wet tropics."
+  },
+  {
+    "common_name": "Blue Quandong",
+    "latin_name": "Elaeocarpus angustifolius",
+    "slug": "blue-quandong",
+    "region": "Australia (QLD/NSW rainforest)",
+    "synonyms": [
+      "Blue Marble Tree",
+      "Blue Fig",
+      "Silver Quandong"
+    ],
+    "category": "bush_tucker",
+    "description": "Blue quandong (Elaeocarpus angustifolius) is a fast-growing rainforest tree of the wet tropics and subtropics, unrelated to the desert quandong, that drops striking bright blue round fruit. The thin tart flesh is edible and was traditionally eaten, while the deeply sculptured stones are used in craft. It is a large tree suited to high-rainfall coastal gardens with deep moist soil and a warm, frost-free climate. It tolerates wet ground better than most fruit trees and provides quick shade and habitat. Buttress roots develop with age, so give it room away from paths and foundations."
+  },
+  {
+    "common_name": "Warrigal Greens",
+    "latin_name": "Tetragonia tetragonioides",
+    "slug": "warrigal-greens",
+    "region": "Australia (coastal, widespread)",
+    "synonyms": [
+      "New Zealand Spinach",
+      "Botany Bay Spinach",
+      "Native Spinach",
+      "Warrigal Cabbage"
+    ],
+    "category": "bush_tucker",
+    "description": "Warrigal greens (Tetragonia tetragonioides) is a sprawling coastal groundcover used as a native leafy green, cooked like spinach. It was one of the first Australian plants taken into European cultivation. The fleshy, triangular leaves should be blanched briefly before eating to reduce naturally occurring oxalates. It is fast and easy to grow in full sun, tolerating sandy soils, salt spray, heat, and dry spells, and it self-seeds readily. Pick the soft growing tips regularly to keep the plant productive and tender. It works well as an edible groundcover or in a vegetable patch and grows across most of Australia."
+  },
+  {
+    "common_name": "Native Ginger",
+    "latin_name": "Alpinia caerulea",
+    "slug": "native-ginger",
+    "region": "Australia (QLD/NSW rainforest)",
+    "synonyms": [
+      "Atherton Ginger",
+      "Red Back Ginger",
+      "Native Cardamom"
+    ],
+    "category": "bush_tucker",
+    "description": "Native ginger (Alpinia caerulea) is a clumping rainforest understorey plant grown for its edible blue berries, its mildly gingery young shoots and rhizome, and its lush tropical foliage. The pulp around the seeds has a sweet, gingery, slightly tangy taste eaten fresh, and the leaves can be used to wrap food for cooking. It grows well in shade to part shade in moist, rich, well-drained soil and is popular as an ornamental in subtropical and tropical gardens. The Red Back form has striking maroon undersides to the leaves. It tolerates dense shade where few edibles will crop and suits a sheltered courtyard or under established trees."
+  },
+  {
+    "common_name": "Native Raspberry",
+    "latin_name": "Rubus parvifolius",
+    "slug": "native-raspberry",
+    "region": "Australia (eastern, widespread)",
+    "synonyms": [
+      "Atherton Raspberry",
+      "Molucca Raspberry",
+      "Small-leaf Bramble",
+      "Pink-flowered Raspberry"
+    ],
+    "category": "bush_tucker",
+    "description": "Native raspberry (Rubus parvifolius and related species) is a scrambling bramble that produces small, sweet, red raspberries on arching canes. Several native Rubus species are sold under this name, including the tropical Atherton raspberry, all bearing edible fruit similar to a cultivated raspberry but smaller. It grows across a wide range of climates, tolerating frost in the south and humidity in the north, and prefers moist, well-drained soil in full sun to part shade. Like other brambles the canes are prickly and benefit from a support or being grown as an informal thicket. Fruit ripens through summer."
+  },
+  {
+    "common_name": "Native Thyme",
+    "latin_name": "Prostanthera incisa",
+    "slug": "native-thyme",
+    "region": "Australia (NSW/QLD)",
+    "synonyms": [
+      "Cut-leaf Mint Bush",
+      "Native Thyme Bush"
+    ],
+    "category": "bush_tucker",
+    "description": "Native thyme (Prostanthera incisa), a cut-leaf mint bush, is an aromatic shrub whose finely toothed leaves carry a sharp minty, thyme-like scent used as a native herb in cooking. It bursts into mauve flowers in spring that attract bees and other pollinators. It is a quick-growing, soft-wooded shrub for full sun to part shade in light, well-drained soil, and it responds to regular pruning, which keeps it dense and renews the fragrant foliage used for harvest. It dislikes wet feet and heavy clay. Grown well it doubles as an ornamental flowering shrub and a kitchen herb."
+  },
+  {
+    "common_name": "Native River Mint",
+    "latin_name": "Mentha australis",
+    "slug": "native-river-mint",
+    "region": "Australia (eastern watercourses)",
+    "synonyms": [
+      "River Mint",
+      "Native Mint",
+      "Bush Mint",
+      "Wild Mint",
+      "Australian Mint"
+    ],
+    "category": "bush_tucker",
+    "description": "Native river mint (Mentha australis) is a true mint that grows along watercourses across eastern Australia, with a clean, sharp peppermint flavour used in teas, drinks, and cooking. It is a spreading, soft perennial that thrives in damp ground, in full sun to part shade, and spreads by runners much like introduced mints, so it is often best contained in a pot or a defined bed. Keep the soil moist and pick the tips often to encourage fresh growth. It dies back in cold winters and reshoots in spring. A hardy, useful native herb for a wet corner or a water-edge planting."
+  },
+  {
+    "common_name": "Saltbush",
+    "latin_name": "Atriplex nummularia",
+    "slug": "saltbush",
+    "region": "Australia (arid and semi-arid inland)",
+    "synonyms": [
+      "Old Man Saltbush",
+      "Giant Saltbush",
+      "Creeping Saltbush"
+    ],
+    "category": "bush_tucker",
+    "description": "Old man saltbush (Atriplex nummularia) is a tough, silver-grey shrub of the arid inland whose mineral-rich leaves are used as a native seasoning and wrap, and which doubles as drought and salt-tolerant stock fodder and screening. The small, soft leaves have a naturally salty tang and are dried as a flavouring or used fresh around baked and grilled food. It is exceptionally hardy in hot, dry, alkaline, and saline soils in full sun, tolerating drought, frost, and exposed sites where little else grows. It responds well to hard pruning, which renews the fresh foliage used for harvest. Excellent for low-water and coastal gardens."
+  },
+  {
+    "common_name": "Ruby Saltbush",
+    "latin_name": "Enchylaena tomentosa",
+    "slug": "ruby-saltbush",
+    "region": "Australia (arid and semi-arid, widespread)",
+    "synonyms": [
+      "Barrier Saltbush",
+      "Berry Saltbush"
+    ],
+    "category": "bush_tucker",
+    "description": "Ruby saltbush (Enchylaena tomentosa) is a small, spreading native shrub that bears tiny, succulent red and yellow berries with a sweet-salty taste eaten fresh as a trailside snack, while the leaves are also edible. It is an extremely hardy groundcover for hot, dry, sandy, and saline soils in full sun, tolerating drought, frost, and coastal exposure. The fine grey-green foliage and bright berries make it an attractive, low, informal groundcover that also feeds birds. It needs little water once established and suits arid, coastal, and low-maintenance native gardens. Light trimming keeps it compact."
+  },
+  {
+    "common_name": "Sea Celery",
+    "latin_name": "Apium prostratum",
+    "slug": "sea-celery",
+    "region": "Australia (coastal, widespread)",
+    "synonyms": [
+      "Sea Parsley",
+      "Native Celery"
+    ],
+    "category": "bush_tucker",
+    "description": "Sea celery (Apium prostratum) is a low coastal herb, a wild relative of cultivated celery, with glossy divided leaves that carry a strong celery and parsley flavour used fresh in cooking. It grows naturally on dunes, estuaries, and rocky shores, so it tolerates sandy soils, salt, and coastal wind well. In the garden it prefers a moist, sheltered, partly shaded spot and regular picking of the outer leaves to keep new growth coming. It can be grown in a pot or a herb bed and self-seeds in suitable conditions. A useful, easy native herb for coastal and kitchen gardens."
+  },
+  {
+    "common_name": "Pigface",
+    "latin_name": "Carpobrotus rossii",
+    "slug": "pigface",
+    "region": "Australia (coastal, southern and western)",
+    "synonyms": [
+      "Karkalla",
+      "Native Pigface",
+      "Round-leaved Pigface"
+    ],
+    "category": "bush_tucker",
+    "description": "Pigface (Carpobrotus rossii, and the closely related Carpobrotus virescens known in the west as karkalla) is a succulent coastal groundcover with showy purple-pink flowers and edible fruit and leaves. The salty-sweet fruit can be eaten fresh and the fleshy leaves used like a salty vegetable. It is superbly adapted to harsh coastal conditions: sand, salt spray, heat, and drought, in full sun. It forms a fast, dense, fire-retardant mat that stabilises sand and softens hot edges, needing almost no water once established. An ideal edible groundcover for coastal, rockery, and low-maintenance native gardens."
+  },
+  {
+    "common_name": "Bunya Nut",
+    "latin_name": "Araucaria bidwillii",
+    "slug": "bunya-nut",
+    "region": "Australia (QLD)",
+    "synonyms": [
+      "Bunya Pine",
+      "Bunya Bunya",
+      "Bunya Bunya Pine"
+    ],
+    "category": "bush_tucker",
+    "description": "The bunya pine (Araucaria bidwillii) is a towering, dome-crowned conifer from Queensland that produces enormous cones packed with large, starchy, edible nuts, the focus of historic gatherings in the bunya season. The nuts are roasted, boiled, or ground into meal and have a flavour between chestnut and pine nut. It is a very long-lived, slow-maturing tree that eventually becomes large, so it suits acreage and parkland rather than small yards, in deep soil and full sun across subtropical and warm temperate climates. Falling cones are heavy, so site mature trees away from paths and seating. Young trees make a dramatic feature or tub specimen."
+  },
+  {
+    "common_name": "Gumbi Gumbi",
+    "latin_name": "Pittosporum angustifolium",
+    "slug": "gumbi-gumbi",
+    "region": "Australia (inland, widespread)",
+    "synonyms": [
+      "Gumby Gumby",
+      "Weeping Pittosporum",
+      "Berrigan",
+      "Native Apricot"
+    ],
+    "category": "bush_tucker",
+    "description": "Gumbi gumbi (Pittosporum angustifolium) is a hardy inland tree long valued in traditional medicine, with weeping foliage and orange seed capsules. The leaves are most often dried and brewed as a tea rather than eaten as food. It is exceptionally drought and frost tolerant, growing in a wide range of soils in full sun, and forms a graceful small weeping tree useful for dry-climate and native gardens and as habitat. It is slow to moderate growing and needs little once established. Note that the bright seeds are not eaten; this species is grown for its foliage and traditional use, so use any plant material with appropriate knowledge."
+  },
+  {
+    "common_name": "Sandpaper Fig",
+    "latin_name": "Ficus coronata",
+    "slug": "sandpaper-fig",
+    "region": "Australia (eastern coastal)",
+    "synonyms": [
+      "Creek Sandpaper Fig",
+      "Creek Fig"
+    ],
+    "category": "bush_tucker",
+    "description": "The sandpaper fig (Ficus coronata) is a small native fig of eastern creek banks and gullies, bearing sweet, hairy, purple figs that are eaten fresh when fully ripe. Its rough, sandpapery leaves were traditionally used to smooth tools and were given the common name for that reason. It is a modest, manageable fig for moist, sheltered, frost-free to lightly frosted gardens, in full sun to part shade with reliable moisture. Unlike many large figs it has a restrained root system, which makes it more suitable near gardens, though it still appreciates room. Fruit appears over the warmer months and is popular with birds."
+  },
+  {
+    "common_name": "Burdekin Plum",
+    "latin_name": "Pleiogynium timorense",
+    "slug": "burdekin-plum",
+    "region": "Australia (QLD coastal)",
+    "synonyms": [
+      "Tulip Plum",
+      "Sweet Plum"
+    ],
+    "category": "bush_tucker",
+    "description": "Burdekin plum (Pleiogynium timorense) is a handsome coastal tree of tropical and subtropical Queensland that bears dark purple, plum-like fruit. The fruit is very astringent when picked and is traditionally softened by storing it for several days until it sweetens, after which the thin flesh is eaten fresh or made into jam. It is a hardy, attractive shade and street tree for frost-free warm climates, tolerating coastal conditions and a range of soils in full sun. It is slow to moderate growing and long-lived. Fruit ripens in the cooler months and is also taken by birds and flying foxes."
   }
 ]
