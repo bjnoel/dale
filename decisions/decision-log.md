@@ -4,6 +4,29 @@
 
 ---
 
+## DEC-193 — 2026-06-11 — treestock: widen content column on desktop/large screens
+
+**Decided by:** Dale (interactive, requested by Benedict)
+**Context:** Benedict felt the site (one column driven by `treestock_layout.CONTENT_MAX_WIDTH`)
+was too narrow, especially on desktop. The token was `max-w-3xl 2xl:max-w-5xl`: 768px
+everywhere, only widening to 1024px at the 2xl breakpoint (>=1536px), so 13" laptops stayed
+narrow. **Root cause found while verifying:** the `2xl:max-w-5xl` variant never actually
+generated any CSS. Tailwind v4 ignores the v3-style `--content` glob in run-all-scrapers.sh and
+auto-detects sources from the scrapers dir; its extractor pulls the bare `max-w-3xl` out of the
+`CONTENT_MAX_WIDTH` Python string but not the breakpoint-prefixed variants. So the prior
+widening was a dead no-op and the site was effectively 768px on every screen.
+**Decision:** New ladder `max-w-3xl lg:max-w-5xl 2xl:max-w-7xl` (tablet 768px unchanged, desktop
+>=1024px -> 1024px, large monitor >=1536px -> 1280px). Made it actually generate by adding
+`@source inline("max-w-3xl lg:max-w-5xl 2xl:max-w-7xl")` to `tailwind-input.css` (v4 safelist;
+keep in sync with CONTENT_MAX_WIDTH). Golden fixtures regenerated (diff is only the token swap).
+**Actions:** Edited treestock_layout.py + tailwind-input.css, regenerated goldens, deployed,
+rebuilt all width-driven pages + Tailwind (builders only, no scrape/digest/alert emails), purged
+CF cache. Verified live: variant rules present in styles.css, token on homepage. Repeat
+same-day visitors need a hard refresh (styles.css is immutable, busted by the daily `?v=` date).
+**Note:** the two implementing commits mislabel this DEC-192 (number was already taken by the
+beewise GST fix earlier the same day); this entry (DEC-193) is the correct record.
+**To revert:** revert the two commits and rebuild Tailwind + pages.
+
 ## DEC-192 — 2026-06-11 — Beestock: beewise prices were ex-GST, fix scraper to read JSON-LD price
 
 **Decided by:** Dale (reactive bugfix, reported by Benedict)
