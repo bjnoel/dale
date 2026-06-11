@@ -22,6 +22,7 @@ from html import unescape
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
+from stocklib.scrape_health import ScrapeHealth
 
 NURSERIES = {
     "guildford": {
@@ -136,7 +137,7 @@ USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 REQUEST_DELAY = 1.5
 
 
-def fetch_json(url):
+def fetch_json(url, health=None):
     """Fetch JSON from URL."""
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT,
@@ -147,13 +148,17 @@ def fetch_json(url):
             return json.loads(resp.read().decode())
     except urllib.error.HTTPError as e:
         print(f"  HTTP {e.code} fetching {url}")
+        if health:
+            health.note_http_error(e.code, url)
         return None
     except Exception as e:
         print(f"  Error fetching {url}: {e}")
+        if health:
+            health.note_error(str(e))
         return None
 
 
-def scrape_woocommerce(nursery_key, config):
+def scrape_woocommerce(nursery_key, config, health=None):
     """Scrape all products from a WooCommerce store."""
     domain = config["domain"]
     fruit_cats = config.get("fruit_categories", [])
@@ -164,7 +169,7 @@ def scrape_woocommerce(nursery_key, config):
     print(f"Scraping {config['name']} ({domain})...")
 
     if use_category_api:
-        return _scrape_by_category(nursery_key, config, domain, fruit_cats)
+        return _scrape_by_category(nursery_key, config, domain, fruit_cats, health)
 
     all_products = []
     page = 1
@@ -174,7 +179,7 @@ def scrape_woocommerce(nursery_key, config):
         url = f"https://{domain}/wp-json/wc/store/v1/products?per_page={per_page}&page={page}"
         print(f"  Page {page}...", end=" ", flush=True)
 
-        data = fetch_json(url)
+        data = fetch_json(url, health)
         if data is None:
             print("failed")
             break
@@ -209,7 +214,7 @@ def scrape_woocommerce(nursery_key, config):
     return all_products
 
 
-def _scrape_by_category(nursery_key, config, domain, fruit_cats):
+def _scrape_by_category(nursery_key, config, domain, fruit_cats, health=None):
     """Fetch products by iterating specific category slugs (for large stores)."""
     seen_ids = set()
     all_products = []
@@ -221,7 +226,7 @@ def _scrape_by_category(nursery_key, config, domain, fruit_cats):
         while True:
             url = (f"https://{domain}/wp-json/wc/store/v1/products"
                    f"?per_page={per_page}&page={page}&category={cat_slug}")
-            data = fetch_json(url)
+            data = fetch_json(url, health)
             if not data:
                 break
             for product in data:
@@ -307,6 +312,7 @@ def save_snapshot(nursery_key, products, config):
 
     print(f"  Saved: {snapshot_file}")
     print(f"  In stock: {in_stock} / Out of stock: {len(normalized) - in_stock}")
+    return snapshot
 
 
 def main():
@@ -326,9 +332,19 @@ def main():
         targets = NURSERIES
 
     for key, config in targets.items():
-        products = scrape_woocommerce(key, config)
-        if products:
-            save_snapshot(key, products, config)
+        health = ScrapeHealth(key)
+        try:
+            products = scrape_woocommerce(key, config, health)
+            snapshot = save_snapshot(key, products, config) if products else None
+        except Exception as e:
+            health.note_error(repr(e))
+            health.finish(ok=False)
+            raise
+        if snapshot:
+            health.finish(products=snapshot["product_count"],
+                          in_stock=snapshot["in_stock_count"])
+        else:
+            health.finish()
         print()
 
 

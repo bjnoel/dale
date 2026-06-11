@@ -25,6 +25,7 @@ from datetime import datetime, date
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
+from stocklib.scrape_health import ScrapeHealth
 
 NURSERIES = {
     "primal-fruits": {
@@ -41,7 +42,7 @@ REQUEST_DELAY = 1.5   # seconds between requests per worker — be polite
 MAX_WORKERS = 5       # concurrent fetches — keeps total request rate reasonable
 
 
-def fetch_page(url, timeout=20):
+def fetch_page(url, timeout=20, health=None):
     """Fetch a page and return the HTML body."""
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT,
@@ -52,17 +53,21 @@ def fetch_page(url, timeout=20):
             return resp.read().decode("utf-8", errors="replace")
     except urllib.error.HTTPError as e:
         print(f"  HTTP {e.code} fetching {url}")
+        if health:
+            health.note_http_error(e.code, url)
         return None
     except Exception as e:
         print(f"  Error fetching {url}: {e}")
+        if health:
+            health.note_error(str(e))
         return None
 
 
-def discover_product_urls(domain):
+def discover_product_urls(domain, health=None):
     """Fetch the main page and extract all product URLs."""
     url = f"https://{domain}"
     print(f"  Discovering products from {url}...")
-    html = fetch_page(url)
+    html = fetch_page(url, health=health)
     if not html:
         return []
 
@@ -119,11 +124,12 @@ def extract_product_data(url, html):
     }
 
 
-def fetch_product(url: str, nursery_key: str, nursery_name: str, index: int, total: int) -> dict | None:
+def fetch_product(url: str, nursery_key: str, nursery_name: str, index: int, total: int,
+                  health=None) -> dict | None:
     """Fetch and parse a single product page. Used by concurrent scraper."""
     time.sleep(REQUEST_DELAY)  # polite delay per worker
     slug = url.split("/products/")[-1][:40]
-    html = fetch_page(url)
+    html = fetch_page(url, health=health)
     if not html:
         print(f"  [{index}/{total}] {slug}... failed")
         return None
@@ -140,12 +146,12 @@ def fetch_product(url: str, nursery_key: str, nursery_name: str, index: int, tot
         return None
 
 
-def scrape_ecwid(nursery_key, config):
+def scrape_ecwid(nursery_key, config, health=None):
     """Scrape all products from an Ecwid store using concurrent fetches."""
     domain = config["domain"]
     print(f"Scraping {config['name']} ({domain})...")
 
-    product_urls = discover_product_urls(domain)
+    product_urls = discover_product_urls(domain, health)
     if not product_urls:
         print("  No products found")
         return []
@@ -156,7 +162,8 @@ def scrape_ecwid(nursery_key, config):
     products = []
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {
-            executor.submit(fetch_product, url, nursery_key, config["name"], i + 1, total): url
+            executor.submit(fetch_product, url, nursery_key, config["name"], i + 1, total,
+                            health): url
             for i, url in enumerate(product_urls)
         }
         for future in as_completed(futures):
@@ -232,9 +239,17 @@ def main():
         targets = NURSERIES
 
     for key, config in targets.items():
-        products = scrape_ecwid(key, config)
-        if products:
-            save_snapshot(key, products, config)
+        health = ScrapeHealth(key)
+        try:
+            products = scrape_ecwid(key, config, health)
+            if products:
+                save_snapshot(key, products, config)
+        except Exception as e:
+            health.note_error(repr(e))
+            health.finish(ok=False)
+            raise
+        health.finish(products=len(products),
+                      in_stock=sum(1 for p in products if p["available"]))
         print()
 
 

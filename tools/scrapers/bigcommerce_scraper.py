@@ -27,6 +27,7 @@ from datetime import datetime, date
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
+from stocklib.scrape_health import ScrapeHealth
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent / "data")) / "nursery-stock"
 NURSERY_KEY = "heritage-fruit-trees"
@@ -56,7 +57,7 @@ from stocklib.classify import NON_PLANT_KEYWORDS
 REQUEST_DELAY = 1.5  # seconds between requests (be polite)
 
 
-def fetch_html(url, delay=True):
+def fetch_html(url, delay=True, health=None):
     """Fetch HTML from URL with proper headers."""
     if delay:
         time.sleep(REQUEST_DELAY)
@@ -70,22 +71,26 @@ def fetch_html(url, delay=True):
             return resp.read().decode("utf-8", errors="replace")
     except urllib.error.HTTPError as e:
         if e.code == 404:
-            return None
+            return None  # expected for guessed product URLs; not a health event
         print(f"  HTTP {e.code} fetching {url}")
+        if health:
+            health.note_http_error(e.code, url)
         return None
     except Exception as e:
         print(f"  Error fetching {url}: {e}")
+        if health:
+            health.note_error(str(e))
         return None
 
 
-def get_product_urls_from_category(category_slug):
+def get_product_urls_from_category(category_slug, health=None):
     """Paginate through a BigCommerce category and collect product URLs."""
     urls = []
     page = 1
 
     while True:
         url = f"{BASE_URL}/{category_slug}/?page={page}"
-        html = fetch_html(url, delay=(page > 1))
+        html = fetch_html(url, delay=(page > 1), health=health)
         if not html:
             print(f"    page {page}: failed")
             break
@@ -217,7 +222,7 @@ def parse_product_page(product_path, html):
     }
 
 
-def scrape(dry_run=False):
+def scrape(dry_run=False, health=None):
     """Main scrape function. Returns list of normalized products."""
     print(f"\nScraping {NURSERY_NAME} ({BASE_URL})")
     print("=" * 60)
@@ -227,7 +232,7 @@ def scrape(dry_run=False):
     seen = set()
     for category in CATEGORIES:
         print(f"\nCategory: /{category}/")
-        paths = get_product_urls_from_category(category)
+        paths = get_product_urls_from_category(category, health)
         for p in paths:
             if p not in seen:
                 seen.add(p)
@@ -257,7 +262,7 @@ def scrape(dry_run=False):
             skipped += 1
             continue
 
-        html = fetch_html(f"{BASE_URL}{product_path}")
+        html = fetch_html(f"{BASE_URL}{product_path}", health=health)
         data = parse_product_page(product_path, html)
 
         if data is None:
@@ -343,9 +348,20 @@ def save_snapshot(products):
 
 if __name__ == "__main__":
     dry_run = "--dry-run" in sys.argv
-    products = scrape(dry_run=dry_run)
+    health = ScrapeHealth(NURSERY_KEY) if not dry_run else None
+    try:
+        products = scrape(dry_run=dry_run, health=health)
+        if products:
+            save_snapshot(products)
+    except Exception as e:
+        if health:
+            health.note_error(repr(e))
+            health.finish(ok=False)
+        raise
     if products:
-        save_snapshot(products)
+        health.finish(products=len(products),
+                      in_stock=sum(1 for p in products if p["any_available"]))
     elif not dry_run:
+        health.finish(ok=False)
         print("\nNo products scraped. Check for blocking or site structure changes.")
         sys.exit(1)
