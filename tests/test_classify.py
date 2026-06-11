@@ -25,10 +25,16 @@ from stocklib.taxonomy import KNOWN_CATEGORIES
 
 
 class FalsePositivesRemovedTest(unittest.TestCase):
-    """The three substring offenders must stay out of the list."""
-    def test_pot_bag_class_not_in_list(self):
-        for kw in ("pot", "bag", "class"):
+    """The substring offenders must stay out of the list."""
+    def test_pot_bag_class_tool_not_in_list(self):
+        for kw in ("pot", "bag", "class", "tool"):
             self.assertNotIn(kw, NON_PLANT_KEYWORDS)
+
+    def test_toolangi_strawberry_is_real(self):  # 'tool' used to hit 'Toolangi'
+        self.assertTrue(is_real_product("Strawberry - Toolangi Choice"))
+        self.assertFalse(is_real_product(
+            "Dwarfing Tool for Cincturing or Girdling Fruit Trees"))
+        self.assertFalse(is_real_product("Garden Tools Set"))
 
     def test_sapote_is_a_real_product(self):  # 'pot' used to hit 'sapote'
         self.assertTrue(is_real_product("Black Sapote 'Maher' (Dwarf)"))
@@ -99,6 +105,37 @@ class JunkPartitionTest(unittest.TestCase):
         for kw in ("banksia", "callistemon", "melaleuca", "eucalyptus",
                    "wattle", "acacia", "lomandra", "sheoak", "kurrajong"):
             self.assertIn(kw, native)
+
+
+class DashboardJunkDeforkTest(unittest.TestCase):
+    """build-dashboard derives its junk filter from the shared halves
+    (DAL-194 P1.5): true junk + ornamental/vegetable keywords, with native
+    keywords deliberately exempt so the live melaleuca/wattle dashboard rows
+    survive as unclassified search results."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "build_dashboard", SCRAPERS / "build-dashboard.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        cls.dashboard_junk = mod.DASHBOARD_JUNK_KEYWORDS
+
+    def test_upstreamed_dashboard_keywords_in_true_junk(self):
+        for kw in ("combo pack", "starter kit", "tree sealant",
+                   "end stop terminator"):
+            self.assertIn(kw, TRUE_JUNK, kw)
+
+    def test_dashboard_filter_composition(self):
+        self.assertTrue(TRUE_JUNK <= self.dashboard_junk)
+        for kw in ("ornamental", "cordyline", "asparagus"):
+            self.assertIn(kw, self.dashboard_junk, kw)
+
+    def test_native_keywords_exempt_from_dashboard_filter(self):
+        for kw, cat in CATEGORY_KEYWORDS.items():
+            if cat == "native":
+                self.assertNotIn(kw, self.dashboard_junk, kw)
 
 
 class SeedPacketTest(unittest.TestCase):

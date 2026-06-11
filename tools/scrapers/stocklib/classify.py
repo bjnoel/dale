@@ -11,6 +11,8 @@ false-positives that were wrongly dropping real fruit:
             (build_species_trends carried 'pot' and was hiding all sapotes etc.)
   - 'bag'   matched '45Ltr (Bag)' on a real "Fraser Island Apple"
   - 'class' matched '(Class)ic' (e.g. 'Mulberry Black Classic')
+  - 'tool'  matched '(Tool)angi' (Daleys "Strawberry - Toolangi Choice");
+            now 'tools' + 'dwarfing tool' (the one real tool product)
 
 Since DEC-200 (category expansion) the list is split by what the keyword
 actually names:
@@ -43,9 +45,10 @@ from .taxonomy import ENABLED_CATEGORIES
 # category, forever. Keep sorted for reviewability.
 TRUE_JUNK = frozenset({
     "banana bunch cover", "biochar", "bonsai bag", "book", "budding tape",
-    "catalogue", "concentrate spray", "connector", "delivery",
+    "catalogue", "combo pack", "concentrate spray", "connector", "delivery",
     "delivery charge", "dynamic lifter", "eco oil", "eco-oil", "ecofend",
-    "exclusion net", "fertiliser", "fertilizer", "fish emulsion", "freight",
+    "end stop terminator", "exclusion net", "fertiliser", "fertilizer",
+    "fish emulsion", "freight",
     "fungicide", "garden gloves", "gift card", "gift certificate",
     "gift voucher", "glove", "gloves", "grafting knife", "grafting tape",
     "gropod", "grow bag", "guide", "herbicide", "insect control",
@@ -56,7 +59,9 @@ TRUE_JUNK = frozenset({
     "rubber hook", "saucer", "searles", "searles liquid", "seasol",
     "seaweed", "seaweed solution", "secateur", "secateurs", "sharp shooter",
     "shipping", "soil", "soil mix", "spray", "stake", "staking kit",
-    "support", "terracotta", "ticket", "tool", "tree guard", "tree stake",
+    "starter kit", "support", "terracotta", "ticket", "tools",
+    "dwarfing tool", "tree guard",
+    "tree sealant", "tree stake",
     "tree tube", "weed killer", "white oil", "wire", "workshop",
     "worm castings", "yates",
 })
