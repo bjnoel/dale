@@ -29,9 +29,16 @@ from bee_retailers import RETAILERS
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent.parent / "data")) / "bee-stock"
 USER_AGENT = "BeestockBot/1.0 (+https://beestock.com.au; price-monitoring)"
-CONCURRENCY = 6
+# Beewise rate-limits aggressively since 2026-05-24 (429 after ~100 fast
+# requests). Override these for a slow, polite run.
+CONCURRENCY = int(os.environ.get("BEESTOCK_MAGENTO_CONCURRENCY", "6"))
+REQUEST_DELAY = float(os.environ.get("BEESTOCK_MAGENTO_DELAY", "0"))
 REQUEST_TIMEOUT = 30
 SITEMAP_TIMEOUT = 30
+# Refuse to save a snapshot when too many page fetches failed: a partial
+# snapshot makes most of the catalogue vanish from the site and pollutes
+# the day-over-day comparison.
+MAX_ERROR_RATE = 0.2
 
 PRODUCT_PAGE_EVENT_RE = re.compile(
     r'"event":"productPage","product":(\{(?:[^{}]|\{[^{}]*\})*\})'
@@ -156,6 +163,8 @@ def extract_product(page_url, raw_html):
 
 def fetch_and_parse(url):
     try:
+        if REQUEST_DELAY:
+            time.sleep(REQUEST_DELAY)
         body = fetch(url)
     except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ConnectionError) as e:
         return ("error", url, str(e))
@@ -199,6 +208,9 @@ def scrape_magento(retailer_key, config):
 
     elapsed = time.time() - start
     print(f"  Done in {elapsed:.1f}s: {len(products)} products, {skipped} non-products, {errors} errors")
+    if urls and errors / len(urls) > MAX_ERROR_RATE:
+        print(f"  ABORT: {errors}/{len(urls)} fetches failed (> {MAX_ERROR_RATE:.0%}), not saving partial snapshot")
+        return []
     return products
 
 
@@ -256,6 +268,10 @@ def save_snapshot(retailer_key, products, config):
         json.dump(payload, f, indent=2)
 
     latest_file = retailer_dir / "latest.json"
+    # Never write through a symlink: a latest.json -> dated-snapshot link once
+    # silently rewrote the dated file on every scrape (beewise, 2026-04-19).
+    if latest_file.is_symlink():
+        latest_file.unlink()
     with open(latest_file, "w") as f:
         json.dump(payload, f, indent=2)
 
