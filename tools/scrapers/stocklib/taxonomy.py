@@ -26,11 +26,20 @@ SPECIES_FILE = Path(__file__).parent.parent / "fruit_species.json"
 DEFAULT_CATEGORY = "fruit"
 ENABLED_CATEGORIES: tuple[str, ...] = ("fruit",)
 
+# Every category a species record may carry. Only ENABLED_CATEGORIES are
+# rendered anywhere; the others exist as classification hints until their
+# enable (DEC-200: bush_tucker is the pilot, native/ornamental/vegetable
+# later or never). A typo'd category fails the schema test, not silently.
+KNOWN_CATEGORIES = frozenset({
+    "fruit", "bush_tucker", "native", "ornamental", "vegetable",
+})
+
 
 def load_species(path: Path | None = None) -> list[dict]:
     """Load species records. Each record without a `category` defaults to
-    DEFAULT_CATEGORY. Returns [] if the file is missing (matching the callers'
-    previous behaviour)."""
+    DEFAULT_CATEGORY; `tags` (cross-listing without moving the species, e.g.
+    Finger Lime stays fruit + tags bush_tucker) defaults to []. Returns [] if
+    the file is missing (matching the callers' previous behaviour)."""
     path = path or SPECIES_FILE
     if not path.exists():
         return []
@@ -38,6 +47,7 @@ def load_species(path: Path | None = None) -> list[dict]:
         records = json.load(f)
     for r in records:
         r.setdefault("category", DEFAULT_CATEGORY)
+        r.setdefault("tags", [])
     return records
 
 
@@ -65,3 +75,12 @@ def enabled_species(path: Path | None = None) -> list[dict]:
     """Records whose category is enabled (today: fruit only)."""
     return [r for r in load_species(path)
             if r.get("category", DEFAULT_CATEGORY) in ENABLED_CATEGORIES]
+
+
+def landing_species(category: str, path: Path | None = None) -> list[dict]:
+    """Records a category landing page renders: the record's own category
+    matches OR the record carries the category as a tag (cross-listed, e.g.
+    Finger Lime is fruit + tags ["bush_tucker"] and appears on /bush-tucker/
+    without its species URL or watches moving)."""
+    return [r for r in load_species(path)
+            if r.get("category") == category or category in r.get("tags", [])]
