@@ -133,6 +133,453 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "finger-lime-chartreuse": {
+      "slug": "finger-lime-chartreuse",
+      "species": "Finger Lime",
+      "variety": "Chartreuse",
+      "paragraphs": [
+        "Chartreuse stands apart from the red and pink finger limes on colouring alone. The fruit is green skinned with pale green to yellow flesh and clear to lime green vesicles. The flavour is a subtle, tangy citrus that is widely described as less bitter than other finger lime varieties, which makes it one of the gentler selections to eat fresh and a popular pick for salads, seafood and desserts.",
+        "Nurseries list an extended flowering and fruiting season for Chartreuse, with harvest running from about March to August, a longer window than many single-flush finger lime selections offer."
+      ],
+      "claims": [
+        {
+          "text": "Green fruit with pale green to yellow flesh and clear to lime green vesicles",
+          "type": "appearance",
+          "cites": [
+            "agt-finger-limes",
+            "ftl-chartreuse",
+            "pfp-chartreuse"
+          ]
+        },
+        {
+          "text": "Subtle citrus flavour, described as less bitter than other finger lime varieties",
+          "type": "flavour",
+          "cites": [
+            "agt-finger-limes",
+            "ftl-chartreuse"
+          ]
+        },
+        {
+          "text": "Extended flowering and fruiting season, with harvest listed from about March to August",
+          "type": "season",
+          "cites": [
+            "pfp-chartreuse",
+            "ftl-chartreuse"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agt-finger-limes",
+          "name": "Aussie Green Thumb, Citrus australasica Finger Limes Growing Guide",
+          "url": "https://aussiegreenthumb.com/finger-limes/",
+          "tier": "third_party"
+        },
+        {
+          "id": "pfp-chartreuse",
+          "name": "Princess Fancy Plants, Finger Lime Chartreuse",
+          "url": "https://princessfancyplants.com.au/finger-lime-chartreuse/",
+          "tier": "nursery"
+        },
+        {
+          "id": "ftl-chartreuse",
+          "name": "Fruit Tree Lane, Chartreuse Finger Lime Trees",
+          "url": "https://fruittreelane.com.au/shop/chartreuse-finger-lime-trees-50mm-pots-cutting-grown/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "finger-lime-d-emerald": {
+      "slug": "finger-lime-d-emerald",
+      "species": "Finger Lime",
+      "variety": "D Emerald",
+      "paragraphs": [
+        "D'Emerald is a black-skinned finger lime whose almost black fruit conceals bright emerald green pulp, a striking colour contrast that makes it one of the most recognisable selections in the Australian trade. The juicy citrus pearls are noted for being unusually easy to extract from the fruit. Cropping peaks in autumn, with lighter fruiting continuing through much of the year. It is sold grafted in the Citrus Gems range of native citrus, including a dwarf form suited to pots and hedging, and some nurseries also list it under the name Fat Black.",
+        "The name is generally treated as a short trade form of Durham's Emerald, among the finger lime cultivars registered with the Australian Cultivar Registration Authority, which carries the same description: a medium shrub bearing black fruit with emerald green, easy-to-extract vesicles, cropping heavily from summer to late autumn with continual light cropping year round. That registered cultivar arose in the Northern Rivers district of New South Wales and was introduced into cultivation in 1994."
+      ],
+      "claims": [
+        {
+          "text": "Fruit has black to very dark skin with emerald green pulp",
+          "type": "appearance",
+          "cites": [
+            "gwa-d-emerald",
+            "citrusmen-demerald",
+            "ctahr-fn56"
+          ]
+        },
+        {
+          "text": "Vesicles are easy to extract from the fruit",
+          "type": "use",
+          "cites": [
+            "gwa-d-emerald",
+            "acra-durhams-emerald",
+            "citrusmen-demerald"
+          ]
+        },
+        {
+          "text": "Fruits mainly in autumn with continued lighter cropping through the year",
+          "type": "season",
+          "cites": [
+            "gwa-d-emerald",
+            "acra-durhams-emerald",
+            "citrusmen-demerald"
+          ]
+        },
+        {
+          "text": "Sold grafted in the Citrus Gems native citrus range, including a dwarf form; also listed by some nurseries as Fat Black",
+          "type": "cultivation",
+          "cites": [
+            "gwa-d-emerald",
+            "citrusmen-demerald",
+            "ladybird-demerald"
+          ]
+        },
+        {
+          "text": "Durham's Emerald is an ACRA-registered cultivar described as a medium open shrub with black fruit and emerald green pulp, originating in the Northern Rivers district and introduced into cultivation in 1994",
+          "type": "origin",
+          "cites": [
+            "acra-durhams-emerald",
+            "ctahr-fn56"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "acra-durhams-emerald",
+          "name": "Australian Cultivar Registration Authority, Citrus australasica 'Durhams Emerald'",
+          "url": "https://acra.biodiversity.services/info/rdetail/711",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ctahr-fn56",
+          "name": "University of Hawaii CTAHR Extension, Finger Limes (FN-56)",
+          "url": "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/FN%2056.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gwa-d-emerald",
+          "name": "Gardening With Angus, Citrus australasica 'D Emerald'",
+          "url": "https://gardeningwithangus.com.au/citrus-australasica-d-emerald/",
+          "tier": "third_party"
+        },
+        {
+          "id": "citrusmen-demerald",
+          "name": "Citrus Men, Citrus Gems D'Emerald Finger Lime",
+          "url": "https://www.citrusmen.com.au/shop/p/citrus-gems-demerald-m5krh-ek7b5",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-demerald",
+          "name": "Ladybird Nursery, Finger Lime D'Emerald / Fat Black",
+          "url": "https://www.ladybirdnursery.com.au/finger-lime-emerald-fat-black-grafted/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "finger-lime-d-emerald-llp": {
+      "slug": "finger-lime-d-emerald-llp",
+      "species": "Finger Lime",
+      "variety": "D Emerald Llp",
+      "paragraphs": [
+        "The listing name D Emerald maps to D'Emerald, a selected cultivar of the Australian native finger lime (Citrus australasica). It is grown for slender, finger shaped fruit with notably dark, almost black skin, which sets it apart from the green and red skinned finger lime selections.",
+        "Cut open, the fruit releases bright emerald green juice vesicles (the citrus caviar) that pop with a fresh lime tang and lift easily for use in cooking. Fruit ripens mainly in autumn, though the plant tends to keep bearing through much of the year, and the bush has a compact, dense habit that suits pots, hedging, or a culinary feature plant."
+      ],
+      "claims": [
+        {
+          "text": "D'Emerald (listed as D Emerald) is a selected cultivar of the Australian native finger lime, Citrus australasica.",
+          "type": "origin",
+          "cites": [
+            "gwa-demerald",
+            "nurserywarehouse-demerald"
+          ]
+        },
+        {
+          "text": "Its finger shaped fruit has dark, almost black skin.",
+          "type": "appearance",
+          "cites": [
+            "gwa-demerald",
+            "nurserywarehouse-demerald"
+          ]
+        },
+        {
+          "text": "Inside the fruit are bright emerald green juice vesicles (citrus caviar).",
+          "type": "appearance",
+          "cites": [
+            "gwa-demerald",
+            "nurserywarehouse-demerald"
+          ]
+        },
+        {
+          "text": "Fruit ripens mainly in autumn, with the plant continuing to bear through much of the year.",
+          "type": "season",
+          "cites": [
+            "gwa-demerald",
+            "nurserywarehouse-demerald"
+          ]
+        },
+        {
+          "text": "The plant has a compact, dense habit suited to pots or hedging.",
+          "type": "cultivation",
+          "cites": [
+            "gwa-demerald",
+            "nurserywarehouse-demerald"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-demerald",
+          "name": "Gardening With Angus, Citrus australasica 'D'Emerald'",
+          "url": "https://gardeningwithangus.com.au/citrus-australasica-d-emerald/",
+          "tier": "third_party"
+        },
+        {
+          "id": "nurserywarehouse-demerald",
+          "name": "Nursery Warehouse, Citrus australasica 'D-Emerald' Emerald Finger Lime",
+          "url": "https://www.nurserywarehouse.com.au/products/citrus-australasica-d-emerald-emerald-finger-lime",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "finger-lime-giant-jali-red": {
+      "slug": "finger-lime-giant-jali-red",
+      "species": "Finger Lime",
+      "variety": "Giant Jali Red",
+      "paragraphs": [
+        "Giant Jali Red is the trade name nurseries use for Jali Red, a finger lime cultivar registered with the Australian Cultivar Registration Authority in 2010 after being selected by grower Judy Viola at Whian Whian in the Northern Rivers district of New South Wales. The 'giant' refers to the fruit: nurseries promote it as one of the largest finger limes available, and the official registration describes cylindrical fruit up to 8cm long.",
+        "The fruit has dark brown to maroon skin filled with red to pink caviar pearls, and the registration notes that the distinctive red and pink flesh darkens after several hours of exposure to air, so it is best used fresh. Plants form an open shrub or small tree of 2 to 3 metres, flowering white in late winter (July to August), and nurseries describe the flavour as a tangy citrus burst suited to garnishes, sauces and gourmet dishes."
+      ],
+      "claims": [
+        {
+          "text": "Jali Red is registered with the Australian Cultivar Registration Authority (registered 2010), applicant Judy Viola, originating at Whian Whian in northern New South Wales",
+          "type": "origin",
+          "cites": [
+            "acra-jali-red",
+            "ctahr-fn56"
+          ]
+        },
+        {
+          "text": "Fruit is cylindrical, 40 to 80mm long, with dark brown skin and red to pink vesicles",
+          "type": "appearance",
+          "cites": [
+            "acra-jali-red",
+            "ladybird-jali-red"
+          ]
+        },
+        {
+          "text": "The red/pink flesh darkens when exposed to air for several hours",
+          "type": "appearance",
+          "cites": [
+            "acra-jali-red"
+          ]
+        },
+        {
+          "text": "Marketed by nurseries as Giant Jali Red for its extra-large fruit",
+          "type": "appearance",
+          "cites": [
+            "ladybird-jali-red"
+          ]
+        },
+        {
+          "text": "Open-habit tall shrub or small tree to 2 to 3 metres, with white flowers in July to August",
+          "type": "cultivation",
+          "cites": [
+            "acra-jali-red"
+          ]
+        },
+        {
+          "text": "Flavour described as a tangy citrus burst, used in garnishes, sauces and gourmet dishes",
+          "type": "flavour",
+          "cites": [
+            "ladybird-jali-red"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "acra-jali-red",
+          "name": "Australian Cultivar Registration Authority, Citrus australasica 'Jali Red'",
+          "url": "https://acra.biodiversity.services/info/rdetail/621",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ctahr-fn56",
+          "name": "University of Hawaii CTAHR Extension, Finger Limes (FN-56)",
+          "url": "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/FN%2056.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ladybird-jali-red",
+          "name": "Ladybird Nursery, Finger Lime Giant Jali Red",
+          "url": "https://www.ladybirdnursery.com.au/finger-lime-jali-red-grafted/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "finger-lime-green-sapphire": {
+      "slug": "finger-lime-green-sapphire",
+      "species": "Finger Lime",
+      "variety": "Green Sapphire",
+      "paragraphs": [
+        "Green Sapphire is a green-fruited finger lime selection that keeps the classic lime look at both ends: slender, dark green fruit filled with vivid green, caviar-like pearls. Most named finger lime cultivars chase dark skins and pink or red pulp, so a deliberately green selection stands out among them. White flowers appear in spring and the fruit ripens mainly in autumn.",
+        "It is sold as part of the Citrus Gems range of Australian native citrus selections and is noted for an unusually graceful habit for a finger lime, with willowy, lightly weeping branches and soft, pale foliage rather than the typical stiff thorny bush. It suits containers as well as garden planting, which has made it one of the more common cultivars in general garden centres."
+      ],
+      "claims": [
+        {
+          "text": "Green-skinned fruit filled with vivid green, caviar-like pearls",
+          "type": "appearance",
+          "cites": [
+            "gwa-green-sapphire",
+            "nursery-warehouse",
+            "flower-power"
+          ]
+        },
+        {
+          "text": "Willowy, lightly weeping habit with soft, light coloured foliage",
+          "type": "appearance",
+          "cites": [
+            "gwa-green-sapphire",
+            "flower-power"
+          ]
+        },
+        {
+          "text": "Flowers in spring; fruit ripens mainly in autumn",
+          "type": "season",
+          "cites": [
+            "gwa-green-sapphire",
+            "nursery-warehouse",
+            "natif-fingerlimes"
+          ]
+        },
+        {
+          "text": "Sold as part of the Citrus Gems range of Australian native citrus selections",
+          "type": "origin",
+          "cites": [
+            "gwa-green-sapphire",
+            "flower-power"
+          ]
+        },
+        {
+          "text": "Suited to container growing as well as garden planting",
+          "type": "cultivation",
+          "cites": [
+            "nursery-warehouse",
+            "flower-power"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-green-sapphire",
+          "name": "Gardening With Angus, Citrus australasica 'Green Sapphire'",
+          "url": "https://gardeningwithangus.com.au/citrus-australasica-green-sapphire/",
+          "tier": "third_party"
+        },
+        {
+          "id": "natif-fingerlimes",
+          "name": "Natif, Australian Fingerlimes (variety season guide)",
+          "url": "https://natif.com.au/blogs/news/australian-fingerlimes",
+          "tier": "third_party"
+        },
+        {
+          "id": "nursery-warehouse",
+          "name": "Nursery Warehouse, Green Sapphire Finger Lime",
+          "url": "https://www.nurserywarehouse.com.au/products/citrus-australasica-green-sapphire-green-sapphire-finger-lime",
+          "tier": "nursery"
+        },
+        {
+          "id": "flower-power",
+          "name": "Flower Power, Citrus Gems Green Sapphire Finger Lime",
+          "url": "https://www.flowerpower.com.au/citrus-gems-green-sapphire-finger-lime-167458p",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "finger-lime-jali-red": {
+      "slug": "finger-lime-jali-red",
+      "species": "Finger Lime",
+      "variety": "Jali Red",
+      "paragraphs": [
+        "Jali Red is one of the few finger lime cultivars formally registered with the Australian Cultivar Registration Authority. It originated at Whian Whian in the Northern Rivers region of New South Wales, in the heart of the finger lime's native range, with the registration (applicant Judy Viola) accepted in 2005 and formalised in 2010.",
+        "The fruit is a cylindrical berry with dark brown to maroon skin enclosing pink to red caviar pearls, and the ACRA description notes the red of the vesicles deepens once exposed to air. The plant is a tall shrub or small tree of around 2 to 3 metres with a sparse open habit, white flowers in July and August, and moderate frost hardiness. In the nursery trade Daleys rates it as one of the largest fruited finger limes and a high yielding variety with good flavour, harvested from March through September."
+      ],
+      "claims": [
+        {
+          "text": "Originated at Whian Whian in northern New South Wales and registered with the Australian Cultivar Registration Authority (application 2005 by Judy Viola, registered 2010)",
+          "type": "origin",
+          "cites": [
+            "acra-jali-red"
+          ]
+        },
+        {
+          "text": "Cylindrical fruit with dark brown to maroon skin and pink to red vesicles",
+          "type": "appearance",
+          "cites": [
+            "acra-jali-red",
+            "daleys-jali-red"
+          ]
+        },
+        {
+          "text": "Vesicle colour deepens when exposed to air",
+          "type": "appearance",
+          "cites": [
+            "acra-jali-red"
+          ]
+        },
+        {
+          "text": "Tall shrub or small tree to about 2 to 3 metres with a sparse open habit, white flowers in July and August, and moderate frost hardiness",
+          "type": "cultivation",
+          "cites": [
+            "acra-jali-red"
+          ]
+        },
+        {
+          "text": "Described by Daleys as one of the largest finger limes and a high yielding variety with good flavour, harvested March through September",
+          "type": "season",
+          "cites": [
+            "daleys-jali-red"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "acra-jali-red",
+          "name": "Australian Cultivar Registration Authority, Citrus australasica 'Jali Red'",
+          "url": "https://acra.biodiversity.services/info/rdetail/621",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-jali-red",
+          "name": "Daleys Fruit Tree Nursery, Finger Lime Jali Red",
+          "url": "https://www.daleysfruit.com.au/buy/finger-lime-jali-red-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "finger-lime-judy-s-everbearing": {
       "slug": "finger-lime-judy-s-everbearing",
       "species": "Finger Lime",
@@ -202,6 +649,169 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "finger-lime-judys-everbearing": {
+      "slug": "finger-lime-judys-everbearing",
+      "species": "Finger Lime",
+      "variety": "Judys Everbearing",
+      "paragraphs": [
+        "Judy's Everbearing is a prolific finger lime selected by Judy Viola (or colleagues). Its name reflects an unusually long cropping habit: it carries a heavy crop from summer to autumn and produces fruit sporadically through the rest of the year, where most finger limes fruit in a single tighter window. The dark fruit holds clear, light green to pink pearls with few seeds.",
+        "It is one of the cultivars used in peer-reviewed chemotype work, where its peel oil was characterised by a distinctive limonene, citronellal and isomenthone profile, a combination not previously reported in other citrus. The aromatic lemon-lime pearls are used as for any finger lime, with seafood, in drinks, or in place of lemon and lime."
+      ],
+      "claims": [
+        {
+          "text": "Judy's Everbearing was selected by Judy Viola or colleagues.",
+          "type": "origin",
+          "cites": [
+            "ucr-misterioso"
+          ]
+        },
+        {
+          "text": "It crops heavily from summer to autumn and also produces fruit sporadically through the year, an everbearing habit.",
+          "type": "season",
+          "cites": [
+            "gwa-je",
+            "daleys-je"
+          ]
+        },
+        {
+          "text": "The pearls are clear, light green to pink with few seeds.",
+          "type": "appearance",
+          "cites": [
+            "daleys-je"
+          ]
+        },
+        {
+          "text": "Its peel oil has a distinctive limonene, citronellal and isomenthone chemotype not previously reported in other citrus.",
+          "type": "flavour",
+          "cites": [
+            "pubmed-chemotype"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-je",
+          "name": "Gardening With Angus - Citrus australasica 'Judy's Everbearing'",
+          "url": "https://gardeningwithangus.com.au/citrus-australasica-judys-everbearing/",
+          "tier": "third_party"
+        },
+        {
+          "id": "pubmed-chemotype",
+          "name": "Delort & Jaquier, Comparative analysis of three Australian finger lime cultivars (Phytochemistry, PubMed 25468539)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25468539/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ucr-misterioso",
+          "name": "Givaudan Citrus Variety Collection, UC Riverside - finger lime (CRC4295)",
+          "url": "https://citrusvariety.ucr.edu/crc4295",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-je",
+          "name": "Daleys Fruit - Finger Lime Judy's Everbearing",
+          "url": "https://www.daleysfruit.com.au/buy/finger-lime-judys-everbearing-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "finger-lime-mt-white": {
+      "slug": "finger-lime-mt-white",
+      "species": "Finger Lime",
+      "variety": "Mt White",
+      "paragraphs": [
+        "Mt White is the odd one out among nursery finger limes. It is not a Citrus australasica selection at all, but Citrus garrawayi, the Mount White lime, a closely related Australian native citrus from tropical rainforest on Cape York Peninsula in far north Queensland. In the wild it grows as a rainforest understorey tree and is rare, and the species has never been commercially cropped, so a garden plant is essentially a collector's item.",
+        "The fruit reads as a shorter, thicker finger lime, with green to yellowish-green skin and green caviar style pulp vesicles, and the tree is easy to tell from true finger limes by its noticeably broader leaves. It can reach around 15 metres in its rainforest habitat but stays much smaller in cultivation. The pearls are edible and used the same way as finger lime, fresh over seafood or in cooking, with the appeal here being rarity rather than colour range."
+      ],
+      "claims": [
+        {
+          "text": "Sold under finger lime listings but is actually Citrus garrawayi, the Mount White lime, a distinct species often placed in Microcitrus",
+          "type": "origin",
+          "cites": [
+            "wikipedia-garrawayi",
+            "ctahr-fn56",
+            "daleys-mt-white"
+          ]
+        },
+        {
+          "text": "Native to rainforest on Cape York Peninsula, far north Queensland, where it grows as an understorey tree; rare in the wild with no commercial cultivation to date",
+          "type": "origin",
+          "cites": [
+            "wikipedia-garrawayi",
+            "gwa-garrawayi",
+            "ctahr-fn56"
+          ]
+        },
+        {
+          "text": "Fruit is shorter and thicker than finger lime, with green to yellowish-green skin and green pulp vesicles",
+          "type": "appearance",
+          "cites": [
+            "ctahr-fn56",
+            "wikipedia-garrawayi",
+            "daleys-mt-white"
+          ]
+        },
+        {
+          "text": "Has noticeably broader leaves than true finger limes",
+          "type": "appearance",
+          "cites": [
+            "gwa-garrawayi",
+            "daleys-mt-white",
+            "wikipedia-garrawayi"
+          ]
+        },
+        {
+          "text": "Can reach about 15 metres in its natural habitat but remains much smaller in cultivation",
+          "type": "cultivation",
+          "cites": [
+            "wikipedia-garrawayi",
+            "gwa-garrawayi"
+          ]
+        },
+        {
+          "text": "Fruit is edible and used like finger lime, fresh or in cooking, but the species has not been commercialised",
+          "type": "use",
+          "cites": [
+            "gwa-garrawayi",
+            "wikipedia-garrawayi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ctahr-fn56",
+          "name": "University of Hawaii CTAHR Extension, Finger Limes (FN-56)",
+          "url": "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/FN%2056.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-garrawayi",
+          "name": "Wikipedia, Citrus garrawayi",
+          "url": "https://en.wikipedia.org/wiki/Citrus_garrawayi",
+          "tier": "third_party"
+        },
+        {
+          "id": "gwa-garrawayi",
+          "name": "Gardening With Angus, Citrus garrawayi Mount White Lime",
+          "url": "https://gardeningwithangus.com.au/citrus-garrawayi-mount-white-lime/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-mt-white",
+          "name": "Daleys Fruit Tree Nursery, Mount White Lime",
+          "url": "https://www.daleysfruit.com.au/Mount-White-Lime-Microcitrus-Garrawayae.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "finger-lime-pink-ice": {
       "slug": "finger-lime-pink-ice",
@@ -328,11 +938,220 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "finger-lime-red-champagne": {
+      "slug": "finger-lime-red-champagne",
+      "species": "Finger Lime",
+      "variety": "Red Champagne",
+      "paragraphs": [
+        "Red Champagne is one of the most popular and widely grown finger lime selections in Australia, taken up by commercial orchards for its flavour and its unusually long fruiting season, roughly January to May. The fruit ripens to a dark maroon to red skin, and the pearls inside range from pale and clear through pink to red. The taste is milder and subtly sweeter than green finger limes, often described as sitting somewhere between grapefruit and Tahitian lime.",
+        "It also handles life after harvest unusually well. Growers rate it as having one of the longest shelf lives of any finger lime variety, and postharvest research cited in a Nuffield Australia report found Red Champagne pearls held their condition best in cold storage at 4 degrees Celsius, which helps explain its standing with chefs and commercial growers."
+      ],
+      "claims": [
+        {
+          "text": "Dark maroon to red skin with pearls ranging from pale or clear through pink to red",
+          "type": "appearance",
+          "cites": [
+            "nuffield-king",
+            "shaman-australis",
+            "ladybird-rc"
+          ]
+        },
+        {
+          "text": "Mild, subtly sweet flavour often compared to grapefruit and Tahitian lime",
+          "type": "flavour",
+          "cites": [
+            "shaman-australis",
+            "ladybird-rc",
+            "ozfingerlime"
+          ]
+        },
+        {
+          "text": "Long fruiting season, roughly January to May",
+          "type": "season",
+          "cites": [
+            "natif-fingerlimes",
+            "shaman-australis",
+            "ozfingerlime"
+          ]
+        },
+        {
+          "text": "A select commercial variety and one of the most popular finger limes grown in Australia",
+          "type": "breeding",
+          "cites": [
+            "nuffield-king",
+            "ozfingerlime",
+            "ladybird-rc"
+          ]
+        },
+        {
+          "text": "Long shelf life; postharvest research found its pearls kept condition best at 4 degrees Celsius",
+          "type": "use",
+          "cites": [
+            "nuffield-king",
+            "ozfingerlime"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nuffield-king",
+          "name": "King, J., The commercial production of Australian native finger lime, Nuffield Australia report",
+          "url": "https://www.nuffieldscholar.org/sites/default/files/2025-07/King,%20J%20FINAL%20WEB.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "natif-fingerlimes",
+          "name": "Natif, Australian Fingerlimes (variety season guide)",
+          "url": "https://natif.com.au/blogs/news/australian-fingerlimes",
+          "tier": "third_party"
+        },
+        {
+          "id": "shaman-australis",
+          "name": "Shaman Australis Botanicals, Red Champagne Finger Lime",
+          "url": "https://shaman-australis.com.au/product/citrus-australasica-red-champagne-finger-lime-plant/",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-rc",
+          "name": "Ladybird Nursery, Discover the Unique Red Champagne Finger Lime",
+          "url": "https://www.ladybirdnursery.com.au/red-champagne-finger-lime/",
+          "tier": "nursery"
+        },
+        {
+          "id": "ozfingerlime",
+          "name": "OZ Finger Lime, Standard Finger Lime Varieties",
+          "url": "https://ozfingerlime.com.au/standard-varieties/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "finger-lime-sunrise": {
+      "slug": "finger-lime-sunrise",
+      "species": "Finger Lime",
+      "variety": "Sunrise",
+      "paragraphs": [
+        "Sunrise Lime is not a straight finger lime selection but a CSIRO bred native citrus hybrid, a seedling selection of a faustrimedin, the cross between the finger lime and a calamondin (itself a mandarin and cumquat hybrid). It was granted Plant Breeders Rights in 2004 alongside CSIRO's Australian Blood and Outback limes and is licensed to nurseries across Australia.",
+        "The fruit looks nothing like typical finger lime caviar: it is small, pear shaped and golden to orange skinned, with a sweet edible rind and pith around tangy juice that carries a delicate floral note, so it can be eaten whole like a cumquat. Fruit comes on through the cooler months, with availability running roughly February to June, and it is especially valued for marmalade, jams and preserves."
+      ],
+      "claims": [
+        {
+          "text": "CSIRO developed hybrid, a seedling selection of a faustrimedin, the cross between the finger lime and a calamondin (a mandarin and cumquat hybrid)",
+          "type": "breeding",
+          "cites": [
+            "csiro-limes",
+            "csiropedia-limes",
+            "angus-sunrise"
+          ]
+        },
+        {
+          "text": "Granted Plant Breeders Rights in 2004 alongside the Australian Blood and Outback limes and licensed to several nurseries across Australia",
+          "type": "breeding",
+          "cites": [
+            "csiro-limes"
+          ]
+        },
+        {
+          "text": "Small pear shaped fruit with golden to orange skin",
+          "type": "appearance",
+          "cites": [
+            "csiropedia-limes",
+            "angus-sunrise",
+            "bushfoodshop-sunrise"
+          ]
+        },
+        {
+          "text": "Sweet edible rind and pith with tangy juice and a delicate floral note; can be eaten whole like a cumquat",
+          "type": "flavour",
+          "cites": [
+            "angus-sunrise",
+            "bushfoodshop-sunrise"
+          ]
+        },
+        {
+          "text": "Valued for marmalade, jams and preserves",
+          "type": "use",
+          "cites": [
+            "csiropedia-limes",
+            "bushfoodshop-sunrise"
+          ]
+        },
+        {
+          "text": "Fruits through the cooler months, available roughly February to June",
+          "type": "season",
+          "cites": [
+            "angus-sunrise",
+            "bushfoodshop-sunrise"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "csiro-limes",
+          "name": "CSIRO, Novel Australian lime varieties",
+          "url": "https://www.csiro.au/en/research/plants/crops/horticulture/novel-australian-lime-varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "csiropedia-limes",
+          "name": "CSIROpedia, A taste of the outback, CSIRO lime varieties",
+          "url": "https://csiropedia.csiro.au/limes/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "angus-sunrise",
+          "name": "Gardening With Angus, Citrus 'Sunrise Lime'",
+          "url": "https://gardeningwithangus.com.au/citrus-sunrise-lime/",
+          "tier": "third_party"
+        },
+        {
+          "id": "bushfoodshop-sunrise",
+          "name": "Taste Australia Bush Food Shop, Sunrise Lime",
+          "url": "https://www.bushfoodshop.com.au/sunrise-lime/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
   "skipped": [
+    "finger-lime-champagne",
+    "finger-lime-classic-pink",
     "finger-lime-collette",
     "finger-lime-crystal",
-    "finger-lime-tom-thumb"
+    "finger-lime-dark-red",
+    "finger-lime-emerald-green",
+    "finger-lime-emma",
+    "finger-lime-falon-rose",
+    "finger-lime-gold",
+    "finger-lime-gold-finger",
+    "finger-lime-gold-pearl",
+    "finger-lime-green",
+    "finger-lime-green-chrystal",
+    "finger-lime-jasper-jade",
+    "finger-lime-little-ruby",
+    "finger-lime-maleny-red",
+    "finger-lime-pink",
+    "finger-lime-purple",
+    "finger-lime-rainforest-pearl-2",
+    "finger-lime-red",
+    "finger-lime-red-centre",
+    "finger-lime-red-ruby",
+    "finger-lime-rosebank-red",
+    "finger-lime-royal-pearl",
+    "finger-lime-russell-river",
+    "finger-lime-tom-thumb",
+    "finger-lime-torakina-pink",
+    "finger-lime-torakina-pink-cutting",
+    "finger-lime-wauchope",
+    "finger-lime-yellow",
+    "finger-lime-yellow-lemonade"
   ]
 }
