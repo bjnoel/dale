@@ -81,6 +81,13 @@ beestock.com.au, www.beestock.com.au {
         reverse_proxy localhost:8098
     }
 
+    # Bee emails (welcome + price alerts) use a bare /unsubscribe link; route it
+    # to the backend (handles GET /unsubscribe) so they don't 404. beestock has no
+    # static unsubscribe.html, so this is the canonical unsubscribe path.
+    handle /unsubscribe {
+        reverse_proxy localhost:8098
+    }
+
     root * /opt/dale/bee-dashboard
     encode zstd gzip
     file_server
