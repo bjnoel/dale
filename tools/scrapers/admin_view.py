@@ -19,13 +19,18 @@ import html
 import json
 import sqlite3
 from collections import Counter
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
+
+from stocklib.scrape_health import HEALTH_DIRNAME, read_records
 
 DATA_DIR = Path("/opt/dale/data")
 SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 PENDING_FILE = DATA_DIR / "pending_subscribers.json"
 VARIETY_WATCHES_DB = DATA_DIR / "variety_watches.db"
+
+HEALTH_DAYS = 14
+MAX_RECENT_ERRORS = 15
 
 SITE_URL = "https://treestock.com.au"
 
@@ -165,6 +170,90 @@ def build_admin_model(subscribers, pending, watches_rows) -> dict:
     }
 
 
+def build_health_model(day_records) -> dict:
+    """Pure aggregation of scrape-health records into the /admin grid model.
+
+    day_records: list of (YYYY-MM-DD, records) pairs, NEWEST first (today at
+    index 0). Re-runs append, so only the last record per nursery per day
+    counts. Per day a nursery is "ok", "fail" (ok=false), "zero" (ok but 0
+    products), or absent (no record, rendered as a gap).
+    """
+    day_records = list(day_records or [])
+    # Oldest -> newest so the grid reads left to right.
+    days = [d for d, _ in reversed(day_records)]
+    latest_per_day = []  # aligned with days
+    for _, records in reversed(day_records):
+        latest = {}
+        for rec in records:
+            if rec.get("nursery"):
+                latest[rec["nursery"]] = rec
+        latest_per_day.append(latest)
+
+    nurseries = sorted({n for day in latest_per_day for n in day})
+
+    rows = []
+    total_records = sum(len(r) for _, r in day_records)
+    for nursery in nurseries:
+        cells = []
+        counts = []
+        last_success = None
+        latest_products = None
+        for day, latest in zip(days, latest_per_day):
+            rec = latest.get(nursery)
+            if rec is None:
+                cells.append(None)
+                counts.append(None)
+                continue
+            products = rec.get("products", 0)
+            if not rec.get("ok", False):
+                cells.append("fail")
+            elif products == 0:
+                cells.append("zero")
+            else:
+                cells.append("ok")
+                last_success = rec.get("ts") or day
+            counts.append(products)
+            latest_products = products
+        rows.append({
+            "nursery": nursery,
+            "cells": cells,
+            "counts": counts,
+            "latest_products": latest_products,
+            "last_success": last_success,
+        })
+
+    # Recent errors, newest first.
+    recent_errors = []
+    for day, latest in zip(reversed(days), reversed(latest_per_day)):
+        for nursery in sorted(latest):
+            rec = latest[nursery]
+            if rec.get("error"):
+                recent_errors.append({
+                    "day": day,
+                    "nursery": nursery,
+                    "error": rec["error"],
+                })
+    recent_errors = recent_errors[:MAX_RECENT_ERRORS]
+
+    return {
+        "days": days,
+        "rows": rows,
+        "recent_errors": recent_errors,
+        "total_records": total_records,
+    }
+
+
+def load_health_data(data_dir: Path = DATA_DIR, today: date = None) -> dict:
+    """Read the last HEALTH_DAYS of scrape-health records and build the model."""
+    today = today or date.today()
+    health_dir = Path(data_dir) / HEALTH_DIRNAME
+    day_records = []
+    for n in range(HEALTH_DAYS):
+        day = (today - timedelta(days=n)).isoformat()
+        day_records.append((day, read_records(day, health_dir)))
+    return build_health_model(day_records)
+
+
 def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     """Read the live data files + DB and build the model."""
     data_dir = Path(data_dir)
@@ -198,7 +287,9 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
         except sqlite3.Error:
             watches_rows = []
 
-    return build_admin_model(subscribers, pending, watches_rows)
+    model = build_admin_model(subscribers, pending, watches_rows)
+    model["health"] = load_health_data(data_dir)
+    return model
 
 
 # ---------------------------------------------------------------------------
@@ -318,6 +409,85 @@ def _top_varieties_table(rows) -> str:
     )
 
 
+_CELL_LABELS = {
+    "ok": ("ok", "OK"),
+    "fail": ("fail", "FAILED"),
+    "zero": ("zero", "zero products"),
+    None: ("none", "no record"),
+}
+
+
+def _health_grid(health: dict) -> str:
+    days = health["days"]
+    # Column headers: day-of-month, full date in the tooltip.
+    head_cells = "".join(
+        f'<th class="hday" title="{_esc(d)}">{_esc(d[8:10])}</th>' for d in days
+    )
+    body = []
+    for row in health["rows"]:
+        cells = []
+        for day, status, count in zip(days, row["cells"], row["counts"]):
+            cls, label = _CELL_LABELS[status]
+            detail = f"{day}: {label}"
+            if count is not None:
+                detail += f", {count} products"
+            cells.append(f'<td class="hcell {cls}" title="{_esc(detail)}"></td>')
+        last = _short_date(row["last_success"]) if row["last_success"] else "never"
+        products = row["latest_products"]
+        body.append(
+            "<tr>"
+            f"<td>{_esc(row['nursery'])}</td>"
+            + "".join(cells) +
+            f"<td class='num'>{products if products is not None else '—'}</td>"
+            f"<td>{_esc(last)}</td>"
+            "</tr>"
+        )
+    return (
+        '<table class="health"><thead><tr>'
+        f'<th>Nursery</th>{head_cells}<th class="num">Products</th><th>Last success</th>'
+        '</tr></thead><tbody>' + "".join(body) + "</tbody></table>"
+    )
+
+
+def _health_errors(errors) -> str:
+    if not errors:
+        return ""
+    body = "".join(
+        "<tr>"
+        f"<td>{_esc(e['day'])}</td>"
+        f"<td>{_esc(e['nursery'])}</td>"
+        f"<td>{_esc(e['error'])}</td>"
+        "</tr>"
+        for e in errors
+    )
+    return (
+        f'<h3>Recent errors</h3>'
+        '<table><thead><tr><th>Day</th><th>Nursery</th><th>Error</th></tr></thead>'
+        f'<tbody>{body}</tbody></table>'
+    )
+
+
+def _health_section(health) -> str:
+    if not health or not health["rows"]:
+        return (
+            f'<section><h2>Scraper health ({HEALTH_DAYS} days)</h2>'
+            '<p class="muted">No scrape-health records yet. They appear after the '
+            'next nightly scrape.</p></section>'
+        )
+    legend = (
+        '<p class="muted legend">'
+        '<span class="hcell ok"></span> ok &nbsp;'
+        '<span class="hcell zero"></span> zero products &nbsp;'
+        '<span class="hcell fail"></span> failed &nbsp;'
+        '<span class="hcell none"></span> no record</p>'
+    )
+    return (
+        f'<section><h2>Scraper health ({HEALTH_DAYS} days)</h2>'
+        + legend + _health_grid(health) + _health_errors(health["recent_errors"])
+        + "</section>"
+    )
+
+
 def _pending_table(rows) -> str:
     if not rows:
         return '<section><h2>Pending confirmations</h2><p class="muted">None.</p></section>'
@@ -353,6 +523,7 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
         _watch_only_table(model["watch_only"]),
         _pending_table(model["pending"]),
         _top_varieties_table(model["top_varieties"][:25]),
+        _health_section(model.get("health")),
     ]
     content = "\n".join(parts)
 
@@ -390,6 +561,16 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
   .grid3 {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }}
   .grid2 {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }}
   .grid3 section, .grid2 section {{ margin:0; }}
+  h3 {{ font-size:0.9rem; color:#374151; margin:14px 0 8px; }}
+  table.health th.hday {{ font-size:0.7rem; text-align:center; padding:6px 2px; }}
+  td.hcell {{ width:18px; padding:0; }}
+  span.hcell {{ display:inline-block; width:12px; height:12px; border-radius:2px;
+    vertical-align:-2px; }}
+  .hcell.ok {{ background:#34d399; }}
+  .hcell.fail {{ background:#ef4444; }}
+  .hcell.zero {{ background:#fbbf24; }}
+  .hcell.none {{ background:#e5e7eb; }}
+  .legend {{ font-size:0.8rem; margin:0 0 10px; }}
 </style>
 </head>
 <body>

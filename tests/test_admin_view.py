@@ -144,5 +144,108 @@ class RenderAdminHtmlTest(unittest.TestCase):
         self.assertIn("&lt;script&gt;", page)
 
 
+def _hrec(nursery, ok=True, products=100, error=None, ts="2026-06-11T01:00:00"):
+    return {"ts": ts, "nursery": nursery, "ok": ok, "products": products,
+            "in_stock": 50, "duration_s": 1.0, "http_403": 0, "http_429": 0,
+            "error": error}
+
+
+class BuildHealthModelTest(unittest.TestCase):
+    """The scrape-health grid behind the /admin panel (DAL-193 P0.3)."""
+
+    def test_empty_input_renders_empty_state(self):
+        model = admin_view.build_health_model([])
+        self.assertEqual(model["rows"], [])
+        page = admin_view._health_section(model)
+        self.assertIn("No scrape-health records yet", page)
+
+    def test_statuses_ok_fail_zero_and_gap(self):
+        day_records = [
+            ("2026-06-11", [_hrec("daleys"),
+                            _hrec("ladybird", ok=False, products=0, error="HTTP 500"),
+                            _hrec("fruitopia", products=0)]),
+            ("2026-06-10", [_hrec("daleys")]),
+        ]
+        model = admin_view.build_health_model(day_records)
+        rows = {r["nursery"]: r for r in model["rows"]}
+        # Days run oldest -> newest.
+        self.assertEqual(model["days"], ["2026-06-10", "2026-06-11"])
+        self.assertEqual(rows["daleys"]["cells"], ["ok", "ok"])
+        self.assertEqual(rows["ladybird"]["cells"], [None, "fail"])
+        self.assertEqual(rows["fruitopia"]["cells"], [None, "zero"])
+
+    def test_last_success_and_latest_products(self):
+        day_records = [
+            ("2026-06-11", [_hrec("daleys", ok=False, products=0,
+                                  ts="2026-06-11T01:00:00")]),
+            ("2026-06-10", [_hrec("daleys", products=617,
+                                  ts="2026-06-10T01:00:00")]),
+        ]
+        model = admin_view.build_health_model(day_records)
+        row = model["rows"][0]
+        self.assertEqual(row["last_success"], "2026-06-10T01:00:00")
+        self.assertEqual(row["latest_products"], 0)
+
+    def test_rerun_same_day_last_record_wins(self):
+        day_records = [
+            ("2026-06-11", [_hrec("daleys", ok=False, products=0), _hrec("daleys")]),
+        ]
+        model = admin_view.build_health_model(day_records)
+        self.assertEqual(model["rows"][0]["cells"], ["ok"])
+
+    def test_recent_errors_newest_first_and_capped(self):
+        day_records = [
+            ("2026-06-11", [_hrec("daleys", ok=False, products=0, error="new boom")]),
+            ("2026-06-10", [_hrec("daleys", ok=False, products=0, error="old boom")]),
+        ]
+        model = admin_view.build_health_model(day_records)
+        self.assertEqual([e["error"] for e in model["recent_errors"]],
+                         ["new boom", "old boom"])
+
+    def test_render_mixed_records(self):
+        day_records = [
+            ("2026-06-11", [_hrec("daleys", products=617),
+                            _hrec("ladybird", ok=False, products=0,
+                                  error="HTTP 403 https://x")]),
+        ]
+        page = admin_view._health_section(admin_view.build_health_model(day_records))
+        self.assertIn("daleys", page)
+        self.assertIn("617", page)
+        self.assertIn("Recent errors", page)
+        self.assertIn("HTTP 403 https://x", page)
+
+    def test_render_escapes_error_text(self):
+        day_records = [
+            ("2026-06-11", [_hrec("daleys", ok=False, products=0,
+                                  error="<img onerror=x>")]),
+        ]
+        page = admin_view._health_section(admin_view.build_health_model(day_records))
+        self.assertNotIn("<img onerror=x>", page)
+
+    def test_full_page_includes_health_section(self):
+        model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
+        model["health"] = admin_view.build_health_model(
+            [("2026-06-11", [_hrec("daleys")])])
+        page = admin_view.render_admin_html(model)
+        self.assertIn("Scraper health", page)
+
+    def test_full_page_renders_without_health_key(self):
+        # Direct render calls (and old callers) without a health key still work.
+        model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
+        page = admin_view.render_admin_html(model)
+        self.assertIn("No scrape-health records yet", page)
+
+    def test_load_health_data_reads_from_disk(self):
+        import tempfile
+        from datetime import date
+        from stocklib.scrape_health import append_record
+        with tempfile.TemporaryDirectory() as tmp:
+            health_dir = Path(tmp) / "scraper-health"
+            append_record(_hrec("daleys"), health_dir)
+            model = admin_view.load_health_data(Path(tmp), today=date.today())
+            self.assertEqual(len(model["rows"]), 1)
+            self.assertEqual(model["rows"][0]["nursery"], "daleys")
+
+
 if __name__ == "__main__":
     unittest.main()
