@@ -38,6 +38,7 @@ PLAUSIBLE_SCRIPT = ('<link rel="preconnect" href="https://data.bjnoel.com">'
 NAV_ITEMS = [
     ("Search", "/"),
     ("Species", "/species/"),
+    ("Bush Tucker", "/bush-tucker/"),
     ("Nurseries", "/nursery/"),
     ("Varieties", "/variety/"),
     ("Compare", "/compare/"),

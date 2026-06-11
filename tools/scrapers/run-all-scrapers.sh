@@ -83,6 +83,15 @@ else
     fi
 fi
 
+# Build the /bush-tucker/ category landing page (DEC-200 / DAL-198): same
+# dashboard components, scoped to bush tucker stock, into dashboard/bush-tucker/.
+# Non-fatal: a failure here must not block the homepage or the rest of the run.
+echo "$LOG_PREFIX Building bush tucker landing page..."
+mkdir -p "$PROJECT_DIR/dashboard/bush-tucker"
+python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" \
+    "$PROJECT_DIR/dashboard/bush-tucker" --category bush_tucker 2>&1 \
+    || echo "$LOG_PREFIX WARNING: Bush tucker landing build failed (non-fatal)"
+
 # Generate daily digest (text + HTML + shareable web page versions)
 echo "$LOG_PREFIX Generating daily digest..."
 TODAY=$(date '+%Y-%m-%d')

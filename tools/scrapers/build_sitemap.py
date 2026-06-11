@@ -35,6 +35,7 @@ STATIC_PAGES = [
     ("digest.html", "daily", "0.8"),
     ("history.html", "daily", "0.7"),
     ("species/", "weekly", "0.8"),
+    ("bush-tucker/", "daily", "0.8"),
     ("nursery/", "weekly", "0.8"),
     ("compare/", "weekly", "0.8"),
     ("variety/", "weekly", "0.7"),

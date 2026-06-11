@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Track rare fruit and plant stock across Australian nurseries. Search availability, compare prices, find what's in stock.">
-<link rel="canonical" href="https://treestock.com.au/">
-<meta property="og:title" content="treestock.com.au - Australian Nursery Stock Tracker">
-<meta property="og:description" content="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
+<meta name="description" content="Find Australian bush tucker and native food plants in stock across nurseries: lemon myrtle, finger lime, warrigal greens, mountain pepper, quandong and more. Compare prices, check availability and shipping.">
+<link rel="canonical" href="https://treestock.com.au/bush-tucker/">
+<meta property="og:title" content="Australian Bush Tucker Plants">
+<meta property="og:description" content="Track bush tucker and native food plant stock across Australian nurseries. Lemon myrtle, finger lime, warrigal greens, quandong and more. Free.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://treestock.com.au/og-image.png">
-<meta property="og:url" content="https://treestock.com.au/">
+<meta property="og:url" content="https://treestock.com.au/bush-tucker/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="treestock.com.au - Australian Nursery Stock Tracker">
-<meta name="twitter:description" content="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.">
+<meta name="twitter:title" content="Australian Bush Tucker Plants">
+<meta name="twitter:description" content="Track bush tucker and native food plant stock across Australian nurseries. Lemon myrtle, finger lime, warrigal greens, quandong and more. Free.">
 <meta name="twitter:image" content="https://treestock.com.au/og-image.png">
-<title>treestock.com.au - Australian Nursery Stock Tracker</title>
+<title>Australian Bush Tucker Plants for Sale, Compare Prices | treestock.com.au</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link href="/styles.css?v=DATE" rel="stylesheet">
 <link rel="preconnect" href="https://data.bjnoel.com"><link rel="dns-prefetch" href="https://data.bjnoel.com"><script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
@@ -114,7 +114,7 @@
                               gap-2 sm:gap-4 w-full mt-2 pt-2 sm:pt-0
                               border-t sm:border-0 border-gray-100 text-sm">
         <a href="/species/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Species</a>
-        <a href="/bush-tucker/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Bush Tucker</a>
+        <a href="/bush-tucker/" class="hover:text-green-700 no-underline whitespace-nowrap text-green-800 font-semibold">Bush Tucker</a>
         <a href="/nursery/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Nurseries</a>
         <a href="/variety/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Varieties</a>
         <a href="/compare/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Compare</a>
@@ -133,22 +133,18 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
 </script>
 
 <main class="max-w-3xl lg:max-w-5xl 2xl:max-w-7xl mx-auto px-4 py-4">
+  <div class="mb-4">
+    <h1 class="text-2xl font-bold text-green-900 mb-1">Australian Bush Tucker Plants</h1>
+    <p class="text-sm text-gray-600">Native food plants in stock across Australian nurseries. Search lemon myrtle, finger lime, warrigal greens, mountain pepper, quandong and more, then compare prices and check which nurseries ship to your state. Updated daily.</p>
+  </div>
   <!-- Search & Filters -->
   <div class="mb-4 space-y-3">
-    <input type="text" id="search" placeholder="Search plants... (e.g. sapodilla, mango, fig)"
+    <input type="text" id="search" placeholder="Search bush tucker... (e.g. lemon myrtle, finger lime, warrigal greens)"
       class="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
       autofocus>
     <div id="speciesWrap">
-      <div class="species-strip"><a href="/species/avocado.html" class="species-pill" data-q="Avocado" data-sl="avocado">Avocado <span class="count">3</span></a>
-<a href="/species/apple.html" class="species-pill" data-q="Apple" data-sl="apple">Apple <span class="count">3</span></a>
-<a href="/species/black-sapote.html" class="species-pill" data-q="Black Sapote" data-sl="black-sapote">Black Sapote <span class="count">3</span></a>
-<a href="/species/lychee.html" class="species-pill" data-q="Lychee" data-sl="lychee">Lychee <span class="count">2</span></a>
-<a href="/species/banana.html" class="species-pill" data-q="Banana" data-sl="banana">Banana <span class="count">2</span></a>
-<a href="/species/mango.html" class="species-pill" data-q="Mango" data-sl="mango">Mango <span class="count">1</span></a>
-<a href="/species/mountain-pepper.html" class="species-pill" data-q="Mountain Pepper" data-sl="mountain-pepper">Mountain Pepper <span class="count">1</span></a>
-<a href="/species/fig.html" class="species-pill" data-q="Fig" data-sl="fig">Fig <span class="count">1</span></a>
+      <div class="species-strip"><a href="/species/mountain-pepper.html" class="species-pill" data-q="Mountain Pepper" data-sl="mountain-pepper">Mountain Pepper <span class="count">1</span></a>
 <a href="/species/warrigal-greens.html" class="species-pill" data-q="Warrigal Greens" data-sl="warrigal-greens">Warrigal Greens <span class="count">1</span></a>
-<a href="/species/longan.html" class="species-pill" data-q="Longan" data-sl="longan">Longan <span class="count">1</span></a>
 <a href="/species/riberry.html" class="species-pill" data-q="Riberry" data-sl="riberry">Riberry <span class="count">1</span></a></div>
       <button id="toggleSpecies" class="toggle-pills-btn" style="display:none">Show all &#9662;</button>
     </div>
@@ -240,7 +236,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   </div>
 </footer>
 
-<script src="/data.js?v=DATE" defer></script>
+<script src="/bush-tucker/data.js?v=DATE" defer></script>
 <script src="/dashboard.js?v=DATE" defer></script>
 
 <!-- Floating subscribe bar (mobile only) -->

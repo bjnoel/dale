@@ -448,6 +448,71 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
     return True
 
 
+# Category landing pages (DEC-200 IA / DAL-198). Each reuses the full dashboard
+# search + filters + results, scoped to one category's stock. The homepage is
+# NOT in here and is never touched (results above the fold, nothing above them).
+# To add a category: enable it in stocklib.taxonomy, then add an entry here and
+# a nav link in treestock_layout.NAV_ITEMS.
+_BUSH_TUCKER_INTRO = """  <div class="mb-4">
+    <h1 class="text-2xl font-bold text-green-900 mb-1">Australian Bush Tucker Plants</h1>
+    <p class="text-sm text-gray-600">Native food plants in stock across Australian nurseries. Search lemon myrtle, finger lime, warrigal greens, mountain pepper, quandong and more, then compare prices and check which nurseries ship to your state. Updated daily.</p>
+  </div>"""
+
+LANDING_PAGES: dict[str, dict] = {
+    "bush_tucker": {
+        "title": "Australian Bush Tucker Plants for Sale, Compare Prices | treestock.com.au",
+        "description": "Find Australian bush tucker and native food plants in stock across nurseries: lemon myrtle, finger lime, warrigal greens, mountain pepper, quandong and more. Compare prices, check availability and shipping.",
+        "canonical_url": "https://treestock.com.au/bush-tucker/",
+        "og_title": "Australian Bush Tucker Plants",
+        "og_description": "Track bush tucker and native food plant stock across Australian nurseries. Lemon myrtle, finger lime, warrigal greens, quandong and more. Free.",
+        "active_path": "/bush-tucker/",
+        "search_placeholder": "Search bush tucker... (e.g. lemon myrtle, finger lime, warrigal greens)",
+        "data_url": "/bush-tucker/data.js",
+        "intro_html": _BUSH_TUCKER_INTRO,
+    },
+}
+
+
+def filter_to_category(products: list[dict], nurseries: list[dict],
+                       ranked_species: list[dict], category: str):
+    """Scope the loaded dashboard data to one category landing page (DAL-198).
+
+    A product belongs if it matched a species in the category's landing set
+    (the species' own category OR a cross-listing tag, e.g. the bush-tucker-
+    tagged fruits like Finger Lime), OR the categorize ladder routes it into the
+    category via the nursery's category_raw mapping (e.g. a Daleys "Bush Food
+    Plants" product with no species record). Returns scoped
+    (products, nurseries, ranked_species)."""
+    from stocklib.categorize import Categorizer
+    from stocklib.taxonomy import landing_species
+
+    landing_slugs = {s["slug"] for s in landing_species(category)}
+    categorizer = Categorizer(species_matcher=_all_records_category_matcher())
+
+    kept = []
+    for p in products:
+        sl = p.get("sl")
+        if sl and sl in landing_slugs:
+            kept.append(p)
+            continue
+        cat, _src = categorizer.categorize(
+            p.get("t", ""), p.get("nk", ""), p.get("cat", ""))
+        if cat == category:
+            kept.append(p)
+
+    kept_keys = {p.get("nk") for p in kept}
+    kept_nurseries = []
+    for n in nurseries:
+        if n["key"] not in kept_keys:
+            continue
+        n = dict(n)
+        n_products = [p for p in kept if p.get("nk") == n["key"]]
+        n["count"] = len(n_products)
+        n["in_stock"] = sum(1 for p in n_products if p.get("a"))
+        kept_nurseries.append(n)
+
+    kept_ranked = [s for s in ranked_species if s["sl"] in landing_slugs]
+    return kept, kept_nurseries, kept_ranked
 
 
 def load_previous_snapshot(nursery_dir: Path) -> dict:
@@ -775,7 +840,11 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
     return products, nurseries_loaded, ranked_species
 
 
-def build_html(products: list[dict], nurseries: list[dict], ranked_species: list[dict], highlights_html: str = "") -> str:
+def build_html(products: list[dict], nurseries: list[dict], ranked_species: list[dict], highlights_html: str = "", landing: dict | None = None) -> str:
+    # `landing` carries per-page overrides for a category landing page (e.g.
+    # /bush-tucker/, DAL-198). When None every value below is the homepage
+    # default, so the homepage output is byte-identical.
+    L = landing or {}
     """Generate the dashboard HTML with embedded data."""
     products_json = json.dumps(products, separators=(",", ":"))
     nurseries_json = json.dumps(nurseries, separators=(",", ":"))
@@ -869,20 +938,27 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .filter-chip button { background: none; border: none; color: #166534; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
   .filter-chip button:hover { color: #dc2626; }"""
 
+    # Optional intro block above the search (category landing pages only; the
+    # homepage stays "search first" with nothing above results). Empty -> the
+    # homepage markup is unchanged.
+    intro_html = L.get("intro_html", "")
+    intro_block = ("\n" + intro_html) if intro_html else ""
+    data_url = L.get("data_url", "/data.js")
+
     # Twitter Card + og:title/description/image/type are emitted by render_head;
     # only the og:image dimensions (which render_head does not model) are added here.
     extra_head_tags = """<meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">"""
 
     head = render_head(
-        title="treestock.com.au - Australian Nursery Stock Tracker",
-        description="Track rare fruit and plant stock across Australian nurseries. Search availability, compare prices, find what's in stock.",
-        canonical_url="https://treestock.com.au/",
-        og_title="treestock.com.au - Australian Nursery Stock Tracker",
-        og_description="Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free.",
+        title=L.get("title", "treestock.com.au - Australian Nursery Stock Tracker"),
+        description=L.get("description", "Track rare fruit and plant stock across Australian nurseries. Search availability, compare prices, find what's in stock."),
+        canonical_url=L.get("canonical_url", "https://treestock.com.au/"),
+        og_title=L.get("og_title", "treestock.com.au - Australian Nursery Stock Tracker"),
+        og_description=L.get("og_description", "Track fruit tree stock across Australian nurseries. Daily price drops, restocks, and availability. Filter by state. Free."),
         og_image="https://treestock.com.au/og-image.png",
         og_type="website",
-        jsonld=[organization_jsonld(), website_jsonld()],
+        jsonld=L.get("jsonld", [organization_jsonld(), website_jsonld()]),
         extra_head=extra_head_tags,
         extra_style=extra_style,
     )
@@ -894,17 +970,17 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
     header = render_header(
         max_width=CONTENT_MAX_WIDTH,
         show_nav=True,
-        active_path="/",
+        active_path=L.get("active_path", "/"),
         extra_right=f'<span class="text-xs text-gray-500 hidden sm:block">Updated {now}</span>',
     )
 
     html = f"""{head}
 {header}
 
-<main class="{CONTENT_MAX_WIDTH} mx-auto px-4 py-4">
+<main class="{CONTENT_MAX_WIDTH} mx-auto px-4 py-4">{intro_block}
   <!-- Search & Filters -->
   <div class="mb-4 space-y-3">
-    <input type="text" id="search" placeholder="Search plants... (e.g. sapodilla, mango, fig)"
+    <input type="text" id="search" placeholder="{L.get("search_placeholder", "Search plants... (e.g. sapodilla, mango, fig)")}"
       class="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
       autofocus>
     <div id="speciesWrap">
@@ -980,7 +1056,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
 {render_footer(max_width=CONTENT_MAX_WIDTH, extra_text='<span id="stats" class="block mb-1"></span><a href="/advertise.html" class="underline">Nursery partnerships</a>')}
 
-<script src="/data.js?v={cache_v}" defer></script>
+<script src="{data_url}?v={cache_v}" defer></script>
 <script src="/dashboard.js?v={cache_v}" defer></script>
 
 <!-- Floating subscribe bar (mobile only) -->
@@ -1012,6 +1088,7 @@ def main():
     parser.add_argument("--featured", metavar="NURSERY_KEY", help="Nursery key to feature (e.g. primal-fruits). Overrides FEATURED_NURSERIES constant. Use for demo/preview builds only.")
     parser.add_argument("--output-name", default="index.html", metavar="FILENAME", help="Output filename (default: index.html). Use e.g. featured-demo.html for demo builds.")
     parser.add_argument("--needs-review-out", metavar="PATH", help="Also run the categorize ladder (DEC-200) and write the per-nursery needs-review JSON to PATH. Off by default so golden builds never see it.")
+    parser.add_argument("--category", metavar="CATEGORY", choices=sorted(LANDING_PAGES), help="Build a category landing page (e.g. bush_tucker) instead of the homepage: same components, scoped to that category's stock (DAL-198). Writes index.html + data.js into output_dir; reference the scoped data.js via the page's data_url.")
     args = parser.parse_args()
 
     data_dir = Path(args.data_dir)
@@ -1042,8 +1119,16 @@ def main():
     if args.needs_review_out:
         write_needs_review(products, Path(args.needs_review_out))
 
+    landing = None
+    if args.category:
+        products, nurseries, ranked_species = filter_to_category(
+            products, nurseries, ranked_species, args.category)
+        landing = LANDING_PAGES[args.category]
+        print(f"  Category landing '{args.category}': {len(products)} products, "
+              f"{len(ranked_species)} species, {len(nurseries)} nurseries")
+
     output_dir.mkdir(parents=True, exist_ok=True)
-    html, data_js = build_html(products, nurseries, ranked_species, highlights_html)
+    html, data_js = build_html(products, nurseries, ranked_species, highlights_html, landing=landing)
 
     # Atomic write: write to temp file then rename to avoid serving partial HTML
     out_file = output_dir / args.output_name
@@ -1061,18 +1146,22 @@ def main():
     print(f"Data written to {data_file} ({len(data_js):,} bytes)")
 
     # Post-build verification. data.js is now the big file; the HTML is small by
-    # design, so guard each against its own floor (a corrupt build trips one of them).
+    # design, so guard each against its own floor (a corrupt build trips one of
+    # them). These floors are calibrated for the full homepage; a category
+    # landing page is legitimately a small fraction of the catalogue, so the
+    # data.js / product-count floors do not apply to it.
     html_size = out_file.stat().st_size
     data_size = data_file.stat().st_size
     if html_size < 8_000:
         print(f"WARNING: index.html is suspiciously small ({html_size:,} bytes). Expected >8KB.", file=sys.stderr)
         sys.exit(2)
-    if data_size < 500_000:
-        print(f"WARNING: data.js is suspiciously small ({data_size:,} bytes). Expected >500KB.", file=sys.stderr)
-        sys.exit(2)
-    if len(products) < 1000:
-        print(f"WARNING: Only {len(products)} products loaded. Expected >1000. Check scrapers.", file=sys.stderr)
-        sys.exit(2)
+    if not args.category:
+        if data_size < 500_000:
+            print(f"WARNING: data.js is suspiciously small ({data_size:,} bytes). Expected >500KB.", file=sys.stderr)
+            sys.exit(2)
+        if len(products) < 1000:
+            print(f"WARNING: Only {len(products)} products loaded. Expected >1000. Check scrapers.", file=sys.stderr)
+            sys.exit(2)
     print(f"Verification passed: index.html {html_size:,} bytes, data.js {data_size:,} bytes, {len(products)} products")
 
 
