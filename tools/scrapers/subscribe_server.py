@@ -30,6 +30,13 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import parse_qs, parse_qsl, urlparse
 
+import admin_view
+
+try:
+    import jwt  # PyJWT — validates the Cloudflare Access JWT on /admin
+except ImportError:  # server fails closed (403) if PyJWT is missing
+    jwt = None
+
 SCRIPT_DIR = Path(__file__).parent
 
 SUBSCRIBERS_FILE = Path("/opt/dale/data/subscribers.json")
@@ -181,12 +188,99 @@ def _save_manage_link_log(log: dict):
         json.dump(log, f, indent=2)
 
 
+def _read_app_env(key: str) -> str:
+    """Read a single KEY=value from app.env (same format as UNSUBSCRIBE_SECRET)."""
+    if APP_ENV.exists():
+        with open(APP_ENV) as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith(key + "="):
+                    return line.split("=", 1)[1].strip()
+    return ""
+
+
+_cf_jwks_client = None
+
+
+def _get_cf_jwks_client(team_domain: str):
+    """Cache a PyJWKClient for the Cloudflare Access team JWKS endpoint."""
+    global _cf_jwks_client
+    if _cf_jwks_client is None and jwt is not None:
+        _cf_jwks_client = jwt.PyJWKClient(f"{team_domain}/cdn-cgi/access/certs")
+    return _cf_jwks_client
+
+
+def _extract_cf_token(headers) -> str:
+    """CF Access injects the JWT as a header (and a cookie). Prefer the header."""
+    token = headers.get("Cf-Access-Jwt-Assertion", "")
+    if token:
+        return token.strip()
+    cookie = headers.get("Cookie", "")
+    for part in cookie.split(";"):
+        part = part.strip()
+        if part.startswith("CF_Authorization="):
+            return part.split("=", 1)[1].strip()
+    return ""
+
+
+def verify_cf_access(headers) -> bool:
+    """Validate the Cloudflare Access JWT.
+
+    CF Access authenticates at the edge, but the origin is publicly reachable, so
+    a direct-to-origin request would bypass it. Validating the signed
+    Cf-Access-Jwt-Assertion here closes that hole. Fails closed (returns False)
+    on any missing config, missing token, or verification error.
+    """
+    if jwt is None:
+        print("CF Access check failed: PyJWT not installed", file=sys.stderr)
+        return False
+    team_domain = _read_app_env("CF_ACCESS_TEAM_DOMAIN").rstrip("/")
+    aud = _read_app_env("CF_ACCESS_AUD")
+    if not team_domain or not aud:
+        print(
+            "CF Access check failed: CF_ACCESS_TEAM_DOMAIN/CF_ACCESS_AUD not set in app.env",
+            file=sys.stderr,
+        )
+        return False
+    token = _extract_cf_token(headers)
+    if not token:
+        return False
+    try:
+        signing_key = _get_cf_jwks_client(team_domain).get_signing_key_from_jwt(token)
+        jwt.decode(
+            token,
+            signing_key.key,
+            algorithms=["RS256"],
+            audience=aud,
+            issuer=team_domain,
+        )
+        return True
+    except Exception as e:
+        print(f"CF Access verification failed: {e}", file=sys.stderr)
+        return False
+
+
 class SubscribeHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
         params = dict(parse_qsl(parsed.query))
         email = params.get("email", "").strip().lower()
         token = params.get("token", "").strip()
+
+        # Read-only subscriber admin view. Gated by Cloudflare Access at the edge
+        # AND by JWT validation here (so a direct-to-origin hit can't reach it).
+        if parsed.path in ("/admin", "/admin/"):
+            if not verify_cf_access(self.headers):
+                self.send_html(403, "<h2>403 — Forbidden</h2><p>This page is gated by Cloudflare Access.</p>")
+                return
+            try:
+                page = admin_view.render_admin_html(admin_view.load_admin_data())
+            except Exception as e:
+                print(f"Admin view render error: {e}", file=sys.stderr)
+                self.send_html(500, "<h2>500</h2><p>Could not build the admin view.</p>")
+                return
+            self.send_admin_html(page)
+            return
 
         if parsed.path in ("/wishlist-counts", "/api/wishlist-counts"):
             try:
@@ -1022,6 +1116,17 @@ async function removeVariety(slug) {{
         self.send_response(status)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(encoded)))
+        self.end_headers()
+        self.wfile.write(encoded)
+
+    def send_admin_html(self, html_doc: str):
+        """Send a full pre-rendered HTML page (no site chrome); noindex + no-store."""
+        encoded = html_doc.encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(encoded)))
+        self.send_header("X-Robots-Tag", "noindex, nofollow")
+        self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(encoded)
 

@@ -36,6 +36,16 @@ treestock.com.au, www.treestock.com.au {
         reverse_proxy localhost:8099
     }
 
+    # Read-only subscriber admin view. Gate with Cloudflare Access (Zero Trust)
+    # at the edge; subscribe_server.py also validates the CF Access JWT so a
+    # direct-to-origin request can't bypass it.
+    handle /admin {
+        reverse_proxy localhost:8099
+    }
+    handle /admin/ {
+        reverse_proxy localhost:8099
+    }
+
     root * /opt/dale/dashboard
     encode zstd gzip
     file_server
@@ -112,6 +122,14 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
     }
     handle /api/request-manage-link {
         uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+
+    # Read-only subscriber admin view (see HTTPS block above).
+    handle /admin {
+        reverse_proxy localhost:8099
+    }
+    handle /admin/ {
         reverse_proxy localhost:8099
     }
 
