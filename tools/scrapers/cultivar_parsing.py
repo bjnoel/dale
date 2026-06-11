@@ -644,16 +644,18 @@ _ORNAMENTAL_WORDS = frozenset({
 _ORNAMENTAL_PAREN_WORDS = _ORNAMENTAL_WORDS | frozenset({'rosa', 'nerium'})
 
 # Active variety watches that predate the gate and point at non-fruit pages
-# (kawakawa x2, maroon bush x2, mandevilla, begonia, cinnamon myrtle as of
-# 2026-06-11). Their pages and alerts stay alive until the taxonomy grows a
-# natives/ornamentals category (stocklib.taxonomy.ENABLED_CATEGORIES). Closed
-# list: the pages' species stay out of scope, so no NEW watches can be added.
+# (kawakawa x2, maroon bush x2, mandevilla, begonia as of 2026-06-11). Their
+# pages and alerts stay alive until the taxonomy grows a natives/ornamentals
+# category (stocklib.taxonomy.ENABLED_CATEGORIES). Closed list: the pages'
+# species stay out of scope, so no NEW watches can be added.
+# cinnamon-myrtle-mini retired 2026-06-11 (DAL-197): Cinnamon Myrtle is now a
+# registered, enabled bush_tucker species, so the slug is organically in scope
+# and no longer needs grandfathering.
 GRANDFATHERED_VARIETY_SLUGS = frozenset({
     'piper-excelsum-kawakawa',
     'maroon-bush-scaevola-spinescens',
     'mandevilla-peach-sunrise',
     'begonia-bewitched-red-black',
-    'cinnamon-myrtle-mini',
 })
 
 

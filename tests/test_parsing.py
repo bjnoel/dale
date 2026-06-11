@@ -298,6 +298,7 @@ class SpeciesInScope(unittest.TestCase):
         "Papaya Bisexual",
         "Mandarin (Imperial)",         # parenthesized qualifier
         "Mandarin Imperial",           # cultivar word in the species slot
+        "Lemon Myrtle",                # registered enabled bush_tucker (DAL-197)
         "Persimmon Fuyu",
         "Guava Hawaiian",
         "Plum x Apricot",              # cross led by a known species
@@ -311,7 +312,6 @@ class SpeciesInScope(unittest.TestCase):
         "Chilli",                      # edible but out of fruit/nut/berry scope
         "Tomato",
         "Flowering Cherry",            # ornamental prunus: species doesn't lead
-        "Lemon Myrtle",                # borrows a fruit name, different plant
         "Apple Cactus",
         "Peanut Tree",
         "Heliconia bihai x caribaea",  # cross of unknown species
@@ -345,7 +345,6 @@ class SpeciesInScope(unittest.TestCase):
             "Heuchera Sugar Plum (Heuchera)",
             "Frangipani Apricot (Plumeria rubra)",
             "Rose Showpiece Orange (Rosa)",        # genus only in the parens
-            "Lemon Myrtle",
             "Strawberry Begonia Hanging plants",
         ]
         for t in leaks:
@@ -591,11 +590,22 @@ class VocabularyScopedOrnamentalGate(unittest.TestCase):
         self.assertTrue(cp.cultivar_in_scope("Lemon Myrtle",
                                              title="Lemon Myrtle 'Mini'"))
 
-    def test_unregistered_lemon_myrtle_still_rejects(self):
-        # No injection: live taxonomy has no Lemon Myrtle record.
-        self.assertIsNone(cp.product_variety_slug("Lemon Myrtle 'Mini'"))
-        self.assertFalse(cp.cultivar_in_scope("Lemon Myrtle",
-                                              title="Lemon Myrtle 'Mini'"))
+    def test_registered_lemon_myrtle_parses_live(self):
+        # No injection: since DAL-197 the LIVE taxonomy carries an enabled
+        # Lemon Myrtle bush_tucker record, so the vocabulary-scoped gate admits
+        # it (its own vocabulary covers "myrtle").
+        self.assertEqual(cp.product_variety_slug("Lemon Myrtle 'Mini'"),
+                         "lemon-myrtle-mini")
+        self.assertTrue(cp.cultivar_in_scope("Lemon Myrtle",
+                                             title="Lemon Myrtle 'Mini'"))
+
+    def test_unregistered_ornamental_myrtle_still_rejects_live(self):
+        # An ornamental myrtle with NO registered record still rejects against
+        # the live taxonomy: "myrtle" is not covered by any matched record's
+        # vocabulary, so the gate stays plugged for crepe/willow myrtles.
+        self.assertIsNone(cp.product_variety_slug("Crepe Myrtle 'Sioux'"))
+        self.assertFalse(cp.cultivar_in_scope("Crepe Myrtle",
+                                              title="Crepe Myrtle 'Sioux'"))
 
     def test_hibiscus_petite_orange_still_rejects(self):
         # Even with Lemon Myrtle registered: 'hibiscus' is not in the Orange
@@ -618,14 +628,23 @@ class VocabularyScopedOrnamentalGate(unittest.TestCase):
         }])
         self.assertIsNone(cp.product_variety_slug("Testfruit - Red Hibiscus"))
 
-    def test_live_records_carry_no_ornamental_vocabulary(self):
-        # The behaviour-preservation claim: today no enabled record's own
-        # names contain an ornamental word, so moving the gate after
-        # canonicalisation changes nothing in production.
+    def test_enabled_ornamental_vocabulary_is_qualified(self):
+        # Before the pilot no enabled record's names carried an ornamental
+        # word. DAL-197 enabled the myrtle bush tucker species (Lemon/Aniseed/
+        # Cinnamon Myrtle), which legitimately carry "myrtle" -- exactly what
+        # the vocabulary-scoped gate is for. Safety invariant: any ornamental
+        # word in an enabled record's vocabulary is part of a MULTI-word common
+        # name (qualified), never bare, so it only unlocks titles carrying the
+        # same qualifier ("Lemon Myrtle"), not crepe myrtles.
         for r in cp._species_records():
             names = [r.get("common_name", "")] + list(r.get("synonyms", []) or [])
-            words = set()
             for name in names:
-                words.update(re.findall(r"[a-z]+", name.lower()))
-            self.assertFalse(words & cp._ORNAMENTAL_PAREN_WORDS,
-                             f"{r.get('common_name')}: {words & cp._ORNAMENTAL_PAREN_WORDS}")
+                words = set(re.findall(r"[a-z]+", name.lower()))
+                orn = words & cp._ORNAMENTAL_PAREN_WORDS
+                if orn:
+                    self.assertGreater(
+                        len(name.split()), 1,
+                        f"{r.get('common_name')}: bare ornamental name {name!r}")
+                    self.assertEqual(
+                        orn, {"myrtle"},
+                        f"{r.get('common_name')}: unexpected ornamental word {orn}")

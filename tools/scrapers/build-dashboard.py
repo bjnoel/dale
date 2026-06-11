@@ -744,23 +744,21 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             species_summary[sl]["in_stock"] += 1
         if p.get("p"):
             species_summary[sl]["prices"].append(p["p"])
-        if not species_summary[sl]["cn"] and p.get("ln"):
-            species_summary[sl]["_ln"] = p["ln"]
-
-    # Resolve common names from species lookup
-    ln_to_cn: dict[str, str] = {}
+    # Resolve common names from the species lookup by SLUG. The slug is unique
+    # per record (enforced by the taxonomy schema test); the latin name is NOT
+    # -- Riberry and Lilly Pilly both carry Syzygium luehmannii -- so keying cn
+    # resolution on the latin name mislabelled one of them (surfaced at the
+    # DAL-197 bush tucker enable).
+    sl_to_cn: dict[str, str] = {}
     if species_lookup:
         for entry in species_lookup.values():
-            ln = entry.get("ln", "")
-            cn = entry.get("cn", "")
-            if ln and cn and ln not in ln_to_cn:
-                ln_to_cn[ln] = cn
+            sl_, cn = entry.get("sl", ""), entry.get("cn", "")
+            if sl_ and cn:
+                sl_to_cn.setdefault(sl_, cn)
 
     for sl, s in species_summary.items():
         if not s["cn"]:
-            ln = s.get("_ln", "")
-            s["cn"] = ln_to_cn.get(ln, sl.replace("-", " ").title())
-        s.pop("_ln", None)
+            s["cn"] = sl_to_cn.get(sl, sl.replace("-", " ").title())
         prices = s.pop("prices", [])
         if prices:
             s["min_p"] = round(min(prices), 2)
