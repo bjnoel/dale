@@ -254,6 +254,18 @@ def load_health_data(data_dir: Path = DATA_DIR, today: date = None) -> dict:
     return build_health_model(day_records)
 
 
+def load_needs_review(data_dir: Path = DATA_DIR) -> dict | None:
+    """The categorize ladder's needs-review report (written nightly by
+    build-dashboard --needs-review-out). None when it doesn't exist yet."""
+    path = Path(data_dir) / "needs-review.json"
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
 def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     """Read the live data files + DB and build the model."""
     data_dir = Path(data_dir)
@@ -289,6 +301,7 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
 
     model = build_admin_model(subscribers, pending, watches_rows)
     model["health"] = load_health_data(data_dir)
+    model["needs_review"] = load_needs_review(data_dir)
     return model
 
 
@@ -488,6 +501,44 @@ def _health_section(health) -> str:
     )
 
 
+def _needs_review_section(report) -> str:
+    """Per-nursery unclassified counts from the categorize ladder (DEC-200).
+    The correction loop: a high count means the nursery needs a species record
+    or a nursery_categories.json mapping line, not hand-tuned keywords."""
+    if not report or not report.get("nurseries"):
+        return (
+            '<section><h2>Needs review (unclassified products)</h2>'
+            '<p class="muted">No needs-review report yet. It appears after the '
+            'next nightly dashboard build.</p></section>'
+        )
+    rows = sorted(report["nurseries"].items(),
+                  key=lambda kv: -kv[1].get("unclassified", 0))
+    body = []
+    for nursery, entry in rows:
+        total = entry.get("total", 0)
+        unclassified = entry.get("unclassified", 0)
+        pct = f"{unclassified / total * 100:.0f}%" if total else "0%"
+        examples = ", ".join(entry.get("examples", [])[:3])
+        body.append(
+            "<tr>"
+            f"<td>{_esc(nursery)}</td>"
+            f"<td class='num'>{unclassified}</td>"
+            f"<td class='num'>{total}</td>"
+            f"<td class='num'>{_esc(pct)}</td>"
+            f"<td>{_esc(examples)}</td>"
+            "</tr>"
+        )
+    generated = _short_date(report.get("generated_at", ""))
+    return (
+        f'<section><h2>Needs review (unclassified products)</h2>'
+        f'<p class="muted">From the categorize ladder, generated {_esc(generated)}. '
+        'Fix by adding a species record or a nursery_categories.json mapping.</p>'
+        '<table><thead><tr><th>Nursery</th><th class="num">Unclassified</th>'
+        '<th class="num">Total</th><th class="num">Rate</th><th>Examples</th>'
+        '</tr></thead><tbody>' + "".join(body) + '</tbody></table></section>'
+    )
+
+
 def _pending_table(rows) -> str:
     if not rows:
         return '<section><h2>Pending confirmations</h2><p class="muted">None.</p></section>'
@@ -524,6 +575,7 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
         _pending_table(model["pending"]),
         _top_varieties_table(model["top_varieties"][:25]),
         _health_section(model.get("health")),
+        _needs_review_section(model.get("needs_review")),
     ]
     content = "\n".join(parts)
 

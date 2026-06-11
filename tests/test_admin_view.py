@@ -235,6 +235,30 @@ class BuildHealthModelTest(unittest.TestCase):
         page = admin_view.render_admin_html(model)
         self.assertIn("No scrape-health records yet", page)
 
+    def test_needs_review_section_renders_counts(self):
+        report = {
+            "generated_at": "2026-06-11T12:00:00+00:00",
+            "nurseries": {
+                "daleys": {"total": 600, "unclassified": 40,
+                           "by_category": {"fruit": 560},
+                           "examples": ["Mystery One", "Mystery Two"]},
+            },
+        }
+        page = admin_view._needs_review_section(report)
+        self.assertIn("daleys", page)
+        self.assertIn("40", page)
+        self.assertIn("Mystery One", page)
+        self.assertIn("7%", page)  # 40/600
+
+    def test_needs_review_empty_state(self):
+        page = admin_view._needs_review_section(None)
+        self.assertIn("No needs-review report yet", page)
+
+    def test_full_page_includes_needs_review_section(self):
+        model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
+        page = admin_view.render_admin_html(model)
+        self.assertIn("Needs review", page)
+
     def test_load_health_data_reads_from_disk(self):
         import tempfile
         from datetime import date

@@ -1,0 +1,11 @@
+{
+  "daleys": [
+    {"match": "Bush Food Plants", "mode": "exact", "category": "bush_tucker"}
+  ],
+  "guildford": [
+    {"match": "Australian Native Food Plants", "mode": "contains", "category": "bush_tucker"}
+  ],
+  "ross-creek": [
+    {"match": "Australian Native", "mode": "exact", "category": "bush_tucker"}
+  ]
+}
