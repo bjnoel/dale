@@ -13,6 +13,7 @@ Usage:
     python3 daily_digest.py /path/to/nursery-stock --wa-only
 """
 
+import functools
 import json
 import re
 import sys
@@ -47,12 +48,62 @@ WA_NURSERIES = {k for k, states in SHIPPING_MAP.items() if "WA" in states}
 # All category keys a daily digest can contain. Order matters for rendering.
 ALL_CATEGORIES = ("back_in_stock", "price_drops", "new_products")
 
+# DAL-199 gate: a clearly labelled "Bush tucker" section in the digest. OFF
+# until Benedict has reviewed the copy (DEC-200 3.7). While False the digest is
+# byte-identical to before the pilot (bush tucker items stay inline in their
+# nursery's section). Flip to True in a one-line PR once the copy is approved.
+BUSH_TUCKER_DIGEST_SECTION = False
+
 
 def _resolve_categories(categories):
     """Normalise a categories argument into a frozenset. None = all categories."""
     if categories is None:
         return frozenset(ALL_CATEGORIES)
     return frozenset(c for c in categories if c in ALL_CATEGORIES)
+
+
+@functools.lru_cache(maxsize=1)
+def _bush_tucker_phrases() -> tuple:
+    """Lowercased names/synonyms of the enabled category==bush_tucker species
+    (the pilot records only, NOT the cross-listed fruits like Finger Lime, which
+    stay in the main fruit flow). Used to route digest change items into the
+    labelled bush tucker section. Longest first so the match is specific."""
+    from stocklib.taxonomy import enabled_species
+    phrases = set()
+    for r in enabled_species():
+        if r.get("category") != "bush_tucker":
+            continue
+        for n in [r.get("common_name", "")] + list(r.get("synonyms", []) or []):
+            n = n.strip().lower()
+            if n:
+                phrases.add(n)
+    return tuple(sorted(phrases, key=len, reverse=True))
+
+
+def _is_bush_tucker(title: str) -> bool:
+    """True if a change item's title names a bush tucker pilot species. Whole
+    word/phrase match, so "Desert Lime" routes to bush tucker but "Tahitian
+    Lime" does not."""
+    t = title.lower()
+    return any(re.search(r"\b" + re.escape(ph) + r"\b", t)
+               for ph in _bush_tucker_phrases())
+
+
+def _partition_bush_tucker(all_changes: dict) -> tuple[dict, dict]:
+    """Split each nursery's change lists into (fruit, bush_tucker) by title.
+    Only the pilot bush tucker species route to the bush tucker bucket; the
+    cross-listed fruits stay with fruit. Same per-nursery shape on both sides."""
+    fruit, bt = {}, {}
+    for nk, changes in all_changes.items():
+        f_c = {cat: [] for cat in ALL_CATEGORIES}
+        b_c = {cat: [] for cat in ALL_CATEGORIES}
+        for cat in ALL_CATEGORIES:
+            for item in changes.get(cat, []):
+                bucket = b_c if _is_bush_tucker(item.get("title", "")) else f_c
+                bucket[cat].append(item)
+        fruit[nk] = f_c
+        bt[nk] = b_c
+    return fruit, bt
 
 
 def is_fruit_product(product: dict, nursery_key: str) -> bool:
@@ -95,11 +146,47 @@ def load_snapshot(nursery_dir: Path, target_date: str) -> dict:
 
 
 
+def _bush_tucker_text(bt_changes: dict, filter_state: str, enabled) -> list:
+    """Plain-text "Bush tucker" block (DAL-199): bush tucker changes flattened
+    across nurseries (state-filtered), each line noting its nursery. [] if
+    nothing qualifies."""
+    rows = []
+    for nursery_key, changes in sorted(bt_changes.items()):
+        if filter_state and not nursery_ships_to(nursery_key, filter_state):
+            continue
+        nm = NURSERY_NAMES.get(nursery_key, nursery_key)
+        if "back_in_stock" in enabled:
+            for item in changes["back_in_stock"]:
+                price_str = ""
+                if item.get("price"):
+                    price_str = f" — ${item['price']:.2f}"
+                    if item.get("old_price"):
+                        price_str += f" (was ${item['old_price']:.2f})"
+                link = f"\n    {item['url']}" if item.get("url") else ""
+                rows.append(f"  ✅ {item['title']} ({nm}){price_str}{link}")
+        if "price_drops" in enabled:
+            for item in changes["price_drops"]:
+                link = f"\n    {item['url']}" if item.get("url") else ""
+                rows.append(f"  📉 {item['title']} ({nm}): ${item['old_price']:.2f} → ${item['new_price']:.2f}{link}")
+        if "new_products" in enabled:
+            for item in changes["new_products"]:
+                price_str = f" — ${item['price']:.2f}" if item["price"] else ""
+                link = f"\n    {item['url']}" if item.get("url") else ""
+                rows.append(f"  🆕 {item['title']} ({nm}){price_str}{link}")
+    if not rows:
+        return []
+    return ["🌿 Bush tucker", *rows, ""]
+
+
 def format_text(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
     """Format changes as plain text for FB groups."""
     # --wa-only is an alias for --state WA
     filter_state = "WA" if wa_only else state
     enabled = _resolve_categories(categories)
+    if BUSH_TUCKER_DIGEST_SECTION:
+        render_changes, bt_changes = _partition_bush_tucker(all_changes)
+    else:
+        render_changes, bt_changes = all_changes, None
 
     lines = []
     lines.append(f"🌱 Nursery Stock Update — {target_date}")
@@ -108,7 +195,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
 
     has_any = False
 
-    for nursery_key, changes in sorted(all_changes.items()):
+    for nursery_key, changes in sorted(render_changes.items()):
         if filter_state and not nursery_ships_to(nursery_key, filter_state):
             continue
 
@@ -156,6 +243,12 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
                 lines.append(item)
         lines.append("")
 
+    if bt_changes is not None:
+        bt_lines = _bush_tucker_text(bt_changes, filter_state, enabled)
+        if bt_lines:
+            has_any = True
+            lines.extend(bt_lines)
+
     if not has_any:
         lines.append("No changes today — all quiet across the nurseries.")
         lines.append("")
@@ -171,15 +264,55 @@ def _utm(url: str) -> str:
     return url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
 
 
+def _bush_tucker_section(bt_changes: dict, filter_state: str, enabled) -> dict | None:
+    """One flattened "Bush tucker" section (DAL-199) across nurseries
+    (state-filtered); each entry notes its nursery. None if nothing qualifies."""
+    entries = []
+    for nursery_key, changes in sorted(bt_changes.items()):
+        if filter_state and not nursery_ships_to(nursery_key, filter_state):
+            continue
+        note = NURSERY_NAMES.get(nursery_key, nursery_key)
+        if "back_in_stock" in enabled:
+            for item in changes["back_in_stock"]:
+                url = item.get("url", "")
+                entries.append({
+                    "kind": "back", "has_url": bool(url), "utm_url": _utm(url),
+                    "title": item["title"], "price": item["price"],
+                    "old_price": item.get("old_price"), "note": note,
+                })
+        if "price_drops" in enabled:
+            for item in changes["price_drops"]:
+                url = item.get("url", "")
+                entries.append({
+                    "kind": "price", "has_url": bool(url), "utm_url": _utm(url),
+                    "title": item["title"], "old_price": item["old_price"],
+                    "new_price": item["new_price"], "note": note,
+                })
+        if "new_products" in enabled:
+            for item in changes["new_products"]:
+                url = item.get("url", "")
+                entries.append({
+                    "kind": "new", "has_url": bool(url), "utm_url": _utm(url),
+                    "title": item["title"], "price": item["price"], "note": note,
+                })
+    if not entries:
+        return None
+    return {"name": "🌿 Bush tucker", "entries": entries}
+
+
 def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str = "", categories=None) -> list[dict]:
     """Build per-nursery change sections as view-data: a list of
     {name, entries}. The digest_sections template renders these and autoescapes
     the scraped product title and the utm URL (which carries a raw &)."""
     filter_state = "WA" if wa_only else state
     enabled = _resolve_categories(categories)
+    if BUSH_TUCKER_DIGEST_SECTION:
+        render_changes, bt_changes = _partition_bush_tucker(all_changes)
+    else:
+        render_changes, bt_changes = all_changes, None
     sections = []
 
-    for nursery_key, changes in sorted(all_changes.items()):
+    for nursery_key, changes in sorted(render_changes.items()):
         if filter_state and not nursery_ships_to(nursery_key, filter_state):
             continue
 
@@ -218,6 +351,11 @@ def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str 
         if not entries:
             continue
         sections.append({"name": name, "entries": entries})
+
+    if bt_changes is not None:
+        bt_section = _bush_tucker_section(bt_changes, filter_state, enabled)
+        if bt_section:
+            sections.append(bt_section)
 
     return sections
 
