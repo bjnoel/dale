@@ -26,15 +26,14 @@ from treestock_layout import render_head, render_header, render_footer, render_b
 from shipping import SHIPPING_MAP
 
 DATA_DIR = Path("/opt/dale/data/nursery-stock")
-FRUIT_SPECIES = Path(__file__).parent / "fruit_species.json"
 OUTPUT_DIR = Path("/opt/dale/dashboard")
 
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.taxonomy import enabled_species
 
 
 def load_species():
-    with open(FRUIT_SPECIES) as f:
-        return json.load(f)
+    return enabled_species()
 
 
 def build_lookup(species_list):

@@ -19,14 +19,11 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, LOCAL_DEL
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+from stocklib.taxonomy import enabled_species
 
 
 def load_species_lookup() -> dict:
-    if not SPECIES_FILE.exists():
-        return {}
-    with open(SPECIES_FILE) as f:
-        species = json.load(f)
+    species = enabled_species()
     lookup = {}
     for s in species:
         common = s["common_name"].lower()

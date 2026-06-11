@@ -58,6 +58,24 @@ class NoForkingTest(unittest.TestCase):
                 f"{definers}. Shared logic lives in stocklib/ -- import it, don't copy it.",
             )
 
+    def test_species_file_read_only_by_taxonomy(self):
+        """Every consumer goes through stocklib.taxonomy (enabled_species /
+        load_species). A direct fruit_species.json read bypasses the category
+        gate (DEC-200 P1.4): when a category is enabled or disabled, a direct
+        reader silently keeps serving the wrong species set. Scans bee/ too."""
+        rx = re.compile(r'''["']fruit_species\.json["']''')
+        files = _scanned_files() + sorted((SCRAPERS / "bee").glob("*.py"))
+        readers = sorted(
+            str(f.relative_to(SCRAPERS))
+            for f in files
+            if any(rx.search(line) for line in f.read_text().splitlines())
+        )
+        self.assertEqual(
+            readers, ["stocklib/taxonomy.py"],
+            "fruit_species.json may only be opened by stocklib/taxonomy.py -- "
+            f"import taxonomy.enabled_species() instead. Found in: {readers}",
+        )
+
     def test_comparison_engine_not_re_forked(self):
         """The stock-change engine (variant_key / compare_snapshots) lives only in
         stocklib.changes; treestock AND beestock import it. Scans bee/ too, since

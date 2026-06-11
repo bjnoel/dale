@@ -15,7 +15,7 @@ from pathlib import Path
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label, restriction_warning
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+from stocklib.taxonomy import enabled_species
 
 # Per-nursery metadata: website URL, tags, description
 NURSERY_META = {
@@ -123,10 +123,7 @@ NURSERY_META = {
 
 
 def load_species_lookup() -> dict:
-    if not SPECIES_FILE.exists():
-        return {}
-    with open(SPECIES_FILE) as f:
-        species = json.load(f)
+    species = enabled_species()
     lookup = {}
     for s in species:
         common = s["common_name"].lower()

@@ -21,7 +21,7 @@ from pathlib import Path
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+from stocklib.taxonomy import enabled_species
 
 
 # ----- Evidence grading -----
@@ -342,8 +342,7 @@ def load_valid_species_slugs() -> set:
     """Slugs that have a real /species/<slug>.html page. Empty set if the file is
     missing so internal links are silently omitted rather than 404."""
     try:
-        with open(SPECIES_FILE) as f:
-            return {s["slug"] for s in json.load(f)}
+        return {s["slug"] for s in enabled_species()}
     except (OSError, json.JSONDecodeError, KeyError, TypeError):
         return set()
 

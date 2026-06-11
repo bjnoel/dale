@@ -18,7 +18,7 @@ from pathlib import Path
 from treestock_layout import render_page, render_breadcrumb, SITE_URL
 from shipping import SHIPPING_MAP
 
-FRUIT_SPECIES = Path(__file__).parent / "fruit_species.json"
+from stocklib.taxonomy import enabled_species
 VARIETY_WATCHES_DB = Path("/opt/dale/data/variety_watches.db")
 DEFAULT_OUTPUT_DIR = Path("/opt/dale/dashboard")
 
@@ -46,8 +46,7 @@ def get_wish_counts():
 
 
 def build(output_dir=DEFAULT_OUTPUT_DIR):
-    with open(FRUIT_SPECIES) as f:
-        species_list = json.load(f)
+    species_list = enabled_species()
 
     wish_counts = get_wish_counts()
     total_votes = sum(wish_counts.values())

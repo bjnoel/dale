@@ -28,7 +28,6 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 import growing_guides
 from build_species_trends import build_species_trends, make_sparkline, trend_direction
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
 from cultivar_parsing import (  # noqa: E402
     product_variety_slug as _variety_slug,
@@ -76,14 +75,15 @@ RELATED_LOOKUP = build_related_lookup()
 
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.taxonomy import enabled_species
 
 
 def load_species() -> list[dict]:
-    if not SPECIES_FILE.exists():
-        print(f"ERROR: {SPECIES_FILE} not found", file=sys.stderr)
+    records = enabled_species()
+    if not records:
+        print("ERROR: no enabled species records found", file=sys.stderr)
         sys.exit(1)
-    with open(SPECIES_FILE) as f:
-        return json.load(f)
+    return records
 
 
 def build_species_lookup(species_list: list[dict]) -> dict:

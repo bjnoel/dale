@@ -30,7 +30,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
-SPECIES_FILE = SCRIPT_DIR / "fruit_species.json"
+from stocklib.taxonomy import enabled_species
 DEFAULT_OUT = SCRIPT_DIR / "growing_guides" / "archive_links.json"
 # Sibling checkouts under the projects directory by default.
 DEFAULT_RFCA = REPO_ROOT.parent / "rfcarchive.org.au"
@@ -65,7 +65,7 @@ def norm(s: str) -> str:
 def build_name_lookup() -> dict:
     """Map normalised species names/synonyms -> treestock slug."""
     lookup = {}
-    species = json.loads(SPECIES_FILE.read_text())
+    species = enabled_species()
     for s in species:
         slug = s.get("slug")
         if not slug:

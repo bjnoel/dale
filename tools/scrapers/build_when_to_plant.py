@@ -31,15 +31,14 @@ from pathlib import Path
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
+from stocklib.taxonomy import enabled_species
 
 
 def load_valid_species_slugs() -> set:
     """Slugs that have a real /species/<slug>.html page. Used to validate the
     species links in the calendar so they can never point at a 404."""
     try:
-        with open(SPECIES_FILE) as f:
-            return {s["slug"] for s in json.load(f) if s.get("slug")}
+        return {s["slug"] for s in enabled_species() if s.get("slug")}
     except (OSError, json.JSONDecodeError, KeyError):
         return set()
 

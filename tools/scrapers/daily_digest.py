@@ -24,7 +24,6 @@ from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_footer
 
 # Fruit species lookup for filtering non-fruit products
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
 # Same filters as build-dashboard.py
 FRUIT_FILTERS = {

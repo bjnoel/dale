@@ -18,7 +18,7 @@ from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_header, render_footer, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
-from stocklib.taxonomy import load_species
+from stocklib.taxonomy import enabled_species
 # Reuse the variety builder's non-plant denylist so we never emit a variety
 # slug (vs) for a product it would refuse to build a /variety/ page for
 # (e.g. "Yates Apple": "yates" is a chemical brand in that list). Keeping a
@@ -32,7 +32,6 @@ from build_variety_pages import NON_PLANT_KEYWORDS as _VARIETY_PAGE_DENY
 # - Ross Creek: ships QLD/NSW/ACT/VIC only, NOT WA (quarantine restrictions noted)
 # - Ladybird: ships QLD/NSW/VIC/ACT only, NOT WA
 # - Fruitopia: unclear from policy, likely does NOT ship to WA (QLD-based, no WA mention)
-SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 RARITY_SCORES_FILE = Path("/opt/dale/data/rarity_scores.json")
 
 # Featured nurseries (paying partners). Products are visually highlighted and sorted first.
@@ -42,7 +41,7 @@ FEATURED_NURSERIES: set[str] = set()  # e.g. {'primal-fruits'} when live
 
 def load_species_lookup() -> dict:
     """Load fruit species data and build a title-matching lookup."""
-    species = load_species()
+    species = enabled_species()
 
     lookup = {}
     for s in species:
@@ -753,15 +752,12 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
     # Build species slug lookup for dynamic CTA (common names + synonyms -> slug + display name)
     species_slugs: dict[str, dict] = {}
-    if SPECIES_FILE.exists():
-        with open(SPECIES_FILE) as f:
-            species_data = json.load(f)
-        for s in species_data:
-            entry = {"slug": s["slug"], "name": s["common_name"]}
-            species_slugs[s["common_name"].lower()] = entry
-            for syn in s.get("synonyms", []):
-                if syn:
-                    species_slugs[syn.lower()] = entry
+    for s in enabled_species():
+        entry = {"slug": s["slug"], "name": s["common_name"]}
+        species_slugs[s["common_name"].lower()] = entry
+        for syn in s.get("synonyms", []):
+            if syn:
+                species_slugs[syn.lower()] = entry
     species_slugs_json = json.dumps(species_slugs, separators=(",", ":"))
 
     # Build hard-to-find slug set from computed rarity scores

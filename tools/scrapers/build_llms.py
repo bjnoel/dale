@@ -18,7 +18,7 @@ from pathlib import Path
 
 from treestock_layout import SITE_URL, SITE_NAME
 
-FRUIT_SPECIES = Path(__file__).parent / "fruit_species.json"
+from stocklib.taxonomy import enabled_species
 DEFAULT_OUTPUT_DIR = Path("/opt/dale/dashboard")
 
 SUMMARY = (
@@ -66,7 +66,7 @@ def build_llms_txt(species: list) -> str:
 
 
 def build(output_dir=DEFAULT_OUTPUT_DIR):
-    species = json.loads(FRUIT_SPECIES.read_text())
+    species = enabled_species()
     text = build_llms_txt(species)
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
