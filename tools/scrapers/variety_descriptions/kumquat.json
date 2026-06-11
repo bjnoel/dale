@@ -1,0 +1,446 @@
+{
+  "species_slug": "kumquat",
+  "schema_version": 1,
+  "varieties": {
+    "kumquat-calamondin": {
+      "slug": "kumquat-calamondin",
+      "species": "Kumquat",
+      "variety": "Calamondin",
+      "paragraphs": [
+        "Calamondin (also called calamansi) is a natural hybrid of kumquat and mandarin, native to the Philippines and South East Asia. The small, round fruit looks like a little lime, usually 25 to 35 mm across, with a thin orange peel and orange, juicy flesh.",
+        "The juice is sharply sour and aromatic while the peel is sweet, so the fruit is used more for cooking than fresh eating: marinades, dipping sauces, drinks, and preserves. It is sensitive to hard cold and suits warm temperate to subtropical gardens. The compact, productive plant flowers and fruits through much of the year, which makes it popular as a potted ornamental as well as a kitchen citrus."
+      ],
+      "claims": [
+        {
+          "text": "Calamondin (calamansi) is a natural hybrid of kumquat and mandarin, native to the Philippines and South East Asia.",
+          "type": "origin",
+          "cites": [
+            "wiki-calamansi",
+            "pmc-calamondin"
+          ]
+        },
+        {
+          "text": "The small round fruit resembles a little lime, usually 25 to 35 mm across, with thin orange peel and orange juicy flesh.",
+          "type": "appearance",
+          "cites": [
+            "wiki-calamansi"
+          ]
+        },
+        {
+          "text": "The juice is sharply sour while the peel is sweet, and the fruit is used for marinades, dipping sauces, drinks and preserves.",
+          "type": "flavour",
+          "cites": [
+            "wiki-calamansi"
+          ]
+        },
+        {
+          "text": "The plant is sensitive to extreme cold and is grown in tropical to subtropical climates.",
+          "type": "climate",
+          "cites": [
+            "wiki-calamansi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-calamansi",
+          "name": "Wikipedia: Calamansi",
+          "url": "https://en.wikipedia.org/wiki/Calamansi",
+          "tier": "third_party"
+        },
+        {
+          "id": "pmc-calamondin",
+          "name": "Phytochemicals, Bioactive Properties and Commercial Potential of Calamondin (Citrofortunella microcarpa) Fruits: A Review (PMC)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10146261/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "kumquat-calamondin-variegated": {
+      "slug": "kumquat-calamondin-variegated",
+      "species": "Kumquat",
+      "variety": "Calamondin Variegated",
+      "paragraphs": [
+        "Variegated Calamondin is a natural mutation of ordinary calamondin, prized for its marbled, light green and cream variegated foliage. The developing fruit is faintly striped green over a yellow ground, and the stripes fade to solid orange as it ripens. The fruit is a touch smaller and lighter than standard calamondin.",
+        "The flesh is acidic and juicy with few seeds, used like ordinary calamansi for juice and cooking, though the plant is grown mainly as an ornamental. It is sometimes sold under the name Peters. Like its parent it flowers and fruits over much of the year, which adds to its decorative value in pots."
+      ],
+      "claims": [
+        {
+          "text": "Variegated Calamondin is a mutation on a branch of a regular calamondin tree, with marbled, light green and variegated foliage.",
+          "type": "origin",
+          "cites": [
+            "ucr-3087"
+          ]
+        },
+        {
+          "text": "The immature fruit shows green stripes on a yellow ground that fade to solid orange at maturity, and the fruit is smaller and lighter than regular calamondin.",
+          "type": "appearance",
+          "cites": [
+            "ucr-3087",
+            "wiki-calamansi"
+          ]
+        },
+        {
+          "text": "The flesh is acidic and juicy with few seeds.",
+          "type": "flavour",
+          "cites": [
+            "ucr-3087"
+          ]
+        },
+        {
+          "text": "It is grown primarily as an ornamental and is sometimes marketed under the name Peters.",
+          "type": "uses",
+          "cites": [
+            "ucr-3087"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-3087",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside: Variegated Calamondin (CRC 3087)",
+          "url": "https://citrusvariety.ucr.edu/crc3087",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-calamansi",
+          "name": "Wikipedia: Calamansi (variegated form)",
+          "url": "https://en.wikipedia.org/wiki/Calamansi",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "kumquat-chinotto": {
+      "slug": "kumquat-chinotto",
+      "species": "Kumquat",
+      "variety": "Chinotto",
+      "paragraphs": [
+        "Chinotto is not a true kumquat but the myrtle-leaved sour orange (Citrus myrtifolia), often sold alongside kumquats for its similar small, ornamental form. It is thought to have arisen as a mutation of the sour orange. The tree grows very slowly into a dwarf, dense bush with small, dark green, myrtle-like leaves carried densely on thornless branches.",
+        "It sets clusters of small orange fruits that are moderately tart and bitter, ripen in winter, and hang on the tree for much of the year, giving long ornamental value. The bitter fruit is a classic flavouring for Italian amari, the Campari aperitif, and Chinotto soft drinks, and is candied whole. It is grown mainly as an ornamental."
+      ],
+      "claims": [
+        {
+          "text": "Chinotto is the myrtle-leaved sour orange, Citrus myrtifolia, thought to have arisen as a mutation of the sour orange.",
+          "type": "origin",
+          "cites": [
+            "ucr-3857",
+            "wiki-myrtifolia"
+          ]
+        },
+        {
+          "text": "The tree grows very slowly into a dwarf, compact, dense bush with small dark green leaves on thornless branches.",
+          "type": "appearance",
+          "cites": [
+            "ucr-3857"
+          ]
+        },
+        {
+          "text": "It bears small orange fruits that are moderately tart, ripen in winter, and hang on the tree for much of the year.",
+          "type": "season",
+          "cites": [
+            "ucr-3857"
+          ]
+        },
+        {
+          "text": "The bitter fruit is used to flavour Italian amari, Campari, and Chinotto soft drinks, and is candied.",
+          "type": "uses",
+          "cites": [
+            "wiki-myrtifolia"
+          ]
+        },
+        {
+          "text": "It is grown primarily as an ornamental.",
+          "type": "uses",
+          "cites": [
+            "ucr-3857"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-3857",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside: Chinotto sour orange (CRC 3857)",
+          "url": "https://citrusvariety.ucr.edu/crc3857",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-myrtifolia",
+          "name": "Wikipedia: Citrus myrtifolia",
+          "url": "https://en.wikipedia.org/wiki/Citrus_myrtifolia",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "kumquat-hong-kong": {
+      "slug": "kumquat-hong-kong",
+      "species": "Kumquat",
+      "variety": "Hong Kong",
+      "paragraphs": [
+        "The Hong Kong kumquat (Fortunella hindsii) is the smallest-fruited and most primitive of the kumquats. Its round fruit rarely exceeds about 1.3 cm across, and with a thin rind and several large seeds it is virtually inedible, so the plant is grown as a novelty ornamental rather than for eating.",
+        "The tree is very small and very spiny with small, narrow leaves, and the red-orange fruit holds well on the plant. It grows wild in southern China and is of ancient origin. Swingle regarded it as the most primitive of the kumquats and the closest to the ancestral species from which all citrus evolved."
+      ],
+      "claims": [
+        {
+          "text": "The Hong Kong kumquat (Fortunella hindsii) is the smallest-fruited and most primitive kumquat; its round fruit rarely exceeds about 1.3 cm across.",
+          "type": "appearance",
+          "cites": [
+            "ucr3790",
+            "wiki_kumquat"
+          ]
+        },
+        {
+          "text": "With a thin rind and several large seeds the fruit is virtually inedible, so the plant is grown as a novelty ornamental.",
+          "type": "uses",
+          "cites": [
+            "ucr3790"
+          ]
+        },
+        {
+          "text": "The tree is very small and very spiny, it grows wild in southern China and is of ancient origin, and Swingle considered it close to the ancestral species of all citrus.",
+          "type": "origin",
+          "cites": [
+            "ucr3790",
+            "wiki_kumquat"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr3790",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside, Hong Kong (Fortunella hindsii) (CRC 3790)",
+          "url": "https://citrusvariety.ucr.edu/crc3790",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki_kumquat",
+          "name": "Wikipedia, Kumquat",
+          "url": "https://en.wikipedia.org/wiki/Kumquat",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "kumquat-marumi": {
+      "slug": "kumquat-marumi",
+      "species": "Kumquat",
+      "variety": "Marumi",
+      "paragraphs": [
+        "Marumi (Fortunella japonica), the round kumquat, carries spherical to slightly flattened golden fruit about 2.5 to 3 cm across, with a smooth, thin rind that is spicy and aromatic when bruised. The flesh is sparse and acidic with a few small seeds, and the whole fruit is eaten.",
+        "The tree resembles Nagami but is slightly thorny, with leaves that are smaller and rounder at the tip."
+      ],
+      "claims": [
+        {
+          "text": "Marumi (Fortunella japonica), the round kumquat, has spherical to slightly flattened golden fruit about 2.5 to 3 cm across with a smooth, thin, spicy aromatic rind.",
+          "type": "appearance",
+          "cites": [
+            "ucr3237",
+            "wiki_kumquat"
+          ]
+        },
+        {
+          "text": "The flesh is sparse and acidic with a few small seeds and the whole fruit is eaten; the tree resembles Nagami but is slightly thorny with smaller, rounder-tipped leaves.",
+          "type": "flavour",
+          "cites": [
+            "ucr3237"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr3237",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside, Marumi (CRC 3237)",
+          "url": "https://citrusvariety.ucr.edu/crc3237",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki_kumquat",
+          "name": "Wikipedia, Kumquat",
+          "url": "https://en.wikipedia.org/wiki/Kumquat",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "kumquat-meiwa": {
+      "slug": "kumquat-meiwa",
+      "species": "Kumquat",
+      "variety": "Meiwa",
+      "paragraphs": [
+        "Meiwa (Fortunella crassifolia) is the kumquat to grow for eating fresh out of hand. Its fruit is short oblong to almost round and noticeably larger than Nagami, with a thick, sweet rind. Many fruits are seedless or carry only a few seeds, and the sections are more numerous than in other kumquats.",
+        "Because the sweet rind is thicker than Nagami's, the whole fruit tastes sweeter, and UC Riverside rates it the best variety for fresh eating. Like other kumquats the tree is semi-dormant in winter and the fruit ripens in late winter. It is widely grown in parts of China and Japan."
+      ],
+      "claims": [
+        {
+          "text": "Meiwa (Fortunella crassifolia) has short oblong to almost round fruit, larger than Nagami, with a thick sweet rind and many fruits seedless or with few seeds.",
+          "type": "appearance",
+          "cites": [
+            "ucr3818",
+            "wiki_kumquat"
+          ]
+        },
+        {
+          "text": "The thicker sweet rind makes the whole fruit taste sweeter than Nagami, and it is rated the best variety for fresh eating.",
+          "type": "flavour",
+          "cites": [
+            "ucr3818"
+          ]
+        },
+        {
+          "text": "The tree is semi-dormant in winter, fruit ripens in late winter, and it is widely grown in parts of China and Japan.",
+          "type": "season",
+          "cites": [
+            "ucr3818",
+            "wiki_kumquat"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr3818",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside, Meiwa (CRC 3818)",
+          "url": "https://citrusvariety.ucr.edu/crc3818",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki_kumquat",
+          "name": "Wikipedia, Kumquat",
+          "url": "https://en.wikipedia.org/wiki/Kumquat",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "kumquat-nagami": {
+      "slug": "kumquat-nagami",
+      "species": "Kumquat",
+      "variety": "Nagami",
+      "paragraphs": [
+        "Nagami (Fortunella margarita), also called the oval kumquat, is the most widely grown kumquat in both Asia and the West. Its small oval fruit, a little over 3 cm long, is eaten whole, skin and all. The appeal is the contrast: the orange rind is sweet while the flesh inside is quite acidic, so a single bite delivers a refreshing tart-sweet result.",
+        "Fruit ripens in late winter and holds well on the tree, and the trees turn semi-dormant through the cooler months, which makes kumquats among the more cold-hardy citrus. Nagami is enjoyed fresh and is a favourite for marmalade, candying, and preserves."
+      ],
+      "claims": [
+        {
+          "text": "Nagami (Fortunella margarita), the oval kumquat, is the most widely grown kumquat in both Asia and the West and is typically eaten whole.",
+          "type": "origin",
+          "cites": [
+            "ucr3877",
+            "wiki_margarita"
+          ]
+        },
+        {
+          "text": "The small oval fruit is a little over 3 cm long; the orange rind is sweet while the flesh is acidic, giving a tart-sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "ucr3877"
+          ]
+        },
+        {
+          "text": "Fruit ripens in late winter and holds well on the tree, and the semi-dormant trees are relatively cold-hardy for citrus.",
+          "type": "season",
+          "cites": [
+            "ucr3877"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr3877",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside, Nagami kumquat (CRC 3877)",
+          "url": "https://citrusvariety.ucr.edu/crc3877",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki_margarita",
+          "name": "Wikipedia, Citrus margarita",
+          "url": "https://en.wikipedia.org/wiki/Citrus_margarita",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "kumquat-variegated": {
+      "slug": "kumquat-variegated",
+      "species": "Kumquat",
+      "variety": "Variegated",
+      "paragraphs": [
+        "The variegated kumquat is grown as much for its looks as for its fruit. The foliage is striped cream and pale yellow, and the immature fruits are striped light green and light yellow, turning orange as they ripen with the striping fading at maturity. The variegated kumquat in cultivation arose as a variegated mutation of the Nagami kumquat.",
+        "The fruit follows the Nagami pattern: small and oval with a sweet rind and acidic, juicy flesh, and it is eaten whole. The dense, shrubby plant is highly ornamental and makes a striking container or pot specimen."
+      ],
+      "claims": [
+        {
+          "text": "The variegated kumquat has foliage striped cream and pale yellow, with immature fruits striped light green and yellow that turn orange and lose their striping at maturity.",
+          "type": "appearance",
+          "cites": [
+            "ucr4082",
+            "ladybird"
+          ]
+        },
+        {
+          "text": "It arose as a variegated mutation of the Nagami kumquat.",
+          "type": "origin",
+          "cites": [
+            "ucr4082"
+          ]
+        },
+        {
+          "text": "The fruit is small and oval with a sweet rind and acidic, juicy flesh, eaten whole, and the dense shrubby plant is highly ornamental for pots.",
+          "type": "uses",
+          "cites": [
+            "ucr4082",
+            "ladybird"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr4082",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside, Centennial Variegated kumquat (CRC 4082)",
+          "url": "https://citrusvariety.ucr.edu/crc4082",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ladybird",
+          "name": "Ladybird Nursery, Variegated Kumquat",
+          "url": "https://www.ladybirdnursery.com.au/kumquat-variegated/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "kumquat-calamansi-variegated-citrus-fruit-tree",
+    "kumquat-calamondin-fruit-tree",
+    "kumquat-courtyard",
+    "kumquat-fortunella",
+    "kumquat-green",
+    "kumquat-seedling"
+  ]
+}

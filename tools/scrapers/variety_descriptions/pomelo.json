@@ -69,19 +69,99 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "pomelo-tahitian": {
+      "slug": "pomelo-tahitian",
+      "species": "Pomelo",
+      "variety": "Tahitian",
+      "paragraphs": [
+        "The Tahitian pummelo (Citrus maxima), also recorded as Sarawak pomelo or Moanalua, is believed to have developed in Tahiti from seed brought from Borneo, and was later carried to Hawaii before reaching the UC Riverside collection as budwood in 1971. Unlike the thick, coarse rind of most pomelos, it carries a notably thin, greenish yellow rind on a round fruit slightly flattened at the base, ranging from small to medium-large in size.",
+        "Its flesh is greenish to greenish amber, juicy and sweet, with high sugar and moderate acidity. The flavour is distinctive and divisive, often described as melon-like or even lime-like, which some collectors prize and others dislike. It is early to mid-season in maturity and holds well on the tree. Long valued for excellent eating quality, it has stayed a niche variety of local and limited commercial importance."
+      ],
+      "claims": [
+        {
+          "text": "The Tahitian pummelo is believed to have developed in Tahiti from seed from Borneo, then was taken to Hawaii, reaching UC Riverside as budwood in 1971.",
+          "type": "origin",
+          "cites": [
+            "ucr-tahitian"
+          ]
+        },
+        {
+          "text": "It is also known as Sarawak pomelo or Moanalua.",
+          "type": "naming",
+          "cites": [
+            "specialty-tahitian"
+          ]
+        },
+        {
+          "text": "It has a notably thin greenish yellow rind on a round fruit slightly flattened at the base, ranging from small to medium-large.",
+          "type": "appearance",
+          "cites": [
+            "ucr-tahitian"
+          ]
+        },
+        {
+          "text": "The flesh is greenish to greenish amber, juicy and sweet, with high sugar and moderate acidity.",
+          "type": "flavour",
+          "cites": [
+            "ucr-tahitian",
+            "specialty-tahitian"
+          ]
+        },
+        {
+          "text": "The flavour is distinctive and divisive, often described as melon-like or lime-like.",
+          "type": "flavour",
+          "cites": [
+            "ucr-tahitian",
+            "specialty-tahitian"
+          ]
+        },
+        {
+          "text": "It is early to mid-season in maturity and holds well on the tree, and remains a niche variety of local and limited commercial importance despite excellent eating quality.",
+          "type": "season",
+          "cites": [
+            "ucr-tahitian"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-tahitian",
+          "name": "Givaudan Citrus Variety Collection, UC Riverside: Tahitian pummelo (CRC 3806)",
+          "url": "https://citrusvariety.ucr.edu/crc3806",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty-tahitian",
+          "name": "Specialty Produce: Tahitian Pomelos Information and Facts",
+          "url": "https://specialtyproduce.com/produce/Tahitian_Pomelos_11920.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
   "skipped": [
     "pomelo-carter-s-red",
     "pomelo-carters-red",
+    "pomelo-carters-red-jumbo",
+    "pomelo-flicks-yellow",
+    "pomelo-k13",
+    "pomelo-k13-jumbo",
+    "pomelo-k13-thai-gold",
     "pomelo-k15",
     "pomelo-red",
+    "pomelo-red-rouge",
     "pomelo-rouge-red",
     "pomelo-tang-pink",
     "pomelo-tangelo",
     "pomelo-thai-gold",
     "pomelo-thai-sun",
     "pomelo-watsons",
+    "pomelo-watsons-choice",
     "pomelo-white"
   ]
 }
