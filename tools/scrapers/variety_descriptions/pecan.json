@@ -2,6 +2,247 @@
   "species_slug": "pecan",
   "schema_version": 1,
   "varieties": {
+    "pecan-apache": {
+      "slug": "pecan-apache",
+      "species": "Pecan",
+      "variety": "Apache",
+      "paragraphs": [
+        "Apache is a USDA pecan (Carya illinoinensis) cultivar from the USDA-ARS pecan breeding program at Brownwood, Texas, selected from a cross of Burkett by Schley. Like the program's other releases (Wichita, Cheyenne, Mohawk and Kiowa among them), it carries an American Indian tribe name.",
+        "Apache is protogynous (Type II), so its female flowers are receptive before the tree sheds its own pollen, and it sets best with a Type I (protandrous) cultivar flowering nearby."
+      ],
+      "claims": [
+        {"text": "Apache was selected from a cross of Burkett by Schley in the USDA-ARS breeding program at Brownwood, Texas.", "type": "breeding", "cites": ["cgru-apache", "ashs-apalachee"]},
+        {"text": "USDA pecan releases, including Apache, carry American Indian tribe names.", "type": "naming", "cites": ["cgru-apache", "nmsu-h659"]},
+        {"text": "Apache is protogynous (Type II) for pollination.", "type": "pollination", "cites": ["nmsu-h659", "panzarella"]}
+      ],
+      "sources": [
+        {"id": "cgru-apache", "name": "USDA-ARS Carya cultivar database, Apache", "url": "https://cgru.usda.gov/CARYA/PECANS/apache.htm", "tier": "authoritative"},
+        {"id": "ashs-apalachee", "name": "'Apalachee' Pecan, HortScience 45(9)", "url": "https://journals.ashs.org/hortsci/view/journals/hortsci/45/9/article-p1386.xml", "tier": "authoritative"},
+        {"id": "nmsu-h659", "name": "Pecan Cultivars for New Mexico, NMSU H659", "url": "https://pubs.nmsu.edu/_h/H659/index.html", "tier": "authoritative"},
+        {"id": "panzarella", "name": "Classification of Pecan Cultivars, Panzarella", "url": "https://www.panzarellacitrus.com/tree-care/2-trees/29-pecancultivars", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-cape-fear": {
+      "slug": "pecan-cape-fear",
+      "species": "Pecan",
+      "variety": "Cape Fear",
+      "paragraphs": [
+        "Cape Fear is a pecan (Carya illinoinensis) cultivar that arose as an open-pollinated seedling of Schley at the Coastal Plain research station in Willard, North Carolina, where the seed was planted in 1912 and the selection first reported in 1937. It is very precocious, producing well filled nuts with attractive golden kernels as a young tree (around 55 percent kernel, roughly 58 nuts per pound), though percent kernel tends to fall toward 50 percent as the tree matures.",
+        "Cape Fear is protandrous (Type I) with very early pollen shed, so it needs a later-shedding (Type II) pollinator and the Australian SP (self pollinating) label does not apply. Its scab resistance was once rated good but is now considered about average and varies by location, ranging from moderately resistant to susceptible. Nuts ripen mid to late season."
+      ],
+      "claims": [
+        {"text": "Cape Fear is an open-pollinated seedling of Schley from the Coastal Plain station at Willard, North Carolina, with seed planted in 1912 and the selection first reported in 1937.", "type": "origin", "cites": ["cgru-capefear", "ncsu-capefear"]},
+        {"text": "Cape Fear is very precocious with well filled golden kernels as a young tree (around 55 percent kernel, roughly 58 nuts per pound), declining toward 50 percent kernel with maturity.", "type": "characteristic", "cites": ["uf-hs106", "ncsu-capefear"]},
+        {"text": "Cape Fear is protandrous (Type I) with very early pollen shed.", "type": "pollination", "cites": ["uf-hs106", "ncsu-capefear"]},
+        {"text": "Cape Fear scab resistance, once rated good, is now about average and varies by location; nuts ripen mid to late season.", "type": "characteristic", "cites": ["uf-hs106"]}
+      ],
+      "sources": [
+        {"id": "uf-hs106", "name": "UF/IFAS Extension HS106: Pecan Cultivars for North Florida", "url": "https://edis.ifas.ufl.edu/publication/HS106", "tier": "authoritative"},
+        {"id": "ncsu-capefear", "name": "NC State Extension Gardener Plant Toolbox: Carya illinoinensis Cape Fear", "url": "https://plants.ces.ncsu.edu/plants/carya-illinoinensis-cape-fear/", "tier": "authoritative"},
+        {"id": "cgru-capefear", "name": "USDA-ARS Carya cultivar database: Cape Fear", "url": "https://cgru.usda.gov/CARYA/PECANS/capefear.htm", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-cherokee-sp": {
+      "slug": "pecan-cherokee-sp",
+      "species": "Pecan",
+      "variety": "Cherokee SP",
+      "paragraphs": [
+        "Cherokee SP refers to the cultivar Cherokee, a USDA pecan (Carya illinoinensis) selected from a cross of Schley by Evers and named and released in 1971. An SP tag in a nursery listing is the seller's pollination grouping, not a confirmed self fertile habit.",
+        "Cherokee is protandrous (Type I) and produces a small to medium nut, around 67 per pound. It is susceptible to pecan scab, so it is best suited to drier climates and crops best with a Type II pollinator nearby."
+      ],
+      "claims": [
+        {"text": "Cherokee was selected from a cross of Schley by Evers and released in 1971.", "type": "breeding", "cites": ["uga-cherokee"]},
+        {"text": "Cherokee is protandrous (Type I) for pollination.", "type": "pollination", "cites": ["hs106", "msfruit"]},
+        {"text": "Cherokee produces a small to medium nut, around 67 per pound, and is susceptible to pecan scab.", "type": "horticulture", "cites": ["hs106"]}
+      ],
+      "sources": [
+        {"id": "uga-cherokee", "name": "UGA Pecan Breeding cultivars, Cherokee", "url": "https://pecanbreeding.uga.edu/cultivars/alphabetical-list/cherokee.html", "tier": "authoritative"},
+        {"id": "hs106", "name": "Pecan Cultivars for North Florida, UF/IFAS HS106", "url": "https://ask.ifas.ufl.edu/publication/HS106", "tier": "authoritative"},
+        {"id": "msfruit", "name": "Pollination in Pecans, Mississippi State Extension", "url": "https://msfruitextension.wordpress.com/2014/11/13/pollination-in-pecans/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-cheyenne": {
+      "slug": "pecan-cheyenne",
+      "species": "Pecan",
+      "variety": "Cheyenne",
+      "paragraphs": [
+        "Cheyenne is a USDA pecan (Carya illinoinensis) cultivar from a controlled cross of Clark by Odom made by L. D. Romberg at the USDA-ARS station in Brownwood, Texas, in 1942 and released in 1970. It produces a medium nut, around 53 per pound.",
+        "Cheyenne is protandrous (Type I) and forms a relatively small, precocious tree, but it is very susceptible to pecan scab and to yellow and blackmargined aphids, which can lead to sooty mould. It suits drier climates where scab pressure is low and needs a Type II pollinator."
+      ],
+      "claims": [
+        {"text": "Cheyenne came from a cross of Clark by Odom made by L. D. Romberg at Brownwood, Texas, in 1942 and was released in 1970.", "type": "breeding", "cites": ["cgru-cheyenne", "uga-cheyenne"]},
+        {"text": "Cheyenne produces a medium nut, around 53 per pound.", "type": "nut", "cites": ["hs106"]},
+        {"text": "Cheyenne is protandrous (Type I) for pollination.", "type": "pollination", "cites": ["hs106", "msfruit"]},
+        {"text": "Cheyenne is very susceptible to pecan scab and to yellow and blackmargined aphids, which can cause sooty mould.", "type": "horticulture", "cites": ["cgru-cheyenne", "hs106"]},
+        {"text": "Cheyenne forms a relatively small, precocious tree.", "type": "horticulture", "cites": ["cgru-cheyenne"]}
+      ],
+      "sources": [
+        {"id": "cgru-cheyenne", "name": "USDA-ARS Carya cultivar database, Cheyenne", "url": "https://cgru.usda.gov/CARYA/PECANS/cheyenne.htm", "tier": "authoritative"},
+        {"id": "uga-cheyenne", "name": "UGA Pecan Breeding cultivars, Cheyenne", "url": "https://pecanbreeding.uga.edu/cultivars/alphabetical-list/cheyenne.html", "tier": "authoritative"},
+        {"id": "hs106", "name": "Pecan Cultivars for North Florida, UF/IFAS HS106", "url": "https://ask.ifas.ufl.edu/publication/HS106", "tier": "authoritative"},
+        {"id": "msfruit", "name": "Pollination in Pecans, Mississippi State Extension", "url": "https://msfruitextension.wordpress.com/2014/11/13/pollination-in-pecans/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-desirable-sp": {
+      "slug": "pecan-desirable-sp",
+      "species": "Pecan",
+      "variety": "Desirable SP",
+      "paragraphs": [
+        "Desirable is a pecan (Carya illinoinensis) cultivar that was among the first developed from a controlled cross, made in the early 1900s by Carl F. Forkert at Ocean Springs, Jackson County, Mississippi. Its parentage is not certain but may be Success by Jewett. It became a southeastern industry standard, valued for a large, well filled nut with golden kernels (around 53 percent kernel), and is widely planted, often serving as a pollenizer for Stuart.",
+        "Desirable is protandrous (Type I), shedding abundant pollen early in the season while its female flowers are receptive mid to late season, so the Australian SP (self pollinating) label does not reflect its biology. Its major weakness is disease: Desirable is highly susceptible to pecan scab and needs a strict fungicide programme in humid climates, which has ended its recommendation in higher-disease districts. Nuts ripen mid to late season."
+      ],
+      "claims": [
+        {"text": "Desirable was among the first pecan cultivars from a controlled cross, made in the early 1900s by Carl F. Forkert at Ocean Springs, Mississippi, with uncertain parentage possibly Success by Jewett.", "type": "origin", "cites": ["cgru-desirable"]},
+        {"text": "Desirable has a large, well filled nut with golden kernels (around 53 percent kernel) and is widely planted, often as a pollenizer for Stuart.", "type": "characteristic", "cites": ["uf-hs106", "cgru-desirable"]},
+        {"text": "Desirable is protandrous (Type I), shedding abundant pollen early while pistillate receptivity is mid to late season.", "type": "pollination", "cites": ["uf-hs106", "cgru-desirable"]},
+        {"text": "Desirable is highly susceptible to pecan scab, requiring a strict spray schedule, and ripens mid to late season.", "type": "characteristic", "cites": ["uf-hs106"]}
+      ],
+      "sources": [
+        {"id": "uf-hs106", "name": "UF/IFAS Extension HS106: Pecan Cultivars for North Florida", "url": "https://edis.ifas.ufl.edu/publication/HS106", "tier": "authoritative"},
+        {"id": "cgru-desirable", "name": "USDA-ARS Carya cultivar database: Desirable", "url": "https://cgru.usda.gov/CARYA/PECANS/desirabl.htm", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-kiowa": {
+      "slug": "pecan-kiowa",
+      "species": "Pecan",
+      "variety": "Kiowa",
+      "paragraphs": [
+        "Kiowa is a USDA pecan (Carya illinoinensis) cultivar released in 1976 from a controlled cross made by L. D. Romberg at the USDA-ARS station in Brownwood, Texas. It was originally reported as Mahan by Odom, but isozyme and DNA marker analysis ruled Odom out as the pollen parent and points instead to Mahan by Desirable.",
+        "Kiowa is a large nut, slightly bigger than Desirable at roughly 45 nuts per pound, with good kernel quality. It is protogynous (Type II), rates around average for scab resistance, and ripens mid to late season."
+      ],
+      "claims": [
+        {"text": "Kiowa was released in 1976 from a controlled cross made by L. D. Romberg at the USDA station in Brownwood, Texas.", "type": "breeding", "cites": ["uga-kiowa", "hs106"]},
+        {"text": "Originally reported as Mahan by Odom, marker analysis ruled out Odom and indicates the cross is Mahan by Desirable.", "type": "breeding", "cites": ["uga-kiowa", "pecansouth-gen"]},
+        {"text": "Kiowa is a large nut, slightly larger than Desirable at about 45 nuts per pound.", "type": "nut", "cites": ["hs106"]},
+        {"text": "Kiowa is protogynous (Type II) for pollination.", "type": "pollination", "cites": ["hs106", "msfruit"]},
+        {"text": "Kiowa rates around average for scab resistance and ripens mid to late season.", "type": "horticulture", "cites": ["hs106"]}
+      ],
+      "sources": [
+        {"id": "uga-kiowa", "name": "UGA Pecan Breeding cultivars, Kiowa", "url": "https://pecanbreeding.uga.edu/cultivars/alphabetical-list/kiowa.html", "tier": "authoritative"},
+        {"id": "hs106", "name": "Pecan Cultivars for North Florida, UF/IFAS HS106", "url": "https://ask.ifas.ufl.edu/publication/HS106", "tier": "authoritative"},
+        {"id": "pecansouth-gen", "name": "Family Trees: Generations & Propagations, Pecan South", "url": "https://www.pecansouthmagazine.com/magazine/article/family-trees-generations-propagations/", "tier": "third_party"},
+        {"id": "msfruit", "name": "Pollination in Pecans, Mississippi State Extension", "url": "https://msfruitextension.wordpress.com/2014/11/13/pollination-in-pecans/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-mohawk-sp": {
+      "slug": "pecan-mohawk-sp",
+      "species": "Pecan",
+      "variety": "Mohawk SP",
+      "paragraphs": [
+        "Mohawk SP refers to the cultivar Mohawk, a USDA pecan (Carya illinoinensis) from a cross of Success by Mahan made by L. D. Romberg at Brownwood, Texas, in 1946 and released in 1965. It was bred to combine the large nut size of its parents with precocious, heavy bearing.",
+        "Mohawk is protogynous (Type II) for pollination and is susceptible to pecan scab, so it performs best in drier western climates. An SP tag in a nursery listing reflects the seller's pollination grouping, not a verified self fertile habit, so plant it with a compatible Type I cultivar."
+      ],
+      "claims": [
+        {"text": "Mohawk came from a cross of Success by Mahan made by L. D. Romberg at Brownwood, Texas, in 1946 and was released in 1965.", "type": "breeding", "cites": ["uga-mohawk", "northernpecans"]},
+        {"text": "Mohawk was bred to combine large nut size with precocious, heavy bearing.", "type": "breeding", "cites": ["northernpecans", "uga-mohawk"]},
+        {"text": "Mohawk is protogynous (Type II) for pollination.", "type": "pollination", "cites": ["msfruit", "panzarella"]},
+        {"text": "Mohawk is susceptible to pecan scab.", "type": "horticulture", "cites": ["hs106"]}
+      ],
+      "sources": [
+        {"id": "uga-mohawk", "name": "UGA Pecan Breeding cultivars, Mohawk", "url": "https://pecanbreeding.uga.edu/cultivars/alphabetical-list/mohawk.html", "tier": "authoritative"},
+        {"id": "northernpecans", "name": "Mohawk: A precautionary tale, Northern Pecans (Bill Reid)", "url": "https://northernpecans.blogspot.com/2014/12/mohawk-precautionary-tale.html", "tier": "third_party"},
+        {"id": "msfruit", "name": "Pollination in Pecans, Mississippi State Extension", "url": "https://msfruitextension.wordpress.com/2014/11/13/pollination-in-pecans/", "tier": "authoritative"},
+        {"id": "panzarella", "name": "Classification of Pecan Cultivars, Panzarella", "url": "https://www.panzarellacitrus.com/tree-care/2-trees/29-pecancultivars", "tier": "third_party"},
+        {"id": "hs106", "name": "Pecan Cultivars for North Florida, UF/IFAS HS106", "url": "https://ask.ifas.ufl.edu/publication/HS106", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-nut-pabst": {
+      "slug": "pecan-nut-pabst",
+      "species": "Pecan",
+      "variety": "Nut PABST",
+      "paragraphs": [
+        "Pabst is a historic pecan (Carya illinoinensis) cultivar from Jackson County, Mississippi. It traces to the seedling orchard that businessman William B. Schmidt planted at his country home in 1875, the same orchard that produced the Success cultivar, and was propagated by nurseryman C.E. Pabst around 1890. In the 1920s and 1930s it was one of the five most prominent southeastern varieties, alongside Alley, Schley, Success and Stuart, all native to that county.",
+        "The nut is about the size of Stuart with a thick shell and a low percent kernel (around 45 percent), well filled and attractive for the in-shell trade. The tree grows very large but is very susceptible to scab and powdery mildew, and Pabst is no longer commercially recommended, surviving mainly as a heritage variety. The Australian SP (self pollinating) label is a nursery description, not a verified pollination type."
+      ],
+      "claims": [
+        {"text": "Pabst traces to a Jackson County, Mississippi seedling orchard planted by William B. Schmidt in 1875 (the source of Success too) and was propagated by nurseryman C.E. Pabst around 1890.", "type": "origin", "cites": ["msu-pabst", "cgru-pabst"]},
+        {"text": "In the 1920s and 1930s Pabst was one of the five most prominent southeastern pecan varieties, with Alley, Schley, Success and Stuart.", "type": "history", "cites": ["msu-pabst"]},
+        {"text": "The Pabst nut is about Stuart size with a thick shell and a low percent kernel (around 45 percent), well filled and attractive for the in-shell trade.", "type": "characteristic", "cites": ["cgru-pabst"]},
+        {"text": "The Pabst tree is very large but very susceptible to scab and powdery mildew, and the variety is no longer recommended.", "type": "characteristic", "cites": ["cgru-pabst", "msu-pabst"]}
+      ],
+      "sources": [
+        {"id": "msu-pabst", "name": "Mississippi State University Extension: Good Agricultural Practices for Pecans in Mississippi (P2736)", "url": "https://extension.msstate.edu/sites/default/files/publications/P2736_web.pdf", "tier": "authoritative"},
+        {"id": "cgru-pabst", "name": "USDA-ARS Carya pecan cultivars: origin and characteristics of major varieties", "url": "https://cgru.usda.gov/carya/pecans/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-pabst-pollinating": {
+      "slug": "pecan-pabst-pollinating",
+      "species": "Pecan",
+      "variety": "PABST Pollinating",
+      "paragraphs": [
+        "Pabst is a historic pecan (Carya illinoinensis) cultivar from Jackson County, Mississippi. It traces to the seedling orchard that businessman William B. Schmidt planted at his country home in 1875, the same orchard that produced the Success cultivar, and was propagated by nurseryman C.E. Pabst around 1890. In the 1920s and 1930s it was one of the five most prominent southeastern varieties, alongside Alley, Schley, Success and Stuart, all native to that county.",
+        "The nut is about the size of Stuart with a thick shell and a low percent kernel (around 45 percent), well filled and attractive for the in-shell trade. The tree grows very large but is very susceptible to scab and powdery mildew, and Pabst is no longer commercially recommended, surviving mainly as a heritage variety. The Australian SP (self pollinating) label is a nursery description, not a verified pollination type."
+      ],
+      "claims": [
+        {"text": "Pabst traces to a Jackson County, Mississippi seedling orchard planted by William B. Schmidt in 1875 (the source of Success too) and was propagated by nurseryman C.E. Pabst around 1890.", "type": "origin", "cites": ["msu-pabst", "cgru-pabst"]},
+        {"text": "In the 1920s and 1930s Pabst was one of the five most prominent southeastern pecan varieties, with Alley, Schley, Success and Stuart.", "type": "history", "cites": ["msu-pabst"]},
+        {"text": "The Pabst nut is about Stuart size with a thick shell and a low percent kernel (around 45 percent), well filled and attractive for the in-shell trade.", "type": "characteristic", "cites": ["cgru-pabst"]},
+        {"text": "The Pabst tree is very large but very susceptible to scab and powdery mildew, and the variety is no longer recommended.", "type": "characteristic", "cites": ["cgru-pabst", "msu-pabst"]}
+      ],
+      "sources": [
+        {"id": "msu-pabst", "name": "Mississippi State University Extension: Good Agricultural Practices for Pecans in Mississippi (P2736)", "url": "https://extension.msstate.edu/sites/default/files/publications/P2736_web.pdf", "tier": "authoritative"},
+        {"id": "cgru-pabst", "name": "USDA-ARS Carya pecan cultivars: origin and characteristics of major varieties", "url": "https://cgru.usda.gov/carya/pecans/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-pabst-self-pollinating": {
+      "slug": "pecan-pabst-self-pollinating",
+      "species": "Pecan",
+      "variety": "Pabst Self Pollinating",
+      "paragraphs": [
+        "Pabst is a historic pecan (Carya illinoinensis) cultivar from Jackson County, Mississippi. It traces to the seedling orchard that businessman William B. Schmidt planted at his country home in 1875, the same orchard that produced the Success cultivar, and was propagated by nurseryman C.E. Pabst around 1890. In the 1920s and 1930s it was one of the five most prominent southeastern varieties, alongside Alley, Schley, Success and Stuart, all native to that county.",
+        "The nut is about the size of Stuart with a thick shell and a low percent kernel (around 45 percent), well filled and attractive for the in-shell trade. The tree grows very large but is very susceptible to scab and powdery mildew, and Pabst is no longer commercially recommended, surviving mainly as a heritage variety. The Australian SP (self pollinating) label is a nursery description, not a verified pollination type."
+      ],
+      "claims": [
+        {"text": "Pabst traces to a Jackson County, Mississippi seedling orchard planted by William B. Schmidt in 1875 (the source of Success too) and was propagated by nurseryman C.E. Pabst around 1890.", "type": "origin", "cites": ["msu-pabst", "cgru-pabst"]},
+        {"text": "In the 1920s and 1930s Pabst was one of the five most prominent southeastern pecan varieties, with Alley, Schley, Success and Stuart.", "type": "history", "cites": ["msu-pabst"]},
+        {"text": "The Pabst nut is about Stuart size with a thick shell and a low percent kernel (around 45 percent), well filled and attractive for the in-shell trade.", "type": "characteristic", "cites": ["cgru-pabst"]},
+        {"text": "The Pabst tree is very large but very susceptible to scab and powdery mildew, and the variety is no longer recommended.", "type": "characteristic", "cites": ["cgru-pabst", "msu-pabst"]}
+      ],
+      "sources": [
+        {"id": "msu-pabst", "name": "Mississippi State University Extension: Good Agricultural Practices for Pecans in Mississippi (P2736)", "url": "https://extension.msstate.edu/sites/default/files/publications/P2736_web.pdf", "tier": "authoritative"},
+        {"id": "cgru-pabst", "name": "USDA-ARS Carya pecan cultivars: origin and characteristics of major varieties", "url": "https://cgru.usda.gov/carya/pecans/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "pecan-pawnee": {
       "slug": "pecan-pawnee",
       "species": "Pecan",
@@ -24,6 +265,98 @@
       "confidence_score": 0.93,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "pecan-riverside": {
+      "slug": "pecan-riverside",
+      "species": "Pecan",
+      "variety": "Riverside",
+      "paragraphs": [
+        "Riverside is an old western pecan (Carya illinoinensis) better known as a rootstock than as a nut variety. It is thought to have originated from the rootstock of a grafted tree whose scion died, and was being offered in E. E. Risien's West Texas Pecan Nursery by 1908. SSR marker analysis suggests it is probably a cross of Longfellow with either San Saba or Family Use.",
+        "Riverside is recommended as a rootstock for the western United States. As a southern type it produces trees that are less cold hardy than rootstocks raised from northern cultivars such as Giles, Peruque or Colby."
+      ],
+      "claims": [
+        {"text": "Riverside is an important rootstock cultivar for the western United States.", "type": "horticulture", "cites": ["cgru-riverside", "ucanr-rootstock"]},
+        {"text": "Riverside is thought to have originated from the rootstock of a grafted tree whose scion died, and was offered in E. E. Risien's West Texas Pecan Nursery by 1908.", "type": "origin", "cites": ["cgru-riverside"]},
+        {"text": "SSR marker analysis suggests Riverside is probably a cross of Longfellow with either San Saba or Family Use.", "type": "breeding", "cites": ["cgru-riverside"]},
+        {"text": "As a southern type, Riverside produces trees less cold hardy than rootstocks from northern cultivars such as Giles, Peruque or Colby.", "type": "horticulture", "cites": ["ucanr-rootstock"]}
+      ],
+      "sources": [
+        {"id": "cgru-riverside", "name": "USDA-ARS Carya cultivar database, Riverside", "url": "https://cgru.usda.gov/carya/pecans/riverside.htm", "tier": "authoritative"},
+        {"id": "ucanr-rootstock", "name": "Pecan Scion & Rootstock Selection, UC ANR", "url": "https://ucanr.edu/sites/btfnp/fruitnutproduction/Pecan/Pecan_Scion_Rootstock_Selection/", "tier": "authoritative"}
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-shoshonii": {
+      "slug": "pecan-shoshonii",
+      "species": "Pecan",
+      "variety": "Shoshonii",
+      "paragraphs": [
+        "Shoshoni (the USDA spelling, sold in Australia as Shoshonii) is a USDA pecan (Carya illinoinensis) cultivar from a controlled cross of Odom by Evers made by L.D. Romberg at the USDA Pecan Field Station, Brownwood, Texas, in 1944. It first fruited in 1950 and was released in 1972. Evers passed on precocity and prolificacy, so Shoshoni bears young and yields heavily, with nuts ripening early, around the first week of October.",
+        "Shoshoni is protogynous (Type II), shedding pollen mid season while its female flowers are receptive early to mid season, so for reliable cropping it is paired with a protandrous (Type I) partner rather than relied on alone. Like most pecans it is wind pollinated and crops best with a compatible cultivar nearby, so the Australian nursery SP (self pollinating) label does not reflect its biology."
+      ],
+      "claims": [
+        {"text": "Shoshoni is a USDA cultivar from an Odom by Evers cross made by L.D. Romberg at Brownwood, Texas, in 1944, first fruiting in 1950.", "type": "origin", "cites": ["cgru-shoshoni"]},
+        {"text": "Shoshoni was released in 1972.", "type": "origin", "cites": ["cgru-shoshoni", "sundown-shoshoni"]},
+        {"text": "Shoshoni is precocious and a heavy yielder, with nuts ripening early, around the first week of October.", "type": "characteristic", "cites": ["cgru-shoshoni"]},
+        {"text": "Shoshoni is protogynous (Type II), with mid-season pollen shed and early to mid-season pistillate receptivity.", "type": "pollination", "cites": ["cgru-shoshoni"]}
+      ],
+      "sources": [
+        {"id": "cgru-shoshoni", "name": "USDA-ARS Carya cultivar database: Shoshoni", "url": "https://cgru.usda.gov/CARYA/PECANS/shoshoni.htm", "tier": "authoritative"},
+        {"id": "sundown-shoshoni", "name": "Sundown Farms cultivar reference: Shoshoni Pecan", "url": "https://sundownfarms.com/reference/pecans/shoshoni-pecan/", "tier": "nursery"}
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-shoshonii-b-sp": {
+      "slug": "pecan-shoshonii-b-sp",
+      "species": "Pecan",
+      "variety": "Shoshonii B SP",
+      "paragraphs": [
+        "Shoshoni (the USDA spelling, sold in Australia as Shoshonii) is a USDA pecan (Carya illinoinensis) cultivar from a controlled cross of Odom by Evers made by L.D. Romberg at the USDA Pecan Field Station, Brownwood, Texas, in 1944. It first fruited in 1950 and was released in 1972. Evers passed on precocity and prolificacy, so Shoshoni bears young and yields heavily, with nuts ripening early, around the first week of October.",
+        "Shoshoni is protogynous (Type II), shedding pollen mid season while its female flowers are receptive early to mid season, so for reliable cropping it is paired with a protandrous (Type I) partner rather than relied on alone. Like most pecans it is wind pollinated and crops best with a compatible cultivar nearby, so the Australian nursery SP (self pollinating) label does not reflect its biology."
+      ],
+      "claims": [
+        {"text": "Shoshoni is a USDA cultivar from an Odom by Evers cross made by L.D. Romberg at Brownwood, Texas, in 1944, first fruiting in 1950.", "type": "origin", "cites": ["cgru-shoshoni"]},
+        {"text": "Shoshoni was released in 1972.", "type": "origin", "cites": ["cgru-shoshoni", "sundown-shoshoni"]},
+        {"text": "Shoshoni is precocious and a heavy yielder, with nuts ripening early, around the first week of October.", "type": "characteristic", "cites": ["cgru-shoshoni"]},
+        {"text": "Shoshoni is protogynous (Type II), with mid-season pollen shed and early to mid-season pistillate receptivity.", "type": "pollination", "cites": ["cgru-shoshoni"]}
+      ],
+      "sources": [
+        {"id": "cgru-shoshoni", "name": "USDA-ARS Carya cultivar database: Shoshoni", "url": "https://cgru.usda.gov/CARYA/PECANS/shoshoni.htm", "tier": "authoritative"},
+        {"id": "sundown-shoshoni", "name": "Sundown Farms cultivar reference: Shoshoni Pecan", "url": "https://sundownfarms.com/reference/pecans/shoshoni-pecan/", "tier": "nursery"}
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pecan-tejas-sp": {
+      "slug": "pecan-tejas-sp",
+      "species": "Pecan",
+      "variety": "Tejas SP",
+      "paragraphs": [
+        "Tejas SP refers to the cultivar Tejas, a USDA pecan (Carya illinoinensis) selected from a cross of Mahan by Risien and released in 1973. It produces an attractive but small nut.",
+        "Tejas is protogynous (Type II) and is susceptible to pecan scab. Mature trees tend to set very heavy crops, and kernel quality declines markedly when the tree is overloaded. An SP tag in a nursery listing is the seller's pollination grouping, not a confirmed self fertile habit."
+      ],
+      "claims": [
+        {"text": "Tejas was selected from a cross of Mahan by Risien and released in 1973 by the USDA.", "type": "breeding", "cites": ["uga-tejas"]},
+        {"text": "Tejas produces an attractive but small nut, and quality declines when mature trees set very large crops.", "type": "nut", "cites": ["uga-tejas"]},
+        {"text": "Tejas is protogynous (Type II) for pollination.", "type": "pollination", "cites": ["hs106"]},
+        {"text": "Tejas is susceptible to pecan scab.", "type": "horticulture", "cites": ["hs106"]}
+      ],
+      "sources": [
+        {"id": "uga-tejas", "name": "UGA Pecan Breeding cultivars, Tejas", "url": "https://pecanbreeding.uga.edu/cultivars/alphabetical-list/tejas.html", "tier": "authoritative"},
+        {"id": "hs106", "name": "Pecan Cultivars for North Florida, UF/IFAS HS106", "url": "https://ask.ifas.ufl.edu/publication/HS106", "tier": "authoritative"}
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "pecan-wichita": {
       "slug": "pecan-wichita",
