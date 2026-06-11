@@ -27,6 +27,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
+from stocklib.scrape_health import ScrapeHealth
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock" / "daleys"
 BASE_URL = "https://www.daleysfruit.com.au"
@@ -34,7 +35,7 @@ USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 REQUEST_DELAY = 2  # seconds between page fetches
 
 
-def fetch_html(url):
+def fetch_html(url, health=None):
     """Fetch raw HTML from a URL."""
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT,
@@ -45,9 +46,13 @@ def fetch_html(url):
             return resp.read().decode("utf-8", errors="replace")
     except urllib.error.HTTPError as e:
         print(f"  HTTP {e.code} fetching {url}")
+        if health:
+            health.note_http_error(e.code, url)
         return None
     except Exception as e:
         print(f"  Error fetching {url}: {e}")
+        if health:
+            health.note_error(str(e))
         return None
 
 
@@ -458,7 +463,7 @@ def save_snapshot(products, pre_purchase_products):
 
     print(f"\nSaved: {snapshot_file}")
     print(f"Saved: {latest_file}")
-    return snapshot_file
+    return snapshot
 
 
 def print_summary(products, pre_purchase_products):
@@ -551,35 +556,47 @@ def main():
 
     products = []
     pre_purchase_products = []
+    health = ScrapeHealth("daleys")
 
-    if do_plant_list:
-        print("Fetching Plant-List.php (full catalogue)...")
-        html = fetch_html(f"{BASE_URL}/Plant-List.php")
-        if html:
-            print(f"  Received {len(html):,} bytes")
-            products = parse_plant_list(html)
-            print(f"  Parsed {len(products)} products")
-        else:
-            print("  FAILED to fetch Plant-List.php")
-
-    if do_pre_purchase:
+    try:
         if do_plant_list:
-            print(f"\nWaiting {REQUEST_DELAY}s before next request...")
-            time.sleep(REQUEST_DELAY)
+            print("Fetching Plant-List.php (full catalogue)...")
+            html = fetch_html(f"{BASE_URL}/Plant-List.php", health)
+            if html:
+                print(f"  Received {len(html):,} bytes")
+                products = parse_plant_list(html)
+                print(f"  Parsed {len(products)} products")
+            else:
+                print("  FAILED to fetch Plant-List.php")
 
-        print("Fetching pre-purchase.php (upcoming stock)...")
-        html = fetch_html(f"{BASE_URL}/pre-purchase.php")
-        if html:
-            print(f"  Received {len(html):,} bytes")
-            pre_purchase_products = parse_pre_purchase(html)
-            print(f"  Parsed {len(pre_purchase_products)} products")
-        else:
-            print("  FAILED to fetch pre-purchase.php")
+        if do_pre_purchase:
+            if do_plant_list:
+                print(f"\nWaiting {REQUEST_DELAY}s before next request...")
+                time.sleep(REQUEST_DELAY)
 
-    if products or pre_purchase_products:
-        save_snapshot(products, pre_purchase_products)
+            print("Fetching pre-purchase.php (upcoming stock)...")
+            html = fetch_html(f"{BASE_URL}/pre-purchase.php", health)
+            if html:
+                print(f"  Received {len(html):,} bytes")
+                pre_purchase_products = parse_pre_purchase(html)
+                print(f"  Parsed {len(pre_purchase_products)} products")
+            else:
+                print("  FAILED to fetch pre-purchase.php")
+
+        snapshot = None
+        if products or pre_purchase_products:
+            snapshot = save_snapshot(products, pre_purchase_products)
+    except Exception as e:
+        health.note_error(repr(e))
+        health.finish(ok=False)
+        raise
+
+    if snapshot:
+        health.finish(products=snapshot["product_count"],
+                      in_stock=snapshot["in_stock_count"])
         print_summary(products, pre_purchase_products)
     else:
+        health.finish(ok=False)
         print("\nNo data scraped. Check errors above.")
         sys.exit(1)
 

@@ -21,6 +21,7 @@ from datetime import datetime, date
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
+from stocklib.scrape_health import ScrapeHealth
 
 # Nursery configurations
 NURSERIES = {
@@ -95,7 +96,7 @@ USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 REQUEST_DELAY = 2  # seconds between paginated requests
 
 
-def fetch_json(url):
+def fetch_json(url, health=None):
     """Fetch JSON from URL with proper headers."""
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT,
@@ -106,13 +107,17 @@ def fetch_json(url):
             return json.loads(resp.read().decode())
     except urllib.error.HTTPError as e:
         print(f"  HTTP {e.code} fetching {url}")
+        if health:
+            health.note_http_error(e.code, url)
         return None
     except Exception as e:
         print(f"  Error fetching {url}: {e}")
+        if health:
+            health.note_error(str(e))
         return None
 
 
-def scrape_shopify(nursery_key, config):
+def scrape_shopify(nursery_key, config, health=None):
     """Scrape all products from a Shopify store's JSON API."""
     domain = config["domain"]
     all_products = []
@@ -124,7 +129,7 @@ def scrape_shopify(nursery_key, config):
         url = f"https://{domain}/products.json?limit=250&page={page}"
         print(f"  Page {page}...", end=" ", flush=True)
 
-        data = fetch_json(url)
+        data = fetch_json(url, health)
         if data is None:
             print("failed")
             break
@@ -287,10 +292,19 @@ def main():
         targets = NURSERIES
 
     for key, config in targets.items():
-        products = scrape_shopify(key, config)
-        if products:
-            normalized = save_snapshot(key, products, config)
-            print_summary(key, normalized)
+        health = ScrapeHealth(key)
+        try:
+            products = scrape_shopify(key, config, health)
+            normalized = []
+            if products:
+                normalized = save_snapshot(key, products, config)
+                print_summary(key, normalized)
+        except Exception as e:
+            health.note_error(repr(e))
+            health.finish(ok=False)
+            raise
+        health.finish(products=len(normalized),
+                      in_stock=sum(1 for p in normalized if p["any_available"]))
         print()
 
 
