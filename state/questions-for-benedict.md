@@ -12,7 +12,7 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
-**Q43** [INFO] 2026-06-11 — Beewise blocked our server
+**Q43** [ANSWERED 2026-06-11: option (a), Benedict asked for hosting contacts + email draft in session. Draft delivered in chat; host identified as VentraIP/Synergy (Nexigen) family. Nightly Magento scrape throttled to 1 req/s so the email's politeness claim holds.]
 
 Beewise's firewall has blocked the VPS IP (178.104.20.9) since May 24: every request
 403s, even with a browser user-agent, while the same bot UA works fine from a
