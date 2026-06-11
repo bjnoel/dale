@@ -45,5 +45,23 @@ class WelcomeEmailCountTest(unittest.TestCase):
         self.assertNotIn("19 Australian", self.html)
 
 
+class WelcomeUnsubscribeUrlTest(unittest.TestCase):
+    """The welcome email's unsubscribe link must hit a routed path. Bare
+    /unsubscribe is not routed by Caddy and 404s; the working target is the
+    /unsubscribe.html static page (consistent with email_footer + alert senders)."""
+
+    def test_unsubscribe_base_is_routed_html_page(self):
+        self.assertEqual(
+            send_welcome_email.UNSUBSCRIBE_BASE,
+            "https://treestock.com.au/unsubscribe.html",
+        )
+
+    def test_unsubscribe_base_not_bare_path(self):
+        self.assertFalse(
+            send_welcome_email.UNSUBSCRIBE_BASE.endswith("/unsubscribe"),
+            "bare /unsubscribe is not routed by Caddy and 404s",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -27,6 +27,8 @@ SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 PENDING_FILE = DATA_DIR / "pending_subscribers.json"
 VARIETY_WATCHES_DB = DATA_DIR / "variety_watches.db"
 
+SITE_URL = "https://treestock.com.au"
+
 VALID_CATEGORIES = ("new_products", "price_drops", "back_in_stock")
 VALID_FREQUENCIES = ("daily", "weekly", "off")
 STATES = ("ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT")
@@ -68,23 +70,23 @@ def _short_date(value: str) -> str:
     return str(value)[:10]
 
 
-def build_admin_model(subscribers, pending, watches_rows, wishlist_rows) -> dict:
+def build_admin_model(subscribers, pending, watches_rows) -> dict:
     """Pure aggregation. No I/O.
 
-    watches_rows:  iterable of (email, variety_slug, variety_title, species_slug, added_at)
-    wishlist_rows: iterable of (email, species_slug, added_at)
+    watches_rows: iterable of (email, variety_slug, variety_title, species_slug, added_at)
     """
     subscribers = subscribers or []
     pending = pending or []
     watches_rows = list(watches_rows or [])
-    wishlist_rows = list(wishlist_rows or [])
 
-    # Map email -> list of watched variety titles (preserve insertion order).
+    # Map email -> list of watched varieties as (title, slug), preserving order.
+    # The slug lets the renderer link each watch to its /variety/<slug>.html page.
     watches_by_email = {}
     for row in watches_rows:
         email = (row[0] or "").lower()
-        title = row[2] or row[1] or ""
-        watches_by_email.setdefault(email, []).append(title)
+        slug = row[1] or ""
+        title = row[2] or slug or ""
+        watches_by_email.setdefault(email, []).append((title, slug))
 
     sub_emails = {(s.get("email") or "").lower() for s in subscribers}
 
@@ -104,8 +106,8 @@ def build_admin_model(subscribers, pending, watches_rows, wishlist_rows) -> dict
 
     # Watchers who aren't in subscribers.json (set a variety watch without subscribing).
     watch_only = [
-        {"email": email, "watches": titles}
-        for email, titles in sorted(watches_by_email.items())
+        {"email": email, "watches": watches}
+        for email, watches in sorted(watches_by_email.items())
         if email not in sub_emails
     ]
 
@@ -131,13 +133,18 @@ def build_admin_model(subscribers, pending, watches_rows, wishlist_rows) -> dict
     by_frequency = [(f, freq_counts.get(f, 0)) for f in VALID_FREQUENCIES]
     by_category = [(c, cat_counts.get(c, 0)) for c in VALID_CATEGORIES]
 
-    # Aggregate demand.
-    top_varieties = Counter(
-        (r[2] or r[1] or "") for r in watches_rows
-    ).most_common()
-    top_wishlist = Counter(
-        (r[1] or "") for r in wishlist_rows
-    ).most_common()
+    # Most-watched varieties, aggregated by slug (with a representative title) so
+    # the renderer can link each to its /variety/<slug>.html page.
+    slug_counts = Counter()
+    slug_title = {}
+    for row in watches_rows:
+        slug = row[1] or ""
+        title = row[2] or slug or ""
+        slug_counts[slug] += 1
+        slug_title.setdefault(slug, title)
+    top_varieties = [
+        (slug, slug_title.get(slug, slug), n) for slug, n in slug_counts.most_common()
+    ]
 
     distinct_watchers = len({(r[0] or "").lower() for r in watches_rows})
 
@@ -147,7 +154,6 @@ def build_admin_model(subscribers, pending, watches_rows, wishlist_rows) -> dict
             "pending": len(pending),
             "watches": len(watches_rows),
             "watchers": distinct_watchers,
-            "wishlist_votes": len(wishlist_rows),
         },
         "by_state": by_state,
         "by_frequency": by_frequency,
@@ -156,7 +162,6 @@ def build_admin_model(subscribers, pending, watches_rows, wishlist_rows) -> dict
         "watch_only": watch_only,
         "pending": pending_rows,
         "top_varieties": top_varieties,
-        "top_wishlist": top_wishlist,
     }
 
 
@@ -181,7 +186,7 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
         except (json.JSONDecodeError, OSError):
             pending = []
 
-    watches_rows, wishlist_rows = [], []
+    watches_rows = []
     if watches_db.exists():
         try:
             con = sqlite3.connect(f"file:{watches_db}?mode=ro", uri=True)
@@ -189,14 +194,11 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
                 "SELECT email, variety_slug, variety_title, species_slug, added_at "
                 "FROM watches ORDER BY added_at"
             ).fetchall()
-            wishlist_rows = con.execute(
-                "SELECT email, species_slug, added_at FROM wishlist ORDER BY added_at"
-            ).fetchall()
             con.close()
         except sqlite3.Error:
-            watches_rows, wishlist_rows = [], []
+            watches_rows = []
 
-    return build_admin_model(subscribers, pending, watches_rows, wishlist_rows)
+    return build_admin_model(subscribers, pending, watches_rows)
 
 
 # ---------------------------------------------------------------------------
@@ -207,13 +209,29 @@ def _esc(value) -> str:
     return html.escape(str(value if value is not None else ""))
 
 
+def _variety_link(title: str, slug: str) -> str:
+    """Link a variety to its page on the main site (opens in a new tab)."""
+    if not slug:
+        return _esc(title)
+    return (
+        f'<a href="{SITE_URL}/variety/{_esc(slug)}.html" target="_blank" '
+        f'rel="noopener">{_esc(title)}</a>'
+    )
+
+
+def _watch_links(watches) -> str:
+    """Render a list of (title, slug) watches as comma-separated links."""
+    if not watches:
+        return '<span class="muted">—</span>'
+    return ", ".join(_variety_link(t, s) for t, s in watches)
+
+
 def _cards(totals: dict) -> str:
     cards = [
         ("Subscribers", totals["subscribers"]),
         ("Pending", totals["pending"]),
         ("Variety watches", totals["watches"]),
         ("Watchers", totals["watchers"]),
-        ("Wishlist votes", totals["wishlist_votes"]),
     ]
     items = "".join(
         f'<div class="card"><div class="card-num">{n}</div>'
@@ -248,7 +266,6 @@ def _subscriber_table(rows) -> str:
         return '<section><h2>Subscribers</h2><p class="muted">No subscribers yet.</p></section>'
     body = []
     for r in rows:
-        watches = ", ".join(_esc(t) for t in r["watches"]) if r["watches"] else '<span class="muted">—</span>'
         body.append(
             "<tr>"
             f"<td>{_esc(r['email'])}</td>"
@@ -256,7 +273,7 @@ def _subscriber_table(rows) -> str:
             f"<td>{_esc(r['frequency'])}</td>"
             f"<td>{_esc(_categories_label(r['categories']))}</td>"
             f"<td>{_esc(r['subscribed_at'])}</td>"
-            f"<td>{watches}</td>"
+            f"<td>{_watch_links(r['watches'])}</td>"
             "</tr>"
         )
     return (
@@ -274,7 +291,7 @@ def _watch_only_table(rows) -> str:
     body = "".join(
         "<tr>"
         f"<td>{_esc(r['email'])}</td>"
-        f"<td>{', '.join(_esc(t) for t in r['watches'])}</td>"
+        f"<td>{_watch_links(r['watches'])}</td>"
         "</tr>"
         for r in rows
     )
@@ -283,6 +300,21 @@ def _watch_only_table(rows) -> str:
         '<p class="muted">Set a variety alert without joining the digest list.</p>'
         '<table><thead><tr><th>Email</th><th>Variety watches</th></tr></thead>'
         f'<tbody>{body}</tbody></table></section>'
+    )
+
+
+def _top_varieties_table(rows) -> str:
+    """rows: list of (slug, title, count). Each variety links to the main site."""
+    if not rows:
+        body = '<tr><td colspan="2" class="muted">None</td></tr>'
+    else:
+        body = "".join(
+            f"<tr><td>{_variety_link(title, slug)}</td><td class='num'>{n}</td></tr>"
+            for slug, title, n in rows
+        )
+    return (
+        '<section><h2>Top watched varieties</h2>'
+        f'<table class="mini"><tbody>{body}</tbody></table></section>'
     )
 
 
@@ -320,10 +352,7 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
         _subscriber_table(model["subscribers"]),
         _watch_only_table(model["watch_only"]),
         _pending_table(model["pending"]),
-        '<div class="grid2">',
-        _count_table("Top watched varieties", model["top_varieties"][:25]),
-        _count_table("Top wishlist species", model["top_wishlist"][:25]),
-        "</div>",
+        _top_varieties_table(model["top_varieties"][:25]),
     ]
     content = "\n".join(parts)
 

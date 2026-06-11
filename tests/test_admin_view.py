@@ -38,17 +38,10 @@ WATCHES = [
     ("d@x.com", "fig-black-genoa", "Black Genoa Fig", "fig", "2026-06-11T11:00:00"),
 ]
 
-# (email, species_slug, added_at)
-WISHLIST = [
-    ("a@x.com", "durian", "2026-06-10T10:00:00"),
-    ("e@x.com", "durian", "2026-06-11T10:00:00"),
-    ("a@x.com", "mangosteen", "2026-06-10T10:01:00"),
-]
-
 
 class BuildAdminModelTest(unittest.TestCase):
     def setUp(self):
-        self.model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES, WISHLIST)
+        self.model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
 
     def test_totals(self):
         t = self.model["totals"]
@@ -56,7 +49,7 @@ class BuildAdminModelTest(unittest.TestCase):
         self.assertEqual(t["pending"], 1)
         self.assertEqual(t["watches"], 3)
         self.assertEqual(t["watchers"], 2)  # a@x.com and d@x.com
-        self.assertEqual(t["wishlist_votes"], 3)
+        self.assertNotIn("wishlist_votes", t)  # wishlist no longer tracked
 
     def test_by_state_legacy_wa_only(self):
         # c@x.com uses legacy wa_only -> WA. Only nonzero states, in STATES order.
@@ -76,8 +69,12 @@ class BuildAdminModelTest(unittest.TestCase):
         )
 
     def test_subscriber_watch_join(self):
+        # Watches are (title, slug) pairs so the renderer can link to the variety page.
         by_email = {r["email"]: r for r in self.model["subscribers"]}
-        self.assertEqual(by_email["a@x.com"]["watches"], ["Black Genoa Fig", "KP Mango"])
+        self.assertEqual(
+            by_email["a@x.com"]["watches"],
+            [("Black Genoa Fig", "fig-black-genoa"), ("KP Mango", "mango-kp")],
+        )
         self.assertEqual(by_email["b@x.com"]["watches"], [])
 
     def test_subscribers_sorted_newest_first(self):
@@ -89,19 +86,17 @@ class BuildAdminModelTest(unittest.TestCase):
         watch_only = self.model["watch_only"]
         self.assertEqual(len(watch_only), 1)
         self.assertEqual(watch_only[0]["email"], "d@x.com")
-        self.assertEqual(watch_only[0]["watches"], ["Black Genoa Fig"])
+        self.assertEqual(watch_only[0]["watches"], [("Black Genoa Fig", "fig-black-genoa")])
 
-    def test_top_varieties(self):
+    def test_top_varieties_by_slug_with_title(self):
+        # (slug, title, count), most-watched first.
         self.assertEqual(
             self.model["top_varieties"],
-            [("Black Genoa Fig", 2), ("KP Mango", 1)],
+            [("fig-black-genoa", "Black Genoa Fig", 2), ("mango-kp", "KP Mango", 1)],
         )
 
-    def test_top_wishlist(self):
-        self.assertEqual(
-            self.model["top_wishlist"],
-            [("durian", 2), ("mangosteen", 1)],
-        )
+    def test_no_wishlist_key(self):
+        self.assertNotIn("top_wishlist", self.model)
 
     def test_pending_rows(self):
         self.assertEqual(
@@ -114,7 +109,7 @@ class BuildAdminModelTest(unittest.TestCase):
         self.assertEqual(by_email["a@x.com"]["subscribed_at"], "2026-06-10")
 
     def test_empty_inputs(self):
-        model = admin_view.build_admin_model([], [], [], [])
+        model = admin_view.build_admin_model([], [], [])
         self.assertEqual(model["totals"]["subscribers"], 0)
         self.assertEqual(model["subscribers"], [])
         self.assertEqual(model["top_varieties"], [])
@@ -122,18 +117,27 @@ class BuildAdminModelTest(unittest.TestCase):
 
 class RenderAdminHtmlTest(unittest.TestCase):
     def test_render_contains_data_and_is_noindex(self):
-        model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES, WISHLIST)
+        model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
         page = admin_view.render_admin_html(model, generated_at="2026-06-11 12:00")
         self.assertIn("noindex", page)
         self.assertIn("a@x.com", page)
         self.assertIn("Black Genoa Fig", page)
         self.assertIn("2026-06-11 12:00", page)
 
+    def test_render_links_varieties_to_main_site(self):
+        model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
+        page = admin_view.render_admin_html(model)
+        self.assertIn(
+            'href="https://treestock.com.au/variety/fig-black-genoa.html"', page
+        )
+        # Wishlist section is gone.
+        self.assertNotIn("wishlist", page.lower())
+
     def test_render_escapes_html_in_titles(self):
         watches = [("z@x.com", "evil", "<script>alert(1)</script>", "sp", "2026-06-10")]
         model = admin_view.build_admin_model(
             [{"email": "z@x.com", "state": "ALL", "subscribed_at": "2026-06-10"}],
-            [], watches, [],
+            [], watches,
         )
         page = admin_view.render_admin_html(model)
         self.assertNotIn("<script>alert(1)</script>", page)

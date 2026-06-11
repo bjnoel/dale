@@ -28,7 +28,7 @@ import sys
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
-from urllib.parse import parse_qs, parse_qsl, urlparse
+from urllib.parse import parse_qs, parse_qsl, quote, urlparse
 
 import admin_view
 
@@ -1045,7 +1045,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
 
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.8rem;color:#9ca3af">
-  <a href="https://treestock.com.au/unsubscribe?email={email}&token={token}" style="color:#dc2626">Unsubscribe from all</a>
+  <a href="https://treestock.com.au/unsubscribe.html?email={quote(email)}&token={token}" style="color:#dc2626">Unsubscribe from all</a>
   &middot; <a href="https://treestock.com.au" style="color:#6b7280">treestock.com.au</a>
 </p>
 <script>

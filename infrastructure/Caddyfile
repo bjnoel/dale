@@ -46,6 +46,13 @@ treestock.com.au, www.treestock.com.au {
         reverse_proxy localhost:8099
     }
 
+    # Bare /unsubscribe is referenced by older welcome emails; route it to the
+    # backend (handles GET /unsubscribe) so those links don't 404. New emails use
+    # the /unsubscribe.html static page.
+    handle /unsubscribe {
+        reverse_proxy localhost:8099
+    }
+
     root * /opt/dale/dashboard
     encode zstd gzip
     file_server
@@ -130,6 +137,13 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
         reverse_proxy localhost:8099
     }
     handle /admin/ {
+        reverse_proxy localhost:8099
+    }
+
+    # Bare /unsubscribe is referenced by older welcome emails; route it to the
+    # backend (handles GET /unsubscribe) so those links don't 404. New emails use
+    # the /unsubscribe.html static page.
+    handle /unsubscribe {
         reverse_proxy localhost:8099
     }
 
