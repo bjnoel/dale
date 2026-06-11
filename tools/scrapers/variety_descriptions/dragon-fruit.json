@@ -167,6 +167,85 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "dragon-fruit-palora": {
+      "slug": "dragon-fruit-palora",
+      "species": "Dragon Fruit",
+      "variety": "Palora",
+      "paragraphs": [
+        "Palora is the premium Ecuadorian yellow pitahaya, a form of Selenicereus megalanthus named for the Palora canton in the Ecuadorian Amazon where it is grown. Ecuador's National Intellectual Rights Service has granted the Amazonian pitahaya from Palora a denomination of origin, protecting fruit from the region from imitation. Unlike the leafy scaled skin of red dragon fruit, it carries a bright yellow, spiny, knobbly skin over translucent white flesh studded with small crunchy black seeds.",
+        "The flesh has a pleasant, mildly sweet flavour, and like other yellow pitayas the plant is self fertile, so a single plant can set fruit. It is treated as a premium export fruit, shipped to dozens of countries, and Ecuador's climate gives growers three production peaks across the year rather than one short season."
+      ],
+      "claims": [
+        {
+          "text": "Named for and grown in the Palora region of the Ecuadorian Amazon; the Amazonian pitahaya from Palora holds an Ecuadorian denomination of origin certificate.",
+          "type": "origin",
+          "cites": [
+            "tridge",
+            "ff"
+          ]
+        },
+        {
+          "text": "A form of Selenicereus megalanthus with yellow, spiny, tuberculate skin over white flesh containing small black seeds.",
+          "type": "appearance",
+          "cites": [
+            "wiki",
+            "growables"
+          ]
+        },
+        {
+          "text": "The flesh has a pleasant, mildly sweet flavour.",
+          "type": "flavour",
+          "cites": [
+            "wiki",
+            "growables"
+          ]
+        },
+        {
+          "text": "Yellow pitayas are self fertile, requiring no cross pollination.",
+          "type": "pollination",
+          "cites": [
+            "wiki"
+          ]
+        },
+        {
+          "text": "Exported as a premium fruit to dozens of countries, with three production peaks per year in Ecuador.",
+          "type": "commercial",
+          "cites": [
+            "ff"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki",
+          "name": "Wikipedia: Selenicereus megalanthus",
+          "url": "https://en.wikipedia.org/wiki/Selenicereus_megalanthus",
+          "tier": "third_party"
+        },
+        {
+          "id": "ff",
+          "name": "FreshFruitPortal: Ecuadorian yellow dragon fruit making waves in the U.S.",
+          "url": "https://www.freshfruitportal.com/news/2023/03/28/ecuadorian-yellow-dragon-fruit-making-waves-in-the-u-s/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tridge",
+          "name": "Tridge: Yellow Pitahaya from Ecuador",
+          "url": "https://www.tridge.com/stories/yellow-pitahaya-from-ecuador-low-production-in-2019-but-increasing-global-demand",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Pitaya Species and Named Varieties (UF/IFAS derived)",
+          "url": "https://www.growables.org/information/TropicalFruit/PitayaSpeciesVarieties.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "dragon-fruit-purple-haze": {
       "slug": "dragon-fruit-purple-haze",
       "species": "Dragon Fruit",
@@ -522,11 +601,125 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "dragon-fruit-zamorano": {
+      "slug": "dragon-fruit-zamorano",
+      "species": "Dragon Fruit",
+      "variety": "Zamorano",
+      "paragraphs": [
+        "Zamorano is a red fleshed pitaya that originates in Honduras. The fruit is medium sized, roughly 0.5 to 1 pound (about 0.2 to 0.45 kg), with red skin edged by green scale margins and red pulp, and its flavour is sweet and mild rather than sharp, which suits fresh eating.",
+        "A practical drawcard is that Zamorano is self fertile, setting fruit without cross pollination from a second variety, so a single backyard plant can crop. The pitaya variety table derived from UF/IFAS notes lists it as recommended for home landscape planting."
+      ],
+      "claims": [
+        {
+          "text": "Originates in Honduras.",
+          "type": "origin",
+          "cites": [
+            "growables",
+            "spicyexotics"
+          ]
+        },
+        {
+          "text": "Red skin with green scale margins and red pulp.",
+          "type": "appearance",
+          "cites": [
+            "growables",
+            "urbantropicals"
+          ]
+        },
+        {
+          "text": "Sweet, mild flavour.",
+          "type": "flavour",
+          "cites": [
+            "growables",
+            "spicyexotics"
+          ]
+        },
+        {
+          "text": "Self fertile; does not need cross pollination.",
+          "type": "pollination",
+          "cites": [
+            "growables",
+            "urbantropicals"
+          ]
+        },
+        {
+          "text": "Fruit weight roughly 0.5 to 1.0 lb.",
+          "type": "size",
+          "cites": [
+            "growables"
+          ]
+        },
+        {
+          "text": "Recommended for home landscape planting in the UF/IFAS derived variety table.",
+          "type": "uses",
+          "cites": [
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "growables",
+          "name": "Growables: Pitaya Species and Named Varieties (UF/IFAS derived)",
+          "url": "https://www.growables.org/information/TropicalFruit/PitayaSpeciesVarieties.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "spicyexotics",
+          "name": "Spicy Exotics: Zamorano dragon fruit",
+          "url": "https://spicyexotics.com/product/zamorano/",
+          "tier": "nursery"
+        },
+        {
+          "id": "urbantropicals",
+          "name": "Urban Tropicals: Zamorano Dragon Fruit Cactus",
+          "url": "https://urbantropicals.com/product/zamorano-dragon-fruit-cactus-hylocereus-polyrhizus/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
   "skipped": [
+    "dragon-fruit-asunta",
     "dragon-fruit-aussie-gold",
     "dragon-fruit-aztec-gem",
-    "dragon-fruit-cosmic-charlie"
+    "dragon-fruit-big-red",
+    "dragon-fruit-columbian-supreme",
+    "dragon-fruit-condor",
+    "dragon-fruit-connie-mayer",
+    "dragon-fruit-cosmic-charlie",
+    "dragon-fruit-desert-king",
+    "dragon-fruit-el-grullo",
+    "dragon-fruit-florida-sweet-red",
+    "dragon-fruit-frankies-red",
+    "dragon-fruit-jade-red",
+    "dragon-fruit-lemonade",
+    "dragon-fruit-londonii",
+    "dragon-fruit-lucille-lemonade",
+    "dragon-fruit-magenta",
+    "dragon-fruit-malaysian-purple",
+    "dragon-fruit-neon",
+    "dragon-fruit-orange",
+    "dragon-fruit-pearl",
+    "dragon-fruit-peony-perfection",
+    "dragon-fruit-pink-beauty",
+    "dragon-fruit-pink-champagne",
+    "dragon-fruit-pink-diamond",
+    "dragon-fruit-pink-panther",
+    "dragon-fruit-purple",
+    "dragon-fruit-purple-megalanthus",
+    "dragon-fruit-red-commercial",
+    "dragon-fruit-red-skin-and-white-flesh",
+    "dragon-fruit-scotts-purple",
+    "dragon-fruit-thi",
+    "dragon-fruit-townsend-pink",
+    "dragon-fruit-trish",
+    "dragon-fruit-white-commercial",
+    "dragon-fruit-yellow-blaze"
   ]
 }
