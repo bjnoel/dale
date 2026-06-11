@@ -32,6 +32,16 @@ GOLDEN_CASES = [
         "outputs": ["index.html"],
     },
     {
+        # The /bush-tucker/ category landing page (DAL-198): same components as
+        # the homepage, scoped to bush tucker stock. Pins both the page shell
+        # (title/canonical/pills/data_url) and the scoped data.js (the product
+        # filtering is the new logic worth covering).
+        "name": "bush_tucker_landing",
+        "script": "build-dashboard.py",
+        "args": ["{DATA}", "{OUT}", "--category", "bush_tucker"],
+        "outputs": ["index.html", "data.js"],
+    },
+    {
         "name": "variety",
         "script": "build_variety_pages.py",
         "args": ["{DATA}", "{OUT}"],
