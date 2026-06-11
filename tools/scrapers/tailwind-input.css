@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+/* Force-generate the responsive content-width utilities.
+   The width token (treestock_layout.CONTENT_MAX_WIDTH) is composed in a Python
+   string and interpolated into pages, so Tailwind v4's automatic source
+   detection reliably extracts the bare `max-w-3xl` but NOT the breakpoint
+   variants `lg:max-w-5xl` / `2xl:max-w-7xl`. Without this, the desktop/large
+   widening silently produces no CSS and every page stays at 768px. Keep this
+   list in sync with CONTENT_MAX_WIDTH. */
+@source inline("max-w-3xl lg:max-w-5xl 2xl:max-w-7xl");
