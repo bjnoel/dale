@@ -1,0 +1,74 @@
+{
+  "slug": "native-raspberry",
+  "common_name": "Native Raspberry",
+  "sources_note": "Growing guidance on this page draws on Australian native-plant groups, local native-plant resources, native-plant societies, and recognised native-food sources.",
+  "sources": [
+    {"id": "illawarra", "name": "Growing Illawarra Natives: native raspberries", "short": "Growing Illawarra Natives", "url": "https://blog.growingillawarranatives.org/2020/07/try-growing-native-raspberries.html"},
+    {"id": "nurseriesonline", "name": "Nurseries Online: Native Raspberries", "short": "Nurseries Online", "url": "https://www.nurseriesonline.com.au/plant-index/australian-native-plants/native-raspberries/"},
+    {"id": "wikipedia", "name": "Rubus parvifolius (Wikipedia)", "short": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Rubus_parvifolius"},
+    {"id": "anpsa", "name": "Australian Native Plants Society: native Rubus", "short": "ANPSA", "url": "https://anpsa.org.au/plant_profiles/"},
+    {"id": "slowfood", "name": "Slow Food Foundation: Australian Native Raspberry (Ark of Taste)", "short": "Slow Food Foundation", "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/australian-native-raspberry/"},
+    {"id": "agrifutures", "name": "AgriFutures Australia: Native foods", "short": "AgriFutures", "url": "https://agrifutures.com.au/farm-diversity/native-foods/"},
+    {"id": "dpird-quarantine", "name": "DPIRD WA: Importing plants and quarantine", "short": "DPIRD WA", "url": "https://www.agric.wa.gov.au/bringing-plants-and-plant-products-wa"}
+  ],
+  "core": {
+    "intro": "Native raspberry is the common name for several Australian bramble species in the genus Rubus, most often Rubus parvifolius (small-leaf bramble) and Rubus rosifolius (the rose-leaf or Atherton raspberry). They scramble through the bush on thorny arching canes and bear small, sweet, red raspberries that you can eat fresh, much like a smaller version of the cultivated berry. They are tough, widely adaptable plants, so the basics are the same across the country: moist well-drained soil, part shade, room for the prickly canes, and a yearly prune. The state sections cover which species suits where.",
+    "sections": [
+      {"heading": "Two species under one name", "body": "Rubus parvifolius is the most widespread native raspberry, found from around Rockhampton in Queensland south to Adelaide and right through Tasmania, semi-deciduous and very hardy. Rubus rosifolius, the rose-leaf bramble or Atherton raspberry, is more at home in warm subtropical and coastal gardens and tends to stay evergreen. Both carry edible red fruit and similar care; if you have a choice, match the species to your climate, with parvifolius for cooler and drier areas and rosifolius for the warm subtropics.", "cites": ["wikipedia", "nurseriesonline"]},
+      {"heading": "Position and soil", "body": "Native raspberries grow as scrambling, thorny vines that can be trained up a support or left to form an informal thicket. They prefer moist, well-drained soil and a part-shade position, and parvifolius in particular is very hardy and drought tolerant once established. Give them room, because the canes are prickly and spread, and a spot where you do not mind a slightly wild tangle. They take a wide range of climates, from subtropical through temperate to a Mediterranean summer.", "cites": ["illawarra", "wikipedia"]},
+      {"heading": "Care, feeding and pruning", "body": "Treat them much like a cultivated bramble: a feed of fertiliser in early spring, mulch and organic matter over the roots, and steady moisture for the best fruit. Prune once a year, ideally after fruiting, to remove old spent canes, keep the thicket open and make the fruit easier to reach among the thorns. They are vigorous and forgiving, and a yearly cut-back is the main thing that keeps them productive and manageable rather than rampant.", "cites": ["illawarra", "agrifutures"]},
+      {"heading": "Fruit and harvest", "body": "The small red berries are pleasantly flavoured, sweet with a slightly tart edge and a clear raspberry character, just smaller than the shop fruit. They are eaten fresh straight off the cane or used in sauces and jams, and the plants crop most heavily through spring and summer, with some fruit over a long season in warm climates. Pick when fully coloured and gently soft, and watch the thorns. Birds enjoy them too, so net or pick promptly if you want a share.", "cites": ["slowfood", "nurseriesonline"]},
+      {"heading": "Buying tips", "body": "Check which species you are buying, since parvifolius and rosifolius suit different climates, and pick the one that matches yours. A potted plant establishes quickly; you can also grow them from the suckering canes of an existing plant. Give any native raspberry a position with room for the prickly growth and a support or fence if you would rather train it than let it sprawl.", "cites": ["nurseriesonline", "anpsa"]}
+    ],
+    "faqs": [
+      {"q": "Are native raspberries actually edible?", "a": "Yes. The small red berries are genuinely edible and pleasant, sweet with a slightly tart raspberry flavour, just smaller than the cultivated fruit. Eat them fresh off the cane or use them in sauces and jams. They are a true bush food, listed among Australia's traditional native fruits."},
+      {"q": "How is a native raspberry different from a shop raspberry?", "a": "It is a different, locally native Rubus species rather than the European cultivated raspberry, with smaller fruit, thorny scrambling canes and far greater toughness and adaptability to Australian conditions. The flavour is recognisably raspberry, the plant is wilder and hardier, and it crops over a longer warm-season window in mild climates."},
+      {"q": "Do native raspberries need pruning?", "a": "A yearly prune after fruiting is the main care they need. Cutting out old spent canes keeps the prickly thicket open, makes the berries easier to reach and keeps the plant productive rather than rampant. Otherwise they are vigorous and forgiving, wanting only moisture, a spring feed and room to scramble."},
+      {"q": "Will native raspberry take over the garden?", "a": "It is a vigorous scrambler with suckering, prickly canes, so give it room and a defined spot rather than a tidy border. A yearly cut-back after fruiting and the odd removal of stray suckers keeps it in bounds, and training it onto a support rather than letting it sprawl makes it easier to manage."}
+    ]
+  },
+  "states": {
+    "NSW": {
+      "intro": "Growing native raspberry in New South Wales. Both common species occur in NSW, so it is an easy and widely adaptable bush food across the state, from the warm coast to the cooler tablelands.",
+      "sections": [
+        {"heading": "Climate fit", "body": "In NSW you can grow Rubus parvifolius across the cooler and drier districts and the tablelands, where its hardiness and drought tolerance shine, and Rubus rosifolius along the warm humid coast and ranges, where it stays evergreen and crops over a long season. Give either moist well-drained soil and part shade, room for the canes, and a yearly prune, and they fruit reliably. They are among the most forgiving native edibles for a NSW garden.", "cites": ["illawarra", "wikipedia"]},
+        {"heading": "An informal berry thicket", "body": "Many NSW growers let native raspberry form an informal thicket at the edge of the garden or train it along a fence, where the prickly canes double as a habitat hedge for small birds. Prune after fruiting to keep it open and productive and to make the berries easier to reach.", "cites": ["nurseriesonline"]}
+      ],
+      "faqs": [
+        {"q": "Which native raspberry should I grow in NSW?", "a": "Match the species to your part of the state. Rubus parvifolius suits the cooler, drier districts and the tablelands with its hardiness and drought tolerance, while Rubus rosifolius suits the warm humid coast and ranges and tends to stay evergreen and crop over a longer season."}
+      ]
+    },
+    "QLD": {
+      "intro": "Growing native raspberry in Queensland. The warm subtropical and coastal climate suits Rubus rosifolius, the rose-leaf or Atherton raspberry, particularly well, so it is an easy, long-cropping bush food in much of the state.",
+      "sections": [
+        {"heading": "Climate fit", "body": "In subtropical and coastal Queensland Rubus rosifolius grows readily, often staying evergreen and fruiting over a long warm-season window. Rubus parvifolius reaches into southern and inland Queensland too. Give them moist well-drained soil, part shade and room for the thorny canes, and they crop with little fuss. The warmth and rainfall of coastal Queensland make for vigorous growth, so a yearly prune to keep the thicket open matters here.", "cites": ["nurseriesonline", "wikipedia"]}
+      ],
+      "faqs": [
+        {"q": "How do I keep native raspberry from getting out of hand in a warm Queensland garden?", "a": "Queensland's warmth and rainfall drive strong growth, so give it a defined spot rather than a tidy bed, cut it back hard after fruiting each year, pull out stray suckers as they appear, and train the canes onto a support or fence instead of letting the prickly tangle sprawl. Managed that way it stays a productive berry plant rather than a thicket."}
+      ]
+    },
+    "VIC": {
+      "intro": "Growing native raspberry in Victoria. The cool-climate species Rubus parvifolius is right at home here, hardy through Victorian winters and frost, so it is a dependable cold-climate bush food.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Rubus parvifolius ranges naturally through cool temperate southern Australia and Tasmania, so Victoria's cool winters and frosts suit it well; it is semi-deciduous and very hardy. Give it moist well-drained soil and part to full sun in the cooler climate, room for the scrambling canes, and a yearly prune after fruiting. It is one of the easier native fruits for a Victorian garden, asking little once established.", "cites": ["wikipedia", "illawarra"]}
+      ],
+      "faqs": [
+        {"q": "Does native raspberry drop its leaves over a Victorian winter?", "a": "Often, yes. Rubus parvifolius is semi-deciduous, so in cool Victoria it sheds much of its foliage through the cold months and reshoots from the canes in spring. That is normal rather than a problem, and winter, while the plant is bare, is a good time to cut out the old spent canes."}
+      ]
+    },
+    "WA": {
+      "intro": "Growing native raspberry in Western Australia. The hardy, drought-tolerant Rubus parvifolius suits the south-west, though live plants still clear WA's plant-import rules, so a locally grown plant is the simplest start.",
+      "sections": [
+        {"heading": "Climate fit", "body": "In the south-west of WA the hardy, drought-tolerant Rubus parvifolius copes well with the Mediterranean climate of dry summers and mild winters, especially with some summer water and a part-shade position. Give it moist well-drained soil while establishing, room for the prickly canes, and a yearly prune after fruiting. Its toughness and drought tolerance make it more forgiving than many fruiting plants in WA's dry summer.", "cites": ["wikipedia", "dpird-quarantine"]},
+        {"heading": "Buying into WA", "body": "WA's plant-import rules limit which interstate nurseries can send live plants across the border, so source a WA-grown plant from a local native nursery where you can, which also arrives suited to the dry climate. Check current import conditions before ordering a live plant from the east.", "cites": ["dpird-quarantine"]}
+      ],
+      "faqs": [
+        {"q": "Can I make more native raspberry plants from one I already have in WA?", "a": "Easily. It throws up suckers and its canes take root where they arch down onto damp ground, so you can dig up a rooted sucker or peg a cane tip into the soil to make new plants. It is the cheapest way to build a berry patch from a single WA-grown plant once you have one established."}
+      ]
+    }
+  },
+  "further_reading": [
+    {"title": "Try growing: native raspberries", "url": "https://blog.growingillawarranatives.org/2020/07/try-growing-native-raspberries.html", "source": "Growing Illawarra Natives"},
+    {"title": "Australian Native Raspberry (Ark of Taste)", "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/australian-native-raspberry/", "source": "Slow Food Foundation"}
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "slug": "lemon-myrtle",
+  "common_name": "Lemon Myrtle",
+  "sources_note": "Growing guidance on this page draws on Australian native-plant nurseries, state government plant-health resources, and recognised native-food industry sources.",
+  "sources": [
+    {"id": "tuckerbush", "name": "Tucker Bush: Lemon Myrtle (Backhousia citriodora)", "short": "Tucker Bush", "url": "https://tuckerbush.com.au/lemon-myrtle-backhousia-citriodora/"},
+    {"id": "sga", "name": "Sustainable Gardening Australia: Lemon Myrtle", "short": "Sustainable Gardening Australia", "url": "https://www.sgaonline.org.au/lemon-myrtle-2/"},
+    {"id": "bunnings", "name": "Bunnings: How to grow lemon myrtle", "short": "Bunnings", "url": "https://www.bunnings.com.au/diy-advice/garden/planting-and-growing/how-to-grow-lemon-myrtle"},
+    {"id": "anpsa", "name": "Australian Native Plants Society: Backhousia citriodora", "short": "ANPSA", "url": "https://anpsa.org.au/plant_profiles/backhousia-citriodora/"},
+    {"id": "wikipedia", "name": "Backhousia citriodora (Wikipedia)", "short": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Backhousia_citriodora"},
+    {"id": "agrifutures", "name": "AgriFutures Australia: Native foods (lemon myrtle)", "short": "AgriFutures", "url": "https://agrifutures.com.au/farm-diversity/native-foods/"},
+    {"id": "dpird-myrtlerust", "name": "Myrtle rust information (Australian plant-health agencies)", "short": "Myrtle rust plant-health note", "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/diseases-pests/myrtle-rust"},
+    {"id": "daf-nativefoods", "name": "Queensland DAF: Native food and botanical industry", "short": "Queensland DAF", "url": "https://www.daf.qld.gov.au/business-priorities/agriculture/plants/crops-pastures"},
+    {"id": "dpird-quarantine", "name": "DPIRD WA: Importing plants and quarantine", "short": "DPIRD WA", "url": "https://www.agric.wa.gov.au/bringing-plants-and-plant-products-wa"}
+  ],
+  "core": {
+    "intro": "Lemon myrtle (Backhousia citriodora) is the best known of the Australian native food herbs, a dense rainforest tree from southeast Queensland whose crushed leaves carry the highest natural citral content of any plant. The basics are the same anywhere in the country: a warm, frost-free position when young, rich free-draining soil, steady moisture, and regular tip pruning to keep soft leaves coming. The state sections below cover climate fit, where it grows best, myrtle rust pressure and (for WA) the quarantine context.",
+    "sections": [
+      {"heading": "One species, two jobs", "body": "Lemon myrtle is grown for its intensely lemon-scented leaf, used dried or fresh in tea, baking, dressings and spice blends, and it doubles as a handsome small evergreen tree or clipped hedge. It is sold as the straight species rather than as named fruit cultivars, though selected forms bred for leaf oil exist in the commercial trade. For a home garden, choose a healthy, well-rooted plant and let the use (kitchen herb, feature tree, or screen) decide how hard you prune it.", "cites": ["tuckerbush", "anpsa"]},
+      {"heading": "Position and soil", "body": "As a rainforest species it wants rich, deep, free-draining soil with plenty of organic matter, and a position in full sun to part shade. In cooler or coastal-temperate gardens it takes full sun, but in hot dry inland climates give it dappled shade or protection from harsh afternoon sun. Dig in compost and aged manure before planting, keep the root zone mulched, and on heavy clay add gypsum and plant on a low mound to lift the roots out of wet ground. It grows well in a large pot, which is the simplest way to manage it in a cold or frost-prone garden.", "cites": ["sga", "bunnings"]},
+      {"heading": "Water and feeding", "body": "Keep young plants evenly moist through their first few summers while the root system establishes; lemon myrtle dislikes drying out hard but equally dislikes waterlogging. Feed in spring and again in late summer with a slow-release fertiliser; it is not a phosphorus-sensitive native, so a general garden or citrus and fruit fertiliser is fine, and the extra nitrogen supports the leafy growth you harvest. Mulch well before summer to hold moisture and keep the surface roots cool.", "cites": ["sga", "tuckerbush"]},
+      {"heading": "Pruning for leaf", "body": "Regular light pruning is the single most useful thing you can do. Tip pruning from a young age keeps the bush compact and dense and constantly produces the soft new leaves that carry the most oil and the best flavour. As a hedge or screen it responds to clipping and can be kept anywhere from waist height to several metres; as a feature tree, remove the lower branches over time to lift a single clean trunk. Harvest by picking young, soft leaves straight off the branch, which doubles as your pruning.", "cites": ["bunnings", "tuckerbush"]},
+      {"heading": "Myrtle rust, the one disease to know", "body": "Myrtle rust (Austropuccinia psidii) is an introduced fungal disease of the myrtle family that arrived in Australia in 2010 and attacks soft new growth, showing as bright yellow powdery spores on distorted young leaves and shoot tips. Lemon myrtle is susceptible, and young plants and tender flushes are the most vulnerable. Reduce pressure by planting in an open, airy position, avoiding overhead watering late in the day, removing and bagging infected growth, and not buying plants that already show spores. In commercial leaf production it is the headline management issue.", "cites": ["dpird-myrtlerust", "wikipedia"]},
+      {"heading": "Buying tips", "body": "Buy a vigorous plant with clean, spore-free new growth and a well-developed root system rather than the cheapest tube stock, since a strong start carries it through its frost-tender early years. A tube or 140mm pot establishes quickly; an advanced plant gives an instant hedge or feature but costs more. If you are in a cold-winter or frost-prone district, a potted plant you can shelter or move is the safest choice.", "cites": ["tuckerbush", "agrifutures"]}
+    ],
+    "faqs": [
+      {"q": "Does lemon myrtle handle frost?", "a": "Young plants are frost-tender and should be protected for their first few winters; once mature and woody they take light frost, especially with the shelter of other plants or a wall. In genuinely cold or heavy-frost districts grow it in a pot you can move undercover for winter, or keep it clipped and sheltered against a warm aspect."},
+      {"q": "Can I grow lemon myrtle in a pot?", "a": "Yes, and it is the standard way to keep it in cooler climates. Use a large pot of quality free-draining mix, water steadily so it never dries out hard, feed in spring and late summer, and tip prune to keep it bushy. A pot also lets you move it into shelter through a cold or frosty winter."},
+      {"q": "Why are the new leaves on my lemon myrtle covered in yellow powder?", "a": "That is myrtle rust, a fungal disease that attacks the soft new growth of myrtle-family plants. Prune off and bag the affected shoots, improve air flow around the plant, avoid wetting the foliage late in the day, and choose an open sunny position. Badly and repeatedly infected young plants can be set back hard, so act early."},
+      {"q": "Do I prune lemon myrtle, and when?", "a": "Tip pruning whenever you harvest keeps it dense and productive, since the youngest soft leaves carry the most lemon oil. A light all-over prune after flowering tidies it, and as a hedge it takes regular clipping. Pruning and harvesting are effectively the same job."}
+    ]
+  },
+  "states": {
+    "WA": {
+      "intro": "Growing lemon myrtle in Western Australia. Perth's Mediterranean climate of hot dry summers and mild winters suits it well with summer irrigation, and being a leaf herb rather than a fruit it sidesteps much of the fruit-tree quarantine friction, though live plants still have to clear WA's plant-import rules.",
+      "sections": [
+        {"heading": "Climate fit", "body": "In the south-west, lemon myrtle grows happily given steady summer water, since the dry Perth summer is the opposite of its humid rainforest home. Plant where it gets morning sun and some afternoon protection inland, mulch heavily, and keep the water up through the first few summers. Frost is the main limit in the cooler inland and the hills, so the warmest, most sheltered spot in the garden, or a moveable pot, is the safe choice. The dry air does have one upside: myrtle rust pressure is generally lower than in the humid east.", "cites": ["sga", "dpird-quarantine"]},
+        {"heading": "Buying into WA", "body": "WA's strict plant-import rules limit which interstate nurseries can send live plants across the border, so the simplest route is a WA-grown plant from a local native or bush-food nursery. Buying locally also means the plant is already adjusted to the dry climate. Check current import conditions before ordering a live plant from the eastern states.", "cites": ["dpird-quarantine"]}
+      ],
+      "faqs": [
+        {"q": "Will lemon myrtle grow in Perth?", "a": "Yes. The main differences from its native range are the dry summer and winter frost in the cooler suburbs and hills, so water steadily through summer, mulch well, and give young plants a warm sheltered position or grow them in a pot you can move undercover in a frosty winter."},
+        {"q": "Is myrtle rust a problem on lemon myrtle in WA?", "a": "Pressure is generally lower in WA's dry climate than in the humid eastern states, but the disease can still appear on soft new growth in humid spells or on crowded plants. Keep plants open and airy, avoid late-day overhead watering, and remove any affected shoots promptly."}
+      ]
+    },
+    "QLD": {
+      "intro": "Growing lemon myrtle in Queensland. This is its home: the species occurs naturally in the subtropical and tropical rainforests of southeast and central-eastern Queensland, so the climate is a natural fit and the main job is managing vigorous growth and myrtle rust in the humidity.",
+      "sections": [
+        {"heading": "Climate fit", "body": "From the southeast through the wet tropics, lemon myrtle thrives in the warm, humid Queensland climate that matches its rainforest origins, growing fast and flushing soft new leaf for much of the year. Give it rich soil and steady moisture and it will reward you with heavy leaf. The trade-off for that warmth and humidity is higher myrtle rust pressure than drier regions, so position and airflow matter.", "cites": ["agrifutures", "daf-nativefoods"]},
+        {"heading": "Myrtle rust in the humid north", "body": "Warm humid conditions favour myrtle rust, and Queensland is where lemon myrtle leaf is grown commercially and where the disease is taken most seriously. In a backyard, plant in an open sunny spot rather than a crowded, shaded corner, keep foliage dry late in the day, and cut out and bag infected flushes as they appear. Commercial growers manage it as the leading production issue.", "cites": ["dpird-myrtlerust"]}
+      ],
+      "faqs": [
+        {"q": "Is lemon myrtle native to Queensland?", "a": "Yes. It occurs naturally in subtropical and tropical rainforest in southeast and central-eastern Queensland, which is why it grows so readily in Queensland gardens and why the state is the heart of the commercial lemon myrtle leaf industry."},
+        {"q": "How do I keep myrtle rust off lemon myrtle in a humid Queensland garden?", "a": "You manage rather than eliminate it. Choose an open, sunny, well-ventilated position, avoid wetting the leaves late in the day, remove and bag infected new growth promptly, and start with clean spore-free plants. Vigorous established trees shrug off occasional infection better than struggling young ones."}
+      ]
+    },
+    "NSW": {
+      "intro": "Growing lemon myrtle in New South Wales. The species reaches its southern natural limit in the far north-east of NSW, and across the warm coastal strip it is an easy, productive garden tree, with frost the main constraint as you move inland and south.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Along the warm, humid north coast and into the Sydney basin lemon myrtle grows well in a sheltered, frost-free spot, flushing soft leaf through the warmer months. On the tablelands and in colder inland and southern districts, winter frost is the limit, so site it in the warmest position you have, against a north-facing wall or among other plants, or grow it in a pot to shelter in winter. Keep the water up over the dry late-summer period.", "cites": ["anpsa", "sga"]},
+        {"heading": "Pruning and harvest in NSW gardens", "body": "In the milder coastal gardens lemon myrtle can become a sizeable tree, so most home growers keep it clipped as a hedge or a tidy small tree and harvest the trimmings. Regular tip pruning gives a steady supply of the soft young leaves that carry the best flavour, and keeps the plant to a workable size in a suburban yard.", "cites": ["bunnings"]}
+      ],
+      "faqs": [
+        {"q": "How far south in NSW can I grow lemon myrtle?", "a": "It grows well along the warm coastal strip and in the Sydney basin in a sheltered frost-free spot. On the tablelands and in colder southern and inland districts winter frost is the limit, so use the warmest position in the garden or keep it in a moveable pot."},
+        {"q": "Will lemon myrtle survive a Sydney winter outdoors?", "a": "An established plant in a sheltered, frost-free Sydney garden generally comes through winter fine. Young plants are more tender, so protect them for the first couple of winters and avoid frost pockets when you choose the planting spot."}
+      ]
+    },
+    "VIC": {
+      "intro": "Growing lemon myrtle in Victoria. This is the cold edge of its range: Victorian winters bring frost that lemon myrtle does not enjoy, so most Victorian growers keep it in a pot or in the warmest, most sheltered corner of the garden and treat winter protection as the main task.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Victoria's cool, frosty winters are the challenge. In frost-free coastal and inner-Melbourne microclimates an established plant can grow in the ground in a warm sheltered position, but across most of the state a large pot is the reliable approach, kept in a bright spot and moved under cover or against a warm wall through the coldest months. Give it as much warmth and sun as you can in the growing season and steady water in summer.", "cites": ["sga", "tuckerbush"]},
+        {"heading": "Pot culture in a cold climate", "body": "Grown in a pot, lemon myrtle becomes a portable kitchen herb: a free-draining mix, steady summer water, a spring and late-summer feed, and regular tip pruning keep it compact and productive, and you simply shelter it from frost. This is how most Victorian and other cold-climate gardeners keep it alive and cropping.", "cites": ["bunnings"]}
+      ],
+      "faqs": [
+        {"q": "Can you grow lemon myrtle in Melbourne?", "a": "Yes, but mind the frost. In a warm, frost-free inner-suburban or coastal microclimate it can go in the ground in a sheltered spot; across most of Victoria it is safest in a large pot kept in a bright position and sheltered from frost over winter."},
+        {"q": "How do I overwinter lemon myrtle in Victoria?", "a": "Grow it in a pot and move it under cover, into a bright frost-free spot or against a warm north wall, through the coldest months. Ease back on water in winter, keep it out of frost, and resume feeding and tip pruning as growth picks up in spring."}
+      ]
+    }
+  },
+  "further_reading": [
+    {"title": "Lemon Myrtle (Backhousia citriodora) plant profile", "url": "https://anpsa.org.au/plant_profiles/backhousia-citriodora/", "source": "Australian Native Plants Society"},
+    {"title": "Native foods: lemon myrtle agronomy and industry", "url": "https://agrifutures.com.au/farm-diversity/native-foods/", "source": "AgriFutures Australia"}
+  ]
+}

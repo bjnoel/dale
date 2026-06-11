@@ -319,6 +319,19 @@ SPECIES_CLIMATE_CATEGORY = {
     # understates how completely the subtropics and the cool south rule it out (a
     # glasshouse curiosity at best). Each per-state note tells that real story.
     "cacao": "cacao",
+    # Bush tucker (DAL-201). The rainforest myrtles and native ginger are
+    # frost-tender, humidity-loving subtropical understorey/rainforest plants,
+    # so they take the shared "subtropical" note (warm, summer-irrigated, frost
+    # the limit in the cool south); their real per-state nuances (myrtle rust
+    # pressure, shade for ginger) live in the per-species guides. Mountain
+    # pepper and native raspberry are deliberately NOT mapped: a cool-climate
+    # frost-hardy mountain shrub and a hardy wide-ranging bramble do not fit any
+    # existing note ("temperate / choose low-chill varieties" is wrong for both),
+    # so they fall back to "default" (the quarantine line) and let their guide
+    # overlays tell the real climate story.
+    "lemon myrtle": "subtropical",
+    "cinnamon myrtle": "subtropical",
+    "native ginger": "subtropical",
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
