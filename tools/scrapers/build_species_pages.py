@@ -30,7 +30,10 @@ from build_species_trends import build_species_trends, make_sparkline, trend_dir
 
 SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 
-from cultivar_parsing import product_variety_slug as _variety_slug  # noqa: E402
+from cultivar_parsing import (  # noqa: E402
+    product_variety_slug as _variety_slug,
+    group_by_cultivar, GRANDFATHERED_VARIETY_SLUGS,
+)
 
 
 def _no_dash(text: str) -> str:
@@ -352,7 +355,7 @@ def build_when_to_buy_html(name: str, trend_summary: dict) -> str:
         title = f"Very hard to find"
         body = (
             f"In stock only {avail_pct}% of tracked days. "
-            f"Set an alert above to be notified when {name} returns."
+            f"Set an alert below to be notified when {name} returns."
         )
     elif stock_dir == "up":
         bg = "bg-amber-50 border-amber-200"
@@ -366,7 +369,7 @@ def build_when_to_buy_html(name: str, trend_summary: dict) -> str:
         bg = "bg-gray-50 border-gray-200"
         icon = "&#9203;"  # hourglass
         title = f"Currently out of stock"
-        body = f"Available {avail_pct}% of days. Set an alert above to be notified when it returns."
+        body = f"Available {avail_pct}% of days. Set an alert below to be notified when it returns."
 
     price_note = f" Prices from ${min_price_now:.0f} AUD." if min_price_now else ""
     dir_label = {"up": "rising", "down": "falling", "flat": "stable"}
@@ -421,7 +424,8 @@ def compute_state_links(species_slug: str, products: list[dict]) -> dict[str, st
 
 
 def build_species_page(species: dict, products: list[dict], slug_to_name: dict[str, str] | None = None,
-                       rarity: dict | None = None, trend_summary: dict | None = None) -> str:
+                       rarity: dict | None = None, trend_summary: dict | None = None,
+                       varieties: list[dict] | None = None) -> str:
     """Generate HTML for a single species page."""
     name = species["common_name"]
     latin = species["latin_name"]
@@ -466,6 +470,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         ships = local_lbl if local_lbl else (", ".join(n["ships_to"]) if n["ships_to"] else "Local only")
         in_s = n["in_stock"]
         nursery_view.append({
+            "key": nk,
             "name": _no_dash(n["name"]),
             "avail_text": f"{in_s} in stock" if in_s > 0 else "out of stock",
             "avail_color": "text-green-700 font-semibold" if in_s > 0 else "text-gray-400",
@@ -506,6 +511,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         product_view.append({
             "has_url": bool(nursery_url),
             "nursery_url": nursery_url,
+            "nursery_key": p["nursery_key"],
             "title": _no_dash(p["title"]),
             "alert_link": alert_link,
             "nursery_name": _no_dash(p["nursery_name"]),
@@ -527,8 +533,11 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     # flags back-in-stock items, price drops and new arrivals across nurseries.
     if in_stock_count == 0:
         sub_bg = "bg-amber-50 border-amber-200"
-        sub_heading_cls = "text-amber-800"
-        sub_heading = f"&#9888; {name} trees are currently out of stock"
+        # Keep the amber headline: the box sits under a Where-to-buy table whose
+        # rows all read "out of stock", and this line turns that into an action.
+        heading_p = (
+            f'<p class="font-semibold text-amber-800 mb-1">&#9888; {name} trees are currently out of stock</p>\n    '
+        )
         sub_body = (
             f"Subscribe to the free treestock daily digest. It flags back-in-stock items "
             f"(including {name}), price drops, and new arrivals across all {total_nurseries} "
@@ -536,8 +545,8 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         )
     else:
         sub_bg = "bg-green-50 border-green-200"
-        sub_heading_cls = "text-green-800"
-        sub_heading = f"&#128276; Get the treestock daily digest"
+        # No headline on the in-stock variant; the body line says what it is.
+        heading_p = ""
         sub_body = (
             f"Free daily email flagging back-in-stock items, price drops, and new arrivals "
             f"across all {total_nurseries} nurseries we monitor. Filter by state below."
@@ -545,8 +554,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
 
     watch_box_html = f"""  <!-- Daily-digest subscribe box (always shown) -->
   <div id="subscribeBox" class="p-4 {sub_bg} border rounded-lg text-sm mb-6">
-    <p class="font-semibold {sub_heading_cls} mb-1">{sub_heading}</p>
-    <p class="text-gray-600 mb-3">{sub_body}</p>
+    {heading_p}<p class="text-gray-600 mb-3">{sub_body}</p>
     <form id="subscribeForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
       <input type="email" id="subEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
@@ -670,6 +678,9 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         '  </div>'
     ) if in_stock_count > 0 else ''
 
+    # Variety chip cloud: in-stock varieties first, then alphabetical.
+    variety_view = sorted(varieties or [], key=lambda v: (not v["in_stock"], v["name"].lower()))
+
     return render_template(
         "species_page.html.j2",
         head=head, header=header, breadcrumb=breadcrumb, footer=footer,
@@ -681,6 +692,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         state_links_html=state_links_html, related_species_html=related_species_html,
         variety_cta=variety_cta, treesmith_promo=treesmith_promo,
         watch_script=watch_script, nursery_view=nursery_view, product_view=product_view,
+        variety_view=variety_view,
     )
 
 
@@ -758,6 +770,28 @@ def main():
     print("Grouping by species...")
     by_species = group_by_species(products, lookup)
     print(f"  {len(by_species)} species matched")
+
+    # Variety chip clouds: the SAME grouping build_variety_pages.py writes
+    # /variety/<slug>.html pages from, so a chip can never link to a page that
+    # does not exist. Grandfathered slugs are alert-only and stay off browsable
+    # surfaces, matching the variety index (DEC-195/196).
+    print("Grouping varieties for chip clouds...")
+    variety_groups = group_by_cultivar(products)
+    name_to_slug = {s["common_name"]: s["slug"] for s in species_list}
+    varieties_by_species: dict[str, list[dict]] = defaultdict(list)
+    for v_slug, g in variety_groups.items():
+        if v_slug in GRANDFATHERED_VARIETY_SLUGS:
+            continue
+        sp_slug = name_to_slug.get(g["species"])
+        if not sp_slug:
+            continue
+        varieties_by_species[sp_slug].append({
+            "slug": v_slug,
+            "name": _no_dash(g["variety"]),
+            # available and price, matching the variety page's own in-stock count
+            "in_stock": any(p["available"] and p["price"] for p in g["products"]),
+        })
+    print(f"  {sum(len(v) for v in varieties_by_species.values())} variety chips across {len(varieties_by_species)} species")
 
     print("Computing rarity scores...")
     rarity_scores = compute_rarity_scores(data_dir, by_species, lookup)
@@ -839,7 +873,8 @@ def main():
         })
 
         html = build_species_page(species, prods, slug_to_name, rarity=rarity,
-                                  trend_summary=trend_summaries.get(slug))
+                                  trend_summary=trend_summaries.get(slug),
+                                  varieties=varieties_by_species.get(slug, []))
         out_file = species_dir / f"{slug}.html"
         out_file.write_text(html)
         generated += 1

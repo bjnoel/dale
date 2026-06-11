@@ -48,7 +48,7 @@ from stocklib.classify import NON_PLANT_KEYWORDS
 
 from cultivar_parsing import (  # noqa: E402
     slugify, parse_cultivar, extract_type_label, canonical_cultivar,
-    GRANDFATHERED_VARIETY_SLUGS,
+    group_by_cultivar, GRANDFATHERED_VARIETY_SLUGS,
 )
 from stocklib.taxonomy import load_species
 
@@ -104,37 +104,6 @@ def load_all_products(data_dir: Path) -> list[dict]:
                 "ships_states": SHIPPING_MAP.get(nursery_key, []),
             })
     return products
-
-
-def group_by_cultivar(products: list[dict]) -> dict:
-    """
-    Group products by normalized cultivar name.
-    Key: (species_slug, variety_slug) → normalized title and list of products.
-    """
-    groups = defaultdict(lambda: {"title": "", "species": "", "variety": "", "products": []})
-
-    for p in products:
-        parsed = parse_cultivar(p["title"])
-        if not parsed:
-            continue
-        # Taxonomy gate + canonicalisation (DEC-195/196): out-of-scope products
-        # get no page; respellings and synonym spellings of one species
-        # ("Jakfruit", "Cumquat", "Davidson Plum") converge on one canonical
-        # name and one slug.
-        canon = canonical_cultivar(*parsed, p["title"])
-        if canon is None:
-            continue
-        species, variety, key = canon
-        if not groups[key]["title"]:
-            # Use the cleaned parsed parts, not the raw first product title, so
-            # the page H1/meta read "Black Sapote - Mossman" rather than the
-            # messy "Black Sapote Mossman 5l" that happened to land first.
-            groups[key]["title"] = f"{species} - {variety}"
-            groups[key]["species"] = species
-            groups[key]["variety"] = variety
-        groups[key]["products"].append(p)
-
-    return groups
 
 
 def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> str:

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import defaultdict
 from pathlib import Path
 
 
@@ -791,6 +792,42 @@ def product_variety_slug(title: str) -> str | None:
     species, variety = parsed
     c = canonical_cultivar(species, variety, title)
     return c[2] if c else None
+
+
+def group_by_cultivar(products: list[dict]) -> dict:
+    """
+    Group products by normalized cultivar name.
+    Key: variety slug → normalized title and list of products.
+
+    THE shared grouping for variety surfaces: build_variety_pages.py uses it
+    to decide which /variety/<slug>.html pages exist, and build_species_pages.py
+    uses the same output for the variety chip cloud, so a chip can never link
+    to a page that was not generated.
+    """
+    groups = defaultdict(lambda: {"title": "", "species": "", "variety": "", "products": []})
+
+    for p in products:
+        parsed = parse_cultivar(p["title"])
+        if not parsed:
+            continue
+        # Taxonomy gate + canonicalisation (DEC-195/196): out-of-scope products
+        # get no page; respellings and synonym spellings of one species
+        # ("Jakfruit", "Cumquat", "Davidson Plum") converge on one canonical
+        # name and one slug.
+        canon = canonical_cultivar(*parsed, p["title"])
+        if canon is None:
+            continue
+        species, variety, key = canon
+        if not groups[key]["title"]:
+            # Use the cleaned parsed parts, not the raw first product title, so
+            # the page H1/meta read "Black Sapote - Mossman" rather than the
+            # messy "Black Sapote Mossman 5l" that happened to land first.
+            groups[key]["title"] = f"{species} - {variety}"
+            groups[key]["species"] = species
+            groups[key]["variety"] = variety
+        groups[key]["products"].append(p)
+
+    return groups
 
 
 def extract_type_label(title: str) -> str:

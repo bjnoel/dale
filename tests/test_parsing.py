@@ -31,9 +31,10 @@ def _load(path: Path):
 cp = _load(SCRAPERS / "cultivar_parsing.py")
 # Also load the three callers to make sure they still import cleanly (catches
 # accidental leftover references to removed helpers). bvp is kept bound so the
-# per-row type-pill suppression helper (DEC-177) can be unit-tested directly.
+# per-row type-pill suppression helper (DEC-177) can be unit-tested directly;
+# bsp so GroupByCultivar can assert both builders share one grouping.
 bvp = _load(SCRAPERS / "build_variety_pages.py")
-_load(SCRAPERS / "build_species_pages.py")
+bsp = _load(SCRAPERS / "build_species_pages.py")
 _load(SCRAPERS / "send_variety_alerts.py")
 
 
@@ -192,6 +193,33 @@ class ProductVarietySlug(unittest.TestCase):
         self.assertEqual(
             {cp.product_variety_slug(t) for t in feijoa}, {"feijoa-mammoth"}
         )
+
+
+# ---------------------------------------------------------------------------
+# group_by_cultivar -- THE shared grouping for variety surfaces. The variety
+# builder writes /variety/<slug>.html for every group; the species builder
+# renders its chip cloud from the same groups, so a chip can never link to a
+# page that was not generated. Both must use the cultivar_parsing copy.
+# ---------------------------------------------------------------------------
+
+class GroupByCultivar(unittest.TestCase):
+    def test_builders_share_one_implementation(self):
+        self.assertIs(bvp.group_by_cultivar, bsp.group_by_cultivar)
+        self.assertEqual(bvp.group_by_cultivar.__module__, "cultivar_parsing")
+
+    def test_grouping(self):
+        products = [
+            {"title": "Black Sapote Mossman 5l"},
+            {"title": "Black Sapote - Mossman (grafted)"},
+            {"title": "Avocado - Hass"},
+            {"title": "Sapodilla"},        # species-only listing: no cultivar
+            {"title": "Rose - Iceberg"},   # parses fine, but outside the fruit taxonomy
+        ]
+        groups = cp.group_by_cultivar(products)
+        self.assertEqual(set(groups), {"black-sapote-mossman", "avocado-hass"})
+        self.assertEqual(len(groups["black-sapote-mossman"]["products"]), 2)
+        self.assertEqual(groups["black-sapote-mossman"]["variety"], "Mossman")
+        self.assertEqual(groups["avocado-hass"]["species"], "Avocado")
 
 
 # ---------------------------------------------------------------------------

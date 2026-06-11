@@ -4,6 +4,48 @@
 
 ---
 
+## DEC-197 — 2026-06-11 — treestock species pages: digest box below Where-to-buy, nursery/availability links, variety chip cloud
+
+**Decided by:** Benedict (request + option picks), Dale (implementation)
+
+**Context:** Benedict asked for three species-page changes (using /species/jackfruit.html
+as the example): (1) the daily-digest box sat too high, right under the hero, and should
+move below the Where-to-buy section without a headline; (2) the Where-to-buy rows were
+plain text and should link out (nursery name to the nursery, availability to a
+filtered stock view); (3) the page had no list of distinct varieties, and big species
+(Apple 105 linkable varieties, Mango 127) need a representation that scales. Benedict
+picked: move the box on all screen sizes, link nursery names to /nursery/<key>.html
+(not the external site), and a chip cloud with stock dots over a summary table or an
+A-Z index.
+
+**Implementation:**
+- Page order is now hero, when-to-buy, Where to buy, subscribe box, varieties chip
+  cloud, growing guide, state links, related species, listings table. The green
+  subscribe-box headline is gone; the amber all-out-of-stock headline stays because it
+  is the line that turns a table full of "out of stock" rows into an action. When-to-buy
+  copy "Set an alert above" became "below".
+- Where-to-buy rows: nursery name links to /nursery/<key>.html; the availability cell
+  links to #listings and a small inline script filters the listings table to that
+  nursery (species is implicit on a species page), with a "Showing N listings from X.
+  Clear filter" bar. Without JS the links degrade to plain anchor jumps.
+- The old "All <species> varieties (N listed)" table is renamed "All <species>
+  listings (N)": it is one row per nursery product, and "varieties" now means the new
+  section.
+- Variety chip cloud: one pill per distinct cultivar linking to its /variety/ page,
+  in-stock first (filled green dot) then alphabetical (hollow grey dot), clamped to
+  exactly 3 rows by max-height with a "Show all N varieties" toggle that only appears
+  when chips actually overflow. All chips stay in the DOM (crawlers + Tailwind purge).
+- **Chips can never 404:** `group_by_cultivar` moved verbatim from
+  build_variety_pages.py into cultivar_parsing.py (the documented shared home for
+  cultivar identity), and the species builder renders chips from the same groups the
+  variety builder writes pages for, minus the same grandfathered exclusions
+  (DEC-195/196). tests/test_parsing.py now asserts both builders share the one
+  implementation. Verified on live data: 3,867 /variety/ links across 88 species
+  pages, zero missing targets; variety golden pages byte-identical after the move.
+
+**To revert:** restore the old section order in species_page.html.j2 and drop the
+`varieties=` kwarg; the grouping move is behaviour-neutral and can stay either way.
+
 ## DEC-196 — 2026-06-11 — treestock /variety/: canonical species grouping, state filter, Sugar Apple record, grandfathered pages off the index
 
 **Decided by:** Benedict (review feedback on DEC-195), Dale (implementation)
