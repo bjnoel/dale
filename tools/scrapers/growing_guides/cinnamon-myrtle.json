@@ -1,0 +1,76 @@
+{
+  "slug": "cinnamon-myrtle",
+  "common_name": "Cinnamon Myrtle",
+  "sources_note": "Growing guidance on this page draws on Australian native-plant and fruit-tree nurseries, native-plant societies, state plant-health resources, and recognised native-food sources.",
+  "sources": [
+    {"id": "tuckerbush", "name": "Tucker Bush: Cinnamon Myrtle (Backhousia myrtifolia)", "short": "Tucker Bush", "url": "https://tuckerbush.com.au/cinnamon-myrtle-backhousia-myrtifolia/"},
+    {"id": "daleys", "name": "Daleys Fruit Trees: Cinnamon Myrtle (Backhousia myrtifolia)", "short": "Daleys", "url": "https://www.daleysfruit.com.au/CINNAMON-MYRTLE,--Backhousia-myrtifolia.htm"},
+    {"id": "wikipedia", "name": "Backhousia myrtifolia (Wikipedia)", "short": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Backhousia_myrtifolia"},
+    {"id": "anpsa", "name": "Australian Native Plants Society: Backhousia myrtifolia", "short": "ANPSA", "url": "https://anpsa.org.au/plant_profiles/backhousia-myrtifolia/"},
+    {"id": "agrifutures", "name": "AgriFutures Australia: Native foods", "short": "AgriFutures", "url": "https://agrifutures.com.au/farm-diversity/native-foods/"},
+    {"id": "dpird-myrtlerust", "name": "Myrtle rust information (Australian plant-health agencies)", "short": "Myrtle rust plant-health note", "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/plants/diseases-pests/myrtle-rust"},
+    {"id": "dpird-quarantine", "name": "DPIRD WA: Importing plants and quarantine", "short": "DPIRD WA", "url": "https://www.agric.wa.gov.au/bringing-plants-and-plant-products-wa"}
+  ],
+  "core": {
+    "intro": "Cinnamon myrtle (Backhousia myrtifolia) is a hardy rainforest shrub whose leaves carry a warm, sweet cinnamon and clove aroma used as a native cinnamon substitute in baking and spice blends. Its great advantage over its relatives lemon and aniseed myrtle is toughness: it is more cold tolerant and more adaptable, taking light frost once established, which opens it up to cooler and drier gardens. The basics are free-draining soil, organic matter, steady water while young, and an eye on myrtle rust. The state sections cover climate fit and frost limits.",
+    "sections": [
+      {"heading": "What it is and what you use", "body": "Cinnamon myrtle is grown for its leaf, used in place of cinnamon to flavour curries, stews, soups, roasts and sauces, with a warm sweet spiciness. It is sold as the species, not as named fruit cultivars. Masses of small creamy, star-shaped flowers cover it in spring and summer, so it earns its place as an ornamental flowering shrub as well as a kitchen plant. To harvest, pick the young, soft leaves straight off the branch.", "cites": ["tuckerbush", "anpsa"]},
+      {"heading": "Hardier than the other myrtles", "body": "Where lemon and aniseed myrtle are firmly frost-tender, cinnamon myrtle is the cold-hardy member of the family. Mature, established plants tolerate light frost, and the species copes with a wider range of soils and situations, growing in rainforest, on river banks and on coastal cliffs in the wild. That adaptability makes it the myrtle to choose for a cooler or more exposed garden, though young plants still need frost protection until they harden up.", "cites": ["wikipedia", "daleys"]},
+      {"heading": "Position and soil", "body": "Plant in free-draining soil enriched with organic matter, in part shade when young and full sun to part shade once established. Dig in compost before planting, mulch the root zone, and on heavy clay improve drainage and plant on a low mound. In the wild it can reach around seven metres, but in a home garden expect roughly three metres, and it takes happily to being clipped as a hedge or kept as a compact small tree. Keep young plants watered while they establish.", "cites": ["daleys", "tuckerbush"]},
+      {"heading": "Pruning and feeding", "body": "Tip prune regularly to keep the bush dense and to produce the soft young leaves that carry the best flavour, which doubles as harvesting. Feed in spring and again in late summer with a general or native-safe fertiliser; like other Backhousia it is not phosphorus-sensitive, so it is forgiving to feed. A light prune after the spring and summer flowering keeps it tidy and shapely.", "cites": ["tuckerbush", "agrifutures"]},
+      {"heading": "Myrtle rust to watch", "body": "Being a myrtle-family plant, cinnamon myrtle is susceptible to myrtle rust (Austropuccinia psidii), the introduced fungus that attacks soft new growth with bright yellow spores on distorted young leaves. Plant in an open airy position, avoid wetting the foliage late in the day, remove and bag any infected flushes, and start with clean spore-free stock. Its hardiness does not make it immune, so manage the disease as you would on lemon myrtle.", "cites": ["dpird-myrtlerust", "wikipedia"]}
+    ],
+    "faqs": [
+      {"q": "Is cinnamon myrtle related to true cinnamon?", "a": "No, not botanically. True cinnamon comes from Cinnamomum trees of Asia, while cinnamon myrtle is Backhousia myrtifolia, an Australian rainforest plant in the myrtle family. Its leaf simply happens to carry a warm cinnamon and clove aroma, which is why it works as a native cinnamon substitute despite the two being unrelated."},
+      {"q": "What do you do with cinnamon myrtle leaves?", "a": "Use them as a native cinnamon substitute. The warm, sweet, clove-and-cinnamon leaf flavours baking, curries, stews, soups, roasts and sauces. Pick young soft leaves straight off the branch and use them fresh or dried; harvesting this way also keeps the bush compact."},
+      {"q": "How big does cinnamon myrtle get?", "a": "In the wild it can reach around seven metres, but in a home garden it usually settles near three metres, and it clips readily into a hedge or a tidy small tree. Regular tip pruning keeps it to whatever size you want while giving you the soft leaf to harvest."},
+      {"q": "Can you grow cinnamon myrtle in a pot?", "a": "Yes. A large pot of quality free-draining mix suits a courtyard or balcony and makes it easy to shelter the plant from hard frost in a cold climate. Water steadily so it never dries out hard, feed in spring and late summer, and tip prune to keep it bushy and to harvest the soft cinnamon-scented leaf."}
+    ]
+  },
+  "states": {
+    "NSW": {
+      "intro": "Growing cinnamon myrtle in New South Wales. The species is native to the subtropical rainforests of eastern NSW, and its extra cold tolerance lets it grow further south and inland than lemon myrtle, making it one of the more adaptable native food shrubs for NSW gardens.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Along the warm NSW coast and ranges cinnamon myrtle grows easily in its native subtropical climate, and because it takes light frost once established it also succeeds in cooler and more inland gardens where lemon myrtle would fail. Give it free-draining soil and water while young, and it makes a hardy flowering shrub or hedge. On the colder tablelands protect young plants over their first winters until they harden up.", "cites": ["anpsa", "daleys"]},
+        {"heading": "A hedge or a small tree", "body": "In NSW gardens cinnamon myrtle is often grown as a clipped hedge or a compact small tree, its spring and summer flush of creamy star flowers earning it a place beyond the kitchen. Regular tip pruning keeps it to size and gives a steady supply of the soft cinnamon-scented leaf.", "cites": ["tuckerbush"]}
+      ],
+      "faqs": [
+        {"q": "How far south and inland can I grow cinnamon myrtle in NSW?", "a": "Further than lemon myrtle. Its tolerance of light frost once established lets it succeed in cooler coastal, range and inland NSW gardens, not just the warm coast. On the colder tablelands give young plants frost protection for their first winters until they toughen up."}
+      ]
+    },
+    "QLD": {
+      "intro": "Growing cinnamon myrtle in Queensland. It is native to subtropical eastern Australia including southeast Queensland, so the warm climate suits it and the main job, as with all the myrtles, is managing vigorous growth and myrtle rust in the humidity.",
+      "sections": [
+        {"heading": "Climate fit", "body": "In subtropical and coastal Queensland cinnamon myrtle grows readily in its home climate, flowering heavily and flushing soft leaf for much of the year. Give it rich free-draining soil and steady moisture. The warmth and humidity that suit it also favour myrtle rust, so position and airflow matter more than cold tolerance does here.", "cites": ["agrifutures", "wikipedia"]},
+        {"heading": "Myrtle rust in the humid climate", "body": "Warm humid conditions favour myrtle rust, so in a Queensland garden plant cinnamon myrtle in an open sunny spot rather than a crowded shaded corner, keep the foliage dry late in the day, and cut out and bag infected flushes as they appear. Starting with clean plants and keeping them vigorous is the best defence.", "cites": ["dpird-myrtlerust"]}
+      ],
+      "faqs": [
+        {"q": "Is cinnamon myrtle native to Queensland?", "a": "Yes. It occurs naturally in the subtropical rainforests of eastern Australia, including southeast Queensland, so it grows readily in warm Queensland gardens. In the humid climate the main attention it needs is good airflow and prompt removal of any myrtle-rust-affected new growth."}
+      ]
+    },
+    "WA": {
+      "intro": "Growing cinnamon myrtle in Western Australia. As a leaf herb it sidesteps much of the fruit-tree quarantine friction, though live plants still clear WA's import rules, and its hardiness makes it one of the easier myrtles for the dry west.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Perth's hot dry summers are the opposite of cinnamon myrtle's humid rainforest home, so the key is steady summer water and heavy mulch while it establishes, after which it is reasonably drought tolerant. One real bonus of the dry air is that myrtle rust pressure is far lower here than in the humid eastern states, so the disease is rarely the problem it can be in the east. Plant in free-draining soil and it settles in as an easy, productive shrub.", "cites": ["daleys", "dpird-quarantine"]},
+        {"heading": "Buying into WA", "body": "WA's plant-import rules limit which interstate nurseries can send live plants over the border, so a WA-grown plant from a local nursery is the simplest route and arrives adjusted to the dry climate. Check current import conditions before ordering a live plant from the eastern states.", "cites": ["dpird-quarantine"]}
+      ],
+      "faqs": [
+        {"q": "Is cinnamon myrtle hardy enough for the cooler Perth suburbs and hills?", "a": "Yes, more so than lemon myrtle. Once established it takes the light frosts of the Perth hills and frost-prone suburbs, where a young lemon myrtle would be cut back, so it is the more reliable leaf myrtle for those cooler gardens. Protect young plants for their first couple of winters until they harden up."}
+      ]
+    },
+    "VIC": {
+      "intro": "Growing cinnamon myrtle in Victoria. Of all the leaf myrtles this is the one most worth trying in a cool climate, because its tolerance of light frost gives a sheltered Victorian garden a genuine chance, though winter protection while young is still the main task.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Victoria's cool frosty winters are the test, but cinnamon myrtle's light-frost tolerance once established makes it the pick of the leaf myrtles for the south. In a sheltered, frost-free or near frost-free position an established plant can grow in the ground, and across colder districts a large pot kept in a bright spot and protected from hard frost is the reliable approach. Give it as much warmth and sun as you can in the growing season and steady summer water.", "cites": ["wikipedia", "tuckerbush"]},
+        {"heading": "Protecting young plants", "body": "The cold tolerance is for established plants, so the key in Victoria is nursing young cinnamon myrtle through its first couple of winters with frost protection, a sheltered warm aspect, or a pot moved under cover. Once it has hardened up it shrugs off the light frosts that would kill a young lemon myrtle.", "cites": ["daleys"]}
+      ],
+      "faqs": [
+        {"q": "Can you grow cinnamon myrtle in Victoria?", "a": "It is the best of the leaf myrtles for Victoria, because established plants take light frost. In a sheltered frost-free spot it can grow in the ground; elsewhere a large pot protected from hard frost works well. The main task is nursing young plants through their first winters until they harden up."}
+      ]
+    }
+  },
+  "further_reading": [
+    {"title": "Cinnamon Myrtle (Backhousia myrtifolia) plant profile", "url": "https://anpsa.org.au/plant_profiles/backhousia-myrtifolia/", "source": "Australian Native Plants Society"},
+    {"title": "Native foods agronomy and industry", "url": "https://agrifutures.com.au/farm-diversity/native-foods/", "source": "AgriFutures Australia"}
+  ]
+}

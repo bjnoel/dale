@@ -1,0 +1,73 @@
+{
+  "slug": "native-ginger",
+  "common_name": "Native Ginger",
+  "sources_note": "Growing guidance on this page draws on Australian native-plant nurseries, native-plant societies, local government native-plant resources, and recognised native-food sources.",
+  "sources": [
+    {"id": "angus", "name": "Gardening With Angus: Alpinia caerulea (Native Ginger)", "short": "Gardening With Angus", "url": "https://gardeningwithangus.com.au/alpinia-caerulea-native-ginger/"},
+    {"id": "sga", "name": "Sustainable Gardening Australia: Native Ginger", "short": "Sustainable Gardening Australia", "url": "https://www.sgaonline.org.au/native-ginger/"},
+    {"id": "tuckerbush", "name": "Tucker Bush: Red Back Australian Ginger (Alpinia caerulea Atherton)", "short": "Tucker Bush", "url": "https://tuckerbush.com.au/red-back-australian-ginger-alpinia-caerulea-atherton/"},
+    {"id": "austplants", "name": "Australian Plants Society: Alpinia caerulea", "short": "Australian Plants Society", "url": "https://resources.austplants.com.au/plant/alpinia-caerulea/"},
+    {"id": "wikipedia", "name": "Alpinia caerulea (Wikipedia)", "short": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Alpinia_caerulea"},
+    {"id": "sunshinecoast", "name": "Sunshine Coast Council: Native ginger", "short": "Sunshine Coast Council", "url": "https://www.sunshinecoast.qld.gov.au/environment/education-resources-and-events/environment-resources-and-publications/native-plants/native-ginger"},
+    {"id": "dpird-quarantine", "name": "DPIRD WA: Importing plants and quarantine", "short": "DPIRD WA", "url": "https://www.agric.wa.gov.au/bringing-plants-and-plant-products-wa"}
+  ],
+  "core": {
+    "intro": "Native ginger (Alpinia caerulea) is a clumping rainforest understorey plant grown for three things at once: edible blue berries, mildly gingery young shoots and rhizome, and lush tropical foliage for a shady spot. Unlike most edibles it actively wants shade, which makes it one of the few productive natives for a dim courtyard or under established trees. The basics are the same everywhere: shade to part shade, rich moist soil that never dries out hard, and frost protection. The state sections cover climate fit and where it grows easily.",
+    "sections": [
+      {"heading": "Forms to look for", "body": "The plain green form and the Red Back (Atherton) form are the two you will usually see. Both crop the same edible blue berries and gingery shoots; the Red Back form adds striking maroon undersides to its leaves and is grown as much for looks as for food. Either makes a clump to around two metres. Choose a healthy multi-stemmed plant and the use, food, foliage, or both, decides where you put it.", "cites": ["tuckerbush", "austplants"]},
+      {"heading": "Shade and position", "body": "Native ginger grows best in part to full shade, which is unusual for an edible. In full shade it still grows well but sets less fruit, so for a decent berry crop give it bright dappled light rather than deep gloom. It is ideal under a canopy, in a south-facing courtyard, or anywhere too dim for fruit trees. The one place it does not belong is hot, exposed full sun, which scorches the foliage.", "cites": ["angus", "sga"]},
+      {"heading": "Soil, water and feeding", "body": "Give it rich, free-draining soil with plenty of organic matter and keep it constantly moist, since as a rainforest plant it dislikes drying out between waterings. Mulch well before summer to hold moisture and keep the surface cool. Feed in spring to drive the lush growth, and divide congested clumps in the warm months to make more plants. It is a strong grower in the right shady, moist spot and slows right down if it is too dry.", "cites": ["sga", "wikipedia"]},
+      {"heading": "What you eat, and how", "body": "The blue berries hold a brittle shell over black seeds wrapped in a scant white pulp with a pleasant lemony taste, eaten fresh off the clump. The centres of the new shoots have a mild gingery flavour and work as a ginger substitute in cooking, and the leaves can be used to wrap food for steaming. The rhizome is also used, with a more earthy, resinous flavour than supermarket ginger. Pick shoots and leaves as you need them, which keeps the clump tidy.", "cites": ["sunshinecoast", "wikipedia"]},
+      {"heading": "Buying and dividing", "body": "Buy an established multi-stemmed plant for the quickest start, or take a division from a friend's clump in the warm months. A potted plant suits a shady balcony or courtyard and is the simplest way to grow it in a cold or frost-prone climate, where you can move it under cover for winter. It is frost-tender, so wherever you plant it, keep young clumps out of frost pockets.", "cites": ["tuckerbush", "angus"]}
+    ],
+    "faqs": [
+      {"q": "Will native ginger grow in deep shade?", "a": "It will grow in full shade, which is one of its best features, but it sets fewer berries the darker it gets. For foliage alone, deep shade is fine; for a worthwhile berry crop, give it bright dappled light or a few hours of gentle morning sun rather than gloom."},
+      {"q": "Is this the same ginger you buy at the shop?", "a": "No. Supermarket ginger is Zingiber officinale; native ginger is Alpinia caerulea, a different plant in the same family. Its young shoots and rhizome give a milder, gingery flavour and it adds edible blue berries that culinary ginger does not, so it is a substitute and a fresh fruit rather than a replacement."},
+      {"q": "How big does native ginger get and can I keep it in a pot?", "a": "An open clump reaches around two metres tall and spreads steadily by rhizome. It grows well in a large pot in a shady spot, which both contains the spread and lets you shelter it from frost in a cold climate. Divide it when the pot fills."},
+      {"q": "Does native ginger cope with frost?", "a": "It is frost-tender and prefers a warm, sheltered position. In frost-prone gardens plant it under a protective canopy, against a warm wall, or grow it in a pot you can move under cover through the coldest weeks."}
+    ]
+  },
+  "states": {
+    "WA": {
+      "intro": "Growing native ginger in Western Australia. It is an eastern-states rainforest plant, so in WA the work is recreating shade and constant moisture in a dry climate, and clearing live plants through WA's plant-import rules.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Perth's dry summers and the low humidity are the opposite of native ginger's humid rainforest home, so it needs a shady, sheltered spot, rich moisture-holding soil, heavy mulch and reliable summer water to do well. A shaded courtyard or a spot under established trees, kept damp, is ideal. Winter frost in the cooler suburbs and hills is the other limit, so a moveable pot is the safe option there. Grown in shade and kept moist, it is a good choice for the dim corners where little else fruits.", "cites": ["sga", "dpird-quarantine"]},
+        {"heading": "Buying into WA", "body": "WA's plant-import rules limit which interstate nurseries can send live plants across the border, so a WA-grown plant from a local native nursery is the simplest route and starts off adjusted to the dry climate. Check current import conditions before ordering a live plant from the east.", "cites": ["dpird-quarantine"]}
+      ],
+      "faqs": [
+        {"q": "Can native ginger grow in Perth's dry climate?", "a": "Yes, in a shady, sheltered position with rich moisture-holding soil, deep mulch and steady summer water. The dry air means you have to supply the humidity and damp that its rainforest home provides naturally, and frost-prone gardens are best served by a moveable pot."}
+      ]
+    },
+    "QLD": {
+      "intro": "Growing native ginger in Queensland. This is core habitat: Alpinia caerulea grows naturally up the Queensland coast and ranges to Cape York, so the warm, humid climate suits it and it is one of the easiest productive plants for a shady Queensland garden.",
+      "sections": [
+        {"heading": "Climate fit", "body": "From the southeast through the wet tropics the warm, humid Queensland climate matches native ginger's rainforest origins, and it grows lushly in shade with little fuss given moist rich soil. It is a natural understorey plant for a shaded Queensland yard, courtyard or rainforest-style garden, and crops berries and shoots readily where it gets bright dappled light. Keep it watered through any dry spell and it will romp away.", "cites": ["sunshinecoast", "austplants"]}
+      ],
+      "faqs": [
+        {"q": "Is native ginger native to Queensland?", "a": "Yes. It grows naturally up the Queensland coast and coastal hinterland all the way to Cape York, which is why it is so at home in shaded Queensland gardens and needs little more than moisture and a sheltered, lightly shaded spot."}
+      ]
+    },
+    "NSW": {
+      "intro": "Growing native ginger in New South Wales. The species is native to NSW, occurring from around the Central Coast north, so along the warm coastal strip it is an easy shade plant, with frost the limit as you move onto the tablelands and inland.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Along the warm NSW coast and into sheltered Sydney gardens native ginger grows readily in a shaded, moist spot, cropping berries and shoots through the warmer months. On the tablelands and in colder inland districts winter frost is the constraint, so use the most sheltered, frost-free position you have under a canopy or against a warm wall, or grow it in a pot to move under cover in winter. It is a useful edible for the shady corners of a coastal NSW garden.", "cites": ["angus", "austplants"]}
+      ],
+      "faqs": [
+        {"q": "How far south and inland can I grow native ginger in NSW?", "a": "It grows easily along the warm coastal strip and in sheltered Sydney gardens. On the colder tablelands and inland it is limited by winter frost, so give it the warmest sheltered shade you have, or keep it in a moveable pot."}
+      ]
+    },
+    "VIC": {
+      "intro": "Growing native ginger in Victoria. This is the cold edge for a frost-tender rainforest plant, so most Victorian growers treat it as a shade-loving pot plant to be sheltered through winter rather than a garden-bed permanent.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Victoria's cool, frosty winters are the challenge for native ginger. In a frost-free coastal or inner-Melbourne microclimate it can grow in the ground in a sheltered, shaded spot, but across most of the state a large pot in a bright, shaded position, moved under cover or against a warm wall for winter, is the reliable approach. Keep it moist and out of frost, and it makes a lush foliage plant and occasional cropper in a cool climate.", "cites": ["sga", "angus"]}
+      ],
+      "faqs": [
+        {"q": "Can you grow native ginger in Melbourne?", "a": "Yes, mainly as a sheltered shade or pot plant. In a warm frost-free microclimate it can go in the ground in a shaded spot; across most of Victoria it is safest in a large pot kept in bright shade and moved out of frost over winter."}
+      ]
+    }
+  },
+  "further_reading": [
+    {"title": "Alpinia caerulea (Native Ginger) plant profile", "url": "https://gardeningwithangus.com.au/alpinia-caerulea-native-ginger/", "source": "Gardening With Angus"},
+    {"title": "Native ginger plant resource", "url": "https://resources.austplants.com.au/plant/alpinia-caerulea/", "source": "Australian Plants Society"}
+  ]
+}

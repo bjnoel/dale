@@ -1,0 +1,74 @@
+{
+  "slug": "mountain-pepper",
+  "common_name": "Mountain Pepper",
+  "sources_note": "Growing guidance on this page draws on Australian native-plant nurseries, specialist mountain-pepper growers, native-plant societies, and recognised native-food sources.",
+  "sources": [
+    {"id": "tuckerbush", "name": "Tucker Bush: Pepperberry (Tasmannia lanceolata)", "short": "Tucker Bush", "url": "https://tuckerbush.com.au/pepperberry-tasmannia-lanceolata/"},
+    {"id": "bunnings", "name": "Bunnings: How to grow mountain pepper", "short": "Bunnings", "url": "https://www.bunnings.com.au/diy-advice/garden/planting-and-growing/how-to-grow-mountain-pepper"},
+    {"id": "bronzewing", "name": "Bronzewing Farm: Tasmannia lanceolata, the plant", "short": "Bronzewing Farm", "url": "https://www.tasmanianmountainpepper.com/the-plant.html"},
+    {"id": "wikipedia", "name": "Tasmannia lanceolata (Wikipedia)", "short": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Tasmannia_lanceolata"},
+    {"id": "agrifutures", "name": "AgriFutures Australia: Native foods (mountain pepper)", "short": "AgriFutures", "url": "https://agrifutures.com.au/farm-diversity/native-foods/"},
+    {"id": "malleenative", "name": "Mallee Native Plants: Tasmannia lanceolata (Mountain Pepper Bush)", "short": "Mallee Native Plants", "url": "https://www.malleenativeplants.com.au/tasmannia-lanceolata-mountain-pepper-bush/"},
+    {"id": "dpird-quarantine", "name": "DPIRD WA: Importing plants and quarantine", "short": "DPIRD WA", "url": "https://www.agric.wa.gov.au/bringing-plants-and-plant-products-wa"}
+  ],
+  "core": {
+    "intro": "Mountain pepper (Tasmannia lanceolata) is a cool-climate shrub from the highlands of Tasmania, Victoria and southern New South Wales, prized for both its peppery leaf and its intensely hot dark berries. It is the bush food that breaks the usual rules: it is frost-hardy rather than frost-tender, it wants cool, moist, dappled conditions rather than heat, and it needs a male and a female plant to set berries. The state sections cover where its cool-climate needs are met and where summer heat makes it a struggle.",
+    "sections": [
+      {"heading": "Male and female plants", "body": "Mountain pepper is dioecious, meaning male and female flowers are on separate plants, so you need at least one of each near one another to get berries. Female flowers are small with few petals and develop into the fruit; male flowers are larger, clustered and carry many petals. The leaf is peppery and can be harvested from any plant regardless of sex, so a single plant is still worth growing for leaf alone, but for the famous black pepperberries you must plant a pair.", "cites": ["wikipedia", "bronzewing"]},
+      {"heading": "Cool, moist, dappled", "body": "This is a highland understorey shrub, so it wants the opposite of a hot dry border: cool conditions free of water stress, a moist humus-rich and slightly acidic soil, and dappled shade or part shade, with protection from hot afternoon sun in warmer districts. It is hardy to frost, wind and poor soils once settled, but it resents drought and baking heat, which set it back or kill it. Mulch heavily, keep the root zone cool and damp, and it grows into a dense shrub of two to five metres.", "cites": ["bunnings", "malleenative"]},
+      {"heading": "The leaf and the berry", "body": "Both the leaf and the berry are aromatic and pungent, building a slow, lingering heat. The leaf is harvested year round and dried or used fresh as a native pepper. Where a male and female grow together, small cream flowers in spring give way to red berries that ripen to a glossy purple-black over autumn; these are dried and ground as the hottest of the native pepper spices and should be used sparingly. Pick leaf as you prune, and harvest berries once they colour up fully.", "cites": ["bronzewing", "tuckerbush"]},
+      {"heading": "Care and harvest", "body": "Keep young plants evenly moist and shaded while they establish, and feed lightly in spring with a native-safe fertiliser. Tip prune to keep the bush dense and to encourage the soft leaf you harvest. It is naturally slow to moderate growing and long-lived once it has the cool, damp position it wants. The single biggest mistake is planting it in a hot, dry, sunny spot, where it sulks; given shade and steady moisture it is hardy and trouble-free.", "cites": ["bunnings", "agrifutures"]},
+      {"heading": "Buying tips", "body": "Because you need both sexes for berries, buy plants sold and labelled as male and female, or buy several seedlings and keep a mix (seedlings are not sexed until they flower). If you only want the peppery leaf, a single unsexed plant is fine. Look for a healthy plant with the characteristic crimson young stems, and in a warm district choose the coolest, most sheltered, shadiest position you can offer it.", "cites": ["tuckerbush", "agrifutures"]}
+    ],
+    "faqs": [
+      {"q": "Do I need two mountain pepper plants to get berries?", "a": "Yes, for berries you do. The species carries male and female flowers on separate plants, so you need at least one of each growing near one another for the female to set fruit. If you only want the peppery leaf, which any plant produces, a single plant is enough."},
+      {"q": "Why is my mountain pepper struggling in a hot sunny spot?", "a": "It is a cool-climate highland plant that dislikes heat, drought and full exposure. Move it, or shade and mulch it heavily and keep the soil constantly moist. It wants dappled shade, cool roots and steady water, the opposite of a hot dry border, and will thrive once it has them."},
+      {"q": "Is mountain pepper a commercial crop?", "a": "Yes. It is one of Australia's established native-food crops, grown mainly in Tasmania and the southern uplands for both its peppery leaf and its hot dried pepperberry. That commercial interest is why home gardeners can buy named, sex-labelled plants rather than relying on unsexed seedlings."},
+      {"q": "Is mountain pepper frost-hardy?", "a": "Yes, unusually for a bush food it is genuinely frost-hardy and also takes wind and poor soils, which suits it to cold-climate gardens. Its weakness is the other end of the range: hot, dry, exposed conditions, which it does not tolerate."}
+    ]
+  },
+  "states": {
+    "VIC": {
+      "intro": "Growing mountain pepper in Victoria. This is heartland: the species grows wild in the Victorian highlands, so the state's cool moist climate and reliable winter chill suit it better than almost anywhere, and frost is no obstacle.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Victoria's cool winters and moist elevated districts are close to mountain pepper's natural home in the ranges, so it grows readily in cooler gardens, the hills, and the wetter south and east of the state. Give it a moist humus-rich soil and dappled shade and it is hardy and long-lived, taking frost in its stride. The only Victorian gardens where it struggles are the hottest, driest inland ones, where it needs the shadiest, dampest position you can manage.", "cites": ["bronzewing", "malleenative"]},
+        {"heading": "A pair for berries", "body": "In a cool Victorian garden where it grows well, the thing to get right is planting a male and a female together so the female sets its prized black pepperberries. Seedlings are not sexed until they flower, so either buy plants labelled by sex or grow a few and keep a mix once they show.", "cites": ["wikipedia"]}
+      ],
+      "faqs": [
+        {"q": "Does mountain pepper grow well in Victoria?", "a": "Very well. It is native to the Victorian highlands, so the cool moist climate and winter chill suit it, frost is no problem, and it grows readily in cooler gardens, the hills and the wetter south and east given moist soil and some shade. Only the hottest driest inland spots are a struggle."}
+      ]
+    },
+    "NSW": {
+      "intro": "Growing mountain pepper in New South Wales. It is native to the southern highlands and tablelands of NSW, so the cool elevated districts grow it well, while the warm humid coast and the hot inland are too warm for it to be happy.",
+      "sections": [
+        {"heading": "Climate fit", "body": "In the cool, moist tablelands and southern highlands of NSW mountain pepper is at home, hardy to the frosts there and growing into a dense shrub given dappled shade and damp humus-rich soil. Down on the warm, humid coast and out in the hot dry inland it is marginal: the heat and dryness work against a highland plant, so if you try it there, choose the coolest, shadiest, dampest corner of the garden and keep it well watered and mulched.", "cites": ["malleenative", "bunnings"]}
+      ],
+      "faqs": [
+        {"q": "Can I grow mountain pepper on the NSW coast?", "a": "It is much happier in the cool tablelands and southern highlands than on the warm humid coast. Coastal and hot inland gardens are marginal for a highland plant, so it needs the coolest, shadiest, most moisture-retentive spot you have and steady water if you want to try it there."}
+      ]
+    },
+    "WA": {
+      "intro": "Growing mountain pepper in Western Australia. It is a cool-climate eastern-states highland plant, so most of WA is too hot and dry for it, and it also has to clear WA's plant-import rules, which makes it one of the harder bush foods to grow in the west.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Mountain pepper needs cool, moist, frost-touched conditions, which puts most of WA, with its hot dry summers, well outside its comfort zone. The best chance is the cooler, wetter far south-west and the hills, in deep shade with constantly moist, humus-rich soil and heavy mulch, treated as a fussy specialty plant. In Perth and the warm dry districts it is a struggle and a pot in a cool shaded courtyard, kept damp, is the realistic approach.", "cites": ["malleenative", "dpird-quarantine"]},
+        {"heading": "Buying into WA", "body": "WA's plant-import rules limit which interstate nurseries can send live plants across the border, so source a WA-grown plant where you can. Because berries need a male and a female, plan to buy a sexed pair if the pepperberries are the goal.", "cites": ["dpird-quarantine"]}
+      ],
+      "faqs": [
+        {"q": "Will mountain pepper grow in Perth?", "a": "It is difficult. Perth's hot dry summers are the opposite of what this cool-climate highland plant wants, so the realistic options are the cooler, wetter far south-west and hills in deep moist shade, or a pot in a cool shaded courtyard kept constantly damp. Treat it as a fussy specialty rather than an easy native."}
+      ]
+    },
+    "QLD": {
+      "intro": "Growing mountain pepper in Queensland. This is the wrong end of the country for a cool-climate highland shrub: most of Queensland is far too warm, and only the coolest elevated pockets offer any chance.",
+      "sections": [
+        {"heading": "Climate fit", "body": "Mountain pepper is adapted to cold highland conditions, so the warm, humid Queensland lowlands and the hot inland simply do not suit it. The only realistic prospects are the coolest elevated districts, such as the Granite Belt and the higher ranges, and even there it needs deep shade, constantly moist humus-rich soil and protection from heat. For most Queensland gardeners it is not worth the fight, and the warm-climate native pepper alternatives are easier.", "cites": ["wikipedia", "malleenative"]}
+      ],
+      "faqs": [
+        {"q": "Can mountain pepper be grown in Queensland?", "a": "Only with difficulty, and only in the coolest elevated districts like the Granite Belt and higher ranges, where it still needs deep shade, constant moisture and protection from heat. Across most of warm, humid Queensland it is not suited, and other native pepper plants are an easier choice."}
+      ]
+    }
+  },
+  "further_reading": [
+    {"title": "Tasmannia lanceolata, the plant (cultivation notes)", "url": "https://www.tasmanianmountainpepper.com/the-plant.html", "source": "Bronzewing Farm"},
+    {"title": "Native foods: mountain pepper agronomy and industry", "url": "https://agrifutures.com.au/farm-diversity/native-foods/", "source": "AgriFutures Australia"}
+  ]
+}
