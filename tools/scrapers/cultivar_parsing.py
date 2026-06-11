@@ -835,6 +835,18 @@ def product_variety_slug(title: str) -> str | None:
     return c[2] if c else None
 
 
+def _display_variety(variety: str) -> str:
+    """Capitalize all-lowercase words for display, so a lowercase nursery title
+    ("Semi Dwarf Apple granny smith") can't put "granny smith" in page H1s and
+    headings when it happens to create the group first. Mixed-case and coded
+    names (R2E2, J33, McIntosh, d'Agen) pass through untouched; slugs are
+    lowercased separately and unaffected."""
+    return ' '.join(
+        w.capitalize() if w.isalpha() and w.islower() else w
+        for w in variety.split()
+    )
+
+
 def group_by_cultivar(products: list[dict]) -> dict:
     """
     Group products by normalized cultivar name.
@@ -863,9 +875,10 @@ def group_by_cultivar(products: list[dict]) -> dict:
             # Use the cleaned parsed parts, not the raw first product title, so
             # the page H1/meta read "Black Sapote - Mossman" rather than the
             # messy "Black Sapote Mossman 5l" that happened to land first.
-            groups[key]["title"] = f"{species} - {variety}"
+            variety_disp = _display_variety(variety)
+            groups[key]["title"] = f"{species} - {variety_disp}"
             groups[key]["species"] = species
-            groups[key]["variety"] = variety
+            groups[key]["variety"] = variety_disp
         groups[key]["products"].append(p)
 
     return groups

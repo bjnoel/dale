@@ -262,6 +262,19 @@ class GroupByCultivar(unittest.TestCase):
         self.assertEqual(groups["black-sapote-mossman"]["variety"], "Mossman")
         self.assertEqual(groups["avocado-hass"]["species"], "Avocado")
 
+    def test_display_casing(self):
+        # A lowercase nursery title creating the group first must not put
+        # "granny smith" into H1s/headings; coded names pass through untouched.
+        groups = cp.group_by_cultivar([
+            {"title": "Semi Dwarf Apple granny smith (Bare rooted)"},
+            {"title": "Apple - Granny Smith"},
+            {"title": "Mango - R2E2"},
+        ])
+        self.assertEqual(groups["apple-granny-smith"]["variety"], "Granny Smith")
+        self.assertEqual(groups["apple-granny-smith"]["title"], "Apple - Granny Smith")
+        self.assertEqual(len(groups["apple-granny-smith"]["products"]), 2)
+        self.assertEqual(groups["mango-r2e2"]["variety"], "R2E2")
+
 
 # ---------------------------------------------------------------------------
 # Taxonomy scope gate (DEC-195) -- /variety/ pages and variety alerts only

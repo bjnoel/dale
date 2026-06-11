@@ -211,8 +211,11 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
         title=title, today=today, nursery_count=nursery_count, in_stock_count=in_stock_count,
         blurb_html=blurb_html,
         summary_callout=summary_callout, product_view=product_view,
-        watch_heading=("Notify me next time this comes back" if in_stock else "Get notified when this comes back in stock"),
-        watch_body=("This variety is currently in stock. You can still set an alert for next time." if in_stock else "This specific variety is currently out of stock. Enter your email to get an alert the moment it's available again."),
+        watch_heading=(f"Notify me next time {variety} {species} comes back" if in_stock
+                       else f"Get notified when {variety} {species} comes back in stock"),
+        watch_body=(f"{variety} {species} is currently in stock. You can still set an alert for next time."
+                    if in_stock else
+                    f"{variety} {species} is currently out of stock. Enter your email to get an alert the moment it's available again."),
         other_varieties_html=other_varieties_html,
         slug_js=slug_js, species_slug_js=species_slug_js, variety_title_js=variety_title_js,
     )
