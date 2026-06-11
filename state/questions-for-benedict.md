@@ -12,6 +12,42 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
+**Q44** [BLOCKING the digest send only] Bush tucker digest section, copy review (DAL-199)
+
+The bush tucker pilot is live (species pages + /bush-tucker/ landing). The last
+pilot step is a clearly labelled "Bush tucker" section in the daily digest. It is
+built and shipped but **gated OFF** (`BUSH_TUCKER_DIGEST_SECTION = False`), so
+nothing has gone to subscribers. I need your OK on the copy before the first send.
+
+How it works: bush tucker change items (restocks, price drops, new listings) move
+out of the per-nursery blocks into one labelled section at the end. Only the new
+bush tucker species go there. The cross-listed fruits you already track (finger
+lime, desert lime, macadamia, lilly pilly, davidson's plum, kakadu plum, muntries,
+midyim) stay in the normal fruit flow, so the rare-fruit feel is unchanged.
+
+Real sample from today's data (plain-text digest):
+
+```
+🌿 Bush tucker
+  🆕 Native Ginger - Wavy Leaf (xSmall) (Daleys Fruit Trees) — $4.90
+  🆕 Native Ginger (xSmall) (Daleys Fruit Trees) — $4.90
+  🆕 Native Ginger (Medium) (Daleys Fruit Trees) — $14.90
+  🆕 Native Ginger - Atherton Red Back (xSmall) (Daleys Fruit Trees) — $4.90
+```
+
+(The HTML email/page version is the same content with the same ✅ / 📉 / 🆕 icons
+the rest of the digest uses, plus the nursery name in grey after each item.)
+
+Questions:
+1. Approve this as-is to flip the flag on? (y / n)
+2. Section heading: "🌿 Bush tucker" ok, or prefer "Bush tucker" / "Native bush
+   foods" / something else?
+3. Any wording you want in a one-line intro under the heading, or leave it bare?
+
+Once you say go, flipping the flag is a one-line change I deploy immediately.
+
+---
+
 **Q43** [RESOLVED 2026-06-11: Benedict sent the email; beewise replied declining to be
 listed. Removed from beestock same day (DEC-198). Do not re-add without their explicit OK.]
 
