@@ -19,7 +19,7 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_header, render_footer, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
 from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK
-from stocklib.taxonomy import enabled_species
+from stocklib.taxonomy import enabled_species, load_species
 # Reuse the variety builder's non-plant denylist so we never emit a variety
 # slug (vs) for a product it would refuse to build a /variety/ page for
 # (e.g. "Yates Apple": "yates" is a chemical brand in that list). Keeping a
@@ -48,6 +48,43 @@ DASHBOARD_JUNK_KEYWORDS = TRUE_JUNK | {
 # Featured nurseries (paying partners). Products are visually highlighted and sorted first.
 # To activate a featured listing, add the nursery key here.
 FEATURED_NURSERIES: set[str] = set()  # e.g. {'primal-fruits'} when live
+
+
+def _all_records_category_matcher():
+    """Rung 1 of the categorize ladder (DEC-200): the existing match_species
+    flow over ALL species records, enabled or not ("category known but
+    disabled" is needs-review information, not junk), returning the matched
+    record's category."""
+    lookup: dict[str, dict] = {}
+    for s in load_species():
+        entry = {"cn": s["common_name"], "category": s.get("category", "fruit")}
+        lookup[s["common_name"].lower()] = entry
+        for syn in s.get("synonyms", []):
+            if syn:
+                lookup[syn.lower()] = entry
+
+    def matcher(title: str):
+        m = match_species(title, lookup)
+        return m["category"] if m else None
+    return matcher
+
+
+def write_needs_review(products: list[dict], out_path: Path) -> None:
+    """Run the categorize ladder over the dashboard's (already junk-filtered)
+    products and write the per-nursery needs-review report for /admin."""
+    from stocklib.categorize import Categorizer, build_needs_review
+    categorizer = Categorizer(species_matcher=_all_records_category_matcher())
+    report = build_needs_review(
+        ((p["t"], p.get("nk", ""), p.get("cat", "")) for p in products),
+        categorizer,
+    )
+    report["generated_at"] = datetime.now(timezone.utc).isoformat()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(report, indent=2, sort_keys=True))
+    total_unclassified = sum(n["unclassified"] for n in report["nurseries"].values())
+    print(f"Needs-review report written to {out_path} "
+          f"({total_unclassified} unclassified products)")
 
 
 def load_species_lookup() -> dict:
@@ -976,6 +1013,7 @@ def main():
     parser.add_argument("output_dir", nargs="?", default="dashboard-output", help="Where to write index.html (default: ./dashboard-output/)")
     parser.add_argument("--featured", metavar="NURSERY_KEY", help="Nursery key to feature (e.g. primal-fruits). Overrides FEATURED_NURSERIES constant. Use for demo/preview builds only.")
     parser.add_argument("--output-name", default="index.html", metavar="FILENAME", help="Output filename (default: index.html). Use e.g. featured-demo.html for demo builds.")
+    parser.add_argument("--needs-review-out", metavar="PATH", help="Also run the categorize ladder (DEC-200) and write the per-nursery needs-review JSON to PATH. Off by default so golden builds never see it.")
     args = parser.parse_args()
 
     data_dir = Path(args.data_dir)
@@ -1002,6 +1040,9 @@ def main():
     print("Building recent highlights...")
     highlights_html = build_recent_highlights(data_dir)
     print(f"  Highlights section: {'generated' if highlights_html else 'empty (insufficient data)'}")
+
+    if args.needs_review_out:
+        write_needs_review(products, Path(args.needs_review_out))
 
     output_dir.mkdir(parents=True, exist_ok=True)
     html, data_js = build_html(products, nurseries, ranked_species, highlights_html)

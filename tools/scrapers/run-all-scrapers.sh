@@ -47,9 +47,12 @@ if [ -f "$DASHBOARD_FILE" ]; then
     cp "$DASHBOARD_FILE" "$DASHBOARD_BACKUP"
 fi
 
-# Build dashboard (atomic write + post-build verification built into script)
+# Build dashboard (atomic write + post-build verification built into script).
+# --needs-review-out runs the categorize ladder (DEC-200) and feeds the /admin
+# needs-review queue; it does not change the dashboard output.
 echo "$LOG_PREFIX Building dashboard..."
-if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" 2>&1; then
+if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" \
+    --needs-review-out "$PROJECT_DIR/data/needs-review.json" 2>&1; then
     # Verify JS syntax of the dashboard client app (now external: static/dashboard.js,
     # copied to the dashboard dir by deploy.sh). Temp copy because `node --check
     # /dev/stdin` is broken on Node 22 (ENOENT on /proc fd path).
