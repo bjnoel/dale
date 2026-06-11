@@ -1,0 +1,3678 @@
+{
+  "species_slug": "persimmon",
+  "schema_version": 1,
+  "skipped": [
+    "persimmon-black-sapote",
+    "persimmon-cultivar-akayaki",
+    "persimmon-cultivar-fuyu-shuvancy",
+    "persimmon-cultivar-fuyu-upright",
+    "persimmon-cultivar-striped-nightingale",
+    "persimmon-cultivar-vanilla",
+    "persimmon-cultivar-wrights-favorite",
+    "persimmon-fuyu-weeper",
+    "persimmon-maru",
+    "persimmon-pomelo",
+    "persimmon-pomelo-astringent",
+    "persimmon-pomelo-non-astringent",
+    "persimmon-rojo-a",
+    "persimmon-twentieth-century",
+    "persimmon-wright-s-favourite-astringent"
+  ],
+  "varieties": {
+    "persimmon-american": {
+      "slug": "persimmon-american",
+      "species": "Persimmon",
+      "variety": "American",
+      "paragraphs": [
+        "The American persimmon (Diospyros virginiana) is a different species from the familiar Asian or Japanese kaki, native across the central and eastern United States from New England to Florida and west to Texas and Kansas. In Australia it is usually sold as a seedling tree rather than a named grafted cultivar. The fruit is much smaller than a kaki and is fiercely astringent until it is fully soft and ripe, at which point it turns very sweet with a soft, almost jelly-like flesh.",
+        "It is one of the most cold-hardy persimmons, tolerating frosts that would damage kaki, and the fruit often hangs on the bare tree into winter, sweetening further after cold weather. Trees are typically dioecious, so separate male and female plants are generally needed to set fruit. The ripe fruit is eaten fresh or used in puddings, jams and baking."
+      ],
+      "claims": [
+        {
+          "text": "Distinct species (D. virginiana) native to central and eastern North America, not the Asian kaki.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-dv",
+            "ncsu"
+          ]
+        },
+        {
+          "text": "Usually sold in Australia as a seedling tree rather than a grafted named cultivar.",
+          "type": "identity",
+          "cites": [
+            "daleys-american",
+            "wikipedia-dv"
+          ]
+        },
+        {
+          "text": "Fruit is much smaller than a kaki and very astringent until fully soft and ripe, then very sweet and soft.",
+          "type": "astringency",
+          "cites": [
+            "wikipedia-dv",
+            "ncsu"
+          ]
+        },
+        {
+          "text": "Among the most cold-hardy persimmons; fruit can hang into winter and sweeten after cold.",
+          "type": "ripening",
+          "cites": [
+            "wikipedia-dv",
+            "fruitgrove"
+          ]
+        },
+        {
+          "text": "Typically dioecious, needing separate male and female trees to fruit.",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-dv",
+            "ncsu"
+          ]
+        },
+        {
+          "text": "Ripe fruit eaten fresh or used in puddings, jams and baking.",
+          "type": "uses",
+          "cites": [
+            "ncsu",
+            "wikipedia-dv"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-dv",
+          "name": "Wikipedia: Diospyros virginiana",
+          "url": "https://en.wikipedia.org/wiki/Diospyros_virginiana",
+          "tier": "third_party"
+        },
+        {
+          "id": "ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox: Diospyros virginiana",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-virginiana/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fruitgrove",
+          "name": "The Fruit Grove: American vs Asian Persimmons",
+          "url": "https://thefruitgrove.com/american-vs-asian-persimmons-whats-the-difference/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-american",
+          "name": "Daleys Fruit: Persimmon American Seedling (Diospyros virginiana)",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-american-seedling-fruit-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-common": {
+      "slug": "persimmon-common",
+      "species": "Persimmon",
+      "variety": "Common",
+      "paragraphs": [
+        "Common persimmon is one of the standard names for Diospyros virginiana, the persimmon native to the central and eastern United States, also known as American persimmon, eastern persimmon or Virginian date plum. It is a hardy, shrubby to medium deciduous tree rather than one of the grafted Asian kaki cultivars. The small fruit is very astringent until it softens completely, then becomes sweet and rich, so it is left to ripen fully or until after the first frosts before eating.",
+        "Because the species is dioecious, separate male and female trees are generally needed to set fruit. It is valued as a tough, cold-tolerant tree, and its dense, nearly black heartwood was historically prized for hard-wearing items such as golf club heads and billiard cues."
+      ],
+      "claims": [
+        {
+          "text": "\"Common persimmon\" is a recognised name for Diospyros virginiana, also called American or eastern persimmon and Virginian date plum.",
+          "type": "identity",
+          "cites": [
+            "ncsu",
+            "hellohello-common",
+            "wikipedia-dv"
+          ]
+        },
+        {
+          "text": "Native to the central and eastern United States.",
+          "type": "origin",
+          "cites": [
+            "ncsu",
+            "wikipedia-dv"
+          ]
+        },
+        {
+          "text": "A hardy, shrubby to medium deciduous tree.",
+          "type": "appearance",
+          "cites": [
+            "ncsu",
+            "hellohello-common"
+          ]
+        },
+        {
+          "text": "Fruit is very astringent until fully soft, then sweet; often left until after frost.",
+          "type": "astringency",
+          "cites": [
+            "ncsu",
+            "wikipedia-dv"
+          ]
+        },
+        {
+          "text": "Dioecious, needing separate male and female trees to fruit.",
+          "type": "pollination",
+          "cites": [
+            "ncsu",
+            "wikipedia-dv"
+          ]
+        },
+        {
+          "text": "Dense, nearly black heartwood historically used for golf club heads and billiard cues.",
+          "type": "uses",
+          "cites": [
+            "ncsu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox: Diospyros virginiana",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-virginiana/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-dv",
+          "name": "Wikipedia: Diospyros virginiana",
+          "url": "https://en.wikipedia.org/wiki/Diospyros_virginiana",
+          "tier": "third_party"
+        },
+        {
+          "id": "hellohello-common",
+          "name": "Hello Hello Plants (The Tutu Guru): Diospyros Common Persimmon",
+          "url": "https://www.thetutuguru.com.au/shop/diospyros-common-persimmon/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-cultivar-hyakume": {
+      "slug": "persimmon-cultivar-hyakume",
+      "species": "Persimmon",
+      "variety": "Cultivar Hyakume",
+      "paragraphs": [
+        "Hyakume is a pollination-variant non-astringent (PVNA) Japanese persimmon, also sold as Cinnamon or Brown Sugar persimmon. Its defining quirk is in the flesh: when flowers are pollinated and seeds form, the pale orange pulp develops brown, cinnamon-coloured flecks, called goma (sesame) in Japan, and the fruit loses its astringency. Pollinated, brown-fleshed fruit can be eaten while still firm and crisp.",
+        "Without pollination the same tree bears paler fruit that stays astringent and must soften before eating. The brown-fleshed form is prized for a sweet, spicy, brown sugar or date-like richness. Hyakume is oval to bell shaped with broad shoulders, medium to large, and native to East Asia."
+      ],
+      "claims": [
+        {
+          "text": "Hyakume is a pollination-variant non-astringent (PVNA) persimmon native to East Asia, also sold as Cinnamon or Brown Sugar persimmon.",
+          "type": "astringency",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hyakume",
+            "growables"
+          ]
+        },
+        {
+          "text": "When pollinated and seeded, the pale orange flesh develops brown cinnamon flecks called goma, loses astringency, and can be eaten firm.",
+          "type": "quirk",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hyakume"
+          ]
+        },
+        {
+          "text": "Unpollinated fruit stays astringent and must soften before eating.",
+          "type": "astringency",
+          "cites": [
+            "sp-hyakume",
+            "growables"
+          ]
+        },
+        {
+          "text": "The brown-fleshed form is sweet and spicy with a brown sugar richness; fruit is oval to bell shaped, medium to large.",
+          "type": "flavour",
+          "cites": [
+            "sp-hyakume"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-persimmon",
+          "name": "Wikipedia: Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-hyakume",
+          "name": "Specialty Produce: Hyakume Persimmons",
+          "url": "https://specialtyproduce.com/produce/Hyakume_Persimmons_6662.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Persimmon Varieties",
+          "url": "https://www.growables.org/information/TropicalFruit/persimmonvarieties.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-cultivar-ichiki-kei": {
+      "slug": "persimmon-cultivar-ichiki-kei",
+      "species": "Persimmon",
+      "variety": "Cultivar Ichiki Kei",
+      "paragraphs": [
+        "Ichiki Kei is the persimmon usually sold as Ichikikei Jiro, or Early Jiro, a bud mutation (sport) of the popular Jiro. It is a pollination-constant non-astringent type, so the fruit is sweet and free of mouth-puckering tannins even while still firm and crisp, eaten like an apple rather than waiting for it to go soft. Rare-fruit and extension sources rate the flesh as good quality and a touch sweeter than Fuyu.",
+        "Its main appeal is size. It stays a semi-dwarf, reaching only around two metres with a rounded, spreading habit, which suits pots and small gardens. The roundish, slightly flattened fruit has reddish orange skin that can deepen to one of the richest reds of any persimmon when fully ripe. It is self-fertile and ripens early in the season."
+      ],
+      "claims": [
+        {
+          "text": "Sold as Ichikikei Jiro or Early Jiro, a dwarf bud mutation (sport) of the Jiro persimmon",
+          "type": "origin",
+          "cites": [
+            "crfg",
+            "uf-ifas"
+          ]
+        },
+        {
+          "text": "Pollination-constant non-astringent: sweet and free of astringency even when eaten firm and crisp",
+          "type": "astringency",
+          "cites": [
+            "crfg",
+            "ogw-earlyjiro"
+          ]
+        },
+        {
+          "text": "Flesh rated good quality and sweeter than Fuyu",
+          "type": "flavour",
+          "cites": [
+            "crfg",
+            "ogw-earlyjiro"
+          ]
+        },
+        {
+          "text": "Semi-dwarf tree (around two metres) with a rounded, spreading habit, suiting pots and small gardens",
+          "type": "habit",
+          "cites": [
+            "uf-ifas",
+            "crfg"
+          ]
+        },
+        {
+          "text": "Roundish, slightly oblate fruit with reddish orange skin that deepens to a rich red when fully ripe",
+          "type": "appearance",
+          "cites": [
+            "crfg",
+            "ogw-earlyjiro"
+          ]
+        },
+        {
+          "text": "Self-fertile and early ripening",
+          "type": "pollination",
+          "cites": [
+            "ogw-earlyjiro",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uf-ifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Persimmon Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/93745-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ogw-earlyjiro",
+          "name": "One Green World, Early Jiro Asian Persimmon",
+          "url": "https://onegreenworld.com/product/early-jiro-2/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-cultivar-izu": {
+      "slug": "persimmon-cultivar-izu",
+      "species": "Persimmon",
+      "variety": "Cultivar Izu",
+      "paragraphs": [
+        "Izu is a non-astringent Japanese persimmon prized as the earliest-ripening non-astringent cultivar, maturing weeks ahead of Fuyu and Jiro. Because it carries no astringency, it can be picked and eaten while firm and crisp once it colours up, giving a clean, sweet, mild flavour. The fruit is medium to medium-large, oblate and bright orange.",
+        "It was bred in the mid 20th century specifically to extend the season at its early end, ripening from late September into November in the Northern Hemisphere. The tree is naturally compact and lower in vigour than many persimmons, which suits smaller gardens, though the fruit has a shorter shelf life than late-season varieties and soluble solids average around 16 percent."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent, so it can be eaten firm and crisp off the tree.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Earliest-ripening non-astringent cultivar, maturing ahead of Fuyu and Jiro.",
+          "type": "season",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Bred in the mid 20th century to ripen early in the season.",
+          "type": "origin",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "Medium to medium-large, oblate, bright orange fruit with sweet, mild flavour.",
+          "type": "appearance",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Naturally compact, lower-vigour tree; shorter shelf life than late-season types; soluble solids around 16 percent.",
+          "type": "habit",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS Extension, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Izu Persimmons",
+          "url": "https://specialtyproduce.com/produce/Izu_Persimmons_14126.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-cultivar-saruga": {
+      "slug": "persimmon-cultivar-saruga",
+      "species": "Persimmon",
+      "variety": "Cultivar Saruga",
+      "paragraphs": [
+        "Saruga is a listing spelling of Suruga, a non-astringent (PCNA) Japanese persimmon bred from a Hanagosho by Okugosho cross. It is one of the sweetest of the non-astringent kaki types, with soluble solids commonly in the 18 to 21 percent range, and the flesh can be eaten crisp and firm straight off the tree without any need to ripen the tannins out first.",
+        "It is a late-season cultivar, ripening after most other non-astringent varieties, and it holds its flavour well after picking. Fruit are medium to large and oblate (slightly flattened) with strong red-orange colour when mature. Trees are of moderate vigour, and the late-hanging crop can be prone to bird, insect and animal damage."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent PCNA type from a Hanagosho by Okugosho cross",
+          "type": "origin",
+          "cites": [
+            "ufifas-mg242",
+            "cultivar-guide"
+          ]
+        },
+        {
+          "text": "Among the sweetest non-astringent kaki, soluble solids about 18 to 21 percent",
+          "type": "flavour",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Eaten crisp and firm with no astringency",
+          "type": "astringency",
+          "cites": [
+            "gardeners-path",
+            "cultivar-guide"
+          ]
+        },
+        {
+          "text": "Late-season ripening that holds flavour after picking",
+          "type": "season",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Medium to large oblate fruit with strong red-orange colour",
+          "type": "appearance",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Moderate vigour, late crop susceptible to insect and animal damage",
+          "type": "traits",
+          "cites": [
+            "ufifas-mg242"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-mg242",
+          "name": "UF/IFAS EDIS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://edis.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "cultivar-guide",
+          "name": "Cultivar.guide Persimmon varieties",
+          "url": "https://cultivar.guide/persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeners-path",
+          "name": "Gardener's Path, Best Asian Persimmon Varieties",
+          "url": "https://gardenerspath.com/plants/fruit-trees/best-asian-persimmon-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-cultivar-tananashi": {
+      "slug": "persimmon-cultivar-tananashi",
+      "species": "Persimmon",
+      "variety": "Cultivar Tananashi",
+      "paragraphs": [
+        "Tananashi is a listing spelling of Tanenashi, whose name means seedless in Japanese. It is a classic Japanese astringent persimmon and the most common astringent cultivar grown in Florida. The fruit is large and conical (cone-shaped), with deep yellow to orange skin and orange flesh.",
+        "As a pollination-constant astringent type it seldom sets seed even when pollinated, so the fruit is effectively seedless, and it must be ripened soft before eating to lose its tannic astringency. It is regarded as having excellent eating quality once fully ripe."
+      ],
+      "claims": [
+        {
+          "text": "Tanenashi means seedless in Japanese.",
+          "type": "origin",
+          "cites": [
+            "rfca",
+            "masterclass"
+          ]
+        },
+        {
+          "text": "It is the most common astringent persimmon cultivar grown in Florida.",
+          "type": "notable",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "The fruit is large and conical or cone-shaped.",
+          "type": "appearance",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It seldom sets seed even when pollinated, so fruit is effectively seedless.",
+          "type": "trait",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It is an astringent type that must ripen soft before eating.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It is valued for excellent eating quality when fully ripe.",
+          "type": "flavour",
+          "cites": [
+            "rfca",
+            "masterclass"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Club Archives, The Oriental Persimmon",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmons7-88.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "masterclass",
+          "name": "MasterClass, Types of Persimmons",
+          "url": "https://www.masterclass.com/articles/types-of-persimmons",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-cultivar-titibut-tamopan": {
+      "slug": "persimmon-cultivar-titibut-tamopan",
+      "species": "Persimmon",
+      "variety": "Cultivar Titibut Tamopan",
+      "paragraphs": [
+        "Tamopan is a large astringent persimmon best known for its unusual shape: a circular constriction runs around the upper third of the fruit near the stem, giving it the look of an acorn sitting in its cap. The skin is notably thick.",
+        "The flesh is juicy and somewhat watery, and the flavour is generally regarded as modest rather than rich. Like all astringent persimmons the fruit must be eaten fully soft to avoid mouth-puckering tannins, and more than one strain is grown under the Tamopan name, so fruit quality varies between trees."
+      ],
+      "claims": [
+        {
+          "text": "Tamopan is a large fruit with a circular constriction around the upper third near the stem, giving an acorn-cap shape.",
+          "type": "appearance",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It is an astringent type that must be eaten fully soft.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "The skin is thick and the flesh juicy and somewhat watery.",
+          "type": "appearance",
+          "cites": [
+            "ufifas"
+          ]
+        },
+        {
+          "text": "Its flavour is generally regarded as modest.",
+          "type": "flavour",
+          "cites": [
+            "rfca",
+            "cultivarguide"
+          ]
+        },
+        {
+          "text": "More than one strain is grown under the Tamopan name, with varying fruit quality.",
+          "type": "notable",
+          "cites": [
+            "ufifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Club Archives, The Oriental Persimmon",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmons7-88.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "cultivarguide",
+          "name": "Cultivar Guide, Persimmon Varieties",
+          "url": "https://cultivar.guide/persimmon",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-cultivar-tonewase": {
+      "slug": "persimmon-cultivar-tonewase",
+      "species": "Persimmon",
+      "variety": "Cultivar Tonewase",
+      "paragraphs": [
+        "Tone Wase (also written Tonewase) is an early-ripening astringent persimmon that arose as a natural bud sport (mutation) of the Japanese cultivar Hiratanenashi. Its defining feature is that it matures roughly 10 to 15 days earlier than its parent, making it one of the earliest astringent persimmons of the season.",
+        "Like Hiratanenashi it is an astringent type that must be soft-ripe before eating to shed its tannins, and it is valued for sweet, high-sugar fruit once ready. Because it carries Hiratanenashi parentage, the fruit is typically seedless."
+      ],
+      "claims": [
+        {
+          "text": "Tone Wase is a natural bud sport (mutation) of the Japanese cultivar Hiratanenashi.",
+          "type": "origin",
+          "cites": [
+            "anfic",
+            "ncbi"
+          ]
+        },
+        {
+          "text": "It ripens roughly 10 to 15 days earlier than Hiratanenashi, among the earliest astringent persimmons.",
+          "type": "season",
+          "cites": [
+            "anfic",
+            "ncbi"
+          ]
+        },
+        {
+          "text": "It is an astringent type that must be soft-ripe before eating.",
+          "type": "astringency",
+          "cites": [
+            "anfic",
+            "rosscreek"
+          ]
+        },
+        {
+          "text": "The fruit is sweet with high sugar once ripe.",
+          "type": "flavour",
+          "cites": [
+            "anfic",
+            "rosscreek"
+          ]
+        },
+        {
+          "text": "It is typically seedless, sharing the seedless character of its Hiratanenashi parent.",
+          "type": "trait",
+          "cites": [
+            "ncbi",
+            "ufifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic",
+          "name": "ANFIC, Tone Wase Persimmon",
+          "url": "https://anfic.com.au/variety/tone-wase-persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ncbi",
+          "name": "Comparative transcriptome analysis of persimmon somatic mutants (PMC11327018)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11327018/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek",
+          "name": "Ross Creek Tropicals, Persimmon Tone Wase Astringent",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-tone-wase-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-dai-dai-maru": {
+      "slug": "persimmon-dai-dai-maru",
+      "species": "Persimmon",
+      "variety": "Dai Dai Maru",
+      "paragraphs": [
+        "Dai Dai Maru is an astringent Japanese persimmon (Diospyros kaki) that stays harshly tannic until it is fully ripe and soft (or cured), when it becomes deliciously sweet with a jam-like consistency. The medium, rounded fruit has a glossy orange-red skin with a light bloom and dark, cinnamon-coloured flesh. It is most often seedless unless cross-pollinated.",
+        "The softened flesh is rich, sweet and juicy, and the fruit can be eaten fresh, dried or cooked. It ripens through the Australian autumn, with harvest commonly from April to June. Australian nurseries describe the tree as self-fertile and a reliable, regular cropper that stays fairly compact (around 2 to 5 metres and able to be pruned smaller), making it manageable in a home garden."
+      ],
+      "claims": [
+        {
+          "text": "Dai Dai Maru is an astringent Japanese persimmon that must be fully ripe and soft (or cured) before eating, when it becomes sweet with a jam-like consistency",
+          "type": "astringency",
+          "cites": [
+            "cooksinfo",
+            "daleys-ddm",
+            "rosscreek-ddm"
+          ]
+        },
+        {
+          "text": "The medium, rounded fruit has a glossy orange-red skin with a light bloom",
+          "type": "appearance",
+          "cites": [
+            "daleys-ddm",
+            "cooksinfo"
+          ]
+        },
+        {
+          "text": "The flesh is dark, cinnamon-coloured and rich, sweet and juicy",
+          "type": "flavour",
+          "cites": [
+            "cooksinfo",
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "Fruit is most often seedless unless cross-pollinated, and can be eaten fresh, dried or cooked",
+          "type": "uses",
+          "cites": [
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "It ripens through the Australian autumn, with harvest commonly from April to June",
+          "type": "season",
+          "cites": [
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "Australian nurseries describe the tree as self-fertile and a reliable cropper that stays fairly compact, around 2 to 5 metres and prunable smaller",
+          "type": "habit",
+          "cites": [
+            "daleys-ddm",
+            "rosscreek-ddm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cooksinfo",
+          "name": "CooksInfo: Maru Persimmons",
+          "url": "https://www.cooksinfo.com/maru-persimmons",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-ddm",
+          "name": "Daleys Fruit: Dai Dai Maru (A) Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-dai-dai-maru-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "rosscreek-ddm",
+          "name": "Ross Creek Tropicals: Persimmon Dai Dai Maru Astringent",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-dai-dai-maru-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-dai-dai-maru-a": {
+      "slug": "persimmon-dai-dai-maru-a",
+      "species": "Persimmon",
+      "variety": "Dai Dai Maru A",
+      "paragraphs": [
+        "Dai Dai Maru is an astringent Japanese persimmon (Diospyros kaki) that stays harshly tannic until it is fully ripe and soft (or cured), when it becomes deliciously sweet with a jam-like consistency. The medium, rounded fruit has a glossy orange-red skin with a light bloom and dark, cinnamon-coloured flesh. It is most often seedless unless cross-pollinated.",
+        "The softened flesh is rich, sweet and juicy, and the fruit can be eaten fresh, dried or cooked. It ripens through the Australian autumn, with harvest commonly from April to June. Australian nurseries describe the tree as self-fertile and a reliable, regular cropper that stays fairly compact (around 2 to 5 metres and able to be pruned smaller), making it manageable in a home garden."
+      ],
+      "claims": [
+        {
+          "text": "Dai Dai Maru is an astringent Japanese persimmon that must be fully ripe and soft (or cured) before eating, when it becomes sweet with a jam-like consistency",
+          "type": "astringency",
+          "cites": [
+            "cooksinfo",
+            "daleys-ddm",
+            "rosscreek-ddm"
+          ]
+        },
+        {
+          "text": "The medium, rounded fruit has a glossy orange-red skin with a light bloom",
+          "type": "appearance",
+          "cites": [
+            "daleys-ddm",
+            "cooksinfo"
+          ]
+        },
+        {
+          "text": "The flesh is dark, cinnamon-coloured and rich, sweet and juicy",
+          "type": "flavour",
+          "cites": [
+            "cooksinfo",
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "Fruit is most often seedless unless cross-pollinated, and can be eaten fresh, dried or cooked",
+          "type": "uses",
+          "cites": [
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "It ripens through the Australian autumn, with harvest commonly from April to June",
+          "type": "season",
+          "cites": [
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "Australian nurseries describe the tree as self-fertile and a reliable cropper that stays fairly compact, around 2 to 5 metres and prunable smaller",
+          "type": "habit",
+          "cites": [
+            "daleys-ddm",
+            "rosscreek-ddm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cooksinfo",
+          "name": "CooksInfo: Maru Persimmons",
+          "url": "https://www.cooksinfo.com/maru-persimmons",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-ddm",
+          "name": "Daleys Fruit: Dai Dai Maru (A) Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-dai-dai-maru-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "rosscreek-ddm",
+          "name": "Ross Creek Tropicals: Persimmon Dai Dai Maru Astringent",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-dai-dai-maru-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-dai-dai-maru-astringent": {
+      "slug": "persimmon-dai-dai-maru-astringent",
+      "species": "Persimmon",
+      "variety": "Dai Dai Maru Astringent",
+      "paragraphs": [
+        "Dai Dai Maru is an astringent Japanese persimmon (Diospyros kaki) that stays harshly tannic until it is fully ripe and soft (or cured), when it becomes deliciously sweet with a jam-like consistency. The medium, rounded fruit has a glossy orange-red skin with a light bloom and dark, cinnamon-coloured flesh. It is most often seedless unless cross-pollinated.",
+        "The softened flesh is rich, sweet and juicy, and the fruit can be eaten fresh, dried or cooked. It ripens through the Australian autumn, with harvest commonly from April to June. Australian nurseries describe the tree as self-fertile and a reliable, regular cropper that stays fairly compact (around 2 to 5 metres and able to be pruned smaller), making it manageable in a home garden."
+      ],
+      "claims": [
+        {
+          "text": "Dai Dai Maru is an astringent Japanese persimmon that must be fully ripe and soft (or cured) before eating, when it becomes sweet with a jam-like consistency",
+          "type": "astringency",
+          "cites": [
+            "cooksinfo",
+            "daleys-ddm",
+            "rosscreek-ddm"
+          ]
+        },
+        {
+          "text": "The medium, rounded fruit has a glossy orange-red skin with a light bloom",
+          "type": "appearance",
+          "cites": [
+            "daleys-ddm",
+            "cooksinfo"
+          ]
+        },
+        {
+          "text": "The flesh is dark, cinnamon-coloured and rich, sweet and juicy",
+          "type": "flavour",
+          "cites": [
+            "cooksinfo",
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "Fruit is most often seedless unless cross-pollinated, and can be eaten fresh, dried or cooked",
+          "type": "uses",
+          "cites": [
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "It ripens through the Australian autumn, with harvest commonly from April to June",
+          "type": "season",
+          "cites": [
+            "daleys-ddm"
+          ]
+        },
+        {
+          "text": "Australian nurseries describe the tree as self-fertile and a reliable cropper that stays fairly compact, around 2 to 5 metres and prunable smaller",
+          "type": "habit",
+          "cites": [
+            "daleys-ddm",
+            "rosscreek-ddm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "cooksinfo",
+          "name": "CooksInfo: Maru Persimmons",
+          "url": "https://www.cooksinfo.com/maru-persimmons",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-ddm",
+          "name": "Daleys Fruit: Dai Dai Maru (A) Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-dai-dai-maru-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "rosscreek-ddm",
+          "name": "Ross Creek Tropicals: Persimmon Dai Dai Maru Astringent",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-dai-dai-maru-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-flat-seedless-a": {
+      "slug": "persimmon-flat-seedless-a",
+      "species": "Persimmon",
+      "variety": "Flat Seedless A",
+      "paragraphs": [
+        "Flat Seedless is the Australian market name for Hira-tanenashi, one of the most widely grown commercial astringent persimmons in Japan (recorded there as the second most popular variety). The fruit is large and distinctly flat or squat in shape, with a tough, glossy orange-red skin and pale yellow-orange flesh that turns sweet once fully ripe.",
+        "It is an astringent, pollination-constant type, so the fruit has to be left until soft and jelly-ripe before eating, otherwise tannins pucker the mouth. True to its name it is almost always seedless even where pollinators are present, which sets it apart from the non-astringent Fuyu-type persimmons that can be eaten while still firm."
+      ],
+      "claims": [
+        {
+          "text": "Flat Seedless is the Australian name for the Japanese astringent cultivar Hira-tanenashi.",
+          "type": "origin",
+          "cites": [
+            "rfca",
+            "ufifas"
+          ]
+        },
+        {
+          "text": "It is an astringent type whose fruit must be fully soft and ripe before eating to lose its tannins.",
+          "type": "astringency",
+          "cites": [
+            "rfca",
+            "ufifas",
+            "daleys"
+          ]
+        },
+        {
+          "text": "The fruit is large and flat or squat in shape.",
+          "type": "appearance",
+          "cites": [
+            "rfca",
+            "daleys"
+          ]
+        },
+        {
+          "text": "The skin is glossy orange-red and the flesh is pale.",
+          "type": "appearance",
+          "cites": [
+            "rfca",
+            "daleys"
+          ]
+        },
+        {
+          "text": "It is almost always seedless even when pollinators are present.",
+          "type": "trait",
+          "cites": [
+            "ufifas",
+            "daleys"
+          ]
+        },
+        {
+          "text": "It is one of the most widely grown commercial astringent persimmons in Japan.",
+          "type": "notable",
+          "cites": [
+            "rfca",
+            "ufifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Club Archives, The Oriental Persimmon",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmons7-88.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Persimmon Flat Seedless",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-flat-seedless-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-flat-seedless-astringent": {
+      "slug": "persimmon-flat-seedless-astringent",
+      "species": "Persimmon",
+      "variety": "Flat Seedless Astringent",
+      "paragraphs": [
+        "Flat Seedless is the Australian market name for Hira-tanenashi, one of the most widely grown commercial astringent persimmons in Japan (recorded there as the second most popular variety). The fruit is large and distinctly flat or squat in shape, with a tough, glossy orange-red skin and pale yellow-orange flesh that turns sweet once fully ripe.",
+        "It is an astringent, pollination-constant type, so the fruit has to be left until soft and jelly-ripe before eating, otherwise tannins pucker the mouth. True to its name it is almost always seedless even where pollinators are present, which sets it apart from the non-astringent Fuyu-type persimmons that can be eaten while still firm."
+      ],
+      "claims": [
+        {
+          "text": "Flat Seedless is the Australian name for the Japanese astringent cultivar Hira-tanenashi.",
+          "type": "origin",
+          "cites": [
+            "rfca",
+            "ufifas"
+          ]
+        },
+        {
+          "text": "It is an astringent type whose fruit must be fully soft and ripe before eating to lose its tannins.",
+          "type": "astringency",
+          "cites": [
+            "rfca",
+            "ufifas",
+            "daleys"
+          ]
+        },
+        {
+          "text": "The fruit is large and flat or squat in shape.",
+          "type": "appearance",
+          "cites": [
+            "rfca",
+            "daleys"
+          ]
+        },
+        {
+          "text": "The skin is glossy orange-red and the flesh is pale.",
+          "type": "appearance",
+          "cites": [
+            "rfca",
+            "daleys"
+          ]
+        },
+        {
+          "text": "It is almost always seedless even when pollinators are present.",
+          "type": "trait",
+          "cites": [
+            "ufifas",
+            "daleys"
+          ]
+        },
+        {
+          "text": "It is one of the most widely grown commercial astringent persimmons in Japan.",
+          "type": "notable",
+          "cites": [
+            "rfca",
+            "ufifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Club Archives, The Oriental Persimmon",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmons7-88.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Persimmon Flat Seedless",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-flat-seedless-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-fuyu": {
+      "slug": "persimmon-fuyu",
+      "species": "Persimmon",
+      "variety": "Fuyu",
+      "paragraphs": [
+        "Fuyu is the best known non astringent Japanese persimmon (Diospyros kaki) and the type most widely sold in supermarkets. Unlike astringent persimmons, it can be eaten while still firm and crisp, sliced like an apple or tomato, with no mouth puckering tannins. The skin is deep orange, the flesh light orange, and the flavour sweet and mild.",
+        "The fruit is squat and tomato shaped, medium to large and faintly four sided in outline. It ripens late in the season and keeps and ships well. After the leaves fall the fruit clings to the bare branches, persisting into winter and giving an ornamental display. Fuyu is also listed under the name Fuyugaki, or Fuyu Kaki."
+      ],
+      "claims": [
+        {
+          "text": "Fuyu is a non astringent Japanese persimmon that can be eaten while still firm and crisp, without astringency.",
+          "type": "astringency",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "It is the best known non astringent type and the persimmon most widely sold in supermarkets.",
+          "type": "popularity",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The fruit is squat and tomato shaped, medium to large, with deep orange skin and light orange flesh, faintly four sided.",
+          "type": "appearance",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The flavour is sweet and mild.",
+          "type": "flavour",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        },
+        {
+          "text": "Fruit persists on the bare tree after leaf fall, into winter.",
+          "type": "season",
+          "cites": [
+            "ncsu"
+          ]
+        },
+        {
+          "text": "It ripens late in the season and keeps and ships well.",
+          "type": "season",
+          "cites": [
+            "crfg",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Fuyu is also known as Fuyugaki (Fuyu Kaki).",
+          "type": "naming",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox, Diospyros kaki 'Fuyu'",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-kaki-fuyu/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Persimmon Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/93745-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Fuyu Non Astringent Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-fuyu-non-astringent-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-fuyu-fruit-tree": {
+      "slug": "persimmon-fuyu-fruit-tree",
+      "species": "Persimmon",
+      "variety": "Fuyu Fruit Tree",
+      "paragraphs": [
+        "Fuyu is the best known non astringent Japanese persimmon (Diospyros kaki) and the type most widely sold in supermarkets. Unlike astringent persimmons, it can be eaten while still firm and crisp, sliced like an apple or tomato, with no mouth puckering tannins. The skin is deep orange, the flesh light orange, and the flavour sweet and mild.",
+        "The fruit is squat and tomato shaped, medium to large and faintly four sided in outline. It ripens late in the season and keeps and ships well. After the leaves fall the fruit clings to the bare branches, persisting into winter and giving an ornamental display. Fuyu is also listed under the name Fuyugaki, or Fuyu Kaki."
+      ],
+      "claims": [
+        {
+          "text": "Fuyu is a non astringent Japanese persimmon that can be eaten while still firm and crisp, without astringency.",
+          "type": "astringency",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "It is the best known non astringent type and the persimmon most widely sold in supermarkets.",
+          "type": "popularity",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The fruit is squat and tomato shaped, medium to large, with deep orange skin and light orange flesh, faintly four sided.",
+          "type": "appearance",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The flavour is sweet and mild.",
+          "type": "flavour",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        },
+        {
+          "text": "Fruit persists on the bare tree after leaf fall, into winter.",
+          "type": "season",
+          "cites": [
+            "ncsu"
+          ]
+        },
+        {
+          "text": "It ripens late in the season and keeps and ships well.",
+          "type": "season",
+          "cites": [
+            "crfg",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Fuyu is also known as Fuyugaki (Fuyu Kaki).",
+          "type": "naming",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox, Diospyros kaki 'Fuyu'",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-kaki-fuyu/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Persimmon Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/93745-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Fuyu Non Astringent Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-fuyu-non-astringent-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-fuyu-non-astringent": {
+      "slug": "persimmon-fuyu-non-astringent",
+      "species": "Persimmon",
+      "variety": "Fuyu Non Astringent",
+      "paragraphs": [
+        "Fuyu Non Astringent is the standard non astringent Fuyu, the best known type of Japanese persimmon (Diospyros kaki) and the one most widely sold in supermarkets. Because it carries little astringency it can be eaten while still firm and crisp, sliced like an apple or tomato, with no mouth puckering. The skin is deep orange, the flesh light orange, and the flavour sweet and mild.",
+        "The fruit is squat and tomato shaped, medium to large and faintly four sided in outline. It ripens late in the season and keeps and ships well. After the leaves fall the fruit clings to the bare branches, persisting into winter for ornamental effect. The cultivar is also listed under the name Fuyugaki, or Fuyu Kaki."
+      ],
+      "claims": [
+        {
+          "text": "Fuyu is a non astringent Japanese persimmon that can be eaten while still firm and crisp, without astringency.",
+          "type": "astringency",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "It is the best known non astringent type and the persimmon most widely sold in supermarkets.",
+          "type": "popularity",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The fruit is squat and tomato shaped, medium to large, with deep orange skin and light orange flesh, faintly four sided.",
+          "type": "appearance",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The flavour is sweet and mild.",
+          "type": "flavour",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        },
+        {
+          "text": "Fruit persists on the bare tree after leaf fall, into winter.",
+          "type": "season",
+          "cites": [
+            "ncsu"
+          ]
+        },
+        {
+          "text": "It ripens late in the season and keeps and ships well.",
+          "type": "season",
+          "cites": [
+            "crfg",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Fuyu is also known as Fuyugaki (Fuyu Kaki).",
+          "type": "naming",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox, Diospyros kaki 'Fuyu'",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-kaki-fuyu/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Persimmon Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/93745-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Fuyu Non Astringent Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-fuyu-non-astringent-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-fuyugaki": {
+      "slug": "persimmon-fuyugaki",
+      "species": "Persimmon",
+      "variety": "Fuyugaki",
+      "paragraphs": [
+        "Fuyugaki (also written Fuyu Kaki) is another name for Fuyu, the best known non astringent Japanese persimmon (Diospyros kaki) and the type most widely sold in supermarkets. Because it is non astringent it can be eaten while still firm and crisp, sliced like an apple or tomato, with no mouth puckering tannins. The skin is deep orange, the flesh light orange, and the flavour sweet and mild.",
+        "The fruit is squat and tomato shaped, medium to large and faintly four sided in outline. It ripens late in the season and keeps and ships well. After the leaves fall the fruit clings to the bare branches, persisting into winter and giving an ornamental display."
+      ],
+      "claims": [
+        {
+          "text": "Fuyu is a non astringent Japanese persimmon that can be eaten while still firm and crisp, without astringency.",
+          "type": "astringency",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "It is the best known non astringent type and the persimmon most widely sold in supermarkets.",
+          "type": "popularity",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The fruit is squat and tomato shaped, medium to large, with deep orange skin and light orange flesh, faintly four sided.",
+          "type": "appearance",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The flavour is sweet and mild.",
+          "type": "flavour",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        },
+        {
+          "text": "Fruit persists on the bare tree after leaf fall, into winter.",
+          "type": "season",
+          "cites": [
+            "ncsu"
+          ]
+        },
+        {
+          "text": "It ripens late in the season and keeps and ships well.",
+          "type": "season",
+          "cites": [
+            "crfg",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Fuyu is also known as Fuyugaki (Fuyu Kaki).",
+          "type": "naming",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox, Diospyros kaki 'Fuyu'",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-kaki-fuyu/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Persimmon Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/93745-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Fuyu Non Astringent Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-fuyu-non-astringent-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-fuyugaki-non-astringent": {
+      "slug": "persimmon-fuyugaki-non-astringent",
+      "species": "Persimmon",
+      "variety": "Fuyugaki Non Astringent",
+      "paragraphs": [
+        "Fuyugaki Non Astringent is the Fuyu persimmon listed under its Japanese name Fuyugaki (Fuyu Kaki). It is the best known non astringent type of Japanese persimmon (Diospyros kaki) and the one most widely sold in supermarkets. Being non astringent, it can be eaten while still firm and crisp, sliced like an apple or tomato, with no mouth puckering. The skin is deep orange, the flesh light orange, and the flavour sweet and mild.",
+        "The fruit is squat and tomato shaped, medium to large and faintly four sided in outline. It ripens late in the season and keeps and ships well. After the leaves fall the fruit clings to the bare branches, persisting into winter for ornamental effect."
+      ],
+      "claims": [
+        {
+          "text": "Fuyu is a non astringent Japanese persimmon that can be eaten while still firm and crisp, without astringency.",
+          "type": "astringency",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "It is the best known non astringent type and the persimmon most widely sold in supermarkets.",
+          "type": "popularity",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The fruit is squat and tomato shaped, medium to large, with deep orange skin and light orange flesh, faintly four sided.",
+          "type": "appearance",
+          "cites": [
+            "ncsu",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The flavour is sweet and mild.",
+          "type": "flavour",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        },
+        {
+          "text": "Fruit persists on the bare tree after leaf fall, into winter.",
+          "type": "season",
+          "cites": [
+            "ncsu"
+          ]
+        },
+        {
+          "text": "It ripens late in the season and keeps and ships well.",
+          "type": "season",
+          "cites": [
+            "crfg",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Fuyu is also known as Fuyugaki (Fuyu Kaki).",
+          "type": "naming",
+          "cites": [
+            "ncsu",
+            "crfg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox, Diospyros kaki 'Fuyu'",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-kaki-fuyu/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg",
+          "name": "California Rare Fruit Growers, Persimmon Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/93745-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Fuyu Non Astringent Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-fuyu-non-astringent-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-hachiya": {
+      "slug": "persimmon-hachiya",
+      "species": "Persimmon",
+      "variety": "Hachiya",
+      "paragraphs": [
+        "Hachiya is the classic Japanese astringent persimmon (Diospyros kaki), an acorn or heart shaped fruit with smooth, glossy orange to red skin. It is loaded with soluble tannins when firm, so it tastes harshly astringent and dries the mouth unless eaten fully ripe. Left to soften, the flesh collapses into a smooth, jelly-like pulp that is intensely sweet, with honey, apricot and raisin notes.",
+        "Because it must be eaten soft, Hachiya is the variety of choice for baking and for drying into hoshigaki, the traditional hung and hand-massaged dried persimmon. This sets it apart from non-astringent types like Fuyu that can be eaten crisp. Fruit ripens through autumn into early winter."
+      ],
+      "claims": [
+        {
+          "text": "Hachiya is the most common astringent Japanese persimmon, acorn or heart shaped with glossy orange-red skin.",
+          "type": "appearance",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hachiya"
+          ]
+        },
+        {
+          "text": "It is high in soluble tannins and harshly astringent until fully ripe, so it must be eaten when soft.",
+          "type": "astringency",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hachiya"
+          ]
+        },
+        {
+          "text": "Ripe flesh becomes a smooth jelly-like pulp that is intensely sweet with honey and apricot notes.",
+          "type": "flavour",
+          "cites": [
+            "sp-hachiya"
+          ]
+        },
+        {
+          "text": "Because it must be eaten soft, Hachiya is favoured for baking and for drying into hoshigaki.",
+          "type": "uses",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hachiya"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-persimmon",
+          "name": "Wikipedia: Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-hachiya",
+          "name": "Specialty Produce: Hachiya Persimmons",
+          "url": "https://specialtyproduce.com/produce/Hachiya_Persimmons_907.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-hachiya-astringent": {
+      "slug": "persimmon-hachiya-astringent",
+      "species": "Persimmon",
+      "variety": "Hachiya- Astringent",
+      "paragraphs": [
+        "Hachiya is the classic Japanese astringent persimmon (Diospyros kaki), an acorn or heart shaped fruit with smooth, glossy orange to red skin. It is loaded with soluble tannins when firm, so it tastes harshly astringent and dries the mouth unless eaten fully ripe. Left to soften, the flesh collapses into a smooth, jelly-like pulp that is intensely sweet, with honey, apricot and raisin notes.",
+        "Because it must be eaten soft, Hachiya is the variety of choice for baking and for drying into hoshigaki, the traditional hung and hand-massaged dried persimmon. This sets it apart from non-astringent types like Fuyu that can be eaten crisp. Fruit ripens through autumn into early winter."
+      ],
+      "claims": [
+        {
+          "text": "Hachiya is the most common astringent Japanese persimmon, acorn or heart shaped with glossy orange-red skin.",
+          "type": "appearance",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hachiya"
+          ]
+        },
+        {
+          "text": "It is high in soluble tannins and harshly astringent until fully ripe, so it must be eaten when soft.",
+          "type": "astringency",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hachiya"
+          ]
+        },
+        {
+          "text": "Ripe flesh becomes a smooth jelly-like pulp that is intensely sweet with honey and apricot notes.",
+          "type": "flavour",
+          "cites": [
+            "sp-hachiya"
+          ]
+        },
+        {
+          "text": "Because it must be eaten soft, Hachiya is favoured for baking and for drying into hoshigaki.",
+          "type": "uses",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hachiya"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-persimmon",
+          "name": "Wikipedia: Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-hachiya",
+          "name": "Specialty Produce: Hachiya Persimmons",
+          "url": "https://specialtyproduce.com/produce/Hachiya_Persimmons_907.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-hyakumo": {
+      "slug": "persimmon-hyakumo",
+      "species": "Persimmon",
+      "variety": "Hyakumo",
+      "paragraphs": [
+        "Hyakumo is a listing spelling of Hyakume, a pollination-variant non-astringent (PVNA) Japanese persimmon also sold as Cinnamon or Brown Sugar persimmon. Its defining quirk is in the flesh: when flowers are pollinated and seeds form, the pale orange pulp develops brown, cinnamon-coloured flecks, called goma (sesame) in Japan, and the fruit loses its astringency. Pollinated, brown-fleshed fruit can be eaten while still firm and crisp.",
+        "Without pollination the same tree bears paler fruit that stays astringent and must soften before eating. The brown-fleshed form is prized for a sweet, spicy, brown sugar or date-like richness. Hyakume is oval to bell shaped with broad shoulders, medium to large, and native to East Asia."
+      ],
+      "claims": [
+        {
+          "text": "Hyakume (Hyakumo) is a pollination-variant non-astringent (PVNA) persimmon native to East Asia, also sold as Cinnamon or Brown Sugar persimmon.",
+          "type": "astringency",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hyakume",
+            "growables"
+          ]
+        },
+        {
+          "text": "When pollinated and seeded, the pale orange flesh develops brown cinnamon flecks called goma, loses astringency, and can be eaten firm.",
+          "type": "quirk",
+          "cites": [
+            "wiki-persimmon",
+            "sp-hyakume"
+          ]
+        },
+        {
+          "text": "Unpollinated fruit stays astringent and must soften before eating.",
+          "type": "astringency",
+          "cites": [
+            "sp-hyakume",
+            "growables"
+          ]
+        },
+        {
+          "text": "The brown-fleshed form is sweet and spicy with a brown sugar richness; fruit is oval to bell shaped, medium to large.",
+          "type": "flavour",
+          "cites": [
+            "sp-hyakume"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-persimmon",
+          "name": "Wikipedia: Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-hyakume",
+          "name": "Specialty Produce: Hyakume Persimmons",
+          "url": "https://specialtyproduce.com/produce/Hyakume_Persimmons_6662.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Persimmon Varieties",
+          "url": "https://www.growables.org/information/TropicalFruit/persimmonvarieties.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-isahaya": {
+      "slug": "persimmon-isahaya",
+      "species": "Persimmon",
+      "variety": "Isahaya",
+      "paragraphs": [
+        "Isahaya is a non-astringent Japanese persimmon, a large-fruited selection of the popular Fuyu that originated in the Nagasaki area. Like Fuyu it is a PCNA type that loses its astringency on the tree, so the fruit can be eaten while still firm and crisp rather than waiting for it to go soft.",
+        "Its main point of difference from Fuyu is size, with fruit that run noticeably larger, while the sugar content sits slightly below Fuyu. It is an uncommon variety, valued by collectors for big, sweet, ready-to-eat fruit."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent large-fruited selection of Fuyu originating in Nagasaki",
+          "type": "origin",
+          "cites": [
+            "anfic-isahaya",
+            "rosscreek-isahaya"
+          ]
+        },
+        {
+          "text": "PCNA type eaten firm and crisp without softening",
+          "type": "astringency",
+          "cites": [
+            "anfic-isahaya",
+            "rosscreek-isahaya"
+          ]
+        },
+        {
+          "text": "Fruit larger than Fuyu with sugar content slightly lower than Fuyu",
+          "type": "flavour",
+          "cites": [
+            "anfic-isahaya"
+          ]
+        },
+        {
+          "text": "Uncommon, collector-oriented variety",
+          "type": "traits",
+          "cites": [
+            "anfic-isahaya",
+            "rosscreek-isahaya"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic-isahaya",
+          "name": "ANFIC (Australian Nurserymen's Fruit Improvement Company), Isahaya persimmon",
+          "url": "https://anfic.com.au/variety/isahaya-persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-isahaya",
+          "name": "Ross Creek Tropicals, Isahaya Persimmon",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-isahaya-non-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-isahaya-non-astringent": {
+      "slug": "persimmon-isahaya-non-astringent",
+      "species": "Persimmon",
+      "variety": "Isahaya Non Astringent",
+      "paragraphs": [
+        "Isahaya is a non-astringent Japanese persimmon, a large-fruited selection of the popular Fuyu that originated in the Nagasaki area. Like Fuyu it is a PCNA type that loses its astringency on the tree, so the fruit can be eaten while still firm and crisp rather than waiting for it to go soft.",
+        "Its main point of difference from Fuyu is size, with fruit that run noticeably larger, while the sugar content sits slightly below Fuyu. It is an uncommon variety, valued by collectors for big, sweet, ready-to-eat fruit."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent large-fruited selection of Fuyu originating in Nagasaki",
+          "type": "origin",
+          "cites": [
+            "anfic-isahaya",
+            "rosscreek-isahaya"
+          ]
+        },
+        {
+          "text": "PCNA type eaten firm and crisp without softening",
+          "type": "astringency",
+          "cites": [
+            "anfic-isahaya",
+            "rosscreek-isahaya"
+          ]
+        },
+        {
+          "text": "Fruit larger than Fuyu with sugar content slightly lower than Fuyu",
+          "type": "flavour",
+          "cites": [
+            "anfic-isahaya"
+          ]
+        },
+        {
+          "text": "Uncommon, collector-oriented variety",
+          "type": "traits",
+          "cites": [
+            "anfic-isahaya",
+            "rosscreek-isahaya"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic-isahaya",
+          "name": "ANFIC (Australian Nurserymen's Fruit Improvement Company), Isahaya persimmon",
+          "url": "https://anfic.com.au/variety/isahaya-persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-isahaya",
+          "name": "Ross Creek Tropicals, Isahaya Persimmon",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-isahaya-non-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-izu": {
+      "slug": "persimmon-izu",
+      "species": "Persimmon",
+      "variety": "Izu",
+      "paragraphs": [
+        "Izu is a non-astringent Japanese persimmon prized as the earliest-ripening non-astringent cultivar, maturing weeks ahead of Fuyu and Jiro. Because it carries no astringency, it can be picked and eaten while firm and crisp once it colours up, giving a clean, sweet, mild flavour. The fruit is medium to medium-large, oblate and bright orange.",
+        "It was bred in the mid 20th century specifically to extend the season at its early end, ripening from late September into November in the Northern Hemisphere. The tree is naturally compact and lower in vigour than many persimmons, which suits smaller gardens, though the fruit has a shorter shelf life than late-season varieties and soluble solids average around 16 percent."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent, so it can be eaten firm and crisp off the tree.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Earliest-ripening non-astringent cultivar, maturing ahead of Fuyu and Jiro.",
+          "type": "season",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Bred in the mid 20th century to ripen early in the season.",
+          "type": "origin",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "Medium to medium-large, oblate, bright orange fruit with sweet, mild flavour.",
+          "type": "appearance",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Naturally compact, lower-vigour tree; shorter shelf life than late-season types; soluble solids around 16 percent.",
+          "type": "habit",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS Extension, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Izu Persimmons",
+          "url": "https://specialtyproduce.com/produce/Izu_Persimmons_14126.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-izu-na": {
+      "slug": "persimmon-izu-na",
+      "species": "Persimmon",
+      "variety": "Izu NA",
+      "paragraphs": [
+        "Izu is a non-astringent Japanese persimmon prized as the earliest-ripening non-astringent cultivar, maturing weeks ahead of Fuyu and Jiro. Because it carries no astringency, it can be picked and eaten while firm and crisp once it colours up, giving a clean, sweet, mild flavour. The fruit is medium to medium-large, oblate and bright orange.",
+        "It was bred in the mid 20th century specifically to extend the season at its early end, ripening from late September into November in the Northern Hemisphere. The tree is naturally compact and lower in vigour than many persimmons, which suits smaller gardens, though the fruit has a shorter shelf life than late-season varieties and soluble solids average around 16 percent."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent, so it can be eaten firm and crisp off the tree.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Earliest-ripening non-astringent cultivar, maturing ahead of Fuyu and Jiro.",
+          "type": "season",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Bred in the mid 20th century to ripen early in the season.",
+          "type": "origin",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "Medium to medium-large, oblate, bright orange fruit with sweet, mild flavour.",
+          "type": "appearance",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Naturally compact, lower-vigour tree; shorter shelf life than late-season types; soluble solids around 16 percent.",
+          "type": "habit",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS Extension, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Izu Persimmons",
+          "url": "https://specialtyproduce.com/produce/Izu_Persimmons_14126.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-izu-non-astringent": {
+      "slug": "persimmon-izu-non-astringent",
+      "species": "Persimmon",
+      "variety": "Izu Non Astringent",
+      "paragraphs": [
+        "Izu is a non-astringent Japanese persimmon prized as the earliest-ripening non-astringent cultivar, maturing weeks ahead of Fuyu and Jiro. Because it carries no astringency, it can be picked and eaten while firm and crisp once it colours up, giving a clean, sweet, mild flavour. The fruit is medium to medium-large, oblate and bright orange.",
+        "It was bred in the mid 20th century specifically to extend the season at its early end, ripening from late September into November in the Northern Hemisphere. The tree is naturally compact and lower in vigour than many persimmons, which suits smaller gardens, though the fruit has a shorter shelf life than late-season varieties and soluble solids average around 16 percent."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent, so it can be eaten firm and crisp off the tree.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Earliest-ripening non-astringent cultivar, maturing ahead of Fuyu and Jiro.",
+          "type": "season",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Bred in the mid 20th century to ripen early in the season.",
+          "type": "origin",
+          "cites": [
+            "specialty"
+          ]
+        },
+        {
+          "text": "Medium to medium-large, oblate, bright orange fruit with sweet, mild flavour.",
+          "type": "appearance",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Naturally compact, lower-vigour tree; shorter shelf life than late-season types; soluble solids around 16 percent.",
+          "type": "habit",
+          "cites": [
+            "ufifas",
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS Extension, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Izu Persimmons",
+          "url": "https://specialtyproduce.com/produce/Izu_Persimmons_14126.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-japanese-flat-seedless": {
+      "slug": "persimmon-japanese-flat-seedless",
+      "species": "Persimmon",
+      "variety": "Japanese Flat Seedless",
+      "paragraphs": [
+        "Flat Seedless is the Australian market name for Hira-tanenashi, one of the most widely grown commercial astringent persimmons in Japan (recorded there as the second most popular variety). The fruit is large and distinctly flat or squat in shape, with a tough, glossy orange-red skin and pale yellow-orange flesh that turns sweet once fully ripe.",
+        "It is an astringent, pollination-constant type, so the fruit has to be left until soft and jelly-ripe before eating, otherwise tannins pucker the mouth. True to its name it is almost always seedless even where pollinators are present, which sets it apart from the non-astringent Fuyu-type persimmons that can be eaten while still firm."
+      ],
+      "claims": [
+        {
+          "text": "Flat Seedless is the Australian name for the Japanese astringent cultivar Hira-tanenashi.",
+          "type": "origin",
+          "cites": [
+            "rfca",
+            "ufifas"
+          ]
+        },
+        {
+          "text": "It is an astringent type whose fruit must be fully soft and ripe before eating to lose its tannins.",
+          "type": "astringency",
+          "cites": [
+            "rfca",
+            "ufifas",
+            "daleys"
+          ]
+        },
+        {
+          "text": "The fruit is large and flat or squat in shape.",
+          "type": "appearance",
+          "cites": [
+            "rfca",
+            "daleys"
+          ]
+        },
+        {
+          "text": "The skin is glossy orange-red and the flesh is pale.",
+          "type": "appearance",
+          "cites": [
+            "rfca",
+            "daleys"
+          ]
+        },
+        {
+          "text": "It is almost always seedless even when pollinators are present.",
+          "type": "trait",
+          "cites": [
+            "ufifas",
+            "daleys"
+          ]
+        },
+        {
+          "text": "It is one of the most widely grown commercial astringent persimmons in Japan.",
+          "type": "notable",
+          "cites": [
+            "rfca",
+            "ufifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Club Archives, The Oriental Persimmon",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmons7-88.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Persimmon Flat Seedless",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-flat-seedless-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-jiro": {
+      "slug": "persimmon-jiro",
+      "species": "Persimmon",
+      "variety": "Jiro",
+      "paragraphs": [
+        "Jiro is one of Japan's leading pollination-constant non-astringent persimmons, which means it loses its tannins on the tree and can be eaten while still firm and crisp, with no need to wait for it to soften. The fruit is medium to large, squat and oblate (often slightly squared), with deep orange skin and sweet, mild flesh that has an apple-like crunch. The thin skin is edible, and the fruit is usually seedless or carries only a few small seeds.",
+        "It is a mid-season variety, ripening from about mid October to mid November in the Northern Hemisphere (autumn in Australia), with soluble solids reported around 16 to 19 percent. Jiro is valued as a dependable home-garden tree because it is notably cold-hardy and sets fruit without a pollinator, though crops can be erratic on young trees before becoming more consistent as the tree matures."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent (pollination-constant), so it can be eaten firm and crisp off the tree.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "ncstate",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Medium to large, squat oblate, deep orange fruit, usually seedless or with few seeds, with edible thin skin.",
+          "type": "appearance",
+          "cites": [
+            "ncstate",
+            "specialty",
+            "ufifas"
+          ]
+        },
+        {
+          "text": "Mid-season ripening (about mid October to mid November), soluble solids roughly 16 to 19 percent.",
+          "type": "season",
+          "cites": [
+            "ufifas"
+          ]
+        },
+        {
+          "text": "Cold-hardy and sets fruit without a pollinator.",
+          "type": "habit",
+          "cites": [
+            "ncstate"
+          ]
+        },
+        {
+          "text": "A leading Japanese non-astringent cultivar with sweet, mild, apple-crisp flesh.",
+          "type": "flavour",
+          "cites": [
+            "specialty",
+            "ncstate"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS Extension, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ncstate",
+          "name": "NC State Extension Gardener Plant Toolbox, Diospyros kaki 'Jiro'",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-kaki-jiro/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Jiro Persimmons",
+          "url": "https://specialtyproduce.com/produce/Jiro_Persimmons_14311.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-jiro-non-astringent": {
+      "slug": "persimmon-jiro-non-astringent",
+      "species": "Persimmon",
+      "variety": "Jiro Non Astringent",
+      "paragraphs": [
+        "Jiro is one of Japan's leading pollination-constant non-astringent persimmons, which means it loses its tannins on the tree and can be eaten while still firm and crisp, with no need to wait for it to soften. The fruit is medium to large, squat and oblate (often slightly squared), with deep orange skin and sweet, mild flesh that has an apple-like crunch. The thin skin is edible, and the fruit is usually seedless or carries only a few small seeds.",
+        "It is a mid-season variety, ripening from about mid October to mid November in the Northern Hemisphere (autumn in Australia), with soluble solids reported around 16 to 19 percent. Jiro is valued as a dependable home-garden tree because it is notably cold-hardy and sets fruit without a pollinator, though crops can be erratic on young trees before becoming more consistent as the tree matures."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent (pollination-constant), so it can be eaten firm and crisp off the tree.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "ncstate",
+            "specialty"
+          ]
+        },
+        {
+          "text": "Medium to large, squat oblate, deep orange fruit, usually seedless or with few seeds, with edible thin skin.",
+          "type": "appearance",
+          "cites": [
+            "ncstate",
+            "specialty",
+            "ufifas"
+          ]
+        },
+        {
+          "text": "Mid-season ripening (about mid October to mid November), soluble solids roughly 16 to 19 percent.",
+          "type": "season",
+          "cites": [
+            "ufifas"
+          ]
+        },
+        {
+          "text": "Cold-hardy and sets fruit without a pollinator.",
+          "type": "habit",
+          "cites": [
+            "ncstate"
+          ]
+        },
+        {
+          "text": "A leading Japanese non-astringent cultivar with sweet, mild, apple-crisp flesh.",
+          "type": "flavour",
+          "cites": [
+            "specialty",
+            "ncstate"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS Extension, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ncstate",
+          "name": "NC State Extension Gardener Plant Toolbox, Diospyros kaki 'Jiro'",
+          "url": "https://plants.ces.ncsu.edu/plants/diospyros-kaki-jiro/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Jiro Persimmons",
+          "url": "https://specialtyproduce.com/produce/Jiro_Persimmons_14311.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-maekawa-jiro": {
+      "slug": "persimmon-maekawa-jiro",
+      "species": "Persimmon",
+      "variety": "Maekawa Jiro",
+      "paragraphs": [
+        "Maekawa Jiro is a bud sport (a natural mutation) of the Jiro persimmon, sharing its non-astringent character so the fruit can be eaten firm and crisp straight from the tree without waiting for it to soften. It produces round to oblate, bright orange fruit, typically about 8 to 10 cm across, with sweet, mild flesh.",
+        "Like its parent it is a mid-season variety, ripening roughly mid October to mid November in the Northern Hemisphere (autumn in Australia). A practical advantage for home growers is that it is self-fertile, setting a crop without a separate pollinator tree."
+      ],
+      "claims": [
+        {
+          "text": "A bud sport (natural mutation) of the Jiro persimmon.",
+          "type": "origin",
+          "cites": [
+            "mobot"
+          ]
+        },
+        {
+          "text": "Non-astringent, so it can be eaten firm and crisp off the tree.",
+          "type": "astringency",
+          "cites": [
+            "mobot",
+            "edible"
+          ]
+        },
+        {
+          "text": "Round to oblate, bright orange fruit about 8 to 10 cm (3 to 4 inches) across.",
+          "type": "appearance",
+          "cites": [
+            "mobot"
+          ]
+        },
+        {
+          "text": "Mid-season ripening, about mid October to mid November.",
+          "type": "season",
+          "cites": [
+            "mobot"
+          ]
+        },
+        {
+          "text": "Self-fertile, setting fruit without a separate pollinator.",
+          "type": "habit",
+          "cites": [
+            "mobot"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mobot",
+          "name": "Missouri Botanical Garden Plant Finder, Diospyros 'Maekawa Jiro'",
+          "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?taxonid=452723",
+          "tier": "authoritative"
+        },
+        {
+          "id": "edible",
+          "name": "Edible Landscaping, Maekawa Jiro Persimmon",
+          "url": "https://ediblelandscaping.com/products/maekawa-jiro-persimmon-1",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-nightingale": {
+      "slug": "persimmon-nightingale",
+      "species": "Persimmon",
+      "variety": "Nightingale",
+      "paragraphs": [
+        "Nightingale is an astringent Japanese persimmon (Diospyros kaki) closely related to the well known Hachiya, and it is often listed as a Hachiya type. It is distinguished by its more compact, semi-dwarf habit (typically around 2 to 5 metres, prunable smaller and suited to small gardens) and by deeper red-orange flesh, where Hachiya tends towards dark yellow. The fruit is large and oblong-conical to heart-shaped with a glossy orange to orange-red skin.",
+        "Being astringent, it stays mouth-puckeringly tannic until fully soft, then turns rich, sweet and jelly-like, which makes it prized for fresh eating, drying and baking. It ripens early in the persimmon season and is often among the first persimmons to mature, cropping through the Australian autumn. Nurseries describe it as self-fertile and a reliable, heavy bearer, with the high-quality flesh usually seedless."
+      ],
+      "claims": [
+        {
+          "text": "Nightingale is an astringent Japanese persimmon that is inedible until fully ripe and soft, when it turns sweet and jelly-like",
+          "type": "astringency",
+          "cites": [
+            "dgp",
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "It is closely related to Hachiya and is often listed as a Hachiya type",
+          "type": "origin",
+          "cites": [
+            "dgp",
+            "aviani"
+          ]
+        },
+        {
+          "text": "It has a more compact, semi-dwarf habit, typically around 2 to 5 metres and suited to smaller gardens",
+          "type": "habit",
+          "cites": [
+            "dgp",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "Its flesh is a deep red-orange, distinct from the dark yellow flesh of Hachiya",
+          "type": "appearance",
+          "cites": [
+            "dgp",
+            "aviani"
+          ]
+        },
+        {
+          "text": "The fruit is large and oblong-conical to heart-shaped with a glossy orange to orange-red skin",
+          "type": "appearance",
+          "cites": [
+            "dgp",
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "It ripens early in the persimmon season and is often among the first persimmons to mature, cropping through the Australian autumn",
+          "type": "season",
+          "cites": [
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "Nurseries describe it as self-fertile and a reliable, heavy bearer, with fruit usually seedless",
+          "type": "pollination",
+          "cites": [
+            "daleys-nightingale"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "dgp",
+          "name": "Deep Green Permaculture: The Difference Between Nightingale and Hachiya Persimmons",
+          "url": "https://deepgreenpermaculture.com/2020/06/08/the-difference-between-nightingale-and-hachiya-persimmons/",
+          "tier": "third_party"
+        },
+        {
+          "id": "aviani",
+          "name": "Aviani Persimmon Farm: Persimmon Varieties",
+          "url": "https://www.avianipersimmonfarm.com.au/varieties",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-nightingale",
+          "name": "Daleys Fruit: Nightingale Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-nightingale-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-nightingale-a": {
+      "slug": "persimmon-nightingale-a",
+      "species": "Persimmon",
+      "variety": "Nightingale A",
+      "paragraphs": [
+        "Nightingale is an astringent Japanese persimmon (Diospyros kaki) closely related to the well known Hachiya, and it is often listed as a Hachiya type. It is distinguished by its more compact, semi-dwarf habit (typically around 2 to 5 metres, prunable smaller and suited to small gardens) and by deeper red-orange flesh, where Hachiya tends towards dark yellow. The fruit is large and oblong-conical to heart-shaped with a glossy orange to orange-red skin.",
+        "Being astringent, it stays mouth-puckeringly tannic until fully soft, then turns rich, sweet and jelly-like, which makes it prized for fresh eating, drying and baking. It ripens early in the persimmon season and is often among the first persimmons to mature, cropping through the Australian autumn. Nurseries describe it as self-fertile and a reliable, heavy bearer, with the high-quality flesh usually seedless."
+      ],
+      "claims": [
+        {
+          "text": "Nightingale is an astringent Japanese persimmon that is inedible until fully ripe and soft, when it turns sweet and jelly-like",
+          "type": "astringency",
+          "cites": [
+            "dgp",
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "It is closely related to Hachiya and is often listed as a Hachiya type",
+          "type": "origin",
+          "cites": [
+            "dgp",
+            "aviani"
+          ]
+        },
+        {
+          "text": "It has a more compact, semi-dwarf habit, typically around 2 to 5 metres and suited to smaller gardens",
+          "type": "habit",
+          "cites": [
+            "dgp",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "Its flesh is a deep red-orange, distinct from the dark yellow flesh of Hachiya",
+          "type": "appearance",
+          "cites": [
+            "dgp",
+            "aviani"
+          ]
+        },
+        {
+          "text": "The fruit is large and oblong-conical to heart-shaped with a glossy orange to orange-red skin",
+          "type": "appearance",
+          "cites": [
+            "dgp",
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "It ripens early in the persimmon season and is often among the first persimmons to mature, cropping through the Australian autumn",
+          "type": "season",
+          "cites": [
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "Nurseries describe it as self-fertile and a reliable, heavy bearer, with fruit usually seedless",
+          "type": "pollination",
+          "cites": [
+            "daleys-nightingale"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "dgp",
+          "name": "Deep Green Permaculture: The Difference Between Nightingale and Hachiya Persimmons",
+          "url": "https://deepgreenpermaculture.com/2020/06/08/the-difference-between-nightingale-and-hachiya-persimmons/",
+          "tier": "third_party"
+        },
+        {
+          "id": "aviani",
+          "name": "Aviani Persimmon Farm: Persimmon Varieties",
+          "url": "https://www.avianipersimmonfarm.com.au/varieties",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-nightingale",
+          "name": "Daleys Fruit: Nightingale Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-nightingale-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-nightingale-astringent": {
+      "slug": "persimmon-nightingale-astringent",
+      "species": "Persimmon",
+      "variety": "Nightingale Astringent",
+      "paragraphs": [
+        "Nightingale is an astringent Japanese persimmon (Diospyros kaki) closely related to the well known Hachiya, and it is often listed as a Hachiya type. It is distinguished by its more compact, semi-dwarf habit (typically around 2 to 5 metres, prunable smaller and suited to small gardens) and by deeper red-orange flesh, where Hachiya tends towards dark yellow. The fruit is large and oblong-conical to heart-shaped with a glossy orange to orange-red skin.",
+        "Being astringent, it stays mouth-puckeringly tannic until fully soft, then turns rich, sweet and jelly-like, which makes it prized for fresh eating, drying and baking. It ripens early in the persimmon season and is often among the first persimmons to mature, cropping through the Australian autumn. Nurseries describe it as self-fertile and a reliable, heavy bearer, with the high-quality flesh usually seedless."
+      ],
+      "claims": [
+        {
+          "text": "Nightingale is an astringent Japanese persimmon that is inedible until fully ripe and soft, when it turns sweet and jelly-like",
+          "type": "astringency",
+          "cites": [
+            "dgp",
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "It is closely related to Hachiya and is often listed as a Hachiya type",
+          "type": "origin",
+          "cites": [
+            "dgp",
+            "aviani"
+          ]
+        },
+        {
+          "text": "It has a more compact, semi-dwarf habit, typically around 2 to 5 metres and suited to smaller gardens",
+          "type": "habit",
+          "cites": [
+            "dgp",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "Its flesh is a deep red-orange, distinct from the dark yellow flesh of Hachiya",
+          "type": "appearance",
+          "cites": [
+            "dgp",
+            "aviani"
+          ]
+        },
+        {
+          "text": "The fruit is large and oblong-conical to heart-shaped with a glossy orange to orange-red skin",
+          "type": "appearance",
+          "cites": [
+            "dgp",
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "It ripens early in the persimmon season and is often among the first persimmons to mature, cropping through the Australian autumn",
+          "type": "season",
+          "cites": [
+            "aviani",
+            "daleys-nightingale"
+          ]
+        },
+        {
+          "text": "Nurseries describe it as self-fertile and a reliable, heavy bearer, with fruit usually seedless",
+          "type": "pollination",
+          "cites": [
+            "daleys-nightingale"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "dgp",
+          "name": "Deep Green Permaculture: The Difference Between Nightingale and Hachiya Persimmons",
+          "url": "https://deepgreenpermaculture.com/2020/06/08/the-difference-between-nightingale-and-hachiya-persimmons/",
+          "tier": "third_party"
+        },
+        {
+          "id": "aviani",
+          "name": "Aviani Persimmon Farm: Persimmon Varieties",
+          "url": "https://www.avianipersimmonfarm.com.au/varieties",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-nightingale",
+          "name": "Daleys Fruit: Nightingale Persimmon",
+          "url": "https://www.daleysfruit.com.au/buy/persimmon-nightingale-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-nishinura-wase": {
+      "slug": "persimmon-nishinura-wase",
+      "species": "Persimmon",
+      "variety": "Nishinura Wase",
+      "paragraphs": [
+        "Nishimura Wase (the spelling Nishinura Wase is a common nursery variant) is an early Japanese persimmon, known in the United States as Coffee Cake. Wase means early, and it is one of the first persimmons to colour up, ripening roughly a month ahead of Fuyu. It is a pollination-variant non-astringent type, which makes it unusual. The fruit behaves completely differently depending on whether the flowers were pollinated.",
+        "When pollinated and carrying seeds, it develops crunchy brown flesh, a little like a chocolate Fuyu, and is non-astringent and sweet eaten firm, with a rich, spicy-sweet flavour. Grown on its own without a pollinator, the seedless fruit stays astringent until it softens to a sweet jelly. The brown flesh and rich taste are why it picked up the Coffee Cake name. A chocolate or Fuyu-type persimmon nearby brings out its best."
+      ],
+      "claims": [
+        {
+          "text": "Early Japanese persimmon, also called Coffee Cake, among the first to ripen (about a month before Fuyu)",
+          "type": "season",
+          "cites": [
+            "felix-gillet",
+            "ogw-coffeecake"
+          ]
+        },
+        {
+          "text": "Pollination-variant non-astringent: when pollinated and seeded it has crunchy brown flesh, non-astringent and sweet eaten firm",
+          "type": "astringency",
+          "cites": [
+            "felix-gillet",
+            "four-winds"
+          ]
+        },
+        {
+          "text": "Grown without a pollinator the seedless fruit is astringent until it softens to a sweet jelly",
+          "type": "astringency",
+          "cites": [
+            "felix-gillet",
+            "ogw-coffeecake"
+          ]
+        },
+        {
+          "text": "Named Coffee Cake for its brown flesh and rich, spicy-sweet flavour",
+          "type": "flavour",
+          "cites": [
+            "ogw-coffeecake",
+            "felix-gillet"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "felix-gillet",
+          "name": "Felix Gillet Institute, Persimmon Discoveries",
+          "url": "https://felixgillet.org/persimmon-discoveries",
+          "tier": "third_party"
+        },
+        {
+          "id": "ogw-coffeecake",
+          "name": "One Green World, Coffee Cake Asian Persimmon",
+          "url": "https://onegreenworld.com/product/coffee-cake-asian-persimmon/",
+          "tier": "nursery"
+        },
+        {
+          "id": "four-winds",
+          "name": "Four Winds Growers, Coffee Cake (Nishimura wase) Persimmon",
+          "url": "https://www.fourwindsgrowers.com/products/coffee-cake-persimmon-tree",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-rojo-brilliante": {
+      "slug": "persimmon-rojo-brilliante",
+      "species": "Persimmon",
+      "variety": "Rojo Brilliante",
+      "paragraphs": [
+        "Rojo Brillante is the leading Spanish persimmon cultivar, which arose from a spontaneous mutation in the 1950s in the Ribera del Xuquer area of Valencia. It is an astringent type, large and oblong with bright orange-red skin. Eaten in its natural state it must be fully soft, but it is famous for being sold firm: producers treat the fruit with carbon dioxide in sealed atmospheres to remove astringency while keeping the flesh crisp.",
+        "Sold firm and crunchy under the registered Persimon brand and the Kaki Ribera del Xuquer protected designation of origin (DOP), it eats sweet and juicy more like a crisp apple than a soft jelly. Spain produces hundreds of thousands of tonnes a year, with fruit available roughly from October to January."
+      ],
+      "claims": [
+        {
+          "text": "Rojo Brillante arose from a spontaneous mutation in the 1950s in the Ribera del Xuquer area of Valencia, Spain.",
+          "type": "origin",
+          "cites": [
+            "persimon-eu",
+            "sp-rojo"
+          ]
+        },
+        {
+          "text": "It is an astringent cultivar, large and oblong with bright orange-red skin.",
+          "type": "appearance",
+          "cites": [
+            "persimon-eu",
+            "wiki-persimmon"
+          ]
+        },
+        {
+          "text": "Producers remove astringency with carbon dioxide in sealed atmospheres so it can be sold firm and crisp.",
+          "type": "quirk",
+          "cites": [
+            "wiki-persimmon"
+          ]
+        },
+        {
+          "text": "It is sold firm under the registered Persimon brand and the Kaki Ribera del Xuquer DOP, eaten sweet and crunchy.",
+          "type": "uses",
+          "cites": [
+            "wiki-persimmon",
+            "persimon-eu"
+          ]
+        },
+        {
+          "text": "It is Spain's leading persimmon cultivar, available roughly October to January.",
+          "type": "season",
+          "cites": [
+            "wiki-persimmon",
+            "persimon-eu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-persimmon",
+          "name": "Wikipedia: Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "persimon-eu",
+          "name": "DOP Kaki Ribera del Xuquer: Bright Red Variety",
+          "url": "https://persimon.eu/en/persimmons/bright-red-variety/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-rojo",
+          "name": "Specialty Produce: Rojo Brillante Persimmons",
+          "url": "https://specialtyproduce.com/produce/Rojo_Brillante_Persimmons_24699.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-rojo-brilliante-astringent": {
+      "slug": "persimmon-rojo-brilliante-astringent",
+      "species": "Persimmon",
+      "variety": "Rojo Brilliante Astringent",
+      "paragraphs": [
+        "Rojo Brillante is the leading Spanish persimmon cultivar, which arose from a spontaneous mutation in the 1950s in the Ribera del Xuquer area of Valencia. It is an astringent type, large and oblong with bright orange-red skin. Eaten in its natural state it must be fully soft, but it is famous for being sold firm: producers treat the fruit with carbon dioxide in sealed atmospheres to remove astringency while keeping the flesh crisp.",
+        "Sold firm and crunchy under the registered Persimon brand and the Kaki Ribera del Xuquer protected designation of origin (DOP), it eats sweet and juicy more like a crisp apple than a soft jelly. Spain produces hundreds of thousands of tonnes a year, with fruit available roughly from October to January."
+      ],
+      "claims": [
+        {
+          "text": "Rojo Brillante arose from a spontaneous mutation in the 1950s in the Ribera del Xuquer area of Valencia, Spain.",
+          "type": "origin",
+          "cites": [
+            "persimon-eu",
+            "sp-rojo"
+          ]
+        },
+        {
+          "text": "It is an astringent cultivar, large and oblong with bright orange-red skin.",
+          "type": "appearance",
+          "cites": [
+            "persimon-eu",
+            "wiki-persimmon"
+          ]
+        },
+        {
+          "text": "Producers remove astringency with carbon dioxide in sealed atmospheres so it can be sold firm and crisp.",
+          "type": "quirk",
+          "cites": [
+            "wiki-persimmon"
+          ]
+        },
+        {
+          "text": "It is sold firm under the registered Persimon brand and the Kaki Ribera del Xuquer DOP, eaten sweet and crunchy.",
+          "type": "uses",
+          "cites": [
+            "wiki-persimmon",
+            "persimon-eu"
+          ]
+        },
+        {
+          "text": "It is Spain's leading persimmon cultivar, available roughly October to January.",
+          "type": "season",
+          "cites": [
+            "wiki-persimmon",
+            "persimon-eu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-persimmon",
+          "name": "Wikipedia: Persimmon",
+          "url": "https://en.wikipedia.org/wiki/Persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "persimon-eu",
+          "name": "DOP Kaki Ribera del Xuquer: Bright Red Variety",
+          "url": "https://persimon.eu/en/persimmons/bright-red-variety/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-rojo",
+          "name": "Specialty Produce: Rojo Brillante Persimmons",
+          "url": "https://specialtyproduce.com/produce/Rojo_Brillante_Persimmons_24699.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-shinshu": {
+      "slug": "persimmon-shinshu",
+      "species": "Persimmon",
+      "variety": "Shinshu",
+      "paragraphs": [
+        "Shinshu is a Japanese non-astringent persimmon that came out of Japan's breeding work on early-ripening PCNA (pollination-constant non-astringent) types. Being PCNA, it is sweet and free of astringency straight off the tree, eaten while still firm, without needing a pollinator or a wait for it to soften before the tannins disappear.",
+        "It is an early to mid-season variety, ripening around late April in Australia, with moderate-sized fruit of roughly 250 grams and smooth orange skin. The flesh is soft and very juicy, and it reaches about 17 Brix, so it eats sweet and of high quality. It is also noted to perform well grown under cover or in a greenhouse."
+      ],
+      "claims": [
+        {
+          "text": "Japanese non-astringent persimmon from Japan's breeding programs for early-ripening PCNA (pollination-constant non-astringent) types",
+          "type": "origin",
+          "cites": [
+            "nifts",
+            "anfic"
+          ]
+        },
+        {
+          "text": "PCNA type: sweet and non-astringent eaten firm, with no pollinator needed to remove astringency",
+          "type": "astringency",
+          "cites": [
+            "anfic",
+            "nifts"
+          ]
+        },
+        {
+          "text": "Early to mid-season, ripening around late April in Australia",
+          "type": "season",
+          "cites": [
+            "anfic",
+            "nifts"
+          ]
+        },
+        {
+          "text": "Moderate fruit around 250 g with orange skin, soft juicy flesh, and about 17 Brix",
+          "type": "appearance",
+          "cites": [
+            "anfic"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic",
+          "name": "ANFIC, Shinshu persimmon variety",
+          "url": "https://anfic.com.au/variety/shinshu-persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "nifts",
+          "name": "Persimmon breeding in Japan for PCNA type with marker-assisted selection (NIFTS)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4780803/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-sunami": {
+      "slug": "persimmon-sunami",
+      "species": "Persimmon",
+      "variety": "Sunami",
+      "paragraphs": [
+        "Sunami is a non-astringent Japanese persimmon that arose as a large-fruited bud mutation of Fuyu. It is prized for fruit larger than standard Fuyu, often around 300 grams, with yellow skin and flesh reported to have better flavour and texture than Fuyu.",
+        "It also ripens earlier, maturing roughly ten days ahead of Fuyu, which brings forward the start of the non-astringent season. Sunami is a rare variety, grown more by collectors and specialty nurseries than at commercial scale."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent large-fruited bud mutation of Fuyu from Japan",
+          "type": "origin",
+          "cites": [
+            "anfic-persimmons",
+            "rosscreek-sunami"
+          ]
+        },
+        {
+          "text": "Large fruit around 300 grams with yellow skin",
+          "type": "appearance",
+          "cites": [
+            "anfic-persimmons",
+            "rosscreek-sunami"
+          ]
+        },
+        {
+          "text": "Better flavour and texture than Fuyu",
+          "type": "flavour",
+          "cites": [
+            "anfic-persimmons"
+          ]
+        },
+        {
+          "text": "Matures about ten days before Fuyu",
+          "type": "season",
+          "cites": [
+            "anfic-persimmons",
+            "rosscreek-sunami"
+          ]
+        },
+        {
+          "text": "Rare, collector-oriented variety",
+          "type": "traits",
+          "cites": [
+            "rosscreek-sunami"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic-persimmons",
+          "name": "ANFIC (Australian Nurserymen's Fruit Improvement Company), Persimmon varieties",
+          "url": "https://anfic.com.au/varieties/all/other-fruit/persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-sunami",
+          "name": "Ross Creek Tropicals, Sunami Persimmon",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-sunami-non-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-sunami-non-astringent": {
+      "slug": "persimmon-sunami-non-astringent",
+      "species": "Persimmon",
+      "variety": "Sunami Non Astringent",
+      "paragraphs": [
+        "Sunami is a non-astringent Japanese persimmon that arose as a large-fruited bud mutation of Fuyu. It is prized for fruit larger than standard Fuyu, often around 300 grams, with yellow skin and flesh reported to have better flavour and texture than Fuyu.",
+        "It also ripens earlier, maturing roughly ten days ahead of Fuyu, which brings forward the start of the non-astringent season. Sunami is a rare variety, grown more by collectors and specialty nurseries than at commercial scale."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent large-fruited bud mutation of Fuyu from Japan",
+          "type": "origin",
+          "cites": [
+            "anfic-persimmons",
+            "rosscreek-sunami"
+          ]
+        },
+        {
+          "text": "Large fruit around 300 grams with yellow skin",
+          "type": "appearance",
+          "cites": [
+            "anfic-persimmons",
+            "rosscreek-sunami"
+          ]
+        },
+        {
+          "text": "Better flavour and texture than Fuyu",
+          "type": "flavour",
+          "cites": [
+            "anfic-persimmons"
+          ]
+        },
+        {
+          "text": "Matures about ten days before Fuyu",
+          "type": "season",
+          "cites": [
+            "anfic-persimmons",
+            "rosscreek-sunami"
+          ]
+        },
+        {
+          "text": "Rare, collector-oriented variety",
+          "type": "traits",
+          "cites": [
+            "rosscreek-sunami"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic-persimmons",
+          "name": "ANFIC (Australian Nurserymen's Fruit Improvement Company), Persimmon varieties",
+          "url": "https://anfic.com.au/varieties/all/other-fruit/persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-sunami",
+          "name": "Ross Creek Tropicals, Sunami Persimmon",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-sunami-non-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-suruga": {
+      "slug": "persimmon-suruga",
+      "species": "Persimmon",
+      "variety": "Suruga",
+      "paragraphs": [
+        "Suruga is a non-astringent (PCNA) Japanese persimmon bred from a Hanagosho by Okugosho cross. It is one of the sweetest of the non-astringent kaki types, with soluble solids commonly in the 18 to 21 percent range, and the flesh can be eaten crisp and firm straight off the tree without any need to ripen the tannins out first.",
+        "It is a late-season cultivar, ripening after most other non-astringent varieties, and it holds its flavour well after picking. Fruit are medium to large and oblate (slightly flattened) with strong red-orange colour when mature. Trees are of moderate vigour, and the late-hanging crop can be prone to bird, insect and animal damage."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent PCNA type from a Hanagosho by Okugosho cross",
+          "type": "origin",
+          "cites": [
+            "ufifas-mg242",
+            "cultivar-guide"
+          ]
+        },
+        {
+          "text": "Among the sweetest non-astringent kaki, soluble solids about 18 to 21 percent",
+          "type": "flavour",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Eaten crisp and firm with no astringency",
+          "type": "astringency",
+          "cites": [
+            "gardeners-path",
+            "cultivar-guide"
+          ]
+        },
+        {
+          "text": "Late-season ripening that holds flavour after picking",
+          "type": "season",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Medium to large oblate fruit with strong red-orange colour",
+          "type": "appearance",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Moderate vigour, late crop susceptible to insect and animal damage",
+          "type": "traits",
+          "cites": [
+            "ufifas-mg242"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-mg242",
+          "name": "UF/IFAS EDIS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://edis.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "cultivar-guide",
+          "name": "Cultivar.guide Persimmon varieties",
+          "url": "https://cultivar.guide/persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeners-path",
+          "name": "Gardener's Path, Best Asian Persimmon Varieties",
+          "url": "https://gardenerspath.com/plants/fruit-trees/best-asian-persimmon-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-suruga-non-astringent": {
+      "slug": "persimmon-suruga-non-astringent",
+      "species": "Persimmon",
+      "variety": "Suruga Non Astringent",
+      "paragraphs": [
+        "Suruga is a non-astringent (PCNA) Japanese persimmon bred from a Hanagosho by Okugosho cross. It is one of the sweetest of the non-astringent kaki types, with soluble solids commonly in the 18 to 21 percent range, and the flesh can be eaten crisp and firm straight off the tree without any need to ripen the tannins out first.",
+        "It is a late-season cultivar, ripening after most other non-astringent varieties, and it holds its flavour well after picking. Fruit are medium to large and oblate (slightly flattened) with strong red-orange colour when mature. Trees are of moderate vigour, and the late-hanging crop can be prone to bird, insect and animal damage."
+      ],
+      "claims": [
+        {
+          "text": "Non-astringent PCNA type from a Hanagosho by Okugosho cross",
+          "type": "origin",
+          "cites": [
+            "ufifas-mg242",
+            "cultivar-guide"
+          ]
+        },
+        {
+          "text": "Among the sweetest non-astringent kaki, soluble solids about 18 to 21 percent",
+          "type": "flavour",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Eaten crisp and firm with no astringency",
+          "type": "astringency",
+          "cites": [
+            "gardeners-path",
+            "cultivar-guide"
+          ]
+        },
+        {
+          "text": "Late-season ripening that holds flavour after picking",
+          "type": "season",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Medium to large oblate fruit with strong red-orange colour",
+          "type": "appearance",
+          "cites": [
+            "ufifas-mg242",
+            "gardeners-path"
+          ]
+        },
+        {
+          "text": "Moderate vigour, late crop susceptible to insect and animal damage",
+          "type": "traits",
+          "cites": [
+            "ufifas-mg242"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-mg242",
+          "name": "UF/IFAS EDIS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://edis.ifas.ufl.edu/publication/mg242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "cultivar-guide",
+          "name": "Cultivar.guide Persimmon varieties",
+          "url": "https://cultivar.guide/persimmon",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeners-path",
+          "name": "Gardener's Path, Best Asian Persimmon Varieties",
+          "url": "https://gardenerspath.com/plants/fruit-trees/best-asian-persimmon-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-tanenashi": {
+      "slug": "persimmon-tanenashi",
+      "species": "Persimmon",
+      "variety": "Tanenashi",
+      "paragraphs": [
+        "Tanenashi, whose name means seedless in Japanese, is a classic Japanese astringent persimmon and the most common astringent cultivar grown in Florida. The fruit is large and conical (cone-shaped), with deep yellow to orange skin and orange flesh.",
+        "As a pollination-constant astringent type it seldom sets seed even when pollinated, so the fruit is effectively seedless, and it must be ripened soft before eating to lose its tannic astringency. It is regarded as having excellent eating quality once fully ripe."
+      ],
+      "claims": [
+        {
+          "text": "Tanenashi means seedless in Japanese.",
+          "type": "origin",
+          "cites": [
+            "rfca",
+            "masterclass"
+          ]
+        },
+        {
+          "text": "It is the most common astringent persimmon cultivar grown in Florida.",
+          "type": "notable",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "The fruit is large and conical or cone-shaped.",
+          "type": "appearance",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It seldom sets seed even when pollinated, so fruit is effectively seedless.",
+          "type": "trait",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It is an astringent type that must ripen soft before eating.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It is valued for excellent eating quality when fully ripe.",
+          "type": "flavour",
+          "cites": [
+            "rfca",
+            "masterclass"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Club Archives, The Oriental Persimmon",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmons7-88.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "masterclass",
+          "name": "MasterClass, Types of Persimmons",
+          "url": "https://www.masterclass.com/articles/types-of-persimmons",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-tanenashi-astringent": {
+      "slug": "persimmon-tanenashi-astringent",
+      "species": "Persimmon",
+      "variety": "Tanenashi Astringent",
+      "paragraphs": [
+        "Tanenashi, whose name means seedless in Japanese, is a classic Japanese astringent persimmon and the most common astringent cultivar grown in Florida. The fruit is large and conical (cone-shaped), with deep yellow to orange skin and orange flesh.",
+        "As a pollination-constant astringent type it seldom sets seed even when pollinated, so the fruit is effectively seedless, and it must be ripened soft before eating to lose its tannic astringency. It is regarded as having excellent eating quality once fully ripe."
+      ],
+      "claims": [
+        {
+          "text": "Tanenashi means seedless in Japanese.",
+          "type": "origin",
+          "cites": [
+            "rfca",
+            "masterclass"
+          ]
+        },
+        {
+          "text": "It is the most common astringent persimmon cultivar grown in Florida.",
+          "type": "notable",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "The fruit is large and conical or cone-shaped.",
+          "type": "appearance",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It seldom sets seed even when pollinated, so fruit is effectively seedless.",
+          "type": "trait",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It is an astringent type that must ripen soft before eating.",
+          "type": "astringency",
+          "cites": [
+            "ufifas",
+            "rfca"
+          ]
+        },
+        {
+          "text": "It is valued for excellent eating quality when fully ripe.",
+          "type": "flavour",
+          "cites": [
+            "rfca",
+            "masterclass"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Club Archives, The Oriental Persimmon",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmons7-88.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "masterclass",
+          "name": "MasterClass, Types of Persimmons",
+          "url": "https://www.masterclass.com/articles/types-of-persimmons",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-tone-wase-astringent": {
+      "slug": "persimmon-tone-wase-astringent",
+      "species": "Persimmon",
+      "variety": "Tone Wase- Astringent",
+      "paragraphs": [
+        "Tone Wase (also written Tonewase) is an early-ripening astringent persimmon that arose as a natural bud sport (mutation) of the Japanese cultivar Hiratanenashi. Its defining feature is that it matures roughly 10 to 15 days earlier than its parent, making it one of the earliest astringent persimmons of the season.",
+        "Like Hiratanenashi it is an astringent type that must be soft-ripe before eating to shed its tannins, and it is valued for sweet, high-sugar fruit once ready. Because it carries Hiratanenashi parentage, the fruit is typically seedless."
+      ],
+      "claims": [
+        {
+          "text": "Tone Wase is a natural bud sport (mutation) of the Japanese cultivar Hiratanenashi.",
+          "type": "origin",
+          "cites": [
+            "anfic",
+            "ncbi"
+          ]
+        },
+        {
+          "text": "It ripens roughly 10 to 15 days earlier than Hiratanenashi, among the earliest astringent persimmons.",
+          "type": "season",
+          "cites": [
+            "anfic",
+            "ncbi"
+          ]
+        },
+        {
+          "text": "It is an astringent type that must be soft-ripe before eating.",
+          "type": "astringency",
+          "cites": [
+            "anfic",
+            "rosscreek"
+          ]
+        },
+        {
+          "text": "The fruit is sweet with high sugar once ripe.",
+          "type": "flavour",
+          "cites": [
+            "anfic",
+            "rosscreek"
+          ]
+        },
+        {
+          "text": "It is typically seedless, sharing the seedless character of its Hiratanenashi parent.",
+          "type": "trait",
+          "cites": [
+            "ncbi",
+            "ufifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic",
+          "name": "ANFIC, Tone Wase Persimmon",
+          "url": "https://anfic.com.au/variety/tone-wase-persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ncbi",
+          "name": "Comparative transcriptome analysis of persimmon somatic mutants (PMC11327018)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11327018/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS, Japanese Persimmon Cultivars in Florida (MG242)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG242",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek",
+          "name": "Ross Creek Tropicals, Persimmon Tone Wase Astringent",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-tone-wase-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-yoho": {
+      "slug": "persimmon-yoho",
+      "species": "Persimmon",
+      "variety": "Yoho",
+      "paragraphs": [
+        "Yoho is a Japanese persimmon noted for firm flesh that softens very slowly, holding its texture for a long time after harvest, which suits storage and handling. It is a productive, parthenocarpic cultivar (it can set fruit without pollination), carrying moderate-sized red-orange fruit that ripen in the middle of the season.",
+        "Sources disagree on its astringency. The Australian variety body ANFIC classes Yoho as astringent, meaning it should be softened before eating, while some research and several nurseries describe or sell it as non-astringent. Buyers should confirm which type they have before eating it firm."
+      ],
+      "claims": [
+        {
+          "text": "Firm flesh that softens very slowly and holds texture after harvest",
+          "type": "traits",
+          "cites": [
+            "anfic-yoho",
+            "frontiers-postharvest"
+          ]
+        },
+        {
+          "text": "Productive and parthenocarpic, setting fruit without pollination",
+          "type": "traits",
+          "cites": [
+            "anfic-yoho"
+          ]
+        },
+        {
+          "text": "Moderate-sized red-orange fruit ripening mid-season",
+          "type": "appearance",
+          "cites": [
+            "anfic-yoho"
+          ]
+        },
+        {
+          "text": "Astringency is disputed, classed astringent by ANFIC but sold as non-astringent by some nurseries and described non-astringent in some research",
+          "type": "astringency",
+          "cites": [
+            "anfic-yoho",
+            "frontiers-postharvest",
+            "rosscreek-yoho",
+            "ladybird-yoho"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic-yoho",
+          "name": "ANFIC (Australian Nurserymen's Fruit Improvement Company), Yoho persimmon",
+          "url": "https://anfic.com.au/variety/yoho-persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "frontiers-postharvest",
+          "name": "Frontiers in Genetics, Postharvest Fruit Qualities in Astringent and Non-astringent Persimmon Cultivars",
+          "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2021.670929/full",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-yoho",
+          "name": "Ross Creek Tropicals, Yoho Persimmon (astringent listing)",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-yoho-astringent",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-yoho",
+          "name": "Ladybird Nursery, Yoho Persimmon (non-astringent listing)",
+          "url": "https://ladybirdnursery.com.au/products/persimmon-yoho-non-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "persimmon-yoho-non-astringent": {
+      "slug": "persimmon-yoho-non-astringent",
+      "species": "Persimmon",
+      "variety": "Yoho Non Astringent",
+      "paragraphs": [
+        "Yoho is a Japanese persimmon noted for firm flesh that softens very slowly, holding its texture for a long time after harvest, which suits storage and handling. It is a productive, parthenocarpic cultivar (it can set fruit without pollination), carrying moderate-sized red-orange fruit that ripen in the middle of the season.",
+        "Sources disagree on its astringency. Some research and several Australian nurseries describe or sell Yoho as non-astringent, while the variety body ANFIC classes it as astringent, meaning it should be softened before eating. Buyers should confirm which type they have before eating it firm."
+      ],
+      "claims": [
+        {
+          "text": "Firm flesh that softens very slowly and holds texture after harvest",
+          "type": "traits",
+          "cites": [
+            "anfic-yoho",
+            "frontiers-postharvest"
+          ]
+        },
+        {
+          "text": "Productive and parthenocarpic, setting fruit without pollination",
+          "type": "traits",
+          "cites": [
+            "anfic-yoho"
+          ]
+        },
+        {
+          "text": "Moderate-sized red-orange fruit ripening mid-season",
+          "type": "appearance",
+          "cites": [
+            "anfic-yoho"
+          ]
+        },
+        {
+          "text": "Astringency is disputed, classed astringent by ANFIC but sold as non-astringent by some nurseries and described non-astringent in some research",
+          "type": "astringency",
+          "cites": [
+            "anfic-yoho",
+            "frontiers-postharvest",
+            "rosscreek-yoho",
+            "ladybird-yoho"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anfic-yoho",
+          "name": "ANFIC (Australian Nurserymen's Fruit Improvement Company), Yoho persimmon",
+          "url": "https://anfic.com.au/variety/yoho-persimmon/",
+          "tier": "third_party"
+        },
+        {
+          "id": "frontiers-postharvest",
+          "name": "Frontiers in Genetics, Postharvest Fruit Qualities in Astringent and Non-astringent Persimmon Cultivars",
+          "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2021.670929/full",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-yoho",
+          "name": "Ross Creek Tropicals, Yoho Persimmon (astringent listing)",
+          "url": "https://www.rosscreektropicals.com.au/products/persimmon-yoho-astringent",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-yoho",
+          "name": "Ladybird Nursery, Yoho Persimmon (non-astringent listing)",
+          "url": "https://ladybirdnursery.com.au/products/persimmon-yoho-non-astringent",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  }
+}
