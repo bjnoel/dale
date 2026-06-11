@@ -78,6 +78,30 @@ def parse_availability(raw_html, json_ld_blocks):
     return None
 
 
+def parse_json_ld_price(json_ld_blocks):
+    """Return the offer price from a JSON-LD Product block, or None.
+
+    On beewise the Magento dataLayer productPage event carries the ex-GST
+    price, while the JSON-LD offer carries the inc-GST price the site
+    displays and the customer pays. Always prefer this one.
+    """
+    for block in json_ld_blocks:
+        if isinstance(block, dict) and block.get("@type") == "Product":
+            offers = block.get("offers") or {}
+            if isinstance(offers, list):
+                offers = offers[0] if offers else {}
+            if not isinstance(offers, dict):
+                continue
+            raw = offers.get("price", offers.get("lowPrice"))
+            if raw is None:
+                continue
+            try:
+                return float(raw)
+            except (TypeError, ValueError):
+                continue
+    return None
+
+
 def extract_product(page_url, raw_html):
     """Extract a product dict from a Magento product page. Returns None if not a product."""
     ev = PRODUCT_PAGE_EVENT_RE.search(raw_html)
@@ -104,11 +128,13 @@ def extract_product(page_url, raw_html):
     if available is None:
         available = True  # default-optimistic if the page has no clear marker
 
-    price = event.get("price")
-    try:
-        price = float(price) if price is not None else None
-    except (TypeError, ValueError):
-        price = None
+    price = parse_json_ld_price(ld_blocks)
+    if price is None:
+        price = event.get("price")
+        try:
+            price = float(price) if price is not None else None
+        except (TypeError, ValueError):
+            price = None
 
     sku = event.get("sku") or ""
     product_id = event.get("id")

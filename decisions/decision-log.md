@@ -4,6 +4,27 @@
 
 ---
 
+## DEC-192 — 2026-06-11 — Beestock: beewise prices were ex-GST, fix scraper to read JSON-LD price
+
+**Decided by:** Dale (reactive bugfix, reported by Benedict)
+**Context:** Benedict spotted a beewise listing (Konigin 25L honey tank) shown on beestock at
+$232.73 while the site sells it for $256. 256 / 1.1 = 232.727: the scraper was publishing
+ex-GST prices. Root cause: `magento_bee_scraper.py` read the price from Magento's dataLayer
+`productPage` event, which on beewise carries the price excluding GST. The page's JSON-LD
+Product offer carries the displayed inc-GST price ($256.00, confirmed live on the page).
+Beewise is the only Magento retailer; Shopify retailers and all treestock scrapers are
+unaffected (different code paths).
+**Decision:** Prefer the JSON-LD Product offer price (with AggregateOffer lowPrice fallback),
+fall back to the dataLayer event price only when JSON-LD has no usable price. Added
+`tests/test_magento_bee_scraper.py` regression tests (verified failing on old code, passing on
+new; full suite 1410 green). Historical beewise snapshots keep their ex-GST prices: GST status
+is per-product and unrecoverable from old data, and rewriting history is riskier than a one-day
+step. The correction shows as a ~10% price increase, which `compare_snapshots` ignores (it only
+reports drops), so no false price-drop alerts go to subscribers.
+**Actions:** Fixed scraper + regression tests, deployed, re-scraped beewise, rebuilt bee pages
+(builders only, no digest/alert emails).
+**To revert:** revert the commit; the next nightly scrape republishes event prices.
+
 ## DEC-191 — 2026-06-08 — Variety descriptions: tropical six (dragon fruit, passionfruit, guava, banana, starfruit, sapodilla)
 
 **Decided by:** Dale (parallel variety-descriptions run, branch dale/varieties-tropfruit)
