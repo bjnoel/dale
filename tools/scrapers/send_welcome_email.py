@@ -26,7 +26,10 @@ APP_ENV = SECRETS_DIR / "app.env"
 FROM_EMAIL = "alerts@mail.treestock.com.au"
 FROM_NAME = "treestock.com.au"
 SITE_URL = "https://treestock.com.au"
-UNSUBSCRIBE_BASE = "https://treestock.com.au/unsubscribe"
+# The static /unsubscribe.html page (POSTs to /api/unsubscribe). Bare /unsubscribe
+# is not a routed path, so it 404s — keep this consistent with email_footer.py and
+# the alert senders, which all use /unsubscribe.html.
+UNSUBSCRIBE_BASE = "https://treestock.com.au/unsubscribe.html"
 UTM = "utm_source=treestock&utm_medium=email&utm_campaign=welcome"
 
 
