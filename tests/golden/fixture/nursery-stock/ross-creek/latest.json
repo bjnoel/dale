@@ -2,8 +2,8 @@
   "nursery": "ross-creek",
   "nursery_name": "Ross Creek Tropicals",
   "scraped_at": "2026-03-05T04:10:00",
-  "product_count": 5,
-  "in_stock_count": 4,
+  "product_count": 7,
+  "in_stock_count": 6,
   "products": [
     {
       "nursery": "ross-creek",
@@ -64,6 +64,32 @@
       "min_price": 45.0,
       "max_price": 45.0,
       "any_available": false
+    },
+    {
+      "nursery": "ross-creek",
+      "nursery_name": "Ross Creek Tropicals",
+      "title": "Riberry",
+      "url": "https://rosscreek.com.au/p/riberry",
+      "product_type": "Australian Native",
+      "variants": [
+        {"title": "200mm", "price": 28.00, "available": true, "sku": "RC-AN-RB"}
+      ],
+      "min_price": 28.0,
+      "max_price": 28.0,
+      "any_available": true
+    },
+    {
+      "nursery": "ross-creek",
+      "nursery_name": "Ross Creek Tropicals",
+      "title": "Blue Tongue - Melastoma affine",
+      "url": "https://rosscreek.com.au/p/blue-tongue",
+      "product_type": "Australian Native",
+      "variants": [
+        {"title": "200mm", "price": 22.00, "available": true, "sku": "RC-AN-BT"}
+      ],
+      "min_price": 22.0,
+      "max_price": 22.0,
+      "any_available": true
     }
   ]
 }

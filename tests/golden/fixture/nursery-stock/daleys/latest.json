@@ -2,8 +2,8 @@
   "nursery": "daleys",
   "nursery_name": "Daleys Fruit Trees",
   "scraped_at": "2026-03-05T03:12:48",
-  "product_count": 8,
-  "in_stock_count": 7,
+  "product_count": 10,
+  "in_stock_count": 9,
   "products": [
     {
       "nursery": "daleys",
@@ -108,6 +108,32 @@
       ],
       "min_price": 24.95,
       "max_price": 24.95,
+      "any_available": true
+    },
+    {
+      "nursery": "daleys",
+      "nursery_name": "Daleys Fruit Trees",
+      "title": "Mountain Pepper",
+      "url": "https://daleysfruit.com.au/p/mountain-pepper",
+      "category": "Bush Food Plants",
+      "variants": [
+        {"title": "Tube", "price": 14.95, "available": true, "sku": "D-BT-MP"}
+      ],
+      "min_price": 14.95,
+      "max_price": 14.95,
+      "any_available": true
+    },
+    {
+      "nursery": "daleys",
+      "nursery_name": "Daleys Fruit Trees",
+      "title": "Native Gardenia",
+      "url": "https://daleysfruit.com.au/p/native-gardenia",
+      "category": "Bush Food Plants",
+      "variants": [
+        {"title": "Tube", "price": 16.95, "available": true, "sku": "D-BT-NG"}
+      ],
+      "min_price": 16.95,
+      "max_price": 16.95,
       "any_available": true
     }
   ]
