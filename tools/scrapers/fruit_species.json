@@ -418,9 +418,7 @@
     "synonyms": [
       "Cherimoya",
       "Atemoya",
-      "Bullock's Heart",
-      "Sugar Apple",
-      "Annona squamosa"
+      "Bullock's Heart"
     ],
     "description": "Custard apples are subtropical trees producing creamy, sweet fruit with a flavour resembling vanilla custard. They grow best in coastal Queensland and northern NSW, though sheltered positions in subtropical WA also suit them. Tracked varieties include Geffner and Paxton Prolific. Geffner is widely considered the best commercial variety in Australia, producing large, smooth-skinned fruit with fewer seeds and excellent shelf life. Paxton Prolific is an older type valued for consistent productivity. Trees need frost-free conditions, warm nights during flowering, and a distinct dry season to encourage simultaneous leaf drop and uniform flower set. Hand-pollination dramatically improves yields; transfer pollen from male-phase flowers to female-phase flowers with a small brush in the early morning. Plant in full sun in well-drained, deep soil enriched with compost. Custard apples are sensitive to waterlogging. Fertilise with a balanced tropical fruit fertiliser every 8 weeks during the growing season. Fruit is ready to harvest when it just begins to soften and develops a cream-green blush. In WA, custard apples can be grown in the Kimberley and Pilbara, though summer heat requires careful irrigation management. No specific state movement restrictions apply, but always verify with local biosecurity authorities."
   },
@@ -852,7 +850,11 @@
       "Davidson Plum",
       "Davidsons Plum",
       "Davidson’s Plum",
-      "Ooray"
+      "Ooray",
+      "Davidsonia",
+      "Davidsonia jerseyana",
+      "Davidsonia johnsonii",
+      "Davidsonia pruriens"
     ]
   },
   {
@@ -891,5 +893,15 @@
     "slug": "desert-lime",
     "region": "Australia (inland)",
     "synonyms": []
+  },
+  {
+    "common_name": "Sugar Apple",
+    "latin_name": "Annona squamosa",
+    "slug": "sugar-apple",
+    "region": "Tropical Americas",
+    "synonyms": [
+      "Annona squamosa",
+      "Sweetsop"
+    ]
   }
 ]

@@ -292,6 +292,51 @@ class SpeciesInScope(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
+# Canonicalisation (DEC-196) -- respellings and synonym spellings of one
+# species must converge on one canonical name and ONE slug, so the variety
+# index doesn't show "Jakfruit" and "Jackfruit" as separate species.
+# ---------------------------------------------------------------------------
+
+class CanonicalCultivar(unittest.TestCase):
+    def test_respellings_merge(self):
+        self.assertEqual(cp.product_variety_slug("Jakfruit - Black Gold"), "jackfruit-black-gold")
+        self.assertEqual(cp.product_variety_slug("Jackfruit - Black Gold"), "jackfruit-black-gold")
+        self.assertEqual(cp.product_variety_slug("Jackfruit Marcott - Black Gold"), "jackfruit-black-gold")
+        self.assertEqual(cp.product_variety_slug("Cumquat - Meiwa"), "kumquat-meiwa")
+        self.assertEqual(cp.product_variety_slug("Grapes - Menindee Seedless"), "grape-menindee-seedless")
+        self.assertEqual(cp.product_variety_slug("Dragonfruit - Pink Panther"), "dragon-fruit-pink-panther")
+
+    def test_davidsons_plum_spellings_merge(self):
+        titles = [
+            "Davidson Plum - Smooth",
+            "Davidson’s Plum ‘Smooth’",
+            "Davidsonia jerseyana - Smooth",
+        ]
+        self.assertEqual(
+            {cp.product_variety_slug(t) for t in titles}, {"davidson-s-plum-smooth"}
+        )
+
+    def test_species_only_listing_gets_no_page(self):
+        # "Annona squamosa - Sugar apple" is a sugar apple tree, not a cultivar
+        self.assertIsNone(cp.product_variety_slug("Annona squamosa - Sugar apple"))
+        # ...but a real sugar apple cultivar gets its own species' slug
+        self.assertEqual(
+            cp.product_variety_slug("Sugar apple - Kampong Mauve"),
+            "sugar-apple-kampong-mauve",
+        )
+
+    def test_canonicalize_species(self):
+        self.assertEqual(cp.canonicalize_species("Meyer Lemon"), ("Lemon", "Meyer"))
+        self.assertEqual(cp.canonicalize_species("Carambola Starfruit"), ("Starfruit", ""))
+        self.assertEqual(
+            cp.canonicalize_species("Jaboticaba White Plinia phitrantha"),
+            ("Jaboticaba", "White"),
+        )
+        self.assertEqual(cp.canonicalize_species("Mandarin Imperial"), ("Mandarin", "Imperial"))
+        self.assertIsNone(cp.canonicalize_species("Kangaroo Paw"))
+
+
+# ---------------------------------------------------------------------------
 # Relaxed pass -- titles the strict parser rejects but which still express a
 # cultivar once listing noise is stripped, plus multigraft and leading-quote
 # shapes. Added 2026-05-30 to widen variety-page coverage for OOS search rows.

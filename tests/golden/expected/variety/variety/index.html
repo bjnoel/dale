@@ -92,15 +92,29 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   </p>
 
   <div class="mb-6">
-    <input id="varietySearch" type="search" placeholder="Search varieties or species (e.g. Hass, Bowen, Valencia...)"
-      class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-      autocomplete="off">
+    <div class="flex gap-2">
+      <input id="varietySearch" type="search" placeholder="Search varieties or species (e.g. Hass, Bowen, Valencia...)"
+        class="flex-1 min-w-0 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        autocomplete="off">
+      <select id="stateFilter" aria-label="Filter by state"
+        class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+        <option value="">All states</option>
+        <option value="NSW">NSW</option>
+        <option value="VIC">VIC</option>
+        <option value="QLD">QLD</option>
+        <option value="SA">SA</option>
+        <option value="WA">WA</option>
+        <option value="ACT">ACT</option>
+        <option value="TAS">TAS</option>
+        <option value="NT">NT</option>
+      </select>
+    </div>
     <p id="varietyCount" class="text-xs text-gray-400 mt-1">12 varieties across 8 species</p>
   </div>
 
   <div id="noResults" class="hidden text-center py-12 text-gray-500">
     <p class="text-lg">No varieties found matching your search.</p>
-    <p class="text-sm mt-1">Try a different spelling or species name.</p>
+    <p class="text-sm mt-1">Try a different spelling or species name, or clear the state filter.</p>
   </div>
 
   
@@ -120,7 +134,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
           </tr>
         </thead>
         <tbody>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="dorsett golden">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="dorsett golden" data-states="ACT NSW QLD SA VIC WA">
         <td class="py-2 pr-4">
           <a href="/variety/apple-dorsett-golden.html" class="text-green-800 hover:underline">Dorsett Golden</a>
         </td>
@@ -128,7 +142,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
         <td class="py-2 pr-4 text-sm">3 in stock</td>
         <td class="py-2 text-sm font-medium">$32.00</td>
       </tr>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="pink lady">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="pink lady" data-states="ACT NSW QLD SA VIC WA">
         <td class="py-2 pr-4">
           <a href="/variety/apple-pink-lady.html" class="text-green-800 hover:underline">Pink Lady</a>
         </td>
@@ -156,7 +170,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
           </tr>
         </thead>
         <tbody>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="hass">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="hass" data-states="ACT NSW QLD SA VIC WA">
         <td class="py-2 pr-4">
           <a href="/variety/avocado-hass.html" class="text-green-800 hover:underline">Hass</a>
         </td>
@@ -164,7 +178,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
         <td class="py-2 pr-4 text-sm">2 in stock</td>
         <td class="py-2 text-sm font-medium">$34.95</td>
       </tr>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="reed">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="reed" data-states="WA">
         <td class="py-2 pr-4">
           <a href="/variety/avocado-reed.html" class="text-green-800 hover:underline">Reed</a>
         </td>
@@ -192,7 +206,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
           </tr>
         </thead>
         <tbody>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="cavendish">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="cavendish" data-states="WA">
         <td class="py-2 pr-4">
           <a href="/variety/banana-cavendish.html" class="text-green-800 hover:underline">Cavendish</a>
         </td>
@@ -200,7 +214,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
         <td class="py-2 pr-4 text-sm">1 in stock</td>
         <td class="py-2 text-sm font-medium">$22.00</td>
       </tr>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="dwarf cavendish">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="dwarf cavendish" data-states="ACT NSW QLD SA VIC WA">
         <td class="py-2 pr-4">
           <a href="/variety/banana-dwarf-cavendish.html" class="text-green-800 hover:underline">Dwarf Cavendish</a>
         </td>
@@ -228,7 +242,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
           </tr>
         </thead>
         <tbody>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="mossman">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="mossman" data-states="ACT NSW QLD SA VIC WA">
         <td class="py-2 pr-4">
           <a href="/variety/black-sapote-mossman.html" class="text-green-800 hover:underline">Mossman</a>
         </td>
@@ -256,7 +270,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
           </tr>
         </thead>
         <tbody>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="black genoa">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="black genoa" data-states="WA">
         <td class="py-2 pr-4">
           <a href="/variety/fig-black-genoa.html" class="text-green-800 hover:underline">Black Genoa</a>
         </td>
@@ -284,7 +298,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
           </tr>
         </thead>
         <tbody>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="kohala">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="kohala" data-states="ACT NSW QLD VIC">
         <td class="py-2 pr-4">
           <a href="/variety/longan-kohala.html" class="text-green-800 hover:underline">Kohala</a>
         </td>
@@ -312,7 +326,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
           </tr>
         </thead>
         <tbody>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="kwai may pink">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="kwai may pink" data-states="ACT NSW QLD VIC">
         <td class="py-2 pr-4">
           <a href="/variety/lychee-kwai-may-pink.html" class="text-green-800 hover:underline">Kwai May Pink</a>
         </td>
@@ -340,7 +354,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
           </tr>
         </thead>
         <tbody>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="kensington pride">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="kensington pride" data-states="ACT NSW QLD SA VIC WA">
         <td class="py-2 pr-4">
           <a href="/variety/mango-kensington-pride.html" class="text-green-800 hover:underline">Kensington Pride</a>
         </td>
@@ -348,7 +362,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
         <td class="py-2 pr-4 text-sm">1 in stock</td>
         <td class="py-2 text-sm font-medium">$29.95</td>
       </tr>
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="r2e2">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="r2e2" data-states="ACT NSW QLD VIC">
         <td class="py-2 pr-4">
           <a href="/variety/mango-r2e2.html" class="text-green-800 hover:underline">R2E2</a>
         </td>
@@ -366,64 +380,61 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
 <script>
 (function() {
   const input = document.getElementById('varietySearch');
+  const stateSel = document.getElementById('stateFilter');
   const countEl = document.getElementById('varietyCount');
   const noResultsEl = document.getElementById('noResults');
   const sections = document.querySelectorAll('section[data-sp]');
   const totalVarieties = 12;
   const totalSpecies = 8;
 
-  input.addEventListener('input', function() {
-    const q = this.value.toLowerCase().trim();
+  function applyFilters() {
+    const q = input.value.toLowerCase().trim();
+    const state = stateSel.value;
     let visibleVarieties = 0;
     let visibleSpecies = 0;
 
     sections.forEach(function(section) {
       const sp = section.getAttribute('data-sp');
+      const spMatch = !q || sp.includes(q);
       const rows = section.querySelectorAll('tr[data-var]');
-      let sectionMatch = false;
+      let rowsShown = 0;
 
-      if (!q) {
-        // No filter: show everything
-        rows.forEach(r => r.style.display = '');
+      rows.forEach(function(row) {
+        const varName = row.getAttribute('data-var');
+        const searchOk = !q || spMatch || varName.includes(q);
+        const stateOk = !state || (' ' + row.getAttribute('data-states') + ' ').includes(' ' + state + ' ');
+        if (searchOk && stateOk) {
+          row.style.display = '';
+          rowsShown++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      if (rowsShown > 0) {
         section.style.display = '';
-        sectionMatch = true;
-        visibleVarieties += rows.length;
+        visibleVarieties += rowsShown;
         visibleSpecies++;
       } else {
-        // Filter rows by variety name or species name
-        const spMatch = sp.includes(q);
-        let rowsShown = 0;
-        rows.forEach(function(row) {
-          const varName = row.getAttribute('data-var');
-          if (spMatch || varName.includes(q)) {
-            row.style.display = '';
-            rowsShown++;
-          } else {
-            row.style.display = 'none';
-          }
-        });
-        if (rowsShown > 0) {
-          section.style.display = '';
-          visibleVarieties += rowsShown;
-          visibleSpecies++;
-          sectionMatch = true;
-        } else {
-          section.style.display = 'none';
-        }
+        section.style.display = 'none';
       }
     });
 
-    if (!q) {
+    if (!q && !state) {
       countEl.textContent = totalVarieties + ' varieties across ' + totalSpecies + ' species';
       noResultsEl.classList.add('hidden');
     } else if (visibleVarieties === 0) {
       countEl.textContent = 'No matches found';
       noResultsEl.classList.remove('hidden');
     } else {
-      countEl.textContent = visibleVarieties + ' varieties across ' + visibleSpecies + ' species';
+      const where = state ? ' shippable to ' + state : '';
+      countEl.textContent = visibleVarieties + ' varieties across ' + visibleSpecies + ' species' + where;
       noResultsEl.classList.add('hidden');
     }
-  });
+  }
+
+  input.addEventListener('input', applyFilters);
+  stateSel.addEventListener('change', applyFilters);
 })();
 </script>
 

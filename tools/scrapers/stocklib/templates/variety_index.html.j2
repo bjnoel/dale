@@ -11,15 +11,29 @@
   </p>
 
   <div class="mb-6">
-    <input id="varietySearch" type="search" placeholder="Search varieties or species (e.g. Hass, Bowen, Valencia...)"
-      class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-      autocomplete="off">
+    <div class="flex gap-2">
+      <input id="varietySearch" type="search" placeholder="Search varieties or species (e.g. Hass, Bowen, Valencia...)"
+        class="flex-1 min-w-0 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        autocomplete="off">
+      <select id="stateFilter" aria-label="Filter by state"
+        class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+        <option value="">All states</option>
+        <option value="NSW">NSW</option>
+        <option value="VIC">VIC</option>
+        <option value="QLD">QLD</option>
+        <option value="SA">SA</option>
+        <option value="WA">WA</option>
+        <option value="ACT">ACT</option>
+        <option value="TAS">TAS</option>
+        <option value="NT">NT</option>
+      </select>
+    </div>
     <p id="varietyCount" class="text-xs text-gray-400 mt-1">{{ total_varieties }} varieties across {{ species_count }} species</p>
   </div>
 
   <div id="noResults" class="hidden text-center py-12 text-gray-500">
     <p class="text-lg">No varieties found matching your search.</p>
-    <p class="text-sm mt-1">Try a different spelling or species name.</p>
+    <p class="text-sm mt-1">Try a different spelling or species name, or clear the state filter.</p>
   </div>
 
   {%+ for s in species_view %}{{ "" }}
@@ -40,7 +54,7 @@
         </thead>
         <tbody>
 {% for v in s.rows %}
-      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="{{ v.var_lower }}">
+      <tr class="border-b border-gray-100 hover:bg-gray-50" data-var="{{ v.var_lower }}" data-states="{{ v.states }}">
         <td class="py-2 pr-4">
           <a href="/variety/{{ v.slug }}.html" class="text-green-800 hover:underline">{{ v.variety }}</a>
         </td>
@@ -59,64 +73,61 @@
 <script>
 (function() {
   const input = document.getElementById('varietySearch');
+  const stateSel = document.getElementById('stateFilter');
   const countEl = document.getElementById('varietyCount');
   const noResultsEl = document.getElementById('noResults');
   const sections = document.querySelectorAll('section[data-sp]');
   const totalVarieties = {{ total_varieties }};
   const totalSpecies = {{ species_count }};
 
-  input.addEventListener('input', function() {
-    const q = this.value.toLowerCase().trim();
+  function applyFilters() {
+    const q = input.value.toLowerCase().trim();
+    const state = stateSel.value;
     let visibleVarieties = 0;
     let visibleSpecies = 0;
 
     sections.forEach(function(section) {
       const sp = section.getAttribute('data-sp');
+      const spMatch = !q || sp.includes(q);
       const rows = section.querySelectorAll('tr[data-var]');
-      let sectionMatch = false;
+      let rowsShown = 0;
 
-      if (!q) {
-        // No filter: show everything
-        rows.forEach(r => r.style.display = '');
+      rows.forEach(function(row) {
+        const varName = row.getAttribute('data-var');
+        const searchOk = !q || spMatch || varName.includes(q);
+        const stateOk = !state || (' ' + row.getAttribute('data-states') + ' ').includes(' ' + state + ' ');
+        if (searchOk && stateOk) {
+          row.style.display = '';
+          rowsShown++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      if (rowsShown > 0) {
         section.style.display = '';
-        sectionMatch = true;
-        visibleVarieties += rows.length;
+        visibleVarieties += rowsShown;
         visibleSpecies++;
       } else {
-        // Filter rows by variety name or species name
-        const spMatch = sp.includes(q);
-        let rowsShown = 0;
-        rows.forEach(function(row) {
-          const varName = row.getAttribute('data-var');
-          if (spMatch || varName.includes(q)) {
-            row.style.display = '';
-            rowsShown++;
-          } else {
-            row.style.display = 'none';
-          }
-        });
-        if (rowsShown > 0) {
-          section.style.display = '';
-          visibleVarieties += rowsShown;
-          visibleSpecies++;
-          sectionMatch = true;
-        } else {
-          section.style.display = 'none';
-        }
+        section.style.display = 'none';
       }
     });
 
-    if (!q) {
+    if (!q && !state) {
       countEl.textContent = totalVarieties + ' varieties across ' + totalSpecies + ' species';
       noResultsEl.classList.add('hidden');
     } else if (visibleVarieties === 0) {
       countEl.textContent = 'No matches found';
       noResultsEl.classList.remove('hidden');
     } else {
-      countEl.textContent = visibleVarieties + ' varieties across ' + visibleSpecies + ' species';
+      const where = state ? ' shippable to ' + state : '';
+      countEl.textContent = visibleVarieties + ' varieties across ' + visibleSpecies + ' species' + where;
       noResultsEl.classList.add('hidden');
     }
-  });
+  }
+
+  input.addEventListener('input', applyFilters);
+  stateSel.addEventListener('change', applyFilters);
 })();
 </script>
 

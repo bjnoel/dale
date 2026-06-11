@@ -4,6 +4,50 @@
 
 ---
 
+## DEC-196 — 2026-06-11 — treestock /variety/: canonical species grouping, state filter, Sugar Apple record, grandfathered pages off the index
+
+**Decided by:** Benedict (review feedback on DEC-195), Dale (implementation)
+
+**Context:** Benedict reviewed the gated /variety/ index and found four issues:
+(1) "Sugar apple" and "Annona squamosa" listed as separate species; (2) no state
+filter on the index; (3) Cinnamon Myrtle (grandfathered, not a fruit) visible in
+the browsable index; (4) spelling/synonym duplication: Davidson Plum vs Davidson's
+Plum vs "Davidson's Plum Davidsonia jerseyana", Jaboticaba White vs "Jaboticaba
+White Plinia phitrantha", Jackfruit vs Jackfruit Marcott vs Jakfruit.
+
+**Root cause for 1+4:** grouping keyed on the RAW parsed species text. Synonyms,
+respellings and latin-name tails each produced their own species section and slug.
+
+**Implementation:**
+- `canonical_cultivar()` in cultivar_parsing.py is now THE grouping identity for
+  /variety/ pages and variety alerts: maps the parsed species onto its canonical
+  taxonomy name (synonym lookup, leading-match with leftover salvage), strips latin
+  tails and species restatements from varieties, drops species-only listings
+  ("Annona squamosa - Sugar apple" is a tree listing, not a cultivar). Cultivar
+  info carried by synonyms survives ("Meyer Lemon" contributes "Meyer"); pure
+  renames don't pollute ("Jakfruit", "Cumquat", "Carambola Starfruit").
+- Result on live data: Davidson's Plum = one section (NSW, QLD, Smooth, Tucker
+  Bush); Jakfruit/Marcott merged into Jackfruit; Dragonfruit into Dragon Fruit;
+  Pawpaw into Papaya; Grapes into Grape; Cumquat into Kumquat.
+- **Sugar Apple is its own species record** (Annona squamosa, distinct from
+  Custard Apple A. reticulata; the DEC-195 synonym call was botanically wrong).
+- **State filter** on /variety/ index: dropdown next to search, each row carries
+  data-states (union of stocking nurseries' ship-to states incl. local-delivery
+  states), combined with the existing text search.
+- **Grandfathered pages excluded from the index**: they exist solely to keep 7
+  subscribers' restock alerts alive, not for browsing. Orphan deletion now keys
+  on written pages, not index entries, so they survive rebuilds.
+- Species links now use the taxonomy record slug (davidsons-plum), not
+  slugify("Davidson's Plum") (davidson-s-plum), so canonical sections link to the
+  real species pages.
+- **Watch slug migration required on server** (slug changes): cumquat-meiwa ->
+  kumquat-meiwa, grapes-menindee-seedless -> grape-menindee-seedless. Run
+  migrate_variety_watch_slugs.py (dry run, then --apply) after deploy. All other
+  31 active watches verified unchanged or already-stale beforehand.
+
+**To revert:** group_by_cultivar can key on slugify(f"{species}-{variety}") raw
+again; the taxonomy/synonym data is harmless either way.
+
 ## DEC-195 — 2026-06-11 — treestock /variety/ taxonomy gate: drop non-fruit listings, add missing fruit/nut/berry species
 
 **Decided by:** Benedict (scope), Dale (audit + implementation)

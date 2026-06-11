@@ -46,7 +46,20 @@ NURSERY_URLS = {
 from stocklib.classify import NON_PLANT_KEYWORDS
 
 
-from cultivar_parsing import slugify, parse_cultivar, extract_type_label, cultivar_in_scope  # noqa: E402
+from cultivar_parsing import (  # noqa: E402
+    slugify, parse_cultivar, extract_type_label, canonical_cultivar,
+    GRANDFATHERED_VARIETY_SLUGS,
+)
+from stocklib.taxonomy import load_species
+
+# Canonical species name -> the /species/ page slug from the taxonomy record
+# (slugify("Davidson's Plum") gives davidson-s-plum; the record says
+# davidsons-plum, which is the file build_species_pages actually writes).
+_SPECIES_PAGE_SLUG = {r["common_name"]: r["slug"] for r in load_species()}
+
+
+def species_page_slug(name: str) -> str:
+    return _SPECIES_PAGE_SLUG.get(name) or slugify(name)
 
 
 def visible_type_label(type_label: str, variety: str) -> str:
@@ -104,13 +117,14 @@ def group_by_cultivar(products: list[dict]) -> dict:
         parsed = parse_cultivar(p["title"])
         if not parsed:
             continue
-        species, variety = parsed
-        # Normalize key
-        key = slugify(f"{species}-{variety}")
-        # Fruit/nut/berry taxonomy gate (DEC-195): ornamentals, veg, and
-        # unrecognised species parse fine but get no /variety/ page.
-        if not cultivar_in_scope(species, key, p["title"]):
+        # Taxonomy gate + canonicalisation (DEC-195/196): out-of-scope products
+        # get no page; respellings and synonym spellings of one species
+        # ("Jakfruit", "Cumquat", "Davidson Plum") converge on one canonical
+        # name and one slug.
+        canon = canonical_cultivar(*parsed, p["title"])
+        if canon is None:
             continue
+        species, variety, key = canon
         if not groups[key]["title"]:
             # Use the cleaned parsed parts, not the raw first product title, so
             # the page H1/meta read "Black Sapote - Mossman" rather than the
@@ -178,7 +192,7 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
 
     in_stock_count = len(in_stock)
     nursery_count = len(set(p["nursery_key"] for p in products))
-    species_slug = slugify(species)
+    species_slug = species_page_slug(species)
     # Optional verified "what's unique about this variety" blurb, rendered under the
     # meta line and above the price table. Empty string for un-enriched varieties.
     blurb_html = render_blurb(slug, species_slug) if has_description(slug, species_slug) else ""
@@ -255,7 +269,7 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
     species_view = []
     for sp in sorted(by_species.keys()):
         varieties = sorted(by_species[sp], key=lambda x: x["variety"])
-        sp_slug = slugify(sp)
+        sp_slug = species_page_slug(sp)
         row_view = [
             {
                 "var_lower": v["variety"].lower(),
@@ -264,6 +278,7 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
                 "n_count": v["nursery_count"],
                 "in_s": v["in_stock"],
                 "price": f'${v["min_price"]:.2f}' if v["min_price"] else "—",
+                "states": " ".join(v.get("states", [])),
             }
             for v in varieties
         ]
@@ -329,6 +344,7 @@ def main():
 
     index_entries = []
     pages_written = 0
+    written_slugs = set()
 
     for slug, data in groups.items():
         prods = data["products"]
@@ -340,6 +356,13 @@ def main():
         out_path = variety_dir / f"{slug}.html"
         with open(out_path, "w") as f:
             f.write(html)
+        written_slugs.add(slug)
+        pages_written += 1
+
+        # Grandfathered non-fruit pages exist only to keep their subscribers'
+        # restock alerts alive (DEC-195); they stay out of the browsable index.
+        if slug in GRANDFATHERED_VARIETY_SLUGS:
+            continue
 
         index_entries.append({
             "slug": slug,
@@ -349,12 +372,12 @@ def main():
             "nursery_count": len(all_nurseries),
             "in_stock": len(in_stock),
             "min_price": min_price,
+            "states": sorted({st for p in prods for st in p["ships_states"]}),
         })
-        pages_written += 1
 
     # Delete orphan variety pages from previous runs (e.g. when parse_cultivar
     # tightens up and a slug stops being generated). Don't touch index.html.
-    current_slugs = {e["slug"] for e in index_entries}
+    current_slugs = written_slugs
     orphans = [
         p for p in variety_dir.glob("*.html")
         if p.stem != "index" and p.stem not in current_slugs

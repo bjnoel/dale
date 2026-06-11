@@ -602,66 +602,195 @@ GRANDFATHERED_VARIETY_SLUGS = frozenset({
 })
 
 
-def species_in_scope(species: str) -> bool:
-    """True if a parsed species name belongs to the fruit taxonomy: a common
-    name or synonym, directly, or leading the text ("Mandarin Imperial",
-    "Apple Multi Graft", "Plum x Apricot" all lead with a known species).
-    A leading match is rejected when the remainder names a different plant
-    form ("Lemon Myrtle", "Apple Cactus" are not lemons or apples).
+_LATIN_NOISE_CACHE: frozenset[str] | None = None
 
-    Gates which cultivars get /variety/ pages and variety alerts (DEC-195).
-    Fails open when the species file is missing, matching the loaders'
-    graceful behaviour."""
+# Australian state words duplicate the species' origin when they ride in the
+# species slot ("Ooray Queensland Davidson's Plum"); dropped from leftovers
+# only, never from the variety itself ("Davidson's Plum - NSW" is a real
+# selection name).
+_STATE_WORDS = frozenset({
+    'nsw', 'qld', 'queensland', 'vic', 'victoria', 'wa', 'sa', 'nt',
+    'tas', 'tasmania', 'act',
+})
+
+
+def _latin_noise_words() -> frozenset[str]:
+    """Words that carry no cultivar information wherever they appear: latin
+    binomial fragments from the taxonomy ("Davidsonia", "Plinia"), epithets of
+    related species, propagation noise ("marcott"), cross markers, and 'form'
+    ("NSW Form Davidsonia jerseyana" is the NSW selection)."""
+    global _LATIN_NOISE_CACHE
+    if _LATIN_NOISE_CACHE is None:
+        words = {
+            'marcott', 'marcotted', 'x', 'spp', 'var', 'cv', 'form',
+            'jerseyana', 'johnsonii', 'pruriens', 'phitrantha',
+        }
+        if _SPECIES_FILE.exists():
+            try:
+                with open(_SPECIES_FILE) as f:
+                    for r in json.load(f):
+                        words.update(re.findall(r'[a-z]+', (r.get('latin_name') or '').lower()))
+            except (OSError, json.JSONDecodeError):
+                pass
+        _LATIN_NOISE_CACHE = frozenset(words)
+    return _LATIN_NOISE_CACHE
+
+
+def _ornamental_title(title: str) -> bool:
+    """True when the raw title names an ornamental genus, in the text or in a
+    parenthesized latin name ("Rose Showpiece Orange (Rosa)")."""
+    tl = title.lower()
+    if set(re.findall(r'[a-z]+', tl)) & _ORNAMENTAL_WORDS:
+        return True
+    parens = ' '.join(re.findall(r'\(([^)]*)\)', tl))
+    return bool(set(re.findall(r'[a-z]+', parens)) & _ORNAMENTAL_PAREN_WORDS)
+
+
+def _synonym_extra(text: str, canonical: str) -> str:
+    """Cultivar info a matched synonym carries beyond the canonical name:
+    'Meyer Lemon' -> 'Meyer', 'Bacon Avocado' -> 'Bacon'. Pure renames and
+    respellings ('Jakfruit', 'Cumquat', 'Annona squamosa') share no word with
+    the canonical name and return ''. Words that are themselves a synonym of
+    the same species ('Carambola Starfruit'), size/form words ('Dwarf Mango'),
+    and plant-form words ('Kiwi Berry') are not cultivar info either."""
     lookup = _load_species_lookup()
+    canon_words = [re.sub(r'[^a-z]', '', w) for w in canonical.lower().split()]
+
+    def matches(wn: str) -> bool:
+        return any(
+            wn == c or (len(wn) >= 4 and len(c) >= 4 and (c.startswith(wn) or wn.startswith(c)))
+            for c in canon_words
+        )
+
+    words = text.split()
+    norm = [re.sub(r'[^a-z]', '', w.lower()) for w in words]
+    if not any(matches(wn) for wn in norm if wn):
+        return ""
+    return ' '.join(
+        w for w, wn in zip(words, norm)
+        if wn and not matches(wn) and wn not in SIZE_WORDS
+        and wn not in _NON_FRUIT_FORM_WORDS and lookup.get(wn) != canonical
+    )
+
+
+def canonicalize_species(species: str) -> tuple[str, str] | None:
+    """Map a parsed species text onto the taxonomy: ('canonical name',
+    'leftover cultivar words') or None when out of scope (DEC-195/196).
+
+    'Jakfruit' -> ('Jackfruit', ''); 'Meyer Lemon' -> ('Lemon', 'Meyer');
+    'Mandarin Imperial' -> ('Mandarin', 'Imperial'); 'Jackfruit Marcott' ->
+    ('Jackfruit', ''); "Davidson's Plum Davidsonia jerseyana" ->
+    ("Davidson's Plum", ''); 'Rose' -> None. A leading match is rejected when
+    the remainder names a different plant form ('Lemon Myrtle', 'Apple
+    Cactus'). Fails open (returns the input) when the species file is missing,
+    matching the loaders' graceful behaviour."""
+    lookup = _load_species_lookup()
+    s = species.strip()
     if not lookup:
-        return True
-    s = species.lower().strip()
+        return (s, "")
     if not s:
-        return False
-    if s in lookup:
-        return True
+        return None
+    if s.lower() in lookup:
+        canon = lookup[s.lower()]
+        return (canon, _synonym_extra(s, canon))
     # Parenthesized qualifiers: "Mandarin (Imperial)" is still a mandarin
     bare = re.sub(r'\s*\([^)]*\)', '', s).strip()
-    if bare:
-        if bare in lookup:
-            return True
-        s = bare
-    words = s.split()
-    for n in range(min(len(words) - 1, 4), 0, -1):
-        if ' '.join(words[:n]) in lookup:
-            rest = (w.strip('\'"‘’“”()') for w in words[n:])
-            return not any(w in _NON_FRUIT_FORM_WORDS for w in rest)
-    return False
+    if bare and bare.lower() in lookup:
+        canon = lookup[bare.lower()]
+        return (canon, _synonym_extra(bare, canon))
+    tokens = (bare or s).split()
+    lowered = [t.lower() for t in tokens]
+    discard = _latin_noise_words() | SIZE_WORDS | _STATE_WORDS
+    for n in range(min(len(tokens) - 1, 4), 0, -1):
+        lead = ' '.join(lowered[:n])
+        if lead not in lookup:
+            continue
+        rest = tokens[n:]
+        rest_norm = [re.sub(r'[^a-z]', '', w.lower()) for w in rest]
+        if any(wn in _NON_FRUIT_FORM_WORDS for wn in rest_norm if wn):
+            return None
+        canon = lookup[lead]
+        # Restating the species in the species slot is noise, not cultivar
+        # info: "Ooray Queensland Davidson's Plum" leaves just "Queensland".
+        rest_str = ' '.join(rest)
+        for phrase in sorted(
+            [p for p, c in lookup.items() if c == canon] + [canon.lower()],
+            key=len, reverse=True,
+        ):
+            rest_str = re.sub(rf'(?i)(?<![a-z]){re.escape(phrase)}(?![a-z])', ' ', rest_str)
+        keep = [
+            w for w in rest_str.split()
+            if (wn := re.sub(r'[^a-z]', '', w.lower())) and wn not in discard
+        ]
+        lead_extra = _synonym_extra(' '.join(tokens[:n]), canon)
+        leftover = ' '.join(([lead_extra] if lead_extra else []) + keep)
+        return (canon, leftover)
+    return None
+
+
+def species_in_scope(species: str) -> bool:
+    """True if a parsed species name belongs to the fruit taxonomy (DEC-195)."""
+    return canonicalize_species(species) is not None
 
 
 def cultivar_in_scope(species: str, slug: str = "", title: str = "") -> bool:
-    """Full scope gate for one product: grandfathered watched slugs always
-    pass, titles naming an ornamental genus always fail, then species_in_scope
-    decides. Pass the RAW title when available; it catches ornamentals whose
-    parse looks fruity ("Hibiscus Petite Orange" -> species "Orange")."""
+    """Boolean scope gate: grandfathered watched slugs always pass, titles
+    naming an ornamental genus always fail, then the taxonomy decides."""
     if slug in GRANDFATHERED_VARIETY_SLUGS:
         return True
-    if title:
-        tl = title.lower()
-        if set(re.findall(r'[a-z]+', tl)) & _ORNAMENTAL_WORDS:
-            return False
-        parens = ' '.join(re.findall(r'\(([^)]*)\)', tl))
-        if set(re.findall(r'[a-z]+', parens)) & _ORNAMENTAL_PAREN_WORDS:
-            return False
+    if title and _ornamental_title(title):
+        return False
     return species_in_scope(species)
 
 
+def canonical_cultivar(species: str, variety: str, title: str = "") -> tuple[str, str, str] | None:
+    """Scope-gate AND canonicalise one parsed cultivar: (canonical_species,
+    variety, slug) or None when out of scope. This is THE grouping identity
+    for /variety/ pages and variety alerts (DEC-196): respellings and synonym
+    spellings of one species converge on one canonical name and one slug.
+    Species-only listings ('Annona squamosa - Sugar apple') return None."""
+    raw_slug = slugify(f"{species}-{variety}")
+    if raw_slug in GRANDFATHERED_VARIETY_SLUGS:
+        return (species, variety, raw_slug)
+    if title and _ornamental_title(title):
+        return None
+    c = canonicalize_species(species)
+    if c is None:
+        return None
+    canonical, leftover = c
+    var = f"{leftover} {variety}".strip() if leftover else variety
+    # Latin tails carry no cultivar info: "'Smooth' Davidsonia johnsonii" and
+    # "Smooth" are the same selection and must share one slug.
+    vt = var.split()
+    while vt and re.sub(r'[^a-z]', '', vt[-1].lower()) in _latin_noise_words():
+        vt.pop()
+    if not vt:
+        return None
+    var = ' '.join(vt).strip('\'"‘’“” ')
+    if not var:
+        return None
+    vl, cl = var.lower(), canonical.lower()
+    # A "variety" that just restates the species is not a cultivar
+    if vl == cl or _load_species_lookup().get(vl) == canonical:
+        return None
+    # Strip a trailing species restatement: 'Smooth Davidson's Plum' -> 'Smooth'
+    if vl.endswith(' ' + cl):
+        var = var[:-(len(cl) + 1)].strip()
+        if not var:
+            return None
+    slug = slugify(f"{canonical}-{var}")
+    return (canonical, var, slug) if slug else None
+
+
 def product_variety_slug(title: str) -> str | None:
-    """Parse + slugify in one step. Returns None when the title isn't a cultivar
-    or its species is outside the fruit taxonomy (DEC-195)."""
+    """Parse + canonicalise + slugify in one step. Returns None when the title
+    isn't a cultivar or is outside the fruit taxonomy (DEC-195)."""
     parsed = parse_cultivar(title)
     if not parsed:
         return None
     species, variety = parsed
-    slug = slugify(f"{species}-{variety}") or None
-    if slug and not cultivar_in_scope(species, slug, title):
-        return None
-    return slug
+    c = canonical_cultivar(species, variety, title)
+    return c[2] if c else None
 
 
 def extract_type_label(title: str) -> str:
