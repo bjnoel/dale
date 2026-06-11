@@ -61,11 +61,14 @@ BASE_STYLE = """\
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   #nav-menu.open { display: flex; }"""
 
-# Responsive content width: a comfortable 768px column by default, widening to
-# 1024px only on large external monitors (Tailwind's 2xl breakpoint, >=1536px).
-# A 13" laptop reports just under 1536px, so it stays at 768px. One token drives
-# every page's header, main, breadcrumb, and footer so the widths never drift.
-CONTENT_MAX_WIDTH = "max-w-3xl 2xl:max-w-5xl"
+# Responsive content width, one token driving every page's header, main,
+# breadcrumb, and footer so the widths never drift:
+#   - mobile + tablet (<1024px): 768px (max-w-3xl) -- the comfortable reading column
+#   - laptop/desktop (lg, >=1024px): 1024px (max-w-5xl)
+#   - large monitor (2xl, >=1536px): 1280px (max-w-7xl)
+# Previously this only widened at the 2xl breakpoint, so a 13" laptop (just under
+# 1536px) stayed stuck at the narrow 768px column. The lg step fixes that.
+CONTENT_MAX_WIDTH = "max-w-3xl lg:max-w-5xl 2xl:max-w-7xl"
 
 # Make the width token available to the Jinja templates (treestock env only; the
 # bee site renders its own inline HTML and never loads these templates).
