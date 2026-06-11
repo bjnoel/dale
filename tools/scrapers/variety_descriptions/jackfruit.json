@@ -78,6 +78,73 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "jackfruit-crisp": {
+      "slug": "jackfruit-crisp",
+      "species": "Jackfruit",
+      "variety": "Crisp",
+      "paragraphs": [
+        "Jackfruit selections fall into two broad flesh types, and Crisp is the firmer of the two. Where soft type jackfruit has small, mushy, very sweet carpels with a slippery texture, the crisp type has arils that are firm and almost crunchy, though usually a touch less sweet. Crisp fleshed fruit holds its shape well, which makes it the type most often eaten fresh out of hand rather than cooked or processed.",
+        "Crisp jackfruit is typically grown from seedlings, so individual trees vary, and named crisp selections such as Hew, Honey Gold and Galaxy have been singled out for their excellent flavour and firm aril texture. The flavour is rich and tropical, often described as having a pineapple like aftertaste."
+      ],
+      "claims": [
+        {
+          "text": "Crisp jackfruit has firm, almost crunchy arils, in contrast to the soft, mushy flesh of soft type jackfruit.",
+          "type": "texture",
+          "cites": [
+            "stfc-jackfruit",
+            "rfca-qualities"
+          ]
+        },
+        {
+          "text": "Crisp types are usually a little less sweet than soft types but are favoured for eating fresh.",
+          "type": "flavour",
+          "cites": [
+            "stfc-jackfruit",
+            "rfca-qualities",
+            "daleys-crisp"
+          ]
+        },
+        {
+          "text": "Named crisp flesh selections include Hew, Honey Gold and Galaxy, noted for firm texture and excellent flavour.",
+          "type": "naming",
+          "cites": [
+            "rfca-qualities",
+            "stfc-jackfruit"
+          ]
+        },
+        {
+          "text": "Crisp jackfruit is often described as having a pineapple like aftertaste.",
+          "type": "flavour",
+          "cites": [
+            "daleys-crisp"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "stfc-jackfruit",
+          "name": "Sub-Tropical Fruit Club of Qld, Jackfruit (Artocarpus heterophyllus)",
+          "url": "https://stfc.org.au/articles/jackfruit-artocarpus-heterophyllus/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-qualities",
+          "name": "RFCA Archives, A Guide to Jackfruit Eating Qualities",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Jakfruit/JakQualities7-92.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys-crisp",
+          "name": "Daleys Fruit Tree Nursery, Jakfruit Crisp",
+          "url": "https://www.daleysfruit.com.au/Shop/Asian_FruitsJakfruit.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "jackfruit-honey-gold": {
       "slug": "jackfruit-honey-gold",
       "species": "Jackfruit",
@@ -145,16 +212,213 @@
       "confidence_score": 0.88,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "jackfruit-j33": {
+      "slug": "jackfruit-j33",
+      "species": "Jackfruit",
+      "variety": "J33",
+      "paragraphs": [
+        "J33 is a Malaysian jackfruit clone, also recorded as Tekam Yellow and registered under Malaysia's Department of Agriculture alongside selections such as J29 and J31. Among the registered Malaysian clones it is the one most preferred by consumers, valued for its sweetness and for crunchy, crisp arils rather than the softer texture found in many other jackfruits.",
+        "The flesh is deep yellow and aromatic, and the clone is grown mainly as a premium fruit for the fresh export market. Fruit is picked mature green, firm enough to withstand postharvest handling and transport, then ripened off the tree. This pairing of crispness, sweetness and shipping tolerance is what sets J33 apart from softer local types."
+      ],
+      "claims": [
+        {
+          "text": "J33 is a Malaysian jackfruit clone also known as Tekam Yellow, registered under Malaysia's Department of Agriculture.",
+          "type": "origin",
+          "cites": [
+            "ijafp-mardi",
+            "greens-of-kerala"
+          ]
+        },
+        {
+          "text": "Among Malaysia's registered clones, Tekam Yellow (J33) is the variety most preferred by consumers for its sweetness and crunchy texture.",
+          "type": "flavour",
+          "cites": [
+            "ijafp-mardi"
+          ]
+        },
+        {
+          "text": "J33 is grown as a premium fresh fruit for export, harvested mature green to withstand postharvest handling.",
+          "type": "use",
+          "cites": [
+            "ijafp-mardi"
+          ]
+        },
+        {
+          "text": "The arils are deep yellow.",
+          "type": "appearance",
+          "cites": [
+            "ijafp-mardi",
+            "greens-of-kerala"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ijafp-mardi",
+          "name": "International Journal of Agriculture, Forestry and Plantation (MARDI authors), Vol. 10",
+          "url": "https://ijafp.org/wp-content/uploads/2020/11/KLIAFP10_303.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "greens-of-kerala",
+          "name": "Greens of Kerala, Malaysian J-33 Jackfruit",
+          "url": "https://www.greensofkerala.com/blog/exotic-fruits/malaysian-j-33-jackfruit-taste-health-benefits-planting-instruction-fertilization/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "jackfruit-red": {
+      "slug": "jackfruit-red",
+      "species": "Jackfruit",
+      "variety": "Red",
+      "paragraphs": [
+        "Red fleshed jackfruit is a recognised type of Artocarpus heterophyllus whose arils are not the usual yellow but range from light pink through to deep copper red. It is concentrated in southern India, particularly Karnataka and Kerala, where named selections such as Sindhoora, Pattamuttam and Siddu have been identified and propagated.",
+        "These red types are rare and prized mainly for the striking colour of their flesh, a novelty that draws strong interest and good prices at jackfruit fairs and markets in southern India. The type is distinctive enough to carry its own local names, including Chembaratti Chakka in Malayalam, a reference to the red of hibiscus flowers."
+      ],
+      "claims": [
+        {
+          "text": "Red fleshed jackfruit has arils ranging from light pink to deep copper red, distinct from the usual yellow.",
+          "type": "appearance",
+          "cites": [
+            "itfnet-red",
+            "krishi-jagran"
+          ]
+        },
+        {
+          "text": "It is concentrated in southern India, notably Karnataka and Kerala, with named selections such as Sindhoora, Pattamuttam and Siddu.",
+          "type": "origin",
+          "cites": [
+            "itfnet-red",
+            "krishi-jagran"
+          ]
+        },
+        {
+          "text": "Red fleshed jackfruit is rare and valued chiefly for its striking flesh colour, fetching good prices at fairs and markets.",
+          "type": "use",
+          "cites": [
+            "itfnet-red",
+            "krishi-jagran"
+          ]
+        },
+        {
+          "text": "In Malayalam the red type is called Chembaratti Chakka, a reference to the red of hibiscus flowers.",
+          "type": "naming",
+          "cites": [
+            "itfnet-red"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "itfnet-red",
+          "name": "International Tropical Fruits Network, India's Unique Treasure: Red Fleshed Jackfruit",
+          "url": "https://www.itfnet.org/v1/2015/01/india%e2%80%99s-unique-treasure-red-fleshed-jackfruit/",
+          "tier": "third_party"
+        },
+        {
+          "id": "krishi-jagran",
+          "name": "Krishi Jagran, Ever Heard of a Red-fleshed Jackfruit?",
+          "url": "https://krishijagran.com/agripedia/ever-heard-of-a-red-fleshed-jackfruit-heres-all-you-need-to-know/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "jackfruit-yullatin": {
+      "slug": "jackfruit-yullatin",
+      "species": "Jackfruit",
+      "variety": "Yullatin",
+      "paragraphs": [
+        "Yullatin (also spelt Yullaten) is an Australian grown jackfruit selection that stands out for its modest fruit size, producing small fruit in the range of about 3 to 12 kg. That smaller size makes it easier to handle and use than the giant 15 kg plus fruit some jackfruit trees set. It is classed among the crisp flesh types and carries firm, pale yellow arils.",
+        "Two practical traits set Yullatin apart. It is noted as cold tolerant, which is useful at the cooler subtropical edge of jackfruit growing, and it is recorded as crossing well with the Bosworth variety, the two acting as good pollination partners for each other."
+      ],
+      "claims": [
+        {
+          "text": "Yullatin (also spelt Yullaten) is an Australian grown jackfruit selection producing small fruit of roughly 3 to 12 kg.",
+          "type": "origin",
+          "cites": [
+            "rfca-list",
+            "daleys-yullatin"
+          ]
+        },
+        {
+          "text": "It is a crisp flesh type.",
+          "type": "texture",
+          "cites": [
+            "stfc-jackfruit",
+            "rfca-list"
+          ]
+        },
+        {
+          "text": "It is noted as cold tolerant and crosses well with the Bosworth variety as a pollination partner.",
+          "type": "pollination",
+          "cites": [
+            "rfca-list"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-list",
+          "name": "RFCA Archives, Fruit Trees Species List (jackfruit section)",
+          "url": "https://rfcarchives.org.au/Next/CaringForTrees/FruitTreesSpeciesList122-02.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "stfc-jackfruit",
+          "name": "Sub-Tropical Fruit Club of Qld, Jackfruit (Artocarpus heterophyllus)",
+          "url": "https://stfc.org.au/articles/jackfruit-artocarpus-heterophyllus/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-yullatin",
+          "name": "Daleys Fruit Tree Nursery, Jakfruit Yullatin",
+          "url": "https://www.daleysfruit.com.au/Shop/Asian_FruitsJakfruit.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
   "skipped": [
     "jackfruit-amber",
+    "jackfruit-banana",
     "jackfruit-berry",
+    "jackfruit-brinsmead-special",
     "jackfruit-cosmic-gold",
     "jackfruit-crunchy",
+    "jackfruit-crunchy-gold",
+    "jackfruit-dawn",
+    "jackfruit-duranbah-gold",
+    "jackfruit-elite",
     "jackfruit-galaxy",
     "jackfruit-j36",
+    "jackfruit-kyogle-gold",
+    "jackfruit-little-jewel",
+    "jackfruit-malay",
+    "jackfruit-nangka-mini",
+    "jackfruit-pineapple-crunch",
     "jackfruit-plant",
-    "jackfruit-tree"
+    "jackfruit-rahjan",
+    "jackfruit-rajhan",
+    "jackfruit-red-crispy",
+    "jackfruit-rocky-creek-gold",
+    "jackfruit-sunshine-crunch",
+    "jackfruit-tree",
+    "jackfruit-tweed-crisp",
+    "jackfruit-tyagarah-vanilla",
+    "jackfruit-underwood",
+    "jackfruit-yellow-crunch"
   ]
 }
