@@ -12,10 +12,10 @@ needs a passing test before being committed.
 """
 from __future__ import annotations
 
-import json
 import re
 from collections import defaultdict
-from pathlib import Path
+
+from stocklib import taxonomy
 
 
 SIZE_WORDS = frozenset({
@@ -26,9 +26,29 @@ SIZE_WORDS = frozenset({
     'advanced', 'budget', 'self', 'fertile',
 })
 
-_SPECIES_FILE = Path(__file__).parent / "fruit_species.json"
 _SPECIES_LOOKUP_CACHE: dict[str, str] | None = None
 _CANONICAL_SPECIES_CACHE: set[str] | None = None
+_RECORD_VOCAB_CACHE: dict[str, frozenset[str]] | None = None
+
+
+def _species_records() -> list[dict]:
+    """THE seam between the parser and the species data: every species-derived
+    structure in this module (name lookup, canonical set, latin noise words,
+    record vocabularies) builds from this. Returns ENABLED records only, so
+    authored-but-disabled categories (e.g. bush tucker before its enable,
+    DEC-200) cannot perturb parsing. Tests inject records by patching this."""
+    return taxonomy.enabled_species()
+
+
+def _clear_species_caches() -> None:
+    """Reset the memoised species-derived state. For tests that patch
+    _species_records; production never needs it."""
+    global _SPECIES_LOOKUP_CACHE, _CANONICAL_SPECIES_CACHE
+    global _RECORD_VOCAB_CACHE, _LATIN_NOISE_CACHE
+    _SPECIES_LOOKUP_CACHE = None
+    _CANONICAL_SPECIES_CACHE = None
+    _RECORD_VOCAB_CACHE = None
+    _LATIN_NOISE_CACHE = None
 
 
 def _canonical_species() -> set[str]:
@@ -50,22 +70,15 @@ def _load_species_lookup() -> dict[str, str]:
     global _SPECIES_LOOKUP_CACHE
     if _SPECIES_LOOKUP_CACHE is not None:
         return _SPECIES_LOOKUP_CACHE
-    if not _SPECIES_FILE.exists():
-        _SPECIES_LOOKUP_CACHE = {}
-        return _SPECIES_LOOKUP_CACHE
     lookup: dict[str, str] = {}
-    try:
-        with open(_SPECIES_FILE) as f:
-            for s in json.load(f):
-                name = s.get("common_name", "").strip()
-                if name:
-                    lookup[name.lower()] = name
-                for syn in s.get("synonyms", []) or []:
-                    syn = (syn or "").strip()
-                    if syn:
-                        lookup[syn.lower()] = name or syn
-    except (OSError, json.JSONDecodeError):
-        pass
+    for s in _species_records():
+        name = s.get("common_name", "").strip()
+        if name:
+            lookup[name.lower()] = name
+        for syn in s.get("synonyms", []) or []:
+            syn = (syn or "").strip()
+            if syn:
+                lookup[syn.lower()] = name or syn
     _SPECIES_LOOKUP_CACHE = lookup
     return lookup
 
@@ -667,25 +680,46 @@ def _latin_noise_words() -> frozenset[str]:
             'marcott', 'marcotted', 'x', 'spp', 'var', 'cv', 'form',
             'jerseyana', 'johnsonii', 'pruriens', 'phitrantha',
         }
-        if _SPECIES_FILE.exists():
-            try:
-                with open(_SPECIES_FILE) as f:
-                    for r in json.load(f):
-                        words.update(re.findall(r'[a-z]+', (r.get('latin_name') or '').lower()))
-            except (OSError, json.JSONDecodeError):
-                pass
+        for r in _species_records():
+            words.update(re.findall(r'[a-z]+', (r.get('latin_name') or '').lower()))
         _LATIN_NOISE_CACHE = frozenset(words)
     return _LATIN_NOISE_CACHE
 
 
-def _ornamental_title(title: str) -> bool:
-    """True when the raw title names an ornamental genus, in the text or in a
-    parenthesized latin name ("Rose Showpiece Orange (Rosa)")."""
+def _record_vocab(canonical: str) -> frozenset[str]:
+    """Word tokens of a record's OWN common_name + synonyms, by canonical name.
+    Latin names deliberately do not contribute: the gate override below must
+    come from names the record is actually sold under, not from binomials."""
+    global _RECORD_VOCAB_CACHE
+    if _RECORD_VOCAB_CACHE is None:
+        vocab: dict[str, set[str]] = {}
+        for r in _species_records():
+            name = (r.get("common_name") or "").strip()
+            if not name:
+                continue
+            words = vocab.setdefault(name.lower(), set())
+            words.update(re.findall(r'[a-z]+', name.lower()))
+            for syn in r.get("synonyms", []) or []:
+                words.update(re.findall(r'[a-z]+', (syn or "").lower()))
+        _RECORD_VOCAB_CACHE = {k: frozenset(v) for k, v in vocab.items()}
+    return _RECORD_VOCAB_CACHE.get(canonical.lower(), frozenset())
+
+
+def _ornamental_conflict(title: str, canonical: str) -> bool:
+    """True when the raw title names an ornamental genus that the matched,
+    enabled record's own vocabulary does NOT cover. Runs AFTER
+    canonicalisation, vocabulary-scoped (DEC-200 design doc 3.4): a registered
+    Lemon Myrtle record covers 'myrtle' in its own titles, but an Orange
+    record never covers 'hibiscus', so "Hibiscus Petite Orange" (the relaxed
+    parser reads the COLOR word as the species) still rejects. Checks the
+    plain text against _ORNAMENTAL_WORDS and parenthesized latin names
+    ("Rose Showpiece Orange (Rosa)") against _ORNAMENTAL_PAREN_WORDS."""
+    vocab = _record_vocab(canonical)
     tl = title.lower()
-    if set(re.findall(r'[a-z]+', tl)) & _ORNAMENTAL_WORDS:
+    if (set(re.findall(r'[a-z]+', tl)) & _ORNAMENTAL_WORDS) - vocab:
         return True
     parens = ' '.join(re.findall(r'\(([^)]*)\)', tl))
-    return bool(set(re.findall(r'[a-z]+', parens)) & _ORNAMENTAL_PAREN_WORDS)
+    return bool((set(re.findall(r'[a-z]+', parens)) & _ORNAMENTAL_PAREN_WORDS) - vocab)
 
 
 def _synonym_extra(text: str, canonical: str) -> str:
@@ -776,13 +810,18 @@ def species_in_scope(species: str) -> bool:
 
 
 def cultivar_in_scope(species: str, slug: str = "", title: str = "") -> bool:
-    """Boolean scope gate: grandfathered watched slugs always pass, titles
-    naming an ornamental genus always fail, then the taxonomy decides."""
+    """Boolean scope gate: grandfathered watched slugs always pass, then the
+    taxonomy decides, then titles naming an ornamental genus outside the
+    matched record's own vocabulary fail (the post-canonicalisation order is
+    what lets a registered Lemon Myrtle through while crepe myrtles stay out)."""
     if slug in GRANDFATHERED_VARIETY_SLUGS:
         return True
-    if title and _ornamental_title(title):
+    c = canonicalize_species(species)
+    if c is None:
         return False
-    return species_in_scope(species)
+    if title and _ornamental_conflict(title, c[0]):
+        return False
+    return True
 
 
 def canonical_cultivar(species: str, variety: str, title: str = "") -> tuple[str, str, str] | None:
@@ -794,12 +833,14 @@ def canonical_cultivar(species: str, variety: str, title: str = "") -> tuple[str
     raw_slug = slugify(f"{species}-{variety}")
     if raw_slug in GRANDFATHERED_VARIETY_SLUGS:
         return (species, variety, raw_slug)
-    if title and _ornamental_title(title):
-        return None
     c = canonicalize_species(species)
     if c is None:
         return None
     canonical, leftover = c
+    # Ornamental gate, after canonicalisation and vocabulary-scoped (3.4): an
+    # ornamental word rejects unless the matched record's own names cover it.
+    if title and _ornamental_conflict(title, canonical):
+        return None
     var = f"{leftover} {variety}".strip() if leftover else variety
     # Latin tails carry no cultivar info: "'Smooth' Davidsonia johnsonii" and
     # "Smooth" are the same selection and must share one slug.
