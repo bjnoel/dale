@@ -56,12 +56,10 @@ RETAILERS = {
         "platform": "shopify",
         "location": "QLD",
     },
-    "beewise": {
-        "name": "Beewise",
-        "domain": "www.beewise.com.au",
-        "platform": "magento",
-        "location": "Perth, WA",
-    },
+    # "beewise" - removed 2026-06-11 at the owner's request (declined to be
+    # listed when we asked about their firewall block, DEC-198). Do not
+    # re-add without their explicit OK. Snapshot history archived at
+    # /opt/dale/data/archive/bee-stock-beewise/.
 }
 
 # Shipping: most beekeeping retailers ship nationally (no live quarantine issues
@@ -75,7 +73,6 @@ SHIPPING_MAP = {
     "the-urban-beehive": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
     "becs-beehive": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
     "beekeeping-supplies-australia": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
-    "beewise": ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
 }
 
 RETAILER_NAMES = {k: v["name"] for k, v in RETAILERS.items()}

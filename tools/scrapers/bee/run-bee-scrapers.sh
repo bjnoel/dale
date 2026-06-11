@@ -19,9 +19,9 @@ echo "$LOG_PREFIX Scraping Shopify bee retailers..."
 cd "$SCRIPT_DIR"
 python3 "$SCRIPT_DIR/shopify_bee_scraper.py" 2>&1
 
-# Magento retailers (beewise). Throttled to 1 req/s: beewise rate-limits
-# fast crawls (429), and we promised them a polite crawl when asking for
-# their firewall to allowlist our IP (Q43 / DEC-194).
+# Magento retailers (none active since beewise opted out 2026-06-11,
+# DEC-198; the scraper exits cleanly when none are configured). Kept at
+# 1 req/s as the polite default for any future Magento retailer.
 echo "$LOG_PREFIX Scraping Magento bee retailers..."
 BEESTOCK_MAGENTO_CONCURRENCY=1 BEESTOCK_MAGENTO_DELAY=1.0 \
     python3 "$SCRIPT_DIR/magento_bee_scraper.py" 2>&1 || echo "$LOG_PREFIX WARNING: Magento scrape failed (non-fatal)."

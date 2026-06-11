@@ -42,7 +42,7 @@ STATE_INTROS = {
     "WA": (
         "Western Australia remains varroa-free, making it one of the best places in "
         "Australia to keep bees. All major Australian retailers ship beekeeping supplies "
-        "to WA. Beewise, based in Perth, is the only WA-local option for in-store pickup."
+        "to WA, so distance is less of a barrier than it looks."
     ),
     "QLD": (
         "Queensland has a strong beekeeping tradition, with a warm climate that keeps "
@@ -106,8 +106,8 @@ STATE_INFO_BOXES = {
 }
 
 # Which retailers are local/based in each state
+# (no WA-local retailer since beewise's removal, 2026-06-11, DEC-198)
 STATE_LOCAL_RETAILERS = {
-    "WA": ["beewise"],
     "QLD": ["beekeeping-supplies-australia"],
     "NSW": ["flow-hive"],
     "VIC": ["ecrotek", "becs-beehive"],
@@ -115,9 +115,6 @@ STATE_LOCAL_RETAILERS = {
 
 # Per-retailer, per-state notes
 STATE_RETAILER_NOTES = {
-    "WA": {
-        "beewise": "Perth-based, in-store pickup available",
-    },
     "QLD": {
         "beekeeping-supplies-australia": "QLD-based",
         "flow-hive": "NSW-based, ships nationwide",

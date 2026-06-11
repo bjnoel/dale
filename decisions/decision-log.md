@@ -4,6 +4,32 @@
 
 ---
 
+## DEC-198 — 2026-06-11 — Beestock: beewise removed at owner's request
+
+**Decided by:** Benedict (beewise replied to the Q43 outreach email declining to be listed)
+**Context:** The Q43 email asked beewise to have their host allowlist our monitor IP, and
+explicitly offered removal if they'd rather not be listed. They chose removal. We honour
+opt-outs immediately and unconditionally (prime directive: ethics first).
+**Decision:** Remove beewise from beestock entirely:
+- `bee_retailers.py`: RETAILERS + SHIPPING_MAP entries removed (commented with the why and
+  a do-not-re-add note). All builders filter on RETAILERS, so beewise drops out of the
+  dashboard, category, compare, and retailer pages on rebuild.
+- `build_bee_location_pages.py`: WA local-retailer entry, per-state note, and the WA intro
+  sentence naming Beewise removed.
+- `/retailer/beewise.html` deleted from the server, retailer index + sitemap rebuilt.
+- Snapshot history (2026-04-20..2026-06-11) archived server-side to
+  `/opt/dale/data/archive/bee-stock-beewise/`, out of the build path. Not deleted: it is
+  unpublished operational history of then-public data.
+- Historical dated digest pages (/digest/YYYY-MM-DD.html) keep old beewise mentions, same
+  as any dated archive; no live surface lists them.
+- Magento pipeline step stays (no active Magento retailers; scraper exits cleanly) for
+  whichever Magento retailer comes next.
+**Why not negotiate:** they were asked once, politely, with referral traffic as the carrot;
+they said no. "Tell him he's dreaming." Their related store The Urban Beehive remains
+listed (separate site, scrape works, no objection received; if one arrives, same treatment).
+**To revert:** only with beewise's explicit OK: restore the two bee_retailers.py entries,
+location-page references, and move the archive back.
+
 ## DEC-197 — 2026-06-11 — treestock species pages: digest box below Where-to-buy, nursery/availability links, variety chip cloud
 
 **Decided by:** Benedict (request + option picks), Dale (implementation)
