@@ -12,6 +12,23 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
+**Q43** [INFO] 2026-06-11 — Beewise blocked our server
+
+Beewise's firewall has blocked the VPS IP (178.104.20.9) since May 24: every request
+403s, even with a browser user-agent, while the same bot UA works fine from a
+residential IP. They also added rate limiting (429 after ~100 fast requests). So the
+nightly beewise scrape has failed silently for 19 days; I did a one-time slow scrape
+from your machine today to fix the prices (they were also ex-GST, now fixed, DEC-192).
+
+Beewise is a Perth business. Options:
+- **(a)** You email them: beestock.com.au lists their products with referral links
+  (utm_source=beestock), our monitor IP got caught in their May firewall change,
+  ask them to allowlist 178.104.20.9. I can draft the email.
+- **(b)** Drop beewise from beestock (data goes stale otherwise).
+- **(c)** Leave as-is, I re-scrape manually from your machine occasionally.
+
+a / b / c?
+
 **Q42** [SUPERSEDED 2026-04-27 by DEC-104]
 
 Original question proposed three monetisation paths (B nursery sponsorship, C treestock paid tier, A walkthrough audits). DEC-104 selected a fourth path that was not on the original list: **Treesmith Pro subscriptions, with treestock as the funnel**. Walkthrough (option A) is paused. Options B and C remain on the table as future moves but are no longer blocking.

@@ -4,6 +4,36 @@
 
 ---
 
+## DEC-194 — 2026-06-11 — Beestock: beewise WAF block since May 24 + latest.json symlink corruption
+
+**Decided by:** Dale (discovered while remediating DEC-192)
+**Context:** Re-scraping beewise after the GST fix failed with 403. Investigation found:
+1. Beewise's firewall has 403'd the VPS IP (178.104.20.9) since 2026-05-24, all UAs including
+   browser ones, so it is an IP/datacenter block, not targeted at our bot (the transparent
+   BeestockBot UA gets 200 from a residential IP). The nightly scrape failed silently for 19
+   days; the `|| non-fatal` guard in run-bee-scrapers.sh swallowed it, and the site served
+   stale May-23 (and ex-GST) beewise prices.
+2. Beewise also rate-limits now: a fast scrape (6 threads) gets 429 after ~100 requests.
+3. `latest.json` for beewise was a SYMLINK to the dated `2026-04-19.json` (created during the
+   retailer's setup). `save_snapshot` wrote through it, so every scrape since Apr 19 rewrote
+   that dated file. True Apr-19 data is lost; the file held a byte-identical duplicate of
+   `2026-05-23.json` and was deleted. Dated snapshots Apr-20 onward are genuine (written as
+   fresh files daily).
+**Decision:**
+- One-time slow scrape (1 req/s, single thread, transparent bot UA) from Benedict's machine,
+  uploaded to the server, so the site shows correct inc-GST prices today. Justified: we were
+  actively publishing wrong prices for a retailer we link referral traffic to; the residential
+  fetch is served happily by beewise.
+- Hardened the scraper: BEESTOCK_MAGENTO_CONCURRENCY/BEESTOCK_MAGENTO_DELAY env knobs, abort
+  without saving when >20% of fetches fail (no partial snapshots), never write latest.json
+  through a symlink. Regression tests added (suite 1413 green).
+- Sustainable path is Benedict's call (Q43): ask beewise to allowlist the VPS IP (they are a
+  Perth business and we send them tagged referral traffic), drop the retailer, or occasional
+  manual re-scrapes. NOT routing around the block via proxies; ethics first.
+**To revert:** n/a (data repair + hardening). If beewise allowlists the IP, the nightly cron
+resumes working with no further change; consider BEESTOCK_MAGENTO_DELAY=1 in cron to stay
+under their rate limit.
+
 ## DEC-193 — 2026-06-11 — treestock: widen content column on desktop/large screens
 
 **Decided by:** Dale (interactive, requested by Benedict)
