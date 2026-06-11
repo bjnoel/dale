@@ -12,6 +12,7 @@ here (the title that produced the wrong output, mapped to the expected
 output). See feedback_regression_tests_on_bugfix memory.
 """
 import importlib.util
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -545,3 +546,86 @@ class SuppressTypeLabel(unittest.TestCase):
             bvp.visible_type_label("Dwarf, Bare rooted", "Dwarf Cavendish"),
             "Bare rooted",
         )
+
+
+# ---------------------------------------------------------------------------
+# Vocabulary-scoped ornamental gate + the _species_records seam (DAL-194 P1.3)
+# ---------------------------------------------------------------------------
+
+class VocabularyScopedOrnamentalGate(unittest.TestCase):
+    """The ornamental rejection runs AFTER canonicalisation and is scoped to
+    the matched record's own common_name/synonym vocabulary (DEC-200 design
+    doc 3.4). The trap the naive "skip if canonicalized" version fails:
+    "Hibiscus Petite Orange" canonicalizes to Orange but must still reject."""
+
+    LEMON_MYRTLE = {
+        "common_name": "Lemon Myrtle",
+        "latin_name": "Backhousia citriodora",
+        "slug": "lemon-myrtle",
+        "region": "Australia",
+        "synonyms": [],
+        "category": "bush_tucker",
+        "tags": [],
+    }
+
+    def _inject(self, extra_records):
+        from stocklib import taxonomy
+        records = taxonomy.enabled_species() + list(extra_records)
+        original = cp._species_records
+        cp._species_records = lambda: records
+        cp._clear_species_caches()
+
+        def restore():
+            cp._species_records = original
+            cp._clear_species_caches()
+        self.addCleanup(restore)
+
+    def test_seam_returns_enabled_species(self):
+        from stocklib import taxonomy
+        self.assertEqual(cp._species_records(), taxonomy.enabled_species())
+
+    def test_registered_lemon_myrtle_parses(self):
+        self._inject([self.LEMON_MYRTLE])
+        self.assertEqual(cp.product_variety_slug("Lemon Myrtle 'Mini'"),
+                         "lemon-myrtle-mini")
+        self.assertTrue(cp.cultivar_in_scope("Lemon Myrtle",
+                                             title="Lemon Myrtle 'Mini'"))
+
+    def test_unregistered_lemon_myrtle_still_rejects(self):
+        # No injection: live taxonomy has no Lemon Myrtle record.
+        self.assertIsNone(cp.product_variety_slug("Lemon Myrtle 'Mini'"))
+        self.assertFalse(cp.cultivar_in_scope("Lemon Myrtle",
+                                              title="Lemon Myrtle 'Mini'"))
+
+    def test_hibiscus_petite_orange_still_rejects(self):
+        # Even with Lemon Myrtle registered: 'hibiscus' is not in the Orange
+        # record's vocabulary, so the fruit-as-COLOR leak stays plugged.
+        self._inject([self.LEMON_MYRTLE])
+        self.assertIsNone(cp.product_variety_slug("Hibiscus Petite Orange"))
+
+    def test_crepe_myrtle_still_rejects(self):
+        self._inject([self.LEMON_MYRTLE])
+        self.assertIsNone(cp.product_variety_slug("Crepe Myrtle 'Zuni'"))
+        self.assertIsNone(cp.product_variety_slug("Crepe Myrtle - Red"))
+
+    def test_latin_name_does_not_unlock_the_gate(self):
+        # A record whose LATIN name carries an ornamental word must not cover
+        # that word: only common_name/synonyms contribute to the vocabulary.
+        self._inject([{
+            "common_name": "Testfruit", "latin_name": "Hibiscus testus",
+            "slug": "testfruit", "region": "", "synonyms": [],
+            "category": "fruit", "tags": [],
+        }])
+        self.assertIsNone(cp.product_variety_slug("Testfruit - Red Hibiscus"))
+
+    def test_live_records_carry_no_ornamental_vocabulary(self):
+        # The behaviour-preservation claim: today no enabled record's own
+        # names contain an ornamental word, so moving the gate after
+        # canonicalisation changes nothing in production.
+        for r in cp._species_records():
+            names = [r.get("common_name", "")] + list(r.get("synonyms", []) or [])
+            words = set()
+            for name in names:
+                words.update(re.findall(r"[a-z]+", name.lower()))
+            self.assertFalse(words & cp._ORNAMENTAL_PAREN_WORDS,
+                             f"{r.get('common_name')}: {words & cp._ORNAMENTAL_PAREN_WORDS}")
