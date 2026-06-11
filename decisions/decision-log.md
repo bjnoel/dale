@@ -4,6 +4,25 @@
 
 ---
 
+## DEC-202 — 2026-06-11 — Bush tucker pilot shipped and deployed live (Phase 2)
+
+**Decided by:** Benedict (directive: carry out DAL-195 through DAL-201 in order, one PR each), Dale (execution)
+
+**Context:** DEC-201 shipped Phases 0 and 1 (observability + behaviour-preserving taxonomy plumbing) and filed the Phase 2 bush tucker pilot as DAL-195..202 plus DAL-203 (natives placeholder). This session carried out the pilot.
+
+**Shipped (7 PRs, all squash-merged + deployed same session):**
+- DAL-195 / P2.1 (#128): re-ran the supply census on the server (the category_raw ladder already classifies 62 products as bush tucker by store category alone), then authored 20 `category: "bush_tucker"` species records in fruit_species.json (verified descriptions, latin_name, no bare ornamental-word names) and tagged the 8 adjacent fruits (Finger Lime, Lilly Pilly, Davidson's Plum, Kakadu Plum, Muntries, Midyim Berry, Desert Lime, Macadamia) with `tags: ["bush_tucker"]` without moving their category. Still disabled; goldens byte-identical.
+- DAL-196 / P2.2 (#130): added 6 bush tucker products to the golden fixture covering every ladder rung (registry, category_raw, unclassified); dashboard index.html unchanged (rows live in the un-pinned data.js), only count bumps in nursery_compare + location.
+- DAL-197 / P2.3 (#132): the one-line enable, `ENABLED_CATEGORIES = ("fruit", "bush_tucker")`. Retired the cinnamon-myrtle-mini grandfather. Golden review confirmed every change was additive (new bush tucker surfaces) with zero fruit-page edits. Bugfix surfaced: the homepage species pills resolved common names by latin_name, which is not unique (Riberry shares Syzygium luehmannii with Lilly Pilly, mislabelling the pill); fixed by resolving by slug. Per-nursery pre-filters reviewed (Ladybird's tags filter already admits the "Australian Bush Foods" subtree, no change needed).
+- DAL-198 / P2.4 (#133): the /bush-tucker/ landing page, reusing the full dashboard search via a parameterized build_html (homepage byte-identical). LIVE: 388 bush tucker products across 15 nurseries. Bush Tucker nav link site-wide; sitemap entry; nightly build wired in.
+- DAL-199 / P2.5 (#134): a clearly labelled "Bush tucker" digest section, gated OFF behind BUSH_TUCKER_DIGEST_SECTION (default False) so it cannot reach subscribers before Benedict approves the copy. Copy posted to questions-for-benedict.md (Q44). Cross-listed fruits stay in the fruit flow; variant-level compares only.
+- DAL-200 / P2.6 (optional): DEFERRED. The census showed no real coverage gap (388 products already captured, dominated by Ladybird/Guildford/Ross Creek/Fruitopia/Daleys); the include-filtered nurseries this would widen are fruit/seed specialists contributing almost nothing. Revisit only if the P2.8 review shows a gap.
+- DAL-201 / P2.7 (#139): growing guides for the top 5 bush tucker species (lemon-myrtle, native-ginger, mountain-pepper, cinnamon-myrtle, native-raspberry), real https-verified sources, all guards green. LIVE on the species pages.
+
+**Invariants held:** goldens byte-identical through P2.1; the P2.3 enable diff was exactly the new-category surfaces; the homepage was never touched (results above the fold, nothing added above them); restriction warnings only (no ships-to badges); variant-level compares only; no em dashes. 1605 tests green.
+
+**Open:** DAL-199 awaits Benedict's copy approval (Q44) before the flag flips. DAL-202 (the ~6-week pilot review, natives go/no-go) is dated for the week of 2026-07-23, six weeks after the enable; success criteria already written into the ticket. DAL-203 (natives) stays gated on that review. "Tell him he's dreaming" remains a valid P2.8 outcome.
+
 ## DEC-201 — 2026-06-11 — Category expansion Phases 0 and 1 shipped; P2 pilot tickets filed
 
 **Decided by:** Benedict (directive: "carry out the tickets from docs/category-expansion.md one by one"), Dale (execution)

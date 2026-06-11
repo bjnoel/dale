@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-06-11",
-  "session_count": 81,
+  "session_count": 82,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -88,12 +88,14 @@
       "subscribers": 6,
       "revenue_total": 0,
       "category_expansion": {
-        "status": "planned",
-        "decision": "DEC-200",
+        "status": "pilot-live",
+        "decision": "DEC-202",
         "design_doc": "docs/category-expansion.md",
         "pilot": "bush_tucker",
-        "tickets": "DAL-193 (P0 observability), DAL-194 (P1 plumbing); P2/P3 filed at P1 closeout",
-        "sequence": "P0 observability and P1 plumbing in parallel, P2 bush tucker pilot gated on P1, P3 natives gated on P2.8 review"
+        "pilot_enabled": "2026-06-11",
+        "pilot_live": "388 bush tucker products across 15 nurseries on /bush-tucker/; 20 species records + 8 cross-tagged fruits; 5 growing guides live",
+        "tickets": "DAL-193 (P0) + DAL-194 (P1) shipped DEC-201; DAL-195..198 + DAL-201 shipped DEC-202; DAL-199 digest section gated off pending Benedict copy approval (Q44); DAL-200 deferred (no gap); DAL-202 review ~2026-07-23; DAL-203 natives gated on DAL-202",
+        "next": "Benedict approves the digest copy (Q44) then flip the flag; the P2.8 review on 2026-07-23 decides natives go/no-go"
       }
     },
     "b_experiment_beestock": {

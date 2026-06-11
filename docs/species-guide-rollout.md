@@ -340,7 +340,18 @@ black-sapote, loquat, starfruit, rollinia, miracle-fruit. (50 species have some 
   therefore repointed from a real species (cacao) to a permanent SYNTHETIC slug ("example-unenriched") with an
   inline blurb, and the old "unguided species that still has archive links" test was repurposed to assert a
   now-guided species (cacao) still has archive-index entries. Future enrichments no longer move the fixture.
-- [ ] (continue down the priority order)
+- [x] lemon-myrtle (DEC-202, first bush tucker batch, QLD native home, leaf-not-fruit, myrtle rust, "subtropical")
+- [x] native-ginger (DEC-202, shade-loving rainforest clump, edible blue berries, "subtropical")
+- [x] mountain-pepper (DEC-202, dioecious cool-climate frost-hardy shrub, VIC flagship, "default" climate note)
+- [x] cinnamon-myrtle (DEC-202, the cold-hardy leaf myrtle, NSW reach, "subtropical")
+- [x] native-raspberry (DEC-202, two Rubus species under one name, "default" climate note)
+- The five above shipped together as the first bush tucker guide batch 2026-06-11 (PR #139, DAL-201 / the
+  DEC-202 pilot). Sources are real and https-verified (no fabricated citations); the FAQ-overlap guard is
+  strict, so single-section state overlays need genuinely net-new FAQs (propagation, storage, commercial-crop
+  angles) rather than a recap of the climate-fit section. mountain-pepper and native-raspberry intentionally
+  carry NO SPECIES_CLIMATE_CATEGORY entry (the cool-climate/wide-ranging story would be wrong under the
+  stone/pome "temperate" note), so they fall back to "default" and the overlays tell the real story.
+- [ ] (continue down the priority order; next bush tucker by stock: native-river-mint, gumbi-gumbi, sandpaper-fig, burdekin-plum, saltbush)
 
 ## Notes
 
