@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-06-11",
-  "session_count": 80,
+  "session_count": 81,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -11,7 +11,10 @@
     "a": {
       "name": "Treesmith",
       "type": "mobile_app_freemium",
-      "platform": ["ios", "android"],
+      "platform": [
+        "ios",
+        "android"
+      ],
       "package": "app.treesmith",
       "repos": {
         "app": "/Users/bjnoel/Projects/treesmith-app",
@@ -110,13 +113,13 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done — hello@walkthrough.au via Fastmail",
-    "blog": "deployed — walkthrough.au live",
+    "email": "done \u2014 hello@walkthrough.au via Fastmail",
+    "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env"
+    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env"
   }
 }

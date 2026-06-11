@@ -4,6 +4,27 @@
 
 ---
 
+## DEC-201 — 2026-06-11 — Category expansion Phases 0 and 1 shipped; P2 pilot tickets filed
+
+**Decided by:** Benedict (directive: "carry out the tickets from docs/category-expansion.md one by one"), Dale (execution)
+
+**Context:** DEC-200 approved the expansion design with two umbrella tickets: DAL-193 (P0 observability) and DAL-194 (P1 behaviour-preserving taxonomy plumbing). Benedict asked for them to be carried out.
+
+**Shipped (9 PRs, all squash-merged + deployed same session):**
+- P0.1 (#109): stocklib/scrape_health.py; all 5 scrapers write one JSONL health record per nursery run (incl. failures, 403/429 counts) to data/scraper-health/.
+- P0.2 (#110): detect_scrape_anomalies.py in the nightly pipeline; emails Benedict on failed runs, zero-products-where-yesterday-had-stock, any 403/429, 3-day streaks; idempotent per day, --dry-run.
+- P0.3 (#111): /admin scraper-health panel (14-day ok/fail/zero grid, last success, recent errors). CF Access verified still failing closed post-restart. DAL-193 closed.
+- P1.1 (#112): taxonomy tags + KNOWN_CATEGORIES + landing_species(); schema tests.
+- P1.2 (#113): junk filter split into TRUE_JUNK (junk forever) + CATEGORY_KEYWORDS (filtered real plants); NON_PLANT_KEYWORDS derived, verified set-equal pre/post.
+- P1.3 (#116): _species_records() seam onto enabled_species(); ornamental gate moved after canonicalisation, vocabulary-scoped (dormant Lemon Myrtle fix). A/B over 10,150 live titles: 0 diffs.
+- P1.4 (#118): all 14 remaining direct fruit_species.json readers migrated onto taxonomy; no-forking guard bans direct reads. Six non-golden builders diff-verified byte-identical.
+- P1.5 (#119): dashboard junk filter de-forked (natives exempt so live melaleuca/wattle rows stay). Live diff enumerated: 107 junk/ornamental products drop (mostly restocked Ladybird cordylines), 0 appear. Bonus bugfix: 'tool' substring was hiding the real "Strawberry - Toolangi Choice" on variety/species/compare surfaces; replaced with 'tools' + 'dwarfing tool', regression-tested.
+- P1.6 (#121): stocklib/categorize.py ladder + nursery_categories.json seed mappings; build-dashboard --needs-review-out in cron; /admin needs-review table seeded (1,059 unclassified baseline; seed rules already classify 66 bush tucker products). DAL-194 closed.
+
+**Per the DAL-194 closeout chain:** filed DAL-195..202 (P2.1-P2.8 bush tucker pilot) and DAL-203 (P3 natives placeholder, gated on the P2.8 review). Phase 2 starts at DAL-195 (server re-census + species records).
+
+**Invariants held throughout:** goldens byte-identical at every P1 step; ENABLED_CATEGORIES still ("fruit",); nothing user-visible changed except the enumerated dashboard junk drops and the Toolangi restoration.
+
 ## DEC-200 — 2026-06-11 — treestock category expansion: bush tucker pilot, landing-page IA, observability alongside
 
 **Decided by:** Benedict (four scope decisions) + Dale (design, evidence)
