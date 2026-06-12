@@ -222,6 +222,199 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "orange-blood-cara-cara": {
+      "slug": "orange-blood-cara-cara",
+      "species": "Orange",
+      "variety": "Blood Cara Cara",
+      "paragraphs": [
+        "Cara Cara is a pink-fleshed navel orange that arose as a bud mutation on a Washington navel tree, discovered in 1976 at Hacienda Cara Cara in Venezuela. Most tree and fruit traits reflect its Washington navel ancestry, but the flesh is deep pink. Unlike blood oranges, which get their colour from anthocyanins, the pink comes from the carotenoid lycopene.",
+        "The fruit is seedless, sweet and notably low in acid, with the rich navel flavour plus berry-like notes often described as cranberry or rose. It is a mid-to-late season orange, ripe at Riverside roughly from November to January."
+      ],
+      "claims": [
+        {
+          "text": "Pink-fleshed navel that arose as a bud mutation on a Washington navel tree, discovered 1976 at Hacienda Cara Cara, Venezuela",
+          "type": "origin",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Deep pink flesh coloured by the carotenoid lycopene, not anthocyanins as in blood oranges",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Seedless, sweet and low in acid",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-caracara",
+            "ucr-caracara"
+          ]
+        },
+        {
+          "text": "Berry-like notes (cranberry, rose) over the navel flavour",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-caracara"
+          ]
+        },
+        {
+          "text": "Mid-to-late season; ripe at Riverside roughly November to January",
+          "type": "season",
+          "cites": [
+            "ucr-caracara"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-caracara",
+          "name": "Wikipedia: Cara Cara navel orange",
+          "url": "https://en.wikipedia.org/wiki/Cara_Cara_navel_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-caracara",
+          "name": "UC Riverside Citrus Variety Collection: Cara Cara navel orange",
+          "url": "https://citrusvariety.ucr.edu/crc3994",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "orange-blood-fruit-tree": {
+      "slug": "orange-blood-fruit-tree",
+      "species": "Orange",
+      "variety": "Blood Fruit Tree",
+      "paragraphs": [
+        "Blood oranges owe their crimson flesh to anthocyanins, a family of pigments common in flowers and many fruits but unusual in citrus. The colour develops when fruit ripens under low night temperatures, so the deepest colour comes from regions with cool nights. The pigment can keep accumulating in cold storage after harvest.",
+        "Flavour is distinctive, with a raspberry-like note alongside the usual citrus character. Flesh ranges from orange streaked with red to deep crimson, and sometimes the rind shows dark colouring too. The main cultivars are Moro, Tarocco and Sanguinello, long associated with Sicily and the Mediterranean."
+      ],
+      "claims": [
+        {
+          "text": "Red flesh is due to anthocyanin pigments, common in flowers and fruit but uncommon in citrus",
+          "type": "appearance",
+          "cites": [
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "Pigmentation develops when fruit ripens under low night temperatures and continues to accumulate in cold storage",
+          "type": "appearance",
+          "cites": [
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "Distinctive raspberry-like flavour in addition to usual citrus notes",
+          "type": "flavour",
+          "cites": [
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "Main cultivars are Moro, Tarocco and Sanguinello, associated with Sicily and the Mediterranean",
+          "type": "naming",
+          "cites": [
+            "wiki-blood",
+            "sp-sicilian"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-sicilian",
+          "name": "Specialty Produce: Sicilian Blood Oranges",
+          "url": "https://specialtyproduce.com/produce/Sicilian_Blood_Oranges_24612.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "orange-blood-ippolito": {
+      "slug": "orange-blood-ippolito",
+      "species": "Orange",
+      "variety": "Blood Ippolito",
+      "paragraphs": [
+        "Tarocco is a famous Italian blood orange, widely regarded as one of the sweetest and most flavourful blood oranges and a leading table orange in Italy. It is often called a 'half-blood' because its flesh shows less red pigmentation than Moro or Sanguinello, and at Riverside the rind develops very little colour. It is essentially seedless.",
+        "The red colour comes from anthocyanins (the same pigments in pomegranates) and develops properly only with chilly winter nights, so colour varies by climate. At Riverside the fruit ripens around December to February, similar to Moro. The tree is vigorous but only moderately productive."
+      ],
+      "claims": [
+        {
+          "text": "Tarocco is an Italian blood orange and a leading table orange in Italy",
+          "type": "origin",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is regarded as one of the sweetest, most flavourful blood oranges and is called a 'half-blood' for its lower flesh pigmentation than Moro and Sanguinello",
+          "type": "flavour",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is essentially seedless, with very little rind colouration at Riverside",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "The red colour is from anthocyanins (as in pomegranates) and requires a chilly winter to develop properly",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens around December to February, similar to Moro, and the tree is vigorous but only moderately productive",
+          "type": "season",
+          "cites": [
+            "ucr-tarocco"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-tarocco",
+          "name": "UC Riverside Citrus Variety Collection: Tarocco blood orange",
+          "url": "https://citrusvariety.ucr.edu/crc3596",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
     "orange-blood-maltese": {
       "slug": "orange-blood-maltese",
       "species": "Orange",
@@ -280,6 +473,194 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "orange-blood-meli-tarocco": {
+      "slug": "orange-blood-meli-tarocco",
+      "species": "Orange",
+      "variety": "Blood Meli Tarocco",
+      "paragraphs": [
+        "Blood Meli Tarocco is a nucellar clone of the Italian Tarocco Meli blood orange, selected at the CRA citrus institute at Acireale, Sicily, in 1988. The parent Tarocco is a classic Sicilian blood orange from the foothills of Mount Etna, whose deep red flesh comes from anthocyanin pigments that develop with cool conditions.",
+        "This clone is valued as a late-maturing blood orange whose ripe fruit holds on the tree for a long period. Its rind shows only rare, limited red blush, while the flesh is deep red and very juicy. Like other Tarocco oranges it is sweet and relatively low in acid with a hint of raspberry, and typically seedless to nearly seedless. The fruit stays firm and stores well, on a vigorous tree with long, sometimes thorny, drooping branches."
+      ],
+      "claims": [
+        {
+          "text": "Blood Meli Tarocco is a nucellar clone of the Tarocco Meli cultivar, selected at the CRA citrus institute at Acireale, Sicily, in 1988.",
+          "type": "breeding",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "The parent Tarocco is a Sicilian blood orange from the foothills of Mount Etna.",
+          "type": "origin",
+          "cites": [
+            "wiki-blood",
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "Its deep red flesh comes from anthocyanin pigments that develop with cool conditions.",
+          "type": "appearance",
+          "cites": [
+            "wiki-blood",
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "It is a late-maturing clone whose ripe fruit holds on the tree for a long period.",
+          "type": "season",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "Its rind shows only rare, limited red blush.",
+          "type": "appearance",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "The flesh is deep red and very juicy.",
+          "type": "appearance",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "Tarocco flesh is sweet and relatively low in acid with a hint of raspberry.",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "Tarocco oranges are typically seedless to nearly seedless.",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "The fruit stays firm and is suitable for cold storage.",
+          "type": "storage",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "The tree is vigorous with long, sometimes thorny, drooping branches.",
+          "type": "growing",
+          "cites": [
+            "nsw-dpi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nsw-dpi",
+          "name": "NSW DPI Primefact: Tarocco Meli blood orange",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0018/1206180/Tarocco-Meli-blood-orange.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "oscartintori",
+          "name": "Oscar Tintori Nurseries: Nucellar Tarocco Meli Blood Orange",
+          "url": "https://www.oscartintori.it/en/prodotto/nucellar-tarocco-meli-blood-orange/",
+          "tier": "nursery"
+        },
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce: Tarocco Blood Oranges",
+          "url": "https://specialtyproduce.com/produce/Tarocco_Blood_Oranges_2456.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "orange-blood-rosso-tarocco": {
+      "slug": "orange-blood-rosso-tarocco",
+      "species": "Orange",
+      "variety": "Blood Rosso Tarocco",
+      "paragraphs": [
+        "Tarocco is a famous Italian blood orange, widely regarded as one of the sweetest and most flavourful blood oranges and a leading table orange in Italy. It is often called a 'half-blood' because its flesh shows less red pigmentation than Moro or Sanguinello, and at Riverside the rind develops very little colour. It is essentially seedless.",
+        "The red colour comes from anthocyanins (the same pigments in pomegranates) and develops properly only with chilly winter nights, so colour varies by climate. At Riverside the fruit ripens around December to February, similar to Moro. The tree is vigorous but only moderately productive."
+      ],
+      "claims": [
+        {
+          "text": "Tarocco is an Italian blood orange and a leading table orange in Italy",
+          "type": "origin",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is regarded as one of the sweetest, most flavourful blood oranges and is called a 'half-blood' for its lower flesh pigmentation than Moro and Sanguinello",
+          "type": "flavour",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is essentially seedless, with very little rind colouration at Riverside",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "The red colour is from anthocyanins (as in pomegranates) and requires a chilly winter to develop properly",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens around December to February, similar to Moro, and the tree is vigorous but only moderately productive",
+          "type": "season",
+          "cites": [
+            "ucr-tarocco"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-tarocco",
+          "name": "UC Riverside Citrus Variety Collection: Tarocco blood orange",
+          "url": "https://citrusvariety.ucr.edu/crc3596",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
     },
     "orange-blood-tarocco-ippolito": {
       "slug": "orange-blood-tarocco-ippolito",
@@ -348,6 +729,126 @@
       "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "orange-blood-tarocco-meli": {
+      "slug": "orange-blood-tarocco-meli",
+      "species": "Orange",
+      "variety": "Blood Tarocco Meli",
+      "paragraphs": [
+        "Blood Meli Tarocco is a nucellar clone of the Italian Tarocco Meli blood orange, selected at the CRA citrus institute at Acireale, Sicily, in 1988. The parent Tarocco is a classic Sicilian blood orange from the foothills of Mount Etna, whose deep red flesh comes from anthocyanin pigments that develop with cool conditions.",
+        "This clone is valued as a late-maturing blood orange whose ripe fruit holds on the tree for a long period. Its rind shows only rare, limited red blush, while the flesh is deep red and very juicy. Like other Tarocco oranges it is sweet and relatively low in acid with a hint of raspberry, and typically seedless to nearly seedless. The fruit stays firm and stores well, on a vigorous tree with long, sometimes thorny, drooping branches."
+      ],
+      "claims": [
+        {
+          "text": "Blood Meli Tarocco is a nucellar clone of the Tarocco Meli cultivar, selected at the CRA citrus institute at Acireale, Sicily, in 1988.",
+          "type": "breeding",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "The parent Tarocco is a Sicilian blood orange from the foothills of Mount Etna.",
+          "type": "origin",
+          "cites": [
+            "wiki-blood",
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "Its deep red flesh comes from anthocyanin pigments that develop with cool conditions.",
+          "type": "appearance",
+          "cites": [
+            "wiki-blood",
+            "specialtyproduce"
+          ]
+        },
+        {
+          "text": "It is a late-maturing clone whose ripe fruit holds on the tree for a long period.",
+          "type": "season",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "Its rind shows only rare, limited red blush.",
+          "type": "appearance",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "The flesh is deep red and very juicy.",
+          "type": "appearance",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "Tarocco flesh is sweet and relatively low in acid with a hint of raspberry.",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "Tarocco oranges are typically seedless to nearly seedless.",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "The fruit stays firm and is suitable for cold storage.",
+          "type": "storage",
+          "cites": [
+            "nsw-dpi",
+            "oscartintori"
+          ]
+        },
+        {
+          "text": "The tree is vigorous with long, sometimes thorny, drooping branches.",
+          "type": "growing",
+          "cites": [
+            "nsw-dpi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nsw-dpi",
+          "name": "NSW DPI Primefact: Tarocco Meli blood orange",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0018/1206180/Tarocco-Meli-blood-orange.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "oscartintori",
+          "name": "Oscar Tintori Nurseries: Nucellar Tarocco Meli Blood Orange",
+          "url": "https://www.oscartintori.it/en/prodotto/nucellar-tarocco-meli-blood-orange/",
+          "tier": "nursery"
+        },
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce",
+          "name": "Specialty Produce: Tarocco Blood Oranges",
+          "url": "https://specialtyproduce.com/produce/Tarocco_Blood_Oranges_2456.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-12"
     },
     "orange-blood-tarocco-rosso": {
       "slug": "orange-blood-tarocco-rosso",
@@ -733,6 +1234,74 @@
       "confidence_score": 0.95,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "orange-ippolito-blood": {
+      "slug": "orange-ippolito-blood",
+      "species": "Orange",
+      "variety": "Ippolito Blood",
+      "paragraphs": [
+        "Tarocco is a famous Italian blood orange, widely regarded as one of the sweetest and most flavourful blood oranges and a leading table orange in Italy. It is often called a 'half-blood' because its flesh shows less red pigmentation than Moro or Sanguinello, and at Riverside the rind develops very little colour. It is essentially seedless.",
+        "The red colour comes from anthocyanins (the same pigments in pomegranates) and develops properly only with chilly winter nights, so colour varies by climate. At Riverside the fruit ripens around December to February, similar to Moro. The tree is vigorous but only moderately productive."
+      ],
+      "claims": [
+        {
+          "text": "Tarocco is an Italian blood orange and a leading table orange in Italy",
+          "type": "origin",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is regarded as one of the sweetest, most flavourful blood oranges and is called a 'half-blood' for its lower flesh pigmentation than Moro and Sanguinello",
+          "type": "flavour",
+          "cites": [
+            "wiki-blood",
+            "ucr-tarocco"
+          ]
+        },
+        {
+          "text": "It is essentially seedless, with very little rind colouration at Riverside",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "The red colour is from anthocyanins (as in pomegranates) and requires a chilly winter to develop properly",
+          "type": "appearance",
+          "cites": [
+            "ucr-tarocco",
+            "wiki-blood"
+          ]
+        },
+        {
+          "text": "At Riverside the fruit ripens around December to February, similar to Moro, and the tree is vigorous but only moderately productive",
+          "type": "season",
+          "cites": [
+            "ucr-tarocco"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-tarocco",
+          "name": "UC Riverside Citrus Variety Collection: Tarocco blood orange",
+          "url": "https://citrusvariety.ucr.edu/crc3596",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-blood",
+          "name": "Wikipedia: Blood orange",
+          "url": "https://en.wikipedia.org/wiki/Blood_orange",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
     },
     "orange-jaffa": {
       "slug": "orange-jaffa",

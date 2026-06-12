@@ -1,0 +1,323 @@
+{
+  "species_slug": "tangelo",
+  "schema_version": 1,
+  "varieties": {
+    "tangelo-mineola": {
+      "slug": "tangelo-mineola",
+      "species": "Tangelo",
+      "variety": "Mineola",
+      "paragraphs": [
+        "Minneola is a tangelo, a cross of Duncan grapefruit and Dancy mandarin released by the USDA in 1931, and it is widely sold in the gift-fruit trade as the Honeybell. It is easily recognised by a pronounced stem-end neck that gives the fruit a bell shape, with a smooth, deep reddish-orange rind that peels readily.",
+        "The flesh is rich and juicy, carrying a touch of tartness inherited from its grapefruit parent, and it ripens mid to late season (around January to March in the northern hemisphere). Minneola blossoms are self-incompatible, so the tree needs a compatible pollinator to set a good crop. Most mandarins do the job, but its tangelo siblings Orlando and Seminole, and the Satsumas, do not."
+      ],
+      "claims": [
+        {
+          "text": "Minneola is a tangelo from a Duncan grapefruit and Dancy mandarin cross, released by the USDA in 1931.",
+          "type": "origin",
+          "cites": [
+            "ucr-minneola",
+            "wiki-tangelo"
+          ]
+        },
+        {
+          "text": "It is widely sold in the gift-fruit trade under the name Honeybell.",
+          "type": "naming",
+          "cites": [
+            "ucr-minneola",
+            "wiki-tangelo"
+          ]
+        },
+        {
+          "text": "The fruit has a pronounced stem-end neck giving it a bell shape, with a smooth deep reddish-orange rind that peels readily.",
+          "type": "appearance",
+          "cites": [
+            "ucr-minneola",
+            "wiki-tangelo"
+          ]
+        },
+        {
+          "text": "The flesh is rich and juicy with a touch of tartness from its grapefruit parent.",
+          "type": "flavour",
+          "cites": [
+            "ucr-minneola"
+          ]
+        },
+        {
+          "text": "It ripens mid to late season, around January to March in the northern hemisphere.",
+          "type": "season",
+          "cites": [
+            "ucr-minneola"
+          ]
+        },
+        {
+          "text": "Minneola blossoms are self-incompatible and need a compatible pollinator; most mandarins work, but Orlando, Seminole and Satsumas do not.",
+          "type": "pollination",
+          "cites": [
+            "ucr-minneola"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-minneola",
+          "name": "UC Riverside Givaudan Citrus Variety Collection, Minneola tangelo",
+          "url": "https://citrusvariety.ucr.edu/crc3340",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-tangelo",
+          "name": "Wikipedia, Tangelo",
+          "url": "https://en.wikipedia.org/wiki/Tangelo",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "tangelo-minneola": {
+      "slug": "tangelo-minneola",
+      "species": "Tangelo",
+      "variety": "Minneola",
+      "paragraphs": [
+        "Minneola is a tangelo, a cross of Duncan grapefruit and Dancy mandarin released by the USDA in 1931, and it is widely sold in the gift-fruit trade as the Honeybell. It is easily recognised by a pronounced stem-end neck that gives the fruit a bell shape, with a smooth, deep reddish-orange rind that peels readily.",
+        "The flesh is rich and juicy, carrying a touch of tartness inherited from its grapefruit parent, and it ripens mid to late season (around January to March in the northern hemisphere). Minneola blossoms are self-incompatible, so the tree needs a compatible pollinator to set a good crop. Most mandarins do the job, but its tangelo siblings Orlando and Seminole, and the Satsumas, do not."
+      ],
+      "claims": [
+        {
+          "text": "Minneola is a tangelo from a Duncan grapefruit and Dancy mandarin cross, released by the USDA in 1931.",
+          "type": "origin",
+          "cites": [
+            "ucr-minneola",
+            "wiki-tangelo"
+          ]
+        },
+        {
+          "text": "It is widely sold in the gift-fruit trade under the name Honeybell.",
+          "type": "naming",
+          "cites": [
+            "ucr-minneola",
+            "wiki-tangelo"
+          ]
+        },
+        {
+          "text": "The fruit has a pronounced stem-end neck giving it a bell shape, with a smooth deep reddish-orange rind that peels readily.",
+          "type": "appearance",
+          "cites": [
+            "ucr-minneola",
+            "wiki-tangelo"
+          ]
+        },
+        {
+          "text": "The flesh is rich and juicy with a touch of tartness from its grapefruit parent.",
+          "type": "flavour",
+          "cites": [
+            "ucr-minneola"
+          ]
+        },
+        {
+          "text": "It ripens mid to late season, around January to March in the northern hemisphere.",
+          "type": "season",
+          "cites": [
+            "ucr-minneola"
+          ]
+        },
+        {
+          "text": "Minneola blossoms are self-incompatible and need a compatible pollinator; most mandarins work, but Orlando, Seminole and Satsumas do not.",
+          "type": "pollination",
+          "cites": [
+            "ucr-minneola"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-minneola",
+          "name": "UC Riverside Givaudan Citrus Variety Collection, Minneola tangelo",
+          "url": "https://citrusvariety.ucr.edu/crc3340",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-tangelo",
+          "name": "Wikipedia, Tangelo",
+          "url": "https://en.wikipedia.org/wiki/Tangelo",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "tangelo-orlando": {
+      "slug": "tangelo-orlando",
+      "species": "Tangelo",
+      "variety": "Orlando",
+      "paragraphs": [
+        "Orlando comes from the same Duncan grapefruit and Dancy mandarin cross that produced Minneola. It was bred by W. T. Swingle of the USDA in 1911 and first went by the name Lake tangelo. The fruit is nearly round to slightly flattened with no neck, and wears a thin orange rind that clings fairly tightly, so it does not slip off the segments as easily as some mandarins.",
+        "The orange flesh is very juicy and mild-sweet, and Orlando matures early, roughly November to January. In the orchard the tree is recognised by its distinctively cupped leaves, and it rates as somewhat more cold tolerant than Minneola. Like other tangelos it is self-incompatible, cropping best when a suitable pollinator grows nearby."
+      ],
+      "claims": [
+        {
+          "text": "Orlando is from a Duncan grapefruit and Dancy mandarin cross, bred by W. T. Swingle of the USDA in 1911.",
+          "type": "origin",
+          "cites": [
+            "ucr-orlando",
+            "wiki-tangelo"
+          ]
+        },
+        {
+          "text": "It was originally known as the Lake tangelo before being renamed Orlando.",
+          "type": "naming",
+          "cites": [
+            "ucr-orlando"
+          ]
+        },
+        {
+          "text": "The fruit is nearly round to slightly flattened with no neck and a thin orange rind that clings fairly tightly and is not easily hand-peeled.",
+          "type": "appearance",
+          "cites": [
+            "ucr-orlando"
+          ]
+        },
+        {
+          "text": "The orange flesh is juicy and mild, sweet flavoured.",
+          "type": "flavour",
+          "cites": [
+            "ucr-orlando",
+            "specialty-orlando"
+          ]
+        },
+        {
+          "text": "Orlando matures early, with harvest roughly from November to January.",
+          "type": "season",
+          "cites": [
+            "ucr-orlando",
+            "specialty-orlando"
+          ]
+        },
+        {
+          "text": "The tree is recognised by its distinctively cupped leaves.",
+          "type": "growing",
+          "cites": [
+            "ucr-orlando"
+          ]
+        },
+        {
+          "text": "Orlando is somewhat more cold tolerant than Minneola.",
+          "type": "climate",
+          "cites": [
+            "ucr-orlando"
+          ]
+        },
+        {
+          "text": "It is self-incompatible and crops best with a suitable pollinator nearby.",
+          "type": "pollination",
+          "cites": [
+            "ucr-orlando"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-orlando",
+          "name": "UC Riverside Givaudan Citrus Variety Collection, Orlando tangelo",
+          "url": "https://citrusvariety.ucr.edu/crc3874",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-tangelo",
+          "name": "Wikipedia, Tangelo",
+          "url": "https://en.wikipedia.org/wiki/Tangelo",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-orlando",
+          "name": "Specialty Produce, Orlando Tangelos",
+          "url": "https://specialtyproduce.com/produce/Orlando_Tangelos_8574.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "tangelo-seminole": {
+      "slug": "tangelo-seminole",
+      "species": "Tangelo",
+      "variety": "Seminole",
+      "paragraphs": [
+        "Seminole is a tangelo from a Duncan grapefruit and Dancy mandarin cross, named and released in the 1930s. Some older accounts list a Bowen grapefruit as the parent, later identified as Duncan, which is why its background is sometimes described two ways. The fruit is deep red-orange and oblate (flattened) without a neck, with a thin, firm peel.",
+        "Inside are juicy segments with a pleasant, subacid flavour and a fair scattering of seeds. The tree is noted as scab-resistant. Seminole ripens late and the fruit can be quite tart, so it tends to be at its best later in the season once it has had time to sweeten."
+      ],
+      "claims": [
+        {
+          "text": "Seminole is a tangelo from a Duncan grapefruit and Dancy mandarin cross, named and released in the 1930s (older accounts list a Bowen grapefruit parent later identified as Duncan).",
+          "type": "origin",
+          "cites": [
+            "ucr-seminole",
+            "wiki-tangelo"
+          ]
+        },
+        {
+          "text": "The fruit is deep red-orange and oblate in shape, not necked, with a thin and firm peel.",
+          "type": "appearance",
+          "cites": [
+            "wiki-tangelo",
+            "specialty-seminole"
+          ]
+        },
+        {
+          "text": "It has juicy segments with a pleasant, subacid flavour and a number of seeds.",
+          "type": "flavour",
+          "cites": [
+            "wiki-tangelo",
+            "specialty-seminole"
+          ]
+        },
+        {
+          "text": "The tree is noted as scab-resistant.",
+          "type": "growing",
+          "cites": [
+            "wiki-tangelo",
+            "specialty-seminole"
+          ]
+        },
+        {
+          "text": "Seminole ripens late and the fruit can be quite tart.",
+          "type": "season",
+          "cites": [
+            "ucr-seminole"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-seminole",
+          "name": "UC Riverside Givaudan Citrus Variety Collection, Seminole tangelo",
+          "url": "https://citrusvariety.ucr.edu/crc2604",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-tangelo",
+          "name": "Wikipedia, Tangelo",
+          "url": "https://en.wikipedia.org/wiki/Tangelo",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-seminole",
+          "name": "Specialty Produce, Seminole Tangelos",
+          "url": "https://specialtyproduce.com/produce/Seminole_Tangelos_17859.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}
