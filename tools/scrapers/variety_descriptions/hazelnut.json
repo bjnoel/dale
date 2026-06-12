@@ -1,0 +1,845 @@
+{
+  "species_slug": "hazelnut",
+  "schema_version": 1,
+  "varieties": {
+    "hazelnut-barcelona": {
+      "slug": "hazelnut-barcelona",
+      "species": "Hazelnut",
+      "variety": "Barcelona",
+      "paragraphs": [
+        "Barcelona originated in Spain and became the most widely planted European hazelnut in North America, long dominating Oregon orchards and serving as the industry benchmark other varieties are measured against. The tree is vigorous and upright, producing large, round nuts with a thick shell. The kernel is sweet with a high oil content, suiting both the in shell market and confectionery and roasting uses.",
+        "A notable quirk is its coarse brown pellicle (skin), which clings tightly and is difficult to remove completely even after roasting, so Barcelona is less ideal where a clean blanched kernel is wanted. Trees tend to crop heavily in alternate years and can set a high proportion of blank nuts. In Australia Barcelona is mid season flowering and has been one of the higher yielding cultivars in trials, also valued as a pollinator for selections such as T.B. Cosford."
+      ],
+      "claims": [
+        {
+          "text": "Barcelona originated in Spain and became the most widely planted European hazelnut in North America, long the dominant Oregon variety and the industry benchmark.",
+          "type": "origin",
+          "cites": [
+            "hazelnuthub-barcelona",
+            "osu-varieties"
+          ]
+        },
+        {
+          "text": "The vigorous, upright tree bears large round nuts with a thick shell and a sweet, high oil kernel used for in shell, confectionery and roasting.",
+          "type": "appearance",
+          "cites": [
+            "hazelnuthub-barcelona",
+            "osu-varieties"
+          ]
+        },
+        {
+          "text": "Its coarse brown pellicle clings tightly and is hard to remove fully even after roasting.",
+          "type": "use",
+          "cites": [
+            "hazelnuthub-barcelona",
+            "osu-varieties"
+          ]
+        },
+        {
+          "text": "Barcelona tends to crop heavily in alternate years and can produce a high proportion of blank nuts.",
+          "type": "growing",
+          "cites": [
+            "osu-varieties",
+            "hazelnuthub-barcelona"
+          ]
+        },
+        {
+          "text": "In Australia Barcelona is mid season flowering, has been among the higher yielding trial cultivars, and serves as a pollinator for selections such as T.B. Cosford.",
+          "type": "pollination",
+          "cites": [
+            "agrifutures-assessment",
+            "heritage-tbc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agrifutures-assessment",
+          "name": "AgriFutures Australia, Hazelnut Variety Assessment for south-eastern Australia",
+          "url": "https://agrifutures.com.au/product/hazelnut-variety-assessment-for-south-eastern-australia-2/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "osu-varieties",
+          "name": "Oregon State University Extension, Growing Hazelnuts in the Pacific Northwest: Varieties",
+          "url": "https://extension.oregonstate.edu/catalog/em-9073-growing-hazelnuts-pacific-northwest-varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "hazelnuthub-barcelona",
+          "name": "Hazelnut Hub, Understanding the Unique Traits of the Barcelona Hazelnut",
+          "url": "https://hazelnuthub.com/understanding-the-unique-traits-of-the-barcelona-hazelnut/",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage-tbc",
+          "name": "Heritage Fruit Trees, T.B. Cosford hazelnut",
+          "url": "https://www.heritagefruittrees.com.au/t-b-cosford-hazelnut/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-cosford": {
+      "slug": "hazelnut-cosford",
+      "species": "Hazelnut",
+      "variety": "Cosford",
+      "paragraphs": [
+        "Cosford is a classic English cobnut, said to date to around 1816 and named after Cosford Hundred in Suffolk, near Ipswich. It is prized for a notably thin shell that cracks easily, and an elongated, broadly elliptic nut carried in a long husk or full beard. The light cream kernel is juicy and sweet, making Cosford a long favourite for eating fresh as well as cooking and roasting.",
+        "Beyond its own eating quality, Cosford earned a reputation across the English speaking world as a reliable pollinator, so it is often planted among other hazels to lift cropping. It is not self fertile, so growing at least two compatible cultivars ensures cross pollination. Nuts ripen in late September in the northern hemisphere (autumn). The Cosford name also anchors several later Australian selections sold under Cosford labels."
+      ],
+      "claims": [
+        {
+          "text": "Cosford is an English cobnut dating to about 1816, named after Cosford Hundred in Suffolk near Ipswich.",
+          "type": "origin",
+          "cites": [
+            "hazelstar",
+            "fpm-cosford"
+          ]
+        },
+        {
+          "text": "It has a thin, easy to crack shell and an elongated nut carried in a long husk or beard.",
+          "type": "appearance",
+          "cites": [
+            "hazelstar",
+            "rhs-cosford"
+          ]
+        },
+        {
+          "text": "The light cream kernel is juicy and sweet, valued for fresh eating, cooking and roasting.",
+          "type": "flavour",
+          "cites": [
+            "hazelstar",
+            "rhs-cosford"
+          ]
+        },
+        {
+          "text": "Cosford is well known as a good pollinator for other hazel cultivars and is not self fertile, so at least two cultivars are needed for cross pollination.",
+          "type": "pollination",
+          "cites": [
+            "rhs-cosford",
+            "hazelstar"
+          ]
+        },
+        {
+          "text": "Nuts ripen in late September (autumn).",
+          "type": "season",
+          "cites": [
+            "hazelstar",
+            "fpm-cosford"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hazelstar",
+          "name": "Hazelstar, Cosford cultivar profile",
+          "url": "https://hazelstar.net/en/product/cosford/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rhs-cosford",
+          "name": "Royal Horticultural Society, Corylus avellana Cosford",
+          "url": "https://www.rhs.org.uk/plants/301249/corylus-avellana-cosford-(f)/details",
+          "tier": "third_party"
+        },
+        {
+          "id": "fpm-cosford",
+          "name": "Frank P Matthews, Cosford filbert",
+          "url": "https://www.frankpmatthews.com/catalogue/fruit-trees/filbert/cosford/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-ennis": {
+      "slug": "hazelnut-ennis",
+      "species": "Hazelnut",
+      "variety": "Ennis",
+      "paragraphs": [
+        "Ennis is an American (United States) hazelnut selection grown for its very large, slightly elongated, oblong nuts with a smooth, shiny shell. It is one of the few cultivars that can match or exceed Barcelona for size, which makes it a leading choice for the in shell and fresh market rather than the kernel trade. The kernel is light brown and attractive, contributing to its strong appeal in the in shell nut market.",
+        "Trees are robust and productive, and in south eastern Australian variety trials Ennis was among the highest yielding of the in shell cultivars. It requires cross pollination, commonly paired with partners such as Barcelona and Butler. Ennis features among the overseas varieties imported into Australia for trial and commercial planting."
+      ],
+      "claims": [
+        {
+          "text": "Ennis is a United States hazelnut selection producing very large, slightly elongated, oblong nuts with a smooth shiny shell.",
+          "type": "origin",
+          "cites": [
+            "wcngg",
+            "tsesmelis-ennis"
+          ]
+        },
+        {
+          "text": "It rivals or exceeds Barcelona for size and is favoured for the in shell and fresh market, with an attractive light brown kernel.",
+          "type": "appearance",
+          "cites": [
+            "wcngg",
+            "tsesmelis-ennis"
+          ]
+        },
+        {
+          "text": "Ennis was among the highest yielding in shell cultivars in south eastern Australian trials.",
+          "type": "use",
+          "cites": [
+            "agrifutures-assessment"
+          ]
+        },
+        {
+          "text": "Ennis requires cross pollination, commonly with Barcelona and Butler.",
+          "type": "pollination",
+          "cites": [
+            "wcngg",
+            "tsesmelis-ennis"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agrifutures-assessment",
+          "name": "AgriFutures Australia, Hazelnut Variety Assessment for south-eastern Australia",
+          "url": "https://agrifutures.com.au/product/hazelnut-variety-assessment-for-south-eastern-australia-2/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wcngg",
+          "name": "West Coast Nut, Oregon Hazelnut Varieties in a Nutshell",
+          "url": "https://www.wcngg.com/2021/05/14/oregon-hazelnut-varieties-in-a-nutshell/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tsesmelis-ennis",
+          "name": "Tsesmelis Fruit and Nut Nursery, Ennis Hazelnut Variety",
+          "url": "https://tsesmelis.gr/en/trees/nuts/hazelnuts/ennis-hazelnut-variety/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-hall-s-giant": {
+      "slug": "hazelnut-hall-s-giant",
+      "species": "Hazelnut",
+      "variety": "Hall's Giant",
+      "paragraphs": [
+        "Hall's Giant is an old European filbert, widely sold under the synonyms Halle'sche Riesennuss (Geant de Halle) and Merveille de Bollwiller, with origins traced to Germany or the Alsace region. It forms a vigorous, upright bush and ripens late in the season. The nuts are notably large and rounded, sitting in a glossy rust-brown shell, which is how it earned the Giant name.",
+        "Its main reputation in Australia and Europe is as a pollinizer. Hall's Giant sheds masses of pollen and, being a later-flowering type, is valued for pollinating other late-flowering hazels rather than purely as a cropper. Plant it alongside a compatible variety, since hazelnuts are not reliably self-fertile and male and female bloom times often differ."
+      ],
+      "claims": [
+        {
+          "text": "Hall's Giant is an old European filbert known by the synonyms Halle'sche Riesennuss (Geant de Halle) and Merveille de Bollwiller, with origins traced to Germany or Alsace.",
+          "type": "naming",
+          "cites": [
+            "agroforestry",
+            "starkbros",
+            "promesse"
+          ]
+        },
+        {
+          "text": "It forms a vigorous, upright bush and is a late-season variety.",
+          "type": "growing",
+          "cites": [
+            "agroforestry"
+          ]
+        },
+        {
+          "text": "The nuts are large and rounded with a glossy rust-brown shell.",
+          "type": "appearance",
+          "cites": [
+            "starkbros"
+          ]
+        },
+        {
+          "text": "It is valued chiefly as a pollinizer, shedding masses of pollen and suited to pollinating other later-flowering hazels.",
+          "type": "pollination",
+          "cites": [
+            "starkbros",
+            "agroforestry"
+          ]
+        },
+        {
+          "text": "Hazelnuts are not reliably self-fertile, so a compatible second variety should be planted nearby.",
+          "type": "pollination",
+          "cites": [
+            "agroforestry",
+            "rhs-corylus"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agroforestry",
+          "name": "Agroforestry Research Trust, Hazelnut Hall's Giant",
+          "url": "https://www.agroforestry.co.uk/product/hazelnut-corylus-avellana-halls-giant/",
+          "tier": "third_party"
+        },
+        {
+          "id": "starkbros",
+          "name": "Stark Bro's Nurseries, Hall's Giant Filbert",
+          "url": "https://www.starkbros.com/products/nut-trees/filbert-hazelnut-trees/halls-giant-filbert-hazelnut",
+          "tier": "nursery"
+        },
+        {
+          "id": "promesse",
+          "name": "Promesse de Fleurs, Merveille de Bollwiller",
+          "url": "https://www.promessedefleurs.ie/fruit-trees/fruit-trees-by-variety/fruit-bearing-hazelnut-trees/hazel-merveille-de-bollwiller-corylus-maxima.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "rhs-corylus",
+          "name": "Royal Horticultural Society, Corylus maxima",
+          "url": "https://www.rhs.org.uk/plants/72619/corylus-maxima-lambert-s-filbert/details",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-halls-giant": {
+      "slug": "hazelnut-halls-giant",
+      "species": "Hazelnut",
+      "variety": "Halls Giant",
+      "paragraphs": [
+        "Hall's Giant is an old European filbert, widely sold under the synonyms Halle'sche Riesennuss (Geant de Halle) and Merveille de Bollwiller, with origins traced to Germany or the Alsace region. It forms a vigorous, upright bush and ripens late in the season. The nuts are notably large and rounded, sitting in a glossy rust-brown shell, which is how it earned the Giant name.",
+        "Its main reputation in Australia and Europe is as a pollinizer. Hall's Giant sheds masses of pollen and, being a later-flowering type, is valued for pollinating other late-flowering hazels rather than purely as a cropper. Plant it alongside a compatible variety, since hazelnuts are not reliably self-fertile and male and female bloom times often differ."
+      ],
+      "claims": [
+        {
+          "text": "Hall's Giant is an old European filbert known by the synonyms Halle'sche Riesennuss (Geant de Halle) and Merveille de Bollwiller, with origins traced to Germany or Alsace.",
+          "type": "naming",
+          "cites": [
+            "agroforestry",
+            "starkbros",
+            "promesse"
+          ]
+        },
+        {
+          "text": "It forms a vigorous, upright bush and is a late-season variety.",
+          "type": "growing",
+          "cites": [
+            "agroforestry"
+          ]
+        },
+        {
+          "text": "The nuts are large and rounded with a glossy rust-brown shell.",
+          "type": "appearance",
+          "cites": [
+            "starkbros"
+          ]
+        },
+        {
+          "text": "It is valued chiefly as a pollinizer, shedding masses of pollen and suited to pollinating other later-flowering hazels.",
+          "type": "pollination",
+          "cites": [
+            "starkbros",
+            "agroforestry"
+          ]
+        },
+        {
+          "text": "Hazelnuts are not reliably self-fertile, so a compatible second variety should be planted nearby.",
+          "type": "pollination",
+          "cites": [
+            "agroforestry",
+            "rhs-corylus"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agroforestry",
+          "name": "Agroforestry Research Trust, Hazelnut Hall's Giant",
+          "url": "https://www.agroforestry.co.uk/product/hazelnut-corylus-avellana-halls-giant/",
+          "tier": "third_party"
+        },
+        {
+          "id": "starkbros",
+          "name": "Stark Bro's Nurseries, Hall's Giant Filbert",
+          "url": "https://www.starkbros.com/products/nut-trees/filbert-hazelnut-trees/halls-giant-filbert-hazelnut",
+          "tier": "nursery"
+        },
+        {
+          "id": "promesse",
+          "name": "Promesse de Fleurs, Merveille de Bollwiller",
+          "url": "https://www.promessedefleurs.ie/fruit-trees/fruit-trees-by-variety/fruit-bearing-hazelnut-trees/hazel-merveille-de-bollwiller-corylus-maxima.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "rhs-corylus",
+          "name": "Royal Horticultural Society, Corylus maxima",
+          "url": "https://www.rhs.org.uk/plants/72619/corylus-maxima-lambert-s-filbert/details",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-lambert": {
+      "slug": "hazelnut-lambert",
+      "species": "Hazelnut",
+      "variety": "Lambert",
+      "paragraphs": [
+        "Lambert, or Lambert's Filbert, is a classic filbert belonging to Corylus maxima and is widely regarded as synonymous with the Kentish Cob, the most popular cobnut variety in Britain. The name is thought to be a corruption of filbert from Lombardy, and the variety is believed to have been introduced around 1830, after which it displaced earlier kinds and became the dominant Kentish cobnut by the twentieth century.",
+        "It is an upright, reliable cropper producing large, ovoid to oblong nuts in long frilly husks (the elongated husk that overhangs the nut is the defining filbert trait). The flavour is well regarded, and it is considered a good pollinator for other varieties. Pendulous pale-yellow catkins appear in late winter to early spring, and at least two cultivars should be grown together for cross-pollination."
+      ],
+      "claims": [
+        {
+          "text": "Lambert (Lambert's Filbert) belongs to Corylus maxima and is regarded as synonymous with the Kentish Cob.",
+          "type": "naming",
+          "cites": [
+            "britannica-lambert",
+            "rhs-lambert",
+            "treesonline"
+          ]
+        },
+        {
+          "text": "The name is thought to be a corruption of filbert from Lombardy, and the variety is believed to have been introduced around 1830 and became the dominant Kentish cobnut.",
+          "type": "origin",
+          "cites": [
+            "treesonline"
+          ]
+        },
+        {
+          "text": "It produces large ovoid to oblong nuts in long frilly husks that overhang the nut, the defining filbert trait.",
+          "type": "appearance",
+          "cites": [
+            "britannica-lambert",
+            "treesonline"
+          ]
+        },
+        {
+          "text": "It is a reliable cropper with good flavour and is considered a good pollinator for other varieties.",
+          "type": "flavour",
+          "cites": [
+            "treesonline",
+            "rhs-lambert"
+          ]
+        },
+        {
+          "text": "Pendulous pale-yellow catkins appear in late winter to early spring, and at least two cultivars should be grown together for cross-pollination.",
+          "type": "pollination",
+          "cites": [
+            "rhs-lambert"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "britannica-lambert",
+          "name": "Encyclopaedia Britannica, Lambert's filbert",
+          "url": "https://www.britannica.com/plant/Lamberts-filbert",
+          "tier": "third_party"
+        },
+        {
+          "id": "rhs-lambert",
+          "name": "Royal Horticultural Society, Corylus maxima Lambert's Filbert",
+          "url": "https://www.rhs.org.uk/plants/72619/corylus-maxima-lambert-s-filbert/details",
+          "tier": "third_party"
+        },
+        {
+          "id": "treesonline",
+          "name": "Trees and Shrubs Online (International Dendrology Society), Corylus maxima",
+          "url": "https://www.treesandshrubsonline.org/articles/corylus/corylus-maxima/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-lewis-nut": {
+      "slug": "hazelnut-lewis-nut",
+      "species": "Hazelnut",
+      "variety": "Lewis [nut]",
+      "paragraphs": [
+        "Lewis is a hazelnut released in 1997 by the Oregon State University breeding program led by Shawn Mehlenbacher, named (with companion releases Clark and Sacajawea) for figures of the Lewis and Clark expedition. It was bred as a high-quality, early-ripening cultivar and is compatible as a pollenizer for the industry-standard Barcelona. The nuts tend to be smaller but are high yielding with excellent kernel quality, and harvest comes relatively early in the season.",
+        "Lewis carries quantitative (partial) resistance to eastern filbert blight, a major disease in North America, though it is not immune, and newer aggressive blight strains can overcome it. It is a comparatively compact tree, which makes it useful where vigour needs to be kept in check. As with other hazelnuts, a compatible second variety is required for pollination."
+      ],
+      "claims": [
+        {
+          "text": "Lewis was released in 1997 by the Oregon State University hazelnut breeding program led by Shawn Mehlenbacher.",
+          "type": "breeding",
+          "cites": [
+            "osu-progress",
+            "wcngg",
+            "ishs"
+          ]
+        },
+        {
+          "text": "It was bred as an early-ripening, high-quality cultivar and is compatible as a pollenizer for Barcelona.",
+          "type": "pollination",
+          "cites": [
+            "osu-progress",
+            "starkbros-lewis"
+          ]
+        },
+        {
+          "text": "The nuts tend to be smaller but are high yielding with excellent kernel quality, and harvest is relatively early in the season.",
+          "type": "use",
+          "cites": [
+            "wcngg",
+            "starkbros-lewis"
+          ]
+        },
+        {
+          "text": "Lewis has quantitative (partial) resistance to eastern filbert blight but is not immune, and newer aggressive strains can overcome it.",
+          "type": "growing",
+          "cites": [
+            "osu-efb",
+            "wcngg"
+          ]
+        },
+        {
+          "text": "It is a comparatively compact tree and, like other hazelnuts, requires a compatible second variety for pollination.",
+          "type": "pollination",
+          "cites": [
+            "starkbros-lewis"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "osu-progress",
+          "name": "Oregon State University Progress Archive, Hazelnut Heritage",
+          "url": "https://archive.progress.oregonstate.edu/fall-2005/hazelnut-hertitage",
+          "tier": "authoritative"
+        },
+        {
+          "id": "osu-efb",
+          "name": "OSU Botany and Plant Pathology, EFB Resistant Cultivars",
+          "url": "https://bpp.oregonstate.edu/efb/management/plant-resistant-cultivars",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wcngg",
+          "name": "West Coast Nut, Oregon Hazelnut Varieties in a Nutshell",
+          "url": "https://www.wcngg.com/2021/05/14/oregon-hazelnut-varieties-in-a-nutshell/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ishs",
+          "name": "International Society for Horticultural Science",
+          "url": "https://ishs.org/ishs-article/1226_6/",
+          "tier": "third_party"
+        },
+        {
+          "id": "starkbros-lewis",
+          "name": "Stark Bro's Nurseries, Lewis Filbert",
+          "url": "https://www.starkbros.com/products/nut-trees/filbert-hazelnut-trees/lewis-filbert-hazelnut",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-t-b-cosford": {
+      "slug": "hazelnut-t-b-cosford",
+      "species": "Hazelnut",
+      "variety": "T.B. Cosford",
+      "paragraphs": [
+        "T.B. Cosford, also written TBC and known as Tokolyi Cosford or Brownfield Tokolyi Cosford, is an Australian hazelnut selection. It is a legacy of Imre Tokolyi, who arrived from Hungary in 1956 and raised thousands of seedlings at his Hoodles Creek nursery in Victoria, selecting for yield and suitability to local conditions. TBC remains one of the main varieties grown in Australia today.",
+        "The tree is vigorous and hardy with good steady yields, and the medium sized, mid brown nuts have a thin shell. Its main commercial use is blanched kernels for the confectionery trade. It is not reliably self fertile, with male and female flowers not always overlapping, so partners such as Barcelona, Tonda di Giffoni or Lewis are recommended. Nuts ripen in late summer to early autumn (February to March in Australia)."
+      ],
+      "claims": [
+        {
+          "text": "T.B. Cosford (TBC, Tokolyi Cosford, Brownfield Tokolyi Cosford) is an Australian hazelnut selection and a legacy of Imre Tokolyi, who raised and selected seedlings at his Hoodles Creek nursery from 1956.",
+          "type": "origin",
+          "cites": [
+            "hga-history",
+            "heritage-tbc"
+          ]
+        },
+        {
+          "text": "TBC is one of the main hazelnut varieties grown in Australia today.",
+          "type": "naming",
+          "cites": [
+            "hga-history",
+            "heritage-tbc"
+          ]
+        },
+        {
+          "text": "The tree is vigorous and hardy with steady yields, bearing medium sized, mid brown, thin shelled nuts used mainly as blanched kernels for confectionery.",
+          "type": "use",
+          "cites": [
+            "heritage-tbc"
+          ]
+        },
+        {
+          "text": "It is not reliably self fertile because male and female flowers do not always overlap, so pollinators such as Barcelona, Tonda di Giffoni or Lewis are recommended.",
+          "type": "pollination",
+          "cites": [
+            "heritage-tbc"
+          ]
+        },
+        {
+          "text": "Nuts ripen in late summer to early autumn, February to March in Australia.",
+          "type": "season",
+          "cites": [
+            "heritage-tbc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hga-history",
+          "name": "Hazelnut Growers of Australia, History of Hazelnuts in Australia",
+          "url": "https://hazelnutgrowersaustralia.org.au/history-of-hazelnuts-in-australia/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "heritage-tbc",
+          "name": "Heritage Fruit Trees, T.B. Cosford hazelnut",
+          "url": "https://www.heritagefruittrees.com.au/t-b-cosford-hazelnut/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-tonda-di-giffoni": {
+      "slug": "hazelnut-tonda-di-giffoni",
+      "species": "Hazelnut",
+      "variety": "Tonda Di Giffoni",
+      "paragraphs": [
+        "Tonda di Giffoni is a famous Italian hazelnut from the Campania region near Salerno, recognised in 1997 with PGI (Protected Geographical Indication) status as Nocciola di Giffoni. It produces a distinctively round nut with white, firm, crunchy flesh and a thin skin (perisperm) that peels away easily, a trait highly valued by the confectionery industry. The flavour is sweet and aromatic, and on roasting it develops an intense aroma with notes of caramel.",
+        "Because it blanches and roasts so cleanly, Tonda di Giffoni is a benchmark variety for pastes, chopped nut and sweet specialities rather than the in shell trade. In Australia it is grown as a medium sized, blanchable nut suited to milder districts with lower winter chilling, and it also serves as a useful pollinator for other cultivars such as T.B. Cosford."
+      ],
+      "claims": [
+        {
+          "text": "Tonda di Giffoni is an Italian hazelnut from Campania near Salerno, recognised in 1997 as a PGI variety (Nocciola di Giffoni).",
+          "type": "origin",
+          "cites": [
+            "summerinitaly-giffoni",
+            "artecibo-giffoni"
+          ]
+        },
+        {
+          "text": "It produces a round nut with white firm crunchy flesh and a thin perisperm that peels away easily.",
+          "type": "appearance",
+          "cites": [
+            "summerinitaly-giffoni",
+            "artecibo-giffoni"
+          ]
+        },
+        {
+          "text": "The flavour is sweet and aromatic, developing an intense caramel aroma on roasting, making it a benchmark for pastes and confectionery.",
+          "type": "use",
+          "cites": [
+            "artecibo-giffoni",
+            "summerinitaly-giffoni"
+          ]
+        },
+        {
+          "text": "In Australia it is a medium sized, blanchable nut suited to milder, lower chill districts and serves as a pollinator for cultivars such as T.B. Cosford.",
+          "type": "growing",
+          "cites": [
+            "agrifutures-assessment",
+            "heritage-tbc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agrifutures-assessment",
+          "name": "AgriFutures Australia, Hazelnut Variety Assessment for south-eastern Australia",
+          "url": "https://agrifutures.com.au/product/hazelnut-variety-assessment-for-south-eastern-australia-2/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "summerinitaly-giffoni",
+          "name": "Summer in Italy, Hazelnut of Giffoni IGP",
+          "url": "https://www.summerinitaly.com/traveltips/hazelnut-of-giffoni-igp",
+          "tier": "third_party"
+        },
+        {
+          "id": "artecibo-giffoni",
+          "name": "Arte Cibo, The Giffoni Hazelnut",
+          "url": "https://www.artecibo.com/the-giffoni-hazelnut-the-quintessence-of-flavour",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage-tbc",
+          "name": "Heritage Fruit Trees, T.B. Cosford hazelnut",
+          "url": "https://www.heritagefruittrees.com.au/t-b-cosford-hazelnut/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-turkish-cosford": {
+      "slug": "hazelnut-turkish-cosford",
+      "species": "Hazelnut",
+      "variety": "Turkish Cosford",
+      "paragraphs": [
+        "Turkish Cosford is one of the Cosford named hazelnuts that became established in Australia, sold widely by Australian nurseries as a thin shelled nut for fresh eating, roasting and cooking. Like its English Cosford namesake, it carries a thin, easy to crack shell. In Australian conditions the nuts are harvested in late summer to autumn, typically from late February into March.",
+        "Its standout role is as a pollinator. Turkish Cosford is described as a near universal pollinator, so it is commonly interplanted to improve cropping across a mixed hazel orchard. It is not self fertile, so at least two compatible cultivars are needed for nut set. The Cosford label sits within a broader Australian hazelnut history, where Cosford type selections were developed and grown locally through the mid twentieth century."
+      ],
+      "claims": [
+        {
+          "text": "Turkish Cosford is a Cosford named hazelnut sold widely by Australian nurseries.",
+          "type": "naming",
+          "cites": [
+            "hga-history",
+            "speciality-turkish",
+            "daleys-turkish"
+          ]
+        },
+        {
+          "text": "It is a thin shelled nut used fresh and for roasting and cooking.",
+          "type": "use",
+          "cites": [
+            "daleys-turkish",
+            "speciality-turkish"
+          ]
+        },
+        {
+          "text": "In Australia the nuts are harvested in late summer to autumn, from late February into March.",
+          "type": "season",
+          "cites": [
+            "daleys-turkish"
+          ]
+        },
+        {
+          "text": "Turkish Cosford acts as a near universal pollinator and is not self fertile, needing two compatible cultivars for nut set.",
+          "type": "pollination",
+          "cites": [
+            "daleys-turkish",
+            "speciality-turkish"
+          ]
+        },
+        {
+          "text": "Cosford type selections feature in Australian hazelnut history and were grown locally through the mid twentieth century.",
+          "type": "origin",
+          "cites": [
+            "hga-history"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hga-history",
+          "name": "Hazelnut Growers of Australia, History of Hazelnuts in Australia",
+          "url": "https://hazelnutgrowersaustralia.org.au/history-of-hazelnuts-in-australia/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "speciality-turkish",
+          "name": "Speciality Trees, Corylus avellana Turkish Cosford",
+          "url": "https://www.specialitytrees.com.au/trees/corylus-avellana-turkish-cosford-5tj0x",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-turkish",
+          "name": "Daleys Fruit Tree Nursery, Hazelnut Turkish Cosford",
+          "url": "https://www.daleysfruit.com.au/Buy-Hazelnut-Turkish-Cosford-Corylus-avellana.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "hazelnut-wanliss-pride": {
+      "slug": "hazelnut-wanliss-pride",
+      "species": "Hazelnut",
+      "variety": "Wanliss Pride",
+      "paragraphs": [
+        "Wanliss Pride is an Australian hazelnut, selected in Victoria and grown commonly there in the 1920s, with some heritage trees still surviving in the region. It is appreciated as a producer of large, mid-brown, well-flavoured nuts carried in clusters within a thin shell, and is used mostly as an in-shell nut for eating, roasting, and cooking. As an Australian selection it is one of the few named cultivars of local origin in the trade.",
+        "It needs cross-pollination, as male and female flowers do not always open together, so a second variety should be planted nearby. The nuts mature and drop around February to March in the southern hemisphere. Note that some Australian nurseries sell it under the alternate catalogue name American White."
+      ],
+      "claims": [
+        {
+          "text": "Wanliss Pride is an Australian hazelnut selected in Victoria and grown commonly there in the 1920s, with heritage trees still surviving.",
+          "type": "origin",
+          "cites": [
+            "heritage-wanliss",
+            "nswdpi-handbook"
+          ]
+        },
+        {
+          "text": "It produces large, mid-brown, well-flavoured nuts in clusters within a thin shell, used mostly as an in-shell nut for eating, roasting, and cooking.",
+          "type": "use",
+          "cites": [
+            "heritage-wanliss",
+            "nswdpi-handbook"
+          ]
+        },
+        {
+          "text": "It requires cross-pollination because male and female flowers do not always open together.",
+          "type": "pollination",
+          "cites": [
+            "heritage-wanliss"
+          ]
+        },
+        {
+          "text": "The nuts mature and drop around February to March in the southern hemisphere.",
+          "type": "season",
+          "cites": [
+            "heritage-wanliss"
+          ]
+        },
+        {
+          "text": "Some Australian nurseries sell it under the alternate name American White.",
+          "type": "naming",
+          "cites": [
+            "daleys-americanwhite",
+            "guildford"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "heritage-wanliss",
+          "name": "Heritage Fruit Trees, Wanliss Pride hazelnut",
+          "url": "https://www.heritagefruittrees.com.au/wanliss-pride-hazelnut/",
+          "tier": "nursery"
+        },
+        {
+          "id": "nswdpi-handbook",
+          "name": "NSW DPI Hazelnut Growers' Handbook",
+          "url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0011/1615799/Hazelnut-growers-handbook.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-americanwhite",
+          "name": "Daleys Fruit Tree Nursery, Hazelnut American White",
+          "url": "https://www.daleysfruit.com.au/Hazelnut---American-White-Coryluus-avellana.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "guildford",
+          "name": "Guildford Garden Centre, Hazelnut American White Wanliss Pride",
+          "url": "https://guildfordgardencentre.com.au/product/hazelnut-american-white-wanliss-pride/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "hazelnut-american-white",
+    "hazelnut-red-aveline"
+  ]
+}

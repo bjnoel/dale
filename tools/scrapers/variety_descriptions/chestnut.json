@@ -1,0 +1,525 @@
+{
+  "species_slug": "chestnut",
+  "schema_version": 1,
+  "varieties": {
+    "chestnut-april-gold": {
+      "slug": "chestnut-april-gold",
+      "species": "Chestnut",
+      "variety": "April Gold",
+      "paragraphs": [
+        "April Gold is grown for its large, glossy dark brown nuts, which suit roasting and general cooking. The Rare Fruit Council of Australia records it as a selection of European (Castanea sativa) origin from the Dandenong Ranges in Victoria, with an upright tree that drops its nuts freely when ripe.",
+        "As the name suggests, it is an autumn ripening chestnut, with growers listing its harvest across April and into May. The large, dark coloured nuts are a consistent feature noted by both the Rare Fruit Council and the nurseries that offer the variety."
+      ],
+      "claims": [
+        {
+          "text": "Recorded by the Rare Fruit Council of Australia as a selection of European (Castanea sativa) origin from the Dandenong Ranges in Victoria.",
+          "type": "origin",
+          "cites": [
+            "rfca"
+          ]
+        },
+        {
+          "text": "Produces large, dark glossy-brown nuts.",
+          "type": "appearance",
+          "cites": [
+            "rfca",
+            "daleys-ag"
+          ]
+        },
+        {
+          "text": "Suited to roasting and general cooking.",
+          "type": "use",
+          "cites": [
+            "daleys-ag"
+          ]
+        },
+        {
+          "text": "Upright tree with free-falling nuts when ripe.",
+          "type": "growing",
+          "cites": [
+            "rfca"
+          ]
+        },
+        {
+          "text": "The name reflects its autumn ripening, with harvest listed across April into May.",
+          "type": "naming",
+          "cites": [
+            "daleys-ag"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council of Australia Archives, Fruit Trees Species and Varieties List",
+          "url": "https://rfcarchives.org.au/Next/CaringForTrees/FruitTreesSpeciesList122-02.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys-ag",
+          "name": "Daleys Fruit Trees, Chestnut April Gold",
+          "url": "https://www.daleysfruit.com.au/buy/chestnut-april-gold-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "chestnut-buffalo-queen": {
+      "slug": "chestnut-buffalo-queen",
+      "species": "Chestnut",
+      "variety": "Buffalo Queen",
+      "paragraphs": [
+        "Buffalo Queen is prized as one of the first chestnuts to reach the Australian market each season. Chestnuts Australia lists it as an early season variety, and it appears among the chestnut types grown commercially across the country's growing districts. Its early ripening makes it a marker for the start of the autumn chestnut season.",
+        "In the kitchen it is treated differently from the classic roasting chestnuts. Chestnuts Australia notes Buffalo Queen is better boiled than roasted, which suits it to soups, purees and braises rather than the open fire. The nuts themselves are large and dark skinned."
+      ],
+      "claims": [
+        {
+          "text": "An early season variety, among the first Australian chestnuts to reach market.",
+          "type": "season",
+          "cites": [
+            "chestnuts-australia",
+            "region"
+          ]
+        },
+        {
+          "text": "Better suited to boiling than to roasting.",
+          "type": "use",
+          "cites": [
+            "chestnuts-australia"
+          ]
+        },
+        {
+          "text": "Produces large, dark skinned nuts.",
+          "type": "appearance",
+          "cites": [
+            "daleys-bq",
+            "ladybird-bq"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "chestnuts-australia",
+          "name": "Chestnuts Australia, Chestnut Info",
+          "url": "https://www.chestnutsaustralia.com.au/chestnut-info/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "region",
+          "name": "Region Canberra, Sweet chestnuts in season",
+          "url": "https://region.com.au/sweet-chestnuts-in-season/242517/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-bq",
+          "name": "Daleys Fruit Trees, Chestnut Buffalo Queen",
+          "url": "https://www.daleysfruit.com.au/buy/chestnut-buffalo-queen-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-bq",
+          "name": "Ladybird Nursery, Chestnut Buffalo Queen",
+          "url": "https://www.ladybirdnursery.com.au/chestnut-buffalo-queen/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "chestnut-di-coppi-marone": {
+      "slug": "chestnut-di-coppi-marone",
+      "species": "Chestnut",
+      "variety": "Di Coppi Marone",
+      "paragraphs": [
+        "De Coppi Marone (also written Di Coppi Marone) is a European marrone-type sweet chestnut (Castanea sativa) long selected for grafting in Europe for its eating quality. In Australia it is prized as a roasting nut, valued for a rich, sweet flavour and a moist, smooth texture.",
+        "Its standout trait is peelability: the inner skin (pellicle) separates cleanly from the flesh, which marrone-type chestnuts are known for and which makes them easier to prepare than many varieties. It is a mid to late season nut, with the burrs falling in the autumn months."
+      ],
+      "claims": [
+        {
+          "text": "De Coppi Marone (Di Coppi Marone) is a European marrone-type Castanea sativa long selected for grafting in Europe.",
+          "type": "origin",
+          "cites": [
+            "chestnutsaustralia-decoppi",
+            "heritage-decoppi"
+          ]
+        },
+        {
+          "text": "It is regarded as a top roasting nut with a rich, sweet flavour and smooth, moist texture.",
+          "type": "flavour",
+          "cites": [
+            "chestnutsaustralia-chestnutinfo",
+            "heritage-decoppi"
+          ]
+        },
+        {
+          "text": "It is easy to peel because the inner skin separates cleanly from the flesh.",
+          "type": "use",
+          "cites": [
+            "chestnutsaustralia-chestnutinfo",
+            "heritage-decoppi"
+          ]
+        },
+        {
+          "text": "It is a mid to late season variety, harvested as burrs fall in autumn.",
+          "type": "season",
+          "cites": [
+            "chestnutsaustralia-chestnutinfo",
+            "heritage-decoppi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "chestnutsaustralia-chestnutinfo",
+          "name": "Chestnuts Australia, Chestnut Info",
+          "url": "https://www.chestnutsaustralia.com.au/chestnut-info/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "chestnutsaustralia-decoppi",
+          "name": "Chestnuts Australia, De Coppi Marone",
+          "url": "https://www.chestnutsaustralia.com.au/australian-chestnuts/de-coppi-marone-42000a/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "heritage-decoppi",
+          "name": "Heritage Fruit Trees, De Coppi Marone",
+          "url": "https://www.heritagefruittrees.com.au/de-coppi-marone/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "chestnut-emerald-gem": {
+      "slug": "chestnut-emerald-gem",
+      "species": "Chestnut",
+      "variety": "Emerald Gem",
+      "paragraphs": [
+        "Emerald Gem is an Australian-raised sweet chestnut (Castanea sativa), a selection made by Grandview Nursery and associated with the Emerald Lake area in Victoria's Dandenong Ranges. It is one of a cluster of Australian cultivars recognised in horticultural records alongside the Fleming's selections and Buffalo Queen.",
+        "The tree is grown as much for ornament as for nuts, forming a spreading, almost weeping canopy that crops prolifically. Heavy bearing tends to influence nut size, with fruit described as medium and a distinctive orange-tan to orange-brown colour without the stripes seen on some other varieties. Nuts are harvested through autumn, roughly April to June, and suit roasting and cooking."
+      ],
+      "claims": [
+        {
+          "text": "Emerald Gem is an Australian-raised Castanea sativa cultivar selected by Grandview Nursery.",
+          "type": "origin",
+          "cites": [
+            "rbgvic-hortflora",
+            "daleys-emerald-gem"
+          ]
+        },
+        {
+          "text": "It is associated with the Emerald Lake area of the Dandenong Ranges in Victoria.",
+          "type": "origin",
+          "cites": [
+            "daleys-emerald-gem",
+            "specialitytrees-emerald-gem"
+          ]
+        },
+        {
+          "text": "The tree has a spreading, almost weeping habit and crops prolifically.",
+          "type": "growing",
+          "cites": [
+            "daleys-emerald-gem",
+            "specialitytrees-emerald-gem"
+          ]
+        },
+        {
+          "text": "Nuts are an orange-tan to orange-brown colour without stripes.",
+          "type": "appearance",
+          "cites": [
+            "daleys-emerald-gem",
+            "specialitytrees-emerald-gem"
+          ]
+        },
+        {
+          "text": "Nuts mature in autumn (around April to June) and suit roasting and cooking.",
+          "type": "season",
+          "cites": [
+            "daleys-emerald-gem",
+            "specialitytrees-emerald-gem"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rbgvic-hortflora",
+          "name": "Royal Botanic Gardens Victoria HortFlora, Castanea sativa",
+          "url": "https://hortflora.rbg.vic.gov.au/taxon/ad8db920-5340-11e7-b82b-005056b0018f",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-emerald-gem",
+          "name": "Daleys Fruit, Chestnut Emerald Gem",
+          "url": "https://www.daleysfruit.com.au/buy/chestnut-emerald-gem-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "specialitytrees-emerald-gem",
+          "name": "Speciality Trees, Castanea sativa Emerald Gem",
+          "url": "https://www.specialitytrees.com.au/trees/castanea-sativa-emerald-gem-dmfkm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "chestnut-flemings-prolific": {
+      "slug": "chestnut-flemings-prolific",
+      "species": "Chestnut",
+      "variety": "Flemings Prolific",
+      "paragraphs": [
+        "Fleming's Prolific is an Australian-raised sweet chestnut (Castanea sativa), a specially selected, budded cultivar from Fleming's Nurseries and one of several Fleming's selections recognised in Australian horticultural records. As the name suggests, it is grown for reliable, abundant cropping.",
+        "The tree bears quality, medium to large, light-brown nuts with good flavour suited to roasting and cooking. It ripens early in the chestnut season, around late March into April. Like other chestnuts it is self-sterile, so a second compatible variety is needed nearby for pollination and a crop."
+      ],
+      "claims": [
+        {
+          "text": "Fleming's Prolific is an Australian-raised Castanea sativa cultivar, a budded selection from Fleming's Nurseries.",
+          "type": "origin",
+          "cites": [
+            "rbgvic-hortflora",
+            "flemings-prolific"
+          ]
+        },
+        {
+          "text": "It is a prolific, reliable bearer of medium to large, light-brown nuts good for roasting and cooking.",
+          "type": "use",
+          "cites": [
+            "flemings-prolific",
+            "baag-chestnuts"
+          ]
+        },
+        {
+          "text": "It ripens early in the season, around late March to April.",
+          "type": "season",
+          "cites": [
+            "baag-chestnuts"
+          ]
+        },
+        {
+          "text": "Chestnuts are self-sterile, so a second compatible variety is needed for pollination.",
+          "type": "pollination",
+          "cites": [
+            "flemings-prolific",
+            "baag-chestnuts"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rbgvic-hortflora",
+          "name": "Royal Botanic Gardens Victoria HortFlora, Castanea sativa",
+          "url": "https://hortflora.rbg.vic.gov.au/taxon/ad8db920-5340-11e7-b82b-005056b0018f",
+          "tier": "authoritative"
+        },
+        {
+          "id": "flemings-prolific",
+          "name": "Fleming's Nurseries, Fleming's Prolific Chestnut",
+          "url": "https://www.flemings.com.au/nurseries/fleming-s-prolific-chestnut.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "baag-chestnuts",
+          "name": "Bulleen Art and Garden, Chestnuts",
+          "url": "https://baag.com.au/chestnuts/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "chestnut-flemings-special": {
+      "slug": "chestnut-flemings-special",
+      "species": "Chestnut",
+      "variety": "Flemings Special",
+      "paragraphs": [
+        "Fleming's Special is an Australian-raised sweet chestnut (Castanea sativa), a specially selected, budded cultivar from Fleming's Nurseries listed among the Fleming's selections in Australian horticultural records. It is grown as a reliable cropper and a handsome ornamental shade tree.",
+        "Its nuts are its signature: excellent quality, flavoursome, medium to large and brown with a predominant stripe, well suited to roasting and cooking. It is a mid-season variety, ripening around April, and like all chestnuts needs a different cross-pollinating variety planted nearby to set a crop."
+      ],
+      "claims": [
+        {
+          "text": "Fleming's Special is an Australian-raised Castanea sativa cultivar, a budded selection from Fleming's Nurseries.",
+          "type": "origin",
+          "cites": [
+            "rbgvic-hortflora",
+            "flemings-special"
+          ]
+        },
+        {
+          "text": "It produces excellent quality, medium to large brown nuts with a predominant stripe, good for roasting and cooking.",
+          "type": "appearance",
+          "cites": [
+            "flemings-special",
+            "baag-chestnuts"
+          ]
+        },
+        {
+          "text": "It is a mid-season variety ripening around April.",
+          "type": "season",
+          "cites": [
+            "baag-chestnuts"
+          ]
+        },
+        {
+          "text": "It requires cross-pollination with a different chestnut variety to crop.",
+          "type": "pollination",
+          "cites": [
+            "baag-chestnuts"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rbgvic-hortflora",
+          "name": "Royal Botanic Gardens Victoria HortFlora, Castanea sativa",
+          "url": "https://hortflora.rbg.vic.gov.au/taxon/ad8db920-5340-11e7-b82b-005056b0018f",
+          "tier": "authoritative"
+        },
+        {
+          "id": "flemings-special",
+          "name": "Fleming's Nurseries, Fleming's Special Chestnut",
+          "url": "https://www.flemings.com.au/nurseries/fleming-s-special-chestnut.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "baag-chestnuts",
+          "name": "Bulleen Art and Garden, Chestnuts",
+          "url": "https://baag.com.au/chestnuts/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "chestnut-red-spanish": {
+      "slug": "chestnut-red-spanish",
+      "species": "Chestnut",
+      "variety": "Red Spanish",
+      "paragraphs": [
+        "Red Spanish is a sweet chestnut (Castanea sativa) grown in Australia and noted by the industry body for being a large, Japanese-style nut. Rather than the typical European roasting use, it is best suited to boiling or steaming, which sets it apart from peel-and-roast varieties.",
+        "Because of that texture and cooking style it is favoured for purees and soups, where the nut is cooked soft and worked into a smooth result rather than served whole and roasted."
+      ],
+      "claims": [
+        {
+          "text": "Red Spanish is a large, Japanese-style chestnut nut.",
+          "type": "appearance",
+          "cites": [
+            "chestnutsaustralia-chestnutinfo"
+          ]
+        },
+        {
+          "text": "It is best boiled or steamed rather than roasted.",
+          "type": "use",
+          "cites": [
+            "chestnutsaustralia-chestnutinfo",
+            "chestnutsaustraliainc-faq"
+          ]
+        },
+        {
+          "text": "It is favoured for purees and soups.",
+          "type": "use",
+          "cites": [
+            "chestnutsaustraliainc-faq"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "chestnutsaustralia-chestnutinfo",
+          "name": "Chestnuts Australia, Chestnut Info",
+          "url": "https://www.chestnutsaustralia.com.au/chestnut-info/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "chestnutsaustraliainc-faq",
+          "name": "Chestnuts Australia Inc, Growing Chestnuts FAQ",
+          "url": "https://www.chestnutsaustraliainc.com.au/growing-chestnuts-faq/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "chestnut-reilly": {
+      "slug": "chestnut-reilly",
+      "species": "Chestnut",
+      "variety": "Reilly",
+      "paragraphs": [
+        "Reilly stands apart from the cool climate chestnuts of north-east Victoria because it is a low chill selection suited to warmer, subtropical districts. The Rare Fruit Council of Australia records that it originated from a planting made early in the twentieth century on the Alstonville Plateau in northern New South Wales, a region far milder than the alpine chestnut country around Bright and Wandiligong.",
+        "Because of its low chill needs, Reilly crops prolifically through February and March, ahead of the southern varieties. Growers and the Rare Fruit Council are candid about its quality, describing it as having fair nut and keeping qualities rather than premium ones. Its real value is letting growers in mild, low chill areas produce sweet chestnuts at all."
+      ],
+      "claims": [
+        {
+          "text": "Originated from a planting made early in the twentieth century on the Alstonville Plateau in northern New South Wales.",
+          "type": "origin",
+          "cites": [
+            "rfca",
+            "daleys-reilly"
+          ]
+        },
+        {
+          "text": "A low chill selection suited to warmer, subtropical districts rather than the cool alpine chestnut country.",
+          "type": "climate",
+          "cites": [
+            "rfca",
+            "daleys-reilly"
+          ]
+        },
+        {
+          "text": "Bears prolifically through February and March.",
+          "type": "season",
+          "cites": [
+            "rfca",
+            "daleys-reilly"
+          ]
+        },
+        {
+          "text": "Described as having fair nut and keeping qualities.",
+          "type": "storage",
+          "cites": [
+            "rfca",
+            "daleys-reilly"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council of Australia Archives, Fruit Trees Species and Varieties List",
+          "url": "https://rfcarchives.org.au/Next/CaringForTrees/FruitTreesSpeciesList122-02.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys-reilly",
+          "name": "Daleys Fruit Trees, Chestnut Reilly",
+          "url": "https://www.daleysfruit.com.au/buy/chestnut-reilly-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "chestnut-marone",
+    "chestnut-wandiligong-wonder",
+    "chestnut-winchester"
+  ]
+}
