@@ -1,0 +1,310 @@
+{
+  "species_slug": "walnut",
+  "schema_version": 1,
+  "varieties": {
+    "walnut-black": {
+      "slug": "walnut-black",
+      "species": "Walnut",
+      "variety": "Black",
+      "paragraphs": [
+        "The eastern American black walnut (Juglans nigra) is native to central and eastern North America, where it grows mostly along rivers and in deep, fertile soils. It is prized as much for its timber as its nuts. The heavy, hard heartwood is a rich chocolate brown that dries with very little warping, and has long been a premium choice for furniture, cabinetry, veneer and gunstocks.",
+        "Its nuts carry a bold, earthy flavour much stronger than the milder English walnut, sealed inside a very hard shell and a thick green husk that stains skin and clothing and is awkward to remove. The leaves, roots and husks contain juglone, an allelopathic compound that suppresses many nearby plants, including tomatoes, apples and blueberries, so siting the tree well matters."
+      ],
+      "claims": [
+        {
+          "text": "Juglans nigra is native to central and eastern North America.",
+          "type": "origin",
+          "cites": [
+            "jn-ncsu",
+            "jn-wiki"
+          ]
+        },
+        {
+          "text": "Its heavy, hard, dark brown heartwood dries with little warping and is prized for furniture, cabinetry, veneer and gunstocks.",
+          "type": "timber",
+          "cites": [
+            "jn-ncsu",
+            "jn-wiki"
+          ]
+        },
+        {
+          "text": "Leaves, roots and husks contain juglone, an allelopathic compound that inhibits many nearby plants such as tomatoes, apples and blueberries.",
+          "type": "quirk",
+          "cites": [
+            "jn-ncsu",
+            "jn-wiki"
+          ]
+        },
+        {
+          "text": "The nuts have a strong, robust flavour distinct from the milder English walnut, in a very hard shell and a staining husk that is difficult to remove.",
+          "type": "flavour",
+          "cites": [
+            "jn-wiki",
+            "jn-ncsu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "jn-ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox: Juglans nigra",
+          "url": "https://plants.ces.ncsu.edu/plants/juglans-nigra/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "jn-wiki",
+          "name": "Wikipedia: Juglans nigra",
+          "url": "https://en.wikipedia.org/wiki/Juglans_nigra",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "walnut-english": {
+      "slug": "walnut-english",
+      "species": "Walnut",
+      "variety": "English",
+      "paragraphs": [
+        "The common walnut (Juglans regia) is native to south east Europe and central Asia, through Iran and the Himalaya, and has been cultivated so long that its true wild range is blurred. It carries several names. Persian walnut points to its homeland, while English walnut is something of a misnomer that stuck because English ships once dominated the nut trade, not because the tree comes from England.",
+        "Cultivated forms have been selected for a thin, wrinkled shell that cracks easily around a sweet, creamy kernel eaten fresh, roasted or salted, which sets it apart from the tougher, bolder black walnut. The fine, even grained timber is valued for furniture, cabinets, veneers and gunstocks. California now grows about 99 percent of the United States walnut crop, favouring deep soils and long, warm summers."
+      ],
+      "claims": [
+        {
+          "text": "Juglans regia is native to south east Europe and central Asia, including Iran and the Himalayan region, and has a long cultivation history.",
+          "type": "origin",
+          "cites": [
+            "jr-ncsu",
+            "jr-wiki"
+          ]
+        },
+        {
+          "text": "It is known as common, Persian or English walnut; the name English arose because English traders once dominated its distribution, not because it originates in England.",
+          "type": "quirk",
+          "cites": [
+            "jr-wiki",
+            "jr-ncsu"
+          ]
+        },
+        {
+          "text": "Cultivated forms have a thin, wrinkled shell that cracks easily around a sweet, creamy mild kernel eaten fresh, roasted or salted.",
+          "type": "flavour",
+          "cites": [
+            "jr-ncsu",
+            "jr-wiki"
+          ]
+        },
+        {
+          "text": "The fine grained timber is used for furniture, cabinets, veneers and gunstocks, and California produces about 99 percent of the United States walnut crop.",
+          "type": "timber",
+          "cites": [
+            "jr-ncsu",
+            "jr-wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "jr-ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox: Juglans regia",
+          "url": "https://plants.ces.ncsu.edu/plants/juglans-regia/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "jr-wiki",
+          "name": "Wikipedia: Juglans regia",
+          "url": "https://en.wikipedia.org/wiki/Juglans_regia",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "walnut-english-or-common": {
+      "slug": "walnut-english-or-common",
+      "species": "Walnut",
+      "variety": "English Or Common",
+      "paragraphs": [
+        "The common walnut (Juglans regia) is native to south east Europe and central Asia, through Iran and the Himalaya, and has been cultivated so long that its true wild range is blurred. It carries several names. Persian walnut points to its homeland, while English walnut is something of a misnomer that stuck because English ships once dominated the nut trade, not because the tree comes from England.",
+        "Cultivated forms have been selected for a thin, wrinkled shell that cracks easily around a sweet, creamy kernel eaten fresh, roasted or salted, which sets it apart from the tougher, bolder black walnut. The fine, even grained timber is valued for furniture, cabinets, veneers and gunstocks. California now grows about 99 percent of the United States walnut crop, favouring deep soils and long, warm summers."
+      ],
+      "claims": [
+        {
+          "text": "Juglans regia is native to south east Europe and central Asia, including Iran and the Himalayan region, and has a long cultivation history.",
+          "type": "origin",
+          "cites": [
+            "jr-ncsu",
+            "jr-wiki"
+          ]
+        },
+        {
+          "text": "It is known as common, Persian or English walnut; the name English arose because English traders once dominated its distribution, not because it originates in England.",
+          "type": "quirk",
+          "cites": [
+            "jr-wiki",
+            "jr-ncsu"
+          ]
+        },
+        {
+          "text": "Cultivated forms have a thin, wrinkled shell that cracks easily around a sweet, creamy mild kernel eaten fresh, roasted or salted.",
+          "type": "flavour",
+          "cites": [
+            "jr-ncsu",
+            "jr-wiki"
+          ]
+        },
+        {
+          "text": "The fine grained timber is used for furniture, cabinets, veneers and gunstocks, and California produces about 99 percent of the United States walnut crop.",
+          "type": "timber",
+          "cites": [
+            "jr-ncsu",
+            "jr-wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "jr-ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox: Juglans regia",
+          "url": "https://plants.ces.ncsu.edu/plants/juglans-regia/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "jr-wiki",
+          "name": "Wikipedia: Juglans regia",
+          "url": "https://en.wikipedia.org/wiki/Juglans_regia",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "walnut-juglans-nigra-black": {
+      "slug": "walnut-juglans-nigra-black",
+      "species": "Walnut",
+      "variety": "Juglans Nigra Black",
+      "paragraphs": [
+        "The eastern American black walnut (Juglans nigra) is native to central and eastern North America, where it grows mostly along rivers and in deep, fertile soils. It is prized as much for its timber as its nuts. The heavy, hard heartwood is a rich chocolate brown that dries with very little warping, and has long been a premium choice for furniture, cabinetry, veneer and gunstocks.",
+        "Its nuts carry a bold, earthy flavour much stronger than the milder English walnut, sealed inside a very hard shell and a thick green husk that stains skin and clothing and is awkward to remove. The leaves, roots and husks contain juglone, an allelopathic compound that suppresses many nearby plants, including tomatoes, apples and blueberries, so siting the tree well matters."
+      ],
+      "claims": [
+        {
+          "text": "Juglans nigra is native to central and eastern North America.",
+          "type": "origin",
+          "cites": [
+            "jn-ncsu",
+            "jn-wiki"
+          ]
+        },
+        {
+          "text": "Its heavy, hard, dark brown heartwood dries with little warping and is prized for furniture, cabinetry, veneer and gunstocks.",
+          "type": "timber",
+          "cites": [
+            "jn-ncsu",
+            "jn-wiki"
+          ]
+        },
+        {
+          "text": "Leaves, roots and husks contain juglone, an allelopathic compound that inhibits many nearby plants such as tomatoes, apples and blueberries.",
+          "type": "quirk",
+          "cites": [
+            "jn-ncsu",
+            "jn-wiki"
+          ]
+        },
+        {
+          "text": "The nuts have a strong, robust flavour distinct from the milder English walnut, in a very hard shell and a staining husk that is difficult to remove.",
+          "type": "flavour",
+          "cites": [
+            "jn-wiki",
+            "jn-ncsu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "jn-ncsu",
+          "name": "NC State Extension Gardener Plant Toolbox: Juglans nigra",
+          "url": "https://plants.ces.ncsu.edu/plants/juglans-nigra/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "jn-wiki",
+          "name": "Wikipedia: Juglans nigra",
+          "url": "https://en.wikipedia.org/wiki/Juglans_nigra",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "walnut-placentia": {
+      "slug": "walnut-placentia",
+      "species": "Walnut",
+      "variety": "Placentia",
+      "paragraphs": [
+        "The Placentia walnut is a Persian walnut (Juglans regia) that originated around Placentia, California, a Santa Barbara Soft Shell type selected in the early 1900s. It was central to early Californian walnut growing, helping make southern Santa Barbara County and then Orange County among the most important walnut districts in the United States in the decades around 1900.",
+        "Its nuts are medium sized with a thin but only fairly well sealed shell that tends to crack during harvest, holding a light coloured, plump kernel of mild flavour. A low chill requirement suits it to mild winter coastal Southern California. The variety later faded after blight struck in the 1910s and pests such as husk fly arrived in the 1920s, ceding ground to hardier northern Californian cultivars."
+      ],
+      "claims": [
+        {
+          "text": "The Placentia is a Persian walnut that originated around Placentia, California, a Santa Barbara Soft Shell type selected in the early 1900s, and helped make southern Santa Barbara County and Orange County major United States walnut districts.",
+          "type": "origin",
+          "cites": [
+            "pl-sbhm",
+            "pl-och",
+            "pl-dwn"
+          ]
+        },
+        {
+          "text": "Its medium sized nuts have a thin but only fairly well sealed shell that cracks readily at harvest, with a light coloured, plump, mild flavoured kernel and a low chill requirement suited to mild winter coastal Southern California.",
+          "type": "flavour",
+          "cites": [
+            "pl-dwn",
+            "pl-sbhm"
+          ]
+        },
+        {
+          "text": "The variety declined after blight struck in the 1910s and pests such as husk fly arrived in the 1920s, giving way to hardier northern Californian varieties.",
+          "type": "quirk",
+          "cites": [
+            "pl-och"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pl-sbhm",
+          "name": "Santa Barbara Historical Museum: Santa Barbara, The Walnut Capital of the U.S.",
+          "url": "https://www.sbhistorical.org/santa-barbara-the-walnut-capital-of-the-u-s/",
+          "tier": "third_party"
+        },
+        {
+          "id": "pl-och",
+          "name": "O.C. History Roundup: Walnuts, The Mother of Invention",
+          "url": "https://ochistorical.blogspot.com/2016/01/walnuts-mother-of-invention.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "pl-dwn",
+          "name": "Dave Wilson Nursery: Placentia Walnut",
+          "url": "https://www.davewilson.com/nurseries/products/nut-trees/walnut/placentia/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": []
+}

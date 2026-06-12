@@ -1,0 +1,224 @@
+{
+  "species_slug": "pistachio",
+  "schema_version": 1,
+  "varieties": {
+    "pistachio-chinese": {
+      "slug": "pistachio-chinese",
+      "species": "Pistachio",
+      "variety": "Chinese",
+      "paragraphs": [
+        "Despite the name, the Chinese pistachio (Pistacia chinensis) is not the tree that gives us edible pistachios (that is Pistacia vera). It is a deciduous ornamental native to a broad Asian range, grown as a shade or street tree and prized above all for its fiery orange and red autumn foliage, which ranks it among the showiest trees of the season.",
+        "The species is dioecious, so male and female trees are separate. Female trees carry small rounded drupes that ripen from red to blue black and feed birds, but the fruit is inedible to people, so this is not a nut crop. Its real link to commercial pistachios is underground: Pistacia chinensis is commonly used as a hardy rootstock onto which the edible Pistacia vera is grafted."
+      ],
+      "claims": [
+        {
+          "text": "Chinese pistachio is Pistacia chinensis, a deciduous ornamental shade or street tree, not the edible pistachio species Pistacia vera.",
+          "type": "identity",
+          "cites": [
+            "ncstate",
+            "ucanr"
+          ]
+        },
+        {
+          "text": "It is prized for fiery orange and red autumn foliage and is among the showiest trees in autumn.",
+          "type": "appearance",
+          "cites": [
+            "ncstate",
+            "ucanr"
+          ]
+        },
+        {
+          "text": "The species is dioecious, and female trees produce small rounded drupes that ripen from red to blue black and are eaten by birds.",
+          "type": "habit",
+          "cites": [
+            "ncstate"
+          ]
+        },
+        {
+          "text": "The fruit is inedible to people, so Chinese pistachio is not grown as a nut crop.",
+          "type": "uses",
+          "cites": [
+            "ncstate"
+          ]
+        },
+        {
+          "text": "Pistacia chinensis is commonly used as a rootstock for grafting the edible pistachio nut tree, Pistacia vera.",
+          "type": "uses",
+          "cites": [
+            "ucanr"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ncstate",
+          "name": "NC State Extension Gardener Plant Toolbox (Pistacia chinensis)",
+          "url": "https://plants.ces.ncsu.edu/plants/pistacia-chinensis/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ucanr",
+          "name": "UC Master Gardener Program of Sonoma County (Pistacia chinensis)",
+          "url": "https://ucanr.edu/site/mg-sonoma/pistacia-chinensis-chinese-pistache",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pistachio-female-sirora": {
+      "slug": "pistachio-female-sirora",
+      "species": "Pistachio",
+      "variety": "Female Sirora",
+      "paragraphs": [
+        "Sirora is the cultivar that built the Australian pistachio industry. CSIRO researchers at Merbein, near Mildura, selected it from open pollinated seedlings of the Red Aleppo variety and released it in 1982 together with matching male pollinators. It now accounts for roughly 97 per cent of female pistachio plantings in Australia, far ahead of the Californian standard Kerman.",
+        "Bred for Australian conditions, Sirora is also a more even bearer than many pistachios, which tend to crop heavily one year then lightly the next. Pistachios are dioecious, so a Sirora female still needs a male tree nearby to set nuts (one male can service up to eight females), with harvest falling in autumn, around February and March."
+      ],
+      "claims": [
+        {
+          "text": "CSIRO selected Sirora at Merbein near Mildura from open pollinated seedlings of the Red Aleppo variety and released it in 1982 along with male pollinators.",
+          "type": "origin",
+          "cites": [
+            "pgai",
+            "npa"
+          ]
+        },
+        {
+          "text": "Sirora accounts for around 97 per cent of female pistachio plantings in Australia.",
+          "type": "cultivation",
+          "cites": [
+            "pgai"
+          ]
+        },
+        {
+          "text": "Sirora is harvested in autumn, around February and March.",
+          "type": "harvest",
+          "cites": [
+            "daleys",
+            "npa"
+          ]
+        },
+        {
+          "text": "Sirora is a more even bearer than other pistachio varieties, which tend to alternate between a heavy crop one year and a light crop the next.",
+          "type": "habit",
+          "cites": [
+            "daleys"
+          ]
+        },
+        {
+          "text": "Pistachios are dioecious, so a Sirora female needs a male pollinator nearby, with one male able to pollinate up to eight female trees.",
+          "type": "pollination",
+          "cites": [
+            "daleys",
+            "pgai"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pgai",
+          "name": "Pistachio Growers' Association of Australia (History)",
+          "url": "https://www.pgai.com.au/history/",
+          "tier": "third_party"
+        },
+        {
+          "id": "npa",
+          "name": "Nut Producers Australia (Pistachios)",
+          "url": "https://nutproducers.com.au/pistachios",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery (Pistachio Sirora Female)",
+          "url": "https://www.daleysfruit.com.au/Pistachio-Sirora-Female-Pistacia-vera.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pistachio-sirora-female": {
+      "slug": "pistachio-sirora-female",
+      "species": "Pistachio",
+      "variety": "Sirora Female",
+      "paragraphs": [
+        "Sirora is the cultivar that built the Australian pistachio industry. CSIRO researchers at Merbein, near Mildura, selected it from open pollinated seedlings of the Red Aleppo variety and released it in 1982 together with matching male pollinators. It now accounts for roughly 97 per cent of female pistachio plantings in Australia, far ahead of the Californian standard Kerman.",
+        "Bred for Australian conditions, Sirora is also a more even bearer than many pistachios, which tend to crop heavily one year then lightly the next. Pistachios are dioecious, so a Sirora female still needs a male tree nearby to set nuts (one male can service up to eight females), with harvest falling in autumn, around February and March."
+      ],
+      "claims": [
+        {
+          "text": "CSIRO selected Sirora at Merbein near Mildura from open pollinated seedlings of the Red Aleppo variety and released it in 1982 along with male pollinators.",
+          "type": "origin",
+          "cites": [
+            "pgai",
+            "npa"
+          ]
+        },
+        {
+          "text": "Sirora accounts for around 97 per cent of female pistachio plantings in Australia.",
+          "type": "cultivation",
+          "cites": [
+            "pgai"
+          ]
+        },
+        {
+          "text": "Sirora is harvested in autumn, around February and March.",
+          "type": "harvest",
+          "cites": [
+            "daleys",
+            "npa"
+          ]
+        },
+        {
+          "text": "Sirora is a more even bearer than other pistachio varieties, which tend to alternate between a heavy crop one year and a light crop the next.",
+          "type": "habit",
+          "cites": [
+            "daleys"
+          ]
+        },
+        {
+          "text": "Pistachios are dioecious, so a Sirora female needs a male pollinator nearby, with one male able to pollinate up to eight female trees.",
+          "type": "pollination",
+          "cites": [
+            "daleys",
+            "pgai"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pgai",
+          "name": "Pistachio Growers' Association of Australia (History)",
+          "url": "https://www.pgai.com.au/history/",
+          "tier": "third_party"
+        },
+        {
+          "id": "npa",
+          "name": "Nut Producers Australia (Pistachios)",
+          "url": "https://nutproducers.com.au/pistachios",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery (Pistachio Sirora Female)",
+          "url": "https://www.daleysfruit.com.au/Pistachio-Sirora-Female-Pistacia-vera.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "pistachio-male-blue-moon",
+    "pistachio-nut-female",
+    "pistachio-nut-male",
+    "pistachio-tree"
+  ]
+}
