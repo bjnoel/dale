@@ -2,6 +2,126 @@
   "species_slug": "fig",
   "schema_version": 1,
   "varieties": {
+    "fig-archipal": {
+      "slug": "fig-archipal",
+      "species": "Fig",
+      "variety": "Archipal",
+      "paragraphs": [
+        "Archipal (also spelled Archipel, and known as De L'Archipel) is an heirloom common fig of French and English heritage that reached California in 1889. Its synonyms include Ronde Noire, Figue Grise and Hardy Prolific, and it is sometimes confused with Osborn. It bears large, pear-shaped fruit with bronze skin tinged with violet.",
+        "The flesh is amber coloured and honey-flavoured, and the fruit is at its best eaten fresh. A mid-season variety, Archipal performs best in cool coastal conditions rather than hot inland areas, where the fruit is prone to spoiling."
+      ],
+      "claims": [
+        {
+          "text": "An heirloom common fig of French and English heritage that reached California in 1889; synonyms include De L'Archipel, Ronde Noire, Figue Grise and Hardy Prolific, and it is sometimes confused with Osborn",
+          "type": "origin",
+          "cites": [
+            "figdatabase-archipel",
+            "diggers-archipal"
+          ]
+        },
+        {
+          "text": "Bears large, pear-shaped fruit with bronze skin tinged with violet",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-archipel",
+            "diggers-archipal"
+          ]
+        },
+        {
+          "text": "Flesh is amber coloured and honey-flavoured, and the fruit is best eaten fresh",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-archipel",
+            "diggers-archipal"
+          ]
+        },
+        {
+          "text": "A mid-season fig that performs best in cool coastal climates and is prone to spoiling in hot inland areas",
+          "type": "season",
+          "cites": [
+            "figdatabase-archipel",
+            "diggers-archipal"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-archipel",
+          "name": "Fig Database: Archipel",
+          "url": "https://www.figdatabase.com/variety-details/2058/archipel",
+          "tier": "third_party"
+        },
+        {
+          "id": "diggers-archipal",
+          "name": "The Diggers Club: Fig 'De L'Archipel'",
+          "url": "https://www.diggers.com.au/products/fig-archipal",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "fig-bedu": {
+      "slug": "fig-bedu",
+      "species": "Fig",
+      "variety": "Bedu",
+      "paragraphs": [
+        "Bedu is a common name for Ficus palmata, the Punjab fig or wild Himalayan fig. It is not the common fig (Ficus carica) but a wild relative of it, native across north-eastern Africa and Arabia through to northern India and the Himalayas, where its fruit is widely eaten.",
+        "It grows as a vigorous shrub or small tree, larger and more vigorous than the common fig, and bears small fruit (around 2 cm) that turns purplish as it ripens. The fruit is eaten fresh or dried. Ficus palmata is graft-compatible with Ficus carica and readily hybridises with it, which is part of its appeal to collectors."
+      ],
+      "claims": [
+        {
+          "text": "Bedu is a common name for Ficus palmata, the Punjab or wild Himalayan fig, a wild relative of the common fig Ficus carica",
+          "type": "naming",
+          "cites": [
+            "wikipedia-palmata",
+            "figdatabase-palmata"
+          ]
+        },
+        {
+          "text": "Native from north-eastern Africa and Arabia through to northern India and the Himalayas, where its fruit is widely eaten",
+          "type": "origin",
+          "cites": [
+            "wikipedia-palmata"
+          ]
+        },
+        {
+          "text": "Vigorous shrub or small tree bearing small fruit (around 2 cm) that turns purplish, eaten fresh or dried",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-palmata",
+            "figdatabase-palmata"
+          ]
+        },
+        {
+          "text": "Graft-compatible with Ficus carica and hybridises readily with it",
+          "type": "growing",
+          "cites": [
+            "figdatabase-palmata"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-palmata",
+          "name": "Wikipedia: Ficus palmata",
+          "url": "https://en.wikipedia.org/wiki/Ficus_palmata",
+          "tier": "third_party"
+        },
+        {
+          "id": "figdatabase-palmata",
+          "name": "Fig Database: Ficus Palmata",
+          "url": "https://www.figdatabase.com/variety-details/1954/ficus-palmata",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "fig-black-genoa": {
       "slug": "fig-black-genoa",
       "species": "Fig",
@@ -137,6 +257,73 @@
       "confidence_score": 0.95,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "fig-blue-provence": {
+      "slug": "fig-blue-provence",
+      "species": "Fig",
+      "variety": "Blue Provence",
+      "paragraphs": [
+        "Blue Provence is an old heritage fig with a long history in Australia. The earliest documented reference is from 1869, when plants were sourced from the Camden Park nursery in New South Wales, and it later appeared in early Australian fruit catalogues such as Goodman's. It is recorded under several synonyms, including Adam, Perth Adam, Augusta Purple and Adams Pride, so the same fig circulates under more than one name.",
+        "The fruit has blue to violet skin with prominent ribs and an open eye, over soft, very sweet flesh with a purple-blue tinge and red pulp. The flavour sits in the dark-berry camp, sweet with distinct berry notes and a touch of acidity. It grows as a large, vigorous, large-leaved tree and ripens mid to late season, roughly March to April in Australian conditions."
+      ],
+      "claims": [
+        {
+          "text": "Earliest documented Australian reference dates to 1869 from the Camden Park nursery in New South Wales, with later listings in early Australian fruit catalogues",
+          "type": "origin",
+          "cites": [
+            "figdatabase-blue-provence"
+          ]
+        },
+        {
+          "text": "Recorded under synonyms including Adam, Perth Adam, Augusta Purple and Adams Pride",
+          "type": "naming",
+          "cites": [
+            "figdatabase-blue-provence"
+          ]
+        },
+        {
+          "text": "Blue to violet skin with prominent ribs and an open eye, with soft red pulp showing a purple-blue tinge",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-blue-provence",
+            "daleys-blue-provence"
+          ]
+        },
+        {
+          "text": "Dark-berry type with very sweet, soft flesh, distinct berry notes and a touch of acidity; noted as sweeter than many figs",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-blue-provence",
+            "daleys-blue-provence"
+          ]
+        },
+        {
+          "text": "Ripens mid to late season, around March to April in Australia",
+          "type": "season",
+          "cites": [
+            "figdatabase-blue-provence",
+            "daleys-blue-provence"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-blue-provence",
+          "name": "Fig Database: Blue Provence",
+          "url": "https://www.figdatabase.com/variety-details/592/blue-provence",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-blue-provence",
+          "name": "Daleys Fruit: Fig Blue Provence",
+          "url": "https://www.daleysfruit.com.au/Fig-Blue-Provence-ficus-carica.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "fig-bourjassotte-noire": {
       "slug": "fig-bourjassotte-noire",
@@ -416,6 +603,402 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "fig-clown-mosaic": {
+      "slug": "fig-clown-mosaic",
+      "species": "Fig",
+      "variety": "Clown Mosaic",
+      "paragraphs": [
+        "Clown Mosaic refers to the Clown Fig or Mosaic Fig, the variegated form of Ficus aspera (often sold as 'Parcellii'). It is an ornamental relative of the edible fig, native to Vanuatu in the South Pacific and first described in scientific literature in 1786 from a specimen collected on Tanna Island. It is grown for its striking foliage rather than for fruit.",
+        "Its large, rough-textured leaves carry a highly variable mosaic of grey-green, cream and dull pink over dark green, and even the small figs are striped. The fruit is cauliflorous, forming directly on the trunk and branches and ripening from green through orange-red to purple. Tender and warmth-loving, it is usually grown as an ornamental foliage plant or container houseplant."
+      ],
+      "claims": [
+        {
+          "text": "An ornamental form of Ficus aspera (Clown Fig / Mosaic Fig), native to Vanuatu and first described in scientific literature in 1786 from a specimen collected on Tanna Island",
+          "type": "origin",
+          "cites": [
+            "wikipedia-ficus-aspera",
+            "antropocene-ficus-aspera"
+          ]
+        },
+        {
+          "text": "The variegated 'Parcellii' form shows a highly variable mosaic of paler grey-green, cream and dull pink over dark green leaves",
+          "type": "appearance",
+          "cites": [
+            "antropocene-ficus-aspera",
+            "toptropicals-ficus-aspera"
+          ]
+        },
+        {
+          "text": "Fruit is cauliflorous, borne on the trunk and branches, the small figs are striped, and they ripen from green through orange-red to purple",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-ficus-aspera",
+            "toptropicals-ficus-aspera"
+          ]
+        },
+        {
+          "text": "Grown as an ornamental foliage plant rather than for fruit, and is tender, suited to tropical and subtropical conditions",
+          "type": "uses",
+          "cites": [
+            "antropocene-ficus-aspera",
+            "toptropicals-ficus-aspera"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-ficus-aspera",
+          "name": "Wikipedia: Ficus aspera",
+          "url": "https://en.wikipedia.org/wiki/Ficus_aspera",
+          "tier": "third_party"
+        },
+        {
+          "id": "antropocene-ficus-aspera",
+          "name": "Monaco Nature Encyclopedia: Ficus aspera",
+          "url": "https://antropocene.it/en/2024/04/05/ficus-aspera-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "toptropicals-ficus-aspera",
+          "name": "Top Tropicals: Ficus aspera (Variegated Clown Fig)",
+          "url": "https://toptropicals.com/catalog/uid/ficus_aspera.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "fig-deciduous": {
+      "slug": "fig-deciduous",
+      "species": "Fig",
+      "variety": "Deciduous",
+      "paragraphs": [
+        "The Deciduous Fig is an Australian native strangler fig, Ficus henneana, found only in Australia from Milton in New South Wales north to Queensland and the Northern Territory, in riverine, coastal and drier rainforest. It was named after Diedrich Henne, who collected it at Booby Island in the Torres Strait in 1861, and in 2013 it was returned to the name Ficus henneana after earlier being treated as a variety of Ficus superba. It begins life as a hemi-epiphyte, can strangle its host, and reaches up to 35 metres on the best sites.",
+        "Unusually for a fig, it is semi-deciduous, rarely dropping every leaf but often seen almost bare in October, which gives it its common name. The small globular figs are about 25 millimetres across, purplish with pink dots, and ripen from January to July. They are edible but not especially palatable to people, so the tree is valued more as a food source for wildlife, feeding fig-eating birds such as the Australasian figbird, the rare Coxen's fig-parrot and the wompoo fruit dove."
+      ],
+      "claims": [
+        {
+          "text": "Ficus henneana (Deciduous Fig) occurs only in Australia, from Milton NSW to northern Queensland and the Northern Territory, in riverine, littoral and drier rainforest",
+          "type": "origin",
+          "cites": [
+            "wikipedia-ficus-henneana"
+          ]
+        },
+        {
+          "text": "Named after Diedrich Henne, who collected it at Booby Island in the Torres Strait in 1861; reassigned to the name Ficus henneana in 2013 after being treated as a variety of Ficus superba",
+          "type": "naming",
+          "cites": [
+            "wikipedia-ficus-henneana"
+          ]
+        },
+        {
+          "text": "A hemi-epiphyte strangler fig that can reach up to 35 metres, and is semi-deciduous, seldom losing all leaves but often nearly bare in October",
+          "type": "growing",
+          "cites": [
+            "wikipedia-ficus-henneana",
+            "daleys-deciduous-fig"
+          ]
+        },
+        {
+          "text": "Figs are globular, about 25 millimetres in diameter, purplish with pink dots, ripening January to July, edible for humans but not particularly palatable",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-ficus-henneana"
+          ]
+        },
+        {
+          "text": "Native rainforest tree whose figs are eaten by birds including the Australasian figbird, the rare Coxen's fig-parrot and the wompoo fruit dove",
+          "type": "uses",
+          "cites": [
+            "wikipedia-ficus-henneana",
+            "daleys-deciduous-fig"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-ficus-henneana",
+          "name": "Wikipedia: Ficus henneana",
+          "url": "https://en.wikipedia.org/wiki/Ficus_henneana",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-deciduous-fig",
+          "name": "Daleys Fruit Tree Nursery: Deciduous Fig (Ficus superba)",
+          "url": "https://www.daleysfruit.com.au/buy/ficus-superba-deciduous-fig-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "fig-flanders": {
+      "slug": "fig-flanders",
+      "species": "Fig",
+      "variety": "Flanders",
+      "paragraphs": [
+        "Flanders is a fig selected from the University of California fig breeding program run by Ira J. Condit at Riverside. The fruit has a long slender neck and a light tan to brownish-yellow skin marked with violet stripes, over amber to pink pulp.",
+        "It is prized for rich, sweet flavour and is treated as a dual-purpose fig for fresh eating and drying. The eye (ostiole) is small and tightly closed, and the fruit resists cracking and splitting, which helps it cope with rain and humidity. It bears a light breba crop followed by a heavier main crop."
+      ],
+      "claims": [
+        {
+          "text": "Selected from Ira J. Condit's University of California fig breeding program at Riverside",
+          "type": "origin",
+          "cites": [
+            "figdatabase-flanders",
+            "ocfruit",
+            "fourwinds"
+          ]
+        },
+        {
+          "text": "Long slender neck, light tan to brownish-yellow skin with violet stripes, amber to pink pulp",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-flanders",
+            "ocfruit",
+            "fourwinds"
+          ]
+        },
+        {
+          "text": "Small, tightly closed eye and good resistance to cracking and splitting, with high sugar",
+          "type": "growing",
+          "cites": [
+            "ocfruit",
+            "figdatabase-flanders"
+          ]
+        },
+        {
+          "text": "Rich, sweet, dual-purpose flavour for fresh eating and drying, bearing a breba and a heavier main crop",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-flanders",
+            "fourwinds"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-flanders",
+          "name": "Fig Database: Flanders",
+          "url": "https://www.figdatabase.com/variety-details/148/flanders",
+          "tier": "third_party"
+        },
+        {
+          "id": "ocfruit",
+          "name": "Figs in Coastal Southern California",
+          "url": "https://ocfruit.com/files/Figs_Coastal_SC.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "fourwinds",
+          "name": "Four Winds Growers: Flanders Fig Tree",
+          "url": "https://www.fourwindsgrowers.com/products/flanders-fig-tree",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "fig-french-paillard": {
+      "slug": "fig-french-paillard",
+      "species": "Fig",
+      "variety": "French Paillard",
+      "paragraphs": [
+        "French Paillard (also recorded as Franche Paillard, with the synonyms Abondance and Franque Pagarde) is an old French fig documented by French pomologists from the late eighteenth century onward. It was among the European fig varieties preserved in California through the heirloom nurseryman Felix Gillet, whose original mother tree still grows near his former Barren Hill Nursery in Nevada City.",
+        "It is a two-crop fig with a light early (breba) crop and a very abundant main crop. The fruit is medium and pear-shaped, the skin violet-brown in the sun and greenish-violet in shade, and the pulp is red, very juicy and of very good quality. Growers rate its second-crop flavour highly and note it does well as a pot plant."
+      ],
+      "claims": [
+        {
+          "text": "Old French fig also recorded as Franche Paillard, with synonyms Abondance and Franque Pagarde; documented by French pomologists from the late eighteenth century",
+          "type": "naming",
+          "cites": [
+            "figdatabase-fp"
+          ]
+        },
+        {
+          "text": "Preserved in California through heirloom nurseryman Felix Gillet; an original mother tree still grows near his former Barren Hill Nursery in Nevada City",
+          "type": "origin",
+          "cites": [
+            "felixgillet-fp"
+          ]
+        },
+        {
+          "text": "A two-crop fig with a light early (breba) crop and a very abundant main crop",
+          "type": "season",
+          "cites": [
+            "figdatabase-fp",
+            "felixgillet-fp"
+          ]
+        },
+        {
+          "text": "Medium, pear-shaped fruit; skin violet-brown in the sun to greenish-violet in shade; pulp red, very juicy and of very good quality",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-fp",
+            "felixgillet-fp"
+          ]
+        },
+        {
+          "text": "Rated highly for its second-crop flavour and suited to pot culture",
+          "type": "flavour",
+          "cites": [
+            "figs4fun-fp",
+            "figdatabase-fp"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-fp",
+          "name": "Fig Database: Franche Paillard",
+          "url": "https://www.figdatabase.com/variety-details/787/franche-paillard",
+          "tier": "third_party"
+        },
+        {
+          "id": "felixgillet-fp",
+          "name": "Felix Gillet Institute: Fig Discoveries",
+          "url": "https://felixgillet.org/fig-discoveries",
+          "tier": "third_party"
+        },
+        {
+          "id": "figs4fun-fp",
+          "name": "Figs 4 Fun: varieties beginning with P (Paillard)",
+          "url": "https://figs4fun.com/Var_P_info.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "fig-goutte-d-or": {
+      "slug": "fig-goutte-d-or",
+      "species": "Fig",
+      "variety": "Goutte D Or",
+      "paragraphs": [
+        "Goutte d'Or, French for drop of gold, is an old French fig also recorded under the synonyms Doree and Figue d'Or. The name describes its golden-yellow skin, which can take on a rose to wine-coloured flush as it ripens, over pink flesh.",
+        "It is a common-type, self-fertile fig that crops without a pollinator and bears two crops in a season, an early breba and a later main crop. The flavour is sweet and fruity, and it is regarded as excellent for drying."
+      ],
+      "claims": [
+        {
+          "text": "Old French fig whose name means drop of gold; also known as Doree and Figue d'Or",
+          "type": "naming",
+          "cites": [
+            "figdatabase-doree",
+            "promessedefleurs"
+          ]
+        },
+        {
+          "text": "Golden-yellow skin tinged with rose, becoming wine-coloured, over pink flesh",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-doree",
+            "promessedefleurs"
+          ]
+        },
+        {
+          "text": "Common-type, self-fertile fig that bears two crops (breba and main)",
+          "type": "pollination",
+          "cites": [
+            "figdatabase-doree",
+            "promessedefleurs"
+          ]
+        },
+        {
+          "text": "Sweet, fruity flavour and regarded as excellent for drying",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-doree"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-doree",
+          "name": "Fig Database: Doree (synonyms include Goutte d'Or, Figue d'Or)",
+          "url": "https://www.figdatabase.com/variety-details/122/doree",
+          "tier": "third_party"
+        },
+        {
+          "id": "promessedefleurs",
+          "name": "Promesse de Fleurs: Figuier Goutte d'Or",
+          "url": "https://www.promessedefleurs.com/fruitiers/fruitiers-par-variete/figuier/figuier-goutte-d-or.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "fig-hivernenca-de-la-senyora": {
+      "slug": "fig-hivernenca-de-la-senyora",
+      "species": "Fig",
+      "variety": "Hivernenca De La Senyora",
+      "paragraphs": [
+        "Hivernenca De La Senyora is a Spanish fig from the Balearic Islands (Mallorca), documented by fig researcher Montserrat Pons. The Catalan name 'Hivernenca' marks it as a winter fig: it is very late, beginning to ripen in October and carrying on well into winter, unusually late for a fig.",
+        "The elongated fruit is marked with distinctive cracks and shifts from green-yellow to a mix of brown, purple and grey as it matures. Inside, the flesh is deep red with a rich berry flavour that collectors compare to the prized Black Madeira, which has made it a sought-after variety."
+      ],
+      "claims": [
+        {
+          "text": "A Spanish fig from the Balearic Islands (Mallorca), documented by fig researcher Montserrat Pons",
+          "type": "origin",
+          "cites": [
+            "figdatabase-hivernenca",
+            "figboss-hivernenca"
+          ]
+        },
+        {
+          "text": "A very late variety; the Catalan name Hivernenca means winter fig, and it begins ripening in October and continues into winter",
+          "type": "season",
+          "cites": [
+            "figdatabase-hivernenca",
+            "figboss-hivernenca"
+          ]
+        },
+        {
+          "text": "Elongated fruit marked with distinctive cracks, shifting from green-yellow to brown, purple and grey as it matures",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-hivernenca",
+            "figboss-hivernenca"
+          ]
+        },
+        {
+          "text": "Deep red flesh with a rich berry flavour that collectors compare to Black Madeira",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-hivernenca",
+            "figboss-hivernenca"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-hivernenca",
+          "name": "Fig Database: De La Senyora (Hivernenca)",
+          "url": "https://www.figdatabase.com/variety-details/1516/de-la-senyora-hivernenca",
+          "tier": "third_party"
+        },
+        {
+          "id": "figboss-hivernenca",
+          "name": "Fig Boss (Ross Raddi): De La Senyora (Hivernenca) Variety Review",
+          "url": "https://www.figboss.com/post/de-la-senyora-hivernenca-mp-the-black-madeira-killer",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "fig-panache": {
       "slug": "fig-panache",
       "species": "Fig",
@@ -564,6 +1147,72 @@
       "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "fig-purple-vigilante": {
+      "slug": "fig-purple-vigilante",
+      "species": "Fig",
+      "variety": "Purple Vigilante",
+      "paragraphs": [
+        "Purple Vigilante is a heritage fig that has been grown in Australia since at least 1935. It was obtained by a Western Australian fig collector who passed cuttings on to private growers in Victoria, and it stays uncommon in the nursery trade. Like most common figs it is self-pollinating.",
+        "The fruit has purple skin and reddish-purple flesh, noticeably darker inside than Black Genoa. Growers describe the flavour as strong, sweet and complex, and rate it highly. It ripens mid-season and suits fresh eating, drying and jams."
+      ],
+      "claims": [
+        {
+          "text": "Heritage fig grown in Australia since at least 1935, obtained by a Western Australian collector who passed cuttings to growers in Victoria",
+          "type": "origin",
+          "cites": [
+            "thefruitforest",
+            "daleysforum"
+          ]
+        },
+        {
+          "text": "Self-pollinating and uncommon in the nursery trade",
+          "type": "pollination",
+          "cites": [
+            "fruittreecottage"
+          ]
+        },
+        {
+          "text": "Purple skin with reddish-purple flesh, darker inside than Black Genoa",
+          "type": "appearance",
+          "cites": [
+            "fruittreecottage",
+            "daleysforum"
+          ]
+        },
+        {
+          "text": "Strong, sweet and complex flavour, ripening mid-season, used fresh, dried and for jams",
+          "type": "flavour",
+          "cites": [
+            "fruittreecottage",
+            "daleysforum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fruittreecottage",
+          "name": "Fruit Tree Cottage: Fig Purple Vigilante",
+          "url": "https://www.fruittreecottage.com.au/products/fig-purple-vigilante",
+          "tier": "nursery"
+        },
+        {
+          "id": "thefruitforest",
+          "name": "The Fruit Forest: Heirloom Figs",
+          "url": "https://www.thefruitforest.com/fruits-vegetables-and-herbs/heirloom-figs-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleysforum",
+          "name": "Daleys Fruit Forum: Heirloom fig varieties",
+          "url": "https://www.daleysfruit.com.au/forum/heirloom-fig-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "fig-violette-de-bordeaux": {
       "slug": "fig-violette-de-bordeaux",
@@ -856,33 +1505,125 @@
       "confidence_score": 0.88,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "fig-zidi": {
+      "slug": "fig-zidi",
+      "species": "Fig",
+      "variety": "Zidi",
+      "paragraphs": [
+        "Zidi is a Tunisian fig and one of the country's most prized commercial varieties, traditionally grown in the mountainous Djebba (Mont el Gorraa) area on terraced hillsides. It is a Smyrna-type fig, which means it has an absolute need for caprification (pollination by the fig wasp) to set ripe fruit, unlike common self-fertile figs.",
+        "The fruit is large with tough purplish-black to violet-black skin and soft reddish flesh, prized for its high sugar content and rich, sweet berry flavour with a jammy, chewy texture. Beyond fresh eating, Zidi figs are sun-dried into 'chriha' for year-round use and folded into Tunisian pastries such as Magroud and Samsa."
+      ],
+      "claims": [
+        {
+          "text": "A Smyrna-type fig from Tunisia that requires caprification (fig-wasp pollination) to set ripe fruit",
+          "type": "origin",
+          "cites": [
+            "figdatabase-zidi",
+            "tunisia-fig-overview"
+          ]
+        },
+        {
+          "text": "Large fruit with tough purplish-black to violet-black skin and soft reddish flesh",
+          "type": "appearance",
+          "cites": [
+            "figdatabase-zidi",
+            "slowfood-zidi"
+          ]
+        },
+        {
+          "text": "Known for high sugar content and a rich, sweet berry flavour with a jammy, chewy texture",
+          "type": "flavour",
+          "cites": [
+            "figdatabase-zidi",
+            "slowfood-zidi"
+          ]
+        },
+        {
+          "text": "Traditionally grown on terraced hillsides in the Djebba (Mont el Gorraa) area and dried into 'chriha', and used in pastries such as Magroud and Samsa",
+          "type": "uses",
+          "cites": [
+            "slowfood-zidi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "figdatabase-zidi",
+          "name": "Fig Database: Zidi",
+          "url": "https://www.figdatabase.com/variety-details/476/zidi",
+          "tier": "third_party"
+        },
+        {
+          "id": "slowfood-zidi",
+          "name": "Slow Food Foundation Ark of Taste: Zidi Fig",
+          "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/zidi-fig/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tunisia-fig-overview",
+          "name": "Fig Cultivation and Genetic Resources in Tunisia, an Overview",
+          "url": "https://www.researchgate.net/publication/282438665_Fig_cultivation_and_genetic_resources_in_Tunisia_an_overview",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
   "skipped": [
+    "fig-adam",
     "fig-audrey-banyan",
+    "fig-black-copedi",
+    "fig-black-sicilian",
     "fig-blue-province",
+    "fig-brown",
+    "fig-carmel",
     "fig-celeste-sugar",
     "fig-climbing",
     "fig-conadria-red",
     "fig-conadria-red-sweet-temptation",
     "fig-deanna",
     "fig-deanne",
+    "fig-diggers-purple-heart",
     "fig-excel",
     "fig-excel-yellow",
     "fig-figalicious",
+    "fig-flash",
     "fig-flash-2ft-standards",
     "fig-flash-3ft-standards",
+    "fig-forest-green",
+    "fig-gold",
+    "fig-green-island",
     "fig-ivan-s-brown",
+    "fig-ivans-brown",
+    "fig-jenny-smith-blue",
     "fig-leaved",
+    "fig-margurette",
     "fig-midnight-petite",
     "fig-panache-tiger-stripe",
+    "fig-peter-good",
     "fig-picone-black",
+    "fig-picone-green",
     "fig-piconi",
+    "fig-pingo-de-mel",
     "fig-prestons-prolific",
+    "fig-purple-prince",
     "fig-red-conadria",
+    "fig-sabre",
+    "fig-sabre-tooth",
     "fig-sandpaper",
     "fig-sandpaper-birds-eye",
+    "fig-sicilian-black",
+    "fig-siyah-kis",
+    "fig-st-john-of-malta",
+    "fig-stoney-yellow",
+    "fig-sugar",
     "fig-sweet-temptation",
+    "fig-sweet-temptation-extra",
+    "fig-the-magic",
     "fig-tree-black-adam",
     "fig-tree-black-coronata",
     "fig-tree-black-genoa",
@@ -906,6 +1647,8 @@
     "fig-tree-white-adriatic",
     "fig-tree-white-genoa",
     "fig-tucker-bush-sandpaper",
-    "fig-white-adriatic-big-size"
+    "fig-white",
+    "fig-white-adriatic-big-size",
+    "fig-white-lightning"
   ]
 }
