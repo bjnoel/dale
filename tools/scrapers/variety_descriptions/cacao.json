@@ -14,27 +14,38 @@
         {
           "text": "Mocambo sold as cacao is Theobroma bicolor, a relative of the chocolate tree Theobroma cacao but a distinct species.",
           "type": "naming",
-          "cites": ["wiki-bicolor", "chocolate-class"]
+          "cites": [
+            "wiki-bicolor",
+            "chocolate-class"
+          ]
         },
         {
           "text": "It is native to Central and South America, including the Amazon rainforest of Brazil, Colombia, Ecuador and Peru, and is also called jaguar tree, macambo and pataxte.",
           "type": "origin",
-          "cites": ["wiki-bicolor"]
+          "cites": [
+            "wiki-bicolor"
+          ]
         },
         {
           "text": "Its seeds are edible, high in calories, and rich in protein and fibre, and can be used like cacao for chocolate-like drinks.",
           "type": "use",
-          "cites": ["wiki-bicolor"]
+          "cites": [
+            "wiki-bicolor"
+          ]
         },
         {
           "text": "It was cultivated by the Aztecs alongside cacao and the beans produce an unusually thick, stable foam.",
           "type": "use",
-          "cites": ["wiki-bicolor"]
+          "cites": [
+            "wiki-bicolor"
+          ]
         },
         {
           "text": "Pataxte appears in the Maya Popol Vuh paired with cacao, is lower in caffeine than chocolate, and is still prepared for its prized foaming quality.",
           "type": "use",
-          "cites": ["chocolate-class"]
+          "cites": [
+            "chocolate-class"
+          ]
         }
       ],
       "sources": [
@@ -68,22 +79,33 @@
         {
           "text": "Trinitario is a hybrid group of cacao derived from crosses between Criollo and Forastero, not a single clone.",
           "type": "breeding",
-          "cites": ["wiki-cocoa-beans", "tropical-cacao"]
+          "cites": [
+            "wiki-cocoa-beans",
+            "tropical-cacao"
+          ]
         },
         {
           "text": "It is named after Trinidad, where it emerged after disease destroyed the island's Criollo and growers replanted with Forastero, the two then crossing naturally.",
           "type": "origin",
-          "cites": ["wiki-cocoa-beans", "chocolatsdumonde"]
+          "cites": [
+            "wiki-cocoa-beans",
+            "chocolatsdumonde"
+          ]
         },
         {
           "text": "Trinitario was more disease resistant than Criollo while tasting better than Forastero.",
           "type": "flavour",
-          "cites": ["wiki-cocoa-beans"]
+          "cites": [
+            "wiki-cocoa-beans"
+          ]
         },
         {
           "text": "It is classed as a fine, or flavour, cacao and valued by chocolate makers for fruity and floral aromatics.",
           "type": "use",
-          "cites": ["tropical-cacao", "chocolatsdumonde"]
+          "cites": [
+            "tropical-cacao",
+            "chocolatsdumonde"
+          ]
         }
       ],
       "sources": [
@@ -114,6 +136,7 @@
   },
   "skipped": [
     "cacao-sg2",
-    "cacao-theobroma"
+    "cacao-theobroma",
+    "cacao-tree"
   ]
 }
