@@ -1314,6 +1314,98 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "peach-ora-a": {
+      "slug": "peach-ora-a",
+      "species": "Peach",
+      "variety": "Ora A",
+      "paragraphs": [
+        "Ora A is a peachcot, an interspecific peach and apricot type that is botanically a peach (Prunus persica) but carries strong apricot character. The fruit is small with dark orange skin and flesh, looking more like an apricot than a peach, and the flavour sits between the two, sweeter and less tart than a true apricot with a peach undertone. It is an early to mid season variety, ripening roughly across October to December in Australian gardens.",
+        "Its main appeal is climate range. Like other low chill stone fruit crosses, Ora A fruits in places where traditional apricots struggle, which suits it to warm and subtropical districts. It is self pollinating, so a single tree will crop without a partner, and Daleys lists it as resistant to bacterial black spot, a common wet climate problem for stone fruit. The fruit is clingstone, with firm flesh that holds together for fresh eating and cooking."
+      ],
+      "claims": [
+        {
+          "text": "Ora A is a peachcot, an interspecific peach and apricot type that is botanically a peach (Prunus persica) with apricot characteristics; low chill stone fruit crosses of this kind fruit where standard apricots struggle",
+          "type": "naming",
+          "cites": [
+            "daleys-peachcot-ora-a",
+            "rosscreek-peachcot-ora-a",
+            "ucanr-stonefruit-hybrids"
+          ]
+        },
+        {
+          "text": "Low chill and suited to warm and subtropical districts",
+          "type": "climate",
+          "cites": [
+            "daleys-peachcot-ora-a",
+            "rosscreek-peachcot-ora-a",
+            "ucanr-stonefruit-hybrids"
+          ]
+        },
+        {
+          "text": "Self pollinating, so a single tree crops without a partner",
+          "type": "pollination",
+          "cites": [
+            "daleys-peachcot-ora-a",
+            "rosscreek-peachcot-ora-a"
+          ]
+        },
+        {
+          "text": "Small fruit with dark orange skin and flesh, resembling an apricot more than a peach",
+          "type": "appearance",
+          "cites": [
+            "daleys-peachcot-ora-a",
+            "rosscreek-peachcot-ora-a"
+          ]
+        },
+        {
+          "text": "Flavour between peach and apricot, sweeter and less tart than a true apricot",
+          "type": "flavour",
+          "cites": [
+            "daleys-peachcot-ora-a",
+            "rosscreek-peachcot-ora-a"
+          ]
+        },
+        {
+          "text": "Early to mid season, ripening around October to December in Australia",
+          "type": "season",
+          "cites": [
+            "daleys-peachcot-ora-a",
+            "rosscreek-peachcot-ora-a"
+          ]
+        },
+        {
+          "text": "Resistant to bacterial black spot; clingstone with firm flesh",
+          "type": "disease",
+          "cites": [
+            "daleys-peachcot-ora-a"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daleys-peachcot-ora-a",
+          "name": "Daleys Fruit Trees: Peachcot Ora A",
+          "url": "https://www.daleysfruit.com.au/buy/peachcot-ora-a-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "rosscreek-peachcot-ora-a",
+          "name": "Ross Creek Tropicals: Peachcot Ora A",
+          "url": "https://www.rosscreektropicals.com.au/products/peachcot-ora-a",
+          "tier": "nursery"
+        },
+        {
+          "id": "ucanr-stonefruit-hybrids",
+          "name": "UC ANR: Demystifying Pluots, Apriums and Other Stone Fruit Hybrids",
+          "url": "https://ucanr.edu/blog/backyard-gardener/article/demystifying-pluots-apriums-and-other-stone-fruit-hybrids",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
     "peach-pullar-s-cling": {
       "slug": "peach-pullar-s-cling",
       "species": "Peach",
@@ -1789,6 +1881,7 @@
     "peach-angel",
     "peach-angel-donut",
     "peach-angel-flat",
+    "peach-angel-stone-fruit",
     "peach-angel-subtropical-donut",
     "peach-anzac-sweet-17",
     "peach-brigg-s-red-may",
@@ -1811,6 +1904,8 @@
     "peach-loring-stone-fruit",
     "peach-maravilha",
     "peach-melodie",
+    "peach-multi-graft-o-henry-golden-queen",
+    "peach-nectarine-peacharine",
     "peach-okee-dokee-flat",
     "peach-okeedokee",
     "peach-okeedokee-donut",
@@ -1823,6 +1918,7 @@
     "peach-ruby-sensation",
     "peach-rubysensation",
     "peach-silvan-sunset",
+    "peach-silvan-sunset-four-seasons",
     "peach-silvan-sunset-four-seasons-peach",
     "peach-spring-gold",
     "peach-stark-earilglo",
