@@ -1,0 +1,116 @@
+{
+  "species_slug": "sugar-apple",
+  "schema_version": 1,
+  "varieties": {
+    "sugar-apple-kampong-mauve": {
+      "slug": "sugar-apple-kampong-mauve",
+      "species": "Sugar Apple",
+      "variety": "Kampong Mauve",
+      "paragraphs": [
+        "Kampong Mauve is a purplish-red selection of sugar apple (Annona squamosa), unusual among a fruit that is normally green. The skin turns purple very early, well before ripening, and the mature surface is tuberculate (knobbly) and dusted with a whitish bloom. It is named after the Kampong, the former Coconut Grove (Miami) home of plant explorer David Fairchild, as a tribute to him.",
+        "The flesh is white and custard-like, sweet with a slight acidity, and the variety has a reputation for a juicy, pear-like taste and texture with a tropical twist. The skin is thin and the fruit is made of loosely cohering segments that pull apart easily, each carpel typically holding one small brown seed about the size of a bean."
+      ],
+      "claims": [
+        {
+          "text": "Kampong Mauve is a purplish-red form of Annona squamosa, unusual among normally green sugar apples.",
+          "type": "appearance",
+          "cites": ["growables", "ilikerareplants"]
+        },
+        {
+          "text": "The skin turns purple early, is tuberculate and covered with a whitish bloom.",
+          "type": "appearance",
+          "cites": ["ilikerareplants"]
+        },
+        {
+          "text": "It is named after the Kampong, David Fairchild's former Coconut Grove home.",
+          "type": "naming",
+          "cites": ["ilikerareplants", "gardenfl"]
+        },
+        {
+          "text": "The flesh is white, custard-like, sweet and slightly acidulous, with a juicy pear-like taste and thin skin.",
+          "type": "flavour",
+          "cites": ["ilikerareplants", "growables"]
+        },
+        {
+          "text": "Carpels cohere loosely and each normally contains one small brown bean-sized seed.",
+          "type": "appearance",
+          "cites": ["ilikerareplants"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ilikerareplants",
+          "name": "I like rare plants! (citing Rare Fruit Council International)",
+          "url": "https://ilikerareplants.blogspot.com/2008/08/annona-squamosa-kampong-mauve.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Sugar Apple, Annona squamosa",
+          "url": "https://www.growables.org/information/TropicalFruit/annonasquamosa.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenfl",
+          "name": "Garden Florida: Sugar Apples Exploring the Different Variety",
+          "url": "https://gardenfl.com/sugar-apples-exploring-the-different-variety-annona-squamosa/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "sugar-apple-purple": {
+      "slug": "sugar-apple-purple",
+      "species": "Sugar Apple",
+      "variety": "Purple",
+      "paragraphs": [
+        "Purple sugar apple is the red or purple-skinned form of Annona squamosa, a striking departure from the usual pale green sugar apple. Native to the tropical regions of Central America and the Antilles (including Cuba, where it is known as anon rojo or morado), it carries vibrant reddish-purple skin over the same knobbly, segmented surface as a green sugar apple. As it matures the colour deepens, with the gaps between the protuberances turning bright pink.",
+        "Inside, the pulp is white to creamy white with a custard-like consistency and a sweet, pleasant flavour, sometimes tinged pale purple near the skin. The fruit pulls apart into loosely connected segments and is soft enough to scoop with a spoon. In Cuba it has long been eaten fresh or blended into a traditional drink called Champola."
+      ],
+      "claims": [
+        {
+          "text": "Purple sugar apple is the red or purple-skinned form of Annona squamosa, native to Central America and the Antilles including Cuba.",
+          "type": "origin",
+          "cites": ["slowfood", "growables"]
+        },
+        {
+          "text": "It has vibrant reddish-purple skin that deepens with maturity, with bright pink between the protuberances.",
+          "type": "appearance",
+          "cites": ["slowfood", "growables"]
+        },
+        {
+          "text": "The pulp is white to creamy white, custard-like and sweet, sometimes tinged purple near the skin.",
+          "type": "flavour",
+          "cites": ["growables", "slowfood"]
+        },
+        {
+          "text": "In Cuba it is eaten fresh or made into a traditional drink called Champola.",
+          "type": "use",
+          "cites": ["slowfood"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "slowfood",
+          "name": "Slow Food Foundation Ark of Taste: Anon Rojo o Morado (Red Sugar Apple)",
+          "url": "https://www.fondazioneslowfood.com/en/ark-of-taste-slow-food/anon-rojo-o-morado-red-sugar-apple/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Sugar Apple, Annona squamosa",
+          "url": "https://www.growables.org/information/TropicalFruit/annonasquamosa.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}
