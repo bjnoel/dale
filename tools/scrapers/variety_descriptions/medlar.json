@@ -1,0 +1,182 @@
+{
+  "species_slug": "medlar",
+  "schema_version": 1,
+  "varieties": {
+    "medlar-dutch": {
+      "slug": "medlar-dutch",
+      "species": "Medlar",
+      "variety": "Dutch",
+      "paragraphs": [
+        "Dutch (also sold as Large Dutch or Dutch Medlar) is the large-fruited classic of the species. Very large-fruited medlars have been known as Dutch Medlars for centuries, so the name covers an old category of big-fruited stock rather than a single modern clone. The russet-brown fruit measures around 5cm across, among the largest of any medlar, set off by large single white flowers (also about 5cm) in late spring. The tree grows as a small, spreading tree or large shrub.",
+        "Like all medlars, the fruit is inedible when picked hard and must be bletted: left to soften (after frost or in storage) until the flesh turns brown and pulpy, which reduces tannins and acids and lifts the sugar, giving a complex, spicy, almost vinous flavour. It ripens late, with fruit gathered after autumn frosts. The soft pulp is eaten raw (sometimes with sugar and cream) or, given its size, is well suited to medlar jelly and other cooked preserves."
+      ],
+      "claims": [
+        {
+          "text": "Very large-fruited medlars have been known as Dutch Medlars for centuries; not necessarily a single clone",
+          "type": "history",
+          "cites": [
+            "tso"
+          ]
+        },
+        {
+          "text": "Russet-brown fruit about 5cm across, with white flowers about 5cm in late spring",
+          "type": "appearance",
+          "cites": [
+            "rhs-dutch"
+          ]
+        },
+        {
+          "text": "Grows as a small, spreading tree or large shrub",
+          "type": "habit",
+          "cites": [
+            "rhs-dutch"
+          ]
+        },
+        {
+          "text": "Fruit must be bletted (softened by frost or in storage) until brown and pulpy, reducing tannins and acids and raising sugar, giving a complex spicy or vinous flavour",
+          "type": "ripening",
+          "cites": [
+            "wiki",
+            "tso"
+          ]
+        },
+        {
+          "text": "Ripens late; fruit gathered after frost",
+          "type": "season",
+          "cites": [
+            "rhs-dutch",
+            "wiki"
+          ]
+        },
+        {
+          "text": "Bletted pulp eaten raw, sometimes with sugar and cream, or made into medlar jelly",
+          "type": "uses",
+          "cites": [
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-dutch",
+          "name": "Royal Horticultural Society, Mespilus germanica 'Dutch'",
+          "url": "https://www.rhs.org.uk/plants/90895/mespilus-germanica-dutch-(f)/details",
+          "tier": "authoritative"
+        },
+        {
+          "id": "tso",
+          "name": "Trees and Shrubs Online, Mespilus germanica",
+          "url": "https://www.treesandshrubsonline.org/articles/mespilus/mespilus-germanica/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Mespilus germanica",
+          "url": "https://en.wikipedia.org/wiki/Mespilus_germanica",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "medlar-nottingham": {
+      "slug": "medlar-nottingham",
+      "species": "Medlar",
+      "variety": "Nottingham",
+      "paragraphs": [
+        "Nottingham is the heirloom benchmark among medlars, very old and already treated as the common medlar by Loudon in 1838, and often called the oldest cultivar still grown. It is a smaller-fruited variety, the fruit roughly 2.5cm to 4cm across, carried on a tree that is more upright than the species, with only moderate vigour that suits smaller gardens (older trees often become attractively twisted). Cup-shaped white flowers open in spring, and it holds the RHS Award of Garden Merit.",
+        "What it lacks in size it makes up in taste: Nottingham is prized as a well-flavoured, richly aromatic medlar. As with all medlars, the fruit must be bletted, left to soften after frost or in storage until the brown flesh turns pulpy, which mellows the tannins and develops a sweet, spicy, slightly sharp flavour. It ripens in late autumn into winter, and the soft pulp is eaten fresh or cooked into jellies and other preserves."
+      ],
+      "claims": [
+        {
+          "text": "Very old cultivar, treated as the common medlar by Loudon in 1838, often called the oldest cultivar still grown",
+          "type": "history",
+          "cites": [
+            "tso",
+            "wiki"
+          ]
+        },
+        {
+          "text": "Smaller fruit, about 2.5cm to 4cm across",
+          "type": "appearance",
+          "cites": [
+            "rhs-nott",
+            "tso"
+          ]
+        },
+        {
+          "text": "Tree more upright than the species, moderate vigour suiting smaller gardens, often twisted with age",
+          "type": "habit",
+          "cites": [
+            "rhs-nott",
+            "tso"
+          ]
+        },
+        {
+          "text": "Cup-shaped white flowers in spring",
+          "type": "appearance",
+          "cites": [
+            "rhs-nott"
+          ]
+        },
+        {
+          "text": "Holds the RHS Award of Garden Merit",
+          "type": "quality",
+          "cites": [
+            "wiki"
+          ]
+        },
+        {
+          "text": "Well-flavoured, regarded as a great-flavoured medlar",
+          "type": "flavour",
+          "cites": [
+            "rhs-nott",
+            "tso"
+          ]
+        },
+        {
+          "text": "Fruit must be bletted (softened by frost or storage) until brown and pulpy, mellowing tannins and developing a spicy flavour",
+          "type": "ripening",
+          "cites": [
+            "wiki",
+            "tso"
+          ]
+        },
+        {
+          "text": "Ripens late autumn into winter; pulp eaten fresh or made into jellies",
+          "type": "uses",
+          "cites": [
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-nott",
+          "name": "Royal Horticultural Society, Mespilus germanica 'Nottingham'",
+          "url": "https://www.rhs.org.uk/plants/64367/mespilus-germanica-nottingham-(f)/details",
+          "tier": "authoritative"
+        },
+        {
+          "id": "tso",
+          "name": "Trees and Shrubs Online, Mespilus germanica",
+          "url": "https://www.treesandshrubsonline.org/articles/mespilus/mespilus-germanica/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Mespilus germanica",
+          "url": "https://en.wikipedia.org/wiki/Mespilus_germanica",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": []
+}

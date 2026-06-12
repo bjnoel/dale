@@ -2421,6 +2421,88 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "plum-spring-satin": {
+      "slug": "plum-spring-satin",
+      "species": "Plum",
+      "variety": "Spring Satin",
+      "paragraphs": [
+        "Spring Satin is a plumcot, an interspecific cross of plum and apricot, and was the first plumcot cultivar released by a public breeding program. It was developed by William (Dick) Okie at the USDA ARS Southeastern Fruit and Tree Nut Research Laboratory in Byron, Georgia, and bred specifically for the humid, medium to high chill conditions of the southeastern United States, where most California plumcots were poorly adapted.",
+        "The fruit is reddish black to purple skinned with flesh that is yellow when immature, turning yellowish red as it ripens, and has a complex, plum like flavour. It ripens early in the stone fruit season. A useful trait is its tolerance to major plum diseases including bacterial spot, bacterial canker, and plum leaf scald. It looks much like a Japanese plum and sets best when cross pollinated with another Japanese plum."
+      ],
+      "claims": [
+        {
+          "text": "Spring Satin is an interspecific plum x apricot plumcot and was the first plumcot cultivar released by a public breeding program.",
+          "type": "origin",
+          "cites": [
+            "usda-pub",
+            "usda-news"
+          ]
+        },
+        {
+          "text": "It was developed by William (Dick) Okie at the USDA ARS laboratory in Byron, Georgia, for the humid medium to high chill southeastern United States.",
+          "type": "origin",
+          "cites": [
+            "usda-pub",
+            "usda-news"
+          ]
+        },
+        {
+          "text": "The fruit has reddish black skin and flesh that is yellow when immature, changing to yellowish red when mature, with a complex plum like flavour.",
+          "type": "appearance",
+          "cites": [
+            "usda-news",
+            "usda-pub"
+          ]
+        },
+        {
+          "text": "It is an early ripening variety in the stone fruit season.",
+          "type": "season",
+          "cites": [
+            "usda-pub",
+            "usda-news"
+          ]
+        },
+        {
+          "text": "It is tolerant to major plum diseases including bacterial spot, bacterial canker, and plum leaf scald.",
+          "type": "trait",
+          "cites": [
+            "usda-news"
+          ]
+        },
+        {
+          "text": "It resembles a Japanese plum and sets fruit best when cross pollinated with another Japanese plum.",
+          "type": "pollination",
+          "cites": [
+            "usda-pub",
+            "starkbros"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "usda-pub",
+          "name": "USDA ARS publication: Spring Satin plumcot (Okie)",
+          "url": "https://www.ars.usda.gov/research/publications/publication/?seqNo115=186897",
+          "tier": "authoritative"
+        },
+        {
+          "id": "usda-news",
+          "name": "USDA ARS news: New Plum-Apricot Cross Ideal for Southern Growers",
+          "url": "https://www.ars.usda.gov/news-events/news/research-news/2000/new-plum-apricot-cross-ideal-for-southern-growers/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "starkbros",
+          "name": "Stark Bro's: Spring Satin Plumcot",
+          "url": "https://www.starkbros.com/products/fruit-trees/plum-trees/spring-satin-plumcot",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "plum-sugar": {
       "slug": "plum-sugar",
       "species": "Plum",
@@ -2677,14 +2759,22 @@
     "plum-amber-queen",
     "plum-angelina-burdett-european",
     "plum-angelino-japanese",
+    "plum-apricot-flavor-supreme",
+    "plum-apricot-plumscrumptious",
     "plum-bells-boronia",
     "plum-black",
+    "plum-black-adder",
     "plum-black-amber-japanese",
     "plum-black-diamond-european",
+    "plum-blood",
+    "plum-blood-mariposa",
+    "plum-blood-satsuma",
+    "plum-cherry-little-chum",
     "plum-cherry-plum-8-1",
     "plum-coe-s-golden-drop-european",
     "plum-coes-golden-drop",
     "plum-coles-golden-gage",
+    "plum-combo-santa-rosa-satsuma",
     "plum-cose-golden-drop-stone-fruit",
     "plum-d-agen",
     "plum-d-agen-french-prune",
@@ -2704,17 +2794,23 @@
     "plum-heuchera-sugar",
     "plum-iluka-blood",
     "plum-imperial-bromeliad-divine",
+    "plum-interspecific-plumscrumptious",
     "plum-king-bill",
     "plum-king-billy",
     "plum-king-billy-european",
     "plum-little-chum",
     "plum-luisa",
     "plum-mariposa-japanese-blood",
+    "plum-multi-graft-flavor-supreme-mariposa",
+    "plum-multi-graft-flavor-supreme-mariposa-santa-rosa",
+    "plum-multi-graft-satsuma-santa-rosa",
+    "plum-multi-graft-sunrise-gulf-gulf-ruby",
     "plum-myrobalan-h29c",
     "plum-narrabeen-japanese",
     "plum-october-purple",
     "plum-peachcot",
     "plum-pine",
+    "plum-plum-black-adder",
     "plum-pollenating-victoria",
     "plum-president-european",
     "plum-prune-d-agen",
@@ -2736,6 +2832,7 @@
     "plum-sunrise-gulf",
     "plum-teagan-blue",
     "plum-teagan-blue-japanese",
+    "plum-x-cherry-little-chum",
     "plum-yarrahapinni-blood",
     "plum-yarrahapinni-japanese-blood"
   ]

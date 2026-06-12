@@ -475,6 +475,65 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pear-clapp-s-favourite": {
+      "slug": "pear-clapp-s-favourite",
+      "species": "Pear",
+      "variety": "Clapp S Favourite",
+      "paragraphs": [
+        "Clapp's Favourite is a classic European pear (Pyrus communis) that arose as a chance seedling on Thaddeus Clapp's property in Dorchester, Massachusetts, and was introduced around 1860. It is generally attributed to a cross of Bartlett (Williams) and Flemish Beauty and carries the lineage of both. The large fruit has smooth, pale to sun yellow skin, usually with an attractive red blush on the side facing the sun, and white, fine grained, very juicy flesh that is sweet with a refreshing touch of acidity.",
+        "Its main claim to fame is timing. Clapp's Favourite ripens early, roughly one to two weeks ahead of Bartlett, making it one of the first European pears of the season. Like most European pears it is not reliably self fertile and benefits from a compatible pollinating partner, and as with the type it is best picked firm and ripened off the tree."
+      ],
+      "claims": [
+        {
+          "text": "Clapp's Favourite is a European pear that arose as a chance seedling on Thaddeus Clapp's property in Dorchester, Massachusetts, introduced around 1860",
+          "type": "origin",
+          "cites": [
+            "specialty-clapp",
+            "dorchester"
+          ]
+        },
+        {
+          "text": "Attributed to a cross of Bartlett (Williams) and Flemish Beauty",
+          "type": "origin",
+          "cites": [
+            "specialty-clapp",
+            "dorchester"
+          ]
+        },
+        {
+          "text": "Large fruit with smooth yellow skin and a red sun blush, and white, fine grained, very juicy, sweet slightly acid flesh",
+          "type": "appearance",
+          "cites": [
+            "specialty-clapp"
+          ]
+        },
+        {
+          "text": "Ripens early, about one to two weeks ahead of Bartlett, and is not reliably self fertile",
+          "type": "quirk",
+          "cites": [
+            "specialty-clapp"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty-clapp",
+          "name": "Specialty Produce, Clapp's Favorite Pears",
+          "url": "https://specialtyproduce.com/produce/Clapps_Favorite_Pears_12960.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "dorchester",
+          "name": "Dorchester Atheneum, Clapp's Favorite Pear",
+          "url": "https://www.dorchesteratheneum.org/project/clapps-favorite-pear-frederick-clapp-pear-sarah-clapp-pear/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "pear-conference": {
       "slug": "pear-conference",
       "species": "Pear",
@@ -1612,6 +1671,66 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pear-nashi-hosui": {
+      "slug": "pear-nashi-hosui",
+      "species": "Pear",
+      "variety": "Nashi Hosui",
+      "paragraphs": [
+        "Hosui is a Japanese nashi (Asian pear, Pyrus pyrifolia) developed at the national horticultural research station at Tsukuba and released in the 1970s. The name roughly translates as much water, a nod to its very juicy flesh. The fruit is large and round to flattened, with a distinctive bronze to golden brown russeted skin dotted with pale lenticels, quite different from the smooth yellow skinned nashi varieties.",
+        "Its flavour is what sets it apart. The white flesh is crisp, fine textured and juicy, sweeter and a little more acid balanced than many nashi, and is often rated among the best tasting Asian pears. It is partially self fertile but crops more reliably with a pollinating partner, so growers commonly pair it with another early flowering nashi."
+      ],
+      "claims": [
+        {
+          "text": "Hosui is a Japanese nashi developed at the Tsukuba research station and released in the 1970s, and the name means much water",
+          "type": "origin",
+          "cites": [
+            "specialty-hosui",
+            "stfc"
+          ]
+        },
+        {
+          "text": "Large round to flattened fruit with bronze to golden brown russeted skin and pale lenticels",
+          "type": "appearance",
+          "cites": [
+            "specialty-hosui",
+            "stfc"
+          ]
+        },
+        {
+          "text": "Crisp, fine textured, very juicy white flesh, sweet with more acidity than most nashi, often rated among the best flavoured Asian pears",
+          "type": "flavour",
+          "cites": [
+            "specialty-hosui",
+            "stfc"
+          ]
+        },
+        {
+          "text": "Partially self fertile but crops better with a cross pollinator",
+          "type": "quirk",
+          "cites": [
+            "stfc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Nashi Pears for SE Queensland",
+          "url": "https://stfc.org.au/articles/nashi-pears-for-south-east-queensland/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-hosui",
+          "name": "Specialty Produce, Hosui Asian Pears",
+          "url": "https://specialtyproduce.com/produce/Hosui_Asian_Pears_7249.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "pear-nashi-nijisseiki": {
       "slug": "pear-nashi-nijisseiki",
       "species": "Pear",
@@ -1671,6 +1790,130 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "pear-nashi-shinseiki": {
+      "slug": "pear-nashi-shinseiki",
+      "species": "Pear",
+      "variety": "Nashi Shinseiki",
+      "paragraphs": [
+        "Shinseiki (the name means New Century) is a Japanese nashi (Asian pear, Pyrus pyrifolia) selected in the mid 20th century and descended from the famous Nijisseiki (Twentieth Century). It is round and apple shaped rather than the European pear teardrop, with thin, moonlight to golden yellow skin and crisp, creamy white flesh that is juicy, fine grained and mildly sweet with low acidity. Like other nashi it stays crisp when ripe and is eaten firm.",
+        "Two traits make it popular with home growers. It is self fertile, so a single tree will set fruit without a pollinating partner (though cross pollination lifts yields), and it carries lower winter chill requirements than most nashi. The fruit hangs on the tree in good condition for several weeks and tastes best when tree ripened. The tree has a reputation for good disease resistance and a vigorous, spreading habit."
+      ],
+      "claims": [
+        {
+          "text": "Shinseiki (New Century) is a Japanese nashi descended from Nijisseiki (Twentieth Century)",
+          "type": "origin",
+          "cites": [
+            "gardenia",
+            "ncstate"
+          ]
+        },
+        {
+          "text": "Round, apple shaped yellow fruit with crisp, creamy white, mildly sweet, low acid flesh, eaten firm",
+          "type": "appearance",
+          "cites": [
+            "stfc",
+            "ncstate"
+          ]
+        },
+        {
+          "text": "Self fertile and lower chill than most nashi, and hangs on the tree in good condition for several weeks",
+          "type": "quirk",
+          "cites": [
+            "stfc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Nashi Pears for SE Queensland",
+          "url": "https://stfc.org.au/articles/nashi-pears-for-south-east-queensland/",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenia",
+          "name": "Gardenia.net, Pyrus pyrifolia Shinseiki",
+          "url": "https://www.gardenia.net/plant/pyrus-pyrifolia-shinseiki",
+          "tier": "third_party"
+        },
+        {
+          "id": "ncstate",
+          "name": "NC State Extension, Pyrus pyrifolia Shinseiki",
+          "url": "https://plants.ces.ncsu.edu/plants/pyrus-pyrifolia-shinseiki/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "pear-nashi-ya-li": {
+      "slug": "pear-nashi-ya-li",
+      "species": "Pear",
+      "variety": "Nashi Ya Li",
+      "paragraphs": [
+        "Ya Li is an old Chinese cultivar of the Chinese white pear (Pyrus x bretschneideri), native to and widely grown across northern China, where it is one of the most commercially important pears. Its name translates literally as duck pear, a reference to the fruit's mallard like shape. Unlike the round Japanese nashi, Ya Li is teardrop shaped, narrowing to a distinct neck at the stem end, with yellow skin and white to pale yellow flesh.",
+        "The flesh is crisp, very juicy and aromatic with a fine texture, and stays crisp rather than softening like a European pear. It is comparatively high in water and lower in sugar, giving a mild, refreshing taste. Ya Li is reputed to be relatively low chill and tends to need a cross pollinating partner (Tsu Li is the classic match) to set a good crop."
+      ],
+      "claims": [
+        {
+          "text": "Ya Li is an old Chinese cultivar of the Chinese white pear (Pyrus x bretschneideri), native to northern China and commercially important there",
+          "type": "origin",
+          "cites": [
+            "wikipedia-bret",
+            "specialty-yali"
+          ]
+        },
+        {
+          "text": "The name means duck pear, referring to its teardrop, neck shaped form, unlike round Japanese nashi",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-bret",
+            "specialty-yali"
+          ]
+        },
+        {
+          "text": "Crisp, very juicy, aromatic white flesh, high in water and lower in sugar, staying crisp when ripe",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-bret",
+            "specialty-yali"
+          ]
+        },
+        {
+          "text": "Reputed to be relatively low chill and benefits from a cross pollinator such as Tsu Li",
+          "type": "quirk",
+          "cites": [
+            "stfc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-bret",
+          "name": "Wikipedia, Pyrus x bretschneideri",
+          "url": "https://en.wikipedia.org/wiki/Pyrus_%C3%97_bretschneideri",
+          "tier": "third_party"
+        },
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Nashi Pears for SE Queensland",
+          "url": "https://stfc.org.au/articles/nashi-pears-for-south-east-queensland/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-yali",
+          "name": "Specialty Produce, Yali Asian Pears",
+          "url": "https://specialtyproduce.com/produce/Yali_Asian_Pears_6585.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "pear-packham-s-triumph": {
       "slug": "pear-packham-s-triumph",
@@ -2074,6 +2317,65 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pear-williams-red": {
+      "slug": "pear-williams-red",
+      "species": "Pear",
+      "variety": "Williams Red",
+      "paragraphs": [
+        "Williams Red is a red skinned bud sport of the classic Williams' Bon Chretien pear (Pyrus communis), the variety known in North America as Bartlett. The original Williams arose in England in the late 1700s and went on to become the world's most widely grown pear. The red form is a naturally occurring colour mutation, found on a branch that produced red skinned fruit, and is propagated by grafting. Several such sports exist, marketed under names like Red Bartlett.",
+        "The red is anthocyanin pigment in the skin only, so the flesh inside is the same pale cream as a standard Williams. Eating quality matches the parent: when ripe the flesh turns buttery and smooth with notably few grit cells, and carries the sweet, musky, almost perfumed flavour that many people think of as the definitive pear taste. As with all European pears it is picked firm and ripened off the tree."
+      ],
+      "claims": [
+        {
+          "text": "Williams Red is a red skinned bud sport (colour mutation) of Williams Bon Chretien, the pear known as Bartlett in North America",
+          "type": "origin",
+          "cites": [
+            "wikipedia-williams",
+            "usapears"
+          ]
+        },
+        {
+          "text": "The original Williams arose in England in the late 1700s and became the world's most widely grown pear",
+          "type": "origin",
+          "cites": [
+            "wikipedia-williams"
+          ]
+        },
+        {
+          "text": "The red colour is anthocyanin in the skin only, while the flesh is the same pale cream as standard Williams",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-williams",
+            "usapears"
+          ]
+        },
+        {
+          "text": "Ripe flesh is buttery and smooth with few grit cells and a sweet, musky, perfumed flavour",
+          "type": "flavour",
+          "cites": [
+            "usapears"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-williams",
+          "name": "Wikipedia, Williams pear",
+          "url": "https://en.wikipedia.org/wiki/Williams_pear",
+          "tier": "third_party"
+        },
+        {
+          "id": "usapears",
+          "name": "USA Pears, Red Bartlett",
+          "url": "https://www.usapears.org/red-bartlett/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "pear-winter-cole": {
       "slug": "pear-winter-cole",
       "species": "Pear",
@@ -2252,11 +2554,19 @@
     "pear-josephine",
     "pear-l-inconnue",
     "pear-manchurian",
+    "pear-multi-graft-beurre-bosc-packham-s-triumph-williams",
+    "pear-multi-graft-packham-s-triumph-williams",
     "pear-nashi",
+    "pear-nashi-bonza",
     "pear-nashi-china",
     "pear-nashi-chojuro",
     "pear-nashi-country-wide",
+    "pear-nashi-kosui",
+    "pear-nashi-multi-graft-nijisseiki-shinseiki",
+    "pear-nashi-nijiseikki",
+    "pear-nashi-nijisseiki-20th-century",
     "pear-nashi-sunshu",
+    "pear-nashi-tropical-sunshu",
     "pear-nejisseiki",
     "pear-nijiseiki-20th-century-nashi",
     "pear-nijisseiki-nashi",
