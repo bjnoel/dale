@@ -1,0 +1,274 @@
+{
+  "species_slug": "gooseberry",
+  "schema_version": 1,
+  "varieties": {
+    "gooseberry-amla-indian": {
+      "slug": "gooseberry-amla-indian",
+      "species": "Gooseberry",
+      "variety": "Amla Indian",
+      "paragraphs": [
+        "The Indian gooseberry or amla (Phyllanthus emblica) is a small to medium deciduous tree of the family Phyllanthaceae, native to tropical and southern Asia, and not related to the true Ribes gooseberries. The fruit is nearly spherical and greenish-yellow, smooth and hard looking, marked by six vertical stripes or furrows. The flesh is crisp and fibrous with a striking taste that is strongly sour and astringent with bitter notes and only a mild sweetness, often leaving a sweet aftertaste once eaten.",
+        "Amla is famous for an exceptionally high vitamin C content and is rarely eaten plain. It is pickled with salt, oil and spices, candied (the murabba), or made into chutneys, juices, and tonics. The fruit is also a cornerstone of Ayurveda, where it is used as a rasayana, a rejuvenating preparation, and it carries sacred significance in Hindu and Buddhist tradition. That blend of fiercely tart fruit, medicinal heritage, and cultural importance is what distinguishes it."
+      ],
+      "claims": [
+        {
+          "text": "Phyllanthus emblica (amla) is in the family Phyllanthaceae, native to tropical and southern Asia, and is not a true Ribes gooseberry.",
+          "type": "botanical",
+          "cites": [
+            "wiki-emblica",
+            "pfaf-emblica"
+          ]
+        },
+        {
+          "text": "The fruit is spherical and greenish-yellow with six vertical furrows, and tastes strongly sour and astringent with bitter notes.",
+          "type": "appearance",
+          "cites": [
+            "wiki-emblica",
+            "pfaf-emblica"
+          ]
+        },
+        {
+          "text": "It is very high in vitamin C, is pickled, candied or juiced, and is used in Ayurveda as a rasayana.",
+          "type": "uses",
+          "cites": [
+            "wiki-emblica",
+            "pfaf-emblica"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-emblica",
+          "name": "Phyllanthus emblica, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Phyllanthus_emblica",
+          "tier": "third_party"
+        },
+        {
+          "id": "pfaf-emblica",
+          "name": "Phyllanthus emblica, Plants For A Future",
+          "url": "https://pfaf.org/user/Plant.aspx?LatinName=Phyllanthus+emblica",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "gooseberry-cape": {
+      "slug": "gooseberry-cape",
+      "species": "Gooseberry",
+      "variety": "Cape",
+      "paragraphs": [
+        "The Cape gooseberry (Physalis peruviana) is not a gooseberry at all but a member of the nightshade family (Solanaceae), related to tomatillos and tomatoes. It is native to the Andean regions of South America, around Peru and Chile, and earned its common name from 19th century cultivation around the Cape of Good Hope in South Africa. Each fruit is a small round berry, bright yellow to orange and about the size of a cherry tomato, wrapped in its own papery, lantern-like husk (the inflated calyx) that must be peeled back before eating.",
+        "The flavour is sweet-tart with tropical notes often described as a blend of pineapple, mango, and tomato with a citrusy snap. The papery husk is not just decorative; fruit left inside it keeps for many weeks at room temperature, which is unusual for a soft berry. Eaten fresh, dipped in chocolate, or made into jam, the husked golden berry is quite distinct from the bristly bush gooseberries of the genus Ribes."
+      ],
+      "claims": [
+        {
+          "text": "Cape gooseberry (Physalis peruviana) is in the nightshade family Solanaceae and is not botanically a true Ribes gooseberry.",
+          "type": "botanical",
+          "cites": [
+            "wiki-physalis",
+            "specialty-cape"
+          ]
+        },
+        {
+          "text": "It is native to Andean South America (Peru, Chile) and named for 19th century cultivation at the Cape of Good Hope.",
+          "type": "origin",
+          "cites": [
+            "wiki-physalis",
+            "specialty-cape"
+          ]
+        },
+        {
+          "text": "The fruit is a yellow-orange berry inside a papery husk, sweet-tart with pineapple, mango and tomato notes, and the husk extends its shelf life.",
+          "type": "appearance",
+          "cites": [
+            "wiki-physalis",
+            "specialty-cape"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-physalis",
+          "name": "Physalis peruviana, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Physalis_peruviana",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-cape",
+          "name": "Cape Gooseberries, Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Cape_Gooseberries_9498.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "gooseberry-captivator": {
+      "slug": "gooseberry-captivator",
+      "species": "Gooseberry",
+      "variety": "Captivator",
+      "paragraphs": [
+        "'Captivator' is a genuine Ribes gooseberry cultivar, a hybrid between the North American Ribes hirtellum and the European Ribes uva-crispa. Its great selling point is that it is nearly thornless, with at most a few spines on new growth, which makes the bush far easier and more pleasant to pick than typical heavily armed gooseberries. The fruit is large and teardrop shaped, ripening from green to a red-pink or burgundy hue, sometimes flecked with paler veining. Ripe berries are noted for being sweet, unlike the sharp tartness of many traditional gooseberries.",
+        "Because it is sweet when fully ripe, Captivator is good for eating fresh straight from the bush, while still being useful in preserves, pies, and baked goods. It is also valued by growers for being hardy and fairly resistant to gooseberry mildew and rust. The mix of near thornless canes, sweet red dessert fruit, and disease tolerance makes it a popular choice for home gardeners who want a low fuss true gooseberry."
+      ],
+      "claims": [
+        {
+          "text": "Captivator is a Ribes gooseberry cultivar, a hybrid of Ribes hirtellum and Ribes uva-crispa.",
+          "type": "origin",
+          "cites": [
+            "specialty-cap",
+            "rhs-cap"
+          ]
+        },
+        {
+          "text": "It is nearly thornless, with at most a few thorns on new growth.",
+          "type": "characteristic",
+          "cites": [
+            "rhs-cap",
+            "specialty-cap"
+          ]
+        },
+        {
+          "text": "The fruit is large and teardrop shaped, ripening red-pink to deep red, and is sweet when ripe.",
+          "type": "appearance",
+          "cites": [
+            "specialty-cap",
+            "rhs-cap"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty-cap",
+          "name": "Captivator Gooseberries, Specialty Produce",
+          "url": "https://specialtyproduce.com/produce/Captivator_Gooseberries_10975.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "rhs-cap",
+          "name": "Ribes uva-crispa 'Captivator', Royal Horticultural Society",
+          "url": "https://www.rhs.org.uk/plants/200995/ribes-uva-crispa-captivator-(c)/details",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "gooseberry-english": {
+      "slug": "gooseberry-english",
+      "species": "Gooseberry",
+      "variety": "English",
+      "paragraphs": [
+        "The English or European gooseberry (Ribes uva-crispa) is the classic true gooseberry, a thorny deciduous shrub in the family Grossulariaceae native to Europe, north-western Africa, and south-western Asia. It is the same genus as currants. The bushes carry small pinkish-yellow flowers followed by distinctive bristly, translucent berries that look like small furry grapes, often veined. Skin colour varies by selection from green through yellow and white to red and purple.",
+        "Picked early and firm, the berries are very tart and are the traditional choice for pies, crumbles, jams, and the English classic gooseberry fool; left to ripen fully they turn sweeter and softer for eating fresh. The fruit has a long horticultural history in Britain, where 18th and 19th century cottage growers, especially Lancashire cotton spinners, bred hundreds of named varieties and competed in gooseberry shows. That heritage and the sharp culinary fruit are what define the English gooseberry."
+      ],
+      "claims": [
+        {
+          "text": "Ribes uva-crispa is the true European gooseberry, a thorny shrub of family Grossulariaceae native to Europe, north-western Africa and south-western Asia.",
+          "type": "botanical",
+          "cites": [
+            "wiki-uvacrispa",
+            "pfaf-uvacrispa"
+          ]
+        },
+        {
+          "text": "The berries are bristly and translucent, in colours from green to red, yellow, white and purple; tart when underripe and sweeter when fully ripe.",
+          "type": "appearance",
+          "cites": [
+            "wiki-uvacrispa",
+            "pfaf-uvacrispa"
+          ]
+        },
+        {
+          "text": "It has a long British growing history, with numerous varieties bred by 18th to 19th century cottage growers, notably in Lancashire.",
+          "type": "history",
+          "cites": [
+            "wiki-uvacrispa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-uvacrispa",
+          "name": "Ribes uva-crispa, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Ribes_uva-crispa",
+          "tier": "third_party"
+        },
+        {
+          "id": "pfaf-uvacrispa",
+          "name": "Ribes uva-crispa, Plants For A Future",
+          "url": "https://pfaf.org/user/Plant.aspx?LatinName=Ribes+uva-crispa",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "gooseberry-star": {
+      "slug": "gooseberry-star",
+      "species": "Gooseberry",
+      "variety": "Star",
+      "paragraphs": [
+        "The star gooseberry (Phyllanthus acidus) is a small tropical tree in the family Phyllanthaceae, and despite the name it is botanically distinct from the true gooseberries of the genus Ribes. Its origin is uncertain, possibly Madagascar, and it spread widely through tropical Asia and the Pacific. The fruit hangs in dense clusters and is small, oblate, and conspicuously ribbed (usually 6 to 8 ribs), giving it a star-like cross section. The skin is pale yellow to whitish, waxy and crisp, surrounding very juicy, sharply sour flesh around a hard central stone.",
+        "The fruit is generally regarded as too tart to eat fresh on its own, so it is usually processed. Common uses include candying, pickling, chutneys, syrups, and jam, and in parts of Southeast Asia it is added raw to salads such as Thailand's som tam. It is sometimes eaten fresh dipped in salt or sugar to balance the acidity. The combination of a tart tree fruit, the distinctive ribbed shape, and its place in Asian and Pacific cooking sets it well apart from the European bush gooseberry."
+      ],
+      "claims": [
+        {
+          "text": "Phyllanthus acidus is in the family Phyllanthaceae and is botanically distinct from true Ribes gooseberries.",
+          "type": "botanical",
+          "cites": [
+            "wiki-pacidus"
+          ]
+        },
+        {
+          "text": "The fruit is oblate with 6 to 8 ribs, pale yellow or white, waxy, crisp, juicy and very sour.",
+          "type": "appearance",
+          "cites": [
+            "wiki-pacidus",
+            "growables"
+          ]
+        },
+        {
+          "text": "It is usually too tart to eat fresh and is candied, pickled, made into chutney or syrup, or used in salads like som tam.",
+          "type": "uses",
+          "cites": [
+            "wiki-pacidus",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-pacidus",
+          "name": "Phyllanthus acidus, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Phyllanthus_acidus",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Otaheite Gooseberry, Growables",
+          "url": "https://www.growables.org/information/TropicalFruit/Otaheite.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "gooseberry-captivator-plant",
+    "gooseberry-ceylon-hill",
+    "gooseberry-guava-psidium-quineense"
+  ]
+}
