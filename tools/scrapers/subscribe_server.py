@@ -49,6 +49,11 @@ CONFIRM_EXPIRY_HOURS = 48
 MANAGE_LINK_RATE_LIMIT_SECONDS = 3600  # one manage-link email per address per hour
 
 VALID_CATEGORIES = ("new_products", "price_drops", "back_in_stock")
+# Plant categories a subscriber can opt into (DAL-199). bush_tucker is OFF by
+# default; "fruit" is the default everyone gets. Distinct from VALID_CATEGORIES
+# above, which is the change-TYPE preference (restock / price drop / new).
+VALID_PLANT_CATEGORIES = ("fruit", "bush_tucker")
+DEFAULT_PLANT_CATEGORIES = ("fruit",)
 VALID_FREQUENCIES = ("daily", "weekly", "off")
 
 
@@ -403,10 +408,13 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             current_categories = subscriber.get("categories")
             if current_categories is None:
                 current_categories = list(VALID_CATEGORIES)
+            current_plant_categories = subscriber.get("plant_categories")
+            if current_plant_categories is None:
+                current_plant_categories = list(DEFAULT_PLANT_CATEGORIES)
             current_frequency = subscriber.get("frequency", "daily")
             if current_frequency not in VALID_FREQUENCIES:
                 current_frequency = "daily"
-            self.send_preferences_page(email, token, current_state, current_categories, current_frequency)
+            self.send_preferences_page(email, token, current_state, current_categories, current_plant_categories, current_frequency)
             return
 
         self.send_error(404)
@@ -667,10 +675,12 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             if is_json:
                 new_state = data.get("state", "").upper().strip()
                 raw_categories = data.get("categories")
+                raw_plant_categories = data.get("plant_categories")
                 raw_frequency = data.get("frequency")
             else:
                 new_state = params.get("state", [""])[0].upper().strip()
                 raw_categories = params.get("categories")
+                raw_plant_categories = params.get("plant_categories")
                 raw_frequency = params.get("frequency", [None])[0]
 
             valid_states = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
@@ -691,6 +701,19 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                         new_categories.append(c)
                         seen.add(c)
 
+            # Normalise plant categories (DAL-199): must be a list when provided.
+            new_plant_categories = None
+            if raw_plant_categories is not None:
+                if not isinstance(raw_plant_categories, list):
+                    self.send_json(400, {"error": "plant_categories must be a list"})
+                    return
+                seen = set()
+                new_plant_categories = []
+                for c in raw_plant_categories:
+                    if c in VALID_PLANT_CATEGORIES and c not in seen:
+                        new_plant_categories.append(c)
+                        seen.add(c)
+
             # Normalise frequency.
             new_frequency = None
             if raw_frequency is not None:
@@ -708,6 +731,8 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                     s.pop("wa_only", None)
                     if new_categories is not None:
                         s["categories"] = new_categories
+                    if new_plant_categories is not None:
+                        s["plant_categories"] = new_plant_categories
                     if new_frequency is not None:
                         s["frequency"] = new_frequency
                     found = True
@@ -719,6 +744,8 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             log_extras = []
             if new_categories is not None:
                 log_extras.append(f"categories={','.join(new_categories) or '(none)'}")
+            if new_plant_categories is not None:
+                log_extras.append(f"plant={','.join(new_plant_categories) or '(none)'}")
             if new_frequency is not None:
                 log_extras.append(f"frequency={new_frequency}")
             extra = (" " + " ".join(log_extras)) if log_extras else ""
@@ -727,6 +754,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 "message": "Preferences updated",
                 "state": new_state,
                 "categories": new_categories,
+                "plant_categories": new_plant_categories,
                 "frequency": new_frequency,
             })
             return
@@ -810,10 +838,24 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">You're subscribed!</h2>
 <p style="color:#374151;margin:0 0 20px">
-  Your first digest will arrive tomorrow morning. You can fine-tune things below — or close this tab and the defaults (daily, all categories) will be used.
+  Your first digest will arrive tomorrow morning. You can fine-tune things below — or close this tab and the defaults (daily, fruit trees) will be used.
 </p>
 
 <form id="prefsForm" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin:0 0 24px">
+
+  <h3 style="color:#065f46;font-size:0.95rem;margin:0 0 8px">What plants?</h3>
+  <div style="margin:0 0 16px">
+    <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
+      <input type="checkbox" name="plant_categories" value="fruit" checked style="margin-top:4px">
+      <span><strong>🍑 Fruit trees</strong>
+        <br><span style="font-size:0.8rem;color:#6b7280">Rare and edible fruit, nut and berry stock</span></span>
+    </label>
+    <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
+      <input type="checkbox" name="plant_categories" value="bush_tucker" style="margin-top:4px">
+      <span><strong>🌿 Bush tucker</strong>
+        <br><span style="font-size:0.8rem;color:#6b7280">Australian native food plants: lemon myrtle, finger lime, warrigal greens and more</span></span>
+    </label>
+  </div>
 
   <h3 style="color:#065f46;font-size:0.95rem;margin:0 0 8px">How often?</h3>
   <div style="margin:0 0 16px">
@@ -879,6 +921,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
   var freqEl = document.querySelector('#prefsForm input[name=frequency]:checked');
   var frequency = freqEl ? freqEl.value : 'daily';
   var categories = Array.from(document.querySelectorAll('#prefsForm input[name=categories]:checked')).map(function(el) {{ return el.value; }});
+  var plant_categories = Array.from(document.querySelectorAll('#prefsForm input[name=plant_categories]:checked')).map(function(el) {{ return el.value; }});
   var msg = document.getElementById('prefsMsg');
   var btn = e.target.querySelector('button');
   btn.disabled = true;
@@ -895,6 +938,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
         action: 'update_preferences',
         state: {json.dumps(self._lookup_subscriber_state(email))},
         categories: categories,
+        plant_categories: plant_categories,
         frequency: frequency
       }})
     }});
@@ -934,6 +978,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
         token: str,
         current_state: str,
         current_categories,
+        current_plant_categories,
         current_frequency: str,
     ):
         states = ["ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"]
@@ -966,6 +1011,24 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
                 f'</label>'
             )
         categories_html = "\n".join(category_rows)
+
+        # Plant category checkboxes (DAL-199): which kinds of plant to follow.
+        current_plant_set = set(current_plant_categories or [])
+        plant_labels = [
+            ("fruit", "🍑 Fruit trees", "Rare and edible fruit, nut and berry stock (the default)"),
+            ("bush_tucker", "🌿 Bush tucker", "Australian native food plants: lemon myrtle, finger lime, warrigal greens and more"),
+        ]
+        plant_rows = []
+        for key, label, hint in plant_labels:
+            checked = " checked" if key in current_plant_set else ""
+            plant_rows.append(
+                f'<label style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;cursor:pointer">'
+                f'<input type="checkbox" name="plant_categories" value="{key}"{checked} style="margin-top:4px">'
+                f'<span><strong>{label}</strong>'
+                f'<br><span style="font-size:0.8rem;color:#6b7280">{hint}</span></span>'
+                f'</label>'
+            )
+        plant_categories_html = "\n".join(plant_rows)
 
         # Frequency radio buttons
         freq_options = [
@@ -1016,6 +1079,14 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
     {options}
   </select>
 
+  <h3 style="color:#374151;font-size:1rem;margin:0 0 8px">Plant categories</h3>
+  <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
+    Which kinds of plant to follow. Fruit trees is the default; bush tucker (native food plants) is opt-in.
+  </p>
+  <div id="plantCategoryGroup" style="margin:0 0 24px">
+    {plant_categories_html}
+  </div>
+
   <h3 style="color:#374151;font-size:1rem;margin:0 0 8px">What to include</h3>
   <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
     Uncheck anything that's not useful to you. If you uncheck everything, you'll skip the digest entirely (variety alerts still work).
@@ -1053,6 +1124,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
   e.preventDefault();
   const state = document.getElementById('stateSelect').value;
   const categories = Array.from(document.querySelectorAll('#categoryGroup input[type=checkbox]:checked')).map(function(el) {{ return el.value; }});
+  const plant_categories = Array.from(document.querySelectorAll('#plantCategoryGroup input[type=checkbox]:checked')).map(function(el) {{ return el.value; }});
   const freqEl = document.querySelector('#frequencyGroup input[type=radio]:checked');
   const frequency = freqEl ? freqEl.value : 'daily';
   const msg = document.getElementById('prefsMsg');
@@ -1069,6 +1141,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
         action: 'update_preferences',
         state: state,
         categories: categories,
+        plant_categories: plant_categories,
         frequency: frequency
       }})
     }});
@@ -1077,6 +1150,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
       msg.style.color = '#065f46';
       let parts = [];
       parts.push(state === 'ALL' ? 'all states' : state);
+      parts.push(plant_categories.indexOf('bush_tucker') >= 0 ? 'fruit + bush tucker' : 'fruit only');
       if (frequency === 'off') {{
         parts.push('no digest emails');
       }} else {{

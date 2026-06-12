@@ -175,5 +175,37 @@ class TestSubscriberSchemaFallbacks(unittest.TestCase):
         )
 
 
+class TestSubscriberPlantCategories(unittest.TestCase):
+    """DAL-199: bush tucker is opt-in, so a legacy or unset subscriber defaults
+    to fruit only and never receives bush tucker unprompted."""
+
+    def test_default_is_fruit_only(self):
+        self.assertEqual(
+            send_digest.get_subscriber_plant_categories({"email": "x@example.com"}),
+            frozenset({"fruit"}),
+        )
+
+    def test_preserves_stored_subset(self):
+        sub = {"email": "x@example.com", "plant_categories": ["fruit", "bush_tucker"]}
+        self.assertEqual(
+            send_digest.get_subscriber_plant_categories(sub),
+            frozenset({"fruit", "bush_tucker"}),
+        )
+
+    def test_bush_tucker_only_is_honoured(self):
+        sub = {"email": "x@example.com", "plant_categories": ["bush_tucker"]}
+        self.assertEqual(
+            send_digest.get_subscriber_plant_categories(sub),
+            frozenset({"bush_tucker"}),
+        )
+
+    def test_drops_unknown_values(self):
+        sub = {"email": "x@example.com", "plant_categories": ["fruit", "ornamental"]}
+        self.assertEqual(
+            send_digest.get_subscriber_plant_categories(sub),
+            frozenset({"fruit"}),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

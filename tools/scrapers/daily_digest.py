@@ -48,11 +48,21 @@ WA_NURSERIES = {k for k, states in SHIPPING_MAP.items() if "WA" in states}
 # All category keys a daily digest can contain. Order matters for rendering.
 ALL_CATEGORIES = ("back_in_stock", "price_drops", "new_products")
 
-# DAL-199 gate: a clearly labelled "Bush tucker" section in the digest. OFF
-# until Benedict has reviewed the copy (DEC-200 3.7). While False the digest is
-# byte-identical to before the pilot (bush tucker items stay inline in their
-# nursery's section). Flip to True in a one-line PR once the copy is approved.
-BUSH_TUCKER_DIGEST_SECTION = False
+# Plant categories a subscriber can opt into (DAL-199, per Benedict: opt-in at
+# confirmation, bush tucker OFF by default). A subscriber's set drives which
+# parts of the digest they receive: "fruit" -> the per-nursery fruit sections;
+# "bush_tucker" -> the clearly labelled bush tucker section. The DEFAULT is
+# fruit only, so the public digest page and any legacy subscriber stay
+# fruit-focused and bush tucker reaches no one who has not ticked the box.
+PLANT_CATEGORIES = ("fruit", "bush_tucker")
+DEFAULT_PLANT_CATEGORIES = frozenset({"fruit"})
+
+
+def _resolve_plant_categories(plant_categories):
+    """None -> the default (fruit only). Otherwise the valid subset."""
+    if plant_categories is None:
+        return DEFAULT_PLANT_CATEGORIES
+    return frozenset(c for c in plant_categories if c in PLANT_CATEGORIES)
 
 
 def _resolve_categories(categories):
@@ -104,6 +114,25 @@ def _partition_bush_tucker(all_changes: dict) -> tuple[dict, dict]:
         fruit[nk] = f_c
         bt[nk] = b_c
     return fruit, bt
+
+
+def filter_changes_by_plant_categories(all_changes: dict, plant_categories=None) -> dict:
+    """Return all_changes keeping only items in the subscriber's plant categories
+    (DAL-199), merged back into one per-nursery dict. For renderers that do not
+    build a separate labelled section (the weekly digest): a fruit-only
+    subscriber's bush tucker items are dropped, a bush-tucker-only subscriber
+    keeps only those, and "both" is unchanged."""
+    pc = _resolve_plant_categories(plant_categories)
+    fruit_changes, bt_changes = _partition_bush_tucker(all_changes)
+    out = {}
+    for nk in all_changes:
+        merged = {cat: [] for cat in ALL_CATEGORIES}
+        for want, src in (("fruit", fruit_changes), ("bush_tucker", bt_changes)):
+            if want in pc:
+                for cat in ALL_CATEGORIES:
+                    merged[cat].extend(src.get(nk, {}).get(cat, []))
+        out[nk] = merged
+    return out
 
 
 def is_fruit_product(product: dict, nursery_key: str) -> bool:
@@ -178,15 +207,17 @@ def _bush_tucker_text(bt_changes: dict, filter_state: str, enabled) -> list:
     return ["🌿 Bush tucker", *rows, ""]
 
 
-def format_text(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
+def format_text(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None, plant_categories=None) -> str:
     """Format changes as plain text for FB groups."""
     # --wa-only is an alias for --state WA
     filter_state = "WA" if wa_only else state
     enabled = _resolve_categories(categories)
-    if BUSH_TUCKER_DIGEST_SECTION:
-        render_changes, bt_changes = _partition_bush_tucker(all_changes)
-    else:
-        render_changes, bt_changes = all_changes, None
+    pc = _resolve_plant_categories(plant_categories)
+    # Always partition; render each plant category only if the subscriber wants
+    # it. Fruit-only (the default) drops bush tucker items entirely.
+    fruit_changes, bt_changes = _partition_bush_tucker(all_changes)
+    render_changes = fruit_changes if "fruit" in pc else {}
+    bt_changes = bt_changes if "bush_tucker" in pc else None
 
     lines = []
     lines.append(f"🌱 Nursery Stock Update — {target_date}")
@@ -300,16 +331,16 @@ def _bush_tucker_section(bt_changes: dict, filter_state: str, enabled) -> dict |
     return {"name": "🌿 Bush tucker", "entries": entries}
 
 
-def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str = "", categories=None) -> list[dict]:
+def _build_change_sections(all_changes: dict, wa_only: bool = False, state: str = "", categories=None, plant_categories=None) -> list[dict]:
     """Build per-nursery change sections as view-data: a list of
     {name, entries}. The digest_sections template renders these and autoescapes
     the scraped product title and the utm URL (which carries a raw &)."""
     filter_state = "WA" if wa_only else state
     enabled = _resolve_categories(categories)
-    if BUSH_TUCKER_DIGEST_SECTION:
-        render_changes, bt_changes = _partition_bush_tucker(all_changes)
-    else:
-        render_changes, bt_changes = all_changes, None
+    pc = _resolve_plant_categories(plant_categories)
+    fruit_changes, bt_changes = _partition_bush_tucker(all_changes)
+    render_changes = fruit_changes if "fruit" in pc else {}
+    bt_changes = bt_changes if "bush_tucker" in pc else None
     sections = []
 
     for nursery_key, changes in sorted(render_changes.items()):
@@ -365,22 +396,32 @@ def _render_sections(sections: list[dict]) -> str:
     return render_template("digest_sections.html.j2", sections=sections)
 
 
-def has_any_changes(all_changes: dict, wa_only: bool = False, state: str = "", categories=None) -> bool:
-    """True if at least one item survives the state + category filter."""
+def has_any_changes(all_changes: dict, wa_only: bool = False, state: str = "", categories=None, plant_categories=None) -> bool:
+    """True if at least one item survives the state + change-type + plant-category
+    filter, so a fruit-only subscriber is not emailed when only bush tucker
+    changed (and vice versa)."""
     filter_state = "WA" if wa_only else state
     enabled = _resolve_categories(categories)
-    for nursery_key, changes in all_changes.items():
-        if filter_state and not nursery_ships_to(nursery_key, filter_state):
-            continue
-        for cat in enabled:
-            if changes.get(cat):
-                return True
+    pc = _resolve_plant_categories(plant_categories)
+    fruit_changes, bt_changes = _partition_bush_tucker(all_changes)
+    buckets = []
+    if "fruit" in pc:
+        buckets.append(fruit_changes)
+    if "bush_tucker" in pc:
+        buckets.append(bt_changes)
+    for bucket in buckets:
+        for nursery_key, changes in bucket.items():
+            if filter_state and not nursery_ships_to(nursery_key, filter_state):
+                continue
+            for cat in enabled:
+                if changes.get(cat):
+                    return True
     return False
 
 
-def format_html(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
+def format_html(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None, plant_categories=None) -> str:
     """Format changes as HTML for email (inline styles, no external deps)."""
-    sections = _build_change_sections(all_changes, wa_only, state, categories)
+    sections = _build_change_sections(all_changes, wa_only, state, categories, plant_categories)
     body_html = _render_sections(sections) if sections else \
         '<p>No changes today — all quiet across the nurseries.</p>'
     return render_template(
@@ -390,21 +431,31 @@ def format_html(all_changes: dict, target_date: str, wa_only: bool = False, stat
     )
 
 
-def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None) -> str:
+def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False, state: str = "", categories=None, plant_categories=None) -> str:
     """Format changes as a shareable web page with proper styling and navigation."""
     filter_state = "WA" if wa_only else state
-    sections = _build_change_sections(all_changes, wa_only, state, categories)
+    sections = _build_change_sections(all_changes, wa_only, state, categories, plant_categories)
 
     title_suffix = f" (Ships to {filter_state})" if filter_state else ""
 
-    # Count changes by type for summary pills
+    # Count changes by type for summary pills, scoped to the page's plant
+    # categories so the fruit page does not count bush tucker items (and vice
+    # versa).
+    pc = _resolve_plant_categories(plant_categories)
+    fruit_changes, bt_changes = _partition_bush_tucker(all_changes)
+    pill_buckets = []
+    if "fruit" in pc:
+        pill_buckets.append(fruit_changes)
+    if "bush_tucker" in pc:
+        pill_buckets.append(bt_changes)
     total_by_type = {}
-    for nursery_key, changes in all_changes.items():
-        if filter_state and not nursery_ships_to(nursery_key, filter_state):
-            continue
-        for cat, items in changes.items():
-            if items:
-                total_by_type[cat] = total_by_type.get(cat, 0) + len(items)
+    for bucket in pill_buckets:
+        for nursery_key, changes in bucket.items():
+            if filter_state and not nursery_ships_to(nursery_key, filter_state):
+                continue
+            for cat, items in changes.items():
+                if items:
+                    total_by_type[cat] = total_by_type.get(cat, 0) + len(items)
 
     pills = []
     pill_config = [

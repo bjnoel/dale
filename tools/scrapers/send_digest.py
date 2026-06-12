@@ -29,7 +29,7 @@ from pathlib import Path
 
 # Import digest generation for per-state filtering
 sys.path.insert(0, str(Path(__file__).parent))
-from daily_digest import load_all_changes, format_html, has_any_changes, ALL_CATEGORIES
+from daily_digest import load_all_changes, format_html, has_any_changes, ALL_CATEGORIES, PLANT_CATEGORIES
 from stocklib.email_footer import inject_footer
 
 SECRETS_DIR = Path("/opt/dale/secrets")
@@ -123,6 +123,16 @@ def get_subscriber_categories(subscriber: dict) -> frozenset:
     return frozenset(c for c in raw if c in ALL_CATEGORIES)
 
 
+def get_subscriber_plant_categories(subscriber: dict) -> frozenset:
+    """Plant categories the subscriber opted into (DAL-199). Default (missing
+    field) is fruit only, so legacy subscribers and anyone who has not ticked
+    bush tucker keep getting the fruit digest only. Unknown values dropped."""
+    raw = subscriber.get("plant_categories")
+    if raw is None:
+        return frozenset({"fruit"})
+    return frozenset(c for c in raw if c in PLANT_CATEGORIES)
+
+
 def get_subscriber_frequency(subscriber: dict) -> str:
     """'daily' | 'weekly' | 'off'. Default 'daily' preserves legacy behaviour."""
     freq = subscriber.get("frequency", "daily")
@@ -192,8 +202,9 @@ def main():
             subscribers = [{"email": test_email, "state": "ALL"}]
         ts = get_subscriber_state(subscribers[0])
         tc = sorted(get_subscriber_categories(subscribers[0]))
+        tp = sorted(get_subscriber_plant_categories(subscribers[0]))
         tf = get_subscriber_frequency(subscribers[0])
-        print(f"TEST MODE: Sending only to {test_email} (state={ts}, frequency={tf}, categories={','.join(tc)})")
+        print(f"TEST MODE: Sending only to {test_email} (state={ts}, frequency={tf}, categories={','.join(tc)}, plant={','.join(tp)})")
     else:
         # Daily run: only address subscribers whose frequency is "daily"
         subscribers = [s for s in all_subscribers if get_subscriber_frequency(s) == "daily"]
@@ -215,17 +226,19 @@ def main():
         print("All subscribers already received today's digest.")
         return
 
-    # Group subscribers by (state, categories) — same combo can reuse rendered HTML.
-    # Empty category sets fall through to the "skip" branch below.
+    # Group subscribers by (state, change-categories, plant-categories) — same
+    # combo can reuse rendered HTML. Empty sets fall through to the "skip" branch.
     by_bucket: dict[tuple, list] = {}
     for s in to_send:
         state = get_subscriber_state(s)
         cats = get_subscriber_categories(s)
-        by_bucket.setdefault((state, cats), []).append(s)
+        pcats = get_subscriber_plant_categories(s)
+        by_bucket.setdefault((state, cats, pcats), []).append(s)
 
     bucket_summary = ", ".join(
-        f"{st}/{','.join(sorted(cs)) or '(none)'}({len(subs)})"
-        for (st, cs), subs in sorted(by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1])))
+        f"{st}/{','.join(sorted(cs)) or '(none)'}/{','.join(sorted(pc)) or '(none)'}({len(subs)})"
+        for (st, cs, pc), subs in sorted(by_bucket.items(),
+                                         key=lambda kv: (kv[0][0], sorted(kv[0][1]), sorted(kv[0][2])))
     )
     print(f"Buckets: {bucket_summary}")
 
@@ -233,7 +246,8 @@ def main():
         for s in to_send:
             state = get_subscriber_state(s)
             cats = ",".join(sorted(get_subscriber_categories(s))) or "(none)"
-            print(f"  Would send to: {s['email']} (state={state}, categories={cats})")
+            pcats = ",".join(sorted(get_subscriber_plant_categories(s))) or "(none)"
+            print(f"  Would send to: {s['email']} (state={state}, categories={cats}, plant={pcats})")
         return
 
     api_key = get_resend_api_key()
@@ -247,29 +261,30 @@ def main():
     failed = 0
     empty_skipped = 0
 
-    for (state, cats), bucket_subscribers in sorted(
-        by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1]))
+    for (state, cats, pcats), bucket_subscribers in sorted(
+        by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1]), sorted(kv[0][2]))
     ):
         filter_state = "" if state == "ALL" else state
 
-        # Subscribers who muted every category — skip outright (variety alerts still
-        # reach them via send_variety_alerts.py).
-        if not cats:
+        # Subscribers who muted every change-type or every plant category — skip
+        # outright (variety alerts still reach them via send_variety_alerts.py).
+        if not cats or not pcats:
             empty_skipped += len(bucket_subscribers)
             print(f"  Skipping {len(bucket_subscribers)} subscribers with no categories enabled")
             continue
 
         # Skip the whole bucket if there's nothing to show after filtering — no
         # point emailing "No changes today" to people who explicitly narrowed scope.
-        if not has_any_changes(all_changes, state=filter_state, categories=cats):
+        if not has_any_changes(all_changes, state=filter_state, categories=cats, plant_categories=pcats):
             empty_skipped += len(bucket_subscribers)
-            print(f"  Skipping {len(bucket_subscribers)} subscribers — no matching changes for {state}/{','.join(sorted(cats))}")
+            print(f"  Skipping {len(bucket_subscribers)} subscribers — no matching changes for {state}/{','.join(sorted(cats))}/{','.join(sorted(pcats))}")
             continue
 
-        cache_key = (state, cats)
+        cache_key = (state, cats, pcats)
         if cache_key not in html_cache:
             html_cache[cache_key] = format_html(
-                all_changes, target_date, state=filter_state, categories=cats
+                all_changes, target_date, state=filter_state, categories=cats,
+                plant_categories=pcats,
             )
         digest_html = html_cache[cache_key]
 
