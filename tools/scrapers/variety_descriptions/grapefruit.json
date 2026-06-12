@@ -179,6 +179,71 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "grapefruit-red-star-ruby": {
+      "slug": "grapefruit-red-star-ruby",
+      "species": "Grapefruit",
+      "variety": "Red Star Ruby",
+      "paragraphs": [
+        "Star Ruby is a product of mutation breeding: it was developed from irradiated Hudson grapefruit seed in the programme of R. A. Hensz at Texas A&I University, Weslaco, Texas. UC Riverside records it as the darkest of the pigmented grapefruits, with very darkly pigmented, juicy flesh that is low-seeded or seedless. The intense red colour comes from lycopene, the carotenoid that gives red grapefruit its flesh colour.",
+        "Despite its prized appearance, Star Ruby is harder to grow than other grapefruits, being more sensitive to cold, phytophthora, nutrient deficiencies and herbicides. It has found only limited commercial success for that reason, but when grown well it produces strikingly coloured, nearly seedless fruit."
+      ],
+      "claims": [
+        {
+          "text": "Star Ruby was developed from irradiated Hudson grapefruit seed in the breeding programme of R. A. Hensz at Texas A&I University, Weslaco, Texas.",
+          "type": "origin",
+          "cites": [
+            "ucr-starruby",
+            "wiki-grapefruit"
+          ]
+        },
+        {
+          "text": "Star Ruby is the darkest of the pigmented grapefruits, with very darkly pigmented flesh that is low-seeded or seedless.",
+          "type": "superlative",
+          "cites": [
+            "ucr-starruby"
+          ]
+        },
+        {
+          "text": "The red flesh colour comes from lycopene, the main pigment of red grapefruit.",
+          "type": "health",
+          "cites": [
+            "acs-pigment"
+          ]
+        },
+        {
+          "text": "Star Ruby is more difficult to grow than other grapefruits and has had limited commercial success.",
+          "type": "description",
+          "cites": [
+            "ucr-starruby",
+            "wiki-grapefruit"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr-starruby",
+          "name": "UC Riverside Citrus Variety Collection: Star Ruby grapefruit",
+          "url": "https://citrusvariety.ucr.edu/crc3770",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-grapefruit",
+          "name": "Wikipedia: Grapefruit",
+          "url": "https://en.wikipedia.org/wiki/Grapefruit",
+          "tier": "third_party"
+        },
+        {
+          "id": "acs-pigment",
+          "name": "Pigmentation and color comparison of Ruby Red and Star Ruby grapefruit juice, Journal of Agricultural and Food Chemistry",
+          "url": "https://pubs.acs.org/doi/10.1021/jf60223a029",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
     "grapefruit-rio-red": {
       "slug": "grapefruit-rio-red",
       "species": "Grapefruit",
