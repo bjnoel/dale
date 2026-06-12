@@ -1,0 +1,66 @@
+{
+  "species_slug": "sandpaper-fig",
+  "schema_version": 1,
+  "varieties": {
+    "sandpaper-fig-tucker-bush": {
+      "slug": "sandpaper-fig-tucker-bush",
+      "species": "Sandpaper Fig",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Sandpaper Fig is Ficus coronata, a small cauliflorous fig native to eastern Australia, found from central Queensland through New South Wales and just into Victoria. It is a small tree, often 6 to 12m, growing along river banks and gullies in rainforest and open forest. Its common name comes from its scabrous, sandpapery upper leaf surface; the ovate leaves are about 5 to 15cm long.",
+        "The small oval fruit, around 1.5cm long and covered in fine hairs, is edible and sweet, often rated among the best-tasting native figs. The figs are eaten fresh once the furry skin is removed, or dried and cooked into pies, jams, and similar. A well-known traditional use of the rough leaves was as a natural abrasive for smoothing and polishing wooden tools, spears, and boomerangs."
+      ],
+      "claims": [
+        {
+          "text": "Sandpaper Fig is Ficus coronata, a small cauliflorous fig native to eastern Australia from central Queensland through NSW into Victoria",
+          "type": "botanical",
+          "cites": [
+            "wiki-sandpaper"
+          ]
+        },
+        {
+          "text": "It reaches about 6 to 12m along riverbanks and gullies, with scabrous sandpapery leaves about 5 to 15cm long",
+          "type": "botanical",
+          "cites": [
+            "wiki-sandpaper"
+          ]
+        },
+        {
+          "text": "The hairy oval fruit about 1.5cm long is edible and sweet, eaten fresh once the furry skin is removed or cooked into preserves",
+          "type": "culinary",
+          "cites": [
+            "wiki-sandpaper",
+            "conversation-sandpaper"
+          ]
+        },
+        {
+          "text": "The rough leaves were traditionally used as an abrasive to smooth and polish wooden tools, spears and boomerangs",
+          "type": "cultural",
+          "cites": [
+            "wiki-sandpaper",
+            "conversation-sandpaper"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-sandpaper",
+          "name": "Wikipedia: Ficus coronata",
+          "url": "https://en.wikipedia.org/wiki/Ficus_coronata",
+          "tier": "third_party"
+        },
+        {
+          "id": "conversation-sandpaper",
+          "name": "The Conversation: Sandpaper figs make food, fire, medicine and a cosy home for wasps",
+          "url": "https://theconversation.com/sandpaper-figs-make-food-fire-medicine-and-a-cosy-home-for-wasps-96404",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

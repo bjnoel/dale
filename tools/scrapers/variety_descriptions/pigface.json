@@ -1,0 +1,198 @@
+{
+  "species_slug": "pigface",
+  "schema_version": 1,
+  "varieties": {
+    "pigface-round-baby": {
+      "slug": "pigface-round-baby",
+      "species": "Pigface",
+      "variety": "Round Baby",
+      "paragraphs": [
+        "Round Baby is the Tucker Bush selection of Disphyma crassifolium subsp. clavellatum, the round-leaved pigface (family Aizoaceae). Unlike the true Carpobrotus pigfaces, whose leaves are triangular in cross section, Disphyma has leaves that are round in cross section, which is where the Round Baby name comes from. It is a low, saline-tolerant succulent groundcover, roughly 2 to 30 cm high with a spread of about 1 to 2 m, native across Western Australia, South Australia, Victoria, Tasmania and New South Wales.",
+        "Both leaves and fruit are edible. The pink, purple or violet flowers appear through much of the year, followed by small berry-sized fruits eaten fresh for their sweet pulp. The succulent leaves are used in salads, stir-fries, pickles and seafood dishes, and can be harvested year round, even when they redden in drier conditions. The plant tolerates frost, drought and salt."
+      ],
+      "claims": [
+        {
+          "text": "Round Baby is Disphyma crassifolium subsp. clavellatum, round-leaved pigface",
+          "type": "taxonomy",
+          "cites": [
+            "tuckerbush-roundbaby",
+            "wikipedia-disphyma"
+          ]
+        },
+        {
+          "text": "Disphyma leaves are round in cross section, unlike triangular Carpobrotus leaves",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-disphyma",
+            "oznativeplants-disphyma"
+          ]
+        },
+        {
+          "text": "Low succulent 2 to 30 cm high, spread about 1 to 2 m, native to WA, SA, Vic, Tas and NSW, flowers pink, purple or violet",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-disphyma",
+            "tuckerbush-roundbaby"
+          ]
+        },
+        {
+          "text": "Leaves and fruit edible; leaves used in salads, stir-fries, pickles and seafood; tolerates frost, drought and salinity",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-roundbaby",
+            "wikipedia-disphyma"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-disphyma",
+          "name": "Wikipedia: Disphyma crassifolium subsp. clavellatum",
+          "url": "https://en.wikipedia.org/wiki/Disphyma_crassifolium_subsp._clavellatum",
+          "tier": "third_party"
+        },
+        {
+          "id": "oznativeplants-disphyma",
+          "name": "Oz Native Plants: Round-leaved Pigface (Disphyma crassifolium var. clavellatum)",
+          "url": "https://www.oznativeplants.com/plantdetail/Round-leaved-Pigface/Disphyma/crassifolium/var-clavellatum.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-roundbaby",
+          "name": "Tucker Bush: Round Baby Pigface (Disphyma crassifolium ssp. clavellatum)",
+          "url": "https://tuckerbush.com.au/round-baby-pigface-disphyma-crassifolium-ssp-clavellatum/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "pigface-tucker-bush": {
+      "slug": "pigface-tucker-bush",
+      "species": "Pigface",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "The Tucker Bush brand sells its pigface as Karkalla, the WA coastal species Carpobrotus virescens (family Aizoaceae). It is a prostrate succulent perennial, roughly 0.1 to 0.3 m high and spreading 0.5 to 3 m, native to southern coastal limestone cliffs and dunes of Western Australia. The fleshy, triangular leaves and purple-pink to white flowers (borne June to December) are typical of the genus.",
+        "Both the leaves and the fruit are edible. The grape-sized fruit ripens deep red, with a salty skin and sweet pulp you can suck out or eat whole. The thick leaves are salty and were traditionally paired with meat, and can be pickled or eaten raw. The leaf juice is also used as a folk remedy for stings and burns, much like aloe vera."
+      ],
+      "claims": [
+        {
+          "text": "Tucker Bush sells its pigface as Karkalla, Carpobrotus virescens",
+          "type": "taxonomy",
+          "cites": [
+            "tuckerbush-karkalla"
+          ]
+        },
+        {
+          "text": "Prostrate succulent perennial 0.1 to 0.3 m high, 0.5 to 3 m wide, on coastal limestone cliffs and dunes of WA, flowers purple-pink to white June to December",
+          "type": "botanical",
+          "cites": [
+            "florabase-virescens"
+          ]
+        },
+        {
+          "text": "Carpobrotus genus has edible fruit, leaves eaten raw or cooked, leaf juice used for stings",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-carpobrotus",
+            "tuckerbush-karkalla"
+          ]
+        },
+        {
+          "text": "Grape-sized fruit ripens deep red with salty skin and sweet pulp; salty leaves traditionally paired with meat",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-karkalla"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "florabase-virescens",
+          "name": "FloraBase (WA Herbarium): Carpobrotus virescens",
+          "url": "https://florabase.dbca.wa.gov.au/browse/profile/2798",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-carpobrotus",
+          "name": "Wikipedia: Carpobrotus",
+          "url": "https://en.wikipedia.org/wiki/Carpobrotus",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-karkalla",
+          "name": "Tucker Bush: Karkalla (Carpobrotus virescens)",
+          "url": "https://tuckerbush.com.au/karkalla-carpobrotus-virescens-bain/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "pigface-virescens-tucker-bush": {
+      "slug": "pigface-virescens-tucker-bush",
+      "species": "Pigface",
+      "variety": "Virescens Tucker Bush",
+      "paragraphs": [
+        "Virescens here is Carpobrotus virescens, the coastal pigface of Western Australia (family Aizoaceae), sold under the Tucker Bush bushfood brand. FloraBase records it as a prostrate succulent herb 0.1 to 0.3 m high and 0.5 to 3 m wide, growing on white, grey or brown coastal sands and limestone cliffs and dunes from Shark Bay to Esperance. Flowers are purple-pink to white from winter into summer.",
+        "It is one of the genuinely edible Australian pigfaces. The grape-sized fruit turns deep red when ripe, eaten by sucking out the sweet pulp inside a salty skin. The succulent leaves are salty and can be eaten raw, pickled or cooked like a vegetable, and the leaf gel is a traditional first aid for stings and burns."
+      ],
+      "claims": [
+        {
+          "text": "Virescens Tucker Bush is Carpobrotus virescens, coastal pigface of WA",
+          "type": "taxonomy",
+          "cites": [
+            "florabase-virescens",
+            "tuckerbush-karkalla"
+          ]
+        },
+        {
+          "text": "Prostrate succulent herb 0.1 to 0.3 m high, 0.5 to 3 m wide, on coastal sands and limestone from Shark Bay to Esperance, flowers purple-pink to white",
+          "type": "botanical",
+          "cites": [
+            "florabase-virescens"
+          ]
+        },
+        {
+          "text": "Grape-sized fruit ripens deep red, salty skin and sweet pulp; leaves salty, eaten raw, pickled or cooked; leaf gel used for stings",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-karkalla",
+            "wikipedia-carpobrotus"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "florabase-virescens",
+          "name": "FloraBase (WA Herbarium): Carpobrotus virescens",
+          "url": "https://florabase.dbca.wa.gov.au/browse/profile/2798",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-carpobrotus",
+          "name": "Wikipedia: Carpobrotus",
+          "url": "https://en.wikipedia.org/wiki/Carpobrotus",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-karkalla",
+          "name": "Tucker Bush: Karkalla (Carpobrotus virescens)",
+          "url": "https://tuckerbush.com.au/karkalla-carpobrotus-virescens-bain/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "pigface-orange"
+  ]
+}

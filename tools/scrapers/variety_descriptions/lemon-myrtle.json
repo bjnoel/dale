@@ -1,0 +1,123 @@
+{
+  "species_slug": "lemon-myrtle",
+  "schema_version": 1,
+  "varieties": {
+    "lemon-myrtle-plant": {
+      "slug": "lemon-myrtle-plant",
+      "species": "Lemon Myrtle",
+      "variety": "Plant",
+      "paragraphs": [
+        "Lemon Myrtle is Backhousia citriodora, a rainforest tree in the Myrtaceae family from central and south-eastern Queensland. The aromatic leaves are an outstanding natural source of citral, with steam-distilled oil typically 90 to 98 per cent citral and a scent often called cleaner and sweeter than lemongrass. This listing is the plant itself rather than a named cultivar.",
+        "Culinary leaves bring an intense lemon-sherbet note to teas, shortbread, baking and seafood, and can replace lemon in milk-based desserts like cheesecake and ice-cream without curdling. The tree forms a dense canopy and in cultivation rarely tops about 5 metres. Aboriginal Australians have long used the species in cuisine and as a medicinal plant."
+      ],
+      "claims": [
+        {
+          "text": "Lemon Myrtle is Backhousia citriodora, family Myrtaceae, from central and south-eastern Queensland rainforest",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-bc"
+          ]
+        },
+        {
+          "text": "Oil typically 90 to 98 per cent citral, aroma cleaner and sweeter than lemongrass",
+          "type": "composition",
+          "cites": [
+            "wikipedia-bc",
+            "pmc-citral"
+          ]
+        },
+        {
+          "text": "Replaces lemon in dairy desserts without curdling; long Aboriginal culinary and medicinal use",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-bc"
+          ]
+        },
+        {
+          "text": "Dense canopy, in cultivation rarely exceeds about 5 metres",
+          "type": "habit",
+          "cites": [
+            "wikipedia-bc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-bc",
+          "name": "Backhousia citriodora, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Backhousia_citriodora",
+          "tier": "third_party"
+        },
+        {
+          "id": "pmc-citral",
+          "name": "Backhousia citriodora, an Unrivalled Source of Citral (Foods, PMC)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8305781/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "lemon-myrtle-tucker-bush": {
+      "slug": "lemon-myrtle-tucker-bush",
+      "species": "Lemon Myrtle",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Lemon Myrtle is Backhousia citriodora, a Myrtaceae tree native to the subtropical rainforests of central and south-eastern Queensland. Its leaves are one of the richest natural sources of citral, with steam-distilled oil typically running 90 to 98 per cent citral, an aroma usually described as cleaner and sweeter than lemongrass. Aboriginal Australians have long used it in food and as a healing plant.",
+        "The leaves give a bright, sherbet-lemon flavour to teas, shortbread, baking and fish, and work as a lemon stand-in in dairy desserts such as cheesecake and ice-cream without the curdling that fruit acidity causes. In cultivation the tree rarely exceeds about 5 metres and carries a dense canopy. \"Tucker Bush\" is the WA native-bushfood brand under which the plant is sold."
+      ],
+      "claims": [
+        {
+          "text": "Lemon Myrtle is Backhousia citriodora, family Myrtaceae, native to subtropical rainforests of central and south-eastern Queensland",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-bc"
+          ]
+        },
+        {
+          "text": "Steam-distilled lemon myrtle oil is typically 90 to 98 per cent citral, with an aroma cleaner and sweeter than lemongrass",
+          "type": "composition",
+          "cites": [
+            "wikipedia-bc",
+            "pmc-citral"
+          ]
+        },
+        {
+          "text": "Used as a lemon replacement in dairy desserts without curdling, and traditionally used by Aboriginal Australians",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-bc"
+          ]
+        },
+        {
+          "text": "In cultivation rarely exceeds about 5 metres with a dense canopy",
+          "type": "habit",
+          "cites": [
+            "wikipedia-bc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-bc",
+          "name": "Backhousia citriodora, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Backhousia_citriodora",
+          "tier": "third_party"
+        },
+        {
+          "id": "pmc-citral",
+          "name": "Backhousia citriodora, an Unrivalled Source of Citral (Foods, PMC)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8305781/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

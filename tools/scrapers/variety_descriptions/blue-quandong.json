@@ -1,0 +1,73 @@
+{
+  "species_slug": "blue-quandong",
+  "schema_version": 1,
+  "varieties": {
+    "blue-quandong-tucker-bush": {
+      "slug": "blue-quandong-tucker-bush",
+      "species": "Blue Quandong",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Blue quandong is Elaeocarpus angustifolius (also known as Elaeocarpus grandis), a large, fast-growing rainforest tree of northern Australia and Asia to New Caledonia, often with buttressed roots and reaching up to about 40 metres. It is unrelated to the desert quandong (Santalum). Sold here under the Tucker Bush brand, it is grown for its striking, spherical bright-blue fruit, which begins within a few years of planting and feeds rainforest wildlife such as cassowaries.",
+        "The blue colour is unusual: it comes not from pigment but from structural colouration in the skin, like the iridescence of butterfly wings. Inside, a thin layer of tangy, slightly bitter flesh surrounds a hard, sculptured stone. Indigenous Australians ate the fruit raw or buried unripe fruit to sweeten it, and the cleaned stones (known as rudraksha in India) are used as prayer beads."
+      ],
+      "claims": [
+        {
+          "text": "Blue quandong is Elaeocarpus angustifolius (also Elaeocarpus grandis), a large fast-growing rainforest tree of northern Australia and Asia to New Caledonia, reaching up to about 40 metres, often with buttress roots.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-elaeocarpus",
+            "agt-bluequandong"
+          ]
+        },
+        {
+          "text": "Its spherical fruit is a brilliant blue, with the colour produced by structural colouration rather than pigment.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-elaeocarpus",
+            "agt-bluequandong"
+          ]
+        },
+        {
+          "text": "The thin flesh is tangy and somewhat bitter around a hard sculptured stone; Indigenous Australians ate it raw or buried unripe fruit to sweeten it.",
+          "type": "culinary",
+          "cites": [
+            "agt-bluequandong",
+            "tuckerbush-bluequandong"
+          ]
+        },
+        {
+          "text": "The cleaned stones, known as rudraksha in India, are used as prayer beads.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-elaeocarpus"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-elaeocarpus",
+          "name": "Elaeocarpus angustifolius, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Elaeocarpus_angustifolius",
+          "tier": "third_party"
+        },
+        {
+          "id": "agt-bluequandong",
+          "name": "Blue Quandong Growing Guide, Aussie Green Thumb",
+          "url": "https://aussiegreenthumb.com/blue-quandong-elaeocarpus-angustifolius/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-bluequandong",
+          "name": "Blue Quandong, Tucker Bush",
+          "url": "https://tuckerbush.com.au/blue-quandong-elaeocarpus-angustifolius/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

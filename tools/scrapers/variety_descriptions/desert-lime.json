@@ -1,0 +1,151 @@
+{
+  "species_slug": "desert-lime",
+  "schema_version": 1,
+  "varieties": {
+    "desert-lime-desert-ice": {
+      "slug": "desert-lime-desert-ice",
+      "species": "Desert Lime",
+      "variety": "Desert Ice",
+      "paragraphs": [
+        "Desert lime is Citrus glauca (formerly Eremocitrus glauca), a thorny native shrub or small tree from inland Queensland, NSW and South Australia. It is one of the most resilient citrus species, tolerating drought, heat and frost, and can shed its leaves and survive on the green photosynthetic bark of its branches in dry spells. The small globular fruits are about a centimetre across with an intense, piquant lime flavour, and the species is the fastest of any citrus to set fruit after flowering. The limes are prized in marmalades, drinks, sauces and as a flavouring.",
+        "'Desert Ice' is a commercial grafted selection of desert lime sold by Australian nurseries. Grafting onto citrus rootstock gives more uniform, vigorous plants suited to a wider range of soils and climates than seedlings, while the fruit keeps the species' concentrated citrus flavour."
+      ],
+      "claims": [
+        {
+          "text": "Desert lime is Citrus glauca (formerly Eremocitrus glauca), a thorny native shrub or small tree of inland Queensland, NSW and South Australia.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-glauca",
+            "ucr-glauca"
+          ]
+        },
+        {
+          "text": "It is among the most resilient citrus species, tolerating drought, heat and frost, and can shed leaves and survive using green bark on its branches.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-glauca"
+          ]
+        },
+        {
+          "text": "Fruits are small and globular, about a centimetre across, with an intense piquant lime flavour, and it is the fastest citrus to set fruit after flowering.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-glauca"
+          ]
+        },
+        {
+          "text": "The limes are used in marmalades, beverages, sauces and as a flavouring.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-glauca",
+            "tuckerbush-desertlime"
+          ]
+        },
+        {
+          "text": "'Desert Ice' is a commercial grafted selection of desert lime sold by Australian nurseries.",
+          "type": "cultivar",
+          "cites": [
+            "primalfruits-desertice"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-glauca",
+          "name": "Citrus glauca, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Citrus_glauca",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-glauca",
+          "name": "Eremocitrus glauca, UCR Citrus Variety Collection",
+          "url": "https://citrusvariety.ucr.edu/crc3463",
+          "tier": "authoritative"
+        },
+        {
+          "id": "tuckerbush-desertlime",
+          "name": "Desert Lime Citrus glauca, Tucker Bush",
+          "url": "https://tuckerbush.com.au/desert-lime-citrus-glauca/",
+          "tier": "nursery"
+        },
+        {
+          "id": "primalfruits-desertice",
+          "name": "Desert Ice Lime Citrus, Primal Fruits",
+          "url": "https://primalfruits.com.au/products/Desert-Ice-Lime-Citrus-p693380715",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "desert-lime-tucker-bush": {
+      "slug": "desert-lime-tucker-bush",
+      "species": "Desert Lime",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Desert lime is Citrus glauca (formerly Eremocitrus glauca), a thorny native shrub or small tree from the arid and semi-arid inland of Queensland, NSW and South Australia. Sold here under the Tucker Bush bushfood brand, it is one of the toughest citrus species, tolerating drought, heat and frost, and can drop its leaves and survive on the green bark of its branches through dry periods. Thorns tend to develop only on lower, grazing-height branches.",
+        "The small grape-sized green to yellow fruits, about a centimetre across, pack an intense, piquant lime flavour, so a little goes a long way. Desert lime is the fastest citrus to fruit after flowering and is high in vitamin C. The limes are used in marmalades, sauces, pickles, candied peel, drinks and as a flavouring for sweet and savoury dishes."
+      ],
+      "claims": [
+        {
+          "text": "Desert lime is Citrus glauca (formerly Eremocitrus glauca), a thorny native shrub or small tree of inland Queensland, NSW and South Australia, sold under the Tucker Bush brand.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-glauca",
+            "ucr-glauca",
+            "tuckerbush-desertlime"
+          ]
+        },
+        {
+          "text": "It tolerates drought, heat and frost and can shed leaves to survive on green bark; thorns develop mainly on lower grazing-height branches.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-glauca"
+          ]
+        },
+        {
+          "text": "Fruits are small, grape-sized, about a centimetre across, with an intense piquant lime flavour, and it is the fastest citrus to fruit after flowering.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-glauca",
+            "tuckerbush-desertlime"
+          ]
+        },
+        {
+          "text": "The limes are used in marmalades, sauces, pickles, candied peel, drinks and as a flavouring.",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-desertlime"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-glauca",
+          "name": "Citrus glauca, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Citrus_glauca",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr-glauca",
+          "name": "Eremocitrus glauca, UCR Citrus Variety Collection",
+          "url": "https://citrusvariety.ucr.edu/crc3463",
+          "tier": "authoritative"
+        },
+        {
+          "id": "tuckerbush-desertlime",
+          "name": "Desert Lime Citrus glauca, Tucker Bush",
+          "url": "https://tuckerbush.com.au/desert-lime-citrus-glauca/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

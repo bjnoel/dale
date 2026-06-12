@@ -1,0 +1,65 @@
+{
+  "species_slug": "warrigal-greens",
+  "schema_version": 1,
+  "varieties": {
+    "warrigal-greens-tucker-bush": {
+      "slug": "warrigal-greens-tucker-bush",
+      "species": "Warrigal Greens",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Warrigal Greens is Tetragonia tetragonioides, a sprawling leafy plant also known as New Zealand spinach, Botany Bay spinach, and kokihi. The Australian name comes from warrigal, a word for plants that grow wild rather than farmed. It is a low, spreading groundcover with soft, triangular green leaves, native to coastal Australia, New Zealand, and parts of East Asia, and tolerant of salty, sandy ground.",
+        "The leaves are eaten cooked, not raw, because the plant contains oxalates. The standard preparation is to blanch the leaves in boiling water for about a minute, then refresh in cold water, which reduces oxalate levels before they are cooked like spinach. It was famously gathered by Captain Cook's crew, helping ward off scurvy on the voyage."
+      ],
+      "claims": [
+        {
+          "text": "Warrigal Greens is Tetragonia tetragonioides, also called New Zealand spinach, Botany Bay spinach and kokihi",
+          "type": "botanical",
+          "cites": [
+            "wiki-warrigal"
+          ]
+        },
+        {
+          "text": "It is a low spreading groundcover with soft triangular leaves, native to coastal Australia, New Zealand and parts of East Asia",
+          "type": "botanical",
+          "cites": [
+            "wiki-warrigal",
+            "anpsa-warrigal"
+          ]
+        },
+        {
+          "text": "It contains oxalates, so leaves are blanched about a minute and refreshed in cold water before cooking like spinach",
+          "type": "culinary",
+          "cites": [
+            "wiki-warrigal"
+          ]
+        },
+        {
+          "text": "It was gathered by Captain Cook's crew and helped guard against scurvy",
+          "type": "cultural",
+          "cites": [
+            "wiki-warrigal"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-warrigal",
+          "name": "Wikipedia: Tetragonia tetragonioides",
+          "url": "https://en.wikipedia.org/wiki/Tetragonia_tetragonioides",
+          "tier": "third_party"
+        },
+        {
+          "id": "anpsa-warrigal",
+          "name": "Australian Native Plants Society: Tetragonia tetragonioides",
+          "url": "https://anpsa.org.au/plant_profiles/tetragonia-tetragonioides/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

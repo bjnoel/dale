@@ -1,0 +1,65 @@
+{
+  "species_slug": "bunya-nut",
+  "schema_version": 1,
+  "varieties": {
+    "bunya-nut-pine": {
+      "slug": "bunya-nut-pine",
+      "species": "Bunya Nut",
+      "variety": "Pine",
+      "paragraphs": [
+        "The Bunya Nut comes from Araucaria bidwillii, the Bunya Pine, a towering evergreen conifer endemic to Australia (mainly southeast Queensland, with two small disjunct populations in the northeast). The female cones are among the largest of any conifer, reaching roughly 30cm long and weighing up to 10kg, each holding 50 to 100 large seeds between 2.5 and 5cm long. The starchy kernels are the edible part, eaten raw, roasted, boiled, or ground into a paste, with a flavour likened to chestnut and a savoury, potato-like quality.",
+        "Bunya nuts are culturally significant. Large crops appear only every few years (early accounts suggested roughly three-year intervals, though the exact cycle is uncertain), and these gluts drew diverse First Nations groups together for major Bunya gatherings that could last for weeks. The kernel is high in starch, low in fat and protein, and was sometimes ground for a bread known as manu."
+      ],
+      "claims": [
+        {
+          "text": "Araucaria bidwillii (Bunya Pine) is an evergreen conifer endemic to Australia, mainly southeast Queensland with disjunct northeast populations",
+          "type": "botanical",
+          "cites": [
+            "wiki-bunya",
+            "conifers-bunya"
+          ]
+        },
+        {
+          "text": "Cones are among the largest of any conifer, around 30cm long and up to 10kg, each holding 50 to 100 seeds 2.5 to 5cm long",
+          "type": "botanical",
+          "cites": [
+            "wiki-bunya"
+          ]
+        },
+        {
+          "text": "The starchy kernels are edible, eaten raw, roasted, boiled or ground, tasting like chestnut with a potato-like savouriness",
+          "type": "culinary",
+          "cites": [
+            "wiki-bunya"
+          ]
+        },
+        {
+          "text": "Large crops occur only every few years and drew First Nations groups to major Bunya gatherings",
+          "type": "cultural",
+          "cites": [
+            "wiki-bunya"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-bunya",
+          "name": "Wikipedia: Araucaria bidwillii",
+          "url": "https://en.wikipedia.org/wiki/Araucaria_bidwillii",
+          "tier": "third_party"
+        },
+        {
+          "id": "conifers-bunya",
+          "name": "The Gymnosperm Database: Araucaria bidwillii",
+          "url": "https://www.conifers.org/ar/Araucaria_bidwillii.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

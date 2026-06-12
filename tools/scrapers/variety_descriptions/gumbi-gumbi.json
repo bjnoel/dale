@@ -1,0 +1,58 @@
+{
+  "species_slug": "gumbi-gumbi",
+  "schema_version": 1,
+  "varieties": {
+    "gumbi-gumbi-tucker-bush": {
+      "slug": "gumbi-gumbi-tucker-bush",
+      "species": "Gumbi Gumbi",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Gumbi Gumbi is Pittosporum angustifolium (also known as weeping pittosporum, butterbush, berrigan, and native willow), a weeping shrub or small tree widespread across inland Australia in every mainland state. It grows to around 10m, with narrow, curved leaves roughly 50 to 90mm long, fragrant yellow to cream flowers, and yellowish capsules holding sticky reddish-brown seeds. It is notably drought-hardy, surviving where annual rainfall is as low as 150mm.",
+        "The plant holds a long place in Aboriginal traditional medicine, with many regional names across Australia. Various Aboriginal groups prepared the leaves, seeds, fruit pulp, or wood, typically steeped in water as a tea or made into a poultice. It is the plant and its cultural history that are distinctive here, rather than any culinary fruit."
+      ],
+      "claims": [
+        {
+          "text": "Gumbi Gumbi is Pittosporum angustifolium, a weeping shrub or small tree to about 10m, widespread across inland mainland Australia",
+          "type": "botanical",
+          "cites": [
+            "wiki-gumbi"
+          ]
+        },
+        {
+          "text": "It has narrow curved leaves 50 to 90mm long, yellow to cream flowers, yellowish capsules with reddish-brown seeds, and tolerates rainfall as low as 150mm a year",
+          "type": "botanical",
+          "cites": [
+            "wiki-gumbi"
+          ]
+        },
+        {
+          "text": "It has a long history in Aboriginal traditional medicine, with leaves, seeds, pulp or wood steeped in water as teas or poultices",
+          "type": "cultural",
+          "cites": [
+            "wiki-gumbi",
+            "mdpi-gumbi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-gumbi",
+          "name": "Wikipedia: Pittosporum angustifolium",
+          "url": "https://en.wikipedia.org/wiki/Pittosporum_angustifolium",
+          "tier": "third_party"
+        },
+        {
+          "id": "mdpi-gumbi",
+          "name": "MDPI: Extraction of Pittosporum angustifolium Used in Traditional Aboriginal Medicine (review)",
+          "url": "https://www.mdpi.com/1661-3821/2/2/4",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

@@ -1,0 +1,129 @@
+{
+  "species_slug": "sea-celery",
+  "schema_version": 1,
+  "varieties": {
+    "sea-celery-annum-tucker-bush": {
+      "slug": "sea-celery-annum-tucker-bush",
+      "species": "Sea Celery",
+      "variety": "Annum Tucker Bush",
+      "paragraphs": [
+        "This Sea Celery is Apium annuum, an annual native herb of the carrot family (Apiaceae) found in salt-marsh and saline habitats of Victoria, South Australia, and Western Australia. FloraBase records it as an erect, slender annual reaching roughly 0.03 to 0.1m (occasionally to 0.2m), bearing white flowers around August to November and growing in sandy, clayey, or loamy seasonally wet flats, saline lake flats, and coastal limestone. It resembles young celery shoots in look and texture, making a compact pot or garden plant.",
+        "It is a distinct species from Apium prostratum, the other plant called sea celery. All parts can be used as a native herb or vegetable, carrying a celery-and-parsley flavour with a salty, peppery note, useful anywhere you would reach for celery or parsley."
+      ],
+      "claims": [
+        {
+          "text": "This Sea Celery is Apium annuum, an annual herb in Apiaceae native to salt-marsh and saline habitats of Victoria, South Australia and Western Australia",
+          "type": "botanical",
+          "cites": [
+            "wiki-annuum",
+            "florabase-annuum"
+          ]
+        },
+        {
+          "text": "FloraBase records it as an erect slender annual roughly 0.03 to 0.1m high with white flowers around August to November in saline and coastal soils",
+          "type": "botanical",
+          "cites": [
+            "florabase-annuum"
+          ]
+        },
+        {
+          "text": "It is a distinct species from Apium prostratum, the other sea celery",
+          "type": "botanical",
+          "cites": [
+            "wiki-annuum"
+          ]
+        },
+        {
+          "text": "All parts are used as a native herb or vegetable with a celery-parsley, salty-peppery flavour",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-annuum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-annuum",
+          "name": "Wikipedia: Apium annuum",
+          "url": "https://en.wikipedia.org/wiki/Apium_annuum",
+          "tier": "third_party"
+        },
+        {
+          "id": "florabase-annuum",
+          "name": "FloraBase (WA Herbarium): Apium annuum P.S.Short",
+          "url": "https://florabase.dbca.wa.gov.au/browse/profile/6210",
+          "tier": "authoritative"
+        },
+        {
+          "id": "tuckerbush-annuum",
+          "name": "Tucker Bush: Sea Celery (Apium annuum)",
+          "url": "https://tuckerbush.com.au/sea-celery-apium-annuum/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "sea-celery-parsley-tucker-bush": {
+      "slug": "sea-celery-parsley-tucker-bush",
+      "species": "Sea Celery",
+      "variety": "Parsley Tucker Bush",
+      "paragraphs": [
+        "Sold by Tucker Bush as Sea Parsley, this is Apium prostratum var. prostratum, a variable native herb of the carrot family (Apiaceae) from coastal Australia and New Zealand, with tiny white flowers in clusters and toothed, celery-scented leaflets. The two recognised varieties differ in leaf shape: var. prostratum is upright with fine, narrow leaves (about 6 to 15 times longer than wide) of swampy ground, while var. filiforme is squatter with broader leaves of dunes and headlands.",
+        "Leaves and stems are eaten fresh in salads or blanched as a vegetable, and dried leaves go into native spice mixes. The flavour sits between celery and parsley with a peppery, faintly salty note. Historically it was valued against scurvy: Captain Cook gathered it, and Maori knew it as Tutae Koau."
+      ],
+      "claims": [
+        {
+          "text": "Sea Parsley is Apium prostratum var. prostratum, a variable native herb in Apiaceae from coastal Australia and New Zealand",
+          "type": "botanical",
+          "cites": [
+            "wiki-prostratum",
+            "tuckerbush-parsley"
+          ]
+        },
+        {
+          "text": "Var. prostratum is upright with fine narrow leaves while var. filiforme is squatter with broader leaves of dunes and headlands",
+          "type": "botanical",
+          "cites": [
+            "wiki-prostratum"
+          ]
+        },
+        {
+          "text": "Leaves and stems are eaten fresh or blanched and dried leaves used in spice mixes, with a celery-parsley peppery flavour",
+          "type": "culinary",
+          "cites": [
+            "wiki-prostratum"
+          ]
+        },
+        {
+          "text": "It was valued against scurvy, gathered by Captain Cook and known to Maori as Tutae Koau",
+          "type": "cultural",
+          "cites": [
+            "wiki-prostratum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-prostratum",
+          "name": "Wikipedia: Apium prostratum",
+          "url": "https://en.wikipedia.org/wiki/Apium_prostratum",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-parsley",
+          "name": "Tucker Bush: Sea Parsley (Apium prostratum var. prostratum)",
+          "url": "https://tuckerbush.com.au/sea-parsley-apium-prostratum-var-prostratum/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

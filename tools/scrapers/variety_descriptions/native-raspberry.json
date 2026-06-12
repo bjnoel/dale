@@ -1,0 +1,126 @@
+{
+  "species_slug": "native-raspberry",
+  "schema_version": 1,
+  "varieties": {
+    "native-raspberry-atherton": {
+      "slug": "native-raspberry-atherton",
+      "species": "Native Raspberry",
+      "variety": "Atherton",
+      "paragraphs": [
+        "The Atherton raspberry is Rubus probus, a true native member of the rose family from the wet tropics and subtropics of Queensland, extending to Papua New Guinea and nearby islands. Atherton is a common name (after the Atherton Tableland region), not a distinct cultivar. It grows as a scrambling, non-woody, prickly shrub to about 2 metres, with five-leaflet compound leaves and recurved thorns, and it forms dense thickets when vigorous.",
+        "Its fruit is a bright red aggregate berry of many small drupes, up to roughly 15 to 20 mm, with a sweet, mild raspberry flavour that is gentler than a common raspberry. The berries are good eaten fresh or made into jams, desserts, syrups and sauces, and the plant fruits mainly through summer and autumn, sometimes for much of the year in warm climates."
+      ],
+      "claims": [
+        {
+          "text": "Atherton raspberry is Rubus probus, a native rose-family raspberry of tropical and subtropical Queensland, Papua New Guinea and nearby islands; Atherton is a common name, not a cultivar.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-rubus",
+            "bushtobowl-atherton"
+          ]
+        },
+        {
+          "text": "It is a scrambling, non-woody, prickly shrub to about 2 metres with five-leaflet compound leaves and recurved thorns, forming dense thickets.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-rubus"
+          ]
+        },
+        {
+          "text": "The fruit is a bright red aggregate of small drupes up to about 15 to 20 mm, with a sweet, mild raspberry flavour.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-rubus",
+            "bushtobowl-atherton"
+          ]
+        },
+        {
+          "text": "Berries are eaten fresh or made into jams, desserts, syrups and sauces; it fruits mainly in summer and autumn.",
+          "type": "culinary",
+          "cites": [
+            "bushtobowl-atherton"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-rubus",
+          "name": "Rubus probus, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Rubus_probus",
+          "tier": "third_party"
+        },
+        {
+          "id": "bushtobowl-atherton",
+          "name": "Atherton Raspberry Rubus probus, Bush to Bowl",
+          "url": "https://bushtobowl.com/products/atherton-raspberry-rubus-probus",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "native-raspberry-atherton-tucker-bush": {
+      "slug": "native-raspberry-atherton-tucker-bush",
+      "species": "Native Raspberry",
+      "variety": "Atherton Tucker Bush",
+      "paragraphs": [
+        "The Atherton raspberry is Rubus probus, a true native raspberry from tropical and subtropical Queensland (also Papua New Guinea and nearby islands). Sold here under the Tucker Bush brand, it is a scrambling, non-woody shrub to about 2 metres high and wide, with compound leaves and recurved thorns on the undersides of leaves and twigs. It is vigorous, and left unchecked a healthy plant can take over a garden bed. Atherton is a common name, not a separate cultivar.",
+        "It produces classic raspberry-like aggregate fruits of many small drupes, bright red and up to around 15 to 20 mm, that are slightly larger and milder than common raspberries. The berries are eaten fresh or used in cakes, jams, jellies, syrups and sauces. It fruits mainly in summer and autumn, can fruit within the first year, and its flowers and fruit attract birds and beneficial insects."
+      ],
+      "claims": [
+        {
+          "text": "Atherton raspberry is Rubus probus, a native raspberry of tropical and subtropical Queensland, Papua New Guinea and nearby islands; Atherton is a common name, not a cultivar.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-rubus",
+            "tuckerbush-atherton"
+          ]
+        },
+        {
+          "text": "It is a scrambling non-woody shrub to about 2 metres with compound leaves and recurved thorns on the undersides of leaves and twigs.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-rubus",
+            "tuckerbush-atherton"
+          ]
+        },
+        {
+          "text": "The fruit is a bright red aggregate of small drupes, up to about 15 to 20 mm, slightly larger and milder than common raspberries.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-rubus",
+            "tuckerbush-atherton"
+          ]
+        },
+        {
+          "text": "Berries are eaten fresh or used in cakes, jams, jellies, syrups and sauces; it fruits mainly in summer and autumn.",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-atherton"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-rubus",
+          "name": "Rubus probus, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Rubus_probus",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-atherton",
+          "name": "Atherton Raspberry Rubus probus, Tucker Bush",
+          "url": "https://tuckerbush.com.au/atherton-raspberry-rubus-probus/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

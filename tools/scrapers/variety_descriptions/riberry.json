@@ -1,0 +1,135 @@
+{
+  "species_slug": "riberry",
+  "schema_version": 1,
+  "varieties": {
+    "riberry-little-denise": {
+      "slug": "riberry-little-denise",
+      "species": "Riberry",
+      "variety": "Little Denise",
+      "paragraphs": [
+        "Riberry is Syzygium luehmannii, an Australian rainforest tree with small glossy lance-shaped leaves that flush pink to red when young and small pear-shaped red berries to about 13 mm long. The fruit is tart and cranberry-like with a hint of clove, popular as a bushfood since the early 1980s in jams, sauces, syrups and confectionery. The species can reach 30 metres in the wild but usually grows to 8 to 10 metres in gardens.",
+        "'Little Denise' is a compact dwarf form grown to around 1.5 metres with a neat, dense habit. It carries glossy apple-green leaves with bright pink new growth and fluffy pale-pink summer flowers followed by edible red berries, and its tidy foliage makes it popular for small gardens, hedging and topiary. It is sold as a riberry selection, though some nurseries list it under hybrid Syzygium."
+      ],
+      "claims": [
+        {
+          "text": "Riberry is Syzygium luehmannii, with small glossy lance-shaped leaves flushing pink to red when young and pear-shaped red berries to about 13 mm long.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-syzygium"
+          ]
+        },
+        {
+          "text": "The fruit is tart and cranberry-like with a hint of clove, used as a bushfood in jams, sauces, syrups and confectionery since the early 1980s.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-syzygium"
+          ]
+        },
+        {
+          "text": "The species reaches 30 metres in the wild but commonly 8 to 10 metres in cultivation.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-syzygium"
+          ]
+        },
+        {
+          "text": "'Little Denise' is a compact dwarf riberry to about 1.5 metres with apple-green leaves, pink new growth and pale-pink summer flowers, used for small gardens, hedging and topiary.",
+          "type": "cultivar",
+          "cites": [
+            "ladybird-denise",
+            "flowerpower-denise"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-syzygium",
+          "name": "Syzygium luehmannii, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_luehmannii",
+          "tier": "third_party"
+        },
+        {
+          "id": "ladybird-denise",
+          "name": "Riberry Little Denise, Ladybird Nursery",
+          "url": "https://www.ladybirdnursery.com.au/riberry-little-denise-syzygium-luehmannii/",
+          "tier": "nursery"
+        },
+        {
+          "id": "flowerpower-denise",
+          "name": "Lilly Pilly Little Denise, Flower Power",
+          "url": "https://www.flowerpower.com.au/lilly-pilly-little-denise-188073",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "riberry-lulu": {
+      "slug": "riberry-lulu",
+      "species": "Riberry",
+      "variety": "Lulu",
+      "paragraphs": [
+        "Riberry is Syzygium luehmannii, a rainforest tree of eastern Australia (Macleay River in NSW to near Cairns in Queensland) that can reach 30 metres in the wild but commonly grows to 8 to 10 metres in cultivation. It has small, glossy, lance-shaped leaves that flush pink to red when young, fluffy cream flowers, and small pear-shaped red berries to about 13 mm long. The fruit has a tart, cranberry-like flavour with a hint of clove, and has been a popular gourmet bushfood since the early 1980s, used in jams, sauces, syrups and confectionery.",
+        "'Lulu' is a compact, dwarf selection of riberry grown for small gardens, reaching roughly 1.2 metres tall while keeping the aromatic foliage, colourful new growth and edible red berries of the species. Its small size suits pots, low hedges and tight spaces where the full-sized tree would be impractical."
+      ],
+      "claims": [
+        {
+          "text": "Riberry is Syzygium luehmannii, native from the Macleay River in NSW to near Cairns in Queensland, reaching 30 metres in the wild but commonly 8 to 10 metres in cultivation.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-syzygium"
+          ]
+        },
+        {
+          "text": "Leaves are small, glossy and lance-shaped, flushing pink to red when young; berries are pear-shaped, red, to about 13 mm long.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-syzygium"
+          ]
+        },
+        {
+          "text": "The fruit has a tart, cranberry-like flavour with a hint of clove and has been a gourmet bushfood since the early 1980s, used in jams, sauces, syrups and confectionery.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-syzygium"
+          ]
+        },
+        {
+          "text": "'Lulu' is a compact, dwarf riberry selection reaching about 1.2 metres, suited to small gardens, with aromatic leaves and red berries.",
+          "type": "cultivar",
+          "cites": [
+            "ladybird-lulu",
+            "plantmark-lulu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-syzygium",
+          "name": "Syzygium luehmannii, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_luehmannii",
+          "tier": "third_party"
+        },
+        {
+          "id": "ladybird-lulu",
+          "name": "Riberry Lulu, Ladybird Nursery",
+          "url": "https://www.ladybirdnursery.com.au/riberry-lulu-syzygium-luehmannii/",
+          "tier": "nursery"
+        },
+        {
+          "id": "plantmark-lulu",
+          "name": "Syzygium luehmannii Lulu, Plantmark",
+          "url": "https://www.plantmark.com.au/syzygium-luehmannii-lulu",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

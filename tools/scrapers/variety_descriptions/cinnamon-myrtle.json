@@ -1,0 +1,102 @@
+{
+  "species_slug": "cinnamon-myrtle",
+  "schema_version": 1,
+  "varieties": {
+    "cinnamon-myrtle-mini": {
+      "slug": "cinnamon-myrtle-mini",
+      "species": "Cinnamon Myrtle",
+      "variety": "Mini",
+      "paragraphs": [
+        "Cinnamon Myrtle is Backhousia myrtifolia, a small Myrtaceae rainforest tree native to eastern Australia, also known as carrol, grey myrtle and ironwood. It bears clusters of small ivory star-shaped flowers, and its crushed leaves release a warm, cinnamon-like aroma from oils such as methyl eugenol and elemicin.",
+        "The leaves are prized as a native cinnamon substitute, lending warmth to biscuits, desserts, stews and sauces. \"Mini\" here refers to the size of the plant offered rather than a botanically distinct dwarf cultivar, so the species character above is what defines it."
+      ],
+      "claims": [
+        {
+          "text": "Cinnamon Myrtle is Backhousia myrtifolia, family Myrtaceae, a small rainforest tree of eastern Australia, also called carrol, grey myrtle and ironwood",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-bm"
+          ]
+        },
+        {
+          "text": "Ivory star-shaped flowers; leaves carry a cinnamon-like aroma from methyl eugenol and elemicin, used as a cinnamon substitute in baking and stews",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-bm",
+            "warndu-cm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-bm",
+          "name": "Backhousia myrtifolia, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Backhousia_myrtifolia",
+          "tier": "third_party"
+        },
+        {
+          "id": "warndu-cm",
+          "name": "Cinnamon Myrtle Food Uses, Warndu",
+          "url": "https://warndu.com/blogs/first-nations-food-guide/cinnamon-myrtle",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "cinnamon-myrtle-tucker-bush": {
+      "slug": "cinnamon-myrtle-tucker-bush",
+      "species": "Cinnamon Myrtle",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Cinnamon Myrtle is Backhousia myrtifolia, a small rainforest tree in the Myrtaceae family from the subtropical rainforests of eastern Australia. It carries several older names including carrol, grey myrtle and ironwood, and produces masses of small, ivory, star-shaped flowers. The crushed leaves give off a warm, cinnamon-like aroma driven by oils such as methyl eugenol and elemicin.",
+        "In the kitchen the leaves work as a softer, native alternative to true cinnamon, flavouring biscuits, desserts, stews and sauces. \"Tucker Bush\" is the WA native-bushfood brand the plant is sold under. It is a close relative of Lemon Myrtle but trades the citrus note for spice."
+      ],
+      "claims": [
+        {
+          "text": "Cinnamon Myrtle is Backhousia myrtifolia, family Myrtaceae, a small rainforest tree of eastern Australian subtropical rainforest",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-bm"
+          ]
+        },
+        {
+          "text": "Also called carrol, grey myrtle and ironwood; produces ivory star-shaped flowers",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-bm"
+          ]
+        },
+        {
+          "text": "Leaves have a cinnamon-like aroma from oils including methyl eugenol and elemicin, used to flavour biscuits, desserts and stews",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-bm",
+            "warndu-cm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-bm",
+          "name": "Backhousia myrtifolia, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Backhousia_myrtifolia",
+          "tier": "third_party"
+        },
+        {
+          "id": "warndu-cm",
+          "name": "Cinnamon Myrtle Food Uses, Warndu",
+          "url": "https://warndu.com/blogs/first-nations-food-guide/cinnamon-myrtle",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

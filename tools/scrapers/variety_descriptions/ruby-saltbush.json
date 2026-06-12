@@ -1,0 +1,75 @@
+{
+  "species_slug": "ruby-saltbush",
+  "schema_version": 1,
+  "varieties": {
+    "ruby-saltbush-tucker-bush": {
+      "slug": "ruby-saltbush-tucker-bush",
+      "species": "Ruby Saltbush",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "This is Ruby Saltbush (Enchylaena tomentosa) sold under the Tucker Bush native-bushfood brand. Despite the shared common name, it belongs to a different genus from the Atriplex saltbushes. It is a small, sometimes straggly native shrub with greyish, hairy foliage and linear, succulent leaves, found across the semi-arid and arid areas of all mainland Australian states.",
+        "Its standout feature is the small berry-like fruit (around 5 to 8 mm), which ripens through yellow, orange and red and has a crisp, salty-sweet flavour with an edible seed inside. The berries can be eaten raw, and it is a hardy, frost and salt tolerant succulent suited to dry-climate gardens."
+      ],
+      "claims": [
+        {
+          "text": "Ruby Saltbush is Enchylaena tomentosa, a different genus from the Atriplex saltbushes, sold here under the Tucker Bush brand",
+          "type": "botanical",
+          "cites": [
+            "anpsa-ench",
+            "indigigrow-ench"
+          ]
+        },
+        {
+          "text": "Small, sometimes straggly shrub with greyish hairy foliage and linear succulent leaves",
+          "type": "botanical",
+          "cites": [
+            "anpsa-ench",
+            "indigigrow-ench"
+          ]
+        },
+        {
+          "text": "Native across semi-arid and arid areas of all mainland Australian states",
+          "type": "origin",
+          "cites": [
+            "anpsa-ench"
+          ]
+        },
+        {
+          "text": "Berry-like fruit about 5 to 8 mm ripens yellow to red with a salty-sweet flavour and edible seed",
+          "type": "culinary",
+          "cites": [
+            "anpsa-ench",
+            "indigigrow-ench"
+          ]
+        },
+        {
+          "text": "Berries can be eaten raw; plant is hardy, frost and salt tolerant",
+          "type": "growth",
+          "cites": [
+            "anpsa-ench",
+            "indigigrow-ench"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anpsa-ench",
+          "name": "Australian Native Plants Society: Enchylaena tomentosa",
+          "url": "https://anpsa.org.au/plant_profiles/enchylaena-tomentosa/",
+          "tier": "third_party"
+        },
+        {
+          "id": "indigigrow-ench",
+          "name": "IndigiGrow: Enchylaena tomentosa",
+          "url": "https://indigigrow.com.au/edu/enchylaena-tomentosa/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}
