@@ -1,0 +1,155 @@
+{
+  "species_slug": "wampee",
+  "schema_version": 1,
+  "varieties": {
+    "wampee-guy-sam": {
+      "slug": "wampee-guy-sam",
+      "species": "Wampee",
+      "variety": "Guy Sam",
+      "paragraphs": [
+        "Guy Sam is one of two named wampee cultivars commonly grafted and sold in Australia, the other being Yeem Pay. It is valued for a sweet, tangy, aromatic, sub-acid flavour, and is generally regarded as the tangier of the pair while Yeem Pay leans sweeter. The grape-sized fruit hang in bunches, have brown skin, and ripen through summer into early autumn.",
+        "Wampee (Clausena lansium) is a citrus relative native to southern China, grown as a handsome evergreen for clusters of small, ovoid berries that turn from pale green to yellow or yellow-brown when ripe. The flesh is juicy and sub-acid, eaten fresh or used in preserves. Named selections like Guy Sam were chosen for better, more reliable fruit than variable seedling trees, which can be small and sour."
+      ],
+      "claims": [
+        {
+          "text": "Guy Sam is one of two named wampee cultivars commonly grafted and sold in Australia, alongside Yeem Pay.",
+          "type": "origin",
+          "cites": [
+            "rfc-au",
+            "daleys-guysam"
+          ]
+        },
+        {
+          "text": "It has a sweet, tangy, aromatic, sub-acid flavour and is regarded as tangier than the sweeter Yeem Pay.",
+          "type": "flavour",
+          "cites": [
+            "daleys-guysam",
+            "baag-wampi"
+          ]
+        },
+        {
+          "text": "The grape-sized fruit have brown skin, hang in bunches, and ripen in summer.",
+          "type": "appearance",
+          "cites": [
+            "daleys-guysam",
+            "baag-wampi"
+          ]
+        },
+        {
+          "text": "Wampee is a citrus relative native to southern China bearing clusters of small ovoid yellow to yellow-brown berries with juicy, sub-acid flesh.",
+          "type": "origin",
+          "cites": [
+            "rfca-archive-wampi",
+            "rfc-au"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfc-au",
+          "name": "Rare Fruit Club Australia, Clausena lansium (Wampi)",
+          "url": "https://rarefruitclub.au/wp/fruit-trees/clausena-lansium/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-archive-wampi",
+          "name": "Rare Fruit Council of Australia Archives, The Wampi in Queensland",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Wampee/WampiInQLD9-94.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys-guysam",
+          "name": "Daleys Fruit Tree Nursery, Wampi Guy Sam",
+          "url": "https://www.daleysfruit.com.au/buy/wampi-guy-sam-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "baag-wampi",
+          "name": "Bulleen Art and Garden, Wampi",
+          "url": "https://baag.com.au/wampi/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "wampee-yeem-pay": {
+      "slug": "wampee-yeem-pay",
+      "species": "Wampee",
+      "variety": "Yeem Pay",
+      "paragraphs": [
+        "Yeem Pay is one of two named wampee cultivars commonly grafted and sold in Australia, the other being Guy Sam. It is prized as the sweeter and more aromatic of the pair, bearing large, elongated fruit with yellow skin rather than the rounder, brown-skinned form of Guy Sam. It is also noted as a heavy cropper, ripening through summer into early autumn.",
+        "Wampee (Clausena lansium) is a citrus relative from southern China, valued as an ornamental evergreen that carries clusters of small, ovoid berries ripening from pale green to yellow or yellow-brown. The juicy, sub-acid to sweet flesh is eaten fresh or made into preserves. Grafted selections such as Yeem Pay were chosen for larger, sweeter and more dependable fruit than seedling trees, which are variable and often sour."
+      ],
+      "claims": [
+        {
+          "text": "Yeem Pay is one of two named wampee cultivars commonly grafted and sold in Australia, alongside Guy Sam.",
+          "type": "origin",
+          "cites": [
+            "rfc-au",
+            "daleys-yeempay"
+          ]
+        },
+        {
+          "text": "It is the sweeter, more aromatic of the two, with large, elongated, yellow-skinned fruit.",
+          "type": "flavour",
+          "cites": [
+            "daleys-yeempay",
+            "baag-wampi"
+          ]
+        },
+        {
+          "text": "It is a heavy cropper.",
+          "type": "bearing",
+          "cites": [
+            "daleys-yeempay",
+            "baag-wampi"
+          ]
+        },
+        {
+          "text": "Wampee is a citrus relative from southern China bearing clusters of small ovoid yellow to yellow-brown berries with juicy, sub-acid flesh.",
+          "type": "origin",
+          "cites": [
+            "rfca-archive-wampi",
+            "rfc-au"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfc-au",
+          "name": "Rare Fruit Club Australia, Clausena lansium (Wampi)",
+          "url": "https://rarefruitclub.au/wp/fruit-trees/clausena-lansium/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-archive-wampi",
+          "name": "Rare Fruit Council of Australia Archives, The Wampi in Queensland",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Wampee/WampiInQLD9-94.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys-yeempay",
+          "name": "Daleys Fruit Tree Nursery, Wampi Yeem Pay",
+          "url": "https://www.daleysfruit.com.au/buy/wampi-yeem-pay-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "baag-wampi",
+          "name": "Bulleen Art and Garden, Wampi",
+          "url": "https://baag.com.au/wampi/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "wampee-wampi-fruit-tree"
+  ]
+}

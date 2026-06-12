@@ -2,6 +2,805 @@
   "species_slug": "lychee",
   "schema_version": 1,
   "varieties": {
+    "lychee-baitayang": {
+      "slug": "lychee-baitayang",
+      "species": "Lychee",
+      "variety": "Baitayang",
+      "paragraphs": [
+        "Baitayang, more often spelt Baitaying (the spelling the Australian Lychee Growers Association uses), earns its place through timing. It is listed as a very early season variety, grown as one of the main varieties by north Queensland orchards whose lychee season opens in November, putting it on shelves before most other lychees ripen. The fruit is medium sized, about 30g, with red to orange skin, carried on a distinctly upright tree.",
+        "It is also noted for keeping quality: the fruit stores well and has a good shelf life, a useful trait in a fruit usually best eaten soon after picking. That combination of earliness and storage life has earned it a place alongside Erdon Lee in commercial plantings."
+      ],
+      "claims": [
+        {
+          "text": "Very early season variety producing medium red/orange fruit on an upright tree, with fruit that stores well and has a good shelf life.",
+          "type": "season",
+          "cites": [
+            "alga-varieties"
+          ]
+        },
+        {
+          "text": "Grown as one of three main varieties at north Queensland orchards (alongside Erdon Lee and Chompogo) whose season runs from November to February.",
+          "type": "use",
+          "cites": [
+            "rocky-creek"
+          ]
+        },
+        {
+          "text": "Fruit about 30g, early season, storing well with a long shelf life.",
+          "type": "size",
+          "cites": [
+            "daleys-baitaying",
+            "alga-varieties"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular lychee varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rocky-creek",
+          "name": "Rocky Creek Orchards, Australian lychee",
+          "url": "https://rockycreekorchards.com.au/produce/lychees",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-baitaying",
+          "name": "Daleys Fruit Tree Nursery, Baitaying Lychee",
+          "url": "https://www.daleysfruit.com.au/buy/lychee-baitaying-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-baitaying": {
+      "slug": "lychee-baitaying",
+      "species": "Lychee",
+      "variety": "Baitaying",
+      "paragraphs": [
+        "Baitaying's distinction in Australia is timing. The Australian Lychee Growers Association lists it as a very early season variety, and it is grown as one of the main varieties by north Queensland orchards whose lychee season opens in November, putting Baitaying on shelves before most other lychees ripen. The fruit is medium sized, about 30g, with red to orange skin, carried on a distinctly upright tree.",
+        "It is also noted for keeping quality: the fruit stores well and has a good shelf life, a useful trait in a fruit usually best eaten soon after picking. That combination of earliness and storage life has earned it a place alongside Erdon Lee in commercial plantings."
+      ],
+      "claims": [
+        {
+          "text": "Very early season variety producing medium red/orange fruit on an upright tree, with fruit that stores well and has a good shelf life.",
+          "type": "season",
+          "cites": [
+            "alga-varieties"
+          ]
+        },
+        {
+          "text": "Grown as one of three main varieties at north Queensland orchards (alongside Erdon Lee and Chompogo) whose season runs from November to February.",
+          "type": "use",
+          "cites": [
+            "rocky-creek"
+          ]
+        },
+        {
+          "text": "Fruit about 30g, early season, storing well with a long shelf life.",
+          "type": "size",
+          "cites": [
+            "daleys-baitaying",
+            "alga-varieties"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular lychee varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rocky-creek",
+          "name": "Rocky Creek Orchards, Australian lychee",
+          "url": "https://rockycreekorchards.com.au/produce/lychees",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-baitaying",
+          "name": "Daleys Fruit Tree Nursery, Baitaying Lychee",
+          "url": "https://www.daleysfruit.com.au/buy/lychee-baitaying-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-bengal": {
+      "slug": "lychee-bengal",
+      "species": "Lychee",
+      "variety": "Bengal",
+      "paragraphs": [
+        "Bengal is an old variety with an unusual pedigree: a seedling selected in Florida, probably from the Purbi variety of West Bengal, India, and in Australia it has often been wrongly identified as Brewster. The fruit is large, about 20g in north Queensland evaluations, bright red and distinctively heart shaped with a pointed tip. Its weakness is the seed, the largest of the common Australian varieties, which limits flesh recovery (57 per cent at Walkamin Research Station, with almost no chicken tongue seeds).",
+        "The tree is a heavy but irregular cropper with a reputation for alternate-year bearing, and Australian rare fruit growers rated it the variety that stands up to strong wind best. Fruit is sold December to January, usually in limited quantities; in Florida it is susceptible to anthracnose and is no longer recommended for planting there."
+      ],
+      "claims": [
+        {
+          "text": "Florida seedling selection, parent tree probably Purbi from West Bengal, India; heart shaped fruit with pointed tip; often wrongly identified as Brewster in Australia.",
+          "type": "origin",
+          "cites": [
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Walkamin Research Station evaluation: mid season, 20.5g fruit, 57 per cent aril, only 1 per cent chicken tongue (large seed), heavy but irregular cropper, quality rated fair.",
+          "type": "measurement",
+          "cites": [
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "Has the largest seed of the varieties surveyed, stands up to strong winds best, and is an alternate-year cropper with good fruit colour.",
+          "type": "bearing",
+          "cites": [
+            "rfca-varieties-3-82"
+          ]
+        },
+        {
+          "text": "A classic lychee with bright red skin and a large seed, available December to January in limited quantities.",
+          "type": "appearance",
+          "cites": [
+            "alga-varieties"
+          ]
+        },
+        {
+          "text": "In Florida, rated an irregular bearer, susceptible to anthracnose, and not recommended for home or commercial planting.",
+          "type": "growing",
+          "cites": [
+            "ufifas-mg051"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-cultivar-names",
+          "name": "RFCA Archives, Lychee Cultivar Names",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rfca-walkamin",
+          "name": "RFCA Archives, Lychee Cultivars Evaluated at Walkamin Research Station",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeCultivars11-93.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rfca-varieties-3-82",
+          "name": "RFCA Archives, Lychee Varieties",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LitchiVarieties3-82.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular lychee varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufifas-mg051",
+          "name": "UF/IFAS Extension, Lychee Growing in the Florida Home Landscape",
+          "url": "https://ask.ifas.ufl.edu/publication/MG051",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-bosworth-3": {
+      "slug": "lychee-bosworth-3",
+      "species": "Lychee",
+      "variety": "Bosworth 3",
+      "paragraphs": [
+        "Every Bosworth 3 lychee in Australia is a direct vegetative descendant of a single tree grown from marcots that a Chinese resident of Ingham, Queensland had brought out from a town in southern China near Macau in 1932. In 1958 H.R. Bosworth collected air layers from three trees in an Ingham garden and, with nobody able to identify the varieties, simply numbered them; number three proved the standout. It is now generally sold as Kwai May Pink (or B3), although archive research notes it matches Kwai Mai Pink in some respects yet differs in growth and habit, and its original Chinese name was never firmly established.",
+        "The fruit is on the small side, averaging about 45 to the kilogram, small seeded and very sweet, with red skin carrying a slight orange hue and a roundish shape. Its real reputation rests on reliability, being reported to produce good crops every year, regardless of season, climate or soil, from New South Wales to Cape York, and it has become a widely grown and commercially important lychee in Australia. The Australian season runs from late November to February."
+      ],
+      "claims": [
+        {
+          "text": "All Australian Bosworth 3 trees are vegetative descendants of one tree grown from marcots brought from southern China near Macau to Ingham, Queensland in 1932; H.R. Bosworth numbered the then unidentified trees after collecting air layers in 1958.",
+          "type": "origin",
+          "cites": [
+            "rfca-bosworth"
+          ]
+        },
+        {
+          "text": "Known and sold in Australia as Kwai May Pink (B3); the identification with Kwai Mai Pink is partial, with differences in growth and habit noted, and the original Chinese name was never established.",
+          "type": "naming",
+          "cites": [
+            "rfca-bosworth",
+            "alga-varieties",
+            "wikipedia-kwai-mai"
+          ]
+        },
+        {
+          "text": "Fruit averages about 45 to the kilogram, small seeded and very sweet.",
+          "type": "measurement",
+          "cites": [
+            "rfca-bosworth",
+            "daleys-bosworth-3"
+          ]
+        },
+        {
+          "text": "Red skin with a slight orange hue, roundish fruit; Australian season late November to February.",
+          "type": "season",
+          "cites": [
+            "alga-varieties"
+          ]
+        },
+        {
+          "text": "Produces good crops every year regardless of season, climate or soil from New South Wales to Cape York, and is a widely grown, commercially important variety in Australia.",
+          "type": "bearing",
+          "cites": [
+            "rfca-bosworth",
+            "daleys-bosworth-3",
+            "wikipedia-kwai-mai"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-bosworth",
+          "name": "RFCA Archives, Bosworth No. 3 Lychee (Feb 1984)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/BosworthLychee2-84.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular lychee varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-kwai-mai",
+          "name": "Wikipedia, Kwai Mai (lychee)",
+          "url": "https://en.wikipedia.org/wiki/Kwai_Mai_(lychee)",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-bosworth-3",
+          "name": "Daleys Fruit Tree Nursery, Lychee Bosworth 3",
+          "url": "https://www.daleysfruit.com.au/buy/lychee-bosworth-3-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-brewster": {
+      "slug": "lychee-brewster",
+      "species": "Lychee",
+      "variety": "Brewster",
+      "paragraphs": [
+        "Brewster is the historic Florida standard, imported to South Florida from Fujian, China by the missionary Reverend William N. Brewster between 1903 and 1906, and widely identified with the old Chinese cultivar Chen Zi (Royal Chen Purple), though Australian rare fruit literature notes some doubt over that identification. The tree is vigorous and upright with strong, wide angled branch crotches, and the oblong fruit ripens from pinkish red to a bright purplish red.",
+        "The flesh is juicy, slightly fragrant and sweet when fully ripe but acid if picked immature. Its quirk is weather dependent seed size: after cool weather up to 80 per cent of seeds can be undeveloped, while in other years much of the crop carries a full sized seed. In Queensland evaluation at Walkamin Research Station it gave large, attractive mid season fruit averaging about 21g, but it cropped irregularly and the big seed limited the amount of flesh."
+      ],
+      "claims": [
+        {
+          "text": "Imported to South Florida from Fujian, China in the early 1900s (1903 to 1906) by Reverend William N. Brewster.",
+          "type": "origin",
+          "cites": [
+            "fao-cultivars",
+            "growables-brewster"
+          ]
+        },
+        {
+          "text": "Identified with the Chinese cultivar Chen Zi (Royal Chen Purple), though the RFCA notes the identification is disputed.",
+          "type": "naming",
+          "cites": [
+            "fao-cultivars",
+            "growables-brewster",
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Tree is vigorous with strong, wide angled branch crotches; fruit and seed are oblong and the skin ripens from pinkish red to bright purplish red.",
+          "type": "appearance",
+          "cites": [
+            "rfca-cultivar-names",
+            "growables-brewster"
+          ]
+        },
+        {
+          "text": "Flesh is juicy, slightly fragrant and sweet when fully ripe but acid when immature.",
+          "type": "flavour",
+          "cites": [
+            "fao-cultivars"
+          ]
+        },
+        {
+          "text": "Up to 80 per cent of seeds can be undeveloped after cool weather, while in other years many fruit carry a full sized seed.",
+          "type": "growing",
+          "cites": [
+            "fao-cultivars",
+            "growables-varieties"
+          ]
+        },
+        {
+          "text": "At Walkamin Research Station in Queensland it was mid season with large attractive fruit averaging 21.5g, irregular cropping, and limited flesh due to the big seed.",
+          "type": "measurement",
+          "cites": [
+            "rfca-walkamin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao-cultivars",
+          "name": "FAO, Lychee Production in the Asia-Pacific Region: Cultivars and Genetic Improvement",
+          "url": "https://www.fao.org/4/ac681e/ac681e06.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "growables-brewster",
+          "name": "Growables, Lychee 'Brewster' (Lychees Online)",
+          "url": "https://www.growables.org/information/TropicalFruit/LycheeOnline2.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables-varieties",
+          "name": "Growables, Lychee Varieties",
+          "url": "https://www.growables.org/information/TropicalFruit/lycheevarieties.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfca-cultivar-names",
+          "name": "RFCA Archives, Lychee Cultivar Names (1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rfca-walkamin",
+          "name": "RFCA Archives, Lychee Cultivars Evaluated at Walkamin Research Station (1993)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeCultivars11-93.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-chom-pogo": {
+      "slug": "lychee-chom-pogo",
+      "species": "Lychee",
+      "variety": "Chom Pogo",
+      "paragraphs": [
+        "Chom Pogo (also written Chompogo) is one of the later season lychees listed by the Australian Lychee Growers Association among the varieties grown in this country. It produces medium to large red fruit on a distinctive dome shaped tree.",
+        "Its signature trait is holding ability: the fruit will hold on the tree for longer than usual before picking, which stretches the harvest window at the tail end of the lychee season. Queensland nurseries likewise describe it as a mid to late variety with bright red fruit and an extended holding time on the tree."
+      ],
+      "claims": [
+        {
+          "text": "Chompogo is a later season fruiting variety listed by the Australian Lychee Growers Association.",
+          "type": "season",
+          "cites": [
+            "alga-chompogo",
+            "alga-varieties",
+            "rosscreek-chompogo"
+          ]
+        },
+        {
+          "text": "It produces medium to large red fruit on a dome shaped tree.",
+          "type": "appearance",
+          "cites": [
+            "alga-chompogo",
+            "alga-varieties",
+            "rosscreek-chompogo"
+          ]
+        },
+        {
+          "text": "The fruit will hold on the tree for longer before picking.",
+          "type": "growing",
+          "cites": [
+            "alga-chompogo",
+            "rosscreek-chompogo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-chompogo",
+          "name": "Australian Lychee Growers Association, Chompogo",
+          "url": "https://australianlychee.com.au/lychee-varieties/162-chompogo",
+          "tier": "authoritative"
+        },
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular Lychee Varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-chompogo",
+          "name": "Ross Creek Tropicals, Lychee Chom-Pogo",
+          "url": "https://www.rosscreektropicals.com.au/products/lychee-chom-pogo",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-chompogo": {
+      "slug": "lychee-chompogo",
+      "species": "Lychee",
+      "variety": "Chompogo",
+      "paragraphs": [
+        "Chompogo, also sold in Australia as Chom Pogo, is one of the later season lychees listed by the Australian Lychee Growers Association among the varieties grown in this country. It produces medium to large red fruit on a distinctive dome shaped tree.",
+        "Its signature trait is holding ability: the fruit will hold on the tree for longer than usual before picking, which stretches the harvest window at the tail end of the lychee season. Queensland nurseries likewise describe it as a mid to late variety with bright red fruit and an extended holding time on the tree."
+      ],
+      "claims": [
+        {
+          "text": "Chompogo is a later season fruiting variety listed by the Australian Lychee Growers Association.",
+          "type": "season",
+          "cites": [
+            "alga-chompogo",
+            "alga-varieties",
+            "rosscreek-chompogo"
+          ]
+        },
+        {
+          "text": "It produces medium to large red fruit on a dome shaped tree.",
+          "type": "appearance",
+          "cites": [
+            "alga-chompogo",
+            "alga-varieties",
+            "rosscreek-chompogo"
+          ]
+        },
+        {
+          "text": "The fruit will hold on the tree for longer before picking.",
+          "type": "growing",
+          "cites": [
+            "alga-chompogo",
+            "rosscreek-chompogo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-chompogo",
+          "name": "Australian Lychee Growers Association, Chompogo",
+          "url": "https://australianlychee.com.au/lychee-varieties/162-chompogo",
+          "tier": "authoritative"
+        },
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular Lychee Varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-chompogo",
+          "name": "Ross Creek Tropicals, Lychee Chom-Pogo",
+          "url": "https://www.rosscreektropicals.com.au/products/lychee-chom-pogo",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-erdon-lee": {
+      "slug": "lychee-erdon-lee",
+      "species": "Lychee",
+      "variety": "Erdon Lee",
+      "paragraphs": [
+        "Erdon Lee is Australia's giant lychee, producing the largest fruit of any lychee currently grown in the country. Individual fruit average around 50g and the biggest can top 100g, roughly four times the size of an ordinary lychee. The fruit is dark red with a distinctly wrinkly, textured skin, and the flesh is sweet, juicy and fragrant. The seed is comparatively large, but the sheer bulk of the fruit still leaves plenty of flesh.",
+        "Sold under names like Giant Lychee, it ripens mid to late season on a medium to large tree with sprawling branches, and its novelty size has made it a premium line that commands high prices at Australian fruit retailers."
+      ],
+      "claims": [
+        {
+          "text": "Produces the largest fruit of any lychee currently grown in Australia, exceeding 100g at the top end.",
+          "type": "size",
+          "cites": [
+            "lennox-erdon-lee",
+            "daleys-erdon-lee"
+          ]
+        },
+        {
+          "text": "Fruit average around 50g, up to four times the size of ordinary lychee varieties.",
+          "type": "size",
+          "cites": [
+            "daleys-erdon-lee",
+            "lennox-erdon-lee"
+          ]
+        },
+        {
+          "text": "Mid to late season variety with large dark red fruit, wrinkly textured skin, on a medium to large tree with sprawling branches.",
+          "type": "appearance",
+          "cites": [
+            "alga-erdon-lee"
+          ]
+        },
+        {
+          "text": "Flesh is sweet, juicy and fragrant; the seed is comparatively large but the fruit size leaves plenty of flesh.",
+          "type": "flavour",
+          "cites": [
+            "lennox-erdon-lee",
+            "daleys-erdon-lee"
+          ]
+        },
+        {
+          "text": "Also marketed as the Giant Lychee and sold as a premium fruit at high retail prices.",
+          "type": "use",
+          "cites": [
+            "lennox-erdon-lee",
+            "daleys-erdon-lee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-erdon-lee",
+          "name": "Australian Lychee Growers Association, Erdon Lee variety page",
+          "url": "https://australianlychee.com.au/lychee-varieties/163-erdon-lee",
+          "tier": "authoritative"
+        },
+        {
+          "id": "lennox-erdon-lee",
+          "name": "Lennox Community Gardens, Lychee Erdon Lee",
+          "url": "https://www.lennoxcommunitygardens.com.au/lychee-erdon-lee.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-erdon-lee",
+          "name": "Daleys Fruit Tree Nursery, Erdon Lee Lychee",
+          "url": "https://www.daleysfruit.com.au/Lychee-Erdon-Lee-Litchi-chinensis.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-fay-zee-siu": {
+      "slug": "lychee-fay-zee-siu",
+      "species": "Lychee",
+      "variety": "Fay Zee Siu",
+      "paragraphs": [
+        "Fay Zee Siu is one of the large fruited Chinese cultivars grown in Australia. Rare Fruit Council archive records list it at around 30g per fruit with a small seed, good quality, and a thorny skin texture similar to Kwai May. Unusually for a lychee, the fruit is picked while the skin still shows some green mottling rather than a full red colour.",
+        "The Australian Lychee Growers Association describes it as a large, sweet fruit available from November to December, early in the Australian season. The catch is consistency, as ALGA notes it is extremely difficult to get commercial crops on a regular basis, so fresh fruit reaches the market only in limited volumes."
+      ],
+      "claims": [
+        {
+          "text": "Large fruited Chinese cultivar of about 30g per fruit, small seeded, good quality, with a thorny skin texture similar to Kwai May.",
+          "type": "measurement",
+          "cites": [
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Picked with some green mottling still on the skin.",
+          "type": "appearance",
+          "cites": [
+            "alga-fay-zee-siu",
+            "rosscreek-fay-zee-siu"
+          ]
+        },
+        {
+          "text": "Large, sweet fruit available from November to December in Australia.",
+          "type": "season",
+          "cites": [
+            "alga-fay-zee-siu",
+            "rosscreek-fay-zee-siu"
+          ]
+        },
+        {
+          "text": "Extremely difficult to get commercial crops on a regular basis.",
+          "type": "bearing",
+          "cites": [
+            "alga-fay-zee-siu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-fay-zee-siu",
+          "name": "Australian Lychee Growers Association, Fay Zee Siu",
+          "url": "https://australianlychee.com.au/lychee-varieties/59-fay-zee-siu",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca-cultivar-names",
+          "name": "RFCA Archives, Lychee Cultivar Names (May 1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rosscreek-fay-zee-siu",
+          "name": "Ross Creek Tropicals, Lychee Fay Zee Siu",
+          "url": "https://www.rosscreektropicals.com.au/products/lychee-fay-zee-siu",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-haak-yip": {
+      "slug": "lychee-haak-yip",
+      "species": "Lychee",
+      "variety": "Haak Yip",
+      "paragraphs": [
+        "Haak Yip (also sold as Hak Ip, Heiye in pinyin, and known in English as Black Leaf) is an old Chinese cultivar named for its dark green, long, pointed leaflets. It is very popular in Taiwan and northern Thailand, and as Hak Ip it has been planted commercially on a wide scale in South Florida.",
+        "The flesh is sweet, crisp and slightly aromatic and rated of excellent quality, under a smooth red skin with an even pattern. It matures early to mid season, about a week after Tai So. In Queensland evaluation at Walkamin Research Station it stood out as a vigorous, regular and heavy cropper with fruit averaging about 17g, and its one practical weakness is that the branches are fragile."
+      ],
+      "claims": [
+        {
+          "text": "Haak Yip is also known as Hak Ip, Heiye and Black Leaf, named for its dark green, long, pointed leaflets.",
+          "type": "naming",
+          "cites": [
+            "fao-cultivars",
+            "rfca-cultivar-names",
+            "growables-varieties"
+          ]
+        },
+        {
+          "text": "It is a Chinese cultivar, very popular in Taiwan and northern Thailand.",
+          "type": "origin",
+          "cites": [
+            "fao-cultivars"
+          ]
+        },
+        {
+          "text": "As Hak Ip it has widespread commercial plantings in South Florida.",
+          "type": "use",
+          "cites": [
+            "growables-varieties"
+          ]
+        },
+        {
+          "text": "Flesh is sweet, crisp, slightly aromatic and of excellent quality, and the skin is smooth with an even pattern.",
+          "type": "flavour",
+          "cites": [
+            "fao-cultivars",
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "It matures early to mid season, about a week after Tai So.",
+          "type": "season",
+          "cites": [
+            "fao-cultivars",
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "At Walkamin Research Station in Queensland it was a high vigour, regular and heavy cropper with fruit averaging 17.1g.",
+          "type": "measurement",
+          "cites": [
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "The branches are noted as fragile.",
+          "type": "growing",
+          "cites": [
+            "rfca-cultivar-names"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao-cultivars",
+          "name": "FAO, Lychee Production in the Asia-Pacific Region: Cultivars and Genetic Improvement",
+          "url": "https://www.fao.org/4/ac681e/ac681e06.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca-cultivar-names",
+          "name": "RFCA Archives, Lychee Cultivar Names (1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rfca-walkamin",
+          "name": "RFCA Archives, Lychee Cultivars Evaluated at Walkamin Research Station (1993)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeCultivars11-93.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "growables-varieties",
+          "name": "Growables, Lychee Varieties",
+          "url": "https://www.growables.org/information/TropicalFruit/lycheevarieties.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-kiamana": {
+      "slug": "lychee-kiamana",
+      "species": "Lychee",
+      "variety": "Kiamana",
+      "paragraphs": [
+        "Kiamana is the Australian nursery trade spelling of Kaimana, a cultivar bred in Hawaii and released by the University of Hawaii. It was selected from seedlings of the Chinese variety Hak Ip planted at the Poamoho experimental farm in 1955 and named in 1982 to mark the 75th, or diamond, anniversary of the Hawaii Agricultural Experiment Station (Kaimana means diamond in Hawaiian). Its standout trait is reliability, with the university reporting a more consistent bearing habit than any of the 14 Chinese lychee cultivars tested in Hawaii over the previous 110 years.",
+        "The oval fruit is large for a lychee, deep maroon with a smooth leathery skin, weighing 20 to 26g, with edible flesh making up 71 to 75 per cent of fruit weight and around 40 per cent of seeds abortive. The firm, translucent flesh is juicy and sweet with a pleasant subacid flavour. Australian listings describe a compact, semi dwarf tree cropping from about November through January, with bearing especially consistent in warm winter districts."
+      ],
+      "claims": [
+        {
+          "text": "Kiamana as sold in Australia is the cultivar known under the standard spelling Kaimana, selected from Hak Ip seedlings planted at the Poamoho experimental farm in 1955 and named in 1982 for the diamond anniversary of the Hawaii Agricultural Experiment Station.",
+          "type": "origin",
+          "cites": [
+            "ctahr-kaimana",
+            "alga-varieties",
+            "daleys-kiamana"
+          ]
+        },
+        {
+          "text": "More consistent bearing habit than any of the 14 Chinese lychee cultivars imported and tested in Hawaii over 110 years.",
+          "type": "bearing",
+          "cites": [
+            "ctahr-kaimana"
+          ]
+        },
+        {
+          "text": "Oval fruit, deep maroon, smooth leathery skin, 20 to 26g, edible pulp 71 to 75 per cent of fruit weight, about 40 per cent of seeds abortive.",
+          "type": "measurement",
+          "cites": [
+            "ctahr-kaimana"
+          ]
+        },
+        {
+          "text": "Flesh firm, translucent, juicy and sweet with a delicious subacid flavour.",
+          "type": "flavour",
+          "cites": [
+            "ctahr-kaimana"
+          ]
+        },
+        {
+          "text": "In Australia it is sold as a semi dwarf, compact tree bearing large red fruit with a relatively small seed; season roughly November to January, with bearing especially consistent in warm winter areas.",
+          "type": "season",
+          "cites": [
+            "alga-varieties",
+            "daleys-kiamana"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ctahr-kaimana",
+          "name": "University of Hawaii CTAHR, Kaimana commodity fact sheet LYCH-3(B)",
+          "url": "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/CFS-LYCH-3B.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular lychee varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-kiamana",
+          "name": "Daleys Fruit Tree Nursery, Lychee Kiamana",
+          "url": "https://www.daleysfruit.com.au/Lychee-Kiamana-Tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lychee-kwai-mai-pink": {
       "slug": "lychee-kwai-mai-pink",
       "species": "Lychee",
@@ -122,6 +921,594 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "lychee-lin-san-sue": {
+      "slug": "lychee-lin-san-sue",
+      "species": "Lychee",
+      "variety": "Lin San Sue",
+      "paragraphs": [
+        "Lin San Sue is one of the names Australian nurseries use for the seedless lychee more often listed as Sue Lin San. The Australian Lychee Growers Association lists it as a new variety producing medium sized, pale red, seedless fruit, a genuine novelty in a fruit otherwise built around a large glossy seed. Australian nurseries describe it as a recent introduction from China, with the seedlessness achieved through many years of selective cross pollination rather than genetic modification.",
+        "Nursery descriptions call the flesh extremely juicy and flavoursome with a refreshing pineapple aftertaste, on a compact, semi dwarf tree suited to home gardens. A notable quirk in the trade advice is that cross pollination from other lychee varieties can cause some fruit to set seeds, so it is often suggested growing it away from other lychees."
+      ],
+      "claims": [
+        {
+          "text": "Listed by ALGA as a new variety producing medium sized, pale red, seedless fruit; marketed in Australia as the Seedless Lychee.",
+          "type": "appearance",
+          "cites": [
+            "alga-sue-lin-san",
+            "rosscreek-seedless",
+            "fruitopia-sue-lin-san"
+          ]
+        },
+        {
+          "text": "Described by nurseries as a new variety from China, with seedlessness achieved through many years of selective cross pollination and not genetic modification.",
+          "type": "origin",
+          "cites": [
+            "fruitopia-sue-lin-san",
+            "rosscreek-seedless"
+          ]
+        },
+        {
+          "text": "Nursery reported: flesh extremely juicy and flavoursome with a refreshing pineapple aftertaste; cross pollination with other lychee varieties can cause seeds in the fruit.",
+          "type": "flavour",
+          "cites": [
+            "rosscreek-seedless"
+          ]
+        },
+        {
+          "text": "A compact, semi dwarf tree suited to home gardens.",
+          "type": "growing",
+          "cites": [
+            "fruitopia-sue-lin-san",
+            "rosscreek-seedless"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-sue-lin-san",
+          "name": "Australian Lychee Growers Association, Sue Lin San",
+          "url": "https://australianlychee.com.au/lychee-varieties/164-sue-lin-san",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-seedless",
+          "name": "Ross Creek Tropicals, Seedless Lychee Sue Lin San",
+          "url": "https://www.rosscreektropicals.com.au/products/lychee-seedless",
+          "tier": "nursery"
+        },
+        {
+          "id": "fruitopia-sue-lin-san",
+          "name": "Fruitopia Nursery, Seedless Lychee Sue Lin San",
+          "url": "https://fruitopianursery.com.au/products/seedless-lychee-sue-lin-san",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-no-mai-chi": {
+      "slug": "lychee-no-mai-chi",
+      "species": "Lychee",
+      "variety": "No Mai Chi",
+      "paragraphs": [
+        "No Mai Chi (Nuomici, also romanised No Mai Tsze) is widely regarded as the premium lychee of China, grown extensively in the suburbs around Guangzhou and described as the world's most sought after lychee for flavour. Nearly all fruit carry tiny aborted chicken tongue seeds, giving an exceptional flesh recovery of 75 to 85 per cent.",
+        "The flesh is very smooth, firm and clean with a distinctive sweet, fragrant flavour, and the heart shaped fruit has a blotchy red and yellow skin rather than an even red. It is a late variety that appears on the market towards the end of the season, the trees are recognisable by a characteristic twist towards the leaflet tip, and a separate later maturing form of similar quality also exists."
+      ],
+      "claims": [
+        {
+          "text": "No Mai Chi (Nuomici) is China's premium lychee, widely grown in the Guangzhou suburbs, and is described as the world's most sought after lychee for its flavour.",
+          "type": "origin",
+          "cites": [
+            "fao-cultivars",
+            "growables-varieties"
+          ]
+        },
+        {
+          "text": "Nearly all fruit have tiny aborted chicken tongue seeds, giving flesh recovery of 75 to 85 per cent.",
+          "type": "measurement",
+          "cites": [
+            "fao-cultivars",
+            "growables-varieties",
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Flesh is very smooth, firm and clean with a distinctive sweet fragrant flavour, and quality is rated excellent.",
+          "type": "flavour",
+          "cites": [
+            "fao-cultivars",
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Fruit is heart shaped with blotchy red and yellow skin colour, and leaflets show a characteristic twist towards the tip; a later maturing form of similar quality also exists.",
+          "type": "appearance",
+          "cites": [
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "It is a late season variety, appearing on the market late in the season.",
+          "type": "season",
+          "cites": [
+            "fao-cultivars"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao-cultivars",
+          "name": "FAO, Lychee Production in the Asia-Pacific Region: Cultivars and Genetic Improvement",
+          "url": "https://www.fao.org/4/ac681e/ac681e06.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca-cultivar-names",
+          "name": "RFCA Archives, Lychee Cultivar Names (1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "growables-varieties",
+          "name": "Growables, Lychee Varieties",
+          "url": "https://www.growables.org/information/TropicalFruit/lycheevarieties.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-red-ball": {
+      "slug": "lychee-red-ball",
+      "species": "Lychee",
+      "variety": "Red Ball",
+      "paragraphs": [
+        "Red Ball is one of the newer lychees in Australian nurseries, described by the growers who introduced it as a recently imported Chinese variety. It bears large bright red fruit, around 40g, with a relatively small seed for the fruit size and an excellent sweet flavour.",
+        "It is a mid season variety carried on a fast growing, dome shaped tree, and it is notably precocious, often producing its first crops at just two to three years old. Australian nurseries expect it to become more widely planted commercially as stock becomes available."
+      ],
+      "claims": [
+        {
+          "text": "Mid season variety producing large red fruit with a relatively small seed on a fast growing dome shaped tree.",
+          "type": "appearance",
+          "cites": [
+            "alga-red-ball"
+          ]
+        },
+        {
+          "text": "Fruit weigh around 40g and have an excellent sweet flavour.",
+          "type": "size",
+          "cites": [
+            "daleys-red-ball",
+            "ladybird-red-ball"
+          ]
+        },
+        {
+          "text": "Described by Australian nurseries as a recently imported Chinese variety expected to be more widely commercially planted.",
+          "type": "origin",
+          "cites": [
+            "daleys-red-ball",
+            "ladybird-red-ball"
+          ]
+        },
+        {
+          "text": "Precocious, fruiting at a young age of two to three years.",
+          "type": "bearing",
+          "cites": [
+            "daleys-red-ball",
+            "ladybird-red-ball"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-red-ball",
+          "name": "Australian Lychee Growers Association, Red Ball variety page",
+          "url": "https://australianlychee.com.au/lychee-varieties/165-red-ball",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-red-ball",
+          "name": "Daleys Fruit Tree Nursery, Red Ball Lychee",
+          "url": "https://www.daleysfruit.com.au/Lychee-Red-Bull-Litchi-chinensis.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-red-ball",
+          "name": "Ladybird Nursery, Red Ball Lychee",
+          "url": "https://www.ladybirdnursery.com.au/red-ball-lychee/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-sah-keng": {
+      "slug": "lychee-sah-keng",
+      "species": "Lychee",
+      "variety": "Sah Keng",
+      "paragraphs": [
+        "Sah Keng is a comparatively modern cultivar, developed in Taiwan in the 1970s and considered to be a seedling of Haak Yip. It is a mid season variety, with the Australian Lychee Growers Association listing availability over December and January.",
+        "The fruit is large and red with a smallish seed and is regarded as a good eating lychee. Its quirk is seed variability: trees set a mixture of large and small seeded fruit with significant variation, but seeds are often small, giving a flesh recovery of about 75 per cent."
+      ],
+      "claims": [
+        {
+          "text": "Sah Keng was developed in Taiwan in the 1970s and appears to be a seedling of Haak Yip.",
+          "type": "origin",
+          "cites": [
+            "fao-cultivars"
+          ]
+        },
+        {
+          "text": "It is a mid season variety, available in Australia over December and January.",
+          "type": "season",
+          "cites": [
+            "fao-cultivars",
+            "alga-varieties"
+          ]
+        },
+        {
+          "text": "Fruit is large and red with a smallish seed and good eating quality.",
+          "type": "appearance",
+          "cites": [
+            "alga-varieties"
+          ]
+        },
+        {
+          "text": "Trees produce both large and small seeded fruit with significant variation, but seeds are often small, giving flesh recovery of about 75 per cent.",
+          "type": "measurement",
+          "cites": [
+            "fao-cultivars"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao-cultivars",
+          "name": "FAO, Lychee Production in the Asia-Pacific Region: Cultivars and Genetic Improvement",
+          "url": "https://www.fao.org/4/ac681e/ac681e06.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular Lychee Varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-salathiel": {
+      "slug": "lychee-salathiel",
+      "species": "Lychee",
+      "variety": "Salathiel",
+      "paragraphs": [
+        "Salathiel is an Australian-developed lychee famous for its chicken tongue seeds. In cultivar evaluations at Walkamin Research Station in north Queensland, 99 per cent of its seeds graded as the tiny shrivelled chicken tongue type and flesh recovery averaged 78 per cent, a flesh-to-seed ratio most varieties cannot approach. The fruit itself is small, around 15g, bright red and smooth skinned, with high sugar levels (about 18 degrees brix in the same trials) and eating quality rated excellent.",
+        "It crops late in the season, December to January in Australia, and is an irregular bearer from year to year. The same trial notes flag it as very susceptible to mite, and small fruit size is the trade-off for some of the best flesh recovery and flavour of any lychee sold in Australia."
+      ],
+      "claims": [
+        {
+          "text": "Developed in Australia, with bright red, smooth skinned, small fruit and a very small seed, available December to January.",
+          "type": "origin",
+          "cites": [
+            "alga-salathiel"
+          ]
+        },
+        {
+          "text": "Walkamin Research Station evaluation recorded 99 per cent chicken tongue seed, 78 per cent aril recovery, 14.8g average fruit and 18.4 degrees brix, with quality rated excellent.",
+          "type": "measurement",
+          "cites": [
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "Very late season cropper with irregular bearing and very high susceptibility to mite.",
+          "type": "bearing",
+          "cites": [
+            "rfca-walkamin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-walkamin",
+          "name": "RFCA Archives, Lychee Cultivars Evaluated at Walkamin Research Station",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeCultivars11-93.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "alga-salathiel",
+          "name": "Australian Lychee Growers Association, Salathiel variety page",
+          "url": "https://australianlychee.com.au/lychee-varieties/62-salathiel",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-seedless-sue-lin-san": {
+      "slug": "lychee-seedless-sue-lin-san",
+      "species": "Lychee",
+      "variety": "Seedless Sue Lin San",
+      "paragraphs": [
+        "Seedless Sue Lin San is the lychee sold in Australia simply as the Seedless Lychee. The Australian Lychee Growers Association lists Sue Lin San as a new variety producing medium sized, pale red, seedless fruit, a genuine novelty in a fruit otherwise built around a large glossy seed. Australian nurseries describe it as a recent introduction from China, with the seedlessness achieved through many years of selective cross pollination rather than genetic modification.",
+        "Nursery descriptions call the flesh extremely juicy and flavoursome with a refreshing pineapple aftertaste, on a compact, semi dwarf tree suited to home gardens. A notable quirk in the trade advice is that cross pollination from other lychee varieties can cause some fruit to set seeds, so it is often suggested growing it away from other lychees."
+      ],
+      "claims": [
+        {
+          "text": "Listed by ALGA as a new variety producing medium sized, pale red, seedless fruit; marketed in Australia as the Seedless Lychee.",
+          "type": "appearance",
+          "cites": [
+            "alga-sue-lin-san",
+            "rosscreek-seedless",
+            "fruitopia-sue-lin-san"
+          ]
+        },
+        {
+          "text": "Described by nurseries as a new variety from China, with seedlessness achieved through many years of selective cross pollination and not genetic modification.",
+          "type": "origin",
+          "cites": [
+            "fruitopia-sue-lin-san",
+            "rosscreek-seedless"
+          ]
+        },
+        {
+          "text": "Nursery reported: flesh extremely juicy and flavoursome with a refreshing pineapple aftertaste; cross pollination with other lychee varieties can cause seeds in the fruit.",
+          "type": "flavour",
+          "cites": [
+            "rosscreek-seedless"
+          ]
+        },
+        {
+          "text": "A compact, semi dwarf tree suited to home gardens.",
+          "type": "growing",
+          "cites": [
+            "fruitopia-sue-lin-san",
+            "rosscreek-seedless"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-sue-lin-san",
+          "name": "Australian Lychee Growers Association, Sue Lin San",
+          "url": "https://australianlychee.com.au/lychee-varieties/164-sue-lin-san",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-seedless",
+          "name": "Ross Creek Tropicals, Seedless Lychee Sue Lin San",
+          "url": "https://www.rosscreektropicals.com.au/products/lychee-seedless",
+          "tier": "nursery"
+        },
+        {
+          "id": "fruitopia-sue-lin-san",
+          "name": "Fruitopia Nursery, Seedless Lychee Sue Lin San",
+          "url": "https://fruitopianursery.com.au/products/seedless-lychee-sue-lin-san",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-souey-tung": {
+      "slug": "lychee-souey-tung",
+      "species": "Lychee",
+      "variety": "Souey Tung",
+      "paragraphs": [
+        "Souey Tung holds a particular place in Australian lychee history, recorded by the Australian Lychee Growers Association as the first lychee variety to be cultivated in Australia. It is also one of the earliest to market, with fruit available from October to November, at the very start of the Australian lychee season.",
+        "Rare Fruit Council archive notes describe the fruit as similar to Haak Yip but lopsided heart shaped, harvesting about two weeks before Haak Yip. The name has a tangled history in Australia: the variety previously circulated under the designation Groff, and some trees sold as Haak Yip selections may in fact be Souey Tung. After a long period of obscurity it is becoming more readily available through nurseries."
+      ],
+      "claims": [
+        {
+          "text": "The first variety of lychee to be cultivated in Australia.",
+          "type": "origin",
+          "cites": [
+            "alga-varieties",
+            "tropicalplanet-souey-tung"
+          ]
+        },
+        {
+          "text": "One of the earliest season varieties, available October to November in Australia.",
+          "type": "season",
+          "cites": [
+            "alga-varieties"
+          ]
+        },
+        {
+          "text": "Fruit similar to Haak Yip but lopsided heart shaped, harvested about two weeks before Haak Yip.",
+          "type": "appearance",
+          "cites": [
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Previously carried the Australian designation Groff, and some Haak Yip selections in Australia may in fact be Souey Tung.",
+          "type": "naming",
+          "cites": [
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Becoming more readily available in Australia.",
+          "type": "use",
+          "cites": [
+            "alga-varieties",
+            "tropicalplanet-souey-tung"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular lychee varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca-cultivar-names",
+          "name": "RFCA Archives, Lychee Cultivar Names (May 1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "tropicalplanet-souey-tung",
+          "name": "Tropical Planet Nursery, Lychee Souey Tung",
+          "url": "https://www.tropicalplanetnursery.com/product-page/lychee-souey-tung",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-sue-lin-san": {
+      "slug": "lychee-sue-lin-san",
+      "species": "Lychee",
+      "variety": "Sue Lin San",
+      "paragraphs": [
+        "Sue Lin San is sold in Australia as the Seedless Lychee. The Australian Lychee Growers Association lists it as a new variety producing medium sized, pale red, seedless fruit, a genuine novelty in a fruit otherwise built around a large glossy seed. Australian nurseries describe it as a recent introduction from China, with the seedlessness achieved through many years of selective cross pollination rather than genetic modification.",
+        "Nursery descriptions call the flesh extremely juicy and flavoursome with a refreshing pineapple aftertaste, on a compact, semi dwarf tree suited to home gardens. A notable quirk in the trade advice is that cross pollination from other lychee varieties can cause some fruit to set seeds, so it is often suggested growing it away from other lychees."
+      ],
+      "claims": [
+        {
+          "text": "Listed by ALGA as a new variety producing medium sized, pale red, seedless fruit; marketed in Australia as the Seedless Lychee.",
+          "type": "appearance",
+          "cites": [
+            "alga-sue-lin-san",
+            "rosscreek-seedless",
+            "fruitopia-sue-lin-san"
+          ]
+        },
+        {
+          "text": "Described by nurseries as a new variety from China, with seedlessness achieved through many years of selective cross pollination and not genetic modification.",
+          "type": "origin",
+          "cites": [
+            "fruitopia-sue-lin-san",
+            "rosscreek-seedless"
+          ]
+        },
+        {
+          "text": "Nursery reported: flesh extremely juicy and flavoursome with a refreshing pineapple aftertaste; cross pollination with other lychee varieties can cause seeds in the fruit.",
+          "type": "flavour",
+          "cites": [
+            "rosscreek-seedless"
+          ]
+        },
+        {
+          "text": "A compact, semi dwarf tree suited to home gardens.",
+          "type": "growing",
+          "cites": [
+            "fruitopia-sue-lin-san",
+            "rosscreek-seedless"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-sue-lin-san",
+          "name": "Australian Lychee Growers Association, Sue Lin San",
+          "url": "https://australianlychee.com.au/lychee-varieties/164-sue-lin-san",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-seedless",
+          "name": "Ross Creek Tropicals, Seedless Lychee Sue Lin San",
+          "url": "https://www.rosscreektropicals.com.au/products/lychee-seedless",
+          "tier": "nursery"
+        },
+        {
+          "id": "fruitopia-sue-lin-san",
+          "name": "Fruitopia Nursery, Seedless Lychee Sue Lin San",
+          "url": "https://fruitopianursery.com.au/products/seedless-lychee-sue-lin-san",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-sue-lin-san-seedless": {
+      "slug": "lychee-sue-lin-san-seedless",
+      "species": "Lychee",
+      "variety": "Sue Lin San Seedless",
+      "paragraphs": [
+        "Sue Lin San Seedless is the lychee sold in Australia simply as the Seedless Lychee. The Australian Lychee Growers Association lists Sue Lin San as a new variety producing medium sized, pale red, seedless fruit, a genuine novelty in a fruit otherwise built around a large glossy seed. Australian nurseries describe it as a recent introduction from China, with the seedlessness achieved through many years of selective cross pollination rather than genetic modification.",
+        "Nursery descriptions call the flesh extremely juicy and flavoursome with a refreshing pineapple aftertaste, on a compact, semi dwarf tree suited to home gardens. A notable quirk in the trade advice is that cross pollination from other lychee varieties can cause some fruit to set seeds, so it is often suggested growing it away from other lychees."
+      ],
+      "claims": [
+        {
+          "text": "Listed by ALGA as a new variety producing medium sized, pale red, seedless fruit; marketed in Australia as the Seedless Lychee.",
+          "type": "appearance",
+          "cites": [
+            "alga-sue-lin-san",
+            "rosscreek-seedless",
+            "fruitopia-sue-lin-san"
+          ]
+        },
+        {
+          "text": "Described by nurseries as a new variety from China, with seedlessness achieved through many years of selective cross pollination and not genetic modification.",
+          "type": "origin",
+          "cites": [
+            "fruitopia-sue-lin-san",
+            "rosscreek-seedless"
+          ]
+        },
+        {
+          "text": "Nursery reported: flesh extremely juicy and flavoursome with a refreshing pineapple aftertaste; cross pollination with other lychee varieties can cause seeds in the fruit.",
+          "type": "flavour",
+          "cites": [
+            "rosscreek-seedless"
+          ]
+        },
+        {
+          "text": "A compact, semi dwarf tree suited to home gardens.",
+          "type": "growing",
+          "cites": [
+            "fruitopia-sue-lin-san",
+            "rosscreek-seedless"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "alga-sue-lin-san",
+          "name": "Australian Lychee Growers Association, Sue Lin San",
+          "url": "https://australianlychee.com.au/lychee-varieties/164-sue-lin-san",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-seedless",
+          "name": "Ross Creek Tropicals, Seedless Lychee Sue Lin San",
+          "url": "https://www.rosscreektropicals.com.au/products/lychee-seedless",
+          "tier": "nursery"
+        },
+        {
+          "id": "fruitopia-sue-lin-san",
+          "name": "Fruitopia Nursery, Seedless Lychee Sue Lin San",
+          "url": "https://fruitopianursery.com.au/products/seedless-lychee-sue-lin-san",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lychee-tai-so": {
       "slug": "lychee-tai-so",
       "species": "Lychee",
@@ -195,6 +1582,210 @@
       "confidence_score": 0.88,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lychee-wai-chee": {
+      "slug": "lychee-wai-chee",
+      "species": "Lychee",
+      "variety": "Wai Chee",
+      "paragraphs": [
+        "Wai Chee (Huaizhi in pinyin) is an old Chinese cultivar that became one of the mainstays of the Australian lychee industry. It is the latest of the commercial varieties grown here: the national season finishes with Wai Chee in northern New South Wales in March, and it is the late variety of choice in south east Queensland and northern NSW. It is also a notably regular bearer on a slow growing tree.",
+        "The fruit is small and round, around 16 to 18g, with a smooth, thin, deep red skin and soft, very juicy, sweet flesh. Most seeds are fully developed, so flesh recovery is a moderate 63 to 73 per cent, and quality is rated medium to good rather than premium. Its real value is timing and reliability: mature fruit can hang on the tree for several days, and late season fruit attracts strong prices in Australia."
+      ],
+      "claims": [
+        {
+          "text": "Wai Chee is the Chinese cultivar Huaizhi and is popular in Australia.",
+          "type": "origin",
+          "cites": [
+            "fao-cultivars"
+          ]
+        },
+        {
+          "text": "It is a late variety; the Australian season finishes with Wai Chee in northern New South Wales in March, and it is grown in south east Queensland and northern NSW.",
+          "type": "season",
+          "cites": [
+            "fao-australia",
+            "alga-varieties",
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "It is a regular bearer on a slow growing tree.",
+          "type": "bearing",
+          "cites": [
+            "rfca-cultivar-names",
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "Fruit is small and rounded, about 16 to 18g (16.9g average at Walkamin), deep red with smooth thin skin.",
+          "type": "measurement",
+          "cites": [
+            "fao-cultivars",
+            "alga-varieties",
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "Flesh is soft, very juicy and sweet; seeds are mostly fully developed giving 63 to 73 per cent flesh recovery, and quality is rated medium to good.",
+          "type": "flavour",
+          "cites": [
+            "fao-cultivars",
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Mature fruit can hang on the tree for several days, and late fruit attracts the highest prices in Australia.",
+          "type": "use",
+          "cites": [
+            "fao-cultivars",
+            "fao-australia",
+            "rfca-walkamin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao-cultivars",
+          "name": "FAO, Lychee Production in the Asia-Pacific Region: Cultivars and Genetic Improvement",
+          "url": "https://www.fao.org/4/ac681e/ac681e06.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fao-australia",
+          "name": "FAO, Lychee Production in Australia",
+          "url": "https://www.fao.org/4/ac684e/ac684e05.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular Lychee Varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca-cultivar-names",
+          "name": "RFCA Archives, Lychee Cultivar Names (1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rfca-walkamin",
+          "name": "RFCA Archives, Lychee Cultivars Evaluated at Walkamin Research Station (1993)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeCultivars11-93.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lychee-wai-chi": {
+      "slug": "lychee-wai-chi",
+      "species": "Lychee",
+      "variety": "Wai Chi",
+      "paragraphs": [
+        "Wai Chi, more often listed as Wai Chee (Huaizhi in pinyin), is an old Chinese cultivar that became one of the mainstays of the Australian lychee industry. It is the latest of the commercial varieties grown here: the national season finishes with this variety in northern New South Wales in March, and it is the late variety of choice in south east Queensland and northern NSW. It is also a notably regular bearer on a slow growing tree.",
+        "The fruit is small and round, around 16 to 18g, with a smooth, thin, deep red skin and soft, very juicy, sweet flesh. Most seeds are fully developed, so flesh recovery is a moderate 63 to 73 per cent, and quality is rated medium to good rather than premium. Its real value is timing and reliability: mature fruit can hang on the tree for several days, and late season fruit attracts strong prices in Australia."
+      ],
+      "claims": [
+        {
+          "text": "Wai Chee is the Chinese cultivar Huaizhi and is popular in Australia.",
+          "type": "origin",
+          "cites": [
+            "fao-cultivars"
+          ]
+        },
+        {
+          "text": "It is a late variety; the Australian season finishes with Wai Chee in northern New South Wales in March, and it is grown in south east Queensland and northern NSW.",
+          "type": "season",
+          "cites": [
+            "fao-australia",
+            "alga-varieties",
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "It is a regular bearer on a slow growing tree.",
+          "type": "bearing",
+          "cites": [
+            "rfca-cultivar-names",
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "Fruit is small and rounded, about 16 to 18g (16.9g average at Walkamin), deep red with smooth thin skin.",
+          "type": "measurement",
+          "cites": [
+            "fao-cultivars",
+            "alga-varieties",
+            "rfca-walkamin"
+          ]
+        },
+        {
+          "text": "Flesh is soft, very juicy and sweet; seeds are mostly fully developed giving 63 to 73 per cent flesh recovery, and quality is rated medium to good.",
+          "type": "flavour",
+          "cites": [
+            "fao-cultivars",
+            "rfca-cultivar-names"
+          ]
+        },
+        {
+          "text": "Mature fruit can hang on the tree for several days, and late fruit attracts the highest prices in Australia.",
+          "type": "use",
+          "cites": [
+            "fao-cultivars",
+            "fao-australia",
+            "rfca-walkamin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao-cultivars",
+          "name": "FAO, Lychee Production in the Asia-Pacific Region: Cultivars and Genetic Improvement",
+          "url": "https://www.fao.org/4/ac681e/ac681e06.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fao-australia",
+          "name": "FAO, Lychee Production in Australia",
+          "url": "https://www.fao.org/4/ac684e/ac684e05.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "alga-varieties",
+          "name": "Australian Lychee Growers Association, Popular Lychee Varieties",
+          "url": "https://www.australianlychee.com.au/about-lychees/varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rfca-cultivar-names",
+          "name": "RFCA Archives, Lychee Cultivar Names (1983)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeVarieties5-83.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "rfca-walkamin",
+          "name": "RFCA Archives, Lychee Cultivars Evaluated at Walkamin Research Station (1993)",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Litchi/LycheeCultivars11-93.htm",
+          "tier": "owned"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
-  }
+  },
+  "skipped": [
+    "lychee-chucka-puc",
+    "lychee-chucka-puc-seconds",
+    "lychee-erdon-lee-fruit-tree",
+    "lychee-jean-hang",
+    "lychee-plant",
+    "lychee-red-ball-fruit-tree",
+    "lychee-seedless-sue-lin-san-seconds",
+    "lychee-tai-so-fruit-tree"
+  ]
 }

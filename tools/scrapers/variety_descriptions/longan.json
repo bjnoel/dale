@@ -123,6 +123,66 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "longan-choompoo": {
+      "slug": "longan-choompoo",
+      "species": "Longan",
+      "variety": "Choompoo",
+      "paragraphs": [
+        "Choompoo (also spelled Chompoo or Sri Chompoo) is a Thai longan cultivar whose name means pink, a nod to the faint pink tinge of its aril. It is prized for sweetness, recorded at around 21 to 22 per cent total soluble solids, carried with a pleasant, perfumed aroma. The translucent flesh is firm and the seed is small, which gives a high proportion of edible aril per fruit.",
+        "Fruit are medium sized and oval with greenish light brown skin, ripening mid season (roughly mid July into August in Thailand). It has a reputation for quality, reportedly exceeding the Kohala longan, though the pink aril does not always develop in warmer climates and the tree can crop irregularly because of poor flowering, so it favours cooler subtropical sites."
+      ],
+      "claims": [
+        {
+          "text": "Choompoo (Chompoo, Sri Chompoo) is a Thai longan cultivar whose name means pink, after the slight pink tinge of its aril.",
+          "type": "origin",
+          "cites": [
+            "fao-longan",
+            "growables-longan"
+          ]
+        },
+        {
+          "text": "It is very sweet, around 21 to 22 per cent total soluble solids, with a pleasant, perfumed aroma.",
+          "type": "measurement",
+          "cites": [
+            "fao-longan",
+            "growables-longan"
+          ]
+        },
+        {
+          "text": "The fruit is medium sized and oval with greenish light brown skin and a small seed, giving high aril recovery.",
+          "type": "appearance",
+          "cites": [
+            "fao-longan"
+          ]
+        },
+        {
+          "text": "It is a mid season cultivar that can exceed Kohala in quality, but the pink aril is not always evident in warmer climates and it can crop irregularly because of poor flowering.",
+          "type": "season",
+          "cites": [
+            "fao-longan",
+            "growables-longan"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fao-longan",
+          "name": "FAO, Cultivars of Main Longan Centres in Asia",
+          "url": "https://www.fao.org/4/x6908e/x6908e0l.htm",
+          "tier": "authoritative"
+        },
+        {
+          "id": "growables-longan",
+          "name": "Growables, Longan Varieties",
+          "url": "https://www.growables.org/information/TropicalFruit/longanvarieties.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "longan-haew": {
       "slug": "longan-haew",
       "species": "Longan",
@@ -243,6 +303,9 @@
     }
   },
   "skipped": [
-    "longan-fijian"
+    "longan-cats-eye",
+    "longan-fijian",
+    "longan-kohala-fruit-tree",
+    "longan-organic-plant"
   ]
 }
