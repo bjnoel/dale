@@ -1,0 +1,639 @@
+{
+  "species_slug": "strawberry",
+  "schema_version": 1,
+  "varieties": {
+    "strawberry-alpine": {
+      "slug": "strawberry-alpine",
+      "species": "Strawberry",
+      "variety": "Alpine",
+      "paragraphs": [
+        "Alpine strawberry is the cultivated form of the wild woodland strawberry (Fragaria vesca), a species native across Europe, western Asia and much of the Northern Hemisphere. Its fruit is a miniature of the familiar garden strawberry, but it is prized for an intense, highly aromatic flavour that many sources rate as superior to commercial varieties. Because of their small size and low yield the wild plants are not grown commercially at scale, which is exactly why alpines are a connoisseur and gourmet pick, often used fresh, in patisserie, jams and liqueurs.",
+        "Unlike most garden strawberries, true alpine selections produce few or no runners, staying as tidy clumps that suit pots, borders and edging. They grow readily and uniformly from their very fine seed and will self-sow around the garden. Alpines are everbearing, flowering and fruiting over a long season rather than in one flush. Some ornamental selections bear white or yellow fruit instead of red."
+      ],
+      "claims": [
+        {
+          "text": "Alpine strawberry is the cultivated form of wild Fragaria vesca, native across Europe, western Asia and much of the Northern Hemisphere.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-vesca",
+            "kew-vesca"
+          ]
+        },
+        {
+          "text": "Its fruit is small but intensely aromatic, often rated superior in flavour to the commercial garden strawberry, and used fresh and in patisserie, jams and liqueurs.",
+          "type": "flavour",
+          "cites": [
+            "kew-vesca",
+            "wikipedia-vesca"
+          ]
+        },
+        {
+          "text": "True alpine types produce few or no runners and form tidy clumps, and grow readily from very fine seed, often self-sowing.",
+          "type": "habit",
+          "cites": [
+            "wikipedia-vesca"
+          ]
+        },
+        {
+          "text": "Alpine cultivars are everbearing with a long flowering and fruiting season, and some bear white or yellow fruit.",
+          "type": "fruiting",
+          "cites": [
+            "wikipedia-vesca"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-vesca",
+          "name": "Fragaria vesca, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Fragaria_vesca",
+          "tier": "third_party"
+        },
+        {
+          "id": "kew-vesca",
+          "name": "Wild strawberry, Fragaria vesca, Royal Botanic Gardens Kew",
+          "url": "https://www.kew.org/plants/wild-strawberry",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-chandler": {
+      "slug": "strawberry-chandler",
+      "species": "Strawberry",
+      "variety": "Chandler",
+      "paragraphs": [
+        "Chandler is a June-bearing garden strawberry bred by the University of California and introduced in 1983, from a cross between Douglas and an unnamed UC selection. It was developed for flavour rather than long shelf life, and the berries are prized for a juicy, richly aromatic, sweet taste with firm flesh that is deep red inside.",
+        "Fruit is large and glossy brilliant red, ranging from long and wedge-shaped to large and conical. As a June-bearer it crops heavily over a short, concentrated window (roughly three weeks), which suits both home growers and market gardeners. It is used fresh and for jam, smoothies and baking."
+      ],
+      "claims": [
+        {
+          "text": "Bred by the University of California and introduced in 1983, from a cross between Douglas and an unnamed UC cultivar.",
+          "type": "origin",
+          "cites": [
+            "hfh-chandler",
+            "sp-chandler"
+          ]
+        },
+        {
+          "text": "June-bearing, cropping over a short concentrated window of about three weeks.",
+          "type": "habit",
+          "cites": [
+            "sp-chandler",
+            "hfh-chandler"
+          ]
+        },
+        {
+          "text": "Bred for flavour rather than shelf life; juicy, aromatic, sweet, firm, deep red inside.",
+          "type": "flavour",
+          "cites": [
+            "hfh-chandler",
+            "sp-chandler"
+          ]
+        },
+        {
+          "text": "Large, glossy, brilliant red fruit varying from wedge-shaped to conical.",
+          "type": "appearance",
+          "cites": [
+            "sp-chandler",
+            "hfh-chandler"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sp-chandler",
+          "name": "Strawberry Plants .org, Chandler Strawberry Plants",
+          "url": "https://strawberryplants.org/chandler-strawberry-plants/",
+          "tier": "third_party"
+        },
+        {
+          "id": "hfh-chandler",
+          "name": "Home for the Harvest, Chandler Strawberry",
+          "url": "https://homefortheharvest.com/chandler-strawberry/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-delliz": {
+      "slug": "strawberry-delliz",
+      "species": "Strawberry",
+      "variety": "Delliz",
+      "paragraphs": [
+        "Delliz (marketed as Delizz) is a day-neutral, everbearing strawberry from the Dutch breeder ABZ Seeds. It made history as the first strawberry ever to win an All-America Selections award, taking the 2016 AAS National edible category. Being day-neutral, its fruiting is not tied to day length, so it can crop continuously from early summer through to autumn frost.",
+        "It is notable for being easy to raise from seed, with a compact, upright habit roughly 35cm tall and 30cm wide that suits containers and hanging baskets as well as garden beds. The berries are red, conical and modestly sized, prized for a sweet, aromatic flavour."
+      ],
+      "claims": [
+        {
+          "text": "Day-neutral, everbearing strawberry from ABZ Seeds, first strawberry to win an All-America Selections award (2016 AAS National winner).",
+          "type": "award",
+          "cites": [
+            "aas-delizz",
+            "sp-delizz"
+          ]
+        },
+        {
+          "text": "Day-neutral fruiting is unaffected by day length, cropping continuously from early summer to autumn frost.",
+          "type": "habit",
+          "cites": [
+            "aas-delizz",
+            "sp-delizz"
+          ]
+        },
+        {
+          "text": "Easy from seed, compact upright habit about 35cm tall and 30cm wide, suited to containers and hanging baskets.",
+          "type": "habit",
+          "cites": [
+            "aas-delizz"
+          ]
+        },
+        {
+          "text": "Red, conical, modestly sized berries with sweet, aromatic flavour.",
+          "type": "flavour",
+          "cites": [
+            "aas-delizz",
+            "sp-delizz"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "aas-delizz",
+          "name": "All-America Selections, Strawberry Delizz F1",
+          "url": "https://all-americaselections.org/product/strawberry-delizz/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sp-delizz",
+          "name": "Strawberry Plants .org, Delizz Strawberry",
+          "url": "https://strawberryplants.org/delizz-strawberry-plants-seeds/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-fresca": {
+      "slug": "strawberry-fresca",
+      "species": "Strawberry",
+      "variety": "Fresca",
+      "paragraphs": [
+        "Fresca is a seed-raised strawberry (Fragaria x ananassa) from PanAmerican Seed, notable as one of the very few varieties that produce traditional, full-sized berries from seed rather than from runners or plugs. It is an everbearing, day-neutral type that flowers and fruits regardless of day length, bearing bright red, firm berries from early summer through to autumn once established.",
+        "The plant has a compact, mounded habit that spreads only around 25 to 30 cm, which makes Fresca well suited to containers, raised beds and hanging baskets where space is tight. Because it comes true and uniform from seed, it is an easy, reliable choice for gardeners who want to raise their own strawberry plants from scratch rather than buying named runner stock."
+      ],
+      "claims": [
+        {
+          "text": "Fresca is a seed-raised Fragaria x ananassa strawberry from PanAmerican Seed, one of few varieties producing full-sized berries from seed.",
+          "type": "origin",
+          "cites": [
+            "panamseed-fresca",
+            "ufseeds-fresca"
+          ]
+        },
+        {
+          "text": "It is an everbearing, day-neutral variety bearing firm bright red berries from early summer into autumn.",
+          "type": "fruiting",
+          "cites": [
+            "panamseed-fresca",
+            "ufseeds-fresca"
+          ]
+        },
+        {
+          "text": "The plant is compact and mounded, spreading only about 25 to 30 cm, suiting containers, raised beds and hanging baskets.",
+          "type": "habit",
+          "cites": [
+            "panamseed-fresca"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "panamseed-fresca",
+          "name": "Strawberry Fresca, PanAmerican Seed (breeder)",
+          "url": "https://www.panamseed.com/plant_info.aspx?phid=059500001001973",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufseeds-fresca",
+          "name": "Fresca Strawberry Seeds, Urban Farmer",
+          "url": "https://www.ufseeds.com/product/fresca-strawberry-seeds/STFR.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-loran": {
+      "slug": "strawberry-loran",
+      "species": "Strawberry",
+      "variety": "Loran",
+      "paragraphs": [
+        "Loran (Fragaria x ananassa 'Loran') is a compact, everbearing strawberry that fruits repeatedly across much of the season rather than in a single early flush. It produces large, conical, deep red berries described as sweet with a firm texture, and it is self-pollinating, so a single plant will set fruit on its own.",
+        "Its standout trait is form factor. Loran has a trailing, compact habit and does not throw many runners, which makes it well suited to hanging baskets, patio pots, and small spaces where runner management is a chore. That combination of perpetual fruiting and tidy container behaviour is why it is widely recommended as a basket and patio variety."
+      ],
+      "claims": [
+        {
+          "text": "Loran is a compact, everbearing variety producing large, conical, deep red fruits.",
+          "type": "fruiting",
+          "cites": [
+            "rhs-loran",
+            "mygardenlife-loran"
+          ]
+        },
+        {
+          "text": "The berries are sweet with a firm texture and the plant is self-pollinating.",
+          "type": "flavour",
+          "cites": [
+            "mygardenlife-loran"
+          ]
+        },
+        {
+          "text": "It has a trailing habit, produces few runners, and suits hanging baskets and containers.",
+          "type": "habit",
+          "cites": [
+            "rhs-loran",
+            "mygardenlife-loran"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-loran",
+          "name": "Royal Horticultural Society, Fragaria x ananassa 'Loran'",
+          "url": "https://www.rhs.org.uk/plants/238329/fragaria-ananassa-loran-(f)/details",
+          "tier": "authoritative"
+        },
+        {
+          "id": "mygardenlife-loran",
+          "name": "MyGardenLife Plant Library, Strawberry 'Loran'",
+          "url": "https://mygardenlife.com/plant-library/strawberry-loran-fragaria-x-ananassa",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-red-gauntlet": {
+      "slug": "strawberry-red-gauntlet",
+      "species": "Strawberry",
+      "variety": "Red Gauntlet",
+      "paragraphs": [
+        "Red Gauntlet is a long-established strawberry of Scottish origin that has been grown commercially in southern Australia for decades. It is a vigorous, heavy-cropping mid-season variety carrying white flowers, and is valued for its reliability and old-fashioned true strawberry flavour on medium, bright red, heart-shaped fruit.",
+        "A notable trait is that it often crops twice, with a main mid-season flush and a smaller second crop later in the season. The RHS notes it is compact and mound-forming, and reports good resistance to red core, though it is susceptible to powdery mildew. It is also listed by the RHS as good for pollinators."
+      ],
+      "claims": [
+        {
+          "text": "Scottish-origin, long-established strawberry grown commercially in southern Australia for decades.",
+          "type": "origin",
+          "cites": [
+            "ge-rg",
+            "tess-rg"
+          ]
+        },
+        {
+          "text": "Vigorous, heavy-cropping mid-season variety with medium bright red heart-shaped fruit and old-fashioned flavour.",
+          "type": "habit",
+          "cites": [
+            "ge-rg",
+            "tess-rg"
+          ]
+        },
+        {
+          "text": "Often crops twice, a main mid-season flush plus a smaller later crop.",
+          "type": "quirk",
+          "cites": [
+            "ge-rg",
+            "tess-rg"
+          ]
+        },
+        {
+          "text": "Compact, mound-forming, with good resistance to red core but susceptible to powdery mildew; listed for pollinators.",
+          "type": "quirk",
+          "cites": [
+            "rhs-rg"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-rg",
+          "name": "Royal Horticultural Society, Fragaria x ananassa 'Redgauntlet'",
+          "url": "https://www.rhs.org.uk/plants/54694/fragaria-ananassa-redgauntlet-(f)/details",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ge-rg",
+          "name": "Garden Express, Strawberry Red Gauntlet",
+          "url": "https://www.gardenexpress.com.au/product/strawberry-red-gauntlet/",
+          "tier": "nursery"
+        },
+        {
+          "id": "tess-rg",
+          "name": "Tesselaar, Strawberries 'Red Gauntlet'",
+          "url": "https://www.tesselaar.net.au/product/1959-strawberries-red-gauntlet",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-summer-breeze-rose": {
+      "slug": "strawberry-summer-breeze-rose",
+      "species": "Strawberry",
+      "variety": "Summer Breeze Rose",
+      "paragraphs": [
+        "Summer Breeze Rose is an ornamental F1 hybrid strawberry from the Dutch breeder ABZ Seeds, the first in the Summer Breeze series. Its draw is the flowers: rose-like, semi-double rose-coloured blooms that hold their colour far longer than ordinary single white strawberry flowers, making it a decorative plant in its own right.",
+        "Despite the ornamental focus it is dual-purpose, also producing aromatic, sweet, cone-shaped edible berries through summer. The plants are compact with few runners and are grown from seed, which suits patios, balconies, borders, window boxes and hanging baskets where both the blooms and fruit are on show."
+      ],
+      "claims": [
+        {
+          "text": "Ornamental F1 hybrid from ABZ Seeds, the first in the Summer Breeze series.",
+          "type": "origin",
+          "cites": [
+            "abz-sbr",
+            "sp-sb"
+          ]
+        },
+        {
+          "text": "Rose-like, semi-double rose-coloured flowers that retain colour longer than single-flowered varieties.",
+          "type": "appearance",
+          "cites": [
+            "abz-sbr",
+            "sp-sb"
+          ]
+        },
+        {
+          "text": "Dual-purpose, also producing sweet, aromatic, cone-shaped edible berries through summer.",
+          "type": "uses",
+          "cites": [
+            "sp-sb",
+            "abz-sbr"
+          ]
+        },
+        {
+          "text": "Compact, few runners, grown from seed, suited to containers and hanging baskets.",
+          "type": "habit",
+          "cites": [
+            "sp-sb",
+            "abz-sbr"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "abz-sbr",
+          "name": "ABZ Seeds, Summer Breeze Rose F1",
+          "url": "https://abzseeds.abzstrawberry.nl/en/assortment/summer-breeze-rose",
+          "tier": "third_party"
+        },
+        {
+          "id": "sp-sb",
+          "name": "Strawberry Plants .org, Summer Breeze Strawberry",
+          "url": "https://strawberryplants.org/summer-breeze-strawberry-variety/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-summer-breeze-snow": {
+      "slug": "strawberry-summer-breeze-snow",
+      "species": "Strawberry",
+      "variety": "Summer Breeze Snow",
+      "paragraphs": [
+        "Summer Breeze Snow is an F1 hybrid ornamental strawberry from ABZ Seeds, the Dutch breeder specialising in seed-propagated, day-neutral strawberries. It is the white-flowered member of the Summer Breeze series, which also includes a bright pink (Cherry Blossom) and a rose-red (Rose) variant. Snow carries semi-double white flowers that the breeder likens to a snow shower in summer, and the blooms hold their petals for a long period, keeping plenty of colour on the plant.",
+        "Beyond its looks it is genuinely productive, setting aromatic bright red strawberries continuously from summer into autumn. The plant is compact with few runners, which is why it is sold for patio pots, hanging baskets and window boxes. Summer Breeze Snow won the IPM innovation prize in 2020 (Garden Plants category, Germany) and took a third prize at the Glass Tulip award in 2019 in the Netherlands."
+      ],
+      "claims": [
+        {
+          "text": "Summer Breeze Snow is an F1 hybrid ornamental strawberry bred by ABZ Seeds, a Dutch breeder of seed-propagated day-neutral strawberries.",
+          "type": "origin",
+          "cites": [
+            "abz-snow",
+            "researchgate-abz"
+          ]
+        },
+        {
+          "text": "It is the white-flowered member of the Summer Breeze series, which also includes pink (Cherry Blossom) and rose-red (Rose) variants, and carries semi-double white flowers that hold their petals a long time.",
+          "type": "appearance",
+          "cites": [
+            "abz-snow"
+          ]
+        },
+        {
+          "text": "The plant is compact with few runners and produces aromatic bright red strawberries continuously from summer into autumn, suited to baskets and containers.",
+          "type": "habit",
+          "cites": [
+            "abz-snow"
+          ]
+        },
+        {
+          "text": "It won the IPM innovation prize 2020 (Garden Plants category, Germany) and a third prize at the Glass Tulip award 2019 in the Netherlands.",
+          "type": "award",
+          "cites": [
+            "abz-snow"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "abz-snow",
+          "name": "Summer Breeze Snow F1, ABZ Seeds",
+          "url": "https://abzseeds.abzstrawberry.nl/en/assortment/summer-breeze-snow",
+          "tier": "authoritative"
+        },
+        {
+          "id": "researchgate-abz",
+          "name": "Advances in F1 hybrid day-neutral strawberry breeding at ABZ Seeds, Andijk, The Netherlands",
+          "url": "https://www.researchgate.net/publication/350693590_Advances_in_F_1_hybrid_day-neutral_strawberry_breeding_at_ABZ_Seeds_Andijk_The_Netherlands",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-sweetheart": {
+      "slug": "strawberry-sweetheart",
+      "species": "Strawberry",
+      "variety": "Sweetheart",
+      "paragraphs": [
+        "Sweetheart (Fragaria x ananassa) is a June-bearing strawberry bred at East Malling Research in Kent, the long-running British soft-fruit breeding programme now run under NIAB. It is a mid-season cropper, fruiting at roughly the same time as the industry-standard Elsanta, with a compact but vigorous habit and a dense canopy that shelters the fruit. Despite the romantic name, the berries are described as uniformly conic rather than literally heart-shaped, attractively glossy, and slightly larger and darker than Elsanta.",
+        "Its main draw is eating quality. Brix (sugar) levels run higher than Elsanta, giving a good balance of sweetness and acidity, and the berries have strong skin that resists bruising. It carries reasonable resistance to powdery mildew and tolerance to verticillium wilt, though it is susceptible to crown rot. Propagated from runners rather than seed, it has proved well suited to lower-input and perennial (multi-year) growing systems."
+      ],
+      "claims": [
+        {
+          "text": "Sweetheart is a June-bearing strawberry bred at East Malling Research in Kent (now under NIAB).",
+          "type": "origin",
+          "cites": [
+            "rhs-sh",
+            "walpole-sh",
+            "niab-sh"
+          ]
+        },
+        {
+          "text": "It is a mid-season variety that crops at about the same time as Elsanta.",
+          "type": "habit",
+          "cites": [
+            "walpole-sh",
+            "em-21food"
+          ]
+        },
+        {
+          "text": "The berries are uniformly conic, glossy, and slightly larger and darker than Elsanta.",
+          "type": "appearance",
+          "cites": [
+            "walpole-sh",
+            "em-21food"
+          ]
+        },
+        {
+          "text": "Brix (sugar) levels are higher than Elsanta, with a balance of sweetness and acidity, and the fruit has strong skin resistant to bruising.",
+          "type": "flavour",
+          "cites": [
+            "walpole-sh",
+            "em-21food"
+          ]
+        },
+        {
+          "text": "It has reasonable resistance to powdery mildew and tolerance to verticillium wilt but is susceptible to crown rot.",
+          "type": "quirk",
+          "cites": [
+            "walpole-sh"
+          ]
+        },
+        {
+          "text": "It is propagated vegetatively from runners and suits perennial, lower-input growing.",
+          "type": "habit",
+          "cites": [
+            "rhs-sh",
+            "em-21food"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-sh",
+          "name": "Royal Horticultural Society, Fragaria x ananassa 'Sweetheart'",
+          "url": "https://www.rhs.org.uk/plants/84343/fragaria-ananassa-sweetheart-(f)/details",
+          "tier": "authoritative"
+        },
+        {
+          "id": "niab-sh",
+          "name": "NIAB East Malling Fruit Varieties",
+          "url": "https://www.niab.com/services/plant-breeding/niab-east-malling-fruit-varieties",
+          "tier": "authoritative"
+        },
+        {
+          "id": "em-21food",
+          "name": "East Malling Research new strawberry varieties (21food trade report)",
+          "url": "https://www.21food.com/news/detail35206.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "walpole-sh",
+          "name": "RW Walpole, Sweetheart Strawberry profile",
+          "url": "https://rwwalpole.co.uk/plants/sweetheart-strawberry/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "strawberry-tioga": {
+      "slug": "strawberry-tioga",
+      "species": "Strawberry",
+      "variety": "Tioga",
+      "paragraphs": [
+        "Tioga is a classic Californian June-bearing strawberry released by the University of California in 1964 for unrestricted propagation by nurserymen. It was a landmark commercial variety, and through the late 1960s and 1970s it accounted for more than half of California's strawberry plantings, valued for its high yields and shipping quality.",
+        "As a short-day, June-bearing type, Tioga concentrates its crop into a single main season rather than fruiting continuously like an everbearer. It is largely of historical importance now, having been superseded by later UC releases, but it remains a reference point in the lineage of modern Californian strawberry breeding."
+      ],
+      "claims": [
+        {
+          "text": "Tioga is a June-bearing strawberry released by the University of California in 1964 for unrestricted propagation.",
+          "type": "origin",
+          "cites": [
+            "calag-tioga",
+            "ucdavis-tioga"
+          ]
+        },
+        {
+          "text": "Through the late 1960s and 1970s Tioga made up more than half of California's strawberry plantings.",
+          "type": "history",
+          "cites": [
+            "ucdavis-tioga"
+          ]
+        },
+        {
+          "text": "Tioga is a high-yielding California-developed June-bearing cultivar.",
+          "type": "habit",
+          "cites": [
+            "calag-tioga",
+            "ucdavis-tioga"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "calag-tioga",
+          "name": "California Agriculture (UC ANR), 'Tioga a new California strawberry'",
+          "url": "https://californiaagriculture.org/article/113055-tioga-a-new-california-strawberry",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ucdavis-tioga",
+          "name": "UC Davis, Strawberry Breeding Program Historical Timeline",
+          "url": "https://www.plantsciences.ucdavis.edu/news/strawberry-breeding-program-backgrounder-historical-timeline",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "strawberry-adina",
+    "strawberry-adina-mega-tube",
+    "strawberry-adina-organic-fruit-plant-runner",
+    "strawberry-beltran",
+    "strawberry-berrylicious",
+    "strawberry-canary-island",
+    "strawberry-handstand",
+    "strawberry-irish",
+    "strawberry-melba-pbr",
+    "strawberry-melba-pbr-mega-tube",
+    "strawberry-pinkie",
+    "strawberry-red-cascade-sh-pbr",
+    "strawberry-red-gauntlet-mega-tube",
+    "strawberry-roman-pink",
+    "strawberry-ruby-red",
+    "strawberry-running-red",
+    "strawberry-running-white",
+    "strawberry-sweetie",
+    "strawberry-tioga-mega-tube",
+    "strawberry-toolangi-choice",
+    "strawberry-tree"
+  ]
+}
