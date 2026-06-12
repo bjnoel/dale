@@ -89,13 +89,13 @@
       "revenue_total": 0,
       "category_expansion": {
         "status": "pilot-live",
-        "decision": "DEC-202",
+        "decision": "DEC-203",
         "design_doc": "docs/category-expansion.md",
         "pilot": "bush_tucker",
         "pilot_enabled": "2026-06-11",
-        "pilot_live": "388 bush tucker products across 15 nurseries on /bush-tucker/; 20 species records + 8 cross-tagged fruits; 5 growing guides live",
-        "tickets": "DAL-193 (P0) + DAL-194 (P1) shipped DEC-201; DAL-195..198 + DAL-201 shipped DEC-202; DAL-199 digest section gated off pending Benedict copy approval (Q44); DAL-200 deferred (no gap); DAL-202 review ~2026-07-23; DAL-203 natives gated on DAL-202",
-        "next": "Benedict approves the digest copy (Q44) then flip the flag; the P2.8 review on 2026-07-23 decides natives go/no-go"
+        "pilot_live": "388 bush tucker products across 15 nurseries on /bush-tucker/; 20 species records + 8 cross-tagged fruits; 5 growing guides; digest is per-subscriber opt-in (DEC-203)",
+        "tickets": "DAL-193 (P0) + DAL-194 (P1) DEC-201; DAL-195..198 + DAL-201 DEC-202; DAL-199 (digest opt-in) DEC-203 LIVE; DAL-200 deferred (no gap); DAL-202 review ~2026-07-23; DAL-203 natives gated on DAL-202",
+        "next": "P2.8 review on 2026-07-23 decides natives go/no-go; Q44 has 2 non-blocking copy questions (checkbox wording, public digest page scope)"
       }
     },
     "b_experiment_beestock": {

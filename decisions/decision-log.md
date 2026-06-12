@@ -4,6 +4,22 @@
 
 ---
 
+## DEC-203 — 2026-06-12 — Bush tucker digest is per-subscriber opt-in (DAL-199 redesign)
+
+**Decided by:** Benedict (directive), Dale (design + execution)
+
+**Context:** DAL-199 originally shipped (DEC-202) as a single labelled bush tucker section behind a global on/off flag, gated pending a copy review. Benedict redirected: he wants it opt-in at email confirmation, off by default, with the subscriber choosing categories (bush tucker / fruit trees, more later). This supersedes the design doc's "no preference plumbing in the pilot" non-goal (DEC-200 3.7, section 7).
+
+**Shipped (PR #154, deployed + verified live 2026-06-12):**
+- Subscribers gain an optional `plant_categories` list. Default (absent) is `["fruit"]`, so every existing subscriber and the public /digest.html stay fruit-only, and bush tucker reaches no one who has not opted in. Distinct from the existing change-type `categories` field.
+- The category choice lands on the confirmation success page (which already had a preferences picker): "🍑 Fruit trees" pre-ticked, "🌿 Bush tucker" opt-in. Same group on the manage page.
+- daily_digest renderers + has_any_changes take a `plant_categories` param (default `{"fruit"}`); the digest partitions and renders the fruit per-nursery sections only if fruit is chosen and the labelled bush tucker section only if bush_tucker is. send_digest + send_weekly_digest bucket by (state, change-categories, plant-categories).
+- The global `BUSH_TUCKER_DIGEST_SECTION` flag is removed; the opt-in itself is the gate, so no flag to flip and no unapproved content can reach a subscriber.
+
+**Verification:** isolated live end-to-end on the server (prefs page renders the checkboxes, update_preferences stores plant_categories, invalid values normalised, default fruit-only). 1611 tests pass. The no-changes digest golden is byte-identical.
+
+**Open (non-blocking, Q44):** checkbox label wording; whether the public /digest.html should stay fruit-only or showcase both categories. "Tell him he's dreaming" still applies at the DAL-202 pilot review (week of 2026-07-23).
+
 ## DEC-202 — 2026-06-11 — Bush tucker pilot shipped and deployed live (Phase 2)
 
 **Decided by:** Benedict (directive: carry out DAL-195 through DAL-201 in order, one PR each), Dale (execution)
