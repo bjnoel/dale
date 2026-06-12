@@ -1,0 +1,256 @@
+{
+  "species_slug": "currant",
+  "schema_version": 1,
+  "varieties": {
+    "currant-black": {
+      "slug": "currant-black",
+      "species": "Currant",
+      "variety": "Black",
+      "paragraphs": [
+        "The blackcurrant (Ribes nigrum) is native to temperate central and northern Europe and northern Asia, with European cultivation thought to have begun in the last decades of the 17th century. Raw fruit has a strong, tart flavour and an intense aromatic, musky character that sets it apart from red and white currants. The unopened buds carry a distinctive terpenic, nutmeg-like aroma. Berries are exceptionally rich in vitamin C, providing well over the daily requirement in a small serving.",
+        "Blackcurrants are usually cooked rather than eaten fresh, going into jams, preserves, syrups, and the commercial juice market. Macerated blackcurrants are the primary ingredient in the French aperitif creme de cassis. Bushes are somewhat self-fertile but set more fruit when pollinated by a different variety, so planting more than one improves yields."
+      ],
+      "claims": [
+        {
+          "text": "Native to temperate central and northern Europe and northern Asia, cultivated in Europe from the late 17th century.",
+          "type": "origin",
+          "cites": [
+            "wiki-blackcurrant"
+          ]
+        },
+        {
+          "text": "Raw fruit has a strong, tart, aromatic musky flavour with terpenic, nutmeg-like buds.",
+          "type": "flavour",
+          "cites": [
+            "wiki-blackcurrant"
+          ]
+        },
+        {
+          "text": "Exceptionally rich in vitamin C.",
+          "type": "nutrition",
+          "cites": [
+            "wiki-blackcurrant",
+            "rhs-nigrum"
+          ]
+        },
+        {
+          "text": "Used for jams, syrups, juice and as the primary ingredient in creme de cassis.",
+          "type": "uses",
+          "cites": [
+            "wiki-blackcurrant"
+          ]
+        },
+        {
+          "text": "Somewhat self-fertile but fruits better when pollinated by another variety.",
+          "type": "pollination",
+          "cites": [
+            "wiki-blackcurrant"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-blackcurrant",
+          "name": "Wikipedia: Blackcurrant",
+          "url": "https://en.wikipedia.org/wiki/Blackcurrant",
+          "tier": "third_party"
+        },
+        {
+          "id": "rhs-nigrum",
+          "name": "Royal Horticultural Society: Ribes nigrum",
+          "url": "https://www.rhs.org.uk/plants/106234/ribes-nigrum-(b)/details",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "currant-red": {
+      "slug": "currant-red",
+      "species": "Currant",
+      "variety": "Red",
+      "paragraphs": [
+        "The redcurrant (Ribes rubrum) is native to western Europe, with the large-berried cultivars first produced in Belgium and northern France in the 17th century. The small, glossy, translucent red berries hang in trusses and are known for their tart flavour, which comes from a high content of organic acids and mixed polyphenols. The astringency increases through the final month of ripening.",
+        "Redcurrant jelly is a classic British condiment served with lamb and game such as venison, turkey, and goose. In Scandinavia and Schleswig-Holstein the fruit goes into fruit soups and summer puddings (rodgrod, rote Grutze). The white currant is a sweeter, less pigmented cultivar of this same species. Bushes are self-fertile but crop more heavily when cross-pollinated by a different variety."
+      ],
+      "claims": [
+        {
+          "text": "Native to western Europe; large-berried cultivars first produced in Belgium and northern France in the 17th century.",
+          "type": "origin",
+          "cites": [
+            "wiki-redcurrant"
+          ]
+        },
+        {
+          "text": "Tart flavour from high organic acid and polyphenol content, increasing in the last month of ripening.",
+          "type": "flavour",
+          "cites": [
+            "wiki-redcurrant"
+          ]
+        },
+        {
+          "text": "Redcurrant jelly served with lamb and game; fruit used in fruit soups and summer puddings.",
+          "type": "uses",
+          "cites": [
+            "wiki-redcurrant"
+          ]
+        },
+        {
+          "text": "White currant is a less pigmented cultivar of Ribes rubrum.",
+          "type": "taxonomy",
+          "cites": [
+            "wiki-redcurrant",
+            "wiki-whitecurrant"
+          ]
+        },
+        {
+          "text": "Self-fertile but produces more fruit when cross-pollinated.",
+          "type": "pollination",
+          "cites": [
+            "wiki-redcurrant"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-redcurrant",
+          "name": "Wikipedia: Redcurrant",
+          "url": "https://en.wikipedia.org/wiki/Redcurrant",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-whitecurrant",
+          "name": "Wikipedia: White currant",
+          "url": "https://en.wikipedia.org/wiki/White_currant",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "currant-royal-de-naples": {
+      "slug": "currant-royal-de-naples",
+      "species": "Currant",
+      "variety": "Royal De Naples",
+      "paragraphs": [
+        "Royal de Naples (Ribes nigrum) is a heritage blackcurrant of European but unknown origin. It was long a standard in England, where it was widely distributed over a century ago, and was brought to America early in the 19th century, entering the American Pomological Society catalogue in 1852 as Black Naples (later shortened to Naples). The vigorous deciduous shrub bears medium-sized black, round to flat-round berries on small trusses that hold on the plant for some time.",
+        "In France's Burgundy region the variety is valued for its aromatic quality and is used mainly for the blackcurrant liqueur creme de cassis, alongside jams, juices, coulis, and sorbets. It is a versatile fruit suited to eating, cooking, preserving, freezing, juicing, cordials, tarts, wines, and syrups."
+      ],
+      "claims": [
+        {
+          "text": "Heritage European blackcurrant of unknown origin; long a standard in England and brought to America early in the 19th century.",
+          "type": "origin",
+          "cites": [
+            "chatham-naples"
+          ]
+        },
+        {
+          "text": "Added to the American Pomological Society catalogue in 1852 as Black Naples, later shortened to Naples.",
+          "type": "history",
+          "cites": [
+            "chatham-naples"
+          ]
+        },
+        {
+          "text": "Vigorous shrub bearing medium-sized black round to flat-round fruit on little trusses that hold on the plant.",
+          "type": "appearance",
+          "cites": [
+            "heritage-royaldenaples"
+          ]
+        },
+        {
+          "text": "Used in Burgundy mainly for creme de cassis liqueur, plus jams, juices, coulis and sorbets.",
+          "type": "uses",
+          "cites": [
+            "heritage-royaldenaples",
+            "chatham-naples"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "chatham-naples",
+          "name": "Chatham Apples (Hedrick, Small Fruits of New York): Black Currants - Naples",
+          "url": "https://www.chathamapples.com/SmallFruitsNY/BlackCurrants.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage-royaldenaples",
+          "name": "Heritage Fruit Trees: Royal de Naples Currant",
+          "url": "https://www.heritagefruittrees.com.au/royal-de-naples-currant/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "currant-white": {
+      "slug": "currant-white",
+      "species": "Currant",
+      "variety": "White",
+      "paragraphs": [
+        "The white currant is not a separate species but a group of cultivars of the redcurrant (Ribes rubrum), an albino variant that lacks the red pigment. The fruit is translucent white to pale cream and differs from redcurrant chiefly in colour and flavour. With the pigment removed, the tartness is dialled back and the natural sweetness comes through, making whitecurrants the mildest and sweetest of the three currant types and pleasant eaten raw.",
+        "Whitecurrants are often served fresh and are rarely called for in savoury cooking. They go into jams, jellies, wines, and syrups, and are the classic ingredient in the prized Bar-le-duc or Lorraine jelly, traditionally seeded by hand. Like other Ribes rubrum, the bushes are self-fertile but crop more heavily with a second variety nearby for cross-pollination."
+      ],
+      "claims": [
+        {
+          "text": "A group of cultivars (albino variant) of redcurrant Ribes rubrum, lacking red pigment.",
+          "type": "origin",
+          "cites": [
+            "wiki-whitecurrant",
+            "wiki-redcurrant"
+          ]
+        },
+        {
+          "text": "Translucent white fruit, sweeter and less tart than redcurrant; mildest and sweetest of the currants.",
+          "type": "flavour",
+          "cites": [
+            "wiki-whitecurrant",
+            "wiki-redcurrant"
+          ]
+        },
+        {
+          "text": "Often served raw; used for jams, jellies, wines and the classic Bar-le-duc (Lorraine) jelly.",
+          "type": "uses",
+          "cites": [
+            "wiki-whitecurrant"
+          ]
+        },
+        {
+          "text": "Self-fertile but produces more fruit when cross-pollinated by another variety.",
+          "type": "pollination",
+          "cites": [
+            "wiki-redcurrant"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-whitecurrant",
+          "name": "Wikipedia: White currant",
+          "url": "https://en.wikipedia.org/wiki/White_currant",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-redcurrant",
+          "name": "Wikipedia: Redcurrant",
+          "url": "https://en.wikipedia.org/wiki/Redcurrant",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "currant-magnus-black"
+  ]
+}

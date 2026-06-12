@@ -1,0 +1,255 @@
+{
+  "species_slug": "elderberry",
+  "schema_version": 1,
+  "varieties": {
+    "elderberry-black-beauty": {
+      "slug": "elderberry-black-beauty",
+      "species": "Elderberry",
+      "variety": "Black Beauty",
+      "paragraphs": [
+        "Black Beauty (cultivar 'Gerda') is an ornamental black elder (Sambucus nigra) granted U.S. Plant Patent PP12,305 in 2001. It is grown above all for its dark purple foliage, which holds colour through most of the growing season on purple young stems, then matures to gray-brown older wood. Foliage colour is strongest in full sun and in cooler climates; in hot conditions the leaves can revert toward green, a useful quirk to know in warm Australian gardens.",
+        "Through early to mid summer it produces tiny, lemon-scented pink flowers that contrast against the dark leaves, followed by edible black-purple berries in late summer that draw birds. Plants are self-pollinating, but fruit set improves when grown alongside a second cultivar. It is typically a large shrub, suited to USDA zones 4 to 8, and the branches can be vulnerable to wind and heavy snow."
+      ],
+      "claims": [
+        {
+          "text": "Black Beauty is the cultivar 'Gerda', a Sambucus nigra with U.S. Plant Patent PP12,305 (2001).",
+          "type": "origin",
+          "cites": [
+            "mbg-gerda"
+          ]
+        },
+        {
+          "text": "Foliage is dark purple on purple young stems, holding colour most of the season; colour is best in sun and cool climates and may revert to green in heat.",
+          "type": "appearance",
+          "cites": [
+            "mbg-gerda",
+            "gardenia-gerda"
+          ]
+        },
+        {
+          "text": "Flowers are tiny, lemon-scented and pink in early to mid summer, followed by edible black-purple berries.",
+          "type": "flavour",
+          "cites": [
+            "mbg-gerda",
+            "gardenia-gerda"
+          ]
+        },
+        {
+          "text": "Plants are self-pollinating but fruit yields increase with a second cultivar; hardy USDA zones 4-8.",
+          "type": "quirk",
+          "cites": [
+            "mbg-gerda"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mbg-gerda",
+          "name": "Missouri Botanical Garden Plant Finder",
+          "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?kempercode=b878",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenia-gerda",
+          "name": "Gardenia.net",
+          "url": "https://www.gardenia.net/plant/sambucus-nigra-f-porphyrophylla-gerda",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "elderberry-black-lace": {
+      "slug": "elderberry-black-lace",
+      "species": "Elderberry",
+      "variety": "Black Lace",
+      "paragraphs": [
+        "Black Lace (cultivar 'Eva') is an ornamental black elder (Sambucus nigra) developed in England through a roughly 10-year breeding programme begun in 1988, and granted U.S. Plant Patent PP15,575 in 2005. Its signature feature is very deeply dissected, purple-black foliage that holds its colour through most of the growing season, giving a fine, lacy effect often likened to a Japanese maple. The dark leaves and purple young stems make it a strong foliage accent rather than a fruiting workhorse.",
+        "In early to mid summer it carries flat clusters of lemon-scented pink flowers that contrast against the dark leaves, followed by edible black-purple berries useful for cordials and preserves. Plants are self-pollinating, but fruit yields improve when more than one cultivar is grown together. It holds the RHS Award of Garden Merit, and the flowers and fruit are edible only when cooked."
+      ],
+      "claims": [
+        {
+          "text": "Black Lace is the cultivar 'Eva', a Sambucus nigra developed in England in a roughly 10-year breeding programme from 1988, with U.S. Plant Patent PP15,575 (2005).",
+          "type": "origin",
+          "cites": [
+            "mbg-eva"
+          ]
+        },
+        {
+          "text": "Foliage is very deeply dissected (laciniate) purple-black, holding colour through most of the season, giving a lacy Japanese-maple-like effect.",
+          "type": "appearance",
+          "cites": [
+            "mbg-eva",
+            "rhs-eva"
+          ]
+        },
+        {
+          "text": "Flowers are lemon-scented and pink, in flat clusters in summer, followed by edible black-purple berries.",
+          "type": "flavour",
+          "cites": [
+            "mbg-eva",
+            "rhs-eva"
+          ]
+        },
+        {
+          "text": "Plants are self-pollinating but fruit yields increase with a second cultivar nearby.",
+          "type": "quirk",
+          "cites": [
+            "mbg-eva"
+          ]
+        },
+        {
+          "text": "Holds the RHS Award of Garden Merit; flowers and fruit are edible only when cooked.",
+          "type": "uses",
+          "cites": [
+            "rhs-eva"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mbg-eva",
+          "name": "Missouri Botanical Garden Plant Finder",
+          "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?kempercode=c596",
+          "tier": "third_party"
+        },
+        {
+          "id": "rhs-eva",
+          "name": "Royal Horticultural Society",
+          "url": "https://www.rhs.org.uk/plants/197771/sambucus-nigra-f-porphyrophylla-eva-pbr/details",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "elderberry-black-tower": {
+      "slug": "elderberry-black-tower",
+      "species": "Elderberry",
+      "variety": "Black Tower",
+      "paragraphs": [
+        "Black Tower (cultivar 'Eiffel 1') is a black elder (Sambucus nigra) bred by Kenneth Richard Tobutt of Gravesend, Britain, from seedlings tracing back to a cross of 'Pyramidalis' and 'Guincho Purple', and granted U.S. Plant Patent PP23,633 in 2013. Its defining trait is an upright, narrow, columnar habit, typically about 1.8 to 2.4 m tall but only 0.9 to 1.2 m wide, making it a strong vertical accent for small spaces where most elders sprawl.",
+        "The serrated leaves emerge greener and mature to burgundy and near-black on dark stems. In early summer it bears clusters of soft pink flowers that stand out against the dark foliage, followed by black-purple berries when another Sambucus nigra is nearby for pollination. It is grown chiefly as an architectural ornamental rather than a primary fruit producer."
+      ],
+      "claims": [
+        {
+          "text": "Black Tower is the cultivar 'Eiffel 1', bred by Kenneth Richard Tobutt of Gravesend, Britain, from seedlings derived from 'Pyramidalis' crossed with 'Guincho Purple', with U.S. Plant Patent PP23,633 (2013).",
+          "type": "origin",
+          "cites": [
+            "mbg-eiffel"
+          ]
+        },
+        {
+          "text": "Habit is upright, narrow and columnar, roughly 1.8-2.4 m tall and 0.9-1.2 m wide.",
+          "type": "appearance",
+          "cites": [
+            "mbg-eiffel",
+            "monrovia-eiffel"
+          ]
+        },
+        {
+          "text": "Foliage matures to burgundy and near-black on dark stems.",
+          "type": "appearance",
+          "cites": [
+            "mbg-eiffel",
+            "monrovia-eiffel"
+          ]
+        },
+        {
+          "text": "Flowers are pink in early summer, followed by black-purple berries; benefits from a second Sambucus nigra for pollination.",
+          "type": "flavour",
+          "cites": [
+            "mbg-eiffel",
+            "monrovia-eiffel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mbg-eiffel",
+          "name": "Missouri Botanical Garden Plant Finder",
+          "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?taxonid=359574",
+          "tier": "third_party"
+        },
+        {
+          "id": "monrovia-eiffel",
+          "name": "Monrovia (introducer)",
+          "url": "https://www.monrovia.com/black-tower-elderberry.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "elderberry-madonna": {
+      "slug": "elderberry-madonna",
+      "species": "Elderberry",
+      "variety": "Madonna",
+      "paragraphs": [
+        "Madonna is a variegated black elder (Sambucus nigra) grown for its divided, pinnate leaves edged in bright yellow-gold margins that soften to cream in summer, set against a green centre. It is a comparatively slow-growing, upright, bushy deciduous shrub, and the best leaf colour shows on fresh growth, so it responds well to hard pruning every year or two. This makes it one of the more striking variegated forms in the species, valued mainly as a foliage plant.",
+        "In summer it carries frothy panicles of tiny, scented white flowers, followed by round, glossy black fruit. It typically reaches around 1.5 to 2.5 m in height and spread over several years. As with all elders, the flowers and fruit are edible only after cooking and should not be eaten raw."
+      ],
+      "claims": [
+        {
+          "text": "Madonna is a variegated Sambucus nigra with divided pinnate leaves edged in bright yellow-gold margins that fade to cream in summer.",
+          "type": "appearance",
+          "cites": [
+            "rhs-madonna",
+            "plantlust-madonna"
+          ]
+        },
+        {
+          "text": "It is a slow-growing, upright, bushy deciduous shrub; best colour is on fresh growth, favouring hard pruning every one to two years.",
+          "type": "quirk",
+          "cites": [
+            "plantlust-madonna"
+          ]
+        },
+        {
+          "text": "Flowers are frothy panicles of tiny scented white blooms in summer, followed by round glossy black fruit.",
+          "type": "flavour",
+          "cites": [
+            "rhs-madonna"
+          ]
+        },
+        {
+          "text": "Reaches roughly 1.5-2.5 m in height and spread; flowers and fruit are edible only when cooked.",
+          "type": "uses",
+          "cites": [
+            "rhs-madonna"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rhs-madonna",
+          "name": "Royal Horticultural Society",
+          "url": "https://www.rhs.org.uk/plants/42791/sambucus-nigra-madonna-(v)/details",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantlust-madonna",
+          "name": "Plant Lust",
+          "url": "https://plantlust.com/plants/13447/sambucus-nigra-madonna/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "elderberry-cane",
+    "elderberry-purple",
+    "elderberry-sambucus-fruit-tree",
+    "elderberry-variegated"
+  ]
+}

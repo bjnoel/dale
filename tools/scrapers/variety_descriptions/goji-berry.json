@@ -1,0 +1,84 @@
+{
+  "species_slug": "goji-berry",
+  "schema_version": 1,
+  "varieties": {
+    "goji-berry-black": {
+      "slug": "goji-berry-black",
+      "species": "Goji Berry",
+      "variety": "Black",
+      "paragraphs": [
+        "Black goji is a different species from the familiar red goji (Lycium barbarum). It is Lycium ruthenicum, a thorny deciduous shrub in the nightshade family (Solanaceae) native to the arid, saline, high-altitude regions of Central Asia and Northwest China, including the Qinghai-Tibet plateau, plus parts of Russia, Mongolia, Iran, Pakistan and northern India. Hardy in saline deserts and poor sandy soils, it is even planted there to combat desertification.",
+        "Its standout feature is the fruit: small, round, dark purple to black berries packed with anthocyanins, the same pigment class found in blueberries but here at notably high concentration. The anthocyanins are unusual acylated petunidin derivatives (petunidin glycosides make up over 95 percent of the total), which makes the colour comparatively stable. The dried berries are most often steeped as a tea that turns the water blue or purple, and the pigment is studied as a natural food colourant. It has a long history in traditional Chinese medicine."
+      ],
+      "claims": [
+        {
+          "text": "Black goji is Lycium ruthenicum, a distinct species from the red goji Lycium barbarum, in the family Solanaceae",
+          "type": "fact",
+          "cites": [
+            "wikipedia",
+            "pmc-review"
+          ]
+        },
+        {
+          "text": "It is a thorny deciduous shrub native to the arid, saline, high-altitude regions of Central Asia and Northwest China, plus Russia, Mongolia, Iran, Pakistan and northern India",
+          "type": "fact",
+          "cites": [
+            "wikipedia",
+            "pmc-review"
+          ]
+        },
+        {
+          "text": "Its small berries are dark purple to black and very high in anthocyanins",
+          "type": "fact",
+          "cites": [
+            "mdpi-pharm",
+            "pmc-review"
+          ]
+        },
+        {
+          "text": "The anthocyanins are predominantly acylated petunidin derivatives, accounting for over 95 percent of the total",
+          "type": "fact",
+          "cites": [
+            "mdpi-pharm",
+            "pmc-review"
+          ]
+        },
+        {
+          "text": "The berries are commonly steeped as a tea and the pigment is studied as a natural food colourant, with a history in traditional Chinese medicine",
+          "type": "fact",
+          "cites": [
+            "pmc-review",
+            "mdpi-pharm"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Lycium ruthenicum",
+          "url": "https://en.wikipedia.org/wiki/Lycium_ruthenicum",
+          "tier": "third_party"
+        },
+        {
+          "id": "pmc-review",
+          "name": "A review of Lycium ruthenicum Murray (PMC, NCBI)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11550641/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "mdpi-pharm",
+          "name": "Black Goji Berry (Lycium ruthenicum Murray): A Review of Its Pharmacological Activity, Nutrients (MDPI)",
+          "url": "https://www.mdpi.com/2072-6643/15/19/4181",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "goji-berry-shrub"
+  ]
+}
