@@ -1,0 +1,593 @@
+{
+  "species_slug": "macadamia",
+  "schema_version": 1,
+  "varieties": {
+    "macadamia-246": {
+      "slug": "macadamia-246",
+      "species": "Macadamia",
+      "variety": "246",
+      "paragraphs": [
+        "Keauhou (HAES 246) was one of the first five Hawaiian macadamia cultivars, released in 1948, and became a foundation variety for the first commercial orchards in Hawaii. It is a vigorous tree that was long rated a top choice under good growing conditions, though it needs deep soil and wind protection to perform well.",
+        "Keauhou is prized for outstanding nut and kernel quality. It carries large clusters of uniform, well shaped nuts (around 55 to the pound) with roughly 35 to 40 percent kernel, and its anthracnose resistance is excellent, which suits it to humid, high rainfall districts."
+      ],
+      "claims": [
+        {"text": "Keauhou (HAES 246) was one of the first five Hawaiian cultivars, released in 1948.", "type": "origin", "cites": ["natcomms2022", "haws_b121"]},
+        {"text": "It became a foundation cultivar for the first commercial macadamia orchards in Hawaii and is a vigorous tree.", "type": "cultivation", "cites": ["haws_b121"]},
+        {"text": "It needs good soil depth and wind protection for satisfactory performance.", "type": "cultivation", "cites": ["haws_b121"]},
+        {"text": "It bears large clusters of uniform, well shaped nuts averaging about 55 to the pound, with roughly 35 to 40 percent kernel, and has excellent anthracnose resistance.", "type": "kernel", "cites": ["haws_b121"]}
+      ],
+      "sources": [
+        {"id": "natcomms2022", "name": "Nature Communications, Signatures of selection in recently domesticated macadamia", "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8752631/", "tier": "authoritative"},
+        {"id": "haws_b121", "name": "Hawaii Agricultural Experiment Station Bulletin 121, Growing Macadamia Nuts in Hawaii", "url": "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/B-121.pdf", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-246-keauhou": {
+      "slug": "macadamia-246-keauhou",
+      "species": "Macadamia",
+      "variety": "246 / Keauhou",
+      "paragraphs": [
+        "Keauhou (HAES 246) was one of the first five Hawaiian macadamia cultivars, released in 1948, and became a foundation variety for the first commercial orchards in Hawaii. It is a vigorous tree that was long rated a top choice under good growing conditions, though it needs deep soil and wind protection to perform well.",
+        "Keauhou is prized for outstanding nut and kernel quality. It carries large clusters of uniform, well shaped nuts (around 55 to the pound) with roughly 35 to 40 percent kernel, and its anthracnose resistance is excellent, which suits it to humid, high rainfall districts."
+      ],
+      "claims": [
+        {"text": "Keauhou (HAES 246) was one of the first five Hawaiian cultivars, released in 1948.", "type": "origin", "cites": ["natcomms2022", "haws_b121"]},
+        {"text": "It became a foundation cultivar for the first commercial macadamia orchards in Hawaii and is a vigorous tree.", "type": "cultivation", "cites": ["haws_b121"]},
+        {"text": "It needs good soil depth and wind protection for satisfactory performance.", "type": "cultivation", "cites": ["haws_b121"]},
+        {"text": "It bears large clusters of uniform, well shaped nuts averaging about 55 to the pound, with roughly 35 to 40 percent kernel, and has excellent anthracnose resistance.", "type": "kernel", "cites": ["haws_b121"]}
+      ],
+      "sources": [
+        {"id": "natcomms2022", "name": "Nature Communications, Signatures of selection in recently domesticated macadamia", "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8752631/", "tier": "authoritative"},
+        {"id": "haws_b121", "name": "Hawaii Agricultural Experiment Station Bulletin 121, Growing Macadamia Nuts in Hawaii", "url": "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/B-121.pdf", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-344": {
+      "slug": "macadamia-344",
+      "species": "Macadamia",
+      "variety": "344",
+      "paragraphs": [
+        "Kau (HAES 344) is a first generation Hawaiian cultivar, selected from the Nutridge seedling orchard in Hawaii in the 1930s. It went on to become one of the most widely planted varieties in north Queensland and remains one of the Hawaiian selections planted widely across the Australian industry.",
+        "The tree is compact and dense and bears early. That heavy branch and leaf structure is also a weakness: Kau trees suffered badly in some areas during cyclone Joy, most likely because of the dense canopy."
+      ],
+      "claims": [
+        {"text": "Kau (HAES 344) is a first generation Hawaiian cultivar selected from the Nutridge seedling orchard in Hawaii in the 1930s.", "type": "origin", "cites": ["natcomms2022"]},
+        {"text": "It became one of the most widely planted cultivars in north Queensland.", "type": "cultivation", "cites": ["rfca_maccult"]},
+        {"text": "It is among the Hawaiian (HAES) selections planted widely across the Australian industry.", "type": "cultivation", "cites": ["macinnov"]},
+        {"text": "The tree is compact and dense.", "type": "characteristic", "cites": ["rfca_maccult", "amorentia"]},
+        {"text": "Its dense branch and leaf structure caused Kau trees to suffer badly in some areas during cyclone Joy.", "type": "characteristic", "cites": ["rfca_maccult"]}
+      ],
+      "sources": [
+        {"id": "natcomms2022", "name": "Nature Communications, Signatures of selection in recently domesticated macadamia", "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8752631/", "tier": "authoritative"},
+        {"id": "rfca_maccult", "name": "RFCA Archive, Macadamia Cultivars for North Queensland", "url": "https://rfcarchives.org.au/Next/Fruits/Nuts/MacCultivars5-92.htm", "tier": "owned"},
+        {"id": "macinnov", "name": "Macadamia Innovation, Breeding history", "url": "https://macadamiainnovation.com.au/welcome/breeding/", "tier": "authoritative"},
+        {"id": "amorentia", "name": "Amorentia Estate and Nursery, Comparing Macadamia Cultivars", "url": "https://amorentia.co.za/comparing-macadamia-cultivars-which-is-right-for-your-farm/", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-741": {
+      "slug": "macadamia-741",
+      "species": "Macadamia",
+      "variety": "741",
+      "paragraphs": [
+        "Mauka (HAES 741) was selected by the University of Hawaii in 1957 and named in 1977. It is genetically identical to HAES 660 (Keaau), both having been derived from the same original trees in the Deschwanden orchard on Kauai. It tends to higher kernel recovery and has long, relatively narrow, spiny leaves.",
+        "In Australia, Mauka is regarded as a consistent, even performer across regions and is one of the widely planted Hawaiian selections. It is also the cultivar behind the reference macadamia genome, which was sequenced and assembled from HAES 741."
+      ],
+      "claims": [
+        {"text": "Mauka (HAES 741) was selected by the University of Hawaii in 1957 and named in 1977.", "type": "origin", "cites": ["hortsci2019"]},
+        {"text": "It is genetically identical to HAES 660 (Keaau), both derived from the same original trees in the Deschwanden orchard on Kauai.", "type": "origin", "cites": ["hortsci2019"]},
+        {"text": "It tends to higher kernel recovery.", "type": "kernel", "cites": ["hortsci2019"]},
+        {"text": "In Australia it is regarded as a consistent, even performer across regions and is among the widely planted Hawaiian selections.", "type": "cultivation", "cites": ["rfca_maccult", "macinnov"]},
+        {"text": "It has long, relatively narrow, spiny leaves.", "type": "characteristic", "cites": ["daf_varid"]},
+        {"text": "The reference macadamia genome was sequenced and assembled from HAES 741.", "type": "characteristic", "cites": ["genome_g3"]}
+      ],
+      "sources": [
+        {"id": "hortsci2019", "name": "HortScience 54(4):616, Genetic Identity of Macadamia Cultivars HAES741 and HAES660", "url": "https://journals.ashs.org/hortsci/view/journals/hortsci/54/4/article-p616.xml", "tier": "authoritative"},
+        {"id": "rfca_maccult", "name": "RFCA Archive, Macadamia Cultivars for North Queensland", "url": "https://rfcarchives.org.au/Next/Fruits/Nuts/MacCultivars5-92.htm", "tier": "owned"},
+        {"id": "macinnov", "name": "Macadamia Innovation, Breeding history", "url": "https://macadamiainnovation.com.au/welcome/breeding/", "tier": "authoritative"},
+        {"id": "daf_varid", "name": "Queensland DPI, Macadamia Variety Identifier", "url": "https://era.dpi.qld.gov.au/id/eprint/1964/14/mac-varieties.pdf", "tier": "authoritative"},
+        {"id": "genome_g3", "name": "G3 Genes Genomes Genetics, Chromosome-Scale Assembly of the Macadamia Genome (HAES 741)", "url": "https://academic.oup.com/g3journal/article/10/10/3497/6053545", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-814": {
+      "slug": "macadamia-814",
+      "species": "Macadamia",
+      "variety": "814",
+      "paragraphs": [
+        "HAES 814 is a small, upright, open tree that starts bearing early. It carries many bunches but produces small nuts, which is why breeding researchers have used it as a small seeded pollen parent in crosses with larger seeded cultivars such as HAES 246.",
+        "Its nut drop comes late in the season, and it has a tendency to sticktights, where dry mature nuts stay attached to the tree rather than falling naturally."
+      ],
+      "claims": [
+        {"text": "HAES 814 is a small, upright, open tree that begins bearing early (precocious).", "type": "characteristic", "cites": ["daf_varid"]},
+        {"text": "It is small seeded and has been used in research as a small seeded pollen parent crossed with larger seeded cultivars such as HAES 246.", "type": "characteristic", "cites": ["pollenstudy"]},
+        {"text": "It has late nut drop with a tendency to sticktights, dry mature nuts that stay attached rather than falling.", "type": "characteristic", "cites": ["daf_varid"]}
+      ],
+      "sources": [
+        {"id": "daf_varid", "name": "Queensland DPI, Macadamia Variety Identifier", "url": "https://era.dpi.qld.gov.au/id/eprint/1964/14/mac-varieties.pdf", "tier": "authoritative"},
+        {"id": "pollenstudy", "name": "ScienceDirect, Pollen-parent affects fruit, nut and kernel development of Macadamia", "url": "https://www.sciencedirect.com/science/article/abs/pii/S030442381830637X", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-816": {
+      "slug": "macadamia-816",
+      "species": "Macadamia",
+      "variety": "816",
+      "paragraphs": [
+        "HAES 816 is a Hawaiian selection that has become one of the preferred varieties in new Australian plantings. The tree is upright and dense, and it is precocious, coming into bearing early. It also has a tendency to flower a second time in summer.",
+        "Its main appeal is kernel quality. It produces large, round, white kernels with high kernel recovery and a good proportion of whole kernels."
+      ],
+      "claims": [
+        {"text": "HAES 816 is a Hawaiian selection and one of the preferred varieties in new Australian plantings.", "type": "cultivation", "cites": ["macinnov", "amorentia"]},
+        {"text": "The tree is upright and dense, and precocious, with a tendency to flower a second time in summer.", "type": "characteristic", "cites": ["daf_varid"]},
+        {"text": "It produces large, round, white kernels with high kernel recovery and a good percentage of whole kernels.", "type": "kernel", "cites": ["daf_varid", "amorentia"]}
+      ],
+      "sources": [
+        {"id": "macinnov", "name": "Macadamia Innovation, Breeding history", "url": "https://macadamiainnovation.com.au/welcome/breeding/", "tier": "authoritative"},
+        {"id": "daf_varid", "name": "Queensland DPI, Macadamia Variety Identifier", "url": "https://era.dpi.qld.gov.au/id/eprint/1964/14/mac-varieties.pdf", "tier": "authoritative"},
+        {"id": "amorentia", "name": "Amorentia Estate and Nursery, Comparing Macadamia Cultivars", "url": "https://amorentia.co.za/comparing-macadamia-cultivars-which-is-right-for-your-farm/", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-849": {
+      "slug": "macadamia-849",
+      "species": "Macadamia",
+      "variety": "849",
+      "paragraphs": [
+        "HAES 849 is one of the numbered Hawaiian (HAES) macadamia selections grown in Australia. It is valued as an early bearing cultivar, coming into crop early and producing in the early part of the season. In comparative Queensland trials it stood out among the early bearing selections for strong young tree production."
+      ],
+      "claims": [
+        {"text": "HAES 849 is a Hawaiian selection grown in Australia and is an early bearing cultivar that crops early in the season.", "type": "characteristic", "cites": ["rfca_maccult", "amorentia"]}
+      ],
+      "sources": [
+        {"id": "rfca_maccult", "name": "RFCA Archive, Macadamia Cultivars for North Queensland", "url": "https://rfcarchives.org.au/Next/Fruits/Nuts/MacCultivars5-92.htm", "tier": "owned"},
+        {"id": "amorentia", "name": "Amorentia Estate and Nursery, Comparing Macadamia Cultivars", "url": "https://amorentia.co.za/comparing-macadamia-cultivars-which-is-right-for-your-farm/", "tier": "nursery"}
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.80,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-a16": {
+      "slug": "macadamia-a16",
+      "species": "Macadamia",
+      "variety": "A16",
+      "paragraphs": [
+        "A16 is an early Hidden Valley A-series selection bred at Hidden Valley Plantations, Beerwah, from open pollinated Renown (an integrifolia by tetraphylla hybrid). It forms a compact, erect tree with a low density canopy, more restrained than the vigorous A4. The cultivar is noted for an unusually short flowering period and tends to set several nuts per raceme (about 4.4 on average in its patent trial).",
+        "A16 carries a thin shell and gives high kernel recovery (around 42 to 45 percent), with most kernels reaching premium oil levels. It is a consistent, high yielding variety, but is noted to have husk spot concerns and a late nut drop. Its plant breeder's rights have expired, so it is now royalty free."
+      ],
+      "claims": [
+        {"text": "A16 was bred at Hidden Valley Plantations, Beerwah, from open pollinated Renown, an integrifolia by tetraphylla hybrid.", "type": "origin", "cites": ["patent_a16", "hvp"]},
+        {"text": "It forms a compact, erect tree with a low density canopy, less vigorous than A4.", "type": "habit", "cites": ["patent_a16", "hvp"]},
+        {"text": "A16 has an unusually short flowering period and sets several nuts per raceme (about 4.4 on average).", "type": "flowering", "cites": ["patent_a16"]},
+        {"text": "The nut has a thin shell, and kernel recovery is high (around 42 to 45 percent).", "type": "kernel", "cites": ["patent_a16", "hvp"]},
+        {"text": "A16 is a consistent, high yielding variety, rated the highest of those tested in its patent trial.", "type": "yield", "cites": ["patent_a16", "hvp"]},
+        {"text": "It is noted to have husk spot concerns and a late nut drop.", "type": "disease", "cites": ["hvp"]},
+        {"text": "Its plant breeder's rights have expired, so it is now royalty free.", "type": "status", "cites": ["hvp"]}
+      ],
+      "sources": [
+        {"id": "patent_a16", "name": "US Plant Patent PP7521 Macadamia Hidden Valley A16 (Google Patents)", "url": "https://patents.google.com/patent/USPP7521P/en", "tier": "authoritative"},
+        {"id": "hvp", "name": "Hidden Valley Plantations, A-Series Varieties (breeder reference)", "url": "https://www.hvp-macadamias.com/A-Series-Varieties/", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-a203": {
+      "slug": "macadamia-a203",
+      "species": "Macadamia",
+      "variety": "A203",
+      "paragraphs": [
+        "A203 is a later Hidden Valley A-series macadamia from Hidden Valley Plantations, Beerwah. It is a smaller, upright tree with a somewhat irregular, straggly habit and a moderate to open canopy. Its standout feature is precocity, coming into bearing very early and giving good early yields, which appeals to growers wanting a quicker return.",
+        "A203 has an unusual, drawn out flowering pattern, flowering over much of the year rather than in one short burst. It carries full, white kernels with kernel recovery around 40 percent. A203 is a grower contract variety, so it remains under licence with royalties payable to the breeder."
+      ],
+      "claims": [
+        {"text": "A203 is a Hidden Valley A-series cultivar from Hidden Valley Plantations, Beerwah.", "type": "origin", "cites": ["hvp", "daf_vid"]},
+        {"text": "It is a small, upright tree with an irregular, straggly habit and a moderate to open canopy.", "type": "habit", "cites": ["daf_vid", "hvp"]},
+        {"text": "A203 is very precocious, bearing very early with good early yields.", "type": "precocity", "cites": ["daf_vid", "hvp"]},
+        {"text": "It has a distinctive prolonged, late flowering pattern extending over much of the year.", "type": "flowering", "cites": ["daf_vid", "hvp"]},
+        {"text": "Kernels are full and white, with kernel recovery around 40 percent.", "type": "kernel", "cites": ["hvp"]},
+        {"text": "A203 is a grower contract variety, under licence with royalties payable.", "type": "status", "cites": ["hvp"]}
+      ],
+      "sources": [
+        {"id": "hvp", "name": "Hidden Valley Plantations, A-Series Varieties (breeder reference)", "url": "https://www.hvp-macadamias.com/A-Series-Varieties/", "tier": "third_party"},
+        {"id": "daf_vid", "name": "Macadamia Variety Identifier, Queensland Department of Primary Industries (DAF)", "url": "https://era.dpi.qld.gov.au/id/eprint/1964/14/mac-varieties.pdf", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-a268": {
+      "slug": "macadamia-a268",
+      "species": "Macadamia",
+      "variety": "A268",
+      "paragraphs": [
+        "A268 is a later Hidden Valley A-series selection from Hidden Valley Plantations, Beerwah. It forms a medium to large, spreading tree with a moderate to open canopy and is precocious, bearing early. It is best known for nut size, setting very large, even, uniform nuts, noticeably bigger than older selections such as A4.",
+        "A268 gives kernel recovery around 40 percent, and its large, regular nuts suit growers and markets that favour size. It is a grower contract variety, so it stays under licence with royalties payable to the breeder, unlike the older royalty free A-series cultivars."
+      ],
+      "claims": [
+        {"text": "A268 is a Hidden Valley A-series cultivar from Hidden Valley Plantations, Beerwah.", "type": "origin", "cites": ["hvp", "daf_vid"]},
+        {"text": "It forms a medium to large, spreading, precocious tree with a moderate to open canopy.", "type": "habit", "cites": ["daf_vid", "hvp"]},
+        {"text": "A268 sets very large, even, uniform nuts, notably larger than A4.", "type": "nut", "cites": ["hvp", "daf_vid"]},
+        {"text": "Kernel recovery is around 40 percent.", "type": "kernel", "cites": ["hvp"]},
+        {"text": "A268 is a grower contract variety, under licence with royalties payable.", "type": "status", "cites": ["hvp"]}
+      ],
+      "sources": [
+        {"id": "hvp", "name": "Hidden Valley Plantations, A-Series Varieties (breeder reference)", "url": "https://www.hvp-macadamias.com/A-Series-Varieties/", "tier": "third_party"},
+        {"id": "daf_vid", "name": "Macadamia Variety Identifier, Queensland Department of Primary Industries (DAF)", "url": "https://era.dpi.qld.gov.au/id/eprint/1964/14/mac-varieties.pdf", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-a38": {
+      "slug": "macadamia-a38",
+      "species": "Macadamia",
+      "variety": "A38",
+      "paragraphs": [
+        "A38 is an Australian Hidden Valley selection from the Hidden Valley Plantations breeding program at Beerwah, Queensland. It is a vigorous, precocious tree with an upright habit and an open canopy, coming into bearing within a few years and giving high yield per hectare. Its uniform, medium to large nuts and manageable growth make it well suited to high density planting.",
+        "A38 is particularly valued for producing a high percentage of whole kernels with good kernel integrity, a premium trait for processors. Kernel recovery sits at a moderate to high level (around 38 percent). Like A4 and A16, its plant breeder's rights have expired, so it is now royalty free and widely propagated."
+      ],
+      "claims": [
+        {"text": "A38 is an Australian Hidden Valley selection (Beerwah, Queensland) that is vigorous, precocious and upright with an open canopy, gives high yield per hectare, and suits high density planting.", "type": "habit", "cites": ["hvp", "daleys_a38"]},
+        {"text": "A38 produces a high percentage of whole kernels with good kernel integrity.", "type": "kernel", "cites": ["hvp", "sciencedirect_a38"]},
+        {"text": "Kernel recovery is around 38 percent.", "type": "kernel", "cites": ["hvp"]},
+        {"text": "Its plant breeder's rights have expired, so it is now royalty free.", "type": "status", "cites": ["hvp"]}
+      ],
+      "sources": [
+        {"id": "hvp", "name": "Hidden Valley Plantations, A-Series Varieties (breeder reference)", "url": "https://www.hvp-macadamias.com/A-Series-Varieties/", "tier": "third_party"},
+        {"id": "sciencedirect_a38", "name": "Postharvest dropping of macadamia nut-in-shell causes damage to kernel (Postharvest Biology and Technology, ScienceDirect)", "url": "https://www.sciencedirect.com/science/article/abs/pii/S0925521408000392", "tier": "authoritative"},
+        {"id": "daleys_a38", "name": "Daleys Fruit Tree Nursery, Macadamia A38", "url": "https://www.daleysfruit.com.au/buy/macadamia-a38-tree.htm", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-a4": {
+      "slug": "macadamia-a4",
+      "species": "Macadamia",
+      "variety": "A4",
+      "paragraphs": [
+        "A4 is one of the first Hidden Valley A-series macadamias, bred at Hidden Valley Plantations near Beerwah in southern Queensland from open pollinated Renown, an integrifolia by tetraphylla hybrid. The tree is semi-erect and strongly vigorous with a relatively short juvenile phase, so it comes into bearing early (precocious). It is valued for tolerance to Cercospora husk spot, a useful trait in humid subtropical orchards.",
+        "Kernels are creamy white with high oil content, and A4 is known for very high kernel recovery (around 45 to 46 percent), among the best of the older Australian selections. It flowers mid to late and harvests mid season. The original plant breeder's rights have expired, so A4 is now royalty free and in the public domain, which keeps it widely available."
+      ],
+      "claims": [
+        {"text": "A4 was bred at Hidden Valley Plantations near Beerwah, Queensland, from open pollinated Renown, an integrifolia by tetraphylla hybrid.", "type": "origin", "cites": ["patent_a4", "hvp"]},
+        {"text": "The tree is semi-erect and strongly vigorous with a short juvenile phase, bearing early (precocious).", "type": "habit", "cites": ["patent_a4", "hvp"]},
+        {"text": "A4 is tolerant to Cercospora husk spot.", "type": "disease", "cites": ["patent_a4", "hvp"]},
+        {"text": "Kernels are creamy white with high oil content and very high kernel recovery (around 45 to 46 percent).", "type": "kernel", "cites": ["patent_a4", "hvp"]},
+        {"text": "A4 flowers mid to late and harvests mid season.", "type": "season", "cites": ["hvp"]},
+        {"text": "Its plant breeder's rights have expired, so A4 is now royalty free and in the public domain.", "type": "status", "cites": ["hvp"]}
+      ],
+      "sources": [
+        {"id": "patent_a4", "name": "US Plant Patent PP7490 Macadamia Hidden Valley A4 (Google Patents)", "url": "https://patents.google.com/patent/USPP7490P/en", "tier": "authoritative"},
+        {"id": "hvp", "name": "Hidden Valley Plantations, A-Series Varieties (breeder reference)", "url": "https://www.hvp-macadamias.com/A-Series-Varieties/", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-beaumont": {
+      "slug": "macadamia-beaumont",
+      "species": "Macadamia",
+      "variety": "Beaumont",
+      "paragraphs": [
+        "Beaumont is an interspecific hybrid of Macadamia integrifolia and M. tetraphylla, discovered by Dr J.H. Beaumont. New leaves emerge reddish and the flowers are a bright pink borne on long racemes, which makes it ornamental as well as productive. It is precocious, often carrying a useful crop by about the fourth year.",
+        "Its shell is easier to open than that of most commercial varieties, and the kernel is high in oil but not especially sweet. The nuts tend to cling to the tree rather than drop when ripe, so harvest is by hand. Along with H2, Beaumont is one of the standard rootstocks used in the Australian macadamia industry."
+      ],
+      "claims": [
+        {"text": "Beaumont is an interspecific hybrid of M. integrifolia and M. tetraphylla, discovered by Dr J.H. Beaumont.", "type": "origin", "cites": ["wiki_mac", "daleys_beaumont"]},
+        {"text": "It has reddish new leaves and bright pink flowers on long racemes, and is precocious, often carrying a useful crop by about the fourth year.", "type": "appearance", "cites": ["wiki_mac"]},
+        {"text": "Its shell is easier to open than most commercial varieties and the kernel is high in oil but not sweet, and the nuts tend not to drop when ripe.", "type": "kernel", "cites": ["wiki_mac"]},
+        {"text": "Along with H2, Beaumont is one of the standard commercial rootstocks used in the Australian macadamia industry.", "type": "use", "cites": ["ishs_rootstock", "daleys_beaumont"]}
+      ],
+      "sources": [
+        {"id": "wiki_mac", "name": "Wikipedia: Macadamia", "url": "https://en.wikipedia.org/wiki/Macadamia", "tier": "third_party"},
+        {"id": "daleys_beaumont", "name": "Daleys Fruit: Macadamia Beaumont", "url": "https://www.daleysfruit.com.au/Macadamia-beaumont.htm", "tier": "nursery"},
+        {"id": "ishs_rootstock", "name": "ISHS: Preliminary evaluation of macadamia rootstocks for yield and tree height", "url": "https://ishs.org/ishs-article/1109_30/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-daddow": {
+      "slug": "macadamia-daddow",
+      "species": "Macadamia",
+      "variety": "Daddow",
+      "paragraphs": [
+        "Daddow is an Australian macadamia cultivar grown for nut production. Its trees are typically large and rounded with an open canopy, and they bear medium sized nuts.",
+        "Daddow is strongly outcrossing. Paternity studies found around 88 percent of its nuts were cross-pollinated and only about 3 percent self set, even for trees in the middle of a single-cultivar block, so it sets best with other varieties nearby. Smaller Daddow nuts tend to carry a higher relative share of unsaturated fatty acids, such as oleic acid, than larger nuts."
+      ],
+      "claims": [
+        {"text": "Daddow is an Australian macadamia cultivar grown for nut production.", "type": "origin", "cites": ["pmc_daddow", "daleys_daddow"]},
+        {"text": "Its trees are typically large and rounded with an open canopy and bear medium sized nuts.", "type": "appearance", "cites": ["pmc_daddow"]},
+        {"text": "Daddow is strongly outcrossing, with paternity studies finding about 88 percent cross-pollination and only around 3 percent self set, even for trees in the middle of a single-cultivar block.", "type": "quirk", "cites": ["pmc_daddow"]},
+        {"text": "Smaller Daddow nuts tend to carry a higher relative share of unsaturated fatty acids, such as oleic acid, than larger nuts.", "type": "kernel", "cites": ["pmc_daddow"]}
+      ],
+      "sources": [
+        {"id": "pmc_daddow", "name": "Hardner et al., Relationships between Nut Size, Kernel Quality, Nutritional Composition and Levels of Outcrossing in Three Macadamia Cultivars (PMC)", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7076547/", "tier": "authoritative"},
+        {"id": "daleys_daddow", "name": "Daleys Fruit: Macadamia Daddow", "url": "https://www.daleysfruit.com.au/buy/macadamia-daddow-tree.htm", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-h2": {
+      "slug": "macadamia-h2",
+      "species": "Macadamia",
+      "variety": "H2",
+      "paragraphs": [
+        "H2, known as the H2 Hinde, is a Macadamia integrifolia selection from a tree planted around the 1920s at Colliston, a farm in the Gold Coast hinterland of Queensland established by Michael James Hinde in 1879. It was registered as scion wood in 1960, becoming one of only two Australian-developed varieties to reach commercial status at the time.",
+        "H2 went on to become a backbone of the Australian industry. Over recent decades it has been the dominant rootstock kept by nurseries, with roughly 90 percent of grafted commercial trees using it as rootstock, which is why it is often sold as a rootstock variety rather than for its own crop."
+      ],
+      "claims": [
+        {"text": "H2 (the H2 Hinde) is a Macadamia integrifolia selection from a tree planted around the 1920s at Colliston, a Queensland Gold Coast hinterland farm established by Michael James Hinde in 1879.", "type": "origin", "cites": ["wiki_h2"]},
+        {"text": "It was registered as scion wood in 1960, one of only two Australian-developed varieties to reach commercial status at the time.", "type": "origin", "cites": ["wiki_h2"]},
+        {"text": "H2 has been the dominant macadamia rootstock kept by Australian nurseries, with roughly 90 percent of grafted commercial trees using it as rootstock.", "type": "use", "cites": ["wiki_h2", "ishs_rootstock"]}
+      ],
+      "sources": [
+        {"id": "wiki_h2", "name": "Wikipedia: H2 Hinde Tree", "url": "https://en.wikipedia.org/wiki/H2_Hinde_Tree", "tier": "third_party"},
+        {"id": "ishs_rootstock", "name": "ISHS: Preliminary evaluation of macadamia rootstocks for yield and tree height", "url": "https://ishs.org/ishs-article/1109_30/", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-lotsa-nuts": {
+      "slug": "macadamia-lotsa-nuts",
+      "species": "Macadamia",
+      "variety": "Lotsa Nuts",
+      "paragraphs": [
+        "Lotsa Nuts is a Macadamia integrifolia selection sold within the Austraflora Tucker Time range of native bushfood plants. It is a precocious, heavy bearing tree that crops nuts by the bucketload and typically starts fruiting within about two to three years of planting, making it popular for backyards.",
+        "It carries pendulous, perfumed cream flowers in spring, followed by medium to large nuts with a rich, creamy flavour. The plant is self pollinating, has handsome glossy lobed leaves, and can be grown as a specimen, screen or hedge. It is marketed under the registered Austraflora brand."
+      ],
+      "claims": [
+        {"text": "A Macadamia integrifolia selection sold in the Austraflora Tucker Time native bushfood range; a precocious, heavy bearing tree that fruits in about two to three years.", "type": "origin", "cites": ["austraflora", "faceysnursery", "rosscreek"]},
+        {"text": "Bears pendulous, perfumed cream flowers in spring, followed by medium to large nuts with a rich, creamy flavour.", "type": "morphology", "cites": ["austraflora", "faceysnursery", "rosscreek"]},
+        {"text": "Self pollinating, with glossy lobed leaves; grown as a specimen, screen or hedge and marketed under the registered Austraflora brand.", "type": "horticulture", "cites": ["austraflora", "faceysnursery", "rosscreek"]}
+      ],
+      "sources": [
+        {"id": "austraflora", "name": "Austraflora (Tucker Time range)", "url": "https://austraflora.com/project/macadamia-tucker-time-lotsa-nuts/", "tier": "third_party"},
+        {"id": "faceysnursery", "name": "Facey's Nursery", "url": "https://www.faceysnursery.com.au/catalogue/maclot18-macadamia-integrifolia-lotsa-nuts/", "tier": "nursery"},
+        {"id": "rosscreek", "name": "Ross Creek Tropicals", "url": "https://www.rosscreektropicals.com.au/products/macadamia-lotsa-nuts", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-mini-maca": {
+      "slug": "macadamia-mini-maca",
+      "species": "Macadamia",
+      "variety": "Mini Maca",
+      "paragraphs": [
+        "MiniMaca is a naturally dwarf Macadamia tetraphylla that began as a one off dwarf tree found within a wild, open pollinated population in northern New South Wales (identified by Ian Matthias). It grows to roughly half the size of a standard macadamia with a more columnar habit, suiting pots, small gardens and clipped hedges.",
+        "The tree flushes red and pink new growth several times a year and carries fragrant pink flowers, giving it ornamental appeal. It is precocious, bearing medium sized, thin shelled, smooth round nuts with white kernels that are good eaten raw or roasted. MiniMaca is protected by Plant Breeders Rights (granted 2014), so propagation is prohibited."
+      ],
+      "claims": [
+        {"text": "A naturally dwarf Macadamia tetraphylla originating as a one off dwarf tree found in a wild, open pollinated population in northern New South Wales (identified by Ian Matthias).", "type": "origin", "cites": ["acra", "daleys"]},
+        {"text": "Grows to about half the size of a standard macadamia with a more columnar habit; flushes red and pink new growth several times a year with fragrant pink flowers; suits pots, small spaces and hedging.", "type": "morphology", "cites": ["acra", "daleys"]},
+        {"text": "Precocious, producing medium sized, thin shelled, smooth round nuts with white kernels suitable for eating raw or roasted.", "type": "horticulture", "cites": ["acra", "daleys"]},
+        {"text": "Protected by Plant Breeders Rights (granted 2014); propagation is prohibited.", "type": "status", "cites": ["acra", "daleys"]}
+      ],
+      "sources": [
+        {"id": "acra", "name": "Australian Cultivar Registration Authority (ACRA)", "url": "https://acra.biodiversity.services/info/rdetail/3681", "tier": "authoritative"},
+        {"id": "daleys", "name": "Daleys Fruit Tree Nursery", "url": "https://www.daleysfruit.com.au/buy-macadamia-minimaca-macadamia-tetraphylla.htm", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-minimaca-pbr": {
+      "slug": "macadamia-minimaca-pbr",
+      "species": "Macadamia",
+      "variety": "MiniMaca PBR",
+      "paragraphs": [
+        "MiniMaca is a naturally dwarf Macadamia tetraphylla that began as a one off dwarf tree found within a wild, open pollinated population in northern New South Wales (identified by Ian Matthias). It grows to roughly half the size of a standard macadamia with a more columnar habit, suiting pots, small gardens and clipped hedges.",
+        "The tree flushes red and pink new growth several times a year and carries fragrant pink flowers, giving it ornamental appeal. It is precocious, bearing medium sized, thin shelled, smooth round nuts with white kernels that are good eaten raw or roasted. MiniMaca is protected by Plant Breeders Rights (granted 2014), so propagation is prohibited."
+      ],
+      "claims": [
+        {"text": "A naturally dwarf Macadamia tetraphylla originating as a one off dwarf tree found in a wild, open pollinated population in northern New South Wales (identified by Ian Matthias).", "type": "origin", "cites": ["acra", "daleys"]},
+        {"text": "Grows to about half the size of a standard macadamia with a more columnar habit; flushes red and pink new growth several times a year with fragrant pink flowers; suits pots, small spaces and hedging.", "type": "morphology", "cites": ["acra", "daleys"]},
+        {"text": "Precocious, producing medium sized, thin shelled, smooth round nuts with white kernels suitable for eating raw or roasted.", "type": "horticulture", "cites": ["acra", "daleys"]},
+        {"text": "Protected by Plant Breeders Rights (granted 2014); propagation is prohibited.", "type": "status", "cites": ["acra", "daleys"]}
+      ],
+      "sources": [
+        {"id": "acra", "name": "Australian Cultivar Registration Authority (ACRA)", "url": "https://acra.biodiversity.services/info/rdetail/3681", "tier": "authoritative"},
+        {"id": "daleys", "name": "Daleys Fruit Tree Nursery", "url": "https://www.daleysfruit.com.au/buy-macadamia-minimaca-macadamia-tetraphylla.htm", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-nut-a16": {
+      "slug": "macadamia-nut-a16",
+      "species": "Macadamia",
+      "variety": "Nut A16",
+      "paragraphs": [
+        "A16 is an early Hidden Valley A-series selection bred at Hidden Valley Plantations, Beerwah, from open pollinated Renown (an integrifolia by tetraphylla hybrid). It forms a compact, erect tree with a low density canopy, more restrained than the vigorous A4. The cultivar is noted for an unusually short flowering period and tends to set several nuts per raceme (about 4.4 on average in its patent trial).",
+        "A16 carries a thin shell and gives high kernel recovery (around 42 to 45 percent), with most kernels reaching premium oil levels. It is a consistent, high yielding variety, but is noted to have husk spot concerns and a late nut drop. Its plant breeder's rights have expired, so it is now royalty free."
+      ],
+      "claims": [
+        {"text": "A16 was bred at Hidden Valley Plantations, Beerwah, from open pollinated Renown, an integrifolia by tetraphylla hybrid.", "type": "origin", "cites": ["patent_a16", "hvp"]},
+        {"text": "It forms a compact, erect tree with a low density canopy, less vigorous than A4.", "type": "habit", "cites": ["patent_a16", "hvp"]},
+        {"text": "A16 has an unusually short flowering period and sets several nuts per raceme (about 4.4 on average).", "type": "flowering", "cites": ["patent_a16"]},
+        {"text": "The nut has a thin shell, and kernel recovery is high (around 42 to 45 percent).", "type": "kernel", "cites": ["patent_a16", "hvp"]},
+        {"text": "A16 is a consistent, high yielding variety, rated the highest of those tested in its patent trial.", "type": "yield", "cites": ["patent_a16", "hvp"]},
+        {"text": "It is noted to have husk spot concerns and a late nut drop.", "type": "disease", "cites": ["hvp"]},
+        {"text": "Its plant breeder's rights have expired, so it is now royalty free.", "type": "status", "cites": ["hvp"]}
+      ],
+      "sources": [
+        {"id": "patent_a16", "name": "US Plant Patent PP7521 Macadamia Hidden Valley A16 (Google Patents)", "url": "https://patents.google.com/patent/USPP7521P/en", "tier": "authoritative"},
+        {"id": "hvp", "name": "Hidden Valley Plantations, A-Series Varieties (breeder reference)", "url": "https://www.hvp-macadamias.com/A-Series-Varieties/", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.90,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-nut-minimaca": {
+      "slug": "macadamia-nut-minimaca",
+      "species": "Macadamia",
+      "variety": "Nut MiniMaca",
+      "paragraphs": [
+        "MiniMaca is a naturally dwarf Macadamia tetraphylla that began as a one off dwarf tree found within a wild, open pollinated population in northern New South Wales (identified by Ian Matthias). It grows to roughly half the size of a standard macadamia with a more columnar habit, suiting pots, small gardens and clipped hedges.",
+        "The tree flushes red and pink new growth several times a year and carries fragrant pink flowers, giving it ornamental appeal. It is precocious, bearing medium sized, thin shelled, smooth round nuts with white kernels that are good eaten raw or roasted. MiniMaca is protected by Plant Breeders Rights (granted 2014), so propagation is prohibited."
+      ],
+      "claims": [
+        {"text": "A naturally dwarf Macadamia tetraphylla originating as a one off dwarf tree found in a wild, open pollinated population in northern New South Wales (identified by Ian Matthias).", "type": "origin", "cites": ["acra", "daleys"]},
+        {"text": "Grows to about half the size of a standard macadamia with a more columnar habit; flushes red and pink new growth several times a year with fragrant pink flowers; suits pots, small spaces and hedging.", "type": "morphology", "cites": ["acra", "daleys"]},
+        {"text": "Precocious, producing medium sized, thin shelled, smooth round nuts with white kernels suitable for eating raw or roasted.", "type": "horticulture", "cites": ["acra", "daleys"]},
+        {"text": "Protected by Plant Breeders Rights (granted 2014); propagation is prohibited.", "type": "status", "cites": ["acra", "daleys"]}
+      ],
+      "sources": [
+        {"id": "acra", "name": "Australian Cultivar Registration Authority (ACRA)", "url": "https://acra.biodiversity.services/info/rdetail/3681", "tier": "authoritative"},
+        {"id": "daleys", "name": "Daleys Fruit Tree Nursery", "url": "https://www.daleysfruit.com.au/buy-macadamia-minimaca-macadamia-tetraphylla.htm", "tier": "nursery"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-nut-pinkalicious": {
+      "slug": "macadamia-nut-pinkalicious",
+      "species": "Macadamia",
+      "variety": "Nut Pinkalicious",
+      "paragraphs": [
+        "Pinkalicious is an Australian bred ornamental macadamia, a hybrid of Macadamia integrifolia and Macadamia tetraphylla developed by Hidden Valley Plantations, a long established Sunshine Coast (Queensland) macadamia grower, with the home gardener in mind. It is sold as a trademarked variety, so propagation is prohibited.",
+        "Its standout feature is long, drooping racemes of bright pink flowers in late winter and early spring, unusual for a macadamia (most varieties carry cream or white flowers). The upright evergreen tree is self pollinating and a prolific bearer, producing good quality nuts that ripen in autumn."
+      ],
+      "claims": [
+        {"text": "A hybrid of Macadamia integrifolia and Macadamia tetraphylla, bred in Australia by Hidden Valley Plantations (a Sunshine Coast, Queensland macadamia grower) for home gardeners.", "type": "origin", "cites": ["daleys", "davesgarden", "hvp"]},
+        {"text": "Bears distinctive long, drooping bright pink flower racemes in late winter to early spring, unusual among macadamias.", "type": "morphology", "cites": ["daleys", "rosscreek", "nurserywarehouse"]},
+        {"text": "Self pollinating and a prolific bearer, with nuts ripening in autumn.", "type": "horticulture", "cites": ["daleys", "rosscreek"]},
+        {"text": "Sold as a trademarked variety; propagation is prohibited.", "type": "status", "cites": ["daleys", "nurserywarehouse"]}
+      ],
+      "sources": [
+        {"id": "daleys", "name": "Daleys Fruit Tree Nursery", "url": "https://www.daleysfruit.com.au/Macadamia-Pinkalicious-Macadamia-Integrifolia-X-Tetraphylla.htm", "tier": "nursery"},
+        {"id": "rosscreek", "name": "Ross Creek Tropicals", "url": "https://www.rosscreektropicals.com.au/products/macadamia-pinkalicious", "tier": "nursery"},
+        {"id": "nurserywarehouse", "name": "Nursery Warehouse", "url": "https://www.nurserywarehouse.com.au/products/pinkalicious-macadamia", "tier": "nursery"},
+        {"id": "hvp", "name": "Hidden Valley Plantations", "url": "https://hvp-macadamias.com/About-Hidden-Valley/", "tier": "third_party"},
+        {"id": "davesgarden", "name": "Dave's Garden PlantFiles", "url": "https://davesgarden.com/guides/pf/showimage/436135", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-pinkalicious": {
+      "slug": "macadamia-pinkalicious",
+      "species": "Macadamia",
+      "variety": "Pinkalicious",
+      "paragraphs": [
+        "Pinkalicious is an Australian bred ornamental macadamia, a hybrid of Macadamia integrifolia and Macadamia tetraphylla developed by Hidden Valley Plantations, a long established Sunshine Coast (Queensland) macadamia grower, with the home gardener in mind. It is sold as a trademarked variety, so propagation is prohibited.",
+        "Its standout feature is long, drooping racemes of bright pink flowers in late winter and early spring, unusual for a macadamia (most varieties carry cream or white flowers). The upright evergreen tree is self pollinating and a prolific bearer, producing good quality nuts that ripen in autumn."
+      ],
+      "claims": [
+        {"text": "A hybrid of Macadamia integrifolia and Macadamia tetraphylla, bred in Australia by Hidden Valley Plantations (a Sunshine Coast, Queensland macadamia grower) for home gardeners.", "type": "origin", "cites": ["daleys", "davesgarden", "hvp"]},
+        {"text": "Bears distinctive long, drooping bright pink flower racemes in late winter to early spring, unusual among macadamias.", "type": "morphology", "cites": ["daleys", "rosscreek", "nurserywarehouse"]},
+        {"text": "Self pollinating and a prolific bearer, with nuts ripening in autumn.", "type": "horticulture", "cites": ["daleys", "rosscreek"]},
+        {"text": "Sold as a trademarked variety; propagation is prohibited.", "type": "status", "cites": ["daleys", "nurserywarehouse"]}
+      ],
+      "sources": [
+        {"id": "daleys", "name": "Daleys Fruit Tree Nursery", "url": "https://www.daleysfruit.com.au/Macadamia-Pinkalicious-Macadamia-Integrifolia-X-Tetraphylla.htm", "tier": "nursery"},
+        {"id": "rosscreek", "name": "Ross Creek Tropicals", "url": "https://www.rosscreektropicals.com.au/products/macadamia-pinkalicious", "tier": "nursery"},
+        {"id": "nurserywarehouse", "name": "Nursery Warehouse", "url": "https://www.nurserywarehouse.com.au/products/pinkalicious-macadamia", "tier": "nursery"},
+        {"id": "hvp", "name": "Hidden Valley Plantations", "url": "https://hvp-macadamias.com/About-Hidden-Valley/", "tier": "third_party"},
+        {"id": "davesgarden", "name": "Dave's Garden PlantFiles", "url": "https://davesgarden.com/guides/pf/showimage/436135", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-pinkalicious-2": {
+      "slug": "macadamia-pinkalicious-2",
+      "species": "Macadamia",
+      "variety": "Pinkalicious 2.",
+      "paragraphs": [
+        "Pinkalicious is an Australian bred ornamental macadamia, a hybrid of Macadamia integrifolia and Macadamia tetraphylla developed by Hidden Valley Plantations, a long established Sunshine Coast (Queensland) macadamia grower, with the home gardener in mind. It is sold as a trademarked variety, so propagation is prohibited.",
+        "Its standout feature is long, drooping racemes of bright pink flowers in late winter and early spring, unusual for a macadamia (most varieties carry cream or white flowers). The upright evergreen tree is self pollinating and a prolific bearer, producing good quality nuts that ripen in autumn."
+      ],
+      "claims": [
+        {"text": "A hybrid of Macadamia integrifolia and Macadamia tetraphylla, bred in Australia by Hidden Valley Plantations (a Sunshine Coast, Queensland macadamia grower) for home gardeners.", "type": "origin", "cites": ["daleys", "davesgarden", "hvp"]},
+        {"text": "Bears distinctive long, drooping bright pink flower racemes in late winter to early spring, unusual among macadamias.", "type": "morphology", "cites": ["daleys", "rosscreek", "nurserywarehouse"]},
+        {"text": "Self pollinating and a prolific bearer, with nuts ripening in autumn.", "type": "horticulture", "cites": ["daleys", "rosscreek"]},
+        {"text": "Sold as a trademarked variety; propagation is prohibited.", "type": "status", "cites": ["daleys", "nurserywarehouse"]}
+      ],
+      "sources": [
+        {"id": "daleys", "name": "Daleys Fruit Tree Nursery", "url": "https://www.daleysfruit.com.au/Macadamia-Pinkalicious-Macadamia-Integrifolia-X-Tetraphylla.htm", "tier": "nursery"},
+        {"id": "rosscreek", "name": "Ross Creek Tropicals", "url": "https://www.rosscreektropicals.com.au/products/macadamia-pinkalicious", "tier": "nursery"},
+        {"id": "nurserywarehouse", "name": "Nursery Warehouse", "url": "https://www.nurserywarehouse.com.au/products/pinkalicious-macadamia", "tier": "nursery"},
+        {"id": "hvp", "name": "Hidden Valley Plantations", "url": "https://hvp-macadamias.com/About-Hidden-Valley/", "tier": "third_party"},
+        {"id": "davesgarden", "name": "Dave's Garden PlantFiles", "url": "https://davesgarden.com/guides/pf/showimage/436135", "tier": "third_party"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "macadamia-tetraphylla": {
+      "slug": "macadamia-tetraphylla",
+      "species": "Macadamia",
+      "variety": "Tetraphylla",
+      "paragraphs": [
+        "Macadamia tetraphylla, the rough-shelled or bauple nut, is native to southern Queensland and northern New South Wales. Its name refers to its leaves, usually borne in whorls of four around each node, where commercial M. integrifolia typically has three. Its flowers are pink to purple rather than creamy white, and the shell is typically rougher and more pebbled than the smooth shell of M. integrifolia.",
+        "Its kernels carry more sugar than M. integrifolia. The raw nut has excellent eating quality, but the higher sugar can caramelise and burn during roasting or baking, which is why the smoother, lower-sugar M. integrifolia dominates commercial planting. Trees sold simply as tetraphylla are grown as this species type rather than as a single named cultivar."
+      ],
+      "claims": [
+        {"text": "Macadamia tetraphylla, the rough-shelled or bauple nut, is native to southern Queensland and northern New South Wales.", "type": "origin", "cites": ["wiki_tetra", "nsw_dpi"]},
+        {"text": "Its leaves are usually borne in whorls of four around each node, where M. integrifolia typically has three, and its flowers are pink to purple rather than creamy white.", "type": "appearance", "cites": ["wiki_tetra"]},
+        {"text": "Its shell is typically rougher and more pebbled than the smooth shell of M. integrifolia.", "type": "shell", "cites": ["wiki_tetra"]},
+        {"text": "Its kernels carry more sugar than M. integrifolia, giving excellent raw eating quality but a tendency to caramelise and burn during roasting or baking, so the lower-sugar M. integrifolia is preferred for commercial planting.", "type": "kernel", "cites": ["wiki_tetra", "nsw_dpi"]}
+      ],
+      "sources": [
+        {"id": "wiki_tetra", "name": "Wikipedia: Macadamia tetraphylla", "url": "https://en.wikipedia.org/wiki/Macadamia_tetraphylla", "tier": "third_party"},
+        {"id": "nsw_dpi", "name": "NSW Department of Primary Industries: Macadamia culture in NSW", "url": "https://www.dpi.nsw.gov.au/agriculture/horticulture/nuts/growing-guides/macadamia-culture-nsw", "tier": "authoritative"}
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "macadamia-842",
+    "macadamia-a29",
+    "macadamia-bush-nut",
+    "macadamia-gouros",
+    "macadamia-integrilfolia-hybrid-g6",
+    "macadamia-nut",
+    "macadamia-nut-lots-a-lots",
+    "macadamia-nut-plant",
+    "macadamia-tree"
+  ]
+}
