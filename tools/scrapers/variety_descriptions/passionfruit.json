@@ -150,6 +150,103 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "passionfruit-hawaiian": {
+      "slug": "passionfruit-hawaiian",
+      "species": "Passionfruit",
+      "variety": "Hawaiian",
+      "paragraphs": [
+        "The Hawaiian is the yellow passionfruit, Passiflora edulis f. flavicarpa, the form behind Hawaii's famous lilikoi. The seeds reached the islands from Australia (reported in 1923), and the University of Hawaii later developed the yellow type into its main commercial crop. It is a distinct form from the common purple passionfruit, with a more vigorous vine and larger, yellow skinned fruit.",
+        "Compared with the purple passionfruit, the yellow Hawaiian is better suited to lower, warmer elevations, so it is the more tropical choice. Its flowers are self-sterile and usually need cross pollination to set a good crop, unlike the self-compatible purple form. The pulp is tangier and richer in acid (mainly citric) than the milder, more aromatic purple fruit, but the vines are heavy bearing."
+      ],
+      "claims": [
+        {
+          "text": "The Hawaiian is the yellow passionfruit, Passiflora edulis f. flavicarpa, a form distinct from the common purple passionfruit.",
+          "type": "identity",
+          "cites": [
+            "wikipedia",
+            "ifas",
+            "daleys"
+          ]
+        },
+        {
+          "text": "The yellow form is more vigorous and bears larger fruit than the purple type.",
+          "type": "appearance",
+          "cites": [
+            "growables",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Yellow passionfruit is better suited to lower, warmer elevations (the more tropical choice), while the purple form favours cooler, higher ground.",
+          "type": "climate",
+          "cites": [
+            "ifas",
+            "hawaiitribune"
+          ]
+        },
+        {
+          "text": "Its flowers are self-sterile and usually need cross pollination to set fruit, unlike the self-compatible purple passionfruit.",
+          "type": "pollination",
+          "cites": [
+            "growables",
+            "ifas",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The pulp is more acidic, mainly citric, than the milder and more aromatic purple fruit, though the vines are very productive.",
+          "type": "flavour",
+          "cites": [
+            "growables",
+            "hawaiitribune"
+          ]
+        },
+        {
+          "text": "The yellow form is the basis of Hawaii's lilikoi, introduced from Australia (reported in 1923) and developed into the islands' main commercial passionfruit.",
+          "type": "origin",
+          "cites": [
+            "hawaiitribune",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Passiflora edulis",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_edulis",
+          "tier": "third_party"
+        },
+        {
+          "id": "ifas",
+          "name": "UF/IFAS: The Passion Fruit in Florida (HS1406)",
+          "url": "https://ask.ifas.ufl.edu/hs1406",
+          "tier": "authoritative"
+        },
+        {
+          "id": "growables",
+          "name": "Growables: Passionfruit (Morton, Fruits of Warm Climates)",
+          "url": "https://www.growables.org/information/TropicalFruit/Passionfruit.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "hawaiitribune",
+          "name": "Hawaii Tribune-Herald: Hawaii's favorite flavor, lilikoi",
+          "url": "https://www.hawaiitribune-herald.com/2013/12/11/features/hawaiis-favorite-flavor-lilikoi/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery: Passionfruit Hawaiian Vine",
+          "url": "https://www.daleysfruit.com.au/buy/passionfruit-hawaiian-vine.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "passionfruit-misty-gem": {
       "slug": "passionfruit-misty-gem",
       "species": "Passionfruit",
@@ -595,9 +692,123 @@
       "confidence_score": 0.84,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "passionfruit-water-lemon": {
+      "slug": "passionfruit-water-lemon",
+      "species": "Passionfruit",
+      "variety": "Water Lemon",
+      "paragraphs": [
+        "Water lemon is not a form of the common purple passionfruit but a distinct passionflower species, Passiflora laurifolia, native to northern South America, the Amazon region and the West Indies. It also goes by Jamaican honeysuckle, golden bellapple and pomme liane. The fruit is ovoid and about the size of a hen's egg, with a leathery skin that ripens from green to deep orange, so it looks more like a small lemon than a typical wrinkled passionfruit.",
+        "Inside, the pulp is white to yellow and extremely juicy, watery enough that it is traditionally sucked straight through a hole in the rind. The flavour is mild, sweet and perfumed, without the sharp tartness of common passionfruit, which suits eating fresh or straining into a refreshing drink. The vigorous climbing vine carries fragrant flowers in unusual blue, lavender and purplish red tones, so it is grown as an ornamental as well as for fruit."
+      ],
+      "claims": [
+        {
+          "text": "Water lemon is a distinct passionflower species, Passiflora laurifolia, native to northern South America, the Amazon region and the West Indies, not a form of common purple passionfruit.",
+          "type": "origin",
+          "cites": [
+            "wikipedia",
+            "growables"
+          ]
+        },
+        {
+          "text": "It is also known as Jamaican honeysuckle, golden bellapple and pomme liane.",
+          "type": "naming",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The fruit is ovoid, about the size of a hen's egg, with a leathery skin that ripens from green to deep orange.",
+          "type": "appearance",
+          "cites": [
+            "growables",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The pulp is white to yellow and extremely juicy, so watery it is often sucked straight through a hole in the rind.",
+          "type": "texture",
+          "cites": [
+            "growables",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The flavour is mild, sweet and perfumed, without the tartness of common passionfruit.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia",
+            "growables"
+          ]
+        },
+        {
+          "text": "The flowers are fragrant and coloured blue, lavender and purplish red.",
+          "type": "appearance",
+          "cites": [
+            "growables",
+            "wikipedia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Passiflora laurifolia",
+          "url": "https://en.wikipedia.org/wiki/Passiflora_laurifolia",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables (Julia Morton, Fruits of Warm Climates): Water Lemon",
+          "url": "https://www.growables.org/information/TropicalFruit/WaterLemon.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
   "skipped": [
-    "passionfruit-flamenco"
+    "passionfruit-black-espalier",
+    "passionfruit-black-magic",
+    "passionfruit-flame-ruby",
+    "passionfruit-flamenco",
+    "passionfruit-flamenco-red",
+    "passionfruit-fruit-banana",
+    "passionfruit-fruit-black-magic",
+    "passionfruit-fruit-giant-granadilla",
+    "passionfruit-fruit-gold-nugget",
+    "passionfruit-fruit-inca-gold",
+    "passionfruit-fruit-panama-gold",
+    "passionfruit-fruit-panama-red",
+    "passionfruit-fruit-pandora-red",
+    "passionfruit-fruit-red-flamenco",
+    "passionfruit-fruit-red-flower",
+    "passionfruit-fruit-sweet-calabash",
+    "passionfruit-fruit-sweet-granadilla",
+    "passionfruit-fruit-sweetheart",
+    "passionfruit-golden-nugget",
+    "passionfruit-inca-gold",
+    "passionfruit-non-black",
+    "passionfruit-non-panama-gold",
+    "passionfruit-non-panama-red",
+    "passionfruit-norfolk-black",
+    "passionfruit-nova",
+    "passionfruit-panama-gold-giant",
+    "passionfruit-panama-perfection",
+    "passionfruit-panama-red-pandora",
+    "passionfruit-panama-sweet-gold",
+    "passionfruit-pandora-red",
+    "passionfruit-purple",
+    "passionfruit-red-flamenco",
+    "passionfruit-select-black",
+    "passionfruit-sensation",
+    "passionfruit-sunshine-special-frutee",
+    "passionfruit-sunshine-splash",
+    "passionfruit-supersweet-96a",
+    "passionfruit-sweet-lilikoi",
+    "passionfruit-vine-plant"
   ]
 }
