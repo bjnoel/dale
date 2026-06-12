@@ -1,0 +1,1082 @@
+{
+  "species_slug": "almond",
+  "schema_version": 1,
+  "varieties": {
+    "almond-all-in-one": {
+      "slug": "almond-all-in-one",
+      "species": "Almond",
+      "variety": "All In One",
+      "paragraphs": [
+        "All In One is a self fertile sweet almond bred by Zaiger Genetics in California, prized as one of the few almonds that crops well without a separate pollinator. It is a genetic semi dwarf, reaching only around 15 feet (under 5 metres), which makes it one of the most compact almonds available and a popular pick for home gardens with limited room.",
+        "The nuts have soft, papery shells around sweet, flavourful kernels. It blooms in the mid to late midseason window and needs a hot summer to ripen its crop, typically harvesting from late September into early October in the northern hemisphere. The later bloom helps the flowers dodge some spring frost damage."
+      ],
+      "claims": [
+        {
+          "text": "Self fertile, so it can crop without a separate pollinator.",
+          "type": "pollination",
+          "cites": [
+            "dwn_aio",
+            "almondsite_ind"
+          ]
+        },
+        {
+          "text": "Bred by Zaiger Genetics in California.",
+          "type": "origin",
+          "cites": [
+            "dwn_aio",
+            "almondsite_ind"
+          ]
+        },
+        {
+          "text": "A genetic semi dwarf reaching about 15 feet.",
+          "type": "habit",
+          "cites": [
+            "dwn_aio"
+          ]
+        },
+        {
+          "text": "Produces soft shelled nuts with sweet, flavourful kernels.",
+          "type": "nut",
+          "cites": [
+            "dwn_aio",
+            "almondsite_ind"
+          ]
+        },
+        {
+          "text": "Blooms mid to late midseason and needs a hot summer to ripen.",
+          "type": "season",
+          "cites": [
+            "dwn_aio"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "dwn_aio",
+          "name": "Dave Wilson Nursery Variety Finder, All-in-One Almond",
+          "url": "https://www.wheretobuy.davewilson.com/product-information/product/all-one-genetic-semi-dwarf-almond",
+          "tier": "nursery"
+        },
+        {
+          "id": "almondsite_ind",
+          "name": "Almond.site, Independence (All-in-One parentage and traits)",
+          "url": "https://almond.site/independence-self-fertile-almond-variety/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-all-in-one-zaione-paper-shell": {
+      "slug": "almond-all-in-one-zaione-paper-shell",
+      "species": "Almond",
+      "variety": "All-in-One Zaione Paper Shell",
+      "paragraphs": [
+        "All-in-One is a self-fertile almond bred by Floyd Zaiger and protected under United States Plant Patent 4304. It is the same cultivar widely sold simply as All In One (the spelling Zaione appears to be a vendor misrendering of Zaiger). Because it is self-fruitful, a single tree sets a crop without a second variety, and it can also pollinate other almonds.",
+        "It is a genetic semi-dwarf that stays compact, around 12 to 15 feet, which suits home gardens where a full size almond would be too large. It produces heavy crops of soft shell nuts with sweet, flavoursome kernels, blooming after Nonpareil and harvesting at roughly Nonpareil timing. A hot summer helps the nuts finish well."
+      ],
+      "claims": [
+        {
+          "text": "All-in-One is a self-fertile almond bred by Floyd Zaiger and protected under United States Plant Patent 4304.",
+          "type": "origin",
+          "cites": [
+            "patent4304",
+            "dwn-allinone"
+          ]
+        },
+        {
+          "text": "It is self-fruitful, so a single tree sets a crop without a second pollinizer variety, and it can also pollinate other almonds.",
+          "type": "pollination",
+          "cites": [
+            "patent4304",
+            "dwn-allinone"
+          ]
+        },
+        {
+          "text": "It is a genetic semi-dwarf that stays compact, around 12 to 15 feet, suiting home gardens.",
+          "type": "trait",
+          "cites": [
+            "dwn-allinone",
+            "toa-allinone"
+          ]
+        },
+        {
+          "text": "It produces heavy crops of soft shell nuts with sweet kernels, blooming after Nonpareil and harvesting at about Nonpareil timing.",
+          "type": "season",
+          "cites": [
+            "patent4304",
+            "dwn-allinone"
+          ]
+        },
+        {
+          "text": "It is the same cultivar sold simply as All In One, bred by Zaiger.",
+          "type": "origin",
+          "cites": [
+            "dwn-allinone",
+            "patent4304"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent4304",
+          "name": "United States Plant Patent PP4304 (almond tree, inventor C. F. Zaiger)",
+          "url": "https://patents.google.com/patent/USPP4304P",
+          "tier": "authoritative"
+        },
+        {
+          "id": "dwn-allinone",
+          "name": "Dave Wilson Nursery, All-in-One Genetic Semi-Dwarf Almond",
+          "url": "https://www.wheretobuy.davewilson.com/product-information/product/all-one-genetic-semi-dwarf-almond",
+          "tier": "nursery"
+        },
+        {
+          "id": "toa-allinone",
+          "name": "Trees of Antiquity, All-In-One Almond",
+          "url": "https://www.treesofantiquity.com/products/all-in-one-almond",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-bitter": {
+      "slug": "almond-bitter",
+      "species": "Almond",
+      "variety": "Bitter",
+      "paragraphs": [
+        "Bitter almond is the bitter-kernel form of Prunus dulcis, distinguished from the everyday sweet almond by a far higher content of amygdalin, a cyanogenic glucoside. Sweet almonds carry only trace amounts, while bitter types hold many times more. When a bitter kernel is crushed or chewed, amygdalin is broken down by enzymes to release hydrogen cyanide along with benzaldehyde, the compound behind the characteristic almond aroma.",
+        "That cyanide makes raw bitter almonds genuinely toxic and unsuitable for fresh eating. Reported figures suggest as few as six to ten raw bitter almonds can poison an adult, with children at risk from far fewer, so they are handled as a flavouring and processing nut rather than a snack. Heat treatment such as baking, boiling or microwaving sharply reduces the cyanide content."
+      ],
+      "claims": [
+        {
+          "text": "Bitter almonds contain far higher levels of amygdalin, a cyanogenic glucoside, than sweet almonds, which carry only trace amounts.",
+          "type": "characteristic",
+          "cites": [
+            "pmc-amygdalin",
+            "healthline-almonds"
+          ]
+        },
+        {
+          "text": "When a bitter almond is crushed or chewed, amygdalin breaks down to release hydrogen cyanide and benzaldehyde.",
+          "type": "characteristic",
+          "cites": [
+            "pmc-amygdalin",
+            "wiki-amygdalin",
+            "healthline-almonds"
+          ]
+        },
+        {
+          "text": "Raw bitter almonds are toxic; as few as six to ten can poison an adult and children are at risk from fewer, so they are not eaten fresh.",
+          "type": "caution",
+          "cites": [
+            "healthline-almonds",
+            "pmc-amygdalin"
+          ]
+        },
+        {
+          "text": "Heat treatment such as baking, boiling or microwaving substantially reduces the cyanide content of bitter almonds.",
+          "type": "characteristic",
+          "cites": [
+            "healthline-almonds"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc-amygdalin",
+          "name": "Amygdalin: Toxicity, Anticancer Activity and Analytical Procedures for Its Determination in Plant Seeds (PMC)",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8069783/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-amygdalin",
+          "name": "Wikipedia, Amygdalin",
+          "url": "https://en.wikipedia.org/wiki/Amygdalin",
+          "tier": "third_party"
+        },
+        {
+          "id": "healthline-almonds",
+          "name": "Healthline, Are Almonds Poisonous?",
+          "url": "https://www.healthline.com/nutrition/are-almonds-poisonous",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-carmel": {
+      "slug": "almond-carmel",
+      "species": "Almond",
+      "variety": "Carmel",
+      "paragraphs": [
+        "Carmel is a long-established Californian commercial almond, prized chiefly as a polleniser for the dominant Nonpareil variety. It blooms only about one to three days after Nonpareil and ripens near the end of the season, so it overlaps and extends the bloom Nonpareil needs to set a crop. Like Nonpareil it is a soft-shell type with a good shell seal, yielding medium, elongated, light-coloured kernels suited to blanching and roasting.",
+        "Carmel's notable quirk is that it is especially susceptible to noninfectious bud failure, also called crazy top, a genetic disorder that kills shoot buds and causes witches' broom growth and loss of bearing spurs, so growers select budwood from low-incidence lines. It is not self-fertile and needs a compatible polleniser such as Nonpareil planted nearby."
+      ],
+      "claims": [
+        {
+          "text": "Carmel is a Californian soft-shell almond with a well-sealed shell, producing medium, elongated, light-coloured kernels.",
+          "type": "characteristic",
+          "cites": [
+            "sacvalley-carmel",
+            "stark-carmel"
+          ]
+        },
+        {
+          "text": "Carmel is valued as a polleniser for Nonpareil, blooming about one to three days after it and harvesting near the end of the season.",
+          "type": "characteristic",
+          "cites": [
+            "sacvalley-carmel"
+          ]
+        },
+        {
+          "text": "Carmel is especially susceptible to noninfectious bud failure (crazy top), a genetic disorder that kills shoot buds and causes witches' broom growth, so low-incidence budwood lines are preferred.",
+          "type": "caution",
+          "cites": [
+            "sacvalley-carmel"
+          ]
+        },
+        {
+          "text": "Carmel is not self-fertile and requires a compatible polleniser planted nearby.",
+          "type": "characteristic",
+          "cites": [
+            "sacvalley-carmel",
+            "stark-carmel"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sacvalley-carmel",
+          "name": "Sacramento Valley Orchards (UC Cooperative Extension), Almond Varieties (Cultivars)",
+          "url": "https://www.sacvalleyorchards.com/almonds/cultivars-rootstocks/almond-varieties-cultivars/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "stark-carmel",
+          "name": "Stark Bro's, Carmel Almond",
+          "url": "https://www.starkbros.com/products/nut-trees/almond-trees/carmel-almond",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-chellaston": {
+      "slug": "almond-chellaston",
+      "species": "Almond",
+      "variety": "Chellaston",
+      "paragraphs": [
+        "Chellaston is an old Australian almond cultivar and one of the classic varieties of the historic Willunga almond district in South Australia, alongside names like Johnston's Prolific, Ne Plus Ultra and Nonpareil. Commercial almond growing took hold at Willunga from the 1850s and 1860s, and for much of the twentieth century the district was Australia's largest almond region. Chellaston survives from that heritage and is still grown and propagated today.",
+        "It is a soft-shelled almond carrying small to medium kernels, with medium vigour and mid-season ripening, used for eating as well as blanching, roasting and confectionery. As an older variety it is not relied on as self-fertile; suggested cross-pollinators include Johnston's Prolific, Ne Plus Ultra and Brandes Jordan."
+      ],
+      "claims": [
+        {
+          "text": "Chellaston is an old Australian almond cultivar, one of the classic varieties of the historic Willunga almond district in South Australia, and is still grown today.",
+          "type": "origin",
+          "cites": [
+            "fleurieu-willunga",
+            "hortflora-almond"
+          ]
+        },
+        {
+          "text": "Commercial almond growing began at Willunga in the 1850s and 1860s, and for much of the twentieth century it was Australia's largest almond district.",
+          "type": "origin",
+          "cites": [
+            "fleurieu-willunga"
+          ]
+        },
+        {
+          "text": "Chellaston is a soft-shelled almond with small to medium kernels, medium vigour and mid-season ripening, used for eating, blanching, roasting and confectionery.",
+          "type": "characteristic",
+          "cites": [
+            "heritage-chellaston",
+            "yalca-chellaston"
+          ]
+        },
+        {
+          "text": "Suggested cross-pollinators for Chellaston include Johnston's Prolific, Ne Plus Ultra and Brandes Jordan.",
+          "type": "characteristic",
+          "cites": [
+            "heritage-chellaston",
+            "yalca-chellaston"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "fleurieu-willunga",
+          "name": "Discover the Fleurieu, Almond Blossom at Willunga, 170 Years of Almond Growing",
+          "url": "https://discoverthefleurieu.com.au/stories/almond-blossom-willunga",
+          "tier": "third_party"
+        },
+        {
+          "id": "hortflora-almond",
+          "name": "Royal Botanic Gardens Victoria, HortFlora: Prunus dulcis (Almond)",
+          "url": "https://hortflora.rbg.vic.gov.au/taxon/ad957ffc-5340-11e7-b82b-005056b0018f",
+          "tier": "authoritative"
+        },
+        {
+          "id": "heritage-chellaston",
+          "name": "Heritage Fruit Trees, Chellaston Almond",
+          "url": "https://www.heritagefruittrees.com.au/chellaston/",
+          "tier": "nursery"
+        },
+        {
+          "id": "yalca-chellaston",
+          "name": "Yalca Fruit Trees, Chellaston Almond",
+          "url": "https://www.yalcafruittrees.com.au/shop/almond-trees/chellaston-almond/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-fritz-paper-shell": {
+      "slug": "almond-fritz-paper-shell",
+      "species": "Almond",
+      "variety": "Fritz Paper Shell",
+      "paragraphs": [
+        "Fritz, sometimes marketed as a paper shell almond, is a Californian commercial variety best known for ripening the latest of the common almonds, around 40 days or more after Nonpareil. Despite that, it blooms with Nonpareil and is a heavy, consistent cropper, which makes it an excellent pollinizer for Nonpareil plantings.",
+        "The nut has a soft to semi-hard shell and yields a medium-small, ovate kernel that falls in the California class. Its very late maturity is its defining quirk. In districts with early autumn rains the long wait to harvest makes Fritz a risky choice, so it suits warmer, drier areas with a long, hot finish to the season."
+      ],
+      "claims": [
+        {
+          "text": "Fritz ripens the latest of the common almonds, around 40 days or more after Nonpareil.",
+          "type": "season",
+          "cites": [
+            "sacvalley",
+            "fortier",
+            "sierragold",
+            "farmers"
+          ]
+        },
+        {
+          "text": "It blooms with Nonpareil and is a heavy, consistent cropper, which makes it an excellent pollinizer for Nonpareil.",
+          "type": "pollination",
+          "cites": [
+            "sacvalley",
+            "sierragold",
+            "fortier"
+          ]
+        },
+        {
+          "text": "The nut has a soft to semi-hard shell and yields a medium-small, ovate kernel in the California class.",
+          "type": "trait",
+          "cites": [
+            "sacvalley",
+            "sierragold",
+            "fortier"
+          ]
+        },
+        {
+          "text": "Its very late maturity makes it a risky choice in districts with early autumn rains.",
+          "type": "trait",
+          "cites": [
+            "sacvalley"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sacvalley",
+          "name": "Sacramento Valley Orchards (UC ANR), Almond Varieties / Cultivars",
+          "url": "https://www.sacvalleyorchards.com/almonds/cultivars-rootstocks/almond-varieties-cultivars/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fortier",
+          "name": "Fortier Farms, California Almonds variety guide",
+          "url": "https://fortierfarms.com/california-almonds/",
+          "tier": "third_party"
+        },
+        {
+          "id": "farmers",
+          "name": "Farmers International, Almond Varieties",
+          "url": "https://farmersinternational.com/productsold/almond_varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sierragold",
+          "name": "Sierra Gold Nurseries, Almond Varieties",
+          "url": "https://www.sierragoldtrees.com/almond-varieties",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-indian": {
+      "slug": "almond-indian",
+      "species": "Almond",
+      "variety": "Indian",
+      "paragraphs": [
+        "Despite the name, the Indian almond sold by Australian nurseries is not a true almond (Prunus dulcis) but Terminalia catappa, a large tropical tree in the family Combretaceae. Also called sea almond, tropical almond or beach almond, it is native across Asia, northern Australia, the Pacific and beyond, and is widely planted through the tropics.",
+        "It is grown as much for ornament and shade as for its nut, forming distinctive tiered, horizontal branches and broad leaves that flush pinkish red or yellow brown before dropping in the dry season. The seed inside the fleshy fruit is small and fiddly to extract, with a mild flavour, and the tree fruits young in warm Australian climates."
+      ],
+      "claims": [
+        {
+          "text": "Not a true almond but Terminalia catappa, family Combretaceae.",
+          "type": "identity",
+          "cites": [
+            "wikipedia_tc",
+            "daleys_indian"
+          ]
+        },
+        {
+          "text": "Also called sea almond, tropical almond or beach almond.",
+          "type": "synonym",
+          "cites": [
+            "wikipedia_tc"
+          ]
+        },
+        {
+          "text": "Native across Asia, Australia and the Pacific, widely planted in the tropics.",
+          "type": "origin",
+          "cites": [
+            "wikipedia_tc"
+          ]
+        },
+        {
+          "text": "Forms tiered branches and leaves that turn pinkish red or yellow brown before falling.",
+          "type": "habit",
+          "cites": [
+            "wikipedia_tc"
+          ]
+        },
+        {
+          "text": "The edible seed is small and difficult to extract.",
+          "type": "nut",
+          "cites": [
+            "wikipedia_tc"
+          ]
+        },
+        {
+          "text": "Fruits young in warm Australian climates.",
+          "type": "habit",
+          "cites": [
+            "daleys_indian"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia_tc",
+          "name": "Wikipedia, Terminalia catappa",
+          "url": "https://en.wikipedia.org/wiki/Terminalia_catappa",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys_indian",
+          "name": "Daleys Fruit Tree Nursery, Indian Almond (Terminalia catappa)",
+          "url": "https://www.daleysfruit.com.au/Nuts/Indian%20almond.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-ixl": {
+      "slug": "almond-ixl",
+      "species": "Almond",
+      "variety": "IXL",
+      "paragraphs": [
+        "IXL is an old Californian papershell almond first selected by a grower named Hatch at Suisun, California, in the nineteenth century. It proved popular across the Californian almond districts, and Australia took the variety up around 1900, where it survives as a heritage almond. The tree is vigorous and upright, often carrying a stocky, twisted trunk.",
+        "It is grown for its large nuts and heavy crops, set in thin papershell shells that open easily. Its main drawback is an early bloom, roughly a week ahead of Nonpareil, which leaves the flowers more exposed to spring frost and limited its spread beyond California."
+      ],
+      "claims": [
+        {
+          "text": "An old Californian papershell almond with large nuts and heavy crops.",
+          "type": "nut",
+          "cites": [
+            "almondsite_ixl",
+            "heritage_ixl"
+          ]
+        },
+        {
+          "text": "First selected by a grower named Hatch at Suisun, California.",
+          "type": "origin",
+          "cites": [
+            "almondsite_ixl"
+          ]
+        },
+        {
+          "text": "Taken up in Australia around 1900.",
+          "type": "origin",
+          "cites": [
+            "almondsite_ixl"
+          ]
+        },
+        {
+          "text": "Vigorous, upright tree, often with a stocky, twisted trunk.",
+          "type": "habit",
+          "cites": [
+            "almondsite_ixl"
+          ]
+        },
+        {
+          "text": "Blooms early, about a week before Nonpareil, leaving it frost prone.",
+          "type": "season",
+          "cites": [
+            "almondsite_ixl"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "almondsite_ixl",
+          "name": "Almond.site, The IXL Almond",
+          "url": "https://almond.site/the-ixl-almond/",
+          "tier": "third_party"
+        },
+        {
+          "id": "heritage_ixl",
+          "name": "Heritage Fruit Trees, IXL Almond",
+          "url": "https://www.heritagefruittrees.com.au/ixl-almond/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-johnston-prolific": {
+      "slug": "almond-johnston-prolific",
+      "species": "Almond",
+      "variety": "Johnston Prolific",
+      "paragraphs": [
+        "Johnston's Prolific is an old Australian almond cultivar that is still grown today. Royal Botanic Gardens Victoria records it, alongside Chellaston, as a historically significant local selection from the long era of Australian almond growing. It suits cooler, coastal districts where some Californian almonds struggle.",
+        "It is a soft shelled almond carrying large, broad, coarse textured nuts with good flavour, and the nuts hull easily. Growers describe it as a biennial cropper that tends to alternate heavier and lighter years, and it needs a pollinator to set fruit, ripening early in the season around late summer."
+      ],
+      "claims": [
+        {
+          "text": "An old Australian almond cultivar still grown, recorded by Royal Botanic Gardens Victoria alongside Chellaston.",
+          "type": "origin",
+          "cites": [
+            "hortflora_jp"
+          ]
+        },
+        {
+          "text": "Suits cooler, coastal districts.",
+          "type": "habit",
+          "cites": [
+            "heritage_jp"
+          ]
+        },
+        {
+          "text": "Soft shelled with large, broad, coarse textured nuts of good flavour that hull easily.",
+          "type": "nut",
+          "cites": [
+            "heritage_jp"
+          ]
+        },
+        {
+          "text": "A biennial cropper that alternates heavier and lighter years.",
+          "type": "habit",
+          "cites": [
+            "heritage_jp"
+          ]
+        },
+        {
+          "text": "Needs a pollinator and ripens early, around late summer.",
+          "type": "pollination",
+          "cites": [
+            "heritage_jp"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "hortflora_jp",
+          "name": "HortFlora, Royal Botanic Gardens Victoria, Prunus dulcis (Almond)",
+          "url": "https://hortflora.rbg.vic.gov.au/taxon/ad957ffc-5340-11e7-b82b-005056b0018f",
+          "tier": "authoritative"
+        },
+        {
+          "id": "heritage_jp",
+          "name": "Heritage Fruit Trees, Johnston Prolific Almond",
+          "url": "https://www.heritagefruittrees.com.au/johnston-prolific/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-mission": {
+      "slug": "almond-mission",
+      "species": "Almond",
+      "variety": "Mission",
+      "paragraphs": [
+        "Mission almond, also sold as Texas or Texas Mission, is a classic late blooming Californian variety long valued as a commercial workhorse. Because it flowers about six days after Nonpareil, its blossoms often escape the late spring frosts that can damage earlier almonds, giving more reliable crops in frost prone districts.",
+        "It is a vigorous, upright tree that bears regularly to heavily. The nuts have hard, well sealed shells that protect the small to medium, plump kernels and keep worm damage low. Mission is not reliably self fertile, so it sets best with a compatible pollinator such as Nonpareil, blooming alongside late varieties like Butte and Padre."
+      ],
+      "claims": [
+        {
+          "text": "Also known as Texas or Texas Mission.",
+          "type": "synonym",
+          "cites": [
+            "dwn_mission",
+            "sapo_mission"
+          ]
+        },
+        {
+          "text": "Late blooming, about six days after Nonpareil.",
+          "type": "season",
+          "cites": [
+            "dwn_mission"
+          ]
+        },
+        {
+          "text": "Vigorous, upright tree that bears regularly to heavily.",
+          "type": "habit",
+          "cites": [
+            "dwn_mission",
+            "sapo_mission"
+          ]
+        },
+        {
+          "text": "Hard, well sealed shells over small to medium, plump kernels.",
+          "type": "nut",
+          "cites": [
+            "dwn_mission"
+          ]
+        },
+        {
+          "text": "Not reliably self fertile, needs a pollinator such as Nonpareil.",
+          "type": "pollination",
+          "cites": [
+            "dwn_mission",
+            "sapo_mission"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "dwn_mission",
+          "name": "Dave Wilson Nursery Variety Finder, Mission Almond",
+          "url": "https://www.wheretobuy.davewilson.com/product-information-commercial/product/mission-almond",
+          "tier": "nursery"
+        },
+        {
+          "id": "sapo_mission",
+          "name": "SAPO Trust (SA Plant Improvement Organisation), Texas Mission almond",
+          "url": "https://www.saplant.co.za/varieties/almonds/texas-mission/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-monterey": {
+      "slug": "almond-monterey",
+      "species": "Almond",
+      "variety": "Monterey",
+      "paragraphs": [
+        "Monterey is a late season Californian variety grown for its large, elongated, well sealed kernel in the California processing class. It sets a high share of double kernels, often 20 percent or more, which some processors discount, but it is a heavy and precocious cropper that yields reliably.",
+        "Monterey blooms a little after Nonpareil and overlaps it enough to serve as a useful pollinizer. It ripens very late, roughly four to six weeks after Nonpareil and near Mission timing, so it can clash with autumn rains in some districts, with anthracnose a concern in wet years. Like other established almonds it is self-incompatible and needs a partner variety."
+      ],
+      "claims": [
+        {
+          "text": "Monterey bears a large, elongated, well sealed kernel in the California processing class.",
+          "type": "trait",
+          "cites": [
+            "sierragold",
+            "fortier"
+          ]
+        },
+        {
+          "text": "It sets a high percentage of double kernels, often 20 percent or more, which some processors discount.",
+          "type": "trait",
+          "cites": [
+            "fortier",
+            "sierragold"
+          ]
+        },
+        {
+          "text": "Monterey blooms a little after Nonpareil and overlaps enough to act as a useful pollinizer for it.",
+          "type": "pollination",
+          "cites": [
+            "sierragold",
+            "fortier",
+            "sacvalley"
+          ]
+        },
+        {
+          "text": "It is a heavy and precocious producer.",
+          "type": "trait",
+          "cites": [
+            "sierragold",
+            "sacvalley"
+          ]
+        },
+        {
+          "text": "Monterey ripens very late, roughly four to six weeks after Nonpareil, near Mission timing.",
+          "type": "season",
+          "cites": [
+            "sacvalley",
+            "sierragold",
+            "fortier"
+          ]
+        },
+        {
+          "text": "Its late maturity can collide with autumn rains in some districts, with anthracnose a concern in wet years.",
+          "type": "trait",
+          "cites": [
+            "sacvalley"
+          ]
+        },
+        {
+          "text": "Like other established almonds it is self-incompatible and needs a partner variety.",
+          "type": "pollination",
+          "cites": [
+            "sacvalley"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sacvalley",
+          "name": "Sacramento Valley Orchards (UC ANR), Almond Varieties / Cultivars",
+          "url": "https://www.sacvalleyorchards.com/almonds/cultivars-rootstocks/almond-varieties-cultivars/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fortier",
+          "name": "Fortier Farms, California Almonds variety guide",
+          "url": "https://fortierfarms.com/california-almonds/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sierragold",
+          "name": "Sierra Gold Nurseries, Almond Varieties",
+          "url": "https://www.sierragoldtrees.com/almond-varieties",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-ne-plus-ultra": {
+      "slug": "almond-ne-plus-ultra",
+      "species": "Almond",
+      "variety": "Ne Plus Ultra",
+      "paragraphs": [
+        "Ne Plus Ultra is a heritage Californian almond selected and introduced alongside Nonpareil by A. T. Hatch in 1879. It bears very large, long, narrow nuts (about 20 or fewer kernels per ounce) with a soft shell and a sweet kernel, giving it a distinctive look among commercial almonds.",
+        "It is an early bloomer, opening about five days before Nonpareil. That early bloom leaves it more exposed to spring frost, but it also makes Ne Plus Ultra a useful early pollinizer for Nonpareil orchards. Like other heritage almonds it is self-incompatible and needs a compatible partner variety to set a crop."
+      ],
+      "claims": [
+        {
+          "text": "Ne Plus Ultra was selected and introduced alongside Nonpareil by A. T. Hatch in California in 1879.",
+          "type": "origin",
+          "cites": [
+            "fortier",
+            "felixgillet"
+          ]
+        },
+        {
+          "text": "It bears very large, long, narrow nuts (about 20 or fewer kernels per ounce) with a soft shell and a sweet kernel.",
+          "type": "trait",
+          "cites": [
+            "fortier",
+            "sierragold"
+          ]
+        },
+        {
+          "text": "It is an early bloomer, opening about five days before Nonpareil, which exposes it to spring frost but makes it a useful early pollinizer for Nonpareil.",
+          "type": "pollination",
+          "cites": [
+            "sierragold",
+            "sacvalley",
+            "fortier"
+          ]
+        },
+        {
+          "text": "Like other heritage almonds it is self-incompatible and needs a compatible partner variety.",
+          "type": "pollination",
+          "cites": [
+            "sacvalley"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sacvalley",
+          "name": "Sacramento Valley Orchards (UC ANR), Almond Varieties / Cultivars",
+          "url": "https://www.sacvalleyorchards.com/almonds/cultivars-rootstocks/almond-varieties-cultivars/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fortier",
+          "name": "Fortier Farms, California Almonds variety guide",
+          "url": "https://fortierfarms.com/california-almonds/",
+          "tier": "third_party"
+        },
+        {
+          "id": "felixgillet",
+          "name": "Felix Gillet Institute, Almond Discoveries",
+          "url": "https://felixgillet.org/almond-discoveries",
+          "tier": "third_party"
+        },
+        {
+          "id": "sierragold",
+          "name": "Sierra Gold Nurseries, Almond Varieties",
+          "url": "https://www.sierragoldtrees.com/almond-varieties",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-nonpareil": {
+      "slug": "almond-nonpareil",
+      "species": "Almond",
+      "variety": "Nonpareil",
+      "paragraphs": [
+        "Nonpareil is the benchmark of the Californian almond industry. It was grown from a seedling selected in Suisun, California in 1879 by A. T. Hatch, the same grower who introduced Ne Plus Ultra. It remains the most widely planted and highest value almond, and Californian Nonpareil is the global reference grade for blanched, sliced and slivered product, flour and butter. The flat, medium size kernel has smooth, pale skin that is prized for its appearance.",
+        "Its thin paper shell gives a high shelling percentage of about 65 to 70 percent, which makes hulling easy but leaves the kernel poorly sealed and more exposed to insects and birds. Nonpareil is self-incompatible, so it needs a compatible pollinizer nearby (Ne Plus Ultra, Price and Fritz are common partners). It blooms mid season and is usually the earliest of the main commercial varieties to reach harvest."
+      ],
+      "claims": [
+        {
+          "text": "Nonpareil was grown from a seedling selected in Suisun, California in 1879 by A. T. Hatch.",
+          "type": "origin",
+          "cites": [
+            "sacvalley",
+            "fortier",
+            "felixgillet",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "It is the most widely planted and highest value Californian almond, and Californian Nonpareil is the global reference grade for blanched, sliced and slivered product, flour and butter.",
+          "type": "use",
+          "cites": [
+            "sacvalley",
+            "fortier"
+          ]
+        },
+        {
+          "text": "The thin paper shell gives a high shelling percentage of about 65 to 70 percent but leaves the kernel poorly sealed and exposed to insect and bird damage.",
+          "type": "trait",
+          "cites": [
+            "fortier",
+            "sacvalley"
+          ]
+        },
+        {
+          "text": "Nonpareil is self-incompatible and needs a compatible pollinizer variety nearby.",
+          "type": "pollination",
+          "cites": [
+            "sacvalley"
+          ]
+        },
+        {
+          "text": "It blooms mid season and is usually the earliest of the main commercial varieties to harvest.",
+          "type": "season",
+          "cites": [
+            "sacvalley",
+            "fortier"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sacvalley",
+          "name": "Sacramento Valley Orchards (UC ANR), Almond Varieties / Cultivars",
+          "url": "https://www.sacvalleyorchards.com/almonds/cultivars-rootstocks/almond-varieties-cultivars/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fortier",
+          "name": "Fortier Farms, California Almonds variety guide",
+          "url": "https://fortierfarms.com/california-almonds/",
+          "tier": "third_party"
+        },
+        {
+          "id": "felixgillet",
+          "name": "Felix Gillet Institute, Almond Discoveries",
+          "url": "https://felixgillet.org/almond-discoveries",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Almond",
+          "url": "https://en.wikipedia.org/wiki/Almond",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-price": {
+      "slug": "almond-price",
+      "species": "Almond",
+      "variety": "Price",
+      "paragraphs": [
+        "Price, often listed as Price Cluster, is a Californian commercial variety carrying a small to medium, plump kernel in a thin shell. It tends to set a high percentage of double kernels, a trait it shares with several Nonpareil related varieties.",
+        "Its main value is timing. Price blooms within a day of Nonpareil, overlapping it almost perfectly, which makes it a popular pollinizer in Nonpareil orchards, and the crop matures only a few days to about a week later. Like other standard almonds it is self-incompatible, so it is planted as a companion rather than a stand alone tree."
+      ],
+      "claims": [
+        {
+          "text": "Price carries a small to medium, plump kernel in a thin shell.",
+          "type": "trait",
+          "cites": [
+            "sierragold",
+            "farmers"
+          ]
+        },
+        {
+          "text": "It tends to set a high percentage of double kernels.",
+          "type": "trait",
+          "cites": [
+            "sierragold",
+            "fortier",
+            "farmers"
+          ]
+        },
+        {
+          "text": "Price blooms within a day of Nonpareil, overlapping it almost perfectly, which makes it a popular pollinizer in Nonpareil orchards.",
+          "type": "pollination",
+          "cites": [
+            "sierragold",
+            "fortier",
+            "sacvalley"
+          ]
+        },
+        {
+          "text": "The crop matures only a few days to about a week after Nonpareil.",
+          "type": "season",
+          "cites": [
+            "sierragold",
+            "fortier",
+            "farmers"
+          ]
+        },
+        {
+          "text": "Like other standard almonds it is self-incompatible.",
+          "type": "pollination",
+          "cites": [
+            "sacvalley"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sacvalley",
+          "name": "Sacramento Valley Orchards (UC ANR), Almond Varieties / Cultivars",
+          "url": "https://www.sacvalleyorchards.com/almonds/cultivars-rootstocks/almond-varieties-cultivars/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fortier",
+          "name": "Fortier Farms, California Almonds variety guide",
+          "url": "https://fortierfarms.com/california-almonds/",
+          "tier": "third_party"
+        },
+        {
+          "id": "farmers",
+          "name": "Farmers International, Almond Varieties",
+          "url": "https://farmersinternational.com/productsold/almond_varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "sierragold",
+          "name": "Sierra Gold Nurseries, Almond Varieties",
+          "url": "https://www.sierragoldtrees.com/almond-varieties",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "almond-vela": {
+      "slug": "almond-vela",
+      "species": "Almond",
+      "variety": "Vela",
+      "paragraphs": [
+        "Vela is one of six self-fertile almonds released by the Australian national breeding program run at the University of Adelaide and funded by Hort Innovation, a program that began in 1997 to cut the industry's reliance on bees for pollination. Vela sets a crop without cross-pollination, though bees and a second variety can still help. Its sister releases include Maxima, Carina, Capella, Mira and Rhea.",
+        "Vela is a soft-shell almond of medium size and vigour, with an upright to spreading, highly spur-bearing habit and high, regular yields. Its kernels are described as having an excellent flavour similar to the benchmark Nonpareil. Because it is self-fertile, it suits both traditional and higher-density plantings without a dedicated polleniser block."
+      ],
+      "claims": [
+        {
+          "text": "Vela is self-fertile and sets a crop without cross-pollination, unlike most older almond varieties.",
+          "type": "characteristic",
+          "cites": [
+            "aba-vela",
+            "mirage-vela"
+          ]
+        },
+        {
+          "text": "Vela is one of six self-fertile varieties (with Maxima, Carina, Capella, Mira and Rhea) released by the University of Adelaide national almond breeding program, funded by Hort Innovation and begun in 1997.",
+          "type": "origin",
+          "cites": [
+            "mirage-vela"
+          ]
+        },
+        {
+          "text": "Vela is a soft-shell almond of medium size and vigour with an upright to spreading, highly spur-bearing habit, high regular yields, and kernel flavour similar to Nonpareil.",
+          "type": "characteristic",
+          "cites": [
+            "aba-vela"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "aba-vela",
+          "name": "Almond Board of Australia, Established Varieties: Vela",
+          "url": "https://almondboard.org.au/wp-content/uploads/2020/08/Est-Varieties-1-Vela.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "mirage-vela",
+          "name": "Mirage News, Self-fertilising almond trees secure future of industry (University of Adelaide)",
+          "url": "https://www.miragenews.com/self-fertilising-almond-trees-secure-future-of-industry/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "almond-all-in-one-pollinating",
+    "almond-brandes-jordan",
+    "almond-californian-papershell",
+    "almond-double",
+    "almond-multi-graft-fritz-mission",
+    "almond-pair",
+    "almond-pollinating",
+    "almond-self-pollinating",
+    "almond-self-pollinating-paper-shell",
+    "almond-tree"
+  ]
+}
