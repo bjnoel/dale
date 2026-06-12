@@ -2,6 +2,246 @@
   "species_slug": "lime",
   "schema_version": 1,
   "varieties": {
+    "lime-australian-round": {
+      "slug": "lime-australian-round",
+      "species": "Lime",
+      "variety": "Australian Round",
+      "paragraphs": [
+        "The Australian round lime (Citrus australis), also known as the Gympie lime, dooja, native lime or round lime, is a citrus endemic to the lowland subtropical rainforests of south east Queensland, from around Brisbane northwards. In the wild it can reach about 20 metres, though it is far smaller in cultivation. The round to slightly pear shaped fruit is roughly 2.5 to 5 cm across with a notably thick skin.",
+        "The juice is sharply acidic and is best used for cordials, marmalades, sauces and flavouring rather than eaten fresh, while the thick skin lends itself to candied peel and zest. The species is of scientific interest too: University of Queensland researchers sequenced its genome because Citrus australis is recognised as resistant to Huanglongbing (citrus greening), a disease that devastates commercial citrus overseas."
+      ],
+      "claims": [
+        {
+          "text": "Citrus australis is endemic to the lowland subtropical rainforests of south east Queensland, from around Brisbane northwards.",
+          "type": "origin",
+          "cites": [
+            "wikia"
+          ]
+        },
+        {
+          "text": "It is also known as the Gympie lime, dooja, native lime and round lime.",
+          "type": "naming",
+          "cites": [
+            "wikia"
+          ]
+        },
+        {
+          "text": "In the wild it can reach about 20 metres, and it is far smaller in cultivation.",
+          "type": "appearance",
+          "cites": [
+            "wikia"
+          ]
+        },
+        {
+          "text": "The fruit is round to slightly pear shaped, roughly 2.5 to 5 cm across, with a notably thick skin.",
+          "type": "appearance",
+          "cites": [
+            "wikia"
+          ]
+        },
+        {
+          "text": "The acidic juice is best used for cordials, marmalades, sauces and flavouring rather than fresh eating.",
+          "type": "use",
+          "cites": [
+            "wikia"
+          ]
+        },
+        {
+          "text": "University of Queensland researchers sequenced its genome because Citrus australis is recognised as resistant to Huanglongbing (citrus greening).",
+          "type": "breeding",
+          "cites": [
+            "uq"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikia",
+          "name": "Wikipedia, Citrus australis",
+          "url": "https://en.wikipedia.org/wiki/Citrus_australis",
+          "tier": "third_party"
+        },
+        {
+          "id": "uq",
+          "name": "University of Queensland News, Australian fruit holds the key to citrus disease resistance",
+          "url": "https://news.uq.edu.au/2023-05-12-australian-fruit-holds-key-citrus-disease-resistance",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lime-indonesian": {
+      "slug": "lime-indonesian",
+      "species": "Lime",
+      "variety": "Indonesian",
+      "paragraphs": [
+        "The Indonesian lime sold by Australian nurseries is jeruk limo (also jeruk limau), the Java lime Citrus amblycarpa. PROSEA records it as known exclusively from cultivation in Java, Indonesia, where its fruit are a common market item. It is a hybrid lime, distinct from makrut (kaffir) lime, although its aromatic leaves are used as a substitute for makrut (Citrus hystrix) leaves to lift the taste of meat sauces.",
+        "The small depressed globose fruit (about 1.5 to 3.5 cm across) has a bullate, dimpled peel and yellow-green, sour, intensely fragrant pulp. The juice of immature fruit is the prized part, used as a condiment in Indonesian dishes such as sambal, soto and bakmi. The plant is a shrub or low tree to around 7 m, carrying white fragrant flowers."
+      ],
+      "claims": [
+        {
+          "text": "The Indonesian lime sold in Australia is jeruk limo (jeruk limau), Citrus amblycarpa.",
+          "type": "naming",
+          "cites": [
+            "rosscreek-indolime",
+            "thornyfruit-jeruklimo",
+            "wiki-amblycarpa"
+          ]
+        },
+        {
+          "text": "Citrus amblycarpa is known exclusively from cultivation in Java, Indonesia.",
+          "type": "origin",
+          "cites": [
+            "prosea-amblycarpa",
+            "wiki-amblycarpa"
+          ]
+        },
+        {
+          "text": "Its aromatic leaves are used as a substitute for makrut (Citrus hystrix) leaves to flavour meat sauces.",
+          "type": "use",
+          "cites": [
+            "prosea-amblycarpa",
+            "wiki-amblycarpa"
+          ]
+        },
+        {
+          "text": "The fruit is a small depressed globose berry about 1.5 to 3.5 cm across, with a bullate peel and yellow-green, sour, fragrant pulp.",
+          "type": "appearance",
+          "cites": [
+            "prosea-amblycarpa"
+          ]
+        },
+        {
+          "text": "The juice of immature fruit is used as a condiment in Indonesian dishes such as sambal, soto and bakmi.",
+          "type": "use",
+          "cites": [
+            "prosea-amblycarpa",
+            "wiki-amblycarpa"
+          ]
+        },
+        {
+          "text": "The plant is a shrub or low tree up to about 7 m with white fragrant flowers.",
+          "type": "appearance",
+          "cites": [
+            "prosea-amblycarpa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-amblycarpa",
+          "name": "Wikipedia: Citrus x amblycarpa",
+          "url": "https://en.wikipedia.org/wiki/Citrus_%C3%97_amblycarpa",
+          "tier": "third_party"
+        },
+        {
+          "id": "prosea-amblycarpa",
+          "name": "PROSEA / PROTA4U: Citrus amblycarpa",
+          "url": "https://prosea.prota4u.org/view.aspx?id=73",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rosscreek-indolime",
+          "name": "Ross Creek Tropicals: Indonesian Lime (Jeruk Limau)",
+          "url": "https://www.rosscreektropicals.com.au/products/indonesian-lime-jeruk-limau",
+          "tier": "nursery"
+        },
+        {
+          "id": "thornyfruit-jeruklimo",
+          "name": "The Thorny Fruit Co: Jeruk Limo, Indonesian Lime, Citrus Amblycarpa",
+          "url": "https://www.thethornyfruit.com.au/products/jeruk-limo-citrus-amblycarpa-var-5pcs",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lime-jeruk-limo": {
+      "slug": "lime-jeruk-limo",
+      "species": "Lime",
+      "variety": "Jeruk Limo",
+      "paragraphs": [
+        "Jeruk limo (jeruk limau) is the Indonesian lime Citrus amblycarpa, a hybrid lime that PROSEA records as known only from cultivation in Java, Indonesia. Despite sometimes being lumped in with makrut (kaffir) lime, it is a separate citrus, though its leaves serve the same role, used as a substitute for makrut (Citrus hystrix) leaves to improve the taste of meat sauces.",
+        "The fruit is a small depressed globose berry (about 1.5 to 3.5 cm across) with a bullate, dimpled peel and yellow-green, sour, very fragrant pulp. The juice of immature fruit is the part most valued, used as a condiment in sambal, soto and bakmi. The tree is a shrub or low tree to around 7 m, bearing white fragrant flowers."
+      ],
+      "claims": [
+        {
+          "text": "Jeruk limo (jeruk limau) is the Indonesian lime Citrus amblycarpa.",
+          "type": "naming",
+          "cites": [
+            "thornyfruit-jeruklimo",
+            "wiki-amblycarpa"
+          ]
+        },
+        {
+          "text": "Citrus amblycarpa is known exclusively from cultivation in Java, Indonesia.",
+          "type": "origin",
+          "cites": [
+            "prosea-amblycarpa",
+            "wiki-amblycarpa"
+          ]
+        },
+        {
+          "text": "Its leaves are used as a substitute for makrut (Citrus hystrix) leaves to flavour meat sauces.",
+          "type": "use",
+          "cites": [
+            "prosea-amblycarpa",
+            "wiki-amblycarpa"
+          ]
+        },
+        {
+          "text": "The fruit is a small depressed globose berry about 1.5 to 3.5 cm across with a bullate peel and yellow-green, sour, fragrant pulp.",
+          "type": "appearance",
+          "cites": [
+            "prosea-amblycarpa"
+          ]
+        },
+        {
+          "text": "The juice of immature fruit is used as a condiment in dishes such as sambal, soto and bakmi.",
+          "type": "use",
+          "cites": [
+            "prosea-amblycarpa",
+            "wiki-amblycarpa"
+          ]
+        },
+        {
+          "text": "The plant is a shrub or low tree up to about 7 m with white fragrant flowers.",
+          "type": "appearance",
+          "cites": [
+            "prosea-amblycarpa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-amblycarpa",
+          "name": "Wikipedia: Citrus x amblycarpa",
+          "url": "https://en.wikipedia.org/wiki/Citrus_%C3%97_amblycarpa",
+          "tier": "third_party"
+        },
+        {
+          "id": "prosea-amblycarpa",
+          "name": "PROSEA / PROTA4U: Citrus amblycarpa",
+          "url": "https://prosea.prota4u.org/view.aspx?id=73",
+          "tier": "authoritative"
+        },
+        {
+          "id": "thornyfruit-jeruklimo",
+          "name": "The Thorny Fruit Co: Jeruk Limo, Indonesian Lime, Citrus Amblycarpa",
+          "url": "https://www.thethornyfruit.com.au/products/jeruk-limo-citrus-amblycarpa-var-5pcs",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lime-kaffir": {
       "slug": "lime-kaffir",
       "species": "Lime",
@@ -70,6 +310,204 @@
       "confidence_score": 0.92,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lime-kusaie": {
+      "slug": "lime-kusaie",
+      "species": "Lime",
+      "variety": "Kusaie",
+      "paragraphs": [
+        "The Kusaie lime is a yellow fruited form of the Rangpur, an old citrus type that almost certainly originated in India. According to the UC Riverside Citrus Variety Collection it was introduced into Hawaii from Kusaie Island in the Caroline group in 1885 and carried to the United States in 1914. Genomic work shows the Rangpur is a hybrid of citron and mandarin, so despite the name lime the fruit sits botanically closer to a mandarin while keeping a sharp, lime like acidity.",
+        "Fruit colour runs from yellowish to reddish orange, with orange flesh that is tender, juicy and strongly acid. The seeds are small, numerous and highly polyembryonic, which lets the variety come remarkably true from seed. The collection notes that calling it a lime is misleading, since the fruit resembles a mandarin in form rather than a true lime."
+      ],
+      "claims": [
+        {
+          "text": "Kusaie is a yellow fruited form of the Rangpur that almost certainly originated in India, introduced to Hawaii from Kusaie Island in 1885 and to the United States in 1914.",
+          "type": "origin",
+          "cites": [
+            "ucr"
+          ]
+        },
+        {
+          "text": "The Rangpur is genomically a hybrid of citron (Citrus medica) and mandarin (Citrus reticulata).",
+          "type": "breeding",
+          "cites": [
+            "wikir"
+          ]
+        },
+        {
+          "text": "The rind is yellowish to reddish orange with orange flesh that is tender, juicy and strongly acid.",
+          "type": "appearance",
+          "cites": [
+            "ucr"
+          ]
+        },
+        {
+          "text": "Seeds are small, numerous and highly polyembryonic, so the variety reproduces remarkably true from seed.",
+          "type": "growing",
+          "cites": [
+            "ucr"
+          ]
+        },
+        {
+          "text": "The name lime is regarded as misleading because the fruit resembles a mandarin rather than a true lime.",
+          "type": "naming",
+          "cites": [
+            "ucr"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside, Kusaie Rangpur lime (CRC 452)",
+          "url": "https://citrusvariety.ucr.edu/crc452",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikir",
+          "name": "Wikipedia, Rangpur (fruit)",
+          "url": "https://en.wikipedia.org/wiki/Rangpur_(fruit)",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lime-mosambi-sweet": {
+      "slug": "lime-mosambi-sweet",
+      "species": "Lime",
+      "variety": "Mosambi Sweet",
+      "paragraphs": [
+        "Mosambi is the Indian sweet lime, Citrus limetta, also called sweet lemon. It is native to southern Iran and is also grown around the Mediterranean Basin. Despite the lime in its name, it is a sweet, low-acid citrus rather than a tart one, and the ripe fruit reads more like a small greenish-yellow orange than a true lime.",
+        "Its flavour is sweet and mild, with a marked lack of acidity, so it tastes flatter than most citrus. The fresh juice turns bitter within a few minutes of exposure to air, so it is drunk straight after juicing. In the Indian subcontinent it is the most common citrus juice, valued as a refreshing drink rather than a cooking acid."
+      ],
+      "claims": [
+        {
+          "text": "Mosambi is the Indian sweet lime (sweet lemon), Citrus limetta.",
+          "type": "naming",
+          "cites": [
+            "wiki-limetta",
+            "lums-limetta"
+          ]
+        },
+        {
+          "text": "It is native to southern Iran and is also cultivated in the Mediterranean Basin.",
+          "type": "origin",
+          "cites": [
+            "wiki-limetta",
+            "lums-limetta"
+          ]
+        },
+        {
+          "text": "Its flavour is sweet and mild with a lack of acidity, tasting flatter than most citrus.",
+          "type": "flavour",
+          "cites": [
+            "wiki-limetta",
+            "lums-limetta"
+          ]
+        },
+        {
+          "text": "The juice turns bitter within a few minutes of exposure to air.",
+          "type": "use",
+          "cites": [
+            "wiki-limetta",
+            "lums-limetta"
+          ]
+        },
+        {
+          "text": "It is the most common citrus juice available in the Indian subcontinent.",
+          "type": "use",
+          "cites": [
+            "wiki-limetta",
+            "lums-limetta"
+          ]
+        },
+        {
+          "text": "The ripe fruit is greenish-yellow and looks more like a small orange than a true lime.",
+          "type": "appearance",
+          "cites": [
+            "wiki-limetta",
+            "lums-limetta"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-limetta",
+          "name": "Wikipedia: Citrus limetta",
+          "url": "https://en.wikipedia.org/wiki/Citrus_limetta",
+          "tier": "third_party"
+        },
+        {
+          "id": "lums-limetta",
+          "name": "Biodiversity at LUMS: Citrus limetta",
+          "url": "https://biodiversity.lums.edu.pk/lums-biodiversity/plants/citrus-limetta",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lime-mount-white": {
+      "slug": "lime-mount-white",
+      "species": "Lime",
+      "variety": "Mount White",
+      "paragraphs": [
+        "The Mount White lime (Citrus garrawayi, sometimes placed in the genus Microcitrus) is one of the citrus species endemic to Australia. It is a rainforest understorey shrub or small tree of the Cape York region in far north Queensland. Because its range is small and isolated, the species is regarded as rare, and there has been no commercial use of it to date.",
+        "It is a finger lime relative, carrying elongated, finger shaped fruit that are yellowish green with green pulp, set off by broad lanceolate leaves. The species was first described by F.M. Bailey in 1904 and is recorded in Australian botanical references under the common name Mount White Lime."
+      ],
+      "claims": [
+        {
+          "text": "Citrus garrawayi (Mount White lime) is native to the Cape York region of far north Queensland, growing as a rainforest understorey shrub or small tree.",
+          "type": "origin",
+          "cites": [
+            "wikig"
+          ]
+        },
+        {
+          "text": "Its range is small and isolated, so the species is rare and has had no commercial use to date.",
+          "type": "growing",
+          "cites": [
+            "wikig"
+          ]
+        },
+        {
+          "text": "The fruit is elongated and finger shaped, yellowish green with green pulp, and the leaves are broad and lanceolate.",
+          "type": "appearance",
+          "cites": [
+            "wikig"
+          ]
+        },
+        {
+          "text": "The species was first described by F.M. Bailey in 1904 and carries the common name Mount White Lime.",
+          "type": "naming",
+          "cites": [
+            "ala"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikig",
+          "name": "Wikipedia, Citrus garrawayi",
+          "url": "https://en.wikipedia.org/wiki/Citrus_garrawayi",
+          "tier": "third_party"
+        },
+        {
+          "id": "ala",
+          "name": "Atlas of Living Australia, Citrus garrawayi (Mount White Lime)",
+          "url": "https://bie.ala.org.au/species/Citrus_garrawayi",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.87,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "lime-rangpur": {
       "slug": "lime-rangpur",
@@ -196,6 +634,123 @@
       "confidence_score": 0.86,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lime-russel-river": {
+      "slug": "lime-russel-river",
+      "species": "Lime",
+      "variety": "Russel River",
+      "paragraphs": [
+        "The Russell River lime (Citrus inodora, also placed in Microcitrus) is an Australian native citrus endemic to the lowland tropical rainforests near the Bellenden Ker Range and Cape Tribulation in far north Queensland. It grows as a shrub up to about 4 metres and is now rare, listed as endangered under Queensland law after much of its habitat was cleared for banana and sugar cane.",
+        "Its standout quirk is written into the name: the species epithet inodora means without odour, and its leaves and flowers are essentially odourless, lacking the aromatic oils typical of citrus. The fruit is egg shaped and yellowish green. It is also known as the large leaf Australian wild lime."
+      ],
+      "claims": [
+        {
+          "text": "Citrus inodora is endemic to lowland tropical rainforest near the Bellenden Ker Range and Cape Tribulation in far north Queensland.",
+          "type": "origin",
+          "cites": [
+            "wikii",
+            "ucri"
+          ]
+        },
+        {
+          "text": "It grows as a shrub up to about 4 metres tall.",
+          "type": "appearance",
+          "cites": [
+            "wikii"
+          ]
+        },
+        {
+          "text": "It is rare and listed as endangered under Queensland's Nature Conservation Act, with much habitat cleared for banana and sugar cane.",
+          "type": "growing",
+          "cites": [
+            "wikii"
+          ]
+        },
+        {
+          "text": "Its leaves and flowers are essentially odourless, lacking the aromatic oils characteristic of citrus, reflected in the epithet inodora.",
+          "type": "naming",
+          "cites": [
+            "wikii",
+            "ucri"
+          ]
+        },
+        {
+          "text": "The fruit is egg shaped and yellowish green, and the plant is also called the large leaf Australian wild lime.",
+          "type": "appearance",
+          "cites": [
+            "wikii"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikii",
+          "name": "Wikipedia, Citrus inodora",
+          "url": "https://en.wikipedia.org/wiki/Citrus_inodora",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucri",
+          "name": "Givaudan Citrus Variety Collection at UC Riverside, Microcitrus inodora (CRC 3785)",
+          "url": "https://citrusvariety.ucr.edu/crc3785",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lime-sublime": {
+      "slug": "lime-sublime",
+      "species": "Lime",
+      "variety": "Sublime",
+      "paragraphs": [
+        "Sublime is an Australian dwarf selection of the Tahitian lime (Citrus latifolia), sold for compact gardens, patios and pots. It grows on its own root system rather than being grafted, and it stays naturally small, reaching about 1.5 metres in the ground and staying under a metre high with a similar width in a container, which suits courtyards and even balconies while still producing full-sized juicy limes."
+      ],
+      "claims": [
+        {
+          "text": "Sublime is an Australian marketed dwarf selection of the Tahitian lime (Citrus latifolia).",
+          "type": "origin",
+          "cites": [
+            "gg",
+            "tess"
+          ]
+        },
+        {
+          "text": "It grows on its own root system rather than being grafted, and produces large, juicy limes.",
+          "type": "growing",
+          "cites": [
+            "gg"
+          ]
+        },
+        {
+          "text": "It reaches about 1.5 metres in the ground and stays under a metre high with a similar width in a pot, suiting patios and balconies.",
+          "type": "appearance",
+          "cites": [
+            "gg",
+            "tess"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gg",
+          "name": "The Garden Gurus, Citrus Lemonicious and Sublime",
+          "url": "https://www.thegardengurus.tv/story.php?id=3959&hit=1",
+          "tier": "third_party"
+        },
+        {
+          "id": "tess",
+          "name": "Tesselaar Plants, Lime Sublime",
+          "url": "https://www.tesselaar.net.au/product/14164-lime-sublime",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "lime-sudachi": {
       "slug": "lime-sudachi",
@@ -531,6 +1086,24 @@
     }
   },
   "skipped": [
-    "lime-australian"
+    "lime-australian",
+    "lime-berry",
+    "lime-citrus-sublime-patio",
+    "lime-finger",
+    "lime-japanese-sudachi",
+    "lime-kaffia",
+    "lime-kaffir-jumbo",
+    "lime-kaffir-tree",
+    "lime-kassia",
+    "lime-kusaie-micronesian",
+    "lime-lemon-our-best-selling-fruit-salad-tree-of-all-time",
+    "lime-lemonade",
+    "lime-limello",
+    "lime-limo",
+    "lime-makrut-nathaniel",
+    "lime-native-sunrise",
+    "lime-sweet-limes",
+    "lime-tahitian-espalier",
+    "lime-tahitian-extra"
   ]
 }
