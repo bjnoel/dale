@@ -12,7 +12,11 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
-**Q44** [INFO, sanity-check the copy] Bush tucker digest is now opt-in (DAL-199)
+**Q44** [RESOLVED 2026-06-12: Benedict approved the checkbox labels as-is, and the
+public /digest.html stays fruit-only for now. No changes needed. DAL-202 review
+scheduled for 2026-07-23.]
+
+Bush tucker digest is now opt-in (DAL-199)
 
 You asked for this to be opt-in at confirmation, off by default, with a choice of
 categories (bush tucker / fruit trees, more later). Built and shipped that way:
