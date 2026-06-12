@@ -562,6 +562,88 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mango-cac": {
+      "slug": "mango-cac",
+      "species": "Mango",
+      "variety": "Cac",
+      "paragraphs": [
+        "Cac is a Vietnamese mango from the celebrated Xoai Cat group, sometimes listed as Xoai Cat Chu. The Vietnamese word cat means sand, a reference to the fine black lenticels that freckle the skin like grains of sand. It was brought from Vietnam to Florida around the year 2000 and is valued for its eating quality and dependable cropping.",
+        "The fruit is medium to large, oval to slightly oblong, with smooth skin that turns from green to yellow. The flesh is lemon to orange yellow, essentially fiberless and melting in texture, with a refined, balanced flavour blending citrus, peach and floral notes. The tree has an open, somewhat leggy habit that benefits from regular shaping."
+      ],
+      "claims": [
+        {
+          "text": "A Vietnamese mango from the Xoai Cat group, also listed as Xoai Cat Chu",
+          "type": "origin",
+          "cites": [
+            "toptropicals-cac",
+            "tropicaltreeguide-cac"
+          ]
+        },
+        {
+          "text": "The Vietnamese word cat means sand, referring to the fine black lenticels that develop on the skin",
+          "type": "naming",
+          "cites": [
+            "tropicaltreeguide-cac"
+          ]
+        },
+        {
+          "text": "Brought from Vietnam to Florida around the year 2000",
+          "type": "history",
+          "cites": [
+            "tropicaltreeguide-cac"
+          ]
+        },
+        {
+          "text": "Medium to large, oval to slightly oblong fruit with smooth skin that turns from green to yellow",
+          "type": "appearance",
+          "cites": [
+            "toptropicals-cac",
+            "tropicaltreeguide-cac"
+          ]
+        },
+        {
+          "text": "Lemon to orange yellow flesh, essentially fiberless with a melting texture",
+          "type": "flavour",
+          "cites": [
+            "toptropicals-cac",
+            "tropicaltreeguide-cac"
+          ]
+        },
+        {
+          "text": "Refined, balanced flavour blending citrus, peach and floral notes",
+          "type": "flavour",
+          "cites": [
+            "toptropicals-cac",
+            "tropicaltreeguide-cac"
+          ]
+        },
+        {
+          "text": "Open, somewhat leggy growth habit that benefits from shaping",
+          "type": "growing",
+          "cites": [
+            "toptropicals-cac"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "tropicaltreeguide-cac",
+          "name": "Tropical Tree Guide: Cac Mango Grow Guide",
+          "url": "https://tropicaltreeguide.com/cac-mango-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "toptropicals-cac",
+          "name": "Top Tropicals: Mangifera indica Cac",
+          "url": "https://toptropicals.com/catalog/uid/mangifera_indica_cac.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "mango-carabao": {
       "slug": "mango-carabao",
       "species": "Mango",
@@ -3289,6 +3371,65 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mango-mangga-madu": {
+      "slug": "mango-mangga-madu",
+      "species": "Mango",
+      "variety": "Mangga Madu",
+      "paragraphs": [
+        "Mangga Madu is a traditional Indonesian mango, listed among the country's named cultivars. Its name translates as honey mango (madu is the Indonesian and Malay word for honey), a reference to its taste rather than its appearance.",
+        "It is grown for an unusually sweet, low acid flavour, so sweet that even immature fruit carries little of the sourness common in young mangoes, with soft, deep yellow flesh. It is one of several honey sweet mango selections grown across the Indonesian archipelago."
+      ],
+      "claims": [
+        {
+          "text": "A named Indonesian mango cultivar",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cultivars",
+            "stekom-manggamadu"
+          ]
+        },
+        {
+          "text": "Its name translates as honey mango (madu means honey in Indonesian)",
+          "type": "naming",
+          "cites": [
+            "stekom-manggamadu",
+            "ladybird-manggamadu"
+          ]
+        },
+        {
+          "text": "Prized for an unusually sweet, low acid flavour, with even immature fruit carrying little sourness, and soft deep yellow flesh",
+          "type": "flavour",
+          "cites": [
+            "stekom-manggamadu",
+            "ladybird-manggamadu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-cultivars",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "stekom-manggamadu",
+          "name": "Ensiklopedia Dunia (Universitas STEKOM): Mangga madu",
+          "url": "https://p2k.stekom.ac.id/ensiklopedia/Mangga_madu",
+          "tier": "third_party"
+        },
+        {
+          "id": "ladybird-manggamadu",
+          "name": "Ladybird Nursery: Mango Mangga Madu",
+          "url": "https://ladybirdnursery.com.au/products/mango-mangga-madu",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "mango-manjeera": {
       "slug": "mango-manjeera",
       "species": "Mango",
@@ -3610,6 +3751,57 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "mango-olour": {
+      "slug": "mango-olour",
+      "species": "Mango",
+      "variety": "Olour",
+      "paragraphs": [
+        "Olour is an Indian mango grown less for its fruit than for its seed. It is one of the polyembryonic mango types, meaning a single seed produces several seedlings, most of them genetically identical to the parent (nucellar seedlings). That habit lets growers raise uniform, true to type plants from seed, which is why Olour is propagated mainly as a rootstock rather than as an eating variety.",
+        "It is widely used in India as a vigorous rootstock for grafting improved cultivars, including the prized Alphonso. Indian horticultural research has identified Olour seedlings as a promising rootstock for intensive Alphonso plantings, where Olour imparts more vigorous growth to the grafted scion than dwarfing rootstocks such as Vellaikulumban."
+      ],
+      "claims": [
+        {
+          "text": "An Indian polyembryonic mango whose seeds produce multiple nucellar seedlings that are largely true to type to the parent",
+          "type": "origin",
+          "cites": [
+            "sciencedirect-polyembryonic"
+          ]
+        },
+        {
+          "text": "Propagated mainly as a rootstock for grafting improved cultivars, including Alphonso, rather than grown as an eating mango",
+          "type": "use",
+          "cites": [
+            "iihr-olour",
+            "sciencedirect-polyembryonic"
+          ]
+        },
+        {
+          "text": "A vigorous rootstock that imparts more growth to the scion than the dwarfing Vellaikulumban, identified for intensive Alphonso cultivation",
+          "type": "growing",
+          "cites": [
+            "iihr-olour"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "iihr-olour",
+          "name": "ICAR-Indian Institute of Horticultural Research: Nucellar seedlings of Vellaikulumban and Olour identified as potential rootstocks for Alphonso",
+          "url": "https://www.iihr.res.in/nucellar-seedlings-%E2%80%98vellaikulumban%E2%80%99-and-%E2%80%98olour%E2%80%99-varieties-are-identified-potential-rootstocks",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sciencedirect-polyembryonic",
+          "name": "Long term performance of mango varieties on five polyembryonic rootstocks (Scientia Horticulturae, ScienceDirect)",
+          "url": "https://www.sciencedirect.com/science/article/abs/pii/S0304423821000510",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "mango-orange-sherbet": {
       "slug": "mango-orange-sherbet",
@@ -3968,6 +4160,73 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mango-phoenix": {
+      "slug": "mango-phoenix",
+      "species": "Mango",
+      "variety": "Phoenix",
+      "paragraphs": [
+        "Phoenix is a Florida mango selected by Gary Zill of Boynton Beach and released to the public in 2017. It is a seedling of Jakarta with an unknown pollen parent. The name comes from its survival story: the tree had been cut back for removal but regrew and went on to fruit, like the mythical phoenix.",
+        "It is regarded as an elite modern variety with a complex flavour that sits between classic and Indian mango character, sweet but subacid, with a resinous, piney note. The yellow-orange flesh is firm, juicy and fibreless, and the fruit often carries an attractive pinkish-red blush. The seed is monoembryonic, so it will not grow true from seed. It is treated as a mid-season variety."
+      ],
+      "claims": [
+        {
+          "text": "Selected by Gary Zill of Boynton Beach, Florida and released in 2017; a seedling of Jakarta with an unknown pollen parent",
+          "type": "origin",
+          "cites": [
+            "tropicaltreeguide-phoenix",
+            "tropicalacres-phoenix"
+          ]
+        },
+        {
+          "text": "Named after the mythological phoenix because the tree was cut back for removal but regrew and fruited",
+          "type": "naming",
+          "cites": [
+            "tropicalacres-phoenix"
+          ]
+        },
+        {
+          "text": "Complex flavour between classic and Indian mango character, sweet and subacid with a resinous, piney note",
+          "type": "flavour",
+          "cites": [
+            "tropicaltreeguide-phoenix",
+            "tropicalacres-phoenix"
+          ]
+        },
+        {
+          "text": "Yellow-orange flesh that is firm, juicy and fibreless, with an attractive pinkish-red blush",
+          "type": "appearance",
+          "cites": [
+            "tropicaltreeguide-phoenix",
+            "tropicalacres-phoenix"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed, so it does not grow true from seed; treated as a mid-season variety",
+          "type": "season",
+          "cites": [
+            "tropicaltreeguide-phoenix"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "tropicaltreeguide-phoenix",
+          "name": "Tropical Tree Guide: Phoenix Mango Grow Guide",
+          "url": "https://tropicaltreeguide.com/phoenix-mango-grow-guide/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tropicalacres-phoenix",
+          "name": "Tropical Acres Farms: Phoenix",
+          "url": "https://www.tropicalacresfarms.com/product-page/phoenix",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "mango-pickering": {
       "slug": "mango-pickering",
       "species": "Mango",
@@ -4162,6 +4421,89 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mango-rad": {
+      "slug": "mango-rad",
+      "species": "Mango",
+      "variety": "Rad",
+      "paragraphs": [
+        "Rad (also written Raed or Rhed) is a Thai mango whose name means rhinoceros, a reference to the small pointed horn that protrudes from the fruit. It is closely tied to Chachoengsao province in central Thailand, historically known as Paet Riew, where the local Rad Pad Riew mango has been granted Geographical Indication status by Thailand's Department of Intellectual Property. The skin stays light green.",
+        "It belongs to the green eating mangoes prized unripe rather than ripe. The firm, crisp flesh is sharp and very sour when raw, turning more tart and sweet as it ripens. In Thailand it is usually eaten as a snack, thinly sliced and dipped in salt and chilli or in nam pla wan (a sweet, salty fish sauce dip), and it also features in Thai green mango salads."
+      ],
+      "claims": [
+        {
+          "text": "Thai mango whose name means rhinoceros, after the small pointed horn that protrudes from the fruit",
+          "type": "naming",
+          "cites": [
+            "holidify-thaimango",
+            "bkmagazine-thaimango"
+          ]
+        },
+        {
+          "text": "Associated with Chachoengsao province (historically Paet Riew); the local Rad Pad Riew mango has Geographical Indication registration in Thailand",
+          "type": "origin",
+          "cites": [
+            "prd-gi",
+            "holidify-thaimango"
+          ]
+        },
+        {
+          "text": "Light green skinned fruit",
+          "type": "appearance",
+          "cites": [
+            "holidify-thaimango",
+            "tgfresh-thaimango"
+          ]
+        },
+        {
+          "text": "Firm, crisp flesh that is sharp and very sour when raw and more tart-sweet when ripe",
+          "type": "flavour",
+          "cites": [
+            "prd-gi",
+            "bkmagazine-thaimango",
+            "tgfresh-thaimango"
+          ]
+        },
+        {
+          "text": "Eaten unripe as a snack, thinly sliced with salt and chilli or nam pla wan, and used in green mango salads",
+          "type": "use",
+          "cites": [
+            "tgfresh-thaimango",
+            "bkmagazine-thaimango",
+            "holidify-thaimango"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "prd-gi",
+          "name": "Government Public Relations Department of Thailand: Rad Pad Riew mango GI status",
+          "url": "https://thailand.prd.go.th/en/content/category/detail/id/2078/iid/360304",
+          "tier": "authoritative"
+        },
+        {
+          "id": "holidify-thaimango",
+          "name": "Holidify: Mangoes in Thailand",
+          "url": "https://www.holidify.com/pages/mangoes-in-thailand-1823.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "bkmagazine-thaimango",
+          "name": "BK Magazine: 4 of the best mangoes in Thailand",
+          "url": "https://www.bkmagazine.com/restaurants/news/4-best-mangoes-thailand/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tgfresh-thaimango",
+          "name": "Tropical Green: Thailand, paradise for the mango lovers",
+          "url": "https://www.tgfresh.com/thailand-paradise-for-the-mango-lovers/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "mango-red-mulgoba": {
       "slug": "mango-red-mulgoba",
       "species": "Mango",
@@ -4351,6 +4693,86 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "mango-sensations": {
+      "slug": "mango-sensations",
+      "species": "Mango",
+      "variety": "Sensations",
+      "paragraphs": [
+        "Sensation is a Florida mango that grew from a seed planted in North Miami in 1935. The tree first fruited in 1941 and was named and propagated commercially from 1949. A 2005 pedigree study found it was most likely a cross between Haden and Brooks, two foundation Florida cultivars. Its seed is monoembryonic, so it does not come true from seed.",
+        "Its signature is colour: a striking dark plum-red skin dotted with pale yellow lenticels. The flesh is firm with a sweet, mild flavour and little fibre. It is a late-season variety, and although it faded commercially in Florida due to uneven ripening, it became a mainstay late-season mango in South Africa, where it is recognised by its deep purple-red blush and stringless flesh."
+      ],
+      "claims": [
+        {
+          "text": "Grew from a seed planted in North Miami, Florida in 1935; first fruited in 1941 and was named and propagated commercially from 1949",
+          "type": "origin",
+          "cites": [
+            "wikipedia-sensation",
+            "mangopedia-sensation"
+          ]
+        },
+        {
+          "text": "A 2005 pedigree analysis found it was most likely a cross between Haden and Brooks",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-sensation",
+            "mangopedia-sensation"
+          ]
+        },
+        {
+          "text": "Distinctive dark plum-red skin with pale yellow lenticel dots",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-sensation",
+            "samga-sensation"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "quirk",
+          "cites": [
+            "wikipedia-sensation"
+          ]
+        },
+        {
+          "text": "A late-season variety with firm, sweet, low-fibre flesh, grown as a mainstay late-season mango in South Africa",
+          "type": "season",
+          "cites": [
+            "samga-sensation",
+            "southafrica-sensation"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-sensation",
+          "name": "Wikipedia: Sensation (mango)",
+          "url": "https://en.wikipedia.org/wiki/Sensation_(mango)",
+          "tier": "third_party"
+        },
+        {
+          "id": "mangopedia-sensation",
+          "name": "Mangopedia: Sensation",
+          "url": "https://mangopedia.org/sensation/",
+          "tier": "third_party"
+        },
+        {
+          "id": "samga-sensation",
+          "name": "South African Mango Growers' Association: Cultivars",
+          "url": "https://mango.co.za/cultivars/",
+          "tier": "third_party"
+        },
+        {
+          "id": "southafrica-sensation",
+          "name": "SouthAfrica.co.za: Mango Cultivars",
+          "url": "https://southafrica.co.za/mango-cultivars.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "mango-spirit-of-76": {
       "slug": "mango-spirit-of-76",
       "species": "Mango",
@@ -4439,6 +4861,93 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "mango-springfels": {
+      "slug": "mango-springfels",
+      "species": "Mango",
+      "variety": "Springfels",
+      "paragraphs": [
+        "Springfels is an old large-fruited Florida mango that grew from a seed planted in 1919 at Charles Springfels' property in West Palm Beach, first fruiting in 1925. A 2005 pedigree study confirmed it as a seedling of Haden. It was promoted heavily in its day, even reaching the White House in a 1939 shipment, but never gained lasting commercial favour as newer cultivars arrived.",
+        "The fruit is notably large, usually over a pound and sometimes several pounds, oblong with a rounded base and no pronounced beak. The skin is yellow with a red blush, much like its Haden parent, over yellow, sweet and aromatic flesh with very light fibre. The seed is monoembryonic. It ripens in July and August in Florida, and although it ships well its tendency to ripen unevenly was a drawback for growers."
+      ],
+      "claims": [
+        {
+          "text": "Grew from a seed planted in 1919 at Charles Springfels' property in West Palm Beach, Florida, first fruiting in 1925",
+          "type": "origin",
+          "cites": [
+            "wikipedia-springfels"
+          ]
+        },
+        {
+          "text": "A 2005 pedigree analysis confirmed it as a seedling of Haden",
+          "type": "breeding",
+          "cites": [
+            "wikipedia-springfels"
+          ]
+        },
+        {
+          "text": "Promoted heavily, including a shipment received by the White House in 1939",
+          "type": "history",
+          "cites": [
+            "wikipedia-springfels"
+          ]
+        },
+        {
+          "text": "Notably large fruit, usually over a pound and sometimes several pounds, oblong with a rounded base and no pronounced beak",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-springfels",
+            "toptropicals-springfels"
+          ]
+        },
+        {
+          "text": "Yellow skin with a red blush over yellow, sweet, aromatic flesh with very light fibre",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-springfels",
+            "toptropicals-springfels"
+          ]
+        },
+        {
+          "text": "Monoembryonic seed",
+          "type": "quirk",
+          "cites": [
+            "wikipedia-springfels"
+          ]
+        },
+        {
+          "text": "Ripens July to August in Florida; ships well but is prone to uneven ripening, which limited its commercial appeal",
+          "type": "season",
+          "cites": [
+            "wikipedia-springfels",
+            "wikipedia-cultivars"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-springfels",
+          "name": "Wikipedia: Springfels",
+          "url": "https://en.wikipedia.org/wiki/Springfels",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-cultivars",
+          "name": "Wikipedia: List of mango cultivars",
+          "url": "https://en.wikipedia.org/wiki/List_of_mango_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "toptropicals-springfels",
+          "name": "Top Tropicals: Mangifera indica Springfels",
+          "url": "https://toptropicals.com/catalog/uid/mangifera_indica_springfels.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "mango-sweet-tart": {
       "slug": "mango-sweet-tart",
@@ -5079,28 +5588,44 @@
     "mango-allison-red",
     "mango-alphonso-fruit-tree",
     "mango-alphonso-mango-m",
+    "mango-ataulfo-honey",
     "mango-ataulfo-honey-mango",
     "mango-bali-apple",
     "mango-bambaroo",
     "mango-bambaroo-kp-l",
     "mango-bamberoo",
     "mango-banana",
+    "mango-banana-callo",
+    "mango-banana-ken",
+    "mango-batawi",
     "mango-beverly",
     "mango-bowen-kensington-pride",
     "mango-brooks-s",
+    "mango-bullock-s-heart",
     "mango-bullocks-heart",
+    "mango-bundy-special",
+    "mango-carabao-filipino",
     "mango-carabao-filipino-mango",
+    "mango-cat-thom",
     "mango-chandrakaran",
     "mango-chereku-rasam",
+    "mango-cherry",
     "mango-choc-anan",
     "mango-choc-anon",
+    "mango-choc-anon-miracle",
+    "mango-crimson-blush",
     "mango-early-gold",
     "mango-elephant-xoai-tuong",
     "mango-florigon-s",
     "mango-giant-titan",
+    "mango-ginger",
     "mango-golden-queen-taiwan-gold",
     "mango-gulliver-s-triumph",
     "mango-harum-wangi",
+    "mango-harumanis-red",
+    "mango-kamerunga-white",
+    "mango-kasturi-blue",
+    "mango-kasturi-green",
     "mango-keitt-s",
     "mango-kensington-red",
     "mango-keow-savoy",
@@ -5109,6 +5634,9 @@
     "mango-khiew-sawoey",
     "mango-king-thai-maha-chanook",
     "mango-kwan",
+    "mango-lashkars-khan",
+    "mango-lemon-meringue-ppk",
+    "mango-lime",
     "mango-lucinda",
     "mango-m-odourata",
     "mango-mangga-golek",
@@ -5121,8 +5649,18 @@
     "mango-pineapple",
     "mango-r2e2-huge-mango-plant",
     "mango-red-harumanis",
+    "mango-ricks-bowen",
+    "mango-rock-saigon",
     "mango-rosa",
+    "mango-royal-red",
+    "mango-rubropetala",
+    "mango-rupee",
+    "mango-senorita",
     "mango-smith",
+    "mango-spychala",
+    "mango-strawberry-sensation",
+    "mango-thong",
+    "mango-tree-sensation",
     "mango-tuong",
     "mango-xo-i-t-ng",
     "mango-zillate",
