@@ -1,0 +1,268 @@
+{
+  "species_slug": "blackberry",
+  "schema_version": 1,
+  "varieties": {
+    "blackberry-jam-fruit": {
+      "slug": "blackberry-jam-fruit",
+      "species": "Blackberry",
+      "variety": "Jam Fruit",
+      "paragraphs": [
+        "Blackberry Jam Fruit (Rosenbergiodendron formosum, formerly Randia formosa) is not a true blackberry at all. It is a small evergreen shrub in the Rubiaceae, the madder and coffee family, and is a close relative of the gardenia rather than of Rubus brambles. Native to parts of Central and South America (including Panama, Colombia, Venezuela and Ecuador), it is listed here under blackberry only because of its trade name, which comes from the flavour of its pulp.",
+        "The plant stays compact, usually around 1.2 to 1.5 metres tall, and carries star shaped, tubular white flowers that are fragrant and attract night flying moths. The olive shaped yellow fruits are roughly 2.5 cm across with a thin woody shell, looking a little like small loquats. Inside is a soft black pulp dotted with small flat seeds that genuinely tastes like blackberry jam, sweet but not cloying, which is the whole appeal of the plant."
+      ],
+      "claims": [
+        {
+          "text": "It is Rosenbergiodendron formosum (formerly Randia formosa), in the Rubiaceae, related to gardenia, and is not a true blackberry (Rubus).",
+          "type": "naming",
+          "cites": [
+            "wiki-rosenberg",
+            "growables-jam"
+          ]
+        },
+        {
+          "text": "Native to Central and South America, including Panama, Colombia, Venezuela and Ecuador.",
+          "type": "origin",
+          "cites": [
+            "wiki-rosenberg"
+          ]
+        },
+        {
+          "text": "A small compact evergreen shrub with fragrant, star shaped, tubular white flowers that attract nocturnal moths.",
+          "type": "appearance",
+          "cites": [
+            "wiki-rosenberg",
+            "growables-jam"
+          ]
+        },
+        {
+          "text": "Olive shaped yellow woody shelled fruits with soft black pulp that tastes like blackberry jam.",
+          "type": "flavour",
+          "cites": [
+            "wiki-rosenberg",
+            "growables-jam"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-rosenberg",
+          "name": "Wikipedia, Rosenbergiodendron formosum",
+          "url": "https://en.wikipedia.org/wiki/Rosenbergiodendron_formosum",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables-jam",
+          "name": "Growables, Blackberry Jam Fruit (Randia formosa)",
+          "url": "https://www.growables.org/information/TropicalFruit/blackberryjam.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "blackberry-thornless-chester": {
+      "slug": "blackberry-thornless-chester",
+      "species": "Blackberry",
+      "variety": "Thornless Chester",
+      "paragraphs": [
+        "Chester (often sold as Chester Thornless) is a thornless, semi erect blackberry released in 1985 through a joint USDA-ARS breeding effort with the Illinois, Ohio and Maryland agricultural experiment stations. It was named for Dr Chester Zych, a fruit researcher at the University of Illinois. The canes are thornless and semi erect, so they crop best when staked or trellised rather than left to sprawl.",
+        "It is a late season variety, ripening well after most summer blackberries. The berries are firm and glossy black with a good, mild flavour, and the tougher skin helps them hold their shape after handling or freezing. Chester is regarded as one of the hardiest of the thornless types, which is part of why it has stayed popular for so long."
+      ],
+      "claims": [
+        {
+          "text": "Released in 1985 via a joint USDA-ARS effort with Illinois, Ohio and Maryland experiment stations, named for Dr Chester Zych of the University of Illinois.",
+          "type": "origin",
+          "cites": [
+            "oregon-berries-chester"
+          ]
+        },
+        {
+          "text": "Thornless and semi erect in habit, cropping best when trellised.",
+          "type": "habit",
+          "cites": [
+            "osu-southcenters",
+            "oregon-berries-chester"
+          ]
+        },
+        {
+          "text": "Late season ripening with large, firm, glossy black berries of good quality.",
+          "type": "season",
+          "cites": [
+            "osu-southcenters",
+            "oregon-berries-chester"
+          ]
+        },
+        {
+          "text": "Among the hardiest of the thornless blackberry types.",
+          "type": "climate",
+          "cites": [
+            "osu-southcenters",
+            "onegreenworld-chester"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "osu-southcenters",
+          "name": "Ohio State University South Centers, Blackberries",
+          "url": "https://southcenters.osu.edu/horticulture/fruits/blackberries",
+          "tier": "authoritative"
+        },
+        {
+          "id": "oregon-berries-chester",
+          "name": "Oregon Raspberry and Blackberry Commission, Chester Thornless",
+          "url": "https://oregon-berries.com/variety/chester-thornless-blackberry/",
+          "tier": "third_party"
+        },
+        {
+          "id": "onegreenworld-chester",
+          "name": "One Green World, Chester Thornless Blackberry",
+          "url": "https://onegreenworld.com/product/chester-thornless-blackberry/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "blackberry-thornless-waldo": {
+      "slug": "blackberry-thornless-waldo",
+      "species": "Blackberry",
+      "variety": "Thornless Waldo",
+      "paragraphs": [
+        "Waldo is a thornless, trailing blackberry from the USDA-ARS breeding program based at Corvallis, Oregon, run in cooperation with Oregon State University. It was released in 1989 and was notable as one of the first thornless trailing blackberries, named in honour of long time USDA berry breeder George F. Waldo. Unusually for a trailing type, its canes are described as trailing but very compact rather than long and rambling.",
+        "It is a late ripening variety carrying medium sized fruit with a high drupelet count, and it shows good resistance to foliar diseases. The flavour is regarded as good, though distinctly different from the aromatic Marion (marionberry) that the Oregon program is best known for, which is one reason Waldo never displaced much Marion acreage commercially."
+      ],
+      "claims": [
+        {
+          "text": "A thornless trailing blackberry from the USDA-ARS program at Corvallis, Oregon, with Oregon State University.",
+          "type": "origin",
+          "cites": [
+            "ars-usda-newcvs",
+            "wiki-blackberry"
+          ]
+        },
+        {
+          "text": "Released in 1989 and was among the first thornless trailing blackberries, named after breeder George F. Waldo.",
+          "type": "origin",
+          "cites": [
+            "ars-usda-newcvs"
+          ]
+        },
+        {
+          "text": "Canes are trailing but very compact.",
+          "type": "habit",
+          "cites": [
+            "ars-usda-newcvs"
+          ]
+        },
+        {
+          "text": "Late ripening with medium fruit and high drupelet count; good flavour but different from Marion.",
+          "type": "season",
+          "cites": [
+            "ars-usda-newcvs",
+            "ars-usda-clearcuts"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ars-usda-newcvs",
+          "name": "USDA-ARS, New USDA-ARS Blackberry Cultivars Bring Diversity to the Market",
+          "url": "https://www.ars.usda.gov/ARSUserFiles/3602/manuscripts/2008/08%20Blackberry%20cvs%20Acta%20Hort.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ars-usda-clearcuts",
+          "name": "USDA-ARS, Trailing Blackberries: From Clear-cuts to Your Table (Finn)",
+          "url": "https://www.ars.usda.gov/ARSUserFiles/1718/PDF/2001/Clearcuts.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-blackberry",
+          "name": "Wikipedia, Blackberry (cultivars)",
+          "url": "https://en.wikipedia.org/wiki/Blackberry",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "blackberry-waldo": {
+      "slug": "blackberry-waldo",
+      "species": "Blackberry",
+      "variety": "Waldo",
+      "paragraphs": [
+        "Waldo is a thornless, trailing blackberry from the USDA-ARS breeding program based at Corvallis, Oregon, run in cooperation with Oregon State University. It was released in 1989 and was notable as one of the first thornless trailing blackberries, named in honour of long time USDA berry breeder George F. Waldo. Unusually for a trailing type, its canes are described as trailing but very compact rather than long and rambling.",
+        "It is a late ripening variety carrying medium sized fruit with a high drupelet count, and it shows good resistance to foliar diseases. The flavour is regarded as good, though distinctly different from the aromatic Marion (marionberry) that the Oregon program is best known for, which is one reason Waldo never displaced much Marion acreage commercially."
+      ],
+      "claims": [
+        {
+          "text": "A thornless trailing blackberry from the USDA-ARS program at Corvallis, Oregon, with Oregon State University.",
+          "type": "origin",
+          "cites": [
+            "ars-usda-newcvs",
+            "wiki-blackberry"
+          ]
+        },
+        {
+          "text": "Released in 1989 and was among the first thornless trailing blackberries, named after breeder George F. Waldo.",
+          "type": "origin",
+          "cites": [
+            "ars-usda-newcvs"
+          ]
+        },
+        {
+          "text": "Canes are trailing but very compact.",
+          "type": "habit",
+          "cites": [
+            "ars-usda-newcvs"
+          ]
+        },
+        {
+          "text": "Late ripening with medium fruit and high drupelet count; good flavour but different from Marion.",
+          "type": "season",
+          "cites": [
+            "ars-usda-newcvs",
+            "ars-usda-clearcuts"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ars-usda-newcvs",
+          "name": "USDA-ARS, New USDA-ARS Blackberry Cultivars Bring Diversity to the Market",
+          "url": "https://www.ars.usda.gov/ARSUserFiles/3602/manuscripts/2008/08%20Blackberry%20cvs%20Acta%20Hort.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ars-usda-clearcuts",
+          "name": "USDA-ARS, Trailing Blackberries: From Clear-cuts to Your Table (Finn)",
+          "url": "https://www.ars.usda.gov/ARSUserFiles/1718/PDF/2001/Clearcuts.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-blackberry",
+          "name": "Wikipedia, Blackberry (cultivars)",
+          "url": "https://en.wikipedia.org/wiki/Blackberry",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "blackberry-nemesia",
+    "blackberry-plant",
+    "blackberry-thornless",
+    "blackberry-thornless-fresh"
+  ]
+}

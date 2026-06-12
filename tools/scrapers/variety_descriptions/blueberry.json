@@ -223,6 +223,65 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "blueberry-denise": {
+      "slug": "blueberry-denise",
+      "species": "Blueberry",
+      "variety": "Denise",
+      "paragraphs": [
+        "Denise is a Northern Highbush blueberry, a group best suited to cooler temperate regions with a proper winter chill. The bush is of medium vigour and height (to about 1.5m) with a slightly spreading habit, making it a manageable garden plant in colder districts.",
+        "Its main drawcard is the fruit. Denise carries very large, round berries that are medium blue with a touch of red around the stem end. Heavy yields of these big, attractive berries have made it a popular choice with some growers."
+      ],
+      "claims": [
+        {
+          "text": "Northern Highbush variety, a type best suited to cooler temperate climates",
+          "type": "classification",
+          "cites": [
+            "berriesau",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Bush of medium vigour and height to about 1.5m with a slightly spreading growth habit",
+          "type": "habit",
+          "cites": [
+            "berriesau"
+          ]
+        },
+        {
+          "text": "Fruit is very large and round, medium blue with red around the stem end",
+          "type": "appearance",
+          "cites": [
+            "berriesau",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Produces heavy yields of large, attractive berries, making it popular with some growers",
+          "type": "growing",
+          "cites": [
+            "berriesau"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "berriesau",
+          "name": "Berries Australia (peak industry body) blueberry varieties",
+          "url": "https://berries.net.au/home/about/blueberries/varieties/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery Blueberry Denise",
+          "url": "https://www.daleysfruit.com.au/Blueberry---Denise.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "blueberry-gulf-coast": {
       "slug": "blueberry-gulf-coast",
       "species": "Blueberry",
@@ -280,6 +339,67 @@
       "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "blueberry-kisses": {
+      "slug": "blueberry-kisses",
+      "species": "Blueberry",
+      "variety": "Kisses",
+      "paragraphs": [
+        "Blueberry Kisses is an Australian bred dwarf blueberry developed through traditional breeding for compact, container friendly growth. It forms a small evergreen shrub (around 1m tall), making it one of the better blueberries for pots, balconies, courtyards and small gardens where a full sized bush would not fit.",
+        "It is sold as a low chill, rabbiteye style selection that fruits in both warm and cool climates, and it is self pollinating, so a single plant will set a crop without a partner. The berries are large, dark blue to purple and very sweet, with a long harvest window (roughly August to January in warm areas, and September to February in cooler ones)."
+      ],
+      "claims": [
+        {
+          "text": "Australian bred dwarf blueberry that forms a compact evergreen shrub around 1m tall, suited to pots and small gardens",
+          "type": "habit",
+          "cites": [
+            "plantnet",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Self pollinating, so a single plant will set fruit without a second variety nearby",
+          "type": "pollination",
+          "cites": [
+            "plantnet",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Marketed as a low chill rabbiteye style selection that fruits in both warm and cool climates",
+          "type": "classification",
+          "cites": [
+            "plantnet",
+            "daleys"
+          ]
+        },
+        {
+          "text": "Produces large, dark blue to purple, very sweet berries over an extended harvest period",
+          "type": "flavour",
+          "cites": [
+            "plantnet",
+            "daleys"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "plantnet",
+          "name": "PlantNet Australia (breeder/brand) Blueberry Kisses",
+          "url": "https://plantnet.com.au/retail-nursery-hub/variety-information/retail-information-blueberries/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery Blueberry Kisses",
+          "url": "https://www.daleysfruit.com.au/Blueberry-Kisses-Vaccinium-hybrid.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "blueberry-legacy": {
       "slug": "blueberry-legacy",
@@ -354,6 +474,71 @@
       "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "blueberry-magnolia": {
+      "slug": "blueberry-magnolia",
+      "species": "Blueberry",
+      "variety": "Magnolia",
+      "paragraphs": [
+        "Magnolia is a southern highbush blueberry released in 1995 by the USDA-ARS breeding program at Poplarville, Mississippi. It was developed for the coastal plains of the south-eastern United States, where southern highbush cultivars are grown to crop earlier in the season than rabbiteye blueberries.",
+        "The medium-sized berries are valued for good flavour, colour and firmness, with a small picking scar. Magnolia ripens about two weeks before the cultivar Climax and has a chill requirement of roughly 550 to 650 hours. As with most southern highbush blueberries, planting it alongside another southern highbush cultivar improves cross-pollination and cropping."
+      ],
+      "claims": [
+        {
+          "text": "Southern highbush blueberry released in 1995 by the USDA-ARS breeding program at Poplarville, Mississippi.",
+          "type": "origin",
+          "cites": [
+            "msu",
+            "ishs"
+          ]
+        },
+        {
+          "text": "Berries are medium in size with good flavour, colour and firmness and a small picking scar.",
+          "type": "flavour",
+          "cites": [
+            "msu"
+          ]
+        },
+        {
+          "text": "Ripens about two weeks before the cultivar Climax.",
+          "type": "season",
+          "cites": [
+            "msu"
+          ]
+        },
+        {
+          "text": "Has a chill requirement of roughly 550 to 650 hours.",
+          "type": "chill",
+          "cites": [
+            "msu"
+          ]
+        },
+        {
+          "text": "Southern highbush cultivars crop best when interplanted with another southern highbush variety for cross-pollination.",
+          "type": "pollination",
+          "cites": [
+            "msu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "msu",
+          "name": "Mississippi State University Extension, blueberry varieties",
+          "url": "https://extension.msstate.edu/agriculture/crops/commercial-horticulture/commercial-fruit-and-nuts/what-varieties-blueberries-should-be-grown",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ishs",
+          "name": "ISHS Acta Horticulturae, Jubilee, Magnolia and Pearl River southern highbush blueberries",
+          "url": "https://ishs.org/ishs-article/446_22/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "blueberry-misty": {
       "slug": "blueberry-misty",
@@ -714,6 +899,138 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "blueberry-sapphire": {
+      "slug": "blueberry-sapphire",
+      "species": "Blueberry",
+      "variety": "Sapphire",
+      "paragraphs": [
+        "Sapphire is a low-chill southern highbush blueberry from the University of Florida, selected from a 1980 Gainesville cross and protected by US Plant Patent PP11,829. Its parents combined the large, high-quality fruit of northern highbush cultivars from Michigan and New Jersey with the low chill requirement and heat tolerance of the native Florida species Vaccinium darrowii, producing a bush suited to mild-winter regions.",
+        "The berries are light blue, firm and noted for excellent flavour, with a dry picking scar, and they ripen early (first commercial Alachua County harvests average about mid April). Sapphire carries a chilling requirement around 400 hours, higher than Sharpblue or Gulf Coast. The semi-upright bush is less vigorous than Sharpblue and sets heavy numbers of flower buds, so thinning can be needed to keep adequate vegetative growth."
+      ],
+      "claims": [
+        {
+          "text": "Low-chill southern highbush blueberry from the University of Florida, selected from a 1980 Gainesville cross and protected by US Plant Patent PP11,829.",
+          "type": "origin",
+          "cites": [
+            "patent",
+            "ufl"
+          ]
+        },
+        {
+          "text": "Parents combined northern highbush cultivars from Michigan and New Jersey with the native Florida species Vaccinium darrowii for low chill and heat tolerance.",
+          "type": "breeding",
+          "cites": [
+            "patent"
+          ]
+        },
+        {
+          "text": "Berries are light blue and firm with a dry picking scar and excellent flavour.",
+          "type": "appearance",
+          "cites": [
+            "ufl"
+          ]
+        },
+        {
+          "text": "Ripens early, with first commercial Alachua County harvests averaging about mid April.",
+          "type": "season",
+          "cites": [
+            "ufl"
+          ]
+        },
+        {
+          "text": "Chilling requirement is around 400 hours, higher than Sharpblue or Gulf Coast.",
+          "type": "chill",
+          "cites": [
+            "ufl"
+          ]
+        },
+        {
+          "text": "Semi-upright bush, less vigorous than Sharpblue, that sets large numbers of flower buds which may require thinning.",
+          "type": "habit",
+          "cites": [
+            "patent",
+            "ufl"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "patent",
+          "name": "US Plant Patent PP11,829, Blueberry plant named Sapphire",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/PP11829",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufl",
+          "name": "UF/IFAS HS967, Blueberry Varieties for Florida (Williamson and Lyrene)",
+          "url": "https://ufdcimages.uflib.ufl.edu/IR/00/00/26/80/00001/HS21500.pdf",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "blueberry-sharpblue": {
+      "slug": "blueberry-sharpblue",
+      "species": "Blueberry",
+      "variety": "Sharpblue",
+      "paragraphs": [
+        "Sharpblue is one of the original southern highbush blueberries, released by the University of Florida (UF/IFAS) breeding program in 1976. Southern highbush types were created by crossing high quality northern highbush cultivars with native low chill Florida Vaccinium species, producing bushes that crop in mild winter, low chill climates where traditional northern highbush varieties struggle.",
+        "Bred for early ripening in warm regions, Sharpblue helped launch the Florida blueberry industry and has since been grown widely in low chill areas, including warmer parts of Australia. It is valued as a reliable, early season cropper for gardeners who do not get cold winters."
+      ],
+      "claims": [
+        {
+          "text": "Released by the University of Florida (UF/IFAS) in 1976 as one of the first three southern highbush blueberry cultivars",
+          "type": "origin",
+          "cites": [
+            "ufifas"
+          ]
+        },
+        {
+          "text": "Southern highbush types were bred by crossing northern highbush cultivars with native low chill Florida Vaccinium species for mild winter climates",
+          "type": "breeding",
+          "cites": [
+            "ufifas"
+          ]
+        },
+        {
+          "text": "Bred for early ripening and suited to low chill, warm climate growing",
+          "type": "season",
+          "cites": [
+            "ufifas",
+            "onegreenworld"
+          ]
+        },
+        {
+          "text": "Helped establish the Florida blueberry industry and is now grown widely in low chill regions",
+          "type": "origin",
+          "cites": [
+            "ufifas",
+            "onegreenworld"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas",
+          "name": "UF/IFAS HS1245 Southern Highbush Blueberry Cultivars from the University of Florida",
+          "url": "https://ask.ifas.ufl.edu/publication/HS1245",
+          "tier": "authoritative"
+        },
+        {
+          "id": "onegreenworld",
+          "name": "One Green World Sharpblue Southern Highbush Blueberry",
+          "url": "https://onegreenworld.com/product/sharpblue-southern-highbush-blueberry/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "blueberry-sharpe-blue": {
       "slug": "blueberry-sharpe-blue",
       "species": "Blueberry",
@@ -871,7 +1188,26 @@
     }
   },
   "skipped": [
+    "blueberry-ash",
+    "blueberry-ash-dark-pink-elly",
+    "blueberry-ash-green-dream",
+    "blueberry-ash-prima-donna",
+    "blueberry-blue-rose",
+    "blueberry-blueberries-bush",
+    "blueberry-blueberry-burst",
+    "blueberry-blueberry-kisses",
+    "blueberry-bsa",
     "blueberry-burst",
-    "blueberry-northland"
+    "blueberry-burst-double-burst",
+    "blueberry-gimme-5",
+    "blueberry-kisses-double-kisses",
+    "blueberry-lily",
+    "blueberry-northland",
+    "blueberry-ob1",
+    "blueberry-rabbiteye",
+    "blueberry-sharpe-blue-extra",
+    "blueberry-sharpe-blue-jumbo-in-wine-barrel",
+    "blueberry-sharpes",
+    "blueberry-vitality"
   ]
 }
