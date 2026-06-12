@@ -1,0 +1,272 @@
+{
+  "species_slug": "coffee",
+  "schema_version": 1,
+  "varieties": {
+    "coffee-catuai-rojo": {
+      "slug": "coffee-catuai-rojo",
+      "species": "Coffee",
+      "variety": "Catuai Rojo",
+      "paragraphs": [
+        "Catuai Rojo is simply the Spanish name for Red Catuai (rojo means red), the red-fruited form of the Brazilian Catuai variety. Catuai was created in 1949 by the Instituto Agronomico (IAC) of Sao Paulo from a cross of Caturra and Mundo Novo and released commercially in 1972; the name derives from a Guarani term meaning very good. The Spanish form Catuai Rojo (paired with Catuai Amarillo for the yellow type) is the label commonly used across Central American origins, where Catuai is a major commercial variety.",
+        "It carries the dwarf, compact stature inherited from Caturra, which allows dense planting, with the vigour and productivity of Mundo Novo. The cherries ripen deep red and the cup is regarded as good but not exceptional, typically chocolatey and caramel-sweet. As with the rest of the Catuai family, its main agronomic weakness is high susceptibility to coffee leaf rust."
+      ],
+      "claims": [
+        {
+          "text": "Catuai Rojo is the Spanish name for Red Catuai, the red-fruited form of Catuai, used widely in Central America alongside Catuai Amarillo",
+          "type": "naming",
+          "cites": [
+            "wcr-catuai",
+            "colipse-catuai"
+          ]
+        },
+        {
+          "text": "Catuai is a Caturra x Mundo Novo cross created by IAC Brazil in 1949 and released in 1972, with the name from a Guarani term meaning very good",
+          "type": "breeding",
+          "cites": [
+            "wcr-catuai",
+            "pdg-catuai"
+          ]
+        },
+        {
+          "text": "It has the dwarf compact stature of Caturra with the vigour of Mundo Novo and ripens to deep red cherries",
+          "type": "appearance",
+          "cites": [
+            "wcr-catuai",
+            "colipse-catuai"
+          ]
+        },
+        {
+          "text": "Cup quality is good not exceptional and the variety is highly susceptible to coffee leaf rust",
+          "type": "growing",
+          "cites": [
+            "wcr-catuai"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wcr-catuai",
+          "name": "World Coffee Research Variety Catalog: Catuai",
+          "url": "https://varieties.worldcoffeeresearch.org/varieties/catuai",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pdg-catuai",
+          "name": "Perfect Daily Grind: Exploring the Catuai Coffee Variety",
+          "url": "https://perfectdailygrind.com/2020/04/exploring-the-catuai-coffee-variety/",
+          "tier": "third_party"
+        },
+        {
+          "id": "colipse-catuai",
+          "name": "Colipse Coffee: Catuai Red and Yellow Varietals",
+          "url": "https://colipsecoffee.com/blogs/coffee/catuai",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "coffee-k7": {
+      "slug": "coffee-k7",
+      "species": "Coffee",
+      "variety": "K7",
+      "paragraphs": [
+        "K7 is a Kenyan arabica selection with a Bourbon-like genetic background, selected from French Mission stock (the early Bourbon-descended coffee introduced to East Africa by missionaries). It was released in Kenya in 1936 after five generations of individual-plant selection, work associated with Scott Agricultural Laboratories. World Coffee Research places it in the Bourbon-Typica group, so unlike disease-bred hybrids it carries no Robusta in its parentage.",
+        "Its distinguishing trait is tolerance to coffee berry disease (CBD), unusual among the older Kenyan traditional varieties, which makes it suited to lower, warmer growing areas where disease pressure is higher. It produces large beans at medium yield, has a spreading habit, and is rated as good cup quality. K7 remains susceptible to coffee leaf rust, and has been used as a parent in later breeding."
+      ],
+      "claims": [
+        {
+          "text": "K7 is a Kenyan arabica selected from French Mission with a Bourbon-like genetic background, in the Bourbon-Typica group",
+          "type": "breeding",
+          "cites": [
+            "wcr-k7",
+            "barista-mag"
+          ]
+        },
+        {
+          "text": "Released in Kenya in 1936 after five generations of selection associated with Scott Agricultural Laboratories",
+          "type": "origin",
+          "cites": [
+            "wcr-k7",
+            "barista-mag"
+          ]
+        },
+        {
+          "text": "Tolerant of coffee berry disease (CBD), suiting lower-altitude areas, but susceptible to coffee leaf rust",
+          "type": "growing",
+          "cites": [
+            "wcr-k7",
+            "barista-mag"
+          ]
+        },
+        {
+          "text": "Produces large beans at medium yield with a spreading habit and good cup quality",
+          "type": "flavour",
+          "cites": [
+            "wcr-k7"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wcr-k7",
+          "name": "World Coffee Research Variety Catalog: K7",
+          "url": "https://varieties.worldcoffeeresearch.org/varieties/k7",
+          "tier": "authoritative"
+        },
+        {
+          "id": "barista-mag",
+          "name": "Barista Magazine: World Coffee Research Expands Varieties Catalog",
+          "url": "https://www.baristamagazine.com/world-coffee-research-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "coffee-red-catuai": {
+      "slug": "coffee-red-catuai",
+      "species": "Coffee",
+      "variety": "Red Catuai",
+      "paragraphs": [
+        "Red Catuai is the red-fruited form of Catuai, a Brazilian arabica created in 1949 by the Instituto Agronomico (IAC) of Sao Paulo from a cross of Caturra and Mundo Novo, and released commercially in 1972. The name comes from a Guarani expression meaning roughly very good. From Caturra it inherits a dwarf, compact stature that allows dense planting; from Mundo Novo it gets vigour and productivity. Red Catuai ripens to deep red cherries.",
+        "In the cup it is regarded as good but not exceptional, often showing chocolate and caramel sweetness with nutty tones, brighter than the yellow form. Catuai is a workhorse across Brazil and Central America. Its main weakness, shared with Caturra, is high susceptibility to coffee leaf rust."
+      ],
+      "claims": [
+        {
+          "text": "Red Catuai is the red-fruited form of Catuai, a Caturra x Mundo Novo cross created by IAC in Brazil in 1949 and released in 1972",
+          "type": "breeding",
+          "cites": [
+            "wcr-catuai",
+            "pdg-catuai"
+          ]
+        },
+        {
+          "text": "Catuai inherits dwarf compact stature from Caturra and vigour from Mundo Novo, and the name derives from a Guarani term meaning very good",
+          "type": "breeding",
+          "cites": [
+            "wcr-catuai",
+            "pdg-catuai"
+          ]
+        },
+        {
+          "text": "Red Catuai ripens to deep red cherries and shows chocolate, caramel and nutty notes, brighter than the yellow form",
+          "type": "flavour",
+          "cites": [
+            "colipse-catuai",
+            "pdg-catuai"
+          ]
+        },
+        {
+          "text": "Cup quality is good but not great and the variety is highly susceptible to coffee leaf rust",
+          "type": "growing",
+          "cites": [
+            "wcr-catuai"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wcr-catuai",
+          "name": "World Coffee Research Variety Catalog: Catuai",
+          "url": "https://varieties.worldcoffeeresearch.org/varieties/catuai",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pdg-catuai",
+          "name": "Perfect Daily Grind: Exploring the Catuai Coffee Variety",
+          "url": "https://perfectdailygrind.com/2020/04/exploring-the-catuai-coffee-variety/",
+          "tier": "third_party"
+        },
+        {
+          "id": "colipse-catuai",
+          "name": "Colipse Coffee: Catuai Red and Yellow Varietals",
+          "url": "https://colipsecoffee.com/blogs/coffee/catuai",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "coffee-yellow-catuai": {
+      "slug": "coffee-yellow-catuai",
+      "species": "Coffee",
+      "variety": "Yellow Catuai",
+      "paragraphs": [
+        "Yellow Catuai (Catuai Amarillo) is the yellow-fruited form of Catuai, the Brazilian arabica created by the Instituto Agronomico (IAC) in 1949 from a Caturra x Mundo Novo cross and released in 1972. It ripens to golden-yellow rather than red cherries, a colour difference traced to a recessive mutation, and is often described as slightly earlier-ripening. Like all Catuai it has the dwarf, compact habit inherited from Caturra, suiting high-density planting.",
+        "Yellow Catuai is frequently described as a softer, mellower cup than Red Catuai, leaning to honeyed sweetness with gentle citrus and nutty tones, though blind tastings often find little reliable difference between the two colour forms. Overall cup quality is considered good rather than outstanding, and like the rest of the Catuai family it is highly susceptible to coffee leaf rust."
+      ],
+      "claims": [
+        {
+          "text": "Yellow Catuai (Catuai Amarillo) is the yellow-fruited form of Catuai, a Caturra x Mundo Novo cross from IAC Brazil released in 1972",
+          "type": "breeding",
+          "cites": [
+            "wcr-catuai",
+            "pdg-catuai"
+          ]
+        },
+        {
+          "text": "It ripens to golden-yellow cherries and shares the dwarf compact habit of Catuai",
+          "type": "appearance",
+          "cites": [
+            "colipse-catuai",
+            "pdg-catuai"
+          ]
+        },
+        {
+          "text": "Yellow Catuai is often described as softer and mellower than Red Catuai, though blind tastings frequently find little reliable difference",
+          "type": "flavour",
+          "cites": [
+            "pdg-catuai",
+            "colipse-catuai"
+          ]
+        },
+        {
+          "text": "Cup quality is good not outstanding and the variety is highly susceptible to coffee leaf rust",
+          "type": "growing",
+          "cites": [
+            "wcr-catuai"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wcr-catuai",
+          "name": "World Coffee Research Variety Catalog: Catuai",
+          "url": "https://varieties.worldcoffeeresearch.org/varieties/catuai",
+          "tier": "authoritative"
+        },
+        {
+          "id": "pdg-catuai",
+          "name": "Perfect Daily Grind: Exploring the Catuai Coffee Variety",
+          "url": "https://perfectdailygrind.com/2020/04/exploring-the-catuai-coffee-variety/",
+          "tier": "third_party"
+        },
+        {
+          "id": "colipse-catuai",
+          "name": "Colipse Coffee: Catuai Red and Yellow Varietals",
+          "url": "https://colipsecoffee.com/blogs/coffee/catuai",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "coffee-arabica-km35",
+    "coffee-bean-arabica-plant",
+    "coffee-blue-mountain-kenya",
+    "coffee-gold",
+    "coffee-grove-size",
+    "coffee-tree-arabica-catuai-rojo"
+  ]
+}

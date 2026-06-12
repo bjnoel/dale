@@ -1,0 +1,63 @@
+{
+  "species_slug": "abiu",
+  "schema_version": 1,
+  "varieties": {
+    "abiu-z4": {
+      "slug": "abiu-z4",
+      "species": "Abiu",
+      "variety": "Z4",
+      "paragraphs": [
+        "Z4 is one of a group of named abiu (Pouteria caimito) selections developed in Queensland, alongside siblings like Z1, Z2 and Z3. It was chosen for commercial quality: a large, rounded fruit carrying just a single seed, which leaves more of the translucent, cream coloured pulp that gives abiu its appeal. The flesh is sweet and is often compared to creme caramel, a flavour that lends it to fresh eating, desserts and ice cream.",
+        "Two traits make Z4 stand out as a collector and orchard selection. It is low in the gummy latex that makes lesser abiu sticky and awkward to eat, and its flesh resists the rapid browning seen in unnamed seedlings, so cut fruit keeps its looks longer. It is also reported to grow largely true from seed, meaning seedlings tend to carry the parent's qualities without grafting."
+      ],
+      "claims": [
+        {
+          "text": "Z4 is a Queensland-developed abiu selection, described as a large round fruit with a single seed",
+          "type": "origin",
+          "cites": [
+            "stfc",
+            "rosscreek-z4"
+          ]
+        },
+        {
+          "text": "The flesh is sweet, translucent to cream coloured, and likened to creme caramel",
+          "type": "flavour",
+          "cites": [
+            "rosscreek-z4"
+          ]
+        },
+        {
+          "text": "Z4 is low in latex and its flesh resists discolouration, and it is reported to grow true from seed",
+          "type": "growing",
+          "cites": [
+            "rosscreek-z4"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld - Abiu",
+          "url": "https://stfc.org.au/abiu-pouteria-caimito/",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-z4",
+          "name": "Ross Creek Tropicals - Abiu Z4",
+          "url": "https://www.rosscreektropicals.com.au/products/abiu-z4",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "abiu-e4",
+    "abiu-e4-pointed",
+    "abiu-pointed",
+    "abiu-z4-round"
+  ]
+}

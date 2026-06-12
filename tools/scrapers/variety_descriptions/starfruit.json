@@ -162,11 +162,65 @@
       "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "starfruit-kembangan": {
+      "slug": "starfruit-kembangan",
+      "species": "Starfruit",
+      "variety": "Kembangan",
+      "paragraphs": [
+        "Kembangan, usually sold as Sri Kembangan, is a named sweet carambola (Averrhoa carambola) selection that University of Florida horticulturists list among the recommended dessert cultivars. It is recorded as a Malaysian selection producing large, sweet fruit of good quality, the kind of low-acid carambola bred specifically for eating fresh rather than for cooking down into preserves.",
+        "The fruit is the classic five-ribbed star shape that yellows as it ripens, with firm, juicy flesh and few seeds. Its mild sweetness and minimal tartness make it popular for slicing into salads, juicing or eating out of hand, and the tree is valued by home growers for cropping heavily while staying compact."
+      ],
+      "claims": [
+        {
+          "text": "Sri Kembangan is a sweet carambola cultivar of Malaysian origin, recommended for fresh eating with large fruit of good quality and flavour",
+          "type": "origin",
+          "cites": [
+            "ufifas-mg269",
+            "ufifas-miamidade"
+          ]
+        },
+        {
+          "text": "The fruit is sweet with low tartness, firm and juicy with few seeds, and the tree crops heavily",
+          "type": "flavour",
+          "cites": [
+            "ufifas-miamidade"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ufifas-mg269",
+          "name": "UF/IFAS - Carambola Growing in the Florida Home Landscape (MG269)",
+          "url": "https://ask.ifas.ufl.edu/publication/MG269",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ufifas-miamidade",
+          "name": "UF/IFAS Extension Miami-Dade - Tropical Fruit: Carambola",
+          "url": "https://blogs.ifas.ufl.edu/miamidadeco/2021/12/30/tropical-fruit-carambola/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
     }
   },
   "skipped": [
     "starfruit-carambola-balimbing-fruit-tree",
+    "starfruit-daleys-sweet-gold",
+    "starfruit-fruit",
+    "starfruit-fruit-arkin",
+    "starfruit-fruit-b17-honey-sweet",
+    "starfruit-fruit-fwang-tung",
+    "starfruit-fruit-giant-siam",
+    "starfruit-fruit-kary",
+    "starfruit-fruit-maha",
+    "starfruit-fruit-thai-knight",
     "starfruit-giant-siam",
+    "starfruit-karri",
     "starfruit-thai-knight"
   ]
 }

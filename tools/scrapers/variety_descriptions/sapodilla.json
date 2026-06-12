@@ -159,5 +159,8 @@
       "verified": true,
       "generated_date": "2026-06-08"
     }
-  }
+  },
+  "skipped": [
+    "sapodilla-chiko-chikoo-chico-naseberry-nispero"
+  ]
 }

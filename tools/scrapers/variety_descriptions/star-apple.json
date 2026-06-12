@@ -1,0 +1,203 @@
+{
+  "species_slug": "star-apple",
+  "schema_version": 1,
+  "varieties": {
+    "star-apple-green": {
+      "slug": "star-apple-green",
+      "species": "Star Apple",
+      "variety": "Green",
+      "paragraphs": [
+        "The green star apple is one of the two recognised colour forms of caimito (Chrysophyllum cainito), distinguished from the more common dark purple type by its greenish to greenish-yellow skin. Compared with the purple form, the green fruit has a notably thinner skin and a softer, more liquid pulp, where the purple type tends toward a denser skin and firmer texture. Inside, the translucent white flesh shows the same radiating star pattern in cross section that gives the species its name. The peel and rind hold a gummy latex and are not eaten.",
+        "In Florida, green-skinned selections such as 'Blanco Star' have been singled out as named cultivars, and some, like 'Blanco Star', set fruit without cross pollination. The flesh is sweet and mild with a soft, gelatinous texture, eaten fresh and often served chilled. The tree carries handsome foliage with golden to bronze undersides, and fruit generally ripen from late winter through spring into early summer. Caimito is native to the lowlands of Central America and the West Indies."
+      ],
+      "claims": [
+        {
+          "text": "Caimito occurs in two main colour types, a dark purple peel and a green/greenish-yellow peel.",
+          "type": "appearance",
+          "cites": [
+            "uf-ifas",
+            "fairchild",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The green fruit has a thinner skin and a more liquid pulp, while the purple fruit has a denser skin and texture.",
+          "type": "appearance",
+          "cites": [
+            "fairchild",
+            "wikipedia",
+            "growables"
+          ]
+        },
+        {
+          "text": "Cut transversely, the fruit shows a star-shaped pattern radiating from a central core.",
+          "type": "appearance",
+          "cites": [
+            "uf-ifas",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The peel and rind are inedible and rich in latex.",
+          "type": "use",
+          "cites": [
+            "uf-ifas",
+            "wikipedia",
+            "growables"
+          ]
+        },
+        {
+          "text": "A green-peel cultivar 'Blanco Star' exists, and it sets fruit without cross pollination.",
+          "type": "pollination",
+          "cites": [
+            "uf-ifas",
+            "fairchild"
+          ]
+        },
+        {
+          "text": "Fruit generally ripen from late winter or early spring into early summer.",
+          "type": "season",
+          "cites": [
+            "growables",
+            "uf-ifas"
+          ]
+        },
+        {
+          "text": "Caimito is native to the lowlands of Central America and the West Indies.",
+          "type": "origin",
+          "cites": [
+            "fairchild",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uf-ifas",
+          "name": "UF/IFAS Extension, Caimito (Star Apple) Growing in the Florida Home Landscape (HS309)",
+          "url": "https://ask.ifas.ufl.edu/publication/HS309",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fairchild",
+          "name": "Fairchild Tropical Botanic Garden, The Star Apple (Chrysophyllum cainito)",
+          "url": "https://fairchildgarden.org/visit/the-star-apple-chrysophyllum-cainito/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Chrysophyllum cainito",
+          "url": "https://en.wikipedia.org/wiki/Chrysophyllum_cainito",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables, Star Apple / Caimito (J. Morton, Fruits of Warm Climates)",
+          "url": "https://www.growables.org/information/TropicalFruit/starapple.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "star-apple-haitian": {
+      "slug": "star-apple-haitian",
+      "species": "Star Apple",
+      "variety": "Haitian",
+      "paragraphs": [
+        "'Haitian Star' is a purple-peel selection of caimito grown commercially for dooryard culture in south Florida. It traces to budwood brought from Port-au-Prince, Haiti, where a tree was observed bearing heavy crops of well-formed, high quality fruit, and introduced into Florida in the early 1950s. As a purple type it has the denser skin and firmer flesh characteristic of that colour form, with the usual radiating star pattern visible when the fruit is cut. The latex-rich peel and rind are not eaten.",
+        "A practical advantage of 'Haitian Star' is that, like the green 'Blanco Star', it does not need cross pollination to set fruit, making it suitable as a single dooryard tree. The flesh is sweet and mild, eaten fresh and often served chilled. The tree is ornamental, with leaves that are glossy green above and golden to bronze beneath, and in Florida fruit are typically harvested from late winter into spring."
+      ],
+      "claims": [
+        {
+          "text": "'Haitian Star' is a purple-peel cultivar of caimito propagated commercially for dooryard culture in south Florida.",
+          "type": "origin",
+          "cites": [
+            "uf-ifas",
+            "fairchild"
+          ]
+        },
+        {
+          "text": "The Haitian star apple was introduced to Florida from budwood collected in Port-au-Prince, Haiti, in the early 1950s, from a tree bearing heavy crops of high quality fruit.",
+          "type": "origin",
+          "cites": [
+            "growables"
+          ]
+        },
+        {
+          "text": "'Haitian Star' does not require cross pollination to set fruit.",
+          "type": "pollination",
+          "cites": [
+            "uf-ifas"
+          ]
+        },
+        {
+          "text": "The purple colour form has a denser skin and firmer texture than the green form.",
+          "type": "appearance",
+          "cites": [
+            "fairchild",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "The peel and rind are inedible and contain latex; a star pattern shows when cut.",
+          "type": "appearance",
+          "cites": [
+            "uf-ifas",
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "In Florida fruit are generally harvested from February to May (late winter into spring).",
+          "type": "season",
+          "cites": [
+            "uf-ifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uf-ifas",
+          "name": "UF/IFAS Extension, Caimito (Star Apple) Growing in the Florida Home Landscape (HS309)",
+          "url": "https://ask.ifas.ufl.edu/publication/HS309",
+          "tier": "authoritative"
+        },
+        {
+          "id": "fairchild",
+          "name": "Fairchild Tropical Botanic Garden, The Star Apple (Chrysophyllum cainito)",
+          "url": "https://fairchildgarden.org/visit/the-star-apple-chrysophyllum-cainito/",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables, Star Apple / Caimito (J. Morton, Fruits of Warm Climates)",
+          "url": "https://www.growables.org/information/TropicalFruit/starapple.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia, Chrysophyllum cainito",
+          "url": "https://en.wikipedia.org/wiki/Chrysophyllum_cainito",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "star-apple-alva",
+    "star-apple-fruit-tree",
+    "star-apple-grimal",
+    "star-apple-newcomb",
+    "star-apple-pink",
+    "star-apple-tear-drop",
+    "star-apple-tree",
+    "star-apple-tropical-fruit",
+    "star-apple-weeping"
+  ]
+}
