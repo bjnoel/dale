@@ -30,8 +30,8 @@ from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from daily_digest import load_snapshot, compare_snapshots, NURSERY_NAMES, ALL_CATEGORIES
-from send_digest import get_subscriber_categories, get_subscriber_frequency, get_subscriber_state
+from daily_digest import load_snapshot, compare_snapshots, NURSERY_NAMES, ALL_CATEGORIES, filter_changes_by_plant_categories
+from send_digest import get_subscriber_categories, get_subscriber_frequency, get_subscriber_state, get_subscriber_plant_categories
 from shipping import SHIPPING_MAP, nursery_ships_to
 from stocklib.email_footer import inject_footer, inject_text_footer
 
@@ -512,16 +512,18 @@ def main():
         print("All subscribers already received this week's digest.")
         return
 
-    # Group by (state, categories) — same combo reuses rendered HTML.
+    # Group by (state, change-categories, plant-categories) — same combo reuses HTML.
     by_bucket: dict[tuple, list] = {}
     for s in to_send:
         state = get_subscriber_state(s)
         cats = get_subscriber_categories(s)
-        by_bucket.setdefault((state, cats), []).append(s)
+        pcats = get_subscriber_plant_categories(s)
+        by_bucket.setdefault((state, cats, pcats), []).append(s)
 
     bucket_summary = ", ".join(
-        f"{st}/{','.join(sorted(cs)) or '(none)'}({len(subs)})"
-        for (st, cs), subs in sorted(by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1])))
+        f"{st}/{','.join(sorted(cs)) or '(none)'}/{','.join(sorted(pc)) or '(none)'}({len(subs)})"
+        for (st, cs, pc), subs in sorted(by_bucket.items(),
+                                         key=lambda kv: (kv[0][0], sorted(kv[0][1]), sorted(kv[0][2])))
     )
     print(f"Buckets: {bucket_summary}")
 
@@ -529,7 +531,8 @@ def main():
         for s in to_send:
             state = get_subscriber_state(s)
             cats = ",".join(sorted(get_subscriber_categories(s))) or "(none)"
-            print(f"  Would send to: {s['email']} (state={state}, categories={cats})")
+            pcats = ",".join(sorted(get_subscriber_plant_categories(s))) or "(none)"
+            print(f"  Would send to: {s['email']} (state={state}, categories={cats}, plant={pcats})")
         all_changes = load_weekly_changes(end_date)
         total_drops = sum(len(c["price_drops"]) for c in all_changes.values())
         total_restocks = sum(len(c["back_in_stock"]) for c in all_changes.values())
@@ -553,27 +556,30 @@ def main():
     failed = 0
     empty_skipped = 0
 
-    for (state, cats), bucket_subscribers in sorted(
-        by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1]))
+    for (state, cats, pcats), bucket_subscribers in sorted(
+        by_bucket.items(), key=lambda kv: (kv[0][0], sorted(kv[0][1]), sorted(kv[0][2]))
     ):
         filter_state = "" if state == "ALL" else state
 
         # Mute-all opt-out: keep variety alerts but skip the weekly digest.
-        if not cats:
+        if not cats or not pcats:
             empty_skipped += len(bucket_subscribers)
             print(f"  Skipping {len(bucket_subscribers)} subscribers with no categories enabled")
             continue
 
         if state not in state_changes_cache:
             state_changes_cache[state] = load_weekly_changes(end_date, state_filter=filter_state)
-        all_changes = state_changes_cache[state]
+        # Scope to the subscriber's plant categories (DAL-199); the weekly has no
+        # separate labelled section, so we filter the items in place.
+        all_changes = filter_changes_by_plant_categories(
+            state_changes_cache[state], pcats)
 
         if not has_any_weekly_changes(all_changes, categories=cats):
             empty_skipped += len(bucket_subscribers)
-            print(f"  Skipping {len(bucket_subscribers)} subscribers — no matching changes for {state}/{','.join(sorted(cats))}")
+            print(f"  Skipping {len(bucket_subscribers)} subscribers — no matching changes for {state}/{','.join(sorted(cats))}/{','.join(sorted(pcats))}")
             continue
 
-        cache_key = (state, cats)
+        cache_key = (state, cats, pcats)
         if cache_key not in html_cache:
             html_cache[cache_key] = format_weekly_html(
                 all_changes, end_date, state_filter=filter_state, categories=cats
