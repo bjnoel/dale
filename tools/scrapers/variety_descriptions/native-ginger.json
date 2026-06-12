@@ -1,0 +1,268 @@
+{
+  "species_slug": "native-ginger",
+  "schema_version": 1,
+  "varieties": {
+    "native-ginger-atherton-red-back": {
+      "slug": "native-ginger-atherton-red-back",
+      "species": "Native Ginger",
+      "variety": "Atherton Red Back",
+      "paragraphs": [
+        "Atherton Red Back is a selected form of Alpinia caerulea, the Australian native ginger (family Zingiberaceae), whose distinguishing feature is a showy red to maroon underside on each leaf, giving rise to the 'Red Back' name. This form originates from the Atherton Tableland highland region near Cairns in far north Queensland. The base species is a rhizomatous understorey perennial of eastern Australian rainforest and wet sclerophyll forest, with arching canes that form a vase-like clump up to about 2 m tall.",
+        "Both the edible parts of the wild species carry through to this form. Fragrant white flowers are followed by round blue fruit (capsules about 1 cm across) holding black seeds in a scant white pulp that tastes pleasantly lemony to peppery. The ginger-scented rhizome and young shoot tips can be used like culinary ginger in both sweet and savoury dishes, jams and tea. The red-backed foliage is the main ornamental draw of this selection."
+      ],
+      "claims": [
+        {
+          "text": "Atherton Red Back is a form of Alpinia caerulea (Zingiberaceae) distinguished by red to maroon leaf undersides, the source of the 'Red Back' name.",
+          "type": "botanical",
+          "cites": [
+            "tuckerbush-rb",
+            "malleedesign",
+            "wikipedia-ac"
+          ]
+        },
+        {
+          "text": "This form originates from the Atherton Tableland highland region near Cairns in north Queensland.",
+          "type": "origin",
+          "cites": [
+            "tuckerbush-rb"
+          ]
+        },
+        {
+          "text": "The base species is a rhizomatous understorey perennial of eastern Australian rainforest with arching canes forming a clump up to about 2 m.",
+          "type": "growth_habit",
+          "cites": [
+            "wikipedia-ac",
+            "malleedesign"
+          ]
+        },
+        {
+          "text": "Round blue fruit about 1 cm across hold black seeds in a white pulp; the fruit and ginger-scented rhizome and shoots are edible and used in cooking.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-ac",
+            "tuckerbush-rb"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "tuckerbush-rb",
+          "name": "Tucker Bush - Red Back Australian Ginger (Alpinia caerulea 'Atherton')",
+          "url": "https://tuckerbush.com.au/red-back-australian-ginger-alpinia-caerulea-atherton/",
+          "tier": "nursery"
+        },
+        {
+          "id": "malleedesign",
+          "name": "Mallee Design - Native ginger: Alpinia caerulea 'Red Back'",
+          "url": "https://malleedesign.com.au/native-ginger/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-ac",
+          "name": "Wikipedia - Alpinia caerulea",
+          "url": "https://en.wikipedia.org/wiki/Alpinia_caerulea",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "native-ginger-red": {
+      "slug": "native-ginger-red",
+      "species": "Native Ginger",
+      "variety": "Red",
+      "paragraphs": [
+        "The red form of native ginger is the red-leaved selection of Alpinia caerulea (family Zingiberaceae), commonly sold as 'Red Back'. Its defining feature is the rich red to maroon underside of each glossy green leaf, a trait that sets it apart from the plain green wild type. It is a clumping, rhizomatous understorey perennial of eastern Australian rainforest, with arching canes that can reach around 2 m, making it a popular screening and feature plant for shaded, moist gardens.",
+        "It shares the edible qualities of the species. Fragrant white flowers give way to round blue fruit (capsules roughly 1 cm across) with black seeds set in a scant white pulp that has a lemony to peppery taste. The ginger-scented rhizome and crunchy young shoot tips can be used as a milder substitute for culinary ginger in sweet and savoury cooking, jams and tea."
+      ],
+      "claims": [
+        {
+          "text": "The red native ginger is the red-leaved form of Alpinia caerulea (Zingiberaceae), sold as 'Red Back', with red to maroon leaf undersides.",
+          "type": "botanical",
+          "cites": [
+            "benara-red",
+            "malleedesign",
+            "wikipedia-ac"
+          ]
+        },
+        {
+          "text": "It is a clumping rhizomatous understorey perennial of eastern Australian rainforest with arching canes reaching around 2 m.",
+          "type": "growth_habit",
+          "cites": [
+            "wikipedia-ac",
+            "malleedesign"
+          ]
+        },
+        {
+          "text": "Round blue fruit about 1 cm across hold black seeds in a white pulp; fruit, rhizome and young shoots are edible and used like a mild culinary ginger.",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-ac",
+            "malleedesign"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "benara-red",
+          "name": "Benara Nurseries - Alpinia caerulea red",
+          "url": "https://www.benaranurseries.com/alpinia-caerulea-red",
+          "tier": "nursery"
+        },
+        {
+          "id": "malleedesign",
+          "name": "Mallee Design - Native ginger: Alpinia caerulea 'Red Back'",
+          "url": "https://malleedesign.com.au/native-ginger/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-ac",
+          "name": "Wikipedia - Alpinia caerulea",
+          "url": "https://en.wikipedia.org/wiki/Alpinia_caerulea",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "native-ginger-red-back-tucker-bush": {
+      "slug": "native-ginger-red-back-tucker-bush",
+      "species": "Native Ginger",
+      "variety": "Red Back Tucker Bush",
+      "paragraphs": [
+        "Red Back Tucker Bush is the WA bushfood brand Tucker Bush's offering of Alpinia caerulea 'Atherton', the red-backed form of Australian native ginger (family Zingiberaceae). Its signature feature is the deep red to maroon underside of each leaf, which gives the 'Red Back' name. The selection traces to the Atherton Tableland highland region near Cairns in far north Queensland, while the species itself is a rainforest understorey perennial native to eastern Australia.",
+        "It is a clumping, shade-loving plant with arching canes growing up to about 2 m tall and 1 m wide. Both the spicy ginger-scented rhizome and the bright blue fruit are edible: the berries have a pleasant lemony ginger flavour, and the rhizome can be used in savoury dishes, desserts, jams, marmalades, confectionery and tea. The red-backed foliage doubles its appeal as an ornamental."
+      ],
+      "claims": [
+        {
+          "text": "Red Back Tucker Bush is Tucker Bush's brand of Alpinia caerulea 'Atherton' (Zingiberaceae), distinguished by red to maroon leaf undersides.",
+          "type": "botanical",
+          "cites": [
+            "tuckerbush-rb",
+            "malleedesign"
+          ]
+        },
+        {
+          "text": "The selection comes from the Atherton Tableland highland region near Cairns in north Queensland.",
+          "type": "origin",
+          "cites": [
+            "tuckerbush-rb"
+          ]
+        },
+        {
+          "text": "It is a shade-loving clumping plant with arching canes up to about 2 m high and 1 m wide.",
+          "type": "growth_habit",
+          "cites": [
+            "tuckerbush-rb",
+            "malleedesign"
+          ]
+        },
+        {
+          "text": "Both the spicy rhizome and the blue fruit are edible; the berries have a lemony ginger flavour and the rhizome is used in savoury and sweet dishes, jams and tea.",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-rb",
+            "wikipedia-ac"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "tuckerbush-rb",
+          "name": "Tucker Bush - Red Back Australian Ginger (Alpinia caerulea 'Atherton')",
+          "url": "https://tuckerbush.com.au/red-back-australian-ginger-alpinia-caerulea-atherton/",
+          "tier": "nursery"
+        },
+        {
+          "id": "malleedesign",
+          "name": "Mallee Design - Native ginger: Alpinia caerulea 'Red Back'",
+          "url": "https://malleedesign.com.au/native-ginger/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-ac",
+          "name": "Wikipedia - Alpinia caerulea",
+          "url": "https://en.wikipedia.org/wiki/Alpinia_caerulea",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "native-ginger-wavy-leaf": {
+      "slug": "native-ginger-wavy-leaf",
+      "species": "Native Ginger",
+      "variety": "Wavy Leaf",
+      "paragraphs": [
+        "Wavy Leaf native ginger is Alpinia arundelliana, a rhizomatous rainforest member of the ginger family (Zingiberaceae) and a different species from the more common blue ginger (Alpinia caerulea). It grows naturally in rainforest and wet sclerophyll forest close to the coast, from north of Wyong in New South Wales up into south-east Queensland. The plant is named for its lanceolate leaves (to around 25 cm long) with distinctively wavy, undulating margins, which set it apart from its smoother-leaved relatives.",
+        "It is an understorey clumping perennial reaching roughly 1 to 2 m tall with fleshy stems and a large pink-tinged rhizome. Pink flowers are followed by deep blue capsules. The aromatic rhizome can be used in the kitchen much like culinary ginger (Zingiber officinale), to which it is related, and First Nations peoples used the broad leaves to wrap fish for steaming."
+      ],
+      "claims": [
+        {
+          "text": "Wavy Leaf native ginger is Alpinia arundelliana, in the ginger family Zingiberaceae, distinct from Alpinia caerulea.",
+          "type": "botanical",
+          "cites": [
+            "daleys",
+            "anpsa-arund"
+          ]
+        },
+        {
+          "text": "It grows in coastal rainforest and wet sclerophyll forest from north of Wyong in NSW into Queensland.",
+          "type": "origin",
+          "cites": [
+            "anpsa-arund"
+          ]
+        },
+        {
+          "text": "It has lanceolate leaves to about 25 cm long with wavy, undulating margins.",
+          "type": "appearance",
+          "cites": [
+            "anpsa-arund",
+            "daleys"
+          ]
+        },
+        {
+          "text": "It is a clumping understorey perennial reaching roughly 1 to 2 m with fleshy stems and a large rhizome; pink flowers are followed by deep blue capsules.",
+          "type": "growth_habit",
+          "cites": [
+            "anpsa-arund",
+            "daleys"
+          ]
+        },
+        {
+          "text": "The aromatic rhizome is used like culinary ginger, and First Nations peoples used the leaves to wrap fish for steaming.",
+          "type": "culinary",
+          "cites": [
+            "anpsa-arund",
+            "daleys"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daleys",
+          "name": "Daley's Fruit Tree Nursery - Native Ginger Wavy Leaf (Alpinia arundelliana)",
+          "url": "https://www.daleysfruit.com.au/buy/native-ginger-wavy-leaf-alpinia-arundelliana.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "anpsa-arund",
+          "name": "Australian Plants Society - Alpinia arundelliana",
+          "url": "https://resources.austplants.com.au/plant/alpinia-arundelliana/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

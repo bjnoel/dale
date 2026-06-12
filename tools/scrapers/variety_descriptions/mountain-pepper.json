@@ -1,0 +1,111 @@
+{
+  "species_slug": "mountain-pepper",
+  "schema_version": 1,
+  "varieties": {
+    "mountain-pepper-female": {
+      "slug": "mountain-pepper-female",
+      "species": "Mountain Pepper",
+      "variety": "Female",
+      "paragraphs": [
+        "Mountain Pepper is Tasmannia lanceolata, a Winteraceae shrub to small tree from cool forests and temperate rainforest of south-eastern Australia. The species is dioecious, so male and female flowers occur on separate plants, and only female plants bear the small, spherical, deep maroon to glossy-black berries (5 to 10 mm) that dry into the prized pepperberry.",
+        "Those berries, and the leaves, get their heat from polygodial, and are dried, ground or brined to season sauces, meats, cheeses and breads. A female needs a male plant nearby for pollination to set fruit, so it is the fruiting half of the pair."
+      ],
+      "claims": [
+        {
+          "text": "Mountain Pepper is Tasmannia lanceolata (Winteraceae) from south-eastern Australian forest and temperate rainforest",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-tl",
+            "vicflora-tl"
+          ]
+        },
+        {
+          "text": "Dioecious, with only female plants bearing the spherical deep maroon to glossy-black berries 5 to 10 mm long that form the pepperberry",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-tl",
+            "vicflora-tl"
+          ]
+        },
+        {
+          "text": "Berries and leaves get heat from polygodial and are dried, ground or brined as a spice; a female needs a nearby male to set fruit",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-tl"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-tl",
+          "name": "Tasmannia lanceolata, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Tasmannia_lanceolata",
+          "tier": "third_party"
+        },
+        {
+          "id": "vicflora-tl",
+          "name": "Tasmannia lanceolata, VicFlora (Royal Botanic Gardens Victoria)",
+          "url": "https://vicflora.rbg.vic.gov.au/flora/taxon/5505a156-251b-4f32-8711-f4e08c2ab9c2",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "mountain-pepper-male": {
+      "slug": "mountain-pepper-male",
+      "species": "Mountain Pepper",
+      "variety": "Male",
+      "paragraphs": [
+        "Mountain Pepper is Tasmannia lanceolata, a shrub to small tree of the Winteraceae family from cool forests and temperate rainforest of south-eastern Australia (NSW Blue Mountains south through the ACT, Victoria and Tasmania). The species is dioecious, meaning male and female flowers grow on separate plants. A male plant produces pollen only and does not set the peppercorn fruit.",
+        "Its role is as a pollinator: at least one male is needed nearby for female plants to fruit. The leaves of both sexes are aromatic and peppery (from the compound polygodial) and are dried and milled to season meats, sauces, cheeses and breads, so a male plant still earns its keep as a leaf-spice source."
+      ],
+      "claims": [
+        {
+          "text": "Mountain Pepper is Tasmannia lanceolata, native to forest and temperate rainforest of south-eastern Australia (Blue Mountains south through ACT, Victoria, Tasmania)",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-tl",
+            "vicflora-tl"
+          ]
+        },
+        {
+          "text": "The species is dioecious with male and female flowers on separate plants; male plants produce pollen and do not bear fruit",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-tl",
+            "vicflora-tl"
+          ]
+        },
+        {
+          "text": "Leaves of both sexes are peppery from polygodial and are dried and milled as a spice",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-tl"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-tl",
+          "name": "Tasmannia lanceolata, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Tasmannia_lanceolata",
+          "tier": "third_party"
+        },
+        {
+          "id": "vicflora-tl",
+          "name": "Tasmannia lanceolata, VicFlora (Royal Botanic Gardens Victoria)",
+          "url": "https://vicflora.rbg.vic.gov.au/flora/taxon/5505a156-251b-4f32-8711-f4e08c2ab9c2",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

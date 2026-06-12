@@ -1,0 +1,206 @@
+{
+  "species_slug": "native-river-mint",
+  "schema_version": 1,
+  "varieties": {
+    "native-river-mint-satureioides-tucker-bush": {
+      "slug": "native-river-mint-satureioides-tucker-bush",
+      "species": "Native River Mint",
+      "variety": "Satureioides Tucker Bush",
+      "paragraphs": [
+        "This Tucker Bush plant is Mentha satureioides, known as native pennyroyal, creeping mint or bush mint, a member of the mint family (Lamiaceae). It is a different species from the upright river mint (Mentha australis), being a low, creeping, mat-forming groundcover that reaches only about 0.2 to 0.4 m tall and spreads by runners to fill the space it is given. It is native to southern and eastern Australia (Queensland, New South Wales, Victoria and South Australia).",
+        "Its small opposite leaves are strongly aromatic when rubbed, with a sweet scent often described as mint with a hint of pennyroyal or oregano, and it is noted to carry more menthol than English pennyroyal. The leaves can be used in place of exotic mint and brewed as a tea. It grows in sun to part shade and tolerates damp, boggy ground, making it a useful aromatic groundcover."
+      ],
+      "claims": [
+        {
+          "text": "This Tucker Bush plant is Mentha satureioides (Lamiaceae), known as native pennyroyal, creeping mint or bush mint, distinct from Mentha australis.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-ms",
+            "gwa-ms",
+            "tuckerbush-ms"
+          ]
+        },
+        {
+          "text": "It is native to southern and eastern Australia: Queensland, NSW, Victoria and South Australia.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-ms"
+          ]
+        },
+        {
+          "text": "It is a low creeping mat-forming groundcover reaching about 0.2 to 0.4 m tall and spreading by runners.",
+          "type": "growth_habit",
+          "cites": [
+            "gwa-ms",
+            "tuckerbush-ms"
+          ]
+        },
+        {
+          "text": "The aromatic leaves have a mint scent with pennyroyal/oregano notes, carry more menthol than English pennyroyal, and can be used as mint or tea.",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-ms",
+            "gwa-ms"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-ms",
+          "name": "Wikipedia - Mentha satureioides",
+          "url": "https://en.wikipedia.org/wiki/Mentha_satureioides",
+          "tier": "third_party"
+        },
+        {
+          "id": "gwa-ms",
+          "name": "Gardening With Angus - Mentha satureioides 'Bush Mint' (Native Pennyroyal)",
+          "url": "https://gardeningwithangus.com.au/mentha-satureioides-bush-mint-native-pennyroyal/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-ms",
+          "name": "Tucker Bush - Bush Mint (Mentha satureioides)",
+          "url": "https://tuckerbush.com.au/bush-mint-mentha-satureioides/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.84,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "native-river-mint-tucker-bush": {
+      "slug": "native-river-mint-tucker-bush",
+      "species": "Native River Mint",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "This Tucker Bush plant is native river mint, Mentha australis, an aromatic native of the mint family (Lamiaceae) also known as river mint, native mint or native peppermint. It is a straggly perennial herb reaching about 0.5 to 0.75 m tall, widespread across eastern and inland Australia (in every state and territory except Western Australia) and usually found in damp soil along rivers and creeks.",
+        "The ovate to lance-shaped leaves have serrated edges and give off a fresh spearmint aroma and flavour when crushed, milder and sweeter than introduced peppermint. Small white to lilac flowers form in the leaf axils in summer and autumn. The leaves are used much like common mint in teas, salads and sauces, and have a long history of use by Indigenous Australians as a culinary flavouring and in medicinal teas."
+      ],
+      "claims": [
+        {
+          "text": "This is native river mint, Mentha australis (Lamiaceae), also called river mint, native mint or native peppermint.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-ma",
+            "anpsa-ma"
+          ]
+        },
+        {
+          "text": "It is widespread in eastern and inland Australia (every state and territory except WA), usually near rivers and creeks.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-ma",
+            "anpsa-ma"
+          ]
+        },
+        {
+          "text": "It is a straggly perennial herb about 0.5 to 0.75 m tall with ovate to lance-shaped serrated leaves and small white to lilac flowers in summer and autumn.",
+          "type": "growth_habit",
+          "cites": [
+            "anpsa-ma"
+          ]
+        },
+        {
+          "text": "The crushed leaves have a fresh spearmint aroma and flavour and are used in teas, salads and sauces; long used by Indigenous Australians as a flavouring and medicinal tea.",
+          "type": "culinary",
+          "cites": [
+            "anpsa-ma",
+            "tuckerbush-ma"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-ma",
+          "name": "Wikipedia - Mentha australis",
+          "url": "https://en.wikipedia.org/wiki/Mentha_australis",
+          "tier": "third_party"
+        },
+        {
+          "id": "anpsa-ma",
+          "name": "Australian Native Plants Society - Mentha australis",
+          "url": "https://anpsa.org.au/plant_profiles/mentha-australis/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "tuckerbush-ma",
+          "name": "Tucker Bush - Native River Mint (Mentha australis)",
+          "url": "https://tuckerbush.com.au/native-river-mint-mentha-australis/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "native-river-mint-wild-tucker-bush": {
+      "slug": "native-river-mint-wild-tucker-bush",
+      "species": "Native River Mint",
+      "variety": "Wild Tucker Bush",
+      "paragraphs": [
+        "Native river mint is Mentha australis, an aromatic Australian native mint in the family Lamiaceae, also called river mint, native mint or native peppermint. This Tucker Bush plant is the wild species, a straggly perennial herb growing roughly 0.5 to 0.75 m tall. It is widespread across eastern and inland Australia (in every state and territory except Western Australia), where it is typically found in damp ground near rivers and creeks.",
+        "Its soft green leaves are ovate to lance-shaped with serrated edges and release a fresh spearmint aroma and flavour when crushed, milder and sweeter than common peppermint. Small white to lilac flowers appear in the leaf axils in summer and autumn. The leaves can be used like introduced mint in teas, salads and sauces, and were long valued by Indigenous Australians as a flavouring and for medicinal teas."
+      ],
+      "claims": [
+        {
+          "text": "Native river mint is Mentha australis (Lamiaceae), also called river mint, native mint or native peppermint.",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-ma",
+            "anpsa-ma"
+          ]
+        },
+        {
+          "text": "It is widespread in eastern and inland Australia (every state and territory except WA), usually near rivers and creeks.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-ma",
+            "anpsa-ma"
+          ]
+        },
+        {
+          "text": "It is a straggly perennial herb about 0.5 to 0.75 m tall with ovate to lance-shaped serrated leaves and small white to lilac flowers in summer and autumn.",
+          "type": "growth_habit",
+          "cites": [
+            "anpsa-ma"
+          ]
+        },
+        {
+          "text": "The crushed leaves have a fresh spearmint aroma and flavour and are used in teas, salads and sauces; valued by Indigenous Australians as a flavouring and medicinal tea.",
+          "type": "culinary",
+          "cites": [
+            "anpsa-ma",
+            "tuckerbush-ma"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-ma",
+          "name": "Wikipedia - Mentha australis",
+          "url": "https://en.wikipedia.org/wiki/Mentha_australis",
+          "tier": "third_party"
+        },
+        {
+          "id": "anpsa-ma",
+          "name": "Australian Native Plants Society - Mentha australis",
+          "url": "https://anpsa.org.au/plant_profiles/mentha-australis/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "tuckerbush-ma",
+          "name": "Tucker Bush - Native River Mint (Mentha australis)",
+          "url": "https://tuckerbush.com.au/native-river-mint-mentha-australis/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

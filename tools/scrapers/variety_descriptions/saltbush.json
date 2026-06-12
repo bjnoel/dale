@@ -1,0 +1,458 @@
+{
+  "species_slug": "saltbush",
+  "schema_version": 1,
+  "varieties": {
+    "saltbush-coastal": {
+      "slug": "saltbush-coastal",
+      "species": "Saltbush",
+      "variety": "Coastal",
+      "paragraphs": [
+        "Coastal Saltbush is most commonly Atriplex cinerea, also known as grey saltbush, coast saltbush, barilla or truganini, a shrub of the Amaranthaceae family. It occurs in sheltered coastal areas and around salt lakes across Western Australia, South Australia, Tasmania, Victoria and New South Wales, and is recognisable by its silvery-grey, fleshy leaves and bladder-like hairs.",
+        "The salty, herby leaves can be used in stuffings and marinades or simply blanched or boiled like spinach, and have a long history of Indigenous and colonial use as a pot-herb. Well adapted to saline and arid conditions, it is hardy and drought tolerant, suiting coastal plantings and erosion control."
+      ],
+      "claims": [
+        {
+          "text": "Coastal Saltbush most commonly refers to Atriplex cinerea (grey saltbush, coast saltbush, barilla, truganini), in the Amaranthaceae family",
+          "type": "botanical",
+          "cites": [
+            "wiki-cin",
+            "sabg-cin"
+          ]
+        },
+        {
+          "text": "Occurs in sheltered coastal areas and around salt lakes across WA, SA, TAS, VIC and NSW",
+          "type": "origin",
+          "cites": [
+            "wiki-cin",
+            "sabg-cin"
+          ]
+        },
+        {
+          "text": "Silvery-grey fleshy leaves covered with bladder-like hairs",
+          "type": "botanical",
+          "cites": [
+            "wiki-cin",
+            "sabg-cin"
+          ]
+        },
+        {
+          "text": "Salty, herby leaves used in stuffings, marinades, or blanched/boiled like spinach; historic pot-herb use",
+          "type": "culinary",
+          "cites": [
+            "wiki-cin",
+            "sabg-cin"
+          ]
+        },
+        {
+          "text": "Hardy, drought and salt tolerant, suited to coastal plantings and erosion control",
+          "type": "growth",
+          "cites": [
+            "wiki-cin",
+            "sabg-cin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-cin",
+          "name": "Wikipedia: Atriplex cinerea",
+          "url": "https://en.wikipedia.org/wiki/Atriplex_cinerea",
+          "tier": "third_party"
+        },
+        {
+          "id": "sabg-cin",
+          "name": "Botanic Gardens of South Australia Plant Selector: Atriplex cinerea",
+          "url": "https://plantselector.botanicgardens.sa.gov.au/Plants/Details/523",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "saltbush-creeping": {
+      "slug": "saltbush-creeping",
+      "species": "Saltbush",
+      "variety": "Creeping",
+      "paragraphs": [
+        "Creeping Saltbush is Atriplex semibaccata, a low, mat-forming native groundcover in the Amaranthaceae family that is endemic to Australia (Western Australia, South Australia, Queensland and New South Wales). First described by Robert Brown in 1810, it spreads horizontally rather than upward, forming a dense, sprawling carpet of foliage.",
+        "It is distinguished by small, succulent, berry-like red to orange fruits that can be eaten fresh or made into jam, giving it the alternate name berry saltbush. Exceptionally hardy, it tolerates drought and high soil salinity, which makes it useful for erosion control and tough, low-water plantings."
+      ],
+      "claims": [
+        {
+          "text": "Creeping Saltbush is Atriplex semibaccata, in the Amaranthaceae family, endemic to Australia",
+          "type": "botanical",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        },
+        {
+          "text": "Native to WA, SA, QLD and NSW; first described by Robert Brown in 1810",
+          "type": "origin",
+          "cites": [
+            "wiki-semi"
+          ]
+        },
+        {
+          "text": "Low mat-forming spreading groundcover",
+          "type": "growth",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        },
+        {
+          "text": "Bears small succulent red to orange berry-like fruits, eaten fresh or made into jam (also called berry saltbush)",
+          "type": "culinary",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        },
+        {
+          "text": "Highly drought and salt tolerant, used for erosion control",
+          "type": "growth",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-semi",
+          "name": "Wikipedia: Atriplex semibaccata",
+          "url": "https://en.wikipedia.org/wiki/Atriplex_semibaccata",
+          "tier": "third_party"
+        },
+        {
+          "id": "sabg-semi",
+          "name": "Botanic Gardens of South Australia Plant Selector: Atriplex semibaccata",
+          "url": "https://plantselector.botanicgardens.sa.gov.au/Plants/Details/2565",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.94,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "saltbush-creeping-tucker-bush": {
+      "slug": "saltbush-creeping-tucker-bush",
+      "species": "Saltbush",
+      "variety": "Creeping Tucker Bush",
+      "paragraphs": [
+        "This is Creeping Saltbush (Atriplex semibaccata) sold under the Tucker Bush native-bushfood brand. It is a low, mat-forming native groundcover in the Amaranthaceae family, endemic to Australia (Western Australia, South Australia, Queensland and New South Wales), and was first described by Robert Brown in 1810. Rather than growing tall, it spreads horizontally into a dense carpet.",
+        "Its distinctive feature is the small, succulent, red to orange berry-like fruit, which can be eaten fresh or made into jam, hence the alternate name berry saltbush. The plant is tough and very drought and salt tolerant, which also makes it useful for erosion control and low-water plantings."
+      ],
+      "claims": [
+        {
+          "text": "This variety is Creeping Saltbush, Atriplex semibaccata, sold under the Tucker Bush brand",
+          "type": "botanical",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        },
+        {
+          "text": "Low mat-forming native groundcover in Amaranthaceae, endemic to Australia (WA, SA, QLD, NSW), described by Robert Brown 1810",
+          "type": "origin",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        },
+        {
+          "text": "Spreads horizontally into a dense carpet",
+          "type": "growth",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        },
+        {
+          "text": "Bears small succulent red to orange edible berries eaten fresh or made into jam (berry saltbush)",
+          "type": "culinary",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        },
+        {
+          "text": "Tough, very drought and salt tolerant, used for erosion control",
+          "type": "growth",
+          "cites": [
+            "wiki-semi",
+            "sabg-semi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-semi",
+          "name": "Wikipedia: Atriplex semibaccata",
+          "url": "https://en.wikipedia.org/wiki/Atriplex_semibaccata",
+          "tier": "third_party"
+        },
+        {
+          "id": "sabg-semi",
+          "name": "Botanic Gardens of South Australia Plant Selector: Atriplex semibaccata",
+          "url": "https://plantselector.botanicgardens.sa.gov.au/Plants/Details/2565",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "saltbush-old-man": {
+      "slug": "saltbush-old-man",
+      "species": "Saltbush",
+      "variety": "Old Man",
+      "paragraphs": [
+        "Old Man Saltbush is Atriplex nummularia, a large perennial native shrub from the Amaranthaceae family found across mainland Australia's arid and semi-arid regions, typically on saline, low-lying clay soils and floodplains. The species name nummularia comes from the Latin for coin, a nod to its rounded, silvery-grey leaves that are scaly on both sides.",
+        "The leaves are edible and salty, and can be treated like a leafy vegetable (blanched, sauteed, wrapped around meat or fish, or used in salads). Seeds were a traditional food source for Aboriginal communities. A hardy, sprawling halophyte with a deep taproot, it is one of the most widely used native forage shrubs in Australia and tolerates drought and salty ground."
+      ],
+      "claims": [
+        {
+          "text": "Old Man Saltbush is Atriplex nummularia, in the Amaranthaceae family",
+          "type": "botanical",
+          "cites": [
+            "wiki-num",
+            "anpsa-indigigrow"
+          ]
+        },
+        {
+          "text": "Native across mainland Australia's arid and semi-arid regions on saline clay soils and floodplains",
+          "type": "origin",
+          "cites": [
+            "wiki-num",
+            "anpsa-indigigrow"
+          ]
+        },
+        {
+          "text": "The name nummularia is Latin for coin, referring to the rounded silvery-grey leaves",
+          "type": "botanical",
+          "cites": [
+            "wiki-num",
+            "angus-num"
+          ]
+        },
+        {
+          "text": "Leaves are edible and salty, used like a leafy vegetable",
+          "type": "culinary",
+          "cites": [
+            "wiki-num",
+            "angus-num"
+          ]
+        },
+        {
+          "text": "Seeds were a traditional Aboriginal food source",
+          "type": "traditional-use",
+          "cites": [
+            "wiki-num",
+            "anpsa-indigigrow"
+          ]
+        },
+        {
+          "text": "Hardy sprawling halophyte, widely used as native forage, drought and salt tolerant",
+          "type": "growth",
+          "cites": [
+            "wiki-num",
+            "angus-num"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-num",
+          "name": "Wikipedia: Atriplex nummularia",
+          "url": "https://en.wikipedia.org/wiki/Atriplex_nummularia",
+          "tier": "third_party"
+        },
+        {
+          "id": "anpsa-indigigrow",
+          "name": "IndigiGrow: Atriplex nummularia",
+          "url": "https://indigigrow.com.au/edu/atriplex-nummularia/",
+          "tier": "third_party"
+        },
+        {
+          "id": "angus-num",
+          "name": "Gardening With Angus: Atriplex nummularia Old Man Saltbush",
+          "url": "https://gardeningwithangus.com.au/atriplex-nummularia-old-man-saltbush/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "saltbush-old-man-tucker-bush": {
+      "slug": "saltbush-old-man-tucker-bush",
+      "species": "Saltbush",
+      "variety": "Old Man Tucker Bush",
+      "paragraphs": [
+        "This is Old Man Saltbush (Atriplex nummularia) sold under the Tucker Bush native-bushfood brand. It is a large perennial native shrub of the Amaranthaceae family, native across mainland Australia's arid and semi-arid regions, where it grows on saline, low-lying clay soils and floodplains. Its rounded, silvery-grey, scaly leaves give the species its name (nummularia is Latin for coin).",
+        "The salty leaves are the prized edible part, treated like a leafy vegetable: blanched, sauteed, wrapped around meat or fish, or torn into salads. Seeds were a traditional Aboriginal food. It is a tough, sprawling halophyte with a deep taproot, drought hardy and one of the most widely used native forage shrubs in Australia."
+      ],
+      "claims": [
+        {
+          "text": "This variety is Old Man Saltbush, Atriplex nummularia, sold under the Tucker Bush brand",
+          "type": "botanical",
+          "cites": [
+            "wiki-num",
+            "tuckerbush-oms"
+          ]
+        },
+        {
+          "text": "Large perennial native shrub of Amaranthaceae, native across mainland Australia on saline clay soils and floodplains",
+          "type": "origin",
+          "cites": [
+            "wiki-num",
+            "anpsa-indigigrow"
+          ]
+        },
+        {
+          "text": "Rounded silvery-grey scaly leaves; nummularia is Latin for coin",
+          "type": "botanical",
+          "cites": [
+            "wiki-num",
+            "angus-num"
+          ]
+        },
+        {
+          "text": "Salty leaves are edible and used like a leafy vegetable",
+          "type": "culinary",
+          "cites": [
+            "wiki-num",
+            "angus-num"
+          ]
+        },
+        {
+          "text": "Seeds were a traditional Aboriginal food source",
+          "type": "traditional-use",
+          "cites": [
+            "wiki-num",
+            "anpsa-indigigrow"
+          ]
+        },
+        {
+          "text": "Tough sprawling halophyte, drought hardy, widely used native forage",
+          "type": "growth",
+          "cites": [
+            "wiki-num",
+            "angus-num"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-num",
+          "name": "Wikipedia: Atriplex nummularia",
+          "url": "https://en.wikipedia.org/wiki/Atriplex_nummularia",
+          "tier": "third_party"
+        },
+        {
+          "id": "anpsa-indigigrow",
+          "name": "IndigiGrow: Atriplex nummularia",
+          "url": "https://indigigrow.com.au/edu/atriplex-nummularia/",
+          "tier": "third_party"
+        },
+        {
+          "id": "angus-num",
+          "name": "Gardening With Angus: Atriplex nummularia Old Man Saltbush",
+          "url": "https://gardeningwithangus.com.au/atriplex-nummularia-old-man-saltbush/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-oms",
+          "name": "Tucker Bush: Old Man Saltbush",
+          "url": "https://tuckerbush.com.au/old-man-saltbush-atriplex-nummularia/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "saltbush-seaberry": {
+      "slug": "saltbush-seaberry",
+      "species": "Saltbush",
+      "variety": "Seaberry",
+      "paragraphs": [
+        "Seaberry Saltbush is Rhagodia candolleana, a hardy evergreen native shrub of the Amaranthaceae family found along the southern Australian coast (South Australia, Victoria and Western Australia). It grows on coastal cliffs, dunes and footslopes, with an erect to spreading habit, and unlike the Atriplex saltbushes it is hermaphrodite (each flower has both male and female parts).",
+        "It produces small red berries that were eaten raw by Indigenous peoples and used by children as face paint. Tolerant of salt spray, saline soils and drought, it is valued for stabilising sand dunes and coastal gardens and provides habitat for wildlife."
+      ],
+      "claims": [
+        {
+          "text": "Seaberry Saltbush is Rhagodia candolleana, in the Amaranthaceae family",
+          "type": "botanical",
+          "cites": [
+            "sabg-rhag",
+            "ozplants-rhag"
+          ]
+        },
+        {
+          "text": "Native along the southern Australian coast (SA, VIC, WA) on coastal cliffs, dunes and footslopes",
+          "type": "origin",
+          "cites": [
+            "sabg-rhag",
+            "ozplants-rhag"
+          ]
+        },
+        {
+          "text": "Hermaphrodite flowers, unlike the dioecious Atriplex saltbushes",
+          "type": "botanical",
+          "cites": [
+            "pfaf-rhag"
+          ]
+        },
+        {
+          "text": "Small red berries were eaten raw by Indigenous peoples and used by children as face paint",
+          "type": "traditional-use",
+          "cites": [
+            "sabg-rhag"
+          ]
+        },
+        {
+          "text": "Tolerant of salt spray, saline soils and drought; used to stabilise sand dunes",
+          "type": "growth",
+          "cites": [
+            "sabg-rhag",
+            "ozplants-rhag"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sabg-rhag",
+          "name": "Botanic Gardens of South Australia Plant Selector: Rhagodia candolleana ssp. candolleana",
+          "url": "https://plantselector.botanicgardens.sa.gov.au/Plants/Details/3640",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ozplants-rhag",
+          "name": "Oz Native Plants: Rhagodia candolleana Seaberry Saltbush",
+          "url": "https://www.oznativeplants.com/plantdetail/Seaberry-Saltbush/Rhagodia/candolleana/zz.html",
+          "tier": "third_party"
+        },
+        {
+          "id": "pfaf-rhag",
+          "name": "Plants For A Future: Rhagodia candolleana",
+          "url": "https://pfaf.org/user/Plant.aspx?LatinName=Rhagodia+candolleana",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

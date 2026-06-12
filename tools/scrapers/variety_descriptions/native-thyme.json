@@ -1,0 +1,59 @@
+{
+  "species_slug": "native-thyme",
+  "schema_version": 1,
+  "varieties": {
+    "native-thyme-tucker-bush": {
+      "slug": "native-thyme-tucker-bush",
+      "species": "Native Thyme",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "The Native Thyme sold under the Tucker Bush brand is Prostanthera incisa, the cut-leaf mint-bush, a Lamiaceae (mint family) shrub endemic to south-eastern Australia from the NSW coast to Victoria. Despite the common name it is not a true thyme; it is an erect, openly branched shrub roughly 0.5 to 3 metres tall with hairy, glandular, coarsely toothed leaves and pale mauve flowers in spring.",
+        "The aromatic, glandular leaves carry a complex savoury flavour with herbal, peppery and citrus tones, used as a native seasoning herb. \"Tucker Bush\" is the WA native-bushfood brand the plant is sold under."
+      ],
+      "claims": [
+        {
+          "text": "Tucker Bush Native Thyme is Prostanthera incisa, the cut-leaf mint-bush, family Lamiaceae, endemic to south-eastern Australia",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-pi",
+            "tuckerbush-nt"
+          ]
+        },
+        {
+          "text": "Erect openly branched shrub about 0.5 to 3 metres tall, hairy glandular toothed leaves, pale mauve flowers",
+          "type": "habit",
+          "cites": [
+            "wikipedia-pi"
+          ]
+        },
+        {
+          "text": "Aromatic leaves used as a native seasoning herb with herbal, peppery and citrus notes",
+          "type": "culinary",
+          "cites": [
+            "tuckerbush-nt",
+            "wikipedia-pi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-pi",
+          "name": "Prostanthera incisa, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Prostanthera_incisa",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-nt",
+          "name": "Native Thyme, Prostanthera incisa, Tucker Bush",
+          "url": "https://tuckerbush.com.au/native-thyme-prostanthera-incisa/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

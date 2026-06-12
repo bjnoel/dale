@@ -1,0 +1,180 @@
+{
+  "species_slug": "quandong",
+  "schema_version": 1,
+  "varieties": {
+    "quandong-eumundi": {
+      "slug": "quandong-eumundi",
+      "species": "Quandong",
+      "variety": "Eumundi",
+      "paragraphs": [
+        "Eumundi Quandong is Elaeocarpus eumundi (family Elaeocarpaceae), also called smooth-leaved quandong, a rainforest tree of north-eastern Australia rather than a desert quandong (Santalum). It occurs in rainforest from Cape York Peninsula in Queensland south to north-eastern New South Wales, at altitudes up to about 1,000 m, and is prized in cultivation for glossy dense foliage with bronze new growth.",
+        "It typically grows 12 to 25 m tall with fibrous bark. Cream-coloured flowers appear around November to December, followed by a blue, oval drupe about 15 mm long that is described as juicy and sharply acid. The fruit feeds rainforest birds, and the tree is widely planted as an ornamental and screening tree."
+      ],
+      "claims": [
+        {
+          "text": "Eumundi Quandong is Elaeocarpus eumundi, also called smooth-leaved quandong",
+          "type": "taxonomy",
+          "cites": [
+            "wikipedia-eumundi",
+            "gardeningwithangus-eumundi"
+          ]
+        },
+        {
+          "text": "Rainforest tree from Cape York Peninsula to north-eastern NSW, up to about 1,000 m altitude",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-eumundi"
+          ]
+        },
+        {
+          "text": "Typically 12 to 25 m tall; cream flowers November to December; blue oval drupe about 15 mm long, juicy and sharply acid",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-eumundi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-eumundi",
+          "name": "Wikipedia: Elaeocarpus eumundi",
+          "url": "https://en.wikipedia.org/wiki/Elaeocarpus_eumundi",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeningwithangus-eumundi",
+          "name": "Gardening With Angus: Elaeocarpus eumundi (Eumundi Quandong)",
+          "url": "https://gardeningwithangus.com.au/elaeocarpus-eumundi-eumundi-quandong/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "quandong-hard": {
+      "slug": "quandong-hard",
+      "species": "Quandong",
+      "variety": "Hard",
+      "paragraphs": [
+        "Hard Quandong is Elaeocarpus obovatus (family Elaeocarpaceae), an eastern Australian rainforest tree, not a relative of the famous desert quandong (Santalum acuminatum). The hard quandong name comes from its very hard fruit stone. It also goes by blueberry ash, whitewood and grey carabeen, and ranges from Proserpine in central-eastern Queensland south to Wyong in New South Wales.",
+        "It is variable in size, sometimes a small tree of 3 to 10 m and sometimes a tall buttressed forest tree to about 45 m. The fruit is a small oval to elliptical blue drupe roughly 10 mm long. It is grown as much for its dense canopy and bird-attracting fruit as for any food use, and is distinct from the edible-kernel and edible-flesh quandongs."
+      ],
+      "claims": [
+        {
+          "text": "Hard Quandong is Elaeocarpus obovatus, also called blueberry ash, whitewood, grey carabeen",
+          "type": "taxonomy",
+          "cites": [
+            "wikipedia-obovatus",
+            "ala-obovatus"
+          ]
+        },
+        {
+          "text": "Not related to the desert quandong Santalum acuminatum",
+          "type": "taxonomy",
+          "cites": [
+            "wikipedia-quandong"
+          ]
+        },
+        {
+          "text": "Ranges from Proserpine, Queensland south to Wyong, NSW; small tree 3 to 10 m up to a tall tree of 45 m with buttress roots",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-obovatus"
+          ]
+        },
+        {
+          "text": "Fruit is an oval to elliptical blue drupe about 10 mm long",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-obovatus"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-obovatus",
+          "name": "Wikipedia: Elaeocarpus obovatus",
+          "url": "https://en.wikipedia.org/wiki/Elaeocarpus_obovatus",
+          "tier": "third_party"
+        },
+        {
+          "id": "ala-obovatus",
+          "name": "Atlas of Living Australia: Elaeocarpus obovatus (Hard Quandong)",
+          "url": "https://bie.ala.org.au/species/Elaeocarpus+obovatus",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-quandong",
+          "name": "Wikipedia: Quandong",
+          "url": "https://en.wikipedia.org/wiki/Quandong",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "quandong-kuranda": {
+      "slug": "quandong-kuranda",
+      "species": "Quandong",
+      "variety": "Kuranda",
+      "paragraphs": [
+        "Kuranda Quandong is Elaeocarpus bancroftii (family Elaeocarpaceae), a large rainforest tree endemic to north-eastern Queensland, not a desert quandong (Santalum). It also goes by Johnstone River almond, ebony heart, grey nut and nut tree, and grows in well-developed rainforest from near Cooktown south to about Tully, from near sea level to around 1,200 m.",
+        "It is a substantial tree to about 30 m tall and 60 cm in trunk diameter, sometimes buttressed, with white flowers and a large, dull grey to blue-green globular drupe about 4 cm across. Inside the very hard stone is an edible, almond-like kernel that Indigenous Australians ate, cracking the tough shell with stone tools. The fruit is also eaten by cassowaries and flying foxes."
+      ],
+      "claims": [
+        {
+          "text": "Kuranda Quandong is Elaeocarpus bancroftii, also called Johnstone River almond, ebony heart, grey nut, nut tree",
+          "type": "taxonomy",
+          "cites": [
+            "wikipedia-bancroftii",
+            "search-bancroftii"
+          ]
+        },
+        {
+          "text": "Large rainforest tree endemic to north-eastern Queensland, from near Cooktown south to about Tully, to around 1,200 m",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-bancroftii"
+          ]
+        },
+        {
+          "text": "Up to about 30 m tall and 60 cm diameter, sometimes buttressed; white flowers; dull grey to blue-green globular drupe about 4 cm across with edible kernel inside a very hard stone",
+          "type": "botanical",
+          "cites": [
+            "wikipedia-bancroftii"
+          ]
+        },
+        {
+          "text": "Fruit eaten by cassowaries and flying foxes; kernel eaten by Indigenous Australians using stone tools",
+          "type": "culinary",
+          "cites": [
+            "wikipedia-bancroftii"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-bancroftii",
+          "name": "Wikipedia: Elaeocarpus bancroftii",
+          "url": "https://en.wikipedia.org/wiki/Elaeocarpus_bancroftii",
+          "tier": "third_party"
+        },
+        {
+          "id": "search-bancroftii",
+          "name": "Lucid Central Rainforest Key: Elaeocarpus bancroftii",
+          "url": "https://apps.lucidcentral.org/rainforest/text/entities/elaeocarpus_bancroftii.htm",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}

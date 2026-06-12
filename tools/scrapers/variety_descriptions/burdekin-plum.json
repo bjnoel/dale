@@ -1,0 +1,65 @@
+{
+  "species_slug": "burdekin-plum",
+  "schema_version": 1,
+  "varieties": {
+    "burdekin-plum-tucker-bush": {
+      "slug": "burdekin-plum-tucker-bush",
+      "species": "Burdekin Plum",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Burdekin Plum is Pleiogynium timoriense, a medium tree in the cashew and mango family (Anacardiaceae) native to Australia, Malesia, and the Pacific. The plum-shaped fruit ripens to a dark purple (rarely pale) skin and grows to about 25 by 38mm. It is edible but distinctly tart, and the colour and flavour vary between trees, with paler fruit tending to be milder.",
+        "Its defining quirk is that the fruit does not soften on the tree. Picked hard and astringent, it must be ripened off the tree, traditionally buried underground, or kept a few days (often in a paper bag) until it turns soft and palatable. Joseph Banks recorded the same effect: hard and disagreeable when gathered, but soft after keeping. The softened flesh is eaten fresh or made into jams and jellies."
+      ],
+      "claims": [
+        {
+          "text": "Burdekin Plum is Pleiogynium timoriense in the family Anacardiaceae (cashew and mango family), native to Australia, Malesia and the Pacific",
+          "type": "botanical",
+          "cites": [
+            "wiki-burdekin"
+          ]
+        },
+        {
+          "text": "The fruit ripens dark purple, up to about 25 by 38mm, and is edible but tart with paler fruit milder",
+          "type": "culinary",
+          "cites": [
+            "wiki-burdekin"
+          ]
+        },
+        {
+          "text": "The fruit will not ripen on the tree and must be softened after picking, traditionally buried or kept a few days until soft",
+          "type": "culinary",
+          "cites": [
+            "wiki-burdekin",
+            "tuckerbush-burdekin"
+          ]
+        },
+        {
+          "text": "Softened flesh is eaten fresh or used in jams and jellies",
+          "type": "culinary",
+          "cites": [
+            "wiki-burdekin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-burdekin",
+          "name": "Wikipedia: Pleiogynium timoriense",
+          "url": "https://en.wikipedia.org/wiki/Pleiogynium_timoriense",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-burdekin",
+          "name": "Tucker Bush: Burdekin Plum",
+          "url": "https://tuckerbush.com.au/burdekin-plum-pleiogynium-timorense/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": []
+}
