@@ -1,0 +1,627 @@
+{
+  "species_slug": "kiwifruit",
+  "schema_version": 1,
+  "varieties": {
+    "kiwifruit-chieftain-male": {
+      "slug": "kiwifruit-chieftain-male",
+      "species": "Kiwifruit",
+      "variety": "Chieftain Male",
+      "paragraphs": [
+        "Chieftain is a male pollinator cultivar of fuzzy kiwifruit (Actinidia deliciosa), not a fruiting vine. Kiwifruit is dioecious, meaning male and female flowers grow on separate plants, so a male like Chieftain is planted alongside fruiting females to supply pollen. Its flowers produce viable pollen but lack a functional pistil, so the vine itself never sets fruit. Chieftain is documented in horticultural research as a male polleniser of Hayward, the dominant commercial green kiwifruit, valued for heavy flowering and good pollen production.",
+        "One vigorous male can pollinate several surrounding female vines, so growers add just one Chieftain to a planting of fruiting cultivars rather than a row of them. Because fruit set, seed number, and size all depend on thorough pollination, choosing a male whose flowering overlaps the female is the whole point. Chieftain is widely paired with Hayward and with warm-climate females such as Dexter."
+      ],
+      "claims": [
+        {
+          "text": "Chieftain is a male pollinator cultivar of fuzzy kiwifruit (Actinidia deliciosa) and does not itself bear fruit.",
+          "type": "pollination",
+          "cites": [
+            "pmc-sesquiterpenes",
+            "wikipedia-deliciosa"
+          ]
+        },
+        {
+          "text": "Kiwifruit is dioecious, with male and female flowers on separate plants, so a male vine is needed to pollinate fruiting females.",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-deliciosa",
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "Male kiwifruit flowers produce viable pollen but lack a functional pistil, so the male vine sets no fruit.",
+          "type": "pollination",
+          "cites": [
+            "pmc-sesquiterpenes"
+          ]
+        },
+        {
+          "text": "Chieftain is a documented male polleniser of the Hayward kiwifruit cultivar.",
+          "type": "pollination",
+          "cites": [
+            "pmc-sesquiterpenes",
+            "daleys-chieftain"
+          ]
+        },
+        {
+          "text": "One male kiwifruit vine can pollinate several female vines.",
+          "type": "pollination",
+          "cites": [
+            "crfg-kiwi",
+            "daleys-chieftain"
+          ]
+        },
+        {
+          "text": "Chieftain is recommended as a pollinator for warm-climate females such as Dexter.",
+          "type": "pollination",
+          "cites": [
+            "daleys-dexter"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc-sesquiterpenes",
+          "name": "Floral sesquiterpenes and their synthesis in dioecious kiwifruit (PMC, Plant Signaling & Behavior)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2835961/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia-deliciosa",
+          "name": "Actinidia chinensis var. deliciosa, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Actinidia_chinensis_var._deliciosa",
+          "tier": "third_party"
+        },
+        {
+          "id": "crfg-kiwi",
+          "name": "Kiwifruit, California Rare Fruit Growers Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/kiwi-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-chieftain",
+          "name": "Kiwifruit Chieftain Male, Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/buy/kiwifruit-m56-male-tree.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-dexter",
+          "name": "Kiwifruit Dexter (female), Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/buy/kiwifruit-dexter-female-plant.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "kiwifruit-dexter": {
+      "slug": "kiwifruit-dexter",
+      "species": "Kiwifruit",
+      "variety": "Dexter",
+      "paragraphs": [
+        "Dexter is a female fuzzy kiwifruit (Actinidia deliciosa) selected for warm-winter areas. It originated in Queensland as a seedling of Hayward, the standard commercial green kiwifruit, and carries fruit similar to Hayward but slightly more elongated. Its main distinction is a relatively low chill requirement, which lets it crop in subtropical and warm temperate districts where Hayward struggles to get enough winter cold. Horticultural references list it among the low-chill cultivars suited to mild-winter regions.",
+        "Being female, Dexter needs a compatible male vine nearby to set fruit, since kiwifruit is dioecious with male and female flowers on separate plants. A male such as Chieftain or Matua, whose flowering overlaps Dexter, supplies the pollen. In the Southern Hemisphere the fruit is typically picked across autumn into early winter."
+      ],
+      "claims": [
+        {
+          "text": "Dexter is a female fuzzy kiwifruit (Actinidia deliciosa) cultivar.",
+          "type": "origin",
+          "cites": [
+            "daleys-dexter",
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "Dexter originated in Queensland as a seedling of Hayward.",
+          "type": "origin",
+          "cites": [
+            "daleys-dexter"
+          ]
+        },
+        {
+          "text": "Dexter fruit is similar to Hayward but slightly more elongated.",
+          "type": "appearance",
+          "cites": [
+            "daleys-dexter"
+          ]
+        },
+        {
+          "text": "Dexter has a relatively low chill requirement and is suited to subtropical and warm temperate areas.",
+          "type": "climate",
+          "cites": [
+            "crfg-kiwi",
+            "daleys-dexter"
+          ]
+        },
+        {
+          "text": "Dexter is listed among low-chill kiwifruit cultivars for warm-winter regions.",
+          "type": "climate",
+          "cites": [
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "Being female, Dexter needs a compatible male pollinator such as Chieftain or Matua because kiwifruit is dioecious.",
+          "type": "pollination",
+          "cites": [
+            "daleys-dexter",
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "In the Southern Hemisphere Dexter fruit is typically harvested across autumn into early winter.",
+          "type": "season",
+          "cites": [
+            "daleys-dexter"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daleys-dexter",
+          "name": "Kiwifruit Dexter (female), Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/buy/kiwifruit-dexter-female-plant.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "crfg-kiwi",
+          "name": "Kiwifruit, California Rare Fruit Growers Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/kiwi-2/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "kiwifruit-dexter-female": {
+      "slug": "kiwifruit-dexter-female",
+      "species": "Kiwifruit",
+      "variety": "Dexter Female",
+      "paragraphs": [
+        "Dexter is a female fuzzy kiwifruit (Actinidia deliciosa) selected for warm-winter areas. It originated in Queensland as a seedling of Hayward, the standard commercial green kiwifruit, and carries fruit similar to Hayward but slightly more elongated. Its main distinction is a relatively low chill requirement, which lets it crop in subtropical and warm temperate districts where Hayward struggles to get enough winter cold. Horticultural references list it among the low-chill cultivars suited to mild-winter regions.",
+        "Being female, Dexter needs a compatible male vine nearby to set fruit, since kiwifruit is dioecious with male and female flowers on separate plants. A male such as Chieftain or Matua, whose flowering overlaps Dexter, supplies the pollen. In the Southern Hemisphere the fruit is typically picked across autumn into early winter."
+      ],
+      "claims": [
+        {
+          "text": "Dexter is a female fuzzy kiwifruit (Actinidia deliciosa) cultivar.",
+          "type": "origin",
+          "cites": [
+            "daleys-dexter",
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "Dexter originated in Queensland as a seedling of Hayward.",
+          "type": "origin",
+          "cites": [
+            "daleys-dexter"
+          ]
+        },
+        {
+          "text": "Dexter fruit is similar to Hayward but slightly more elongated.",
+          "type": "appearance",
+          "cites": [
+            "daleys-dexter"
+          ]
+        },
+        {
+          "text": "Dexter has a relatively low chill requirement and is suited to subtropical and warm temperate areas.",
+          "type": "climate",
+          "cites": [
+            "crfg-kiwi",
+            "daleys-dexter"
+          ]
+        },
+        {
+          "text": "Dexter is listed among low-chill kiwifruit cultivars for warm-winter regions.",
+          "type": "climate",
+          "cites": [
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "Being female, Dexter needs a compatible male pollinator such as Chieftain or Matua because kiwifruit is dioecious.",
+          "type": "pollination",
+          "cites": [
+            "daleys-dexter",
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "In the Southern Hemisphere Dexter fruit is typically harvested across autumn into early winter.",
+          "type": "season",
+          "cites": [
+            "daleys-dexter"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daleys-dexter",
+          "name": "Kiwifruit Dexter (female), Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/buy/kiwifruit-dexter-female-plant.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "crfg-kiwi",
+          "name": "Kiwifruit, California Rare Fruit Growers Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/kiwi-2/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "kiwifruit-hayward": {
+      "slug": "kiwifruit-hayward",
+      "species": "Kiwifruit",
+      "variety": "Hayward",
+      "paragraphs": [
+        "Hayward is the classic fuzzy green kiwifruit (Actinidia chinensis var. deliciosa), developed by Hayward Wright in Avondale, New Zealand around 1924. It became New Zealand's dominant export variety and remains the most popular green kiwifruit cultivar grown worldwide, prized for large fruit, flavour and excellent keeping qualities. The flesh is bright green with a subacid flavour likened to gooseberry or strawberry.",
+        "Kiwifruit vines are dioecious, with male and female flowers on separate plants. Hayward is the fruiting female, and its flowers carry stamens with no viable pollen, so a male vine such as Matua or Tomuri must be planted nearby to set fruit. The brown, hairy-skinned fruit stores and ships well, which is a large part of why this cultivar came to dominate the global trade."
+      ],
+      "claims": [
+        {
+          "text": "Hayward is a fuzzy green kiwifruit, Actinidia chinensis var. deliciosa, developed by Hayward Wright in Avondale, New Zealand around 1924.",
+          "type": "origin",
+          "cites": [
+            "wiki-deliciosa"
+          ]
+        },
+        {
+          "text": "It is the most popular green kiwifruit cultivar worldwide and became New Zealand's dominant export variety.",
+          "type": "naming",
+          "cites": [
+            "wiki-deliciosa",
+            "fruitcrops"
+          ]
+        },
+        {
+          "text": "The flesh is bright green with a subacid flavour likened to gooseberry or strawberry.",
+          "type": "flavour",
+          "cites": [
+            "wiki-deliciosa"
+          ]
+        },
+        {
+          "text": "Kiwifruit vines are dioecious; Hayward is female with no viable pollen and needs a male such as Matua or Tomuri to set fruit.",
+          "type": "pollination",
+          "cites": [
+            "wiki-deliciosa",
+            "fruitcrops"
+          ]
+        },
+        {
+          "text": "The fruit has brown hairy skin and stores and ships well, underpinning its commercial dominance.",
+          "type": "storage",
+          "cites": [
+            "wiki-deliciosa",
+            "fruitcrops"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-deliciosa",
+          "name": "Wikipedia: Actinidia chinensis var. deliciosa",
+          "url": "https://en.wikipedia.org/wiki/Actinidia_chinensis_var._deliciosa",
+          "tier": "third_party"
+        },
+        {
+          "id": "fruitcrops",
+          "name": "Fruit-Crops.com: Kiwifruit (Actinidia deliciosa)",
+          "url": "https://www.fruit-crops.com/kiwifruit-actinidia-deliciosa-a-chev/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "kiwifruit-hayward-female": {
+      "slug": "kiwifruit-hayward-female",
+      "species": "Kiwifruit",
+      "variety": "Hayward Female",
+      "paragraphs": [
+        "Hayward is the classic fuzzy green kiwifruit (Actinidia chinensis var. deliciosa), developed by Hayward Wright in Avondale, New Zealand around 1924. It became New Zealand's dominant export variety and remains the most popular green kiwifruit cultivar grown worldwide, prized for large fruit, flavour and excellent keeping qualities. The flesh is bright green with a subacid flavour likened to gooseberry or strawberry.",
+        "Kiwifruit vines are dioecious, with male and female flowers on separate plants. Hayward is the fruiting female, and its flowers carry stamens with no viable pollen, so a male vine such as Matua or Tomuri must be planted nearby to set fruit. The brown, hairy-skinned fruit stores and ships well, which is a large part of why this cultivar came to dominate the global trade."
+      ],
+      "claims": [
+        {
+          "text": "Hayward is a fuzzy green kiwifruit, Actinidia chinensis var. deliciosa, developed by Hayward Wright in Avondale, New Zealand around 1924.",
+          "type": "origin",
+          "cites": [
+            "wiki-deliciosa"
+          ]
+        },
+        {
+          "text": "It is the most popular green kiwifruit cultivar worldwide and became New Zealand's dominant export variety.",
+          "type": "naming",
+          "cites": [
+            "wiki-deliciosa",
+            "fruitcrops"
+          ]
+        },
+        {
+          "text": "The flesh is bright green with a subacid flavour likened to gooseberry or strawberry.",
+          "type": "flavour",
+          "cites": [
+            "wiki-deliciosa"
+          ]
+        },
+        {
+          "text": "Kiwifruit vines are dioecious; Hayward is female with no viable pollen and needs a male such as Matua or Tomuri to set fruit.",
+          "type": "pollination",
+          "cites": [
+            "wiki-deliciosa",
+            "fruitcrops"
+          ]
+        },
+        {
+          "text": "The fruit has brown hairy skin and stores and ships well, underpinning its commercial dominance.",
+          "type": "storage",
+          "cites": [
+            "wiki-deliciosa",
+            "fruitcrops"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-deliciosa",
+          "name": "Wikipedia: Actinidia chinensis var. deliciosa",
+          "url": "https://en.wikipedia.org/wiki/Actinidia_chinensis_var._deliciosa",
+          "tier": "third_party"
+        },
+        {
+          "id": "fruitcrops",
+          "name": "Fruit-Crops.com: Kiwifruit (Actinidia deliciosa)",
+          "url": "https://www.fruit-crops.com/kiwifruit-actinidia-deliciosa-a-chev/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "kiwifruit-issai": {
+      "slug": "kiwifruit-issai",
+      "species": "Kiwifruit",
+      "variety": "Issai",
+      "paragraphs": [
+        "Issai is a hardy kiwi (kiwiberry), a Japanese cultivar of the hybrid Actinidia arguta x polygama. Unlike the large fuzzy supermarket kiwifruit, hardy kiwis bear small, smooth-skinned, grape-sized green fruit that can be eaten whole without peeling, and the species tolerates far colder winters than fuzzy kiwifruit.",
+        "Its standout trait is self-fertility. Issai is one of the few commonly sold self-fertile hardy kiwis, so a single vine can set fruit without a separate male pollinator, though planting a male can improve yields. It is also more restrained in growth than most hardy kiwis and often fruits young, which makes it a popular choice for small gardens."
+      ],
+      "claims": [
+        {
+          "text": "Issai is a hardy kiwi (kiwiberry), a Japanese cultivar of the hybrid Actinidia arguta x polygama.",
+          "type": "origin",
+          "cites": [
+            "wiki-arguta"
+          ]
+        },
+        {
+          "text": "Hardy kiwis bear small, smooth-skinned, grape-sized green fruit that can be eaten whole without peeling.",
+          "type": "appearance",
+          "cites": [
+            "wiki-arguta"
+          ]
+        },
+        {
+          "text": "The species tolerates far colder winters than fuzzy kiwifruit.",
+          "type": "climate",
+          "cites": [
+            "wiki-arguta"
+          ]
+        },
+        {
+          "text": "Issai is a commonly sold self-fertile cultivar that can set fruit without a separate male pollinator, though a male can improve yields.",
+          "type": "pollination",
+          "cites": [
+            "wiki-arguta",
+            "fgt-issai"
+          ]
+        },
+        {
+          "text": "It is more restrained in growth than most hardy kiwis and often fruits young.",
+          "type": "growing",
+          "cites": [
+            "fgt-issai"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-arguta",
+          "name": "Wikipedia: Actinidia arguta (hardy kiwi)",
+          "url": "https://en.wikipedia.org/wiki/Actinidia_arguta",
+          "tier": "third_party"
+        },
+        {
+          "id": "fgt-issai",
+          "name": "Western Reserve Heritage Seed Co.: Issai Hardy Kiwi",
+          "url": "https://heritageseedco.com/products/issai-hardy-kiwi-vine-actinidia-arguta-issai-self-fertile-1",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "kiwifruit-kens-red": {
+      "slug": "kiwifruit-kens-red",
+      "species": "Kiwifruit",
+      "variety": "Kens Red",
+      "paragraphs": [
+        "Ken's Red is a hardy kiwi hybrid (Actinidia arguta x melanandra) bred in New Zealand. It stands out for its colour: the small, smooth-skinned fruit develops reddish-purple skin and red-tinged flesh, with the colour deepening when grown in full sun. The fruit is sweet and mild, and like other hardy kiwis it can be eaten whole, skin and all.",
+        "As a member of the hardy kiwi group, it tolerates much colder winters than the fuzzy supermarket kiwifruit. Ken's Red is a fruiting female, so it needs a male hardy kiwi planted nearby for pollination and fruit set."
+      ],
+      "claims": [
+        {
+          "text": "Ken's Red is a hardy kiwi hybrid, Actinidia arguta x melanandra, originating from New Zealand.",
+          "type": "origin",
+          "cites": [
+            "wiki-arguta",
+            "ogw-kensred"
+          ]
+        },
+        {
+          "text": "The smooth-skinned fruit has reddish-purple skin and red flesh, and is sweet and mild.",
+          "type": "appearance",
+          "cites": [
+            "ogw-kensred",
+            "plantlust-kensred"
+          ]
+        },
+        {
+          "text": "Like other hardy kiwis, the fruit can be eaten whole, skin and all.",
+          "type": "use",
+          "cites": [
+            "wiki-arguta",
+            "ogw-kensred"
+          ]
+        },
+        {
+          "text": "It is a fruiting female that needs a male hardy kiwi nearby for pollination.",
+          "type": "pollination",
+          "cites": [
+            "ogw-kensred",
+            "plantlust-kensred"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-arguta",
+          "name": "Wikipedia: Actinidia arguta (hardy kiwi)",
+          "url": "https://en.wikipedia.org/wiki/Actinidia_arguta",
+          "tier": "third_party"
+        },
+        {
+          "id": "ogw-kensred",
+          "name": "One Green World: Ken's Red Hardy Kiwi",
+          "url": "https://onegreenworld.com/product/kens-red-hardy-kiwi/",
+          "tier": "nursery"
+        },
+        {
+          "id": "plantlust-kensred",
+          "name": "Plant Lust: Ken's Red Hardy Kiwi (Actinidia arguta x melanandra)",
+          "url": "https://plantlust.com/plants/18293/kens-red-hardy-kiwi/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "kiwifruit-matua": {
+      "slug": "kiwifruit-matua",
+      "species": "Kiwifruit",
+      "variety": "Matua",
+      "paragraphs": [
+        "Matua is a male pollinator cultivar of fuzzy kiwifruit (Actinidia deliciosa), grown for pollen rather than fruit. Kiwifruit is dioecious, so a male vine is planted near fruiting females to set their crop. Matua is one of the most common males used in commercial kiwifruit orchards. Its flowers carry masses of golden stamens but no functional fruiting structure, so the vine produces no kiwifruit of its own.",
+        "Matua is a mid-season male: it begins flowering a little before Hayward and keeps flowering for several weeks, which lets it overlap and pollinate early to mid season females including Hayward. A single vigorous Matua can service several surrounding female vines. Growers wanting to stretch the pollen window further often add a late male such as Tomuri alongside it."
+      ],
+      "claims": [
+        {
+          "text": "Matua is a male pollinator cultivar of fuzzy kiwifruit (Actinidia deliciosa) grown for pollen, not fruit.",
+          "type": "pollination",
+          "cites": [
+            "crfg-kiwi",
+            "daleys-matua"
+          ]
+        },
+        {
+          "text": "Kiwifruit is dioecious, so a male vine is needed to pollinate fruiting females.",
+          "type": "pollination",
+          "cites": [
+            "wikipedia-deliciosa",
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "Matua is one of the most common male pollinators used in commercial kiwifruit orchards.",
+          "type": "pollination",
+          "cites": [
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "Matua is a mid-season male that begins flowering a little before Hayward and continues for several weeks.",
+          "type": "season",
+          "cites": [
+            "crfg-kiwi"
+          ]
+        },
+        {
+          "text": "Matua pollinates early to mid season females such as Hayward.",
+          "type": "pollination",
+          "cites": [
+            "crfg-kiwi",
+            "daleys-matua"
+          ]
+        },
+        {
+          "text": "Tomuri is a late-flowering male used to extend the pollen season alongside mid-season males.",
+          "type": "pollination",
+          "cites": [
+            "crfg-kiwi"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "crfg-kiwi",
+          "name": "Kiwifruit, California Rare Fruit Growers Fruit Facts",
+          "url": "https://crfg.org/homepage/library/fruitfacts/kiwi-2/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-deliciosa",
+          "name": "Actinidia chinensis var. deliciosa, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Actinidia_chinensis_var._deliciosa",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-matua",
+          "name": "Kiwifruit Matua Male, Daleys Fruit",
+          "url": "https://www.daleysfruit.com.au/buy/kiwifruit-male-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "kiwifruit-bruno-female-potted",
+    "kiwifruit-female",
+    "kiwifruit-female-plant",
+    "kiwifruit-fruit-dexter-female",
+    "kiwifruit-fruit-green-female",
+    "kiwifruit-fruit-green-male",
+    "kiwifruit-fruit-hayward-female",
+    "kiwifruit-fruit-male",
+    "kiwifruit-fruit-male-matua",
+    "kiwifruit-gold",
+    "kiwifruit-h4-female",
+    "kiwifruit-issai-going-dormant-for-winter",
+    "kiwifruit-male",
+    "kiwifruit-male-plant",
+    "kiwifruit-male-sweetie",
+    "kiwifruit-red-female",
+    "kiwifruit-sweetie",
+    "kiwifruit-waynes-female"
+  ]
+}
