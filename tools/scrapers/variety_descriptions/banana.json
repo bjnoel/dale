@@ -209,6 +209,66 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "banana-dpm-25": {
+      "slug": "banana-dpm-25",
+      "species": "Banana",
+      "variety": "DPM 25",
+      "paragraphs": [
+        "DPM25 is not a plantain but a Cavendish banana. It was developed by the then Queensland Department of Primary Industries in the early 1990s as a gamma irradiated mutant of the extra dwarf Cavendish cultivar Dwarf Parfitt. Belonging to the AAA Cavendish group, it resembles the standard commercial Williams closely in appearance and was selected for agronomic qualities comparable to it.",
+        "Its main point of interest is disease tolerance. DPM25 was chosen for increased tolerance to Panama disease subtropical race 4 (Foc SR4), the strain that affects Australian subtropical plantings. That tolerance does not carry across to the more aggressive tropical race 4 (Foc TR4). In Northern Territory field screening DPM25 rated as very susceptible to TR4, a reminder that resistance to one race of the pathogen does not guarantee protection against another."
+      ],
+      "claims": [
+        {
+          "text": "DPM25 was developed by the Queensland Department of Primary Industries in the early 1990s as a gamma irradiated mutant of the extra dwarf Cavendish cultivar Dwarf Parfitt",
+          "type": "origin",
+          "cites": [
+            "pmc_nt",
+            "abgc_williams"
+          ]
+        },
+        {
+          "text": "It is an AAA Cavendish selection that resembles Williams closely in appearance and was selected for agronomic qualities comparable to Williams",
+          "type": "description",
+          "cites": [
+            "pmc_nt",
+            "abgc_williams"
+          ]
+        },
+        {
+          "text": "It was selected for increased tolerance to Panama disease subtropical race 4 (Foc SR4)",
+          "type": "trait",
+          "cites": [
+            "pmc_nt",
+            "abgc_williams"
+          ]
+        },
+        {
+          "text": "Its subtropical race 4 tolerance did not translate to tropical race 4, and it rated as very susceptible to Foc TR4 in Northern Territory field trials",
+          "type": "trait",
+          "cites": [
+            "pmc_nt"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pmc_nt",
+          "name": "Banana Cultivar Field Screening for Resistance to Fusarium oxysporum f.sp. cubense Tropical Race 4 in the Northern Territory (PMC)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8400552/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "abgc_williams",
+          "name": "Australian Banana Growers' Council, Williams versus the rest",
+          "url": "https://abgc.org.au/2015/05/21/williams-versus-the-rest/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "banana-ducasse": {
       "slug": "banana-ducasse",
       "species": "Banana",
@@ -339,6 +399,64 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "banana-dwarf-ducasse": {
+      "slug": "banana-dwarf-ducasse",
+      "species": "Banana",
+      "variety": "Dwarf Ducasse",
+      "paragraphs": [
+        "Ducasse, widely sold in Australia as the sugar banana, is a small-fruited banana of the ABB sugar group (a Musa acuminata by Musa balbisiana hybrid related to Pisang Awak). Its fruit are petite with sweet, fragrant, creamy flesh that ripens to a bright yellow, prized for flavour rather than size.",
+        "The Dwarf Ducasse is a half-height selection of that same sugar banana, reaching only about 2 to 3 m rather than the taller full-size plant. The shorter stature suits courtyards, small gardens, and large pots, while the fruit stay the same small, sweet sugar bananas. It shows some tolerance of cooler subtropical conditions, though frost is best avoided."
+      ],
+      "claims": [
+        {
+          "text": "Ducasse (the sugar banana) is a small-fruited banana of the ABB sugar group, a Musa acuminata by Musa balbisiana hybrid, with sweet, fragrant, creamy flesh.",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce_ducasse",
+            "daleys_dwarf_ducasse"
+          ]
+        },
+        {
+          "text": "The dwarf selection reaches only about 2 to 3 m, roughly half the height of standard Ducasse, suiting small gardens and pots.",
+          "type": "stature",
+          "cites": [
+            "daleys_dwarf_ducasse",
+            "benara_dwarf_ducasse"
+          ]
+        },
+        {
+          "text": "It tolerates some cooler subtropical conditions but frost should be avoided, and the fruit ripen bright yellow and creamy.",
+          "type": "cold_tolerance",
+          "cites": [
+            "daleys_dwarf_ducasse"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daleys_dwarf_ducasse",
+          "name": "Daleys Fruit Tree Nursery - Dwarf Banana Ducasse",
+          "url": "https://www.daleysfruit.com.au/Dwarf-Banana-Ducasse-Musa-acuminata.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "benara_dwarf_ducasse",
+          "name": "Benara Nurseries - Musa Dwarf Ducasse",
+          "url": "https://www.benaranurseries.com/musa-dwarf-ducasse",
+          "tier": "nursery"
+        },
+        {
+          "id": "specialtyproduce_ducasse",
+          "name": "Specialty Produce - Ducasse Bananas",
+          "url": "https://specialtyproduce.com/produce/Ducasse_Bananas_25134.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "banana-dwarf-duccase-sugar-banana": {
       "slug": "banana-dwarf-duccase-sugar-banana",
       "species": "Banana",
@@ -410,6 +528,58 @@
       "confidence_score": 0.84,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "banana-french-plantain": {
+      "slug": "banana-french-plantain",
+      "species": "Banana",
+      "variety": "French Plantain",
+      "paragraphs": [
+        "French plantain names a major type within the true plantains, the AAB cooking bananas grown as a staple across West and Central Africa. Plantains are divided into four groups by their bunch form: French, French Horn, False Horn and Horn.",
+        "What sets the French type apart is its bunch: it keeps persistent bracts and a large male bud at the tip, and carries many hands of comparatively small fruit, where Horn types shed the male bud and bear fewer, larger fingers. The fruit are starchy and low in sugar, so they are cooked (fried, boiled or baked) rather than eaten raw."
+      ],
+      "claims": [
+        {
+          "text": "True plantains are AAB cooking bananas divided into four groups by bunch type: French, French Horn, False Horn and Horn.",
+          "type": "classification",
+          "cites": [
+            "wikipedia_true_plantains",
+            "promusa_plantain"
+          ]
+        },
+        {
+          "text": "French types keep persistent bracts and a large male bud and bear large bunches of many hands with relatively small fruit, unlike Horn types which lose the male bud and bear fewer, larger fruit.",
+          "type": "appearance",
+          "cites": [
+            "promusa_plantain"
+          ]
+        },
+        {
+          "text": "Plantains are starchy, low-sugar bananas eaten cooked rather than raw, and are a dietary staple in Africa.",
+          "type": "use",
+          "cites": [
+            "wikipedia_true_plantains",
+            "promusa_plantain"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia_true_plantains",
+          "name": "Wikipedia - True plantains",
+          "url": "https://en.wikipedia.org/wiki/True_plantains",
+          "tier": "third_party"
+        },
+        {
+          "id": "promusa_plantain",
+          "name": "ProMusa - Plantain subgroup",
+          "url": "https://www.promusa.org/Plantain+subgroup",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "banana-gold-finger": {
       "slug": "banana-gold-finger",
@@ -606,6 +776,70 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "banana-pacific": {
+      "slug": "banana-pacific",
+      "species": "Banana",
+      "variety": "Pacific",
+      "paragraphs": [
+        "In Australian nurseries, 'Pacific Plantain' is a Pacific Island cooking banana of the Maoli-Popoulu group (AAB), bananas domesticated long ago in the Pacific, probably between the Bismarck Archipelago and the Solomon Islands. Together with the related Iholena bananas they are often called Pacific plantains.",
+        "The group is recognised by its plump, sausage-shaped fruit (Popoulu types fatter and shorter, Maoli types longer). The flesh is starchy and lower in sugar than dessert bananas, so it is used cooked, fried, baked or grilled until it caramelises. In Australia these Maia Maoli/Popoulu types are grown mainly in north Queensland."
+      ],
+      "claims": [
+        {
+          "text": "Pacific plantains are the Maoli-Popoulu (and related Iholena) cooking bananas of the AAB group, domesticated in the Pacific, possibly the Bismarck Archipelago to Solomon Islands area.",
+          "type": "origin",
+          "cites": [
+            "promusa_maolipopoulu",
+            "wikipedia_maolipopoulu"
+          ]
+        },
+        {
+          "text": "The cultivars are recognised by their sausage-shaped fruit; Popoulu fruit are fatter and shorter than the longer Maoli fruit.",
+          "type": "appearance",
+          "cites": [
+            "promusa_maolipopoulu"
+          ]
+        },
+        {
+          "text": "Sold in Australia as Pacific Plantain, it is a starchy cooking banana lower in sugar than dessert types, eaten fried, baked or grilled; these Maia Maoli/Popoulu types are grown in north Queensland.",
+          "type": "use",
+          "cites": [
+            "daleys_pacific_plantain",
+            "rfc_south_pacific_bananas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "promusa_maolipopoulu",
+          "name": "ProMusa - Maoli-Popoulu subgroup",
+          "url": "https://www.promusa.org/Maoli-Popoulu+subgroup",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikipedia_maolipopoulu",
+          "name": "Wikipedia - Maoli-Popo'ulu (List of banana cultivars)",
+          "url": "https://en.wikipedia.org/wiki/Maoli-Popo%27ulu",
+          "tier": "third_party"
+        },
+        {
+          "id": "rfc_south_pacific_bananas",
+          "name": "RFCA Archives - Some Banana Varieties of the South Pacific",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Banana/SouthPacificBananas11-90.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys_pacific_plantain",
+          "name": "Daleys Fruit Tree Nursery - Pacific Plantain",
+          "url": "https://www.daleysfruit.com.au/Banana-Pacific-Plantain-Musa-%C3%97-paradisiaca.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "banana-pisang-ceylon": {
       "slug": "banana-pisang-ceylon",
       "species": "Banana",
@@ -715,9 +949,306 @@
       "confidence_score": 0.86,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "banana-saba": {
+      "slug": "banana-saba",
+      "species": "Banana",
+      "variety": "Saba",
+      "paragraphs": [
+        "Saba is the Philippines' most important cooking banana, a robust triploid of the ABB group (a Musa acuminata by Musa balbisiana hybrid). The plants are large and sturdy, with thick pseudostems reaching roughly 6 to 9 m, carrying heavy bunches of many hands.",
+        "Its fruit are unmistakable: short, squarish and angular with thick skin and dense, white, starchy flesh. That starchiness makes Saba a cooking banana first (the base for Filipino banana cue and turon), though ripe fruit can be eaten fresh. Its strong Musa balbisiana parentage lends tolerance of drier soils and cooler conditions, and it is also known as the cardaba or cardava banana."
+      ],
+      "claims": [
+        {
+          "text": "Saba is a triploid ABB cooking banana originating in the Philippines, a Musa acuminata by Musa balbisiana hybrid.",
+          "type": "origin",
+          "cites": [
+            "wikipedia_saba"
+          ]
+        },
+        {
+          "text": "The plants are very large and robust, with pseudostems reaching about 6 to 9 m.",
+          "type": "stature",
+          "cites": [
+            "wikipedia_saba"
+          ]
+        },
+        {
+          "text": "Fruit are short, squarish and angular with thick skin and white, starchy flesh.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia_saba",
+            "specialtyproduce_saba"
+          ]
+        },
+        {
+          "text": "It is primarily a cooking banana (used for banana cue and turon) but can be eaten raw when ripe, and the B genome lends tolerance of drier soil and cooler conditions; also known as cardaba/cardava.",
+          "type": "use",
+          "cites": [
+            "wikipedia_saba",
+            "specialtyproduce_saba"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia_saba",
+          "name": "Wikipedia - Saba banana",
+          "url": "https://en.wikipedia.org/wiki/Saba_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce_saba",
+          "name": "Specialty Produce - Saba Bananas",
+          "url": "https://specialtyproduce.com/produce/Saba_Bananas_15268.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "banana-super-dwarf-cavendish": {
+      "slug": "banana-super-dwarf-cavendish",
+      "species": "Banana",
+      "variety": "Super Dwarf Cavendish",
+      "paragraphs": [
+        "Super Dwarf Cavendish is a very compact selection within the Cavendish group of dessert bananas (triploid AAA), descended from the same commercial stock as the common supermarket banana. It is one of the shortest banana selections in cultivation, which is why it is prized as a tub plant for patios, balconies and small gardens, and is even grown indoors. The short pseudostem keeps the plant stable and wind resistant, and brings the bunch down to an easy height to manage and harvest.",
+        "Like other Dwarf Cavendish types it carries broad leaves on short petioles, and the fruit eats much like a standard Cavendish, just borne on a far smaller plant. A distinguishing Cavendish quirk it shares is that the spent male bracts and flowers are not shed from the bunch, an easy field marker for the group."
+      ],
+      "claims": [
+        {
+          "text": "A very compact selection of the Cavendish dessert banana group (triploid AAA), descended from commercial Cavendish stock.",
+          "type": "origin",
+          "cites": [
+            "bananas-org",
+            "wikipedia-dwarf-cavendish"
+          ]
+        },
+        {
+          "text": "One of the shortest banana selections, so it is stable and wind resistant and suits containers, balconies and indoors.",
+          "type": "appearance",
+          "cites": [
+            "bananas-org",
+            "wikipedia-dwarf-cavendish"
+          ]
+        },
+        {
+          "text": "Produces fruit similar to a standard Cavendish, on a much smaller plant.",
+          "type": "flavour",
+          "cites": [
+            "bananas-org",
+            "plantvine"
+          ]
+        },
+        {
+          "text": "Carries broad leaves on short petioles, and the male bracts and flowers are not shed from the bunch.",
+          "type": "appearance",
+          "cites": [
+            "bananas-org",
+            "wikipedia-dwarf-cavendish"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "bananas-org",
+          "name": "Bananas.org wiki, Musa Super Dwarf Cavendish",
+          "url": "https://www.bananas.org/wiki/Musa_Super_Dwarf_Cavendish",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-dwarf-cavendish",
+          "name": "Wikipedia, Dwarf Cavendish banana",
+          "url": "https://en.wikipedia.org/wiki/Dwarf_Cavendish_banana",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantvine",
+          "name": "PlantVine, Super Dwarf Cavendish Banana",
+          "url": "https://www.plantvine.com/product/musa-acuminata-super-dwarf-banana-banana/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "banana-tonga": {
+      "slug": "banana-tonga",
+      "species": "Banana",
+      "variety": "Tonga",
+      "paragraphs": [
+        "The variety sold in Australia as Tonga is one of the Hopa bananas. In Tonga, Hopa is the local name for bananas of the Maoli and Popoulu types, a group domesticated in the Pacific (possibly around the Bismarck Archipelago and Solomon Islands) and carried across Polynesia in ancient times. They belong to the AAB genome group, the Maoli-Popoulu subgroup, which together with the Iholena bananas is often called the Pacific plantains. Australian nurseries list the plant as Musa acuminata x balbisiana, consistent with that hybrid AAB makeup.",
+        "The fruit are recognised by their fat, sausage shaped fingers with bluntly squared ends, the Popoulu types running shorter and fatter than the Maoli. They are dual purpose. Starchy and firm when green, they are used much like a cooking banana, then turn soft and sweet for fresh eating once ripe. The type is rarely seen outside Polynesia and is now grown mainly in Tonga, largely in home gardens and local markets rather than as a commercial export crop."
+      ],
+      "claims": [
+        {
+          "text": "In Tonga, Hopa is the local name for bananas of the Maoli and Popoulu types, the group sold in Australia under the name Tonga",
+          "type": "origin",
+          "cites": [
+            "promusa",
+            "daleys_tonga",
+            "specialty_produce"
+          ]
+        },
+        {
+          "text": "They belong to the AAB genome group in the Maoli-Popoulu subgroup, which with the Iholena bananas is known as the Pacific plantains",
+          "type": "taxonomy",
+          "cites": [
+            "promusa",
+            "specialty_produce"
+          ]
+        },
+        {
+          "text": "The subgroup was domesticated in the Pacific, possibly the Bismarck Archipelago and Solomon Islands area, and spread across Polynesia",
+          "type": "origin",
+          "cites": [
+            "promusa"
+          ]
+        },
+        {
+          "text": "Australian nurseries list the variety as Musa acuminata x balbisiana, consistent with its AAB hybrid makeup",
+          "type": "taxonomy",
+          "cites": [
+            "promusa",
+            "daleys_tonga"
+          ]
+        },
+        {
+          "text": "The fruit are sausage shaped with bluntly squared ends, the Popoulu types shorter and fatter than the Maoli",
+          "type": "appearance",
+          "cites": [
+            "promusa",
+            "daleys_tonga"
+          ]
+        },
+        {
+          "text": "They are dual purpose, starchy and used like a cooking banana when green, then soft and sweet for fresh eating when ripe",
+          "type": "use",
+          "cites": [
+            "promusa",
+            "specialty_produce",
+            "daleys_tonga"
+          ]
+        },
+        {
+          "text": "The type is rarely seen outside Polynesia and is now grown mainly in Tonga, largely in home gardens and local markets",
+          "type": "distribution",
+          "cites": [
+            "promusa",
+            "specialty_produce"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "promusa",
+          "name": "ProMusa, Maoli-Popoulu subgroup",
+          "url": "https://www.promusa.org/Maoli-Popoulu+subgroup",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialty_produce",
+          "name": "Specialty Produce, Hopa Bananas",
+          "url": "https://specialtyproduce.com/produce/Hopa_Bananas_15914.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys_tonga",
+          "name": "Daleys Fruit Tree Nursery, Banana Tonga",
+          "url": "https://www.daleysfruit.com.au/buy/banana-tonga-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "banana-william": {
+      "slug": "banana-william",
+      "species": "Banana",
+      "variety": "William",
+      "paragraphs": [
+        "William (the Williams banana) is the dominant commercial Cavendish grown in Australia. It arose around 1910 as a tall mutant in a Dwarf Cavendish (Chinese Cavendish) plantation in Australia, and its greater height and yield saw it progressively replace the dwarf type, becoming the country's leading banana cultivar by the 1950s. It is a triploid (AAA) Musa acuminata, so the fruit is seedless and sweet, eaten fresh as the classic dessert banana.",
+        "Williams is the benchmark variety for the Australian industry, valued for a fast crop cycle (a short time from planting to harvest) and large, cylindrical bunches. It belongs to the taller Giant Cavendish clones, well above Dwarf Cavendish in height, which makes commercial bunches easier to handle. Backyard growers choose it for reliable, familiar-flavoured Cavendish fruit."
+      ],
+      "claims": [
+        {
+          "text": "The dominant commercial Cavendish and benchmark banana variety grown in Australia.",
+          "type": "uses",
+          "cites": [
+            "abgc",
+            "promusa"
+          ]
+        },
+        {
+          "text": "Arose around 1910 as a tall mutant in a Dwarf Cavendish plantation in Australia and replaced the dwarf type, becoming the leading cultivar by the 1950s.",
+          "type": "origin",
+          "cites": [
+            "promusa"
+          ]
+        },
+        {
+          "text": "A triploid AAA Musa acuminata, giving seedless, sweet dessert fruit.",
+          "type": "origin",
+          "cites": [
+            "wikipedia-cavendish",
+            "promusa"
+          ]
+        },
+        {
+          "text": "Valued for a fast crop cycle and large cylindrical bunches; the Australian industry standard.",
+          "type": "season",
+          "cites": [
+            "abgc",
+            "promusa"
+          ]
+        },
+        {
+          "text": "Belongs to the Giant Cavendish clones, taller than Dwarf Cavendish.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia-cavendish",
+            "promusa"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "abgc",
+          "name": "Australian Banana Growers' Council, Williams versus the rest",
+          "url": "https://abgc.org.au/2015/05/21/williams-versus-the-rest/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "promusa",
+          "name": "ProMusa, Williams cultivar",
+          "url": "https://www.promusa.org/Williams",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-cavendish",
+          "name": "Wikipedia, Cavendish banana",
+          "url": "https://en.wikipedia.org/wiki/Cavendish_banana",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
   "skipped": [
+    "banana-ducasse-dwarf",
+    "banana-dwarf-duccase-sugar",
+    "banana-dwarf-lady-finger",
+    "banana-dwarf-red-dacca",
+    "banana-french",
     "banana-fruit-cover",
     "banana-goldfinger",
     "banana-horned-plantain",
@@ -725,10 +1256,14 @@
     "banana-nathan",
     "banana-passionfruit",
     "banana-pitanga",
+    "banana-plantain-french",
     "banana-stock-4-pack",
     "banana-super-cavendish",
+    "banana-super-cavendish-dwarf",
     "banana-tree-blue-java",
+    "banana-tree-carnarvon",
     "banana-tree-goldfinger",
-    "banana-tree-musa-nathan"
+    "banana-tree-musa-nathan",
+    "banana-williams-cavendish-super"
   ]
 }

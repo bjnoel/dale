@@ -1,0 +1,58 @@
+{
+  "species_slug": "pineapple",
+  "schema_version": 1,
+  "varieties": {
+    "pineapple-f180": {
+      "slug": "pineapple-f180",
+      "species": "Pineapple",
+      "variety": "F180",
+      "paragraphs": [
+        "F180 is a pineapple selection that was imported into Australia from Hawaii and is grown commercially here, rather than being a locally bred Queensland clone. It belongs to the broader family of Hawaiian-derived pineapple selections.",
+        "It is a large, vigorous plant that carries correspondingly large fruit, placing it among the bigger-fruited pineapple types grown in Australia."
+      ],
+      "claims": [
+        {
+          "text": "F180 is a pineapple selection imported into Australia from Hawaii and grown commercially here.",
+          "type": "origin",
+          "cites": [
+            "gardendrum",
+            "daleys"
+          ]
+        },
+        {
+          "text": "F180 is a large, vigorous plant that produces large fruit.",
+          "type": "plant",
+          "cites": [
+            "gardendrum",
+            "daleys"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gardendrum",
+          "name": "GardenDrum, How to grow pineapples for flowers, fruit and foliage",
+          "url": "https://gardendrum.com/2014/07/16/how-to-grow-pineapples-for-flowers-fruit-foliage/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit, Pineapple F180",
+          "url": "https://www.daleysfruit.com.au/buy/pineapple-f180-plant.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "pineapple-gold-nugget",
+    "pineapple-golden-nugget",
+    "pineapple-mila-red",
+    "pineapple-red",
+    "pineapple-sweet-treat"
+  ]
+}
