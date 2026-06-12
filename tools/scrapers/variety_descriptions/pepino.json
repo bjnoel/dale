@@ -1,0 +1,77 @@
+{
+  "species_slug": "pepino",
+  "schema_version": 1,
+  "varieties": {
+    "pepino-kendall-gold": {
+      "slug": "pepino-kendall-gold",
+      "species": "Pepino",
+      "variety": "Kendall Gold",
+      "paragraphs": [
+        "Kendall Gold is a selection of pepino (Solanum muricatum), the Andean pepino dulce or melon pear, valued for reliably good eating quality. The species is parthenocarpic, so plants set fruit without pollination and Kendall Gold is grown as a compact, self fruitful bush. The fruit is egg shaped with smooth golden yellow skin marked by purple striping, and the pale juicy flesh tastes of honeydew melon, a useful trait given that some pepino clones can carry an off, soapy flavour.",
+        "Pepino is native to the temperate Andean regions of Colombia, Peru and Chile and is not known in the wild. More commercially viable cultivars were introduced from New Zealand and elsewhere towards the end of the 20th century, and the species is grown commercially for fruit in places such as Chile and New Zealand. Plants bear within months of planting, making pepino one of the faster fruiting subtropical plants for a collector's garden."
+      ],
+      "claims": [
+        {
+          "text": "Pepino (Solanum muricatum) is the Andean pepino dulce, also called melon pear.",
+          "type": "origin",
+          "cites": ["wiki-solanum"]
+        },
+        {
+          "text": "The species is parthenocarpic and sets fruit without pollination.",
+          "type": "pollination",
+          "cites": ["wiki-solanum"]
+        },
+        {
+          "text": "Kendall Gold grows as a compact, self fruitful bush with golden yellow, purple striped fruit and honeydew flavoured flesh, avoiding the soapy off flavour of some pepino clones.",
+          "type": "appearance",
+          "cites": ["gkplants-kendall", "daleys-kendall"]
+        },
+        {
+          "text": "Pepino is native to temperate Andean regions of Colombia, Peru and Chile and is not known in the wild.",
+          "type": "origin",
+          "cites": ["wiki-solanum"]
+        },
+        {
+          "text": "More commercially viable cultivars were introduced from New Zealand towards the end of the 20th century, and the species is grown commercially in Chile and New Zealand.",
+          "type": "origin",
+          "cites": ["wiki-solanum", "gkplants-kendall"]
+        },
+        {
+          "text": "Pepino bears fruit within 4 to 6 months of planting.",
+          "type": "ripening",
+          "cites": ["wiki-solanum"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-solanum",
+          "name": "Wikipedia: Solanum muricatum",
+          "url": "https://en.wikipedia.org/wiki/Solanum_muricatum",
+          "tier": "third_party"
+        },
+        {
+          "id": "gkplants-kendall",
+          "name": "Grassy Knoll Plants: Solanum muricatum 'Kendall Gold'",
+          "url": "https://gkplants.com/products/solanum-muricatum-kendall-gold-pepino-melon",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-kendall",
+          "name": "Daleys Fruit: Pepino Kendall Gold",
+          "url": "https://www.daleysfruit.com.au/buy/pepino-kendall-gold-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "pepino-berry",
+    "pepino-fruit-plant",
+    "pepino-gold",
+    "pepino-gold-plant"
+  ]
+}

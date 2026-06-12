@@ -1,0 +1,85 @@
+{
+  "species_slug": "babaco",
+  "schema_version": 1,
+  "varieties": {
+    "babaco-champagne-fruit": {
+      "slug": "babaco-champagne-fruit",
+      "species": "Babaco",
+      "variety": "Champagne Fruit",
+      "paragraphs": [
+        "Babaco, marketed as Champagne Fruit, is a naturally occurring hybrid in the genus Vasconcellea (Vasconcellea x heilbornii, syn. Carica pentagona) discovered in the mountains of Ecuador. It is a sterile, seedless papaya relative, so a single plant produces fruit without a pollinating partner. The elongated fruit is five sided and turns from green to yellow as it ripens, and can be picked before it is fully mature to finish ripening off the plant.",
+        "The flesh carries hints of papaya without the muskiness, with notes likened to pineapple, kiwi and strawberry. The thin skin is edible, so the whole fruit can be used. Because it ripens through cooler months and the plant self fruits, it suits home growers in subtropical and mild temperate areas. It works fresh or in smoothies, sauces and salsa, and the high papain content also makes it a useful meat tenderiser."
+      ],
+      "claims": [
+        {
+          "text": "Babaco is also marketed under the trade name Champagne Fruit.",
+          "type": "naming",
+          "cites": ["swt", "diggers", "phoenix"]
+        },
+        {
+          "text": "It is a naturally occurring Vasconcellea hybrid (Vasconcellea x heilbornii, syn. Carica pentagona) from Ecuador.",
+          "type": "origin",
+          "cites": ["wikipedia", "swt"]
+        },
+        {
+          "text": "The fruit is seedless because the plant is a sterile hybrid, and it self pollinates.",
+          "type": "trait",
+          "cites": ["swt", "wikipedia", "diggers"]
+        },
+        {
+          "text": "The fruit is five sided (pentagonal, star shaped when sliced) and ripens from green to yellow.",
+          "type": "appearance",
+          "cites": ["wikipedia", "swt", "diggers"]
+        },
+        {
+          "text": "Flavour resembles papaya without the muskiness, with pineapple, kiwi and strawberry notes.",
+          "type": "flavour",
+          "cites": ["swt", "wikipedia"]
+        },
+        {
+          "text": "The thin skin is edible and the whole fruit can be eaten.",
+          "type": "uses",
+          "cites": ["swt"]
+        },
+        {
+          "text": "It has high papain content, making it useful as a meat tenderiser.",
+          "type": "uses",
+          "cites": ["swt"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Wikipedia: Babaco",
+          "url": "https://en.wikipedia.org/wiki/Babaco",
+          "tier": "third_party"
+        },
+        {
+          "id": "swt",
+          "name": "Strange Wonderful Things: Babaco (Champagne Fruit)",
+          "url": "https://www.strangewonderfulthings.com/207.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "diggers",
+          "name": "The Diggers Club: Babaco - Champagne Fruit",
+          "url": "https://www.diggers.com.au/products/babaco-champagne-fruit",
+          "tier": "nursery"
+        },
+        {
+          "id": "phoenix",
+          "name": "Phoenix Perennials: Vasconcellea x heilbornii (Babaco Papaya/Champagne Fruit)",
+          "url": "https://mailorder.phoenixperennials.com/Vasconcellea-x-heilbornii-Babaco-Papaya-p/9891.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "babaco-papayuelo"
+  ]
+}

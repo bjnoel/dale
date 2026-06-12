@@ -1,0 +1,66 @@
+{
+  "species_slug": "tamarind",
+  "schema_version": 1,
+  "varieties": {
+    "tamarind-sweet": {
+      "slug": "tamarind-sweet",
+      "species": "Tamarind",
+      "variety": "Sweet",
+      "paragraphs": [
+        "Sweet tamarind is a low acid type of true tamarind (Tamarindus indica), best known from Thailand where it is called makham wan. As tamarind pods mature they become sweeter and less sour, and in these sweet cultivars the ripe pulp can carry almost no acidity, setting them apart from the sharply sour tamarind used in savoury cooking and sauces. The reddish brown pulp sits inside a hard shelled, indehiscent pod that can reach roughly 12 to 15 cm long.",
+        "Tamarindus indica is indigenous to tropical Africa, with its domestication traced to the dry savannas of the Sudanian belt, and it is now grown across the tropics. Because of its mild sweetness, sweet tamarind is eaten fresh as a dessert fruit and used in candies, drinks and chutneys, rather than mainly as the souring agent that sour tamarind provides in dishes like curries and pad thai."
+      ],
+      "claims": [
+        {
+          "text": "Sweet tamarind is a low acid type of Tamarindus indica, known in Thailand as makham wan.",
+          "type": "origin",
+          "cites": ["specialty-sweet", "wiki-tamarind"]
+        },
+        {
+          "text": "As tamarind matures it becomes sweeter and less sour, and some sweet varieties have almost no acidity when ripe.",
+          "type": "flavour",
+          "cites": ["wiki-tamarind"]
+        },
+        {
+          "text": "The fruit is an indehiscent pod about 12 to 15 cm long with a hard brown shell and reddish brown pulp.",
+          "type": "appearance",
+          "cites": ["wiki-tamarind"]
+        },
+        {
+          "text": "Tamarindus indica is indigenous to tropical Africa, with domestication in the dry savannas of the Sudanian belt.",
+          "type": "origin",
+          "cites": ["wiki-tamarind"]
+        },
+        {
+          "text": "Sweet tamarind is eaten fresh and used in candies, drinks and chutneys, unlike sour tamarind used mainly as a souring agent.",
+          "type": "uses",
+          "cites": ["specialty-sweet", "wiki-tamarind"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-tamarind",
+          "name": "Wikipedia: Tamarind",
+          "url": "https://en.wikipedia.org/wiki/Tamarind",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty-sweet",
+          "name": "Specialty Food Source: Tamarind 'Thai Sweet'",
+          "url": "https://specialtyfoodsource.com/products/tamarind-thai-sweet-tamarindus-indica",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "tamarind-edible",
+    "tamarind-fruit-tree",
+    "tamarind-leaf",
+    "tamarind-spanish"
+  ]
+}
