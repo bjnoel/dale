@@ -14,27 +14,41 @@
         {
           "text": "African Pride is an atemoya, a hybrid of sugar apple (Annona squamosa) and cherimoya (Annona cherimola).",
           "type": "origin",
-          "cites": ["growables-rfc", "plantneeds-custardapple"]
+          "cites": [
+            "growables-rfc",
+            "plantneeds-custardapple"
+          ]
         },
         {
           "text": "African Pride is the main commercial custard apple cultivar grown in Australia.",
           "type": "origin",
-          "cites": ["daleys-custardapple", "growables-rfc"]
+          "cites": [
+            "daleys-custardapple",
+            "growables-rfc"
+          ]
         },
         {
           "text": "African Pride is highly self compatible and does not generally require hand pollination, and its pollen is the preferred source for hand pollinating other varieties.",
           "type": "pollination",
-          "cites": ["growables-rfc"]
+          "cites": [
+            "growables-rfc"
+          ]
         },
         {
           "text": "African Pride crops early and consistently and is an early maturing cultivar.",
           "type": "season",
-          "cites": ["daleys-custardapple", "plantneeds-custardapple"]
+          "cites": [
+            "daleys-custardapple",
+            "plantneeds-custardapple"
+          ]
         },
         {
           "text": "African Pride fruit is heart shaped and medium sized with a medium thick skin, carrying more seeds than Pink's Mammoth.",
           "type": "appearance",
-          "cites": ["daleys-custardapple", "growables-rfc"]
+          "cites": [
+            "daleys-custardapple",
+            "growables-rfc"
+          ]
         }
       ],
       "sources": [
@@ -62,6 +76,124 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "custard-apple-bays": {
+      "slug": "custard-apple-bays",
+      "species": "Custard Apple",
+      "variety": "Bays",
+      "paragraphs": [
+        "Bays is a cherimoya (Annona cherimola) cultivar grown on a broad, fast-growing evergreen tree. The fruit is round and medium-sized with light green skin marked by characteristic fingerprint-like indentations (the impressa skin type). The flesh is creamy white and custardy.",
+        "It is known as a very sweet cherimoya. Tasters describe a smooth, custard-like flesh with an almost lemony note and a hint of licorice, gritty only near the skin. Some find it one-dimensional and intensely sweet next to more acidic cultivars. Seeds come away easily from the flesh."
+      ],
+      "claims": [
+        {
+          "text": "Bays is a cherimoya cultivar with round, medium-sized, light green fruit whose skin shows fingerprint-like marks (impressa type), borne on a broad fast-growing tree.",
+          "type": "appearance",
+          "cites": [
+            "wiki-list",
+            "marin"
+          ]
+        },
+        {
+          "text": "The flesh is creamy and custardy, very sweet, with an almost lemony flavour and licorice undertones, and is gritty only near the skin.",
+          "type": "flavour",
+          "cites": [
+            "wiki-list",
+            "marin"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-list",
+          "name": "List of cherimoya cultivars (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/List_of_cherimoya_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "marin",
+          "name": "Marin Homestead cherimoya review (Bays, Pierce, Fino de Jete)",
+          "url": "https://www.marinhomestead.com/recipes/cherimoya-review-bays-pierce-and-fino-de-jete/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "custard-apple-fino-de-jete": {
+      "slug": "custard-apple-fino-de-jete",
+      "species": "Custard Apple",
+      "variety": "Fino De Jete",
+      "paragraphs": [
+        "Fino de Jete is a Spanish cherimoya (Annona cherimola) cultivar that dominates plantings on the Granada and Malaga tropical coast, where the regional cherimoya carries the EU Protected Designation of Origin. It produces large, smooth to slightly impressed, heart to kidney-shaped fruit with creamy white flesh.",
+        "Its appeal is the texture and balance: among the softest, most custardy flesh of the common cultivars, with sweetness offset by a noticeable acidity that keeps the flavour tangy rather than cloying. Tasters often rate it the most complex of the widely grown selections. It is one of the higher-yielding commercial cherimoyas, though fruit can carry a fair number of seeds."
+      ],
+      "claims": [
+        {
+          "text": "Fino de Jete is the cherimoya cultivar grown on Spain's Granada-Malaga coast, where the regional fruit holds an EU Protected Designation of Origin.",
+          "type": "origin",
+          "cites": [
+            "wiki-list",
+            "marin"
+          ]
+        },
+        {
+          "text": "Fruit is large, smooth or slightly concave, heart to kidney-shaped with creamy white flesh.",
+          "type": "appearance",
+          "cites": [
+            "wiki-list",
+            "agrownet"
+          ]
+        },
+        {
+          "text": "The flesh is very soft and custardy, and the flavour balances intense sweetness with a slight acidity that makes it tangier and more complex than sweeter cultivars.",
+          "type": "flavour",
+          "cites": [
+            "wiki-list",
+            "marin",
+            "pmc"
+          ]
+        },
+        {
+          "text": "It is one of the higher-yielding cherimoya cultivars but can carry a relatively high seed count.",
+          "type": "yield",
+          "cites": [
+            "pmc"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-list",
+          "name": "List of cherimoya cultivars (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/List_of_cherimoya_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "marin",
+          "name": "Marin Homestead cherimoya review (Bays, Pierce, Fino de Jete)",
+          "url": "https://www.marinhomestead.com/recipes/cherimoya-review-bays-pierce-and-fino-de-jete/",
+          "tier": "third_party"
+        },
+        {
+          "id": "pmc",
+          "name": "Pomological, Sensorial, Nutritional and Nutraceutical Profile of Seven Cherimoya Cultivars (NIH PMC)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7823484/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "agrownet",
+          "name": "Agrownet Cherimoya Varieties List",
+          "url": "https://www.agrownet.com/contents/en-us/d341113_Cherimoya_Varieties_List.html",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
     "custard-apple-geffner": {
       "slug": "custard-apple-geffner",
       "species": "Custard Apple",
@@ -74,27 +206,40 @@
         {
           "text": "Geffner is an atemoya, a hybrid of sugar apple (Annona squamosa) and cherimoya (Annona cherimola).",
           "type": "origin",
-          "cites": ["wikipedia-atemoya", "hortiforum-atemoya"]
+          "cites": [
+            "wikipedia-atemoya",
+            "hortiforum-atemoya"
+          ]
         },
         {
           "text": "Geffner is an Israeli cultivar and a productive one.",
           "type": "origin",
-          "cites": ["wikipedia-atemoya"]
+          "cites": [
+            "wikipedia-atemoya"
+          ]
         },
         {
           "text": "Geffner sets fruit well without the need for hand pollination.",
           "type": "pollination",
-          "cites": ["hortiforum-atemoya", "wikipedia-atemoya"]
+          "cites": [
+            "hortiforum-atemoya",
+            "wikipedia-atemoya"
+          ]
         },
         {
           "text": "The flesh is sweet and creamy and the fruit is well formed and a good size.",
           "type": "flavour",
-          "cites": ["wikipedia-atemoya", "hortiforum-atemoya"]
+          "cites": [
+            "wikipedia-atemoya",
+            "hortiforum-atemoya"
+          ]
         },
         {
           "text": "The fruit is heart shaped with bumpy green skin typical of atemoya.",
           "type": "appearance",
-          "cites": ["daleys-custardapple"]
+          "cites": [
+            "daleys-custardapple"
+          ]
         }
       ],
       "sources": [
@@ -134,27 +279,39 @@
         {
           "text": "Hilary White is one of the main commercial custard apple varieties grown in Australia, alongside African Pride and Pink's Mammoth.",
           "type": "origin",
-          "cites": ["specialtyproduce", "daleys-hilary"]
+          "cites": [
+            "specialtyproduce",
+            "daleys-hilary"
+          ]
         },
         {
           "text": "The Australian custard apple is an atemoya, a hybrid of cherimoya (Annona cherimola) and sugar apple (Annona squamosa).",
           "type": "origin",
-          "cites": ["wikipedia-atemoya", "specialtyproduce"]
+          "cites": [
+            "wikipedia-atemoya",
+            "specialtyproduce"
+          ]
         },
         {
           "text": "Hilary White is a strain of Pink's Mammoth with a smoother skin than standard Pink's Mammoth and sweet, aromatic, creamy white flesh.",
           "type": "appearance",
-          "cites": ["daleys-hilary"]
+          "cites": [
+            "daleys-hilary"
+          ]
         },
         {
           "text": "Its cropping is more consistent than Pink's Mammoth, with bearing between Pink's Mammoth and African Pride.",
           "type": "growing",
-          "cites": ["daleys-hilary"]
+          "cites": [
+            "daleys-hilary"
+          ]
         },
         {
           "text": "Atemoyas generally need hand pollination to set good-quality fruit.",
           "type": "pollination",
-          "cites": ["wikipedia-atemoya"]
+          "cites": [
+            "wikipedia-atemoya"
+          ]
         }
       ],
       "sources": [
@@ -194,27 +351,39 @@
         {
           "text": "Hillary White is one of the main commercial custard apple varieties grown in Australia, alongside African Pride and Pink's Mammoth.",
           "type": "origin",
-          "cites": ["specialtyproduce", "daleys-hilary"]
+          "cites": [
+            "specialtyproduce",
+            "daleys-hilary"
+          ]
         },
         {
           "text": "The Australian custard apple is an atemoya, a hybrid of cherimoya (Annona cherimola) and sugar apple (Annona squamosa).",
           "type": "origin",
-          "cites": ["wikipedia-atemoya", "specialtyproduce"]
+          "cites": [
+            "wikipedia-atemoya",
+            "specialtyproduce"
+          ]
         },
         {
           "text": "Hillary White is a strain of Pink's Mammoth with a smoother skin than standard Pink's Mammoth and sweet, aromatic, creamy white flesh.",
           "type": "appearance",
-          "cites": ["daleys-hilary"]
+          "cites": [
+            "daleys-hilary"
+          ]
         },
         {
           "text": "Its cropping is more consistent than Pink's Mammoth, with bearing between Pink's Mammoth and African Pride.",
           "type": "growing",
-          "cites": ["daleys-hilary"]
+          "cites": [
+            "daleys-hilary"
+          ]
         },
         {
           "text": "Atemoyas generally need hand pollination to set good-quality fruit.",
           "type": "pollination",
-          "cites": ["wikipedia-atemoya"]
+          "cites": [
+            "wikipedia-atemoya"
+          ]
         }
       ],
       "sources": [
@@ -254,27 +423,39 @@
         {
           "text": "Australian atemoya custard apple from Queensland's Maroochy Research Station custard apple breeding program.",
           "type": "origin",
-          "cites": ["freshfruitportal", "daleys-maroochy"]
+          "cites": [
+            "freshfruitportal",
+            "daleys-maroochy"
+          ]
         },
         {
           "text": "The Maroochy Research Station program ran for about 25 years and is described as the world's largest custard apple breeding program.",
           "type": "origin",
-          "cites": ["freshfruitportal"]
+          "cites": [
+            "freshfruitportal"
+          ]
         },
         {
           "text": "Also sold under the name Maroochy Gold, it is one of the recognised Australian custard apple varieties.",
           "type": "naming",
-          "cites": ["specialtyproduce", "daleys-maroochy"]
+          "cites": [
+            "specialtyproduce",
+            "daleys-maroochy"
+          ]
         },
         {
           "text": "Grown as a self-pollinating variety, unlike hand-pollinated Pink's Mammoth and Hillary White.",
           "type": "pollination",
-          "cites": ["daleys-maroochy"]
+          "cites": [
+            "daleys-maroochy"
+          ]
         },
         {
           "text": "Has sweet, flavoursome pale flesh prized for eating quality.",
           "type": "flavour",
-          "cites": ["daleys-maroochy"]
+          "cites": [
+            "daleys-maroochy"
+          ]
         }
       ],
       "sources": [
@@ -314,27 +495,40 @@
         {
           "text": "Paxton Prolific is an atemoya and a seedling selection from the Pink's Mammoth line, also known as KJ Pinks.",
           "type": "origin",
-          "cites": ["daleys-paxton", "hortiforum-atemoya"]
+          "cites": [
+            "daleys-paxton",
+            "hortiforum-atemoya"
+          ]
         },
         {
           "text": "Also known as KJ Pinks, it is one of the recognised Australian custard apple varieties.",
           "type": "naming",
-          "cites": ["specialtyproduce", "daleys-paxton"]
+          "cites": [
+            "specialtyproduce",
+            "daleys-paxton"
+          ]
         },
         {
           "text": "Paxton Prolific sets fruit well naturally without the need for hand pollination.",
           "type": "pollination",
-          "cites": ["hortiforum-atemoya", "daleys-paxton"]
+          "cites": [
+            "hortiforum-atemoya",
+            "daleys-paxton"
+          ]
         },
         {
           "text": "The fruit is a good size with relatively few seeds and is seedless when not pollinated.",
           "type": "appearance",
-          "cites": ["daleys-paxton"]
+          "cites": [
+            "daleys-paxton"
+          ]
         },
         {
           "text": "Paxton Prolific is protected by Plant Breeder Rights.",
           "type": "naming",
-          "cites": ["daleys-paxton"]
+          "cites": [
+            "daleys-paxton"
+          ]
         }
       ],
       "sources": [
@@ -374,27 +568,40 @@
         {
           "text": "Pink Mammoth was the first custard apple cultivar grown in Australia, named after Mr Pink who introduced it.",
           "type": "naming",
-          "cites": ["daleys-custardapple"]
+          "cites": [
+            "daleys-custardapple"
+          ]
         },
         {
           "text": "Pink Mammoth is an atemoya, a hybrid of sugar apple and cherimoya.",
           "type": "origin",
-          "cites": ["growables-rfc", "plantneeds-custardapple"]
+          "cites": [
+            "growables-rfc",
+            "plantneeds-custardapple"
+          ]
         },
         {
           "text": "The fruit is among the largest custard apples, very large and virtually seedless.",
           "type": "appearance",
-          "cites": ["plantneeds-custardapple", "daleys-custardapple"]
+          "cites": [
+            "plantneeds-custardapple",
+            "daleys-custardapple"
+          ]
         },
         {
           "text": "Pink Mammoth is highly self incompatible and requires hand pollination to produce a commercial crop and well shaped fruit, producing few flowers when young.",
           "type": "pollination",
-          "cites": ["growables-rfc", "plantneeds-custardapple"]
+          "cites": [
+            "growables-rfc",
+            "plantneeds-custardapple"
+          ]
         },
         {
           "text": "Pink Mammoth has top quality fruit but lower yields than African Pride.",
           "type": "use",
-          "cites": ["daleys-custardapple"]
+          "cites": [
+            "daleys-custardapple"
+          ]
         }
       ],
       "sources": [
@@ -434,27 +641,40 @@
         {
           "text": "Pinks Mammoth was the first custard apple cultivar grown in Australia, named after Mr Pink who introduced it.",
           "type": "naming",
-          "cites": ["daleys-custardapple"]
+          "cites": [
+            "daleys-custardapple"
+          ]
         },
         {
           "text": "Pinks Mammoth is an atemoya, a hybrid of sugar apple and cherimoya.",
           "type": "origin",
-          "cites": ["growables-rfc", "plantneeds-custardapple"]
+          "cites": [
+            "growables-rfc",
+            "plantneeds-custardapple"
+          ]
         },
         {
           "text": "The fruit is among the largest custard apples, very large and virtually seedless.",
           "type": "appearance",
-          "cites": ["plantneeds-custardapple", "daleys-custardapple"]
+          "cites": [
+            "plantneeds-custardapple",
+            "daleys-custardapple"
+          ]
         },
         {
           "text": "Pinks Mammoth is highly self incompatible and requires hand pollination to produce a commercial crop and well shaped fruit, producing few flowers when young.",
           "type": "pollination",
-          "cites": ["growables-rfc", "plantneeds-custardapple"]
+          "cites": [
+            "growables-rfc",
+            "plantneeds-custardapple"
+          ]
         },
         {
           "text": "Pinks Mammoth has top quality fruit but lower yields than African Pride.",
           "type": "use",
-          "cites": ["daleys-custardapple"]
+          "cites": [
+            "daleys-custardapple"
+          ]
         }
       ],
       "sources": [
@@ -494,27 +714,41 @@
         {
           "text": "Tropic Sun is a relatively recent Australian atemoya selection released as a compact home-garden variety.",
           "type": "origin",
-          "cites": ["stfc", "specialtyproduce", "daleys-tropicsun"]
+          "cites": [
+            "stfc",
+            "specialtyproduce",
+            "daleys-tropicsun"
+          ]
         },
         {
           "text": "It has a semi-dwarf habit, roughly two-thirds normal size and prunable to about 2 metres, unlike the large traditional commercial trees.",
           "type": "growing",
-          "cites": ["daleys-tropicsun"]
+          "cites": [
+            "daleys-tropicsun"
+          ]
         },
         {
           "text": "It is grown as a self-pollinating variety on dwarfing rootstock.",
           "type": "pollination",
-          "cites": ["stfc", "daleys-tropicsun"]
+          "cites": [
+            "stfc",
+            "daleys-tropicsun"
+          ]
         },
         {
           "text": "Ripe fruit has sweet creamy pulp with a moderate seed count, a few more than Pink's Mammoth but well below African Pride.",
           "type": "flavour",
-          "cites": ["stfc", "daleys-tropicsun"]
+          "cites": [
+            "stfc",
+            "daleys-tropicsun"
+          ]
         },
         {
           "text": "Suited to warm tropical to subtropical regions along Australia's eastern seaboard.",
           "type": "growing",
-          "cites": ["daleys-tropicsun"]
+          "cites": [
+            "daleys-tropicsun"
+          ]
         }
       ],
       "sources": [
@@ -541,16 +775,64 @@
       "confidence_score": 0.84,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "custard-apple-white": {
+      "slug": "custard-apple-white",
+      "species": "Custard Apple",
+      "variety": "White",
+      "paragraphs": [
+        "White is a long-recognised named cherimoya (Annona cherimola) selection, one of the cultivars included in scientific cherimoya trials. It is grown on an open, vigorous tree and bears large, broadly conical fruit with superficial small lumps (umbonate) and juicy, pale flesh.",
+        "Its flavour is generally described as mild rather than intense, with descriptions leaning toward soft mango and papaya notes. Reports of fruit size and sweetness vary between sources, which suggests the name covers more than one selection, so treat specific size and sugar figures with caution."
+      ],
+      "claims": [
+        {
+          "text": "White is a named cherimoya cultivar included in scientific cherimoya cultivar trials.",
+          "type": "origin",
+          "cites": [
+            "pmc",
+            "wiki-list"
+          ]
+        },
+        {
+          "text": "It grows on an open, vigorous tree and bears large, broadly conical fruit with small surface lumps (umbonate) and juicy flesh of mild flavour suggesting mango and papaya.",
+          "type": "appearance",
+          "cites": [
+            "wiki-list"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-list",
+          "name": "List of cherimoya cultivars (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/List_of_cherimoya_cultivars",
+          "tier": "third_party"
+        },
+        {
+          "id": "pmc",
+          "name": "Pomological, Sensorial, Nutritional and Nutraceutical Profile of Seven Cherimoya Cultivars (NIH PMC)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7823484/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
     }
   },
   "skipped": [
     "custard-apple-african-pride-seedling",
+    "custard-apple-atkinson",
     "custard-apple-golden-emperor",
     "custard-apple-late-gold",
     "custard-apple-mexican",
     "custard-apple-pink-ilama",
     "custard-apple-plant",
     "custard-apple-rollinia-brazilian",
+    "custard-apple-rosa",
+    "custard-apple-seedling",
+    "custard-apple-sofia",
     "custard-apple-sugar-apple-fruit-tree"
   ]
 }

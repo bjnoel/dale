@@ -1,0 +1,167 @@
+{
+  "species_slug": "mangosteen",
+  "schema_version": 1,
+  "varieties": {
+    "mangosteen-lemon-drop": {
+      "slug": "mangosteen-lemon-drop",
+      "species": "Mangosteen",
+      "variety": "Lemon Drop",
+      "paragraphs": [
+        "Lemon Drop mangosteen is not the true mangosteen but Garcinia intermedia, a tropical American tree native to Central America (both the Atlantic and Pacific sides, from southern Mexico to Panama). It goes by several names, including mameyito, monkey fruit, and jorco. Unlike its slow Asian cousin, it is fast-growing and can bear after as little as two years, which makes it popular with home collectors.",
+        "The fruit is small, a smooth sphere roughly 2 to 3 cm across, ripening to bright yellow, orange, or red with a thin, soft, sometimes edible skin around translucent whitish pulp. The flavour is a bright, aromatic sweet-and-sour, with citrus and tropical notes that suit eating fresh out of hand as well as drinks, jams, and jellies. There is relatively little flesh around the seeds, true to its cherry-sized form."
+      ],
+      "claims": [
+        {
+          "text": "Lemon Drop mangosteen is Garcinia intermedia, native to Central America from southern Mexico to Panama, also called mameyito, monkey fruit, and jorco.",
+          "type": "origin",
+          "cites": ["wiki-intermedia", "growables-intermedia"]
+        },
+        {
+          "text": "It is fast-growing and may fruit after as little as two years.",
+          "type": "growing",
+          "cites": ["wiki-intermedia", "growables-intermedia"]
+        },
+        {
+          "text": "The fruit is a smooth sphere about 2 to 3 cm across, ripening yellow, orange, or red with a thin soft skin around whitish pulp.",
+          "type": "appearance",
+          "cites": ["wiki-intermedia", "growables-intermedia"]
+        },
+        {
+          "text": "The flavour is an aromatic sweet-and-sour and the fruit is eaten fresh or used for drinks, jams, and jellies.",
+          "type": "flavour",
+          "cites": ["wiki-intermedia", "growables-intermedia"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-intermedia",
+          "name": "Wikipedia: Garcinia intermedia",
+          "url": "https://en.wikipedia.org/wiki/Garcinia_intermedia",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables-intermedia",
+          "name": "Growables: Lemon Drop Mangosteen, Mameyito, Garcinia intermedia",
+          "url": "https://www.growables.org/information/TropicalFruit/lemondropmangosteen.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "mangosteen-purple": {
+      "slug": "mangosteen-purple",
+      "species": "Mangosteen",
+      "variety": "Purple",
+      "paragraphs": [
+        "Purple mangosteen is the true mangosteen, Garcinia mangostana, an evergreen tree native to the Malay Peninsula and Borneo and cultivated across tropical Asia since ancient times. It is the fruit that earns the genus its fame: in Southeast Asia it is known as the Queen of Fruits, traditionally paired with durian, the King of Fruits. When ripe the fruit is roughly tangerine sized with a thick, deep reddish-purple inedible rind that is split open to reach the segmented white flesh inside.",
+        "The flesh is sweet and tangy, juicy and slightly fibrous, with fluid-filled vesicles, and is often likened to a blend of strawberry, peach, and pineapple. Its aroma is famously mild. The rind, though inedible raw, is rich in xanthones studied for antioxidant and anti-inflammatory activity. The tree is slow to bear, typically taking many years to first fruit, but established trees can crop heavily for decades."
+      ],
+      "claims": [
+        {
+          "text": "Purple mangosteen is the true mangosteen, Garcinia mangostana, native to the Malay Peninsula and Borneo.",
+          "type": "origin",
+          "cites": ["wiki-mangosteen", "pmc-mangosteen-origin"]
+        },
+        {
+          "text": "In Southeast Asia it is known as the Queen of Fruits, paired with durian as the King of Fruits.",
+          "type": "naming",
+          "cites": ["wiki-mangosteen"]
+        },
+        {
+          "text": "The ripe fruit has a thick, deep reddish-purple inedible rind around segmented white flesh.",
+          "type": "appearance",
+          "cites": ["wiki-mangosteen"]
+        },
+        {
+          "text": "The sweet and tangy flesh is often likened to a blend of strawberry, peach, and pineapple, with a mild aroma.",
+          "type": "flavour",
+          "cites": ["wiki-mangosteen"]
+        },
+        {
+          "text": "The rind contains xanthones studied for antioxidant and anti-inflammatory properties.",
+          "type": "use",
+          "cites": ["wiki-mangosteen"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-mangosteen",
+          "name": "Wikipedia: Mangosteen (Garcinia mangostana)",
+          "url": "https://en.wikipedia.org/wiki/Mangosteen",
+          "tier": "third_party"
+        },
+        {
+          "id": "pmc-mangosteen-origin",
+          "name": "PMC: The origin of cultivated mangosteen (Garcinia mangostana)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10020034/",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "mangosteen-yellow": {
+      "slug": "mangosteen-yellow",
+      "species": "Mangosteen",
+      "variety": "Yellow",
+      "paragraphs": [
+        "Yellow mangosteen is not the true mangosteen but an umbrella name applied to a few Garcinia species, most often Garcinia dulcis and Garcinia xanthochymus. Garcinia dulcis ranges from northeastern India through Indochina, Malaysia, the Philippines, Indonesia, New Guinea, and into Queensland, so it is the form most relevant in Australia. Its fruit turns from green to orange-yellow when ripe and carries a juicy pulp that runs from sour to sweet.",
+        "Garcinia xanthochymus, sometimes called gamboge, bears round yellow fruit a few centimetres across with thin skin and an aromatic, sour, acidic flesh. Both are eaten fresh in small quantities but are best known cooked, the highly acidic pulp going into pickles, chutneys, jams, and curries. Garcinia dulcis has long local use beyond food, including yellow gamboge dye from the unripe fruit and traditional medicinal uses."
+      ],
+      "claims": [
+        {
+          "text": "Yellow mangosteen is an umbrella common name for several Garcinia species, mainly Garcinia dulcis and Garcinia xanthochymus.",
+          "type": "naming",
+          "cites": ["wiki-yellow-mangosteen", "wiki-dulcis"]
+        },
+        {
+          "text": "Garcinia dulcis ranges from northeastern India through Southeast Asia to New Guinea and Queensland, with fruit turning green to orange-yellow and pulp that is sour to sweet.",
+          "type": "origin",
+          "cites": ["wiki-dulcis"]
+        },
+        {
+          "text": "Garcinia xanthochymus bears round yellow fruit a few centimetres across with thin skin and an aromatic, sour, acidic flesh.",
+          "type": "appearance",
+          "cites": ["specialtyproduce-gamboge"]
+        },
+        {
+          "text": "The acidic pulp is used in pickles, chutneys, jams, and curries, and Garcinia dulcis also yields a yellow gamboge dye and has traditional medicinal uses.",
+          "type": "use",
+          "cites": ["wiki-dulcis", "specialtyproduce-gamboge"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-yellow-mangosteen",
+          "name": "Wikipedia: Yellow mangosteen (disambiguation)",
+          "url": "https://en.wikipedia.org/wiki/Yellow_mangosteen",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-dulcis",
+          "name": "Wikipedia: Garcinia dulcis",
+          "url": "https://en.wikipedia.org/wiki/Garcinia_dulcis",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialtyproduce-gamboge",
+          "name": "Specialty Produce: Gamboge Fruit (Garcinia xanthochymus)",
+          "url": "https://specialtyproduce.com/produce/Gamboge_Fruit_15575.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "mangosteen-honey-drop"
+  ]
+}

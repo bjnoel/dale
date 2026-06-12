@@ -1,0 +1,128 @@
+{
+  "species_slug": "soursop",
+  "schema_version": 1,
+  "varieties": {
+    "soursop-cuban-fiberless": {
+      "slug": "soursop-cuban-fiberless",
+      "species": "Soursop",
+      "variety": "Cuban Fiberless",
+      "paragraphs": [
+        "The Cuban Fiberless soursop is a clonal selection (guanabana sin fibre) vegetatively propagated at the Agricultural Experiment Station at Santiago de las Vegas, Cuba, and introduced to Florida in 1959. It was selected for fibreless, smooth flesh, a real point of difference from the stringy, acid soursops common across the tropics, and it is among the more important commercially grown soursop cultivars. The fruit is medium-sized and yellow-green, with pulp that tends to be sweeter and less stringy than ordinary acid types.",
+        "A reliable visual tell sets it apart, the foliage carries a distinct bluish-green, smoky-whitish cast on the upper leaf surface, and that smoky look reliably signals the fruit will be fibreless. The trade-off is productivity, plants of this lineage can be shy bearers, which is why the more productive Whitman Fibreless seedling strain was later raised from it."
+      ],
+      "claims": [
+        {
+          "text": "It is a clonal selection (guanabana sin fibre) propagated at Santiago de las Vegas, Cuba, and introduced to Florida in 1959.",
+          "type": "origin",
+          "cites": ["rfca", "stfc"]
+        },
+        {
+          "text": "It was selected for fibreless, smooth flesh and is among the more important commercially grown soursop cultivars.",
+          "type": "appearance",
+          "cites": ["stfc", "daleys"]
+        },
+        {
+          "text": "The fruit is medium-sized and yellow-green, with pulp sweeter and less stringy than ordinary acid types.",
+          "type": "flavour",
+          "cites": ["stfc"]
+        },
+        {
+          "text": "The foliage carries a distinct bluish-green, smoky-whitish cast on the upper leaf surface that reliably signals fibreless fruit.",
+          "type": "appearance",
+          "cites": ["rfca", "daleys"]
+        },
+        {
+          "text": "Plants of this lineage can be shy bearers, prompting the later raising of the Whitman Fibreless strain.",
+          "type": "growing",
+          "cites": ["rfca"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council of Australia Archive, Bearing Habits of the Cuban Fiberless Soursop",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Soursop/CubanFibrelessSS5-92.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "stfc",
+          "name": "Sub-Tropical Fruit Club of Qld, Soursop (Annona muricata)",
+          "url": "https://stfc.org.au/articles/soursop-annona-muricata/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery, Soursop Cuban Fibreless",
+          "url": "https://www.daleysfruit.com.au/Soursop-Cuban-Fibreglass-Annona-muricata.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "soursop-whitman-fibreless": {
+      "slug": "soursop-whitman-fibreless",
+      "species": "Soursop",
+      "variety": "Whitman Fibreless",
+      "paragraphs": [
+        "Whitman Fibreless is a Florida selection raised from a Cuban Fiberless soursop seedling and named by Miami horticulturist Crafton Clift. Its claim to fame is smooth, fibreless flesh that is sweet and fragrant, without the stringy texture of ordinary soursop, which makes it well suited to eating fresh or blending into juices and ice cream. It carries the same fibreless trait as its Cuban parent.",
+        "What earned it its own name is productivity. The original Cuban introduction was notoriously shy bearing, so this more heavily cropping seedling strain is now propagated in preference to the parent. As with the Cuban Fiberless line, the dull, smoky cast on the upper leaf surface is the reliable sign that the fruit will come true to type as fibreless."
+      ],
+      "claims": [
+        {
+          "text": "Whitman Fibreless is a Florida selection raised from a Cuban Fiberless soursop seedling and named by Miami horticulturist Crafton Clift.",
+          "type": "origin",
+          "cites": ["rfca", "tradewinds"]
+        },
+        {
+          "text": "Its flesh is smooth and fibreless, sweet and fragrant, suited to eating fresh or blending.",
+          "type": "flavour",
+          "cites": ["tradewinds", "tropfruit"]
+        },
+        {
+          "text": "It is a more productive strain now propagated in preference to the shy-bearing original Cuban introduction.",
+          "type": "growing",
+          "cites": ["rfca"]
+        },
+        {
+          "text": "The smoky cast on the upper leaf surface reliably signals the fruit will be fibreless.",
+          "type": "appearance",
+          "cites": ["rfca"]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council of Australia Archive, Bearing Habits of the Cuban Fiberless Soursop",
+          "url": "https://rfcarchives.org.au/Next/Fruits/Soursop/CubanFibrelessSS5-92.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "tradewinds",
+          "name": "Trade Winds Fruit, Whitman Fiberless Soursop",
+          "url": "https://www.tradewindsfruit.com/annona-muricata-whitman-fiberless-soursop-seeds",
+          "tier": "third_party"
+        },
+        {
+          "id": "tropfruit",
+          "name": "Everglades Farm, Whitman Fiberless Soursop",
+          "url": "https://everglades.farm/products/whitman-fiberless-soursop-guanabana-fruit-tree",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "soursop-diny",
+    "soursop-fruit-tree",
+    "soursop-giant",
+    "soursop-golden",
+    "soursop-kyogle"
+  ]
+}
