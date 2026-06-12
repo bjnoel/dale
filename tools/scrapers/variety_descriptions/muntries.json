@@ -1,0 +1,104 @@
+{
+  "species_slug": "muntries",
+  "schema_version": 1,
+  "varieties": {
+    "muntries-tucker-bush": {
+      "slug": "muntries-tucker-bush",
+      "species": "Muntries",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Muntries (Kunzea pomifera), also known as emu apple or native cranberry, is a prostrate myrtle from the sandy coastal country of south-eastern South Australia and western Victoria. It is one of the most important Aboriginal fruits of southern Australia: a staple of the Ngarrindjeri people, who ate the berries fresh and pounded the surplus into dried cakes that kept for months and were traded with neighbouring groups. The common name itself comes from Ngarrindjeri words such as mantari.",
+        "The berries are about a centimetre across, ripening from green to a red-purple flush in late summer and early autumn (roughly February to April), crunchy in texture with a distinctive spicy apple flavour. The species is now farmed commercially on a modest scale, usually trained up trellises for easier picking. In the garden it behaves as a tough, low, weed-suppressing groundcover; the Tucker Bush line is the straight species."
+      ],
+      "claims": [
+        {
+          "text": "Kunzea pomifera (muntries, emu apple, native cranberry) is a prostrate shrub in the myrtle family endemic to south-eastern South Australia and western Victoria",
+          "type": "origin",
+          "cites": [
+            "wiki-muntries",
+            "agrifutures-muntries"
+          ]
+        },
+        {
+          "text": "Muntries were a staple food of the Ngarrindjeri people; surplus fruit was pounded into a pulp, dried into flat cakes that stored for months and traded with other groups",
+          "type": "uses",
+          "cites": [
+            "wiki-muntries",
+            "sanfa-muntries"
+          ]
+        },
+        {
+          "text": "The common name derives from Ngarrindjeri language names such as mantari",
+          "type": "identity",
+          "cites": [
+            "wiki-muntries",
+            "sanfa-muntries"
+          ]
+        },
+        {
+          "text": "Berries are about 1 cm across, crunchy, with a spicy apple flavour, ripening from green to a red or purple flush",
+          "type": "flavour",
+          "cites": [
+            "wiki-muntries",
+            "agt-muntries",
+            "tuckerbush-muntries"
+          ]
+        },
+        {
+          "text": "Fruit is harvested in late summer and early autumn, roughly February to April",
+          "type": "season",
+          "cites": [
+            "sanfa-muntries",
+            "agt-muntries"
+          ]
+        },
+        {
+          "text": "The species is grown commercially on a modest scale and is often trained on trellises for harvesting",
+          "type": "uses",
+          "cites": [
+            "agrifutures-muntries",
+            "wiki-muntries",
+            "tuckerbush-muntries"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-muntries",
+          "name": "Wikipedia: Kunzea pomifera",
+          "url": "https://en.wikipedia.org/wiki/Kunzea_pomifera",
+          "tier": "third_party"
+        },
+        {
+          "id": "agrifutures-muntries",
+          "name": "AgriFutures Australia: Muntries, the domestication and improvement of Kunzea pomifera",
+          "url": "https://agrifutures.com.au/product/muntries-the-domestication-and-improvement-of-kunzea-pomifera/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "sanfa-muntries",
+          "name": "South Australian Native Foods Association: Muntries",
+          "url": "https://sanativefoods.org.au/muntries/",
+          "tier": "third_party"
+        },
+        {
+          "id": "agt-muntries",
+          "name": "Aussie Green Thumb: Kunzea pomifera (Muntries) native guide",
+          "url": "https://aussiegreenthumb.com/muntries-kunzea-pomifera/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-muntries",
+          "name": "Tucker Bush: Muntries (Kunzea pomifera)",
+          "url": "https://tuckerbush.com.au/muntries-kunzea-pomifera/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": []
+}

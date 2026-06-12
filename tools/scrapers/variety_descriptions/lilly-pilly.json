@@ -2,6 +2,472 @@
   "species_slug": "lilly-pilly",
   "schema_version": 1,
   "varieties": {
+    "lilly-pilly-allyn-magic": {
+      "slug": "lilly-pilly-allyn-magic",
+      "species": "Lilly Pilly",
+      "variety": "Allyn Magic",
+      "paragraphs": [
+        "Allyn Magic is a plant breeder's rights protected dwarf cultivar of Syzygium smithii (formerly Acmena smithii), the common lilly pilly. It forms a low, dense, mounding shrub reaching only about 0.5 to 0.6 m tall and up to 1 m wide, which makes it popular for low hedges, borders and small spaces.",
+        "Its main appeal is the new foliage, which flushes bright orange red before maturing to glossy green, giving colour through much of the year. Cream, fluffy flowers in summer are followed by edible fleshy pink berries, and it is noted for resisting the psyllids that disfigure many older lilly pillies."
+      ],
+      "claims": [
+        {
+          "text": "A PBR dwarf cultivar of Syzygium smithii (Acmena smithii), the common lilly pilly.",
+          "type": "identity",
+          "cites": [
+            "gwangus_allyn",
+            "benara_allyn"
+          ]
+        },
+        {
+          "text": "Low mounding shrub about 0.5 to 0.6 m tall and up to 1 m wide.",
+          "type": "habit",
+          "cites": [
+            "gwangus_allyn"
+          ]
+        },
+        {
+          "text": "New growth flushes bright orange red before maturing glossy green.",
+          "type": "identity",
+          "cites": [
+            "gwangus_allyn"
+          ]
+        },
+        {
+          "text": "Cream fluffy summer flowers followed by edible fleshy pink berries.",
+          "type": "fruit",
+          "cites": [
+            "gwangus_allyn"
+          ]
+        },
+        {
+          "text": "Noted for resistance to psyllids.",
+          "type": "habit",
+          "cites": [
+            "gwangus_allyn",
+            "benara_allyn"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwangus_allyn",
+          "name": "Acmena smithii Allyn Magic, Gardening With Angus",
+          "url": "https://gardeningwithangus.com.au/acmena-smithii-allyn-magic-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "benara_allyn",
+          "name": "Acmena smithii Allyn Magic PBR, Benara Nurseries",
+          "url": "https://www.benaranurseries.com/acmena-smithii-allyn-magic-pbr",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-baby-boomer": {
+      "slug": "lilly-pilly-baby-boomer",
+      "species": "Lilly Pilly",
+      "variety": "Baby Boomer",
+      "paragraphs": [
+        "Baby Boomer is a dwarf selection of Syzygium australe, the common edible brush cherry, shrunk to garden-bed scale. It forms a dense, naturally rounded mound that nursery listings put anywhere from under a metre to about 1.5 to 2 m, with glossy green leaves and a bronze to bronze-red flush on each round of new growth. It holds a tight shape with little clipping, tolerates hard cut-backs, and is rated for pots, topiary, borders and even playground plantings.",
+        "For fruit collectors it is ornament first, orchard second: small white flowers through spring and summer are followed by the pink berries typical of Syzygium australe, which nursery listings describe as edible, but the crop on a knee-high hedging plant is modest. Its real distinction is staying genuinely small and dense without constant pruning, a way to keep an edible native species in a courtyard or container where the full-sized species would never fit."
+      ],
+      "claims": [
+        {
+          "text": "A dwarf, naturally mound-forming selection of Syzygium australe, with listed mature sizes ranging from under 1 m to about 1.5 to 2 m",
+          "type": "identity",
+          "cites": [
+            "gwa-babyboomer",
+            "platypus-babyboomer",
+            "scp-babyboomer"
+          ]
+        },
+        {
+          "text": "Glossy green leaves with bronze to bronze-red new growth maturing to green",
+          "type": "identity",
+          "cites": [
+            "gwa-babyboomer",
+            "platypus-babyboomer"
+          ]
+        },
+        {
+          "text": "Small white flowers in spring and summer are followed by small pink berries, described as edible in nursery listings",
+          "type": "flavour",
+          "cites": [
+            "scp-babyboomer",
+            "apo-babyboomer"
+          ]
+        },
+        {
+          "text": "Used for low hedges, borders, topiary, containers and playground plantings; tolerates hard cutting back",
+          "type": "uses",
+          "cites": [
+            "gwa-babyboomer",
+            "platypus-babyboomer"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-babyboomer",
+          "name": "Gardening With Angus: Syzygium australe 'Baby Boomer'",
+          "url": "https://gardeningwithangus.com.au/syzygium-australe-aussie-boomer-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "platypus-babyboomer",
+          "name": "Platypus Plants: Syzygium australe Baby Boomer",
+          "url": "https://www.platypusplants.com.au/products/syzausbabboo-1",
+          "tier": "nursery"
+        },
+        {
+          "id": "scp-babyboomer",
+          "name": "Sunshine Coast Plants: Lilly Pilly Syzygium australe 'Baby Boomer'",
+          "url": "https://sunshinecoastplants.com.au/products/lilly-pilly-syzygium-australe-baby-boomer",
+          "tier": "nursery"
+        },
+        {
+          "id": "apo-babyboomer",
+          "name": "Australian Plants Online: Syzygium Baby Boomer",
+          "url": "https://www.australianplantsonline.com.au/syzygium-australe-baby-boomer.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-big-red": {
+      "slug": "lilly-pilly-big-red",
+      "species": "Lilly Pilly",
+      "variety": "Big Red",
+      "paragraphs": [
+        "Big Red is a Queensland-bred Syzygium australe raised by Peta and Scott McLean at Clagiraba in the Gold Coast hinterland. It came from a 2003 open pollination of the compact cultivar Aussie Compact by an unknown Syzygium australe, was selected as a single seedling in 2004, and is unusual among lilly pillies in holding a United States plant patent (PP21,739, granted 2011) as well as local plant breeder's rights. The patent record describes an upright to bushy plant of about 4 metres tall by 2.5 metres wide with relatively large leaves, noted in trials for tolerating wind, rain, drought and heat of about 40 degrees Celsius.",
+        "The selling point is the new growth, which emerges deep crimson to reddish bronze and stands out against the large, glossy green mature leaves. Fluffy white flowers in summer are followed by edible berries that attract native birds. Hardy and dry tolerant once established, it responds well to shaping and is widely used for hedges, screens, topiary and large containers."
+      ],
+      "claims": [
+        {
+          "text": "Bred by Peta and Scott McLean of Queensland; originated from a 2003 open pollination of Syzygium australe 'Aussie Compact' at Clagiraba, Queensland, selected in 2004, and granted US Plant Patent PP21,739 on 1 March 2011",
+          "type": "origin",
+          "cites": [
+            "uspto-pp21739"
+          ]
+        },
+        {
+          "text": "Protected by plant breeder's rights in Australia",
+          "type": "identity",
+          "cites": [
+            "specialitytrees-big-red"
+          ]
+        },
+        {
+          "text": "New growth emerges deep crimson to reddish bronze, contrasting with large glossy green mature leaves",
+          "type": "foliage",
+          "cites": [
+            "gwa-big-red",
+            "specialitytrees-big-red",
+            "uspto-pp21739"
+          ]
+        },
+        {
+          "text": "Upright to bushy habit, about 4 metres tall by around 2.5 metres wide at maturity",
+          "type": "habit",
+          "cites": [
+            "uspto-pp21739",
+            "specialitytrees-big-red",
+            "gwa-big-red"
+          ]
+        },
+        {
+          "text": "White flowers in summer are followed by edible berries that attract native birds",
+          "type": "uses",
+          "cites": [
+            "gwa-big-red",
+            "gcsc-big-red"
+          ]
+        },
+        {
+          "text": "Hardy and dry tolerant; responds well to shaping and is used for hedging, screening, topiary and containers",
+          "type": "uses",
+          "cites": [
+            "gwa-big-red",
+            "specialitytrees-big-red"
+          ]
+        },
+        {
+          "text": "Patent trial plants tolerated wind, rain, drought and high temperatures of about 40 degrees Celsius",
+          "type": "quirk",
+          "cites": [
+            "uspto-pp21739"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "uspto-pp21739",
+          "name": "US Plant Patent PP21,739, Syzygium plant named 'Big Red' (USPTO)",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/PP21739",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gwa-big-red",
+          "name": "Gardening With Angus, Syzygium 'Big Red' Lilly Pilly",
+          "url": "https://gardeningwithangus.com.au/syzygium-big-red-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialitytrees-big-red",
+          "name": "Speciality Trees, Syzygium australe 'Big Red'",
+          "url": "https://www.specialitytrees.com.au/trees/syzygium-australe-big-red-uznvu",
+          "tier": "nursery"
+        },
+        {
+          "id": "gcsc-big-red",
+          "name": "Sunshine Coast Garden Centre, Syzygium 'Big Red'",
+          "url": "https://www.gardencentresunshinecoast.com.au/products/syzygium-big-red",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-blue": {
+      "slug": "lilly-pilly-blue",
+      "species": "Lilly Pilly",
+      "variety": "Blue",
+      "paragraphs": [
+        "The blue lilly pilly is Syzygium oleosum, a rainforest shrub or small tree from coastal Queensland and New South Wales. It stands out among lilly pillies for its fruit colour: round berries 10 to 25 mm across that ripen through pink to an unusual powdery blue-purple. The fruit is edible and usually palatable, crisp and mildly sweet, often described as carrying aromatic, gingery notes, and it is used for jams, jellies, syrups and drinks.",
+        "The species name oleosum refers to the conspicuous oil glands in the leaves, which make the crushed foliage strongly aromatic. White flowers appear over a very long period, from late spring right through winter, so a tree often carries flowers and ripe fruit at the same time. It grows naturally in littoral, subtropical and warm temperate rainforest from the Illawarra in New South Wales north into Queensland."
+      ],
+      "claims": [
+        {
+          "text": "Blue lilly pilly is Syzygium oleosum, a rainforest shrub or small tree of coastal NSW and Queensland",
+          "type": "identity",
+          "cites": [
+            "plantnet-oleosum",
+            "anpsa-oleosum"
+          ]
+        },
+        {
+          "text": "Berries are 10 to 25 mm across and bluish to purple or magenta",
+          "type": "fruit",
+          "cites": [
+            "plantnet-oleosum",
+            "anpsa-oleosum"
+          ]
+        },
+        {
+          "text": "Fruit is edible and usually palatable, used for jams, jellies, syrups and drinks, with aromatic gingery notes",
+          "type": "flavour",
+          "cites": [
+            "anpsa-oleosum",
+            "tuckerbush-blue"
+          ]
+        },
+        {
+          "text": "White flowers appear over a long period from late spring through winter",
+          "type": "season",
+          "cites": [
+            "plantnet-oleosum",
+            "anpsa-oleosum"
+          ]
+        },
+        {
+          "text": "Leaves have conspicuous oil glands, referenced by the species name oleosum",
+          "type": "identity",
+          "cites": [
+            "plantnet-oleosum",
+            "anpsa-oleosum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "plantnet-oleosum",
+          "name": "PlantNET (NSW Flora Online), Syzygium oleosum",
+          "url": "https://plantnet.rbgsyd.nsw.gov.au/cgi-bin/NSWfl.pl?page=nswfl&lvl=sp&name=Syzygium~oleosum",
+          "tier": "authoritative"
+        },
+        {
+          "id": "anpsa-oleosum",
+          "name": "Australian Native Plants Society (ANPSA), Syzygium oleosum",
+          "url": "https://anpsa.org.au/plant_profiles/syzygium-oleosum/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-blue",
+          "name": "Tucker Bush, Blue Lilly Pilly",
+          "url": "https://tuckerbush.com.au/blue-lilly-pilly-syzygium-oleosum/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-blue-tucker-bush": {
+      "slug": "lilly-pilly-blue-tucker-bush",
+      "species": "Lilly Pilly",
+      "variety": "Blue Tucker Bush",
+      "paragraphs": [
+        "Blue Tucker Bush is the Tucker Bush brand selection of Syzygium oleosum, the blue lilly pilly (also called scented satinash or blue cherry). It is native to eastern Australian rainforests, from Cooktown in north Queensland south to the Illawarra in New South Wales.",
+        "Its fruit start purplish red and ripen to a striking purplish blue, around 13 to 40 mm across, with a crisp texture and a mild, aromatic sweetness suited to eating fresh or making jams and wine. The leaves carry oil dots and are aromatic when crushed, with lemon like notes, a trait that sets this species apart."
+      ],
+      "claims": [
+        {
+          "text": "A selection of Syzygium oleosum, the blue lilly pilly or scented satinash.",
+          "type": "identity",
+          "cites": [
+            "wiki_oleosum",
+            "aussiegreenthumb",
+            "tuckerbush_blue"
+          ]
+        },
+        {
+          "text": "Native to eastern Australian rainforest from Cooktown to the Illawarra.",
+          "type": "origin",
+          "cites": [
+            "wiki_oleosum"
+          ]
+        },
+        {
+          "text": "Fruit ripen from purplish red to purplish blue, 13 to 40 mm across, crisp and mildly sweet and aromatic.",
+          "type": "flavour",
+          "cites": [
+            "wiki_oleosum",
+            "aussiegreenthumb"
+          ]
+        },
+        {
+          "text": "Eaten fresh or made into jams and wine.",
+          "type": "uses",
+          "cites": [
+            "wiki_oleosum"
+          ]
+        },
+        {
+          "text": "Leaves have oil dots and are aromatic, with lemon notes, when crushed.",
+          "type": "identity",
+          "cites": [
+            "wiki_oleosum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki_oleosum",
+          "name": "Syzygium oleosum, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_oleosum",
+          "tier": "third_party"
+        },
+        {
+          "id": "aussiegreenthumb",
+          "name": "Syzygium oleosum Bush Tucker Guide, Aussie Green Thumb",
+          "url": "https://aussiegreenthumb.com/syzygium-oleosum-blue-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush_blue",
+          "name": "Blue Lilly Pilly, Tucker Bush",
+          "url": "https://tuckerbush.com.au/blue-lilly-pilly-syzygium-oleosum/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-broad-leaved": {
+      "slug": "lilly-pilly-broad-leaved",
+      "species": "Lilly Pilly",
+      "variety": "Broad-leaved",
+      "paragraphs": [
+        "The broad-leaved lilly pilly is Syzygium hemilamprum, long sold under its older name Acmena hemilampra. It is a rainforest tree of coastal eastern Australia, occurring from north-eastern New South Wales up the Queensland coast to Cape York and into the Northern Territory, and in the wild it can become a buttressed forest tree to around 35 metres. The distinguishing fruit is white: more or less spherical berries about 11 to 17 mm across that stand out against the dark canopy and are edible in the mild, crisp lilly pilly style.",
+        "Growers know it for its broad, glossy leaves and showy new growth, which flushes copper and pink in spring before hardening to deep green. Fluffy white flowers appear in panicles around October to November. In gardens it behaves as a dense shade or shelter tree, far smaller than its wild dimensions, and it is a host plant for several butterfly species."
+      ],
+      "claims": [
+        {
+          "text": "Broad-leaved lilly pilly is Syzygium hemilamprum, formerly Acmena hemilampra",
+          "type": "identity",
+          "cites": [
+            "wikipedia-hemilamprum",
+            "ppnn-hemilamprum"
+          ]
+        },
+        {
+          "text": "Fruit is white, more or less spherical, 11 to 17 mm in diameter",
+          "type": "fruit",
+          "cites": [
+            "wikipedia-hemilamprum"
+          ]
+        },
+        {
+          "text": "Fruit is edible",
+          "type": "uses",
+          "cites": [
+            "burringbar-hemilamprum",
+            "ppnn-hemilamprum"
+          ]
+        },
+        {
+          "text": "Occurs from north-eastern NSW to Cape York and the Northern Territory, reaching about 35 m in the wild with a buttressed trunk",
+          "type": "origin",
+          "cites": [
+            "wikipedia-hemilamprum",
+            "burringbar-hemilamprum"
+          ]
+        },
+        {
+          "text": "New foliage flushes copper and pink; leaves are broad and glossy",
+          "type": "identity",
+          "cites": [
+            "ppnn-hemilamprum",
+            "wikipedia-hemilamprum"
+          ]
+        },
+        {
+          "text": "White flowers in panicles around October to November",
+          "type": "season",
+          "cites": [
+            "wikipedia-hemilamprum",
+            "ppnn-hemilamprum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-hemilamprum",
+          "name": "Wikipedia, Syzygium hemilamprum",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_hemilamprum",
+          "tier": "third_party"
+        },
+        {
+          "id": "ppnn-hemilamprum",
+          "name": "Paten Park Native Nursery, Syzygium hemilamprum",
+          "url": "https://ppnn.org.au/plant-info/syzygium-hemilamprum/",
+          "tier": "nursery"
+        },
+        {
+          "id": "burringbar-hemilamprum",
+          "name": "Burringbar Rainforest Nursery, Syzygium hemilamprum",
+          "url": "https://burringbarrainforestnursery.com.au/plant-search/syzygium-hemilamprum-broad-leaved-lilly-pilly/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lilly-pilly-brush-cherry": {
       "slug": "lilly-pilly-brush-cherry",
       "species": "Lilly Pilly",
@@ -60,6 +526,71 @@
       "confidence_score": 0.95,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lilly-pilly-bush-cherry-tucker-bush": {
+      "slug": "lilly-pilly-bush-cherry-tucker-bush",
+      "species": "Lilly Pilly",
+      "variety": "Bush Cherry Tucker Bush",
+      "paragraphs": [
+        "Bush Cherry Tucker Bush is the Tucker Bush brand selection of Syzygium australe, the eastern Australian rainforest tree known as brush cherry or scrub cherry. It grows naturally in coastal Queensland and New South Wales and has long been valued as a bush food.",
+        "The edible fruit are pink and elongated, roughly 1.5 to 2.3 cm long, ripening mainly through summer and autumn. They have a refreshing, slightly sour taste and can be eaten fresh or cooked into jams and jellies. It is marketed as psyllid resistant and is often kept clipped as an edible hedge."
+      ],
+      "claims": [
+        {
+          "text": "A selection of Syzygium australe, the eastern Australian brush or scrub cherry.",
+          "type": "identity",
+          "cites": [
+            "wikipedia_australe",
+            "tuckerbush_cherry"
+          ]
+        },
+        {
+          "text": "Native to coastal Queensland and New South Wales.",
+          "type": "origin",
+          "cites": [
+            "wikipedia_australe"
+          ]
+        },
+        {
+          "text": "Pink elongated fruit 1.5 to 2.3 cm long, ripening summer to autumn, refreshing with a hint of sourness.",
+          "type": "flavour",
+          "cites": [
+            "wikipedia_australe"
+          ]
+        },
+        {
+          "text": "Eaten fresh or cooked into jams and jellies.",
+          "type": "uses",
+          "cites": [
+            "wikipedia_australe"
+          ]
+        },
+        {
+          "text": "Marketed as psyllid resistant and grown as a clipped edible hedge.",
+          "type": "habit",
+          "cites": [
+            "tuckerbush_cherry"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia_australe",
+          "name": "Syzygium australe, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_australe",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush_cherry",
+          "name": "Tucker Bush Cherry, Tucker Bush",
+          "url": "https://tuckerbush.com.au/tucker-bush-cherry-syzygium-australe/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "lilly-pilly-bush-christmas": {
       "slug": "lilly-pilly-bush-christmas",
@@ -180,6 +711,906 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "lilly-pilly-coolamon": {
+      "slug": "lilly-pilly-coolamon",
+      "species": "Lilly Pilly",
+      "variety": "Coolamon",
+      "paragraphs": [
+        "Coolamon is not a cultivar but a common name for Syzygium moorei (also durobby, robby or watermelon tree), a rainforest canopy tree from the Richmond, Tweed and Brunswick valleys of far north-east NSW, just reaching south-east Queensland. Its signature habit is ramiflory: showy pink to red fluffy flowers, mostly November to March, burst in clusters straight from bare older branches and even the trunk, and the fruit sets there on the old wood. It is listed Vulnerable in NSW and nationally, so a planted tree doubles as conservation.",
+        "The fruit is huge by lilly pilly standards: a white to pale green, flattened-globe berry 35 to 50 mm across (up to about 6 cm) with a single large seed. The NSW threatened species profile calls it edible but rather tasteless, and Daleys likens its crisp freshness to a Granny Smith apple with a somewhat dry texture, so collectors mostly use it for preserves and novelty rather than fresh eating. In habitat it reaches about 40 m with thick leaves 8 to 20 cm long, so give it real space; few bush tucker trees are more distinctive in flower."
+      ],
+      "claims": [
+        {
+          "text": "Coolamon is Syzygium moorei (durobby, watermelon tree, rose apple), a subtropical rainforest tree of the Richmond, Tweed and Brunswick valleys in far north-east NSW with limited occurrence in south-east Queensland",
+          "type": "identity",
+          "cites": [
+            "nsw-durobby",
+            "plantnet-moorei",
+            "wiki-moorei"
+          ]
+        },
+        {
+          "text": "Ramiflorous: showy pink to red fluffy flowers, mostly November to March, are clustered directly on older leafless branches and the trunk, with fruit forming on the old wood",
+          "type": "season",
+          "cites": [
+            "nsw-durobby",
+            "plantnet-moorei",
+            "wiki-moorei"
+          ]
+        },
+        {
+          "text": "Fruit is a white to greenish, depressed-globose berry 35 to 50 mm in diameter (up to about 6 cm), single-seeded; edible but rather tasteless fresh and better suited to preserves, with Daleys likening its freshness to a Granny Smith apple with a dry texture",
+          "type": "flavour",
+          "cites": [
+            "nsw-durobby",
+            "plantnet-moorei",
+            "wiki-moorei",
+            "daleys-coolamon"
+          ]
+        },
+        {
+          "text": "Listed Vulnerable in NSW and under the Commonwealth EPBC Act; now rare in the wild",
+          "type": "origin",
+          "cites": [
+            "nsw-durobby",
+            "plantnet-moorei",
+            "wiki-moorei"
+          ]
+        },
+        {
+          "text": "A rainforest canopy tree to about 40 m with thick leaves 8 to 20 cm long",
+          "type": "identity",
+          "cites": [
+            "nsw-durobby",
+            "wiki-moorei",
+            "plantnet-moorei"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nsw-durobby",
+          "name": "NSW Threatened Species profile: Durobby (Syzygium moorei)",
+          "url": "https://www.environment.nsw.gov.au/threatenedspeciesapp/profile.aspx?id=10793",
+          "tier": "authoritative"
+        },
+        {
+          "id": "plantnet-moorei",
+          "name": "PlantNET (NSW Flora Online): Syzygium moorei",
+          "url": "https://plantnet.rbgsyd.nsw.gov.au/cgi-bin/NSWfl.pl?page=nswfl&lvl=sp&name=Syzygium~moorei",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-moorei",
+          "name": "Wikipedia: Syzygium moorei",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_moorei",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-coolamon",
+          "name": "Daleys Fruit Tree Nursery: Lilly Pilly Coolamon Tree",
+          "url": "https://www.daleysfruit.com.au/buy/syzygium-mooreii-coolamon-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-elite": {
+      "slug": "lilly-pilly-elite",
+      "species": "Lilly Pilly",
+      "variety": "Elite",
+      "paragraphs": [
+        "Elite is a hedging and screening selection of Syzygium australe, the brush cherry, a rainforest species from eastern Australia. It is a medium, fast grower, around 3 to 5 metres tall by 2 to 3 metres wide, with dense foliage that suits privacy screens, formal hedges, topiary and even bonsai. The dark glossy green leaves carry a bronze-orange flush on the new growth, so a clipped hedge colours up again after every trim.",
+        "Fluffy white to cream flowers appear through spring, attracting bees, and are followed by vibrant pink-red berries. The fruit is edible, like that of the parent species, and draws seed-eating birds, so an unclipped plant offers a small bush tucker harvest as well as habitat value alongside its main job as a screen."
+      ],
+      "claims": [
+        {
+          "text": "A cultivar of Syzygium australe (brush cherry), a species native to eastern Australia",
+          "type": "identity",
+          "cites": [
+            "gwa-elite",
+            "apo-elite"
+          ]
+        },
+        {
+          "text": "Dark glossy green leaves with a bronze-orange flush of new growth",
+          "type": "foliage",
+          "cites": [
+            "gwa-elite",
+            "apo-elite"
+          ]
+        },
+        {
+          "text": "Dense, fast growing form around 3 to 5 metres tall and 2 to 3 metres wide",
+          "type": "habit",
+          "cites": [
+            "gwa-elite",
+            "apo-elite"
+          ]
+        },
+        {
+          "text": "Fluffy white to cream flowers in spring, followed by reddish to pink-red edible berries that attract birds",
+          "type": "season",
+          "cites": [
+            "gwa-elite",
+            "apo-elite"
+          ]
+        },
+        {
+          "text": "Used for privacy screening, formal hedging, topiary and bonsai",
+          "type": "uses",
+          "cites": [
+            "gwa-elite",
+            "apo-elite"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-elite",
+          "name": "Gardening With Angus, Syzygium australe 'Elite' Lilly Pilly",
+          "url": "https://gardeningwithangus.com.au/syzygium-australe-elite-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "apo-elite",
+          "name": "Australian Plants Online, Syzygium Elite lilly pilly",
+          "url": "https://www.australianplantsonline.com.au/syzygium-australe-elite.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-firescreen": {
+      "slug": "lilly-pilly-firescreen",
+      "species": "Lilly Pilly",
+      "variety": "FIRESCREEN",
+      "paragraphs": [
+        "FIRESCREEN is one of the named cultivars of Syzygium smithii (long traded as Acmena smithii), sold under Plant Breeder's Rights with the registered name 'BWNFIR'. It is a fast-growing, broad-leaved selection whose claim to fame is its new growth: glossy flushes of copper red that mature to mid green. Compared with the ordinary species it carries slightly broader leaves and a semi-pendulous, dense habit that holds foliage right to the ground, which is why it is pitched almost entirely at hedging, screening and topiary.",
+        "It remains a fruiting lilly pilly: subtle white flowers are followed by berries that growers value mainly for ornament and wildlife, drawing nectar-feeding birds, bees and butterflies. The species' fruit is edible but rated not particularly palatable, and FIRESCREEN is not sold on its crop. The cultivar is also reported psyllid resistant, which keeps the signature coppery flush unblemished, and quoted mature sizes vary widely between growers (roughly 2 to 4 metres in garden references, up to 6 metres from advanced tree nurseries)."
+      ],
+      "claims": [
+        {
+          "text": "Named cultivar of Syzygium smithii (syn. Acmena smithii), sold under Plant Breeder's Rights as 'BWNFIR'",
+          "type": "identity",
+          "cites": [
+            "wikipedia-smithii",
+            "specialitytrees-firescreen"
+          ]
+        },
+        {
+          "text": "Fast-growing, broad-leaved form with glossy copper red new growth maturing to mid green",
+          "type": "identity",
+          "cites": [
+            "wikipedia-smithii",
+            "gardeningwithangus-firescreen",
+            "specialitytrees-firescreen"
+          ]
+        },
+        {
+          "text": "Slightly broader leaves than the species and a semi-pendulous, dense habit holding foliage to the ground; used for hedging, screening and topiary",
+          "type": "habit",
+          "cites": [
+            "specialitytrees-firescreen",
+            "gardeningwithangus-firescreen"
+          ]
+        },
+        {
+          "text": "White flowers followed by berries that attract nectar-feeding birds, bees and butterflies",
+          "type": "season",
+          "cites": [
+            "gardeningwithangus-firescreen",
+            "evergreentrees-firescreen"
+          ]
+        },
+        {
+          "text": "Reported psyllid resistant",
+          "type": "pest",
+          "cites": [
+            "gardeningwithangus-firescreen",
+            "evergreentrees-firescreen"
+          ]
+        },
+        {
+          "text": "Species fruit is edible but not particularly palatable; the cultivar is not sold for its crop",
+          "type": "flavour",
+          "cites": [
+            "anpsa-smithii"
+          ]
+        },
+        {
+          "text": "Quoted mature sizes vary between growers, roughly 2 to 4 metres in garden references and up to 6 metres from advanced tree nurseries",
+          "type": "habit",
+          "cites": [
+            "gardeningwithangus-firescreen",
+            "specialitytrees-firescreen"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-smithii",
+          "name": "Wikipedia, Syzygium smithii",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_smithii",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardeningwithangus-firescreen",
+          "name": "Gardening With Angus, Acmena smithii 'Fire Screen' Lilly Pilly",
+          "url": "https://gardeningwithangus.com.au/acmena-smithii-fire-screen-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "anpsa-smithii",
+          "name": "Australian Native Plants Society (ANPSA) plant profile, Syzygium smithii",
+          "url": "https://anpsa.org.au/plant_profiles/syzygium-smithii/",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialitytrees-firescreen",
+          "name": "Speciality Trees, Acmena smithii 'BWNFIR' Firescreen PBR",
+          "url": "https://www.specialitytrees.com.au/trees/acmena-smithii-bwnfir-firescreen-syn-syzygium-wcbe6",
+          "tier": "nursery"
+        },
+        {
+          "id": "evergreentrees-firescreen",
+          "name": "Evergreen Trees Direct, Acmena smithii 'Firescreen' Lilly Pilly",
+          "url": "https://www.evergreentrees.com.au/products/acmena-smithii-firescreen-lilly-pilly",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-forest-flame": {
+      "slug": "lilly-pilly-forest-flame",
+      "species": "Lilly Pilly",
+      "variety": "Forest Flame",
+      "paragraphs": [
+        "Forest Flame is a foliage-first hedging selection named for its flush: new growth emerges bright red to reddish-pink, then matures to deep glossy green, and the show repeats after each trim. It is usually catalogued under Acmena smithii (now Syzygium smithii), though at least one retailer sells it as Syzygium australe, and quoted mature sizes swing from a 1 to 2 m compact shrub to a 4 to 6 m screen depending on the seller, so check what your nursery is actually supplying.",
+        "It is widely promoted as psyllid resistant and rarely troubled by pests, which keeps the coloured flush clean. White flowers in the warmer months are followed by berries that listings treat as food for native birds rather than bush tucker; no source gives a useful account of fruit size or flavour. Treat this one as a coloured hedge and screen plant, not a fruiting lilly pilly."
+      ],
+      "claims": [
+        {
+          "text": "A foliage hedging selection usually catalogued under Acmena smithii (now Syzygium smithii); at least one retailer sells it as Syzygium australe",
+          "type": "identity",
+          "cites": [
+            "gwa-forestflame",
+            "egt-forestflame",
+            "nnm-forestflame"
+          ]
+        },
+        {
+          "text": "New growth emerges bright red to reddish-pink and matures to deep glossy green",
+          "type": "identity",
+          "cites": [
+            "gwa-forestflame",
+            "egt-forestflame",
+            "nnm-forestflame"
+          ]
+        },
+        {
+          "text": "Promoted as psyllid resistant and rarely troubled by pests",
+          "type": "pest",
+          "cites": [
+            "gwa-forestflame",
+            "egt-forestflame"
+          ]
+        },
+        {
+          "text": "Quoted mature sizes conflict between sellers, from a 1 to 2 m compact shrub to a 4 to 6 m screen",
+          "type": "identity",
+          "cites": [
+            "gwa-forestflame",
+            "egt-forestflame",
+            "nnm-forestflame"
+          ]
+        },
+        {
+          "text": "White flowers in the warmer months are followed by berries valued mainly as food for native birds; sold for hedging, screening and topiary, not fruit",
+          "type": "uses",
+          "cites": [
+            "gwa-forestflame",
+            "egt-forestflame"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-forestflame",
+          "name": "Gardening With Angus: Acmena smithii 'Forest Flame'",
+          "url": "https://gardeningwithangus.com.au/acmena-smithii-forest-flame-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "egt-forestflame",
+          "name": "Evergreen Trees Direct: Acmena smithii 'Forest Flame'",
+          "url": "https://www.evergreentrees.com.au/products/acmena-smithii-forest-flame",
+          "tier": "nursery"
+        },
+        {
+          "id": "nnm-forestflame",
+          "name": "Nursery Near Me: Forest Flame Lilly Pilly",
+          "url": "https://nurserynearme.com.au/products/acmena-smithii-forest-flame",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-giant-water-gum": {
+      "slug": "lilly-pilly-giant-water-gum",
+      "species": "Lilly Pilly",
+      "variety": "Giant Water Gum",
+      "paragraphs": [
+        "Giant water gum is Syzygium francisii, also called rose satinash, one of the largest lilly pillies: a buttressed rainforest tree that can pass 30 metres in the wild, found from the lower Hunter region of New South Wales north to Gladstone in Queensland. Panicles of white flowers from spring to early summer are followed between January and April by distinctive flattened (depressed-globose) berries, 10 to 20 mm wide, in pale blue, lilac to purple.",
+        "For fruit collectors this one needs honest disclosure: the flesh is thin and dry rather than juicy, so it is better regarded as a bird and habitat fruit than an eating lilly pilly, though nurseries do list it among Australian bush foods. Its real appeal is as a stately shade or specimen tree, with glossy wavy-edged leaves, pinkish new growth and a dense spreading crown, generally considered too large for small gardens."
+      ],
+      "claims": [
+        {
+          "text": "Giant water gum is Syzygium francisii (rose satinash), a buttressed tree occasionally over 30 m, from the NSW coast north to Gladstone, Queensland",
+          "type": "identity",
+          "cites": [
+            "wikipedia-francisii",
+            "plantnet-francisii"
+          ]
+        },
+        {
+          "text": "Fruit is a flattened, depressed-globose berry 10 to 20 mm in diameter, pale blue to lilac or purple, maturing January to April",
+          "type": "fruit",
+          "cites": [
+            "plantnet-francisii",
+            "wikipedia-francisii"
+          ]
+        },
+        {
+          "text": "Flesh is dry and unpalatable; rainforest birds eat the fruit readily",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-francisii"
+          ]
+        },
+        {
+          "text": "Listed by nurseries as a bush food but mainly grown as a large ornamental, too big for household plantings",
+          "type": "uses",
+          "cites": [
+            "daleys-francisii",
+            "wikipedia-francisii"
+          ]
+        },
+        {
+          "text": "White flowers in panicles from spring to early summer; new growth pinkish",
+          "type": "season",
+          "cites": [
+            "wikipedia-francisii",
+            "plantnet-francisii"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-francisii",
+          "name": "Wikipedia, Syzygium francisii",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_francisii",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantnet-francisii",
+          "name": "PlantNET (NSW Flora Online), Syzygium francisii",
+          "url": "https://plantnet.rbgsyd.nsw.gov.au/cgi-bin/NSWfl.pl?page=nswfl&lvl=sp&name=Syzygium~francisii",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-francisii",
+          "name": "Daleys Fruit Tree Nursery, Giant Water Gum",
+          "url": "https://www.daleysfruit.com.au/buy/syzygium-francisii-giant-water-gum-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-hinterland-gold": {
+      "slug": "lilly-pilly-hinterland-gold",
+      "species": "Lilly Pilly",
+      "variety": "Hinterland Gold",
+      "paragraphs": [
+        "Hinterland Gold is a colour-break selection of Syzygium australe, the common edible brush cherry, with mid-sized glossy leaves carrying a distinct golden cast and bronze-gold new growth that flushes several times a year, so a clipped hedge reads gold rather than plain green. It is a dense, fast small tree or large shrub of roughly 2 to 4 m with a non-aggressive root system, and it responds brilliantly to pruning, which is why it is sold almost entirely as hedging, screening and topiary stock.",
+        "Unlike many purely ornamental hedging lilly pillies it keeps the species' bush tucker value: fluffy white flowers through the warm months are followed by edible red berries that Daleys flags as usable bush food. One independent variety guide also rates it as standing up to psyllids fairly well. For a collector it is a practical twofer, an edible Syzygium australe form that earns its spot as a golden screen while still setting fruit."
+      ],
+      "claims": [
+        {
+          "text": "A golden-foliaged selection of Syzygium australe with mid-sized glossy gold-tinted leaves and several flushes of new growth a year",
+          "type": "identity",
+          "cites": [
+            "gwa-hg",
+            "daleys-hg"
+          ]
+        },
+        {
+          "text": "Small tree or large shrub of about 2 to 4 m, dense and fast growing, responds well to pruning and has a non-aggressive root system",
+          "type": "uses",
+          "cites": [
+            "gwa-hg",
+            "daleys-hg"
+          ]
+        },
+        {
+          "text": "Fluffy white flowers in the warm months are followed by edible red berries usable as bush food",
+          "type": "flavour",
+          "cites": [
+            "gwa-hg",
+            "daleys-hg"
+          ]
+        },
+        {
+          "text": "An independent variety guide rates it as standing up to psyllids fairly well",
+          "type": "pest",
+          "cites": [
+            "lawn-varieties"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-hg",
+          "name": "Gardening With Angus: Syzygium australe 'Hinterland Gold'",
+          "url": "https://gardeningwithangus.com.au/syzygium-australe-hinterland-gold-lilly-pilly/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-hg",
+          "name": "Daleys Fruit Tree Nursery: Lilly Pilly Hinterland Gold",
+          "url": "https://www.daleysfruit.com.au/Lilly-Pilly-Hinterland-Gold-Syzygium-australe.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "lawn-varieties",
+          "name": "Lawn.com.au: Lilly Pilly Varieties in Australia",
+          "url": "https://lawn.com.au/lilly-pilly-varieties/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-minor": {
+      "slug": "lilly-pilly-minor",
+      "species": "Lilly Pilly",
+      "variety": "Minor",
+      "paragraphs": [
+        "'Minor' is the dwarf lilly pilly, the long-established compact form of Syzygium smithii (still almost always sold under the older name Acmena smithii). Rather than a bred cultivar, it corresponds to the naturally occurring small-leaved race of the species, sometimes treated as var. minor, which comes from drier rainforest. It reaches only about 3 to 3.5 metres against 8 to 10 metres for the full species in cultivation, and its small, dense foliage with bronze-red new flushes made it a standard Australian hedge plant long before today's branded selections. Nurseries also report it is not prone to psyllid damage.",
+        "Unlike modern berry-shy hedging cultivars, 'Minor' fruits true to the species: creamy white summer flowers are followed by abundant white to mauve-purple berries around 10 to 15 mm across, even on clipped hedges. The fruit is edible but mildly acidic and rated not particularly palatable, a trait of Syzygium smithii itself rather than of this form, so collectors treat it as a plentiful nibbling and processing fruit rather than choice bush tucker."
+      ],
+      "claims": [
+        {
+          "text": "'Minor' is the dwarf lilly pilly, a compact form of Syzygium smithii (syn. Acmena smithii) corresponding to the naturally occurring small-leaved race (var. minor) found in drier rainforest",
+          "type": "identity",
+          "cites": [
+            "anpsa-smithii",
+            "wikipedia-smithii",
+            "evergreengrowers-minor"
+          ]
+        },
+        {
+          "text": "Grows to about 3 to 3.5 metres, against 8 to 10 metres for the species in cultivation",
+          "type": "habit",
+          "cites": [
+            "anpsa-smithii",
+            "evergreengrowers-minor"
+          ]
+        },
+        {
+          "text": "Creamy white summer flowers followed by abundant white to mauve-purple berries about 10 to 15 mm across",
+          "type": "season",
+          "cites": [
+            "anpsa-smithii",
+            "plantnet-smithii",
+            "evergreengrowers-minor"
+          ]
+        },
+        {
+          "text": "Fruit is edible but mildly acidic and not particularly palatable, true of Syzygium smithii generally",
+          "type": "flavour",
+          "cites": [
+            "anpsa-smithii",
+            "wikipedia-smithii"
+          ]
+        },
+        {
+          "text": "Dense small-leaved growth suited to hedging, with nurseries reporting it not prone to psyllid damage",
+          "type": "uses",
+          "cites": [
+            "evergreengrowers-minor"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anpsa-smithii",
+          "name": "Australian Native Plants Society (ANPSA) plant profile, Syzygium smithii",
+          "url": "https://anpsa.org.au/plant_profiles/syzygium-smithii/",
+          "tier": "third_party"
+        },
+        {
+          "id": "wikipedia-smithii",
+          "name": "Wikipedia, Syzygium smithii",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_smithii",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantnet-smithii",
+          "name": "PlantNET (NSW Flora Online), Acmena smithii",
+          "url": "https://plantnet.rbgsyd.nsw.gov.au/cgi-bin/NSWfl.pl?page=nswfl&lvl=sp&name=Acmena~smithii",
+          "tier": "authoritative"
+        },
+        {
+          "id": "evergreengrowers-minor",
+          "name": "Evergreen Growers, Dwarf Lilly Pilly Acmena smithii Minor",
+          "url": "https://www.evergreengrowers.com.au/products/dwarf-lilly-pilly-acmena-smithii-minor-150mm-pot",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-paperbark-satinash": {
+      "slug": "lilly-pilly-paperbark-satinash",
+      "species": "Lilly Pilly",
+      "variety": "Paperbark Satinash",
+      "paragraphs": [
+        "Paperbark satinash is Syzygium papyraceum, a lilly pilly from the rainforests of north-eastern Queensland that is instantly recognisable by its bark: papery, flaky and orange-red to red-brown, unusual in a genus better known for smooth or scaly trunks. It can reach about 35 metres in its home rainforest but is far smaller in cultivation, typically 15 to 20 metres.",
+        "It is also one of the showier lilly pillies in flower, producing mauve to pink blossom in spring followed by purple fruit, elongated berries about 20 mm long that are edible. With coloured bark, pink flowers and purple fruit on the one tree, it offers collectors in warm, moist climates an ornamental satinash that doubles as bush tucker, and it adapts to subtropical and even temperate gardens despite its tropical origins."
+      ],
+      "claims": [
+        {
+          "text": "Paperbark satinash is Syzygium papyraceum, a rainforest tree of north-eastern Queensland",
+          "type": "identity",
+          "cites": [
+            "wikipedia-papyraceum",
+            "anpsa-papyraceum"
+          ]
+        },
+        {
+          "text": "Bark is papery and flaky, orange-red to red-brown",
+          "type": "identity",
+          "cites": [
+            "wikipedia-papyraceum",
+            "anpsa-papyraceum"
+          ]
+        },
+        {
+          "text": "Grows to about 35 m in the wild, around 15 to 20 m in cultivation",
+          "type": "identity",
+          "cites": [
+            "wikipedia-papyraceum",
+            "anpsa-papyraceum"
+          ]
+        },
+        {
+          "text": "Mauve to pink flowers in spring, followed by purple fruit",
+          "type": "season",
+          "cites": [
+            "anpsa-papyraceum",
+            "wikipedia-papyraceum"
+          ]
+        },
+        {
+          "text": "Fruit is an elongated purple berry about 20 mm long and edible",
+          "type": "fruit",
+          "cites": [
+            "anpsa-papyraceum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-papyraceum",
+          "name": "Wikipedia, Syzygium papyraceum",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_papyraceum",
+          "tier": "third_party"
+        },
+        {
+          "id": "anpsa-papyraceum",
+          "name": "Australian Native Plants Society (ANPSA), Syzygium papyraceum",
+          "url": "https://anpsa.org.au/plant_profiles/syzygium-papyraceum/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-pink-cascade": {
+      "slug": "lilly-pilly-pink-cascade",
+      "species": "Lilly Pilly",
+      "variety": "Pink Cascade",
+      "paragraphs": [
+        "Sold as Pink Cascade, this is the lilly pilly cultivar Syzygium 'Cascade', a cultivated hybrid between Syzygium luehmannii (riberry) and Syzygium wilsonii (powder puff lilly pilly). It is grown for its arching, weeping habit and reaches around 4 m tall, growing slowly.",
+        "New growth is a bright bronze pink to reddish that stays colourful for much of the year, and in spring to summer it carries pink, fluffy powder puff flowers about 10 mm across with long stamens. Small pink fruit, around 2 cm, follow the flowers. The pink flush and weeping form, inherited from its two parents, are its distinctive features."
+      ],
+      "claims": [
+        {
+          "text": "Syzygium 'Cascade', a cultivated hybrid of S. luehmannii and S. wilsonii, sold as Pink Cascade.",
+          "type": "identity",
+          "cites": [
+            "austplants_cascade",
+            "gwangus_cascade"
+          ]
+        },
+        {
+          "text": "Arching, weeping habit, slow growing to about 4 m.",
+          "type": "habit",
+          "cites": [
+            "austplants_cascade"
+          ]
+        },
+        {
+          "text": "Bronze pink to reddish new growth, colourful for much of the year.",
+          "type": "identity",
+          "cites": [
+            "austplants_cascade",
+            "gwangus_cascade"
+          ]
+        },
+        {
+          "text": "Pink fluffy powder puff flowers about 10 mm across in spring to summer.",
+          "type": "identity",
+          "cites": [
+            "austplants_cascade"
+          ]
+        },
+        {
+          "text": "Small pink fruit about 2 cm follow the flowers.",
+          "type": "fruit",
+          "cites": [
+            "austplants_cascade"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "austplants_cascade",
+          "name": "Syzygium 'Cascade', Australian Plants Society",
+          "url": "https://resources.austplants.com.au/plant/syzygium-cascade/",
+          "tier": "third_party"
+        },
+        {
+          "id": "gwangus_cascade",
+          "name": "Syzygium Cascade, Gardening With Angus",
+          "url": "https://gardeningwithangus.com.au/syzygium-cascade-lilly-pilly/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.83,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-powder-puff": {
+      "slug": "lilly-pilly-powder-puff",
+      "species": "Lilly Pilly",
+      "variety": "Powder Puff",
+      "paragraphs": [
+        "Powder Puff is Syzygium wilsonii, the powderpuff lilly pilly, a rainforest shrub endemic to far north Queensland roughly between Ingham and Cooktown. It has a weeping habit and large, glossy leaves with reddish bronze new growth.",
+        "It is the only lilly pilly with red flowers, borne as large, fluffy, powder puff heads from spring into summer, which is its signature feature. Clusters of white, fleshy fruit follow; these are edible but quite sour. It is grown mainly as an ornamental for its dramatic flowers rather than for its fruit."
+      ],
+      "claims": [
+        {
+          "text": "Syzygium wilsonii, endemic to far north Queensland rainforest between Ingham and Cooktown.",
+          "type": "origin",
+          "cites": [
+            "anbg_wilsonii",
+            "anpsa_wilsonii"
+          ]
+        },
+        {
+          "text": "The only lilly pilly with red flowers, large fluffy powder puff heads from spring to summer.",
+          "type": "identity",
+          "cites": [
+            "anbg_wilsonii",
+            "anpsa_wilsonii"
+          ]
+        },
+        {
+          "text": "Weeping habit with reddish bronze new growth.",
+          "type": "habit",
+          "cites": [
+            "anbg_wilsonii"
+          ]
+        },
+        {
+          "text": "White fleshy fruit that are edible but quite sour.",
+          "type": "fruit",
+          "cites": [
+            "anbg_wilsonii",
+            "anpsa_wilsonii"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anbg_wilsonii",
+          "name": "Syzygium wilsonii, Australian National Botanic Gardens",
+          "url": "https://www.anbg.gov.au/gnp/interns-2004/syzygium-wilsonii.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "anpsa_wilsonii",
+          "name": "Syzygium wilsonii, Australian Native Plants Society",
+          "url": "https://anpsa.org.au/plant_profiles/syzygium-wilsonii/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-rain-cherry": {
+      "slug": "lilly-pilly-rain-cherry",
+      "species": "Lilly Pilly",
+      "variety": "Rain Cherry",
+      "paragraphs": [
+        "Rain cherry is the nursery name for Syzygium fibrosum, also called fibrous satinash or apricot satinash, a tropical lilly pilly from the rainforests, monsoon forests and gallery forests of northern Australia, New Guinea and the Aru Islands. In its home forests it grows as an understorey tree; in cultivation it can exceed 10 metres but takes hard pruning and is often kept far smaller.",
+        "Masses of creamy flowers are followed by heavy crops of bright pink to red fruit, flattened globular berries about 2 cm wide with a single seed, listed as ripening in late spring. The flavour is distinctly sour, which is why the fruit is used mainly for jams, preserves and confectionery rather than eaten out of hand, and the species is cultivated to a limited extent as a bush food for tropical gardens."
+      ],
+      "claims": [
+        {
+          "text": "Rain cherry is Syzygium fibrosum (fibrous satinash, apricot satinash), native to northern Australia, New Guinea and the Aru Islands",
+          "type": "identity",
+          "cites": [
+            "daleys-fibrosum",
+            "wikipedia-fibrosum"
+          ]
+        },
+        {
+          "text": "Fruit is pink or red, flattened globular, about 2 cm wide, with a single seed",
+          "type": "fruit",
+          "cites": [
+            "wikipedia-fibrosum",
+            "daleys-fibrosum"
+          ]
+        },
+        {
+          "text": "Fruit is sour and used in jams, preserves and confectionery",
+          "type": "flavour",
+          "cites": [
+            "wikipedia-fibrosum",
+            "daleys-fibrosum"
+          ]
+        },
+        {
+          "text": "Creamy flowers in masses precede the fruit; fruiting listed as late spring",
+          "type": "season",
+          "cites": [
+            "daleys-fibrosum",
+            "wikipedia-fibrosum"
+          ]
+        },
+        {
+          "text": "An understorey rainforest tree, over 10 m unpruned, cultivated to a limited extent as a bush food",
+          "type": "uses",
+          "cites": [
+            "daleys-fibrosum",
+            "wikipedia-fibrosum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-fibrosum",
+          "name": "Wikipedia, Syzygium fibrosum",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_fibrosum",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-fibrosum",
+          "name": "Daleys Fruit Tree Nursery, Lilly Pilly Rain Cherry",
+          "url": "https://www.daleysfruit.com.au/Lilly-Pilly-Rain-Cherry-Syzygium-fibrosum.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-red-apple": {
+      "slug": "lilly-pilly-red-apple",
+      "species": "Lilly Pilly",
+      "variety": "Red Apple",
+      "paragraphs": [
+        "Red Apple is the rainforest species Syzygium ingens, still widely traded under its older name Acmena ingens, and it is the opposite of a hedging cultivar: a canopy tree from volcanic soils between Gympie in Queensland and Casino in northern NSW that can reach about 40 m in habitat, with buttressed trunks on old specimens. Even in cultivation Daleys lists it above 10 m with a large spreading crown, so it belongs in parks, farms and acreage plantings rather than suburban hedges.",
+        "Collectors grow it for one of the largest and showiest fruits among the red lilly pillies: a spherical to oval berry 25 to 30 mm long that ripens from light pink to dark red, with white flesh around a single sizeable seed. The fruit is edible and is typically made into sauces and jam, and a tree in season is a magnet for wompoo fruit doves and topknot pigeons. White flowers appear in panicles around November and December, with harvest around March in Daleys' northern NSW listing."
+      ],
+      "claims": [
+        {
+          "text": "Red Apple is Syzygium ingens, long traded as Acmena ingens, a rainforest tree endemic to eastern Australia on volcanic soils from near Gympie (Qld) to Casino (NSW)",
+          "type": "identity",
+          "cites": [
+            "wiki-ingens",
+            "gwa-ingens",
+            "daleys-redapple"
+          ]
+        },
+        {
+          "text": "Fruit is a dark pink to red, spherical to oval berry 25 to 30 mm long with white flesh around a single large seed; edible and used for sauces and jam",
+          "type": "flavour",
+          "cites": [
+            "wiki-ingens",
+            "gwa-ingens",
+            "daleys-redapple"
+          ]
+        },
+        {
+          "text": "A large tree, to about 40 m in rainforest with buttressed trunks on old specimens and over 10 m with a spreading crown in cultivation; suited to parks and farms rather than small gardens",
+          "type": "identity",
+          "cites": [
+            "wiki-ingens",
+            "gwa-ingens",
+            "daleys-redapple"
+          ]
+        },
+        {
+          "text": "Fruit attracts native fruit-eating birds including wompoo fruit doves and topknot pigeons",
+          "type": "uses",
+          "cites": [
+            "wiki-ingens",
+            "daleys-redapple"
+          ]
+        },
+        {
+          "text": "White flowers appear in panicles in November and December, with fruit harvested around March in Daleys' northern NSW listing",
+          "type": "season",
+          "cites": [
+            "wiki-ingens",
+            "daleys-redapple"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-ingens",
+          "name": "Wikipedia: Syzygium ingens",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_ingens",
+          "tier": "third_party"
+        },
+        {
+          "id": "gwa-ingens",
+          "name": "Gardening With Angus: Acmena ingens (Red Apple)",
+          "url": "https://gardeningwithangus.com.au/acmena-ingens-red-apple/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-redapple",
+          "name": "Daleys Fruit Tree Nursery: Lilly Pilly Red Apple (Acmena ingens)",
+          "url": "https://www.daleysfruit.com.au/buy/acmena-ingens-red-apple-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "lilly-pilly-resilience": {
       "slug": "lilly-pilly-resilience",
       "species": "Lilly Pilly",
@@ -297,6 +1728,309 @@
       "confidence_score": 0.95,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "lilly-pilly-river-cherry": {
+      "slug": "lilly-pilly-river-cherry",
+      "species": "Lilly Pilly",
+      "variety": "River Cherry",
+      "paragraphs": [
+        "River cherry is Syzygium tierneyanum, also known as Bamaga satinash or water cherry, a lilly pilly of north-eastern Queensland, New Guinea, the Solomon Islands and Vanuatu. True to its name it typically grows along watercourses as a facultative rheophyte, and it has proven so amenable to cultivation that it is widely planted as a park and street tree in Cairns.",
+        "Numerous small white to cream flowers appear in summer, followed by comparatively large edible berries, roughly 15 to 30 mm across, that range from cream through pink to red. In the wild the fallen fruit is eaten by cassowaries, and for bush tucker growers it offers one of the larger-fruited lilly pillies on a handsome spreading tree that can reach 20 to 25 metres."
+      ],
+      "claims": [
+        {
+          "text": "River cherry is Syzygium tierneyanum (Bamaga satinash), native to north-eastern Queensland, New Guinea, the Solomon Islands and Vanuatu",
+          "type": "identity",
+          "cites": [
+            "wikipedia-tierneyanum",
+            "c4-tierneyanum"
+          ]
+        },
+        {
+          "text": "Often grows along watercourses as a facultative rheophyte; widely planted as a park and street tree in Cairns",
+          "type": "origin",
+          "cites": [
+            "wikipedia-tierneyanum"
+          ]
+        },
+        {
+          "text": "Small white to cream flowers in summer, followed by edible cream, pink or red berries roughly 15 to 30 mm",
+          "type": "fruit",
+          "cites": [
+            "wikipedia-tierneyanum",
+            "c4-tierneyanum"
+          ]
+        },
+        {
+          "text": "Fruit forms part of the cassowary's diet",
+          "type": "uses",
+          "cites": [
+            "c4-tierneyanum"
+          ]
+        },
+        {
+          "text": "A spreading tree to about 20 to 25 m, sometimes buttressed",
+          "type": "identity",
+          "cites": [
+            "wikipedia-tierneyanum",
+            "c4-tierneyanum"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-tierneyanum",
+          "name": "Wikipedia, Syzygium tierneyanum",
+          "url": "https://en.wikipedia.org/wiki/Syzygium_tierneyanum",
+          "tier": "third_party"
+        },
+        {
+          "id": "c4-tierneyanum",
+          "name": "C4 Community for Coastal and Cassowary Conservation, Syzygium tierneyanum",
+          "url": "https://cassowaryconservation.org/plants/syzygium-tierneyanum-river-cherry/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-sublime": {
+      "slug": "lilly-pilly-sublime",
+      "species": "Lilly Pilly",
+      "variety": "SUBLIME",
+      "paragraphs": [
+        "SUBLIME is a modern branded hedging lilly pilly, a cultivar of Syzygium smithii registered as 'DOW30' and held under Plant Breeder's Rights since 2009 (most nurseries still list it under the older name Acmena smithii). Bred by Ozbreed, it was selected for lime green new growth that matures to mid green, dense foliage held right to the ground, and a compact tree habit of around 5 metres tall by 2 to 3 metres wide. The breeder rates it strongly resistant to both psyllids and myrtle rust, the two problems that disfigure older lilly pilly hedges.",
+        "For fruit and bush tucker collectors the defining fact runs the other way: SUBLIME flowers white and fluffy in summer but rarely sets berries, a feature actively marketed as keeping hedges and paths clean. The NSW Government supported Gardening Responsibly scheme assesses it as lower invasive risk, noting neither the cultivar nor its parent show invasive characteristics. It is foliage first and fruit almost never, so anyone wanting edible lilly pilly crops should look to fruiting forms of the species, such as the old dwarf 'Minor', instead."
+      ],
+      "claims": [
+        {
+          "text": "Cultivar of Syzygium smithii (syn. Acmena smithii) registered as 'DOW30', under Plant Breeder's Rights since 2009, bred by Ozbreed",
+          "type": "identity",
+          "cites": [
+            "gardeningresponsibly-sublime",
+            "ozbreed-sublime"
+          ]
+        },
+        {
+          "text": "Lime green new growth maturing to mid green, dense foliage to the ground, around 5 metres tall by 2 to 3 metres wide",
+          "type": "habit",
+          "cites": [
+            "ozbreed-sublime",
+            "gardeningresponsibly-sublime"
+          ]
+        },
+        {
+          "text": "White summer flowers but rarely produces berries",
+          "type": "season",
+          "cites": [
+            "gardeningresponsibly-sublime",
+            "ozbreed-sublime"
+          ]
+        },
+        {
+          "text": "Breeder rates it strongly psyllid resistant and highly myrtle rust resistant",
+          "type": "pest",
+          "cites": [
+            "ozbreed-sublime"
+          ]
+        },
+        {
+          "text": "Assessed as lower invasive risk by the NSW Government supported Gardening Responsibly scheme",
+          "type": "uses",
+          "cites": [
+            "gardeningresponsibly-sublime"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gardeningresponsibly-sublime",
+          "name": "Gardening Responsibly (Plant Sure, NSW Environmental Trust), Acmena smithii 'Sublime'",
+          "url": "https://www.gardeningresponsibly.org.au/plants/13065/",
+          "tier": "third_party"
+        },
+        {
+          "id": "ozbreed-sublime",
+          "name": "Ozbreed, Sublime Acmena smithii 'DOW30' PBR",
+          "url": "https://www.ozbreed.com.au/plant-ranges/ozbreed-advanced-trees/sublime-acmena-is-a-mid-sized-tree-with-refreshing-lime-new-growth-and-dense-foliage-to-the-ground-advanced-trees-range/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-superior-psyllid-free": {
+      "slug": "lilly-pilly-superior-psyllid-free",
+      "species": "Lilly Pilly",
+      "variety": "Superior Psyllid Free",
+      "paragraphs": [
+        "Superior, usually sold with the tag Psyllid Free, is the hedging trade's psyllid-resistant magenta lilly pilly: a compact, dense selection whose foliage shrugs off the pimple-leaf psyllid that disfigures ordinary stock. That matters because the parent species, Syzygium paniculatum, is badly psyllid-prone, described by one wholesale grower as probably the worst affected species. One quirk for buyers: nurseries disagree on its parentage, with most listing it under Syzygium paniculatum and some, including Ladybird, labelling it Syzygium australe.",
+        "Beyond the pest resistance it behaves like a classic magenta cherry. Coppery-bronze new growth matures to glossy green on a dense cone of roughly 2 to 4 m unclipped, with fluffy white to cream flowers in spring and summer followed by edible purple berries; in the wild species the magenta, cherry-like fruit reaches 15 to 25 mm and is used for jam. The wild plant itself is threatened (Endangered in NSW, Vulnerable nationally), restricted to scattered coastal rainforest between the Taree area and Conjola, so the garden form vastly outnumbers the bush one."
+      ],
+      "claims": [
+        {
+          "text": "Compact hedging selection sold as 'Superior' and 'Psyllid Free'; most nurseries list it under Syzygium paniculatum (magenta lilly pilly) but some, including Ladybird, label it Syzygium australe",
+          "type": "identity",
+          "cites": [
+            "plantmark-superior",
+            "ladybird-superior"
+          ]
+        },
+        {
+          "text": "Marketed on strong psyllid resistance; the parent species Syzygium paniculatum is badly psyllid-prone and is described by a wholesale grower as probably the worst affected species",
+          "type": "pest",
+          "cites": [
+            "ladybird-superior",
+            "aps-paniculatum",
+            "downes-psyllid"
+          ]
+        },
+        {
+          "text": "Fluffy white to cream flowers in spring and summer are followed by edible purple berries; the species fruit is magenta, globose to ovoid, 15 to 25 mm, and can be used for jam",
+          "type": "flavour",
+          "cites": [
+            "plantmark-superior",
+            "plantnet-paniculatum",
+            "aps-paniculatum"
+          ]
+        },
+        {
+          "text": "Wild Syzygium paniculatum is a threatened species, listed Endangered in NSW and Vulnerable under the Commonwealth EPBC Act, restricted to scattered NSW coastal rainforest between the Taree area and Conjola",
+          "type": "origin",
+          "cites": [
+            "plantnet-paniculatum",
+            "aps-paniculatum"
+          ]
+        },
+        {
+          "text": "Dense conical shrub to roughly 2 to 4 m unclipped, with coppery-bronze new growth, used for hedging, screening and topiary",
+          "type": "uses",
+          "cites": [
+            "plantmark-superior",
+            "ladybird-superior"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "plantnet-paniculatum",
+          "name": "PlantNET (NSW Flora Online): Syzygium paniculatum",
+          "url": "https://plantnet.rbgsyd.nsw.gov.au/cgi-bin/NSWfl.pl?page=nswfl&lvl=sp&name=Syzygium~paniculatum",
+          "tier": "authoritative"
+        },
+        {
+          "id": "aps-paniculatum",
+          "name": "Australian Plants Society: Syzygium paniculatum",
+          "url": "https://resources.austplants.com.au/plant/syzygium-paniculatum/",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantmark-superior",
+          "name": "Plantmark Wholesale Nurseries: Syzygium paniculatum Superior",
+          "url": "https://www.plantmark.com.au/syzygium-paniculatum-superior",
+          "tier": "nursery"
+        },
+        {
+          "id": "ladybird-superior",
+          "name": "Ladybird Nursery: Lilly Pilly Superior 'Psyllid Free'",
+          "url": "https://ladybirdnursery.com.au/products/lilly-pilly-superior-syzygium-australe",
+          "tier": "nursery"
+        },
+        {
+          "id": "downes-psyllid",
+          "name": "Downes Wholesale Nursery: Syzygium Leaf Psyllid",
+          "url": "https://www.downesnursery.com.au/syzygium-leaf-psyllid/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "lilly-pilly-weeping": {
+      "slug": "lilly-pilly-weeping",
+      "species": "Lilly Pilly",
+      "variety": "Weeping",
+      "paragraphs": [
+        "Weeping lilly pilly is Waterhousea floribunda, listed as Syzygium floribundum in the NSW herbarium's PlantNET. It is a riverbank rainforest tree found from the Williams River near Dungog in New South Wales north to Mackay in Queensland, reaching up to 30 metres along streams, and it is one of the most widely planted ornamental lilly pillies thanks to its gently weeping habit and thin, wavy-edged leaves.",
+        "Trusses of fluffy white flowers in summer are followed by pale pink to greenish berries about 14 mm across, each holding one large seed, ripening from January to April. It is planted overwhelmingly for foliage and form, as a screen, windbreak or specimen, rather than for its fruit, and the seed is notable for germinating quickly, sometimes within ten days."
+      ],
+      "claims": [
+        {
+          "text": "Weeping lilly pilly is Waterhousea floribunda, synonym Syzygium floribundum",
+          "type": "identity",
+          "cites": [
+            "plantnet-floribundum",
+            "wikipedia-waterhousea"
+          ]
+        },
+        {
+          "text": "A rainforest tree of waterways from the Williams River, NSW, north to Mackay, Queensland, to 30 m tall",
+          "type": "origin",
+          "cites": [
+            "wikipedia-waterhousea"
+          ]
+        },
+        {
+          "text": "Weeping habit with thin, wavy-edged leaves; widely cultivated as an ornamental, screen and windbreak",
+          "type": "uses",
+          "cites": [
+            "gwa-floribunda",
+            "wikipedia-waterhousea"
+          ]
+        },
+        {
+          "text": "Fruit is a pale pink or greenish berry about 14 mm in diameter with one large seed, maturing January to April",
+          "type": "fruit",
+          "cites": [
+            "wikipedia-waterhousea",
+            "gwa-floribunda"
+          ]
+        },
+        {
+          "text": "Trusses of fluffy white flowers appear in summer",
+          "type": "season",
+          "cites": [
+            "gwa-floribunda"
+          ]
+        },
+        {
+          "text": "Seed germinates quickly, sometimes within ten days",
+          "type": "identity",
+          "cites": [
+            "wikipedia-waterhousea"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia-waterhousea",
+          "name": "Wikipedia, Waterhousea floribunda",
+          "url": "https://en.wikipedia.org/wiki/Waterhousea_floribunda",
+          "tier": "third_party"
+        },
+        {
+          "id": "plantnet-floribundum",
+          "name": "PlantNET (NSW Flora Online), Syzygium floribundum",
+          "url": "https://plantnet.rbgsyd.nsw.gov.au/cgi-bin/NSWfl.pl?page=nswfl&lvl=sp&name=Syzygium~floribundum",
+          "tier": "authoritative"
+        },
+        {
+          "id": "gwa-floribunda",
+          "name": "Gardening With Angus, Waterhousea floribunda",
+          "url": "https://gardeningwithangus.com.au/waterhousea-floribunda-weeping-lilly-pilly/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-11"
     }
   },
   "skipped": [
@@ -305,8 +2039,17 @@
     "lilly-pilly-baby-boomer-topiary-standards",
     "lilly-pilly-backyard-bliss",
     "lilly-pilly-backyard-bliss-standards",
+    "lilly-pilly-green-machine",
+    "lilly-pilly-long-island",
+    "lilly-pilly-minor-allyn-magic",
+    "lilly-pilly-minor-red-tip",
+    "lilly-pilly-pinnacle",
+    "lilly-pilly-plum-magic",
+    "lilly-pilly-purple-rain",
     "lilly-pilly-select",
     "lilly-pilly-select-form",
+    "lilly-pilly-silver-streaker",
+    "lilly-pilly-slim-jim",
     "lilly-pilly-standards",
     "lilly-pilly-straight-and-narrow"
   ]

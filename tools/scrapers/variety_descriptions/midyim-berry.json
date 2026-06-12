@@ -1,0 +1,226 @@
+{
+  "species_slug": "midyim-berry",
+  "schema_version": 1,
+  "varieties": {
+    "midyim-berry-blush": {
+      "slug": "midyim-berry-blush",
+      "species": "Midyim Berry",
+      "variety": "Blush",
+      "paragraphs": [
+        "'Blush' is a pink-flowered selection of midyim (Austromyrtus dulcis), the prized eastern Australian bush tucker berry. Where the wild species carries small white starry flowers, Blush bears soft pink blooms over dainty foliage that flushes red and pink on the new growth, then goes on to produce the same sweet, purple-speckled white berries as the standard form.",
+        "It is a low, compact, spreading form suited to an edible groundcover or low border. For collectors the fruit is the point: midyim berries rate among the best-flavoured native berries, soft and sweet with a gentle spicy note, and Blush adds ornamental flower and foliage colour without giving any of that up."
+      ],
+      "claims": [
+        {
+          "text": "'Blush' is a selection of Austromyrtus dulcis distinguished by pink flowers rather than the species' usual white",
+          "type": "identity",
+          "cites": [
+            "daleys-blush",
+            "rareplants-blush",
+            "apo-blush"
+          ]
+        },
+        {
+          "text": "New growth flushes red to pink on a low, compact, spreading plant suited to groundcover or low hedging",
+          "type": "habit",
+          "cites": [
+            "daleys-blush",
+            "rareplants-blush"
+          ]
+        },
+        {
+          "text": "It produces the same sweet, edible, speckled white berries as standard midyim",
+          "type": "flavour",
+          "cites": [
+            "daleys-blush",
+            "rareplants-blush",
+            "anbg-midyim"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "daleys-blush",
+          "name": "Daleys Fruit Tree Nursery: Midyim Berry Blush",
+          "url": "https://www.daleysfruit.com.au/Buy-Midyim-Berry-Blush-Austromyrtus-Dulcis-Blush.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "rareplants-blush",
+          "name": "Rareplants: Austromyrtus dulcis 'Blush' (Pink Midyim Berry)",
+          "url": "https://rareplants.net.au/shop/unusual-plants/austromyrtus-dulcis-blush/",
+          "tier": "nursery"
+        },
+        {
+          "id": "apo-blush",
+          "name": "Australian Plants Online: Austromyrtus Blush (pink midgem berry)",
+          "url": "https://www.australianplantsonline.com.au/austromyrtus-blush.html",
+          "tier": "nursery"
+        },
+        {
+          "id": "anbg-midyim",
+          "name": "Australian National Botanic Gardens, Growing Native Plants: Austromyrtus dulcis",
+          "url": "https://www.anbg.gov.au/gnp/gnp12/austromyrtus-dulcis.html",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "midyim-berry-copper-tops": {
+      "slug": "midyim-berry-copper-tops",
+      "species": "Midyim Berry",
+      "variety": "Copper Tops",
+      "paragraphs": [
+        "'Copper Tops' is a hybrid midyim, a cross between Austromyrtus dulcis and its close relative Austromyrtus tenuifolia, named for the coppery flush of its new growth over fine green foliage. It forms a hardy, mounding shrub with arching branches, staying around a metre tall or less while spreading wider, and carries masses of fluffy white flowers in late spring and early summer.",
+        "The autumn berries are grey-white in the same speckled style as regular midyim and keep the sweet, gently spicy flavour that made the species a bush tucker favourite (tasters report peppery, nutmeg and aniseed notes). The bronze-topped foliage means it doubles as an ornamental, and it responds well to pruning, so it is often grown as a low edible hedge."
+      ],
+      "claims": [
+        {
+          "text": "'Copper Tops' is a hybrid between Austromyrtus dulcis and Austromyrtus tenuifolia, named for the coppery colour of its new growth",
+          "type": "identity",
+          "cites": [
+            "gwa-coppertops",
+            "daleys-coppertops"
+          ]
+        },
+        {
+          "text": "It is a hardy spreading shrub with arching branches, about a metre tall or less and spreading wider",
+          "type": "habit",
+          "cites": [
+            "gwa-coppertops",
+            "daleys-coppertops"
+          ]
+        },
+        {
+          "text": "Masses of fluffy white flowers appear in late spring and early summer, followed by edible grey-white berries in autumn",
+          "type": "season",
+          "cites": [
+            "gwa-coppertops",
+            "daleys-coppertops"
+          ]
+        },
+        {
+          "text": "The berries are sweet with a spicy, peppery edge; grower reports mention nutmeg and aniseed notes",
+          "type": "flavour",
+          "cites": [
+            "gwa-coppertops",
+            "daleys-coppertops"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "gwa-coppertops",
+          "name": "Gardening With Angus: Austromyrtus dulcis x tenuifolia 'Copper Tops'",
+          "url": "https://gardeningwithangus.com.au/austromyrtus-dulcis-x-tenuifolia-copper-tops-midyim/",
+          "tier": "third_party"
+        },
+        {
+          "id": "daleys-coppertops",
+          "name": "Daleys Fruit Tree Nursery: Midyim Copper Tops",
+          "url": "https://www.daleysfruit.com.au/Midyim-Copper-Tops-Austromyrtus-dulcis-x-tenuifolia.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "midyim-berry-tucker-bush": {
+      "slug": "midyim-berry-tucker-bush",
+      "species": "Midyim Berry",
+      "variety": "Tucker Bush",
+      "paragraphs": [
+        "Midyim (Austromyrtus dulcis), also called midgen berry, is a low, spreading myrtle of sandy heaths and coastal forests from central New South Wales to Fraser Island in Queensland. It was a favourite bushfood of Aboriginal people along this coast, including around Moreton Bay, and remains one of the most highly rated native berries for eating straight from the bush. Small white starry flowers in spring and summer are followed by fruit from summer into autumn.",
+        "The berries are the drawcard: small, soft and white with blue-black speckles that give them a mauve cast, sweet with a faint spicy edge variously described as gingery, peppery or cinnamon-like. New growth flushes bronze to coppery before maturing to glossy deep green, so the plant works as an ornamental groundcover or low edible hedge as well as a berry bush. The Tucker Bush line is the straight species, the same plant found in the wild."
+      ],
+      "claims": [
+        {
+          "text": "Austromyrtus dulcis is a low spreading shrub native to sandy heath, scrub and forest from central New South Wales to Fraser Island, Queensland",
+          "type": "origin",
+          "cites": [
+            "anbg-midyim",
+            "wiki-midyim"
+          ]
+        },
+        {
+          "text": "The berries are white with small blue-black speckles giving a mauve appearance, sweet and edible, with several pale brown seeds",
+          "type": "identity",
+          "cites": [
+            "anbg-midyim",
+            "wiki-midyim"
+          ]
+        },
+        {
+          "text": "The flavour carries a mild spicy note, variously described as gingery, peppery or cinnamon-like",
+          "type": "flavour",
+          "cites": [
+            "wiki-midyim",
+            "daleys-midyim"
+          ]
+        },
+        {
+          "text": "Fruit ripens in summer and autumn, with the main crop in late summer and early autumn",
+          "type": "season",
+          "cites": [
+            "wiki-midyim",
+            "tuckerbush-midyim"
+          ]
+        },
+        {
+          "text": "Midyim was a traditional Aboriginal bushfood, a noted favourite around Moreton Bay",
+          "type": "uses",
+          "cites": [
+            "wiki-midyim",
+            "tuckerbush-midyim"
+          ]
+        },
+        {
+          "text": "New growth is coppery to bronze, maturing to glossy green, on a dense spreading plant",
+          "type": "habit",
+          "cites": [
+            "anbg-midyim",
+            "tuckerbush-midyim"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "anbg-midyim",
+          "name": "Australian National Botanic Gardens, Growing Native Plants: Austromyrtus dulcis",
+          "url": "https://www.anbg.gov.au/gnp/gnp12/austromyrtus-dulcis.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki-midyim",
+          "name": "Wikipedia: Austromyrtus dulcis",
+          "url": "https://en.wikipedia.org/wiki/Austromyrtus_dulcis",
+          "tier": "third_party"
+        },
+        {
+          "id": "tuckerbush-midyim",
+          "name": "Tucker Bush: Midyim Berries (Austromyrtus dulcis)",
+          "url": "https://tuckerbush.com.au/midyim-berries-austromyrtus-dulcis/",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-midyim",
+          "name": "Daleys Fruit Tree Nursery: Midyim Berry bushfood page",
+          "url": "https://www.daleysfruit.com.au/bushfood/midyim.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "midyim-berry-ruby"
+  ]
+}
