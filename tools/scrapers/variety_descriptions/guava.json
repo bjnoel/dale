@@ -2,6 +2,73 @@
   "species_slug": "guava",
   "schema_version": 1,
   "varieties": {
+    "guava-cherry": {
+      "slug": "guava-cherry",
+      "species": "Guava",
+      "variety": "Cherry",
+      "paragraphs": [
+        "Cherry guava is the common name for Psidium cattleyanum, a small evergreen tree in the myrtle family native to Brazil and closely related to common guava. It is grown for its small, round to oval fruit, only about 4 cm long, with thin skin that ripens deep red to purple (or yellow in the lemon, or Cattley, form) over juicy white flesh dotted with tiny seeds.",
+        "The flesh tastes sweet and strawberry like, which is why the tree is also called strawberry guava. Fruit can be eaten fresh, skin and all, or made into jam. A vigorous, free seeding species, it is prized by collectors but also notorious as the most invasive plant in Hawaii and a recognised environmental weed in parts of Australia, so its spreading habit is worth keeping in mind."
+      ],
+      "claims": [
+        {
+          "text": "Cherry guava is Psidium cattleyanum, a small myrtle family tree native to Brazil and closely related to common guava.",
+          "type": "origin",
+          "cites": [
+            "wiki-cattleyanum",
+            "ifas-st529"
+          ]
+        },
+        {
+          "text": "It bears small round to oval fruit about 4 cm long, with thin skin ripening red to purple (or yellow in the lemon form) over white flesh with tiny seeds.",
+          "type": "appearance",
+          "cites": [
+            "wiki-cattleyanum",
+            "ifas-st529"
+          ]
+        },
+        {
+          "text": "The flesh is sweet with a strawberry like flavour, giving the alternative name strawberry guava.",
+          "type": "flavour",
+          "cites": [
+            "wiki-cattleyanum",
+            "ifas-st529"
+          ]
+        },
+        {
+          "text": "It is a vigorous self seeding species, considered the most invasive plant in Hawaii and a recognised environmental weed in parts of Australia.",
+          "type": "growing",
+          "cites": [
+            "wiki-cattleyanum",
+            "nsw-weedwise-cherry"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-cattleyanum",
+          "name": "Wikipedia: Psidium cattleyanum",
+          "url": "https://en.wikipedia.org/wiki/Psidium_cattleyanum",
+          "tier": "third_party"
+        },
+        {
+          "id": "ifas-st529",
+          "name": "UF/IFAS ENH-687: Psidium cattleianum Strawberry Guava",
+          "url": "https://ask.ifas.ufl.edu/publication/ST529",
+          "tier": "authoritative"
+        },
+        {
+          "id": "nsw-weedwise-cherry",
+          "name": "NSW WeedWise: Cherry guava",
+          "url": "https://weeds.dpi.nsw.gov.au/Weed/Cherryguava",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.92,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "guava-china-pear": {
       "slug": "guava-china-pear",
       "species": "Guava",
@@ -106,6 +173,67 @@
       "confidence_score": 0.85,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "guava-giant-thai": {
+      "slug": "guava-giant-thai",
+      "species": "Guava",
+      "variety": "Giant Thai",
+      "paragraphs": [
+        "Giant Thai is a large fruited Thai white guava, the Bangkok Giant White type, that originated in Thailand. Its main draw is sheer size, with fruit often as big as a tennis ball or larger, carrying green skin that may be bumpy or smooth over crisp, pale flesh.",
+        "The white flesh is firm, crunchy and relatively low in seeds, drier and only mildly sweet compared with soft pink guavas. It is often picked slightly underripe and eaten crisp, sliced like an apple, sometimes dipped in the chilli, sugar and salt mix popular across Southeast Asia."
+      ],
+      "claims": [
+        {
+          "text": "Giant Thai is a large fruited Thai white guava (the Bangkok Giant White type) originating in Thailand.",
+          "type": "origin",
+          "cites": [
+            "specialtyproduce-bangkok-giant",
+            "epicgardening-thaiwhite"
+          ]
+        },
+        {
+          "text": "The fruit are very large, often the size of a tennis ball or bigger, with green skin and pale, crisp flesh.",
+          "type": "appearance",
+          "cites": [
+            "specialtyproduce-bangkok-giant",
+            "epicgardening-thaiwhite"
+          ]
+        },
+        {
+          "text": "The white flesh is firm, crunchy and low in seeds, drier and only mildly sweet compared with pink guavas.",
+          "type": "flavour",
+          "cites": [
+            "specialtyproduce-bangkok-giant",
+            "epicgardening-thaiwhite"
+          ]
+        },
+        {
+          "text": "It is often eaten slightly underripe and crunchy, sliced like an apple, sometimes with a chilli, sugar and salt dip.",
+          "type": "use",
+          "cites": [
+            "specialtyproduce-bangkok-giant",
+            "epicgardening-thaiwhite"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialtyproduce-bangkok-giant",
+          "name": "Specialty Produce: Bangkok Giant White Guavas",
+          "url": "https://specialtyproduce.com/produce/Bangkok_Giant_White_Guavas_25896.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "epicgardening-thaiwhite",
+          "name": "Epic Gardening: Thai White Guava",
+          "url": "https://www.epicgardening.com/thai-white-guava/",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "guava-hawaiian": {
       "slug": "guava-hawaiian",
@@ -219,6 +347,83 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "guava-malay-red": {
+      "slug": "guava-malay-red",
+      "species": "Guava",
+      "variety": "Malay Red",
+      "paragraphs": [
+        "Malay Red, also sold as Red Malaysian guava, is an ornamental selection of the common guava (Psidium guajava). It is grown as much for its looks as its fruit, carrying burgundy to deep red foliage and pink blooms that stand out against the plain white flowers of an ordinary guava.",
+        "The medium, rounded fruit ripens to a burgundy or purple toned skin over soft, sweet pink to red flesh, a colour combination that few guavas show. With its colourful leaves and flowers it doubles as a landscape feature, and is grown mostly in home gardens rather than as a commercial crop."
+      ],
+      "claims": [
+        {
+          "text": "Malay Red is an ornamental selection of common guava (Psidium guajava), also sold as Red Malaysian guava.",
+          "type": "origin",
+          "cites": [
+            "specialty-redmalaysian",
+            "tradewinds-redmalaysian"
+          ]
+        },
+        {
+          "text": "It carries burgundy to deep red foliage and pink flowers, unlike the white flowers of an ordinary guava.",
+          "type": "appearance",
+          "cites": [
+            "specialty-redmalaysian",
+            "tradewinds-redmalaysian",
+            "daleys-malayred"
+          ]
+        },
+        {
+          "text": "The rounded fruit ripens to a burgundy or purple toned skin over soft pink to red flesh.",
+          "type": "appearance",
+          "cites": [
+            "specialty-redmalaysian",
+            "tradewinds-redmalaysian",
+            "daleys-malayred"
+          ]
+        },
+        {
+          "text": "The flesh is sweet.",
+          "type": "flavour",
+          "cites": [
+            "specialty-redmalaysian",
+            "tradewinds-redmalaysian"
+          ]
+        },
+        {
+          "text": "It is valued as an ornamental landscape tree and grown in home gardens rather than commercially.",
+          "type": "use",
+          "cites": [
+            "specialty-redmalaysian",
+            "tradewinds-redmalaysian"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty-redmalaysian",
+          "name": "Specialty Produce, Red Malaysian Guavas",
+          "url": "https://specialtyproduce.com/produce/Red_Malaysian_Guavas_11799.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "tradewinds-redmalaysian",
+          "name": "Tradewinds Fruit, Red Malaysian Guava",
+          "url": "https://www.tradewindsfruit.com/content/guava-red-malaysian.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-malayred",
+          "name": "Daleys Fruit, Guava Malay Red",
+          "url": "https://www.daleysfruit.com.au/buy/guava-malay-red-fruit-tree-psidium-guajava.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
     "guava-mexican-cream": {
       "slug": "guava-mexican-cream",
       "species": "Guava",
@@ -279,6 +484,186 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "guava-narrow-leaf": {
+      "slug": "guava-narrow-leaf",
+      "species": "Guava",
+      "variety": "Narrow Leaf",
+      "paragraphs": [
+        "Narrow Leaf guava is Psidium striatulum, a rare South American guava native to Bolivia, Brazil, Guyana, Suriname and Venezuela. As the name suggests, it is distinguished by slender, narrow leaves that set it apart from the broad leaved common guava.",
+        "It is a shrub or small tree that produces small, round yellow fruit with sweet flesh and a flavour much like common guava, good eaten fresh or made into jams. Its rarity and fine leaved habit make it more of a collector's guava than a commercial crop."
+      ],
+      "claims": [
+        {
+          "text": "Narrow Leaf guava is Psidium striatulum, a rare South American guava native to Bolivia, Brazil, Guyana, Suriname and Venezuela.",
+          "type": "origin",
+          "cites": [
+            "wiki-striatulum",
+            "rosscreek-narrowleaf"
+          ]
+        },
+        {
+          "text": "It is named for its slender, narrow leaves, unlike the broad leaves of common guava.",
+          "type": "appearance",
+          "cites": [
+            "wiki-striatulum",
+            "rosscreek-narrowleaf"
+          ]
+        },
+        {
+          "text": "The plant produces small round yellow fruit with sweet flesh and a flavour similar to common guava, eaten fresh or made into jams.",
+          "type": "flavour",
+          "cites": [
+            "wiki-striatulum",
+            "rosscreek-narrowleaf"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wiki-striatulum",
+          "name": "Wikipedia: Psidium striatulum",
+          "url": "https://en.wikipedia.org/wiki/Psidium_striatulum",
+          "tier": "third_party"
+        },
+        {
+          "id": "rosscreek-narrowleaf",
+          "name": "Ross Creek Tropicals: Narrow Leaf guava (Psidium striatulum)",
+          "url": "https://www.rosscreektropicals.com.au/products/guava-narrow-leaf",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "guava-pearl-white": {
+      "slug": "guava-pearl-white",
+      "species": "Guava",
+      "variety": "Pearl White",
+      "paragraphs": [
+        "Pearl guava, sold here as Pearl White, is a Taiwanese white fleshed selection of common guava. Taiwan's agriculture ministry singles it out for sweeter, more aromatic fruit and a more supple texture than older types. White fleshed guavas like it make up the bulk of Taiwan's guava crop, which is harvested year round with peak supply from November to February.",
+        "The pale flesh is crisp and refreshing, so the fruit is usually eaten fresh and out of hand as a crunchy snack rather than a soft, pulpy dessert guava. That dense, sweet, fragrant quality is what has made Pearl one of Taiwan's signature eating guavas."
+      ],
+      "claims": [
+        {
+          "text": "Pearl guava (sold as Pearl White) is a Taiwanese white fleshed selection of common guava.",
+          "type": "origin",
+          "cites": [
+            "moa-taiwan-guava",
+            "specialtyproduce-pearl"
+          ]
+        },
+        {
+          "text": "It is noted for sweeter, more aromatic fruit and a more supple, crisp texture than older guava types.",
+          "type": "flavour",
+          "cites": [
+            "moa-taiwan-guava",
+            "specialtyproduce-pearl"
+          ]
+        },
+        {
+          "text": "Taiwan's guava crop fruits year round with peak supply November to February.",
+          "type": "season",
+          "cites": [
+            "moa-taiwan-guava"
+          ]
+        },
+        {
+          "text": "The crisp flesh is typically eaten fresh and out of hand as a crunchy snack.",
+          "type": "use",
+          "cites": [
+            "moa-taiwan-guava",
+            "specialtyproduce-pearl"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "moa-taiwan-guava",
+          "name": "Taiwan Ministry of Agriculture: Guava",
+          "url": "https://eng.moa.gov.tw/ws.php?id=9440",
+          "tier": "authoritative"
+        },
+        {
+          "id": "specialtyproduce-pearl",
+          "name": "Specialty Produce: Pearl Guavas",
+          "url": "https://specialtyproduce.com/produce/Pearl_Guavas_24967.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "guava-purple-malay": {
+      "slug": "guava-purple-malay",
+      "species": "Guava",
+      "variety": "Purple Malay",
+      "paragraphs": [
+        "Purple Malay, listed by some nurseries as Purple Malaysian guava, is an ornamental form of the common guava (Psidium guajava). The plant is valued for its colourful, deep red to purple foliage and pink flowers, which set it apart from the white blooms of a standard guava.",
+        "Its round fruit ripens to a maroon or purple toned skin over soft, sweet pink to cream flesh. The pulp is mild, floral and aromatic rather than sharp, suiting it to eating fresh. Like other Malaysian red and purple guavas, it is grown as much for its ornamental colour as for the crop."
+      ],
+      "claims": [
+        {
+          "text": "Purple Malay (Purple Malaysian guava) is an ornamental form of common guava (Psidium guajava).",
+          "type": "origin",
+          "cites": [
+            "specialty-redmalaysian",
+            "sarvodaya-purplemalaysian"
+          ]
+        },
+        {
+          "text": "The round fruit has maroon to purple toned skin with soft pink to cream flesh.",
+          "type": "appearance",
+          "cites": [
+            "specialty-redmalaysian",
+            "sarvodaya-purplemalaysian"
+          ]
+        },
+        {
+          "text": "The flesh is sweet, mild and floral or aromatic rather than sharp.",
+          "type": "flavour",
+          "cites": [
+            "specialty-redmalaysian",
+            "sarvodaya-purplemalaysian"
+          ]
+        },
+        {
+          "text": "It is grown as an ornamental for its deep red to purple foliage and pink flowers.",
+          "type": "use",
+          "cites": [
+            "specialty-redmalaysian",
+            "tradewinds-redmalaysian"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "specialty-redmalaysian",
+          "name": "Specialty Produce, Red Malaysian Guavas",
+          "url": "https://specialtyproduce.com/produce/Red_Malaysian_Guavas_11799.php",
+          "tier": "third_party"
+        },
+        {
+          "id": "sarvodaya-purplemalaysian",
+          "name": "Sarvodaya Institute, Purple Malaysian Guava",
+          "url": "https://sarvodayainstitute.org/products/all-purple-guava",
+          "tier": "nursery"
+        },
+        {
+          "id": "tradewinds-redmalaysian",
+          "name": "Tradewinds Fruit, Red Malaysian Guava",
+          "url": "https://www.tradewindsfruit.com/content/guava-red-malaysian.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-11"
     },
     "guava-red-cherry": {
       "slug": "guava-red-cherry",
@@ -534,7 +919,22 @@
     }
   },
   "skipped": [
+    "guava-amman",
+    "guava-beetroot",
+    "guava-brazilian",
+    "guava-hawaiian-ruby",
+    "guava-hawaiian-supreme",
+    "guava-indian",
+    "guava-indian-white",
+    "guava-perfume",
     "guava-pineapple",
-    "guava-thai-pink"
+    "guava-pink",
+    "guava-purple",
+    "guava-red-cherry-strawberry",
+    "guava-thai",
+    "guava-thai-indian",
+    "guava-thai-pink",
+    "guava-tropical-hawaiian-pink-flesh",
+    "guava-white"
   ]
 }
