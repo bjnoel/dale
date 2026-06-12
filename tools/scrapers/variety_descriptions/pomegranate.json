@@ -364,6 +364,235 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pomegranate-griffith": {
+      "slug": "pomegranate-griffith",
+      "species": "Pomegranate",
+      "variety": "Griffith",
+      "paragraphs": [
+        "In Rare Fruit Council trial notes from a Western Australian planting (Medina Research Centre, reported 1996), Griffith showed claret red skin with deep red, richly flavoured grains that lean slightly too acidic, and was rated a fairly good variety. The trial grew it from cuttings of leading pomegranate varieties supplied by Dr F R Hobman of the Loxton Research Centre in South Australia.",
+        "Australian nurseries list the cultivar today under the close name variants Griffith Red and Griffiths Red, describing deep red to purple skin and deep crimson arils with a sweet tangy flavour, small tender seeds and a rind of medium thickness."
+      ],
+      "claims": [
+        {
+          "text": "Claret red skin with deep red grains in the Western Australian trial, rich flavour but slightly too acidic, rated a fairly good variety.",
+          "type": "flavour",
+          "cites": [
+            "rfca"
+          ]
+        },
+        {
+          "text": "Trialled in WA from cuttings of leading varieties supplied by Dr F R Hobman, Loxton Research Centre, South Australia.",
+          "type": "origin",
+          "cites": [
+            "rfca"
+          ]
+        },
+        {
+          "text": "Nursery listings describe deep red to purple skin and deep crimson arils with a sweet tangy flavour and small tender seeds.",
+          "type": "appearance",
+          "cites": [
+            "fruitopia"
+          ]
+        },
+        {
+          "text": "Sold by Australian nurseries under the names Griffith Red and Griffiths Red.",
+          "type": "naming",
+          "cites": [
+            "ladybird",
+            "fruitopia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council of Australia Archives, Pomegranate Variety Research Results (J R Burt, Agriculture WA, July 1996)",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Pomegranate/PomVarieties7-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "ladybird",
+          "name": "Ladybird Nursery, Pomegranate Griffith Red",
+          "url": "https://www.ladybirdnursery.com.au/products/pomegranate-griffith-red",
+          "tier": "nursery"
+        },
+        {
+          "id": "fruitopia",
+          "name": "Fruitopia Nursery, Pomegranate Griffiths Red",
+          "url": "https://fruitopianursery.com.au/products/pomegranate-griffiths-red",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
+    "pomegranate-griffith-red": {
+      "slug": "pomegranate-griffith-red",
+      "species": "Pomegranate",
+      "variety": "Griffith Red",
+      "paragraphs": [
+        "Griffith Red is the nursery name for the Griffith pomegranate documented in Rare Fruit Council trial notes from Western Australia (reported 1996), where it showed claret red skin and deep red, richly flavoured grains that lean slightly too acidic, and was rated a fairly good variety. That trial grew it from cuttings of leading varieties supplied by Dr F R Hobman of the Loxton Research Centre, South Australia.",
+        "Australian nursery listings describe the fruit as having deep red to purple skin and juicy, deep crimson arils with a sweet tangy flavour, small tender seeds and a rind of medium thickness."
+      ],
+      "claims": [
+        {
+          "text": "In the Western Australian trial, Griffith showed claret red skin with deep red, richly flavoured grains that lean slightly too acidic.",
+          "type": "flavour",
+          "cites": [
+            "rfca"
+          ]
+        },
+        {
+          "text": "Trialled in WA from cuttings of leading varieties supplied by Dr F R Hobman, Loxton Research Centre, South Australia.",
+          "type": "origin",
+          "cites": [
+            "rfca"
+          ]
+        },
+        {
+          "text": "Nursery listings describe deep red to purple skin and juicy deep crimson arils with a sweet tangy flavour.",
+          "type": "appearance",
+          "cites": [
+            "ladybird",
+            "fruitopia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council of Australia Archives, Pomegranate Variety Research Results (J R Burt, Agriculture WA, July 1996)",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Pomegranate/PomVarieties7-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "ladybird",
+          "name": "Ladybird Nursery, Pomegranate Griffith Red",
+          "url": "https://www.ladybirdnursery.com.au/products/pomegranate-griffith-red",
+          "tier": "nursery"
+        },
+        {
+          "id": "fruitopia",
+          "name": "Fruitopia Nursery, Pomegranate Griffiths Red",
+          "url": "https://fruitopianursery.com.au/products/pomegranate-griffiths-red",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
+    "pomegranate-griffiths-red": {
+      "slug": "pomegranate-griffiths-red",
+      "species": "Pomegranate",
+      "variety": "Griffiths Red",
+      "paragraphs": [
+        "Griffiths Red is a nursery spelling of the Griffith pomegranate recorded in Rare Fruit Council trial notes from Western Australia (reported 1996), where Griffith showed claret red skin with deep red, richly flavoured grains that lean slightly too acidic and earned a fairly good rating. The trial used cuttings of leading varieties from Dr F R Hobman, Loxton Research Centre, South Australia.",
+        "Specialist fruit nurseries list Griffiths Red with deep red to purple glossy skin and deep crimson arils carrying a sweet tangy flavour, with small tender seeds and a rind of medium thickness."
+      ],
+      "claims": [
+        {
+          "text": "In the Western Australian trial, Griffith showed claret red skin with deep red grains, rich flavour but slightly too acidic, rated a fairly good variety.",
+          "type": "flavour",
+          "cites": [
+            "rfca"
+          ]
+        },
+        {
+          "text": "Trialled in WA from cuttings of leading varieties supplied by Dr F R Hobman, Loxton Research Centre, South Australia.",
+          "type": "origin",
+          "cites": [
+            "rfca"
+          ]
+        },
+        {
+          "text": "Listed by specialist nurseries with deep red to purple glossy skin, deep crimson arils, a sweet tangy flavour and small tender seeds.",
+          "type": "appearance",
+          "cites": [
+            "fruitopia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca",
+          "name": "Rare Fruit Council of Australia Archives, Pomegranate Variety Research Results (J R Burt, Agriculture WA, July 1996)",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Pomegranate/PomVarieties7-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "fruitopia",
+          "name": "Fruitopia Nursery, Pomegranate Griffiths Red",
+          "url": "https://fruitopianursery.com.au/products/pomegranate-griffiths-red",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
+    "pomegranate-gulosha-azerbaijani": {
+      "slug": "pomegranate-gulosha-azerbaijani",
+      "species": "Pomegranate",
+      "variety": "Gulosha Azerbaijani",
+      "paragraphs": [
+        "Gulosha Azerbaijani is one of the Gulosha pomegranates associated with Azerbaijan in the Caucasus. It reached Australian growers through variety research, with cuttings of leading varieties from the Loxton Research Centre in South Australia trialled in Western Australia through the 1990s. The Loxton records list creamy red skin and bright red juice.",
+        "Australian nurseries describe the fruit as medium to large and slightly elongated, with deep red, juicy arils that balance sweetness and acidity rather than tasting flatly sweet. It is grown for fresh eating and juice, and like Gulosha Rosavaya it featured among the leading varieties in the Australian trials."
+      ],
+      "claims": [
+        {
+          "text": "A Gulosha pomegranate associated with Azerbaijan, trialled in Australia from Loxton Research Centre stock.",
+          "type": "origin",
+          "cites": [
+            "rfca-pomvar",
+            "daleys-azer"
+          ]
+        },
+        {
+          "text": "Loxton trial records list creamy red skin and bright red juice.",
+          "type": "appearance",
+          "cites": [
+            "rfca-pomvar"
+          ]
+        },
+        {
+          "text": "Medium to large, slightly elongated fruit with deep red, juicy arils balancing sweetness and acidity.",
+          "type": "flavour",
+          "cites": [
+            "daleys-azer"
+          ]
+        },
+        {
+          "text": "Gulosha Azerbaijani and Gulosha Rosavaya both appear among the leading varieties in the Australian trials.",
+          "type": "naming",
+          "cites": [
+            "rfca-pomvar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-pomvar",
+          "name": "RFCA Archives, Pomegranate Variety Research Results (J R Burt, Agriculture WA, July 1996)",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Pomegranate/PomVarieties7-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "daleys-azer",
+          "name": "Daleys Fruit, Pomegranate Azerbaijani",
+          "url": "https://www.daleysfruit.com.au/buy/pomegranate-azerbaijani-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
     "pomegranate-jodhpur-red": {
       "slug": "pomegranate-jodhpur-red",
       "species": "Pomegranate",
@@ -565,6 +794,66 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pomegranate-nana": {
+      "slug": "pomegranate-nana",
+      "species": "Pomegranate",
+      "variety": "Nana",
+      "paragraphs": [
+        "Nana is the classic dwarf pomegranate (Punica granatum var. nana), a naturally compact form that stays around 60 cm to 1.2 metres tall and wide, with flowers and fruit scaled down to match. The shrub carries narrow leaves and showy orange to red, trumpet shaped flowers through the warm months.",
+        "It sets miniature pomegranates only a few centimetres across. The fruit is edible but smaller and less juicy than full sized cultivars, so it is valued more for ornament than the table. Nana suits pots and low borders, moves easily indoors and out as a container plant, and is a favourite pomegranate for bonsai. It flowers and fruits readily even when young, which is much of its appeal as a decorative shrub."
+      ],
+      "claims": [
+        {
+          "text": "Nana is a naturally compact dwarf form of Punica granatum, growing about 60 cm to 1.2 metres tall and wide.",
+          "type": "appearance",
+          "cites": [
+            "mbg-nana",
+            "gardenia-nana"
+          ]
+        },
+        {
+          "text": "Carries showy orange to red flowers and miniature fruit only a few centimetres across.",
+          "type": "appearance",
+          "cites": [
+            "mbg-nana",
+            "gardenia-nana"
+          ]
+        },
+        {
+          "text": "The miniature fruit is edible but smaller and less juicy than commercial varieties, valued mainly as ornament.",
+          "type": "flavour",
+          "cites": [
+            "gardenia-nana"
+          ]
+        },
+        {
+          "text": "Widely grown as a container plant and a good species to use as a bonsai.",
+          "type": "uses",
+          "cites": [
+            "mbg-nana",
+            "gardenia-nana"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mbg-nana",
+          "name": "Missouri Botanical Garden Plant Finder, Punica granatum var. nana",
+          "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?taxonid=256850&isprofile=0",
+          "tier": "third_party"
+        },
+        {
+          "id": "gardenia-nana",
+          "name": "Gardenia.net, Punica granatum var. nana (Dwarf Pomegranate)",
+          "url": "https://www.gardenia.net/plant/punica-granatum-pomegranate-nana",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
     "pomegranate-parfianka": {
       "slug": "pomegranate-parfianka",
       "species": "Pomegranate",
@@ -645,6 +934,57 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "pomegranate-velles": {
+      "slug": "pomegranate-velles",
+      "species": "Pomegranate",
+      "variety": "Velles",
+      "paragraphs": [
+        "Velles is the Australian nursery spelling of Veles, a pomegranate that featured among the leading varieties in Australian variety research using germplasm from the Loxton Research Centre in South Australia. The fruit stands out for its squarish shape and pinkish red skin, an unusual look among pomegranates.",
+        "The pulp is juicy with a rich flavour, but it leans noticeably tart and acidic next to the sweeter Gulosha selections, which is why the trial notes flagged it as possibly best suited to processing and juice rather than fresh eating."
+      ],
+      "claims": [
+        {
+          "text": "Velles is the Australian catalogue spelling of the pomegranate Veles, which appeared among varieties trialled in Australia from Loxton Research Centre stock.",
+          "type": "naming",
+          "cites": [
+            "rfca-pomvar",
+            "ladybird-velles"
+          ]
+        },
+        {
+          "text": "The fruit has a squarish shape and pinkish red skin.",
+          "type": "appearance",
+          "cites": [
+            "rfca-pomvar"
+          ]
+        },
+        {
+          "text": "The pulp is juicy with a rich but quite tart and acidic flavour, and the trial notes suggested it may suit processing.",
+          "type": "flavour",
+          "cites": [
+            "rfca-pomvar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "rfca-pomvar",
+          "name": "RFCA Archives, Pomegranate Variety Research Results (J R Burt, Agriculture WA, July 1996)",
+          "url": "https://www.rfcarchives.org.au/Next/Fruits/Pomegranate/PomVarieties7-96.htm",
+          "tier": "owned"
+        },
+        {
+          "id": "ladybird-velles",
+          "name": "Ladybird Nursery, Pomegranate Velles",
+          "url": "https://www.ladybirdnursery.com.au/products/pomegranate-velles",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
     "pomegranate-wonderful": {
       "slug": "pomegranate-wonderful",
       "species": "Pomegranate",
@@ -707,6 +1047,11 @@
   },
   "skipped": [
     "pomegranate-azerbaijani-fruit-tree",
+    "pomegranate-ben-hur-grove-size",
+    "pomegranate-black",
+    "pomegranate-california-wonderful",
+    "pomegranate-californian-wonderful-06",
+    "pomegranate-cypress-hill",
     "pomegranate-fruit-plant",
     "pomegranate-midnight-velvet",
     "pomegranate-parafanka",
@@ -714,6 +1059,8 @@
     "pomegranate-red-velvet-tm",
     "pomegranate-rosavaya",
     "pomegranate-rosavoya",
+    "pomegranate-sheperd",
+    "pomegranate-sheperd-s-special",
     "pomegranate-spanish",
     "pomegranate-wonderful-fruit-tree"
   ]

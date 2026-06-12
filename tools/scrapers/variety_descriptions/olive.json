@@ -143,6 +143,77 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "olive-arecuzzo": {
+      "slug": "olive-arecuzzo",
+      "species": "Olive",
+      "variety": "Arecuzzo",
+      "paragraphs": [
+        "Arecuzzo earned its reputation in Australia through the RIRDC olive variety assessment at Buaraba in south east Queensland, where 60 varieties were trialled in a warm winter, summer rainfall climate quite unlike the Mediterranean conditions most olives prefer. It stood out as one of just ten varieties showing an early start to bearing and relatively high productivity after three years, which makes it of particular interest to growers in humid, low chill districts.",
+        "In that trial it was harvested in late April, placing it mid to late season, and it was not among the handful of varieties with the highest oil content. Australian nurseries offer it as a hardy, productive choice with small to medium fruit that can be pickled as well as pressed."
+      ],
+      "claims": [
+        {
+          "text": "Trialled among 60 varieties in the RIRDC olive variety assessment for subtropical summer rainfall regions at Buaraba, south east Queensland",
+          "type": "origin",
+          "cites": [
+            "agrifutures-03021",
+            "rirdc-03021-pdf"
+          ]
+        },
+        {
+          "text": "One of ten varieties showing an early start to bearing and relatively high productivity after three years in the trial",
+          "type": "growing",
+          "cites": [
+            "rirdc-03021-pdf"
+          ]
+        },
+        {
+          "text": "Harvested in late April in the trial, mid to late within the trial's harvest window",
+          "type": "season",
+          "cites": [
+            "rirdc-03021-pdf"
+          ]
+        },
+        {
+          "text": "Not among the trial's highest oil content varieties",
+          "type": "uses",
+          "cites": [
+            "rirdc-03021-pdf"
+          ]
+        },
+        {
+          "text": "Offered by Australian nurseries with small to medium fruit that can be pickled",
+          "type": "appearance",
+          "cites": [
+            "daleys-arecuzzo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "agrifutures-03021",
+          "name": "AgriFutures Australia (RIRDC), Olive variety assessment for subtropical summer rainfall regions (Pub. 03-021), publication page",
+          "url": "https://agrifutures.com.au/product/olive-variety-assessment-for-subtropical-summer-rainfall-regions/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "rirdc-03021-pdf",
+          "name": "RIRDC Publication 03-021 full report (O'Sullivan, 2003), hosted by Olives Australia",
+          "url": "https://www.olive-ltd.com.au/uploads/1/1/9/2/11924769/03-0211.pdf",
+          "tier": "authoritative"
+        },
+        {
+          "id": "daleys-arecuzzo",
+          "name": "Daleys Fruit Tree Nursery, Olive Arecuzzo",
+          "url": "https://www.daleysfruit.com.au/Olive-Arecuzzo-Olea-europaea.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
     "olive-ascolana-tenera": {
       "slug": "olive-ascolana-tenera",
       "species": "Olive",
@@ -497,6 +568,87 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "olive-helena": {
+      "slug": "olive-helena",
+      "species": "Olive",
+      "variety": "Helena",
+      "paragraphs": [
+        "The Helena olive traces to St Helena Island, a colonial penal settlement in Moreton Bay, Queensland, where prisoners grew olives in the 1800s. Oil from the island's fruit is credited with winning Australia's first international agricultural award, an early milestone for the local olive industry. The selection is widely regarded as a close match to the Italian oil cultivar Frantoio, so it is effectively a heritage Australian name for a Frantoio type.",
+        "It is a dual purpose cultivar carrying small to medium fruit (roughly 2g to 4g) that is rich in oil but also suits pickling. Growers value it as fast growing with a slender, upright habit, and it has built a strong reputation in subtropical south east Queensland where many classic Mediterranean varieties struggle. It is now widely sold simply as the St Helena olive."
+      ],
+      "claims": [
+        {
+          "text": "Originated from olives grown at the St Helena Island penal settlement in Moreton Bay, Queensland.",
+          "type": "origin",
+          "cites": [
+            "sherman",
+            "australis"
+          ]
+        },
+        {
+          "text": "Oil from the island's fruit is credited with winning Australia's first international agricultural award.",
+          "type": "history",
+          "cites": [
+            "sherman",
+            "australis"
+          ]
+        },
+        {
+          "text": "The selection is regarded as a close match to the Italian cultivar Frantoio.",
+          "type": "naming",
+          "cites": [
+            "sherman",
+            "australis"
+          ]
+        },
+        {
+          "text": "Dual purpose with small to medium fruit (about 2g to 4g), used for oil and pickling.",
+          "type": "uses",
+          "cites": [
+            "daleys",
+            "australis"
+          ]
+        },
+        {
+          "text": "Fast growing with a slender upright habit and well suited to subtropical south east Queensland.",
+          "type": "growing",
+          "cites": [
+            "backyard",
+            "sherman"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sherman",
+          "name": "Sherman's Foods: The Remarkable Story of the Helena",
+          "url": "https://www.shermanfoods.com.au/news/the-remarkable-story-of-the-helena-australias-first-international-agriculture-winner",
+          "tier": "third_party"
+        },
+        {
+          "id": "australis",
+          "name": "Australis Plants olive varieties",
+          "url": "https://australisplants.com/olives/varieties.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery: Helena Olive",
+          "url": "https://www.daleysfruit.com.au/buy/olive-helena-fruit-trees-olea-europea.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "backyard",
+          "name": "Aus Plant Nursery (Backyard Treats): Helena Olive",
+          "url": "https://www.ausplantnursery.com.au/backyard_treats/variety_helena_olive.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.88,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
     "olive-kalamata": {
       "slug": "olive-kalamata",
       "species": "Olive",
@@ -556,6 +708,79 @@
       "confidence_score": 0.93,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "olive-kolossus-kalamata": {
+      "slug": "olive-kolossus-kalamata",
+      "species": "Olive",
+      "variety": "Kolossus Kalamata",
+      "paragraphs": [
+        "Kolossus Kalamata is a large fruited Kalamata type table olive. The parent Kalamata comes from Greece, but this selection was developed in Victoria by Elaeocarpus Olive Estate, which holds the OLIVE KOLOSSUS trademark in Australia, and it is sold under Plant Breeder's Rights.",
+        "Its drawcard is fruit size. The olives are much larger than true Kalamata, with a similar dark colour and shape, and are prized for table use and pickling when black. The selection is also reported to be more cold tolerant than true Kalamata while still performing in warmer districts. It is self pollinating but tends to crop better when planted with other varieties."
+      ],
+      "claims": [
+        {
+          "text": "Selection developed in Victoria by Elaeocarpus Olive Estate, which holds the OLIVE KOLOSSUS trademark, and sold under PBR",
+          "type": "naming",
+          "cites": [
+            "trademarkelite",
+            "diggers"
+          ]
+        },
+        {
+          "text": "Fruit is much larger than true Kalamata, with similar dark colour and shape",
+          "type": "appearance",
+          "cites": [
+            "diggers",
+            "daleys-kolossus"
+          ]
+        },
+        {
+          "text": "A table olive used for pickling when black",
+          "type": "uses",
+          "cites": [
+            "daleys-kolossus"
+          ]
+        },
+        {
+          "text": "Reported to be more cold tolerant than true Kalamata",
+          "type": "growing",
+          "cites": [
+            "diggers",
+            "daleys-kolossus"
+          ]
+        },
+        {
+          "text": "Self pollinating but crops better with other varieties nearby",
+          "type": "pollination",
+          "cites": [
+            "daleys-kolossus"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "trademarkelite",
+          "name": "OLIVE KOLOSSUS trademark (Elaeocarpus Olive Estate Pty Ltd), IP Australia record via TrademarkElite",
+          "url": "https://www.trademarkelite.com/australia/trademark/trademark-detail/1351499/OLIVE-KOLOSSUS",
+          "tier": "third_party"
+        },
+        {
+          "id": "diggers",
+          "name": "The Diggers Club, Olive Kolossus Kalamata PBR",
+          "url": "https://www.diggers.com.au/products/olive-kolossus-kalamata-pbr",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys-kolossus",
+          "name": "Daleys Fruit Tree Nursery, Olive Kolossus Kalamata",
+          "url": "https://www.daleysfruit.com.au/buy/olive-jumbo-kalamata-tree.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "generated_date": "2026-06-11",
+      "verified": true
     },
     "olive-koroneiki": {
       "slug": "olive-koroneiki",
@@ -790,6 +1015,78 @@
       "verified": true,
       "generated_date": "2026-06-08"
     },
+    "olive-new-norcia-mission": {
+      "slug": "olive-new-norcia-mission",
+      "species": "Olive",
+      "variety": "New Norcia Mission",
+      "paragraphs": [
+        "This cultivar takes its name from the olive grove at New Norcia, the Benedictine monastic town north of Perth that holds one of Australia's oldest stands of olive trees. Bishop Rosendo Salvado planted the original grove from cuttings brought out from Spain in the 1850s, and many of those trees are still standing and productive more than 160 years later. The grove has long pressed oil for the monastery in the Benedictine tradition of self sufficiency.",
+        "Selected from this Western Australian heritage, the New Norcia Mission olive is grown as a dual purpose tree, pressed for a high quality oil or cured for the table, where it is said to take on a pleasant nutty flavour. The fruit ripens from green through yellow to purple black, and the vigorous, upright tree is self fertile, so it can set a crop on its own."
+      ],
+      "claims": [
+        {
+          "text": "Named after the New Norcia olive grove, one of Australia's oldest stands of olive trees, at the Benedictine town north of Perth.",
+          "type": "naming",
+          "cites": [
+            "nvnews",
+            "oot"
+          ]
+        },
+        {
+          "text": "Bishop Rosendo Salvado planted the original grove from Spanish cuttings in the 1850s, and many trees remain productive more than 160 years on.",
+          "type": "history",
+          "cites": [
+            "nvnews",
+            "oot",
+            "wiki-nn"
+          ]
+        },
+        {
+          "text": "Dual purpose, used for high quality oil or cured for the table with a nutty flavour when pickled.",
+          "type": "uses",
+          "cites": [
+            "flemings"
+          ]
+        },
+        {
+          "text": "Fruit ripens green to yellow to purple black; the vigorous upright tree is self fertile.",
+          "type": "appearance",
+          "cites": [
+            "flemings"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "nvnews",
+          "name": "Northern Valleys News: Hand-picked heritage (New Norcia olives)",
+          "url": "https://nvnews.com.au/hand-picked-heritage/",
+          "tier": "third_party"
+        },
+        {
+          "id": "oot",
+          "name": "Olive Oil Times: New Norcia Wins Best of Show at Perth Royal",
+          "url": "https://www.oliveoiltimes.com/features/new-norcia-wins-perth-royal/8132",
+          "tier": "third_party"
+        },
+        {
+          "id": "wiki-nn",
+          "name": "Wikipedia: New Norcia, Western Australia",
+          "url": "https://en.wikipedia.org/wiki/New_Norcia,_Western_Australia",
+          "tier": "third_party"
+        },
+        {
+          "id": "flemings",
+          "name": "Fleming's Nurseries: New Norcia Mission Olive",
+          "url": "https://www.flemings.com.au/nurseries/new-norcia-mission-olive.html",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.86,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
     "olive-picholine": {
       "slug": "olive-picholine",
       "species": "Olive",
@@ -909,23 +1206,184 @@
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "olive-saint-helena": {
+      "slug": "olive-saint-helena",
+      "species": "Olive",
+      "variety": "Saint Helena",
+      "paragraphs": [
+        "The Saint Helena olive is the same heritage Australian selection as the Helena, named for St Helena Island, a colonial penal settlement in Moreton Bay, Queensland, where olives were grown in the 1800s. Oil from the island's fruit is credited with winning Australia's first international agricultural award. The selection is widely regarded as a close match to the Italian oil cultivar Frantoio.",
+        "It is a dual purpose tree carrying small to medium fruit (roughly 2g to 4g) that is rich in oil but also suits pickling. It is prized as fast growing with a slender, upright habit and performs well in subtropical south east Queensland, where many classic Mediterranean olives struggle, which is why it remains a popular backyard choice there."
+      ],
+      "claims": [
+        {
+          "text": "Named for the St Helena Island penal settlement in Moreton Bay, Queensland, where the olives were grown.",
+          "type": "origin",
+          "cites": [
+            "sherman",
+            "australis"
+          ]
+        },
+        {
+          "text": "Oil from the island's fruit is credited with winning Australia's first international agricultural award.",
+          "type": "history",
+          "cites": [
+            "sherman",
+            "australis"
+          ]
+        },
+        {
+          "text": "The selection is regarded as a close match to the Italian cultivar Frantoio.",
+          "type": "naming",
+          "cites": [
+            "sherman",
+            "australis"
+          ]
+        },
+        {
+          "text": "Dual purpose with small to medium fruit (about 2g to 4g) for oil and pickling.",
+          "type": "uses",
+          "cites": [
+            "daleys",
+            "australis"
+          ]
+        },
+        {
+          "text": "Fast growing, slender upright habit, well suited to subtropical south east Queensland.",
+          "type": "growing",
+          "cites": [
+            "backyard",
+            "sherman"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "sherman",
+          "name": "Sherman's Foods: The Remarkable Story of the Helena",
+          "url": "https://www.shermanfoods.com.au/news/the-remarkable-story-of-the-helena-australias-first-international-agriculture-winner",
+          "tier": "third_party"
+        },
+        {
+          "id": "australis",
+          "name": "Australis Plants olive varieties",
+          "url": "https://australisplants.com/olives/varieties.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "daleys",
+          "name": "Daleys Fruit Tree Nursery: Helena Olive",
+          "url": "https://www.daleysfruit.com.au/buy/olive-helena-fruit-trees-olea-europea.htm",
+          "tier": "nursery"
+        },
+        {
+          "id": "backyard",
+          "name": "Aus Plant Nursery (Backyard Treats): Helena Olive",
+          "url": "https://www.ausplantnursery.com.au/backyard_treats/variety_helena_olive.htm",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "generated_date": "2026-06-11",
+      "verified": true
+    },
+    "olive-uc13": {
+      "slug": "olive-uc13",
+      "species": "Olive",
+      "variety": "UC13",
+      "paragraphs": [
+        "UC13A6, sold in Australia as Californian Queen, came out of the University of California olive breeding program, raised from an open pollinated seedling of the Egyptian table variety Tafahi. It is grown strictly as a table olive and is not recommended for oil. The fruit is very large (about 9 to 11g), so it can be processed green, fermented black, or dry salted when fully ripe.",
+        "Growers value it for easy pollination, regular cropping, and a tolerance of less than perfect soil fertility, with the selection bred to give a slightly more robust fruit that is less prone to bruising. Green ripe fruit is typically ready from about mid April onwards."
+      ],
+      "claims": [
+        {
+          "text": "Came from the University of California breeding program, from an open pollinated seedling of the Egyptian variety Tafahi",
+          "type": "origin",
+          "cites": [
+            "apulia"
+          ]
+        },
+        {
+          "text": "Grown as a table olive, not recommended for oil",
+          "type": "uses",
+          "cites": [
+            "apulia",
+            "foodforest"
+          ]
+        },
+        {
+          "text": "Produces very large fruit (around 9 to 11g)",
+          "type": "appearance",
+          "cites": [
+            "fruittreelane-ucq",
+            "apulia"
+          ]
+        },
+        {
+          "text": "Valued for easy pollination, regular cropping and tolerance of less than perfect soil fertility",
+          "type": "growing",
+          "cites": [
+            "foodforest"
+          ]
+        },
+        {
+          "text": "Bred for a more robust fruit that is less susceptible to bruising; green ripe fruit ready from about mid April",
+          "type": "season",
+          "cites": [
+            "apulia"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "apulia",
+          "name": "Apulia Grove (small batch olive oil producer), Olive Varieties",
+          "url": "https://apulia-grove.com.au/olive-varieties/",
+          "tier": "third_party"
+        },
+        {
+          "id": "foodforest",
+          "name": "The Food Forest (educational permaculture resource), Olives fact sheet",
+          "url": "https://www.foodforest.com.au/fact-sheets/fruit-and-nut-trees/olives/",
+          "tier": "third_party"
+        },
+        {
+          "id": "fruittreelane-ucq",
+          "name": "Fruit Tree Lane, Californian Queen (UC13A6) Olive",
+          "url": "https://fruittreelane.com.au/shop/californian-queen-olive-trees-90mm-pots-uc13a6/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.85,
+      "generated_date": "2026-06-11",
+      "verified": true
     }
   },
   "skipped": [
     "olive-aberquina",
+    "olive-bambalina",
     "olive-bambalina-pbr",
     "olive-bambalino",
     "olive-borouni",
     "olive-california-queen",
+    "olive-californian-queen",
     "olive-del-morocco",
     "olive-del-morroco",
+    "olive-garden-harvest",
     "olive-heritage-frantoio",
     "olive-in-a-wine-barrel-style",
+    "olive-manzanillo-size",
     "olive-mediterranean",
     "olive-menzanillo",
+    "olive-miniolea",
     "olive-miniolea-tm",
+    "olive-nab-tamri",
     "olive-pucal-green",
     "olive-rhododendron",
+    "olive-saint-helena-extra",
+    "olive-suroi",
     "olive-tolley",
     "olive-tolley-s-upright",
     "olive-tolleys-upright",
