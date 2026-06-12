@@ -1,0 +1,368 @@
+{
+  "species_slug": "citron",
+  "schema_version": 1,
+  "varieties": {
+    "citron-buddha": {
+      "slug": "citron-buddha",
+      "species": "Citron",
+      "variety": "Buddha",
+      "paragraphs": [
+        "This is Buddha's Hand, the fingered citron (Citrus medica var. sarcodactylis). Its most striking feature is a fruit that divides at the blossom end into elongated, finger-like segments, giving it the look of a gnarled hand. There is essentially no flesh or seeds inside; the body of the fruit is solid white pith (albedo) beneath a thick rind.",
+        "Prized more for scent and rind than juice, the mature fruit carries a powerful violet to osmanthus fragrance driven by beta-ionone. Cultivated for centuries in China and Japan, it is candied, grated for zest, added to sweet and savoury dishes and spirits, and kept indoors to perfume rooms. In Chinese tradition it represents happiness and long life."
+      ],
+      "claims": [
+        {
+          "text": "Buddha (Buddha's Hand) is the fingered citron, Citrus medica var. sarcodactylis",
+          "type": "naming",
+          "cites": [
+            "ucr3768",
+            "ifas",
+            "wiki"
+          ]
+        },
+        {
+          "text": "The fruit divides into finger-like segments with no flesh or seeds, the body being solid white pith",
+          "type": "appearance",
+          "cites": [
+            "ucr3768"
+          ]
+        },
+        {
+          "text": "The mature rind has a violet to osmanthus fragrance from beta-ionone",
+          "type": "flavour",
+          "cites": [
+            "ucr3768"
+          ]
+        },
+        {
+          "text": "Cultivated in China and Japan, used candied, as zest, in dishes and spirits, and to perfume rooms, symbolising happiness and longevity",
+          "type": "use",
+          "cites": [
+            "ucr3768",
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr3768",
+          "name": "UC Riverside Citrus Variety Collection, Buddha's Hand citron",
+          "url": "https://citrusvariety.ucr.edu/crc3768",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ifas",
+          "name": "UF/IFAS HS1427, Fingered Citron",
+          "url": "https://ask.ifas.ufl.edu/publication/HS1427",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Buddha's hand",
+          "url": "https://en.wikipedia.org/wiki/Buddha's_hand",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "citron-buddha-s-hand": {
+      "slug": "citron-buddha-s-hand",
+      "species": "Citron",
+      "variety": "Buddha’s Hand",
+      "paragraphs": [
+        "Buddha's Hand (Citrus medica var. sarcodactylis) is the fingered form of citron, named for fruit that separates into long, finger-like sections like an open hand. It bucks the usual citrus pattern: there is no juicy pulp and typically no seeds, so the fruit is mostly thick rind over solid white albedo. Finger count varies widely, with some fruit straight and others curled inward.",
+        "What makes it sought after is aroma. The ripe rind is exceptionally fragrant, with a violet or osmanthus character from beta-ionone. With a long history of cultivation in China and Japan, it is candied, used for zest, added to desserts, savoury cooking, and infused spirits, and displayed as a fragrant ornamental and a token of happiness and longevity."
+      ],
+      "claims": [
+        {
+          "text": "Buddha's Hand is the fingered citron, Citrus medica var. sarcodactylis",
+          "type": "naming",
+          "cites": [
+            "ucr3768",
+            "ifas",
+            "wiki"
+          ]
+        },
+        {
+          "text": "The fruit separates into finger-like sections with no juicy pulp and typically no seeds, mostly rind over solid white albedo",
+          "type": "appearance",
+          "cites": [
+            "ucr3768"
+          ]
+        },
+        {
+          "text": "Finger count varies and fruit may be straight or curled",
+          "type": "appearance",
+          "cites": [
+            "wiki"
+          ]
+        },
+        {
+          "text": "The ripe rind is exceptionally fragrant with a violet or osmanthus character from beta-ionone",
+          "type": "flavour",
+          "cites": [
+            "ucr3768"
+          ]
+        },
+        {
+          "text": "Cultivated in China and Japan, candied, used as zest, in dishes and spirits, and as a fragrant ornamental symbolising happiness and longevity",
+          "type": "use",
+          "cites": [
+            "ucr3768",
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr3768",
+          "name": "UC Riverside Citrus Variety Collection, Buddha's Hand citron",
+          "url": "https://citrusvariety.ucr.edu/crc3768",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ifas",
+          "name": "UF/IFAS HS1427, Fingered Citron",
+          "url": "https://ask.ifas.ufl.edu/publication/HS1427",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Buddha's hand",
+          "url": "https://en.wikipedia.org/wiki/Buddha's_hand",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "citron-buddhas-hand": {
+      "slug": "citron-buddhas-hand",
+      "species": "Citron",
+      "variety": "Buddhas Hand",
+      "paragraphs": [
+        "Buddha's Hand is the fingered citron (Citrus medica var. sarcodactylis), an ornamental citron whose fruit splits longitudinally into finger-like segments resembling a many-fingered hand. Unlike a lemon, it has no juicy pulp or seeds: the interior is almost entirely solid white albedo (pith) under the rind. The number of fingers varies from a few to twenty or more, and they may be straight or curled.",
+        "Its rind is intensely fragrant at maturity, with a violet or osmanthus aroma largely from the compound beta-ionone. Long cultivated in China and Japan (and originating in the India region), it is used as zest, candied, and to flavour desserts, savoury dishes, and spirits, as well as a room and clothing perfume and a symbol of happiness and longevity."
+      ],
+      "claims": [
+        {
+          "text": "Buddha's Hand is the fingered citron, Citrus medica var. sarcodactylis",
+          "type": "naming",
+          "cites": [
+            "ucr3768",
+            "ifas",
+            "wiki"
+          ]
+        },
+        {
+          "text": "The fruit splits into finger-like segments with no juicy pulp or seeds, the interior being solid white albedo",
+          "type": "appearance",
+          "cites": [
+            "ucr3768"
+          ]
+        },
+        {
+          "text": "The number of fingers varies and can be straight or curved",
+          "type": "appearance",
+          "cites": [
+            "wiki"
+          ]
+        },
+        {
+          "text": "The rind is highly fragrant with a violet or osmanthus aroma from beta-ionone",
+          "type": "flavour",
+          "cites": [
+            "ucr3768"
+          ]
+        },
+        {
+          "text": "Long cultivated in China and Japan, used as zest, candied, in dishes and spirits, and as a fragrance",
+          "type": "use",
+          "cites": [
+            "ucr3768",
+            "wiki"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr3768",
+          "name": "UC Riverside Citrus Variety Collection, Buddha's Hand citron",
+          "url": "https://citrusvariety.ucr.edu/crc3768",
+          "tier": "authoritative"
+        },
+        {
+          "id": "ifas",
+          "name": "UF/IFAS HS1427, Fingered Citron",
+          "url": "https://ask.ifas.ufl.edu/publication/HS1427",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wiki",
+          "name": "Wikipedia, Buddha's hand",
+          "url": "https://en.wikipedia.org/wiki/Buddha's_hand",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.96,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "citron-etrog": {
+      "slug": "citron-etrog",
+      "species": "Citron",
+      "variety": "Etrog",
+      "paragraphs": [
+        "Etrog is the citron cultivar (Citrus medica) used in the Jewish festival of Sukkot, where an unblemished, ungrafted fruit (ideally retaining its pitam, the persistent style) is held with palm, myrtle, and willow during prayers. The fruit is oblong and lemon-like but tapers toward a candle-flame shape, considerably larger than a lemon, with a glossy yellow rind that is thick and bumpy.",
+        "It is grown for rind and fragrance rather than juice: the pulp is pale, acidic, and scant with many seeds, while the thick rind carries a distinctive violet aroma from beta-ionone. That rind is candied and made into preserves and used to flavour dishes and drinks. Etrog trees are less vigorous and productive than other citrus, which makes them more challenging to grow."
+      ],
+      "claims": [
+        {
+          "text": "Etrog is the citron cultivar (Citrus medica) used in the Jewish festival of Sukkot, held with palm, myrtle, and willow, ideally unblemished, ungrafted, and retaining its pitam",
+          "type": "use",
+          "cites": [
+            "ucr3891",
+            "wikietrog",
+            "specialty"
+          ]
+        },
+        {
+          "text": "The fruit is oblong and lemon-like but tapers to a candle-flame shape, larger than a lemon, with a glossy yellow thick bumpy rind",
+          "type": "appearance",
+          "cites": [
+            "ucr3891",
+            "specialty"
+          ]
+        },
+        {
+          "text": "The pulp is pale, acidic, and not very juicy with many seeds",
+          "type": "appearance",
+          "cites": [
+            "ucr3891"
+          ]
+        },
+        {
+          "text": "The thick rind has a distinctive violet aroma from beta-ionone and is candied, preserved, and used to flavour dishes and drinks",
+          "type": "flavour",
+          "cites": [
+            "ucr3891"
+          ]
+        },
+        {
+          "text": "Etrog trees are less vigorous and productive than other citrus, making them challenging to cultivate",
+          "type": "quirk",
+          "cites": [
+            "specialty"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "ucr3891",
+          "name": "UC Riverside Citrus Variety Collection, Etrog citron",
+          "url": "https://citrusvariety.ucr.edu/crc3891",
+          "tier": "authoritative"
+        },
+        {
+          "id": "wikietrog",
+          "name": "Wikipedia, Etrog",
+          "url": "https://en.wikipedia.org/wiki/Etrog",
+          "tier": "third_party"
+        },
+        {
+          "id": "specialty",
+          "name": "Specialty Produce, Etrog Citron",
+          "url": "https://specialtyproduce.com/produce/Etrog_Citron_8713.php",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.95,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    },
+    "citron-yuzu": {
+      "slug": "citron-yuzu",
+      "species": "Citron",
+      "variety": "Yuzu",
+      "paragraphs": [
+        "Yuzu (Citrus x junos), sometimes called Japanese citron, is not a true citron but a hybrid, believed to have arisen in central China as a cross of the ichang papeda and a mandarin orange. It spread to Japan and Korea and has been grown in East Asia for centuries. The fruit is round to slightly flattened with a rough, bumpy yellow rind, resembling a small bumpy clementine, with very acidic, seedy, highly aromatic flesh.",
+        "Its appeal lies in aroma and tartness: the flavour is fragrant and tart, recalling grapefruit with mandarin overtones. In Japanese cooking the zest and juice are used much as lemon is elsewhere, including in ponzu, vinegar, marmalade, and tea. Thanks to its ichang papeda ancestry, yuzu is unusually cold hardy for citrus, tolerating winters down to around minus 7 degrees Celsius."
+      ],
+      "claims": [
+        {
+          "text": "Yuzu (Citrus x junos), called Japanese citron, is a hybrid believed to have originated in central China from the ichang papeda and a mandarin orange",
+          "type": "breeding",
+          "cites": [
+            "wikiyuzu",
+            "ucr1216"
+          ]
+        },
+        {
+          "text": "It spread to Japan and Korea and has been cultivated in East Asia for centuries",
+          "type": "origin",
+          "cites": [
+            "wikiyuzu"
+          ]
+        },
+        {
+          "text": "The fruit is round to slightly flattened with a rough bumpy yellow rind and very acidic, seedy, aromatic flesh",
+          "type": "appearance",
+          "cites": [
+            "wikiyuzu"
+          ]
+        },
+        {
+          "text": "The flavour is fragrant and tart, resembling grapefruit with mandarin overtones",
+          "type": "flavour",
+          "cites": [
+            "wikiyuzu",
+            "ucr1216"
+          ]
+        },
+        {
+          "text": "In Japanese cuisine the zest and juice are used much as lemon is, including in ponzu, vinegar, marmalade, and tea",
+          "type": "use",
+          "cites": [
+            "wikiyuzu"
+          ]
+        },
+        {
+          "text": "Yuzu is unusually cold hardy for citrus due to its ichang papeda ancestry, tolerating winters down to around minus 7 degrees Celsius",
+          "type": "quirk",
+          "cites": [
+            "wikiyuzu"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikiyuzu",
+          "name": "Wikipedia, Yuzu",
+          "url": "https://en.wikipedia.org/wiki/Yuzu",
+          "tier": "third_party"
+        },
+        {
+          "id": "ucr1216",
+          "name": "UC Riverside Citrus Variety Collection, Yuzu ichandrin",
+          "url": "https://citrusvariety.ucr.edu/crc1216",
+          "tier": "authoritative"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.93,
+      "verified": true,
+      "generated_date": "2026-06-11"
+    }
+  },
+  "skipped": [
+    "citron-daylily-stella",
+    "citron-lemon-citrus-fruit-tree"
+  ]
+}
