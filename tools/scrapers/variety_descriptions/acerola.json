@@ -1,0 +1,173 @@
+{
+  "species_slug": "acerola",
+  "schema_version": 1,
+  "varieties": {
+    "acerola-barbados-cherry-california-sweet": {
+      "slug": "acerola-barbados-cherry-california-sweet",
+      "species": "Acerola",
+      "variety": "Barbados Cherry California Sweet",
+      "paragraphs": [
+        "California Sweet is a sweeter selection of acerola (Malpighia emarginata), the Barbados or West Indian cherry, a small evergreen tree native to the Lesser Antilles of the southern Caribbean and reaching into South America as far south as Brazil. Like other improved selections, it is grown for milder, sweet-tart fruit rather than the sharply sour flavour of typical seedlings, and it stays compact, reaching about 2 to 4 m and pruning readily to around 2 m for pots or small gardens.",
+        "The fruit are bright red drupes, roughly 1 to 3 cm across and 3 to 5 g, with a smooth, very thin skin divided into three obscure lobes, ripening only 3 to 4 weeks after flowering and lasting just 2 to 3 days once picked. Acerola is one of the richest known natural sources of vitamin C, reported at well over 1000 mg per 100 g in ripe fruit and higher still when partially ripe, so the juicy, sweet-tart cherries are best eaten fresh or turned quickly into juice and preserves."
+      ],
+      "claims": [
+        {
+          "text": "Acerola is native to the Lesser Antilles of the southern Caribbean, extending into South America as far south as Brazil.",
+          "type": "origin",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "California Sweet is a sweeter selection grown for milder, sweet-tart fruit, staying compact at about 2 to 4 m and pruning to around 2 m.",
+          "type": "cultivar",
+          "cites": [
+            "ladybird"
+          ]
+        },
+        {
+          "text": "Improved acerola selections are mild and faintly sweet compared with sour, variable seedlings.",
+          "type": "flavour",
+          "cites": [
+            "growables"
+          ]
+        },
+        {
+          "text": "The fruit are bright red drupes about 1 to 3 cm in diameter and 3 to 5 g, with a smooth, very thin shell divided into three obscure lobes.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Drupes mature 3 to 4 weeks after flowering and keep only 2 to 3 days at ambient temperature.",
+          "type": "ripening",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Vitamin C content reaches well over 1000 mg per 100 g in ripe fruit and is higher in partially ripe fruit, among the richest natural sources known.",
+          "type": "nutrition",
+          "cites": [
+            "growables",
+            "ifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Malpighia emarginata, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Malpighia_emarginata",
+          "tier": "third_party"
+        },
+        {
+          "id": "ifas",
+          "name": "Growing Barbados Cherry in Florida, UF/IFAS Extension",
+          "url": "https://blogs.ifas.ufl.edu/stlucieco/2025/08/20/growing-barbados-cherry-in-florida/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "growables",
+          "name": "Barbados Cherry (Morton, Fruits of Warm Climates), Growables",
+          "url": "https://www.growables.org/information/TropicalFruit/barbadoscherry.htm",
+          "tier": "third_party"
+        },
+        {
+          "id": "ladybird",
+          "name": "Acerola Cherry California Sweet, Ladybird Nursery",
+          "url": "https://www.ladybirdnursery.com.au/acerola-cherry-california-sweet/",
+          "tier": "nursery"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.8,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    },
+    "acerola-florida-sweet": {
+      "slug": "acerola-florida-sweet",
+      "species": "Acerola",
+      "variety": "Florida Sweet",
+      "paragraphs": [
+        "Florida Sweet is a named, improved clone of acerola (Malpighia emarginata), the Barbados or West Indian cherry, a small tree native to the Lesser Antilles of the southern Caribbean and extending into South America as far south as Brazil. It was selected and named in 1956 at the University of Florida research centre in Homestead for its upright growth, large fruit, thicker skin, high yield, and a milder, faintly sweet, apple-like flavour that sets it apart from variable, often sour seedlings. UF/IFAS lists it among the improved cultivars recommended for home plantings.",
+        "The fruit are bright red drupes, roughly 1 to 3 cm across and 3 to 5 g, with a smooth, very thin skin divided into three obscure lobes, ripening just 3 to 4 weeks after flowering and keeping only 2 to 3 days at room temperature. Acerola is one of the richest natural sources of vitamin C known, reported at well over 1000 mg per 100 g of ripe fruit and higher still when partially ripe, so the fruit is best eaten fresh or used quickly in juice and preserves."
+      ],
+      "claims": [
+        {
+          "text": "Acerola is native to the Lesser Antilles of the southern Caribbean, extending into South America as far south as Brazil.",
+          "type": "origin",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Florida Sweet is an improved clone introduced in 1956, selected for upright habit, large fruit, thick skin, apple-like semi-sweet flavour and high yield.",
+          "type": "history",
+          "cites": [
+            "growables",
+            "ifas"
+          ]
+        },
+        {
+          "text": "UF/IFAS recommends Florida Sweet among improved cultivars for home plantings for better flavour and productivity than seedlings.",
+          "type": "cultivar",
+          "cites": [
+            "ifas"
+          ]
+        },
+        {
+          "text": "The fruit are bright red drupes about 1 to 3 cm in diameter and 3 to 5 g, with a smooth, very thin shell divided into three obscure lobes.",
+          "type": "appearance",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Drupes mature 3 to 4 weeks after flowering and have a shelf life of only 2 to 3 days at ambient temperature.",
+          "type": "ripening",
+          "cites": [
+            "wikipedia"
+          ]
+        },
+        {
+          "text": "Vitamin C content reaches well over 1000 mg per 100 g in ripe fruit and is higher in partially ripe fruit, making acerola one of the richest natural sources.",
+          "type": "nutrition",
+          "cites": [
+            "growables",
+            "ifas"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "wikipedia",
+          "name": "Malpighia emarginata, Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Malpighia_emarginata",
+          "tier": "third_party"
+        },
+        {
+          "id": "ifas",
+          "name": "Growing Barbados Cherry in Florida, UF/IFAS Extension",
+          "url": "https://blogs.ifas.ufl.edu/stlucieco/2025/08/20/growing-barbados-cherry-in-florida/",
+          "tier": "authoritative"
+        },
+        {
+          "id": "growables",
+          "name": "Barbados Cherry (Morton, Fruits of Warm Climates), Growables",
+          "url": "https://www.growables.org/information/TropicalFruit/barbadoscherry.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "high",
+      "confidence_score": 0.9,
+      "verified": true,
+      "generated_date": "2026-06-12"
+    }
+  },
+  "skipped": [
+    "acerola-barbados-cherry-fruit-tree",
+    "acerola-cherry-florida-sweet"
+  ]
+}

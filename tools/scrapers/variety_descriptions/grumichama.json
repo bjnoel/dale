@@ -11,20 +11,139 @@
         "The small globular fruit has soft, melting pulp over one to a few hard seeds, with much of the flavour residing in the thin skin, and persistent green sepals on top. It is mostly eaten fresh but also used for jams, jellies and pies, and trees can fruit more than once a year with the first crop the largest."
       ],
       "claims": [
-        {"text": "Grumichama (Eugenia brasiliensis) is a Myrtaceae tree native to coastal southern Brazil, also called the Brazilian cherry.", "type": "origin", "cites": ["morton-grumichama", "theferns-grumichama"]},
-        {"text": "The fruit ripens from green to bright red and finally dark purple to nearly black, the typical form.", "type": "appearance", "cites": ["morton-grumichama", "theferns-grumichama"]},
-        {"text": "It tastes like a sweet, subacid cherry with a touch of aromatic resin, with soft melting pulp and one to a few hard seeds.", "type": "flavour", "cites": ["morton-grumichama", "theferns-grumichama"]},
-        {"text": "It is eaten fresh and used for jams, jellies and pies.", "type": "use", "cites": ["morton-grumichama", "uf-ifas-grumichama"]}
+        {
+          "text": "Grumichama (Eugenia brasiliensis) is a Myrtaceae tree native to coastal southern Brazil, also called the Brazilian cherry.",
+          "type": "origin",
+          "cites": [
+            "morton-grumichama",
+            "theferns-grumichama"
+          ]
+        },
+        {
+          "text": "The fruit ripens from green to bright red and finally dark purple to nearly black, the typical form.",
+          "type": "appearance",
+          "cites": [
+            "morton-grumichama",
+            "theferns-grumichama"
+          ]
+        },
+        {
+          "text": "It tastes like a sweet, subacid cherry with a touch of aromatic resin, with soft melting pulp and one to a few hard seeds.",
+          "type": "flavour",
+          "cites": [
+            "morton-grumichama",
+            "theferns-grumichama"
+          ]
+        },
+        {
+          "text": "It is eaten fresh and used for jams, jellies and pies.",
+          "type": "use",
+          "cites": [
+            "morton-grumichama",
+            "uf-ifas-grumichama"
+          ]
+        }
       ],
       "sources": [
-        {"id": "morton-grumichama", "name": "Morton, Fruits of Warm Climates (Purdue NewCROP): Grumichama", "url": "https://hort.purdue.edu/newcrop/morton/grumichama.html", "tier": "authoritative"},
-        {"id": "theferns-grumichama", "name": "Useful Tropical Plants: Eugenia brasiliensis", "url": "https://tropical.theferns.info/viewtropical.php?id=Eugenia+brasiliensis", "tier": "third_party"},
-        {"id": "uf-ifas-grumichama", "name": "University of Florida IFAS Extension (Collier County): Brazilian Cherry or Grumichama", "url": "https://www.growables.org/information/TropicalFruit/documents/BrazilianCherryorGrumichama.pdf", "tier": "authoritative"}
+        {
+          "id": "morton-grumichama",
+          "name": "Morton, Fruits of Warm Climates (Purdue NewCROP): Grumichama",
+          "url": "https://hort.purdue.edu/newcrop/morton/grumichama.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "theferns-grumichama",
+          "name": "Useful Tropical Plants: Eugenia brasiliensis",
+          "url": "https://tropical.theferns.info/viewtropical.php?id=Eugenia+brasiliensis",
+          "tier": "third_party"
+        },
+        {
+          "id": "uf-ifas-grumichama",
+          "name": "University of Florida IFAS Extension (Collier County): Brazilian Cherry or Grumichama",
+          "url": "https://www.growables.org/information/TropicalFruit/documents/BrazilianCherryorGrumichama.pdf",
+          "tier": "authoritative"
+        }
       ],
       "confidence": "high",
       "confidence_score": 0.9,
       "verified": true,
       "generated_date": "2026-06-08"
+    },
+    "grumichama-red": {
+      "slug": "grumichama-red",
+      "species": "Grumichama",
+      "variety": "Red",
+      "paragraphs": [
+        "Grumichama (Eugenia brasiliensis), the Brazilian cherry, is a small Myrtaceae tree from southern Brazil bearing cherry-sized fruit. The ordinary form ripens from green through bright red to a near-black dark purple, but a recognised red-fruited colour form (var. erythrocarpa) holds a red skin rather than darkening. It sits alongside the common dark type and a pale yellow form (var. leucocarpa) as one of the three colour variants growers distinguish.",
+        "The fruit carries a thin, delicate skin over soft, melting white to yellowish pulp, with a flavour close to a sweet or subacid cherry plus a faint touch of aromatic resin. Much of the taste sits in the skin. Like other grumichama, the crop ripens fast and is over within days, which keeps the fresh fruit a collector's item rarely seen in shops."
+      ],
+      "claims": [
+        {
+          "text": "Grumichama (Eugenia brasiliensis) is a Brazilian cherry tree from southern Brazil with cherry-sized fruit.",
+          "type": "fact",
+          "cites": [
+            "pfaf",
+            "theferns",
+            "growables"
+          ]
+        },
+        {
+          "text": "A recognised red-skinned colour form (var. erythrocarpa) is distinguished from the common dark/black type and the yellow form (var. leucocarpa).",
+          "type": "fact",
+          "cites": [
+            "pfaf",
+            "theferns",
+            "growables"
+          ]
+        },
+        {
+          "text": "The ordinary fruit ripens from green to bright red to dark purple, nearly black.",
+          "type": "fact",
+          "cites": [
+            "growables"
+          ]
+        },
+        {
+          "text": "The fruit has a thin delicate skin, soft melting white to yellowish pulp, and a cherry-like flavour with a touch of aromatic resin, with taste largely in the skin.",
+          "type": "fact",
+          "cites": [
+            "theferns",
+            "growables"
+          ]
+        },
+        {
+          "text": "The harvest ripens quickly and is over in a matter of days.",
+          "type": "fact",
+          "cites": [
+            "theferns",
+            "growables"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "pfaf",
+          "name": "Plants For A Future, Eugenia brasiliensis",
+          "url": "https://pfaf.org/user/Plant.aspx?LatinName=Eugenia+brasiliensis",
+          "tier": "third_party"
+        },
+        {
+          "id": "theferns",
+          "name": "Useful Tropical Plants, Eugenia brasiliensis",
+          "url": "https://tropical.theferns.info/viewtropical.php?id=Eugenia+brasiliensis",
+          "tier": "third_party"
+        },
+        {
+          "id": "growables",
+          "name": "Growables, Grumichama (Eugenia brasiliensis)",
+          "url": "https://www.growables.org/information/TropicalFruit/grumichamapage.htm",
+          "tier": "third_party"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_score": 0.82,
+      "verified": true,
+      "generated_date": "2026-06-12"
     },
     "grumichama-yellow": {
       "slug": "grumichama-yellow",
@@ -35,14 +154,50 @@
         "Apart from the fruit colour it is much like the standard grumichama, an evergreen Myrtaceae tree from southern Brazil with glossy leaves, wine red new growth and a sweet, subacid, cherry like flavour. The yellow form is grown as a novelty and collector tree rather than a major commercial type."
       ],
       "claims": [
-        {"text": "The yellow grumichama is the botanical variety Eugenia brasiliensis var. leucocarpa, bearing yellow fruit.", "type": "species", "cites": ["theferns-grumichama", "monaco-grumichama"]},
-        {"text": "It has pale, white fleshed pulp and is less common than the usual red to dark fleshed form.", "type": "appearance", "cites": ["morton-grumichama", "theferns-grumichama"]},
-        {"text": "Aside from fruit colour it is much like the standard grumichama, an evergreen Brazilian Myrtaceae tree with a sweet, subacid cherry like flavour.", "type": "flavour", "cites": ["theferns-grumichama", "monaco-grumichama"]}
+        {
+          "text": "The yellow grumichama is the botanical variety Eugenia brasiliensis var. leucocarpa, bearing yellow fruit.",
+          "type": "species",
+          "cites": [
+            "theferns-grumichama",
+            "monaco-grumichama"
+          ]
+        },
+        {
+          "text": "It has pale, white fleshed pulp and is less common than the usual red to dark fleshed form.",
+          "type": "appearance",
+          "cites": [
+            "morton-grumichama",
+            "theferns-grumichama"
+          ]
+        },
+        {
+          "text": "Aside from fruit colour it is much like the standard grumichama, an evergreen Brazilian Myrtaceae tree with a sweet, subacid cherry like flavour.",
+          "type": "flavour",
+          "cites": [
+            "theferns-grumichama",
+            "monaco-grumichama"
+          ]
+        }
       ],
       "sources": [
-        {"id": "morton-grumichama", "name": "Morton, Fruits of Warm Climates (Purdue NewCROP): Grumichama", "url": "https://hort.purdue.edu/newcrop/morton/grumichama.html", "tier": "authoritative"},
-        {"id": "theferns-grumichama", "name": "Useful Tropical Plants: Eugenia brasiliensis", "url": "https://tropical.theferns.info/viewtropical.php?id=Eugenia+brasiliensis", "tier": "third_party"},
-        {"id": "monaco-grumichama", "name": "Monaco Nature Encyclopedia: Eugenia brasiliensis", "url": "https://www.monaconatureencyclopedia.com/eugenia-brasiliensis/?lang=en", "tier": "third_party"}
+        {
+          "id": "morton-grumichama",
+          "name": "Morton, Fruits of Warm Climates (Purdue NewCROP): Grumichama",
+          "url": "https://hort.purdue.edu/newcrop/morton/grumichama.html",
+          "tier": "authoritative"
+        },
+        {
+          "id": "theferns-grumichama",
+          "name": "Useful Tropical Plants: Eugenia brasiliensis",
+          "url": "https://tropical.theferns.info/viewtropical.php?id=Eugenia+brasiliensis",
+          "tier": "third_party"
+        },
+        {
+          "id": "monaco-grumichama",
+          "name": "Monaco Nature Encyclopedia: Eugenia brasiliensis",
+          "url": "https://www.monaconatureencyclopedia.com/eugenia-brasiliensis/?lang=en",
+          "tier": "third_party"
+        }
       ],
       "confidence": "high",
       "confidence_score": 0.85,
@@ -51,7 +206,12 @@
     }
   },
   "skipped": [
+    "grumichama-black-beauty",
     "grumichama-brazilian-cherry",
-    "grumichama-orange"
+    "grumichama-cherry",
+    "grumichama-obera",
+    "grumichama-orange",
+    "grumichama-regina",
+    "grumichama-sweet-red"
   ]
 }
