@@ -1,0 +1,9 @@
+{
+  "species_slug": "cherry-of-the-rio-grande",
+  "schema_version": 1,
+  "varieties": {},
+  "skipped": [
+    "cherry-of-the-rio-grande-apricot",
+    "cherry-of-the-rio-grande-yellow"
+  ]
+}
