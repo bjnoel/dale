@@ -51,11 +51,15 @@ from cultivar_parsing import (  # noqa: E402
     group_by_cultivar, GRANDFATHERED_VARIETY_SLUGS,
 )
 from stocklib.taxonomy import load_species
+from stocklib.category_ui import category_badges_html, is_bush_tucker, CATEGORY_FILTER_CSS
 
 # Canonical species name -> the /species/ page slug from the taxonomy record
 # (slugify("Davidson's Plum") gives davidson-s-plum; the record says
 # davidsons-plum, which is the file build_species_pages actually writes).
 _SPECIES_PAGE_SLUG = {r["common_name"]: r["slug"] for r in load_species()}
+
+# Canonical species name -> full taxonomy record (for the category badge/filter).
+_SPECIES_BY_NAME = {r["common_name"]: r for r in load_species()}
 
 
 def species_page_slug(name: str) -> str:
@@ -258,6 +262,7 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
             f'<a href="/species/{sp_slug}.html" class="hover:underline">{sp}</a>'
             if sp_slug in valid_species_slugs else sp
         )
+        record = _SPECIES_BY_NAME.get(sp, {})
         species_view.append({
             "sp_heading": sp_heading,
             "sp_slug": sp_slug,
@@ -265,15 +270,19 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
             "variety_count": len(varieties),
             "in_stock_count": sum(v["in_stock"] for v in varieties),
             "rows": row_view,
+            "category": record.get("category", "fruit"),
+            "is_bush_tucker": is_bush_tucker(record),
+            "badges_html": category_badges_html(record),
         })
 
     total_varieties = len(entries)
     total_in_stock = sum(e["in_stock"] for e in entries)
 
     head = render_head(
-        title="Fruit Tree Varieties for Sale in Australia | treestock.com.au",
-        description=f"Browse {total_varieties} named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.",
+        title="Fruit Tree and Bush Tucker Varieties for Sale in Australia | treestock.com.au",
+        description=f"Browse {total_varieties} named fruit tree and Australian bush tucker varieties from nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.",
         canonical_url=f"{SITE_URL}/variety/",
+        extra_style=CATEGORY_FILTER_CSS,
     )
     header = render_header(active_path="/variety/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Varieties", "")])

@@ -76,6 +76,7 @@ RELATED_LOOKUP = build_related_lookup()
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
 from stocklib.classify import NON_PLANT_KEYWORDS
 from stocklib.taxonomy import enabled_species
+from stocklib.category_ui import category_badges_html, CATEGORY_FILTER_CSS
 
 
 def load_species() -> list[dict]:
@@ -698,31 +699,6 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     )
 
 
-# Category badge (label + CSS class) for the species-index. Add a line here when a
-# new category is enabled in stocklib.taxonomy.ENABLED_CATEGORIES. A species shows
-# one badge per category it belongs to (its primary `category` plus any `tags`), so
-# a cross-listed species like finger-lime (category fruit, tags ["bush_tucker"])
-# shows both a Fruit and a Bush Tucker badge.
-CATEGORY_BADGES = {
-    "fruit": ("Fruit", "cat-badge-fruit"),
-    "bush_tucker": ("Bush Tucker", "cat-badge-bush"),
-}
-
-
-def _category_badges_html(species: dict) -> str:
-    """Badge HTML for a species: primary category first, then known-category tags,
-    so a cross-listed species (finger-lime: category fruit, tags ["bush_tucker"])
-    shows both a Fruit and a Bush Tucker badge."""
-    cats = [species.get("category", "fruit")]
-    for tag in species.get("tags", []):
-        if tag in CATEGORY_BADGES and tag not in cats:
-            cats.append(tag)
-    return "".join(
-        f'<span class="cat-badge {CATEGORY_BADGES[c][1]}">{CATEGORY_BADGES[c][0]}</span>'
-        for c in cats if c in CATEGORY_BADGES
-    )
-
-
 def build_species_index(species_data: list[dict], trend_data: dict | None = None) -> str:
     """Build an index page listing all species with data."""
     # trend_data: {slug: [in_stock_count_per_day, ...]} (30 values, oldest first)
@@ -760,25 +736,15 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
             "rarity_cell": rarity_cell,
             "category": category,
             "is_bush_tucker": is_bush_tucker,
-            "category_badges_html": _category_badges_html(s),
+            "category_badges_html": category_badges_html(s),
         })
 
     sparkline_th = '<th class="pb-2 pr-2">30d</th>' if trend_data else ""
 
-    # Self-contained CSS (not Tailwind utilities) so it survives the purged
-    # Tailwind build, which only sees classes present in the static HTML.
-    extra_style = """\
-  .cat-filter-btn { cursor: pointer; }
-  .cat-filter-btn.active { background-color: #065f46; color: white; border-color: #065f46; }
-  tr.hidden-row { display: none; }
-  .cat-badge { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 9999px; border: 1px solid; white-space: nowrap; margin-left: 0.35rem; vertical-align: middle; }
-  .cat-badge-fruit { background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
-  .cat-badge-bush { background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4; }"""
-
     head = render_head(
         title="Browse Fruit Tree and Bush Tucker Species | treestock.com.au",
         description="Browse fruit trees and Australian bush tucker by species across nurseries. Track prices, availability, and shipping. Updated daily.",
-        extra_style=extra_style,
+        extra_style=CATEGORY_FILTER_CSS,
     )
     header = render_header(active_path="/species/")
     footer = render_footer()

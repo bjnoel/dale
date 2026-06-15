@@ -3,24 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Browse 12 named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.">
+<meta name="description" content="Browse 12 named fruit tree and Australian bush tucker varieties from nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.">
 <link rel="canonical" href="https://treestock.com.au/variety/">
-<meta property="og:title" content="Fruit Tree Varieties for Sale in Australia | treestock.com.au">
-<meta property="og:description" content="Browse 12 named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.">
+<meta property="og:title" content="Fruit Tree and Bush Tucker Varieties for Sale in Australia | treestock.com.au">
+<meta property="og:description" content="Browse 12 named fruit tree and Australian bush tucker varieties from nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://treestock.com.au/og-image.png">
 <meta property="og:url" content="https://treestock.com.au/variety/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fruit Tree Varieties for Sale in Australia | treestock.com.au">
-<meta name="twitter:description" content="Browse 12 named fruit tree varieties available from Australian nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.">
+<meta name="twitter:title" content="Fruit Tree and Bush Tucker Varieties for Sale in Australia | treestock.com.au">
+<meta name="twitter:description" content="Browse 12 named fruit tree and Australian bush tucker varieties from nurseries. Find Hass avocado, R2E2 mango, Grimal jaboticaba, Brown Turkey fig and more. Compare prices and check availability. Updated daily.">
 <meta name="twitter:image" content="https://treestock.com.au/og-image.png">
-<title>Fruit Tree Varieties for Sale in Australia | treestock.com.au</title>
+<title>Fruit Tree and Bush Tucker Varieties for Sale in Australia | treestock.com.au</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link href="/styles.css?v=DATE" rel="stylesheet">
 <link rel="preconnect" href="https://data.bjnoel.com"><link rel="dns-prefetch" href="https://data.bjnoel.com"><script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   #nav-menu.open { display: flex; }
+  .cat-filter-btn { cursor: pointer; }
+  .cat-filter-btn.active { background-color: #065f46; color: white; border-color: #065f46; }
+  tr.hidden-row { display: none; }
+  .cat-badge { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 9999px; border: 1px solid; white-space: nowrap; margin-left: 0.35rem; vertical-align: middle; }
+  .cat-badge-fruit { background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+  .cat-badge-bush { background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
 </style>
 
 </head>
@@ -86,7 +92,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
 }
 </script>
 
-  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Varieties for Sale in Australia</h1>
+  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree and Bush Tucker Varieties for Sale in Australia</h1>
   <p class="text-gray-600 mb-4">
     Browse 12 named cultivars tracked across 8 species.
     15 currently in stock across all Australian nurseries. Updated daily.
@@ -110,6 +116,11 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
         <option value="NT">NT</option>
       </select>
     </div>
+    <div class="flex flex-wrap gap-2 mt-2" id="catPills">
+      <button class="cat-filter-btn active text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600" data-cat="all">All</button>
+      <button class="cat-filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600" data-cat="fruit">Fruit</button>
+      <button class="cat-filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600" data-cat="bush_tucker">Bush Tucker</button>
+    </div>
     <p id="varietyCount" class="text-xs text-gray-400 mt-1">12 varieties across 8 species</p>
   </div>
 
@@ -119,9 +130,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   </div>
 
   
-  <section class="mb-8" id="apple" data-sp="apple">
+  <section class="mb-8" id="apple" data-sp="apple" data-category="fruit">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      Apple
+      Apple<span class="cat-badge cat-badge-fruit">Fruit</span>
       <span class="text-sm font-normal text-gray-500 ml-2">2 varieties · 3 in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -155,9 +166,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       </table>
     </div>
   </section>
-  <section class="mb-8" id="avocado" data-sp="avocado">
+  <section class="mb-8" id="avocado" data-sp="avocado" data-category="fruit">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      Avocado
+      Avocado<span class="cat-badge cat-badge-fruit">Fruit</span>
       <span class="text-sm font-normal text-gray-500 ml-2">2 varieties · 3 in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -191,9 +202,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       </table>
     </div>
   </section>
-  <section class="mb-8" id="banana" data-sp="banana">
+  <section class="mb-8" id="banana" data-sp="banana" data-category="fruit">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      Banana
+      Banana<span class="cat-badge cat-badge-fruit">Fruit</span>
       <span class="text-sm font-normal text-gray-500 ml-2">2 varieties · 2 in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -227,9 +238,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       </table>
     </div>
   </section>
-  <section class="mb-8" id="black-sapote" data-sp="black sapote">
+  <section class="mb-8" id="black-sapote" data-sp="black sapote" data-category="fruit">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      Black Sapote
+      Black Sapote<span class="cat-badge cat-badge-fruit">Fruit</span>
       <span class="text-sm font-normal text-gray-500 ml-2">1 varieties · 3 in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -255,9 +266,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       </table>
     </div>
   </section>
-  <section class="mb-8" id="fig" data-sp="fig">
+  <section class="mb-8" id="fig" data-sp="fig" data-category="fruit">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      Fig
+      Fig<span class="cat-badge cat-badge-fruit">Fruit</span>
       <span class="text-sm font-normal text-gray-500 ml-2">1 varieties · 1 in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -283,9 +294,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       </table>
     </div>
   </section>
-  <section class="mb-8" id="longan" data-sp="longan">
+  <section class="mb-8" id="longan" data-sp="longan" data-category="fruit">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      Longan
+      Longan<span class="cat-badge cat-badge-fruit">Fruit</span>
       <span class="text-sm font-normal text-gray-500 ml-2">1 varieties · 1 in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -311,9 +322,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       </table>
     </div>
   </section>
-  <section class="mb-8" id="lychee" data-sp="lychee">
+  <section class="mb-8" id="lychee" data-sp="lychee" data-category="fruit">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      Lychee
+      Lychee<span class="cat-badge cat-badge-fruit">Fruit</span>
       <span class="text-sm font-normal text-gray-500 ml-2">1 varieties · 1 in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -339,9 +350,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       </table>
     </div>
   </section>
-  <section class="mb-8" id="mango" data-sp="mango">
+  <section class="mb-8" id="mango" data-sp="mango" data-category="fruit">
     <h3 class="text-lg font-semibold text-green-900 mb-1">
-      Mango
+      Mango<span class="cat-badge cat-badge-fruit">Fruit</span>
       <span class="text-sm font-normal text-gray-500 ml-2">2 varieties · 1 in stock</span>
     </h3>
     <div class="overflow-x-auto">
@@ -385,8 +396,10 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   const countEl = document.getElementById('varietyCount');
   const noResultsEl = document.getElementById('noResults');
   const sections = document.querySelectorAll('section[data-sp]');
+  const catPills = document.querySelectorAll('#catPills .cat-filter-btn');
   const totalVarieties = 12;
   const totalSpecies = 8;
+  let activeCat = 'all';
 
   function applyFilters() {
     const q = input.value.toLowerCase().trim();
@@ -395,6 +408,13 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
     let visibleSpecies = 0;
 
     sections.forEach(function(section) {
+      const catOk = activeCat === 'all'
+        || (activeCat === 'fruit' && section.getAttribute('data-category') === 'fruit')
+        || (activeCat === 'bush_tucker' && section.getAttribute('data-bushtucker') === '1');
+      if (!catOk) {
+        section.style.display = 'none';
+        return;
+      }
       const sp = section.getAttribute('data-sp');
       const spMatch = !q || sp.includes(q);
       const rows = section.querySelectorAll('tr[data-var]');
@@ -421,7 +441,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       }
     });
 
-    if (!q && !state) {
+    if (!q && !state && activeCat === 'all') {
       countEl.textContent = totalVarieties + ' varieties across ' + totalSpecies + ' species';
       noResultsEl.classList.add('hidden');
     } else if (visibleVarieties === 0) {
@@ -436,6 +456,14 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
 
   input.addEventListener('input', applyFilters);
   stateSel.addEventListener('change', applyFilters);
+  catPills.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      catPills.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeCat = btn.getAttribute('data-cat');
+      applyFilters();
+    });
+  });
 })();
 </script>
 
