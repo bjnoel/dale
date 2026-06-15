@@ -311,7 +311,7 @@ function render() {
     // mixed homepage feed. Homepage only (gated on categoryFilter existing): the
     // /bush-tucker/ landing is already category-scoped, so a badge there is redundant.
     const catBadges = (categoryFilter && (SPECIES_CATS[p.sl] || []).includes('bush_tucker'))
-      ? `<span class="cat-badge ${CAT_BADGE.bush_tucker[1]}">${CAT_BADGE.bush_tucker[0]}</span>`
+      ? `<span class="cat-badge ${CAT_BADGE.bush_tucker[1]}" data-catfilter="bush_tucker" role="button" tabindex="0" title="Show only bush tucker" style="cursor:pointer">${CAT_BADGE.bush_tucker[0]}</span>`
       : '';
     let notifyLink = '';
     if (!p.a && p.vs) {
@@ -558,6 +558,15 @@ document.getElementById('results').addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
     nurserySelect.value = tag.getAttribute('data-nk');
+    search();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  const catTag = e.target.closest('.cat-badge[data-catfilter]');
+  if (catTag && categoryFilter) {
+    e.preventDefault();
+    e.stopPropagation();
+    categoryFilter.value = catTag.getAttribute('data-catfilter');
     search();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
