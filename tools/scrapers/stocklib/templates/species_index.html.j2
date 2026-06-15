@@ -31,7 +31,7 @@
 {% for e in index_view %}
     <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="{{ e.category }}"{% if e.is_bush_tucker %} data-bushtucker="1"{% endif %}>
       <td class="py-3 pr-4">
-        <a href="/species/{{ e.slug }}.html" class="font-medium text-green-700 hover:underline">{{ e.common_name }}</a><span class="cat-badge {{ 'cat-badge-bush' if e.category == 'bush_tucker' else 'cat-badge-fruit' }}">{{ e.category_label }}</span>
+        <a href="/species/{{ e.slug }}.html" class="font-medium text-green-700 hover:underline">{{ e.common_name }}</a>{{ e.category_badges_html|safe }}
         <div class="text-xs text-gray-400 italic">{{ e.latin_name }}</div>
       </td>
       <td class="py-3 pr-4 text-sm {{ e.in_s_class }}">{{ e.in_s }} in stock</td>

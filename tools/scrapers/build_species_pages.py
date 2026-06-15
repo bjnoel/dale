@@ -698,12 +698,29 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     )
 
 
-# Human-readable labels for the species-index category badge/filter. Add a line
-# here when a new category is enabled in stocklib.taxonomy.ENABLED_CATEGORIES.
-CATEGORY_LABELS = {
-    "fruit": "Fruit",
-    "bush_tucker": "Bush Tucker",
+# Category badge (label + CSS class) for the species-index. Add a line here when a
+# new category is enabled in stocklib.taxonomy.ENABLED_CATEGORIES. A species shows
+# one badge per category it belongs to (its primary `category` plus any `tags`), so
+# a cross-listed species like finger-lime (category fruit, tags ["bush_tucker"])
+# shows both a Fruit and a Bush Tucker badge.
+CATEGORY_BADGES = {
+    "fruit": ("Fruit", "cat-badge-fruit"),
+    "bush_tucker": ("Bush Tucker", "cat-badge-bush"),
 }
+
+
+def _category_badges_html(species: dict) -> str:
+    """Badge HTML for a species: primary category first, then known-category tags,
+    so a cross-listed species (finger-lime: category fruit, tags ["bush_tucker"])
+    shows both a Fruit and a Bush Tucker badge."""
+    cats = [species.get("category", "fruit")]
+    for tag in species.get("tags", []):
+        if tag in CATEGORY_BADGES and tag not in cats:
+            cats.append(tag)
+    return "".join(
+        f'<span class="cat-badge {CATEGORY_BADGES[c][1]}">{CATEGORY_BADGES[c][0]}</span>'
+        for c in cats if c in CATEGORY_BADGES
+    )
 
 
 def build_species_index(species_data: list[dict], trend_data: dict | None = None) -> str:
@@ -743,7 +760,7 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
             "rarity_cell": rarity_cell,
             "category": category,
             "is_bush_tucker": is_bush_tucker,
-            "category_label": CATEGORY_LABELS.get(category, "Fruit"),
+            "category_badges_html": _category_badges_html(s),
         })
 
     sparkline_th = '<th class="pb-2 pr-2">30d</th>' if trend_data else ""

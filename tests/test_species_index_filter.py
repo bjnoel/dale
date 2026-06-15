@@ -6,8 +6,8 @@ Guards the subtle bits that the golden file does not pin on its own:
   - every species renders a row (all rows server-rendered, so crawlable
     regardless of the active filter)
   - a fruit cross-tagged bush_tucker (the finger-lime case) carries BOTH
-    data-category="fruit" and data-bushtucker="1", and its badge reads "Fruit"
-    (its primary category), not "Bush Tucker"
+    data-category="fruit" and data-bushtucker="1", and shows BOTH a Fruit and a
+    Bush Tucker badge (primary category first)
   - the three filter pills, the filterSpecies() script, and the hidden-row CSS
     are present
 
@@ -72,6 +72,8 @@ class SpeciesIndexFilterTest(unittest.TestCase):
         self.assertNotIn("data-bushtucker", row)
         self.assertIn("cat-badge-fruit", row)
         self.assertIn(">Fruit</span>", row)
+        # a single-category species shows exactly one badge
+        self.assertEqual(row.count("cat-badge-"), 1)
 
     def test_pure_bush_tucker_row(self):
         row = _row_for(self.html, "lemon-myrtle")
@@ -79,15 +81,19 @@ class SpeciesIndexFilterTest(unittest.TestCase):
         self.assertIn('data-bushtucker="1"', row)
         self.assertIn("cat-badge-bush", row)
         self.assertIn(">Bush Tucker</span>", row)
+        self.assertEqual(row.count("cat-badge-"), 1)
 
-    def test_cross_tagged_fruit_shows_under_both_but_labelled_fruit(self):
+    def test_cross_tagged_fruit_shows_both_badges(self):
         row = _row_for(self.html, "finger-lime")
-        # appears under the Bush Tucker pill (tag match) ...
+        # appears under the Bush Tucker pill (tag match) and the Fruit pill
         self.assertIn('data-bushtucker="1"', row)
-        # ... but its primary category and badge are Fruit, not Bush Tucker
         self.assertIn('data-category="fruit"', row)
+        # and shows BOTH badges, primary (Fruit) first
         self.assertIn("cat-badge-fruit", row)
+        self.assertIn("cat-badge-bush", row)
         self.assertIn(">Fruit</span>", row)
+        self.assertIn(">Bush Tucker</span>", row)
+        self.assertLess(row.index("cat-badge-fruit"), row.index("cat-badge-bush"))
 
     def test_filter_controls_present(self):
         for arg in ("'all'", "'fruit'", "'bush_tucker'"):
