@@ -28,6 +28,7 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 
 from stocklib.classify import NON_PLANT_KEYWORDS
 from stocklib.taxonomy import enabled_species
+from stocklib.category_ui import category_badges_html, is_bush_tucker, CATEGORY_FILTER_CSS
 
 # Minimum nurseries for a compare page to be useful
 MIN_NURSERIES = 3
@@ -256,12 +257,16 @@ def build_compare_index(entries: list[dict]) -> str:
             "nursery_count": e["nursery_count"],
             "in_stock": e["in_stock"],
             "min_price": e["min_price"],
+            "category": sp.get("category", "fruit"),
+            "is_bush_tucker": is_bush_tucker(sp),
+            "category_badges_html": category_badges_html(sp),
         })
 
     head = render_head(
-        title="Fruit Tree Price Comparisons Across Australian Nurseries | treestock.com.au",
-        description=f"Compare fruit tree prices across Australian online nurseries. Find the cheapest mango, fig, avocado, lemon and more. Updated daily from {len(entries)} species.",
+        title="Fruit Tree and Bush Tucker Price Comparisons Across Australian Nurseries | treestock.com.au",
+        description=f"Compare fruit tree and Australian bush tucker prices across nurseries. Find the cheapest mango, fig, avocado, lemon, finger lime and more. Updated daily from {len(entries)} species.",
         canonical_url=f"{SITE_URL}/compare/",
+        extra_style=CATEGORY_FILTER_CSS,
     )
     header = render_header(active_path="/compare/")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Compare Prices", "")])

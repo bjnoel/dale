@@ -3,24 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Compare fruit tree prices across Australian online nurseries. Find the cheapest mango, fig, avocado, lemon and more. Updated daily from 2 species.">
+<meta name="description" content="Compare fruit tree and Australian bush tucker prices across nurseries. Find the cheapest mango, fig, avocado, lemon, finger lime and more. Updated daily from 2 species.">
 <link rel="canonical" href="https://treestock.com.au/compare/">
-<meta property="og:title" content="Fruit Tree Price Comparisons Across Australian Nurseries | treestock.com.au">
-<meta property="og:description" content="Compare fruit tree prices across Australian online nurseries. Find the cheapest mango, fig, avocado, lemon and more. Updated daily from 2 species.">
+<meta property="og:title" content="Fruit Tree and Bush Tucker Price Comparisons Across Australian Nurseries | treestock.com.au">
+<meta property="og:description" content="Compare fruit tree and Australian bush tucker prices across nurseries. Find the cheapest mango, fig, avocado, lemon, finger lime and more. Updated daily from 2 species.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://treestock.com.au/og-image.png">
 <meta property="og:url" content="https://treestock.com.au/compare/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fruit Tree Price Comparisons Across Australian Nurseries | treestock.com.au">
-<meta name="twitter:description" content="Compare fruit tree prices across Australian online nurseries. Find the cheapest mango, fig, avocado, lemon and more. Updated daily from 2 species.">
+<meta name="twitter:title" content="Fruit Tree and Bush Tucker Price Comparisons Across Australian Nurseries | treestock.com.au">
+<meta name="twitter:description" content="Compare fruit tree and Australian bush tucker prices across nurseries. Find the cheapest mango, fig, avocado, lemon, finger lime and more. Updated daily from 2 species.">
 <meta name="twitter:image" content="https://treestock.com.au/og-image.png">
-<title>Fruit Tree Price Comparisons Across Australian Nurseries | treestock.com.au</title>
+<title>Fruit Tree and Bush Tucker Price Comparisons Across Australian Nurseries | treestock.com.au</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link href="/styles.css?v=DATE" rel="stylesheet">
 <link rel="preconnect" href="https://data.bjnoel.com"><link rel="dns-prefetch" href="https://data.bjnoel.com"><script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   #nav-menu.open { display: flex; }
+  .cat-filter-btn { cursor: pointer; }
+  .cat-filter-btn.active { background-color: #065f46; color: white; border-color: #065f46; }
+  tr.hidden-row { display: none; }
+  .cat-badge { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 9999px; border: 1px solid; white-space: nowrap; margin-left: 0.35rem; vertical-align: middle; }
+  .cat-badge-fruit { background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+  .cat-badge-bush { background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
 </style>
 
 </head>
@@ -86,9 +92,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
 }
 </script>
 
-  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree Price Comparisons</h1>
+  <h1 class="text-3xl font-bold text-green-900 mb-2">Fruit Tree and Bush Tucker Price Comparisons</h1>
   <p class="text-gray-600 mb-4">
-    Compare fruit tree prices across 2 species and multiple Australian nurseries.
+    Compare fruit tree and Australian bush tucker prices across 2 species and multiple Australian nurseries.
     Find the cheapest price, check which nurseries ship to your state, and get alerts when prices drop.
     Updated daily.
   </p>
@@ -99,6 +105,15 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <p class="text-xs text-gray-600 mt-0.5">Which nursery has the most stock? Who ships to WA? See all 22 nurseries in one table.</p>
     </div>
     <a href="/compare/nurseries.html" class="ml-4 flex-shrink-0 text-sm px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800 no-underline">Compare nurseries &rarr;</a>
+  </div>
+
+  <div class="flex flex-wrap gap-2 mb-4">
+    <button class="cat-filter-btn active text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('all', this)">All</button>
+    <button class="cat-filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('fruit', this)">Fruit</button>
+    <button class="cat-filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('bush_tucker', this)">Bush Tucker</button>
   </div>
 
   <div class="overflow-x-auto">
@@ -112,18 +127,18 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
         </tr>
       </thead>
       <tbody>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/compare/apple-prices.html" class="font-medium text-green-800 hover:underline">Apple</a>
+        <a href="/compare/apple-prices.html" class="font-medium text-green-800 hover:underline">Apple</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Malus domestica</div>
       </td>
       <td class="py-3 pr-4 text-sm">3 nurseries</td>
       <td class="py-3 pr-4 text-sm">3 in stock</td>
       <td class="py-3 text-sm font-medium">$32.00</td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/compare/black-sapote-prices.html" class="font-medium text-green-800 hover:underline">Black Sapote</a>
+        <a href="/compare/black-sapote-prices.html" class="font-medium text-green-800 hover:underline">Black Sapote</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Diospyros nigra</div>
       </td>
       <td class="py-3 pr-4 text-sm">3 nurseries</td>
@@ -134,6 +149,19 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
     </table>
   </div>
 </main>
+
+<script>
+function filterSpecies(cat, btn) {
+  document.querySelectorAll('.cat-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('tbody tr').forEach(function(row) {
+    var show = cat === 'all'
+      || (cat === 'fruit' && row.dataset.category === 'fruit')
+      || (cat === 'bush_tucker' && row.dataset.bushtucker === '1');
+    row.classList.toggle('hidden-row', !show);
+  });
+}
+</script>
 
 
 <footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-600">
