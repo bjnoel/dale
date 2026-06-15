@@ -3,22 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Find fruit trees for sale across Australian nurseries. Track prices, availability, and shipping for 50+ species including mango, avocado, fig, lychee and more.">
-<meta property="og:title" content="Buy Fruit Trees Online Australia | treestock.com.au">
-<meta property="og:description" content="Find fruit trees for sale across Australian nurseries. Track prices, availability, and shipping for 50+ species including mango, avocado, fig, lychee and more.">
+<meta name="description" content="Browse fruit trees and Australian bush tucker by species across nurseries. Track prices, availability, and shipping. Updated daily.">
+<meta property="og:title" content="Browse Fruit Tree and Bush Tucker Species | treestock.com.au">
+<meta property="og:description" content="Browse fruit trees and Australian bush tucker by species across nurseries. Track prices, availability, and shipping. Updated daily.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://treestock.com.au/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Buy Fruit Trees Online Australia | treestock.com.au">
-<meta name="twitter:description" content="Find fruit trees for sale across Australian nurseries. Track prices, availability, and shipping for 50+ species including mango, avocado, fig, lychee and more.">
+<meta name="twitter:title" content="Browse Fruit Tree and Bush Tucker Species | treestock.com.au">
+<meta name="twitter:description" content="Browse fruit trees and Australian bush tucker by species across nurseries. Track prices, availability, and shipping. Updated daily.">
 <meta name="twitter:image" content="https://treestock.com.au/og-image.png">
-<title>Buy Fruit Trees Online Australia | treestock.com.au</title>
+<title>Browse Fruit Tree and Bush Tucker Species | treestock.com.au</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link href="/styles.css?v=DATE" rel="stylesheet">
 <link rel="preconnect" href="https://data.bjnoel.com"><link rel="dns-prefetch" href="https://data.bjnoel.com"><script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   #nav-menu.open { display: flex; }
+  .cat-filter-btn { cursor: pointer; }
+  .cat-filter-btn.active { background-color: #065f46; color: white; border-color: #065f46; }
+  tr.hidden-row { display: none; }
+  .cat-badge { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 9999px; border: 1px solid; white-space: nowrap; margin-left: 0.35rem; vertical-align: middle; }
+  .cat-badge-fruit { background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+  .cat-badge-bush { background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
 </style>
 
 </head>
@@ -60,8 +66,17 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
 </script>
 
 <main class="max-w-3xl lg:max-w-5xl 2xl:max-w-7xl mx-auto px-4 py-6">
-  <h1 class="text-2xl font-bold text-green-900 mb-2">Fruit Tree Species</h1>
-  <p class="text-gray-500 text-sm mb-6">Browse by species to compare prices and availability across Australian nurseries. Updated daily.</p>
+  <h1 class="text-2xl font-bold text-green-900 mb-2">Species</h1>
+  <p class="text-gray-500 text-sm mb-4">Browse fruit trees and Australian bush tucker by species to compare prices and availability across Australian nurseries. Updated daily.</p>
+
+  <div class="flex flex-wrap gap-2 mb-6">
+    <button class="cat-filter-btn active text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('all', this)">All</button>
+    <button class="cat-filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('fruit', this)">Fruit</button>
+    <button class="cat-filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('bush_tucker', this)">Bush Tucker</button>
+  </div>
 
   <div class="overflow-x-auto">
     <table class="w-full text-left">
@@ -77,9 +92,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
         </tr>
       </thead>
       <tbody>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/species/apple.html" class="font-medium text-green-700 hover:underline">Apple</a>
+        <a href="/species/apple.html" class="font-medium text-green-700 hover:underline">Apple</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Malus domestica</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">3 in stock</td>
@@ -89,9 +104,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/species/avocado.html" class="font-medium text-green-700 hover:underline">Avocado</a>
+        <a href="/species/avocado.html" class="font-medium text-green-700 hover:underline">Avocado</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Persea americana</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">3 in stock</td>
@@ -101,9 +116,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/species/black-sapote.html" class="font-medium text-green-700 hover:underline">Black Sapote</a>
+        <a href="/species/black-sapote.html" class="font-medium text-green-700 hover:underline">Black Sapote</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Diospyros nigra</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">3 in stock</td>
@@ -113,9 +128,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/species/banana.html" class="font-medium text-green-700 hover:underline">Banana</a>
+        <a href="/species/banana.html" class="font-medium text-green-700 hover:underline">Banana</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Musa spp.</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">2 in stock</td>
@@ -125,9 +140,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/species/lychee.html" class="font-medium text-green-700 hover:underline">Lychee</a>
+        <a href="/species/lychee.html" class="font-medium text-green-700 hover:underline">Lychee</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Litchi chinensis</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">2 in stock</td>
@@ -137,9 +152,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/species/fig.html" class="font-medium text-green-700 hover:underline">Fig</a>
+        <a href="/species/fig.html" class="font-medium text-green-700 hover:underline">Fig</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Ficus carica</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">1 in stock</td>
@@ -149,9 +164,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/species/longan.html" class="font-medium text-green-700 hover:underline">Longan</a>
+        <a href="/species/longan.html" class="font-medium text-green-700 hover:underline">Longan</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Dimocarpus longan</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">1 in stock</td>
@@ -161,9 +176,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="fruit">
       <td class="py-3 pr-4">
-        <a href="/species/mango.html" class="font-medium text-green-700 hover:underline">Mango</a>
+        <a href="/species/mango.html" class="font-medium text-green-700 hover:underline">Mango</a><span class="cat-badge cat-badge-fruit">Fruit</span>
         <div class="text-xs text-gray-400 italic">Mangifera indica</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">1 in stock</td>
@@ -173,9 +188,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"><span class="text-xs px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full border border-amber-200 whitespace-nowrap">&#11088; Hard to find</span></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="bush_tucker" data-bushtucker="1">
       <td class="py-3 pr-4">
-        <a href="/species/mountain-pepper.html" class="font-medium text-green-700 hover:underline">Mountain Pepper</a>
+        <a href="/species/mountain-pepper.html" class="font-medium text-green-700 hover:underline">Mountain Pepper</a><span class="cat-badge cat-badge-bush">Bush Tucker</span>
         <div class="text-xs text-gray-400 italic">Tasmannia lanceolata</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">1 in stock</td>
@@ -185,9 +200,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="bush_tucker" data-bushtucker="1">
       <td class="py-3 pr-4">
-        <a href="/species/riberry.html" class="font-medium text-green-700 hover:underline">Riberry</a>
+        <a href="/species/riberry.html" class="font-medium text-green-700 hover:underline">Riberry</a><span class="cat-badge cat-badge-bush">Bush Tucker</span>
         <div class="text-xs text-gray-400 italic">Syzygium luehmannii</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">1 in stock</td>
@@ -197,9 +212,9 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       <td class="py-3 pr-2"></td>
       <td class="py-3"></td>
     </tr>
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="bush_tucker" data-bushtucker="1">
       <td class="py-3 pr-4">
-        <a href="/species/warrigal-greens.html" class="font-medium text-green-700 hover:underline">Warrigal Greens</a>
+        <a href="/species/warrigal-greens.html" class="font-medium text-green-700 hover:underline">Warrigal Greens</a><span class="cat-badge cat-badge-bush">Bush Tucker</span>
         <div class="text-xs text-gray-400 italic">Tetragonia tetragonioides</div>
       </td>
       <td class="py-3 pr-4 text-sm text-green-700 font-medium">1 in stock</td>
@@ -213,6 +228,19 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
     </table>
   </div>
 </main>
+
+<script>
+function filterSpecies(cat, btn) {
+  document.querySelectorAll('.cat-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('tbody tr').forEach(function(row) {
+    var show = cat === 'all'
+      || (cat === 'fruit' && row.dataset.category === 'fruit')
+      || (cat === 'bush_tucker' && row.dataset.bushtucker === '1');
+    row.classList.toggle('hidden-row', !show);
+  });
+}
+</script>
 
 
 <footer class="border-t border-gray-200 mt-8 py-6 text-center text-xs text-gray-600">

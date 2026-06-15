@@ -698,6 +698,14 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     )
 
 
+# Human-readable labels for the species-index category badge/filter. Add a line
+# here when a new category is enabled in stocklib.taxonomy.ENABLED_CATEGORIES.
+CATEGORY_LABELS = {
+    "fruit": "Fruit",
+    "bush_tucker": "Bush Tucker",
+}
+
+
 def build_species_index(species_data: list[dict], trend_data: dict | None = None) -> str:
     """Build an index page listing all species with data."""
     # trend_data: {slug: [in_stock_count_per_day, ...]} (30 values, oldest first)
@@ -719,6 +727,9 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
                 svg = make_sparkline(series, width=60, height=20, color="#16a34a")
                 sparkline_cell = f'<span title="30-day availability trend">{svg}</span>'
 
+        category = s.get("category", "fruit")
+        is_bush_tucker = category == "bush_tucker" or "bush_tucker" in s.get("tags", [])
+
         index_view.append({
             "slug": s["slug"],
             "common_name": s["common_name"],
@@ -730,13 +741,27 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
             "price_range": entry["price_range"],
             "sparkline_cell": sparkline_cell,
             "rarity_cell": rarity_cell,
+            "category": category,
+            "is_bush_tucker": is_bush_tucker,
+            "category_label": CATEGORY_LABELS.get(category, "Fruit"),
         })
 
     sparkline_th = '<th class="pb-2 pr-2">30d</th>' if trend_data else ""
 
+    # Self-contained CSS (not Tailwind utilities) so it survives the purged
+    # Tailwind build, which only sees classes present in the static HTML.
+    extra_style = """\
+  .cat-filter-btn { cursor: pointer; }
+  .cat-filter-btn.active { background-color: #065f46; color: white; border-color: #065f46; }
+  tr.hidden-row { display: none; }
+  .cat-badge { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 9999px; border: 1px solid; white-space: nowrap; margin-left: 0.35rem; vertical-align: middle; }
+  .cat-badge-fruit { background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+  .cat-badge-bush { background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4; }"""
+
     head = render_head(
-        title="Buy Fruit Trees Online Australia | treestock.com.au",
-        description="Find fruit trees for sale across Australian nurseries. Track prices, availability, and shipping for 50+ species including mango, avocado, fig, lychee and more.",
+        title="Browse Fruit Tree and Bush Tucker Species | treestock.com.au",
+        description="Browse fruit trees and Australian bush tucker by species across nurseries. Track prices, availability, and shipping. Updated daily.",
+        extra_style=extra_style,
     )
     header = render_header(active_path="/species/")
     footer = render_footer()

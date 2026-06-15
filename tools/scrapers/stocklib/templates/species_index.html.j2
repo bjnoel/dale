@@ -2,8 +2,17 @@
 {{ header|safe }}
 
 <main class="{{ content_max_width }} mx-auto px-4 py-6">
-  <h1 class="text-2xl font-bold text-green-900 mb-2">Fruit Tree Species</h1>
-  <p class="text-gray-500 text-sm mb-6">Browse by species to compare prices and availability across Australian nurseries. Updated daily.</p>
+  <h1 class="text-2xl font-bold text-green-900 mb-2">Species</h1>
+  <p class="text-gray-500 text-sm mb-4">Browse fruit trees and Australian bush tucker by species to compare prices and availability across Australian nurseries. Updated daily.</p>
+
+  <div class="flex flex-wrap gap-2 mb-6">
+    <button class="cat-filter-btn active text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('all', this)">All</button>
+    <button class="cat-filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('fruit', this)">Fruit</button>
+    <button class="cat-filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
+            onclick="filterSpecies('bush_tucker', this)">Bush Tucker</button>
+  </div>
 
   <div class="overflow-x-auto">
     <table class="w-full text-left">
@@ -20,9 +29,9 @@
       </thead>
       <tbody>
 {% for e in index_view %}
-    <tr class="border-b border-gray-100 hover:bg-gray-50">
+    <tr class="border-b border-gray-100 hover:bg-gray-50" data-category="{{ e.category }}"{% if e.is_bush_tucker %} data-bushtucker="1"{% endif %}>
       <td class="py-3 pr-4">
-        <a href="/species/{{ e.slug }}.html" class="font-medium text-green-700 hover:underline">{{ e.common_name }}</a>
+        <a href="/species/{{ e.slug }}.html" class="font-medium text-green-700 hover:underline">{{ e.common_name }}</a><span class="cat-badge {{ 'cat-badge-bush' if e.category == 'bush_tucker' else 'cat-badge-fruit' }}">{{ e.category_label }}</span>
         <div class="text-xs text-gray-400 italic">{{ e.latin_name }}</div>
       </td>
       <td class="py-3 pr-4 text-sm {{ e.in_s_class }}">{{ e.in_s }} in stock</td>
@@ -36,6 +45,19 @@
     </table>
   </div>
 </main>
+
+<script>
+function filterSpecies(cat, btn) {
+  document.querySelectorAll('.cat-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('tbody tr').forEach(function(row) {
+    var show = cat === 'all'
+      || (cat === 'fruit' && row.dataset.category === 'fruit')
+      || (cat === 'bush_tucker' && row.dataset.bushtucker === '1');
+    row.classList.toggle('hidden-row', !show);
+  });
+}
+</script>
 
 {{ footer|safe }}
 </body>
