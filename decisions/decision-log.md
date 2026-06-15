@@ -4,6 +4,20 @@
 
 ---
 
+## DEC-204 — 2026-06-15 — /species/ category filter + species growing-guide queue (GSC review follow-up)
+
+**Decided by:** Benedict (directive + IA call), Dale (analysis + execution)
+
+**Context:** A GSC review (after recent changes) showed a wave of legitimate 404s and that ~52 of 107 species pages are not indexed. Checks: the sitemap is clean (all 2,849 live URLs return 200; deleted variety/species pages are auto-excluded because the sitemap is rebuilt from files on disk, so the 404s will age out of the index on their own). Root cause of the non-indexing: thin content, 46 of the 52 unindexed species lack a growing guide, concentrated in the bush tucker / native pilot. A second issue surfaced: the /species/ index listed all species (fruit + bush tucker) under an H1 "Fruit Tree Species" with no distinction, so leafy bush tucker (warrigal greens, saltbush) read as fruit trees, the "cinnamon rose under fruit trees" miscategorisation from DEC-200, live.
+
+**Decisions + shipped:**
+- IA: UNIFY not segregate. The /species/ tab keeps every species (discoverability + crawlability) but gains a Fruit / Bush Tucker / All toggle (default All), a per-row category badge, and a corrected heading/title/meta. All rows stay server-rendered (filter is client-side show/hide), so nothing is hidden from crawlers, which helps the indexing gap. Bush Tucker pill mirrors `landing_species` (tag matches like finger-lime appear under both pills, badge stays "Fruit"). Shipped + deployed live (commit on main, server rebuilt, Cloudflare purged); mirrors the `nursery_compare` filter pattern; CSS via render_head `extra_style` to survive the Tailwind purge. Default All chosen over Fruit-first because the homepage (untouched, fruit above the fold) already carries the rare-fruit identity (DEC-200 rule intact), and the goal is more bush-tucker visibility.
+- Indexing follow-up (durable fix): created `docs/species-guide-queue.md`, the prioritised hand-off list of the 53 species still needing a guide (ranked by live stock, since GSC impressions are ~0 across all guideless pages, the chicken-and-egg), with a per-species source angle (rare fruit / native-BT / mainstream). Added a `/species-guide-rollout` command mirroring `/variety-rollout` (one species per worktree+PR, concurrency-safe) so agents can work the queue. A few mainstream entries (coffee, coconut, pineapple, goji-berry) flagged for a guide-or-de-scope call.
+
+**Verification:** 1,616 tests pass; species index golden regenerated (only file affected, no per-species pages changed); live /species/ confirmed (H1 "Species", 3 pills, badges, 107 links present). Browser click-test not run (extension offline); filter JS is a line-for-line mirror of the deployed nursery_compare filter.
+
+**Open:** work the guide queue (Tier 1 first: persimmon, kumquat, kiwifruit, strawberry, chestnut). Confirm the de-scope candidates. Optionally request-index the 18 stale-404 / unknown species to speed re-crawl.
+
 ## DEC-203 — 2026-06-12 — Bush tucker digest is per-subscriber opt-in (DAL-199 redesign)
 
 **Decided by:** Benedict (directive), Dale (design + execution)

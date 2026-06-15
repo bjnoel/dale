@@ -228,6 +228,10 @@ species is in the fixture, full test suite green, PR open.
 
 ## Priority order (data-driven)
 
+> For the CURRENT "what to build next" list see `docs/species-guide-queue.md` (regenerated 2026-06-15:
+> 53 species still need a guide, ranked by live stock). Run one with `/species-guide-rollout <slug>`.
+> The table below is the ORIGINAL fruit-rollout ranking (now essentially all shipped), kept for history.
+
 Ranked by Google Search Console clicks (28 days to 2026-06-02, 2,302 page rows), with Plausible
 views (30d, supplementary) and archive depth. Aggregated per species across its `buy-*-trees-*` and
 `/species/*` pages. `topState` is the highest-impressions state (a hint for flagship, not gospel;
