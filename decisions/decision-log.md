@@ -5831,3 +5831,25 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 - Flutter app code changes go through Benedict, not autonomous commits
 
 **To revert:** Update CLAUDE.md track section, restore project_track_a.md from git, set business-state.json track A back to Walkthrough. Walkthrough infrastructure (site, email, briefs) is preserved untouched.
+
+---
+
+## DEC-206 — 2026-06-15 — Audited and corrected nursery shipping-state data (state filter accuracy)
+
+**Decided by:** Benedict (reported the bug), Dale (audit + fix)
+
+**Context:** Benedict spotted PlantNet products appearing under the Tasmania state filter, even though PlantNet's site says "We do not ship plants to NT, TAS, SA and WA due to state plant quarantine restrictions." The state filter reads each nursery's `ships_to` from `stocklib/registry.py` (the single SHIPPING_MAP source), surfaced into the dashboard via `__DATA.nurseries[].st`. Showing stock in a state a nursery can't ship to is exactly the embarrassing wrong-data case to avoid, so Benedict asked for a comprehensive check of every nursery, not just PlantNet.
+
+**Method:** Verified all 22 nurseries' live shipping policies against their own websites (one verification agent per nursery / per local-delivery group), quoting the policy text. Distinguished online mail-order shipping from local pickup/delivery, and seeds (ship anywhere) from live plants (quarantine-restricted).
+
+**Corrections (registry.py `ships_to`):**
+- **plantnet:** removed WA/SA/TAS. Online shop ships NSW/VIC/QLD/ACT only (WA/SA/TAS/NT excluded per quarantine). This was the reported bug.
+- **yalca-fruit-trees:** removed SA. Policy: "no longer sending to WA, SA or Tasmania."
+- **engalls:** removed SA. Red Imported Fire Ants emergency order paused individual SA orders (bulk-only via an SA stockist; temporary, worth re-checking).
+- **ross-creek:** added SA (was under-showing). Homepage banner ships QLD/NSW/VIC/SA/ACT.
+- **forever-seeds:** added NT (was under-showing). Plants ship everywhere except WA/TAS.
+- **fruitopia:** note only. The old "QLD-based estimate" is now verified correct (QLD/NSW/ACT/VIC/SA).
+
+**Verified correct, no change:** daleys (WA seasonal), ladybird, fruit-salad-trees (WA/TAS monthly), diggers (nationwide + quarantine surcharge), garden-express (nationwide + surcharge), fruit-tree-cottage, heritage-fruit-trees, fruit-tree-lane, and the WA/VIC local-delivery nurseries (primal-fruits, guildford, all-season-plants-wa, perth-mobile-nursery, rayners, garden-world). Aus Nurseries and Diaco's left as-is: their policy pages don't enumerate states, so the existing safe exclusions were kept rather than widened (avoids over-showing).
+
+**Verification:** 1625 tests pass; test_registry pins + goldens updated (ross-creek is the only audited nursery in the golden fixture; diff is purely the SA addition). Deployed via git pull + deploy.sh + page builders (no scrape, no subscriber emails) + tailwind + Cloudflare purge. Confirmed live: treestock.com.au/data.js now serves PlantNet/Yalca/Engall's as NSW/VIC/QLD/ACT (TAS no longer shown), ross-creek with SA, forever-seeds with NT.
