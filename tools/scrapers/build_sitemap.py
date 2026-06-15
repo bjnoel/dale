@@ -47,7 +47,6 @@ STATIC_PAGES = [
     ("companion-planting-guide.html", "monthly", "0.8"),
     ("wa-rare-fruit-guide.html", "monthly", "0.8"),
     ("treesmith.html", "monthly", "0.5"),
-    ("advertise.html", "monthly", "0.4"),
 ]
 
 # State landing pages live in their own section so the locations sub-sitemap

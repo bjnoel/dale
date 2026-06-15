@@ -41,7 +41,7 @@ def _build_fixture(root: Path) -> tuple[Path, Path]:
     for f in (
         "index.html", "digest.html", "history.html", "rare.html",
         "sample-digest.html", "guide.html", "finger-lime-guide.html",
-        "when-to-plant.html", "companion-planting-guide.html", "advertise.html",
+        "when-to-plant.html", "companion-planting-guide.html",
         "buy-fruit-trees-wa.html", "buy-fruit-trees-qld.html",
         "buy-fruit-trees-nsw.html", "buy-fruit-trees-vic.html",
         "buy-fruit-trees-by-species-state.html",

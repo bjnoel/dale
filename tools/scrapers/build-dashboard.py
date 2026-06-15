@@ -944,6 +944,14 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
   .filter-chip button { background: none; border: none; color: #166534; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
   .filter-chip button:hover { color: #dc2626; }
+  .search-box { position: relative; }
+  .search-suggest { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 30; margin: 0; padding: 4px; list-style: none; background: #fff; border: 1px solid #d1d5db; border-radius: 0.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.12); max-height: 320px; overflow-y: auto; }
+  .search-suggest[hidden] { display: none; }
+  .search-suggest li { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 8px 12px; border-radius: 0.375rem; font-size: 0.95rem; color: #1f2937; cursor: pointer; }
+  .search-suggest li.active, .search-suggest li:hover { background: #f0fdf4; color: #065f46; }
+  .search-suggest .suggest-name { font-weight: 500; }
+  .search-suggest .suggest-syn { font-weight: 400; color: #6b7280; font-size: 0.8rem; margin-left: 4px; }
+  .search-suggest .suggest-count { flex-shrink: 0; color: #047857; font-size: 0.75rem; white-space: nowrap; }
 """ + CATEGORY_BADGE_CSS
 
     # Optional intro block above the search (category landing pages only; the
@@ -1000,9 +1008,13 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 <main class="{CONTENT_MAX_WIDTH} mx-auto px-4 py-4">{intro_block}
   <!-- Search & Filters -->
   <div class="mb-4 space-y-3">
-    <input type="text" id="search" placeholder="{L.get("search_placeholder", "Search plants... (e.g. sapodilla, mango, fig)")}"
-      class="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-      autofocus>
+    <div class="search-box relative">
+      <input type="text" id="search" placeholder="{L.get("search_placeholder", "Search plants... (e.g. sapodilla, mango, fig)")}"
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        autofocus autocomplete="off" role="combobox" aria-expanded="false"
+        aria-controls="searchSuggest" aria-autocomplete="list" aria-label="Search plants">
+      <ul id="searchSuggest" role="listbox" aria-label="Species suggestions" class="search-suggest" hidden></ul>
+    </div>
     <div id="speciesWrap">
       <div class="species-strip">{species_strip_html}</div>
       <button id="toggleSpecies" class="toggle-pills-btn" style="display:none">Show all &#9662;</button>
@@ -1075,7 +1087,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
 </main>
 
-{render_footer(max_width=CONTENT_MAX_WIDTH, extra_text='<span id="stats" class="block mb-1"></span><a href="/advertise.html" class="underline">Nursery partnerships</a>')}
+{render_footer(max_width=CONTENT_MAX_WIDTH, extra_text='<span id="stats" class="block mb-1"></span>')}
 
 <script src="{data_url}?v={cache_v}" defer></script>
 <script src="/dashboard.js?v={cache_v}" defer></script>

@@ -517,12 +517,171 @@ function updatePillCounts() {
   }
 }
 
+// --- Search autocomplete (species-only) ---------------------------------
+// Suggestions are built once from data already in memory (P, SPECIES_SLUGS,
+// SLUG_TO_NAME); there is no network call and the species list is ~100 entries, so
+// the filter runs synchronously on each keystroke (a debounce would only add lag).
+// Selecting a suggestion reuses the species-pill contract: set activeSpeciesSlug,
+// mirror the value into the box, run search(), and scroll to results.
+const suggestBox = document.getElementById('searchSuggest');
+const SUGGEST = (() => {
+  const inStockBySlug = {};
+  for (const p of P) { if (p.sl && p.a) inStockBySlug[p.sl] = (inStockBySlug[p.sl] || 0) + 1; }
+  // One record per unique species slug, plus a flat match list over every
+  // searchable string (canonical common name + each synonym key in SPECIES_SLUGS)
+  // so a synonym query resolves to the species while the row shows the real name.
+  const bySlug = {};
+  const matches = [];
+  Object.entries(SPECIES_SLUGS).forEach(([term, v]) => {
+    if (!bySlug[v.slug]) bySlug[v.slug] = { slug: v.slug, name: v.name, inStock: inStockBySlug[v.slug] || 0 };
+    matches.push({ term, slug: v.slug, isSyn: v.name.toLowerCase() !== term });
+  });
+  return { bySlug, matches };
+})();
+let suggestItems = [];
+let suggestActive = -1;
+
+function suggestFor(raw) {
+  const q = raw.toLowerCase().trim();
+  if (q.length < 2) return [];
+  const prefix = [], substr = [];
+  for (const m of SUGGEST.matches) {
+    const idx = m.term.indexOf(q);
+    if (idx === 0) prefix.push(m);
+    else if (idx > 0) substr.push(m);
+  }
+  // Prefix matches first; within each group rank by in-stock count, then prefer the
+  // canonical name over a synonym match, then alphabetical.
+  const rank = (a, b) => {
+    const sa = SUGGEST.bySlug[a.slug], sb = SUGGEST.bySlug[b.slug];
+    return sb.inStock - sa.inStock
+      || (a.isSyn ? 1 : 0) - (b.isSyn ? 1 : 0)
+      || sa.name.localeCompare(sb.name);
+  };
+  prefix.sort(rank); substr.sort(rank);
+  const out = [], seen = new Set();
+  for (const m of prefix.concat(substr)) {
+    if (seen.has(m.slug)) continue;
+    seen.add(m.slug);
+    const s = SUGGEST.bySlug[m.slug];
+    out.push({ slug: s.slug, name: s.name, inStock: s.inStock, viaSyn: m.isSyn ? m.term : null });
+    if (out.length >= 8) break;
+  }
+  return out;
+}
+
+function renderSuggest(items) {
+  suggestItems = items;
+  suggestActive = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  suggestBox.innerHTML = '';
+  if (!items.length) { closeSuggest(); return; }
+  // Build rows as DOM nodes (textContent) so curated names can never inject markup.
+  items.forEach((it, i) => {
+    const li = document.createElement('li');
+    li.setAttribute('role', 'option');
+    li.id = 'suggest-' + i;
+    li.dataset.i = i;
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'suggest-name';
+    nameSpan.textContent = it.name;
+    if (it.viaSyn) {
+      const syn = document.createElement('span');
+      syn.className = 'suggest-syn';
+      syn.textContent = '(' + it.viaSyn + ')';
+      nameSpan.appendChild(syn);
+    }
+    const countSpan = document.createElement('span');
+    countSpan.className = 'suggest-count';
+    countSpan.textContent = it.inStock > 0 ? it.inStock + ' in stock' : 'out of stock';
+    li.appendChild(nameSpan);
+    li.appendChild(countSpan);
+    suggestBox.appendChild(li);
+  });
+  suggestBox.hidden = false;
+  searchInput.setAttribute('aria-expanded', 'true');
+}
+
+function closeSuggest() {
+  suggestBox.hidden = true;
+  suggestBox.innerHTML = '';
+  suggestItems = [];
+  suggestActive = -1;
+  searchInput.setAttribute('aria-expanded', 'false');
+  searchInput.removeAttribute('aria-activedescendant');
+}
+
+function setSuggestActive(i) {
+  const lis = suggestBox.querySelectorAll('li');
+  lis.forEach(li => li.classList.remove('active'));
+  if (i >= 0 && i < lis.length) {
+    lis[i].classList.add('active');
+    lis[i].scrollIntoView({ block: 'nearest' });
+    searchInput.setAttribute('aria-activedescendant', 'suggest-' + i);
+    suggestActive = i;
+  } else {
+    suggestActive = -1;
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+
+function selectSuggestion(i) {
+  const it = suggestItems[i];
+  if (!it) return;
+  document.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
+  searchInput.value = it.name;
+  activeSpeciesSlug = it.slug;
+  closeSuggest();
+  search();
+  const results = document.getElementById('results');
+  if (results) results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+searchInput.addEventListener('keydown', function(e) {
+  if (suggestBox.hidden || !suggestItems.length) {
+    if (e.key === 'Escape') closeSuggest();
+    return;
+  }
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    setSuggestActive((suggestActive + 1) % suggestItems.length);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    setSuggestActive((suggestActive - 1 + suggestItems.length) % suggestItems.length);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    selectSuggestion(suggestActive >= 0 ? suggestActive : 0);
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    closeSuggest();
+  }
+});
+searchInput.addEventListener('focus', function() {
+  if (suggestBox.hidden) renderSuggest(suggestFor(searchInput.value));
+});
+searchInput.addEventListener('blur', function() {
+  // Delay so a click on a suggestion (which blurs the input) still registers.
+  setTimeout(closeSuggest, 150);
+});
+// mousedown (not click) + preventDefault keeps focus on the input and beats blur.
+suggestBox.addEventListener('mousedown', function(e) {
+  const li = e.target.closest('li[data-i]');
+  if (!li) return;
+  e.preventDefault();
+  selectSuggestion(parseInt(li.dataset.i, 10));
+});
+suggestBox.addEventListener('mousemove', function(e) {
+  const li = e.target.closest('li[data-i]');
+  if (li) setSuggestActive(parseInt(li.dataset.i, 10));
+});
+
 // Event listeners
 searchInput.addEventListener('input', function() {
   // Clear active pill and species filter when user types manually
   activeSpeciesSlug = '';
   document.querySelectorAll('.species-pill.active').forEach(p => p.classList.remove('active'));
   search();
+  renderSuggest(suggestFor(searchInput.value));
 });
 inStockOnly.addEventListener('change', search);
 stateFilter.addEventListener('change', function() {
