@@ -307,9 +307,12 @@ function render() {
     const nurseryTagClass = p.ft ? 'nursery-tag featured-tag' : 'nursery-tag';
     const featuredBadge = p.ft ? '<span class="featured-badge">Featured</span>' : '';
     const rareBadge = (p.sl && HARD_TO_FIND.has(p.sl)) ? '<span class="stock-badge rare-badge" data-rare="1" role="button" tabindex="0" title="Show only hard-to-find varieties">Hard to find</span>' : '';
-    const catBadges = (SPECIES_CATS[p.sl] || [])
-      .map(c => CAT_BADGE[c] ? `<span class="cat-badge ${CAT_BADGE[c][1]}">${CAT_BADGE[c][0]}</span>` : '')
-      .join('');
+    // Badge bush tucker only: Fruit is the default and would just be noise on the
+    // mixed homepage feed. Homepage only (gated on categoryFilter existing): the
+    // /bush-tucker/ landing is already category-scoped, so a badge there is redundant.
+    const catBadges = (categoryFilter && (SPECIES_CATS[p.sl] || []).includes('bush_tucker'))
+      ? `<span class="cat-badge ${CAT_BADGE.bush_tucker[1]}">${CAT_BADGE.bush_tucker[0]}</span>`
+      : '';
     let notifyLink = '';
     if (!p.a && p.vs) {
       notifyLink = VARIETY_IN_STOCK[p.vs]
