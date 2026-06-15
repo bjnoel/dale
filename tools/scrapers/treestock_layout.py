@@ -52,10 +52,11 @@ NAV_ITEMS = [
 LOGO_SVG = """\
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-7 h-7 flex-shrink-0">\
 <rect width="64" height="64" rx="12" fill="#065f46"/>\
-<path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/>\
-<path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/>\
-<circle cx="44" cy="44" r="8" fill="#f59e0b"/>\
-<text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text>\
+<g transform="rotate(-40 32 32)">\
+<path d="M20,14 L46,14 C48.2,14 50,15.8 50,18 L50,44 C50,46.2 48.2,48 46,48 L20,48 C18.6,48 17.3,47.3 16.5,46.1 L8.8,35.1 C7.9,33.8 7.9,32.2 8.8,30.9 L16.5,19.9 C17.3,18.7 18.6,18 20,18 Z" fill="#f59e0b"/>\
+<circle cx="18" cy="31" r="3.6" fill="#065f46"/>\
+<path d="M40,22 C31,25 26,32 27.5,40 C29.3,37 32,35 35.5,34 C32,37 30.5,41 30.7,45 C38,41.5 43,34.5 42,26.5 C41,23.5 41.5,21.4 40,22 Z" fill="#16a34a" transform="rotate(40 32 32)"/>\
+</g>\
 </svg>"""
 
 BASE_STYLE = """\
@@ -82,7 +83,13 @@ TREESTOCK = SiteConfig(
     site_url=SITE_URL,
     tailwind_href=TAILWIND_CSS,
     plausible_script=PLAUSIBLE_SCRIPT,
-    favicon_html='<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
+    favicon_html=(
+        '<link rel="icon" href="/favicon.svg" type="image/svg+xml">'
+        '<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">'
+        '<link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png">'
+        '<link rel="apple-touch-icon" href="/apple-touch-icon.png">'
+        '<link rel="manifest" href="/site.webmanifest">'
+    ),
     logo_svg=LOGO_SVG,
     nav_items=NAV_ITEMS,
     accent="green",
