@@ -4,6 +4,20 @@
 
 ---
 
+## DEC-205 — 2026-06-15 — Category filter rolled out to /variety/, /compare/ and the homepage (reverses DEC-200 "homepage untouched")
+
+**Decided by:** Benedict (directive), Dale (execution)
+
+**Context:** After the /species/ category filter (DEC-204), Benedict asked to extend the same Fruit / Bush Tucker / All filter + badges to the other browse surfaces, and specifically to the homepage search results ("badges on the search results so I can filter by species/variety and badge of bush tucker or fruit tree"). The homepage filter **reverses DEC-200's IA decision** (which chose the /bush-tucker/ landing page and explicitly rejected a homepage category filter to keep the homepage untouched). Flagged the reversal to Benedict before building; he confirmed by asking for it.
+
+**Shipped (all deployed + verified live 2026-06-15):**
+- Shared logic extracted to `stocklib/category_ui.py` (CATEGORY_BADGES, category_keys, category_badges_html, is_bush_tucker, CATEGORY_BADGE_CSS, CATEGORY_FILTER_CSS) so no surface forks it. A species shows one badge per category it belongs to, so cross-listed species (finger-lime, macadamia, the 8 tagged fruits) show BOTH Fruit and Bush Tucker and match both filters.
+- /variety/ index: per-section data-category/data-bushtucker + heading badges + three pills wired into the EXISTING search+state filter (composes: a section shows only if it passes the category pill AND the search/state). 25 of 106 sections are bush tucker.
+- /compare/ index: same flat-table treatment as /species/. 21 of 99 pages are bush tucker.
+- Homepage: a `<select id="categoryFilter">` in the EXISTING filter row (NOT a new section above results, so the "search results above the fold" hard rule holds), plus a per-result category badge. Dataset gains a compact `species_cats` map; dashboard.js badges each row and filters (also folded into updatePillCounts + active-filter chips). The filter is homepage-only; the /bush-tucker/ landing (already category-scoped) shows badges but no redundant filter. Both fruit and bush tucker are badged per the request (can switch to bush-tucker-only if the "Fruit" badge on most rows reads as noise).
+
+**Verification:** 1625 tests pass; new tests for variety + compare filters; goldens regenerated (species/variety/compare/dashboard/bush_tucker_landing), each diff reviewed as only the intended change. dashboard.js node --check passes; badge + filter logic simulated against the live dataset (4525 fruit / 296 bush tucker / 838 uncategorised products; finger-lime appears under both filters). Browser click-test not run (extension offline).
+
 ## DEC-204 — 2026-06-15 — /species/ category filter + species growing-guide queue (GSC review follow-up)
 
 **Decided by:** Benedict (directive + IA call), Dale (analysis + execution)

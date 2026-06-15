@@ -15,6 +15,10 @@ for (const _p of P) { if (_p.vs) VARIETY_IN_STOCK[_p.vs] = VARIETY_IN_STOCK[_p.v
 const N = _DATA.nurseries;
 const SPECIES_SLUGS = _DATA.species_slugs;
 const HARD_TO_FIND = new Set(_DATA.hard_to_find);
+// Per-species category list (e.g. {"finger-lime":["fruit","bush_tucker"]}) for the
+// result-row category badge and the Fruit / Bush Tucker filter.
+const SPECIES_CATS = _DATA.species_cats || {};
+const CAT_BADGE = { fruit: ['Fruit', 'cat-badge-fruit'], bush_tucker: ['Bush Tucker', 'cat-badge-bush'] };
 const SLUG_TO_NAME = {};
 Object.values(SPECIES_SLUGS).forEach(v => { SLUG_TO_NAME[v.slug] = v.name; });
 
@@ -62,6 +66,8 @@ const inStockOnly = document.getElementById('inStockOnly');
 const stateFilter = document.getElementById('stateFilter');
 const changesOnly = document.getElementById('changesOnly');
 const sortBy = document.getElementById('sortBy');
+// Category filter (homepage only; absent on category landing pages).
+const categoryFilter = document.getElementById('categoryFilter');
 let activeSpeciesSlug = '';
 let rareOnly = false;
 // Progressive species pills: show SPECIES_DEFAULT pills, reveal SPECIES_TIER more each
@@ -84,10 +90,13 @@ function search() {
 
   let results = P;
 
+  const cat = categoryFilter ? categoryFilter.value : '';
+
   if (stockOnly) results = results.filter(p => p.a);
   if (st) results = results.filter(p => (SHIPS_TO[p.nk] || []).includes(st));
   if (changesOnly.checked) results = results.filter(p => p.ch);
   if (nursery) results = results.filter(p => p.nk === nursery);
+  if (cat) results = results.filter(p => (SPECIES_CATS[p.sl] || []).includes(cat));
   if (activeSpeciesSlug) results = results.filter(p => p.sl === activeSpeciesSlug);
   if (rareOnly) results = results.filter(p => p.sl && HARD_TO_FIND.has(p.sl));
 
@@ -298,6 +307,9 @@ function render() {
     const nurseryTagClass = p.ft ? 'nursery-tag featured-tag' : 'nursery-tag';
     const featuredBadge = p.ft ? '<span class="featured-badge">Featured</span>' : '';
     const rareBadge = (p.sl && HARD_TO_FIND.has(p.sl)) ? '<span class="stock-badge rare-badge" data-rare="1" role="button" tabindex="0" title="Show only hard-to-find varieties">Hard to find</span>' : '';
+    const catBadges = (SPECIES_CATS[p.sl] || [])
+      .map(c => CAT_BADGE[c] ? `<span class="cat-badge ${CAT_BADGE[c][1]}">${CAT_BADGE[c][0]}</span>` : '')
+      .join('');
     let notifyLink = '';
     if (!p.a && p.vs) {
       notifyLink = VARIETY_IN_STOCK[p.vs]
@@ -310,7 +322,7 @@ function render() {
         <div class="font-medium text-sm">${p.t}${latinName}</div>
         <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
           <span class="${nurseryTagClass}" data-nk="${p.nk}">${p.n}</span>
-          ${featuredBadge} ${rareBadge} ${stockBadge} ${shipsBadge} ${localBadge} ${saleBadge} ${changeBadge}
+          ${featuredBadge} ${catBadges} ${rareBadge} ${stockBadge} ${shipsBadge} ${localBadge} ${saleBadge} ${changeBadge}
         </div>
       </div>
       <div class="text-right flex-shrink-0">
@@ -370,6 +382,8 @@ function updateActiveFilters() {
   }
   const st = stateFilter.value;
   if (st) chips.push({label: st, action: 'state'});
+  const cat = categoryFilter ? categoryFilter.value : '';
+  if (cat) chips.push({label: cat === 'bush_tucker' ? 'Bush Tucker' : 'Fruit', action: 'category'});
   if (changesOnly.checked) chips.push({label: 'Changes only', action: 'changes'});
   if (rareOnly) chips.push({label: 'Hard to find', action: 'rare'});
 
@@ -397,6 +411,8 @@ document.getElementById('activeFilters').addEventListener('click', function(e) {
     nurserySelect.value = '';
   } else if (action === 'state') {
     stateFilter.value = '';
+  } else if (action === 'category') {
+    if (categoryFilter) categoryFilter.value = '';
   } else if (action === 'changes') {
     changesOnly.checked = false;
   } else if (action === 'rare') {
@@ -412,12 +428,15 @@ function updatePillCounts() {
   const nursery = nurserySelect.value;
   const changes = changesOnly.checked;
 
+  const cat = categoryFilter ? categoryFilter.value : '';
+
   // Get the base filtered set (all filters except species)
   let base = P;
   if (stockOnly) base = base.filter(p => p.a);
   if (st) base = base.filter(p => (SHIPS_TO[p.nk] || []).includes(st));
   if (changes) base = base.filter(p => p.ch);
   if (nursery) base = base.filter(p => p.nk === nursery);
+  if (cat) base = base.filter(p => (SPECIES_CATS[p.sl] || []).includes(cat));
 
   // Count per species slug
   const counts = {};
@@ -512,6 +531,7 @@ stateFilter.addEventListener('change', function() {
 changesOnly.addEventListener('change', search);
 nurserySelect.addEventListener('change', search);
 sortBy.addEventListener('change', search);
+if (categoryFilter) categoryFilter.addEventListener('change', search);
 
 // Show/hide species pill toggle button + initial pill click binding
 (function() {

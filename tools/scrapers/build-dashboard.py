@@ -20,6 +20,7 @@ from treestock_layout import render_head, render_header, render_footer, CONTENT_
 from cultivar_parsing import product_variety_slug
 from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK
 from stocklib.taxonomy import enabled_species, load_species
+from stocklib.category_ui import category_keys, CATEGORY_BADGE_CSS
 # Reuse the variety builder's non-plant denylist so we never emit a variety
 # slug (vs) for a product it would refuse to build a /variety/ page for
 # (e.g. "Yates Apple": "yates" is a chemical brand in that list). Keeping a
@@ -874,9 +875,15 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
     # `defer` before dashboard.js. Keeping it out of the HTML shrinks the document
     # ~70x for a much faster FCP; JSON.parse of a string literal keeps the parse fast
     # so TBT stays flat. dashboard.js reads window.__DATA synchronously (defer order).
+    # Per-species category list (primary category + cross-listing tags) so the
+    # results JS can badge each row Fruit / Bush Tucker and filter by category.
+    # A cross-listed species (finger-lime) maps to ["fruit", "bush_tucker"].
+    species_cats = {s["slug"]: category_keys(s) for s in enabled_species()}
+
     dashboard_data_json = json.dumps({
         "products": products, "nurseries": nurseries,
         "species_slugs": species_slugs, "hard_to_find": list(hard_to_find_slugs),
+        "species_cats": species_cats,
     }, separators=(",", ":"))
     data_js = "window.__DATA=JSON.parse(" + json.dumps(dashboard_data_json) + ");"
     cache_v = datetime.now(timezone.utc).strftime("%Y%m%d")
@@ -936,7 +943,8 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .other-pill .count { color: #6b7280; }
   .filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
   .filter-chip button { background: none; border: none; color: #166534; font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1; }
-  .filter-chip button:hover { color: #dc2626; }"""
+  .filter-chip button:hover { color: #dc2626; }
+""" + CATEGORY_BADGE_CSS
 
     # Optional intro block above the search (category landing pages only; the
     # homepage stays "search first" with nothing above results). Empty -> the
@@ -944,6 +952,18 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
     intro_html = L.get("intro_html", "")
     intro_block = ("\n" + intro_html) if intro_html else ""
     data_url = L.get("data_url", "/data.js")
+
+    # Category filter (Fruit / Bush Tucker) sits in the existing filter row on the
+    # homepage only. Category landing pages (e.g. /bush-tucker/) are already scoped
+    # to one category, so the control would be redundant there.
+    category_filter_html = "" if landing is not None else (
+        '<select id="categoryFilter" aria-label="Filter by plant category" '
+        'class="border border-gray-300 rounded px-2 py-1 text-sm">'
+        '<option value="">All plants</option>'
+        '<option value="fruit">Fruit</option>'
+        '<option value="bush_tucker">Bush Tucker</option>'
+        '</select>'
+    )
 
     # Twitter Card + og:title/description/image/type are emitted by render_head;
     # only the og:image dimensions (which render_head does not model) are added here.
@@ -1003,6 +1023,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         <option value="NT">NT</option>
         <option value="ACT">ACT</option>
       </select>
+      {category_filter_html}
       <label class="flex items-center gap-1 cursor-pointer">
         <input type="checkbox" id="changesOnly" class="rounded"> Changes only
       </label>

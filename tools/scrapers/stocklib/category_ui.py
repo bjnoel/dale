@@ -17,15 +17,24 @@ CATEGORY_BADGES = {
 
 # Self-contained CSS (NOT Tailwind utilities) so it survives the purged Tailwind
 # build, which only sees classes present in the static HTML. Injected via
-# render_head(extra_style=...). The tr.hidden-row rule is used by the /species/
-# index; it is harmless on /variety/ (which hides via inline style).
+# render_head(extra_style=...).
+
+# Just the badge classes (the homepage uses these without the filter pills, since
+# its category control is a <select> in the existing filter row).
+CATEGORY_BADGE_CSS = """\
+  .cat-badge { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 9999px; border: 1px solid; white-space: nowrap; margin-left: 0.35rem; vertical-align: middle; }
+  .cat-badge-fruit { background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+  .cat-badge-bush { background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4; }"""
+
+# Pills + badges, for the /species/, /variety/ and /compare/ indexes. The
+# tr.hidden-row rule is used by the table-based indexes; it is harmless on
+# /variety/ (which hides via inline style). This composes the badge CSS so the
+# string stays identical to its original inline value.
 CATEGORY_FILTER_CSS = """\
   .cat-filter-btn { cursor: pointer; }
   .cat-filter-btn.active { background-color: #065f46; color: white; border-color: #065f46; }
   tr.hidden-row { display: none; }
-  .cat-badge { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 9999px; border: 1px solid; white-space: nowrap; margin-left: 0.35rem; vertical-align: middle; }
-  .cat-badge-fruit { background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
-  .cat-badge-bush { background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4; }"""
+""" + CATEGORY_BADGE_CSS
 
 
 def category_keys(species: dict) -> list[str]:
