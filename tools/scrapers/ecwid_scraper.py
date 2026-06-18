@@ -259,15 +259,25 @@ def extract_product(raw, domain):
         # restock/variety alerts.
         sold_out = True
     available = not bool(sold_out)
+    price = _as_float(prices.get("basePrice"))
 
+    # Emit BOTH dialects' availability/price fields. Ecwid is the "flat" dialect
+    # (top-level available/price, no variants), but most builders read the
+    # variant dialect's precomputed any_available/min_price/max_price and treat a
+    # missing field as out-of-stock / price-on-application. Carrying both keeps
+    # every consumer correct (the Primal Fruits "0 in stock, all POA" bug) without
+    # adding a `variants` list, so changes.py still keys these products by URL.
     return {
         "title": name,
         "url": page_url,
         "sku": sku,
         "description": _strip_html(raw.get("description") or ""),
-        "price": _as_float(prices.get("basePrice")),
+        "price": price,
+        "min_price": price,
+        "max_price": price,
         "currency": "AUD",
         "available": available,
+        "any_available": available,
         "availability_raw": "OutOfStock" if sold_out else "InStock",
     }
 

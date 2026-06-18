@@ -72,6 +72,20 @@ class ExtractProductTest(unittest.TestCase):
         self.assertEqual(p["sku"], "")          # null variation SKU -> ""
         self.assertEqual(p["price"], 30.0)
 
+    def test_emits_both_dialect_fields(self):
+        # Regression: builders that read the variant dialect (any_available /
+        # min_price / max_price) rendered every flat Ecwid product as "0 in stock,
+        # POA". extract_product must emit both dialects' fields so those builders
+        # are correct without special-casing the flat shape.
+        products, _, _ = _by_title()
+        live = products["Eugenia zuccarinii"]
+        self.assertEqual((live["any_available"], live["available"]), (True, True))
+        self.assertEqual(live["min_price"], 50.0)
+        self.assertEqual(live["max_price"], 50.0)
+        dead = products["Whitman Fibreless Soursop"]
+        self.assertEqual((dead["any_available"], dead["available"]), (False, False))
+        self.assertEqual(dead["min_price"], 30.0)
+
     def test_third_product_maps(self):
         products, _, _ = _by_title()
         p = products["Japanese Maple tree"]
