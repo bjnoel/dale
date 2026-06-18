@@ -5853,3 +5853,22 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **Verified correct, no change:** daleys (WA seasonal), ladybird, fruit-salad-trees (WA/TAS monthly), diggers (nationwide + quarantine surcharge), garden-express (nationwide + surcharge), fruit-tree-cottage, heritage-fruit-trees, fruit-tree-lane, and the WA/VIC local-delivery nurseries (primal-fruits, guildford, all-season-plants-wa, perth-mobile-nursery, rayners, garden-world). Aus Nurseries and Diaco's left as-is: their policy pages don't enumerate states, so the existing safe exclusions were kept rather than widened (avoids over-showing).
 
 **Verification:** 1625 tests pass; test_registry pins + goldens updated (ross-creek is the only audited nursery in the golden fixture; diff is purely the SA addition). Deployed via git pull + deploy.sh + page builders (no scrape, no subscriber emails) + tailwind + Cloudflare purge. Confirmed live: treestock.com.au/data.js now serves PlantNet/Yalca/Engall's as NSW/VIC/QLD/ACT (TAS no longer shown), ross-creek with SA, forever-seeds with NT.
+
+---
+
+## DEC-207 — 2026-06-18 — Fixed WooCommerce scrapers silently dropping fruit tagged with leaf-only categories
+
+**Decided by:** Benedict (spotted a missing product), Dale (diagnosis, audit, fix)
+
+**Context:** Benedict asked why a real product (Fig - Peter Good at Guildford Garden Centre) wasn't in the dataset, even though we track that nursery. Guildford was being scraped fine, but the WooCommerce include-filter only kept products whose category slugs contained one of `fruit_categories`. Guildford tags many fruit trees with only their leaf category (e.g. Peter Good = `exotic-tropical-fruit-trees` + `fig-tree`) and omits the `fruits-nuts`/`edibles` parent the filter required, so they were silently dropped. A sibling tagged with the parent (Fig - Black Sicilian) was kept, which is why the gap was invisible.
+
+**Scope of the bug:** Against the live store, the parent-only filter captured 611 of ~838 fruit/nut trees, dropping ~227 real products (Mango Alphonso, Finger Lime Red Caviar, Blood Orange, plums, apricots, bananas, blueberries, passionfruit). Spot-checking the other WooCommerce include-filter nurseries found the same class of bug at two more:
+- **Engall's** (`citrus`/`dwarf-citrus` only): missed oranges/mandarins/limes/lemons tagged with their fruit-type leaf (`dwarf-orange`, `lime`, `mandarin`...) plus all 6 olives. 55 -> 70 captured.
+- **Yalca:** missed walnuts, hazelnuts, pomegranate, tayberry tagged with their own leaf category. 188 -> 198 captured.
+- **fruit-tree-lane** audited clean (unmatched = nets/secateurs/gift cards + non-core herbs). The `category_api` nurseries (garden-express/plantnet/diacos) and the exclude-filter one (rayners) are not exposed to this class.
+
+**Fix:** Broadened the three nurseries' `fruit_categories` to list the leaf categories (substring matching covers bare-root/`dwarf-` variants). Extracted the filter predicate into a pure `category_matches()` and added `tests/test_woocommerce_filter.py` pinning the exact products the old filter dropped. Commits 38bc778 (Guildford) + c09a052 (Engall's/Yalca). Full suite green (1633 tests).
+
+**Rollout (email-safe):** deploy.sh, then a standalone `woocommerce_scraper.py <nursery>` run per nursery to write today's baseline snapshot (the scraper alone sends no emails) BEFORE the nightly diff, so tonight's variety-alert/surge pipeline compares like-for-like and fires no false "restock" alerts. Then product-page builders + tailwind + Cloudflare purge (skipped daily_digest/history so the public digest wouldn't show 227 false "new" entries). Confirmed live: data.js now serves Peter Good, Alphonso, Manzanillo Olive, Chandler walnut. Guildford 611 -> 838, Engall's 55 -> 70, Yalca 188 -> 198.
+
+**Follow-up:** the same narrow-include-filter risk exists in principle for the Shopify (`product_types`) and BigCommerce (hardcoded category slugs) scrapers; not confirmed broken, worth the same pull-and-compare audit later.
