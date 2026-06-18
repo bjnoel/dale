@@ -1,7 +1,7 @@
 """Regression tests for bigcommerce_scraper.in_scope / extract_breadcrumbs --
 the scope filter for the Heritage Fruit Trees sitemap-driven scrape.
 
-The bug (DEC-208): the scraper walked three top-level category listings
+The bug (DEC-209): the scraper walked three top-level category listings
 (fruit-trees / nut-trees / berries-and-vine-fruit) and relied on them rolling up
 their subcategories. They don't, so ~150 real fruit were silently dropped -- ALL
 blueberries, walnuts, chestnuts, kiwi-fruit, grapes, medlar, loquat, plus ~50

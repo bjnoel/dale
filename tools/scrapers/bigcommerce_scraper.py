@@ -43,7 +43,7 @@ USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 # fruit/ misses blueberries/kiwi-fruit/all-grape-varieties/currants/raspberries,
 # and /fruit-trees/ misses ~50 apples in deeper apple subcategories. That
 # silently dropped ~150 real fruit (all blueberries, walnuts, chestnuts, kiwi,
-# grapes, medlar, loquat, plus a chunk of apples/pears/cherries). DEC-208,
+# grapes, medlar, loquat, plus a chunk of apples/pears/cherries). DEC-209,
 # follow-up to the WooCommerce leaf-category gap (DEC-207).
 PRODUCTS_SITEMAP = BASE_URL + "/xmlsitemap.php?type=products&page={page}"
 
@@ -298,7 +298,7 @@ def get_all_product_urls(health=None):
     """Collect every product URL from the store's products sitemap (the complete
     catalogue). Replaces the old category-walk discovery, which silently missed
     fruit in subcategories the three top-level listings did not roll up
-    (DEC-208). Products are single-path-segment slugs; nav/category/page slugs
+    (DEC-209). Products are single-path-segment slugs; nav/category/page slugs
     and known SKIP_SLUGS are filtered out (the breadcrumb scope filter and the
     title junk filter handle the rest downstream)."""
     paths = []

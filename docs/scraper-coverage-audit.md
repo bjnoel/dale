@@ -1,6 +1,12 @@
 # Scraper coverage audit (Shopify + BigCommerce follow-up to DEC-207)
 
-**Status:** not started. Follow-up from DEC-207 (2026-06-18).
+**Status:** done (2026-06-18). See DEC-209. Outcome: forever-seeds clean;
+garden-world 214 -> 221 (Finger Lime + Blackberry rescued via "Fruit Online"
+tag); diggers 97 -> 131 (curated handle allow-list of ~34 inconsistently-tagged
+fruit); heritage-fruit-trees 268 -> 348 (rewrote discovery to the products
+sitemap + breadcrumb scope filter; recovered all blueberries/walnuts/chestnuts/
+kiwi/medlar/loquat + ~30 apples/pears the 3-category walk silently missed).
+Follow-up from DEC-207 (2026-06-18).
 **Goal:** confirm the Shopify and BigCommerce scrapers are not silently dropping
 real fruit/nut/berry stock the way the WooCommerce scrapers were, and fix any
 that are.

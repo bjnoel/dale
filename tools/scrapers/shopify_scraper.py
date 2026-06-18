@@ -50,7 +50,7 @@ NURSERIES = {
         "domain": "www.diggers.com.au",
         "location": "Dromana, VIC",
         "fruit_tags": ["all fruit & nuts", "all fruit &amp; nuts", "all berries", "fruit trees", "nuts"],
-        # Curated rescue (DEC-208): Diggers tags its fruit inconsistently. ~30
+        # Curated rescue (DEC-209): Diggers tags its fruit inconsistently. ~30
         # real fruit/nut/berry live plants carry no "all fruit & nuts"/"all
         # berries" tag (some are essentially untagged, e.g. Loquat). No tag rule
         # separates them from the herbs/veg/tea that share IsEd/FruitMonth, and
@@ -112,7 +112,7 @@ NURSERIES = {
         # (bush-tucker) rather than "FOOD PLANTS", but tags it "Fruit Online":
         # this rescues Finger Lime (Rainforest Pearl / D'Emerald, incl. dwarf)
         # and Blackberry 'Chester Thornless', which the type filter alone drops
-        # (DEC-208). Pure bush-tucker natives (Davidson's Plum, Dorrigo
+        # (DEC-209). Pure bush-tucker natives (Davidson's Plum, Dorrigo
         # pepperberry, midyim, lemon/cinnamon myrtle) carry only "Edible
         # Australian Natives" and are deliberately NOT rescued here -- that tag
         # also covers native culinary herbs (mints, basil) we don't track.

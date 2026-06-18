@@ -1,7 +1,7 @@
 """Regression tests for shopify_scraper.product_in_scope -- the include-filter
 that decides whether a Shopify product is kept.
 
-The bug (DEC-208, follow-up to the WooCommerce leaf-category gap DEC-207):
+The bug (DEC-209, follow-up to the WooCommerce leaf-category gap DEC-207):
 nurseries that filter their catalogue were silently dropping real fruit the
 store had tagged/typed inconsistently. The fix turns the filter into an OR over
 three signals (product_types / fruit_tags / fruit_handles):
@@ -51,7 +51,7 @@ class TestNoFilterKeepsEverything(unittest.TestCase):
 class TestGardenWorldRegression(unittest.TestCase):
     """FOOD PLANTS type, PLUS a "Fruit Online" tag rescue for NATIVE-typed fruit."""
 
-    # The products the type-only filter used to drop (DEC-208).
+    # The products the type-only filter used to drop (DEC-209).
     DROPPED_BEFORE = [
         ("Finger Lime 'Rainforest Pearl' 17cm", "NATIVE",
          ["Edible Australian Natives", "Fruit Online"]),
