@@ -29,7 +29,21 @@ NURSERIES = {
         "name": "Guildford Garden Centre",
         "domain": "guildfordgardencentre.com.au",
         "location": "Guildford, WA",
-        "fruit_categories": ["fruits-nuts", "edibles"],
+        # Guildford tags many fruit trees with only their leaf category and omits
+        # the "fruits-nuts"/"edibles" parent (e.g. Fig - Peter Good carries only
+        # exotic-tropical-fruit-trees + fig-tree). Parent-only filtering silently
+        # dropped ~225 real fruit/nut trees. Listing the leaf categories too fixes
+        # it. Matching is substring-based, so "stone-fruit" also catches
+        # "stone-fruit-trees-bare-root-stock", "dwarf-fruit" catches the dwarf
+        # bare-root group, etc.
+        "fruit_categories": [
+            "fruits-nuts", "edibles",
+            "stone-fruit", "citrus", "fig-tree", "nut-trees",
+            "dwarf-fruit", "exotic-tropical-fruit", "berries-vines",
+            "berries-and-vines", "self-fertile-fruit", "grape", "blueberry",
+            "raspberry", "passion-fruit", "guava-feijoa", "mango", "avocado",
+            "banana", "mulberry", "soft-skin", "currant",
+        ],
     },
     "yalca-fruit-trees": {
         "name": "Yalca Fruit Trees",
@@ -158,6 +172,21 @@ def fetch_json(url, health=None):
         return None
 
 
+def category_matches(cats, fruit_cats):
+    """True if a product (with category slugs `cats`) belongs to one of the
+    configured `fruit_cats`. A configured slug matches when it equals a product
+    slug OR is a substring of one (so "stone-fruit" catches
+    "stone-fruit-trees-bare-root-stock"). An empty `fruit_cats` means "keep all".
+
+    Substring matching is why a nursery that tags products only with a leaf
+    category (e.g. Guildford's "fig-tree", with no "fruits-nuts" parent) needs
+    those leaf slugs listed explicitly, not just the parent.
+    """
+    if not fruit_cats:
+        return True
+    return any(fc in cats or any(fc in c for c in cats) for fc in fruit_cats)
+
+
 def scrape_woocommerce(nursery_key, config, health=None):
     """Scrape all products from a WooCommerce store."""
     domain = config["domain"]
@@ -191,9 +220,8 @@ def scrape_woocommerce(nursery_key, config, health=None):
         # Filter to fruit/edible categories only
         for product in data:
             cats = [c["slug"] for c in product.get("categories", [])]
-            if fruit_cats:
-                if not any(fc in cats or any(fc in c for c in cats) for fc in fruit_cats):
-                    continue
+            if not category_matches(cats, fruit_cats):
+                continue
             # Exclude non-tree categories / titles (for stores without an
             # include-filter, e.g. Rayners: drop wines, preserves, gifts, tours).
             if excl_cats and any(c in excl_cats for c in cats):
