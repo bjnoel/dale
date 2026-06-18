@@ -15,6 +15,7 @@ Usage:
 import json
 import os
 import re
+import socket
 import sys
 import time
 import threading
@@ -33,6 +34,9 @@ NURSERIES = {
         "domain": "primalfruits.com.au",
         "location": "Parkwood, WA",
         "store_id": "102345518",
+        # This store rate-limits hard (HTTP 429). Go slow and single-file.
+        "workers": 2,
+        "delay": 3.0,
     },
 }
 
@@ -41,26 +45,87 @@ USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 REQUEST_DELAY = 1.5   # seconds between requests per worker — be polite
 MAX_WORKERS = 5       # concurrent fetches — keeps total request rate reasonable
 
+# Retry policy for transient failures. 429 (rate limited) and 503 (overloaded)
+# and read/connect timeouts get retried with exponential backoff so that a busy
+# store doesn't silently drop real products from the snapshot.
+RETRYABLE_HTTP = {429, 503}
+MAX_RETRIES = 3        # extra attempts after the first try
+BACKOFF_BASE = 2.0     # seconds; doubles each retry
+BACKOFF_CAP = 30.0     # never wait longer than this between retries
 
-def fetch_page(url, timeout=20, health=None):
-    """Fetch a page and return the HTML body."""
+
+def _retry_after_seconds(headers):
+    """Parse a Retry-After header in seconds form. Returns float or None.
+
+    The HTTP-date form is ignored (we fall back to exponential backoff)."""
+    if not headers:
+        return None
+    val = headers.get("Retry-After")
+    if not val:
+        return None
+    try:
+        return float(val)
+    except (TypeError, ValueError):
+        return None
+
+
+def _backoff_delay(attempt, retry_after=None):
+    """Seconds to wait before retry ``attempt`` (1-based).
+
+    Exponential (BACKOFF_BASE * 2^(attempt-1)), but never shorter than a
+    server-supplied Retry-After and never longer than BACKOFF_CAP."""
+    base = BACKOFF_BASE * (2 ** (attempt - 1))
+    if retry_after is not None:
+        base = max(base, retry_after)
+    return min(base, BACKOFF_CAP)
+
+
+def _is_timeout(exc):
+    """True if ``exc`` is (or wraps) a socket/read timeout."""
+    if isinstance(exc, (TimeoutError, socket.timeout)):
+        return True
+    if isinstance(exc, urllib.error.URLError) and isinstance(
+            exc.reason, (TimeoutError, socket.timeout)):
+        return True
+    return False
+
+
+def fetch_page(url, timeout=20, health=None, *, _opener=None, _sleep=time.sleep):
+    """Fetch a page and return the HTML body, retrying transient failures.
+
+    Retries HTTP 429/503 and timeouts up to MAX_RETRIES times with exponential
+    backoff (honouring Retry-After). ``_opener``/``_sleep`` are injection seams
+    for tests. Returns None once retries are exhausted or on a fatal error."""
+    opener = _opener or urllib.request.urlopen
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT,
         "Accept": "text/html,application/xhtml+xml",
     })
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return resp.read().decode("utf-8", errors="replace")
-    except urllib.error.HTTPError as e:
-        print(f"  HTTP {e.code} fetching {url}")
-        if health:
-            health.note_http_error(e.code, url)
-        return None
-    except Exception as e:
-        print(f"  Error fetching {url}: {e}")
-        if health:
-            health.note_error(str(e))
-        return None
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            with opener(req, timeout=timeout) as resp:
+                return resp.read().decode("utf-8", errors="replace")
+        except urllib.error.HTTPError as e:
+            if e.code in RETRYABLE_HTTP and attempt < MAX_RETRIES:
+                delay = _backoff_delay(attempt + 1, _retry_after_seconds(e.headers))
+                print(f"  HTTP {e.code} on {url}; retry {attempt + 1}/{MAX_RETRIES} in {delay:.0f}s")
+                _sleep(delay)
+                continue
+            print(f"  HTTP {e.code} fetching {url}")
+            if health:
+                health.note_http_error(e.code, url)
+            return None
+        except Exception as e:
+            if _is_timeout(e) and attempt < MAX_RETRIES:
+                delay = _backoff_delay(attempt + 1)
+                print(f"  timeout on {url}; retry {attempt + 1}/{MAX_RETRIES} in {delay:.0f}s")
+                _sleep(delay)
+                continue
+            print(f"  Error fetching {url}: {e}")
+            if health:
+                health.note_error(str(e))
+            return None
+    return None
 
 
 def discover_product_urls(domain, health=None):
@@ -125,9 +190,9 @@ def extract_product_data(url, html):
 
 
 def fetch_product(url: str, nursery_key: str, nursery_name: str, index: int, total: int,
-                  health=None) -> dict | None:
+                  health=None, delay: float = REQUEST_DELAY) -> dict | None:
     """Fetch and parse a single product page. Used by concurrent scraper."""
-    time.sleep(REQUEST_DELAY)  # polite delay per worker
+    time.sleep(delay)  # polite delay per worker
     slug = url.split("/products/")[-1][:40]
     html = fetch_page(url, health=health)
     if not html:
@@ -157,13 +222,16 @@ def scrape_ecwid(nursery_key, config, health=None):
         return []
 
     total = len(product_urls)
-    print(f"  Fetching {total} product pages with {MAX_WORKERS} concurrent workers...")
+    workers = config.get("workers", MAX_WORKERS)
+    delay = config.get("delay", REQUEST_DELAY)
+    print(f"  Fetching {total} product pages with {workers} concurrent workers "
+          f"({delay}s delay each)...")
 
     products = []
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+    with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = {
             executor.submit(fetch_product, url, nursery_key, config["name"], i + 1, total,
-                            health): url
+                            health, delay): url
             for i, url in enumerate(product_urls)
         }
         for future in as_completed(futures):
