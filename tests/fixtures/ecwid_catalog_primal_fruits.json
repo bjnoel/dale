@@ -1,0 +1,960 @@
+{
+  "expandedCategories": [
+    {
+      "categoryInfo": {
+        "id": 0,
+        "name": ""
+      },
+      "subcategories": [],
+      "products": [
+        {
+          "categoryPaths": [
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": true,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 172281777,
+                  "name": "Eugenia",
+                  "slugs": {
+                    "forRouteWithId": "Eugenia",
+                    "forRouteWithoutId": "eugenia"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 172917299,
+                  "name": "Hardy",
+                  "slugs": {
+                    "forRouteWithId": "Hardy",
+                    "forRouteWithoutId": "hardy"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 172941252,
+                  "name": "Cold Tolerant",
+                  "slugs": {
+                    "forRouteWithId": "Cold-Tolerant",
+                    "forRouteWithoutId": "cold-tolerant"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 173334002,
+                  "name": "Under 3 metres",
+                  "slugs": {
+                    "forRouteWithId": "Under-3-metres",
+                    "forRouteWithoutId": "under-3-metres"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 177962251,
+                  "name": "Bonsai",
+                  "slugs": {
+                    "forRouteWithId": "Bonsai",
+                    "forRouteWithoutId": "bonsai"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 182492752,
+                  "name": "Ornamental",
+                  "slugs": {
+                    "forRouteWithId": "Ornamental",
+                    "forRouteWithoutId": "ornamental"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 185397055,
+                  "name": "WA Postage available",
+                  "slugs": {
+                    "forRouteWithId": "WA-Postage-available",
+                    "forRouteWithoutId": "wa-postage-available"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 198639751,
+                  "name": "Clay Tolerant",
+                  "slugs": {
+                    "forRouteWithId": "Clay-Tolerant",
+                    "forRouteWithoutId": "clay-tolerant"
+                  }
+                }
+              ]
+            }
+          ],
+          "condition": "NEW",
+          "defaultOptionsOverrides": {
+            "paymentsOverrides": {},
+            "pricesOverrides": {
+              "type": "NORMAL_PRODUCT",
+              "appliedTaxes": [
+                {
+                  "name": "GST",
+                  "percent": 10.0,
+                  "price": 4.55
+                }
+              ],
+              "basePrice": 50.0,
+              "basePriceWithModifiersDiscountAndTaxes": 50.0,
+              "basePriceWithModifiersDiscount": 50.0,
+              "optionsChoicesWithModifiersAndTaxes": [],
+              "wholesalePricesWithModifiersAndTaxes": [],
+              "applicableDiscountExternalIds": []
+            },
+            "trackingOverrides": {
+              "fbPixelContentId": "841171265"
+            },
+            "variationOverrides": {
+              "attributes": [],
+              "isBaseProductQuantity": true,
+              "isPreorderAllowed": false,
+              "isShippingRequired": true,
+              "isSoldOut": false,
+              "outletsQuantity": {
+                "quantity": {},
+                "hasDefinedQuantityForAnyVariation": false
+              },
+              "mediaItems": [
+                {
+                  "type": "PICTURE",
+                  "id": "0",
+                  "isMain": true,
+                  "width": 2048,
+                  "height": 1536,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464335.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464337.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464336.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464339.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464334.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#7f8560"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "3",
+                  "isMain": false,
+                  "width": 631,
+                  "height": 1171,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464293.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464295.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464294.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464297.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464292.png",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#9ea29d"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "2",
+                  "isMain": false,
+                  "width": 761,
+                  "height": 1053,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464299.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464301.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464300.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464303.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464298.png",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#a4a392"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "4",
+                  "isMain": false,
+                  "width": 1536,
+                  "height": 2048,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270763.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270765.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270764.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270767.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270762.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#737a54"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "5",
+                  "isMain": false,
+                  "width": 1536,
+                  "height": 2048,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877303.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877305.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877304.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877307.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877302.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#4c4138"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "6",
+                  "isMain": false,
+                  "width": 1536,
+                  "height": 2048,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270769.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270771.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270770.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270773.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270768.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#959b5e"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                }
+              ],
+              "productGridMediaItems": [
+                {
+                  "type": "PICTURE",
+                  "id": "0",
+                  "isMain": true,
+                  "width": 2048,
+                  "height": 1536,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464335.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464337.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464336.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464339.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464334.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#7f8560"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "3",
+                  "isMain": false,
+                  "width": 631,
+                  "height": 1171,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464293.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464295.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464294.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464297.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464292.png",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#9ea29d"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "2",
+                  "isMain": false,
+                  "width": 761,
+                  "height": 1053,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464299.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464301.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464300.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464303.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464298.png",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#a4a392"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "4",
+                  "isMain": false,
+                  "width": 1536,
+                  "height": 2048,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270763.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270765.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270764.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270767.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270762.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#737a54"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "5",
+                  "isMain": false,
+                  "width": 1536,
+                  "height": 2048,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877303.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877305.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877304.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877307.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877302.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#4c4138"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "6",
+                  "isMain": false,
+                  "width": 1536,
+                  "height": 2048,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270769.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270771.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270770.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270773.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270768.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#959b5e"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Eugenia zuccarinii",
+                  "altType": "Fallback"
+                }
+              ],
+              "quantity": 1,
+              "sku": "EugZaSS",
+              "warningLimit": 1
+            },
+            "discountSuggestionsOverrides": {
+              "suggestions": []
+            }
+          },
+          "description": "<p>Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini)</p>\n<p></p>\n<p>Common Names: Guapi-Nhem Acu, Guapinhêm-Açù</p>\n<p><br></p>\n<p>Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young age, often in its second year when only thirty centimetres tall. The stunning, highly fragrant white flowers put on a massive show that bees love, followed by unique dark purple berries with a very large seed and mildly sweet flesh, that melts off as you eat it. Still considered a wild fruit with virtually zero cultivation.</p>\n<p><br></p>\n<p>Features:</p>\n<p>Ideal prune height range: 1.5-2.5m</p>\n<p>pH growing conditions: 5.5 to 6.5</p>\n<p>Shade or full sun: Part shade to full sun</p>\n<p>Minimum pot year 5: 35L pot</p>\n<p>Time to fruit age: 2-3 years from seed</p>\n<p>This species is incredibly resilient for a tropical tree. It has surprising cold hardiness and can handle short temperature drops down to -3c, meaning it handles standard winter spells beautifully in Perth, even Margaret River and the wheatbelt.</p>\n<p><br></p>\n<p><span style=\"font-size: 1rem;\">It forms a compact, ornamental shrub with dark green, hairless leaves. Regular watering and a good mulch layer keep it happy during dry spells.</span></p>\n<p><span style=\"font-size: 1rem;\"><br></span></p>\n<p>Interesting Notes:</p>\n<p>While considered B grade, the flavor of the little amount of fruit is interesting, tasting like a delicious mix of sweet dried prunes, cherries, and tangy pitanga when very ripe. While the seed inside is on the larger side, the dark purple flesh is juicy, aromatic, and pleasant eaten straight off the bush or turned into gourmet jams and juices. Luckily it's a very prolific fruiter.</p>\n<p>This is a top-tier choice for rare fruit collectors wanting easy growing yet super unusual from a small garden space.</p>\n<p><br></p>\n<p>Limited stock. Pickup from Parkwood, WA. Delivery to Perth Metro only.</p>\n<p><br></p>\n<p>Keywords: Eugenia zuccarinii, rare fruit tree, dwarf fruit tree Perth, backyard fruit tree, exotic fruit tree</p>\n<p><br></p>\n<p></p>",
+          "flags": {
+            "canAddToBagSilently": true,
+            "hasAdjacentProducts": true,
+            "hasRelatedProducts": false,
+            "isAllVariationsSoldOut": false,
+            "isPreorderAllowed": false,
+            "isDemo": false,
+            "isGiftCard": false,
+            "isProductReviewsFeatureEnabled": true,
+            "isSwatchesOptionFeatureEnabled": true,
+            "isTermsLinkVisible": false,
+            "hasFreeShipping": false
+          },
+          "identifier": {
+            "type": "PUBLISHED",
+            "productId": 841171265
+          },
+          "jsApiOnly": {
+            "nameTranslated": {
+              "en": "Eugenia zuccarinii"
+            }
+          },
+          "name": "Eugenia zuccarinii",
+          "options": [],
+          "preselectedOptions": {},
+          "rating": {
+            "rating": 0.0,
+            "reviewsPublishedCount": 0
+          },
+          "seo": {
+            "canonicalUrl": "https://primalfruits.com.au/products/eugenia-zuccarinii",
+            "description": "Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young",
+            "jsonLD": "{\"@context\":\"http://schema.org/\",\"@type\":\"Product\",\"name\":\"Eugenia zuccarinii\",\"image\":[{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"name\":\"Eugenia zuccarinii\",\"description\":\"Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464339.jpg\",\"width\":1500,\"height\":1125,\"thumbnail\":{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464337.jpg\",\"width\":400,\"height\":300},\"thumbnailUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464337.jpg\"},{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"name\":\"Eugenia zuccarinii\",\"description\":\"Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464297.jpg\",\"width\":631,\"height\":1171,\"thumbnail\":{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464295.jpg\",\"width\":216,\"height\":400},\"thumbnailUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464295.jpg\"},{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"name\":\"Eugenia zuccarinii\",\"description\":\"Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464303.jpg\",\"width\":761,\"height\":1053,\"thumbnail\":{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464301.jpg\",\"width\":289,\"height\":400},\"thumbnailUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464301.jpg\"},{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"name\":\"Eugenia zuccarinii\",\"description\":\"Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270767.jpg\",\"width\":1125,\"height\":1500,\"thumbnail\":{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270765.jpg\",\"width\":300,\"height\":400},\"thumbnailUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270765.jpg\"},{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"name\":\"Eugenia zuccarinii\",\"description\":\"Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877307.jpg\",\"width\":1125,\"height\":1500,\"thumbnail\":{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877305.jpg\",\"width\":300,\"height\":400},\"thumbnailUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815877305.jpg\"},{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"name\":\"Eugenia zuccarinii\",\"description\":\"Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270773.jpg\",\"width\":1125,\"height\":1500,\"thumbnail\":{\"@type\":\"ImageObject\",\"caption\":\"Eugenia zuccarinii\",\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270771.jpg\",\"width\":300,\"height\":400},\"thumbnailUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5816270771.jpg\"}],\"description\":\"Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young\",\"sku\":\"EugZaSS\",\"offers\":{\"@type\":\"Offer\",\"priceCurrency\":\"AUD\",\"price\":\"50.0\",\"priceSpecification\":{\"@type\":\"PriceSpecification\",\"price\":\"50.0\",\"priceCurrency\":\"AUD\",\"valueAddedTaxIncluded\":true},\"url\":\"/products/Eugenia-zuccarinii-p841171265\",\"itemCondition\":\"http://schema.org/NewCondition\",\"availability\":\"http://schema.org/InStock\",\"seller\":{\"@type\":\"Organization\",\"name\":\"Primal Fruits Perth\"}}}",
+            "ogMetaTags": {
+              "title": "Eugenia zuccarinii",
+              "url": "/products/Eugenia-zuccarinii-p841171265",
+              "image": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464339.jpg",
+              "site_name": "Primal Fruits Perth",
+              "description": "Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young",
+              "type": "website"
+            },
+            "title": "Eugenia zuccarinii",
+            "twitterMetaTags": {
+              "card": "summary_large_image",
+              "title": "Eugenia zuccarinii",
+              "description": "Botanical Name: Eugenia zuccarinii (often misspelled as zaccurini) Common Names: Guapi-Nhem Acu, Guapinhêm-Açù Eugenia zuccarinii is an extremely rare collector's gem from the coastal forests of Rio de Janeiro. This slow-growing dwarf tree is highly adaptable and absolutely perfect for growing in pots and fast growing. It is a massive winner for backyard growers because it fruits at a very young",
+              "image": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/841171265/5815464339.jpg"
+            }
+          },
+          "subtitle": "Guapinhêm-Açù",
+          "slugs": {
+            "forRouteWithId": "Eugenia-zuccarinii",
+            "forRouteWithoutId": "eugenia-zuccarinii"
+          },
+          "urls": {
+            "proxyLinkUrl": "https://primalfruits.com.au/shared-products/841171265?lang=en",
+            "directPageUrl": "/products/Eugenia-zuccarinii-p841171265"
+          }
+        },
+        {
+          "categoryPaths": [
+            {
+              "isDefault": true,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                }
+              ]
+            }
+          ],
+          "condition": "NEW",
+          "defaultOptionsOverrides": {
+            "paymentsOverrides": {},
+            "pricesOverrides": {
+              "type": "NORMAL_PRODUCT",
+              "appliedTaxes": [
+                {
+                  "name": "GST",
+                  "percent": 10.0,
+                  "price": 2.73
+                }
+              ],
+              "basePrice": 30.0,
+              "basePriceWithModifiersDiscountAndTaxes": 30.0,
+              "basePriceWithModifiersDiscount": 30.0,
+              "optionsChoicesWithModifiersAndTaxes": [],
+              "wholesalePricesWithModifiersAndTaxes": [],
+              "applicableDiscountExternalIds": []
+            },
+            "trackingOverrides": {
+              "fbPixelContentId": "838766001"
+            },
+            "variationOverrides": {
+              "attributes": [],
+              "isBaseProductQuantity": true,
+              "isPreorderAllowed": false,
+              "isShippingRequired": true,
+              "isSoldOut": true,
+              "outletsQuantity": {
+                "quantity": {},
+                "hasDefinedQuantityForAnyVariation": false
+              },
+              "mediaItems": [],
+              "productGridMediaItems": [],
+              "quantity": 0,
+              "warningLimit": 1
+            },
+            "discountSuggestionsOverrides": {
+              "suggestions": []
+            }
+          },
+          "description": "Botanical Name: Annona muricata\n<p>Common Name: Whitman Fibreless Soursop</p>\n<p><br></p>\n<p>The Whitman is a top pick for soursop fans. It has creamy, smooth flesh without the usual tough fibres. It is a tropical tree that needs plenty of warmth and protection from cold winds in Perth.</p>\n<p><br></p>\n<p>Features:</p>\n<p>Fruit texture: Soft, creamy, and fibreless.</p>\n<p>Tree height: Can grow quite tall, best pruned to stay manageable.</p>\n<p>Climate: Needs a hot, humid spot. In Perth, it must be in a very protected microclimate or a warm greenhouse to survive for first 2 years.&nbsp;</p>\n<p><br></p>\n<p>Growing tips:</p>\n<p>Soil: Needs rich, well-draining soil.</p>\n<p>Watering: Likes steady moisture but hates sitting in soggy dirt.</p>\n<p>Care: Hand pollinate the flowers to get more fruit.</p>\n<p>Interesting notes:</p>\n<p>This is a favourite for making drinks and smoothies because of the smooth texture. It is a slow grower in cooler zones. Best for advanced growers who can manage its tropical needs.</p>\n<p>Limited stock. Pickup from Parkwood, WA. Delivery to Perth Metro only.</p>\n<p><br></p>\n<p>Keywords: Whitman Soursop, fibreless soursop, rare fruit tree Perth, tropical fruit tree, backyard orchard.</p>\n<p><br></p>\n<p><br></p>",
+          "flags": {
+            "canAddToBagSilently": true,
+            "hasAdjacentProducts": true,
+            "hasRelatedProducts": false,
+            "isAllVariationsSoldOut": true,
+            "isPreorderAllowed": false,
+            "isDemo": false,
+            "isGiftCard": false,
+            "isProductReviewsFeatureEnabled": true,
+            "isSwatchesOptionFeatureEnabled": true,
+            "isTermsLinkVisible": false,
+            "hasFreeShipping": false
+          },
+          "identifier": {
+            "type": "PUBLISHED",
+            "productId": 838766001
+          },
+          "jsApiOnly": {
+            "nameTranslated": {
+              "en": "Whitman Fibreless Soursop"
+            }
+          },
+          "name": "Whitman Fibreless Soursop",
+          "options": [],
+          "preselectedOptions": {},
+          "rating": {
+            "rating": 0.0,
+            "reviewsPublishedCount": 0
+          },
+          "seo": {
+            "canonicalUrl": "https://primalfruits.com.au/products/whitman-fibreless-soursop",
+            "description": "Botanical Name: Annona muricata Common Name: Whitman Fibreless Soursop The Whitman is a top pick for soursop fans. It has creamy, smooth flesh without the usual tough fibres. It is a tropical tree that needs plenty of warmth and protection from cold winds in Perth. Features: Fruit texture: Soft, creamy, and fibreless. Tree height: Can grow quite tall, best pruned to stay manageable. Climate: Needs",
+            "jsonLD": "{\"@context\":\"http://schema.org/\",\"@type\":\"Product\",\"name\":\"Whitman Fibreless Soursop\",\"description\":\"Botanical Name: Annona muricata Common Name: Whitman Fibreless Soursop The Whitman is a top pick for soursop fans. It has creamy, smooth flesh without the usual tough fibres. It is a tropical tree that needs plenty of warmth and protection from cold winds in Perth. Features: Fruit texture: Soft, creamy, and fibreless. Tree height: Can grow quite tall, best pruned to stay manageable. Climate: Needs\",\"sku\":null,\"offers\":{\"@type\":\"Offer\",\"priceCurrency\":\"AUD\",\"price\":\"30.0\",\"priceSpecification\":{\"@type\":\"PriceSpecification\",\"price\":\"30.0\",\"priceCurrency\":\"AUD\",\"valueAddedTaxIncluded\":true},\"url\":\"/products/Whitman-Fibreless-Soursop-p838766001\",\"itemCondition\":\"http://schema.org/NewCondition\",\"availability\":\"http://schema.org/OutOfStock\",\"seller\":{\"@type\":\"Organization\",\"name\":\"Primal Fruits Perth\"}}}",
+            "ogMetaTags": {
+              "title": "Whitman Fibreless Soursop",
+              "url": "/products/Whitman-Fibreless-Soursop-p838766001",
+              "site_name": "Primal Fruits Perth",
+              "description": "Botanical Name: Annona muricata Common Name: Whitman Fibreless Soursop The Whitman is a top pick for soursop fans. It has creamy, smooth flesh without the usual tough fibres. It is a tropical tree that needs plenty of warmth and protection from cold winds in Perth. Features: Fruit texture: Soft, creamy, and fibreless. Tree height: Can grow quite tall, best pruned to stay manageable. Climate: Needs",
+              "type": "website"
+            },
+            "title": "Whitman Fibreless Soursop",
+            "twitterMetaTags": {
+              "card": "summary_large_image",
+              "title": "Whitman Fibreless Soursop",
+              "description": "Botanical Name: Annona muricata Common Name: Whitman Fibreless Soursop The Whitman is a top pick for soursop fans. It has creamy, smooth flesh without the usual tough fibres. It is a tropical tree that needs plenty of warmth and protection from cold winds in Perth. Features: Fruit texture: Soft, creamy, and fibreless. Tree height: Can grow quite tall, best pruned to stay manageable. Climate: Needs"
+            }
+          },
+          "subtitle": "",
+          "slugs": {
+            "forRouteWithId": "Whitman-Fibreless-Soursop",
+            "forRouteWithoutId": "whitman-fibreless-soursop"
+          },
+          "urls": {
+            "proxyLinkUrl": "https://primalfruits.com.au/shared-products/838766001?lang=en",
+            "directPageUrl": "/products/Whitman-Fibreless-Soursop-p838766001"
+          }
+        },
+        {
+          "categoryPaths": [
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": true,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 172917299,
+                  "name": "Hardy",
+                  "slugs": {
+                    "forRouteWithId": "Hardy",
+                    "forRouteWithoutId": "hardy"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 172941252,
+                  "name": "Cold Tolerant",
+                  "slugs": {
+                    "forRouteWithId": "Cold-Tolerant",
+                    "forRouteWithoutId": "cold-tolerant"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 177962251,
+                  "name": "Bonsai",
+                  "slugs": {
+                    "forRouteWithId": "Bonsai",
+                    "forRouteWithoutId": "bonsai"
+                  }
+                }
+              ]
+            },
+            {
+              "isDefault": false,
+              "categoryPath": [
+                {
+                  "id": 0,
+                  "name": "",
+                  "slugs": {
+                    "forRouteWithId": ""
+                  }
+                },
+                {
+                  "id": 182492752,
+                  "name": "Ornamental",
+                  "slugs": {
+                    "forRouteWithId": "Ornamental",
+                    "forRouteWithoutId": "ornamental"
+                  }
+                }
+              ]
+            }
+          ],
+          "condition": "NEW",
+          "defaultOptionsOverrides": {
+            "paymentsOverrides": {},
+            "pricesOverrides": {
+              "type": "NORMAL_PRODUCT",
+              "appliedTaxes": [
+                {
+                  "name": "GST",
+                  "percent": 10.0,
+                  "price": 3.18
+                }
+              ],
+              "basePrice": 35.0,
+              "basePriceWithModifiersDiscountAndTaxes": 35.0,
+              "basePriceWithModifiersDiscount": 35.0,
+              "optionsChoicesWithModifiersAndTaxes": [],
+              "wholesalePricesWithModifiersAndTaxes": [],
+              "applicableDiscountExternalIds": []
+            },
+            "trackingOverrides": {
+              "fbPixelContentId": "840963564"
+            },
+            "variationOverrides": {
+              "attributes": [],
+              "isBaseProductQuantity": true,
+              "isPreorderAllowed": false,
+              "isShippingRequired": true,
+              "isSoldOut": false,
+              "outletsQuantity": {
+                "quantity": {},
+                "hasDefinedQuantityForAnyVariation": false
+              },
+              "mediaItems": [
+                {
+                  "type": "PICTURE",
+                  "id": "0",
+                  "isMain": true,
+                  "width": 1536,
+                  "height": 2048,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128210.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128209.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128211.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128207.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128206.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#71665b"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Japanese Maple tree",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "1",
+                  "isMain": false,
+                  "width": 895,
+                  "height": 1051,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128213.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128215.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128214.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128217.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128212.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#9d987b"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Japanese Maple tree",
+                  "altType": "Fallback"
+                }
+              ],
+              "productGridMediaItems": [
+                {
+                  "type": "PICTURE",
+                  "id": "0",
+                  "isMain": true,
+                  "width": 1536,
+                  "height": 2048,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128210.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128209.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128211.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128207.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128206.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#71665b"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Japanese Maple tree",
+                  "altType": "Fallback"
+                },
+                {
+                  "type": "PICTURE",
+                  "id": "1",
+                  "isMain": false,
+                  "width": 895,
+                  "height": 1051,
+                  "image160pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128213.jpg",
+                  "image400pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128215.jpg",
+                  "image800pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128214.jpg",
+                  "image1500pxUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128217.jpg",
+                  "imageOriginalUrl": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128212.jpg",
+                  "borderInfo": {
+                    "dominatingColor": {
+                      "isDark": true,
+                      "isFullyTransparent": false,
+                      "rgbHexValue": "#9d987b"
+                    },
+                    "homogeneity": false
+                  },
+                  "alt": "Japanese Maple tree",
+                  "altType": "Fallback"
+                }
+              ],
+              "quantity": 1,
+              "sku": "MapJSM",
+              "warningLimit": 1
+            },
+            "discountSuggestionsOverrides": {
+              "suggestions": []
+            }
+          },
+          "description": "<p dir=\"ltr\">Botanical Name: Acer palmatum</p>\n<p dir=\"ltr\">Common Names: Japanese Maple</p>\n<p dir=\"ltr\">Japanese maple trees are famous for their stunning leaf shapes and changing colours. They bring a touch of class to any garden space and look incredible as a feature plant. They are perfect for backyards where you want beautiful autumn tones and a neat shape without taking up too much room.</p>\n<p dir=\"ltr\"><span style=\"font-size: 1rem;\">Features:</span></p>\n<p dir=\"ltr\">Ideal prune height range: 2-4m</p>\n<p dir=\"ltr\">pH growing conditions: 5.5 to 6.5</p>\n<p dir=\"ltr\">Shade or full sun: Prefers afternoon shade in Perth Metro</p>\n<p dir=\"ltr\">Minimum pot year 5: 45L pot</p>\n<p dir=\"ltr\">Time to fruit age: Does not produce edible fruit.</p>\n<p dir=\"ltr\">These trees grow at a slow to moderate pace and lose their leaves in winter. They put on a massive show in autumn when the green or red leaves change to bright orange and crimson. They need shelter from the harsh Perth afternoon sun and strong winds to keep their delicate leaves from burning. They love well-drained soil with plenty of organic matter and regular watering during the hot summer months.</p>\n<p dir=\"ltr\">Interesting Notes:</p>\n<p dir=\"ltr\">The name Acer comes from a Celtic word meaning hard, as the wood is very tough. They make excellent bonsai specimens if you like miniature gardening projects.</p>\n<p dir=\"ltr\">Japanese maples are a top pick for cottage gardens or creating a peaceful courtyard vibe.</p>\n<p dir=\"ltr\">Limited stock. Pickup from Parkwood, WA. Delivery to Perth Metro only.</p>\n<p dir=\"ltr\">Keywords: Japanese maple, Acer palmatum, ornamental tree Perth, autumn colour tree, backyard feature plant<br></p>",
+          "flags": {
+            "canAddToBagSilently": true,
+            "hasAdjacentProducts": true,
+            "hasRelatedProducts": false,
+            "isAllVariationsSoldOut": false,
+            "isPreorderAllowed": false,
+            "isDemo": false,
+            "isGiftCard": false,
+            "isProductReviewsFeatureEnabled": true,
+            "isSwatchesOptionFeatureEnabled": true,
+            "isTermsLinkVisible": false,
+            "hasFreeShipping": false
+          },
+          "identifier": {
+            "type": "PUBLISHED",
+            "productId": 840963564
+          },
+          "jsApiOnly": {
+            "nameTranslated": {
+              "en": "Japanese Maple tree"
+            }
+          },
+          "name": "Japanese Maple tree",
+          "options": [],
+          "preselectedOptions": {},
+          "rating": {
+            "rating": 0.0,
+            "reviewsPublishedCount": 0
+          },
+          "seo": {
+            "canonicalUrl": "https://primalfruits.com.au/products/japanese-maple-tree",
+            "description": "Botanical Name: Acer palmatum Common Names: Japanese Maple Japanese maple trees are famous for their stunning leaf shapes and changing colours. They bring a touch of class to any garden space and look incredible as a feature plant. They are perfect for backyards where you want beautiful autumn tones and a neat shape without taking up too much room. Features: Ideal prune height range: 2-4m pH",
+            "jsonLD": "{\"@context\":\"http://schema.org/\",\"@type\":\"Product\",\"name\":\"Japanese Maple tree\",\"image\":[{\"@type\":\"ImageObject\",\"caption\":\"Japanese Maple tree\",\"name\":\"Japanese Maple tree\",\"description\":\"Botanical Name: Acer palmatum Common Names: Japanese Maple Japanese maple trees are famous for their stunning leaf shapes and changing colours. They bring a touch of class to any garden space and look incredible as a feature plant. They are perfect for backyards where you want beautiful autumn tones and a neat shape without taking up too much room. Features: Ideal prune height range: 2-4m pH\",\"url\":\"/products/Japanese-Maple-tree-p840963564\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128207.jpg\",\"width\":1125,\"height\":1500,\"thumbnail\":{\"@type\":\"ImageObject\",\"caption\":\"Japanese Maple tree\",\"url\":\"/products/Japanese-Maple-tree-p840963564\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128209.jpg\",\"width\":300,\"height\":400},\"thumbnailUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128209.jpg\"},{\"@type\":\"ImageObject\",\"caption\":\"Japanese Maple tree\",\"name\":\"Japanese Maple tree\",\"description\":\"Botanical Name: Acer palmatum Common Names: Japanese Maple Japanese maple trees are famous for their stunning leaf shapes and changing colours. They bring a touch of class to any garden space and look incredible as a feature plant. They are perfect for backyards where you want beautiful autumn tones and a neat shape without taking up too much room. Features: Ideal prune height range: 2-4m pH\",\"url\":\"/products/Japanese-Maple-tree-p840963564\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128217.jpg\",\"width\":895,\"height\":1051,\"thumbnail\":{\"@type\":\"ImageObject\",\"caption\":\"Japanese Maple tree\",\"url\":\"/products/Japanese-Maple-tree-p840963564\",\"contentUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128215.jpg\",\"width\":341,\"height\":400},\"thumbnailUrl\":\"https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128215.jpg\"}],\"description\":\"Botanical Name: Acer palmatum Common Names: Japanese Maple Japanese maple trees are famous for their stunning leaf shapes and changing colours. They bring a touch of class to any garden space and look incredible as a feature plant. They are perfect for backyards where you want beautiful autumn tones and a neat shape without taking up too much room. Features: Ideal prune height range: 2-4m pH\",\"sku\":\"MapJSM\",\"offers\":{\"@type\":\"Offer\",\"priceCurrency\":\"AUD\",\"price\":\"35.0\",\"priceSpecification\":{\"@type\":\"PriceSpecification\",\"price\":\"35.0\",\"priceCurrency\":\"AUD\",\"valueAddedTaxIncluded\":true},\"url\":\"/products/Japanese-Maple-tree-p840963564\",\"itemCondition\":\"http://schema.org/NewCondition\",\"availability\":\"http://schema.org/InStock\",\"seller\":{\"@type\":\"Organization\",\"name\":\"Primal Fruits Perth\"}}}",
+            "ogMetaTags": {
+              "title": "Japanese Maple tree",
+              "url": "/products/Japanese-Maple-tree-p840963564",
+              "image": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128207.jpg",
+              "site_name": "Primal Fruits Perth",
+              "description": "Botanical Name: Acer palmatum Common Names: Japanese Maple Japanese maple trees are famous for their stunning leaf shapes and changing colours. They bring a touch of class to any garden space and look incredible as a feature plant. They are perfect for backyards where you want beautiful autumn tones and a neat shape without taking up too much room. Features: Ideal prune height range: 2-4m pH",
+              "type": "website"
+            },
+            "title": "Japanese Maple tree",
+            "twitterMetaTags": {
+              "card": "summary_large_image",
+              "title": "Japanese Maple tree",
+              "description": "Botanical Name: Acer palmatum Common Names: Japanese Maple Japanese maple trees are famous for their stunning leaf shapes and changing colours. They bring a touch of class to any garden space and look incredible as a feature plant. They are perfect for backyards where you want beautiful autumn tones and a neat shape without taking up too much room. Features: Ideal prune height range: 2-4m pH",
+              "image": "https://d2j6dbq0eux0bg.cloudfront.net/images/102345518/products/840963564/5814128207.jpg"
+            }
+          },
+          "subtitle": "",
+          "slugs": {
+            "forRouteWithId": "Japanese-Maple-tree",
+            "forRouteWithoutId": "japanese-maple-tree"
+          },
+          "urls": {
+            "proxyLinkUrl": "https://primalfruits.com.au/shared-products/840963564?lang=en",
+            "directPageUrl": "/products/Japanese-Maple-tree-p840963564"
+          }
+        }
+      ],
+      "totalProductsCount": 288,
+      "hasMoreProducts": false
+    }
+  ],
+  "collapsedCategories": []
+}
