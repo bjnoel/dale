@@ -22,6 +22,8 @@ sys.path.insert(0, str(SCRAPERS))
 from woocommerce_scraper import category_matches, NURSERIES  # noqa: E402
 
 GUILDFORD_CATS = NURSERIES["guildford"]["fruit_categories"]
+ENGALLS_CATS = NURSERIES["engalls"]["fruit_categories"]
+YALCA_CATS = NURSERIES["yalca-fruit-trees"]["fruit_categories"]
 
 
 class TestCategoryMatches(unittest.TestCase):
@@ -80,6 +82,54 @@ class TestGuildfordRegression(unittest.TestCase):
         # Products that already carried the parent must not regress.
         cats = ["fruits-nuts", "exotic-tropical-fruit-trees", "fig-tree"]
         self.assertTrue(category_matches(cats, GUILDFORD_CATS))
+
+
+class TestEngallsRegression(unittest.TestCase):
+    """Engall's (citrus/olive specialist) tagged fruit by type, not "citrus"."""
+
+    DROPPED_BEFORE = [
+        ("Dwarf Arnold Blood Orange", ["dwarf-orange"]),
+        ("Imperial Mandarin", ["mandarin"]),
+        ("Dwarf Emperor Mandarin", ["dwarf-mandarin"]),
+        ("Tahitian Lime", ["lime"]),
+        ("Manzanillo Olive", ["olives"]),
+        ("Frantoio Olive", ["olives"]),
+    ]
+
+    def test_old_citrus_only_filter_dropped_these(self):
+        for name, cats in self.DROPPED_BEFORE:
+            with self.subTest(name=name):
+                self.assertFalse(category_matches(cats, ["citrus", "dwarf-citrus"]))
+
+    def test_new_filter_keeps_these(self):
+        for name, cats in self.DROPPED_BEFORE:
+            with self.subTest(name=name):
+                self.assertTrue(category_matches(cats, ENGALLS_CATS))
+
+    def test_still_keeps_plain_citrus(self):
+        self.assertTrue(category_matches(["citrus", "speciality-citrus"], ENGALLS_CATS))
+
+
+class TestYalcaRegression(unittest.TestCase):
+    """Yalca missed nuts/fruit tagged with their own leaf category only."""
+
+    DROPPED_BEFORE = [
+        ("Chandler walnut", ["walnut-trees"]),
+        ("Barcelona hazelnut", ["hazel-nuts"]),
+        ("Azerbaijani pomegranate", ["pomegranate-trees"]),
+        ("Tayberry", ["blackberry-plants"]),
+    ]
+
+    def test_new_filter_keeps_these(self):
+        for name, cats in self.DROPPED_BEFORE:
+            with self.subTest(name=name):
+                self.assertTrue(category_matches(cats, YALCA_CATS))
+
+    def test_ornamentals_stay_excluded(self):
+        # Maples/ash/elm carry only "ornamental-trees" -- must NOT be pulled in.
+        for cats in (["ornamental-trees"], ["ornamental-trees", "sugar-maple-trees"]):
+            with self.subTest(cats=cats):
+                self.assertFalse(category_matches(cats, YALCA_CATS))
 
 
 if __name__ == "__main__":

@@ -57,6 +57,11 @@ NURSERIES = {
             "almond-trees", "pistachio-trees", "raspberry-plants",
             "dwarf-fruit-trees", "sub-tropical-and-low-chill-fruits",
             "fruit-tree-hybrid", "specials-discounts",
+            # Nuts/fruit Yalca tags with their own leaf category only (not the
+            # listed ones above): walnuts, hazelnuts, pomegranate, tayberry.
+            # Ornamentals (maple/ash/elm) stay excluded -- they carry only
+            # "ornamental-trees".
+            "walnut-trees", "hazel-nuts", "pomegranate-trees", "blackberry-plants",
         ],
     },
     "garden-express": {
@@ -112,7 +117,15 @@ NURSERIES = {
         "name": "Engall's Nursery",
         "domain": "www.engalls.com.au",
         "location": "Dural, NSW",
-        "fruit_categories": ["citrus", "dwarf-citrus"],
+        # Engall's tags oranges/mandarins/limes/lemons/etc. with only their
+        # fruit-type leaf category (e.g. "dwarf-orange", "lime", "mandarin"),
+        # which lack the "citrus" substring, and also stocks olives.
+        # "citrus"/"dwarf-citrus" alone dropped ~15 real trees. Base slugs catch
+        # their "dwarf-" variants via substring (e.g. "orange" -> "dwarf-orange").
+        "fruit_categories": [
+            "citrus", "dwarf-citrus", "speciality", "mandarin", "orange",
+            "lime", "lemon", "grapefruit", "cumquat", "olives",
+        ],
     },
     "rayners": {
         # Rayners Orchard, Yarra Valley VIC. Deep range of dwarf/multi-graft stone
