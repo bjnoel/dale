@@ -50,6 +50,29 @@ NURSERIES = {
         "domain": "www.diggers.com.au",
         "location": "Dromana, VIC",
         "fruit_tags": ["all fruit & nuts", "all fruit &amp; nuts", "all berries", "fruit trees", "nuts"],
+        # Curated rescue (DEC-208): Diggers tags its fruit inconsistently. ~30
+        # real fruit/nut/berry live plants carry no "all fruit & nuts"/"all
+        # berries" tag (some are essentially untagged, e.g. Loquat). No tag rule
+        # separates them from the herbs/veg/tea that share IsEd/FruitMonth, and
+        # ornamentals named after fruit (Dahlia 'Raspberry Cheesecake', Russian
+        # Olive) carry IsOrn=False, so a name match would drag them in. These
+        # handles are a hand-verified allow-list of the dropped fruit; review on
+        # re-audit (well-tagged new fruit are still caught by fruit_tags).
+        "fruit_handles": [
+            "blueberry-brightwell", "blueberry-brigitta", "boysenberry",
+            "bunya-pine", "chokeberry-black", "cinnamon-myrtle", "cranberry",
+            "goji-berry-wolfberry", "jaboticaba", "jostaberry", "lemon-lisbon",
+            "lemon-myrtle", "loquat", "native-currant", "olive-verdale",
+            "orange-navelina-trifoliata", "persimmon-ichikikei-jiro",
+            "pig-face-pink-native-pigface", "raspberry-bogong",
+            "raspberry-chilcotin", "raspberry-heritage", "raspberry-purple",
+            "raspberry-willamette", "strawberry-melba-potted", "strawberry-musk",
+            "strawberry-reine-des-vallees", "strawberry-tioga",
+            "tasmanian-pepperberry-female",
+            "tasmanian-pepperberry-male-tasmannia-lanceolata",
+            "thornless-blackberry-chester", "thornless-loganberry",
+            "walnut-black", "wild-plum-syn-kaffir-plum", "youngberry",
+        ],
     },
     "all-season-plants-wa": {
         "name": "All Season Plants WA",
@@ -84,10 +107,20 @@ NURSERIES = {
         # "*Online" tags are inconsistently applied (some fruit trees have no
         # tags at all), so tag filtering would miss ~60 trees.
         # Melbourne-metro delivery only (in-house vans) + in-store pickup.
+        #
+        # The store also files some edible stock under product_type "NATIVE"
+        # (bush-tucker) rather than "FOOD PLANTS", but tags it "Fruit Online":
+        # this rescues Finger Lime (Rainforest Pearl / D'Emerald, incl. dwarf)
+        # and Blackberry 'Chester Thornless', which the type filter alone drops
+        # (DEC-208). Pure bush-tucker natives (Davidson's Plum, Dorrigo
+        # pepperberry, midyim, lemon/cinnamon myrtle) carry only "Edible
+        # Australian Natives" and are deliberately NOT rescued here -- that tag
+        # also covers native culinary herbs (mints, basil) we don't track.
         "name": "Garden World",
         "domain": "gardenworld.au",
         "location": "Braeside, VIC",
         "product_types": ["FOOD PLANTS"],
+        "fruit_tags": ["fruit online"],
     },
 }
 
@@ -117,6 +150,46 @@ def fetch_json(url, health=None):
         return None
 
 
+def product_tags(raw):
+    """Normalise a Shopify product's tags to a lowercased list (the API returns
+    either a list or a comma-joined string)."""
+    tags = raw.get("tags", [])
+    if isinstance(tags, str):
+        return [t.strip().lower() for t in tags.split(",") if t.strip()]
+    return [str(t).lower() for t in tags]
+
+
+def product_in_scope(raw, config):
+    """True if a product should be kept for this nursery. An include-filter:
+    keep when ANY configured signal matches (logical OR), so a nursery can list
+    its fruit under a product_type AND rescue items the store files elsewhere by
+    tag or by an explicit handle allow-list. A nursery with no filter keeps
+    everything.
+
+    - product_types: exact match on the product's product_type (lowercased).
+    - fruit_tags:    membership in the product's tag list (lowercased).
+    - fruit_handles: exact match on the product handle. A curated rescue list for
+      stores whose fruit is too inconsistently tagged to catch by type/tag
+      without dragging in herbs/veg/ornamentals (e.g. Diggers).
+
+    Mirrors woocommerce_scraper.category_matches: an empty filter means keep all.
+    """
+    types = config.get("product_types")
+    fruit_tags = config.get("fruit_tags")
+    fruit_handles = config.get("fruit_handles")
+    if not (types or fruit_tags or fruit_handles):
+        return True
+    if types and (raw.get("product_type") or "").lower() in {t.lower() for t in types}:
+        return True
+    if fruit_tags:
+        tags = product_tags(raw)
+        if any(ft.lower() in tags for ft in fruit_tags):
+            return True
+    if fruit_handles and (raw.get("handle") or "") in fruit_handles:
+        return True
+    return False
+
+
 def scrape_shopify(nursery_key, config, health=None):
     """Scrape all products from a Shopify store's JSON API."""
     domain = config["domain"]
@@ -144,32 +217,15 @@ def scrape_shopify(nursery_key, config, health=None):
         page += 1
         time.sleep(REQUEST_DELAY)
 
-    # Filter by product type if configured (e.g. Garden World stocks all fruit
-    # under product_type "FOOD PLANTS"; the rest of the store is non-fruit).
-    product_types = config.get("product_types")
-    if product_types:
-        wanted = {pt.lower() for pt in product_types}
+    # Apply the include-filter (product_types / fruit_tags / fruit_handles).
+    # An unfiltered nursery keeps everything; product_in_scope returns True.
+    has_filter = any(config.get(k) for k in ("product_types", "fruit_tags", "fruit_handles"))
+    if has_filter:
         before = len(all_products)
-        all_products = [p for p in all_products
-                        if p.get("product_type", "").lower() in wanted]
-        print(f"  Filtered to product types {product_types}: {before} -> {len(all_products)}")
-
-    # Filter by fruit tags if configured
-    fruit_tags = config.get("fruit_tags")
-    if fruit_tags:
-        filtered = []
-        for p in all_products:
-            tags = p.get("tags", [])
-            if isinstance(tags, str):
-                tags = [t.strip().lower() for t in tags.split(",")]
-            else:
-                tags = [t.lower() for t in tags]
-            if any(ft.lower() in tags for ft in fruit_tags):
-                filtered.append(p)
-        print(f"  Total: {len(all_products)} products, {len(filtered)} fruit/nut (filtered)")
-        return filtered
-
-    print(f"  Total: {len(all_products)} products")
+        all_products = [p for p in all_products if product_in_scope(p, config)]
+        print(f"  Filtered (in scope): {before} -> {len(all_products)}")
+    else:
+        print(f"  Total: {len(all_products)} products")
     return all_products
 
 
