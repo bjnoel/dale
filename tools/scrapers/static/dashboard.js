@@ -76,6 +76,35 @@ const SPECIES_DEFAULT = 16;
 const SPECIES_TIER = 12;
 let speciesShown = SPECIES_DEFAULT;
 
+// Mirror the current filter state into the address bar so a filtered view can be
+// shared/bookmarked. Only non-default params are written, keeping URLs short. Uses
+// replaceState (not pushState): search() fires on every keystroke, so pushState
+// would bury the back button under a history entry per character. syncURL() only
+// reads state and writes the bar -- it never reads the URL or calls search(), and
+// replaceState fires no popstate, so there is no loop. Called at the tail of search().
+function syncURL() {
+  const params = new URLSearchParams();
+  // species + free-text are mutually exclusive (a pill mirrors its name into the box);
+  // prefer species, matching search() which ignores q when a species is active.
+  if (activeSpeciesSlug) {
+    params.set('species', activeSpeciesSlug);
+  } else {
+    const q = searchInput.value.trim();
+    if (q) params.set('q', q);
+  }
+  if (inStockOnly.checked) params.set('stock', '1');
+  if (stateFilter.value) params.set('state', stateFilter.value);
+  if (categoryFilter && categoryFilter.value) params.set('cat', categoryFilter.value);
+  if (nurserySelect.value) params.set('nursery', nurserySelect.value);
+  if (changesOnly.checked) params.set('changes', '1');
+  // sortBy default is the string "relevance", not "" -- omit it explicitly.
+  if (sortBy.value && sortBy.value !== 'relevance') params.set('sort', sortBy.value);
+  if (rareOnly) params.set('rare', '1');
+  const qs = params.toString();
+  window.history.replaceState(null, '',
+    window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+}
+
 function search() {
   displayCount = 50;
   // A new filter/search view starts collapsed at the default tier. The "Other" pill click
@@ -152,6 +181,7 @@ function search() {
   updateSubCTA(q);
   updateActiveFilters();
   updatePillCounts();
+  syncURL();
 }
 
 function updateSubCTA(q) {
@@ -740,14 +770,42 @@ document.getElementById('results').addEventListener('click', function(e) {
   }
 });
 
-// Apply URL parameters (e.g. ?nursery=garden-express)
-const urlParams = new URLSearchParams(window.location.search);
-const nurseryParam = urlParams.get('nursery');
-if (nurseryParam && nurserySelect.querySelector(`option[value="${nurseryParam}"]`)) {
-  nurserySelect.value = nurseryParam;
-}
+// Restore filter state from the URL so filtered views are shareable/bookmarkable.
+// Runs before the initial search() below; that single search() renders AND
+// re-canonicalises the URL via syncURL(). Order matters: set JS vars + DOM controls
+// here, then let search() -> updatePillCounts() re-apply the species-pill .active class
+// from activeSpeciesSlug. Setting searchInput.value by assignment does not fire 'input',
+// so the autocomplete box stays closed and activeSpeciesSlug isn't clobbered.
+(function restoreFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const get = k => params.get(k) || '';
+  // Validate against real <option>s so a junk/stale param can't break a control.
+  const optOk = (sel, v) => v && sel.querySelector(`option[value="${CSS.escape(v)}"]`);
 
-// Initial render
+  const speciesParam = get('species');
+  if (speciesParam && SLUG_TO_NAME[speciesParam]) {
+    activeSpeciesSlug = speciesParam;
+    searchInput.value = SLUG_TO_NAME[speciesParam]; // mirror the pill-click contract
+  } else if (params.has('q')) {
+    searchInput.value = get('q');
+  }
+  if (get('stock') === '1') inStockOnly.checked = true;
+  if (get('changes') === '1') changesOnly.checked = true;
+  if (get('rare') === '1') rareOnly = true;
+
+  if (optOk(stateFilter, get('state'))) {
+    stateFilter.value = get('state');
+    const subState = document.getElementById('subState'); // mirror the live change-listener
+    if (subState) subState.value = get('state');
+  }
+  // categoryFilter is null on /bush-tucker/ -- guard (page is already category-scoped).
+  if (categoryFilter && optOk(categoryFilter, get('cat'))) categoryFilter.value = get('cat');
+  // nursery: keep backward-compatible with the old ?nursery= behavior.
+  if (optOk(nurserySelect, get('nursery'))) nurserySelect.value = get('nursery');
+  if (optOk(sortBy, get('sort'))) sortBy.value = get('sort');
+})();
+
+// Initial render (also re-canonicalises the URL through syncURL())
 search();
 
 // Subscribe form (context-aware: species watch or general daily alert)

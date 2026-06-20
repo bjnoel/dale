@@ -401,6 +401,19 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   const totalSpecies = 8;
   let activeCat = 'all';
 
+  // Mirror the filter state into the address bar so a filtered view is shareable.
+  // replaceState keeps it out of the back-button history; defaults are dropped.
+  function syncURL() {
+    const params = new URLSearchParams();
+    const q = input.value.trim();
+    if (q) params.set('q', q);
+    if (stateSel.value) params.set('state', stateSel.value);
+    if (activeCat !== 'all') params.set('cat', activeCat);
+    const qs = params.toString();
+    window.history.replaceState(null, '',
+      window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+  }
+
   function applyFilters() {
     const q = input.value.toLowerCase().trim();
     const state = stateSel.value;
@@ -452,6 +465,7 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       countEl.textContent = visibleVarieties + ' varieties across ' + visibleSpecies + ' species' + where;
       noResultsEl.classList.add('hidden');
     }
+    syncURL();
   }
 
   input.addEventListener('input', applyFilters);
@@ -464,6 +478,25 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
       applyFilters();
     });
   });
+
+  // Restore filter state from the URL (q / state / cat) so shared links land filtered.
+  (function restoreFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    let restored = false;
+    if (params.has('q')) { input.value = params.get('q'); restored = true; }
+    const st = params.get('state');
+    if (st && stateSel.querySelector('option[value="' + CSS.escape(st) + '"]')) {
+      stateSel.value = st;
+      restored = true;
+    }
+    const cat = params.get('cat');
+    if (cat === 'fruit' || cat === 'bush_tucker') {
+      activeCat = cat;
+      catPills.forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-cat') === cat); });
+      restored = true;
+    }
+    if (restored) applyFilters();  // also re-canonicalises the URL via syncURL()
+  })();
 })();
 </script>
 

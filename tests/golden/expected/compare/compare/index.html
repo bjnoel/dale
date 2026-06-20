@@ -153,14 +153,24 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
 <script>
 function filterSpecies(cat, btn) {
   document.querySelectorAll('.cat-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   document.querySelectorAll('tbody tr').forEach(function(row) {
     var show = cat === 'all'
       || (cat === 'fruit' && row.dataset.category === 'fruit')
       || (cat === 'bush_tucker' && row.dataset.bushtucker === '1');
     row.classList.toggle('hidden-row', !show);
   });
+  // Mirror the toggle into the URL so a filtered view is shareable. replaceState
+  // keeps it out of the back-button history; 'all' is the default, so drop the param.
+  var url = window.location.pathname + (cat === 'all' ? '' : '?cat=' + cat) + window.location.hash;
+  window.history.replaceState(null, '', url);
 }
+// Restore from ?cat=fruit|bush_tucker on load (absent/junk -> default "All").
+(function() {
+  var cat = new URLSearchParams(window.location.search).get('cat');
+  if (cat !== 'fruit' && cat !== 'bush_tucker') return;
+  filterSpecies(cat, document.querySelector('.cat-filter-btn[onclick*="' + cat + '"]'));
+})();
 </script>
 
 
