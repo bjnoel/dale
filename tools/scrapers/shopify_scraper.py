@@ -122,6 +122,25 @@ NURSERIES = {
         "product_types": ["FOOD PLANTS"],
         "fruit_tags": ["fruit online"],
     },
+    "st-clements-citrus": {
+        # Rare-citrus specialist; whole store is citrus (product_type "Citrus
+        # Tree"), so no filter is needed. WA-only mail order.
+        "name": "St Clements Citrus",
+        "domain": "stclementscitrus.com.au",
+        "location": "High Wycombe, WA",
+    },
+    "the-heritage-nursery": {
+        # Full-service Canberra garden centre (~1,500 SKUs: ornamentals, natives,
+        # giftware, pots, chemicals). Fruit is filed cleanly under these four
+        # product_types. The generic "TREES" type is excluded on purpose -- it is
+        # ~all ornamental (Japanese maples, magnolias, flowering peach/plum,
+        # ornamental pear), so including it would drag in ~70 non-fruit trees while
+        # rescuing almost no real fruit. Local ACT delivery only.
+        "name": "The Heritage Nursery",
+        "domain": "heritagenursery.com.au",
+        "location": "Yarralumla, ACT",
+        "product_types": ["FRUIT TREES", "CITRUS", "BERRIES", "NUTS"],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

@@ -116,6 +116,23 @@ NURSERIES: list[Nursery] = [
             ("VIC",),
             local_delivery={"area": "Melbourne metro", "state": "VIC"},
             note="VIC-based (Heatherton + other Melbourne stores). Melbourne metro delivery + in-store pickup; no interstate (no WA/NT/TAS)."),
+    Nursery("wild-garden-organics", "Wild Garden Organics",
+            ("QLD", "NSW", "VIC", "SA", "ACT"),
+            note="QLD-based (Ecwid). Rare grafted tropicals. No WA/NT/TAS via "
+                 "standard checkout (biosecurity; ships there on request for "
+                 "~$300+). Free shipping over $170. Verified 2026-06-20."),
+    Nursery("st-clements-citrus", "St Clements Citrus",
+            ("WA",),
+            local_delivery={"area": "WA", "state": "WA"},
+            note="High Wycombe, Perth WA (Shopify). Rare-citrus specialist (yuzu, "
+                 "Buddha's hand, blood lime, citron). Posts WA-wide only (citrus "
+                 "interstate quarantine); postage included in price. Verified 2026-06-20."),
+    Nursery("the-heritage-nursery", "The Heritage Nursery",
+            ("ACT",),
+            local_delivery={"area": "ACT + Queanbeyan", "state": "ACT"},
+            note="Canberra garden centre (Shopify). Local delivery (ACT + "
+                 "Queanbeyan, from $90) + click-and-collect only; no interstate "
+                 "post. Distinct from Heritage Fruit Trees (VIC). Verified 2026-06-20."),
 ]
 
 _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}

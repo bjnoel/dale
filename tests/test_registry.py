@@ -46,6 +46,9 @@ EXPECTED_SHIPPING = {
     "rayners": ["VIC"],
     "garden-world": ["VIC"],
     "diacos": ["VIC"],
+    "wild-garden-organics": ["QLD", "NSW", "VIC", "SA", "ACT"],
+    "st-clements-citrus": ["WA"],
+    "the-heritage-nursery": ["ACT"],
 }
 
 EXPECTED_NAMES = {
@@ -71,6 +74,9 @@ EXPECTED_NAMES = {
     "rayners": "Rayners Orchard",
     "garden-world": "Garden World",
     "diacos": "Diaco's Garden Nursery",
+    "wild-garden-organics": "Wild Garden Organics",
+    "st-clements-citrus": "St Clements Citrus",
+    "the-heritage-nursery": "The Heritage Nursery",
 }
 
 EXPECTED_LOCAL = {
@@ -81,6 +87,8 @@ EXPECTED_LOCAL = {
     "rayners": {"area": "Victoria", "state": "VIC"},
     "garden-world": {"area": "Melbourne metro", "state": "VIC"},
     "diacos": {"area": "Melbourne metro", "state": "VIC"},
+    "st-clements-citrus": {"area": "WA", "state": "WA"},
+    "the-heritage-nursery": {"area": "ACT + Queanbeyan", "state": "ACT"},
 }
 
 

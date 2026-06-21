@@ -55,6 +55,15 @@ NURSERIES = {
         # rate-limited us before (DEC-208), so keep a polite inter-page delay.
         "delay": 1.0,
     },
+    "wild-garden-organics": {
+        # QLD rare-tropical grafted-fruit nursery on an Ecwid "starter site".
+        # store_id discovered from app.ecwid.com/script.js?95573253 (2026-06-20).
+        "name": "Wild Garden Organics",
+        "domain": "wildgardenorganics.com.au",
+        "location": "QLD",
+        "store_id": "95573253",
+        "delay": 1.0,
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
