@@ -5941,3 +5941,28 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **No loop / no popstate handler:** `syncURL()` only reads state and writes the bar (never reads the URL or calls `search()`), `restoreFromURL()` only reads the URL and sets state then calls `search()` once, and `replaceState` fires no `popstate`. The three index templates tripped golden tests (compare, species_pages, variety); regenerated with GOLDEN_UPDATE=1, diff was only the changed `<script>` blocks. dashboard.js is a static asset (not builder HTML output), so its golden did not trip. Full suite green (1687). Verified end-to-end in a real browser against a local fixture build: every param writes/restores, defaults drop, mutual exclusivity holds, bush-tucker null-categoryFilter handled, zero console errors.
 
 **Cache/deploy note:** dashboard.js is served immutable (`max-age=31536000`); the `?v=YYYYMMDD` only bumps on a build, so new visitors get the feature immediately after deploy + CF purge, returning visitors on the next `?v=` bump. Shipped email-safe (deploy.sh syncs templates + static, then rebuild_pages_email_safe.sh rebuilds the index pages and bumps `?v=`; never run-all-scrapers.sh ad hoc).
+
+---
+
+## DEC-212 — 2026-06-21 — Onboarded 3 new nurseries (Wild Garden Organics, St Clements Citrus, The Heritage Nursery); rejected 4 candidates that don't ship
+
+**Decided by:** Dale, at Benedict's request (he flagged two candidate URLs and asked me to long-tail search for more, then to triple-check shipping before adding any).
+
+**Context:** Benedict found theaustralianplantshop.com.au + deararborist.com.au while searching "jaboticaba buy australia" and asked if there were others. Long-tail discovery (parallel agents over tropical / temperate / broad queries) surfaced ~10 candidates. The decisive filter was **"does it actually post plants by mail?"** — verified per candidate with 2+ sources (shipping policy page + product page + checkout), because several "shops" turned out to be browse-only.
+
+**Verified and ONBOARDED (3):**
+- **wild-garden-organics** (Ecwid, QLD): rare grafted tropicals (mango cultivars, canistel, soursop). Ships QLD/NSW/VIC/SA/ACT, no WA/NT/TAS standard (badge "No WA/NT/TAS"). store_id 95573253 discovered from app.ecwid.com/script.js. Validated 54 products / 25 in stock. Reuses the DEC-210 Ecwid storefront-API scraper.
+- **st-clements-citrus** (Shopify, Perth WA): rare-citrus specialist (yuzu, Buddha's hand, blood lime, citron etrog). WA-only post; modelled `local_delivery` → label "WA only" (suppresses the misleading "No NT/TAS" badge). Validated 65 products. Now generates new WA species+state pages (e.g. buy-citron-trees-western-australia.html).
+- **the-heritage-nursery** (Shopify, Canberra ACT): full garden centre; fruit filed under product_types FRUIT TREES/CITRUS/BERRIES/NUTS. The generic "TREES" type is ~all ornamental (Acers, magnolias, flowering peach/plum) so it's deliberately excluded — include-filter drops 1519→88. Local ACT delivery only (label "ACT + Queanbeyan only"). Distinct from the existing VIC "Heritage Fruit Trees". Validated 88 products / 77 in stock.
+
+**REJECTED (4) — tell him he's dreaming:**
+- **Orchard Dreams** (Shopify): dropship-template red flags — policy pages 404, cached About cites a "Bellingham WA (Washington) USA" warehouse, free Gmail contact, stale "short break" banner, per-product quarantine field reads backwards (restricts NSW/VIC/SA/WA/ACT, omits NT/TAS). Not a trustworthy data source. (Benedict's instinct flagged this one.)
+- **Perrys Fruit & Nut** (Squarespace, SA): checkout CLOSED ("isn't set up to process payments"); browse-only catalogue.
+- **Newman's Nursery** (WooCommerce, SA): catalogue display only, no prices/cart ("contact nursery for price"), cart/checkout 404; Adelaide metro local delivery only.
+- **The Australian Plant Shop** (Shopify, Sydney): general houseplant/ornamental shop, Sydney-metro delivery only; jaboticaba incidental. **Dear Arborist** (custom platform, ~450 URLs, no JSON feed, Brisbane): natives/medicinal/edibles mix, fruit a slice; not a priority.
+
+**Deferred to DAL-206:** **Heaven On Earth Fruit Trees** (Wix, FNQ) — the best rare-tropical catalogue (150+ varieties) and Benedict approved it, but Wix needs a new scraper: its JSON-LD `Product` offers are empty, so price/stock must be parsed from the `warmupData` blob (sitemap → product pages). Ticketed with the full approach + HTML-fixture test plan.
+
+**Implementation:** registry records + per-platform scrape config (shopify_scraper.py, ecwid_scraper.py). `test_registry` oracle updated; golden regenerated (nursery count 22→25, count-only diff reviewed). Full suite green (1687). All 3 validated live against a throwaway data dir before committing (commit 62be71b).
+
+**Rollout (email-safe, mirrors DEC-207/209/210):** push → server `git pull` + deploy.sh → scrape the 3 new nurseries once on the server to write today's 2026-06-21 baseline (the scrapers alone send no emails) so tonight's 00:00 UTC diff is empty-vs-itself and fires no false restock/surge/digest alerts → `tools/scripts/rebuild_pages_email_safe.sh` (rebuilds all listing pages + tailwind + CF purge, skips every send_*/daily_digest/detect_stock_surges). Verified live: all 3 nursery pages HTTP 200, correct shipping labels render, 25 nurseries site-wide, 7962 products. **Key risk neutralised:** send_variety_alerts/detect_stock_surges/send_digest diff today-vs-yesterday, so a brand-new nursery's first scrape would otherwise show its whole catalogue as "back in stock" and spam subscribers; the baseline prevents it.
