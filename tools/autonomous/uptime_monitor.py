@@ -8,6 +8,7 @@ State is tracked in /opt/dale/data/uptime_state.json to avoid alert spam.
 
 import json
 import os
+import shutil
 import sys
 import urllib.request
 import urllib.error
@@ -41,6 +42,18 @@ CHECKS = [
 ]
 
 TIMEOUT = 15  # seconds
+
+# --- Disk-space monitoring -------------------------------------------------
+# A full disk silently truncates scraper snapshots (corrupting the dataset) and
+# crashes the digest builder. On 2026-07-04 the root FS sat at 100% for ~10 days
+# undetected because this monitor only checked HTTP endpoints. The thresholds
+# below give days of lead time on the 38 GB VPS.
+# See memory/project_server_disk_clickhouse.md for the runbook.
+DISK_PATH = "/"
+DISK_WARN_PCT = 85       # first heads-up
+DISK_CRIT_PCT = 93       # urgent
+DISK_RECOVER_PCT = 80    # hysteresis: only clear the alert once back below this
+_DISK_SEVERITY = {"ok": 0, "warning": 1, "critical": 2}
 
 
 def load_state():
@@ -114,6 +127,109 @@ def format_recovered_email(check, down_since, now):
 """.strip(), f"Site Recovered: {name}\n\nURL: {url}\nDown for: {duration_str}"
 
 
+def disk_level(pct):
+    """Pure: map a used-percentage to an alert level."""
+    if pct >= DISK_CRIT_PCT:
+        return "critical"
+    if pct >= DISK_WARN_PCT:
+        return "warning"
+    return "ok"
+
+
+def disk_alert_decision(prev_level, pct):
+    """Pure: decide what to do given the previously-alerted level and current % used.
+
+    Returns (new_level, action) where action is one of:
+      "alert"     — severity increased (ok->warning, ok/warning->critical); email.
+      "recovered" — dropped back below the recover threshold; send an all-clear.
+      "none"      — nothing worth emailing (including silent de-escalation).
+
+    Hysteresis: once alerting, we don't clear to "ok" until usage falls below
+    DISK_RECOVER_PCT, so usage hovering around the warn line doesn't flap.
+    """
+    level = disk_level(pct)
+    if level == "ok" and prev_level != "ok" and pct >= DISK_RECOVER_PCT:
+        level = prev_level  # hold the alert; not recovered yet
+    if _DISK_SEVERITY[level] > _DISK_SEVERITY.get(prev_level, 0):
+        return level, "alert"
+    if level == "ok" and prev_level != "ok":
+        return level, "recovered"
+    return level, "none"
+
+
+def format_disk_email(level, pct, used_gb, total_gb, free_gb):
+    icon = "🔴" if level == "critical" else "⚠️"
+    html = f"""
+<h2>{icon} Disk {level}: {pct:.0f}% used on the Dale server</h2>
+<p><strong>Filesystem {DISK_PATH}:</strong> {used_gb:.1f} GB used of {total_gb:.1f} GB
+({pct:.0f}%), {free_gb:.1f} GB free.</p>
+<p>A full disk silently truncates scraper snapshots and crashes the digest builder,
+so act before it reaches 100%. Common culprits: Plausible ClickHouse internal log
+tables (system.text_log), ClickHouse server logs, and old weekly backups in
+/opt/dale/backups.</p>
+<p>Runbook: memory/project_server_disk_clickhouse.md in the repo.</p>
+""".strip()
+    text = (f"Disk {level}: {pct:.0f}% used on the Dale server\n\n"
+            f"{DISK_PATH}: {used_gb:.1f} GB used of {total_gb:.1f} GB "
+            f"({pct:.0f}%), {free_gb:.1f} GB free.\n"
+            f"Culprits: ClickHouse system.text_log, ClickHouse logs, old /opt/dale/backups.\n"
+            f"Runbook: memory/project_server_disk_clickhouse.md")
+    return html, text
+
+
+def format_disk_recovered_email(pct, free_gb):
+    html = (f"<h2>✅ Disk recovered: {pct:.0f}% used</h2>"
+            f"<p>Free space is back to {free_gb:.1f} GB on {DISK_PATH}.</p>")
+    text = f"Disk recovered: {pct:.0f}% used, {free_gb:.1f} GB free on {DISK_PATH}."
+    return html, text
+
+
+def check_disk(state, now_str):
+    """Check root-filesystem usage; alert on threshold crossings.
+
+    Mirrors the URL checks: de-dupes via state["disk"], and on a failed send keeps
+    the previous level so the alert is retried next run. Returns True (state always
+    updated with the latest reading).
+    """
+    try:
+        usage = shutil.disk_usage(DISK_PATH)
+    except Exception as e:
+        print(f"[{now_str}] DISK: check failed: {e}")
+        return False
+
+    total_gb = usage.total / 1e9
+    free_gb = usage.free / 1e9
+    used_gb = total_gb - free_gb
+    pct = (usage.total - usage.free) / usage.total * 100
+
+    prev_level = state.get("disk", {}).get("level", "ok")
+    new_level, action = disk_alert_decision(prev_level, pct)
+    committed_level = new_level
+
+    if action == "alert":
+        html, text = format_disk_email(new_level, pct, used_gb, total_gb, free_gb)
+        icon = "🔴" if new_level == "critical" else "⚠️"
+        try:
+            send_email(f"{icon} Disk {new_level}: {pct:.0f}% on Dale server", html, text)
+            print(f"[{now_str}] DISK {new_level.upper()}: {pct:.0f}% used — alert sent")
+        except Exception as e:
+            committed_level = prev_level  # keep prev level so we retry next run
+            print(f"[{now_str}] DISK {new_level.upper()}: {pct:.0f}% used — failed to send alert: {e}")
+    elif action == "recovered":
+        html, text = format_disk_recovered_email(pct, free_gb)
+        try:
+            send_email(f"✅ Disk recovered: {pct:.0f}% on Dale server", html, text)
+            print(f"[{now_str}] DISK RECOVERED: {pct:.0f}% used — alert sent")
+        except Exception as e:
+            committed_level = prev_level  # retry the all-clear next run
+            print(f"[{now_str}] DISK RECOVERED: {pct:.0f}% used — failed to send alert: {e}")
+    else:
+        print(f"[{now_str}] DISK {new_level.upper()}: {pct:.0f}% used ({free_gb:.1f}GB free)")
+
+    state["disk"] = {"level": committed_level, "pct": round(pct, 1), "last_checked": now_str}
+    return True
+
+
 def main():
     state = load_state()
     now = datetime.now(timezone.utc)
@@ -172,6 +288,10 @@ def main():
                 state[cid]["error"] = error
                 changed = True
                 print(f"[{now_str}] DOWN (ongoing): {check['name']} — {error}")
+
+    # Disk space — the failure mode HTTP checks can't see (full disk corrupts data silently).
+    if check_disk(state, now_str):
+        changed = True
 
     if changed:
         save_state(state)
