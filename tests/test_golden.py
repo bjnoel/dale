@@ -102,6 +102,15 @@ GOLDEN_CASES = [
         "outputs": ["companion-planting-guide.html"],
     },
     {
+        # All-curated pollination guide (no data dir); pins the FAQPage ld+json
+        # and the family-card assembly. The temp OUT has no /variety/ pages, so
+        # every variety link deterministically renders as plain text.
+        "name": "pollination_guide",
+        "script": "build_pollination_guide.py",
+        "args": ["{OUT}"],
+        "outputs": ["fruit-tree-pollination-guide.html"],
+    },
+    {
         # All-curated planting calendar (no data dir); pins the FAQPage ld+json.
         "name": "when_to_plant",
         "script": "build_when_to_plant.py",

@@ -135,7 +135,8 @@ def discover_new_content_pages():
 
     # Special content pages
     for fname in ["companion-planting-guide.html", "when-to-plant.html",
-                  "finger-lime-guide.html", "bare-root.html"]:
+                  "finger-lime-guide.html", "bare-root.html",
+                  "fruit-tree-pollination-guide.html"]:
         path = os.path.join(DASHBOARD_DIR, fname)
         if os.path.exists(path):
             pages.append(f"{BASE_URL}/{fname}")

@@ -161,6 +161,11 @@ echo "$LOG_PREFIX Building companion planting guide..."
 python3 "$SCRIPT_DIR/build_companion_guide.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Companion guide build failed (non-fatal)"
 echo "$LOG_PREFIX Companion guide complete."
 
+# Build fruit-tree pollination guide (SEO content)
+echo "$LOG_PREFIX Building pollination guide..."
+python3 "$SCRIPT_DIR/build_pollination_guide.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Pollination guide build failed (non-fatal)"
+echo "$LOG_PREFIX Pollination guide complete."
+
 # Build "when to plant" seasonal planting calendar (SEO content)
 echo "$LOG_PREFIX Building when-to-plant calendar..."
 python3 "$SCRIPT_DIR/build_when_to_plant.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: When-to-plant build failed (non-fatal)"

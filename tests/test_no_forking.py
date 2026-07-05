@@ -39,6 +39,8 @@ GUARDS = [
     (re.compile(r"^def inject_footer\b"), "stocklib/email_footer.py"),
     (re.compile(r"^SHIPPING_MAP\s*[:=]"), "stocklib/registry.py"),
     (re.compile(r"^NURSERY_NAMES\s*[:=]"), "stocklib/registry.py"),
+    (re.compile(r"^EVIDENCE_GRADES\s*[:=]"), "stocklib/evidence.py"),
+    (re.compile(r"^GRADE_BADGE\s*[:=]"), "stocklib/evidence.py"),
 ]
 
 

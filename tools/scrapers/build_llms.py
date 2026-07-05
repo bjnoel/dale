@@ -35,6 +35,8 @@ GUIDES = [
      "Season guide (June to September) with live in-stock bare-root listings and nursery shipping restrictions."),
     ("/companion-planting-guide.html", "Companion Planting Guide for Fruit Trees",
      "Evidence-graded companion and avoidance pairings for fruit trees."),
+    ("/fruit-tree-pollination-guide.html", "Fruit Tree Pollination Guide (Australia)",
+     "Which fruit trees need a pollination partner and which crop alone, with an evidence-graded chart."),
     ("/buy-fruit-trees-wa.html", "Buy Fruit Trees by State",
      "State guides with quarantine and shipping notes (WA, QLD, NSW, VIC)."),
 ]

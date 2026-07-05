@@ -21,34 +21,8 @@ from pathlib import Path
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
+from stocklib.evidence import EVIDENCE_GRADES, GRADE_BADGE, grade_badge
 from stocklib.taxonomy import enabled_species
-
-
-# ----- Evidence grading -----
-
-# Closed vocabulary. A test asserts every claim uses one of these.
-EVIDENCE_GRADES = {
-    "research-backed",       # peer-reviewed or university-extension support
-    "established-practice",  # broad horticultural consensus, low controversy
-    "traditional",           # folklore / anecdotal, plausible but little hard evidence
-    "context-dependent",     # true only for certain varieties, climates or conditions
-}
-
-# label + Tailwind classes per grade (single styling source of truth).
-GRADE_BADGE = {
-    "research-backed": ("Research-backed", "bg-green-100 text-green-800 border-green-300"),
-    "established-practice": ("Established practice", "bg-emerald-50 text-emerald-700 border-emerald-200"),
-    "traditional": ("Traditional, limited evidence", "bg-amber-50 text-amber-800 border-amber-200"),
-    "context-dependent": ("Depends on conditions", "bg-sky-50 text-sky-700 border-sky-200"),
-}
-
-
-def grade_badge(grade: str) -> str:
-    label, cls = GRADE_BADGE[grade]
-    return (
-        f'<span class="inline-block text-xs px-1.5 py-0.5 rounded border {cls} '
-        f'ml-1 align-middle whitespace-nowrap">{label}</span>'
-    )
 
 
 # ----- Content Data -----
@@ -476,7 +450,7 @@ def build_pollinator_table() -> str:
     return f"""
 <section class="mb-10" id="pollinators">
   <h2 class="text-xl font-bold text-green-900 mb-3">Pollinator Requirements Quick Reference</h2>
-  <p class="text-gray-600 text-sm mb-4">Check this before buying a single tree. Getting it wrong means years without fruit.</p>
+  <p class="text-gray-600 text-sm mb-4">Check this before buying a single tree. Getting it wrong means years without fruit. For the full picture, see our <a href="/fruit-tree-pollination-guide.html" class="text-green-700 hover:underline">fruit tree pollination guide</a>.</p>
   <div class="overflow-x-auto rounded-lg border border-gray-200">
     <table class="w-full bg-white text-left">
       <thead class="bg-gray-50 border-b border-gray-200">
