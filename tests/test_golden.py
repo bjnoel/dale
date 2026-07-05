@@ -109,6 +109,16 @@ GOLDEN_CASES = [
         "outputs": ["when-to-plant.html"],
     },
     {
+        # Season-aware bare-root page. --today is pinned so the open/sparse/
+        # closed branch cannot flip with the calendar; the shared fixture has
+        # few (if any) in-stock bare-root items, which pins the in-season
+        # sparse/open branch deterministically.
+        "name": "bare_root",
+        "script": "build_bare_root_page.py",
+        "args": ["{DATA}", "{OUT}", "--today", "2026-07-15"],
+        "outputs": ["bare-root.html"],
+    },
+    {
         "name": "location",
         "script": "build_location_pages.py",
         "args": ["{DATA}", "{OUT}"],

@@ -228,5 +228,46 @@ class VarietyDescriptionRenderTests(unittest.TestCase):
         self.assertEqual(vd.render_blurb("totally-made-up-xyz", "apple"), "")
 
 
+class RenderExcerptTests(unittest.TestCase):
+    """render_excerpt feeds the species pages' notable-varieties one-liners."""
+
+    def test_every_committed_entry_yields_excerpt(self):
+        for fname, sp, vslug, entry in _iter_entries():
+            with self.subTest(file=fname, variety=vslug):
+                excerpt = vd.render_excerpt(vslug, sp)
+                self.assertTrue(excerpt, "usable entry produced empty excerpt")
+                self.assertLessEqual(len(excerpt), 200 + 3)
+                self.assertNotIn("<", excerpt, "excerpt must be plain text")
+                self.assertNotIn("—", excerpt)
+                self.assertNotIn("–", excerpt)
+
+    def test_short_first_sentence_kept_whole(self):
+        vd._CACHE["_test_sp"] = {"v": {"paragraphs": ["Short sentence here. Second sentence follows."]}}
+        try:
+            self.assertEqual(vd.render_excerpt("v", "_test_sp"), "Short sentence here.")
+        finally:
+            del vd._CACHE["_test_sp"]
+
+    def test_long_sentence_truncates_at_word_boundary(self):
+        long_first = "This variety " + "grows very well indeed " * 15 + "in Australia."
+        vd._CACHE["_test_sp"] = {"v": {"paragraphs": [long_first]}}
+        try:
+            excerpt = vd.render_excerpt("v", "_test_sp")
+            self.assertTrue(excerpt.endswith("..."))
+            self.assertLessEqual(len(excerpt), 203)
+            body = excerpt[:-3]
+            self.assertFalse(body.endswith(" "))
+            # No mid-word cut: the truncated text must be a prefix of the
+            # original ending exactly at a word boundary.
+            self.assertTrue(long_first.startswith(body))
+            self.assertEqual(long_first[len(body)], " ")
+        finally:
+            del vd._CACHE["_test_sp"]
+
+    def test_unknown_variety_or_species_empty(self):
+        self.assertEqual(vd.render_excerpt("totally-made-up-xyz", "apple"), "")
+        self.assertEqual(vd.render_excerpt("anything", "no-such-species-xyz"), "")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -26,7 +26,11 @@ from stocklib.templates import render as render_template
 from stocklib.structured_data import product_offer_jsonld
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 import growing_guides
+from stocklib.variety_descriptions import has_description, render_excerpt
 from build_species_trends import build_species_trends, make_sparkline, trend_direction
+
+# How many described in-stock varieties a species page surfaces as excerpts.
+NOTABLE_VARIETIES_MAX = 5
 
 
 from cultivar_parsing import (  # noqa: E402
@@ -684,6 +688,15 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     # Variety chip cloud: in-stock varieties first, then alphabetical.
     variety_view = sorted(varieties or [], key=lambda v: (not v["in_stock"], v["name"].lower()))
 
+    # Notable varieties: in-stock varieties that have a verified description,
+    # surfaced as one-line excerpts. This is the only place species pages show
+    # the variety_descriptions content; the full blurbs stay on /variety/ pages.
+    notable_view = [
+        {**v, "excerpt": render_excerpt(v["slug"], slug)}
+        for v in variety_view
+        if v["in_stock"] and has_description(v["slug"], slug)
+    ][:NOTABLE_VARIETIES_MAX]
+
     return render_template(
         "species_page.html.j2",
         head=head, header=header, breadcrumb=breadcrumb, footer=footer,
@@ -695,7 +708,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         state_links_html=state_links_html, related_species_html=related_species_html,
         variety_cta=variety_cta, treesmith_promo=treesmith_promo,
         watch_script=watch_script, nursery_view=nursery_view, product_view=product_view,
-        variety_view=variety_view,
+        variety_view=variety_view, notable_view=notable_view,
     )
 
 

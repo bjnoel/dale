@@ -31,6 +31,7 @@ from pathlib import Path
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
+from stocklib.citations import inline_cite
 from stocklib.taxonomy import enabled_species
 
 
@@ -271,12 +272,6 @@ CATEGORY_CITES = {
     "arid": ("Searles inland guide", "https://www.searlesgardening.com.au/climates/inland"),
 }
 
-
-def inline_cite(label: str, url: str) -> str:
-    """A small bracketed citation link to an authoritative source."""
-    safe = url.replace("&", "&amp;")
-    return (f' <a href="{safe}" rel="noopener nofollow" target="_blank" '
-            f'class="text-xs text-green-700 hover:underline whitespace-nowrap">[{label}]</a>')
 
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -604,6 +599,7 @@ def build_related_guides() -> str:
 <section class="mb-10" id="related">
   <h2 class="text-xl font-bold text-green-900 mb-3">Related Guides</h2>
   <ul class="text-sm space-y-1 list-disc pl-5">
+    <li><a href="/bare-root.html" class="text-green-700 hover:underline">Bare-root season guide</a> (live in-stock bare-root listings, June to September)</li>
     <li><a href="/guide.html" class="text-green-700 hover:underline">Where to buy rare fruit trees in Australia</a> (nursery directory and shipping guide)</li>
     <li><a href="/companion-planting-guide.html" class="text-green-700 hover:underline">Companion planting guide for fruit trees</a> (what to grow alongside, pollinator partners)</li>
     <li><a href="/species/" class="text-green-700 hover:underline">Browse all tracked species</a> (in-stock counts, price history, restock alerts)</li>

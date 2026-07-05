@@ -31,6 +31,8 @@ SUMMARY = (
 GUIDES = [
     ("/when-to-plant.html", "When to Plant Fruit Trees in Australia",
      "Planting calendar across five climate zones: bare-root season, chill hours, frost guidance."),
+    ("/bare-root.html", "Bare Root Fruit Tree Season in Australia",
+     "Season guide (June to September) with live in-stock bare-root listings and nursery shipping restrictions."),
     ("/companion-planting-guide.html", "Companion Planting Guide for Fruit Trees",
      "Evidence-graded companion and avoidance pairings for fruit trees."),
     ("/buy-fruit-trees-wa.html", "Buy Fruit Trees by State",

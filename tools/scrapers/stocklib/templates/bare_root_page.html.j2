@@ -1,0 +1,34 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="{{ content_max_width }} mx-auto px-4 py-8">
+  {{ breadcrumb|safe }}
+
+  <h1 class="text-2xl font-bold text-green-900 mb-2">Bare Root Fruit Trees in Australia: {{ season_year }} Season</h1>
+  <p class="text-gray-600 text-sm mb-6">Bare-root season is the cheapest time of year to buy deciduous fruit trees. This page tracks what is actually in stock across Australian nurseries, updated {{ today }}.</p>
+
+  {{ status_box|safe }}
+
+  {{ what_is_section|safe }}
+
+  {{ species_section|safe }}
+
+  {{ live_table|safe }}
+
+  {{ nursery_section|safe }}
+
+  {{ cta|safe }}
+
+  {{ faq_section|safe }}
+
+  {{ references|safe }}
+
+  {{ related_guides|safe }}
+
+  {{ treesmith_promo|safe }}
+</main>
+
+{{ footer|safe }}
+{{ subscribe_script|safe }}
+</body>
+</html>

@@ -166,6 +166,11 @@ echo "$LOG_PREFIX Building when-to-plant calendar..."
 python3 "$SCRIPT_DIR/build_when_to_plant.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: When-to-plant build failed (non-fatal)"
 echo "$LOG_PREFIX When-to-plant calendar complete."
 
+# Build bare-root season page (seasonal SEO content, season-aware)
+echo "$LOG_PREFIX Building bare-root season page..."
+python3 "$SCRIPT_DIR/build_bare_root_page.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Bare-root page build failed (non-fatal)"
+echo "$LOG_PREFIX Bare-root season page complete."
+
 # Build sample digest preview page (subscriber conversion)
 echo "$LOG_PREFIX Building sample digest page..."
 python3 "$SCRIPT_DIR/build_sample_digest.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sample digest page build failed (non-fatal)"

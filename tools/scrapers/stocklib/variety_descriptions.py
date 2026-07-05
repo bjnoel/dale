@@ -29,6 +29,7 @@ No em dashes or en dashes anywhere (treestock copy rule); tests guard this.
 """
 
 import json
+import re
 from pathlib import Path
 
 # This module lives in tools/scrapers/stocklib/, the content lives one level up in
@@ -91,6 +92,32 @@ def _load_species(species_slug: str) -> dict:
 def has_description(variety_slug: str, species_slug: str) -> bool:
     """True when a usable variety description exists for this variety slug."""
     return variety_slug in _load_species(species_slug)
+
+
+_SENTENCE_RE = re.compile(r"(.+?[.!?])(?=\s|$)")
+
+
+def render_excerpt(variety_slug: str, species_slug: str, max_len: int = 200) -> str:
+    """Plain-text one-line excerpt of a variety description, or "" if none.
+
+    The first sentence of the first paragraph, word-boundary truncated to
+    max_len. Plain text (no HTML): callers interpolate it through the
+    autoescaping template layer. Lets the species pages surface the verified
+    variety content without repeating whole blurbs (build_variety_pages owns
+    the full render via render_blurb)."""
+    entry = _load_species(species_slug).get(variety_slug)
+    if not entry:
+        return ""
+    paras = [p.strip() for p in entry.get("paragraphs", []) if isinstance(p, str) and p.strip()]
+    if not paras:
+        return ""
+    first = paras[0]
+    m = _SENTENCE_RE.match(first)
+    text = m.group(1) if m else first
+    if len(text) <= max_len:
+        return text
+    cut = text[:max_len].rsplit(" ", 1)[0].rstrip(",;:")
+    return cut + "..."
 
 
 def render_blurb(variety_slug: str, species_slug: str) -> str:
