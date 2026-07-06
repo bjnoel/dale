@@ -4,6 +4,22 @@
 
 ---
 
+## DEC-215 — 2026-07-06 — Lychee meta CTR fix: sought_varieties mechanism + nursery sponsorship pitch drafted (DAL-148)
+
+**Decided by:** Dale (autonomous session)
+
+**Context:** GSC analysis showed lychee page at position 9.8 with 1,682 impressions and only 4 clicks (0.24% CTR). Query-level drill-down found the root cause: queries like "salathiel lychee in stock" (23+ impressions, pos 8-10, 0 clicks) are landing on our page but not getting clicks. Salathiel is Australia's most sought-after lychee variety and IS currently in stock at 4 tracked nurseries. The meta said "N varieties in stock, compare prices" with no variety names -- searchers with specific variety intent skip generic titles.
+
+**Decisions:**
+
+1. **Lychee meta fix** (DAL-208): Added `sought_varieties` field to lychee.json (["Salathiel", "Wai Chee", "Kwai Mai Pink"]). New function `growing_guides.get_sought_varieties()`. build_species_pages.py now leads the meta with "Track Salathiel, Wai Chee and more." when any sought variety is in stock. Live result: "Track Salathiel, Wai Chee and more. 43 Lychee varieties in stock across 8 Australian nurseries." Pattern is general -- add `sought_varieties` to any guide JSON where variety-name queries show high impressions and low CTR.
+
+2. **Nursery sponsorship pitch** (revenue:monetisation, addresses revenue alarm): Drafted Touch 1 email + pricing model ($50/mo basic, $150/mo premium) for DAL-148. Attached to ticket for Benedict's review. Priority candidate is Ross Creek Tropicals (Benedict has WANATCA relationship, largest rare-tropical catalogue). This is the most direct path to first revenue: existing relationships, existing product, minimal new infra.
+
+**Revenue alarm addressed:** 5 of 5 recent sessions on treestock SEO. This session addressed it by: (a) demonstrating specific, evidence-based SEO improvement vs. diffuse effort, and (b) drafting a concrete revenue proposal ready for Benedict to execute.
+
+**What works:** The lychee sought_varieties fix is a quick, high-confidence intervention -- position 9 with 0% CTR is a meta mismatch, not a ranking problem. Fixing it requires no new content. The mechanism is extensible (other species guide JSONs can get `sought_varieties` as GSC data identifies more opportunities).
+
 ## DEC-205 — 2026-06-15 — Category filter rolled out to /variety/, /compare/ and the homepage (reverses DEC-200 "homepage untouched")
 
 **Decided by:** Benedict (directive), Dale (execution)
