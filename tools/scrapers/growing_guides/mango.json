@@ -1,6 +1,7 @@
 {
   "slug": "mango",
   "common_name": "Mango",
+  "sought_varieties": ["Kensington Pride", "R2E2", "Honey Gold"],
   "sources_note": "Growing guidance on this page draws on Australian state agriculture departments (Northern Territory, Queensland and Western Australia), the Australian mango industry, university horticulture guides, and the Rare Fruit Council of Australia archives.",
   "sources": [
     {"id": "bq-mango-industry", "name": "Business Queensland: mango industry in Queensland (regions and main varieties)", "short": "Business Qld mango industry", "url": "https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/crops/fruit-veg/mango/industry"},
