@@ -35,26 +35,31 @@ PLAUSIBLE_SCRIPT = ('<link rel="preconnect" href="https://data.bjnoel.com">'
                     '<link rel="dns-prefetch" href="https://data.bjnoel.com">'
                     '<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>')
 
+# Top-level nav order: the three plant-browse pages (Species, Varieties, Bush
+# Tucker) sit adjacent as the core of the site; Nurseries is a separate flat
+# item (a different axis, not a plant type); then two dropdowns keep the bar
+# short. Guides = informational content; Insights = the price/availability
+# tracking data that is treestock's moat (digest, history, trends, compare,
+# rare finds), all facets of "what changed and where to buy".
 NAV_ITEMS = [
     ("Search", "/"),
     ("Species", "/species/"),
+    ("Varieties", "/variety/"),
     ("Bush Tucker", "/bush-tucker/"),
     ("Nurseries", "/nursery/"),
-    ("Varieties", "/variety/"),
-    ("Compare", "/compare/"),
-    # Grouped dropdown: the informational guides live here so the top-level nav
-    # stays short and every guide (including bare-root and pollination, which
-    # had no nav entry at all) is reachable.
     ("Guides", [
         ("Companion Planting", "/companion-planting-guide.html"),
         ("Bare Root Season", "/bare-root.html"),
         ("Planting Calendar", "/when-to-plant.html"),
         ("Fruit Tree Pollination", "/fruit-tree-pollination-guide.html"),
     ]),
-    ("Rare Finds", "/rare.html"),
-    ("Digest", "/digest.html"),
-    ("History", "/history.html"),
-    ("Trends", "/trends.html"),
+    ("Insights", [
+        ("Digest", "/digest.html"),
+        ("History", "/history.html"),
+        ("Trends", "/trends.html"),
+        ("Compare", "/compare/"),
+        ("Rare Finds", "/rare.html"),
+    ]),
 ]
 
 LOGO_SVG = """\
