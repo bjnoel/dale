@@ -126,6 +126,13 @@ python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGES
 python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" --wa-only 2>&1
 echo "$LOG_PREFIX History page complete."
 
+# Build market trends page (30-day rolling availability + price trends per species).
+# The builder is designed to run daily ("Run daily after scrapers"); without this it
+# went stale between rare manual rebuilds. No email side effects, reads snapshots only.
+echo "$LOG_PREFIX Building trends page..."
+python3 "$SCRIPT_DIR/build_species_trends.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Trends page build failed (non-fatal)"
+echo "$LOG_PREFIX Trends page complete."
+
 # Build nursery profile pages (SEO)
 echo "$LOG_PREFIX Building nursery pages..."
 python3 "$SCRIPT_DIR/build_nursery_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Nursery page build failed (non-fatal)"

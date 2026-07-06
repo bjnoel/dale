@@ -34,6 +34,7 @@ STATIC_PAGES = [
     ("", "daily", "1.0"),
     ("digest.html", "daily", "0.8"),
     ("history.html", "daily", "0.7"),
+    ("trends.html", "daily", "0.7"),
     ("species/", "weekly", "0.8"),
     ("bush-tucker/", "daily", "0.8"),
     ("nursery/", "weekly", "0.8"),
