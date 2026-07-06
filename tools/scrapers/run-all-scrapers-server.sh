@@ -20,6 +20,10 @@ python3 "$SCRIPT_DIR/daleys_scraper.py" 2>&1
 echo "$LOG_PREFIX Scraping Ecwid nurseries..."
 python3 "$SCRIPT_DIR/ecwid_scraper.py" 2>&1
 
+# Wix nurseries (Heaven On Earth)
+echo "$LOG_PREFIX Scraping Wix nurseries..."
+python3 "$SCRIPT_DIR/wix_scraper.py" 2>&1
+
 # WooCommerce nurseries (Guildford Garden Centre)
 echo "$LOG_PREFIX Scraping WooCommerce nurseries..."
 python3 "$SCRIPT_DIR/woocommerce_scraper.py" 2>&1
