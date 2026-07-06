@@ -652,9 +652,28 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     when_to_buy_html = build_when_to_buy_html(name, trend_summary) if trend_summary else ""
 
     price_desc = f" Prices from {price_range}." if price_range else ""
+
+    # Enrich meta with sought variety names (helps CTR on variety-specific queries
+    # like "salathiel lychee in stock"). Only names that are currently in stock are
+    # included, so the snippet is always truthful.
+    _sought = growing_guides.get_sought_varieties(slug)
+    _in_stock_variety_names = {v["name"] for v in (varieties or []) if v["in_stock"]}
+    _sought_in_stock = [n for n in _sought if n in _in_stock_variety_names]
+    if _sought_in_stock:
+        _variety_lead = f"Track {', '.join(_sought_in_stock[:2])} and more. "
+        meta_description = (
+            f"{_variety_lead}{in_stock_count} {name} varieties in stock across "
+            f"{nursery_count} Australian nurseries.{price_desc} Updated daily."
+        )
+    else:
+        meta_description = (
+            f"{in_stock_count} {name} varieties in stock across {nursery_count} "
+            f"Australian nurseries.{price_desc} Compare availability and shipping options. Updated daily."
+        )
+
     head = render_head(
         title=f"{name} Trees for Sale Australia, Compare Prices | treestock.com.au",
-        description=f"{in_stock_count} {name} varieties in stock across {nursery_count} Australian nurseries.{price_desc} Compare availability and shipping options. Updated daily.",
+        description=meta_description,
         canonical_url=f"https://treestock.com.au/species/{slug}.html",
         extra_head=growing_guides.faq_jsonld(slug) if growing_guides.has_guide(slug) else "",
         og_title=f"{name} Trees for Sale in Australia",

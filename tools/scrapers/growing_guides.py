@@ -62,6 +62,18 @@ def has_guide(slug: str) -> bool:
     return _load(slug) is not None
 
 
+def get_sought_varieties(slug: str) -> list[str]:
+    """Return sought variety names for meta description enrichment, or empty list.
+
+    A ``sought_varieties`` list in a guide JSON signals that users commonly
+    search for those variety names by name (e.g. 'salathiel lychee in stock').
+    The builder filters this list to varieties that are currently in stock before
+    including any names in the meta description.
+    """
+    guide = _load(slug)
+    return list(guide.get("sought_varieties", [])) if guide else []
+
+
 def _sources_by_id(guide: dict) -> dict[str, dict]:
     return {s["id"]: s for s in guide.get("sources", []) if s.get("id")}
 

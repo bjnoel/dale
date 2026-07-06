@@ -1,6 +1,7 @@
 {
   "slug": "lychee",
   "common_name": "Lychee",
+  "sought_varieties": ["Salathiel", "Wai Chee", "Kwai Mai Pink"],
   "sources_note": "Growing guidance on this page draws on the Australian Lychee Growers Association, the Queensland and Western Australian agriculture departments, and published horticultural research.",
   "sources": [
     {"id": "fao-australia", "name": "FAO: Lychee Production in Australia (C.M. Menzel, Queensland Department of Primary Industries)", "short": "FAO lychee in Australia", "url": "https://www.fao.org/4/ac684e/ac684e05.htm"},
