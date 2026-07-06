@@ -41,6 +41,8 @@ GUARDS = [
     (re.compile(r"^NURSERY_NAMES\s*[:=]"), "stocklib/registry.py"),
     (re.compile(r"^EVIDENCE_GRADES\s*[:=]"), "stocklib/evidence.py"),
     (re.compile(r"^GRADE_BADGE\s*[:=]"), "stocklib/evidence.py"),
+    (re.compile(r"^def nursery_coverage\b"), "stocklib/coverage.py"),
+    (re.compile(r"^def usable_dates\b"), "stocklib/coverage.py"),
 ]
 
 

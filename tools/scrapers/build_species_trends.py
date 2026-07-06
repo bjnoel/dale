@@ -67,42 +67,11 @@ def get_all_dates(data_dir: Path) -> list[str]:
     return sorted(dates)
 
 
-# A date is a real data day only if a normal number of nurseries scraped it. Days
-# far below the window's typical coverage are a broken/partial scrape, not a real
-# market move: the 2026-07-04 disk-full incident left six days (Jun 24, 26, 29, 30,
-# Jul 2, 3) with a single nursery, which made EVERY species' sparkline show the
-# same phantom crash-and-recover sawtooth. We keep a date only if its nursery count
-# is at least COVERAGE_FRACTION of the window median.
-COVERAGE_FRACTION = 0.5
-
-
-def nursery_coverage(data_dir: Path, dates: list[str]) -> dict[str, int]:
-    """Number of nurseries with a snapshot file for each given date."""
-    cov = {d: 0 for d in dates}
-    for nursery_dir in data_dir.iterdir():
-        if not nursery_dir.is_dir():
-            continue
-        for d in dates:
-            if (nursery_dir / f"{d}.json").exists():
-                cov[d] += 1
-    return cov
-
-
-def usable_dates(dates: list[str], coverage: dict[str, int],
-                 fraction: float = COVERAGE_FRACTION) -> list[str]:
-    """Drop dates whose nursery coverage is far below the median for the window.
-
-    Pure function (no I/O) so the guard is unit-testable. A date survives when its
-    coverage >= fraction * median_coverage. With a healthy window (median ~22) a
-    one-nursery day (coverage 1) is dropped; a normal day (19-25) is kept. If the
-    window is degenerate (no coverage data) all dates pass through unchanged.
-    """
-    counts = sorted(c for c in coverage.values() if c > 0)
-    if not counts:
-        return list(dates)
-    median = counts[len(counts) // 2]
-    threshold = median * fraction
-    return [d for d in dates if coverage.get(d, 0) >= threshold]
+# Broken/partial scrape days (e.g. the 2026-07-04 disk-full incident left six days
+# with a single nursery) draw a phantom crash on every species' sparkline. The
+# nursery-coverage guard drops them; it is shared with build_history.py and lives
+# in stocklib so the two builders cannot drift.
+from stocklib.coverage import nursery_coverage, usable_dates
 
 
 def build_species_trends(data_dir: Path):

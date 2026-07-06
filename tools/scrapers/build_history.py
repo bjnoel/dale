@@ -12,7 +12,6 @@ Usage:
 
 import json
 import sys
-from datetime import date, timedelta
 from pathlib import Path
 
 # Reuse digest's comparison logic
@@ -22,6 +21,7 @@ from daily_digest import (
     compare_snapshots,
     load_snapshot,
 )
+from stocklib.coverage import nursery_coverage, usable_dates
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_footer, SITE_URL
 
@@ -41,46 +41,58 @@ def get_available_dates(data_dir: Path) -> list[str]:
 
 
 def build_history_data(data_dir: Path, wa_only: bool = False) -> list[dict]:
-    """Build change data for all available date pairs."""
-    dates = get_available_dates(data_dir)
+    """Build change data for all available date pairs.
+
+    Broken/partial scrape days are dropped (see stocklib.coverage): they are not
+    shown as their own row, and each day is compared against the previous USABLE
+    date rather than the calendar day before. Otherwise a corrupted day (e.g. the
+    2026-07-04 incident's single-nursery days) both shows an empty change list and
+    severs the day AFTER it from its real delta, because most nurseries have no
+    snapshot on the broken day to compare against.
+    """
+    dates = get_available_dates(data_dir)  # newest first
+    coverage = nursery_coverage(data_dir, dates)
+    dates = usable_dates(dates, coverage)  # order preserved (newest first)
     history = []
 
     for i, target_date in enumerate(dates):
-        # Find previous date
-        prev_date = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
+        # Compare against the previous USABLE date (the next-older entry), so a
+        # dropped broken day does not sever the day after it from its real delta.
+        prev_date = dates[i + 1] if i + 1 < len(dates) else None
 
         day_changes = []
         total_changes = 0
 
-        for nursery_dir in sorted(data_dir.iterdir()):
-            if not nursery_dir.is_dir():
-                continue
-            nursery_key = nursery_dir.name
-            if wa_only and nursery_key not in WA_NURSERIES:
-                continue
+        if prev_date is not None:
+            for nursery_dir in sorted(data_dir.iterdir()):
+                if not nursery_dir.is_dir():
+                    continue
+                nursery_key = nursery_dir.name
+                if wa_only and nursery_key not in WA_NURSERIES:
+                    continue
 
-            prev = load_snapshot(nursery_dir, prev_date)
-            curr = load_snapshot(nursery_dir, target_date)
-            if not prev or not curr:
-                continue
+                prev = load_snapshot(nursery_dir, prev_date)
+                curr = load_snapshot(nursery_dir, target_date)
+                if not prev or not curr:
+                    continue
 
-            changes = compare_snapshots(prev, curr)
-            n_changes = sum(len(v) for v in changes.values())
-            if n_changes == 0:
-                continue
+                changes = compare_snapshots(prev, curr)
+                n_changes = sum(len(v) for v in changes.values())
+                if n_changes == 0:
+                    continue
 
-            total_changes += n_changes
-            nursery_data = {
-                "key": nursery_key,
-                "name": NURSERY_NAMES.get(nursery_key, nursery_key),
-                "wa": nursery_key in WA_NURSERIES,
-                "changes": {},
-            }
-            # Only include non-empty change categories
-            for cat, items in changes.items():
-                if items:
-                    nursery_data["changes"][cat] = items
-            day_changes.append(nursery_data)
+                total_changes += n_changes
+                nursery_data = {
+                    "key": nursery_key,
+                    "name": NURSERY_NAMES.get(nursery_key, nursery_key),
+                    "wa": nursery_key in WA_NURSERIES,
+                    "changes": {},
+                }
+                # Only include non-empty change categories
+                for cat, items in changes.items():
+                    if items:
+                        nursery_data["changes"][cat] = items
+                day_changes.append(nursery_data)
 
         history.append({
             "date": target_date,
