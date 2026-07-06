@@ -67,6 +67,44 @@ def get_all_dates(data_dir: Path) -> list[str]:
     return sorted(dates)
 
 
+# A date is a real data day only if a normal number of nurseries scraped it. Days
+# far below the window's typical coverage are a broken/partial scrape, not a real
+# market move: the 2026-07-04 disk-full incident left six days (Jun 24, 26, 29, 30,
+# Jul 2, 3) with a single nursery, which made EVERY species' sparkline show the
+# same phantom crash-and-recover sawtooth. We keep a date only if its nursery count
+# is at least COVERAGE_FRACTION of the window median.
+COVERAGE_FRACTION = 0.5
+
+
+def nursery_coverage(data_dir: Path, dates: list[str]) -> dict[str, int]:
+    """Number of nurseries with a snapshot file for each given date."""
+    cov = {d: 0 for d in dates}
+    for nursery_dir in data_dir.iterdir():
+        if not nursery_dir.is_dir():
+            continue
+        for d in dates:
+            if (nursery_dir / f"{d}.json").exists():
+                cov[d] += 1
+    return cov
+
+
+def usable_dates(dates: list[str], coverage: dict[str, int],
+                 fraction: float = COVERAGE_FRACTION) -> list[str]:
+    """Drop dates whose nursery coverage is far below the median for the window.
+
+    Pure function (no I/O) so the guard is unit-testable. A date survives when its
+    coverage >= fraction * median_coverage. With a healthy window (median ~22) a
+    one-nursery day (coverage 1) is dropped; a normal day (19-25) is kept. If the
+    window is degenerate (no coverage data) all dates pass through unchanged.
+    """
+    counts = sorted(c for c in coverage.values() if c > 0)
+    if not counts:
+        return list(dates)
+    median = counts[len(counts) // 2]
+    threshold = median * fraction
+    return [d for d in dates if coverage.get(d, 0) >= threshold]
+
+
 def build_species_trends(data_dir: Path):
     """
     Load all historical snapshots and compute per-species, per-day availability and price.
@@ -82,6 +120,16 @@ def build_species_trends(data_dir: Path):
     all_dates = get_all_dates(data_dir)
     # Keep last 35 days max
     all_dates = all_dates[-35:]
+
+    # Drop broken/partial scrape days (see usable_dates) so a handful of
+    # near-empty snapshots do not draw a phantom crash on every species' trend.
+    coverage = nursery_coverage(data_dir, all_dates)
+    kept = usable_dates(all_dates, coverage)
+    dropped = [d for d in all_dates if d not in set(kept)]
+    if dropped:
+        print(f"Skipping {len(dropped)} low-coverage day(s): {', '.join(dropped)}",
+              file=sys.stderr)
+    all_dates = kept
 
     # {species_slug: {date: {in_stock: N, min_price: X, total: N}}}
     species_data: dict[str, dict[str, dict]] = {s["slug"]: {} for s in species_list}
