@@ -6101,3 +6101,21 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **Decision:** Added `"sought_varieties": ["Kensington Pride", "R2E2", "Honey Gold"]` to growing_guides/mango.json. Order matters (the meta uses the first two in-stock names): Kensington Pride is Australia's most iconic mango, R2E2 the second most common, Honey Gold the fallback if either drops out of stock.
 
 **Verification:** Confirmed all three names match in-stock variety names via the live server data using the builder's own grouping (group_by_cultivar): Kensington Pride 4 listings across 3 nurseries, R2E2 3 across 3, Honey Gold 1 nursery. The renderer only includes names currently in stock, so the snippet stays truthful. Golden fixture regenerated (one line: the mango meta description); full suite 1,766 green. Email-safe rebuild (species builder only), no subscriber emails involved.
+
+## DEC-223 — 2026-07-06 — Wix scraper for Heaven On Earth Fruit Trees (DAL-206)
+
+**Decided by:** Dale, executing DAL-206. (Numbered DEC-223 because a concurrent session took DEC-222 for the mango sought_varieties change.) Benedict wrote and approved the ticket; the nursery itself was approved in the 2026-06-20 candidate batch, deferred from DEC-212 because it needed a brand-new scraper).
+
+**Context:** Heaven On Earth Fruit Trees (heavenonearthfruittrees.com.au, Far North QLD) is the standout rare-tropical catalogue from the June discovery pass: 128 products including abiu, mamey sapote, durian, mangosteen, soursop, miracle fruit and santol, many "already fruiting" advanced trees. It is a Wix store, and Wix has no product feed: the JSON-LD Product blocks carry EMPTY offers, so price and stock live only in the `wix-warmup-data` JSON blob each product page embeds for hydration.
+
+**Shipped:** New `tools/scrapers/wix_scraper.py` (26th nursery, 6th platform scraper alongside Shopify/WooCommerce/BigCommerce/Ecwid/Daleys). Store-products sitemap -> per-page fetch -> parse warmupData -> flat-dialect snapshot (both `available`/`price` and `any_available`/`min_price`/`max_price`, the DEC-210 rule, so every builder renders it). Registry: ships QLD/NSW/VIC/SA/NT/ACT, restriction badge "No WA/TAS"; citrus lines are QLD-only per-product (flagged in product names as "QLD POSTAGE ONLY", not modelled at nursery level). Wired into both run-all-scrapers scripts; polite 1.5s delay (~3.5 min for the full store).
+
+**Wix gotchas pinned in code + tests (verified against all 128 live product nodes):**
+- **Price naming is backwards.** `price` is the undiscounted base; `discountedPrice` (and per-variant `comparePrice` with `hasDiscount`) is what the buyer pays. The store runs a storewide 30% discount, so recording `price` would overstate everything (89 vs 62.30). We record the discounted price, and never trust a "discount" that raises the price.
+- **`inventory.status` lies.** All 66 sold-out products (rendered "Out of Stock" on page) still carry `inventory.status: "in_stock"`. `isInStock` is the only trustworthy signal; unknown state falls back to out-of-stock (conservative, same rule as Ecwid: breakage surfaces as a surge alert, not false restock emails).
+- **Partial-scrape guard.** Sitemap empty or >20% of product pages failing aborts without writing a snapshot (keeps last good one), so an outage can't look like a mass delisting.
+- Size-option variants (per-variant `productItems` price range) are handled but none exist in the current catalogue; the path is pinned by a synthetic-node test.
+
+**Engineering:** tests/test_wix_scraper.py (16 tests) against two pruned real-capture page fixtures (in-stock discounted + sold out) plus sitemap/abort/semantics units; registry oracle bumped 25 -> 26; golden regenerated (diff reviewed: only the "26 Australian nurseries" count strings). Full suite 1,785 green. Built in an isolated worktree.
+
+**Rollout:** email-safe, same as DEC-212: deploy, one baseline scrape of heaven-on-earth on the server to write today's snapshot, then rebuild_pages_email_safe.sh. Tomorrow's nightly diff then has a baseline, so subscribers see no false "new nursery" flood.
