@@ -59,7 +59,7 @@ FAMILIES = [
             ("Triploid varieties (Gravenstein, Bramley's Seedling, Jonagold)", None,
              "Have sterile pollen and cannot pollinate anything, so they need TWO other diploid apples nearby, not one.", "research-backed"),
             ("Crabapple", None,
-             "A long-flowering universal pollinator. One crab in the garden covers a mix of apple varieties.", "established-practice"),
+             "Any ornamental crabapple (a small-fruited Malus such as Gorgeous, Golden Hornet or Jack Humm), not a seedling apple and not one special variety. It flowers long and heavily, so a single crab in the garden pollinates a mix of apple varieties.", "established-practice"),
         ],
         "notes": (
             "No room for two trees? A multi-graft apple (several varieties on one trunk) or a self-fertile "
@@ -393,8 +393,8 @@ def build_family_card(fam: dict, valid_slugs: set, out_dir: Path) -> str:
     if fam.get("partners"):
         rows = "".join(
             f'<tr class="border-b border-gray-100 align-top">'
-            f'<td class="py-2 pr-4 text-sm font-medium text-gray-800">{_partner_name_html(name, vslug, out_dir)}</td>'
-            f'<td class="py-2 text-sm text-gray-600">{note}{grade_badge(g)}</td></tr>'
+            f'<td class="py-2.5 pl-3 pr-4 text-sm font-medium text-gray-800">{_partner_name_html(name, vslug, out_dir)}</td>'
+            f'<td class="py-2.5 px-3 text-sm text-gray-600"><div>{note}</div>{grade_badge(g, block=True)}</td></tr>'
             for name, vslug, note, g in fam["partners"]
         )
         partners_html = f"""
@@ -407,7 +407,7 @@ def build_family_card(fam: dict, valid_slugs: set, out_dir: Path) -> str:
   </div>"""
     return f"""
 <section class="mb-10" id="{fam['key']}">
-  <h2 class="text-xl font-bold text-green-900 mb-1">{fam['icon']} {fam['title']}</h2>
+  <h2 class="text-xl font-bold text-green-900 mb-3">{fam['icon']} {fam['title']}</h2>
   <p class="mb-3"><span class="text-sm font-semibold text-gray-700">{label}</span>{status_badge}</p>
   <p class="text-sm text-gray-600 mb-4">{fam['intro']}</p>
   {partners_html}
@@ -421,8 +421,8 @@ def build_family_card(fam: dict, valid_slugs: set, out_dir: Path) -> str:
 def build_summary_table() -> str:
     rows = "".join(
         f'<tr class="border-b border-gray-100 align-top hover:bg-gray-50">'
-        f'<td class="py-2 px-3 text-sm font-medium text-gray-800">{fruit}</td>'
-        f'<td class="py-2 px-3 text-sm text-gray-600">{verdict}{grade_badge(grade)}</td></tr>'
+        f'<td class="py-2.5 px-3 text-sm font-medium text-gray-800">{fruit}</td>'
+        f'<td class="py-2.5 px-3 text-sm text-gray-600"><div>{verdict}</div>{grade_badge(grade, block=True)}</td></tr>'
         for fruit, verdict, grade in SUMMARY
     )
     return f"""
@@ -473,7 +473,7 @@ def build_faq_section() -> str:
     )
     return f"""
 <section class="mb-10" id="faq">
-  <h2 class="text-xl font-bold text-green-900 mb-4">Frequently Asked Questions</h2>
+  <h2 class="text-xl font-bold text-green-900 mb-3">Frequently Asked Questions</h2>
   {items}
 </section>
 """
@@ -537,7 +537,7 @@ def build_page(out_dir: Path) -> str:
         og_image="https://treestock.com.au/og-image.png",
         extra_head=build_faq_jsonld(),
     )
-    header = render_header()
+    header = render_header(active_path="/fruit-tree-pollination-guide.html")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Pollination Guide", "")])
     footer = render_footer()
 

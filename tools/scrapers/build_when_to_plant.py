@@ -532,12 +532,12 @@ def build_references() -> str:
 def build_cta() -> str:
     """Alerts CTA reusing the site-wide double-opt-in subscribe contract."""
     return """
-<section class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8" id="alerts">
+<section class="bg-green-50 border border-green-300 rounded-lg p-6 mb-8" id="alerts">
   <h2 class="text-lg font-semibold text-green-900 mb-1">Know the moment bare-root trees drop</h2>
   <p class="text-sm text-green-900 mb-4">Each winter the best bare-root varieties sell out within days. Subscribe to the free treestock daily digest: back-in-stock items, price drops and new arrivals across every nursery we track. Filter by your state.</p>
-  <form id="subscribeForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
+  <form id="subscribeForm" class="flex flex-col sm:flex-row gap-2 sm:items-center max-w-xl">
     <input type="email" id="subEmail" placeholder="your@email.com" required
-      class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
+      class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 min-w-0">
     <select id="subState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
       <option value="ALL">All states</option>
       <option value="NSW">NSW</option><option value="VIC">VIC</option>

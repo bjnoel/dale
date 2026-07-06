@@ -710,10 +710,15 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     # Notable varieties: in-stock varieties that have a verified description,
     # surfaced as one-line excerpts. This is the only place species pages show
     # the variety_descriptions content; the full blurbs stay on /variety/ pages.
+    # Ordered by popularity (nursery breadth, then listing count) so the common
+    # picks lead, not an alphabetical list starting at Ah Ping / Alphonso.
+    notable_candidates = sorted(
+        (v for v in variety_view if v["in_stock"] and has_description(v["slug"], slug)),
+        key=lambda v: (-v.get("stock_nurseries", 0), -v.get("stock_listings", 0), v["name"].lower()),
+    )
     notable_view = [
         {**v, "excerpt": render_excerpt(v["slug"], slug)}
-        for v in variety_view
-        if v["in_stock"] and has_description(v["slug"], slug)
+        for v in notable_candidates
     ][:NOTABLE_VARIETIES_MAX]
 
     return render_template(
@@ -827,11 +832,17 @@ def main():
         sp_slug = name_to_slug.get(g["species"])
         if not sp_slug:
             continue
+        in_stock_products = [p for p in g["products"] if p["available"] and p["price"]]
         varieties_by_species[sp_slug].append({
             "slug": v_slug,
             "name": _no_dash(g["variety"]),
             # available and price, matching the variety page's own in-stock count
-            "in_stock": any(p["available"] and p["price"] for p in g["products"]),
+            "in_stock": bool(in_stock_products),
+            # Popularity proxy for ordering the notable-varieties list: a variety
+            # carried in stock by more nurseries (breadth), and with more listings,
+            # is the more mainstream pick. Kensington Pride beats Ah Ping.
+            "stock_nurseries": len({p["nursery_key"] for p in in_stock_products}),
+            "stock_listings": len(in_stock_products),
         })
     print(f"  {sum(len(v) for v in varieties_by_species.values())} variety chips across {len(varieties_by_species)} species")
 

@@ -552,7 +552,7 @@ def build_page() -> str:
         og_image="https://treestock.com.au/og-image.png",
         extra_head=build_faq_jsonld(),
     )
-    header = render_header()
+    header = render_header(active_path="/companion-planting-guide.html")
     breadcrumb = render_breadcrumb([("Home", "/"), ("Companion Planting Guide", "")])
     footer = render_footer()
 

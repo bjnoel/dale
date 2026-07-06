@@ -26,11 +26,18 @@ DEFAULT_BASE_STYLE = """\
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   #nav-menu.open { display: flex; }"""
 
-# Tiny hamburger toggle, emitted after the header when nav is shown.
+# Tiny hamburger toggle, emitted after the header when nav is shown. Also closes
+# any open nav dropdown (<details>, e.g. Guides) on an outside click, since a
+# native <details> otherwise stays open until its summary is clicked again.
 NAV_TOGGLE_SCRIPT = """\
 <script>
 document.getElementById('nav-toggle').addEventListener('click', function() {
   document.getElementById('nav-menu').classList.toggle('open');
+});
+document.addEventListener('click', function(e) {
+  document.querySelectorAll('#nav-menu details[open]').forEach(function(d) {
+    if (!d.contains(e.target)) d.removeAttribute('open');
+  });
 });
 </script>"""
 
@@ -50,7 +57,9 @@ class SiteConfig:
     plausible_script: str    # full analytics <script> block (differs per site)
     favicon_html: str        # full <link rel="icon" ...> line (attr order + value differ)
     logo_svg: str            # inline brand SVG shown in the header
-    nav_items: list          # [(label, path), ...]; the "/" entry is the logo and is skipped
+    nav_items: list          # [(label, path), ...]; the "/" entry is the logo and is
+                             # skipped. An entry whose second element is a list of
+                             # (sublabel, subpath) renders as a "Guides"-style dropdown.
     accent: str = "green"
     default_og_image: str = ""   # absolute URL used for og:image/twitter:image when a page passes none
     default_og_type: str = "website"
@@ -138,6 +147,37 @@ def render_head(
 </head>"""
 
 
+def _render_nav_group(label: str, items, accent: str, active_norm: str) -> str:
+    """Render one nav entry as a dropdown (a <details>), for grouped links like
+    "Guides". Native <details> means no JavaScript: it opens on click, is keyboard
+    accessible, and on mobile (inside the hamburger column) simply expands inline
+    because the panel is only absolutely positioned at the sm breakpoint up.
+
+    The default disclosure marker is hidden by the site base_style (a scoped
+    `#nav-menu details > summary` rule), so only sites that pass a grouped
+    nav_item need that CSS; the flat path is untouched and byte-identical.
+    """
+    group_active = bool(active_norm) and any(
+        active_norm == p.rstrip("/") for _, p in items
+    )
+    summary_cls = f" text-{accent}-800 font-semibold" if group_active else " text-gray-600"
+    sub_links = []
+    for sub_label, sub_path in items:
+        is_active = bool(active_norm) and active_norm == sub_path.rstrip("/")
+        sub_active_cls = f" text-{accent}-800 font-semibold" if is_active else " text-gray-700"
+        sub_links.append(
+            f'<a href="{sub_path}" class="block px-3 py-1.5 rounded no-underline '
+            f'whitespace-nowrap hover:bg-{accent}-50 hover:text-{accent}-800{sub_active_cls}">{sub_label}</a>'
+        )
+    sub_html = "\n          ".join(sub_links)
+    return f"""<details class="relative">
+        <summary class="cursor-pointer flex items-center gap-1 hover:text-{accent}-700 whitespace-nowrap{summary_cls}">{label}<svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></summary>
+        <div class="flex flex-col gap-0.5 mt-1 pl-3 text-sm sm:absolute sm:left-0 sm:mt-2 sm:pl-0 sm:p-1.5 sm:min-w-[13rem] sm:bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow-lg sm:z-20">
+          {sub_html}
+        </div>
+      </details>"""
+
+
 def render_header(
     config: SiteConfig,
     subtitle: str = "",
@@ -165,8 +205,12 @@ def render_header(
     hamburger = ""
     nav_script = ""
     if show_nav:
+        active_norm = active_path.rstrip("/") if active_path else ""
         links = []
         for label, path in config.nav_items:
+            if isinstance(path, (list, tuple)):
+                links.append(_render_nav_group(label, path, accent, active_norm))
+                continue
             if path == "/":
                 continue  # Home link is the logo
             is_active = active_path and active_path.rstrip("/") == path.rstrip("/")

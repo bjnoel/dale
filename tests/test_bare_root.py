@@ -203,6 +203,27 @@ class PageChromeTests(unittest.TestCase):
         self.assertNotIn("Ships to WA", HTML_OPEN)
 
 
+class ShippingCellTests(unittest.TestCase):
+    """A WA nursery's stock must not read like an interstate restriction: local
+    delivery is neutral, an interstate quarantine gap is an amber caution."""
+
+    def test_local_nursery_is_neutral_not_amber(self):
+        cell = br._shipping_cell("guildford")  # WA, Perth metro local delivery
+        self.assertIn("Perth metro only", cell)
+        self.assertIn("text-gray-500", cell)
+        self.assertNotIn("text-amber-700", cell)
+
+    def test_restricted_nursery_is_amber(self):
+        cell = br._shipping_cell("ausnurseries")  # no WA/NT/TAS
+        self.assertIn("No WA/NT/TAS", cell)
+        self.assertIn("text-amber-700", cell)
+
+    def test_nationwide_nursery_reads_all_states(self):
+        cell = br._shipping_cell("diggers")  # ships everywhere
+        self.assertIn("All states", cell)
+        self.assertNotIn("text-amber-700", cell)
+
+
 class MainTests(unittest.TestCase):
     def test_main_writes_named_file(self):
         with tempfile.TemporaryDirectory() as tmp:

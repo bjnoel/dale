@@ -24,9 +24,17 @@ GRADE_BADGE = {
 }
 
 
-def grade_badge(grade: str) -> str:
+def grade_badge(grade: str, block: bool = False) -> str:
+    """Render the evidence badge for a grade.
+
+    Default (inline): sits at the end of a run of text with a small left margin,
+    baseline-aligned. Pass block=True to place the badge on its own line inside a
+    wrapper (no left margin), which reads cleanly in table cells where the note
+    can wrap to several lines and a trailing inline badge would strand itself.
+    """
     label, cls = GRADE_BADGE[grade]
+    spacing = "mt-1.5" if block else "ml-1 align-middle"
     return (
         f'<span class="inline-block text-xs px-1.5 py-0.5 rounded border {cls} '
-        f'ml-1 align-middle whitespace-nowrap">{label}</span>'
+        f'{spacing} whitespace-nowrap">{label}</span>'
     )

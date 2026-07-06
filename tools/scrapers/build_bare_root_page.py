@@ -133,6 +133,24 @@ def _is_bare_root(p: dict) -> bool:
     return bool(_RE_BARE_ROOTED.search(text) or _RE_BEAR_ROOTED.search(text))
 
 
+def _shipping_cell(nursery_key: str) -> str:
+    """Shipping/delivery note for a nursery, styled by meaning.
+
+    Local nurseries (Guildford, Primal Fruits, the Melbourne yards) show their
+    delivery area in neutral grey: that is how you buy from them, not a warning.
+    Interstate shippers that skip a quarantine state show an amber caution
+    (No WA/NT/TAS). Full-nationwide shippers read a plain 'All states'. Keeping
+    the two apart stops a WA buyer reading a page full of amber and concluding
+    nothing is available locally when Guildford stocks it."""
+    local = delivery_label(nursery_key)
+    if local:
+        return f'<span class="text-xs text-gray-500">{local}</span>'
+    restrict = restriction_warning(nursery_key)
+    if restrict:
+        return f'<span class="text-xs text-amber-700">{restrict}</span>'
+    return '<span class="text-xs text-gray-400">All states</span>'
+
+
 def collect_bare_root(data_dir, today: str | None = None) -> list[dict]:
     """All bare-root products across today's snapshots, as flat row dicts."""
     rows = []
@@ -257,9 +275,7 @@ def build_live_table(state: str, rows: list[dict], today: date) -> str:
     rows_html = []
     for r in shown:
         price = _fmt_price(r["price"]) if r["price"] is not None else "POA"
-        local = delivery_label(r["nursery_key"])
-        restrict = local if local else restriction_warning(r["nursery_key"])
-        ship_html = f'<span class="text-xs text-amber-700">{restrict}</span>' if restrict else '<span class="text-xs text-gray-400">All states</span>'
+        ship_html = _shipping_cell(r["nursery_key"])
         rows_html.append(
             f"""        <tr>
           <td><a href="{r['url']}" rel="noopener nofollow" target="_blank" class="text-green-700 hover:underline">{r['title']}</a></td>
@@ -275,7 +291,7 @@ def build_live_table(state: str, rows: list[dict], today: date) -> str:
     return f"""
 <section class="mb-10" id="in-stock">
   <h2 class="text-xl font-bold text-green-900 mb-3">Bare-Root Trees in Stock Now ({len(in_stock)})</h2>
-  <p class="text-sm text-gray-600 mb-3">Every bare-root listing currently showing in stock across the nurseries treestock tracks, cheapest first. Prices are today's listed prices; click through for pot-free details and shipping costs.</p>
+  <p class="text-sm text-gray-600 mb-3">Every bare-root listing currently showing in stock across the nurseries treestock tracks, cheapest first. Prices are today's listed prices; click through for pot-free details and shipping costs. The shipping column flags interstate quarantine limits (No WA/NT/TAS); local nurseries show their delivery area instead.</p>
   <div style="overflow-x:auto;">
     <table class="br-table">
       <thead>
@@ -302,9 +318,7 @@ def build_nursery_section(rows: list[dict]) -> str:
         return ""
     items = []
     for key, entry in sorted(by_nursery.items(), key=lambda kv: (-kv[1]["in_stock"], -kv[1]["total"])):
-        local = delivery_label(key)
-        restrict = local if local else restriction_warning(key)
-        ship = f' <span class="text-xs text-amber-700">{restrict}</span>' if restrict else ""
+        ship = " " + _shipping_cell(key)
         items.append(
             f'<li class="mb-1"><a href="/nursery/{key}.html" class="text-green-700 font-semibold hover:underline">{NURSERY_NAMES.get(key, key)}</a>'
             f' <span class="text-xs text-gray-500">({entry["in_stock"]} in stock of {entry["total"]} bare-root listings)</span>{ship}</li>'

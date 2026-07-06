@@ -42,10 +42,18 @@ NAV_ITEMS = [
     ("Nurseries", "/nursery/"),
     ("Varieties", "/variety/"),
     ("Compare", "/compare/"),
+    # Grouped dropdown: the informational guides live here so the top-level nav
+    # stays short and every guide (including bare-root and pollination, which
+    # had no nav entry at all) is reachable.
+    ("Guides", [
+        ("Companion Planting", "/companion-planting-guide.html"),
+        ("Bare Root Season", "/bare-root.html"),
+        ("Planting Calendar", "/when-to-plant.html"),
+        ("Fruit Tree Pollination", "/fruit-tree-pollination-guide.html"),
+    ]),
     ("Rare Finds", "/rare.html"),
     ("Digest", "/digest.html"),
     ("History", "/history.html"),
-    ("Planting Calendar", "/when-to-plant.html"),
     ("Trends", "/trends.html"),
 ]
 
@@ -61,7 +69,9 @@ LOGO_SVG = """\
 
 BASE_STYLE = """\
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-  #nav-menu.open { display: flex; }"""
+  #nav-menu.open { display: flex; }
+  #nav-menu details > summary { list-style: none; }
+  #nav-menu details > summary::-webkit-details-marker { display: none; }"""
 
 # Responsive content width, one token driving every page's header, main,
 # breadcrumb, and footer so the widths never drift:
@@ -142,7 +152,12 @@ def render_footer(max_width: str = CONTENT_MAX_WIDTH, extra_text: str = "") -> s
     """Render the site footer with nav links and attribution."""
     links = []
     for label, path in NAV_ITEMS:
-        if path == "/":
+        if isinstance(path, (list, tuple)):
+            # Grouped nav entry (e.g. Guides): flatten to its individual links so
+            # the footer still deep-links every guide page for crawlers.
+            for sub_label, sub_path in path:
+                links.append(f'<a href="{sub_path}" class="inline-block py-1.5 px-1 hover:text-gray-900">{sub_label}</a>')
+        elif path == "/":
             links.append(f'<a href="/" class="inline-block py-1.5 px-1 hover:text-gray-900">Home</a>')
         else:
             links.append(f'<a href="{path}" class="inline-block py-1.5 px-1 hover:text-gray-900">{label}</a>')
@@ -157,8 +172,6 @@ def render_footer(max_width: str = CONTENT_MAX_WIDTH, extra_text: str = "") -> s
         '<a href="/buy-fruit-trees-nsw.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in NSW</a>'
         ' &middot; '
         '<a href="/buy-fruit-trees-vic.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in VIC</a>'
-        ' &middot; '
-        '<a href="/companion-planting-guide.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Companion Planting</a>'
         ' &middot; '
         '<a href="/compare/nurseries.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare Nurseries</a>'
         ' &middot; '

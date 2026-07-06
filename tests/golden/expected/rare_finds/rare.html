@@ -21,6 +21,8 @@
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   #nav-menu.open { display: flex; }
+  #nav-menu details > summary { list-style: none; }
+  #nav-menu details > summary::-webkit-details-marker { display: none; }
   .restrict-badge { background: #fee2e2; color: #991b1b; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; }
   .rare-badge { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; margin-left: 4px; }
   .species-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
@@ -77,10 +79,18 @@
         <a href="/nursery/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Nurseries</a>
         <a href="/variety/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Varieties</a>
         <a href="/compare/" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Compare</a>
+        <details class="relative">
+        <summary class="cursor-pointer flex items-center gap-1 hover:text-green-700 whitespace-nowrap text-gray-600">Guides<svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></summary>
+        <div class="flex flex-col gap-0.5 mt-1 pl-3 text-sm sm:absolute sm:left-0 sm:mt-2 sm:pl-0 sm:p-1.5 sm:min-w-[13rem] sm:bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow-lg sm:z-20">
+          <a href="/companion-planting-guide.html" class="block px-3 py-1.5 rounded no-underline whitespace-nowrap hover:bg-green-50 hover:text-green-800 text-gray-700">Companion Planting</a>
+          <a href="/bare-root.html" class="block px-3 py-1.5 rounded no-underline whitespace-nowrap hover:bg-green-50 hover:text-green-800 text-gray-700">Bare Root Season</a>
+          <a href="/when-to-plant.html" class="block px-3 py-1.5 rounded no-underline whitespace-nowrap hover:bg-green-50 hover:text-green-800 text-gray-700">Planting Calendar</a>
+          <a href="/fruit-tree-pollination-guide.html" class="block px-3 py-1.5 rounded no-underline whitespace-nowrap hover:bg-green-50 hover:text-green-800 text-gray-700">Fruit Tree Pollination</a>
+        </div>
+      </details>
         <a href="/rare.html" class="hover:text-green-700 no-underline whitespace-nowrap text-green-800 font-semibold">Rare Finds</a>
         <a href="/digest.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Digest</a>
         <a href="/history.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">History</a>
-        <a href="/when-to-plant.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Planting Calendar</a>
         <a href="/trends.html" class="hover:text-green-700 no-underline whitespace-nowrap text-gray-600">Trends</a>
       </nav>
   </div>
@@ -88,6 +98,11 @@
 <script>
 document.getElementById('nav-toggle').addEventListener('click', function() {
   document.getElementById('nav-menu').classList.toggle('open');
+});
+document.addEventListener('click', function(e) {
+  document.querySelectorAll('#nav-menu details[open]').forEach(function(d) {
+    if (!d.contains(e.target)) d.removeAttribute('open');
+  });
 });
 </script>
 
@@ -124,22 +139,22 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
   </div>
 
 
-  <div class="species-card" id="banana">
+  <div class="species-card" id="black-sapote">
     <div class="species-header">
       <div class="species-title-row">
-        <h2 class="species-name"><a href="/species/banana.html">Banana</a></h2>
+        <h2 class="species-name"><a href="/species/black-sapote.html">Black Sapote</a></h2>
         
       </div>
       <div class="species-meta">
         
-        <span class="stock-count">2 in stock</span>
-        <span class="nursery-count">2 nurseries</span>
-        <span class="price-range">$22–$25</span>
+        <span class="stock-count">3 in stock</span>
+        <span class="nursery-count">3 nurseries</span>
+        <span class="price-range">$40–$44</span>
       </div>
     </div>
     <table class="prod-table">
       <tbody>
-        <tr><td class="prod-title"><a href="https://primalfruits.com.au/p/banana-cavendish" target="_blank" rel="noopener">Banana - Cavendish</a></td><td class="prod-nursery"><a href="/nursery/primal-fruits.html">Primal Fruits Perth</a> <span class="restrict-badge">No NT/TAS</span></td><td class="prod-price">$22.00</td></tr><tr><td class="prod-title"><a href="https://daleysfruit.com.au/p/banana-dwarf-cavendish" target="_blank" rel="noopener">Banana - Dwarf Cavendish</a></td><td class="prod-nursery"><a href="/nursery/daleys.html">Daleys Fruit Trees</a> <span class="restrict-badge">No NT/TAS</span></td><td class="prod-price">$25.00</td></tr>
+        <tr><td class="prod-title"><a href="https://daleysfruit.com.au/p/black-sapote-mossman" target="_blank" rel="noopener">Black Sapote Mossman 5l</a></td><td class="prod-nursery"><a href="/nursery/daleys.html">Daleys Fruit Trees</a> <span class="restrict-badge">No NT/TAS</span></td><td class="prod-price">$39.95</td></tr><tr><td class="prod-title"><a href="https://rosscreek.com.au/p/black-sapote-mossman" target="_blank" rel="noopener">Black Sapote - Mossman (grafted)</a></td><td class="prod-nursery"><a href="/nursery/ross-creek.html">Ross Creek Tropicals</a> <span class="restrict-badge">No WA/NT/TAS</span></td><td class="prod-price">$42.00</td></tr><tr><td class="prod-title"><a href="https://primalfruits.com.au/p/black-sapote-mossman" target="_blank" rel="noopener">Black Sapote - Mossman</a></td><td class="prod-nursery"><a href="/nursery/primal-fruits.html">Primal Fruits Perth</a> <span class="restrict-badge">No NT/TAS</span></td><td class="prod-price">$44.00</td></tr>
       </tbody>
     </table>
     
@@ -166,6 +181,27 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
     
   </div>
 
+  <div class="species-card" id="banana">
+    <div class="species-header">
+      <div class="species-title-row">
+        <h2 class="species-name"><a href="/species/banana.html">Banana</a></h2>
+        
+      </div>
+      <div class="species-meta">
+        
+        <span class="stock-count">2 in stock</span>
+        <span class="nursery-count">2 nurseries</span>
+        <span class="price-range">$22–$25</span>
+      </div>
+    </div>
+    <table class="prod-table">
+      <tbody>
+        <tr><td class="prod-title"><a href="https://primalfruits.com.au/p/banana-cavendish" target="_blank" rel="noopener">Banana - Cavendish</a></td><td class="prod-nursery"><a href="/nursery/primal-fruits.html">Primal Fruits Perth</a> <span class="restrict-badge">No NT/TAS</span></td><td class="prod-price">$22.00</td></tr><tr><td class="prod-title"><a href="https://daleysfruit.com.au/p/banana-dwarf-cavendish" target="_blank" rel="noopener">Banana - Dwarf Cavendish</a></td><td class="prod-nursery"><a href="/nursery/daleys.html">Daleys Fruit Trees</a> <span class="restrict-badge">No NT/TAS</span></td><td class="prod-price">$25.00</td></tr>
+      </tbody>
+    </table>
+    
+  </div>
+
   <div class="species-card" id="longan">
     <div class="species-header">
       <div class="species-title-row">
@@ -182,27 +218,6 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
     <table class="prod-table">
       <tbody>
         <tr><td class="prod-title"><a href="https://rosscreek.com.au/p/longan-kohala" target="_blank" rel="noopener">Longan - Kohala</a></td><td class="prod-nursery"><a href="/nursery/ross-creek.html">Ross Creek Tropicals</a> <span class="restrict-badge">No WA/NT/TAS</span></td><td class="prod-price">$60.00</td></tr>
-      </tbody>
-    </table>
-    
-  </div>
-
-  <div class="species-card" id="black-sapote">
-    <div class="species-header">
-      <div class="species-title-row">
-        <h2 class="species-name"><a href="/species/black-sapote.html">Black Sapote</a></h2>
-        
-      </div>
-      <div class="species-meta">
-        
-        <span class="stock-count">3 in stock</span>
-        <span class="nursery-count">3 nurseries</span>
-        <span class="price-range">$40–$44</span>
-      </div>
-    </div>
-    <table class="prod-table">
-      <tbody>
-        <tr><td class="prod-title"><a href="https://daleysfruit.com.au/p/black-sapote-mossman" target="_blank" rel="noopener">Black Sapote Mossman 5l</a></td><td class="prod-nursery"><a href="/nursery/daleys.html">Daleys Fruit Trees</a> <span class="restrict-badge">No NT/TAS</span></td><td class="prod-price">$39.95</td></tr><tr><td class="prod-title"><a href="https://rosscreek.com.au/p/black-sapote-mossman" target="_blank" rel="noopener">Black Sapote - Mossman (grafted)</a></td><td class="prod-nursery"><a href="/nursery/ross-creek.html">Ross Creek Tropicals</a> <span class="restrict-badge">No WA/NT/TAS</span></td><td class="prod-price">$42.00</td></tr><tr><td class="prod-title"><a href="https://primalfruits.com.au/p/black-sapote-mossman" target="_blank" rel="noopener">Black Sapote - Mossman</a></td><td class="prod-nursery"><a href="/nursery/primal-fruits.html">Primal Fruits Perth</a> <span class="restrict-badge">No NT/TAS</span></td><td class="prod-price">$44.00</td></tr>
       </tbody>
     </table>
     
@@ -240,12 +255,15 @@ document.getElementById('nav-toggle').addEventListener('click', function() {
     <a href="/nursery/" class="inline-block py-1.5 px-1 hover:text-gray-900">Nurseries</a> &middot;
     <a href="/variety/" class="inline-block py-1.5 px-1 hover:text-gray-900">Varieties</a> &middot;
     <a href="/compare/" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare</a> &middot;
+    <a href="/companion-planting-guide.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Companion Planting</a> &middot;
+    <a href="/bare-root.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Bare Root Season</a> &middot;
+    <a href="/when-to-plant.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Planting Calendar</a> &middot;
+    <a href="/fruit-tree-pollination-guide.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Fruit Tree Pollination</a> &middot;
     <a href="/rare.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Rare Finds</a> &middot;
     <a href="/digest.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Digest</a> &middot;
     <a href="/history.html" class="inline-block py-1.5 px-1 hover:text-gray-900">History</a> &middot;
-    <a href="/when-to-plant.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Planting Calendar</a> &middot;
     <a href="/trends.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Trends</a>
-    <p class="mt-2"><a href="/buy-fruit-trees-wa.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in WA</a> &middot; <a href="/buy-fruit-trees-qld.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in QLD</a> &middot; <a href="/buy-fruit-trees-nsw.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in NSW</a> &middot; <a href="/buy-fruit-trees-vic.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in VIC</a> &middot; <a href="/companion-planting-guide.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Companion Planting</a> &middot; <a href="/compare/nurseries.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare Nurseries</a> &middot; <a href="/treesmith.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Treesmith app</a> &middot; <a href="/manage.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Manage email alerts</a></p>
+    <p class="mt-2"><a href="/buy-fruit-trees-wa.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in WA</a> &middot; <a href="/buy-fruit-trees-qld.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in QLD</a> &middot; <a href="/buy-fruit-trees-nsw.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in NSW</a> &middot; <a href="/buy-fruit-trees-vic.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in VIC</a> &middot; <a href="/compare/nurseries.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare Nurseries</a> &middot; <a href="/treesmith.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Treesmith app</a> &middot; <a href="/manage.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Manage email alerts</a></p>
     <p class="mt-2">Data updated daily. Prices and availability may change.</p>
     <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
   </div>
