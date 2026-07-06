@@ -26,6 +26,7 @@ from stocklib.templates import render as render_template
 from stocklib.structured_data import product_offer_jsonld
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 import growing_guides
+import rootstock_guides
 from stocklib.variety_descriptions import has_description, render_excerpt
 from build_species_trends import build_species_trends, make_sparkline, trend_direction
 
@@ -253,21 +254,45 @@ def build_species_description(species: dict) -> str:
     name = species["common_name"]
     slug = species.get("slug", "")
     if slug and growing_guides.has_guide(slug):
-        return f"""  <!-- Growing Guide (cited) -->
+        growing = f"""  <!-- Growing Guide (cited) -->
   <section class="mb-8" id="growing">
     <h3 class="text-lg font-semibold text-gray-800 mb-3">Growing {name} in Australia</h3>
 {growing_guides.render_species_guide(slug)}
   </section>"""
-    description = species.get("description", "")
-    if not description:
-        return ""
-    paragraphs = [p.strip() for p in description.strip().split("\n\n") if p.strip()]
-    paras_html = "\n".join(f'      <p class="text-gray-700 text-sm leading-relaxed mb-3">{p}</p>' for p in paragraphs)
-    return f"""  <!-- Growing Guide -->
+    else:
+        description = species.get("description", "")
+        if description:
+            paragraphs = [p.strip() for p in description.strip().split("\n\n") if p.strip()]
+            paras_html = "\n".join(f'      <p class="text-gray-700 text-sm leading-relaxed mb-3">{p}</p>' for p in paragraphs)
+            growing = f"""  <!-- Growing Guide -->
   <section class="mb-8">
     <h3 class="text-lg font-semibold text-gray-800 mb-3">Growing {name} in Australia</h3>
     <div class="prose prose-sm max-w-none">
 {paras_html}
+    </div>
+  </section>"""
+        else:
+            growing = ""
+    return growing + build_species_rootstock_link(name, slug)
+
+
+def build_species_rootstock_link(name: str, slug: str) -> str:
+    """A small cross-link to this species' section of the rootstock guide.
+
+    Shown only when a rootstock guide exists for the slug (rootstock_guides/<slug>.json),
+    so it appears automatically as new species are added to the rootstock layer and
+    never points at a section that is not on /rootstock.html. Sits below the growing
+    guide (well below the fold), per the above-the-fold rule.
+    """
+    if not (slug and rootstock_guides.has_guide(slug)):
+        return ""
+    return f"""
+  <!-- Rootstock guide cross-link -->
+  <section class="mb-8" id="rootstock-link">
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-sm">
+      <p class="text-green-900"><span class="font-semibold">Choosing a rootstock?</span>
+      See which {name.lower()} rootstocks suit your soil, how they set tree size, and how to grow your own in our
+      <a href="/rootstock.html#{slug}" class="text-green-700 underline hover:text-green-800">{name.lower()} rootstock guide</a>.</p>
     </div>
   </section>"""
 
