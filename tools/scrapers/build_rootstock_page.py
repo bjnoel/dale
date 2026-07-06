@@ -37,9 +37,11 @@ from stocklib.taxonomy import enabled_species
 
 import rootstock_guides as rg
 
-# Species covered on the page, in order. Add a species by dropping in a JSON file
-# (rootstock_guides/<slug>.json) and adding its slug here.
-SPECIES = ["peach", "plum", "apple"]
+# Species covered on the page, in order (stone fruit, then pome, then citrus). Add a
+# species by dropping in a JSON file (rootstock_guides/<slug>.json) and adding its slug
+# here. Note: the shared citrus guide is keyed to the "lemon" slug (common_name "Citrus")
+# because "citrus" is not itself an enabled species; only the lemon species page deep-links.
+SPECIES = ["peach", "plum", "apricot", "cherry", "apple", "pear", "lemon"]
 
 # Curated cross-species citations (label, url) for the buying and quarantine sections.
 CITE_DALEYS = ("Daleys rootstock", "https://www.daleysfruit.com.au/Rootstock.htm")

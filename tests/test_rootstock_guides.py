@@ -57,7 +57,9 @@ class AllRootstockGuidesTests(unittest.TestCase):
 
     def test_pilot_species_present(self):
         names = {p.stem for p in GUIDE_FILES}
-        for slug in ("peach", "plum", "apple"):
+        # Pilot (peach/plum/apple) plus the batch-2 species. "lemon" carries the shared
+        # citrus guide (common_name "Citrus"), since "citrus" is not an enabled species.
+        for slug in ("peach", "plum", "apple", "apricot", "cherry", "pear", "lemon"):
             self.assertIn(slug, names, f"missing rootstock guide for {slug}")
 
     def test_every_guide_is_structurally_sound(self):
@@ -116,13 +118,15 @@ class AllRootstockGuidesTests(unittest.TestCase):
 
 class RootstockRenderTests(unittest.TestCase):
     def test_has_guide_and_fallback(self):
-        for slug in ("peach", "plum", "apple"):
+        for slug in ("peach", "plum", "apple", "apricot", "cherry", "pear", "lemon"):
             self.assertTrue(rg.has_guide(slug))
         self.assertFalse(rg.has_guide("durian"))
         self.assertEqual(rg.render_species_section("durian"), "")
 
     def test_section_renders_key_content(self):
-        for slug, token in (("peach", "Nemaguard"), ("plum", "Myrobalan"), ("apple", "MM106")):
+        for slug, token in (("peach", "Nemaguard"), ("plum", "Myrobalan"), ("apple", "MM106"),
+                            ("apricot", "Citation"), ("cherry", "Gisela 5"),
+                            ("pear", "Quince C"), ("lemon", "Flying Dragon")):
             html = rg.render_species_section(slug)
             self.assertIn(token, html, f"{slug} section missing {token}")
             self.assertIn(f'id="{slug}"', html)
@@ -130,7 +134,7 @@ class RootstockRenderTests(unittest.TestCase):
             self.assertNotIn(EN_DASH, html)
 
     def test_get_faqs(self):
-        for slug in ("peach", "plum", "apple"):
+        for slug in ("peach", "plum", "apple", "apricot", "cherry", "pear", "lemon"):
             faqs = rg.get_faqs(slug)
             self.assertTrue(faqs, f"{slug} has no faqs")
             for q, a in faqs:
