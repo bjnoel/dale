@@ -37,6 +37,8 @@ GUIDES = [
      "Evidence-graded companion and avoidance pairings for fruit trees."),
     ("/fruit-tree-pollination-guide.html", "Fruit Tree Pollination Guide (Australia)",
      "Which fruit trees need a pollination partner and which crop alone, with an evidence-graded chart."),
+    ("/rootstock.html", "Fruit Tree Rootstock Guide (Australia)",
+     "Peach, plum and apple rootstock types with vigour, soil and disease traits, an apple dwarfing guide, where to buy rootstock in Australia, WA quarantine, and growing your own from seed and cuttings."),
     ("/buy-fruit-trees-wa.html", "Buy Fruit Trees by State",
      "State guides with quarantine and shipping notes (WA, QLD, NSW, VIC)."),
 ]

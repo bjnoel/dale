@@ -118,6 +118,15 @@ GOLDEN_CASES = [
         "outputs": ["when-to-plant.html"],
     },
     {
+        # All-curated rootstock guide (no data dir); rendered from the per-species
+        # rootstock_guides/ JSON layer. Pins the FAQPage ld+json and the assembled
+        # tables/buying/quarantine sections.
+        "name": "rootstock",
+        "script": "build_rootstock_page.py",
+        "args": ["{OUT}"],
+        "outputs": ["rootstock.html"],
+    },
+    {
         # Season-aware bare-root page. --today is pinned so the open/sparse/
         # closed branch cannot flip with the calendar; the shared fixture has
         # few (if any) in-stock bare-root items, which pins the in-season

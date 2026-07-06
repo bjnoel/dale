@@ -1,0 +1,27 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="{{ content_max_width }} mx-auto px-4 py-8">
+  {{ breadcrumb|safe }}
+
+  <h1 class="text-2xl font-bold text-green-900 mb-2">Fruit Tree Rootstock Guide (Australia)</h1>
+  <p class="text-gray-600 text-sm mb-6">The rootstock decides how big a fruit tree grows, how soon it fruits, and how it copes with your soil and pests. A plain-English guide to peach, plum and apple rootstock for Australian growers and grafters, with where to buy it and how to grow your own. Updated {{ today }}.</p>
+
+  {{ intro_box|safe }}
+
+  {{ species_sections|safe }}
+
+  {{ buying_section|safe }}
+
+  {{ faq_section|safe }}
+
+  {{ references_section|safe }}
+
+  {{ related_guides|safe }}
+
+  {{ treesmith_promo|safe }}
+</main>
+
+{{ footer|safe }}
+</body>
+</html>

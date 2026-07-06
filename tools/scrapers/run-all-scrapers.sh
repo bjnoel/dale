@@ -183,6 +183,11 @@ echo "$LOG_PREFIX Building bare-root season page..."
 python3 "$SCRIPT_DIR/build_bare_root_page.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Bare-root page build failed (non-fatal)"
 echo "$LOG_PREFIX Bare-root season page complete."
 
+# Build rootstock and grafting guide (SEO content, curated per-species JSON layer)
+echo "$LOG_PREFIX Building rootstock guide..."
+python3 "$SCRIPT_DIR/build_rootstock_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Rootstock guide build failed (non-fatal)"
+echo "$LOG_PREFIX Rootstock guide complete."
+
 # Build sample digest preview page (subscriber conversion)
 echo "$LOG_PREFIX Building sample digest page..."
 python3 "$SCRIPT_DIR/build_sample_digest.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sample digest page build failed (non-fatal)"

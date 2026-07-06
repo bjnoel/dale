@@ -383,6 +383,7 @@ def build_related_guides() -> str:
   <ul class="text-sm space-y-1 list-disc pl-5">
     <li><a href="/when-to-plant.html" class="text-green-700 hover:underline">When to plant fruit trees in Australia</a> (full planting calendar for 50 species)</li>
     <li><a href="/companion-planting-guide.html" class="text-green-700 hover:underline">Companion planting guide for fruit trees</a> (what to grow alongside)</li>
+    <li><a href="/rootstock.html" class="text-green-700 hover:underline">Fruit tree rootstock guide</a> (rootstock types, suppliers, grow your own)</li>
     <li><a href="/species/" class="text-green-700 hover:underline">Browse all tracked species</a> (in-stock counts, prices, restock alerts)</li>
   </ul>
 </section>

@@ -1,0 +1,34 @@
+{
+  "slug": "plum",
+  "common_name": "Plum",
+  "intro": "Plums are grafted onto plum rootstocks chosen mostly for soil: Myrobalan for a strong all-round tree, Marianna where the ground is heavy and wet, and a peach rootstock in warm low-chill districts. Unlike peach, plum does not come true from seed, so the clonal plum rootstocks are grown from hardwood cuttings rather than stones, which also makes them the easiest fruit-tree rootstock to strike at home.",
+  "sources_note": "Rootstock guidance on this page draws on horticultural research, university foundation stock records, the FAO review of Australian deciduous fruit production, and Australian and international nursery rootstock references.",
+  "sources": [
+    {"id": "daleys-rootstock", "name": "Daleys Fruit Tree Nursery: rootstocks for grafting", "short": "Daleys rootstock guide", "url": "https://www.daleysfruit.com.au/Rootstock.htm"},
+    {"id": "fao-australia", "name": "FAO: deciduous fruit production in Australia (regional rootstock tables)", "short": "FAO Australia", "url": "https://www.fao.org/4/ab985e/ab985e04.htm"},
+    {"id": "davewilson", "name": "Dave Wilson Nursery: grower rootstock comparisons", "short": "Dave Wilson Nursery", "url": "https://www.davewilson.com/growers/rootstock-comparisons/"},
+    {"id": "fps-myro29c", "name": "Foundation Plant Services, UC Davis: Myrobalan 29C rootstock record", "short": "UC Davis Foundation Plant Services", "url": "https://fps.ucdavis.edu/treedetails.cfm?v=1027"},
+    {"id": "pmc-rootstock-review", "name": "Rootstock breeding of stone fruits under modern cultivation (peer-reviewed review)", "short": "Stone-fruit rootstock review", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12074155/"},
+    {"id": "walcot", "name": "Walcot Organic Nursery: fruit tree rootstocks (St Julien, Pixy)", "short": "Walcot Nursery", "url": "https://walcotnursery.co.uk/rootstocks/"},
+    {"id": "groworganic", "name": "Grow Organic: how to grow and propagate a plum tree (cuttings, grafting)", "short": "Grow Organic", "url": "https://www.groworganic.com/blogs/articles/plum-tree-propagation-a-guide-to-growing-and-grafting"},
+    {"id": "olea-wa", "name": "Olea Nurseries (Manjimup, WA): commercial rootstock range", "short": "Olea Nurseries WA", "url": "https://www.oleanurseries.com.au/CommercialGrowers/rootstock"}
+  ],
+  "rootstocks": [
+    {"name": "Myrobalan", "type": "Prunus cerasifera seedling", "vigour": "Vigorous, full size", "soils": "Adaptable to medium and heavy soils; tolerates waterlogging", "notes": "The standard all-round plum rootstock, resistant to a wide range of root-knot nematodes. Seedling Myrobalan is variable and tends to sucker.", "cites": ["davewilson", "pmc-rootstock-review"]},
+    {"name": "Myrobalan 29C", "type": "Clonal Prunus cerasifera", "vigour": "Standard, makes a large tree", "soils": "Good waterlogging tolerance; medium to heavy soils", "notes": "A uniform clonal Myrobalan grown from cuttings, with less suckering than Marianna. Good with apricot, plum and prune, but poor with peach and nectarine. Susceptible to lesion and ring nematode.", "cites": ["fps-myro29c"]},
+    {"name": "Marianna GF8-1", "type": "Plum hybrid (P. cerasifera x P. munsoniana)", "vigour": "Moderate, slightly dwarfing", "soils": "Better on heavy, wet soils than Myrobalan", "notes": "The pick for heavy or poorly drained ground. Root-knot resistant, but very susceptible to bacterial canker, and incompatible with peaches, nectarines and some almonds.", "cites": ["daleys-rootstock", "davewilson"]},
+    {"name": "Nemaguard (peach)", "type": "Low-chill peach seedling", "vigour": "Vigorous, full size", "soils": "Well-drained, sandy soils", "notes": "In warm, low-chill Australian districts plums and prunes are worked on peach rootstocks (Okinawa, Flordaguard, Coastal, Nemaguard) rather than Myrobalan. Prunes on peach rootstock can develop brown line.", "cites": ["fao-australia", "davewilson"]},
+    {"name": "St Julien A, Pixy", "type": "Prunus insititia (semi-dwarfing)", "vigour": "Semi-dwarfing to dwarfing", "soils": "General-purpose soils", "notes": "Size-controlling plum rootstocks that keep the tree to a pickable height. Common in the UK, much less so in Australia, but the option if you want a smaller plum.", "cites": ["walcot", "pmc-rootstock-review"]}
+  ],
+  "grow_your_own": {
+    "intro": "Plum does not come true from seed the way peach does, so the clonal plum rootstocks (Myrobalan and Marianna) are propagated from hardwood cuttings, which strike readily. That makes plum rootstock the easiest to raise at home for a grafter.",
+    "sections": [
+      {"heading": "From hardwood cuttings", "body": "Take cuttings in winter while the wood is dormant, about 15 to 30cm (6 to 12 inches) long, dip the cut end in rooting hormone, and strike them in a free-draining mix. Marianna and Myrobalan both root well this way, which is how nurseries reproduce them.", "cites": ["groworganic", "fps-myro29c"]},
+      {"heading": "Why not seed", "body": "A plum grown from seed rarely matches its parent, so seedlings are unpredictable; a cutting-grown clone of a known rootstock gives a uniform, predictable tree instead. Once the cutting has rooted, graft your chosen variety on in early spring as the sap starts to rise.", "cites": ["groworganic"]}
+    ]
+  },
+  "faqs": [
+    {"q": "Can I grow plum rootstock from a cutting?", "a": "Yes, and it is the easiest fruit-tree rootstock to raise at home. Myrobalan and Marianna strike readily from hardwood cuttings taken in winter, about 15 to 30cm long, with the cut end dipped in rooting hormone. Plum does not come true from seed, so cuttings, not stones, are the way to reproduce a known plum rootstock."},
+    {"q": "Which plum rootstock is best for heavy clay?", "a": "Marianna copes with heavy, wet ground better than Myrobalan, which is why nurseries reach for it on poorly drained soil. The trade-off is that Marianna is very susceptible to bacterial canker and is incompatible with peaches, nectarines and some almonds, so it is a plum-and-apricot rootstock, not a universal one."}
+  ]
+}

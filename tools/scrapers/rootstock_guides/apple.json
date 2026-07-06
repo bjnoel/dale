@@ -1,0 +1,40 @@
+{
+  "slug": "apple",
+  "common_name": "Apple",
+  "intro": "Apple is the rootstock story most gardeners actually meet, because the Malling (M) and Malling-Merton (MM) rootstocks set the size of the tree: the same variety can be a 1.5m courtyard tree or a 4m orchard tree depending only on the stock it sits on. Apples do not come true from seed and these dwarfing stocks are clones, not seedlings, so you cannot raise an MM106 from a pip; grafters buy named rootstock. The percentages below are of a full-size seedling tree and vary a little with soil and variety.",
+  "sources_note": "Rootstock guidance on this page draws on university extension, the Royal Horticultural Society, apple-industry extension references, and Australian nursery rootstock listings. Dwarfing figures are given as ranges because sources differ with soil and scion vigour.",
+  "sources": [
+    {"id": "daleys-rootstock", "name": "Daleys Fruit Tree Nursery: apple rootstocks for grafting", "short": "Daleys rootstock guide", "url": "https://www.daleysfruit.com.au/Rootstock.htm"},
+    {"id": "heritage-rootstock", "name": "Heritage Fruit Trees: rootstocks (apple and pear)", "short": "Heritage Fruit Trees", "url": "https://www.heritagefruittrees.com.au/rootstocks/"},
+    {"id": "rhs", "name": "Royal Horticultural Society: rootstocks for fruit", "short": "RHS rootstocks", "url": "https://www.rhs.org.uk/fruit/fruit-trees/rootstocks"},
+    {"id": "wsu", "name": "Washington State University Tree Fruit: rootstocks for apple", "short": "WSU Tree Fruit", "url": "https://treefruit.wsu.edu/web-article/apple-rootstocks/"},
+    {"id": "nmsu-h307", "name": "New Mexico State University: rootstocks for size control in apple trees (H307)", "short": "NMSU size-control guide", "url": "https://pubs.nmsu.edu/_h/H307/index.html"},
+    {"id": "ext-phytophthora", "name": "Apple extension: rootstock susceptibility to Phytophthora (collar rot)", "short": "Apple collar-rot table", "url": "https://apples.extension.org/table-of-apple-rootstock-susceptibility-to-phytophthora-spp/"},
+    {"id": "ext-woolly", "name": "Apple extension: woolly apple aphid and the Malling-Merton series", "short": "Woolly apple aphid", "url": "https://apples.extension.org/woolly-apple-aphid/"},
+    {"id": "ext-stool", "name": "Apple extension: how nurseries grow rootstocks (stool beds)", "short": "How rootstocks are grown", "url": "https://apples.extension.org/how-do-nurseries-grow-rootstocks/"},
+    {"id": "ufl-layering", "name": "University of Florida propagation: mound or stool layering", "short": "UF stool layering", "url": "https://propg.ifas.ufl.edu/08-layering/07-layering-mound.html"},
+    {"id": "unh-graft", "name": "University of New Hampshire Extension: grafting fruit trees in the home orchard", "short": "UNH grafting guide", "url": "https://extension.unh.edu/resource/growing-fruit-grafting-fruit-trees-home-orchard-fact-sheet"}
+  ],
+  "rootstocks": [
+    {"name": "M27", "type": "Very dwarfing", "vigour": "Very dwarfing, about 1.2 to 1.8m", "soils": "Needs good, weed-free soil; unsuitable on poor soil", "notes": "The smallest common stock, for pots and stepovers. Needs permanent staking and crops young (about two years).", "cites": ["rhs", "nmsu-h307"]},
+    {"name": "M9", "type": "Dwarfing", "vigour": "Dwarfing, about 40% of full size", "soils": "Wants good, fertile soil", "notes": "The classic high-density dwarf. Brittle roots, so it needs permanent staking or a trellis. Very precocious, but susceptible to fire blight and woolly apple aphid.", "cites": ["nmsu-h307", "wsu", "rhs"]},
+    {"name": "M26", "type": "Dwarf", "vigour": "Dwarf, about 40 to 50% of full size", "soils": "Best in good soils; stake in exposed sites", "notes": "A slightly larger, more forgiving dwarf than M9, but prone to collar rot, fire blight, woolly aphid and burr knots. Stake early.", "cites": ["wsu", "nmsu-h307", "ext-phytophthora"]},
+    {"name": "MM106", "type": "Semi-dwarf", "vigour": "Semi-dwarf, about 65 to 70% of full size", "soils": "Wide soil adaptability, but avoid wet, heavy ground", "notes": "The common all-round backyard rootstock in Australia: resistant to woolly aphid, does not sucker, self-supporting after a few years. Its one real weakness is collar rot on wet or poorly drained soils.", "cites": ["daleys-rootstock", "rhs", "wsu", "ext-phytophthora"]},
+    {"name": "MM102", "type": "Semi-dwarf", "vigour": "Semi-dwarfing", "soils": "Wide soil adaptability", "notes": "A semi-dwarfing MM stock sold in Australia, best grafted in August and September while dormant. A good place for a beginner grafter to start.", "cites": ["daleys-rootstock"]},
+    {"name": "MM111", "type": "Vigorous", "vigour": "Vigorous, about 75 to 85% of full size", "soils": "Broadly adapted; drought tolerant", "notes": "A vigorous stock for poorer soils or a big tree. Woolly-aphid resistant and better on wet soils than MM106, but slower to come into bearing (four to five years).", "cites": ["nmsu-h307", "wsu", "rhs"]},
+    {"name": "Northern Spy", "type": "Vigorous (variety used as rootstock)", "vigour": "Vigorous, near full size", "soils": "General-purpose soils", "notes": "The woolly-aphid-resistant American variety that the whole Malling-Merton series was bred from, and still sold as a vigorous rootstock in its own right.", "cites": ["ext-woolly", "heritage-rootstock"]},
+    {"name": "Seedling", "type": "Apple seedling (e.g. Granny Smith seedling)", "vigour": "Full size (100%)", "soils": "Most soils, including grass orchards and poorer soils", "notes": "A seedling apple used as a rootstock gives a full-size, vigorous, variable tree with no size control. The choice for a standard orchard tree, not a backyard.", "cites": ["daleys-rootstock", "rhs"]}
+  ],
+  "grow_your_own": {
+    "intro": "Apple is the exception to grow-your-own. You cannot raise a dwarfing apple rootstock from seed, because apples do not come true from seed and the M and MM stocks are clones. If you want size control, you buy the named rootstock; growing your own only gives you a full-size seedling.",
+    "sections": [
+      {"heading": "Why seed does not work", "body": "A pip from a good apple grows into a different tree, usually with poor fruit, and always full sized. It cannot carry the dwarfing you are after, so a seedling is only useful as a vigorous, standard-size rootstock, never as an MM106 or M9.", "cites": ["unh-graft"]},
+      {"heading": "How clonal rootstock is made (stool beds)", "body": "Nurseries reproduce the M and MM clones by mound layering, also called stooling: a mother plant is cut low, the new shoots are mounded with soil or sawdust so they root at the base, then in autumn the rooted shoots are lifted as rootstock liners. It is the most common way apple rootstocks are propagated, and it is why the stock stays genetically identical.", "cites": ["ufl-layering", "ext-stool"]},
+      {"heading": "For the home grafter", "body": "Buy a named clonal rootstock (MM106 is the common all-round backyard choice in Australia), then graft your variety on in late winter or bud it in late summer. Australian suppliers sell M and MM stock singly or in small bundles, so a hobby grafter can get a handful.", "cites": ["daleys-rootstock", "heritage-rootstock"]}
+    ]
+  },
+  "faqs": [
+    {"q": "Can I grow apple rootstock from seed?", "a": "Not the dwarfing kind. Apples do not come true from seed, and the M and MM rootstocks that control tree size are clones, propagated by mound layering (stooling), not grown from pips. A seedling apple can be used as a rootstock, but it gives a full-size, variable tree with no size control, so grafters buy named clonal rootstock instead."},
+    {"q": "What is the best apple rootstock for a backyard?", "a": "MM106 is the usual all-rounder in Australia: about 65% of full size, resistant to woolly aphid, and self-supporting after a few years. The catch is that it is prone to collar rot on wet, heavy soils, so if your ground stays wet, or you want a smaller tree and can give it a permanent stake, choose a dwarf such as M9 or M26 instead."}
+  ]
+}

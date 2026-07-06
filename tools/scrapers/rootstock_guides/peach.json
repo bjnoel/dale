@@ -1,0 +1,36 @@
+{
+  "slug": "peach",
+  "common_name": "Peach",
+  "intro": "Almost every peach and nectarine sold is a named variety budded onto a rootstock, and the rootstock decides how the tree copes with your soil, your pests and your water. Most Australian peach rootstocks are peach seedlings chosen for vigour and root-knot nematode resistance, with a peach-almond hybrid for limey ground and a few size-controlling hybrids where you want a smaller tree. Peaches are also the one stone fruit that comes fairly true from seed, so a peach stone is the classic home-raised rootstock.",
+  "sources_note": "Rootstock guidance on this page draws on horticultural research, university extension, the FAO review of Australian deciduous fruit production, and Australian and international nursery rootstock references.",
+  "sources": [
+    {"id": "daleys-rootstock", "name": "Daleys Fruit Tree Nursery: rootstocks for grafting", "short": "Daleys rootstock guide", "url": "https://www.daleysfruit.com.au/Rootstock.htm"},
+    {"id": "fao-australia", "name": "FAO: deciduous fruit production in Australia (regional rootstock tables)", "short": "FAO Australia", "url": "https://www.fao.org/4/ab985e/ab985e04.htm"},
+    {"id": "davewilson", "name": "Dave Wilson Nursery: grower rootstock comparisons", "short": "Dave Wilson Nursery", "url": "https://www.davewilson.com/growers/rootstock-comparisons/"},
+    {"id": "fourwinds", "name": "Four Winds Growers: deciduous rootstock information", "short": "Four Winds Growers", "url": "https://www.fourwindsgrowers.com/pages/deciduous-rootstock-information"},
+    {"id": "ufifas-hs366", "name": "University of Florida IFAS: rootstocks for Florida stone fruit (HS366)", "short": "UF IFAS stone fruit rootstocks", "url": "https://ask.ifas.ufl.edu/publication/HS366"},
+    {"id": "frontiers-gf677", "name": "Frontiers in Plant Science: nitrogen use by peach rootstock GF677 in alkaline soils", "short": "Frontiers GF677 study", "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1699942/full"},
+    {"id": "olea-wa", "name": "Olea Nurseries (Manjimup, WA): commercial rootstock range", "short": "Olea Nurseries WA", "url": "https://www.oleanurseries.com.au/CommercialGrowers/rootstock"},
+    {"id": "iowa-stratify", "name": "Iowa State University Extension: germination of tree seed (stratification)", "short": "Iowa State Extension", "url": "https://yardandgarden.extension.iastate.edu/how-to/germination-tree-seed"},
+    {"id": "phillyorchard-peachseed", "name": "Philadelphia Orchard Project: growing peaches from seed", "short": "Philadelphia Orchard Project", "url": "https://www.phillyorchards.org/2015/07/07/growing-peaches-from-seed/"}
+  ],
+  "rootstocks": [
+    {"name": "Nemaguard", "type": "Peach seedling", "vigour": "Vigorous, full size", "soils": "Prefers well-drained, sandy soils; poor on wet ground", "notes": "The standard peach and nectarine rootstock for lighter soils. Resistant to root-knot nematode, but susceptible to root-lesion nematode and to bacterial canker.", "cites": ["davewilson", "fourwinds"]},
+    {"name": "Lovell", "type": "Peach seedling", "vigour": "Vigorous, full size", "soils": "More tolerant of wet soils than Nemaguard, and more cold hardy", "notes": "The choice for heavier or colder ground, but susceptible to root-knot nematode on sandy soils, so it is the opposite trade-off to Nemaguard.", "cites": ["davewilson", "fourwinds"]},
+    {"name": "Golden Queen / Elberta", "type": "Peach seedling", "vigour": "Vigorous, full size", "soils": "General-purpose temperate soils", "notes": "Peach seedling rootstocks long used in Australia's temperate stone-fruit districts, alongside Nemaguard.", "cites": ["fao-australia"]},
+    {"name": "Okinawa, Flordaguard, Coastal", "type": "Low-chill peach seedling", "vigour": "Vigorous, full size", "soils": "Warm, low-chill and subtropical districts (Flordaguard not for alkaline soils)", "notes": "The low-chill peach rootstocks used for subtropical stone fruit in Australia. Coastal is a hardy peach that grows wild on the NSW north coast.", "cites": ["fao-australia", "daleys-rootstock", "ufifas-hs366"]},
+    {"name": "GF677", "type": "Peach x almond hybrid", "vigour": "Very vigorous", "soils": "Alkaline and calcareous soils; drought tolerant", "notes": "The rootstock for limey ground: it strongly resists lime-induced iron chlorosis where a peach seedling would go yellow. Sold in WA (wholesale) for peach and almond.", "cites": ["frontiers-gf677", "olea-wa"]},
+    {"name": "Citation", "type": "Peach x plum hybrid", "vigour": "Size controlling (smaller tree)", "soils": "Tolerates wet soils", "notes": "A size-controlling hybrid where you want a shorter peach; resists root-knot nematode and copes with wet feet, but is incompatible with virus-carrying peach or nectarine scions.", "cites": ["davewilson", "fao-australia"]}
+  ],
+  "grow_your_own": {
+    "intro": "Peaches come fairly true from seed, so a stone from a good peach makes a serviceable rootstock, which is why home grafters so often raise their own. The seedling will not be identical to its parent, but for a rootstock that does not matter; you bud your chosen variety onto it.",
+    "sections": [
+      {"heading": "Raising a seedling from a stone", "body": "Clean the flesh off the stone, then give the seed a cold, moist stratification of roughly three months (about 98 to 105 days) at around 1 to 5 degrees, for example in damp sand or a sand and peat mix in the fridge. Sow the stratified seed about 5cm (2 inches) deep in spring once the cold period is done.", "cites": ["iowa-stratify", "phillyorchard-peachseed"]},
+      {"heading": "From seedling to grafted tree", "body": "A vigorous peach seedling is usually ready to bud or graft within a season or two, once the stem reaches roughly pencil thickness. Bud in late summer or graft your named variety in late winter. Commercial growers never fruit the seedling itself, because seedlings are too variable to sell as a known variety, but that same seedling is exactly what they bud a named variety onto.", "cites": ["fao-australia", "phillyorchard-peachseed"]}
+    ]
+  },
+  "faqs": [
+    {"q": "Can I grow peach rootstock from a supermarket peach stone?", "a": "Yes. Peaches come fairly true from seed, so a stone from a good peach makes a usable rootstock. Give it about three months of cold, moist stratification in the fridge, sow it in spring, and bud or graft your chosen variety onto the seedling once it reaches pencil thickness. A grafted, named tree still fruits sooner and to type, so seed-raising is for the hobby grafter, not a shortcut to fruit."},
+    {"q": "Which peach rootstock suits sandy Perth soil?", "a": "A root-knot-nematode-resistant peach seedling such as Nemaguard is the classic choice for sandy soils, because root-knot nematode is the main sandy-soil problem for peaches. It prefers free-draining ground, so keep the water up in summer. On limey or alkaline sand, the peach-almond hybrid GF677 avoids the iron chlorosis that yellows a peach seedling."}
+  ]
+}

@@ -52,6 +52,7 @@ NAV_ITEMS = [
         ("Bare Root Season", "/bare-root.html"),
         ("Planting Calendar", "/when-to-plant.html"),
         ("Fruit Tree Pollination", "/fruit-tree-pollination-guide.html"),
+        ("Rootstock Guide", "/rootstock.html"),
     ]),
     ("Insights", [
         ("Digest", "/digest.html"),
