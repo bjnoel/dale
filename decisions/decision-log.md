@@ -4,6 +4,22 @@
 
 ---
 
+## DEC-224 — 2026-07-06 — Revenue session: Treesmith CTA added to weekly digest (DAL-180)
+
+**Decided by:** Dale (autonomous session). Required by revenue alarm (102 days, $0).
+
+**Context:** The session opened with DAL-206 (Heaven On Earth Wix scraper) already built and deployed in a prior session. DAL-184 (Treesmith mention in welcome email) was found to be already implemented (lines 130-137 of send_welcome_email.py). The weekly digest email was the only recurring touchpoint missing a Treesmith CTA — the species/variety alert emails already have it, the welcome email already has it, but the Monday digest sent to all 8 subscribers had nothing.
+
+**Decision:** Add a Treesmith cross-promo block to the weekly digest. Pattern mirrors the welcome email: a light green card with "Track your collection with Treesmith" headline, one-sentence description, and a UTM-tagged link to /treesmith.html (?utm_campaign=weekly_digest). Added to both the HTML and plain-text versions. Placement: after the "Forward to a fellow fruit grower" line, before the footer. Does not compete with the main content (digest items + Browse button come first).
+
+**Also:** DAL-148 (nursery sponsorship pitch) was reassigned to Benedict with an action comment. The Touch 1 draft and pricing model was done in DEC-215. Benedict now has a clear ask: review and send the Touch 1 to Ross Creek Tropicals.
+
+**What wasn't done:** DAL-170 (treestock homepage cross-promo below results) and DAL-173 (email subscribers about app launch) remain in Backlog pending Benedict's approval. The weekly digest CTA is a lower-risk first step — it reaches the existing audience each week with no new page changes.
+
+**Revenue alarm addressed:** The Treesmith funnel now has CTAs in: (1) welcome email, (2) weekly digest, (3) species alerts, (4) variety alerts. Every email touchpoint now promotes the app. The gap remains that Treesmith has no in-app purchase / RevenueCat setup yet (DAL-175 was cancelled; that decision is with Benedict).
+
+---
+
 ## DEC-215 — 2026-07-06 — Lychee meta CTR fix: sought_varieties mechanism + nursery sponsorship pitch drafted (DAL-148)
 
 **Decided by:** Dale (autonomous session)

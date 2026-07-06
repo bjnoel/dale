@@ -320,6 +320,15 @@ def format_weekly_html(all_changes: dict, end_date: str, state_filter: str = "",
       Know a fellow fruit grower who would love this? Forward this email to them.
     </p>
 
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 16px;margin-top:20px;">
+      <p style="margin:0 0 6px;font-weight:600;color:#065f46;font-size:0.9rem;">Track your collection with Treesmith</p>
+      <p style="margin:0;color:#374151;font-size:0.875rem;line-height:1.5;">
+        treestock tells you what's in stock. <strong>Treesmith</strong>, our companion app, helps you
+        catalog every tree, log grafts and harvests, and capture growth photos over time.
+        <a href="{SITE_URL}/treesmith.html?utm_source=treestock&amp;utm_medium=email&amp;utm_campaign=weekly_digest" style="color:#065f46;">Learn more &rarr;</a>
+      </p>
+    </div>
+
   </div>
 
 </div>
@@ -431,6 +440,11 @@ def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "",
     lines.append(f"Browse all current stock: {SITE_URL}")
     lines.append("")
     lines.append("Know a fellow fruit grower who would love this? Forward this email to them.")
+    lines.append("")
+    lines.append("---")
+    lines.append("Track your collection with Treesmith")
+    lines.append(f"treestock tells you what's in stock. Treesmith, our companion app, helps you catalog every tree, log grafts and harvests, and capture growth photos over time.")
+    lines.append(f"{SITE_URL}/treesmith.html?utm_source=treestock&utm_medium=email&utm_campaign=weekly_digest")
     return "\n".join(lines)
 
 
