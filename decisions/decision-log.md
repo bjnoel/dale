@@ -6135,3 +6135,20 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **Engineering:** tests/test_wix_scraper.py (16 tests) against two pruned real-capture page fixtures (in-stock discounted + sold out) plus sitemap/abort/semantics units; registry oracle bumped 25 -> 26; golden regenerated (diff reviewed: only the "26 Australian nurseries" count strings). Full suite 1,785 green. Built in an isolated worktree.
 
 **Rollout:** email-safe, same as DEC-212: deploy, one baseline scrape of heaven-on-earth on the server to write today's snapshot, then rebuild_pages_email_safe.sh. Tomorrow's nightly diff then has a baseline, so subscribers see no false "new nursery" flood.
+
+## DEC-225 — 2026-07-07 — rfcarchives.org.au backlinks to treestock (DAL-212)
+
+**Decided by:** Dale, executing DAL-212 after Benedict unblocked it in session (domain transfer complete, site relaunched on Cloudflare Pages from `/Users/bjnoel/Projects/rfcarchives.org.au`, GitHub Actions deploy on push).
+
+**Context:** Benedict now owns rfcarchives.org.au, the RFCA newsletter archive (1,788 pages, articles from 1980-2002, aged .org.au domain with decades of accumulated inbound links, topically identical to treestock). He asked for the best non-intrusive SEO link to treestock. Treestock already links TO the archive (DEC-127 further-reading citations), so this completes the reverse direction.
+
+**Decision: contextual hub-page links, not a sitewide footer.** A footer link on all 1,788 pages is both the intrusive option and the weak one (Google collapses sitewide boilerplate to roughly one link, and a sudden 1,788-link block is the classic link-scheme fingerprint). Instead:
+
+- **40 species hub pages** (Abiu through WhiteSapote) each get one small line at the end of the article list: "These archive articles date from 1980 to 2002. For [current {species} availability at Australian nurseries](/species/{slug}.html), see treestock.com.au." Deep links to the pages where treestock actually competes, anchor text varies naturally per species, genuinely useful (the archive is historical; "where do I buy one today" is a real reader need). 40 of 96 RFCA species directories map to enabled treestock species; unmapped ones (durian, breadfruit, taro...) got nothing.
+- **Homepage**: one line below the article list linking treestock.com.au (highest-authority page on the domain).
+- **Crawl plumbing so the links get counted**: sitemap.xml (1,789 URLs) + robots.txt Sitemap line, canonical on the homepage, 301 for the duplicate /index.htm. The site last signalled an update in 2013; without a recrawl nudge the links sit unseen.
+- **Dofollow, no rel attributes**: owned, unpaid, topically relevant cross-linking at editorial scale.
+
+**Scope narrowing vs the DAL-212 sketch:** the ticket sketched links on every article page (~1,500). Shipped hubs only: that is where inbound equity concentrates, every article already links up to its hub, and Benedict asked for non-intrusive. Article-page extension stays available. Held back: Caring For Trees grafting/pollination articles linking /rootstock.html and /fruit-tree-pollination-guide.html, as a light second pass in a few weeks.
+
+**Verification:** all 40 treestock species URLs HEAD-checked 200 before linking; all 167 archive_links.json citation URLs verified 200 on the relaunched site (URL structure preserved, our guides' citations alive again); insertions spot-checked including the Mango trailing-note edge case; live-verified post-deploy (hub link, homepage line, canonical, sitemap 200, /index.htm 301). Edits done bytes-safe in latin-1 (site is ISO-8859-1), ASCII-only insertions. Commit 3a9776a on bjnoel/rfcarchives.org.au. Note: Cloudflare managed robots.txt prepends its content-signals block on this zone too (ai-train=no, ClaudeBot/GPTBot blocked); origin robots.txt with the Sitemap line serves beneath it, Googlebot unaffected.

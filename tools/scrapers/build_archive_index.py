@@ -33,7 +33,7 @@ REPO_ROOT = SCRIPT_DIR.parent.parent
 from stocklib.taxonomy import enabled_species
 DEFAULT_OUT = SCRIPT_DIR / "growing_guides" / "archive_links.json"
 # Sibling checkouts under the projects directory by default.
-DEFAULT_RFCA = REPO_ROOT.parent / "rfcarchive.org.au"
+DEFAULT_RFCA = REPO_ROOT.parent / "rfcarchives.org.au"
 DEFAULT_WANATCA = REPO_ROOT.parent / "wanatca-hugo"
 
 # RFCA folder / WANATCA keyword spellings that do not match a treestock slug or synonym.
