@@ -6254,3 +6254,5 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 - category_api mode is REQUIRED, not an optimisation: the plain paginated listing hides ~55 of the 98 fruiting products; a direct fetch of the `all-fruiting-plants-trees` category returns all 98 (audited with the full-store-vs-filter method from DEC-207).
 - Shipping: no plants to WA/TAS (shipping page + per-product lines); NT not excluded, so ships QLD/NSW/VIC/SA/NT/ACT. A few products are stricter (some exclude SA, two are QLD-only), left as per-product rules like Heaven On Earth's citrus.
 - First snapshot: 98 products, 60 in stock. Junk filter passes all 98. Golden fixtures regenerated for the 26 to 27 nursery-count copy change; full suite (1799 tests) green.
+
+**Correction, same day:** Benedict spoke to the nursery directly: they do not ship to NT either, despite the site only listing WA/TAS exclusions. Registry updated to QLD/NSW/VIC/SA/ACT; restriction warning is now "No WA/NT/TAS".

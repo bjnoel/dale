@@ -50,7 +50,7 @@ EXPECTED_SHIPPING = {
     "st-clements-citrus": ["WA"],
     "the-heritage-nursery": ["ACT"],
     "heaven-on-earth": ["QLD", "NSW", "VIC", "SA", "NT", "ACT"],
-    "all-rare-herbs": ["QLD", "NSW", "VIC", "SA", "NT", "ACT"],
+    "all-rare-herbs": ["QLD", "NSW", "VIC", "SA", "ACT"],
 }
 
 EXPECTED_NAMES = {
