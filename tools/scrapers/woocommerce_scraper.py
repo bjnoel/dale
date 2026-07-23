@@ -145,6 +145,24 @@ NURSERIES = {
         ],
         "exclude_title_keywords": ["preserved"],
     },
+    "all-rare-herbs": {
+        # All Rare Herbs, Mapleton QLD (Sunshine Coast hinterland). Herb
+        # specialist (~600 SKUs: herbs, seeds, dried product) with a distinct
+        # fruiting branch we surface: rare/unusual fruit (miracle fruit,
+        # acerola, jaboticaba, vanilla, coffee, cocoa), berries, nuts, citrus.
+        # category_api mode is REQUIRED here, not just an optimisation: the
+        # plain paginated listing hides ~55 of the 98 fruiting products
+        # (audited 2026-07-23), while a direct category fetch returns all 98.
+        # The parent "fruiting-trees" and its "all-fruiting-plants-trees"
+        # child both count 98, so the single child slug covers the branch.
+        # Deliberately NOT included: "dormant-roots-bare-rooted" (herb roots +
+        # ornamentals like maples/birches, with only 2 fruit items).
+        "name": "All Rare Herbs",
+        "domain": "allrareherbs.com.au",
+        "location": "Mapleton, QLD",
+        "category_api": True,
+        "fruit_categories": ["all-fruiting-plants-trees"],
+    },
     "diacos": {
         # Diaco's Garden Nursery, Melbourne (Heatherton + other VIC stores).
         # Large general garden centre (~900 SKUs: ornamentals, hardware,

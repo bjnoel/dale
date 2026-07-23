@@ -140,6 +140,14 @@ NURSERIES: list[Nursery] = [
                  "WA/TAS; NT included (per postage page). Citrus is QLD-only "
                  "(per-product rule, flagged in product names as 'QLD POSTAGE "
                  "ONLY', not modelled at nursery level). Verified 2026-06-20."),
+    Nursery("all-rare-herbs", "All Rare Herbs",
+            ("QLD", "NSW", "VIC", "SA", "NT", "ACT"),
+            note="Mapleton QLD (WooCommerce). Herb specialist with a rare-fruit "
+                 "branch (miracle fruit, acerola, vanilla, coffee, cocoa). No "
+                 "plants to WA/TAS (shipping page + per-product lines, verified "
+                 "2026-07-23); NT not excluded. A few products are stricter "
+                 "(some also exclude SA, two are QLD-only), per-product rules "
+                 "not modelled at nursery level."),
 ]
 
 _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}

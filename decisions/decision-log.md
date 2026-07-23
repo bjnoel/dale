@@ -6241,3 +6241,16 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **Decision:** All new beestock work stops immediately. No new tickets, features, or the pending de-fork. Wind-down mode (freeze to static vs let it run untouched until domain expiry) is Benedict's call; Dale's recommendation is freeze-to-static (kill the scraper cron + alerts, keep pages up, notify the single subscriber, decide the domain at renewal). Execution logged when Benedict picks.
 
 **Executed (same day, Benedict picked freeze-to-static):** The single subscriber turned out to be Benedict's own test signup, so no goodbye email was needed. Freeze applied: bee scraper cron commented out (00:30 UTC line), `bee-subscribe-server.service` stopped and disabled, Caddyfile subscribe/unsubscribe routes now return 410 instead of proxying to :8098, and a "no longer updated, last checked 23 July 2026" banner injected into all 176 served pages under /opt/dale/bee-dashboard. Pages stay online as an archive. Domain decision deferred to renewal (check registrar; .au whois hides expiry).
+
+## DEC-231 — 2026-07-23 — Onboard All Rare Herbs (allrareherbs.com.au), fruit branch only
+
+**Decided by:** Benedict (requested), Dale (executed).
+
+**Context:** All Rare Herbs is a Mapleton QLD (Sunshine Coast hinterland) mail-order herb specialist, ~600 SKUs, on WooCommerce with the public Store API open. Its "Shop Fruiting Plants & Trees" branch (98 products) is squarely in treestock's niche: miracle fruit, acerola cherry, vanilla, coffee, cocoa, goji, midyim, and other rarities most tracked nurseries don't carry.
+
+**Decision:** Add as the 27th registry nursery, surfacing only the fruiting branch. Herbs, seeds, dried product, and the bare-rooted category (herb roots plus ornamental maples/birches, only 2 fruit items) are excluded.
+
+**Implementation notes:**
+- category_api mode is REQUIRED, not an optimisation: the plain paginated listing hides ~55 of the 98 fruiting products; a direct fetch of the `all-fruiting-plants-trees` category returns all 98 (audited with the full-store-vs-filter method from DEC-207).
+- Shipping: no plants to WA/TAS (shipping page + per-product lines); NT not excluded, so ships QLD/NSW/VIC/SA/NT/ACT. A few products are stricter (some exclude SA, two are QLD-only), left as per-product rules like Heaven On Earth's citrus.
+- First snapshot: 98 products, 60 in stock. Junk filter passes all 98. Golden fixtures regenerated for the 26 to 27 nursery-count copy change; full suite (1799 tests) green.
