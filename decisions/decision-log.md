@@ -6231,3 +6231,11 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 - Also fixed DAL-217 (golden test non-determinism) in same session
 
 **What needs Benedict:** Homepage CTA approval (DAL-219); App Store Connect analytics check; Flutter nudge after first plant added; consider lowering paywall trigger.
+
+## DEC-230 — 2026-07-23 — beestock.com.au discontinued to focus on treestock + Treesmith
+
+**Decided by:** Benedict.
+
+**Context:** Beestock never built an audience: 38 visitors in the last 30 days (treestock did 2,926 in the same window) and exactly 1 email subscriber. Meanwhile the daily bee scraper cron, price alerts, and subscribe server keep consuming maintenance attention (scraper breakage, the pending bee/ de-fork), and scraping bee retailers has already cost goodwill once (Beewise removal, DEC-198). Every hour on beestock is an hour not spent on the two tracks that can actually reach the $100/mo target.
+
+**Decision:** All new beestock work stops immediately. No new tickets, features, or the pending de-fork. Wind-down mode (freeze to static vs let it run untouched until domain expiry) is Benedict's call; Dale's recommendation is freeze-to-static (kill the scraper cron + alerts, keep pages up, notify the single subscriber, decide the domain at renewal). Execution logged when Benedict picks.
