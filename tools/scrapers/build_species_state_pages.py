@@ -23,6 +23,7 @@ from pathlib import Path
 from shipping import SHIPPING_MAP, NURSERY_NAMES
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.templates import render as render_template
+from stocklib.utm import outbound
 from treestock_layout import (
     render_head,
     render_header,
@@ -486,7 +487,7 @@ def build_combo_page(
     product_view = []
     for p in sorted_products:
         product_view.append({
-            "url": p["url"],
+            "url": outbound(p["url"], "state-page"),
             "title": _no_dash(p["title"]),
             "nursery_name": _no_dash(p["nursery_name"]),
             "price_cell": f"${p['price']:.0f}" if p["price"] else "",

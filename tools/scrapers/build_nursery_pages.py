@@ -16,6 +16,7 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
 from stocklib.taxonomy import enabled_species
+from stocklib.utm import outbound
 
 # Per-nursery metadata: website URL, tags, description
 NURSERY_META = {
@@ -118,6 +119,36 @@ NURSERY_META = {
         "url": "https://diacos.com.au",
         "tags": ["fruit trees", "edibles", "VIC", "garden centre"],
         "description": "Diaco's Garden Nursery is a Melbourne garden centre group (Heatherton and other Victorian stores) carrying fruit trees and edibles alongside a large general garden range. Delivery is Melbourne metro with in-store pickup available. Does not ship to WA, NT, or TAS.",
+    },
+    "rayners": {
+        "url": "https://www.raynersorchard.com.au",
+        "tags": ["multi-graft trees", "stone fruit", "finger limes", "VIC"],
+        "description": "Rayners Orchard is a Yarra Valley orchard and nursery with a deep range of dwarf and multi-graft stone fruit, pears, citrus, dozens of finger lime cultivars, and feijoas. Famous for their orchard tours. Delivers within Victoria only (interstate for bulk 50+ orders).",
+    },
+    "wild-garden-organics": {
+        "url": "https://wildgardenorganics.com.au",
+        "tags": ["rare tropicals", "grafted trees", "QLD"],
+        "description": "Wild Garden Organics is a Queensland nursery specialising in rare grafted tropical fruit trees. Free shipping on orders over $170 to QLD, NSW, VIC, SA and ACT. Does not ship to WA, NT, or TAS via standard checkout (biosecurity).",
+    },
+    "st-clements-citrus": {
+        "url": "https://stclementscitrus.com.au",
+        "tags": ["rare citrus", "yuzu", "WA grown"],
+        "description": "St Clements Citrus is a rare-citrus specialist in High Wycombe, Perth WA, growing yuzu, Buddha's hand, blood lime, citron and other hard-to-find citrus. Posts WA-wide only (citrus cannot cross state quarantine borders), with postage included in the price. A rare WA-local source for collector citrus.",
+    },
+    "the-heritage-nursery": {
+        "url": "https://heritagenursery.com.au",
+        "tags": ["fruit trees", "garden centre", "ACT"],
+        "description": "The Heritage Nursery is a Canberra garden centre in Yarralumla carrying fruit trees alongside a general garden range. Local delivery covers the ACT and Queanbeyan, plus click-and-collect. No interstate shipping. Not to be confused with Heritage Fruit Trees in Victoria.",
+    },
+    "heaven-on-earth": {
+        "url": "https://www.heavenonearthfruittrees.com.au",
+        "tags": ["rare tropicals", "abiu", "durian", "QLD"],
+        "description": "Heaven On Earth Fruit Trees is a Far North Queensland nursery specialising in rare tropical fruit: abiu, mamey sapote, soursop, miracle fruit, durian and more. Ships Australia-wide except WA and TAS. Citrus is QLD-delivery only (flagged per product).",
+    },
+    "all-rare-herbs": {
+        "url": "https://allrareherbs.com.au",
+        "tags": ["rare fruit", "miracle fruit", "vanilla", "coffee", "QLD"],
+        "description": "All Rare Herbs is a Mapleton QLD mail-order nursery best known for herbs, with a genuinely rare fruiting range: miracle fruit, acerola cherry, vanilla, coffee, cocoa, goji, midyim and other collector plants. We track their fruiting plants and trees only. No plants to WA, NT, or TAS.",
     },
 }
 
@@ -249,36 +280,9 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     ship_badges = "".join(f'<span class="badge bg-secondary me-1">{s}</span>' for s in ships)
     wa_stat = "✓" if wa else "✗"
 
-    species_rows = ""
-    for sp in species_breakdown:
-        in_s = sp["in_stock"]
-        tot = sp["total"]
-        stock_cell = f'<span class="text-success fw-bold">{in_s}</span>' if in_s > 0 else f'<span class="text-muted">{in_s}</span>'
-        species_rows += f"""
-        <tr>
-            <td><a href="/species/{sp['sl']}.html">{sp['cn']}</a></td>
-            <td class="text-muted fst-italic small">{sp['ln']}</td>
-            <td class="text-center">{stock_cell}</td>
-            <td class="text-center text-muted">{tot}</td>
-        </tr>"""
-
     all_in_stock = [p for p in products if p.get("any_available")]
     in_stock_products = all_in_stock[:20]
     has_more_products = len(all_in_stock) > 20
-    product_rows = ""
-    for p in in_stock_products:
-        price = f"${p['min_price']:.2f}" if p.get("min_price") else "POA"
-        title = p.get("title", "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        p_url = p.get("url", "#")
-        product_rows += f"""
-        <tr>
-            <td><a href="{p_url}" target="_blank" rel="noopener">{title}</a></td>
-            <td class="text-end">{price}</td>
-        </tr>"""
-
-    url_display = url.replace("https://", "").replace("http://", "")
-    url_link = f'<a href="{url}" target="_blank" rel="noopener">{url_display}</a>' if url else ""
-    location_line = f"📍 {location}" + (f"\n                &nbsp;·&nbsp;\n                {url_link}" if url_link else "")
 
     scraped_at = data.get("scraped_at", "")
     if scraped_at:
@@ -294,12 +298,19 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     tag_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded mr-1 mb-1 whitespace-nowrap">{t}</span>' for t in tags)
     ship_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-600 text-white rounded mr-1">{s}</span>' for s in ships)
 
-    # Rebuild species rows for Tailwind
+    # Species rows. An in-stock count > 0 links to the dashboard pre-filtered
+    # to this nursery + species + in-stock (dashboard.js restores filters from
+    # the URL), so the number is a drill-down, not just a stat.
     species_rows_tw = ""
     for sp in species_breakdown:
         in_s = sp["in_stock"]
         tot = sp["total"]
-        stock_cell = f'<span class="text-green-700 font-bold">{in_s}</span>' if in_s > 0 else f'<span class="text-gray-400">{in_s}</span>'
+        if in_s > 0:
+            stock_href = f"/?nursery={nursery_key}&species={sp['sl']}&stock=1"
+            stock_cell = (f'<a href="{stock_href}" class="text-green-700 font-bold hover:underline" '
+                          f'title="View {sp["cn"].lower()} in stock at {name}">{in_s}</a>')
+        else:
+            stock_cell = f'<span class="text-gray-400">{in_s}</span>'
         species_rows_tw += f"""
         <tr class="border-b border-gray-100 hover:bg-gray-50">
           <td class="py-1.5 px-3 text-sm"><a href="/species/{sp['sl']}.html" class="text-green-700 hover:underline">{sp['cn']}</a></td>
@@ -308,12 +319,11 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
           <td class="py-1.5 px-3 text-center text-sm text-gray-400">{tot}</td>
         </tr>"""
 
-    # Rebuild product rows for Tailwind
     product_rows_tw = ""
     for p in in_stock_products:
         price = f"${p['min_price']:.2f}" if p.get("min_price") else "POA"
         title = p.get("title", "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        p_url = p.get("url", "#")
+        p_url = outbound(p.get("url", ""), "nursery-page") or "#"
         product_rows_tw += f"""
         <tr class="border-b border-gray-100 hover:bg-gray-50">
           <td class="py-1.5 px-3 text-sm"><a href="{p_url}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{title}</a></td>
@@ -341,7 +351,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     footer = render_footer()
 
     url_display = url.replace("https://", "").replace("http://", "")
-    url_link = f'<a href="{url}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{url_display}</a>' if url else ""
+    url_link = f'<a href="{outbound(url, "nursery-page")}" target="_blank" rel="noopener" class="text-green-700 hover:underline">{url_display}</a>' if url else ""
 
     return f"""{head}
 {header_html}

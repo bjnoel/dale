@@ -28,6 +28,7 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 # Non-plant keywords to exclude regardless of species match
 from stocklib.classify import NON_PLANT_KEYWORDS
 from stocklib.taxonomy import enabled_species
+from stocklib.utm import outbound
 
 # States to generate pages for
 STATES = ["WA", "QLD", "NSW", "VIC"]
@@ -367,7 +368,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
 
     shown_view = [
         {
-            "url": p["url"],
+            "url": outbound(p["url"], "location-page"),
             "title": p["title"],
             "price_str": f"${p['price']:.2f}" if p["price"] else "N/A",
             "nursery_name": p["nursery_name"],

@@ -22,6 +22,7 @@ sys.path.insert(0, str(SCRAPERS_DIR))
 from build_compare_pages import load_species, build_species_lookup, match_title
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
 from stocklib.templates import render as render_template
+from stocklib.utm import outbound
 from treestock_layout import render_head, render_header, render_footer
 
 # Rarity scores are computed daily by build_species_pages.py and saved here.
@@ -168,7 +169,7 @@ def build_rare_page(data_dir: str, output_dir: str):
         show_products = sorted(products, key=lambda x: (x['price'] or 999))
         prod_rows = [
             {
-                'url': p['url'],
+                'url': outbound(p['url'], 'rare-finds'),
                 'title': p['title'],
                 'nursery_url': p['nursery_url'],
                 'nursery_name': p['nursery_name'],

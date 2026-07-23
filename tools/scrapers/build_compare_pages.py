@@ -28,6 +28,7 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 
 from stocklib.classify import NON_PLANT_KEYWORDS
 from stocklib.taxonomy import enabled_species
+from stocklib.utm import outbound
 from stocklib.category_ui import category_badges_html, is_bush_tucker, CATEGORY_FILTER_CSS
 
 # Minimum nurseries for a compare page to be useful
@@ -176,10 +177,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
     nursery_view = []
     for nk, n in sorted_nurseries:
         in_stock_row = bool(n["best_price"] and n["in_stock_count"] > 0)
-        if in_stock_row and n["best_url"]:
-            utm_url = n["best_url"] + ("&" if "?" in n["best_url"] else "?") + "utm_source=treestock&utm_medium=compare"
-        else:
-            utm_url = ""
+        utm_url = outbound(n["best_url"], "compare") if in_stock_row else ""
         local_lbl = delivery_label(nk)
         ships = local_lbl if local_lbl else (", ".join(n["ships_to"]) if n["ships_to"] else "Local only")
         nursery_view.append({
@@ -196,10 +194,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
     sorted_products = sorted(products, key=lambda x: (not x["available"], x["price"] or 9999, x["title"]))
     product_view = []
     for p in sorted_products:
-        if p["url"]:
-            utm_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=compare"
-        else:
-            utm_url = ""
+        utm_url = outbound(p["url"], "compare")
         product_view.append({
             "url": p["url"],
             "utm_url": utm_url,

@@ -64,6 +64,7 @@ TREESMITH_PROMO = (
 )
 
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.utm import outbound
 
 
 def get_resend_api_key() -> str:
@@ -205,7 +206,7 @@ def build_alert_email(species_name: str, slug: str, new_products: list[dict]) ->
     rows = ""
     for p in sorted(new_products, key=lambda x: x["price"] or 9999):
         price_str = f"${p['price']:.2f}" if p["price"] else "POA"
-        utm_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=email&utm_campaign=alert" if p["url"] else ""
+        utm_url = outbound(p["url"], "email", campaign="alert")
         rows += f"""
       <tr>
         <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6">

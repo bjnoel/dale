@@ -33,6 +33,7 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 
 from stocklib.citations import inline_cite
 from stocklib.classify import is_real_product
+from stocklib.utm import outbound
 from stocklib.registry import NURSERY_NAMES, delivery_label, restriction_warning
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.taxonomy import enabled_species
@@ -162,7 +163,7 @@ def collect_bare_root(data_dir, today: str | None = None) -> list[dict]:
                 continue
             rows.append({
                 "title": p.get("title", ""),
-                "url": p.get("url", ""),
+                "url": outbound(p.get("url", ""), "bare-root"),
                 "nursery_key": nursery_key,
                 "nursery": NURSERY_NAMES.get(nursery_key, snap.get("nursery_name", nursery_key)),
                 "price": _product_price(p),

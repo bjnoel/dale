@@ -52,6 +52,7 @@ from cultivar_parsing import (  # noqa: E402
 )
 from stocklib.taxonomy import load_species
 from stocklib.category_ui import category_badges_html, is_bush_tucker, CATEGORY_FILTER_CSS
+from stocklib.utm import outbound
 
 # Canonical species name -> the /species/ page slug from the taxonomy record
 # (slugify("Davidson's Plum") gives davidson-s-plum; the record says
@@ -140,7 +141,7 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
             if p["restrict"] else ""
         )
         product_view.append({
-            "product_link": p["url"] or nursery_url,
+            "product_link": outbound(p["url"] or (nursery_url if nursery_url != "#" else ""), "variety-page") or "#",
             "nursery_name": p["nursery_name"],
             "type_label": visible_type_label(p["type_label"], variety),
             "restrict_div": restrict_div,

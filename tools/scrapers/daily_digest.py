@@ -39,6 +39,7 @@ FRUIT_FILTERS = {
 }
 
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.utm import outbound
 from stocklib import changes as _changes
 from stocklib.changes import variant_key as _variant_key, variant_display_title as _variant_display_title, compare_snapshots
 
@@ -292,7 +293,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
 
 
 def _utm(url: str) -> str:
-    return url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral" if url else ""
+    return outbound(url, "referral")
 
 
 def _bush_tucker_section(bt_changes: dict, filter_state: str, enabled) -> dict | None:

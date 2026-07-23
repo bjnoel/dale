@@ -82,6 +82,7 @@ RELATED_LOOKUP = build_related_lookup()
 from stocklib.classify import NON_PLANT_KEYWORDS
 from stocklib.taxonomy import enabled_species
 from stocklib.category_ui import category_badges_html, CATEGORY_FILTER_CSS
+from stocklib.utm import outbound
 
 
 def load_species() -> list[dict]:
@@ -517,7 +518,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     # fragment (a clean variety slug or the #subscribeBox anchor) -> |safe.
     product_view = []
     for p in sorted(products, key=lambda x: (not x["available"], x["price"] or 9999)):
-        nursery_url = p["url"] + ("&" if "?" in p["url"] else "?") + "utm_source=treestock&utm_medium=referral" if p["url"] else ""
+        nursery_url = outbound(p["url"], "referral")
         # Alerts link only on OOS rows -- no value nudging someone to an
         # "alert me when it's back" page for something they can buy right now.
         # Named cultivars get a per-variety watch (the kept, low-noise feature)
