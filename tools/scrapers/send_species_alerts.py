@@ -37,14 +37,16 @@ from pathlib import Path
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
 DASHBOARD_DIR = Path("/opt/dale/dashboard")
-SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 ALERT_SENDS_LOG = DATA_DIR / "species_alert_sends.json"
-RESEND_ENV = SECRETS_DIR / "resend.env"
-APP_ENV = SECRETS_DIR / "app.env"
 from stocklib.taxonomy import enabled_species
 
-FROM_EMAIL = "alerts@mail.treestock.com.au"
-FROM_NAME = "treestock.com.au"
+
+from stocklib.mailer import (get_resend_api_key, get_unsubscribe_secret,
+                             make_unsubscribe_token, load_subscribers,
+                             load_sends_log, save_sends_log)
+import functools
+from stocklib.mailer import send_email as _send_email
+send_email = functools.partial(_send_email, user_agent="treestock-alerts/1.0")
 SITE_URL = "https://treestock.com.au"
 UNSUBSCRIBE_BASE = f"{SITE_URL}/unsubscribe.html"
 
@@ -66,53 +68,6 @@ TREESMITH_PROMO = (
 from stocklib.classify import is_real_product
 from stocklib.species_match import build_species_lookup, match_title
 from stocklib.utm import outbound
-
-
-def get_resend_api_key() -> str:
-    with open(RESEND_ENV) as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith("RESEND_API_KEY="):
-                return line.split("=", 1)[1].strip()
-    raise ValueError("RESEND_API_KEY not found in resend.env")
-
-
-def get_unsubscribe_secret() -> str:
-    if APP_ENV.exists():
-        with open(APP_ENV) as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("UNSUBSCRIBE_SECRET="):
-                    return line.split("=", 1)[1].strip()
-    return ""
-
-
-def make_unsubscribe_token(email: str, secret: str) -> str:
-    return hmac.new(
-        secret.encode(),
-        email.lower().encode(),
-        hashlib.sha256,
-    ).hexdigest()[:32]
-
-
-def load_subscribers() -> list:
-    if not SUBSCRIBERS_FILE.exists():
-        return []
-    with open(SUBSCRIBERS_FILE) as f:
-        return json.load(f)
-
-
-def load_sends_log() -> dict:
-    if not ALERT_SENDS_LOG.exists():
-        return {}
-    with open(ALERT_SENDS_LOG) as f:
-        return json.load(f)
-
-
-def save_sends_log(log: dict):
-    ALERT_SENDS_LOG.parent.mkdir(parents=True, exist_ok=True)
-    with open(ALERT_SENDS_LOG, "w") as f:
-        json.dump(log, f, indent=2)
 
 
 def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
@@ -274,35 +229,6 @@ def inject_unsubscribe(html: str, email: str, token: str) -> str:
     return html + footer
 
 
-def send_email(api_key: str, to_email: str, subject: str, html_body: str) -> bool:
-    payload = {
-        "from": f"{FROM_NAME} <{FROM_EMAIL}>",
-        "to": [to_email],
-        "subject": subject,
-        "html": html_body,
-    }
-    data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        "https://api.resend.com/emails",
-        data=data,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "treestock-alerts/1.0",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req) as resp:
-            result = json.loads(resp.read().decode())
-            print(f"  Sent to {to_email}: {result.get('id', 'ok')}")
-            return True
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode() if e.fp else str(e)
-        print(f"  FAILED {to_email} ({e.code}): {error_body}", file=sys.stderr)
-        return False
-
-
 def main():
     dry_run = "--dry-run" in sys.argv
     target_date = date.today().isoformat()
@@ -393,7 +319,7 @@ def main():
         return
 
     # Load sends log
-    sends_log = load_sends_log()
+    sends_log = load_sends_log(ALERT_SENDS_LOG)
     today_log = sends_log.get(target_date, {})  # {species_slug: [emails_already_sent]}
 
     if dry_run:
@@ -447,7 +373,7 @@ def main():
 
     if not redirect_to:
         sends_log[target_date] = today_log
-        save_sends_log(sends_log)
+        save_sends_log(ALERT_SENDS_LOG, sends_log)
 
     print(f"\nDone: {total_sent} alert(s) sent, {total_failed} failed")
     if total_failed:

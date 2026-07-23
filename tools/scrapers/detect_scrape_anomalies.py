@@ -31,6 +31,8 @@ STREAK_DAYS = 3
 
 SENDS_LOG_FILE = Path(os.environ.get("DALE_DATA_DIR", "/opt/dale/data")) / "scrape_anomaly_sends.json"
 
+from stocklib.mailer import load_sends_log, save_sends_log
+
 CONDITION_LABELS = {
     "failed": "Scraper failed",
     "zero_products": "Zero products",
@@ -139,22 +141,6 @@ def send_alert(subject, html, text):
     send_email(subject, html, text)
 
 
-def load_sends_log():
-    if not SENDS_LOG_FILE.exists():
-        return {}
-    try:
-        with open(SENDS_LOG_FILE) as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return {}
-
-
-def save_sends_log(log):
-    SENDS_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(SENDS_LOG_FILE, "w") as f:
-        json.dump(log, f, indent=2)
-
-
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     positional = [a for a in argv if not a.startswith("--")]
@@ -186,14 +172,14 @@ def main(argv=None):
         print(f"\n[DRY RUN] Would send:\nSubject: {subject}\n\n{text}")
         return 0
 
-    sends_log = load_sends_log()
+    sends_log = load_sends_log(SENDS_LOG_FILE)
     if sends_log.get("last_sent") == today.isoformat() and not force:
         print(f"Scrape anomaly alert already sent today ({today.isoformat()}), skipping.")
         return 0
 
     send_alert(subject, html, text)
     sends_log["last_sent"] = today.isoformat()
-    save_sends_log(sends_log)
+    save_sends_log(SENDS_LOG_FILE, sends_log)
     print(f"Scrape anomaly alert sent: {len(anomalies)} anomalies")
     return 0
 

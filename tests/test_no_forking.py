@@ -59,6 +59,17 @@ GUARDS = [
     # The seed-packet rule ("seeds?" but not seedling/seedless) was retyped
     # inline in 7+ files; only classify.py may spell that regex.
     (re.compile(r"seeds\?"), "stocklib/classify.py"),
+    # Email plumbing (DEC-232 follow-up): unsubscribe tokens are
+    # security-critical (a drifted copy = broken unsubscribe links from that
+    # sender), and the rest were 4-7 identical copies each.
+    (re.compile(r"^def get_resend_api_key\b"), "stocklib/mailer.py"),
+    (re.compile(r"^def get_unsubscribe_secret\b"), "stocklib/mailer.py"),
+    (re.compile(r"^def make_unsubscribe_token\b"), "stocklib/mailer.py"),
+    (re.compile(r"^def load_subscribers\b"), "stocklib/mailer.py"),
+    (re.compile(r"^def load_sends_log\b"), "stocklib/mailer.py"),
+    (re.compile(r"^def save_sends_log\b"), "stocklib/mailer.py"),
+    # Senders bind their User-Agent via functools.partial, never a def.
+    (re.compile(r"^def send_email\b"), "stocklib/mailer.py"),
 ]
 
 # Function names that must not be DEFINED anywhere in the scanned set: dead

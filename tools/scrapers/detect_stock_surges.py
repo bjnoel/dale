@@ -27,6 +27,8 @@ ABS_THRESHOLD = 10    # absolute change of 10+ items
 SCRIPT_DIR = Path(__file__).parent
 SENDS_LOG_FILE = Path("/opt/dale/data/surge_alert_sends.json")
 
+from stocklib.mailer import load_sends_log, save_sends_log
+
 
 def load_snapshot_header(path):
     """Load just the header fields from a snapshot (not full product list)."""
@@ -152,22 +154,6 @@ Thresholds: {PCT_THRESHOLD}% change and {ABS_THRESHOLD}+ items.
     print(f"Stock surge alert sent: {len(surges)} nurseries")
 
 
-def load_sends_log() -> dict:
-    if not SENDS_LOG_FILE.exists():
-        return {}
-    try:
-        with open(SENDS_LOG_FILE) as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return {}
-
-
-def save_sends_log(log: dict) -> None:
-    SENDS_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(SENDS_LOG_FILE, "w") as f:
-        json.dump(log, f, indent=2)
-
-
 def main():
     if len(sys.argv) < 2:
         print("Usage: detect_stock_surges.py <data_dir>")
@@ -190,14 +176,14 @@ def main():
         return
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    sends_log = load_sends_log()
+    sends_log = load_sends_log(SENDS_LOG_FILE)
     if sends_log.get("last_sent") == today and "--force" not in sys.argv:
         print(f"Stock surge alert already sent today ({today}), skipping.")
         return
 
     send_alert(surges)
     sends_log["last_sent"] = today
-    save_sends_log(sends_log)
+    save_sends_log(SENDS_LOG_FILE, sends_log)
 
 
 if __name__ == "__main__":

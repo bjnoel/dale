@@ -17,22 +17,13 @@ import urllib.request
 from pathlib import Path
 
 SECRETS_DIR = Path("/opt/dale/secrets")
-RESEND_ENV = SECRETS_DIR / "resend.env"
-APP_ENV = SECRETS_DIR / "app.env"
 
 FROM_EMAIL = "alerts@mail.treestock.com.au"
 FROM_NAME = "treestock.com.au"
+
+from stocklib.mailer import get_resend_api_key
 SITE_URL = "https://treestock.com.au"
 CONFIRM_BASE = "https://treestock.com.au/api/confirm"
-
-
-def get_resend_api_key() -> str:
-    with open(RESEND_ENV) as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith("RESEND_API_KEY="):
-                return line.split("=", 1)[1].strip()
-    raise ValueError("RESEND_API_KEY not found in resend.env")
 
 
 def build_confirmation_html(email: str, confirm_url: str) -> str:

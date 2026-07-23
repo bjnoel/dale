@@ -20,44 +20,18 @@ sys.path.insert(0, str(Path(__file__).parent))
 from shipping import SHIPPING_MAP
 
 SECRETS_DIR = Path("/opt/dale/secrets")
-RESEND_ENV = SECRETS_DIR / "resend.env"
-APP_ENV = SECRETS_DIR / "app.env"
 
 FROM_EMAIL = "alerts@mail.treestock.com.au"
 FROM_NAME = "treestock.com.au"
+
+from stocklib.mailer import (get_resend_api_key, get_unsubscribe_secret,
+                             make_unsubscribe_token)
 SITE_URL = "https://treestock.com.au"
 # The static /unsubscribe.html page (POSTs to /api/unsubscribe). Bare /unsubscribe
 # is not a routed path, so it 404s — keep this consistent with email_footer.py and
 # the alert senders, which all use /unsubscribe.html.
 UNSUBSCRIBE_BASE = "https://treestock.com.au/unsubscribe.html"
 UTM = "utm_source=treestock&utm_medium=email&utm_campaign=welcome"
-
-
-def get_resend_api_key() -> str:
-    with open(RESEND_ENV) as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith("RESEND_API_KEY="):
-                return line.split("=", 1)[1].strip()
-    raise ValueError("RESEND_API_KEY not found in resend.env")
-
-
-def get_unsubscribe_secret() -> str:
-    if APP_ENV.exists():
-        with open(APP_ENV) as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("UNSUBSCRIBE_SECRET="):
-                    return line.split("=", 1)[1].strip()
-    return ""
-
-
-def make_unsubscribe_token(email: str, secret: str) -> str:
-    return hmac.new(
-        secret.encode(),
-        email.lower().encode(),
-        hashlib.sha256,
-    ).hexdigest()[:32]
 
 
 def build_welcome_html(email: str, unsubscribe_url: str, manage_url: str = "") -> str:

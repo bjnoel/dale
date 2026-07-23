@@ -32,6 +32,9 @@ from urllib.parse import parse_qs, parse_qsl, quote, urlparse
 
 import admin_view
 
+from stocklib.mailer import (SUBSCRIBERS_FILE, get_unsubscribe_secret,
+                             make_unsubscribe_token, load_subscribers)
+
 try:
     import jwt  # PyJWT — validates the Cloudflare Access JWT on /admin
 except ImportError:  # server fails closed (403) if PyJWT is missing
@@ -39,7 +42,6 @@ except ImportError:  # server fails closed (403) if PyJWT is missing
 
 SCRIPT_DIR = Path(__file__).parent
 
-SUBSCRIBERS_FILE = Path("/opt/dale/data/subscribers.json")
 PENDING_FILE = Path("/opt/dale/data/pending_subscribers.json")
 APP_ENV = Path("/opt/dale/secrets/app.env")
 VARIETY_WATCHES_DB = Path("/opt/dale/data/variety_watches.db")
@@ -90,26 +92,6 @@ def init_variety_watches_db():
     con.close()
 
 
-def get_unsubscribe_secret() -> str:
-    if APP_ENV.exists():
-        with open(APP_ENV) as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("UNSUBSCRIBE_SECRET="):
-                    return line.split("=", 1)[1].strip()
-    return ""
-
-
-def make_unsubscribe_token(email: str) -> str:
-    """Same deterministic token used by every preferences/unsubscribe link."""
-    secret = get_unsubscribe_secret()
-    if not secret:
-        return ""
-    return hmac.new(
-        secret.encode(), email.lower().encode(), hashlib.sha256
-    ).hexdigest()[:32]
-
-
 def verify_unsubscribe_token(email: str, token: str) -> bool:
     expected = make_unsubscribe_token(email)
     if not expected:
@@ -158,13 +140,6 @@ def purge_expired_pending(pending: list) -> list:
         except Exception:
             pass
     return fresh
-
-
-def load_subscribers() -> list:
-    if SUBSCRIBERS_FILE.exists():
-        with open(SUBSCRIBERS_FILE) as f:
-            return json.load(f)
-    return []
 
 
 def save_subscribers(subscribers: list):

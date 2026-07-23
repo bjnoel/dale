@@ -39,66 +39,21 @@ from stocklib.utm import outbound
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
 NURSERY_STOCK_DIR = DATA_DIR / "nursery-stock"
-SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 WEEKLY_SENDS_LOG = DATA_DIR / "weekly_digest_sends.json"
-RESEND_ENV = SECRETS_DIR / "resend.env"
-APP_ENV = SECRETS_DIR / "app.env"
 
-FROM_EMAIL = "alerts@mail.treestock.com.au"
-FROM_NAME = "treestock.com.au"
+
+from stocklib.mailer import (get_resend_api_key, get_unsubscribe_secret,
+                             make_unsubscribe_token, load_subscribers,
+                             load_sends_log, save_sends_log)
+import functools
+from stocklib.mailer import send_email as _send_email
+send_email = functools.partial(_send_email, user_agent="treestock-weekly/1.0")
 SITE_URL = "https://treestock.com.au"
 
 # Caps to keep emails scannable
 MAX_PRICE_DROPS = 8
 MAX_RESTOCKS = 8
 MAX_NEW_ARRIVALS = 8
-
-
-def get_resend_api_key() -> str:
-    with open(RESEND_ENV) as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith("RESEND_API_KEY="):
-                return line.split("=", 1)[1].strip()
-    raise ValueError("RESEND_API_KEY not found in resend.env")
-
-
-def get_unsubscribe_secret() -> str:
-    if APP_ENV.exists():
-        with open(APP_ENV) as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("UNSUBSCRIBE_SECRET="):
-                    return line.split("=", 1)[1].strip()
-    return ""
-
-
-def make_unsubscribe_token(email: str, secret: str) -> str:
-    return hmac.new(
-        secret.encode(),
-        email.lower().encode(),
-        hashlib.sha256,
-    ).hexdigest()[:32]
-
-
-def load_subscribers() -> list:
-    if not SUBSCRIBERS_FILE.exists():
-        return []
-    with open(SUBSCRIBERS_FILE) as f:
-        return json.load(f)
-
-
-def load_sends_log() -> dict:
-    if not WEEKLY_SENDS_LOG.exists():
-        return {}
-    with open(WEEKLY_SENDS_LOG) as f:
-        return json.load(f)
-
-
-def save_sends_log(log: dict):
-    WEEKLY_SENDS_LOG.parent.mkdir(parents=True, exist_ok=True)
-    with open(WEEKLY_SENDS_LOG, "w") as f:
-        json.dump(log, f, indent=2)
 
 
 def load_weekly_changes(end_date: str, state_filter: str = "") -> dict:
@@ -446,37 +401,6 @@ def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "",
     return "\n".join(lines)
 
 
-def send_email(api_key: str, to_email: str, subject: str, html_body: str, text_body: str = "") -> bool:
-    payload = {
-        "from": f"{FROM_NAME} <{FROM_EMAIL}>",
-        "to": [to_email],
-        "subject": subject,
-        "html": html_body,
-    }
-    if text_body:
-        payload["text"] = text_body
-    data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        "https://api.resend.com/emails",
-        data=data,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "treestock-weekly/1.0",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            result = json.loads(resp.read().decode())
-            print(f"  Sent to {to_email}: {result.get('id', 'ok')}")
-            return True
-    except urllib.error.HTTPError as e:
-        error_body = e.fp.read().decode() if e.fp else str(e)
-        print(f"  FAILED {to_email} ({e.code}): {error_body}", file=sys.stderr)
-        return False
-
-
 def main():
     dry_run = "--dry-run" in sys.argv
     test_email = None
@@ -513,7 +437,7 @@ def main():
         return
 
     # Idempotency
-    sends_log = load_sends_log()
+    sends_log = load_sends_log(WEEKLY_SENDS_LOG)
     already_sent = set() if test_email else set(sends_log.get(week_key, []))
     to_send = [s for s in subscribers if s["email"] not in already_sent]
     skipped = len(subscribers) - len(to_send)
@@ -616,7 +540,7 @@ def main():
 
     if not test_email:
         sends_log[week_key] = sent_emails
-        save_sends_log(sends_log)
+        save_sends_log(WEEKLY_SENDS_LOG, sends_log)
 
     sent_count = len(sent_emails) - len(already_sent)
     print(f"Done: {sent_count} sent, {empty_skipped} skipped (empty/muted), {failed} failed")

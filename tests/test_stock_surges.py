@@ -96,25 +96,24 @@ class ThresholdLogic(unittest.TestCase):
 
 
 class IdempotencyLog(unittest.TestCase):
-    """The send marker prevents duplicate emails on the same UTC day."""
+    """The send marker prevents duplicate emails on the same UTC day.
+    load/save_sends_log live in stocklib.mailer and take the log path."""
 
     def test_load_returns_empty_when_missing(self):
         with tempfile.TemporaryDirectory() as td:
-            dss.SENDS_LOG_FILE = Path(td) / "missing.json"
-            self.assertEqual(dss.load_sends_log(), {})
+            self.assertEqual(dss.load_sends_log(Path(td) / "missing.json"), {})
 
     def test_load_returns_empty_on_corrupt_json(self):
         with tempfile.TemporaryDirectory() as td:
             log = Path(td) / "log.json"
             log.write_text("{not valid json")
-            dss.SENDS_LOG_FILE = log
-            self.assertEqual(dss.load_sends_log(), {})
+            self.assertEqual(dss.load_sends_log(log), {})
 
     def test_save_then_load_roundtrip(self):
         with tempfile.TemporaryDirectory() as td:
-            dss.SENDS_LOG_FILE = Path(td) / "log.json"
-            dss.save_sends_log({"last_sent": "2026-04-25"})
-            self.assertEqual(dss.load_sends_log(), {"last_sent": "2026-04-25"})
+            log = Path(td) / "log.json"
+            dss.save_sends_log(log, {"last_sent": "2026-04-25"})
+            self.assertEqual(dss.load_sends_log(log), {"last_sent": "2026-04-25"})
 
 
 if __name__ == "__main__":

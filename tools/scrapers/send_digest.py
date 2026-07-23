@@ -35,70 +35,15 @@ from stocklib.email_footer import inject_footer
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
 NURSERY_STOCK_DIR = DATA_DIR / "nursery-stock"
-SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 SENDS_LOG_FILE = DATA_DIR / "digest_sends.json"
-RESEND_ENV = SECRETS_DIR / "resend.env"
-APP_ENV = SECRETS_DIR / "app.env"
-
-FROM_EMAIL = "alerts@mail.treestock.com.au"
-FROM_NAME = "treestock.com.au"
 
 
-def get_resend_api_key() -> str:
-    with open(RESEND_ENV) as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith("RESEND_API_KEY="):
-                return line.split("=", 1)[1].strip()
-    raise ValueError("RESEND_API_KEY not found in resend.env")
-
-
-def get_unsubscribe_secret() -> str:
-    """Load or create a stable HMAC secret for unsubscribe tokens."""
-    if APP_ENV.exists():
-        with open(APP_ENV) as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("UNSUBSCRIBE_SECRET="):
-                    return line.split("=", 1)[1].strip()
-    # Generate a new secret and store it
-    import secrets as _secrets
-    secret = _secrets.token_hex(32)
-    APP_ENV.parent.mkdir(parents=True, exist_ok=True)
-    with open(APP_ENV, "a") as f:
-        f.write(f"UNSUBSCRIBE_SECRET={secret}\n")
-    print(f"Generated new UNSUBSCRIBE_SECRET in {APP_ENV}")
-    return secret
-
-
-def make_unsubscribe_token(email: str, secret: str) -> str:
-    """Generate HMAC-SHA256 token for unsubscribe link."""
-    return hmac.new(
-        secret.encode(),
-        email.lower().encode(),
-        hashlib.sha256,
-    ).hexdigest()[:32]
-
-
-def load_subscribers() -> list:
-    if not SUBSCRIBERS_FILE.exists():
-        return []
-    with open(SUBSCRIBERS_FILE) as f:
-        return json.load(f)
-
-
-def load_sends_log() -> dict:
-    """Returns dict of {date_str: [email, ...]} of already-sent digests."""
-    if not SENDS_LOG_FILE.exists():
-        return {}
-    with open(SENDS_LOG_FILE) as f:
-        return json.load(f)
-
-
-def save_sends_log(log: dict):
-    SENDS_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(SENDS_LOG_FILE, "w") as f:
-        json.dump(log, f, indent=2)
+from stocklib.mailer import (get_resend_api_key, get_unsubscribe_secret,
+                             make_unsubscribe_token, load_subscribers,
+                             load_sends_log, save_sends_log)
+import functools
+from stocklib.mailer import send_email as _send_email
+send_email = functools.partial(_send_email, user_agent="treestock-digest/1.0")
 
 
 def get_subscriber_state(subscriber: dict) -> str:
@@ -139,36 +84,6 @@ def get_subscriber_frequency(subscriber: dict) -> str:
     if freq not in ("daily", "weekly", "off"):
         return "daily"
     return freq
-
-
-def send_email(api_key: str, to_email: str, subject: str, html_body: str) -> bool:
-    """Send a single email via Resend API."""
-    payload = {
-        "from": f"{FROM_NAME} <{FROM_EMAIL}>",
-        "to": [to_email],
-        "subject": subject,
-        "html": html_body,
-    }
-    data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        "https://api.resend.com/emails",
-        data=data,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "treestock-digest/1.0",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req) as resp:
-            result = json.loads(resp.read().decode())
-            print(f"  Sent to {to_email}: {result.get('id', 'ok')}")
-            return True
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode() if e.fp else str(e)
-        print(f"  FAILED {to_email} ({e.code}): {error_body}", file=sys.stderr)
-        return False
 
 
 def main():
@@ -214,7 +129,7 @@ def main():
         return
 
     # Load send log (skip already-sent today; test mode bypasses idempotency)
-    sends_log = load_sends_log()
+    sends_log = load_sends_log(SENDS_LOG_FILE)
     already_sent = set() if test_email else set(sends_log.get(target_date, []))
 
     to_send = [s for s in subscribers if s["email"] not in already_sent]
@@ -251,7 +166,7 @@ def main():
         return
 
     api_key = get_resend_api_key()
-    secret = get_unsubscribe_secret()
+    secret = get_unsubscribe_secret(create=True)
     subject = f"Nursery Stock Update — {target_date}"
 
     # Cache generated HTML per (state, categories) bucket
@@ -302,7 +217,7 @@ def main():
     # Save updated log — skip in test mode to avoid corrupting production sends log
     if not test_email:
         sends_log[target_date] = sent_emails
-        save_sends_log(sends_log)
+        save_sends_log(SENDS_LOG_FILE, sends_log)
 
     sent_count = len(sent_emails) - len(already_sent)
     print(f"Done: {sent_count} sent, {empty_skipped} skipped (empty/muted), {failed} failed")
