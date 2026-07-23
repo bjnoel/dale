@@ -6169,3 +6169,19 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **Engineering:** `check-weekly-update.py` rewritten (same filename, dale-runner.sh unchanged); pure `gate_decision(today, latest_week, stamp_date)` stays unit-testable; `tests/test_weekly_update_gate.py` rewritten (25 tests incl. the no-Monday-loophole regression and unsigned-draft-doesn't-count). Git commits were rejected as a signal: interactive Dale sessions commit as Benedict's identity, so authorship proves nothing.
 
 **Rollout:** deploy via tools/deploy.sh, add the Monday cron line, seed the engagement stamp with today (Benedict is demonstrably present), ending the current strike immediately.
+
+## DEC-227 — 2026-07-23 — Bush tucker pilot review: tell him he's dreaming on natives (DAL-202/DAL-203)
+
+**Decided by:** Dale, executing the pre-agreed decision rule from DAL-202 (thresholds set in docs/category-expansion.md section 5 and on the ticket; outcome mapping agreed when the pilot shipped, DEC-200/202/203).
+
+**Context:** Bush tucker (20 native food species, /bush-tucker/ landing, species pages, guides, digest opt-in) went live 2026-06-11 as a pilot for a broader natives expansion (Phase 3, DAL-203). The 6-week checkpoint fell due this week; the scheduled cloud routine fired but could not post (dead Linear connector), so the measurement ran from an interactive dale-server session.
+
+**Results against criteria:**
+
+1. Organic clicks (30+/week combined by week 6): **FAIL.** 1, 1, and 2 clicks per fortnight across all bush tucker surfaces, roughly 0.5-1/week vs 30. Impressions grew 95 -> 140 -> 311 per fortnight, so indexing works; demand does not exist at meaningful scale.
+2. Engagement (5+ watches or digest opt-ins): **FAIL.** 1 variety watch + 1 digest opt-in.
+3. Unclassified under 10% for lead nurseries: **FAIL 4/5.** guildford 9.3%, fruitopia 12.7%, ross-creek 13.9%, ladybird 20.3%, daleys 20.6%.
+4. Zero fruit regression: **PASS.** Non-bush-tucker clicks grew 386 -> 599 -> 679 per fortnight vs ~298/fortnight baseline.
+5. Scrape health green: **PASS with caveats** (no sustained outages in 43 days; intermittent failures mostly ladybird/primal-fruits/heaven-on-earth).
+
+**Decision:** Natives expansion cancelled (DAL-203 -> Canceled), DAL-202 -> Done. Bush tucker pages stay live: zero marginal cost, impressions still compounding, no fruit downside. No further category-expansion investment; effort stays on fruit content layers and the Treesmith funnel, which is where the growth demonstrably is. Thresholds were Benedict-adjustable; he can reopen DAL-203 to overrule.
