@@ -72,20 +72,17 @@ treestock.com.au, www.treestock.com.au {
 }
 
 beestock.com.au, www.beestock.com.au {
+    # beestock discontinued 2026-07-23 (DEC-229). Scrapers, alerts, and the
+    # subscribe server are retired; pages stay up static. Subscribe endpoints
+    # return 410 instead of proxying to the stopped service on :8098.
     handle /api/subscribe {
-        uri strip_prefix /api
-        reverse_proxy localhost:8098
+        respond "beestock is no longer updated and subscriptions are closed." 410
     }
     handle /api/unsubscribe {
-        uri strip_prefix /api
-        reverse_proxy localhost:8098
+        respond "beestock subscriptions are closed. All subscribers have been removed." 410
     }
-
-    # Bee emails (welcome + price alerts) use a bare /unsubscribe link; route it
-    # to the backend (handles GET /unsubscribe) so they don't 404. beestock has no
-    # static unsubscribe.html, so this is the canonical unsubscribe path.
     handle /unsubscribe {
-        reverse_proxy localhost:8098
+        respond "beestock subscriptions are closed. All subscribers have been removed." 410
     }
 
     root * /opt/dale/bee-dashboard
