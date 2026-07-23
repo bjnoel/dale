@@ -6199,3 +6199,35 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 4. Tests: new tests/test_shopify_retry.py (retry wiring + truncated-snapshot abort regression), test_no_forking guards for RETRYABLE_HTTP / request_with_retry / backoff_delay. Full suite green (1799 tests).
 
 **Not done (deliberately):** woocommerce/bigcommerce/daleys scrapers still have no retry; they were unaffected on the 19th and can adopt stocklib.retry when next touched.
+
+## DEC-229 — 2026-07-23 — Treesmith funnel audit: found the primary leak (DAL-218)
+
+**Decided by:** Dale (autonomous session, DAL-218).
+
+**Context:** Revenue alarm active (119 days, $0). Treesmith has been live since April 2026 with 0 Pro subscribers. Cross-promo CTAs are live on treestock (species/variety/guide pages, all email programs). Yet no conversions. Audit ordered to find where the leak is before building more funnel content.
+
+**Findings (data from Plausible + PostHog + Resend, 2026-07-23):**
+
+| Funnel Step | Volume | Notes |
+|---|---|---|
+| treestock.com.au visitors (30d) | 2,865 | Growing +59% MoM |
+| /treesmith.html views (30d) | 12 unique | 0.4% CTR from treestock |
+| App Store click-throughs (30d) | UNKNOWN | No UTM on iOS link |
+| App MAU / WAU | 43 / 10 | 6 new installs last 7d |
+| Activated: added a plant | 33% (2/6 new users) | Decent |
+| Logged an activity | 0% (0/4 who added plants) | Bad — graft tracking unused |
+| Paywall views (7d) | 1 | 43 MAU, only 1 paywall hit |
+| Pro purchases | 0 | — |
+
+**Primary leak: Step 1 → 2 (treestock → treesmith.html).** The CTAs are below-the-fold on species/variety/guide pages. They are absent from: the homepage (225 visitors/month, top page), nursery pages (Daleys: 84, Ladybird: 43), compare pages (mulberry-prices: 55). 12 people/month reaching the Treesmith landing page from 2,865 visitors.
+
+**Secondary leaks:** No UTM on web CTAs (can't attribute by page type); no UTM on iOS App Store link (can't measure App Store referrals from treestock); 0% activity log after plant add (differentiator unused); 0% D1 retention (small sample); paywall at 30 plants is rarely reached.
+
+**What was shipped (autonomous):**
+- Added UTM params to `render_treesmith_promo` web CTA (utm_content={context} so Plausible can attribute by page type)
+- Added UTM to iOS App Store link on treesmith.html
+- Emailed Benedict the full audit report
+- Proposed DAL-219 (homepage Treesmith CTA, needs Benedict OK) and DAL-220 (nursery pages, lower priority)
+- Also fixed DAL-217 (golden test non-determinism) in same session
+
+**What needs Benedict:** Homepage CTA approval (DAL-219); App Store Connect analytics check; Flutter nudge after first plant added; consider lowering paywall trigger.

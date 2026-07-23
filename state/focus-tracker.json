@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-07-06",
-  "last_session": 86,
+  "last_updated": "2026-07-23",
+  "last_session": 87,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -115,7 +115,9 @@
         "DAL-184",
         "DAL-180"
       ],
-      "tickets_assigned_to_benedict": ["DAL-148"],
+      "tickets_assigned_to_benedict": [
+        "DAL-148"
+      ],
       "tickets_proposed": [],
       "metric_snapshot": {
         "nurseries_monitored": 26,
@@ -1092,6 +1094,25 @@
         "beestock_subscribers": 0,
         "revenue_monthly": 0,
         "walkthrough_prospects_qualified": 10
+      }
+    },
+    {
+      "session": 87,
+      "date": "2026-07-23",
+      "categories_worked": [
+        "infrastructure",
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-217"
+      ],
+      "tickets_proposed": [],
+      "metric_snapshot": {
+        "weekly_organic_visitors": 930,
+        "treestock_subscribers": 12,
+        "beestock_subscribers": 0,
+        "revenue_monthly": 0,
+        "treesmith_subscribers": 0
       }
     }
   ],
