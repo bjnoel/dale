@@ -870,7 +870,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
             hard_to_find_slugs = {slug for slug, r in rarity_data.items() if r.get("hard_to_find")}
         except Exception:
             pass
-    hard_to_find_json = json.dumps(list(hard_to_find_slugs), separators=(",", ":"))
+    hard_to_find_json = json.dumps(sorted(hard_to_find_slugs), separators=(",", ":"))
     # Single JSON blob, written to an external data.js (window.__DATA) that loads
     # `defer` before dashboard.js. Keeping it out of the HTML shrinks the document
     # ~70x for a much faster FCP; JSON.parse of a string literal keeps the parse fast
@@ -882,7 +882,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
     dashboard_data_json = json.dumps({
         "products": products, "nurseries": nurseries,
-        "species_slugs": species_slugs, "hard_to_find": list(hard_to_find_slugs),
+        "species_slugs": species_slugs, "hard_to_find": sorted(hard_to_find_slugs),
         "species_cats": species_cats,
     }, separators=(",", ":"))
     data_js = "window.__DATA=JSON.parse(" + json.dumps(dashboard_data_json) + ");"
@@ -1126,6 +1126,12 @@ def main():
 
     data_dir = Path(args.data_dir)
     output_dir = Path(args.output_dir)
+
+    # Resolve rarity_scores.json relative to data_dir so test fixtures are used
+    # in golden tests (fixture/rarity_scores.json) rather than the live server file.
+    # On the live server data_dir is /opt/dale/data/nursery-stock/ so parent is unchanged.
+    global RARITY_SCORES_FILE
+    RARITY_SCORES_FILE = data_dir.parent / "rarity_scores.json"
 
     if not data_dir.exists():
         print(f"Error: {data_dir} does not exist")

@@ -63,6 +63,11 @@ def build_rare_page(data_dir: str, output_dir: str):
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Resolve rarity_scores.json relative to data_dir so test fixtures are used
+    # rather than the hardcoded live server path.
+    global RARITY_SCORES_FILE
+    RARITY_SCORES_FILE = data_dir.parent / "rarity_scores.json"
+
     species_list = load_species()
     lookup = build_species_lookup(species_list)
     rarity_scores = load_rarity_scores()
