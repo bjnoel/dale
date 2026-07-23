@@ -226,7 +226,7 @@ def render_treesmith_promo(context: str = "variety") -> str:
           log grafts and harvests, and capture growth photos over time. Built by the
           same person behind treestock.
         </p>
-        <a href="/treesmith.html"
+        <a href="/treesmith.html?utm_source=treestock&amp;utm_medium=web&amp;utm_campaign=promo_block&amp;utm_content={context}"
            class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-800 no-underline">
           See Treesmith &rarr;
         </a>

@@ -31,7 +31,7 @@ OG_IMAGE = "https://treestock.com.au/treesmith/grid.png"
 APP_BASE = "https://treesmith.app/"
 APP_UTM = "?utm_source=treestock&utm_medium=treesmith_page&utm_campaign=treesmith_launch"
 APP_URL = APP_BASE + APP_UTM
-IOS_URL = "https://apps.apple.com/us/app/treesmith/id6761506742"
+IOS_URL = "https://apps.apple.com/us/app/treesmith/id6761506742?utm_source=treestock&utm_medium=treesmith_page&utm_campaign=treesmith_launch"
 ANDROID_BETA_URL = "https://treesmith.app/beta/" + APP_UTM
 
 
