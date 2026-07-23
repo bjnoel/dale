@@ -15,7 +15,7 @@ from pathlib import Path
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label, restriction_warning
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
-from stocklib.taxonomy import enabled_species
+from stocklib.species_match import load_species_lookup, match_species
 from stocklib.utm import outbound
 
 # Per-nursery metadata: website URL, tags, description
@@ -151,35 +151,6 @@ NURSERY_META = {
         "description": "All Rare Herbs is a Mapleton QLD mail-order nursery best known for herbs, with a genuinely rare fruiting range: miracle fruit, acerola cherry, vanilla, coffee, cocoa, goji, midyim and other collector plants. We track their fruiting plants and trees only. No plants to WA, NT, or TAS.",
     },
 }
-
-
-def load_species_lookup() -> dict:
-    species = enabled_species()
-    lookup = {}
-    for s in species:
-        common = s["common_name"].lower()
-        entry = {
-            "cn": s["common_name"],
-            "ln": s["latin_name"],
-            "sl": s["slug"],
-        }
-        parts = s["latin_name"].split()
-        if len(parts) >= 2:
-            entry["g"] = parts[0]
-        lookup[common] = entry
-        for alias in s.get("aliases", []):
-            lookup[alias.lower()] = entry
-    return lookup
-
-
-def match_species(title: str, lookup: dict):
-    title_lower = title.lower()
-    for term, entry in lookup.items():
-        if term and term in title_lower:
-            return entry
-        if "g" in entry and entry["g"].lower() in title_lower:
-            return entry
-    return None
 
 
 def load_nursery_data(data_dir: Path) -> dict:
