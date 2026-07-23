@@ -43,6 +43,9 @@ GUARDS = [
     (re.compile(r"^GRADE_BADGE\s*[:=]"), "stocklib/evidence.py"),
     (re.compile(r"^def nursery_coverage\b"), "stocklib/coverage.py"),
     (re.compile(r"^def usable_dates\b"), "stocklib/coverage.py"),
+    (re.compile(r"^RETRYABLE_HTTP\s*[:=]"), "stocklib/retry.py"),
+    (re.compile(r"^def request_with_retry\b"), "stocklib/retry.py"),
+    (re.compile(r"^def backoff_delay\b"), "stocklib/retry.py"),
 ]
 
 

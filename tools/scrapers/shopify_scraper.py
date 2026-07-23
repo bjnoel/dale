@@ -16,11 +16,11 @@ import os
 import sys
 import time
 import urllib.request
-import urllib.error
 from datetime import datetime, date
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
+from stocklib.retry import request_with_retry
 from stocklib.scrape_health import ScrapeHealth
 
 # Nursery configurations
@@ -146,26 +146,28 @@ NURSERIES = {
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 REQUEST_DELAY = 2  # seconds between paginated requests
+NURSERY_DELAY = 5  # seconds between stores; they share Shopify's edge, so an
+                   # instant-failure cascade must not turn into a request burst
+                   # (2026-07-19: every store 503'd back-to-back within ~1s)
 
 
-def fetch_json(url, health=None):
-    """Fetch JSON from URL with proper headers."""
+def fetch_json(url, health=None, *, _opener=None, _sleep=time.sleep):
+    """Fetch JSON from URL with proper headers, retrying transient 429/503s
+    and timeouts (stocklib.retry). ``_opener``/``_sleep`` are test seams."""
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT,
         "Accept": "application/json",
     })
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return json.loads(resp.read().decode())
-    except urllib.error.HTTPError as e:
-        print(f"  HTTP {e.code} fetching {url}")
-        if health:
-            health.note_http_error(e.code, url)
+    raw = request_with_retry(req, timeout=30, health=health,
+                             _opener=_opener, _sleep=_sleep)
+    if raw is None:
         return None
-    except Exception as e:
-        print(f"  Error fetching {url}: {e}")
+    try:
+        return json.loads(raw.decode())
+    except json.JSONDecodeError as e:
+        print(f"  JSON decode error from {url}: {e}")
         if health:
-            health.note_error(str(e))
+            health.note_error(f"json decode: {e}")
         return None
 
 
@@ -223,8 +225,13 @@ def scrape_shopify(nursery_key, config, health=None):
 
         data = fetch_json(url, health)
         if data is None:
-            print("failed")
-            break
+            # A truncated catalogue looks like a mass stock wipe downstream
+            # (fruitopia saved 250 of ~1100 products on 2026-07-19), so a
+            # failed page kills the whole snapshot, keeping yesterday's.
+            print("failed; aborting (keeping last snapshot)")
+            if health:
+                health.note_error(f"page {page} failed after retries; snapshot aborted")
+            return []
 
         products = data.get("products", [])
         if not products:
@@ -381,6 +388,8 @@ def main():
         health.finish(products=len(normalized),
                       in_stock=sum(1 for p in normalized if p["any_available"]))
         print()
+        if len(targets) > 1:
+            time.sleep(NURSERY_DELAY)
 
 
 if __name__ == "__main__":

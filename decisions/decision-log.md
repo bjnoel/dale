@@ -6185,3 +6185,17 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 5. Scrape health green: **PASS with caveats** (no sustained outages in 43 days; intermittent failures mostly ladybird/primal-fruits/heaven-on-earth).
 
 **Decision:** Natives expansion cancelled (DAL-203 -> Canceled), DAL-202 -> Done. Bush tucker pages stay live: zero marginal cost, impressions still compounding, no fruit downside. No further category-expansion investment; effort stays on fruit content layers and the Treesmith funnel, which is where the growth demonstrably is. Thresholds were Benedict-adjustable; he can reopen DAL-203 to overrule.
+
+## DEC-228 — 2026-07-23 — Retry/backoff for the Shopify scraper after the 2026-07-19 platform-wide 503 blip
+
+**Decided by:** Dale, at Benedict's request ("do the cheap fix") after he flagged the 2026-07-19 mass 5xx failures.
+
+**Context:** On 2026-07-19 at 00:01:38 UTC, 10 of 13 Shopify nurseries returned HTTP 503 instantly (0.08-0.35s) within a two-second window, and fruitopia 503'd on page 2 of pagination. Every non-Shopify platform (Woo, Ecwid, Wix, BigCommerce, custom) succeeded in the same run, and 07-18/07-20 were both clean. Diagnosis: a transient Shopify platform/edge event, possibly triggered or aggravated by our back-to-back products.json hits from one IP. Cost: 10 missing snapshots plus one truncated snapshot (fruitopia saved 250 of ~1100 products, which looks like a mass stock wipe downstream).
+
+**Decision:**
+1. Extract the retry/backoff logic ecwid_scraper already had (DEC-210 era) into shared `stocklib/retry.py` (429/503 + timeouts, exponential backoff 2s..30s honouring Retry-After, 3 retries) instead of forking a third copy.
+2. shopify_scraper: `fetch_json` goes through the shared retry; 5s pause between stores so an instant-failure cascade cannot burst Shopify's edge; a page failing mid-pagination now aborts the whole snapshot (keeping the last good one) and records a scrape-health error, mirroring the Wix MAX_FAILURE_RATIO behaviour.
+3. De-fork: ecwid_scraper and wix_scraper now import from stocklib.retry (the new test_no_forking guard caught wix's private copy immediately). bee/ subsite still forks; unchanged, part of the existing de-fork-pending backlog.
+4. Tests: new tests/test_shopify_retry.py (retry wiring + truncated-snapshot abort regression), test_no_forking guards for RETRYABLE_HTTP / request_with_retry / backoff_delay. Full suite green (1799 tests).
+
+**Not done (deliberately):** woocommerce/bigcommerce/daleys scrapers still have no retry; they were unaffected on the 19th and can adopt stocklib.retry when next touched.

@@ -34,7 +34,6 @@ import html as _html
 import json
 import os
 import re
-import socket
 import sys
 import time
 import urllib.request
@@ -78,13 +77,16 @@ BOOTSTRAP_URL = "https://app.ecwid.com/script.js?{store_id}"
 _HOST_RE = re.compile(r"[a-z0-9-]+storefront-api\.ecwid\.com")
 _TOKEN_RE = re.compile(r"pub[a-f0-9]{20,}")
 
-# Retry policy for transient failures. 429 (rate limited) and 503 (overloaded)
-# and read/connect timeouts get retried with exponential backoff so that a busy
-# store doesn't silently drop products from the snapshot.
-RETRYABLE_HTTP = {429, 503}
-MAX_RETRIES = 3        # extra attempts after the first try
-BACKOFF_BASE = 2.0     # seconds; doubles each retry
-BACKOFF_CAP = 30.0     # never wait longer than this between retries
+# Retry policy for transient failures (429/503/timeouts) lives in
+# stocklib.retry, shared with the other scrapers. Old private names kept as
+# aliases for existing callers/tests.
+from stocklib.retry import (  # noqa: E402
+    RETRYABLE_HTTP, MAX_RETRIES, BACKOFF_BASE, BACKOFF_CAP,
+    retry_after_seconds as _retry_after_seconds,
+    backoff_delay as _backoff_delay,
+    is_timeout as _is_timeout,
+    request_with_retry as _request,
+)
 
 
 def _as_float(value):
@@ -94,78 +96,6 @@ def _as_float(value):
         return float(value)
     except (TypeError, ValueError):
         return None
-
-
-def _retry_after_seconds(headers):
-    """Parse a Retry-After header in seconds form. Returns float or None.
-
-    The HTTP-date form is ignored (we fall back to exponential backoff)."""
-    if not headers:
-        return None
-    val = headers.get("Retry-After")
-    if not val:
-        return None
-    try:
-        return float(val)
-    except (TypeError, ValueError):
-        return None
-
-
-def _backoff_delay(attempt, retry_after=None):
-    """Seconds to wait before retry ``attempt`` (1-based).
-
-    Exponential (BACKOFF_BASE * 2^(attempt-1)), but never shorter than a
-    server-supplied Retry-After and never longer than BACKOFF_CAP."""
-    base = BACKOFF_BASE * (2 ** (attempt - 1))
-    if retry_after is not None:
-        base = max(base, retry_after)
-    return min(base, BACKOFF_CAP)
-
-
-def _is_timeout(exc):
-    """True if ``exc`` is (or wraps) a socket/read timeout."""
-    if isinstance(exc, (TimeoutError, socket.timeout)):
-        return True
-    if isinstance(exc, urllib.error.URLError) and isinstance(
-            exc.reason, (TimeoutError, socket.timeout)):
-        return True
-    return False
-
-
-def _request(req, timeout=20, health=None, *, _opener=None, _sleep=time.sleep):
-    """Send a urllib Request, retrying transient failures, and return the raw
-    response bytes (or None once retries are exhausted / on a fatal error).
-
-    Shared by fetch_page (GET) and fetch_json (POST). Retries HTTP 429/503 and
-    timeouts up to MAX_RETRIES times with exponential backoff (honouring
-    Retry-After). ``_opener``/``_sleep`` are injection seams for tests."""
-    opener = _opener or urllib.request.urlopen
-    url = req.full_url
-    for attempt in range(MAX_RETRIES + 1):
-        try:
-            with opener(req, timeout=timeout) as resp:
-                return resp.read()
-        except urllib.error.HTTPError as e:
-            if e.code in RETRYABLE_HTTP and attempt < MAX_RETRIES:
-                delay = _backoff_delay(attempt + 1, _retry_after_seconds(e.headers))
-                print(f"  HTTP {e.code} on {url}; retry {attempt + 1}/{MAX_RETRIES} in {delay:.0f}s")
-                _sleep(delay)
-                continue
-            print(f"  HTTP {e.code} fetching {url}")
-            if health:
-                health.note_http_error(e.code, url)
-            return None
-        except Exception as e:
-            if _is_timeout(e) and attempt < MAX_RETRIES:
-                delay = _backoff_delay(attempt + 1)
-                print(f"  timeout on {url}; retry {attempt + 1}/{MAX_RETRIES} in {delay:.0f}s")
-                _sleep(delay)
-                continue
-            print(f"  Error fetching {url}: {e}")
-            if health:
-                health.note_error(str(e))
-            return None
-    return None
 
 
 def fetch_page(url, timeout=20, health=None, *, _opener=None, _sleep=time.sleep):
