@@ -18,7 +18,7 @@ from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_header, render_footer, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
-from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK
+from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK, is_seed_packet
 from stocklib.taxonomy import enabled_species, load_species
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.category_ui import category_keys, CATEGORY_BADGE_CSS
@@ -89,54 +89,9 @@ def write_needs_review(products: list[dict], out_path: Path) -> None:
           f"({total_unclassified} unclassified products)")
 
 
-# Product type / tag filters for fruit-only tracking
-# If a nursery has useful categorization, only include products matching these
-FRUIT_FILTERS = {
-    "ladybird": {
-        "mode": "tags",
-        "include_tags": ["Fruit Trees & Edibles"],  # products with this tag prefix
-    },
-    "ross-creek": {
-        "mode": "all",  # all products are fruit/plant related
-    },
-    "fruitopia": {
-        "mode": "all",
-    },
-    "daleys": {
-        "mode": "categories",
-        "include_prefixes": [
-            "Fruit and Nut Trees", "Fruit Trees/",
-            "Bush Food Plants",
-            "Herbs, Spices & Perennial Vegetables",
-        ],
-    },
-    "primal-fruits": {
-        "mode": "all",
-    },
-    "guildford": {
-        "mode": "all",  # already filtered at scrape time by WooCommerce categories
-    },
-    "fruit-salad-trees": {
-        "mode": "all",  # all products are multi-graft fruit trees
-    },
-    "diggers": {
-        "mode": "all",  # already filtered at scrape time by fruit/nut tags
-    },
-    "all-season-plants-wa": {
-        "mode": "all",  # WA-based fruit tree nursery, all products are fruit
-    },
-    "ausnurseries": {
-        "mode": "all",  # Dedicated fruit/nut tree nursery
-    },
-    "fruit-tree-cottage": {
-        "mode": "all",  # Dedicated fruit tree nursery (Forest Glen, QLD)
-    },
-    "forever-seeds": {
-        # Only include products that are grown plants/trees, not seed packets or herbs
-        "mode": "title_include",
-        "include_keywords": ["fruit tree", "fruit plant", "vine plant", "fruiting"],
-    },
-}
+# Per-nursery fruit-only filters: shared with daily_digest.py via stocklib
+# (the two copies drifted; see stocklib/fruit_filters.py).
+from stocklib.fruit_filters import FRUIT_FILTERS, is_fruit_product
 
 
 def build_recent_highlights(data_dir: Path) -> str:
@@ -210,7 +165,7 @@ def build_recent_highlights(data_dir: Path) -> str:
                 _tl = title.lower()
                 if any(kw in _tl for kw in _highlight_skip):
                     continue
-                if re.search(r'\bseeds?\b', _tl) and 'seedling' not in _tl and 'seedless' not in _tl:
+                if is_seed_packet(_tl):
                     continue
 
                 if not variants:
@@ -328,32 +283,6 @@ def build_recent_highlights(data_dir: Path) -> str:
   </div>"""
 
 
-def is_fruit_product(product: dict, nursery_key: str) -> bool:
-    """Check if a product should be included based on nursery-specific filters."""
-    filt = FRUIT_FILTERS.get(nursery_key)
-    if not filt or filt.get("mode") == "all":
-        return True
-
-    if filt.get("mode") == "tags":
-        tags = product.get("tags", [])
-        include_tags = filt.get("include_tags", [])
-        for tag in tags:
-            for inc in include_tags:
-                if tag.startswith(inc):
-                    return True
-        return False
-
-    if filt.get("mode") == "categories":
-        cat = product.get("product_type", product.get("category", ""))
-        include_prefixes = filt.get("include_prefixes", [])
-        return any(cat.startswith(prefix) for prefix in include_prefixes)
-
-    if filt.get("mode") == "title_include":
-        title_lower = product.get("title", "").lower()
-        include_keywords = filt.get("include_keywords", [])
-        return any(kw in title_lower for kw in include_keywords)
-
-    return True
 
 
 # Category landing pages (DEC-200 IA / DAL-198). Each reuses the full dashboard
@@ -544,8 +473,7 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 continue
 
             # Skip seed packets (not nursery-grown trees/plants)
-            # Match standalone "seed" or "seeds" but not "seedling" or "seedless"
-            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
+            if is_seed_packet(title_lower):
                 continue
 
             # Skip standalone pot/planter products (but not "potted" plants)

@@ -26,7 +26,7 @@ from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, SITE_URL
 
 
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import is_real_product
 from stocklib.taxonomy import enabled_species
 from stocklib.utm import outbound
 from stocklib.category_ui import category_badges_html, is_bush_tucker, CATEGORY_FILTER_CSS
@@ -39,38 +39,7 @@ def load_species() -> list[dict]:
     return enabled_species()
 
 
-def build_species_lookup(species_list: list[dict]) -> dict:
-    lookup = {}
-    for s in species_list:
-        lookup[s["common_name"].lower()] = s
-        for syn in s.get("synonyms", []):
-            if syn:
-                lookup[syn.lower()] = s
-    return lookup
-
-
-def match_title(title: str, lookup: dict) -> dict | None:
-    title_lower = title.lower()
-    # Strip common size/form prefixes
-    for prefix in ["dwarf ", "semi-dwarf ", "miniature ", "standard ", "grafted ", "advanced "]:
-        if title_lower.startswith(prefix):
-            title_lower = title_lower[len(prefix):]
-            break
-    # Try from start first (most nurseries use "Species - Variety" format)
-    words = re.split(r'[\s\-–—]+', title_lower)
-    for n in range(min(len(words), 5), 0, -1):
-        candidate = " ".join(words[:n])
-        if candidate in lookup:
-            return lookup[candidate]
-    # Fallback: match any N-word sequence in title (handles "Variety Species (size)" format)
-    words = re.split(r'[\s\-–—(]+', title_lower)
-    words = [w.rstrip(").,") for w in words if w]
-    for start in range(1, len(words)):
-        for n in range(min(len(words) - start, 3), 0, -1):
-            candidate = " ".join(words[start:start + n])
-            if candidate in lookup:
-                return lookup[candidate]
-    return None
+from stocklib.species_match import build_species_lookup, match_title
 
 
 def load_all_products(data_dir: Path) -> list[dict]:
@@ -80,10 +49,7 @@ def load_all_products(data_dir: Path) -> list[dict]:
         nursery_name = data.get("nursery_name") or NURSERY_NAMES.get(nursery_key, nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
-            title_lower = title.lower()
-            if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
-                continue
-            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
+            if not is_real_product(title):
                 continue
             min_price = p.get("min_price")
             if min_price is None:

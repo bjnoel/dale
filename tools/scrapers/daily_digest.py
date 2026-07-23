@@ -26,19 +26,8 @@ from treestock_layout import render_head, render_header, render_footer
 
 # Fruit species lookup for filtering non-fruit products
 
-# Same filters as build-dashboard.py
-FRUIT_FILTERS = {
-    "ladybird": {
-        "mode": "tags",
-        "include_tags": ["Fruit Trees & Edibles"],
-    },
-    "forever-seeds": {
-        "mode": "title_include",
-        "include_keywords": ["fruit tree", "fruit plant", "vine plant", "fruiting"],
-    },
-}
-
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import is_real_product
+from stocklib.fruit_filters import FRUIT_FILTERS, is_fruit_product
 from stocklib.utm import outbound
 from stocklib import changes as _changes
 from stocklib.changes import variant_key as _variant_key, variant_display_title as _variant_display_title, compare_snapshots
@@ -136,42 +125,16 @@ def filter_changes_by_plant_categories(all_changes: dict, plant_categories=None)
     return out
 
 
-def is_fruit_product(product: dict, nursery_key: str) -> bool:
-    """Check if product is fruit/edible (same logic as dashboard)."""
-    title_lower = product.get("title", "").lower()
-
-    filt = FRUIT_FILTERS.get(nursery_key)
-    if not filt or filt.get("mode") == "all":
-        if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
-            return False
-        # Skip seed packets
-        if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
-            return False
-        return True
-
-    if filt.get("mode") == "tags":
-        tags = product.get("tags", [])
-        include_tags = filt.get("include_tags", [])
-        for tag in tags:
-            for inc in include_tags:
-                if tag.startswith(inc):
-                    return True
-        return False
-
-    if filt.get("mode") == "title_include":
-        include_keywords = filt.get("include_keywords", [])
-        return any(kw in title_lower for kw in include_keywords)
-
-    return True
-
-
-
-
+def _digest_product_filter(product: dict, nursery_key: str) -> bool:
+    """Same inclusion rule as the dashboard pipeline: the nursery's own fruit
+    categorisation (shared FRUIT_FILTERS) plus the junk/seed-packet filter."""
+    return (is_real_product(product.get("title", ""))
+            and is_fruit_product(product, nursery_key))
 
 
 def load_snapshot(nursery_dir: Path, target_date: str) -> dict:
     """treestock snapshot load: fruit-filtered. Engine in stocklib.changes."""
-    return _changes.load_snapshot(nursery_dir, target_date, product_filter=is_fruit_product)
+    return _changes.load_snapshot(nursery_dir, target_date, product_filter=_digest_product_filter)
 
 
 
@@ -508,7 +471,7 @@ def format_html_page(all_changes: dict, target_date: str, wa_only: bool = False,
 
 def load_all_changes(data_dir: Path, target_date: str) -> tuple[dict, int]:
     """treestock changes: fruit-filtered, all nursery dirs. Engine in stocklib.changes."""
-    return _changes.load_all_changes(data_dir, target_date, product_filter=is_fruit_product)
+    return _changes.load_all_changes(data_dir, target_date, product_filter=_digest_product_filter)
 
 
 def main():

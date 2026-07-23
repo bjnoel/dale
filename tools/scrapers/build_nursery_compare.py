@@ -19,30 +19,17 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, LOCAL_DEL
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
-from stocklib.taxonomy import enabled_species
-
-
-def load_species_lookup() -> dict:
-    species = enabled_species()
-    lookup = {}
-    for s in species:
-        common = s["common_name"].lower()
-        entry = {"cn": s["common_name"], "sl": s["slug"]}
-        lookup[common] = entry
-        for alias in s.get("aliases", []):
-            lookup[alias.lower()] = entry
-    return lookup
+from stocklib.species_match import build_species_lookup, match_title
 
 
 def count_species(products: list, species_lookup: dict) -> int:
-    """Count distinct species in a nursery's product list."""
+    """Count distinct species in a nursery's product list (shared matcher, so
+    the count agrees with the dashboard and species pages)."""
     found = set()
     for p in products:
-        title = p.get("title", "").lower()
-        for term, entry in species_lookup.items():
-            if term and term in title:
-                found.add(entry["cn"])
-                break
+        sp = match_title(p.get("title", ""), species_lookup)
+        if sp:
+            found.add(sp["slug"])
     return len(found)
 
 
@@ -160,7 +147,7 @@ def main():
     compare_dir.mkdir(parents=True, exist_ok=True)
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    species_lookup = load_species_lookup()
+    species_lookup = build_species_lookup()
     nurseries_data = load_nursery_data(data_dir)
 
     if not nurseries_data:

@@ -28,32 +28,13 @@ from shipping import SHIPPING_MAP
 DATA_DIR = Path("/opt/dale/data/nursery-stock")
 OUTPUT_DIR = Path("/opt/dale/dashboard")
 
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import is_real_product
+from stocklib.species_match import build_species_lookup as build_lookup, match_title
 from stocklib.taxonomy import enabled_species
 
 
 def load_species():
     return enabled_species()
-
-
-def build_lookup(species_list):
-    lookup = {}
-    for s in species_list:
-        lookup[s["common_name"].lower()] = s
-        for syn in s.get("synonyms", []):
-            if syn:
-                lookup[syn.lower()] = s
-    return lookup
-
-
-def match_title(title: str, lookup: dict):
-    title_lower = title.lower()
-    words = re.split(r'[\s\-\u2013\u2014]+', title_lower)
-    for n in range(min(len(words), 5), 0, -1):
-        candidate = " ".join(words[:n])
-        if candidate in lookup:
-            return lookup[candidate]
-    return None
 
 
 def get_all_dates(data_dir: Path) -> list[str]:
@@ -117,10 +98,7 @@ def build_species_trends(data_dir: Path):
                 d = json.load(f)
             for p in d.get("products", []):
                 title = p.get("title", "")
-                title_lower = title.lower()
-                if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
-                    continue
-                if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
+                if not is_real_product(title):
                     continue
                 species = match_title(title, lookup)
                 if not species:

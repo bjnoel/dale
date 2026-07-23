@@ -43,7 +43,7 @@ NURSERY_URLS = {
     "fruit-tree-cottage": "https://www.fruittreecottage.com.au",
 }
 
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import NON_PLANT_KEYWORDS, is_real_product
 
 
 from cultivar_parsing import (  # noqa: E402
@@ -91,11 +91,8 @@ def load_all_products(data_dir: Path) -> list[dict]:
         for p in raw_products:
             title = p.get("title", "").strip()
             title_lower = title.lower()
-            # Skip non-plant items
-            if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
-                continue
-            # Skip seed packets (not nursery-grown trees)
-            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
+            # Skip non-plant items and seed packets
+            if not is_real_product(title):
                 continue
             products.append({
                 "nursery_key": nursery_key,

@@ -61,7 +61,7 @@ TREESMITH_PROMO = (
     '</div>'
 )
 
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import is_real_product
 from stocklib.utm import outbound
 
 
@@ -120,9 +120,7 @@ def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
         for p in data.get("products", []):
             title = p.get("title", "")
             title_lower = title.lower()
-            if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
-                continue
-            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
+            if not is_real_product(title):
                 continue
             available = p.get("any_available", p.get("available", False))
             variants = p.get("variants", [])

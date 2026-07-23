@@ -79,7 +79,8 @@ def build_related_lookup() -> dict[str, list[str]]:
 RELATED_LOOKUP = build_related_lookup()
 
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import is_real_product
+from stocklib.species_match import build_species_lookup, match_title
 from stocklib.taxonomy import enabled_species
 from stocklib.category_ui import category_badges_html, CATEGORY_FILTER_CSS
 from stocklib.utm import outbound
@@ -91,30 +92,6 @@ def load_species() -> list[dict]:
         print("ERROR: no enabled species records found", file=sys.stderr)
         sys.exit(1)
     return records
-
-
-def build_species_lookup(species_list: list[dict]) -> dict:
-    """Build a lowercase name → species entry lookup."""
-    lookup = {}
-    for s in species_list:
-        key = s["common_name"].lower()
-        lookup[key] = s
-        for syn in s.get("synonyms", []):
-            if syn:
-                lookup[syn.lower()] = s
-    return lookup
-
-
-def match_title(title: str, lookup: dict) -> dict | None:
-    """Match a product title against the species lookup."""
-    title_lower = title.lower()
-    # Try progressively shorter prefixes
-    words = re.split(r'[\s\-–—]+', title_lower)
-    for n in range(min(len(words), 5), 0, -1):
-        candidate = " ".join(words[:n])
-        if candidate in lookup:
-            return lookup[candidate]
-    return None
 
 
 def load_nursery_products(data_dir: Path) -> list[dict]:
@@ -132,12 +109,7 @@ def load_nursery_products(data_dir: Path) -> list[dict]:
         nursery_name = data.get("nursery_name", nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
-            title_lower = title.lower()
-            if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
-                continue
-            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
-                continue
-            if title_lower in {"gift card", "gift voucher", "gift certificate"}:
+            if not is_real_product(title):
                 continue
             # Get best price
             variants = p.get("variants", [])

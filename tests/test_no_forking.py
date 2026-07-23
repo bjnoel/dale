@@ -46,6 +46,27 @@ GUARDS = [
     (re.compile(r"^RETRYABLE_HTTP\s*[:=]"), "stocklib/retry.py"),
     (re.compile(r"^def request_with_retry\b"), "stocklib/retry.py"),
     (re.compile(r"^def backoff_delay\b"), "stocklib/retry.py"),
+    # Title -> species matching (2026-07-23 de-fork: five drifted match_title
+    # copies meant "Dwarf Apple ..." counted on one page and not another)
+    (re.compile(r"^def match_species\b"), "stocklib/species_match.py"),
+    (re.compile(r"^def match_title\b"), "stocklib/species_match.py"),
+    (re.compile(r"^def load_species_lookup\b"), "stocklib/species_match.py"),
+    (re.compile(r"^def build_species_lookup\b"), "stocklib/species_match.py"),
+    # Per-nursery fruit filters (digest's copy had 2 of the dashboard's 12
+    # nurseries and no "categories" mode)
+    (re.compile(r"^FRUIT_FILTERS\s*[:=]"), "stocklib/fruit_filters.py"),
+    (re.compile(r"^def is_fruit_product\b"), "stocklib/fruit_filters.py"),
+    # The seed-packet rule ("seeds?" but not seedling/seedless) was retyped
+    # inline in 7+ files; only classify.py may spell that regex.
+    (re.compile(r"seeds\?"), "stocklib/classify.py"),
+]
+
+# Function names that must not be DEFINED anywhere in the scanned set: dead
+# fork names whose reappearance means someone re-forked shared logic under the
+# old name instead of importing it.
+BANNED_DEFS = [
+    r"^def is_non_plant\b",           # use classify.is_real_product
+    r"^def match_title_to_species\b", # use species_match.match_title
 ]
 
 
@@ -82,6 +103,21 @@ class NoForkingTest(unittest.TestCase):
             "fruit_species.json may only be opened by stocklib/taxonomy.py -- "
             f"import taxonomy.enabled_species() instead. Found in: {readers}",
         )
+
+    def test_dead_fork_names_do_not_reappear(self):
+        files = _scanned_files()
+        for pattern in BANNED_DEFS:
+            rx = re.compile(pattern)
+            definers = sorted(
+                str(f.relative_to(SCRAPERS))
+                for f in files
+                if any(rx.search(line) for line in f.read_text().splitlines())
+            )
+            self.assertEqual(
+                definers, [],
+                f"{pattern!r} is a retired fork name; import the stocklib "
+                f"replacement instead of redefining it (found in {definers}).",
+            )
 
     def test_comparison_engine_not_re_forked(self):
         """The stock-change engine (variant_key / compare_snapshots) lives only in

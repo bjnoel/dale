@@ -26,7 +26,8 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 
 
 # Non-plant keywords to exclude regardless of species match
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import is_real_product
+from stocklib.species_match import build_species_lookup, match_title
 from stocklib.taxonomy import enabled_species
 from stocklib.utm import outbound
 
@@ -187,38 +188,6 @@ def load_species() -> set[str]:
     return names
 
 
-def build_species_lookup(species_list: list[dict]) -> dict:
-    """Map species names/synonyms to species dicts."""
-    lookup = {}
-    for s in species_list:
-        lookup[s["common_name"].lower()] = s
-        for syn in s.get("synonyms", []):
-            if syn:
-                lookup[syn.lower()] = s
-    return lookup
-
-
-def match_title_to_species(title: str, lookup: dict) -> dict | None:
-    """Try to match a product title to a known fruit species."""
-    t = title.lower()
-    words = re.split(r"[\s\-\u2013\u2014]+", t)
-    for n in range(min(len(words), 5), 0, -1):
-        candidate = " ".join(words[:n])
-        if candidate in lookup:
-            return lookup[candidate]
-    return None
-
-
-def is_non_plant(title: str) -> bool:
-    t = title.lower()
-    if any(kw in t for kw in NON_PLANT_KEYWORDS):
-        return True
-    # Exclude seed packets (not nursery-grown trees)
-    if re.search(r'\bseeds?\b', t) and 'seedling' not in t and 'seedless' not in t:
-        return True
-    return False
-
-
 def load_all_products(data_dir: Path) -> list[dict]:
     """Load all products from today's snapshot (or latest.json fallback)."""
     products = []
@@ -294,10 +263,10 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
             continue
         if not p["available"]:
             continue
-        if is_non_plant(p["title"]):
+        if not is_real_product(p["title"]):
             continue
         # Must match a known fruit species
-        if not match_title_to_species(p["title"], species_lookup):
+        if not match_title(p["title"], species_lookup):
             continue
         state_products.append(p)
 
@@ -312,7 +281,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
     species_counts: Counter = Counter()
     species_names: dict[str, str] = {}
     for p in state_products:
-        sp = match_title_to_species(p["title"], species_lookup)
+        sp = match_title(p["title"], species_lookup)
         if sp:
             sp_slug = sp["common_name"].lower().replace(" ", "-").replace("'", "")
             species_counts[sp_slug] += 1
@@ -424,8 +393,8 @@ def main():
             1 for p in products
             if p["nursery_key"] in state_nurseries
             and p["available"]
-            and not is_non_plant(p["title"])
-            and match_title_to_species(p["title"], species_lookup)
+            and is_real_product(p["title"])
+            and match_title(p["title"], species_lookup)
         )
         print(f"  Written: {out_file} ({in_stock} matched in-stock products)")
 

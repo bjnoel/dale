@@ -6256,3 +6256,24 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 - First snapshot: 98 products, 60 in stock. Junk filter passes all 98. Golden fixtures regenerated for the 26 to 27 nursery-count copy change; full suite (1799 tests) green.
 
 **Correction, same day:** Benedict spoke to the nursery directly: they do not ship to NT either, despite the site only listing WA/TAS exclusions. Registry updated to QLD/NSW/VIC/SA/ACT; restriction warning is now "No WA/NT/TAS".
+
+## DEC-232 — 2026-07-23 — De-fork title matching, fruit filters, and the junk/seed rule
+
+**Decided by:** Benedict (requested the audit and the fix), Dale (executed).
+
+**Context:** The Plum count bug fixed earlier today (nursery page said 4 in stock, dashboard said 1) came from a forked species matcher. Benedict asked whether other functions were duplicated the same way. An AST scan of tools/ found every same-named function defined in more than one file; after discarding benign hits (main(), thin wrappers, the frozen bee/ subsite), four real drift clusters remained:
+
+1. FRUIT_FILTERS + is_fruit_product: daily_digest.py's copy had 2 of build-dashboard.py's 12 nurseries and lacked the "categories" mode daleys relies on, so digest emails applied no per-nursery fruit filter to daleys, diggers, guildford, ross-creek and six others.
+2. match_title: five distinct variants (compare, species, state, trends pages, species alerts). Only compare pages stripped Dwarf/Grafted/etc prefixes and handled "Akane Apple (medium)" variety-first titles, so the same product counted on some surfaces and not others.
+3. build_nursery_compare.py's load_species_lookup read a nonexistent "aliases" key (the exact bug fixed in build_nursery_pages this morning), and its count_species used substring-anywhere matching ("pear" matched "prickly pear").
+4. The junk-keyword + seed-packet exclusion pair was retyped inline in 7+ files even though stocklib.classify.is_real_product already bundles it.
+
+**Decision:** Consolidate all four into stocklib, guarded by tests, in one pass.
+
+**Implementation:**
+- stocklib/species_match.py now owns THE matching algorithm: match_title (entry-shape agnostic) and match_species (adds cultivar extraction) share one core; build_species_lookup builds the full-record lookup. All seven consumer builders/senders import from it.
+- New stocklib/fruit_filters.py owns FRUIT_FILTERS (the dashboard's 12-nursery superset) and is_fruit_product (all four modes). The digest combines it with classify.is_real_product, matching the dashboard pipeline; junk is now filtered in every mode, not just "all".
+- Inline junk/seed copies replaced with classify.is_real_product / is_seed_packet.
+- tests/test_no_forking.py gains guards (single-definer rules for the matcher, lookups, FRUIT_FILTERS, and the literal seed regex; banned dead fork names is_non_plant / match_title_to_species). New tests/test_fruit_filters.py pins dashboard and digest to the same objects; test_species_match.py pins all seven callers to the shared matcher. 1823 tests green.
+
+**Expected visible effects:** species/state/trends/location pages and species alerts pick up prefix-stripped and variety-first titles they previously dropped; digest emails stop including non-fruit daleys/ladybird items; nursery compare species counts change to agree with every other surface.

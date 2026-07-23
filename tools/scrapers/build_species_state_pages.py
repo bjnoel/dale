@@ -335,41 +335,13 @@ SPECIES_CLIMATE_CATEGORY = {
     "native ginger": "subtropical",
 }
 
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import is_real_product
+from stocklib.species_match import build_species_lookup, match_title
 from stocklib.taxonomy import enabled_species
 
 
 def load_species() -> list[dict]:
     return enabled_species()
-
-
-def build_species_lookup(species_list: list[dict]) -> dict:
-    lookup = {}
-    for s in species_list:
-        lookup[s["common_name"].lower()] = s
-        for syn in s.get("synonyms", []):
-            if syn:
-                lookup[syn.lower()] = s
-    return lookup
-
-
-def match_title(title: str, lookup: dict) -> dict | None:
-    t = title.lower()
-    words = re.split(r"[\s\-\u2013\u2014]+", t)
-    for n in range(min(len(words), 5), 0, -1):
-        candidate = " ".join(words[:n])
-        if candidate in lookup:
-            return lookup[candidate]
-    return None
-
-
-def is_non_plant(title: str) -> bool:
-    t = title.lower()
-    if any(kw in t for kw in NON_PLANT_KEYWORDS):
-        return True
-    if re.search(r"\bseeds?\b", t) and "seedling" not in t and "seedless" not in t:
-        return True
-    return False
 
 
 def load_all_products(data_dir: Path) -> list[dict]:
@@ -403,7 +375,7 @@ def compute_combos(
     for p in products:
         if not p["available"]:
             continue
-        if is_non_plant(p["title"]):
+        if not is_real_product(p["title"]):
             continue
         species = match_title(p["title"], species_lookup)
         if not species:

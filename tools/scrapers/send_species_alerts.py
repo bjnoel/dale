@@ -63,7 +63,8 @@ TREESMITH_PROMO = (
     '</div>'
 )
 
-from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.classify import is_real_product
+from stocklib.species_match import build_species_lookup, match_title
 from stocklib.utm import outbound
 
 
@@ -114,29 +115,6 @@ def save_sends_log(log: dict):
         json.dump(log, f, indent=2)
 
 
-def load_species_lookup() -> dict:
-    """Build lowercase name → species entry lookup."""
-    species_list = enabled_species()
-    lookup = {}
-    for s in species_list:
-        key = s["common_name"].lower()
-        lookup[key] = s
-        for syn in s.get("synonyms", []):
-            if syn:
-                lookup[syn.lower()] = s
-    return lookup
-
-
-def match_title(title: str, lookup: dict) -> dict | None:
-    title_lower = title.lower()
-    words = re.split(r'[\s\-–—]+', title_lower)
-    for n in range(min(len(words), 5), 0, -1):
-        candidate = " ".join(words[:n])
-        if candidate in lookup:
-            return lookup[candidate]
-    return None
-
-
 def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
     """Load products from a specific date's snapshots (or latest.json if today)."""
     products = []
@@ -162,10 +140,7 @@ def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
         nursery_name = data.get("nursery_name", nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
-            title_lower = title.lower()
-            if any(kw in title_lower for kw in NON_PLANT_KEYWORDS):
-                continue
-            if re.search(r'\bseeds?\b', title_lower) and 'seedling' not in title_lower and 'seedless' not in title_lower:
+            if not is_real_product(title):
                 continue
             available = p.get("any_available", p.get("available", False))
             variants = p.get("variants", [])
@@ -372,7 +347,7 @@ def main():
     print(f"Watched species: {', '.join(sorted(watched_slugs))} ({len(watchers)} email/species pairs)")
 
     # Load species lookup
-    lookup = load_species_lookup()
+    lookup = build_species_lookup()
     if not lookup:
         print("ERROR: Could not load species taxonomy", file=sys.stderr)
         sys.exit(1)
