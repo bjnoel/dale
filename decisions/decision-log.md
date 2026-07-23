@@ -6152,3 +6152,20 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **Scope narrowing vs the DAL-212 sketch:** the ticket sketched links on every article page (~1,500). Shipped hubs only: that is where inbound equity concentrates, every article already links up to its hub, and Benedict asked for non-intrusive. Article-page extension stays available. Held back: Caring For Trees grafting/pollination articles linking /rootstock.html and /fruit-tree-pollination-guide.html, as a light second pass in a few weeks.
 
 **Verification:** all 40 treestock species URLs HEAD-checked 200 before linking; all 167 archive_links.json citation URLs verified 200 on the relaunched site (URL structure preserved, our guides' citations alive again); insertions spot-checked including the Mango trailing-note edge case; live-verified post-deploy (hub link, homepage line, canonical, sitemap 200, /index.htm 301). Edits done bytes-safe in latin-1 (site is ISO-8859-1), ASCII-only insertions. Commit 3a9776a on bjnoel/rfcarchives.org.au. Note: Cloudflare managed robots.txt prepends its content-signals block on this zone too (ai-train=no, ClaudeBot/GPTBot blocked); origin robots.txt with the Sitemap line serves beneath it, Googlebot unaffected.
+
+## DEC-226 — 2026-07-23 — Engagement-based strike gate replaces the weekly-writing requirement
+
+**Decided by:** Benedict + Dale (interactive session), after Benedict flagged that writing every week is problematic and that the strike behaved oddly.
+
+**Context:** The weekly-update gate (Dale strikes Wed+ if no update within 2 ISO weeks) had a loophole: Monday and Tuesday always passed regardless of staleness ("Benedict has until Wednesday"), so with the last update stuck at 2026-W20, Dale worked Mon-Tue and struck Wed-Sun every week from late May to late July. Because the check runs on UTC weekdays, "Monday" starts 8am Sunday AWST, which is the off-strike-on-Sunday behaviour Benedict observed. Separately, the same day's checkup found the DAL-202 6-week review routine fired but failed to post to Linear (stale claude.ai connector on the retired mcp.linear.app/sse endpoint; comment posted manually, connector re-added on /mcp).
+
+**Decision (Benedict picked from four options): engagement-based gate.** Writing was the highest-friction engagement signal; Linear is where Benedict actually shows up. New rules:
+
+- Dale strikes only after **28 days with no sign of Benedict**, on any weekday (loophole removed).
+- Signals: (1) any non-Dale actor activity in Linear (ticket moves, comments), detected by daily-digest.py which stamps `data/benedict-engagement.json`; (2) a weekly-update file Benedict wrote or signed off. Newest signal wins.
+- Dale **auto-drafts** the previous week's update every Monday (new `weekly_update_draft.py`, cron 01:00 UTC Mon) from Linear completions + git commits. Drafts carry an `auto-drafted by Dale` marker line and do NOT count as engagement until Benedict deletes the marker (sign-off). The historical record stays continuous either way.
+- The Sunday pester email only fires once the gap exceeds 21 days (one warning week before a strike), instead of every week, and its copy explains the renegotiated deal.
+
+**Engineering:** `check-weekly-update.py` rewritten (same filename, dale-runner.sh unchanged); pure `gate_decision(today, latest_week, stamp_date)` stays unit-testable; `tests/test_weekly_update_gate.py` rewritten (25 tests incl. the no-Monday-loophole regression and unsigned-draft-doesn't-count). Git commits were rejected as a signal: interactive Dale sessions commit as Benedict's identity, so authorship proves nothing.
+
+**Rollout:** deploy via tools/deploy.sh, add the Monday cron line, seed the engagement stamp with today (Benedict is demonstrably present), ending the current strike immediately.

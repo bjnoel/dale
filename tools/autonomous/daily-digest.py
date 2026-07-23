@@ -86,6 +86,68 @@ def get_team_id(team_name):
     return data["teams"]["nodes"][0]["id"]
 
 
+def update_engagement_stamp(team_id, since_iso, data_dir):
+    """Stamp {data}/benedict-engagement.json if a human (any non-Dale actor)
+    touched Linear in the window: issue history events or comments.
+
+    The engagement gate (check-weekly-update.py) reads this stamp; without
+    it Dale strikes after GRACE_DAYS of silence from Benedict.
+    """
+    data = graphql("""
+        query($teamId: ID!, $since: DateTimeOrDuration!) {
+            issues(
+                filter: {
+                    team: { id: { eq: $teamId } }
+                    updatedAt: { gt: $since }
+                }
+                first: 50
+            ) {
+                nodes {
+                    history(first: 25) {
+                        nodes { createdAt actor { name } }
+                    }
+                    comments(first: 10) {
+                        nodes { createdAt user { name } }
+                    }
+                }
+            }
+        }
+    """, {"teamId": team_id, "since": since_iso})
+    if not data or not data.get("issues"):
+        return False
+
+    latest_human = None
+    for issue in data["issues"]["nodes"]:
+        events = [(e.get("createdAt"), (e.get("actor") or {}).get("name"))
+                  for e in issue.get("history", {}).get("nodes", [])]
+        events += [(c.get("createdAt"), (c.get("user") or {}).get("name"))
+                   for c in issue.get("comments", {}).get("nodes", [])]
+        for created_at, name in events:
+            if not created_at or created_at < since_iso:
+                continue
+            if not name or name.strip().lower() == "dale":
+                continue
+            if latest_human is None or created_at > latest_human:
+                latest_human = created_at
+
+    if not latest_human:
+        return False
+
+    path = os.path.join(data_dir, "benedict-engagement.json")
+    try:
+        with open(path, "w") as f:
+            json.dump({
+                "last_seen": latest_human[:10],
+                "source": "linear",
+                "stamped_at": datetime.now(timezone.utc).isoformat(),
+            }, f, indent=2)
+        log(f"Engagement stamp updated: human Linear activity at {latest_human}")
+        return True
+    except IOError as e:
+        log(f"Warning: could not write engagement stamp: {e}")
+        return False
+
+
 def get_recent_activity(team_id, since_iso):
     """Fetch tickets completed/created in last 24h + currently in progress."""
 
@@ -465,6 +527,12 @@ def main():
     if team_id:
         completed, created, in_progress = get_recent_activity(team_id, since_iso)
         log(f"Linear: {len(completed)} completed, {len(created)} created, {len(in_progress)} in progress")
+        try:
+            update_engagement_stamp(
+                team_id, since_iso,
+                config.get("paths", {}).get("data", "/opt/dale/data"))
+        except Exception as e:
+            log(f"Warning: engagement stamp check failed: {e}")
     else:
         log("Warning: could not find Linear team")
         completed, created, in_progress = [], [], []

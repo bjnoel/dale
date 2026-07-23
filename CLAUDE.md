@@ -249,8 +249,12 @@ Not yet migrated: the `bee/` subsite still forks some of this (de-fork pending).
 - **After finishing a blog post for bjnoel.com**, always create or update the
   weekly update file at `weekly-updates/YYYY-WNN.md` (ISO week format). Include
   a brief summary of what was done that week (blog topic, other work, etc.).
-  This file gates autonomous Dale sessions; without it, Dale goes on strike
-  from Wednesday onwards.
+- **Strike gate (DEC-226, engagement-based since 2026-07-23):** autonomous Dale
+  strikes only after 28 days with NO sign of Benedict. Signals: non-Dale Linear
+  activity (daily-digest stamps `data/benedict-engagement.json`) or a weekly
+  update Benedict wrote or signed off. Dale auto-drafts the weekly file each
+  Monday (`weekly_update_draft.py`); drafts carry an "auto-drafted by Dale"
+  marker and only count once Benedict deletes the marker line.
 
 ## Important Reminders
 

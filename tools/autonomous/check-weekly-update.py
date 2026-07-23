@@ -1,14 +1,26 @@
 #!/usr/bin/env python3
 """
-Check whether Benedict has provided a weekly update.
+Engagement gate for autonomous Dale sessions.
 
-Used as a gate before autonomous Dale sessions. If it's Wednesday or later
-and there hasn't been a weekly update within the grace period (2 ISO weeks),
-Dale refuses to work.
+Dale strikes only if there has been NO sign of Benedict for GRACE_DAYS
+(default 28). Signs of Benedict, newest wins:
+
+  1. A weekly-update file (weekly-updates/YYYY-WNN.md) that Benedict wrote
+     himself, or a Dale auto-draft he signed off by deleting the
+     auto-draft marker line. Files still containing the marker do not count.
+  2. The engagement stamp at {data}/benedict-engagement.json, written by
+     daily-digest.py whenever it sees non-Dale activity in Linear
+     (ticket moves, comments). Can also be written manually to end a
+     strike immediately.
+
+This replaced the old weekly-writing gate (2026-07-23). That gate had a
+loophole: Monday and Tuesday always passed regardless of staleness, so a
+long-lapsed update meant Dale worked Mon-Tue and struck Wed-Sun forever.
+The new gate applies every day of the week.
 
 Exit codes:
-    0 = OK to proceed (update within grace period, or still early in the week)
-    1 = STRIKE (Wednesday+ with no recent update, Dale refuses to work)
+    0 = OK to proceed
+    1 = STRIKE (no engagement signal within GRACE_DAYS)
 
 Usage:
     python3 check-weekly-update.py          # Check and print status
@@ -25,13 +37,14 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
 REPO_ROOT = os.path.normpath(os.path.join(SCRIPT_DIR, "..", ".."))
 
-# Wednesday = day 3 in ISO weekday (Mon=1, Tue=2, Wed=3, ...)
-STRIKE_DAY = 3
+# Days without any engagement signal before Dale downs tools.
+GRACE_DAYS = 28
 
-# Number of ISO weeks of grace. If the most recent weekly update is this many
-# weeks ago or less, Dale keeps working. 2 weeks means a Sunday update covers
-# the next two Wednesdays without striking.
-GRACE_WEEKS = 2
+# Dale's weekly auto-drafts carry this marker; Benedict signs one off by
+# deleting the marker line. Drafts with the marker do not count as engagement.
+AUTO_DRAFT_MARKER = "auto-drafted by Dale"
+
+STAMP_FILENAME = "benedict-engagement.json"
 
 FILENAME_RE = re.compile(r"^(\d{4})-W(\d{2})\.md$")
 
@@ -41,39 +54,27 @@ def load_config():
         return json.load(f)
 
 
-def get_iso_week_today():
-    """Return current (year, week) tuple."""
-    iso = datetime.now(timezone.utc).isocalendar()
-    return iso[0], iso[1]
-
-
-def get_iso_weekday():
-    """Return ISO weekday: Mon=1, Tue=2, Wed=3, ..., Sun=7."""
-    return datetime.now(timezone.utc).isocalendar()[2]
-
-
-def week_label(year_week):
-    year, week = year_week
-    return f"{year}-W{week:02d}"
-
-
-def _file_has_content(path):
-    """Check if a file exists and has at least 10 chars of non-header content."""
+def _counts_as_benedict(path):
+    """A weekly-update file counts if it has real content and is not an
+    unsigned Dale auto-draft."""
     if not os.path.exists(path):
         return False
     try:
         with open(path) as f:
             content = f.read().strip()
-        lines = [l for l in content.split("\n") if l.strip() and not l.strip().startswith("#")]
-        return len("".join(lines)) >= 10
     except IOError:
         return False
+    if AUTO_DRAFT_MARKER in content:
+        return False
+    lines = [l for l in content.split("\n") if l.strip() and not l.strip().startswith("#")]
+    return len("".join(lines)) >= 10
 
 
 def latest_update_week(data_dir, search_dirs=None):
-    """Return (year, week) of the most recent weekly-update file, or None.
+    """Return (year, week) of the most recent Benedict-authored (or
+    Benedict-signed-off) weekly-update file, or None.
 
-    By default scans both /opt/dale/data/weekly-updates/ and the repo's
+    Scans both /opt/dale/data/weekly-updates/ and the repo's
     weekly-updates/ directory, so updates submitted via git count before
     deploy.sh runs. Tests can pass an explicit `search_dirs` list to isolate.
     """
@@ -90,10 +91,26 @@ def latest_update_week(data_dir, search_dirs=None):
             m = FILENAME_RE.match(name)
             if not m:
                 continue
-            if not _file_has_content(os.path.join(dir_path, name)):
+            if not _counts_as_benedict(os.path.join(dir_path, name)):
                 continue
             candidates.append((int(m.group(1)), int(m.group(2))))
     return max(candidates) if candidates else None
+
+
+def read_engagement_stamp(data_dir):
+    """Return the date of the last recorded Benedict engagement, or None.
+
+    The stamp file is JSON: {"last_seen": "YYYY-MM-DD", "source": "..."}.
+    """
+    path = os.path.join(data_dir, STAMP_FILENAME)
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path) as f:
+            stamp = json.load(f)
+        return date.fromisoformat(stamp["last_seen"][:10])
+    except (IOError, ValueError, KeyError, TypeError):
+        return None
 
 
 def weeks_between(earlier, later):
@@ -108,44 +125,46 @@ def weeks_between(earlier, later):
     return (later_monday - earlier_monday).days // 7
 
 
-def gate_decision(current_week, weekday, latest_week, grace_weeks=GRACE_WEEKS):
+def gate_decision(today, latest_week, stamp_date, grace_days=GRACE_DAYS):
     """Pure gate logic: given today's state, decide proceed vs. strike.
 
     Args:
-        current_week: (year, week) tuple for today.
-        weekday: ISO weekday (Mon=1 .. Sun=7).
-        latest_week: (year, week) of most recent weekly update, or None.
-        grace_weeks: number of ISO weeks of grace before striking.
+        today: datetime.date for today.
+        latest_week: (year, week) of most recent Benedict weekly update, or None.
+        stamp_date: date of last Linear engagement stamp, or None.
+        grace_days: days without any signal before striking.
 
     Returns:
         (ok: bool, message: str)
     """
-    day_name = ["Monday", "Tuesday", "Wednesday", "Thursday",
-                "Friday", "Saturday", "Sunday"][weekday - 1]
-    current_label = week_label(current_week)
-
-    if latest_week == current_week:
-        return True, f"Weekly update found for {current_label}. All good."
-
+    signals = []
     if latest_week is not None:
-        gap = weeks_between(latest_week, current_week)
-        if 0 <= gap <= grace_weeks:
-            return True, (
-                f"Grace period: most recent update is {week_label(latest_week)} "
-                f"({gap} week(s) ago, grace={grace_weeks}). Proceeding."
-            )
+        signals.append(("weekly update %d-W%02d" % latest_week,
+                        date.fromisocalendar(latest_week[0], latest_week[1], 1)))
+    if stamp_date is not None:
+        signals.append(("Linear activity", stamp_date))
 
-    if weekday < STRIKE_DAY:
-        return True, (
-            f"No update yet for {current_label} (today is {day_name}). "
-            f"Benedict has until Wednesday. Proceeding."
+    if not signals:
+        return False, (
+            "STRIKE! No engagement signal from Benedict at all "
+            "(no weekly update, no Linear activity stamp). "
+            "Dale refuses to work until Benedict shows signs of life."
         )
 
-    latest_desc = week_label(latest_week) if latest_week else "never"
+    label, latest = max(signals, key=lambda s: s[1])
+    gap = (today - latest).days
+
+    if gap <= grace_days:
+        return True, (
+            f"Benedict engaged {gap} day(s) ago ({label}). "
+            f"Grace is {grace_days} days. Proceeding."
+        )
+
     return False, (
-        f"STRIKE! No weekly update within {grace_weeks} weeks "
-        f"(latest: {latest_desc}) and it's {day_name}. "
-        f"Dale refuses to work until Benedict writes weekly-updates/{current_label}.md"
+        f"STRIKE! No sign of Benedict for {gap} days "
+        f"(last: {label}, {latest.isoformat()}; grace is {grace_days} days). "
+        f"Dale refuses to work until Benedict moves a Linear ticket, "
+        f"writes a weekly update, or signs off the latest auto-draft."
     )
 
 
@@ -154,9 +173,9 @@ def check():
     config = load_config()
     data_dir = config["paths"]["data"]
     return gate_decision(
-        current_week=get_iso_week_today(),
-        weekday=get_iso_weekday(),
+        today=datetime.now(timezone.utc).date(),
         latest_week=latest_update_week(data_dir),
+        stamp_date=read_engagement_stamp(data_dir),
     )
 
 

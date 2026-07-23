@@ -28,6 +28,36 @@ CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
 # Where weekly updates live
 DATA_DIR = None  # Set from config
 
+# Only pester once the engagement gap is within a week of the 28-day
+# strike threshold in check-weekly-update.py.
+PESTER_AFTER_DAYS = 21
+
+
+def _load_gate_module():
+    import importlib.util
+    gate_path = os.path.join(SCRIPT_DIR, "check-weekly-update.py")
+    spec = importlib.util.spec_from_file_location("check_weekly_update", gate_path)
+    gate = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gate)
+    return gate
+
+
+def engagement_gap_days(data_dir):
+    """Days since the last Benedict engagement signal, or None if there has
+    never been one (which should always pester)."""
+    from datetime import date
+    gate = _load_gate_module()
+    signals = []
+    latest_week = gate.latest_update_week(data_dir)
+    if latest_week is not None:
+        signals.append(date.fromisocalendar(latest_week[0], latest_week[1], 1))
+    stamp = gate.read_engagement_stamp(data_dir)
+    if stamp is not None:
+        signals.append(stamp)
+    if not signals:
+        return None
+    return (datetime.now(timezone.utc).date() - max(signals)).days
+
 
 def load_config():
     with open(CONFIG_PATH) as f:
@@ -149,7 +179,7 @@ ssh dale-server "mkdir -p /opt/dale/data/weekly-updates && cat > /opt/dale/data/
 EOF</pre>
 
     <p style="background: #fff3cd; padding: 10px; border-radius: 6px; border-left: 4px solid #ffc107;">
-        <strong>Fair warning:</strong> If I don't see <code>{week_label}.md</code> by Wednesday, I'm going on strike. No autonomous sessions until you check in. That's the deal.
+        <strong>The deal (renegotiated 2026-07):</strong> You don't have to write every week anymore. Moving a Linear ticket or commenting there counts as checking in, and I auto-draft the weekly file each Monday (delete the marker line to sign it off). But if I see no sign of you for four weeks straight, I'm going on strike until you resurface.
     </p>
 
     <p>It doesn't have to be War and Peace. Three sentences is better than nothing. I'll use whatever you write to make better decisions about where to focus.</p>
@@ -180,8 +210,10 @@ Save your update:
   (Your update here)
   EOF
 
-Fair warning: If I don't see {week_label}.md by Wednesday, I'm going on strike.
-No autonomous sessions until you check in. That's the deal.
+The deal (renegotiated 2026-07): You don't have to write every week anymore.
+Moving a Linear ticket counts as checking in, and I auto-draft the weekly file
+each Monday (delete the marker line to sign it off). But if I see no sign of
+you for four weeks straight, I'm going on strike until you resurface.
 
 Cheers,
 Dale
@@ -241,6 +273,13 @@ def main():
     if update_exists(data_dir):
         week_label = get_week_label()
         print(f"Update already exists for {week_label}. No pestering needed.")
+        return
+
+    # Engagement gate: only pester when Benedict is actually approaching
+    # the 28-day strike threshold, not every quiet Sunday.
+    gap = engagement_gap_days(data_dir)
+    if gap is not None and gap <= PESTER_AFTER_DAYS:
+        print(f"Benedict engaged {gap} day(s) ago. No pestering needed.")
         return
 
     send_pester_email()
