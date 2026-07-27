@@ -147,8 +147,8 @@ NURSERY_META = {
     },
     "all-rare-herbs": {
         "url": "https://allrareherbs.com.au",
-        "tags": ["rare fruit", "miracle fruit", "vanilla", "coffee", "QLD"],
-        "description": "All Rare Herbs is a Mapleton QLD mail-order nursery best known for herbs, with a genuinely rare fruiting range: miracle fruit, acerola cherry, vanilla, coffee, cocoa, goji, midyim and other collector plants. We track their fruiting plants and trees only. No plants to WA, NT, or TAS.",
+        "tags": ["rare fruit", "miracle fruit", "vanilla", "coffee", "mail order"],
+        "description": "All Rare Herbs is an online-only mail-order nursery best known for herbs, with a genuinely rare fruiting range: miracle fruit, acerola cherry, vanilla, coffee, cocoa, goji, midyim and other collector plants. We track their fruiting plants and trees only. No plants to WA, NT, or TAS.",
     },
 }
 

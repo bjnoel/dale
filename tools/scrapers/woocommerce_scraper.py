@@ -146,7 +146,9 @@ NURSERIES = {
         "exclude_title_keywords": ["preserved"],
     },
     "all-rare-herbs": {
-        # All Rare Herbs, Mapleton QLD (Sunshine Coast hinterland). Herb
+        # All Rare Herbs. Online-only mail order, location deliberately not
+        # published (changed hands and moved from Mapleton QLD during 2025-26;
+        # the nursery asked us to show "Australia", 2026-07-27). Herb
         # specialist (~600 SKUs: herbs, seeds, dried product) with a distinct
         # fruiting branch we surface: rare/unusual fruit (miracle fruit,
         # acerola, jaboticaba, vanilla, coffee, cocoa), berries, nuts, citrus.
@@ -159,7 +161,7 @@ NURSERIES = {
         # ornamentals like maples/birches, with only 2 fruit items).
         "name": "All Rare Herbs",
         "domain": "allrareherbs.com.au",
-        "location": "Mapleton, QLD",
+        "location": "Australia",
         "category_api": True,
         "fruit_categories": ["all-fruiting-plants-trees"],
     },

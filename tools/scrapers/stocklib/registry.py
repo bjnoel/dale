@@ -142,7 +142,10 @@ NURSERIES: list[Nursery] = [
                  "ONLY', not modelled at nursery level). Verified 2026-06-20."),
     Nursery("all-rare-herbs", "All Rare Herbs",
             ("QLD", "NSW", "VIC", "SA", "ACT"),
-            note="Mapleton QLD (WooCommerce). Herb specialist with a rare-fruit "
+            note="Online only, location not published (WooCommerce). Changed "
+                 "hands and moved from Mapleton QLD during 2025-26; the nursery "
+                 "asked us to list it as 'Australia' (2026-07-27). Herb "
+                 "specialist with a rare-fruit "
                  "branch (miracle fruit, acerola, vanilla, coffee, cocoa). No "
                  "plants to WA/TAS/NT (site only lists WA/TAS; NT confirmed "
                  "excluded by the nursery directly, Benedict 2026-07-23). A few "
