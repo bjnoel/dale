@@ -208,11 +208,23 @@ def render_treesmith_promo(context: str = "variety") -> str:
     the results and watch form (below the fold) so it never competes with the
     primary CTA. `context` tweaks the lead line for variety vs species pages.
     No em dashes (treestock copy rule).
+
+    Hub and spoke, deliberately: this block only ever links to /treesmith.html,
+    which is the single page on treestock that links out to treesmith.app. Do
+    not add direct treesmith.app links to generated species/variety pages.
+
+    Variety and rootstock readers are the ones grafting, so those contexts get
+    a grafting lead and deep-link to the hub's #grafting section, where the
+    grafting-techniques reference and graft-tracking pages live.
     """
     lead = {
-        "variety": "Tracking a variety here? Keep a record of the one you actually buy.",
+        "variety": "Tracking a variety here? Keep a record of the one you actually buy, and of the grafts you take off it.",
         "species": "Found a tree to buy? Keep a record of the one you actually plant.",
+        "rootstock": "Once the graft is on, the details are worth keeping: technique, date, and where the scion wood came from.",
     }.get(context, "Keep a record of the trees you actually buy.")
+    grafting = context in ("variety", "rootstock")
+    anchor = "#grafting" if grafting else ""
+    cta = "See how graft tracking works" if grafting else "See Treesmith"
     return f"""
   <!-- Treesmith cross-promo (below the fold) -->
   <aside class="bg-green-50 border border-green-200 rounded-lg p-5 mb-8">
@@ -223,12 +235,12 @@ def render_treesmith_promo(context: str = "variety") -> str:
         <h3 class="font-semibold text-green-900 mb-1">Track your collection with Treesmith</h3>
         <p class="text-sm text-green-900 mb-3">
           {lead} Treesmith is a mobile app for plant collectors: catalog every tree,
-          log grafts and harvests, and capture growth photos over time. Built by the
-          same person behind treestock.
+          log grafts and harvests, and capture growth photos over time. Free for up to
+          30 plants, on iOS and Android. Built by the same person behind treestock.
         </p>
-        <a href="/treesmith.html?utm_source=treestock&amp;utm_medium=web&amp;utm_campaign=promo_block&amp;utm_content={context}"
+        <a href="/treesmith.html?utm_source=treestock&amp;utm_medium=web&amp;utm_campaign=promo_block&amp;utm_content={context}{anchor}"
            class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-800 no-underline">
-          See Treesmith &rarr;
+          {cta} &rarr;
         </a>
       </div>
     </div>

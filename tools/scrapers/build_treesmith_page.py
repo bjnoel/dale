@@ -22,17 +22,32 @@ from treestock_layout import render_page, CONTENT_MAX_WIDTH
 TITLE = "Treesmith, the plant-tracking app for collectors"
 DESCRIPTION = (
     "Treesmith is a mobile app for serious plant collectors. Catalog every "
-    "tree, log grafts and harvests, capture photos over time. Free on iOS, "
-    "Android in beta."
+    "tree, log grafts and harvests, capture photos over time. Free on iOS "
+    "and Android."
 )
 CANONICAL = "https://treestock.com.au/treesmith.html"
 OG_IMAGE = "https://treestock.com.au/treesmith/grid.png"
 
 APP_BASE = "https://treesmith.app/"
-APP_UTM = "?utm_source=treestock&utm_medium=treesmith_page&utm_campaign=treesmith_launch"
+UTM_PARAMS = "utm_source=treestock&utm_medium=treesmith_page&utm_campaign=treesmith_launch"
+APP_UTM = "?" + UTM_PARAMS
 APP_URL = APP_BASE + APP_UTM
-IOS_URL = "https://apps.apple.com/us/app/treesmith/id6761506742?utm_source=treestock&utm_medium=treesmith_page&utm_campaign=treesmith_launch"
-ANDROID_BETA_URL = "https://treesmith.app/beta/" + APP_UTM
+IOS_URL = "https://apps.apple.com/us/app/treesmith/id6761506742?" + UTM_PARAMS
+# Android left beta on 2026-06-15. treesmith.app/beta/ now 301s to the app's
+# marketing homepage, so link the Play Store listing directly. Its URL already
+# carries a query string, hence the & rather than a ? before the UTM params.
+ANDROID_URL = "https://play.google.com/store/apps/details?id=app.treesmith&" + UTM_PARAMS
+
+# Deep links for the grafting section. Readers arriving from the variety and
+# rootstock promo blocks came here for grafting, not for a feature list.
+GRAFTING_TECHNIQUES_URL = (
+    "https://treesmith.app/grafting-techniques/?" + UTM_PARAMS
+    + "&utm_content=grafting_techniques"
+)
+GRAFT_TRACKING_URL = (
+    "https://treesmith.app/graft-tracking/?" + UTM_PARAMS
+    + "&utm_content=graft_tracking"
+)
 
 
 def build_body() -> str:
@@ -42,8 +57,10 @@ def build_body() -> str:
     return render_template(
         "treesmith_page.html.j2",
         ios_url=IOS_URL,
-        android_beta_url=ANDROID_BETA_URL,
+        android_url=ANDROID_URL,
         app_url=APP_URL,
+        grafting_techniques_url=GRAFTING_TECHNIQUES_URL,
+        graft_tracking_url=GRAFT_TRACKING_URL,
     )
 
 

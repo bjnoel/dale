@@ -226,7 +226,7 @@ def build_page(out_dir: Path) -> str:
         faq_section=build_faq_section(faqs),
         references_section=build_references_section(),
         related_guides=build_related_guides(),
-        treesmith_promo=render_treesmith_promo("species"),
+        treesmith_promo=render_treesmith_promo("rootstock"),
     )
 
 
