@@ -6279,3 +6279,23 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **Expected visible effects:** species/state/trends/location pages and species alerts pick up prefix-stripped and variety-first titles they previously dropped; digest emails stop including non-fruit daleys/ladybird items; nursery compare species counts change to agree with every other surface.
 
 **Follow-up (same day):** The low-priority cluster was consolidated too. New stocklib/mailer.py owns get_resend_api_key, get_unsubscribe_secret (create flag preserves the digest's generate-if-missing behaviour), make_unsubscribe_token (now fails closed on an empty secret everywhere, matching the subscribe server), load_subscribers, load/save_sends_log (path-parameterised, tolerant of corrupt files), and send_email (senders bind their User-Agent via functools.partial). Ten consumers de-forked; guard tests extended; test_mailer.py pins the token format (HMAC-SHA256, lowercased email, 32 hex chars) that every emailed link depends on. 1827 tests green.
+
+---
+
+## DEC-233 — 2026-07-27 — List All Rare Herbs as "Australia" at the nursery's request
+
+**Decided by:** Dale (autonomous, low-risk courtesy request from a tracked nursery).
+
+**Context:** All Rare Herbs (onboarded 4 days ago, DEC-231) got in touch after seeing their listing. They have changed ownership and moved from Mapleton QLD within the past year, are now online only, and deliberately do not publish a physical location. They asked that the nursery page show "Australia" instead of a town, noting other listings already do this (Aus Nurseries has shown "Australia" since onboarding, so the precedent and the rendering path already existed).
+
+**Decision:** Honour it. A tracked nursery asking us not to publish their address is a reasonable request with no downside for users: the state filter, shipping badges and restriction warnings all come from the shipping map, not the location string, so nothing about "can this reach me?" is lost. Refusing would cost goodwill with exactly the kind of supplier relationship treestock depends on.
+
+**Implementation:**
+- `woocommerce_scraper.py`: all-rare-herbs `location` "Mapleton, QLD" to "Australia" (the config value the scraper stamps into every snapshot).
+- `build_nursery_pages.py`: description no longer names the town ("an online-only mail-order nursery"), and the "QLD" tag becomes "mail order".
+- `stocklib/registry.py`: the internal note records the move and the request rather than the old town.
+- Server: the six existing all-rare-herbs snapshots were patched in place (the pages read `location` from the snapshot, so a config change alone would not have taken effect until the next scrape), then nursery pages + compare page rebuilt and the Cloudflare edge purged. Live and verified: no "Mapleton" anywhere in the served dashboard.
+
+**Not changed:** the shipping map (QLD/NSW/VIC/SA/ACT, no WA/NT/TAS). That was confirmed by the nursery directly on 2026-07-23, four days ago, and they did not flag it as out of date.
+
+**Cost:** $0. 1827 tests green.
