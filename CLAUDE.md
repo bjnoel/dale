@@ -43,7 +43,18 @@ index/privacy/terms).
 
 **Pricing model (freemium):**
 - Free: up to 30 plants, one location, photos, activity log, GPS map, local export
-- Pro (subscription): unlimited plants, multiple locations, cloud backup, bulk operations
+- Pro: unlimited plants, multiple locations, reminders, bulk operations.
+  A **one-time purchase, NOT a subscription.** Pro used to be an annual plan;
+  that was retired in July 2026 and those users were migrated across, so nobody
+  is on a renewing Pro plan.
+- Cloud backup: automatic daily backups and cross-device sync. A **separate
+  auto-renewing yearly subscription** that requires Pro first. This is the only
+  recurring product. On lapse, cloud data goes read-only for a 30-day grace
+  period; Pro and local data are unaffected.
+
+Do not describe Pro as a subscription or list cloud backup as a Pro feature.
+Getting this wrong put incorrect pricing on treestock, the Treesmith homepage,
+the press kit and the Terms of Service (all corrected 2026-07-27).
 
 **Dale's role:** Growth, marketing, app store optimisation (ASO), content,
 cross-promotion from treestock, and the web companion. Benedict owns the Flutter
@@ -114,7 +125,6 @@ Do the work. Write code, create content, build tools, analyse data.
 ### 4. Update State
 After work is done, update all relevant state files:
 - `state/business-state.json` — Overall status
-- `state/active-sprint.md` — What's in progress
 - `decisions/decision-log.md` — What you decided and why
 - `financials/ledger.json` — Any financial changes
 - `public-ledger/YYYY-MM-DD.md` — Public-facing log entry
@@ -171,9 +181,6 @@ Benedict answers questions async, often from his phone. To make this easy:
 4. Use yes/no or multiple choice format where possible
 5. Never ask more than 5 questions at once
 
-A web-based question dashboard with WhatsApp notifications will be built as
-part of the infrastructure setup (Sprint 0).
-
 ## treestock.com.au Rules (READ BEFORE TOUCHING DASHBOARD CODE)
 
 These are hard rules from Benedict. Do not override or "improve" past them.
@@ -197,52 +204,14 @@ These are hard rules from Benedict. Do not override or "improve" past them.
 
 4. **No em dashes in copy.** Use commas, periods, or parentheses instead.
 
-## Testing
+## Scraper code
 
-Run before committing any change to `tools/scrapers/` (especially the
-parsing helpers, builders, or alert scripts):
+Run `python3 -m unittest discover tests/` before committing any change under
+`tools/scrapers/`. Shared logic lives in `stocklib`. Import it, never copy
+(`tests/test_no_forking.py` enforces this).
 
-```
-python3 -m unittest discover tests/
-```
-
-Tests live in `tests/` and use only stdlib unittest (no pytest). They
-focus on pure functions where bugs have bitten us before -- particularly
-`parse_cultivar` / `slugify` / `_variety_slug`, which are duplicated
-across `build_variety_pages.py`, `build_species_pages.py`, and
-`send_variety_alerts.py` and MUST stay in sync (a drift = variety alert
-URLs that don't match the pages built for them, or alert links pointing
-to 404s on species pages).
-
-When you change one of those helpers, update the tests too.
-
-## Shared code (stocklib)
-
-Shared logic lives in the `tools/scrapers/stocklib/` package. It ships via the
-existing rsync deploy (no infra change); scripts in `tools/scrapers/` import it
-for free, scripts in `tools/scrapers/bee/` add the parent dir to `sys.path`
-first. Do NOT copy these into a builder or scraper -- import from the package,
-or `tests/test_no_forking.py` fails:
-
-- `stocklib.classify` -- `NON_PLANT_KEYWORDS` / `is_real_product`, the
-  "is this junk, not a tree?" filter (was once 10 drifted copies).
-- `stocklib.registry` -- one `Nursery` record per nursery; `SHIPPING_MAP`,
-  `NURSERY_NAMES`, `LOCAL_DELIVERY` are derived. `shipping.py` re-exports them.
-- `stocklib.snapshots.iter_nursery_snapshots` -- the today/latest snapshot walk.
-- `stocklib.model` -- typed Product/Variant/Snapshot + `validate_snapshot`.
-- `stocklib.taxonomy` -- species + `category`; `ENABLED_CATEGORIES` is the switch.
-- `stocklib.email_footer.inject_footer` -- the subscriber email footer.
-
-Conventions:
-- Add a nursery = one record in `stocklib/registry.py` (plus its scraper config).
-- Add a plant category (e.g. ornamentals) = species records carrying that
-  `category` in `fruit_species.json`, then add it to
-  `stocklib.taxonomy.ENABLED_CATEGORIES`. Today it is `("fruit",)`.
-- `tests/test_golden.py` fails if a builder's page output changes unexpectedly;
-  regenerate with `GOLDEN_UPDATE=1` ONLY for an intended change, and review the
-  diff first.
-
-Not yet migrated: the `bee/` subsite still forks some of this (de-fork pending).
+Full details in `tools/scrapers/CLAUDE.md`, which loads automatically when you
+work with files in that directory.
 
 ## Automated Housekeeping
 
@@ -259,11 +228,8 @@ Not yet migrated: the `bee/` subsite still forks some of this (de-fork pending).
 ## Important Reminders
 
 - You have judgment. Use it. Don't ask Benedict things you can figure out yourself.
-- Small bets over big bets. Test assumptions before committing resources.
 - Revenue quality: recurring > one-time, retained > churned.
 - The competition for Track A (Treesmith) is generic plant-tracker apps with no
   collector-specific features. Our differentiator is graft tracking, scion sources,
   activity logs, and a built-in audience via treestock.
 - The competition for Track B is... nobody. That's the point.
-- Document everything. Future-you (next session) depends on past-you's notes.
-- "Tell him he's dreaming" is a valid decision outcome. Log it and move on.
