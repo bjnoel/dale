@@ -12,6 +12,23 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
+**Q45** [BLOCKING] STFC preview is live, reply is drafted, needs your eyes before it goes
+
+Preview: **https://stfc-preview.pages.dev** (open it on your phone, there is an
+A/B switch at the top of every page). Their whole library, 473 entries, real
+content, two design directions.
+
+Draft reply: `docs/stfc-reply-draft.md`. I cannot send it and would not want to.
+
+1. **Send the reply as drafted, or does it need changes?** It answers her
+   portfolio question with treestock, quotes the prev/next example, links the
+   preview and asks her two questions. No pricing, no terms.
+2. **Do you have a preference between A and B yourself?** I have deliberately not
+   put a recommendation in the email, but if you have a view, say so and I will
+   add a gentle steer.
+
+That is it. Everything else about this is decided and logged as DEC-234.
+
 **Q44** [RESOLVED 2026-06-12: Benedict approved the checkbox labels as-is, and the
 public /digest.html stays fruit-only for now. No changes needed. DAL-202 review
 scheduled for 2026-07-23.]

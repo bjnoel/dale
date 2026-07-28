@@ -6299,3 +6299,57 @@ In parallel, Benedict's Treesmith Flutter app (mobile plant tracker for serious 
 **Not changed:** the shipping map (QLD/NSW/VIC/SA/ACT, no WA/NT/TAS). That was confirmed by the nursery directly on 2026-07-23, four days ago, and they did not flag it as out of date.
 
 **Cost:** $0. 1827 tests green.
+
+---
+
+## DEC-234 — 2026-07-28 — Build and deploy the STFC preview before quoting anything
+
+**Decided by:** Benedict (asked for the plan to be executed), Dale (executed).
+
+**Context:** The Sub-Tropical Fruit Club of Qld asked whether Benedict has built other
+sites like the rebuild he is proposing. `docs/stfc-rebuild-plan.md` answered that the
+right reply is a working preview of *their* site, not a portfolio link. This decision
+records executing that plan end to end in one session.
+
+**Decision:** Build the real Astro project (not a throwaway mockup) in a separate repo
+at `/Users/bjnoel/Projects/stfc-web`, migrate their whole library into it, deploy two
+design directions to a Cloudflare Pages preview, and draft one reply. No pricing, no
+terms, no commitment asked for yet.
+
+**What changed versus the plan:**
+- **No crawler was needed.** stfc.org.au exposes `/wp-json/wp/v2` publicly, so the whole
+  library came across as structured records in about fifteen seconds. Phase 0 became an
+  API client, and Phase 1 never had to strip theme HTML. This also removes the plan's
+  "ask for a WordPress export once they commit" dependency for everything except images.
+- **23 genuine duplicate pairs, not one.** The plan claimed only `propagating`/
+  `propagating-2` was a real duplicate. 23 entries are published twice, nearly always the
+  same text filed under two different sections. Only `white-sapote` is a false pair. This
+  is better ammunition than assumed, not worse.
+- **Recipes is 42 entries, not 29; the `-2` suffix hits 142 URLs, not 134.** The original
+  numbers came from crawling section listings, which undercount.
+- **Image migration is a non-issue.** 63 images across 22 entries in the whole corpus,
+  against the plan's worry about optimising images across 474 entries.
+
+**Built:** 507 posts to 473 canonical entries. 23 duplicates merged, 120 `-2` slugs
+cleaned, 162 redirects generated, 1,821 headings recovered from run-in bold text, 133
+entries with citations lifted out of body prose into structured frontmatter. Topic and
+species tags plus a one-line summary generated per entry, because the source site has
+none of them; 84 entries (17%) were left untagged rather than tagged wrongly. All of it
+committed as plain frontmatter, so a wrong tag is a one-line edit, matching the
+treestock growing_guides/variety_descriptions discipline.
+
+**Deployed:** <https://stfc-preview.pages.dev>, 950 pages, `noindex` plus a robots.txt
+disallow so it cannot compete with stfc.org.au. Two directions (A community club, B
+reference library) with an A/B switch on every page. Deployed with the existing
+`CLOUDFLARE_API_TOKEN` from `state/secrets/cloudflare.env`; no new account or spend.
+
+**Deliberately not done:** the redirect map is built but written to `data/_redirects`,
+not `public/`, because on a preview its targets do not exist and it would 301 visitors
+into dead ends. Also skipped per plan: Keystatic, the homepage, membership/contact forms,
+DNS, and video transcription.
+
+**Cost:** $0. Tagging is vocabulary matching rather than a model call, so there was not
+even the few cents the plan budgeted.
+
+**Next:** Benedict reviews the preview and sends `docs/stfc-reply-draft.md`. The reply
+asks exactly two questions: A or B, and whether Articles and Tips stay separate.
