@@ -59,6 +59,48 @@ class BreadcrumbTest(unittest.TestCase):
         self.assertEqual(parse_jsonld(out)["@type"], "BreadcrumbList")
 
 
+class LinklessMiddleCrumbTest(unittest.TestCase):
+    """Regression: Search Console "Missing field 'item' (in 'itemListElement')".
+
+    Google requires "item" on every crumb EXCEPT the last one. build_variety_pages
+    passes an empty url for the species crumb when that species has no species page
+    (grandfathered non-fruit varieties), which produced a middle ListItem with no
+    "item" and a dead <a href=""> in the nav. Such a crumb is dropped from both.
+    """
+    # Home > Varieties > Begonia (no species page) > Bewitched Red Black
+    CRUMBS = [("Home", "/"), ("Varieties", "/variety/"), ("Begonia", ""),
+              ("Bewitched Red Black", "")]
+
+    def test_every_non_last_item_has_item(self):
+        items = parse_jsonld(sd.breadcrumb_jsonld(self.CRUMBS, SITE_URL))["itemListElement"]
+        for it in items[:-1]:
+            self.assertIn("item", it, f"crumb {it['name']!r} is missing 'item'")
+
+    def test_linkless_middle_crumb_dropped_and_positions_renumbered(self):
+        items = parse_jsonld(sd.breadcrumb_jsonld(self.CRUMBS, SITE_URL))["itemListElement"]
+        self.assertEqual([it["name"] for it in items],
+                         ["Home", "Varieties", "Bewitched Red Black"])
+        self.assertEqual([it["position"] for it in items], [1, 2, 3])
+        self.assertNotIn("item", items[-1])
+
+    def test_trailing_linkless_crumb_still_kept(self):
+        """The last crumb legitimately has no url; only middles are dropped."""
+        items = parse_jsonld(sd.breadcrumb_jsonld(
+            [("Home", "/"), ("Varieties", "/variety/"), ("Hass", "")], SITE_URL,
+        ))["itemListElement"]
+        self.assertEqual([it["name"] for it in items], ["Home", "Varieties", "Hass"])
+
+    def test_nav_has_no_empty_href_and_matches_jsonld(self):
+        out = render_breadcrumb(self.CRUMBS)
+        nav = re.search(r"<nav.*?</nav>", out, re.S).group(0)
+        self.assertNotIn('href=""', nav)
+        self.assertNotIn("Begonia", nav)
+        # Visible trail and the markup must agree (Google's breadcrumb guidance)
+        names = [it["name"] for it in parse_jsonld(out)["itemListElement"]]
+        for name in names:
+            self.assertIn(name, nav)
+
+
 class OrganizationWebsiteTest(unittest.TestCase):
     def test_organization(self):
         data = parse_jsonld(organization_jsonld())

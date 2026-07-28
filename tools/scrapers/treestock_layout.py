@@ -140,7 +140,12 @@ def render_breadcrumb(crumbs: list[tuple[str, str]], max_width: str = CONTENT_MA
     crumbs: list of (label, url) tuples. Last item has no link (current page).
     The JSON-LD is appended after the <nav> (valid anywhere in the body), so
     every breadcrumbed page emits BreadcrumbList structured data for free.
+
+    A linkless crumb anywhere but the end is dropped from both the nav and the
+    JSON-LD (see stocklib.structured_data.drop_linkless_crumbs): it would render
+    as a dead <a href=""> and trip the Search Console "Missing field 'item'" error.
     """
+    crumbs = _sd.drop_linkless_crumbs(crumbs)
     parts = []
     for i, (label, url) in enumerate(crumbs):
         if i == len(crumbs) - 1:

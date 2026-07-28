@@ -29,15 +29,39 @@ def _abs_url(url: str, site_url: str) -> str:
     return f"{site_url}/{url}"
 
 
+def drop_linkless_crumbs(crumbs: list) -> list:
+    """Drop any non-final crumb that has no url.
+
+    Google requires "item" on every breadcrumb EXCEPT the last one ("If the
+    breadcrumb is the last item in the breadcrumb trail, item is not required").
+    A linkless crumb in the middle of the trail therefore emits a ListItem with no
+    "item", which Search Console reports as the critical error "Missing field
+    'item' (in 'itemListElement')". It is also useless to a reader: the nav would
+    render it as <a href="">, a dead link back to the current page.
+
+    Callers pass an empty url to mean "no page exists for this level" (e.g.
+    build_variety_pages, when the species has no species page). Dropping the crumb
+    is the honest rendering of that. The trailing crumb keeps its empty url: it is
+    the current page, and Google falls back to the containing page's URL.
+
+    Shared by breadcrumb_jsonld and treestock_layout.render_breadcrumb so the
+    visible trail and the markup always agree, per Google's breadcrumb guidance.
+    """
+    return [
+        (label, url) for i, (label, url) in enumerate(crumbs)
+        if url or i == len(crumbs) - 1
+    ]
+
+
 def breadcrumb_jsonld(crumbs: list, site_url: str) -> str:
     """BreadcrumbList from the same (label, url) tuples render_breadcrumb takes.
 
-    The last crumb is the current page and conventionally has an empty url; any
-    crumb with an empty url is emitted without an "item" (valid: Google tolerates
-    a missing item on the trailing element).
+    The last crumb is the current page and conventionally has an empty url, so it
+    is emitted without an "item". Linkless crumbs earlier in the trail are dropped
+    (see drop_linkless_crumbs) and positions renumbered over what remains.
     """
     items = []
-    for i, (label, url) in enumerate(crumbs):
+    for i, (label, url) in enumerate(drop_linkless_crumbs(crumbs)):
         item = {"@type": "ListItem", "position": i + 1, "name": label}
         abs_url = _abs_url(url, site_url)
         if abs_url:
