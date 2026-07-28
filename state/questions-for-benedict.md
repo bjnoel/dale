@@ -12,22 +12,24 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
-**Q45** [BLOCKING] STFC preview is live, reply is drafted, needs your eyes before it goes
+**Q45** [BLOCKING] STFC reply is drafted and shortened, ready for you to send
 
-Preview: **https://stfc-preview.pages.dev** (open it on your phone, there is an
-A/B switch at the top of every page). Their whole library, 473 entries, real
-content, two design directions.
+Preview: **https://stfc-preview.pages.dev** (A/B switch at the top of every page).
+Draft: `docs/stfc-reply-draft.md`, now 384 words. I cannot send it and would not
+want to.
 
-Draft reply: `docs/stfc-reply-draft.md`. I cannot send it and would not want to.
+*2026-07-28: you said you prefer B (reference library), so the draft now leans
+that way in question 1, phrased as a lean rather than a verdict so the committee
+still has an easy out. The preview itself stays neutral, A listed first, neither
+marked as recommended.*
 
-1. **Send the reply as drafted, or does it need changes?** It answers her
-   portfolio question with treestock, quotes the prev/next example, links the
-   preview and asks her two questions. No pricing, no terms.
-2. **Do you have a preference between A and B yourself?** I have deliberately not
-   put a recommendation in the email, but if you have a view, say so and I will
-   add a gentle steer.
+*Also 2026-07-28: stfc.org.au was briefly unreachable for you. Not us. The
+harvest made 9 requests in total, rate limited to one a second, and the site
+answers normally from your connection with no VPN.*
 
-That is it. Everything else about this is decided and logged as DEC-234.
+Only thing left: **read it and send it, or tell me what to change.**
+
+Everything else about this is decided and logged as DEC-234.
 
 **Q44** [RESOLVED 2026-06-12: Benedict approved the checkbox labels as-is, and the
 public /digest.html stays fruit-only for now. No changes needed. DAL-202 review
