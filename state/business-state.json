@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 95,
+  "session_count": 96,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -218,7 +218,39 @@
           "compare": "77 pages, 4,786 impr, 121 clicks, 2.5% CTR, 1.57 clicks/page"
         },
         "striking_distance": "Almost entirely one query family at position 10-14: '<species> tree(s) for sale'. Species page titles already match it exactly ('Lychee Trees for Sale Australia, Compare Prices'), so the constraint is rank, not copy. DEC-243: do NOT run another meta/title CTR pass; DAL-208's lever is exhausted.",
-        "next": "DAL-249 (expand species+state, best clicks/page) and DAL-250 (test whether the thin variety tail suppresses the earning pages). DAL-216 cancelled as superseded."
+        "next": "DAL-249 (expand species+state, best clicks/page) and DAL-250 (test whether the thin variety tail suppresses the earning pages). DAL-216 cancelled as superseded.",
+        "state_page_coverage": {
+          "measured": "2026-07-30 (DAL-167, posted to DAL-249)",
+          "note": "build_species_state_pages.py defines STATE_SLUGS for WA, QLD, NSW and VIC only. The state filter dropdown offers SA, so visitors can filter to it, but there is no page for search to land on.",
+          "pages_built": {
+            "western-australia": 75,
+            "new-south-wales": 29,
+            "queensland": 29,
+            "victoria": 28,
+            "south-australia": 0,
+            "tasmania": 0,
+            "northern-territory": 0,
+            "act": 0
+          },
+          "reachable_in_stock_listings": {
+            "VIC": 4672,
+            "QLD": 4240,
+            "NSW": 4240,
+            "SA": 2012,
+            "WA": 1351,
+            "TAS": 188,
+            "NT": 152
+          },
+          "gap": "SA has MORE reachable stock than WA (2,012 from 14 nurseries vs 1,351 from 9) and zero pages. MIN_PRODUCTS>=3 is not what excludes it; SA was never added to the config. TAS and NT are genuinely thin and should stay excluded. No SA-based nursery is tracked at all.",
+          "do_not": "Do NOT rank candidate states by our own state-page traffic (WA 469 visitors/30d, NSW 131, VIC 127, QLD 92, SA 0). That is circular: WA leads because we built 75 WA pages. Plausible visit:region returns empty (no geo database configured), so real visitor geography needs DAL-251 first."
+        }
+      },
+      "outreach_clubs": {
+        "measured": "2026-07-30 (DEC-244, DAL-167)",
+        "stfc_qld": "Do NOT send a links-page email. Benedict is mid-negotiation to rebuild stfc.org.au (Sheryl Backhouse) and the club promoting treestock is a TERM of that rebuild, not a favour ask. A separate email during a live proposal undercuts it. DAL-252 holds the committee one-pager, gated on Sheryl asking, and requires a declared conflict of interest (Benedict owns the products the club would link to).",
+        "rare_fruit_sa": "Only live send. Benedict is a member and has offered them the RFCWA photo voting app. Links page confirmed live and maintained (Australian Nurseries section lists Daleys and Perry's Fruit & Nut; already links STFC and RFCWA). Email drafted on DAL-167 and assigned to Benedict: it asks which SA nurseries members buy from rather than requesting a listing, because we have no SA pages to send them to.",
+        "rare_fruit_australia": "Dropped. Site unmaintained, and rfcarchives.org.au is the stronger RFCA-lineage asset we already own.",
+        "orchard_of_flavours": "Dropped. Non-AU domain, topical relevance only."
       }
     },
     "b_experiment_beestock": {

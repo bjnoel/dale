@@ -7201,3 +7201,92 @@ source check that no call site passes one. Verified by mutation: removing the `s
 advance fails 4 tests. Full suite 1950, all passing.
 
 **Cost:** $0.
+
+---
+
+## DEC-244 — 2026-07-30 — Do not send STFC a links-page email during a live proposal, and stop asking South Australia to link to a site with no South Australian pages
+
+**Decided by:** Dale (autonomous; DAL-167 is approved and Benedict handed it back this
+morning). The one action that remains is his to take.
+
+**Context: the same four reflections.** $0 after 126 days, Track A stale at 5 of 5
+session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale with the
+metric unmoved. DAL-167 is the one Todo ticket that is neither Track A nor routine
+treestock SEO: it is outreach, a category with **zero session-days** in the recent
+distribution, it is High priority, and Benedict commented on it at 06:15 today with
+"handing it back to you". DEC-241 and DEC-242 also gave it something it never had, which
+is a number to trade.
+
+**Benedict's update reduced four targets to one, and the reasoning matters more than the
+arithmetic.**
+
+*STFC: the links-page email should not be sent at all.* He is mid-negotiation to rebuild
+stfc.org.au, and told the ticket that STFC would promote treestock and Treesmith as part
+of it. `docs/stfc-reply-draft.md` deliberately withholds price, terms and the RFCWA photo
+app for a committee one-pager. Dropping a separate "please add treestock to your links
+page" email into that window asks Sheryl for a personal favour while a professional
+proposal sits in front of her committee, and it makes the proposal look like it has a
+second agenda. The promotion is a **term of the rebuild**, not a links-page request.
+DAL-167's original ask arrives through a better door and the email is deleted rather than
+drafted. Raised as DAL-252, explicitly gated on Sheryl asking, because writing it now
+would be the "terminates in a document" failure DEC-238 and DEC-239 both named.
+
+*Rare Fruit Australia and Orchard of Flavours: dropped*, confirming Benedict's July call.
+Unmaintained site, and a Portuguese domain with topical relevance only.
+
+*Rare Fruit SA: the only send left, and it is now warm.* He is a member and has already
+offered them the RFCWA photo voting app.
+
+**What checking our own honesty found, and it changed the email.**
+
+Their links page is live and maintained, has an Australian Nurseries section (Daleys,
+Perry's Fruit & Nut) and already links STFC and Rare Fruit Club WA. treestock fits it.
+Then I checked what SA growers would be clicking through to:
+
+- **14 of 27 nurseries ship to South Australia: 2,012 in-stock listings today.**
+- **treestock has zero South Australian pages.** `build_species_state_pages.py` defines
+  `STATE_SLUGS` for WA, QLD, NSW and VIC only. Built: WA 75, NSW 29, QLD 29, VIC 28,
+  **SA 0, TAS 0, NT 0, ACT 0**. No `buy-fruit-trees-sa.html` either.
+- **We track no SA-based nursery at all.**
+
+DEC-243 measured species+state as our best page type by a distance (3.0% CTR, 4.07
+clicks/page, against variety's 0.19). The single highest-yield thing we build does not
+exist for the state of the club we were about to ask for a link. **SA has more reachable
+stock than WA (2,012 against 1,351) and WA carries 75 pages.** So `MIN_PRODUCTS >= 3` is
+not excluding SA; SA was never added to the config.
+
+**So the email asks a question instead of requesting a favour.** Which SA nurseries do
+members actually buy from, we add them, SA members get what the eastern states already
+have. The link becomes something they offer because the site is useful to their members.
+230 words, no ask in the first two thirds, every figure checked today. Assigned to
+Benedict in Todo, not Done: it is his to send.
+
+**The circularity I nearly walked into, recorded because it is the same failure class as
+the last three decisions.** DAL-249 has to rank which state to build next. The obvious
+input is our own state-page traffic: WA 469 visitors/30d, NSW 131, VIC 127, QLD 92, SA 0.
+That reads as a demand signal and it is not. **WA leads because we built 75 WA pages.**
+SA is zero because SA has no pages to visit. Ranking states by it would entrench the first
+guess we ever made. Posted to DAL-249 as a caveat on its own step 2.
+
+The non-circular input is visitor geography, and we do not have it: Plausible's
+`visit:region` returns empty on our instance because no geo database is configured, while
+`visit:country` works (AU 2,548 of 3,220). DAL-251 raised to turn it on before DAL-249
+runs, since events are not backfilled. This is the third consecutive session in which the
+number needed to make a decision either did not exist, was truncated, or was never
+queried. DEC-241 said check whether the number exists; DEC-243 said check whether it is
+complete; this one adds **check whether it is circular.**
+
+**One thing volunteered that nobody asked for.** Benedict rebuilding a club's website
+while that club promotes two products he owns commercially is a conflict of interest. It
+is entirely fine declared and quite bad discovered by a committee member six months in.
+One sentence in the one-pager fixes it permanently, and it will most likely make them
+more willing to link, not less. Written into DAL-252 as non-optional. Prime Directive 1
+covers customers; the same standard should cover a volunteer committee.
+
+**Honest accounting.** This session sent nothing and shipped no code. It deleted an email
+that would have cost us goodwill, corrected an outreach opening from a favour to an offer,
+and found that our best-performing page type is missing for a state with more reachable
+stock than WA. Nothing here moves $0 today.
+
+**Cost:** $0. Read-only Plausible and snapshot queries plus one fetch of the Rare Fruit SA
+links page.
