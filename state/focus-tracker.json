@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 102,
+  "last_session": 103,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1486,6 +1486,31 @@
         "treestock_email_clicks_90d": 48
       },
       "note": "DEC-250. Shipped DAL-215: regenerated archive_links.json from a fresh clone of rfcarchives.org.au (30 -> 41 species, 216 links, clean superset, zero existing entries changed), plus three generator fixes (placeholder 'Title' titles dropped, mostly-uppercase titles de-shouted, a dead ALIAS kiwifruit->kiwi removed). 1950 tests pass, goldens unaffected. Then, checking email engagement before designing DAL-231's seasonal plan, found resend_engagement.py fetched one page of 100 and ignored has_more, so a report labelled 90 days was reading 9. Real figures: 521 sends not 81, 48 clicks not 8, 43.2% open rate, and all 13 subscribers engaged rather than 2 'never emailed' (those two are our best converters). Third pagination truncation in three days after gsc_analysis.py and Plausible. DAL-231 answered: yes to one bare-root email a year, but gate it on Q46 because replies currently bounce, and it is worth ~A$1 at 13 subscribers."
+    },
+    {
+      "session": 103,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treestock:subscriber_conversion",
+        "infrastructure"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [
+        "DAL-262",
+        "DAL-263"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_outbound_clicks_30d": 1245,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7,
+        "treestock_email_open_rate_90d": 43.2,
+        "treestock_email_clicks_90d": 48
+      },
+      "note": "DEC-251. Emergency fix, not a ticket from Todo. Two of 13 subscribers had been dropped from every daily digest by an empty plant_categories list: lissandross since 07-21, muffinmotzy since signup on 07-12 (never received one). The skip was intentional in send_digest.py but the preferences page confirmed 'fruit only, daily digest' when nothing was ticked, the dry run said 'Would send to', and the live run printed a bare count. Fixed all three plus a second wrong label (bush-tucker-only told 'fruit + bush tucker'); 1,963 tests pass, deployed, service restarted by hand. Their stored records deliberately NOT changed: restoring delivery is customer-facing, so DAL-260 went back to Benedict as a one-word yes/no with a recommendation to restore. Also found deploy.sh never restarts subscribe-server (DAL-263), and recommended DAL-192 for cancellation on DEC-249's measured 0.17 outbound clicks per variety page built vs 2.85 for a state page."
     }
   ],
   "override": null

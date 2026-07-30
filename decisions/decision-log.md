@@ -8037,3 +8037,110 @@ gsc_analysis.py, in the Plausible breakdowns, and now in resend_engagement.py. I
 luck, it is a design habit, and DAL-261 exists to stop finding it one tool at a time.
 
 **Cost:** $0. One shallow clone of a public repo, read-only Resend and Plausible calls.
+
+---
+
+## DEC-251 — 2026-07-30 — Two of our thirteen subscribers were receiving nothing, and the interface told them they were subscribed
+
+**Decided by:** Dale (autonomous, under the emergency exception: subscribers were not
+receiving a service they had signed up for). DAL-260 was in Backlog, not Todo. The code
+fix is shipped and live; the data decision about the two affected people is Benedict's
+and the ticket goes back to him in Todo.
+
+**Context: the same four reflections, and why I did not answer them with a tenth analysis.**
+$0 after 126 days, Track A stale at 5 of 5 session-days, treestock growth stale at 4 of 5,
+`revenue:monetisation` stale with the metric unmoved.
+
+The reflections ask for revenue work, Track A work, or a plan to the first dollar. DEC-248
+wrote that plan and its first three steps are all Benedict's. Track A's two levers have sat
+on DAL-242 for three sessions. Writing an eleventh strategy document into an eight-deep
+queue is precisely the failure mode DEC-238 and DEC-239 named. So I checked the Todo queue
+for anything that was actually broken, and something was.
+
+**Finding 1: two of thirteen subscribers had been silently dropped from every digest.**
+
+Both `muffinmotzy` and `lissandross` have `plant_categories: []` stored, an empty list
+rather than a missing field. `send_digest.py:186` skips any bucket with no plant
+categories. That skip is correct behaviour taken on its own. The defect is everything
+around it.
+
+The timeline is worse than DAL-260 recorded. It said both stopped on 2026-07-20. Against
+`digest_sends.json`:
+
+- `lissandross` received digests on 07-19 and 07-20 only, then nothing.
+- `muffinmotzy` subscribed on 07-12 and has **never received a single daily digest.**
+
+DEC-250 named these two as our best converters on 4 opens each. Those opens were welcome
+and variety-alert mail. Neither has ever been counted as a digest recipient.
+
+**Finding 2: the interface told them the opposite, in so many words.**
+
+`subscribe_server.py` built its saved-preferences summary as
+`plant_categories.indexOf('bush_tucker') >= 0 ? 'fruit + bush tucker' : 'fruit only'`.
+With nothing ticked, that falls to the else branch. A user who unticked both plant types
+was told:
+
+> Saved: all states, **fruit only, daily digest**.
+
+and then received nothing, permanently. The same expression had a second bug in it: a
+bush-tucker-only subscriber was told "fruit + bush tucker".
+
+The analogous case for change-categories was already handled two lines below, printing
+"all categories muted". Plant categories were simply missed when DAL-199 added them.
+
+Two more places hid it. The dry run printed "Would send to" for subscribers it would never
+send to. The live run printed a bare count with no addresses, so even a person reading the
+log saw "Skipping 2 subscribers" and not who.
+
+**Finding 3, recorded as unknown rather than guessed.** How they reached an empty list is
+not determinable. Signup never writes the field, and both the confirm-success page and the
+preferences page render "Fruit trees" pre-ticked, so `[]` requires an active untick. The
+subscribe-server request log has rotated away. I ruled out the alternatives I could test:
+the container IDs match the JS selectors, `manage.html` only requests a link and does not
+post preferences, and no other code path writes the field. DAL-260 said "cause unknown, do
+not guess", and the honest answer is that it is still unknown.
+
+**What shipped (046b96f, deployed, service restarted, 1,963 tests pass).**
+
+1. A preferences save leaving zero plant types is rejected, unless the submitted frequency
+   is `off`, which is the supported way to stop digests and is a radio button on the same
+   form. Server-side, so the API is covered and not only the browser.
+2. The confirmation line tells the truth in all three cases.
+3. The digest run names the skipped addresses on stderr; the dry run says
+   "Would SKIP (nothing selected)".
+
+**What deliberately did not ship: their data.** Turning someone's email back on is
+customer-facing and I would be acting on a guess about intent. The recommendation on the
+ticket is to restore both to `["fruit"]`, because both left frequency on "daily" when an
+explicit "Off" option was right there, and because the UI's own confirmation told them they
+had "fruit only, daily". One word from Benedict settles it.
+
+**Finding 4, found on the way out: our deploy does not deploy this file.** `tools/deploy.sh`
+rsyncs `tools/scrapers/` to `/opt/dale/scrapers/` and contains no `systemctl` call, but
+`subscribe-server.service` is a long-lived process reading `subscribe_server.py`. A change
+to it lands on disk and has no effect until someone restarts the service by hand, which I
+did. Same shape as the bug it was found beside: the deploy reports success, the file on
+disk is correct, and the running behaviour is stale. Raised as DAL-263.
+
+**Also this session: DAL-192 recommended for cancellation, on evidence that post-dates it.**
+It proposes taxonomy records so more long-tail exotics get /variety/ pages. DEC-249 measured
+a variety page at 0.17 outbound clicks per page built against a state page's 2.85, with
+1,014 of 1,659 taking zero visitors in 30 days. It is the lowest-yield page type we build by
+about 16x, and the ticket proposes extending its thinnest tail. Offered back as an inverted
+version (add records only where GSC already shows impressions) if Benedict wants it kept.
+
+**Honest accounting.** No revenue. This is the third session running that shipped code. It
+found that 15% of our best-performing channel had been dead for between 10 and 18 days
+while the dashboard, the send log summary and the user-facing confirmation all read normal,
+and it removed the trap rather than only the instance.
+
+**Running lesson, tenth session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is
+connected. DEC-248: the arithmetic. DEC-249: it is instrumented. DEC-250: the fetcher loops.
+This one adds **check that what the system tells the user matches what the system does.**
+Every layer here was individually defensible. The skip was intentional, the count was
+printed, the tests passed. The failure was that the only human-readable surface, the one
+sentence the subscriber actually saw, asserted the opposite of the behaviour, and no test
+had ever compared the two.
+
+**Cost:** $0. Read-only inspection of the send log and subscriber file, one service restart.

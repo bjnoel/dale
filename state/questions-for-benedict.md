@@ -30,14 +30,29 @@ That is the actual bottleneck, not my throughput, so this is a ranking rather th
    server bill about 4x. Detail on the ticket and in DEC-248.
 3. **Q46** below — one email address.
 
+**Added since, and it is one word:**
+- **DAL-260** — two of our 13 subscribers have been getting no digest at all
+  (lissandross since 21 July, muffinmotzy since signup on 12 July, never once). Cause
+  found and fixed tonight: unticking every plant type silenced them while the page
+  confirmed "fruit only, daily digest". I have NOT touched their saved preferences,
+  because switching someone's email back on is your call, not mine. Reply **"yes"**
+  and I restore both; reply **"leave them"** and I close it as fixed-forward only.
+  My recommendation is yes: both left frequency on "daily" when an "Off" button was
+  right there.
+
 Then, when you have time: DAL-115 (community post), DAL-167 (send the RFSA email),
 DAL-80 and DAL-242.
 
-**Withdrawing two, unless you object:**
+**Withdrawing three, unless you object:**
 - **DAL-165** — your permaculture directory question is answered (no, DEC-245). Nothing
   left for you to do. Recommend closing.
 - **DAL-173** — superseded by the subscriber drip (DEC-240) and DAL-221, and aimed at 13
   subscribers on a path measured at ~0 conversions. Recommend cancelling.
+- **DAL-192** — long-tail /variety/ taxonomy records. DEC-249 measured a variety page at
+  0.17 outbound clicks per page built against a state page's 2.85, with 1,014 of our
+  1,659 variety pages taking zero visitors in 30 days. This ticket adds more of the
+  thinnest part of that tail. Recommend cancelling, or say the word and I will rewrite
+  it to follow GSC impressions instead of guessing.
 
 **Q46** [BLOCKING] Which email address should receive replies to treestock emails?
 

@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link."
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link."
       },
       "funnel_from_treestock": {
         "audit": "DAL-218: /treesmith.html took 12 unique visitors/month out of treestock's 2,865 (0.4%).",
@@ -359,7 +359,16 @@
         "engaged_subscribers": "13 of 13",
         "correction": "resend_engagement.py fetched a single page of 100 and ignored Resend's has_more flag, so a report labelled 90 days was reading 9 (2026-07-21..07-30). It reported 81 sends, 39 opens, 8 clicks, 48.1% open rate, 2 subscribers 'never emailed' and 2 'delivered, no open'. All six figures were wrong. With the full 1,836-email history every subscriber is engaged, and the two listed as never emailed are the two best converters (4/4/3 and 4/3/1 sent/opened/clicked). Nothing was broken in the sending; the measurement was broken. Fixed d45e404, now follows the `after` cursor and raises rather than returning a partial history.",
         "implication": "Email is the best-performing channel treestock has per head, and behaves nothing like treestock editorial PAGES, which DEC-249 measured at 0.01 outbound clicks/visitor. The binding constraint on its value is list size (13), not content or frequency.",
-        "open_defect": "DAL-260: 11 of 13 subscribers received an email on 2026-07-30 but lissandross and muffinmotzy, both frequency=daily and both high-converting, last received one on 2026-07-20. Invisible until the pagination fix."
+        "open_defect": "RESOLVED in code (DEC-251). DAL-260 now carries only the data decision for Benedict: whether to restore the two muted subscribers.",
+        "delivery_defect_fixed": {
+          "decision": "DEC-251 / DAL-260 (2026-07-30), shipped 046b96f and deployed",
+          "what": "Two of 13 subscribers had plant_categories == [] stored, so send_digest.py:186 skipped them from every daily send. lissandross received digests on 07-19 and 07-20 only; muffinmotzy subscribed 07-12 and NEVER received a single daily digest (their opens in DEC-250 were welcome and variety-alert mail, not digests).",
+          "why_invisible": "The preferences page confirmed 'Saved: all states, fruit only, daily digest' whenever bush tucker was absent, including when nothing at all was ticked. The dry run printed 'Would send to' for subscribers it would never send to. The live run printed a bare count with no addresses. The identical case for change-categories was already handled ('all categories muted'); plant categories were missed when DAL-199 added them.",
+          "root_cause_of_the_empty_list": "UNKNOWN and deliberately not guessed. Signup never writes the field and both preference pages render fruit pre-ticked, so reaching [] needs an active untick. The subscribe-server request log has rotated away. Ruled out: container IDs match the JS selectors, manage.html does not post preferences, no other code path writes the field.",
+          "fix": "Server-side rejection of a preferences save leaving zero plant types unless the submitted frequency is 'off'. Confirmation line no longer claims 'fruit only' when nothing is selected, and no longer tells a bush-tucker-only subscriber 'fruit + bush tucker'. Digest run now names skipped addresses on stderr; dry run says 'Would SKIP (nothing selected)'.",
+          "outstanding": "The two existing records are deliberately UNCHANGED. Restoring delivery is customer-facing, so DAL-260 is back with Benedict as a one-word yes/no. Dale's recommendation is to restore both to ['fruit'], because both left frequency on 'daily' when an explicit 'Off' option existed, and the UI told them they had 'fruit only, daily'.",
+          "deploy_gap_found": "tools/deploy.sh rsyncs the code but never restarts subscribe-server, so any subscribe_server.py change sits on disk with no effect until a manual restart. Done by hand this session; raised as DAL-263."
+        }
       },
       "seasonal_email_plan": {
         "decision": "DEC-250 / DAL-231",
@@ -399,14 +408,14 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done \u2014 hello@walkthrough.au via Fastmail",
-    "blog": "deployed \u2014 walkthrough.au live",
+    "email": "done — hello@walkthrough.au via Fastmail",
+    "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)"
+    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)"
   }
 }
