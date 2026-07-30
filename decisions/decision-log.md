@@ -8375,3 +8375,96 @@ and a 7-day window with no cumulative are both small, reasonable-looking choices
 them they could report twelve sales we never made while hiding two we did.
 
 **Cost:** $0. Read-only PostHog queries, one deploy.
+
+---
+
+## DEC-254 — 2026-07-30 — The activation crisis that redirected the whole strategy was a reporting artefact
+
+**Decided by:** Dale (autonomous). DAL-265 was the ticket DEC-252 spun out as the new top
+priority for Track A. It is now recommended for cancellation, because its headline number
+does not survive being checked.
+
+**Context: the same four reflections.** $0 recorded after 126 days, Track A stale at 5 of 5
+session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale.
+
+The channel-stale rule wants a genuinely new approach before more Track A work. Last session
+supplied one: DEC-252 said the constraint is not ASO, price or the funnel but **activation**,
+because "290 installs, 18 people have EVER added a plant". This session went to work that
+finding and found the finding itself was wrong.
+
+**Defect 1: the denominator covers weeks the numerator could not exist.**
+
+`plant_added` first appears in PostHog on **2026-06-08**. Installs are counted from
+**2026-04-25**. So 219 devices in that denominator could not have fired the event no matter
+what the user did. Their activation is unknown, not zero.
+
+The giveaway was visible in a single query and I had not run it: `plant_added`, `photo_added`,
+`location_added` and `onboarding_started` all have a first-seen date of exactly 2026-06-08.
+Four events do not start on the same day by coincidence; that is the day the instrumentation
+shipped, not the day users started behaving differently.
+
+**Defect 2: the supporting statistic came from a dead event.**
+
+DEC-252's most quoted line was "of 186 people with a `plant_count_snapshot`, 181 max out at 0
+plants". `plant_count_snapshot` only ever emitted on **builds 13 to 40** and stopped around
+2026-06-07. It is not in the current codebase at all. So that 97% describes April and May users
+of a build that is now 16+ versions old.
+
+It is also contradicted from inside its own dataset. Splitting by install cohort: of the people
+first seen on or after 2026-06-08, **13 fired `plant_added`, while 0 of the 7 who have a
+snapshot show a count above zero.** The event and the behaviour disagree, which is what a
+decommissioned event looks like.
+
+**Corrected figures.**
+
+| measure | on file | actual |
+|---|---|---|
+| all-time activation | 18/290 = 6% | **13/126 = 10%** (clipped to coverage) |
+| "never added a plant" | 97% | not measurable from that event |
+| July cohort, public builds (<=52) | -- | **9/33 = 27%** |
+| July cohort reaching the paywall | -- | 19/48 = 40% |
+
+Checked for contamination before claiming it: the July activators are on builds 44 to 56 across
+US, UA, IN and AU storefronts, so they are not Benedict and not a room full of internal testers.
+Builds 53-56 (internal) were split out and activate at 3/15, no better than the public 9/33.
+
+**Defect 3, also in DEC-252: the onboarding criticism was already fixed before it was written.**
+
+DEC-252 said "onboarding's only steps are `gps` and `location`, i.e. we ask for a garden location
+before they care", and DAL-265 was framed around it. Benedict replaced that flow on 2026-07-02
+with a zero-dialog welcome screen that requests no permissions, and it shipped in build 52.
+PostHog confirms it rather than the git log alone: `welcome_screen_shown` fires on build 52 from
+2026-07-23. `onboarding_started` is legacy telemetry from users still on older builds.
+
+**What shipped (137442d, deployed, 1,978 tests pass, up from 1,971).**
+
+The digest's weekly activation cohort was always correct. What was missing was a trustworthy
+**all-time** line, and that absence is precisely why an untrustworthy one got computed by hand
+into a decision doc. `m_activation` now clips the all-time cohort to the day `plant_added` first
+appears, prints that date beside the number, and shows the excluded devices as "unknown not zero"
+instead of dropping them silently. 7 regression tests pin the rendered text, per DEC-251.
+
+Live output: `Added a plant (all time, since 2026-06-08) 13/126 = 10%`.
+
+Deployed and diffed against the repo copy, because per DEC-253 there is no deploy cron.
+
+**What this does and does not change.** It does not mean Treesmith is healthy. 27% of new users
+adding a plant is respectable; **1 of 15 returning on 2+ days in the 8-14 day cohort is not**, and
+retention is now the honest open question rather than activation. It does mean that the DEC-252
+conclusion "everything else acts on the 3% who got past this" was wrong, and that the levers it
+retired on those grounds were retired on a bad number.
+
+**Queue effect.** Nothing added. DAL-265 handed back with a recommendation to cancel and an
+explicit offer to open a retention ticket only if Benedict wants it.
+
+**Running lesson, thirteenth session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is connected.
+DEC-248: the arithmetic. DEC-249: instrumented. DEC-250: the fetcher loops. DEC-251: what the
+system says matches what it does. DEC-252: check the zero. DEC-253: which direction the default
+rounds. This one adds **check that the numerator and the denominator cover the same period.**
+DEC-249 taught that an uninstrumented page reads as a zero; this is the same error one level up,
+where an event that started late makes every user before it look like a failure. The tell is
+cheap and I will take it as standard from now on: before quoting any rate, ask when the event in
+the numerator first appears.
+
+**Cost:** $0. Read-only PostHog queries, reads of the read-only app mirror, one deploy.

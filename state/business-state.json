@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 105,
+  "session_count": 106,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -119,7 +119,7 @@
         "onboarding_completed": 49,
         "people_ever_added_a_plant": 18,
         "people_reached_paywall": 76,
-        "activation_is_the_constraint": "Of 186 people carrying a plant_count_snapshot, 181 have NEVER had a single plant. Max plants ever reached, per person: 0 x181, 1 x2, 21 x1, 30 x1, 47 x1. Only 18 people have ever fired plant_added. This sits upstream of ASO, price, the treestock funnel and the free tier limit, all of which act on people who installed and then did nothing. DAL-265.",
+        "activation_is_the_constraint": "SUPERSEDED BY DEC-254, DO NOT USE. The 6% and 97% figures here divide by weeks the plant_added event did not exist and lean on plant_count_snapshot, a dead event from builds 13-40. Corrected: ~10% all-time, ~27% for the July cohort. See activation_correction_2026_07_30.",
         "paywall_is_reachable_after_all": "76 of 290 people (26%) have seen the paywall, 73 got to a result. DEC-237's claim that the 30-plant free tier means almost nobody sees it is WRONG. paywall_result by trigger, all 148: manual 57 dismissed + 8 purchased; cloud_backup 39 dismissed + 5 purchased + 2 restored + 2 failed; reminders 19 dismissed; location_limit 11 dismissed; plant_limit 2 dismissed; bulk_ops 2 dismissed. The plant limit is 1.4% of paywall results, the least-used door.",
         "free_tier_cut_is_dead": "DAL-224 (30 to 15 plants) recommended for cancellation. Three people have ever exceeded 15 plants and two have exceeded 30, so the cut would move exactly one person from under the cap to over it.",
         "review_prompt_is_built_not_blocked": "DAL-230 is not a decision. lib/features/review/ has the eligibility gate, coordinator, suppression signals, Settings row, analytics and tests, with kReviewPromptEnabled = true (c7a8db1, 2026-07-30). It is unshipped: released build 52, feature in build 56. PostHog has zero review_prompt_requested and zero review_prompt_suppressed events, which confirms it. Needs a store submission. Expect single-digit asks per month: gate 8 needs 2 distinct active days and only ~8% of the base reaches that.",
@@ -141,6 +141,18 @@
           "onboarding_completion_7d": "7 of 10 = 70%",
           "retention": "0 of 13 returned on 2+ days (8-14d cohort)",
           "biggest_funnel_drop": "opened -> onboarded, lost 18 of 25 = 72%"
+        },
+        "activation_correction_2026_07_30": {
+          "decision": "DEC-254 / DAL-265",
+          "supersedes": "the activation_is_the_constraint block below, which is left in place but is WRONG",
+          "defect_1": "plant_added first appears 2026-06-08; installs are counted from 2026-04-25. 219 devices in DEC-252's denominator could not fire the event at all. plant_added, photo_added, location_added and onboarding_started ALL start 2026-06-08, which is the instrumentation ship date, not a behaviour change.",
+          "defect_2": "plant_count_snapshot (DEC-252's '181 of 186 never had a plant') only ever emitted on builds 13-40 and stopped ~2026-06-07. It is not in the current codebase. It describes April/May users of a superseded build, and is contradicted internally: 13 post-June people fired plant_added while 0 of the 7 post-June people with a snapshot show >0.",
+          "defect_3": "DEC-252's 'onboarding only asks gps and location' is stale. Benedict replaced it 2026-07-02 with a zero-dialog welcome screen, shipped in build 52; welcome_screen_shown fires on build 52 from 2026-07-23.",
+          "corrected_all_time_activation": "13/126 = 10% (device-level, clipped to 2026-06-08)",
+          "corrected_july_cohort_public_builds": "9/33 = 27% added a plant; 19/48 = 40% reached the paywall",
+          "contamination_check": "July activators span builds 44-56 and US/UA/IN/AU storefronts. Internal builds 53-56 activate at 3/15, no better than public 9/33.",
+          "real_open_question": "RETENTION, not activation: 1 of 15 in the 8-14 day cohort returned on 2+ days.",
+          "fix_shipped": "137442d. m_activation clips the all-time cohort to the day plant_added first appears, prints that date, and reports excluded devices as 'unknown not zero'. 7 render-text regression tests."
         }
       }
     },
