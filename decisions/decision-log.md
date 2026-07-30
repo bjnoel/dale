@@ -7087,3 +7087,117 @@ record. And the pagination bug is pinned by a test: an unpaginated breakdown rep
 are ~1,000 distinct ones a month. Full suite 1940, all passing.
 
 **Cost:** $0. Read-only fetches of 8 nursery contact pages, rate-limited by hand.
+
+---
+
+## DEC-243 — 2026-07-30 — The SEO tool was truncating its own inputs, and DAL-208's CTR lever is exhausted
+
+**Decided by:** Dale (autonomous; DAL-235 was approved and is exactly this check-in).
+
+**Context: four reflections again.** $0 after 126 days, Track A stale at 5 of 5
+session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale with the
+metric unmoved. The channel-stale warning demanded a genuinely new approach before more
+treestock SEO work, so I should say plainly what the new framing is and why it justifies
+picking an SEO ticket at all.
+
+**The framing.** DEC-241 measured that treestock's only product at scale is referral: 639
+buyers a month handed to 27 nurseries, and a treestock-to-Treesmith pass-through of ~0%.
+Its own arithmetic put a full-coverage referral fee at roughly $21 to $62/month at today's
+traffic, and at $100/month at **roughly double** today's traffic. So organic traffic
+stopped being "audience building for a funnel that does not convert" and became the direct
+multiplier on the only revenue path Benedict has not already declined. That is the new
+approach: same channel, different reason, and a specific number to aim at.
+
+Also worth saying, because the reflection asserts it: treestock's metrics are **not** flat.
+2,865 to 3,220 visitors month on month. The stale flag is measuring session count, not
+outcome.
+
+**Finding 1, and it invalidates work rather than adding to it: `gsc_analysis.py` was
+truncating every aggregate it produced.**
+
+`query_gsc` sent `startRow: 0` with a `row_limit` and never paginated. The page dimension
+was capped at 500 rows and the query dimension at 200. treestock has **2,026 pages and
+6,904 distinct queries** with impressions in a 28-day window. GSC does not error when you
+ask for fewer rows than exist; it returns the top N by impressions, so the output looked
+entirely plausible and was computed on a biased subset.
+
+What that actually cost:
+
+| page type | truncated report | paginated truth |
+|---|---|---|
+| variety | 223 pages, 4,017 impr, **8.0% CTR** | 1,659 pages, 13,543 impr, **2.4% CTR** |
+
+The truncated numbers said variety pages were our best-converting page type by 4x. They
+are average. The obvious recommendation to write out of this ticket would have been "build
+more variety pages", and variety pages have the **worst** click yield per page on the site
+(0.19 clicks/page against 4.07 for species+state). I was one step from recommending the
+opposite of what the data supports, on the strength of a number that was wrong.
+
+This is the same failure class as the Plausible pagination bug in DEC-241, found in a
+second tool one day later. DEC-241's lesson was "check whether the number exists before
+building on the assumption". The follow-up lesson is **check whether the number is
+complete.** Both tools failed silently and in the same direction: quietly reporting a
+subset as if it were the whole.
+
+`gsc_page_review.py`'s 50-row per-page query cap was deliberately left alone. That one is a
+"top queries for this page" display, not an aggregate, so a cap is correct there.
+
+**Finding 2, the actual answer to DAL-235: stop optimising species-page CTR.**
+
+DAL-208's lever was matching titles and metas to the query. Four weeks on, the
+striking-distance set is almost entirely one query family, all at position 10-14: fig trees
+for sale (68 impr, pos 12.1), persimmon (57, 13.8), cherry (53, 10.1), lime (49, 10.9),
+lychee (47, 11.6), mandarin (47, 10.7), hazelnut (45, 10.7), feijoa (43, 12.6).
+
+Our species pages already carry the title "Lychee Trees for Sale Australia, Compare Prices
+| treestock.com.au", an h1 of "Lychee Trees", and a meta with live variety and price
+counts. **There is no wording left to match.** The constraint is rank, not click-through,
+so another meta-rewriting pass would be four more weeks of nothing. Recording that as a
+conclusion is the point of a check-in ticket; the failure mode would have been to find
+eight more pages to tweak.
+
+The lychee case is the specific evidence. DEC-215's `sought_varieties` fix shipped and is
+live, and lychee.html now runs 2,475 impressions / 8 clicks / **0.32% CTR** at average
+position 9.0. A visible share of that is quoted-operator queries no human types:
+`"salathiel" "litchi chinensis" nursery` (51 impr, 0 clicks), `"sah keng" lychee nursery`
+(17, 0), `"kwai mai pink" "in stock" nursery` (14, 0). Site-wide, quoted queries are 288
+impressions at average position 8.8 with **zero clicks between them**.
+
+**I checked whether that explained site-wide CTR and it does not**, so I am not claiming it.
+Quoted queries are 1.6% of the impressions GSC will name, and the query dimension only
+accounts for 18,045 of 66,870 impressions because GSC anonymises rare queries. The honest
+statement is narrower: lychee's CTR was never a copy problem, and it is suggestive alongside
+DAL-246's finding that chatgpt.com is now treestock's largest non-search referrer. It is not
+evidence about the site as a whole, and I nearly wrote it up as if it were.
+
+**What the corrected table recommends instead**, filed rather than sneaked into this ticket:
+
+- **DAL-249:** expand species+state pages. 3.0% CTR against species' 1.7% on the same
+  commercial intent, 4.07 clicks per page, and only 128 of them earning against 1,659
+  variety pages. State-qualified queries are also the one place we are not competing
+  head-on with Daleys nationally.
+- **DAL-250:** test whether the 1,659-page thin variety tail is suppressing the pages that
+  earn. Four of the highest-impression variety pages sit at position 50-85 with zero clicks.
+  Filed explicitly as a hypothesis with a stated way to be wrong (young-domain authority is
+  the competing explanation), a one-session budget, and an instruction not to prune anything
+  before measuring.
+
+**DAL-216 cancelled.** It is the fifth fortnightly GSC page-review brief and Benedict
+cancelled four of the others. More to the point, its page selection and its
+CTR-underperformance flags were themselves generated from the truncated pull, so actioning
+its recommendations would mean acting on numbers now known to be wrong.
+
+**Honest accounting.** This session shipped a bug fix and two conclusions, not traffic.
+Nothing here moves $0 today. What it changes is that the SEO evidence base is now correct
+and that the next four weeks will not be spent rewriting metas that already match.
+
+**Tests:** new `tests/test_gsc_pagination.py`, 10 tests: a short page stops after one
+request, every row is returned across pages in order, `startRow` advances, an exact
+multiple of the page size neither drops the last page nor loops forever, an empty result,
+`row_limit` caps the total without ever requesting a negative page, an HTTP error mid-pagination
+returns the rows already gathered rather than losing them, a signature guard that fails if a
+default `row_limit` is ever reintroduced (that default is how the truncation got in), and a
+source check that no call site passes one. Verified by mutation: removing the `start_row`
+advance fails 4 tests. Full suite 1950, all passing.
+
+**Cost:** $0.

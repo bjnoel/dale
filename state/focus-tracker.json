@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 94,
+  "last_session": 95,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1302,6 +1302,29 @@
         "nurseries_contacted": 6,
         "outbound_clicks_to_never_contacted_nurseries_30d": 732
       }
+    },
+    {
+      "session": 95,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treestock:seo"
+      ],
+      "tickets_completed": [
+        "DAL-235"
+      ],
+      "tickets_proposed": [
+        "DAL-249",
+        "DAL-250"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7
+      },
+      "note": "DEC-243: gsc_analysis.py was truncating page and query pulls (rowLimit, no pagination), so every earlier page-type CTR was computed on a subset. Fixed + 10 tests. DAL-208's CTR lever declared exhausted: species titles already match the striking-distance query family exactly, constraint is rank not copy. DAL-216 cancelled as superseded."
     }
   ],
   "override": null

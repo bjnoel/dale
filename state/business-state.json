@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 94,
+  "session_count": 95,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -203,6 +203,22 @@
         "outstanding_on_benedict": "All three nurseries that replied (Daleys, Ross Creek, Heritage) have had an unanswered follow-up action since 2026-04-25, 96 days. Ross Creek's Tom admins the Oz Rare Fruit Australia Facebook group.",
         "open_question": "How Benedict logs a send from his phone. Options posted on DAL-80: (a) one-liners on the ticket that Dale syncs, (b) a small authed web form, (c) install EspoCRM. Recommendation is (a).",
         "why_not_a_crm": "EspoCRM/Twenty would fit the box (2.4 GB RAM free) but buy a login page to patch, a DB to back up and a Leads/Opportunities schema for 27 rows and one user. Offered on DAL-80 if Benedict still wants it."
+      },
+      "seo": {
+        "measured": "2026-07-30 (DAL-235, DEC-243), 28d to 2026-07-27, GSC",
+        "clicks_28d": 1513,
+        "impressions_28d": 66870,
+        "ctr": "2.3%",
+        "avg_position": 16.7,
+        "page_type_yield": {
+          "note": "Paginated figures. gsc_analysis.py previously truncated the page dimension at 500 rows against 2,026 pages, so every earlier page-type CTR in the log is wrong. Variety was reported at 8.0% CTR; it is 2.4%.",
+          "species+state": "128 pages, 17,180 impr, 521 clicks, 3.0% CTR, 4.07 clicks/page",
+          "species": "90 pages, 22,354 impr, 390 clicks, 1.7% CTR, 4.33 clicks/page",
+          "variety": "1,659 pages, 13,543 impr, 322 clicks, 2.4% CTR, 0.19 clicks/page",
+          "compare": "77 pages, 4,786 impr, 121 clicks, 2.5% CTR, 1.57 clicks/page"
+        },
+        "striking_distance": "Almost entirely one query family at position 10-14: '<species> tree(s) for sale'. Species page titles already match it exactly ('Lychee Trees for Sale Australia, Compare Prices'), so the constraint is rank, not copy. DEC-243: do NOT run another meta/title CTR pass; DAL-208's lever is exhausted.",
+        "next": "DAL-249 (expand species+state, best clicks/page) and DAL-250 (test whether the thin variety tail suppresses the earning pages). DAL-216 cancelled as superseded."
       }
     },
     "b_experiment_beestock": {
