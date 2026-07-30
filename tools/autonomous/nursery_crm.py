@@ -76,13 +76,16 @@ def outbound_clicks(period="30d"):
         return {}
 
     agg = {}
-    for page in range(1, 41):
+    max_pages = 40
+    complete = False
+    for page in range(1, max_pages + 1):
         res = api_get(base, token, "/api/v1/stats/breakdown", {
             "site_id": SITE_ID, "period": period, "property": "event:props:url",
             "filters": f"event:name=={OUTBOUND_GOAL}",
             "metrics": "events,visitors", "limit": 1000, "page": page,
         })
         if not res or not res.get("results"):
+            complete = True
             break
         for row in res["results"]:
             dom = normalise_domain(row["url"])
@@ -90,7 +93,14 @@ def outbound_clicks(period="30d"):
             cur["clicks"] += row.get("events", 0)
             cur["visitors"] += row.get("visitors", 0)
         if len(res["results"]) < 1000:
+            complete = True
             break
+    if not complete:
+        # Running off the end of the loop with a full final page means there is
+        # more data we did not read. Say so out loud: a silently capped total is
+        # exactly the failure behind DEC-250 and DEC-253.
+        print(f"warning: Plausible outbound breakdown hit the {max_pages}-page cap; "
+              "referral click totals are PARTIAL and understated.", file=sys.stderr)
     return agg
 
 

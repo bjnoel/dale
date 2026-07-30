@@ -179,24 +179,53 @@ def get_gsc_service(use_oauth=False):
     return build("searchconsole", "v1", credentials=creds)
 
 
-def gsc_query(service, site_url, start_date, end_date, dimensions, row_limit=500):
-    body = {
-        "startDate": start_date,
-        "endDate": end_date,
-        "dimensions": dimensions,
-        "rowLimit": row_limit,
-        "startRow": 0,
-    }
-    try:
-        response = (
-            service.searchanalytics()
-            .query(siteUrl=site_url, body=body)
-            .execute()
-        )
-        return response.get("rows", [])
-    except Exception as e:
-        print(f"GSC error for {site_url} ({dimensions}): {e}", file=sys.stderr)
-        return []
+GSC_PAGE_SIZE = 25000
+GSC_MAX_PAGES = 40
+
+
+def gsc_query(service, site_url, start_date, end_date, dimensions,
+              page_size=GSC_PAGE_SIZE, max_pages=GSC_MAX_PAGES):
+    """Fetch ALL rows for a GSC query, following startRow until a short page.
+
+    This used to issue one request with a fixed rowLimit and startRow 0. The
+    query dimension returns thousands of rows (1,703 for a 7-day treestock
+    window against the old 200-row cap), and the callers compute a SET
+    DIFFERENCE from it, so truncation did not merely shorten the list, it
+    inverted it: a query present in both periods but outside the top 200 of
+    the earlier one was reported as brand new. Measured 2026-07-30: 9 of the
+    10 "new queries" in the daily email were queries we already ranked for,
+    and position movers saw 11 of a true 392.
+    """
+    rows = []
+    start_row = 0
+    for _ in range(max_pages):
+        body = {
+            "startDate": start_date,
+            "endDate": end_date,
+            "dimensions": dimensions,
+            "rowLimit": page_size,
+            "startRow": start_row,
+        }
+        try:
+            response = (
+                service.searchanalytics()
+                .query(siteUrl=site_url, body=body)
+                .execute()
+            )
+        except Exception as e:
+            print(f"GSC error for {site_url} ({dimensions}): {e}", file=sys.stderr)
+            return []
+        page = response.get("rows", [])
+        rows.extend(page)
+        if len(page) < page_size:
+            return rows
+        start_row += len(page)
+    print(
+        f"GSC pagination hit {max_pages} pages for {site_url} ({dimensions}); "
+        f"returning {len(rows)} rows, which may be partial.",
+        file=sys.stderr,
+    )
+    return rows
 
 
 def collect_gsc_stats(sites):
@@ -260,11 +289,11 @@ def collect_gsc_stats(sites):
         }
 
         # Period A queries
-        a_rows = gsc_query(svc, site_url, str(a_start), str(a_end), ["query"], row_limit=200)
+        a_rows = gsc_query(svc, site_url, str(a_start), str(a_end), ["query"])
         a_queries = {r["keys"][0]: r for r in a_rows}
 
         # Period B queries
-        b_rows = gsc_query(svc, site_url, str(b_start), str(b_end), ["query"], row_limit=200)
+        b_rows = gsc_query(svc, site_url, str(b_start), str(b_end), ["query"])
         b_queries = {r["keys"][0]: r for r in b_rows}
 
         # New queries: in A but not in B, sorted by impressions

@@ -93,31 +93,50 @@ def update_engagement_stamp(team_id, since_iso, data_dir):
     The engagement gate (check-weekly-update.py) reads this stamp; without
     it Dale strikes after GRACE_DAYS of silence from Benedict.
     """
-    data = graphql("""
-        query($teamId: ID!, $since: DateTimeOrDuration!) {
-            issues(
-                filter: {
-                    team: { id: { eq: $teamId } }
-                    updatedAt: { gt: $since }
-                }
-                first: 50
-            ) {
-                nodes {
-                    history(first: 25) {
-                        nodes { createdAt actor { name } }
+    # Paginated. This used to take a single `first: 50` page, and a page is not
+    # the window: if more than 50 issues were touched since `since_iso`, the
+    # human activity could sit on issue 51 and be invisible. The consequence is
+    # asymmetric and bad -- an unseen signal reads as "no sign of Benedict",
+    # which is what makes Dale strike (DEC-226).
+    nodes = []
+    cursor = None
+    for _ in range(40):
+        data = graphql("""
+            query($teamId: ID!, $since: DateTimeOrDuration!, $after: String) {
+                issues(
+                    filter: {
+                        team: { id: { eq: $teamId } }
+                        updatedAt: { gt: $since }
                     }
-                    comments(first: 10) {
-                        nodes { createdAt user { name } }
+                    first: 50
+                    after: $after
+                ) {
+                    nodes {
+                        history(first: 25) {
+                            nodes { createdAt actor { name } }
+                        }
+                        comments(first: 10) {
+                            nodes { createdAt user { name } }
+                        }
                     }
+                    pageInfo { hasNextPage endCursor }
                 }
             }
-        }
-    """, {"teamId": team_id, "since": since_iso})
-    if not data or not data.get("issues"):
+        """, {"teamId": team_id, "since": since_iso, "after": cursor})
+        if not data or not data.get("issues"):
+            break
+        page = data["issues"]
+        nodes.extend(page.get("nodes", []))
+        info = page.get("pageInfo") or {}
+        if not info.get("hasNextPage") or not info.get("endCursor"):
+            break
+        cursor = info["endCursor"]
+
+    if not nodes:
         return False
 
     latest_human = None
-    for issue in data["issues"]["nodes"]:
+    for issue in nodes:
         events = [(e.get("createdAt"), (e.get("actor") or {}).get("name"))
                   for e in issue.get("history", {}).get("nodes", [])]
         events += [(c.get("createdAt"), (c.get("user") or {}).get("name"))

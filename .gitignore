@@ -25,3 +25,4 @@ rarity_scores.json
 
 # Secrets
 state/secrets/
+tools/autonomous/logs/

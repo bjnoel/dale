@@ -8468,3 +8468,131 @@ cheap and I will take it as standard from now on: before quoting any rate, ask w
 the numerator first appears.
 
 **Cost:** $0. Read-only PostHog queries, reads of the read-only app mirror, one deploy.
+
+---
+
+## DEC-255 — 2026-07-30 — The daily email told us we had nine new search terms; one of them was new
+
+**Decided by:** Dale (autonomous). DAL-261 was in Backlog. It is the ticket three previous
+sessions each spun out after finding one instance of the same defect, and it is now Done.
+DAL-228 cancelled on Dale's own call, as Benedict asked. DAL-231 handed back.
+
+**Context: the same four reflections.** $0 recorded after 126 days, Track A stale at 5 of 5
+session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale.
+
+The channel-stale rule wants a genuinely new approach or a different channel. I took the
+different channel, and the reason is worth stating plainly. Every remaining revenue lever in
+the queue is Benedict's: DEC-248's first three steps are all his, DAL-245 is a yes/no he owns,
+Q46 and Q48 are lookups only he can do. His queue was already the documented bottleneck. The
+one thing this session could do that nobody was waiting on was to stop the reporting layer
+lying, and it was lying more than I expected.
+
+**A dead end first, recorded so nobody repeats it.** I tried to settle Q48 (did we really sell
+two copies of Pro?) without Benedict, on the theory that the app ships `purchases_flutter` and
+a RevenueCat key might be readable in the mirror. It is not: both keys come from
+`String.fromEnvironment` at build time and there is no dart-define file in the repo. **DAL-267
+stands exactly as written.** Three minutes, then I stopped.
+
+**Finding 1: the GSC block in the daily email has been ~90% false since it was built.**
+
+`traffic_report.py::gsc_query` issued one request at `rowLimit=200, startRow=0`. A 7-day
+treestock window has **1,703 query rows**, so it was reading 12% of them. That alone would be
+ordinary truncation. What makes it worse is what the caller does with it: a **set difference**
+between two periods, "new queries" = present in period A, absent from period B. Truncation
+does not shorten a set difference, it **inverts** it. Any query we already ranked for, but
+which sat outside the top 200 of the earlier week, was reported as brand new.
+
+Measured against live GSC, the exact top-10 block that goes to Benedict every morning:
+
+| reported as new | actually new |
+|---|---|
+| persimmon tree for sale | orange tree |
+| fig trees for sale | mature mulberry tree for sale |
+| avocado tree for sale | papaya tree for sale near me |
+| zidi fig | st clements citrus |
+| fig tree for sale | bare root persimmon trees |
+| banana plants for sale | orange tree for sale |
+
+**Nine of the ten were queries we already ranked for.** "Position movers" was showing **11 of
+a true 392**, so we have never once seen our own rank volatility. Fixed to paginate to
+exhaustion; the live re-run now matches the true set I had computed independently, item for
+item. DAL-268 exists to go back and look at what the correct version says.
+
+**Finding 2: `resend_report.py` carried the DEC-250 bug in the sibling file.**
+
+It kept its own copy of `fetch_emails` at a single unpaginated `limit=100`. That is precisely
+the defect DEC-250 found and fixed in `resend_engagement.py` last week, in the file next to it.
+One page is about 17 days of sends at current volume, so the default 7-day window happened to
+fit and the output looked correct, while the `--days 14` documented in the script's own usage
+string would have silently reported a partial window under a heading asserting the full one.
+Now delegates to the paginated fetcher rather than keeping a second copy: 100 emails became
+**1,838**.
+
+**Finding 3, and it is the one I did not go looking for: a perfectly inverted metric.**
+
+With pagination fixed, the report announced a **52.5% delivery rate**. My first instinct was
+that Resend statuses lag. I checked before writing a ticket, and there are **no bounces at all**:
+every email in 90 days is delivered, opened or clicked.
+
+The bug is that Resend's `last_event` is the **furthest state an email reached**, not a set of
+flags. An email that got opened reports `opened`, not `delivered`. The report counted the
+literal string `"delivered"`, so **every email that did well was counted as undelivered**.
+
+The consequence is the part worth remembering: **the reported delivery rate fell as engagement
+rose.** A perfect week, where every subscriber opened, would have reported 0% delivery. True
+figures are 100% delivered, 0 bounced, 47.5% open, which reconciles with DEC-250's 43.2%.
+`resend_engagement.py` gets this right, so DEC-250's "email is our best channel per head"
+stands unaffected.
+
+**Finding 4: the strike gate could not see Benedict past page one.**
+
+`daily-digest.py::update_engagement_stamp` took a single `first: 50` page of issues touched
+since the cutoff, looking for any non-Dale actor. With more than 50 touched issues his activity
+could sit on page two. Per DEC-226 that is the input to whether Dale **strikes**, so the failure
+runs in the damaging direction: an unseen signal is indistinguishable from an absent one. Now
+follows the cursor.
+
+**Finding 5:** `nursery_crm.outbound_clicks` paginates correctly and then ran off the end of
+`range(1, 41)` with no signal. A full final page means there is more we did not read. It now
+warns that referral totals are PARTIAL instead of quietly understating the one number that
+prices the whole referral plan.
+
+**Audited and clean**, recorded so the next session does not re-check them: `plausible_stats.py`
+(`limit=10`, but an honest labelled top-N with no total derived from it), `linear_poller.py`,
+`linear_update.py archive-stale`, `gsc_analysis.py`, `resend_engagement.py`,
+`treesmith_analytics.py`, `uptime_monitor.py`.
+
+**What actually shipped is the test, not the five fixes.** `tests/test_api_pagination.py` drives
+each real fetcher against a fake transport returning a saturated first page. This defect has now
+appeared six times in six days because **a saturated first page and a complete small result set
+are identical at the call site**; the only guard that works is a test that asserts the fetcher
+goes back for more. It covers the nastiest case explicitly: a result set that is an exact
+multiple of the page size, where the last full page looks exactly like a truncated one. 1,991
+tests pass, up from 1,983. Deployed and diffed against the deployed copy, per DEC-253's
+no-deploy-cron finding.
+
+**Queue work.** DAL-228 (grafting content push on treestock) **cancelled on my own call**, which
+Benedict explicitly delegated. Three measurements kill it: the treestock to Treesmith funnel is
+3 clicks in 6 months (DEC-241), treestock editorial is our worst page type at 0.01 outbound
+clicks per visitor (DEC-249), and it is 30 July so the July-August window is nearly gone. I said
+what I would do instead: the same content on treesmith.app, where a reader is already a prospect,
+after DAL-240 tells us whether that site gets any organic traffic at all. DAL-231 handed back to
+Benedict: the plan he asked for is delivered, and Q46 is the only thing blocking it.
+
+**Honest accounting.** No revenue. Fifth consecutive session that shipped code. It did not earn a
+dollar and it did not try to; it removed a reporting surface that was telling us we were
+discovering search demand we had had all along, and a delivery metric that got worse the better
+we did.
+
+**Running lesson, fourteenth session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is
+connected. DEC-248: the arithmetic. DEC-249: instrumented. DEC-250: the fetcher loops. DEC-251:
+what the system says matches what it does. DEC-252: check the zero. DEC-253: which direction the
+default rounds. DEC-254: numerator and denominator cover the same period. This one adds **check
+whether the value you are counting is a state or a flag.** `last_event == "delivered"` reads as
+obviously correct English and is exactly backwards, because the field holds the furthest state
+reached. The tell is cheap: if a metric would look worse when the underlying thing goes better,
+it is measuring the wrong set. DAL-269 proposes asserting the invariants that catch this class
+(opened <= delivered, delivered + bounced <= sent) rather than finding one a week.
+
+**Cost:** $0. Read-only GSC, Resend and Plausible calls, two deploys.

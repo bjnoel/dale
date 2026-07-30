@@ -21,6 +21,9 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from resend_engagement import fetch_emails as _engagement_fetch_emails  # noqa: E402
+
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
 SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
@@ -44,6 +47,21 @@ PROGRAM_LABELS = {
 # Programs to include in marketing summary and breakdown
 MARKETING_PROGRAMS = {"treestock_digest", "beestock_welcome"}
 
+# Resend's `last_event` is the FURTHEST state an email reached, not a set of
+# flags. An email that was opened reports last_event == "opened", not
+# "delivered". Counting only the literal "delivered" therefore excluded every
+# email that did well, and produced a delivery rate that fell as engagement
+# rose: 61 sent / 32 "delivered" = 52.5% on 2026-07-30, when the true figure
+# was 100% delivered and 0 bounced. Membership must be tested against the
+# states at or beyond the one being measured.
+REACHED_INBOX = {"delivered", "opened", "clicked", "complained"}
+OPENED_OR_BETTER = {"opened", "clicked"}
+
+
+def count_reached(emails, states) -> int:
+    """Count emails whose last_event is at or beyond any of `states`."""
+    return sum(1 for e in emails if e.get("last_event") in states)
+
 
 def get_resend_key() -> str:
     env_path = SECRETS_DIR / "resend-readonly.env"
@@ -56,23 +74,17 @@ def get_resend_key() -> str:
 
 
 def fetch_emails(api_key: str, limit: int = 100) -> list:
-    """Fetch recent emails from Resend list endpoint."""
-    url = f"https://api.resend.com/emails?limit={limit}"
-    req = urllib.request.Request(
-        url,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "dale-resend-report/1.0",
-        }
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            data = json.load(resp)
-        return data.get("data", [])
-    except urllib.error.HTTPError as e:
-        body = e.read().decode() if e.fp else str(e)
-        raise RuntimeError(f"Resend API error ({e.code}): {body}")
+    """Fetch the full send history, following Resend's `after` cursor.
+
+    Delegates to resend_engagement.fetch_emails rather than keeping a second
+    copy: this file used to issue a single unpaginated request at limit=100,
+    the same defect DEC-250 found and fixed in resend_engagement.py. One page
+    is ~17 days of sends at current volume, so the 7-day window happened to
+    fit and the report looked right, while `--days 14` or any growth in send
+    volume would have silently reported a partial window under a heading
+    asserting the full one.
+    """
+    return _engagement_fetch_emails(api_key, limit=limit)
 
 
 def classify_sender(from_field: str) -> str:
@@ -142,10 +154,10 @@ def build_report(emails: list, days: int = 7) -> dict:
             event_counts[e["last_event"]] += 1
 
         sent = len(prog_emails)
-        delivered = event_counts.get("delivered", 0)
-        bounced = event_counts.get("bounced", 0)
-        opened = event_counts.get("opened", 0)
-        clicked = event_counts.get("clicked", 0)
+        delivered = count_reached(prog_emails, REACHED_INBOX)
+        bounced = count_reached(prog_emails, {"bounced"})
+        opened = count_reached(prog_emails, OPENED_OR_BETTER)
+        clicked = count_reached(prog_emails, {"clicked"})
 
         # Collect unique recipients
         recipients: set = set()
@@ -182,9 +194,9 @@ def build_report(emails: list, days: int = 7) -> dict:
         for e in es
     ]
     m_sent = len(marketing_emails)
-    m_delivered = sum(1 for e in marketing_emails if e["last_event"] == "delivered")
-    m_bounced = sum(1 for e in marketing_emails if e["last_event"] == "bounced")
-    m_opened = sum(1 for e in marketing_emails if e["last_event"] == "opened")
+    m_delivered = count_reached(marketing_emails, REACHED_INBOX)
+    m_bounced = count_reached(marketing_emails, {"bounced"})
+    m_opened = count_reached(marketing_emails, OPENED_OR_BETTER)
 
     return {
         "generated_at": now.isoformat(),
