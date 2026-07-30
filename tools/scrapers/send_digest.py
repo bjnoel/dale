@@ -160,9 +160,12 @@ def main():
     if dry_run:
         for s in to_send:
             state = get_subscriber_state(s)
-            cats = ",".join(sorted(get_subscriber_categories(s))) or "(none)"
-            pcats = ",".join(sorted(get_subscriber_plant_categories(s))) or "(none)"
-            print(f"  Would send to: {s['email']} (state={state}, categories={cats}, plant={pcats})")
+            raw_cats = get_subscriber_categories(s)
+            raw_pcats = get_subscriber_plant_categories(s)
+            cats = ",".join(sorted(raw_cats)) or "(none)"
+            pcats = ",".join(sorted(raw_pcats)) or "(none)"
+            verb = "Would send to" if raw_cats and raw_pcats else "Would SKIP (nothing selected)"
+            print(f"  {verb}: {s['email']} (state={state}, categories={cats}, plant={pcats})")
         return
 
     api_key = get_resend_api_key()
@@ -185,7 +188,11 @@ def main():
         # outright (variety alerts still reach them via send_variety_alerts.py).
         if not cats or not pcats:
             empty_skipped += len(bucket_subscribers)
-            print(f"  Skipping {len(bucket_subscribers)} subscribers with no categories enabled")
+            which = "change" if not cats else "plant"
+            names = ", ".join(s["email"] for s in bucket_subscribers)
+            print(f"  WARNING: permanently skipping {len(bucket_subscribers)} "
+                  f"subscribers with no {which} categories enabled, but frequency "
+                  f"is not 'off': {names}", file=sys.stderr)
             continue
 
         # Skip the whole bucket if there's nothing to show after filtering — no

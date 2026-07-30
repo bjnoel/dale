@@ -698,6 +698,17 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                     return
                 new_frequency = raw_frequency or None
 
+            # Ticking no plant type at all silences the digest permanently
+            # (send_digest.py skips the bucket), but nothing in the UI said so:
+            # two daily subscribers sat in that state for 10+ days. "Off" is the
+            # supported way to stop digests, so reject the ambiguous state.
+            if new_plant_categories is not None and not new_plant_categories and new_frequency != "off":
+                self.send_json(400, {
+                    "error": "Select at least one plant type, or set frequency to "
+                             "'off' to stop digest emails.",
+                })
+                return
+
             subscribers = load_subscribers()
             found = False
             for s in subscribers:
@@ -1125,7 +1136,13 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
       msg.style.color = '#065f46';
       let parts = [];
       parts.push(state === 'ALL' ? 'all states' : state);
-      parts.push(plant_categories.indexOf('bush_tucker') >= 0 ? 'fruit + bush tucker' : 'fruit only');
+      if (plant_categories.length === 0) {{
+        parts.push('no plant types');
+      }} else if (plant_categories.indexOf('bush_tucker') >= 0) {{
+        parts.push(plant_categories.indexOf('fruit') >= 0 ? 'fruit + bush tucker' : 'bush tucker only');
+      }} else {{
+        parts.push('fruit only');
+      }}
       if (frequency === 'off') {{
         parts.push('no digest emails');
       }} else {{
