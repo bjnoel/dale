@@ -1,0 +1,505 @@
+{
+  "schema_version": 1,
+  "updated": "2026-07-30",
+  "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened.",
+  "statuses": {
+    "not_contacted": "No recorded outreach.",
+    "contacted": "Touch 1 sent, no reply recorded.",
+    "warm": "Replied and engaged.",
+    "courtesy": "Replied, but not a growth prospect. Maintain relationship only.",
+    "personal": "Benedict has a personal relationship. Handle offline, not by cold email."
+  },
+  "nurseries": [
+    {
+      "key": "daleys",
+      "name": "Daleys Fruit Trees",
+      "domain": "daleysfruit.com.au",
+      "contact_name": "Correy",
+      "email": "order@daleysfruit.com.au",
+      "phone": null,
+      "contact_form": "https://www.daleysfruit.com.au/Contact.html",
+      "preferred_channel": "email",
+      "status": "warm",
+      "touches": [
+        {
+          "date": "2026-03-30",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Touch 1 goodwill intro, no pitch",
+          "evidence": "DAL-80 comment 2026-04-25"
+        },
+        {
+          "date": "2026-04-25",
+          "direction": "in",
+          "channel": "email",
+          "by": "correy",
+          "summary": "Warm but terse. Staff update stock daily, prices change frequently. Door open to further questions.",
+          "evidence": "DAL-80 comment 2026-04-25"
+        }
+      ],
+      "open_action": {
+        "owner": "benedict",
+        "what": "Touch 1.5 reply: thank Correy, ask whether they plan to introduce an affiliate program, confirm the 'ships to WA seasonally with quarantine permits' description is still accurate.",
+        "since": "2026-04-25"
+      },
+      "notes": "No affiliate program (DAL-154, re-verified 2026-07-30 in DEC-241). Wholesale only, $2k minimum. Our single largest referral destination over 6 months."
+    },
+    {
+      "key": "ross-creek",
+      "name": "Ross Creek Tropicals",
+      "domain": "rosscreektropicals.com.au",
+      "contact_name": "Tom",
+      "email": "rosscreektropicals@gmail.com",
+      "phone": "0406 998 961",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "warm",
+      "touches": [
+        {
+          "date": "2026-03-30",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Touch 1 goodwill intro, no pitch",
+          "evidence": "DAL-80 comment 2026-04-25"
+        },
+        {
+          "date": "2026-03-31",
+          "direction": "in",
+          "channel": "email",
+          "by": "tom",
+          "summary": "Enthusiastic. Helps manage the Oz Rare Fruit Australia Facebook group and saw our post there. Gave seasonality data (peak Feb-Apr ~700 products, low Sep-Nov). Suggested adding Google ratings. Asked what we gain from the site.",
+          "evidence": "DAL-80 comment 2026-04-25"
+        },
+        {
+          "date": "2026-04-01",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Answered the 'what do you gain' question honestly, flagged future featured listings, asked about bulk WA shipping via intermediary.",
+          "evidence": "DAL-80 comment 2026-04-25"
+        },
+        {
+          "date": "2026-04-02",
+          "direction": "in",
+          "channel": "email",
+          "by": "tom",
+          "summary": "WA only via concierge resellers, no in-house bulk. Wants to eventually but needs a separate treatment area.",
+          "evidence": "DAL-80 comment 2026-04-25"
+        }
+      ],
+      "open_action": {
+        "owner": "benedict",
+        "what": "Touch 1.5: confirm the seasonality banner is live on his nursery page, polite 'thinking about it' on Google reviews.",
+        "since": "2026-04-25"
+      },
+      "notes": "Our warmest relationship and the best-connected contact we have (Oz Rare Fruit Australia FB group admin). Seasonality is live on /nursery/ross-creek.html. The impact.com affiliate fingerprint found in DEC-241 did not reproduce and is treated as a false positive."
+    },
+    {
+      "key": "heritage-fruit-trees",
+      "name": "Heritage Fruit Trees",
+      "domain": "heritagefruittrees.com.au",
+      "contact_name": "Rob",
+      "email": null,
+      "phone": null,
+      "contact_form": "https://www.heritagefruittrees.com.au/contact-us/",
+      "preferred_channel": "contact_form",
+      "status": "courtesy",
+      "touches": [
+        {
+          "date": "2026-03-26",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "First nursery contacted. Relationship established (DAL-38).",
+          "evidence": "DAL-80 description"
+        },
+        {
+          "date": "2026-04-20",
+          "direction": "in",
+          "channel": "email",
+          "by": "rob",
+          "summary": "Confirmed WA/TAS/NT shipping is permanently off. Started reinstating interstate certification, then decided the compliance and audit overhead was too high for this season.",
+          "evidence": "DAL-80 comment 2026-04-25"
+        }
+      ],
+      "open_action": {
+        "owner": "benedict",
+        "what": "Short friendly thank-you. No pitch: Heritage is tightening, not expanding.",
+        "since": "2026-04-25"
+      },
+      "notes": "Rob is the relationship Benedict pointed at as the model for this whole ticket. Not a growth prospect. NURSERY_META and project_heritage_shipping.md already reflect the no-WA/TAS/NT position."
+    },
+    {
+      "key": "perth-mobile-nursery",
+      "name": "Perth Mobile Nursery",
+      "domain": "perthmobilenursery.com.au",
+      "contact_name": null,
+      "email": "sales@perthmobilenursery.com.au",
+      "phone": "+61 431 095 777",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-03-26",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Touch 1 (DAL-20). No reply recorded.",
+          "evidence": "DAL-80 description"
+        }
+      ],
+      "open_action": null,
+      "notes": "WA, so Benedict can follow up in person. WhatsApp available on the same number. 4th largest referral destination and the largest WA one."
+    },
+    {
+      "key": "yalca-fruit-trees",
+      "name": "Yalca Fruit Trees",
+      "domain": "yalcafruittrees.com.au",
+      "contact_name": null,
+      "email": "info@yalcafruittrees.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-03-26",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Touch 1 (DAL-20). No reply recorded.",
+          "evidence": "DAL-80 description"
+        }
+      ],
+      "open_action": null,
+      "notes": ""
+    },
+    {
+      "key": "fruit-tree-lane",
+      "name": "Fruit Tree Lane",
+      "domain": "fruittreelane.com.au",
+      "contact_name": null,
+      "email": null,
+      "phone": "07 4696 8792",
+      "contact_form": "https://fruittreelane.com.au/contact/",
+      "preferred_channel": "contact_form",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": {
+        "owner": "benedict",
+        "what": "Touch 1 draft was prepared under DAL-77 and assigned to Benedict. Unknown whether it was sent.",
+        "since": "2026-03-28"
+      },
+      "notes": "Only nursery where a draft was handed over and the outcome was never recorded. Worth a one-line answer from Benedict rather than a guess."
+    },
+    {
+      "key": "primal-fruits",
+      "name": "Primal Fruits Perth",
+      "domain": "primalfruits.com.au",
+      "contact_name": "Cyrus",
+      "email": null,
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "whatsapp",
+      "status": "personal",
+      "touches": [],
+      "open_action": {
+        "owner": "benedict",
+        "what": "Join the Primal Club affiliate program (GoAffPro, free, self-serve). The only self-serve affiliate program among all 27 nurseries (DEC-241).",
+        "since": "2026-07-30"
+      },
+      "notes": "Benedict knows Cyrus personally, WhatsApp direct. Do not cold-email. Parkwood, Perth, local pickup."
+    },
+    {
+      "key": "ladybird",
+      "name": "Ladybird Nursery",
+      "domain": "ladybirdnursery.com.au",
+      "contact_name": null,
+      "email": null,
+      "phone": "07 3092 2849",
+      "contact_form": "https://ladybirdnursery.com.au/pages/contact",
+      "preferred_channel": "contact_form",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "Our largest catalogue (7,130 products) and our #1 referral destination in the last 30 days. No affiliate program (DEC-241). Highest-value nursery we have never spoken to."
+    },
+    {
+      "key": "guildford",
+      "name": "Guildford Garden Centre",
+      "domain": "guildfordgardencentre.com.au",
+      "contact_name": null,
+      "email": "info@guildfordgardencentre.com.au",
+      "phone": "(08) 9279 8645",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "WA, in person visitable from Perth. Benedict could walk in."
+    },
+    {
+      "key": "fruitopia",
+      "name": "Fruitopia",
+      "domain": "fruitopianursery.com.au",
+      "contact_name": null,
+      "email": "info@fruitopianursery.com.au",
+      "phone": "0435 779 553",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": ""
+    },
+    {
+      "key": "ausnurseries",
+      "name": "Aus Nurseries",
+      "domain": "ausnurseries.com",
+      "contact_name": null,
+      "email": null,
+      "phone": null,
+      "contact_form": "https://ausnurseries.com/pages/contact",
+      "preferred_channel": "contact_form",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": ""
+    },
+    {
+      "key": "diggers",
+      "name": "The Diggers Club",
+      "domain": "diggers.com.au",
+      "contact_name": null,
+      "email": "info@diggers.com.au",
+      "phone": "(03) 5984 7900",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "Largest heritage seed company in Australia. Busy comms team, keep any message very short."
+    },
+    {
+      "key": "fruit-tree-cottage",
+      "name": "Fruit Tree Cottage",
+      "domain": "fruittreecottage.com.au",
+      "contact_name": null,
+      "email": "hello@fruittreecottage.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": ""
+    },
+    {
+      "key": "fruit-salad-trees",
+      "name": "Fruit Salad Trees",
+      "domain": "fruitsaladtrees.com",
+      "contact_name": null,
+      "email": "sales@fruitsaladtrees.com",
+      "phone": "0439 899 478",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "Multi-graft trees, genuinely unique on the site. Ships to WA first Tuesday of each month with a quarantine permit."
+    },
+    {
+      "key": "rayners",
+      "name": "Rayners Orchard",
+      "domain": "raynersorchard.com.au",
+      "contact_name": null,
+      "email": "admin@raynersorchard.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "9th largest referral destination in the last 30 days and we have no contact route recorded."
+    },
+    {
+      "key": "heaven-on-earth",
+      "name": "Heaven On Earth Fruit Trees",
+      "domain": "heavenonearthfruittrees.com.au",
+      "contact_name": null,
+      "email": "heavenonearthfruittrees@outlook.com",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "Rare tropical specialist, added 2026 via DAL-206."
+    },
+    {
+      "key": "garden-world",
+      "name": "Garden World",
+      "domain": "gardenworld.au",
+      "contact_name": null,
+      "email": null,
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "unknown",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": {
+        "owner": "dale",
+        "what": "No email or contact page found on gardenworld.au (both /contact/ and /contact-us/ 404). Needs a manual look or a phone call.",
+        "since": "2026-07-30"
+      },
+      "notes": ""
+    },
+    {
+      "key": "diacos",
+      "name": "Diaco's Garden Nursery",
+      "domain": "diacos.com.au",
+      "contact_name": null,
+      "email": null,
+      "phone": null,
+      "contact_form": "https://www.diacos.com.au/contact-us/",
+      "preferred_channel": "contact_form",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": ""
+    },
+    {
+      "key": "forever-seeds",
+      "name": "Forever Seeds",
+      "domain": "forever-seeds.myshopify.com",
+      "contact_name": null,
+      "email": "info@forever-seeds.com",
+      "phone": "02 66 771 598",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "Phone is voicemail only. Rare tropicals (Rollinia, Canistel, Sudachi, Yuzu), some of the most unusual stock on the site."
+    },
+    {
+      "key": "plantnet",
+      "name": "PlantNet",
+      "domain": "plantnet.com.au",
+      "contact_name": null,
+      "email": "info@plantnet.com.au",
+      "phone": "(07) 3491 9905",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "We claim WA buyers are served via their Olea Nurseries partner in Manjimup. Worth confirming that is still current."
+    },
+    {
+      "key": "engalls",
+      "name": "Engall's Nursery",
+      "domain": "engalls.com.au",
+      "contact_name": null,
+      "email": "enquiries@engalls.com.au",
+      "phone": "02 9651 2735",
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": ""
+    },
+    {
+      "key": "garden-express",
+      "name": "Garden Express",
+      "domain": "gardenexpress.com.au",
+      "contact_name": null,
+      "email": null,
+      "phone": "1300 606 242",
+      "contact_form": "https://www.gardenexpress.com.au/contact-us",
+      "preferred_channel": "contact_form",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "Large general online retailer, fruit trees are a small part of the range. Keep expectations low."
+    },
+    {
+      "key": "all-season-plants-wa",
+      "name": "All Season Plants WA",
+      "domain": "allseasonplantswa.com.au",
+      "contact_name": null,
+      "email": "allseasonplantswa@gmail.com",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "WA."
+    },
+    {
+      "key": "st-clements-citrus",
+      "name": "St Clements Citrus",
+      "domain": "stclementscitrus.com.au",
+      "contact_name": null,
+      "email": "sales@stclementcitrus.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "Their published address is sales@stclementcitrus.com.au, singular 'clement', which does not match their stclementscitrus.com.au domain. Read off their own contact page 2026-07-30; worth confirming before a first send."
+    },
+    {
+      "key": "the-heritage-nursery",
+      "name": "The Heritage Nursery",
+      "domain": "heritagenursery.com.au",
+      "contact_name": null,
+      "email": null,
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "unknown",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": {
+        "owner": "dale",
+        "what": "No email or contact page found on heritagenursery.com.au (both /contact/ and /contact-us/ 404). Needs a manual look or a phone call.",
+        "since": "2026-07-30"
+      },
+      "notes": "Distinct from Heritage Fruit Trees. Do not confuse the two in outreach."
+    },
+    {
+      "key": "wild-garden-organics",
+      "name": "Wild Garden Organics",
+      "domain": "wildgardenorganics.com.au",
+      "contact_name": null,
+      "email": "info.wildgardenorganics@gmail.com",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": ""
+    },
+    {
+      "key": "all-rare-herbs",
+      "name": "All Rare Herbs",
+      "domain": "allrareherbs.com.au",
+      "contact_name": null,
+      "email": "info@allrareherbs.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": ""
+    }
+  ]
+}

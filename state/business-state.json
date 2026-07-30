@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 93,
+  "session_count": 94,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -185,6 +185,24 @@
         "chatgpt.com": 97,
         "facebook": 22,
         "rfcarchives.org.au": 2
+      },
+      "nursery_relationships": {
+        "register": "data/nursery-contacts.json + tools/autonomous/nursery_crm.py (DAL-80, DEC-242). Git-tracked JSON, one record per monitored nursery: contact route, status, evidenced touch history, and who owns the next action. Referral click counts are NOT stored; nursery_crm.py joins them live from Plausible so a report cannot go stale. Commands: report, due, log, set, validate.",
+        "measured": "2026-07-30",
+        "contacted": 6,
+        "warm": 2,
+        "courtesy": 1,
+        "personal": 1,
+        "not_contacted": 21,
+        "with_contact_route": 25,
+        "no_contact_route": [
+          "garden-world",
+          "the-heritage-nursery"
+        ],
+        "key_finding": "60% of the referral value treestock generates (732 of 1,220 outbound clicks in 30 days) goes to nurseries we have never spoken to. Ladybird is our #1 destination at 206 clicks / 187 buyers and has never been contacted.",
+        "outstanding_on_benedict": "All three nurseries that replied (Daleys, Ross Creek, Heritage) have had an unanswered follow-up action since 2026-04-25, 96 days. Ross Creek's Tom admins the Oz Rare Fruit Australia Facebook group.",
+        "open_question": "How Benedict logs a send from his phone. Options posted on DAL-80: (a) one-liners on the ticket that Dale syncs, (b) a small authed web form, (c) install EspoCRM. Recommendation is (a).",
+        "why_not_a_crm": "EspoCRM/Twenty would fit the box (2.4 GB RAM free) but buy a login page to patch, a DB to back up and a Leads/Opportunities schema for 27 rows and one user. Offered on DAL-80 if Benedict still wants it."
       }
     },
     "b_experiment_beestock": {

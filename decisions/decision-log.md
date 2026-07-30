@@ -6967,3 +6967,123 @@ six months. Five consecutive session-days went into optimising a funnel whose co
 rate nobody had checked. The lesson is not "do more analysis"; DEC-238 and DEC-239 both
 correctly warned about analysis that terminates in a document. The lesson is to check
 whether the number exists before building on the assumption.
+
+---
+
+## DEC-242 — 2026-07-30 — Build the nursery touchlist as a git-tracked file, not a CRM install, and point it at the referral number
+
+**Decided by:** Dale (autonomous; DAL-80 is approved and Benedict specified the need
+this morning). The deviation from "install open source CRM software on the server" is
+Dale's call and is flagged back to him on the ticket with an offer to do it his way.
+
+**Context:** the same four reflections opened this session: $0 after 126 days, Track A
+stale at 5 of 5 session-days, treestock growth stale at 4 of 5, `revenue:monetisation`
+stale with the metric unmoved. DEC-241, written an hour earlier, had just reframed the
+business: treestock is a referral engine handing 639 buyers a month to 27 nurseries for
+free, and the treestock-to-Treesmith funnel is measured at ~0%. Its closing note was
+that "we sent your store 202 customers last month" is the strongest thing treestock has
+ever been able to say to a nursery, and that this is the missing ingredient in every
+outreach ticket we have.
+
+Benedict then commented on DAL-80 at 09:19: "I'd like to convert this to something
+outside linear, some kind of (free?) touchlist software, I guess it's like salesforce,
+but maybe we can install something opensource on the server so I can keep track of when
+we contact people and follow up and have api access so you can get a handle on it too?"
+
+**Decision: build the touchlist, decline the CRM install, and join it to Plausible.**
+
+*Why not EspoCRM or Twenty.* Not resources: the box has 2.4 GB RAM and 24 GB disk free
+and EspoCRM would fit. The objection is fit. We have **27 rows, one user, and no
+pipeline.** What a CRM install buys is a public login page to keep patched, a database
+to back up, and a schema that wants Leads, Accounts, Opportunities and Campaigns for
+something that is really "who have we emailed and what did they say". Offered on the
+ticket to install EspoCRM behind Caddy if Benedict still wants it after seeing the
+alternative; that is his call, not mine to refuse.
+
+*What was built.* `data/nursery-contacts.json` plus `tools/autonomous/nursery_crm.py`
+(`report`, `due`, `log`, `set`, `validate`). Git history is the audit log. The "API
+access" Benedict asked for is better served by a file Dale reads and writes directly
+than by an HTTP API in front of a database.
+
+**Two design points that are the whole value.**
+
+1. **Referral counts are deliberately not stored.** `report` pulls them live from
+   Plausible on every run, so the number in front of Benedict cannot be stale. This is
+   the DEC-241 data joined per nursery for the first time.
+2. **Every touch cites its evidence** and absence of a touch means "no record", not
+   "did not happen". A test enforces the evidence field. The alternative, a register
+   that quietly accumulates remembered history, would be worse than no register.
+
+**It paid for itself by recovering data we had already lost.** Contact details for 19
+nurseries were researched in March 2026 and written into **a Linear comment on this
+ticket and nowhere else.** Effectively unusable: nobody would find them, and nobody
+did. That is precisely the failure Benedict was describing when he asked to get this
+out of Linear. They are now in the register. Closing my own gap, the 8 nurseries added
+after the March pass had no contact route at all; fetched their contact pages and found
+5 more emails (Rayners, Heaven On Earth, St Clements, Wild Garden Organics, All Rare
+Herbs) plus Diaco's form. **25 of 27 now have a contact route.** Garden World and The
+Heritage Nursery 404 on both `/contact/` and `/contact-us/` and are recorded as open
+actions on Dale rather than guessed at. St Clements publishes `sales@stclementcitrus.com.au`,
+singular "clement", which does not match their own domain; recorded with a flag to
+confirm before sending rather than silently corrected.
+
+**What the joined table says, none of which was visible before.**
+
+- **60% of the referral value treestock generates goes to nurseries we have never
+  spoken to.** 732 of 1,220 outbound clicks in 30 days.
+- **Ladybird is our #1 referral destination (206 clicks, 187 buyers) and has never been
+  contacted.** Nor has Aus Nurseries (74) or Guildford (67), and Guildford is in Perth
+  where Benedict could walk in.
+- **All three nurseries that replied have had an unanswered action since 2026-04-25, 96
+  days.** Daleys, Ross Creek and Heritage each replied warmly to a cold email and
+  Benedict's own triage plan specified a Touch 1.5 for each. None was sent, or at least
+  none was recorded. Ross Creek's Tom is the worst one to leave hanging: he admins the
+  Oz Rare Fruit Australia Facebook group and is the best-connected contact we have.
+- **Fruit Tree Lane** is the single record I could not resolve. DAL-77 handed Benedict a
+  draft in March and the outcome was never written down, so it is an open question to
+  him rather than an assumption either way.
+
+**The outreach copy changed shape, and that is the point.** Every March draft opened
+with "you are listed on my site", which asks for a favour and offers nothing. Touch 1
+now opens with a number: "Last month treestock sent 187 people through to your store."
+Three drafts filled in (Ladybird, Aus Nurseries, Guildford) rather than all sixteen,
+deliberately: if a number-first opening does not get replies, sixteen versions of it is
+wasted work. Write the rest in whatever shape earns a reply.
+
+**The honest limitation, and the question that decides whether this rots.** Dale can
+write to the register and Benedict cannot. If he emails Ladybird from his phone and it
+never gets logged, this file decays exactly like the March comment did. Three options
+on the ticket: (a) he posts one-liners on DAL-80 and Dale syncs them, zero
+infrastructure, works today; (b) a small authenticated web form; (c) EspoCRM after all.
+Recommended (a) until it annoys him. **DAL-80 is assigned back to him in Todo, not
+marked Done:** the three emails are his to send and the logging question is his to
+answer.
+
+**Also honest: this is groundwork, not revenue.** Nothing here moves $0. What it changes
+is that the next outreach, link request or referral-fee conversation starts from
+evidence rather than from a favour, and that DEC-241's finding is now a standing tool
+instead of a one-off analysis. Two follow-ups proposed: DAL-247 (monthly goodwill
+referral report to every nursery, built as a flagged mechanism like the DEC-240 drip)
+and DAL-248 (ask the three warm nurseries for a link, after the overdue replies go out).
+
+**Correction to DEC-241's arithmetic.** DEC-241 reported 1,516 outbound clicks over six
+months. Re-run with pagination it is **1,827** across 1,311 distinct URLs; the earlier
+figure was itself truncated by an unpaginated breakdown. The 30-day figures in DEC-241
+(1,245 clicks, Ladybird 206, Daleys 202, 3 clicks to treesmith.app, 1 to apps.apple.com,
+0 to Play) all reproduce exactly, so none of its conclusions change.
+
+**Tests:** new `tests/test_nursery_crm.py`, 25 tests. The register covers exactly the
+nurseries in `stocklib.registry` (a nursery we track but cannot contact is the gap this
+closes), domains are unique so referral clicks cannot double-count, every touch cites
+evidence, no history starts with an inbound reply, anything with no contact route has an
+owner, no em dashes. Validation rejects unknown statuses, unnormalised domains, warm
+status with no touches, touches with `not_contacted` status, unparseable dates and
+actions owned by nobody. Mutations are pinned: an outbound touch promotes
+`not_contacted` to `contacted`, an inbound promotes to `warm`, an inbound does **not**
+downgrade a `personal` relationship (Cyrus must not become a cold-email target),
+backfilled touches stay in date order, an unknown key raises instead of creating a
+record. And the pagination bug is pinned by a test: an unpaginated breakdown reports
+**516 clicks instead of 1,245**, because the property is the full product URL and there
+are ~1,000 distinct ones a month. Full suite 1940, all passing.
+
+**Cost:** $0. Read-only fetches of 8 nursery contact pages, rate-limited by hand.
