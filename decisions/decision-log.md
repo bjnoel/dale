@@ -7397,3 +7397,130 @@ traffic.**
 
 **Cost:** $0. Read-only fetches of the Permaculture Australia join page, three directory
 listings, rarefruitclub.au and two Urban Revolution pages.
+
+---
+
+## DEC-246 — 2026-07-30 — The rare-fruit scarcity story is now a shipping story, and it hands us the linkable asset we said we did not have
+
+**Decided by:** Dale (autonomous; DAL-115 is approved and Benedict asked for it to be
+updated this morning: "please update this, we have more data now"). The post itself is
+his to make, so the ticket goes back to him in Todo, not Done.
+
+**Context: the same four reflections.** $0 after 126 days, Track A stale at 5 of 5
+session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale with the
+metric unmoved. The channel-stale rule requires a genuinely new approach before more
+treestock work, so I will state it before the findings.
+
+**Why this is not more of the same treestock work.** The 4 of 5 stale session-days were
+on-site: page titles, metas, CTA placement, funnel instrumentation. DEC-243 concluded
+that treestock's SEO constraint is **rank, not copy**, and rank comes from authority.
+DEC-245 then declined a $70/year rented directory link and recorded the real reason we
+were even considering renting one: **treestock has nothing anyone would link to on its
+own merits.** Every page we own is a live stock table. Useful, not citable. This session
+is off-site distribution and asset creation, in the one category with **zero** session-days
+in the recent distribution. Same channel, different constraint.
+
+**Finding 1: the ticket's own draft had gone stale, and posting it would have cost us.**
+
+The April draft (30 days, 19 nurseries) led with White Sapote as "the rarest fruit tree we
+track, 11% availability". Over the full 142 days **White Sapote has been in stock somewhere
+in Australia on every single day**, from 8 nurseries. Pecan, Rambutan, Jaboticaba and Cacao,
+four more of its seven, are equally fine. It also carried price ranges rendered as
+"9.90 - 4.95", "4 - 00" and "1 - 9" from a formatting bug.
+
+The audience for this post is people who buy these trees. Posting a five-month-old rarity
+claim that any of them could disprove by opening one nursery tab, in a post whose entire
+premise is that the data is good, is the worst possible outcome for a community post. This
+is the first time updating a ticket has *deleted* its headline rather than refreshed it.
+
+**Finding 2: national rarity is nearly solved, so "hardest to find in Australia" is the
+wrong question.**
+
+142 days, 2026-03-05 to 2026-07-30, 27 nurseries, 108 species, one check per day.
+**92 of the 108 species were in stock somewhere in Australia on all 142 days.** I expected
+a long tail of unobtainable trees and found about seven.
+
+The seven, ranked by average number of stockists holding stock on a given day:
+
+| Species | Nurseries carrying it | Avg stockists in stock/day | Days with none anywhere |
+|---|---|---|---|
+| Kakadu Plum | 3 | 0.04 | **137 of 142** |
+| Riberry | 1 | 0.18 | 117 |
+| Muntries | 3 | 0.50 | 71 |
+| Quandong | 3 | 0.58 | 60 |
+| Cherry of the Rio Grande | 3 | 0.94 | 24 |
+| Chinese Bayberry | 3 | 1.27 | 0 |
+| Babaco | 4 | 1.94 | 0 |
+
+Kakadu Plum was buyable on 5 days out of 142 and is not today. Riberry has exactly one
+stockist in the country and went 115 consecutive days with nothing. Tamarillo is the
+interesting near-miss: 10 stockists, more than anything on the list, and still 10 days with
+zero national stock, because they all sell out together.
+
+**A metric change was necessary and is worth recording.** The existing
+`compute_rarity_scores` averages availability across *listings*, so a nursery with 20
+variety SKUs of one species outvotes four nurseries with one each. I rolled up to the
+nursery-day level instead: a species is available at a nursery on a day if any of its
+listings is. Same source data, no SKU-count bias.
+
+**Finding 3, the actual story: where you live matters far more than which tree you want.**
+
+Counting only nurseries that publish a shipping policy covering the state:
+
+| State | Nurseries shipping there | Species ever reachable | Avg species in stock/day |
+|---|---|---|---|
+| VIC | 21 | 107 of 108 | 101.2 |
+| NSW / ACT | 18 / 19 | 107 | 101.1 |
+| QLD | 18 | 107 | 101.1 |
+| SA | 14 | 102 | 94.2 |
+| WA | 9 | 105 | 93.6 |
+| NT | 4 | 65 | 49.2 |
+| **TAS** | **3** | **35 of 108** | **27.5** |
+
+**73 of the 108 species were never once buyable in Tasmania across 142 days.** Not out of
+stock: never listed by anyone who ships there. Three nurseries serve the state.
+
+And the one I did not expect, which is the hook for the WA Rare Fruit Club and which
+contradicts what that group believes: **WA is not the cut-off state.** 9 shipping nurseries
+against Victoria's 21 sounds dire, but 105 of 108 species are reachable and an average day
+has 93.6 in stock against Victoria's 101.2. Quarantine costs WA roughly 7% of breadth,
+concentrated in a handful of species (Muntries never, Kakadu Plum 5 days, Cherry of the Rio
+Grande and Chinese Bayberry about a quarter of days, Quince about half) rather than spread
+across the catalogue. Everyone in WA assumes WA is Tasmania. Tasmania is Tasmania.
+
+**Caveats written into the post rather than left to be found.** Nursery count grew from 19
+to 27 during the window, so early days undercount. Shipping is stated policy, not a test
+order. **Bare-root seasonality is not scarcity**: Walnut (1.9 stockists in March, 4.7 in
+July), Currant (2.6 to 7.9), Hazelnut (2.5 to 6.0) and Apple (10.8 to 16.8) all look scarce
+on a five-month average and are simply winter-only, which is why none of them are in the
+seven. Some listings are seed packets, not trees, which is why Goji Berry is not in the
+seven despite a low score. And **no South Australian nursery is in the tracked set at all**,
+disclosed in the post rather than left for a reader to find.
+
+**What this unlocks, and it is the part worth more than the post.** DEC-245 recorded that
+we had no citable asset and were therefore reduced to pricing rented links. This table is
+one, computed from 142 days of data nobody else collects, and it is the thing the free link
+targets (Urban Revolution, Rare Fruit SA, STFC) would actually be linking *to*. Raised as
+**DAL-254**: publish the reachability dataset as a single citable page with its method,
+regenerated monthly. Deliberately not per-state buy pages, which is DAL-249, and it should
+be judged on referring domains (DAL-253) rather than its own traffic.
+
+Also raised **DAL-255**: recruit South Australian nurseries. Not a count-metric ticket. SA
+sits behind three separate blocked things at once: DEC-244's Rare Fruit SA email had to be
+rewritten to ask a question because we had nothing SA to offer, DAL-249 cannot build SA
+pages of the highest-yield page type from a set with no SA nursery, and DAL-115 now measures
+SA growers as behind every eastern state while all 14 nurseries serving them are interstate.
+Explicitly scoped to exclude TAS and NT, which are genuinely thin.
+
+**Honest accounting.** This session shipped no code and sent nothing; the post is Benedict's
+to make, which is the correct owner for a community post written in the first person. It
+does not move $0 today. What it changes is that a stale post did not go out, and that the
+"we have nothing worth linking to" problem from DEC-245 has an answer that costs $0.
+
+**Running lesson, fifth session in a row.** DEC-241: check the number exists. DEC-243: check
+it is complete. DEC-244: check it is not circular. DEC-245: check we can see the result at
+all. This one adds **check it has not expired.** The April analysis was correct when written
+and wrong four months later, and nothing in the ticket would have told anyone that.
+
+**Cost:** $0. Read-only analysis of existing availability history. No code changed, so no
+tests were affected.

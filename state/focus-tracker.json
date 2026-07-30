@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 97,
+  "last_session": 98,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1374,6 +1374,27 @@
         "treestock_gsc_avg_position": 16.7
       },
       "note": "DEC-243: gsc_analysis.py was truncating page and query pulls (rowLimit, no pagination), so every earlier page-type CTR was computed on a subset. Fixed + 10 tests. DAL-208's CTR lever declared exhausted: species titles already match the striking-distance query family exactly, constraint is rank not copy. DAL-216 cancelled as superseded."
+    },
+    {
+      "session": 98,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treestock:social"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [
+        "DAL-254",
+        "DAL-255"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7
+      },
+      "note": "DEC-246 / DAL-115: rebuilt the community data post on 142 days x 27 nurseries. The April draft was stale (White Sapote, its headline 'rarest', is now in stock somewhere every day) and had broken price ranges. National rarity has largely resolved: 92 of 108 species in stock somewhere on all 142 days. The real finding is state reachability, with 73 of 108 species never once buyable in TAS, and WA far less cut off than assumed. Handed to Benedict to post. Proposed DAL-254 (citable reachability page, the linkable asset DEC-245 said we lacked) and DAL-255 (SA nurseries)."
     }
   ],
   "override": null

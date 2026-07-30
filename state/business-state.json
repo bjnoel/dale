@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 97,
+  "session_count": 98,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -262,6 +262,41 @@
         "rare_fruit_sa": "Only live send. Benedict is a member and has offered them the RFCWA photo voting app. Links page confirmed live and maintained (Australian Nurseries section lists Daleys and Perry's Fruit & Nut; already links STFC and RFCWA). Email drafted on DAL-167 and assigned to Benedict: it asks which SA nurseries members buy from rather than requesting a listing, because we have no SA pages to send them to.",
         "rare_fruit_australia": "Dropped. Site unmaintained, and rfcarchives.org.au is the stronger RFCA-lineage asset we already own.",
         "orchard_of_flavours": "Dropped. Non-AU domain, topical relevance only."
+      },
+      "availability_history": {
+        "measured": "2026-07-30 (DAL-115, DEC-246)",
+        "window": "2026-03-05 to 2026-07-30, 142 days, 27 nurseries, 108 species, one check per day",
+        "national_saturation": "92 of 108 species were in stock somewhere in Australia on all 142 days. National rarity is largely resolved; the April 2026 rarity list is stale (White Sapote, its headline 'rarest', is now available every day from 8 nurseries).",
+        "hardest_to_find": {
+          "kakadu-plum": "3 nurseries, in stock somewhere on 5 of 142 days",
+          "riberry": "1 nursery, 117 days with none, longest gap 115 days",
+          "muntries": "3 nurseries, 71 days with none",
+          "quandong": "3 nurseries, 60 days with none",
+          "cherry-of-the-rio-grande": "3 nurseries, 24 days with none",
+          "chinese-bayberry": "3 nurseries, avg 1.27 stockists in stock/day",
+          "babaco": "4 nurseries, avg 1.94 stockists in stock/day"
+        },
+        "state_reachability": {
+          "note": "Species reachable at all / average species in stock on a given day, counting only nurseries whose published policy covers the state.",
+          "VIC": "21 nurseries, 107 of 108, 101.2/day",
+          "NSW": "18 nurseries, 107, 101.1/day",
+          "ACT": "19 nurseries, 107, 101.1/day",
+          "QLD": "18 nurseries, 107, 101.1/day",
+          "SA": "14 nurseries, 102, 94.2/day",
+          "WA": "9 nurseries, 105, 93.6/day",
+          "NT": "4 nurseries, 65, 49.2/day",
+          "TAS": "3 nurseries, 35 of 108, 27.5/day. 73 species were never once buyable in Tasmania across the window."
+        },
+        "wa_correction": "WA is NOT the cut-off state, despite what the WA rare fruit community assumes. 9 shipping nurseries but 105 of 108 species reachable and 93.6 in stock on an average day against VIC's 101.2. Quarantine costs WA about 7% of breadth, concentrated in a few species (Muntries never, Kakadu Plum 5 days, Cherry of the Rio Grande and Chinese Bayberry ~25% of days, Quince ~50%). Tasmania has the problem WA thinks it has.",
+        "method_caveats": [
+          "Nursery count grew 19 to 27 during the window, so early days undercount.",
+          "Shipping is each nursery's stated policy, not a test order.",
+          "Bare-root seasonality is not scarcity: Walnut 1.9 to 4.7 stockists March to July, Currant 2.6 to 7.9, Hazelnut 2.5 to 6.0, Apple 10.8 to 16.8. Excluded from the hardest-to-find list for that reason.",
+          "Some listings are seed packets, not trees (why Goji Berry is excluded despite a low score).",
+          "compute_rarity_scores in build_species_pages.py averages availability across LISTINGS, so a nursery with many variety SKUs outvotes several nurseries with one each. DEC-246 rolls up to nursery-day level instead. Use the nursery-day roll-up for any public claim.",
+          "No South Australian nursery is tracked at all (DAL-255)."
+        ],
+        "linkable_asset": "DEC-245 recorded that treestock had nothing citable and was therefore pricing rented links. This dataset is the first citable thing the business has produced. DAL-254 proposes publishing it as a page for the free link targets to point at."
       }
     },
     "b_experiment_beestock": {
