@@ -7930,3 +7930,110 @@ of measurement are indistinguishable in a dashboard, and we very nearly built a 
 on top of one.
 
 **Cost:** $0. Read-only Plausible queries (paginated), reads of `shipping.py` and the live guide.
+
+---
+
+## DEC-250 — 2026-07-30 — The email channel is our best per head, and we had been measuring 9 days of it as if it were 90
+
+**Decided by:** Dale (autonomous). DAL-215 was approved and is shipped. DAL-231 asked for a
+plan rather than an email, and the plan is a recommendation, so it stays in Todo.
+
+**Context: the same reflections, and the honest answer to them.** $0 after 126 days, Track A
+stale at 5 of 5 session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale
+with the metric unmoved.
+
+The reflection asks for revenue work, Track A work, or a concrete plan to the first dollar.
+I did not write a ninth analysis, and that is deliberate. **DEC-248 wrote that plan yesterday**
+and its first three steps are all Benedict's (join Primal Fruits, answer DAL-245, contact the
+top three). Track A's two levers have been sitting on DAL-242 for two sessions. Writing another
+strategy document into a queue that already has 8 items would be precisely the failure mode
+DEC-238 and DEC-239 named. So this session did the thing the reflections cannot ask for:
+**it shipped code and it fixed a measurement.** Both tickets it touched were already approved.
+
+**Finding 1: DAL-215 was exactly what it claimed, which is rarer than it sounds.**
+
+The RFCA and WANATCA checkouts are not on this server, so I cloned the public archive repo.
+Regenerated: 30 to 41 species, 216 links, **11 species added and zero existing entries changed**.
+A genuinely clean superset, as the ticket predicted. All 11 verified to actually render.
+
+Three generator defects fixed, all confined to the new species so no existing page moved:
+
+- The junk entry the ticket flagged: `Soursop/PRSoursop110-1-99.htm` extracts as the literal
+  string `Title`. The skip list only caught "untitled" and "index".
+- One it did not flag: `ZEVELU (The CONGO FRUIT) FRUITS IN JULATTEN (AUSTRALIA)` on persimmon.
+  The de-shouting used `str.isupper()`, which is False because of a single lowercase "The".
+- A latent one: `ALIAS` mapped `kiwifruit` to `kiwi`, and **`kiwi` is not a treestock slug**.
+  The mapping was backwards, so it could only ever have dropped links silently.
+
+Deliberately **not** fixed: several species render duplicate visible titles (passionfruit lists
+"Passionfruit" four times). It is pre-existing across 11 of the original 30 and de-duplicating
+would churn existing pages for a cosmetic gain. Flagged, not fixed. 1,950 tests pass.
+
+I took the ticket's own valuation as read (DAL-233 measured the existing cross-links at 2
+visitors in 30 days) and did **not** re-measure afterwards. It was a script re-run plus three
+correctness fixes, which is the case the ticket said was worth doing. Nothing more is claimed.
+
+**Finding 2, which is the session: we have been reading 9 days of email as 90.**
+
+DAL-231 asks for a seasonal subscriber email. Before designing a cadence I went to check what
+our existing email actually achieves, and the tool that answers it is wrong.
+`resend_engagement.py` issued a single request at `limit=100` and ignored Resend's `has_more`
+flag. It returned exactly 100 every time, which looks like a total and was a saturated first
+page covering **2026-07-21 to 2026-07-30**, under a heading that read "90d: 2026-05-01 to
+2026-07-30".
+
+| | reported | actual |
+|---|---|---|
+| emails fetched | 100 | **1,836** |
+| sent (90d) | 81 | **521** |
+| opened | 39 | **225** |
+| clicked | 8 | **48** |
+| open rate | 48.1% | **43.2%** |
+| "never emailed" | 2 | **0** |
+| "delivered, no open" | 2 | **0** |
+
+The categorical errors matter more than the rates, and they ran in the damaging direction.
+**All 13 subscribers are engaged.** The two the report called "never emailed" are our two best
+converters, at 4 sent / 4 opened / 3 clicked and 4 sent / 3 opened / 1 clicked. Had I trusted
+the report I would have opened a ticket to fix a broken sender. **Nothing was broken in the
+sending. The measurement was broken.** Fixed: it now follows the `after` cursor and raises
+rather than returning a partial history.
+
+**Finding 3: email is the best channel treestock has per head, and it is the opposite of
+treestock editorial.**
+
+43.2% open and 48 clicks in 90 days from 13 people. DEC-249 measured treestock's guide and
+editorial *pages* at 0.01 outbound clicks per visitor and concluded editorial traffic on the
+site is worth almost nothing in referral. **Email subscribers do not behave like guide readers**,
+and the two findings should not be collapsed into one view of "content".
+
+**So DAL-231 is answered yes, with a gate.** Benedict's instinct of one email per year is right,
+and the reason is list size rather than content: at 13 subscribers a seasonal send is worth
+maybe 10 to 15 outbound clicks, about **A$1** at DEC-248's 6.8c mid case. One send, late June,
+bare-root, pointed at DAL-185's existing landing page, written once as a reusable template.
+
+Gated on **Q46**, and this is the part worth recording. A warm editorial email in Benedict's
+voice invites replies, and **replies to us bounce**: `alerts@mail.treestock.com.au` has no MX
+and `stocklib.mailer` sets no `Reply-To`. Sending our warmest one-a-year email to our 13 warmest
+people and bouncing their replies is worse than not sending it. Parked for June 2027, not sent
+for the 2026 season, on the grounds that the last days of a bare-root window is the worst time
+to spend goodwill for A$1.
+
+**Two tickets proposed.** DAL-260: 11 of 13 subscribers got an email on 2026-07-30 and two,
+both `frequency=daily` and both high-converting, last got one on 2026-07-20. This was invisible
+until the pagination fix and I have deliberately not guessed the cause. DAL-261: audit every
+external API reader for the same truncation.
+
+**Honest accounting.** No revenue. This shipped a page change for the second session running,
+retired an approved ticket, and corrected a measurement that would have sent the next session
+chasing a sender bug that does not exist.
+
+**Running lesson, ninth session, and it is the same one twice in three days.** DEC-241: check
+the number exists. DEC-243: check it is complete. DEC-244: check it is not circular. DEC-245:
+check we can see the result. DEC-246: check it has not expired. DEC-247: check the lever is
+connected. DEC-248: check the arithmetic. DEC-249: check it is instrumented. This adds nothing
+new, and that is the point: **"is it complete" has now failed three times in three days**, in
+gsc_analysis.py, in the Plausible breakdowns, and now in resend_engagement.py. It is not bad
+luck, it is a design habit, and DAL-261 exists to stop finding it one tool at a time.
+
+**Cost:** $0. One shallow clone of a public repo, read-only Resend and Plausible calls.

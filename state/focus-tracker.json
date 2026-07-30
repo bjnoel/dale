@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 101,
+  "last_session": 102,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1458,6 +1458,34 @@
         "treestock_gsc_avg_position": 16.7
       },
       "note": "DEC-249. Investigated DAL-176 and returned a no. /wa-rare-fruit-guide.html had NO Plausible script, so its 0 pageviews over 51 days were an absence of measurement, not a traffic figure; the ticket's premise that it lifts subscribe conversion was never observable. It was also untracked by git and told WA buyers PlantNet and Heritage Fruit Trees could ship to them, which shipping.py says neither does. Shipped the fix into tools/scrapers/static/ (analytics tag, correct list of the 9 WA-reachable nurseries, St Clements Citrus added, DEC-246 reachability folded in); 1,950 tests pass. Separately, broke outbound clicks down by source page for the first time: species+state is best on BOTH SEO yield and referral yield (0.45 clicks/visitor vs 0.28 site average, ~16x a variety page per page built, ~43 more state pages covers the A$8.20/mo infra milestone), while guide/editorial pages run at 0.01 clicks/visitor. Posted to DAL-249 and DAL-250; recommended DAL-228 be deferred. Nothing added to Benedict's queue."
+    },
+    {
+      "session": 102,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treestock:seo",
+        "treestock:subscriber_conversion",
+        "infrastructure"
+      ],
+      "tickets_completed": [
+        "DAL-215"
+      ],
+      "tickets_proposed": [
+        "DAL-260",
+        "DAL-261"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_outbound_clicks_30d": 1245,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7,
+        "treestock_email_open_rate_90d": 43.2,
+        "treestock_email_clicks_90d": 48
+      },
+      "note": "DEC-250. Shipped DAL-215: regenerated archive_links.json from a fresh clone of rfcarchives.org.au (30 -> 41 species, 216 links, clean superset, zero existing entries changed), plus three generator fixes (placeholder 'Title' titles dropped, mostly-uppercase titles de-shouted, a dead ALIAS kiwifruit->kiwi removed). 1950 tests pass, goldens unaffected. Then, checking email engagement before designing DAL-231's seasonal plan, found resend_engagement.py fetched one page of 100 and ignored has_more, so a report labelled 90 days was reading 9. Real figures: 521 sends not 81, 48 clicks not 8, 43.2% open rate, and all 13 subscribers engaged rather than 2 'never emailed' (those two are our best converters). Third pagination truncation in three days after gsc_analysis.py and Plausible. DAL-231 answered: yes to one bare-root email a year, but gate it on Q46 because replies currently bounce, and it is worth ~A$1 at 13 subscribers."
     }
   ],
   "override": null

@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 100,
+  "session_count": 102,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -348,6 +348,25 @@
         "wa_shipping_truth": "9 of 27 nurseries reach a WA address: WA-based = All Season Plants WA, Guildford Garden Centre, Perth Mobile Nursery, Primal Fruits Perth, St Clements Citrus; interstate = Daleys, The Diggers Club, Fruit Salad Trees, Garden Express.",
         "fixed": "Moved to tools/scrapers/static/wa-rare-fruit-guide.html (deploy.sh owns it, git tracks it). Plausible script added, shipping list corrected, St Clements Citrus added, DEC-246 reachability finding folded in. Live at the next 00:00 UTC deploy.",
         "next": "DAL-176 (national version) parked in Todo for 30 days until the WA guide has real pageview data. DAL-259 proposes a test that blocks shipping an uninstrumented sitemap page again."
+      },
+      "subscriber_engagement": {
+        "measured": "2026-07-30 (DAL-231, DEC-250), 90d to 2026-07-30, Resend, PAGINATED",
+        "subscribers": 13,
+        "emails_sent_90d": 521,
+        "opened_90d": 225,
+        "open_rate_pct": 43.2,
+        "clicked_90d": 48,
+        "engaged_subscribers": "13 of 13",
+        "correction": "resend_engagement.py fetched a single page of 100 and ignored Resend's has_more flag, so a report labelled 90 days was reading 9 (2026-07-21..07-30). It reported 81 sends, 39 opens, 8 clicks, 48.1% open rate, 2 subscribers 'never emailed' and 2 'delivered, no open'. All six figures were wrong. With the full 1,836-email history every subscriber is engaged, and the two listed as never emailed are the two best converters (4/4/3 and 4/3/1 sent/opened/clicked). Nothing was broken in the sending; the measurement was broken. Fixed d45e404, now follows the `after` cursor and raises rather than returning a partial history.",
+        "implication": "Email is the best-performing channel treestock has per head, and behaves nothing like treestock editorial PAGES, which DEC-249 measured at 0.01 outbound clicks/visitor. The binding constraint on its value is list size (13), not content or frequency.",
+        "open_defect": "DAL-260: 11 of 13 subscribers received an email on 2026-07-30 but lissandross and muffinmotzy, both frequency=daily and both high-converting, last received one on 2026-07-20. Invisible until the pagination fix."
+      },
+      "seasonal_email_plan": {
+        "decision": "DEC-250 / DAL-231",
+        "cadence": "ONE email per year, late June/early July, bare-root season. Benedict's call, endorsed.",
+        "rationale": "At 13 subscribers a seasonal send is worth roughly 10-15 outbound clicks, about A$1 at DEC-248's 6.8c mid case. It is a retention lever now and a revenue lever only if the list grows.",
+        "gated_on": "DAL-243 / Q46. A warm editorial email invites replies and replies to us BOUNCE (alerts@mail.treestock.com.au has no MX, stocklib.mailer sets no Reply-To). Do not send until an address exists.",
+        "status": "Parked in Todo for late June 2027. Not sent for the 2026 season."
       }
     },
     "b_experiment_beestock": {
