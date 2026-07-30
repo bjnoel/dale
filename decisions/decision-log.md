@@ -6841,3 +6841,129 @@ the app, compliance footer present). Verified by mutation: disabling the enabled
 check, the dedupe and the cap fails 4 tests. Full suite 1915, all passing.
 
 **Cost:** $0. One Resend send.
+
+---
+
+## DEC-241 — 2026-07-30 — treestock is not an app funnel, it is a referral engine. Point the revenue plan at what it actually does
+
+**Decided by:** Dale (autonomous analysis and a strategy recommendation). The one action
+that follows requires Benedict and is raised as DAL-245, not taken.
+
+**Context:** the session opened with four reflections again: $0 after 126 days, Track A
+flagged stale at 5 of 5 session-days, treestock growth flagged stale at 4 of 5, and
+`revenue:monetisation` flagged stale with `revenue_monthly` unmoved at 0 across the whole
+streak. The instruction was to produce revenue work, Track A work, or a concrete plan to
+the first dollar, and to not repeat an approach that has not worked.
+
+DEC-239 and DEC-240 both ended by naming DAL-242 (ratings, free-tier limit) as the real
+blocker and both were right, but both also accepted the surrounding premise: that
+treestock's job is to feed Treesmith. This session tested that premise instead of acting
+on it.
+
+**The premise was never measured, and it is false.**
+
+treestock has loaded Plausible's `script.outbound-links.js` since launch
+(`treestock_layout.py:36`). Every click leaving the site has been recorded for six
+months. In 126 days nobody had queried it once. DAL-218's funnel audit measured
+`/treesmith.html` pageviews, which is the top of the funnel; the outbound goal measures
+the bottom, and it was sitting there the whole time.
+
+Last 30 days, 3,220 visitors:
+
+- **639 visitors (20%) clicked through to a nursery.** 1,245 clicks across 44 domains.
+- **14 visitors reached `/treesmith.html`.**
+- **1 click to apps.apple.com. 0 to play.google.com.**
+
+Over the full six months: **1,516 outbound clicks, 3 to treesmith.app, 0 to either app
+store.** The single Apple click is the first ever recorded and it happened this month.
+
+CLAUDE.md calls treestock-to-Treesmith cross-promotion the "New primary monetisation
+path" and Track B phase 3 is built on it. Six months of that path has produced three
+clicks and zero installs. That is not a leak to be plugged, and DAL-219 and DAL-222
+shipping yesterday will not fix it, because adding CTAs upstream of a step with a
+measured 0% pass-through multiplies by zero.
+
+**Why it fails is intent, not placement.** A 20% outbound rate is very high; the site
+works. But it works as a shopping utility. Someone arrives asking where to buy a Carabao
+mango today, finds the nursery that has one, and leaves to buy it. Interrupting that
+errand to pitch a A$39.99 plant-tracking app from a developer with no star rating is
+asking them to abandon the thing they came for. The audience is real and it is the right
+demographic; it is in the wrong mode.
+
+**Decision, in three parts.**
+
+*1. Demote the cross-promotion from strategy to decoration, without removing it.* It is
+honest, it costs nothing, and DEC-239's `utm_content` tagging is what made this analysis
+writable. It stays. What stops is spending session-days on it. DAL-241 is reframed: the
+August re-measure asks "did any surface produce a store click at all", and if the answer
+is still 0 or 1, we stop. No new treestock-to-Treesmith funnel tickets before then. This
+is deliberately a brake on the thing five of the last five session-days went into.
+
+*2. Name the asset treestock actually has: 639 high-intent buyers a month, handed to 27
+nurseries for free.* That is the only thing this business currently produces at scale, it
+is growing, and it requires none of Benedict's blocked product decisions. The obvious
+question, asked for the first time in 126 days, is whether any of it can be converted.
+
+*3. Do not act on it unilaterally, because Benedict has already said no to the adjacent
+idea.* DAL-148 (nursery sponsored listing pitch) and DAL-79 (featured listing page +
+payment) were both cancelled, and `/advertise.html` was suppressed on 2026-06-15. Raised
+as DAL-245 for his call.
+
+**What the affiliate research found, including the part that undercuts the idea.**
+
+Probed all 27 tracked nurseries for affiliate programs (guessed paths, then fingerprinted
+homepages for Refersion, GoAffPro, UpPromote, Tapfiliate, ShareASale, Commission Factory,
+Impact, Awin and six others):
+
+- **Exactly one has a self-serve program.** Primal Fruits Perth runs GoAffPro, branded
+  "Primal Club", linked from their own footer. They are worth **33 clicks a month** to us.
+- **Ladybird (206) and Daleys (202), 33% of all our outbound clicks between them, have
+  nothing.** Neither does any other nursery in the top ten.
+- A first `impact.com` fingerprint on Ross Creek did not reproduce on a second fetch and
+  is treated as a false positive, not a finding.
+
+So the self-serve path is worth roughly nothing: 33 clicks a month at a plausible 3%
+conversion, $70 order and 8% commission is about **$0.55/month**. Signing up for it is
+still free and Benedict may as well, but it is not a revenue plan.
+
+**The honest ceiling on the whole idea.** If every nursery we send clicks to paid a
+performance-based referral fee, at 3% conversion, $70 average order and 8% commission,
+1,245 clicks a month is **about $21/month**. Generous assumptions (5%, $100, 10%) give
+**$62/month**. Neither clears the $100 target at today's traffic. It clears at roughly
+double, which at +59% MoM is not far off, but I am not going to present a number as a
+plan when it is short. **Affiliate revenue is a real first dollar and a plausible $20 to
+$60/month; it is not on its own the answer to $100.**
+
+**What I think is actually worth more than the money, and why DAL-245 is still worth
+filing.** "We sent your store 202 customers last month, here is the breakdown" is the
+strongest thing treestock has ever been able to say to a nursery, and until this morning
+we could not say it. It is the missing ingredient in DAL-167 (link-prospect outreach),
+DAL-232 (backlink research) and any future data partnership, none of which have anything
+to trade. That is a different pitch from DAL-148, which asked nurseries to pay for
+placement with no evidence and would have compromised the neutrality of the rankings. A
+performance-based referral fee changes nothing a visitor sees: inclusion, ordering and
+prices stay purely data-driven. Whether even that is a line Benedict wants to cross is
+his call, which is the point of the ticket.
+
+**Two incidental findings from the same data, both filed.**
+
+- **chatgpt.com is now treestock's largest non-search-engine referrer: 97 visitors/30d**,
+  against Facebook's 22. Over six months it is only 47, so essentially all of it is
+  recent. AI assistants are recommending treestock to people asking where to buy fruit
+  trees in Australia. `build_llms.py` exists and has never been evaluated. DAL-246.
+- **Facebook has collapsed**: 420 visitors over six months, 22 in the last 30 days.
+
+**DAL-233 closed on the way.** DAL-212's rfcarchives.org.au cross-links have sent **2
+visitors in 30 days**, 0.06% of traffic. Worth doing once at near-zero cost, not worth a
+follow-up, and it is evidence that DAL-232 should be judged on domain authority and
+indexation rather than on referral traffic.
+
+**Cost:** $0. No code changed, so no tests were affected. Read-only analysis plus Linear
+and state updates.
+
+**Uncomfortable summary, recorded deliberately.** The measurement that reframes the whole
+revenue plan took one Plausible query against a goal that had been collecting data for
+six months. Five consecutive session-days went into optimising a funnel whose conversion
+rate nobody had checked. The lesson is not "do more analysis"; DEC-238 and DEC-239 both
+correctly warned about analysis that terminates in a document. The lesson is to check
+whether the number exists before building on the assumption.

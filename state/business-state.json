@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 92,
+  "session_count": 93,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -80,7 +80,9 @@
         "fixed_2026_07_30": "DEC-239 / DAL-219 + DAL-222. The homepage (225 visitors/mo, the top page) had NO Treesmith CTA: the promo block was wired into six page builders but never build-dashboard.py. Now renders as the last block inside <main>, after the subscribe box and its highlights, on the homepage and category landing pages. /treesmith.html now uses Apple's and Google's official badge artwork (served locally from /treesmith/, trademark attribution added) instead of plain text buttons, and links the /au/ storefront instead of /us/.",
         "instrumentation": "Every promo surface tags a distinct utm_content: homepage, landing, species, variety, rootstock. DAL-218 could only see an undifferentiated total. Re-measure in ~4 weeks: DAL-241.",
         "expectation": "Deliberately modest. The homepage block removes a zero rather than being a growth lever, and the badge CTR gain is capped by the page receiving 12 visitors/month. Per DEC-239 the binding constraint is upstream of the funnel, not in it.",
-        "drip_email": "DEC-240 / DAL-173: tools/scrapers/send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once only (data/treesmith_intro_sends.json). Nightly cron at 23:30 UTC. It is a logged no-op until /opt/dale/data/treesmith-intro-enabled exists: Benedict approves the copy first (proof-of-concept sent to him 2026-07-30). DRIP_START_DATE 2026-07-30 excludes the 13 existing subscribers, who belong to the separate one-time broadcast DAL-221. utm_content=intro_email on the landing link."
+        "drip_email": "DEC-240 / DAL-173: tools/scrapers/send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once only (data/treesmith_intro_sends.json). Nightly cron at 23:30 UTC. It is a logged no-op until /opt/dale/data/treesmith-intro-enabled exists: Benedict approves the copy first (proof-of-concept sent to him 2026-07-30). DRIP_START_DATE 2026-07-30 excludes the 13 existing subscribers, who belong to the separate one-time broadcast DAL-221. utm_content=intro_email on the landing link.",
+        "measured_2026_07_30": "DEC-241 / DAL-241. The bottom of the funnel, never measured before: over 6 months treestock produced 1,516 outbound clicks, of which 3 went to treesmith.app and 0 to either app store. In the last 30 days: 14 visitors reached /treesmith.html, 1 clicked apps.apple.com, 0 clicked play.google.com, against 639 visitors who clicked through to a nursery. DAL-218 measured the TOP of the funnel (/treesmith.html pageviews); the outbound goal measures the bottom and says the pass-through is ~0%. Adding CTAs upstream multiplies by zero. Cause is audience intent, not CTA placement: treestock visitors are mid-errand buyers, not app shoppers.",
+        "status": "DEMOTED from strategy to decoration (DEC-241). The cross-promo stays because it is honest and free, but no new treestock->Treesmith funnel tickets until DAL-241's August re-measure shows whether ANY surface produces a store click. If it is still 0-1, stop."
       },
       "blocked_on_benedict": "DAL-242 (assigned to Benedict): DEC-237 ranked ratings (DAL-230) and paywall reachability (DAL-224) as the two highest-leverage levers to a first sale. Neither is Dale's to pull (Flutter review prompts; a free-tier product decision) and both sit in Backlog. This, not effort, is why sustained Track A work has not moved the metrics."
     },
@@ -150,6 +152,39 @@
         "pilot_live": "388 bush tucker products across 15 nurseries on /bush-tucker/; 20 species records + 8 cross-tagged fruits; 5 growing guides; digest is per-subscriber opt-in (DEC-203)",
         "tickets": "DAL-193 (P0) + DAL-194 (P1) DEC-201; DAL-195..198 + DAL-201 DEC-202; DAL-199 (digest opt-in) DEC-203 LIVE; DAL-200 deferred (no gap); DAL-202 review ~2026-07-23; DAL-203 natives gated on DAL-202",
         "next": "P2.8 review on 2026-07-23 decides natives go/no-go; Q44 has 2 non-blocking copy questions (checkbox wording, public digest page scope)"
+      },
+      "outbound_referral": {
+        "measured": "2026-07-30 (DEC-241) from Plausible's Outbound Link: Click goal, which treestock_layout.py:36 has recorded since launch and nobody had queried in 126 days.",
+        "visitors_30d": 3220,
+        "outbound_clicks_30d": 1245,
+        "visitors_who_clicked_out_30d": 639,
+        "outbound_rate": "20% of all visitors click through to a nursery. A very high referral rate; the site works as a shopping utility.",
+        "top_destinations_30d": {
+          "ladybirdnursery.com.au": 206,
+          "daleysfruit.com.au": 202,
+          "rosscreektropicals.com.au": 128,
+          "perthmobilenursery.com.au": 82,
+          "ausnurseries.com": 74,
+          "guildfordgardencentre.com.au": 67,
+          "fruitopianursery.com.au": 61,
+          "diggers.com.au": 56,
+          "raynersorchard.com.au": 48,
+          "fruittreecottage.com.au": 47
+        },
+        "affiliate_programs": "All 27 nurseries probed (guessed paths + homepage fingerprints for GoAffPro, Refersion, UpPromote, Tapfiliate, ShareASale, Commission Factory, Impact, Awin, others). EXACTLY ONE has a self-serve program: Primal Fruits Perth (GoAffPro, branded 'Primal Club'), worth 33 clicks/mo (~$0.55/mo). Ladybird and Daleys, a third of all outbound clicks, have none. A first impact.com fingerprint on Ross Creek did not reproduce and is treated as a false positive.",
+        "monetisation_ceiling": "If every nursery paid a referral fee: ~$21/mo at 3% conversion / $70 order / 8% commission; ~$62/mo on generous assumptions (5% / $100 / 10%). Does NOT reach $100/mo at today's traffic; reaches it at roughly double.",
+        "status": "DAL-245, assigned to Benedict. He cancelled DAL-148 and DAL-79 and suppressed /advertise.html on 2026-06-15, so this is his call, not Dale's."
+      },
+      "referral_sources_30d": {
+        "measured": "2026-07-30",
+        "note": "chatgpt.com is now the largest non-search-engine referrer (97/30d vs 47 over the whole 6mo, so almost all recent) and beats Facebook (22/30d, down from 420/6mo). DAL-246 investigates, including whether DAL-188's Cloudflare bot filtering blocks AI crawlers.",
+        "google": 1773,
+        "direct": 542,
+        "bing": 374,
+        "duckduckgo": 270,
+        "chatgpt.com": 97,
+        "facebook": 22,
+        "rfcarchives.org.au": 2
       }
     },
     "b_experiment_beestock": {

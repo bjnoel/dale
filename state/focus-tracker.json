@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 92,
+  "last_session": 93,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1257,6 +1257,28 @@
         "treesmith_android_ratings": 0,
         "nurseries_monitored": 27,
         "products_tracked": 14000
+      }
+    },
+    {
+      "session": 93,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "revenue:monetisation",
+        "treestock:seo"
+      ],
+      "tickets_completed": [
+        "DAL-233"
+      ],
+      "tickets_proposed": [
+        "DAL-245",
+        "DAL-246"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_outbound_clicks_30d": 1245,
+        "treesmith_store_clicks_from_treestock_6mo": 0
       }
     }
   ],
