@@ -145,6 +145,11 @@ class TreesmithPageBadgeTest(unittest.TestCase):
         self.assertIn("trademarks of Apple Inc.", self.html)
         self.assertIn("trademarks of Google LLC", self.html)
 
+    def test_exactly_one_main_landmark(self):
+        """render_page already wraps the body; the template must not add a second."""
+        self.assertEqual(self.html.count("<main"), 1)
+        self.assertEqual(self.html.count("</main>"), 1)
+
     def test_store_links_keep_utm_tags(self):
         self.assertIn("utm_source=treestock", self.html)
         self.assertIn("utm_medium=treesmith_page", self.html)

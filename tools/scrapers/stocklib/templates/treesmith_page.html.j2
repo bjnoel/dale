@@ -1,5 +1,7 @@
-
-<main class="{{ content_max_width }} mx-auto px-4 py-6">
+{# No <main> wrapper here: render_page already wraps every body in one with the
+   same classes, and this template was the only one on the site adding a second.
+   Two <main> elements is invalid HTML and leaves assistive tech without a single
+   primary landmark. #}
 
   <section class="text-center mb-10">
     <img src="/treesmith/icon.png" alt="Treesmith app icon"
@@ -139,4 +141,3 @@
     the Google Play logo are trademarks of Google LLC.
   </p>
 
-</main>
