@@ -34,6 +34,61 @@ def save_json(path, data):
         f.write("\n")
 
 
+def session_usage(data):
+    """Whole-session token totals from a `claude -p --output-format json` result.
+
+    `usage` reports only the final segment, so it understates two ways:
+
+    - After a compaction it collapses entirely. The 2026-07-30 04:00 session
+      logged 291 output tokens for a run that actually produced 42,341.
+    - Even without one it counts only the main loop's model. The 03:00 session
+      logged 38,781 and silently dropped Haiku's 2,061.
+
+    `modelUsage` accumulates across the whole session and every model, and its
+    per-model costUSD sums to total_cost_usd exactly, so prefer it. `usage`
+    stays as a fallback for logs written before modelUsage existed.
+    """
+    model_usage = data.get("modelUsage") or {}
+    if model_usage:
+        return {
+            "tokens_input": sum(
+                v.get("inputTokens", 0) + v.get("cacheReadInputTokens", 0)
+                for v in model_usage.values()
+            ),
+            "tokens_output": sum(v.get("outputTokens", 0) for v in model_usage.values()),
+            "cache_creation_tokens": sum(
+                v.get("cacheCreationInputTokens", 0) for v in model_usage.values()
+            ),
+            # Sessions mix models (Opus main loop, Haiku background), so keep
+            # the split for cost attribution.
+            "by_model": {
+                model: {
+                    "tokens_output": v.get("outputTokens", 0),
+                    "cost_usd": round(v.get("costUSD", 0), 4),
+                }
+                for model, v in sorted(model_usage.items())
+            },
+        }
+
+    usage = data.get("usage", {})
+    return {
+        "tokens_input": usage.get("input_tokens", 0) + usage.get("cache_read_input_tokens", 0),
+        "tokens_output": usage.get("output_tokens", 0),
+        "cache_creation_tokens": usage.get("cache_creation_input_tokens", 0),
+        "by_model": {},
+    }
+
+
+def session_duration_seconds(data):
+    """Session wall clock, working around an unreliable duration_ms.
+
+    The 2026-07-30 04:00 session reported duration_ms 9131 (9 seconds) for a
+    run cron timed at 11.9 minutes; duration_api_ms said 681304 (11.4 min).
+    The 03:00 session had the opposite ordering. Take whichever is larger.
+    """
+    return max(data.get("duration_ms") or 0, data.get("duration_api_ms") or 0) / 1000
+
+
 def log_session(session_log_path):
     """Parse Claude output and append to token log."""
     ensure_dirs()
@@ -51,11 +106,10 @@ def log_session(session_log_path):
         try:
             with open(session_log_path) as f:
                 data = json.load(f)
-            usage = data.get("usage", {})
-            entry["tokens_input"] = usage.get("input_tokens", 0) + usage.get("cache_read_input_tokens", 0)
-            entry["tokens_output"] = usage.get("output_tokens", 0)
-            entry["cache_creation_tokens"] = usage.get("cache_creation_input_tokens", 0)
-            entry["duration_seconds"] = data.get("duration_ms", 0) / 1000
+            entry.update(session_usage(data))
+            entry["duration_seconds"] = session_duration_seconds(data)
+            # Understated for the same reason usage is: it counts the final
+            # segment only. Kept because there is no better field, not trusted.
             entry["num_turns"] = data.get("num_turns", 0)
             entry["cost_usd"] = data.get("total_cost_usd", 0)
             entry["is_error"] = data.get("is_error", False)
@@ -68,7 +122,8 @@ def log_session(session_log_path):
     log = load_json(TOKEN_LOG)
     log.append(entry)
     save_json(TOKEN_LOG, log)
-    print(f"Logged: {entry['tokens_input']} in / {entry['tokens_output']} out")
+    cost = entry.get("cost_usd", 0)
+    print(f"Logged: {entry['tokens_input']} in / {entry['tokens_output']} out / ${cost:.2f}")
 
 
 def get_failure_count():
