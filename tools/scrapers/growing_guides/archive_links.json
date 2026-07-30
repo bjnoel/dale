@@ -1,4 +1,53 @@
 {
+  "abiu": [
+    {
+      "title": "Abiu",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Abiu/Abiu.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Abiu",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Abiu/Abiu3-82.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Abiu - One Of The Best Sapotaceous Fruits",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Abiu/Abiu5-83.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "A Local Experience With The Abiu",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Abiu/AbiuExperience7-82.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Abiu Fact Sheet",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Abiu/AbiuFactSheet3-82.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Gray Abiu",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Abiu/GrayAbiu11-96.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
+  "acerola": [
+    {
+      "title": "Acerola Articles",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Acerola/Acerola.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Acerola",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Acerola/Acerola7-87.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Barbados Cherry",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Acerola/BarbadosCherry9-93.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
   "avocado": [
     {
       "title": "Avocado",
@@ -121,6 +170,28 @@
     {
       "title": "Preliminary Observations On The Cupuassu",
       "url": "https://rfcarchives.org.au/Next/Fruits/Cacao/Cupuassu5-96.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
+  "coffee": [
+    {
+      "title": "Coffee",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Coffee/Coffee.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Coffee",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Coffee/Coffee03-80.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Coffee",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Coffee/Coffee119-2-01.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Coffee Processing In The Home",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Coffee/CoffeeProcessing109-98.htm",
       "source": "Rare Fruit Council archives"
     }
   ],
@@ -414,6 +485,13 @@
       "source": "Rare Fruit Council archives"
     }
   ],
+  "kiwifruit": [
+    {
+      "title": "Kiwi Fruit",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Kiwi/Kiwi.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
   "longan": [
     {
       "title": "Longan",
@@ -552,6 +630,48 @@
       "source": "Rare Fruit Council archives"
     }
   ],
+  "mangosteen": [
+    {
+      "title": "Asam Gelugor",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Mangosteen/AsamGelugor3-93.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Mangosteen Alternative",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Mangosteen/ButtonMangosteen3-92.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Some Tropical Fruits",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Mangosteen/Garcinias11-84.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Imbe",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Mangosteen/Imbe117-4-00.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Mangosteen",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Mangosteen/Mangosteen.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Mangosteens",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Mangosteen/Mangosteen9-89.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Mangosteen (Purple)",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Mangosteen/MangosteenCulture7-83.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Mangosteen - Precocity, Yield And Profit",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Mangosteen/MangosteenGrowing9-83.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
   "miracle-fruit": [
     {
       "title": "Miracle Fruit",
@@ -687,6 +807,55 @@
       "source": "Rare Fruit Council archives"
     }
   ],
+  "persimmon": [
+    {
+      "title": "Persimmon Production In China",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/ChinesePersimmons5-97.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Velvet Apple In Queensland",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/MaboloInQld5-95.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Persimmon",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmon.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Oriental Persimmon",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Persimmons7-88.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Mabolo - The Velvet Apple",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/VelvetApple3-94.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Zevelu (The Congo Fruit) Fruits In Julatten (Australia)",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Persimmon/Zevelu114-1-00.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
+  "pineapple": [
+    {
+      "title": "Picking A Pineapple",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Pineapple/ChoosingPineapple1-90.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Pineapple",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Pineapple/Pineapple.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Pineapple",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Pineapple/Pineapple11-88.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
   "pomegranate": [
     {
       "title": "From The Pomegranate Action Group",
@@ -815,6 +984,55 @@
       "source": "Rare Fruit Council archives"
     }
   ],
+  "soursop": [
+    {
+      "title": "Bearing Habits Of The Cuban Fiberless Soursop",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Soursop/CubanFibrelessSS5-92.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Cuban Fibreless Soursop",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Soursop/FibrelessSoursop3-92.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Soursop",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Soursop/Soursop.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Soursop",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Soursop/Soursop3-81.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
+  "star-apple": [
+    {
+      "title": "A New Species Of Chrysophyllum",
+      "url": "https://rfcarchives.org.au/Next/Fruits/StarApple/NewChrysophyllum3-92.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Star Apple",
+      "url": "https://rfcarchives.org.au/Next/Fruits/StarApple/StarApple.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Star Apple",
+      "url": "https://rfcarchives.org.au/Next/Fruits/StarApple/StarApple02-80.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Star Apple Culture",
+      "url": "https://rfcarchives.org.au/Next/Fruits/StarApple/StarApple5-89.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Star Apple In North Queensland",
+      "url": "https://rfcarchives.org.au/Next/Fruits/StarApple/StarAppleNQ9-82.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
   "starfruit": [
     {
       "title": "Belimbing",
@@ -854,6 +1072,55 @@
     {
       "title": "Carambola Varieties",
       "url": "https://rfcarchives.org.au/Next/Fruits/Carambola/CarambolaVarieties9-86.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
+  "tamarind": [
+    {
+      "title": "Tamarind",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Tamarind/AboutTamarind5-81.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Tamarind",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Tamarind/Tamarind.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Tamarind",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Tamarind/Tamarind1-94.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Tamarind: A Saucy Tree",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Tamarind/Tamarind3-90.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Tamarind",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Tamarind/Tamarind5-83.htm",
+      "source": "Rare Fruit Council archives"
+    }
+  ],
+  "wampee": [
+    {
+      "title": "Wampee",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Wampee/Wampee.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Wampee",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Wampee/Wampee11-93.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "Wampi",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Wampee/Wampi5-96.htm",
+      "source": "Rare Fruit Council archives"
+    },
+    {
+      "title": "The Wampi In Queensland",
+      "url": "https://rfcarchives.org.au/Next/Fruits/Wampee/WampiInQLD9-94.htm",
       "source": "Rare Fruit Council archives"
     }
   ],

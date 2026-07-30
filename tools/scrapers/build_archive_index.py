@@ -41,10 +41,13 @@ ALIAS = {
     "figs": "fig", "grapes": "grape", "jakfruit": "jackfruit", "litchi": "lychee",
     "carambola": "starfruit", "custardapple": "custard-apple", "blacksapote": "black-sapote",
     "fingerlime": "finger-lime", "dragonfruit": "dragon-fruit", "lillypilly": "lilly-pilly",
-    "waxjambu": "wax-jambu", "kiwifruit": "kiwi", "mandarins": "mandarin", "oranges": "orange",
+    "waxjambu": "wax-jambu", "mandarins": "mandarin", "oranges": "orange",
 }
 
 DASHES = {"—": "-", "–": "-"}
+
+# Editor placeholders left in a few archive pages' <title>. They are not titles.
+PLACEHOLDER_TITLES = {"title", "untitled", "index", "document", "new page 1", "home"}
 
 
 def no_dash(s: str) -> str:
@@ -55,6 +58,15 @@ def no_dash(s: str) -> str:
 
 def clean(s: str) -> str:
     return no_dash(re.sub(r"\s+", " ", s).strip())
+
+
+def detitle_shout(s: str) -> str:
+    """Title-case a shouted archive title. Some pages are fully uppercase and some
+    are mostly uppercase with a stray lowercase word, which str.isupper() misses."""
+    letters = [c for c in s if c.isalpha()]
+    if letters and sum(c.isupper() for c in letters) / len(letters) > 0.7:
+        return s.title()
+    return s
 
 
 def norm(s: str) -> str:
@@ -104,9 +116,9 @@ def collect_rfca(rfca_dir: Path, lookup: dict) -> dict:
             if name.endswith("_Image.htm") or name.startswith("R_"):
                 continue  # skip image pages and recipes
             title = title_from_htm(htm)
-            if not title or title.lower() in ("untitled", "index"):
+            if not title or title.strip().lower() in PLACEHOLDER_TITLES:
                 continue
-            title = title.title() if title.isupper() else title
+            title = detitle_shout(title)
             url = f"https://rfcarchives.org.au/Next/Fruits/{folder.name}/{name}"
             out.setdefault(slug, []).append(
                 {"title": title, "url": url, "source": "Rare Fruit Council archives"}
