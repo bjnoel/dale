@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 98,
+  "session_count": 99,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -53,7 +53,7 @@
           "Croppa (Australian, 2025-06, 13 ratings, $36/yr, 7-day trial) - vegetable focus, AU planting zones, very actively shipped."
         ]
       },
-      "aso_findings": "DAL-225 (2026-07-30): ranked #1 for 'graft tracker', 'grafting tracker', 'treesmith'. Ranked NOWHERE for 'plant tracker', 'garden journal', 'plant journal', 'plant inventory', 'plant collection tracker', 'fruit tree journal', 'orchard journal'. Bare 'graft'/'grafting' returns 33-35 building games out of 48 results because Apple fuzzy-matches graft to craft. Graft is the right thing to be BETTER at and the wrong thing to be FOUND by: keep it in the description, move subtitle and keyword field onto searched terms.",
+      "aso_findings": "DEC-247 (2026-07-30, 36 AU terms re-measured): the APP NAME is the field that ranks, not the subtitle or keyword field. Decisive evidence: our subtitle contains 'garden journal' verbatim and we are not in the top 191, while the top 4 are apps with 0, 3, 6 and 0 ratings that all carry the phrase in their NAME. Across 14 terms, top-5 results had every query word in the app name 21.4% of the time vs 11.0% at ranks 6-20 (median ratings 42 vs 11); 8 of 70 top-5 slots are held by a 0-rating app with the phrase in its name. Current ranks: graft tracker #1, treesmith #1, orchard tracker #3, tree tracker #5, fruit tree tracker #7, bonsai tracker #22, citrus tracker #25, propagation tracker #35, fruit tree journal #40. Invisible: garden journal, plant inventory, garden planner, plant log, garden diary, fruit tree, rare fruit, plant catalogue, garden log, plant database, garden mapping. plant tracker #186 of 189 DESPITE 'Plant' and 'Tracker' both being in our name. Pattern: we rank on <niche> tracker compounds (held by 0-rating apps, winnable) and nowhere on broad plant/garden terms (held by PictureThis/Planta with thousands of ratings, not winnable at 0). Supersedes DAL-225's advice to retarget the subtitle and keyword field, which would have changed the wrong field.",
       "dale_role": "Growth, ASO, marketing, content, cross-promotion from treestock, web companion. Flutter app code stays with Benedict -- propose, don't commit.",
       "aso_work_done": "2026-04-27 (DAL-169): title, subtitle, keywords, description drafted for App Store Connect",
       "community_launch_drafts": "2026-04-27 (DAL-171): WA Rare Fruit FB post + WAAS newsletter blurb ready for Benedict to post",
@@ -84,7 +84,33 @@
         "measured_2026_07_30": "DEC-241 / DAL-241. The bottom of the funnel, never measured before: over 6 months treestock produced 1,516 outbound clicks, of which 3 went to treesmith.app and 0 to either app store. In the last 30 days: 14 visitors reached /treesmith.html, 1 clicked apps.apple.com, 0 clicked play.google.com, against 639 visitors who clicked through to a nursery. DAL-218 measured the TOP of the funnel (/treesmith.html pageviews); the outbound goal measures the bottom and says the pass-through is ~0%. Adding CTAs upstream multiplies by zero. Cause is audience intent, not CTA placement: treestock visitors are mid-errand buyers, not app shoppers.",
         "status": "DEMOTED from strategy to decoration (DEC-241). The cross-promo stays because it is honest and free, but no new treestock->Treesmith funnel tickets until DAL-241's August re-measure shows whether ANY surface produces a store click. If it is still 0-1, stop."
       },
-      "blocked_on_benedict": "DAL-242 (assigned to Benedict): DEC-237 ranked ratings (DAL-230) and paywall reachability (DAL-224) as the two highest-leverage levers to a first sale. Neither is Dale's to pull (Flutter review prompts; a free-tier product decision) and both sit in Backlog. This, not effort, is why sustained Track A work has not moved the metrics."
+      "blocked_on_benedict": "DAL-242 (assigned to Benedict): DEC-237 ranked ratings (DAL-230) and paywall reachability (DAL-224) as the two highest-leverage levers to a first sale. Neither is Dale's to pull (Flutter review prompts; a free-tier product decision) and both sit in Backlog. This, not effort, is why sustained Track A work has not moved the metrics.",
+      "aso_recommendation_pending": {
+        "ticket": "DAL-177",
+        "owner": "Benedict (every field is pasted in App Store Connect / Play Console)",
+        "name": "TreeSmith: Plant Graft Tracker -> TreeSmith: Fruit Tree Tracker (29/30). Contests Grove head-on on the one niche term with real purchase intent, where a 5-week-old 0-rating app holds #1 on name alone and we are already #7. Gives up #1 on 'graft tracker' (no volume) and #186 on 'plant tracker' (nothing).",
+        "subtitle": "Graft, scion & garden journal -> Graft, scion & orchard journal (30/30). One word: 'garden' is unwinnable, 'orchard' is a term we are already #3 on.",
+        "keywords": "rare,rootstock,propagation,nursery,citrus,permaculture,cuttings,bonsai,harvest,plant,log,map (92/100). Drops orchard/fruit/tree because the name and subtitle now carry them and Apple indexes the three fields as one pool.",
+        "play_short_desc": "Graft, scion & orchard journal for collectors. GPS map, photo log, exports. (75/80)",
+        "ab_testing": "Apple Product Page Optimization tests icon, screenshots and previews ONLY, so this ticket's original 'description A/B variant' is not executable on Apple. Google Play Store Listing Experiments can test short and long description. Any description A/B belongs on Play.",
+        "followups": "DAL-256 (App Store Connect impressions vs product page views vs units: are we failing at discovery, at the search result, or at the listing?) and DAL-257 (re-measure the same 36 terms 4 weeks post-rename, prediction recorded in advance)."
+      },
+      "store_listing_accuracy_defect": {
+        "found": "2026-07-30 (DEC-247)",
+        "severity": "customer-facing pricing misstatement on both purchase pages",
+        "detail": "Both live store descriptions read 'Pro: unlimited plants, multiple locations, cloud backup, bulk operations and CSV import.' Cloud backup is NOT included in Pro. lib/features/pro/screens/paywall_screen.dart:627-633 lists it as an add-on that Pro unlocks the ability to buy, sold separately at A$9.99/year on top of A$39.99 Pro. A buyer can pay $39.99 expecting backup and find it is a second purchase.",
+        "why_missed": "The same error was corrected on treestock, the treesmith.app homepage, the press kit and the Terms on 2026-07-27. The two store listings were missed. store-listing-google-play.txt in the app repo is stale and carries it too.",
+        "fix": "Replacement FREE OR PRO block worded straight off the paywall is on DAL-177, for both stores. Benedict pastes it. Asked for regardless of whether any ASO recommendation is accepted."
+      },
+      "live_listing_verified_2026_07_30": {
+        "ios_name": "TreeSmith: Plant Graft Tracker (30/30)",
+        "ios_subtitle": "Graft, scion & garden journal (29/30)",
+        "ios_ratings": 0,
+        "play_name": "TreeSmith: Plant Graft Tracker",
+        "play_short_desc": "Graft, scion & garden journal for collectors. GPS map, photo log, exports. (74/80)",
+        "play_updated": "27 July 2026",
+        "note": "iTunes lookup API reports 0 screenshots for our app; the live product page serves 70 screenshot images. Do not trust the lookup API's screenshot fields."
+      }
     },
     "a_paused_walkthrough": {
       "name": "Perth AI Efficiency Audits (PAUSED 2026-04-27)",

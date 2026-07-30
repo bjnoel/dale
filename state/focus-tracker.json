@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 98,
+  "last_session": 99,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1395,6 +1395,27 @@
         "treestock_gsc_avg_position": 16.7
       },
       "note": "DEC-246 / DAL-115: rebuilt the community data post on 142 days x 27 nurseries. The April draft was stale (White Sapote, its headline 'rarest', is now in stock somewhere every day) and had broken price ranges. National rarity has largely resolved: 92 of 108 species in stock somewhere on all 142 days. The real finding is state reachability, with 73 of 108 species never once buyable in TAS, and WA far less cut off than assumed. Handed to Benedict to post. Proposed DAL-254 (citable reachability page, the linkable asset DEC-245 said we lacked) and DAL-255 (SA nurseries)."
+    },
+    {
+      "session": 99,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treesmith:growth"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [
+        "DAL-256",
+        "DAL-257"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7
+      },
+      "note": "DEC-247 / DAL-177: measured 36 AU App Store terms and found the ASO plan was aimed at the wrong field. Our subtitle contains 'garden journal' verbatim and we are not in the top 191, while the top 4 are 0-to-6 rating apps carrying the phrase in their NAME. Recommended renaming to 'TreeSmith: Fruit Tree Tracker' (we are already #7 there, Grove took #1 on name alone at 0 ratings) rather than retargeting the subtitle and keyword field. Also found both live store descriptions state Pro includes cloud backup, which is false and is the one thing that must be fixed regardless. Handed to Benedict. Proposed DAL-256 (App Store Connect funnel: discovery vs listing) and DAL-257 (4-week rank re-measure with a falsifiable prediction)."
     }
   ],
   "override": null

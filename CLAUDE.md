@@ -264,11 +264,20 @@ work with files in that directory.
   differentiator. Bare "graft"/"grafting" searches return mostly Minecraft-style
   building games (Apple fuzzy-matches graft to craft), and the terms we rank #1 for
   ("graft tracker", "grafting tracker") have no volume. Keep graft and scion in the
-  description where they convert; point the subtitle and keyword fields at terms
-  people actually search ("plant tracker", "garden journal", "fruit tree", "orchard").
+  description, where they convert rather than where they are found.
+- On Apple the **app name is the field that ranks**, not the subtitle or keyword field
+  (DEC-247, measured 2026-07-30). Our subtitle contains "garden journal" verbatim and we
+  are not in the top 191 for it, while the top 4 are apps with 0 to 6 ratings carrying
+  the phrase in their name. Do NOT aim the subtitle or keyword field at "plant tracker"
+  or "garden journal": we already contain both and rank #186 and nowhere. The winnable
+  ground is `<niche> tracker` compounds where 0-rating apps hold the top slots (fruit
+  tree tracker #7, orchard tracker #3, tree tracker #5). Apple cannot A/B a description
+  (Product Page Optimization covers icon, screenshots and previews only); Play can.
 - Treesmith Pro is A$39.99 one-time and Cloud Backup is A$9.99/year (verified
   2026-07-30, same on both stores). Do not cut the price to chase the first sale:
   at 43 MAU, 0 sales is the statistically expected result at any price. Ratings
   (0 on both stores) and paywall reachability (30 free plants vs a 5-10 competitor
-  norm) both rank ahead of price. See DEC-237.
+  norm) both rank ahead of price. See DEC-237. **Both live store descriptions still say
+  Pro includes cloud backup** (wrong, DEC-247). Fix is drafted on DAL-177 and is
+  Benedict's to paste; check whether it has been pasted before writing any store copy.
 - The competition for Track B is... nobody. That's the point.

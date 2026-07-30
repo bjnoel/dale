@@ -7524,3 +7524,140 @@ and wrong four months later, and nothing in the ticket would have told anyone th
 
 **Cost:** $0. Read-only analysis of existing availability history. No code changed, so no
 tests were affected.
+
+---
+
+## DEC-247 — 2026-07-30 — The ASO plan was aimed at the weakest field, and both store listings currently misstate what Pro includes
+
+**Decided by:** Dale (autonomous; DAL-177 is approved and Benedict said "do the
+recommendation from DAL-225" this morning). The deviation from that recommendation is
+Dale's call and is flagged on the ticket with the evidence that drove it. Every field
+has to be pasted by Benedict, so the ticket goes back to him in Todo, not Done.
+
+**Context: the same four reflections, and one of them had to be answered before picking
+this ticket.** $0 after 126 days, Track A stale at 5 of 5 session-days, treestock growth
+stale at 4 of 5, `revenue:monetisation` stale with the metric unmoved.
+
+Track A is the stale channel, so the new approach has to be stated up front. The 5 stale
+session-days were funnel, CTA placement, cross-promo instrumentation and pricing analysis:
+all of them **downstream of someone finding the app**. Nobody has touched discovery. DEC-237
+measured that we rank nowhere for the terms people search and #1 for terms nobody searches,
+and then the work went back downstream. This session is the store search index, which is
+upstream of every one of those five days and is the one Track A surface that is neither
+Benedict's Flutter code (DAL-230) nor a product decision he owns (DAL-224).
+
+**Finding 1: the recommendation I was told to execute would have optimised the wrong field.**
+
+DAL-225 said move the subtitle and keyword field off graft onto searched terms. Before
+writing copy I measured what those two fields are currently worth.
+
+Our live subtitle is `Graft, scion & garden journal`. It contains the exact phrase
+**"garden journal"**. We are **not in the top 191** for it. The top four are Your Garden
+Journal (0 ratings), GrowNotes: Garden Journal (3), My Garden Planner & Journal (6) and
+Garden Journal: Planner (0).
+
+**Two of the top four have zero ratings, exactly like us.** So authority is not what keeps
+us out, and the one thing all four have that we do not is the phrase **in the app name**.
+
+The same shape holds on the term Benedict flagged. For "fruit tree tracker", #1 is Fruit
+Tree Tracker - Grove (0 ratings, five weeks old) and #2 is FruitForest (0 ratings). We are
+**#7** with the words split across name and keyword field.
+
+Checked properly rather than on the anecdote: across 14 terms and their top 20 results,
+apps in the **top 5** carry every query word in their name 21.4% of the time against 11.0%
+at ranks 6 to 20, with median ratings 42 against 11. So name-match and ratings both matter
+and name-match roughly doubles the odds. **8 of the 70 top-5 slots sampled are held by an
+app with zero ratings and the phrase in its name.** That is the winnable ground.
+
+Recording the strength honestly: a 2x association on a 14-term sample is not a law. The
+"garden journal" case is the decisive evidence and the aggregate is supporting.
+
+**Finding 2: we rank on niche compounds and nowhere on broad terms, and that is a strategy.**
+
+Ranking today (AU): graft tracker #1, treesmith #1, orchard tracker #3, tree tracker #5,
+fruit tree tracker #7, grafting #11 (polluted with building games), bonsai tracker #22,
+citrus tracker #25, propagation tracker #35, fruit tree journal #40.
+
+Invisible: garden journal, plant inventory, garden planner, plant log, plant collection,
+garden diary, fruit tree, rare fruit, plant catalogue, garden log, plant database, garden
+mapping. Plus **plant tracker at #186 of 189, with "Plant" and "Tracker" both in our name.**
+
+Broad `plant`/`garden` terms are held by PictureThis and Planta with thousands of ratings
+and are not winnable at 0. `<niche> tracker` compounds are held by 0-rating apps and are.
+
+**This corrects guidance I wrote into CLAUDE.md myself**, which currently says to point the
+subtitle and keyword fields at "plant tracker" and "garden journal". Those are precisely the
+two terms we already contain verbatim and rank 186th and nowhere for. Fixed in the file.
+
+**So the recommendation changed from "retarget the subtitle" to "rename the app":**
+`TreeSmith: Plant Graft Tracker` to **`TreeSmith: Fruit Tree Tracker`** (29/30). It spends
+the highest-weighted field on the one phrase in our niche with real purchase intent, where a
+five-week-old 0-rating app holds #1 on its name alone and where we are already #7. It gives
+up #1 on "graft tracker" (DEC-237: no volume) and #186 on "plant tracker" (nothing). Graft
+stays in the subtitle and throughout the description, which is where it converts rather than
+where it is found. Subtitle changes one word, `garden` to `orchard`, swapping the unwinnable
+half for a term we are #3 on. Keyword field drops the words the name and subtitle now carry.
+
+**Finding 3, which matters more than any of the above and is independent of it: both live
+store descriptions tell buyers that Pro includes cloud backup. It does not.**
+
+Live on Apple and Play right now: "Pro: unlimited plants, multiple locations, cloud backup,
+bulk operations and CSV import."
+
+The in-app paywall (`lib/features/pro/screens/paywall_screen.dart:627-633`) lists cloud
+backup as an **add-on that Pro unlocks the ability to buy**, sold separately at A$9.99/year
+on top of A$39.99. Someone can read the store page, pay $39.99 expecting backup, and discover
+afterwards that it is a second purchase.
+
+This is the exact error CLAUDE.md carries a standing rule about, and which was corrected on
+treestock, the treesmith.app homepage, the press kit and the Terms on 2026-07-27. **The two
+store listings were missed, and they are the only pages anyone actually buys from.**
+`store-listing-google-play.txt` in the app repo is stale and carries it too. The replacement
+block is worded straight off the paywall so the store cannot drift from the app again, and
+it drops "CSV import" from the Pro line rather than guess, since the paywall files that under
+local backup and export, which is free.
+
+Prime Directive 1 is about not misleading anyone. A wrong feature list on the purchase page
+is the most expensive place to be wrong, and it had been live for three days after every
+other surface was fixed. It is asked for on the ticket as a fix to make regardless of whether
+any ASO recommendation is accepted.
+
+**Finding 4: the deliverable this ticket originally asked for cannot be produced.**
+
+The ticket is titled "App Store description A/B variant". Apple's Product Page Optimization
+tests **app icon, screenshots and app previews only**, and Custom Product Pages vary
+screenshots, previews and promotional text. **Neither can vary the description.** Google Play
+Store Listing Experiments can test short and long description. So the A/B this ticket wanted
+is executable, on the other store. Flagged as a platform read to confirm in the consoles
+rather than something measured.
+
+**Honest accounting, including what this does not do.** Nothing here moves $0 today, and ASO
+only gets more people to a listing. It does not touch DEC-237's top two levers, ratings
+(DAL-230) and paywall reachability (DAL-224), which are still sitting with Benedict on
+DAL-242. What it changes is that discovery has been measured for the first time, that a
+factually wrong pricing claim on both purchase pages has a fix in front of him, and that the
+next ASO session starts from a falsifiable prediction rather than another rewrite.
+
+**Two tickets proposed, both aimed at not repeating this.** DAL-256: pull App Store Connect
+impressions, product page views and units, because we cannot currently tell whether we are
+failing at discovery, at the search result, or at the listing page, and today's rename is a
+bet on the first of the three. Same pattern as DEC-241, where Plausible had recorded every
+outbound click for 126 days and nobody had queried it; Apple has been recording this since
+April. DAL-257: re-measure the identical 36 terms four weeks after the rename, with the
+prediction written down now (fruit tree tracker #7 to top 3, orchard tracker holds, graft
+tracker drops off #1 and that is accepted, plant tracker stays invisible). If fruit tree
+tracker does not move, the name-field theory is wrong, ASO is not our lever, and the honest
+conclusion is that only Benedict's two levers remain. Record that instead of trying a fourth
+wording.
+
+**Running lesson, sixth session.** DEC-241: check the number exists. DEC-243: check it is
+complete. DEC-244: check it is not circular. DEC-245: check we can see the result. DEC-246:
+check it has not expired. This one adds **check the lever is connected to the thing you are
+trying to move.** The plan to retarget the subtitle and keyword field was reasonable, cheap
+and would have changed nothing, because the field being changed is not the field that ranks.
+Two smaller versions of the same trap were avoided on the way: the iTunes lookup API reports
+0 screenshots for our app while the live product page serves 70 images, so a "we have no
+screenshots" ticket died before it was written.
+
+**Cost:** $0. Read-only iTunes Search API calls (rate limited by hand), two store page
+fetches, and reads of the read-only app mirror.
