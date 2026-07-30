@@ -226,6 +226,7 @@ def render_treesmith_promo(context: str = "variety") -> str:
         "variety": "Tracking a variety here? Keep a record of the one you actually buy, and of the grafts you take off it.",
         "species": "Found a tree to buy? Keep a record of the one you actually plant.",
         "rootstock": "Once the graft is on, the details are worth keeping: technique, date, and where the scion wood came from.",
+        "homepage": "You searched for it, you bought it, now you need somewhere to remember it.",
     }.get(context, "Keep a record of the trees you actually buy.")
     grafting = context in ("variety", "rootstock")
     anchor = "#grafting" if grafting else ""

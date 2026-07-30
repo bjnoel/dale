@@ -32,7 +32,14 @@ APP_BASE = "https://treesmith.app/"
 UTM_PARAMS = "utm_source=treestock&utm_medium=treesmith_page&utm_campaign=treesmith_launch"
 APP_UTM = "?" + UTM_PARAMS
 APP_URL = APP_BASE + APP_UTM
-IOS_URL = "https://apps.apple.com/us/app/treesmith/id6761506742?" + UTM_PARAMS
+# /au/, not /us/: treestock's audience is Australian, and the US storefront path
+# makes an AU shopper's App Store detour through a "not available in your
+# country" style hand-off before it resolves. The slug is the listing's real one
+# (DAL-225 verified it against the live listing).
+IOS_URL = (
+    "https://apps.apple.com/au/app/treesmith-plant-graft-tracker/id6761506742?"
+    + UTM_PARAMS
+)
 # Android left beta on 2026-06-15. treesmith.app/beta/ now 301s to the app's
 # marketing homepage, so link the Play Store listing directly. Its URL already
 # carries a query string, hence the & rather than a ? before the UTM params.

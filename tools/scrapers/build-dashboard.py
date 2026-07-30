@@ -16,7 +16,7 @@ from pathlib import Path
 
 from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
-from treestock_layout import render_head, render_header, render_footer, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
+from treestock_layout import render_head, render_header, render_footer, render_treesmith_promo, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
 from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK, is_seed_packet
 from stocklib.taxonomy import enabled_species, load_species
@@ -808,6 +808,15 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         '</select>'
     )
 
+    # Treesmith cross-promo, last block inside <main> (DAL-219). The homepage was
+    # the only high-traffic page without one: the funnel audit (DAL-218) found
+    # /treesmith.html taking 12 visitors a month out of 2,865, with the 225/month
+    # homepage contributing none of them. It sits after the subscribe block and
+    # its supporting highlights so the free-alerts signup stays the primary CTA,
+    # and below the results either way (treestock rule 1). utm_content separates
+    # homepage clicks from the species/variety blocks in Plausible.
+    treesmith_promo = render_treesmith_promo("homepage" if landing is None else "landing")
+
     # Twitter Card + og:title/description/image/type are emitted by render_head;
     # only the og:image dimensions (which render_head does not model) are added here.
     extra_head_tags = """<meta property="og:image:width" content="1200">
@@ -919,6 +928,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
 {highlights_html}
 
+{treesmith_promo}
 
 </main>
 
