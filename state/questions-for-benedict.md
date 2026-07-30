@@ -12,6 +12,16 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
+**Q46** [BLOCKING] Which email address should receive replies to treestock emails?
+
+Replies to our emails currently bounce. We send From `alerts@mail.treestock.com.au`,
+and that subdomain has no MX record, so a reply has nowhere to land. Both the welcome
+email and the new Treesmith intro email say "just reply to this email".
+
+Do you have (or can you add) something like `hello@treestock.com.au` on Fastmail?
+Any working address is fine, it does not have to be on treestock.com.au. Once I know
+it I add it as a `Reply-To` on every sender in one place (DAL-243).
+
 **Q45** [BLOCKING] STFC reply is drafted and shortened, ready for you to send
 
 Preview: **https://stfc-preview.pages.dev** (A/B switch at the top of every page).

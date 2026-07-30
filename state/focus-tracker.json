@@ -1241,8 +1241,11 @@
         "treestock:subscriber_conversion"
       ],
       "tickets_completed": [],
-      "tickets_proposed": [],
-      "notes": "DEC-240. DAL-173 turned from a four-month-old email draft into a standing mechanism, per Benedict's overnight spec: send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once and never again. Proof-of-concept sent to Benedict; nightly cron installed but a logged no-op until he creates the approval flag. Existing 13 subscribers excluded by a start-date gate so flipping the switch cannot pre-empt the separate broadcast he wants to approve (DAL-221). Fixed three factual errors carried by the April draft (wrong App Store id, Android called beta, Pro described as including cloud backup) and verified every feature claim against the app source via the DEC-238 mirror. DAL-173 handed to Benedict awaiting approval.",
+      "tickets_proposed": [
+        "DAL-243",
+        "DAL-244"
+      ],
+      "notes": "DEC-240. DAL-173 turned from a four-month-old email draft into a standing mechanism, per Benedict's overnight spec: send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once and never again. Proof-of-concept sent to Benedict; nightly cron installed but a logged no-op until he creates the approval flag. Existing 13 subscribers excluded by a start-date gate so flipping the switch cannot pre-empt the separate broadcast he wants to approve (DAL-221). Fixed three factual errors carried by the April draft (wrong App Store id, Android called beta, Pro described as including cloud backup) and verified every feature claim against the app source via the DEC-238 mirror. DAL-173 handed to Benedict awaiting approval. Also found while writing the email: replies to every treestock email we have ever sent bounce, because the sending subdomain mail.treestock.com.au has no MX or A record and no sender sets a Reply-To, while the welcome and intro emails both invite replies (DAL-243, Q46). Proposed DAL-244 to instrument the subscribe funnel, since subscribers are now the input to an automated Treesmith drip rather than a vanity count.",
       "metric_snapshot": {
         "weekly_organic_visitors": 930,
         "treestock_subscribers": 13,
