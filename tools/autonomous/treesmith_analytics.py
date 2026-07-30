@@ -166,25 +166,61 @@ def m_active(host, key):
 
 
 def m_activation(host, key):
-    """Of devices first seen in the last 7 days, how many added a plant?"""
+    """How many new devices added a plant, this week and all time.
+
+    The all-time figure is deliberately NOT computed over every device we have
+    ever seen. `plant_added` did not exist for the app's first six weeks, so a
+    device that installed before the event shipped looks identical to one that
+    installed and never activated. DEC-254: dividing all-time activations by
+    all-time installs understated activation by roughly 4x and was read as an
+    activation crisis.
+
+    So the cohort is clipped to devices first seen on or after the day
+    `plant_added` first appears in the data, and that date is reported next to
+    the number so nobody can silently widen the window again.
+    """
     rows = hogql(host, key, """
-        WITH cohort AS (
+        SELECT min(toDate(timestamp)) FROM events WHERE event = 'plant_added'
+    """)
+    coverage_start = rows[0][0] if rows and rows[0][0] else None
+    if coverage_start is None:
+        # No activation events at all: a rate would be meaningless, not zero.
+        return {"installs": 0, "activated": 0, "rate": None,
+                "coverage_start": None, "all_installs": 0,
+                "all_activated": 0, "all_rate": None}
+
+    rows = hogql(host, key, """
+        WITH firsts AS (
           SELECT distinct_id, min(timestamp) AS first_seen
           FROM events GROUP BY distinct_id
-          HAVING first_seen >= now() - INTERVAL 7 DAY
+        ),
+        activated AS (
+          SELECT DISTINCT distinct_id FROM events WHERE event = 'plant_added'
         )
         SELECT
-          count() AS installs,
-          countIf(distinct_id IN (
-            SELECT DISTINCT distinct_id FROM events
-            WHERE event = 'plant_added'
-          )) AS activated
-        FROM cohort
-    """)
-    installs = rows[0][0] if rows else 0
-    activated = rows[0][1] if rows else 0
-    rate = round(activated / installs * 100) if installs else None
-    return {"installs": installs, "activated": activated, "rate": rate}
+          countIf(first_seen >= now() - INTERVAL 7 DAY) AS installs_7d,
+          countIf(first_seen >= now() - INTERVAL 7 DAY
+                  AND distinct_id IN (SELECT distinct_id FROM activated)) AS activated_7d,
+          countIf(first_seen >= toDate({start})) AS installs_all,
+          countIf(first_seen >= toDate({start})
+                  AND distinct_id IN (SELECT distinct_id FROM activated)) AS activated_all,
+          countIf(first_seen < toDate({start})) AS excluded
+        FROM firsts
+    """.replace("{start}", "'%s'" % coverage_start))
+
+    installs, activated, all_installs, all_activated, excluded = (
+        rows[0] if rows else (0, 0, 0, 0, 0))
+    return {
+        "installs": installs,
+        "activated": activated,
+        "rate": round(activated / installs * 100) if installs else None,
+        "coverage_start": str(coverage_start),
+        "all_installs": all_installs,
+        "all_activated": all_activated,
+        "all_rate": (round(all_activated / all_installs * 100)
+                     if all_installs else None),
+        "excluded_pre_coverage": excluded,
+    }
 
 
 def m_onboarding(host, key):
@@ -463,6 +499,20 @@ def render(metrics):
         color = GREEN if (d["rate"] or 0) >= 25 else RED
         kv("Added a plant (new users)",
            f"{d['activated']}/{d['installs']} = {rate}", color)
+        # All-time, clipped to the period plant_added has actually existed.
+        # Printing the start date is the point: DEC-254 was caused by an
+        # all-time rate computed over weeks the event could not fire.
+        if d.get("coverage_start"):
+            all_rate = ("n/a" if d.get("all_rate") is None
+                        else f"{d['all_rate']}%")
+            all_color = GREEN if (d.get("all_rate") or 0) >= 25 else RED
+            kv(f"Added a plant (all time, since {d['coverage_start']})",
+               f"{d['all_activated']}/{d['all_installs']} = {all_rate}",
+               all_color)
+            excluded = d.get("excluded_pre_coverage") or 0
+            if excluded:
+                kv("  Excluded (installed before plant_added existed)",
+                   f"{excluded} devices, activation unknown not zero", GREY)
     else:
         err("Activation", ac["error"])
     ob = metrics["onboarding"]
