@@ -8258,3 +8258,120 @@ DEC-248: the arithmetic. DEC-249: it is instrumented. DEC-250: the fetcher loops
 system tells the user matches what it does. This one adds **check the zero you are building the
 strategy on.** Ten sessions of increasingly careful reasoning about how to earn the first dollar,
 and the possibility that we had already earned it was recorded, in our own analytics, in July.
+
+---
+
+## DEC-253 — 2026-07-30 — The digest that hid two sales also counted thirteen test purchases as revenue
+
+**Decided by:** Dale (autonomous, under the "something is BROKEN" exception). DAL-266 was in
+Backlog rather than Todo. The tool it covers is Dale's own internal reporting script, not a
+customer-facing surface, and it was actively producing false statements about revenue, which
+is the single thing eleven sessions of strategy had been reasoned from. Shipped and deployed;
+the ticket is Done.
+
+**Context: the same four reflections, and why this is the answer to them.** $0 recorded after
+126 days, Track A stale at 5 of 5 session-days, treestock growth stale at 4 of 5,
+`revenue:monetisation` stale with the metric unmoved.
+
+The channel-stale rule demands a genuinely new approach before more Track A work. Here it is,
+and it is narrow on purpose. The 5 stale Track A session-days were all attempts to *move* a
+number. DEC-252 discovered last session that the number itself may never have been right. So
+this session did not try to earn a dollar or analyse another lever. It fixed the instrument
+that tells us whether we have earned one, because every future decision reads that instrument
+and it was lying in two directions at once.
+
+**Finding 1: `environment` tagging began on 2026-07-01, and the old code turned every event
+before that into a sale.**
+
+The digest counted production purchases with `coalesce(properties.environment, 'production')`.
+That is a decision to treat "we do not know" as "yes, real money". I pulled every
+purchase-shaped `paywall_result` to see how much it was covering:
+
+| period | events | environment |
+|---|---|---|
+| 2026-04-30 to 2026-05-18 | **13** | **absent** |
+| 2026-07-01 | 1 | sandbox |
+| 2026-07-06, 2026-07-23 | 2 | production |
+
+Thirteen purchase outcomes across 30 April to 18 May, all untagged: 6 `lifetime_purchased`,
+4 `cloud_backup_sub_purchased`, 3 `restored`, clustered in an 18-day window over eight
+distinct ids during the launch and TestFlight period. On the rolling 7-day window the digest
+actually used, these were long out of scope and did no damage. On **any longer window, or the
+cumulative line this business needs, the old code would have reported 12 production sales.**
+
+They are now bucketed as `untagged` and never counted as revenue. I did not classify them as
+sandbox either. We do not know what they were, and DEC-251's lesson was that guessing at
+unrecoverable state is how you get a confident wrong answer.
+
+**Finding 2: the sale that was found last session was one week from vanishing again.**
+
+DEC-252 found the two production purchases by querying PostHog directly, not through the
+digest. The reason the digest never surfaced them is that monetisation was reported on a
+rolling 7 days with no cumulative total behind it, so each sale appeared in exactly one Monday
+email and then aged out permanently.
+
+Running the fixed version tonight makes the near miss concrete: the 23 July purchase is *still*
+inside the 7-day window, showing as "Purchases this week (production) 1". It would have
+dropped out of the very next Monday digest, unremarked, exactly as the 6 July one did.
+
+**Finding 3, a correction to DEC-252.** I wrote that `paywall_result` "does not carry that
+property at all, so its sandbox counter is permanently 0". That is wrong. It does carry
+`environment`, on the 3 events since 1 July, and it correctly flagged the sandbox one. The
+untagged events are the *older* ones. The conclusion was right and the mechanism was not, and
+a wrong mechanism in the log is how the next session builds on sand.
+
+**What shipped (0bd7368, deployed, 1,971 tests pass, up from 1,963).**
+
+- Money is read from `purchase_succeeded`, the only event carrying price, currency and
+  environment together. `paywall_result` now reports reach only (views, dismissals), because
+  it has no price and its older events have no environment.
+- Every purchase figure is reported **all-time as well as weekly**. A sale cannot age out.
+- Anything not counted as production is still *printed* ("Excluded: sandbox (AUD), 1 all time,
+  not counted as revenue"), because a silent exclusion is what made the old production counter
+  untrustworthy.
+- A **reconciliation check** between `paywall_result` and `purchase_succeeded`. They come from
+  different code paths, so a divergence means one is dropping events and the money line is
+  incomplete. It prints a red warning on mismatch. They currently agree, 3 and 3 since 1 July.
+- `--help`, and an unrecognised argument now exits 2 instead of falling through to the email
+  path. That is what sent Benedict an unscheduled digest during DEC-252.
+- 8 regression tests pinning the **rendered text**, per DEC-251: the render is the only surface
+  a human reads, and the old bug was invisible precisely because no test compared what the tool
+  said to what it did.
+
+**Finding 4, found on the way out and worth more than it looks: there is no deploy cron.**
+
+`crontab -l` has the Monday digest and the nightly Treesmith drip, and **no deploy entry**.
+`deploy.sh` runs from the autonomous session startup hook, which fires at 18:00 to 21:00 UTC.
+My commit landed at roughly 21:10, ten minutes after tonight's deploy and after the last
+session of the night. The fixed code would have sat in git, tested and green, while Monday's
+digest ran the old copy from `/opt/dale/autonomous/`. Same family as DAL-263 (deploy.sh never
+restarts subscribe-server) and as DEC-251 generally: the repo is correct, the running system is
+not, and nothing reports the gap. I ran `deploy.sh` and verified the deployed copy renders the
+new output.
+
+**What this does NOT do.** It does not confirm revenue. `revenue_monthly` stays 0 and Q48 and
+DAL-264 stay open. Client-side telemetry is not a receipt. One thing did get cheaper for
+Benedict: the app ships `purchases_flutter`, so **RevenueCat's own dashboard answers DAL-264
+faster than App Store Connect** and separates sandbox from production directly. We hold no
+RevenueCat credential, which is why Dale cannot settle it; proposed as a ticket.
+
+**Bonus reading from the live dry run, not acted on.** Installs are up sharply (25 in 7 days,
++92% WoW) and the recent cohort activates far better than the all-time base: 4 of 25 added a
+plant (16%) against 18 of 290 (6%) all time, with onboarding completion at 70%. Against that,
+**retention on the 8-14 day cohort is 0 of 13**, and the biggest funnel drop is still
+opened -> onboarded at 72%. Small numbers, one week, and I am deliberately not drawing a
+conclusion from them. Logged so DAL-265 starts from data rather than from tonight's summary.
+
+**Honest accounting.** No revenue earned. Fourth consecutive session that shipped code. It
+repaired the one recurring surface that reports whether this business makes money, in both
+directions: it can no longer hide a real sale, and it can no longer invent thirteen fake ones.
+
+**Running lesson, twelfth session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is
+connected. DEC-248: the arithmetic. DEC-249: it is instrumented. DEC-250: the fetcher loops.
+DEC-251: what the system tells the user matches what it does. DEC-252: check the zero.
+This one adds **check which direction the default rounds.** `coalesce(unknown, 'production')`
+and a 7-day window with no cumulative are both small, reasonable-looking choices, and between
+them they could report twelve sales we never made while hiding two we did.
+
+**Cost:** $0. Read-only PostHog queries, one deploy.

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 104,
+  "last_session": 105,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1543,6 +1543,41 @@
         "treestock_email_clicks_90d": 48
       },
       "note": "DEC-252. First ever query of PostHog (project 166160), 126 days of behavioural data never read. Found two production purchase_succeeded events (A$39.99 on 07-06, US$24.99 on 07-23) against a state file that says 0 sales, so revenue_monthly:0 may be wrong; NOT edited, Benedict confirms in App Store Connect (DAL-264). Killed DAL-224 with data (181 of 186 people never had one plant; 3 ever exceeded 15; plant_limit is 2 of 148 paywall results). DAL-230's review prompt is built and enabled at build 56 but the released build is 52, and PostHog has zero review events, so it needs a submission not a decision. DAL-242 closed: both levers settled. Real constraint is activation, 97% of installs never add a plant (DAL-265)."
+    },
+    {
+      "session": 105,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treesmith:growth",
+        "infrastructure"
+      ],
+      "tickets_completed": [
+        "DAL-266"
+      ],
+      "tickets_proposed": [
+        "DAL-267"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treesmith_installs_all_time": 314,
+        "treesmith_people_ever_added_a_plant": 18,
+        "treesmith_people_reached_paywall": 76,
+        "treesmith_production_purchases_all_time": 2,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_outbound_clicks_30d": 1245,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7,
+        "treestock_email_open_rate_90d": 43.2,
+        "treestock_email_clicks_90d": 48,
+        "treesmith_installs_7d": 25,
+        "treesmith_active_7d": 29,
+        "treesmith_active_28d": 61,
+        "treesmith_activation_rate_7d_pct": 16,
+        "treesmith_retention_8_14d_cohort_pct": 0
+      },
+      "note": "DEC-253. Fixed the weekly Treesmith digest: it reported purchases on a rolling 7d with no cumulative line (so a real sale aged out after one email) and used coalesce(environment,'production') (so 13 untagged Apr-May TestFlight purchases would read as production sales on any longer window). Money now read from purchase_succeeded, reported all-time as well as weekly, non-production buckets printed not dropped, plus a paywall_result vs purchase_succeeded reconciliation warning. 8 regression tests on rendered text. Also found there is NO deploy cron, so cron jobs run stale code until a session hook fires; deployed by hand and verified."
     }
   ],
   "override": null

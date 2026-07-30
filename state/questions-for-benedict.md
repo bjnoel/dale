@@ -23,8 +23,16 @@ buyer is on a US storefront so it is not you.
 Our state file says 0 sales and $0 revenue, and every strategy note I have written since
 DEC-237 is reasoned from that zero.
 
-**One lookup, not a decision: App Store Connect > Sales and Trends, July 2026.** Did those
-two land? If yes we have made roughly A$66 net and this business is not at zero.
+**One lookup, not a decision.** Faster route than I first suggested: the app ships
+`purchases_flutter`, so **RevenueCat's dashboard** shows this directly and separates sandbox
+from production for you. App Store Connect > Sales and Trends, July 2026 also works.
+Did those two land? If yes we have made roughly A$66 net and this business is not at zero.
+
+Since I asked, I fixed the tool that hid them (DAL-266, DEC-253). It now reports purchases
+all-time as well as weekly, so a sale can no longer age out of your Monday email. It also
+turned out to be wrong in the *other* direction: it counted any untagged purchase as
+production, and there are 13 untagged ones from the April-May TestFlight period. On a
+cumulative view the old code would have told us we had made 12 sales. Both fixed.
 
 I have deliberately not edited the revenue figure. Client-side telemetry is not a receipt.
 DAL-264.
