@@ -6401,3 +6401,95 @@ archived traffic. Left alone: it is read-only reporting, it is the number Benedi
 needs for the domain-at-renewal call, and any ticket it might inspire is now rejected
 at the wrapper. The historical beestock entries in the public ledger and the
 `beestock:*` category keys in `focus-tracker.json` are also left intact as record.
+
+---
+
+## DEC-236 — 2026-07-30 — Backlog relevance sweep, and fix the generator that was creating duplicates
+
+**Decided by:** Benedict (requested the review, approved the closures), Dale (executed).
+
+**Context:** Benedict asked for a relevance review of the Linear backlog, particularly
+tickets from June and earlier. 33 open backlog tickets at the time. The review found
+three tickets already done, four killed by later decisions, and three duplicates.
+
+The duplicates are the important part. Benedict spotted that they were *new* tickets,
+not stale ones: DAL-226 and DAL-236 were created on 2026-07-27 and duplicated DAL-173
+and DAL-220, created four days earlier by Dale itself. That is a bug, not a judgement
+lapse, and DAL-236's own description gives it away: "the audit proposed DAL-220 for
+this but it may not have been formally ticketed". It had been. Dale could not see it.
+
+**Root cause:** `linear_poller.graphql()` returned `None` on any API failure (HTTP
+error, timeout, GraphQL errors) and `get_issues_by_state()` turned that into `[]`. A
+failed backlog fetch was therefore indistinguishable from an empty backlog, and the
+failure propagated through three layers that each made it worse:
+
+1. The poller wrote `backlog: [], backlog_count: 0` and exited 0, so the failure was
+   invisible.
+2. `dale-runner.sh` read `backlog_count` 0, below `min_backlog` 15, and started a
+   generation session, whose entire purpose is creating tickets.
+3. `session-prompt.py` guarded the duplicate list with `if backlog:`, so an empty list
+   silently omitted the "do NOT create duplicates" block entirely. The generation
+   prompt then asserted as fact that the backlog was below target and instructed Dale
+   to fill it to 15.
+
+Dale created 13 tickets in three minutes (DAL-224 to DAL-236) with no visibility of the
+20 tickets already there. Three were duplicates. The other ten stand.
+
+A second defect of the same class: the issue query was `first: 50` with no paging,
+ordered by `updatedAt`. Past 50 open issues the least-recently-touched drop off the
+duplicate list, which is exactly the set of old tickets a new proposal most resembles.
+Not the cause this time (33 tickets), but it would have been soon.
+
+**Decision:**
+
+*Backlog sweep, 33 tickets to 23.*
+
+- Done, verified against the repo: DAL-211 and DAL-214 (golden tests pass, fixed by
+  DAL-217), DAL-213 (App Store and Play links with UTM are live in
+  `build_treesmith_page.py`; the badge-image work remains as DAL-222).
+- Cancelled: DAL-200 (bush food scope dead per DEC-227, fruit coverage already fixed by
+  DEC-207/209), DAL-190 (10-week-old GSC snapshot, superseded by DAL-216/DAL-208),
+  DAL-161 (weekly digest and variety alerts now do this), DAL-148 (nursery sponsorship
+  pitch conflicts with Benedict suppressing /advertise.html on 2026-06-15).
+- Duplicates, linked and closed: DAL-236 to DAL-220, DAL-226 to DAL-173, DAL-182 to
+  DAL-230. DAL-182's three deliverables were merged into DAL-230's description rather
+  than dropped.
+
+*Generator fixes.* Fail loud, page fully, and enforce the duplicate rule in code:
+
+1. `linear_poller.graphql()` raises `LinearAPIError` instead of returning `None`.
+   Nothing downstream can mistake a failure for an empty result.
+2. `get_issues_by_state()` pages to exhaustion (`PAGE_SIZE` 50, `MAX_PAGES` 20) and
+   propagates errors rather than returning a short list.
+3. The poller writes the tasks file atomically via temp-and-rename, only on full
+   success, with a `poll_ok: true` marker. A failed poll leaves the previous file
+   intact and exits non-zero.
+4. `dale-runner.sh` refuses to start a generation session when the poll failed.
+   A normal session on stale data is survivable; generating tickets blind is not.
+5. `session-prompt.py` states explicitly when the backlog is genuinely empty, warns
+   loudly when `poll_ok` is absent, and the generation prompt now quotes the real
+   backlog count instead of asserting it is below target.
+6. `linear_update.py create` blocks near-duplicate titles (overlap coefficient >= 0.7
+   over content words, at least 3 shared tokens) against all open tickets, exit 3 with
+   the matches printed. `--allow-duplicate` exists for the fortnightly GSC review
+   ticket, whose titles differ only by date; `gsc_page_review.py` passes it.
+
+**Why overlap coefficient, not Jaccard:** DAL-220 vs DAL-236 scores 0.42 by Jaccard
+(missed) and 0.71 by overlap (caught). A short title contained within a longer one is a
+duplicate even though the union is large.
+
+**Also fixed:** `state/business-state.json` still described Pro as including cloud
+backup, the exact error CLAUDE.md was corrected for on 2026-07-27. That file is injected
+into every autonomous session prompt, so it was re-seeding the wrong pricing into new
+tickets faster than the corrections landed.
+
+**Tests:** new `tests/test_linear_poller.py` (10 tests) covers the raise-not-None
+contract for every failure mode and the paging fix. `tests/test_linear_update.py` gains
+6 tests asserting the two real duplicate pairs are caught, that distinct tickets are
+not, and that treestock and treesmith never collide. Both verified failing against the
+pre-fix code first (13 errors and `50 != 52`). Full suite: 1855 tests, all passing.
+
+**Honest limitation:** token overlap catches lexical duplicates, not semantic ones.
+DAL-182 vs DAL-230 ("in-app review prompt copy" vs "App Store rating and review audit")
+scores 0.5 and would not have been blocked. The guard raises the floor; it does not
+replace reading the backlog.

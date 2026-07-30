@@ -458,6 +458,10 @@ def post_to_linear(report_md, report_date, dry_run=False):
                 "--description", description,
                 "--labels", "SEO,Track B",
                 "--priority", "3",
+                # Each fortnight's title differs only by date, so the duplicate
+                # guard in linear_update.py would block it. This recurrence is
+                # intentional: one ticket per review window.
+                "--allow-duplicate",
             ],
             capture_output=True,
             text=True,

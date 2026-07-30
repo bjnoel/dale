@@ -99,5 +99,87 @@ class BlocklistTests(unittest.TestCase):
         )
 
 
+class DuplicateTitleTests(unittest.TestCase):
+    """Regression coverage for the duplicate burst of 2026-07-27.
+
+    A generation session created 13 tickets in three minutes. Three
+    duplicated tickets Dale itself had created four days earlier. The
+    prompt did tell it to read every backlog title first, but prompt text
+    is not enforcement, so the check now runs in cmd_create as well.
+
+    Root cause of the blind session is covered in tests/test_linear_poller.py.
+    """
+
+    # (identifier, title) pairs as cmd_create assembles them
+    BACKLOG = [
+        ("DAL-220", "treestock: Treesmith CTA on nursery pages (Daleys, Ladybird)"),
+        ("DAL-173", "Treesmith: email treestock subscribers about app launch"),
+        ("DAL-221", "treestock: build send_broadcast.py for one-time Treesmith email to all subscribers"),
+        ("DAL-215", "Regenerate archive_links.json: 11 newly-enabled species have unused RFCA further-reading"),
+        ("DAL-84", "treestock: Weekly Facebook content post from digest data"),
+    ]
+
+    def assertFlagged(self, title, expected_id):
+        matches = linear_update.find_similar_titles(title, self.BACKLOG)
+        self.assertTrue(matches, f"expected {title!r} to be flagged as a duplicate")
+        self.assertEqual(matches[0][0], expected_id)
+
+    def assertNotFlagged(self, title):
+        matches = linear_update.find_similar_titles(title, self.BACKLOG)
+        self.assertFalse(matches, f"{title!r} was wrongly flagged: {matches}")
+
+    def test_catches_the_real_duplicates(self):
+        # DAL-236, created 2026-07-27, duplicating DAL-220 from 2026-07-23
+        self.assertFlagged(
+            "Treestock: add Treesmith CTA to nursery pages (follow-up from DAL-218 audit)",
+            "DAL-220",
+        )
+        # DAL-226, same session, duplicating DAL-173
+        self.assertFlagged(
+            "Treesmith: dedicated one-off email to treestock subscribers pitching the app",
+            "DAL-173",
+        )
+
+    def test_allows_genuinely_distinct_tickets(self):
+        self.assertNotFlagged("treestock: bare-root season subscriber email (July-August)")
+        self.assertNotFlagged("Treesmith: verify Android Play Store listing is live and discoverable")
+        self.assertNotFlagged("treestock: add app store badge images to /treesmith.html")
+        self.assertNotFlagged("Treesmith: competitive pricing analysis vs plant tracker apps")
+
+    def test_treestock_and_treesmith_are_not_interchangeable(self):
+        # Both site names survive tokenisation, so a Treesmith ticket must not
+        # collide with the treestock ticket it happens to share words with.
+        score = linear_update.title_overlap(
+            "Treesmith: weekly Facebook content post from digest data",
+            "treestock: Weekly Facebook content post from digest data",
+        )
+        self.assertGreater(score, 0.7, "near-identical titles should still score high")
+        self.assertLess(
+            linear_update.title_overlap("treestock: nursery scraper health grid",
+                                        "Treesmith: App Store rating and review audit"),
+            0.3,
+        )
+
+    def test_short_titles_need_more_than_one_shared_word(self):
+        # Two shared tokens out of two would otherwise score 1.0
+        self.assertEqual(
+            linear_update.title_overlap("treestock: fix sitemap", "treestock: fix robots"),
+            0.0,
+        )
+
+    def test_empty_titles_score_zero(self):
+        self.assertEqual(linear_update.title_overlap("", "treestock: anything"), 0.0)
+        self.assertEqual(linear_update.title_overlap("the and for", "treestock: anything"), 0.0)
+
+    def test_recurring_generated_tickets_are_flagged_by_design(self):
+        # gsc_page_review.py passes --allow-duplicate precisely because these
+        # fortnightly titles differ only by date and would otherwise be blocked.
+        matches = linear_update.find_similar_titles(
+            "treestock: GSC page review - 2026-07-15",
+            [("DAL-190", "treestock: GSC page review - 2026-05-18")],
+        )
+        self.assertTrue(matches)
+
+
 if __name__ == "__main__":
     unittest.main()

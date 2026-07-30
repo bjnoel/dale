@@ -97,8 +97,10 @@ python3 "$SCRIPT_DIR/check-weekly-update.py" || {
 # --- Fetch Linear tickets ---
 
 log "Fetching Linear tickets"
+POLLER_OK=1
 python3 "$SCRIPT_DIR/linear_poller.py" 2>>"$LOG_DIR/cron.log" || {
-    log "Warning: Linear poller failed (will proceed with stale data if available)"
+    POLLER_OK=0
+    log "Warning: Linear poller failed (tickets on file are stale)"
 }
 
 # --- Check if there's work to do ---
@@ -123,6 +125,15 @@ fi
 
 # Determine session type
 if [ "$TODO_COUNT" = "0" ]; then
+    # A generation session exists to create tickets, and its only defence
+    # against duplicates is the backlog list in the prompt. If the poll failed,
+    # that list is stale or absent and Dale proposes blind: on 2026-07-27 this
+    # produced 13 tickets in three minutes, three of them duplicates of tickets
+    # created four days earlier. Skip rather than guess.
+    if [ "$POLLER_OK" != "1" ]; then
+        log "Linear poll failed. Skipping generation session (would propose tickets blind)."
+        exit 0
+    fi
     SESSION_TYPE="generation"
     GEN_TURNS=$(python3 -c "import json; print(json.load(open('$CONFIG')).get('linear', {}).get('generation_session_max_turns', 40))")
     MAX_TURNS="$GEN_TURNS"

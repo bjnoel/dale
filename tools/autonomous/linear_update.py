@@ -13,6 +13,7 @@ Usage:
 
 import json
 import os
+import re
 import sys
 import urllib.request
 import urllib.error
@@ -281,9 +282,54 @@ def cmd_assign(args):
         print(f"{identifier} -> assigned to {assignee}")
 
 
+# Words that carry no distinguishing signal in a Dale ticket title. Site names
+# stay in deliberately: "treestock" vs "treesmith" is a real distinction.
+TITLE_STOPWORDS = frozenset("""
+a an and the to for of on in at by with from is are be into via
+add adds new update updates fix fixes make dale ticket
+""".split())
+
+# Overlap coefficient, not Jaccard: a short title fully contained in a longer
+# one is a duplicate even though the union is large. DAL-220 vs DAL-236 scores
+# 0.42 by Jaccard (missed) and 0.71 by overlap (caught).
+DUPLICATE_THRESHOLD = 0.7
+MIN_SHARED_TOKENS = 3  # keeps two-word titles from colliding on one common word
+
+
+def _title_tokens(title):
+    """Lowercase alphanumeric content words in a title."""
+    words = re.findall(r"[a-z0-9]+", (title or "").lower())
+    return {w for w in words if w not in TITLE_STOPWORDS}
+
+
+def title_overlap(a, b):
+    """0.0 to 1.0: how much of the shorter title's content the two share."""
+    ta, tb = _title_tokens(a), _title_tokens(b)
+    if not ta or not tb:
+        return 0.0
+    shared = ta & tb
+    if len(shared) < MIN_SHARED_TOKENS:
+        return 0.0
+    return len(shared) / min(len(ta), len(tb))
+
+
+def find_similar_titles(title, existing, threshold=DUPLICATE_THRESHOLD):
+    """Existing tickets whose titles overlap `title`, worst offender first.
+
+    `existing` is an iterable of (identifier, title) pairs.
+    """
+    matches = [
+        (identifier, other, score)
+        for identifier, other in existing
+        if (score := title_overlap(title, other)) >= threshold
+    ]
+    return sorted(matches, key=lambda m: m[2], reverse=True)
+
+
 def cmd_create(args):
     if not args:
-        print("Usage: linear_update.py create 'Title' [--description '...'] [--labels 'SEO,Tech'] [--priority 3]",
+        print("Usage: linear_update.py create 'Title' [--description '...'] [--labels 'SEO,Tech'] "
+              "[--priority 3] [--allow-duplicate]",
               file=sys.stderr)
         sys.exit(1)
 
@@ -291,6 +337,7 @@ def cmd_create(args):
     description = ""
     labels_str = ""
     priority = 3  # Normal
+    allow_duplicate = False
 
     i = 1
     while i < len(args):
@@ -303,6 +350,9 @@ def cmd_create(args):
         elif args[i] == "--priority" and i + 1 < len(args):
             priority = int(args[i + 1])
             i += 2
+        elif args[i] == "--allow-duplicate":
+            allow_duplicate = True
+            i += 1
         else:
             i += 1
 
@@ -324,12 +374,36 @@ def cmd_create(args):
     max_backlog = config.get("linear", {}).get("max_backlog", 20)
     team_id = get_team_id(team_name)
 
-    # Check backlog count
+    # Check backlog count. get_issues_by_state raises on API failure rather
+    # than returning [], so a broken poll can no longer read as "empty backlog,
+    # room for more".
     from linear_poller import get_issues_by_state
     backlog = get_issues_by_state(team_id, "backlog")
     if len(backlog) >= max_backlog:
         print(f"Backlog full ({len(backlog)}/{max_backlog}). Cannot create more tickets.", file=sys.stderr)
         sys.exit(1)
+
+    # Duplicate guard. The session prompt already tells Dale to read every
+    # backlog title first, but on 2026-07-27 it created 13 tickets in three
+    # minutes, three of them duplicates of tickets four days old. Prompt-level
+    # instructions are not an enforcement mechanism, so check here too.
+    if not allow_duplicate:
+        open_titles = [(i["identifier"], i["title"]) for i in backlog]
+        for state_type in ("unstarted", "started"):
+            open_titles += [(i["identifier"], i["title"])
+                            for i in get_issues_by_state(team_id, state_type)]
+        matches = find_similar_titles(title, open_titles)
+        if matches:
+            print(f"BLOCKED: '{title}' looks like a duplicate of an existing ticket:", file=sys.stderr)
+            for identifier, existing, score in matches:
+                print(f"  {identifier} (overlap {score:.0%}): {existing}", file=sys.stderr)
+            print(
+                "\nWork the existing ticket, or update its description, instead of opening a new one.\n"
+                "If this really is distinct work, re-run with --allow-duplicate and say why in the "
+                "description.",
+                file=sys.stderr,
+            )
+            sys.exit(3)
 
     # Get backlog state ID
     state_id = get_state_id(team_id, "Backlog")

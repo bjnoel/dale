@@ -553,6 +553,16 @@ No Linear data available. Do read-only work only (research, analysis).
         lines.append("**Existing backlog tickets (do NOT create duplicates):**")
         for t in backlog:
             lines.append(f"- {t['id']}: {t['title']}")
+    elif linear_data.get("poll_ok"):
+        # Say it out loud. Silently omitting this block is indistinguishable
+        # from a failed poll, and a missing list reads as "nothing exists yet".
+        lines.append("**The backlog is genuinely empty** (confirmed by a successful poll, "
+                     "not an API failure).")
+    if not linear_data.get("poll_ok"):
+        lines.append("")
+        lines.append("**WARNING: this queue came from a failed or pre-fix poll, so the lists "
+                     "above are unverified and may be incomplete or empty when tickets exist.** "
+                     "Do NOT create tickets this session.")
     lines.append("")
 
     # Cancelled tickets (do not recreate)
@@ -735,6 +745,11 @@ Do NOT create more tickets if the backlog is full (check the count above).
 4. Ask: "Does this overlap?" Check for same nursery, same feature, same target, same concept.
 5. If ANY overlap, do NOT create the ticket.
 
+`linear_update.py create` also blocks titles that overlap an open ticket and
+exits 3 with the matches listed. If you hit that, work the existing ticket or
+extend its description. Do not reword the title to slip past the check.
+Never reach for `--allow-duplicate` to unblock yourself.
+
 When you assign a ticket to Benedict (for questions/review), remove the Dale label:
 the Dale label means "in Dale's court". Benedict re-adds it when passing back to you.
 
@@ -806,10 +821,15 @@ def build_generation_prompt():
 
     blocklist_block = load_blocklist_block(repo)
 
+    backlog_count = linear_data.get("backlog_count", 0)
+    to_propose = max(0, min_backlog - backlog_count)
+
     prompt = f"""This is a TICKET GENERATION session at {now}.
 You are Dale, the AI business agent. Your Todo queue is empty and the Backlog
-is below the target of {min_backlog} tickets. Your ONLY task this session is to
-propose new backlog tickets to bring the backlog up to {min_backlog}.
+holds {backlog_count} tickets against a target of {min_backlog}. Propose at most
+{to_propose} new tickets, and fewer if you cannot find that many that are
+genuinely distinct from the backlog listed below. Proposing nothing is a valid
+outcome; padding the count with near-duplicates is not.
 
 You MUST NOT: write code, modify files, deploy anything, send emails, or do "real work."
 You MUST: create tickets using `python3 /opt/dale/autonomous/linear_update.py create`.
@@ -858,6 +878,15 @@ above to identify gaps and opportunities.
 2. Read EVERY cancelled/rejected ticket above (rejected by Benedict).
 3. Read EVERY completed ticket above (already done).
 4. Ask: "Does this overlap?" If ANY overlap, do NOT create it.
+
+`linear_update.py create` also blocks titles that overlap an open ticket and
+exits 3 with the matches listed. If you hit that, work the existing ticket or
+extend its description. Do not reword the title to slip past the check.
+Never reach for `--allow-duplicate` to unblock yourself.
+
+On 2026-07-27 a generation session created 13 tickets in three minutes and
+three were duplicates of tickets from four days earlier. Proposing fewer, or
+none, is always better than proposing a near-duplicate.
 
 To create a ticket:
 `python3 /opt/dale/autonomous/linear_update.py create "Title" --description "Level: X. Expected metric: Y. Rationale: Z" --labels "Track B" --priority 3`

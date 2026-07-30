@@ -23,6 +23,9 @@ LOG_FILE = os.path.join(SCRIPT_DIR, "logs", "linear-poller.log")
 
 GRAPHQL_URL = "https://api.linear.app/graphql"
 
+PAGE_SIZE = 50
+MAX_PAGES = 20  # 1000 issues, far above any real Dale queue
+
 
 def log(msg):
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -47,8 +50,26 @@ def get_token():
     raise ValueError("LINEAR_API_TOKEN not found in linear.env")
 
 
+class LinearAPIError(RuntimeError):
+    """The Linear API could not be reached, or returned errors.
+
+    Deliberately distinct from "the query succeeded and matched nothing".
+    Collapsing the two is what caused the 2026-07-27 duplicate burst: a failed
+    backlog fetch returned [], the runner read backlog_count 0, started a
+    generation session with no duplicate-prevention list in the prompt, and
+    Dale re-created 13 tickets it already had (DAL-224 through DAL-236).
+
+    Callers must let this propagate rather than substituting an empty list.
+    An empty list means "no tickets"; that claim must only ever be made about
+    a request that actually succeeded.
+    """
+
+
 def graphql(query, variables=None):
-    """Make a GraphQL request to the Linear API."""
+    """Make a GraphQL request to the Linear API.
+
+    Raises LinearAPIError on any failure. Never returns None to mean "failed".
+    """
     token = get_token()
     body = json.dumps({"query": query, "variables": variables or {}}).encode("utf-8")
 
@@ -61,17 +82,26 @@ def graphql(query, variables=None):
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
             result = json.loads(resp.read().decode())
-            if "errors" in result:
-                log(f"GraphQL errors: {result['errors']}")
-                return None
-            return result.get("data")
     except urllib.error.HTTPError as e:
         error_body = e.read().decode() if e.fp else str(e)
         log(f"Linear API error ({e.code}): {error_body}")
-        return None
+        raise LinearAPIError(f"Linear API error ({e.code}): {error_body}") from e
     except (urllib.error.URLError, TimeoutError) as e:
         log(f"Linear API unreachable: {e}")
-        return None
+        raise LinearAPIError(f"Linear API unreachable: {e}") from e
+    except json.JSONDecodeError as e:
+        log(f"Linear API returned non-JSON: {e}")
+        raise LinearAPIError(f"Linear API returned non-JSON: {e}") from e
+
+    if "errors" in result:
+        log(f"GraphQL errors: {result['errors']}")
+        raise LinearAPIError(f"GraphQL errors: {result['errors']}")
+
+    data = result.get("data")
+    if data is None:
+        log("GraphQL response had no data field")
+        raise LinearAPIError("GraphQL response had no data field")
+    return data
 
 
 def get_team_id(team_name):
@@ -84,7 +114,7 @@ def get_team_id(team_name):
         }
     """, {"name": team_name})
 
-    if not data or not data["teams"]["nodes"]:
+    if not data["teams"]["nodes"]:
         return None
     return data["teams"]["nodes"][0]["id"]
 
@@ -99,6 +129,14 @@ def get_issues_by_state(team_id, state_type, since_days=None):
     within the last N days. This is used for completed/canceled lists so the
     session prompt keeps seeing recent done/cancelled tickets even after the
     auto-archiver runs.
+
+    Pages through the full result set. This used to stop at the first 50 issues
+    ordered by updatedAt, which silently hid the least-recently-touched tickets
+    from the duplicate-prevention list in the session prompt -- exactly the old
+    tickets a new proposal is most likely to duplicate.
+
+    Raises LinearAPIError if any page fails. Returning a short list on error
+    would understate the backlog to every caller downstream.
     """
     variables = {"teamId": team_id, "stateType": state_type}
     extra_filter = ""
@@ -110,8 +148,8 @@ def get_issues_by_state(team_id, state_type, since_days=None):
         extra_args = ", $since: DateTimeOrDuration!"
     include_archived = "true" if since_days is not None else "false"
 
-    data = graphql(f"""
-        query($teamId: ID!, $stateType: String!{extra_args}) {{
+    query = f"""
+        query($teamId: ID!, $stateType: String!, $after: String{extra_args}) {{
             issues(
                 includeArchived: {include_archived}
                 filter: {{
@@ -120,8 +158,10 @@ def get_issues_by_state(team_id, state_type, since_days=None):
                     {extra_filter}
                 }}
                 orderBy: updatedAt
-                first: 50
+                first: {PAGE_SIZE}
+                after: $after
             ) {{
+                pageInfo {{ hasNextPage endCursor }}
                 nodes {{
                     id
                     identifier
@@ -143,11 +183,23 @@ def get_issues_by_state(team_id, state_type, since_days=None):
                 }}
             }}
         }}
-    """, variables)
+    """
 
-    if not data or not data.get("issues"):
-        return []
-    return data["issues"]["nodes"]
+    nodes = []
+    cursor = None
+    for _ in range(MAX_PAGES):
+        data = graphql(query, {**variables, "after": cursor})
+        page = data.get("issues")
+        if page is None:
+            raise LinearAPIError(f"No issues field in response for state '{state_type}'")
+        nodes.extend(page.get("nodes", []))
+        info = page.get("pageInfo") or {}
+        if not info.get("hasNextPage") or not info.get("endCursor"):
+            return nodes
+        cursor = info["endCursor"]
+
+    log(f"Hit MAX_PAGES ({MAX_PAGES}) fetching '{state_type}'; list may be truncated")
+    return nodes
 
 
 def format_issue_title_only(issue):
@@ -191,6 +243,18 @@ def format_issue(issue):
 
 
 def main():
+    try:
+        poll()
+    except LinearAPIError as e:
+        # Exit non-zero and leave the previous tasks file untouched. A partial
+        # or empty file here reads downstream as "no work, no backlog", which
+        # is how the runner ends up generating tickets blind.
+        log(f"Poll failed, keeping previous tasks file: {e}")
+        print(f"Error: Linear poll failed: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def poll():
     dry_run = "--dry-run" in sys.argv
     config = load_config()
     team_name = config.get("linear", {}).get("team", "Dale")
@@ -245,6 +309,9 @@ def main():
 
     result = {
         "fetched_at": datetime.now(timezone.utc).isoformat(),
+        # Only ever written by a poll where every fetch succeeded. Consumers
+        # that create tickets must refuse to act on a file without it.
+        "poll_ok": True,
         "team": team_name,
         "team_id": team_id,
         "todo": todo,
@@ -262,10 +329,13 @@ def main():
         log(f"Dry run: {len(todo)} todo, {len(in_progress)} in progress, {len(backlog)}/{max_backlog} backlog")
         return
 
-    # Write to file for session-prompt.py
+    # Write to file for session-prompt.py. Write to a temp file and rename so
+    # a crash mid-write cannot leave truncated JSON that parses as no tickets.
     os.makedirs(os.path.dirname(TASKS_FILE), exist_ok=True)
-    with open(TASKS_FILE, "w") as f:
+    tmp_path = TASKS_FILE + ".tmp"
+    with open(tmp_path, "w") as f:
         json.dump(result, f, indent=2)
+    os.replace(tmp_path, TASKS_FILE)
 
     log(f"Saved: {len(todo)} todo, {len(in_progress)} in progress, {len(backlog)}/{max_backlog} backlog, {len(cancelled)} cancelled, {len(completed)} completed")
 

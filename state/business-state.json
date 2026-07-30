@@ -23,7 +23,7 @@
       "status": "first-release-approved",
       "release_version": "1.0.1+13",
       "store_status": "Apple approved (2026-04-27)",
-      "pricing_model": "freemium: 30 plants free, Pro = unlimited + multi-location + cloud backup + bulk ops",
+      "pricing_model": "freemium: 30 plants free. Pro = ONE-TIME purchase (unlimited plants, multiple locations, reminders, bulk ops), NOT a subscription. Cloud backup is a SEPARATE auto-renewing yearly subscription requiring Pro, and is the only recurring product. Never describe Pro as a subscription or list cloud backup as a Pro feature.",
       "subscribers": 0,
       "revenue_total": 0,
       "dale_role": "Growth, ASO, marketing, content, cross-promotion from treestock, web companion. Flutter app code stays with Benedict -- propose, don't commit.",
