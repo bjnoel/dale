@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 100,
+  "last_session": 101,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1435,6 +1435,29 @@
         "treestock_gsc_avg_position": 16.7
       },
       "note": "DEC-248: the referral ceiling published this morning was exactly 10.0x too small (1,245 clicks x 3% x $70 x 8% = $209/mo, published as $21). Full-coverage referral clears $100/mo at today's traffic above ~1.2% conversion, and the top 3 nurseries alone cover the A$8.20/mo cash burn ~4x. Also separated the two targets (A$8.20 infra vs ~A$162 full self-funding) and separated paid placement (declined twice) from performance referral (never asked). Plan to the first dollar: join Primal Fruits' free self-serve program for the conversion MEASUREMENT (~$2/mo revenue, prices all 1,245 clicks), then ask the top 3. Kill condition recorded. Second half of the session reduced Benedict's queue from 8 items to a ranked 3, recommending DAL-165 close and DAL-173 cancel."
+    },
+    {
+      "session": 101,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treestock:subscriber_conversion",
+        "revenue:monetisation",
+        "treestock:data_quality"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [
+        "DAL-259"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_outbound_clicks_30d": 1245,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7
+      },
+      "note": "DEC-249. Investigated DAL-176 and returned a no. /wa-rare-fruit-guide.html had NO Plausible script, so its 0 pageviews over 51 days were an absence of measurement, not a traffic figure; the ticket's premise that it lifts subscribe conversion was never observable. It was also untracked by git and told WA buyers PlantNet and Heritage Fruit Trees could ship to them, which shipping.py says neither does. Shipped the fix into tools/scrapers/static/ (analytics tag, correct list of the 9 WA-reachable nurseries, St Clements Citrus added, DEC-246 reachability folded in); 1,950 tests pass. Separately, broke outbound clicks down by source page for the first time: species+state is best on BOTH SEO yield and referral yield (0.45 clicks/visitor vs 0.28 site average, ~16x a variety page per page built, ~43 more state pages covers the A$8.20/mo infra milestone), while guide/editorial pages run at 0.01 clicks/visitor. Posted to DAL-249 and DAL-250; recommended DAL-228 be deferred. Nothing added to Benedict's queue."
     }
   ],
   "override": null

@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 99,
+  "session_count": 100,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -201,7 +201,21 @@
         "monetisation_ceiling": "CORRECTED 2026-07-30 (DEC-248). The figures published earlier the same day (~$21/mo conservative, ~$62/mo generous) were an arithmetic error, exactly 10.0x too small on both. On the SAME inputs: 1,245 x 3% x $70 x 8% = $209/mo, and 1,245 x 5% x $100 x 10% = $622/mo. A mid case (1% conversion, $85 order, 8% commission) is 6.8c per click = $85/mo, of which the top 3 nurseries alone are $36/mo and the top 10 are $66/mo. Full-coverage referral therefore CLEARS the $100/mo target at today's traffic on any conversion assumption above roughly 1.2%, and the top 3 nurseries alone cover the A$8.20/mo cash burn about 4x. The DEC-241 conclusion that referral 'does not reach $100/mo' was wrong.",
         "conversion_rate_is_the_open_question": "The per-click value swings 20x across plausible conversion rates (0.5% to 5%) and we have never measured it. Primal Fruits Perth is the only nursery with a self-serve program (GoAffPro) and it reports conversions automatically, so its 33 clicks/mo are worth far more as a measurement than as the ~$2/mo of commission. DEC-248: join that one first to price every other click on the site.",
         "product_shape_matters": "Benedict has declined PAID PLACEMENT twice (DAL-148 sponsored listings, DAL-79 featured listing page, /advertise.html suppressed 2026-06-15). He has never been asked about PERFORMANCE REFERRAL, which is a different product: commission on a completed sale, no ad units, no change to result ordering, disclosed. DEC-241 and DEC-245 lumped the two together. Standing ethics rule: ranking stays on list price and must never be influenced by commission.",
-        "status": "DAL-245, assigned to Benedict. Reduced by DEC-248 to a single yes/no on performance referral (not ads), plus one self-serve signup."
+        "status": "DAL-245, assigned to Benedict. Reduced by DEC-248 to a single yes/no on performance referral (not ads), plus one self-serve signup.",
+        "yield_by_page_type": {
+          "measured": "2026-07-30 (DEC-249). First breakdown of the Outbound Link: Click goal by source page (event:page). Paginated; reconciles to 1,245 clicks / 345 pages / 30d.",
+          "note": "clicks per VISITOR is the non-circular comparison (normalised for how many pages of each type we chose to build). clicks per page BUILT is the build-priority number.",
+          "species+state": "128 built, 811 visitors, 365 clicks, 0.45 clicks/visitor, 2.85 per page built (~19c/mo at DEC-248 mid case)",
+          "homepage": "1 built, 253 visitors, 93 clicks, 0.37 clicks/visitor",
+          "nursery": "27 built, 531 visitors, 145 clicks, 0.27 clicks/visitor, 5.4 per page built",
+          "variety": "1,659 built, 1,030 visitors, 283 clicks, 0.27 clicks/visitor, 0.17 per page built (~1.2c/mo). 1,014 of 1,659 took ZERO visitors in 30 days.",
+          "compare": "77 built, 269 visitors, 72 clicks, 0.27 clicks/visitor, 0.94 per page built",
+          "species": "90 built, 1,142 visitors, 261 clicks, 0.23 clicks/visitor, 2.90 per page built",
+          "guide_editorial": "5 built, 267 visitors, 4 clicks, 0.01 clicks/visitor. Editorial traffic on treestock produces almost no referral value; it has to be justified on backlinks (DAL-253) or subscribers (DAL-244), neither of which is currently measured.",
+          "site_average": "0.28 clicks/visitor",
+          "implication": "species+state is best on BOTH SEO yield (DEC-243) and referral yield, measured independently. A state page is worth ~16x a variety page per page built. ~43 more state pages covers the A$8.20/mo infrastructure milestone. DAL-251 still gates WHICH state, not whether the type is worth building.",
+          "caveats": "One month. Correlation not causation (a 'buy <species> trees <state>' visitor may simply arrive with more intent). An outbound click is not a sale; 6.8c/click is DEC-248's assumed mid case, unmeasured until DAL-258."
+        }
       },
       "referral_sources_30d": {
         "measured": "2026-07-30",
@@ -325,6 +339,15 @@
           "No South Australian nursery is tracked at all (DAL-255)."
         ],
         "linkable_asset": "DEC-245 recorded that treestock had nothing citable and was therefore pricing rented links. This dataset is the first citable thing the business has produced. DAL-254 proposes publishing it as a page for the free link targets to point at."
+      },
+      "lead_magnet_wa_guide": {
+        "measured": "2026-07-30 (DEC-249)",
+        "defect": "/wa-rare-fruit-guide.html was live for 51 days with NO Plausible script, so it recorded 0 pageviews for its entire life. The zero was an absence of measurement, not a traffic figure. DAL-176's premise that it 'lifts subscribe conversion' was never observable.",
+        "second_defect": "The file existed only in /opt/dale/dashboard/, not in git and not produced by any builder. A clean rebuild of the web root would have deleted it silently.",
+        "accuracy_defect": "It told WA buyers that PlantNet and Heritage Fruit Trees could ship to them. Per shipping.py neither does. It omitted The Diggers Club and Garden Express (which do) and St Clements Citrus from the WA nursery list.",
+        "wa_shipping_truth": "9 of 27 nurseries reach a WA address: WA-based = All Season Plants WA, Guildford Garden Centre, Perth Mobile Nursery, Primal Fruits Perth, St Clements Citrus; interstate = Daleys, The Diggers Club, Fruit Salad Trees, Garden Express.",
+        "fixed": "Moved to tools/scrapers/static/wa-rare-fruit-guide.html (deploy.sh owns it, git tracks it). Plausible script added, shipping list corrected, St Clements Citrus added, DEC-246 reachability finding folded in. Live at the next 00:00 UTC deploy.",
+        "next": "DAL-176 (national version) parked in Todo for 30 days until the WA guide has real pageview data. DAL-259 proposes a test that blocks shipping an uninstrumented sitemap page again."
       }
     },
     "b_experiment_beestock": {

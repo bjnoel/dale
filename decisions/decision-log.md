@@ -7806,3 +7806,127 @@ interrogation of where numbers come from, and the number that was actually wrong
 multiplication, in a figure I published myself and then reasoned from twice.
 
 **Cost:** $0. One Plausible read (paginated) and arithmetic.
+
+---
+
+## DEC-249 — 2026-07-30 — The lead magnet was never instrumented, and page types can finally be ranked by revenue instead of traffic
+
+**Decided by:** Dale (autonomous; DAL-176 is approved and Benedict's only comment on it is
+"Investigate this"). The investigation returned a no, so the ticket goes back to Todo parked
+rather than Done, and the fix it uncovered is shipped.
+
+**Context: the same reflections, and the one that had to be answered first.** $0 after 126
+days, Track A stale at 5 of 5 session-days, treestock growth stale at 4 of 5,
+`revenue:monetisation` stale with the metric unmoved.
+
+The channel-stale rule requires a genuinely new approach before more treestock work, so:
+the 4 stale session-days measured treestock by **traffic** (GSC clicks, CTR, page-type yield,
+CTA placement). DEC-248 established that the only revenue path Benedict has not declined is
+**referral**, priced per outbound click. Nobody has ever ranked our page types by outbound
+clicks. That is a different metric on the same channel, and it is the one that has money
+attached to it. Track A was not picked because both of its levers are still sitting with
+Benedict on DAL-242 and a sixth session of Track A documents is what DEC-238 and DEC-239
+already named as the failure mode.
+
+**Finding 1: we have been citing a lead magnet that has never been possible to observe.**
+
+DAL-176 proposes extending the WA Rare Fruit Guide to a national version, on the stated
+premise that the WA guide "lifts subscribe conversion for WA visitors".
+
+`/wa-rare-fruit-guide.html`, Plausible: **0 pageviews in 30 days. 0 pageviews in six months.**
+
+It is live (HTTP 200), in the sitemap, and linked from the homepage subscribe CTA, which sits
+on the site's busiest page. The zero is not a traffic figure. **The page carries no Plausible
+script.** It was hand-written straight into the web root on 2026-06-09 instead of being
+generated through `treestock_layout.py`, which is what injects the analytics tag on the other
+184 pages.
+
+So a lead magnet was shipped, linked from the highest-traffic element on the site, asserted in
+a ticket to convert, and never once counted. Building a national version would have been
+doubling an unmeasured bet. It was also **not in version control**: the file existed only at
+`/opt/dale/dashboard/`, produced by no builder, so a clean rebuild of the web root would have
+deleted it and nothing would have failed.
+
+**Finding 2, which is the part that had to be fixed today: the guide sends WA buyers to two
+nurseries that cannot ship to them.**
+
+It read: "Nurseries that *can* ship to WA: Daleys (seasonal permit), Fruit Salad Trees (first
+Tuesday of month), **PlantNet** (via WA-grown Olea Nurseries stock), **Heritage Fruit Trees**
+(restricted range)."
+
+Against our own `shipping.py`: `plantnet` covers NSW, VIC, QLD, ACT. `heritage-fruit-trees`
+covers NSW, VIC, QLD, SA, ACT. **Neither ships to WA.** It also omitted The Diggers Club and
+Garden Express, which do, and omitted St Clements Citrus, a WA citrus specialist, from a
+section listing WA nurseries, in a guide whose own quarantine text says citrus is among the
+hardest things to get shipped in.
+
+Nine of 27 nurseries reach a WA address: five WA-based (All Season Plants WA, Guildford Garden
+Centre, Perth Mobile Nursery, Primal Fruits Perth, St Clements Citrus) and four interstate
+(Daleys, Diggers, Fruit Salad Trees, Garden Express).
+
+A WA collector following our advice could have ordered from Heritage or PlantNet and had it
+refused at quarantine. Prime Directive 1, on the one page we ask people to hand over an email
+address for. This is the same class of defect as DEC-247's store listings: a surface that was
+correct when written, drifted, and was not on anybody's list because nothing generates it.
+
+**Finding 3: outbound clicks can be attributed to the source page, and never had been.**
+
+Plausible records the page against every `Outbound Link: Click` event, so the goal breaks down
+by `event:page`. Paginated per DEC-243; it reconciles exactly to 1,245 clicks across 345 pages.
+
+| page type | built | visitors | out-clicks | clicks/visitor | clicks per page built |
+|---|---|---|---|---|---|
+| **species+state** | 128 | 811 | 365 | **0.45** | **2.85** |
+| homepage | 1 | 253 | 93 | 0.37 | 93 |
+| nursery | 27 | 531 | 145 | 0.27 | 5.4 |
+| variety | 1,659 | 1,030 | 283 | 0.27 | 0.17 |
+| compare | 77 | 269 | 72 | 0.27 | 0.94 |
+| species | 90 | 1,142 | 261 | 0.23 | 2.90 |
+| guide / editorial | 5 | 267 | 4 | **0.01** | 0.80 |
+| | | **4,397** | **1,245** | 0.28 | |
+
+**species+state is the best page type on both axes, measured independently.** DEC-243 ranked it
+best on SEO yield (3.0% CTR, 4.07 clicks/page). It is now also best on referral yield, 0.45
+outbound clicks per visitor against a 0.28 site average. Two unrelated metrics agreeing is the
+strongest build signal this site has produced.
+
+Clicks **per visitor** is also the non-circular form DEC-244 asked for. It is normalised for how
+many pages we chose to build, so it describes the page type rather than our own past guesses.
+
+Priced at DEC-248's mid case of 6.8c per click: a state page is worth about **19c/month**, a
+variety page about **1.2c/month**. Sixteen to one, per page built. Roughly 43 more state pages
+covers the A$8.20/month infrastructure milestone (M1), which is the cheapest path to it that does
+not require Benedict to talk to anyone. Posted to DAL-249, with the note that DAL-251 should still
+gate *which* state we build first but no longer gates whether the type is worth building.
+
+**And the row that changes what content is worth writing: guide and editorial pages run at 0.01
+outbound clicks per visitor.** 267 visitors produced 4 clicks. The companion planting guide is the
+site's #2 page by traffic and produces almost no referral value. Editorial traffic on treestock does
+not behave like the rest of treestock. That does not make editorial worthless (its jobs are links and
+subscribers, per DAL-253 and DAL-244), but it does mean editorial has to be justified on those, and
+neither is currently measured. It is also why DAL-228 was recommended for deferral rather than worked.
+
+**What shipped.** `tools/scrapers/static/wa-rare-fruit-guide.html`, so `deploy.sh` owns it and git
+tracks it. Plausible script added, the shipping paragraph replaced with the correct nine split into
+interstate and WA-local, St Clements Citrus added, and DEC-246's reachability finding folded in
+(105 of 108 species reachable in WA, 93.6 in stock on an average day against Victoria's 101.2, and
+Tasmania at 35 of 108 with 73 species never once buyable). 1,950 tests pass. No new em dashes.
+
+**Queue effect, since DEC-248 identified Benedict's queue depth as the real bottleneck.** Nothing
+was added to his queue. DAL-176 parked for 30 days with a reason. DAL-228 recommended for deferral
+with evidence, and explicitly offered back to him if he wants it on community grounds rather than
+conversion grounds. One backlog ticket proposed (DAL-259, the instrumentation guard).
+
+**Honest accounting.** This earned nothing today. It shipped code for the first time in eight
+sessions, removed a factual error that could have cost a reader money, made a lead magnet
+measurable 51 days late, and produced the first ranking of our pages by the metric that revenue
+actually depends on.
+
+**Running lesson, eighth session.** DEC-241: check the number exists. DEC-243: check it is complete.
+DEC-244: check it is not circular. DEC-245: check we can see the result. DEC-246: check it has not
+expired. DEC-247: check the lever is connected. DEC-248: check the arithmetic. This one adds
+**check that the thing is instrumented before quoting a zero as a finding.** A zero and an absence
+of measurement are indistinguishable in a dashboard, and we very nearly built a second lead magnet
+on top of one.
+
+**Cost:** $0. Read-only Plausible queries (paginated), reads of `shipping.py` and the live guide.
