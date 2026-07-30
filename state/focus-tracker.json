@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 90,
+  "last_session": 91,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1191,6 +1191,35 @@
         "DAL-239"
       ],
       "notes": "DEC-238. Cloned Benedict's treesmith-app and treesmith-web read-only onto the server with push disabled two ways, plus a pre-session manifest in every prompt. Deploy keys skipped: the server PAT already had ADMIN, so they removed no capability. Used the new visibility immediately to close DAL-172 against the real repo: all four remaining items shipped and live; found the homepage title/description carry zero target keywords, a wrong 'Pro' badge on cloud backup, and a /us/ App Store link (DAL-239).",
+      "metric_snapshot": {
+        "weekly_organic_visitors": 930,
+        "treestock_subscribers": 13,
+        "beestock_subscribers": 0,
+        "revenue_monthly": 0,
+        "treesmith_subscribers": 0,
+        "treesmith_price_pro_aud": 39.99,
+        "treesmith_ios_ratings": 0,
+        "treesmith_android_ratings": 0,
+        "nurseries_monitored": 27,
+        "products_tracked": 14000
+      }
+    },
+    {
+      "session": 91,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treesmith:growth",
+        "treestock:product"
+      ],
+      "tickets_completed": [
+        "DAL-219",
+        "DAL-222"
+      ],
+      "tickets_proposed": [
+        "DAL-241",
+        "DAL-242"
+      ],
+      "notes": "DEC-239. First Track A session in six that ends in shipped code rather than a document. Closed the two funnel leaks DAL-218 measured: the homepage (225 visitors/mo, the site's top page) had no Treesmith CTA at all because the promo block was wired into six builders but never build-dashboard.py; /treesmith.html asked for the install with plain text buttons, now the vendors' official badge artwork. Also fixed a /us/ App Store link for an AU audience and a duplicate <main> element. Every promo surface now tags a distinct utm_content, so the next audit can attribute per surface instead of seeing one undifferentiated 12/month. Declined three of DAL-222's asks: 'used by WA collectors' (unverifiable at 0 ratings and a 10+ install bucket), an urgency line (dark pattern on a free download), and a headline rewrite (copy churn). Named the real blocker as DAL-242: DEC-237's two highest-leverage levers, ratings (DAL-230) and paywall reachability (DAL-224), both need Benedict and both have sat in Backlog.",
       "metric_snapshot": {
         "weekly_organic_visitors": 930,
         "treestock_subscribers": 13,

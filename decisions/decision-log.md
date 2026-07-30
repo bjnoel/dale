@@ -6653,3 +6653,101 @@ compact, and a guard fails if either live mirror ever regains a working push URL
 1871, all green.
 
 **Cost:** $0. 42 MB of disk.
+
+---
+
+## DEC-239 — 2026-07-30 — Ship the funnel instead of analysing it again, and name what is actually blocked
+
+**Decided by:** Dale (autonomous; DAL-219 and DAL-222 were both approved and specify
+shippable treestock changes, which CLAUDE.md puts at Dale's discretion).
+
+**Context:** the session opened with four automatic reflections at once: revenue $0 after
+126 days, five of five recent session-days on Track A with flat metrics, and both
+`treestock:seo` and `revenue:monetisation` flagged stale. They partly contradict each
+other: the revenue alarm demands Track A or revenue work, the channel-stale warning
+demands a genuinely new approach before more Track A work.
+
+**The resolution is that the last five Track A session-days share a shape, not a subject.**
+DAL-225, DAL-229, DAL-172, DAL-179 and DAL-223 were analysis, verification, mirrors and
+drafts. Valuable (DEC-237 corrected two wrong beliefs in CLAUDE.md, DEC-238 made the app
+readable) but every one of them terminated in a document. DAL-219 and DAL-222 are the
+first Track A tickets in that run that end in code on a live site, and DEC-238 already
+named this failure mode: "the mechanism by which Track A tickets keep terminating in
+draft ready for Benedict". So the new approach is not a new subject, it is shipping.
+
+**Decision: ship both funnel fixes, decline three of DAL-222's asks, and stop treating
+the funnel as unmeasured.**
+
+*What shipped.* DAL-218 measured /treesmith.html taking 12 unique visitors a month out of
+treestock's 2,865. Two causes:
+
+1. **The homepage had no Treesmith CTA at all.** Not a judgement call, a gap: the promo
+   block was wired into the species, variety, rootstock, bare-root, when-to-plant and
+   pollination builders and never into `build-dashboard.py`. It is the single
+   highest-traffic page on the site at 225 visitors a month. Category landing pages were
+   missing it for the same reason. Both now render it as the last block inside `<main>`,
+   after the subscribe box and its supporting highlights, so free alerts stay the primary
+   CTA and nothing moves above the results (treestock rule 1).
+2. **/treesmith.html asked for the install with plain text buttons.** Replaced with
+   Apple's and Google's own badge artwork, fetched from their badge endpoints and served
+   locally from `/treesmith/` so the page does not depend on their CDNs. Google's PNG
+   carries clear space inside the asset, so it renders at 60px against Apple's 40px to
+   make the visible pills match. Verified Tailwind v4 emits the arbitrary `h-[60px]`
+   utility from the scanned HTML first, because if it silently did not the Google badge
+   would render at its intrinsic 646px and destroy the hero. Both vendors' trademark
+   attribution added, as their guidelines require once the artwork is used.
+
+*Two bugs fixed on the way.* The iOS link pointed at the **`/us/` storefront** for an
+entirely Australian audience, the same class of error DEC-238 found on treesmith.app;
+now `/au/`, verified 200 against the live listing. And /treesmith.html emitted **two
+`<main>` elements**, because `render_page` already wraps every body in one; it was the
+only template on the site doing that.
+
+*The part that compounds is the instrumentation.* Every promo surface now tags a distinct
+`utm_content` (`homepage`, `landing`, `species`, `variety`, `rootstock`). DAL-218 could
+only see one undifferentiated 12/month, so it could not say which surface earned it. The
+next audit can. Shipping a CTA we cannot attribute would have repeated the mistake.
+
+**Three of DAL-222's asks were declined, and the reasons matter more than the code.**
+
+- **"Used by WA collectors" was not written.** DAL-225 verified 0 ratings on both stores
+  and Play's 10+ install bucket. We have no evidence of who uses it. A usage claim we
+  cannot stand behind is what Prime Directive 1 exists to prevent, and the honest proof
+  is already on the page twice (built by treestock's author; graft tracking requested by
+  Rare Fruit Club WA members). Flagged on the ticket that a verifiable number or a named
+  quotable member gets added immediately.
+- **No urgency line.** Manufacturing urgency for a free download is a dark pattern and
+  there is no real deadline to point at.
+- **No headline rewrite.** The suggested "Track the rare trees you collect" drops what
+  the existing "Track the trees you buy from treestock" adds, which is the referring
+  context. Copy churn with no evidence behind it.
+
+**Honest expectation, stated so the follow-up is not graded generously.** 225 homepage
+visitors a month is real but small, and the block sits below a long results list. This
+removes a zero; it is not a growth lever. Recognisable store badges are a genuine CTR
+improvement on the page's primary action, but the page only receives 12 visitors a month,
+so the ceiling on that improvement is roughly nothing until the upstream blocks feed it.
+
+**What this session did not fix, and should be read as the real blocker.** DEC-237 ranked
+the route to the first dollar: ratings first (DAL-230), then paywall reachability
+(DAL-224), then ASO, then price. Both of the top two are sitting in **Backlog awaiting
+Benedict's approval**, and neither is something Dale can ship alone: DAL-230 needs review
+prompts in Benedict's Flutter code, DAL-224 needs his agreement to cut the free tier from
+30 plants to 15. Funnel work of the kind shipped today feeds more traffic into a paywall
+almost nobody reaches, sold by a developer with no star rating. That is the honest answer
+to "why has sustained Track A effort not moved the metrics": the two highest-leverage
+levers are not Dale's to pull, and they have been waiting since this morning.
+
+**Tests:** new `tests/test_treesmith_funnel.py`, 14 tests, pinning the funnel contract
+rather than trusting goldens alone, since a golden only fails until someone regenerates
+it: promo present and below the results on both built pages, hub-and-spoke linking (promo
+blocks never link straight to treesmith.app), distinct `utm_content` per surface, no em
+dashes and Pro never called a subscription in the copy, badge assets committed and sized
+against layout shift, AU storefront, attribution present, one `<main>`. Verified failing
+(5 failures + 5 errors) against each fix reverted in turn. Goldens regenerated and
+reviewed: additive on the two homepages, and the treesmith diff is the badges plus the
+removed duplicate landmark. Full suite 1893, all passing.
+
+**Cost:** $0. 16 KB of badge artwork. Live at the 00:00 UTC rebuild rather than a
+hand-run partial deploy, because rebuilding the homepage outside the normal pipeline
+order risks a worse page than the one currently served for no benefit beyond hours.
