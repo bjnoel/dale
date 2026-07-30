@@ -10,6 +10,11 @@ show as zero.
 Usage:
     python3 treesmith_analytics.py            # query + email
     python3 treesmith_analytics.py --dry-run  # print to stdout, no email
+    python3 treesmith_analytics.py --help     # this text, no email
+
+Note: any UNRECOGNISED argument is rejected rather than ignored. Running this
+with a stray flag used to fall through to the email path and send Benedict an
+unscheduled digest, which is exactly what happened during DEC-252.
 
 Schedule (VPS crontab, Monday 00:00 UTC = Monday 08:00 AWST):
     0 0 * * 1 /opt/dale/autonomous/treesmith_analytics.py \
@@ -22,8 +27,12 @@ Locally it falls back to ~/.posthog/credentials.json (the PostHog CLI's file).
 
 Revenue note: PostHog purchase/paywall events are CLIENT-SIDE and include
 sandbox/TestFlight activity. RevenueCat is the source of truth for real
-revenue. This digest filters monetization to environment='production' where
-the event carries it, but still labels those numbers "directional".
+revenue (the app ships purchases_flutter), with App Store Connect behind it.
+Money here is read from `purchase_succeeded`, the only event carrying price,
+currency and environment together, and is counted as revenue ONLY when
+environment is explicitly 'production'. Untagged events (before 2026-07-01,
+when tagging began) are shown separately and never counted. Every figure is
+reported all-time as well as weekly, so a sale cannot age out of the digest.
 """
 
 import json
@@ -225,36 +234,102 @@ def m_funnel(host, key):
     return {"steps": counts, "biggest_drop": biggest}
 
 
-def m_paywall(host, key):
-    """Paywall views and outcomes (last 7 days), production-only where tagged.
+PURCHASE_OUTCOMES = (
+    "'lifetime_purchased','annual_purchased',"
+    "'cloud_backup_sub_purchased','cloud_backup_resubscribed'"
+)
 
-    `environment` may be absent on older events; we treat missing as
-    production so we don't silently hide everything, but the digest still
-    labels purchase counts as directional.
+
+def m_paywall(host, key):
+    """Paywall views and purchase outcomes in the last 7 days.
+
+    This reports REACH (how many people saw the paywall and what they chose).
+    It deliberately does not report money: `paywall_result` carries no price,
+    and it only started carrying `environment` on 2026-07-01, so any
+    environment split derived from it is unreliable for older events. The
+    dollar figures come from m_purchases via `purchase_succeeded` instead.
     """
-    rows = hogql(host, key, """
+    rows = hogql(host, key, f"""
         SELECT
           countIf(event = 'paywall_shown') AS shown,
           countIf(event = 'paywall_result'
-                  AND properties.outcome IN
-                    ('lifetime_purchased','annual_purchased',
-                     'cloud_backup_sub_purchased','cloud_backup_resubscribed')
-                  AND coalesce(properties.environment, 'production')
-                      = 'production') AS purchased_prod,
+                  AND properties.outcome IN ({PURCHASE_OUTCOMES})) AS purchased,
           countIf(event = 'paywall_result'
-                  AND properties.outcome IN
-                    ('lifetime_purchased','annual_purchased',
-                     'cloud_backup_sub_purchased','cloud_backup_resubscribed')
-                  AND properties.environment = 'sandbox') AS purchased_sandbox
+                  AND properties.outcome = 'dismissed') AS dismissed
         FROM events
         WHERE timestamp >= now() - INTERVAL 7 DAY
           AND event IN ('paywall_shown', 'paywall_result')
     """)
-    shown = rows[0][0] if rows else 0
-    prod = rows[0][1] if rows else 0
-    sandbox = rows[0][2] if rows else 0
-    return {"shown": shown, "purchased_prod": prod,
-            "purchased_sandbox": sandbox}
+    return {"shown": rows[0][0] if rows else 0,
+            "purchased": rows[0][1] if rows else 0,
+            "dismissed": rows[0][2] if rows else 0}
+
+
+def m_purchases(host, key):
+    """Purchases from `purchase_succeeded`: last 7 days AND all time.
+
+    Two defects this exists to prevent, both found in DEC-252:
+
+    1. The digest used to report purchases on a rolling 7-day window only, so
+       a real sale appeared in exactly one Monday email and then vanished with
+       nothing carrying it forward. Two production purchases went unnoticed for
+       24 days. Every window here is reported alongside an all-time cumulative
+       total, which cannot fall out of scope.
+    2. It used to infer environment with coalesce(environment, 'production'),
+       which silently relabels every untagged event as a real sale. Tagging
+       only began 2026-07-01, so the 13 purchase outcomes before that are of
+       genuinely unknown environment. They are counted as 'untagged', never as
+       production.
+
+    `purchase_succeeded` is the only event carrying price, currency and
+    environment together, which is why money is reported from it alone.
+    """
+    rows = hogql(host, key, """
+        SELECT
+          coalesce(toString(properties.environment), 'untagged') AS env,
+          coalesce(toString(properties.currency), '?') AS currency,
+          count() AS n_all,
+          sum(toFloat(properties.price)) AS revenue_all,
+          countIf(timestamp >= now() - INTERVAL 7 DAY) AS n_7d,
+          sumIf(toFloat(properties.price),
+                timestamp >= now() - INTERVAL 7 DAY) AS revenue_7d
+        FROM events
+        WHERE event = 'purchase_succeeded'
+        GROUP BY env, currency
+        ORDER BY env, currency
+    """)
+    buckets = []
+    for env, currency, n_all, rev_all, n_7d, rev_7d in rows:
+        buckets.append({
+            "env": env, "currency": currency,
+            "n_all": n_all, "revenue_all": round(rev_all or 0, 2),
+            "n_7d": n_7d, "revenue_7d": round(rev_7d or 0, 2),
+        })
+    return {"buckets": buckets,
+            "production": [b for b in buckets if b["env"] == "production"]}
+
+
+def m_purchase_reconciliation(host, key):
+    """Cross-check `paywall_result` purchase outcomes against `purchase_succeeded`.
+
+    These are emitted by different code paths, so a divergence means one of
+    them is dropping events and the money line cannot be trusted. Reported
+    only for the period since environment tagging began, because before that
+    `purchase_succeeded` was not being sent at all and a mismatch is expected.
+    """
+    rows = hogql(host, key, f"""
+        SELECT
+          countIf(event = 'paywall_result'
+                  AND properties.outcome IN ({PURCHASE_OUTCOMES})) AS via_paywall,
+          countIf(event = 'purchase_succeeded') AS via_purchase
+        FROM events
+        WHERE timestamp >= toDateTime('2026-07-01 00:00:00')
+          AND event IN ('paywall_result', 'purchase_succeeded')
+    """)
+    via_paywall = rows[0][0] if rows else 0
+    via_purchase = rows[0][1] if rows else 0
+    return {"via_paywall": via_paywall, "via_purchase": via_purchase,
+            "agrees": via_paywall == via_purchase}
 
 
 def m_retention(host, key):
@@ -340,9 +415,10 @@ def render(metrics):
     line("=" * 40)
     html('<h2 style="margin:0 0 4px 0;">TreeSmith Weekly</h2>')
     html('<p style="color:#888;font-size:12px;margin:0 0 16px 0;">'
-         'Last 7 days. Revenue = RevenueCat (source of truth); paywall/'
-         'purchase counts here are client-side, sandbox-excluded, '
-         'directional only.</p>')
+         'Rates are last 7 days; purchase counts are shown weekly AND '
+         'all-time so a sale cannot age out. Client-side and directional: '
+         'RevenueCat is the source of truth. Only environment=production '
+         'counts as revenue.</p>')
 
     def section(title):
         line("")
@@ -417,12 +493,53 @@ def render(metrics):
     pw = metrics["paywall"]
     if pw["ok"]:
         d = pw["data"]
-        kv("Paywall views", str(d["shown"]))
-        kv("Purchases (production)", str(d["purchased_prod"]),
-           GREEN if d["purchased_prod"] else GREY)
-        kv("Purchases (sandbox, excluded)", str(d["purchased_sandbox"]), GREY)
+        kv("Paywall views (7d)", str(d["shown"]))
+        kv("Paywall dismissed (7d)", str(d["dismissed"]))
     else:
         err("Paywall", pw["error"])
+
+    pu = metrics["purchases"]
+    if pu["ok"]:
+        prod = pu["data"]["production"]
+        # 7-day figures, then the all-time totals that cannot fall out of scope.
+        n_7d = sum(b["n_7d"] for b in prod)
+        kv("Purchases this week (production)", str(n_7d),
+           GREEN if n_7d else GREY)
+        for b in prod:
+            if b["n_7d"]:
+                kv(f"  {b['currency']} this week",
+                   f"{b['revenue_7d']:.2f}", GREEN)
+
+        n_all = sum(b["n_all"] for b in prod)
+        kv("Purchases ALL TIME (production)", str(n_all),
+           GREEN if n_all else GREY)
+        for b in prod:
+            kv(f"  {b['currency']} all time (gross)",
+               f"{b['revenue_all']:.2f}", GREEN if b["n_all"] else GREY)
+        if not prod:
+            kv("  revenue all time", "none recorded", GREY)
+
+        # Everything not counted above, so an excluded sale is still visible.
+        for b in pu["data"]["buckets"]:
+            if b["env"] != "production":
+                kv(f"Excluded: {b['env']} ({b['currency']})",
+                   f"{b['n_all']} all time, not counted as revenue", GREY)
+    else:
+        err("Purchases", pu["error"])
+
+    rc = metrics["reconciliation"]
+    if rc["ok"]:
+        d = rc["data"]
+        if not d["agrees"]:
+            msg = (f"paywall_result reports {d['via_paywall']} purchases "
+                   f"since 2026-07-01 but purchase_succeeded reports "
+                   f"{d['via_purchase']}. One of them is dropping events, so "
+                   f"treat the revenue line above as incomplete.")
+            line(f"  !! {msg}")
+            html(f'<div style="margin-top:6px;color:{RED};font-weight:bold;'
+                 f'font-size:13px;">Purchase events disagree: {msg}</div>')
+    else:
+        err("Reconciliation", rc["error"])
 
     # Retention
     section("Retention")
@@ -472,7 +589,17 @@ def render(metrics):
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
-    dry_run = "--dry-run" in sys.argv
+    args = sys.argv[1:]
+    if "--help" in args or "-h" in args:
+        print(__doc__)
+        return
+    unknown = [a for a in args if a != "--dry-run"]
+    if unknown:
+        # Never fall through to the email path on a typo.
+        print(f"Unknown argument(s): {' '.join(unknown)}\n", file=sys.stderr)
+        print(__doc__, file=sys.stderr)
+        sys.exit(2)
+    dry_run = "--dry-run" in args
     host, key = load_posthog_credentials()
 
     metrics = {
@@ -482,6 +609,8 @@ def main():
         "onboarding": run_metric(m_onboarding, host, key),
         "funnel": run_metric(m_funnel, host, key),
         "paywall": run_metric(m_paywall, host, key),
+        "purchases": run_metric(m_purchases, host, key),
+        "reconciliation": run_metric(m_purchase_reconciliation, host, key),
         "retention": run_metric(m_retention, host, key),
         "top_screens": run_metric(m_top_screens, host, key),
         "backup": run_metric(m_backup, host, key),
