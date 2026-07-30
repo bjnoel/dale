@@ -84,7 +84,28 @@ Benedict is embedded in the WA rare fruit community and attends meets in person.
 **Key moat:** The accumulated price/availability dataset over time. Community trust via
 Benedict's in-person relationships. Nobody else is collecting this data.
 
-## Paused Tracks
+## Paused and Discontinued Tracks
+
+### beestock.com.au — Beekeeping Supplies (Discontinued 2026-07-23)
+
+The Track B sister site for beekeeping supplies. Discontinued (DEC-230) and frozen
+static after 4+ months with no audience (38 visitors/30d vs treestock's 2,926). Its
+only subscriber was Benedict's own test signup, so nobody was notified. Do NOT
+propose or do any beestock work:
+
+- No new beestock tickets. `beestock`, `beekeep`, and `apiary` are hard-blocked
+  via `state/ticket-blocklist.json`
+- No features, SEO content, category work, retailer research, or subscriber growth
+- No bee/ de-fork, even though the code duplication is real
+- Do NOT "fix" the disabled bee scraper cron, the stopped and disabled
+  `bee-subscribe-server.service`, the 410 subscribe/unsubscribe routes, or the
+  "no longer updated" banner on the 176 archived pages. All four are deliberate.
+
+Pages stay online as an archive until Benedict's domain decision at renewal. If
+beestock ever revives, Benedict will edit the blocklist entry out explicitly.
+
+**Why discontinued:** No audience, and scraping bee retailers already cost goodwill
+once (Beewise, DEC-198). "Tell him he's dreaming" on beekeeping supplies.
 
 ### Walkthrough — Perth AI Efficiency Audits (Paused 2026-04-27)
 

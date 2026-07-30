@@ -58,5 +58,46 @@ class IsMeaningfulCommentTests(unittest.TestCase):
         self.assertTrue(linear_update._is_meaningful_comment("Dale: a"))
 
 
+class BlocklistTests(unittest.TestCase):
+    """Reads the committed state/ticket-blocklist.json, not a fixture."""
+
+    def assertBlocked(self, title, description=""):
+        hit = linear_update.check_blocklist(title, description)
+        self.assertIsNotNone(hit, f"should be blocked: {title!r}")
+
+    def assertAllowed(self, title, description=""):
+        hit = linear_update.check_blocklist(title, description)
+        self.assertIsNone(
+            hit, f"should be allowed: {title!r} (matched {hit[0] if hit else None!r})"
+        )
+
+    def test_blocks_beestock(self):
+        # DEC-230: beestock discontinued 2026-07-23
+        self.assertBlocked("beestock: add subscribe CTA to compare pages")
+        self.assertBlocked("Beestock price history charts")
+        self.assertBlocked("Write a beginner beekeeping buying guide")
+        self.assertBlocked("Re-enable the bee scraper cron")
+        self.assertBlocked(
+            "Audit archived sites", "Includes beestock.com.au category pages"
+        )
+
+    def test_blocks_existing_entries(self):
+        self.assertBlocked("Tass1 Trees demo store")
+        self.assertBlocked("Leeming Fruit Trees follow-up")
+        self.assertBlocked("walkthrough: research 10 Perth SMB prospects")
+
+    def test_no_bee_substring_false_positives(self):
+        # "bee" as a bare pattern would match "been", "between", "beetle".
+        # These are all legitimate treestock/Treesmith tickets.
+        self.assertAllowed("treestock: species pages have been flat since June")
+        self.assertAllowed("treestock: fix ordering between digest and species pages")
+        self.assertAllowed("treestock: add fruit fly and beetle pest notes to guides")
+        self.assertAllowed("Treesmith: App Store rating and review audit")
+        self.assertAllowed(
+            "treestock: bare-root season subscriber email",
+            "Bare-root stock has been listed by 4 nurseries.",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

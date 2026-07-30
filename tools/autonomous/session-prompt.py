@@ -260,6 +260,9 @@ def compute_reflection(tracker, config):
     session_log = tracker.get("session_log", [])
     categories = tracker.get("categories", {})
     parents = tracker.get("parents", {})
+    # Paused/discontinued channels stay in `parents` so historical session_log
+    # entries still render, but must never be offered as a pivot target.
+    archived_parents = set(tracker.get("archived_parents", []))
     override = tracker.get("override")
 
     # Deduplicate by date
@@ -374,7 +377,10 @@ def compute_reflection(tracker, config):
         # Check if any stale categories belong to this parent
         stale_in_parent = [sc for sc in result["stale_categories"] if sc["parent"] == p]
         if stale_in_parent:
-            other_parents = [name for name in parents if name != p]
+            other_parents = [
+                name for name in parents
+                if name != p and name not in archived_parents
+            ]
             result["stale_parents"].append({
                 "parent": p,
                 "display": parents.get(p, p),

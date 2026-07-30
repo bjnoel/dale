@@ -6353,3 +6353,51 @@ even the few cents the plan budgeted.
 
 **Next:** Benedict reviews the preview and sends `docs/stfc-reply-draft.md`. The reply
 asks exactly two questions: A or B, and whether Articles and Tips stay separate.
+
+## DEC-235 — 2026-07-30 — Close out the beestock ticket backlog and hard-block new beestock work
+
+**Decided by:** Benedict (requested), Dale (executed).
+
+**Context:** DEC-230 stopped beestock work and froze the site static on 2026-07-23, but
+the close-out was partial. Three beestock tickets were still sitting in Linear Backlog
+(DAL-150 subscribe form A/B test, DAL-157 compare page subscribe CTA, DAL-186 beginner
+beekeeping buying guide), all of them proposing work on a site with no live subscribe
+path. Nothing stopped autonomous Dale creating more: beestock was absent from the repo
+CLAUDE.md and from `state/ticket-blocklist.json`, so the only guard was memory of a
+decision Dale cannot carry between sessions. Worse, `state/focus-tracker.json` still
+listed beestock as a live channel, and the strategic reflection offers every other
+parent channel as a pivot target when the current one goes stale, so a flat treestock
+streak would have actively told Dale to go and work on beestock.
+
+**Decision:** Close the backlog and make the block structural rather than remembered.
+
+1. DAL-150, DAL-157 and DAL-186 cancelled, each with a comment citing DEC-230 and the
+   specific reason the ticket no longer makes sense.
+2. New `state/ticket-blocklist.json` entry blocking `beestock`, `beekeep`,
+   `bee dashboard`/`bee-dashboard`/`bee_dashboard`, `bee scraper`/`bee-scraper`/
+   `bee_scraper`, `bee-subscribe`/`bee_subscribe`/`bee_subscribers`, `apiary` and
+   `apiarist`. `linear_update.py create` rejects any matching ticket, and
+   `session-prompt.py` renders the whole blocklist into every autonomous session, so
+   Dale is told before it tries. A bare `bee` pattern was deliberately NOT used: it
+   matches "been" and "between" and would block legitimate treestock tickets.
+3. New "Paused and Discontinued Tracks" section in CLAUDE.md covering beestock, with
+   the four deliberate freeze artefacts (disabled cron, stopped service, 410 routes,
+   stale-page banner) named explicitly so no future session "fixes" them.
+4. `focus-tracker.json` gains `archived_parents: ["beestock", "walkthrough"]` and
+   `compute_reflection()` filters those out of the pivot alternatives it suggests.
+   Walkthrough had the same latent bug: paused since DEC-104 but still offered as a
+   destination. History stays in `parents`/`session_log` so old entries still render.
+
+**Tests:** `tests/test_focus_reflection.py` (new, 5 tests) covers the archived-parent
+filter, including a test that fails if the filter silently becomes a no-op and one
+asserting the committed tracker keeps beestock and walkthrough archived.
+`tests/test_linear_update.py` gains blocklist coverage against the committed
+blocklist: beestock phrasings are blocked, and five legitimate treestock/Treesmith
+titles containing the "bee" substring are not. Full suite: 1839 tests, all passing.
+
+**Deliberately not done:** beestock is still reported on in `traffic_report.py` (GSC)
+and `resend_report.py` (subscriber count), so the daily digest keeps showing its
+archived traffic. Left alone: it is read-only reporting, it is the number Benedict
+needs for the domain-at-renewal call, and any ticket it might inspire is now rejected
+at the wrapper. The historical beestock entries in the public ledger and the
+`beestock:*` category keys in `focus-tracker.json` are also left intact as record.

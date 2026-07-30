@@ -1,6 +1,6 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-07-28",
+  "last_updated": "2026-07-30",
   "session_count": 88,
   "phase": 0,
   "phase_name": "Setup",
@@ -99,14 +99,27 @@
       }
     },
     "b_experiment_beestock": {
-      "name": "Beekeeping Supply Price Tracker",
+      "name": "Beekeeping Supply Price Tracker (DISCONTINUED 2026-07-23)",
       "domain": "beestock.com.au",
-      "status": "live",
+      "status": "discontinued-frozen-static",
+      "discontinued_decision": "DEC-230",
+      "discontinued_reason": "No audience after 4+ months: 38 visitors/30d vs treestock's 2,926, and the only subscriber was Benedict's own test signup. Scraping bee retailers had already cost goodwill once (Beewise, DEC-198). Attention moved to treestock + Treesmith.",
+      "closeout_decision": "DEC-235",
+      "frozen_state": "Bee scraper cron disabled, bee-subscribe-server.service stopped and disabled, Caddy subscribe/unsubscribe routes return 410, 'no longer updated' banner on all 176 pages. All four are DELIBERATE, do not repair them.",
+      "do_not": [
+        "propose new beestock tickets (hard-blocked in state/ticket-blocklist.json)",
+        "build beestock features, SEO content, or category work",
+        "research new bee retailers or re-add Beewise (DEC-198)",
+        "re-enable the scraper cron, subscribe server, or alert emails",
+        "do the bee/ scraper de-fork, even though the duplication is real"
+      ],
+      "pages": "online as an archive until Benedict's domain decision at renewal",
       "dashboard_url": "https://beestock.com.au",
       "retailers_monitored": 8,
       "products_tracked": 4109,
       "in_stock": 2950,
       "first_scrape_date": "2026-03-19",
+      "last_scrape_date": "2026-07-23",
       "days_of_data": 31,
       "subscribers": 0,
       "revenue_total": 0,

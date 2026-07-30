@@ -95,12 +95,13 @@
   },
   "parents": {
     "treestock": "treestock.com.au growth",
-    "beestock": "beestock.com.au growth",
+    "beestock": "beestock.com.au (discontinued 2026-07-23, frozen static)",
     "treesmith": "Track A (Treesmith) revenue",
     "walkthrough": "Track A (Walkthrough, paused) revenue",
     "revenue": "Direct monetisation",
     "infrastructure": "Infrastructure"
   },
+  "archived_parents": ["beestock", "walkthrough"],
   "session_log": [
     {
       "session": 86,
