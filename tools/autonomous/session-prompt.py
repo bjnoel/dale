@@ -15,6 +15,49 @@ def load_config():
         return json.load(f)
 
 
+def model_display_name(model_id):
+    """Turn a model id into its human name: claude-opus-5 -> "Claude Opus 5".
+
+    Sessions self-labelled their commit trailers from memory and got it wrong:
+    the 2026-07-30 03:00 session ran on claude-opus-5 and signed the commit
+    "Claude Opus 4.6". A model cannot reliably know its own id, so the runner
+    tells it. Derived from config rather than hardcoded, so changing the model
+    stays a one-line config edit.
+
+    Returns "Claude" alone when no model is pinned, which is honest: with the
+    CLI default in play we genuinely do not know what ran.
+    """
+    if not model_id:
+        return "Claude"
+    # Context-window variants are suffixed in brackets: claude-opus-5[1m].
+    context_suffix = ""
+    if model_id.endswith("]") and "[" in model_id:
+        model_id, _, bracket = model_id.rpartition("[")
+        context_suffix = f" ({bracket.rstrip(']').upper()} context)"
+    parts = model_id.split("-")
+    if parts and parts[0] == "claude":
+        parts = parts[1:]
+    if not parts:
+        return f"Claude{context_suffix}"
+    family = parts[0].capitalize()
+    # Trailing 8-digit date stamps (claude-haiku-4-5-20251001) are not version
+    # numbers and read as nonsense in a name.
+    version = [p for p in parts[1:] if not (len(p) == 8 and p.isdigit())]
+    if not version:
+        return f"Claude {family}{context_suffix}"
+    return f"Claude {family} {'.'.join(version)}{context_suffix}"
+
+
+def commit_trailer(config):
+    """The exact Co-Authored-By line sessions must use, model and effort included."""
+    claude_cfg = config.get("claude", {})
+    name = model_display_name(claude_cfg.get("model", ""))
+    effort = claude_cfg.get("effort", "")
+    if effort:
+        name = f"{name} (effort: {effort})"
+    return f"Co-Authored-By: {name} <noreply@anthropic.com>"
+
+
 def read_file(path, max_lines=None):
     """Read a file, return contents or a fallback message."""
     try:
@@ -596,6 +639,7 @@ def build_prompt():
     data = config["paths"]["data"]
     auto = config["paths"]["autonomous"]
     max_min = config["budget"]["max_session_duration_minutes"]
+    commit_trailer_line = commit_trailer(config)
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -767,7 +811,15 @@ the Dale label means "in Dale's court". Benedict re-adds it when passing back to
 9. **Always prefix your Linear comments with "Dale:"** so Benedict can tell
    at a glance who wrote what. The linear_update.py script does this automatically,
    but if you ever post comments by other means, add the prefix yourself.
-10. **Focus tracker (MANDATORY):** At the end of every session, update state/focus-tracker.json:
+10. **Commit trailer (MANDATORY, exact text):** end every git commit message with
+    this line and nothing else in its place. Do not guess your own model name or
+    version, and do not adapt this from memory. Copy it verbatim:
+
+    ```
+    {commit_trailer_line}
+    ```
+
+11. **Focus tracker (MANDATORY):** At the end of every session, update state/focus-tracker.json:
     - Append to "session_log": session number, date, categories_worked (use ONLY keys from
       the "categories" dict in the file), tickets_completed, tickets_proposed, and a
       metric_snapshot with current values for all tracked metrics.

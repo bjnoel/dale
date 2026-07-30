@@ -123,5 +123,73 @@ class LiveTrackerTests(unittest.TestCase):
             self.assertIn(name, tracker.get("parents", {}))
 
 
+class CommitTrailerTests(unittest.TestCase):
+    """Regression coverage for the mislabelled commit trailer (2026-07-30).
+
+    The 03:00 session ran on claude-opus-5 and signed its commit
+    "Co-Authored-By: Claude Opus 4.6". A model cannot reliably know its own
+    id, so the runner now derives the exact trailer from config.json and
+    hands it over verbatim.
+    """
+
+    def test_model_names(self):
+        cases = {
+            "claude-opus-5": "Claude Opus 5",
+            "claude-sonnet-4-6": "Claude Sonnet 4.6",
+            "claude-fable-5": "Claude Fable 5",
+            # trailing date stamps are not version numbers
+            "claude-haiku-4-5-20251001": "Claude Haiku 4.5",
+            # context-window variants
+            "claude-opus-5[1m]": "Claude Opus 5 (1M context)",
+        }
+        for model_id, expected in cases.items():
+            with self.subTest(model_id=model_id):
+                self.assertEqual(session_prompt.model_display_name(model_id), expected)
+
+    def test_unpinned_model_does_not_invent_a_version(self):
+        # With the CLI default in play we do not know what ran. Saying
+        # "Claude" is honest; naming a version would be the original bug.
+        self.assertEqual(session_prompt.model_display_name(""), "Claude")
+        self.assertEqual(
+            session_prompt.commit_trailer({}),
+            "Co-Authored-By: Claude <noreply@anthropic.com>",
+        )
+
+    def test_trailer_includes_model_and_effort(self):
+        self.assertEqual(
+            session_prompt.commit_trailer(
+                {"claude": {"model": "claude-opus-5", "effort": "medium"}}
+            ),
+            "Co-Authored-By: Claude Opus 5 (effort: medium) <noreply@anthropic.com>",
+        )
+
+    def test_trailer_omits_effort_when_unset(self):
+        self.assertEqual(
+            session_prompt.commit_trailer({"claude": {"model": "claude-opus-5"}}),
+            "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+        )
+
+    def test_committed_config_produces_a_versioned_trailer(self):
+        import json
+
+        with open(REPO_ROOT / "tools" / "autonomous" / "config.json") as f:
+            config = json.load(f)
+        trailer = session_prompt.commit_trailer(config)
+        self.assertTrue(trailer.startswith("Co-Authored-By: Claude "))
+        self.assertNotEqual(
+            trailer,
+            "Co-Authored-By: Claude <noreply@anthropic.com>",
+            "config.json should pin a model, so the trailer must name one",
+        )
+
+    def test_rendered_prompt_carries_the_trailer(self):
+        # The value is interpolated into a large f-string. If that breaks, the
+        # rule silently ships as a literal placeholder and sessions guess again.
+        prompt = session_prompt.build_prompt()
+        expected = session_prompt.commit_trailer(session_prompt.load_config())
+        self.assertIn(expected, prompt)
+        self.assertNotIn("{commit_trailer_line}", prompt)
+
+
 if __name__ == "__main__":
     unittest.main()
