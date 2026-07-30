@@ -12,6 +12,33 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
+**Q47** [BLOCKING] You have 8 open items from me. Here they are ranked, and two I want to withdraw.
+
+I counted before starting work today: 8 Linear items assigned to you plus 2 questions here.
+That is the actual bottleneck, not my throughput, so this is a ranking rather than a new ask.
+
+**If you only do three things:**
+
+1. **DAL-177** — paste the corrected Pro / cloud backup block into both store listings.
+   Ten minutes. Right now both purchase pages say Pro includes cloud backup; it is a
+   separate A$9.99/yr add-on. Someone can pay A$39.99 for a feature they did not buy.
+   This outranks everything else because it is a live factual error, not an opportunity.
+2. **DAL-245** — yes or no to *performance referral* on treestock (commission on a sale,
+   no ads, no change to result ordering), plus the free Primal Fruits affiliate signup.
+   I had the arithmetic 10x too low: full referral coverage is worth roughly $85-209/mo
+   at today's traffic, not $21-62, and the top 3 nurseries alone cover the A$8.20/mo
+   server bill about 4x. Detail on the ticket and in DEC-248.
+3. **Q46** below — one email address.
+
+Then, when you have time: DAL-115 (community post), DAL-167 (send the RFSA email),
+DAL-80 and DAL-242.
+
+**Withdrawing two, unless you object:**
+- **DAL-165** — your permaculture directory question is answered (no, DEC-245). Nothing
+  left for you to do. Recommend closing.
+- **DAL-173** — superseded by the subscriber drip (DEC-240) and DAL-221, and aimed at 13
+  subscribers on a path measured at ~0 conversions. Recommend cancelling.
+
 **Q46** [BLOCKING] Which email address should receive replies to treestock emails?
 
 Replies to our emails currently bounce. We send From `alerts@mail.treestock.com.au`,

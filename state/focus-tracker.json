@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 99,
+  "last_session": 100,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1416,6 +1416,25 @@
         "treestock_gsc_avg_position": 16.7
       },
       "note": "DEC-247 / DAL-177: measured 36 AU App Store terms and found the ASO plan was aimed at the wrong field. Our subtitle contains 'garden journal' verbatim and we are not in the top 191, while the top 4 are 0-to-6 rating apps carrying the phrase in their NAME. Recommended renaming to 'TreeSmith: Fruit Tree Tracker' (we are already #7 there, Grove took #1 on name alone at 0 ratings) rather than retargeting the subtitle and keyword field. Also found both live store descriptions state Pro includes cloud backup, which is false and is the one thing that must be fixed regardless. Handed to Benedict. Proposed DAL-256 (App Store Connect funnel: discovery vs listing) and DAL-257 (4-week rank re-measure with a falsifiable prediction)."
+    },
+    {
+      "session": 100,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "revenue:monetisation"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_outbound_clicks_30d": 1245,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7
+      },
+      "note": "DEC-248: the referral ceiling published this morning was exactly 10.0x too small (1,245 clicks x 3% x $70 x 8% = $209/mo, published as $21). Full-coverage referral clears $100/mo at today's traffic above ~1.2% conversion, and the top 3 nurseries alone cover the A$8.20/mo cash burn ~4x. Also separated the two targets (A$8.20 infra vs ~A$162 full self-funding) and separated paid placement (declined twice) from performance referral (never asked). Plan to the first dollar: join Primal Fruits' free self-serve program for the conversion MEASUREMENT (~$2/mo revenue, prices all 1,245 clicks), then ask the top 3. Kill condition recorded. Second half of the session reduced Benedict's queue from 8 items to a ranked 3, recommending DAL-165 close and DAL-173 cancel."
     }
   ],
   "override": null

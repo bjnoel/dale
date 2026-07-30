@@ -7661,3 +7661,148 @@ screenshots" ticket died before it was written.
 
 **Cost:** $0. Read-only iTunes Search API calls (rate limited by hand), two store page
 fetches, and reads of the read-only app mirror.
+
+---
+
+## DEC-248 — 2026-07-30 — The referral ceiling was 10x too small, so the plan to the first dollar changes
+
+**Decided by:** Dale (autonomous strategy work; the reflection required a concrete plan to
+the first dollar, and no Todo ticket in the queue is a revenue ticket). The spend and the
+outreach are Benedict's under the authority table, so DAL-245 goes back to him narrowed to
+one yes/no rather than a business model to design.
+
+**Context: three reflections and a queue that is not the bottleneck.** $0 after 126 days,
+Track A stale at 5 of 5 session-days, treestock growth stale at 4 of 5,
+`revenue:monetisation` stale with the metric unmoved. What I checked before picking
+anything: **Benedict has 8 open Linear items assigned to him** (DAL-80, 115, 165, 167, 173,
+177, plus Backlog 242 and 245) and 2 open questions in the questions file. He answers async
+from a phone. Dale's throughput is not the constraint; the depth of his queue is. So this
+session had to either shorten that queue or be worth adding to it.
+
+**Finding 1, and it inverts the strategy: the referral ceiling published this morning is
+exactly 10x too small.**
+
+`business-state.json` and DEC-241 both said: if every nursery paid a referral fee,
+"~$21/mo at 3% conversion / $70 order / 8% commission; ~$62/mo on generous assumptions
+(5% / $100 / 10%)", and therefore referral "does NOT reach $100/mo at today's traffic".
+
+On those exact inputs, against the 1,245 outbound clicks/30d I re-pulled today:
+
+- 1,245 x 0.03 x $70 x 0.08 = **$209.16/mo**, published as $21.
+- 1,245 x 0.05 x $100 x 0.10 = **$622.50/mo**, published as $62.
+
+Both ratios are 10.0x. It is not a different assumption, it is a dropped decimal place, and
+I wrote it yesterday.
+
+Corrected picture, with a mid case added because the two stated scenarios are far apart:
+
+| scenario | $/click | all 27 | top 3 | top 10 |
+|---|---|---|---|---|
+| pessimistic (0.5% / $60 / 5%) | 1.5c | $18.68 | $8.04 | $14.56 |
+| mid (1% / $85 / 8%) | 6.8c | $84.66 | $36.45 | $66.03 |
+| DEC-241 conservative (3% / $70 / 8%) | 16.8c | $209.16 | $90.05 | $163.13 |
+| DEC-241 generous (5% / $100 / 10%) | 50c | $622.50 | $268.00 | $485.50 |
+
+**Full-coverage referral clears $100/mo at today's traffic on any conversion assumption
+above roughly 1.2%.** DEC-241's headline conclusion, that the only thing this business
+produces at scale cannot pay for it, was an arithmetic artefact.
+
+**Finding 2: the target was never stated correctly either, and it splits into two
+milestones.**
+
+`ledger.json` says the actual cash burn is **A$8.20/month** (Hetzner A$7.00 plus A$1.20
+backups). The $100 USD/month in CLAUDE.md is Benedict funding Dale's own Claude API, which
+is about A$154. Nothing in the repo has ever separated these, so "get to $100" has been
+carrying two different meanings.
+
+- **M1, infrastructure breakeven: A$8.20/month.** Never named as a milestone. The **top
+  three nurseries alone** (Ladybird 206, Daleys 202, Ross Creek 128 = 536 clicks, 43% of
+  all outbound) cover it about 4x in the mid case, and 1.0x even in the pessimistic one.
+- **M2, full self-funding: about A$162/month.** Needs roughly full nursery coverage in the
+  mid case, or the top 10 in the conservative one.
+
+Three emails covering the server bill is a different sort of goal from $100/month of
+nothing in particular, and two of those three nurseries are already warm (Daleys/Correy,
+Ross Creek/Tom, both from DEC-242).
+
+**Finding 3: Benedict has declined ads twice and has never been asked about referral.**
+
+He cancelled DAL-148 (sponsored listing pitch), cancelled DAL-79 (featured listing page
+plus payment) and suppressed /advertise.html on 2026-06-15. All three are **paid
+placement**: money changes what a visitor sees. DEC-241 and DEC-245 both treated that as a
+verdict on monetising treestock generally. It is not. **Performance referral is a different
+product**: commission on a completed sale, no ad units, no promoted rows, no change to
+result ordering, and disclosed. Written into `business-state.json` as a standing rule that
+ranking stays on list price and must never be influenced by commission, because the moment
+that stops being true the site stops being worth using.
+
+**Finding 4, which decides what to do first: the number that matters is not the ceiling, it
+is the conversion rate, and we have never measured it.**
+
+The table above spans 20x, entirely on an assumed conversion rate. Every argument in DEC-245
+about what a click is worth, and every future decision about buying traffic, rests on a
+figure nobody has ever observed.
+
+**Primal Fruits Perth is the only one of 27 nurseries with a self-serve affiliate program**
+(GoAffPro, "Primal Club"), it takes 33 clicks/mo, and GoAffPro reports conversions
+automatically. As revenue that is about $2/month and not worth a session. As a
+**measurement** it prices all 1,245 clicks, decides whether DAL-245 is worth $19/mo or
+$200/mo, and settles DEC-245's sequencing rule. Benedict already knows Cyrus personally
+(WhatsApp, per DEC-242). It is a signup, not a negotiation.
+
+So the plan to the first dollar, in order:
+
+1. **Join Primal Fruits' existing affiliate program.** Benedict, one signup, $0, no email to
+   anyone. Purpose is the conversion number, not the commission.
+2. **Wait 30 days and read the real per-click value.** Dale reports it against the table above.
+3. **Then ask the top 3.** Daleys and Ross Creek are warm and have an unanswered follow-up
+   from 2026-04-25; Ladybird is our single biggest destination at 206 clicks and has never
+   been contacted, so it needs touch 1 first (DAL-247's goodwill referral report is exactly
+   that, and DAL-248 is the ask). The opening line is now a measured number in dollars, not
+   an estimate.
+4. **Mechanism for the 26 nurseries with no affiliate software:** a treestock-specific
+   discount code. Every e-commerce platform they run already supports codes, redemptions are
+   countable without any integration, and the buyer gets something real out of it. We would
+   be trusting their count, and that should be said out loud rather than engineered around at
+   this scale.
+
+**Kill condition, written now so it is not negotiated later.** If a live Primal Fruits
+program produces a measured conversion rate implying full-coverage referral below
+**A$30/month**, then referral does not reach M2, treestock is an audience asset and not a
+business, and the honest next conversation is whether to keep funding this at all rather
+than to find a fifth growth lever.
+
+**What this does not change.** Treesmith is still the larger single ticket (A$39.99, roughly
+A$34 net after Apple's 15% small business rate) and still has 0 sales at 43 MAU with both of
+its levers sitting with Benedict on DAL-242. Nothing here is a reason to work on it less. It
+is a reason to stop treating treestock as a funnel into it (DEC-241 was right about that) and
+start treating it as the revenue line it already is.
+
+**Queue reduction, the other half of the session.** Ranked for Benedict, with two withdrawn:
+
+1. **DAL-177** — paste the corrected Pro / cloud backup block on both stores. Ten minutes,
+   and until it is done both purchase pages tell buyers Pro includes a A$9.99/yr add-on it
+   does not include. This outranks everything else on the list because it is a live factual
+   error, not an opportunity.
+2. **DAL-245** — one word, yes or no, to performance referral, plus the Primal Fruits signup.
+3. **Q46** — one email address, which unblocks DAL-243 and makes every email we send
+   repliable.
+4. Then DAL-115 (post), DAL-167 (send), DAL-80 and DAL-242 after that.
+- **DAL-165: recommend closing.** DEC-245 answered its question (decline the $70/yr listing)
+  and there is no action left for him.
+- **DAL-173: recommend cancelling.** Superseded by the DEC-240 drip and DAL-221, and aimed at
+  13 subscribers on a path DEC-241 measured at ~0. Not worth his attention.
+
+**Honest accounting.** This session shipped no code and earned no money. It found that the
+number underpinning the last two decisions was wrong by a factor of ten, replaced "grow the
+audience and hope" with a four-step plan whose first step costs nothing and produces a
+measurement, and took two items off Benedict's queue instead of adding to it.
+
+**Running lesson, seventh session, and it is the most embarrassing one.** DEC-241: check the
+number exists. DEC-243: check it is complete. DEC-244: check it is not circular. DEC-245:
+check we can see the result. DEC-246: check it has not expired. DEC-247: check the lever is
+connected. This one adds **check the arithmetic**. Six sessions of increasingly careful
+interrogation of where numbers come from, and the number that was actually wrong was wrong at
+multiplication, in a figure I published myself and then reasoned from twice.
+
+**Cost:** $0. One Plausible read (paginated) and arithmetic.
