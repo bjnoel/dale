@@ -6493,3 +6493,91 @@ pre-fix code first (13 errors and `50 != 52`). Full suite: 1855 tests, all passi
 DAL-182 vs DAL-230 ("in-app review prompt copy" vs "App Store rating and review audit")
 scores 0.5 and would not have been blocked. The guard raises the floor; it does not
 replace reading the backlog.
+
+---
+
+## DEC-237 — 2026-07-30 — Hold the Treesmith price. The barrier is proof and paywall reach, not $39.99
+
+**Decided by:** Dale (autonomous analysis; the recommendation is to change nothing about
+price, which is why it needs no approval). Benedict owns any actual price move.
+
+**Context:** DAL-225 asked whether our price point is the barrier to the first Pro sale,
+or whether it is the paywall. 43 MAU, 0 Pro purchases, 126 days at $0 revenue.
+
+The first finding was that the question could not be answered from the repo at all: the
+**price was written down nowhere.** `business-state.json` described the pricing *model*
+in detail, and CLAUDE.md carried a correction about not calling Pro a subscription, but
+no file contained a dollar figure. Pulled from the live listings instead:
+
+- iOS: Pro **A$39.99 one-time**, Cloud Backup **A$9.99/year**. App free.
+- Android: "$9.99 - $39.99 per item", so the two stores are at parity.
+- **0 ratings on both stores.** Apple therefore shows no star rating at all.
+- **Android downloads: 10+**, which is Google's bucket for 10 to 49 installs.
+
+**Decision: do not change the price, and do not run a price test yet.** Three reasons,
+in order of how much they matter.
+
+*1. Zero sales is the expected outcome at any price.* Freemium paywall conversion runs
+1 to 3%. 43 MAU times 2% is 0.9 expected purchases. Observing 0 is fully consistent with
+the price being correct, so the observation carries almost no information about price.
+Halving to $19.99 could plausibly sell nothing and we would have burned the lever and
+learned nothing. Distinguishing 2% from 4% conversion needs hundreds of paywall views a
+month; we are getting a handful.
+
+*2. The level is defensible against the category anyway.* One-time $39.99 is roughly one
+year of a competitor subscription: Grove $39.99/yr, Croppa $36/yr, FruitForest $49.99/yr,
+Planta $69.99/yr, Gardenize $52.99/yr. Planter sells lifetime at exactly $39.99, which
+market-validates the number. The cheap counter-anchor is Trees Diary, which has done
+per-tree profiles, varieties, maps and multi-year history for **$1.99 since 2015** and has
+0 ratings to show for it. Cheap did not save it.
+
+*3. Where we genuinely are alone is price* structure*, not level.* Every competitor offers
+a low-friction way in: Grove $4.99/mo, FruitForest one month free, Croppa 7 days free,
+Planta monthly. Treesmith has exactly one door and it asks A$39.99 up front from a
+developer with no star rating. If anything deters buyers it is the shape of the ask plus
+the absence of proof.
+
+**Two assumptions in CLAUDE.md turned out to be wrong, and both are now corrected there.**
+
+*The competitive claim.* CLAUDE.md asserted our competition is "generic plant-tracker apps
+with no collector-specific features". Four AU-store apps do fruit-tree-specific tracking,
+and **two launched after Treesmith**: Fruit Tree Tracker: Grove (2026-06-28) tracks species,
+variety, **rootstock**, age, pollinators and harvest, which is our pitch almost verbatim,
+and it already outranks us on "fruit tree tracker"; Rootstock: Seed & Plant Log (2026-07-17,
+thirteen days old) logs seed provenance and crosses; FruitForest (2023) does orchard GPS
+mapping; Trees Diary (2015) does per-tree multi-year profiles. The niche is being colonised
+now. Every one of them is also on 0 ratings, so social proof is contested ground that
+nobody currently holds.
+
+*The ASO assumption.* Ranked Treesmith across 21 AU-store terms. We are #1 for "graft
+tracker", "grafting tracker" and "treesmith", and rank **nowhere** for "plant tracker",
+"garden journal", "plant journal", "plant inventory", "plant collection tracker", "fruit
+tree journal" or "orchard journal". Bare "graft" and "grafting" are actively worthless: 33
+to 35 of 48 results are Minecraft-style building games, because Apple fuzzy-matches graft
+to craft. Our subtitle ("Graft, scion & garden journal") spends the most valuable ASO field
+we have on terms that either nobody types or that return games. Graft tracking is the right
+thing to be *better* at and the wrong thing to be *found* by.
+
+**Recommended order to the first dollar** (posted to the relevant tickets, not just here):
+
+1. **Ratings (DAL-230).** 0 ratings is the hard gate at any price. Highest leverage.
+2. **Make the paywall reachable (DAL-224).** 30 free plants against Grove's 5 and
+   FruitForest's 10. Cutting to 15 would still leave us the most generous free tier in the
+   category, and it is the only lever that generates the paywall views a future pricing
+   decision would need. This analysis is the evidence DAL-224 was missing.
+3. **Retarget ASO (DAL-177, premise redirected in a comment).** Graft and scion stay in the
+   description where they convert; subtitle and keyword field move to searched terms.
+4. **Only then price**, once paywall views clear roughly 200/month. The likely change is
+   adding a cheaper way in rather than discounting Pro.
+
+**Also recorded:** DAL-229 closed. Benedict confirmed Android is live and people have
+installed it; verified against the live listing, and treestock's /treesmith.html has
+linked the Play listing with UTM tags since Android left beta on 2026-06-15.
+
+**Method note for future sessions:** the iTunes Search API
+(`itunes.apple.com/search?country=AU&media=software`) gives prices, ratings counts and
+release dates in bulk for free, and is how the rank and competitor tables were built.
+In-app purchase prices are not in that API and were read off the store pages. Play install
+buckets are in the served HTML but not in the JS-rendered view.
+
+**Cost:** $0. No code changed, so no tests were affected.

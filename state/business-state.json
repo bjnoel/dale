@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 88,
+  "session_count": 89,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -20,12 +20,39 @@
         "app": "/Users/bjnoel/Projects/treesmith-app",
         "web": "/Users/bjnoel/Projects/treesmith-web"
       },
-      "status": "first-release-approved",
-      "release_version": "1.0.1+13",
-      "store_status": "Apple approved (2026-04-27)",
+      "status": "live-both-stores",
+      "release_version": "1.0.9 (2026-07-28)",
+      "store_status": "iOS live (listed 2026-04-24, Apple approved 2026-04-27). Android live, confirmed by Benedict and verified 2026-07-30 (DAL-229).",
+      "store_urls": {
+        "ios": "https://apps.apple.com/au/app/treesmith-plant-graft-tracker/id6761506742",
+        "android": "https://play.google.com/store/apps/details?id=app.treesmith"
+      },
       "pricing_model": "freemium: 30 plants free. Pro = ONE-TIME purchase (unlimited plants, multiple locations, reminders, bulk ops), NOT a subscription. Cloud backup is a SEPARATE auto-renewing yearly subscription requiring Pro, and is the only recurring product. Never describe Pro as a subscription or list cloud backup as a Pro feature.",
-      "subscribers": 0,
-      "revenue_total": 0,
+      "prices_aud": {
+        "pro_one_time": 39.99,
+        "cloud_backup_yearly": 9.99,
+        "verified": "2026-07-30 (DAL-225) from both live listings. Play shows '$9.99 - $39.99 per item', so iOS and Android are at price parity."
+      },
+      "store_metrics": {
+        "verified": "2026-07-30 (DAL-225)",
+        "ios_ratings": 0,
+        "android_ratings": 0,
+        "android_downloads_bucket": "10+ (Google's bucket for 10-49 installs)",
+        "note": "0 ratings on both stores, so Apple displays no star rating at all. DEC-237 treats this as the binding constraint on conversion, ahead of the price level."
+      },
+      "pricing_analysis": "DEC-237 / DAL-225 (2026-07-30): $39.99 one-time is ~1 year of a category subscription (Grove $39.99/yr, Croppa $36/yr, FruitForest $49.99/yr, Planta $69.99/yr) and Planter sells lifetime at exactly $39.99, so the level is defensible. Do NOT cut the price: at 43 MAU, 0 sales is the expected result at any price (43 x 2% = 0.9), and a 30-plant free tier means almost nobody sees the paywall. Revisit price only once paywall views clear ~200/month.",
+      "competitors_direct": {
+        "verified": "2026-07-30 (DAL-225), AU App Store",
+        "note": "Fruit-tree-specific competition now EXISTS. Two of these launched after Treesmith. All are on 0 ratings, so social proof is winnable ground nobody holds.",
+        "apps": [
+          "Fruit Tree Tracker: Grove (launched 2026-06-28, 0 ratings, 5 trees free, $39.99/yr or $4.99/mo) - tracks species, variety, rootstock, planting date, age, pollinators, harvest. Outranks us on 'fruit tree tracker'.",
+          "Rootstock: Seed & Plant Log (launched 2026-07-17, 0 ratings, free in early release) - seed provenance and crosses, for seed savers and hobbyist breeders.",
+          "FruitForest: Orchard Mapping (2023, 0 ratings, 10 trees free + 1mo trial, $49.99-$99.99/yr) - orchard GPS mapping, cloud sync, team collaboration.",
+          "Trees Diary (2015, 0 ratings, $1.99 paid up front) - per-tree profiles, varieties, map, multi-year history. The cheap counter-anchor, and 0 ratings after 11 years shows cheap does not win.",
+          "Croppa (Australian, 2025-06, 13 ratings, $36/yr, 7-day trial) - vegetable focus, AU planting zones, very actively shipped."
+        ]
+      },
+      "aso_findings": "DAL-225 (2026-07-30): ranked #1 for 'graft tracker', 'grafting tracker', 'treesmith'. Ranked NOWHERE for 'plant tracker', 'garden journal', 'plant journal', 'plant inventory', 'plant collection tracker', 'fruit tree journal', 'orchard journal'. Bare 'graft'/'grafting' returns 33-35 building games out of 48 results because Apple fuzzy-matches graft to craft. Graft is the right thing to be BETTER at and the wrong thing to be FOUND by: keep it in the description, move subtitle and keyword field onto searched terms.",
       "dale_role": "Growth, ASO, marketing, content, cross-promotion from treestock, web companion. Flutter app code stays with Benedict -- propose, don't commit.",
       "aso_work_done": "2026-04-27 (DAL-169): title, subtitle, keywords, description drafted for App Store Connect",
       "community_launch_drafts": "2026-04-27 (DAL-171): WA Rare Fruit FB post + WAAS newsletter blurb ready for Benedict to post"
@@ -77,15 +104,15 @@
       "status": "live-in-community",
       "monetisation_path": "Cross-promote Treesmith Pro to treestock audience (DEC-104). Standalone treestock paid tier remains a future option.",
       "dashboard_url": "https://treestock.com.au",
-      "nurseries_monitored": 26,
+      "nurseries_monitored": 27,
       "nurseries_researched": 28,
       "first_scrape_date": "2026-03-05",
       "days_of_data": 23,
-      "products_tracked": 11798,
-      "in_stock": 4603,
+      "products_tracked": 14000,
+      "in_stock": 5595,
       "species_matched_pct": 73,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
-      "subscribers": 6,
+      "subscribers": 13,
       "revenue_total": 0,
       "category_expansion": {
         "status": "pilot-live",

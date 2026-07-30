@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-07-23",
-  "last_session": 88,
+  "last_updated": "2026-07-30",
+  "last_session": 89,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -101,7 +101,10 @@
     "revenue": "Direct monetisation",
     "infrastructure": "Infrastructure"
   },
-  "archived_parents": ["beestock", "walkthrough"],
+  "archived_parents": [
+    "beestock",
+    "walkthrough"
+  ],
   "session_log": [
     {
       "session": 86,
@@ -1142,6 +1145,35 @@
         "treesmith_subscribers": 0,
         "nurseries_monitored": 27,
         "products_tracked": 13944
+      }
+    },
+    {
+      "session": 89,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "revenue:monetisation",
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-229",
+        "DAL-225"
+      ],
+      "tickets_proposed": [
+        "DAL-237",
+        "DAL-238"
+      ],
+      "notes": "DEC-237. Competitive pricing analysis: hold $39.99, barrier is 0 ratings + unreachable paywall, not price. Corrected two wrong assumptions in CLAUDE.md (fruit-tree competitors now exist; graft is an ASO dead end). Recorded the previously-unwritten prices.",
+      "metric_snapshot": {
+        "weekly_organic_visitors": 930,
+        "treestock_subscribers": 13,
+        "beestock_subscribers": 0,
+        "revenue_monthly": 0,
+        "treesmith_subscribers": 0,
+        "treesmith_price_pro_aud": 39.99,
+        "treesmith_ios_ratings": 0,
+        "treesmith_android_ratings": 0,
+        "nurseries_monitored": 27,
+        "products_tracked": 14000
       }
     }
   ],

@@ -250,7 +250,25 @@ work with files in that directory.
 
 - You have judgment. Use it. Don't ask Benedict things you can figure out yourself.
 - Revenue quality: recurring > one-time, retained > churned.
-- The competition for Track A (Treesmith) is generic plant-tracker apps with no
-  collector-specific features. Our differentiator is graft tracking, scion sources,
-  activity logs, and a built-in audience via treestock.
+- The competition for Track A (Treesmith) is NO LONGER just generic plant-tracker
+  apps. Verified 2026-07-30 (DAL-225, DEC-237): fruit-tree-specific competitors now
+  exist and two launched after us. Fruit Tree Tracker: Grove (2026-06-28) tracks
+  species, variety, rootstock, age, pollinators and harvest, and already outranks us
+  on "fruit tree tracker". Rootstock: Seed & Plant Log (2026-07-17) does seed
+  provenance and crosses. FruitForest (2023) does orchard GPS mapping. Trees Diary
+  (2015) does per-tree multi-year profiles for $1.99. All of them are on 0 ratings.
+  Our differentiator is still graft tracking, scion sources, activity logs, and a
+  built-in audience via treestock, but the moat is narrowing. Do not assert we are
+  alone in the niche without checking the store first.
+- Graft keywords are an ASO dead end, even though graft tracking is a real
+  differentiator. Bare "graft"/"grafting" searches return mostly Minecraft-style
+  building games (Apple fuzzy-matches graft to craft), and the terms we rank #1 for
+  ("graft tracker", "grafting tracker") have no volume. Keep graft and scion in the
+  description where they convert; point the subtitle and keyword fields at terms
+  people actually search ("plant tracker", "garden journal", "fruit tree", "orchard").
+- Treesmith Pro is A$39.99 one-time and Cloud Backup is A$9.99/year (verified
+  2026-07-30, same on both stores). Do not cut the price to chase the first sale:
+  at 43 MAU, 0 sales is the statistically expected result at any price. Ratings
+  (0 on both stores) and paywall reachability (30 free plants vs a 5-10 competitor
+  norm) both rank ahead of price. See DEC-237.
 - The competition for Track B is... nobody. That's the point.
