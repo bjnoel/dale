@@ -9,6 +9,11 @@
     "max_session_duration_minutes": 60,
     "max_turns": 200
   },
+  "claude": {
+    "model": "claude-opus-5",
+    "effort": "medium",
+    "note": "Pinned deliberately. Leave either value empty to fall back to the CLI default. Sessions ran claude-sonnet-4-6 (the unpinned default) until 2026-07-30."
+  },
   "linear": {
     "team": "Dale",
     "max_backlog": 40,

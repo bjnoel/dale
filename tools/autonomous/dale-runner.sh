@@ -151,6 +151,23 @@ if [ -f /opt/dale/secrets/claude.env ]; then
     export CLAUDE_CODE_OAUTH_TOKEN
 fi
 
+# Model and effort. Both are pinned in config.json rather than left to the CLI
+# default: an autonomous job that runs hourly should not silently change model
+# (and cost profile) when the default moves. Empty values fall back to the
+# default, so clearing the config key is the rollback.
+CLAUDE_MODEL=$(python3 -c "
+import json; print(json.load(open('$CONFIG')).get('claude', {}).get('model', '') or '')" 2>/dev/null || echo "")
+CLAUDE_EFFORT=$(python3 -c "
+import json; print(json.load(open('$CONFIG')).get('claude', {}).get('effort', '') or '')" 2>/dev/null || echo "")
+
+# Expanded as ${MODEL_ARGS[@]+...} at the call site: an empty array under
+# `set -u` is an unbound-variable error on bash < 4.4, and clearing both config
+# keys is exactly the documented rollback.
+MODEL_ARGS=()
+[ -n "$CLAUDE_MODEL" ] && MODEL_ARGS+=(--model "$CLAUDE_MODEL")
+[ -n "$CLAUDE_EFFORT" ] && MODEL_ARGS+=(--effort "$CLAUDE_EFFORT")
+log "Model: ${CLAUDE_MODEL:-<cli default>} (effort: ${CLAUDE_EFFORT:-<cli default>})"
+
 # Build the session prompt
 PROMPT=$(python3 "$SCRIPT_DIR/session-prompt.py" --session-type "$SESSION_TYPE" 2>>"$LOG_DIR/prompt-errors.log") || {
     log "Failed to build session prompt."
@@ -176,6 +193,7 @@ while [ "$ATTEMPT" -lt "$MAX_ATTEMPTS" ]; do
         --dangerously-skip-permissions \
         --output-format json \
         --max-turns "$MAX_TURNS" \
+        ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} \
         > "$SESSION_LOG" 2>"$LOG_DIR/claude-stderr-$TODAY-$HOUR.log"
 
     EXIT_CODE=$?
