@@ -194,6 +194,56 @@ def get_linear_tasks(data_dir):
         return None
 
 
+def get_treesmith_status(data_dir):
+    """Render the Treesmith mirror manifest written by refresh_treesmith_status.py.
+
+    Deliberately compact (DAL-179): the mirrors are on local disk, so this block
+    tells a session what exists and where, and the session reads the files it
+    actually needs instead of paying for them in every prompt.
+    """
+    path = os.path.join(data_dir, "treesmith-status.json")
+    if not os.path.exists(path):
+        return ("No Treesmith mirror manifest. Run "
+                "tools/autonomous/refresh_treesmith_status.py (DAL-179).")
+    try:
+        with open(path) as f:
+            manifest = json.load(f)
+    except (json.JSONDecodeError, IOError) as e:
+        return f"Treesmith manifest unreadable: {e}"
+
+    lines = [
+        "Benedict's Treesmith repos are mirrored READ-ONLY on this server. Push is",
+        "disabled. Read these paths directly instead of assuming what the app does,",
+        "and propose app changes rather than editing the Flutter code.",
+        "",
+    ]
+    for key, entry in manifest.get("repos", {}).items():
+        path_str = entry.get("path", "?")
+        if entry.get("error"):
+            lines.append(f"- {key}: {path_str} — {entry['error']}")
+            continue
+        stale = " STALE (last pull failed)" if entry.get("stale") else ""
+        lines.append(f"- {key}: {path_str}{stale}")
+        version = entry.get("version")
+        if version:
+            lines.append(f"  version {version} (last released build "
+                         f"{entry.get('last_released_build', '?')})")
+        lines.append(f"  HEAD {entry.get('commit', '?')} "
+                     f"{entry.get('commit_date', '?')[:10]} "
+                     f"\"{entry.get('commit_subject', '')}\"")
+        if entry.get("features"):
+            lines.append(f"  lib/features: {', '.join(entry['features'])}")
+        if entry.get("pages"):
+            lines.append(f"  src/pages: {', '.join(entry['pages'])}")
+        if entry.get("journal_entries"):
+            lines.append(f"  journal entries: {len(entry['journal_entries'])}")
+    lines.append("")
+    lines.append(f"Manifest generated {manifest.get('generated_at', '?')}. "
+                 "Full detail (dependency list, docs index) is in "
+                 "/opt/dale/data/treesmith-status.json.")
+    return "\n".join(lines)
+
+
 def get_plausible_stats():
     """Get Plausible analytics summary, if available."""
     try:
@@ -651,6 +701,7 @@ def build_prompt():
         os.path.join(repo, "decisions", "decision-log.md"), n=5
     )
     data_summary = get_data_summary(data)
+    treesmith_status = get_treesmith_status(data)
     pending_approvals = get_pending_approvals(auto)
     token_stats = get_token_stats(auto)
     linear_data = get_linear_tasks(data)
@@ -688,6 +739,9 @@ task WELL before moving on. No shortcuts, no half-finished work. Quality over qu
 
 ## Today's Data Summary
 {data_summary}
+
+## Treesmith Codebase (read-only mirrors, DAL-179)
+{treesmith_status}
 
 ## Token Usage History
 {token_stats}
@@ -861,6 +915,7 @@ def build_generation_prompt():
         os.path.join(repo, "decisions", "decision-log.md"), n=5
     )
     data_summary = get_data_summary(data)
+    treesmith_status = get_treesmith_status(data)
     linear_data = get_linear_tasks(data)
     linear_block = format_linear_block(linear_data)
 
@@ -898,6 +953,9 @@ You MUST: create tickets using `python3 /opt/dale/autonomous/linear_update.py cr
 
 ## Today's Data Summary
 {data_summary}
+
+## Treesmith Codebase (read-only mirrors, DAL-179)
+{treesmith_status}
 
 ## Ticket Generation Rules
 

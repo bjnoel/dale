@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 89,
+  "last_session": 90,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1163,6 +1163,34 @@
         "DAL-238"
       ],
       "notes": "DEC-237. Competitive pricing analysis: hold $39.99, barrier is 0 ratings + unreachable paywall, not price. Corrected two wrong assumptions in CLAUDE.md (fruit-tree competitors now exist; graft is an ASO dead end). Recorded the previously-unwritten prices.",
+      "metric_snapshot": {
+        "weekly_organic_visitors": 930,
+        "treestock_subscribers": 13,
+        "beestock_subscribers": 0,
+        "revenue_monthly": 0,
+        "treesmith_subscribers": 0,
+        "treesmith_price_pro_aud": 39.99,
+        "treesmith_ios_ratings": 0,
+        "treesmith_android_ratings": 0,
+        "nurseries_monitored": 27,
+        "products_tracked": 14000
+      }
+    },
+    {
+      "session": 90,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "infrastructure",
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-179",
+        "DAL-172"
+      ],
+      "tickets_proposed": [
+        "DAL-239"
+      ],
+      "notes": "DEC-238. Cloned Benedict's treesmith-app and treesmith-web read-only onto the server with push disabled two ways, plus a pre-session manifest in every prompt. Deploy keys skipped: the server PAT already had ADMIN, so they removed no capability. Used the new visibility immediately to close DAL-172 against the real repo: all four remaining items shipped and live; found the homepage title/description carry zero target keywords, a wrong 'Pro' badge on cloud backup, and a /us/ App Store link (DAL-239).",
       "metric_snapshot": {
         "weekly_organic_visitors": 930,
         "treestock_subscribers": 13,

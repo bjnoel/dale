@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 89,
+  "session_count": 90,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -17,8 +17,9 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web"
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
       "release_version": "1.0.9 (2026-07-28)",
@@ -55,7 +56,25 @@
       "aso_findings": "DAL-225 (2026-07-30): ranked #1 for 'graft tracker', 'grafting tracker', 'treesmith'. Ranked NOWHERE for 'plant tracker', 'garden journal', 'plant journal', 'plant inventory', 'plant collection tracker', 'fruit tree journal', 'orchard journal'. Bare 'graft'/'grafting' returns 33-35 building games out of 48 results because Apple fuzzy-matches graft to craft. Graft is the right thing to be BETTER at and the wrong thing to be FOUND by: keep it in the description, move subtitle and keyword field onto searched terms.",
       "dale_role": "Growth, ASO, marketing, content, cross-promotion from treestock, web companion. Flutter app code stays with Benedict -- propose, don't commit.",
       "aso_work_done": "2026-04-27 (DAL-169): title, subtitle, keywords, description drafted for App Store Connect",
-      "community_launch_drafts": "2026-04-27 (DAL-171): WA Rare Fruit FB post + WAAS newsletter blurb ready for Benedict to post"
+      "community_launch_drafts": "2026-04-27 (DAL-171): WA Rare Fruit FB post + WAAS newsletter blurb ready for Benedict to post",
+      "web_companion": {
+        "domain": "treesmith.app",
+        "stack": "Astro on Cloudflare Pages",
+        "verified": "2026-07-30 (DAL-172) against the live sitemap",
+        "indexable_pages": [
+          "/",
+          "/features",
+          "/graft-tracking",
+          "/grafting-techniques",
+          "/journal",
+          "/journal (3 posts)",
+          "/press",
+          "/privacy",
+          "/terms"
+        ],
+        "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link."
+      }
     },
     "a_paused_walkthrough": {
       "name": "Perth AI Efficiency Audits (PAUSED 2026-04-27)",
@@ -162,6 +181,7 @@
     "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
     "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env"
+    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)"
   }
 }

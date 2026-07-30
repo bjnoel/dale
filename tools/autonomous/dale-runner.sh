@@ -94,6 +94,12 @@ python3 "$SCRIPT_DIR/check-weekly-update.py" || {
     exit 0
 }
 
+# 7. Refresh the read-only Treesmith mirrors (DAL-179). Non-fatal: a stale
+# manifest still beats no visibility, and the manifest records its own staleness.
+python3 "$SCRIPT_DIR/refresh_treesmith_status.py" >>"$LOG_DIR/cron.log" 2>&1 || {
+    log "Warning: Treesmith mirror refresh failed (manifest may be stale)"
+}
+
 # --- Fetch Linear tickets ---
 
 log "Fetching Linear tickets"

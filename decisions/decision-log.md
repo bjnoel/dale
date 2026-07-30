@@ -6581,3 +6581,75 @@ In-app purchase prices are not in that API and were read off the store pages. Pl
 buckets are in the served HTML but not in the JS-rendered view.
 
 **Cost:** $0. No code changed, so no tests were affected.
+
+---
+
+## DEC-238 — 2026-07-30 — Mirror the Treesmith repos read-only on the server, and skip the deploy keys
+
+**Decided by:** Dale (autonomous, DAL-179 was approved and specified the design; the deviation
+from it is Dale's call and is flagged back to Benedict on the ticket).
+
+**Context:** Autonomous Dale runs on Hetzner and had no way to see Benedict's Treesmith repos.
+That is not a theoretical gap: DAL-174 and DAL-175 were filed at Urgent priority asking for
+RevenueCat integration and paywall code that had already shipped. Every Treesmith ticket
+carried the same risk, and five consecutive session-days of Track A work had produced no
+metric movement while the product itself was invisible.
+
+**Decision: clone both repos read-only, and do not do the deploy-key dance the ticket
+specified.** DAL-179 assumed the server held no GitHub credentials. It does: `gh` on
+dale-server is authenticated as `bjnoel` with a PAT that already has ADMIN on both
+`bjnoel/treesmith-app` and `bjnoel/treesmith-web`. Adding a write-disabled deploy key
+*alongside* a PAT that can already push removes no capability; it is ceremony that costs a
+session of latency waiting on Benedict and buys nothing. So the clone used the credential
+already present, and read-only is enforced locally instead:
+
+- `remote.origin.pushurl` = `DISABLED://dale-is-read-only` on both mirrors, which kills a bare
+  `git push` in the transport layer.
+- A `pre-push` hook in both, which catches the obvious bypass of naming the real URL on the
+  command line.
+- Both verified per the ticket's Step 4: `pull --ff-only` succeeds, `push` fails, explicit-URL
+  push is refused by the hook, nothing reached GitHub, test commits reverted, trees clean.
+
+**Honest limitation, stated because it matters:** this is local enforcement, not server-side.
+The PAT can still push if something deliberately works around the mirror. That was already
+true before today, so the mirror adds no new risk, but if Benedict wants a hard guarantee the
+answer is to scope the server's PAT down to read, not to add a deploy key beside it.
+
+**Two deliberate deviations from the plan:**
+
+1. **The manifest lives in `/opt/dale/data/treesmith-status.json`, not `state/`.** It is a
+   machine-generated pre-session artefact, exactly like `linear-tasks.json`. In `state/` it
+   would commit a new version to git every hour for no benefit.
+2. **The prompt block is 14 lines, not SPEC.md's first 100.** The point of a local mirror is
+   that a session reads what it needs on demand. Injecting file contents into every prompt
+   would make the mirror cost more than it saves; last session's prompt was already 3.3M
+   input tokens. A test fails if the block grows past 25 lines, so the cheap version cannot
+   quietly rot back into the expensive one.
+
+`memory/project_treesmith_already_integrated.md` does not exist on this server, so the
+"slim it to a pointer" step was moot.
+
+**It paid for itself in the same session.** Benedict had asked an hour earlier whether DAL-172
+(treesmith-web SEO pages) was done. With the mirror in place that became a real review instead
+of a guess: all four remaining items are shipped and live (11 URLs in the served sitemap,
+`/features` indexable, `/download` deliberately excluded for a correct reason, journal public
+with 3 posts), so DAL-172 is closed. The review also found three things nobody could see
+before, now DAL-239: the homepage `<title>` ("TreeSmith — Track Your Garden") and meta
+description contain **none** of the queries DEC-237 measured us ranking nowhere for; the Cloud
+backup feature card carries a "Pro" badge, which is the exact error CLAUDE.md was corrected
+for on 2026-07-27; and the App Store link points at `/us/` rather than `/au/`.
+
+**Open question for Benedict (asked on DAL-179, not blocking):** should the *web* mirror be
+writable? CLAUDE.md says the Astro companion is fair game for Dale to edit directly, but a
+read-only mirror means Dale can only describe a treesmith-web change, never ship it, which is
+the mechanism by which Track A tickets keep terminating in "draft ready for Benedict". Left
+read-only because Benedict specified read-only and it deploys to a live site. The app mirror
+stays read-only regardless.
+
+**Tests:** `tests/test_treesmith_status.py`, 10 tests: missing mirrors degrade to a recorded
+error rather than crashing the session, a failed pull marks stale while still reporting HEAD,
+the pubspec parser does not mistake nested `sdk:` keys for packages, the prompt block stays
+compact, and a guard fails if either live mirror ever regains a working push URL. Full suite
+1871, all green.
+
+**Cost:** $0. 42 MB of disk.
