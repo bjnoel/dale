@@ -6751,3 +6751,93 @@ removed duplicate landmark. Full suite 1893, all passing.
 **Cost:** $0. 16 KB of badge artwork. Live at the 00:00 UTC rebuild rather than a
 hand-run partial deploy, because rebuilding the homepage outside the normal pipeline
 order risks a worse page than the one currently served for no benefit beyond hours.
+
+---
+
+## DEC-240 — 2026-07-30 — Make the Treesmith intro email a mechanism, not another draft
+
+**Decided by:** Benedict (specified the behaviour on DAL-173 four hours before this
+session), Dale (built and shipped it).
+
+**Context:** the session opened with the same four reflections as the last one: $0
+after 126 days, five of five recent session-days on Track A with flat metrics, and
+both treestock and revenue:monetisation flagged stale. DEC-239 already diagnosed
+why: Track A work keeps terminating in a document. DAL-173 had been sitting in Todo
+since April as exactly that, a draft email waiting for someone to send it.
+
+Benedict's comment at 03:33 today changed the ticket from a draft into a spec:
+"run it as a proof of concept first (send it as an email only to me) that I can
+approve. I think it would be good if we could send it to any new daily subscribers
+say ~1 week after they first subscribe (and never again)."
+
+**Decision: build the drip rather than send the broadcast.** A one-time send to the
+13 existing subscribers is a single event with 13 chances at a first sale. A drip
+that fires seven days after every future signup is a standing mechanism: every
+subscriber treestock earns from here on gets the pitch, once, without a session
+having to remember. That is the difference between a task and a funnel, and it is
+what Benedict asked for.
+
+`tools/scrapers/send_treesmith_intro.py`, three modes:
+
+- `--test EMAIL` sends one copy and records nothing. Ran it to b@bjnoel.com; that is
+  the proof of concept Benedict asked to approve.
+- `--drip` is the cron mode. Picks subscribers who signed up at least 7 days ago and
+  have never been sent it, oldest first, and stamps `treesmith_intro_sends.json`
+  after **each** send rather than once at the end, so a crash mid-run cannot re-mail
+  whoever already received it.
+- `--dry-run` lists recipients and sends nothing.
+
+**Three guards, each for a specific way this could go wrong.**
+
+1. `ENABLED_FLAG` (`/opt/dale/data/treesmith-intro-enabled`). The cron is installed
+   now and is a logged no-op until that file exists. Benedict approves the copy by
+   asking Dale to create it, or by touching it himself. This is why the mechanism
+   could ship in the same session that asked for approval, instead of waiting a day
+   for a one-line change.
+2. `DRIP_START_DATE` = 2026-07-30. Every existing subscriber predates it and is
+   therefore out of scope. They are the subject of a separate one-time broadcast
+   Benedict wants to approve on its own (DAL-221); the drip must not quietly get
+   there first. Without this, turning the flag on would have mailed all 13 at once.
+3. `MAX_PER_RUN` = 10. If the cron is down for a month the backlog drains over
+   several days rather than in one burst that reads as a blast to a mailbox provider.
+
+**The old draft had three factual errors and they are now pinned by tests.** It
+carried App Store id `6743767587`, which is not our app (ours is `6761506742`); it
+described Android as beta, which it left on 2026-06-15; and it said "Pro unlocks
+unlimited plants, multiple locations, and cloud backup", which is the exact error
+CLAUDE.md was corrected for on 2026-07-27. Cloud backup is a separate yearly
+subscription. The new copy says Pro is a one-time purchase and does not mention
+cloud backup at all, because the free tier and the one-time unlock are all this
+email needs and naming it invites the error back.
+
+**Every feature claim was checked against the app, not the marketing.** Free limit
+30 is `freePlantLimit` in `lib/core/providers/entitlement_provider.dart:102`; the Pro
+list (unlimited plants, multiple locations, reminders, bulk operations) is the
+paywall's own comparison table at `lib/features/pro/screens/paywall_screen.dart:627`.
+This is the first Treesmith copy written with the read-only mirror (DEC-238) actually
+used for what it is for.
+
+**Attribution.** The store links are direct: the reader is warm and the action we
+want is an install, so routing them through a marketing page first only adds a step.
+The secondary "read more" link carries `utm_content=intro_email`, which is what makes
+this surface countable in Plausible alongside the five DEC-239 tagged, so DAL-241 can
+tell email-driven traffic from homepage-driven traffic.
+
+**Honest expectation.** treestock gains roughly 2 to 3 subscribers a month, so this
+sends 2 to 3 emails a month. At category conversion rates that is not a first sale on
+its own, and DEC-239's blocker still stands: DAL-242 (ratings and the free-tier limit)
+is where the leverage is, and both need Benedict. What this changes is that the
+highest-intent audience we have is now reached automatically and permanently, at zero
+marginal effort, instead of once if someone remembers.
+
+**Tests:** new `tests/test_treesmith_intro.py`, 22 tests. Eligibility (delay boundary,
+never twice, case-insensitive dedupe, existing subscribers excluded, a guard that
+fails if `DRIP_START_DATE` is ever set in the future and silently kills the drip,
+unparseable dates skipped not crashed), the guards (nothing sent when not enabled,
+nothing sent on dry run, per-send logging, the cap, test mode records nothing), and
+the copy (Pro never a subscription, no cloud backup, correct listing id, AU
+storefront, no "beta", no em dashes, no unverifiable usage claims, free limit matches
+the app, compliance footer present). Verified by mutation: disabling the enabled flag
+check, the dedupe and the cap fails 4 tests. Full suite 1915, all passing.
+
+**Cost:** $0. One Resend send.

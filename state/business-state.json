@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 91,
+  "session_count": 92,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -79,7 +79,8 @@
         "audit": "DAL-218: /treesmith.html took 12 unique visitors/month out of treestock's 2,865 (0.4%).",
         "fixed_2026_07_30": "DEC-239 / DAL-219 + DAL-222. The homepage (225 visitors/mo, the top page) had NO Treesmith CTA: the promo block was wired into six page builders but never build-dashboard.py. Now renders as the last block inside <main>, after the subscribe box and its highlights, on the homepage and category landing pages. /treesmith.html now uses Apple's and Google's official badge artwork (served locally from /treesmith/, trademark attribution added) instead of plain text buttons, and links the /au/ storefront instead of /us/.",
         "instrumentation": "Every promo surface tags a distinct utm_content: homepage, landing, species, variety, rootstock. DAL-218 could only see an undifferentiated total. Re-measure in ~4 weeks: DAL-241.",
-        "expectation": "Deliberately modest. The homepage block removes a zero rather than being a growth lever, and the badge CTR gain is capped by the page receiving 12 visitors/month. Per DEC-239 the binding constraint is upstream of the funnel, not in it."
+        "expectation": "Deliberately modest. The homepage block removes a zero rather than being a growth lever, and the badge CTR gain is capped by the page receiving 12 visitors/month. Per DEC-239 the binding constraint is upstream of the funnel, not in it.",
+        "drip_email": "DEC-240 / DAL-173: tools/scrapers/send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once only (data/treesmith_intro_sends.json). Nightly cron at 23:30 UTC. It is a logged no-op until /opt/dale/data/treesmith-intro-enabled exists: Benedict approves the copy first (proof-of-concept sent to him 2026-07-30). DRIP_START_DATE 2026-07-30 excludes the 13 existing subscribers, who belong to the separate one-time broadcast DAL-221. utm_content=intro_email on the landing link."
       },
       "blocked_on_benedict": "DAL-242 (assigned to Benedict): DEC-237 ranked ratings (DAL-230) and paywall reachability (DAL-224) as the two highest-leverage levers to a first sale. Neither is Dale's to pull (Flutter review prompts; a free-tier product decision) and both sit in Backlog. This, not effort, is why sustained Track A work has not moved the metrics."
     },

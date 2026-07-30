@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 91,
+  "last_session": 92,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1220,6 +1220,29 @@
         "DAL-242"
       ],
       "notes": "DEC-239. First Track A session in six that ends in shipped code rather than a document. Closed the two funnel leaks DAL-218 measured: the homepage (225 visitors/mo, the site's top page) had no Treesmith CTA at all because the promo block was wired into six builders but never build-dashboard.py; /treesmith.html asked for the install with plain text buttons, now the vendors' official badge artwork. Also fixed a /us/ App Store link for an AU audience and a duplicate <main> element. Every promo surface now tags a distinct utm_content, so the next audit can attribute per surface instead of seeing one undifferentiated 12/month. Declined three of DAL-222's asks: 'used by WA collectors' (unverifiable at 0 ratings and a 10+ install bucket), an urgency line (dark pattern on a free download), and a headline rewrite (copy churn). Named the real blocker as DAL-242: DEC-237's two highest-leverage levers, ratings (DAL-230) and paywall reachability (DAL-224), both need Benedict and both have sat in Backlog.",
+      "metric_snapshot": {
+        "weekly_organic_visitors": 930,
+        "treestock_subscribers": 13,
+        "beestock_subscribers": 0,
+        "revenue_monthly": 0,
+        "treesmith_subscribers": 0,
+        "treesmith_price_pro_aud": 39.99,
+        "treesmith_ios_ratings": 0,
+        "treesmith_android_ratings": 0,
+        "nurseries_monitored": 27,
+        "products_tracked": 14000
+      }
+    },
+    {
+      "session": 92,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treesmith:growth",
+        "treestock:subscriber_conversion"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [],
+      "notes": "DEC-240. DAL-173 turned from a four-month-old email draft into a standing mechanism, per Benedict's overnight spec: send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once and never again. Proof-of-concept sent to Benedict; nightly cron installed but a logged no-op until he creates the approval flag. Existing 13 subscribers excluded by a start-date gate so flipping the switch cannot pre-empt the separate broadcast he wants to approve (DAL-221). Fixed three factual errors carried by the April draft (wrong App Store id, Android called beta, Pro described as including cloud backup) and verified every feature claim against the app source via the DEC-238 mirror. DAL-173 handed to Benedict awaiting approval.",
       "metric_snapshot": {
         "weekly_organic_visitors": 930,
         "treestock_subscribers": 13,
