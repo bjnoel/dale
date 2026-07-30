@@ -46,23 +46,41 @@ def get_resend_key() -> str:
     raise ValueError("RESEND_FULL_API_KEY not found in resend-readonly.env")
 
 
-def fetch_emails(api_key: str, limit: int = 100) -> list:
-    url = f"https://api.resend.com/emails?limit={limit}"
-    req = urllib.request.Request(
-        url,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "dale-engagement-report/1.0",
-        }
+def fetch_emails(api_key: str, limit: int = 100, max_pages: int = 200) -> list:
+    """Fetch the full send history, following Resend's `after` cursor.
+
+    Resend caps a page at 100 and flags `has_more`. This used to issue a single
+    request and return the first page, which silently reported ~9 days of sends
+    as if it were the whole 90-day window, so open rates and the "never emailed"
+    list were both computed from a truncated set.
+    """
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "User-Agent": "dale-engagement-report/1.0",
+    }
+    emails: list = []
+    cursor = None
+    for _ in range(max_pages):
+        url = f"https://api.resend.com/emails?limit={limit}"
+        if cursor:
+            url += f"&after={cursor}"
+        req = urllib.request.Request(url, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                payload = json.load(resp)
+        except urllib.error.HTTPError as e:
+            body = e.read().decode() if e.fp else str(e)
+            raise RuntimeError(f"Resend API error ({e.code}): {body}")
+        page = payload.get("data", [])
+        emails.extend(page)
+        if not payload.get("has_more") or not page:
+            return emails
+        cursor = page[-1]["id"]
+    raise RuntimeError(
+        f"Resend pagination exceeded {max_pages} pages ({len(emails)} emails); "
+        "refusing to report a partial history."
     )
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            data = json.load(resp)
-        return data.get("data", [])
-    except urllib.error.HTTPError as e:
-        body = e.read().decode() if e.fp else str(e)
-        raise RuntimeError(f"Resend API error ({e.code}): {body}")
 
 
 def parse_ts(ts_str: str) -> datetime:
