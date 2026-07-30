@@ -7290,3 +7290,110 @@ stock than WA. Nothing here moves $0 today.
 
 **Cost:** $0. Read-only Plausible and snapshot queries plus one fetch of the Rare Fruit SA
 links page.
+
+---
+
+## DEC-245 — 2026-07-30 — Do not rent a backlink, and do not buy traffic before deciding what traffic is worth
+
+**Decided by:** Dale (autonomous analysis of a spending question). The spend itself is
+Benedict's call under the authority table and DAL-165 is handed back to him with a
+recommendation, not a decision taken.
+
+**Context: the same four reflections.** $0 after 126 days, Track A stale at 5 of 5
+session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale with the
+metric unmoved. Outreach and link building is the one category in the recent
+distribution with **zero** session-days, and DAL-165 is where Benedict left a direct,
+unanswered, money question at 09:21 today: "permaculture directory is $75/y to join (I
+do have PDC, so could do this) - worth it for the link? On top of all the other things,
+RFCWA, RFSA, STFC Qld".
+
+It is also the right lever family to be asking about. DEC-243 established that
+treestock's SEO constraint is **rank, not click-through**: the striking-distance set is
+one query family at position 10-14 and our titles already match it word for word. What
+moves rank from there is authority, and authority is links. So "should we buy a link"
+is a reasonable question, not a distraction.
+
+**Finding 1: the offer is better than expected, and I checked rather than assumed.**
+
+Three live Permaculture Australia listing pages (Urban Revolution, WaterUps, Savour Soil
+Permaculture) all render the business website as `<a target="_blank" href="...">` with
+**no rel attribute at all**. Do-follow. The listing pages are self-canonical, carry no
+noindex, and are indexed (the Urban Revolution listing returns in search). Most paid
+directories nofollow everything and are worth nothing; this one is not one of those.
+
+**The price is also wrong in the question, in a way that matters.** It is **$70/year**,
+not $75, and the cheap $45 Ordinary tier does **not** include a directory listing at all.
+The listing exists only on Professional ($70) and Organisation ($85).
+
+**Finding 2: four reasons to decline anyway, in ascending order of how much I believe
+them.**
+
+*a. It is a rented link.* Membership is annual and "cancel anytime", so the listing goes
+when the membership goes. Every other target on the DAL-165 list (RFCWA, RFSA, STFC, and
+the new one below) is permanent and free. Paying in perpetuity for a link that evaporates
+the day you stop is the structurally worst form of link to own, and the bill never ends.
+
+*b. The eligibility wording does not describe us.* Professional membership is "OPEN to
+Individuals earning money from Permaculture (PDC or other accreditation required)".
+Benedict holds the PDC. treestock earns $0 and is not a permaculture business. Joining a
+professional tier on a stretched claim to obtain a backlink is exactly what Prime
+Directive 1 is for. Recorded explicitly so this does not get re-litigated as a technicality:
+if he wants to join PA because he wants to be in PA, that is a good decision on its own
+terms and the listing is a free extra. It is the *purchase for SEO* that is declined.
+
+*c. We could not tell whether it worked.* treestock has **no backlink visibility of any
+kind**. GSC's API does not expose the Links report and we have never had a backlink tool.
+We would be buying an SEO input with no way to observe the output, then guessing again at
+renewal. This is the fourth consecutive session where the number needed to make a call did
+not exist in a usable form: DEC-241 (does it exist), DEC-243 (is it complete), DEC-244 (is
+it circular), and now **can we see it at all**. Raised as DAL-253: Bing Webmaster Tools is
+free, does expose referring domains, and Bing plus DuckDuckGo already supply 644 of
+treestock's 3,220 monthly visitors from an index we have never once looked at.
+
+*d. Sequencing, and this is the argument I would actually defend.* DEC-241 measured that
+the only thing this business produces at scale is referral: 639 buyers a month handed to
+27 nurseries for free, with a treestock-to-Treesmith pass-through of about 0%. Traffic is
+therefore the multiplier on exactly one revenue path, and that path is DAL-245, which is
+unanswered and is Benedict's call. **Until DAL-245 is decided, treestock traffic has no
+price**, and spending recurring money to grow an input to a revenue path we have not
+switched on is out of order.
+
+The same argument runs the other way and that is the useful half: if DAL-245 is a yes,
+the referral arithmetic prices a click for the first time at roughly 1.7 to 5 cents
+($21 to $62/month against 1,245 clicks). A $70/year link that reliably delivered 200
+extra clicks a month would then be an obvious yes on arithmetic rather than a hunch.
+Posted to DAL-245, because it means that decision unblocks more than it appears to.
+
+**Finding 3: a correction to my own April recommendation.** DAL-165's Tier 1 told
+Benedict to ask the RFCWA webmaster for a links-page listing. I went and looked at
+rarefruitclub.au today and **could not find a links or resources page**; the public site
+is thin and members-area heavy. So the realistic RFCWA ask is a newsletter or meeting
+mention, which is audience rather than a link. Flagged to him rather than quietly
+dropped, since he is the member and can settle it in 30 seconds.
+
+Worth stating plainly: **none of the free links has landed yet.** RFSA is drafted and
+sitting with him (DAL-167), STFC comes through the rebuild (DEC-244, DAL-252), RFCWA may
+have nowhere to go. Buying a fourth link before any of the free three has landed is
+guessing with money.
+
+**Finding 4: a free target that is better than the paid one, found while checking the
+paid one.** Urban Revolution (urbanrevolution.com.au), Victoria Park, Perth. Permaculture
+eco and garden store, all staff hold PDCs, curates **six resources pages**. The
+garden-and-soil page links out do-follow and currently lists five WA suppliers. More
+topically relevant than a national directory listing, permanent, $0, in Perth, and it is
+a walk-in conversation rather than an email, which is how Track B has always worked best.
+Posted to DAL-232, along with two method notes: check `rel` before ranking any link
+target, and prefer permanent free links over recurring paid ones.
+
+**Also flagged:** DAL-232 (backlink research) and DAL-165 are close to the same ticket.
+Suggested DAL-232 narrow to actioning do-follow targets rather than running another
+research pass, or fold into DAL-165.
+
+**Honest accounting.** This session spent nothing, shipped no code and sent nothing. It
+answered a money question with evidence instead of instinct, corrected a price and one of
+my own April recommendations, and found a free link target that beats the paid one. What
+it is really worth is the sequencing rule: **decide what traffic is worth before buying
+traffic.**
+
+**Cost:** $0. Read-only fetches of the Permaculture Australia join page, three directory
+listings, rarefruitclub.au and two Urban Revolution pages.

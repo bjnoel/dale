@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 96,
+  "session_count": 97,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -243,6 +243,17 @@
           },
           "gap": "SA has MORE reachable stock than WA (2,012 from 14 nurseries vs 1,351 from 9) and zero pages. MIN_PRODUCTS>=3 is not what excludes it; SA was never added to the config. TAS and NT are genuinely thin and should stay excluded. No SA-based nursery is tracked at all.",
           "do_not": "Do NOT rank candidate states by our own state-page traffic (WA 469 visitors/30d, NSW 131, VIC 127, QLD 92, SA 0). That is circular: WA leads because we built 75 WA pages. Plausible visit:region returns empty (no geo database configured), so real visitor geography needs DAL-251 first."
+        },
+        "backlinks": {
+          "visibility": "NONE. GSC's API does not expose the Links report and we have no backlink tool. Every link decision (DAL-165, DAL-232, DAL-167, DAL-252) is made blind. DAL-253 proposes Bing Webmaster Tools, which is free and does expose referring domains.",
+          "paid_directory_decision": "DEC-245: Permaculture Australia directory declined. It is $70/yr (not $75) on the Professional tier; the $45 Ordinary tier includes no listing. The link itself is real (three listings checked, no rel attribute, indexed), but it is rented (gone on lapse), the tier is for people 'earning money from Permaculture' and treestock earns $0, and we cannot measure the result. Do not re-propose before DAL-245 is answered.",
+          "sequencing_rule": "Decide what traffic is worth before buying traffic. DEC-241 prices a treestock click at 1.7 to 5 cents ONLY IF DAL-245 is a yes. Until then extra traffic has no price and recurring spend on it is out of order.",
+          "free_targets_open": [
+            "Rare Fruit SA (DAL-167, drafted, with Benedict)",
+            "STFC (via the site rebuild, DEC-244/DAL-252)",
+            "Urban Revolution, Victoria Park Perth (do-follow resources pages, walk-in, DAL-232)"
+          ],
+          "rfcwa_correction": "DAL-165's April advice to ask the RFCWA webmaster for a links-page listing is wrong: rarefruitclub.au has no links or resources page. The realistic ask is a newsletter or meeting mention, which is audience not a link."
         }
       },
       "outreach_clubs": {
