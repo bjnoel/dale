@@ -177,7 +177,7 @@ def collect_indexing_progress(service, dashboard_dir=DASHBOARD_DIR):
 
     print(f"--- INDEXING PROGRESS ({start_str} to {end_str}, 90 days) ---")
 
-    page_rows = query_gsc(service, SITE_URL, start_str, end_str, ["page"], row_limit=2000)
+    page_rows = query_gsc(service, SITE_URL, start_str, end_str, ["page"])
     indexed_urls = set()
     for row in page_rows:
         url = row["keys"][0]
@@ -348,24 +348,47 @@ def date_range(days_back=30):
     return str(start), str(end)
 
 
-def query_gsc(service, site_url, start_date, end_date, dimensions, row_limit=500):
-    body = {
-        "startDate": start_date,
-        "endDate": end_date,
-        "dimensions": dimensions,
-        "rowLimit": row_limit,
-        "startRow": 0,
-    }
-    try:
-        response = (
-            service.searchanalytics()
-            .query(siteUrl=site_url, body=body)
-            .execute()
-        )
-        return response.get("rows", [])
-    except HttpError as e:
-        print(f"  ERROR querying GSC ({dimensions}): {e}", file=sys.stderr)
-        return []
+GSC_MAX_ROWS_PER_PAGE = 25000
+
+
+def query_gsc(service, site_url, start_date, end_date, dimensions, row_limit=None):
+    """Fetch every row for `dimensions`, paginating until GSC runs out.
+
+    GSC caps a single response and reports no total, so one request silently
+    truncates. treestock has ~2,000 pages and ~7,000 distinct queries in a
+    28-day window; a truncated page set yields wrong per-page-type CTRs rather
+    than an obvious error. `row_limit` caps the total (None = everything).
+    """
+    rows = []
+    start_row = 0
+    while True:
+        want = GSC_MAX_ROWS_PER_PAGE
+        if row_limit is not None:
+            want = min(want, row_limit - len(rows))
+            if want <= 0:
+                break
+        body = {
+            "startDate": start_date,
+            "endDate": end_date,
+            "dimensions": dimensions,
+            "rowLimit": want,
+            "startRow": start_row,
+        }
+        try:
+            response = (
+                service.searchanalytics()
+                .query(siteUrl=site_url, body=body)
+                .execute()
+            )
+        except HttpError as e:
+            print(f"  ERROR querying GSC ({dimensions}): {e}", file=sys.stderr)
+            return rows
+        page = response.get("rows", [])
+        rows.extend(page)
+        if len(page) < want:
+            break
+        start_row += len(page)
+    return rows
 
 
 def format_pct(v):
@@ -424,7 +447,7 @@ def run_analysis(days=16, output_path=None, inspect=False):
 
     # 2. Top queries
     print("--- TOP 20 QUERIES (by impressions) ---")
-    query_rows = query_gsc(service, SITE_URL, start_date, end_date, ["query"], row_limit=200)
+    query_rows = query_gsc(service, SITE_URL, start_date, end_date, ["query"])
     query_rows.sort(key=lambda r: r["impressions"], reverse=True)
     for row in query_rows[:20]:
         q = row["keys"][0]
@@ -465,7 +488,7 @@ def run_analysis(days=16, output_path=None, inspect=False):
 
     # 3. Top pages
     print("--- TOP 20 PAGES (by impressions) ---")
-    page_rows = query_gsc(service, SITE_URL, start_date, end_date, ["page"], row_limit=500)
+    page_rows = query_gsc(service, SITE_URL, start_date, end_date, ["page"])
     page_rows.sort(key=lambda r: r["impressions"], reverse=True)
     for row in page_rows[:20]:
         page = row["keys"][0].replace("https://treestock.com.au", "")
