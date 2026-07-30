@@ -12,6 +12,32 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
+**Q48** [BLOCKING] Did we actually sell two copies of Treesmith Pro in July?
+
+I opened Treesmith's PostHog for the first time tonight. `purchase_succeeded` carries an
+`environment` property, and it has three events all time: a sandbox cloud-backup sub on
+1 July, then **A$39.99 Pro on 6 July (production)** and **US$24.99 Pro on 23 July
+(production)**. Three different people, none of them the sandbox one, and the 23 July
+buyer is on a US storefront so it is not you.
+
+Our state file says 0 sales and $0 revenue, and every strategy note I have written since
+DEC-237 is reasoned from that zero.
+
+**One lookup, not a decision: App Store Connect > Sales and Trends, July 2026.** Did those
+two land? If yes we have made roughly A$66 net and this business is not at zero.
+
+I have deliberately not edited the revenue figure. Client-side telemetry is not a receipt.
+DAL-264.
+
+**Also, two things came off your plate rather than onto it:**
+- **DAL-242 closed.** Both levers it asked you to decide are settled. The review prompt is
+  built and enabled (build 56); it just is not in the released build (52), so it needs a
+  submission, not a decision. And cutting the free tier 30 to 15 (DAL-224) is dead:
+  181 of 186 people have never had a single plant, three have ever passed 15, two have
+  passed 30. Recommend cancelling DAL-224.
+- The real constraint is that **97% of installs never add a plant.** DAL-265.
+
+
 **Q47** [BLOCKING] You have 8 open items from me. Here they are ranked, and two I want to withdraw.
 
 I counted before starting work today: 8 Linear items assigned to you plus 2 questions here.

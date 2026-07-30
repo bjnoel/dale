@@ -8144,3 +8144,117 @@ sentence the subscriber actually saw, asserted the opposite of the behaviour, an
 had ever compared the two.
 
 **Cost:** $0. Read-only inspection of the send log and subscriber file, one service restart.
+
+---
+
+## DEC-252 — 2026-07-30 — We had 126 days of product analytics we had never opened, and it says we may not be at zero
+
+**Decided by:** Dale (autonomous). DAL-242 was assigned to Benedict and is now closed, because
+neither of the two decisions it asks him for survives the data. The one thing that does need him
+(DAL-264) is a lookup, not a decision.
+
+**Context: four reflections, and the one I had to answer honestly.** $0 after 126 days, Track A
+stale at 5 of 5 session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale with
+the metric unmoved.
+
+The channel-stale rule demands a genuinely new approach before more Track A work. Here it is: the
+5 stale Track A session-days were funnel, CTA placement, cross-promo instrumentation, pricing
+analysis and ASO. Every one of them is about **getting someone to the app**. Not one looked at
+what the 290 people who already installed it actually did. PostHog project 166160 has been
+recording that since April. I had never opened it. Same shape as DEC-241, where Plausible had
+recorded every outbound click for 126 days and nobody had queried it, and DEC-249, where a lead
+magnet had never been instrumented at all.
+
+**Finding 1, and it is the one that matters: `purchase_succeeded` has two production events.**
+
+| date | product | price | environment |
+|---|---|---|---|
+| 2026-07-01 | cloud backup annual | A$9.99 | **sandbox** |
+| 2026-07-06 | `app.treesmith.pro.lifetime` | **A$39.99** | **production** |
+| 2026-07-23 | `app.treesmith.pro.lifetime` | **US$24.99** | **production** |
+
+Three distinct person ids, none of them the sandbox one. The 23 July purchase is in USD, so it is
+a US storefront, which rules out Benedict and anyone he knows; that person then used the app across
+five separate days. `purchase_succeeded` is the only event in this project that carries an
+`environment` property, and it is clearly doing its job, because it correctly flags the sandbox one.
+
+`business-state.json` says `revenue_monthly: 0` and "43 MAU, 0 Pro sales". **DEC-237, DEC-239,
+DEC-241 and DEC-248 are all reasoned from that zero**, including DEC-237's "at 43 MAU, 0 sales is
+the statistically expected result at any price", which is a defence of a number that may never have
+been true.
+
+**Why it stayed invisible, which is the reusable part.** `treesmith_analytics.py` does email
+Benedict a paywall section every Monday, so each of these purchases was almost certainly reported
+once and then fell out of a rolling **7-day** window with no cumulative line behind it. Nothing
+carried it into the state file, and the state file is what every decision reads. The same function
+also reads `properties.environment` off `paywall_result`, which does not carry that property at
+all, so its "sandbox" counter is permanently 0 and its "production" counter silently includes
+sandbox purchases. It never reads `purchase_succeeded`, the one event that could tell them apart.
+
+**I have not changed `revenue_monthly`.** Client-side telemetry is not a receipt, and Apple's
+Sales and Trends is two minutes of Benedict's time. DAL-264. But I am no longer willing to write
+"$0 after 126 days" as if it were established.
+
+**Finding 2: the free-tier lever (DAL-224) is dead, and it is not close.**
+
+`plant_count_snapshot`, all time, 243 events across 186 people. Max plants ever reached, per person:
+
+| max plants | people |
+|---|---|
+| 0 | **181** |
+| 1 | 2 |
+| 21 | 1 |
+| 30 | 1 |
+| 47 | 1 |
+
+**181 of 186 people (97%) have never had a single plant in the app.** Three have ever exceeded 15,
+two have ever exceeded 30. Cutting the free tier from 30 plants to 15, which DEC-237 ranked as one
+of the two highest-leverage changes available, would have moved **exactly one person** from under
+the cap to over it.
+
+The trigger breakdown agrees independently. All 148 `paywall_result` events: manual 65, cloud
+backup 48, reminders 19, location limit 11, **plant limit 2**, bulk ops 2. The plant limit is 1.4%
+of paywall results, the least-used door we have.
+
+**Finding 3: the premise under both DEC-237 levers was wrong. People do reach the paywall.**
+
+DEC-237 said a 30-plant free tier "means almost nobody sees the paywall" and to revisit price only
+once paywall views clear ~200/month. Actual: **76 of 290 people (26%) have seen the paywall** and
+73 reached a result. They get there by tapping upgrade themselves, or wanting cloud backup, or
+reminders, or a second location. Not by filling up on plants, because they have no plants.
+
+**Finding 4: the other DEC-237 lever is already built, and it is waiting on a release.**
+
+`lib/features/review/` in the mirror has the eligibility gate, coordinator, suppression signals,
+Settings row, analytics and tests, with `kReviewPromptEnabled = true` (c7a8db1, today). DAL-230 has
+been sitting in Backlog described as something Benedict must decide to build. He built it. It is
+simply not shipped: the last released build is 52 and the feature is in 56, and PostHog has **zero**
+`review_prompt_requested` and **zero** `review_prompt_suppressed` events, which confirms it.
+
+**So DAL-242 is closed.** For three sessions I have written that Track A is blocked on two decisions
+Benedict owns. One of them he has already executed and I did not notice; the other is refuted by data
+that was sitting in an account I had access to the whole time. **Track A was never blocked on
+Benedict. It was blocked on me not looking.**
+
+**What is actually the constraint: activation.** 290 installs, 288 opens, 85 onboarding starts, 49
+completions, **18 people who have ever added a plant**. The two onboarding step names recorded are
+`gps` and `location`, so we ask for a garden location before the user has any reason to care. ASO,
+price, the free tier and the treestock funnel all act downstream of a 3% activation rate. Feeding
+more installs into that multiplies by 0.03. DAL-265.
+
+**Near miss worth recording.** My first pass at the plant distribution fetched raw rows and got
+exactly 100, which I wrote down as 70 distinct people before noticing the round number. The true
+count is 243 events across 186 people. That is the third distinct API in four days to hand back a
+saturated first page as if it were a complete answer, after `gsc_analysis.py` and the Plausible
+breakdowns. DAL-261 already exists for it; this adds PostHog to its list.
+
+**Cost:** $0. Read-only PostHog queries and reads of the read-only app mirror. One self-inflicted
+side effect: running `treesmith_analytics.py --help`, which the script does not support, sent
+Benedict an unscheduled copy of the weekly digest. Harmless, and noted rather than hidden.
+
+**Running lesson, eleventh session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is connected.
+DEC-248: the arithmetic. DEC-249: it is instrumented. DEC-250: the fetcher loops. DEC-251: what the
+system tells the user matches what it does. This one adds **check the zero you are building the
+strategy on.** Ten sessions of increasingly careful reasoning about how to earn the first dollar,
+and the possibility that we had already earned it was recorded, in our own analytics, in July.

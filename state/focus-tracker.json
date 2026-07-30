@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-07-30",
-  "last_session": 103,
+  "last_session": 104,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1511,6 +1511,38 @@
         "treestock_email_clicks_90d": 48
       },
       "note": "DEC-251. Emergency fix, not a ticket from Todo. Two of 13 subscribers had been dropped from every daily digest by an empty plant_categories list: lissandross since 07-21, muffinmotzy since signup on 07-12 (never received one). The skip was intentional in send_digest.py but the preferences page confirmed 'fruit only, daily digest' when nothing was ticked, the dry run said 'Would send to', and the live run printed a bare count. Fixed all three plus a second wrong label (bush-tucker-only told 'fruit + bush tucker'); 1,963 tests pass, deployed, service restarted by hand. Their stored records deliberately NOT changed: restoring delivery is customer-facing, so DAL-260 went back to Benedict as a one-word yes/no with a recommendation to restore. Also found deploy.sh never restarts subscribe-server (DAL-263), and recommended DAL-192 for cancellation on DEC-249's measured 0.17 outbound clicks per variety page built vs 2.85 for a state page."
+    },
+    {
+      "session": 104,
+      "date": "2026-07-30",
+      "categories_worked": [
+        "treesmith:growth",
+        "revenue:monetisation"
+      ],
+      "tickets_completed": [
+        "DAL-242"
+      ],
+      "tickets_proposed": [
+        "DAL-264",
+        "DAL-265",
+        "DAL-266"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treesmith_installs_all_time": 290,
+        "treesmith_people_ever_added_a_plant": 18,
+        "treesmith_people_reached_paywall": 76,
+        "treesmith_production_purchases_all_time": 2,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_outbound_clicks_30d": 1245,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7,
+        "treestock_email_open_rate_90d": 43.2,
+        "treestock_email_clicks_90d": 48
+      },
+      "note": "DEC-252. First ever query of PostHog (project 166160), 126 days of behavioural data never read. Found two production purchase_succeeded events (A$39.99 on 07-06, US$24.99 on 07-23) against a state file that says 0 sales, so revenue_monthly:0 may be wrong; NOT edited, Benedict confirms in App Store Connect (DAL-264). Killed DAL-224 with data (181 of 186 people never had one plant; 3 ever exceeded 15; plant_limit is 2 of 148 paywall results). DAL-230's review prompt is built and enabled at build 56 but the released build is 52, and PostHog has zero review events, so it needs a submission not a decision. DAL-242 closed: both levers settled. Real constraint is activation, 97% of installs never add a plant (DAL-265)."
     }
   ],
   "override": null

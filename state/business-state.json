@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-07-30",
-  "session_count": 102,
+  "session_count": 104,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link."
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link."
       },
       "funnel_from_treestock": {
         "audit": "DAL-218: /treesmith.html took 12 unique visitors/month out of treestock's 2,865 (0.4%).",
@@ -84,7 +84,7 @@
         "measured_2026_07_30": "DEC-241 / DAL-241. The bottom of the funnel, never measured before: over 6 months treestock produced 1,516 outbound clicks, of which 3 went to treesmith.app and 0 to either app store. In the last 30 days: 14 visitors reached /treesmith.html, 1 clicked apps.apple.com, 0 clicked play.google.com, against 639 visitors who clicked through to a nursery. DAL-218 measured the TOP of the funnel (/treesmith.html pageviews); the outbound goal measures the bottom and says the pass-through is ~0%. Adding CTAs upstream multiplies by zero. Cause is audience intent, not CTA placement: treestock visitors are mid-errand buyers, not app shoppers.",
         "status": "DEMOTED from strategy to decoration (DEC-241). The cross-promo stays because it is honest and free, but no new treestock->Treesmith funnel tickets until DAL-241's August re-measure shows whether ANY surface produces a store click. If it is still 0-1, stop."
       },
-      "blocked_on_benedict": "DAL-242 (assigned to Benedict): DEC-237 ranked ratings (DAL-230) and paywall reachability (DAL-224) as the two highest-leverage levers to a first sale. Neither is Dale's to pull (Flutter review prompts; a free-tier product decision) and both sit in Backlog. This, not effort, is why sustained Track A work has not moved the metrics.",
+      "blocked_on_benedict": "RESOLVED 2026-07-30 (DEC-252). DAL-242 closed: neither lever needed the decision it asked for. Review prompts (DAL-230) are built and enabled, waiting on a store submission, not on Benedict deciding. The free tier cut (DAL-224) is measurably pointless and recommended for cancellation. The one open item is DAL-264, a lookup rather than a decision: confirm in App Store Connect whether the two production purchases are real.",
       "aso_recommendation_pending": {
         "ticket": "DAL-177",
         "owner": "Benedict (every field is pasted in App Store Connect / Play Console)",
@@ -110,6 +110,21 @@
         "play_short_desc": "Graft, scion & garden journal for collectors. GPS map, photo log, exports. (74/80)",
         "play_updated": "27 July 2026",
         "note": "iTunes lookup API reports 0 screenshots for our app; the live product page serves 70 screenshot images. Do not trust the lookup API's screenshot fields."
+      },
+      "posthog_product_analytics": {
+        "measured": "2026-07-30 (DEC-252, DAL-242). PostHog project 166160, all-time, first query in 126 days. Aggregate server-side: a raw row fetch returned exactly 100 rows against a true count of 243 (the DAL-261 truncation pattern).",
+        "installs_all_time": 290,
+        "opened_all_time": 288,
+        "onboarding_started": 85,
+        "onboarding_completed": 49,
+        "people_ever_added_a_plant": 18,
+        "people_reached_paywall": 76,
+        "activation_is_the_constraint": "Of 186 people carrying a plant_count_snapshot, 181 have NEVER had a single plant. Max plants ever reached, per person: 0 x181, 1 x2, 21 x1, 30 x1, 47 x1. Only 18 people have ever fired plant_added. This sits upstream of ASO, price, the treestock funnel and the free tier limit, all of which act on people who installed and then did nothing. DAL-265.",
+        "paywall_is_reachable_after_all": "76 of 290 people (26%) have seen the paywall, 73 got to a result. DEC-237's claim that the 30-plant free tier means almost nobody sees it is WRONG. paywall_result by trigger, all 148: manual 57 dismissed + 8 purchased; cloud_backup 39 dismissed + 5 purchased + 2 restored + 2 failed; reminders 19 dismissed; location_limit 11 dismissed; plant_limit 2 dismissed; bulk_ops 2 dismissed. The plant limit is 1.4% of paywall results, the least-used door.",
+        "free_tier_cut_is_dead": "DAL-224 (30 to 15 plants) recommended for cancellation. Three people have ever exceeded 15 plants and two have exceeded 30, so the cut would move exactly one person from under the cap to over it.",
+        "review_prompt_is_built_not_blocked": "DAL-230 is not a decision. lib/features/review/ has the eligibility gate, coordinator, suppression signals, Settings row, analytics and tests, with kReviewPromptEnabled = true (c7a8db1, 2026-07-30). It is unshipped: released build 52, feature in build 56. PostHog has zero review_prompt_requested and zero review_prompt_suppressed events, which confirms it. Needs a store submission. Expect single-digit asks per month: gate 8 needs 2 distinct active days and only ~8% of the base reaches that.",
+        "possible_revenue": "UNCONFIRMED AND IMPORTANT. purchase_succeeded (which carries an environment property, unlike paywall_result) has three all-time events: 2026-07-01 cloud backup annual A$9.99 SANDBOX; 2026-07-06 app.treesmith.pro.lifetime A$39.99 PRODUCTION; 2026-07-23 app.treesmith.pro.lifetime US$24.99 PRODUCTION. Three distinct person ids, none the sandbox one; the July 23 buyer is on a US storefront and used the app across 5 later days. If real that is ~A$66 net of Apple's 15% small business rate and the first revenue this business has produced. revenue_monthly deliberately LEFT AT 0 pending Benedict checking App Store Connect (DAL-264): client-side telemetry is not a receipt.",
+        "why_it_was_invisible": "treesmith_analytics.py reports paywall purchases over a rolling 7 days with no cumulative line, so each purchase appeared in exactly one Monday digest and vanished. It also reads properties.environment off paywall_result, which does not carry that property, so its sandbox counter is permanently 0 and its production counter silently includes sandbox. It never reads purchase_succeeded at all. DAL-266."
       }
     },
     "a_paused_walkthrough": {
@@ -408,14 +423,14 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done — hello@walkthrough.au via Fastmail",
-    "blog": "deployed — walkthrough.au live",
+    "email": "done \u2014 hello@walkthrough.au via Fastmail",
+    "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)"
+    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)"
   }
 }
