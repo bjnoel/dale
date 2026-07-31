@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-07-30",
-  "session_count": 107,
+  "last_updated": "2026-07-31",
+  "session_count": 108,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -153,6 +153,43 @@
           "contamination_check": "July activators span builds 44-56 and US/UA/IN/AU storefronts. Internal builds 53-56 activate at 3/15, no better than public 9/33.",
           "real_open_question": "RETENTION, not activation: 1 of 15 in the 8-14 day cohort returned on 2+ days.",
           "fix_shipped": "137442d. m_activation clips the all-time cohort to the day plant_added first appears, prints that date, and reports excluded devices as 'unknown not zero'. 7 render-text regression tests."
+        },
+        "unit_economics_2026_07_31": {
+          "decision": "DEC-256 / DAL-234",
+          "method": "Period-matched. purchase_succeeded does not exist before 2026-07-01, so the denominator is installs since that date, not all-time. Dividing 2 purchases by 290 all-time installs would repeat the DEC-254 error exactly.",
+          "installs_since_2026_07_01": 49,
+          "production_purchases_same_window": 2,
+          "install_to_purchase_rate_pct": 4.1,
+          "wilson_95_ci_pct": [
+            1.1,
+            13.7
+          ],
+          "net_per_install_aud": 1.32,
+          "installs_per_month_for_cash_burn_a8_20": 6,
+          "installs_per_month_for_full_cost_a162": 123,
+          "caveats": "n=2. The whole calculation rests on Q48 / DAL-264 being confirmed; these are client-side events, not receipts. At the CI low end (1.1%) the full operating cost needs 445 installs/month against July's 49, so this is not established, only bounded away from zero.",
+          "standing_metric": "DAL-271 proposes putting this in the weekly digest with its interval, so it stops being recomputed by hand."
+        },
+        "storefront_geography_2026_07_31": {
+          "finding": "61% of July installs are US, not Australian. US 30, AU 9, IN 4, then CH/UA/MA/BD/IT/KR 1 each, of 49 distinct devices.",
+          "implication": "Every ASO measurement we have ever taken (DEC-247, 36 terms) is on the AU store, and DAL-177's rename and DAL-257's re-measure are both scored against AU ranks. We have never looked at our rank in the storefront that supplies most of our users. DAL-270.",
+          "also": "DAL-234's premise (Australian rare fruit community channels) targets 18% of installs. Still worth doing because it is the only segment Benedict can influence, but it is not where the users are."
+        },
+        "install_trend_2026_07_31": {
+          "weekly_distinct_devices": {
+            "2026-06-28": 13,
+            "2026-07-05": 8,
+            "2026-07-12": 1,
+            "2026-07-19": 19,
+            "2026-07-26": 17
+          },
+          "monthly_distinct_devices": {
+            "2026-04": 15,
+            "2026-05": 160,
+            "2026-06": 71,
+            "2026-07": 49
+          },
+          "note": "The '+92% WoW' in the 2026-07-30 digest was a rebound off a floor of ONE install in the week of 07-12, not growth. May's 160 was launch attention and has not recurred."
         }
       }
     },

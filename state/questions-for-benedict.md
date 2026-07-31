@@ -37,13 +37,27 @@ cumulative view the old code would have told us we had made 12 sales. Both fixed
 I have deliberately not edited the revenue figure. Client-side telemetry is not a receipt.
 DAL-264.
 
+**Update 2026-07-31: this question is now worth much more than A$66.** I finally computed
+an install-to-purchase rate, period-matched to the day `purchase_succeeded` started existing
+(2026-07-01, so the all-time denominator would have been wrong): **2 production purchases /
+49 installs = 4.1%**, 95% interval 1.1% to 13.7%. At roughly A$38 net that is **A$1.32 per
+install**, which means about **6 installs a month covers the server bill** and about **123
+covers your Claude spend too**. July had 49.
+
+Every one of those numbers has your two receipts as its numerator. If they are real, Track A
+has a working unit economic and growth is worth funding. If they are not, this whole
+paragraph evaporates and so does DAL-271. One lookup settles it.
+
 **Also, two things came off your plate rather than onto it:**
 - **DAL-242 closed.** Both levers it asked you to decide are settled. The review prompt is
   built and enabled (build 56); it just is not in the released build (52), so it needs a
   submission, not a decision. And cutting the free tier 30 to 15 (DAL-224) is dead:
   181 of 186 people have never had a single plant, three have ever passed 15, two have
   passed 30. Recommend cancelling DAL-224.
-- The real constraint is that **97% of installs never add a plant.** DAL-265.
+- ~~The real constraint is that **97% of installs never add a plant.**~~ **Withdrawn.**
+  That was a reporting artefact and I retracted it the next night (DEC-254). The event
+  started 44 days after the installs it was divided by. Real figure is 27% for the July
+  cohort, which is fine. Retention is the honest worry, not activation.
 
 
 **Q47** [BLOCKING] You have 8 open items from me. Here they are ranked, and two I want to withdraw.

@@ -8596,3 +8596,113 @@ it is measuring the wrong set. DAL-269 proposes asserting the invariants that ca
 (opened <= delivered, delivered + bounced <= sent) rather than finding one a week.
 
 **Cost:** $0. Read-only GSC, Resend and Plausible calls, two deploys.
+
+---
+
+## DEC-256 — 2026-07-31 — An install is worth A$1.32, and 61% of them are American
+
+**Decided by:** Dale (autonomous). Todo queue worked in order: DAL-232 actioned and handed
+back, DAL-234 narrowed and handed back, DAL-176 parked out of Todo. Two tickets proposed.
+
+**Context: the same four reflections.** $0 recorded after 127 days, Track A stale at 5 of 5
+session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale.
+
+Five consecutive sessions shipped code that repaired reporting. That was the right call each
+time and it is not the right call tonight, because there was nothing broken to find: I checked
+the deploy gap first (DEC-253 says there is no deploy cron and last night's commit landed at
+23:12, after the last deploy window) and all four changed files match the deployed copies. So
+this session worked the approved Todo queue instead, and the new approach the stale-channel
+rule demands is that **before producing another Track A document, I priced the thing the
+document was supposed to increase.**
+
+**Finding 1: DAL-232's premise is largely gone, and its one real target is confirmed.**
+
+Benedict's Urban Revolution find reproduces and is better than the ticket said: **37 curated
+outbound links across four resources pages and not a single `nofollow` on the site.** I then
+mined their link neighbourhood, which is the cheap next move, and probed twelve candidate
+pages in total.
+
+**Exactly one is a live, curated, do-follow links page in our topic.** Permaculture West and
+rarefruitclub.au have no links page at all (404), the community garden network's is
+member-gated with two external links, and Perth City Farm's and Green Life Soil's "links"
+pages point mostly at their own web designer and payment gateway. The web of curated links
+pages this ticket was written against in April has mostly stopped existing.
+
+Recorded as unknown rather than absent: **growgreatfruit.com.au, permaculturenews.org and
+permacultureprinciples.com all 403 this server at the homepage**, not just at the links path.
+That is a property of our IP, not of their sites. Three of eight national candidates being
+unreachable means **link prospecting by script from dale-server systematically under-reports**,
+which is the same shape as the WA guide reading zero pageviews because it had no analytics tag.
+
+The consequence is a reframe rather than a list: the backlink channel is not gated on finding
+more links pages, it is gated on having something worth citing. DEC-245 recorded that we had
+nothing. DEC-246 produced the first thing, the 142-day reachability dataset, and it is still
+unpublished on DAL-254.
+
+**Finding 2, and it is the one that matters: an install has a price now.**
+
+DAL-234's expected metric is `treesmith_downloads -> revenue_monthly`, which has always been
+an act of faith. Before mapping eight community channels I checked whether the lever connects.
+
+Period matching first, because DEC-254 caught me on exactly this. **`purchase_succeeded` does
+not exist before 2026-07-01.** Dividing our 2 production purchases by 290 all-time installs
+would have repeated the fake activation crisis to the letter. Matched to coverage:
+
+- distinct devices installing since 2026-07-01: **49**
+- production purchases in the same window: **2** (both purchasers first appear inside it)
+
+**2 of 49 = 4.1%, Wilson 95% interval 1.1% to 13.7%.** At about A$38 net of Apple's 15%, that
+is **A$1.32 per install**, so roughly **6 installs a month covers the A$8.20 cash burn** and
+**123 covers the full A$162 operating cost**. July delivered 49.
+
+I am not writing this down as good news. It rests on n=2 and entirely on Q48, which is still
+unanswered, and at the bottom of the interval the full cost needs 445 installs a month against
+July's 49. What has changed is that the number is bounded rather than unknown, and the lower
+bound is not zero.
+
+**Finding 3: we are not an Australian app.**
+
+July installs by storefront: **US 30, AU 9, IN 4**, then six countries with one each.
+**Australia is 18% of our installs.**
+
+Every ASO measurement this business has ever taken is on the Australian store. DEC-247
+re-measured 36 terms, all AU. DAL-177's proposed rename and DAL-257's four-week re-measure are
+both scored against AU ranks. **We have never once looked at where we rank in the storefront
+that supplies most of our users**, and the competitor set that DEC-237 and DEC-247 are built on
+(Grove, Rootstock, FruitForest) was identified on the AU store too. DAL-270.
+
+This does not kill DAL-234, but it narrows it hard. Australian community channels target 18%
+of installs. They stay worth doing for two reasons that survive the finding: it is the only
+segment Benedict can influence at all, and a rare fruit club member is a much better match for
+graft tracking than whoever finds us in a US search, so it is the cohort most likely to convert
+near the top of the interval rather than the bottom. But the ticket's research half is waste:
+the four routes worth using (WA Rare Fruit Club, Oz Rare Fruit Australia, Rare Fruit SA, WAAS)
+need no research and DAL-171's post has been drafted since April and never sent. Handed back
+recommending the research half be cancelled and the sending half kept.
+
+**Finding 4, small and worth correcting in place.** Last night's digest reported installs
+"+92% WoW". Weekly distinct devices are 8, **1**, 19, 17. That was a rebound off a floor of one,
+not growth. Corrected in the state file rather than repeated.
+
+**Queue effect.** Nothing added to Benedict's plate that was not already on it: DAL-232 and
+DAL-234 both go back to him as things only he can do (walk into a shop, post to a club), which
+is what they always were. DAL-176 moved out of Todo to Backlog because it is gated on 30 days
+of pageview data that only started accruing tonight, and Todo should mean workable now. Q48 was
+updated rather than re-asked, because its value went up by an order of magnitude: it is no
+longer "did we make A$66", it is "does Track A have a unit economic".
+
+**Honest accounting.** No revenue. First session in six that shipped no code, deliberately:
+nothing was broken, and the marginal value of a sixth reporting fix is below the value of
+finding out that we have been optimising the wrong storefront.
+
+**Running lesson, fifteenth session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is
+connected. DEC-248: the arithmetic. DEC-249: instrumented. DEC-250: the fetcher loops.
+DEC-251: what the system says matches what it does. DEC-252: check the zero. DEC-253: which
+direction the default rounds. DEC-254: numerator and denominator cover the same period.
+DEC-255: state or flag. This one adds **check who the users actually are before optimising for
+who you assumed they were.** Six months of ASO, competitor analysis and community planning were
+all aimed at Australia, on no evidence beyond the fact that we are Australian. The query that
+settled it took one line and had been available since April.
+
+**Cost:** $0. Read-only PostHog queries, twelve public page fetches, no deploy.
