@@ -28,6 +28,7 @@ DATA_DIR = Path("/opt/dale/data")
 SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 PENDING_FILE = DATA_DIR / "pending_subscribers.json"
 VARIETY_WATCHES_DB = DATA_DIR / "variety_watches.db"
+NURSERY_CONTACTS_FILE = DATA_DIR / "nursery-contacts.json"
 
 HEALTH_DAYS = 14
 MAX_RECENT_ERRORS = 15
@@ -266,6 +267,96 @@ def load_needs_review(data_dir: Path = DATA_DIR) -> dict | None:
         return None
 
 
+def build_nursery_model(register, today: date = None) -> dict:
+    """Pure aggregation of the nursery relationship register (DAL-80) into the
+    /admin view model. No I/O, and no referral figures: those come from
+    Plausible at call time in nursery_crm.py and are deliberately not duplicated
+    here, so this page cannot show a stale copy of them.
+
+    Rows are ordered by how overdue they are: nurseries with an open action
+    first (oldest first), then never-contacted, then everything else by name.
+    """
+    today = today or date.today()
+    register = register or {}
+    nurseries = register.get("nurseries") or []
+
+    rows = []
+    for n in nurseries:
+        touches = sorted(n.get("touches") or [], key=lambda t: t.get("date") or "")
+        last = touches[-1]["date"] if touches else None
+        open_action = n.get("open_action") or None
+        rows.append({
+            "key": n.get("key", ""),
+            "name": n.get("name", ""),
+            "status": n.get("status", "unknown"),
+            "contact_name": n.get("contact_name") or "",
+            "route": contact_route_label(n),
+            "last_touch": last,
+            "days_since": days_between(last, today),
+            "touches": touches,
+            "open_owner": (open_action or {}).get("owner") or "",
+            "open_what": (open_action or {}).get("what") or "",
+            "open_since": (open_action or {}).get("since") or "",
+            "notes": n.get("notes") or "",
+        })
+
+    def sort_key(r):
+        if r["open_what"]:
+            # An action with no "since" date has an unknown age, so it sorts
+            # after the ones we can actually date rather than ahead of them.
+            return (0, r["open_since"] or "9999", r["name"])
+        if r["status"] == "not_contacted":
+            return (1, "", r["name"])
+        return (2, "", r["name"])
+
+    rows.sort(key=sort_key)
+
+    status_counts = Counter(r["status"] for r in rows)
+    return {
+        "rows": rows,
+        "updated": register.get("updated", ""),
+        "totals": {
+            "nurseries": len(rows),
+            "open_actions": sum(1 for r in rows if r["open_what"]),
+            "never_contacted": sum(1 for r in rows if not r["last_touch"]),
+        },
+        "by_status": sorted(status_counts.items(), key=lambda kv: -kv[1]),
+    }
+
+
+def contact_route_label(n: dict) -> str:
+    """How we can reach this nursery: email, else contact form, else phone."""
+    if n.get("email"):
+        return n["email"]
+    if n.get("contact_form"):
+        return "web form"
+    if n.get("phone"):
+        return str(n["phone"])
+    return "no route found"
+
+
+def days_between(iso_day: str, today: date) -> int | None:
+    if not iso_day:
+        return None
+    try:
+        return (today - date.fromisoformat(str(iso_day)[:10])).days
+    except ValueError:
+        return None
+
+
+def load_nursery_data(data_dir: Path = DATA_DIR, today: date = None) -> dict | None:
+    """Read the deployed copy of the register. None when it is not there yet
+    (deploy.sh copies it out of the repo, where git history is the audit log)."""
+    path = Path(data_dir) / NURSERY_CONTACTS_FILE.name
+    if not path.exists():
+        return None
+    try:
+        register = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+    return build_nursery_model(register, today)
+
+
 def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     """Read the live data files + DB and build the model."""
     data_dir = Path(data_dir)
@@ -302,6 +393,7 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     model = build_admin_model(subscribers, pending, watches_rows)
     model["health"] = load_health_data(data_dir)
     model["needs_review"] = load_needs_review(data_dir)
+    model["nurseries"] = load_nursery_data(data_dir)
     return model
 
 
@@ -539,6 +631,90 @@ def _needs_review_section(report) -> str:
     )
 
 
+_STATUS_CLASS = {
+    "warm": "st-warm",
+    "personal": "st-warm",
+    "courtesy": "st-mid",
+    "contacted": "st-mid",
+    "not_contacted": "st-cold",
+}
+
+
+def _touch_history(touches) -> str:
+    """Full contact history for one nursery, oldest first."""
+    if not touches:
+        return '<span class="muted">Never contacted.</span>'
+    items = []
+    for t in touches:
+        arrow = "&rarr; out" if t.get("direction") == "out" else "&larr; in"
+        by = t.get("by") or ""
+        channel = t.get("channel") or ""
+        meta = " · ".join(x for x in (arrow, _esc(by), _esc(channel)) if x)
+        items.append(
+            f'<li><span class="tdate">{_esc(_short_date(t.get("date", "")))}</span> '
+            f'<span class="muted">{meta}</span><br>{_esc(t.get("summary", ""))}</li>'
+        )
+    return f'<ul class="touches">{"".join(items)}</ul>'
+
+
+def _nursery_section(model) -> str:
+    """The nursery relationship register (DAL-80): who we have spoken to, when,
+    and whose move it is next. Ordered by what is overdue, not alphabetically."""
+    if not model:
+        return (
+            '<section><h2>Nursery relationships</h2>'
+            '<p class="muted">No register deployed yet. It is copied out of the '
+            'repo by deploy.sh (data/nursery-contacts.json).</p></section>'
+        )
+
+    t = model["totals"]
+    status_line = ", ".join(f"{_esc(s)} {n}" for s, n in model["by_status"])
+    body = []
+    for r in model["rows"]:
+        since = f' <span class="muted">({r["days_since"]}d ago)</span>' if r["days_since"] is not None else ""
+        last = f'{_esc(r["last_touch"])}{since}' if r["last_touch"] else '<span class="muted">never</span>'
+        if r["open_what"]:
+            owner = _esc(r["open_owner"] or "unassigned")
+            action = (
+                f'<div class="action"><strong>{owner}:</strong> {_esc(r["open_what"])}'
+                f' <span class="muted">(since {_esc(r["open_since"])})</span></div>'
+            )
+        else:
+            action = '<span class="muted">&mdash;</span>'
+        name = _esc(r["name"])
+        if r["contact_name"]:
+            name += f' <span class="muted">({_esc(r["contact_name"])})</span>'
+        cls = _STATUS_CLASS.get(r["status"], "st-cold")
+        body.append(
+            "<tr>"
+            f"<td>{name}<br><span class='muted small'>{_esc(r['route'])}</span></td>"
+            f"<td><span class='pill {cls}'>{_esc(r['status'])}</span></td>"
+            f"<td>{last}</td>"
+            f"<td>{action}</td>"
+            "</tr>"
+            "<tr class='histrow'><td colspan='4'>"
+            f"<details><summary>History ({len(r['touches'])})</summary>"
+            f"{_touch_history(r['touches'])}"
+            + (f"<p class='muted small'>{_esc(r['notes'])}</p>" if r["notes"] else "")
+            + "</details></td></tr>"
+        )
+
+    return (
+        '<section><h2>Nursery relationships</h2>'
+        f'<p class="muted">{t["nurseries"]} nurseries · '
+        f'<strong>{t["open_actions"]} open actions</strong> · '
+        f'{t["never_contacted"]} never contacted · {status_line}. '
+        f'Register updated {_esc(model["updated"])}. '
+        'Sorted by oldest open action first, then never-contacted. '
+        'Referral click counts are deliberately not shown here: they are read live '
+        'from Plausible by <code>nursery_crm.py report</code> so they cannot go stale '
+        'on a cached page.</p>'
+        '<table><thead><tr>'
+        '<th>Nursery</th><th>Status</th><th>Last touch</th><th>Next action</th>'
+        '</tr></thead><tbody>' + "".join(body) + '</tbody></table></section>'
+    )
+
+
 def _pending_table(rows) -> str:
     if not rows:
         return '<section><h2>Pending confirmations</h2><p class="muted">None.</p></section>'
@@ -564,6 +740,7 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
 
     parts = [
         _cards(model["totals"]),
+        _nursery_section(model.get("nurseries")),
         '<div class="grid3">',
         _count_table("By state", model["by_state"]),
         _count_table("By frequency", model["by_frequency"]),
@@ -623,6 +800,18 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
   .hcell.zero {{ background:#fbbf24; }}
   .hcell.none {{ background:#e5e7eb; }}
   .legend {{ font-size:0.8rem; margin:0 0 10px; }}
+  .small {{ font-size:0.78rem; }}
+  .pill {{ display:inline-block; padding:2px 8px; border-radius:999px;
+    font-size:0.72rem; font-weight:600; white-space:nowrap; }}
+  .st-warm {{ background:#d1fae5; color:#065f46; }}
+  .st-mid {{ background:#fef3c7; color:#92400e; }}
+  .st-cold {{ background:#f3f4f6; color:#6b7280; }}
+  .action {{ color:#92400e; }}
+  tr.histrow td {{ padding:0 10px 8px; border-bottom:1px solid #e5e7eb; }}
+  tr.histrow summary {{ cursor:pointer; font-size:0.78rem; color:#6b7280; }}
+  ul.touches {{ margin:8px 0 0; padding-left:18px; font-size:0.8rem; }}
+  ul.touches li {{ margin-bottom:8px; }}
+  .tdate {{ font-weight:600; }}
 </style>
 </head>
 <body>

@@ -50,6 +50,15 @@ chmod +x /opt/dale/autonomous/weekly-pester.py 2>/dev/null
 chmod +x /opt/dale/autonomous/check-weekly-update.py 2>/dev/null
 chmod +x /opt/dale/autonomous/treesmith_analytics.py 2>/dev/null
 
+# Publish the nursery relationship register to the data dir so the /admin page
+# can render it (DAL-80). The repo copy stays the source of truth: git history is
+# the audit log for who we contacted and when.
+REPO_CONTACTS="$REPO_TOOLS/../data/nursery-contacts.json"
+if [ -f "$REPO_CONTACTS" ]; then
+    cp -a "$REPO_CONTACTS" /opt/dale/data/nursery-contacts.json
+    log "Published nursery register to data dir"
+fi
+
 # Sync weekly updates from repo to data dir (allows submitting updates via git)
 REPO_UPDATES="$REPO_TOOLS/../weekly-updates"
 DATA_UPDATES="/opt/dale/data/weekly-updates"

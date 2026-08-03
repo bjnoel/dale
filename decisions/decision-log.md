@@ -8706,3 +8706,115 @@ all aimed at Australia, on no evidence beyond the fact that we are Australian. T
 settled it took one line and had been available since April.
 
 **Cost:** $0. Read-only PostHog queries, twelve public page fetches, no deploy.
+
+---
+
+## DEC-257 — 2026-08-03 — The inbox we needed for two blocked tickets was already paid for
+
+**Decided by:** Dale (autonomous). Two Todo tickets worked, both answered by Benedict
+within the hour before this session started. DAL-260 closed Done. DAL-80's two questions
+answered and handed back. One ticket proposed (DAL-273).
+
+**Context: the same four reflections.** $0 recorded after 130 days, Track A stale at 5 of
+5 session-days, treestock growth stale at 4 of 5, `revenue:monetisation` stale.
+
+The channel-stale rule wants a genuinely new approach or a different channel. I took the
+different channel deliberately, and the reason is that for once the queue was not the
+bottleneck: Benedict answered **two** questions at 01:08 and 01:28 UTC, roughly half an
+hour before this session began. His queue depth has been the documented constraint since
+DEC-248. When the constraint clears, the correct move is to consume it immediately, not
+to start a sixteenth analysis.
+
+Deploy gap checked first, per DEC-253. All four files changed in the last three commits
+match their deployed copies. Nothing broken to fix.
+
+**Finding 1: DAL-260 closed, and it is the first customer-visible repair this business
+has shipped.**
+
+He replied "yes". Both records carrying `plant_categories: []` are restored to
+`["fruit"]`, which is what the preferences page had been claiming they were on all along,
+each stamped with a restore timestamp and reason so the edit is not silent. Verified
+rather than assumed: a live dry run now names them.
+
+```
+Subscribers: 11 daily, 2 to send, 9 already sent today
+  Would send to: muffinmotzy@gmail.com (state=ALL, ..., plant=fruit)
+  Would send to: lissandross@inertia.net.nz (state=VIC, ..., plant=fruit)
+```
+
+muffinmotzy had never received a single daily digest in the 22 days since signing up.
+No backfill and no apology email: neither subscriber asked us anything, and a message
+explaining that our software had been quietly dropping them invites an unsubscribe more
+than it earns goodwill. Offered to Benedict as his call if he disagrees.
+
+**Finding 2: the answer to "how do I view contact status/history" was a page we already
+had, gated the way we already wanted.**
+
+Benedict asked how to see the register from his phone. `/admin` has existed since
+DAL-193, is served by `subscribe_server.py`, and sits behind Cloudflare Access. Adding
+the nursery register to it cost one section and no new surface, no new auth, no new
+public URL for private relationship notes. Live now, sorted by what is overdue rather
+than alphabetically: 27 nurseries, **7 open actions**, 22 never contacted.
+
+Two things I deliberately did NOT do. I left referral click counts off the page, even
+though they are the most useful column, because they are read live from Plausible and a
+rendered page would become a second staleable copy of the exact number that prices the
+whole referral plan (DEC-241, DEC-248). And I did not fork `nursery_crm.outbound_clicks`
+to get them. `deploy.sh` now publishes the register out of the repo, so git history stays
+the audit log.
+
+Ten tests, one of which asserts that a missing register renders "No register deployed
+yet" rather than an empty table, because DEC-249's lesson is that an absence and a zero
+must not look alike. 2,001 tests pass, up from 1,991. Deployed, and subscribe-server
+restarted by hand because DAL-263 is still open and `deploy.sh` still does not do it.
+
+**Finding 3, the one worth keeping: Q46 was half wrong, and had been for weeks.**
+
+Benedict asked for a BCC address Dale can read. Before costing out Cloudflare Email
+Routing plus a Worker, I checked what already exists:
+
+```
+dig MX treestock.com.au
+10 in1-smtp.messagingengine.com.
+20 in2-smtp.messagingengine.com.
+```
+
+**The apex domain has received email this whole time.** It is Fastmail, which Benedict
+already pays for. Q46 has been on file asserting that replies to our emails bounce
+because we have no address, and DAL-243 and the entire bare-root seasonal email plan
+(DEC-250) have been blocked behind it.
+
+The real defect is narrower and entirely ours: we send From `alerts@mail.treestock.com.au`,
+a *subdomain* with no MX, and `stocklib/mailer.py:112` sets no `Reply-To` header at all.
+So a reply is addressed to a subdomain that cannot receive it. The fix is one line
+pointing `Reply-To` at an apex address, not a new service and not a DNS change. I did not
+guess the address; that is the remaining half of Q46.
+
+The same mailbox answers Benedict's BCC question. A Fastmail alias plus an app password
+scoped to IMAP only, which is individually revocable and cannot send mail, gives Dale a
+readable inbox with nothing bought and nothing installed. This server reaches
+`imap.fastmail.com:993`; I checked before proposing it. Cloudflare Email Routing was
+considered and rejected: it needs an MX change on a live domain, a Worker, and a token
+scope we do not hold, to duplicate a mailbox we already own.
+
+**Queue effect.** Nothing added to Benedict's plate that he did not ask for. DAL-273 is
+gated on two actions of his that take about five minutes between them. Q46 was rewritten
+rather than re-asked, because its content changed: it is no longer "buy us an address",
+it is "confirm two aliases on the mailbox you have".
+
+**Honest accounting.** No revenue. Sixth session in seven that shipped code, and the
+first in some time whose output a human will actually open. It closed the only
+customer-facing defect we had, and it turned a blocking question into a five-minute one.
+
+**Running lesson, sixteenth session.** DEC-241: check the number exists. DEC-243:
+complete. DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the
+lever is connected. DEC-248: the arithmetic. DEC-249: instrumented. DEC-250: the fetcher
+loops. DEC-251: what the system says matches what it does. DEC-252: check the zero.
+DEC-253: which direction the default rounds. DEC-254: numerator and denominator cover the
+same period. DEC-255: state or flag. DEC-256: who the users actually are. This one adds
+**check what you already own before costing out what to buy.** Q46 has been blocking a
+revenue channel for weeks on the premise that we needed an email address. We had one. The
+query that settled it was a single `dig`, and the same instinct that found Plausible
+(DEC-241) and PostHog (DEC-252) sitting unqueried would have found it any time since.
+
+**Cost:** $0. One `dig`, read-only Cloudflare zone list, one deploy, one service restart.

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-07-31",
-  "last_session": 108,
+  "last_updated": "2026-08-03",
+  "last_session": 109,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1687,6 +1687,49 @@
         "treesmith_installs_us_share_pct": 61,
         "treesmith_install_to_purchase_pct": 4.1,
         "treesmith_net_per_install_aud": 1.32
+      }
+    },
+    {
+      "session": 109,
+      "date": "2026-08-03",
+      "categories_worked": [
+        "treestock:subscriber_conversion",
+        "infrastructure",
+        "revenue:monetisation"
+      ],
+      "tickets_completed": [
+        "DAL-260"
+      ],
+      "tickets_proposed": [
+        "DAL-273"
+      ],
+      "note": "DEC-257. Benedict answered two questions in the half hour before the session, so the session consumed his queue rather than adding to it. DAL-260 closed: both muted subscribers restored to ['fruit'] and verified against a live send_digest dry run; muffinmotzy had never received a single digest in 22 days. DAL-80 answered: nursery relationship register now renders on /admin behind Cloudflare Access, sorted by oldest open action first (27 nurseries, 7 open actions, 6 of them Benedict's); referral clicks deliberately left off to avoid a staleable second copy. Q46 found to be half wrong: treestock.com.au's apex already has Fastmail MX and has received mail all along, so the reply-bounce fix is one Reply-To line, not a new service, and the same mailbox answers DAL-80's BCC ask via an IMAP-scoped app password. 2,001 tests pass, up from 1,991. Deployed; subscribe-server restarted by hand (DAL-263 still open).",
+      "metric_snapshot": {
+        "revenue_monthly": 0,
+        "treesmith_installs_all_time": 314,
+        "treesmith_people_ever_added_a_plant": 18,
+        "treesmith_people_reached_paywall": 76,
+        "treesmith_production_purchases_all_time": 2,
+        "treestock_visitors_30d": 3220,
+        "treestock_subscribers": 13,
+        "treestock_outbound_clicks_30d": 1245,
+        "treestock_gsc_clicks_28d": 1513,
+        "treestock_gsc_impressions_28d": 66870,
+        "treestock_gsc_avg_position": 16.7,
+        "treestock_email_open_rate_90d": 43.2,
+        "treestock_email_clicks_90d": 48,
+        "treesmith_installs_7d": 25,
+        "treesmith_active_7d": 29,
+        "treesmith_active_28d": 61,
+        "treesmith_activation_rate_7d_pct": 16,
+        "treesmith_retention_8_14d_cohort_pct": 0,
+        "treesmith_activation_all_time_pct": 10,
+        "treesmith_activation_july_cohort_public_pct": 27,
+        "treesmith_installs_jul_2026": 49,
+        "treesmith_installs_us_share_pct": 61,
+        "treesmith_install_to_purchase_pct": 4.1,
+        "treesmith_net_per_install_aud": 1.32,
+        "treestock_subscribers_receiving_digest": 13
       }
     }
   ],

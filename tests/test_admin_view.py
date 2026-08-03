@@ -271,5 +271,120 @@ class BuildHealthModelTest(unittest.TestCase):
             self.assertEqual(model["rows"][0]["nursery"], "daleys")
 
 
+
+REGISTER = {
+    "updated": "2026-08-03",
+    "nurseries": [
+        {
+            "key": "daleys", "name": "Daleys", "status": "warm",
+            "contact_name": "Correy", "email": "order@daleys.com.au",
+            "touches": [
+                {"date": "2026-04-25", "direction": "in", "by": "correy",
+                 "channel": "email", "summary": "Warm reply"},
+                {"date": "2026-03-30", "direction": "out", "by": "benedict",
+                 "channel": "email", "summary": "Touch 1 goodwill intro"},
+            ],
+            "open_action": {"owner": "benedict", "what": "Touch 1.5 reply",
+                            "since": "2026-04-25"},
+            "notes": "Largest referral destination.",
+        },
+        {
+            "key": "ladybird", "name": "Ladybird", "status": "not_contacted",
+            "contact_form": "https://ladybird.example/contact", "touches": [],
+        },
+        {
+            "key": "yalca", "name": "Yalca", "status": "contacted",
+            "email": "info@yalca.com.au",
+            "touches": [{"date": "2026-03-26", "direction": "out",
+                         "by": "benedict", "channel": "email",
+                         "summary": "Touch 1"}],
+        },
+    ],
+}
+
+
+class NurseryRegisterTests(unittest.TestCase):
+    """The nursery relationship register on /admin (DAL-80)."""
+
+    def model(self):
+        from datetime import date
+        return admin_view.build_nursery_model(REGISTER, today=date(2026, 8, 3))
+
+    def test_totals(self):
+        t = self.model()["totals"]
+        self.assertEqual(t["nurseries"], 3)
+        self.assertEqual(t["open_actions"], 1)
+        self.assertEqual(t["never_contacted"], 1)
+
+    def test_open_actions_sort_first_then_never_contacted(self):
+        names = [r["name"] for r in self.model()["rows"]]
+        self.assertEqual(names, ["Daleys", "Ladybird", "Yalca"])
+
+    def test_undated_open_action_sorts_after_dated_ones(self):
+        # An action with no "since" has an unknown age; it must not jump the
+        # queue ahead of one we can prove has been open for 100 days.
+        from datetime import date
+        reg = {"updated": "2026-08-03", "nurseries": [
+            {"key": "a", "name": "Aaa", "status": "not_contacted", "touches": [],
+             "open_action": {"owner": "dale", "what": "no route found"}},
+            {"key": "z", "name": "Zzz", "status": "warm", "touches": [],
+             "open_action": {"owner": "benedict", "what": "reply",
+                             "since": "2026-04-25"}},
+        ]}
+        model = admin_view.build_nursery_model(reg, today=date(2026, 8, 3))
+        self.assertEqual([r["name"] for r in model["rows"]], ["Zzz", "Aaa"])
+
+    def test_last_touch_is_the_newest_not_the_last_listed(self):
+        # The fixture lists touches newest-first on purpose: the model must sort.
+        row = self.model()["rows"][0]
+        self.assertEqual(row["last_touch"], "2026-04-25")
+        self.assertEqual(row["days_since"], 100)
+
+    def test_touch_history_is_ordered_oldest_first(self):
+        dates = [t["date"] for t in self.model()["rows"][0]["touches"]]
+        self.assertEqual(dates, ["2026-03-30", "2026-04-25"])
+
+    def test_never_contacted_has_no_last_touch(self):
+        row = next(r for r in self.model()["rows"] if r["name"] == "Ladybird")
+        self.assertIsNone(row["last_touch"])
+        self.assertIsNone(row["days_since"])
+        self.assertEqual(row["route"], "web form")
+
+    def test_route_prefers_email(self):
+        row = next(r for r in self.model()["rows"] if r["name"] == "Yalca")
+        self.assertEqual(row["route"], "info@yalca.com.au")
+
+    def test_missing_register_renders_a_named_absence_not_a_silent_gap(self):
+        # DEC-249: an absence of data must not look like a zero.
+        page = admin_view.render_admin_html(
+            dict(admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES),
+                 nurseries=None))
+        self.assertIn("Nursery relationships", page)
+        self.assertIn("No register deployed yet", page)
+
+    def test_rendered_page_states_the_open_action_and_its_owner(self):
+        # DEC-251: pin the text a human actually reads, not just the model.
+        page = admin_view.render_admin_html(
+            dict(admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES),
+                 nurseries=self.model()))
+        self.assertIn("1 open actions", page)
+        self.assertIn("Touch 1.5 reply", page)
+        self.assertIn("benedict", page)
+        self.assertIn("Touch 1 goodwill intro", page)
+        self.assertIn("Register updated 2026-08-03", page)
+
+    def test_load_nursery_data_returns_none_when_file_absent(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertIsNone(admin_view.load_nursery_data(Path(tmp)))
+
+    def test_load_nursery_data_reads_from_disk(self):
+        import json, tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "nursery-contacts.json").write_text(json.dumps(REGISTER))
+            model = admin_view.load_nursery_data(Path(tmp))
+            self.assertEqual(model["totals"]["nurseries"], 3)
+
+
 if __name__ == "__main__":
     unittest.main()

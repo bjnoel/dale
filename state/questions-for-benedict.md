@@ -78,18 +78,15 @@ That is the actual bottleneck, not my throughput, so this is a ranking rather th
    server bill about 4x. Detail on the ticket and in DEC-248.
 3. **Q46** below — one email address.
 
-**Added since, and it is one word:**
-- **DAL-260** — two of our 13 subscribers have been getting no digest at all
-  (lissandross since 21 July, muffinmotzy since signup on 12 July, never once). Cause
-  found and fixed tonight: unticking every plant type silenced them while the page
-  confirmed "fruit only, daily digest". I have NOT touched their saved preferences,
-  because switching someone's email back on is your call, not mine. Reply **"yes"**
-  and I restore both; reply **"leave them"** and I close it as fixed-forward only.
-  My recommendation is yes: both left frequency on "daily" when an "Off" button was
-  right there.
+**Answered 2026-08-03, both closed out:**
+- **DAL-260** — you said yes. Both subscribers restored to "fruit" and verified against
+  a live dry run of the digest; they start receiving from the 2026-08-04 send. Done.
+- **DAL-80** — your two questions are answered on the ticket. The contact status and
+  history view is live at **treestock.com.au/admin** behind the Access gate you already
+  have. The BCC idea needs no new infrastructure (see Q46); it needs an alias and an
+  IMAP app password from you, then DAL-273 builds the reader.
 
-Then, when you have time: DAL-115 (community post), DAL-167 (send the RFSA email),
-DAL-80 and DAL-242.
+Then, when you have time: DAL-115 (community post), DAL-167 (send the RFSA email).
 
 **Withdrawing three, unless you object:**
 - **DAL-165** — your permaculture directory question is answered (no, DEC-245). Nothing
@@ -102,15 +99,28 @@ DAL-80 and DAL-242.
   thinnest part of that tail. Recommend cancelling, or say the word and I will rewrite
   it to follow GSC impressions instead of guessing.
 
-**Q46** [BLOCKING] Which email address should receive replies to treestock emails?
+**Q46** [BLOCKING] Confirm two Fastmail addresses on treestock.com.au
 
-Replies to our emails currently bounce. We send From `alerts@mail.treestock.com.au`,
-and that subdomain has no MX record, so a reply has nowhere to land. Both the welcome
-email and the new Treesmith intro email say "just reply to this email".
+**Corrected 2026-08-03, I had this half wrong.** I wrote that treestock.com.au cannot
+receive email. It can: the apex already carries your Fastmail MX
+(`in1/in2-smtp.messagingengine.com`). What actually bounces is narrower. We send From
+`alerts@mail.treestock.com.au`, a *subdomain* with no MX, and `stocklib/mailer.py` sets
+no `Reply-To` at all, so a reply goes to the subdomain and dies. No DNS change and no
+new service is needed, just an address on the apex to point `Reply-To` at.
 
-Do you have (or can you add) something like `hello@treestock.com.au` on Fastmail?
-Any working address is fine, it does not have to be on treestock.com.au. Once I know
-it I add it as a `Reply-To` on every sender in one place (DAL-243).
+Two asks, both on the mailbox you already pay for:
+
+1. **Replies:** confirm an address for `Reply-To` (`hello@treestock.com.au`?). One line
+   in `stocklib/mailer.py`, then DAL-243 closes and the bare-root seasonal email is
+   unblocked. The welcome email and the Treesmith intro email both say "just reply to
+   this email" and that is currently untrue.
+2. **Nursery BCC (your DAL-80 idea):** create an alias, say `nursery-log@treestock.com.au`,
+   and generate a Fastmail **app password scoped to IMAP only** into
+   `/opt/dale/secrets/fastmail.env`. App passwords are individually revocable and that
+   scope cannot send mail. Then BCC'ing that alias auto-logs the touch to the nursery
+   register (DAL-273) and you never log anything from your phone.
+
+This server can already reach `imap.fastmail.com:993`; I checked.
 
 **Q45** [BLOCKING] STFC reply is drafted and shortened, ready for you to send
 
