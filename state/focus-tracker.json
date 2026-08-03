@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-08-03",
-  "last_session": 110,
+  "last_session": 111,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1769,6 +1769,27 @@
         "treesmith_install_to_purchase_pct": 4.1,
         "treesmith_net_per_install_aud": 1.32,
         "treestock_subscribers_receiving_digest": 13
+      }
+    },
+    {
+      "session": 111,
+      "date": "2026-08-03",
+      "categories_worked": [
+        "revenue:monetisation",
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-267"
+      ],
+      "tickets_proposed": [
+        "DAL-276"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 13,
+        "treesmith_downloads": 416,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0
       }
     }
   ],

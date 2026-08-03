@@ -9004,3 +9004,110 @@ could compare it against the world. Where a number has a human who would know it
 hand, show it to them before building on it.
 
 **Cost:** $0. Read-only PostHog queries, reads of the read-only app mirror, one deploy.
+
+---
+
+## DEC-260 — 2026-08-03 — There were three sales, not two, and we are not at $0
+
+**Decided by:** Dale (autonomous). Benedict supplied the read-only RevenueCat key an hour
+before this session and wrote on DAL-265: "I've provided it. use the key to verify question 2."
+Q48 is answered. DAL-267 closed Done. DAL-265's last open dependency is cleared.
+
+**Context: the same four reflections.** $0 recorded after 130 days, Track A stale at 5 of 5
+session-days, `revenue:monetisation` stale at 4 of 5, infrastructure stale at 3 of 5.
+
+The stale-channel rule wants a genuinely new approach. This is one, and not because I thought
+of it: for the first time this business has a **receipt**. Every revenue number ever quoted
+here came from `purchase_succeeded`, an event our own app fires. Deploy gap checked first per
+DEC-253; all three recent commits matched their deployed copies.
+
+**Finding 1: revenue_monthly has been 0 and it should not have been.**
+
+Three production purchases, store-validated:
+
+| purchased (UTC) | env | store | cc | gross | proceeds |
+|---|---|---|---|---|---|
+| 2026-06-26 23:09 | production | app_store | **PK** | $24.85 | **$17.40** |
+| 2026-07-06 10:49 | production | app_store | AU | $27.74 | **$17.66** |
+| 2026-07-23 22:00 | production | app_store | US | $24.99 | **$17.49** |
+
+**US$52.55 in proceeds, all time.** Five further purchases are sandbox and are excluded.
+`revenue_monthly` moves off 0 for the first time in 130 days, to **US$35.15**, July's proceeds.
+
+It is worth being precise about how small this is. It is roughly ten months of the A$8.20
+cash burn and about a fortnight of the full A$162 operating cost. Nothing about the strategy
+changes. What changes is that the denominator of every ratio we compute is no longer zero.
+
+**Finding 2: our own telemetry never knew about the Pakistan sale.**
+
+PostHog reports **2** production purchases. RevenueCat reports **3**. `purchase_succeeded`
+first exists on 2026-07-01 and the first sale was 2026-06-26, so it is not late, it is absent.
+DEC-256's unit economics were period-matched to 2026-07-01 precisely to avoid the DEC-254
+error, which was the right instinct and still could not see a sale that fell outside the
+window it was defending itself with.
+
+**Finding 3, the one that changes a number we have reasoned from: gross is not revenue.**
+
+A$39.99 of Pro is **US$27.74 gross and US$17.66 in proceeds**. We keep **64%**, not the 85%
+DEC-256 assumed from Apple's small-business rate, because the sticker price includes tax and
+the commission is taken on top. So the net per sale is about **A$27, not A$38**, and DEC-256's
+A$1.32 net per install is roughly 40% too high. That figure has been quoted in the state file,
+in Q48 and in two decisions.
+
+The reason this was invisible is that `purchase_succeeded` records **what the buyer was
+charged**. It is the correct number for a paywall experiment and the wrong number for a
+P&L, and nothing distinguished the two because we only ever had the one source.
+
+**What shipped.** `tools/autonomous/revenuecat.py`, and a Monday digest that now leads with a
+`Revenue (RevenueCat, store-validated)` section reporting **proceeds**, with gross shown
+underneath and labelled. The PostHog block is retitled `Paywall reach (PostHog, directional)`,
+because that is what it measures.
+
+Two cross-checks, both of which currently fire correctly:
+
+```
+  Revenue ALL TIME (proceeds) US$52.55
+  Paid purchases ALL TIME    3
+    gross before store cut   US$77.58
+    buyer countries          AU, PK, US
+  Excluded: sandbox          5 purchases, US$136.56, not counted as revenue
+    RevenueCat 28d gross     US$52
+  !! RevenueCat has 3 paid purchases, PostHog purchase_succeeded has 2.
+     The receipt wins; our own telemetry is missing 1.
+```
+
+The first is DEC-259's lesson applied: the per-customer sweep is recomputed independently by
+RevenueCat's own 28-day gross metric, and they agree ($52 against our $52.73 for that window).
+The second is the divergence warning, which will keep firing until Benedict ships the app-side
+fix, and should.
+
+14 tests in `tests/test_revenuecat.py`, asserting the three failure modes this business has
+already shipped once each: truncation on a saturated first page (DEC-255), an unknown
+environment rounding towards revenue (DEC-253), and reporting a number the operator would not
+recognise (DEC-259, gross where he expects proceeds). 2,038 pass, up from 2,024. Deployed and
+diffed.
+
+**A note on method.** There is no project-wide purchase list in the v2 API, so the
+authoritative read walks all 416 customers, one request each. That is fine weekly and would
+not be fine hourly. The v1 API rejects this key outright (code 7723); use v2 only.
+
+**Also worth Benedict's attention:** MRR is **US$0** and active subscriptions **0**. Cloud
+Backup, the only recurring product we sell, has never sold outside sandbox. The $100/month
+recurring target has no product behind it yet that anyone has bought.
+
+**Honest accounting.** This session did not earn a dollar. It found ones already earned, and
+one of them had been sitting in a system we could have read since June. The business has made
+**US$52.55**.
+
+**Running lesson, eighteenth session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is
+connected. DEC-248: the arithmetic. DEC-249: instrumented. DEC-250: the fetcher loops.
+DEC-251: what the system says matches what it does. DEC-252: check the zero. DEC-253: which
+direction the default rounds. DEC-254: same period. DEC-255: state or flag. DEC-256: who the
+users are. DEC-257: what you already own. DEC-259: check it against a human who knows.
+This one adds **prefer the party with no incentive and no bug to the party that is you.**
+Every check above was applied to our own telemetry, and our own telemetry was missing a third
+of the sales and overstating each one by half. RevenueCat's number needed no auditing because
+the stores computed it. Where an external system holds the same fact, read theirs.
+
+**Cost:** $0. Read-only RevenueCat v2 calls, one deploy.

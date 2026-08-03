@@ -12,74 +12,26 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
-**Q48** [BLOCKING] Did we actually sell two copies of Treesmith Pro in July?
+**Q48** [ANSWERED 2026-08-03] Did we actually sell two copies of Treesmith Pro in July?
 
-I opened Treesmith's PostHog for the first time tonight. `purchase_succeeded` carries an
-`environment` property, and it has three events all time: a sandbox cloud-backup sub on
-1 July, then **A$39.99 Pro on 6 July (production)** and **US$24.99 Pro on 23 July
-(production)**. Three different people, none of them the sandbox one, and the 23 July
-buyer is on a US storefront so it is not you.
+**Yes, and there were three, not two.** Answered from the RevenueCat key you put on the
+server. Store-validated proceeds, net of commission and tax:
 
-Our state file says 0 sales and $0 revenue, and every strategy note I have written since
-DEC-237 is reasoned from that zero.
+| when | store | country | proceeds |
+|---|---|---|---|
+| 2026-06-26 | App Store | Pakistan | US$17.40 |
+| 2026-07-06 | App Store | Australia | US$17.66 |
+| 2026-07-23 | App Store | US | US$17.49 |
 
-**One lookup, not a decision.** Faster route than I first suggested: the app ships
-`purchases_flutter`, so **RevenueCat's dashboard** shows this directly and separates sandbox
-from production for you. App Store Connect > Sales and Trends, July 2026 also works.
-Did those two land? If yes we have made roughly A$66 net and this business is not at zero.
+**US$52.55 all time.** Five other purchases are sandbox and are excluded. `revenue_monthly`
+is off zero for the first time, at US$35.15 (July's proceeds).
 
-Since I asked, I fixed the tool that hid them (DAL-266, DEC-253). It now reports purchases
-all-time as well as weekly, so a sale can no longer age out of your Monday email. It also
-turned out to be wrong in the *other* direction: it counted any untagged purchase as
-production, and there are 13 untagged ones from the April-May TestFlight period. On a
-cumulative view the old code would have told us we had made 12 sales. Both fixed.
+Two things you should know came out of it. Our own `purchase_succeeded` event never existed
+before 1 July, so it never saw the Pakistan sale at all: PostHog says 2, the receipts say 3.
+And **we keep 64% of the sticker price, not 85%** (A$39.99 Pro is US$27.74 gross and US$17.66
+in proceeds), so every "net per sale" figure I have written was about 40% too high.
 
-I have deliberately not edited the revenue figure. Client-side telemetry is not a receipt.
-DAL-264.
-
-**Update 2026-07-31: this question is now worth much more than A$66.** I finally computed
-an install-to-purchase rate, period-matched to the day `purchase_succeeded` started existing
-(2026-07-01, so the all-time denominator would have been wrong): **2 production purchases /
-49 installs = 4.1%**, 95% interval 1.1% to 13.7%. At roughly A$38 net that is **A$1.32 per
-install**, which means about **6 installs a month covers the server bill** and about **123
-covers your Claude spend too**. July had 49.
-
-Every one of those numbers has your two receipts as its numerator. If they are real, Track A
-has a working unit economic and growth is worth funding. If they are not, this whole
-paragraph evaporates and so does DAL-271. One lookup settles it.
-
-**Also, two things came off your plate rather than onto it:**
-- **DAL-242 closed.** Both levers it asked you to decide are settled. The review prompt is
-  built and enabled (build 56); it just is not in the released build (52), so it needs a
-  submission, not a decision. And cutting the free tier 30 to 15 (DAL-224) is dead:
-  181 of 186 people have never had a single plant, three have ever passed 15, two have
-  passed 30. Recommend cancelling DAL-224.
-- ~~The real constraint is that **97% of installs never add a plant.**~~ **Withdrawn.**
-  That was a reporting artefact and I retracted it the next night (DEC-254). The event
-  started 44 days after the installs it was divided by. Real figure is 27% for the July
-  cohort, which is fine. Retention is the honest worry, not activation.
-
-**Update 2026-08-03 (DEC-259): the ask has narrowed to one credential, and this question
-now lives on DAL-265 with everything else about reporting accuracy.**
-
-You told me the digest was wrong and you were right twice over. `plant_added` only fires
-from the plant form, so import and restore create plants silently: **291 plants actually
-held against 165 add events ever recorded, 43% invisible.** Your own record is 113 events
-against a plant count that reached 160. Separately, every headcount was counting device
-ids rather than people: **348 ids, 297 people**, one person carrying 27 of them, which
-inflates installs 17% and is exactly how a returning buyer drops out of the active count
-in the week they pay us. Both fixed and live.
-
-**What I need is one thing: a read-only RevenueCat API key** (Project settings > API keys
-> secret key, read-only). Both keys in the app are `String.fromEnvironment` at build time
-so nothing is readable from the mirror; I checked and stopped looking. With it I report
-money from receipts instead of telemetry and this question closes permanently instead of
-once. While you are in there, confirming the A$39.99 on 6 July and US$24.99 on 23 July
-answers the original question in ten seconds.
-
-Until that key exists, every dollar figure in your Monday email stays labelled
-directional, because it is.
-
+The Monday digest now reads money from RevenueCat and flags the disagreement. No action needed.
 
 **Q47** [BLOCKING] You have 8 open items from me. Here they are ranked, and two I want to withdraw.
 
