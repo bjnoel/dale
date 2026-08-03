@@ -8818,3 +8818,76 @@ query that settled it was a single `dig`, and the same instinct that found Plaus
 (DEC-241) and PostHog (DEC-252) sitting unqueried would have found it any time since.
 
 **Cost:** $0. One `dig`, read-only Cloudflare zone list, one deploy, one service restart.
+
+---
+
+## DEC-258 — 2026-08-03 — Ticket descriptions are decision cards, the research moves to a comment
+
+**Benedict:** "Since moving Dale to Opus 5, his tickets are incredibly wordy and it takes me
+ages to parse all the text in them to work out if they're a) a good idea b) worth pursuing...
+The idea of this system was to save time but it's taking me longer to read tickets than come
+up with tasks myself."
+
+**Measured before changing anything.** 48 open tickets held **14,112 words**, about **64
+minutes** of reading to triage the backlog. Median description 278 words, longest 789. Split
+by the Opus 5 switch (2026-07-30, commit 6f1b1cd): tickets created before it ran 88-227 words
+with a ~95 median, everything after ran 250-705 with a ~320 median.
+
+**The model was doing what it was told.** `session-prompt.py` said, in both the normal and the
+generation prompt: "For EVERY ticket you propose, include in the description: which thinking
+level it operates at, which tracked metric it expects to move, why you believe it will move
+that metric (not just 'it might help')." Opus 5 complied more thoroughly than its predecessor.
+Blaming the model would have fixed nothing. Two secondary causes made it worse: the mandated
+`Level 2 (Channel). Expected metric: ...` preamble spent the first line of every ticket, the
+only line visible in a phone list view, on metadata that **nothing in the codebase parses**;
+and nothing enforced a limit, unlike the duplicate guard.
+
+**Decision: the description is a decision card, capped at 100 words in code.**
+
+```
+<One sentence: what you will actually do.>
+
+**Why now:** <the single strongest number or fact, 1-2 sentences>
+
+**Cost:** <$ and time> · <Dale autonomous | Benedict must: X>
+
+`L2 · treesmith_downloads`
+```
+
+Everything else goes to `--research`, posted as the first comment: one scroll below the
+decision, free to skip, as long as the work deserves. The goal is not less thinking. It is
+thinking placed where it does not tax the reader.
+
+**Three enforcement points, because prompt text is not an enforcement mechanism (DEC-236):**
+
+1. `session-prompt.py` asks for the card and shows the `--research` heredoc, in both prompts.
+   The session output block no longer restates ticket bodies back at Benedict.
+2. `linear_update.py create` exits 4 past 100 words, **with no override flag**. Every long
+   ticket felt justified to whoever wrote it, which is exactly how the backlog reached 64
+   minutes. `count_description_words` ignores link targets, code and markdown markers so
+   formatting does not eat the budget. The blocklist check now also scans research text,
+   which could otherwise have hidden a blocked topic.
+3. `gsc_page_review.py` pasted 4,000 characters into `--description` every fortnight (this is
+   why DAL-272 was 789 words) and would have started **failing outright** against the new cap.
+   It now builds a card leading with the highest-impression opportunity query.
+
+**Migrated all 48 open tickets.** Comment first, then description, so the original text never
+existed nowhere; idempotent on a "Research backing" marker; dry-run before apply. Verified
+afterwards that all 48 originals are preserved verbatim in a comment and all 48 descriptions
+are the card. Six appeared to differ and were Linear auto-linking bare domains, confirmed
+identical once unwrapped. Linear's API served stale reads for a minute or two after the write,
+which is worth knowing before trusting a read-back.
+
+**Result: 14,112 -> 3,051 words. ~64 minutes -> ~14. Nothing deleted.**
+
+**Also worth Benedict's attention:** the backlog sits at 39/40 of `max_backlog`, so ticket
+creation was about to fail regardless of length. Shortening tickets does not fix having 48 of
+them. Culling is the next conversation, and it is his call, not Dale's.
+
+**Tests:** `tests/test_ticket_length.py`, 14 tests. The real DAL-270 description fails the cap
+and its card version passes, the card keeps the decisive number, the counter ignores
+formatting, and the generated GSC card fits and leads with the biggest opportunity. Full suite
+1893 green (`test_gsc_pagination` needs `requests`, absent on the dev machine, present on the
+server, and unrelated to this change).
+
+**Cost:** $0.
