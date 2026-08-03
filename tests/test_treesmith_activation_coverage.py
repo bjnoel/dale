@@ -50,6 +50,10 @@ def _metrics(activation):
         "paywall": {"ok": True,
                     "data": {"shown": 0, "purchased": 0, "dismissed": 0}},
         "purchases": {"ok": True, "data": {"buckets": [], "production": []}},
+        # Revenue comes from RevenueCat (DEC-260); not exercised here,
+        # so it renders as an error rather than a silent zero.
+        "revenuecat": {"ok": False, "error": "not under test"},
+
         "reconciliation": {
             "ok": True,
             "data": {"via_paywall": 0, "via_purchase": 0, "agrees": True}},

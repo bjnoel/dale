@@ -420,6 +420,27 @@ def m_purchases(host, key):
             "production": [b for b in buckets if b["env"] == "production"]}
 
 
+def m_revenuecat(_host=None, _key=None):
+    """Validated revenue from RevenueCat: the receipt, not our own telemetry.
+
+    PostHog's `purchase_succeeded` is fired by our own app and is wrong in
+    both directions (DEC-260). It did not exist before 2026-07-01, so it
+    never saw the 2026-06-26 production sale at all, and it records the
+    sticker price the buyer saw rather than the money we receive. RevenueCat
+    holds the store-validated receipt with a gross/commission/tax/proceeds
+    breakdown.
+
+    Proceeds is the only figure reported as revenue here. Anything whose
+    environment is not literally "production" is excluded, never inferred.
+    """
+    sys.path.insert(0, SCRIPT_DIR)
+    import revenuecat  # noqa: E402 - sibling module, VPS-only credentials
+
+    summary = revenuecat.collect()
+    summary.pop("purchases", None)  # the digest wants totals, not receipts
+    return summary
+
+
 def m_purchase_reconciliation(host, key):
     """Cross-check `paywall_result` purchase outcomes against `purchase_succeeded`.
 
@@ -527,9 +548,10 @@ def render(metrics):
     html('<h2 style="margin:0 0 4px 0;">TreeSmith Weekly</h2>')
     html('<p style="color:#888;font-size:12px;margin:0 0 16px 0;">'
          'Rates are last 7 days; purchase counts are shown weekly AND '
-         'all-time so a sale cannot age out. Client-side and directional: '
-         'RevenueCat is the source of truth. Only environment=production '
-         'counts as revenue.</p>')
+         'all-time so a sale cannot age out. Revenue is read from RevenueCat '
+         '(store-validated receipts, proceeds after commission and tax); '
+         'PostHog figures are our own client-side telemetry and are '
+         'directional. Only environment=production counts as revenue.</p>')
 
     def section(title):
         line("")
@@ -637,8 +659,56 @@ def render(metrics):
     else:
         err("Funnel", fn["error"])
 
+    # Revenue: the receipt. This section outranks the telemetry below it.
+    section("Revenue (RevenueCat, store-validated)")
+    rcm = metrics["revenuecat"]
+    if rcm["ok"]:
+        d = rcm["data"]
+        n = d["production_n"]
+        proceeds = d["production_proceeds_usd"]
+        # Proceeds, not gross: this is what reaches the bank after the store
+        # commission and tax. Quoting gross overstates us by about a third.
+        kv("Revenue ALL TIME (proceeds)", f"US${proceeds:.2f}",
+           GREEN if proceeds else GREY)
+        kv("Paid purchases ALL TIME", str(n), GREEN if n else GREY)
+        if d.get("production_gross_usd"):
+            kv("  gross before store cut",
+               f"US${d['production_gross_usd']:.2f}", GREY)
+        if d.get("countries"):
+            kv("  buyer countries", ", ".join(d["countries"]), GREY)
+        for month, m in (d.get("by_month") or {}).items():
+            kv(f"  {month}", f"{m['n']} paid, US${m['proceeds']:.2f}")
+        # Excluded buckets are printed, never dropped, so a sale that does not
+        # count as revenue is still visible rather than silently missing.
+        for env, b in sorted((d.get("by_env") or {}).items()):
+            if env != "production":
+                kv(f"Excluded: {env}",
+                   f"{b['n']} purchases, US${b['proceeds']:.2f}, "
+                   f"not counted as revenue", GREY)
+
+        # Independent cross-check (DEC-259): the per-customer sweep against
+        # the dashboard's own 28-day gross, which is computed by RevenueCat.
+        ov = d.get("overview") or {}
+        if isinstance(ov.get("revenue"), (int, float)):
+            kv("  RevenueCat 28d gross", f"US${ov['revenue']}", GREY)
+
+        # And against our own telemetry, which is the number every strategy
+        # note before DEC-260 was reasoned from.
+        pu_chk = metrics["purchases"]
+        if pu_chk["ok"]:
+            ph_n = sum(b["n_all"] for b in pu_chk["data"]["production"])
+            if ph_n != n:
+                msg = (f"RevenueCat has {n} paid purchases, PostHog "
+                       f"purchase_succeeded has {ph_n}. The receipt wins; "
+                       f"our own telemetry is missing {n - ph_n}.")
+                line(f"  !! {msg}")
+                html(f'<div style="margin-top:6px;color:{RED};'
+                     f'font-size:13px;">{msg}</div>')
+    else:
+        err("RevenueCat", rcm["error"])
+
     # Monetization
-    section("Monetization (directional - verify in RevenueCat)")
+    section("Paywall reach (PostHog, directional)")
     pw = metrics["paywall"]
     if pw["ok"]:
         d = pw["data"]
@@ -761,6 +831,7 @@ def main():
         "funnel": run_metric(m_funnel, host, key),
         "paywall": run_metric(m_paywall, host, key),
         "purchases": run_metric(m_purchases, host, key),
+        "revenuecat": run_metric(m_revenuecat),
         "reconciliation": run_metric(m_purchase_reconciliation, host, key),
         "retention": run_metric(m_retention, host, key),
         "top_screens": run_metric(m_top_screens, host, key),
