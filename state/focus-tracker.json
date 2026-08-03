@@ -1701,7 +1701,8 @@
         "DAL-260"
       ],
       "tickets_proposed": [
-        "DAL-273"
+        "DAL-273",
+        "DAL-274"
       ],
       "note": "DEC-257. Benedict answered two questions in the half hour before the session, so the session consumed his queue rather than adding to it. DAL-260 closed: both muted subscribers restored to ['fruit'] and verified against a live send_digest dry run; muffinmotzy had never received a single digest in 22 days. DAL-80 answered: nursery relationship register now renders on /admin behind Cloudflare Access, sorted by oldest open action first (27 nurseries, 7 open actions, 6 of them Benedict's); referral clicks deliberately left off to avoid a staleable second copy. Q46 found to be half wrong: treestock.com.au's apex already has Fastmail MX and has received mail all along, so the reply-bounce fix is one Reply-To line, not a new service, and the same mailbox answers DAL-80's BCC ask via an IMAP-scoped app password. 2,001 tests pass, up from 1,991. Deployed; subscribe-server restarted by hand (DAL-263 still open).",
       "metric_snapshot": {
