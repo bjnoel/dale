@@ -227,7 +227,33 @@
         "proceeds_not_gross": "A$39.99 of Pro is US$27.74 gross and US$17.66 in proceeds: 64%. Store commission plus tax, not the flat 15% small-business rate DEC-256 assumed. Every net-per-sale figure before this date is ~40% too high.",
         "unit_economics_correction": "DEC-256 put net per install at A$1.32 using an assumed A$38 net per sale. Real proceeds are ~US$17.5 (~A$27) per sale. Recompute before quoting.",
         "no_recurring_revenue": "MRR US$0, active subscriptions 0, active trials 0. Cloud Backup (the only recurring product) has never sold outside sandbox.",
-        "method": "No project-wide purchase list exists in the v2 API, so the sweep walks all 416 customers. Cross-checked against RevenueCat's own 28-day gross metric (US$52 vs our US$52.73 for the same window)."
+        "method": "No project-wide purchase list exists in the v2 API, so the sweep walks all 416 customers. Cross-checked against RevenueCat's own 28-day gross metric (US$52 vs our US$52.73 for the same window).",
+        "platform_split_2026_08_03": {
+          "decision": "DEC-261 / DAL-265",
+          "source": "RevenueCat customer records (first_seen_at, last_seen_platform), cross-checked against PostHog $os.",
+          "android_installs": 287,
+          "android_buyers": 0,
+          "android_proceeds_usd": 0.0,
+          "ios_installs": 129,
+          "ios_buyers": 3,
+          "ios_proceeds_usd": 52.55,
+          "ios_rate_pct": 2.33,
+          "blended_rate_pct": 0.72,
+          "posthog_agrees": "PostHog $os: Android 217 people, iOS 80. Same direction, ~70% Android, from an independent system.",
+          "android_is_not_broken": "Play Store billing is PROVEN WORKING: two play_store SANDBOX purchases validated through RevenueCat on 2026-05-10. Android's zero is genuine demand, not a misconfigured integration. Do NOT open a 'fix Android billing' ticket.",
+          "android_reaches_the_paywall_more": "46 Android people reached the paywall vs 28 iOS. All 9 Android purchase-shaped paywall_result events are build 22 (internal testing, May) plus one sandbox on 2026-07-01.",
+          "implication": "Every ASO decision we have made targets the App Store, which is ~31% of installs and 100% of revenue. That focus is correct, for a reason we did not know until now. Android acquisition is worth ~zero until one Android buyer exists.",
+          "open_discrepancy": "Play Console's public listing says '10+ downloads' but RevenueCat counts 287 Android installs and PostHog 217 people, spread across all 8 released versions. Benedict can see the real Play Console number; worth one look."
+        },
+        "purchase_lag_2026_08_03": {
+          "decision": "DEC-261 / DAL-265",
+          "finding": "ALL THREE buyers purchased on the SAME DAY they installed. Lag 0, 0, 0.",
+          "why_it_matters": "Nobody has ever installed, used Treesmith, and later decided to pay. The purchase decision is made from the store listing and the first-run impression, before the product is experienced.",
+          "reframes": "Activation and retention sit DOWNSTREAM of the money, not upstream. DEC-252's 'activation is the constraint' and DEC-254's 'retention is the real open question' are both true about the product and neither is currently a revenue lever. Store listing, price and first-run are.",
+          "cohort_evidence": "Because lag is 0, cohort maturity does not confound: the May cohort's 48 iOS installs had their chance on day 1 and took it 0 times. iOS by month: Mar 5/0, Apr 33/0, May 48/0, Jun 19/1, Jul 22/2.",
+          "caveat": "n=3. Stated as the strongest signal we have about WHEN the decision is made, not as an established rate."
+        },
+        "install_count_divergence": "RevenueCat 416 customers vs PostHog 297 people (+40%). Neither is authoritative: RevenueCat opens a customer per SDK init, PostHog merges aliased ids onto a person. The digest now prints the gap rather than picking one and quietly dividing by it. Retention cross-check: RevenueCat says 11% of iOS and 5% of Android are ever seen on a later day; 272 of 287 Android and 111 of 129 iOS are never seen again 60s after first launch."
       }
     },
     "a_paused_walkthrough": {

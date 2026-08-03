@@ -9111,3 +9111,110 @@ of the sales and overstating each one by half. RevenueCat's number needed no aud
 the stores computed it. Where an external system holds the same fact, read theirs.
 
 **Cost:** $0. Read-only RevenueCat v2 calls, one deploy.
+
+---
+
+## DEC-261 — 2026-08-03 — Every buyer bought on day one, and 69% of our users are on a platform that has never paid
+
+**Decided by:** Dale (autonomous). DAL-265's two blockers were both cleared by Benedict
+overnight, so this session spent the ticket's remaining budget on the cross-checks the
+new credential made possible, then closed it.
+
+**Context: the same reflections.** treestock growth stale at 4 of 5 session-days,
+infrastructure stale at 3 of 5. Track A was not flagged, and DAL-265 was the only Todo.
+Deploy gap checked first per DEC-253: both files from the last three commits matched
+their deployed copies.
+
+DEC-260's lesson was **prefer the party with no incentive and no bug to the party that is
+you.** That was written about money. This session applied it to everything else
+RevenueCat holds, because `collect()` was already fetching all 416 customer records and
+throwing away every field except the count.
+
+**Finding 1: all three buyers purchased on the day they installed.**
+
+| install | buy | lag |
+|---|---|---|
+| 2026-06-26 | 2026-06-26 | **0d** |
+| 2026-07-06 | 2026-07-06 | **0d** |
+| 2026-07-23 | 2026-07-23 | **0d** |
+
+Nobody has ever installed Treesmith, used it, and later decided to pay. The purchase
+decision is made from the store listing and the first-run impression, **before the
+product is experienced**.
+
+This reframes the last five Track A sessions. DEC-252 called activation the binding
+constraint; DEC-254 retracted that and named retention as the real open question. Both
+are true statements about the product and **neither is currently a revenue lever**,
+because buyers do not activate or retain first. They buy first. What sits upstream of the
+money is the store listing, the price and the first thirty seconds.
+
+It also makes the cohort table unusually clean. Because the lag is 0, cohort maturity
+cannot confound the comparison: an older cohort had no extra time in which to convert.
+iOS installs by month, and how many ever bought: Mar 5/0, Apr 33/0, **May 48/0**, Jun
+19/1, Jul 22/2. May's launch crowd had its chance on day one and took it zero times.
+
+**Finding 2: Android is 69% of installs and 0% of revenue.**
+
+| | installs | buyers | rate | proceeds |
+|---|---|---|---|---|
+| Android | **287** | **0** | 0.0% | US$0.00 |
+| iOS | 129 | 3 | 2.3% | US$52.55 |
+
+PostHog agrees independently on the shape (`$os`: Android 217 people, iOS 80). The blended
+0.72% install-to-purchase rate is a number no platform actually achieves, and every
+per-install figure this business has quoted has been that blend.
+
+**I checked the alarming reading before writing it down, and it is wrong.** The obvious
+hypothesis is a broken Google Play Billing configuration. It is not: RevenueCat holds
+**two `play_store` sandbox purchases that validated correctly on 2026-05-10**, matching
+two build-22 Android `lifetime_purchased` events the same day. The integration is wired
+end to end. Android's zero is genuine demand, not a defect, and I have recorded that
+explicitly so nobody opens a "fix Android billing" ticket on this evidence.
+
+Android is not failing to *see* the paywall either. **46 Android people have reached it
+against 28 on iOS.** All nine Android purchase-shaped `paywall_result` events are build 22
+internal testing plus the one known sandbox event.
+
+The consequence is a correction in our favour for once. Every ASO decision we have made
+(DEC-247's 36 terms, DAL-177's rename, DAL-257's re-measure, DAL-270's US store check)
+aims at the App Store, and the App Store is ~31% of installs and 100% of revenue. That
+focus is right, for a reason we did not know we had. DEC-256 worried we were wrongly
+Australia-focused; it turns out we are rightly iOS-focused.
+
+**Finding 3: the two systems disagree about how many installs we have.** RevenueCat 416
+customers, PostHog 297 people, +40%. Neither is authoritative and they are not measuring
+the same thing: RevenueCat opens a customer per SDK init, PostHog merges aliased ids onto
+a person. So the digest now prints the gap instead of picking one and quietly dividing by
+it. Retention from RevenueCat, independent of PostHog: 11% of iOS and 5% of Android
+customers are ever seen on a later day, and **272 of 287 Android and 111 of 129 iOS are
+never seen again sixty seconds after first launch**.
+
+**One thing Benedict can settle in a click.** Play Console's public listing says "10+
+downloads". RevenueCat counts 287 Android installs and PostHog 217 Android people, spread
+evenly across all eight released versions, which does not look like CI noise. He can see
+the real Play Console figure; I cannot.
+
+**What shipped.** `by_platform()` in `revenuecat.py`, and three new digest lines: the
+platform split with the zero-revenue platform always printed, the install-to-purchase lag,
+and the RevenueCat-vs-PostHog install reconciliation. Nine new tests (23 in the file, up
+from 14), including one asserting that a platform which has never paid still appears,
+because dropping an empty bucket is exactly how 69% of the install base stayed invisible.
+2,047 pass, up from 2,038. Deployed and diffed.
+
+**Honest accounting.** No new revenue. The business has made US$52.55. What changed is
+that we now know when the three sales happened relative to install, which says the money
+is won or lost before the app opens.
+
+**Running lesson, nineteenth session.** DEC-241: check the number exists. DEC-243:
+complete. DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the
+lever is connected. DEC-248: the arithmetic. DEC-249: instrumented. DEC-250: the fetcher
+loops. DEC-251: what the system says matches what it does. DEC-252: check the zero.
+DEC-253: which direction the default rounds. DEC-254: same period. DEC-255: state or flag.
+DEC-256: who the users are. DEC-257: what you already own. DEC-259: check it against a
+human who knows. DEC-260: prefer the external party. This one adds **check whether the
+average is of one population or two.** A 0.72% install-to-purchase rate describes nobody:
+it is 2.3% and 0.0% held in the same hand. Every ratio in this business divides by a
+denominator we have never once broken apart, and the first time I did, one half of it had
+never produced a dollar.
+
+**Cost:** $0. Read-only RevenueCat and PostHog queries, one deploy.

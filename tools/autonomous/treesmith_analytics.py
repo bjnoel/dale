@@ -142,12 +142,15 @@ def m_installs(host, key):
         SELECT
           countIf(first_seen >= now() - INTERVAL 7 DAY) AS this_week,
           countIf(first_seen >= now() - INTERVAL 14 DAY
-                  AND first_seen < now() - INTERVAL 7 DAY) AS prev_week
+                  AND first_seen < now() - INTERVAL 7 DAY) AS prev_week,
+          count() AS all_time
         FROM firsts
     """)
     this_week = rows[0][0] if rows else 0
     prev_week = rows[0][1] if rows else 0
+    all_time = rows[0][2] if rows else 0
     return {"this_week": this_week, "prev_week": prev_week,
+            "all_time": all_time,
             "delta": pct_delta(this_week, prev_week)}
 
 
@@ -678,6 +681,23 @@ def render(metrics):
             kv("  buyer countries", ", ".join(d["countries"]), GREY)
         for month, m in (d.get("by_month") or {}).items():
             kv(f"  {month}", f"{m['n']} paid, US${m['proceeds']:.2f}")
+
+        # Which platform the money comes from. A blended rate averages two
+        # populations that behave nothing alike, so it is never shown alone.
+        for plat, b in (d.get("platforms") or {}).items():
+            kv(f"  {plat}",
+               f"{b['installs']} installs, {b['buyers']} buyers "
+               f"({b['rate_pct']}%), US${b['proceeds']:.2f}",
+               GREEN if b["buyers"] else GREY)
+
+        # Days from install to purchase. If this is 0 the purchase decision is
+        # made before the app is used, and activation/retention work sits
+        # downstream of the money rather than upstream of it.
+        lags = d.get("purchase_lag_days")
+        if lags:
+            kv("  days install -> purchase",
+               ", ".join(str(x) for x in lags)
+               + ("  (all same-day)" if set(lags) == {0} else ""))
         # Excluded buckets are printed, never dropped, so a sale that does not
         # count as revenue is still visible rather than silently missing.
         for env, b in sorted((d.get("by_env") or {}).items()):
@@ -691,6 +711,20 @@ def render(metrics):
         ov = d.get("overview") or {}
         if isinstance(ov.get("revenue"), (int, float)):
             kv("  RevenueCat 28d gross", f"US${ov['revenue']}", GREY)
+
+        # Two systems count installs and they disagree. Neither is authoritative
+        # (RevenueCat opens a customer per SDK init, PostHog merges aliased ids
+        # onto a person), so the point is to keep the gap visible rather than to
+        # pick a winner and quietly divide by it.
+        ins = metrics["installs"]
+        rc_c = d.get("customers")
+        if ins["ok"] and rc_c:
+            ph_people = ins["data"].get("all_time")
+            if ph_people:
+                gap = round((rc_c - ph_people) / ph_people * 100)
+                kv("  installs: RevenueCat vs PostHog",
+                   f"{rc_c} customers vs {ph_people} people ({gap:+d}%)",
+                   GREY)
 
         # And against our own telemetry, which is the number every strategy
         # note before DEC-260 was reasoned from.

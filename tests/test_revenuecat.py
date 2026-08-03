@@ -159,7 +159,63 @@ LIVE = {
     "by_env": {"production": {"n": 3, "proceeds": 52.55, "gross": 77.58},
                "sandbox": {"n": 5, "proceeds": 136.56, "gross": 198.20}},
     "overview": {"revenue": 52}, "customers": 416,
+    "platforms": {
+        "android": {"installs": 287, "buyers": 0, "proceeds": 0.0,
+                    "rate_pct": 0.0},
+        "iOS": {"installs": 129, "buyers": 3, "proceeds": 52.55,
+                "rate_pct": 2.33},
+    },
+    "purchase_lag_days": [0, 0, 0],
 }
+
+
+def customer(cid, plat="iOS", first_seen=1780000000000, last_seen=None):
+    return {"id": cid, "last_seen_platform": plat,
+            "first_seen_at": first_seen,
+            "last_seen_at": last_seen if last_seen is not None else first_seen}
+
+
+class PlatformTests(unittest.TestCase):
+    """DEC-261. A blended install-to-purchase rate averages two populations
+    that behave nothing alike, and hides that one of them has never paid."""
+
+    def test_installs_and_buyers_are_split_by_platform(self):
+        customers = [customer("a", "iOS"), customer("b", "iOS"),
+                     customer("c", "android")]
+        buys = [dict(purchase(), customer_id="a")]
+        got = rc.by_platform(customers, buys)["platforms"]
+        self.assertEqual(got["iOS"]["installs"], 2)
+        self.assertEqual(got["iOS"]["buyers"], 1)
+        self.assertEqual(got["iOS"]["proceeds"], 17.49)
+        self.assertEqual(got["android"]["installs"], 1)
+        self.assertEqual(got["android"]["buyers"], 0)
+        self.assertEqual(got["android"]["proceeds"], 0.0)
+
+    def test_a_platform_that_has_never_paid_still_appears(self):
+        # The failure this guards is a silent one: dropping the empty bucket
+        # would hide 69% of the install base from every revenue conversation.
+        customers = [customer("a", "iOS"), customer("c", "android")]
+        got = rc.by_platform(customers, [dict(purchase(), customer_id="a")])
+        self.assertIn("android", got["platforms"])
+        self.assertEqual(got["platforms"]["android"]["rate_pct"], 0.0)
+
+    def test_sandbox_purchases_do_not_create_buyers(self):
+        customers = [customer("a", "iOS")]
+        buys = [dict(purchase(env="sandbox"), customer_id="a")]
+        got = rc.by_platform(customers, buys)["platforms"]
+        self.assertEqual(got["iOS"]["buyers"], 0)
+        self.assertEqual(got["iOS"]["proceeds"], 0.0)
+
+    def test_purchase_lag_is_measured_in_days_from_first_seen(self):
+        day = 86_400_000
+        customers = [customer("a", "iOS", first_seen=1784000000000 - 3 * day)]
+        buys = [dict(purchase(at=1784000000000), customer_id="a")]
+        self.assertEqual(rc.by_platform(customers, buys)["purchase_lag_days"], [3])
+
+    def test_same_day_purchase_is_zero_not_missing(self):
+        customers = [customer("a", "iOS", first_seen=1784000000000)]
+        buys = [dict(purchase(at=1784000000000), customer_id="a")]
+        self.assertEqual(rc.by_platform(customers, buys)["purchase_lag_days"], [0])
 
 
 class RenderTests(unittest.TestCase):
@@ -190,6 +246,29 @@ class RenderTests(unittest.TestCase):
     def test_no_warning_when_the_two_sources_agree(self):
         text, _ = ta.render(digest_metrics(LIVE, 3))
         self.assertNotIn("The receipt wins", text)
+
+    def test_platform_split_is_rendered_with_the_zero_platform_visible(self):
+        text, _ = ta.render(digest_metrics(LIVE, 3))
+        self.assertIn("287 installs, 0 buyers (0.0%), US$0.00", text)
+        self.assertIn("129 installs, 3 buyers (2.33%), US$52.55", text)
+
+    def test_same_day_purchases_are_called_out(self):
+        text, _ = ta.render(digest_metrics(LIVE, 3))
+        self.assertIn("days install -> purchase", text)
+        self.assertIn("all same-day", text)
+
+    def test_mixed_lags_are_not_labelled_same_day(self):
+        data = dict(LIVE, purchase_lag_days=[0, 4, 11])
+        text, _ = ta.render(digest_metrics(data, 3))
+        self.assertIn("0, 4, 11", text)
+        self.assertNotIn("all same-day", text)
+
+    def test_install_counts_from_the_two_systems_are_reconciled(self):
+        metrics = digest_metrics(LIVE, 3)
+        metrics["installs"] = {"ok": True, "data": {
+            "this_week": 5, "prev_week": 4, "all_time": 297, "delta": 25}}
+        text, _ = ta.render(metrics)
+        self.assertIn("416 customers vs 297 people (+40%)", text)
 
     def test_a_revenuecat_failure_does_not_sink_the_digest(self):
         metrics = digest_metrics(LIVE, 3)

@@ -224,6 +224,57 @@ def summarise(purchases):
     }
 
 
+def _day(ms):
+    import datetime
+    return datetime.datetime.fromtimestamp(
+        (ms or 0) / 1000, datetime.timezone.utc).date()
+
+
+def by_platform(customers, purchases):
+    """Installs, buyers and proceeds per platform, plus days from install to buy.
+
+    Both halves of this were invisible until DEC-261 and both change what the
+    numbers above mean.
+
+    The platform split matters because a blended install-to-purchase rate
+    averages two populations that behave nothing alike: every sale so far is
+    App Store, while most installs are Android. Quoting one rate across both
+    understates iOS and invents a number no platform actually achieves.
+
+    The lag matters because if buyers purchase on the day they install, then
+    activation and retention sit *after* the purchase decision rather than
+    before it, and in-app work cannot be justified as a revenue lever.
+    """
+    production = [p for p in purchases if p.get("environment") == "production"]
+    first_seen = {c["id"]: c.get("first_seen_at") for c in customers}
+    buyers = {p.get("customer_id") for p in production}
+
+    stats = {}
+    for c in customers:
+        plat = c.get("last_seen_platform") or "unknown"
+        b = stats.setdefault(plat, {"installs": 0, "buyers": 0, "proceeds": 0.0})
+        b["installs"] += 1
+        if c["id"] in buyers:
+            b["buyers"] += 1
+    for p in production:
+        cid = p.get("customer_id")
+        plat = next((c.get("last_seen_platform") or "unknown"
+                     for c in customers if c["id"] == cid), "unknown")
+        if plat in stats:
+            stats[plat]["proceeds"] += (p.get("revenue_in_usd") or {}).get(
+                "proceeds") or 0.0
+    for b in stats.values():
+        b["proceeds"] = round(b["proceeds"], 2)
+        b["rate_pct"] = round(b["buyers"] / b["installs"] * 100, 2) if b["installs"] else 0.0
+
+    lags = []
+    for p in production:
+        fs = first_seen.get(p.get("customer_id"))
+        if fs:
+            lags.append((_day(p.get("purchased_at")) - _day(fs)).days)
+    return {"platforms": dict(sorted(stats.items())), "purchase_lag_days": sorted(lags)}
+
+
 def collect(project_id=None, api_key=None, _opener=None):
     """One call site for everything: customers, purchases, summary, overview."""
     if project_id is None or api_key is None:
@@ -233,6 +284,7 @@ def collect(project_id=None, api_key=None, _opener=None):
                                 _opener=_opener)
     summary = summarise(purchases)
     summary["customers"] = len(customers)
+    summary.update(by_platform(customers, purchases))
     try:
         summary["overview"] = fetch_overview(project_id, api_key,
                                              _opener=_opener)
