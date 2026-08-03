@@ -814,10 +814,39 @@ Use the Step-Back Thinking Ladder to decide WHAT to propose:
 | 1 - Approach | "Is this the right tactic within this approach?" |
 | 0 - Tactical | "Is this a specific improvement worth doing?" |
 
-For EVERY ticket you propose, include in the description:
-- Which thinking level it operates at
-- Which tracked metric it expects to move (from focus-tracker.json categories)
-- Why you believe it will move that metric (not just "it might help")
+### Ticket format: a decision card, not a report
+
+Benedict triages on his phone. The description exists so he can answer
+yes/no/later, nothing more. **Hard cap 100 words, enforced by
+`linear_update.py create`, which exits 4 if you exceed it. There is no
+override flag.** Aim for 60 to 80.
+
+```
+<One sentence: what you will actually do.>
+
+**Why now:** <the single strongest number or fact, 1-2 sentences>
+
+**Cost:** <$ and time> · <Dale autonomous | Benedict must: X>
+
+`L2 · treesmith_downloads`
+```
+
+That last line carries the thinking level and expected metric. Keep it to
+that one compact line. Do NOT open the description with
+"Level 2 (Channel). Expected metric: ..." prose: it pushes the actual ask
+below the fold on a phone, and nothing parses it.
+
+Everything else goes in `--research`, posted automatically as the first
+comment: your evidence, workings, rejected alternatives, prior-ticket
+history, how you would verify it, what would falsify it. Be as thorough
+there as you like. The point is not to think less, it is to put the
+thinking one scroll below the decision so it costs nothing to skip.
+
+Rules of thumb:
+- One number beats three. Pick the one that would change his mind.
+- If a sentence would not change a yes to a no, it is research, not description.
+- Do not restate the title.
+- Never split one idea into several tickets to duck the cap.
 
 DO NOT propose tickets that:
 - Only move count metrics (nurseries_monitored, products_tracked, retailers_monitored)
@@ -831,7 +860,32 @@ BAD ticket: "Add nursery X to treestock"
   (only moves nurseries_monitored, no evidence it drives traffic)
 
 To propose work:
-`python3 /opt/dale/autonomous/linear_update.py create "Title" --description "Why this matters" --labels "SEO,Track B" --priority 3`
+```
+python3 /opt/dale/autonomous/linear_update.py create "Title" \
+  --description "$(cat <<'EOF'
+Re-run our 36 App Store keyword ranks against the US storefront instead of AU.
+
+**Why now:** 61% of July installs are US (30 of 49) but every rank we have
+ever measured is AU, so DAL-177's rename is scored on the wrong store.
+
+**Cost:** $0, ~1hr · Dale autonomous, read-only.
+
+`L2 · treesmith_downloads`
+EOF
+)" \
+  --research "$(cat <<'EOF'
+July installs by storefront: US 30, AU 9, IN 4, then singles (DAL-234).
+Both production purchases are one AUD and one USD.
+
+DEC-247 re-measured 36 terms, all AU, and concluded the app NAME is the
+ranking field. DAL-177's rename and DAL-257's re-measure are both scored
+against AU ranks...
+EOF
+)" \
+  --labels "Track A" --priority 3
+```
+Use the `--research` heredoc for anything that does not fit the card. A long
+research comment is good work; a long description is a tax on Benedict.
 This creates a Backlog ticket with a "Dale" label automatically added.
 Benedict will move it to Todo if approved.
 Do NOT create more tickets if the backlog is full (check the count above).
@@ -968,10 +1022,31 @@ Use the Step-Back Thinking Ladder for every ticket you propose:
 | 1 - Approach | "Is this the right tactic within this approach?" |
 | 0 - Tactical | "Is this a specific improvement worth doing?" |
 
-For EVERY ticket, include in the description:
-- Which thinking level it operates at
-- Which tracked metric it expects to move (from focus-tracker.json categories)
-- Why you believe it will move that metric
+### Ticket format: a decision card, not a report
+
+Benedict triages on his phone. **Hard cap 100 words on the description,
+enforced by `linear_update.py create`, which exits 4 if you exceed it. There
+is no override flag.** Aim for 60 to 80.
+
+```
+<One sentence: what you will actually do.>
+
+**Why now:** <the single strongest number or fact, 1-2 sentences>
+
+**Cost:** <$ and time> · <Dale autonomous | Benedict must: X>
+
+`L2 · treesmith_downloads`
+```
+
+The final line carries the thinking level and expected metric. Do NOT open
+with "Level 2 (Channel). Expected metric: ..." prose: it pushes the ask below
+the fold on a phone, and nothing parses it.
+
+Put your evidence, workings, rejected alternatives and prior-ticket history in
+`--research`, which is posted as the first comment. Be thorough there. The
+goal is not less thinking, it is thinking placed one scroll below the
+decision. If a sentence would not change a yes to a no, it belongs in
+research.
 
 DO NOT propose tickets that:
 - Only move count metrics (nurseries_monitored, products_tracked, retailers_monitored)
@@ -998,12 +1073,30 @@ On 2026-07-27 a generation session created 13 tickets in three minutes and
 three were duplicates of tickets from four days earlier. Proposing fewer, or
 none, is always better than proposing a near-duplicate.
 
-To create a ticket:
-`python3 /opt/dale/autonomous/linear_update.py create "Title" --description "Level: X. Expected metric: Y. Rationale: Z" --labels "Track B" --priority 3`
+To create a ticket (description on the card format, everything else in research):
+```
+python3 /opt/dale/autonomous/linear_update.py create "Title" \
+  --description "$(cat <<'EOF'
+<one sentence: the ask>
+
+**Why now:** <strongest number>
+
+**Cost:** <$ and time> · <who does what>
+
+`L2 · metric_name`
+EOF
+)" \
+  --research "$(cat <<'EOF'
+<all the evidence, workings and alternatives, as long as you like>
+EOF
+)" \
+  --labels "Track B" --priority 3
+```
 
 ## Session Output
 End with:
-**Tickets proposed:** list all new tickets with thinking level and expected metric
+**Tickets proposed:** one line each: `DAL-nnn · L2 · metric · <5-word summary>`
+Do not restate the ticket bodies here. Benedict reads them in Linear.
 """
     return prompt
 

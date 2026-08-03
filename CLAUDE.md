@@ -234,6 +234,30 @@ Run `python3 -m unittest discover tests/` before committing any change under
 Full details in `tools/scrapers/CLAUDE.md`, which loads automatically when you
 work with files in that directory.
 
+## Ticket Format (READ BEFORE PROPOSING WORK)
+
+A Linear description is a **decision card**, not a report. Benedict triages on
+his phone and needs only enough to answer yes/no/later. **Hard cap 100 words,
+enforced by `linear_update.py create` (exits 4). No override flag.** Target 60-80.
+
+```
+<One sentence: what you will actually do.>
+
+**Why now:** <the single strongest number or fact, 1-2 sentences>
+
+**Cost:** <$ and time> · <Dale autonomous | Benedict must: X>
+
+`L2 · treesmith_downloads`
+```
+
+Everything else goes in `--research`, posted automatically as the first comment:
+evidence, workings, rejected alternatives, prior-ticket history. Be thorough
+there. The goal is not less thinking, it is thinking placed one scroll below the
+decision. Do NOT open a description with "Level 2 (Channel). Expected metric:..."
+prose; that line belongs at the bottom, compact, in backticks.
+
+Full rationale and the measured before/after in `docs/ticket-format.md`.
+
 ## Automated Housekeeping
 
 - **After finishing a blog post for bjnoel.com**, always create or update the

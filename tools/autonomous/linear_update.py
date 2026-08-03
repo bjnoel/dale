@@ -9,6 +9,7 @@ Usage:
   python3 linear_update.py assign DAL-42 benedict
   python3 linear_update.py assign DAL-42 none
   python3 linear_update.py create "Title here" --description "Details" --labels "SEO,Track B" --priority 3
+  python3 linear_update.py create "Title" --description "<=100 words" --research "the long version"
 """
 
 import json
@@ -21,6 +22,20 @@ import urllib.error
 SECRETS_DIR = "/opt/dale/secrets"
 GRAPHQL_URL = "https://api.linear.app/graphql"
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
+
+# A ticket description is a decision card, not a report. Benedict triages on a
+# phone and only needs enough to answer yes/no/later; the evidence belongs in
+# the research comment, one scroll below, where it costs nothing to skip.
+#
+# Measured 2026-08-03: the 48 open tickets held 14,112 words, about 64 minutes
+# of reading just to triage the backlog. Tickets written before the Opus 5
+# switch had a ~95-word median and were fine; after it the median was ~320.
+# The session prompt asked for that ("include which thinking level, which
+# metric, why you believe it will move"), so this is a prompt defect the model
+# faithfully executed. Prompt text alone is not an enforcement mechanism, the
+# same lesson as the duplicate guard below, so the cap lives in code.
+MAX_DESCRIPTION_WORDS = 100
+RESEARCH_COMMENT_HEADER = "## Research backing"
 
 
 def _blocklist_path():
@@ -326,15 +341,32 @@ def find_similar_titles(title, existing, threshold=DUPLICATE_THRESHOLD):
     return sorted(matches, key=lambda m: m[2], reverse=True)
 
 
+def count_description_words(text):
+    """Word count for the cap, ignoring markdown that is not prose.
+
+    Link targets, code fences and heading/bullet markers are formatting rather
+    than something Benedict reads, so they should not eat the budget.
+    """
+    if not text:
+        return 0
+    text = re.sub(r"```.*?```", " ", text, flags=re.DOTALL)      # code blocks
+    text = re.sub(r"`[^`]*`", " ", text)                          # inline code
+    text = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text)          # keep link text
+    text = re.sub(r"<[^>]+>", " ", text)                          # bare urls/html
+    text = re.sub(r"^[\s>#*\-+|]+", " ", text, flags=re.MULTILINE)
+    return len(text.split())
+
+
 def cmd_create(args):
     if not args:
-        print("Usage: linear_update.py create 'Title' [--description '...'] [--labels 'SEO,Tech'] "
-              "[--priority 3] [--allow-duplicate]",
+        print("Usage: linear_update.py create 'Title' [--description '...'] [--research '...'] "
+              "[--labels 'SEO,Tech'] [--priority 3] [--allow-duplicate]",
               file=sys.stderr)
         sys.exit(1)
 
     title = args[0]
     description = ""
+    research = ""
     labels_str = ""
     priority = 3  # Normal
     allow_duplicate = False
@@ -343,6 +375,9 @@ def cmd_create(args):
     while i < len(args):
         if args[i] == "--description" and i + 1 < len(args):
             description = args[i + 1]
+            i += 2
+        elif args[i] == "--research" and i + 1 < len(args):
+            research = args[i + 1]
             i += 2
         elif args[i] == "--labels" and i + 1 < len(args):
             labels_str = args[i + 1]
@@ -356,9 +391,35 @@ def cmd_create(args):
         else:
             i += 1
 
+    # Length cap. There is deliberately no override flag: every long ticket has
+    # felt justified to whoever wrote it, which is exactly how the backlog got
+    # to 64 minutes of reading. The detail is not lost, it moves to --research.
+    words = count_description_words(description)
+    if words > MAX_DESCRIPTION_WORDS:
+        print(
+            f"BLOCKED: description is {words} words, the cap is {MAX_DESCRIPTION_WORDS}.\n"
+            f"\n"
+            f"A ticket description is a decision card, not a report. Benedict triages\n"
+            f"on his phone and needs only enough to answer yes/no/later:\n"
+            f"\n"
+            f"  <one sentence: what you will actually do>\n"
+            f"\n"
+            f"  **Why now:** <the single strongest number, 1-2 sentences>\n"
+            f"\n"
+            f"  **Cost:** <$ and time> · <Dale autonomous | Benedict must: X>\n"
+            f"\n"
+            f"  `L2 · treesmith_downloads`\n"
+            f"\n"
+            f"Move the evidence, workings, alternatives and prior-ticket history into\n"
+            f"--research. It is posted as the first comment, one scroll below the\n"
+            f"description, so nothing is lost and nothing is forced on the reader.",
+            file=sys.stderr,
+        )
+        sys.exit(4)
+
     # Hard block on prospects/topics Benedict has explicitly closed out.
     # See state/ticket-blocklist.json. This cannot be bypassed by rewording.
-    blocked = check_blocklist(title, description)
+    blocked = check_blocklist(title, description + "\n" + research)
     if blocked:
         pattern, reason = blocked
         print(
@@ -436,13 +497,27 @@ def cmd_create(args):
     data = graphql(f"""
         mutation({var_types}) {{
             issueCreate(input: {{ {mutation_input} }}) {{
-                issue {{ identifier title state {{ name }} }}
+                issue {{ id identifier title state {{ name }} }}
             }}
         }}
     """, variables)
 
     issue = data["issueCreate"]["issue"]
     print(f"Created {issue['identifier']}: {issue['title']} [{issue['state']['name']}]")
+
+    # The evidence goes one scroll below the decision, not into it.
+    if research:
+        body = research if research.lstrip().startswith("#") else \
+            f"{RESEARCH_COMMENT_HEADER}\n\n{research}"
+        graphql("""
+            mutation($issueId: String!, $body: String!) {
+                commentCreate(input: { issueId: $issueId, body: $body }) {
+                    comment { id }
+                }
+            }
+        """, {"issueId": issue["id"], "body": body})
+        print(f"Research comment added ({count_description_words(research)} words)")
+
     print(f"Backlog: {len(backlog) + 1}/{max_backlog}")
 
 
