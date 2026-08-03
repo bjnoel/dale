@@ -8891,3 +8891,116 @@ formatting, and the generated GSC card fits and leads with the biggest opportuni
 server, and unrelated to this change).
 
 **Cost:** $0.
+
+---
+
+## DEC-259 — 2026-08-03 — Benedict noticed his own plants were missing from our reporting
+
+**Decided by:** Dale (autonomous), on Benedict's direct instruction. DAL-265 repurposed
+as the single reporting-accuracy ticket and handed back. DAL-269, DAL-271, DAL-264 and
+DAL-267 cancelled and folded into it.
+
+**Context.** The same four reflections: $0 recorded after 130 days, Track A stale, treestock
+growth stale, `revenue:monetisation` stale. Deploy gap checked first per DEC-253; all files
+from the last three commits matched their deployed copies, so nothing was silently stale.
+
+Benedict commented on DAL-265 an hour before this session:
+
+> I want to get accurate stats, I know they're wrong because in some cases we have had the
+> weekly reporting saying 0 active users, but someone has bought prod during that week. Also,
+> I have added more plants than the weekly report says there was in total, something is not
+> adding up. Can you consolidate any open/todo tickets around this issue into a single one?
+
+He was right on both counts, and both are the same failure: **the digest counted an event
+stream rather than the thing the event stream is a proxy for.**
+
+**Defect 1: we counted plants typed in by hand and called it plants.**
+
+`capturePlantAdded` is called from exactly one place in the app,
+`lib/features/plants/screens/plant_form_screen.dart:596`. A plant created by importing a
+file or restoring a backup fires nothing. So `plant_added` was never a count of plants; it
+was a count of plants entered through one screen.
+
+The number that settles it was already in the payload and had never been read. `plant_added`
+carries `plant_count_after`. High-water mark per person:
+
+| | |
+|---|---|
+| plants actually held | **291** across 20 people |
+| `plant_added` events ever recorded | 165 |
+| **plants we never saw arrive** | **126 = 43%** |
+
+Benedict's own record is the sharpest case: 113 add events against a plant count that
+reached **160**. He found this the only way it could be found from where he sits, by
+having more plants in his hand than our reporting said existed anywhere.
+
+**Defect 2: we counted device ids and called them people.**
+
+Every people-count in the digest was `count(DISTINCT distinct_id)`. PostHog issues a fresh
+`distinct_id` per anonymous device and aliases it onto a `person_id` on sign-in, reinstall
+or restore. **348 ids across 297 actual people.** One person carries 27 ids alone, another
+14, another 11.
+
+It fails in the damaging direction twice over. Installs are inflated 17%, so every
+conversion rate divided by them was understated. And a phantom id looks exactly like
+somebody who arrived once and never returned, which is how a returning buyer can vanish
+from an active-user count in the week they paid us: precisely the symptom Benedict
+described.
+
+Corrected on the same data: installs since 2026-07-01 are **50 people, not 60 ids**, so
+DEC-256's 4.1% install-to-purchase rate becomes 4.0% on a denominator that means something.
+The direction of that correction is small here and will not stay small.
+
+**What shipped (deployed, diffed against the deployed copy, 2,024 tests up from 2,016).**
+
+- `m_installs`, `m_active`, `m_activation`, `m_funnel` and `m_retention` count `person_id`.
+  A test reads the query source and fails if any of them reverts, because a wrong
+  denominator produces a perfectly plausible number and nothing in the rendered output
+  could ever catch it.
+- A standing line printing people against ids, so the drift stays visible instead of being
+  fixed once and forgotten.
+- A `Plants held` line carrying the size of the blind spot and its cause, which goes silent
+  when the two agree so there is no permanent warning to learn to ignore.
+
+Live output:
+
+```
+  Active people (7d / 28d)   20 / 53
+    Counting people, not device ids 297 people across 348 ids (51 phantom, id-count runs +17%)
+  Plants held (high water)   291 across 20 people
+    Never seen being added   126 of 291 = 43% (plant_added fires only from the plant form,
+                             not on import or restore)
+```
+
+**Deliberately not done.** I did not patch the Flutter app. The real fix is one event in
+`import_service.dart` and the restore path, and it is Benedict's to commit (CLAUDE.md:
+propose, do not commit). I recommended a separate `plants_imported` event carrying a count
+rather than N individual `plant_added` calls, because keeping hand-entry and import
+distinguishable is the exact distinction whose absence caused this.
+
+**Consolidation, as asked.** DAL-265 is now the single ticket. Four cancelled into it:
+DAL-269 (reconcile every rate against an independent recount — this session was that audit),
+DAL-271 (revenue per install as a standing metric — blocked behind the same inflated
+denominator, and computing per-install economics on it would have been DEC-254 one field
+over), DAL-264 and DAL-267 (the App Store Connect confirmation and the RevenueCat key,
+which are now the only things between us and trustworthy revenue). That also takes the
+backlog from 39/40 to 35/40, which DEC-258 flagged as about to fail on its own.
+
+**Honest accounting.** No revenue. It is worth stating plainly that a human operator caught
+this and the reporting system did not, after sixteen consecutive sessions of me auditing
+that same system. Every check I have added since DEC-241 asks whether a number is complete,
+current, circular or instrumented. None of them asks whether the number is **the number he
+would recognise**. Benedict knew how many plants he had.
+
+**Running lesson, seventeenth session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is
+connected. DEC-248: the arithmetic. DEC-249: instrumented. DEC-250: the fetcher loops.
+DEC-251: what the system says matches what it does. DEC-252: check the zero. DEC-253: which
+direction the default rounds. DEC-254: numerator and denominator cover the same period.
+DEC-255: state or flag. DEC-256: who the users actually are. DEC-257: what you already own.
+This one adds **check the metric against somebody who knows the answer independently.**
+Every defect above was invisible from inside the data and obvious to the one person who
+could compare it against the world. Where a number has a human who would know it first
+hand, show it to them before building on it.
+
+**Cost:** $0. Read-only PostHog queries, reads of the read-only app mirror, one deploy.

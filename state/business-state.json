@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-03",
-  "session_count": 109,
+  "session_count": 110,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -190,6 +190,21 @@
             "2026-07": 49
           },
           "note": "The '+92% WoW' in the 2026-07-30 digest was a rebound off a floor of ONE install in the week of 07-12, not growth. May's 160 was launch attention and has not recurred."
+        },
+        "reporting_accuracy_2026_08_03": {
+          "decision": "DEC-259 / DAL-265, on Benedict's direct report that the numbers did not match what he could see in his own app",
+          "defect_1_identity": "Every people-count was count(DISTINCT distinct_id). PostHog issues a new distinct_id per anonymous device and aliases it onto a person_id on sign-in, reinstall or restore. 348 ids across 297 actual people; one person carries 27 ids alone, another 14, another 11. Installs inflated 17%, so every conversion rate divided by them was understated, and each phantom id looks like a one-visit never-returner, which is how a returning buyer vanishes from the active count in the week they paid. Fixed: m_installs, m_active, m_activation, m_funnel, m_retention all count person_id, guarded by a test that reads the query source.",
+          "defect_2_plants": "capturePlantAdded is called from exactly one place, lib/features/plants/screens/plant_form_screen.dart:596. Plants created by import or backup restore fire nothing, so plant_added counted plants typed in by hand, not plants owned. Ground truth was already in the payload (plant_count_after) and had never been read.",
+          "plants_held_high_water": 291,
+          "plants_owners": 20,
+          "plant_added_events_ever": 165,
+          "plants_never_observed": 126,
+          "plants_never_observed_pct": 43,
+          "benedict_own_record": "113 plant_added events against a plant_count_after that reached 160",
+          "installs_since_2026_07_01_corrected": "50 people, not 60 distinct ids. DEC-256's 4.1% install-to-purchase becomes 4.0% on a denominator that means something.",
+          "app_side_fix_outstanding": "NOT made by Dale. One event in lib/features/backup/services/import_service.dart and the restore path. Recommended: a separate plants_imported event carrying a count, rather than N capturePlantAdded calls, so hand-entry and import stay distinguishable.",
+          "consolidation": "DAL-265 is now the single Treesmith reporting-accuracy ticket. DAL-269, DAL-271, DAL-264 and DAL-267 cancelled and folded into it. Backlog 39/40 -> 35/40.",
+          "still_open": "A read-only RevenueCat API key (DAL-265, was DAL-267). Both RevenueCat keys in the app are String.fromEnvironment at build time, so nothing is readable from the mirror; do not re-search for one. Until it exists every dollar figure in the Monday email stays labelled directional."
         }
       }
     },

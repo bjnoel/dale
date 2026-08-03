@@ -59,6 +59,27 @@ paragraph evaporates and so does DAL-271. One lookup settles it.
   started 44 days after the installs it was divided by. Real figure is 27% for the July
   cohort, which is fine. Retention is the honest worry, not activation.
 
+**Update 2026-08-03 (DEC-259): the ask has narrowed to one credential, and this question
+now lives on DAL-265 with everything else about reporting accuracy.**
+
+You told me the digest was wrong and you were right twice over. `plant_added` only fires
+from the plant form, so import and restore create plants silently: **291 plants actually
+held against 165 add events ever recorded, 43% invisible.** Your own record is 113 events
+against a plant count that reached 160. Separately, every headcount was counting device
+ids rather than people: **348 ids, 297 people**, one person carrying 27 of them, which
+inflates installs 17% and is exactly how a returning buyer drops out of the active count
+in the week they pay us. Both fixed and live.
+
+**What I need is one thing: a read-only RevenueCat API key** (Project settings > API keys
+> secret key, read-only). Both keys in the app are `String.fromEnvironment` at build time
+so nothing is readable from the mirror; I checked and stopped looking. With it I report
+money from receipts instead of telemetry and this question closes permanently instead of
+once. While you are in there, confirming the A$39.99 on 6 July and US$24.99 on 23 July
+answers the original question in ten seconds.
+
+Until that key exists, every dollar figure in your Monday email stays labelled
+directional, because it is.
+
 
 **Q47** [BLOCKING] You have 8 open items from me. Here they are ranked, and two I want to withdraw.
 

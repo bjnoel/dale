@@ -136,8 +136,8 @@ def m_installs(host, key):
     """New devices (first-ever event) this week vs the prior week."""
     rows = hogql(host, key, """
         WITH firsts AS (
-          SELECT distinct_id, min(timestamp) AS first_seen
-          FROM events GROUP BY distinct_id
+          SELECT person_id, min(timestamp) AS first_seen
+          FROM events GROUP BY person_id
         )
         SELECT
           countIf(first_seen >= now() - INTERVAL 7 DAY) AS this_week,
@@ -156,17 +156,92 @@ def m_active(host, key):
     rows = hogql(host, key, """
         SELECT
           count(DISTINCT if(timestamp >= now() - INTERVAL 7 DAY,
-                            distinct_id, NULL)) AS w,
+                            person_id, NULL)) AS w,
           count(DISTINCT if(timestamp >= now() - INTERVAL 28 DAY,
-                            distinct_id, NULL)) AS m
+                            person_id, NULL)) AS m
         FROM events WHERE timestamp >= now() - INTERVAL 28 DAY
     """)
     return {"wau": rows[0][0] if rows else 0,
             "mau": rows[0][1] if rows else 0}
 
 
+def m_identity(host, key):
+    """How far `distinct_id` and `person_id` have drifted apart, all time.
+
+    PostHog issues a fresh `distinct_id` per anonymous device and then aliases
+    it onto a `person_id` when the user signs in, reinstalls or restores. Every
+    people-count in this digest used to be `count(DISTINCT distinct_id)`, which
+    counts one human once per id they have ever carried. One person in our data
+    carries 27 ids on their own.
+
+    The effect runs in the damaging direction: installs are inflated, so every
+    conversion rate built on that denominator is understated, and each phantom
+    id looks like somebody who arrived once and never came back, so retention
+    is understated too.
+
+    Printed every week rather than fixed once, because the only way to notice a
+    metric quietly reverting to id-counting is to keep both numbers visible.
+    """
+    rows = hogql(host, key, """
+        SELECT count(DISTINCT distinct_id), count(DISTINCT person_id)
+        FROM events
+    """)
+    ids = rows[0][0] if rows else 0
+    persons = rows[0][1] if rows else 0
+    return {"ids": ids, "persons": persons, "phantom": ids - persons,
+            "inflation_pct": (round((ids - persons) / persons * 100)
+                              if persons else None)}
+
+
+def m_plants(host, key):
+    """How many plants exist, and how many of them we ever saw being added.
+
+    `plant_added` fires from exactly one place in the app,
+    `plant_form_screen.dart`, so a plant created by restoring a backup or
+    importing a file is never announced. Counting the event therefore counts
+    plants typed in by hand, not plants owned.
+
+    The truth was already in the payload and had never been read: `plant_added`
+    carries `plant_count_after`, and the retired `plant_count_snapshot` carried
+    `plant_count`. The high-water mark of those per person is a floor on how
+    many plants that person holds.
+
+    The gap between the two is reported deliberately. It is the size of the
+    blind spot, and it is what Benedict noticed from the other side by having
+    more plants in his own app than the digest said existed in total.
+    """
+    rows = hogql(host, key, """
+        WITH per_person AS (
+          SELECT person_id,
+                 max(greatest(
+                   toIntOrZero(replaceAll(
+                     JSONExtractRaw(properties, 'plant_count_after'), '"', '')),
+                   toIntOrZero(replaceAll(
+                     JSONExtractRaw(properties, 'plant_count'), '"', ''))
+                 )) AS high_water
+          FROM events
+          WHERE event IN ('plant_added', 'plant_count_snapshot')
+          GROUP BY person_id
+        )
+        SELECT count(), sum(high_water) FROM per_person WHERE high_water > 0
+    """)
+    owners = rows[0][0] if rows else 0
+    plants = rows[0][1] if rows else 0
+    observed = scalar(hogql(host, key, """
+        SELECT count() FROM events WHERE event = 'plant_added'
+    """))
+    unobserved = max(plants - observed, 0)
+    return {
+        "owners": owners,
+        "plants": plants,
+        "observed_adds": observed,
+        "unobserved": unobserved,
+        "unobserved_pct": (round(unobserved / plants * 100) if plants else None),
+    }
+
+
 def m_activation(host, key):
-    """How many new devices added a plant, this week and all time.
+    """How many new people added a plant, this week and all time.
 
     The all-time figure is deliberately NOT computed over every device we have
     ever seen. `plant_added` did not exist for the app's first six weeks, so a
@@ -191,19 +266,19 @@ def m_activation(host, key):
 
     rows = hogql(host, key, """
         WITH firsts AS (
-          SELECT distinct_id, min(timestamp) AS first_seen
-          FROM events GROUP BY distinct_id
+          SELECT person_id, min(timestamp) AS first_seen
+          FROM events GROUP BY person_id
         ),
         activated AS (
-          SELECT DISTINCT distinct_id FROM events WHERE event = 'plant_added'
+          SELECT DISTINCT person_id FROM events WHERE event = 'plant_added'
         )
         SELECT
           countIf(first_seen >= now() - INTERVAL 7 DAY) AS installs_7d,
           countIf(first_seen >= now() - INTERVAL 7 DAY
-                  AND distinct_id IN (SELECT distinct_id FROM activated)) AS activated_7d,
+                  AND person_id IN (SELECT person_id FROM activated)) AS activated_7d,
           countIf(first_seen >= toDate({start})) AS installs_all,
           countIf(first_seen >= toDate({start})
-                  AND distinct_id IN (SELECT distinct_id FROM activated)) AS activated_all,
+                  AND person_id IN (SELECT person_id FROM activated)) AS activated_all,
           countIf(first_seen < toDate({start})) AS excluded
         FROM firsts
     """.replace("{start}", "'%s'" % coverage_start))
@@ -253,7 +328,7 @@ def m_funnel(host, key):
     counts = []
     for label, event in steps:
         rows = hogql(host, key, f"""
-            SELECT count(DISTINCT distinct_id) FROM events
+            SELECT count(DISTINCT person_id) FROM events
             WHERE event = '{event}'
               AND timestamp >= now() - INTERVAL 7 DAY
         """)
@@ -375,10 +450,10 @@ def m_retention(host, key):
     """
     rows = hogql(host, key, """
         WITH per_device AS (
-          SELECT distinct_id,
+          SELECT person_id,
                  min(timestamp) AS first_seen,
                  count(DISTINCT toDate(timestamp)) AS active_days
-          FROM events GROUP BY distinct_id
+          FROM events GROUP BY person_id
         )
         SELECT
           count() AS cohort,
@@ -485,13 +560,37 @@ def render(metrics):
         err("New installs", g["error"])
     a = metrics["active"]
     if a["ok"]:
-        kv("Active devices (7d / 28d)",
+        kv("Active people (7d / 28d)",
            f"{a['data']['wau']} / {a['data']['mau']}")
     else:
-        err("Active devices", a["error"])
+        err("Active people", a["error"])
+    idm = metrics["identity"]
+    if idm["ok"]:
+        d = idm["data"]
+        if d["persons"]:
+            kv("  Counting people, not device ids",
+               f"{d['persons']} people across {d['ids']} ids "
+               f"({d['phantom']} phantom, id-count runs "
+               f"+{d['inflation_pct']}%)", GREY)
+        else:
+            kv("  Counting people, not device ids", "no events recorded", GREY)
+    else:
+        err("Identity", idm["error"])
 
     # Activation
     section("Activation")
+    pl = metrics["plants"]
+    if pl["ok"]:
+        d = pl["data"]
+        kv("Plants held (high water)",
+           f"{d['plants']} across {d['owners']} people")
+        if d["unobserved"]:
+            kv("  Never seen being added",
+               f"{d['unobserved']} of {d['plants']} = {d['unobserved_pct']}% "
+               f"(plant_added fires only from the plant form, "
+               f"not on import or restore)", RED)
+    else:
+        err("Plants", pl["error"])
     ac = metrics["activation"]
     if ac["ok"]:
         d = ac["data"]
@@ -512,7 +611,7 @@ def render(metrics):
             excluded = d.get("excluded_pre_coverage") or 0
             if excluded:
                 kv("  Excluded (installed before plant_added existed)",
-                   f"{excluded} devices, activation unknown not zero", GREY)
+                   f"{excluded} people, activation unknown not zero", GREY)
     else:
         err("Activation", ac["error"])
     ob = metrics["onboarding"]
@@ -524,7 +623,7 @@ def render(metrics):
         err("Onboarding", ob["error"])
 
     # Funnel
-    section("Activation funnel (7d, distinct devices)")
+    section("Activation funnel (7d, distinct people)")
     fn = metrics["funnel"]
     if fn["ok"]:
         for label, n in fn["data"]["steps"]:
@@ -655,6 +754,8 @@ def main():
     metrics = {
         "installs": run_metric(m_installs, host, key),
         "active": run_metric(m_active, host, key),
+        "identity": run_metric(m_identity, host, key),
+        "plants": run_metric(m_plants, host, key),
         "activation": run_metric(m_activation, host, key),
         "onboarding": run_metric(m_onboarding, host, key),
         "funnel": run_metric(m_funnel, host, key),
