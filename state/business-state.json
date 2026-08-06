@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-06",
-  "session_count": 115,
+  "session_count": 116,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -421,7 +421,13 @@
         "duckduckgo": 270,
         "chatgpt.com": 97,
         "facebook": 22,
-        "rfcarchives.org.au": 2
+        "rfcarchives.org.au": 2,
+        "chatgpt_by_month_2026": {
+          "04": 13,
+          "05": 15,
+          "06": 19,
+          "07": 104
+        }
       },
       "nursery_relationships": {
         "register": "data/nursery-contacts.json + tools/autonomous/nursery_crm.py (DAL-80, DEC-242). Git-tracked JSON, one record per monitored nursery: contact route, status, evidenced touch history, and who owns the next action. Referral click counts are NOT stored; nursery_crm.py joins them live from Plausible so a report cannot go stale. Commands: report, due, log, set, validate.",
@@ -506,6 +512,15 @@
           "tail_referral_30d": "255 outbound clicks (18% of all 1,400); 154 pages carry 100% of them; 2,611 of 2,765 (94%) sent zero.",
           "zero_impression_pages": "1,061 of 2,765 (38%) got no impression in 28 days.",
           "recommendation": "Do NOTHING to the tail. Noindexing the dead 94% would cost ~10% of variety search clicks to prevent a penalty we have no evidence of. Effort belongs on DAL-249 (species+state), best page type on SEO yield and referral yield independently."
+        },
+        "visitor_geography": {
+          "decision": "DEC-270 / DAL-251 (2026-08-06). Attempted, verified, reverted. Blocked on a free MaxMind account, which only Benedict can create.",
+          "why_country_works_and_region_does_not": "Plausible CE ships with DB-IP Country Lite baked in. That is the source of visit:country. It is a country-only file with no region data. Nothing was misconfigured; the capability was never present.",
+          "v3_2_0_supports": "IP_GEOLOCATION_DB, MAXMIND_LICENSE_KEY, MAXMIND_EDITION, GEONAMES_SOURCE_FILE (grepped from the running image). Geonames name table already bundled at /app/lib/location-0.1.0/priv/geonames.lite.csv.",
+          "db_ip_city_lite_does_not_work": "Free, CC BY, no signup, loads fine, and resolves correctly in-process (58.7.0.1 -> Western Australia / Perth). But the Lite file is stripped: subdivisions carry names only, no iso_code, and city carries names only, no geoname_id. Plausible stores region as ISO 3166-2 and city as a geonames id, so it has nothing to store. Verified by pushing one real pageview through /api/event with X-Forwarded-For: 58.7.0.1: country resolved to AU, region and city both empty.",
+          "fix": "MaxMind GeoLite2-City carries both fields. Free but needs an account. Set MAXMIND_LICENSE_KEY and MAXMIND_EDITION=GeoLite2-City and Plausible downloads and auto-updates it. One restart, ~20s of collection downtime.",
+          "no_backfill": "Region data starts the day it is switched on. DAL-249's state choice gets real data a few weeks after the key exists.",
+          "state_left_in": "docker-compose.yml restored from backup, geoip/ deleted, container recreated, health 200, loaded DB back to DBIP-Country-Lite. One deliberate artefact: a single test pageview on walkthrough.au at /dal-251-geoip-test, kept rather than removed with a hand-written ALTER TABLE DELETE on the events table."
         }
       },
       "outreach_clubs": {
@@ -587,6 +602,22 @@
         "rationale": "At 13 subscribers a seasonal send is worth roughly 10-15 outbound clicks, about A$1 at DEC-248's 6.8c mid case. It is a retention lever now and a revenue lever only if the list grows.",
         "gated_on": "DAL-243 / Q46. A warm editorial email invites replies and replies to us BOUNCE (alerts@mail.treestock.com.au has no MX, stocklib.mailer sets no Reply-To). Do not send until an address exists.",
         "status": "Parked in Todo for late June 2027. Not sent for the 2026 season."
+      },
+      "ai_crawler_block": {
+        "decision": "DEC-269 / DAL-246 (2026-08-06). Measured, not fixed: Dale has no Cloudflare access.",
+        "finding": "Cloudflare returns 403 to every AI crawler on treestock.com.au AND treesmith.app, including the answer/citation bots (OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-User, Claude-User, Claude-SearchBot) as well as the training bots we do want blocked (GPTBot, CCBot, ClaudeBot, Bytespider, Amazonbot, meta-externalagent).",
+        "not_spoof_protection": "Controls rule it out. Spoofed Googlebot, bingbot and DuckDuckBot from this datacentre IP all return 200, as do curl, wget, python-urllib, a plain Chrome UA and a made-up 'TotallyMadeUpBot/9.9'. The rule matches AI crawler user agents specifically.",
+        "origin_is_innocent": "Same request straight to Caddy via --resolve treestock.com.au:443:127.0.0.1 returns 200. Nothing in /etc/caddy matches these agents. Block body is 'Your request was blocked.' (25 bytes, text/plain), not a standard Cloudflare challenge page.",
+        "zone_scoped": "treestock.com.au blocked, treesmith.app blocked, beestock.com.au (also proxied, cf-ray present) serves 200 to all 15 AI UAs. Per-zone setting.",
+        "the_contradiction": "/robots.txt returns 200 to OAI-SearchBot while /llms.txt, /sitemap.xml and /species/olive.html return 403 to the identical request. Our robots.txt states Content-Signal: search=yes, ai-input=yes and says the answer/search crawlers are 'intentionally NOT listed'. We publish a permission the edge does not honour.",
+        "llms_txt": "Built by tools/scrapers/build_llms.py, current (rebuilt 00:39 UTC 2026-08-06, 18.7 KB, good content), served at /llms.txt, 200 to browsers and 403 to every AI agent it was written for. Not referenced from robots.txt or any sitemap.",
+        "block_has_not_killed_the_channel": "DAL-188 flipped the proxy on 2026-05-18. chatgpt.com referrals by month: Apr 13, May 15, Jun 19, Jul 104. The channel grew 5x AFTER the block. Likeliest mechanism: ChatGPT search leans on Bing's index and bingbot is allowed (Bing sends 870 visitors/6mo). Do NOT claim the block is costing us the referrals; it is not supported.",
+        "suggestive_only": "Perplexity relies on its own crawler, both its agents are blocked, and it has sent 3 visitors in 6 months against ChatGPT's 151. Perplexity is a far smaller product, so this is consistent-with, not evidence.",
+        "what_it_does_cost": "ChatGPT-User is the fetch that fires when a user asks the assistant to open or verify a page. Our proposition is today's price and stock; a blocked assistant cannot quote a current price.",
+        "landing_pages": "Diffuse. 30 entry pages over 6 months, top one is 5 visitors, spread across /species/*, /buy-*-trees-<state>.html, /variety/*, /compare/*, /nursery/*. Deep-link answers off an index, not one viral URL.",
+        "value_today": "104 visitors/mo x 0.28 outbound clicks/visitor (DEC-249) x 6.8c (DEC-248) is about A$2/mo. The argument is the trajectory (13 -> 104) and that it is the only non-Google source growing. Facebook went 420/6mo to 22/30d.",
+        "dale_cannot_fix": "Our Cloudflare token is refused on bot_management, settings, firewall/rules and rulesets for zone 87880cb83388c52cf86b0a7037845cb3. Note CLOUDFLARE_ZONE_ID_TREESTOCK in secrets is correct; the token scope is the limit.",
+        "options_for_benedict": "(a) turn the AI block off on both zones and let robots.txt carry the policy, honest cost being that robots.txt is voluntary and Bytespider is known not to honour it; or (b) keep enforcement but block only the training UAs. DAL-246 assigned to him."
       }
     },
     "b_experiment_beestock": {

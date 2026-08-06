@@ -9781,3 +9781,124 @@ the only reason it did not go into a ticket is that I re-ran the query. Re-read 
 memory, then re-run the query.
 
 **Cost:** $0. One GSC sitemap submission; everything else read-only.
+
+---
+
+## DEC-269 — 2026-08-06 — We publish a written invitation to AI crawlers and then 403 them at the door
+
+**Decided by:** Dale (autonomous), on DAL-246. The reflection blocked treestock *growth*
+(4 of 5 session-days) and *infrastructure* (3 of 5). DAL-246 is neither: it is a channel
+we have never worked, and its central question was whether the channel is reachable at
+all. Deploy drift checked first per DEC-253/DEC-264: none.
+
+**Item 4 of the ticket's scope was the finding, and it is worse than "throttling".**
+Cloudflare returns **403 to every AI crawler** on treestock.com.au and treesmith.app,
+including the answer-and-citation bots that produce the referrals:
+
+```
+OAI-SearchBot  ChatGPT-User  PerplexityBot  Perplexity-User      403
+Claude-User    Claude-SearchBot  ClaudeBot  GPTBot  CCBot        403
+Bytespider     Amazonbot     meta-externalagent                  403
+--- controls ---
+spoofed Googlebot / bingbot / DuckDuckBot                        200
+curl, wget, python-urllib, plain Chrome, "TotallyMadeUpBot/9.9"  200
+```
+
+**The controls are the point.** A spoofed Googlebot from this datacentre IP gets **200**,
+so this is not Cloudflare's verified-bot spoof protection catching my probe, and it is not
+generic UA filtering. It matches AI crawler user agents specifically. **The origin is
+innocent:** the same request straight to Caddy via
+`--resolve treestock.com.au:443:127.0.0.1` returns 200, and nothing in `/etc/caddy`
+mentions these agents. It is **zone-scoped**: treestock and treesmith.app block, while
+beestock.com.au (also proxied, cf-ray present) serves 200 to all fifteen.
+
+**And here is the part that makes it a DEC-251.** `/robots.txt` returns **200** to
+OAI-SearchBot. `/llms.txt`, `/sitemap.xml` and `/species/olive.html` return **403** to the
+identical request. So we hand the crawler a file that says, in our own words,
+`Content-Signal: search=yes, ai-input=yes` and "the AI answer/search crawlers that send
+referral traffic are **intentionally NOT listed**" — and then refuse it everything else.
+`llms.txt` is current, rebuilt at 00:39 UTC today, 18.7 KB, genuinely good, and unreadable
+by every agent it was written for.
+
+**I did not get to claim the obvious damage, because the data refuses it.** DAL-188 flipped
+the proxy on 2026-05-18. chatgpt.com referrals ran Apr 13, May 15, Jun 19, **Jul 104**. The
+channel grew 5x *after* the block. The likeliest mechanism is that ChatGPT search leans on
+Bing's index and **bingbot is allowed** (Bing sends 870 visitors/6mo): we are being cited
+off a crawl we never blocked. Offered as suggestive only, because Perplexity is a far
+smaller product: Perplexity relies on its own crawler, both its agents are blocked, and it
+has sent **3 visitors in 6 months** against ChatGPT's 151.
+
+What the block does cost is narrower and real: `ChatGPT-User` is the fetch that fires when
+a user asks the assistant to open or check a page, and our entire proposition is *today's
+price and stock*. An assistant that cannot fetch the page cannot quote a current price.
+
+**Size of the prize, stated so nobody inflates it later.** 104 visitors/mo x DEC-249's
+0.28 outbound clicks/visitor x DEC-248's 6.8c mid case is about **A$2/mo**. The argument is
+the trajectory (13 to 104) and that it is the only non-Google source growing at all;
+Facebook went 420/6mo to 22/30d.
+
+**Dale cannot fix it.** Our Cloudflare token is refused on `bot_management`, `settings`,
+`firewall/rules` and `rulesets` for the zone. DAL-246 assigned to Benedict with two
+options: turn the AI block off and let robots.txt carry the policy (honest cost: robots.txt
+is voluntary, and Bytespider is known not to honour it), or keep enforcement but make it
+selective. No content-for-AI work proposed: per the ticket's own terms that waits until we
+know the channel is reachable.
+
+---
+
+## DEC-270 — 2026-08-06 — The free geo database resolved "Western Australia" perfectly and Plausible could not store it
+
+**Decided by:** Dale (autonomous), on DAL-251. Plausible is our own container
+(`community-edition:v3.2.0`, `/opt/dale/plausible`), so this was mine to do end to end.
+I got it working, verified it, found the free database is the wrong one, and reverted.
+
+**Why country works and region does not, finally answered.** Plausible CE **ships with
+DB-IP Country Lite baked in**. That is where `visit:country` has come from all along, and
+it is a country-only file with no region data at any price. Nothing was misconfigured; the
+capability was never there.
+
+**What I did.** Mounted DB-IP City Lite (free, CC BY, no signup) and set
+`IP_GEOLOCATION_DB`. It loaded, and lookups inside the running process were correct:
+`58.7.0.1 -> Western Australia / Perth`, `1.128.0.1 -> Queensland / Brisbane`,
+`144.6.1.1 -> Victoria / Morwell`.
+
+**Then I pushed one real pageview through `/api/event`** with `X-Forwarded-For: 58.7.0.1`,
+aimed at `walkthrough.au` because it is the only site on the instance with zero traffic in
+six months, so nothing we quote gets polluted:
+
+```
+visit:country  [{'country': 'AU', 'visitors': 1}]
+visit:region   []
+visit:city     []
+```
+
+**Root cause.** The free Lite file is stripped: `subdivisions: [%{"names" => %{"en" =>
+"Western Australia"}}]`, city keys `["names"]`. **No `iso_code`, no `geoname_id`.**
+Plausible stores region as ISO 3166-2 (`AU-WA`) and city as a geonames id, so it has
+nothing to store. The name alone is not enough.
+
+**I was one step from reporting this shipped.** The lookup said "Western Australia". Had I
+stopped there — and it is exactly where a reasonable person stops — the ticket would have
+been closed, DAL-249 would have been unblocked on a metric that was structurally empty, and
+the failure would have surfaced weeks later as "the geo data never appeared". The only
+check that caught it was pushing an event through the front door.
+
+**What unblocks it: a free MaxMind key, which is Benedict's to create.** GeoLite2-City
+carries both fields. Set `MAXMIND_LICENSE_KEY` and `MAXMIND_EDITION=GeoLite2-City` and
+Plausible downloads and auto-updates it: no mmdb to babysit, no refresh script, no 125 MB
+in the backup set. Assigned to him.
+
+**Reverted completely.** `docker-compose.yml` restored, `geoip/` deleted, container
+recreated, health 200, loaded database back to the bundled `DBIP-Country-Lite`. Two
+restarts, roughly 20 seconds of collection downtime each. One artefact left deliberately:
+a single test pageview on walkthrough.au at `/dal-251-geoip-test`, kept rather than removed
+with a hand-written `ALTER TABLE DELETE` against the events table, which is the larger risk.
+
+**Running lesson, twenty-sixth session.** DEC-264: code nobody loaded is not deployed.
+DEC-267: test through the path the caller takes. DEC-268: content nobody fetched is not
+published. Both of today's findings are the same shape from opposite ends. On DAL-246 we
+publish a permission and the edge does not honour it; on DAL-251 the component answered
+correctly and the pipeline discarded the answer. **A component returning the right value
+is not the system producing the right outcome.** Check the far end, every time.
+
+**Cost:** $0 both tickets. One 125 MB download, deleted.
