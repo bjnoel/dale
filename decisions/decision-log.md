@@ -9412,3 +9412,55 @@ not. Before building a new signal, check whether the one you have is being read.
 
 **Cost:** $0. One branch, `feat/ticket-outcome-loop`. Full suite run before and after on
 `origin/main` to separate pre-existing golden flake from regressions.
+
+---
+
+## DEC-264 — 2026-08-06 — I verified the module, not the process, and the page never changed
+
+**Decided by:** Benedict. *"For https://treestock.com.au/admin it's a bit cluttered, nursery
+info takes up the whole top section."* Three changes, all approved in plan: trim the
+register, merge the blocked-on-me lists, fix the deploy.
+
+**The clutter was measurable and it was mostly placeholders.** The page is 10 sections and
+72KB. The nursery register was 23% of it and **55 table rows**, because it rendered all 27
+nurseries as two rows each regardless of content. But only 7 have an open action, only 5
+have any touch history, and **22 have never been contacted and carry zero touches** — each
+rendering a name, the word "never", and an empty `History (0)` expander. Roughly 44 of the
+55 rows said nothing. Now 14 rows are visible and 34 collapse behind one expander, and the
+14 nurseries carrying only a note say "Notes" instead of `History (0)` over a note.
+
+**The oldest thing blocked on Benedict was never in Linear.** DEC-263 built "Waiting on
+you" reading Linear only. Fruit Tree Lane has owed a reply since **2026-03-28, 131 days**,
+older than every ticket except DAL-80. The register holds 5 benedict-owned open actions
+and the list could not see one of them. They now merge, sorted strictly by age, tagged by
+source. Merged in `daily-digest.py` where the snapshot is written rather than at render
+time, so the email and the page cannot disagree — the reason `business-snapshot.json`
+exists. Dale-owned actions are excluded; they are Dale's work.
+
+**The finding that matters more than either, and it is about me.** The /admin section from
+DEC-263 was never live. I deployed it, rendered it on the server, confirmed the HTML was
+correct, and reported it shipped. It was not: `subscribe-server` imports `admin_view` at
+module scope and had been running since **2026-08-03 02:10**, while the file changed
+**2026-08-06 02:35**. The process held the old module for three days. DAL-263 had already
+recorded this for `subscribe_server.py` and nobody, including me, extended it to the
+modules it imports.
+
+The verification I did — "the function returns the right HTML" — cannot detect this. The
+only check that can is whether the *serving process* is newer than the file. `deploy.sh`
+now checksums `subscribe_server.py`, `admin_view.py` and `stocklib/*.py` before and after
+rsync and restarts only on a real change, so the hourly no-op deploy does not bounce the
+service 24 times a day. It logs loudly on failure, because the failure mode is a deploy
+that reports success while serving stale code. **DAL-263 closed.**
+
+Verified both branches this time, with sub-second evidence rather than a same-second
+timestamp: changed modules restarted the service (PID 2494384 to 2897300, process start
+`03:10:38.933` against a file mtime of `03:10:38.833`), and an immediate second deploy
+logged "unchanged: no restart" with the PID held.
+
+**Running lesson, twenty-second session.** DEC-263: a measurement nobody reads is not a
+measurement. This one is its sibling and sharper because I walked into it one day later:
+**code nobody loaded is not deployed.** I checked the artefact and not the thing serving
+it. The general form, which DEC-262 also hit from a different angle, is that verifying the
+layer you changed is not verifying the layer the user meets.
+
+**Cost:** $0. Branch `feat/admin-declutter`.
