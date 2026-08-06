@@ -9603,3 +9603,70 @@ to observe the effect. The tail had grown 7x unaided; that growth *was* the trea
 Before designing an experiment, check whether the variable has already moved on you.
 
 **Cost:** $0. Read-only GSC and Plausible queries.
+
+---
+
+## DEC-267 — 2026-08-06 — The nursery register logs itself now, and the boundary is structural
+
+**Decided by:** Benedict, closing out the DEC-265 correction. He asked for option (a),
+a separate Resend account, and offered `beaner.top` as a domain. Built and live.
+
+**Why a separate account rather than the one we already had.** The existing Resend account
+carries five verified domains and an `email.received` webhook enabled since 2025-12-15
+pointing at a scion.exchange Supabase function. Resend fires that event at **every**
+registered webhook and offers no per-webhook filtering, verified four ways: `POST
+/webhooks` accepts only `endpoint` and `events`; the live webhook object carries no filter
+field; the docs describe only event-type selection; and the "Domain webhooks" changelog
+that looked exactly like what we needed turns out to mean webhooks *about* domain
+lifecycle. Adding a Dale endpoint there would have sent every nursery email Benedict BCCs
+to scion.exchange's function, and every scion.exchange reply to ours. That is DEC-265's
+mistake in a quieter costume: a boundary made of convention. The new account holds nothing
+but nursery BCCs and has exactly one webhook.
+
+**Why no custom domain.** He offered `beaner.top`. Checked before wiring anything to it:
+it **expires 2026-09-02, 27 days out**; its MX still points at Namecheap Private Email, so
+it is not as disused as assumed and repointing would break whatever still lands there; and
+the name is a US ethnic slur, which he may not have known and which would have sat in
+Dale's config and his sent folder. None of that needed resolving, because Resend supplies
+a managed `<id>.resend.app` receiving address that needs no DNS at all. Address is
+`nursery@veliamsal.resend.app`.
+
+**The constraint that shaped the design.** `deploy.sh:89` copies the repo copy of
+`data/nursery-contacts.json` over the data-dir copy on **every** deploy, and dale-runner
+deploys hourly. A webhook writing the register directly would have had its work erased
+within the hour, silently. So the webhook appends to a JSONL nothing overwrites, and
+`nursery_crm.py merge-inbound` folds it into the repo copy where git history stays the
+audit log. `merge-nursery-inbound.sh` runs that hourly and commits.
+
+**The security boundary is the signature, so it is tested as one.** The route cannot sit
+behind Cloudflare Access, because Resend has to reach it unauthenticated. Svix HMAC-SHA256
+over `{id}.{timestamp}.{raw body}`, five-minute replay window, constant-time compare, fails
+closed when no secret is configured. Eleven tests cover it: tampered body, wrong secret,
+replayed timestamp, future timestamp, swapped `svix-id`, non-v1 version, missing headers,
+and no-secret. Raw bytes are read before the generic body decode, because re-serialising
+would change key order and the signature would never match.
+
+**What testing through the real URL caught that a localhost test would not.** The first
+end-to-end attempt returned **403, Cloudflare error 1010** — bot filtering from DAL-188
+blocking python-urllib's user agent. Every request, valid or not. Had I tested against
+`127.0.0.1:8099` and called it done, the endpoint would have looked perfect and Resend's
+webhooks would have been rejected at the edge forever, with no error anywhere we look.
+Retested with curl (401, correct), then with a Svix user agent (200, correct), and finally
+by sending a real email through Resend so the actual Svix client made the actual request:
+
+```
+resend-inbound rejected: no nursery matched
+  (from=['dale@mail.walkthrough.au'], to/cc=['nursery@veliamsal.resend.app'])
+```
+
+That line is the proof: received, fired, past Cloudflare, signature verified, correctly
+ignored. Test record removed afterwards so the register was never polluted.
+
+**Running lesson, twenty-fourth session.** DEC-263: a measurement nobody reads. DEC-264:
+code nobody loaded. DEC-265: an unverified security claim. This one completes the set:
+**test through the path the caller actually takes.** The origin was healthy the whole time;
+the edge in front of it was not. Same shape as DEC-264, where the module was correct and
+the process serving it was stale. Each time, the layer I could see was fine and the layer
+between me and the user was not.
+
+**Cost:** $0. New free Resend account, managed inbound domain, no DNS change.
