@@ -8,6 +8,11 @@ dist/
 __pycache__/
 .claude/
 
+# Local dev virtualenv (`python3 -m venv .venv && .venv/bin/pip install -r
+# requirements.txt`). The VPS deliberately uses system Python with apt packages;
+# see the header of requirements.txt.
+.venv/
+
 # Large data files (tracked separately or via LFS)
 data/nursery-stock/*/20*.json
 data/nursery-stock/*/latest.json
@@ -22,6 +27,14 @@ deliverables/
 # Generated rarity scores. build_species_pages.py writes this next to the data
 # dir; the species_pages golden test writes it into tests/golden/fixture/.
 rarity_scores.json
+
+# ...except the golden fixture copy, which is test input, not output. Ignoring it
+# meant a fresh clone or worktree failed 2 golden tests (rare_finds,
+# bush_tucker_landing) until some earlier test happened to generate it, which
+# depends on discovery order. Verified 2026-08-06: fresh worktree fails 2, copy
+# this file in, passes; and a full suite run leaves it byte-identical, so
+# tracking it will not show dirty after running tests.
+!tests/golden/fixture/rarity_scores.json
 
 # Secrets
 state/secrets/
