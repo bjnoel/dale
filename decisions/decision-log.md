@@ -9530,3 +9530,76 @@ capabilities: the failure of a capability is loud and the failure of a limit is 
 
 **Cost:** $0. Q46 ask 2 withdrawn, DAL-273 re-specced with the correction in its research
 comment rather than quietly rewritten.
+
+---
+
+## DEC-266 — 2026-08-06 — The tail we were going to prune already ran the experiment, and it says no
+
+**Decided by:** Dale (autonomous), on DAL-250, which Benedict approved with a stated
+preference: *"I would prefer the no index option if at all possible... But yes, start the
+investigation."* The investigation says do neither. DAL-250 Done, no change shipped.
+
+**Context: the reflection said not infrastructure** (3 of 5 session-days, uptime unmoved).
+DAL-250 was the highest-priority Todo, is Track B, and is Dale-autonomous end to end.
+Deploy gap checked first per DEC-253/DEC-264: no drift.
+
+**The premise was stale before it was tested.** The ticket says 1,659 variety pages. There
+are **2,765** (2,764 in `sitemaps/variety.xml`). The tail grew 67% since the ticket was
+written and no report said so, which is a small instance of the DEC-263 problem: the
+number was in the filesystem the whole time and nothing read it on a schedule.
+
+**Cannibalisation: refuted.** GSC query x page, 28 days, 9,450 rows paginated. 503 queries
+are served by both a variety page and another page type, and the variety page is
+**outranked on 434 of them**, typically sitting at position 48-79 beneath a species or
+compare page at 7-13. Clicks: variety 5, everything else 23. A result at #58 is not taking
+a click from a result at #7.
+
+**Suppression: refuted, by an experiment that had already run.** The whole point of the
+ticket was that testing site-level quality drag seems to require shipping the noindex
+first. It does not. The tail grew from 376 to 2,765 pages between March and August while
+GSC recorded what happened to everything else:
+
+```
+window            variety pages |  rest of site: impr   clicks   avg pos   CTR
+2026-03-17..04-13           376 |                5,831       89      18.4   1.5%
+2026-04-14..05-11         2,391 |               17,416      261      18.9   1.5%
+2026-05-12..06-08         2,005 |               19,304      366      17.8   1.9%
+2026-06-09..07-06         1,941 |               30,686      629      17.0   2.0%
+2026-07-07..08-03         1,704 |               60,199    1,357      14.1   2.3%
+```
+
+While the thin tail was at its largest, the rest of the site improved on **every metric**:
+10x impressions, 15x clicks, average position 18.4 to 14.1, CTR 1.5% to 2.3%. The
+hypothesis predicts decline or stall; five consecutive windows rise monotonically.
+
+**Stated, not buried:** this is a natural experiment. Species+state pages were being added
+over the same period, so I cannot prove the site would not have grown *more* without the
+tail. The honest claim is narrower and still sufficient: a specific prediction was made
+and the data contradicts it.
+
+**Crawl budget: unknown, and recorded as unknown.** The starvation version of the argument
+needs Googlebot hits per page type. The treestock Caddy site block has **no `log`
+directive**, so no access log exists, and GSC's Crawl Stats report is not in the API. Per
+DEC-249 this is an absence of measurement, not a zero, and I did not reason past it.
+
+**What the tail actually is: 154 pages and 2,611 passengers.** GSC clicks 336/28d (20% of
+site), top 200 pages carry 90%. Outbound clicks 255/30d (18% of all), and **154 pages
+carry 100% of them** while 2,611 (94%) sent none. 38% of variety pages got zero impressions.
+Real inefficiency, but noindexing the dead 94% would cost ~10% of variety search clicks to
+prevent a penalty we have no evidence of.
+
+**Honest accounting.** No code shipped, no revenue, no metric moved. What this session
+bought is the ~2 days of build-and-verify that the noindex would have cost, plus the
+knowledge that the site's quality signal is not the constraint. DEC-249 already showed
+species+state is the best page type on SEO yield and referral yield independently; that is
+where the effort belongs (DAL-249).
+
+**Running lesson, twenty-fourth session.** DEC-263: a measurement nobody reads is not a
+measurement. DEC-264: code nobody loaded is not deployed. DEC-265: an unverified security
+claim is worse than no claim. This one adds **check whether the experiment has already run
+on its own.** I was one step from building a 50/50 noindex split to answer a question that
+five windows of GSC history had already answered, because the change felt like the only way
+to observe the effect. The tail had grown 7x unaided; that growth *was* the treatment arm.
+Before designing an experiment, check whether the variable has already moved on you.
+
+**Cost:** $0. Read-only GSC and Plausible queries.

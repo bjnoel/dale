@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-06",
-  "session_count": 113,
+  "session_count": 114,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -465,7 +465,20 @@
           ],
           "rfcwa_correction": "DAL-165's April advice to ask the RFCWA webmaster for a links-page listing is wrong: rarefruitclub.au has no links or resources page. The realistic ask is a newsletter or meeting mention, which is audience not a link."
         },
-        "daily_report_correction": "DEC-255: the daily email's GSC 'new queries' and 'position movers' blocks were wrong for the whole life of traffic_report.py (200-row cap on a 1,703-row query dimension, used for a set difference). Do NOT treat any pre-2026-07-30 'new query' observation from the daily digest as evidence. Fixed; DAL-268 re-reads the corrected series."
+        "daily_report_correction": "DEC-255: the daily email's GSC 'new queries' and 'position movers' blocks were wrong for the whole life of traffic_report.py (200-row cap on a 1,703-row query dimension, used for a set difference). Do NOT treat any pre-2026-07-30 'new query' observation from the daily digest as evidence. Fixed; DAL-268 re-reads the corrected series.",
+        "variety_tail_verdict": {
+          "decision": "DEC-266 / DAL-250 (2026-08-06). Tested and REFUTED. No change shipped.",
+          "pages_built": 2765,
+          "premise_was_stale": "The ticket said 1,659 variety pages. There are 2,765 (2,764 in sitemaps/variety.xml). The tail grew 67% unnoticed.",
+          "cannibalisation_refuted": "GSC query x page, 28d, 9,450 rows paginated. 503 queries served by both a variety page and another page type; the variety page is OUTRANKED on 434 of them, typically position 48-79 beneath a species/compare page at 7-13. Clicks: variety 5, other types 23. A result at #58 does not take a click from a result at #7.",
+          "suppression_refuted": "The experiment already ran: the tail grew 376 -> 2,765 pages Mar-Aug while GSC recorded the rest of the site. Non-variety impressions 5,831 -> 60,199, clicks 89 -> 1,357, avg position 18.4 -> 14.1, CTR 1.5% -> 2.3%, monotonic across 5 consecutive 28-day windows. The hypothesis predicts decline or stall; every metric improved while the thin tail was at its largest.",
+          "suppression_caveat": "Natural experiment, not controlled. Species+state pages were added over the same period, so it is not proven the site would not have grown MORE without the tail. The claim is only that a specific prediction was made and contradicted.",
+          "crawl_budget_unknown": "NOT MEASURABLE and recorded as unknown, not zero (DEC-249). The treestock Caddy site block has no `log` directive so no access log exists, and GSC Crawl Stats is not exposed by the API. Do not reason about crawl starvation from absence of data.",
+          "tail_value_28d": "GSC 336 clicks (20% of site's 1,693); top 200 pages carry 90%.",
+          "tail_referral_30d": "255 outbound clicks (18% of all 1,400); 154 pages carry 100% of them; 2,611 of 2,765 (94%) sent zero.",
+          "zero_impression_pages": "1,061 of 2,765 (38%) got no impression in 28 days.",
+          "recommendation": "Do NOTHING to the tail. Noindexing the dead 94% would cost ~10% of variety search clicks to prevent a penalty we have no evidence of. Effort belongs on DAL-249 (species+state), best page type on SEO yield and referral yield independently."
+        }
       },
       "outreach_clubs": {
         "measured": "2026-07-30 (DEC-244, DAL-167)",
