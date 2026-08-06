@@ -9670,3 +9670,114 @@ the process serving it was stale. Each time, the layer I could see was fine and 
 between me and the user was not.
 
 **Cost:** $0. New free Resend account, managed inbound domain, no DNS change.
+
+---
+
+## DEC-268 — 2026-08-06 — Three tickets of SEO content that Google has never once fetched
+
+**Decided by:** Dale (autonomous), on DAL-240. The reflection blocked treestock growth
+(4 of 5 session-days) and infrastructure (3 of 5, uptime unmoved), so this session went
+to Track A. DAL-240 was the only High-priority Todo and is Dale-autonomous end to end.
+Deploy drift checked first per DEC-253/DEC-264: none.
+
+**The ticket asked four questions and got a fifth answer.** Is treesmith.app in Search
+Console (yes, and always was, `sc-domain:treesmith.app`, `siteOwner`). Does it have
+analytics (yes, Plausible in `Base.astro:49` with outbound tracking on, verified by
+fetching the script rather than trusting the filename). Two premises the ticket treated as
+open were settled by one API call each that nobody had made.
+
+**The third question is where it turned.** URL Inspection on seven pages:
+
+```
+/                                  Submitted and indexed     crawled 2026-07-13
+/graft-tracking/                   Submitted and indexed     crawled 2026-07-27
+/features/                         URL is unknown to Google   never
+/grafting-techniques/              URL is unknown to Google   never
+/journal/                          URL is unknown to Google   never
+/journal/why-keep-a-plant-log/     URL is unknown to Google   never
+/press/                            URL is unknown to Google   never
+```
+
+Not "indexed but ranking poorly". **Never fetched, not once.** That is essentially all of
+DAL-172's output, plus the journal DAL-183 fed.
+
+**Root cause, and it was one call to fix.** `GET /sitemaps` on the property returned `{}`.
+No sitemap had ever been submitted. The sitemap was never the problem: live at
+`/sitemap-index.xml` (200), correctly referenced from `robots.txt`, 11 URLs, with
+`/catalogue/` and `/download/` properly excluded exactly as intended. It was published and
+never registered, so Google found `/` and `/graft-tracking/` by some other route and never
+learned the other nine existed. Submitted 05:04:29Z, downloaded by Google 05:04:30Z, one
+second later, 0 errors, 0 warnings.
+
+**Ruled out explicitly so nobody blames it later.** `robots.txt` disallows `GPTBot`,
+`ClaudeBot` and `Google-Extended` under a Cloudflare-managed block. `Google-Extended`
+governs Gemini training only and has no effect on Search indexing. It did not cause this.
+It does block AI assistants, which is a finding DAL-246 should have.
+
+**What the traffic actually is.** GSC, 28d: **6 clicks, 111 impressions**, and they are
+branded. `treesmith` 24 impressions, `tree smith` 14, `treesmiths` 1, `grafting app` 3.
+**Non-branded search is 3 impressions and 0 clicks in 28 days.** Everyone arriving from
+Google already knew the app's name.
+
+Plausible, 30d: 157 visitors. But `/privacy/` took 51 and `/terms/` 16, both **100%
+Direct**, which is the in-app Settings links. **43% of the site's traffic is existing
+users reading legal pages**, not prospects. The acquisition site is ~93 visitors/month.
+
+**The finding worth keeping.** Store clicks: **21 in 30 days** (Play 11, Apple 10), 43
+life-to-date. DEC-241 measured treestock at 1,827 outbound clicks over six months with
+**0 to either app store**. So the web companion, which we have quietly treated as a
+side-project, is 100% of our measurable web-to-store path, and DEC-241's demotion of the
+treestock funnel does not transfer to it.
+
+**And the finding that costs us something.** Breaking those clicks down by source page
+returns exactly one row: `/`, 23 clicks. `/features/`, `/graft-tracking/`,
+`/grafting-techniques/`, `/journal/*` and `/press/` have produced **zero store clicks
+between them**. So three tickets of content have returned nothing on either axis: no
+search visibility, because Google never read them, and no store clicks, because the people
+who do arrive do not use them.
+
+**Stated so it is not oversold:** 43 store clicks against RevenueCat's 416 installs is a
+~10% ceiling, and a click is not an install. treesmith.app is not where our users come
+from. Store search is, which is why DAL-177 still outranks this site for attention.
+
+**The falsifiable follow-up.** Re-check index coverage around 2026-08-27. If the five
+pages are still unknown to Google *after* a submitted sitemap, then discovery was not the
+constraint, a five-page site with no backlinks simply is not worth Google's crawl budget,
+and the treesmith.app content strategy is dead on those terms. Until then, do not write a
+sixth page onto a pile Google has not read.
+
+## The second ticket, and a correction to my own notes
+
+DAL-230 (ratings audit). Ratings re-checked **per storefront** after DEC-262: AU 0, US 0,
+GB 0. Live version 1.0.9 / build 52 everywhere; repo is at 1.0.10+58.
+
+My stored note said "PostHog has zero `review_prompt_*` events, which confirms it is
+unshipped." **I re-queried instead of repeating it, and it was stale.** Since 2026-08-03
+there are **18 `review_prompt_suppressed` events** (build 58: 12 events / 7 people; build
+57: 6 / 3). The feature runs, the gate executes, the analytics are wired. Nothing needs
+debugging.
+
+**Every one of the 18 suppressions, 100%, reads `recent_version_change.`**
+`kReviewSuppressionWindow = Duration(days: 14)` blacks the prompt out for a fortnight
+after any version change, and six builds have shipped since 52, so the window resets
+before it can expire. The prompt **cannot** fire on a device that receives builds more
+often than fortnightly. That is correct behaviour and I am not proposing a change; it
+does mean internal testing can never demonstrate the prompt working, and a zero after
+release should not be read as a bug for 14 days either.
+
+DAL-230 needs no decision and no code. It needs a public store submission, which is
+Benedict's. Assigned to him, Dale label removed, moved to Todo, with DAL-177's still
+unpasted store description recommended for the same submission.
+
+**Running lesson, twenty-fifth session.** DEC-263: a measurement nobody reads is not a
+measurement. DEC-264: code nobody loaded is not deployed. DEC-267: test through the path
+the caller actually takes. This one is the publishing version of all three: **content
+nobody fetched is not published.** Eleven pages were live, indexable, in a valid sitemap,
+linked from robots.txt, and correct in every property we controlled. The one step that was
+not ours, telling Google they existed, was never taken, and every check we ran for four
+months inspected our side of the line. The second lesson is smaller and about me: I had a
+confident stored fact ("zero review_prompt events") that was three days out of date, and
+the only reason it did not go into a ticket is that I re-ran the query. Re-read the
+memory, then re-run the query.
+
+**Cost:** $0. One GSC sitemap submission; everything else read-only.

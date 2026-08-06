@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-06",
-  "session_count": 114,
+  "session_count": 115,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -73,7 +73,26 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link."
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "measured_2026_08_06": {
+          "decision": "DEC-268 / DAL-240",
+          "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
+          "analytics": "Plausible IS present (Base.astro:49, data.bjnoel.com, script pa-CmG0fVwm41XEQXVJY1zU4.js) with outbound-link tracking ENABLED (verified by fetching the script). Monthly visitors 0 for every month before 2026-04 and the site launched then, so the history is complete, not a DEC-249 measurement gap.",
+          "indexation_defect": "5 of 7 inspected pages returned 'URL is unknown to Google', NEVER CRAWLED: /features/, /grafting-techniques/, /journal/, /journal/why-keep-a-plant-log/, /press/. Only / and /graft-tracking/ are indexed. That is essentially all of DAL-172's output.",
+          "root_cause": "NO SITEMAP HAD EVER BEEN SUBMITTED to GSC. GET /sitemaps returned {}. The sitemap itself was always fine: live at /sitemap-index.xml (200), referenced from robots.txt, 11 correct URLs with /catalogue/ and /download/ properly excluded. Published but never registered.",
+          "fixed": "Submitted 2026-08-06T05:04:29Z; Google downloaded it at 05:04:30Z, 1 second later, errors 0, warnings 0.",
+          "ruled_out": "robots.txt disallows GPTBot, ClaudeBot and Google-Extended (Cloudflare-managed). Google-Extended governs Gemini training ONLY and does NOT affect Search indexing. It was not the cause. It DOES block AI assistants, relevant to DAL-246.",
+          "organic_search_28d": "6 clicks / 111 impressions / avg pos 6.2. Series by 28d window: Apr 0/22, May 7/32, Jun 1/28, Jul 6/111.",
+          "organic_is_branded": "Queries: 'treesmith' 24 impr 2 clicks, 'tree smith' 14 impr 0, 'treesmiths' 1, 'grafting app' 3 impr 0. NON-BRANDED SEARCH IS 3 IMPRESSIONS AND 0 CLICKS IN 28 DAYS. These are people who already know the app typing its name.",
+          "plausible_30d": "157 visitors, 222 pageviews. Sources: Direct 119, Google 23, Facebook 7, chatgpt.com 4, treestock 4, Bing 1.",
+          "43pct_is_existing_users": "/privacy/ took 51 visitors and /terms/ 16, both 100% Direct: those are the in-app Settings links, not prospects. Strip them and the acquisition site is ~93 visitors/month.",
+          "store_clicks": "21 events / 17 visitors in 30d (Play 11, Apple 10). Life to date 43 (Play 22, Apple 21) plus 20 to old tester links. Monthly: Apr 2, May 23, Jun 15, Jul 25.",
+          "all_store_clicks_come_from_the_homepage": "Outbound clicks broken down by source page returns exactly ONE row: / with 23 clicks. /features/, /graft-tracking/, /grafting-techniques/, /journal/* and /press/ have produced ZERO store clicks between them.",
+          "contrast_with_treestock": "DEC-241 measured treestock at 1,827 outbound clicks over 6 months with 3 to treesmith.app and 0 to either app store. treesmith.app sends ~21 store clicks/month. Small, but it is 100% of our measurable web-to-store path, and DEC-241's demotion of the treestock funnel does NOT apply to this site.",
+          "honest_ceiling": "43 store clicks life-to-date against RevenueCat's 416 installs is ~10%, and a click is not an install. treesmith.app is not where our users come from; store search and browse are, which is why DAL-177 still outranks this site for attention.",
+          "do_not": "Do NOT write another treesmith.app content page yet: the existing five have never been crawled. Re-check index coverage ~2026-08-27. If they are STILL unknown to Google after a submitted sitemap, discovery is not the problem and the content strategy is dead on those terms.",
+          "next": "DAL-239 is now the highest-value treesmith.app ticket: / carries 82 of 111 impressions and is the only page producing a store click. Also noted, not actioned: the store links on / carry no campaign token (so ASC and Play Console cannot attribute these 21 clicks) and point at the /us/ storefront, which per DEC-262 is the un-optimised localisation."
+        }
       },
       "funnel_from_treestock": {
         "audit": "DAL-218: /treesmith.html took 12 unique visitors/month out of treestock's 2,865 (0.4%).",
@@ -277,6 +296,15 @@
           "attribution_NOT_established": "The obvious story (the missing 'Tracker' in the US name causes the gap) fails its own control: terms with no 'tracker' in them are also worse on US, 8 of 11, median 32 vs 83. This data cannot separate 'un-optimised listing' from 'more competitive store'. The listing defect is verified; its share of the rank gap is not."
         },
         "rank_noise_floor": "AU ranks drift up to 8 positions in 7 days with NO change to name, subtitle, keywords or build. Measured against DEC-247's 2026-07-30 baseline: orchard tracker 3->5, tree tracker 5->9, fruit tree tracker 7->5, bonsai 22->18, citrus 25->17, propagation 35->30, fruit tree journal 40->32. Mean absolute drift 3.3, max 8. Terms where we sit at #1 do not move. DAL-257's pre-recorded prediction ('fruit tree tracker #7 -> top 3') is INSIDE this band and the term is already #5 with no rename shipped, so on its current design that ticket cannot distinguish the rename working from Apple reshuffling. Score the whole 36-term set on US, and re-baseline immediately before submission."
+      },
+      "review_prompt_status_2026_08_06": {
+        "decision": "DEC-268 / DAL-230",
+        "ratings": "0 on AU, US and GB, checked per storefront after DEC-262. Live version 1.0.9 (build 52) everywhere; repo is 1.0.10+58.",
+        "correction_to_memory": "My notes said 'PostHog has zero review_prompt_* events, which confirms it is unshipped'. NO LONGER TRUE as of 2026-08-03. review_prompt_suppressed has 18 events (build 58: 12 events / 7 people; build 57: 6 / 3). The gate executes and the analytics are wired correctly. Nothing needs debugging.",
+        "why_it_has_never_fired": "ALL 18 suppressions, 100%, carry reason 'recent_version_change'. kReviewSuppressionWindow = Duration(days: 14) (review_prompt_prefs.dart:61) blacks the prompt out for 14 days after any version change, and 6 builds have shipped since 52, so the window resets before it can expire. The prompt CANNOT fire on a device receiving builds more often than fortnightly. That is correct behaviour, not a bug, and internal testing can therefore never demonstrate it working.",
+        "review_prompt_requested": "0 events, all time.",
+        "blocker": "A public store submission, which only Benedict can make. DAL-230 assigned to him, Dale label removed, moved to Todo.",
+        "expectation": "Gate 8 needs 2 distinct active days and per DEC-254 only ~8-27% of the base reaches that, so expect single-digit asks per month, and a fraction become ratings. Worth shipping because 0 ratings is the worst possible state, not because it produces many."
       }
     },
     "a_paused_walkthrough": {
