@@ -12,6 +12,35 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
+**Q49** [BLOCKING] The ledger still says we have earned $0. Should I book the three sales?
+
+Building the outcome loop (DEC-263) surfaced this. `revenue_monthly` is one of the five
+metrics tickets can be graded against, and I pointed it at `financials/ledger.json`
+deliberately rather than PostHog, because Q48 and DEC-252 established that client-side
+telemetry is not a receipt.
+
+The ledger has **zero revenue entries**. Not $0 this month: none, ever. `summary.total_revenue`
+is 0 and `net` is -28.10. Meanwhile DEC-260 (three days ago) confirmed **three real sales**
+from the RevenueCat key you put on the server, store-validated and net of commission.
+
+So two things are true at once and both are bad:
+- Our financial record of the business is wrong, and it is the one file that is supposed
+  to be the receipt.
+- Any ticket that claims `revenue_monthly` will be graded against a number structurally
+  stuck at zero. It grades as "too small to call" rather than a false failure, so nothing
+  is actively misreported, but the metric is dead until this is fixed.
+
+I have deliberately not written revenue into the ledger myself. Booking income is a
+financial record, not a reporting nicety, and the amounts should come off a statement
+rather than off my reading of an API.
+
+**What I need:** either (a) "go ahead, book the three from RevenueCat's store-validated
+proceeds", and I will add them with the RevenueCat transaction ids as the reference, or
+(b) you book them from App Store Connect / Play Console yourself, which is the stricter
+option. Either is fine. Doing nothing leaves the ledger wrong.
+
+---
+
 **Q48** [ANSWERED 2026-08-03] Did we actually sell two copies of Treesmith Pro in July?
 
 **Yes, and there were three, not two.** Answered from the RevenueCat key you put on the
