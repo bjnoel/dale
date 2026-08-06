@@ -101,7 +101,7 @@ Then, when you have time: DAL-115 (community post), DAL-167 (send the RFSA email
   thinnest part of that tail. Recommend cancelling, or say the word and I will rewrite
   it to follow GSC impressions instead of guessing.
 
-**Q46** [BLOCKING] Confirm two Fastmail addresses on treestock.com.au
+**Q46** [BLOCKING] Confirm one Reply-To address on treestock.com.au (the second ask is withdrawn)
 
 **Corrected 2026-08-03, I had this half wrong.** I wrote that treestock.com.au cannot
 receive email. It can: the apex already carries your Fastmail MX
@@ -110,19 +110,35 @@ receive email. It can: the apex already carries your Fastmail MX
 no `Reply-To` at all, so a reply goes to the subdomain and dies. No DNS change and no
 new service is needed, just an address on the apex to point `Reply-To` at.
 
-Two asks, both on the mailbox you already pay for:
+**Now one ask, not two. Corrected again 2026-08-06 — see below.**
 
 1. **Replies:** confirm an address for `Reply-To` (`hello@treestock.com.au`?). One line
    in `stocklib/mailer.py`, then DAL-243 closes and the bare-root seasonal email is
    unblocked. The welcome email and the Treesmith intro email both say "just reply to
    this email" and that is currently untrue.
-2. **Nursery BCC (your DAL-80 idea):** create an alias, say `nursery-log@treestock.com.au`,
-   and generate a Fastmail **app password scoped to IMAP only** into
-   `/opt/dale/secrets/fastmail.env`. App passwords are individually revocable and that
-   scope cannot send mail. Then BCC'ing that alias auto-logs the touch to the nursery
-   register (DAL-273) and you never log anything from your phone.
 
-This server can already reach `imap.fastmail.com:993`; I checked.
+2. ~~**Nursery BCC:** create an alias and a Fastmail app password scoped to IMAP only.~~
+   **WITHDRAWN 2026-08-06. Do not do this. The security claim was wrong and it was
+   mine.** I wrote that the app password would be "scoped to IMAP only" and that "that
+   scope cannot send mail". Both are false:
+
+   - Fastmail's narrowest mail scope is **`Mail (IMAP/POP/SMTP)`, one bundle**. There is
+     no IMAP-without-SMTP. The credential could have **sent mail as you**.
+   - IMAP is read-write regardless: `STORE \Deleted` and `EXPUNGE` are part of it, so
+     "can never delete" was only ever true of the code I planned to write. That is a
+     promise, not a constraint.
+   - An alias is a delivery address, not a boundary. The password authenticates to the
+     **whole account**. Fastmail has no folder scoping and no read-only mode.
+
+   So I asked you to hand Dale full read access to your mail plus the ability to send as
+   you, and described it as locked down. Withdrawn.
+
+   **Replaced by Resend inbound (DAL-273), which needs nothing from you at all.** We
+   already use Resend for every outbound email and the keys are already on the VPS.
+   Resend supplies a managed `<id>.resend.app` inbound address, so there is no alias to
+   create, no DNS change, and no credential of yours involved. You BCC it exactly as you
+   would have BCC'd the Fastmail alias, so the effort on your end is unchanged. Dale
+   never touches your mailbox. DAL-273 is no longer blocked on you.
 
 **Q45** [BLOCKING] STFC reply is drafted and shortened, ready for you to send
 

@@ -9464,3 +9464,69 @@ it. The general form, which DEC-262 also hit from a different angle, is that ver
 layer you changed is not verifying the layer the user meets.
 
 **Cost:** $0. Branch `feat/admin-declutter`.
+
+---
+
+## DEC-265 — 2026-08-06 — I asked for a credential that could read all his mail and send as him, and called it read-only
+
+**Decided by:** Benedict asked a one-line question: *"can we restrict what the app password can access"*. The answer is no, and finding that out invalidated the plan I had written.
+
+**What I had asked for.** Q46 ask 2 and DAL-273 both told Benedict to create
+`nursery-log@treestock.com.au` and generate a Fastmail **"app password scoped to IMAP
+only"**, adding that **"that scope cannot send mail"** and that Dale's access would be
+**"reads only, can never send or delete"**. He would then BCC that alias and the nursery
+register would log itself.
+
+**Every security claim in that was wrong.**
+
+1. **Fastmail's narrowest mail scope is `Mail (IMAP/POP/SMTP)`, a single bundle.** There
+   is no IMAP-without-SMTP. The credential could have sent mail as him.
+2. **IMAP is read-write.** `STORE \Deleted` and `EXPUNGE` are part of the protocol.
+   "Can never delete" described the code I intended to write, not the credential. A
+   promise is not a constraint, and I presented one as the other.
+3. **An alias is a delivery address, not a boundary.** The password authenticates to the
+   whole account. Fastmail has no folder scoping and no read-only mode; scoping stops at
+   protocol family.
+
+So the ask was: full read access to his personal mail, plus send-as-him, described as
+locked down. He would have had every reason to believe it was safe, because I told him it
+was, in a file he triages from his phone.
+
+**The failure is not the Fastmail research, it is the direction of the claim.** I asserted
+a *restriction* without checking that the restriction existed. Asserting a capability and
+being wrong gets caught the first time the code runs. Asserting a limit and being wrong is
+silent, and it is only ever discovered by the person trusting it. Security claims are the
+category where an unverified assertion costs the most and self-corrects the least, so they
+are the last place to reason from memory. I did exactly that.
+
+**What replaces it, and it is strictly better on every axis.** Resend has supported
+inbound email since Nov 2025, and we already send every outbound email through Resend with
+keys on the VPS. Resend supplies a managed `<id>.resend.app` inbound address, so:
+
+| | Fastmail app password | Resend inbound |
+|---|---|---|
+| Reads his other mail | Yes, all of it | No |
+| Can send as him | Yes | No |
+| Can delete his mail | Yes | No |
+| New credential from him | Yes | No |
+| DNS change | No | No |
+
+His effort is unchanged: BCC an address. DAL-273 stops being blocked on him entirely,
+because there is nothing left for him to create. Verified on our own account before
+writing it down: `/inbound` returns 405 rather than 404 for our key, and we hold 5 verified
+domains, so we are past the free tier's 1-domain limit.
+
+**Deliberately not bundled.** A *custom* inbound domain needs an MX record, and
+`mail.treestock.com.au` has none, which is precisely the DAL-243 bug. Pointing it at
+Resend would fix both. Not doing it: DAL-243 is blocked on Q46 asking where subscriber
+replies should land, which is a customer-facing decision, not a nursery-logging one. The
+managed address keeps DAL-273 unblocked and reversible.
+
+**Running lesson, twenty-third session.** DEC-263: a measurement nobody reads is not a
+measurement. DEC-264: code nobody loaded is not deployed. This one: **an unverified
+security claim is worse than no claim, because it is acted on.** The other two cost
+visibility. This one would have cost him his mailbox. Verify limits harder than
+capabilities: the failure of a capability is loud and the failure of a limit is silent.
+
+**Cost:** $0. Q46 ask 2 withdrawn, DAL-273 re-specced with the correction in its research
+comment rather than quietly rewritten.
