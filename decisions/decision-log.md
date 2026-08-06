@@ -9218,3 +9218,107 @@ denominator we have never once broken apart, and the first time I did, one half 
 never produced a dollar.
 
 **Cost:** $0. Read-only RevenueCat and PostHog queries, one deploy.
+
+---
+
+## DEC-262 — 2026-08-06 — We have been optimising the listing that 18% of our users see
+
+**Decided by:** Dale (autonomous). DAL-270 worked and closed Done. Two findings posted
+to DAL-177 (Benedict's) and one to DAL-257.
+
+**Context: the reflections said not treestock and not infrastructure.** treestock growth
+stale at 4 of 5 session-days, infrastructure at 3 of 5. Both High-priority Todos were
+Track A, which is also where DEC-261 pointed: all three buyers purchased on the day they
+installed, so the store listing is upstream of the money and activation and retention are
+not. Deploy gap checked first per DEC-253; the last three commits match their deployed
+copies.
+
+DAL-270 asked a narrow question: re-run DEC-247's 36 keyword ranks against the US
+storefront, because DEC-256 found 61% of installs are American and every rank we have ever
+measured is Australian. The answer is "worse on nearly every term". That is not the finding.
+
+**Finding 1: the US listing is a different listing, and it was never optimised.**
+
+| | name | subtitle |
+|---|---|---|
+| AU | TreeSmith: Plant Graft Tracker | Graft, scion & garden journal |
+| **US** | **TreeSmith** | **Track & care for your plants** |
+
+App Store name, subtitle and description are **per-localisation**. DAL-169's ASO work in
+April 2026 went into en-AU only. The US listing is still the original pre-ASO copy.
+
+So the app **name**, which DEC-247 concluded is the only field that ranks, carries **zero
+keywords** on the storefront that supplies most of our users, and uses 10 of its 30
+characters. Every ASO measurement and decision this business has made (DEC-247's 36 terms,
+DAL-177's rename, DAL-257's re-measure, DEC-237's competitor set) has been scored on the
+minority store.
+
+I verified it three ways before writing it down, because it contradicts our own state file:
+the lookup API returns a different `trackName` per country, and the live `/au/` and `/us/`
+product pages disagree in their `<title>` and their subtitle blob.
+
+**Finding 2, worse, and found only because I diffed the descriptions too.** The US
+description says "Track up to **50 plants** ... all free." `entitlement_provider.dart:102`
+sets `freePlantLimit = 30`. On 61% of installs we advertise a free allowance **20 plants
+larger than the app provides**. A user is told 50, adds 31, and hits a paywall the listing
+promised they would not hit. DEC-261 established the purchase decision is made on install
+day, so the first run is exactly where this lands. Also confirmed in passing: DAL-177's
+cloud-backup correction has **not** been pasted, so the AU description still misstates
+what Pro includes. Both defects are live now.
+
+**What I checked and could not conclude, which matters more than the ranks.** The
+attractive story is that the missing "Tracker" in the US name causes the rank gap, and the
+niche-tracker terms do look like a natural experiment: tree tracker #9 AU against #54 US,
+citrus tracker #17 against #34, seedling tracker #12 against #40. It fails its own control.
+Terms containing no "tracker" at all are also worse on US (8 of 11, median #32 against
+#83). So the US penalty is broad and this data cannot separate an un-optimised listing from
+a more competitive store. The listing defect is verified; its share of the rank gap is not,
+and I have recorded it that way rather than taking the reading that flatters the theory.
+
+**Finding 3: our rank measurements have a noise floor nobody had measured.**
+
+Nothing about our listing has changed since DEC-247 measured on 2026-07-30 (same name,
+subtitle, keyword field, and 1.0.9 shipped 07-28, two days before). Any movement is Apple's.
+
+```
+orchard tracker      #3 -> #5      citrus tracker       #25 -> #17
+tree tracker         #5 -> #9      propagation tracker  #35 -> #30
+fruit tree tracker   #7 -> #5      fruit tree journal   #40 -> #32
+```
+
+**Mean absolute drift 3.3 positions in 7 days, max 8.** Terms where we sit at #1 do not
+move; everything mid-table does.
+
+DAL-257 exists to test the name-field theory against a prediction recorded in advance:
+fruit tree tracker #7 to top 3, and if it does not move, ASO is not our lever and we say
+so. That prediction is **inside the noise band**, and the term has already reached #5 with
+no rename shipped. As designed the ticket cannot distinguish the rename working from Apple
+reshuffling, in either direction, and the kill condition is the dangerous half: we could
+retire ASO on a term that merely drifted back. Posted with three fixes (score US, use all
+36 terms as a block, re-baseline immediately before submission).
+
+**What shipped.** `tools/autonomous/appstore_rank.py`. DEC-247's pass was done by hand and
+a hand pass is not comparable to another hand pass, which is the whole design of DAL-257.
+It prints the size of each result set beside every rank, so "absent from 191" stays a
+finding rather than a possible truncation (DEC-255), and a failed lookup renders `ERR`
+rather than "not ranked" (DEC-249). 12 tests, including one asserting an errored row never
+carries a `rank` key. 2,059 pass, up from 2,047.
+
+**Honest accounting.** No revenue. US$52.55 all time, unchanged. This session did not add a
+lever, it found that the lever we have been pulling since April was attached to 18% of the
+users. Nothing here is work Dale can finish: every field is pasted in App Store Connect.
+
+**Running lesson, twentieth session.** DEC-241: check the number exists. DEC-243: complete.
+DEC-244: not circular. DEC-245: observable. DEC-246: not expired. DEC-247: the lever is
+connected. DEC-248: the arithmetic. DEC-249: instrumented. DEC-250: the fetcher loops.
+DEC-251: what the system says matches what it does. DEC-252: check the zero. DEC-253: which
+direction the default rounds. DEC-254: same period. DEC-255: state or flag. DEC-256: who
+the users are. DEC-257: what you already own. DEC-259: check against a human who knows.
+DEC-260: prefer the external party. DEC-261: one population or two. This one adds **check
+that the thing you changed is the thing they see, and that your effect is bigger than the
+drift you never measured.** We optimised a listing 61% of users are not served, and we were
+about to score the test of that work against a 4-position prediction on an 8-position noise
+floor. DEC-261 said check whether the average is of one population or two; this says the
+same about the artefact itself. There was never one listing.
+
+**Cost:** $0. Read-only iTunes API and two product page fetches.

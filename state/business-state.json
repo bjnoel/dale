@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-08-03",
-  "session_count": 112,
+  "last_updated": "2026-08-06",
+  "session_count": 113,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -254,6 +254,29 @@
           "caveat": "n=3. Stated as the strongest signal we have about WHEN the decision is made, not as an established rate."
         },
         "install_count_divergence": "RevenueCat 416 customers vs PostHog 297 people (+40%). Neither is authoritative: RevenueCat opens a customer per SDK init, PostHog merges aliased ids onto a person. The digest now prints the gap rather than picking one and quietly dividing by it. Retention cross-check: RevenueCat says 11% of iOS and 5% of Android are ever seen on a later day; 272 of 287 Android and 111 of 129 iOS are never seen again 60s after first launch."
+      },
+      "storefront_localisation_defect": {
+        "found": "2026-08-06 (DEC-262 / DAL-270)",
+        "severity": "the majority storefront has an un-optimised listing AND advertises a free tier the app does not provide",
+        "au_name": "TreeSmith: Plant Graft Tracker",
+        "au_subtitle": "Graft, scion & garden journal",
+        "us_name": "TreeSmith",
+        "us_subtitle": "Track & care for your plants",
+        "detail": "App Store name, subtitle and description are PER-LOCALISATION. DAL-169's April ASO work went into en-AU only. The US listing is the original pre-ASO copy, so the app NAME (the only field DEC-247 found ranks) carries zero keywords on the storefront supplying 61% of installs. version and releaseNotes are identical across localisations; only name, subtitle and description differ.",
+        "free_tier_misstatement": "The US description says 'Track up to 50 plants ... all free'. entitlement_provider.dart:102 sets freePlantLimit = 30. We advertise 20 more free plants than the app gives, on 61% of installs, and DEC-261 says the purchase decision is made on install day.",
+        "pro_cloud_backup_fix_not_pasted": "Verified 2026-08-06: the live AU description still reads 'Pro: unlimited plants, multiple locations, cloud backup, bulk operations and CSV import.' DAL-177 is still unpasted.",
+        "action": "DAL-177, Benedict. Paste name, subtitle and description into BOTH localisations, not one."
+      },
+      "aso_rank_measurement": {
+        "tool": "tools/autonomous/appstore_rank.py (DAL-270). 36 terms in 4 groups, AU and US, iTunes Search API, no credentials. Reports the size of each result set beside every rank so 'absent from 191' is distinguishable from truncation, and renders ERR rather than 'not ranked' on a failed lookup.",
+        "measured_2026_08_06": {
+          "ranked_on_both": 16,
+          "ranked_on_au_only": 5,
+          "ranked_on_us_only": 0,
+          "au_vs_us": "fruit tree tracker 5/6, orchard tracker 5/6, tree tracker 9/54, graft tracker 1/1, citrus tracker 17/34, seedling tracker 12/40, propagation tracker 30/63, fruit tree journal 32/83, harvest tracker 97/none, treesmith 1/1. Median rank roughly doubles on US.",
+          "attribution_NOT_established": "The obvious story (the missing 'Tracker' in the US name causes the gap) fails its own control: terms with no 'tracker' in them are also worse on US, 8 of 11, median 32 vs 83. This data cannot separate 'un-optimised listing' from 'more competitive store'. The listing defect is verified; its share of the rank gap is not."
+        },
+        "rank_noise_floor": "AU ranks drift up to 8 positions in 7 days with NO change to name, subtitle, keywords or build. Measured against DEC-247's 2026-07-30 baseline: orchard tracker 3->5, tree tracker 5->9, fruit tree tracker 7->5, bonsai 22->18, citrus 25->17, propagation 35->30, fruit tree journal 40->32. Mean absolute drift 3.3, max 8. Terms where we sit at #1 do not move. DAL-257's pre-recorded prediction ('fruit tree tracker #7 -> top 3') is INSIDE this band and the term is already #5 with no rename shipped, so on its current design that ticket cannot distinguish the rename working from Apple reshuffling. Score the whole 36-term set on US, and re-baseline immediately before submission."
       }
     },
     "a_paused_walkthrough": {
