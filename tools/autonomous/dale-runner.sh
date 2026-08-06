@@ -166,6 +166,16 @@ import json; print(json.load(open('$CONFIG')).get('claude', {}).get('model', '')
 CLAUDE_EFFORT=$(python3 -c "
 import json; print(json.load(open('$CONFIG')).get('claude', {}).get('effort', '') or '')" 2>/dev/null || echo "")
 
+# Generation sessions think harder. A bad ticket costs Benedict triage time and
+# then sits in the backlog for weeks; a longer generation session costs tokens
+# once. The backlog cap means these sessions now produce fewer tickets, so the
+# extra effort is spent on the ones that survive.
+if [ "$SESSION_TYPE" = "generation" ]; then
+    GEN_EFFORT=$(python3 -c "
+import json; print(json.load(open('$CONFIG')).get('claude', {}).get('generation_effort', '') or '')" 2>/dev/null || echo "")
+    [ -n "$GEN_EFFORT" ] && CLAUDE_EFFORT="$GEN_EFFORT"
+fi
+
 # Expanded as ${MODEL_ARGS[@]+...} at the call site: an empty array under
 # `set -u` is an unbound-variable error on bash < 4.4, and clearing both config
 # keys is exactly the documented rollback.

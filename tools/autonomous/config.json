@@ -12,13 +12,16 @@
   "claude": {
     "model": "claude-opus-5",
     "effort": "medium",
-    "note": "Pinned deliberately. Leave either value empty to fall back to the CLI default. Sessions ran claude-sonnet-4-6 (the unpinned default) until 2026-07-30."
+    "generation_effort": "high",
+    "note": "Pinned deliberately. Leave either value empty to fall back to the CLI default. Sessions ran claude-sonnet-4-6 (the unpinned default) until 2026-07-30. generation_effort applies only to ticket-generation sessions: proposing the wrong work is more expensive than thinking about it for longer."
   },
   "linear": {
     "team": "Dale",
-    "max_backlog": 40,
-    "min_backlog": 15,
-    "generation_session_max_turns": 40
+    "max_backlog": 15,
+    "min_backlog": 10,
+    "generation_session_max_turns": 120,
+    "stale_backlog_days": 30,
+    "note": "Benedict's cap, 2026-08-06. Was 40/15/40 turns, which produced 30 untriaged tickets and 13 in one day. The band is now 10-15: generate below 10, hard stop at 15, so a full backlog blocks new proposals until he triages. Fewer, better-researched tickets is the trade: generation sessions get 3x the turns and a higher effort setting. stale_backlog_days is the untriaged-to-Cancelled horizon."
   },
   "notifications": {
     "from_email": "dale@mail.walkthrough.au",

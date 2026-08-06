@@ -20,11 +20,39 @@ Target 60 to 80 words. **Hard cap 100, enforced by `linear_update.py create`,
 which exits 4. There is no override flag.**
 
 The final backticked line carries the thinking level (L0 tactical to L3
-strategic) and the metric the ticket expects to move. Nothing parses it; it is
-there so Benedict can see the altitude at a glance. Do **not** open the
+strategic) and the metric the ticket expects to move. Do **not** open the
 description with `Level 2 (Channel). Expected metric: ...` prose. That was the
 old habit, and it spent the first line of every ticket, the only line visible
 on a phone list view, on metadata.
+
+## The trailer is parsed (since 2026-08-06)
+
+This used to read "nothing parses it; it is there so Benedict can see the
+altitude at a glance". That was true and it was the problem: Dale declared an
+intended outcome on roughly sixty tickets and was never graded against one, so
+"done" was the last word on every piece of work.
+
+`tools/autonomous/ticket_outcomes.py` now reads it. When a ticket is completed
+it stamps the named metric's current value; 28 days later it re-reads the
+metric and posts the before/after as a comment on the ticket, and in the daily
+digest. So:
+
+- **Prefer a metric the registry can read.** As of 2026-08-06:
+  `treestock_organic_visitors`, `treesmith_downloads`, `revenue_monthly`,
+  `treestock_subscribers`, `treestock_subscriber_engagement`. Adding one is a
+  single entry in `METRIC_READERS`.
+- **Prose trailers are still legal.** `nursery relationships`, `protects every
+  other metric` and `unblocks DEC-248 step 3` are all real, and all describe
+  work whose value is not a number. Those tickets are reported as "shipped
+  without a readable metric" rather than being forced into a false measurement.
+  Use one when it is honest, not to duck a verdict.
+- **Name the metric you actually believe will move.** A scraper refactor
+  claiming `revenue_monthly` will be graded on revenue and will read as a
+  failure, which is the correct outcome for an inflated claim.
+
+The verdict is deliberately worded as correlation, not attribution: other work
+ships inside the same 28 days and nursery traffic is seasonal. It says what
+happened, not what caused it. The value is in having the question asked at all.
 
 ## Where the thinking goes
 

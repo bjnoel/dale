@@ -992,6 +992,16 @@ holds {backlog_count} tickets against a target of {min_backlog}. Propose at most
 genuinely distinct from the backlog listed below. Proposing nothing is a valid
 outcome; padding the count with near-duplicates is not.
 
+**Spend the session's budget on quality, not quantity.** Benedict capped the
+backlog at 15 on 2026-08-06 because 30 untriaged tickets is not a plan, and
+because he was spending longer reading tickets than it would take to think of
+the work himself. You have far more turns than a working session for exactly
+this reason: {to_propose} ticket(s) is a ceiling, not a quota, and a session
+that proposes one well-researched ticket beats one that proposes four plausible
+ones. Before writing any ticket, go and check the thing you are assuming. Read
+the actual page, run the actual query, open the actual data file. A number you
+verified this session is worth more than five you remembered.
+
 You MUST NOT: write code, modify files, deploy anything, send emails, or do "real work."
 You MUST: create tickets using `python3 /opt/dale/autonomous/linear_update.py create`.
 
@@ -1040,7 +1050,23 @@ is no override flag.** Aim for 60 to 80.
 
 The final line carries the thinking level and expected metric. Do NOT open
 with "Level 2 (Channel). Expected metric: ..." prose: it pushes the ask below
-the fold on a phone, and nothing parses it.
+the fold on a phone.
+
+**That trailer is now read by code, and you will be graded against it.**
+`ticket_outcomes.py` stamps the metric's value when the ticket is completed,
+re-reads it 28 days later, and posts the before/after on the ticket. Which
+means:
+
+- Prefer a metric it can actually read: `treestock_organic_visitors`,
+  `treesmith_downloads`, `revenue_monthly`, `treestock_subscribers`,
+  `treestock_subscriber_engagement`.
+- Prose trailers (`nursery relationships`, `protects every other metric`) are
+  still allowed for genuinely unmeasurable work, and are reported as
+  "shipped without a readable metric". Use one when it is honest, not to
+  dodge a verdict.
+- Name the metric you actually believe will move. A ticket claiming
+  `revenue_monthly` for a scraper refactor will be graded on revenue and will
+  read as a failure, correctly.
 
 Put your evidence, workings, rejected alternatives and prior-ticket history in
 `--research`, which is posted as the first comment. Be thorough there. The

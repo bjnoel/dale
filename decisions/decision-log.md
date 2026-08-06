@@ -9322,3 +9322,93 @@ floor. DEC-261 said check whether the average is of one population or two; this 
 same about the artefact itself. There was never one listing.
 
 **Cost:** $0. Read-only iTunes API and two product page fetches.
+
+---
+
+## DEC-263 — 2026-08-06 — The trailer nothing parsed, and the queue nobody could hold in their head
+
+**Decided by:** Benedict, from the observation that started the session: *"I assign it
+tickets, it completes them, I see that it has done them in a daily notification, but I
+don't know if there's follow up or have a good mental model of what's changing behind the
+scenes."* Dale scoped and built it. Four changes, one branch.
+
+**The diagnosis is not the obvious one.** Dale does write follow-ups. DAL-241 re-measures
+the funnel now the CTAs are tagged, DAL-257 re-measures store rank four weeks after the
+rename, DAL-258 measures referral conversion once Primal is live, DAL-268 re-checks what
+was decided off the broken GSC section. All four existed on 2026-08-06 and all four sat in
+Backlog with no due date, no label and no trigger, indistinguishable from 26 pieces of
+net-new work. DAL-257 names its own horizon in its title and nothing anywhere would ever
+have said "it has been four weeks". The follow-up loop was written and never wired up.
+
+**Four things, in the order they matter.**
+
+**1. The trailer is parsed now.** Every ticket ends `` `L2 · treesmith_downloads` `` and
+`docs/ticket-format.md` said outright: "Nothing parses it." Roughly sixty tickets have
+declared an intended outcome and not one has been graded. `ticket_outcomes.py` stamps the
+named metric at completion, re-reads it 28 days later, and posts the before/after on the
+ticket and in the digest. Registry covers the five metric names Dale actually uses; prose
+trailers (`nursery relationships`, `protects every other metric`) stay legal and are
+reported as "shipped without a readable metric" rather than coerced into a number.
+
+Deliberate constraints, each of which is a lesson already in this log:
+- `MetricUnavailable` is distinct from a reading of zero (DEC-236's shape: a failed poll
+  that returns empty reads as a confident fact). A metric that cannot be read defers; it
+  never grades as a 100% decline.
+- `revenue_monthly` reads the **ledger**, not PostHog `purchase_succeeded`. Q48 and
+  DEC-252 turned on exactly this: client-side telemetry is not a receipt.
+- Both readings under 10 returns "too small to call" rather than a percentage. 1 to 2
+  subscribers is +100% and means nothing.
+- Every verdict comment says **correlation, not attribution**, in those words. Other work
+  ships inside the same 28 days and nursery traffic is seasonal.
+
+**2. "Waiting on you" leads the digest.** DAL-177 has been in Todo, assigned to Benedict,
+since 2026-04-27. **101 days.** It is the ticket carrying the corrected store description
+that CLAUDE.md says blocks all store copy, and DEC-262 confirmed four days ago is still
+not pasted. The digest reported activity cheerfully every morning for 101 mornings and
+never once said that. Detection is assignment **or** a Cost line putting Benedict in an
+action position, because both halves are load-bearing: assignment catches DAL-177, the
+Cost-line scan catches the many unassigned tickets ending "Dale drafts, Benedict sends".
+Sorted oldest first, anything over 30 days flagged.
+
+**3. /admin gains a business-state section.** The email is a flow report and always will
+be; 30 of them cannot be reconstructed into "what is true now". The digest writes
+`business-snapshot.json` and `/admin` renders it, so there is one place the numbers come
+from and the page and the email cannot disagree. The page ages its own snapshot: past 36
+hours it says so, because a dead cron showing confident stale numbers is worse than an
+empty page.
+
+**4. The backlog is capped at 15, band 10-15.** Was 40. The real backlog was 30, with 13
+created in a single day on 2026-07-30. `docs/ticket-format.md` measured the cost of an
+unreadable backlog at 64 minutes of triage; the cap is the other half of that fix, since
+shortening the tickets does nothing about their number. Untriaged Backlog tickets are
+auto-cancelled after 30 days, **except** any a human has commented on or edited: the sweep
+clears proposals Benedict never got to, and must never overrule one he consciously parked.
+
+**The trade Benedict asked for explicitly: fewer tickets, more thought each.** Generation
+sessions go from 40 turns to 120 and from `medium` to `high` effort. A bad ticket costs
+triage time and then squats in a capped queue for a month; a longer generation session
+costs tokens once. The prompt now says the ceiling is not a quota and tells Dale to go
+verify the thing it is assuming before writing anything.
+
+**What this does NOT do, stated so nobody assumes otherwise.** It cannot attribute. It
+grades a 28-day window against the 28 before it, and everything else that happened in
+those 56 days is in the number too. A "did not move" is not proof the work was worthless
+and a "moved" is not proof it worked. The claim is narrower and still worth the build:
+every shipped ticket now gets its own question asked out loud, on the ticket, with a date.
+
+**Immediate consequence, flagged not hidden.** The live backlog is 30 against a new cap of
+15, and only DAL-176 is old enough for the first expiry sweep. So ticket creation is
+blocked until Benedict triages down to 15. That is the forcing function working as
+designed, not a bug, but it will bite on the next generation session and he should know
+before it does.
+
+**Running lesson, twenty-first session.** DEC-261: one population or two. DEC-262: check
+that the thing you changed is the thing they see. This one adds **a measurement nobody
+reads is not a measurement.** The metric trailer was correct, disciplined, present on
+sixty tickets, and worth nothing, because the loop stopped at "written down". The same
+was true of the follow-up tickets and of the 101-day queue. In all three cases the data
+existed and the last mile, someone or something actually looking at it on a schedule, did
+not. Before building a new signal, check whether the one you have is being read.
+
+**Cost:** $0. One branch, `feat/ticket-outcome-loop`. Full suite run before and after on
+`origin/main` to separate pre-existing golden flake from regressions.

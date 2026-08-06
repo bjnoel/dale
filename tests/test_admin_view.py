@@ -5,8 +5,11 @@ read-only subscriber admin page (rendered by subscribe_server.py at /admin).
 Run from repo root with:
     python3 -m unittest discover tests/
 """
+import json
 import sys
+import tempfile
 import unittest
+from datetime import datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -384,6 +387,76 @@ class NurseryRegisterTests(unittest.TestCase):
             (Path(tmp) / "nursery-contacts.json").write_text(json.dumps(REGISTER))
             model = admin_view.load_nursery_data(Path(tmp))
             self.assertEqual(model["totals"]["nurseries"], 3)
+
+
+SNAPSHOT = {
+    "generated_at": "2026-08-06T22:00:00+00:00",
+    "waiting_on_benedict": [
+        {"id": "DAL-177", "title": "Store description variant", "state": "Todo",
+         "days": 101, "assigned": True},
+        {"id": "DAL-274", "title": "Draft nursery replies", "state": "Backlog",
+         "days": 3, "assigned": False},
+    ],
+    "verdicts_recent": [{
+        "ticket": "DAL-219", "metric": "treesmith_downloads",
+        "baseline": {"value": 49, "unit": "installs/28d"},
+        "verdict": {"value": 61, "pct": 24.5, "call": "moved"},
+    }],
+    "verdicts_summary": {"awaiting": 4, "ungraded": 2, "next_due": "2026-09-01"},
+    "traffic": {"sites": [{"site": "treestock.com.au", "month_visitors": 2926,
+                           "month_change": 8, "week_visitors": 690,
+                           "week_change": -3}]},
+}
+
+
+class TestBusinessSection(unittest.TestCase):
+    """The /admin business block: the always-on 'what is true now' surface."""
+
+    def test_load_marks_a_fresh_snapshot_current(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "business-snapshot.json").write_text(json.dumps(SNAPSHOT))
+            snap = admin_view.load_business_data(
+                Path(tmp), now=datetime.fromisoformat("2026-08-07T02:00:00+00:00"))
+            self.assertFalse(snap["stale"])
+            self.assertEqual(snap["age_hours"], 4.0)
+
+    def test_load_marks_an_old_snapshot_stale(self):
+        """A dead digest cron must not leave the page showing confident numbers
+        as if they were current."""
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "business-snapshot.json").write_text(json.dumps(SNAPSHOT))
+            snap = admin_view.load_business_data(
+                Path(tmp), now=datetime.fromisoformat("2026-08-09T22:00:00+00:00"))
+            self.assertTrue(snap["stale"])
+            html = admin_view._business_section(snap)
+            self.assertIn("Stale", html)
+
+    def test_missing_snapshot_is_none_not_an_error(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertIsNone(admin_view.load_business_data(Path(tmp)))
+        self.assertIn("No snapshot yet", admin_view._business_section(None))
+
+    def test_corrupt_snapshot_is_none(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "business-snapshot.json").write_text("{not json")
+            self.assertIsNone(admin_view.load_business_data(Path(tmp)))
+
+    def test_section_renders_waiting_verdicts_and_traffic(self):
+        html = admin_view._business_section(SNAPSHOT)
+        self.assertIn("DAL-177", html)
+        self.assertIn("DAL-219", html)
+        self.assertIn("treestock.com.au", html)
+        self.assertIn("2926", html)
+
+    def test_stale_row_gets_one_class_attribute_not_two(self):
+        """A second `class` on the same tag is ignored by every browser, which
+        would silently drop the over-30-days highlight."""
+        html = admin_view._waiting_table(SNAPSHOT["waiting_on_benedict"])
+        self.assertIn("class='num action'", html)
+        self.assertNotIn("class='num' class=", html)
+
+    def test_empty_waiting_list(self):
+        self.assertIn("Nothing is blocked", admin_view._waiting_table([]))
 
 
 if __name__ == "__main__":

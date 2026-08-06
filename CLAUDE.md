@@ -256,9 +256,35 @@ there. The goal is not less thinking, it is thinking placed one scroll below the
 decision. Do NOT open a description with "Level 2 (Channel). Expected metric:..."
 prose; that line belongs at the bottom, compact, in backticks.
 
+**The trailer is parsed and you are graded against it (DEC-263).**
+`ticket_outcomes.py` stamps the named metric when a ticket completes, re-reads
+it 28 days later, and posts the before/after on the ticket. Prefer a metric the
+registry can read: `treestock_organic_visitors`, `treesmith_downloads`,
+`revenue_monthly`, `treestock_subscribers`, `treestock_subscriber_engagement`.
+Prose trailers stay legal for genuinely unmeasurable work and are reported as
+"shipped without a readable metric"; use one when it is honest, not to duck a
+verdict. Name the metric you actually believe will move.
+
+**Backlog is capped at 15, band 10-15 (DEC-263).** `linear_update.py create`
+exits 1 when it is full, and there is no override. Do not work around it by
+rewording, splitting or waiting. If what you found beats something already in
+the backlog, say so on that ticket. Untriaged Backlog tickets auto-cancel after
+30 days unless a human has touched them. Generation sessions get 120 turns and
+`high` effort: the ceiling is not a quota, and one well-researched ticket beats
+four plausible ones.
+
 Full rationale and the measured before/after in `docs/ticket-format.md`.
 
 ## Automated Housekeeping
+
+- **Outcome loop (DEC-263):** `daily-digest.py` runs `ticket_outcomes.py record`
+  then `verdict` inline before building the email, so the baseline is always
+  stamped before it is reported. It also writes `data/business-snapshot.json`,
+  which `/admin` renders as the always-on "what is true now" page. The email is
+  the flow report; the snapshot is the stock.
+- **Backlog expiry:** `linear_update.py expire-stale-backlog --execute` runs
+  Mondays 03:30 UTC. Dry-run without `--execute`. It spares any ticket a human
+  has commented on or edited.
 
 - **After finishing a blog post for bjnoel.com**, always create or update the
   weekly update file at `weekly-updates/YYYY-WNN.md` (ISO week format). Include

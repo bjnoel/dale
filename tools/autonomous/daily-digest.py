@@ -2,16 +2,22 @@
 """Daily digest email for Dale.
 
 Runs once daily (22:00 UTC = 6am AWST). Compiles:
-  1. Linear activity (last 24h): completed, created, in-progress tickets
-  2. Traffic dashboard: Plausible + GSC via traffic_report.py
-  3. Session summaries: aggregated token/cost from all session logs today
-  4. Focus tracker: current reflection level
+  1. Waiting on you: open tickets Benedict has to act on, oldest first
+  2. Outcome verdicts: tickets graded 28 days on against the metric they named
+  3. Linear activity (last 24h): completed, created, in-progress tickets
+  4. Traffic dashboard: Plausible + GSC via traffic_report.py
+  5. Session summaries: aggregated token/cost from all session logs today
+  6. Focus tracker: current reflection level
+
+Also writes data/business-snapshot.json, the "what is true now" state the
+/admin page renders. The email is a flow report; the snapshot is the stock.
 
 Usage: python3 daily-digest.py [--dry-run]
 """
 
 import json
 import os
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -274,6 +280,125 @@ def get_recent_activity(team_id, since_iso):
     return completed, created, in_progress
 
 
+# A ticket waits on Benedict when it is assigned to him, or when its Cost line
+# puts him in an action position. Both halves are needed: DAL-177 sat in Todo
+# for 101 days assigned to him with nothing surfacing it, and plenty of
+# unassigned tickets still end "Dale drafts, Benedict sends".
+BENEDICT_ACTION_RE = re.compile(
+    r"Benedict\s*(?:must|:|'s\b|only\b|"
+    r"sends?|submits?|approves?|implements?|verifies|picks?|does|reviews?|"
+    r"answers?|pastes?|opens?|confirms?|signs?)"
+    r"|Blocked on (?:you|Benedict)",
+    re.IGNORECASE,
+)
+
+
+def get_waiting_on_benedict(team_id):
+    """Open tickets that cannot move without Benedict, oldest first.
+
+    Age is measured from creation, which is the number that matters: the
+    complaint this answers is not "what is assigned to me" (Linear shows that)
+    but "how long has it been sitting there", which nothing showed.
+    """
+    nodes = []
+    cursor = None
+    for _ in range(20):
+        data = graphql("""
+            query($teamId: ID!, $after: String) {
+                issues(
+                    filter: {
+                        team: { id: { eq: $teamId } }
+                        state: { type: { in: ["backlog", "unstarted", "started"] } }
+                    }
+                    first: 50
+                    after: $after
+                ) {
+                    nodes {
+                        identifier title description createdAt
+                        state { name }
+                        assignee { name }
+                    }
+                    pageInfo { hasNextPage endCursor }
+                }
+            }
+        """, {"teamId": team_id, "after": cursor})
+        if not data or not data.get("issues"):
+            break
+        page = data["issues"]
+        nodes.extend(page.get("nodes", []))
+        info = page.get("pageInfo") or {}
+        if not info.get("hasNextPage") or not info.get("endCursor"):
+            break
+        cursor = info["endCursor"]
+
+    today = datetime.now(timezone.utc).date()
+    waiting = []
+    for n in nodes:
+        assignee = (n.get("assignee") or {}).get("name") or ""
+        description = n.get("description") or ""
+        assigned = "benedict" in assignee.lower()
+        asked = bool(BENEDICT_ACTION_RE.search(description))
+        if not (assigned or asked):
+            continue
+        try:
+            created = datetime.strptime(
+                n["createdAt"][:10], "%Y-%m-%d").date()
+            days = (today - created).days
+        except (KeyError, ValueError):
+            days = None
+        waiting.append({
+            "id": n["identifier"],
+            "title": n["title"],
+            "state": (n.get("state") or {}).get("name", ""),
+            "days": days,
+            "assigned": assigned,
+        })
+
+    waiting.sort(key=lambda w: (w["days"] is None, -(w["days"] or 0)))
+    return waiting
+
+
+def run_outcome_loop(dry_run=False):
+    """Stamp baselines for yesterday's completions, then settle anything due.
+
+    Each step is isolated: a PostHog outage that breaks `record` must not stop
+    `verdict` from settling a treestock ticket, and neither can stop the email.
+    """
+    import subprocess
+
+    script = os.path.join(SCRIPT_DIR, "ticket_outcomes.py")
+    for step in ("record", "verdict"):
+        cmd = ["python3", script, step]
+        if dry_run:
+            cmd.append("--dry-run")
+        try:
+            proc = subprocess.run(cmd, timeout=300, capture_output=True, text=True)
+            if proc.returncode == 0:
+                log(f"outcomes {step}: {(proc.stdout or '').strip()[:200]}")
+            else:
+                log(f"outcomes {step} failed ({proc.returncode}): "
+                    f"{(proc.stderr or '').strip()[:200]}")
+        except Exception as e:  # noqa: BLE001
+            log(f"outcomes {step} raised: {e}")
+
+
+def load_outcomes():
+    """Verdicts settled since yesterday, plus what is still pending.
+
+    Returns (recent, summary). Never raises: the outcome loop is a reporting
+    nicety and must not be able to take the digest down with it.
+    """
+    try:
+        sys.path.insert(0, SCRIPT_DIR)
+        import ticket_outcomes
+        store = ticket_outcomes.load_store()
+        return (ticket_outcomes.recent_verdicts(store, days=1),
+                ticket_outcomes.pending_summary(store))
+    except Exception as e:  # noqa: BLE001
+        log(f"Warning: could not load ticket outcomes: {e}")
+        return [], {"awaiting": 0, "ungraded": 0, "next_due": None}
+
+
 def aggregate_sessions(since):
     """Read all session-*.json files modified since the cutoff."""
     logs_dir = Path(LOG_DIR)
@@ -385,11 +510,155 @@ def load_focus_summary(repo_dir):
     return f"Top focus areas (last {len(recent)} sessions): {top_str}"
 
 
+STALE_DAYS = 30  # past this, a ticket waiting on Benedict is called out in red
+
+
+def _age_label(days):
+    if days is None:
+        return ""
+    return f"{days}d"
+
+
+def _waiting_html(waiting):
+    """Tickets that cannot move without Benedict, oldest first."""
+    parts = ["<h3>Waiting on you</h3>"]
+    if not waiting:
+        parts.append("<p style='color: #888;'>Nothing is blocked on you.</p>")
+        return "\n".join(parts)
+
+    stale = sum(1 for w in waiting if (w["days"] or 0) >= STALE_DAYS)
+    parts.append(
+        f"<p style='font-size:0.9em;color:#555'>{len(waiting)} ticket(s), "
+        f"{stale} over {STALE_DAYS} days old.</p>"
+    )
+    parts.append("<ul>")
+    for w in waiting:
+        days = w["days"] or 0
+        colour = "#b91c1c" if days >= STALE_DAYS else "#6b7280"
+        weight = "700" if days >= STALE_DAYS else "400"
+        parts.append(
+            f"<li><span style='color:{colour};font-weight:{weight}'>"
+            f"{_age_label(w['days'])}</span> &mdash; <strong>{w['id']}</strong>: "
+            f"{w['title']} <span style='color:#9ca3af'>[{w['state']}]</span></li>"
+        )
+    parts.append("</ul>")
+    return "\n".join(parts)
+
+
+def _outcomes_html(recent, summary):
+    """Verdicts on tickets that named a metric, 28 days after they shipped."""
+    parts = ["<h3>Outcome verdicts</h3>"]
+    if recent:
+        parts.append("<ul>")
+        for r in recent:
+            v = r["verdict"]
+            base = r["baseline"]
+            label = {
+                "moved": ("moved", "#047857"),
+                "declined": ("went the wrong way", "#b91c1c"),
+                "flat": ("did not move", "#92400e"),
+                "too-small": ("too small to call", "#6b7280"),
+            }.get(v["call"], (v["call"], "#6b7280"))
+            pct = f" ({v['pct']:+.1f}%)" if v.get("pct") is not None else ""
+            parts.append(
+                f"<li><strong>{r['ticket']}</strong>: <code>{r['metric']}</code> "
+                f"{base['value']} &rarr; {v['value']} {base['unit']}{pct} &mdash; "
+                f"<span style='color:{label[1]};font-weight:600'>{label[0]}</span></li>"
+            )
+        parts.append("</ul>")
+    else:
+        parts.append("<p style='color: #888;'>No verdicts came due today.</p>")
+
+    bits = [f"{summary['awaiting']} awaiting a verdict"]
+    if summary.get("next_due"):
+        bits.append(f"next due {summary['next_due']}")
+    if summary.get("ungraded"):
+        bits.append(f"{summary['ungraded']} shipped without a readable metric")
+    parts.append(
+        f"<p style='font-size:0.85em;color:#6b7280'>{' · '.join(bits)}</p>"
+    )
+    return "\n".join(parts)
+
+
+def write_business_snapshot(data_dir, *, waiting, outcomes, completed, created,
+                            in_progress, subscriber_stats, session_stats):
+    """Write the state of the business to disk for the /admin view.
+
+    The digest answers "what happened yesterday". This answers "what is true
+    now", which is the question 30 daily emails cannot be reconstructed into.
+    Written by the digest rather than by /admin so there is exactly one place
+    the numbers come from, and the email and the page can never disagree.
+
+    Never raises: /admin degrades to "no snapshot yet", the email still sends.
+    """
+    recent_verdicts, verdict_summary = outcomes
+    snapshot = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "waiting_on_benedict": waiting,
+        "verdicts_recent": recent_verdicts,
+        "verdicts_summary": verdict_summary,
+        "tickets": {
+            "completed_24h": len(completed),
+            "created_24h": len(created),
+            "in_progress": len(in_progress),
+        },
+        "subscribers": {
+            "total": subscriber_stats.get("total_subscribers", 0),
+            "variety_watches": subscriber_stats.get("variety_watch_count", 0),
+            "variety_watch_emails": subscriber_stats.get("variety_watch_emails", 0),
+        },
+        "sessions_24h": {
+            "count": session_stats.get("count", 0),
+            "cost_usd": session_stats.get("cost_usd", 0),
+            "duration_min": session_stats.get("duration_min", 0),
+        },
+    }
+
+    # Fold in the traffic numbers the traffic report already computed, so the
+    # page reads one file.
+    try:
+        with open(os.path.join(data_dir, "traffic_report.json")) as f:
+            traffic = json.load(f)
+        snapshot["traffic"] = {
+            "generated_at": traffic.get("generated_at"),
+            "sites": [
+                {
+                    "site": s.get("site"),
+                    "month_visitors": (s.get("month") or {}).get("visitors"),
+                    "month_change": s.get("month_change"),
+                    "week_visitors": (s.get("week") or {}).get("visitors"),
+                    "week_change": s.get("week_change"),
+                }
+                for s in traffic.get("plausible", [])
+            ],
+        }
+    except (FileNotFoundError, json.JSONDecodeError, OSError) as e:
+        log(f"Warning: traffic numbers missing from snapshot: {e}")
+
+    try:
+        os.makedirs(data_dir, exist_ok=True)
+        path = os.path.join(data_dir, "business-snapshot.json")
+        tmp = path + ".tmp"
+        with open(tmp, "w") as f:
+            json.dump(snapshot, f, indent=2)
+        os.replace(tmp, path)
+        log(f"Business snapshot written to {path}")
+    except OSError as e:
+        log(f"Warning: could not write business snapshot: {e}")
+
+
 def build_digest_html(completed, created, in_progress, session_stats,
                       traffic_html, focus_summary, subscriber_stats, today,
-                      resend_html=""):
+                      resend_html="", waiting=None, outcomes=None):
     """Build the HTML email body."""
     parts = [f"<h2>Dale Daily Digest &mdash; {today}</h2>"]
+
+    # Benedict's queue and the outcome verdicts lead. Everything below them is
+    # a record of what happened; these two are the only parts that ask anything
+    # of the reader, and the digest is read on a phone.
+    parts.append(_waiting_html(waiting or []))
+    if outcomes is not None:
+        parts.append(_outcomes_html(*outcomes))
 
     # Traffic dashboard
     if traffic_html:
@@ -468,9 +737,41 @@ def build_digest_html(completed, created, in_progress, session_stats,
 
 def build_digest_text(completed, created, in_progress, session_stats,
                       traffic_text, focus_summary, subscriber_stats, today,
-                      resend_text=""):
+                      resend_text="", waiting=None, outcomes=None):
     """Build the plaintext email body."""
     lines = [f"Dale Daily Digest -- {today}", ""]
+
+    lines.append("== Waiting on you ==")
+    if waiting:
+        stale = sum(1 for w in waiting if (w["days"] or 0) >= STALE_DAYS)
+        lines.append(f"  {len(waiting)} ticket(s), {stale} over {STALE_DAYS} days old.")
+        for w in waiting:
+            flag = " (!)" if (w["days"] or 0) >= STALE_DAYS else ""
+            lines.append(
+                f"  {_age_label(w['days']):>5}{flag} {w['id']}: {w['title']} [{w['state']}]")
+    else:
+        lines.append("  Nothing is blocked on you.")
+    lines.append("")
+
+    if outcomes is not None:
+        recent, summary = outcomes
+        lines.append("== Outcome verdicts ==")
+        if recent:
+            for r in recent:
+                v, base = r["verdict"], r["baseline"]
+                pct = f" ({v['pct']:+.1f}%)" if v.get("pct") is not None else ""
+                lines.append(
+                    f"  {r['ticket']}: {r['metric']} {base['value']} -> "
+                    f"{v['value']} {base['unit']}{pct} -- {v['call']}")
+        else:
+            lines.append("  No verdicts came due today.")
+        bits = [f"{summary['awaiting']} awaiting"]
+        if summary.get("next_due"):
+            bits.append(f"next due {summary['next_due']}")
+        if summary.get("ungraded"):
+            bits.append(f"{summary['ungraded']} with no readable metric")
+        lines.append(f"  ({', '.join(bits)})")
+        lines.append("")
 
     if traffic_text:
         lines.append(traffic_text)
@@ -543,6 +844,7 @@ def main():
 
     # 1. Linear activity
     team_id = get_team_id(team_name)
+    waiting = []
     if team_id:
         completed, created, in_progress = get_recent_activity(team_id, since_iso)
         log(f"Linear: {len(completed)} completed, {len(created)} created, {len(in_progress)} in progress")
@@ -552,9 +854,21 @@ def main():
                 config.get("paths", {}).get("data", "/opt/dale/data"))
         except Exception as e:
             log(f"Warning: engagement stamp check failed: {e}")
+        try:
+            waiting = get_waiting_on_benedict(team_id)
+            log(f"Waiting on Benedict: {len(waiting)} ticket(s)")
+        except Exception as e:
+            log(f"Warning: waiting-on-Benedict query failed: {e}")
     else:
         log("Warning: could not find Linear team")
         completed, created, in_progress = [], [], []
+
+    # 1b. Outcome loop. Run inline rather than as its own cron entry: the
+    # baseline must be stamped before the digest reports it, and "before" is a
+    # guarantee here and only a hope in a crontab. Failures are logged and
+    # ignored; a broken metric reader must not stop the email.
+    run_outcome_loop(dry_run=dry_run)
+    outcomes = load_outcomes()
 
     # 2. Traffic report (generate fresh; GSC only on Sundays)
     traffic_html, traffic_text = "", ""
@@ -597,13 +911,26 @@ def main():
     log(f"Subscribers: {subscriber_stats['total_subscribers']} total, "
         f"{subscriber_stats['variety_watch_count']} variety watches")
 
+    # 6. Business snapshot for the always-on /admin view. Same numbers as the
+    # email, written to disk so there is a surface to pull rather than 30 emails
+    # to reconstruct from.
+    if not dry_run:
+        write_business_snapshot(
+            config.get("paths", {}).get("data", "/opt/dale/data"),
+            waiting=waiting, outcomes=outcomes, completed=completed,
+            created=created, in_progress=in_progress,
+            subscriber_stats=subscriber_stats, session_stats=session_stats,
+        )
+
     # Build email
     html = build_digest_html(completed, created, in_progress, session_stats,
                              traffic_html, focus_summary, subscriber_stats, today,
-                             resend_html=resend_html)
+                             resend_html=resend_html, waiting=waiting,
+                             outcomes=outcomes)
     text = build_digest_text(completed, created, in_progress, session_stats,
                              traffic_text, focus_summary, subscriber_stats, today,
-                             resend_text=resend_text)
+                             resend_text=resend_text, waiting=waiting,
+                             outcomes=outcomes)
 
     if dry_run:
         print("=== HTML ===")

@@ -29,9 +29,15 @@ SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 PENDING_FILE = DATA_DIR / "pending_subscribers.json"
 VARIETY_WATCHES_DB = DATA_DIR / "variety_watches.db"
 NURSERY_CONTACTS_FILE = DATA_DIR / "nursery-contacts.json"
+BUSINESS_SNAPSHOT_FILE = DATA_DIR / "business-snapshot.json"
 
 HEALTH_DAYS = 14
 MAX_RECENT_ERRORS = 15
+
+# Past this, a ticket waiting on Benedict is flagged. Matches STALE_DAYS in
+# daily-digest.py, which writes the snapshot this reads.
+WAITING_STALE_DAYS = 30
+SNAPSHOT_STALE_HOURS = 36  # digest runs daily; older than this and the page says so
 
 SITE_URL = "https://treestock.com.au"
 
@@ -357,6 +363,38 @@ def load_nursery_data(data_dir: Path = DATA_DIR, today: date = None) -> dict | N
     return build_nursery_model(register, today)
 
 
+def load_business_data(data_dir: Path = DATA_DIR, now: datetime = None) -> dict | None:
+    """Read the business snapshot the daily digest writes.
+
+    None when it has not been written yet, which is the state on any server
+    that has not run a digest since this shipped. The page degrades to a note
+    rather than an error.
+    """
+    path = Path(data_dir) / BUSINESS_SNAPSHOT_FILE.name
+    if not path.exists():
+        return None
+    try:
+        snapshot = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    # A snapshot that quietly stops updating is worse than none: the page would
+    # keep showing confident numbers from a dead cron. Age it explicitly.
+    now = now or datetime.now()
+    stale = None
+    generated = snapshot.get("generated_at")
+    if generated:
+        try:
+            ts = datetime.fromisoformat(str(generated).replace("Z", "+00:00"))
+            age_h = (now.astimezone(ts.tzinfo) - ts).total_seconds() / 3600
+            stale = age_h > SNAPSHOT_STALE_HOURS
+            snapshot["age_hours"] = round(age_h, 1)
+        except (ValueError, TypeError):
+            pass
+    snapshot["stale"] = stale
+    return snapshot
+
+
 def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     """Read the live data files + DB and build the model."""
     data_dir = Path(data_dir)
@@ -394,6 +432,7 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     model["health"] = load_health_data(data_dir)
     model["needs_review"] = load_needs_review(data_dir)
     model["nurseries"] = load_nursery_data(data_dir)
+    model["business"] = load_business_data(data_dir)
     return model
 
 
@@ -733,12 +772,148 @@ def _pending_table(rows) -> str:
     )
 
 
+_VERDICT_CLASS = {
+    "moved": ("moved", "v-good"),
+    "declined": ("went the wrong way", "v-bad"),
+    "flat": ("did not move", "v-flat"),
+    "too-small": ("too small to call", "v-none"),
+    "unmeasured": ("could not be measured", "v-none"),
+}
+
+
+def _waiting_table(waiting) -> str:
+    if not waiting:
+        return '<p class="muted">Nothing is blocked on Benedict.</p>'
+    rows = []
+    for w in waiting:
+        days = w.get("days")
+        stale = days is not None and days >= WAITING_STALE_DAYS
+        # One class attribute, not two: a second `class` on the same tag is
+        # ignored by every browser, which would have silently dropped the
+        # over-30-days highlight that is the whole point of the column.
+        cls = "num action" if stale else "num"
+        who = "assigned" if w.get("assigned") else "asked in ticket"
+        rows.append(
+            "<tr>"
+            f"<td class='{cls}'><strong>{_esc(days if days is not None else '—')}</strong></td>"
+            f"<td>{_esc(w.get('id'))}</td>"
+            f"<td>{_esc(w.get('title'))}</td>"
+            f"<td>{_esc(w.get('state'))}</td>"
+            f"<td class='small muted'>{_esc(who)}</td>"
+            "</tr>"
+        )
+    return (
+        '<table><thead><tr><th class="num">Days</th><th>Ticket</th><th>Title</th>'
+        '<th>State</th><th>Why</th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody></table>'
+    )
+
+
+def _verdict_table(verdicts, summary) -> str:
+    parts = []
+    if verdicts:
+        rows = []
+        for r in verdicts:
+            v, base = r.get("verdict") or {}, r.get("baseline") or {}
+            label, cls = _VERDICT_CLASS.get(v.get("call"), (v.get("call", "?"), "v-none"))
+            pct = f" ({v['pct']:+.1f}%)" if v.get("pct") is not None else ""
+            rows.append(
+                "<tr>"
+                f"<td>{_esc(r.get('ticket'))}</td>"
+                f"<td class='small'>{_esc(r.get('metric'))}</td>"
+                f"<td class='num'>{_esc(base.get('value'))} &rarr; {_esc(v.get('value'))}"
+                f"<span class='muted small'>{_esc(pct)}</span></td>"
+                f"<td><span class='pill {cls}'>{_esc(label)}</span></td>"
+                "</tr>"
+            )
+        parts.append(
+            '<table><thead><tr><th>Ticket</th><th>Metric</th>'
+            '<th class="num">Before &rarr; after</th><th>Verdict</th></tr></thead>'
+            f'<tbody>{"".join(rows)}</tbody></table>'
+        )
+    else:
+        parts.append('<p class="muted">No verdicts settled recently.</p>')
+
+    if summary:
+        bits = [f"{summary.get('awaiting', 0)} awaiting a verdict"]
+        if summary.get("next_due"):
+            bits.append(f"next due {summary['next_due']}")
+        if summary.get("ungraded"):
+            bits.append(f"{summary['ungraded']} shipped without a readable metric")
+        parts.append(f'<p class="small muted">{_esc(" · ".join(bits))}</p>')
+    return "".join(parts)
+
+
+def _traffic_row(traffic) -> str:
+    sites = (traffic or {}).get("sites") or []
+    if not sites:
+        return ""
+    rows = []
+    for s in sites:
+        def chg(v):
+            if v is None:
+                return '<span class="muted">—</span>'
+            cls = "v-good" if v > 0 else ("v-bad" if v < 0 else "v-flat")
+            return f'<span class="pill {cls}">{v:+d}%</span>'
+        rows.append(
+            "<tr>"
+            f"<td>{_esc(s.get('site'))}</td>"
+            f"<td class='num'>{_esc(s.get('month_visitors'))}</td>"
+            f"<td class='num'>{chg(s.get('month_change'))}</td>"
+            f"<td class='num'>{_esc(s.get('week_visitors'))}</td>"
+            f"<td class='num'>{chg(s.get('week_change'))}</td>"
+            "</tr>"
+        )
+    return (
+        '<h3>Traffic</h3>'
+        '<table><thead><tr><th>Site</th><th class="num">30d visitors</th>'
+        '<th class="num">vs prev</th><th class="num">7d</th><th class="num">vs prev</th>'
+        '</tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody></table>'
+    )
+
+
+def _business_section(snapshot) -> str:
+    """State of the business: what is blocked on Benedict, what shipped work
+    actually did, and the headline numbers. The daily email is a flow report;
+    this is the thing to open when you want the current picture instead."""
+    if not snapshot:
+        return (
+            '<section><h2>Business state</h2>'
+            '<p class="muted">No snapshot yet. The daily digest writes one at '
+            '22:00 UTC.</p></section>'
+        )
+
+    header = ""
+    if snapshot.get("stale"):
+        header = (
+            f'<p class="action"><strong>Stale.</strong> Last written '
+            f'{_esc(snapshot.get("age_hours"))}h ago, so the digest cron may have '
+            f'stopped. Numbers below are from then, not now.</p>'
+        )
+
+    return (
+        '<section><h2>Business state</h2>'
+        + header
+        + '<h3>Waiting on Benedict</h3>'
+        + _waiting_table(snapshot.get("waiting_on_benedict") or [])
+        + '<h3>Outcome verdicts</h3>'
+        + _verdict_table(snapshot.get("verdicts_recent") or [],
+                         snapshot.get("verdicts_summary") or {})
+        + _traffic_row(snapshot.get("traffic"))
+        + '</section>'
+    )
+
+
 def render_admin_html(model: dict, generated_at: str = None) -> str:
     """Standalone, view-only HTML page. No public site chrome, noindex."""
     if generated_at is None:
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     parts = [
+        # Business state leads: it is the only section that says what needs
+        # doing rather than what already exists.
+        _business_section(model.get("business")),
         _cards(model["totals"]),
         _nursery_section(model.get("nurseries")),
         '<div class="grid3">',
@@ -806,6 +981,10 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
   .st-warm {{ background:#d1fae5; color:#065f46; }}
   .st-mid {{ background:#fef3c7; color:#92400e; }}
   .st-cold {{ background:#f3f4f6; color:#6b7280; }}
+  .v-good {{ background:#d1fae5; color:#065f46; }}
+  .v-bad {{ background:#fee2e2; color:#991b1b; }}
+  .v-flat {{ background:#fef3c7; color:#92400e; }}
+  .v-none {{ background:#f3f4f6; color:#6b7280; }}
   .action {{ color:#92400e; }}
   tr.histrow td {{ padding:0 10px 8px; border-bottom:1px solid #e5e7eb; }}
   tr.histrow summary {{ cursor:pointer; font-size:0.78rem; color:#6b7280; }}
@@ -816,7 +995,7 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
 </head>
 <body>
 <header>
-  <h1>treestock admin · subscribers</h1>
+  <h1>treestock admin · business state</h1>
   <div class="ts">View only · generated {_esc(generated_at)}</div>
 </header>
 <main>

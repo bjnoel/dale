@@ -10,6 +10,7 @@ Usage:
   python3 linear_update.py assign DAL-42 none
   python3 linear_update.py create "Title here" --description "Details" --labels "SEO,Track B" --priority 3
   python3 linear_update.py create "Title" --description "<=100 words" --research "the long version"
+  python3 linear_update.py expire-stale-backlog [--days 30] [--execute]
 """
 
 import json
@@ -441,7 +442,20 @@ def cmd_create(args):
     from linear_poller import get_issues_by_state
     backlog = get_issues_by_state(team_id, "backlog")
     if len(backlog) >= max_backlog:
-        print(f"Backlog full ({len(backlog)}/{max_backlog}). Cannot create more tickets.", file=sys.stderr)
+        print(
+            f"BLOCKED: backlog is full ({len(backlog)}/{max_backlog}).\n"
+            f"\n"
+            f"The cap is Benedict's (2026-08-06). A backlog he has not triaged is\n"
+            f"not a plan, and 30 open proposals is past the point where anyone can\n"
+            f"hold them in their head.\n"
+            f"\n"
+            f"Do NOT work around this by rewording, splitting, or waiting an hour.\n"
+            f"The queue is full until Benedict triages it or the 30-day expiry\n"
+            f"sweep clears untouched proposals. If what you have found genuinely\n"
+            f"beats something already in the backlog, say so on that ticket\n"
+            f"instead of opening another.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     # Duplicate guard. The session prompt already tells Dale to read every
@@ -621,6 +635,166 @@ def cmd_archive_stale(args):
     print(f"Archived {ok}/{len(issues)}")
 
 
+def get_state_id_by_type(team_id, state_type):
+    """First workflow state of a given type. Safer than matching on name:
+    Linear's cancelled state is spelled "Canceled" by default but is renameable,
+    and a rename must not silently turn this command into a no-op."""
+    data = graphql("""
+        query($teamId: ID!) {
+            workflowStates(filter: { team: { id: { eq: $teamId } } }) {
+                nodes { id name type position }
+            }
+        }
+    """, {"teamId": team_id})
+    if not data:
+        return None, None
+    states = [s for s in data["workflowStates"]["nodes"] if s["type"] == state_type]
+    if not states:
+        return None, None
+    states.sort(key=lambda s: s.get("position", 0))
+    return states[0]["id"], states[0]["name"]
+
+
+def _touched_by_human(issue):
+    """True if anyone other than Dale has commented on or edited this ticket.
+
+    The point of the expiry sweep is to clear proposals Benedict never got to,
+    not to overrule ones he consciously parked. Any human touch means he has
+    seen it and chosen to leave it, so it survives. Same signal the digest's
+    engagement stamp uses.
+    """
+    actors = [(c.get("user") or {}).get("name")
+              for c in issue.get("comments", {}).get("nodes", [])]
+    actors += [(h.get("actor") or {}).get("name")
+               for h in issue.get("history", {}).get("nodes", [])]
+    return any(a and a.strip().lower() != "dale" for a in actors)
+
+
+def cmd_expire_stale_backlog(args):
+    """Cancel Backlog tickets Benedict never triaged within N days.
+
+    A proposal that has sat untouched for a month is not a plan, it is clutter
+    that makes the real queue harder to read. Cancelling is reversible in one
+    click and the ticket keeps all its research, so the cost of being wrong is
+    close to zero; the cost of an unreadable backlog was measured at 64 minutes
+    of triage (docs/ticket-format.md).
+
+    Dry run by default. Pass --execute to actually cancel.
+    """
+    from datetime import datetime, timedelta, timezone
+
+    config = load_config()
+    days = config.get("linear", {}).get("stale_backlog_days", 30)
+    execute = False
+    i = 0
+    while i < len(args):
+        if args[i] == "--days" and i + 1 < len(args):
+            days = int(args[i + 1])
+            i += 2
+        elif args[i] == "--execute":
+            execute = True
+            i += 1
+        else:
+            i += 1
+
+    team_name = config.get("linear", {}).get("team", "Dale")
+    team_id = get_team_id(team_name)
+    if not team_id:
+        print(f"Team '{team_name}' not found", file=sys.stderr)
+        sys.exit(1)
+
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime(
+        "%Y-%m-%dT%H:%M:%S.000Z")
+
+    issues = []
+    cursor = None
+    while True:
+        data = graphql("""
+            query($teamId: ID!, $cutoff: DateTimeOrDuration!, $after: String) {
+                issues(
+                    filter: {
+                        team: { id: { eq: $teamId } }
+                        state: { type: { eq: "backlog" } }
+                        createdAt: { lt: $cutoff }
+                    }
+                    first: 50
+                    after: $after
+                ) {
+                    nodes {
+                        id identifier title createdAt
+                        assignee { name }
+                        comments(first: 20) { nodes { user { name } } }
+                        history(first: 20) { nodes { actor { name } } }
+                    }
+                    pageInfo { hasNextPage endCursor }
+                }
+            }
+        """, {"teamId": team_id, "cutoff": cutoff, "after": cursor})
+        page = data["issues"]
+        issues.extend(page["nodes"])
+        if not page["pageInfo"]["hasNextPage"]:
+            break
+        cursor = page["pageInfo"]["endCursor"]
+
+    expiring, spared = [], []
+    for it in issues:
+        if _touched_by_human(it):
+            spared.append(it)
+        else:
+            expiring.append(it)
+
+    print(f"Team: {team_name}")
+    print(f"Backlog tickets created before {cutoff[:10]} ({days} days): {len(issues)}")
+    print(f"  untouched, will cancel: {len(expiring)}")
+    print(f"  touched by a human, keeping: {len(spared)}")
+    for it in expiring:
+        print(f"    CANCEL  {it['identifier']}: {it['title'][:70]}")
+    for it in spared:
+        print(f"    keep    {it['identifier']}: {it['title'][:70]}")
+
+    if not execute:
+        print("\nDRY RUN. Pass --execute to cancel.")
+        return
+    if not expiring:
+        print("Nothing to cancel.")
+        return
+
+    state_id, state_name = get_state_id_by_type(team_id, "canceled")
+    if not state_id:
+        print("No cancelled-type workflow state on this team", file=sys.stderr)
+        sys.exit(1)
+
+    note = (
+        f"Dale: Auto-cancelled after {days} days in Backlog with no triage.\n\n"
+        f"Not a judgement on the idea. The backlog is capped so it stays "
+        f"readable, and an untouched proposal is occupying a slot a fresher one "
+        f"could use. Everything here (description, research comment) is intact. "
+        f"Move it back to Backlog or Todo to revive it."
+    )
+
+    ok = 0
+    for it in expiring:
+        try:
+            graphql("""
+                mutation($issueId: String!, $body: String!) {
+                    commentCreate(input: { issueId: $issueId, body: $body }) {
+                        comment { id }
+                    }
+                }
+            """, {"issueId": it["id"], "body": note})
+            graphql("""
+                mutation($id: String!, $stateId: String!) {
+                    issueUpdate(id: $id, input: { stateId: $stateId }) {
+                        issue { identifier }
+                    }
+                }
+            """, {"id": it["id"], "stateId": state_id})
+            ok += 1
+        except SystemExit:
+            print(f"FAIL: {it['identifier']}", file=sys.stderr)
+    print(f"Cancelled {ok}/{len(expiring)} to '{state_name}'")
+
+
 def cmd_label(args):
     """Add or remove a label from an issue."""
     if len(args) < 3 or args[0] not in ("add", "remove"):
@@ -674,6 +848,7 @@ COMMANDS = {
     "create": cmd_create,
     "label": cmd_label,
     "archive-stale": cmd_archive_stale,
+    "expire-stale-backlog": cmd_expire_stale_backlog,
 }
 
 

@@ -181,5 +181,44 @@ class DuplicateTitleTests(unittest.TestCase):
         self.assertTrue(matches)
 
 
+class TestTouchedByHuman(unittest.TestCase):
+    """The 30-day backlog expiry sweep cancels untriaged proposals, but must
+    never overrule one Benedict consciously parked. Any non-Dale actor on the
+    ticket means he has seen it and chosen to leave it there."""
+
+    def _issue(self, comment_authors=(), history_actors=()):
+        return {
+            "comments": {"nodes": [{"user": {"name": n}} for n in comment_authors]},
+            "history": {"nodes": [{"actor": {"name": n}} for n in history_actors]},
+        }
+
+    def test_untouched_ticket_expires(self):
+        self.assertFalse(linear_update._touched_by_human(self._issue()))
+
+    def test_dale_only_activity_still_expires(self):
+        """Dale creating and commenting on its own proposal is not triage."""
+        issue = self._issue(comment_authors=["Dale"], history_actors=["Dale"])
+        self.assertFalse(linear_update._touched_by_human(issue))
+
+    def test_benedict_comment_spares_it(self):
+        issue = self._issue(comment_authors=["Dale", "Benedict Noel"])
+        self.assertTrue(linear_update._touched_by_human(issue))
+
+    def test_benedict_history_event_spares_it(self):
+        """Re-prioritising or re-labelling without commenting still counts."""
+        issue = self._issue(history_actors=["Benedict Noel"])
+        self.assertTrue(linear_update._touched_by_human(issue))
+
+    def test_dale_name_match_is_case_insensitive(self):
+        issue = self._issue(comment_authors=["dale", "DALE "])
+        self.assertFalse(linear_update._touched_by_human(issue))
+
+    def test_missing_actor_is_not_a_human(self):
+        """Linear returns a null actor for some automated events."""
+        issue = {"comments": {"nodes": [{"user": None}]},
+                 "history": {"nodes": [{"actor": None}]}}
+        self.assertFalse(linear_update._touched_by_human(issue))
+
+
 if __name__ == "__main__":
     unittest.main()
