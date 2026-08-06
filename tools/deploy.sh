@@ -80,6 +80,7 @@ chmod +x /opt/dale/autonomous/dale-runner.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/weekly-pester.py 2>/dev/null
 chmod +x /opt/dale/autonomous/check-weekly-update.py 2>/dev/null
 chmod +x /opt/dale/autonomous/treesmith_analytics.py 2>/dev/null
+chmod +x /opt/dale/autonomous/merge-nursery-inbound.sh 2>/dev/null
 
 # Publish the nursery relationship register to the data dir so the /admin page
 # can render it (DAL-80). The repo copy stays the source of truth: git history is

@@ -36,6 +36,15 @@ treestock.com.au, www.treestock.com.au {
         reverse_proxy localhost:8099
     }
 
+    # Resend `email.received` webhook for the nursery contact log (DAL-273).
+    # Deliberately NOT behind Cloudflare Access: Resend has to reach it
+    # unauthenticated. It is protected instead by the Svix HMAC signature, which
+    # subscribe_server verifies against the whole raw body before parsing it.
+    handle /api/resend-inbound {
+        uri strip_prefix /api
+        reverse_proxy localhost:8099
+    }
+
     # Read-only subscriber admin view. Gate with Cloudflare Access (Zero Trust)
     # at the edge; subscribe_server.py also validates the CF Access JWT so a
     # direct-to-origin request can't bypass it.

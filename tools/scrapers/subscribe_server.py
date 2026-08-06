@@ -31,6 +31,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, parse_qsl, quote, urlparse
 
 import admin_view
+import nursery_inbound
 
 from stocklib.mailer import (SUBSCRIBERS_FILE, get_unsubscribe_secret,
                              make_unsubscribe_token, load_subscribers)
@@ -394,8 +395,61 @@ class SubscribeHandler(BaseHTTPRequestHandler):
 
         self.send_error(404)
 
+    def _handle_resend_inbound(self):
+        """Resend `email.received` webhook -> nursery touch log (DAL-273).
+
+        Reads raw bytes rather than reusing the decoded body below, because the
+        Svix signature covers the exact bytes received. Decoding and re-encoding
+        round-trips for valid UTF-8, but a mismatch here means silently
+        rejecting real mail, which is not a risk worth taking to share a line.
+        """
+        length = int(self.headers.get("Content-Length", 0) or 0)
+        if length > 1_000_000:          # a metadata-only payload is ~1KB
+            self.send_json(413, {"error": "payload too large"})
+            return
+        raw = self.rfile.read(length)
+
+        headers = {
+            "svix-id": self.headers.get("svix-id"),
+            "svix-timestamp": self.headers.get("svix-timestamp"),
+            "svix-signature": self.headers.get("svix-signature"),
+        }
+
+        try:
+            result = nursery_inbound.handle(
+                raw, headers,
+                register_path=str(admin_view.NURSERY_CONTACTS_FILE))
+        except nursery_inbound.InboundError as e:
+            # Two distinct outcomes, deliberately different codes. A bad
+            # signature is 401 and Resend keeps retrying, which is what we want
+            # if we have merely misconfigured the secret. Anything else is a
+            # message we will never want (not addressed to us, no nursery
+            # matched), so 202 tells Resend to stop retrying it forever.
+            reason = str(e)
+            unauthorised = ("signature" in reason or "svix" in reason
+                            or "secret" in reason or "timestamp" in reason)
+            print(f"resend-inbound rejected: {reason}", file=sys.stderr)
+            if unauthorised:
+                self.send_json(401, {"error": "unauthorized"})
+            else:
+                self.send_json(202, {"status": "ignored"})
+            return
+        except Exception as e:  # noqa: BLE001 - never 500 a webhook into a retry storm
+            print(f"resend-inbound error: {e}", file=sys.stderr)
+            self.send_json(500, {"error": "internal"})
+            return
+
+        print(f"resend-inbound: {result}")
+        self.send_json(200, {"status": result})
+
     def do_POST(self):
         path = self.path.split("?")[0]
+
+        # Handled before the allowlist below because it needs the raw body.
+        if path in ("/resend-inbound", "/api/resend-inbound"):
+            self._handle_resend_inbound()
+            return
+
         if path not in (
             "/subscribe", "/api/subscribe",
             "/watch-variety", "/api/watch-variety",

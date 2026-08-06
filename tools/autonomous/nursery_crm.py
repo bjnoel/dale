@@ -180,17 +180,107 @@ def cmd_log(reg, args):
     }
     if args.evidence:
         touch["evidence"] = args.evidence
-    n.setdefault("touches", []).append(touch)
-    n["touches"].sort(key=lambda t: t["date"])
-    if args.direction == "in" and n["status"] == "contacted":
-        n["status"] = "warm"
-    elif args.direction == "out" and n["status"] == "not_contacted":
-        n["status"] = "contacted"
+    if not apply_touch(n, touch):
+        print(f"{n['name']} already has a touch with evidence "
+              f"{touch['evidence']}. Nothing to do.")
+        return 0
     if args.clear_action:
         n["open_action"] = None
     save_register(reg)
     print(f"Logged {args.direction} touch for {n['name']} on {args.date}. "
           f"Status now {n['status']}.")
+    return 0
+
+
+INBOUND_LOG = "/opt/dale/data/nursery-inbound.jsonl"
+
+
+def apply_touch(n, touch):
+    """Append a touch to a nursery and advance its status. Shared by `log` and
+    `merge-inbound` so a hand-logged touch and a BCC'd one behave identically.
+
+    Returns False when this evidence id is already on the nursery, which is what
+    makes the merge idempotent: Resend retries webhooks, and the merge may run
+    before a previous run's commit has landed.
+    """
+    evidence = touch.get("evidence")
+    if evidence and any(t.get("evidence") == evidence
+                        for t in n.get("touches", [])):
+        return False
+
+    n.setdefault("touches", []).append(touch)
+    n["touches"].sort(key=lambda t: t["date"])
+    if touch["direction"] == "in" and n["status"] == "contacted":
+        n["status"] = "warm"
+    elif touch["direction"] == "out" and n["status"] == "not_contacted":
+        n["status"] = "contacted"
+    return True
+
+
+def cmd_merge_inbound(reg, args):
+    """Fold BCC'd touches from the inbound log into the register (DAL-273).
+
+    The webhook cannot write the register itself: `deploy.sh` copies the repo
+    copy over `/opt/dale/data/nursery-contacts.json` on every deploy, and
+    dale-runner deploys hourly, so anything written there is gone within the
+    hour. The webhook appends to a JSONL nothing overwrites; this folds it into
+    the repo copy, where git history stays the audit log.
+    """
+    path = args.log or INBOUND_LOG
+    try:
+        with open(path) as f:
+            lines = [ln for ln in (l.strip() for l in f) if ln]
+    except OSError:
+        print(f"No inbound log at {path}, nothing to merge.")
+        return 0
+
+    records, malformed = [], 0
+    for ln in lines:
+        try:
+            records.append(json.loads(ln))
+        except json.JSONDecodeError:
+            malformed += 1
+
+    merged, skipped, unknown = 0, 0, []
+    for rec in records:
+        if rec.get("merged"):
+            continue
+        try:
+            n = find(reg, rec["nursery"])
+        except KeyError:
+            # The register lost a nursery between logging and merging. Leave the
+            # record unmerged rather than dropping it silently.
+            unknown.append(rec.get("nursery"))
+            continue
+        touch = {k: rec[k] for k in ("date", "direction", "channel", "by",
+                                     "summary") if k in rec}
+        if rec.get("evidence"):
+            touch["evidence"] = rec["evidence"]
+        if apply_touch(n, touch):
+            merged += 1
+        else:
+            skipped += 1
+        rec["merged"] = True
+
+    if args.dry_run:
+        print(f"(dry run) would merge {merged}, skip {skipped} already present")
+        if unknown:
+            print(f"  unknown nursery keys, left unmerged: {sorted(set(unknown))}")
+        return 0
+
+    if merged:
+        save_register(reg)
+    # Rewrite the log with merged flags set, so a re-run is a no-op even if the
+    # register write is later reverted in git.
+    with open(path, "w") as f:
+        for rec in records:
+            f.write(json.dumps(rec, sort_keys=True) + "\n")
+
+    print(f"Merged {merged} touch(es), {skipped} already present.")
+    if malformed:
+        print(f"  warning: {malformed} malformed line(s) skipped")
+    if unknown:
+        print(f"  warning: unknown nursery keys left unmerged: {sorted(set(unknown))}")
     return 0
 
 
@@ -293,6 +383,13 @@ def main(argv=None):
                    choices=["benedict", "dale"])
     p.add_argument("--clear-action", action="store_true")
     p.set_defaults(fn=cmd_set)
+
+    p = sub.add_parser("merge-inbound",
+                       help="fold BCC'd touches from the Resend inbound log "
+                            "into the register (DAL-273)")
+    p.add_argument("--log", help=f"inbound JSONL (default {INBOUND_LOG})")
+    p.add_argument("--dry-run", action="store_true")
+    p.set_defaults(fn=cmd_merge_inbound)
 
     p = sub.add_parser("validate")
     p.set_defaults(fn=cmd_validate)

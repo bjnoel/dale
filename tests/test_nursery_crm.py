@@ -207,5 +207,139 @@ class TestReferralJoin(unittest.TestCase):
         self.assertEqual("event:props:url", seen["property"])
 
 
+class TestApplyTouch(unittest.TestCase):
+    """Shared by `log` and `merge-inbound`, so a hand-logged touch and a BCC'd
+    one must behave identically."""
+
+    def _n(self, status="not_contacted", touches=None):
+        return {"key": "k", "name": "N", "status": status,
+                "touches": list(touches or [])}
+
+    def test_outbound_advances_not_contacted_to_contacted(self):
+        n = self._n("not_contacted")
+        crm.apply_touch(n, {"date": "2026-08-06", "direction": "out",
+                            "channel": "email", "by": "benedict", "summary": "s"})
+        self.assertEqual(n["status"], "contacted")
+
+    def test_inbound_advances_contacted_to_warm(self):
+        n = self._n("contacted")
+        crm.apply_touch(n, {"date": "2026-08-06", "direction": "in",
+                            "channel": "email", "by": "k", "summary": "s"})
+        self.assertEqual(n["status"], "warm")
+
+    def test_warm_is_not_downgraded(self):
+        n = self._n("warm")
+        crm.apply_touch(n, {"date": "2026-08-06", "direction": "out",
+                            "channel": "email", "by": "benedict", "summary": "s"})
+        self.assertEqual(n["status"], "warm")
+
+    def test_touches_stay_sorted_by_date(self):
+        n = self._n(touches=[{"date": "2026-08-01", "direction": "out",
+                              "summary": "old"}])
+        crm.apply_touch(n, {"date": "2026-07-01", "direction": "out",
+                            "channel": "email", "by": "b", "summary": "older"})
+        self.assertEqual([t["date"] for t in n["touches"]],
+                         ["2026-07-01", "2026-08-01"])
+
+    def test_duplicate_evidence_is_refused(self):
+        n = self._n(touches=[{"date": "2026-08-01", "direction": "out",
+                              "summary": "x", "evidence": "resend:e_1"}])
+        added = crm.apply_touch(n, {"date": "2026-08-06", "direction": "out",
+                                    "channel": "email", "by": "b",
+                                    "summary": "y", "evidence": "resend:e_1"})
+        self.assertFalse(added)
+        self.assertEqual(len(n["touches"]), 1)
+
+    def test_touch_without_evidence_is_always_added(self):
+        n = self._n(touches=[{"date": "2026-08-01", "direction": "out",
+                              "summary": "x"}])
+        self.assertTrue(crm.apply_touch(n, {
+            "date": "2026-08-06", "direction": "out", "channel": "email",
+            "by": "b", "summary": "y"}))
+
+
+class TestMergeInbound(unittest.TestCase):
+    """Folds the webhook's JSONL into the repo register. The webhook cannot
+    write the register itself: deploy.sh copies the repo copy over the data-dir
+    copy every hourly deploy, so anything written there is gone within the hour.
+    """
+
+    def setUp(self):
+        import tempfile
+        from pathlib import Path
+        self.tmp = Path(tempfile.mkdtemp())
+        self.log = self.tmp / "inbound.jsonl"
+        self.reg = {"nurseries": [
+            {"key": "daleys", "name": "Daleys", "domain": "d.com.au",
+             "status": "not_contacted", "touches": []}]}
+        self.saved = []
+        self._orig_save = crm.save_register
+        crm.save_register = lambda r, path=None: self.saved.append(copy.deepcopy(r))
+
+    def tearDown(self):
+        crm.save_register = self._orig_save
+
+    def _args(self, dry_run=False):
+        class A:
+            pass
+        a = A()
+        a.log = str(self.log)
+        a.dry_run = dry_run
+        return a
+
+    def _write(self, *records):
+        self.log.write_text("".join(json.dumps(r) + "\n" for r in records))
+
+    def _record(self, evidence="resend:e_1", nursery="daleys", merged=False):
+        return {"nursery": nursery, "date": "2026-08-06", "direction": "out",
+                "channel": "email", "by": "benedict", "summary": "Scion wood",
+                "evidence": evidence, "merged": merged}
+
+    def test_merges_an_unmerged_record(self):
+        self._write(self._record())
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(len(self.reg["nurseries"][0]["touches"]), 1)
+        self.assertEqual(self.reg["nurseries"][0]["status"], "contacted")
+
+    def test_already_merged_records_are_skipped(self):
+        self._write(self._record(merged=True))
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(self.reg["nurseries"][0]["touches"], [])
+
+    def test_log_is_marked_merged_so_a_rerun_is_a_noop(self):
+        self._write(self._record())
+        crm.cmd_merge_inbound(self.reg, self._args())
+        on_disk = [json.loads(l) for l in self.log.read_text().splitlines() if l]
+        self.assertTrue(all(r["merged"] for r in on_disk))
+
+    def test_rerun_adds_nothing(self):
+        self._write(self._record())
+        crm.cmd_merge_inbound(self.reg, self._args())
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(len(self.reg["nurseries"][0]["touches"]), 1)
+
+    def test_dry_run_changes_nothing_on_disk(self):
+        self._write(self._record())
+        crm.cmd_merge_inbound(self.reg, self._args(dry_run=True))
+        on_disk = [json.loads(l) for l in self.log.read_text().splitlines() if l]
+        self.assertFalse(on_disk[0]["merged"])
+        self.assertEqual(self.saved, [])
+
+    def test_unknown_nursery_key_is_left_unmerged_not_dropped(self):
+        self._write(self._record(nursery="vanished"))
+        crm.cmd_merge_inbound(self.reg, self._args())
+        on_disk = [json.loads(l) for l in self.log.read_text().splitlines() if l]
+        self.assertFalse(on_disk[0]["merged"])
+
+    def test_malformed_lines_do_not_stop_the_merge(self):
+        self.log.write_text("{not json\n" + json.dumps(self._record()) + "\n")
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(len(self.reg["nurseries"][0]["touches"]), 1)
+
+    def test_missing_log_is_not_an_error(self):
+        self.assertEqual(
+            crm.cmd_merge_inbound(self.reg, self._args()), 0)
+
+
 if __name__ == "__main__":
     unittest.main()
