@@ -352,10 +352,76 @@ def get_waiting_on_benedict(team_id):
             "state": (n.get("state") or {}).get("name", ""),
             "days": days,
             "assigned": assigned,
+            "source": "linear",
         })
 
-    waiting.sort(key=lambda w: (w["days"] is None, -(w["days"] or 0)))
-    return waiting
+    return sort_by_age(waiting)
+
+
+def sort_by_age(rows):
+    """Oldest first, undated last."""
+    return sorted(rows, key=lambda w: (w["days"] is None, -(w["days"] or 0)))
+
+
+# Action notes in the register are prose, not titles, and run long. Trim for the
+# list; the full text stays on the nursery section of /admin.
+NURSERY_ACTION_MAXLEN = 90
+
+
+def get_nursery_actions(data_dir, today=None):
+    """Open nursery-register actions that are Benedict's move.
+
+    "What is blocked on me" is one question, not two. The oldest answer to it is
+    not in Linear at all: Fruit Tree Lane has owed a reply since 2026-03-28,
+    older than any ticket on the board.
+
+    Deliberately a direct field read rather than a call into
+    `admin_view.build_nursery_model`. That function does CRM sorting and status
+    aggregation this does not need, and the two modules deploy to different
+    trees (/opt/dale/autonomous/ vs /opt/dale/scrapers/). `open_action` is a
+    plain field, so nothing is being forked.
+
+    Dale-owned actions are excluded: they are Dale's work, not Benedict's.
+    """
+    today = today or datetime.now(timezone.utc).date()
+    path = os.path.join(data_dir, "nursery-contacts.json")
+    try:
+        with open(path) as f:
+            register = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError, OSError) as e:
+        log(f"Warning: nursery register unreadable, no nursery actions: {e}")
+        return []
+
+    rows = []
+    for n in register.get("nurseries") or []:
+        action = n.get("open_action") or {}
+        what = (action.get("what") or "").strip()
+        if not what:
+            continue
+        if (action.get("owner") or "").strip().lower() != "benedict":
+            continue
+
+        days = None
+        since = str(action.get("since") or "")[:10]
+        if since:
+            try:
+                days = (today - datetime.strptime(since, "%Y-%m-%d").date()).days
+            except ValueError:
+                days = None
+
+        if len(what) > NURSERY_ACTION_MAXLEN:
+            what = what[:NURSERY_ACTION_MAXLEN].rstrip() + "..."
+
+        rows.append({
+            "id": n.get("name") or n.get("key", ""),
+            "title": what,
+            "state": n.get("status", ""),
+            "days": days,
+            "assigned": True,
+            "source": "nursery",
+        })
+
+    return sort_by_age(rows)
 
 
 def run_outcome_loop(dry_run=False):
@@ -536,10 +602,13 @@ def _waiting_html(waiting):
         days = w["days"] or 0
         colour = "#b91c1c" if days >= STALE_DAYS else "#6b7280"
         weight = "700" if days >= STALE_DAYS else "400"
+        tag = ""
+        if w.get("source") == "nursery":
+            tag = " <span style='color:#9ca3af;font-size:0.85em'>[nursery]</span>"
         parts.append(
             f"<li><span style='color:{colour};font-weight:{weight}'>"
             f"{_age_label(w['days'])}</span> &mdash; <strong>{w['id']}</strong>: "
-            f"{w['title']} <span style='color:#9ca3af'>[{w['state']}]</span></li>"
+            f"{w['title']} <span style='color:#9ca3af'>[{w['state']}]</span>{tag}</li>"
         )
     parts.append("</ul>")
     return "\n".join(parts)
@@ -747,8 +816,10 @@ def build_digest_text(completed, created, in_progress, session_stats,
         lines.append(f"  {len(waiting)} ticket(s), {stale} over {STALE_DAYS} days old.")
         for w in waiting:
             flag = " (!)" if (w["days"] or 0) >= STALE_DAYS else ""
+            tag = " [nursery]" if w.get("source") == "nursery" else ""
             lines.append(
-                f"  {_age_label(w['days']):>5}{flag} {w['id']}: {w['title']} [{w['state']}]")
+                f"  {_age_label(w['days']):>5}{flag} {w['id']}: {w['title']} "
+                f"[{w['state']}]{tag}")
     else:
         lines.append("  Nothing is blocked on you.")
     lines.append("")
@@ -862,6 +933,15 @@ def main():
     else:
         log("Warning: could not find Linear team")
         completed, created, in_progress = [], [], []
+
+    # The nursery register holds open actions too, and the oldest thing blocked
+    # on Benedict lives there rather than in Linear. Merge before anything
+    # renders so the email and /admin show the same one list.
+    nursery_actions = get_nursery_actions(
+        config.get("paths", {}).get("data", "/opt/dale/data"))
+    if nursery_actions:
+        log(f"Waiting on Benedict: +{len(nursery_actions)} nursery action(s)")
+    waiting = sort_by_age(waiting + nursery_actions)
 
     # 1b. Outcome loop. Run inline rather than as its own cron entry: the
     # baseline must be stamped before the digest reports it, and "before" is a

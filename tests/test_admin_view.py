@@ -9,7 +9,7 @@ import json
 import sys
 import tempfile
 import unittest
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -387,6 +387,88 @@ class NurseryRegisterTests(unittest.TestCase):
             (Path(tmp) / "nursery-contacts.json").write_text(json.dumps(REGISTER))
             model = admin_view.load_nursery_data(Path(tmp))
             self.assertEqual(model["totals"]["nurseries"], 3)
+
+
+class TestNurserySectionTrim(unittest.TestCase):
+    """The register used to render all 27 nurseries as two rows each, 55 rows at
+    the top of /admin, when only 7 had an open action and 22 had never been
+    contacted at all. Only the actionable ones stay visible now."""
+
+    def _html(self):
+        model = admin_view.build_nursery_model(REGISTER, date(2026, 8, 6))
+        return admin_view._nursery_section(model)
+
+    def _visible(self):
+        """Everything before the collapsed block, i.e. what renders unexpanded."""
+        return self._html().split("<details><summary>2 more")[0]
+
+    def test_open_action_row_is_visible(self):
+        self.assertIn("Daleys", self._visible())
+
+    def test_quiet_nurseries_are_collapsed(self):
+        visible = self._visible()
+        self.assertNotIn("Ladybird", visible)
+        self.assertNotIn("Yalca", visible)
+        # ...but still present on the page, just behind the expander.
+        self.assertIn("Ladybird", self._html())
+        self.assertIn("Yalca", self._html())
+
+    def test_collapsed_summary_counts_the_remainder(self):
+        self.assertIn("2 more nurseries, nothing outstanding", self._html())
+
+    def test_no_empty_history_expander(self):
+        """Ladybird has no touches and no notes, so it gets no expander at all.
+        Every never-contacted nursery used to render 'History (0)'."""
+        self.assertNotIn("History (0)", self._html())
+
+    def test_notes_only_nursery_is_labelled_notes_not_history(self):
+        register = {"updated": "2026-08-03", "nurseries": [
+            {"key": "n", "name": "NotesOnly", "status": "not_contacted",
+             "touches": [], "notes": "Ships nationally."}]}
+        html = admin_view._nursery_section(
+            admin_view.build_nursery_model(register, date(2026, 8, 6)))
+        self.assertIn("Notes", html)
+        self.assertIn("Ships nationally.", html)
+        self.assertNotIn("History (0)", html)
+
+    def test_history_still_rendered_where_it_exists(self):
+        html = self._html()
+        self.assertIn("History (2)", html)   # Daleys
+        self.assertIn("History (1)", html)   # Yalca
+        self.assertIn("Touch 1 goodwill intro", html)
+
+    def test_headline_counts_still_cover_everything(self):
+        html = self._html()
+        self.assertIn("3 nurseries", html)
+        self.assertIn("1 open actions", html)
+
+    def test_all_nurseries_actionable_means_no_collapsed_block(self):
+        register = {"updated": "x", "nurseries": [
+            {"key": "a", "name": "A", "status": "warm", "touches": [],
+             "open_action": {"owner": "benedict", "what": "do", "since": "2026-01-01"}}]}
+        html = admin_view._nursery_section(
+            admin_view.build_nursery_model(register, date(2026, 8, 6)))
+        self.assertNotIn("nothing outstanding", html)
+
+    def test_no_open_actions_says_so(self):
+        register = {"updated": "x", "nurseries": [
+            {"key": "a", "name": "A", "status": "not_contacted", "touches": []}]}
+        html = admin_view._nursery_section(
+            admin_view.build_nursery_model(register, date(2026, 8, 6)))
+        self.assertIn("No open actions", html)
+        self.assertIn("1 more nursery, nothing outstanding", html)
+
+
+class TestSectionOrder(unittest.TestCase):
+    def test_business_state_precedes_the_nursery_register(self):
+        """The complaint that started this: nursery info owned the top of the
+        page. Actionable state has to come first."""
+        model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
+        model["nurseries"] = admin_view.build_nursery_model(REGISTER, date(2026, 8, 6))
+        model["business"] = SNAPSHOT
+        html = admin_view.render_admin_html(model)
+        self.assertLess(html.index("Business state"), html.index("Nursery relationships"))
+        self.assertLess(html.index("Subscribers"), html.index("Nursery relationships"))
 
 
 SNAPSHOT = {

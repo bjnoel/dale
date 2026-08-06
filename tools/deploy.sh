@@ -20,12 +20,43 @@ if [ ! -d "$REPO_TOOLS" ]; then
     exit 1
 fi
 
+# Checksum the modules subscribe-server holds in memory, so we can tell whether
+# this deploy actually needs a restart. Python imports at process start, so a
+# changed admin_view.py or stocklib module sits on disk doing nothing until the
+# service is bounced -- which is how the DEC-263 /admin work deployed "successfully"
+# on 2026-08-06 and never appeared on the page (the process had been up since
+# 2026-08-03). DAL-263.
+server_modules_sum() {
+    cat /opt/dale/scrapers/subscribe_server.py \
+        /opt/dale/scrapers/admin_view.py \
+        /opt/dale/scrapers/stocklib/*.py 2>/dev/null | md5sum | cut -d' ' -f1
+}
+SERVER_SUM_BEFORE=$(server_modules_sum)
+
 # Sync scrapers (exclude data, logs, __pycache__)
 rsync -a --delete \
     --exclude='__pycache__/' \
     --exclude='*.pyc' \
     "$REPO_TOOLS/scrapers/" /opt/dale/scrapers/
 log "Synced scrapers"
+
+# Restart only when one of those modules actually changed. Gating on the
+# checksum rather than on "did we deploy" matters because dale-runner.sh runs
+# deploy.sh every hour; gating on the latter would bounce the service 24 times a
+# day and drop whatever subscribe request was in flight each time.
+SERVER_SUM_AFTER=$(server_modules_sum)
+if [ "$SERVER_SUM_BEFORE" != "$SERVER_SUM_AFTER" ]; then
+    if sudo -n systemctl restart subscribe-server 2>>"$LOG"; then
+        log "subscribe-server modules changed: restarted subscribe-server"
+    else
+        # Non-fatal, but it must be loud: the symptom otherwise is a deploy that
+        # reports success while the live page keeps serving the old code.
+        log "WARNING: subscribe-server modules changed but restart FAILED. /admin and the subscribe routes are still running old code."
+        echo "WARNING: subscribe-server restart failed after deploy; live code is stale." >&2
+    fi
+else
+    log "subscribe-server modules unchanged: no restart"
+fi
 
 # Sync autonomous scripts (exclude logs, approvals, __pycache__, STOP file)
 rsync -a \

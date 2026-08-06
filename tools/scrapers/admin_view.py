@@ -708,8 +708,48 @@ def _nursery_section(model) -> str:
 
     t = model["totals"]
     status_line = ", ".join(f"{_esc(s)} {n}" for s, n in model["by_status"])
+
+    # Split, don't sort: build_nursery_model already orders open-action-first,
+    # so partitioning preserves its ordering. Of 27 nurseries, 22 have never
+    # been contacted and have no touches, and rendering all of them as full
+    # rows is what made this section 55 rows and the top of the page.
+    actionable = [r for r in model["rows"] if r["open_what"]]
+    rest = [r for r in model["rows"] if not r["open_what"]]
+
+    head = (
+        '<table><thead><tr>'
+        '<th>Nursery</th><th>Status</th><th>Last touch</th><th>Next action</th>'
+        '</tr></thead><tbody>'
+    )
+    tables = _nursery_table(actionable, head) if actionable else (
+        '<p class="muted">No open actions.</p>')
+    if rest:
+        tables += (
+            f'<details><summary>{len(rest)} more '
+            f'{"nursery" if len(rest) == 1 else "nurseries"}, nothing outstanding'
+            f'</summary>{_nursery_table(rest, head)}</details>'
+        )
+
+    return (
+        '<section><h2>Nursery relationships</h2>'
+        f'<p class="muted">{t["nurseries"]} nurseries · '
+        f'<strong>{t["open_actions"]} open actions</strong> · '
+        f'{t["never_contacted"]} never contacted · {status_line}. '
+        f'Register updated {_esc(model["updated"])}. '
+        'Open actions are also listed at the top of this page, alongside the '
+        'Linear tickets waiting on you. '
+        'Referral click counts are deliberately not shown here: they are read live '
+        'from Plausible by <code>nursery_crm.py report</code> so they cannot go stale '
+        'on a cached page.</p>'
+        + tables + '</section>'
+    )
+
+
+def _nursery_table(rows, head: str) -> str:
+    """One nursery table body. Split out so the open-action rows and the
+    collapsed remainder render identically."""
     body = []
-    for r in model["rows"]:
+    for r in rows:
         since = f' <span class="muted">({r["days_since"]}d ago)</span>' if r["days_since"] is not None else ""
         last = f'{_esc(r["last_touch"])}{since}' if r["last_touch"] else '<span class="muted">never</span>'
         if r["open_what"]:
@@ -731,27 +771,22 @@ def _nursery_section(model) -> str:
             f"<td>{last}</td>"
             f"<td>{action}</td>"
             "</tr>"
-            "<tr class='histrow'><td colspan='4'>"
-            f"<details><summary>History ({len(r['touches'])})</summary>"
-            f"{_touch_history(r['touches'])}"
-            + (f"<p class='muted small'>{_esc(r['notes'])}</p>" if r["notes"] else "")
-            + "</details></td></tr>"
         )
+        # Only emit the expander when there is something behind it, and label it
+        # for what is actually there. It used to render for every nursery, so
+        # the 22 never-contacted ones each got an empty "History (0)" row, and
+        # the 14 of those carrying only a note said "History (0)" over a note.
+        if r["touches"] or r["notes"]:
+            label = f"History ({len(r['touches'])})" if r["touches"] else "Notes"
+            body.append(
+                "<tr class='histrow'><td colspan='4'>"
+                f"<details><summary>{label}</summary>"
+                f"{_touch_history(r['touches']) if r['touches'] else ''}"
+                + (f"<p class='muted small'>{_esc(r['notes'])}</p>" if r["notes"] else "")
+                + "</details></td></tr>"
+            )
 
-    return (
-        '<section><h2>Nursery relationships</h2>'
-        f'<p class="muted">{t["nurseries"]} nurseries · '
-        f'<strong>{t["open_actions"]} open actions</strong> · '
-        f'{t["never_contacted"]} never contacted · {status_line}. '
-        f'Register updated {_esc(model["updated"])}. '
-        'Sorted by oldest open action first, then never-contacted. '
-        'Referral click counts are deliberately not shown here: they are read live '
-        'from Plausible by <code>nursery_crm.py report</code> so they cannot go stale '
-        'on a cached page.</p>'
-        '<table><thead><tr>'
-        '<th>Nursery</th><th>Status</th><th>Last touch</th><th>Next action</th>'
-        '</tr></thead><tbody>' + "".join(body) + '</tbody></table></section>'
-    )
+    return head + "".join(body) + "</tbody></table>"
 
 
 def _pending_table(rows) -> str:
@@ -792,7 +827,10 @@ def _waiting_table(waiting) -> str:
         # ignored by every browser, which would have silently dropped the
         # over-30-days highlight that is the whole point of the column.
         cls = "num action" if stale else "num"
-        who = "assigned" if w.get("assigned") else "asked in ticket"
+        if w.get("source") == "nursery":
+            who = "nursery register"
+        else:
+            who = "assigned" if w.get("assigned") else "asked in ticket"
         rows.append(
             "<tr>"
             f"<td class='{cls}'><strong>{_esc(days if days is not None else '—')}</strong></td>"
@@ -803,8 +841,8 @@ def _waiting_table(waiting) -> str:
             "</tr>"
         )
     return (
-        '<table><thead><tr><th class="num">Days</th><th>Ticket</th><th>Title</th>'
-        '<th>State</th><th>Why</th></tr></thead>'
+        '<table><thead><tr><th class="num">Days</th><th>Item</th><th>What</th>'
+        '<th>State</th><th>Source</th></tr></thead>'
         f'<tbody>{"".join(rows)}</tbody></table>'
     )
 
@@ -910,12 +948,13 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
     if generated_at is None:
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
 
+    # Ordered needs-doing, then audience, then reference. The nursery register
+    # used to sit third and render 55 rows, which put a CRM table where the
+    # answer to "what needs me" should be; its open actions are now surfaced in
+    # the business block instead, so the register itself is reference detail.
     parts = [
-        # Business state leads: it is the only section that says what needs
-        # doing rather than what already exists.
-        _business_section(model.get("business")),
         _cards(model["totals"]),
-        _nursery_section(model.get("nurseries")),
+        _business_section(model.get("business")),
         '<div class="grid3">',
         _count_table("By state", model["by_state"]),
         _count_table("By frequency", model["by_frequency"]),
@@ -926,6 +965,7 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
         _watch_only_table(model["watch_only"]),
         _pending_table(model["pending"]),
         _top_varieties_table(model["top_varieties"][:25]),
+        _nursery_section(model.get("nurseries")),
         _health_section(model.get("health")),
         _needs_review_section(model.get("needs_review")),
     ]
