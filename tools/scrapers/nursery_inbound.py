@@ -49,7 +49,14 @@ RECEIVING_DOMAIN = "veliamsal.resend.app"
 # Benedict actually wrote to appears nowhere in the payload: the first real BCC
 # was rejected as "no nursery matched" with to/cc holding only our own inbound
 # address. The real To and Cc live on the full message, which has to be fetched.
-RECEIVED_API = "https://api.resend.com/emails/receive/{email_id}"
+# The path is /emails/inbound/{id}. It was first written as /emails/receive/{id},
+# guessed from a 422 that said "the `id` must be a valid UUID", which turned out
+# to be that error for any unknown path under /emails. That guess 404'd silently
+# and the fallback reported an empty header list, which looks identical to "the
+# header was not there". Confirmed against the live account: GET /emails/inbound
+# lists received messages, and GET /emails/inbound/{id} returns one with a full
+# `headers` dict including `to`.
+RECEIVED_API = "https://api.resend.com/emails/inbound/{email_id}"
 RECEIVED_FETCH_TIMEOUT_S = 10
 
 
@@ -278,12 +285,20 @@ def build_record(payload, register, receiving_domain=RECEIVING_DOMAIN,
     # error: the webhook's recipients are the envelope, so they are our own
     # inbound address and the nursery is only on the real To/Cc header. Fetch
     # the full message and try again before giving up.
-    fetched = []
+    fetched, fetch_state = [], "not attempted"
     if not key:
         fetch = fetch or fetch_received
-        message = fetch(data.get("email_id"), api_key or load_api_key())
-        if message:
+        # The webhook calls it email_id, the REST API calls the same value id.
+        message = fetch(data.get("email_id") or data.get("id"),
+                        api_key or load_api_key())
+        if message is None:
+            # A 404, a bad key or an outage. Distinguished from "fetched fine but
+            # the header was absent" because those two need opposite fixes and
+            # reporting both as an empty list cost a round trip once already.
+            fetch_state = "fetch failed"
+        else:
             fetched = _header_addresses(message)
+            fetch_state = f"fetched to/cc={fetched}"
             for addr in fetched:
                 key = match_nursery(addr, register)
                 if key:
@@ -293,7 +308,7 @@ def build_record(payload, register, receiving_domain=RECEIVING_DOMAIN,
     if not key:
         raise InboundError(
             f"no nursery matched (from={sender}, to/cc={recipients}, "
-            f"fetched to/cc={fetched})")
+            f"{fetch_state})")
 
     day = str(data.get("created_at") or "")[:10]
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):

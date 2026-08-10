@@ -275,6 +275,64 @@ class TestBccFallsBackToTheFullMessage(unittest.TestCase):
         self.assertIsNone(ni.fetch_received(None, "re_test"))
         self.assertIsNone(ni.fetch_received("e_1", None))
 
+    def test_endpoint_is_the_inbound_path(self):
+        """First written as /emails/receive/{id}, guessed from a 422 that turns
+        out to be the response for any unknown path under /emails. It 404'd and
+        the fallback silently reported an empty header list. Confirmed live:
+        /emails/inbound/{id} is the one that returns headers."""
+        self.assertIn("/emails/inbound/", ni.RECEIVED_API)
+        self.assertNotIn("/emails/receive/", ni.RECEIVED_API)
+
+    def test_id_key_falls_back_when_the_payload_says_id(self):
+        """Webhook says email_id, REST says id. Accept either."""
+        seen = {}
+
+        def fake_fetch(email_id, api_key, **kw):
+            seen["id"] = email_id
+            return {"headers": {"to": "orders@daleysfruit.com.au"}}
+
+        p = self._bcc_payload()
+        del p["data"]["email_id"]
+        p["data"]["id"] = "117accac"
+        rec = ni.build_record(p, REGISTER, fetch=fake_fetch, api_key="re_test")
+        self.assertEqual(rec["nursery"], "daleys")
+        self.assertEqual(seen["id"], "117accac")
+
+    def test_failed_fetch_is_reported_differently_from_an_absent_header(self):
+        """These need opposite fixes, and reporting both as [] cost a round trip."""
+        with self.assertRaises(ni.InboundError) as failed:
+            ni.build_record(self._bcc_payload(), REGISTER,
+                            fetch=lambda *a, **k: None, api_key="re_test")
+        self.assertIn("fetch failed", str(failed.exception))
+
+        with self.assertRaises(ni.InboundError) as absent:
+            ni.build_record(self._bcc_payload(), REGISTER,
+                            fetch=lambda *a, **k: {"headers": {}},
+                            api_key="re_test")
+        self.assertIn("fetched to/cc=[]", str(absent.exception))
+
+    def test_real_resend_header_shape_matches(self):
+        """Exact shape returned by GET /emails/inbound/{id} on 2026-08-10 for
+        Benedict's email to Ross Creek: lowercase header keys, display-name form,
+        and to/cc/bcc at the top level all holding only our own inbound address."""
+        message = {
+            "id": "117accac-1465-477d-a01e-f9e13be0ca77",
+            "to": ["nursery@veliamsal.resend.app"], "cc": [], "bcc": [],
+            "received_for": ["nursery@veliamsal.resend.app"],
+            "headers": {
+                "from": '"Benedict Noel" <ben@treestock.com.au>',
+                "to": '"Ross Creek Tropicals" <admin@rosscreektropicals.com.au>',
+                "subject": "Re: Your nursery is on treestock.com.au",
+            },
+        }
+        reg = {"nurseries": [{"key": "ross-creek", "name": "Ross Creek",
+                              "domain": "rosscreektropicals.com.au",
+                              "status": "warm"}]}
+        rec = ni.build_record(self._bcc_payload(), reg,
+                              fetch=lambda *a, **k: message, api_key="re_test")
+        self.assertEqual(rec["nursery"], "ross-creek")
+        self.assertEqual(rec["direction"], "out")
+
     def test_bad_created_at_falls_back_to_today(self):
         from datetime import datetime, timezone
         rec = ni.build_record(payload(created_at="not-a-date"), REGISTER)
