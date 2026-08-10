@@ -522,6 +522,15 @@ class TestPageSplit(unittest.TestCase):
         # Actionable state still leads, now by tab order rather than by scroll.
         self.assertEqual(admin_view.ADMIN_PAGES[0][0], "/admin")
 
+    def test_nursery_blurb_points_at_the_page_that_now_holds_open_actions(self):
+        """The split stranded this sentence: it used to say open actions were
+        "at the top of this page", which stopped being true the moment the
+        business section moved to /admin. Cross-page references have to be
+        links, not directions."""
+        html = admin_view.render_nurseries_html(self.full_model())
+        self.assertNotIn("top of this page", html)
+        self.assertIn('<a href="/admin">Business state</a>', html)
+
     def test_every_tab_has_a_renderer_or_is_the_digest(self):
         # A tab that 404s is worse than no tab. /admin/digest is served by
         # digest_archive, so it is the one legitimate absence here.
