@@ -535,6 +535,132 @@ def cmd_create(args):
     print(f"Backlog: {len(backlog) + 1}/{max_backlog}")
 
 
+MAX_OPEN_QUESTIONS = 5
+
+
+def cmd_ask(args):
+    """Open a question for Benedict as a Linear ticket, not a line in a text file.
+
+    Benedict, 2026-08-10: "Can we convert questions for benedict to tickets
+    instead of me needing to look through a text file?"
+
+    Deliberately NOT cmd_create with different flags:
+
+    * It lands in **Todo assigned to Benedict**, never Backlog, so it does not
+      consume one of the 15 backlog slots. A question is a thing he owes an
+      answer to, not a proposal awaiting triage, and the two queues should not
+      compete for the same cap.
+    * It gets the **Question** label and NOT the Dale label, so linear_poller.py
+      leaves it alone (poller takes Dale-labelled or unassigned). A question Dale
+      picks up and "works" is a question that never got asked.
+    * There is no duplicate guard and no 100-word cap. A question needs enough
+      context to be answerable from a phone, and the decision-card format is for
+      work proposals. Keep it short anyway.
+
+    The cap here is on OPEN QUESTIONS, not the backlog: CLAUDE.md has always said
+    never ask more than 5 at once, and that was previously an instruction with
+    nothing enforcing it. Now it is enforced, for the same reason the backlog cap
+    lives in code rather than in a prompt.
+    """
+    if not args:
+        print("Usage: linear_update.py ask 'Question title' [--description '...'] "
+              "[--research '...'] [--labels 'Track A'] [--priority 2]", file=sys.stderr)
+        sys.exit(1)
+
+    title = args[0]
+    description = research = labels_str = ""
+    priority = 2  # High: a question blocking Dale outranks most proposals.
+
+    i = 1
+    while i < len(args):
+        if args[i] == "--description" and i + 1 < len(args):
+            description, i = args[i + 1], i + 2
+        elif args[i] == "--research" and i + 1 < len(args):
+            research, i = args[i + 1], i + 2
+        elif args[i] == "--labels" and i + 1 < len(args):
+            labels_str, i = args[i + 1], i + 2
+        elif args[i] == "--priority" and i + 1 < len(args):
+            priority, i = int(args[i + 1]), i + 2
+        else:
+            i += 1
+
+    config = load_config()
+    team_name = config.get("linear", {}).get("team", "Dale")
+    team_id = get_team_id(team_name)
+
+    from linear_poller import get_issues_by_state
+    open_questions = []
+    for state_type in ("unstarted", "started"):
+        for issue in get_issues_by_state(team_id, state_type):
+            labels = [l["name"] for l in issue.get("labels", {}).get("nodes", [])] \
+                if isinstance(issue.get("labels"), dict) else issue.get("labels", [])
+            if "Question" in (labels or []):
+                open_questions.append(issue)
+
+    if len(open_questions) >= MAX_OPEN_QUESTIONS:
+        print(
+            f"BLOCKED: {len(open_questions)} questions are already open, the cap is "
+            f"{MAX_OPEN_QUESTIONS}.\n\n"
+            f"CLAUDE.md: never ask more than 5 questions at once. He answers async from a\n"
+            f"phone, so a sixth does not get answered faster, it makes the first five less\n"
+            f"likely to be. Open questions:\n"
+            + "\n".join(f"  {q['identifier']}: {q['title']}" for q in open_questions)
+            + "\n\nAnswer, withdraw or fold one of those in before asking another.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    state_id = get_state_id(team_id, "Todo")
+    benedict_id = get_user_id("Benedict")
+
+    variables = {
+        "teamId": team_id, "title": title, "stateId": state_id,
+        "priority": priority, "assigneeId": benedict_id,
+    }
+    mutation_input = ("teamId: $teamId, title: $title, stateId: $stateId, "
+                      "priority: $priority, assigneeId: $assigneeId")
+    var_types = ("$teamId: String!, $title: String!, $stateId: String!, "
+                 "$priority: Int!, $assigneeId: String!")
+
+    if description:
+        variables["description"] = description
+        mutation_input += ", description: $description"
+        var_types += ", $description: String!"
+
+    label_names = ["Question"] + \
+        ([l.strip() for l in labels_str.split(",")] if labels_str else [])
+    label_ids = get_label_ids(team_id, label_names)
+    if label_ids:
+        variables["labelIds"] = label_ids
+        mutation_input += ", labelIds: $labelIds"
+        var_types += ", $labelIds: [String!]!"
+
+    data = graphql(f"""
+        mutation({var_types}) {{
+            issueCreate(input: {{ {mutation_input} }}) {{
+                issue {{ id identifier title state {{ name }} }}
+            }}
+        }}
+    """, variables)
+
+    issue = data["issueCreate"]["issue"]
+    print(f"Asked {issue['identifier']}: {issue['title']} [{issue['state']['name']}, Benedict]")
+
+    if research:
+        body = research if research.lstrip().startswith("#") else \
+            f"{RESEARCH_COMMENT_HEADER}\n\n{research}"
+        graphql("""
+            mutation($issueId: String!, $body: String!) {
+                commentCreate(input: { issueId: $issueId, body: $body }) {
+                    comment { id }
+                }
+            }
+        """, {"issueId": issue["id"], "body": body})
+        print("Research comment added")
+
+    print(f"Open questions: {len(open_questions) + 1}/{MAX_OPEN_QUESTIONS}")
+
+
 def cmd_archive_stale(args):
     """Archive Done/Cancelled/Duplicate issues older than --days (default 30).
 
@@ -846,6 +972,7 @@ COMMANDS = {
     "comment": cmd_comment,
     "assign": cmd_assign,
     "create": cmd_create,
+    "ask": cmd_ask,
     "label": cmd_label,
     "archive-stale": cmd_archive_stale,
     "expire-stale-backlog": cmd_expire_stale_backlog,

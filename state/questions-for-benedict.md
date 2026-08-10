@@ -1,16 +1,26 @@
-# Questions for Benedict
+# Questions for Benedict — FROZEN ARCHIVE (Q1-Q50)
 
-*Answer inline and mark [ANSWERED]. Dale reads this at the start of each session.
-Keep answers short — a few words is fine. Dale will figure out the rest.*
-
-**Rules:**
-- This file is for async QUESTIONS only (things Benedict needs to answer)
-- Action items and work requests go in Linear tickets, not here
-- Archive answered questions periodically to keep this file short
+> **This file is closed. Do not add to it.**
+>
+> Questions for Benedict are now **Linear tickets labelled `Question`**, created with
+> `linear_update.py ask`. His call, 2026-08-10: *"can we convert questions for benedict
+> to tickets instead of me needing to look through a text file?"* He already triages
+> Linear on his phone, and a second inbox only he had to remember to open was one
+> inbox too many. See the Communication Protocol in `CLAUDE.md`.
+>
+> **Migrated to Linear on 2026-08-10** (the two that were still open):
+> - **Q50** (rename the app) → **DAL-279**
+> - **Q45** (send the STFC reply) → **DAL-280**
+>
+> Everything below is kept for provenance, not for action. Several entries are cited
+> from the decision log and from memory: Q46 carries the Fastmail security correction,
+> Q48 carries the discovery that we had made three sales and keep 64% rather than 85%,
+> and Q49 is the record of the ledger being wrong. Deleting them would break those
+> references.
 
 ---
 
-## Open Questions
+## Closed Questions (archive)
 
 **Q50** [BLOCKING] Rename the app to `TreeSmith: Fruit Tree Tracker`? Yes or no.
 
@@ -48,7 +58,24 @@ are holding that release for fixes to land. Answering now just means it is queue
 
 ---
 
-**Q49** [BLOCKING] The ledger still says we have earned $0. Should I book the three sales?
+**Q49** [ANSWERED 2026-08-10] The ledger still says we have earned $0. Should I book the three sales?
+
+**Answered: yes, book them.** Done the same day. All three RevenueCat-confirmed sales are
+in `financials/ledger.json` as `type: revenue` entries: US$17.40 (2026-06-26, Pakistan),
+US$17.66 (2026-07-06, Australia), US$17.49 (2026-07-23, US). **US$52.55 all time.**
+
+One thing surfaced while booking them. The proceeds are **USD** while the ledger's currency
+is **AUD**, and `ticket_outcomes.read_revenue_monthly` labelled its output with the ledger
+currency regardless. Booking USD amounts would therefore have reported USD figures under an
+AUD label, silently, from the first sale onward: the same class of error as DEC-263's renamed
+event, where the number looks fine and means something else. It now sums per currency and
+**raises rather than invent an FX rate** if revenue is ever booked in two currencies at once.
+No exchange rate has been applied anywhere; reconcile against App Store Connect payment
+reports when they are to hand.
+
+The original text is kept below for the record.
+
+
 
 Building the outcome loop (DEC-263) surfaced this. `revenue_monthly` is one of the five
 metrics tickets can be graded against, and I pointed it at `financials/ledger.json`

@@ -23,9 +23,9 @@ work out, you are expected to say "tell him he's dreaming" and move on.
 2. **Small bets** — Test many possibilities at small scale before committing. Never
    assume a choice is right. Validate with evidence.
 3. **Transparency** — Every decision, its reasoning, and outcome is logged in `public-ledger/`.
-4. **Ask Benedict** — He is your co-founder. Write questions to `state/questions-for-benedict.md`.
-   He answers them async (often from his phone). Keep questions concise and answerable in a
-   few words where possible.
+4. **Ask Benedict** — He is your co-founder. Open questions as Linear tickets with
+   `linear_update.py ask` (see Communication Protocol). He answers them async, often from
+   his phone. Keep questions concise and answerable in a few words where possible.
 5. **Be frugal** — Limited runway. Every dollar spent needs clear expected ROI.
 6. **Mistakes are expected** — Log them, learn from them, move on. The framework is
    designed for iteration, not perfection.
@@ -131,8 +131,9 @@ You cannot persist between sessions. Every time you start:
 cat state/business-state.json       # Metrics dashboard (slim, no work tracking)
 cat decisions/decision-log.md       # Recent decisions (last 5)
 cat financials/ledger.json          # Financial state
-cat state/questions-for-benedict.md # Async questions only (not action items)
 ```
+Open questions for Benedict are **Linear tickets labelled `Question`**, not a file.
+`state/questions-for-benedict.md` is a frozen archive (Q1-Q50) and must not be added to.
 Work tracking lives in **Linear** (Dale team). Check Linear for tickets, not state files.
 `active-sprint.md` is deprecated. Do not recreate it.
 
@@ -149,7 +150,7 @@ After work is done, update all relevant state files:
 - `decisions/decision-log.md` — What you decided and why
 - `financials/ledger.json` — Any financial changes
 - `public-ledger/YYYY-MM-DD.md` — Public-facing log entry
-- `state/questions-for-benedict.md` — Any new questions
+- Any new questions: `linear_update.py ask`, not a state file
 
 ### 5. Commit & Summarise
 **Always git commit at the end of every session.** Stage all changed files and
@@ -194,13 +195,44 @@ did and what's next.
 
 ## Communication Protocol
 
-Benedict answers questions async, often from his phone. To make this easy:
+Questions for Benedict are **Linear tickets**, not a text file (his call, 2026-08-10:
+"can we convert questions for benedict to tickets instead of me needing to look
+through a text file?"). He already triages Linear on his phone; a second inbox that
+only he had to remember to open was one inbox too many.
+
+```bash
+python3 linear_update.py ask "Rename the app to X? Yes or no." \
+    --description "<the question, the options, and what each costs>" \
+    --research "<workings, evidence, rejected alternatives>" \
+    --labels "Track A"
+```
+
+`ask` is not `create` with different flags, and the differences are deliberate:
+
+- Lands in **Todo assigned to Benedict**, never Backlog, so a question never eats
+  one of the 15 backlog slots. A question is a debt we owe him, not a proposal
+  awaiting triage.
+- Gets the **`Question`** label and NOT the `Dale` label, so `linear_poller.py`
+  leaves it alone. A question Dale picks up and "works" is a question never asked.
+- No 100-word cap and no duplicate guard: a decision card is for work proposals.
+  Keep it short anyway.
+- **Capped at 5 open questions, enforced in code** (`MAX_OPEN_QUESTIONS`). Rule 5
+  below used to be an instruction with nothing behind it.
+
+To make answering easy:
 
 1. Keep questions short and answerable in a few words
-2. Group related questions together
-3. Mark priority: [BLOCKING] = can't proceed without answer, [INFO] = nice to have
+2. Group related questions into one ticket rather than opening several
+3. Priority 1 = can't proceed without an answer, 2 = default, 3 = nice to have
 4. Use yes/no or multiple choice format where possible
 5. Never ask more than 5 questions at once
+
+**Answering:** he replies in a Linear comment and moves it to Done. Dale reads
+the comment and acts. Do not re-ask a question that has a comment on it.
+
+`state/questions-for-benedict.md` is a **frozen archive** of Q1-Q50 kept for
+provenance (DEC-250, Q46's security correction and Q48's revenue finding are all
+cited from elsewhere). Never add to it.
 
 ## treestock.com.au Rules (READ BEFORE TOUCHING DASHBOARD CODE)
 
