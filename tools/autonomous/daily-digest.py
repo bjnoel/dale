@@ -716,6 +716,36 @@ def write_business_snapshot(data_dir, *, waiting, outcomes, completed, created,
         log(f"Warning: could not write business snapshot: {e}")
 
 
+# Mirrors the path convention in tools/scrapers/digest_archive.py, which reads
+# these files back for /admin/digest. Deliberately not an import: that module
+# lives in the other deploy tree (/opt/dale/scrapers), and the digest email must
+# not be able to fail on a cross-tree import. tests/test_digest_archive.py
+# asserts the two halves still agree on the path.
+DIGESTS_DIRNAME = "digests"
+
+
+def write_digest_archive(data_dir, today, html):
+    """Save the digest body so /admin/digest can serve it later.
+
+    The email is the notification; this is the record. Stored as the raw
+    fragment build_digest_html returns, so the admin chrome can change without
+    rewriting history.
+
+    Never raises: a full disk must not stop the digest going out.
+    """
+    try:
+        archive_dir = os.path.join(data_dir, DIGESTS_DIRNAME)
+        os.makedirs(archive_dir, exist_ok=True)
+        path = os.path.join(archive_dir, f"{today}.html")
+        tmp = path + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(html)
+        os.replace(tmp, path)
+        log(f"Digest archived to {path}")
+    except OSError as e:
+        log(f"Warning: could not archive digest: {e}")
+
+
 def build_digest_html(completed, created, in_progress, session_stats,
                       traffic_html, focus_summary, subscriber_stats, today,
                       resend_html="", waiting=None, outcomes=None):
@@ -1019,6 +1049,12 @@ def main():
         print(text)
         log("Dry run complete")
         return
+
+    # Archive before sending: if Resend is down, the digest is still readable at
+    # /admin/digest, which is the case the archive most needs to cover.
+    write_digest_archive(
+        config.get("paths", {}).get("data", "/opt/dale/data"), today, html
+    )
 
     # Send via notify.py's send_email
     sys.path.insert(0, SCRIPT_DIR)

@@ -31,6 +31,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, parse_qsl, quote, urlparse
 
 import admin_view
+import digest_archive
 import nursery_inbound
 
 from stocklib.mailer import (SUBSCRIBERS_FILE, get_unsubscribe_secret,
@@ -273,6 +274,23 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 self.send_html(500, "<h2>500</h2><p>Could not build the admin view.</p>")
                 return
             self.send_admin_html(page)
+            return
+
+        # Archived daily digests. Same Cloudflare Access gate as /admin (the
+        # Access app covers /admin and every subpath; verified 2026-08-10), and
+        # the same fail-closed JWT check here for direct-to-origin hits.
+        if parsed.path == "/admin/digest" or parsed.path.startswith("/admin/digest/"):
+            if not verify_cf_access(self.headers):
+                self.send_html(403, "<h2>403 — Forbidden</h2><p>This page is gated by Cloudflare Access.</p>")
+                return
+            day = parsed.path[len("/admin/digest"):].strip("/") or None
+            try:
+                status, page = digest_archive.render_digest_page(day=day)
+            except Exception as e:
+                print(f"Digest archive render error: {e}", file=sys.stderr)
+                self.send_html(500, "<h2>500</h2><p>Could not build the digest archive.</p>")
+                return
+            self.send_admin_html(page, status=status)
             return
 
         if parsed.path in ("/wishlist-counts", "/api/wishlist-counts"):
@@ -1251,10 +1269,10 @@ async function removeVariety(slug) {{
         self.end_headers()
         self.wfile.write(encoded)
 
-    def send_admin_html(self, html_doc: str):
+    def send_admin_html(self, html_doc: str, status: int = 200):
         """Send a full pre-rendered HTML page (no site chrome); noindex + no-store."""
         encoded = html_doc.encode()
-        self.send_response(200)
+        self.send_response(status)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(encoded)))
         self.send_header("X-Robots-Tag", "noindex, nofollow")

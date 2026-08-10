@@ -943,6 +943,94 @@ def _business_section(snapshot) -> str:
     )
 
 
+# Page chrome, shared by /admin and /admin/digest (digest_archive.py). Kept as a
+# plain string rather than inlined in the f-string below so a second page can use
+# it without a second copy of the stylesheet drifting away from this one.
+PAGE_CSS = """
+  :root { color-scheme: light; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    margin:0; background:#f9fafb; color:#111827; }
+  header { background:#065f46; color:#fff; padding:16px 24px; }
+  header h1 { margin:0; font-size:1.1rem; }
+  header .ts { font-size:0.8rem; opacity:0.85; }
+  header a { color:#a7f3d0; }
+  main { max-width:1100px; margin:0 auto; padding:24px 16px 64px; }
+  .cards { display:flex; flex-wrap:wrap; gap:12px; margin:0 0 24px; }
+  .card { flex:1 1 150px; background:#fff; border:1px solid #e5e7eb;
+    border-radius:10px; padding:16px; text-align:center; }
+  .card-num { font-size:1.8rem; font-weight:700; color:#065f46; }
+  .card-label { font-size:0.8rem; color:#6b7280; margin-top:4px; }
+  section { margin:0 0 28px; }
+  h2 { font-size:1rem; color:#374151; margin:0 0 10px; }
+  table { width:100%; border-collapse:collapse; background:#fff;
+    border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; font-size:0.85rem; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #f3f4f6;
+    vertical-align:top; }
+  th { background:#f3f4f6; color:#374151; font-weight:600; }
+  td.num, th.num { text-align:right; }
+  tr:last-child td { border-bottom:none; }
+  .mini { max-width:100%; }
+  .muted { color:#9ca3af; }
+  .grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .grid3 section, .grid2 section { margin:0; }
+  h3 { font-size:0.9rem; color:#374151; margin:14px 0 8px; }
+  table.health th.hday { font-size:0.7rem; text-align:center; padding:6px 2px; }
+  td.hcell { width:18px; padding:0; }
+  span.hcell { display:inline-block; width:12px; height:12px; border-radius:2px;
+    vertical-align:-2px; }
+  .hcell.ok { background:#34d399; }
+  .hcell.fail { background:#ef4444; }
+  .hcell.zero { background:#fbbf24; }
+  .hcell.none { background:#e5e7eb; }
+  .legend { font-size:0.8rem; margin:0 0 10px; }
+  .small { font-size:0.78rem; }
+  .pill { display:inline-block; padding:2px 8px; border-radius:999px;
+    font-size:0.72rem; font-weight:600; white-space:nowrap; }
+  .st-warm { background:#d1fae5; color:#065f46; }
+  .st-mid { background:#fef3c7; color:#92400e; }
+  .st-cold { background:#f3f4f6; color:#6b7280; }
+  .v-good { background:#d1fae5; color:#065f46; }
+  .v-bad { background:#fee2e2; color:#991b1b; }
+  .v-flat { background:#fef3c7; color:#92400e; }
+  .v-none { background:#f3f4f6; color:#6b7280; }
+  .action { color:#92400e; }
+  tr.histrow td { padding:0 10px 8px; border-bottom:1px solid #e5e7eb; }
+  tr.histrow summary { cursor:pointer; font-size:0.78rem; color:#6b7280; }
+  ul.touches { margin:8px 0 0; padding-left:18px; font-size:0.8rem; }
+  ul.touches li { margin-bottom:8px; }
+  .tdate { font-weight:600; }
+"""
+
+
+def render_page(title: str, heading: str, subtitle: str, content: str,
+                extra_css: str = "") -> str:
+    """The admin page shell: noindex, no public site chrome.
+
+    `subtitle` is escaped; `content` is trusted HTML the caller has already
+    built. Used by render_admin_html and by the digest archive.
+    """
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>{_esc(title)}</title>
+<style>{PAGE_CSS}{extra_css}</style>
+</head>
+<body>
+<header>
+  <h1>{_esc(heading)}</h1>
+  <div class="ts">{subtitle}</div>
+</header>
+<main>
+{content}
+</main>
+</body>
+</html>"""
+
+
 def render_admin_html(model: dict, generated_at: str = None) -> str:
     """Standalone, view-only HTML page. No public site chrome, noindex."""
     if generated_at is None:
@@ -971,78 +1059,15 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
     ]
     content = "\n".join(parts)
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<title>treestock admin — subscribers</title>
-<style>
-  :root {{ color-scheme: light; }}
-  body {{ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    margin:0; background:#f9fafb; color:#111827; }}
-  header {{ background:#065f46; color:#fff; padding:16px 24px; }}
-  header h1 {{ margin:0; font-size:1.1rem; }}
-  header .ts {{ font-size:0.8rem; opacity:0.85; }}
-  main {{ max-width:1100px; margin:0 auto; padding:24px 16px 64px; }}
-  .cards {{ display:flex; flex-wrap:wrap; gap:12px; margin:0 0 24px; }}
-  .card {{ flex:1 1 150px; background:#fff; border:1px solid #e5e7eb;
-    border-radius:10px; padding:16px; text-align:center; }}
-  .card-num {{ font-size:1.8rem; font-weight:700; color:#065f46; }}
-  .card-label {{ font-size:0.8rem; color:#6b7280; margin-top:4px; }}
-  section {{ margin:0 0 28px; }}
-  h2 {{ font-size:1rem; color:#374151; margin:0 0 10px; }}
-  table {{ width:100%; border-collapse:collapse; background:#fff;
-    border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; font-size:0.85rem; }}
-  th, td {{ text-align:left; padding:8px 10px; border-bottom:1px solid #f3f4f6;
-    vertical-align:top; }}
-  th {{ background:#f3f4f6; color:#374151; font-weight:600; }}
-  td.num, th.num {{ text-align:right; }}
-  tr:last-child td {{ border-bottom:none; }}
-  .mini {{ max-width:100%; }}
-  .muted {{ color:#9ca3af; }}
-  .grid3 {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }}
-  .grid2 {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }}
-  .grid3 section, .grid2 section {{ margin:0; }}
-  h3 {{ font-size:0.9rem; color:#374151; margin:14px 0 8px; }}
-  table.health th.hday {{ font-size:0.7rem; text-align:center; padding:6px 2px; }}
-  td.hcell {{ width:18px; padding:0; }}
-  span.hcell {{ display:inline-block; width:12px; height:12px; border-radius:2px;
-    vertical-align:-2px; }}
-  .hcell.ok {{ background:#34d399; }}
-  .hcell.fail {{ background:#ef4444; }}
-  .hcell.zero {{ background:#fbbf24; }}
-  .hcell.none {{ background:#e5e7eb; }}
-  .legend {{ font-size:0.8rem; margin:0 0 10px; }}
-  .small {{ font-size:0.78rem; }}
-  .pill {{ display:inline-block; padding:2px 8px; border-radius:999px;
-    font-size:0.72rem; font-weight:600; white-space:nowrap; }}
-  .st-warm {{ background:#d1fae5; color:#065f46; }}
-  .st-mid {{ background:#fef3c7; color:#92400e; }}
-  .st-cold {{ background:#f3f4f6; color:#6b7280; }}
-  .v-good {{ background:#d1fae5; color:#065f46; }}
-  .v-bad {{ background:#fee2e2; color:#991b1b; }}
-  .v-flat {{ background:#fef3c7; color:#92400e; }}
-  .v-none {{ background:#f3f4f6; color:#6b7280; }}
-  .action {{ color:#92400e; }}
-  tr.histrow td {{ padding:0 10px 8px; border-bottom:1px solid #e5e7eb; }}
-  tr.histrow summary {{ cursor:pointer; font-size:0.78rem; color:#6b7280; }}
-  ul.touches {{ margin:8px 0 0; padding-left:18px; font-size:0.8rem; }}
-  ul.touches li {{ margin-bottom:8px; }}
-  .tdate {{ font-weight:600; }}
-</style>
-</head>
-<body>
-<header>
-  <h1>treestock admin · business state</h1>
-  <div class="ts">View only · generated {_esc(generated_at)}</div>
-</header>
-<main>
-{content}
-</main>
-</body>
-</html>"""
+    return render_page(
+        title="treestock admin — business state",
+        heading="treestock admin · business state",
+        subtitle=(f"View only · generated {_esc(generated_at)} · "
+                  '<a href="/admin/digest">daily digest archive &rarr;</a>'),
+        content=content,
+    )
+
+
 
 
 if __name__ == "__main__":

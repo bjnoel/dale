@@ -29,6 +29,7 @@ fi
 server_modules_sum() {
     cat /opt/dale/scrapers/subscribe_server.py \
         /opt/dale/scrapers/admin_view.py \
+        /opt/dale/scrapers/digest_archive.py \
         /opt/dale/scrapers/stocklib/*.py 2>/dev/null | md5sum | cut -d' ' -f1
 }
 SERVER_SUM_BEFORE=$(server_modules_sum)

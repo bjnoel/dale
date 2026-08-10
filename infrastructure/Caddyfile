@@ -55,6 +55,15 @@ treestock.com.au, www.treestock.com.au {
         reverse_proxy localhost:8099
     }
 
+    # /admin/digest[/<YYYY-MM-DD>]: the archived daily digests. Wildcarded so a
+    # new admin subpage doesn't need a Caddy edit. The Cloudflare Access app
+    # covers /admin and every subpath (verified 2026-08-10) and
+    # subscribe_server fails closed without a valid JWT, so an unrouted path
+    # under here is a backend 404, not an exposure.
+    handle /admin/* {
+        reverse_proxy localhost:8099
+    }
+
     # Bare /unsubscribe is referenced by older welcome emails; route it to the
     # backend (handles GET /unsubscribe) so those links don't 404. New emails use
     # the /unsubscribe.html static page.
@@ -150,6 +159,9 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
         reverse_proxy localhost:8099
     }
     handle /admin/ {
+        reverse_proxy localhost:8099
+    }
+    handle /admin/* {
         reverse_proxy localhost:8099
     }
 
