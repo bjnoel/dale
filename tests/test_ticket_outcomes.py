@@ -261,3 +261,51 @@ class TestWindow(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRevenueCurrency(unittest.TestCase):
+    """revenue_monthly must never report one currency under another's label.
+
+    Every sale to date is USD store proceeds while the ledger's own currency is
+    AUD, so the pre-2026-08-10 version of read_revenue_monthly would have
+    reported USD figures tagged "AUD" the moment Q49's sales were booked.
+    """
+
+    def _ledger(self, entries, currency="AUD"):
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(lambda: __import__("shutil").rmtree(tmp, ignore_errors=True))
+        (tmp / "financials").mkdir()
+        (tmp / "financials" / "ledger.json").write_text(
+            json.dumps({"currency": currency, "entries": entries, "summary": {}}))
+        real = to.repo_dir
+        to.repo_dir = lambda: str(tmp)
+        self.addCleanup(lambda: setattr(to, "repo_dir", real))
+        return tmp
+
+    def test_usd_revenue_is_labelled_usd_not_ledger_currency(self):
+        self._ledger([
+            {"date": "2026-07-06", "type": "revenue", "amount": 17.66, "currency": "USD"},
+            {"date": "2026-07-23", "type": "revenue", "amount": 17.49, "currency": "USD"},
+        ])
+        value, unit, _ = to.read_revenue_monthly(date(2026, 7, 31))
+        self.assertEqual(value, 35.15)
+        self.assertEqual(unit, "USD/28d")
+
+    def test_entry_without_currency_falls_back_to_ledger_currency(self):
+        self._ledger([{"date": "2026-07-06", "type": "revenue", "amount": 10.0}])
+        _, unit, _ = to.read_revenue_monthly(date(2026, 7, 31))
+        self.assertEqual(unit, "AUD/28d")
+
+    def test_mixed_currencies_refuse_to_invent_an_fx_rate(self):
+        self._ledger([
+            {"date": "2026-07-06", "type": "revenue", "amount": 17.66, "currency": "USD"},
+            {"date": "2026-07-07", "type": "revenue", "amount": 25.00, "currency": "AUD"},
+        ])
+        with self.assertRaises(to.MetricUnavailable):
+            to.read_revenue_monthly(date(2026, 7, 31))
+
+    def test_no_revenue_in_window_is_zero_not_an_error(self):
+        self._ledger([{"date": "2026-01-01", "type": "revenue", "amount": 5.0, "currency": "USD"}])
+        value, unit, _ = to.read_revenue_monthly(date(2026, 7, 31))
+        self.assertEqual(value, 0.0)
+        self.assertEqual(unit, "AUD/28d")

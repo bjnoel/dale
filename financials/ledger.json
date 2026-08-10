@@ -13,8 +13,8 @@
       "date": "2026-03-05",
       "type": "expense",
       "category": "infrastructure",
-      "description": "Hetzner CAX11 VPS (Nuremberg) — nursery scrapers",
-      "amount": -7.00,
+      "description": "Hetzner CAX11 VPS (Nuremberg) \u2014 nursery scrapers",
+      "amount": -7.0,
       "recurring": true,
       "recurring_period": "monthly",
       "note": "~EUR 4.39/mo, approx $7 AUD"
@@ -23,7 +23,7 @@
       "date": "2026-03-10",
       "type": "expense",
       "category": "infrastructure",
-      "description": "leafscan.com.au domain registration (VentraIP) — replaced by treestock.com.au",
+      "description": "leafscan.com.au domain registration (VentraIP) \u2014 replaced by treestock.com.au",
       "amount": -9.95,
       "recurring": false,
       "recurring_period": "yearly",
@@ -34,19 +34,50 @@
       "type": "expense",
       "category": "infrastructure",
       "description": "Hetzner server backups enabled",
-      "amount": -1.20,
+      "amount": -1.2,
       "recurring": true,
       "recurring_period": "monthly",
       "note": "~EUR 0.76/mo, approx $1.20 AUD. Backup window 06-10 UTC."
+    },
+    {
+      "date": "2026-06-26",
+      "type": "revenue",
+      "category": "treesmith_pro",
+      "description": "Treesmith Pro (one-time) \u2014 App Store, Pakistan",
+      "amount": 17.4,
+      "currency": "USD",
+      "recurring": false,
+      "note": "Store-validated proceeds net of Apple commission and tax, per RevenueCat (DAL-267 read-only key). USD because RevenueCat reports proceeds in USD; the AUD payout is only knowable from App Store Connect payment reports and has not been reconciled. Booked 2026-08-10 on Benedict's approval (Q49)."
+    },
+    {
+      "date": "2026-07-06",
+      "type": "revenue",
+      "category": "treesmith_pro",
+      "description": "Treesmith Pro (one-time) \u2014 App Store, Australia",
+      "amount": 17.66,
+      "currency": "USD",
+      "recurring": false,
+      "note": "Store-validated proceeds net of Apple commission and tax, per RevenueCat (DAL-267 read-only key). USD because RevenueCat reports proceeds in USD; the AUD payout is only knowable from App Store Connect payment reports and has not been reconciled. Booked 2026-08-10 on Benedict's approval (Q49)."
+    },
+    {
+      "date": "2026-07-23",
+      "type": "revenue",
+      "category": "treesmith_pro",
+      "description": "Treesmith Pro (one-time) \u2014 App Store, United States",
+      "amount": 17.49,
+      "currency": "USD",
+      "recurring": false,
+      "note": "Store-validated proceeds net of Apple commission and tax, per RevenueCat (DAL-267 read-only key). USD because RevenueCat reports proceeds in USD; the AUD payout is only knowable from App Store Connect payment reports and has not been reconciled. Booked 2026-08-10 on Benedict's approval (Q49)."
     }
   ],
   "summary": {
-    "total_revenue": 0,
-    "total_expenses": -28.10,
-    "net": -28.10,
-    "monthly_burn": 8.20,
+    "total_revenue": 0.0,
+    "total_revenue_usd": 52.55,
+    "total_expenses": -28.1,
+    "net": -28.1,
+    "monthly_burn": 8.2,
     "runway_start_date": "2026-03-05",
     "runway_months": 6,
-    "note": "Benedict funding ~$100 USD/month for Claude API. Hetzner ~$7 AUD/mo for scraper server."
+    "note": "Revenue and expenses are in DIFFERENT currencies and are deliberately not combined. Expenses are AUD (ledger currency). All revenue to date is USD store proceeds as reported by RevenueCat, so total_revenue (AUD) is 0 and net excludes revenue. No FX rate has been applied because inventing one would make the receipt less true, not more; reconcile against App Store Connect payment reports when available. Benedict funds ~$100 USD/month for Claude API separately. Hetzner ~$7 AUD/mo + $1.20 backups."
   }
 }

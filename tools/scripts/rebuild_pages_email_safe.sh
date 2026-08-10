@@ -43,6 +43,7 @@ run python3 build_bare_root_page.py "$DATA" "$DIGEST_DIR"
 run python3 build_rootstock_page.py "$DIGEST_DIR"
 run python3 build_treesmith_page.py "$DIGEST_DIR"
 run python3 build_404_page.py "$DIGEST_DIR"
+run python3 build_affiliate_disclosure.py "$DIGEST_DIR"
 run python3 build_llms.py "$DIGEST_DIR"
 
 run python3 build_sitemap.py "$DIGEST_DIR/species" "$DIGEST_DIR"

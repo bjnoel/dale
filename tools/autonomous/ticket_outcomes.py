@@ -248,14 +248,33 @@ def read_revenue_monthly(end_date):
         raise MetricUnavailable(f"ledger unreadable: {e}")
 
     start, end = _window(end_date)
-    total = 0.0
+    ledger_ccy = ledger.get("currency", "AUD")
+
+    # Sum per currency rather than into one bucket. Every sale so far is USD
+    # store proceeds while the ledger's own currency is AUD, so the old version
+    # would have reported USD figures under an AUD label the moment revenue was
+    # booked. Silently mislabelling a unit is the same class of bug as
+    # DEC-263's renamed event: the number looks fine and means something else.
+    totals = {}
     for entry in ledger.get("entries", []):
         if entry.get("type") != "revenue":
             continue
         day = str(entry.get("date", ""))[:10]
         if start <= day <= end:
-            total += float(entry.get("amount", 0) or 0)
-    return round(total, 2), f"{ledger.get('currency', 'AUD')}/28d", "booked in ledger"
+            ccy = entry.get("currency", ledger_ccy)
+            totals[ccy] = totals.get(ccy, 0.0) + float(entry.get("amount", 0) or 0)
+
+    if not totals:
+        return 0.0, f"{ledger_ccy}/28d", "booked in ledger"
+    if len(totals) > 1:
+        # Refuse to invent an exchange rate. A verdict is better withheld than
+        # computed from an FX assumption nobody recorded.
+        mix = ", ".join(f"{v:.2f} {c}" for c, v in sorted(totals.items()))
+        raise MetricUnavailable(
+            f"revenue booked in multiple currencies ({mix}); no FX rate is recorded, "
+            f"so a single figure would be fabricated")
+    ccy, total = next(iter(totals.items()))
+    return round(total, 2), f"{ccy}/28d", "booked in ledger"
 
 
 def read_treestock_subscribers(end_date):

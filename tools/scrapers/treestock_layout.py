@@ -201,6 +201,7 @@ def render_footer(max_width: str = CONTENT_MAX_WIDTH, extra_text: str = "") -> s
     {nav_line}
     <p class="mt-2">{state_links}</p>
     <p class="mt-2">Data updated daily. Prices and availability may change.</p>
+    <p class="mt-1">Some nursery links earn us a commission. It never affects search results or ordering. <a href="/affiliate-disclosure.html" class="underline">How this works</a></p>
     <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>{extra}
   </div>
 </footer>"""

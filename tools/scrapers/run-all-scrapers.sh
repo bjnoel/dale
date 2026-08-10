@@ -252,6 +252,12 @@ echo "$LOG_PREFIX Building 404 page..."
 python3 "$SCRIPT_DIR/build_404_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: 404 page build failed (non-fatal)"
 echo "$LOG_PREFIX 404 page complete."
 
+# Affiliate disclosure. Generated from stocklib.utm.AFFILIATES, so it stays in
+# step with which nurseries actually pay us. Every page footer links to it.
+echo "$LOG_PREFIX Building affiliate disclosure page..."
+python3 "$SCRIPT_DIR/build_affiliate_disclosure.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: affiliate disclosure build failed (non-fatal)"
+echo "$LOG_PREFIX Affiliate disclosure complete."
+
 # Build Tailwind CSS (purged, scans all generated HTML for used classes)
 echo "$LOG_PREFIX Building Tailwind CSS..."
 if tailwindcss --input "$SCRIPT_DIR/tailwind-input.css" \

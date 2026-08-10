@@ -28,7 +28,7 @@ from treestock_layout import render_head, render_header, render_footer
 
 from stocklib.classify import is_real_product
 from stocklib.fruit_filters import FRUIT_FILTERS, is_fruit_product
-from stocklib.utm import outbound
+from stocklib.utm import outbound, affiliate
 from stocklib import changes as _changes
 from stocklib.changes import variant_key as _variant_key, variant_display_title as _variant_display_title, compare_snapshots
 
@@ -155,16 +155,16 @@ def _bush_tucker_text(bt_changes: dict, filter_state: str, enabled) -> list:
                     price_str = f" — ${item['price']:.2f}"
                     if item.get("old_price"):
                         price_str += f" (was ${item['old_price']:.2f})"
-                link = f"\n    {item['url']}" if item.get("url") else ""
+                link = f"\n    {affiliate(item['url'])}" if item.get("url") else ""
                 rows.append(f"  ✅ {item['title']} ({nm}){price_str}{link}")
         if "price_drops" in enabled:
             for item in changes["price_drops"]:
-                link = f"\n    {item['url']}" if item.get("url") else ""
+                link = f"\n    {affiliate(item['url'])}" if item.get("url") else ""
                 rows.append(f"  📉 {item['title']} ({nm}): ${item['old_price']:.2f} → ${item['new_price']:.2f}{link}")
         if "new_products" in enabled:
             for item in changes["new_products"]:
                 price_str = f" — ${item['price']:.2f}" if item["price"] else ""
-                link = f"\n    {item['url']}" if item.get("url") else ""
+                link = f"\n    {affiliate(item['url'])}" if item.get("url") else ""
                 rows.append(f"  🆕 {item['title']} ({nm}){price_str}{link}")
     if not rows:
         return []
@@ -206,14 +206,14 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
                     price_str = f" — ${item['price']:.2f}"
                     if item.get("old_price"):
                         price_str += f" (was ${item['old_price']:.2f})"
-                link = f"\n    {item['url']}" if item.get("url") else ""
+                link = f"\n    {affiliate(item['url'])}" if item.get("url") else ""
                 items.append(f"  ✅ {item['title']}{price_str}{link}")
             sections.append(("Back in stock", items))
 
         if "price_drops" in enabled and changes["price_drops"]:
             items = []
             for item in changes["price_drops"]:
-                link = f"\n    {item['url']}" if item.get("url") else ""
+                link = f"\n    {affiliate(item['url'])}" if item.get("url") else ""
                 items.append(f"  📉 {item['title']}: ${item['old_price']:.2f} → ${item['new_price']:.2f}{link}")
             sections.append(("Price drops", items))
 
@@ -221,7 +221,7 @@ def format_text(all_changes: dict, target_date: str, wa_only: bool = False, stat
             items = []
             for item in changes["new_products"][:10]:  # Cap at 10
                 price_str = f" — ${item['price']:.2f}" if item["price"] else ""
-                link = f"\n    {item['url']}" if item.get("url") else ""
+                link = f"\n    {affiliate(item['url'])}" if item.get("url") else ""
                 items.append(f"  🆕 {item['title']}{price_str}{link}")
             extra = len(changes["new_products"]) - 10
             if extra > 0:

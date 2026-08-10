@@ -22,6 +22,7 @@ from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK, is_seed_packet
 from stocklib.taxonomy import enabled_species, load_species
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.category_ui import category_keys, CATEGORY_BADGE_CSS
+from stocklib.utm import affiliate
 # Reuse the variety builder's non-plant denylist so we never emit a variety
 # slug (vs) for a product it would refuse to build a /variety/ page for
 # (e.g. "Yates Apple": "yates" is a chemical brand in that list). Keeping a
@@ -529,7 +530,9 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "p": round(min_price, 2) if min_price else None,
                 "a": bool(available),
                 "s": stock_count,
-                "u": p.get("url", ""),
+                # Affiliate ref applied here, not in dashboard.js: the JS appends
+                # its own UTM but must never carry a copy of AFFILIATE_REFS.
+                "u": affiliate(p.get("url", "")),
                 "sale": bool(on_sale),
                 "cat": p.get("product_type", p.get("category", "")),
             }

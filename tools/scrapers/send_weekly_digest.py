@@ -34,7 +34,7 @@ from daily_digest import load_snapshot, compare_snapshots, NURSERY_NAMES, ALL_CA
 from send_digest import get_subscriber_categories, get_subscriber_frequency, get_subscriber_state, get_subscriber_plant_categories
 from shipping import SHIPPING_MAP, nursery_ships_to
 from stocklib.email_footer import inject_footer, inject_text_footer
-from stocklib.utm import outbound
+from stocklib.utm import outbound, affiliate
 
 SECRETS_DIR = Path("/opt/dale/secrets")
 DATA_DIR = Path("/opt/dale/data")
@@ -361,7 +361,7 @@ def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "",
             lines.append(f"  ${item['old_price']:.2f} -> ${item['new_price']:.2f}{pct}")
             lines.append(f"  {item['nursery']}")
             if item.get("url"):
-                lines.append(f"  {item['url']}")
+                lines.append(f"  {affiliate(item['url'])}")
             lines.append("")
 
     if top_restocks:
@@ -372,7 +372,7 @@ def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "",
             lines.append(f"  {item['title']}{price_str}")
             lines.append(f"  {item['nursery']}")
             if item.get("url"):
-                lines.append(f"  {item['url']}")
+                lines.append(f"  {affiliate(item['url'])}")
             lines.append("")
 
     if top_new_arrivals:
@@ -383,7 +383,7 @@ def format_weekly_text(all_changes: dict, end_date: str, state_filter: str = "",
             lines.append(f"  {item['title']}{price_str}")
             lines.append(f"  {item['nursery']}")
             if item.get("url"):
-                lines.append(f"  {item['url']}")
+                lines.append(f"  {affiliate(item['url'])}")
             lines.append("")
 
     if not (top_price_drops or top_restocks or top_new_arrivals):

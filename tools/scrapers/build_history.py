@@ -22,6 +22,7 @@ from daily_digest import (
     load_snapshot,
 )
 from stocklib.coverage import nursery_coverage, usable_dates
+from stocklib.utm import affiliate
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_footer, SITE_URL
 
@@ -88,10 +89,16 @@ def build_history_data(data_dir: Path, wa_only: bool = False) -> list[dict]:
                     "wa": nursery_key in WA_NURSERIES,
                     "changes": {},
                 }
-                # Only include non-empty change categories
+                # Only include non-empty change categories. URLs get the
+                # affiliate ref here rather than in the page's JS, so
+                # AFFILIATE_REFS stays in one place (stocklib.utm).
                 for cat, items in changes.items():
                     if items:
-                        nursery_data["changes"][cat] = items
+                        nursery_data["changes"][cat] = [
+                            {**item, "url": affiliate(item["url"])}
+                            if item.get("url") else item
+                            for item in items
+                        ]
                 day_changes.append(nursery_data)
 
         history.append({
