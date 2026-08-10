@@ -40,7 +40,7 @@
       ],
       "open_action": {
         "owner": "benedict",
-        "what": "Send the drafted reply to Correy (order@daleysfruit.com.au), BCC nursery@veliamsal.resend.app. Draft on DAL-274. Asks whether they would graft named sapodilla for WA club demand, given they already do named canistel (Lyndall, Kona, Grey) while sapodilla is seedling only.",
+        "what": "Send the drafted reply to Correy (order@daleysfruit.com.au), BCC nursery@veliamsal.resend.app. Draft on DAL-274. Two asks: whether they can see clicks converting to orders, and whether they would graft named sapodilla for WA club demand. Must NOT quote Ross Creek's 3-4% conversion figure, Tom gave it privately and Daleys is his competitor.",
         "since": "2026-08-10"
       },
       "notes": "No affiliate program (DAL-154, re-verified 2026-07-30 in DEC-241). Wholesale only, $2k minimum. Our single largest referral destination over 6 months."
@@ -95,9 +95,21 @@
           "by": "benedict",
           "summary": "Re: Your nursery is on treestock.com.au",
           "evidence": "resend:117accac-1465-477d-a01e-f9e13be0ca77"
+        },
+        {
+          "date": "2026-08-10",
+          "direction": "in",
+          "channel": "email",
+          "by": "tom",
+          "summary": "Replied same day. Will check Shopify for clicks-to-sales. Says they convert 3-4% of clicks vs a sub-2% ecomm norm. Grafted sapodilla is a SUPPLY problem not demand ('could sell hundreds of each each year'): their propagation supplier closed, stock trees need 1-2 years, a trip for grafting material is planned but no ETA. Asked us to check back in 3 months but not to bet on availability.",
+          "evidence": "Tom's reply pasted by Benedict 2026-08-10; arrived to his inbox so not BCC-captured"
         }
       ],
-      "open_action": null,
+      "open_action": {
+        "owner": "dale",
+        "what": "Check back with Tom about grafted sapodilla on or after 2026-11-10, his suggested 3 months. He said not to bet on availability. Separately: he offered to pull clicks-to-sales out of Shopify, so chase that number, it prices DAL-247 and DAL-248.",
+        "since": "2026-08-10"
+      },
       "notes": "Our warmest relationship and the best-connected contact we have (Tom helps admin the Oz Rare Fruit Australia FB group). Seasonality live on /nursery/ross-creek.html. Email corrected 2026-08-10 to admin@rosscreektropicals.com.au: the register had rosscreektropicals@gmail.com, whose gmail.com domain would NOT have matched the register on a BCC'd touch. Stocks grafted sapodilla Krasuey, Ponderosa and Sawo Manilla at $99, all out of stock 2026-08-10. WA only via concierge resellers; no bulk because pallets by road freight carry extreme risk vs cartons by express post, and in-house needs a separate treatment area."
     },
     {
