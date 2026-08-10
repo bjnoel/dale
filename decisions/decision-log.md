@@ -9952,3 +9952,71 @@ reported on weekly. The direction a customer would use to answer us was never ch
 by anyone, in five months. We measured the half of the conversation we controlled.
 
 **Cost:** $0. No DNS change; the apex already had Fastmail MX.
+
+---
+
+## DEC-272 — 2026-08-10 — The digest was a notification pretending to be a record
+
+**Decided by:** Benedict, asking whether the daily digests were readable anywhere online:
+*"it's easier than me looking through my emails to work out what needs to be done."*
+Built, deployed and backfilled the same session.
+
+**What was wrong.** `daily-digest.py` built the digest HTML in memory, handed it to Resend
+and dropped it. Nothing wrote it to disk. The only durable trace was Benedict's inbox, so
+"what did Dale say needed doing on the 3rd" was a mail-client search. The digest leads with
+"Waiting on you" (26 tickets, 9 over 30 days old on 2026-08-09), which is precisely the
+part worth re-reading, and it was the part hardest to get back to.
+
+The near-miss in the naming is worth recording: `treestock.com.au/archive/digest-YYYY-MM-DD.html`
+already existed, 244 pages of it, and looks exactly like what was being asked for. Those are
+the **nursery stock** digests sent to subscribers. Different product, colliding name. The
+business digest had no URL at all.
+
+**What shipped.** `/admin/digest` serves the newest, with older ones behind a pager and a
+month-grouped archive list. Each day's fragment is written to `data/digests/YYYY-MM-DD.html`
+before the email is sent, deliberately: if Resend is down, that is exactly when the archive
+needs to hold the digest. The writer never raises, because a full disk must not stop the
+email going out.
+
+**Backfilled, not started empty.** Resend keeps the sent HTML and returns it per message,
+and what it returns is byte-for-byte the fragment `build_digest_html` produced. So the
+archive opened with 29 days already in it (2026-07-12 to 2026-08-09, no gaps), rather than
+filling up one day at a time from today. `tools/scripts/backfill-digest-archive.py` is
+idempotent and can be re-run, though the retention window slides, so what was not recovered
+today is gone.
+
+**Security verified, not assumed (DEC-265's lesson).** The question was whether the
+Cloudflare Access app protecting `/admin` also covers `/admin/digest`. The API listed zero
+Access apps, which was a token scope artefact, not the truth. Rather than assert it from
+memory, I probed the live edge: `/admin`, `/admin/digest` and a nonexistent `/admin/zzz`
+all 302 to the Access login while `/` returns 200. Access covers the path prefix. The
+origin was then checked separately and fail-closes with 403 on every `/admin*` path without
+a valid JWT, so the two layers are independent. No Cloudflare dashboard change was needed.
+
+**Two things nearly shipped broken.**
+
+`deploy.sh` restarts subscribe-server only when its module checksum changes, and that
+checksum listed `subscribe_server.py`, `admin_view.py` and `stocklib/*.py`. A new
+`digest_archive.py` would not have been in it, so a later fix to the archive would have sat
+on disk while the old code kept serving. That is DEC-264 exactly, and it is now in the
+checksum.
+
+The live `/etc/caddy/Caddyfile` has drifted from the tracked copy: it carries a
+`hook.gandongully.com.au` block the repo does not have. Copying the repo file over it would
+have silently deleted a working service. Patched the live file in place instead, validated,
+reloaded. **The tracked Caddyfile is not a safe thing to deploy wholesale.** Left as-is
+rather than folded in, since gandon-calendar is not Dale's.
+
+**The writer and the reader cannot import each other**, living in `/opt/dale/autonomous`
+and `/opt/dale/scrapers`. Rather than a fragile cross-tree import on the cron path, they
+agree by convention and `tests/test_digest_archive.py` asserts they still do: it loads both
+modules, writes with one and reads with the other. Day validation is strict `YYYY-MM-DD`
+because the day arrives off the URL and becomes a filesystem path.
+
+**Running lesson, twenty-sixth session.** DEC-263: a measurement nobody reads. DEC-264: code
+nobody loaded. DEC-267: test through the path the caller takes. DEC-271: test the reverse
+path. This one: **a notification is not a record.** The digest was doing two jobs, telling
+Benedict what needed doing and being the history of what needed doing, and it was only ever
+built for the first. Anything that is worth sending daily is worth keeping.
+
+**Cost:** $0. Storage is ~6KB/day.
