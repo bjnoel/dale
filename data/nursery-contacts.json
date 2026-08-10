@@ -167,7 +167,11 @@
           "evidence": "DAL-80 description"
         }
       ],
-      "open_action": null,
+      "open_action": {
+        "owner": "dale",
+        "what": "Touch 2 is overdue (touch 1 emailed 2026-03-26, no reply, 137d). Biggest WA referral destination at 99 clicks/30d. Email clearly is not their channel: draft a short WhatsApp message for +61 431 095 777 instead.",
+        "since": "2026-08-10"
+      },
       "notes": "WA, so Benedict can follow up in person. WhatsApp available on the same number. 4th largest referral destination and the largest WA one."
     },
     {
@@ -285,7 +289,11 @@
       "preferred_channel": "email",
       "status": "not_contacted",
       "touches": [],
-      "open_action": null,
+      "open_action": {
+        "owner": "benedict",
+        "what": "Send the touch 1 email to info@guildfordgardencentre.com.au, BCC nursery@veliamsal.resend.app. Draft is in deliverables/guildford-touch-1.txt.",
+        "since": "2026-08-10"
+      },
       "notes": "WA, in person visitable from Perth. Benedict could walk in."
     },
     {
