@@ -101,7 +101,16 @@ Then, when you have time: DAL-115 (community post), DAL-167 (send the RFSA email
   thinnest part of that tail. Recommend cancelling, or say the word and I will rewrite
   it to follow GSC impressions instead of guessing.
 
-**Q46** [BLOCKING] Confirm one Reply-To address on treestock.com.au (the second ask is withdrawn)
+**Q46** [ANSWERED 2026-08-10] Confirm one Reply-To address on treestock.com.au
+
+**Answered: `ben@treestock.com.au`**, Benedict's choice over `hello@` because a
+one-person nursery list reads better from a person. Shipped and verified the same day
+(DAL-243, DEC-271): a real send now carries `reply_to: ['ben@treestock.com.au']` and
+was delivered, not bounced. Deliverability was checked *before* shipping, since
+pointing Reply-To at an address that does not receive mail would have reproduced the
+bug with a nicer name.
+
+Nothing further needed. The original text is kept below for the record.
 
 **Corrected 2026-08-03, I had this half wrong.** I wrote that treestock.com.au cannot
 receive email. It can: the apex already carries your Fastmail MX

@@ -9902,3 +9902,53 @@ correctly and the pipeline discarded the answer. **A component returning the rig
 is not the system producing the right outcome.** Check the far end, every time.
 
 **Cost:** $0 both tickets. One 125 MB download, deleted.
+
+---
+
+## DEC-271 — 2026-08-10 — Every reply this list ever received, we bounced
+
+**Decided by:** Benedict, answering Q46: *"Can we make it so it's ben@treestock.com.au as
+it's more personal?"* Shipped, verified and closed the same day. DAL-243 done.
+
+**The bug, stated plainly.** We send From `alerts@mail.treestock.com.au`, a subdomain with
+no MX and no A record, and set no `Reply-To` at all. So for the entire life of the list,
+every reply to every email hard-bounced, while the welcome email said *"Questions? Just
+reply to this email"* and the Treesmith intro said *"I would genuinely like to hear what is
+missing. Just reply to this email."* We invited replies we had made it impossible to
+receive, and we never heard the silence because nothing was watching the reply path.
+
+`ben@` over `hello@` was Benedict's call and it is the right one for a 15-subscriber list
+run by one person in Perth.
+
+**Verified before shipping, not after.** The obvious failure mode here is fixing the bug
+by pointing `Reply-To` at another address that also does not receive mail. So the first
+thing I did was send a probe to `ben@treestock.com.au` and check the delivery status:
+`delivered`. Only then did I touch the code. After deploying, a real send through the
+deployed `mailer.send_email` came back carrying `reply_to: ['ben@treestock.com.au']`, and
+the message was delivered and opened.
+
+**Coverage, because "fix the mailer" was not the whole job.** Eight things send treestock
+email. Five go through `mailer.send_email` and were fixed by the single change there. Three
+build their own Resend payload and needed the fix individually. Excluded on purpose:
+`bee/` (discontinued, hard rule in CLAUDE.md) and `notify.py` (Dale to Benedict, another
+domain, he is the recipient).
+
+**The reason it was four edits instead of one.** Those three senders each carried their own
+`FROM_EMAIL` and `FROM_NAME` copy, despite already importing other things from
+`stocklib.mailer` in the very next line. `test_no_forking.py` guarded shared *functions*
+and not these constants, so the sender identity had quietly drifted into four copies. They
+import it now, and the constants are guarded, so the next change to how this list
+identifies itself is one edit.
+
+**Regression guard, checked failing-then-passing.** `test_every_treestock_sender_sets_reply_to`
+scans each sender's source for a payload with no `reply_to`. Removing it from one sender
+fails the test; restoring it passes. That is the test that would have caught the original
+bug across all four senders at once, and its absence is why nobody did.
+
+**Running lesson, twenty-fifth session.** DEC-263: a measurement nobody reads. DEC-264:
+code nobody loaded. DEC-267: test through the path the caller actually takes. This one:
+**test the reverse path too.** Everything about sending was instrumented, monitored and
+reported on weekly. The direction a customer would use to answer us was never checked once,
+by anyone, in five months. We measured the half of the conversation we controlled.
+
+**Cost:** $0. No DNS change; the apex already had Fastmail MX.
