@@ -180,6 +180,7 @@ def cmd_log(reg, args):
     }
     if args.evidence:
         touch["evidence"] = args.evidence
+    had = (n.get("open_action") or {}).get("what")
     if not apply_touch(n, touch):
         print(f"{n['name']} already has a touch with evidence "
               f"{touch['evidence']}. Nothing to do.")
@@ -189,6 +190,8 @@ def cmd_log(reg, args):
     save_register(reg)
     print(f"Logged {args.direction} touch for {n['name']} on {args.date}. "
           f"Status now {n['status']}.")
+    if had and not n.get("open_action"):
+        print(f"  Cleared open action: {had}")
     return 0
 
 
@@ -214,6 +217,21 @@ def apply_touch(n, touch):
         n["status"] = "warm"
     elif touch["direction"] == "out" and n["status"] == "not_contacted":
         n["status"] = "contacted"
+
+    # An outbound touch discharges the open action, because in every case so far
+    # the action IS the outbound touch ("send touch 1.5 to Correy"). Without
+    # this the loop never closed: Benedict sent the email, the BCC logged it,
+    # and the digest kept asking him to send it. Fruit Tree Lane asked for 134
+    # days. Git history keeps the cleared text, so nothing is lost.
+    #
+    # Inbound is excluded: them replying is not us doing our half.
+    # `keep_open` is the escape hatch for an action an email cannot discharge,
+    # such as Primal Fruits' "sign up to the affiliate program". Emailing Cyrus
+    # about anything else must not silently tick that off.
+    if touch["direction"] == "out":
+        action = n.get("open_action") or {}
+        if action.get("what") and not action.get("keep_open"):
+            n["open_action"] = None
     return True
 
 
@@ -241,7 +259,7 @@ def cmd_merge_inbound(reg, args):
         except json.JSONDecodeError:
             malformed += 1
 
-    merged, skipped, unknown = 0, 0, []
+    merged, skipped, unknown, cleared = 0, 0, [], []
     for rec in records:
         if rec.get("merged"):
             continue
@@ -256,14 +274,19 @@ def cmd_merge_inbound(reg, args):
                                      "summary") if k in rec}
         if rec.get("evidence"):
             touch["evidence"] = rec["evidence"]
+        had = (n.get("open_action") or {}).get("what")
         if apply_touch(n, touch):
             merged += 1
+            if had and not n.get("open_action"):
+                cleared.append(f"{n['name']}: {had}")
         else:
             skipped += 1
         rec["merged"] = True
 
     if args.dry_run:
         print(f"(dry run) would merge {merged}, skip {skipped} already present")
+        for c in cleared:
+            print(f"  would clear open action, {c}")
         if unknown:
             print(f"  unknown nursery keys, left unmerged: {sorted(set(unknown))}")
         return 0
@@ -277,6 +300,8 @@ def cmd_merge_inbound(reg, args):
             f.write(json.dumps(rec, sort_keys=True) + "\n")
 
     print(f"Merged {merged} touch(es), {skipped} already present.")
+    for c in cleared:
+        print(f"  Cleared open action, {c}")
     if malformed:
         print(f"  warning: {malformed} malformed line(s) skipped")
     if unknown:
@@ -298,6 +323,10 @@ def cmd_set(reg, args):
     if args.action:
         n["open_action"] = {"owner": args.action_owner, "what": args.action,
                             "since": date.today().isoformat()}
+        if args.keep_open:
+            n["open_action"]["keep_open"] = True
+    elif args.keep_open and n.get("open_action"):
+        n["open_action"]["keep_open"] = True
     if args.clear_action:
         n["open_action"] = None
     save_register(reg)
@@ -334,6 +363,8 @@ def validate(reg):
         act = n.get("open_action")
         if act and act.get("owner") not in {"dale", "benedict"}:
             problems.append(w + f"action owner {act.get('owner')!r} is not dale or benedict")
+        if act and "keep_open" in act and not isinstance(act["keep_open"], bool):
+            problems.append(w + f"keep_open {act['keep_open']!r} is not a bool")
     return problems
 
 
@@ -382,6 +413,9 @@ def main(argv=None):
     p.add_argument("--action-owner", default="benedict",
                    choices=["benedict", "dale"])
     p.add_argument("--clear-action", action="store_true")
+    p.add_argument("--keep-open", dest="keep_open", action="store_true",
+                   help="an outbound touch must NOT auto-clear this action, "
+                        "for actions an email cannot discharge")
     p.set_defaults(fn=cmd_set)
 
     p = sub.add_parser("merge-inbound",

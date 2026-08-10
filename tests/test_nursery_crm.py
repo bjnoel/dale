@@ -211,9 +211,15 @@ class TestApplyTouch(unittest.TestCase):
     """Shared by `log` and `merge-inbound`, so a hand-logged touch and a BCC'd
     one must behave identically."""
 
-    def _n(self, status="not_contacted", touches=None):
+    def _n(self, status="not_contacted", touches=None, open_action=None):
         return {"key": "k", "name": "N", "status": status,
-                "touches": list(touches or [])}
+                "touches": list(touches or []), "open_action": open_action}
+
+    @staticmethod
+    def _action(**kw):
+        act = {"owner": "benedict", "what": "Send touch 2", "since": "2026-03-28"}
+        act.update(kw)
+        return act
 
     def test_outbound_advances_not_contacted_to_contacted(self):
         n = self._n("not_contacted")
@@ -249,6 +255,42 @@ class TestApplyTouch(unittest.TestCase):
                                     "summary": "y", "evidence": "resend:e_1"})
         self.assertFalse(added)
         self.assertEqual(len(n["touches"]), 1)
+
+    def test_outbound_touch_clears_the_open_action(self):
+        """The loop has to close itself. Before this, Benedict sent the email,
+        the BCC logged the touch, and the digest kept asking him to send it."""
+        n = self._n(open_action=self._action())
+        crm.apply_touch(n, {"date": "2026-08-10", "direction": "out",
+                            "channel": "email", "by": "benedict", "summary": "s"})
+        self.assertIsNone(n["open_action"])
+
+    def test_inbound_touch_leaves_the_open_action_alone(self):
+        """Them writing to us does not do our half of the job."""
+        n = self._n("contacted", open_action=self._action())
+        crm.apply_touch(n, {"date": "2026-08-10", "direction": "in",
+                            "channel": "email", "by": "them", "summary": "s"})
+        self.assertIsNotNone(n["open_action"])
+
+    def test_keep_open_survives_an_outbound_touch(self):
+        """Primal Fruits' action is 'sign up to the affiliate program'. Emailing
+        Cyrus about something else must not silently tick that off."""
+        n = self._n(open_action=self._action(keep_open=True,
+                                             what="Join the affiliate program"))
+        crm.apply_touch(n, {"date": "2026-08-10", "direction": "out",
+                            "channel": "email", "by": "benedict", "summary": "s"})
+        self.assertIsNotNone(n["open_action"])
+
+    def test_refused_duplicate_does_not_clear_the_action(self):
+        """A replayed Resend webhook must not discharge an action on a touch it
+        declined to add."""
+        n = self._n(touches=[{"date": "2026-08-01", "direction": "out",
+                              "summary": "x", "evidence": "resend:e_1"}],
+                    open_action=self._action())
+        added = crm.apply_touch(n, {"date": "2026-08-10", "direction": "out",
+                                    "channel": "email", "by": "b",
+                                    "summary": "y", "evidence": "resend:e_1"})
+        self.assertFalse(added)
+        self.assertIsNotNone(n["open_action"])
 
     def test_touch_without_evidence_is_always_added(self):
         n = self._n(touches=[{"date": "2026-08-01", "direction": "out",
