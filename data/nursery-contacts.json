@@ -195,13 +195,17 @@
           "by": "benedict",
           "summary": "Touch 1 goodwill intro via website contact form, no pitch. No reply received as at 2026-08-10 (135 days).",
           "evidence": "DAL-77 threaded comment 2026-03-28 'Note - contacted 28 Mar'"
+        },
+        {
+          "date": "2026-08-10",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Touch 2 by email to sales@fruittreelane.com.au: servable-only demand (olives 213, blueberries 153), all 16 blueberry lines out of stock, OB1 not in their range. No pitch.",
+          "evidence": "sent 2026-08-10, BCC reached Resend inbound at 02:37:15Z but did not match (see DEC on payload metadata); logged by hand"
         }
       ],
-      "open_action": {
-        "owner": "dale",
-        "what": "Touch 2 drafted 2026-08-10, posted as a comment on DAL-80. Benedict to send to sales@fruittreelane.com.au, BCC nursery@veliamsal.resend.app. If no reply by 2026-08-24, ring 07 4696 8792 on a Tue or Thu.",
-        "since": "2026-08-10"
-      },
+      "open_action": null,
       "notes": "Contact form touch 1 sent 2026-03-28 (Benedict, DAL-77), no reply in 135 days. Site publishes no email; sales@fruittreelane.com.au found on their Localsearch profile 2026-08-10, unverified by a successful send. Also phone 07 4696 8792 and facebook.com/fruittreelane. Open to public Tue and Thu 9am-3pm, 43 Helidon Dip Rd, Helidon QLD 4344. 110 products tracked, only 19 in stock (was ~28 in April), which is why referral volume is low."
     },
     {

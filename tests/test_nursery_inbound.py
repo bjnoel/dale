@@ -211,6 +211,70 @@ class TestBuildRecord(unittest.TestCase):
         rec = ni.build_record(payload(subject=None), REGISTER)
         self.assertEqual(rec["summary"], "(no subject)")
 
+
+class TestBccFallsBackToTheFullMessage(unittest.TestCase):
+    """The `email.received` webhook is metadata only, and for a BCC its
+    recipients are the envelope, so they are our own inbound address and the
+    nursery is nowhere in the payload. The first real BCC, Fruit Tree Lane on
+    2026-08-10, was rejected as "no nursery matched" with
+    to/cc=['nursery@veliamsal.resend.app']. The DEC-266 end-to-end test could
+    not have caught it: it sent TO the inbound address, so the metadata and the
+    header agreed. Only a genuine BCC separates them."""
+
+    def _bcc_payload(self):
+        """What Resend actually sends for a BCC: envelope recipients only."""
+        return payload(from_="ben@treestock.com.au",
+                       to=("nursery@veliamsal.resend.app",), cc=())
+
+    def test_bcc_matches_on_the_fetched_to_header(self):
+        called = {}
+
+        def fake_fetch(email_id, api_key, **kw):
+            called["email_id"] = email_id
+            return {"to": ["orders@daleysfruit.com.au"], "cc": []}
+
+        rec = ni.build_record(self._bcc_payload(), REGISTER,
+                              fetch=fake_fetch, api_key="re_test")
+        self.assertEqual(rec["nursery"], "daleys")
+        self.assertEqual(rec["direction"], "out")
+        self.assertEqual(called["email_id"], "e_123")
+
+    def test_headers_as_a_list_of_name_value_pairs(self):
+        def fake_fetch(email_id, api_key, **kw):
+            return {"headers": [{"name": "To", "value": "orders@daleysfruit.com.au"},
+                                {"name": "Subject", "value": "x"}]}
+
+        rec = ni.build_record(self._bcc_payload(), REGISTER,
+                              fetch=fake_fetch, api_key="re_test")
+        self.assertEqual(rec["nursery"], "daleys")
+
+    def test_headers_as_a_dict(self):
+        def fake_fetch(email_id, api_key, **kw):
+            return {"headers": {"To": "sales@rosscreektropicals.com.au"}}
+
+        rec = ni.build_record(self._bcc_payload(), REGISTER,
+                              fetch=fake_fetch, api_key="re_test")
+        self.assertEqual(rec["nursery"], "ross-creek")
+
+    def test_fetch_failure_degrades_to_the_old_rejection(self):
+        """A Resend outage must not become a 500 and an endless Svix retry."""
+        with self.assertRaises(ni.InboundError) as cm:
+            ni.build_record(self._bcc_payload(), REGISTER,
+                            fetch=lambda *a, **k: None, api_key="re_test")
+        self.assertIn("no nursery matched", str(cm.exception))
+
+    def test_metadata_match_does_not_fetch(self):
+        """The common case must not cost an API call per webhook."""
+        def explode(*a, **k):
+            raise AssertionError("fetched when the metadata already matched")
+
+        rec = ni.build_record(payload(), REGISTER, fetch=explode)
+        self.assertEqual(rec["nursery"], "daleys")
+
+    def test_fetch_received_returns_none_without_credentials(self):
+        self.assertIsNone(ni.fetch_received(None, "re_test"))
+        self.assertIsNone(ni.fetch_received("e_1", None))
+
     def test_bad_created_at_falls_back_to_today(self):
         from datetime import datetime, timezone
         rec = ni.build_record(payload(created_at="not-a-date"), REGISTER)

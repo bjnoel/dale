@@ -26,10 +26,16 @@ fi
 # service is bounced -- which is how the DEC-263 /admin work deployed "successfully"
 # on 2026-08-06 and never appeared on the page (the process had been up since
 # 2026-08-03). DAL-263.
+#
+# This list is hand-maintained and has been wrong once already: nursery_inbound.py
+# was missing, so the 2026-08-10 BCC matcher fix would have rsynced onto a server
+# that kept serving the old module. `tests/test_deploy_restart_list.py` now fails
+# if subscribe_server.py imports a local module that is not listed here.
 server_modules_sum() {
     cat /opt/dale/scrapers/subscribe_server.py \
         /opt/dale/scrapers/admin_view.py \
         /opt/dale/scrapers/digest_archive.py \
+        /opt/dale/scrapers/nursery_inbound.py \
         /opt/dale/scrapers/stocklib/*.py 2>/dev/null | md5sum | cut -d' ' -f1
 }
 SERVER_SUM_BEFORE=$(server_modules_sum)

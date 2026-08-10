@@ -44,6 +44,14 @@ TIMESTAMP_TOLERANCE_S = 5 * 60
 # log, whatever its headers claim.
 RECEIVING_DOMAIN = "veliamsal.resend.app"
 
+# The `email.received` webhook carries metadata only, no body and no headers.
+# For a BCC'd message the metadata recipients are the envelope, so the nursery
+# Benedict actually wrote to appears nowhere in the payload: the first real BCC
+# was rejected as "no nursery matched" with to/cc holding only our own inbound
+# address. The real To and Cc live on the full message, which has to be fetched.
+RECEIVED_API = "https://api.resend.com/emails/receive/{email_id}"
+RECEIVED_FETCH_TIMEOUT_S = 10
+
 
 class InboundError(Exception):
     """Rejected. The message is the reason, safe to log, never returned to the
@@ -171,7 +179,69 @@ def match_nursery(address, register):
     return None
 
 
-def build_record(payload, register, receiving_domain=RECEIVING_DOMAIN):
+def load_api_key(path=SECRET_ENV):
+    """Read RESEND_API_KEY for the inbound account from the secrets file."""
+    try:
+        with open(path) as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("RESEND_API_KEY="):
+                    return line.split("=", 1)[1].strip().strip("'\"")
+    except OSError:
+        pass
+    return None
+
+
+def _header_addresses(message):
+    """To and Cc addresses off a fetched message, however Resend spells them.
+
+    The API has returned headers as a dict and as a list of {name, value} in
+    different accounts, so both are read rather than guessing which we get.
+    """
+    out = []
+    for field in ("to", "cc"):
+        out += _addresses(message.get(field))
+
+    headers = message.get("headers")
+    if isinstance(headers, dict):
+        for name, value in headers.items():
+            if str(name).lower() in ("to", "cc"):
+                out += _addresses([value] if isinstance(value, str) else value)
+    elif isinstance(headers, list):
+        for h in headers:
+            if not isinstance(h, dict):
+                continue
+            if str(h.get("name", "")).lower() in ("to", "cc"):
+                out += _addresses([h.get("value")])
+    return out
+
+
+def fetch_received(email_id, api_key, timeout=RECEIVED_FETCH_TIMEOUT_S):
+    """Full inbound message from the Received emails API, or None.
+
+    Never raises: this is a fallback on a path that has already failed to match,
+    so a Resend outage must degrade to the old "no nursery matched" rejection
+    rather than turn into a 500 and an infinite Svix retry loop.
+    """
+    if not email_id or not api_key:
+        return None
+    import urllib.error
+    import urllib.request
+    req = urllib.request.Request(
+        RECEIVED_API.format(email_id=email_id),
+        headers={"Authorization": f"Bearer {api_key}",
+                 "Accept": "application/json",
+                 "User-Agent": "dale-nursery-inbound/1.0"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            body = json.loads(resp.read().decode())
+    except (urllib.error.URLError, OSError, json.JSONDecodeError, ValueError):
+        return None
+    return body.get("data") if isinstance(body.get("data"), dict) else body
+
+
+def build_record(payload, register, receiving_domain=RECEIVING_DOMAIN,
+                 fetch=None, api_key=None):
     """Turn an `email.received` payload into a touch record, or raise.
 
     Direction is read from where the nursery actually appears: in `from` means
@@ -204,9 +274,26 @@ def build_record(payload, register, receiving_domain=RECEIVING_DOMAIN):
                 direction, counterparty = "out", addr
                 break
 
+    # Nothing matched the metadata. For a BCC that is the expected case, not an
+    # error: the webhook's recipients are the envelope, so they are our own
+    # inbound address and the nursery is only on the real To/Cc header. Fetch
+    # the full message and try again before giving up.
+    fetched = []
+    if not key:
+        fetch = fetch or fetch_received
+        message = fetch(data.get("email_id"), api_key or load_api_key())
+        if message:
+            fetched = _header_addresses(message)
+            for addr in fetched:
+                key = match_nursery(addr, register)
+                if key:
+                    direction, counterparty = "out", addr
+                    break
+
     if not key:
         raise InboundError(
-            f"no nursery matched (from={sender}, to/cc={recipients})")
+            f"no nursery matched (from={sender}, to/cc={recipients}, "
+            f"fetched to/cc={fetched})")
 
     day = str(data.get("created_at") or "")[:10]
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
