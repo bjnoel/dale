@@ -10173,3 +10173,69 @@ Shopify figure. DEC-248's economics clear $100/month at roughly 1.2%. That mater
 DAL-245, which is now the highest-value open decision on the board and is Benedict's to make.
 
 **Cost:** $0.
+
+---
+
+## DEC-276 — 2026-08-10 — We are an Australian app after all, and I had said we were not
+
+**Decided by:** Dale (autonomous), on DAL-234. Reverses my own conclusion in DEC-256.
+
+**The claim I made ten days ago.** DEC-256 reported "61% of installs are US, only 18% AU"
+and concluded that DAL-234's premise, engaging Australian rare fruit community channels,
+"targets 18% of installs". It was written into business-state, into memory, and into the
+ticket as the reason to cancel the research half.
+
+**It was one population reported as two, and I had written the lesson myself the session
+before.** The 18% came from PostHog, July only, n=49, at device level (pre-DEC-259), and it
+**blended iOS and Android**. Android is 69% of installs and has produced exactly zero
+dollars. DEC-261's lesson is *check whether the average is of one population or two*, and I
+made the identical mistake in the opposite direction in the very next session, on the same
+metric family, having just written it down.
+
+**Corrected, from RevenueCat's 432 customer records rather than a 49-device PostHog slice:**
+
+| | iOS | Android | total | iOS share |
+|---|---|---|---|---|
+| **AU** | **58** | 36 | 94 | **62%** |
+| US | 66 | 247 | 313 | 21% |
+
+**On iOS, the only platform that has ever sold anything, Australia is 43% of installs.**
+And the two facts compound: Australians install on iOS, Americans install on Android, so an
+average AU install lands on the platform converting at 2.3% while an average US install
+lands on the one converting at 0.0%. Not a launch artefact: iOS AU share by month runs
+42 / 46 / 37 / 32 / 40% from April to August.
+
+**A second, independent signal.** On "seen again on a day after install", the weakest bar
+available and applied identically to both: iOS AU **21.4%** (9/42) vs US 7.4% (4/54),
+Fisher one-sided p = 0.046; Android AU **25.8%** (8/31) vs US 1.4% (3/217), p < 0.0001.
+
+**Controlled, because the obvious confound is us.** The first cut included 19 AU records
+that are pre-release builds (0.x) or predate the 2026-04-24 public listing, i.e. Benedict
+and the WA testers. Excluding all of them made the effect *larger*, and it holds on each
+platform separately, so it is not a repeat of the pooling error it was found by.
+
+**What it does not change, stated plainly.** All 94 AU installs to date produced 1 buyer
+(~1.1%) against 313 US installs producing 1 (~0.3%). An Australian install looks worth
+roughly 3x an American one, on n=2 buyers, which is not enough to dress up. At ~19c per AU
+install, $100/mo needs ~530 AU installs a month against the ~14 we get. **The community
+channel is the best audience we can reach, not a revenue plan.** Both things are true.
+
+**The map is still not deliverable and I am still not going to invent it.** Facebook
+redirects this server to a login wall so group sizes are unavailable, and rarefruitsa.org.au
+did not respond. Recorded as unknown, per DEC-256's own method traps. Benedict has standing
+in four channels that need no research at all: WA Rare Fruit Club, Oz Rare Fruit Australia
+(Tom at Ross Creek admins it), Rare Fruit SA, and the WAAS newsletter.
+
+**The one action.** DAL-171's WA Rare Fruit Club post has been drafted since April and never
+sent. DAL-171 was marked **Done when the post was drafted**, so a ticket that has produced
+nothing in four months reads as complete. That is the DEC-238/239 "Track A terminates in
+documents" pattern with a closed ticket on top of it.
+
+**Running lesson, twenty-seventh session.** Every prior lesson asks whether a number is
+complete, current, circular, instrumented, arithmetically right, or recognisable to a human.
+This one is narrower and worse: **I wrote the lesson, then broke it, then quoted the broken
+number as settled strategy for ten days.** A lesson recorded in the decision log is not a
+lesson applied. The only thing that caught it was recomputing the number from a different
+source instead of re-reading my own summary of it.
+
+**Cost:** $0. Read-only.

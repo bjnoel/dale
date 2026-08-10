@@ -193,7 +193,8 @@
         "storefront_geography_2026_07_31": {
           "finding": "61% of July installs are US, not Australian. US 30, AU 9, IN 4, then CH/UA/MA/BD/IT/KR 1 each, of 49 distinct devices.",
           "implication": "Every ASO measurement we have ever taken (DEC-247, 36 terms) is on the AU store, and DAL-177's rename and DAL-257's re-measure are both scored against AU ranks. We have never looked at our rank in the storefront that supplies most of our users. DAL-270.",
-          "also": "DAL-234's premise (Australian rare fruit community channels) targets 18% of installs. Still worth doing because it is the only segment Benedict can influence, but it is not where the users are."
+          "also": "DAL-234's premise (Australian rare fruit community channels) targets 18% of installs. Still worth doing because it is the only segment Benedict can influence, but it is not where the users are.",
+          "SUPERSEDED_BY_DEC_275": "The '61% US / 18% AU' headline here is WRONG for every purpose it was used for. It blends iOS and Android, and Android is 69% of installs and 0% of revenue. Corrected in DEC-275 from RevenueCat's 432 customer records: on iOS, the only platform that has ever sold, AU is 43% of installs (58 of 134). Do not quote the 18% again."
         },
         "install_trend_2026_07_31": {
           "weekly_distinct_devices": {
@@ -273,7 +274,8 @@
           "cohort_evidence": "Because lag is 0, cohort maturity does not confound: the May cohort's 48 iOS installs had their chance on day 1 and took it 0 times. iOS by month: Mar 5/0, Apr 33/0, May 48/0, Jun 19/1, Jul 22/2.",
           "caveat": "n=3. Stated as the strongest signal we have about WHEN the decision is made, not as an established rate."
         },
-        "install_count_divergence": "RevenueCat 416 customers vs PostHog 297 people (+40%). Neither is authoritative: RevenueCat opens a customer per SDK init, PostHog merges aliased ids onto a person. The digest now prints the gap rather than picking one and quietly dividing by it. Retention cross-check: RevenueCat says 11% of iOS and 5% of Android are ever seen on a later day; 272 of 287 Android and 111 of 129 iOS are never seen again 60s after first launch."
+        "install_count_divergence": "RevenueCat 416 customers vs PostHog 297 people (+40%). Neither is authoritative: RevenueCat opens a customer per SDK init, PostHog merges aliased ids onto a person. The digest now prints the gap rather than picking one and quietly dividing by it. Retention cross-check: RevenueCat says 11% of iOS and 5% of Android are ever seen on a later day; 272 of 287 Android and 111 of 129 iOS are never seen again 60s after first launch.",
+        "no_new_sales_since": "Re-swept 2026-08-10: still 3 production purchases, US$52.55 proceeds all time, MRR US$0. Nothing has sold since 2026-07-23, 18 days."
       },
       "storefront_localisation_defect": {
         "found": "2026-08-06 (DEC-262 / DAL-270)",
@@ -303,6 +305,42 @@
         "review_prompt_requested": "0 events, all time.",
         "blocker": "A public store submission, which only Benedict can make. DAL-230 assigned to him, Dale label removed, moved to Todo.",
         "expectation": "Gate 8 needs 2 distinct active days and per DEC-254 only ~8-27% of the base reaches that, so expect single-digit asks per month, and a fraction become ratings. Worth shipping because 0 ratings is the worst possible state, not because it produces many."
+      },
+      "audience_geography": {
+        "decision": "DEC-275 / DAL-234 (2026-08-10). Source: RevenueCat 432 customer records (last_seen_country x last_seen_platform), not the 49-device PostHog July slice DEC-256 used.",
+        "installs_by_country_platform": {
+          "AU": {
+            "ios": 58,
+            "android": 36,
+            "total": 94,
+            "ios_share_pct": 61.7
+          },
+          "US": {
+            "ios": 66,
+            "android": 247,
+            "total": 313,
+            "ios_share_pct": 21.1
+          },
+          "other": {
+            "ios": 10,
+            "android": 15,
+            "total": 25,
+            "ios_share_pct": 40.0
+          }
+        },
+        "headline": "On iOS, the only platform that has ever produced revenue, AU is 43% of installs. DEC-256's '18% AU' blended in Android, which is 69% of installs and 0% of revenue.",
+        "compounding_effect": "Australians install on iOS (62%), Americans install on Android (21% iOS). So the average AU install lands on the platform converting at 2.3% and the average US install lands on the one converting at 0.0%.",
+        "not_a_launch_artefact": "iOS AU share by month: Apr 42%, May 46%, Jun 37%, Jul 32%, Aug 40%.",
+        "retention_au_vs_us": {
+          "bar": "seen again on a day later than install; weakest available bar, applied identically to both",
+          "ios": "AU 21.4% (9/42) vs US 7.4% (4/54), Fisher one-sided p = 0.046",
+          "android": "AU 25.8% (8/31) vs US 1.4% (3/217), p < 0.0001",
+          "controlled": "Excludes 19 AU records that are pre-release builds (0.x) or predate the 2026-04-24 public listing, i.e. Benedict and the WA testers. The effect got LARGER after exclusion and holds on each platform independently."
+        },
+        "value_per_install": "94 AU installs -> 1 buyer (~1.1%); 313 US installs -> 1 buyer (~0.3%). An AU install looks worth ~3x a US install, on n=2 buyers. Do not overstate it.",
+        "does_not_reach_the_target": "At ~19c per AU install, $100/mo needs ~530 AU installs/month against the ~14 we get. The Australian community is our best-quality audience and the only one Benedict can reach; it is not a revenue plan.",
+        "channels": "Four need no research and Benedict already has standing: WA Rare Fruit Club, Oz Rare Fruit Australia (Tom at Ross Creek admins it), Rare Fruit SA, WAAS newsletter. Facebook group sizes are NOT obtainable from this server (login wall) and must not be invented.",
+        "open_action": "DAL-171's WA Rare Fruit Club post has been drafted since April and never sent. DAL-171 was marked Done when the post was DRAFTED. DAL-234 is with Benedict."
       }
     },
     "a_paused_walkthrough": {

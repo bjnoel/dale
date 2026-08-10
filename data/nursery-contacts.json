@@ -312,13 +312,17 @@
           "by": "benedict",
           "summary": "Touch 1 goodwill intro. Flagged 612 products listed, linked their page, offered corrections and asked for their peak fruit tree season. No reply.",
           "evidence": "Email pasted by Benedict 2026-08-10"
+        },
+        {
+          "date": "2026-08-10",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Re: treestock.com.au, and a quick visit?",
+          "evidence": "resend:e75a4838-adf9-47da-82b3-f3e5bdce8378"
         }
       ],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Send touch 2 to info@guildfordgardencentre.com.au, BCC nursery@veliamsal.resend.app. Draft at deliverables/guildford-touch-1.txt. Asks permission to drop in rather than re-asking the peak-season question that touch 1 got no answer to.",
-        "since": "2026-08-10"
-      },
+      "open_action": null,
       "notes": "WA, Perth metro delivery only, in person visitable from Perth (Guildford, ~20 min from CBD). Touch 1 emailed 2026-03-30, no reply. Register wrongly showed not_contacted until 2026-08-10; Benedict had the sent email. Same failure as Fruit Tree Lane: a touch that lives only in Benedict's outbox is invisible to the register."
     },
     {
