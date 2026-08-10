@@ -40,7 +40,7 @@
       ],
       "open_action": {
         "owner": "benedict",
-        "what": "Send the drafted reply to Correy (order@daleysfruit.com.au), BCC nursery@veliamsal.resend.app. Draft on DAL-274. Asks him to confirm the 'ships to WA seasonally with quarantine permits' line.",
+        "what": "Send the drafted reply to Correy (order@daleysfruit.com.au), BCC nursery@veliamsal.resend.app. Draft on DAL-274. Asks for their seasonal shape, the question that produced Ross Creek's banner. Do NOT ask him to confirm WA shipping: Benedict has bought from them twice in 6 months and knows it is accurate.",
         "since": "2026-08-10"
       },
       "notes": "No affiliate program (DAL-154, re-verified 2026-07-30 in DEC-241). Wholesale only, $2k minimum. Our single largest referral destination over 6 months."
@@ -91,7 +91,7 @@
       ],
       "open_action": {
         "owner": "benedict",
-        "what": "Send the drafted reply to Tom (rosscreektropicals@gmail.com), BCC nursery@veliamsal.resend.app. Draft on DAL-274. No Treesmith ask: blocked on DAL-177, the live store copy still lists cloud backup as a Pro feature.",
+        "what": "Send the drafted update to Tom (rosscreektropicals@gmail.com), BCC nursery@veliamsal.resend.app. Draft on DAL-274. Not an apology: Tom's 2026-04-02 message closed the thread and nothing was owed.",
         "since": "2026-08-10"
       },
       "notes": "Our warmest relationship and the best-connected contact we have (Oz Rare Fruit Australia FB group admin). Seasonality is live on /nursery/ross-creek.html. The impact.com affiliate fingerprint found in DEC-241 did not reproduce and is treated as a false positive."
@@ -124,12 +124,8 @@
           "evidence": "DAL-80 comment 2026-04-25"
         }
       ],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Send the drafted thank-you to Rob via heritagefruittrees.com.au/contact-us/. Draft on DAL-274. Form cannot be BCC'd, tell Dale when sent.",
-        "since": "2026-08-10"
-      },
-      "notes": "Rob is the relationship Benedict pointed at as the model for this whole ticket. Not a growth prospect. NURSERY_META and project_heritage_shipping.md already reflect the no-WA/TAS/NT position."
+      "open_action": null,
+      "notes": "Rob is the relationship Benedict pointed at as the model for this whole ticket. Not a growth prospect and no longer carries an open action: Benedict confirmed 2026-08-10 that he already replied to Rob himself, so the 'overdue thank-you' the register was tracking did not exist. NURSERY_META and project_heritage_shipping.md already reflect the no-WA/TAS/NT position, and /nursery/heritage-fruit-trees.html shows it. Courtesy contact only, do not pitch: Heritage is contracting, not expanding."
     },
     {
       "key": "perth-mobile-nursery",
