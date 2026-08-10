@@ -107,14 +107,30 @@
           "by": "tom",
           "summary": "Replied same day. Will check Shopify for clicks-to-sales. Says they convert 3-4% of clicks vs a sub-2% ecomm norm. Grafted sapodilla is a SUPPLY problem not demand ('could sell hundreds of each each year'): their propagation supplier closed, stock trees need 1-2 years, a trip for grafting material is planned but no ETA. Asked us to check back in 3 months but not to bet on availability.",
           "evidence": "Tom's reply pasted by Benedict 2026-08-10; arrived to his inbox so not BCC-captured"
+        },
+        {
+          "date": "2026-08-10",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Replied thanking Tom for the 3-4% figure and asking him to dig the real clicks-to-sales number out of Shopify. Acknowledged the sapodilla supply answer and flagged a check-back after Christmas.",
+          "evidence": "deliverables/ross-creek-reply-conversions.txt; sent by Benedict 2026-08-10 without BCC, hand-logged"
+        },
+        {
+          "date": "2026-08-10",
+          "direction": "in",
+          "channel": "email",
+          "by": "tom",
+          "summary": "Sent the real Shopify figure: 166 clicks in the past 90 days at 3.61% conversion, so about 6 orders. First measured clicks-to-sales number any nursery has given us, replacing his earlier 3-4% estimate.",
+          "evidence": "Tom's reply pasted by Benedict 2026-08-10"
         }
       ],
       "open_action": {
-        "owner": "benedict",
-        "what": "Send the short reply to Tom (admin@rosscreektropicals.com.au), BCC nursery@veliamsal.resend.app. Draft at deliverables/ross-creek-reply-conversions.txt and on DAL-274. Asks him to send the Shopify clicks-to-sales number he offered. Dale chases the sapodilla side after 2026-11-10.",
+        "owner": "dale",
+        "what": "Follow up on grafted sapodilla on or after 2026-11-10 (Tom said check back in 3 months, do not bet on it). Also re-ask for a Shopify figure once the UTM gap on the homepage is fixed, to see if his attributed clicks rise.",
         "since": "2026-08-10"
       },
-      "notes": "Our warmest relationship and the best-connected contact we have (Tom helps admin the Oz Rare Fruit Australia FB group). Seasonality live on /nursery/ross-creek.html. Email corrected 2026-08-10 to admin@rosscreektropicals.com.au: the register had rosscreektropicals@gmail.com, whose gmail.com domain would NOT have matched the register on a BCC'd touch. Stocks grafted sapodilla Krasuey, Ponderosa and Sawo Manilla at $99, all out of stock 2026-08-10. WA only via concierge resellers; no bulk because pallets by road freight carry extreme risk vs cartons by express post, and in-house needs a separate treatment area."
+      "notes": "Our warmest relationship and the best-connected contact we have (Tom helps admin the Oz Rare Fruit Australia FB group). Seasonality live on /nursery/ross-creek.html. Email corrected 2026-08-10 to admin@rosscreektropicals.com.au: the register had rosscreektropicals@gmail.com, whose gmail.com domain would NOT have matched the register on a BCC'd touch. Stocks grafted sapodilla Krasuey, Ponderosa and Sawo Manilla at $99, all out of stock 2026-08-10. WA only via concierge resellers; no bulk because pallets by road freight carry extreme risk vs cartons by express post, and in-house needs a separate treatment area. MEASURED CONVERSION (2026-08-10, Tom via Shopify): 166 clicks in 90 days at 3.61%, about 6 orders. Our Plausible count for the same window is 336 clicks, of which only 214 carry utm_source=treestock. Shopify's 166 sits just under our tagged count, so Tom is reading a UTM-filtered report and the 122 untagged clicks are invisible to him. The gap is historical, not a live bug: shared UTM tagging landed 2026-07-23, so only 18 of Tom's 90 days were tagged. Tagged share was 53% before that commit and 88% after (88% site-wide too). His next report should show more clicks even at flat traffic. Re-ask in ~3 months to test that."
     },
     {
       "key": "heritage-fruit-trees",
@@ -287,14 +303,23 @@
       "phone": "(08) 9279 8645",
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-03-30",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Touch 1 goodwill intro. Flagged 612 products listed, linked their page, offered corrections and asked for their peak fruit tree season. No reply.",
+          "evidence": "Email pasted by Benedict 2026-08-10"
+        }
+      ],
       "open_action": {
         "owner": "benedict",
-        "what": "Send the touch 1 email to info@guildfordgardencentre.com.au, BCC nursery@veliamsal.resend.app. Draft is in deliverables/guildford-touch-1.txt.",
+        "what": "Send touch 2 to info@guildfordgardencentre.com.au, BCC nursery@veliamsal.resend.app. Draft at deliverables/guildford-touch-1.txt. Asks permission to drop in rather than re-asking the peak-season question that touch 1 got no answer to.",
         "since": "2026-08-10"
       },
-      "notes": "WA, in person visitable from Perth. Benedict could walk in."
+      "notes": "WA, Perth metro delivery only, in person visitable from Perth (Guildford, ~20 min from CBD). Touch 1 emailed 2026-03-30, no reply. Register wrongly showed not_contacted until 2026-08-10; Benedict had the sent email. Same failure as Fruit Tree Lane: a touch that lives only in Benedict's outbox is invisible to the register."
     },
     {
       "key": "fruitopia",
