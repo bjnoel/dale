@@ -39,8 +39,8 @@
         }
       ],
       "open_action": {
-        "owner": "dale",
-        "what": "BLOCKED ON DALE, not Benedict: nothing is drafted. Tracked as DAL-274. Once Dale posts the draft this returns to Benedict to send. Original: Touch 1.5 reply: thank Correy, ask whether they plan to introduce an affiliate program, confirm the 'ships to WA seasonally with quarantine permits' description is still accurate.",
+        "owner": "benedict",
+        "what": "Send the drafted reply to Correy (order@daleysfruit.com.au), BCC nursery@veliamsal.resend.app. Draft on DAL-274. Asks him to confirm the 'ships to WA seasonally with quarantine permits' line.",
         "since": "2026-08-10"
       },
       "notes": "No affiliate program (DAL-154, re-verified 2026-07-30 in DEC-241). Wholesale only, $2k minimum. Our single largest referral destination over 6 months."
@@ -90,8 +90,8 @@
         }
       ],
       "open_action": {
-        "owner": "dale",
-        "what": "BLOCKED ON DALE, not Benedict: nothing is drafted. Tracked as DAL-274. Once Dale posts the draft this returns to Benedict to send. Original: Touch 1.5: confirm the seasonality banner is live on his nursery page, polite 'thinking about it' on Google reviews.",
+        "owner": "benedict",
+        "what": "Send the drafted reply to Tom (rosscreektropicals@gmail.com), BCC nursery@veliamsal.resend.app. Draft on DAL-274. No Treesmith ask: blocked on DAL-177, the live store copy still lists cloud backup as a Pro feature.",
         "since": "2026-08-10"
       },
       "notes": "Our warmest relationship and the best-connected contact we have (Oz Rare Fruit Australia FB group admin). Seasonality is live on /nursery/ross-creek.html. The impact.com affiliate fingerprint found in DEC-241 did not reproduce and is treated as a false positive."
@@ -125,8 +125,8 @@
         }
       ],
       "open_action": {
-        "owner": "dale",
-        "what": "BLOCKED ON DALE, not Benedict: nothing is drafted. Tracked as DAL-274. Once Dale posts the draft this returns to Benedict to send. Original: Short friendly thank-you. No pitch: Heritage is tightening, not expanding.",
+        "owner": "benedict",
+        "what": "Send the drafted thank-you to Rob via heritagefruittrees.com.au/contact-us/. Draft on DAL-274. Form cannot be BCC'd, tell Dale when sent.",
         "since": "2026-08-10"
       },
       "notes": "Rob is the relationship Benedict pointed at as the model for this whole ticket. Not a growth prospect. NURSERY_META and project_heritage_shipping.md already reflect the no-WA/TAS/NT position."
