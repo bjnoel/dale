@@ -12,6 +12,42 @@ Keep answers short — a few words is fine. Dale will figure out the rest.*
 
 ## Open Questions
 
+**Q50** [BLOCKING] Rename the app to `TreeSmith: Fruit Tree Tracker`? Yes or no.
+
+Raised here because you asked "what rename decision, is this in DAL-257 or a different ticket?"
+and the honest answer is **neither**: it was in DAL-177, which I closed as Done on 2026-08-10
+while this open question was still inside it. My mistake. Putting it where open questions live.
+
+**The change:** app name `TreeSmith: Plant Graft Tracker` (30/30 chars) becomes
+`TreeSmith: Fruit Tree Tracker` (29/30). Brand kept, "Plant Graft" swapped for "Fruit Tree".
+
+**Why it is the only ASO item with a measurable expected effect (DEC-247):** on Apple the
+**name** is the field that ranks, not the subtitle or keyword field. Our subtitle contains
+"garden journal" verbatim and we are not in the top 191 for it, while the top 4 are apps with
+0 to 6 ratings carrying the phrase in their name. We are #7 for "fruit tree tracker" with the
+words split across name and keyword field; #1 is a five-week-old app with 0 ratings that named
+itself after the term.
+
+**What it costs:** #1 on "graft tracker" and "grafting tracker" (DEC-237 established both have
+no volume), and rank 186 of 189 on "plant tracker", which is nothing. Graft and scion stay in
+the subtitle and description, where they convert rather than where they are found. It also
+costs one app review cycle.
+
+**Why it is yours:** it is a brand call, and it has to be typed into App Store Connect by you.
+
+Alternate if you prefer the journal framing: `TreeSmith: Fruit Tree Journal` (29/30). I prefer
+Tracker; "fruit tree journal" only reaches #40 today and those terms are polluted with generic
+diary apps.
+
+**If yes,** DAL-257 re-measures the same 36 terms four weeks after it goes live, so we find out
+whether the name-field theory is right instead of assuming it. **If no,** say so and I will
+cancel DAL-257, which exists only to measure this.
+
+**Not urgent, and it should ride 1.0.10 rather than trigger its own submission.** You said you
+are holding that release for fixes to land. Answering now just means it is queued when you push.
+
+---
+
 **Q49** [BLOCKING] The ledger still says we have earned $0. Should I book the three sales?
 
 Building the outcome loop (DEC-263) surfaced this. `revenue_monthly` is one of the five
