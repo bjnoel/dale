@@ -35,6 +35,7 @@ when tagging began) are shown separately and never counted. Every figure is
 reported all-time as well as weekly, so a sale cannot age out of the digest.
 """
 
+import datetime
 import json
 import os
 import sys
@@ -45,6 +46,35 @@ PROJECT_ID = 166160
 DEFAULT_HOST = "https://eu.posthog.com"
 SECRETS_DIR = "/opt/dale/secrets"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Every app event name this digest reads, in one place.
+#
+# The names used to be string literals scattered across the metric queries.
+# When the app renamed its onboarding events (commit f0117ee replaced the old
+# OnboardingFlow with a welcome screen), the digest kept querying the dead
+# names and reported "Onboarding completion 0/0 = n/a" plus a red "Biggest
+# drop: opened -> onboarded: lost 22 (100%)" for eleven days. Both were false;
+# the week actually ran 15 shown / 15 completed = 100%.
+#
+# A query against an event nobody sends returns 0, and 0 is a legal answer, so
+# nothing could have caught this by inspecting the numbers. m_event_liveness
+# watches this exact dict instead: any name with real history and no recent
+# events is reported as SILENT rather than floored to zero.
+EVENTS = {
+    "opened": "Application Opened",
+    "welcome_shown": "welcome_screen_shown",
+    "welcome_completed": "welcome_screen_completed",
+    "plant_added": "plant_added",
+    "activity_logged": "activity_logged",
+    "paywall_shown": "paywall_shown",
+    "paywall_result": "paywall_result",
+    "purchase_succeeded": "purchase_succeeded",
+}
+
+# How many events a name must have carried historically before its silence is
+# worth reporting. Low-volume events have quiet weeks all the time; a rename
+# shows up as hundreds of events stopping dead.
+MIN_HISTORY = 20
 
 
 # ── Credentials ────────────────────────────────────────────────────────────
@@ -196,6 +226,70 @@ def m_identity(host, key):
                               if persons else None)}
 
 
+def m_event_liveness(host, key):
+    """Which of the events this digest depends on have stopped arriving.
+
+    Every other metric here answers "what did users do". This one answers "can
+    we still see what users do", which is upstream of all of them: a metric
+    reading an event the app no longer sends reports 0, and 0 is indistinguishable
+    from a real zero. That is not hypothetical. `onboarding_completed` was
+    renamed to `welcome_screen_completed` on 2026-07-02, the last stragglers on
+    the old build stopped sending it on 2026-07-30, and for the eleven days after
+    that the digest reported a 100%-converting funnel step as a total collapse.
+
+    Two failure modes, deliberately reported apart because they need different
+    fixes:
+
+      silent      the name has real history and nothing recent. Renamed, or the
+                  code path that fired it was removed.
+      never_seen  the name has never appeared at all. A typo in EVENTS, or an
+                  event we planned and never shipped.
+
+    Anything below MIN_HISTORY is left alone; a low-volume event having a quiet
+    week is ordinary and warning about it would train the reader to skip this
+    section, which is the one failure this section cannot afford.
+    """
+    names = sorted(set(EVENTS.values()))
+    in_list = ", ".join("'%s'" % n for n in names)
+    rows = hogql(host, key, f"""
+        SELECT event,
+               toString(max(toDate(timestamp))) AS last_seen,
+               count() AS all_time,
+               countIf(timestamp >= now() - INTERVAL 7 DAY) AS recent
+        FROM events
+        WHERE event IN ({in_list})
+        GROUP BY event
+    """)
+
+    silent = []
+    seen = set()
+    for event, last_seen, all_time, recent in rows:
+        seen.add(event)
+        if recent == 0 and all_time >= MIN_HISTORY:
+            silent.append({
+                "event": event,
+                "last_seen": last_seen,
+                "days_ago": _days_since(last_seen),
+                "all_time": all_time,
+            })
+    silent.sort(key=lambda s: s["all_time"], reverse=True)
+    return {"silent": silent,
+            "never_seen": [n for n in names if n not in seen]}
+
+
+def _days_since(date_str):
+    """Whole days from an ISO date to today, or None if it will not parse.
+
+    Returns None rather than raising: a malformed date must not cost the
+    reader the rest of the warning, which is still actionable without it.
+    """
+    try:
+        seen = datetime.date.fromisoformat(str(date_str)[:10])
+    except (ValueError, TypeError):
+        return None
+    return (datetime.date.today() - seen).days
+
+
 def m_plants(host, key):
     """How many plants exist, and how many of them we ever saw being added.
 
@@ -302,14 +396,20 @@ def m_activation(host, key):
 
 
 def m_onboarding(host, key):
-    """Onboarding starts vs completes in the last 7 days."""
-    rows = hogql(host, key, """
+    """First-run screen starts vs completes in the last 7 days.
+
+    Reads the welcome-screen events, NOT the retired onboarding_* pair. See
+    EVENTS for what happened when this queried the old names.
+    """
+    started_event = EVENTS["welcome_shown"]
+    completed_event = EVENTS["welcome_completed"]
+    rows = hogql(host, key, f"""
         SELECT
-          countIf(event = 'onboarding_started') AS started,
-          countIf(event = 'onboarding_completed') AS completed
+          countIf(event = '{started_event}') AS started,
+          countIf(event = '{completed_event}') AS completed
         FROM events
         WHERE timestamp >= now() - INTERVAL 7 DAY
-          AND event IN ('onboarding_started', 'onboarding_completed')
+          AND event IN ('{started_event}', '{completed_event}')
     """)
     started = rows[0][0] if rows else 0
     completed = rows[0][1] if rows else 0
@@ -323,24 +423,38 @@ def m_funnel(host, key):
     Reports the biggest single drop-off so the digest can call it out.
     """
     steps = [
-        ("opened", "Application Opened"),
-        ("onboarded", "onboarding_completed"),
-        ("plant_added", "plant_added"),
-        ("activity_logged", "activity_logged"),
+        ("opened", EVENTS["opened"]),
+        ("onboarded", EVENTS["welcome_completed"]),
+        ("plant_added", EVENTS["plant_added"]),
+        ("activity_logged", EVENTS["activity_logged"]),
     ]
     counts = []
     for label, event in steps:
         rows = hogql(host, key, f"""
-            SELECT count(DISTINCT person_id) FROM events
-            WHERE event = '{event}'
-              AND timestamp >= now() - INTERVAL 7 DAY
+            SELECT count(DISTINCT if(timestamp >= now() - INTERVAL 7 DAY,
+                                     person_id, NULL)) AS people_7d,
+                   count() AS all_time
+            FROM events WHERE event = '{event}'
         """)
-        counts.append((label, rows[0][0] if rows else 0))
-    # Biggest absolute drop between consecutive steps.
+        people_7d = rows[0][0] if rows else 0
+        all_time = rows[0][1] if rows else 0
+        # An event no code path has ever emitted reads as a step nobody
+        # reached. `activity_logged` is the live example: the app declares
+        # captureActivityLogged and never calls it, so this step sat at 0
+        # while the digest blamed the users. Carry whether the step is
+        # measurable at all, so the render and the drop calculation can both
+        # refuse to treat "not instrumented" as "nobody did it".
+        counts.append((label, people_7d, all_time > 0))
+
+    # Biggest absolute drop between consecutive INSTRUMENTED steps. A step we
+    # cannot see is skipped rather than scored: a 100% drop into an event that
+    # has never existed is a fact about our telemetry, not about the funnel,
+    # and printing it in red trains the reader to ignore the line that matters.
+    measurable = [(label, n) for label, n, ok in counts if ok]
     biggest = None
-    for i in range(1, len(counts)):
-        prev_label, prev_n = counts[i - 1]
-        cur_label, cur_n = counts[i]
+    for i in range(1, len(measurable)):
+        prev_label, prev_n = measurable[i - 1]
+        cur_label, cur_n = measurable[i]
         drop = prev_n - cur_n
         if prev_n and (biggest is None or drop > biggest[2]):
             pct = round(drop / prev_n * 100)
@@ -573,6 +687,32 @@ def render(metrics):
         line(f"  {name}: ERROR {msg}")
         html(f'<div style="color:{RED};font-size:12px;">{name}: {msg}</div>')
 
+    # Event liveness. Deliberately first: every number below is built on these
+    # events, so a broken input has to be read before the figures derived from
+    # it. Renders nothing at all when everything is arriving, because this runs
+    # every week and a section that always says "fine" stops being read.
+    lv = metrics.get("liveness")
+    if lv and lv["ok"]:
+        d = lv["data"]
+        if d["silent"] or d["never_seen"]:
+            section("Event liveness")
+            for s in d["silent"]:
+                ago = ("" if s["days_ago"] is None
+                       else f" ({s['days_ago']}d ago)")
+                kv(s["event"],
+                   f"SILENT. Last seen {s['last_seen']}{ago}, "
+                   f"{s['all_time']} events historically. Renamed or dropped? "
+                   f"Any metric reading it is showing zero.", RED)
+            for name in d["never_seen"]:
+                kv(name,
+                   "never seen. Typo in EVENTS, or an event that never shipped.",
+                   RED)
+    elif lv and not lv["ok"]:
+        # An errored liveness check is itself a blind spot, so say so rather
+        # than letting the section's silence read as "all events healthy".
+        section("Event liveness")
+        err("Event liveness", lv["error"])
+
     # Growth
     section("Growth")
     g = metrics["installs"]
@@ -651,8 +791,12 @@ def render(metrics):
     section("Activation funnel (7d, distinct people)")
     fn = metrics["funnel"]
     if fn["ok"]:
-        for label, n in fn["data"]["steps"]:
-            kv(label, str(n))
+        for label, n, instrumented in fn["data"]["steps"]:
+            if instrumented:
+                kv(label, str(n))
+            else:
+                kv(label, "not instrumented (the app has never sent this "
+                          "event, so this is not a user behaviour)", RED)
         bd = fn["data"]["biggest_drop"]
         if bd:
             msg = f"{bd[0]} -> {bd[1]}: lost {bd[2]} ({bd[3]}%)"
@@ -856,6 +1000,7 @@ def main():
     host, key = load_posthog_credentials()
 
     metrics = {
+        "liveness": run_metric(m_event_liveness, host, key),
         "installs": run_metric(m_installs, host, key),
         "active": run_metric(m_active, host, key),
         "identity": run_metric(m_identity, host, key),
