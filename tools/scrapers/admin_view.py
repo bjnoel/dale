@@ -1000,15 +1000,39 @@ PAGE_CSS = """
   ul.touches { margin:8px 0 0; padding-left:18px; font-size:0.8rem; }
   ul.touches li { margin-bottom:8px; }
   .tdate { font-weight:600; }
+  nav.tabs { display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+  nav.tabs a { padding:6px 12px; border-radius:999px; font-size:0.82rem;
+    text-decoration:none; color:#d1fae5; background:rgba(255,255,255,0.14); }
+  nav.tabs a.here { background:#fff; color:#065f46; font-weight:600; }
 """
+
+# The admin surface, in the order the tabs appear. /admin is the landing page and
+# holds the only thing that asks anything of the reader; the rest is reference.
+# Splitting these out of one page was Benedict's call, 2026-08-10: as a single
+# document it had become a wall of text you had to scroll past to find anything.
+ADMIN_PAGES = (
+    ("/admin", "Business state"),
+    ("/admin/subscribers", "Subscribers"),
+    ("/admin/nurseries", "Nurseries"),
+    ("/admin/digest", "Daily digest"),
+)
+
+
+def render_nav(current_path: str) -> str:
+    """Tab bar shared by every admin page. `current_path` is matched exactly."""
+    links = []
+    for path, label in ADMIN_PAGES:
+        cls = ' class="here"' if path == current_path else ""
+        links.append(f'<a href="{path}"{cls}>{_esc(label)}</a>')
+    return '<nav class="tabs">' + "".join(links) + "</nav>"
 
 
 def render_page(title: str, heading: str, subtitle: str, content: str,
-                extra_css: str = "") -> str:
+                extra_css: str = "", nav: str = "") -> str:
     """The admin page shell: noindex, no public site chrome.
 
-    `subtitle` is escaped; `content` is trusted HTML the caller has already
-    built. Used by render_admin_html and by the digest archive.
+    `subtitle`, `content` and `nav` are trusted HTML the caller has already
+    built and escaped. Shared by the three /admin pages and the digest archive.
     """
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1023,6 +1047,7 @@ def render_page(title: str, heading: str, subtitle: str, content: str,
 <header>
   <h1>{_esc(heading)}</h1>
   <div class="ts">{subtitle}</div>
+{nav}
 </header>
 <main>
 {content}
@@ -1031,18 +1056,34 @@ def render_page(title: str, heading: str, subtitle: str, content: str,
 </html>"""
 
 
-def render_admin_html(model: dict, generated_at: str = None) -> str:
-    """Standalone, view-only HTML page. No public site chrome, noindex."""
+def _subtitle(generated_at: str = None) -> tuple:
     if generated_at is None:
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+    return generated_at, f"View only · generated {_esc(generated_at)}"
 
-    # Ordered needs-doing, then audience, then reference. The nursery register
-    # used to sit third and render 55 rows, which put a CRM table where the
-    # answer to "what needs me" should be; its open actions are now surfaced in
-    # the business block instead, so the register itself is reference detail.
+
+def render_business_html(model: dict, generated_at: str = None) -> str:
+    """/admin — the landing page, and the only one that asks anything of the
+    reader: what is blocked on Benedict, how graded tickets turned out, traffic.
+
+    Everything reference-shaped lives on the other tabs. The whole point of the
+    split is that this page stays short enough to read in one screen.
+    """
+    _, subtitle = _subtitle(generated_at)
+    return render_page(
+        title="treestock admin — business state",
+        heading="treestock admin · business state",
+        subtitle=subtitle,
+        content=_business_section(model.get("business")),
+        nav=render_nav("/admin"),
+    )
+
+
+def render_subscribers_html(model: dict, generated_at: str = None) -> str:
+    """/admin/subscribers — who is subscribed, to what, and what they watch."""
+    _, subtitle = _subtitle(generated_at)
     parts = [
         _cards(model["totals"]),
-        _business_section(model.get("business")),
         '<div class="grid3">',
         _count_table("By state", model["by_state"]),
         _count_table("By frequency", model["by_frequency"]),
@@ -1053,25 +1094,51 @@ def render_admin_html(model: dict, generated_at: str = None) -> str:
         _watch_only_table(model["watch_only"]),
         _pending_table(model["pending"]),
         _top_varieties_table(model["top_varieties"][:25]),
+    ]
+    return render_page(
+        title="treestock admin — subscribers",
+        heading="treestock admin · subscribers",
+        subtitle=subtitle,
+        content="\n".join(parts),
+        nav=render_nav("/admin/subscribers"),
+    )
+
+
+def render_nurseries_html(model: dict, generated_at: str = None) -> str:
+    """/admin/nurseries — the relationship register plus the scraper's view of
+    the same nurseries: health grid and the unclassified-products report. They
+    belong together; both answer "what is going on with nursery X".
+    """
+    _, subtitle = _subtitle(generated_at)
+    parts = [
         _nursery_section(model.get("nurseries")),
         _health_section(model.get("health")),
         _needs_review_section(model.get("needs_review")),
     ]
-    content = "\n".join(parts)
-
     return render_page(
-        title="treestock admin — business state",
-        heading="treestock admin · business state",
-        subtitle=(f"View only · generated {_esc(generated_at)} · "
-                  '<a href="/admin/digest">daily digest archive &rarr;</a>'),
-        content=content,
+        title="treestock admin — nurseries",
+        heading="treestock admin · nurseries",
+        subtitle=subtitle,
+        content="\n".join(parts),
+        nav=render_nav("/admin/nurseries"),
     )
 
 
+# path -> renderer, so subscribe_server routes without a chain of ifs.
+ADMIN_RENDERERS = {
+    "/admin": render_business_html,
+    "/admin/subscribers": render_subscribers_html,
+    "/admin/nurseries": render_nurseries_html,
+}
 
 
 if __name__ == "__main__":
-    # Local smoke test: render from whatever data dir is passed (or the default).
+    # Local smoke test: render one page from whatever data dir is passed.
+    #   python3 admin_view.py [data_dir] [/admin|/admin/subscribers|/admin/nurseries]
     import sys
     data_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else DATA_DIR
-    print(render_admin_html(load_admin_data(data_dir)))
+    path = sys.argv[2] if len(sys.argv) > 2 else "/admin"
+    render = ADMIN_RENDERERS.get(path)
+    if render is None:
+        sys.exit(f"unknown admin page {path!r}; try one of {list(ADMIN_RENDERERS)}")
+    print(render(load_admin_data(data_dir)))

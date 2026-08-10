@@ -184,6 +184,7 @@ def _shell(subtitle: str, content: str) -> str:
         subtitle=subtitle,
         content=content,
         extra_css=EXTRA_CSS,
+        nav=admin_view.render_nav("/admin/digest"),
     )
 
 
@@ -193,11 +194,10 @@ def render_digest_page(data_dir=None, day: str = None):
     day=None means the newest archived digest.
     """
     days = list_digest_days(data_dir)
-    back = '<a href="/admin">&larr; business state</a>'
 
     if not days:
         return 200, _shell(
-            back,
+            "View only",
             '<section><h2>No digests archived yet</h2>'
             '<p class="muted">The first one lands after the next daily digest '
             "run (22:00 UTC / 6am AWST).</p></section>",
@@ -210,7 +210,7 @@ def render_digest_page(data_dir=None, day: str = None):
         # the list rather than a bare 404, since the likely cause is a guessed URL.
         label = admin_view._esc(day)
         return 404, _shell(
-            back,
+            f"{len(days)} archived",
             f'<section><h2>No digest for {label}</h2>'
             '<p class="muted">Nothing archived for that date. Pick one below.</p>'
             "</section>" + _archive_list("", days),
@@ -218,14 +218,17 @@ def render_digest_page(data_dir=None, day: str = None):
 
     body = load_digest(data_dir, day)
     if body is None:
-        return 404, _shell(back, "<section><h2>Could not read that digest</h2></section>")
+        return 404, _shell(
+            f"{len(days)} archived",
+            "<section><h2>Could not read that digest</h2></section>",
+        )
 
     content = (
         _pager(day, days)
         + f'<div class="digest">{body}</div>'
         + _archive_list(day, days)
     )
-    return 200, _shell(f"{back} · {len(days)} archived", content)
+    return 200, _shell(f"{days[-1]} to {days[0]} · {len(days)} archived", content)
 
 
 if __name__ == "__main__":

@@ -121,7 +121,7 @@ class BuildAdminModelTest(unittest.TestCase):
 class RenderAdminHtmlTest(unittest.TestCase):
     def test_render_contains_data_and_is_noindex(self):
         model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
-        page = admin_view.render_admin_html(model, generated_at="2026-06-11 12:00")
+        page = admin_view.render_subscribers_html(model, generated_at="2026-06-11 12:00")
         self.assertIn("noindex", page)
         self.assertIn("a@x.com", page)
         self.assertIn("Black Genoa Fig", page)
@@ -129,7 +129,7 @@ class RenderAdminHtmlTest(unittest.TestCase):
 
     def test_render_links_varieties_to_main_site(self):
         model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
-        page = admin_view.render_admin_html(model)
+        page = admin_view.render_subscribers_html(model)
         self.assertIn(
             'href="https://treestock.com.au/variety/fig-black-genoa.html"', page
         )
@@ -142,7 +142,7 @@ class RenderAdminHtmlTest(unittest.TestCase):
             [{"email": "z@x.com", "state": "ALL", "subscribed_at": "2026-06-10"}],
             [], watches,
         )
-        page = admin_view.render_admin_html(model)
+        page = admin_view.render_subscribers_html(model)
         self.assertNotIn("<script>alert(1)</script>", page)
         self.assertIn("&lt;script&gt;", page)
 
@@ -229,13 +229,13 @@ class BuildHealthModelTest(unittest.TestCase):
         model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
         model["health"] = admin_view.build_health_model(
             [("2026-06-11", [_hrec("daleys")])])
-        page = admin_view.render_admin_html(model)
+        page = admin_view.render_nurseries_html(model)
         self.assertIn("Scraper health", page)
 
     def test_full_page_renders_without_health_key(self):
         # Direct render calls (and old callers) without a health key still work.
         model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
-        page = admin_view.render_admin_html(model)
+        page = admin_view.render_nurseries_html(model)
         self.assertIn("No scrape-health records yet", page)
 
     def test_needs_review_section_renders_counts(self):
@@ -259,7 +259,7 @@ class BuildHealthModelTest(unittest.TestCase):
 
     def test_full_page_includes_needs_review_section(self):
         model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
-        page = admin_view.render_admin_html(model)
+        page = admin_view.render_nurseries_html(model)
         self.assertIn("Needs review", page)
 
     def test_load_health_data_reads_from_disk(self):
@@ -359,7 +359,7 @@ class NurseryRegisterTests(unittest.TestCase):
 
     def test_missing_register_renders_a_named_absence_not_a_silent_gap(self):
         # DEC-249: an absence of data must not look like a zero.
-        page = admin_view.render_admin_html(
+        page = admin_view.render_nurseries_html(
             dict(admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES),
                  nurseries=None))
         self.assertIn("Nursery relationships", page)
@@ -367,7 +367,7 @@ class NurseryRegisterTests(unittest.TestCase):
 
     def test_rendered_page_states_the_open_action_and_its_owner(self):
         # DEC-251: pin the text a human actually reads, not just the model.
-        page = admin_view.render_admin_html(
+        page = admin_view.render_nurseries_html(
             dict(admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES),
                  nurseries=self.model()))
         self.assertIn("1 open actions", page)
@@ -459,16 +459,76 @@ class TestNurserySectionTrim(unittest.TestCase):
         self.assertIn("1 more nursery, nothing outstanding", html)
 
 
-class TestSectionOrder(unittest.TestCase):
-    def test_business_state_precedes_the_nursery_register(self):
-        """The complaint that started this: nursery info owned the top of the
-        page. Actionable state has to come first."""
+class TestPageSplit(unittest.TestCase):
+    """The complaint that started this: /admin was one long wall of text, and
+    the nursery register owned the top of it. The answer used to be section
+    order; since 2026-08-10 it is separate pages. What has to stay true is that
+    the landing page carries the actionable state and nothing else."""
+
+    def full_model(self):
         model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
         model["nurseries"] = admin_view.build_nursery_model(REGISTER, date(2026, 8, 6))
         model["business"] = SNAPSHOT
-        html = admin_view.render_admin_html(model)
-        self.assertLess(html.index("Business state"), html.index("Nursery relationships"))
-        self.assertLess(html.index("Subscribers"), html.index("Nursery relationships"))
+        model["health"] = admin_view.build_health_model(
+            [("2026-06-11", [_hrec("daleys")])])
+        return model
+
+    def test_landing_page_is_business_state_only(self):
+        html = admin_view.render_business_html(self.full_model())
+        self.assertIn("Business state", html)
+        # The three things that used to bury it.
+        self.assertNotIn("Nursery relationships", html)
+        self.assertNotIn("Scraper health", html)
+        self.assertNotIn("Top watched varieties", html)
+
+    def test_subscribers_page_has_no_nursery_or_business_sections(self):
+        html = admin_view.render_subscribers_html(self.full_model())
+        self.assertIn("Top watched varieties", html)
+        self.assertNotIn("Nursery relationships", html)
+        # The section, not the nav tab of the same name.
+        self.assertNotIn("<h2>Business state</h2>", html)
+
+    def test_nurseries_page_groups_register_with_scraper_health(self):
+        html = admin_view.render_nurseries_html(self.full_model())
+        self.assertIn("Nursery relationships", html)
+        self.assertIn("Scraper health", html)
+        self.assertIn("Needs review", html)
+        self.assertNotIn("<h2>Business state</h2>", html)
+
+    def test_every_page_carries_the_same_nav(self):
+        model = self.full_model()
+        for render in (admin_view.render_business_html,
+                       admin_view.render_subscribers_html,
+                       admin_view.render_nurseries_html):
+            html = render(model)
+            for path, label in admin_view.ADMIN_PAGES:
+                with self.subTest(render=render.__name__, path=path):
+                    self.assertIn(f'href="{path}"', html)
+                    self.assertIn(label, html)
+
+    def test_nav_marks_the_current_page_once(self):
+        pairs = [
+            ("/admin", admin_view.render_business_html),
+            ("/admin/subscribers", admin_view.render_subscribers_html),
+            ("/admin/nurseries", admin_view.render_nurseries_html),
+        ]
+        for path, render in pairs:
+            with self.subTest(path=path):
+                html = render(self.full_model())
+                self.assertEqual(html.count('class="here"'), 1)
+                self.assertIn(f'<a href="{path}" class="here">', html)
+
+    def test_business_state_is_the_first_tab(self):
+        # Actionable state still leads, now by tab order rather than by scroll.
+        self.assertEqual(admin_view.ADMIN_PAGES[0][0], "/admin")
+
+    def test_every_tab_has_a_renderer_or_is_the_digest(self):
+        # A tab that 404s is worse than no tab. /admin/digest is served by
+        # digest_archive, so it is the one legitimate absence here.
+        for path, _ in admin_view.ADMIN_PAGES:
+            with self.subTest(path=path):
+                self.assertTrue(
+                    path in admin_view.ADMIN_RENDERERS or path == "/admin/digest")
 
 
 SNAPSHOT = {

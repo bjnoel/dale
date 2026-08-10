@@ -263,12 +263,18 @@ class SubscribeHandler(BaseHTTPRequestHandler):
 
         # Read-only subscriber admin view. Gated by Cloudflare Access at the edge
         # AND by JWT validation here (so a direct-to-origin hit can't reach it).
-        if parsed.path in ("/admin", "/admin/"):
+        # /admin (business state), /admin/subscribers, /admin/nurseries. One
+        # model, three views; the split keeps each page short enough to read.
+        # rstrip only the trailing slash of a real subpath: "/" must stay "/",
+        # or it would normalise to "" and fall through to the admin lookup.
+        admin_path = parsed.path.rstrip("/") if parsed.path != "/" else "/"
+        if admin_path in admin_view.ADMIN_RENDERERS:
             if not verify_cf_access(self.headers):
                 self.send_html(403, "<h2>403 — Forbidden</h2><p>This page is gated by Cloudflare Access.</p>")
                 return
             try:
-                page = admin_view.render_admin_html(admin_view.load_admin_data())
+                render = admin_view.ADMIN_RENDERERS[admin_path]
+                page = render(admin_view.load_admin_data())
             except Exception as e:
                 print(f"Admin view render error: {e}", file=sys.stderr)
                 self.send_html(500, "<h2>500</h2><p>Could not build the admin view.</p>")
