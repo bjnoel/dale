@@ -10020,3 +10020,51 @@ Benedict what needed doing and being the history of what needed doing, and it wa
 built for the first. Anything that is worth sending daily is worth keeping.
 
 **Cost:** $0. Storage is ~6KB/day.
+
+---
+
+## DEC-273 — 2026-08-10 — /admin was one page doing four jobs
+
+**Decided by:** Benedict, immediately after DEC-272: *"Can you also split the main admin
+page into subpages for business state, nurseries and subscribers, it's one long wall of
+text at the moment."*
+
+**The shape of the problem.** /admin rendered ~91KB of HTML in one document: business
+state, subscriber cards and breakdowns, three subscriber tables, top varieties, a 27-row
+nursery register with expandable touch histories, a 14-day scraper health grid, and the
+needs-review report. DEC-251 had already fought this once by reordering sections so
+actionable state came before the nursery register. Reordering buys you one round; the
+page keeps growing.
+
+**Four tabs, one model, one stylesheet.** `/admin` is now business state alone (11KB,
+readable in a screen) and is the only page that asks anything of the reader. Subscribers
+and nurseries are reference and live behind their own tabs. The digest archive from
+DEC-272 joined the same nav, so what was two disconnected pages is now one surface.
+
+Scraper health and needs-review went with the **nurseries**, not with business state.
+They answer the same question the register does, "what is going on with nursery X", from
+the scraper's side rather than the relationship's.
+
+**What the split broke, and how it was caught.** The nursery register's blurb said open
+actions were "also listed at the top of this page". True when everything was one
+document; false the moment business state moved to /admin. Caught by rendering the page
+and reading it, not by a test, because no test asserted on prose that had been correct
+for two months. It is a link now, and there is a regression test. **Cross-page references
+have to be links, not directions** — a direction is only true relative to a layout, and
+layouts move.
+
+**Testing the guarantee, not the implementation.** `TestSectionOrder` asserted
+`index("Business state") < index("Nursery relationships")`, which is meaningless once
+they are separate documents. Deleting it would have dropped the guarantee it existed to
+protect. It became `TestPageSplit`, which asserts the same intent against the new
+structure: the landing page carries the actionable state and *not* the three things that
+used to bury it. The first version of that test failed, correctly, because "Business
+state" appears on every page as a nav label; the assertion had to name the section
+heading. **A test that greps for a bare string will find the navigation.**
+
+**A concurrent session pushed mid-work.** The hourly runner landed two commits while this
+was in progress, and the push was rejected. No file overlap, so a rebase settled it, but
+this is the case `feedback_parallel_agent_worktree` exists for: interactive work on `main`
+near the top of the hour should be in a worktree.
+
+**Cost:** $0.
