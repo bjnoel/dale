@@ -21,10 +21,8 @@ from shipping import SHIPPING_MAP
 
 SECRETS_DIR = Path("/opt/dale/secrets")
 
-FROM_EMAIL = "alerts@mail.treestock.com.au"
-FROM_NAME = "treestock.com.au"
-
-from stocklib.mailer import (get_resend_api_key, get_unsubscribe_secret,
+from stocklib.mailer import (FROM_EMAIL, FROM_NAME, REPLY_TO_EMAIL,
+                             get_resend_api_key, get_unsubscribe_secret,
                              make_unsubscribe_token)
 SITE_URL = "https://treestock.com.au"
 # The static /unsubscribe.html page (POSTs to /api/unsubscribe). Bare /unsubscribe
@@ -157,6 +155,7 @@ def send_welcome(email: str, dry_run: bool = False) -> bool:
     api_key = get_resend_api_key()
     payload = {
         "from": f"{FROM_NAME} <{FROM_EMAIL}>",
+        "reply_to": REPLY_TO_EMAIL,
         "to": [email],
         "subject": subject,
         "html": html,

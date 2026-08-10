@@ -30,6 +30,19 @@ SUBSCRIBERS_FILE = DATA_DIR / "subscribers.json"
 FROM_EMAIL = "alerts@mail.treestock.com.au"
 FROM_NAME = "treestock.com.au"
 
+# Where replies actually land (DAL-243, Q46 answered 2026-08-10).
+#
+# We send From a subdomain with no MX and no A record, so for the whole life of
+# this list every reply to every email we have ever sent hard-bounced, while the
+# welcome email and the Treesmith intro both said "just reply to this email".
+# Nothing detected it because nothing was watching the bounce.
+#
+# This is the apex, which carries Benedict's Fastmail MX, and it is a person's
+# name rather than hello@ because a one-person nursery list reads better from a
+# person. Verified deliverable before shipping: a test send to this address came
+# back `delivered`, not bounced.
+REPLY_TO_EMAIL = "ben@treestock.com.au"
+
 
 def get_resend_api_key() -> str:
     with open(RESEND_ENV) as f:
@@ -110,6 +123,7 @@ def send_email(api_key: str, to_email: str, subject: str, html_body: str,
     """Send a single email via the Resend API. Returns True on success."""
     payload = {
         "from": f"{FROM_NAME} <{FROM_EMAIL}>",
+        "reply_to": REPLY_TO_EMAIL,
         "to": [to_email],
         "subject": subject,
         "html": html_body,

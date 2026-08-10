@@ -70,6 +70,12 @@ GUARDS = [
     (re.compile(r"^def save_sends_log\b"), "stocklib/mailer.py"),
     # Senders bind their User-Agent via functools.partial, never a def.
     (re.compile(r"^def send_email\b"), "stocklib/mailer.py"),
+    # Sender identity (DAL-243). These were four identical copies, and the fork
+    # is why the Reply-To fix had to be applied in four places instead of one.
+    # The guards above covered functions only, so the constants drifted freely.
+    (re.compile(r"^FROM_EMAIL\s*="), "stocklib/mailer.py"),
+    (re.compile(r"^FROM_NAME\s*="), "stocklib/mailer.py"),
+    (re.compile(r"^REPLY_TO_EMAIL\s*="), "stocklib/mailer.py"),
 ]
 
 # Function names that must not be DEFINED anywhere in the scanned set: dead

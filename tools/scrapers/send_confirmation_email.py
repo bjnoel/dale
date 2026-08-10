@@ -18,10 +18,8 @@ from pathlib import Path
 
 SECRETS_DIR = Path("/opt/dale/secrets")
 
-FROM_EMAIL = "alerts@mail.treestock.com.au"
-FROM_NAME = "treestock.com.au"
-
-from stocklib.mailer import get_resend_api_key
+from stocklib.mailer import (FROM_EMAIL, FROM_NAME, REPLY_TO_EMAIL,
+                             get_resend_api_key)
 SITE_URL = "https://treestock.com.au"
 CONFIRM_BASE = "https://treestock.com.au/api/confirm"
 
@@ -122,6 +120,7 @@ def send_confirmation(email: str, token: str, state: str = "ALL", dry_run: bool 
     api_key = get_resend_api_key()
     payload = {
         "from": f"{FROM_NAME} <{FROM_EMAIL}>",
+        "reply_to": REPLY_TO_EMAIL,
         "to": [email],
         "subject": subject,
         "html": html,
