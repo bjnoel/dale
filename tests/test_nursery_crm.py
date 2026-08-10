@@ -343,17 +343,6 @@ class TestMergeInbound(unittest.TestCase):
         self.assertEqual(len(self.reg["nurseries"][0]["touches"]), 1)
         self.assertEqual(self.reg["nurseries"][0]["status"], "contacted")
 
-    def test_already_merged_records_are_skipped(self):
-        self._write(self._record(merged=True))
-        crm.cmd_merge_inbound(self.reg, self._args())
-        self.assertEqual(self.reg["nurseries"][0]["touches"], [])
-
-    def test_log_is_marked_merged_so_a_rerun_is_a_noop(self):
-        self._write(self._record())
-        crm.cmd_merge_inbound(self.reg, self._args())
-        on_disk = [json.loads(l) for l in self.log.read_text().splitlines() if l]
-        self.assertTrue(all(r["merged"] for r in on_disk))
-
     def test_rerun_adds_nothing(self):
         self._write(self._record())
         crm.cmd_merge_inbound(self.reg, self._args())
@@ -367,11 +356,64 @@ class TestMergeInbound(unittest.TestCase):
         self.assertFalse(on_disk[0]["merged"])
         self.assertEqual(self.saved, [])
 
-    def test_unknown_nursery_key_is_left_unmerged_not_dropped(self):
+    def test_unknown_nursery_key_is_retried_on_the_next_run(self):
+        # The register lost the nursery. Once it comes back, the next run must
+        # pick the record up rather than having quietly consumed it.
         self._write(self._record(nursery="vanished"))
         crm.cmd_merge_inbound(self.reg, self._args())
-        on_disk = [json.loads(l) for l in self.log.read_text().splitlines() if l]
-        self.assertFalse(on_disk[0]["merged"])
+        self.assertEqual(self.reg["nurseries"][0]["touches"], [])
+        self.reg["nurseries"][0]["key"] = "vanished"
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(len(self.reg["nurseries"][0]["touches"]), 1)
+
+    # --- Layer 1: the merge is stateless, so a failure cannot persist ---
+    #
+    # The log used to be rewritten with `merged: true` flags. That marked a
+    # touch consumed BEFORE the register write was durable, so a reverted or
+    # never-committed register lost the touch permanently: gone from the
+    # register, and flagged consumed in the log. The register already dedupes
+    # on evidence id, so the flag was redundant state that could only be wrong.
+
+    def test_a_reverted_register_write_is_replayed(self):
+        """The whole point. `git checkout -- data/nursery-contacts.json`
+        after a merge must not cost us the touch."""
+        self._write(self._record())
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(len(self.reg["nurseries"][0]["touches"]), 1)
+        self.reg["nurseries"][0]["touches"] = []   # the revert
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(len(self.reg["nurseries"][0]["touches"]), 1)
+
+    def test_a_legacy_merged_flag_does_not_suppress_the_touch(self):
+        """Records written before this change carry `merged: true`. The flag is
+        vestigial and must not stop a touch the register has never seen."""
+        self._write(self._record(merged=True))
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(len(self.reg["nurseries"][0]["touches"]), 1)
+
+    def test_the_log_is_never_written(self):
+        """The webhook appends; the merge only reads. Nothing else may write it,
+        or the two contend and the append-only audit trail stops being one."""
+        self._write(self._record())
+        before = self.log.read_bytes()
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(self.log.read_bytes(), before)
+
+    def test_a_record_without_evidence_is_refused_not_replayed_forever(self):
+        """Without an evidence id `apply_touch` cannot dedupe, so replaying
+        would append the same touch every hour. Refuse it instead."""
+        rec = self._record()
+        del rec["evidence"]
+        self._write(rec)
+        crm.cmd_merge_inbound(self.reg, self._args())
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(self.reg["nurseries"][0]["touches"], [])
+
+    def test_a_blank_evidence_id_is_refused_too(self):
+        self._write(self._record(evidence=""))
+        crm.cmd_merge_inbound(self.reg, self._args())
+        crm.cmd_merge_inbound(self.reg, self._args())
+        self.assertEqual(self.reg["nurseries"][0]["touches"], [])
 
     def test_malformed_lines_do_not_stop_the_merge(self):
         self.log.write_text("{not json\n" + json.dumps(self._record()) + "\n")

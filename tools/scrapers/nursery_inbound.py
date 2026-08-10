@@ -324,7 +324,10 @@ def build_record(payload, register, receiving_domain=RECEIVING_DOMAIN,
         "evidence": f"resend:{data.get('email_id') or data.get('message_id') or '?'}",
         "counterparty": counterparty,
         "logged_at": datetime.now(timezone.utc).isoformat(),
-        "merged": False,
+        # Deliberately no "merged" flag. nursery_crm's merge replays this log in
+        # full on every run and dedupes against the register by evidence id, so
+        # tracking consumption here could only ever go stale or lie. Records
+        # written before 2026-08-10 still carry the field; it is ignored.
     }
 
 

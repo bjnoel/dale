@@ -243,6 +243,20 @@ def cmd_merge_inbound(reg, args):
     dale-runner deploys hourly, so anything written there is gone within the
     hour. The webhook appends to a JSONL nothing overwrites; this folds it into
     the repo copy, where git history stays the audit log.
+
+    **This is stateless: it reads the log and never writes it.** Every record is
+    replayed on every run, and `apply_touch` drops the ones the register already
+    has by evidence id, so the whole thing is idempotent by construction.
+
+    It used to stamp `merged: true` onto each record instead. That marked a
+    touch consumed before the register write was durable, so any path that
+    reverted the register lost the touch twice over: absent from the register,
+    and flagged consumed in the log, therefore never retried. It happened for
+    real on 2026-08-10, when a concurrent session left the shared repo
+    mid-rebase, the commit failed, and the merge had already flipped the flags.
+    Replaying costs one pass over a file that grows by a few lines a week, and
+    it means a failure anywhere downstream, a failed commit, a reverted file, a
+    clobbered deploy, heals itself on the next run instead of persisting.
     """
     path = args.log or INBOUND_LOG
     try:
@@ -259,21 +273,23 @@ def cmd_merge_inbound(reg, args):
         except json.JSONDecodeError:
             malformed += 1
 
-    merged, skipped, unknown, cleared = 0, 0, [], []
+    merged, skipped, unknown, cleared, unusable = 0, 0, [], [], []
     for rec in records:
-        if rec.get("merged"):
+        # No evidence id means `apply_touch` cannot dedupe, so replaying would
+        # append the same touch every hour forever. Refuse it and say so.
+        if not rec.get("evidence"):
+            unusable.append(rec.get("nursery"))
             continue
         try:
             n = find(reg, rec["nursery"])
         except KeyError:
-            # The register lost a nursery between logging and merging. Leave the
-            # record unmerged rather than dropping it silently.
+            # The register lost a nursery between logging and merging. Say so
+            # and move on; the next run retries it for free.
             unknown.append(rec.get("nursery"))
             continue
         touch = {k: rec[k] for k in ("date", "direction", "channel", "by",
                                      "summary") if k in rec}
-        if rec.get("evidence"):
-            touch["evidence"] = rec["evidence"]
+        touch["evidence"] = rec["evidence"]
         had = (n.get("open_action") or {}).get("what")
         if apply_touch(n, touch):
             merged += 1
@@ -281,23 +297,19 @@ def cmd_merge_inbound(reg, args):
                 cleared.append(f"{n['name']}: {had}")
         else:
             skipped += 1
-        rec["merged"] = True
 
     if args.dry_run:
         print(f"(dry run) would merge {merged}, skip {skipped} already present")
         for c in cleared:
             print(f"  would clear open action, {c}")
         if unknown:
-            print(f"  unknown nursery keys, left unmerged: {sorted(set(unknown))}")
+            print(f"  unknown nursery keys, retried next run: {sorted(set(unknown))}")
+        if unusable:
+            print(f"  records with no evidence id, refused: {sorted(set(unusable))}")
         return 0
 
     if merged:
         save_register(reg)
-    # Rewrite the log with merged flags set, so a re-run is a no-op even if the
-    # register write is later reverted in git.
-    with open(path, "w") as f:
-        for rec in records:
-            f.write(json.dumps(rec, sort_keys=True) + "\n")
 
     print(f"Merged {merged} touch(es), {skipped} already present.")
     for c in cleared:
@@ -305,7 +317,10 @@ def cmd_merge_inbound(reg, args):
     if malformed:
         print(f"  warning: {malformed} malformed line(s) skipped")
     if unknown:
-        print(f"  warning: unknown nursery keys left unmerged: {sorted(set(unknown))}")
+        print(f"  warning: unknown nursery keys, retried next run: {sorted(set(unknown))}")
+    if unusable:
+        print(f"  warning: {len(unusable)} record(s) with no evidence id refused, "
+              f"they cannot be deduped: {sorted(set(unusable))}")
     return 0
 
 
