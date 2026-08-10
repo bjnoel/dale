@@ -22,7 +22,8 @@
 
 ## Closed Questions (archive)
 
-**Q50** [BLOCKING] Rename the app to `TreeSmith: Fruit Tree Tracker`? Yes or no.
+**Q50** [MIGRATED 2026-08-10 → **DAL-279**. Answer on the ticket, not here.]
+Rename the app to `TreeSmith: Fruit Tree Tracker`? Yes or no.
 
 Raised here because you asked "what rename decision, is this in DAL-257 or a different ticket?"
 and the honest answer is **neither**: it was in DAL-177, which I closed as Done on 2026-08-10
@@ -212,7 +213,8 @@ new service is needed, just an address on the apex to point `Reply-To` at.
    would have BCC'd the Fastmail alias, so the effort on your end is unchanged. Dale
    never touches your mailbox. DAL-273 is no longer blocked on you.
 
-**Q45** [BLOCKING] STFC reply is drafted and shortened, ready for you to send
+**Q45** [MIGRATED 2026-08-10 → **DAL-280**. Answer on the ticket, not here.]
+STFC reply is drafted and shortened, ready for you to send
 
 Preview: **https://stfc-preview.pages.dev** (A/B switch at the top of every page).
 Draft: `docs/stfc-reply-draft.md`, now 384 words. I cannot send it and would not

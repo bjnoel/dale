@@ -10239,3 +10239,84 @@ lesson applied. The only thing that caught it was recomputing the number from a 
 source instead of re-reading my own summary of it.
 
 **Cost:** $0. Read-only.
+
+## DEC-277 — 2026-08-10 — Referral revenue turned on, disclosed in public, and questions moved out of a text file
+
+**Decided by:** Benedict, in three answers in one message. He joined Primal Club, approved a
+public disclosure, restated the ranking rule as standing, approved booking the sales, and asked
+for questions to become tickets.
+
+**The affiliate mechanism was simpler than modelled.** DEC-248 assumed per-product affiliate
+link generation. GoAffPro just wants `?ref=treestock` on the existing URL, so this is a query
+parameter, not an integration.
+
+**One declaration, and the JavaScript deliberately does not get a copy.** `stocklib.utm` gains
+`AFFILIATES`, keyed by the domain in a nursery's product URLs. `affiliate()` runs inside
+`outbound()`, covering 14 call sites in 12 files. But three link emitters bypass `outbound()`
+entirely, and one is the homepage: `dashboard.js` and `history_page.html.j2` build their links
+client-side. The obvious fix is to add the domain list to the JS. **That would fork the one
+thing that must never fork**, and `tests/test_no_forking.py` exists because this repo has had
+ten drifted copies of a filter before. Instead the URLs are tagged in Python *before* being
+serialised into the page (`build-dashboard.py`, `build_history.py`), so the JS keeps appending
+its own UTM and never learns what an affiliate is.
+
+**The disclosure page is generated, not written.** `/affiliate-disclosure.html` renders from
+`AFFILIATES`, so adding a nursery updates the public disclosure automatically. A hand-written
+disclosure that lags the code is worse than none, because it reads as a promise. It states
+plainly that ranking never takes commission into account, that 26 of 27 nurseries earn us
+nothing, and that buyers pay no more. Footer links it site-wide, which is below the results and
+so does not touch the above-fold rule.
+
+**The history timeline had no test coverage and I nearly shipped it blind.** The golden fixture
+for `history` deliberately contains no dated snapshots (it pins the empty-timeline page), so
+every golden test passed while that code path was never executed. `tests/test_history_affiliate.py`
+covers it directly. Its first run **failed correctly**: the non-affiliate branch used Daleys,
+whose `FRUIT_FILTERS` entry is `mode="categories"`, so an uncategorised fixture product was
+dropped by the digest filter before reaching the affiliate code. That is the DEC-207/209
+leaf-category gap surfacing in a test fixture. The guard assertion (`"fixture produced no change;
+test is not exercising anything"`) is what caught it rather than a silent pass. **A test that can
+pass while asserting on an empty collection is not a test.**
+
+**Booking the three sales exposed a live mislabelling bug.** `ticket_outcomes.read_revenue_monthly`
+summed `entry["amount"]` and stamped the unit with the *ledger's* currency, AUD. Every sale we
+have is **USD** store proceeds. Booking them would have reported USD figures under an AUD label,
+silently, from the first entry onward, into the DEC-263 outcome loop that grades tickets. It now
+sums per currency and **raises rather than invent an FX rate** when two are present. No exchange
+rate has been applied anywhere: the AUD payout is only knowable from App Store Connect payment
+reports, and inventing a rate would make the receipt less true, not more. Ledger now reads
+US$52.55 all time against A$28.10 of expenses, deliberately not netted.
+
+**Questions became tickets, and the reason is that a text file hid a real blocker.** Benedict:
+*"Can we convert questions for benedict to tickets instead of me needing to look through a text
+file?"* He triages Linear on his phone; the questions file was a second inbox only he had to
+remember to open, and Q45 sat unanswered for roughly two weeks inside it. `linear_update.py ask`
+creates into **Todo assigned to him**, never Backlog, so a question cannot consume one of the 15
+backlog slots: a question is a debt we owe him, not a proposal awaiting triage. It carries the
+`Question` label and **not** `Dale`, so `linear_poller.py` ignores it, because a question Dale
+picks up and "works" is a question that never got asked. Capped at 5 open, **enforced in code**;
+CLAUDE.md has said "never more than 5 at once" since March with nothing behind it, which is the
+same lesson as the backlog cap. Q45 and Q50 migrated to DAL-280 and DAL-279. The file is frozen
+rather than deleted, because Q46 carries the Fastmail security correction and Q48 carries the
+discovery that we had made three sales and keep 64% rather than 85%, both cited elsewhere.
+
+**Two process failures of mine, recorded because they are the same failure.** I closed DAL-177
+as Done while an unanswered decision (the app rename) was still inside it, and Benedict had to
+ask where that decision lived. Earlier the same session I read DAL-231's stale description over
+its own comments and called a settled question urgent. **Both are a decision and its ticket
+drifting apart, and in both cases the cheaper-to-read surface won.** The `ask` command exists so
+an open decision has somewhere to live that is not the body of a ticket that might get closed.
+
+**Also caught:** `git add -A tools/` swept two of Benedict's untracked files
+(`tools/scrapers/CLAUDE.md`, `tools/scripts/shopify-upload.py`) into a commit that had nothing to
+do with them. Backed out and restaged explicitly. Broad `add` across a directory somebody else is
+also working in is not safe.
+
+**Verified live:** disclosure page 200, footer link present, Primal product links carry
+`?ref=treestock`, Daleys links carry none. 2264 tests pass (only the pre-existing
+`test_gsc_pagination` import error, no `requests` locally).
+
+**Not verified:** that a real click through `?ref=treestock` registers as an attributed click in
+the GoAffPro dashboard. Param position should not matter, but nobody has confirmed one. That
+check has to happen before any conversion number from this is quoted.
+
+**Cost:** $0.
