@@ -36,13 +36,17 @@
           "by": "correy",
           "summary": "Warm but terse. Staff update stock daily, prices change frequently. Door open to further questions.",
           "evidence": "DAL-80 comment 2026-04-25"
+        },
+        {
+          "date": "2026-08-10",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Re: Your nursery is on treestock.com.au",
+          "evidence": "resend:ab6c4821-780a-4a42-8e25-2c7c5b66de93"
         }
       ],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Send the drafted reply to Correy (order@daleysfruit.com.au), BCC nursery@veliamsal.resend.app. Draft on DAL-274. Two asks: whether they can see clicks converting to orders, and whether they would graft named sapodilla for WA club demand. Must NOT quote Ross Creek's 3-4% conversion figure, Tom gave it privately and Daleys is his competitor.",
-        "since": "2026-08-10"
-      },
+      "open_action": null,
       "notes": "No affiliate program (DAL-154, re-verified 2026-07-30 in DEC-241). Wholesale only, $2k minimum. Our single largest referral destination over 6 months."
     },
     {
