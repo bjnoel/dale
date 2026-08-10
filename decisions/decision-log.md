@@ -10112,3 +10112,64 @@ started. Google Play still carries the identical wrong Pro line in both descript
 sits at 29 against a cap of 15, so the Play work is recorded in state rather than ticketed.
 
 **Cost:** $0.
+
+## DEC-275 — 2026-08-10 — Cleared the Linear backlog from 29 to 24, and got corrected on the one I called urgent
+
+**Trigger:** Benedict, opening the session: *"give me what I should be working on next from Linear,
+what's outstanding and high priority, I want to clear out some of the tickets."*
+
+**The queue was lying in two directions at once.** Todo showed 9 items, all assigned to Benedict,
+which read as a 9-deep human bottleneck. Four of them (DAL-251, DAL-246, DAL-232, DAL-234) say
+"Dale autonomous" or "Dale researches" in their own cost lines. They were assigned to Benedict and
+carried no `Dale` label, and `linear_poller.py:285-293` picks up only tickets that are
+**`Dale`-labelled OR unassigned**, so those four were invisible to the autonomous runner *and*
+sitting in Benedict's queue. Work nobody could start, counted against the person who could not do
+it. Fixed by adding the label and clearing the assignee. His Todo went 9 to 3.
+
+**Six closed. The reasons are on the tickets, not just here:**
+
+- **DAL-274** to Done. Overtaken by events: all three "100-day overdue" nursery replies went out
+  today, and Heritage's was never overdue at all, Benedict had already replied himself.
+- **DAL-224** cancelled. Falsified by DAL-242's PostHog pull, not deprioritised. 181 of 186 people
+  have never had a single plant in the app; `plant_limit` is 2 of 148 paywall results. Cutting the
+  free tier 30 to 15 would have moved **one** person.
+- **DAL-173 + DAL-221** cancelled as a pair. DAL-221 was priority Urgent for a tool whose only
+  consumer was DAL-173's email. Kill the consumer, the tool is speculative infrastructure.
+- **DAL-272** cancelled. Third dated GSC review ticket to go this way after DAL-190 and DAL-216.
+  The generator mints a snapshot every fortnight and each is stale before it reaches the top.
+- **DAL-176** cancelled after 105 days. Its own description reads "Why now: It is not. Do not start."
+
+**The one I got wrong, and it is the most useful thing in this entry.** I surfaced DAL-231, the
+bare-root subscriber email, as time-critical: *send this week or cancel*. Benedict: *"I thought we
+decided that bare root would be next year, it's too late in the year now."* He was right. **DEC-250
+settled it eleven days earlier**: one send a year, late June, explicitly not for the 2026 season,
+parked for June 2027.
+
+I read the description, which still carried the pre-decision "Urgent or drop it, peak season is
+nearly over", and the Todo column, which agreed with it. The decision was in a comment. Two stale
+signals and one accurate one, and **the two stale ones are the two that are cheap to read**. This is
+the second time in two sessions that a stale premise on a ticket nearly drove work: DEC-274 was the
+same shape, where DAL-177's own comment called en-US "the primary" localisation and acting on it
+would have deleted the good listing. **A ticket whose description contradicts its own comments is a
+trap, and the description wins by default.** If a decision changes a ticket's premise, the
+description changes with it or the ticket leaves Todo. Recorded in memory as
+`project_bare_root_annual_email` so a future session cannot re-propose it off-season.
+
+Cancelled rather than parked, because holding one of 15 capped backlog slots for ten months to
+represent a date is a poor trade. The trigger lives in DEC-250 and in memory.
+
+**What the clear-out surfaced that outranks everything still ticketed.** No Linear ticket exists for
+the single highest-value action available: **submitting Treesmith 1.0.10**. The repo is at
+`1.0.10+58`, both storefronts still serve 1.0.9, and three separate things are waiting behind that
+one submission: the in-app review prompt (built, `kReviewPromptEnabled = true` since build 56, zero
+`review_prompt_requested` events ever, and 0 ratings is DEC-237's top lever), the corrected Pro /
+cloud-backup copy (the live listing still misdescribes a A$39.99 purchase), and the en-US "50 plants
+free" line against an actual limit of 30. **The most important work was not the worst ticket in the
+backlog, it was the one that was never written down.**
+
+**And a live commercial input arrived mid-session.** Tom at Ross Creek, replying today, says they
+convert **3-4% of clicks to sales** against a sub-2% ecommerce norm, and is pulling the real
+Shopify figure. DEC-248's economics clear $100/month at roughly 1.2%. That materially strengthens
+DAL-245, which is now the highest-value open decision on the board and is Benedict's to make.
+
+**Cost:** $0.
