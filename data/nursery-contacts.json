@@ -205,7 +205,11 @@
           "evidence": "sent 2026-08-10, BCC reached Resend inbound at 02:37:15Z but did not match (see DEC on payload metadata); logged by hand"
         }
       ],
-      "open_action": null,
+      "open_action": {
+        "owner": "dale",
+        "what": "Touch 2 sent 2026-08-10 by email to sales@fruittreelane.com.au. If no reply by 2026-08-24, Dale to prompt Benedict to ring 07 4696 8792 on a Tue or Thu (their public days).",
+        "since": "2026-08-10"
+      },
       "notes": "Contact form touch 1 sent 2026-03-28 (Benedict, DAL-77), no reply in 135 days. Site publishes no email; sales@fruittreelane.com.au found on their Localsearch profile 2026-08-10, unverified by a successful send. Also phone 07 4696 8792 and facebook.com/fruittreelane. Open to public Tue and Thu 9am-3pm, 43 Helidon Dip Rd, Helidon QLD 4344. 110 products tracked, only 19 in stock (was ~28 in April), which is why referral volume is low."
     },
     {
@@ -236,11 +240,20 @@
       "phone": "(07) 3092 2849",
       "contact_form": "https://ladybirdnursery.com.au/pages/contact",
       "preferred_channel": "contact_form",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-08-10",
+          "direction": "out",
+          "channel": "contact_form",
+          "by": "benedict",
+          "summary": "Touch 1 goodwill intro via website contact form, no pitch. Hook: 232 visitors sent last month, one of the two biggest destinations on the site.",
+          "evidence": "Benedict confirmed sent 2026-08-10; contact form cannot be BCC'd so logged by hand"
+        }
+      ],
       "open_action": {
-        "owner": "benedict",
-        "what": "Touch 1 drafted 2026-08-10, posted on DAL-80. Send via ladybirdnursery.com.au/pages/contact. Hook: 232 visitors last month, one of the two biggest destinations. Do NOT claim outright #1: true at 30d only, Daleys leads 587 to 502 over 6 months and they tie at 7d.",
+        "owner": "dale",
+        "what": "Touch 1 sent 2026-08-10 via contact form. If no reply by 2026-08-24, Dale to prompt Benedict to ring (07) 3092 2849 (open 9-5 daily) or DM @ladybirdfruittrees. Touch 2 hook held in reserve: biggest catalogue we track, 7156 lines.",
         "since": "2026-08-10"
       },
       "notes": "Second largest referral destination cumulatively, first over the last 30 days. Visitors by window (2026-08-10): 7d Ladybird 64 = Daleys 64; 30d Ladybird 232 vs Daleys 216; 6mo and all-time Daleys 587 vs Ladybird 502. A #1 claim is only safe scoped to 30 days and can flip month to month, so use 'one of the two biggest'. All 256 of their 30d clicks came from national or QLD/NSW/VIC/ACT pages, none from WA/NT/TAS/SA, which they cannot ship to. Kallangur QLD, family owned since 2016, open 9-5 daily. 7156 lines tracked, 1857 in stock, the biggest catalogue we follow. No public email; contact form, phone (07) 3092 2849, or facebook.com/ladybirdfruittrees and instagram.com/ladybirdfruittrees."
