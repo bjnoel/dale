@@ -1,6 +1,6 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-08-06",
+  "last_updated": "2026-08-10",
   "session_count": 116,
   "phase": 0,
   "phase_name": "Setup",
@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
           "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
@@ -112,14 +112,15 @@
         "keywords": "rare,rootstock,propagation,nursery,citrus,permaculture,cuttings,bonsai,harvest,plant,log,map (92/100). Drops orchard/fruit/tree because the name and subtitle now carry them and Apple indexes the three fields as one pool.",
         "play_short_desc": "Graft, scion & orchard journal for collectors. GPS map, photo log, exports. (75/80)",
         "ab_testing": "Apple Product Page Optimization tests icon, screenshots and previews ONLY, so this ticket's original 'description A/B variant' is not executable on Apple. Google Play Store Listing Experiments can test short and long description. Any description A/B belongs on Play.",
-        "followups": "DAL-256 (App Store Connect impressions vs product page views vs units: are we failing at discovery, at the search result, or at the listing?) and DAL-257 (re-measure the same 36 terms 4 weeks post-rename, prediction recorded in advance)."
+        "followups": "DAL-256 (App Store Connect impressions vs product page views vs units: are we failing at discovery, at the search result, or at the listing?) and DAL-257 (re-measure the same 36 terms 4 weeks post-rename, prediction recorded in advance).",
+        "status_2026_08_10": "DAL-177 CLOSED (DEC-274). Taken: the description accuracy fix and the en-US localisation deletion, both staged against 1.0.10. NOT taken: the rename (still an open yes/no from Benedict, and the only item with a measurable expected effect), the subtitle change, the keyword field and the promotional text. DAL-257's re-measure clock has NOT started, because it is premised on the rename."
       },
       "store_listing_accuracy_defect": {
         "found": "2026-07-30 (DEC-247)",
-        "severity": "customer-facing pricing misstatement on both purchase pages",
-        "detail": "Both live store descriptions read 'Pro: unlimited plants, multiple locations, cloud backup, bulk operations and CSV import.' Cloud backup is NOT included in Pro. lib/features/pro/screens/paywall_screen.dart:627-633 lists it as an add-on that Pro unlocks the ability to buy, sold separately at A$9.99/year on top of A$39.99 Pro. A buyer can pay $39.99 expecting backup and find it is a second purchase.",
-        "why_missed": "The same error was corrected on treestock, the treesmith.app homepage, the press kit and the Terms on 2026-07-27. The two store listings were missed. store-listing-google-play.txt in the app repo is stale and carries it too.",
-        "fix": "Replacement FREE OR PRO block worded straight off the paywall is on DAL-177, for both stores. Benedict pastes it. Asked for regardless of whether any ASO recommendation is accepted."
+        "status": "iOS FIXED but NOT YET LIVE (2026-08-10, DEC-274). Play STILL LIVE AND WRONG.",
+        "detail": "Both live store descriptions read 'Pro: unlimited plants, multiple locations, cloud backup, bulk operations and CSV import.' Cloud backup is NOT included in Pro. lib/features/pro/screens/paywall_screen.dart:627-633 lists it as an add-on that Pro unlocks the ability to buy, sold separately at A$9.99/year on top of A$39.99 Pro.",
+        "ios": "Corrected FREE OR PRO block pasted into the en-AU description against version 1.0.10, plus the EULA link. Ships when 1.0.10 is released. Verified 2026-08-10 at close: the live listing is still 1.0.9 and still carries the error.",
+        "play": "OUTSTANDING. Short and long description both still say cloud backup is a Pro feature. store-listing-google-play.txt in the app repo is stale and carries it too. Different console, separate paste, no ticket (backlog at 29 vs cap 15)."
       },
       "live_listing_verified_2026_07_30": {
         "ios_name": "TreeSmith: Plant Graft Tracker (30/30)",
@@ -276,15 +277,12 @@
       },
       "storefront_localisation_defect": {
         "found": "2026-08-06 (DEC-262 / DAL-270)",
-        "severity": "the majority storefront has an un-optimised listing AND advertises a free tier the app does not provide",
-        "au_name": "TreeSmith: Plant Graft Tracker",
-        "au_subtitle": "Graft, scion & garden journal",
-        "us_name": "TreeSmith",
-        "us_subtitle": "Track & care for your plants",
-        "detail": "App Store name, subtitle and description are PER-LOCALISATION. DAL-169's April ASO work went into en-AU only. The US listing is the original pre-ASO copy, so the app NAME (the only field DEC-247 found ranks) carries zero keywords on the storefront supplying 61% of installs. version and releaseNotes are identical across localisations; only name, subtitle and description differ.",
-        "free_tier_misstatement": "The US description says 'Track up to 50 plants ... all free'. entitlement_provider.dart:102 sets freePlantLimit = 30. We advertise 20 more free plants than the app gives, on 61% of installs, and DEC-261 says the purchase decision is made on install day.",
-        "pro_cloud_backup_fix_not_pasted": "Verified 2026-08-06: the live AU description still reads 'Pro: unlimited plants, multiple locations, cloud backup, bulk operations and CSV import.' DAL-177 is still unpasted.",
-        "action": "DAL-177, Benedict. Paste name, subtitle and description into BOTH localisations, not one."
+        "status": "RESOLVED 2026-08-10 (DEC-274) by collapsing to a single localisation. Takes effect when 1.0.10 is released.",
+        "primary_language": "English (Australia). NOT en-US, contrary to what DAL-177's 2026-08-06 comment said. Confirmed in App Store Connect and verified via fallback: JP/DE/FR/BR/MX all serve the en-AU listing. GB/CA/NZ/IE/SG do too but are inconclusive alone, being British-English-family storefronts that could match on language rather than fall back to primary.",
+        "resolution": "en-US localisation DELETED. The primary cannot be deleted, so collapsing to one listing meant deleting en-US, which was also the one carrying both defects. en-AU now serves every storefront.",
+        "free_tier_misstatement": "RESOLVED by deletion. The US description said 'Track up to 50 plants ... all free' against entitlement_provider.dart:104 freePlantLimit = 30.",
+        "side_effect": "The US storefront inherits the en-AU app name, so the field DEC-247 found is the only one that ranks stops being empty of keywords on the storefront supplying 61% of installs. Free by-product of the cleanup, not the goal. This is a real ASO event but it is NOT the rename DAL-257 was written to test.",
+        "repo_guard": "deploy.sh:454 in treesmith-app now reads ios_locales=(en-AU), commit 1acaee3. It was hardcoded (en-US en-AU) and rewrote release notes into both dirs every deploy; with --release the Fastfile sets skip_metadata:false so deliver would have re-created the deleted localisation. ios/fastlane/metadata/ is gitignored, so the directory was never tracked and git rm would have failed. The Android en-US changelog path is deliberately untouched."
       },
       "aso_rank_measurement": {
         "tool": "tools/autonomous/appstore_rank.py (DAL-270). 36 terms in 4 groups, AU and US, iTunes Search API, no credentials. Reports the size of each result set beside every rank so 'absent from 191' is distinguishable from truncation, and renders ERR rather than 'not ranked' on a failed lookup.",
@@ -650,15 +648,15 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done \u2014 hello@walkthrough.au via Fastmail",
-    "blog": "deployed \u2014 walkthrough.au live",
+    "email": "done — hello@walkthrough.au via Fastmail",
+    "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
+    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
     "deploy_gap": "There is NO deploy cron (DEC-253). `crontab -l` has the Monday Treesmith digest and the nightly Treesmith drip only. tools/deploy.sh runs from the autonomous session startup hook (18:00-21:00 UTC), so a commit made after the last session of the night sits in git, tested and green, while cron keeps running the stale copy in /opt/dale/autonomous/. Same family as DAL-263 (deploy.sh never restarts subscribe-server). After changing ANYTHING cron executes: diff the repo copy against the deployed copy, run tools/deploy.sh, and verify.",
     "reporting_integrity": "DEC-255 / DAL-261 (2026-07-30): audited every external API reader. Fixed 5 defects. traffic_report.py read 200 of 1,703 GSC query rows and computed a SET DIFFERENCE from the slice, so 9 of the 10 'new queries' in Benedict's daily email were queries we already ranked for and position movers showed 11 of a true 392. resend_report.py kept an unpaginated copy of fetch_emails (the DEC-250 bug in the sibling file): 100 emails became 1,838. resend_report.py also counted delivery as last_event=='delivered', but last_event is the FURTHEST state reached, so every opened/clicked email counted as undelivered and the delivery rate FELL as engagement ROSE (52.5% reported against a true 100% delivered, 0 bounced). daily-digest.py's engagement stamp took one page of 50 issues, and that gates whether Dale strikes (DEC-226), so an unseen signal read as absence. nursery_crm.outbound_clicks ran off a 40-page cap silently and now warns PARTIAL. Audited clean: plausible_stats.py (honest top-N), linear_poller.py, linear_update.py archive-stale, gsc_analysis.py, resend_engagement.py, treesmith_analytics.py, uptime_monitor.py. Guard is tests/test_api_pagination.py, which drives each real fetcher against a saturated first page.",
     "email_reply_path": "DEC-257 CORRECTION to Q46. treestock.com.au's APEX already has Fastmail MX (in1/in2-smtp.messagingengine.com) and has received email the whole time. The defect is narrower and entirely ours: we send From alerts@mail.treestock.com.au, a SUBDOMAIN with no MX, and stocklib/mailer.py:112 sets no Reply-To at all, so replies are addressed somewhere that cannot receive them. Fix is ONE LINE pointing Reply-To at an apex address (DAL-243), not a new service and not a DNS change. Do NOT add MX to the sending subdomain. The same mailbox answers DAL-80's BCC ask via a Fastmail alias + an IMAP-scoped app password (revocable, cannot send); imap.fastmail.com:993 is reachable from this server, verified. Cloudflare Email Routing considered and rejected: MX change on a live domain, a Worker, and a token scope we do not hold, to duplicate a mailbox we already own."

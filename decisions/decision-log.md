@@ -10068,3 +10068,47 @@ this is the case `feedback_parallel_agent_worktree` exists for: interactive work
 near the top of the hour should be in a worktree.
 
 **Cost:** $0.
+
+## DEC-274 — 2026-08-10 — Two App Store listings became one, and the one we deleted was the broken one
+
+**Trigger:** Benedict, on DAL-177: *"the reason it says 50 is I forgot to update one of them,
+can I delete either AU/US and just keep one?"*
+
+**The premise on the ticket was wrong.** DAL-177's own 2026-08-06 comment called en-US "the
+primary" localisation. It is not. App Store Connect has Primary Language = English
+(Australia), and acting on the ticket would have deleted the good listing and kept the one
+advertising a free tier the app does not provide.
+
+The check that settled it: GB, CA, NZ, IE and SG all served the en-AU listing, but every one
+of those is a British-English-family storefront and could have been landing there by language
+proximity rather than by primary-language fallback. JP, DE, FR, BR and MX have no such
+proximity. All five served en-AU. That is the primary-language fallback, and it is only
+conclusive because the non-English storefronts were checked. **A fallback test run only on
+storefronts that share a language variant proves nothing.**
+
+**The fix inverted, and got better.** The primary localisation cannot be deleted, so
+collapsing to one listing meant deleting **en-US** — which is also where both defects lived.
+The `Track up to 50 plants ... all free` line (against `freePlantLimit = 30`) was removed by
+deletion rather than correction, and the US storefront inherits the en-AU app name, so the
+field DEC-247 identified as the only one that ranks stops being empty of keywords on the
+storefront supplying 61% of installs. That was a free by-product of a cleanup, not the goal.
+
+**The advice was wrong once before it was right.** The first repo instruction given was
+`git rm -r ios/fastlane/metadata/en-US`. That would have failed: `**/fastlane/metadata/` is
+gitignored and untracked. Worse, the directory was not the cause. `deploy.sh:451` hardcoded
+`ios_locales=(en-US en-AU)` and rewrote release notes into both directories on every deploy,
+and with `--release` the Fastfile sets `skip_metadata: false`, so `deliver` would have
+silently re-created the localisation on the next release. **Deleting the artefact does not
+help when a script regenerates it** — the fix was the one-line array, plus the stale comment
+above it that still asserted both locales were enabled.
+
+Fixed in the app repo as `1acaee3`, with the Android `en-US` changelog path deliberately
+untouched: same string, different console, still correct.
+
+**What is not done.** Nothing is live. Both storefronts still serve 1.0.9 with the old copy,
+verified at close; the corrections ship when 1.0.10 is released. The rename to
+`TreeSmith: Fruit Tree Tracker` is still an open yes/no, so DAL-257's re-measure clock has not
+started. Google Play still carries the identical wrong Pro line in both descriptions. Backlog
+sits at 29 against a cap of 15, so the Play work is recorded in state rather than ticketed.
+
+**Cost:** $0.
