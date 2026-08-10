@@ -233,13 +233,17 @@
       "domain": "ladybirdnursery.com.au",
       "contact_name": null,
       "email": null,
-      "phone": "07 3092 2849",
+      "phone": "(07) 3092 2849",
       "contact_form": "https://ladybirdnursery.com.au/pages/contact",
       "preferred_channel": "contact_form",
       "status": "not_contacted",
       "touches": [],
-      "open_action": null,
-      "notes": "Our largest catalogue (7,130 products) and our #1 referral destination in the last 30 days. No affiliate program (DEC-241). Highest-value nursery we have never spoken to."
+      "open_action": {
+        "owner": "benedict",
+        "what": "Touch 1 drafted 2026-08-10, posted on DAL-80. Send via ladybirdnursery.com.au/pages/contact. Hook: 232 visitors last month, our #1 destination. No email published anywhere (site, directories, socials all checked 2026-08-10). If the form gets no reply in 2 weeks, ring or DM @ladybirdfruittrees.",
+        "since": "2026-08-10"
+      },
+      "notes": "Our largest referral destination: 256 clicks / 232 visitors in 30d, and all 256 came from national or QLD/NSW/VIC/ACT pages, none from states they cannot ship to. Kallangur QLD, family owned since 2016, open 9-5 daily. 7156 lines tracked, 1857 in stock, by far the biggest catalogue we follow. No public email; contact form, phone (07) 3092 2849, or facebook.com/ladybirdfruittrees and instagram.com/ladybirdfruittrees."
     },
     {
       "key": "guildford",
