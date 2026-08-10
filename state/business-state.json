@@ -194,7 +194,7 @@
           "finding": "61% of July installs are US, not Australian. US 30, AU 9, IN 4, then CH/UA/MA/BD/IT/KR 1 each, of 49 distinct devices.",
           "implication": "Every ASO measurement we have ever taken (DEC-247, 36 terms) is on the AU store, and DAL-177's rename and DAL-257's re-measure are both scored against AU ranks. We have never looked at our rank in the storefront that supplies most of our users. DAL-270.",
           "also": "DAL-234's premise (Australian rare fruit community channels) targets 18% of installs. Still worth doing because it is the only segment Benedict can influence, but it is not where the users are.",
-          "SUPERSEDED_BY_DEC_275": "The '61% US / 18% AU' headline here is WRONG for every purpose it was used for. It blends iOS and Android, and Android is 69% of installs and 0% of revenue. Corrected in DEC-275 from RevenueCat's 432 customer records: on iOS, the only platform that has ever sold, AU is 43% of installs (58 of 134). Do not quote the 18% again."
+          "SUPERSEDED_BY_DEC_276": "The '61% US / 18% AU' headline here is WRONG for every purpose it was used for. It blends iOS and Android, and Android is 69% of installs and 0% of revenue. Corrected in DEC-276 from RevenueCat's 432 customer records: on iOS, the only platform that has ever sold, AU is 43% of installs (58 of 134). Do not quote the 18% again."
         },
         "install_trend_2026_07_31": {
           "weekly_distinct_devices": {
@@ -307,7 +307,7 @@
         "expectation": "Gate 8 needs 2 distinct active days and per DEC-254 only ~8-27% of the base reaches that, so expect single-digit asks per month, and a fraction become ratings. Worth shipping because 0 ratings is the worst possible state, not because it produces many."
       },
       "audience_geography": {
-        "decision": "DEC-275 / DAL-234 (2026-08-10). Source: RevenueCat 432 customer records (last_seen_country x last_seen_platform), not the 49-device PostHog July slice DEC-256 used.",
+        "decision": "DEC-276 / DAL-234 (2026-08-10). Source: RevenueCat 432 customer records (last_seen_country x last_seen_platform), not the 49-device PostHog July slice DEC-256 used.",
         "installs_by_country_platform": {
           "AU": {
             "ios": 58,

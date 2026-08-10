@@ -10231,7 +10231,7 @@ sent. DAL-171 was marked **Done when the post was drafted**, so a ticket that ha
 nothing in four months reads as complete. That is the DEC-238/239 "Track A terminates in
 documents" pattern with a closed ticket on top of it.
 
-**Running lesson, twenty-seventh session.** Every prior lesson asks whether a number is
+**Running lesson, twenty-eighth session.** Every prior lesson asks whether a number is
 complete, current, circular, instrumented, arithmetically right, or recognisable to a human.
 This one is narrower and worse: **I wrote the lesson, then broke it, then quoted the broken
 number as settled strategy for ten days.** A lesson recorded in the decision log is not a
