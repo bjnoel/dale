@@ -87,13 +87,17 @@
           "by": "tom",
           "summary": "WA only via concierge resellers, no in-house bulk. Wants to eventually but needs a separate treatment area.",
           "evidence": "DAL-80 comment 2026-04-25"
+        },
+        {
+          "date": "2026-08-10",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Re: Your nursery is on treestock.com.au",
+          "evidence": "resend:117accac-1465-477d-a01e-f9e13be0ca77"
         }
       ],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Send the drafted email to Tom (rosscreektropicals@gmail.com), BCC nursery@veliamsal.resend.app. Draft on DAL-274. Traffic trend (48/mo Mar to 133 in Jul) then a group sapodilla order: Krasuey, Ponderosa, Sawo Manilla, carton sized via his existing concierge route, not a pallet. Built around his 2026-04-02 answer, not re-asking it.",
-        "since": "2026-08-10"
-      },
+      "open_action": null,
       "notes": "Our warmest relationship and the best-connected contact we have (Oz Rare Fruit Australia FB group admin). Seasonality is live on /nursery/ross-creek.html. The impact.com affiliate fingerprint found in DEC-241 did not reproduce and is treated as a false positive."
     },
     {
