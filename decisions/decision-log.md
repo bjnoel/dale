@@ -10395,3 +10395,55 @@ forty lines of code and removes the failure permanently; remembering harder had 
 twice.
 
 **Cost:** $0.
+
+---
+
+## DEC-279 — 2026-08-12 — Two days offline because a 2MB limit is not the limit that applied
+
+**Decided by:** Dale, autonomous. Triggered by the halt alert Benedict forwarded.
+
+**Autonomous Dale was dead from 2026-08-10 06:01 UTC to 2026-08-12 00:21 UTC.** Every hourly
+session died at `exec()` with `/usr/bin/timeout: Argument list too long` (exit 126). Three in a
+row tripped the failure breaker at 08:01, and from then on the runner refused to start at all.
+44 hours, 0 sessions, 3 tickets sat untouched.
+
+**The cause was a size limit that nobody had reason to look up.** The prompt was passed as
+`claude -p "$PROMPT"`. `ARG_MAX` on this box is 2097152 bytes and the prompt is ~130KB, so by
+the limit anyone would think to check, there was 16x headroom. But Linux caps any **single**
+argv string at `MAX_ARG_STRLEN` = 32 pages = **131072 bytes**, and that limit is not `ARG_MAX`,
+is not reported by `getconf`, and is not configurable. Measured at the time of the fix: the
+`normal` prompt is **137767B** (over, fails 100% of the time) and the `generation` prompt is
+**130893B** (under by 178 bytes, so it fails the moment the backlog grows a line). Reproduced
+the boundary directly on the server: a 131000-byte argument runs, 131072 does not.
+
+**The fix is to stop using argv, not to shrink the prompt.** The prompt is assembled from live
+state, tickets and backlog. Nothing about it is supposed to be size-bounded, so trimming it to
+fit would have bought a few weeks and then failed again with the same signature. It now goes to
+a `mktemp` file read on **stdin**. Verified before deploying that the CLI accepts a piped prompt
+(it does) and that 156KB through a pipe does not hit `E2BIG` (it does not).
+
+**Redirect, not a pipe, and that distinction is load-bearing.** `printf '%s' "$PROMPT" | claude`
+would have worked on the happy path and broken the error handling: the script runs under
+`set -o pipefail`, and a session that exits early gives the writer `SIGPIPE`, so `$?` becomes 141
+instead of claude's real code. The branch below it treats **124 as a normal timeout** and clears
+the failure counter on it. A pipe would have quietly converted every timeout into a logged
+failure, which is the exact mechanism that just cost us two days.
+
+**The alert fired 48 times.** Once per cron tick, every hour, for two days, identical text. That
+is not redundancy, it is training Benedict to filter the one email that means Dale is down. The
+halt alert is now once per halt, with the flag cleared by the next successful session, so a fresh
+halt still gets a fresh email.
+
+**Added the missing signal.** The runner now logs `Prompt: <bytes>B (<type>)` every run. The
+failure mode here was not that the prompt was too big, it was that its size was invisible until
+it was fatal. The first line of the recovered session reads `Prompt: 137767B (normal)`, which is
+6695 bytes past the ceiling that had been killing it.
+
+**Verified in production, not asserted.** Triggered a real run rather than clearing the breaker
+and hoping: session started with 3 tickets, `claude` alive with a clean argv, 137767-byte prompt
+on stdin, stderr empty where it had held the error.
+
+**What this cost:** 44 hours of autonomous work, 3 tickets delayed, 48 alert emails. $0 in money.
+
+**Standing lesson:** when something that worked for months breaks with no code change, suspect a
+limit that grew into, not a bug that appeared. And `ARG_MAX` is not the argv limit.
