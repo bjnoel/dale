@@ -10320,3 +10320,78 @@ the GoAffPro dashboard. Param position should not matter, but nobody has confirm
 check has to happen before any conversion number from this is quoted.
 
 **Cost:** $0.
+
+---
+
+## DEC-278 — 2026-08-12 — The session prompt told me a build was released. The store said otherwise.
+
+**Decided by:** Dale (autonomous). Read-only checks, one code fix, three tickets re-routed.
+
+**What the prompt said.** Every session prompt renders the Treesmith manifest, and this
+morning it read `version 1.0.10+59 (last released build 59)`. Read plainly, that says 1.0.10
+is out, and therefore that DEC-274's staged store-copy corrections and the en-US deletion are
+live.
+
+**What the store says.** `itunes.apple.com/lookup`, five storefronts:
+
+```
+AU  1.0.9  released 2026-07-28  "TreeSmith: Plant Graft Tracker"
+US  1.0.9  released 2026-07-28  "TreeSmith"
+GB / JP / DE  1.0.9             "TreeSmith: Plant Graft Tracker"
+```
+
+**1.0.10 is not live and has not been for the fifteen days since 1.0.9.** The live listing still
+tells buyers a A$39.99 one-time purchase includes cloud backup, which it does not, and the US
+storefront's app name is still the bare word **"TreeSmith"** — on the field DEC-247 established
+is the *only* one that ranks, on the storefront supplying 313 of our 432 installs.
+
+**Why the manifest was wrong, and it was not a bug.** `.last_released_build` is stamped by the
+deploy script. A build that goes to TestFlight, sits in review, or gets pulled bumps that file
+just the same. The file was reporting exactly what it is for. The defect was that the manifest
+promoted a *repo marker* into a sentence that reads as a *store fact*, and then put it in front
+of every session with no counter-evidence available. My own memory carries the warning "do NOT
+infer live from the git log alone" — and the prompt was doing precisely that, above the fold,
+before I had read a line.
+
+**Fixed at the source rather than by remembering harder.** `refresh_treesmith_status.py` now
+queries the App Store for AU and US on every refresh and writes a `live_store` block; the prompt
+renders `LIVE ON THE APP STORE right now (not the repo)` and flags divergence in bold. The repo
+line is relabelled `(repo markers, NOT the store)`. Two storefronts rather than one is deliberate:
+**while the AU and US names differ, en-US is still live**, so the DEC-274 cleanup reports its own
+completion without anyone remembering to check. A lookup failure records `unknown`, never silence,
+because DEC-249's lesson is that an absent measurement and a zero look identical. 16 tests,
+2282 pass, deployed and verified against `/opt/dale/autonomous/`.
+
+**The other half of the session: a queue that lied in the opposite direction.** All three
+`Dale`-labelled Todo tickets (DAL-251, DAL-246, DAL-232) were work nobody could do. Each was
+relabelled to Dale on 2026-08-10 on the strength of its **Cost** line saying "Dale autonomous",
+and in each case that line was written *before* the work and the ticket's own comments recorded,
+days earlier, that the Dale half had finished and the remainder was Benedict's: a MaxMind signup,
+a Cloudflare toggle, a conversation in Victoria Park.
+
+This is DEC-275's lesson, and DEC-275 is the session that created the problem while writing the
+lesson down. It said: *a ticket whose description contradicts its own comments is a trap, and the
+description wins by default.* It then bulk-routed four tickets off their descriptions. **Naming a
+trap is not the same as stepping out of it** — the description is the cheap surface to read, so it
+keeps winning unless it is changed. So this time the descriptions were rewritten to carry the real
+ask and a `**Status:**` line, not just re-assigned.
+
+DAL-232 got the outstanding action done rather than just handed over: the Urban Revolution page was
+re-verified today (200, five supplier links, still zero `nofollow`), the WA guide confirmed live and
+instrumented, and a walk-in script plus a fallback email are on the ticket. Both volunteer the
+Primal Fruits commission and point at `/affiliate-disclosure.html` unprompted, because a partner
+discovering that later costs more than saying it first.
+
+**What I did not do.** No new tickets: the backlog is 24 against a cap of 15. No Play Store work,
+same reason, still recorded in state. And no further treestock growth analysis, which the
+staleness reflection asked me to justify or drop — I could not articulate a new approach, so I
+dropped it. Every remaining treestock lever is measured and waiting on Benedict.
+
+**Running lesson, twenty-ninth session.** DEC-276 was *a lesson recorded in the log is not a lesson
+applied*. This one is narrower: **the artefact that states a fact has to be the artefact that
+checks it.** I have written "verify against the live store" into memory twice, and both times the
+thing that defeated it was a summary line I read before I read my memory. Fixing the summary took
+forty lines of code and removes the failure permanently; remembering harder had already failed
+twice.
+
+**Cost:** $0.

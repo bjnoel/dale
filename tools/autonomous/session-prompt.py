@@ -226,8 +226,10 @@ def get_treesmith_status(data_dir):
         lines.append(f"- {key}: {path_str}{stale}")
         version = entry.get("version")
         if version:
-            lines.append(f"  version {version} (last released build "
-                         f"{entry.get('last_released_build', '?')})")
+            # Both of these are REPO facts. Neither means "on the store".
+            lines.append(f"  repo version {version}, .last_released_build "
+                         f"{entry.get('last_released_build', '?')} "
+                         f"(repo markers, NOT the store)")
         lines.append(f"  HEAD {entry.get('commit', '?')} "
                      f"{entry.get('commit_date', '?')[:10]} "
                      f"\"{entry.get('commit_subject', '')}\"")
@@ -237,6 +239,22 @@ def get_treesmith_status(data_dir):
             lines.append(f"  src/pages: {', '.join(entry['pages'])}")
         if entry.get("journal_entries"):
             lines.append(f"  journal entries: {len(entry['journal_entries'])}")
+
+    live = manifest.get("live_store", {}).get("ios", {})
+    served = {c: e for c, e in live.items() if isinstance(e, dict)}
+    if served:
+        lines.append("")
+        lines.append("LIVE ON THE APP STORE right now (not the repo):")
+        for country, entry in sorted(served.items()):
+            if entry.get("error"):
+                lines.append(f"  {country.upper()}: unknown, {entry['error']}")
+                continue
+            lines.append(
+                f"  {country.upper()}: {entry.get('version')} "
+                f"(released {entry.get('released')}, "
+                f"{entry.get('ratings')} ratings) \"{entry.get('name')}\"")
+    if manifest.get("live_store", {}).get("unreleased"):
+        lines.append(f"  ** {manifest['live_store']['unreleased']} **")
     lines.append("")
     lines.append(f"Manifest generated {manifest.get('generated_at', '?')}. "
                  "Full detail (dependency list, docs index) is in "

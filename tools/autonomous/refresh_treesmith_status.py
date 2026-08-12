@@ -17,6 +17,8 @@ import json
 import os
 import subprocess
 import sys
+import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 
 MIRRORS = {
@@ -24,6 +26,13 @@ MIRRORS = {
     "web": "/opt/dale/treesmith-web",
 }
 OUTPUT = "/opt/dale/data/treesmith-status.json"
+
+APP_STORE_ID = "6761506742"
+# AU is the primary localisation and US is the storefront supplying most
+# installs (DEC-276). Reading both is what makes the en-US deletion visible:
+# while the two names differ, the second localisation is still live.
+STORE_COUNTRIES = ("au", "us")
+STORE_LOOKUP = "https://itunes.apple.com/lookup?id={id}&country={country}"
 
 
 def git(repo, *args):
@@ -108,6 +117,68 @@ def app_details(repo):
     return details
 
 
+def fetch_live_ios(timeout=15):
+    """What the App Store is actually serving, per storefront.
+
+    The repo can only ever say what Benedict has committed. `.last_released_build`
+    is a marker the deploy script stamps, and a build can sit in review, go to
+    TestFlight only, or be pulled, so it does not mean "live". Sessions have
+    repeatedly reasoned from the repo version as though it were the store
+    version: DEC-274 staged store-copy corrections against 1.0.10 and every
+    later session had to re-check by hand whether they had shipped.
+
+    Fails soft. A refresh that cannot reach Apple records why and moves on;
+    an absent answer must never read as an answer.
+    """
+    live = {"checked_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    for country in STORE_COUNTRIES:
+        url = STORE_LOOKUP.format(id=APP_STORE_ID, country=country)
+        try:
+            with urllib.request.urlopen(url, timeout=timeout) as response:
+                payload = json.load(response)
+        except (urllib.error.URLError, json.JSONDecodeError, OSError,
+                TimeoutError) as exc:
+            live[country] = {"error": f"lookup failed: {type(exc).__name__}"}
+            continue
+        results = payload.get("results") or []
+        if not results:
+            live[country] = {"error": "not listed on this storefront"}
+            continue
+        result = results[0]
+        live[country] = {
+            "version": result.get("version"),
+            "name": result.get("trackName"),
+            "released": (result.get("currentVersionReleaseDate") or "")[:10],
+            "ratings": result.get("userRatingCount"),
+        }
+    return live
+
+
+def release_gap(repo_version, live):
+    """Compare the repo's version against what each storefront serves.
+
+    Returns None when they agree or when nothing could be read. Anything else
+    is a statement a session would otherwise have had to discover by hand.
+    """
+    if not repo_version:
+        return None
+    # pubspec carries "1.0.10+59"; the store carries "1.0.10".
+    repo_semver = repo_version.split("+", 1)[0]
+    behind = sorted(
+        country for country, entry in live.items()
+        if isinstance(entry, dict) and entry.get("version")
+        and entry["version"] != repo_semver
+    )
+    if not behind:
+        return None
+    served = {live[c]["version"] for c in behind}
+    return (
+        f"repo is at {repo_semver} but the App Store serves "
+        f"{'/'.join(sorted(served))} on {', '.join(c.upper() for c in behind)}: "
+        f"{repo_semver} is NOT live"
+    )
+
+
 def web_details(repo):
     """Astro companion: which pages exist, and how many journal entries."""
     details = {}
@@ -158,6 +229,12 @@ def build_manifest():
         entry.update(app_details(path) if key == "app" else web_details(path))
         manifest["repos"][key] = entry
 
+    live = fetch_live_ios()
+    manifest["live_store"] = {"ios": live}
+    gap = release_gap(manifest["repos"].get("app", {}).get("version"), live)
+    if gap:
+        manifest["live_store"]["unreleased"] = gap
+
     return manifest
 
 
@@ -178,6 +255,13 @@ def main():
             + (" (STALE: pull failed)" if entry.get("stale") else "")
         )
         print(f"  {key}: {status}")
+    for country, entry in manifest.get("live_store", {}).get("ios", {}).items():
+        if isinstance(entry, dict):
+            print(f"  store {country}: "
+                  f"{entry.get('error') or entry.get('version')} "
+                  f"{entry.get('name', '')}".rstrip())
+    if manifest.get("live_store", {}).get("unreleased"):
+        print(f"  {manifest['live_store']['unreleased']}")
     return 1 if errors else 0
 
 

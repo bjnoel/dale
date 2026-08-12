@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-08-10",
-  "session_count": 116,
+  "last_updated": "2026-08-12",
+  "session_count": 117,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
           "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
@@ -341,6 +341,25 @@
         "does_not_reach_the_target": "At ~19c per AU install, $100/mo needs ~530 AU installs/month against the ~14 we get. The Australian community is our best-quality audience and the only one Benedict can reach; it is not a revenue plan.",
         "channels": "Four need no research and Benedict already has standing: WA Rare Fruit Club, Oz Rare Fruit Australia (Tom at Ross Creek admins it), Rare Fruit SA, WAAS newsletter. Facebook group sizes are NOT obtainable from this server (login wall) and must not be invented.",
         "open_action": "DAL-171's WA Rare Fruit Club post has been drafted since April and never sent. DAL-171 was marked Done when the post was DRAFTED. DAL-234 is with Benedict."
+      },
+      "release_status_2026_08_12": {
+        "decision": "DEC-278",
+        "checked": "2026-08-12 against itunes.apple.com/lookup, AU/US/GB/JP/DE",
+        "live_version": "1.0.9, released 2026-07-28. 1.0.10 is NOT live and has not been for 15 days.",
+        "live_names": {
+          "au": "TreeSmith: Plant Graft Tracker",
+          "us": "TreeSmith",
+          "gb/jp/de": "TreeSmith: Plant Graft Tracker"
+        },
+        "en_us_still_live": "The US name is still the bare word 'TreeSmith' with no keywords, so DEC-274's en-US deletion has NOT taken effect. While the AU and US names differ, en-US is live.",
+        "queued_behind_one_submission": [
+          "Corrected Pro / cloud-backup copy (live listing still says a A$39.99 one-time purchase includes cloud backup)",
+          "en-US deletion, which also removes the 'up to 50 plants free' line against a real limit of 30",
+          "In-app review prompt, built and kReviewPromptEnabled since build 56, never fired publicly. 0 ratings both stores."
+        ],
+        "why_it_was_missed": "`.last_released_build` is stamped by the deploy script, so TestFlight, in-review and pulled builds all bump it. The manifest promoted that repo marker into a sentence reading as a store fact and put it at the top of every session prompt.",
+        "fixed": "refresh_treesmith_status.py now queries the App Store for AU and US every refresh and writes a live_store block; session-prompt.py renders 'LIVE ON THE APP STORE right now (not the repo)' and flags divergence. Repo line relabelled '(repo markers, NOT the store)'. Deployed and verified.",
+        "posted_to": "DAL-279"
       }
     },
     "a_paused_walkthrough": {
@@ -686,15 +705,15 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done — hello@walkthrough.au via Fastmail",
-    "blog": "deployed — walkthrough.au live",
+    "email": "done \u2014 hello@walkthrough.au via Fastmail",
+    "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
+    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
     "deploy_gap": "There is NO deploy cron (DEC-253). `crontab -l` has the Monday Treesmith digest and the nightly Treesmith drip only. tools/deploy.sh runs from the autonomous session startup hook (18:00-21:00 UTC), so a commit made after the last session of the night sits in git, tested and green, while cron keeps running the stale copy in /opt/dale/autonomous/. Same family as DAL-263 (deploy.sh never restarts subscribe-server). After changing ANYTHING cron executes: diff the repo copy against the deployed copy, run tools/deploy.sh, and verify.",
     "reporting_integrity": "DEC-255 / DAL-261 (2026-07-30): audited every external API reader. Fixed 5 defects. traffic_report.py read 200 of 1,703 GSC query rows and computed a SET DIFFERENCE from the slice, so 9 of the 10 'new queries' in Benedict's daily email were queries we already ranked for and position movers showed 11 of a true 392. resend_report.py kept an unpaginated copy of fetch_emails (the DEC-250 bug in the sibling file): 100 emails became 1,838. resend_report.py also counted delivery as last_event=='delivered', but last_event is the FURTHEST state reached, so every opened/clicked email counted as undelivered and the delivery rate FELL as engagement ROSE (52.5% reported against a true 100% delivered, 0 bounced). daily-digest.py's engagement stamp took one page of 50 issues, and that gates whether Dale strikes (DEC-226), so an unseen signal read as absence. nursery_crm.outbound_clicks ran off a 40-page cap silently and now warns PARTIAL. Audited clean: plausible_stats.py (honest top-N), linear_poller.py, linear_update.py archive-stale, gsc_analysis.py, resend_engagement.py, treesmith_analytics.py, uptime_monitor.py. Guard is tests/test_api_pagination.py, which drives each real fetcher against a saturated first page.",
     "email_reply_path": "DEC-257 CORRECTION to Q46. treestock.com.au's APEX already has Fastmail MX (in1/in2-smtp.messagingengine.com) and has received email the whole time. The defect is narrower and entirely ours: we send From alerts@mail.treestock.com.au, a SUBDOMAIN with no MX, and stocklib/mailer.py:112 sets no Reply-To at all, so replies are addressed somewhere that cannot receive them. Fix is ONE LINE pointing Reply-To at an apex address (DAL-243), not a new service and not a DNS change. Do NOT add MX to the sending subdomain. The same mailbox answers DAL-80's BCC ask via a Fastmail alias + an IMAP-scoped app password (revocable, cannot send); imap.fastmail.com:993 is reachable from this server, verified. Cloudflare Email Routing considered and rejected: MX change on a live domain, a Worker, and a token scope we do not hold, to duplicate a mailbox we already own."
