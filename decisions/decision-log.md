@@ -10447,3 +10447,69 @@ on stdin, stderr empty where it had held the error.
 
 **Standing lesson:** when something that worked for months breaks with no code change, suspect a
 limit that grew into, not a bug that appeared. And `ARG_MAX` is not the argv limit.
+
+---
+
+## DEC-280 — 2026-08-12 — The prompt was 62% archive, and nothing was measuring it
+
+**Decided by:** Dale, autonomous, at Benedict's request after DEC-279 ("that prompt seems
+quite long, can we work on streamlining it?").
+
+**The session prompt was 139,014 bytes, about 34,750 tokens, every hour.** One section was
+61.7% of it: `state/business-state.json`, dumped verbatim. That file went from **5,679B on
+2026-07-23 to 85,790B on 2026-08-12**, 15x in under three weeks. It had been pruned once
+before, on 2026-04-04, from 15,763B down to 3,311B, and grew straight back. DEC-279 removed
+the wall this growth hit; it did nothing about the growth.
+
+**The file stopped being what its own heading calls it.** The prompt labels the section
+"Current Business State (metrics only)". The metrics in it are worth about 3KB. The other
+83KB is findings: good ones, mostly, but an accumulating knowledge base living in a slot
+labelled dashboard.
+
+**Metrics travel, arguments stay.** `render_business_state()` sends scalars and short
+strings verbatim, and reduces prose over 180 chars to its opening claim plus a path to read
+the rest. The split is deliberate: the opening claim is the part that stops a known-wrong
+conclusion being reached a second time ("DEC-237's claim ... is WRONG"), and the supporting
+paragraph is the part you only need when a ticket actually touches it. **Nothing is deleted.**
+85,790B to 45,881B.
+
+**An unplanned improvement.** `activation_is_the_constraint` is marked "SUPERSEDED BY DEC-254,
+DO NOT USE" and then restates the wrong figures. Headlining ships the warning and drops the
+figures, so the misleading numbers no longer enter the session at all. The warning is the
+whole value of that key.
+
+**Five decisions were 21KB to carry five headlines.** Now headline plus first substantive
+paragraph. It took the *first* paragraph initially, which is "**Decided by:** Dale,
+autonomous" on most entries: provenance, not finding. 22,709B to 2,418B.
+
+**On trimming instructions.** Benedict's steer was that much of this is "probably no longer
+needed with smarter models". True for coaching, false for facts. Cut "do each task WELL, no
+shortcuts, quality over quantity" and the five-step SHOUTED duplicate checklist that restates
+what `linear_update.py create` enforces in code. Kept every repo-specific rule: exact CLI
+invocations, the 100-word cap, the commit trailer, the blocklist. A model cannot infer those,
+and each traces to a logged failure. **I also checked whether the prompt duplicates CLAUDE.md,
+which is auto-loaded since the session runs with cwd set to the repo. It does not: 4% shingle
+overlap. They paraphrase the same rules rather than repeat them, so there was no win there.**
+
+**Result: 139,014B to 78,537B, 44% smaller, ~15,000 fewer input tokens per session.** Verified
+all 18 load-bearing facts still present (pricing model, both blocklists, ticket format, commit
+trailer, focus tracker, emergency exception, current metrics).
+
+**The actual fix is the test.** `tests/test_prompt_size.py` ceilings the state file and the
+rendered block, asserts metrics survive the render verbatim, asserts a headlined finding keeps
+its claim, and guards the DEC-279 stdin fix. Its duplicate-guard assertion **failed on first
+run against my own comment**, which quotes `claude -p "$PROMPT"` while explaining why not to
+use it. Real bug in the check, caught by writing it. The size of this prompt was never
+reported anywhere until it was fatal; now a step change fails a test.
+
+**What is left, and why I stopped.** The rendered state block is still 45,881B, 58% of the new
+prompt. Threshold tuning is exhausted: dropping the prose cut from 180 to 80 chars saves only
+4.7KB, because the remaining bulk is 638 distinct keys, not long values. Going further means
+deciding which findings no longer earn a place in an hourly prompt, and that is a call about
+the business, not about formatting. Candidates, for Benedict: the paused `a_paused_walkthrough`
+and discontinued `b_experiment_beestock` blocks (~2.7KB, already covered by CLAUDE.md and the
+blocklist), and the 30 date-stamped snapshot keys (~20.7KB) whose homes are arguably the
+decision log. Note that date-stamped does **not** mean stale here: `release_status_2026_08_12`
+is today's. That is exactly why I did not automate it.
+
+**Cost:** $0.
