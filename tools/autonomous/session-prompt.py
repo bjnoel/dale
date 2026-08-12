@@ -76,16 +76,119 @@ def read_file(path, max_lines=None):
 
 
 def get_last_n_decisions(path, n=5):
-    """Extract the last N decisions from the decision log."""
+    """Headline + opening paragraph of the last N decisions.
+
+    Was the full text of all five, which by 2026-08 was ~21KB of the prompt, or
+    15% of it, to carry five entries most sessions never refer to. The headline
+    is what stops the same ground being re-covered; the argument is what you go
+    and read when a ticket actually touches it. Full text: decisions/decision-log.md.
+    """
     content = read_file(path)
     if content.startswith("(file not found"):
         return content
-    # Split by decision headers
     decisions = content.split("\n## DEC-")
     if len(decisions) <= 1:
         return content[-2000:]  # fallback
-    recent = decisions[-n:]
-    return "\n## DEC-".join(recent)
+
+    out = []
+    for entry in decisions[-n:]:
+        lines = ("## DEC-" + entry).strip().split("\n")
+        heading = lines[0]
+        body = []
+        for ln in lines[1:]:
+            if ln.strip():
+                body.append(ln.strip())
+            elif body:
+                break
+        out.append(heading + ("\n" + " ".join(body) if body else ""))
+    return "\n\n".join(out) + (
+        "\n\n(Opening paragraph only. Full reasoning for any of these: "
+        "grep -A80 'DEC-XXX' decisions/decision-log.md)"
+    )
+
+
+# A prose value long enough to be an argument rather than a reading. Values under
+# this go through verbatim; longer ones are headlined and left on disk.
+_PROSE_CHARS = 180
+
+
+def _first_sentence(text, limit=220):
+    """Opening claim of a prose value, which is where the finding always sits."""
+    flat = " ".join(text.split())
+    cut = len(flat)
+    for stop in (". ", "; "):
+        i = flat.find(stop)
+        if i != -1:
+            cut = min(cut, i + 1)
+    if cut > limit:
+        cut = flat.rfind(" ", 0, limit)
+        if cut == -1:
+            cut = limit
+    head = flat[:cut].rstrip(" .;,")
+    return head + (" ..." if cut < len(flat) else "")
+
+
+def render_business_state(path):
+    """Render business-state.json as metrics verbatim and findings as headlines.
+
+    The file is dumped in full no longer. It went from 5,679B on 2026-07-23 to
+    85,790B on 2026-08-12, a 15x rise in under three weeks, and at that size it
+    was 62% of the session prompt and the thing that pushed it through the argv
+    ceiling (DEC-279). Growth is not the bug: the findings in it are good. Sending
+    all of them every hour to carry a handful of numbers is.
+
+    Scalars and short strings go through untouched, because they are the metrics
+    the heading promises. Long prose keeps its opening claim, which is the part
+    that stops a known-wrong conclusion being reached twice, and drops the
+    supporting argument, which is what the path pointer is for. Nothing is
+    deleted; this only decides what travels.
+    """
+    raw = read_file(path)
+    if raw.startswith("(file not found"):
+        return raw
+    try:
+        state = json.loads(raw)
+    except json.JSONDecodeError as e:
+        # Never silently swallow this: a broken state file that renders as
+        # nothing looks identical to a business with no state.
+        return f"(state/business-state.json is not valid JSON: {e}. Repair it this session.)"
+
+    lines, headlined = [], 0
+
+    def walk(node, depth, path_parts):
+        nonlocal headlined
+        pad = "  " * depth
+        if isinstance(node, dict):
+            for k, v in node.items():
+                here = path_parts + [k]
+                if isinstance(v, (dict, list)) and v:
+                    lines.append(f"{pad}{k}:")
+                    walk(v, depth + 1, here)
+                elif isinstance(v, str) and len(v) > _PROSE_CHARS:
+                    headlined += 1
+                    lines.append(f"{pad}{k}: {_first_sentence(v)}")
+                else:
+                    lines.append(f"{pad}{k}: {json.dumps(v, ensure_ascii=False)}")
+        elif isinstance(node, list):
+            for item in node:
+                if isinstance(item, (dict, list)):
+                    walk(item, depth, path_parts)
+                elif isinstance(item, str) and len(item) > _PROSE_CHARS:
+                    headlined += 1
+                    lines.append(f"{pad}- {_first_sentence(item)}")
+                else:
+                    lines.append(f"{pad}- {json.dumps(item, ensure_ascii=False)}")
+
+    walk(state, 0, [])
+    body = "\n".join(lines)
+    note = (
+        f"\n({headlined} long findings are shown as their opening claim only. "
+        f"Full text is in state/business-state.json, which is {len(raw):,}B on disk "
+        f"and is still the file you update. To read one in full: "
+        f"python3 -c \"import json;print(json.load(open('state/business-state.json'))"
+        f"['tracks']['a']['posthog_product_analytics'])\")"
+    )
+    return body + "\n" + note
 
 
 def get_data_summary(data_dir):
@@ -713,7 +816,7 @@ def build_prompt():
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     # Read state files from the repo
-    business_state = read_file(os.path.join(repo, "state", "business-state.json"))
+    business_state = render_business_state(os.path.join(repo, "state", "business-state.json"))
     questions = read_file(os.path.join(repo, "state", "questions-for-benedict.md"), max_lines=40)
     recent_decisions = get_last_n_decisions(
         os.path.join(repo, "decisions", "decision-log.md"), n=5
@@ -742,8 +845,8 @@ def build_prompt():
 
     prompt = f"""This is an AUTONOMOUS ticket-processing session at {now}.
 You are Dale, the AI business agent. These sessions run hourly when tickets exist.
-Time limit: {max_min} minutes. Work through approved tickets sequentially. Do each
-task WELL before moving on. No shortcuts, no half-finished work. Quality over quantity.
+Time limit: {max_min} minutes. Work tickets sequentially and finish each one before
+starting the next.
 
 {linear_block}
 
@@ -908,17 +1011,12 @@ This creates a Backlog ticket with a "Dale" label automatically added.
 Benedict will move it to Todo if approved.
 Do NOT create more tickets if the backlog is full (check the count above).
 
-**DUPLICATE CHECK (CRITICAL):** Before creating ANY ticket:
-1. Read EVERY backlog title above.
-2. Read EVERY cancelled/rejected ticket above (these were rejected by Benedict).
-3. Read EVERY completed ticket above (this work is already done).
-4. Ask: "Does this overlap?" Check for same nursery, same feature, same target, same concept.
-5. If ANY overlap, do NOT create the ticket.
-
-`linear_update.py create` also blocks titles that overlap an open ticket and
-exits 3 with the matches listed. If you hit that, work the existing ticket or
-extend its description. Do not reword the title to slip past the check.
-Never reach for `--allow-duplicate` to unblock yourself.
+**Duplicate check.** The backlog, cancelled and completed lists above are the
+whole history: same nursery, same feature, same target or same concept all count
+as overlap, and cancelled means Benedict already said no. `linear_update.py create`
+also blocks overlapping titles and exits 3 with the matches listed. If you hit
+that, work the existing ticket or extend it. Do not reword the title to slip past
+the check, and do not reach for `--allow-duplicate`.
 
 When you assign a ticket to Benedict (for questions/review), remove the Dale label:
 the Dale label means "in Dale's court". Benedict re-adds it when passing back to you.
@@ -982,7 +1080,7 @@ def build_generation_prompt():
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-    business_state = read_file(os.path.join(repo, "state", "business-state.json"))
+    business_state = render_business_state(os.path.join(repo, "state", "business-state.json"))
     recent_decisions = get_last_n_decisions(
         os.path.join(repo, "decisions", "decision-log.md"), n=5
     )
