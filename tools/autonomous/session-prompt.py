@@ -90,17 +90,31 @@ def get_last_n_decisions(path, n=5):
     if len(decisions) <= 1:
         return content[-2000:]  # fallback
 
+    # "**Decided by:** Dale, autonomous." is provenance, not the finding, and it
+    # opens most entries. Skip past it to the first paragraph that says what was
+    # actually concluded, falling back to the metadata if that is all there is.
+    meta_prefixes = ("**Decided by:", "**Trigger:", "**Decision:**", "**Status:")
+
     out = []
     for entry in decisions[-n:]:
         lines = ("## DEC-" + entry).strip().split("\n")
         heading = lines[0]
-        body = []
+
+        paras, cur = [], []
         for ln in lines[1:]:
             if ln.strip():
-                body.append(ln.strip())
-            elif body:
-                break
-        out.append(heading + ("\n" + " ".join(body) if body else ""))
+                cur.append(ln.strip())
+            elif cur:
+                paras.append(" ".join(cur))
+                cur = []
+        if cur:
+            paras.append(" ".join(cur))
+
+        body = next(
+            (p for p in paras if not p.startswith(meta_prefixes)),
+            paras[0] if paras else "",
+        )
+        out.append(heading + ("\n" + body if body else ""))
     return "\n\n".join(out) + (
         "\n\n(Opening paragraph only. Full reasoning for any of these: "
         "grep -A80 'DEC-XXX' decisions/decision-log.md)"
