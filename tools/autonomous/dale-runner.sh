@@ -42,13 +42,23 @@ if [ -f "$LOCK_FILE" ]; then
     rm -f "$LOCK_FILE"
 fi
 echo $$ > "$LOCK_FILE"
-trap 'rm -f "$LOCK_FILE"' EXIT
+PROMPT_FILE=""
+trap 'rm -f "$LOCK_FILE" ${PROMPT_FILE:+"$PROMPT_FILE"}' EXIT
 
 # 3. Consecutive failures
+#
+# The halt alert fires ONCE per halt, not once per cron tick. The 2026-08-10
+# halt sent 48 identical emails over two days, which is how you teach someone
+# to filter the alert that actually matters. The flag is cleared on the next
+# successful session, so a fresh halt still gets a fresh email.
+HALT_FLAG="$SCRIPT_DIR/locks/halt-notified.flag"
 FAILURE_COUNT=$(python3 "$SCRIPT_DIR/budget-tracker.py" failure-count 2>/dev/null | tail -1)
 if [ "${FAILURE_COUNT:-0}" -ge 3 ]; then
     log "3+ consecutive failures ($FAILURE_COUNT). Halting."
-    python3 "$SCRIPT_DIR/notify.py" alert "3 consecutive failures — autonomous run halted. Check logs."
+    if [ ! -f "$HALT_FLAG" ]; then
+        python3 "$SCRIPT_DIR/notify.py" alert "3 consecutive failures — autonomous run halted. Check logs."
+        touch "$HALT_FLAG"
+    fi
     exit 0
 fi
 
@@ -184,12 +194,26 @@ MODEL_ARGS=()
 [ -n "$CLAUDE_EFFORT" ] && MODEL_ARGS+=(--effort "$CLAUDE_EFFORT")
 log "Model: ${CLAUDE_MODEL:-<cli default>} (effort: ${CLAUDE_EFFORT:-<cli default>})"
 
-# Build the session prompt
-PROMPT=$(python3 "$SCRIPT_DIR/session-prompt.py" --session-type "$SESSION_TYPE" 2>>"$LOG_DIR/prompt-errors.log") || {
+# Build the session prompt.
+#
+# It goes to a file and is fed to claude on stdin, NOT as `claude -p "$PROMPT"`.
+# A single argv string is capped at MAX_ARG_STRLEN (32 pages = 131072 bytes on
+# this box), which is a separate, much smaller limit than ARG_MAX (2MB). The
+# prompt grew past it on 2026-08-10 and every session died at exec() with
+# "Argument list too long" (exit 126) until the 3-failure breaker halted the
+# runner. Nothing in the prompt is meant to be size-bounded, so the fix is to
+# stop routing it through argv rather than to trim it. Redirect, not a pipe:
+# under `set -o pipefail` a SIGPIPE'd writer would overwrite claude's exit code
+# and break the "124 means a normal timeout" branch below.
+PROMPT_FILE=$(mktemp "${TMPDIR:-/tmp}/dale-prompt-XXXXXX")
+python3 "$SCRIPT_DIR/session-prompt.py" --session-type "$SESSION_TYPE" \
+    > "$PROMPT_FILE" 2>>"$LOG_DIR/prompt-errors.log" || {
     log "Failed to build session prompt."
     python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "prompt-build-failed"
     exit 1
 }
+PROMPT_BYTES=$(stat -c%s "$PROMPT_FILE" 2>/dev/null || stat -f%z "$PROMPT_FILE" 2>/dev/null || echo 0)
+log "Prompt: ${PROMPT_BYTES}B ($SESSION_TYPE)"
 
 # Run with timeout + retry on empty output
 SECONDS_LIMIT=$((MAX_MINUTES * 60))
@@ -205,11 +229,12 @@ while [ "$ATTEMPT" -lt "$MAX_ATTEMPTS" ]; do
         sleep 30
     fi
 
-    timeout "${SECONDS_LIMIT}" claude -p "$PROMPT" \
+    timeout "${SECONDS_LIMIT}" claude -p \
         --dangerously-skip-permissions \
         --output-format json \
         --max-turns "$MAX_TURNS" \
         ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} \
+        < "$PROMPT_FILE" \
         > "$SESSION_LOG" 2>"$LOG_DIR/claude-stderr-$TODAY-$HOUR.log"
 
     EXIT_CODE=$?
@@ -250,6 +275,7 @@ fi
 # Clear failure counter on successful completion
 if [ "$EXIT_CODE" -eq 0 ] || [ "$EXIT_CODE" -eq 124 ]; then
     python3 "$SCRIPT_DIR/budget-tracker.py" clear-failures 2>/dev/null
+    rm -f "$HALT_FLAG"
 fi
 
 log "=== Session complete (exit: $EXIT_CODE) ==="
