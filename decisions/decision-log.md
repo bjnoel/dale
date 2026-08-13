@@ -10707,3 +10707,63 @@ have.
 
 The Apple counter-signal recorded above is unaffected and still unexplained. Play's evidence is
 direct and controlled; the Apple US/AU comparison is neither.
+
+---
+
+## DEC-283 — 2026-08-13 — Visitor geography is live, and the variable name was the whole risk
+
+**Status:** Shipped. DAL-251 closed after 7 days blocked on Benedict.
+
+Benedict created the free MaxMind account and put the credentials on this machine. DEC-270
+had already done the hard half: it established that Plausible CE ships DB-IP Country Lite,
+that the free DB-IP City Lite file is stripped of `iso_code` and `geoname_id` and therefore
+cannot work at any price, and that GeoLite2-City carries both. All that remained was the key.
+
+**What shipped.** `/opt/dale/secrets/maxmind.env` (mode 600) referenced as an `env_file` on
+the plausible service, so the secret stays out of `docker-compose.yml`. One container
+recreate, health 200 after 12 seconds. Loaded database went from `DBIP-Country-Lite` to
+`GeoLite2-City`. Plausible downloads and auto-updates it, so there is no mmdb to babysit.
+
+**The finding worth keeping: the credentials as supplied would have failed silently.**
+Benedict's file used `MAXMIND_KEY`. Plausible reads `MAXMIND_LICENSE_KEY`. The failure mode
+is not a crash. `runtime.exs:249` defaults `ip_geolocation_db` to the bundled
+`dbip-country.mmdb.gz`, so with the wrong name the container boots clean, health returns 200,
+country data keeps flowing, and `visit:region` stays empty. Every surface signal says
+success. Caught by grepping the running image for `MAXMIND_[A-Z_]*` and reading the config
+block before the restart, rather than after wondering why the data never came.
+
+The file also used `KEY = value` with spaces, which breaks `source` in bash and every
+`split("=")` parser in `tools/autonomous/`. Normalised on both machines.
+
+**Verified through the front door, which is the only reason this is a shipped claim.**
+DEC-270's lesson was that an in-process lookup returning "Western Australia" is exactly where
+a reasonable person stops and is not evidence. So: three pageviews pushed through
+`/api/event` with `X-Forwarded-For`, on walkthrough.au because it is the only zero-traffic
+site on the instance.
+
+```
+58.7.0.1  -> AU-NT  / Darwin        visit:region  AU-NSW 1, AU-NT 1, AU-QLD 1
+1.128.0.1 -> AU-QLD / (no city)     visit:city    2073124 (Darwin), 2147714 (Sydney)
+144.6.1.1 -> AU-NSW / Sydney        visit:country AU 3
+```
+
+The breakdown matches the database prediction exactly. DEC-270's identical test returned
+`[]` for both region and city. Then the test that actually matters: real treestock.com.au
+traffic showed `AU-QLD` visitors within four minutes of the restart.
+
+**What this unblocks, stated narrowly.** DAL-249 can now choose states on visitor geography
+instead of on traffic to the state pages we ourselves chose to build, which was circular.
+It does not unblock DAL-249, which was never blocked: the 2026-07-30 comment established
+SA as the first block on stock grounds alone (2,012 in-stock listings from 14 nurseries,
+zero pages, against WA's 1,351 from 9 carrying 75 pages). Geography informs the ordering
+after SA.
+
+**Nothing backfills.** Region data starts today. The first few days are a small sample and
+should not be read as representative.
+
+**Running lesson, twenty-eighth session.** DEC-264: code nobody loaded is not deployed.
+DEC-267: test through the path the caller takes. DEC-268: content nobody fetched is not
+published. DEC-270: a component answering correctly in isolation is not a working feature.
+Today adds the quietest member of the family: a configuration key with the wrong name is not
+a misconfiguration you will be told about. The system had a default, the default was
+plausible, and every health check would have passed while the feature did nothing.

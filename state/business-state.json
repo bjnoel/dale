@@ -1,6 +1,6 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-08-12",
+  "last_updated": "2026-08-13",
   "session_count": 117,
   "phase": 0,
   "phase_name": "Setup",
@@ -569,13 +569,16 @@
           "recommendation": "Do NOTHING to the tail. Noindexing the dead 94% would cost ~10% of variety search clicks to prevent a penalty we have no evidence of. Effort belongs on DAL-249 (species+state), best page type on SEO yield and referral yield independently."
         },
         "visitor_geography": {
-          "decision": "DEC-270 / DAL-251 (2026-08-06). Attempted, verified, reverted. Blocked on a free MaxMind account, which only Benedict can create.",
+          "decision": "DEC-283 / DAL-251 (2026-08-13). SHIPPED. Benedict created the MaxMind account; region and city now resolve on live traffic.",
+          "status": "Live since 2026-08-13 02:52 UTC. Loaded database is GeoLite2-City (was DBIP-Country-Lite). visit:region returns ISO 3166-2 Australian states, visit:city returns geonames ids.",
           "why_country_works_and_region_does_not": "Plausible CE ships with DB-IP Country Lite baked in. That is the source of visit:country. It is a country-only file with no region data. Nothing was misconfigured; the capability was never present.",
           "v3_2_0_supports": "IP_GEOLOCATION_DB, MAXMIND_LICENSE_KEY, MAXMIND_EDITION, GEONAMES_SOURCE_FILE (grepped from the running image). Geonames name table already bundled at /app/lib/location-0.1.0/priv/geonames.lite.csv.",
+          "how_it_is_wired": "/opt/dale/secrets/maxmind.env (mode 600) holds MAXMIND_LICENSE_KEY and MAXMIND_EDITION=GeoLite2-City. It is referenced as an env_file on the plausible service in /opt/dale/plausible/docker-compose.yml, so the secret never enters the compose file. Plausible downloads the database itself and auto-updates it; there is no mmdb in the backup set and no refresh script.",
+          "the_variable_name_is_load_bearing": "Plausible reads MAXMIND_LICENSE_KEY. The name Benedict supplied was MAXMIND_KEY. A wrong name does NOT crash the container: ip_geolocation_db falls back to the bundled dbip-country.mmdb.gz, so it boots, serves country data, and visit:region stays silently empty. Caught before the restart by grepping the running image and reading /app/releases/0.0.1/runtime.exs:249-252.",
           "db_ip_city_lite_does_not_work": "Free, CC BY, no signup, loads fine, and resolves correctly in-process (58.7.0.1 -> Western Australia / Perth). But the Lite file is stripped: subdivisions carry names only, no iso_code, and city carries names only, no geoname_id. Plausible stores region as ISO 3166-2 and city as a geonames id, so it has nothing to store. Verified by pushing one real pageview through /api/event with X-Forwarded-For: 58.7.0.1: country resolved to AU, region and city both empty.",
-          "fix": "MaxMind GeoLite2-City carries both fields. Free but needs an account. Set MAXMIND_LICENSE_KEY and MAXMIND_EDITION=GeoLite2-City and Plausible downloads and auto-updates it. One restart, ~20s of collection downtime.",
-          "no_backfill": "Region data starts the day it is switched on. DAL-249's state choice gets real data a few weeks after the key exists.",
-          "state_left_in": "docker-compose.yml restored from backup, geoip/ deleted, container recreated, health 200, loaded DB back to DBIP-Country-Lite. One deliberate artefact: a single test pageview on walkthrough.au at /dal-251-geoip-test, kept rather than removed with a hand-written ALTER TABLE DELETE on the events table."
+          "no_backfill": "Region data starts 2026-08-13. Nothing before that date carries a region. DAL-249's state choice gets a usable sample a few weeks out; do not read the first days as representative.",
+          "verification": "Front-door test per DEC-270, not an in-process lookup. Three pageviews through /api/event with X-Forwarded-For 58.7.0.1, 1.128.0.1, 144.6.1.1 on walkthrough.au returned visit:region AU-NT, AU-QLD, AU-NSW, matching the database exactly, and visit:city 2073124 (Darwin) and 2147714 (Sydney). Real traffic confirmed separately: treestock.com.au showed AU-QLD visitors within four minutes of the restart.",
+          "test_artefacts": "Two deliberate artefacts on walkthrough.au, the only zero-traffic site on the instance: /dal-251-geoip-test (2026-08-06, DEC-270) and /dal-251-maxmind-test (2026-08-13, 3 views). Both kept rather than removed with a hand-written ALTER TABLE DELETE on the events table, which is the larger risk."
         }
       },
       "outreach_clubs": {
