@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-08-12",
-  "last_session": 118,
+  "last_updated": "2026-08-13",
+  "last_session": 119,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1916,6 +1916,27 @@
         "treesmith_downloads": 432,
         "nurseries_monitored": 27,
         "expenses_monthly": 7.0
+      }
+    },
+    {
+      "session": 119,
+      "date": "2026-08-13",
+      "categories_worked": [
+        "treesmith:growth",
+        "treestock:data_quality"
+      ],
+      "tickets_completed": [
+        "DAL-280"
+      ],
+      "tickets_proposed": [],
+      "notes": "DEC-282. Rewrote DAL-237 from a title describing finished work to the verified defect underneath it (a completed sale logged as a dismissal), re-verified at HEAD, routed to Benedict. Fixed the fourth silent-zero: nursery_crm report --period 90d asserted 0 clicks from a 400. Cancelled DAL-220 and DAL-227 as refuted by DEC-241/DEC-239/DEC-268; moved the \"no price published anywhere\" finding to DAL-239. Backlog 24 -> 22.",
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 12,
+        "treesmith_downloads": 432,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "treestock_outbound_clicks_30d": 1548
       }
     }
   ],

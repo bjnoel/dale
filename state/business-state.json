@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-13",
-  "session_count": 117,
+  "session_count": 119,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -360,6 +360,17 @@
         "why_it_was_missed": "`.last_released_build` is stamped by the deploy script, so TestFlight, in-review and pulled builds all bump it. The manifest promoted that repo marker into a sentence reading as a store fact and put it at the top of every session prompt.",
         "fixed": "refresh_treesmith_status.py now queries the App Store for AU and US every refresh and writes a live_store block; session-prompt.py renders 'LIVE ON THE APP STORE right now (not the repo)' and flags divergence. Repo line relabelled '(repo markers, NOT the store)'. Deployed and verified.",
         "posted_to": "DAL-279"
+      },
+      "purchase_telemetry_defect": {
+        "decision": "DEC-282 (2026-08-13). Re-verified against the mirror at HEAD f20a064.",
+        "what": "A completed sale can be recorded as a dismissal. 1 of our 3 production sales is recorded that way in PostHog right now.",
+        "mechanism": "paywall_screen.dart:213 awaits service.purchasePackage(...), line 217 then does 'if (!mounted) return;'. The await runs up to 8s inside waitForEntitlement (entitlement_service.dart:470) against a 10s call timeout. Dispose in that window and neither capturePurchaseSucceeded nor _fireResult runs, so dispose() at line 89 fires 'dismissed' because _resultFired is still false.",
+        "second_path": "case PurchaseOutcome.cancelled: break; at line 251 fires nothing at all, so a genuine cancel and a dropped sale are indistinguishable.",
+        "evidence": "The Pakistan buyer's paywall_result outcome=dismissed is stamped 23:09:37, the same second RevenueCat recorded the receipt.",
+        "ticket": "DAL-237, retitled from \"instrument paywall views\" (work already done) to the defect, description rewritten, Todo, assigned to Benedict.",
+        "fix_part_1": "Fire the purchase events from inside EntitlementService.purchasePackage rather than the widget callback, and give cancelled its own outcome value. Small, no privacy implications, Benedict commits it.",
+        "fix_part_2": "Push the PostHog distinct id to RevenueCat as a subscriber attribute at configure time so anonymous buyers are attributable. Benedict's privacy call, deliberately separate.",
+        "consequence": "Every paywall dismissal rate we have quoted is an upper bound, and PostHog purchase counts are a lower bound. RevenueCat remains the source of truth for money."
       }
     },
     "a_paused_walkthrough": {
@@ -465,6 +476,20 @@
           "site_average": "0.28 clicks/visitor",
           "implication": "species+state is best on BOTH SEO yield (DEC-243) and referral yield, measured independently. A state page is worth ~16x a variety page per page built. ~43 more state pages covers the A$8.20/mo infrastructure milestone. DAL-251 still gates WHICH state, not whether the type is worth building.",
           "caveats": "One month. Correlation not causation (a 'buy <species> trees <state>' visitor may simply arrive with more intent). An outbound click is not a sale; 6.8c/click is DEC-248's assumed mid case, unmeasured until DAL-258."
+        },
+        "measured_2026_08_13": {
+          "decision": "DEC-282",
+          "note": "Corrected 30d figures after fixing nursery_crm.py. Up from 1,245 clicks on 2026-07-30. The uncontacted share fell from 60% to 36%, which is outreach working, not traffic moving.",
+          "outbound_clicks_30d": 1548,
+          "pct_to_never_contacted": 36,
+          "top_two": "Ladybird 271, Daleys 244"
+        },
+        "report_tool_defect": {
+          "decision": "DEC-282 (2026-08-13), found in passing by DEC-281",
+          "what": "nursery_crm.py report --period 90d printed a table of zeros for all 27 nurseries and asserted '0 outbound clicks sent in the last 90d'.",
+          "cause": "Plausible v1 accepts only day/7d/30d/month/6mo/12mo and 400s on 90d. api_get turns any HTTP error into None, and outbound_clicks read None as 'no more pages', returning {}. The stderr warning vanishes when piped.",
+          "fixed": "Period validated against the accepted set up front; a None from any page raises PlausibleUnavailable and cmd_report exits 2. A genuine empty result still returns {} and a missing config still degrades to blank columns. 3 regression tests.",
+          "family": "Fourth of its kind after DEC-250, DEC-253 and DEC-255."
         }
       },
       "referral_sources_30d": {

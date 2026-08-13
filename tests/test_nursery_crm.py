@@ -186,6 +186,30 @@ class TestReferralJoin(unittest.TestCase):
         self.assertEqual([1, 2], calls)
         self.assertEqual(1005, agg["a.com"]["clicks"])
 
+    def test_an_unaccepted_period_fails_instead_of_reporting_zero(self):
+        """`report --period 90d` printed "0 outbound clicks sent in the last 90d"
+        for every one of 27 nurseries. Plausible 400s on 90d, api_get turns that
+        into None, and None read as "no more pages". A failed request and a
+        genuine zero must not look the same (DEC-250, DEC-253)."""
+        with self.assertRaises(crm.PlausibleUnavailable):
+            crm.outbound_clicks("90d")
+
+    def test_an_api_error_fails_instead_of_reporting_zero(self):
+        """Same defect from the other direction: a valid period whose request
+        fails anyway (auth, timeout, outage) must not render as zero clicks."""
+        with mock.patch.dict(sys.modules, {"plausible_stats": mock.MagicMock(
+                load_plausible_config=lambda: ("t", "http://x"),
+                api_get=lambda *a, **k: None)}):
+            with self.assertRaises(crm.PlausibleUnavailable):
+                crm.outbound_clicks("30d")
+
+    def test_a_genuine_zero_is_still_an_empty_dict(self):
+        """The guard must not turn "nobody clicked" into an error."""
+        with mock.patch.dict(sys.modules, {"plausible_stats": mock.MagicMock(
+                load_plausible_config=lambda: ("t", "http://x"),
+                api_get=lambda *a, **k: {"results": []})}):
+            self.assertEqual({}, crm.outbound_clicks("30d"))
+
     def test_missing_plausible_config_degrades_instead_of_crashing(self):
         def boom():
             raise ValueError("no token")

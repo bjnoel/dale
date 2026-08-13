@@ -10767,3 +10767,74 @@ published. DEC-270: a component answering correctly in isolation is not a workin
 Today adds the quietest member of the family: a configuration key with the wrong name is not
 a misconfiguration you will be told about. The system had a default, the default was
 plausible, and every health check would have passed while the feature did nothing.
+
+---
+
+## DEC-284 — 2026-08-13 — The defect that mislabels our sales was filed under a title that said it was already done
+
+**Decided by:** Dale, autonomous. No approved Dale-side ticket existed this session: DAL-280 was
+answered, and every other Todo item is assigned to Benedict. Backlog 24/15, so nothing could be
+created either. The work available was triage and a broken tool.
+
+**DAL-237 was titled "instrument paywall views so any pricing decision is measurable".** That is
+work we finished. `paywall_shown`, `paywall_result` and `purchase_succeeded` are all live, and
+DEC-252 measured 76 of 290 people reaching the paywall across 148 results. Read the title alone
+and the correct triage decision is "cancel, done". Underneath it, in a comment, sat a verified
+defect: **a completed sale can be recorded as a dismissal**, and one of our three sales is
+recorded that way right now.
+
+**Re-verified today against the mirror at HEAD, not quoted from the comment.** `_purchase()` in
+`paywall_screen.dart:213` awaits `service.purchasePackage(...)`, then line 217 does
+`if (!mounted) return;`. That await runs up to 8 seconds inside `waitForEntitlement`
+(`entitlement_service.dart:470`) against a 10-second call timeout. Dispose the widget in that
+window and neither `capturePurchaseSucceeded` nor `_fireResult` runs, so `dispose()` at line 89
+fires `dismissed` because `_resultFired` is still false. Separately,
+`case PurchaseOutcome.cancelled: break;` at line 251 fires nothing at all, reaching the same end
+state by another route, so a genuine cancel and a dropped sale are indistinguishable. The
+Pakistan buyer's `paywall_result outcome=dismissed` is stamped 23:09:37, the same second
+RevenueCat recorded the receipt.
+
+**The lesson, and it is DEC-278's with the surfaces swapped.** DEC-278 said the artefact that
+states a fact has to be the artefact that checks it, and noted I had bulk-routed four tickets off
+their descriptions after warning about exactly that. Here the description was not merely stale, it
+was actively camouflage: it described completed work, so the ticket read as safe to close, while
+the thing worth doing was one scroll below. **A finding parked as a comment on a ticket about
+something else has been thrown away, because triage reads the title.** Ticket format puts research
+in comments deliberately; that is right for evidence supporting the stated ask, and wrong for a
+finding that replaces it. When a comment falsifies its own ticket, rewrite the ticket that day.
+Retitled to the defect, description rewritten to 88 words, moved to Todo and assigned to Benedict,
+since part 1 of the fix is Flutter code Dale cannot commit. Part 2, pushing the PostHog id to
+RevenueCat so anonymous buyers are attributable, stays a privacy call and stays his.
+
+**A fourth silent zero, fixed.** DEC-281 noticed in passing that
+`nursery_crm.py report --period 90d` prints a table of zeros for all 27 nurseries. Confirmed and
+fixed. Plausible's v1 API accepts only `day, 7d, 30d, month, 6mo, 12mo` and 400s on `90d`;
+`api_get` turns any HTTP error into `None`; `outbound_clicks` read `None` as "no more pages" and
+returned `{}`. The report then printed **"0 outbound clicks sent in the last 90d"** as a
+confident statement of fact about the only revenue-adjacent metric treestock has. The stderr
+warning was there and is invisible the moment output is piped. Fixed both ways: the period is
+validated against the accepted set up front, and a `None` from any page now raises
+`PlausibleUnavailable` and exits 2 rather than rendering zeros. A genuine empty result still
+returns `{}`, and a missing config still degrades to blank columns, both pinned by tests. Three
+regression tests added, full suite 2,291 passing. Same family as DEC-250, DEC-253 and DEC-255:
+**a failed read and a real zero must never render identically.**
+
+**Two backlog tickets cancelled because our own measurements refuted them.** DAL-220 (Treesmith
+CTA on nursery pages) proposed a sixth treestock-to-Treesmith surface; DEC-241 measured 1,827
+outbound clicks over 6 months with 3 reaching treesmith.app and 0 reaching either store, and the
+cause is audience intent, not placement. It also has an unpriced cost: nursery pages run at 0.27
+outbound clicks per visitor and referral is the only treestock output anyone has paid for
+(DEC-281). DAL-227 (/treesmith.html conversion) had its tracking half shipped by DEC-239, and its
+remaining half aims at a 12-visitor/month page when DEC-268 showed **every one of treesmith.app's
+store clicks comes from `/`**. Its one durable finding, that **no price appears anywhere on either
+site** while the whole category is annual and we are the only one-time offer, was moved onto
+DAL-239 rather than deleted with the ticket.
+
+**Referral is up and outreach moved it.** The corrected 30d report reads **1,548 outbound clicks**
+against 1,245 a fortnight ago, and the share going to nurseries we have never spoken to has fallen
+from 60% to **36%**. Ladybird 271, Daleys 244.
+
+**Backlog 24 to 22.** Still over the 15 cap, so the Daleys catalogue-gap ticket DEC-281 drafted
+remains uncreatable. Not worked around.
+
+**Cost:** $0.

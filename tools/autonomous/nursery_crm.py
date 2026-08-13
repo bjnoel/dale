@@ -58,13 +58,32 @@ def normalise_domain(url_or_host):
     return host[4:] if host.startswith("www.") else host
 
 
+# Plausible's v1 stats API only accepts these. It 400s on anything else,
+# including the plausible-looking "90d", and api_get turns a 400 into None.
+PLAUSIBLE_PERIODS = ("day", "7d", "30d", "month", "6mo", "12mo")
+
+
+class PlausibleUnavailable(RuntimeError):
+    """The API refused or could not be reached. NOT the same as zero clicks."""
+
+
 def outbound_clicks(period="30d"):
     """Clicks per destination domain from Plausible.
 
     Paginates: the breakdown is by full URL and there are ~1,000 distinct
     product URLs per month, so a single unpaginated page silently undercounts.
-    Returns {} if Plausible is unreachable, so a report still renders.
+    Returns {} if Plausible is not configured, so a report still renders.
+
+    Raises PlausibleUnavailable if the API answers with an error. A failed
+    request and a genuine zero are indistinguishable in the returned dict, and
+    rendering "0 outbound clicks" from a 400 is a confident false statement
+    about the only revenue-adjacent metric treestock has (DEC-250, DEC-253).
     """
+    if period not in PLAUSIBLE_PERIODS:
+        raise PlausibleUnavailable(
+            f"invalid period {period!r}; Plausible accepts "
+            f"{', '.join(PLAUSIBLE_PERIODS)}")
+
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from plausible_stats import load_plausible_config, api_get
 
@@ -84,7 +103,11 @@ def outbound_clicks(period="30d"):
             "filters": f"event:name=={OUTBOUND_GOAL}",
             "metrics": "events,visitors", "limit": 1000, "page": page,
         })
-        if not res or not res.get("results"):
+        if res is None:
+            raise PlausibleUnavailable(
+                f"Plausible returned an error for period {period!r} on page {page}; "
+                "refusing to report zero clicks from a failed request")
+        if not res.get("results"):
             complete = True
             break
         for row in res["results"]:
@@ -127,7 +150,11 @@ def contact_route(n):
 
 
 def cmd_report(reg, args):
-    clicks = outbound_clicks(args.period)
+    try:
+        clicks = outbound_clicks(args.period)
+    except PlausibleUnavailable as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
     rows = []
     for n in reg["nurseries"]:
         c = clicks.get(n["domain"], {})
