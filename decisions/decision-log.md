@@ -10972,3 +10972,55 @@ a plausible default, a recovery path that could not recover, and now an instruct
 correct about the goal and wrong about the first step. The ticket said "commit the compose".
 Reading the file before doing what the ticket said is the entire difference between this
 being infrastructure work and being an incident.
+
+---
+
+## DEC-287 — 2026-08-13 — stock.scion.exchange cannot renew, and it is the proxy doing it
+
+**Status:** Diagnosed, fix identified, BLOCKED on a permission. Found while auditing the box
+for DAL-281, unrelated to it.
+
+**Symptom.** Caddy has been logging a renewal check for `stock.scion.exchange` every ten
+minutes for the last eight days. First read of that was "expired cert, visitors see TLS
+errors". That was wrong twice, and both corrections matter.
+
+Visitors do not see errors: `https://stock.scion.exchange/` returns 200. And the origin is
+not merely stale, it cannot serve that hostname over HTTPS at all. Both facts have the same
+cause.
+
+**Root cause, from the actual ACME errors rather than from the retry noise.** The hostname is
+Cloudflare-proxied (orange cloud) at `178.104.20.9`, which makes both challenge types
+impossible:
+
+- **http-01**: Let's Encrypt fetched `/.well-known/acme-challenge/<token>` and got
+  `<!DOCTYPE html>` back. Cloudflare answered it, not the origin.
+- **tls-alpn-01**: `Cannot negotiate ALPN protocol "acme-tls/1"`. Cloudflare terminates TLS,
+  so the challenge never reaches Caddy.
+
+Caddy is now on **attempt 53**, has fallen back to the Let's Encrypt **staging** CA, is on a
+6-hour backoff and gives up at `max_duration` 30 days, so roughly 22 days remain. The public
+200 is Cloudflare serving a cached copy: `cf-cache-status: HIT` persists even with a
+cache-busting query string, so the hostname is serving stale content rather than the 301 to
+treestock.com.au that the Caddy block defines.
+
+**`leafscan.com.au` is not broken but is on the same track.** Its origin cert is still valid
+and it correctly 301s today. It is proxied identically, so it hits the same wall at its next
+renewal. Worth fixing at the same time rather than waiting for the same eight days of retries.
+
+**The fix.** Make the redirect stop depending on the origin's certificate. Either
+grey-cloud the records so http-01 reaches Caddy directly, which is one DNS field per record
+and is exactly what `hook.gandongully.com.au` already does on this box on purpose, or move
+the redirect to a Cloudflare Redirect Rule and drop the block from Caddy entirely, which is
+tidier but needs a token permission we do not have.
+
+**Why it is not done.** The DNS write was refused: the Cloudflare token in
+`/opt/dale/secrets/cloudflare.env` can read zones, DNS and page rules but returns
+`Authentication error` on `/rulesets`, and the live DNS mutation needs Benedict's say-so
+rather than being folded silently into an infrastructure ticket. Nothing has been changed.
+
+**Worth keeping regardless of the fix.** The first three diagnoses here were all wrong in the
+same direction, and each was wrong because a symptom was read instead of a cause. "Expired
+cert" came from a renewal log line. "Origin cannot serve it" came from a `curl` to the IP
+that failed for want of SNI, not for want of a certificate. "Cache is masking it" was right
+only by accident. The actual answer needed the ACME error text, which was four greps away the
+whole time and said precisely what was wrong in one sentence.
