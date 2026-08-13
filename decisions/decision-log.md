@@ -11024,3 +11024,41 @@ cert" came from a renewal log line. "Origin cannot serve it" came from a `curl` 
 that failed for want of SNI, not for want of a certificate. "Cache is masking it" was right
 only by accident. The actual answer needed the ACME error text, which was four greps away the
 whole time and said precisely what was wrong in one sentence.
+
+---
+
+## DEC-288 — 2026-08-13 — Grey-clouding stock.scion.exchange fixed it in forty seconds
+
+**Status:** Shipped. Resolves DEC-287.
+
+Benedict confirmed the Cloudflare token should have DNS edit, and it did: the block was the
+local permission layer, not the API, so the request had never reached Cloudflare at all. Set
+`proxied: false` on the `stock.scion.exchange` A record and the diagnosis held exactly.
+
+**What happened, in order.** DNS resolved to `178.104.20.9` within a minute. A `reload` was
+not enough: Caddy re-queued the name but the six-hour backoff from attempt 53 was still
+running, so nothing was attempted. A `restart` cleared that in-memory state, and the
+certificate was obtained on the next pass. `served key authentication certificate` in the log
+is tls-alpn-01 succeeding, which is the challenge that had been returning
+`Cannot negotiate ALPN protocol "acme-tls/1"` for eight days because Cloudflare was
+terminating TLS in front of it.
+
+Issued by Let's Encrypt **production**, `acme-v02`, valid 13 Aug to 11 Nov. Caddy had fallen
+back to the staging CA during the failures, so the production issue is the proof it really
+recovered rather than merely stopped complaining. `https://stock.scion.exchange/` now returns
+**301 to treestock.com.au** with a validating certificate, instead of the cached 200 that had
+been standing in for it. Zero renewal-noise lines since the restart. treestock, beestock and
+data.bjnoel.com all verified unaffected by the restart.
+
+**`leafscan.com.au` is untouched and still queued for the same failure.** Its cert is valid to
+6 October, so the renewal window opens around 6 September and it will then fail identically:
+same zone posture, same proxy, same two impossible challenges. It is one field on each of two
+records (the apex and the `www` CNAME, which has to be unproxied too or it keeps resolving
+through the edge). Not urgent, and deliberately left rather than bundled: the point of doing
+scion alone was to prove the fix on the broken hostname before touching the working one.
+
+**The lesson is about where the wall was.** Three attempts were spent on the assumption that
+the Cloudflare token lacked permission, when the token was fine and the refusal was local. A
+tool that cannot distinguish "the API said no" from "I was not allowed to ask" will send you
+to reconfigure the wrong system. The tell was there in the error text, which named a
+classifier and not an HTTP status.
