@@ -11181,3 +11181,51 @@ old. That upgrade is not a `docker compose pull`: CE pins a supported ClickHouse
 and they move as a matched set against the release notes. Not filed in Linear because the
 backlog stands at 23 against a cap of 15; recorded in `docs/server-maintenance.md`
 instead rather than reworded into a slot it does not deserve.
+
+---
+
+## DEC-291 — 2026-08-13 — The check that would have caught it measures the origin, not the front door
+
+**Status:** Shipped. Closes the gap named in DEC-289.
+
+`stock.scion.exchange` failed for eight days across 53 retries while `uptime_monitor.py`
+reported it up, because the hostname kept returning 200 from Cloudflare's cache in front of a
+dead origin. Fixing the three hostnames removed the cause; it did nothing about the class.
+`check_certs()` closes that.
+
+**The design decision that makes it work is which end it measures.** It connects to
+`127.0.0.1:443` with SNI set, not to the public hostname. Proven on treestock rather than
+asserted: the edge certificate expires **5 Oct** and the origin certificate expires **7 Oct**.
+They are two different certificates. A monitor pointed at the public name reads Cloudflare's,
+which was perfectly valid for every one of those eight days, and would have gone on reporting
+health exactly as the existing check did.
+
+Every one of the last four entries has been the same mistake in a different costume: DEC-283 a
+config key behind a plausible default, DEC-285 an error handed to a recovery path that could
+not recover, DEC-287 eight days behind a cached 200, DEC-290 a clean patch report read off a
+frozen index. All four measured a surface that was working instead of the thing that was not.
+Choosing the origin here is that lesson spent rather than merely written down.
+
+**Two properties pinned harder than the thresholds.** An unreadable certificate is
+**critical**, not unknown, because a dead origin presents as no certificate at all and
+"no data" is precisely the reading the scion failure produced. And hostnames come from Caddy's
+admin API rather than a list in the file, because a certificate monitor that silently stops
+covering a newly added hostname is worse than not having one. It discovered all nine on the
+first live run, including `hook.gandongully.com.au`, which no list of mine would have thought
+to include.
+
+Warn at 21 days, since Caddy starts renewing near 30 and 21 means it has been failing about a
+week. Critical at 7. Recover at 25 for hysteresis. One email per run listing every offender,
+because these fail together by zone rather than one at a time.
+
+**Live reading at ship time**, all nine ok: scion 89.9d (the fresh certificate from this
+morning), treestock 55.1d, leafscan 54.1d, gandon 82.8d. 21 tests, including the
+unreadable-origin regression, that a failed send is retried instead of swallowed, and that an
+unreachable admin API skips rather than alerting that everything is broken.
+
+**What this still does not cover.** It watches expiry, not issuance. A certificate renewed by
+the staging CA would read as healthy, and Caddy fell back to staging during exactly this
+outage. The distinguishing signal is the issuer, `acme-v02` against `acme-staging-v02`, and it
+is not checked. Named here rather than fixed, because the eight-day window this closes is the
+one that actually happened and a monitor that grows a feature per near-miss is how the disk
+check ended up being the only one anybody trusted.
