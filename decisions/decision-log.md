@@ -10581,3 +10581,15 @@ anything". Same silent-zero family as DEC-250 and DEC-253.
 does not auto-discharge an action only a visit can close.
 
 **Cost:** $0.
+
+**Correction, appended 2026-08-13.** The zero-variant finding above does not hold. All 518
+products across those three nurseries carry `min_price == max_price`, one `price` and one `sku`
+each: they are genuinely flat, one-price-per-product catalogues, not records with variants
+stripped out. `stocklib/changes.py:load_snapshot` handles exactly this (`if not variants: key =
+url or title`) and its own comment names the case ("e.g. Ecwid flat products"). With a single
+price per product, comparing `min_price` **is** comparing the variant price, so there is no
+rule 3 violation, no false positive and nothing excluded from price-change detection. I read an
+absent variant list as lost data twice in one session, first on Fruit Salad Trees and again
+here. Absence of variant structure is a fact about the store, not evidence of a scraper gap.
+**Daleys is unaffected and still stands:** there the missing products are absent from the
+snapshot entirely, which is a different thing from being present without variants.
