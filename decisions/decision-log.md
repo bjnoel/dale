@@ -11229,3 +11229,46 @@ outage. The distinguishing signal is the issuer, `acme-v02` against `acme-stagin
 is not checked. Named here rather than fixed, because the eight-day window this closes is the
 one that actually happened and a monitor that grows a feature per near-miss is how the disk
 check ended up being the only one anybody trusted.
+
+---
+
+## DEC-292 — 2026-08-13 — Three strikes that were never consecutive
+
+**Status:** Shipped. Found while verifying DEC-285.
+
+The circuit breaker halts autonomous Dale after 3 consecutive failures. The counter was
+cleared in exactly one place: the end of a session that did work. Every other exit left it
+untouched, including the commonest outcome of all, `No todo tickets, backlog is healthy`.
+
+So "consecutive" did not mean consecutive. Failures accumulated across days with entirely
+healthy runs in between. When this was found the counter read 1, holding a
+`git-pull-conflict` from a cause fixed hours earlier, and its history carried entries from
+30 July, 6 August and 10 August, all of them still counting toward the same three strikes.
+Two unrelated hiccups next month would have halted Dale on a tally that was mostly
+archaeology, and the halt email would have pointed at whatever failed last.
+
+**The fix is one line and the reasoning is the whole entry.** A no-op run is a *successful*
+run. Reaching that exit proves the repo synced, deploy ran, and Linear answered, which is
+every component the breaker exists to guard. It now clears the counter and the halt-notified
+flag, which is what that flag's own comment already claimed happened ("cleared on the next
+successful session").
+
+**What deliberately does not clear.** The STOP file and the halt flag mean nothing ran at
+all. The strike path and the poller-failed path are degraded runs that prove less than a
+clean no-op does. Clearing on a successful *pull* was considered and rejected outright: it
+happens near the top of every run, so it would reset the counter before the session that
+might fail, and the breaker could never trip at all.
+
+**Tests.** The failure counter had no behavioural coverage whatsoever, on the component that
+can silently stop the entire business. Added: accumulation, clear-preserves-history, legacy
+list-shaped log migration, and the bug stated as behaviour (fail, healthy, fail, healthy,
+fail must leave the count at 1, not 3). The runner itself cannot be run under test because
+it invokes claude, so a structural test pins the clear on the healthy path and asserts the
+STOP and halt paths never clear. Verified failing against the pre-fix script.
+
+**Third entry today in the same family.** DEC-283: a config key whose wrong name failed
+silently behind a plausible default. DEC-285: a failed push handed to a recovery mechanism
+incapable of recovering. DEC-290: a clean security report read off an index frozen for seven
+weeks. Now a counter whose name asserted an invariant it did not maintain. Every one of them
+reported success while doing nothing, and none was found by the monitoring; all four came
+out of reading the thing directly.

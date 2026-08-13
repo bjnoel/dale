@@ -22,9 +22,12 @@ Run from repo root with:
     python3 -m unittest discover tests/
 """
 import importlib.util
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 AUTONOMOUS = REPO_ROOT / "tools" / "autonomous"
@@ -141,6 +144,96 @@ class SessionDurationTests(unittest.TestCase):
             budget_tracker.session_duration_seconds({"duration_ms": None, "duration_api_ms": None}),
             0,
         )
+
+
+class FailureCounterTests(unittest.TestCase):
+    """The 3-failure circuit breaker halts autonomous Dale entirely, and until
+    2026-08-13 nothing here was covered."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.log = str(Path(self.tmp.name) / "failures.json")
+        self.patch = mock.patch.object(budget_tracker, "FAILURE_LOG", self.log)
+        self.patch.start()
+        # ensure_dirs() creates LOG_DIR, which must not be the real one.
+        self.dir_patch = mock.patch.object(budget_tracker, "LOG_DIR", self.tmp.name)
+        self.dir_patch.start()
+
+    def tearDown(self):
+        self.patch.stop()
+        self.dir_patch.stop()
+        self.tmp.cleanup()
+
+    def test_failures_accumulate(self):
+        self.assertEqual(budget_tracker.get_failure_count(), 0)
+        budget_tracker.log_failure("git-pull-conflict")
+        budget_tracker.log_failure("claude-exit-1")
+        self.assertEqual(budget_tracker.get_failure_count(), 2)
+
+    def test_clear_resets_the_count_but_keeps_history(self):
+        budget_tracker.log_failure("git-pull-conflict")
+        budget_tracker.log_failure("claude-exit-1")
+        budget_tracker.clear_failures()
+
+        self.assertEqual(budget_tracker.get_failure_count(), 0)
+        with open(self.log) as f:
+            saved = json.load(f)
+        self.assertEqual(len(saved["history"]), 2,
+                         "history is the audit trail and must survive a clear")
+        self.assertEqual([h["reason"] for h in saved["history"]],
+                         ["git-pull-conflict", "claude-exit-1"])
+
+    def test_a_healthy_run_between_two_failures_stops_the_breaker(self):
+        """The 2026-08-13 bug, expressed as behaviour.
+
+        Runs went: fail, healthy no-op, fail, healthy no-op, fail. Because the
+        no-op path never cleared, that reached 3 and halted Dale, even though no
+        two failures were ever consecutive.
+        """
+        budget_tracker.log_failure("git-pull-conflict")
+        budget_tracker.clear_failures()          # healthy no-op run
+        budget_tracker.log_failure("claude-exit-126")
+        budget_tracker.clear_failures()          # healthy no-op run
+        budget_tracker.log_failure("claude-exit-1")
+
+        self.assertEqual(budget_tracker.get_failure_count(), 1,
+                         "no two failures were consecutive, so the breaker must not be near tripping")
+        self.assertLess(budget_tracker.get_failure_count(), 3)
+
+    def test_legacy_list_shaped_log_is_migrated(self):
+        """Older installs wrote a bare list. log_failure must not crash on one."""
+        Path(self.log).write_text(json.dumps([{"date": "2026-01-01", "reason": "old"}]))
+        budget_tracker.log_failure("new")
+        self.assertEqual(budget_tracker.get_failure_count(), 1)
+        with open(self.log) as f:
+            saved = json.load(f)
+        self.assertEqual(len(saved["history"]), 2)
+
+
+class RunnerClearsOnHealthyNoOpTests(unittest.TestCase):
+    """Structural guard for the fix itself.
+
+    The behaviour lives in dale-runner.sh, which cannot be run under test (it
+    invokes claude). This pins the one line that was missing, so removing it
+    fails the suite rather than silently restoring the stale-counter bug.
+    """
+
+    def setUp(self):
+        self.script = (AUTONOMOUS / "dale-runner.sh").read_text()
+
+    def test_healthy_no_op_exit_clears_the_failure_counter(self):
+        marker = "No todo tickets, backlog is healthy"
+        self.assertIn(marker, self.script)
+        block = self.script.split(marker, 1)[1].split("exit 0", 1)[0]
+        self.assertIn("clear-failures", block,
+                      "a healthy no-op run must reset the consecutive-failure count")
+
+    def test_stop_and_halt_paths_do_not_clear(self):
+        """Clearing on these would disable the breaker outright."""
+        for marker in ("STOP file exists", "consecutive failures"):
+            block = self.script.split(marker, 1)[1].split("exit 0", 1)[0]
+            self.assertNotIn("clear-failures", block,
+                             f"the {marker!r} path must never clear failures")
 
 
 if __name__ == "__main__":

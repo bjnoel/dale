@@ -156,6 +156,22 @@ fi
 
 if [ "$TODO_COUNT" = "0" ] && [ "$BACKLOG_COUNT" -ge "$MIN_BACKLOG" ]; then
     log "No todo tickets, backlog is healthy ($BACKLOG_COUNT/$MIN_BACKLOG). Exiting."
+    # A no-op run is a *successful* run, and the breaker counts consecutive
+    # failed runs. Reaching this line proves every component the breaker guards
+    # is working: the repo synced, deploy ran, and Linear answered.
+    #
+    # Without this the counter reset only after a session that did work, so
+    # failures accumulated across days with healthy runs in between. On
+    # 2026-08-13 it still held a git-pull-conflict whose cause had been fixed
+    # hours earlier, and the history carried entries from 30 Jul, 6 Aug and
+    # 10 Aug all counting toward the same three strikes. Two unrelated hiccups
+    # next month would have halted Dale on a tally that was mostly archaeology.
+    #
+    # Deliberately NOT cleared on the other early exits: the STOP file and the
+    # halt flag mean nothing ran at all, and the strike and poller-failed paths
+    # are degraded runs that prove less than this one does.
+    python3 "$SCRIPT_DIR/budget-tracker.py" clear-failures 2>/dev/null
+    rm -f "$HALT_FLAG"
     exit 0
 fi
 
