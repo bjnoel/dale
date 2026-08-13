@@ -161,6 +161,7 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
     handle /admin/ {
         reverse_proxy localhost:8099
     }
+
     handle /admin/* {
         reverse_proxy localhost:8099
     }
@@ -193,3 +194,45 @@ stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
 data.bjnoel.com {
     reverse_proxy localhost:8000
 }
+
+# gandon-calendar Lodgify webhook receiver.
+#
+# Append to /etc/caddy/Caddyfile on the Hetzner box, then `sudo systemctl reload caddy`.
+#
+# hook.gandongully.com.au must be a DNS-only (grey cloud) A record pointing at
+# this host. Proxying it through Cloudflare would sit the receiver behind the
+# shared Cloudflare estate again for no benefit, and Caddy needs to answer the
+# HTTP-01 challenge on this name directly.
+
+hook.gandongully.com.au {
+	# Only the two paths the receiver serves are routed. Everything else is a
+	# flat 404 that never reaches Python.
+	handle /hook/* {
+		reverse_proxy 127.0.0.1:8790
+	}
+
+	handle /healthz {
+		reverse_proxy 127.0.0.1:8790
+	}
+
+	handle {
+		respond "not found" 404
+	}
+
+	# The token is in the request path, so the URI must not reach the access
+	# log. Dropping the field entirely is the version-proof way to do that;
+	# the status code and remote address are what is worth having anyway.
+	#
+	# Logs go to journald with the rest of Caddy rather than to a file: the
+	# caddy unit runs with ProtectSystem=full, and a custom log file is one
+	# more writable path to get wrong. `journalctl -u caddy` has it all.
+	log {
+		format filter {
+			wrap console
+			fields {
+				request>uri delete
+			}
+		}
+	}
+}
+

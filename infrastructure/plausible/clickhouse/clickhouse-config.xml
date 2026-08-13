@@ -1,0 +1,20 @@
+<clickhouse>
+    <logger>
+        <level>warning</level>
+        <console>true</console>
+    </logger>
+    <query_thread_log remove="remove"/>
+    <query_log>
+        <database>system</database>
+        <table>query_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </query_log>
+    <part_log remove="remove"/>
+    <text_log remove="remove"/>
+    <metric_log remove="remove"/>
+    <asynchronous_metric_log remove="remove"/>
+    <trace_log remove="remove"/>
+    <processors_profile_log remove="remove"/>
+    <error_log remove="remove"/>
+</clickhouse>

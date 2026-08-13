@@ -1,0 +1,23 @@
+# Dale project logs (DAL-281).
+#
+# Nothing rotated these before. Every cron line appends with >>, so scraper.log
+# had reached 14MB and uptime.log grows every five minutes forever. Not a disk
+# problem yet at 38% usage, but it is unbounded, and the one time this box hit
+# 100% full it truncated ten days of snapshot writes (DEC-... 2026-07-04).
+#
+# copytruncate because the writers are long-lived cron redirections that hold
+# the file open. A rename would leave them writing to an unlinked inode and the
+# rotated file would stay empty forever.
+
+/opt/dale/autonomous/logs/*.log
+/opt/dale/data/*.log
+{
+    weekly
+    rotate 8
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+    su dale dale
+}

@@ -1,0 +1,13 @@
+[Unit]
+Description=beestock.com.au Subscribe Server
+After=network.target
+
+[Service]
+Type=simple
+User=dale
+ExecStart=/usr/bin/python3 /opt/dale/scrapers/bee/bee_subscribe_server.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

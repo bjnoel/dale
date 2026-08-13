@@ -1,0 +1,50 @@
+0 0 * * * /opt/dale/scrapers/run-all-scrapers.sh >> /opt/dale/data/scraper.log 2>&1
+
+# Scrapers at 00:00 UTC (08:00 AWST)
+
+# Autonomous Dale — hourly ticket check + daily digest
+0 * * * * /opt/dale/autonomous/dale-runner.sh >> /opt/dale/autonomous/logs/cron.log 2>&1
+0 9 * * 0 /opt/dale/autonomous/weekly-pester.py >> /opt/dale/autonomous/logs/cron.log 2>&1
+
+# Uptime monitor — every 5 minutes
+*/5 * * * * /usr/bin/python3 /opt/dale/autonomous/uptime_monitor.py >> /opt/dale/autonomous/logs/uptime.log 2>&1
+# Weekly data backup — Sundays 02:00 UTC (10:00 AWST)
+0 2 * * 0 /opt/dale/autonomous/weekly_backup.sh >> /opt/dale/autonomous/logs/backup.log 2>&1
+
+# Bee stock scrapers at 00:30 UTC (08:30 AWST), after nursery scrapers
+# DEC-229 beestock discontinued 2026-07-23: # 30 0 * * * /opt/dale/scrapers/bee/run-bee-scrapers.sh >> /opt/dale/data/bee-scraper.log 2>&1
+
+# Daily digest at 6am AWST (22:00 UTC)
+0 22 * * * /usr/bin/python3 /opt/dale/autonomous/daily-digest.py >> /opt/dale/autonomous/logs/cron.log 2>&1
+
+# GSC weekly analysis — Sundays 07:00 UTC
+0 7 * * 0 /usr/bin/python3 /opt/dale/scrapers/gsc_analysis.py --inspect --output /opt/dale/data/gsc_report.json >> /opt/dale/autonomous/logs/gsc.log 2>&1
+
+# Resend weekly email delivery report -- Sundays 06:45 UTC (before daily digest)
+45 6 * * 0 /usr/bin/python3 /opt/dale/repo/tools/autonomous/resend_report.py --output /opt/dale/data/resend_report.json >> /opt/dale/autonomous/logs/resend_report.log 2>&1
+
+# Weekly nursery stock digest to treestock.com.au subscribers -- Sundays 23:00 UTC (7am AWST Monday)
+0 23 * * 0 /usr/bin/python3 /opt/dale/repo/tools/scrapers/send_weekly_digest.py >> /opt/dale/autonomous/logs/weekly_digest.log 2>&1
+
+# Fortnightly GSC page review -- 1st and 15th of each month, 07:30 UTC (after GSC analysis)
+30 7 1,15 * * /usr/bin/python3 /opt/dale/repo/tools/scrapers/gsc_page_review.py >> /opt/dale/autonomous/logs/gsc.log 2>&1
+
+# Auto-archive Done/Cancelled Linear tickets >30 days old -- Mondays 03:00 UTC
+0 3 * * 1 /usr/bin/python3 /opt/dale/autonomous/linear_update.py archive-stale --days 30 --execute >> /opt/dale/autonomous/logs/archive.log 2>&1
+
+# TreeSmith weekly analytics digest -- Mondays 00:00 UTC (08:00 AWST)
+0 0 * * 1 /opt/dale/autonomous/treesmith_analytics.py >> /opt/dale/autonomous/logs/treesmith_analytics.log 2>&1
+
+# Weekly update auto-draft (DEC-226) -- Mondays 01:00 UTC
+0 1 * * 1 /usr/bin/python3 /opt/dale/autonomous/weekly_update_draft.py >> /opt/dale/autonomous/logs/cron.log 2>&1
+
+# Treesmith intro email to NEW treestock subscribers, ~7 days after signup (DAL-173)
+# No-op until /opt/dale/data/treesmith-intro-enabled exists (Benedict approves the copy first).
+30 23 * * * /usr/bin/python3 /opt/dale/repo/tools/scrapers/send_treesmith_intro.py --drip >> /opt/dale/autonomous/logs/treesmith_intro.log 2>&1
+
+# gandon-calendar: refresh Lodgify bookings (07:10 / 19:10 AWST)
+10 23,11 * * * /opt/gandon-calendar/tools/publish.sh >> /opt/gandon-calendar/publish.log 2>&1
+# gandon-calendar: drain webhook refresh requests
+* * * * * /opt/gandon-calendar/tools/refresh_if_requested.sh >> /opt/gandon-calendar/publish.log 2>&1
+30 3 * * 1 /usr/bin/python3 /opt/dale/autonomous/linear_update.py expire-stale-backlog --execute >> /opt/dale/autonomous/logs/archive.log 2>&1
+15 * * * * /opt/dale/autonomous/merge-nursery-inbound.sh >> /opt/dale/autonomous/logs/cron.log 2>&1
