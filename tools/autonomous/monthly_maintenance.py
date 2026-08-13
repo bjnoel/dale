@@ -28,6 +28,7 @@ lives here in pure functions instead, where tests can reach it.
 
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -45,6 +46,8 @@ LOCKS_DIR = "/opt/dale/autonomous/locks"
 VETO_FILE = os.path.join(LOCKS_DIR, "no-reboot")
 SESSION_LOCK = os.path.join(LOCKS_DIR, "session.lock")
 REBOOT_REQUIRED_PATH = "/var/run/reboot-required"
+# apt.systemd.daily touches this only after a successful update.
+APT_SUCCESS_STAMP = "/var/lib/apt/periodic/update-success-stamp"
 PLAUSIBLE_DIR = "/opt/dale/plausible"
 
 # How far ahead the announcement goes out. Two days puts it in Saturday
@@ -59,6 +62,25 @@ ANNOUNCE_LEAD_DAYS = 2
 # but waiting a few minutes is free.
 SESSION_WAIT_SECONDS = 600
 SESSION_POLL_SECONDS = 15
+
+# Options every apt call gets, and the reason each one is there.
+#
+# On 2026-08-13 an `apt-get -qq -y update` fired by apt.systemd.daily was found
+# still running after 48 days, with four /usr/lib/apt/methods/https children
+# stuck on sockets. It held /var/lib/apt/lists/lock the whole time, so
+# unattended-upgrades had installed nothing since 24 June, and the "0 packages
+# pending from -security" that made the box look current was a reading off an
+# index frozen in June. On a fresh index it was 142 upgradable, 83 of them
+# security.
+#
+# Acquire timeouts stop a wedged mirror connection hanging forever. The lock
+# timeout stops the monthly window failing outright just because the daily
+# timer happened to be mid-refresh.
+APT_OPTS = [
+    "-o", "Acquire::http::Timeout=30",
+    "-o", "Acquire::https::Timeout=30",
+    "-o", "DPkg::Lock::Timeout=300",
+]
 
 # Everything that has to be back after a reboot. Checked by --verify.
 EXPECTED_UNITS = ["caddy", "docker", "subscribe-server", "gandon-hook"]
@@ -145,17 +167,49 @@ def running_kernel():
     return out
 
 
+def parse_installed_kernels(dpkg_output):
+    """Pure: newest actually-installed kernel from `dpkg-query -W` output.
+
+    The status field is not optional here. A plain glob over
+    linux-image-*-generic also returns `rc` packages (removed, config left
+    behind) and `un` ones (never installed at all, listed only because
+    something once depended on them). On this box that included eight
+    `linux-image-unsigned-*` entries at status `un`, and taking the raw name
+    yielded "unsigned-6.8.0-124-generic" as the newest kernel -- which would
+    have made --verify compare uname -r against a package that does not exist,
+    report a false failure after a perfectly good reboot, and skip the
+    autoremove forever.
+    """
+    best = None
+    for line in dpkg_output.split("\n"):
+        parts = line.split()
+        if len(parts) < 2 or not parts[1].startswith("ii"):
+            continue
+        version = parts[0][len("linux-image-"):]
+        if best is None or _kernel_sort_key(version) > _kernel_sort_key(best):
+            best = version
+    return best
+
+
+def _kernel_sort_key(name):
+    """Ordering key for an Ubuntu kernel ABI name like `6.8.0-124-generic`.
+
+    Numeric, not lexical: `6.8.0-90-generic` sorts *after* `6.8.0-124-generic`
+    as a string, which would pick the older kernel as the newer one. Comparing
+    the integers is exact for this naming scheme and keeps the function pure --
+    shelling out to `dpkg --compare-versions` would make it untestable anywhere
+    but the server, which is precisely where a wrong answer is expensive.
+    """
+    return tuple(int(n) for n in re.findall(r"\d+", name))
+
+
 def newest_installed_kernel():
-    """Highest linux-image-*-generic package installed, by dpkg's own ordering."""
-    rc, out = run(["dpkg-query", "-W", "-f=${Package}\\n", "linux-image-*-generic"], timeout=60)
+    """Highest installed linux-image-*-generic, by dpkg's own version ordering."""
+    rc, out = run(["dpkg-query", "-W", "-f=${Package} ${db:Status-Abbrev}\\n",
+                   "linux-image-*-generic"], timeout=60)
     if rc != 0 or not out:
         return None
-    versions = [p.replace("linux-image-", "").strip() for p in out.split("\n") if p.strip()]
-    best = None
-    for v in versions:
-        if best is None or run(["dpkg", "--compare-versions", v, "gt", best], timeout=30)[0] == 0:
-            best = v
-    return best
+    return parse_installed_kernels(out)
 
 
 def reboot_required_since():
@@ -176,12 +230,32 @@ def reboot_required_packages():
 
 
 def pending_upgrades():
-    """(count, first few names) of upgradable packages."""
-    rc, out = run(["apt-get", "-s", "upgrade"], timeout=300)
+    """(count, names) of packages a full-upgrade would install.
+
+    Simulates full-upgrade, not upgrade, because full-upgrade is what --run
+    actually applies; counting one and applying the other is how an
+    announcement quietly stops matching reality.
+    """
+    rc, out = run(["apt-get"] + APT_OPTS + ["-s", "full-upgrade"], timeout=300)
     if rc != 0:
         return 0, []
     names = [l.split()[1] for l in out.split("\n") if l.startswith("Inst ")]
     return len(names), names
+
+
+def apt_index_age_days():
+    """Days since the last *successful* apt-get update, or None if never.
+
+    apt.systemd.daily writes this stamp only on success, which is exactly the
+    signal that was missing when a hung update held the lock for 48 days while
+    every other indicator stayed green.
+    """
+    try:
+        mtime = os.path.getmtime(APT_SUCCESS_STAMP)
+    except OSError:
+        return None
+    return (datetime.now(timezone.utc)
+            - datetime.fromtimestamp(mtime, timezone.utc)).total_seconds() / 86400
 
 
 def session_is_live():
@@ -328,12 +402,13 @@ def do_run(now_perth, dry_run=False, force=False):
     wait_for_session()
 
     log(f"applying {pending} package upgrade(s)")
-    rc, out = run(["sudo", "-n", "apt-get", "update"], timeout=600)
+    rc, out = run(["sudo", "-n", "apt-get"] + APT_OPTS + ["update"], timeout=900)
     log(f"apt-get update exited {rc}")
     env_prefix = ["sudo", "-n", "env", "DEBIAN_FRONTEND=noninteractive",
                   "NEEDRESTART_MODE=a"]
-    rc, out = run(env_prefix + ["apt-get", "-y", "-o", "Dpkg::Options::=--force-confdef",
-                                "-o", "Dpkg::Options::=--force-confold", "full-upgrade"],
+    rc, out = run(env_prefix + ["apt-get"] + APT_OPTS +
+                  ["-y", "-o", "Dpkg::Options::=--force-confdef",
+                   "-o", "Dpkg::Options::=--force-confold", "full-upgrade"],
                   timeout=3600)
     log(f"apt-get full-upgrade exited {rc}")
     if rc != 0:
@@ -392,6 +467,10 @@ def do_verify(now_perth, dry_run=False, force=False):
     pending, _ = pending_upgrades()
     checks.append(("apt clean", pending == 0, f"{pending} package(s) still upgradable"))
 
+    index_age = apt_index_age_days()
+    checks.append(("apt index fresh", index_age is not None and index_age < 2,
+                   "never updated" if index_age is None else f"{index_age:.1f} days old"))
+
     usage = shutil.disk_usage("/")
     pct = (usage.total - usage.free) / usage.total * 100
     checks.append(("disk", pct < 85, f"{pct:.0f}% used, {usage.free / 1e9:.1f} GB free"))
@@ -404,7 +483,7 @@ def do_verify(now_perth, dry_run=False, force=False):
     autoremove = "skipped (checks did not all pass)"
     if all_ok and not dry_run:
         rc, out = run(["sudo", "-n", "env", "DEBIAN_FRONTEND=noninteractive",
-                       "apt-get", "-y", "autoremove", "--purge"], timeout=1800)
+                       "apt-get"] + APT_OPTS + ["-y", "autoremove", "--purge"], timeout=1800)
         removed = [l for l in out.split("\n") if l.startswith("Remv ")]
         autoremove = f"exit {rc}, {len(removed)} package(s) removed"
 

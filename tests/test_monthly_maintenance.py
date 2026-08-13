@@ -131,6 +131,47 @@ class HasWorkTests(unittest.TestCase):
         self.assertTrue(self.mod.has_work(None, 55))
 
 
+class KernelParsingTests(unittest.TestCase):
+    """Regression, caught on the box before the first run: a plain glob over
+    linux-image-*-generic returned eight `linux-image-unsigned-*` entries at
+    status `un` (never installed) and six `rc` ones (removed, config left).
+    Taking the raw package name made "unsigned-6.8.0-124-generic" the newest
+    kernel, so --verify would have compared uname -r against a package that
+    does not exist, reported a false failure after a good reboot, and skipped
+    the autoremove forever."""
+
+    def setUp(self):
+        self.mod = load_maintenance()
+
+    # Verbatim from `dpkg-query -W -f='${Package} ${db:Status-Abbrev}\n'` on
+    # dale-server, 2026-08-13.
+    REAL_OUTPUT = "\n".join([
+        "linux-image-6.8.0-101-generic rc ",
+        "linux-image-6.8.0-106-generic rc ",
+        "linux-image-6.8.0-117-generic rc ",
+        "linux-image-6.8.0-124-generic ii ",
+        "linux-image-6.8.0-90-generic ii ",
+        "linux-image-unsigned-6.8.0-124-generic un ",
+        "linux-image-unsigned-6.8.0-90-generic un ",
+    ])
+
+    def test_ignores_never_installed_and_removed_packages(self):
+        self.assertEqual(self.mod.parse_installed_kernels(self.REAL_OUTPUT),
+                         "6.8.0-124-generic")
+
+    def test_picks_the_highest_not_the_last(self):
+        # 90 sorts after 124 alphabetically; only dpkg's ordering gets this right.
+        out = "linux-image-6.8.0-124-generic ii \nlinux-image-6.8.0-90-generic ii "
+        self.assertEqual(self.mod.parse_installed_kernels(out), "6.8.0-124-generic")
+
+    def test_nothing_installed_returns_none(self):
+        self.assertIsNone(self.mod.parse_installed_kernels(
+            "linux-image-unsigned-6.8.0-124-generic un "))
+
+    def test_blank_output_returns_none(self):
+        self.assertIsNone(self.mod.parse_installed_kernels(""))
+
+
 class VetoTests(unittest.TestCase):
     """The veto is one-shot on purpose. A sticky veto left in place would
     recreate exactly the nine-week gap DAL-282 is about."""

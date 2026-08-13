@@ -72,6 +72,22 @@ REBOOT_REQUIRED_PATH = "/var/run/reboot-required"
 REBOOT_WARN_DAYS = 40
 REBOOT_CRIT_DAYS = 75
 
+# Stale apt index. Found while fixing the above: an `apt-get -qq -y update`
+# started by apt.systemd.daily on 24 June was still running 48 days later, four
+# https methods stuck on sockets, holding /var/lib/apt/lists/lock the whole
+# time. unattended-upgrades therefore installed nothing after 24 June, and the
+# "0 packages pending from -security" that made the box look current was read
+# off a two-month-old index. On a fresh index it was 142 upgradable, 83 of them
+# security.
+#
+# This is the same failure shape as the reboot gap, one layer further down:
+# every visible signal reported success and the effect had stopped happening.
+# apt.systemd.daily runs daily, so 3 days is already anomalous and 10 means
+# nobody is coming.
+APT_SUCCESS_STAMP = "/var/lib/apt/periodic/update-success-stamp"
+APT_STALE_WARN_DAYS = 3
+APT_STALE_CRIT_DAYS = 10
+
 # Repo divergence. git_sync.sh should heal a rejected push within the hour, so
 # anything still unpushed after this long means the self-heal itself failed and
 # the next session's pull is about to start failing.
@@ -489,6 +505,115 @@ def check_reboot_required(state, now_str):
     return True
 
 
+def apt_stale_level(age_days):
+    """Pure: map the age of the last successful apt-get update to a level."""
+    if age_days is None or age_days >= APT_STALE_CRIT_DAYS:
+        return "critical"
+    if age_days >= APT_STALE_WARN_DAYS:
+        return "warning"
+    return "ok"
+
+
+def apt_stale_decision(prev_level, age_days):
+    """Pure: same vocabulary as disk_alert_decision.
+
+    `age_days` is None when the stamp has never been written, which is treated
+    as critical rather than ok: "no evidence apt has ever succeeded" is the
+    worse reading, and assuming the friendlier one is what let this sit for
+    seven weeks.
+    """
+    level = apt_stale_level(age_days)
+    if _SEVERITY[level] > _SEVERITY.get(prev_level, 0):
+        return level, "alert"
+    if level == "ok" and prev_level != "ok":
+        return level, "recovered"
+    return level, "none"
+
+
+def apt_index_age_days():
+    """Days since the last successful apt-get update, or None if never."""
+    try:
+        mtime = os.path.getmtime(APT_SUCCESS_STAMP)
+    except OSError:
+        return None
+    return (datetime.now(timezone.utc)
+            - datetime.fromtimestamp(mtime, timezone.utc)).total_seconds() / 86400
+
+
+def format_apt_stale_email(level, age_days):
+    icon = "🔴" if level == "critical" else "⚠️"
+    age = "never" if age_days is None else f"{age_days:.0f} days ago"
+    html = f"""
+<h2>{icon} apt has not successfully updated its index since {age}</h2>
+<p><code>{APT_SUCCESS_STAMP}</code> is stale. <code>apt.systemd.daily</code> runs
+daily and only touches that stamp on success, so this means the refresh is
+failing or wedged.</p>
+<p><strong>Why this matters more than it reads.</strong> While the index is
+stale, unattended-upgrades installs nothing new and <code>apt list
+--upgradable</code> reports against a frozen snapshot. The box then reports
+zero pending security updates because it has not looked, which is
+indistinguishable from being up to date.</p>
+<p><strong>First thing to check:</strong> a hung update still holding the lock.
+<code>pgrep -a apt-get</code> — on 2026-08-13 one had been running for 48 days
+with its https methods stuck on sockets. Kill the tree, then
+<code>sudo apt-get -o Acquire::http::Timeout=30 update</code>.</p>
+<p>Runbook: docs/server-maintenance.md in the repo.</p>
+""".strip()
+    text = (f"apt has not successfully updated its index since {age}.\n\n"
+            f"{APT_SUCCESS_STAMP} is stale. While it is, unattended-upgrades "
+            f"installs nothing and 'apt list --upgradable' reports against a "
+            f"frozen snapshot, so the box reports zero pending security updates "
+            f"because it has not looked.\n\n"
+            f"Check for a hung update holding the lock: pgrep -a apt-get\n"
+            f"Then: sudo apt-get -o Acquire::http::Timeout=30 update\n"
+            f"Runbook: docs/server-maintenance.md")
+    return html, text
+
+
+def check_apt_freshness(state, now_str):
+    """Alert when apt's package index has stopped refreshing.
+
+    Mirrors check_disk: de-duped via state["apt"], previous level retained on a
+    failed send so the alert retries.
+    """
+    age_days = apt_index_age_days()
+    prev_level = state.get("apt", {}).get("level", "ok")
+    new_level, action = apt_stale_decision(prev_level, age_days)
+    committed_level = new_level
+    age_str = "never" if age_days is None else f"{age_days:.1f}d"
+
+    if action == "alert":
+        html, text = format_apt_stale_email(new_level, age_days)
+        icon = "🔴" if new_level == "critical" else "⚠️"
+        try:
+            send_email(f"{icon} apt index stale on Dale server ({age_str})", html, text)
+            print(f"[{now_str}] APT {new_level.upper()}: index {age_str} old — alert sent")
+        except Exception as e:
+            committed_level = prev_level
+            print(f"[{now_str}] APT {new_level.upper()}: index {age_str} old — "
+                  f"failed to send alert: {e}")
+    elif action == "recovered":
+        try:
+            send_email("✅ apt index refreshing again on Dale server",
+                       "<h2>✅ apt has successfully updated its index.</h2>"
+                       "<p>unattended-upgrades can see current packages again.</p>",
+                       "apt has successfully updated its index. unattended-upgrades "
+                       "can see current packages again.")
+            print(f"[{now_str}] APT RECOVERED: index {age_str} old — alert sent")
+        except Exception as e:
+            committed_level = prev_level
+            print(f"[{now_str}] APT RECOVERED: failed to send alert: {e}")
+    else:
+        print(f"[{now_str}] APT {new_level.upper()}: index {age_str} old")
+
+    state["apt"] = {
+        "level": committed_level,
+        "age_days": round(age_days, 1) if age_days is not None else None,
+        "last_checked": now_str,
+    }
+    return True
+
+
 def main():
     state = load_state()
     now = datetime.now(timezone.utc)
@@ -560,6 +685,12 @@ def main():
     # Reboot pending — the third invisible failure: patches installed, apt clean,
     # every signal green, and the running kernel still the old one.
     if check_reboot_required(state, now_str):
+        changed = True
+
+    # Stale apt index — the fourth, and the one that fakes all the others: with
+    # a frozen index the box reports zero pending security updates because it
+    # has not looked.
+    if check_apt_freshness(state, now_str):
         changed = True
 
     if changed:

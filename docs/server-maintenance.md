@@ -23,6 +23,29 @@ long-running process still had the old copy mapped.
 **The lesson generalises: "the patch is installed" and "the patch is running"
 are different claims, and only one of them is what security means.**
 
+### And one layer further down: the index had frozen too
+
+Found while fixing the above, and worse than the original finding.
+
+An `apt-get -qq -y update` started by `apt.systemd.daily` on **24 June** was
+still running **48 days later**, with four `/usr/lib/apt/methods/https` children
+stuck on sockets and no timeout to end them. It held `/var/lib/apt/lists/lock`
+that entire time, so `unattended-upgrades` could not run at all after 24 June —
+`unattended-upgrades-dpkg.log` has been zero bytes since 1 July.
+
+That means the reassuring number was itself an artefact. "0 packages pending
+from `-security`" was read off an index frozen in June. The box reported zero
+pending security updates **because it had not looked**.
+
+On a fresh index: **142 packages upgradable, 83 of them from the security
+pocket**, and the available kernel had moved on again to 6.8.0-137.
+
+No dpkg transaction was in flight (`/var/lib/dpkg/updates/` empty, frontend lock
+free), so the hung tree was killed and the index refreshed. Two defences now
+exist: every apt call carries `Acquire::*::Timeout` and `DPkg::Lock::Timeout`
+(`APT_OPTS` in `monthly_maintenance.py`), and `uptime_monitor.py` alerts when
+`/var/lib/apt/periodic/update-success-stamp` goes stale.
+
 ## The cadence
 
 | when | what | how |
@@ -107,18 +130,28 @@ fires — including when the "skipped" email fails to send, so a Resend outage
 cannot turn a one-month skip into a permanent one. A sticky veto left in place
 would recreate exactly the nine-week gap this cadence closes.
 
-## The backstop
+## The backstops
 
-`uptime_monitor.py` (every 5 minutes) alerts when `/var/run/reboot-required` has
-been set for **more than 40 days**, escalating once at **75 days**, with an
-all-clear when the file disappears.
+`uptime_monitor.py` runs every 5 minutes and now carries two checks for this,
+both de-duped through `uptime_state.json` and both retried on a failed send.
 
-40 days is deliberate: the longest possible gap between first Mondays is 35 days,
-so the alert fires only when a window was actually missed, never during a healthy
-cycle. An alert that cried wolf every month would be filtered inside two.
+**Reboot pending.** Alerts once past **40 days**, escalating at **75**, with an
+all-clear when the file disappears. 40 is deliberate: the longest possible gap
+between first Mondays is 35 days, so it fires only when a window was actually
+missed, never during a healthy cycle. An alert that cried wolf every month would
+be filtered inside two. `/var/run` is tmpfs, so the file cannot survive a reboot
+and its mtime is a trustworthy "set at".
 
-`/var/run` is tmpfs, so the file cannot survive a reboot and its mtime is a
-trustworthy "set at".
+**apt index stale.** Alerts once past **3 days** since the last *successful*
+`apt-get update`, critical at **10**, using
+`/var/lib/apt/periodic/update-success-stamp` — which `apt.systemd.daily` touches
+only on success. A missing stamp is treated as **critical, not ok**: "no evidence
+apt has ever succeeded" is the worse reading, and assuming the friendlier one is
+what let the 48-day hang sit unnoticed.
+
+The two are complementary and the order matters. A stale index makes the
+reboot-required check look healthy too, because nothing new ever gets installed
+to require a reboot. If both fire, believe the apt one first.
 
 ## Manual run
 

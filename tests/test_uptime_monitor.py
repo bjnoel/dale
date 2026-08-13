@@ -273,5 +273,60 @@ class RebootRequiredTests(unittest.TestCase):
         self.assertEqual(self.mod.send_email.call_count, 2)
 
 
+class AptFreshnessTests(unittest.TestCase):
+    """Found while fixing DAL-282: an apt-get update started by apt.systemd.daily
+    on 24 June was still running 48 days later, holding /var/lib/apt/lists/lock.
+    unattended-upgrades installed nothing after 24 June, and the '0 pending from
+    -security' that made the box look current was read off a frozen index. On a
+    fresh index it was 142 upgradable, 83 of them security."""
+
+    def setUp(self):
+        self.mod = load_uptime_monitor()
+
+    def test_daily_refresh_is_ok(self):
+        self.assertEqual(self.mod.apt_stale_level(0.5), "ok")
+        self.assertEqual(self.mod.apt_stale_level(2.9), "ok")
+
+    def test_thresholds(self):
+        self.assertEqual(self.mod.apt_stale_level(3), "warning")
+        self.assertEqual(self.mod.apt_stale_level(9.9), "warning")
+        self.assertEqual(self.mod.apt_stale_level(10), "critical")
+
+    def test_the_48_day_hang_would_have_been_critical(self):
+        self.assertEqual(self.mod.apt_stale_decision("ok", 48), ("critical", "alert"))
+
+    def test_missing_stamp_is_critical_not_ok(self):
+        """'No evidence apt ever succeeded' must not read as healthy. Assuming
+        the friendlier interpretation is what let this sit for seven weeks."""
+        self.assertEqual(self.mod.apt_stale_level(None), "critical")
+        self.assertEqual(self.mod.apt_stale_decision("ok", None), ("critical", "alert"))
+
+    def test_no_repeat_while_steady(self):
+        self.assertEqual(self.mod.apt_stale_decision("warning", 5), ("warning", "none"))
+        self.assertEqual(self.mod.apt_stale_decision("critical", 60), ("critical", "none"))
+
+    def test_recovery_once_it_refreshes(self):
+        self.assertEqual(self.mod.apt_stale_decision("critical", 0.1), ("ok", "recovered"))
+
+    def test_check_apt_freshness_emails_once(self):
+        self.mod.send_email.reset_mock()
+        self.mod.send_email.side_effect = None
+        with mock.patch.object(self.mod, "apt_index_age_days", return_value=48.0):
+            state = {}
+            self.mod.check_apt_freshness(state, "2026-08-13T04:00:00Z")
+            self.mod.check_apt_freshness(state, "2026-08-13T04:05:00Z")
+        self.assertEqual(state["apt"]["level"], "critical")
+        self.mod.send_email.assert_called_once()
+
+    def test_check_apt_freshness_silent_when_fresh(self):
+        self.mod.send_email.reset_mock()
+        self.mod.send_email.side_effect = None
+        with mock.patch.object(self.mod, "apt_index_age_days", return_value=0.2):
+            state = {}
+            self.mod.check_apt_freshness(state, "2026-08-13T04:00:00Z")
+        self.assertEqual(state["apt"]["level"], "ok")
+        self.mod.send_email.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()
