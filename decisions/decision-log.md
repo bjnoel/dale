@@ -10513,3 +10513,71 @@ decision log. Note that date-stamped does **not** mean stale here: `release_stat
 is today's. That is exactly why I did not automate it.
 
 **Cost:** $0.
+
+---
+
+## DEC-281 — 2026-08-13 — Daleys told us what our own instrument could not: 47% of their catalogue is invisible to us
+
+**Decided by:** Dale, autonomous, prompted by Benedict relaying two nursery replies and asking
+whether to raise affiliate terms with Daleys.
+
+**Correy at Daleys volunteered the number we have been trying to measure for months.**
+treestock drove **4 sales worth about $280 over 90 days**. Against our own Plausible outbound
+data for the same window (576 clicks, 536 unique visitors), that is **0.75% conversion and
+~$0.49 revenue per click**. It is a floor: their attribution only sees same-session buyers, and
+a $100 fruit tree is not usually a same-session purchase. Posted to DAL-258, which had been
+waiting on the Primal Fruits GoAffPro signup for a number it could have had for free.
+
+**On affiliate: no.** At $280/quarter from our single largest referral destination, a typical
+5-10% plant commission is **$56-112/year**. Daleys has no affiliate program at all (wholesale
+only, $2k minimum, DAL-154 re-verified in DEC-241), so capturing that means asking them to
+build one. Asking for a cut immediately after they offered a gift voucher also misprices the
+relationship. The 536 qualified visitors per quarter are the asset; what they are worth is a
+paid-listing question, not a commission one, and that is Track B phase 4, explicitly later.
+
+**The real find was buried in the same email.** Correy noted Daleys has 7 named grafted
+sapodilla varieties and that we only show the seedling because the rest are out of stock. That
+is true, and it is structural. `daleys_scraper.py` fetches exactly two URLs, `Plant-List.php`
+(in-stock) and `pre-purchase.php` (upcoming). Both are stock-gated. A variety that is out of
+stock with nothing on the way has never been on a page we fetch. **1,275 `/buy/` URLs sit in
+their public sitemap against 680 products we ingest: roughly 595 products, 47% of the
+catalogue, invisible.** Every one of those pages carries clean schema.org JSON-LD with
+per-variant price and availability, and robots.txt permits `/buy/`. Verified both ways: Krasuey
+returns 2 offers, $99 and $109, both `OutOfStock`; the seedling returns 3 offers, one `InStock`.
+
+**Why this matters more than the money.** `build_variety_pages.py:220` already renders "this
+variety is currently out of stock, enter your email to get an alert". We built the capture and
+cannot populate it for the varieties that most need it, because a variety only enters our data
+by being in stock, and the scarcest things never are. Krasuey is Daleys' top 1% plant with a
+waitlist Correy says he cannot meet. treestock cannot tell a single person when it lands.
+
+**I measured the wrong thing first, and it nearly shipped.** An initial audit ranked nurseries
+by product-level `any_available` and flagged Fruit Salad Trees, St Clements and All Season
+Plants WA alongside Daleys. Re-run at variant level, Fruit Salad Trees is **0.0% at product
+level and 60.3% at variant level**: 367 of 609 variants sold out, the data present all along
+and hidden by the rollup. Those three are cleared. CLAUDE.md rule 3 already says compare at
+variant level; the same discipline applies to reading availability, not just prices.
+
+**Two findings survived the correction.** Daleys is confirmed (0.9% product, 19.7% variant,
+against a 60-80% norm for nurseries read from a real catalogue API). And separately,
+**heaven-on-earth, primal-fruits and wild-garden-organics record zero variants across 518
+products**, so under rule 3 those cannot participate in price-change detection at all. Primal
+Fruits is our only affiliate. That is a different defect and needs its own ticket. Diacos
+(0.0% at both levels, WooCommerce) remains an unverified candidate.
+
+**Blocked on the backlog cap, deliberately not worked around.** The Daleys ticket is drafted
+with full research and `linear_update.py create` refused it: **backlog 24/15**. Fourteen of
+those were created in one burst on 2026-07-30 and none expire until about 2026-08-29. The cap
+rule forbids rewording, splitting or waiting, and permits saying so on an existing ticket,
+which is what the DAL-258 comment does. The draft is held pending Benedict's triage.
+
+**Also fixed nothing, but found:** `nursery_crm.py report --period 90d` prints a table of zeros
+for all 27 nurseries. `90d` is not a valid Plausible period, the API 400s, and
+`outbound_clicks()` swallows the error into an empty dict that renders as "nobody clicked
+anything". Same silent-zero family as DEC-250 and DEC-253.
+
+**Register updated.** Both replies logged as inbound touches; Daleys and Guildford both moved
+`contacted` to `warm`. Guildford's Monday visit carries `keep_open` so the confirmation email
+does not auto-discharge an action only a visit can close.
+
+**Cost:** $0.

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-08-10",
+  "updated": "2026-08-13",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -44,10 +44,22 @@
           "by": "benedict",
           "summary": "Re: Your nursery is on treestock.com.au",
           "evidence": "resend:ab6c4821-780a-4a42-8e25-2c7c5b66de93"
+        },
+        {
+          "date": "2026-08-13",
+          "direction": "in",
+          "channel": "email",
+          "by": "correy",
+          "summary": "Correy: treestock drove 4 sales / ~$280 in 90d (their analytics). Offered gift voucher for referrals. Revealed 7 named grafted sapodilla varieties we do not see (all out of stock). Krasuey top 1% importance, demand unmeetable. Offered to reserve stock. Grafting at 70% this season, low on rootstock.",
+          "evidence": "Email pasted by Benedict 2026-08-13"
         }
       ],
-      "open_action": null,
-      "notes": "No affiliate program (DAL-154, re-verified 2026-07-30 in DEC-241). Wholesale only, $2k minimum. Our single largest referral destination over 6 months."
+      "open_action": {
+        "owner": "dale",
+        "what": "Draft Correy's reply: thank him, accept the voucher, ask for the per-species named-variety list (or confirm we can read it off the Daleys species pages) so out-of-stock varieties become alertable, and ask him to keep sending the quarterly conversion figure. Do NOT raise affiliate.",
+        "since": "2026-08-13"
+      },
+      "notes": "No affiliate program (DAL-154, re-verified 2026-07-30 in DEC-241). Wholesale only, $2k minimum. Our single largest referral destination: 576 clicks / 536 visitors in the 90d to 2026-08-13. Correy reported 4 sales worth ~$280 over the same window = 0.75% conversion, ~$0.49/click; their attribution is same-session only so it is a floor. Gift voucher offered as thanks for referrals (non-cash, no ranking effect). Sapodilla: 7 named grafted varieties exist, treestock sees only the seedling because the rest have been out of stock our whole window. Krasuey top 1% importance, demand far exceeds supply. Grafting 70% success this season, low on rootstock."
     },
     {
       "key": "ross-creek",
@@ -298,12 +310,12 @@
       "key": "guildford",
       "name": "Guildford Garden Centre",
       "domain": "guildfordgardencentre.com.au",
-      "contact_name": null,
+      "contact_name": "Emma",
       "email": "info@guildfordgardencentre.com.au",
       "phone": "(08) 9279 8645",
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "contacted",
+      "status": "warm",
       "touches": [
         {
           "date": "2026-03-30",
@@ -320,10 +332,23 @@
           "by": "benedict",
           "summary": "Re: treestock.com.au, and a quick visit?",
           "evidence": "resend:e75a4838-adf9-47da-82b3-f3e5bdce8378"
+        },
+        {
+          "date": "2026-08-13",
+          "direction": "in",
+          "channel": "email",
+          "by": "emma",
+          "summary": "Emma: first email got buried, apologised. Will look at the site properly. Happy to meet in person at the garden centre. Mondays before 2.30pm quietest; next week works. Peak bare root season, bagging a couple thousand trees.",
+          "evidence": "Email pasted by Benedict 2026-08-13"
         }
       ],
-      "open_action": null,
-      "notes": "WA, Perth metro delivery only, in person visitable from Perth (Guildford, ~20 min from CBD). Touch 1 emailed 2026-03-30, no reply. Register wrongly showed not_contacted until 2026-08-10; Benedict had the sent email. Same failure as Fruit Tree Lane: a touch that lives only in Benedict's outbox is invisible to the register."
+      "open_action": {
+        "owner": "benedict",
+        "what": "Visit Emma at the garden centre Mon 2026-08-17, before 2.30pm. Confirm the time first. Casual: no pitch, nothing commercial. Ask her to correct our 612 listings, confirm the Perth metro delivery boundary, and get the bare root window open/close dates.",
+        "since": "2026-08-13",
+        "keep_open": true
+      },
+      "notes": "WA, Perth metro delivery only, in person visitable from Perth (Guildford, ~20 min from CBD). Contact is Emma. 612 products listed; 127 clicks / 119 visitors in the 90d to 2026-08-13. Geo is unverifiable (DEC-270 free geo DB returns empty region/city), so do NOT describe those visitors as local. Touch 1 (2026-03-30) was buried, not ignored; Emma said so herself on 2026-08-13. Peak bare root season Aug, bagging a couple thousand trees, Mondays before 2.30pm are quietest."
     },
     {
       "key": "fruitopia",
