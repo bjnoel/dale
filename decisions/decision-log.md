@@ -10666,3 +10666,44 @@ named varieties pointing at *his* notify list, feeding it rather than competing 
 Related: this reframes the 0.75% conversion in DAL-258. If the scarcest stock is fulfilled
 privately before it is ever listed, treestock's outbound clicks are landing on what is left
 over, and 0.75% is a rate measured against the wrong denominator.
+
+**Result, appended 2026-08-13 (same day).** The Play listing went live within hours and the
+effect is already measurable, so the prediction registered above has been met far faster and
+harder than forecast. Day-0 post-change reading in
+`data/treesmith-play-rank-day0-postchange.json`, against the pre-change baseline taken earlier
+the same day.
+
+"fruit tree tracker": **AU #26/30 to #1/30. US absent-from-30 to #1/30.** Every term in the
+set containing "fruit tree" moved from absent to top 2 on both storefronts, plus "tree tracker"
+(AU absent to #3, US #9 to #4) and "rare fruit" (absent to #1 on both).
+
+**Three things make this stronger than a single before/after usually is:**
+
+1. **The control group held in all six cells.** The orchard terms, whose indexed text was
+   deliberately left unchanged, are bit-for-bit identical before and after: AU `orchard tracker`
+   `none/12` both times, and the same for orchard map and orchard management on both stores.
+   Holding that word back cost us one subtitle improvement and bought the ability to say the
+   movement was not a general reshuffle.
+2. **Every rank change is on a term containing a word we added.** 19 cells changed; outside the
+   fruit/tree family, not one is a rank change. They are denominator wobbles on terms where we
+   are absent before and after (propagation tracker `none/9` to `none/29`, scion wood `none/12`
+   to `none/30+`). No rank moved anywhere we did not touch the words.
+3. **The predicted cost did not materialise.** We kept **#1 on "graft tracker" and "grafting
+   tracker"** despite removing "graft" from the title, because Play indexes the short and long
+   descriptions and graft still appears in both. DEC-247's Apple-shaped reasoning assumed the
+   name field was where the term had to live. On Play it does not have to be.
+
+**What this does and does not establish.** It establishes that the name field moves *rank* on
+Play, with a control, on one variable. It does **not** establish that rank moves *downloads*,
+which is the only claim the business cares about. We still cannot see search volume, so #1 on a
+term nobody searches is worth nothing, and this is a day-0 reading where fresh-listing effects
+can be transient.
+
+**DAL-257 therefore stays open and its purpose changes.** It was written to ask "does the name
+field move rank". That is answered on Play. The four-week re-measure now asks the question that
+was always the real one: does the rank hold, and does it show up in `treesmith_downloads`. A
+rank win that produces no installs kills the ASO thesis just as firmly as a rank failure would
+have.
+
+The Apple counter-signal recorded above is unaffected and still unexplained. Play's evidence is
+direct and controlled; the Apple US/AU comparison is neither.
