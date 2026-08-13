@@ -38,6 +38,45 @@ def snapshot_path(nursery_dir: Path, today: str | None = None) -> Path | None:
     return fallback if fallback.exists() else None
 
 
+def snapshot_path_for_date(nursery_dir: Path, target_date: str,
+                           today: str | None = None) -> Path | None:
+    """How a nursery looked on `target_date`, for day-to-day comparisons.
+
+    Exact dated snapshot if we have one. For today, latest.json is at least as
+    fresh, so it wins when today's dated file is not written yet. Otherwise the
+    most recent snapshot at or before the target date: a nursery whose scrape
+    failed has not emptied its shelves, it only failed to report.
+
+    That last fallback is the point of this function. Callers used to skip the
+    nursery entirely when a dated file was missing, which silently claimed it
+    had *no stock* that day. On 2026-08-13, with Heritage Fruit Trees missing
+    two snapshots (their site was 503ing) and Ladybird missing one, that made
+    10 watched varieties look like fresh 0 -> in-stock restocks against 98 real
+    subscriber watches. None of them had ever gone out of stock (DEC-293).
+
+    Deliberately unbounded: comparing against the last state we actually
+    observed is what "back in stock" means to a subscriber. A nursery returning
+    after a long outage yields alerts for what genuinely changed since we last
+    saw it, which is a real answer, where treating the gap as zero stock is a
+    fabricated one. Returns None only when a nursery has no history at or
+    before the date, where no claim about stock can honestly be made.
+    """
+    snap = nursery_dir / f"{target_date}.json"
+    if snap.exists():
+        return snap
+
+    today = today or _today_utc()
+    if target_date == today:
+        fallback = nursery_dir / "latest.json"
+        if fallback.exists():
+            return fallback
+
+    prior = sorted(
+        p for p in nursery_dir.glob("????-??-??.json") if p.stem <= target_date
+    )
+    return prior[-1] if prior else None
+
+
 def iter_nursery_snapshots(data_dir, today: str | None = None) -> Iterator[tuple[str, dict]]:
     """Yield (nursery_key, snapshot_dict) for each nursery under data_dir.
 

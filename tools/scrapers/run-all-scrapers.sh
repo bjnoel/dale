@@ -8,41 +8,102 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="/opt/dale"
+# /opt/dale in production. Overridable so tests/test_run_all_scrapers.py can run
+# the real script against a temp tree instead of asserting on a copy of it.
+PROJECT_DIR="${DALE_PROJECT_DIR:-/opt/dale}"
 export DALE_DATA_DIR="$PROJECT_DIR/data"
 LOG_PREFIX="[$(date '+%Y-%m-%d %H:%M:%S')]"
+
+# Number of platform scraper families below, and how many may fail before we
+# stop instead of publishing. One family down is a nursery having a bad night;
+# most of them down at once is us (our network, our IP blocked, a shared
+# dependency), and then yesterday's published site is more truthful than one
+# rebuilt from mostly-stale data.
+SCRAPER_COUNT=6
+MAX_SCRAPER_FAILURES=3
+
+# The alarm must not sit downstream of the failure it exists to report.
+# detect_scrape_anomalies.py used to be the last step of this script, below the
+# smoke test. On 2026-08-12 the run aborted at the BigCommerce call, so the
+# alarm never ran: ok=false was recorded correctly in data/scraper-health/ on
+# both dead nights and nobody was told. It now runs the moment the scrapers
+# finish, and an EXIT trap fires it even if a later step aborts the run.
+SCRAPE_HEALTH_REPORTED=""
+report_scrape_health() {
+    if [ -n "$SCRAPE_HEALTH_REPORTED" ]; then
+        return 0
+    fi
+    SCRAPE_HEALTH_REPORTED=1
+    echo "$LOG_PREFIX Checking scrape health..."
+    python3 "$SCRIPT_DIR/detect_scrape_anomalies.py" 2>&1 \
+        || echo "$LOG_PREFIX WARNING: Scrape anomaly check failed (non-fatal)"
+}
+trap report_scrape_health EXIT
+
+# One nursery's outage must degrade that nursery, not the whole publish. These
+# six calls were bare under `set -e` until 2026-08-13: Heritage Fruit Trees
+# began serving HTTP 503 on every URL, bigcommerce_scraper.py correctly refused
+# to write a 0-product snapshot and exited 1, and the run died there, taking
+# availability_tracker, the dashboard, all twenty-odd page builders and both
+# subscriber sends with it. The site froze for two days (DEC-293).
+#
+# A failure is never silent: each scraper records ok=false via
+# stocklib.scrape_health, and report_scrape_health turns that into an email.
+SCRAPER_FAILURES=()
+
+run_scraper() {
+    local label="$1"; shift
+    if python3 "$@" 2>&1; then
+        return 0
+    fi
+    SCRAPER_FAILURES+=("$label")
+    echo "$LOG_PREFIX WARNING: $label scrape failed (continuing with other nurseries)"
+}
 
 echo "$LOG_PREFIX Starting nursery stock scrape..."
 
 # Shopify nurseries (Ross Creek, Ladybird, Fruitopia, Fruit Salad Trees, Diggers, All Season Plants WA, Aus Nurseries, Fruit Tree Cottage)
 echo "$LOG_PREFIX Scraping Shopify nurseries..."
-python3 "$SCRIPT_DIR/shopify_scraper.py" 2>&1
+run_scraper "Shopify" "$SCRIPT_DIR/shopify_scraper.py"
 
 # Daleys (custom scraper)
 echo "$LOG_PREFIX Scraping Daleys..."
-python3 "$SCRIPT_DIR/daleys_scraper.py" 2>&1
+run_scraper "Daleys" "$SCRIPT_DIR/daleys_scraper.py"
 
 # Ecwid nurseries (Primal Fruits)
 echo "$LOG_PREFIX Scraping Ecwid nurseries..."
-python3 "$SCRIPT_DIR/ecwid_scraper.py" 2>&1
+run_scraper "Ecwid" "$SCRIPT_DIR/ecwid_scraper.py"
 
 # Wix nurseries (Heaven On Earth)
 echo "$LOG_PREFIX Scraping Wix nurseries..."
-python3 "$SCRIPT_DIR/wix_scraper.py" 2>&1
+run_scraper "Wix" "$SCRIPT_DIR/wix_scraper.py"
 
 # WooCommerce nurseries (Guildford Garden Centre)
 echo "$LOG_PREFIX Scraping WooCommerce nurseries..."
-python3 "$SCRIPT_DIR/woocommerce_scraper.py" 2>&1
+run_scraper "WooCommerce" "$SCRIPT_DIR/woocommerce_scraper.py"
 
 # BigCommerce nurseries (Heritage Fruit Trees)
 echo "$LOG_PREFIX Scraping BigCommerce nurseries..."
-python3 "$SCRIPT_DIR/bigcommerce_scraper.py" 2>&1
+run_scraper "BigCommerce" "$SCRIPT_DIR/bigcommerce_scraper.py"
 
 echo "$LOG_PREFIX Scrape complete."
 
+# Tell Benedict what failed before any later step gets the chance to abort.
+report_scrape_health
+
+FAILED_COUNT=${#SCRAPER_FAILURES[@]}
+if [ "$FAILED_COUNT" -gt "$MAX_SCRAPER_FAILURES" ]; then
+    echo "$LOG_PREFIX ERROR: $FAILED_COUNT of $SCRAPER_COUNT scrapers failed (${SCRAPER_FAILURES[*]}), above the floor of $MAX_SCRAPER_FAILURES. Not publishing; keeping yesterday's site."
+    exit 1
+fi
+if [ "$FAILED_COUNT" -gt 0 ]; then
+    echo "$LOG_PREFIX $FAILED_COUNT of $SCRAPER_COUNT scrapers failed (${SCRAPER_FAILURES[*]}). Those nurseries keep their last-known-good data; continuing."
+fi
+
 # Update availability history
 echo "$LOG_PREFIX Updating availability history..."
-python3 "$SCRIPT_DIR/availability_tracker.py" "$PROJECT_DIR/data/nursery-stock" 2>&1
+python3 "$SCRIPT_DIR/availability_tracker.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 \
+    || echo "$LOG_PREFIX WARNING: Availability history update failed (non-fatal; history page may be stale)"
 
 # Backup previous dashboard before rebuilding (keep last-known-good for rollback)
 DASHBOARD_FILE="$PROJECT_DIR/dashboard/index.html"
@@ -104,30 +165,39 @@ ARCHIVE_DIR="$DIGEST_DIR/archive"
 mkdir -p "$ARCHIVE_DIR"
 
 # Text digests (for FB groups)
+# Guarded for the same reason as the scrapers: these were bare under `set -e`
+# too, so a digest build failure would have taken every page builder below it
+# and both subscriber sends with it.
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --save "$DIGEST_DIR/digest.txt" 2>&1
+    --save "$DIGEST_DIR/digest.txt" 2>&1 || echo "$LOG_PREFIX WARNING: digest.txt build failed (non-fatal)"
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --wa-only --save "$DIGEST_DIR/digest-wa.txt" 2>&1
+    --wa-only --save "$DIGEST_DIR/digest-wa.txt" 2>&1 || echo "$LOG_PREFIX WARNING: digest-wa.txt build failed (non-fatal)"
 
 # Email HTML digest (unfiltered; send_digest.py handles per-subscriber state filtering)
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --html --save "$DIGEST_DIR/digest-email.html" 2>&1
+    --html --save "$DIGEST_DIR/digest-email.html" 2>&1 || echo "$LOG_PREFIX WARNING: digest-email.html build failed (non-fatal)"
 
 # Shareable web page digests (main ones served at /digest.html)
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --page --save "$DIGEST_DIR/digest.html" 2>&1
+    --page --save "$DIGEST_DIR/digest.html" 2>&1 || echo "$LOG_PREFIX WARNING: digest.html build failed (non-fatal)"
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --page --wa-only --save "$DIGEST_DIR/digest-wa.html" 2>&1
+    --page --wa-only --save "$DIGEST_DIR/digest-wa.html" 2>&1 || echo "$LOG_PREFIX WARNING: digest-wa.html build failed (non-fatal)"
 
-# Archive dated copies
-cp "$DIGEST_DIR/digest.html" "$ARCHIVE_DIR/digest-$TODAY.html"
-cp "$DIGEST_DIR/digest-wa.html" "$ARCHIVE_DIR/digest-wa-$TODAY.html"
+# Archive dated copies. Only archive what actually exists, so a failed digest
+# build above does not abort the run here (and does not archive a stale page
+# under today's date).
+if [ -f "$DIGEST_DIR/digest.html" ]; then
+    cp "$DIGEST_DIR/digest.html" "$ARCHIVE_DIR/digest-$TODAY.html"
+fi
+if [ -f "$DIGEST_DIR/digest-wa.html" ]; then
+    cp "$DIGEST_DIR/digest-wa.html" "$ARCHIVE_DIR/digest-wa-$TODAY.html"
+fi
 echo "$LOG_PREFIX Digest complete (archived as $TODAY)."
 
 # Build price/stock change history page
 echo "$LOG_PREFIX Building history page..."
-python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1
-python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" --wa-only 2>&1
+python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: History page build failed (non-fatal)"
+python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" --wa-only 2>&1 || echo "$LOG_PREFIX WARNING: History page (WA) build failed (non-fatal)"
 echo "$LOG_PREFIX History page complete."
 
 # Build market trends page (30-day rolling availability + price trends per species).
@@ -282,7 +352,8 @@ python3 "$SCRIPT_DIR/smoke_test.py" --quiet 2>&1 || echo "$LOG_PREFIX WARNING: S
 echo "$LOG_PREFIX Smoke test complete."
 
 # Scrape-health anomaly check (failed runs, zero-product days, 403/429 blocks,
-# failure streaks) — alerts Benedict, idempotent per day
-echo "$LOG_PREFIX Checking scrape health..."
-python3 "$SCRIPT_DIR/detect_scrape_anomalies.py" 2>&1 || echo "$LOG_PREFIX WARNING: Scrape anomaly check failed (non-fatal)"
-echo "$LOG_PREFIX Scrape health check complete."
+# failure streaks) already ran, right after the scrapers, and the EXIT trap
+# would have run it even if a step above aborted. It used to live here, which
+# is precisely why two dead scrape nights went unreported: everything that can
+# report a failure must sit upstream of the things that can fail.
+echo "$LOG_PREFIX Scrape health check complete (reported above)."

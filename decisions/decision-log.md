@@ -11272,3 +11272,85 @@ incapable of recovering. DEC-290: a clean security report read off an index froz
 weeks. Now a counter whose name asserted an invariant it did not maintain. Every one of them
 reported success while doing nothing, and none was found by the monitoring; all four came
 out of reading the thing directly.
+
+---
+
+## DEC-293 — 2026-08-13 — One nursery's 503 took the whole site off the air for two days
+
+**Status:** Shipped. Site republished, run-all-scrapers.sh made fault-tolerant, both
+alarms fixed, phantom restock alerts defused.
+
+heritagefruittrees.com.au began returning HTTP 503 on every URL, homepage included, on
+both a browser UA and curl's. `bigcommerce_scraper.py` fetched all 597 URLs, got nothing,
+and did exactly the right thing: it refused to write a 0-product snapshot and exited 1.
+
+That correct refusal is what broke the site. The six scraper calls in
+`run-all-scrapers.sh` were bare under `set -euo pipefail`, so the run died at the
+BigCommerce line and never reached `availability_tracker.py`, `build-dashboard.py`, the
+five digest builds, any of the twenty-odd page builders, `send_digest.py` or
+`send_variety_alerts.py`. treestock.com.au served a footer reading 2026-08-11 for two
+days and no subscriber received anything. Every build step *below* the failure was
+already guarded with `|| echo ... non-fatal`; the scrapers had simply been left out of a
+convention the rest of the file follows.
+
+**The failure was detected correctly every night, and reached nobody.** This is the more
+interesting half and it took two separate fixes.
+
+`detect_scrape_anomalies.py` exists precisely for this: its first listed condition is "a
+scraper run failed (ok=false)". It was the *last* step of the same script, below the
+smoke test. A run that aborts can never reach its own alarm, so the alarm could report
+every failure except the ones that mattered most. The health records were written
+faithfully on both dead nights (`data/scraper-health/2026-08-13.jsonl`, 00:34) and the
+last anomaly email was 2026-08-05. It now runs the moment the scrapers finish, and an
+EXIT trap fires it even if a later step aborts. The rule the file now encodes: anything
+that reports a failure must sit upstream of everything that can fail.
+
+The second silence was the daily digest, the one report Benedict actually reads. It had
+no concept of scraper health at all, so for two days it reported traffic, tickets and
+subscribers as entirely normal while the site was frozen. It now carries a Pipeline
+section built from two independent questions, because the failures worth catching answer
+them differently: did tonight's scrape work (health records), and did anything actually
+get published (index.html mtime). This outage scraped 26 of 27 nurseries fine and
+published nothing, so a health-records-only check would still have called it healthy.
+A broken pipeline goes above Benedict's queue and into the subject line, since the whole
+failure mode is an email where every other line reads normal.
+
+**The floor.** Continuing on 1 of 6 scrapers down is a nursery having a bad night;
+continuing on 5 of 6 is us, and publishing then would rebuild the market report from
+mostly-stale data. Above 3 of 6 the run now stops before the build steps and keeps
+yesterday's site, which is the more truthful artifact. Below it, the failed nurseries
+keep their last-known-good `latest.json` and everything else publishes normally.
+
+**Nine more abort points than the diagnosis found.** Guarding stopped at line 137, so the
+five `daily_digest.py` calls, the two archive `cp`s and the two `build_history.py` calls
+were bare too. Any of them would have taken both subscriber sends down the same way. The
+regression test caught this independently: run against the pre-fix script with every
+stub succeeding, the run still died, at the `cp` of a `digest.html` the stub had not
+created.
+
+**The trap that would have made the recovery worse than the outage.**
+`send_variety_alerts.py` fires on a variety going from 0 in-stock listings yesterday to
+some today, and its loader *skipped* any nursery with no dated snapshot for the day being
+compared. Skipping fed the comparison "this nursery had nothing in stock" when the truth
+was "this nursery did not report". Heritage was missing two snapshots and Ladybird one,
+so a dry run had **10 phantom restocks queued against 98 real subscriber watches**, for
+varieties that had never gone out of stock. Fixed in
+`stocklib.snapshots.snapshot_path_for_date`, which falls back to the most recent snapshot
+at or before the target date. Deliberately unbounded: comparing against the last state we
+actually observed is what "back in stock" means to a subscriber, where treating a gap as
+empty shelves is a fabricated claim. It returns None only when a nursery has no history
+at all, the one case where no honest claim about stock can be made.
+
+**Tests.** 27 new, all verified failing against the pre-fix code first. The shell is
+exercised for real against a temp tree with stubbed executables rather than asserting on
+a copy of its logic, because the bug was `set -e` control flow and only the real shell
+reproduces it: 8 of 9 fail before the fix. `PROJECT_DIR` gained a `DALE_PROJECT_DIR`
+override purely so the real script can be tested instead of a paraphrase of it.
+
+**Heritage is still 503 as of writing.** Their outage, not our scraper, and now it costs
+us one nursery's freshness instead of the entire site.
+
+**Same family as the four before it.** DEC-283, DEC-285, DEC-290 and DEC-292 all reported
+success while doing nothing. This one is the next step in that pattern: the component
+did *not* report success, it reported failure accurately and on time, into a channel that
+could not physically reach anyone. Detection was never the weak link. Delivery was.

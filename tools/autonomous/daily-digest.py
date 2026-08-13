@@ -424,6 +424,123 @@ def get_nursery_actions(data_dir, today=None):
     return sort_by_age(rows)
 
 
+# The site rebuilds nightly at about 00:35 UTC and this digest runs at 22:00
+# UTC, so a healthy index.html is roughly 21 hours old when it is read here and
+# one missed night makes it roughly 45. 30 separates those cleanly.
+STALE_PUBLISH_HOURS = 30
+DASHBOARD_DIR = "/opt/dale/dashboard"
+
+
+def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
+    """Is the treestock publishing pipeline actually alive?
+
+    On 12 and 13 August 2026 it was not. Heritage Fruit Trees began serving 503s,
+    the nightly run aborted on that scraper, and the site sat two days stale
+    while this digest reported traffic, tickets and subscribers as though
+    nothing had happened. The failure was detected correctly on both nights and
+    written to data/scraper-health/. It simply never reached the one report
+    Benedict reads (DEC-293).
+
+    Two independent questions, because the failures worth catching answer them
+    differently: did tonight's scrape work (health records), and did anything
+    get published (index.html mtime). A run can fail every scraper and still
+    publish yesterday's pages, and it can scrape perfectly and publish nothing,
+    which is precisely what happened here.
+
+    Reads the JSONL directly instead of importing stocklib.scrape_health,
+    because this module deploys to /opt/dale/autonomous and stocklib ships to
+    /opt/dale/scrapers, so the import would not resolve at runtime (same
+    reasoning as get_nursery_actions). It summarises only. Grading streaks and
+    403/429 stays in detect_scrape_anomalies.py rather than being forked here.
+    """
+    now = now or datetime.now(timezone.utc)
+    today = now.strftime("%Y-%m-%d")
+    health = {
+        "ok": True,
+        "problems": [],
+        "nurseries_ok": 0,
+        "nurseries_failed": [],
+        "published_age_hours": None,
+        "published_at": None,
+    }
+
+    path = os.path.join(data_dir, "scraper-health", f"{today}.jsonl")
+    records = []
+    try:
+        with open(path) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    records.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+    except (FileNotFoundError, OSError) as e:
+        log(f"Warning: scrape-health unreadable ({e}); reporting as no scrape")
+
+    if not records:
+        health["problems"].append(
+            f"No scrape recorded for {today}. The nightly run did not reach any nursery.")
+    else:
+        # Re-runs append, so the last record for a nursery is the live one.
+        latest = {r["nursery"]: r for r in records if r.get("nursery")}
+        failed = sorted(n for n, r in latest.items() if not r.get("ok"))
+        health["nurseries_ok"] = len(latest) - len(failed)
+        health["nurseries_failed"] = failed
+        if failed:
+            health["problems"].append(
+                f"{len(failed)} of {len(latest)} nurseries failed to scrape: "
+                + ", ".join(failed))
+
+    index_path = os.path.join(dashboard_dir, "index.html")
+    try:
+        mtime = datetime.fromtimestamp(os.path.getmtime(index_path), timezone.utc)
+        age_h = (now - mtime).total_seconds() / 3600.0
+        health["published_age_hours"] = round(age_h, 1)
+        health["published_at"] = mtime.strftime("%Y-%m-%d %H:%M UTC")
+        if age_h > STALE_PUBLISH_HOURS:
+            health["problems"].append(
+                f"Site last published {age_h:.0f}h ago ({health['published_at']}). "
+                "Nothing has gone live since.")
+    except OSError as e:
+        health["problems"].append(f"Published site unreadable at {index_path}: {e}")
+
+    health["ok"] = not health["problems"]
+    return health
+
+
+def _pipeline_html(health):
+    """Loud when broken, one quiet line when not. This section exists because
+    a silent digest is what let two dead nights pass unnoticed."""
+    if health["ok"]:
+        age = health["published_age_hours"]
+        age_txt = f", published {age:.0f}h ago" if age is not None else ""
+        return ("<h3>Pipeline</h3>"
+                f"<p style='color:#2e7d32'>treestock healthy: "
+                f"{health['nurseries_ok']} nurseries scraped{age_txt}.</p>")
+
+    items = "".join(f"<li>{p}</li>" for p in health["problems"])
+    return (
+        "<h3 style='color:#c62828'>Pipeline BROKEN</h3>"
+        "<div style='border-left:4px solid #c62828;padding:8px 12px;background:#fff5f5'>"
+        f"<ul style='margin:0'>{items}</ul></div>"
+    )
+
+
+def _pipeline_text(health):
+    lines = ["== Pipeline =="]
+    if health["ok"]:
+        age = health["published_age_hours"]
+        age_txt = f", published {age:.0f}h ago" if age is not None else ""
+        lines.append(f"  treestock healthy: {health['nurseries_ok']} nurseries scraped{age_txt}.")
+    else:
+        lines.append("  BROKEN:")
+        for p in health["problems"]:
+            lines.append(f"    (!) {p}")
+    return lines
+
+
 def run_outcome_loop(dry_run=False):
     """Stamp baselines for yesterday's completions, then settle anything due.
 
@@ -748,14 +865,24 @@ def write_digest_archive(data_dir, today, html):
 
 def build_digest_html(completed, created, in_progress, session_stats,
                       traffic_html, focus_summary, subscriber_stats, today,
-                      resend_html="", waiting=None, outcomes=None):
+                      resend_html="", waiting=None, outcomes=None,
+                      pipeline=None):
     """Build the HTML email body."""
     parts = [f"<h2>Dale Daily Digest &mdash; {today}</h2>"]
+
+    # A broken pipeline outranks everything, including Benedict's queue: if the
+    # site is not publishing, no other number in this email is worth acting on.
+    # When healthy it drops to one line below the queue so it costs no attention.
+    if pipeline is not None and not pipeline["ok"]:
+        parts.append(_pipeline_html(pipeline))
 
     # Benedict's queue and the outcome verdicts lead. Everything below them is
     # a record of what happened; these two are the only parts that ask anything
     # of the reader, and the digest is read on a phone.
     parts.append(_waiting_html(waiting or []))
+
+    if pipeline is not None and pipeline["ok"]:
+        parts.append(_pipeline_html(pipeline))
     if outcomes is not None:
         parts.append(_outcomes_html(*outcomes))
 
@@ -836,9 +963,14 @@ def build_digest_html(completed, created, in_progress, session_stats,
 
 def build_digest_text(completed, created, in_progress, session_stats,
                       traffic_text, focus_summary, subscriber_stats, today,
-                      resend_text="", waiting=None, outcomes=None):
+                      resend_text="", waiting=None, outcomes=None,
+                      pipeline=None):
     """Build the plaintext email body."""
     lines = [f"Dale Daily Digest -- {today}", ""]
+
+    if pipeline is not None and not pipeline["ok"]:
+        lines.extend(_pipeline_text(pipeline))
+        lines.append("")
 
     lines.append("== Waiting on you ==")
     if waiting:
@@ -853,6 +985,10 @@ def build_digest_text(completed, created, in_progress, session_stats,
     else:
         lines.append("  Nothing is blocked on you.")
     lines.append("")
+
+    if pipeline is not None and pipeline["ok"]:
+        lines.extend(_pipeline_text(pipeline))
+        lines.append("")
 
     if outcomes is not None:
         recent, summary = outcomes
@@ -1016,6 +1152,21 @@ def main():
     # 4. Focus tracker
     focus_summary = load_focus_summary(repo_dir)
 
+    # 4b. Publishing pipeline. Wrapped because a broken health reader must not
+    # stop the email: this section exists to make silence impossible, so it
+    # cannot itself become a new way for the digest not to arrive.
+    pipeline = None
+    try:
+        pipeline = get_pipeline_health(
+            config.get("paths", {}).get("data", "/opt/dale/data"))
+        if pipeline["ok"]:
+            log(f"Pipeline healthy: {pipeline['nurseries_ok']} nurseries, "
+                f"published {pipeline['published_age_hours']}h ago")
+        else:
+            log(f"Pipeline BROKEN: {'; '.join(pipeline['problems'])}")
+    except Exception as e:
+        log(f"Warning: pipeline health check failed: {e}")
+
     # 5. Subscriber stats
     subscriber_stats = get_subscriber_stats()
     log(f"Subscribers: {subscriber_stats['total_subscribers']} total, "
@@ -1036,11 +1187,11 @@ def main():
     html = build_digest_html(completed, created, in_progress, session_stats,
                              traffic_html, focus_summary, subscriber_stats, today,
                              resend_html=resend_html, waiting=waiting,
-                             outcomes=outcomes)
+                             outcomes=outcomes, pipeline=pipeline)
     text = build_digest_text(completed, created, in_progress, session_stats,
                              traffic_text, focus_summary, subscriber_stats, today,
                              resend_text=resend_text, waiting=waiting,
-                             outcomes=outcomes)
+                             outcomes=outcomes, pipeline=pipeline)
 
     if dry_run:
         print("=== HTML ===")
@@ -1060,7 +1211,12 @@ def main():
     sys.path.insert(0, SCRIPT_DIR)
     from notify import send_email
 
+    # A broken pipeline goes in the subject. The digest is triaged on a phone
+    # from the notification, and the failure this reports is one where every
+    # other line of the email reads normal.
     subject = f"Dale Daily Digest -- {today}"
+    if pipeline is not None and not pipeline["ok"]:
+        subject = f"(!) treestock not publishing -- {subject}"
     success = send_email(subject, html, text)
     if success:
         log("Digest email sent")

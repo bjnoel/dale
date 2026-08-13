@@ -64,6 +64,7 @@ TREESMITH_PROMO = (
 )
 
 from stocklib.classify import is_real_product
+from stocklib.snapshots import snapshot_path_for_date
 from stocklib.utm import outbound
 
 
@@ -77,13 +78,11 @@ def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
     for nursery_dir in sorted(data_dir.iterdir()):
         if not nursery_dir.is_dir():
             continue
-        dated_file = nursery_dir / f"{target_date}.json"
-        latest_file = nursery_dir / "latest.json"
-        if dated_file.exists():
-            source = dated_file
-        elif target_date == today and latest_file.exists():
-            source = latest_file
-        else:
+        # A missing snapshot means the nursery did not report, not that it sold
+        # out. Skipping it here made every watched variety on the other side of
+        # the comparison look like a restock (DEC-293).
+        source = snapshot_path_for_date(nursery_dir, target_date, today)
+        if source is None:
             continue
         try:
             with open(source) as f:
