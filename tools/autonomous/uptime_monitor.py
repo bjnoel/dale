@@ -98,6 +98,25 @@ APT_STALE_CRIT_DAYS = 10
 GIT_REPO_PATH = "/opt/dale/repo"
 GIT_AHEAD_ALERT_HOURS = 1
 
+# Certificate expiry (DEC-289). stock.scion.exchange's origin certificate expired
+# and Caddy retried for eight days across 53 attempts, fell back to the Let's
+# Encrypt staging CA, and would have given up at thirty. Every check in this file
+# stayed green the whole time, because the hostname kept returning 200: Cloudflare
+# was serving cache in front of a dead origin. It was found by accident during an
+# audit for an unrelated ticket.
+#
+# Caddy begins renewing around thirty days out, so twenty-one days remaining means
+# renewal has already been failing for about a week. Seven is the point where a
+# human has to act before it breaks in public.
+#
+# Hostnames come from Caddy's own admin API rather than a list here. A hardcoded
+# list is exactly the drift DAL-281 existed to remove, and a certificate monitor
+# that silently stops covering a new hostname is worse than none.
+CADDY_ADMIN_SERVERS_URL = "http://127.0.0.1:2019/config/apps/http/servers"
+CERT_WARN_DAYS = 21
+CERT_CRIT_DAYS = 7
+CERT_RECOVER_DAYS = 25   # hysteresis: only clear once comfortably renewed
+
 
 def load_state():
     if not os.path.exists(STATE_PATH):
@@ -614,6 +633,229 @@ def check_apt_freshness(state, now_str):
     return True
 
 
+def caddy_hostnames(config):
+    """Pure: every host matcher in Caddy's server config, deduped and sorted.
+
+    Walks the whole structure rather than assuming a shape, because the JSON Caddy
+    generates from a Caddyfile nests differently depending on how many matchers and
+    subroutes a site block has.
+    """
+    found = set()
+
+    def walk(node):
+        if isinstance(node, dict):
+            hosts = node.get("host")
+            if isinstance(hosts, list):
+                found.update(h for h in hosts if isinstance(h, str))
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for value in node:
+                walk(value)
+
+    walk(config)
+    return sorted(found)
+
+
+def parse_not_after(openssl_output):
+    """Pure: 'notAfter=Nov 11 03:22:04 2026 GMT' -> aware datetime, or None."""
+    for line in (openssl_output or "").splitlines():
+        line = line.strip()
+        if not line.startswith("notAfter="):
+            continue
+        raw = line.split("=", 1)[1].strip()
+        try:
+            return datetime.strptime(raw, "%b %d %H:%M:%S %Y %Z").replace(tzinfo=timezone.utc)
+        except ValueError:
+            return None
+    return None
+
+
+def cert_days_remaining(not_after, now):
+    """Pure: days until expiry. Negative once expired. None if unknown."""
+    if not_after is None:
+        return None
+    return (not_after - now).total_seconds() / 86400.0
+
+
+def cert_level(days):
+    """Pure: map days-remaining to an alert level.
+
+    Unreadable (None) is critical, not unknown. The failure this monitor exists to
+    catch presented exactly that way: the origin could not complete a handshake at
+    all, so there was no certificate to read. Treating that as "no data" would skip
+    the one case worth alerting on.
+    """
+    if days is None or days <= CERT_CRIT_DAYS:
+        return "critical"
+    if days <= CERT_WARN_DAYS:
+        return "warning"
+    return "ok"
+
+
+def cert_alert_decision(prev_level, days):
+    """Pure: same contract as disk_alert_decision, thresholds running the other way.
+
+    Hysteresis holds an existing alert until the certificate is comfortably renewed
+    (CERT_RECOVER_DAYS), so a cert sitting near the warn line does not flap an
+    all-clear and a fresh warning at each run.
+    """
+    level = cert_level(days)
+    if level == "ok" and prev_level != "ok" and days is not None and days < CERT_RECOVER_DAYS:
+        level = prev_level  # renewed, but not far enough clear to call it recovered
+    if _SEVERITY[level] > _SEVERITY.get(prev_level, 0):
+        return level, "alert"
+    if level == "ok" and prev_level != "ok":
+        return level, "recovered"
+    return level, "none"
+
+
+def format_cert_email(level, offenders):
+    """offenders: list of (hostname, days) worst first. days None means unreadable."""
+    icon = "🔴" if level == "critical" else "⚠️"
+
+    def describe(host, days):
+        if days is None:
+            return f"{host}: certificate could not be read at the origin"
+        if days < 0:
+            return f"{host}: EXPIRED {abs(days):.0f} days ago"
+        return f"{host}: {days:.0f} days remaining"
+
+    rows = "".join(f"<li>{describe(h, d)}</li>" for h, d in offenders)
+    html = f"""
+<h2>{icon} Certificate {level}: {len(offenders)} hostname(s) on the Dale server</h2>
+<ul>{rows}</ul>
+<p>This is measured at the origin (127.0.0.1 with SNI), not through Cloudflare. A
+proxied hostname keeps serving Cloudflare's own valid certificate while the origin's
+is dead, which is how stock.scion.exchange failed for eight days with every check
+green.</p>
+<p>Most likely cause: the hostname is Cloudflare-proxied, so neither ACME challenge
+can complete. http-01 gets answered by the edge and tls-alpn-01 cannot negotiate.
+Fix is to set the DNS record to DNS-only (grey cloud), then
+<code>sudo systemctl restart caddy</code>. A reload is not enough; the existing
+multi-hour backoff keeps running.</p>
+<p>Runbook: memory/project_caddy_acme_needs_grey_cloud.md. Confirm recovery by
+checking the issuer is acme-v02 and not acme-staging-v02.</p>
+""".strip()
+    text = (f"Certificate {level} on the Dale server\n\n"
+            + "\n".join(describe(h, d) for h, d in offenders)
+            + "\n\nMeasured at the origin, not through Cloudflare.\n"
+              "Likely cause: hostname is Cloudflare-proxied so ACME cannot complete.\n"
+              "Fix: grey-cloud the DNS record, then sudo systemctl restart caddy.\n"
+              "Runbook: memory/project_caddy_acme_needs_grey_cloud.md")
+    return html, text
+
+
+def format_cert_recovered_email(worst_host, days):
+    html = (f"<h2>✅ Certificates recovered</h2>"
+            f"<p>All Caddy hostnames are comfortably valid again; the nearest expiry is "
+            f"{worst_host} at {days:.0f} days.</p>")
+    text = (f"Certificates recovered. Nearest expiry is {worst_host} at {days:.0f} days.")
+    return html, text
+
+
+def fetch_caddy_hostnames(timeout=10):
+    """Ask Caddy what it is actually serving. Returns [] if the admin API is unreachable."""
+    try:
+        with urllib.request.urlopen(CADDY_ADMIN_SERVERS_URL, timeout=timeout) as response:
+            return caddy_hostnames(json.load(response))
+    except Exception:
+        return []
+
+
+def read_cert_not_after(hostname, timeout=15):
+    """The origin's certificate expiry for `hostname`, or None if it cannot be read.
+
+    Connects to 127.0.0.1 with SNI rather than to the public name on purpose: for a
+    Cloudflare-proxied hostname a public connection returns Cloudflare's certificate,
+    which stayed valid throughout the outage this check exists to detect.
+
+    Verification is not performed, because an expired certificate is the thing being
+    reported and must not become an exception that prevents reading it.
+    """
+    try:
+        handshake = subprocess.run(
+            ["openssl", "s_client", "-servername", hostname, "-connect", "127.0.0.1:443"],
+            input="", capture_output=True, text=True, timeout=timeout,
+        )
+    except Exception:
+        return None
+
+    out = handshake.stdout or ""
+    start = out.find("-----BEGIN CERTIFICATE-----")
+    end = out.find("-----END CERTIFICATE-----")
+    if start == -1 or end == -1:
+        return None
+    pem = out[start:end + len("-----END CERTIFICATE-----")] + "\n"
+
+    try:
+        parsed = subprocess.run(
+            ["openssl", "x509", "-noout", "-enddate"],
+            input=pem, capture_output=True, text=True, timeout=timeout,
+        )
+    except Exception:
+        return None
+
+    return parse_not_after(parsed.stdout)
+
+
+def check_certs(state, now_str, now=None):
+    """Alert when any Caddy-served hostname's origin certificate is near expiry.
+
+    One email for all offenders rather than one per hostname: these fail together,
+    since the usual cause is a zone-level DNS posture rather than a single cert.
+    """
+    now = now or datetime.now(timezone.utc)
+    hostnames = fetch_caddy_hostnames()
+    if not hostnames:
+        print(f"[{now_str}] CERTS: could not read hostnames from Caddy admin API, skipped")
+        return False
+
+    readings = []
+    for hostname in hostnames:
+        days = cert_days_remaining(read_cert_not_after(hostname), now)
+        readings.append((hostname, days))
+
+    # Worst first: unreadable ranks above expired ranks above merely near.
+    readings.sort(key=lambda r: (r[1] is not None, r[1]))
+    worst_host, worst_days = readings[0]
+
+    prev_level = state.get("certs", {}).get("level", "ok")
+    new_level, action = cert_alert_decision(prev_level, worst_days)
+    committed_level = new_level
+
+    offenders = [(h, d) for h, d in readings if cert_level(d) != "ok"]
+
+    if action == "alert":
+        html, text = format_cert_email(new_level, offenders)
+        icon = "🔴" if new_level == "critical" else "⚠️"
+        try:
+            send_email(f"{icon} Certificate {new_level}: {worst_host} on Dale server", html, text)
+            print(f"[{now_str}] CERTS {new_level.upper()}: {len(offenders)} offender(s) — alert sent")
+        except Exception as e:
+            committed_level = prev_level  # keep prev level so we retry next run
+            print(f"[{now_str}] CERTS {new_level.upper()}: failed to send alert: {e}")
+    elif action == "recovered":
+        html, text = format_cert_recovered_email(worst_host, worst_days)
+        try:
+            send_email("✅ Certificates recovered on Dale server", html, text)
+            print(f"[{now_str}] CERTS RECOVERED: nearest {worst_host} {worst_days:.0f}d — alert sent")
+        except Exception as e:
+            committed_level = prev_level  # retry the all-clear next run
+            print(f"[{now_str}] CERTS RECOVERED: failed to send alert: {e}")
+    else:
+        nearest = "unreadable" if worst_days is None else f"{worst_days:.0f}d"
+        print(f"[{now_str}] CERTS {new_level.upper()}: {len(hostnames)} checked, nearest {worst_host} {nearest}")
+
+    state["certs"] = {
+        "level": committed_level,
+        "nearest_host": worst_host,
+        "nearest_days": None if worst_days is None else round(worst_days, 1),
+        "last_checked": now_str,
+    }
+    return True
+
+
 def main():
     state = load_state()
     now = datetime.now(timezone.utc)
@@ -691,6 +933,12 @@ def main():
     # a frozen index the box reports zero pending security updates because it
     # has not looked.
     if check_apt_freshness(state, now_str):
+        changed = True
+
+    # Certificate expiry — the fifth invisible failure, and the one that hid behind
+    # a 200. The origin's cert was dead for eight days while the URL check above
+    # reported the site up, because Cloudflare was serving cache in front of it.
+    if check_certs(state, now_str, now):
         changed = True
 
     if changed:

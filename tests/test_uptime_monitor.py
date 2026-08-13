@@ -328,5 +328,159 @@ class AptFreshnessTests(unittest.TestCase):
         self.mod.send_email.assert_not_called()
 
 
+class CertExpiryTests(unittest.TestCase):
+    """Certificate expiry monitoring (DEC-291).
+
+    The bug being regressed: stock.scion.exchange's ORIGIN certificate expired and
+    Caddy retried for eight days, while the URL check in this same file reported the
+    site up the whole time because Cloudflare served a cached 200 in front of it.
+
+    Two properties matter more than the thresholds. An unreadable certificate must be
+    critical rather than skipped, because a dead origin presents as no certificate at
+    all. And the reading must come from the origin, because the edge's certificate was
+    valid throughout.
+    """
+
+    def setUp(self):
+        self.mod = load_uptime_monitor()
+        self.mod.send_email = mock.MagicMock()
+        self.now = datetime(2026, 8, 13, tzinfo=timezone.utc)
+
+    # --- levels -----------------------------------------------------------
+    def test_healthy_cert_is_ok(self):
+        self.assertEqual(self.mod.cert_level(90), "ok")
+        self.assertEqual(self.mod.cert_level(22), "ok")
+
+    def test_warn_band(self):
+        self.assertEqual(self.mod.cert_level(21), "warning")
+        self.assertEqual(self.mod.cert_level(8), "warning")
+
+    def test_critical_band(self):
+        self.assertEqual(self.mod.cert_level(7), "critical")
+        self.assertEqual(self.mod.cert_level(0), "critical")
+
+    def test_already_expired_is_critical(self):
+        self.assertEqual(self.mod.cert_level(-8), "critical")
+
+    def test_unreadable_cert_is_critical_not_unknown(self):
+        # The scion failure exactly: the origin could not complete a handshake, so
+        # there was no cert to read. Treating None as "no data" skips the one case
+        # this monitor exists for.
+        self.assertEqual(self.mod.cert_level(None), "critical")
+
+    # --- decisions --------------------------------------------------------
+    def test_escalates_and_emails(self):
+        self.assertEqual(self.mod.cert_alert_decision("ok", 14), ("warning", "alert"))
+        self.assertEqual(self.mod.cert_alert_decision("warning", 3), ("critical", "alert"))
+
+    def test_steady_state_is_silent(self):
+        self.assertEqual(self.mod.cert_alert_decision("warning", 14), ("warning", "none"))
+        self.assertEqual(self.mod.cert_alert_decision("ok", 60), ("ok", "none"))
+
+    def test_hysteresis_holds_until_comfortably_renewed(self):
+        # 23 days is above the warn line but below the recover line: still alerting.
+        self.assertEqual(self.mod.cert_alert_decision("warning", 23), ("warning", "none"))
+
+    def test_recovers_after_a_real_renewal(self):
+        self.assertEqual(self.mod.cert_alert_decision("critical", 89), ("ok", "recovered"))
+
+    # --- parsing ----------------------------------------------------------
+    def test_parse_not_after(self):
+        parsed = self.mod.parse_not_after("notAfter=Nov 11 03:22:04 2026 GMT\n")
+        self.assertEqual(parsed, datetime(2026, 11, 11, 3, 22, 4, tzinfo=timezone.utc))
+
+    def test_parse_not_after_rejects_garbage(self):
+        self.assertIsNone(self.mod.parse_not_after("notAfter=not a date"))
+        self.assertIsNone(self.mod.parse_not_after("unrelated output"))
+        self.assertIsNone(self.mod.parse_not_after(""))
+
+    def test_days_remaining(self):
+        not_after = datetime(2026, 8, 23, tzinfo=timezone.utc)
+        self.assertAlmostEqual(self.mod.cert_days_remaining(not_after, self.now), 10.0, places=3)
+        self.assertIsNone(self.mod.cert_days_remaining(None, self.now))
+
+    # --- hostname discovery ----------------------------------------------
+    def test_hostnames_are_discovered_deduped_and_sorted(self):
+        config = {
+            "srv0": {"routes": [
+                {"match": [{"host": ["treestock.com.au", "www.treestock.com.au"]}]},
+                {"handle": [{"routes": [{"match": [{"host": ["beestock.com.au"]}]}]}]},
+                {"match": [{"host": ["treestock.com.au"]}]},
+            ]}
+        }
+        self.assertEqual(
+            self.mod.caddy_hostnames(config),
+            ["beestock.com.au", "treestock.com.au", "www.treestock.com.au"],
+        )
+
+    def test_hostname_discovery_tolerates_odd_shapes(self):
+        self.assertEqual(self.mod.caddy_hostnames({}), [])
+        self.assertEqual(self.mod.caddy_hostnames({"host": "not-a-list"}), [])
+
+    # --- end to end -------------------------------------------------------
+    def _run_check(self, readings, state=None):
+        state = {} if state is None else state
+        with mock.patch.object(self.mod, "fetch_caddy_hostnames", return_value=list(readings)), \
+             mock.patch.object(self.mod, "read_cert_not_after",
+                               side_effect=lambda h, **kw: readings[h]):
+            self.mod.check_certs(state, "2026-08-13T04:00:00Z", self.now)
+        return state
+
+    def test_all_healthy_is_silent(self):
+        state = self._run_check({
+            "treestock.com.au": datetime(2026, 11, 11, tzinfo=timezone.utc),
+            "beestock.com.au": datetime(2026, 11, 11, tzinfo=timezone.utc),
+        })
+        self.assertEqual(state["certs"]["level"], "ok")
+        self.mod.send_email.assert_not_called()
+
+    def test_unreadable_origin_cert_alerts(self):
+        state = self._run_check({
+            "treestock.com.au": datetime(2026, 11, 11, tzinfo=timezone.utc),
+            "stock.scion.exchange": None,
+        })
+        self.assertEqual(state["certs"]["level"], "critical")
+        self.assertEqual(state["certs"]["nearest_host"], "stock.scion.exchange")
+        self.mod.send_email.assert_called_once()
+
+    def test_one_email_covers_every_offender(self):
+        self._run_check({
+            "leafscan.com.au": datetime(2026, 8, 20, tzinfo=timezone.utc),   # 7d
+            "stock.scion.exchange": datetime(2026, 8, 25, tzinfo=timezone.utc),  # 12d
+            "treestock.com.au": datetime(2026, 11, 11, tzinfo=timezone.utc),  # fine
+        })
+        self.mod.send_email.assert_called_once()
+        body = self.mod.send_email.call_args[0][2]
+        self.assertIn("leafscan.com.au", body)
+        self.assertIn("stock.scion.exchange", body)
+        self.assertNotIn("treestock.com.au", body)
+
+    def test_expired_cert_is_reported_as_expired(self):
+        self._run_check({"stock.scion.exchange": datetime(2026, 8, 5, tzinfo=timezone.utc)})
+        body = self.mod.send_email.call_args[0][2]
+        self.assertIn("EXPIRED", body)
+
+    def test_does_not_re_alert_while_still_bad(self):
+        state = self._run_check({"a.example": datetime(2026, 8, 20, tzinfo=timezone.utc)})
+        self.assertEqual(self.mod.send_email.call_count, 1)
+        self._run_check({"a.example": datetime(2026, 8, 20, tzinfo=timezone.utc)}, state)
+        self.assertEqual(self.mod.send_email.call_count, 1, "must not email every 5 minutes")
+
+    def test_unreachable_admin_api_skips_rather_than_alerting(self):
+        # No hostnames means we learned nothing, not that everything is broken.
+        state = {}
+        with mock.patch.object(self.mod, "fetch_caddy_hostnames", return_value=[]):
+            changed = self.mod.check_certs(state, "2026-08-13T04:00:00Z", self.now)
+        self.assertFalse(changed)
+        self.assertNotIn("certs", state)
+        self.mod.send_email.assert_not_called()
+
+    def test_failed_send_is_retried_next_run(self):
+        self.mod.send_email.side_effect = RuntimeError("resend down")
+        state = self._run_check({"a.example": datetime(2026, 8, 20, tzinfo=timezone.utc)})
+        # Level must NOT be committed, or the retry never happens.
+        self.assertEqual(state["certs"]["level"], "ok")
+
+
 if __name__ == "__main__":
     unittest.main()
