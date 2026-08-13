@@ -480,7 +480,7 @@ def do_verify(now_perth, dry_run=False, force=False):
     # Only reclaim the superseded kernels once everything else is confirmed
     # healthy. autoremove on a box that did not come back properly is the last
     # thing anyone wants.
-    autoremove = "skipped (checks did not all pass)"
+    autoremove = "skipped (dry run)" if dry_run else "skipped (checks did not all pass)"
     if all_ok and not dry_run:
         rc, out = run(["sudo", "-n", "env", "DEBIAN_FRONTEND=noninteractive",
                        "apt-get"] + APT_OPTS + ["-y", "autoremove", "--purge"], timeout=1800)

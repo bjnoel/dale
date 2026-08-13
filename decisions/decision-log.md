@@ -11105,3 +11105,79 @@ of failure behind a cached 200. Three consecutive entries where the system was w
 confident, and in all three the monitoring reported health because it was measuring the wrong
 surface. The pattern is not carelessness, it is that every one of these checks was written to
 answer "is it up" when the question worth asking is "is it doing the thing".
+
+## DEC-290 — 2026-08-13 — Nine weeks of patches were never running, and the index that hid it had been frozen for seven
+
+**Status:** Shipped and verified. Closes DAL-282.
+
+Benedict asked whether the server had ever been updated. The answer turned out to have
+two layers, and the second one invalidated the first.
+
+**Layer one, which is what the ticket described.** `unattended-upgrades` was installed,
+enabled and genuinely working. Zero packages pending from the `-security` pocket. Every
+signal green. Meanwhile: uptime 161 days, running `6.8.0-90-generic` with `6.8.0-124`
+installed and unbooted, seven kernel images and `libc6` patched on disk and inert in
+memory, `/var/run/reboot-required` set since 11 June. `libc6` is the quiet one, because
+every long-running process still had the old copy mapped. The mechanism worked and the
+effect never landed.
+
+**Layer two, found while fixing layer one, and worse.** An `apt-get -qq -y update`
+started by `apt.systemd.daily` on **24 June was still running 48 days later**, four
+`/usr/lib/apt/methods/https` children stuck on sockets with no timeout, holding
+`/var/lib/apt/lists/lock` the entire time. `unattended-upgrades-dpkg.log` has been zero
+bytes since 1 July. So the reassuring number was itself an artefact: "0 pending from
+`-security`" was read off an index frozen in June. **The box reported zero pending
+security updates because it had not looked.** On a fresh index: 142 upgradable, 83 of
+them security, and the available kernel had moved on to 6.8.0-137.
+
+No dpkg transaction was in flight (`/var/lib/dpkg/updates/` empty, frontend lock free),
+so the hung tree was killed and the index refreshed. That is a read-only operation and
+lost nothing.
+
+**The fix is a cadence, not a reboot.** A one-off reboot restores exactly the state that
+then decayed for nine weeks. `monthly_maintenance.py` is built so the default outcome is
+that it happens: announced two days ahead, applied and rebooted on the first Monday of
+the month at 02:30 AWST, vetoable but only for one month. Benedict's call on all four
+choices (trigger, window, apt scope, Docker scope). Automatic *unattended* reboots were
+rejected: the box also hosts someone else's holiday-rental calendar, and rebooting it
+without a human knowing is worse than a stale kernel. Announcing is what makes this not
+that.
+
+**Why a reminder was rejected.** The obvious alternative was a monthly email saying
+"reboot due". That is the same shape as the failure: the last nine weeks were also
+waiting on someone to act. The veto is one-shot and deletes itself when it fires, including
+when the notification email fails to send, because a sticky veto left in place recreates
+the original gap exactly.
+
+**Two defects caught before the first run, one of them mine.** `dpkg-query` over
+`linux-image-*-generic` also returns `un` packages that were never installed and `rc` ones
+that were removed; eight `linux-image-unsigned-*` entries made
+`unsigned-6.8.0-124-generic` look like the newest kernel. `--verify` would have compared
+`uname -r` against a package that does not exist, reported a false failure after a
+perfectly good reboot, and skipped the kernel cleanup forever. Now filtered on install
+status and ordered numerically in a pure function, because shelling out to
+`dpkg --compare-versions` made it testable only on the one machine where a wrong answer
+is expensive.
+
+**Measured outcome.** First cycle ran attended at 06:07 UTC (14:07 AWST) with Benedict
+present. Booted `6.8.0-137-generic`, `reboot-required` cleared, 0 packages upgradable,
+all four units active, all three containers up, treestock 200, ClickHouse intact at
+733,662 events with its log-table suppression surviving the restart. The `@reboot` hook
+fired on schedule at 06:11:50 and emailed the PASS unprompted, which was the point of
+building it. Downtime: roughly 70 seconds.
+
+**The monitoring lesson, continuing the DEC-283/285/287/289 run.** This is the fifth
+consecutive entry where the system was wrong and confident. The new part is that here the
+monitoring was not merely measuring the wrong surface, it was reading a *stale* one and
+reporting the staleness as health. So `uptime_monitor.py` gains two checks, and their
+order matters: reboot pending at 40 days, and apt index stale at 3 days. A missing
+`update-success-stamp` counts as **critical, not ok**, because "no evidence apt ever
+succeeded" is the worse reading and assuming the friendlier one is exactly what let this
+sit for seven weeks. If both fire, believe the apt one: a frozen index makes the reboot
+check look healthy too, since nothing new ever gets installed to require a reboot.
+
+**Deferred, deliberately.** Plausible CE v3.2.0 and ClickHouse 24.12 are 6 and 17 months
+old. That upgrade is not a `docker compose pull`: CE pins a supported ClickHouse major
+and they move as a matched set against the release notes. Not filed in Linear because the
+backlog stands at 23 against a cap of 15; recorded in `docs/server-maintenance.md`
+instead rather than reworded into a slot it does not deserve.
