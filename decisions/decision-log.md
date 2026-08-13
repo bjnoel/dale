@@ -10896,3 +10896,79 @@ key whose wrong value failed silently because the system had a plausible default
 the same shape in the error path: a failure was caught, logged, and handed to a recovery
 mechanism that could not perform the recovery. Both failures were invisible precisely
 because something was written to a log and nothing was written to a person.
+
+---
+
+## DEC-286 — 2026-08-13 — The config we were told to commit was the one file we could not
+
+**Status:** Shipped. DAL-281.
+
+The box runs 21 cron jobs, two systemd units, a Plausible stack and Caddy, and almost none
+of it was recorded anywhere. The ticket's plan was to commit the crontab, the Plausible
+compose and the units, plus a weekly job so it could not drift again. Auditing it first
+changed the shape of the work twice.
+
+**The compose file could not be committed as written, and this repo is public.**
+`/opt/dale/plausible/docker-compose.yml` line 13 carried a literal `POSTGRES_PASSWORD`.
+`SECRET_KEY_BASE` on line 65 was already a correct `${...}` reference, which is what made
+the inconsistency easy to miss: the file looked like it handled secrets properly. Executing
+the ticket verbatim would have published the Plausible database password. Verified before
+touching anything that nothing had leaked yet: `git log --all -S POSTGRES_PASSWORD` is
+empty and no compose or `.env` file has ever been tracked.
+
+Everything else was clean. The crontab, both units and all three ClickHouse XMLs contain no
+secrets, and the live Caddyfile's only secret-shaped line is a comment explaining that the
+gandon token travels in the request path and must be kept out of the access log. So exactly
+one file blocked the whole plan.
+
+**Fixed at the source rather than redacted on the way out.** `POSTGRES_PASSWORD` moved into
+the `.env` the compose already reads for `BASE_URL` and `SECRET_KEY_BASE`, and is now
+`${POSTGRES_PASSWORD}`. Proof it changed nothing: `docker compose config` hashes to
+`4be4382b...` before and after, byte identical, and health stayed 200 with no restart. A
+redacted copy would have been the wrong answer twice over, since it cannot be diffed and it
+drifts from the file it claims to record.
+
+**The second reframing: snapshots already cover the thing the ticket said it was for.**
+Hetzner backups are live and paid for, A$1.20/month, daily, 7-day retention. "The box dies"
+was never the exposure. What was missing is a diff: when the crontab changed, what changed,
+and whether the box is still what we think it is. Restoring a whole snapshot to read one
+file is absurd. So the deliverable is a git history and a weekly email, not an archive, and
+the job alerts on drift rather than only committing it. DEC-285 yesterday was a failure
+written to a log and not to a person; a silent commit would have been the same mistake in a
+new costume.
+
+**The gate is the point, and it fails closed.** `config_scan.py` reads every captured byte
+before anything is written into the working tree, and one literal credential aborts the run
+with nothing committed. It distinguishes a sensitive name with a literal value from a
+reference, a path or prose, because `EnvironmentFile=/opt/dale/secrets/lodgify.env` and that
+Caddyfile comment both appear in files we legitimately track. A gate that cries wolf on
+those gets switched off within a month, which is worse than no gate. 21 tests pin both
+directions, including that neither the alert nor the log ever repeats the value it caught.
+
+**The Caddyfile paradox is resolved rather than documented.** The tracked copy was 38 lines
+stale and restoring it would have deleted the `hook.gandongully.com.au` block, so the one
+file we tracked was a backup we were forbidden to restore. Drift turned out to be
+bidirectional: the repo also held a five-line `/admin/digest` comment the live file lacked.
+Backported that comment to the live file first, comment-only, validated and reloaded, so the
+capture loses nothing. `docs/treestock-admin-setup.md` told a human to
+`cp infrastructure/Caddyfile /etc/caddy/Caddyfile`; that line is gone.
+
+**Two scripts existed only on the server.** `weekly_backup.sh`, which has been running from
+cron every Sunday since March, and `loop-runner.sh`, which nothing invokes. `deploy.sh`
+rsyncs `autonomous/` without `--delete`, so a server-only file survives there indefinitely
+and invisibly. Both recovered. `scrapers/` uses `--delete` and was clean, which is the
+argument for the flag.
+
+**Also fixed while in there:** seven files in `/opt/dale/secrets/` were 0664 or 0644 rather
+than 0600, `/opt/dale/plausible/.env` was 0644 root:root with a world-readable byte-identical
+duplicate alongside it, and nothing rotated any project log. Stated honestly: the box has
+exactly one non-system account, so the loose modes were defence in depth and not a live
+leak. The duplicate is deleted, the modes are 0600, and `/etc/logrotate.d/dale` now covers
+both log directories with copytruncate, because the writers are cron redirections that hold
+the file open.
+
+**Running lesson, twenty-ninth session.** The last three entries were all a system that had
+a plausible default, a recovery path that could not recover, and now an instruction that was
+correct about the goal and wrong about the first step. The ticket said "commit the compose".
+Reading the file before doing what the ticket said is the entire difference between this
+being infrastructure work and being an incident.

@@ -46,7 +46,15 @@ tools/deploy.sh                       # rsyncs tools/scrapers/ to /opt/dale/scra
 
 # on the server: update Caddy and restart the subscribe server
 ssh dale-server
-sudo cp /opt/dale/repo/infrastructure/Caddyfile /etc/caddy/Caddyfile
+
+# NEVER cp the repo Caddyfile over the live one. infrastructure/Caddyfile is a
+# recording of the live file, not a deploy source, and it carries blocks owned
+# by another project (hook.gandongully.com.au). A wholesale copy has already
+# come within one command of deleting a working webhook receiver. Diff, then
+# patch the hunks you want in place. See infrastructure/README.md.
+sudo diff /opt/dale/repo/infrastructure/Caddyfile /etc/caddy/Caddyfile
+sudo nano /etc/caddy/Caddyfile
+sudo caddy validate --adapter caddyfile --config /etc/caddy/Caddyfile
 sudo systemctl reload caddy
 systemctl list-units | grep subscribe   # find the unit name (sibling: bee-subscribe-server)
 sudo systemctl restart <subscribe-server-unit>

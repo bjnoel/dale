@@ -59,6 +59,12 @@ Token usage is tracked and budgeted to never compete with Benedict's interactive
 
 ## Cron Schedule
 
+> **Historical.** This is the March 2026 plan and it no longer describes the
+> box: scrapers moved to 00:00 UTC and the single nightly session became four
+> (DEC-050) and then hourly. The authoritative schedule is
+> `infrastructure/crontab.txt`, captured from the live crontab every Monday by
+> `tools/autonomous/snapshot-server-config.sh` (DAL-281). Read that, not this.
+
 ```
 # Existing: scrapers at 6am UTC (2pm AWST)
 0 6 * * * /opt/dale/scrapers/run-all-scrapers.sh >> /opt/dale/data/scraper.log 2>&1
