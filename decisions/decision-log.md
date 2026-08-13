@@ -10645,3 +10645,24 @@ Benedict on DAL-279. It needs no build either. `store-listing-google-play.txt` i
 remains stale and untouched; it is not what the store serves.
 
 **Cost:** $0. Both readers are credential-free public endpoints.
+
+**Second correction, appended 2026-08-13,** from Benedict: he bought the Tropical sapodilla off
+**Daleys' own notify list**, and it never appeared as publicly in stock at all. The reserve list
+was fulfilled entirely from people already waiting. This materially changes the ticket's
+rationale. **Crawling `/buy/` would not have caught it.** A variety that goes from OutOfStock
+straight to fulfilled-off-the-reserve-list never renders `InStock`, so daily crawling sees
+`OutOfStock` to `OutOfStock` with no transition and fires no alert, precisely for the scarcest
+varieties. The restock-alert half of the case does not hold for Daleys. What survives is
+**existence**: 595 varieties become buildable, indexable pages, which is what
+`treestock_organic_visitors` was named for, so the metric is unaffected.
+
+**It also clarifies the division of labour.** Daleys' reserve list is upstream of their public
+page and will always beat us on Daleys stock, but it only reaches people who already know
+Daleys carries Krasuey. What it cannot do is tell someone Ross Creek also has grafted Krasuey,
+Ponderosa and Sawo Manilla. **Cross-nursery is the part no single nursery's list can run**, and
+it is untouched by any of this. The right ask to Correy is therefore to list his out-of-stock
+named varieties pointing at *his* notify list, feeding it rather than competing with it.
+
+Related: this reframes the 0.75% conversion in DAL-258. If the scarcest stock is fulfilled
+privately before it is ever listed, treestock's outbound clicks are landing on what is left
+over, and 0.75% is a rate measured against the wrong denominator.
