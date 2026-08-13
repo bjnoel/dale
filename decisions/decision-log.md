@@ -11062,3 +11062,46 @@ the Cloudflare token lacked permission, when the token was fine and the refusal 
 tool that cannot distinguish "the API said no" from "I was not allowed to ask" will send you
 to reconfigure the wrong system. The tell was there in the error text, which named a
 classifier and not an HTTP status.
+
+---
+
+## DEC-289 — 2026-08-13 — leafscan grey-clouded too, and the gap it leaves is the monitoring
+
+**Status:** Shipped. Closes the DEC-287 family.
+
+Benedict unproxied `leafscan.com.au` and `www.leafscan.com.au` himself. Both now resolve to
+`178.104.20.9`, return `301` to treestock.com.au with `server: Caddy` and no `cf-ray`, so
+they are served by the origin rather than the edge.
+
+**Tested the thing that was actually broken, not the thing that was easy to test.**
+`http://leafscan.com.au/.well-known/acme-challenge/<probe>` now answers from Caddy. The
+original failure was Let's Encrypt fetching that exact path and receiving Cloudflare's
+`<!DOCTYPE html>`, so this is the specific defect gone rather than a proxy for it.
+
+**Not force-renewed, and that is a deliberate limit on the claim.** leafscan's certificate
+runs to 6 Oct, so its first real renewal under the new posture is around 6 Sept. Deleting a
+valid certificate to prove the point today would have risked a working host to remove an
+inference we can already make with confidence: same box, same config block, and
+`stock.scion.exchange` renewed successfully hours earlier from an identical starting
+position. So the mechanism is proven and this particular renewal is predicted. Those are
+different words on purpose.
+
+**The gap this leaves, stated plainly.** `uptime_monitor.py` checks treestock and
+walkthrough by HTTP only. Nothing anywhere watches certificate expiry. That is why
+`stock.scion.exchange` failed for eight days, on 53 retries, while every dashboard stayed
+green, and it was found by accident during an audit for an unrelated ticket. Grey-clouding
+removes the cause for these three hostnames; it does nothing about the class. The next
+certificate to fail quietly will be just as invisible as this one was.
+
+Not fixed here, because it is a monitoring feature and not a config change, and bundling it
+into a DNS follow-up is how scope stops meaning anything. It is the obvious next ticket:
+`check_cert_expiry()` alongside the existing `check_disk()` in the 5-minute uptime cron,
+warning below 21 days, which is the window in which Caddy has already given up but a human
+can still act.
+
+**Running lesson.** DEC-283 was a config key that failed silently behind a plausible default.
+DEC-285 was an error handed to a recovery path that could not recover. DEC-287 was eight days
+of failure behind a cached 200. Three consecutive entries where the system was wrong and
+confident, and in all three the monitoring reported health because it was measuring the wrong
+surface. The pattern is not carelessness, it is that every one of these checks was written to
+answer "is it up" when the question worth asking is "is it doing the thing".
