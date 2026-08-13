@@ -10593,3 +10593,55 @@ absent variant list as lost data twice in one session, first on Fruit Salad Tree
 here. Absence of variant structure is a fact about the store, not evidence of a scraper gap.
 **Daleys is unaffected and still stands:** there the missing products are absent from the
 snapshot entirely, which is a different thing from being present without variants.
+
+## DEC-282 — 2026-08-13 — The rename goes to both stores, and Play is the only one that can prove anything
+
+**Decision:** Benedict approved the DAL-279 rename to `TreeSmith: Fruit Tree Tracker` on both
+stores. Captured a pre-rename rank baseline on both before anything changes, and extended
+DAL-257 to score both.
+
+**Why both stores, and why Play matters more than it looks.** Play's title cap is also 30, so
+the same 29-char string fits. But the two stores are not symmetric in a way that decides the
+experiment: a Play listing change needs no build and lands alone, while Apple only permits an
+app-name change as part of a version submission, and the pending 1.0.10 submission also carries
+the en-US localisation deletion. That deletion changes the US app name from bare `TreeSmith` to
+a keyword-carrying one across 61% of installs. Two ASO events, one release, unattributable.
+**The Apple measurement is confounded by construction and the Play one is not.** DAL-177's
+closing comment already warned not to let DAL-257 fire on the deletion alone; the answer is to
+run the real test where the confound does not exist.
+
+**What was built.** `tools/autonomous/playstore_rank.py`, the Play twin of `appstore_rank.py`,
+importing its 36-term set rather than copying it (pinned by a source scan in
+`tests/test_playstore_rank.py`, the same anti-fork shape as `test_no_forking.py` — an identity
+check fails on test ordering, because both readers load via importlib under fixed names and
+whichever runs second replaces the other in `sys.modules`).
+
+One failure mode is genuinely new and does not exist on Apple. Apple returns up to 200 results
+and usually fewer, so "absent from n=191" proves absence (DEC-255). Play serves ~30 then
+lazy-loads, so **absent from n=30 proves nothing** — we may sit at 31. The reader reports
+`none/30+` for a saturated window and `none/12` for an exhausted one, and a test pins that they
+never render alike. Without it, a rename that pushed us from #26 to #31 would read as
+unchanged-and-absent rather than as a loss, and DAL-257 would score the theory on an instrument
+that cannot see the move. Same family as DEC-249.
+
+**Baseline, 2026-08-13, pre-rename.** `data/treesmith-play-rank-baseline.json` and
+`data/treesmith-appstore-rank-baseline.json`. We rank on 5 of 36 terms on Play against 17 (AU)
+and 20 (US) on Apple. "fruit tree tracker": Play AU #26/30, Play US absent from 30, Apple AU #7,
+Apple US #4.
+
+**The finding that cuts against our own theory.** Apple US ranks **#4** for "fruit tree tracker"
+under the name `TreeSmith`, which contains neither "fruit" nor "tracker". Apple AU ranks **#7**
+under `TreeSmith: Plant Graft Tracker`, which contains "tracker". The storefront with fewer
+query words in its name ranks better on the target term. If the name field carried the weight
+DEC-247 assigns it, that ordering should be reversed. It is confounded (different competitive
+sets; US carries 61% of installs and so more engagement signal), so it does not refute DEC-247,
+which was measured on AU alone and never had to account for it. Recorded now rather than
+discovered while scoring DAL-257. It lowers the expected effect; it does not change the
+decision, because the rename is a metadata edit riding a submission that has to happen anyway.
+
+**Also confirmed live, not inferred:** the Play long description still ships the DEC-274 pricing
+error ("Pro: unlimited plants, multiple locations, cloud backup..."). Corrected block handed to
+Benedict on DAL-279. It needs no build either. `store-listing-google-play.txt` in the app repo
+remains stale and untouched; it is not what the store serves.
+
+**Cost:** $0. Both readers are credential-free public endpoints.

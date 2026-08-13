@@ -1,0 +1,942 @@
+{
+  "AU": [
+    {
+      "group": "niche_tracker",
+      "term": "fruit tree tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 26,
+      "top3": [
+        "com.zht.fruit_trees",
+        "org.greenstand.android.TreeTracker",
+        "com.PlayMore.FruitTree"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "orchard tracker",
+      "country": "AU",
+      "result_count": 12,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.habadigital.obstgarten",
+        "com.theorchard.OrchardGo",
+        "com.orchardthieves"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "tree tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "org.greenstand.android.TreeTracker",
+        "org.treeo.treeo",
+        "cz.nadacepartnerstvi.treecheck"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "graft tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 1,
+      "top3": [
+        "app.treesmith",
+        "com.cibiltech.ptg.graftCare",
+        "me.cfs.chronic.fatigue.syndrome.pacing.diary.tracker"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "grafting tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 1,
+      "top3": [
+        "app.treesmith",
+        "com.dreamteammobile.tagtracker",
+        "me.cfs.chronic.fatigue.syndrome.pacing.diary.tracker"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "bonsai tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "app.bonsaicare",
+        "com.jooni.app",
+        "com.coddykit.bonsaicare"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "citrus tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.wemagineai.citrus",
+        "com.boxnbiz.citrusfreight",
+        "com.dub.app.citruscollege"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "propagation tracker",
+      "country": "AU",
+      "result_count": 9,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "ua.rv.sashko.hf_propagation",
+        "jp.moo.myworks.progressofproject",
+        "amar.progress"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "seedling tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "us.seedtime.app",
+        "com.sochitieu.app",
+        "ro.crxapps.seedling"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "harvest tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.harvestapp",
+        "com.nplglobalappdev.nplshare",
+        "com.topcon.harvestTrackerLite"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant tracker",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.potally.app",
+        "com.plantparentai.app",
+        "com.devjah.plants"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden journal",
+      "country": "AU",
+      "result_count": 26,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "com.sevelina.garden.planner.scheduler.help",
+        "us.seedtime.app"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden planner",
+      "country": "AU",
+      "result_count": 20,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "org.alphabeet.app",
+        "us.seedtime.app"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant log",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.plantlog.plantlog",
+        "com.mirkaeraketo.plantdiary",
+        "com.devjah.plants"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden diary",
+      "country": "AU",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "com.mirkaeraketo.plantdiary",
+        "com.sevelina.garden.planner.scheduler.help"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden log",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "com.mg.mygarden",
+        "us.seedtime.app"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant inventory",
+      "country": "AU",
+      "result_count": 21,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.mirkaeraketo.plantdiary",
+        "com.devjah.plants",
+        "org.plantnet"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant collection",
+      "country": "AU",
+      "result_count": 23,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "cn.danatech.xingseus",
+        "greg.io.care_app_android",
+        "com.kongregate.mobile.pocketplants.google"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant catalogue",
+      "country": "AU",
+      "result_count": 12,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.mirkaeraketo.plantdiary",
+        "greg.io.care_app_android",
+        "cn.danatech.xingseus"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant database",
+      "country": "AU",
+      "result_count": 24,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "cn.danatech.xingseus",
+        "org.plantnet",
+        "com.stevelib.thetortoisetable"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden mapping",
+      "country": "AU",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "org.alphabeet.app",
+        "com.fate.gardenAi2"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant care",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.plantparentai.app",
+        "com.stromming.planta",
+        "me.jodoin.aiplantdoctor"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.PlayMore.FruitTree",
+        "com.zht.fruit_trees",
+        "com.dictionary.fruittrees.fruit.trees"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree journal",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.zht.fruit_trees",
+        "com.dictionary.fruittrees.fruit.trees",
+        "com.soft24hours.dictionaries.dictionary11"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree care",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.dictionary.fruittrees.fruit.trees",
+        "com.zht.fruit_trees",
+        "com.fruittree.crush"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "rare fruit",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.taprun.fruitheroline",
+        "com.fruitripeness.hru",
+        "com.cutthefruit.rope.strawberry"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "grafting",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.mmircil.cnb2",
+        "com.amazon.kindle",
+        "com.garmin.android.apps.connectmobile"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "scion wood",
+      "country": "AU",
+      "result_count": 12,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.beauty_nxt.app",
+        "org.scionlab.scion",
+        "com.anideaz.woodsnipes"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "rootstock",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.rootiq.stock",
+        "com.blackboxstocks.mobile",
+        "com.recroot.app"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "orchard management",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.trackensure.orchard",
+        "tech.farmable.farmable",
+        "com.theorchard.OrchardGo"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "orchard map",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.okshur.WastelandOrchard",
+        "com.askpascal.tinnies",
+        "com.google.android.apps.mapslite"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "home orchard",
+      "country": "AU",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.habadigital.obstgarten",
+        "com.okshur.WastelandOrchard",
+        "com.orchard.poc"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "backyard orchard",
+      "country": "AU",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.simpplr.backyard",
+        "com.backyard.hunt",
+        "com.fellcode.ultrayardtimer"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "permaculture",
+      "country": "AU",
+      "result_count": 50,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.kj224.app",
+        "com.conduit.app_f41a435b335e4fd6b8a8caa614fed6b1.app",
+        "app.groad.groguild"
+      ]
+    },
+    {
+      "group": "brand",
+      "term": "treesmith",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 1,
+      "top3": [
+        "app.treesmith",
+        "com.droidhang.slot.android.google",
+        "com.smiconsulting.treetribe"
+      ]
+    },
+    {
+      "group": "brand",
+      "term": "tree smith",
+      "country": "AU",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 1,
+      "top3": [
+        "app.treesmith",
+        "com.a3dcomm.aether.smith.lite",
+        "com.a3dcomm.aether.smith"
+      ]
+    }
+  ],
+  "US": [
+    {
+      "group": "niche_tracker",
+      "term": "fruit tree tracker",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.zht.fruit_trees",
+        "com.dictionary.fruittrees.fruit.trees",
+        "com.PlayMore.FruitTree"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "orchard tracker",
+      "country": "US",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.habadigital.obstgarten",
+        "com.theorchard.OrchardGo",
+        "com.trackensure.orchard"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "tree tracker",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 9,
+      "top3": [
+        "org.greenstand.android.TreeTracker",
+        "org.treeo.treeo",
+        "com.treetracker.mobile"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "graft tracker",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 1,
+      "top3": [
+        "app.treesmith",
+        "com.cibiltech.ptg.graftCare",
+        "com.cofox.kahunas.Graft"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "grafting tracker",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 1,
+      "top3": [
+        "app.treesmith",
+        "com.dreamteammobile.tagtracker",
+        "me.cfs.chronic.fatigue.syndrome.pacing.diary.tracker"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "bonsai tracker",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "app.bonsaicare",
+        "com.jooni.app",
+        "com.hellobonsai.bonsai"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "citrus tracker",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.wemagineai.citrus",
+        "com.technologyevolvingsolutions.kivy_app",
+        "com.boxnbiz.citrusfreight"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "propagation tracker",
+      "country": "US",
+      "result_count": 10,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "ua.rv.sashko.hf_propagation",
+        "amar.progress",
+        "jp.moo.myworks.progressofproject"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "seedling tracker",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "us.seedtime.app",
+        "io.ionic.seed2spoon",
+        "com.sochitieu.app"
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "harvest tracker",
+      "country": "US",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.topcon.harvestTrackerLite",
+        "com.nplglobalappdev.nplshare",
+        "com.harvestapp"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant tracker",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.potally.app",
+        "com.devjah.plants",
+        "com.plantparentai.app"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden journal",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "us.seedtime.app",
+        "io.ionic.seed2spoon"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden planner",
+      "country": "US",
+      "result_count": 20,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "us.seedtime.app",
+        "io.ionic.seed2spoon"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant log",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.plantlog.plantlog",
+        "com.mirkaeraketo.plantdiary",
+        "com.devjah.plants"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden diary",
+      "country": "US",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "io.ionic.seed2spoon",
+        "us.seedtime.app"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden log",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "io.ionic.seed2spoon",
+        "us.seedtime.app"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant inventory",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.mirkaeraketo.plantdiary",
+        "com.devjah.plants",
+        "com.myplantin.app"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant collection",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "cn.danatech.xingseus",
+        "greg.io.care_app_android",
+        "org.plantnet"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant catalogue",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.mirkaeraketo.plantdiary",
+        "greg.io.care_app_android",
+        "cn.danatech.xingseus"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant database",
+      "country": "US",
+      "result_count": 14,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.stevelib.thetortoisetable",
+        "cn.danatech.xingseus",
+        "org.plantnet"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden mapping",
+      "country": "US",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.perculacreative.peter.gardenplanner",
+        "io.ionic.seed2spoon",
+        "com.gardenplan.app"
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant care",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.plantparentai.app",
+        "me.jodoin.aiplantdoctor",
+        "com.devjah.plants"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.PlayMore.FruitTree",
+        "com.zht.fruit_trees",
+        "com.dictionary.fruittrees.fruit.trees"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree journal",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.zht.fruit_trees",
+        "com.PlayMore.FruitTree",
+        "com.fruittree.crush"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree care",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.dictionary.fruittrees.fruit.trees",
+        "com.zht.fruit_trees",
+        "com.fruittree.crush"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "rare fruit",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.fruitripeness.hru",
+        "com.cutthefruit.rope.strawberry",
+        "com.premiumsoftware.fruitsandvegetables"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "grafting",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.mmircil.cnb2",
+        "graftapp.figmd.com.graft",
+        "com.amazon.kindle"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "scion wood",
+      "country": "US",
+      "result_count": 14,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "org.scionlab.scion",
+        "com.beauty_nxt.app",
+        "com.anideaz.woodsnipes"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "rootstock",
+      "country": "US",
+      "result_count": 9,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.rootiq.stock",
+        "com.pricklyfish.hotstock",
+        "com.blackboxstocks.mobile"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "orchard management",
+      "country": "US",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.theorchard.OrchardGo",
+        "com.trackensure.orchard",
+        "com.orchard.care519"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "orchard map",
+      "country": "US",
+      "result_count": 29,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.okshur.WastelandOrchard",
+        "com.ambitious.bubble",
+        "gov.caltrans.quickmap"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "home orchard",
+      "country": "US",
+      "result_count": 28,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.habadigital.obstgarten",
+        "com.orcharddrop.basketcatcher",
+        "com.subsplashconsulting.s_397PFR"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "backyard orchard",
+      "country": "US",
+      "result_count": 12,
+      "truncated": false,
+      "rank": null,
+      "top3": [
+        "com.simpplr.backyard",
+        "com.backyard.hunt",
+        "com.okshur.WastelandOrchard"
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "permaculture",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": null,
+      "top3": [
+        "com.kj224.app",
+        "com.conduit.app_f41a435b335e4fd6b8a8caa614fed6b1.app",
+        "app.groad.groguild"
+      ]
+    },
+    {
+      "group": "brand",
+      "term": "treesmith",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 1,
+      "top3": [
+        "app.treesmith",
+        "com.theartisttree.wallet",
+        "com.droidhang.slot.android.google"
+      ]
+    },
+    {
+      "group": "brand",
+      "term": "tree smith",
+      "country": "US",
+      "result_count": 30,
+      "truncated": true,
+      "rank": 1,
+      "top3": [
+        "app.treesmith",
+        "com.a3dcomm.aether.smith",
+        "com.a3dcomm.aether.smith.lite"
+      ]
+    }
+  ]
+}

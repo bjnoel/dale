@@ -1,0 +1,1590 @@
+{
+  "AU": [
+    {
+      "group": "niche_tracker",
+      "term": "fruit tree tracker",
+      "country": "AU",
+      "result_count": 158,
+      "rank": 7,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Fruit Tree Tracker - Grove",
+          "ratings": 0
+        },
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 0
+        },
+        {
+          "name": "Fruit Juice Farm",
+          "ratings": 183
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "orchard tracker",
+      "country": "AU",
+      "result_count": 170,
+      "rank": 10,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Hectre \u2013 Orchard Management",
+          "ratings": 0
+        },
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 0
+        },
+        {
+          "name": "Fruit Tree Tracker - Grove",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "tree tracker",
+      "country": "AU",
+      "result_count": 180,
+      "rank": 21,
+      "name_match_top5": 0.8,
+      "top3": [
+        {
+          "name": "TreeTracker Mobile",
+          "ratings": 0
+        },
+        {
+          "name": "Flora - Green Focus",
+          "ratings": 15595
+        },
+        {
+          "name": "Tree Tracker Pro",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "graft tracker",
+      "country": "AU",
+      "result_count": 184,
+      "rank": 1,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "TreeSmith: Plant Graft Tracker",
+          "ratings": 0
+        },
+        {
+          "name": "Peptide Tracker - PeptideKit",
+          "ratings": 39
+        },
+        {
+          "name": "Blood Sugar Tracker-AI Health",
+          "ratings": 18
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "grafting tracker",
+      "country": "AU",
+      "result_count": 182,
+      "rank": 1,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "TreeSmith: Plant Graft Tracker",
+          "ratings": 0
+        },
+        {
+          "name": "StoryGraph: Reading Tracker",
+          "ratings": 209
+        },
+        {
+          "name": "Peptide Tracker - PeptideKit",
+          "ratings": 39
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "bonsai tracker",
+      "country": "AU",
+      "result_count": 181,
+      "rank": 29,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Jooni \u2013 Bonsai Tracking",
+          "ratings": 0
+        },
+        {
+          "name": "BonsAI Identifier: Tree Care",
+          "ratings": 1
+        },
+        {
+          "name": "Money Bonsai Net Worth Tracker",
+          "ratings": 3
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "citrus tracker",
+      "country": "AU",
+      "result_count": 173,
+      "rank": 44,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Parcel Tracking\uff0dpkge Australia",
+          "ratings": 267
+        },
+        {
+          "name": "Water tracker Waterllama",
+          "ratings": 4369
+        },
+        {
+          "name": "Package Tracker \uff0d Packy",
+          "ratings": 89
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "propagation tracker",
+      "country": "AU",
+      "result_count": 165,
+      "rank": 83,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Phone Tracker - Family Locator",
+          "ratings": 2320
+        },
+        {
+          "name": "Findo: Find My Kids & Friends",
+          "ratings": 5181
+        },
+        {
+          "name": "GPS Tracks",
+          "ratings": 2228
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "seedling tracker",
+      "country": "AU",
+      "result_count": 177,
+      "rank": 30,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Plant Care App-Plant Tracker",
+          "ratings": 0
+        },
+        {
+          "name": "GrowIt: Garden Planner",
+          "ratings": 679
+        },
+        {
+          "name": "PROVENA: Seed Tracker",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "harvest tracker",
+      "country": "AU",
+      "result_count": 179,
+      "rank": null,
+      "name_match_top5": 0.4,
+      "top3": [
+        {
+          "name": "Digi-Star Harvest Tracker",
+          "ratings": 0
+        },
+        {
+          "name": "Harvest Tracker",
+          "ratings": 0
+        },
+        {
+          "name": "Harvest: Track Time & Invoice",
+          "ratings": 329
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant tracker",
+      "country": "AU",
+      "result_count": 187,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 3022
+        },
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 56347
+        },
+        {
+          "name": "PlantIn: Plant Care Identifier",
+          "ratings": 9349
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden journal",
+      "country": "AU",
+      "result_count": 192,
+      "rank": null,
+      "name_match_top5": 1.0,
+      "top3": [
+        {
+          "name": "Your Garden Journal",
+          "ratings": 1
+        },
+        {
+          "name": "GARDENIZE Plant Care & Journal",
+          "ratings": 51
+        },
+        {
+          "name": "GrowNotes: Garden Journal",
+          "ratings": 3
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden planner",
+      "country": "AU",
+      "result_count": 186,
+      "rank": null,
+      "name_match_top5": 0.6,
+      "top3": [
+        {
+          "name": "Planter: Garden Planner",
+          "ratings": 42
+        },
+        {
+          "name": "AI Garden & Landscape Design",
+          "ratings": 20
+        },
+        {
+          "name": "iScape: Landscape Design",
+          "ratings": 709
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant log",
+      "country": "AU",
+      "result_count": 189,
+      "rank": null,
+      "name_match_top5": 0.4,
+      "top3": [
+        {
+          "name": "PlantLog",
+          "ratings": 0
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 3022
+        },
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 56347
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden diary",
+      "country": "AU",
+      "result_count": 183,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Garden Diary - Home Gardening",
+          "ratings": 0
+        },
+        {
+          "name": "GARDENIZE Plant Care & Journal",
+          "ratings": 51
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 3022
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden log",
+      "country": "AU",
+      "result_count": 166,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "GrowNotes: Garden Journal",
+          "ratings": 3
+        },
+        {
+          "name": "Garden Planner - VegLog",
+          "ratings": 1
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 3022
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant inventory",
+      "country": "AU",
+      "result_count": 188,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "PlantNet",
+          "ratings": 611
+        },
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 56347
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 3022
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant collection",
+      "country": "AU",
+      "result_count": 183,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 56347
+        },
+        {
+          "name": "Plant Identifier: LeafSnap",
+          "ratings": 454
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 3022
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant catalogue",
+      "country": "AU",
+      "result_count": 187,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Plant Catalogue",
+          "ratings": 1
+        },
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 56347
+        },
+        {
+          "name": "PlantNet",
+          "ratings": 611
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant database",
+      "country": "AU",
+      "result_count": 187,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 56347
+        },
+        {
+          "name": "PlantNet",
+          "ratings": 611
+        },
+        {
+          "name": "GARDENIZE Plant Care & Journal",
+          "ratings": 51
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden mapping",
+      "country": "AU",
+      "result_count": 174,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "GardenMap - Map your Garden",
+          "ratings": 0
+        },
+        {
+          "name": "MapMyGarden",
+          "ratings": 0
+        },
+        {
+          "name": "GrowIt: Garden Planner",
+          "ratings": 679
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant care",
+      "country": "AU",
+      "result_count": 187,
+      "rank": null,
+      "name_match_top5": 0.8,
+      "top3": [
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 3022
+        },
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 56347
+        },
+        {
+          "name": "Plant Parent: Plant Care Guide",
+          "ratings": 4236
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree",
+      "country": "AU",
+      "result_count": 174,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "PlantNet",
+          "ratings": 611
+        },
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 0
+        },
+        {
+          "name": "Fruit Merge\u2122: Match Game",
+          "ratings": 19111
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree journal",
+      "country": "AU",
+      "result_count": 175,
+      "rank": 129,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Journey - Diary, Journal",
+          "ratings": 463
+        },
+        {
+          "name": "Fruit Tree Tracker - Grove",
+          "ratings": 0
+        },
+        {
+          "name": "Day One: Daily Journal & Diary",
+          "ratings": 8735
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree care",
+      "country": "AU",
+      "result_count": 164,
+      "rank": 81,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Blossom - AI Plant Identifier",
+          "ratings": 3569
+        },
+        {
+          "name": "PlantIn: Plant Care Identifier",
+          "ratings": 9349
+        },
+        {
+          "name": "Planto: Plant Identifier",
+          "ratings": 966
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "rare fruit",
+      "country": "AU",
+      "result_count": 129,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Fruit Ninja\u00ae",
+          "ratings": 31428
+        },
+        {
+          "name": "Fruit Merge\u2122: Match Game",
+          "ratings": 19111
+        },
+        {
+          "name": "Fruit Pop!",
+          "ratings": 379
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "grafting",
+      "country": "AU",
+      "result_count": 187,
+      "rank": 20,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "RealmCraft: mine & craft world",
+          "ratings": 3363
+        },
+        {
+          "name": "Block Craft 3D: Building Game",
+          "ratings": 67387
+        },
+        {
+          "name": "Kawaii World - Craft and Build",
+          "ratings": 24909
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "scion wood",
+      "country": "AU",
+      "result_count": 120,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "WoodSense: Craft & Identifier",
+          "ratings": 206
+        },
+        {
+          "name": "I.D. Wood",
+          "ratings": 7
+        },
+        {
+          "name": "Wood Inc. Idle Lumber Chopper",
+          "ratings": 17
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "rootstock",
+      "country": "AU",
+      "result_count": 37,
+      "rank": 3,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Rootstock: Seed & Plant Log",
+          "ratings": 0
+        },
+        {
+          "name": "Grow A Garden : Codes & Stocks",
+          "ratings": 244
+        },
+        {
+          "name": "TreeSmith: Plant Graft Tracker",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "orchard management",
+      "country": "AU",
+      "result_count": 166,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Hectre \u2013 Orchard Management",
+          "ratings": 0
+        },
+        {
+          "name": "Farmable: Farm Management App",
+          "ratings": 38
+        },
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "orchard map",
+      "country": "AU",
+      "result_count": 156,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 0
+        },
+        {
+          "name": "Tractor GPS - Field Guidance",
+          "ratings": 491
+        },
+        {
+          "name": "Farmable: Farm Management App",
+          "ratings": 38
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "home orchard",
+      "country": "AU",
+      "result_count": 165,
+      "rank": 140,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Orchard Piper Resident App",
+          "ratings": 1
+        },
+        {
+          "name": "Holman Home",
+          "ratings": 2315
+        },
+        {
+          "name": "Better Homes and Gardens",
+          "ratings": 4
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "backyard orchard",
+      "country": "AU",
+      "result_count": 172,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Backyard Master",
+          "ratings": 4443
+        },
+        {
+          "name": "Yard AI: Backyard Design AU",
+          "ratings": 50
+        },
+        {
+          "name": "Backyard & Outdoor Living",
+          "ratings": 1
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "permaculture",
+      "country": "AU",
+      "result_count": 141,
+      "rank": 102,
+      "name_match_top5": 1.0,
+      "top3": [
+        {
+          "name": "Permaculture.",
+          "ratings": 4
+        },
+        {
+          "name": "Discover Permaculture",
+          "ratings": 0
+        },
+        {
+          "name": "Permaculture Magazine",
+          "ratings": 1
+        }
+      ]
+    },
+    {
+      "group": "brand",
+      "term": "treesmith",
+      "country": "AU",
+      "result_count": 166,
+      "rank": 1,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "TreeSmith: Plant Graft Tracker",
+          "ratings": 0
+        },
+        {
+          "name": "Idle Lumber Empire Clicker Inc",
+          "ratings": 7925
+        },
+        {
+          "name": "Idle Lumber Mill - Wood Game",
+          "ratings": 917
+        }
+      ]
+    },
+    {
+      "group": "brand",
+      "term": "tree smith",
+      "country": "AU",
+      "result_count": 115,
+      "rank": 2,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Christmas Tree Puzzles",
+          "ratings": 0
+        },
+        {
+          "name": "TreeSmith: Plant Graft Tracker",
+          "ratings": 0
+        },
+        {
+          "name": "Forest Tree Identifier",
+          "ratings": 5
+        }
+      ]
+    }
+  ],
+  "US": [
+    {
+      "group": "niche_tracker",
+      "term": "fruit tree tracker",
+      "country": "US",
+      "result_count": 172,
+      "rank": 4,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Fruit Tree Tracker - Grove",
+          "ratings": 0
+        },
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 4
+        },
+        {
+          "name": "Tree Identifier AI: ID Trees",
+          "ratings": 2436
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "orchard tracker",
+      "country": "US",
+      "result_count": 180,
+      "rank": 7,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Fruit Tree Tracker - Grove",
+          "ratings": 0
+        },
+        {
+          "name": "Hectre \u2013 Orchard Management",
+          "ratings": 14
+        },
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 4
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "tree tracker",
+      "country": "US",
+      "result_count": 178,
+      "rank": 26,
+      "name_match_top5": 0.8,
+      "top3": [
+        {
+          "name": "TreeTracker Mobile",
+          "ratings": 6
+        },
+        {
+          "name": "Flora - Green Focus",
+          "ratings": 82440
+        },
+        {
+          "name": "Tree Tracker",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "graft tracker",
+      "country": "US",
+      "result_count": 187,
+      "rank": 1,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "TreeSmith",
+          "ratings": 0
+        },
+        {
+          "name": "StoryGraph: Reading Tracker",
+          "ratings": 3539
+        },
+        {
+          "name": "Case Tracker for USCIS & NVC",
+          "ratings": 315840
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "grafting tracker",
+      "country": "US",
+      "result_count": 189,
+      "rank": 1,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "TreeSmith",
+          "ratings": 0
+        },
+        {
+          "name": "StoryGraph: Reading Tracker",
+          "ratings": 3539
+        },
+        {
+          "name": "Shotsy GLP-1 Tracker",
+          "ratings": 29228
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "bonsai tracker",
+      "country": "US",
+      "result_count": 179,
+      "rank": 20,
+      "name_match_top5": 0.4,
+      "top3": [
+        {
+          "name": "Jooni \u2013 Bonsai Tracking",
+          "ratings": 5
+        },
+        {
+          "name": "BonsAI Identifier: Tree Care",
+          "ratings": 32
+        },
+        {
+          "name": "Bonsai Care: Plant Tracker",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "citrus tracker",
+      "country": "US",
+      "result_count": 180,
+      "rank": 29,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Package Tracker - pkge Mobile",
+          "ratings": 18725
+        },
+        {
+          "name": "Package Tracker \uff0d Packy",
+          "ratings": 2561
+        },
+        {
+          "name": "CUBE Tracker",
+          "ratings": 6436
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "propagation tracker",
+      "country": "US",
+      "result_count": 169,
+      "rank": 44,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "GPS Tracks",
+          "ratings": 17469
+        },
+        {
+          "name": "CUBE Tracker",
+          "ratings": 6436
+        },
+        {
+          "name": "Propagation Journal",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "seedling tracker",
+      "country": "US",
+      "result_count": 179,
+      "rank": 29,
+      "name_match_top5": 0.4,
+      "top3": [
+        {
+          "name": "Seedling: Plant Tracker",
+          "ratings": 3
+        },
+        {
+          "name": "Plant Identifier & Care: Ficus",
+          "ratings": 6981
+        },
+        {
+          "name": "GrowIt: Garden Planner",
+          "ratings": 13668
+        }
+      ]
+    },
+    {
+      "group": "niche_tracker",
+      "term": "harvest tracker",
+      "country": "US",
+      "result_count": 190,
+      "rank": 117,
+      "name_match_top5": 0.8,
+      "top3": [
+        {
+          "name": "Harvest Tracker",
+          "ratings": 0
+        },
+        {
+          "name": "Digi-Star Harvest Tracker",
+          "ratings": 2
+        },
+        {
+          "name": "Harvest: Track Time & Invoice",
+          "ratings": 2659
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant tracker",
+      "country": "US",
+      "result_count": 186,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 112972
+        },
+        {
+          "name": "Plant Care Tracker - Ploi",
+          "ratings": 240
+        },
+        {
+          "name": "Greg: Plant Identifier & Care",
+          "ratings": 20404
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden journal",
+      "country": "US",
+      "result_count": 175,
+      "rank": null,
+      "name_match_top5": 0.4,
+      "top3": [
+        {
+          "name": "GrowNotes: Garden Journal",
+          "ratings": 15
+        },
+        {
+          "name": "Planter: Garden Planner",
+          "ratings": 2338
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 112972
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden planner",
+      "country": "US",
+      "result_count": 193,
+      "rank": null,
+      "name_match_top5": 1.0,
+      "top3": [
+        {
+          "name": "Planter: Garden Planner",
+          "ratings": 2338
+        },
+        {
+          "name": "GrowIt: Garden Planner",
+          "ratings": 13668
+        },
+        {
+          "name": "Seed to Spoon - Garden Planner",
+          "ratings": 9234
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant log",
+      "country": "US",
+      "result_count": 191,
+      "rank": null,
+      "name_match_top5": 0.4,
+      "top3": [
+        {
+          "name": "PlantLog",
+          "ratings": 10
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 112972
+        },
+        {
+          "name": "leaf diary - Plant Care Log",
+          "ratings": 0
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden diary",
+      "country": "US",
+      "result_count": 177,
+      "rank": null,
+      "name_match_top5": 0.4,
+      "top3": [
+        {
+          "name": "Garden Diary - \u5712\u82b8\u8a18\u9332\u30ce\u30fc\u30c8",
+          "ratings": 0
+        },
+        {
+          "name": "Garden Diary - Home Gardening",
+          "ratings": 0
+        },
+        {
+          "name": "Seed to Spoon - Garden Planner",
+          "ratings": 9234
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden log",
+      "country": "US",
+      "result_count": 171,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "GrowNotes: Garden Journal",
+          "ratings": 15
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 112972
+        },
+        {
+          "name": "GrowIt: Garden Planner",
+          "ratings": 13668
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant inventory",
+      "country": "US",
+      "result_count": 193,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "PlantNet",
+          "ratings": 7036
+        },
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 1105317
+        },
+        {
+          "name": "Plant Identifier: LeafSnap",
+          "ratings": 4738
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant collection",
+      "country": "US",
+      "result_count": 193,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 1105317
+        },
+        {
+          "name": "Plant Identifier: LeafSnap",
+          "ratings": 4738
+        },
+        {
+          "name": "Greg: Plant Identifier & Care",
+          "ratings": 20404
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant catalogue",
+      "country": "US",
+      "result_count": 190,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "PlantNet",
+          "ratings": 7036
+        },
+        {
+          "name": "Plant Catalogue",
+          "ratings": 4
+        },
+        {
+          "name": "Planto: Plant Identifier",
+          "ratings": 8244
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant database",
+      "country": "US",
+      "result_count": 189,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 1105317
+        },
+        {
+          "name": "PlantNet",
+          "ratings": 7036
+        },
+        {
+          "name": "GARDENIZE Plant Care Gardening",
+          "ratings": 271
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "garden mapping",
+      "country": "US",
+      "result_count": 183,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "GardenPin: Plant Identifier",
+          "ratings": 7
+        },
+        {
+          "name": "Planter: Garden Planner",
+          "ratings": 2338
+        },
+        {
+          "name": "GrowIt: Garden Planner",
+          "ratings": 13668
+        }
+      ]
+    },
+    {
+      "group": "broad",
+      "term": "plant care",
+      "country": "US",
+      "result_count": 193,
+      "rank": null,
+      "name_match_top5": 0.8,
+      "top3": [
+        {
+          "name": "PictureThis - Plant Identifier",
+          "ratings": 1105317
+        },
+        {
+          "name": "Planta: Plant & Garden Care",
+          "ratings": 112972
+        },
+        {
+          "name": "Plant Parent: Plant Care Guide",
+          "ratings": 89782
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree",
+      "country": "US",
+      "result_count": 174,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Fruit Patch App",
+          "ratings": 24
+        },
+        {
+          "name": "PlantNet",
+          "ratings": 7036
+        },
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 4
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree journal",
+      "country": "US",
+      "result_count": 171,
+      "rank": 37,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Journey - Diary, Journal",
+          "ratings": 5055
+        },
+        {
+          "name": "Fruit Tree Tracker - Grove",
+          "ratings": 0
+        },
+        {
+          "name": "Penzu",
+          "ratings": 2526
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "fruit tree care",
+      "country": "US",
+      "result_count": 174,
+      "rank": 36,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Blossom - Plant Care Guide",
+          "ratings": 68726
+        },
+        {
+          "name": "Plant Guru - Plant Care Guide",
+          "ratings": 3638
+        },
+        {
+          "name": "Planto: Plant Identifier",
+          "ratings": 8244
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "rare fruit",
+      "country": "US",
+      "result_count": 135,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Fruit Ninja\u00ae",
+          "ratings": 370593
+        },
+        {
+          "name": "Fruit Merge\u2122: Match Game",
+          "ratings": 307090
+        },
+        {
+          "name": "Fruit Merge: Melon Game",
+          "ratings": 3261
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "grafting",
+      "country": "US",
+      "result_count": 52,
+      "rank": 5,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "RealmCraft: mine & craft world",
+          "ratings": 78809
+        },
+        {
+          "name": "Block Craft 3D: Building Games",
+          "ratings": 836829
+        },
+        {
+          "name": "GRAFT General Registry",
+          "ratings": 1
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "scion wood",
+      "country": "US",
+      "result_count": 130,
+      "rank": null,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "WoodSense: Wood Plans & Guides",
+          "ratings": 8846
+        },
+        {
+          "name": "Wood Identifier: Wuddy",
+          "ratings": 264
+        },
+        {
+          "name": "I.D. Wood",
+          "ratings": 244
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "rootstock",
+      "country": "US",
+      "result_count": 45,
+      "rank": 5,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Rootstock: Seed & Plant Log",
+          "ratings": 0
+        },
+        {
+          "name": "vTree",
+          "ratings": 46
+        },
+        {
+          "name": "Bartlett Arborist Supply",
+          "ratings": 740
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "orchard management",
+      "country": "US",
+      "result_count": 176,
+      "rank": 139,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "Hectre \u2013 Orchard Management",
+          "ratings": 14
+        },
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 4
+        },
+        {
+          "name": "Farmable: Farm Manager App",
+          "ratings": 11
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "orchard map",
+      "country": "US",
+      "result_count": 149,
+      "rank": null,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "FruitForest: Orchard Mapping",
+          "ratings": 4
+        },
+        {
+          "name": "Gilcrease Orchard",
+          "ratings": 7
+        },
+        {
+          "name": "Tractor GPS - Field Guidance",
+          "ratings": 3300
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "home orchard",
+      "country": "US",
+      "result_count": 163,
+      "rank": 107,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Rafter Home",
+          "ratings": 6
+        },
+        {
+          "name": "Gilcrease Orchard",
+          "ratings": 7
+        },
+        {
+          "name": "Home AI: Room & Garden Design",
+          "ratings": 13
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "backyard orchard",
+      "country": "US",
+      "result_count": 169,
+      "rank": 152,
+      "name_match_top5": 0.0,
+      "top3": [
+        {
+          "name": "Backyard Master",
+          "ratings": 59540
+        },
+        {
+          "name": "Gilcrease Orchard",
+          "ratings": 7
+        },
+        {
+          "name": "Seed to Spoon - Garden Planner",
+          "ratings": 9234
+        }
+      ]
+    },
+    {
+      "group": "subject",
+      "term": "permaculture",
+      "country": "US",
+      "result_count": 161,
+      "rank": 107,
+      "name_match_top5": 0.4,
+      "top3": [
+        {
+          "name": "Discover Permaculture",
+          "ratings": 1
+        },
+        {
+          "name": "Permaculture.",
+          "ratings": 12
+        },
+        {
+          "name": "Farm Your Yard: Gardening App",
+          "ratings": 398
+        }
+      ]
+    },
+    {
+      "group": "brand",
+      "term": "treesmith",
+      "country": "US",
+      "result_count": 161,
+      "rank": 1,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "TreeSmith",
+          "ratings": 0
+        },
+        {
+          "name": "Idle Lumber Empire - Wood Game",
+          "ratings": 106907
+        },
+        {
+          "name": "Cutting Tree",
+          "ratings": 5431
+        }
+      ]
+    },
+    {
+      "group": "brand",
+      "term": "tree smith",
+      "country": "US",
+      "result_count": 125,
+      "rank": 1,
+      "name_match_top5": 0.2,
+      "top3": [
+        {
+          "name": "TreeSmith",
+          "ratings": 0
+        },
+        {
+          "name": "Christmas Tree Puzzles",
+          "ratings": 6
+        },
+        {
+          "name": "Forest Tree Identifier",
+          "ratings": 776
+        }
+      ]
+    }
+  ]
+}
