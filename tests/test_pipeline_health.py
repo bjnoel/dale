@@ -112,6 +112,40 @@ class PipelineHealthTest(unittest.TestCase):
 
     # --- staleness ---------------------------------------------------------
 
+    # --- severity: what earns the subject line ------------------------------
+
+    def test_failed_nurseries_alone_do_not_shout_in_the_subject(self):
+        """Heritage may be 503 for weeks. A subject that cries every morning
+        for a fortnight is one you correctly learn to ignore, and
+        detect_scrape_anomalies.py already emails per-nursery failures."""
+        self.write_health([health_record("heritage-fruit-trees", ok=False),
+                           health_record("n1")])
+        self.write_index(age_hours=21)
+        h = self.check()
+        self.assertFalse(h["ok"], "still worth showing in the body")
+        self.assertIsNone(h["headline"], "but not worth a subject-line alarm")
+        self.assertEqual(h["critical"], [])
+
+    def test_stale_site_earns_the_subject_line(self):
+        """The business being off the air is the case worth shouting about."""
+        self.write_health([health_record("n1")])
+        self.write_index(age_hours=45.4)
+        h = self.check()
+        self.assertEqual(h["headline"], "treestock not publishing")
+        self.assertTrue(h["critical"])
+
+    def test_no_scrape_at_all_earns_the_subject_line(self):
+        self.write_index(age_hours=1)
+        h = self.check()
+        self.assertEqual(h["headline"], "treestock scrape did not run")
+
+    def test_critical_problems_still_render_in_the_body(self):
+        """Promoting an item to critical must not remove it from the section."""
+        self.write_health([health_record("n1")])
+        self.write_index(age_hours=45.4)
+        h = self.check()
+        self.assertTrue(any("last published" in p for p in h["problems"]))
+
     def test_stale_site_is_broken_even_when_every_scraper_passed(self):
         """The exact shape of this outage: scraping was fine, publishing was
         not. A health-records-only check would have called this healthy."""

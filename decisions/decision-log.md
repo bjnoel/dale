@@ -11312,8 +11312,17 @@ section built from two independent questions, because the failures worth catchin
 them differently: did tonight's scrape work (health records), and did anything actually
 get published (index.html mtime). This outage scraped 26 of 27 nurseries fine and
 published nothing, so a health-records-only check would still have called it healthy.
-A broken pipeline goes above Benedict's queue and into the subject line, since the whole
-failure mode is an email where every other line reads normal.
+Anything wrong renders above Benedict's queue, since the whole failure mode is an email
+where every other line reads normal.
+
+Two severities, and the split matters more than it looks. Only the site not publishing,
+or no scrape running at all, reaches the subject line. Individual nursery failures render
+in the body and stay there. The first draft shouted about both, which would have put
+"(!)" in the subject every morning for as long as Heritage stays 503, and an alarm that
+fires daily for a fortnight is one you correctly learn to ignore. That is the same bug
+class as the outage itself, arrived at from the opposite direction: the first alarm
+could not reach anyone, and this one would have reached him so often it stopped meaning
+anything. `detect_scrape_anomalies.py` already emails per-nursery failures on its own.
 
 **The floor.** Continuing on 1 of 6 scrapers down is a nursery having a bad night;
 continuing on 5 of 6 is us, and publishing then would rebuild the market report from

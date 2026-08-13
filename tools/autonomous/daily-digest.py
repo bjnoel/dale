@@ -452,12 +452,22 @@ def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
     /opt/dale/scrapers, so the import would not resolve at runtime (same
     reasoning as get_nursery_actions). It summarises only. Grading streaks and
     403/429 stays in detect_scrape_anomalies.py rather than being forked here.
+
+    Two severities, because they need different volumes. A site that is not
+    publishing is the business being off the air and belongs in the subject
+    line. Individual nurseries failing is worth showing but not worth shouting:
+    Heritage could be 503 for weeks, and a subject that cries every morning for
+    a fortnight is one Benedict correctly learns to ignore, which is how this
+    class of bug comes back. detect_scrape_anomalies.py already emails
+    per-nursery failures separately.
     """
     now = now or datetime.now(timezone.utc)
     today = now.strftime("%Y-%m-%d")
     health = {
         "ok": True,
         "problems": [],
+        "critical": [],
+        "headline": None,
         "nurseries_ok": 0,
         "nurseries_failed": [],
         "published_age_hours": None,
@@ -480,8 +490,9 @@ def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
         log(f"Warning: scrape-health unreadable ({e}); reporting as no scrape")
 
     if not records:
-        health["problems"].append(
+        health["critical"].append(
             f"No scrape recorded for {today}. The nightly run did not reach any nursery.")
+        health["headline"] = "treestock scrape did not run"
     else:
         # Re-runs append, so the last record for a nursery is the live one.
         latest = {r["nursery"]: r for r in records if r.get("nursery")}
@@ -500,12 +511,16 @@ def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
         health["published_age_hours"] = round(age_h, 1)
         health["published_at"] = mtime.strftime("%Y-%m-%d %H:%M UTC")
         if age_h > STALE_PUBLISH_HOURS:
-            health["problems"].append(
+            health["critical"].append(
                 f"Site last published {age_h:.0f}h ago ({health['published_at']}). "
                 "Nothing has gone live since.")
+            health["headline"] = "treestock not publishing"
     except OSError as e:
-        health["problems"].append(f"Published site unreadable at {index_path}: {e}")
+        health["critical"].append(f"Published site unreadable at {index_path}: {e}")
+        health["headline"] = "treestock not publishing"
 
+    # Critical items are problems too; they just also escape into the subject.
+    health["problems"] = health["critical"] + health["problems"]
     health["ok"] = not health["problems"]
     return health
 
@@ -1215,8 +1230,8 @@ def main():
     # from the notification, and the failure this reports is one where every
     # other line of the email reads normal.
     subject = f"Dale Daily Digest -- {today}"
-    if pipeline is not None and not pipeline["ok"]:
-        subject = f"(!) treestock not publishing -- {subject}"
+    if pipeline is not None and pipeline.get("headline"):
+        subject = f"(!) {pipeline['headline']} -- {subject}"
     success = send_email(subject, html, text)
     if success:
         log("Digest email sent")
