@@ -48,3 +48,7 @@
 * * * * * /opt/gandon-calendar/tools/refresh_if_requested.sh >> /opt/gandon-calendar/publish.log 2>&1
 30 3 * * 1 /usr/bin/python3 /opt/dale/autonomous/linear_update.py expire-stale-backlog --execute >> /opt/dale/autonomous/logs/archive.log 2>&1
 15 * * * * /opt/dale/autonomous/merge-nursery-inbound.sh >> /opt/dale/autonomous/logs/cron.log 2>&1
+
+# Record the server config into the repo (DAL-281). Mondays 04:20 UTC:
+# off the top of the hour so it does not race the hourly dale-runner push.
+20 4 * * 1 /opt/dale/autonomous/snapshot-server-config.sh >> /opt/dale/autonomous/logs/cron.log 2>&1
