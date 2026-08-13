@@ -54,7 +54,23 @@ DISK_PATH = "/"
 DISK_WARN_PCT = 85       # first heads-up
 DISK_CRIT_PCT = 93       # urgent
 DISK_RECOVER_PCT = 80    # hysteresis: only clear the alert once back below this
-_DISK_SEVERITY = {"ok": 0, "warning": 1, "critical": 2}
+_SEVERITY = {"ok": 0, "warning": 1, "critical": 2}
+
+# Reboot-required monitoring (DAL-282). unattended-upgrades installs kernel and
+# libc patches; only a reboot activates them. On 2026-08-13 the box had been up
+# 161 days running 6.8.0-90 with 6.8.0-124 installed, and reboot-required had
+# been set since 11 June. Zero packages pending from the security pocket, so
+# every existing signal read green while the live posture was March's.
+#
+# monthly_maintenance.py now reboots on the first Monday of each month, so this
+# check is the backstop for that cadence failing rather than the primary fix.
+# The thresholds are set accordingly: the longest possible gap between first
+# Mondays is 35 days, so 40 fires only when a window was actually missed, not
+# every month. /var/run is tmpfs, so the file cannot survive a reboot and its
+# mtime is a trustworthy "set at".
+REBOOT_REQUIRED_PATH = "/var/run/reboot-required"
+REBOOT_WARN_DAYS = 40
+REBOOT_CRIT_DAYS = 75
 
 # Repo divergence. git_sync.sh should heal a rejected push within the hour, so
 # anything still unpushed after this long means the self-heal itself failed and
@@ -161,7 +177,7 @@ def disk_alert_decision(prev_level, pct):
     level = disk_level(pct)
     if level == "ok" and prev_level != "ok" and pct >= DISK_RECOVER_PCT:
         level = prev_level  # hold the alert; not recovered yet
-    if _DISK_SEVERITY[level] > _DISK_SEVERITY.get(prev_level, 0):
+    if _SEVERITY[level] > _SEVERITY.get(prev_level, 0):
         return level, "alert"
     if level == "ok" and prev_level != "ok":
         return level, "recovered"
@@ -354,6 +370,125 @@ def check_git_divergence(state, now_str):
     return True
 
 
+def reboot_level(age_days):
+    """Pure: map the age of /var/run/reboot-required to an alert level."""
+    if age_days >= REBOOT_CRIT_DAYS:
+        return "critical"
+    if age_days >= REBOOT_WARN_DAYS:
+        return "warning"
+    return "ok"
+
+
+def reboot_alert_decision(prev_level, age_days):
+    """Pure: decide what to do given the previously-alerted level and the age in
+    days of /var/run/reboot-required. `age_days` is None when no reboot is
+    pending.
+
+    Returns (new_level, action) with the same vocabulary as
+    disk_alert_decision: "alert", "recovered", or "none".
+
+    No hysteresis here, unlike disk: the age only ever increases, and the file
+    vanishing is unambiguous. Recovery therefore means "someone rebooted".
+    """
+    if age_days is None:
+        return "ok", ("recovered" if prev_level != "ok" else "none")
+    level = reboot_level(age_days)
+    if _SEVERITY[level] > _SEVERITY.get(prev_level, 0):
+        return level, "alert"
+    return level, "none"
+
+
+def format_reboot_email(level, age_days, since_str, packages):
+    icon = "🔴" if level == "critical" else "⚠️"
+    listed = "".join(f"<li><code>{p}</code></li>" for p in packages[:10])
+    more = f"<p>...and {len(packages) - 10} more.</p>" if len(packages) > 10 else ""
+    html = f"""
+<h2>{icon} Reboot pending for {age_days:.0f} days on the Dale server</h2>
+<p><code>/var/run/reboot-required</code> has been set since <strong>{since_str}</strong>.
+The monthly maintenance window should have cleared this, so the cadence itself
+has failed.</p>
+<p>This is the failure that hides: patches are installed, apt reports nothing
+pending, every dashboard reads green, and the running kernel is still the old
+one. Packages waiting on a reboot:</p>
+<ul>{listed}</ul>{more}
+<p><strong>Fix:</strong> <code>sudo /usr/bin/python3
+/opt/dale/autonomous/monthly_maintenance.py --run --force</code>, or check why
+the Sunday 18:30 UTC cron did not fire (a stale <code>locks/no-reboot</code>
+veto file is the first thing to look at).</p>
+<p>Runbook: docs/server-maintenance.md in the repo.</p>
+""".strip()
+    text = (f"Reboot pending for {age_days:.0f} days on the Dale server.\n\n"
+            f"/var/run/reboot-required set since {since_str}.\n"
+            f"Packages waiting: {', '.join(packages[:10])}"
+            f"{f' and {len(packages) - 10} more' if len(packages) > 10 else ''}\n\n"
+            f"The monthly maintenance window should have cleared this, so the "
+            f"cadence has failed. Check for a stale locks/no-reboot veto file.\n"
+            f"Fix: sudo python3 /opt/dale/autonomous/monthly_maintenance.py --run --force\n"
+            f"Runbook: docs/server-maintenance.md")
+    return html, text
+
+
+def read_reboot_required():
+    """(age_in_days, since_str, packages) or (None, None, []) when none pending."""
+    try:
+        mtime = os.path.getmtime(REBOOT_REQUIRED_PATH)
+    except OSError:
+        return None, None, []
+    since = datetime.fromtimestamp(mtime, timezone.utc)
+    age_days = (datetime.now(timezone.utc) - since).total_seconds() / 86400
+    try:
+        with open(REBOOT_REQUIRED_PATH + ".pkgs") as f:
+            packages = sorted({line.strip() for line in f if line.strip()})
+    except OSError:
+        packages = []
+    return age_days, since.strftime("%Y-%m-%d %H:%M UTC"), packages
+
+
+def check_reboot_required(state, now_str):
+    """Alert when installed kernel/libc patches have sat unactivated too long.
+
+    Mirrors check_disk: de-dupes via state["reboot"], and on a failed send keeps
+    the previous level so the alert is retried next run.
+    """
+    age_days, since_str, packages = read_reboot_required()
+
+    prev_level = state.get("reboot", {}).get("level", "ok")
+    new_level, action = reboot_alert_decision(prev_level, age_days)
+    committed_level = new_level
+
+    if action == "alert":
+        html, text = format_reboot_email(new_level, age_days, since_str, packages)
+        icon = "🔴" if new_level == "critical" else "⚠️"
+        try:
+            send_email(f"{icon} Reboot pending {age_days:.0f} days on Dale server", html, text)
+            print(f"[{now_str}] REBOOT {new_level.upper()}: pending {age_days:.0f}d — alert sent")
+        except Exception as e:
+            committed_level = prev_level  # retry next run
+            print(f"[{now_str}] REBOOT {new_level.upper()}: pending {age_days:.0f}d — "
+                  f"failed to send alert: {e}")
+    elif action == "recovered":
+        try:
+            send_email("✅ Dale server reboot no longer pending",
+                       "<h2>✅ /var/run/reboot-required is clear.</h2>"
+                       "<p>The installed kernel and libc patches are now the ones "
+                       "actually running.</p>",
+                       "/var/run/reboot-required is clear. Installed patches are now active.")
+            print(f"[{now_str}] REBOOT RECOVERED: no reboot pending — alert sent")
+        except Exception as e:
+            committed_level = prev_level  # retry the all-clear next run
+            print(f"[{now_str}] REBOOT RECOVERED: failed to send alert: {e}")
+    else:
+        pending = f"pending {age_days:.0f}d" if age_days is not None else "none pending"
+        print(f"[{now_str}] REBOOT {new_level.upper()}: {pending}")
+
+    state["reboot"] = {
+        "level": committed_level,
+        "age_days": round(age_days, 1) if age_days is not None else None,
+        "last_checked": now_str,
+    }
+    return True
+
+
 def main():
     state = load_state()
     now = datetime.now(timezone.utc)
@@ -420,6 +555,11 @@ def main():
     # Repo divergence — the other invisible failure: sites stay up, disk is fine,
     # and automation silently stops an hour later.
     if check_git_divergence(state, now_str):
+        changed = True
+
+    # Reboot pending — the third invisible failure: patches installed, apt clean,
+    # every signal green, and the running kernel still the old one.
+    if check_reboot_required(state, now_str):
         changed = True
 
     if changed:

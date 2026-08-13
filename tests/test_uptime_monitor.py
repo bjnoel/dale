@@ -192,5 +192,86 @@ class GitDivergenceTests(unittest.TestCase):
         self.mod.send_email.assert_not_called()
 
 
+class RebootRequiredTests(unittest.TestCase):
+    """DAL-282: the box ran 6.8.0-90 for 161 days with 6.8.0-124 installed and
+    reboot-required set since 11 June. 0 packages pending from the security
+    pocket, so every existing signal read green."""
+
+    def setUp(self):
+        self.mod = load_uptime_monitor()
+
+    def test_reboot_level_thresholds(self):
+        self.assertEqual(self.mod.reboot_level(0), "ok")
+        self.assertEqual(self.mod.reboot_level(39.9), "ok")
+        self.assertEqual(self.mod.reboot_level(40), "warning")
+        self.assertEqual(self.mod.reboot_level(74.9), "warning")
+        self.assertEqual(self.mod.reboot_level(75), "critical")
+
+    def test_a_normal_monthly_cycle_never_alerts(self):
+        """The longest gap between first Mondays is 35 days. If the threshold
+        fired inside a healthy cycle, the alert would be noise within two
+        months and ignored by the third."""
+        for age in (1, 20, 30, 35, 39):
+            self.assertEqual(self.mod.reboot_alert_decision("ok", age), ("ok", "none"))
+
+    def test_missed_window_alerts_once(self):
+        self.assertEqual(self.mod.reboot_alert_decision("ok", 41), ("warning", "alert"))
+        self.assertEqual(self.mod.reboot_alert_decision("warning", 41), ("warning", "none"))
+
+    def test_second_missed_window_escalates_once(self):
+        self.assertEqual(self.mod.reboot_alert_decision("warning", 80), ("critical", "alert"))
+        self.assertEqual(self.mod.reboot_alert_decision("critical", 90), ("critical", "none"))
+
+    def test_the_state_we_actually_found(self):
+        # 2026-06-11 to 2026-08-13 is 63 days: warning, not yet critical.
+        self.assertEqual(self.mod.reboot_alert_decision("ok", 63), ("warning", "alert"))
+
+    def test_recovery_when_the_file_disappears(self):
+        self.assertEqual(self.mod.reboot_alert_decision("warning", None), ("ok", "recovered"))
+        self.assertEqual(self.mod.reboot_alert_decision("critical", None), ("ok", "recovered"))
+
+    def test_no_pending_reboot_is_silent(self):
+        self.assertEqual(self.mod.reboot_alert_decision("ok", None), ("ok", "none"))
+
+    def test_check_reboot_required_emails_once_past_the_threshold(self):
+        self.mod.send_email.reset_mock()
+        with mock.patch.object(self.mod, "read_reboot_required",
+                               return_value=(63.0, "2026-06-11 06:22 UTC",
+                                             ["libc6", "linux-image-6.8.0-124-generic"])):
+            state = {}
+            self.mod.check_reboot_required(state, "2026-08-13T03:00:00Z")
+            self.assertEqual(state["reboot"]["level"], "warning")
+            self.mod.send_email.assert_called_once()
+
+            # Five minutes later, still pending: no second email.
+            self.mod.check_reboot_required(state, "2026-08-13T03:05:00Z")
+            self.mod.send_email.assert_called_once()
+
+    def test_check_reboot_required_silent_when_none_pending(self):
+        self.mod.send_email.reset_mock()
+        with mock.patch.object(self.mod, "read_reboot_required",
+                               return_value=(None, None, [])):
+            state = {}
+            self.mod.check_reboot_required(state, "2026-08-13T03:00:00Z")
+        self.assertEqual(state["reboot"]["level"], "ok")
+        self.assertIsNone(state["reboot"]["age_days"])
+        self.mod.send_email.assert_not_called()
+
+    def test_failed_send_is_retried_next_run(self):
+        """Same contract as check_disk: a Resend outage must not swallow the
+        only warning we get."""
+        self.mod.send_email.reset_mock()
+        self.mod.send_email.side_effect = RuntimeError("resend down")
+        with mock.patch.object(self.mod, "read_reboot_required",
+                               return_value=(63.0, "2026-06-11 06:22 UTC", ["libc6"])):
+            state = {}
+            self.mod.check_reboot_required(state, "2026-08-13T03:00:00Z")
+            self.assertEqual(state["reboot"]["level"], "ok")  # not committed
+            self.mod.send_email.side_effect = None
+            self.mod.check_reboot_required(state, "2026-08-13T03:05:00Z")
+        self.assertEqual(state["reboot"]["level"], "warning")
+        self.assertEqual(self.mod.send_email.call_count, 2)
+
+
 if __name__ == "__main__":
     unittest.main()
