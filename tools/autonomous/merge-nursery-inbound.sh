@@ -51,10 +51,26 @@ Automated by merge-nursery-inbound.sh (DAL-273). Source records are in
     exit 1
 }
 
-# Push if we can. A failed push is not fatal: the commit is local and the next
-# dale-runner session pushes it, the same way it pushes its own work.
-if ! git push -q origin main 2>>"$LOG"; then
-    log "push failed, commit is local and will go with the next session"
+# Push, healing the ordinary case where another writer got there first.
+#
+# This used to log "commit is local and will go with the next session" and carry
+# on. It did not go with the next session: it broke the next session, whose
+# `git pull --ff-only` cannot resolve a divergence. See git_sync.sh.
+source "$REPO/tools/autonomous/git_sync.sh"
+
+git_sync_push "$LOG"
+PUSH_STATUS=$?
+
+if [ "$PUSH_STATUS" -eq 0 ]; then
+    if [ "$GIT_SYNC_REBASED" = "1" ]; then
+        log "push was rejected, rebased onto origin/main and pushed"
+    fi
+else
+    REASON=$(git_sync_explain "$PUSH_STATUS")
+    log "PUSH FAILED ($REASON). The commit is local, and every autonomous session will fail its pull until this is resolved."
+    python3 "$REPO/tools/autonomous/notify.py" alert \
+        "merge-nursery-inbound could not push to origin/main: $REASON. /opt/dale/repo is ahead of origin and autonomous Dale will fail its hourly pull until someone resolves it. Fix: cd /opt/dale/repo && git rebase origin/main && git push." \
+        >/dev/null 2>&1 || log "alert email also failed"
 fi
 
 # Republish to the data dir so /admin reflects the new touch before the next

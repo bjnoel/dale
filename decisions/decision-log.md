@@ -10838,3 +10838,61 @@ from 60% to **36%**. Ladybird 271, Daleys 244.
 remains uncreatable. Not worked around.
 
 **Cost:** $0.
+
+---
+
+## DEC-285 — 2026-08-13 — A rejected push was treated as weather, and it deadlocked everything
+
+**Status:** Shipped. Prevention for the incident found while auditing DAL-251.
+
+**What happened.** At 02:07 an autonomous session committed and its push was rejected,
+because origin had moved on. At 02:15 `merge-nursery-inbound.sh` committed, was rejected
+for the same reason, and logged:
+
+```
+push failed, commit is local and will go with the next session
+```
+
+then exited 0. At 03:00 the next session ran `git pull --ff-only`, which is the one pull
+mode that cannot resolve a divergence. It exited 1 and logged `git-pull-conflict`. Three of
+those trip the circuit breaker and Dale halts entirely. It was found at 03:05 by accident,
+while auditing something unrelated, roughly two hours before the halt.
+
+**The bug is not that the push failed.** Three writers push to `origin/main`: the hourly
+session, the hourly inbound merge, and Benedict's laptop. Rejection is the expected case,
+not the exceptional one. The bug is that both call sites deferred to a "next session" that
+was structurally incapable of doing the job, and said so in a log line reassuring enough
+that nobody checked.
+
+**Four fixes, shipped together.**
+
+1. **A rejected push now heals itself.** New `tools/autonomous/git_sync.sh` provides
+   `git_sync_push`: push, and on rejection fetch, rebase, push again. One retry converts a
+   permanent deadlock into a non-event.
+2. **`--ff-only` is gone from the session pull.** It is correct for a pure deploy target
+   and wrong for a box that also pushes. `git_sync_pull` rebases its own unpushed commits.
+3. **Divergence is now alerted on.** `uptime_monitor.py` runs every 5 minutes and emails
+   when the repo has held unpushed commits for over an hour. Today's window was 50 minutes
+   of silence followed by an hour of failing sessions.
+4. **A failed push is now loud.** Both call sites send an alert naming the fix command,
+   instead of a log line implying it is handled.
+
+**What these deliberately do not do.** Neither function ever resolves a conflict. A real
+content conflict aborts the rebase and returns non-zero, because auto-merging the
+append-only decision log unattended is a worse outcome than stopping. Neither will rebase
+over an uncommitted working tree. Both properties are pinned by tests.
+
+**Tests.** `tests/test_git_sync.py` builds a bare origin and two clones and reproduces the
+deadlock exactly, including an assertion that the old `--ff-only` path really does fail on
+that state, so the regression is demonstrated rather than asserted. Six more cases cover
+the safety properties and the alert thresholds. Full suite green.
+
+**Worktrees were considered and rejected.** They give a separate working directory but
+share `.git`, refs and the remote, so they change nothing about two writers diverging
+against one branch. The problem was never contention over a checkout.
+
+**Running lesson, twenty-eighth session, second entry.** DEC-283 this morning was a config
+key whose wrong value failed silently because the system had a plausible default. This is
+the same shape in the error path: a failure was caught, logged, and handed to a recovery
+mechanism that could not perform the recovery. Both failures were invisible precisely
+because something was written to a log and nothing was written to a person.

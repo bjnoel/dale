@@ -14,6 +14,7 @@ import importlib.util
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -119,6 +120,75 @@ class DiskMonitorTests(unittest.TestCase):
             state = {}
             self.mod.check_disk(state, "2026-07-04T00:00:00Z")
         self.assertEqual(state["disk"]["level"], "ok")
+        self.mod.send_email.assert_not_called()
+
+
+class GitDivergenceTests(unittest.TestCase):
+    """The 2026-08-13 incident: a stranded commit sat unpushed for 50 minutes and
+    was found by accident. Three failed sessions would have halted Dale."""
+
+    def setUp(self):
+        self.mod = load_uptime_monitor()
+
+    def test_in_sync_is_silent(self):
+        self.assertEqual(self.mod.git_divergence_decision(False, 0, 0), (False, "none"))
+
+    def test_recently_ahead_is_silent(self):
+        # Every session and inbound merge commits before it pushes. A repo ahead
+        # for a few minutes is the normal path, not a fault.
+        self.assertEqual(self.mod.git_divergence_decision(False, 1, 0.2), (False, "none"))
+
+    def test_ahead_past_the_threshold_alerts(self):
+        self.assertEqual(self.mod.git_divergence_decision(False, 2, 1.5), (True, "alert"))
+
+    def test_does_not_re_alert_every_five_minutes(self):
+        self.assertEqual(self.mod.git_divergence_decision(True, 2, 4.0), (True, "none"))
+
+    def test_recovery_clears_and_notifies_once(self):
+        self.assertEqual(self.mod.git_divergence_decision(True, 0, 0), (False, "recovered"))
+        self.assertEqual(self.mod.git_divergence_decision(False, 0, 0), (False, "none"))
+
+    def test_check_git_divergence_emails_on_a_stranded_commit(self):
+        self.mod.send_email.reset_mock()
+        stale = int(datetime(2020, 1, 1, tzinfo=timezone.utc).timestamp())
+
+        def fake_git(*args):
+            if args[0] == "fetch":
+                return ""
+            return f"{stale}\tchore: log nursery touches from BCC'd inbound mail"
+
+        with mock.patch.object(self.mod.os.path, "isdir", return_value=True), \
+             mock.patch.object(self.mod, "_git", side_effect=fake_git):
+            state = {}
+            self.mod.check_git_divergence(state, "2026-08-13T03:00:00Z")
+
+        self.assertTrue(state["git"]["alerted"])
+        self.assertEqual(state["git"]["ahead"], 1)
+        self.mod.send_email.assert_called_once()
+
+    def test_check_git_divergence_silent_when_in_sync(self):
+        self.mod.send_email.reset_mock()
+
+        def fake_git(*args):
+            return ""
+
+        with mock.patch.object(self.mod.os.path, "isdir", return_value=True), \
+             mock.patch.object(self.mod, "_git", side_effect=fake_git):
+            state = {}
+            self.mod.check_git_divergence(state, "2026-08-13T03:00:00Z")
+
+        self.assertEqual(state["git"]["ahead"], 0)
+        self.mod.send_email.assert_not_called()
+
+    def test_fetch_failure_does_not_alert(self):
+        """A network blip must not look like a divergence."""
+        self.mod.send_email.reset_mock()
+        with mock.patch.object(self.mod.os.path, "isdir", return_value=True), \
+             mock.patch.object(self.mod, "_git", return_value=None):
+            state = {}
+            handled = self.mod.check_git_divergence(state, "2026-08-13T03:00:00Z")
+        self.assertFalse(handled)
+        self.assertNotIn("git", state)
         self.mod.send_email.assert_not_called()
 
 

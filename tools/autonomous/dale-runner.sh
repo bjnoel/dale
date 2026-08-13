@@ -76,17 +76,37 @@ fi
 
 cd "$REPO_DIR"
 
-git fetch origin 2>>"$LOG_DIR/git-errors.log" || {
-    log "Git fetch failed."
-    python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "git-fetch-failed"
+# Prefer the deployed copy: this runs before deploy.sh, so the repo copy may be
+# whatever the last pull left behind. Fall back to the repo for a fresh box.
+if [ -f "$SCRIPT_DIR/git_sync.sh" ]; then
+    source "$SCRIPT_DIR/git_sync.sh"
+elif [ -f "$REPO_DIR/tools/autonomous/git_sync.sh" ]; then
+    source "$REPO_DIR/tools/autonomous/git_sync.sh"
+else
+    log "git_sync.sh not found. Aborting."
+    python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "git-sync-missing"
     exit 1
-}
+fi
 
-git pull --ff-only origin main 2>>"$LOG_DIR/git-errors.log" || {
-    log "Git pull failed (possible conflicts)."
+# Was `git fetch` + `git pull --ff-only`. ff-only is right for a pure deploy
+# target and wrong here, because this box also pushes: one rejected push left it
+# permanently unable to pull, which halted Dale via the 3-failure breaker.
+git_sync_pull "$LOG_DIR/git-errors.log"
+PULL_STATUS=$?
+
+if [ "$PULL_STATUS" -ne 0 ]; then
+    REASON=$(git_sync_explain "$PULL_STATUS")
+    log "Git pull failed ($REASON)."
     python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "git-pull-conflict"
+    python3 "$SCRIPT_DIR/notify.py" alert \
+        "Autonomous Dale cannot pull: $REASON. Sessions will keep failing and the 3-failure breaker will halt Dale entirely. Fix: cd /opt/dale/repo && git status." \
+        >/dev/null 2>&1 || true
     exit 1
-}
+fi
+
+if [ "$GIT_SYNC_REBASED" = "1" ]; then
+    log "Pull rebased local commits onto origin/main (another writer got there first)."
+fi
 
 # Deploy scripts from repo to server locations
 if [ -f "$REPO_DIR/tools/deploy.sh" ]; then
@@ -267,9 +287,23 @@ cd "$REPO_DIR"
 UNPUSHED=$(git log origin/main..HEAD --oneline 2>/dev/null)
 if [ -n "$UNPUSHED" ]; then
     log "Pushing commits: $(echo "$UNPUSHED" | wc -l | tr -d ' ') commit(s)"
-    git push origin main 2>>"$LOG_DIR/git-errors.log" || {
-        log "Git push failed (will retry next session)"
-    }
+
+    # Was a bare push whose failure logged "will retry next session". It did not
+    # retry; it stranded the commits and broke the next session's pull.
+    git_sync_push "$LOG_DIR/git-errors.log"
+    PUSH_STATUS=$?
+
+    if [ "$PUSH_STATUS" -eq 0 ]; then
+        if [ "$GIT_SYNC_REBASED" = "1" ]; then
+            log "Push was rejected, rebased onto origin/main and pushed."
+        fi
+    else
+        REASON=$(git_sync_explain "$PUSH_STATUS")
+        log "Git push FAILED ($REASON). Commits are local and the next session will fail its pull."
+        python3 "$SCRIPT_DIR/notify.py" alert \
+            "Autonomous Dale could not push: $REASON. /opt/dale/repo is ahead of origin and the next session will fail its pull. Fix: cd /opt/dale/repo && git rebase origin/main && git push." \
+            >/dev/null 2>&1 || true
+    fi
 fi
 
 # Clear failure counter on successful completion

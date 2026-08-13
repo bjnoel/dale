@@ -9,6 +9,7 @@ State is tracked in /opt/dale/data/uptime_state.json to avoid alert spam.
 import json
 import os
 import shutil
+import subprocess
 import sys
 import urllib.request
 import urllib.error
@@ -54,6 +55,16 @@ DISK_WARN_PCT = 85       # first heads-up
 DISK_CRIT_PCT = 93       # urgent
 DISK_RECOVER_PCT = 80    # hysteresis: only clear the alert once back below this
 _DISK_SEVERITY = {"ok": 0, "warning": 1, "critical": 2}
+
+# Repo divergence. git_sync.sh should heal a rejected push within the hour, so
+# anything still unpushed after this long means the self-heal itself failed and
+# the next session's pull is about to start failing.
+#
+# On 2026-08-13 a stranded commit sat for 50 minutes and was found by accident;
+# three failed sessions would have halted Dale entirely. One hour is inside that
+# window and outside the normal push-retry path.
+GIT_REPO_PATH = "/opt/dale/repo"
+GIT_AHEAD_ALERT_HOURS = 1
 
 
 def load_state():
@@ -230,6 +241,119 @@ def check_disk(state, now_str):
     return True
 
 
+def git_divergence_decision(prev_alerted, ahead, oldest_age_hours):
+    """Pure: decide what to do about unpushed commits in the server repo.
+
+    Returns (now_alerted, action) where action is "alert", "recovered" or "none".
+
+    A repo briefly ahead of origin is completely normal: every session and every
+    inbound merge commits before it pushes. Only a repo that is *still* ahead an
+    hour later indicates the push path has failed, which is the state that
+    breaks every subsequent pull.
+    """
+    if ahead == 0:
+        return False, ("recovered" if prev_alerted else "none")
+    if oldest_age_hours >= GIT_AHEAD_ALERT_HOURS:
+        return True, ("none" if prev_alerted else "alert")
+    return prev_alerted, "none"
+
+
+def _git(*args):
+    """Run git in the server repo. Returns stdout, or None on any failure."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", GIT_REPO_PATH, *args],
+            capture_output=True, text=True, timeout=60,
+        )
+        return result.stdout.strip() if result.returncode == 0 else None
+    except Exception:
+        return None
+
+
+def format_git_email(ahead, oldest_age_hours, subjects):
+    listed = "".join(f"<li><code>{s}</code></li>" for s in subjects[:5])
+    html = f"""
+<h2>⚠️ /opt/dale/repo has been ahead of origin for {oldest_age_hours:.1f} hours</h2>
+<p><strong>{ahead} unpushed commit(s).</strong> A push has failed and did not
+self-heal.</p>
+<ul>{listed}</ul>
+<p>This matters more than it looks. Autonomous Dale's hourly session pulls before
+it runs; a diverged repo makes that pull fail, which logs a failure, and three
+consecutive failures trip the circuit breaker and halt Dale entirely.</p>
+<p><strong>Fix:</strong> <code>cd /opt/dale/repo &amp;&amp; git rebase origin/main
+&amp;&amp; git push origin main</code>. If the rebase conflicts, resolve it by
+hand: the decision log is append-only, so keep both entries and renumber the one
+that has not reached origin.</p>
+""".strip()
+    text = (f"/opt/dale/repo is {ahead} commit(s) ahead of origin, oldest "
+            f"{oldest_age_hours:.1f}h old. A push failed and did not self-heal. "
+            f"The next autonomous session's pull will fail; three failures halt Dale. "
+            f"Fix: cd /opt/dale/repo && git rebase origin/main && git push origin main")
+    return html, text
+
+
+def check_git_divergence(state, now_str):
+    """Alert when the repo has held unpushed commits for over an hour.
+
+    The failure this catches is silent by construction: everything stays healthy,
+    the sites stay up, and the only symptom is automation quietly stopping an
+    hour later. Mirrors check_disk: de-dupes via state, and on a failed send
+    keeps the previous flag so the alert retries.
+    """
+    if not os.path.isdir(os.path.join(GIT_REPO_PATH, ".git")):
+        return False
+
+    if _git("fetch", "-q", "origin") is None:
+        print(f"[{now_str}] GIT: fetch failed, skipping divergence check")
+        return False
+
+    log = _git("log", "origin/main..HEAD", "--format=%ct\t%s")
+    if log is None:
+        print(f"[{now_str}] GIT: could not read divergence")
+        return False
+
+    lines = [l for l in log.split("\n") if l.strip()]
+    ahead = len(lines)
+    subjects = [l.split("\t", 1)[1] for l in lines if "\t" in l]
+
+    oldest_age_hours = 0.0
+    if lines:
+        try:
+            oldest_ts = min(int(l.split("\t", 1)[0]) for l in lines)
+            oldest_age_hours = (
+                datetime.now(timezone.utc) - datetime.fromtimestamp(oldest_ts, timezone.utc)
+            ).total_seconds() / 3600
+        except (ValueError, IndexError):
+            oldest_age_hours = GIT_AHEAD_ALERT_HOURS  # unreadable timestamp, assume stale
+
+    prev_alerted = state.get("git", {}).get("alerted", False)
+    now_alerted, action = git_divergence_decision(prev_alerted, ahead, oldest_age_hours)
+    committed = now_alerted
+
+    if action == "alert":
+        html, text = format_git_email(ahead, oldest_age_hours, subjects)
+        try:
+            send_email(f"⚠️ Dale repo stuck: {ahead} unpushed commit(s)", html, text)
+            print(f"[{now_str}] GIT: {ahead} unpushed, {oldest_age_hours:.1f}h old — alert sent")
+        except Exception as e:
+            committed = prev_alerted  # retry next run
+            print(f"[{now_str}] GIT: {ahead} unpushed — failed to send alert: {e}")
+    elif action == "recovered":
+        try:
+            send_email("✅ Dale repo back in sync with origin",
+                       "<h2>✅ /opt/dale/repo is back in sync with origin/main.</h2>",
+                       "/opt/dale/repo is back in sync with origin/main.")
+            print(f"[{now_str}] GIT RECOVERED: in sync — alert sent")
+        except Exception as e:
+            committed = prev_alerted
+            print(f"[{now_str}] GIT RECOVERED: failed to send alert: {e}")
+    else:
+        print(f"[{now_str}] GIT: {ahead} unpushed ({oldest_age_hours:.1f}h old)")
+
+    state["git"] = {"alerted": committed, "ahead": ahead, "last_checked": now_str}
+    return True
+
+
 def main():
     state = load_state()
     now = datetime.now(timezone.utc)
@@ -291,6 +415,11 @@ def main():
 
     # Disk space — the failure mode HTTP checks can't see (full disk corrupts data silently).
     if check_disk(state, now_str):
+        changed = True
+
+    # Repo divergence — the other invisible failure: sites stay up, disk is fine,
+    # and automation silently stops an hour later.
+    if check_git_divergence(state, now_str):
         changed = True
 
     if changed:
