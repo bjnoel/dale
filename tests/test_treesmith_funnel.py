@@ -31,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from golden_runner import run_builder  # noqa: E402
 from treestock_layout import render_treesmith_promo  # noqa: E402
+from stocklib.flags import DIGEST_SIGNUP_ENABLED  # noqa: E402
 
 STATIC = SCRAPERS / "static" / "treesmith"
 
@@ -89,14 +90,20 @@ class HomepagePromoTest(unittest.TestCase):
         self.assertIn("utm_content=landing", self.landing)
 
     def test_promo_sits_below_the_results(self):
-        """treestock rule 1. Also below the subscribe block, which stays primary."""
+        """treestock rule 1. Also below the subscribe block when that block is
+        on the page at all: the digest signup is hidden site-wide while
+        DIGEST_SIGNUP_ENABLED is off, so its ordering is only asserted when it
+        is actually rendered."""
         for name, html in (("homepage", self.home), ("landing", self.landing)):
             with self.subTest(page=name):
                 results = html.index('<div id="results">')
-                subscribe = html.index('id="subscribeForm"')
                 promo = html.index("Track your collection with Treesmith")
                 self.assertLess(results, promo)
-                self.assertLess(subscribe, promo)
+                if DIGEST_SIGNUP_ENABLED:
+                    self.assertIn('id="subscribeForm"', html)
+                    self.assertLess(html.index('id="subscribeForm"'), promo)
+                else:
+                    self.assertNotIn('id="subscribeForm"', html)
 
     def test_promo_is_inside_main(self):
         for name, html in (("homepage", self.home), ("landing", self.landing)):

@@ -19,6 +19,8 @@ SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 
 sys.path.insert(0, str(SCRAPERS))
 
+from stocklib.flags import DIGEST_SIGNUP_ENABLED  # noqa: E402
+
 
 def _load(path: Path):
     spec = importlib.util.spec_from_file_location(path.stem, path)
@@ -164,8 +166,13 @@ class SparseAndClosedStateTests(unittest.TestCase):
         self.assertIn("2027", HTML_CLOSED)
 
     def test_curated_sections_survive_closed_state(self):
-        for anchor in ('id="what-is-bare-root"', 'id="species"', 'id="faq"',
-                       'id="references"', 'id="alerts"'):
+        anchors = ['id="what-is-bare-root"', 'id="species"', 'id="faq"',
+                   'id="references"']
+        # id="alerts" is the shared digest CTA (build_when_to_plant.build_cta),
+        # hidden while DIGEST_SIGNUP_ENABLED is off.
+        if DIGEST_SIGNUP_ENABLED:
+            anchors.append('id="alerts"')
+        for anchor in anchors:
             self.assertIn(anchor, HTML_CLOSED, f"missing section {anchor} in closed state")
 
 

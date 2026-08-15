@@ -19,6 +19,8 @@ SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 # build_when_to_plant imports treestock_layout, so the scrapers dir must be importable.
 sys.path.insert(0, str(SCRAPERS))
 
+from stocklib.flags import DIGEST_SIGNUP_ENABLED  # noqa: E402
+
 
 def _load(path: Path):
     spec = importlib.util.spec_from_file_location(path.stem, path)
@@ -48,8 +50,15 @@ class BuildTests(unittest.TestCase):
             self.assertGreater(out.stat().st_size, 5000)
 
     def test_required_sections_present(self):
-        for anchor in ('id="zones"', 'id="by-type"', 'id="calendar"',
-                       'id="alerts"', 'id="faq"', 'id="related"'):
+        anchors = ['id="zones"', 'id="by-type"', 'id="calendar"',
+                   'id="faq"', 'id="related"']
+        # The alerts CTA is the digest signup, hidden site-wide while
+        # DIGEST_SIGNUP_ENABLED is off.
+        if DIGEST_SIGNUP_ENABLED:
+            anchors.append('id="alerts"')
+        else:
+            self.assertNotIn('id="alerts"', HTML)
+        for anchor in anchors:
             self.assertIn(anchor, HTML, f"missing section {anchor}")
         self.assertIn("Bare-root season: June to August", HTML)
 

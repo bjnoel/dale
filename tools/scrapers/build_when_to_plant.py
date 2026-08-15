@@ -28,6 +28,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
@@ -530,7 +531,10 @@ def build_references() -> str:
 
 
 def build_cta() -> str:
-    """Alerts CTA reusing the site-wide double-opt-in subscribe contract."""
+    """Alerts CTA reusing the site-wide double-opt-in subscribe contract.
+    Empty while DIGEST_SIGNUP_ENABLED is off (stocklib/flags.py)."""
+    if not DIGEST_SIGNUP_ENABLED:
+        return ""
     return """
 <section class="bg-green-50 border border-green-300 rounded-lg p-6 mb-8" id="alerts">
   <h2 class="text-lg font-semibold text-green-900 mb-1">Know the moment bare-root trees drop</h2>

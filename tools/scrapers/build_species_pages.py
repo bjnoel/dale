@@ -24,6 +24,7 @@ from datetime import datetime, timezone
 from shipping import SHIPPING_MAP, LOCAL_DELIVERY, delivery_label
 from stocklib.templates import render as render_template
 from stocklib.structured_data import product_offer_jsonld
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 import growing_guides
 import rootstock_guides
@@ -557,7 +558,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
             f"across all {total_nurseries} nurseries we monitor. Filter by state below."
         )
 
-    watch_box_html = f"""  <!-- Daily-digest subscribe box (always shown) -->
+    watch_box_html = "" if not DIGEST_SIGNUP_ENABLED else f"""  <!-- Daily-digest subscribe box -->
   <div id="subscribeBox" class="p-4 {sub_bg} border rounded-lg text-sm mb-6">
     {heading_p}<p class="text-gray-600 mb-3">{sub_body}</p>
     <form id="subscribeForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
@@ -582,7 +583,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     # the dashboard search bundle, so the form is wired up here. Posts the
     # general double-opt-in subscribe contract (action:'subscribe' + state),
     # the same one the variety pages use. No species-level watch (removed).
-    watch_script = r"""
+    watch_script = "" if not DIGEST_SIGNUP_ENABLED else r"""
 <script>
 (function() {
   var subForm = document.getElementById('subscribeForm');

@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, delivery_label
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.snapshots import iter_nursery_snapshots
 from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
@@ -208,6 +209,7 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
 
     return render_template(
         "variety_page.html.j2",
+        digest_signup=DIGEST_SIGNUP_ENABLED,
         head=head, header=header, breadcrumb=breadcrumb, footer=footer,
         treesmith_promo=render_treesmith_promo("variety"),
         title=title, today=today, nursery_count=nursery_count, in_stock_count=in_stock_count,

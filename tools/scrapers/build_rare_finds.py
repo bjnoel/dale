@@ -21,6 +21,7 @@ SCRAPERS_DIR = Path(__file__).parent
 sys.path.insert(0, str(SCRAPERS_DIR))
 from build_compare_pages import load_species, build_species_lookup, match_title
 from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.templates import render as render_template
 from stocklib.utm import outbound
 from treestock_layout import render_head, render_header, render_footer
@@ -249,6 +250,7 @@ def build_rare_page(data_dir: str, output_dir: str):
 
     html = render_template(
         "rare_page.html.j2",
+        digest_signup=DIGEST_SIGNUP_ENABLED,
         head=head, header=header, footer=footer,
         species_count=species_count, total_products=total_products,
         date_str=date_str, cards=cards, nursery_total=len(NURSERY_NAMES),

@@ -83,7 +83,9 @@
     </div>
   </section>
 
-  <!-- Email alert CTA -->
+  {% if digest_signup %}
+  <!-- Email alert CTA. Posted action:'watch' to /api/subscribe, an action
+       the server never had, so it silently did a plain digest signup. -->
   <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
     <p class="font-medium text-green-800 mb-1">Get price drop alerts for {{ name }}</p>
     <p class="text-gray-600 mb-3">We monitor {{ total_nurseries }} nurseries daily. Get emailed when {{ name }} prices drop or new varieties appear. <a href="/sample-digest.html" class="text-green-700 underline">See sample &rarr;</a></p>
@@ -124,6 +126,7 @@
     });
   });
   </script>
+  {% endif %}
 
   <!-- SEO text -->
   <section class="mt-8 text-sm text-gray-500 border-t border-gray-100 pt-6">

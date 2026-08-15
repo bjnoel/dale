@@ -22,9 +22,6 @@ const CAT_BADGE = { fruit: ['Fruit', 'cat-badge-fruit'], bush_tucker: ['Bush Tuc
 const SLUG_TO_NAME = {};
 Object.values(SPECIES_SLUGS).forEach(v => { SLUG_TO_NAME[v.slug] = v.name; });
 
-// Tracks which species the user is currently viewing (for context-aware subscribe)
-let currentWatchSlug = null;
-
 const NURSERY_URLS = {
   'ross-creek': 'rosscreektropicals.com.au',
   'ladybird': 'ladybirdnursery.com.au',
@@ -192,7 +189,6 @@ function updateSubCTA(q) {
   const subState = document.getElementById('subState');
 
   if (!q) {
-    currentWatchSlug = null;
     ctaEl.innerHTML = `<strong>Get the free WA Rare Fruit Guide + restock alerts</strong> \u2014 free daily email, unsubscribe any time. <a href="/wa-rare-fruit-guide.html" class="text-green-700 underline whitespace-nowrap">Preview the guide \u2192</a>`;
     if (floatInput) floatInput.placeholder = 'Get daily alerts (free)';
     if (subBtn) subBtn.textContent = 'Subscribe free';
@@ -217,13 +213,11 @@ function updateSubCTA(q) {
     // Species-level watches were removed (variety watches only, see commit 3f89a09).
     // A species pill/search subscribes to the general daily digest (which includes this
     // species); the link points to the species page where the per-variety watches live.
-    currentWatchSlug = null;
     ctaEl.innerHTML = `<strong>Get free daily restock and price alerts.</strong> Unsubscribe any time. <a href="/species/${slug}.html" class="text-green-700 underline whitespace-nowrap">See all ${name} &rarr;</a>`;
     if (floatInput) floatInput.placeholder = 'Get daily alerts (free)';
     if (subBtn) subBtn.textContent = 'Subscribe free';
     if (subState) subState.style.display = '';
   } else {
-    currentWatchSlug = null;
     const displayQ = q.length > 20 ? q.slice(0, 20) + '...' : q;
     ctaEl.innerHTML = `<strong>Get alerted when "${displayQ}" prices change.</strong> Free daily email, unsubscribe any time. <a href="/sample-digest.html" class="text-green-700 underline whitespace-nowrap">See example &rarr;</a>`;
     if (floatInput) floatInput.placeholder = `"${displayQ}" price alerts (free)`;
@@ -232,40 +226,93 @@ function updateSubCTA(q) {
   }
 }
 
-function setupWatchForm(formId, emailId, msgId) {
-  const form = document.getElementById(formId);
-  if (!form) return;
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const email = document.getElementById(emailId).value.trim();
-    const species = form.dataset.species;
-    const msg = document.getElementById(msgId);
-    const btn = form.querySelector('button');
-    btn.disabled = true;
-    btn.textContent = 'Watching...';
-    try {
-      const resp = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, action: 'watch', species}),
-      });
-      const result = await resp.json();
-      msg.classList.remove('hidden');
-      msg.classList.add('text-green-700');
-      msg.textContent = result.message === 'Already watching'
-        ? 'You are already watching this.'
-        : 'Done! We will email you when it comes in stock.';
-      form.querySelector('input').disabled = true;
-      btn.classList.add('hidden');
-    } catch(err) {
-      msg.classList.remove('hidden');
-      msg.classList.add('text-red-600');
-      msg.textContent = 'Something went wrong. Please try again.';
-      btn.disabled = false;
-      btn.textContent = 'Watch this';
-    }
-  });
+// --- Per-variety alerts -----------------------------------------------------
+// The one capture channel that works. Every result row with a variety slug gets
+// a control here, in stock or not: you can ask to be told when something comes
+// back OR when it drops in price. It used to require a click through to
+// /variety/<slug>.html and only appeared on out-of-stock rows.
+
+const WATCH_EMAIL_KEY = 'ts_watch_email';
+
+function rememberedWatchEmail() {
+  try { return localStorage.getItem(WATCH_EMAIL_KEY) || ''; } catch (e) { return ''; }
 }
+
+function rememberWatchEmail(email) {
+  try { localStorage.setItem(WATCH_EMAIL_KEY, email); } catch (e) { /* private mode */ }
+}
+
+// Slug -> title, harvested during render so the POST can name the variety the
+// way the variety pages do.
+const WATCH_TITLES = {};
+
+async function submitWatch(wrap, email) {
+  const slug = wrap.dataset.vs;
+  const msg = wrap.querySelector('.watch-msg');
+  const btn = wrap.querySelector('.watch-go');
+  btn.disabled = true;
+  btn.textContent = '...';
+  try {
+    const resp = await fetch('/api/watch-variety', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email: email,
+        variety_slug: slug,
+        species_slug: wrap.dataset.sp || '',
+        variety_title: WATCH_TITLES[slug] || slug
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'failed');
+    rememberWatchEmail(email);
+    wrap.querySelector('.watch-form').classList.add('hidden');
+    msg.textContent = data.message === 'Already watching'
+      ? 'Already on your alert list.'
+      : 'Alert set. We will email you.';
+    msg.classList.remove('hidden');
+    wrap.querySelector('.notify-link').classList.add('hidden');
+  } catch (err) {
+    msg.textContent = 'Could not set that alert. Try again.';
+    msg.classList.remove('hidden');
+    msg.classList.add('watch-err');
+    btn.disabled = false;
+    btn.textContent = 'Set alert';
+  }
+}
+
+// Delegated: rows are re-rendered on every search, so per-row listeners would
+// leak. One listener on the container survives any number of renders.
+document.getElementById('results').addEventListener('click', function(e) {
+  const trigger = e.target.closest('.notify-link');
+  if (trigger) {
+    e.preventDefault();
+    const wrap = trigger.closest('.watch-wrap');
+    const form = wrap.querySelector('.watch-form');
+    const input = form.querySelector('.watch-email');
+    const saved = rememberedWatchEmail();
+    // Second and third watches are one tap: the address is already known.
+    if (saved) { submitWatch(wrap, saved); return; }
+    form.classList.toggle('hidden');
+    if (!form.classList.contains('hidden')) input.focus();
+    return;
+  }
+  const go = e.target.closest('.watch-go');
+  if (go) {
+    e.preventDefault();
+    const wrap = go.closest('.watch-wrap');
+    const email = wrap.querySelector('.watch-email').value.trim();
+    if (email) submitWatch(wrap, email);
+  }
+});
+
+document.getElementById('results').addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter' || !e.target.classList.contains('watch-email')) return;
+  e.preventDefault();
+  const wrap = e.target.closest('.watch-wrap');
+  const email = e.target.value.trim();
+  if (email) submitWatch(wrap, email);
+});
 
 function render() {
   const results = currentResults;
@@ -343,11 +390,27 @@ function render() {
     const catBadges = (categoryFilter && (SPECIES_CATS[p.sl] || []).includes('bush_tucker'))
       ? `<span class="cat-badge ${CAT_BADGE.bush_tucker[1]}" data-catfilter="bush_tucker" role="button" tabindex="0" title="Show only bush tucker" style="cursor:pointer">${CAT_BADGE.bush_tucker[0]}</span>`
       : '';
+    // Per-variety alert control. On EVERY row that names a cultivar, not just
+    // out-of-stock ones: an in-stock item is exactly what you want a price-drop
+    // alert on, and until now there was no way to ask for one.
     let notifyLink = '';
-    if (!p.a && p.vs) {
-      notifyLink = VARIETY_IN_STOCK[p.vs]
-        ? `<a href="/variety/${p.vs}.html" class="notify-link">In stock elsewhere &rarr;</a>`
-        : `<a href="/variety/${p.vs}.html" class="notify-link">Notify me when it's back in stock</a>`;
+    if (p.vs) {
+      WATCH_TITLES[p.vs] = p.t;
+      const label = !p.a
+        ? (VARIETY_IN_STOCK[p.vs] ? 'In stock elsewhere, alert me anyway' : "Notify me when it's back in stock")
+        : 'Alert me if the price drops';
+      const elsewhere = (!p.a && VARIETY_IN_STOCK[p.vs])
+        ? `<a href="/variety/${p.vs}.html" class="notify-alt">See where &rarr;</a>`
+        : '';
+      notifyLink =
+        `<div class="watch-wrap" data-vs="${p.vs}" data-sp="${p.sl || ''}">` +
+          `<button type="button" class="notify-link">${label}</button>${elsewhere}` +
+          `<span class="watch-form hidden">` +
+            `<input type="email" class="watch-email" placeholder="your@email.com" aria-label="Email for ${label}">` +
+            `<button type="button" class="watch-go">Set alert</button>` +
+          `</span>` +
+          `<span class="watch-msg hidden"></span>` +
+        `</div>`;
     }
     return `<div class="product-row-wrap">
       <a href="${p.u}${utm}" target="_blank" rel="noopener" class="product-row${featuredClass} flex items-center gap-3 py-3 px-2 block">
@@ -364,24 +427,11 @@ function render() {
     </a>${notifyLink}</div>`;
   }).join('');
 
-  // Watch CTA: show when search results all out of stock
-  const q2 = searchInput.value.trim();
-  if (q2 && results.length > 0 && results.every(p => !p.a)) {
-    const esc2 = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    const slug2 = q2.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    const banner =
-      '<div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-3" id="watchBannerWrap">' +
-      '<p class="text-sm font-semibold text-green-800">All <span class="text-green-900">' + esc2(q2) + '</span> listings are currently out of stock</p>' +
-      '<p class="text-xs text-gray-500 mt-0.5 mb-2">Get an email when any come back in stock.</p>' +
-      '<form id="watchBannerForm" data-species="' + slug2 + '" class="flex gap-2">' +
-      '<input type="email" id="watchBannerEmail" placeholder="your@email.com" required class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 min-w-0">' +
-      '<button type="submit" class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">Watch</button>' +
-      '</form>' +
-      '<div id="watchBannerMsg" class="mt-2 text-sm hidden"></div>' +
-      '</div>';
-    container.insertAdjacentHTML('afterbegin', banner);
-    setupWatchForm('watchBannerForm', 'watchBannerEmail', 'watchBannerMsg');
-  }
+  // The "all results out of stock" watch banner used to live here. It POSTed
+  // {action:'watch'} to /api/subscribe, an action the server never had, so it
+  // silently enrolled people in the general digest while telling them they were
+  // watching a species. Species-level watches were removed deliberately in
+  // April; every row now carries its own per-variety control instead.
 
   if (results.length > displayCount) {
     loadMoreEl.classList.remove('hidden');
@@ -808,40 +858,28 @@ document.getElementById('results').addEventListener('click', function(e) {
 // Initial render (also re-canonicalises the URL through syncURL())
 search();
 
-// Subscribe form (context-aware: species watch or general daily alert)
-document.getElementById('subscribeForm').addEventListener('submit', async (e) => {
+// Digest subscribe form. Absent from the page while DIGEST_SIGNUP_ENABLED is
+// off (stocklib/flags.py), so this must be guarded rather than assumed.
+const subscribeFormEl = document.getElementById('subscribeForm');
+if (subscribeFormEl) subscribeFormEl.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('subEmail').value.trim();
   const stateEl = document.getElementById('subState');
   const state = stateEl ? stateEl.value : 'ALL';
   const msg = document.getElementById('subMessage');
   const btn = document.getElementById('subBtn');
-  const watchSlug = currentWatchSlug;
   btn.disabled = true;
-  btn.textContent = watchSlug ? 'Setting alert...' : 'Subscribing...';
-
-  let payload;
-  if (watchSlug) {
-    payload = {email, action: 'watch', species: watchSlug};
-  } else {
-    payload = {email, state};
-  }
+  btn.textContent = 'Subscribing...';
 
   try {
     const resp = await fetch('/api/subscribe', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload),
+      body: JSON.stringify({email, state}),
     });
     const data = await resp.json();
     if (resp.ok) {
-      if (watchSlug && resp.status === 201) {
-        const speciesName = SLUG_TO_NAME[watchSlug] || watchSlug;
-        msg.textContent = `Watching ${speciesName} \u2014 we\u2019ll email you when any ${speciesName} variety comes back in stock.`;
-      } else if (watchSlug && resp.status === 200) {
-        const speciesName = SLUG_TO_NAME[watchSlug] || watchSlug;
-        msg.textContent = `You\u2019re already watching ${speciesName}.`;
-      } else if (resp.status === 202) {
+      if (resp.status === 202) {
         msg.textContent = `Check your email \u2014 we sent you a confirmation link.`;
         document.getElementById('subEmail').value = '';
       } else if (resp.status === 201) {
@@ -865,7 +903,7 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
     msg.classList.remove('hidden');
   }
   btn.disabled = false;
-  btn.textContent = watchSlug ? `Watch ${SLUG_TO_NAME[watchSlug] || watchSlug}` : 'Subscribe free';
+  btn.textContent = 'Subscribe free';
 });
 
 // Floating subscribe bar (mobile only — shows after scroll or timer)
@@ -915,23 +953,15 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
     const email = document.getElementById('floatEmail').value.trim();
     const stateEl = document.getElementById('subState');
     const state = stateEl ? stateEl.value : 'ALL';
-    const watchSlug = currentWatchSlug;
     const btn = e.target.querySelector('button[type=submit]');
     btn.disabled = true;
     btn.textContent = '...';
-
-    let payload;
-    if (watchSlug) {
-      payload = {email, action: 'watch', species: watchSlug};
-    } else {
-      payload = {email, state};
-    }
 
     try {
       const resp = await fetch('/api/subscribe', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload),
+        body: JSON.stringify({email, state}),
       });
       const data = await resp.json();
       if (resp.status === 202) {
@@ -939,9 +969,7 @@ document.getElementById('subscribeForm').addEventListener('submit', async (e) =>
         setTimeout(function() { bar.classList.add('translate-y-full'); }, 4000);
       } else if (resp.status === 201 || resp.status === 200) {
         localStorage.setItem('ts_subscribed', '1');
-        const confirmMsg = watchSlug
-          ? `Alert set! We\u2019ll email when ${SLUG_TO_NAME[watchSlug] || watchSlug} is back in stock.`
-          : `Subscribed! You\u2019ll get tomorrow\u2019s changes in your inbox.`;
+        const confirmMsg = `Subscribed! You\u2019ll get tomorrow\u2019s changes in your inbox.`;
         bar.innerHTML = `<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-white font-medium">${confirmMsg}</div>`;
         setTimeout(function() { bar.classList.add('translate-y-full'); }, 3000);
       } else {

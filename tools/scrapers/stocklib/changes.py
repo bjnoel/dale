@@ -77,7 +77,7 @@ def load_snapshot(snap_dir: Path, target_date: str,
         if not variants:
             # No variants at all (e.g. Ecwid flat products) -- key by URL
             key = url or title
-            products[key] = p
+            products[key] = dict(p, product_title=title)
         else:
             # Always flatten to variant level, even single-variant products, so
             # keys stay consistent when a product gains/loses variants.
@@ -91,6 +91,12 @@ def load_snapshot(snap_dir: Path, target_date: str,
                         vprice = None
                 products[vkey] = {
                     "title": variant_display_title(title, v.get("title", "")),
+                    # The raw product title, kept alongside the variant display
+                    # title. Callers that need to map a variant back to a
+                    # cultivar (send_variety_alerts) must slug from this: the
+                    # display title carries a size suffix, and shapes like
+                    # "X (Default Title)" slug into a different variety.
+                    "product_title": title,
                     "url": url,
                     "min_price": vprice,
                     "any_available": bool(v.get("available", False)),
@@ -108,6 +114,10 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
 
     for key, product in curr.items():
         title = product.get("title", "")
+        # Raw product title (no size suffix), for callers mapping a variant
+        # back to a cultivar. Falls back to the display title for snapshots
+        # loaded before this field existed.
+        product_title = product.get("product_title", title)
         price = product.get("min_price")
         available = product.get("any_available", product.get("available", False))
 
@@ -115,6 +125,7 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
             if available:
                 changes["new_products"].append({
                     "title": title,
+                    "product_title": product_title,
                     "price": price,
                     "url": product.get("url", ""),
                 })
@@ -130,6 +141,7 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
         if back_in_stock:
             entry = {
                 "title": title,
+                "product_title": product_title,
                 "price": price,
                 "url": product.get("url", ""),
             }
@@ -145,6 +157,7 @@ def compare_snapshots(prev: dict, curr: dict) -> dict:
             if diff < -0.01:
                 changes["price_drops"].append({
                     "title": title,
+                    "product_title": product_title,
                     "old_price": prev_price,
                     "new_price": price,
                     "url": product.get("url", ""),

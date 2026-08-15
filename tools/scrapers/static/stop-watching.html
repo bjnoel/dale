@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Stop alerts | treestock.com.au</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 80px auto; padding: 24px; color: #111; line-height: 1.6; }
+  h2 { color: #065f46; margin-bottom: 8px; font-size: 1.3rem; }
+  .variety { font-weight: 700; color: #92400e; }
+  .email { color: #6b7280; font-size: 0.9rem; }
+  button { background: #dc2626; color: white; border: none; padding: 10px 28px; border-radius: 6px; font-size: 1rem; cursor: pointer; margin-top: 16px; }
+  button:hover { background: #b91c1c; }
+  button[disabled] { opacity: 0.6; cursor: progress; }
+  #msg { margin-top: 16px; font-size: 0.95rem; min-height: 1.4em; }
+  .ok { color: #065f46; }
+  .err { color: #b91c1c; }
+  .alt { display: block; margin-top: 24px; font-size: 0.85rem; color: #6b7280; }
+  .back { display: block; margin-top: 20px; color: #6b7280; font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<div id="panel">
+  <h2 id="heading">Stop these alerts?</h2>
+  <p id="lead">You are about to stop receiving treestock.com.au alerts.</p>
+  <p class="email" id="email-display"></p>
+  <button id="confirm">Yes, stop these alerts</button>
+  <a href="#" class="alt" id="stop-all-link">Or stop every treestock alert for this address</a>
+</div>
+
+<div id="msg"></div>
+<a href="https://treestock.com.au" class="back">&larr; Back to treestock.com.au</a>
+
+<script>
+(function () {
+  var p = new URLSearchParams(location.search);
+  var email = p.get('email') || '';
+  var token = p.get('token') || '';
+  var variety = p.get('variety') || '';
+  var title = p.get('title') || '';
+
+  var heading = document.getElementById('heading');
+  var lead = document.getElementById('lead');
+  var msg = document.getElementById('msg');
+  var panel = document.getElementById('panel');
+  var confirmBtn = document.getElementById('confirm');
+  var stopAllLink = document.getElementById('stop-all-link');
+  var dropAll = false;
+
+  document.getElementById('email-display').textContent = email;
+
+  if (!email || !token) {
+    panel.style.display = 'none';
+    msg.className = 'err';
+    msg.textContent = 'This link is missing information. Please use the link from your alert email.';
+    return;
+  }
+
+  if (variety) {
+    var label = title || variety.replace(/-/g, ' ');
+    heading.textContent = 'Stop alerts for this variety?';
+    lead.innerHTML = 'You will stop getting emails about <span class="variety"></span>. Any other varieties you watch are unaffected.';
+    lead.querySelector('.variety').textContent = label;
+  } else {
+    dropAll = true;
+    stopAllLink.style.display = 'none';
+    heading.textContent = 'Stop all treestock alerts?';
+    lead.textContent = 'You will stop getting emails about every variety you are watching.';
+  }
+
+  function send() {
+    confirmBtn.disabled = true;
+    var payload = {email: email, token: token};
+    if (dropAll) { payload.all = true; } else { payload.variety_slug = variety; }
+    fetch('/api/unwatch-variety', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('failed');
+      panel.style.display = 'none';
+      msg.className = 'ok';
+      msg.textContent = dropAll
+        ? 'Done. You will not get any more treestock alerts.'
+        : 'Done. That alert has been removed.';
+    }).catch(function () {
+      confirmBtn.disabled = false;
+      msg.className = 'err';
+      msg.textContent = 'Something went wrong. Please try again, or reply to the email and we will sort it out.';
+    });
+  }
+
+  confirmBtn.addEventListener('click', send);
+  stopAllLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    dropAll = true;
+    heading.textContent = 'Stop all treestock alerts?';
+    lead.textContent = 'You will stop getting emails about every variety you are watching.';
+    stopAllLink.style.display = 'none';
+    confirmBtn.textContent = 'Yes, stop all alerts';
+  });
+})();
+</script>
+</body>
+</html>

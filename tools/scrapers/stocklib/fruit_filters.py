@@ -91,3 +91,16 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
         return any(kw in title_lower for kw in include_keywords)
 
     return True
+
+
+def digest_product_filter(product: dict, nursery_key: str) -> bool:
+    """The full treestock inclusion rule: the nursery's own fruit
+    categorisation plus the junk/seed-packet filter.
+
+    Lives here rather than in daily_digest.py because send_variety_alerts.py
+    needs exactly the same rule to run stocklib.changes over the snapshots, and
+    a second copy would drift the way FRUIT_FILTERS itself once did.
+    """
+    from stocklib.classify import is_real_product
+    return (is_real_product(product.get("title", ""))
+            and is_fruit_product(product, nursery_key))

@@ -20,6 +20,7 @@ from datetime import datetime, timezone
 from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
@@ -197,6 +198,7 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
 
     return render_template(
         "compare_page.html.j2",
+        digest_signup=DIGEST_SIGNUP_ENABLED,
         head=head, header=header, breadcrumb=breadcrumb, footer=footer,
         name=name, latin=latin, slug=slug, now=now,
         total_nurseries=total_nurseries, in_stock_count=len(in_stock),

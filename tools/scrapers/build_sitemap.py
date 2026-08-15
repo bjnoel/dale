@@ -41,7 +41,9 @@ STATIC_PAGES = [
     ("compare/", "weekly", "0.8"),
     ("variety/", "weekly", "0.7"),
     ("rare.html", "daily", "0.8"),
-    ("sample-digest.html", "daily", "0.6"),
+    # sample-digest.html dropped 2026-08-15: the digest signup it exists to sell
+    # is hidden site-wide (stocklib.flags.DIGEST_SIGNUP_ENABLED). Re-add it here
+    # when that flag goes back on.
     ("guide.html", "monthly", "0.7"),
     ("finger-lime-guide.html", "monthly", "0.8"),
     ("when-to-plant.html", "monthly", "0.8"),

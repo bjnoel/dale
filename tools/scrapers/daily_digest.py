@@ -27,7 +27,8 @@ from treestock_layout import render_head, render_header, render_footer
 # Fruit species lookup for filtering non-fruit products
 
 from stocklib.classify import is_real_product
-from stocklib.fruit_filters import FRUIT_FILTERS, is_fruit_product
+from stocklib.fruit_filters import (FRUIT_FILTERS, digest_product_filter,
+                                    is_fruit_product)
 from stocklib.utm import outbound, affiliate
 from stocklib import changes as _changes
 from stocklib.changes import variant_key as _variant_key, variant_display_title as _variant_display_title, compare_snapshots
@@ -125,11 +126,10 @@ def filter_changes_by_plant_categories(all_changes: dict, plant_categories=None)
     return out
 
 
-def _digest_product_filter(product: dict, nursery_key: str) -> bool:
-    """Same inclusion rule as the dashboard pipeline: the nursery's own fruit
-    categorisation (shared FRUIT_FILTERS) plus the junk/seed-packet filter."""
-    return (is_real_product(product.get("title", ""))
-            and is_fruit_product(product, nursery_key))
+# Same inclusion rule as the dashboard pipeline: the nursery's own fruit
+# categorisation (shared FRUIT_FILTERS) plus the junk/seed-packet filter.
+# Now lives in stocklib so send_variety_alerts.py can share it rather than fork.
+_digest_product_filter = digest_product_filter
 
 
 def load_snapshot(nursery_dir: Path, target_date: str) -> dict:

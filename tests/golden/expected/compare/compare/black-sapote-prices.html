@@ -225,47 +225,6 @@ document.addEventListener('click', function(e) {
     </div>
   </section>
 
-  <!-- Email alert CTA -->
-  <div class="p-4 bg-green-50 rounded-lg text-sm mb-6">
-    <p class="font-medium text-green-800 mb-1">Get price drop alerts for Black Sapote</p>
-    <p class="text-gray-600 mb-3">We monitor 3 nurseries daily. Get emailed when Black Sapote prices drop or new varieties appear. <a href="/sample-digest.html" class="text-green-700 underline">See sample &rarr;</a></p>
-    <form id="watchForm" class="flex flex-col sm:flex-row gap-2">
-      <input type="email" id="watchEmail" placeholder="your@email.com" required
-        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
-      <button type="submit"
-        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
-        Alert me
-      </button>
-    </form>
-    <div id="watchMessage" class="mt-2 text-sm hidden"></div>
-  </div>
-
-  <script>
-  document.getElementById('watchForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var email = document.getElementById('watchEmail').value.trim();
-    var msg = document.getElementById('watchMessage');
-    fetch('/api/subscribe', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email: email, action: 'watch', species: 'black-sapote'})
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      msg.textContent = d.message === 'Already watching'
-        ? 'You're already set up for Black Sapote price alerts.'
-        : '✓ Done! We'll email you when Black Sapote prices change.';
-      msg.className = 'mt-2 text-sm text-green-700';
-      msg.style.display = 'block';
-      document.getElementById('watchForm').style.display = 'none';
-    })
-    .catch(function() {
-      msg.textContent = 'Something went wrong — please try again.';
-      msg.className = 'mt-2 text-sm text-red-600';
-      msg.style.display = 'block';
-    });
-  });
-  </script>
 
   <!-- SEO text -->
   <section class="mt-8 text-sm text-gray-500 border-t border-gray-100 pt-6">

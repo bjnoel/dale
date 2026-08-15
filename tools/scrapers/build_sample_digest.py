@@ -27,6 +27,7 @@ try:
 except Exception:
     NURSERY_COUNT = 15  # fallback
 
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.templates import render as render_template
 
 
@@ -182,6 +183,13 @@ def build_highlights_section(highlights: dict, max_each: int = 4) -> str:
 
 
 def build_sample_digest():
+    # The page exists only to sell the digest signup, which is hidden site-wide
+    # (stocklib.flags.DIGEST_SIGNUP_ENABLED). Skip the build rather than leave a
+    # subscribe form reachable from search results and old links.
+    if not DIGEST_SIGNUP_ENABLED:
+        print("Digest signup is disabled; skipping sample-digest.html")
+        return
+
     email_file = DASHBOARD_DIR / "digest-email.html"
     if not email_file.exists():
         print(f"Warning: {email_file} not found. Skipping sample digest.")

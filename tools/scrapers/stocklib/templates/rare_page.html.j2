@@ -12,6 +12,7 @@
     </p>
   </div>
 
+  {% if digest_signup %}
   <div class="subscribe-box mb-6">
     <p class="font-semibold text-green-900 mb-1">Get rare restock alerts by email — free.</p>
     <p class="text-sm text-gray-600 mb-3">Be first to know when hard-to-find species come back into stock. Daily digest of price drops and new arrivals. <a href="/sample-digest.html" class="text-green-700 underline">See what a digest looks like &rarr;</a></p>
@@ -32,6 +33,7 @@
     </form>
     <p id="subscribeMsg" class="text-sm mt-2 text-gray-600"></p>
   </div>
+  {% endif %}
 
 {% for card in cards %}
 

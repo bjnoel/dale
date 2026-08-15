@@ -22,6 +22,7 @@ from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK, is_seed_packet
 from stocklib.taxonomy import enabled_species, load_species
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.category_ui import category_keys, CATEGORY_BADGE_CSS
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.utm import affiliate
 # Reuse the variety builder's non-plant denylist so we never emit a variety
 # slug (vs) for a product it would refuse to build a /variety/ page for
@@ -754,8 +755,21 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
      :empty stops matching the instant JS sets innerHTML, so it never gaps a filled view. */
   #results:empty { min-height: 100vh; }
   .product-row-wrap { border-bottom: 1px solid #f3f4f6; }
-  .notify-link { display: inline-block; margin: 0 0 8px 0.5rem; padding: 2px 10px; font-size: 0.75rem; color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 9999px; text-decoration: none; }
+  /* Per-variety alert control, one per result row. Sits below the row so it
+     never pushes the results themselves down the page. */
+  .watch-wrap { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 8px 0.5rem; }
+  .notify-link { display: inline-block; padding: 2px 10px; font-size: 0.75rem; color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 9999px; text-decoration: none; cursor: pointer; font-family: inherit; }
   .notify-link:hover { background: #dcfce7; }
+  .notify-alt { font-size: 0.75rem; color: #15803d; text-decoration: underline; }
+  .watch-form { display: inline-flex; gap: 0.3rem; align-items: center; }
+  .watch-form.hidden, .watch-msg.hidden, .notify-link.hidden { display: none; }
+  .watch-email { padding: 3px 8px; font-size: 0.75rem; border: 1px solid #d1d5db; border-radius: 9999px; min-width: 0; width: 11rem; max-width: 45vw; }
+  .watch-email:focus { outline: none; border-color: #16a34a; box-shadow: 0 0 0 2px rgba(22,163,74,0.15); }
+  .watch-go { padding: 3px 10px; font-size: 0.75rem; font-weight: 600; color: white; background: #15803d; border: none; border-radius: 9999px; cursor: pointer; font-family: inherit; }
+  .watch-go:hover { background: #166534; }
+  .watch-go[disabled] { opacity: 0.6; cursor: progress; }
+  .watch-msg { font-size: 0.75rem; color: #15803d; }
+  .watch-msg.watch-err { color: #b91c1c; }
   .product-row:hover { background: #f9fafb; }
   .product-row.featured-row { border-left: 3px solid #f59e0b; background: #fffdf5; }
   .product-row.featured-row:hover { background: #fef9e7; }
@@ -819,6 +833,49 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
     # and below the results either way (treestock rule 1). utm_content separates
     # homepage clicks from the species/variety blocks in Plausible.
     treesmith_promo = render_treesmith_promo("homepage" if landing is None else "landing")
+
+    # Digest signup, hidden behind DIGEST_SIGNUP_ENABLED (stocklib.flags).
+    # Per-variety alerts on each result row are the capture channel now.
+    subscribe_block = """
+  <!-- Email Alerts Signup (below results) -->
+  <div class="mt-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+      <p id="subCTA" class="text-sm text-green-800 flex-1"><strong>Get the free WA Rare Fruit Guide + restock alerts.</strong> Free daily email, unsubscribe any time. <a href="/wa-rare-fruit-guide.html" class="text-green-700 underline whitespace-nowrap">Preview the guide &rarr;</a></p>
+      <form id="subscribeForm" class="flex gap-2 flex-shrink-0 flex-wrap">
+        <input type="email" id="subEmail" placeholder="your@email.com" required
+          class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
+        <select id="subState" aria-label="State for stock alerts" class="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+          <option value="ALL">All states</option>
+          <option value="NSW">NSW</option><option value="VIC">VIC</option>
+          <option value="QLD">QLD</option><option value="WA">WA</option>
+          <option value="SA">SA</option><option value="TAS">TAS</option>
+          <option value="NT">NT</option><option value="ACT">ACT</option>
+        </select>
+        <button id="subBtn" type="submit" class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+          Subscribe free
+        </button>
+      </form>
+    </div>
+    <div id="subMessage" class="mt-2 text-sm hidden"></div>
+  </div>
+""" if DIGEST_SIGNUP_ENABLED else ""
+
+    float_bar = """
+<!-- Floating subscribe bar (mobile only) -->
+<div id="floatBar" class="md:hidden fixed bottom-0 left-0 right-0 bg-green-700 text-white shadow-lg transform translate-y-full transition-transform duration-300 z-50">
+  <div class="flex items-center gap-2 px-3 py-2.5">
+    <form id="floatForm" class="flex items-center gap-2 flex-1 min-w-0">
+      <input type="email" id="floatEmail" placeholder="Get daily alerts (free)" required
+        class="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg text-sm text-gray-900 border-0 focus:outline-none focus:ring-2 focus:ring-white">
+      <button type="submit" class="flex-shrink-0 px-3 py-1.5 bg-white text-green-700 rounded-lg text-sm font-semibold">
+        Subscribe
+      </button>
+    </form>
+    <button id="floatDismiss" aria-label="Dismiss" class="flex-shrink-0 text-green-200 hover:text-white pl-1 text-lg leading-none">&times;</button>
+  </div>
+  <div id="floatMsg" class="hidden text-xs text-green-200 px-3 pb-2"></div>
+</div>
+""" if DIGEST_SIGNUP_ENABLED else ""
 
     # Twitter Card + og:title/description/image/type are emitted by render_head;
     # only the og:image dimensions (which render_head does not model) are added here.
@@ -907,28 +964,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
     </button>
   </div>
 
-  <!-- Email Alerts Signup (below results) -->
-  <div class="mt-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-      <p id="subCTA" class="text-sm text-green-800 flex-1"><strong>Get the free WA Rare Fruit Guide + restock alerts.</strong> Free daily email, unsubscribe any time. <a href="/wa-rare-fruit-guide.html" class="text-green-700 underline whitespace-nowrap">Preview the guide &rarr;</a></p>
-      <form id="subscribeForm" class="flex gap-2 flex-shrink-0 flex-wrap">
-        <input type="email" id="subEmail" placeholder="your@email.com" required
-          class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 w-44">
-        <select id="subState" aria-label="State for stock alerts" class="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-          <option value="ALL">All states</option>
-          <option value="NSW">NSW</option><option value="VIC">VIC</option>
-          <option value="QLD">QLD</option><option value="WA">WA</option>
-          <option value="SA">SA</option><option value="TAS">TAS</option>
-          <option value="NT">NT</option><option value="ACT">ACT</option>
-        </select>
-        <button id="subBtn" type="submit" class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
-          Subscribe free
-        </button>
-      </form>
-    </div>
-    <div id="subMessage" class="mt-2 text-sm hidden"></div>
-  </div>
-
+{subscribe_block}
 {highlights_html}
 
 {treesmith_promo}
@@ -940,21 +976,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 <script src="{data_url}?v={cache_v}" defer></script>
 <script src="/dashboard.js?v={cache_v}" defer></script>
 
-<!-- Floating subscribe bar (mobile only) -->
-<div id="floatBar" class="md:hidden fixed bottom-0 left-0 right-0 bg-green-700 text-white shadow-lg transform translate-y-full transition-transform duration-300 z-50">
-  <div class="flex items-center gap-2 px-3 py-2.5">
-    <form id="floatForm" class="flex items-center gap-2 flex-1 min-w-0">
-      <input type="email" id="floatEmail" placeholder="Get daily alerts (free)" required
-        class="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg text-sm text-gray-900 border-0 focus:outline-none focus:ring-2 focus:ring-white">
-      <button type="submit" class="flex-shrink-0 px-3 py-1.5 bg-white text-green-700 rounded-lg text-sm font-semibold">
-        Subscribe
-      </button>
-    </form>
-    <button id="floatDismiss" aria-label="Dismiss" class="flex-shrink-0 text-green-200 hover:text-white pl-1 text-lg leading-none">&times;</button>
-  </div>
-  <div id="floatMsg" class="hidden text-xs text-green-200 px-3 pb-2"></div>
-</div>
-
+{float_bar}
 </body>
 </html>"""
 

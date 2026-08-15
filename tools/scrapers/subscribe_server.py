@@ -401,7 +401,16 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             subscribers = load_subscribers()
             subscriber = next((s for s in subscribers if s["email"] == email), None)
             if not subscriber:
-                self.send_html(404, "<h2>Not found</h2><p>That email isn't in our subscriber list.</p>")
+                # Watch-only address: holds variety alerts but never subscribed
+                # to the digest. This used to 404, which made "Manage your
+                # alerts" a dead link for the large majority of alert
+                # recipients (83 of 89 at the time of writing). They get the
+                # watch list and nothing else, because there are no digest
+                # preferences to show.
+                if self._get_variety_watches(email):
+                    self.send_watch_only_page(email, token)
+                else:
+                    self.send_html(404, "<h2>Not found</h2><p>That email isn't in our subscriber list.</p>")
                 return
 
             current_state = subscriber.get("state", "WA" if subscriber.get("wa_only") else "ALL")
@@ -663,25 +672,37 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             email = data.get("email", "").strip().lower()
             token = data.get("token", "").strip()
             variety_slug = data.get("variety_slug", "").strip()
+            # `all: true` drops every watch this address holds. The alert email
+            # offers it as "stop all my treestock alerts", so a recipient can
+            # always get out in one step without knowing which watch is which.
+            drop_all = bool(data.get("all"))
             if not email or not token or not verify_unsubscribe_token(email, token):
                 self.send_json(403, {"error": "Invalid token"})
                 return
-            if not variety_slug:
+            if not variety_slug and not drop_all:
                 self.send_json(400, {"error": "variety_slug required"})
                 return
             try:
                 con = sqlite3.connect(VARIETY_WATCHES_DB)
-                con.execute(
-                    "DELETE FROM watches WHERE email = ? AND variety_slug = ?",
-                    (email, variety_slug),
-                )
+                if drop_all:
+                    cur = con.execute("DELETE FROM watches WHERE email = ?", (email,))
+                else:
+                    cur = con.execute(
+                        "DELETE FROM watches WHERE email = ? AND variety_slug = ?",
+                        (email, variety_slug),
+                    )
+                removed = cur.rowcount
                 con.commit()
                 con.close()
             except sqlite3.Error as e:
                 self.send_json(500, {"error": f"DB error: {e}"})
                 return
-            print(f"Variety watch removed: {email} -> {variety_slug}")
-            self.send_json(200, {"message": "Alert removed"})
+            if drop_all:
+                print(f"All variety watches removed: {email} ({removed})")
+                self.send_json(200, {"message": "All alerts removed", "removed": removed})
+            else:
+                print(f"Variety watch removed: {email} -> {variety_slug}")
+                self.send_json(200, {"message": "Alert removed", "removed": removed})
             return
 
         # Support both form-encoded and JSON
@@ -1036,6 +1057,91 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
                 return s.get("state") or ("WA" if s.get("wa_only") else "ALL")
         return "ALL"
 
+    def _variety_watch_rows(self, email: str) -> str:
+        """Render the watch list as removable rows. Shared by the full
+        preferences page and the watch-only page."""
+        watches = self._get_variety_watches(email)
+        if not watches:
+            return '<p style="color:#9ca3af;font-size:0.85rem">None. Browse variety pages to add watches.</p>'
+        rows = ""
+        for vw in watches:
+            safe_title = vw["title"].replace('"', "&quot;").replace("<", "&lt;")
+            rows += (
+                f'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;'
+                f'border-bottom:1px solid #f3f4f6">'
+                f'<span>{safe_title}</span>'
+                f'<button onclick="removeVariety(\'{vw["slug"]}\')" style="background:none;border:1px solid #d1d5db;'
+                f'color:#6b7280;padding:4px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer">Remove</button>'
+                f'</div>'
+            )
+        return rows
+
+    def send_watch_only_page(self, email: str, token: str):
+        """Manage page for an address that holds variety watches but is not a
+        digest subscriber. No state/category/frequency controls, because none
+        of them apply: the only thing this person receives is variety alerts."""
+        body = f"""
+<h2 style="color:#065f46;margin:0 0 8px">Your variety alerts</h2>
+<p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{email}</p>
+
+<p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
+  We email you when one of these comes back in stock, or drops in price, at any
+  nursery we track. Nothing else.
+</p>
+<div id="varietyWatches" style="margin:0 0 24px">
+{self._variety_watch_rows(email)}
+</div>
+
+<button id="stopAll" style="background:none;border:1px solid #fca5a5;color:#dc2626;padding:8px 16px;border-radius:8px;font-size:0.85rem;cursor:pointer">
+  Stop all my treestock alerts
+</button>
+<p id="stopMsg" style="font-size:0.85rem;min-height:1.2em;margin:8px 0 0"></p>
+
+<hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
+<p style="font-size:0.8rem;color:#9ca3af">
+  <a href="https://treestock.com.au" style="color:#6b7280">treestock.com.au</a>
+</p>
+<script>
+async function removeVariety(slug) {{
+  try {{
+    const resp = await fetch('/api/unwatch-variety', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{email: '{email}', token: '{token}', variety_slug: slug}})
+    }});
+    if (resp.ok) location.reload();
+    else document.getElementById('stopMsg').textContent = 'Could not remove that alert.';
+  }} catch (err) {{ document.getElementById('stopMsg').textContent = 'Network error.'; }}
+}}
+document.getElementById('stopAll').addEventListener('click', async function() {{
+  const msg = document.getElementById('stopMsg');
+  const btn = this;
+  btn.disabled = true;
+  try {{
+    const resp = await fetch('/api/unwatch-variety', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{email: '{email}', token: '{token}', all: true}})
+    }});
+    if (resp.ok) {{
+      msg.style.color = '#065f46';
+      msg.textContent = 'Done. You will not get any more treestock alerts.';
+      document.getElementById('varietyWatches').innerHTML = '';
+      btn.style.display = 'none';
+    }} else {{
+      msg.style.color = '#dc2626';
+      msg.textContent = 'Something went wrong.';
+      btn.disabled = false;
+    }}
+  }} catch (err) {{
+    msg.style.color = '#dc2626';
+    msg.textContent = 'Network error.';
+    btn.disabled = false;
+  }}
+}});
+</script>"""
+        self.send_html(200, body)
+
     def send_preferences_page(
         self,
         email: str,
@@ -1113,21 +1219,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
         frequency_html = "\n".join(freq_rows)
 
         # Get variety watches from SQLite
-        variety_watches = self._get_variety_watches(email)
-        variety_items = ""
-        if variety_watches:
-            for vw in variety_watches:
-                safe_title = vw["title"].replace('"', "&quot;").replace("<", "&lt;")
-                variety_items += (
-                    f'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;'
-                    f'border-bottom:1px solid #f3f4f6">'
-                    f'<span>{safe_title}</span>'
-                    f'<button onclick="removeVariety(\'{vw["slug"]}\')" style="background:none;border:1px solid #d1d5db;'
-                    f'color:#6b7280;padding:4px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer">Remove</button>'
-                    f'</div>'
-                )
-        else:
-            variety_items = '<p style="color:#9ca3af;font-size:0.85rem">None. Browse variety pages to add watches.</p>'
+        variety_items = self._variety_watch_rows(email)
 
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">Manage your alerts</h2>
@@ -1170,9 +1262,10 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
 </form>
 <p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:8px 0 24px"></p>
 
-<h3 style="color:#374151;font-size:1rem;margin:24px 0 8px">Variety restock alerts</h3>
+<h3 style="color:#374151;font-size:1rem;margin:24px 0 8px">Variety alerts</h3>
 <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
-  Get emailed when these specific varieties come back in stock anywhere.
+  Get emailed when these specific varieties come back in stock, or drop in price,
+  at any nursery we track.
 </p>
 <div id="varietyWatches" style="margin:0 0 24px">
 {variety_items}
