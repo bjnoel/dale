@@ -10594,6 +10594,36 @@ here. Absence of variant structure is a fact about the store, not evidence of a 
 **Daleys is unaffected and still stands:** there the missing products are absent from the
 snapshot entirely, which is a different thing from being present without variants.
 
+**Update, appended 2026-08-15: Correy answered the crawl question with a feed, and the
+feed corrects our scraper too.** Benedict's 2026-08-13 reply asked whether crawling ~1,000
+`/buy/` pages would bother their server. Correy's answer (2026-08-15): don't crawl, here is
+the CSV product feed Meta pulls every 2 hours (`feeds/meta-products-<token>.php`, obscured
+URL, treat as semi-private), and he will build a custom feed in any format with any fields we
+name. Fetched once and joined to the live snapshot on SKU:
+
+- **1,998 products / 3,649 variants** against our 681 / 1,179. 546 products have an in-stock
+  variant, **2,085 do not**, and **587 out-of-stock products carry a grafted variant**. That is
+  the named-variety layer we cannot see, and it is bigger than the 595 the sitemap implied.
+  Krasuey is in it: SKUs 1085 ($99, 4L grafted) and 4806 ($109, 6L grafted), both out of stock.
+- Per variant: SKU, group id, title, description, availability, price, sale price (145 rows),
+  variant deep link, images, `size` as "4L 60-70cm Grafted" (pot, height, propagation), and a
+  quantity that is >0 for every in-stock row. Prices agree with ours on 843 of 843 shared SKUs.
+- **The feed's availability is binary and it disagrees with our scraper on 259 of 843 shared
+  variants.** Checked SKU 5642 (almond) on its live page: schema.org `PreSale`. Plant-List.php
+  lists it with a count of 18, so `daleys_scraper.py` calls it in stock; the feed collapses
+  PreSale to "out of stock". Correy's four states (In Stock, Catalogue Pre Order 1-2 months,
+  Pre Purchase 1-6 months, Out Of Stock) explain the whole gap. So the Meta feed alone would
+  drop the winter bare-root catalogue, and our current scraper has been counting pre-orders as
+  stock all along. Neither source is right on its own; the custom feed with the four states is.
+
+**Decision:** accept the custom feed, JSON, daily, with the four-state availability, quantity,
+expected-ready window for the two pre-order states, botanical name, propagation, pot size and
+height, and rootstock if they hold it. Ask for descriptions and climate/frost/fruiting-month
+fields as a second pass, not in the first ask. This is the first nursery handing treestock
+structured data directly rather than being scraped; it removes the DEC-293 fragility for our
+largest referral destination and it is exactly the moat CLAUDE.md describes. Reply drafted for
+Benedict in his voice. Ticket still blocked: **backlog 21/15**. Register updated.
+
 ## DEC-282 — 2026-08-13 — The rename goes to both stores, and Play is the only one that can prove anything
 
 **Decision:** Benedict approved the DAL-279 rename to `TreeSmith: Fruit Tree Tracker` on both

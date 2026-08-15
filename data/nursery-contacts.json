@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-08-13",
+  "updated": "2026-08-15",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -60,10 +60,18 @@
           "by": "benedict",
           "summary": "Re: Your nursery is on treestock.com.au",
           "evidence": "resend:504ccaaf-2277-45ba-a631-130d6b08a2a1"
+        },
+        {
+          "date": "2026-08-15",
+          "direction": "in",
+          "channel": "email",
+          "by": "correy",
+          "summary": "Correy answered the crawl question with a better option: their Meta product feed (CSV, refreshed 2h, 1,998 products / 3,649 variants incl. out of stock, binary in/out only) and an OFFER of a custom feed in any format with 4-state availability (In Stock / Catalogue Pre Order / Pre Purchase / Out of Stock), stock numbers, botanical name, specs. Group URL = strip skuNN- from link. Will create Krasuey pre-purchases Friday.",
+          "evidence": "Email pasted by Benedict 2026-08-15"
         }
       ],
       "open_action": null,
-      "notes": "No affiliate program (DAL-154, re-verified 2026-07-30 in DEC-241). Wholesale only, $2k minimum. Our single largest referral destination: 576 clicks / 536 visitors in the 90d to 2026-08-13. Correy reported 4 sales worth ~$280 over the same window = 0.75% conversion, ~$0.49/click; their attribution is same-session only so it is a floor. Gift voucher offered as thanks for referrals (non-cash, no ranking effect). Sapodilla: 7 named grafted varieties exist, treestock sees only the seedling because the rest have been out of stock our whole window. Krasuey top 1% importance, demand far exceeds supply. Grafting 70% success this season, low on rootstock."
+      "notes": "Meta feed URL is obscured (feeds/meta-products-<token>.php), treat as semi-private: fetch it, never publish it. Verified 2026-08-15: feed 'out of stock' includes PreSale items (SKU 5642 almond is PreSale on-page, in-stock 18 on Plant-List, out of stock in feed), so the binary feed alone would drop the winter catalogue pre-orders; the custom 4-state feed is the one to take."
     },
     {
       "key": "ross-creek",
