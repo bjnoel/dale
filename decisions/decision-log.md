@@ -11411,3 +11411,80 @@ us one nursery's freshness instead of the entire site.
 success while doing nothing. This one is the next step in that pattern: the component
 did *not* report success, it reported failure accurately and on time, into a channel that
 could not physically reach anyone. Detection was never the weak link. Delivery was.
+
+---
+
+## DEC-294 — 2026-08-15 — 89 people asked for an alert, 12 asked for the newsletter
+
+**Status:** Shipped. Per-variety alerts made the primary capture channel, digest signup
+hidden site-wide behind a flag, three live defects fixed on the way.
+
+Benedict flagged that the digest subscriber count was stuck at 12 and had gone backwards
+despite ~165 visitors a day, and guessed it was the wrong offer and not sticky enough.
+Both true, and the gap is bigger than it looked from the counter.
+
+`subscribers.json` was never the audience. `variety_watches.db` holds **89 people across
+101 watches**, growing every month (1, 12, 22, 17, 30, 19 by mid-August), against the
+digest's 12 and falling: 3 unsubscribes to 2 signups in the fortnight to 2026-08-15. Only
+6 people are in both, so **83 watchers were invisible to every subscriber metric we
+report**. The watch also wins on engagement: 33.3% click against the digest's 10.5%, and
+across 21 alerts nobody has EVER removed a watch afterwards.
+
+The placement was the exact inverse of the demand. The digest had the homepage block, the
+mobile floating bar, species/variety/compare/rare/when-to-plant/bare-root pages, a
+dedicated /sample-digest.html and the WA Rare Fruit Guide lead magnet. The watch had a
+12px pill that rendered **only on out-of-stock rows** and required a click through to
+/variety/<slug>.html. It still won 7 to 1.
+
+Churn is fatigue, not disinterest. Of the three who quit the digest, one had opened 4 of
+4 and clicked 3 times, another 13 of 14. A single day's digest carries **69 back-in-stock
+items across 13 nurseries**, organised by nursery. It is a nursery-shaped email in a
+collector-shaped market.
+
+**Three things were broken, and two of them made the alert emails dishonest.** Adding a
+second trigger before fixing them would have multiplied the damage.
+
+The opt-out in variety alerts did not work at all. It pointed at `/api/unsubscribe` and
+`/api/preferences`, which only know `subscribers.json`. For the 83 watch-only recipients
+"Unsubscribe" answered "Not found" and the alerts kept coming, and "Manage your alerts"
+404'd. An email offering an unsubscribe facility that does not unsubscribe you from what
+it is sending is a Spam Act problem, not just a UX one.
+
+Alerts re-fired forever on flickering stock. Dedupe covered only the current date, so
+`tamarillo-red` went out **8 separate times** to each of two people (Jun 17, Jun 19, Jul
+7, Jul 20, Jul 24, Jul 31, Aug 7, Aug 15) and would have gone a 9th. A 30-day per-trigger
+cooldown cuts that history to about 3.
+
+The homepage "watch this species" banner was a false promise. It POSTed `action:'watch'`
+to `/api/subscribe`, an action the server has never had, so it silently enrolled people
+in the general digest behind a double opt-in while telling them they were watching a
+species. Two more copies of the same dead payload sat in the compare pages and the mobile
+bar. Species watches were removed deliberately in April; the client kept asking anyway.
+
+**What shipped.** Every result row naming a cultivar now carries an inline alert control,
+in stock or not, submitting without leaving the page; you previously could not ask to be
+told about something currently in stock. The address is cached so the second and third
+watches are one tap, aimed squarely at the real ceiling: 80 of 89 watchers hold exactly
+one variety, and only 4 have ever come back on a later day to add another. Watched
+varieties now alert on price drops as well as restocks, compared at variant level through
+`stocklib.changes` (rule 3) and gated on 10% AND $5 so pot-size noise and $2 wobbles stay
+out. Restock beats price drop on the same variety and carries the old price as context,
+so one plant never sends two emails in a day.
+
+`DIGEST_SIGNUP_ENABLED` in `stocklib/flags.py` hides every signup surface at once.
+Benedict's call, and deliberately a hide rather than a delete: sends to the existing 12
+continue untouched, `/api/subscribe`, `/api/confirm`, `/preferences` and
+`/unsubscribe.html` all stay live, and one boolean brings it back when there is evidence
+to justify it.
+
+**What we deliberately did NOT do.** No price-rise alerts: a rise is not actionable, and
+every non-actionable email is a step toward the unsubscribe. No personal "your watch list"
+digest yet, tempting as it is, because at 1.1 watches per person it would be an empty
+email; it becomes possible only once the inline control lifts that number. No species or
+saved-search watches.
+
+**Open follow-up:** `treestock_subscribers` in `ticket_outcomes.py` still reads
+`len(subscribers.json)`, so every ticket graded against it has been scored on 12 people
+while ignoring 89. The watches are tracked, but as `treestock_subscriber_engagement`,
+which frames a separate and larger audience as engagement of the small one. That metric
+should be re-pointed before the next verdict cycle.
