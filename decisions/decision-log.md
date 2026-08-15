@@ -10624,6 +10624,24 @@ structured data directly rather than being scraped; it removes the DEC-293 fragi
 largest referral destination and it is exactly the moat CLAUDE.md describes. Reply drafted for
 Benedict in his voice. Ticket still blocked: **backlog 21/15**. Register updated.
 
+**Correction, appended 2026-08-15, from Benedict:** the draft above, and the 2026-08-13
+email before it, said we would point people at Daleys' notify list "rather than running my
+own for your stock". Benedict: "what if people want something that's unavailable on multiple
+sites and they want to know when any of them come back in stock". That is the product. A
+treestock variety watch is cross-nursery by construction; Daleys' list can only ever say
+Daleys. Handing Daleys watchers off to Correy gives away the one thing no nursery's list can
+do, and it gives away the subscriber, who is the audience and the Treesmith funnel. It also
+gets worse with the custom feed, not better: with four states, Out Of Stock to Pre Purchase
+is a public transition our alert can fire on (Correy is opening Krasuey pre-purchases this
+Friday), so DEC-282's "crawling would not have caught it" was true of binary InStock only.
+
+**Revised position:** keep the cross-nursery watch and alert on Daleys transitions like any
+other nursery. On Daleys' out-of-stock listings, link to his plant page (where his notify list
+lives) as well, not instead. Say so plainly to Correy in the reply rather than let the earlier
+wording stand: our alert sends the buyer to him either way, so it feeds his sales even if not
+his list. The relationship cost of being straight about it is smaller than the cost of quietly
+promising something we should not build.
+
 ## DEC-282 — 2026-08-13 — The rename goes to both stores, and Play is the only one that can prove anything
 
 **Decision:** Benedict approved the DAL-279 rename to `TreeSmith: Fruit Tree Tracker` on both
