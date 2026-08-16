@@ -376,7 +376,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         admin_path = parsed.path.rstrip("/") if parsed.path != "/" else "/"
         if admin_path in admin_view.ADMIN_RENDERERS:
             if not verify_cf_access(self.headers):
-                self.send_html(403, "<h2>403 — Forbidden</h2><p>This page is gated by Cloudflare Access.</p>")
+                self.send_html(403, "<h2>403 Forbidden</h2><p>This page is gated by Cloudflare Access.</p>")
                 return
             try:
                 render = admin_view.ADMIN_RENDERERS[admin_path]
@@ -393,7 +393,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         # the same fail-closed JWT check here for direct-to-origin hits.
         if parsed.path == "/admin/digest" or parsed.path.startswith("/admin/digest/"):
             if not verify_cf_access(self.headers):
-                self.send_html(403, "<h2>403 — Forbidden</h2><p>This page is gated by Cloudflare Access.</p>")
+                self.send_html(403, "<h2>403 Forbidden</h2><p>This page is gated by Cloudflare Access.</p>")
                 return
             day = parsed.path[len("/admin/digest"):].strip("/") or None
             try:
@@ -652,8 +652,13 @@ class SubscribeHandler(BaseHTTPRequestHandler):
 
             subscribers = load_subscribers()
             subscriber = next((s for s in subscribers if s["email"] == requested_email), None)
-            if subscriber is None:
-                print(f"Manage-link request for non-subscriber (silent): {requested_email}")
+            # Watch-only addresses count. This looked only in subscribers.json,
+            # so the ~83 people who hold variety watches and never subscribed
+            # to the digest were told "a link is on its way" and got nothing:
+            # the in-email footer link worked, the site's own link did not.
+            # That is the large majority of alert recipients.
+            if subscriber is None and not self._get_variety_watches(requested_email):
+                print(f"Manage-link request for unknown address (silent): {requested_email}")
                 self.send_json(200, generic_ok)
                 return
 
@@ -1031,7 +1036,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         # Check for existing pending entry (don't spam confirmation emails)
         pending = purge_expired_pending(load_pending())
         if any(p["email"] == email and p.get("state", "ALL") == sub_state for p in pending):
-            self.send_json(200, {"message": "Check your email — confirmation link already sent", "email": email})
+            self.send_json(200, {"message": "Check your email, confirmation link already sent", "email": email})
             return
 
         # Add to pending and send confirmation email
@@ -1233,7 +1238,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">You're subscribed!</h2>
 <p style="color:#374151;margin:0 0 20px">
-  Your first digest will arrive tomorrow morning. You can fine-tune things below — or close this tab and the defaults (daily, fruit trees) will be used.
+  Your first digest will arrive tomorrow morning. You can fine-tune things below, or close this tab and the defaults (daily, fruit trees) will be used.
 </p>
 
 <form id="prefsForm" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin:0 0 24px">
@@ -1267,7 +1272,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
     <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
       <input type="radio" name="frequency" value="off" style="margin-top:4px">
       <span><strong>Off</strong>
-        <br><span style="font-size:0.8rem;color:#6b7280">No digest emails — but variety alerts still work</span></span>
+        <br><span style="font-size:0.8rem;color:#6b7280">No digest emails, but variety alerts still work</span></span>
     </label>
   </div>
 
@@ -1532,7 +1537,7 @@ document.getElementById('stopAll').addEventListener('click', async function() {{
         freq_options = [
             ("daily", "Daily", "One email per day when any tracked change happens"),
             ("weekly", "Weekly summary", "A single curated email on Sunday mornings"),
-            ("off", "Off", "No digest emails — but variety alerts still work"),
+            ("off", "Off", "No digest emails, but variety alerts still work"),
         ]
         freq_rows = []
         for key, label, hint in freq_options:
@@ -1549,9 +1554,36 @@ document.getElementById('stopAll').addEventListener('click', async function() {{
         # Get variety watches from SQLite
         variety_items = self._variety_watch_rows(email)
 
+        # Variety alerts lead, digest settings follow. This page is reached
+        # from the alert email, which is now the product: the person arriving
+        # here came from a variety alert and wants the variety list, not a
+        # state filter. It used to render digest settings first and put
+        # "Variety alerts" last, below the save button.
+        #
+        # The digest block collapses when its frequency is "off", because that
+        # is a subscriber who has already said they do not want it. Collapsed
+        # rather than removed: the 12 real digest subscribers must still be
+        # able to reach their settings, and so must anyone turning it back on.
+        digest_off = current_frequency == "off"
+        digest_open = "" if digest_off else " open"
+        digest_summary = ("Digest emails (currently off)" if digest_off
+                          else f"Digest emails ({html.escape(current_frequency)})")
+
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">Manage your alerts</h2>
 <p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{html.escape(email)}</p>
+
+<h3 style="color:#374151;font-size:1rem;margin:0 0 8px">Variety alerts</h3>
+<p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
+  We email you when one of these comes back in stock, or drops in price, at any
+  nursery we track. One alert covers both.
+</p>
+<div id="varietyWatches" style="margin:0 0 24px">
+{variety_items}
+</div>
+
+<details{digest_open} style="margin:0 0 8px;border-top:1px solid #e5e7eb;padding-top:16px">
+<summary style="cursor:pointer;color:#374151;font-size:1rem;font-weight:600;margin:0 0 16px">{digest_summary}</summary>
 
 <form id="prefsForm" style="margin:0">
 
@@ -1589,15 +1621,7 @@ document.getElementById('stopAll').addEventListener('click', async function() {{
   </button>
 </form>
 <p id="prefsMsg" style="font-size:0.85rem;min-height:1.2em;margin:8px 0 24px"></p>
-
-<h3 style="color:#374151;font-size:1rem;margin:24px 0 8px">Variety alerts</h3>
-<p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
-  Get emailed when these specific varieties come back in stock, or drop in price,
-  at any nursery we track.
-</p>
-<div id="varietyWatches" style="margin:0 0 24px">
-{variety_items}
-</div>
+</details>
 
 <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb">
 <p style="font-size:0.8rem;color:#9ca3af">
