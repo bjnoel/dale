@@ -15,6 +15,7 @@ Regenerate goldens after an intended change, then review the diff:
     GOLDEN_UPDATE=1 python3 -m unittest tests.test_golden
 """
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -24,6 +25,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 GOLDEN_DIR = Path(__file__).resolve().parent / "golden"
 FIXTURE_DATA = GOLDEN_DIR / "fixture" / "nursery-stock"
+FIXTURE_LEDGER = GOLDEN_DIR / "fixture" / "page-ledger" / "variety.json"
 EXPECTED_DIR = GOLDEN_DIR / "expected"
 
 # Tokens that vary by the run date/time (not by input). Normalised on both sides
@@ -48,9 +50,16 @@ def normalise(text: str) -> str:
 def run_builder(script: str, arg_template: list[str], output_globs: list[str]) -> dict:
     """Run a builder against the fixture into a temp dir; return {relpath: normalised_text}.
 
-    arg_template entries are literal args, with "{DATA}" and "{OUT}" substituted
-    for the fixture data dir and the temp output dir. Returns the normalised text
-    of every file matching output_globs (paths relative to OUT).
+    arg_template entries are literal args, with these substitutions:
+
+        {DATA}    the committed fixture snapshot dir
+        {OUT}     a fresh temp output dir
+        {LEDGER}  a WRITABLE COPY of the committed fixture page ledger
+
+    {LEDGER} is copied rather than passed through because the builders write
+    their ledger back at the end of a run. Handing them the committed fixture
+    would leave the repo dirty after a test run, and worse, would make the
+    second run of the suite differ from the first.
 
     The builder's exit code is intentionally ignored: some builders (e.g. the
     dashboard) exit non-zero on the small fixture because of production size/row
@@ -58,7 +67,15 @@ def run_builder(script: str, arg_template: list[str], output_globs: list[str]) -
     produced files instead.
     """
     out = Path(tempfile.mkdtemp(prefix="golden-"))
-    args = [a.replace("{DATA}", str(FIXTURE_DATA)).replace("{OUT}", str(out)) for a in arg_template]
+    ledger = out.parent / f"{out.name}-ledger.json"
+    if any("{LEDGER}" in a for a in arg_template):
+        shutil.copyfile(FIXTURE_LEDGER, ledger)
+    args = [
+        a.replace("{DATA}", str(FIXTURE_DATA))
+         .replace("{OUT}", str(out))
+         .replace("{LEDGER}", str(ledger))
+        for a in arg_template
+    ]
     proc = subprocess.run(
         [sys.executable, str(SCRAPERS / script), *args],
         capture_output=True, text=True, cwd=str(SCRAPERS),

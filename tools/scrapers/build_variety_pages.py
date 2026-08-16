@@ -335,7 +335,10 @@ def build_tombstone_page(slug: str, entry: dict, valid_species_slugs: set[str],
         title=title, today="", nursery_count=0, in_stock_count=0,
         blurb_html=blurb_html,
         summary_callout="",
-        tombstone_html=render_tombstone(title, entry, cta_html=cta_html),
+        # "Mahan (B) Pecan", not the canonical "Pecan - Mahan (B)": the callout
+        # is a sentence, and the same reading the watch copy below already uses.
+        tombstone_html=render_tombstone(
+            f"{variety} {species}".strip() or title, entry, cta_html=cta_html),
         product_view=product_view,
         watch_heading=f"Tell me when {variety} {species} is back",
         watch_body=(

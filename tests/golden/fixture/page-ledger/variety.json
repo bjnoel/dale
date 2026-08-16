@@ -1,0 +1,138 @@
+{
+ "schema": 1,
+ "family": "variety",
+ "updated": "2026-05-02",
+ "skipped_nights": 0,
+ "review": [],
+ "_comment": [
+  "Fixture ledger for the variety_tombstone golden case. Every date here is",
+  "fixed so the rendered tombstone is byte-stable: the page's only per-run",
+  "content would otherwise be the date sentence.",
+  "",
+  "pecan-mahan-b is the real case from docs/page-lifecycle-plan.md. Daleys",
+  "listed it 5 March to 1 May 2026, delisted it, and relisted it on 11 August.",
+  "The page 404'd for 101 days and then rebuilt itself. It is absent from the",
+  "fixture snapshots, has already spent its one free night of absence",
+  "(absent_nights 1), and clears the entry guard (live_days 58, span 57 days),",
+  "so tonight's run tombstones it.",
+  "",
+  "The remaining entries are the slugs the fixture DOES build. They are here so",
+  "the ledger's live count matches tonight's output: without them one absent",
+  "page out of thirteen reads as the site collapsing and the global floor fires",
+  "before any of this is reached."
+ ],
+ "pages": {
+  "apple-dorsett-golden": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Apple - Dorsett Golden", "species": "Apple",
+   "species_slug": "apple", "variety": "Dorsett Golden",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "apple-pink-lady": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Apple - Pink Lady", "species": "Apple",
+   "species_slug": "apple", "variety": "Pink Lady",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "avocado-hass": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Avocado - Hass", "species": "Avocado",
+   "species_slug": "avocado", "variety": "Hass",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "avocado-reed": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Avocado - Reed", "species": "Avocado",
+   "species_slug": "avocado", "variety": "Reed",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "banana-cavendish": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Banana - Cavendish", "species": "Banana",
+   "species_slug": "banana", "variety": "Cavendish",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "banana-dwarf-cavendish": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Banana - Dwarf Cavendish", "species": "Banana",
+   "species_slug": "banana", "variety": "Dwarf Cavendish",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "black-sapote-mossman": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Black Sapote - Mossman", "species": "Black Sapote",
+   "species_slug": "black-sapote", "variety": "Mossman",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "fig-black-genoa": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Fig - Black Genoa", "species": "Fig",
+   "species_slug": "fig", "variety": "Black Genoa",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "longan-kohala": {
+   "state": "live", "first_seen": "2026-03-05", "last_seen": "2026-05-01",
+   "live_days": 58, "in_stock_days": 58, "last_in_stock": "2026-05-01",
+   "since": "2026-03-05", "seeded": true, "absent_nights": 0,
+   "title": "Longan - Kohala", "species": "Longan",
+   "species_slug": "longan", "variety": "Kohala",
+   "rows": [], "rows_as_of": "2026-05-01",
+   "redirect_to": null, "retired_reason": null, "see_also": []
+  },
+  "pecan-mahan-b": {
+   "state": "live",
+   "first_seen": "2026-03-05",
+   "last_seen": "2026-05-01",
+   "live_days": 58,
+   "in_stock_days": 44,
+   "last_in_stock": "2026-05-01",
+   "since": "2026-03-05",
+   "seeded": false,
+   "absent_nights": 1,
+   "title": "Pecan - Mahan (B)",
+   "species": "Pecan",
+   "species_slug": "pecan",
+   "variety": "Mahan (B)",
+   "rows": [
+    {
+     "nursery_key": "daleys",
+     "nursery_name": "Daleys Fruit Trees",
+     "title": "Pecan - Mahan (B)",
+     "price": 49.0,
+     "available": true,
+     "url": "https://daleysfruit.com.au/p/pecan-mahan-b",
+     "states": "NSW, VIC, QLD, SA, WA, ACT",
+     "type_label": ""
+    }
+   ],
+   "rows_as_of": "2026-05-01",
+   "redirect_to": null,
+   "retired_reason": null,
+   "see_also": []
+  }
+ }
+}

@@ -43,9 +43,26 @@ GOLDEN_CASES = [
     },
     {
         "name": "variety",
+        # --index-out keeps the canonical title map inside the temp dir. Without
+        # it the builder writes to /opt/dale/data/variety-index.json, which does
+        # not exist on a dev box (so it skips) but very much does on the server,
+        # where running this suite would replace 2,600 real varieties with the
+        # fixture's twelve and 404 every watch signup until the next build.
         "script": "build_variety_pages.py",
-        "args": ["{DATA}", "{OUT}"],
+        "args": ["{DATA}", "{OUT}", "--index-out", "{OUT}/variety-index.json"],
         "outputs": ["variety/*.html"],
+    },
+    {
+        # The same builder with a ledger: one slug in the fixture ledger is
+        # absent from the fixture snapshots, so this run tombstones it. Only the
+        # tombstone is captured; the live pages are the case above, and this way
+        # the golden stays small enough to review by hand, which is the point of
+        # having it.
+        "name": "variety_tombstone",
+        "script": "build_variety_pages.py",
+        "args": ["{DATA}", "{OUT}", "--index-out", "{OUT}/variety-index.json",
+                 "--ledger", "{LEDGER}"],
+        "outputs": ["variety/pecan-mahan-b.html"],
     },
     {
         "name": "compare",
