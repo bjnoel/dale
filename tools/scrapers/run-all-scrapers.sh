@@ -233,8 +233,14 @@ python3 "$SCRIPT_DIR/build_rare_finds.py" "$PROJECT_DIR/data/nursery-stock" "$DI
 echo "$LOG_PREFIX Rare finds page complete."
 
 # Build variety pages (cultivar-level SEO)
+# --ledger is what turns a disappearing slug into a tombstone or a redirect stub
+# instead of a 404; without it this builder is stateless and deletes nothing.
+# --allow-delete permits the only two irreversible outcomes (a variety that has
+# left the taxonomy, and a page that never met the 7-day entry guard), which is
+# why an ad-hoc run must not pass it.
 echo "$LOG_PREFIX Building variety pages..."
-python3 "$SCRIPT_DIR/build_variety_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Variety page build failed (non-fatal)"
+python3 "$SCRIPT_DIR/build_variety_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" \
+    --ledger "$PROJECT_DIR/data/page-ledger/variety.json" --allow-delete 2>&1 || echo "$LOG_PREFIX WARNING: Variety page build failed (non-fatal)"
 echo "$LOG_PREFIX Variety pages complete."
 
 # Build companion planting guide (SEO content)
@@ -272,7 +278,20 @@ echo "$LOG_PREFIX Building Treesmith landing page..."
 python3 "$SCRIPT_DIR/build_treesmith_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Treesmith landing page build failed (non-fatal)"
 echo "$LOG_PREFIX Treesmith landing page complete."
 
-# Build sitemap
+# Build location pages (WA/QLD/NSW/VIC, fruit-species-filtered)
+echo "$LOG_PREFIX Building location pages..."
+python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Location page build failed (non-fatal)"
+echo "$LOG_PREFIX Location pages complete."
+
+# Build species+state combo pages (buy-[species]-trees-[state].html)
+echo "$LOG_PREFIX Building species+state combo pages..."
+python3 "$SCRIPT_DIR/build_species_state_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 | tail -3 || echo "$LOG_PREFIX WARNING: Species+state page build failed (non-fatal)"
+echo "$LOG_PREFIX Species+state combo pages complete."
+
+# Build sitemap. MUST come after every page builder: it globs the output dir and
+# reads each page's declared lifecycle state, so running it earlier described
+# last night's combo files. That was harmless while page states did not exist
+# and wrong the moment they did.
 echo "$LOG_PREFIX Building sitemap..."
 python3 "$SCRIPT_DIR/build_sitemap.py" "$DIGEST_DIR/species" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sitemap build failed (non-fatal)"
 echo "$LOG_PREFIX Sitemap complete."
@@ -306,16 +325,6 @@ fi
 echo "$LOG_PREFIX Sending variety restock alerts..."
 python3 "$SCRIPT_DIR/send_variety_alerts.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Variety alerts failed (non-fatal)"
 echo "$LOG_PREFIX Variety alert send complete."
-
-# Build location pages (WA/QLD/NSW/VIC, fruit-species-filtered)
-echo "$LOG_PREFIX Building location pages..."
-python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Location page build failed (non-fatal)"
-echo "$LOG_PREFIX Location pages complete."
-
-# Build species+state combo pages (buy-[species]-trees-[state].html)
-echo "$LOG_PREFIX Building species+state combo pages..."
-python3 "$SCRIPT_DIR/build_species_state_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 | tail -3 || echo "$LOG_PREFIX WARNING: Species+state page build failed (non-fatal)"
-echo "$LOG_PREFIX Species+state combo pages complete."
 
 # Build 404 page (served by Caddy handle_errors)
 echo "$LOG_PREFIX Building 404 page..."

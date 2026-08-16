@@ -29,7 +29,12 @@ run python3 build_nursery_compare.py "$DATA" "$DIGEST_DIR"
 run python3 build_species_pages.py "$DATA" "$DIGEST_DIR"        # species BEFORE variety
 run python3 build_compare_pages.py "$DATA" "$DIGEST_DIR"
 run python3 build_rare_finds.py "$DATA" "$DIGEST_DIR"
-run python3 build_variety_pages.py "$DATA" "$DIGEST_DIR"        # variety AFTER species
+# --ledger, but deliberately NOT --allow-delete: this script is run by hand, and
+# the two irreversible outcomes should only ever happen on the nightly path.
+# Passing the ledger is what keeps tombstones re-rendered with the new chrome;
+# without it they would be the only pages a chrome change never reached.
+run python3 build_variety_pages.py "$DATA" "$DIGEST_DIR" \
+    --ledger "$PROJECT_DIR/data/page-ledger/variety.json"   # variety AFTER species
 run python3 build_location_pages.py "$DATA" "$DIGEST_DIR"
 run python3 build_species_state_pages.py "$DATA" "$DIGEST_DIR"
 

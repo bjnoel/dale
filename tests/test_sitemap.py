@@ -17,6 +17,10 @@ from xml.etree import ElementTree as ET
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 
+# build_sitemap imports stocklib. Running it as a script puts its own directory
+# on sys.path; loading it by file path here does not, so do it explicitly.
+sys.path.insert(0, str(SCRAPERS))
+
 
 def _load(path: Path):
     spec = importlib.util.spec_from_file_location(path.stem, path)
@@ -162,6 +166,72 @@ class LastmodTests(unittest.TestCase):
             self.assertIsNotNone(new_lastmod)
             self.assertNotEqual(old_lastmod, today, "backdated file should not show today")
             self.assertEqual(new_lastmod, today, "freshly-created file should show today")
+
+
+class PageStateTests(unittest.TestCase):
+    """Pages declare their lifecycle state in a meta tag and the sitemap reads
+    it. The fixture above writes empty files, which is exactly the "no tag"
+    case, so those tests also pin the untagged default."""
+
+    def _urls(self, path: Path) -> list[str]:
+        root = ET.parse(path).getroot()
+        return [el.text for el in root.findall(".//sm:url/sm:loc", NS)]
+
+    def _built(self, tmp, pages):
+        species_dir, output_dir = _build_fixture(Path(tmp))
+        for rel, state in pages.items():
+            (output_dir / rel).write_text(
+                "<!DOCTYPE html>\n<html>\n<head>\n"
+                f'<meta name="treestock-page-state" content="{state}">\n</head>')
+        bs.build_sitemap(species_dir, output_dir)
+        return output_dir
+
+    def test_a_tombstone_stays_in_the_sitemap(self):
+        """It is a 200 with unique content, and the whole point is for Google
+        to recrawl it and learn it is not a 404."""
+        with tempfile.TemporaryDirectory() as tmp:
+            out = self._built(tmp, {"variety/keitt-mango.html": "tombstone"})
+            self.assertIn("https://treestock.com.au/variety/keitt-mango.html",
+                          self._urls(out / "sitemaps" / "variety.xml"))
+
+    def test_a_redirect_stub_is_excluded(self):
+        """A stub canonicals elsewhere, so submitting it asks for the target to
+        be indexed twice."""
+        with tempfile.TemporaryDirectory() as tmp:
+            out = self._built(tmp, {"variety/keitt-mango.html": "redirect"})
+            urls = self._urls(out / "sitemaps" / "variety.xml")
+            self.assertNotIn("https://treestock.com.au/variety/keitt-mango.html",
+                             urls)
+            self.assertIn("https://treestock.com.au/variety/r2e2-mango.html", urls)
+
+    def test_an_untagged_page_is_treated_as_live(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            species_dir, output_dir = _build_fixture(Path(tmp))
+            bs.build_sitemap(species_dir, output_dir)
+            self.assertIn("https://treestock.com.au/variety/keitt-mango.html",
+                          self._urls(output_dir / "sitemaps" / "variety.xml"))
+
+    def test_a_stubbed_combo_page_is_excluded_too(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = self._built(tmp, {"buy-mango-trees-wa.html": "redirect"})
+            urls = self._urls(out / "sitemaps" / "locations.xml")
+            self.assertNotIn("https://treestock.com.au/buy-mango-trees-wa.html",
+                             urls)
+
+    def test_the_excluded_set_is_the_rollback_lever(self):
+        """Rollback lever 2 is "add TOMBSTONE to EXCLUDED_PAGE_STATES". This
+        pins that it is genuinely a one-line change and that nothing else
+        decides what gets listed."""
+        with tempfile.TemporaryDirectory() as tmp:
+            original = bs.EXCLUDED_PAGE_STATES
+            bs.EXCLUDED_PAGE_STATES = frozenset({"redirect", "tombstone"})
+            try:
+                out = self._built(tmp, {"variety/keitt-mango.html": "tombstone"})
+                self.assertNotIn(
+                    "https://treestock.com.au/variety/keitt-mango.html",
+                    self._urls(out / "sitemaps" / "variety.xml"))
+            finally:
+                bs.EXCLUDED_PAGE_STATES = original
 
 
 if __name__ == "__main__":

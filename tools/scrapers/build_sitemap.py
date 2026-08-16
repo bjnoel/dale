@@ -12,7 +12,14 @@ Layout:
     sitemaps/variety.xml         -- variety/*.html (the bulk of the URLs)
 
 Per-URL <lastmod> is derived from the HTML file's mtime, so Google sees a
-real freshness signal rather than a blanket "today" stamp.
+real freshness signal rather than a blanket "today" stamp. That only became
+true once the page builders started skipping writes for unchanged bytes; before
+that every page's mtime moved every night.
+
+Pages declare their own lifecycle state in a meta tag and this builder excludes
+by reading it, rather than reading the ledger. The sitemap has no business
+knowing where the ledger lives, and coupling it to a file it does not own would
+also break its hand-built test fixture.
 
 Usage:
     python3 build_sitemap.py <species-dir> <output-dir>
@@ -24,8 +31,22 @@ from datetime import datetime, timezone
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from stocklib.page_ledger import REDIRECT, read_page_state
+
 
 BASE_URL = "https://treestock.com.au"
+
+# Tombstones stay IN the sitemap on purpose. They are 200s with unique content,
+# and the thing we want most is for Google to recrawl them and learn they are
+# not 404s. Redirect stubs stay out: a stub canonicals elsewhere, so submitting
+# it asks for the target to be indexed twice.
+#
+# This set is rollback lever 2. If variety clicks fall more than 30% over 14
+# days against the prior 14 and no core update explains it, add TOMBSTONE here.
+# One line, pages still serve 200 for humans, and no noindex is involved
+# (DEC-266 settled that, and a noindex-then-remove cycle is a worse signal than
+# either state).
+EXCLUDED_PAGE_STATES = frozenset({REDIRECT})
 
 
 # Static / hand-curated pages. (path, changefreq, priority).
@@ -82,6 +103,15 @@ def _file_lastmod(path: Path, fallback: str) -> str:
     except OSError:
         return fallback
     return datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d")
+
+
+def _excluded(html_file: Path) -> bool:
+    """True for a page whose declared state keeps it out of the sitemap.
+
+    A page with no tag reads as `live`, which is the honest default: every page
+    on the site predates this mechanism and none of them are stubs.
+    """
+    return read_page_state(html_file) in EXCLUDED_PAGE_STATES
 
 
 def _resolve_static_file(output_dir: Path, species_dir: Path, rel_path: str) -> Path:
@@ -155,6 +185,8 @@ def _collect_dir(output_dir: Path, subdir: str, changefreq: str, priority: str) 
     for html_file in sorted(d.glob("*.html")):
         if html_file.name == "index.html":
             continue
+        if _excluded(html_file):
+            continue
         loc = f"{BASE_URL}/{subdir}/{html_file.name}"
         out.append((loc, _file_lastmod(html_file, today), changefreq, priority))
     return out
@@ -189,6 +221,8 @@ def _collect_locations(output_dir: Path) -> list:
         if LOCATION_PAGE_PATTERN.match(html_file.name):
             continue
         if not COMBO_PATTERN.match(html_file.name):
+            continue
+        if _excluded(html_file):
             continue
         loc = f"{BASE_URL}/{html_file.name}"
         out.append((loc, _file_lastmod(html_file, today), "weekly", "0.7"))

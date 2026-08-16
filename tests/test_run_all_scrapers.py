@@ -196,6 +196,24 @@ class RunAllScrapersTest(unittest.TestCase):
         self.assertIn("send_digest.py", invoked)
         self.assertIn("build_variety_pages.py", invoked)
 
+    # --- the sitemap ordering hazard ---------------------------------------
+
+    def test_the_sitemap_is_built_after_every_page_builder(self):
+        """The sitemap globs the output dir and now reads each page's declared
+        lifecycle state, so it has to run last. It used to run before the
+        location and combo builders, which meant tonight's sitemap described
+        last night's combo files: harmless while page states did not exist, and
+        wrong the moment they did."""
+        _, invoked = self.run_script()
+        self.assertIn("build_sitemap.py", invoked)
+        sitemap_at = invoked.index("build_sitemap.py")
+        for builder in ("build_variety_pages.py", "build_location_pages.py",
+                        "build_species_state_pages.py"):
+            self.assertIn(builder, invoked)
+            self.assertLess(
+                invoked.index(builder), sitemap_at,
+                f"{builder} must run before the sitemap that describes its pages")
+
 
 if __name__ == "__main__":
     unittest.main()
