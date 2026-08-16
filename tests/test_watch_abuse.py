@@ -103,13 +103,32 @@ class WatchEndpointCase(unittest.TestCase):
         self.index_path = root / INDEX_FILENAME
         write_variety_index(self.index_path, INDEX_TITLES)
 
-        self._orig = (server.VARIETY_WATCHES_DB, server.VARIETY_INDEX_FILE)
+        self._orig = (server.VARIETY_WATCHES_DB, server.VARIETY_INDEX_FILE,
+                      server.WATCH_NOTICE_LOG, server.subprocess,
+                      server.make_unsubscribe_token)
+        # There is no UNSUBSCRIBE_SECRET on a dev box, and the notice path
+        # correctly refuses to send without one. Stub it so these tests
+        # exercise the whole path rather than stopping at that guard.
+        server.make_unsubscribe_token = lambda e, *a: "tok123"
         server.VARIETY_WATCHES_DB = self.db
         server.VARIETY_INDEX_FILE = self.index_path
+        # A successful watch now queues a notice email. Redirect its log and
+        # replace subprocess, or these tests reach for /opt/dale/data and spawn
+        # a real sender. Not relying on a missing secret to stop them: that is
+        # true on a dev box and not on the server.
+        server.WATCH_NOTICE_LOG = root / "watch_notice_sends.json"
+        self.spawned = []
+        server.subprocess = type(
+            "FakeSubprocess", (), {
+                "DEVNULL": -3,
+                "Popen": lambda _self, args, **kw: self.spawned.append(args),
+            })()
         server.init_variety_watches_db()
 
     def tearDown(self):
-        server.VARIETY_WATCHES_DB, server.VARIETY_INDEX_FILE = self._orig
+        (server.VARIETY_WATCHES_DB, server.VARIETY_INDEX_FILE,
+         server.WATCH_NOTICE_LOG, server.subprocess,
+         server.make_unsubscribe_token) = self._orig
         self.tmp.cleanup()
 
     def post(self, payload=None, **kwargs):

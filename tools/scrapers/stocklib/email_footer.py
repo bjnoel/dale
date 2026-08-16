@@ -29,6 +29,31 @@ def footer_urls(email: str, token: str, site_url: str = DEFAULT_SITE_URL) -> tup
     return unsubscribe_url, preferences_url
 
 
+def watch_urls(email: str, token: str, variety_slug: str = "",
+               variety_title: str = "",
+               site_url: str = DEFAULT_SITE_URL) -> tuple[str, str, str]:
+    """(stop_this_one, stop_everything, manage_all) for a variety-alert recipient.
+
+    Almost everyone receiving a variety alert is watch-only (83 of 89 at the
+    time of writing), so the digest's /unsubscribe and /api/unsubscribe links
+    are the wrong doors: they only know about subscribers.json. These point at
+    the watch system that is actually sending the mail.
+
+    /stop-watching.html is a confirm page, not a delete-on-GET link, so a mail
+    scanner prefetching the URL cannot silently remove someone's alerts.
+
+    Shared because two senders now build these (the alert footer and the watch
+    notice), and a stop link that works in one email and not the other is the
+    exact drift stocklib exists to prevent.
+    """
+    q = urllib.parse.quote
+    stop_all = f"{site_url}/stop-watching.html?email={q(email)}&token={token}"
+    stop_one = (f"{stop_all}&variety={q(variety_slug)}&title={q(variety_title)}"
+                if variety_slug else "")
+    manage = f"{site_url}/api/preferences?email={q(email)}&token={token}"
+    return stop_one, stop_all, manage
+
+
 def _state_label(state: str) -> str:
     return f"Filtered to: {state}" if state != "ALL" else "Showing: all states"
 

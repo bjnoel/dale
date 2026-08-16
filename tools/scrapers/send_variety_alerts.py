@@ -102,6 +102,7 @@ from stocklib.utm import outbound
 from stocklib import changes as _changes
 from stocklib.fruit_filters import digest_product_filter
 from stocklib.variety_index import DEFAULT_INDEX_PATH, get_variety_index
+from stocklib.email_footer import watch_urls
 
 
 from cultivar_parsing import slugify, parse_cultivar, product_variety_slug  # noqa: E402
@@ -479,11 +480,8 @@ def inject_unsubscribe(html: str, email: str, token: str,
     /stop-watching.html is a confirm page, not a delete-on-GET link, so a mail
     scanner prefetching the URL cannot silently remove someone's alerts.
     """
-    q = urllib.parse.quote
-    stop_one = (f"{SITE_URL}/stop-watching.html?email={q(email)}&token={token}"
-                f"&variety={q(variety_slug)}&title={q(variety_title)}")
-    stop_all = f"{SITE_URL}/stop-watching.html?email={q(email)}&token={token}"
-    manage_url = f"{SITE_URL}/api/preferences?email={q(email)}&token={token}"
+    stop_one, stop_all, manage_url = watch_urls(
+        email, token, variety_slug, variety_title, site_url=SITE_URL)
     one_line = (
         f'<a href="{_html.escape(stop_one, quote=True)}" style="color:#6b7280">'
         f'Stop watching {_html.escape(variety_title)}</a> &middot;\n  '

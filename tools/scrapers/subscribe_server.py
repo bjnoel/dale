@@ -53,6 +53,9 @@ PENDING_FILE = DATA_DIR / "pending_subscribers.json"
 APP_ENV = Path("/opt/dale/secrets/app.env")
 VARIETY_WATCHES_DB = DATA_DIR / "variety_watches.db"
 MANAGE_LINK_LOG = DATA_DIR / "manage_link_sends.json"
+# Sibling of the manage-link log, deliberately a separate file: the two
+# throttles must not be able to suppress each other.
+WATCH_NOTICE_LOG = DATA_DIR / "watch_notice_sends.json"
 # Written by build_variety_pages.py. The server never parses cultivar names
 # itself; it reads this map to decide whether a watched slug is real and to
 # take the title from us rather than from the caller.
@@ -60,6 +63,12 @@ VARIETY_INDEX_FILE = DEFAULT_INDEX_PATH
 PORT = 8099
 CONFIRM_EXPIRY_HOURS = 48
 MANAGE_LINK_RATE_LIMIT_SECONDS = 3600  # one manage-link email per address per hour
+# One "you're now watching X" per address per hour. This is an abuse ceiling,
+# not a courtesy: it caps what a forged-address attack can make a victim
+# receive at 24 emails a day instead of one per watch created. The notice lists
+# every variety the address watches, so a watch added inside a throttled window
+# is acknowledged by the next notice rather than lost.
+WATCH_NOTICE_RATE_LIMIT_SECONDS = 3600
 
 # --- Abuse limits on watch creation ---------------------------------------
 # Nothing sat between a script and 90 real inboxes: /api/watch-variety took a
@@ -243,18 +252,27 @@ def is_valid_email(email: str) -> bool:
 
 
 def _load_manage_link_log() -> dict:
-    if MANAGE_LINK_LOG.exists():
+    return _load_json_log(MANAGE_LINK_LOG)
+
+
+def _save_manage_link_log(log: dict):
+    _save_json_log(MANAGE_LINK_LOG, log)
+
+
+def _load_json_log(path: Path) -> dict:
+    if path.exists():
         try:
-            with open(MANAGE_LINK_LOG) as f:
-                return json.load(f)
+            with open(path) as f:
+                data = json.load(f)
+                return data if isinstance(data, dict) else {}
         except (json.JSONDecodeError, OSError):
             return {}
     return {}
 
 
-def _save_manage_link_log(log: dict):
-    MANAGE_LINK_LOG.parent.mkdir(parents=True, exist_ok=True)
-    with open(MANAGE_LINK_LOG, "w") as f:
+def _save_json_log(path: Path, log: dict):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w") as f:
         json.dump(log, f, indent=2)
 
 
@@ -762,6 +780,9 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 return
             if inserted:
                 print(f"Variety watch added: {email} -> {variety_slug}")
+                # Only on a real insert. Re-watching something you already
+                # watch is not news and must not cost an email.
+                self._maybe_send_watch_notice(email, variety_slug)
                 self.send_json(201, {"message": "Alert set!", "variety_slug": variety_slug})
             else:
                 self.send_json(200, {"message": "Already watching", "variety_slug": variety_slug})
@@ -1112,6 +1133,80 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             return n
         except sqlite3.Error:
             return 0
+
+    def _maybe_send_watch_notice(self, email: str, variety_slug: str):
+        """Acknowledge a new watch, at most once per address per hour.
+
+        Nobody was told they had subscribed: first contact could be weeks
+        later, when a restock finally fired, by which point the alert reads as
+        unsolicited mail.
+
+        Throttled because this is also the lever an attacker would pull. One
+        forged address plus a loop was unbounded mail to a stranger; it is now
+        24 a day worst case. The notice lists every variety the address
+        watches, so a watch added inside a throttled window still gets
+        acknowledged by the next one.
+        """
+        log = _load_json_log(WATCH_NOTICE_LOG)
+        last = log.get(email)
+        if last:
+            try:
+                elapsed = (datetime.now() - datetime.fromisoformat(last)).total_seconds()
+                if elapsed < WATCH_NOTICE_RATE_LIMIT_SECONDS:
+                    print(f"Watch notice throttled for {email} "
+                          f"({int(elapsed)}s since last)")
+                    return
+            except ValueError:
+                pass    # unparseable stamp: treat as never sent
+
+        token = make_unsubscribe_token(email)
+        if not token:
+            print("ERROR: UNSUBSCRIBE_SECRET missing; cannot send watch notice "
+                  f"for {email}", file=sys.stderr)
+            return
+
+        script = SCRIPT_DIR / "send_watch_notice_email.py"
+        if not script.exists():
+            print(f"ERROR: {script} not found", file=sys.stderr)
+            return
+
+        # Stamp BEFORE launching, and treat a failure to stamp as a reason not
+        # to send. This is a throttle protecting a third party's inbox, so it
+        # has to fail closed: if the stamp cannot be persisted, an unwritable
+        # log would otherwise mean every watch re-sends, which is the unbounded
+        # mail this exists to prevent.
+        previous = log.get(email)
+        log[email] = datetime.now().isoformat()
+        try:
+            _save_json_log(WATCH_NOTICE_LOG, log)
+        except OSError as ex:
+            print(f"ERROR: could not record watch-notice send ({ex}); "
+                  f"not sending, because an unrecorded send has no throttle",
+                  file=sys.stderr)
+            return
+
+        try:
+            subprocess.Popen(
+                [sys.executable, str(script), email, token, variety_slug],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        except Exception as ex:
+            # Roll the stamp back so a transient spawn failure does not cost
+            # this person their only acknowledgement for the next hour. Best
+            # effort: if the rollback fails too, we stay on the safe side.
+            print(f"Warning: could not launch watch notice: {ex}", file=sys.stderr)
+            try:
+                if previous is None:
+                    log.pop(email, None)
+                else:
+                    log[email] = previous
+                _save_json_log(WATCH_NOTICE_LOG, log)
+            except OSError:
+                pass
+            return
+
+        print(f"Watch notice queued: {email} -> {variety_slug}")
 
     def _get_variety_watches(self, email: str):
         """Get variety watches for an email from SQLite."""
