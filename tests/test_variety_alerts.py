@@ -41,6 +41,7 @@ alerts = _load(SCRAPERS / "send_variety_alerts.py")
 
 from cultivar_parsing import product_variety_slug  # noqa: E402
 from stocklib import changes as changes_mod  # noqa: E402
+from stocklib import variety_index as variety_index_mod  # noqa: E402
 
 
 def _make_db(path: Path):
@@ -286,6 +287,89 @@ class AlertEmailBodyTests(unittest.TestCase):
                 html = alerts.build_variety_alert_email(
                     "Mango - R2E2", "mango-r2e2", [self.PRODUCT], kind)
                 self.assertNotIn("—", html)
+
+    def test_a_hostile_title_cannot_inject_markup(self):
+        """A title reaching this function is either canonical or a stored
+        legacy value, and the legacy ones were caller-supplied."""
+        html = alerts.build_variety_alert_email(
+            '<img src=x onerror="alert(1)">', "mango-r2e2",
+            [self.PRODUCT], alerts.RESTOCK)
+        # The escaped text still contains the word "onerror"; what matters is
+        # that no tag and no attribute boundary survives.
+        self.assertNotIn("<img", html)
+        self.assertNotIn('onerror="', html)
+        self.assertIn("&lt;img", html)
+
+    def test_nursery_supplied_strings_are_escaped_too(self):
+        """Not an injection worry, a rendering one: an unescaped & or < in a
+        listing title breaks the email for everyone."""
+        product = dict(self.PRODUCT,
+                       title="Mango <R2E2> & friends",
+                       nursery_name="Daleys & Sons")
+        html = alerts.build_variety_alert_email(
+            "Mango - R2E2", "mango-r2e2", [product], alerts.RESTOCK)
+        self.assertIn("Mango &lt;R2E2&gt; &amp; friends", html)
+        self.assertIn("Daleys &amp; Sons", html)
+
+    def test_unsubscribe_footer_escapes_the_title(self):
+        html = alerts.inject_unsubscribe(
+            "<html><body>x</body></html>", "a@example.com", "tok",
+            variety_slug="mango-r2e2", variety_title='<b>Mango</b>')
+        self.assertNotIn("<b>Mango</b>", html)
+        self.assertIn("&lt;b&gt;Mango&lt;/b&gt;", html)
+
+
+class CanonicalTitleTests(unittest.TestCase):
+    """The display title comes from the builder's index, not from whoever
+    watched the slug first."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = Path(self.tmp.name) / variety_index_mod.INDEX_FILENAME
+        self._orig = alerts._VARIETY_INDEX
+
+    def tearDown(self):
+        alerts._VARIETY_INDEX = self._orig
+        self.tmp.cleanup()
+
+    def _index(self, titles):
+        variety_index_mod.write_variety_index(self.path, titles)
+        alerts._VARIETY_INDEX = variety_index_mod.VarietyIndex(self.path)
+
+    def test_index_title_beats_the_first_watchers_string(self):
+        self._index({"mango-r2e2": "Mango - R2E2"})
+        watchers = {"mango-r2e2": [
+            {"email": "a@example.com", "variety_title": "Mango R2E2 45L POT (PICKUP)"},
+            {"email": "b@example.com", "variety_title": "irrelevant"},
+        ]}
+        self.assertEqual(alerts.display_title("mango-r2e2", watchers),
+                         "Mango - R2E2")
+
+    def test_unknown_slug_keeps_the_stored_title(self):
+        """~12 watched slugs are already absent from live stock and so have no
+        index entry. Their watchers keep a recognisable name."""
+        self._index({"mango-r2e2": "Mango - R2E2"})
+        watchers = {"gone-forever": [
+            {"email": "a@example.com", "variety_title": "Gone - Forever"}]}
+        self.assertEqual(alerts.display_title("gone-forever", watchers),
+                         "Gone - Forever")
+
+    def test_no_index_at_all_falls_back_rather_than_going_silent(self):
+        alerts._VARIETY_INDEX = variety_index_mod.VarietyIndex(self.path)
+        watchers = {"mango-r2e2": [
+            {"email": "a@example.com", "variety_title": "Mango - R2E2"}]}
+        self.assertEqual(alerts.display_title("mango-r2e2", watchers),
+                         "Mango - R2E2")
+
+
+class SubjectLineTests(unittest.TestCase):
+    def test_newlines_and_control_characters_are_flattened(self):
+        self.assertEqual(
+            alerts.subject_safe("Mango\r\n - R2E2\tGrafted"),
+            "Mango - R2E2 Grafted")
+
+    def test_ordinary_titles_are_untouched(self):
+        self.assertEqual(alerts.subject_safe("Mango - R2E2"), "Mango - R2E2")
 
 
 if __name__ == "__main__":

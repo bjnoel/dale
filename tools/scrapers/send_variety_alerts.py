@@ -44,6 +44,7 @@ Australian Spam Act compliance:
 
 import hashlib
 import hmac
+import html as _html
 import json
 import re
 import sqlite3
@@ -100,6 +101,7 @@ from stocklib.snapshots import snapshot_path_for_date
 from stocklib.utm import outbound
 from stocklib import changes as _changes
 from stocklib.fruit_filters import digest_product_filter
+from stocklib.variety_index import DEFAULT_INDEX_PATH, get_variety_index
 
 
 from cultivar_parsing import slugify, parse_cultivar, product_variety_slug  # noqa: E402
@@ -172,6 +174,48 @@ def load_watches() -> list[dict]:
     rows = con.execute("SELECT email, variety_slug, species_slug, variety_title FROM watches").fetchall()
     con.close()
     return [dict(r) for r in rows]
+
+
+# Canonical slug -> title map, written by build_variety_pages.py. Loaded on
+# first use; tests replace it directly.
+_VARIETY_INDEX = None
+
+
+def variety_index():
+    global _VARIETY_INDEX
+    if _VARIETY_INDEX is None:
+        _VARIETY_INDEX = get_variety_index(DEFAULT_INDEX_PATH)
+    return _VARIETY_INDEX
+
+
+def display_title(slug: str, watchers: dict) -> str:
+    """The name to put in front of a watcher for `slug`.
+
+    Canonical title from the index. This used to be
+    `watchers[slug][0]["variety_title"]`, i.e. whatever string the FIRST person
+    to watch this slug happened to POST, interpolated into the subject and body
+    of mail sent to everyone else watching it.
+
+    The stored title is still the fallback, because ~12 watched slugs have
+    dropped out of live stock and so have no page and no index entry, and those
+    people should keep getting a recognisable name rather than nothing. That
+    fallback is exactly why every render site escapes.
+    """
+    stored = ""
+    rows = watchers.get(slug) or []
+    if rows:
+        stored = rows[0].get("variety_title") or ""
+    return variety_index().display_title(slug, stored)
+
+
+def subject_safe(title: str) -> str:
+    """Flatten a title for use in a subject line.
+
+    Resend takes the subject as a JSON field, so a newline cannot inject a
+    header, but it can still produce a subject that renders as junk. Collapse
+    whitespace and drop control characters.
+    """
+    return re.sub(r"\s+", " ", re.sub(r"[\x00-\x1f\x7f]", " ", title or "")).strip()
 
 
 def ensure_schema(con: sqlite3.Connection) -> None:
@@ -318,7 +362,15 @@ def _nursery_display_name(data_dir: Path, nursery_key: str) -> str:
 def build_variety_alert_email(variety_title: str, variety_slug: str,
                               products: list[dict],
                               alert_type: str = RESTOCK) -> str:
-    """Build HTML email body for a per-variety restock or price-drop alert."""
+    """Build HTML email body for a per-variety restock or price-drop alert.
+
+    Everything interpolated into the HTML here is escaped. The variety title is
+    the one that mattered (it used to be caller-supplied and reached every
+    watcher of the slug), but nursery listing titles get the same treatment:
+    an unescaped `&` or `<` in a product name is a rendering bug even when
+    nobody is being hostile.
+    """
+    safe_title = _html.escape(variety_title)
     rows = ""
     for p in sorted(products, key=lambda x: x["price"] or 9999):
         price_str = f"${p['price']:.2f}" if p["price"] else "POA"
@@ -335,20 +387,20 @@ def build_variety_alert_email(variety_title: str, variety_slug: str,
         rows += f"""
       <tr>
         <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6">
-          <a href="{utm_url}" style="color:#15803d;text-decoration:none">{p['title']}</a>
+          <a href="{_html.escape(utm_url, quote=True)}" style="color:#15803d;text-decoration:none">{_html.escape(p['title'])}</a>
         </td>
-        <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:0.875em">{p['nursery_name']}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:0.875em">{_html.escape(p['nursery_name'])}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6;font-weight:600">{price_str}</td>
       </tr>"""
 
     if alert_type == PRICE_DROP:
-        heading = f"{variety_title} just dropped in price"
+        heading = f"{safe_title} just dropped in price"
         subhead = "A variety you're watching is cheaper than it was yesterday."
     else:
-        heading = f"{variety_title} is now available!"
+        heading = f"{safe_title} is now available!"
         subhead = "The specific variety you were watching has come back into stock."
 
-    variety_url = f"{SITE_URL}/variety/{variety_slug}.html"
+    variety_url = f"{SITE_URL}/variety/{urllib.parse.quote(variety_slug)}.html"
 
     return f"""<!DOCTYPE html>
 <html>
@@ -383,7 +435,7 @@ def build_variety_alert_email(variety_title: str, variety_slug: str,
 
     <div style="margin-top:20px">
       <a href="{variety_url}" style="display:inline-block;background:#15803d;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-size:0.9em;font-weight:500">
-        View {variety_title} on treestock.com.au
+        View {safe_title} on treestock.com.au
       </a>
     </div>
 
@@ -433,7 +485,8 @@ def inject_unsubscribe(html: str, email: str, token: str,
     stop_all = f"{SITE_URL}/stop-watching.html?email={q(email)}&token={token}"
     manage_url = f"{SITE_URL}/api/preferences?email={q(email)}&token={token}"
     one_line = (
-        f'<a href="{stop_one}" style="color:#6b7280">Stop watching {variety_title}</a> &middot;\n  '
+        f'<a href="{_html.escape(stop_one, quote=True)}" style="color:#6b7280">'
+        f'Stop watching {_html.escape(variety_title)}</a> &middot;\n  '
         if variety_slug else ""
     )
     footer = f"""
@@ -470,6 +523,15 @@ def main():
     if not data_dir.exists():
         print(f"ERROR: {data_dir} does not exist", file=sys.stderr)
         sys.exit(1)
+    idx_count = len(variety_index())
+    if idx_count:
+        print(f"Canonical variety titles loaded: {idx_count}")
+    else:
+        # Not fatal: every alert falls back to its stored title, which is what
+        # shipped before the index existed. Loud because a missing index means
+        # a variety page build has not run.
+        print(f"WARNING: no variety index at {variety_index().path}; "
+              f"falling back to stored watch titles", file=sys.stderr)
 
     mode_tag = ""
     if dry_run:
@@ -513,8 +575,7 @@ def main():
         today_count = len(today_by_variety.get(slug, []))
         yesterday_count = len(yesterday_by_variety.get(slug, []))
         if today_count > 0 and yesterday_count == 0:
-            # Use the variety_title from the first watcher record
-            variety_title = watchers[slug][0]["variety_title"]
+            variety_title = display_title(slug, watchers)
             restocked_slugs.add(slug)
             alerts.append({
                 "slug": slug,
@@ -533,7 +594,7 @@ def main():
         if slug in restocked_slugs:
             print(f"  (price drop on {slug} folded into its restock alert)")
             continue
-        variety_title = watchers[slug][0]["variety_title"]
+        variety_title = display_title(slug, watchers)
         alerts.append({
             "slug": slug,
             "alert_type": PRICE_DROP,
@@ -585,10 +646,11 @@ def main():
             print(f"  {variety_title} ({alert_type}): no eligible watchers")
             continue
 
+        subject_title = subject_safe(variety_title)
         if alert_type == PRICE_DROP:
-            subject = f"{variety_title} just dropped in price -- treestock.com.au"
+            subject = f"{subject_title} just dropped in price -- treestock.com.au"
         else:
-            subject = f"{variety_title} is now available -- treestock.com.au"
+            subject = f"{subject_title} is now available -- treestock.com.au"
         email_html = build_variety_alert_email(variety_title, slug, products, alert_type)
 
         print(f"\n  Sending '{variety_title}' {alert_type} alert to {len(recipients)} watcher(s)...")

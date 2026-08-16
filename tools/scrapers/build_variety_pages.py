@@ -54,6 +54,7 @@ from cultivar_parsing import (  # noqa: E402
 from stocklib.taxonomy import load_species
 from stocklib.category_ui import category_badges_html, is_bush_tucker, CATEGORY_FILTER_CSS
 from stocklib.utm import outbound
+from stocklib.variety_index import DEFAULT_INDEX_PATH, write_variety_index
 
 # Canonical species name -> the /species/ page slug from the taxonomy record
 # (slugify("Davidson's Plum") gives davidson-s-plum; the record says
@@ -297,12 +298,20 @@ def build_variety_index(entries: list[dict], valid_species_slugs: set[str]) -> s
 
 
 def main():
-    if len(sys.argv) < 3:
-        print(f"Usage: {sys.argv[0]} <data_dir> <output_dir>", file=sys.stderr)
+    argv = sys.argv[1:]
+    index_out = DEFAULT_INDEX_PATH
+    if "--index-out" in argv:
+        i = argv.index("--index-out")
+        index_out = Path(argv[i + 1])
+        del argv[i:i + 2]
+
+    if len(argv) < 2:
+        print(f"Usage: {sys.argv[0]} <data_dir> <output_dir> [--index-out PATH]",
+              file=sys.stderr)
         sys.exit(1)
 
-    data_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2])
+    data_dir = Path(argv[0])
+    output_dir = Path(argv[1])
     variety_dir = output_dir / "variety"
     variety_dir.mkdir(parents=True, exist_ok=True)
 
@@ -324,6 +333,12 @@ def main():
     print(f"Found {len(groups)} distinct cultivar names")
 
     index_entries = []
+    # slug -> canonical title for EVERY page written, grandfathered ones
+    # included. This is what the subscribe server and the alert sender read
+    # instead of trusting a client-supplied title; a grandfathered slug is
+    # excluded from the browsable index below but still has live watchers whose
+    # alerts have to name the variety.
+    canonical_titles: dict[str, str] = {}
     pages_written = 0
     written_slugs = set()
 
@@ -338,6 +353,7 @@ def main():
         with open(out_path, "w") as f:
             f.write(html)
         written_slugs.add(slug)
+        canonical_titles[slug] = data["title"]
         pages_written += 1
 
         # Grandfathered non-fruit pages exist only to keep their subscribers'
@@ -374,6 +390,20 @@ def main():
         f.write(index_html)
 
     print(f"Written {pages_written} variety pages + index to {variety_dir}/")
+
+    # Canonical slug -> title map for the subscribe server and the alert
+    # sender. Goes to the server's state dir, not the web root: it is state the
+    # server reads, not a page anyone browses. Written last so a build that
+    # dies partway leaves the previous (still valid) index in place rather than
+    # a truncated one.
+    if index_out.parent.is_dir():
+        write_variety_index(index_out, canonical_titles)
+        print(f"Written {len(canonical_titles)} canonical variety titles to {index_out}")
+    else:
+        # A dev box has no /opt/dale/data. Skipping is right there, and saying
+        # so is what stops it being skipped unnoticed on the server.
+        print(f"Skipped variety index: {index_out.parent} does not exist "
+              f"(use --index-out to write elsewhere)")
 
     # Print summary stats
     multi = sum(1 for e in index_entries if e["nursery_count"] > 1)

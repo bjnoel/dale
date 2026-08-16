@@ -260,18 +260,22 @@ Order matters because slugs move and the alert sender runs nightly at 22:00 UTC.
 3. Commit, then `tools/deploy.sh`. Never scp.
 4. Run the individual builders (`build_variety_pages.py` first, so `variety-index.json`
    exists before the server needs it). **Never `run-all-scrapers.sh`, it emails subscribers.**
-5. `migrate_variety_watch_slugs.py` dry-run, review, then apply on the server. **Steps 4 and
-   5 must be adjacent**: the build deletes orphan pages (`build_variety_pages.py:362-367`),
+5. `backfill_variety_titles.py` dry-run, review, then `--apply`. Rewrites the stored
+   caller-supplied titles from the index. Must run BEFORE the re-slug below, which
+   recomputes each slug from its stored title: canonical titles in means no spurious
+   slug movement out. Rows whose slug is not in the index are left alone by design.
+6. `migrate_variety_watch_slugs.py` dry-run, review, then apply on the server. **Steps 4 and
+   6 must be adjacent**: the build deletes orphan pages (`build_variety_pages.py:362-367`),
    so between them a watcher's alert link can 404.
-6. **Assert every watched slug resolves.** `SELECT DISTINCT variety_slug FROM watches` must
+7. **Assert every watched slug resolves.** `SELECT DISTINCT variety_slug FROM watches` must
    be a subset of the generated pages plus `GRANDFATHERED_VARIETY_SLUGS`. 12 watched slugs
    are already absent from live stock today, so establish that baseline before the change
    and require the number not to grow. This is the check that would catch a missed migration
    before a subscriber does.
-7. Verify with `send_variety_alerts.py --dry-run`, then `--redirect-to b@bjnoel.com` for a
+8. Verify with `send_variety_alerts.py --dry-run`, then `--redirect-to b@bjnoel.com` for a
    real rendered email. `--redirect-to` deliberately does not record sends, so a later real
    run still fires.
-8. Confirm no alert fired as a side effect: `sends` count should be unchanged (47 at the time
+9. Confirm no alert fired as a side effect: `sends` count should be unchanged (47 at the time
    of writing) until the next scheduled run.
 
 Deploy while no autonomous session is running, or the hourly runner trips the breaker.

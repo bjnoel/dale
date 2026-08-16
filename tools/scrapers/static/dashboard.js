@@ -242,10 +242,12 @@ function rememberWatchEmail(email) {
   try { localStorage.setItem(WATCH_EMAIL_KEY, email); } catch (e) { /* private mode */ }
 }
 
-// Slug -> title, harvested during render so the POST can name the variety the
-// way the variety pages do.
-const WATCH_TITLES = {};
-
+// The POST used to carry a variety_title harvested from the row, which meant
+// a homepage watch stored the RAW nursery listing title ("Advanced Lemon
+// 'Eureka Seedless' 400mm/45Ltr Pot (PICK UP ONLY)") and that string became
+// the subject line of the alert email sent to everyone watching the slug. The
+// server now takes the title from the index the builder writes and ignores
+// anything sent here, so there is nothing to harvest.
 async function submitWatch(wrap, email) {
   const slug = wrap.dataset.vs;
   const msg = wrap.querySelector('.watch-msg');
@@ -259,8 +261,7 @@ async function submitWatch(wrap, email) {
       body: JSON.stringify({
         email: email,
         variety_slug: slug,
-        species_slug: wrap.dataset.sp || '',
-        variety_title: WATCH_TITLES[slug] || slug
+        species_slug: wrap.dataset.sp || ''
       })
     });
     const data = await resp.json();
@@ -395,7 +396,6 @@ function render() {
     // alert on, and until now there was no way to ask for one.
     let notifyLink = '';
     if (p.vs) {
-      WATCH_TITLES[p.vs] = p.t;
       const label = !p.a
         ? (VARIETY_IN_STOCK[p.vs] ? 'In stock elsewhere, alert me anyway' : "Notify me when it's back in stock")
         : 'Alert me if the price drops';

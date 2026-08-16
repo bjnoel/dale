@@ -20,6 +20,7 @@ Caddy config addition:
 
 import hashlib
 import hmac
+import html
 import json
 import re
 import sqlite3
@@ -36,6 +37,8 @@ import nursery_inbound
 
 from stocklib.mailer import (SUBSCRIBERS_FILE, get_unsubscribe_secret,
                              make_unsubscribe_token, load_subscribers)
+from stocklib.variety_index import (DEFAULT_INDEX_PATH, get_variety_index,
+                                    is_valid_slug)
 
 try:
     import jwt  # PyJWT — validates the Cloudflare Access JWT on /admin
@@ -44,10 +47,15 @@ except ImportError:  # server fails closed (403) if PyJWT is missing
 
 SCRIPT_DIR = Path(__file__).parent
 
-PENDING_FILE = Path("/opt/dale/data/pending_subscribers.json")
+DATA_DIR = Path("/opt/dale/data")
+PENDING_FILE = DATA_DIR / "pending_subscribers.json"
 APP_ENV = Path("/opt/dale/secrets/app.env")
-VARIETY_WATCHES_DB = Path("/opt/dale/data/variety_watches.db")
-MANAGE_LINK_LOG = Path("/opt/dale/data/manage_link_sends.json")
+VARIETY_WATCHES_DB = DATA_DIR / "variety_watches.db"
+MANAGE_LINK_LOG = DATA_DIR / "manage_link_sends.json"
+# Written by build_variety_pages.py. The server never parses cultivar names
+# itself; it reads this map to decide whether a watched slug is real and to
+# take the title from us rather than from the caller.
+VARIETY_INDEX_FILE = DEFAULT_INDEX_PATH
 PORT = 8099
 CONFIRM_EXPIRY_HOURS = 48
 MANAGE_LINK_RATE_LIMIT_SECONDS = 3600  # one manage-link email per address per hour
@@ -575,13 +583,36 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             email = data.get("email", "").strip().lower()
             variety_slug = data.get("variety_slug", "").strip()
             species_slug = data.get("species_slug", "").strip()
-            variety_title = data.get("variety_title", "").strip()
+            # data["variety_title"] is read and discarded on purpose. It used
+            # to be stored and then interpolated into the subject and body of
+            # mail sent to every other watcher of this slug, which handed a
+            # stranger the copy in our email. The title now comes from the
+            # index the builder writes; see stocklib/variety_index.py.
             if not email or not is_valid_email(email):
                 self.send_json(400, {"error": "Valid email required"})
                 return
             if not variety_slug:
                 self.send_json(400, {"error": "variety_slug required"})
                 return
+            if not is_valid_slug(variety_slug) or (species_slug and not is_valid_slug(species_slug)):
+                self.send_json(400, {"error": "Invalid variety"})
+                return
+            index = get_variety_index(VARIETY_INDEX_FILE)
+            variety_title = index.title(variety_slug)
+            if variety_title is None:
+                # Only treat "absent from the index" as "not a real variety"
+                # when we actually have an index. A deploy restarts this
+                # service before the builders run, so the file can legitimately
+                # be missing for a few minutes and failing closed there would
+                # drop real signups. The slug already passed is_valid_slug, so
+                # the fallback title is safe to render either way.
+                if index.available:
+                    print(f"Rejected watch on unknown variety slug: {variety_slug}")
+                    self.send_json(404, {"error": "Unknown variety"})
+                    return
+                variety_title = index.display_title(variety_slug)
+                print(f"WARNING: {VARIETY_INDEX_FILE} missing or empty; "
+                      f"accepting {variety_slug} with a slug-derived title")
             added_at = datetime.now().isoformat()
             try:
                 con = sqlite3.connect(VARIETY_WATCHES_DB)
@@ -590,8 +621,17 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                     "VALUES (?, ?, ?, ?, ?)",
                     (email, variety_slug, species_slug, variety_title, added_at),
                 )
-                con.commit()
                 inserted = cur.rowcount > 0
+                if not inserted:
+                    # INSERT OR IGNORE leaves the existing row alone, including
+                    # a title stored back when the client supplied it. Refresh
+                    # it so re-watching heals the row.
+                    con.execute(
+                        "UPDATE watches SET variety_title = ? "
+                        "WHERE email = ? AND variety_slug = ? AND variety_title != ?",
+                        (variety_title, email, variety_slug, variety_title),
+                    )
+                con.commit()
                 con.close()
             except sqlite3.Error as e:
                 self.send_json(500, {"error": f"DB error: {e}"})
@@ -1059,18 +1099,32 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
 
     def _variety_watch_rows(self, email: str) -> str:
         """Render the watch list as removable rows. Shared by the full
-        preferences page and the watch-only page."""
+        preferences page and the watch-only page.
+
+        Titles are shown from the canonical index where we have one, so a row
+        for a watch created before the server owned titles reads the same as a
+        row created today. A slug that has dropped out of the dataset keeps its
+        stored title rather than vanishing, hence the escaping below: that
+        stored value could still be whatever a caller once posted.
+
+        The Remove button carries the slug in a data attribute and is wired up
+        by a delegated listener on each page. It used to build an inline
+        onclick out of the slug, which is a string-concatenated JS context and
+        the wrong shape to defend even when the value is safe.
+        """
         watches = self._get_variety_watches(email)
         if not watches:
             return '<p style="color:#9ca3af;font-size:0.85rem">None. Browse variety pages to add watches.</p>'
+        index = get_variety_index(VARIETY_INDEX_FILE)
         rows = ""
         for vw in watches:
-            safe_title = vw["title"].replace('"', "&quot;").replace("<", "&lt;")
+            safe_title = html.escape(index.display_title(vw["slug"], vw["title"]))
             rows += (
                 f'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;'
                 f'border-bottom:1px solid #f3f4f6">'
                 f'<span>{safe_title}</span>'
-                f'<button onclick="removeVariety(\'{vw["slug"]}\')" style="background:none;border:1px solid #d1d5db;'
+                f'<button type="button" class="remove-watch" data-slug="{html.escape(vw["slug"], quote=True)}" '
+                f'style="background:none;border:1px solid #d1d5db;'
                 f'color:#6b7280;padding:4px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer">Remove</button>'
                 f'</div>'
             )
@@ -1082,7 +1136,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
         of them apply: the only thing this person receives is variety alerts."""
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">Your variety alerts</h2>
-<p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{email}</p>
+<p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{html.escape(email)}</p>
 
 <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
   We email you when one of these comes back in stock, or drops in price, at any
@@ -1107,12 +1161,16 @@ async function removeVariety(slug) {{
     const resp = await fetch('/api/unwatch-variety', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{email: '{email}', token: '{token}', variety_slug: slug}})
+      body: JSON.stringify({{email: {json.dumps(email)}, token: {json.dumps(token)}, variety_slug: slug}})
     }});
     if (resp.ok) location.reload();
     else document.getElementById('stopMsg').textContent = 'Could not remove that alert.';
   }} catch (err) {{ document.getElementById('stopMsg').textContent = 'Network error.'; }}
 }}
+document.getElementById('varietyWatches').addEventListener('click', function(e) {{
+  const btn = e.target.closest('.remove-watch');
+  if (btn) removeVariety(btn.dataset.slug);
+}});
 document.getElementById('stopAll').addEventListener('click', async function() {{
   const msg = document.getElementById('stopMsg');
   const btn = this;
@@ -1223,7 +1281,7 @@ document.getElementById('stopAll').addEventListener('click', async function() {{
 
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">Manage your alerts</h2>
-<p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{email}</p>
+<p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{html.escape(email)}</p>
 
 <form id="prefsForm" style="margin:0">
 
@@ -1344,8 +1402,8 @@ async function removeVariety(slug) {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
       body: JSON.stringify({{
-        email: '{email}',
-        token: '{token}',
+        email: {json.dumps(email)},
+        token: {json.dumps(token)},
         variety_slug: slug
       }})
     }});
@@ -1353,6 +1411,10 @@ async function removeVariety(slug) {{
     else alert('Failed to remove watch.');
   }} catch (err) {{ alert('Network error.'); }}
 }}
+document.getElementById('varietyWatches').addEventListener('click', function(e) {{
+  const btn = e.target.closest('.remove-watch');
+  if (btn) removeVariety(btn.dataset.slug);
+}});
 </script>"""
         self.send_html(200, body)
 

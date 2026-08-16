@@ -539,8 +539,10 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             }
             _vs = product_variety_slug(title)
             if _vs and not any(kw in title_lower for kw in _VARIETY_PAGE_DENY):
+                # Slug only. "vt" (the raw listing title) used to ride along so
+                # the watch POST could name the variety; the server takes the
+                # title from its own index now and nothing reads vt.
                 product_data["vs"] = _vs
-                product_data["vt"] = title
             if nursery_name in FEATURED_NURSERIES:
                 product_data["ft"] = True
 
