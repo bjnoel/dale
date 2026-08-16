@@ -46,6 +46,15 @@ GUARDS = [
     (re.compile(r"^RETRYABLE_HTTP\s*[:=]"), "stocklib/retry.py"),
     (re.compile(r"^def request_with_retry\b"), "stocklib/retry.py"),
     (re.compile(r"^def backoff_delay\b"), "stocklib/retry.py"),
+    # Scrape-health reading. The anomaly detector and the page-lifecycle
+    # ledger's health gate must agree on which record wins for a nursery on a
+    # re-run day, or one alerts on a failure the other has already forgiven.
+    (re.compile(r"^def latest_by_nursery\b"), "stocklib/scrape_health.py"),
+    (re.compile(r"^def untrusted_nurseries\b"), "stocklib/scrape_health.py"),
+    # Page-lifecycle state machine. Both builders share one classifier; a
+    # second copy is how the two families' guards drift apart.
+    (re.compile(r"^def decide_night\b"), "stocklib/page_ledger.py"),
+    (re.compile(r"^def write_page\b"), "stocklib/page_ledger.py"),
     # Title -> species matching (2026-07-23 de-fork: five drifted match_title
     # copies meant "Dwarf Apple ..." counted on one page and not another)
     (re.compile(r"^def match_species\b"), "stocklib/species_match.py"),

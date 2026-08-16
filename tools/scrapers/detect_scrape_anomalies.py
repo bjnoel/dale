@@ -25,7 +25,7 @@ import sys
 from datetime import date, timedelta
 from pathlib import Path
 
-from stocklib.scrape_health import read_records
+from stocklib.scrape_health import latest_by_nursery, read_records
 
 STREAK_DAYS = 3
 
@@ -39,16 +39,6 @@ CONDITION_LABELS = {
     "blocked": "Blocked (403/429)",
     "failure_streak": f"Failed {STREAK_DAYS} days running",
 }
-
-
-def latest_by_nursery(records):
-    """Last record per nursery for a day (re-runs append, last one wins)."""
-    latest = {}
-    for rec in records:
-        nursery = rec.get("nursery")
-        if nursery:
-            latest[nursery] = rec
-    return latest
 
 
 def detect_anomalies(days):

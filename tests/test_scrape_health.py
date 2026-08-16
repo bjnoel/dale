@@ -10,13 +10,14 @@ import json
 import sys
 import tempfile
 import unittest
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tools" / "scrapers"))
 
 from stocklib.scrape_health import (  # noqa: E402
-    ScrapeHealth, append_record, default_health_dir, read_records,
+    ScrapeHealth, append_record, default_health_dir, latest_by_nursery,
+    read_records, untrusted_nurseries,
 )
 
 REQUIRED_FIELDS = {
@@ -77,6 +78,99 @@ class ReadRecordsTest(unittest.TestCase):
             path.write_text('{"nursery": "daleys", "ok": true}\n{"nursery": "lady\n')
             records = read_records(day, tmp)
             self.assertEqual(len(records), 1)
+
+
+class UntrustedNurseriesTest(unittest.TestCase):
+    """The gate the page-lifecycle ledger asks before believing that a page's
+    products are gone. Getting this wrong in the permissive direction
+    tombstones pages en masse off one truncated scrape."""
+
+    DAY = "2026-08-16"
+
+    def _history(self, tmp, nursery, counts, *, ok=True, start_back=1):
+        """Write `counts` as the nursery's product totals on the days before
+        DAY, most recent first."""
+        for offset, n in enumerate(counts, start=start_back):
+            day = (date.fromisoformat(self.DAY) - timedelta(days=offset)).isoformat()
+            (Path(tmp) / f"{day}.jsonl").write_text(
+                json.dumps({"nursery": nursery, "ok": ok, "products": n}) + "\n")
+
+    def _today(self, tmp, records):
+        (Path(tmp) / f"{self.DAY}.jsonl").write_text(
+            "\n".join(json.dumps(r) for r in records) + "\n")
+
+    def test_healthy_nursery_is_trusted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._history(tmp, "daleys", [500, 505, 495, 500, 510, 500, 498])
+            self._today(tmp, [{"nursery": "daleys", "ok": True, "products": 490}])
+            self.assertEqual(untrusted_nurseries(self.DAY, tmp), set())
+
+    def test_failed_run_is_untrusted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._history(tmp, "daleys", [500] * 7)
+            self._today(tmp, [{"nursery": "daleys", "ok": False, "products": 0}])
+            self.assertEqual(untrusted_nurseries(self.DAY, tmp), {"daleys"})
+
+    def test_truncated_but_successful_run_is_untrusted(self):
+        """The dangerous scrape is the one that succeeds with a third of the
+        catalogue: latest.json does not cover it, because a real snapshot got
+        written."""
+        with tempfile.TemporaryDirectory() as tmp:
+            self._history(tmp, "ladybird", [6500] * 7)
+            self._today(tmp, [{"nursery": "ladybird", "ok": True, "products": 2000}])
+            self.assertEqual(untrusted_nurseries(self.DAY, tmp), {"ladybird"})
+
+    def test_missing_record_for_a_known_nursery_is_untrusted(self):
+        """Every scraper writes a record on the failure path too, so no record
+        means the scraper never ran and its snapshot is stale."""
+        with tempfile.TemporaryDirectory() as tmp:
+            self._history(tmp, "ross-creek", [300] * 7)
+            self._today(tmp, [{"nursery": "daleys", "ok": True, "products": 500}])
+            self.assertIn("ross-creek", untrusted_nurseries(self.DAY, tmp))
+
+    def test_no_history_means_no_judgement(self):
+        """A fresh install has no medians. The ledger's global floor is the
+        backstop there, not a guess from two days of data."""
+        with tempfile.TemporaryDirectory() as tmp:
+            self._history(tmp, "newbie", [1000, 1000])
+            self._today(tmp, [{"nursery": "newbie", "ok": True, "products": 10}])
+            self.assertEqual(untrusted_nurseries(self.DAY, tmp), set())
+
+    def test_failed_history_days_do_not_drag_the_median_down(self):
+        """A nursery that failed for days then came back small would otherwise
+        look healthy against its own outage."""
+        with tempfile.TemporaryDirectory() as tmp:
+            self._history(tmp, "flaky", [500, 500, 500, 500])
+            self._history(tmp, "flaky", [0, 0, 0], ok=False, start_back=5)
+            self._today(tmp, [{"nursery": "flaky", "ok": True, "products": 100}])
+            self.assertEqual(untrusted_nurseries(self.DAY, tmp), {"flaky"})
+
+    def test_rerun_uses_the_last_record_of_the_day(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._history(tmp, "daleys", [500] * 7)
+            self._today(tmp, [
+                {"nursery": "daleys", "ok": False, "products": 0},
+                {"nursery": "daleys", "ok": True, "products": 500},
+            ])
+            self.assertEqual(untrusted_nurseries(self.DAY, tmp), set())
+
+    def test_empty_health_dir_is_silent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(untrusted_nurseries(self.DAY, tmp), set())
+
+
+class LatestByNurseryTest(unittest.TestCase):
+    def test_last_record_wins(self):
+        latest = latest_by_nursery([
+            {"nursery": "a", "products": 1},
+            {"nursery": "a", "products": 2},
+            {"nursery": "b", "products": 3},
+        ])
+        self.assertEqual(latest["a"]["products"], 2)
+        self.assertEqual(latest["b"]["products"], 3)
+
+    def test_records_without_a_nursery_are_ignored(self):
+        self.assertEqual(latest_by_nursery([{"ok": True}]), {})
 
 
 class ScrapeHealthTest(unittest.TestCase):
