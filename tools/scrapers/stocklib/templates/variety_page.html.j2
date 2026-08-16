@@ -5,12 +5,22 @@
   {{ breadcrumb|safe }}
 
   <h1 class="text-3xl font-bold text-green-900 mb-1">Buy {{ title }} Trees in Australia</h1>
+{% if not tombstone_html %}
   <p class="text-gray-500 text-sm mb-4">Updated {{ today }} · {{ nursery_count }} nurseries tracked · {{ in_stock_count }} in stock</p>
+{% endif %}
 
   {{ blurb_html|safe }}
 
   {{ summary_callout|safe }}
 
+{# The tombstone sits BELOW the blurb on purpose: leading with the absence is
+   what makes a page read as a soft 404. A tombstone is re-rendered nightly from
+   fixed ledger data, so it carries no "Updated" line either, which would be a
+   lie on a page whose facts stopped changing. #}
+{% if tombstone_html %}
+  {{ tombstone_html|safe }}
+{% endif %}
+{% if product_view %}
   <div class="overflow-x-auto mb-8">
     <table class="w-full text-left">
       <thead>
@@ -39,6 +49,7 @@
 {% endfor %}      </tbody>
     </table>
   </div>
+{% endif %}
 
   <!-- Per-variety restock alert. Species-page Alerts links land on this anchor;
        the sticky-header clearance is the global scroll-padding-top rule in

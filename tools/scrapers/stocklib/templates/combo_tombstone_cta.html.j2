@@ -1,0 +1,25 @@
+{# Combo tombstone CTA. Links only: no <form>, no email input, no /api/ call.
+   Species-level watches were removed deliberately (DEC-294) and the endpoint a
+   species banner would post to does not exist. Renders nothing at all when
+   there is nothing to link to, rather than an empty box. #}
+{% if variety_links %}
+<p class="font-medium">Other {{ species_name }} varieties in stock now:</p>
+<ul class="mt-1 space-y-0.5">
+{% for v in variety_links %}
+  <li><a href="{{ v.href }}" class="underline text-green-800">{{ v.label }}</a>{% if not v.in_stock %} <span class="text-xs text-amber-700">(out of stock)</span>{% endif %}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% if species_href %}
+<p class="{% if variety_links %}mt-2{% endif %}"><a href="{{ species_href }}" class="underline text-green-800">See every {{ species_name }} listing we track</a></p>
+{% endif %}
+{% if state_links %}
+<p class="mt-2">{{ species_name }} in other states:
+{% for s in state_links %}
+<a href="{{ s.href }}" class="underline text-green-800">{{ s.label }}</a>{% if not loop.last %}, {% endif %}
+{% endfor %}
+</p>
+{% endif %}
+{% if not variety_links and not species_href and not state_links and hub_href %}
+<p><a href="{{ hub_href }}" class="underline text-green-800">Browse fruit trees in {{ hub_label }}</a></p>
+{% endif %}

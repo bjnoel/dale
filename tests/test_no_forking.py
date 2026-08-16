@@ -55,6 +55,17 @@ GUARDS = [
     # second copy is how the two families' guards drift apart.
     (re.compile(r"^def decide_night\b"), "stocklib/page_ledger.py"),
     (re.compile(r"^def write_page\b"), "stocklib/page_ledger.py"),
+    (re.compile(r"^STATE_META_NAME\s*[:=]"), "stocklib/page_ledger.py"),
+    (re.compile(r"^def page_state_meta\b"), "stocklib/page_ledger.py"),
+    (re.compile(r"^def read_page_state\b"), "stocklib/page_ledger.py"),
+    # Tombstone copy. Both families render their own table but share the
+    # callout, the date sentence and the CTA slot; a second copy of the
+    # sentences is how one family starts claiming a different history from the
+    # other for the same underlying ledger fields.
+    (re.compile(r"^def render_tombstone\b"), "stocklib/tombstone.py"),
+    (re.compile(r"^def last_stock_sentence\b"), "stocklib/tombstone.py"),
+    (re.compile(r"^def tracking_sentence\b"), "stocklib/tombstone.py"),
+    (re.compile(r"^def render_stub\b"), "stocklib/tombstone.py"),
     # Title -> species matching (2026-07-23 de-fork: five drifted match_title
     # copies meant "Dwarf Apple ..." counted on one page and not another)
     (re.compile(r"^def match_species\b"), "stocklib/species_match.py"),

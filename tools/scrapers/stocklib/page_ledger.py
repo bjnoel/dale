@@ -46,6 +46,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import tempfile
 from collections import Counter
 from dataclasses import dataclass, field
@@ -115,6 +116,50 @@ RENAME_MAJORITY = 0.5
 REDIRECT_DEPTH_CAP = 8
 
 LEDGER_DIRNAME = "page-ledger"
+
+# Every generated page declares its own state in a meta tag, and the sitemap
+# builder excludes by reading it. Rejected: having the sitemap read the ledger
+# (it would couple that builder to a file it does not own, and break its
+# hand-built test fixture) and a sidecar exclusion list (two sources of truth
+# for one fact). Carrying the state as a *value* rather than a bare marker is
+# also what makes the rollback lever "stop listing tombstones" a one-line
+# change.
+STATE_META_NAME = "treestock-page-state"
+
+# The sitemap reads only the head of each file. Generous enough for the whole
+# <head> of every page we generate, small enough that scanning thousands of
+# files stays cheap.
+STATE_META_SCAN_BYTES = 1024
+
+_STATE_META_RE = re.compile(
+    rf'<meta\s+name="{STATE_META_NAME}"\s+content="([a-z-]+)"')
+
+
+def page_state_meta(state: str) -> str:
+    """The state declaration for a page's <head>.
+
+    Emitted for live pages too, not just tombstones. A marker that appears only
+    on the unusual pages tells you nothing about a page that lacks it: it could
+    be live, or it could predate the change.
+    """
+    if state not in STATES:
+        raise ValueError(f"unknown page state {state!r}")
+    return f'<meta name="{STATE_META_NAME}" content="{state}">'
+
+
+def read_page_state(path: Path | str, default: str = LIVE) -> str:
+    """The state a generated page declares, read from its first bytes.
+
+    Defaults to `live`, which is the honest reading of a page with no tag: every
+    page on the site predates this change, and none of them are tombstones.
+    """
+    try:
+        with open(path, "rb") as f:
+            head = f.read(STATE_META_SCAN_BYTES).decode("utf-8", "ignore")
+    except OSError:
+        return default
+    match = _STATE_META_RE.search(head)
+    return match.group(1) if match else default
 
 
 def default_ledger_dir() -> Path:
