@@ -11547,3 +11547,58 @@ a year is roughly +300 to +450 clicks against 4,659, so **+6% to +10%**. Worth t
 hours because the content is already written and it compounds, but it is a tidy-up and not
 a growth lever. The binding constraint on the business is still that nobody has measured
 what a treestock click is worth in Treesmith Pro terms (DAL-241).
+
+---
+
+## DEC-296 — 2026-08-16 — One synonym filed four species under a fifth
+
+**Status:** Shipped. `"Sapote"` removed as a White Sapote synonym; Canistel and Mamey
+Sapote added as tracked species; regression tests cover the bug and the bug class.
+
+Benedict spot-checked a new combo page from DEC-295 and asked why canistel was listed
+under white sapote. It was, and so were three other species.
+
+`fruit_species.json` gave White Sapote the bare synonym **"Sapote"**. The shared matcher's
+any-position fallback (`stocklib/species_match.py::_fallback_candidate`) will match a
+one-word lookup key anywhere after position 0, so every product title containing the word
+"sapote" that did not already match something more specific landed on white sapote.
+
+**Of the 15 products on the white sapote pages, 3 were white sapote.** The other 12 were
+canistel (*Pouteria campechiana*, 5), mamey sapote (*Pouteria sapota*, 4), green sapote
+(*Pouteria viridis*, 1) and two unidentified "X Sapote" cultivars. *Casimiroa edulis* is
+not in the same family as any of them. A collector searching for white sapote was being
+shown four different fruits, which is the kind of thing that costs community trust rather
+than just clicks.
+
+**Canistel was also the largest untracked species we stock:** 11 products across 5
+nurseries, including 6 at Daleys alone (Lyndall, Ross Sapote, Grey, Kona, Aurea and a
+plain seedling). The ones whose titles contained "sapote" were mislabelled; the ones that
+did not, like "Canistel Aurea" and "Canistel - Lyndall", matched nothing at all and were
+invisible on every species surface. So the same synonym was simultaneously fabricating
+stock on one page and hiding it everywhere else.
+
+Black sapote was never affected: it matches on its full two-word name, and the matcher
+tries longer candidates first at each position.
+
+**Fix.** Deleted the bare synonym, and gave the strays real homes rather than letting them
+vanish: Canistel (with synonyms Cannistel, Yellow Sapote, Egg Fruit, Egg Fruit Tree, Ross
+Sapote) and Mamey Sapote are now species records. Green Sapote and "Bruno Sapote" match
+nothing and stay unlisted, which is the honest outcome for a single unidentified product;
+showing nothing beats filing it under a species it is not.
+
+**Tests cover the class, not just the case.** `SapoteDisambiguationTest` pins every real
+canistel title seen in live data, the black sapote non-regression, and a guard that no
+one-word synonym is the tail of another species' common name. That guard is what would
+have caught this at write time. Five of its eight tests fail against the old data.
+
+Two things found while in there. Pineapple guava under Feijoa is **correct** (*Acca
+sellowiana*, genuinely sold under both names) and is now pinned so a future synonym cull
+does not "fix" it. And the olive description carried an em dash, in breach of the copy
+rule, on our single highest-traffic page; fixed, with a test so descriptions cannot
+reacquire one.
+
+**Age and blast radius.** The synonym predates DEC-295 by a long way, so the WA white
+sapote page has been wrong for months. DEC-295 published it to three more states the same
+day Benedict caught it. Worth noting plainly: the page-count work shipped that morning had
+tests for *which* pages get built and none for whether the products on them are the right
+species. Coverage was pointed at the plumbing, not the content.
