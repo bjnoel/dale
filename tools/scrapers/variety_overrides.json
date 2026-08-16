@@ -1,0 +1,47 @@
+{
+  "_readme": [
+    "Human curation for variety identity, applied in cultivar_parsing.canonical_cultivar",
+    "so every consumer inherits it: the builders, the dashboard alert gate, and the",
+    "alert sender.",
+    "",
+    "  deny   slugs that are not a real cultivar. No /variety/ page, no alert button.",
+    "  alias  slug -> slug. Folds a sibling onto the cultivar it actually names.",
+    "",
+    "Alias resolves BEFORE deny. Grandfathered slugs beat deny, because that set",
+    "exists to keep existing watchers' alerts alive.",
+    "",
+    "BEFORE DENYING OR ALIASING A SLUG SOMEONE WATCHES: run",
+    "migrate_variety_watch_slugs.py for an alias, and for a deny check nobody is on",
+    "it first (/admin/varieties lists watch counts). build_variety_pages.py deletes",
+    "orphan pages, so a slug that stops being generated takes its page with it and",
+    "404s a live watcher's alert link.",
+    "",
+    "DO NOT auto-fold siblings by prefix. avocado-hass-lamb is Lamb Hass, a",
+    "different cultivar; guava-thai-pink, orange-valencia-delta and",
+    "finger-lime-green-sapphire are all real. /admin/varieties lists the pairs that",
+    "need a human; this file is where that human's answers go.",
+    "",
+    "Every deny entry below removes something that exists in live stock today.",
+    "Entries the parser already handles were taken back out: a list that names",
+    "slugs which cannot occur reads like curation is happening when it is not."
+  ],
+
+  "deny": [
+    "apple-mint",
+    "grapefruit-mint",
+    "orange-turmeric",
+    "peach-palm",
+    "jackfruit-daleys-special-deals",
+    "miracle-fruit-tropical",
+    "sapodilla-tropical",
+    "wampee-tropical",
+    "wax-jambu-tropical",
+    "kiwifruit-male",
+    "kiwifruit-female",
+    "kiwifruit-fruit-male",
+    "lemon-thornless",
+    "jujube-thornless"
+  ],
+
+  "alias": {}
+}

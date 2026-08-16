@@ -433,7 +433,79 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     model["needs_review"] = load_needs_review(data_dir)
     model["nurseries"] = load_nursery_data(data_dir)
     model["business"] = load_business_data(data_dir)
+    model["varieties"] = load_variety_curation(data_dir, watches_rows)
     return model
+
+
+def load_variety_curation(data_dir: Path, watches_rows) -> dict:
+    """The variety review queue, built WITHOUT importing cultivar_parsing.
+
+    That import is deliberately kept out of the server (it is heavy, and it
+    would join deploy.sh's restart fingerprint list). Everything here is string
+    work over two files the server already has: the canonical index the builder
+    writes, and the curated override file that rsyncs with the scrapers.
+
+    Sibling detection is prefix matching, and prefix matching is exactly what
+    must NOT be applied automatically: avocado-hass-lamb is Lamb Hass, a
+    different cultivar. That is the point of surfacing pairs for a human rather
+    than folding them.
+    """
+    data_dir = Path(data_dir)
+    index = {}
+    index_file = data_dir / "variety-index.json"
+    if index_file.exists():
+        try:
+            loaded = json.loads(index_file.read_text())
+            if isinstance(loaded, dict):
+                index = {k: v for k, v in loaded.items()
+                         if isinstance(k, str) and isinstance(v, str)}
+        except (json.JSONDecodeError, OSError):
+            index = {}
+
+    overrides = {"deny": [], "alias": {}, "error": ""}
+    ov_file = Path(__file__).parent / "variety_overrides.json"
+    if ov_file.exists():
+        try:
+            raw = json.loads(ov_file.read_text())
+            overrides["deny"] = sorted(raw.get("deny") or [])
+            overrides["alias"] = dict(raw.get("alias") or {})
+        except (json.JSONDecodeError, OSError) as e:
+            overrides["error"] = str(e)
+
+    watch_counts = {}
+    for row in watches_rows:
+        watch_counts[row[1]] = watch_counts.get(row[1], 0) + 1
+
+    slugs = sorted(index)
+    siblings = []
+    for base in slugs:
+        longer = [s for s in slugs if s != base and s.startswith(base + "-")]
+        if longer:
+            siblings.append({
+                "base": base,
+                "base_watchers": watch_counts.get(base, 0),
+                "siblings": [{"slug": s, "watchers": watch_counts.get(s, 0)}
+                             for s in sorted(longer)],
+            })
+
+    # Watched slugs with no page. The rollout tracks this number and requires
+    # it not to grow: each one is an alert whose link 404s.
+    orphan_watches = sorted(
+        ({"slug": s, "watchers": n} for s, n in watch_counts.items() if s not in index),
+        key=lambda d: (-d["watchers"], d["slug"]))
+
+    # Should always be empty. A denied slug someone watches means a curation
+    # call silently switched off a live alert.
+    denied_but_watched = sorted(
+        s for s in overrides["deny"] if watch_counts.get(s))
+
+    return {
+        "index_size": len(index),
+        "overrides": overrides,
+        "siblings": siblings,
+        "orphan_watches": orphan_watches,
+        "denied_but_watched": denied_but_watched,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -1015,6 +1087,7 @@ ADMIN_PAGES = (
     ("/admin", "Business state"),
     ("/admin/subscribers", "Subscribers"),
     ("/admin/nurseries", "Nurseries"),
+    ("/admin/varieties", "Varieties"),
     ("/admin/digest", "Daily digest"),
 )
 
@@ -1125,11 +1198,130 @@ def render_nurseries_html(model: dict, generated_at: str = None) -> str:
     )
 
 
+def _variety_alarm(model: dict) -> str:
+    """The two things on this page that mean something is wrong right now."""
+    parts = []
+    denied = model.get("denied_but_watched") or []
+    if denied:
+        rows = ", ".join(_esc(s) for s in denied)
+        parts.append(
+            f'<section><h2>Denied but watched</h2>'
+            f'<p class="warn">{len(denied)} slug(s) are on the deny list AND have '
+            f'a live watcher: {rows}. A denied slug loses its page, so those '
+            f'alerts now link to a 404. Remove the deny, or migrate the watch '
+            f'first.</p></section>')
+    orphans = model.get("orphan_watches") or []
+    if orphans:
+        body = "".join(
+            f'<tr><td>{_esc(o["slug"])}</td><td class="num">{o["watchers"]}</td></tr>'
+            for o in orphans)
+        parts.append(
+            f'<section><h2>Watched slugs with no page ({len(orphans)})</h2>'
+            f'<p class="muted">Each one is an alert whose link 404s. This number '
+            f'must not grow across a deploy: that is how a missed slug migration '
+            f'shows up before a subscriber finds it.</p>'
+            f'<table class="mini"><thead><tr><th>Slug</th><th class="num">Watchers</th>'
+            f'</tr></thead><tbody>{body}</tbody></table></section>')
+    return "\n".join(parts)
+
+
+def _variety_overrides_section(overrides: dict) -> str:
+    if overrides.get("error"):
+        return (f'<section><h2>Override file</h2><p class="warn">'
+                f'variety_overrides.json could not be read: '
+                f'{_esc(overrides["error"])}. Curation is NOT being applied.'
+                f'</p></section>')
+    deny = overrides.get("deny") or []
+    alias = overrides.get("alias") or {}
+    deny_rows = "".join(f"<tr><td>{_esc(s)}</td></tr>" for s in deny) or \
+        '<tr><td class="muted">None</td></tr>'
+    alias_rows = "".join(
+        f"<tr><td>{_esc(k)}</td><td>{_esc(v)}</td></tr>"
+        for k, v in sorted(alias.items())) or \
+        '<tr><td colspan="2" class="muted">None</td></tr>'
+    return (
+        f'<section><h2>Curation in force</h2>'
+        f'<p class="muted">From tools/scrapers/variety_overrides.json. Edit it in '
+        f'the repo and deploy; this page is read only, so no write endpoint has '
+        f'to sit behind Cloudflare Access.</p>'
+        f'<div class="grid3">'
+        f'<div><h3>Denied ({len(deny)})</h3><table class="mini"><tbody>{deny_rows}'
+        f'</tbody></table></div>'
+        f'<div><h3>Aliased ({len(alias)})</h3><table class="mini"><thead><tr>'
+        f'<th>From</th><th>To</th></tr></thead><tbody>{alias_rows}</tbody></table>'
+        f'</div></div></section>')
+
+
+def _sibling_review_section(siblings) -> str:
+    """The queue that needs a person.
+
+    Deliberately NOT auto-folded. avocado-hass-lamb is Lamb Hass, a different
+    cultivar; guava-thai-pink, orange-valencia-delta and
+    finger-lime-green-sapphire are all real. Prefix matching finds candidates;
+    only someone who knows the plants can adjudicate them.
+    """
+    if not siblings:
+        return ('<section><h2>Sibling review queue</h2>'
+                '<p class="muted">Nothing to adjudicate.</p></section>')
+    rows = []
+    for group in siblings:
+        kids = ", ".join(
+            f'{_esc(s["slug"])}{" (" + str(s["watchers"]) + " watching)" if s["watchers"] else ""}'
+            for s in group["siblings"])
+        base_w = (f' ({group["base_watchers"]} watching)'
+                  if group["base_watchers"] else "")
+        rows.append(f'<tr><td>{_esc(group["base"])}{base_w}</td><td>{kids}</td></tr>')
+    # Copy-pasteable starting point for the alias map. Every line is a
+    # SUGGESTION to accept or delete, never something applied on its own.
+    suggestion = ",\n".join(
+        f'    {json.dumps(s["slug"])}: {json.dumps(group["base"])}'
+        for group in siblings for s in group["siblings"])
+    return (
+        f'<section><h2>Sibling review queue ({len(siblings)} base slugs)</h2>'
+        f'<p class="muted">Longer slugs sharing a base. Some are the same '
+        f'cultivar fragmented across listings; some are genuinely different '
+        f'plants (avocado-hass-lamb is Lamb Hass). A human decides, which is '
+        f'why nothing here is applied automatically.</p>'
+        f'<table class="mini"><thead><tr><th>Base</th><th>Longer siblings</th>'
+        f'</tr></thead><tbody>{"".join(rows)}</tbody></table>'
+        f'<h3>Starting point for the alias map</h3>'
+        f'<p class="muted">Paste into variety_overrides.json and DELETE every '
+        f'line that names a different plant. Run migrate_variety_watch_slugs.py '
+        f'after, or watchers on the old slug stop hearing anything.</p>'
+        f'<pre class="code">"alias": {{\n{_esc(suggestion)}\n}}</pre></section>')
+
+
+def render_varieties_html(model: dict, generated_at: str = None) -> str:
+    """/admin/varieties — variety identity: what curation is in force, what is
+    waiting on a human, and what is currently broken."""
+    _, subtitle = _subtitle(generated_at)
+    v = model.get("varieties") or {}
+    parts = [
+        f'<p class="muted">{v.get("index_size", 0)} variety pages in the '
+        f'canonical index.</p>',
+        _variety_alarm(v),
+        _variety_overrides_section(v.get("overrides") or {}),
+        _sibling_review_section(v.get("siblings") or []),
+    ]
+    return render_page(
+        title="treestock admin — varieties",
+        heading="treestock admin · varieties",
+        subtitle=subtitle,
+        content="\n".join(p for p in parts if p),
+        extra_css=(
+            "  pre.code { background:#f8fafc; border:1px solid #e2e8f0; "
+            "border-radius:6px; padding:12px; overflow-x:auto; font-size:0.78rem; }\n"
+            "  .warn { color:#b91c1c; }\n"),
+        nav=render_nav("/admin/varieties"),
+    )
+
+
 # path -> renderer, so subscribe_server routes without a chain of ifs.
 ADMIN_RENDERERS = {
     "/admin": render_business_html,
     "/admin/subscribers": render_subscribers_html,
     "/admin/nurseries": render_nurseries_html,
+    "/admin/varieties": render_varieties_html,
 }
 
 

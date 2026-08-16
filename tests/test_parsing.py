@@ -664,11 +664,27 @@ class BidirectionalDash(unittest.TestCase):
     """"A - B" is not always species-then-variety."""
 
     def test_a_category_on_the_left_no_longer_swallows_the_species(self):
-        # Was species "Tropical", which the taxonomy gate then dropped whole.
-        self.assertEqual(cp.product_variety_slug("Tropical - Sapodilla"),
-                         "sapodilla-tropical")
-        self.assertEqual(cp.product_variety_slug("Tropical - Wampee"),
-                         "wampee-tropical")
+        """Two layers, and they do different jobs.
+
+        The parser's job is species attribution: "Tropical - Sapodilla" used to
+        parse as species "Tropical", which the taxonomy gate then dropped
+        whole, so the listing existed nowhere. It now resolves to Sapodilla.
+
+        "Tropical" is still a rubbish VARIETY name, and that is curation's job:
+        the shipped override file denies these, so no page and no alert button.
+        Both layers are asserted here so neither can be removed on the belief
+        that the other covers it.
+        """
+        for title, slug in (("Tropical - Sapodilla", "sapodilla-tropical"),
+                            ("Tropical - Wampee", "wampee-tropical")):
+            with self.subTest(title=title):
+                parsed = cp.parse_cultivar(title)
+                self.assertIsNotNone(parsed)
+                self.assertEqual(cp.canonicalize_species(parsed[0])[0].lower(),
+                                 slug.rsplit("-", 1)[0].replace("-", " "))
+                # ...and curation removes the page.
+                self.assertIn(slug, cp.load_variety_overrides()["deny"])
+                self.assertIsNone(cp.product_variety_slug(title))
 
     def test_a_real_species_on_the_left_is_never_re_read(self):
         self.assertEqual(cp.product_variety_slug("Sapodilla Grafted - Krasuey"),

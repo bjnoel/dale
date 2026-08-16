@@ -12,8 +12,10 @@ needs a passing test before being committed.
 """
 from __future__ import annotations
 
+import json
 import re
 from collections import defaultdict
+from pathlib import Path
 
 from stocklib import taxonomy
 
@@ -871,6 +873,77 @@ def _synonym_extra(text: str, canonical: str) -> str:
     )
 
 
+VARIETY_OVERRIDES_FILE = Path(__file__).parent / "variety_overrides.json"
+_OVERRIDES_CACHE: dict | None = None
+
+
+class VarietyOverrideError(RuntimeError):
+    """The override file exists but is not usable."""
+
+
+def load_variety_overrides(path: Path | None = None) -> dict:
+    """Read the curated deny/alias file.
+
+    Human judgement the parser cannot reach. The parser fixes handle the
+    mechanical cases (pollination markers, listing noise, synonym lists); this
+    is for the ones that need someone who knows the plants, e.g. that
+    "avocado-hass-lamb" is Lamb Hass and NOT a sibling of avocado-hass.
+
+    A malformed file raises rather than returning empty. Silently disabling
+    curation would look identical to curation having no effect, and the whole
+    point of the file is that someone decided something.
+    """
+    global _OVERRIDES_CACHE
+    if path is None and _OVERRIDES_CACHE is not None:
+        return _OVERRIDES_CACHE
+    target = Path(path or VARIETY_OVERRIDES_FILE)
+    if not target.exists():
+        data = {"deny": frozenset(), "alias": {}}
+    else:
+        try:
+            raw = json.loads(target.read_text())
+        except (OSError, json.JSONDecodeError) as e:
+            raise VarietyOverrideError(f"{target}: {e}") from e
+        if not isinstance(raw, dict):
+            raise VarietyOverrideError(f"{target}: top level must be an object")
+        deny = raw.get("deny", [])
+        alias = raw.get("alias", {})
+        if not isinstance(deny, list) or not all(isinstance(s, str) for s in deny):
+            raise VarietyOverrideError(f"{target}: 'deny' must be a list of slugs")
+        if not isinstance(alias, dict) or not all(
+                isinstance(k, str) and isinstance(v, str) for k, v in alias.items()):
+            raise VarietyOverrideError(f"{target}: 'alias' must be slug -> slug")
+        data = {"deny": frozenset(deny), "alias": dict(alias)}
+    if path is None:
+        _OVERRIDES_CACHE = data
+    return data
+
+
+def _apply_overrides(canonical: str, var: str, slug: str) -> tuple[str, str, str] | None:
+    """Alias, then deny. Returns the possibly-rewritten triple, or None.
+
+    Order matters: alias resolves FIRST so a slug can be folded onto a target
+    that is itself denied, and so denying a target does not accidentally spare
+    everything pointing at it.
+
+    Grandfathering beats deny. GRANDFATHERED_VARIETY_SLUGS exists precisely to
+    keep existing watchers' alerts alive, and a curation call made later must
+    not be able to silently switch off an alert someone is already relying on.
+    """
+    overrides = load_variety_overrides()
+    target = overrides["alias"].get(slug)
+    if target and target != slug:
+        slug = target
+        # The alias names the slug, so re-derive the display variety from it
+        # rather than keeping the one we parsed: they would otherwise disagree
+        # ("Shepard Type B" living at avocado-shepard).
+        prefix = slugify(canonical) + "-"
+        var = (slug[len(prefix):] if slug.startswith(prefix) else slug).replace("-", " ").title()
+    if slug in overrides["deny"] and slug not in GRANDFATHERED_VARIETY_SLUGS:
+        return None
+    return (canonical, var, slug)
+
+
 def canonicalize_species(species: str) -> tuple[str, str] | None:
     """Map a parsed species text onto the taxonomy: ('canonical name',
     'leftover cultivar words') or None when out of scope (DEC-195/196).
@@ -984,7 +1057,9 @@ def canonical_cultivar(species: str, variety: str, title: str = "") -> tuple[str
         if not var:
             return None
     slug = slugify(f"{canonical}-{var}")
-    return (canonical, var, slug) if slug else None
+    if not slug:
+        return None
+    return _apply_overrides(canonical, var, slug)
 
 
 def product_variety_slug(title: str) -> str | None:
