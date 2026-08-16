@@ -770,3 +770,21 @@ class NeverACultivarTails(unittest.TestCase):
         # Seedling vs grafted is a real distinction.
         self.assertEqual(cp.product_variety_slug("Black Sapote - Seedling 140ml"),
                          "black-sapote-seedling")
+
+    def test_an_emptied_bracket_does_not_survive_into_the_title(self):
+        """A cleaner that empties a bracket used to leave the bracket:
+        "Gravenstein [Bear rooted]" -> "Gravenstein [ ]".
+
+        Harmless while the parsed variety only fed slugs, because slugify drops
+        punctuation. It stopped being harmless when the canonical title became
+        the display name AND the email subject line: "Apple - Gravenstein [ ]
+        is now available" was queued to go to a real watcher.
+        """
+        self.assertEqual(cp.parse_cultivar("Apple - Gravenstein [Bear rooted]"),
+                         ("Apple", "Gravenstein"))
+        self.assertEqual(cp.product_variety_slug("Apple - Gravenstein [Bear rooted]"),
+                         "apple-gravenstein")
+
+    def test_brackets_with_real_content_are_untouched(self):
+        self.assertEqual(cp.product_variety_slug("Apple - Pink Lady"), "apple-pink-lady")
+        self.assertEqual(cp.product_variety_slug("Avocado 'Hass'"), "avocado-hass")

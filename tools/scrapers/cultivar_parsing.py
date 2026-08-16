@@ -586,7 +586,13 @@ def _clean_part(text: str, *, strip_sizeform: bool) -> str:
             s = rx.sub(' ', s)
     s = _CLEAN_VOLUME_RE.sub(' ', s)
     s = _CLEAN_POTMM_RE.sub(' ', s)
-    s = re.sub(r'\s+', ' ', s).strip(" -'\"")
+    # A cleaner that empties a bracket leaves the bracket behind:
+    # "Gravenstein [Bear rooted]" -> "Gravenstein [ ]". Harmless when this was
+    # only feeding slugs (punctuation is dropped by slugify), but the canonical
+    # title is now the display name AND the email subject line, so
+    # "Apple - Gravenstein [ ] is now available" would go out to a real person.
+    s = re.sub(r'[\[\(\{]\s*[\]\)\}]', ' ', s)
+    s = re.sub(r'\s+', ' ', s).strip(" -'\"[](){}")
     return s
 
 
