@@ -284,8 +284,13 @@ python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" 
 echo "$LOG_PREFIX Location pages complete."
 
 # Build species+state combo pages (buy-[species]-trees-[state].html)
+# The ledger is what stops a combo freezing: below RETAIN_MIN_PRODUCTS it
+# tombstones instead of serving last season's in-stock table forever. The
+# trailing JSON page list this pipes to `tail -3` is still the last stdout line;
+# everything the lifecycle prints goes to stderr.
 echo "$LOG_PREFIX Building species+state combo pages..."
-python3 "$SCRIPT_DIR/build_species_state_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 | tail -3 || echo "$LOG_PREFIX WARNING: Species+state page build failed (non-fatal)"
+python3 "$SCRIPT_DIR/build_species_state_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" \
+    --ledger "$PROJECT_DIR/data/page-ledger/species-state.json" --allow-delete 2>&1 | tail -3 || echo "$LOG_PREFIX WARNING: Species+state page build failed (non-fatal)"
 echo "$LOG_PREFIX Species+state combo pages complete."
 
 # Build sitemap. MUST come after every page builder: it globs the output dir and

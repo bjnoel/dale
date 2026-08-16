@@ -36,7 +36,8 @@ run python3 build_rare_finds.py "$DATA" "$DIGEST_DIR"
 run python3 build_variety_pages.py "$DATA" "$DIGEST_DIR" \
     --ledger "$PROJECT_DIR/data/page-ledger/variety.json"   # variety AFTER species
 run python3 build_location_pages.py "$DATA" "$DIGEST_DIR"
-run python3 build_species_state_pages.py "$DATA" "$DIGEST_DIR"
+run python3 build_species_state_pages.py "$DATA" "$DIGEST_DIR" \
+    --ledger "$PROJECT_DIR/data/page-ledger/species-state.json"
 
 # Curated guide + static pages. No email side effects, so they are email-safe to
 # rebuild here. Needed whenever the shared chrome changes (e.g. the nav), so the

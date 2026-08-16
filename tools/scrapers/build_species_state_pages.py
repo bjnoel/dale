@@ -15,6 +15,7 @@ Usage:
     python3 build_species_state_pages.py /path/to/nursery-stock /path/to/output/
 """
 
+import argparse
 import json
 import re
 import sys
@@ -23,8 +24,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES
+from stocklib.page_ledger import (
+    FAMILY_SPECIES_STATE, LIVE, TOMBSTONE, PageLedger, decide_night,
+    page_state_meta, write_page,
+)
+from stocklib.scrape_health import untrusted_nurseries
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.templates import render as render_template
+from stocklib.tombstone import combo_cta_html, render_tombstone
 from stocklib.utm import outbound
 from treestock_layout import (
     render_head,
@@ -35,9 +42,21 @@ from treestock_layout import (
 )
 import growing_guides
 
+# Threshold to CREATE a page. Unchanged: a new combo page still has to be worth
+# having before it exists.
 MIN_PRODUCTS = 3
+# Threshold to KEEP one that already exists. A page that falls to two products
+# is thin, not wrong, and deleting it (or worse, freezing it) throws away a URL
+# over a number that moves back next week. Below this, at zero, it tombstones.
+RETAIN_MIN_PRODUCTS = 1
 # Caps the GUIDELESS species in QLD/NSW/VIC. Guided species are exempt (select_combos).
 MAX_COMBOS_PER_STATE = 20
+
+# Which files in the output dir are combo pages. Deliberately excludes the
+# state landing pages (buy-fruit-trees-wa.html) and the combo index, neither of
+# which this builder owns.
+COMBO_FILE_RE = re.compile(r"^buy-.+-trees-(?:" + "|".join(
+    ["western-australia", "queensland", "new-south-wales", "victoria"]) + r")\.html$")
 
 # State full names for URLs and headings
 STATE_FULL_NAMES = {
@@ -392,11 +411,12 @@ def compute_combos(
 
 
 def select_combos(
-    combos: dict[str, dict[str, list[dict]]]
+    combos: dict[str, dict[str, list[dict]]],
+    retained: set[tuple[str, str]] = frozenset(),
 ) -> dict[str, list[tuple[str, list[dict]]]]:
     """
-    Select which combos to build pages for. Every combo still needs MIN_PRODUCTS
-    in stock at a nursery that ships to that state.
+    Select which combos to build pages for. A combo needs MIN_PRODUCTS in stock
+    at a nursery that ships to that state to be CREATED.
     WA: all of them.
     QLD/NSW/VIC: the top MAX_COMBOS_PER_STATE by product count, plus every species
     below that line that has a growing guide.
@@ -407,6 +427,21 @@ def select_combos(
     clicks a year, against 22.3 and 1 for the guideless ones. So a species we have
     already researched earns a page in every state that can buy it, and the cap
     goes on doing its real job of holding back the guideless tail.
+
+    `retained` is the set of (state, species_slug) pairs that already have a live
+    page. They are added back whatever their rank, as long as they still have
+    RETAIN_MIN_PRODUCTS, and they do NOT consume a cap slot. Two reasons, and the
+    second is the subtle one:
+
+    - A page that exists and still has stock must keep rendering that stock. The
+      alternative is what this builder did for months: never delete, so a combo
+      that fell below the threshold served a frozen in-stock table forever. Ten
+      pages were in that state on 2026-08-16, feijoa WA (889 impressions a year)
+      and tamarillo WA (676) among them.
+    - If a retained page consumed a cap slot it would push a healthier combo out,
+      and next night that one would be retained and push another out. The cap
+      bounds how many *new* guideless pages we create; it was never a budget for
+      how many may exist.
 
     Returns: state -> [(species_slug, products), ...], densest stock first.
     """
@@ -419,16 +454,31 @@ def select_combos(
         ]
         state_combos.sort(key=lambda x: -len(x[1]))
         if state == "WA":
-            selected[state] = state_combos
-            continue
-        # Below the cap, only guided species survive. Both slices are already sorted,
-        # and everything in the tail has less stock than everything in the head, so
-        # concatenating keeps the whole list in descending stock order.
-        selected[state] = state_combos[:MAX_COMBOS_PER_STATE] + [
-            (slug, prods)
-            for slug, prods in state_combos[MAX_COMBOS_PER_STATE:]
-            if growing_guides.has_guide(slug)
-        ]
+            chosen = state_combos
+        else:
+            # Below the cap, only guided species survive. Both slices are already
+            # sorted, and everything in the tail has less stock than everything in
+            # the head, so concatenating keeps the whole list in descending stock
+            # order.
+            chosen = state_combos[:MAX_COMBOS_PER_STATE] + [
+                (slug, prods)
+                for slug, prods in state_combos[MAX_COMBOS_PER_STATE:]
+                if growing_guides.has_guide(slug)
+            ]
+        if retained:
+            already = {slug for slug, _ in chosen}
+            chosen = chosen + [
+                (slug, prods)
+                for slug, prods in combos[state].items()
+                if slug not in already
+                and (state, slug) in retained
+                and len(prods) >= RETAIN_MIN_PRODUCTS
+            ]
+            # Re-sort once the retained ones join: they can outrank tail entries,
+            # and the index page reads this order. A no-op without them, since
+            # sorted() is stable and head+tail is already descending.
+            chosen.sort(key=lambda x: -len(x[1]))
+        selected[state] = chosen
     return selected
 
 
@@ -444,11 +494,22 @@ def _no_dash(text: str) -> str:
     return text.replace("—", "-").replace("–", "-")
 
 
+def combo_key(species_slug: str, state: str) -> str:
+    """The ledger key for a combo page: its filename without the extension.
+
+    The combo family keys on the filename rather than on a parsed identity,
+    because here the URL *is* the identity. It is assembled from taxonomy and a
+    state code, neither of which a scraped title can change under us.
+    """
+    return f"buy-{species_slug}-trees-{STATE_SLUGS[state]}"
+
+
 def build_combo_page(
     state: str,
     species_slug: str,
     products: list[dict],
     today_str: str,
+    state_meta: str = "",
 ) -> str:
     species_info = products[0]["species"]
     species_name = species_info["common_name"]
@@ -523,7 +584,8 @@ def build_combo_page(
         page_title,
         meta_desc,
         canonical,
-        extra_head=faq_ld,
+        extra_head=(f"{faq_ld}\n{state_meta}" if faq_ld and state_meta
+                    else (faq_ld or state_meta)),
         og_title=f"Buy {species_name} Trees in {state_full}",
         og_description=meta_desc,
         og_image="https://treestock.com.au/og-image.png",
@@ -569,6 +631,92 @@ def build_combo_page(
     )
 
 
+def build_combo_tombstone(entry: dict) -> str:
+    """Build the page for a combo with nothing left in stock in that state.
+
+    Same template, minus the in-stock table and the nursery list (there is
+    nothing to put in either), and keeping the growing guide, which is the
+    substance that stops this reading as a soft 404. The 10 orphans this
+    replaces were serving a frozen in-stock table of products that had been
+    gone for months, which is a worse answer than saying so.
+
+    **No email capture here, ever.** Species-level watches were removed
+    deliberately, and DEC-294 found a "watch this species" banner POSTing an
+    action the server never had, silently enrolling people in the digest while
+    telling them they were watching a species. The CTA is links.
+
+    No variety links either, and that is a data fact rather than an omission: a
+    combo tombstones precisely because no nursery ships that species to that
+    state, so every variety we could list would be one the reader cannot buy.
+    Pointing a WA reader at stock that cannot cross the border is the same
+    mistake as a "Ships to WA" badge.
+    """
+    species_name = entry.get("species") or ""
+    species_slug = entry.get("species_slug") or ""
+    state = entry.get("state_code") or ""
+    state_full = STATE_FULL_NAMES.get(state, state)
+    state_slug = STATE_SLUGS.get(state, state.lower())
+    title = entry.get("title") or f"{species_name} trees in {state_full}"
+
+    other_states = [s for s in ["WA", "QLD", "NSW", "VIC"] if s != state]
+    cta_html = combo_cta_html(
+        species_name,
+        species_href=f"/species/{species_slug}.html",
+        state_links=[
+            {"href": f"/buy-{species_slug}-trees-{STATE_SLUGS[s]}.html",
+             "label": STATE_FULL_NAMES[s]}
+            for s in other_states
+        ],
+        hub_href=f"/buy-fruit-trees-{state.lower()}.html",
+        hub_label=state_full,
+    )
+
+    has_rich_guide = growing_guides.has_guide(species_slug)
+    meta_desc = (
+        f"No nursery we track is currently shipping {species_name} trees to "
+        f"{state_full}. See when they were last available, and where to look "
+        f"in the meantime.")
+    head = render_head(
+        f"Buy {species_name} Trees in {state_full} | treestock.com.au",
+        meta_desc,
+        f"https://treestock.com.au/buy-{species_slug}-trees-{state_slug}.html",
+        extra_head=page_state_meta(TOMBSTONE),
+        og_title=f"Buy {species_name} Trees in {state_full}",
+        og_description=meta_desc,
+        og_image="https://treestock.com.au/og-image.png",
+        og_type="article",
+    )
+    climate_note = get_climate_note(species_name, state)
+    return render_template(
+        "species_state_combo.html.j2",
+        head=head,
+        header=render_header(),
+        breadcrumb=render_breadcrumb([
+            ("Home", "/"),
+            (f"Fruit trees in {state}", f"/buy-fruit-trees-{state.lower()}.html"),
+            (f"{species_name} in {state_full}", ""),
+        ]),
+        footer=render_footer(),
+        species_name=species_name, state_full=state_full, state=state,
+        state_lower=state.lower(), species_slug=species_slug,
+        latin_note="", today_str="", total_products=0, nursery_count=0,
+        price_str="", shown_note="",
+        climate_para=(
+            f'<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 '
+            f'text-sm text-amber-900">{climate_note}</div>' if climate_note else ""),
+        tombstone_html=render_tombstone(title, entry, cta_html=cta_html),
+        guide_body=(growing_guides.render_combo_guide(species_slug, state)
+                    if has_rich_guide else ""),
+        treesmith_promo=render_treesmith_promo("species"),
+        nursery_list_items="", cross_links="".join(
+            f'<a href="/buy-{species_slug}-trees-{STATE_SLUGS[s]}.html" '
+            f'class="inline-block text-sm text-green-700 hover:underline mr-4">'
+            f'{species_name} trees in {STATE_FULL_NAMES[s]} &rarr;</a>'
+            for s in other_states),
+        product_view=[],
+    )
+
+
 def build_index_page(
     selected: dict[str, list[tuple[str, list[dict]]]],
     today_str: str,
@@ -605,13 +753,110 @@ def build_index_page(
     )
 
 
-def main():
-    if len(sys.argv) < 3:
-        print("Usage: python3 build_species_state_pages.py /path/to/nursery-stock /path/to/output/")
-        sys.exit(1)
+def _log(message: str) -> None:
+    """This builder's stdout is parsed (run-all-scrapers pipes it to `tail -3`
+    for the trailing JSON page list), so everything narrative goes to stderr."""
+    print(message, file=sys.stderr)
 
-    data_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2])
+
+def run_lifecycle(ledger: PageLedger, args, output_dir: Path, today: str,
+                  written_keys: set[str]) -> None:
+    """Classify and render the combo pages that were not generated tonight.
+
+    No rename branch: a combo key is assembled from taxonomy and a state code,
+    so its products cannot reappear under a different combo key. No retired
+    branch either, for the same reason. Tombstone or nothing.
+    """
+    untrusted = untrusted_nurseries(today, args.health_dir)
+    if untrusted:
+        _log(f"Untrusted nurseries tonight: {', '.join(sorted(untrusted))}")
+
+    plan = decide_night(ledger, written_keys, today=today, untrusted=untrusted,
+                        allow_delete=args.allow_delete and not args.dry_run)
+    _log(f"Page lifecycle: {plan.summary()}")
+    if ledger.resurrected:
+        _log(f"  Back in stock: {', '.join(ledger.resurrected[:10])}")
+    for key, reason in sorted(plan.held.items())[:10]:
+        _log(f"  Held {key}: {reason}")
+
+    if args.dry_run:
+        _log("  DRY RUN: no ledger written, no tombstones rendered")
+        return
+
+    rendered = 0
+    for key in ledger.slugs_in_state(TOMBSTONE):
+        html = build_combo_tombstone(ledger.pages[key])
+        if write_page(output_dir / f"{key}.html", html):
+            rendered += 1
+    _log(f"  Wrote {rendered} tombstone(s) "
+         f"({len(ledger.slugs_in_state(TOMBSTONE))} total)")
+
+    for key in plan.removals:
+        (output_dir / f"{key}.html").unlink(missing_ok=True)
+    if plan.removals:
+        _log(f"  Deleted {len(plan.removals)}: {', '.join(plan.removals[:10])}")
+
+    ledger.save(args.ledger, today)
+    _log(f"  Ledger: {len(ledger.pages)} pages, {ledger.live_count()} live")
+
+
+def seed_from_disk(ledger: PageLedger, output_dir: Path, today: str) -> int:
+    """Create ledger entries for combo pages already on disk.
+
+    Enumerating the filesystem rather than tonight's snapshots is the whole
+    point: the pages that most need an entry are exactly the ones the current
+    stock no longer produces. Ten of those existed on 2026-08-16, serving frozen
+    in-stock tables, and none of them appear anywhere in tonight's output.
+
+    Seeded entries carry no history, so the entry guard holds them for a week
+    before anything can happen to them. That is the guard working.
+    """
+    seeded = 0
+    for path in sorted(output_dir.glob("buy-*-trees-*.html")):
+        key = path.stem
+        if key in ledger.pages or not COMBO_FILE_RE.match(path.name):
+            continue
+        state = next((s for s, slug in STATE_SLUGS.items()
+                      if key.endswith(f"-trees-{slug}")), None)
+        if not state:
+            continue
+        species_slug = key[len("buy-"):-len(f"-trees-{STATE_SLUGS[state]}")]
+        ledger.seed(key, today=today, state_code=state,
+                    species_slug=species_slug,
+                    species=species_slug.replace("-", " ").title(),
+                    title=f"{species_slug.replace('-', ' ').title()} trees in "
+                          f"{STATE_FULL_NAMES[state]}")
+        seeded += 1
+    return seeded
+
+
+def parse_args(argv=None):
+    parser = argparse.ArgumentParser(
+        description="Build buy-<species>-trees-<state>.html combo pages")
+    parser.add_argument("data_dir", type=Path)
+    parser.add_argument("output_dir", type=Path)
+    parser.add_argument("--ledger", type=Path, default=None,
+                        help="page lifecycle ledger. Without it this builder "
+                             "never tombstones and never retains a thin page")
+    parser.add_argument("--allow-delete", action="store_true",
+                        help="permit deleting a page that never met the entry "
+                             "guard. Combo pages are never 'retired'")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="report what the lifecycle would do, write no "
+                             "ledger and no tombstones")
+    parser.add_argument("--seed", action="store_true",
+                        help="create ledger entries for combo pages already on "
+                             "disk. For bootstrapping an empty ledger")
+    parser.add_argument("--health-dir", type=Path, default=None,
+                        help="scraper-health records, for the untrusted-nursery "
+                             "gate")
+    return parser.parse_args(argv)
+
+
+def main():
+    args = parse_args()
+    data_dir = args.data_dir
+    output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -623,27 +868,70 @@ def main():
     print("Loading products...", file=sys.stderr)
     products = load_all_products(data_dir)
 
+    ledger = (PageLedger.load(args.ledger, FAMILY_SPECIES_STATE, log=_log)
+              if args.ledger else None)
+    state_meta = page_state_meta(LIVE) if ledger else ""
+    if ledger and args.seed:
+        print(f"Seeded {seed_from_disk(ledger, output_dir, today_str)} combo "
+              f"pages from disk", file=sys.stderr)
+
     print("Computing combos...", file=sys.stderr)
     combos = compute_combos(products, species_lookup)
-    selected = select_combos(combos)
+    # A page that already exists is retained on RETAIN_MIN_PRODUCTS rather than
+    # re-earning MIN_PRODUCTS every night, and does not consume a cap slot.
+    # `state` is the lifecycle state (live/tombstone/...), so the combo's state
+    # code lives under `state_code`. Sharing the key would have let a seeded
+    # entry quietly overwrite its own lifecycle state with "WA".
+    retained = set()
+    if ledger:
+        retained = {
+            (entry["state_code"], entry["species_slug"])
+            for entry in ledger.pages.values()
+            if entry.get("state") == LIVE and entry.get("state_code")
+            and entry.get("species_slug")
+        }
+    selected = select_combos(combos, retained)
 
     total = sum(len(v) for v in selected.values())
     print(f"Building {total} combo pages...", file=sys.stderr)
+    written_keys = set()
     for state in ["WA", "QLD", "NSW", "VIC"]:
         state_combos = selected[state]
         state_slug = STATE_SLUGS[state]
         print(f"  {state}: {len(state_combos)} pages", file=sys.stderr)
         for species_slug, prods in state_combos:
-            html = build_combo_page(state, species_slug, prods, today_str)
-            filename = f"buy-{species_slug}-trees-{state_slug}.html"
-            (output_dir / filename).write_text(html)
+            html = build_combo_page(state, species_slug, prods, today_str,
+                                    state_meta)
+            key = combo_key(species_slug, state)
+            write_page(output_dir / f"{key}.html", html)
+            written_keys.add(key)
+            if ledger:
+                ledger.observe(
+                    key, today=today_str, in_stock=True,
+                    rows=[{
+                        "nursery_key": p["nursery_key"],
+                        "nursery_name": p["nursery_name"],
+                        "title": p["title"],
+                        "price": p["price"],
+                        "available": p["available"],
+                        "url": p["url"],
+                    } for p in sorted(prods, key=lambda p: -(p["price"] or 0))],
+                    title=f"{prods[0]['species']['common_name']} trees in "
+                          f"{STATE_FULL_NAMES[state]}",
+                    species=prods[0]["species"]["common_name"],
+                    species_slug=species_slug,
+                    state_code=state,
+                )
 
     # Build index page
     index_html = build_index_page(selected, today_str)
-    (output_dir / "buy-fruit-trees-by-species-state.html").write_text(index_html)
+    write_page(output_dir / "buy-fruit-trees-by-species-state.html", index_html)
     print(f"  Index page: buy-fruit-trees-by-species-state.html", file=sys.stderr)
 
     print(f"Done. {total + 1} pages written to {output_dir}", file=sys.stderr)
+
+    if ledger:
+        run_lifecycle(ledger, args, output_dir, today_str, written_keys)
 
     # Print summary for sitemap integration
     pages = []

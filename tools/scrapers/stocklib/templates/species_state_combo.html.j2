@@ -7,9 +7,18 @@
 {{ breadcrumb|safe }}
 
   <h1 class="text-2xl font-bold text-gray-900 mb-1">Buy {{ species_name }} Trees in {{ state_full }}{{ latin_note|safe }}</h1>
+{% if not tombstone_html %}
   <p class="text-gray-500 text-sm mb-4">Updated {{ today_str }} &nbsp;&middot;&nbsp; {{ total_products }} in stock across {{ nursery_count }} nurseries{% if price_str %} &nbsp;&middot;&nbsp; {{ price_str }}{% endif %}</p>
+{% endif %}
 
   {{ climate_para|safe }}
+{# Below the climate note, not above it: leading with the absence is what makes
+   a page read as a soft 404. The growing guide further down is the other half
+   of that, and it stays on a tombstone for the same reason. #}
+{% if tombstone_html %}
+  {{ tombstone_html|safe }}
+{% endif %}
+{% if product_view %}
 
   <h2 class="text-lg font-semibold text-gray-800 mt-6 mb-3">In-stock {{ species_name }} trees{{ shown_note }}</h2>
   <div class="overflow-x-auto rounded-lg border border-gray-200 mb-6">
@@ -36,6 +45,7 @@
   <ul class="list-disc pl-5 mb-6 text-sm text-gray-700 space-y-1">
     {{ nursery_list_items|safe }}
   </ul>
+{% endif %}
 
   <div class="border-t border-gray-200 pt-6 mb-6">
     <a href="/species/{{ species_slug }}.html" class="inline-block text-sm text-green-700 hover:underline mr-4">&larr; All {{ species_name }} trees Australia-wide</a>

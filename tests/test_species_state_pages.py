@@ -117,6 +117,11 @@ class ComboSelectionTests(unittest.TestCase):
                 self.assertIn(slug, sel[st], f"{st}/{slug}")
 
     def test_cap_still_bounds_the_guideless(self):
+        """The cap bounds how many NEW guideless pages get created, not how many
+        may exist. A page that already exists is retained past the cap (see
+        test_combo_lifecycle.RetentionThresholdTest): if retention consumed cap
+        slots, a thin retained page would evict a healthier combo, which would
+        then be retained next night and evict another."""
         extra = [(f"spare-{i:02d}", self.MIN) for i in range(5)]
         sel = self._select(self._head() + extra)
         for st in self.CAPPED_STATES:
