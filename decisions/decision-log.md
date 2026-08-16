@@ -11488,3 +11488,62 @@ saved-search watches.
 while ignoring 89. The watches are tracked, but as `treestock_subscriber_engagement`,
 which frames a separate and larger audience as engagement of the small one. That metric
 should be re-pointed before the next verdict cycle.
+
+---
+
+## DEC-295 — 2026-08-16 — The cap was rationing the wrong thing
+
+**Status:** Shipped. `MAX_COMBOS_PER_STATE` now bounds only the guideless species, so
+every species we have already researched gets a page in every state that can buy it.
+QLD/NSW/VIC go from 20 combo pages each to 53.
+
+Benedict asked whether "olive trees western australia" had siblings we were missing, and
+whether Ahrefs was needed to find them. It did, and it was not.
+
+Combo pages are the best-performing page type on treestock: 149 URLs earning 1,370 clicks
+in the 12 months to 2026-08-13, **29% of all site organic clicks from 3% of URLs**, at an
+average position of 15.3. The gap was not keyword discovery. It was two constants in
+`build_species_state_pages.py`: a hard cap of 20 species for QLD/NSW/VIC, written to
+"avoid thin content", and a state list containing only WA, QLD, NSW and VIC.
+
+**The cap was measuring thinness by stock rank, and thinness does not live there.** Across
+the 148 combo pages with GSC data, the ones carrying a growing guide average position
+**14.6 with a median 5 clicks a year**; the guideless ones average **22.3 and 1 click**. A
+guided page is a 62KB document with per-state climate, growing regions, varieties, harvest
+window, pests, six FAQs with FAQPage JSON-LD and cited sources. A guideless one is 19KB
+with five headings. Rollinia in Victoria has little stock and a full guide, and was
+excluded; quince in WA has more stock, no guide, position 20.8, zero clicks, and was kept.
+
+So the cap now applies only to guideless species. The change is additive by construction:
+nothing that was being built stops being built. That was deliberate. The builder never
+deletes, so dropping a live page freezes it at whatever stock it last had, and a stale
+in-stock table is worse than a thin one. The 29 guideless pages that earn 52 clicks a year
+keep being refreshed.
+
+**A number in the first analysis was wrong and the correction changed the recommendation.**
+Sizing the gap from the file list gave 335 missing pages, 189 of them "free because the
+guide already exists". Opening the files killed that: all 55 guides carry overlays for
+exactly WA, QLD, NSW and VIC and nothing else. `render_combo_guide()` does not fail on an
+unknown state, it silently returns an empty overlay, so an SA page would have rendered the
+national core under a South Australian heading. Across 48 SA pages sharing that core with
+their eastern siblings, that is a duplicate-content liability we would have shipped on
+purpose. The free number was 94, not 189, and SA and ACT were dropped from scope.
+
+**On Ahrefs: not yet.** GSC's query dimension reports only 50,406 of 207,108 impressions
+and 489 of 4,659 clicks, so roughly 90% of our clicks come from queries Google will not
+name. Ahrefs models head terms and would not recover them. It answers "what should we rank
+for that we do not", and our constraint was "we have not built the pages we already
+qualify for". Worth revisiting once the tail is exhausted.
+
+**What we deliberately did NOT do.** No SA, ACT, TAS or NT pages: each needs a per-state
+overlay per species, which is the `species-guide-rollout` process at about one species per
+session, and TAS and NT have only 3 and 4 nurseries shipping to them. No chasing the
+national head terms: 49 queries with 80+ impressions sit at position 20+ and earned **6
+clicks between them** over 12 months ("fruit trees" at 68.9, "macadamia tree" at 77.3).
+That is Daleys and Bunnings ground.
+
+**Honest expected value.** 94 pages at the observed NSW/VIC/QLD tail rate of 3 to 5 clicks
+a year is roughly +300 to +450 clicks against 4,659, so **+6% to +10%**. Worth the few
+hours because the content is already written and it compounds, but it is a tidy-up and not
+a growth lever. The binding constraint on the business is still that nobody has measured
+what a treestock click is worth in Treesmith Pro terms (DAL-241).

@@ -47,6 +47,90 @@ def _unenriched_products():
 UNENRICHED_PAGE = bssp.build_combo_page("QLD", "example-unenriched", _unenriched_products(), TODAY)
 
 
+class ComboSelectionTests(unittest.TestCase):
+    """select_combos: which species+state pairs earn a page (DAL-249).
+
+    WA takes every species with MIN_PRODUCTS in stock. QLD/NSW/VIC take the top
+    MAX_COMBOS_PER_STATE by stock count, plus every guided species below that line.
+    The point of the exemption is that a guided page is not thin however little
+    stock sits behind it, so it should not be rationed by stock rank.
+    """
+
+    CAP = bssp.MAX_COMBOS_PER_STATE
+    MIN = bssp.MIN_PRODUCTS
+    CAPPED_STATES = ("QLD", "NSW", "VIC")
+
+    @staticmethod
+    def _combos(ranked):
+        """[(slug, n_in_stock)] -> the compute_combos shape, identical in every state."""
+        return {
+            st: {slug: [{"i": i} for i in range(n)] for slug, n in ranked}
+            for st in STATES
+        }
+
+    @classmethod
+    def _head(cls, n_products=500):
+        """CAP guideless species, all with more stock than anything we add below."""
+        return [(f"filler-{i:02d}", n_products - i) for i in range(cls.CAP)]
+
+    def _select(self, ranked):
+        return {st: [slug for slug, _ in v]
+                for st, v in bssp.select_combos(self._combos(ranked)).items()}
+
+    def test_filler_slugs_are_genuinely_guideless(self):
+        # Guards the fixture itself: if these ever gained guides the tests below
+        # would pass for the wrong reason.
+        for slug, _ in self._head():
+            self.assertFalse(gg.has_guide(slug), slug)
+
+    def test_guided_species_below_the_cap_still_gets_a_page(self):
+        sel = self._select(self._head() + [("olive", self.MIN)])
+        for st in self.CAPPED_STATES:
+            self.assertIn("olive", sel[st],
+                          f"{st}: a guided species must not be rationed by stock rank")
+
+    def test_guideless_species_below_the_cap_gets_no_page(self):
+        sel = self._select(self._head() + [("example-unenriched", self.MIN)])
+        for st in self.CAPPED_STATES:
+            self.assertNotIn("example-unenriched", sel[st],
+                             f"{st}: the cap must still hold back the guideless tail")
+
+    def test_min_products_outranks_the_guide(self):
+        # A guide is not a licence to build a page with nothing to sell on it.
+        sel = self._select(self._head() + [("olive", self.MIN - 1)])
+        for st in STATES:
+            self.assertNotIn("olive", sel[st], st)
+
+    def test_wa_is_unchanged_and_takes_the_guideless_tail(self):
+        ranked = self._head() + [("example-unenriched", self.MIN), ("olive", self.MIN)]
+        sel = self._select(ranked)
+        self.assertEqual(len(sel["WA"]), len(ranked))
+        self.assertIn("example-unenriched", sel["WA"])
+
+    def test_guideless_head_is_kept_so_live_pages_do_not_go_stale(self):
+        # The exemption only ADDS pages. Guideless species above the cap keep theirs,
+        # because the builder never deletes: dropping one freezes it at whatever stock
+        # it last had, and a stale in-stock table is worse than a thin one.
+        sel = self._select(self._head() + [("olive", self.MIN)])
+        for st in self.CAPPED_STATES:
+            for slug, _ in self._head():
+                self.assertIn(slug, sel[st], f"{st}/{slug}")
+
+    def test_cap_still_bounds_the_guideless(self):
+        extra = [(f"spare-{i:02d}", self.MIN) for i in range(5)]
+        sel = self._select(self._head() + extra)
+        for st in self.CAPPED_STATES:
+            self.assertEqual(len(sel[st]), self.CAP,
+                             f"{st}: guideless species beyond the cap leaked through")
+
+    def test_selection_stays_sorted_by_stock_count(self):
+        # main() and the index page both rely on densest-stock-first ordering.
+        ranked = self._head() + [("olive", 9), ("lychee", 7), ("fig", 5)]
+        for st, pairs in bssp.select_combos(self._combos(ranked)).items():
+            counts = [len(p) for _, p in pairs]
+            self.assertEqual(counts, sorted(counts, reverse=True), st)
+
+
 class ClimateNoteTests(unittest.TestCase):
     """The miscategorisation fix: the mediterranean category exists and is wired up.
     Olive/fig-specific climate assertions live in their per-species files."""

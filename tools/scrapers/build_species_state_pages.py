@@ -7,7 +7,9 @@ Generates pages like:
   /buy-apple-trees-western-australia.html
 
 Pages are created for species+state combinations with >= 3 in-stock products
-at nurseries that ship to that state. Limits: WA (all), QLD/NSW/VIC (top 20 each).
+at nurseries that ship to that state. WA takes all of them. QLD/NSW/VIC take the
+top 20 by stock count, plus every species carrying a growing guide (see
+select_combos for why the guide, not the stock ranking, is the thinness test).
 
 Usage:
     python3 build_species_state_pages.py /path/to/nursery-stock /path/to/output/
@@ -34,7 +36,8 @@ from treestock_layout import (
 import growing_guides
 
 MIN_PRODUCTS = 3
-MAX_COMBOS_PER_STATE = 20  # Limit for QLD/NSW/VIC to avoid thin content
+# Caps the GUIDELESS species in QLD/NSW/VIC. Guided species are exempt (select_combos).
+MAX_COMBOS_PER_STATE = 20
 
 # State full names for URLs and headings
 STATE_FULL_NAMES = {
@@ -392,10 +395,20 @@ def select_combos(
     combos: dict[str, dict[str, list[dict]]]
 ) -> dict[str, list[tuple[str, list[dict]]]]:
     """
-    Select which combos to build pages for.
-    WA: all with MIN_PRODUCTS+
-    QLD/NSW/VIC: top MAX_COMBOS_PER_STATE by product count
-    Returns: state -> [(species_slug, products), ...]
+    Select which combos to build pages for. Every combo still needs MIN_PRODUCTS
+    in stock at a nursery that ships to that state.
+    WA: all of them.
+    QLD/NSW/VIC: the top MAX_COMBOS_PER_STATE by product count, plus every species
+    below that line that has a growing guide.
+
+    The cap alone used to decide it, to "avoid thin content". Measured over the 12
+    months to 2026-08-13 (DAL-249), thinness tracks the guide and not the stock
+    ranking: combo pages carrying a guide averaged position 14.6 and a median 5
+    clicks a year, against 22.3 and 1 for the guideless ones. So a species we have
+    already researched earns a page in every state that can buy it, and the cap
+    goes on doing its real job of holding back the guideless tail.
+
+    Returns: state -> [(species_slug, products), ...], densest stock first.
     """
     selected = {}
     for state in ["WA", "QLD", "NSW", "VIC"]:
@@ -405,8 +418,17 @@ def select_combos(
             if len(prods) >= MIN_PRODUCTS
         ]
         state_combos.sort(key=lambda x: -len(x[1]))
-        limit = None if state == "WA" else MAX_COMBOS_PER_STATE
-        selected[state] = state_combos[:limit] if limit else state_combos
+        if state == "WA":
+            selected[state] = state_combos
+            continue
+        # Below the cap, only guided species survive. Both slices are already sorted,
+        # and everything in the tail has less stock than everything in the head, so
+        # concatenating keeps the whole list in descending stock order.
+        selected[state] = state_combos[:MAX_COMBOS_PER_STATE] + [
+            (slug, prods)
+            for slug, prods in state_combos[MAX_COMBOS_PER_STATE:]
+            if growing_guides.has_guide(slug)
+        ]
     return selected
 
 
