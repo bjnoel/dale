@@ -648,3 +648,109 @@ class VocabularyScopedOrnamentalGate(unittest.TestCase):
                     self.assertEqual(
                         orn, {"myrtle"},
                         f"{r.get('common_name')}: unexpected ornamental word {orn}")
+
+
+# ---------------------------------------------------------------------------
+# Variety identity (the alert-curation work). Junk was getting watchable slugs
+# and real cultivars were fragmenting across several of them. All three fixes
+# land in functions BOTH parser paths funnel through, so the relaxed-only deny
+# lists stop being the only line of defence.
+#
+# Every case below was checked against the 14,021 live product titles before
+# landing: 184 slugs go, 53 appear, and NO watched slug moves or disappears.
+# ---------------------------------------------------------------------------
+
+class BidirectionalDash(unittest.TestCase):
+    """"A - B" is not always species-then-variety."""
+
+    def test_a_category_on_the_left_no_longer_swallows_the_species(self):
+        # Was species "Tropical", which the taxonomy gate then dropped whole.
+        self.assertEqual(cp.product_variety_slug("Tropical - Sapodilla"),
+                         "sapodilla-tropical")
+        self.assertEqual(cp.product_variety_slug("Tropical - Wampee"),
+                         "wampee-tropical")
+
+    def test_a_real_species_on_the_left_is_never_re_read(self):
+        self.assertEqual(cp.product_variety_slug("Sapodilla Grafted - Krasuey"),
+                         "sapodilla-krasuey")
+        self.assertEqual(cp.product_variety_slug("Avocado - Hass"), "avocado-hass")
+
+    def test_the_right_side_must_be_a_species_and_nothing_else(self):
+        """"Peach Sunrise" matches the taxonomy on its leading word and leaves
+        "Sunrise" over. Reversing on a partial match flipped this grandfathered
+        slug, which has a live watcher, into peach-sunrise-mandevilla."""
+        self.assertEqual(cp.product_variety_slug("Mandevilla - Peach Sunrise"),
+                         "mandevilla-peach-sunrise")
+
+
+class CommaIsASeparator(unittest.TestCase):
+    def test_a_synonym_list_is_not_a_cultivar(self):
+        # One fruit's six names had a page and a watchable alert button.
+        self.assertIsNone(cp.product_variety_slug(
+            "Sapodilla, Chiko, Chikoo, Chico, Naseberry, Nispero"))
+
+    def test_a_latin_tail_folds_into_the_real_cultivar(self):
+        self.assertEqual(cp.product_variety_slug(
+            "Avocado Hass, Persea americana, Type A, Fruit Tree"), "avocado-hass")
+
+    def test_pure_listing_noise_after_the_comma_truncates_rather_than_rejects(self):
+        """Nurseries write "<cultivar> (<latin>), fruit tree". Rejecting on the
+        comma outright loses a real variety to punctuation, so a tail that is
+        nothing but noise is cut instead."""
+        self.assertEqual(cp.product_variety_slug(
+            "Lychee Baitaying (Litchi chinensis), fruit tree"), "lychee-baitaying")
+        self.assertEqual(cp.product_variety_slug(
+            "Longan Heaw tree (Dimocarpus longan), fruit tree"), "longan-heaw")
+
+    def test_noise_detection_distinguishes_junk_from_names(self):
+        self.assertTrue(cp._is_listing_noise("QLD Only, fruit tree"))
+        self.assertTrue(cp._is_listing_noise("Persea americana, Type A, Fruit Tree"))
+        self.assertFalse(cp._is_listing_noise("Chiko, Chikoo, Chico"))
+
+
+class NeverACultivarTails(unittest.TestCase):
+    def test_bare_species_wearing_noise_gets_no_page(self):
+        for title in ("Grafted Almond Pair", "Coffee, plant", "Soursop Tree",
+                      "Bunya Pine Tree", "Cacao Plant"):
+            with self.subTest(title=title):
+                self.assertIsNone(cp.product_variety_slug(title))
+
+    def test_pollination_markers_fold_the_fragmented_siblings(self):
+        """The headline fix. Someone watching avocado-shepard got nothing when
+        any of these restocked, which is DEC-294's "buyable somewhere" promise
+        already broken for 15% of subscribers."""
+        for title in ("Avocado Shepard Type B", "Avocado Shepard B",
+                      "Avocado Shepard B Type", "Avocado - Shepard"):
+            with self.subTest(title=title):
+                self.assertEqual(cp.product_variety_slug(title), "avocado-shepard")
+
+    def test_trade_marks_fold_too(self):
+        self.assertEqual(cp.product_variety_slug("Blueberry Burst PBR"),
+                         "blueberry-burst")
+        self.assertEqual(cp.product_variety_slug("Olive Miniolea TM"),
+                         "olive-miniolea")
+
+    def test_stripping_is_tail_only(self):
+        """These words carry meaning in front of a name, and a blanket filter
+        would eat the cultivar."""
+        self.assertEqual(cp.product_variety_slug("Apple - Fruit Salad"),
+                         "apple-fruit-salad")
+
+    def test_words_deliberately_excluded_from_the_vocabulary(self):
+        """Each of these was in the original plan and each did measurable
+        damage against the live titles, so each is left alone on purpose."""
+        # Real grape cultivar names. Stripping broke 4 live watches.
+        self.assertEqual(cp.product_variety_slug("Grape - Thompson Seedless"),
+                         "grape-thompson-seedless")
+        self.assertEqual(cp.product_variety_slug("Grapes - Menindee Seedless"),
+                         "grape-menindee-seedless")
+        # "Chester Thornless" is the cultivar's name, not a description.
+        self.assertEqual(cp.product_variety_slug("Blackberry Chester Thornless"),
+                         "blackberry-chester-thornless")
+        # Dioecious plants sell the sexes as separate products you need both
+        # of. Merging them would alert someone about the wrong plant.
+        self.assertNotEqual(cp.product_variety_slug("Pistachio Sirora Male"),
+                            cp.product_variety_slug("Pistachio Sirora Female"))
+        # Seedling vs grafted is a real distinction.
+        self.assertEqual(cp.product_variety_slug("Black Sapote - Seedling 140ml"),
+                         "black-sapote-seedling")

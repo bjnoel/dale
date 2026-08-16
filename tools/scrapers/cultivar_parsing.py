@@ -203,6 +203,34 @@ def _find_species_anywhere(cleaned: str) -> tuple[str, list[str], list[str]] | N
     return (canon_name, words[:i], words[i + n:])
 
 
+def _is_listing_noise(text: str) -> bool:
+    """True when `text` carries no cultivar information at all.
+
+    Used to decide whether a comma in a title separates two names (reject, the
+    run is not one variety) or a name from its trailing junk (truncate).
+    "QLD Only, fruit tree" is noise; "Chiko, Chikoo, Chico" is not.
+    """
+    if not text.strip():
+        return True
+    cleaned = _clean_part(text, strip_sizeform=True)
+    if not cleaned:
+        return True
+    tokens = [t for t in re.split(r'[\s,\-]+', cleaned.lower()) if t]
+    # _latin_noise_words covers binomial fragments from the taxonomy, which is
+    # what "Avocado Hass, Persea americana, Type A, Fruit Tree" is made of
+    # after the cultivar name. Without it that title loses its slug entirely
+    # instead of folding into avocado-hass, and that nursery's Hass listing
+    # stops appearing on the page for it.
+    latin = _latin_noise_words()
+    return bool(tokens) and all(
+        t.strip(".,'\"()") in _NEVER_A_CULTIVAR
+        or t.strip(".,'\"()") in _SIZEFORM_ONLY
+        or t.strip(".,'\"()") in SIZE_WORDS
+        or t.strip(".,'\"()") in latin
+        for t in tokens
+    )
+
+
 def _variety_ok(variety_tokens: list[str], species: str = '') -> str | None:
     """Clean + validate a candidate variety. Returns the variety string or None."""
     # A STANDALONE dash followed by nothing but size/noise words is trailing
@@ -217,10 +245,29 @@ def _variety_ok(variety_tokens: list[str], species: str = '') -> str | None:
             variety_tokens = variety_tokens[:sep_idx]
         else:
             return None
+    # The comma is a separator too, and it was missing from the reject set
+    # below. That is how "Sapodilla, Chiko, Chikoo, Chico, Naseberry, Nispero"
+    # (one fruit's synonym list) became a cultivar with a page and a watchable
+    # slug, and how "Avocado Hass, Persea americana, Type A, Fruit Tree" got a
+    # slug of its own separate from avocado-hass.
+    #
+    # Truncate rather than reject when everything after the first comma is
+    # listing noise, mirroring the standalone-dash rule above. Nurseries write
+    # "Guava Yellow Cherry (Psidium littorale), QLD Only, fruit tree", and
+    # rejecting that outright loses a real cultivar to punctuation. Measured
+    # against the live titles: rejecting outright dropped 4 real varieties.
+    comma_idx = next((i for i, t in enumerate(variety_tokens) if ',' in t), None)
+    if comma_idx is not None:
+        head, _, tail_of_token = variety_tokens[comma_idx].partition(',')
+        rest = " ".join([tail_of_token] + variety_tokens[comma_idx + 1:])
+        if _is_listing_noise(rest):
+            variety_tokens = variety_tokens[:comma_idx] + ([head] if head else [])
+        else:
+            return None
     # If any embedded separator survived (- / | : etc.), a boundary was crossed
     # (e.g. "Sapodilla / Chicku", "Fruit Tree Cottage | Tamarillo"). Reject: the
     # token run is not a clean single variety.
-    if any(re.search(r'[\-–—/|:;]', t) for t in variety_tokens):
+    if any(re.search(r'[\-–—/|:;,]', t) for t in variety_tokens):
         return None
     # Bananas keep dwarf/super/semi: "Dwarf Cavendish" is a cultivar, not a size.
     drop = SIZE_WORDS if species.strip().lower() != 'banana' else (SIZE_WORDS - {'dwarf', 'super', 'semi'})
@@ -462,6 +509,47 @@ _SIZEFORM_ONLY = frozenset({
     'large', 'medium', 'small',
 })
 
+# Words that are never, on their own, a cultivar name. A title reduced to
+# nothing but these is a bare species listing wearing noise, not a variety, and
+# it was getting a /variety/ page and a watchable alert button anyway
+# ("almond-pair", "coffee-plant", "kiwifruit-male", "soursop-tree",
+# "bunya-nut-tree").
+#
+# Applied in _clean_cultivar_parts, which is the ONE function both the strict
+# and relaxed parser paths funnel through, so the relaxed-only deny lists stop
+# being the only line of defence.
+#
+# Trailing pollination markers are here too. Dropping them is what folds
+# "avocado-shepard-type-b", "avocado-shepard-b" and "avocado-shepard-b-type"
+# into "avocado-shepard", so someone watching the Shepard avocado hears about
+# all of them. Watching one and missing the others is DEC-294's central promise
+# ("buyable somewhere") already broken for 15% of subscribers.
+_NEVER_A_CULTIVAR = frozenset({
+    'plant', 'plants', 'tree', 'trees', 'shrub', 'shrubs', 'vine', 'vines',
+    'cultivar', 'variety', 'fruit', 'nut', 'type', 'pair', 'self',
+    'pollinator', 'pollinating', 'polliniser', 'pollinizer', 'rootstock',
+    'pbr', 'tm', 'a', 'b',
+})
+
+# Words deliberately NOT in that set, each because running the parser over the
+# 14,021 live titles showed it doing damage:
+#
+#   seedless   "Menindee Seedless", "Thompson Seedless" and "Crimson Seedless"
+#              are grape CULTIVAR names, not descriptions. Stripping it moved
+#              25 slugs and broke 4 live watches.
+#   thornless  same: "Chester Thornless" is the cultivar's name.
+#   male /     dioecious plants (kiwifruit, pistachio, pepperberry) sell the
+#   female     sexes as separate products you often need both of. Stripping
+#              collapsed kiwifruit-chieftain-male into kiwifruit-chieftain, and
+#              merged pistachio-sirora-male with pistachio-sirora-female, which
+#              would send someone a restock alert for the wrong plant.
+#   seedling   a real distinction against grafted stock, and pinned by an
+#              existing parse case ("Black Sapote - Seedling 140ml").
+#
+# Junk slugs that survive because of those exclusions (kiwifruit-male,
+# lemon-thornless) are curation's problem, not the parser's: the override file
+# can deny a slug without the parser having to merge two different plants.
+
 
 def _strip_noise_parens(s: str) -> str:
     """Delete parenthetical groups whose inner text is pure listing noise
@@ -510,8 +598,21 @@ def _clean_cultivar_parts(species: str, variety: str) -> tuple[str, str] | None:
         return None
     if re.match(r'^[A-Za-z]\s*$', var):              # single-letter pollination type
         return None
+
+    # Strip never-a-cultivar words from the TAIL only. Tail-only is deliberate:
+    # these words carry real meaning in front ("Male Kiwifruit" is a listing
+    # shape we already handle elsewhere; "Fruit Salad" is a name), and a
+    # blanket filter would eat cultivars like "Thornless Blackberry" mid-name.
+    var_parts = [t for t in re.split(r'\s+', var) if t]
+    while var_parts and var_parts[-1].lower().strip(".,'\"()") in _NEVER_A_CULTIVAR:
+        var_parts.pop()
+    var = " ".join(var_parts).strip(" -'\"")
+    if not var:
+        return None
+
     var_tokens = [t for t in re.split(r'[\s\-]+', var.lower()) if t]
-    if var_tokens and all(t in _SIZEFORM_ONLY for t in var_tokens):
+    if var_tokens and all(t in _SIZEFORM_ONLY or t in _NEVER_A_CULTIVAR
+                          for t in var_tokens):
         return None
     return (sp, var)
 
@@ -565,6 +666,25 @@ def _strict_parse(title: str) -> tuple[str, str] | None:
         m = re.match(r'^(.+?)\s*[-\u2013\u2014]\s*(.+)$', s)
         if m:
             species, variety = m.group(1).strip(), m.group(2).strip()
+            # "A - B" is not always species-then-variety. "Tropical - Sapodilla"
+            # is a CATEGORY then a species, and taking the left side as the
+            # species made it "Tropical", which the taxonomy gate then dropped
+            # entirely. Try the reverse orientation, but ONLY when the left
+            # side does not resolve and the right side does, so a title whose
+            # left side is a real species is never re-read.
+            # "Sapodilla Grafted - Krasuey" is untouched: its left side
+            # resolves.
+            #
+            # The right side must be a species AND NOTHING ELSE (empty
+            # leftover). Without that, "Mandevilla - Peach Sunrise" flips,
+            # because "Peach Sunrise" matches the taxonomy on its leading word
+            # and leaves "Sunrise" over. That slug is grandfathered and has
+            # live watchers, so the loose version broke the one group this
+            # whole branch exists to protect.
+            right = canonicalize_species(variety)
+            if (canonicalize_species(species) is None
+                    and right is not None and not right[1]):
+                species, variety = variety, species
     else:
         # Pipe separator, but only when the left side is a known species
         m = re.match(r'^(.+?)\s*\|\s*(.+)$', s)
