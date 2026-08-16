@@ -267,11 +267,16 @@ Order matters because slugs move and the alert sender runs nightly at 22:00 UTC.
 6. `migrate_variety_watch_slugs.py` dry-run, review, then apply on the server. **Steps 4 and
    6 must be adjacent**: the build deletes orphan pages (`build_variety_pages.py:362-367`),
    so between them a watcher's alert link can 404.
-7. **Assert every watched slug resolves.** `SELECT DISTINCT variety_slug FROM watches` must
-   be a subset of the generated pages plus `GRANDFATHERED_VARIETY_SLUGS`. 12 watched slugs
-   are already absent from live stock today, so establish that baseline before the change
-   and require the number not to grow. This is the check that would catch a missed migration
+7. **Assert every watched slug resolves.** `check_watched_slugs.py --baseline 2`. Every
+   watched slug must be a generated page or a `GRANDFATHERED_VARIETY_SLUGS` entry, and the
+   count that is not must not grow. This is the check that catches a missed migration
    before a subscriber does.
+
+   **The baseline is 2, not the 12 stated above.** Measured against the live watch table
+   and all 14,021 live titles: `avocado-pollinating-duo-bacon-and-hass` and `plum-zwetschge`.
+   The 12 was slugs absent from live STOCK, which is a different thing, because an
+   out-of-stock variety still has a page and its alert link still works. Verified before
+   landing: this branch adds none (before 2, after 2, newly unresolved: none).
 8. Verify with `send_variety_alerts.py --dry-run`, then `--redirect-to b@bjnoel.com` for a
    real rendered email. `--redirect-to` deliberately does not record sends, so a later real
    run still fires.

@@ -144,9 +144,10 @@ class WriteAndReadTests(unittest.TestCase):
         )
 
     def test_display_title_falls_back_to_the_stored_title_for_unknown_slugs(self):
-        """~12 watched slugs have dropped out of live stock, so they have no
-        page and no index entry. Their watchers keep a recognisable name; the
-        render sites escape it."""
+        """Measured against live data: 2 watched slugs have no page at all.
+        (The plan said 12, which counted slugs absent from live STOCK; an
+        out-of-stock variety still has a page.) Their watchers keep a
+        recognisable name; the render sites escape it."""
         write_variety_index(self.path, {"mango-r2e2": "Mango - R2E2"})
         idx = VarietyIndex(self.path)
         self.assertEqual(idx.display_title("gone-forever", "Gone - Forever"),
@@ -263,3 +264,43 @@ class GrandfatheredSlugsAreIndexedTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WatchedSlugResolutionTests(unittest.TestCase):
+    """The gate that catches a missed slug migration before a subscriber does.
+
+    A watch whose slug has no page is an alert whose "View X on
+    treestock.com.au" link 404s, and nothing else in the pipeline complains:
+    build_variety_pages.py deletes orphan pages silently, and the alert sender
+    happily sends for a slug with no page behind it.
+    """
+
+    def setUp(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "check_watched_slugs", SCRAPERS / "check_watched_slugs.py")
+        self.mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.mod)
+
+    def test_a_watch_with_a_page_resolves(self):
+        self.assertEqual(
+            self.mod.unresolved_slugs({"avocado-hass": 3}, {"avocado-hass"}, set()),
+            [])
+
+    def test_a_watch_without_a_page_is_reported_with_its_watcher_count(self):
+        self.assertEqual(
+            self.mod.unresolved_slugs({"gone-forever": 2}, {"avocado-hass"}, set()),
+            [("gone-forever", 2)])
+
+    def test_a_grandfathered_slug_counts_as_resolved(self):
+        """It has no page in the browsable index by design, and its watchers
+        are exactly who that set exists for."""
+        self.assertEqual(
+            self.mod.unresolved_slugs({"mandevilla-peach-sunrise": 1}, set(),
+                                      {"mandevilla-peach-sunrise"}),
+            [])
+
+    def test_worst_first(self):
+        result = self.mod.unresolved_slugs(
+            {"a-one": 1, "b-five": 5, "c-two": 2}, set(), set())
+        self.assertEqual([s for s, _ in result], ["b-five", "c-two", "a-one"])
