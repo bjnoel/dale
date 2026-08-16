@@ -26,10 +26,11 @@ import re
 import sqlite3
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
-from urllib.parse import parse_qs, parse_qsl, quote, urlparse
+import urllib.request
+from urllib.parse import parse_qs, parse_qsl, quote, urlencode, urlparse
 
 import admin_view
 import digest_archive
@@ -59,6 +60,37 @@ VARIETY_INDEX_FILE = DEFAULT_INDEX_PATH
 PORT = 8099
 CONFIRM_EXPIRY_HOURS = 48
 MANAGE_LINK_RATE_LIMIT_SECONDS = 3600  # one manage-link email per address per hour
+
+# --- Abuse limits on watch creation ---------------------------------------
+# Nothing sat between a script and 90 real inboxes: /api/watch-variety took a
+# valid-looking email and inserted a live watch, with no cap, no rate limit and
+# no body-size limit. These are the ceilings. Read the honesty note on
+# _client_ip before treating the per-IP one as the control that holds.
+
+# Every POST this server accepts is a handful of fields. 8KB is far above any
+# real payload and far below anything worth parsing from a stranger.
+MAX_BODY_BYTES = 8192
+
+# Bounds the blast radius of one forged address. Not spoofable, unlike the IP.
+MAX_WATCHES_PER_ADDRESS = 50
+
+# Generous on purpose: a collector adding alerts while browsing is the normal
+# case and must not be throttled. It exists to make bulk creation expensive,
+# not to police ordinary use.
+WATCH_IP_LIMIT = 30
+WATCH_IP_WINDOW_SECONDS = 3600
+
+# Turnstile stays OFF until a secret exists in app.env (creating the keys is
+# Benedict's job). The hook is here so enabling it is a secret plus nothing
+# else, rather than a code change made under pressure.
+TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+TURNSTILE_TIMEOUT_SECONDS = 3
+
+# CORS. Hygiene, NOT abuse protection: a browser enforces it and a script
+# ignores it entirely, and these endpoints carry no cookie auth for a malicious
+# site to ride. Narrowed from "*" anyway, because "*" advertises an intent to
+# be called from anywhere that was never true.
+ALLOWED_ORIGIN = "https://treestock.com.au"
 
 VALID_CATEGORIES = ("new_products", "price_drops", "back_in_stock")
 # Plant categories a subscriber can opt into (DAL-199). bush_tucker is OFF by
@@ -97,9 +129,57 @@ def init_variety_watches_db():
             added_at TEXT NOT NULL,
             UNIQUE(email, species_slug)
         );
+        -- Per-IP rate-limit state. A table rather than a second JSON file
+        -- because this DB is already open on the watch path, and because
+        -- "DELETE WHERE ts < ?" is the pruning the JSON files do not get.
+        -- Rows are deleted once they leave the window, so this holds at most
+        -- an hour of addresses.
+        CREATE TABLE IF NOT EXISTS watch_attempts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ip TEXT NOT NULL,
+            ts TEXT NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_watch_attempts_ip_ts
+            ON watch_attempts(ip, ts);
     """)
     con.commit()
     con.close()
+
+
+def turnstile_secret() -> str:
+    """Empty until Benedict creates the keys and puts TURNSTILE_SECRET in
+    app.env. Read per call rather than cached at import, so turning it on is a
+    file edit and a service restart, not a deploy."""
+    return _read_app_env("TURNSTILE_SECRET")
+
+
+def turnstile_ok(token: str, remote_ip: str) -> bool:
+    """Verify a Turnstile token, or pass when Turnstile is not configured.
+
+    Passing when unconfigured is the whole point of the flag gate: the code
+    path is live and exercised today as a no-op, so switching it on later
+    cannot be the change that discovers a bug in it.
+
+    The server is single-threaded, so the outbound call is bounded by a short
+    timeout and a failure to reach Cloudflare passes rather than blocks. That
+    is the right trade while this is a second line of defence behind the
+    per-address cap; it would not be if it were the only one.
+    """
+    secret = turnstile_secret()
+    if not secret:
+        return True
+    if not token:
+        return False
+    payload = urlencode({"secret": secret, "response": token,
+                         "remoteip": remote_ip}).encode()
+    try:
+        with urllib.request.urlopen(
+                urllib.request.Request(TURNSTILE_VERIFY_URL, data=payload),
+                timeout=TURNSTILE_TIMEOUT_SECONDS) as resp:
+            return bool(json.loads(resp.read()).get("success"))
+    except Exception as e:
+        print(f"Warning: Turnstile verification unreachable ({e}); allowing")
+        return True
 
 
 def verify_unsubscribe_token(email: str, token: str) -> bool:
@@ -501,8 +581,21 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             self.send_error(404)
             return
 
-        content_length = int(self.headers.get("Content-Length", 0))
-        body = self.rfile.read(content_length).decode()
+        # Cap before reading, not after. Reading first and validating later
+        # means a stranger decides how much memory this process allocates.
+        try:
+            content_length = int(self.headers.get("Content-Length", 0) or 0)
+        except ValueError:
+            self.send_json(400, {"error": "Invalid Content-Length"})
+            return
+        if content_length > MAX_BODY_BYTES:
+            self.send_json(413, {"error": "Payload too large"})
+            return
+        try:
+            body = self.rfile.read(content_length).decode()
+        except UnicodeDecodeError:
+            self.send_json(400, {"error": "Invalid encoding"})
+            return
 
         # Self-serve magic-link request: any email gets a uniform 200 so we don't
         # leak which addresses are subscribed. Only confirmed subscribers receive
@@ -597,6 +690,22 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             if not is_valid_slug(variety_slug) or (species_slug and not is_valid_slug(species_slug)):
                 self.send_json(400, {"error": "Invalid variety"})
                 return
+            # Honeypot. The field is hidden and off the tab order, so a person
+            # never fills it and a bot that fills every input does. Answer as
+            # if it worked: telling a bot which check it failed is free help.
+            if (data.get("website") or "").strip():
+                print(f"Honeypot tripped on watch attempt: {variety_slug}")
+                self.send_json(201, {"message": "Alert set!", "variety_slug": variety_slug})
+                return
+            client_ip = self._client_ip()
+            if not turnstile_ok((data.get("turnstile_token") or "").strip(), client_ip):
+                self.send_json(403, {"error": "Verification failed"})
+                return
+            if self._watch_rate_limited(client_ip):
+                print(f"Rate-limited watch attempt from {client_ip}")
+                self.send_json(429, {"error": "Too many alerts set from here. "
+                                              "Try again in an hour."})
+                return
             index = get_variety_index(VARIETY_INDEX_FILE)
             variety_title = index.title(variety_slug)
             if variety_title is None:
@@ -613,6 +722,21 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 variety_title = index.display_title(variety_slug)
                 print(f"WARNING: {VARIETY_INDEX_FILE} missing or empty; "
                       f"accepting {variety_slug} with a slug-derived title")
+            # Per-address cap. Checked after the slug resolves so a caller
+            # cannot burn someone else's allowance with junk slugs, and skipped
+            # when the address already watches this one so hitting the cap can
+            # never turn an idempotent re-watch into an error.
+            if self._watch_count(email) >= MAX_WATCHES_PER_ADDRESS:
+                already = any(w["slug"] == variety_slug
+                              for w in self._get_variety_watches(email))
+                if not already:
+                    print(f"Watch cap reached for {email} "
+                          f"({MAX_WATCHES_PER_ADDRESS})")
+                    self.send_json(429, {
+                        "error": f"That address is already watching "
+                                 f"{MAX_WATCHES_PER_ADDRESS} varieties, which "
+                                 f"is the limit."})
+                    return
             added_at = datetime.now().isoformat()
             try:
                 con = sqlite3.connect(VARIETY_WATCHES_DB)
@@ -674,27 +798,11 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             except sqlite3.Error as e:
                 self.send_json(500, {"error": f"DB error: {e}"})
                 return
-            # Also subscribe this person if not already subscribed
-            subscribers = load_subscribers()
-            existing = next((s for s in subscribers if s["email"] == email), None)
-            if not existing:
-                subscribers.append({
-                    "email": email,
-                    "subscribed_at": datetime.now().isoformat(),
-                    "state": "ALL",
-                })
-                save_subscribers(subscribers)
-                print(f"New subscriber via wishlist: {email}")
-                welcome_script = SCRIPT_DIR / "send_welcome_email.py"
-                if welcome_script.exists():
-                    try:
-                        subprocess.Popen(
-                            [sys.executable, str(welcome_script), email],
-                            stdout=subprocess.DEVNULL,
-                            stderr=subprocess.DEVNULL,
-                        )
-                    except Exception as ex:
-                        print(f"Warning: could not launch welcome email: {ex}")
+            # A wishlist vote used to silently add the voter to
+            # subscribers.json and fire a welcome email: no double opt-in, no
+            # statement that voting subscribed you, and a second consent path
+            # that contradicted the one DEC-294 settled on. Removed. Voting is
+            # a vote. The table had 0 rows, so nobody was affected.
             if inserted:
                 print(f"Wishlist vote: {email} -> {species_slug} (total: {count})")
                 self.send_json(201, {"message": "Added to wishlist!", "species_slug": species_slug, "total": count})
@@ -933,10 +1041,77 @@ class SubscribeHandler(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):
         self.send_response(200)
-        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Origin", ALLOWED_ORIGIN)
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
+
+    def _client_ip(self) -> str:
+        """Best guess at who is calling.
+
+        BE HONEST ABOUT WHAT THIS IS WORTH. treestock.com.au is orange-clouded,
+        so CF-Connecting-IP is present and correct for traffic that came
+        through Cloudflare. The origin is also directly reachable, so anyone
+        who finds its address can send whatever CF-Connecting-IP they like and
+        the limit below evaporates.
+
+        It raises the cost of casual abuse and nothing more. The controls that
+        actually hold are MAX_WATCHES_PER_ADDRESS, which is not spoofable, and
+        the notice-email throttle, which caps what a victim can be made to
+        receive.
+        """
+        for header in ("CF-Connecting-IP", "X-Forwarded-For"):
+            value = (self.headers.get(header) or "").strip()
+            if value:
+                # X-Forwarded-For is a chain; the first entry is the client.
+                return value.split(",")[0].strip()[:64]
+        try:
+            return self.client_address[0]
+        except (AttributeError, IndexError):
+            return "unknown"
+
+    def _watch_rate_limited(self, ip: str) -> bool:
+        """True when `ip` has already had WATCH_IP_LIMIT attempts in the
+        window. Records this attempt when it has not.
+
+        Pruning happens on the same pass, so the table never accumulates: at
+        most one window of addresses is retained, which is as long as the data
+        is any use and no longer.
+        """
+        now = datetime.now()
+        cutoff = (now - timedelta(seconds=WATCH_IP_WINDOW_SECONDS)).isoformat()
+        try:
+            con = sqlite3.connect(VARIETY_WATCHES_DB)
+            con.execute("DELETE FROM watch_attempts WHERE ts < ?", (cutoff,))
+            recent = con.execute(
+                "SELECT COUNT(*) FROM watch_attempts WHERE ip = ? AND ts >= ?",
+                (ip, cutoff),
+            ).fetchone()[0]
+            if recent >= WATCH_IP_LIMIT:
+                con.commit()
+                con.close()
+                return True
+            con.execute("INSERT INTO watch_attempts (ip, ts) VALUES (?, ?)",
+                        (ip, now.isoformat()))
+            con.commit()
+            con.close()
+            return False
+        except sqlite3.Error as e:
+            # Fail open: a limiter that 500s the endpoint when its own table
+            # misbehaves is a worse outage than the abuse it prevents, and the
+            # per-address cap is untouched by this.
+            print(f"Warning: watch rate-limit check failed ({e}); allowing")
+            return False
+
+    def _watch_count(self, email: str) -> int:
+        try:
+            con = sqlite3.connect(VARIETY_WATCHES_DB)
+            n = con.execute("SELECT COUNT(*) FROM watches WHERE email = ?",
+                            (email,)).fetchone()[0]
+            con.close()
+            return n
+        except sqlite3.Error:
+            return 0
 
     def _get_variety_watches(self, email: str):
         """Get variety watches for an email from SQLite."""
@@ -1445,7 +1620,7 @@ document.getElementById('varietyWatches').addEventListener('click', function(e) 
         body = json.dumps(data).encode()
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
-        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Origin", ALLOWED_ORIGIN)
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)

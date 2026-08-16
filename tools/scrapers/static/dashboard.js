@@ -261,7 +261,9 @@ async function submitWatch(wrap, email) {
       body: JSON.stringify({
         email: email,
         variety_slug: slug,
-        species_slug: wrap.dataset.sp || ''
+        species_slug: wrap.dataset.sp || '',
+        // Honeypot: hidden, off the tab order, never filled by a person.
+        website: (wrap.querySelector('.watch-hp') || {}).value || ''
       })
     });
     const data = await resp.json();
@@ -407,6 +409,7 @@ function render() {
           `<button type="button" class="notify-link">${label}</button>${elsewhere}` +
           `<span class="watch-form hidden">` +
             `<input type="email" class="watch-email" placeholder="your@email.com" aria-label="Email for ${label}">` +
+            `<input type="text" class="watch-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">` +
             `<button type="button" class="watch-go">Set alert</button>` +
           `</span>` +
           `<span class="watch-msg hidden"></span>` +

@@ -191,6 +191,9 @@ document.addEventListener('click', function(e) {
     <form id="watchForm" class="flex gap-2 flex-wrap">
       <input type="email" id="watchEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 flex-1 max-w-xs">
+      <!-- Honeypot: hidden, off the tab order, never filled by a person. -->
+      <input type="text" id="watchHp" tabindex="-1" autocomplete="off" aria-hidden="true"
+        style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <button type="submit"
         class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 text-sm font-medium whitespace-nowrap">
         Notify me
@@ -277,7 +280,7 @@ document.getElementById('watchForm').addEventListener('submit', function(e) {
       email: email,
       variety_slug: 'fig-black-genoa',
       species_slug: 'fig',
-      variety_title: 'Fig - Black Genoa'
+      website: document.getElementById('watchHp').value
     })
   })
   .then(function(r) { return r.json(); })
