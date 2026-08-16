@@ -242,6 +242,18 @@ function rememberWatchEmail(email) {
   try { localStorage.setItem(WATCH_EMAIL_KEY, email); } catch (e) { /* private mode */ }
 }
 
+// The two alert triggers, drawn the same way they are named in the email.
+// aria-hidden because the button text already says what the alert does; a
+// screen reader announcing "bell" adds nothing.
+const BELL_SVG =
+  '<svg class="watch-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">' +
+  '<path d="M10 2a5 5 0 0 0-5 5v3.6L3.7 13a.6.6 0 0 0 .5.9h11.6a.6.6 0 0 0 .5-.9L15 10.6V7a5 5 0 0 0-5-5Z"/>' +
+  '<path d="M8 15.5a2 2 0 0 0 4 0Z"/></svg>';
+const CHART_DOWN_SVG =
+  '<svg class="watch-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" ' +
+  'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<path d="M3 5.5 8.5 11l3-3L17 13.5"/><path d="M17 9.5v4h-4"/></svg>';
+
 // The POST used to carry a variety_title harvested from the row, which meant
 // a homepage watch stored the RAW nursery listing title ("Advanced Lemon
 // 'Eureka Seedless' 400mm/45Ltr Pot (PICK UP ONLY)") and that string became
@@ -272,7 +284,9 @@ async function submitWatch(wrap, email) {
     wrap.querySelector('.watch-form').classList.add('hidden');
     msg.textContent = data.message === 'Already watching'
       ? 'Already on your alert list.'
-      : 'Alert set. We will email you.';
+      // Names both triggers, because one watch fires on both and the old copy
+      // ("we will email you") left people to guess which.
+      : "Alert set. We'll email you when it's back in stock or drops in price.";
     msg.classList.remove('hidden');
     wrap.querySelector('.notify-link').classList.add('hidden');
   } catch (err) {
@@ -398,6 +412,15 @@ function render() {
     // alert on, and until now there was no way to ask for one.
     let notifyLink = '';
     if (p.vs) {
+      // Inline SVG rather than emoji here: the pill inherits currentColor, so
+      // the glyph stays on-brand and crisp at any zoom, and mail-client
+      // rendering (the reason the emails use emoji) is not a constraint on a
+      // web page. Same two glyphs as the email: bell for back in stock,
+      // falling chart for price drop.
+      const icon = !p.a ? BELL_SVG : CHART_DOWN_SVG;
+      // One watch covers BOTH triggers, so the label names the one you are
+      // most likely to want from this row and the hint says the rest. The old
+      // copy promised only the trigger it named.
       const label = !p.a
         ? (VARIETY_IN_STOCK[p.vs] ? 'In stock elsewhere, alert me anyway' : "Notify me when it's back in stock")
         : 'Alert me if the price drops';
@@ -406,7 +429,7 @@ function render() {
         : '';
       notifyLink =
         `<div class="watch-wrap" data-vs="${p.vs}" data-sp="${p.sl || ''}">` +
-          `<button type="button" class="notify-link">${label}</button>${elsewhere}` +
+          `<button type="button" class="notify-link" title="One alert covers both: back in stock and price drops">${icon}${label}</button>${elsewhere}` +
           `<span class="watch-form hidden">` +
             `<input type="email" class="watch-email" placeholder="your@email.com" aria-label="Email for ${label}">` +
             `<input type="text" class="watch-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">` +

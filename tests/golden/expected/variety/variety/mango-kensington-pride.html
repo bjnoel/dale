@@ -183,10 +183,10 @@ document.addEventListener('click', function(e) {
        tailwind-input.css. -->
   <div id="watchSection" class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
     <h3 class="font-semibold text-gray-900 mb-1">
-      Notify me next time Kensington Pride Mango comes back
+      Alert me about Kensington Pride Mango
     </h3>
     <p class="text-sm text-gray-600 mb-3">
-      Kensington Pride Mango is currently in stock. You can still set an alert for next time.
+      Kensington Pride Mango is in stock now. Set an alert and we&#39;ll email you if the price drops, or next time it sells out and returns.
     </p>
     <form id="watchForm" class="flex gap-2 flex-wrap">
       <input type="email" id="watchEmail" placeholder="your@email.com" required
@@ -287,13 +287,13 @@ document.getElementById('watchForm').addEventListener('submit', function(e) {
   .then(function(d) {
     msg.textContent = d.message === 'Already watching'
       ? 'You\'re already watching this variety!'
-      : '✓ Alert set! You\'ll be notified when Mango - Kensington Pride is back in stock.';
+      : '✓ Alert set. We\'ll email you when Mango - Kensington Pride is back in stock or drops in price.';
     msg.className = 'mt-2 text-sm text-amber-700';
     msg.style.display = 'block';
     document.getElementById('watchForm').style.display = 'none';
   })
   .catch(function() {
-    msg.textContent = 'Something went wrong — please try again.';
+    msg.textContent = 'Something went wrong, please try again.';
     msg.className = 'mt-2 text-sm text-red-600';
     msg.style.display = 'block';
   });

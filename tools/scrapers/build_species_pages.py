@@ -495,24 +495,24 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         # Alerts link only on OOS rows -- no value nudging someone to an
         # "alert me when it's back" page for something they can buy right now.
         # Named cultivars get a per-variety watch (the kept, low-noise feature)
-        # via their variety page. OOS rows we can't parse into a cultivar (bare
-        # species names) have no per-variety target, so they fall back to the
-        # daily-digest subscribe box on this page (#subscribeBox); the digest
-        # covers back-in-stock items.
+        # via their variety page.
         v_slug = _variety_slug(p["title"])
         if v_slug and not p["available"]:
-            # #watchSection lands the click ON the variety page's restock-alert
-            # form instead of the top of the page (Benedict, 2026-06-11).
+            # #watchSection lands the click ON the variety page's alert form
+            # instead of the top of the page (Benedict, 2026-06-11).
             alert_link = (
                 f' <a href="/variety/{v_slug}.html#watchSection" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" '
-                f'title="Get restock alerts for this variety">&#128276; Alerts</a>'
-            )
-        elif not p["available"]:
-            alert_link = (
-                f' <a href="#subscribeBox" class="ml-1 text-xs text-green-700 hover:underline whitespace-nowrap" '
-                f'title="Subscribe to the daily digest for back-in-stock alerts">&#128276; Alerts</a>'
+                f'title="Alert me when this variety is back in stock or drops in price">&#128276; Alerts</a>'
             )
         else:
+            # Everything else gets no link, INCLUDING out-of-stock rows whose
+            # title does not parse into a cultivar (bare species names). Those
+            # used to offer "Alerts" pointing at #subscribeBox, but DEC-294
+            # turned DIGEST_SIGNUP_ENABLED off and that anchor stopped being
+            # rendered, so the link went nowhere on every species page. Species
+            # pages do not load dashboard.js, so there is no inline control to
+            # redirect it to, and by definition there is no per-variety target.
+            # Dropping it beats inventing a destination.
             alert_link = ''
         product_view.append({
             "has_url": bool(nursery_url),

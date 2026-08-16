@@ -139,7 +139,7 @@ document.getElementById('subscribeForm').addEventListener('submit', function(e) 
     document.getElementById('subscribeForm').style.display = 'none';
   })
   .catch(function() {
-    msg.textContent = 'Something went wrong — please try again.';
+    msg.textContent = 'Something went wrong, please try again.';
     msg.className = 'mt-2 text-sm text-red-600';
     msg.style.display = 'block';
   });
@@ -164,13 +164,13 @@ document.getElementById('watchForm').addEventListener('submit', function(e) {
   .then(function(d) {
     msg.textContent = d.message === 'Already watching'
       ? 'You\'re already watching this variety!'
-      : '✓ Alert set! You\'ll be notified when {{ variety_title_js|safe }} is back in stock.';
+      : '✓ Alert set. We\'ll email you when {{ variety_title_js|safe }} is back in stock or drops in price.';
     msg.className = 'mt-2 text-sm text-amber-700';
     msg.style.display = 'block';
     document.getElementById('watchForm').style.display = 'none';
   })
   .catch(function() {
-    msg.textContent = 'Something went wrong — please try again.';
+    msg.textContent = 'Something went wrong, please try again.';
     msg.className = 'mt-2 text-sm text-red-600';
     msg.style.display = 'block';
   });

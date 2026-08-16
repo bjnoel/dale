@@ -72,6 +72,21 @@ MIN_DROP_ABS = 5.00
 RESTOCK = "restock"
 PRICE_DROP = "price_drop"
 
+# The two triggers were indistinguishable at a glance: same layout, same
+# colours, differing only in a sentence of wording. Emoji rather than inline
+# SVG because SVG support across mail clients is unreliable and there is no
+# plain-text part to fall back to. The subject line carries it too, which is
+# the only part visible before opening.
+#
+# The bell is Benedict's choice. Note the daily digest uses a tick for
+# back-in-stock, but that is a category pill in a different context and the
+# falling chart is already the digest's price-drop glyph, so half of this is
+# existing vocabulary.
+ALERT_ICON = {
+    RESTOCK: "\N{BELL}",                        # U+1F514
+    PRICE_DROP: "\N{CHART WITH DOWNWARDS TREND}",   # U+1F4C9
+}
+
 
 from stocklib.mailer import (get_resend_api_key, get_unsubscribe_secret,
                              make_unsubscribe_token)
@@ -394,12 +409,15 @@ def build_variety_alert_email(variety_title: str, variety_slug: str,
         <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6;font-weight:600">{price_str}</td>
       </tr>"""
 
+    icon = ALERT_ICON.get(alert_type, ALERT_ICON[RESTOCK])
     if alert_type == PRICE_DROP:
-        heading = f"{safe_title} just dropped in price"
-        subhead = "A variety you're watching is cheaper than it was yesterday."
+        heading = f"{icon} {safe_title} just dropped in price"
+        subhead = ("A variety you're watching is cheaper than it was yesterday. "
+                   "Your alert covers both price drops and restocks.")
     else:
-        heading = f"{safe_title} is now available!"
-        subhead = "The specific variety you were watching has come back into stock."
+        heading = f"{icon} {safe_title} is now available!"
+        subhead = ("The variety you're watching has come back into stock. "
+                   "Your alert covers both restocks and price drops.")
 
     variety_url = f"{SITE_URL}/variety/{urllib.parse.quote(variety_slug)}.html"
 
@@ -645,10 +663,11 @@ def main():
             continue
 
         subject_title = subject_safe(variety_title)
+        icon = ALERT_ICON.get(alert_type, ALERT_ICON[RESTOCK])
         if alert_type == PRICE_DROP:
-            subject = f"{subject_title} just dropped in price -- treestock.com.au"
+            subject = f"{icon} {subject_title} just dropped in price -- treestock.com.au"
         else:
-            subject = f"{subject_title} is now available -- treestock.com.au"
+            subject = f"{icon} {subject_title} is now available -- treestock.com.au"
         email_html = build_variety_alert_email(variety_title, slug, products, alert_type)
 
         print(f"\n  Sending '{variety_title}' {alert_type} alert to {len(recipients)} watcher(s)...")

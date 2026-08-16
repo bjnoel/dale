@@ -319,6 +319,48 @@ class AlertEmailBodyTests(unittest.TestCase):
         self.assertIn("&lt;b&gt;Mango&lt;/b&gt;", html)
 
 
+class AlertIconTests(unittest.TestCase):
+    """The two triggers were indistinguishable: same layout, same colours,
+    differing only in a sentence of wording. Emoji rather than inline SVG
+    because SVG is unreliable across mail clients and there is no plain-text
+    part to fall back to."""
+
+    PRODUCT = AlertEmailBodyTests.PRODUCT
+
+    def test_restock_carries_the_bell(self):
+        html = alerts.build_variety_alert_email(
+            "Mango - R2E2", "mango-r2e2", [self.PRODUCT], alerts.RESTOCK)
+        self.assertIn("\N{BELL}", html)
+        self.assertNotIn("\N{CHART WITH DOWNWARDS TREND}", html)
+
+    def test_price_drop_carries_the_falling_chart(self):
+        html = alerts.build_variety_alert_email(
+            "Mango - R2E2", "mango-r2e2", [self.PRODUCT], alerts.PRICE_DROP)
+        self.assertIn("\N{CHART WITH DOWNWARDS TREND}", html)
+        self.assertNotIn("\N{BELL}", html)
+
+    def test_both_emails_say_the_alert_covers_both_triggers(self):
+        """One watch fires on both, and the copy used to name only the one that
+        had just fired."""
+        for kind in (alerts.RESTOCK, alerts.PRICE_DROP):
+            with self.subTest(kind=kind):
+                html = alerts.build_variety_alert_email(
+                    "Mango - R2E2", "mango-r2e2", [self.PRODUCT], kind)
+                self.assertIn("covers both", html)
+
+    def test_the_icon_survives_into_the_subject_line(self):
+        """The subject is the only part visible before opening, so an icon that
+        stops at the heading solves half the problem."""
+        for kind, glyph in ((alerts.RESTOCK, "\N{BELL}"),
+                            (alerts.PRICE_DROP, "\N{CHART WITH DOWNWARDS TREND}")):
+            with self.subTest(kind=kind):
+                icon = alerts.ALERT_ICON[kind]
+                self.assertEqual(icon, glyph)
+                subject = f"{icon} {alerts.subject_safe('Mango - R2E2')} is now available -- treestock.com.au"
+                self.assertTrue(subject.startswith(glyph))
+                self.assertIn(" -- ", subject)
+
+
 class CanonicalTitleTests(unittest.TestCase):
     """The display title comes from the builder's index, not from whoever
     watched the slug first."""

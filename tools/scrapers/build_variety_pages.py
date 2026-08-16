@@ -216,11 +216,17 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str]) -> 
         title=title, today=today, nursery_count=nursery_count, in_stock_count=in_stock_count,
         blurb_html=blurb_html,
         summary_callout=summary_callout, product_view=product_view,
-        watch_heading=(f"Notify me next time {variety} {species} comes back" if in_stock
-                       else f"Get notified when {variety} {species} comes back in stock"),
-        watch_body=(f"{variety} {species} is currently in stock. You can still set an alert for next time."
+        # One watch fires on BOTH triggers, so say so on both sides of the
+        # in-stock split. The old copy promised only a restock, which was the
+        # wrong promise in the in-stock case (where a price drop is the alert
+        # you actually want) and an incomplete one everywhere else.
+        watch_heading=(f"Alert me about {variety} {species}" if in_stock
+                       else f"Get notified when {variety} {species} comes back"),
+        watch_body=(f"{variety} {species} is in stock now. Set an alert and we'll email you "
+                    f"if the price drops, or next time it sells out and returns."
                     if in_stock else
-                    f"{variety} {species} is currently out of stock. Enter your email to get an alert the moment it's available again."),
+                    f"{variety} {species} is currently out of stock. Enter your email and we'll "
+                    f"tell you the moment it's available again, or if it comes back cheaper."),
         other_varieties_html=other_varieties_html,
         slug_js=slug_js, species_slug_js=species_slug_js, variety_title_js=variety_title_js,
     )

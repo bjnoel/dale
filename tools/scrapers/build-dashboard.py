@@ -760,8 +760,11 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   /* Per-variety alert control, one per result row. Sits below the row so it
      never pushes the results themselves down the page. */
   .watch-wrap { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 8px 0.5rem; }
-  .notify-link { display: inline-block; padding: 2px 10px; font-size: 0.75rem; color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 9999px; text-decoration: none; cursor: pointer; font-family: inherit; }
+  .notify-link { display: inline-flex; align-items: center; gap: 0.25rem; padding: 2px 10px; font-size: 0.75rem; color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 9999px; text-decoration: none; cursor: pointer; font-family: inherit; }
   .notify-link:hover { background: #dcfce7; }
+  /* Trigger glyph on the alert pill. Sized in em and filled with currentColor
+     so it tracks the pill's own text, including on hover. */
+  .watch-icon { width: 1em; height: 1em; flex: none; }
   .notify-alt { font-size: 0.75rem; color: #15803d; text-decoration: underline; }
   .watch-form { display: inline-flex; gap: 0.3rem; align-items: center; }
   .watch-form.hidden, .watch-msg.hidden, .notify-link.hidden { display: none; }
