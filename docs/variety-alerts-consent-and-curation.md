@@ -264,10 +264,22 @@ Order matters because slugs move and the alert sender runs nightly at 22:00 UTC.
    caller-supplied titles from the index. Must run BEFORE the re-slug below, which
    recomputes each slug from its stored title: canonical titles in means no spurious
    slug movement out. Rows whose slug is not in the index are left alone by design.
-6. `migrate_variety_watch_slugs.py` dry-run, review, then apply on the server. **Steps 4 and
-   6 must be adjacent**: the build deletes orphan pages (`build_variety_pages.py:362-367`),
-   so between them a watcher's alert link can 404.
-7. **Assert every watched slug resolves.** `check_watched_slugs.py --baseline 2`. Every
+6. ~~`migrate_variety_watch_slugs.py`~~ **DO NOT RUN. Obsolete and actively harmful as of
+   this release** (found during the 2026-08-16 rollout, dry-run caught it).
+
+   That script recomputes each slug by re-parsing the watch's stored title. That was right
+   when stored titles were raw nursery titles (DEC-176), but step 5 above now makes them
+   canonical DISPLAY titles, and a display title does not round-trip to its own slug: the
+   one watch it wanted to move was `strawberry-melba-pbr-mega-tube` (which HAS a page) onto
+   `strawberry-melba-pbr-mega` (which does not), because "(mega tube)" flattens to "Mega
+   Tube" and the parser then strips "tube" as a size word. Running it would have broken a
+   live watch and taken the unresolved count from 2 to 3.
+
+   The index is now the authority on which slugs exist, and `check_watched_slugs.py` is the
+   gate. Re-slugging is only needed when the parser moves a slug out from under a watch,
+   which is measurable up front and was zero for this release.
+7. **Assert every watched slug resolves.** `check_watched_slugs.py --baseline 2`. This is
+   now the ONLY slug-safety step, since 6 is retired. Every
    watched slug must be a generated page or a `GRANDFATHERED_VARIETY_SLUGS` entry, and the
    count that is not must not grow. This is the check that catches a missed migration
    before a subscriber does.
