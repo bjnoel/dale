@@ -258,8 +258,19 @@ Order matters because slugs move and the alert sender runs nightly at 22:00 UTC.
 1. Land code + tests; `.venv/bin/python -m unittest discover tests/` green.
 2. Regenerate goldens with `GOLDEN_UPDATE=1` and **review the diff** before accepting.
 3. Commit, then `tools/deploy.sh`. Never scp.
-4. Run the individual builders (`build_variety_pages.py` first, so `variety-index.json`
-   exists before the server needs it). **Never `run-all-scrapers.sh`, it emails subscribers.**
+4. Run the individual builders. **Never `run-all-scrapers.sh`, it emails subscribers.**
+
+   - `build_variety_pages.py` FIRST, so `variety-index.json` exists before the server
+     needs it.
+   - `build_species_pages.py`, for the dropped dead bell.
+   - `build-dashboard.py` **twice**: once for the homepage, once for
+     `dashboard/bush-tucker` with `--category bush_tucker`. **This one is easy to forget
+     and it broke the homepage on 2026-08-16.** `static/dashboard.js` is copied straight
+     across by `deploy.sh`, but the CSS that sizes what it injects is generated INTO
+     `index.html` by this builder, so deploying without rebuilding puts new markup live
+     against an old stylesheet. `grep -rl dashboard.js` on the dashboard dir is how to
+     confirm which pages need it.
+   - `purge_cloudflare.sh` after, or the edge serves the old HTML.
 5. `backfill_variety_titles.py` dry-run, review, then `--apply`. Rewrites the stored
    caller-supplied titles from the index. Must run BEFORE the re-slug below, which
    recomputes each slug from its stored title: canonical titles in means no spurious
