@@ -1,0 +1,320 @@
+"""
+End-to-end tests for build_variety_pages.py under a page ledger.
+
+The unit tests in test_page_ledger.py pin the state machine. These pin the
+things only a real run can show: that the builder without --ledger deletes
+nothing, that a tombstone renders with a *working* watch form, and that the
+tombstoned slug reaches the canonical title map the subscribe server validates
+against. That last one is the whole point of a tombstone and it fails silently:
+a form that 404s on submit looks exactly like a form that works.
+
+Run from repo root with:
+    python3 -m unittest discover tests/
+"""
+import json
+import subprocess
+import sys
+import tempfile
+import unittest
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SCRAPERS = REPO_ROOT / "tools" / "scrapers"
+FIXTURE_DATA = Path(__file__).resolve().parent / "golden" / "fixture" / "nursery-stock"
+
+sys.path.insert(0, str(SCRAPERS))
+
+from stocklib.page_ledger import (  # noqa: E402
+    FAMILY_VARIETY, LIVE, REDIRECT, SCHEMA, TOMBSTONE,
+)
+
+TODAY = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def days_ago(n: int) -> str:
+    return (datetime.now(timezone.utc) - timedelta(days=n)).strftime("%Y-%m-%d")
+
+
+def gone_entry(**over) -> dict:
+    """A page that was live for months, is absent tonight, and has already used
+    up its one free night of absence."""
+    entry = {
+        "state": LIVE,
+        "first_seen": days_ago(120), "last_seen": days_ago(1),
+        "live_days": 100, "in_stock_days": 80, "last_in_stock": days_ago(3),
+        "since": days_ago(120), "seeded": True,
+        "title": "Pecan - Mahan (B)", "species": "Pecan",
+        "species_slug": "pecan", "variety": "Mahan (B)",
+        "rows": [{"nursery_key": "daleys", "nursery_name": "Daleys",
+                  "title": "Pecan - Mahan (B)", "price": 49.0, "available": True,
+                  "url": "https://daleys/pecan-mahan", "states": "NSW, QLD",
+                  "type_label": ""}],
+        "rows_as_of": days_ago(1), "redirect_to": None, "retired_reason": None,
+        "see_also": [], "absent_nights": 1,
+    }
+    entry.update(over)
+    return entry
+
+
+def fixture_slugs() -> list[str]:
+    """The slugs the golden fixture builds, read from the committed goldens.
+
+    The ledger has to know about these as live pages, or every run here looks
+    like the site collapsing: the global floor compares tonight's page count
+    against the ledger's live count, and it would fire before any of the guards
+    under test got a look in.
+    """
+    expected = (Path(__file__).resolve().parent / "golden" / "expected"
+                / "variety" / "variety")
+    return sorted(p.stem for p in expected.glob("*.html") if p.stem != "index")
+
+
+class BuilderRun:
+    """One build into a temp dir, with an optional starting ledger."""
+
+    def __init__(self, pages=None, extra_args=()):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.out = Path(self.tmp.name) / "out"
+        self.out.mkdir(parents=True)
+        self.ledger_path = Path(self.tmp.name) / "variety.json"
+        self.index_out = Path(self.tmp.name) / "variety-index.json"
+        self.health_dir = Path(self.tmp.name) / "health"
+        self.health_dir.mkdir()
+        self.pages = {
+            slug: gone_entry(title=f"Fixture - {slug}", absent_nights=0)
+            for slug in fixture_slugs()
+        }
+        self.pages.update(pages or {})
+        self.extra_args = list(extra_args)
+
+    def write_ledger(self):
+        self.ledger_path.write_text(json.dumps({
+            "schema": SCHEMA, "family": FAMILY_VARIETY, "updated": days_ago(1),
+            "skipped_nights": 0, "review": [], "pages": self.pages,
+        }))
+
+    def run(self, with_ledger=True):
+        if with_ledger:
+            self.write_ledger()
+        args = [str(FIXTURE_DATA), str(self.out),
+                "--index-out", str(self.index_out)]
+        if with_ledger:
+            args += ["--ledger", str(self.ledger_path),
+                     "--health-dir", str(self.health_dir)]
+        args += self.extra_args
+        self.proc = subprocess.run(
+            [sys.executable, str(SCRAPERS / "build_variety_pages.py"), *args],
+            capture_output=True, text=True, cwd=str(SCRAPERS))
+        return self
+
+    def page(self, slug):
+        return (self.out / "variety" / f"{slug}.html")
+
+    def ledger(self):
+        return json.loads(self.ledger_path.read_text())
+
+    def index(self):
+        return json.loads(self.index_out.read_text())
+
+    def close(self):
+        self.tmp.cleanup()
+
+
+class StatelessRunTest(unittest.TestCase):
+    """Without --ledger the builder must behave exactly as it did, minus the
+    delete. That is what makes "all 19 goldens unchanged" a meaningful claim."""
+
+    def setUp(self):
+        self.run = BuilderRun()
+        # A page from a previous run that tonight's build does not generate.
+        (self.run.out / "variety").mkdir(parents=True, exist_ok=True)
+        self.stale = self.run.out / "variety" / "pecan-mahan-b.html"
+        self.stale.write_text("<html>old</html>")
+        self.run.run(with_ledger=False)
+        self.addCleanup(self.run.close)
+
+    def test_it_builds(self):
+        self.assertTrue(self.run.page("avocado-hass").exists(),
+                        self.run.proc.stderr[-2000:])
+
+    def test_it_deletes_nothing(self):
+        self.assertTrue(self.stale.exists())
+        self.assertEqual(self.stale.read_text(), "<html>old</html>")
+
+    def test_it_writes_no_ledger(self):
+        self.assertFalse(self.run.ledger_path.exists())
+
+    def test_pages_carry_no_state_meta(self):
+        """No ledger means no page states, so declaring one would be declaring
+        something this run does not know."""
+        self.assertNotIn("treestock-page-state",
+                         self.run.page("avocado-hass").read_text())
+
+
+class TombstoneRunTest(unittest.TestCase):
+    def setUp(self):
+        self.run = BuilderRun(pages={"pecan-mahan-b": gone_entry()}).run()
+        self.addCleanup(self.run.close)
+        self.html = self.run.page("pecan-mahan-b").read_text()
+
+    def test_the_page_exists_instead_of_404ing(self):
+        self.assertTrue(self.run.page("pecan-mahan-b").exists(),
+                        self.run.proc.stderr[-3000:])
+        self.assertEqual(
+            self.run.ledger()["pages"]["pecan-mahan-b"]["state"], TOMBSTONE)
+
+    def test_it_declares_itself_a_tombstone(self):
+        self.assertIn('content="tombstone"', self.html)
+
+    def test_it_leads_with_the_variety_not_the_absence(self):
+        """A page whose first content is a variety description is not a soft
+        404 to any classifier."""
+        h1 = self.html.index("<h1")
+        callout = self.html.index("No nursery we track is currently listing")
+        self.assertLess(h1, callout)
+        self.assertIn("Buy Pecan - Mahan (B) Trees in Australia", self.html)
+
+    def test_it_carries_the_history_sentence(self):
+        self.assertIn("It was last in stock on", self.html)
+        self.assertIn("We tracked it at 1 nursery", self.html)
+
+    def test_it_keeps_a_working_watch_form(self):
+        self.assertIn('id="watchForm"', self.html)
+        self.assertIn("/api/watch-variety", self.html)
+
+    def test_the_slug_stays_in_the_canonical_title_map(self):
+        """The subscribe server 404s a watch on a slug absent from this map, so
+        leaving a tombstone out of it puts a form on the page that cannot
+        work."""
+        self.assertEqual(self.run.index().get("pecan-mahan-b"),
+                         "Pecan - Mahan (B)")
+
+    def test_it_shows_the_last_known_rows_without_linking_dead_urls(self):
+        self.assertIn("Daleys", self.html)
+        self.assertIn("$49.00", self.html)
+        self.assertNotIn("https://daleys/pecan-mahan", self.html)
+        self.assertIn("/nursery/daleys.html", self.html)
+
+    def test_it_drops_the_updated_line(self):
+        self.assertNotIn("nurseries tracked", self.html)
+
+    def test_it_advertises_no_purchasable_product(self):
+        self.assertNotIn('"@type": "Product"', self.html)
+        self.assertNotIn('"@type": "Offer"', self.html)
+
+    def test_it_is_out_of_the_browsable_index(self):
+        index = (self.run.out / "variety" / "index.html").read_text()
+        self.assertNotIn("pecan-mahan-b", index)
+
+    def test_a_tombstone_is_not_deleted_on_later_nights(self):
+        self.run.pages = self.run.ledger()["pages"]
+        self.run.run()
+        self.assertTrue(self.run.page("pecan-mahan-b").exists())
+
+    def test_no_em_dashes(self):
+        self.assertNotIn("—", self.html)
+
+
+class ResurrectionTest(unittest.TestCase):
+    def test_a_tombstoned_slug_that_comes_back_is_overwritten_by_the_real_page(self):
+        run = BuilderRun(pages={
+            "avocado-hass": gone_entry(state=TOMBSTONE, title="Avocado - Hass",
+                                       species="Avocado", variety="Hass"),
+        }).run()
+        self.addCleanup(run.close)
+        html = run.page("avocado-hass").read_text()
+        self.assertNotIn("No nursery we track is currently listing", html)
+        self.assertIn('content="live"', html)
+        self.assertEqual(run.ledger()["pages"]["avocado-hass"]["state"], LIVE)
+
+
+class RedirectStubTest(unittest.TestCase):
+    def setUp(self):
+        # Its last known product URL is one the fixture lists under a different
+        # slug tonight, which is what a rename looks like from the outside.
+        moved = gone_entry(
+            title="Avocado - Hass Dwarf", species="Avocado",
+            variety="Hass Dwarf",
+            rows=[{"nursery_key": "daleys", "nursery_name": "Daleys",
+                   "title": "Avocado - Hass", "price": 49.0, "available": True,
+                   "url": self._fixture_url("Avocado - Hass"), "states": "NSW"}])
+        self.run = BuilderRun(pages={"avocado-hass-dwarf": moved}).run()
+        self.addCleanup(self.run.close)
+
+    @staticmethod
+    def _fixture_url(title):
+        for nursery in sorted(FIXTURE_DATA.iterdir()):
+            snap = nursery / "latest.json"
+            if not snap.exists():
+                continue
+            for p in json.loads(snap.read_text()).get("products", []):
+                if p.get("title") == title:
+                    return p.get("url")
+        raise AssertionError(f"fixture has no product titled {title!r}")
+
+    def test_the_old_slug_serves_a_stub_pointing_at_the_new_one(self):
+        entry = self.run.ledger()["pages"]["avocado-hass-dwarf"]
+        self.assertEqual(entry["state"], REDIRECT, self.run.proc.stdout[-2000:])
+        self.assertEqual(entry["redirect_to"], "avocado-hass")
+        html = self.run.page("avocado-hass-dwarf").read_text()
+        self.assertIn('content="redirect"', html)
+        self.assertIn('href="/variety/avocado-hass.html"', html)
+
+    def test_the_stub_refreshes_and_canonicals_to_the_target(self):
+        html = self.run.page("avocado-hass-dwarf").read_text()
+        self.assertIn('http-equiv="refresh"', html)
+        self.assertIn('rel="canonical" href="https://treestock.com.au/variety/'
+                      'avocado-hass.html"', html)
+
+    def test_the_stub_carries_no_watch_form(self):
+        """A watch on a slug that is never generated again can never fire."""
+        html = self.run.page("avocado-hass-dwarf").read_text()
+        self.assertNotIn("<form", html)
+        self.assertNotIn("/api/", html)
+
+
+class DeleteGuardTest(unittest.TestCase):
+    """The two irreversible outcomes, and the flag that gates both."""
+
+    def _young(self):
+        return gone_entry(first_seen=days_ago(3), last_seen=days_ago(1),
+                          live_days=3, title="Pecan - Brandnew",
+                          variety="Brandnew")
+
+    def test_a_page_below_the_entry_guard_survives_without_allow_delete(self):
+        run = BuilderRun(pages={"pecan-brandnew": self._young()}).run()
+        self.addCleanup(run.close)
+        self.assertIn("pecan-brandnew", run.ledger()["pages"])
+
+    def test_and_is_deleted_with_it(self):
+        run = BuilderRun(pages={"pecan-brandnew": self._young()},
+                         extra_args=["--allow-delete"]).run()
+        self.addCleanup(run.close)
+        self.assertNotIn("pecan-brandnew", run.ledger()["pages"])
+        self.assertFalse(run.page("pecan-brandnew").exists())
+
+    def test_dry_run_writes_no_ledger_and_no_tombstone(self):
+        run = BuilderRun(pages={"pecan-mahan-b": gone_entry()},
+                         extra_args=["--dry-run"]).run()
+        self.addCleanup(run.close)
+        self.assertEqual(run.ledger()["pages"]["pecan-mahan-b"]["state"], LIVE)
+        self.assertFalse(run.page("pecan-mahan-b").exists())
+        self.assertIn("DRY RUN", run.proc.stdout)
+
+
+class UnchangedPagesAreNotRewrittenTest(unittest.TestCase):
+    def test_a_second_identical_run_leaves_mtimes_alone(self):
+        """Once pages are permanent, a nightly rewrite of identical bytes is
+        what makes every sitemap <lastmod> a lie."""
+        run = BuilderRun(pages={"pecan-mahan-b": gone_entry()}).run()
+        self.addCleanup(run.close)
+        page = run.page("pecan-mahan-b")
+        before = page.stat().st_mtime_ns
+        run.pages = run.ledger()["pages"]
+        run.run()
+        self.assertEqual(page.stat().st_mtime_ns, before)
+
+
+if __name__ == "__main__":
+    unittest.main()

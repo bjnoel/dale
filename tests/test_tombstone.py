@@ -20,8 +20,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tools" / "scrapers"))
 
 from stocklib.page_ledger import (  # noqa: E402
-    LIVE, REDIRECT, STATE_META_NAME, TOMBSTONE, page_state_meta,
-    read_page_state,
+    LIVE, REDIRECT, STATE_META_NAME, STATE_META_SCAN_BYTES, TOMBSTONE,
+    page_state_meta, read_page_state,
 )
 from stocklib.tombstone import (  # noqa: E402
     MAX_COMBO_CTA_LINKS, combo_cta_html, format_date, format_price,
@@ -189,8 +189,19 @@ class PageStateMetaTest(unittest.TestCase):
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "late.html"
-            path.write_text("<html>" + ("x" * 2000) + page_state_meta(TOMBSTONE))
+            path.write_text("<html>" + ("x" * (STATE_META_SCAN_BYTES + 1))
+                            + page_state_meta(TOMBSTONE))
             self.assertEqual(read_page_state(path), LIVE)
+
+    def test_the_window_clears_a_real_pages_head(self):
+        """Measured rather than assumed: a variety page's <head> is about
+        3,754 bytes, and render_head() appends extra_head last. A window that
+        does not clear the head reads every tombstone as live."""
+        golden = (Path(__file__).resolve().parent / "golden" / "expected"
+                  / "variety" / "variety" / "apple-dorsett-golden.html")
+        if golden.exists():
+            head_end = golden.read_bytes().find(b"</head>")
+            self.assertGreater(STATE_META_SCAN_BYTES, head_end)
 
     def test_missing_file_reads_as_the_default(self):
         self.assertEqual(read_page_state("/nonexistent/page.html"), LIVE)

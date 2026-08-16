@@ -126,10 +126,13 @@ LEDGER_DIRNAME = "page-ledger"
 # change.
 STATE_META_NAME = "treestock-page-state"
 
-# The sitemap reads only the head of each file. Generous enough for the whole
-# <head> of every page we generate, small enough that scanning thousands of
-# files stays cheap.
-STATE_META_SCAN_BYTES = 1024
+# The sitemap reads only the head of each file. render_head() appends
+# extra_head last, just before </head>, and a real variety page's head measures
+# 3,754 bytes (the Open Graph block, the Plausible snippet and the style block
+# are most of it), so the 1KB this was first specified at would never have seen
+# the tag. 8KB leaves room for the head to grow and still costs well under a
+# second across every page on the site.
+STATE_META_SCAN_BYTES = 8192
 
 _STATE_META_RE = re.compile(
     rf'<meta\s+name="{STATE_META_NAME}"\s+content="([a-z-]+)"')
