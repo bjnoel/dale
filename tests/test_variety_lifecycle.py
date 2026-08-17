@@ -316,5 +316,83 @@ class UnchangedPagesAreNotRewrittenTest(unittest.TestCase):
         self.assertEqual(page.stat().st_mtime_ns, before)
 
 
+class TestSeedFromAvailability(unittest.TestCase):
+    """--seed is bootstrap-only, ran once, and had no test at all.
+
+    availability.json is keyed by product URL, or `<url>|sku:…` / `|id:…` /
+    `|v:…` for a variant, and the scraped title is a *field* of the record.
+    Seeding read the key as the title, so slug_for_title was handed a URL,
+    parsed no cultivar out of it and returned None for very nearly everything.
+    The bootstrap that exists to give each page its real age instead gave every
+    page a first_seen of tonight, which is the state --seed was written to
+    avoid: the entry guard then holds the whole site for a week and a page live
+    since March looks exactly like one built an hour ago.
+
+    Caught by the dry run on 2026-08-17, which seeded 1 entry out of 2,570.
+    """
+
+    def _seed(self, products: dict) -> tuple[int, dict]:
+        import build_variety_pages as bvp
+        from stocklib.page_ledger import PageLedger
+
+        with tempfile.TemporaryDirectory() as tmp:
+            nursery = Path(tmp) / "nursery-stock" / "daleys"
+            nursery.mkdir(parents=True)
+            (nursery / "availability.json").write_text(json.dumps({
+                "nursery": "daleys", "nursery_name": "Daleys",
+                "products": products,
+            }))
+            ledger = PageLedger.load(Path(tmp) / "variety.json", FAMILY_VARIETY,
+                                     log=lambda *a, **k: None)
+            seeded = bvp.seed_from_availability(ledger, nursery.parent, TODAY)
+        return seeded, ledger.pages
+
+    def test_seeds_from_the_title_field_not_the_key(self):
+        import build_variety_pages as bvp
+
+        seeded, pages = self._seed({
+            "https://daleys.com.au/pecan-mahan/|sku:pm-1": {
+                "title": "Pecan - Mahan (B)",
+                "first_seen": "2026-03-05",
+                "days": {"2026-03-05": {"a": True},
+                         "2026-03-06": {"a": False},
+                         "2026-03-07": {"a": True}},
+            },
+        })
+
+        self.assertEqual(seeded, 1, "one real product must seed one entry")
+        slug = bvp.slug_for_title("Pecan - Mahan (B)")
+        self.assertIn(slug, pages, "seeded under the key, not the title")
+        entry = pages[slug]
+        self.assertEqual(entry["first_seen"], "2026-03-05")
+        self.assertEqual(entry["live_days"], 3)
+        self.assertEqual(entry["in_stock_days"], 2)
+        self.assertEqual(entry["last_in_stock"], "2026-03-07")
+
+    def test_variants_of_one_product_collapse_to_one_slug(self):
+        """Three variant keys, one cultivar. The aggregate is a union of days,
+        not three separate pages and not one row's history."""
+        seeded, pages = self._seed({
+            "https://daleys.com.au/pecan-mahan/|sku:a": {
+                "title": "Pecan - Mahan (B)", "first_seen": "2026-03-05",
+                "days": {"2026-03-05": {"a": True}},
+            },
+            "https://daleys.com.au/pecan-mahan/|sku:b": {
+                "title": "Pecan - Mahan (B)", "first_seen": "2026-03-06",
+                "days": {"2026-03-06": {"a": False}},
+            },
+            "https://daleys.com.au/pecan-mahan/|v:Large": {
+                "title": "Pecan - Mahan (B)", "first_seen": "2026-03-07",
+                "days": {"2026-03-07": {"a": True}},
+            },
+        })
+
+        self.assertEqual(seeded, 1)
+        entry = next(iter(pages.values()))
+        self.assertEqual(entry["first_seen"], "2026-03-05")
+        self.assertEqual(entry["live_days"], 3)
+        self.assertEqual(entry["in_stock_days"], 2)
+
+
 if __name__ == "__main__":
     unittest.main()

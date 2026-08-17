@@ -479,12 +479,14 @@ def seed_from_availability(ledger: PageLedger, data_dir: Path, today: str) -> in
     Night one with an empty ledger would otherwise hold every page below the
     entry guard for a week, and a page that has been live since March would look
     exactly like one built for the first time tonight. availability.json records
-    per-product, per-day in-stock history keyed by title, so the dates are real
-    rather than reconstructed.
+    per-product, per-day in-stock history keyed by product URL, carrying the
+    scraped title on each record, so the dates are real rather than
+    reconstructed.
 
-    Good archaeology, and still the wrong primary source: it is keyed by scraped
-    title, so it re-derives page identity under the current parser, which is the
-    bug class this whole change exists to fix. Used once, at bootstrap.
+    Good archaeology, and still the wrong primary source: the only identity it
+    holds is that scraped title, so it re-derives the slug under the current
+    parser, which is the bug class this whole change exists to fix. Used once,
+    at bootstrap.
     """
     history: dict[str, dict] = {}
     for nursery_dir in sorted(p for p in data_dir.iterdir() if p.is_dir()):
@@ -497,8 +499,12 @@ def seed_from_availability(ledger: PageLedger, data_dir: Path, today: str) -> in
         except (OSError, json.JSONDecodeError) as e:
             print(f"  WARNING: unreadable {avail_file}: {e}")
             continue
-        for title, record in (data.get("products") or {}).items():
-            slug = slug_for_title(title)
+        # Keyed by product URL, or `<url>|sku:…` / `|id:…` / `|v:…` per variant
+        # (availability_tracker.py builds them). The scraped title is a field of
+        # the record, so several variant keys can carry the same title and
+        # aggregate into one slug below.
+        for record in (data.get("products") or {}).values():
+            slug = slug_for_title(record.get("title") or "")
             if not slug:
                 continue
             agg = history.setdefault(slug, {"days": set(), "in_stock": set()})
