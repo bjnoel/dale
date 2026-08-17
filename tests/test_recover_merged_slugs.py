@@ -22,8 +22,11 @@ SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 
 sys.path.insert(0, str(SCRAPERS))
 
+from stocklib import taxonomy  # noqa: E402
+
 from recover_merged_slugs import (  # noqa: E402
-    build_proposals, classify, load_titles, summarise, watch_counts,
+    build_proposals, classify, load_titles, pinned_taxonomy, summarise,
+    watch_counts,
 )
 
 
@@ -214,6 +217,63 @@ class LoadTitlesTest(unittest.TestCase):
         self._nursery("daleys", "2026-08-16", ["Apple Akane"])
         (self.data / "empty-nursery").mkdir()
         self.assertEqual(len(load_titles(self.data, "2026-08-16")), 1)
+
+
+class FakeParser:
+    """Stands in for a parser module's memoised species-derived state."""
+
+    def __init__(self):
+        self.cleared = 0
+        self.species_file_when_used = None
+
+    def _clear_species_caches(self):
+        self.cleared += 1
+
+    def use(self):
+        self.species_file_when_used = taxonomy.SPECIES_FILE
+
+
+class PinnedTaxonomyTest(unittest.TestCase):
+    """The old parser must read the old species file, not today's.
+
+    Both parser revisions import stocklib.taxonomy as the same live module, so
+    an unpinned old parser reads today's data. That combination never ran: one
+    synonym fix in fruit_species.json moved 8 slugs, and proposing redirects for
+    slugs that were never URLs is the failure this pin exists to prevent.
+    """
+
+    def setUp(self):
+        self.original = taxonomy.SPECIES_FILE
+        self.addCleanup(setattr, taxonomy, "SPECIES_FILE", self.original)
+
+    def test_the_pin_is_visible_to_a_parser_inside_the_block(self):
+        parser = FakeParser()
+        pinned = Path("/tmp/pinned-species.json")
+        with pinned_taxonomy(pinned, (parser,)):
+            parser.use()
+        self.assertEqual(parser.species_file_when_used, pinned)
+
+    def test_caches_are_cleared_on_the_way_in_and_out(self):
+        """A pin applied over a warm cache changes nothing, and says nothing."""
+        parser = FakeParser()
+        with pinned_taxonomy(Path("/tmp/pinned-species.json"), (parser,)):
+            self.assertEqual(parser.cleared, 1)
+        self.assertEqual(parser.cleared, 2)
+
+    def test_the_live_species_file_is_restored_afterwards(self):
+        parser = FakeParser()
+        with pinned_taxonomy(Path("/tmp/pinned-species.json"), (parser,)):
+            pass
+        self.assertEqual(taxonomy.SPECIES_FILE, self.original)
+
+    def test_restored_even_when_the_body_raises(self):
+        parser = FakeParser()
+        with self.assertRaises(ValueError):
+            with pinned_taxonomy(Path("/tmp/pinned-species.json"), (parser,)):
+                raise ValueError("parser blew up mid-run")
+        self.assertEqual(taxonomy.SPECIES_FILE, self.original)
+        self.assertEqual(parser.cleared, 2, "a warm old-species cache must not "
+                                            "leak into the current parser's run")
 
 
 class WatchCountsTest(unittest.TestCase):

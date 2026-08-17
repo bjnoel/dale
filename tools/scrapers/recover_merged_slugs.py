@@ -14,16 +14,25 @@ successor. A tombstone is a dead end and would throw that away.
 Both ends of the mapping are derived rather than reconstructed, which is what
 makes this worth doing properly:
 
-  old slug   the PRE-merge parser, run over the dated snapshot the pre-merge
-             nightly actually read. Not "what we think used to be there".
+  old slug   the PRE-merge parser AND that revision's species taxonomy, run
+             over the dated snapshot the pre-merge nightly actually read. Not
+             "what we think used to be there".
   new slug   the CURRENT parser, run over the SAME titles. Holding the input
              fixed is what isolates the parser change from overnight stock
              churn, which moves slugs for entirely unrelated reasons.
 
-Both are driven through `group_by_cultivar`, the same grouping the builder uses
-to decide which pages exist, so the reconstructed slug set is comparable to the
-count in scraper.log rather than merely similar to it. `--verify` asserts that
-reconciliation and is the reason to trust anything below it.
+Pinning the taxonomy as well as the parser is not belt-and-braces. The first
+run of this tool did not, and reported 2,725 slugs against the 2,717 in
+scraper.log: `fruit_species.json` had been fixed later that morning to stop
+filing canistel and mamey sapote under white sapote, and the old parser reading
+today's species file reconstructed a night that never ran. Those 8 slugs were
+never URLs. Proposing redirects for them would have been the same class of
+mistake as seeding a page into existence at an address nobody ever linked.
+
+Both ends are driven through `group_by_cultivar`, the same grouping the builder
+uses to decide which pages exist, so the reconstructed slug set is comparable to
+the count in scraper.log rather than merely similar to it. `--expect-old` asserts
+that reconciliation and is the reason to trust anything below it.
 
 This writes a PROPOSAL and applies nothing. A rename that names the wrong
 successor is a permanent lie to a crawler, and prefix similarity is exactly the
@@ -33,6 +42,7 @@ a different cultivar. Approval is a human's, via /admin/varieties.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import importlib.util
 import json
 import sqlite3
@@ -44,10 +54,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from stocklib import taxonomy  # noqa: E402
 from stocklib.classify import is_real_product  # noqa: E402
 from stocklib.snapshots import iter_nursery_snapshots  # noqa: E402
 
 PARSER_PATH = "tools/scrapers/cultivar_parsing.py"
+SPECIES_PATH = "tools/scrapers/fruit_species.json"
 
 # The commit immediately before "fix: one cultivar, one slug (parser)". Named
 # rather than derived: which change to undo is a judgement, and a script that
@@ -78,29 +90,57 @@ def find_repo(start: Path | None = None) -> Path | None:
     return None
 
 
+def write_revision(repo: Path, rev: str, repo_path: str, dest: Path) -> Path:
+    """A tracked file as it stood at `rev`, on disk at `dest`."""
+    blob = subprocess.run(
+        ["git", "-C", str(repo), "show", f"{rev}:{repo_path}"],
+        capture_output=True, text=True)
+    if blob.returncode != 0:
+        raise SystemExit(f"cannot read {repo_path} at {rev}: {blob.stderr.strip()}")
+    dest.write_text(blob.stdout)
+    return dest
+
+
 def load_parser_revision(repo: Path, rev: str, workdir: Path):
     """Import cultivar_parsing.py as it stood at `rev`, alongside the current one.
 
-    Under a distinct module name, so both parsers live in sys.modules at once
-    and neither shadows the other. The old file still does `from stocklib import
-    taxonomy`, which resolves against today's stocklib -- correct, because the
-    species taxonomy is not what changed, and pinning it too would test a
-    combination that never ran.
+    Under a distinct module name, so both parsers live in sys.modules at once and
+    neither shadows the other. The old file still does `from stocklib import
+    taxonomy`, so which species data it sees is decided by `pinned_taxonomy`
+    rather than by the import.
     """
-    blob = subprocess.run(
-        ["git", "-C", str(repo), "show", f"{rev}:{PARSER_PATH}"],
-        capture_output=True, text=True)
-    if blob.returncode != 0:
-        raise SystemExit(f"cannot read {PARSER_PATH} at {rev}: {blob.stderr.strip()}")
-    path = workdir / "cultivar_parsing_premerge.py"
-    path.write_text(blob.stdout)
-
     name = "cultivar_parsing_premerge"
+    path = write_revision(repo, rev, PARSER_PATH, workdir / f"{name}.py")
     spec = importlib.util.spec_from_file_location(name, path)
     module = importlib.util.module_from_spec(spec)
     sys.modules[name] = module
     spec.loader.exec_module(module)
     return module
+
+
+@contextlib.contextmanager
+def pinned_taxonomy(species_file: Path, modules):
+    """Point the shared taxonomy at `species_file` for the duration.
+
+    The parser reads species data through stocklib.taxonomy, which both parser
+    revisions import as the same live module, so an old parser left alone reads
+    TODAY's species file. That combination never ran, and it is not a small
+    difference: one synonym fix in fruit_species.json moved 8 slugs.
+
+    `modules` are the parser modules to reset around the swap. They memoise
+    everything species-derived on first use, so a pin applied after the cache is
+    warm changes nothing at all, and silently.
+    """
+    was = taxonomy.SPECIES_FILE
+    taxonomy.SPECIES_FILE = Path(species_file)
+    for module in modules:
+        module._clear_species_caches()
+    try:
+        yield
+    finally:
+        taxonomy.SPECIES_FILE = was
+        for module in modules:
+            module._clear_species_caches()
 
 
 def load_titles(data_dir: Path, on_date: str) -> list[dict]:
@@ -284,8 +324,13 @@ def main() -> int:
 
     import cultivar_parsing as new_parser
     with tempfile.TemporaryDirectory() as tmp:
-        old_parser = load_parser_revision(repo, args.old_rev, Path(tmp))
-        old_groups = old_parser.group_by_cultivar(products)
+        workdir = Path(tmp)
+        old_parser = load_parser_revision(repo, args.old_rev, workdir)
+        species = write_revision(repo, args.old_rev, SPECIES_PATH,
+                                 workdir / "fruit_species_pinned.json")
+        # Old parser and old species data together, which is the pair that ran.
+        with pinned_taxonomy(species, (old_parser, new_parser)):
+            old_groups = old_parser.group_by_cultivar(products)
         new_groups = new_parser.group_by_cultivar(products)
 
         print(f"Pre-merge parser ({args.old_rev}): {len(old_groups)} distinct cultivars")
