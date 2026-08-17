@@ -389,6 +389,27 @@ class NearMissTests(unittest.TestCase):
         self.assertEqual([(p["a"], p["b"]) for p in left],
                          [("mango-bambaroo", "mango-bamberoo")])
 
+    def test_the_backwards_direction_says_so_in_the_dropdown(self):
+        """Both directions carried their nursery counts and that was not enough:
+        `apple-2way-gala-red-delicious (3) -> apple-2-way-gala-red-delicious (1)`
+        got picked, retiring a page with three nurseries and 150 live days for
+        one with one nursery and 49. Two numbers side by side are a comparison
+        the reader has to make; the dropdown now states the conclusion."""
+        facts = {"apple-2way-gala-red-delicious": {"nurseries": 3},
+                 "apple-2-way-gala-red-delicious": {"nurseries": 1}}
+        backwards = admin_view._fold_option("apple-2way-gala-red-delicious",
+                                            "apple-2-way-gala-red-delicious", facts)
+        forwards = admin_view._fold_option("apple-2-way-gala-red-delicious",
+                                           "apple-2way-gala-red-delicious", facts)
+        self.assertIn("retires the bigger page", backwards)
+        self.assertNotIn("retires the bigger page", forwards)
+
+    def test_an_even_fold_is_not_flagged(self):
+        """One nursery each way is a real choice, not a mistake, and warning on
+        it would train the reader past the warning that matters."""
+        facts = {"a": {"nurseries": 1}, "b": {"nurseries": 1}}
+        self.assertNotIn("retires", admin_view._fold_option("a", "b", facts))
+
     def test_pairs_from_different_species_are_never_compared(self):
         """The bucketing is an optimisation and must not change the answer: an
         edit inside the species half would have to survive canonicalisation to
@@ -397,6 +418,70 @@ class NearMissTests(unittest.TestCase):
                                                      "mango-alphonzo"]),
                          [{"a": "mango-alphonso", "b": "mango-alphonzo",
                            "tier": "letter"}])
+
+
+class QueuedRowRenderingTests(WriteHarness):
+    """A row whose fold is already queued must not re-offer the question.
+
+    Benedict folded `mango-bamberoo`, it landed in `curation_pending`, and the
+    row came back from the reload with its select reset to "leave", both
+    directions still on offer, and a small pill as the only difference. "I
+    folded it but it doesn't look like it's been folded" is a correct reading of
+    that markup: the only durable feedback was in a section several screens up.
+    """
+
+    def render(self):
+        inv = admin_view.load_variety_inventory(self.data)
+        # Both members must be live pages in the ledger or the section renders
+        # no fold options at all. One queued alias should resolve this row and
+        # the sibling row below it, because it is one decision.
+        pairs = [{"a": "avocado-hass", "b": "avocado-hass-potted",
+                  "tier": "letter"}]
+        return admin_view.render_variety_review_html({
+            "varieties": {"index_size": 4, "near_misses": pairs,
+                          "near_miss_tiers": {"letter": 1},
+                          "siblings": [{"base": "avocado-hass", "base_watchers": 0,
+                                        "tier": "judgement",
+                                        "siblings": [{"slug": "avocado-hass-potted",
+                                                      "watchers": 0,
+                                                      "tier": "noise"}]}],
+                          "tiers": {"noise": 1}, "overrides": {"deny": [], "alias": {}}},
+            "inventory": inv,
+            "decisions": self.store(),
+            "csrf": "x",
+        })
+
+    def test_an_unfolded_sibling_row_offers_both_answers(self):
+        html = self.render()
+        self.assertIn('class="fold"', html)
+        self.assertIn('class="dis"', html)
+
+    def test_a_folded_sibling_row_states_the_decision_instead(self):
+        self.apply("alias", [{"slug": "avocado-hass-potted",
+                              "target": "avocado-hass"}])
+        html = self.render()
+        self.assertIn("folded into", html)
+        self.assertIn('data-action="undo-alias"', html)
+        # The controls are gone, not merely decorated. Leaving them rendered is
+        # what made a landed decision look like an untouched row.
+        self.assertNotIn('class="fold"', html)
+        self.assertNotIn('class="dis"', html)
+
+    def test_a_folded_near_miss_row_drops_its_select(self):
+        self.apply("alias", [{"slug": "avocado-hass-potted",
+                              "target": "avocado-hass"}])
+        html = self.render()
+        self.assertIn("folded into", html)
+        self.assertNotIn('class="nm"', html)
+        self.assertNotIn('class="nmd"', html)
+
+    def test_the_cancel_button_targets_the_slug_that_was_folded(self):
+        """Not the pair, and not the target. `unqueue` drops by `from`."""
+        self.apply("alias", [{"slug": "avocado-hass-potted",
+                              "target": "avocado-hass"}])
+        html = self.render()
+        self.assertIn('data-action="undo-alias" data-slug="avocado-hass-potted"',
+                      html)
 
 
 class NightlyApplicationTests(unittest.TestCase):

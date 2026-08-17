@@ -1982,14 +1982,23 @@ def _variety_overrides_section(overrides: dict) -> str:
 def _fold_option(slug: str, target: str, facts: dict) -> str:
     """One direction of a fold, labelled with what it costs.
 
-    The nursery counts are the whole decision. Folding the 5-nursery page into
-    the 1-nursery one is legal, survives every guard, and is wrong, so the count
-    goes in the option text rather than a column the eye has to join up.
+    The nursery counts are the whole decision, and counts alone were not enough.
+    Both directions carried their numbers and Benedict still picked
+    `apple-2way-gala-red-delicious (3) -> apple-2-way-gala-red-delicious (1)`,
+    which retires a page carrying three nurseries and 150 live days in favour of
+    one carrying one nursery and 49. Two numbers side by side are a comparison
+    the reader has to make; "retires the bigger page" is the conclusion, and the
+    conclusion is what belongs in a dropdown you skim.
+
+    It says "retires" rather than "loses" because nothing is lost: every product
+    moves onto the target. What goes is the URL, and the established URL is the
+    one worth keeping.
     """
     n = (facts.get(slug) or {}).get("nurseries", 0)
     m = (facts.get(target) or {}).get("nurseries", 0)
+    warn = " · retires the bigger page" if n > m else ""
     return (f'<option value="{_esc(slug)}|{_esc(target)}">'
-            f'{_esc(slug)} ({n}) &rarr; {_esc(target)} ({m})</option>')
+            f'{_esc(slug)} ({n}) &rarr; {_esc(target)} ({m}){warn}</option>')
 
 
 def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str:
@@ -2014,7 +2023,7 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str
         return ""
     facts = {f["slug"]: f for f in (inv.get("facts") or [])}
     live = {s for s, f in facts.items() if f["state"] == LIVE}
-    queued = {r.get("from") for r in (store.get("curation_pending") or [])}
+    pending = _pending_aliases(store)
     rows = []
     for p in pairs:
         a, b = p["a"], p["b"]
@@ -2030,17 +2039,19 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str
             opts += _fold_option(b, a, facts)
         if not opts:
             continue
-        mark = ' <span class="fl">queued</span>' if {a, b} & queued else ""
+        folded = _folded_cell(pending, a, b)
+        verbs = (f'<td colspan="2">{folded}</td>' if folded else
+                 f'<td><select class="nm"><option value="">leave</option>{opts}'
+                 f'</select></td>'
+                 f'<td><label class="pick"><input type="checkbox" class="nmd"> '
+                 f'different plants</label></td>')
         rows.append(
-            f'<tr data-a="{_esc(a)}" data-b="{_esc(b)}">'
+            f'<tr data-a="{_esc(a)}" data-b="{_esc(b)}"'
+            f'{" class=\"done\"" if folded else ""}>'
             f'<td>{_variety_link(a, a)} <span class="muted">vs</span> '
-            f'{_variety_link(b, b)}{mark}</td>'
+            f'{_variety_link(b, b)}</td>'
             f'<td><span class="fl">{_esc(_NEAR_MISS_LABEL.get(p["tier"], p["tier"]))}'
-            f'</span></td>'
-            f'<td><select class="nm"><option value="">leave</option>{opts}'
-            f'</select></td>'
-            f'<td><label class="pick"><input type="checkbox" class="nmd"> '
-            f'different plants</label></td></tr>')
+            f'</span></td>{verbs}</tr>')
     if not rows:
         return ""
     counts = " · ".join(f'{tiers.get(t, 0)} {_NEAR_MISS_LABEL[t]}'
@@ -2066,7 +2077,8 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str
         f'<tbody>{"".join(rows)}</tbody></table></div></section>')
 
 
-def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "") -> str:
+def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
+                            store: dict = None) -> str:
     """The queue that needs a person, and now remembers being worked.
 
     Deliberately NOT auto-folded. avocado-hass-lamb is Lamb Hass, a different
@@ -2096,6 +2108,7 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "")
     dismissed = tiers.get("dismissed", 0)
     live = {f["slug"] for f in ((inv or {}).get("facts") or [])
             if f["state"] == LIVE}
+    pending = _pending_aliases(store or {})
     if not siblings:
         return (f'<section><h2>Sibling review queue</h2>'
                 f'<p class="muted">Nothing left to adjudicate. {dismissed} pair(s) '
@@ -2115,17 +2128,23 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "")
                 continue
             watch = (f' <span class="small muted">({s["watchers"]} watching)</span>'
                      if s["watchers"] else "")
-            fold = ('<label class="pick"><input type="checkbox" class="fold"> '
-                    'same plant</label>' if group["base"] in live else
-                    '<span class="small muted">base not live</span>')
+            folded = _folded_cell(pending, s["slug"], group["base"])
+            if folded:
+                verbs = f'<td colspan="2">{folded}</td>'
+            else:
+                fold = ('<label class="pick"><input type="checkbox" class="fold"> '
+                        'same plant</label>' if group["base"] in live else
+                        '<span class="small muted">base not live</span>')
+                verbs = (f'<td>{fold}</td>'
+                         f'<td><label class="pick"><input type="checkbox" class="dis"> '
+                         f'different plants</label></td>')
             rows.append(
-                f'<tr data-base="{_esc(group["base"])}" data-other="{_esc(s["slug"])}">'
+                f'<tr data-base="{_esc(group["base"])}" data-other="{_esc(s["slug"])}"'
+                f'{" class=\"done\"" if folded else ""}>'
                 f'<td>{_esc(group["base"])}{base_w}</td>'
                 f'<td>{_esc(s["slug"])}{watch}</td>'
                 f'<td><span class="fl">{_esc(_TIER_LABEL.get(s["tier"], s["tier"]))}</span></td>'
-                f'<td>{fold}</td>'
-                f'<td><label class="pick"><input type="checkbox" class="dis"> '
-                f'different plants</label></td></tr>')
+                f'{verbs}</tr>')
     if not rows:
         return (f'<section><h2>Sibling review queue</h2><p class="muted">No '
                 f'sibling pair matches <code>{_esc(q)}</code>. {total} in the '
@@ -2172,6 +2191,9 @@ REVIEW_CSS = """
   select.nm { font:inherit; font-size:0.78rem; padding:4px 6px; max-width:100%;
     border:1px solid #d1d5db; border-radius:6px; background:#fff; }
   select.nm.dirty { border-color:#065f46; background:#ecfdf5; }
+  tr.done { background:#f0fdf4; }
+  tr.done td { color:#4b5563; }
+  span.done { font-size:0.8rem; color:#065f46; }
   form.qbox { display:flex; flex-wrap:wrap; gap:8px; align-items:center;
     margin:0 0 16px; font-size:0.82rem; }
   form.qbox input { font:inherit; padding:6px 9px; border:1px solid #d1d5db;
@@ -2230,6 +2252,36 @@ def _filter_note(q: str, shown: int, total: int) -> str:
         return ""
     return (f'<p class="small muted">Filtered to <code>{_esc(q)}</code>: '
             f'{shown} of {total}.</p>')
+
+
+def _pending_aliases(store: dict) -> dict:
+    """slug -> target for every alias already queued."""
+    return {r.get("from"): r.get("to")
+            for r in (store.get("curation_pending") or [])
+            if r.get("kind") == decisions.ALIAS and r.get("from")}
+
+
+def _folded_cell(pending: dict, *slugs) -> str:
+    """What a row shows once a fold is queued against it, or "".
+
+    A queued row has to stop looking like an open question. It kept rendering
+    the same select, reset to "leave", with both directions still on offer and a
+    small pill as the only difference, so the honest answer to "did that work?"
+    was a pill in one column and a row in a section several screens up. Benedict
+    folded `mango-bamberoo`, it landed, and the row told him nothing.
+
+    So the row states the decision instead, and offers the only verb still
+    meaningful on it: taking it back. Cancelling reuses the same `button.undo`
+    the queued-for-tonight table has, because a decision you can only undo from
+    one place on the page is one you undo by reloading and squinting.
+    """
+    for s in slugs:
+        if s in pending:
+            return (f'<span class="done">folded into '
+                    f'<strong>{_esc(pending[s])}</strong></span> '
+                    f'<button type="button" class="undo" data-action="undo-alias" '
+                    f'data-slug="{_esc(s)}">Cancel</button>')
+    return ""
 
 
 def _pending_section(store: dict) -> str:
@@ -2358,7 +2410,7 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "") -> str:
     """
     if not inv.get("present"):
         return ""
-    queued = {r.get("from") for r in (store.get("curation_pending") or [])}
+    pending = _pending_aliases(store)
     rows = []
     noisy = 0
     for f in inv["facts"]:
@@ -2368,13 +2420,20 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "") -> str:
         if not _matches(q, f["slug"], f.get("clean_twin")):
             continue
         twin = f.get("clean_twin") or ""
-        pending = ' <span class="fl">queued</span>' if f["slug"] in queued else ""
+        # Same rule as the other two queues: an answered row states its answer
+        # rather than re-offering the question with a pill beside it. Here the
+        # input was worse than a reset select, because it kept the prefilled
+        # twin and so looked exactly like a row nobody had touched.
+        folded = _folded_cell(pending, f["slug"])
+        cell = (folded or
+                f'<input type="text" class="al" value="{_esc(twin)}" '
+                f'placeholder="alias target" spellcheck="false">')
         rows.append(
-            f'<tr data-slug="{_esc(f["slug"])}">'
-            f'<td>{_variety_link(f["slug"], f["slug"])}{pending}'
+            f'<tr data-slug="{_esc(f["slug"])}"'
+            f'{" class=\"done\"" if folded else ""}>'
+            f'<td>{_variety_link(f["slug"], f["slug"])}'
             f'<div class="small muted">noise: {_esc(", ".join(f["noise"]))}</div></td>'
-            f'<td><input type="text" class="al" value="{_esc(twin)}" '
-            f'placeholder="alias target" spellcheck="false"></td>'
+            f'<td>{cell}</td>'
             f'<td class="num">{f["nurseries"]}</td>'
             f'<td class="num">{f["watchers"] or ""}</td></tr>')
     if not rows:
@@ -2461,7 +2520,11 @@ REVIEW_JS = """
   var DEFAULT_WHEN = 'Nothing changes on the site until tonight\\u2019s 00:00 UTC ' +
                      'build. You can still change your mind.';
 
-  function confirmBulk(action, rows, risky, done) {
+  // `why` completes the sentence "<n> rows ...". Each caller computes a
+  // different `risky` for a different reason, and one shared phrase ("the least
+  // safe") named the rows without ever naming the hazard, so the dialog warned
+  // about a backwards fold in words that could not say which way was backwards.
+  function confirmBulk(action, rows, risky, why, done) {
     var n = rows.length;
     var label = phrase(action, n);
     var dlg = document.createElement('dialog');
@@ -2473,8 +2536,11 @@ REVIEW_JS = """
         return '<li>' + esc(r.slug || (r.base + ' vs ' + r.other)) +
           (r.target ? ' &rarr; ' + esc(r.target) : '') + '</li>';
       }).join('') + (n > 5 ? '<li>and ' + (n - 5) + ' more</li>' : '') + '</ul>' +
-      (risky.length ? '<p class="warn">' + risky.length +
-        ' of these are the least safe: ' + esc(risky.slice(0, 3).join(', ')) +
+      (risky.length ? '<p class="warn">' +
+        (risky.length === 1 ? '1 row ' : risky.length + ' rows ') +
+        esc(why || 'in this batch needs a second look') + ': ' +
+        esc(risky.slice(0, 3).join(', ')) +
+        (risky.length > 3 ? ', and ' + (risky.length - 3) + ' more' : '') +
         '.</p>' : '') +
       '<div class="when">' + (WHEN[action] || DEFAULT_WHEN) + '</div>' +
       (needType ? '<p>More than ' + BULK + ' rows. Type <strong>' + n +
@@ -2512,9 +2578,9 @@ REVIEW_JS = """
     });
   }
 
-  function submit(action, rows, risky) {
+  function submit(action, rows, risky, why) {
     if (!rows.length) { say('Nothing selected.', true); return; }
-    confirmBulk(action, rows, risky || [], function () {
+    confirmBulk(action, rows, risky || [], why, function () {
       post(action, rows).then(function (res) {
         if (res.status === 200) {
           say(res.body.applied + ' recorded, effective ' + res.body.effective +
@@ -2585,7 +2651,9 @@ REVIEW_JS = """
         var risky = rows.filter(function (r) {
           return /-(potted|tree|trees|fruit|nut|pome|stone|dwf|tm|pbr)(-|$)/.test(r.target);
         }).map(function (r) { return r.slug + ' \\u2192 ' + r.target; });
-        submit(action, rows, risky);
+        submit(action, rows, risky,
+               'points at a target that still carries listing noise, so the ' +
+               'redirect lands on a page that is itself a rename candidate');
       });
     });
   }
@@ -2595,9 +2663,12 @@ REVIEW_JS = """
   if (asec) {
     var arows = Array.prototype.slice.call(asec.querySelectorAll('tbody tr'));
     var asel = document.getElementById('asel');
+    // A row with a fold already queued renders its decision instead of an
+    // input, so every lookup here can come back null.
     function filled() {
       return arows.filter(function (tr) {
-        return tr.querySelector('.al').value.trim();
+        var input = tr.querySelector('.al');
+        return input && input.value.trim();
       });
     }
     function refreshA() {
@@ -2607,6 +2678,7 @@ REVIEW_JS = """
     }
     arows.forEach(function (tr) {
       var input = tr.querySelector('.al');
+      if (!input) return;
       input.addEventListener('input', function () {
         input.classList.toggle('dirty', !!input.value.trim());
         refreshA();
@@ -2623,7 +2695,8 @@ REVIEW_JS = """
         return Number(document.querySelector('tr[data-slug="' + r.slug +
           '"] td.num').textContent) > 1;
       }).map(function (r) { return r.slug + ' (several nurseries)'; });
-      submit('alias', rows, risky);
+      submit('alias', rows, risky,
+             'covers more than one nursery, so several listings move at once');
     });
   }
 
@@ -2636,11 +2709,19 @@ REVIEW_JS = """
   if (nsec) {
     var nrows = Array.prototype.slice.call(nsec.querySelectorAll('tbody tr'));
     var nsel = document.getElementById('nsel');
+    // Null on any row whose fold is already queued: it renders the decision
+    // and a Cancel button in place of both controls.
     function chosenFolds() {
-      return nrows.filter(function (tr) { return tr.querySelector('.nm').value; });
+      return nrows.filter(function (tr) {
+        var sel = tr.querySelector('.nm');
+        return sel && sel.value;
+      });
     }
     function chosenDistinct() {
-      return nrows.filter(function (tr) { return tr.querySelector('.nmd').checked; });
+      return nrows.filter(function (tr) {
+        var box = tr.querySelector('.nmd');
+        return box && box.checked;
+      });
     }
     function refreshN() {
       var f = chosenFolds().length, d = chosenDistinct().length;
@@ -2652,6 +2733,7 @@ REVIEW_JS = """
     nrows.forEach(function (tr) {
       var sel = tr.querySelector('.nm');
       var dis = tr.querySelector('.nmd');
+      if (!sel || !dis) return;
       // The two answers contradict each other. Letting both be set and picking
       // one at submit time would apply an answer nobody gave.
       sel.addEventListener('change', function () {
@@ -2682,7 +2764,9 @@ REVIEW_JS = """
           }).map(function (tr) {
             return tr.querySelector('.nm').value.replace('|', ' \\u2192 ');
           });
-          submit('alias', rows, risky);
+          submit('alias', rows, risky,
+                 'folds a page carried by MORE nurseries into one carried by ' +
+                 'fewer, retiring the better established URL');
         } else {
           submit('distinct', chosenDistinct().map(function (tr) {
             return {base: tr.getAttribute('data-a'),
@@ -2714,12 +2798,13 @@ REVIEW_JS = """
     srows.forEach(function (tr) {
       var fold = tr.querySelector('.fold');
       var dis = tr.querySelector('.dis');
-      if (fold) {
+      if (fold && dis) {
         fold.addEventListener('change', function () {
           if (fold.checked) dis.checked = false;
           refreshS();
         });
       }
+      if (!dis) return;   // fold already queued: the row shows Cancel instead
       dis.addEventListener('change', function () {
         if (dis.checked && fold) fold.checked = false;
         refreshS();
@@ -2741,7 +2826,9 @@ REVIEW_JS = """
             return tr.getAttribute('data-other') + ' \\u2192 ' +
                    tr.getAttribute('data-base');
           });
-          submit('alias', rows, risky);
+          submit('alias', rows, risky,
+                 'differs from its base by more than listing noise, so it may ' +
+                 'be a different plant (avocado-hass-lamb is Lamb Hass)');
         } else {
           submit('distinct', tickedBy('.dis').map(function (tr) {
             return {base: tr.getAttribute('data-base'),
@@ -2808,7 +2895,7 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
         _alias_queue_section(inv, store, q),
         _near_miss_section(v.get("near_misses") or [],
                            v.get("near_miss_tiers") or {}, inv, store, q),
-        _sibling_review_section(v.get("siblings") or [], tiers, inv, q),
+        _sibling_review_section(v.get("siblings") or [], tiers, inv, q, store),
         _variety_overrides_section(v.get("overrides") or {}),
         f'<script>window.CSRF={json.dumps(model.get("csrf") or "")};'
         f'{REVIEW_JS}</script>',
