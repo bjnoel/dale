@@ -458,9 +458,32 @@ class TestSeedRedirects(unittest.TestCase):
     @staticmethod
     def _rename(slug="avocado-hass-type-a", target="avocado-hass", **over):
         proposal = {"slug": slug, "target": target, "verdict": "rename",
-                    "title": "Avocado - Hass Type A", "approved": True}
+                    "title": "Avocado - Hass Type A", "species": "Avocado",
+                    "variety": "Hass Type A", "approved": True}
         proposal.update(over)
         return proposal
+
+    def test_the_species_is_carried_onto_the_entry(self):
+        """A stub does not need it; a tombstone does.
+
+        Converting a redirect to a tombstone is a decision a reviewer can make
+        later, and a tombstone with no species draws no breadcrumb and can offer
+        no siblings. By then the pre-merge parser is the only other place the
+        species could come from, so it is seeded now or not at all.
+        """
+        _, _, pages = self._apply([self._rename()], {"avocado-hass"})
+        entry = pages["avocado-hass-type-a"]
+        self.assertEqual(entry["species"], "Avocado")
+        self.assertEqual(entry["variety"], "Hass Type A")
+
+    def test_a_proposal_without_a_species_still_applies(self):
+        """Proposal files written before the species was carried must not break."""
+        proposal = self._rename()
+        del proposal["species"]
+        del proposal["variety"]
+        applied, _, pages = self._apply([proposal], {"avocado-hass"})
+        self.assertEqual(applied, 1)
+        self.assertEqual(pages["avocado-hass-type-a"]["state"], REDIRECT)
 
     def test_an_approved_rename_becomes_a_redirect_entry(self):
         applied, _, pages = self._apply([self._rename()], {"avocado-hass"})

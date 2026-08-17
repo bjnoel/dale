@@ -245,6 +245,13 @@ def build_proposals(old_groups: dict, new_groups: dict, live_slugs: set[str],
         proposals.append({
             "slug": slug,
             "title": group.get("title") or slug,
+            # Carried so a seeded entry can render as something other than a
+            # stub later. A stub needs only the title, but converting one to a
+            # tombstone (a real decision a reviewer may make) needs the species
+            # to draw a breadcrumb and offer siblings, and there is nowhere else
+            # to recover it from once the old parser is gone.
+            "species": group.get("species") or "",
+            "variety": group.get("variety") or "",
             "verdict": record["verdict"],
             "target": target,
             "suggested": record.get("suggested"),

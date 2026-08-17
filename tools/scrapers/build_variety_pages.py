@@ -585,8 +585,15 @@ def seed_redirects(ledger: PageLedger, path: Path, today: str,
         if (ledger.pages.get(slug) or {}).get("state") == LIVE:
             skipped.append(f"{slug}: live in the ledger")
             continue
+        # species/variety are not needed to render a stub, which shows only the
+        # two titles. They are seeded because a reviewer may later decide this
+        # should have been a tombstone, and a tombstone without a species has no
+        # breadcrumb and can offer no siblings. Recovering it after the fact
+        # would mean running the pre-merge parser again.
         ledger.seed(slug, today=today, state=REDIRECT, redirect_to=target,
-                    since=today, title=p.get("title") or slug)
+                    since=today, title=p.get("title") or slug,
+                    species=p.get("species") or None,
+                    variety=p.get("variety") or None)
         applied += 1
     return applied, skipped
 

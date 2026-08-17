@@ -148,6 +148,48 @@ that matters here; tiering is a convenience on top of it.
 
 ---
 
+## 3a. Editing what already exists
+
+Asked for 2026-08-17: "can I edit the slug/redirects that already exist if they're wrong?"
+
+Yes for redirects. Not for live slugs, and the reason matters.
+
+**A redirect is data and is editable.** `redirect_to` is a field in the ledger, nothing derives
+from it, and `resolve_redirects` already follows chains and is cycle-safe and depth-capped. So
+retargeting `a -> b` to `a -> c` is a one-field write that the next build renders. Same for
+converting between states:
+
+| Now | Can become | How |
+|---|---|---|
+| `redirect` | a different target | write `redirect_to` |
+| `redirect` | `tombstone` | write `state`, drop `redirect_to` |
+| `tombstone` | `redirect` (a successor turned up) | write both |
+| `retired` | `tombstone` or `redirect` | write both |
+| `live` | **nothing** | see below |
+
+**A live slug cannot be renamed from a browser, and should not be.** The slug is not stored
+anywhere to edit: `canonical_cultivar` computes it from the nursery's product title on every
+run, so a hand-edit would be recomputed away the same night. `apple-pink-lady-pome` is wrong
+because the parser produced it, and the fix is an alias in `variety_overrides.json`, which is
+the git-tracked configuration path in section 5.
+
+The good part is what happens next, automatically. Alias it and its products start appearing
+under the target tonight. Two nights later the exit guard releases the old slug, `rename_target`
+sees a single successor carrying its products, and `decide_night` turns it into a redirect
+without anyone asking. **Fixing a bad slug produces its own redirect**, which is the behaviour
+the whole lifecycle change existed to get.
+
+So the UI has two verbs that look similar and are not: *retarget this redirect* (instant,
+operational, reversible) and *this live slug is wrong* (queues an alias, lands in git, takes two
+nights, changes parsing everywhere). Section 6's "blast radius" rule applies: they must not look
+alike.
+
+One thing had to change in the code for this to work. A stub only ever displays two titles, so
+seeding a redirect never needed the species. A tombstone does: without it there is no breadcrumb
+and no sibling offer. Since a reviewer converting a redirect to a tombstone is exactly what this
+section enables, and the pre-merge parser is the only other place that species could be
+recovered from, `species` and `variety` are now carried through the proposal onto the entry.
+
 ## 4. Decisions have to stick
 
 The single change that makes the review page worth opening twice.
@@ -223,6 +265,31 @@ verifying rather than assuming:
   entry or a queued config change, both of which a later night can undo. `--allow-delete`
   stays where it is, on the nightly, off the web.
 
+### Bulk actions have to be hard to do by accident
+
+Asked for 2026-08-17: a loud warning on any approve-all or reject-all.
+
+Three layers, because a modal on its own is something people learn to click through.
+
+1. **Friction scaled to the count.** Ten rows or fewer gets an ordinary confirm. More than ten
+   requires typing the number into the dialog, so the hand cannot finish the action without the
+   eye reading the count. Same principle as ordering the night's guards by blast radius: the
+   cost of a gesture should track what the gesture can break.
+2. **The dialog says what changes, not "are you sure".** Name the count, the action, and the
+   rows that are least safe, which the tool already flags: 4 of the current 126 point at a
+   target whose own slug still carries listing noise. The confirm button restates the action
+   (`Approve 126 redirects`), never `OK`. Rejecting is also a decision and it also persists, so
+   it gets the same dialog rather than being treated as the harmless direction.
+3. **Say when it becomes real, because it is not immediate.** An approval writes to a file the
+   nightly reads. Nothing on the site changes until the 00:00 UTC build, and that window is the
+   strongest safety property available here. It belongs in the confirmation text rather than
+   buried: *"126 approved. Nothing changes on the site until tonight's build. You can still
+   change your mind."*
+
+**Wiring still needed.** `run-all-scrapers.sh` line 242 does not pass `--seed-redirects`, so an
+approval currently reaches nothing. Adding that flag to the nightly is what makes any of this
+true, and it should land in the same phase as the approve button rather than before it.
+
 ---
 
 ## 7. Phases
@@ -233,8 +300,13 @@ of the value Benedict asked for and carries no new risk at all. Move the existin
 and alarm blocks to `/admin/varieties/review` unchanged.
 
 **Phase 2: approve redirects.** The narrowest, best-understood write: a POST that flips
-`approved` on rows of the proposal file, plus the CSRF and staleness work from section 6.
-126 real rows are already waiting, so it ships with its own test case.
+`approved` on rows of the proposal file, plus the CSRF and staleness work from section 6, the
+bulk-action confirmation, and `--seed-redirects` wired into the nightly. 126 real rows are
+already waiting, so it ships with its own test case.
+
+**Phase 2a: retarget existing entries.** Editing a redirect that turned out wrong, and
+converting between redirect and tombstone. Same write plumbing as phase 2 and the same file
+format, over the ledger instead of the proposal file, so it is small once phase 2 exists.
 
 **Phase 3: sibling decisions.** Persisted `distinct` dismissals first, then tiering, then
 `curation_pending` with `promote_curation.py`. That order is deliberate: dismissals are what
