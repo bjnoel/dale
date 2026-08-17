@@ -162,7 +162,7 @@ class AdminReviewQueueTests(unittest.TestCase):
         self.assertEqual(orphans, [{"slug": "gone-forever", "watchers": 2}])
 
     def test_the_page_renders_and_names_the_risk(self):
-        html = admin_view.render_varieties_html({"varieties": self.model()})
+        html = admin_view.render_variety_review_html({"varieties": self.model()})
         self.assertIn("gone-forever", html)
         self.assertIn("avocado-hass-lamb", html)
         self.assertIn("Lamb Hass", html)     # the warning against auto-folding
@@ -171,8 +171,19 @@ class AdminReviewQueueTests(unittest.TestCase):
         model = self.model()
         model["overrides"]["deny"] = ["avocado-shepard"]
         model["denied_but_watched"] = ["avocado-shepard"]
-        html = admin_view.render_varieties_html({"varieties": model})
+        html = admin_view.render_variety_review_html({"varieties": model})
         self.assertIn("Denied but watched", html)
+
+    def test_the_queue_moved_off_the_inventory_page(self):
+        """DAL-283 split the two jobs. /admin/varieties answers "what are my
+        variety pages" and asks nothing; the queue is a different screen. A
+        sibling suggestion reappearing on the inventory is the regression."""
+        model = {"varieties": self.model(), "inventory": {"present": False,
+                                                          "path": "x", "error": ""}}
+        html = admin_view.render_varieties_html(model)
+        self.assertNotIn("Sibling review queue", html)
+        self.assertNotIn("avocado-hass-lamb", html)
+        self.assertIn("/admin/varieties/review", html)
 
     def test_the_admin_page_does_not_drag_the_parser_into_the_server(self):
         """subscribe_server imports admin_view at module scope. Pulling
@@ -183,8 +194,10 @@ class AdminReviewQueueTests(unittest.TestCase):
         self.assertNotIn("from cultivar_parsing", source)
 
     def test_the_tab_is_registered(self):
-        self.assertIn("/admin/varieties", dict(admin_view.ADMIN_PAGES))
-        self.assertIn("/admin/varieties", admin_view.ADMIN_RENDERERS)
+        for path in ("/admin/varieties", "/admin/varieties/review"):
+            with self.subTest(path=path):
+                self.assertIn(path, dict(admin_view.ADMIN_PAGES))
+                self.assertIn(path, admin_view.ADMIN_RENDERERS)
 
 
 if __name__ == "__main__":

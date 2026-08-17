@@ -388,6 +388,23 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             self.send_admin_html(page)
             return
 
+        # The variety inventory's data payload. Same Access gate, same read-only
+        # posture; it exists because /admin/varieties covers 2,767 pages and the
+        # ledger behind them is 3.1MB, so the detail is fetched and filtered in
+        # the browser rather than inlined into the HTML.
+        if admin_path in admin_view.ADMIN_JSON:
+            if not verify_cf_access(self.headers):
+                self.send_admin_json({"error": "forbidden"}, status=403)
+                return
+            try:
+                payload = admin_view.ADMIN_JSON[admin_path](admin_view.load_admin_data())
+            except Exception as e:
+                print(f"Admin JSON build error: {e}", file=sys.stderr)
+                self.send_admin_json({"error": "could not build the payload"}, status=500)
+                return
+            self.send_admin_json(payload)
+            return
+
         # Archived daily digests. Same Cloudflare Access gate as /admin (the
         # Access app covers /admin and every subpath; verified 2026-08-10), and
         # the same fail-closed JWT check here for direct-to-origin hits.
@@ -1734,6 +1751,23 @@ document.getElementById('varietyWatches').addEventListener('click', function(e) 
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(encoded)
+
+    def send_admin_json(self, data: dict, status: int = 200):
+        """Admin data payload: compact, never cached, never cross-origin.
+
+        Not send_json: that one sets Access-Control-Allow-Origin for the public
+        widgets, and an Access-gated payload has no business advertising itself
+        to another origin. Compact separators because the reason this is a
+        separate request at all is its size.
+        """
+        body = json.dumps(data, separators=(",", ":")).encode()
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("X-Robots-Tag", "noindex, nofollow")
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
 
     def send_json(self, status: int, data: dict):
         body = json.dumps(data).encode()

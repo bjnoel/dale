@@ -17,11 +17,14 @@ page is view-only: it never writes anything.
 
 import html
 import json
+import re
 import sqlite3
 from collections import Counter
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from stocklib.page_ledger import (FAMILY_VARIETY, LEDGER_DIRNAME, LIVE,
+                                  REDIRECT, RETIRED, TOMBSTONE, ledger_path)
 from stocklib.scrape_health import HEALTH_DIRNAME, read_records
 
 DATA_DIR = Path("/opt/dale/data")
@@ -50,6 +53,34 @@ CATEGORY_SHORT = {
     "price_drops": "drops",
     "back_in_stock": "restock",
 }
+
+# Listing noise that should never have reached a slug. Every token is one
+# cultivar_parsing._strip_listing_noise removes from a product title, or one
+# _NOISE_PAREN_WORDS drops from a bracketed category label, so a slug still
+# carrying one means the parser missed it rather than that a grower named the
+# plant that way. Kept as a literal set rather than imported: pulling
+# cultivar_parsing into admin_view would put a heavy import on the server and
+# add a module to deploy.sh's restart fingerprint (test_variety_overrides
+# enforces that). The cost is that this list has to be re-read against
+# _NOISE_RES when that changes, which is what the reference above is for.
+NOISE_SLUG_TOKENS = frozenset({
+    "grafted", "potted", "pot", "pots",
+    "bare", "bareroot", "root", "rooted", "cutting", "grown",
+    "tree", "trees", "seedling", "seedlings", "plant", "plants",
+    "fruit", "nut", "nuts", "pome", "stone",
+    "tm", "dwf", "pbr", "dwarf",
+})
+
+# Bananas keep dwarf: Dwarf Cavendish is a cultivar, not a pot size. Exactly the
+# `keep_dwarf` exception _strip_listing_noise already makes, mirrored here so the
+# two cannot disagree about the same 8 slugs.
+DWARF_KEEPING_SPECIES = frozenset({"banana"})
+
+# "1 years old", "5-year-old". Age is a listing attribute, never a cultivar.
+_AGE_IN_SLUG_RE = re.compile(r"\d+-years?-old")
+_AGE_TOKENS = frozenset({"year", "years", "old"})
+
+_SLUGIFY_RE = re.compile(r"[^a-z0-9]+")
 
 
 # These three mirror the normalisation helpers in send_digest.py. Inlined so this
@@ -434,6 +465,8 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     model["nurseries"] = load_nursery_data(data_dir)
     model["business"] = load_business_data(data_dir)
     model["varieties"] = load_variety_curation(data_dir, watches_rows)
+    watch_counts = Counter(row[1] for row in watches_rows if row[1])
+    model["inventory"] = load_variety_inventory(data_dir, watch_counts)
     return model
 
 
@@ -505,6 +538,290 @@ def load_variety_curation(data_dir: Path, watches_rows) -> dict:
         "siblings": siblings,
         "orphan_watches": orphan_watches,
         "denied_but_watched": denied_but_watched,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Catalogue inventory: what the variety pages ARE (DAL-283)
+#
+# load_variety_curation above knows only slug strings, because the two files it
+# reads carry nothing else. The page ledger sitting next to it has the whole
+# history of every page (state, first seen, days in stock, last known nurseries
+# and prices, and why each state changed) and until now nothing read it. That is
+# the whole change: state counts, a species drill-down, and the attention queues
+# all fall out of a file the nightly already writes.
+#
+# Read only, deliberately. Approving anything is DAL-284 and needs the CSRF work
+# in docs/admin-varieties-plan.md section 6 first.
+# ---------------------------------------------------------------------------
+
+def _slugify(value: str) -> str:
+    return _SLUGIFY_RE.sub("-", (value or "").lower()).strip("-")
+
+
+def noisy_slug_tokens(slug: str, species: str = "") -> list:
+    """Listing-noise tokens left in `slug`, ignoring its species prefix.
+
+    The species prefix has to come off first or the check fires on correct
+    slugs: Dragon Fruit, Bunya Nut and Grapefruit are species names, so
+    `dragon-fruit-asunta` carries no noise at all while `grape-fruit-wheeny`
+    (species Grape) carries one.
+    """
+    slug = slug or ""
+    prefix = _slugify(species)
+    rest = slug[len(prefix) + 1:] if prefix and slug.startswith(prefix + "-") else slug
+    tokens = set(rest.split("-"))
+    if prefix in DWARF_KEEPING_SPECIES:
+        tokens.discard("dwarf")
+    found = sorted(tokens & NOISE_SLUG_TOKENS)
+    if _AGE_IN_SLUG_RE.search(rest):
+        found.append("<age>")
+    return found
+
+
+def clean_twin(slug: str, noise, live_slugs) -> str:
+    """The slug this one would be with its listing noise stripped, IF that page
+    already exists as a live page of its own.
+
+    62 of the 120 noisy slugs have one: two live pages for the same cultivar,
+    competing for the same search term, and nothing has ever shown that. Stated
+    as a fact and nothing more. Folding one into the other is an alias, an alias
+    is configuration, configuration is git, and that is DAL-284 and section 5 of
+    docs/admin-varieties-plan.md rather than anything this page may do.
+    """
+    if not noise:
+        return ""
+    drop = {t for t in noise if t != "<age>"} | _AGE_TOKENS
+    parts = [p for p in slug.split("-") if p not in drop and not p.isdigit()]
+    candidate = "-".join(parts)
+    return candidate if candidate != slug and candidate in live_slugs else ""
+
+
+def _entry_facts(slug: str, entry: dict, watchers: int = 0) -> dict:
+    """One ledger entry flattened to the handful of facts the page shows."""
+    rows = entry.get("rows") or []
+    nurseries = {r.get("nursery_key") for r in rows if r.get("nursery_key")}
+    species = entry.get("species") or ""
+    state = entry.get("state") or LIVE
+    noise = noisy_slug_tokens(slug, species)
+    return {
+        "slug": slug,
+        "species": species,
+        "state": state,
+        "title": entry.get("title") or "",
+        "nurseries": len(nurseries),
+        "products": len(rows),
+        "in_stock": any(r.get("available") for r in rows),
+        "in_stock_days": int(entry.get("in_stock_days") or 0),
+        "live_days": int(entry.get("live_days") or 0),
+        "first_seen": entry.get("first_seen") or "",
+        "last_in_stock": entry.get("last_in_stock") or "",
+        "absent_nights": int(entry.get("absent_nights") or 0),
+        "redirect_to": entry.get("redirect_to") or "",
+        "see_also": list(entry.get("see_also") or []),
+        "retired_reason": entry.get("retired_reason") or "",
+        "since": entry.get("since") or "",
+        "watchers": watchers,
+        "noise": noise,
+    }
+
+
+# Flag key -> (tile label, the one-line explanation under it). Order is the
+# order they appear. Every one is a filter the browser can apply to the payload,
+# so a count is never a dead end: clicking it lists the pages it counted.
+ATTENTION_QUEUES = (
+    ("absent", "absent tonight",
+     "Not generated tonight. Tombstoned after 2 nights."),
+    ("never", "never in stock",
+     "Live page, no buyable product has ever appeared on it."),
+    ("oos", "out of stock now",
+     "Has sold before, nothing available today."),
+    ("single", "single-product",
+     "One product at one nursery. The page is that nursery's listing."),
+    ("noisy", "noisy slug",
+     "Slug still carries listing noise the parser should have stripped."),
+    ("lonely", "only variety",
+     "The sole live page for its species."),
+)
+
+
+def build_variety_inventory(pages: dict, watch_counts: dict = None) -> dict:
+    """Pure aggregation over the ledger's `pages` object. No I/O.
+
+    Returns state counts, per-species rows, the attention-queue counts, and the
+    flattened per-variety facts. The renderer sends the species rows to HTML and
+    the per-variety facts to a compact JSON payload; both come from here so they
+    cannot disagree about a number.
+    """
+    pages = pages or {}
+    watch_counts = watch_counts or {}
+
+    facts = [_entry_facts(slug, entry, watch_counts.get(slug, 0))
+             for slug, entry in sorted(pages.items())
+             if isinstance(entry, dict)]
+
+    counts = Counter(f["state"] for f in facts)
+
+    # Only live pages have a species that means anything for a count: a redirect
+    # or tombstone is shown against its species too, but it is not a page the
+    # catalogue offers, so it never counts toward "varieties".
+    live_per_species = Counter(f["species"] for f in facts if f["state"] == LIVE)
+    lonely_species = {s for s, n in live_per_species.items() if n == 1}
+
+    for f in facts:
+        live = f["state"] == LIVE
+        f["flags"] = {
+            "absent": live and f["absent_nights"] > 0,
+            "never": live and f["in_stock_days"] == 0,
+            "oos": live and not f["in_stock"] and f["in_stock_days"] > 0,
+            "single": live and f["products"] == 1 and f["nurseries"] == 1,
+            "noisy": live and bool(f["noise"]),
+            "lonely": live and f["species"] in lonely_species,
+        }
+
+    live_slugs = {f["slug"] for f in facts if f["state"] == LIVE}
+    for f in facts:
+        f["clean_twin"] = (clean_twin(f["slug"], f["noise"], live_slugs)
+                           if f["flags"]["noisy"] else "")
+    shadowing = sum(1 for f in facts if f["clean_twin"])
+
+    attention = []
+    for key, label, note in ATTENTION_QUEUES:
+        if key == "noisy" and shadowing:
+            note = f"{note} {shadowing} shadow a clean page that already exists."
+        attention.append({
+            "key": key, "label": label, "note": note,
+            "count": sum(1 for f in facts if f["flags"][key]),
+        })
+
+    species_rows = []
+    for name in sorted(live_per_species):
+        mine = [f for f in facts if f["species"] == name]
+        live_rows = [f for f in mine if f["state"] == LIVE]
+        species_rows.append({
+            "name": name,
+            "slug": _slugify(name),
+            "varieties": len(live_rows),
+            "in_stock": sum(1 for f in live_rows if f["in_stock"]),
+            "single": sum(1 for f in live_rows if f["flags"]["single"]),
+            "never": sum(1 for f in live_rows if f["flags"]["never"]),
+            "noisy": sum(1 for f in live_rows if f["flags"]["noisy"]),
+            "redirect": sum(1 for f in mine if f["state"] == REDIRECT),
+            "tombstone": sum(1 for f in mine if f["state"] == TOMBSTONE),
+        })
+    species_rows.sort(key=lambda r: (-r["varieties"], r["name"]))
+
+    # Species with no live page at all still deserve a row: a species whose only
+    # pages are redirects is exactly the kind of thing this page exists to show.
+    for name in sorted({f["species"] for f in facts} - set(live_per_species)):
+        mine = [f for f in facts if f["species"] == name]
+        species_rows.append({
+            "name": name, "slug": _slugify(name), "varieties": 0,
+            "in_stock": 0, "single": 0, "never": 0, "noisy": 0,
+            "redirect": sum(1 for f in mine if f["state"] == REDIRECT),
+            "tombstone": sum(1 for f in mine if f["state"] == TOMBSTONE),
+        })
+
+    return {
+        "total": len(facts),
+        "counts": {
+            LIVE: counts.get(LIVE, 0),
+            REDIRECT: counts.get(REDIRECT, 0),
+            TOMBSTONE: counts.get(TOMBSTONE, 0),
+            RETIRED: counts.get(RETIRED, 0),
+        },
+        "species": species_rows,
+        "species_count": len(live_per_species),
+        "attention": attention,
+        "shadowing": shadowing,
+        "facts": facts,
+    }
+
+
+def load_variety_inventory(data_dir: Path = DATA_DIR, watch_counts: dict = None) -> dict:
+    """Read the variety page ledger and aggregate it.
+
+    A missing or unreadable ledger is reported on the page rather than raised:
+    the admin view is the thing you open when something is wrong, so it must
+    still render when the file it wants is the thing that broke.
+    """
+    path = ledger_path(FAMILY_VARIETY, Path(data_dir) / LEDGER_DIRNAME)
+    if not path.exists():
+        return {"present": False, "path": str(path), "error": "",
+                **build_variety_inventory({}, watch_counts)}
+    try:
+        raw = json.loads(path.read_text())
+        if not isinstance(raw, dict) or not isinstance(raw.get("pages"), dict):
+            raise ValueError("no pages object")
+    except (OSError, ValueError) as e:
+        return {"present": False, "path": str(path), "error": str(e),
+                **build_variety_inventory({}, watch_counts)}
+
+    model = build_variety_inventory(raw["pages"], watch_counts)
+    model.update({
+        "present": True,
+        "path": str(path),
+        "error": "",
+        "updated": raw.get("updated") or "",
+        "skipped_nights": int(raw.get("skipped_nights") or 0),
+    })
+    return model
+
+
+# The compact payload the browser filters. Positional rather than keyed: the
+# same 2,767 rows are 148KB as arrays and 258KB as objects, and the browser has
+# to parse and hold whichever it gets. `cols` makes the format self-describing
+# so the saving does not cost a reader their bearings.
+PAYLOAD_COLS = ("slug", "species", "state", "nurseries", "in_stock",
+                "first_seen", "watchers", "flags", "target", "twin")
+
+PAYLOAD_STATES = (LIVE, REDIRECT, TOMBSTONE, RETIRED)
+
+# Bit per attention queue, in ATTENTION_QUEUES order.
+PAYLOAD_FLAGS = tuple(key for key, _, _ in ATTENTION_QUEUES)
+
+
+def build_varieties_payload(model: dict) -> dict:
+    """The per-variety rows, compacted for the browser.
+
+    Species are interned to an index, states and flags to small integers, and
+    the year is dropped from `first_seen` (every page is 20xx). None of that is
+    cleverness for its own sake: the ledger is 3.1MB and /variety/index.html is
+    already 1.4MB, so the one rule this page has is that it does not inline the
+    catalogue.
+    """
+    facts = model.get("facts") or []
+    species = sorted({f["species"] for f in facts})
+    species_idx = {name: i for i, name in enumerate(species)}
+    state_idx = {name: i for i, name in enumerate(PAYLOAD_STATES)}
+
+    rows = []
+    for f in facts:
+        bits = 0
+        for i, key in enumerate(PAYLOAD_FLAGS):
+            if f["flags"].get(key):
+                bits |= 1 << i
+        rows.append([
+            f["slug"],
+            species_idx[f["species"]],
+            state_idx.get(f["state"], 0),
+            f["nurseries"],
+            1 if f["in_stock"] else 0,
+            (f["first_seen"] or "")[2:],
+            f["watchers"],
+            bits,
+            f["redirect_to"],
+            f.get("clean_twin", ""),
+        ])
+
+    return {
+        "cols": list(PAYLOAD_COLS),
+        "species": species,
+        "states": list(PAYLOAD_STATES),
+        "flags": list(PAYLOAD_FLAGS),
+        "flagLabels": [label for _, label, _ in ATTENTION_QUEUES],
+        "updated": model.get("updated", ""),
+        "rows": rows,
     }
 
 
@@ -1088,6 +1405,7 @@ ADMIN_PAGES = (
     ("/admin/subscribers", "Subscribers"),
     ("/admin/nurseries", "Nurseries"),
     ("/admin/varieties", "Varieties"),
+    ("/admin/varieties/review", "Variety review"),
     ("/admin/digest", "Daily digest"),
 )
 
@@ -1295,27 +1613,408 @@ def _sibling_review_section(siblings) -> str:
         f'<pre class="code">"alias": {{\n{_esc(suggestion)}\n}}</pre></section>')
 
 
-def render_varieties_html(model: dict, generated_at: str = None) -> str:
-    """/admin/varieties — variety identity: what curation is in force, what is
-    waiting on a human, and what is currently broken."""
+def render_variety_review_html(model: dict, generated_at: str = None) -> str:
+    """/admin/varieties/review — everything that needs a person.
+
+    The three blocks that used to be /admin/varieties, moved here unchanged when
+    that page became the inventory (DAL-283). Two different jobs: the inventory
+    answers "what are my variety pages" and asks nothing, this one is the queue.
+    """
     _, subtitle = _subtitle(generated_at)
     v = model.get("varieties") or {}
     parts = [
         f'<p class="muted">{v.get("index_size", 0)} variety pages in the '
-        f'canonical index.</p>',
+        f'canonical index. <a href="/admin/varieties">Back to the inventory</a>.</p>',
         _variety_alarm(v),
         _variety_overrides_section(v.get("overrides") or {}),
         _sibling_review_section(v.get("siblings") or []),
     ]
     return render_page(
-        title="treestock admin — varieties",
-        heading="treestock admin · varieties",
+        title="treestock admin — variety review",
+        heading="treestock admin · variety review",
         subtitle=subtitle,
         content="\n".join(p for p in parts if p),
         extra_css=(
             "  pre.code { background:#f8fafc; border:1px solid #e2e8f0; "
             "border-radius:6px; padding:12px; overflow-x:auto; font-size:0.78rem; }\n"
             "  .warn { color:#b91c1c; }\n"),
+        nav=render_nav("/admin/varieties/review"),
+    )
+
+
+# -- the inventory page ------------------------------------------------------
+
+_STATE_LABEL = {LIVE: "live", REDIRECT: "redirect",
+                TOMBSTONE: "tombstone", RETIRED: "retired"}
+
+
+def _inventory_states(inv: dict) -> str:
+    """The state strip. Redirects and tombstones as first-class things.
+
+    They are the point of reading the ledger at all: everywhere else on the site
+    a redirected page shows up as an absence, which is indistinguishable from a
+    page that was never built.
+    """
+    counts = inv.get("counts") or {}
+    cells = []
+    for state in (LIVE, REDIRECT, TOMBSTONE, RETIRED):
+        n = counts.get(state, 0)
+        if state == RETIRED and not n:
+            continue  # only worth a slot once one exists
+        cells.append(
+            f'<div class="card"><div class="card-num st-{state}">{n:,}</div>'
+            f'<div class="card-label">{_STATE_LABEL[state]}</div></div>')
+    return f'<div class="cards">{"".join(cells)}</div>'
+
+
+def _inventory_attention(inv: dict) -> str:
+    """The six queues, each a filter rather than a number to admire."""
+    tiles = []
+    for q in inv.get("attention") or []:
+        tiles.append(
+            f'<button type="button" class="qtile" data-flag="{_esc(q["key"])}" '
+            f'title="{_esc(q["note"])}">'
+            f'<span class="qnum">{q["count"]:,}</span>'
+            f'<span class="qlabel">{_esc(q["label"])}</span></button>')
+    return (
+        f'<section><h2>Attention</h2>'
+        f'<div class="qtiles">{"".join(tiles)}</div>'
+        f'<p class="small muted">Click a tile to list the pages it counted. '
+        f'Nothing here is an error on its own: 59% of the catalogue being one '
+        f'nursery selling one product is a fact about the market, not a bug.</p>'
+        f'</section>')
+
+
+def _inventory_controls(inv: dict) -> str:
+    options = "".join(
+        f'<option value="{_esc(r["name"])}">{_esc(r["name"])} ({r["varieties"]})</option>'
+        for r in sorted(inv.get("species") or [], key=lambda r: r["name"]))
+    states = "".join(
+        f'<option value="{s}">{_STATE_LABEL[s]}</option>'
+        for s in (LIVE, REDIRECT, TOMBSTONE, RETIRED))
+    return (
+        f'<section class="controls" hidden id="controls">'
+        f'<input type="search" id="q" placeholder="Search slugs, e.g. hass" '
+        f'autocomplete="off" spellcheck="false">'
+        f'<select id="fspecies"><option value="">All species</option>{options}</select>'
+        f'<select id="fstate"><option value="">Any state</option>{states}</select>'
+        f'<button type="button" id="clear" hidden>Clear</button>'
+        f'</section>')
+
+
+def _inventory_species_table(inv: dict) -> str:
+    """Server-rendered, so the page is useful before any JS runs.
+
+    112 rows of aggregate, not 2,767 rows of detail: the detail arrives in the
+    payload and expands in place.
+    """
+    rows = []
+    for r in inv.get("species") or []:
+        extra = []
+        if r["redirect"]:
+            extra.append(f'{r["redirect"]} redirect')
+        if r["tombstone"]:
+            extra.append(f'{r["tombstone"]} tombstone')
+        rows.append(
+            f'<tr class="sprow" data-species="{_esc(r["name"])}" tabindex="0">'
+            f'<td class="sname">{_esc(r["name"])}</td>'
+            f'<td class="num">{r["varieties"]}</td>'
+            f'<td class="num">{r["in_stock"]}</td>'
+            f'<td class="num">{r["single"] or ""}</td>'
+            f'<td class="num">{r["never"] or ""}</td>'
+            f'<td class="num">{r["noisy"] or ""}</td>'
+            f'<td class="small muted">{_esc(", ".join(extra))}</td></tr>'
+            f'<tr class="drill" hidden><td colspan="7"></td></tr>')
+    if not rows:
+        rows = ['<tr><td colspan="7" class="muted">No pages in the ledger.</td></tr>']
+    return (
+        f'<section id="species-section">'
+        f'<h2>Species ({inv.get("species_count", 0)})</h2>'
+        f'<div class="tscroll"><table id="species"><thead><tr><th>Species</th>'
+        f'<th class="num">Varieties</th><th class="num">In stock</th>'
+        f'<th class="num">Single</th><th class="num">Never</th>'
+        f'<th class="num">Noisy</th><th>Other states</th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody></table></div>'
+        f'<p class="small muted"><noscript>Per-variety detail and search need '
+        f'JavaScript; the counts above do not.</noscript></p></section>')
+
+
+def _inventory_missing(inv: dict) -> str:
+    reason = (f' It could not be read: {_esc(inv["error"])}.'
+              if inv.get("error") else " It does not exist yet.")
+    return (
+        f'<section><h2>No page ledger</h2><p class="warn">Expected the variety '
+        f'ledger at <code>{_esc(inv.get("path", ""))}</code>.{reason} Everything '
+        f'on this page comes from that file, so there is nothing to show. The '
+        f'nightly writes it; <a href="/admin/varieties/review">the review '
+        f'queue</a> does not depend on it and still works.</p></section>')
+
+
+INVENTORY_CSS = """
+  /* Seven columns of counts do not fit a phone, and Benedict triages on one.
+     The table scrolls inside its own box rather than pushing the page sideways. */
+  .tscroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .tscroll table { width:auto; min-width:100%; }
+  .tscroll th, .tscroll td.num, .vt td:nth-child(2), .vt td:nth-child(5) {
+    white-space:nowrap; }
+  .qtiles { display:flex; flex-wrap:wrap; gap:10px; }
+  .qtile { flex:1 1 150px; background:#fff; border:1px solid #e5e7eb;
+    border-radius:10px; padding:12px 10px; text-align:center; cursor:pointer;
+    font:inherit; color:inherit; }
+  .qtile:hover, .qtile:focus { border-color:#065f46; }
+  .qtile.on { border-color:#065f46; background:#ecfdf5; }
+  .qnum { display:block; font-size:1.4rem; font-weight:700; color:#065f46; }
+  .qlabel { display:block; font-size:0.75rem; color:#6b7280; margin-top:2px; }
+  .card-num.st-redirect { color:#1d4ed8; }
+  .card-num.st-tombstone { color:#6b7280; }
+  .card-num.st-retired { color:#b91c1c; }
+  .controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .controls input, .controls select, .controls button { font:inherit;
+    font-size:0.85rem; padding:7px 10px; border:1px solid #d1d5db;
+    border-radius:8px; background:#fff; color:#111827; }
+  .controls input { flex:1 1 240px; }
+  .controls button { cursor:pointer; }
+  tr.sprow { cursor:pointer; }
+  tr.sprow:hover td, tr.sprow:focus td { background:#f0fdf4; }
+  tr.sprow.open td.sname { font-weight:700; }
+  td.sname::before { content:"\\25B8 "; color:#9ca3af; }
+  tr.sprow.open td.sname::before { content:"\\25BE "; }
+  tr.drill > td { background:#f9fafb; padding:0 10px 10px; }
+  table.vt { margin-top:6px; font-size:0.8rem; }
+  .vstate { font-weight:600; }
+  .vstate.redirect { color:#1d4ed8; }
+  .vstate.tombstone { color:#6b7280; }
+  .vstate.retired { color:#b91c1c; }
+  .fl { display:inline-block; margin-left:4px; padding:1px 6px; border-radius:999px;
+    font-size:0.68rem; background:#fef3c7; color:#92400e; }
+  .twin { font-size:0.72rem; color:#92400e; margin-top:2px; }
+  .warn { color:#b91c1c; }
+  code { background:#f3f4f6; padding:1px 4px; border-radius:4px; }
+"""
+
+# Everything below runs only once the payload lands. The species counts are
+# already on the page by then, which is the whole reason they are rendered
+# server-side: a failed fetch costs the drill-down and the search, not the page.
+INVENTORY_JS = """
+(function () {
+  var URL = '/admin/varieties.json';
+  var data = null, open = null, filter = null;
+  var q = document.getElementById('q');
+  var fsp = document.getElementById('fspecies');
+  var fst = document.getElementById('fstate');
+  var clear = document.getElementById('clear');
+  var controls = document.getElementById('controls');
+  var sect = document.getElementById('species-section');
+  var results = document.getElementById('results');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c];
+    });
+  }
+
+  function row(r) {
+    return {
+      slug: r[0], species: data.species[r[1]], state: data.states[r[2]],
+      nurseries: r[3], inStock: !!r[4], firstSeen: r[5] ? '20' + r[5] : '',
+      watchers: r[6], flags: r[7], target: r[8], twin: r[9]
+    };
+  }
+
+  function hasFlag(r, key) {
+    var i = data.flags.indexOf(key);
+    return i >= 0 && (r[7] & (1 << i)) !== 0;
+  }
+
+  function flagPills(v, bits) {
+    var out = '';
+    data.flags.forEach(function (name, i) {
+      if (name === 'oos' || name === 'lonely') return;   // shown by the columns
+      if (bits & (1 << i)) out += '<span class="fl">' + esc(name) + '</span>';
+    });
+    return out;
+  }
+
+  function table(rows) {
+    if (!rows.length) return '<p class="muted small">Nothing matches.</p>';
+    var out = '<div class="tscroll"><table class="mini vt"><thead><tr><th>Slug</th><th>State</th>' +
+      '<th class="num">Nurseries</th><th>In stock</th><th>First seen</th>' +
+      '<th class="num">Watch</th></tr></thead><tbody>';
+    rows.forEach(function (raw) {
+      var v = row(raw);
+      var state = v.state === 'redirect' && v.target
+        ? 'redirect &rarr; ' + esc(v.target) : esc(v.state);
+      var twin = v.twin
+        ? '<div class="twin">shadows <a href="https://treestock.com.au/variety/' +
+          encodeURIComponent(v.twin) + '.html" target="_blank" rel="noopener">' +
+          esc(v.twin) + '</a></div>'
+        : '';
+      out += '<tr><td><a href="https://treestock.com.au/variety/' +
+        encodeURIComponent(v.slug) + '.html" target="_blank" rel="noopener">' +
+        esc(v.slug) + '</a>' + flagPills(v, v.flags) + twin + '</td>' +
+        '<td class="vstate ' + esc(v.state) + '">' + state + '</td>' +
+        '<td class="num">' + (v.nurseries || '') + '</td>' +
+        '<td>' + (v.state === 'live' ? (v.inStock ? 'yes' : 'no') : '') + '</td>' +
+        '<td>' + esc(v.firstSeen) + '</td>' +
+        '<td class="num">' + (v.watchers || '\\u00b7') + '</td></tr>';
+    });
+    return out + '</tbody></table></div>';
+  }
+
+  function bySlug(a, b) { return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; }
+
+  function matching() {
+    var term = (q.value || '').trim().toLowerCase();
+    var sp = fsp.value, st = fst.value;
+    return data.rows.filter(function (r) {
+      if (filter && !hasFlag(r, filter)) return false;
+      if (sp && data.species[r[1]] !== sp) return false;
+      if (st && data.states[r[2]] !== st) return false;
+      if (term && r[0].indexOf(term) === -1) return false;
+      return true;
+    }).sort(bySlug);
+  }
+
+  function searching() {
+    return !!((q.value || '').trim() || fsp.value || fst.value || filter);
+  }
+
+  function heading(n) {
+    var bits = [];
+    if (filter) bits.push(data.flagLabels[data.flags.indexOf(filter)] || filter);
+    if (fsp.value) bits.push(fsp.value);
+    if (fst.value) bits.push(fst.value);
+    var term = (q.value || '').trim();
+    if (term) bits.push('"' + term + '"');
+    return n.toLocaleString() + ' page' + (n === 1 ? '' : 's') +
+      (bits.length ? ' \\u00b7 ' + esc(bits.join(' \\u00b7 ')) : '');
+  }
+
+  function render() {
+    if (!searching()) {
+      results.hidden = true;
+      sect.hidden = false;
+      clear.hidden = true;
+      return;
+    }
+    var rows = matching();
+    results.innerHTML = '<h2>' + heading(rows.length) + '</h2>' +
+      table(rows.slice(0, 400)) +
+      (rows.length > 400 ? '<p class="small muted">Showing the first 400 of ' +
+        rows.length.toLocaleString() + '. Narrow the search to see the rest.</p>' : '');
+    results.hidden = false;
+    sect.hidden = true;
+    clear.hidden = false;
+  }
+
+  function drill(tr) {
+    var name = tr.getAttribute('data-species');
+    var body = tr.nextElementSibling;
+    if (open === tr) {
+      open.classList.remove('open');
+      body.hidden = true;
+      open = null;
+      return;
+    }
+    if (open) {
+      open.classList.remove('open');
+      open.nextElementSibling.hidden = true;
+    }
+    var rows = data.rows.filter(function (r) { return data.species[r[1]] === name; })
+      .sort(bySlug);
+    body.firstElementChild.innerHTML = table(rows);
+    body.hidden = false;
+    tr.classList.add('open');
+    open = tr;
+  }
+
+  fetch(URL, {credentials: 'same-origin'})
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (payload) {
+      data = payload;
+      controls.hidden = false;
+      [q, fsp, fst].forEach(function (el) {
+        el.addEventListener('input', function () { render(); });
+      });
+      clear.addEventListener('click', function () {
+        q.value = ''; fsp.value = ''; fst.value = ''; filter = null;
+        Array.prototype.forEach.call(document.querySelectorAll('.qtile.on'),
+          function (b) { b.classList.remove('on'); });
+        render();
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('.qtile'),
+        function (b) {
+          b.addEventListener('click', function () {
+            var key = b.getAttribute('data-flag');
+            filter = filter === key ? null : key;
+            Array.prototype.forEach.call(document.querySelectorAll('.qtile'),
+              function (o) { o.classList.toggle('on', o === b && filter); });
+            render();
+          });
+        });
+      Array.prototype.forEach.call(document.querySelectorAll('tr.sprow'),
+        function (tr) {
+          tr.addEventListener('click', function () { drill(tr); });
+          tr.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); drill(tr); }
+          });
+        });
+    })
+    .catch(function (e) {
+      results.innerHTML = '<p class="warn">Could not load the variety payload (' +
+        esc(e.message) + '). The species counts above are still correct; ' +
+        'search and drill-down need it.</p>';
+      results.hidden = false;
+    });
+}());
+"""
+
+
+def render_varieties_html(model: dict, generated_at: str = None) -> str:
+    """/admin/varieties — what the catalogue IS. No decisions on this page.
+
+    Reads the page ledger, which until DAL-283 nothing did. Everything that
+    needs a person moved to /admin/varieties/review.
+    """
+    _, subtitle = _subtitle(generated_at)
+    inv = model.get("inventory") or {}
+    v = model.get("varieties") or {}
+
+    if not inv.get("present"):
+        content = _inventory_missing(inv)
+        return render_page(
+            title="treestock admin — varieties",
+            heading="treestock admin · varieties",
+            subtitle=subtitle, content=content,
+            extra_css=INVENTORY_CSS, nav=render_nav("/admin/varieties"))
+
+    stale = ""
+    updated = inv.get("updated") or ""
+    if updated and updated < date.today().isoformat():
+        stale = (f' <span class="warn">Ledger last written {_esc(updated)}, '
+                 f'so tonight\'s build has not run yet.</span>')
+
+    queue = len(v.get("siblings") or []) + len(v.get("orphan_watches") or [])
+    parts = [
+        _inventory_states(inv),
+        f'<p class="small muted">{inv.get("total", 0):,} pages in the ledger, '
+        f'{inv.get("species_count", 0)} species with a live page. '
+        f'<a href="/admin/varieties/review">Review queue</a> ({queue}).{stale}</p>',
+        _inventory_attention(inv),
+        _inventory_controls(inv),
+        '<section id="results" hidden></section>',
+        _inventory_species_table(inv),
+        f'<script>{INVENTORY_JS}</script>',
+    ]
+    return render_page(
+        title="treestock admin — varieties",
+        heading="treestock admin · varieties",
+        subtitle=subtitle,
+        content="\n".join(parts),
+        extra_css=INVENTORY_CSS,
         nav=render_nav("/admin/varieties"),
     )
 
@@ -1326,16 +2025,31 @@ ADMIN_RENDERERS = {
     "/admin/subscribers": render_subscribers_html,
     "/admin/nurseries": render_nurseries_html,
     "/admin/varieties": render_varieties_html,
+    "/admin/varieties/review": render_variety_review_html,
+}
+
+# path -> builder, for the admin surfaces that answer JSON rather than HTML.
+# Same Cloudflare Access gate, same read-only posture; separate from
+# ADMIN_RENDERERS so the server cannot send one as the other.
+ADMIN_JSON = {
+    "/admin/varieties.json": lambda model: build_varieties_payload(
+        model.get("inventory") or {}),
 }
 
 
 if __name__ == "__main__":
-    # Local smoke test: render one page from whatever data dir is passed.
-    #   python3 admin_view.py [data_dir] [/admin|/admin/subscribers|/admin/nurseries]
+    # Local smoke test, and the only way to see /admin at all: the live pages sit
+    # behind Cloudflare Access, so curl gets a login redirect rather than the
+    # page. Render it here instead.
+    #   python3 admin_view.py [data_dir] [/admin/varieties|/admin/varieties.json|...]
     import sys
     data_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else DATA_DIR
     path = sys.argv[2] if len(sys.argv) > 2 else "/admin"
+    if path in ADMIN_JSON:
+        print(json.dumps(ADMIN_JSON[path](load_admin_data(data_dir)), indent=1))
+        sys.exit(0)
     render = ADMIN_RENDERERS.get(path)
     if render is None:
-        sys.exit(f"unknown admin page {path!r}; try one of {list(ADMIN_RENDERERS)}")
+        sys.exit(f"unknown admin page {path!r}; try one of "
+                 f"{list(ADMIN_RENDERERS) + list(ADMIN_JSON)}")
     print(render(load_admin_data(data_dir)))
