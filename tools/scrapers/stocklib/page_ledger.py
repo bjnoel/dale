@@ -47,6 +47,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import stat
 import tempfile
 from collections import Counter
 from dataclasses import dataclass, field
@@ -476,6 +477,17 @@ def _atomic_write(path: Path, data: bytes) -> None:
     try:
         with os.fdopen(fd, "wb") as f:
             f.write(data)
+        # mkstemp hardcodes 0600, and os.replace carries the temp file's mode to
+        # the destination, so an atomic write quietly makes every page owner-only.
+        # Caddy serves these as another user and answers 403 for them. Match the
+        # file being replaced, or fall back to what a plain open() would have
+        # produced under the current umask.
+        try:
+            os.chmod(tmp, stat.S_IMODE(os.stat(path).st_mode))
+        except FileNotFoundError:
+            umask = os.umask(0)
+            os.umask(umask)
+            os.chmod(tmp, 0o666 & ~umask)
         os.replace(tmp, path)
     except BaseException:
         Path(tmp).unlink(missing_ok=True)

@@ -11,6 +11,8 @@ Run from repo root with:
     python3 -m unittest discover tests/
 """
 import json
+import os
+import stat
 import sys
 import tempfile
 import unittest
@@ -571,6 +573,31 @@ class WritePageTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             write_page(Path(tmp) / "hass.html", "a")
             self.assertEqual([p.name for p in Path(tmp).iterdir()], ["hass.html"])
+
+    def test_new_page_is_readable_by_the_web_server(self):
+        """tempfile.mkstemp hardcodes 0600 and os.replace carries the temp
+        file's mode to the destination, so an atomic write silently produced a
+        page only its owner could read. Caddy runs as another user: on
+        2026-08-17 that turned all 2,570 variety pages and 232 combo pages into
+        403s the moment the ledger first wrote them, and Cloudflare cached the
+        403. A page nobody can read is worse than a page that churns its mtime,
+        which is the problem the atomic write was added to solve.
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "hass.html"
+            write_page(path, "<html>hi</html>")
+            mode = stat.S_IMODE(path.stat().st_mode)
+            self.assertTrue(mode & stat.S_IRGRP, f"group cannot read: {mode:04o}")
+            self.assertTrue(mode & stat.S_IROTH, f"other cannot read: {mode:04o}")
+
+    def test_rewrite_preserves_the_existing_mode(self):
+        """Whatever ops set on a served file must survive a nightly rebuild."""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "hass.html"
+            write_page(path, "a")
+            os.chmod(path, 0o640)
+            write_page(path, "b")
+            self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o640)
 
 
 class PlanReportingTest(GuardTestCase):
