@@ -34,7 +34,14 @@
     "almond-self-pollinating-paper-shell": "almond-self-pollinating-papershell",
     "apple-2-way-gala-red-delicious": "apple-2way-gala-red-delicious",
     "apple-2-way-gala-red-fuji": "apple-2way-gala-red-fuji",
-    "mango-bamberoo": "mango-bambaroo"
+    "banana-tree-blue-java": "banana-blue-java",
+    "banana-tree-cavendish": "banana-cavendish",
+    "banana-tree-goldfinger": "banana-goldfinger",
+    "banana-tree-musa-nathan": "banana-nathan",
+    "mango-bambaroo-kp": "mango-bambaroo",
+    "mango-bambaroo-kp-l": "mango-bambaroo",
+    "mango-bamberoo": "mango-bambaroo",
+    "passionfruit-fruit-banana": "passionfruit-banana"
   },
   "deny": [
     "apple-mint",
