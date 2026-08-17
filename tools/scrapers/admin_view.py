@@ -505,6 +505,127 @@ def sibling_tier(base: str, other: str) -> str:
     return "judgement"
 
 
+_NEAR_MISS_TIER_ORDER = ("hyphen", "letter", "code")
+
+_NEAR_MISS_LABEL = {
+    "hyphen": "hyphens only",
+    "letter": "one letter apart",
+    "code": "inside a code",
+}
+
+
+def one_edit_apart(a: str, b: str) -> str:
+    """The character(s) separating two slugs one edit apart, else "".
+
+    One substitution, insertion or deletion. Returns the character from each
+    side (or the single inserted one) rather than a bare bool, because the tier
+    hangs on what changed: `mango-bambaroo`/`mango-bamberoo` differ by a letter
+    and are one plant, `macadamia-814`/`macadamia-816` differ by a digit and are
+    two cultivars. A bool would flatten the two most different cases in the
+    queue into one row type.
+    """
+    if a == b:
+        return ""
+    la, lb = len(a), len(b)
+    if abs(la - lb) > 1:
+        return ""
+    if la == lb:
+        diff = [i for i in range(la) if a[i] != b[i]]
+        return a[diff[0]] + b[diff[0]] if len(diff) == 1 else ""
+    if la > lb:                      # a is the shorter from here on
+        a, b, la = b, a, lb
+    for i in range(la):
+        if a[i] != b[i]:
+            return b[i] if a[i:] == b[i + 1:] else ""
+    return b[-1]
+
+
+def near_miss_tier(a: str, b: str) -> str:
+    """How likely a near-miss pair is to be one plant: hyphen, letter, code, "".
+
+    Ordered by how little thought each needs, the same shape as `sibling_tier`.
+    Hyphens are settled (`paper-shell` and `papershell` are one plant twice).
+    A letter apart is usually a respelling. Inside a code it is usually two
+    selections, and that tier is where the ones you must not fold cluster:
+    macadamia 814 vs 816, jackfruit J33 vs J36, pomelo K13 vs K15, abiu E4 vs
+    Z4.
+
+    The tier reads the TOKEN the edit falls in, not the character that changed.
+    `abiu-e4` and `abiu-z4` differ by a letter and are two different selections,
+    because `e4` is a code and codes do not have spellings. Tiering on the
+    character alone filed that pair next to `lemon-meyer`/`lemon-myer`.
+    """
+    if a.replace("-", "") == b.replace("-", ""):
+        return "hyphen"
+    if not one_edit_apart(a, b):
+        return ""
+    ta, tb = a.split("-"), b.split("-")
+    if len(ta) == len(tb):
+        changed = [(x, y) for x, y in zip(ta, tb) if x != y]
+    else:
+        # An edit that adds or removes a hyphen, which the hyphen branch above
+        # has already claimed unless the rest also differs. Rare enough that
+        # comparing every token beats guessing which one moved.
+        changed = [(x, y) for x, y in zip(ta, tb) if x != y] or [(a, b)]
+    if any(c.isdigit() for pair in changed for c in "".join(pair)):
+        return "code"
+    return "letter"
+
+
+def near_miss_pairs(slugs, dismissed=frozenset()) -> list:
+    """Pairs of slugs a hyphen or one edit apart, tiered, dismissals removed.
+
+    Prefix matching structurally cannot see any of these: `bambaroo` is not a
+    prefix of `bamberoo`, and `paper-shell` is not a prefix of `papershell`. So
+    `mango-bamberoo` appeared on no queue on this page at all, and the only
+    thing pointing at the problem was a reader noticing four mango pages.
+
+    Measured on the live index 2026-08-17: 2,562 live slugs give 50 hyphen
+    collisions and 76 further one-edit pairs. Finite, unlike the 498 sibling
+    pairs, which is what makes working it to zero a realistic thing to ask.
+
+    Candidates only, never folded automatically. `pear-nashi-hosui` and
+    `pear-nashi-kosui` are one letter apart and are both real nashi cultivars.
+    """
+    # Candidates come from a deletion index, not from comparing every slug with
+    # every other. Two strings are within one edit only if they share a string
+    # with one character removed, so indexing each slug under its own deletions
+    # turns 3.3M comparisons into one pass. Keyed on the species token as well,
+    # because an edit inside the species half would have to survive
+    # canonicalisation to reach a slug at all, and a near miss across two
+    # species is a taxonomy problem rather than a spelling one.
+    #
+    # Hyphen collisions get their own exact index rather than riding on the
+    # deletion one, because they are not bounded by a single edit:
+    # `peach-flor-da-prince` and `peach-flordaprince` are two hyphens apart and
+    # are plainly one plant. Indexing them on the hyphen-stripped string keeps
+    # that tier exact at any distance, which is what makes it the settled tier.
+    index = {}
+    for s in slugs:
+        species = s.split("-")[0]
+        index.setdefault(("~hyphen", s.replace("-", "")), []).append(s)
+        for key in {s} | {s[:i] + s[i + 1:] for i in range(len(s))}:
+            index.setdefault((species, key), []).append(s)
+    seen, pairs = set(), []
+    for group in index.values():
+        if len(group) < 2:
+            continue
+        for i, a in enumerate(sorted(set(group))):
+            for b in sorted(set(group))[i + 1:]:
+                # The index over-generates: "ab" and "ba" share a deletion and
+                # are two edits apart. near_miss_tier is the exact check.
+                key = decisions.sibling_key(a, b)
+                if key in seen or key in dismissed:
+                    continue
+                tier = near_miss_tier(a, b)
+                if not tier:
+                    continue
+                seen.add(key)
+                pairs.append({"a": a, "b": b, "tier": tier})
+    pairs.sort(key=lambda p: (_NEAR_MISS_TIER_ORDER.index(p["tier"]), p["a"], p["b"]))
+    return pairs
+
+
 def load_variety_curation(data_dir: Path, watches_rows, decided: dict = None) -> dict:
     """The variety review queue, built WITHOUT importing cultivar_parsing.
 
@@ -578,13 +699,11 @@ def load_variety_curation(data_dir: Path, watches_rows, decided: dict = None) ->
             })
     siblings.sort(key=lambda g: (_TIER_ORDER.index(g["tier"]), g["base"]))
 
-    # Hyphenation collisions: two slugs that are the same string once the
-    # hyphens come out. Not a prefix relationship, so the sibling scan cannot
-    # see them, and they are always the same plant twice.
-    by_letters = {}
-    for s in slugs:
-        by_letters.setdefault(s.replace("-", ""), []).append(s)
-    spelling = sorted([v for v in by_letters.values() if len(v) > 1])
+    # Near misses: hyphenation collisions and one-edit respellings. Neither is a
+    # prefix relationship, so the sibling scan above cannot see either, and
+    # until DAL-286 the hyphen half was the only one detected and it had no verb.
+    near_misses = near_miss_pairs(slugs, dismissed)
+    near_miss_tiers = Counter(p["tier"] for p in near_misses)
 
     # Watched slugs with no page. The rollout tracks this number and requires
     # it not to grow: each one is an alert whose link 404s.
@@ -602,7 +721,8 @@ def load_variety_curation(data_dir: Path, watches_rows, decided: dict = None) ->
         "overrides": overrides,
         "siblings": siblings,
         "tiers": dict(tier_counts),
-        "spelling": spelling,
+        "near_misses": near_misses,
+        "near_miss_tiers": dict(near_miss_tiers),
         "orphan_watches": orphan_watches,
         "denied_but_watched": denied_but_watched,
     }
@@ -1060,6 +1180,17 @@ def _decide_siblings(action, rows, store, by) -> int:
 
 
 def _decide_curation(action, rows, facts, live_slugs, store, by) -> int:
+    # Everything already queued, plus everything this batch would add. Checking
+    # only the stored queue was enough while aliases arrived one row at a time
+    # from the noise section. The sibling and near-miss sections submit whole
+    # ticked groups, so a batch can now contain both halves of a chain on its
+    # own: ticking the mango-bambaroo group offers `-kp -> bambaroo` next to
+    # `-kp-l -> -kp`, and validating each against a store neither had landed in
+    # yet let both through. promote_curation.merge would then skip one of the
+    # two on an ordering nobody chose.
+    queued = {r["from"]: r.get("to") for r in
+              (store.get("curation_pending") or [])
+              if r.get("kind") == decisions.ALIAS}
     for row in rows:
         slug = str((row or {}).get("slug") or "")
         if action == "unqueue":
@@ -1078,15 +1209,20 @@ def _decide_curation(action, rows, facts, live_slugs, store, by) -> int:
             # A -> B where B is itself queued to move to C would land two
             # aliases that disagree. canonical_cultivar applies the map once,
             # with no chain resolution, so B would keep pointing at C and A
-            # would stop at B.
-            queued = {r["from"]: r.get("to") for r in
-                      (store.get("curation_pending") or [])
-                      if r.get("kind") == decisions.ALIAS}
+            # would stop at B. Both directions, because the chain is just as
+            # broken when the new row is the one being pointed AT.
             if target in queued:
                 raise DecisionRefused(
                     f"{slug} -> {target}, but {target} is already queued to "
                     f"move to {queued[target]}. Aliases are applied once, not "
                     f"chained, so point this at {queued[target]} instead.")
+            pointed_at = [k for k, v in queued.items() if v == slug]
+            if pointed_at:
+                raise DecisionRefused(
+                    f"{slug} -> {target}, but {pointed_at[0]} is already queued "
+                    f"to move to {slug}. Aliases are applied once, not chained, "
+                    f"so fold {pointed_at[0]} into {target} instead.")
+            queued[slug] = target
 
     for row in rows:
         slug = str(row["slug"])
@@ -1843,26 +1979,94 @@ def _variety_overrides_section(overrides: dict) -> str:
         f'</div></div></section>')
 
 
-def _spelling_section(groups) -> str:
-    """Slugs that are the same string once the hyphens come out.
+def _fold_option(slug: str, target: str, facts: dict) -> str:
+    """One direction of a fold, labelled with what it costs.
 
-    The sibling scan is prefix matching, so it structurally cannot see these:
-    `paper-shell` is not a prefix of `papershell`. Unlike a sibling pair, there
-    is nothing to adjudicate. One plant, spelled two ways, twice on the site.
+    The nursery counts are the whole decision. Folding the 5-nursery page into
+    the 1-nursery one is legal, survives every guard, and is wrong, so the count
+    goes in the option text rather than a column the eye has to join up.
     """
-    if not groups:
+    n = (facts.get(slug) or {}).get("nurseries", 0)
+    m = (facts.get(target) or {}).get("nurseries", 0)
+    return (f'<option value="{_esc(slug)}|{_esc(target)}">'
+            f'{_esc(slug)} ({n}) &rarr; {_esc(target)} ({m})</option>')
+
+
+def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str:
+    """Slugs a hyphen or one edit apart, and the verb that folds one in.
+
+    This section is DAL-286 and it exists because of four mango pages. Bambaroo
+    was live at `mango-bambaroo` (5 nurseries), `mango-bambaroo-kp`,
+    `mango-bambaroo-kp-l` and `mango-bamberoo`, and the review page could not
+    act on any of them: the redirect table excludes live pages by design, and
+    the alias queue filters on `flags["noisy"]`, which none of them carry. The
+    sibling queue found two of the four and told the reviewer to "queue an alias
+    in the section above", where there was no row for them. `mango-bamberoo`
+    was on no queue at all.
+
+    Direction is a choice here, unlike the sibling queue where `other` is always
+    `base` plus a suffix. Both directions are offered with the nursery counts on
+    them, and neither is pre-selected: the pair that made this section necessary
+    (`mango-bambaroo` 5 vs `mango-bamberoo` 1) is obvious, and `apple-johnathan`
+    vs `apple-jonathan` at one nursery each is not.
+    """
+    if not pairs:
         return ""
-    rows = "".join(
-        f'<tr><td>{_esc(" / ".join(g))}</td></tr>' for g in groups)
+    facts = {f["slug"]: f for f in (inv.get("facts") or [])}
+    live = {s for s, f in facts.items() if f["state"] == LIVE}
+    queued = {r.get("from") for r in (store.get("curation_pending") or [])}
+    rows = []
+    for p in pairs:
+        a, b = p["a"], p["b"]
+        if not _matches(q, a, b):
+            continue
+        # An alias target must be a live page; the endpoint refuses anything
+        # else. Offer only the directions it would accept rather than render a
+        # control whose job is to produce a 409.
+        opts = ""
+        if b in live:
+            opts += _fold_option(a, b, facts)
+        if a in live:
+            opts += _fold_option(b, a, facts)
+        if not opts:
+            continue
+        mark = ' <span class="fl">queued</span>' if {a, b} & queued else ""
+        rows.append(
+            f'<tr data-a="{_esc(a)}" data-b="{_esc(b)}">'
+            f'<td>{_variety_link(a, a)} <span class="muted">vs</span> '
+            f'{_variety_link(b, b)}{mark}</td>'
+            f'<td><span class="fl">{_esc(_NEAR_MISS_LABEL.get(p["tier"], p["tier"]))}'
+            f'</span></td>'
+            f'<td><select class="nm"><option value="">leave</option>{opts}'
+            f'</select></td>'
+            f'<td><label class="pick"><input type="checkbox" class="nmd"> '
+            f'different plants</label></td></tr>')
+    if not rows:
+        return ""
+    counts = " · ".join(f'{tiers.get(t, 0)} {_NEAR_MISS_LABEL[t]}'
+                        for t in _NEAR_MISS_TIER_ORDER if tiers.get(t))
     return (
-        f'<section><h2>Same slug, different hyphens ({len(groups)})</h2>'
-        f'<p class="muted">Identical once the hyphens are removed. Prefix '
-        f'matching cannot find these, and there is no judgement to make: they '
-        f'are one plant spelled two ways. Alias one onto the other above.</p>'
-        f'<table class="mini"><tbody>{rows}</tbody></table></section>')
+        f'<section id="nearmiss"><h2>Near-miss slugs ({len(rows)} pairs)</h2>'
+        f'{_filter_note(q, len(rows), len(pairs))}'
+        f'<p class="muted">{counts}. Prefix matching cannot see any of these, '
+        f'so the sibling queue below does not list them. Hyphen pairs are one '
+        f'plant twice. A letter apart is usually a respelling '
+        f'(<code>mango-bamberoo</code>). A digit apart is usually two '
+        f'selections: <code>macadamia-814</code> and <code>macadamia-816</code> '
+        f'are different cultivars, and so are <code>pear-nashi-hosui</code> and '
+        f'<code>pear-nashi-kosui</code> despite being one letter apart. Folding '
+        f'queues an alias and takes two nights; marking a pair distinct hides '
+        f'it here for good and changes nothing on the site.</p>'
+        f'<div class="bulkbar">'
+        f'<button type="button" data-action="alias">Fold chosen</button>'
+        f'<button type="button" data-action="distinct">Mark chosen distinct</button>'
+        f'<span class="small muted" id="nsel">nothing chosen</span></div>'
+        f'<div class="tscroll"><table class="mini vt"><thead><tr><th>Pair</th>'
+        f'<th>Tier</th><th>Fold</th><th></th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody></table></div></section>')
 
 
-def _sibling_review_section(siblings, tiers=None) -> str:
+def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "") -> str:
     """The queue that needs a person, and now remembers being worked.
 
     Deliberately NOT auto-folded. avocado-hass-lamb is Lamb Hass, a different
@@ -1876,53 +2080,81 @@ def _sibling_review_section(siblings, tiers=None) -> str:
     opened it. Tiering is on top of that, and it is worth being honest about how
     little it does: 48 of 493 lines differ by listing noise alone. The other 445
     need someone who knows the plants, and most of them are probably correct.
+
+    DAL-286 adds the other half. Only one of the two answers was recordable, so
+    the queue could be emptied of pairs that are different plants and never of
+    pairs that are the same one. `mango-bambaroo` vs `mango-bambaroo-kp` sat
+    here reading "to fold one INTO the other, queue an alias in the section
+    above", and that section lists only slugs carrying listing noise, which this
+    pair does not. The advice was correct and there was nowhere to follow it.
+
+    Direction is fixed: `other` is always `base` plus a suffix, so folding runs
+    other -> base and there is nothing to choose. A base that is not itself live
+    gets no fold control, because the endpoint would refuse the alias.
     """
     tiers = tiers or {}
     dismissed = tiers.get("dismissed", 0)
+    live = {f["slug"] for f in ((inv or {}).get("facts") or [])
+            if f["state"] == LIVE}
     if not siblings:
         return (f'<section><h2>Sibling review queue</h2>'
                 f'<p class="muted">Nothing left to adjudicate. {dismissed} pair(s) '
                 f'marked distinct.</p></section>')
     rows = []
-    total = 0
+    total = 0      # pairs in the queue at all
+    matched = 0    # pairs the filter kept, which is what the cap applies to
     for group in siblings:
         base_w = (f' <span class="small muted">({group["base_watchers"]} watching)</span>'
                   if group["base_watchers"] else "")
         for s in group["siblings"]:
             total += 1
+            if not _matches(q, group["base"], s["slug"]):
+                continue
+            matched += 1
             if len(rows) >= SIBLING_BATCH:
                 continue
             watch = (f' <span class="small muted">({s["watchers"]} watching)</span>'
                      if s["watchers"] else "")
+            fold = ('<label class="pick"><input type="checkbox" class="fold"> '
+                    'same plant</label>' if group["base"] in live else
+                    '<span class="small muted">base not live</span>')
             rows.append(
                 f'<tr data-base="{_esc(group["base"])}" data-other="{_esc(s["slug"])}">'
                 f'<td>{_esc(group["base"])}{base_w}</td>'
                 f'<td>{_esc(s["slug"])}{watch}</td>'
                 f'<td><span class="fl">{_esc(_TIER_LABEL.get(s["tier"], s["tier"]))}</span></td>'
+                f'<td>{fold}</td>'
                 f'<td><label class="pick"><input type="checkbox" class="dis"> '
                 f'different plants</label></td></tr>')
+    if not rows:
+        return (f'<section><h2>Sibling review queue</h2><p class="muted">No '
+                f'sibling pair matches <code>{_esc(q)}</code>. {total} in the '
+                f'queue overall.</p></section>')
     counts = " · ".join(f'{tiers.get(t, 0)} {_TIER_LABEL[t]}' for t in _TIER_ORDER)
     more = ""
-    if total > len(rows):
-        more = (f'<p class="small muted">Showing the first {len(rows)} of {total}, '
+    if matched > len(rows):
+        more = (f'<p class="small muted">Showing the first {len(rows)} of {matched}, '
                 f'easiest first. Marking a pair distinct removes it permanently, '
                 f'so the next {len(rows)} arrive on reload. Nobody adjudicates '
-                f'{total} pairs in one sitting, and pretending otherwise is how '
-                f'the queue stayed at {total}.</p>')
+                f'{matched} pairs in one sitting, and pretending otherwise is how '
+                f'the queue stayed at {matched}.</p>')
     return (
         f'<section id="siblings"><h2>Sibling review queue ({total} pairs)</h2>'
+        f'{_filter_note(q, matched, total)}'
         f'<p class="muted">{counts}'
         f'{f" · {dismissed} already marked distinct" if dismissed else ""}. '
         f'Longer slugs sharing a base. Some are one cultivar fragmented across '
         f'listings; some are genuinely different plants (avocado-hass-lamb is '
-        f'Lamb Hass). Marking a pair distinct removes it from this queue for '
-        f'good, which is the only thing that makes the queue finite. To fold one '
-        f'INTO the other, queue an alias in the section above.</p>'
+        f'Lamb Hass). Both answers are recordable: distinct removes the pair '
+        f'from this queue for good and changes nothing on the site, same plant '
+        f'queues an alias folding the sibling into the base, which lands in git '
+        f'and takes two nights to show up as a redirect.</p>'
         f'<div class="bulkbar">'
+        f'<button type="button" data-action="alias">Fold ticked into base</button>'
         f'<button type="button" data-action="distinct">Mark ticked as distinct</button>'
         f'<span class="small muted" id="ssel">none ticked</span></div>'
         f'<div class="tscroll"><table class="mini vt"><thead><tr><th>Base</th>'
-        f'<th>Sibling</th><th>Tier</th><th></th></tr></thead>'
+        f'<th>Sibling</th><th>Tier</th><th></th><th></th></tr></thead>'
         f'<tbody>{"".join(rows)}</tbody></table></div>{more}</section>')
 
 
@@ -1937,6 +2169,16 @@ REVIEW_CSS = """
   input.rt, input.al { font:inherit; font-size:0.8rem; padding:4px 6px;
     border:1px solid #d1d5db; border-radius:6px; width:100%; min-width:160px; }
   input.rt.dirty, input.al.dirty { border-color:#065f46; background:#ecfdf5; }
+  select.nm { font:inherit; font-size:0.78rem; padding:4px 6px; max-width:100%;
+    border:1px solid #d1d5db; border-radius:6px; background:#fff; }
+  select.nm.dirty { border-color:#065f46; background:#ecfdf5; }
+  form.qbox { display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    margin:0 0 16px; font-size:0.82rem; }
+  form.qbox input { font:inherit; padding:6px 9px; border:1px solid #d1d5db;
+    border-radius:6px; min-width:180px; }
+  form.qbox button { font:inherit; font-size:0.82rem; padding:6px 12px;
+    border:1px solid #065f46; border-radius:8px; background:#065f46; color:#fff;
+    cursor:pointer; }
   label.pick { white-space:nowrap; font-size:0.78rem; cursor:pointer; }
   button.undo { font:inherit; font-size:0.75rem; padding:3px 8px;
     border:1px solid #d1d5db; border-radius:6px; background:#fff; cursor:pointer; }
@@ -1960,6 +2202,34 @@ REVIEW_CSS = """
   #flash.ok { display:block; background:#d1fae5; color:#065f46; }
   #flash.bad { display:block; background:#fee2e2; color:#991b1b; }
 """
+
+
+def _filter_box(q: str) -> str:
+    """Narrow every section to one cultivar.
+
+    A plain GET form, so the filtered view has a URL that can be reloaded after
+    a decision lands and the page reloads itself. A client-side filter would
+    look identical and do nothing, because the rows this exists to reach are
+    past the sibling queue's 100-row cap and are not in the DOM at all.
+    """
+    clear = ('  <a href="/admin/varieties/review">clear</a>' if q else "")
+    return (
+        f'<form class="qbox" method="get" action="/admin/varieties/review">'
+        f'<label for="q">Filter to</label> '
+        f'<input id="q" name="q" value="{_esc(q)}" spellcheck="false" '
+        f'placeholder="bambaroo" autocomplete="off">'
+        f'<button type="submit">Filter</button>{clear}</form>')
+
+
+def _matches(q: str, *slugs) -> bool:
+    return not q or any(q in (s or "").lower() for s in slugs)
+
+
+def _filter_note(q: str, shown: int, total: int) -> str:
+    if not q or shown == total:
+        return ""
+    return (f'<p class="small muted">Filtered to <code>{_esc(q)}</code>: '
+            f'{shown} of {total}.</p>')
 
 
 def _pending_section(store: dict) -> str:
@@ -2004,7 +2274,7 @@ def _pending_section(store: dict) -> str:
         f'</table></section>')
 
 
-def _redirect_manage_section(inv: dict, store: dict) -> str:
+def _redirect_manage_section(inv: dict, store: dict, q: str = "") -> str:
     """The 137 redirects and 68 tombstones, with the two verbs that apply.
 
     A live page is deliberately absent from this table. It cannot be redirected
@@ -2017,8 +2287,12 @@ def _redirect_manage_section(inv: dict, store: dict) -> str:
         return ""
     queued = set((store.get("redirects") or {}))
     rows = []
+    kinds = 0
     for f in inv["facts"]:
         if f["state"] not in (REDIRECT, TOMBSTONE, RETIRED):
+            continue
+        kinds += 1
+        if not _matches(q, f["slug"], f["redirect_to"]):
             continue
         stamp = row_stamp({"state": f["state"], "redirect_to": f["redirect_to"]})
         pending = ' <span class="fl">queued</span>' if f["slug"] in queued else ""
@@ -2049,10 +2323,13 @@ def _redirect_manage_section(inv: dict, store: dict) -> str:
             f'<td class="num">{f["watchers"] or ""}</td>'
             f'<td class="small muted">{_esc(f["since"])}</td></tr>')
     if not rows:
-        return ('<section><h2>Redirects and tombstones</h2>'
-                '<p class="muted">None yet.</p></section>')
+        return (f'<section><h2>Redirects and tombstones</h2>'
+                f'<p class="muted">'
+                f'{f"No redirect or tombstone matches {_esc(q)}." if q else "None yet."}'
+                f'</p></section>')
     return (
         f'<section id="redirects"><h2>Redirects and tombstones ({len(rows)})</h2>'
+        f'{_filter_note(q, len(rows), kinds)}'
         f'<p class="muted">Tick the rows, set a target where one is needed, then '
         f'pick a verb. Each verb only applies to some states, and it will say so '
         f'rather than send something the build would refuse: you cannot retarget '
@@ -2069,7 +2346,7 @@ def _redirect_manage_section(inv: dict, store: dict) -> str:
         f'</tr></thead><tbody>{"".join(rows)}</tbody></table></div></section>')
 
 
-def _alias_queue_section(inv: dict, store: dict) -> str:
+def _alias_queue_section(inv: dict, store: dict, q: str = "") -> str:
     """Live pages whose slug is wrong, and the only verb that can fix one.
 
     62 of these shadow a clean page that already exists, which is two indexed
@@ -2083,8 +2360,12 @@ def _alias_queue_section(inv: dict, store: dict) -> str:
         return ""
     queued = {r.get("from") for r in (store.get("curation_pending") or [])}
     rows = []
+    noisy = 0
     for f in inv["facts"]:
         if not f["flags"].get("noisy"):
+            continue
+        noisy += 1
+        if not _matches(q, f["slug"], f.get("clean_twin")):
             continue
         twin = f.get("clean_twin") or ""
         pending = ' <span class="fl">queued</span>' if f["slug"] in queued else ""
@@ -2102,6 +2383,7 @@ def _alias_queue_section(inv: dict, store: dict) -> str:
     return (
         f'<section id="aliases"><h2>Live slugs carrying listing noise '
         f'({len(rows)})</h2>'
+        f'{_filter_note(q, len(rows), noisy)}'
         f'<p class="muted">{shadowing} of these shadow a clean page that '
         f'already exists, pre-filled below. Queueing an alias does not change '
         f'anything tonight: it lands in <code>variety_overrides.json</code> as '
@@ -2345,26 +2627,128 @@ REVIEW_JS = """
     });
   }
 
-  // -- sibling dismissals -----------------------------------------------------
+  // -- near misses ------------------------------------------------------------
+  // A select rather than a text box: both directions are legal and only one is
+  // right, so the two are spelled out with their nursery counts and the
+  // reviewer picks. Nothing is pre-selected, because a default here is the
+  // page guessing which of two plants is the real one.
+  var nsec = document.getElementById('nearmiss');
+  if (nsec) {
+    var nrows = Array.prototype.slice.call(nsec.querySelectorAll('tbody tr'));
+    var nsel = document.getElementById('nsel');
+    function chosenFolds() {
+      return nrows.filter(function (tr) { return tr.querySelector('.nm').value; });
+    }
+    function chosenDistinct() {
+      return nrows.filter(function (tr) { return tr.querySelector('.nmd').checked; });
+    }
+    function refreshN() {
+      var f = chosenFolds().length, d = chosenDistinct().length;
+      var bits = [];
+      if (f) bits.push(f + ' to fold');
+      if (d) bits.push(d + ' distinct');
+      nsel.textContent = bits.length ? bits.join(', ') : 'nothing chosen';
+    }
+    nrows.forEach(function (tr) {
+      var sel = tr.querySelector('.nm');
+      var dis = tr.querySelector('.nmd');
+      // The two answers contradict each other. Letting both be set and picking
+      // one at submit time would apply an answer nobody gave.
+      sel.addEventListener('change', function () {
+        if (sel.value) dis.checked = false;
+        sel.classList.toggle('dirty', !!sel.value);
+        refreshN();
+      });
+      dis.addEventListener('change', function () {
+        if (dis.checked) { sel.value = ''; sel.classList.remove('dirty'); }
+        refreshN();
+      });
+    });
+    nsec.querySelectorAll('.bulkbar button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var action = btn.getAttribute('data-action');
+        if (action === 'alias') {
+          var rows = chosenFolds().map(function (tr) {
+            var parts = tr.querySelector('.nm').value.split('|');
+            return {slug: parts[0], target: parts[1]};
+          });
+          // Least safe: folding a page carried by several nurseries into one
+          // carried by fewer. Legal, survives every guard, and usually backwards.
+          var risky = chosenFolds().filter(function (tr) {
+            var t = tr.querySelector('.nm');
+            var txt = t.options[t.selectedIndex].textContent;
+            var n = txt.match(/\\((\\d+)\\)[^(]*\\((\\d+)\\)/);
+            return n && Number(n[1]) > Number(n[2]);
+          }).map(function (tr) {
+            return tr.querySelector('.nm').value.replace('|', ' \\u2192 ');
+          });
+          submit('alias', rows, risky);
+        } else {
+          submit('distinct', chosenDistinct().map(function (tr) {
+            return {base: tr.getAttribute('data-a'),
+                    other: tr.getAttribute('data-b')};
+          }), []);
+        }
+      });
+    });
+  }
+
+  // -- sibling folds and dismissals -------------------------------------------
   var ssec = document.getElementById('siblings');
   if (ssec) {
     var srows = Array.prototype.slice.call(ssec.querySelectorAll('tbody tr'));
     var ssel = document.getElementById('ssel');
-    function ticked() {
-      return srows.filter(function (tr) { return tr.querySelector('.dis').checked; });
+    function tickedBy(cls) {
+      return srows.filter(function (tr) {
+        var box = tr.querySelector(cls);
+        return box && box.checked;
+      });
+    }
+    function refreshS() {
+      var f = tickedBy('.fold').length, d = tickedBy('.dis').length;
+      var bits = [];
+      if (f) bits.push(f + ' to fold');
+      if (d) bits.push(d + ' distinct');
+      ssel.textContent = bits.length ? bits.join(', ') : 'none ticked';
     }
     srows.forEach(function (tr) {
-      tr.querySelector('.dis').addEventListener('change', function () {
-        var n = ticked().length;
-        ssel.textContent = n ? n + ' ticked' : 'none ticked';
+      var fold = tr.querySelector('.fold');
+      var dis = tr.querySelector('.dis');
+      if (fold) {
+        fold.addEventListener('change', function () {
+          if (fold.checked) dis.checked = false;
+          refreshS();
+        });
+      }
+      dis.addEventListener('change', function () {
+        if (dis.checked && fold) fold.checked = false;
+        refreshS();
       });
     });
-    ssec.querySelector('.bulkbar button').addEventListener('click', function () {
-      var rows = ticked().map(function (tr) {
-        return {base: tr.getAttribute('data-base'),
-                other: tr.getAttribute('data-other')};
+    ssec.querySelectorAll('.bulkbar button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var action = btn.getAttribute('data-action');
+        if (action === 'alias') {
+          // Direction is not a choice: `other` is `base` plus a suffix.
+          var rows = tickedBy('.fold').map(function (tr) {
+            return {slug: tr.getAttribute('data-other'),
+                    target: tr.getAttribute('data-base')};
+          });
+          // Least safe: a pair the tiering called judgement rather than noise.
+          var risky = tickedBy('.fold').filter(function (tr) {
+            return tr.querySelector('.fl').textContent.indexOf('judgement') !== -1;
+          }).map(function (tr) {
+            return tr.getAttribute('data-other') + ' \\u2192 ' +
+                   tr.getAttribute('data-base');
+          });
+          submit('alias', rows, risky);
+        } else {
+          submit('distinct', tickedBy('.dis').map(function (tr) {
+            return {base: tr.getAttribute('data-base'),
+                    other: tr.getAttribute('data-other')};
+          }), []);
+        }
       });
-      submit('distinct', rows, []);
     });
   }
 
@@ -2394,6 +2778,14 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
     an alias changes what the parser does on every surface, lands in git, and
     takes two nights to finish. They are in separate sections, worded
     differently, and the alias one says so.
+
+    `model["q"]` narrows every section to slugs containing it. DAL-286: the
+    sibling queue renders the first 100 of 498 pairs, easiest first, and the
+    pairs that prompted all of this (`mango-bambaroo` vs `mango-bambaroo-kp`)
+    sort past that cap, so the page had the verb and could not show the row it
+    was built for. Working the queue down from the top is one job; answering
+    "what is going on with bambaroo" is a different one, and the second is how
+    these get noticed.
     """
     stamp, _ = _subtitle(generated_at)
     # NOT "View only": this is the one admin page that changes things, and a
@@ -2405,15 +2797,18 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
     inv = model.get("inventory") or {}
     store = model.get("decisions") or {}
     tiers = v.get("tiers") or {}
+    q = str(model.get("q") or "").strip().lower()
     parts = [
         f'<p class="muted">{v.get("index_size", 0)} variety pages in the '
         f'canonical index. <a href="/admin/varieties">Back to the inventory</a>.</p>',
+        _filter_box(q),
         _variety_alarm(v),
         _pending_section(store),
-        _redirect_manage_section(inv, store),
-        _alias_queue_section(inv, store),
-        _spelling_section(v.get("spelling") or []),
-        _sibling_review_section(v.get("siblings") or [], tiers),
+        _redirect_manage_section(inv, store, q),
+        _alias_queue_section(inv, store, q),
+        _near_miss_section(v.get("near_misses") or [],
+                           v.get("near_miss_tiers") or {}, inv, store, q),
+        _sibling_review_section(v.get("siblings") or [], tiers, inv, q),
         _variety_overrides_section(v.get("overrides") or {}),
         f'<script>window.CSRF={json.dumps(model.get("csrf") or "")};'
         f'{REVIEW_JS}</script>',

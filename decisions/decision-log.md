@@ -11827,3 +11827,110 @@ The alert pointed at `git status`, which is the one command guaranteed to look f
 the failing state was a shared file that no longer existed by the time anyone looked.
 `git_sync_explain` reports the exit code; the log line beside it had the sentence that
 mattered. That log file is worth reading before the exit code is believed.
+
+---
+
+## DEC-300 — 2026-08-17 — The queue that told you to use a verb it did not have
+
+**Status:** Shipped. DAL-286. `/admin/varieties/review` gains a near-miss queue, a fold
+verb in two places, and a `?q=` filter.
+
+### How it was found
+
+Benedict opened `/admin/varieties` and saw four live pages for one mango:
+
+```
+mango-bambaroo        live   5 nurseries   $59.95 - $880
+mango-bambaroo-kp     live   1 nursery     $65.00     first_seen 2026-08-13
+mango-bambaroo-kp-l   live   1 nursery     $150.00    first_seen 2026-03-13
+mango-bamberoo        live   1 nursery     $90.00     first_seen 2026-03-07
+```
+
+Then asked how to link them, which the review page could not answer.
+
+### Why the page could not act on any of them
+
+Five sections, and every one of them declined for a different reason:
+
+| Section | Verdict on bambaroo |
+|---|---|
+| Redirects and tombstones | excludes live pages by design, correctly |
+| Live slugs carrying listing noise | filters on `flags["noisy"]`; all four are `noisy: false` |
+| Same slug, different hyphens | compares hyphen-stripped strings, so `bambaroo` != `bamberoo` |
+| Sibling review queue | found `-kp` and `-kp-l`, and could only say "different plants" |
+| Curation in force | read only |
+
+The sibling queue's own help text read "to fold one INTO the other, queue an alias in the
+section above", and the section above lists only slugs carrying listing noise. The advice
+was correct and there was nowhere to follow it. `mango-bamberoo` was on no queue at all,
+because prefix matching cannot see a substitution in the middle of a word.
+
+DAL-285 made "these are two plants" recordable and left "these are one plant" unrecordable,
+so the queue could be emptied in one direction only.
+
+### The near-miss detector, and what it costs to get the tier wrong
+
+Hyphen collisions plus one-edit pairs, within a species. Measured on 2,562 live slugs:
+52 hyphen, 66 a letter apart, 10 inside a code. 128 pairs, finite, against 498 sibling pairs.
+
+The tier reads the TOKEN the edit falls in, not the character that changed. Tiering on the
+character filed `abiu-e4` / `abiu-z4` next to `lemon-meyer` / `lemon-myer`, and those are
+two different selections against one respelling. A test caught it before the page did.
+
+Nothing folds by itself, and the reason is on the page: `pear-nashi-hosui` and
+`pear-nashi-kosui` are one letter apart and are both real nashi cultivars.
+
+### The verb the page had all along, server-side
+
+`_decide_curation` never required `noisy`. It checks that the slug is in the ledger and the
+target is live, and would have accepted `mango-bamberoo -> mango-bambaroo` on the day it
+shipped. What was missing was a row to click, so the fix is renderers and one guard.
+
+### The guard that had to change
+
+The chain check read only the stored queue. That was sufficient while aliases arrived one
+row at a time from the noise section. The new sections submit whole ticked groups, and
+ticking the mango-bambaroo group offers `-kp -> bambaroo` next to `-kp-l -> -kp`: neither
+was in the store during validation, so both landed, and `promote_curation.merge` then
+dropped one on an ordering nobody chose. Validation now accumulates the batch, and checks
+both directions.
+
+Verified failing before the fix and passing after, against the same batch.
+
+### The 100-row cap made the verb unreachable
+
+The sibling queue renders the first 100 of 498 pairs, easiest first, and `mango-bambaroo`
+sorts past that. The page had the verb and could not show the row it was built for. A
+client-side filter would have looked identical and done nothing, because those rows are not
+in the DOM. `?q=` narrows every section server-side: `?q=bambaroo` is a 29KB page with all
+three sibling pairs and the near-miss pair on it, against 318KB unfiltered.
+
+Working a queue down from the top and asking "what is going on with bambaroo" are different
+jobs, and the second is how these get noticed.
+
+### Performance
+
+A deletion index rather than comparing every slug with every other: two strings are within
+one edit only if they share a string with one character removed. 0.06s for the detector.
+Hyphen collisions keep a separate exact index, because they are not bounded by one edit:
+`peach-flor-da-prince` and `peach-flordaprince` are two hyphens apart and are plainly one
+plant, and the deletion index cannot reach them. That pair is a regression test now.
+
+`load_variety_curation` is 1.04s, of which 0.98s is the pre-existing sibling prefix scan.
+
+### What the entry guard does to a young slug, checked rather than assumed
+
+`mango-bambaroo-kp` has 5 live days against `ENTRY_GUARD_LIVE_DAYS = 7`, so folding it now
+does not produce a redirect. The nightly passes `--allow-delete`, so the URL is unlinked
+rather than left live-but-unregenerated: a 404 on a five-day-old page with no watchers,
+which is the entry guard doing its job. Waiting until 21 August gets a redirect instead.
+132 of 2,562 live pages are below that guard today, and many are the `-potted` and `-extra`
+slugs the alias queue targets, so this is the normal case rather than an edge.
+
+### Still open
+
+`Semi-Dwarf Mango | Bambaroo` at Fruit Tree Cottage has no variety page at all. The pipe is
+not the problem: `Semi Dwarf Mango - Bambaroo` parses and `Semi-Dwarf Mango - Bambaroo` does
+not, so the hyphen inside "Semi-Dwarf" defeats the size-word stripping. Three real fruit
+products across the live catalogue, all Fruit Tree Cottage (Palmer, Irwin, Bambaroo). No
+alias fixes it; it is a parser change and is not ticketed.

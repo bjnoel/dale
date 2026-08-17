@@ -510,6 +510,11 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 # from another origin or by another account.
                 model["csrf"] = admin_csrf_token(
                     str(claims.get("email") or claims.get("sub") or ""))
+                # ?q= narrows the review queues to one cultivar. Capped at a
+                # slug's length: it only ever reaches a substring test against
+                # slugs, and an unbounded query string on a page that renders
+                # 2,700 rows is work a request should not be able to ask for.
+                model["q"] = params.get("q", "")[:80]
                 page = render(model)
             except Exception as e:
                 print(f"Admin view render error: {e}", file=sys.stderr)

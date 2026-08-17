@@ -133,6 +133,47 @@ class RefusalTests(WriteHarness):
                                   "target": "avocado-hass-potted"}])
         self.assertIn("already queued", str(cm.exception))
 
+    def test_a_chain_inside_one_batch_is_refused(self):
+        """The hole the DAL-286 sections opened. The chain guard read only the
+        stored queue, which was enough while aliases arrived one row at a time
+        from the noise section. The sibling and near-miss sections submit whole
+        ticked groups, and ticking the mango-bambaroo group offers
+        `-kp -> bambaroo` alongside `-kp-l -> -kp`: neither is in the store
+        during validation, so both landed, and promote_curation.merge then
+        dropped one of them on an ordering nobody chose."""
+        with self.assertRaises(admin_view.DecisionRefused) as cm:
+            self.apply("alias", [
+                {"slug": "avocado-hass-potted", "target": "avocado-hass"},
+                {"slug": "avocado-hass-type-a", "target": "avocado-hass-potted"},
+            ])
+        self.assertIn("not chained", str(cm.exception))
+        self.assertEqual(self.store()["curation_pending"], [])
+
+    def test_a_chain_is_refused_from_either_direction(self):
+        """A -> B queued, then B -> C. Same broken map, and the guard only
+        looked for the other direction."""
+        self.apply("alias", [{"slug": "avocado-hass-type-a",
+                              "target": "avocado-hass-potted"}])
+        with self.assertRaises(admin_view.DecisionRefused) as cm:
+            self.apply("alias", [{"slug": "avocado-hass-potted",
+                                  "target": "avocado-hass"}])
+        self.assertIn("avocado-hass-type-a", str(cm.exception))
+        self.assertEqual(len(self.store()["curation_pending"]), 1)
+
+    def test_two_slugs_folding_onto_one_target_is_not_a_chain(self):
+        """The bambaroo shape itself. Both ASP-WA listings fold into
+        mango-bambaroo, and refusing the second would make the section useless
+        for the case it was built for."""
+        res = self.apply("alias", [
+            {"slug": "avocado-hass-potted", "target": "avocado-hass"},
+            {"slug": "avocado-hass-type-a", "target": "avocado-hass"},
+        ])
+        self.assertEqual(res["applied"], 2)
+        self.assertEqual(
+            {r["from"]: r["to"] for r in self.store()["curation_pending"]},
+            {"avocado-hass-potted": "avocado-hass",
+             "avocado-hass-type-a": "avocado-hass"})
+
     def test_a_batch_is_all_or_nothing(self):
         """Half of 126 rows landing is worse than none: nobody can tell which
         half without reading the file."""
@@ -275,6 +316,87 @@ class SiblingTieringTests(unittest.TestCase):
         self.assertEqual(
             admin_view.sibling_tier("jaboticaba-sabara", "jaboticaba-sabara-2-years-old"),
             "noise")
+
+
+class NearMissTests(unittest.TestCase):
+    """The detector behind DAL-286.
+
+    Bambaroo was live at four slugs and the review page could act on none of
+    them. `mango-bambaroo-kp` and `-kp-l` were in the sibling queue with only
+    "different plants" to say about them; `mango-bamberoo` was on no queue at
+    all, because prefix matching cannot see a substitution in the middle of a
+    word.
+    """
+
+    def test_the_pair_that_was_invisible_is_found(self):
+        self.assertEqual(
+            admin_view.near_miss_tier("mango-bambaroo", "mango-bamberoo"),
+            "letter")
+
+    def test_a_code_is_tiered_away_from_a_respelling(self):
+        """Where the genuinely different selections cluster. Folding
+        macadamia-814 into -816 would merge two cultivars into one page and the
+        redirect makes it stick."""
+        for a, b in (("macadamia-814", "macadamia-816"),
+                     ("jackfruit-j33", "jackfruit-j36"),
+                     ("pomelo-k13", "pomelo-k15"),
+                     ("abiu-e4", "abiu-z4")):
+            with self.subTest(pair=(a, b)):
+                self.assertEqual(admin_view.near_miss_tier(a, b), "code")
+
+    def test_hyphen_collisions_still_rank_first(self):
+        self.assertEqual(
+            admin_view.near_miss_tier("almond-self-pollinating-paper-shell",
+                                      "almond-self-pollinating-papershell"),
+            "hyphen")
+
+    def test_a_hyphen_collision_more_than_one_edit_apart_is_still_found(self):
+        """The deletion index that finds the one-edit pairs cannot reach this,
+        and the tier it belongs to is the one with no judgement in it. Live pair
+        as of 2026-08-17."""
+        pairs = admin_view.near_miss_pairs(["peach-flor-da-prince",
+                                            "peach-flordaprince"])
+        self.assertEqual(pairs, [{"a": "peach-flor-da-prince",
+                                  "b": "peach-flordaprince", "tier": "hyphen"}])
+
+    def test_insertions_deletions_and_substitutions_all_count_as_one_edit(self):
+        self.assertEqual(admin_view.one_edit_apart("plum-satsuma",
+                                                   "plum-satsumas"), "s")
+        self.assertEqual(admin_view.one_edit_apart("apple-jonathan",
+                                                   "apple-johnathan"), "h")
+        self.assertEqual(admin_view.one_edit_apart("lemon-meyer",
+                                                   "lemon-myer"), "e")
+        # Two edits is not a near miss. `mango-choc-anan` and `mango-chok-anon`
+        # are both in the live index and pairing them would be a guess.
+        self.assertEqual(admin_view.one_edit_apart("mango-choc-anan",
+                                                   "mango-chok-anon"), "")
+        self.assertEqual(admin_view.one_edit_apart("apple-gala", "apple-gala"), "")
+
+    def test_unrelated_slugs_are_not_pairs(self):
+        self.assertEqual(admin_view.near_miss_tier("apple-gala", "pear-gala"), "")
+        self.assertEqual(admin_view.near_miss_tier("fig-black-genoa",
+                                                   "fig-white-genoa"), "")
+
+    def test_a_dismissed_pair_does_not_come_back(self):
+        """The property that makes the queue finite. Hosui and Kosui are both
+        real nashi cultivars, one letter apart, and a reviewer must only have to
+        say so once."""
+        slugs = ["pear-nashi-hosui", "pear-nashi-kosui", "mango-bambaroo",
+                 "mango-bamberoo"]
+        self.assertEqual(len(admin_view.near_miss_pairs(slugs)), 2)
+        dismissed = {ad.sibling_key("pear-nashi-kosui", "pear-nashi-hosui")}
+        left = admin_view.near_miss_pairs(slugs, dismissed)
+        self.assertEqual([(p["a"], p["b"]) for p in left],
+                         [("mango-bambaroo", "mango-bamberoo")])
+
+    def test_pairs_from_different_species_are_never_compared(self):
+        """The bucketing is an optimisation and must not change the answer: an
+        edit inside the species half would have to survive canonicalisation to
+        reach a slug at all."""
+        self.assertEqual(admin_view.near_miss_pairs(["mango-alphonso",
+                                                     "mango-alphonzo"]),
+                         [{"a": "mango-alphonso", "b": "mango-alphonzo",
+                           "tier": "letter"}])
 
 
 class NightlyApplicationTests(unittest.TestCase):
