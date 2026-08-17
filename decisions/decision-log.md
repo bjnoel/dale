@@ -12159,3 +12159,109 @@ the UI showed the fold as queued. That is the third time this shape has appeared
 `--seed-reviewed` and `--decisions`, so it has a test.
 
 **First promotion, run today:** 4 aliases, `_readme` and all 14 deny entries intact.
+
+---
+
+## DEC-302 — 2026-08-17 — The target field was a blank box over 2,562 slugs
+
+**Decision:** Offer both typed target fields the live slugs they will actually accept, and
+check what is typed as it is typed.
+
+Benedict, looking at the noise queue: "Are we able to autocomplete the alias target based on
+legitimate end-points?" The answer is yes, and the row he was looking at is the argument for
+it.
+
+`banana-tree-musa-nathan` carries the noise token `tree`. `clean_twin` strips it and computes
+`banana-musa-nathan`, which is not a live page, so nothing was pre-filled and the field came
+up empty. The right target is `banana-nathan`, which is live, which is one of 42 live Banana
+slugs, and which **no queue on the page names**: prefix matching does not relate the two, and
+they are three edits apart so the near-miss detector does not either. 58 of the 120 noisy rows
+are in that shape. The reviewer had to already know the answer, and the only way to check a
+guess was to submit it and read the refusal.
+
+Banana alone turned out to hold at least nine duplicated cultivars nothing on the page could
+name: `banana-tree-{blue-java,cavendish,goldfinger,musa-nathan,plantain-pacific,carnarvon}`,
+`gold-finger` beside `goldfinger`, `horn-plantain` beside `horned-plantain`,
+`pacific-plantain` beside `plantain-french` beside `french-plantain`, and three spellings of
+super dwarf Williams Cavendish. The list is the finding, not just the control.
+
+### What is offered
+
+One `<datalist>` per species of that species' live slugs, shared by the alias field and the
+redirect field. 112 lists, 2,556 options, 79KB, page 369KB -> 448KB.
+
+Scoped per species rather than one list of everything, because an alias across species is
+almost always a mistake and the suggestions should not imply otherwise. Every species gets a
+list, including the 38 with no row on the page: that costs 7KB and makes the client-side
+check exact, so "not a live variety page" can be stated rather than hedged.
+
+`<option>slug` with the end tag omitted, which HTML5 allows and every browser reads as the
+option's value. The attribute form renders the same 112 lists for 125KB. Verified in Chrome
+that it parses to flat siblings with the right values and that `input.list` resolves, because
+if the parser had nested them instead the list would have silently held one option.
+
+Two exclusions, both guaranteed refusals: anything not live, and anything already folding
+somewhere else, queued or committed.
+
+### What is refused, and where
+
+The check reads the datalists back rather than shipping a second copy of the slug list, so
+the set the browser suggests from and the set the check validates against cannot disagree.
+
+| Typed | Verdict | Blocks the batch |
+|---|---|---|
+| `banana-nathan` | accepted | |
+| `banana-tree-musa-nathan` | points at itself | yes |
+| `banana-pacifik` | not a live variety page | yes |
+| `mango-bambaroo-kp` | already folding into `mango-bambaroo`, and an alias applies once rather than chaining | yes |
+| `mango-bambaroo` | a Mango page, not Banana | no |
+
+The last row is the one worth arguing about. A cross-species target is legal and occasionally
+right, so it warns and lets the batch go. A page that refuses a correct value is a page you
+learn to work around, and everything else here depends on the refusals being trusted.
+
+Blocking happens before the confirm dialog, not after. The batch is all-or-nothing, so one
+typo takes the other sixty with it, and a 409 that arrives after the dialog has been read and
+agreed to is the wrong end of the interaction to find it at. Converting to a tombstone clears
+the target, so a stale value in that box is not a reason to stop; only `retarget` and
+`redirect` gate on it. Verified both: `retarget` on a bad target blocked, `tombstone` on the
+same row went through to the dialog.
+
+**0 of 325 fields go red on load.** That was the check worth running: a page that cries wolf
+on 205 pre-filled redirect targets would have been worse than no check at all.
+
+### The chain guard was reading two of its three sources
+
+Asking which endpoints are legitimate turned up one that was not being refused.
+`_decide_curation` checked the stored queue and, since earlier today, the current batch. It
+never checked `variety_overrides.json`. So `mango-bambaroo-kp -> mango-bambaroo` lands in the
+file tonight, and tomorrow a fold onto `mango-bambaroo-kp` would have been accepted:
+`canonical_cultivar` applies the map once, so those products would sit on a slug the build no
+longer produces.
+
+The hazard did not exist and then start existing. It disappeared from view the moment
+`promote_curation.py` ran, and from tonight that runs by itself every night. Automating the
+promoter turned a rare window into a nightly one for the second time in a day, after the
+committed-row rendering fix in DEC-300.
+
+`load_overrides()` is now the single reader, and `apply_decisions` passes the map down rather
+than having the validator reach for a file. Tests patch the loader, so they do not pass or
+fail depending on what was folded last week.
+
+### A correction
+
+The comments I first wrote cited the review page at 189KB. I had measured it with
+`dict(load_variety_curation(...))`, which has no `varieties` key, so the render silently
+dropped the near-miss, sibling and overrides sections. The real page was 369KB. Fixed in the
+follow-up commit; the ratio the decision rests on got better, not worse.
+
+### Not verified
+
+Chrome's suggestion popup is an OS-level widget and does not appear in a screenshot, so
+whether it filters by substring or by prefix is untested. It matters only to the copy: the
+help text says the field "offers the live pages of the same species", which is true either
+way, rather than promising that typing `nathan` finds `banana-nathan`.
+
+**Tests:** `TargetSuggestionTests`, 10 tests on a two-species fixture built from the real
+banana shape, plus 3 refusal tests for the committed-alias chain including one that asserts an
+unrelated committed alias blocks nothing. 2,991 total, all passing.
