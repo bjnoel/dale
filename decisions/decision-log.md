@@ -11735,3 +11735,95 @@ them to is how it stayed at 498.
 
 `run-all-scrapers.sh` passes `--decisions`. Without it every click reaches nothing, which is
 the trap `--seed-reviewed` was in, so a test asserts the shell script calls it.
+
+---
+
+## DEC-299 — 2026-08-17 — Two git processes, one FETCH_HEAD, three halts
+
+**Status:** Fixed, deployed, breaker cleared. Found from Benedict's hourly alert email.
+
+### What the alert said, and why it was wrong
+
+> Autonomous Dale cannot pull: fetch failed or non-divergence pull failure.
+> Fix: cd /opt/dale/repo && git status.
+
+`git status` on the server said the opposite of a problem:
+
+```
+Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
+nothing to commit, working tree clean
+```
+
+Clean tree, one commit behind, fast-forwardable. Running `git_sync_pull` by hand
+succeeded first try. It also succeeded under `env -i` with cron's environment, which was
+the second guess. The repo was never in a bad state; the pull was losing a race.
+
+### The actual error, which the exit code had thrown away
+
+`logs/git-errors.log` had the three lines the exit code was a summary of:
+
+```
+fatal: Cannot fast-forward to multiple branches.
+```
+
+`git pull` decides what to merge by reading `.git/FETCH_HEAD`. A fetch truncates that file
+when it starts and appends to it as refs arrive, and it is one file shared by every git
+process in the repo. This box runs four: the session pull on the hour, the inbound-mail
+merge at :15, the config snapshot at 04:20, and `uptime_monitor.py` **every five minutes**,
+which fetches `/opt/dale/repo` to check for unpushed commits. Every hour on the hour the
+monitor's fetch and the session's pull are in the same repo in the same second.
+
+A fetch that starts inside another fetch's write window appends its own `main` line after
+the first one, and both are marked for merge:
+
+```
+aa48fbc...	branch 'main' of https://github.com/bjnoel/dale
+aa48fbc...	branch 'main' of https://github.com/bjnoel/dale
+```
+
+Two merge heads, so `--ff-only` dies, over a repo that is a clean fast-forward. Reproduced
+on the server on the first attempt by backing HEAD up one commit and running one background
+fetch alongside the pull. 20/20 locally.
+
+### Why it started on 2026-08-17 and not earlier
+
+DEC-297 corrected `git merge-base --is-ancestor` operands that were the wrong way round.
+The old test was true precisely when the repo was **behind**, so the one state that needs a
+pull was the one state that skipped it and returned 0. The pull had effectively never run
+in production. The first hour the repo was genuinely behind (03:00 UTC) it ran, raced, and
+failed. 03:00, 04:00, 05:00, then the 3-failure breaker halted Dale at 06:00.
+
+Fixing a skipped code path is how you find out the code path was broken.
+
+### The fix
+
+`git merge --ff-only origin/main`, not `git pull --ff-only origin main`. The fetch above it
+has already moved the remote-tracking ref, and a ref is never half-written by another
+process. Nothing in `git_sync.sh` runs `git pull` any more, and a test enforces that.
+
+Every fetch that shares this repo now passes `--no-write-fetch-head`, in `git_sync.sh` and
+in `uptime_monitor.py`. The monitor only ever reads `origin/main`; writing `FETCH_HEAD` at
+all was never anything but a hazard to whoever was reading it.
+
+### A second race, found by the test rather than by production
+
+With a fetch loop running continuously the fixed pull still failed, differently:
+
+```
+error: fetching ref refs/remotes/origin/main failed: incorrect old value provided
+```
+
+Two fetches moving `origin/main` off the same old value; the loser exits non-zero. It needs
+no rewrite, only a retry: the winner has already written the ref, so the second attempt has
+nothing to do and succeeds. `git_sync_fetch` retries once after two seconds. This one had
+not fired in production yet, and it is the same collision, an hour of luck away.
+
+### What this cost
+
+Three hours of halt, one hourly alert email, and no lost work. The stranded state was
+recovered by a plain fast-forward.
+
+The alert pointed at `git status`, which is the one command guaranteed to look fine, because
+the failing state was a shared file that no longer existed by the time anyone looked.
+`git_sync_explain` reports the exit code; the log line beside it had the sentence that
+mattered. That log file is worth reading before the exit code is believed.

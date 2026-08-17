@@ -354,7 +354,14 @@ def check_git_divergence(state, now_str):
     if not os.path.isdir(os.path.join(GIT_REPO_PATH, ".git")):
         return False
 
-    if _git("fetch", "-q", "origin") is None:
+    # --no-write-fetch-head: this monitor runs every five minutes in the same
+    # repo the hourly session pulls in, and both land on :00. A fetch truncates
+    # .git/FETCH_HEAD on start and appends on arrival, so this one used to leave
+    # a second "for-merge" line in the file the session's `git pull` was about to
+    # read, and the pull died with "Cannot fast-forward to multiple branches".
+    # Three of those halted Dale on 2026-08-17 (DEC-299). Only origin/main is
+    # read below, so writing FETCH_HEAD at all was never anything but a hazard.
+    if _git("fetch", "-q", "--no-write-fetch-head", "origin") is None:
         print(f"[{now_str}] GIT: fetch failed, skipping divergence check")
         return False
 

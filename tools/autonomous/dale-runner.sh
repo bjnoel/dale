@@ -96,10 +96,14 @@ PULL_STATUS=$?
 
 if [ "$PULL_STATUS" -ne 0 ]; then
     REASON=$(git_sync_explain "$PULL_STATUS")
-    log "Git pull failed ($REASON)."
+    log "Git pull failed ($REASON). See $LOG_DIR/git-errors.log."
     python3 "$SCRIPT_DIR/budget-tracker.py" log-failure "git-pull-conflict"
+    # The reason is an exit code, and on 2026-08-17 (DEC-299) it sent a human to
+    # `git status`, which reported a clean tree one commit behind because the
+    # failure was a race in a file that no longer existed by the time anyone
+    # looked. git's own sentence was in git-errors.log all along. Name it first.
     python3 "$SCRIPT_DIR/notify.py" alert \
-        "Autonomous Dale cannot pull: $REASON. Sessions will keep failing and the 3-failure breaker will halt Dale entirely. Fix: cd /opt/dale/repo && git status." \
+        "Autonomous Dale cannot pull: $REASON. Sessions will keep failing and the 3-failure breaker will halt Dale entirely. Read the error first: tail $LOG_DIR/git-errors.log. Then: cd /opt/dale/repo && git status." \
         >/dev/null 2>&1 || true
     exit 1
 fi

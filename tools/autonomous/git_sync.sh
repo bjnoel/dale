@@ -24,6 +24,19 @@
 # and returns non-zero, because auto-merging the decision log unattended is a
 # worse outcome than stopping and asking.
 #
+# Nothing here runs `git pull`, and every fetch passes --no-write-fetch-head.
+# Both are deliberate. `git pull` decides what to merge by reading .git/FETCH_HEAD,
+# a single file shared by every git process in the repo, and this box runs four of
+# them: this hourly pull, the :15 inbound merge, the 04:20 config snapshot, and
+# uptime_monitor.py fetching every five minutes. A fetch truncates FETCH_HEAD when
+# it starts and appends when refs arrive, so a fetch that starts inside that window
+# leaves two "for-merge" lines behind, and `git pull --ff-only` dies with "Cannot
+# fast-forward to multiple branches" over a repo that was a clean fast-forward.
+# That is exactly what halted Dale on 2026-08-17 (DEC-299): the 05-minute monitor
+# fetch collides with the on-the-hour session pull, so it recurred every hour.
+# `git merge --ff-only origin/main` reads the remote-tracking ref instead, which
+# no other process can be halfway through rewriting.
+#
 # Callers must be in the repo directory. Sourced, not executed.
 
 # Set to 1 by git_sync_push / git_sync_pull when the operation only succeeded
@@ -35,6 +48,22 @@ GIT_SYNC_REBASED=0
 # uncommitted work; a stash-and-retry loop unattended is how data goes missing.
 git_sync_is_clean() {
     [ -z "$(git status --porcelain 2>/dev/null)" ]
+}
+
+# Fetch origin, retrying once. The other half of the shared-repo problem: two git
+# processes fetching the same new commit both try to move refs/remotes/origin/main
+# off the same old value, and the loser exits non-zero with "incorrect old value
+# provided". That is a race, not a fault. The winner has already written the ref,
+# so by the retry there is nothing left to do and it succeeds.
+#
+# The losing attempt's error stays in the log even when the retry works. Left
+# deliberately: a fetch that had to retry is worth seeing, and the alternative is
+# a self-heal nobody can count.
+git_sync_fetch() {
+    local log_file="${1:-/dev/stderr}"
+    git fetch -q --no-write-fetch-head origin 2>>"$log_file" && return 0
+    sleep 2
+    git fetch -q --no-write-fetch-head origin 2>>"$log_file"
 }
 
 # Push to origin/main, healing a rejection caused by another writer.
@@ -57,7 +86,7 @@ git_sync_push() {
         return 1
     fi
 
-    git fetch -q origin 2>>"$log_file" || return 2
+    git_sync_fetch "$log_file" || return 2
 
     if ! git rebase origin/main >>"$log_file" 2>&1; then
         git rebase --abort >/dev/null 2>&1
@@ -84,15 +113,20 @@ git_sync_pull() {
     local log_file="${1:-/dev/stderr}"
     GIT_SYNC_REBASED=0
 
-    git fetch -q origin 2>>"$log_file" || return 2
+    git_sync_fetch "$log_file" || return 2
 
-    # Skip the pull only when we already contain origin/main: equal, or ahead by
+    # Skip the merge only when we already contain origin/main: equal, or ahead by
     # our own unpushed commits. The operands were the other way round, and
     # `--is-ancestor HEAD origin/main` is true precisely when we are BEHIND, so
     # the one case that exists to be fixed by a pull was the one case that
     # skipped it and returned success.
+    #
+    # `git merge --ff-only origin/main`, not `git pull --ff-only origin main`:
+    # the fetch above has already moved origin/main, and merging the ref rather
+    # than FETCH_HEAD is what makes this immune to a concurrent fetch. See the
+    # header.
     if git merge-base --is-ancestor origin/main HEAD 2>/dev/null || \
-       git pull --ff-only -q origin main 2>>"$log_file"; then
+       git merge --ff-only -q origin/main 2>>"$log_file"; then
         return 0
     fi
 
