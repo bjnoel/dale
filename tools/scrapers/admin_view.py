@@ -1191,6 +1191,16 @@ def _decide_curation(action, rows, facts, live_slugs, store, by) -> int:
     queued = {r["from"]: r.get("to") for r in
               (store.get("curation_pending") or [])
               if r.get("kind") == decisions.ALIAS}
+    # Separate from `queued`, because re-deciding a slug that is ALREADY queued
+    # is legitimate and the second answer wins, exactly as record_redirect
+    # documents. Naming a slug twice in ONE batch is not a correction: the rows
+    # arrive together, there is no second, and `queue_curation` replaces by
+    # `from`, so whichever the loop reached last silently won. The sibling queue
+    # makes that a click away, because prefix matching lists a slug under every
+    # base it is a child of: mango-bambaroo-kp-l appears under mango-bambaroo
+    # AND under mango-bambaroo-kp, so ticking both rows asks for two
+    # destinations for one plant.
+    in_batch = {}
     for row in rows:
         slug = str((row or {}).get("slug") or "")
         if action == "unqueue":
@@ -1222,6 +1232,14 @@ def _decide_curation(action, rows, facts, live_slugs, store, by) -> int:
                     f"{slug} -> {target}, but {pointed_at[0]} is already queued "
                     f"to move to {slug}. Aliases are applied once, not chained, "
                     f"so fold {pointed_at[0]} into {target} instead.")
+            if in_batch.get(slug, target) != target:
+                raise DecisionRefused(
+                    f"{slug} is ticked to fold into both {in_batch[slug]} and "
+                    f"{target}. One slug has one destination. It is listed "
+                    f"under more than one base because the queue matches "
+                    f"prefixes, so tick only the row whose base you want it to "
+                    f"end up on.")
+            in_batch[slug] = target
             queued[slug] = target
 
     for row in rows:
@@ -2122,6 +2140,15 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
             if f["state"] == LIVE}
     pending = _pending_aliases(store or {})
     committed = committed or {}
+    # A slug is listed under every base it is a prefix-child of, so
+    # mango-bambaroo-kp-l appears under mango-bambaroo AND under
+    # mango-bambaroo-kp. Two rows, one plant, two destinations, and nothing on
+    # the page said so: "one is trying to fold into mango kp" was the reader
+    # working that out from the slugs. Name the alternative on the row.
+    bases_for = {}
+    for group in siblings:
+        for s in group["siblings"]:
+            bases_for.setdefault(s["slug"], []).append(group["base"])
     if not siblings:
         return (f'<section><h2>Sibling review queue</h2>'
                 f'<p class="muted">Nothing left to adjudicate. {dismissed} pair(s) '
@@ -2141,6 +2168,10 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
                 continue
             watch = (f' <span class="small muted">({s["watchers"]} watching)</span>'
                      if s["watchers"] else "")
+            others = [b for b in bases_for.get(s["slug"], []) if b != group["base"]]
+            also = (f'<div class="small muted">also listed under '
+                    f'{_esc(", ".join(sorted(others)))}, tick one row only</div>'
+                    if others else "")
             folded = _folded_cell(pending, committed, s["slug"], group["base"])
             if folded:
                 verbs = f'<td colspan="2">{folded}</td>'
@@ -2155,7 +2186,7 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
                 f'<tr data-base="{_esc(group["base"])}" data-other="{_esc(s["slug"])}"'
                 f'{" class=\"done\"" if folded else ""}>'
                 f'<td>{_esc(group["base"])}{base_w}</td>'
-                f'<td>{_esc(s["slug"])}{watch}</td>'
+                f'<td>{_esc(s["slug"])}{watch}{also}</td>'
                 f'<td><span class="fl">{_esc(_TIER_LABEL.get(s["tier"], s["tier"]))}</span></td>'
                 f'{verbs}</tr>')
     if not rows:
@@ -2218,6 +2249,7 @@ REVIEW_CSS = """
   td.pair div { margin:1px 0; }
   span.foldwarn { display:none; font-size:0.72rem; color:#b91c1c; margin-top:3px; }
   span.foldwarn.on { display:block; }
+  tr.dimmed { opacity:0.45; }
   tr.done { background:#f0fdf4; }
   tr.done td { color:#4b5563; }
   span.done { font-size:0.8rem; color:#065f46; }
@@ -2629,6 +2661,21 @@ REVIEW_JS = """
 
   function submit(action, rows, risky, why) {
     if (!rows.length) { say('Nothing selected.', true); return; }
+    // One slug, one destination. The server refuses this too; catching it here
+    // says which slug rather than making the reader find it in an error.
+    if (action === 'alias') {
+      var seen = {}, clash = null;
+      rows.forEach(function (r) {
+        if (seen[r.slug] && seen[r.slug] !== r.target) clash = r.slug;
+        seen[r.slug] = r.target;
+      });
+      if (clash) {
+        say(clash + ' is ticked to fold into two different pages. It is listed ' +
+            'under more than one base, so tick only the row whose base you want ' +
+            'it to end up on.', true);
+        return;
+      }
+    }
     confirmBulk(action, rows, risky || [], why, function () {
       post(action, rows).then(function (res) {
         if (res.status === 200) {
@@ -2858,6 +2905,19 @@ REVIEW_JS = """
       if (fold && dis) {
         fold.addEventListener('change', function () {
           if (fold.checked) dis.checked = false;
+          // The same slug is listed under every base it is a prefix-child of.
+          // Ticking two of those rows asks for two destinations for one plant,
+          // and queue_curation replaces by `from`, so the last one silently
+          // won. Lock the alternatives rather than explain the wreckage after.
+          var other = tr.getAttribute('data-other');
+          srows.forEach(function (o) {
+            if (o === tr || o.getAttribute('data-other') !== other) return;
+            var f = o.querySelector('.fold');
+            if (!f) return;
+            if (fold.checked) f.checked = false;
+            f.disabled = fold.checked;
+            o.classList.toggle('dimmed', fold.checked);
+          });
           refreshS();
         });
       }

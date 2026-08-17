@@ -160,6 +160,41 @@ class RefusalTests(WriteHarness):
         self.assertIn("avocado-hass-type-a", str(cm.exception))
         self.assertEqual(len(self.store()["curation_pending"]), 1)
 
+    def test_one_slug_cannot_be_ticked_for_two_destinations(self):
+        """The sibling queue lists a slug under every base it is a prefix-child
+        of, so mango-bambaroo-kp-l appears under mango-bambaroo AND under
+        mango-bambaroo-kp. Ticking both rows used to be accepted silently, and
+        `queue_curation` replaces by `from`, so whichever the loop reached last
+        won. The reviewer asked for two destinations and got one chosen by
+        array order."""
+        with self.assertRaises(admin_view.DecisionRefused) as cm:
+            self.apply("alias", [
+                {"slug": "avocado-hass-type-a", "target": "avocado-hass"},
+                {"slug": "avocado-hass-type-a", "target": "avocado-hass-potted"},
+            ])
+        self.assertIn("one destination", str(cm.exception))
+        self.assertEqual(self.store()["curation_pending"], [])
+
+    def test_the_same_row_twice_is_not_a_clash(self):
+        """Identical rows are a double-tick, not two answers."""
+        res = self.apply("alias", [
+            {"slug": "avocado-hass-potted", "target": "avocado-hass"},
+            {"slug": "avocado-hass-potted", "target": "avocado-hass"},
+        ])
+        self.assertEqual(res["applied"], 2)
+        self.assertEqual(len(self.store()["curation_pending"]), 1)
+
+    def test_redeciding_an_already_queued_slug_is_allowed(self):
+        """Different from a clash: the rows did not arrive together, so the
+        second is a correction and wins, as record_redirect documents."""
+        self.apply("alias", [{"slug": "avocado-hass-type-a",
+                              "target": "avocado-hass"}])
+        self.apply("alias", [{"slug": "avocado-hass-type-a",
+                              "target": "avocado-hass-potted"}])
+        self.assertEqual(
+            {r["from"]: r["to"] for r in self.store()["curation_pending"]},
+            {"avocado-hass-type-a": "avocado-hass-potted"})
+
     def test_two_slugs_folding_onto_one_target_is_not_a_chain(self):
         """The bambaroo shape itself. Both ASP-WA listings fold into
         mango-bambaroo, and refusing the second would make the section useless
