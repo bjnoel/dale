@@ -86,7 +86,12 @@ git_sync_pull() {
 
     git fetch -q origin 2>>"$log_file" || return 2
 
-    if git merge-base --is-ancestor HEAD origin/main 2>/dev/null || \
+    # Skip the pull only when we already contain origin/main: equal, or ahead by
+    # our own unpushed commits. The operands were the other way round, and
+    # `--is-ancestor HEAD origin/main` is true precisely when we are BEHIND, so
+    # the one case that exists to be fixed by a pull was the one case that
+    # skipped it and returned success.
+    if git merge-base --is-ancestor origin/main HEAD 2>/dev/null || \
        git pull --ff-only -q origin main 2>>"$log_file"; then
         return 0
     fi

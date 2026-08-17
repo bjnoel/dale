@@ -127,6 +127,30 @@ class TestPushSelfHeals(GitSyncTestCase):
 
 class TestPullSelfHeals(GitSyncTestCase):
 
+    def test_pull_fast_forwards_when_purely_behind(self):
+        """The commonest case of all, and the one that went untested.
+
+        Benedict pushes from the laptop; the server holds nothing of its own and
+        is strictly behind. Skipping the pull here and returning 0 is worse than
+        returning non-zero, because nothing downstream can tell the difference:
+        deploy.sh finds the same commit it deployed last hour and reports
+        success, hourly, indefinitely. That ran from 2026-08-16 until it was
+        found by hand a day later.
+        """
+        commit_file(self.laptop, "laptop.txt", "laptop\n", "laptop work")
+        git(self.laptop, "push", "-q", "origin", "main")
+
+        before = git(self.server, "rev-parse", "HEAD").stdout.strip()
+
+        rc, rebased = call_git_sync(self.server, "git_sync_pull")
+
+        self.assertEqual(rc, 0)
+        self.assertFalse(rebased, "a fast-forward is not a rebase")
+        after = git(self.server, "rev-parse", "HEAD").stdout.strip()
+        self.assertNotEqual(before, after, "HEAD did not move: the pull was skipped")
+        self.assertIn("laptop work", git(self.server, "log", "--format=%s").stdout)
+        self.assertNoRebaseInProgress(self.server)
+
     def test_pull_rebases_own_unpushed_commits(self):
         """`git pull --ff-only` returned 1 here, which is what tripped the breaker."""
         commit_file(self.laptop, "laptop.txt", "laptop\n", "laptop work")
