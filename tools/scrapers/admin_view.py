@@ -2278,6 +2278,11 @@ REVIEW_CSS = """
   span.tstat { display:none; font-size:0.72rem; margin-top:3px; }
   span.tstat.on { display:block; color:#b91c1c; }
   span.tstat.on.warn { color:#b45309; }
+  /* A pre-filled target is the page's guess, so it must not look like a value
+     somebody typed. It says which it is, in words, under the field. */
+  span.sug { display:none; font-size:0.72rem; color:#9ca3af; margin-top:3px; }
+  span.sug.show { display:block; }
+  span.sug.on { color:#065f46; }
   /* An explicit width, not 100% and not auto. A <select> is sized by its widest
      option, so auto let one long slug pair set the width of the whole table;
      100% collapsed it to a bare chevron, because a percentage width inside an
@@ -2667,6 +2672,7 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "",
     committed = committed or {}
     rows = []
     noisy = 0
+    suggested = 0
     for f in inv["facts"]:
         if not f["flags"].get("noisy"):
             continue
@@ -2674,6 +2680,8 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "",
         if not _matches(q, f["slug"], f.get("clean_twin")):
             continue
         twin = f.get("clean_twin") or ""
+        if twin:
+            suggested += 1
         # Same rule as the other two queues: an answered row states its answer
         # rather than re-offering the question with a pill beside it. Here the
         # input was worse than a reset select, because it kept the prefilled
@@ -2682,37 +2690,57 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "",
         cell = (folded or
                 f'<input type="text" class="al" value="{_esc(twin)}" '
                 f'placeholder="alias target" spellcheck="false"'
+                f'{" data-suggested=\"1\"" if twin else ""}'
                 f'{_target_attrs(f["species"], lists)}>'
-                f'<span class="tstat"></span>')
+                f'<span class="tstat"></span>'
+                # Rendered on every row, not only the pre-filled ones. A typed
+                # target that was then unticked is green and would not be sent,
+                # and a field that looks changed and says nothing is the same
+                # ambiguity in the other direction.
+                f'<span class="sug{" show" if twin else ""}">'
+                f'{"suggested, not ticked" if twin else ""}</span>')
+        # The tick, not the filled field, is what says "I mean this row". A
+        # suggestion arrives pre-filled and UNTICKED: `clean_twin` is recomputed
+        # from the slug on every render, it is stored nowhere, and it is the
+        # page's guess. Benedict typed one target, the button offered to queue
+        # five, and he had to ask which of the five he had decided. Same rule and
+        # the same control as the redirect table above, which had it right.
+        pick = (f'<label class="pick"><input type="checkbox" class="sel"> '
+                f'{_variety_link(f["slug"], f["slug"])}</label>'
+                if not folded else _variety_link(f["slug"], f["slug"]))
         rows.append(
             f'<tr data-slug="{_esc(f["slug"])}" '
             f'data-species="{_esc(f["species"])}"'
             f'{" class=\"done\"" if folded else ""}>'
-            f'<td>{_variety_link(f["slug"], f["slug"])}'
+            f'<td>{pick}'
             f'<div class="small muted">noise: {_esc(", ".join(f["noise"]))}</div></td>'
             f'<td>{cell}</td>'
             f'<td class="num">{f["nurseries"]}</td>'
             f'<td class="num">{f["watchers"] or ""}</td></tr>')
     if not rows:
         return ""
-    shadowing = inv.get("shadowing", 0)
+    tick_all = (f'<button type="button" data-action="tick-suggested">'
+                f'Tick all {suggested} suggestions</button>' if suggested else "")
     return (
         f'<section id="aliases"><h2>Live slugs carrying listing noise '
         f'({len(rows)})</h2>'
         f'{_filter_note(q, len(rows), noisy)}'
-        f'<p class="muted">{shadowing} of these shadow a clean page that '
-        f'already exists, pre-filled below. For the rest, the target field '
-        f'offers the live pages of the same species, so the answer can be '
-        f'picked rather than recalled, and anything it cannot accept says so '
-        f'under the field before you click. Queueing an '
+        f'<p class="muted">{suggested} of these shadow a clean page that '
+        f'already exists, and the target is pre-filled with it. A pre-filled '
+        f'target is this page guessing, not a decision: it is recomputed from '
+        f'the slug on every render and stored nowhere, so nothing happens to it '
+        f'until you tick the row. Typing a target ticks the row for you, and '
+        f'the field offers the live pages of the same species so the answer can '
+        f'be picked rather than recalled. Queueing an '
         f'alias does not change '
         f'anything tonight: it lands in <code>variety_overrides.json</code> as '
         f'a commit, and then the products move under the target on the next '
         f'build and the lifecycle writes the redirect itself two nights after '
-        f'that. Blank the target to skip a row.</p>'
+        f'that.</p>'
         f'<div class="bulkbar">'
         f'<button type="button" data-action="alias">Queue aliases</button>'
-        f'<span class="small muted" id="asel">no rows filled</span></div>'
+        f'{tick_all}'
+        f'<span class="small muted" id="asel">none ticked</span></div>'
         f'<div class="tscroll"><table class="mini vt"><thead><tr><th>Slug</th>'
         f'<th>Alias to</th><th class="num">Nurseries</th><th class="num">Watch</th>'
         f'</tr></thead><tbody>{"".join(rows)}</tbody></table></div></section>')
@@ -3031,34 +3059,90 @@ REVIEW_JS = """
   if (asec) {
     var arows = Array.prototype.slice.call(asec.querySelectorAll('tbody tr'));
     var asel = document.getElementById('asel');
-    // A row with a fold already queued renders its decision instead of an
-    // input, so every lookup here can come back null.
-    function filled() {
+    // A row with a fold already queued renders its decision instead of an input
+    // and has no tick, so every lookup here can come back null.
+    //
+    // The tick is what says "I mean this row", not the filled field. A
+    // suggestion arrives pre-filled and unticked: `clean_twin` is recomputed on
+    // every render and stored nowhere, so it is the page's guess and not a
+    // decision. Counting filled fields instead made one typed target read as
+    // "5 rows filled" and offer to queue all five.
+    function tickedA() {
       return arows.filter(function (tr) {
-        var input = tr.querySelector('.al');
-        return input && input.value.trim();
+        var input = tr.querySelector('.al'), box = tr.querySelector('.sel');
+        return input && box && box.checked && input.value.trim();
+      });
+    }
+    function untickedSuggestions() {
+      return arows.filter(function (tr) {
+        var input = tr.querySelector('.al'), box = tr.querySelector('.sel');
+        return input && box && !box.checked &&
+               input.getAttribute('data-suggested') && input.value.trim();
       });
     }
     function refreshA() {
-      var n = filled().length;
-      asel.textContent = n ? n + ' row' + (n === 1 ? '' : 's') + ' filled'
-                           : 'no rows filled';
+      var n = tickedA().length, s = untickedSuggestions().length;
+      asel.textContent = (n ? n + ' ticked' : 'none ticked') +
+        (s ? ' \\u00b7 ' + s + ' suggestion' + (s === 1 ? '' : 's') +
+             ' left alone' : '');
+      arows.forEach(function (tr) {
+        var input = tr.querySelector('.al'), box = tr.querySelector('.sel');
+        var sug = tr.querySelector('.sug');
+        if (!sug || !box || !input) return;
+        // Every filled row says which it is, in words. Colour alone cannot
+        // carry it: the field is green when you changed it and green when a
+        // suggestion is accepted, and those are not the same thing.
+        var v = input.value.trim();
+        var txt = !v ? '' : (box.checked ? 'ticked' :
+          (input.getAttribute('data-suggested') ? 'suggested, not ticked'
+                                                : 'typed, not ticked'));
+        sug.textContent = txt;
+        sug.className = 'sug' + (txt ? ' show' : '') + (box.checked ? ' on' : '');
+      });
     }
     arows.forEach(function (tr) {
-      var input = tr.querySelector('.al');
-      if (!input) return;
+      var input = tr.querySelector('.al'), box = tr.querySelector('.sel');
+      if (!input || !box) return;
+      var was = input.value;
       input.addEventListener('input', function () {
-        input.classList.toggle('dirty', !!input.value.trim());
+        var changed = input.value.trim() !== was;
+        // `dirty` means "you changed this", the same as in the redirect table.
+        // Painting a pre-filled guess green is what made it look decided.
+        input.classList.toggle('dirty', changed);
+        // Editing a target is intent, so it ticks the row. Same rule as above.
+        if (changed) box.checked = true;
         checkTarget(input);
         refreshA();
       });
-      if (input.value.trim()) { input.classList.add('dirty'); checkTarget(input); }
+      box.addEventListener('change', refreshA);
+      if (input.value.trim()) checkTarget(input);
     });
     refreshA();
-    asec.querySelector('.bulkbar button').addEventListener('click', function () {
-      var badA = badTargets(filled(), '.al');
+    var atick = asec.querySelector('.bulkbar button[data-action="tick-suggested"]');
+    if (atick) {
+      // Working the 62 suggestions down in bulk is a real job, and it should
+      // cost one click rather than 62. It ticks and stops there: the confirm
+      // dialog still has to be read and agreed to.
+      atick.addEventListener('click', function () {
+        var n = untickedSuggestions().length;
+        untickedSuggestions().forEach(function (tr) {
+          tr.querySelector('.sel').checked = true;
+        });
+        refreshA();
+        say(n + ' suggestion' + (n === 1 ? '' : 's') + ' ticked. Nothing is ' +
+            'queued until you press Queue aliases.');
+      });
+    }
+    asec.querySelector('.bulkbar button[data-action="alias"]')
+        .addEventListener('click', function () {
+      if (!tickedA().length) {
+        say('Tick the rows you mean first. A pre-filled target is a suggestion ' +
+            'until its row is ticked.', true);
+        return;
+      }
+      var badA = badTargets(tickedA(), '.al');
       if (badA.length) { refuse(badA); return; }
-      var rows = filled().map(function (tr) {
+      var rows = tickedA().map(function (tr) {
         return {slug: tr.getAttribute('data-slug'),
                 target: tr.querySelector('.al').value.trim()};
       });

@@ -742,6 +742,11 @@ SUGGEST_PAGES = {
         rows=[{"nursery_key": "daleys", "available": True}]),
     "banana-nathan": entry(species="Banana", species_slug="banana",
                            rows=[{"nursery_key": "exotica", "available": True}]),
+    # The other half of the queue: noise strips cleanly to a page that IS live,
+    # so the target arrives pre-filled. That is the row Benedict was surprised by.
+    "banana-tree-cavendish": entry(species="Banana", species_slug="banana",
+                                   rows=[{"nursery_key": "daleys",
+                                          "available": True}]),
     "banana-cavendish": entry(species="Banana", species_slug="banana"),
     "banana-old": entry(species="Banana", species_slug="banana",
                         state="tombstone"),
@@ -788,7 +793,7 @@ class TargetSuggestionTests(unittest.TestCase):
         self.assertEqual(ids, {"Banana": "dl-banana", "Mango": "dl-mango"})
         self.assertEqual(self.options(html, "dl-banana"),
                          ["banana-cavendish", "banana-nathan",
-                          "banana-tree-musa-nathan"])
+                          "banana-tree-cavendish", "banana-tree-musa-nathan"])
         self.assertEqual(self.options(html, "dl-mango"),
                          ["mango-bambaroo", "mango-bamberoo"])
 
@@ -809,7 +814,8 @@ class TargetSuggestionTests(unittest.TestCase):
                                          "to": "banana-cavendish"}]},
             committed={"mango-bamberoo": "mango-bambaroo"})
         self.assertEqual(self.options(html, "dl-banana"),
-                         ["banana-cavendish", "banana-tree-musa-nathan"])
+                         ["banana-cavendish", "banana-tree-cavendish",
+                          "banana-tree-musa-nathan"])
         self.assertEqual(self.options(html, "dl-mango"), ["mango-bambaroo"])
 
     def test_the_compact_option_form_is_used(self):
@@ -878,11 +884,75 @@ class TargetSuggestionTests(unittest.TestCase):
         # Cross-species warns, never blocks.
         self.assertRegex(js, r"return \['warn', 'a ' \+ LIVE\[v\]")
         # Both sections gate on it.
-        self.assertIn("badTargets(filled(), '.al')", js)
+        self.assertIn("badTargets(tickedA(), '.al')", js)
         self.assertIn("badTargets(chosen, '.rt')", js)
         # Converting to a tombstone clears the target, so a stale box is not a
         # reason to stop.
         self.assertIn("action === 'retarget' || action === 'redirect'", js)
+
+    def test_a_suggested_target_arrives_ticked_off_not_ticked(self):
+        """Benedict typed one target and the button offered to queue five.
+
+        `clean_twin` is recomputed from the slug on every render and stored
+        nowhere, so a pre-filled target is this page guessing. It was rendered
+        into the same field, painted the same green as a value somebody typed,
+        and counted by the same "N rows filled" label, so there was no way to
+        tell a suggestion from a decision. The tick is the decision now.
+        """
+        html = self.render()
+        row = re.search(r'<tr data-slug="banana-tree-musa-nathan".*?</tr>', html,
+                        re.S).group(0)
+        self.assertIn('type="checkbox" class="sel"', row)
+        self.assertNotIn("data-suggested", row)   # no live twin, nothing filled
+        # banana-tree-cavendish strips to a page that IS live, so it is
+        # pre-filled AND must say that it is only a suggestion.
+        twin = re.search(r'<tr data-slug="banana-tree-cavendish".*?</tr>', html,
+                         re.S).group(0)
+        self.assertIn('value="banana-cavendish"', twin)
+        self.assertIn('data-suggested="1"', twin)
+        self.assertIn("suggested, not ticked", twin)
+        # And every filled row says which it is in words, because the field is
+        # green when you changed it and green when a suggestion is accepted.
+        self.assertIn("'typed, not ticked'", admin_view.REVIEW_JS)
+
+    def test_the_tick_and_not_the_filled_field_is_what_submits(self):
+        js = admin_view.REVIEW_JS
+        self.assertIn("box.checked && input.value.trim()", js)
+        # Typing still ticks the row, so the single-row case stays one gesture.
+        self.assertIn("if (changed) box.checked = true;", js)
+        # And `dirty` goes back to meaning "you changed this", as it does in the
+        # redirect table: a green box on a guess is what made it look decided.
+        self.assertIn("input.classList.toggle('dirty', changed);", js)
+        self.assertNotIn("input.classList.toggle('dirty', !!input.value.trim())",
+                         js)
+
+    def test_the_bulk_path_costs_one_click_not_sixty_two(self):
+        """Refusing to act on untouched suggestions would be correct and
+        useless: 62 of the 120 rows have one, and working them down is the
+        actual job. So there is a button that ticks them all, and it stops
+        there, leaving the confirm dialog to be read."""
+        html = self.render()
+        self.assertRegex(html, r'data-action="tick-suggested">Tick all \d+ '
+                               r'suggestions<')
+        self.assertIn("queued until you press Queue aliases",
+                      admin_view.REVIEW_JS)
+
+    def test_nothing_ticked_says_what_a_prefilled_target_is(self):
+        self.assertIn("A pre-filled target is a suggestion",
+                      admin_view.REVIEW_JS)
+
+    def test_a_folded_row_has_no_tick_to_offer(self):
+        """It renders its decision and a Cancel button, so a checkbox beside it
+        would be a control with nothing to do."""
+        store = {"curation_pending": [{"kind": "alias",
+                                       "from": "banana-tree-musa-nathan",
+                                       "to": "banana-nathan"}]}
+        html = self.render(store=store)
+        row = re.search(r'<tr data-slug="banana-tree-musa-nathan".*?</tr>', html,
+                        re.S).group(0)
+        self.assertIn("folded into", row)
+        self.assertNotIn('class="sel"', row)
+        self.assertNotIn('class="al"', row)
 
     def test_the_check_reads_the_datalists_rather_than_a_second_copy(self):
         """Two lists of live slugs on one page is two lists that can disagree,
