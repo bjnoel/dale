@@ -190,7 +190,13 @@ and no sibling offer. Since a reviewer converting a redirect to a tombstone is e
 section enables, and the pre-merge parser is the only other place that species could be
 recovered from, `species` and `variety` are now carried through the proposal onto the entry.
 
-## 3b. What writing the examples out found
+## 3b. What writing the examples out found (all now fixed and live)
+
+**Status 2026-08-17: every item below was fixed the same day.** Task R1 is applied: 126 redirect
+stubs and 68 tombstones are live, `run-all-scrapers.sh` passes `--seed-reviewed`, and the parser
+no longer lets a bracket reach a heading. Kept as the record of how they were found, which was
+by writing out worked examples rather than by describing the mechanism.
+
 
 Worked through on real data 2026-08-17, at Benedict's request. Three findings, none of which the
 abstract description surfaced.
