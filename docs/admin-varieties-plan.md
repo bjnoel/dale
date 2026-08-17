@@ -65,7 +65,7 @@ today.
 
 ## 3. Shape: two pages, not one
 
-### `/admin/varieties` — what the catalogue *is*
+### `/admin/varieties`: what the catalogue *is*
 
 Answers "what are my variety pages" and nothing else. No decisions on it.
 
@@ -102,10 +102,10 @@ tombstone as first-class things rather than as absences.
 
 **Size.** The ledger is 3.1MB and `/variety/index.html` is already 1.4MB, so the full table
 must not be inlined. Same trick the main site uses after the PageSpeed work: a compact
-`varieties.json` (slug, species, state, counts, flags — roughly 250KB) fetched once, filtered
+`varieties.json` (slug, species, state, counts, flags, roughly 250KB) fetched once, filtered
 client-side. Species rows render server-side so the page is useful before any JS runs.
 
-### `/admin/varieties/review` — what needs a person
+### `/admin/varieties/review`: what needs a person
 
 Everything that is a decision, in one place, ordered by how much thought it takes.
 
@@ -211,7 +211,7 @@ verifying rather than assuming:
   authenticated by cookie alone is forgeable from another origin. Fix: on POST, require the
   `Origin` header to equal `https://treestock.com.au` and reject anything else, plus a
   per-render token bound to the JWT subject. **Check how Cloudflare sets `SameSite` on
-  `CF_Authorization` before relying on any part of this** — do not take the mitigation on
+  `CF_Authorization` before relying on any part of this**. Do not take the mitigation on
   trust, including this description of it.
 - **Stale writes.** Two tabs, or a proposal file regenerated between render and submit. Every
   form carries the generation stamp it was rendered from; a POST whose stamp does not match
@@ -227,16 +227,16 @@ verifying rather than assuming:
 
 ## 7. Phases
 
-**Phase 1 — read the ledger (no writes).** Rebuild `/admin/varieties` as the inventory:
+**Phase 1: read the ledger (no writes).** Rebuild `/admin/varieties` as the inventory:
 state counts, species drill-down, the six attention queues, client-side search. This is most
 of the value Benedict asked for and carries no new risk at all. Move the existing curation
 and alarm blocks to `/admin/varieties/review` unchanged.
 
-**Phase 2 — approve redirects.** The narrowest, best-understood write: a POST that flips
+**Phase 2: approve redirects.** The narrowest, best-understood write: a POST that flips
 `approved` on rows of the proposal file, plus the CSRF and staleness work from section 6.
 126 real rows are already waiting, so it ships with its own test case.
 
-**Phase 3 — sibling decisions.** Persisted `distinct` dismissals first, then tiering, then
+**Phase 3: sibling decisions.** Persisted `distinct` dismissals first, then tiering, then
 `curation_pending` with `promote_curation.py`. That order is deliberate: dismissals are what
 turn 493 into a backlog that drains, and the tiering only clears 49 of them. Depends on phase
 2's write plumbing being proven.
