@@ -12265,3 +12265,42 @@ way, rather than promising that typing `nathan` finds `banana-nathan`.
 **Tests:** `TargetSuggestionTests`, 10 tests on a two-species fixture built from the real
 banana shape, plus 3 refusal tests for the committed-alias chain including one that asserts an
 unrelated committed alias blocks nothing. 2,991 total, all passing.
+
+### Addendum, same day: the suggestion that looked like a decision
+
+Benedict, straight after: "some of the alias are already filled in but when I go to queue
+nathan, it asks if I want to queue all of them, are the autofilled ones not already mapped?"
+
+No, they are not mapped anywhere. `clean_twin` is recomputed from the slug on every render and
+stored in no file. But it went into the same input as a typed value, was painted the same green
+by `.dirty`, was counted by the same "N rows filled" label, and the button acted on every
+filled field. So he typed one target and was offered a batch of five, with no way to tell which
+one he had decided.
+
+The redirect table two sections above had this right the whole time: it has a tick per row, and
+`.dirty` compares against the value the server rendered rather than against empty. The alias
+table now matches it.
+
+| | Before | After |
+|---|---|---|
+| Suggestion arrives | pre-filled, green, counted | pre-filled, plain, unticked |
+| Typing one target | "5 rows filled" | "1 ticked, 2 suggestions left alone" |
+| Queue aliases | queues 5 | queues 1, named in the dialog |
+| Bulk accept | already the default | `Tick all 62 suggestions`, one click |
+| Row state | colour only | "suggested, not ticked" / "typed, not ticked" / "ticked" |
+
+Colour could not carry it. The field is green when you changed it and green when a suggestion
+is accepted, and those are not the same thing, so every filled row states which it is in words.
+
+Refusing to act on untouched suggestions at all would have been correct and useless: 62 of the
+120 rows have one and working them down is the actual job. Hence the bulk button, which ticks
+and stops there, leaving the confirm dialog to be read.
+
+Verified in Chrome on a fixture built from the real banana shape: typing one target produces
+"Queue 1 alias" listing that row alone, the bulk button produces "Queue 3 aliases", pressing
+Queue with nothing ticked says what a pre-filled target is, and all four row states render
+distinctly. On live data: 120 rows, 120 ticks, 62 pre-filled.
+
+The general shape is worth keeping: **a control that fills something in for you has to look
+different from the same control after you have filled it in.** This is the second time in two
+days it has bitten this page, after a folded row that kept re-offering its own select.
