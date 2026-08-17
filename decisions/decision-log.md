@@ -11602,3 +11602,58 @@ sapote page has been wrong for months. DEC-295 published it to three more states
 day Benedict caught it. Worth noting plainly: the page-count work shipped that morning had
 tests for *which* pages get built and none for whether the products on them are the right
 species. Coverage was pointed at the plumbing, not the content.
+
+---
+
+## DEC-297 — 2026-08-17 — The file with all the answers had no reader
+
+**Status:** Shipped and live. `/admin/varieties` is the catalogue inventory,
+`/admin/varieties/review` is the queue. Read only; DAL-284 is the write phase.
+
+Benedict asked for "better oversight of WHAT all my variety pages are". The blocker was
+not a missing screen, it was a screen reading the wrong files. `load_variety_curation`
+opens exactly two: the canonical title index and `variety_overrides.json`. Neither carries
+anything but slug strings, so every question the old page could answer was a question you
+could answer by squinting at a list of slugs.
+
+The page ledger has sat in `/opt/dale/data/page-ledger/variety.json` since the lifecycle
+work landed, holding first seen, days live, days in stock, last known nurseries and
+prices, state, and the reason for every state change, for all 2,767 pages. **Nothing read
+it.** That is the whole change; the rest is presentation.
+
+**What became visible the moment it was read.** 2,562 live, 137 redirect, 68 tombstone.
+Every surface on the site renders a redirect as an absence, which is indistinguishable
+from a page that was never built, so the count of pages we deliberately keep alive had
+never appeared anywhere. 680 pages have never once had a buyable product on them. 1,503
+(59%) are one product at one nursery, which is a fact about the market worth knowing
+before deciding what the site is for. 16 species have exactly one variety.
+
+**The finding that was not in the plan.** 120 live slugs still carry listing noise the
+parser should have stripped, and **62 of them shadow a clean page that already exists**:
+`almond-all-in-one-potted` beside `almond-all-in-one`, `fig-tree-black-genoa` beside
+`fig-black-genoa`, 22 of the fig ones alone. Two live pages for one cultivar, competing
+for the same search term, invisible until something counted them. The row now names the
+page it shadows. It does not offer to fold them: an alias is configuration, configuration
+is git, and a browser writing `variety_overrides.json` on the server is overwritten within
+the hour (section 5 of the plan). That is DAL-284.
+
+**The noise check had to know what a species is.** A plain token match fires on correct
+slugs, because the vocabulary overlaps species names: Dragon Fruit, Bunya Nut and Grape
+Fruit are all real. Stripping the species prefix first takes the false positives from 187
+to 120 and leaves `dragon-fruit-asunta` alone while still catching `grape-fruit-wheeny`,
+which is species Grape. Bananas keep `dwarf`, matching the `keep_dwarf` exception
+`_strip_listing_noise` already makes, because Dwarf Cavendish is a cultivar.
+
+**Weight.** The ledger is 3.1MB and `/variety/index.html` is already 1.4MB, so the
+per-variety detail is a separate `/admin/varieties.json`, 148KB positional and about 25KB
+over the wire, fetched once and filtered in the browser. Species rows render server-side,
+so a failed fetch costs the drill-down and the search rather than the page. Caddy already
+wildcards `/admin/*`, so no Caddy edit; the payload sits behind the same fail-closed
+`verify_cf_access` and gets its own sender rather than `send_json`, which sets CORS for
+the public widgets.
+
+**Still read only, and that is the point.** Phase 1 carries no new risk because it writes
+nothing, and a test asserts the rendered page contains no form and no POST. The CSRF gap
+in section 6 (`_extract_cf_token` falls back to the `CF_Authorization` cookie, so a
+cookie-authenticated POST is forgeable cross-origin) is real and unfixed, and it is the
+first thing DAL-284 has to deal with.
