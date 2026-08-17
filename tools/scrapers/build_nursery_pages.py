@@ -15,6 +15,7 @@ from pathlib import Path
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label, restriction_warning
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
+from stocklib.classify import is_real_product
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.utm import outbound
 
@@ -228,9 +229,21 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     local_label = delivery_label(nursery_key)
     wa = ships_to_wa(nursery_key)
 
-    products = data.get("products", [])
-    in_stock_count = data.get("in_stock_count", sum(1 for p in products if p.get("any_available")))
-    total_count = data.get("product_count", len(products))
+    # Every other builder drops non-plant junk before it reaches a page
+    # (build_species_pages, build_variety_pages, build_location_pages,
+    # build_compare_pages, daily_digest, send_variety_alerts). This one did not.
+    # Guildford loaded an Eden Seeds vegetable range in August 2026; the store
+    # API returns newest first, so 19 of the 20 "In Stock Now" slots went to
+    # carrot and cabbage seed packets on a fruit tree site. Emma at Guildford
+    # spotted it on her own page before we did.
+    #
+    # Filter once here and derive every count below from what survives, so the
+    # headline counts, the species breakdown and the product list cannot
+    # disagree with each other. The snapshot's own in_stock_count/product_count
+    # are pre-filter and must not be trusted for display.
+    products = [p for p in data.get("products", []) if is_real_product(p.get("title", ""))]
+    in_stock_count = sum(1 for p in products if p.get("any_available"))
+    total_count = len(products)
 
     if not seasonality_banner and total_count > 0 and (in_stock_count / total_count) < 0.15:
         pct_str = f"{round(in_stock_count / total_count * 100)}%"

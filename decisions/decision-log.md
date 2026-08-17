@@ -11934,3 +11934,119 @@ not the problem: `Semi Dwarf Mango - Bambaroo` parses and `Semi-Dwarf Mango - Ba
 not, so the hyphen inside "Semi-Dwarf" defeats the size-word stripping. Three real fruit
 products across the live catalogue, all Fruit Tree Cottage (Palmer, Irwin, Bambaroo). No
 alias fixes it; it is a parser change and is not ticketed.
+
+---
+
+## DEC-301 — 2026-08-17 — The nursery owner found the bug on her own page
+
+**Status:** Fixed, tested, deployed. Found in person, at Guildford Garden Centre, by Emma.
+
+### How it was found
+
+Benedict visited Guildford Garden Centre on 2026-08-17, closing the open register action
+raised on 2026-08-13. No pitch, nothing commercial, about an hour. Emma's first substantive
+remark about the site was that our page for her nursery was "a bit weird": the In Stock Now
+panel on `/nursery/guildford.html` was showing seeds.
+
+She was right. The live page at the time of the visit:
+
+```
+ 1 Watermelon - Sugar Baby - Eden Seeds
+ 2 Watermellon - Warpaint - Eden Seeds
+ 3 Silverbeet - Ruby Red Chard - Eden Seeds
+ 4 Pea - Greenfeast (Lincoln) - Eden Seeds
+ 5 Cauliflower - All Year Round - Eden Seeds
+ 6 Carrot - Baby (Amsterdam) - Eden Seeds
+ 7 Lettuce - Salad Bowl Red - Eden Seeds
+ 8 Blueberry - Premier                     <- the only plant in the list
+ 9 Cabbage - Red Acre - Eden Seeds
+...
+20 Kohl Rabi - Purple Vienna - Eden Seeds
+```
+
+Nineteen of twenty slots were vegetable seed packets, on a fruit tree site, on the page
+belonging to the one nursery whose owner we had just asked to come and look at it.
+
+### Cause
+
+`build_nursery_pages.py` was the only builder on the site that never applied
+`stocklib.classify.is_real_product`. Every other one does:
+`build_species_pages`, `build_variety_pages`, `build_location_pages`, `build_compare_pages`,
+`build_bare_root_page`, `build_species_state_pages`, `build_species_trends`, `daily_digest`,
+`send_variety_alerts`. Ten call sites, and this page was not one of them.
+
+That was survivable while it stayed invisible. Two things made it visible at once:
+
+1. Guildford loaded an Eden Seeds vegetable range into their store in August 2026 (the
+   product images are stamped `2026/08`). 47 of those products carry the `edibles` category,
+   and `edibles` is in Guildford's `fruit_categories` include-filter, so they were ingested.
+   `is_real_product` rejects all 47 by name, which is why they appear nowhere else on the site.
+2. The WooCommerce Store API returns newest first and the scraper preserves that order, so
+   `all_in_stock[:20]` took the twenty most recently added in-stock products, which were the
+   seed packets.
+
+Note what is *not* the cause. The `edibles` category predates DEC-207/209's leaf-category
+broadening (commit 38bc778), so this is not a regression from that fix; the filter was
+always this wide and the nursery simply started stocking something new behind it. And the
+seed packets are correctly classified everywhere else. The single missing filter call is the
+whole defect.
+
+### The counts were wrong in the same direction
+
+Fixing only the product list would have left the page contradicting itself, because the
+headline figures were read straight from the snapshot's pre-filter totals:
+
+```python
+in_stock_count = data.get("in_stock_count", ...)   # scraper's number, pre-filter
+total_count    = data.get("product_count", ...)    # scraper's number, pre-filter
+```
+
+Guildford's snapshot on 2026-08-17 holds 924 products, 278 in stock, of which **65 fail
+`is_real_product` and 53 of those are in stock**. So the page was advertising 278 in stock
+while 53 of them were seed packets it was about to stop displaying. The fix filters
+`products` once at the top of `build_nursery_page` and derives `in_stock_count`,
+`total_count` and the species breakdown from what survives, so the four stat cards, the
+species table and the product list cannot disagree.
+
+Before and after, same snapshot:
+
+| | In Stock | Products Tracked | Top of the list |
+|---|---|---|---|
+| Before | 278 | 924 | Watermelon - Sugar Baby - Eden Seeds |
+| After | 225 | 859 | Blueberry - Premier |
+
+The corrected top of the list is what Emma would expect to see: Blueberry Premier, Apricot
+Multi Graft Glengarry/Newcastle, four grafted mangoes, a bare root Royal Gem nectarine,
+pomegranates, a Green Gage plum, a dwarf Granny Smith, male and female Sirora pistachios.
+
+### Tests
+
+`tests/test_nursery_pages.py` is new: there was no test file for this builder and
+`test_golden.py` covers `nursery_compare` but not `nursery`. Six tests, built on the real
+2026-08-17 ordering. Four of the six fail against the old builder and all six pass against
+the new one. One of them pins the store ordering itself, so the fixture cannot quietly stop
+reproducing the bug.
+
+### What this cost, and what it nearly cost
+
+Nothing, in the end, because Emma raised it herself and was amused rather than annoyed. But
+the sequence is worth recording: we emailed her twice asking her to look at her page, she
+came back warm and invited us in, and the page we had directed her to was listing cabbage
+seeds. The goodwill outreach worked and then handed the relationship a defect to survive.
+
+**Cost:** $0.
+
+### Measurement discipline, again
+
+Two false findings were formed and discarded while diagnosing this, both from reading a
+truncated result as a real one:
+
+- A catalogue fetch capped at `range(1, 20)` returned exactly 1900 products (19 pages x 100)
+  and appeared to show Guildford's tracked catalogue collapsing from 838 to 245. The number
+  was the page limit, not the catalogue. Any total that lands on an exact multiple of the
+  page size is a truncation until proven otherwise.
+- The same fetch initially returned 403 because the ad-hoc script omitted the scraper's
+  User-Agent, which reads as "the store blocks us" rather than "you are not the scraper".
+
+The eventual numbers came from the server's own snapshot, which is both the truthful source
+(it is what the site actually serves) and the one that costs Emma's server nothing.

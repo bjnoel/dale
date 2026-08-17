@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-08-15",
+  "updated": "2026-08-17",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -352,15 +352,22 @@
           "by": "emma",
           "summary": "Emma: first email got buried, apologised. Will look at the site properly. Happy to meet in person at the garden centre. Mondays before 2.30pm quietest; next week works. Peak bare root season, bagging a couple thousand trees.",
           "evidence": "Email pasted by Benedict 2026-08-13"
+        },
+        {
+          "date": "2026-08-17",
+          "direction": "out",
+          "channel": "visit",
+          "by": "benedict",
+          "summary": "In-person visit, about an hour with Emma at the garden centre. No pitch, nothing commercial. She knows who Benedict is now and likes the idea of the site. Flagged that our nursery page shows only seed packets in its top 20. Confirmed the delivery boundary on their site is accurate. Explained the bare root pre-order model. Offered a possible way to get their stock listings without scraping.",
+          "evidence": "Benedict's visit notes, 2026-08-17"
         }
       ],
       "open_action": {
         "owner": "benedict",
-        "what": "Visit Emma at the garden centre Mon 2026-08-17, before 2.30pm. Confirm the time first. Casual: no pitch, nothing commercial. Ask her to correct our 612 listings, confirm the Perth metro delivery boundary, and get the bare root window open/close dates.",
-        "since": "2026-08-13",
-        "keep_open": true
+        "what": "Reply to Emma thanking her for the hour, and take up her offer of a direct stock feed: ask what format they can export (CSV or XML), how often it refreshes, and whether it can include the bare root pre-order lines that never reach the website. Also tell her the top-20 on her nursery page is fixed. Dale to draft.",
+        "since": "2026-08-17"
       },
-      "notes": "WA, Perth metro delivery only, in person visitable from Perth (Guildford, ~20 min from CBD). Contact is Emma. 612 products listed; 127 clicks / 119 visitors in the 90d to 2026-08-13. Geo is unverifiable (DEC-270 free geo DB returns empty region/city), so do NOT describe those visitors as local. Touch 1 (2026-03-30) was buried, not ignored; Emma said so herself on 2026-08-13. Peak bare root season Aug, bagging a couple thousand trees, Mondays before 2.30pm are quietest."
+      "notes": "WA, Perth metro delivery only; Emma confirmed 2026-08-17 that the boundary published on their site is accurate. In person visitable from Perth (Guildford, ~20 min from CBD). Contact is Emma. 924 products tracked, 278 in stock at 2026-08-17. 127 clicks / 119 visitors in the 90d to 2026-08-13. Geo is unverifiable (DEC-270 free geo DB returns empty region/city), so do NOT describe those visitors as local. Touch 1 (2026-03-30) was buried, not ignored; Emma said so herself on 2026-08-13. Mondays before 2.30pm are quietest.\n\nBARE ROOT MODEL (Emma, 2026-08-17 visit). They order bare root stock in around June, sell it first to a pre-registration list, then release anything uncollected after 2 weeks to the general public. Whatever does not sell gets potted up and sold on as potted stock. The majority of their bare root sales never appear on the website at all: they are pre-ordered and gone before they are ever listed. treestock structurally cannot see Guildford's main bare root trade, so do not read our bare root coverage of them as complete or quote it as their volume. Where pre-order demand is strong they try to order well above it, but supply does not always allow.\n\nThey deliberately do not import some deciduous stock that is too susceptible to pests, shot hole borer being the live Perth problem. It does not generally affect fruit trees, but it does affect much of the deciduous range they would otherwise bring in. Absence of a variety at Guildford is sometimes a policy decision, not a stock-out.\n\nStock levels are kept deliberately accurate: an online-vs-shop conflict causes real problems when the last plant sells twice. Treat Guildford availability data as high quality.\n\nEmma may be able to supply stock listings directly instead of us scraping. Not yet specified as to format or cadence."
     },
     {
       "key": "fruitopia",
