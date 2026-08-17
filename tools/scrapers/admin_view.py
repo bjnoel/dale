@@ -1985,7 +1985,7 @@ def _variety_overrides_section(overrides: dict) -> str:
         for k, v in sorted(alias.items())) or \
         '<tr><td colspan="2" class="muted">None</td></tr>'
     return (
-        f'<section><h2>Curation in force</h2>'
+        f'<section id="overrides"><h2>Curation in force</h2>'
         f'<p class="muted">From tools/scrapers/variety_overrides.json. Edit it in '
         f'the repo and deploy; this page is read only, so no write endpoint has '
         f'to sit behind Cloudflare Access.</p>'
@@ -2150,7 +2150,7 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
         for s in group["siblings"]:
             bases_for.setdefault(s["slug"], []).append(group["base"])
     if not siblings:
-        return (f'<section><h2>Sibling review queue</h2>'
+        return (f'<section id="siblings"><h2>Sibling review queue</h2>'
                 f'<p class="muted">Nothing left to adjudicate. {dismissed} pair(s) '
                 f'marked distinct.</p></section>')
     rows = []
@@ -2190,7 +2190,8 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
                 f'<td><span class="fl">{_esc(_TIER_LABEL.get(s["tier"], s["tier"]))}</span></td>'
                 f'{verbs}</tr>')
     if not rows:
-        return (f'<section><h2>Sibling review queue</h2><p class="muted">No '
+        return (f'<section id="siblings"><h2>Sibling review queue</h2>'
+                f'<p class="muted">No '
                 f'sibling pair matches <code>{_esc(q)}</code>. {total} in the '
                 f'queue overall.</p></section>')
     counts = " · ".join(f'{tiers.get(t, 0)} {_TIER_LABEL[t]}' for t in _TIER_ORDER)
@@ -2249,6 +2250,23 @@ REVIEW_CSS = """
   td.pair div { margin:1px 0; }
   span.foldwarn { display:none; font-size:0.72rem; color:#b91c1c; margin-top:3px; }
   span.foldwarn.on { display:block; }
+  details.panel > summary { cursor:pointer; list-style:none; padding:2px 0;
+    border-top:1px solid #e5e7eb; }
+  details.panel > summary::-webkit-details-marker { display:none; }
+  details.panel > summary::before { content:"\\25B8"; color:#9ca3af;
+    display:inline-block; width:1.1em; }
+  details.panel[open] > summary::before { content:"\\25BE"; }
+  details.panel > summary:hover .phead { color:#065f46; }
+  .phead { font-size:1.05rem; font-weight:700; }
+  .pbody { padding-left:1.1em; }
+  nav.panelnav { display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;
+    margin:0 0 14px; font-size:0.78rem; }
+  nav.panelnav a { color:#065f46; text-decoration:none; padding:3px 8px;
+    border:1px solid #d1fae5; border-radius:999px; background:#f0fdf4; }
+  nav.panelnav a:hover { border-color:#065f46; }
+  nav.panelnav button { font:inherit; font-size:0.78rem; padding:3px 10px;
+    border:1px solid #d1d5db; border-radius:999px; background:#fff;
+    cursor:pointer; }
   tr.dimmed { opacity:0.45; }
   tr.done { background:#f0fdf4; }
   tr.done td { color:#4b5563; }
@@ -2283,6 +2301,57 @@ REVIEW_CSS = """
   #flash.ok { display:block; background:#d1fae5; color:#065f46; }
   #flash.bad { display:block; background:#fee2e2; color:#991b1b; }
 """
+
+
+_PANEL_RE = re.compile(r'\A<section([^>]*)>\s*<h2>(.*?)</h2>(.*)</section>\Z', re.S)
+
+
+def _collapsible(section_html: str, open_: bool) -> tuple:
+    """Fold one section behind its own heading. Returns (html, id, heading).
+
+    The redirect table is 205 rows and 109KB, and it sits above everything with
+    a verb on it, so working the review queues meant scrolling past every
+    tombstone on the site first. Six sections, five of them long, and only one
+    of them is what you came for on any given day.
+
+    A regex over the section a builder just produced, rather than the same edit
+    to six functions with three empty-state variants between them. The shape is
+    ours and it is asserted in a test, so this cannot silently start passing
+    sections through unwrapped.
+
+    `<details>` and not a tab strip: it collapses without JavaScript, it is
+    keyboard and screen-reader native, and more than one panel can be open at
+    once, which tabs forbid and this page needs (folding a near miss and
+    checking what it did to the queued list).
+    """
+    m = _PANEL_RE.match(section_html.strip())
+    if not m:
+        return section_html, "", ""
+    attrs, heading, body = m.groups()
+    sid = ""
+    got = re.search(r'id="([^"]+)"', attrs)
+    if got:
+        sid = got.group(1)
+    return (f'<section{attrs}><details class="panel"'
+            f'{" open" if open_ else ""}>'
+            f'<summary><span class="phead">{heading}</span></summary>'
+            f'<div class="pbody">{body}</div></details></section>',
+            sid, re.sub(r"<[^>]+>", "", heading))
+
+
+def _panel_nav(panels: list) -> str:
+    """The shape of the work, before opening any of it.
+
+    Every heading already carries its count, so the collapsed page is the
+    summary: 205 redirects, 128 near misses, 485 sibling pairs. That was
+    previously only discoverable by scrolling through all of them.
+    """
+    links = [f'<a href="#{_esc(sid)}">{_esc(heading)}</a>'
+             for _, sid, heading in panels if sid and heading]
+    if not links:
+        return ""
+    return (f'<nav class="panelnav">{" ".join(links)}'
+            f'<button type="button" id="expandall">Open all</button></nav>')
 
 
 def _filter_box(q: str) -> str:
@@ -2374,7 +2443,8 @@ def _pending_section(store: dict) -> str:
     sibs = store.get("siblings") or {}
     cur = store.get("curation_pending") or []
     if not (reds or cur):
-        return (f'<section><h2>Queued for tonight</h2><p class="muted">Nothing '
+        return (f'<section id="pending"><h2>Queued for tonight</h2>'
+                f'<p class="muted">Nothing '
                 f'queued. {len(sibs)} sibling pair(s) dismissed as distinct.'
                 f'</p></section>')
     rows = []
@@ -2394,7 +2464,7 @@ def _pending_section(store: dict) -> str:
                     f'<td><button type="button" class="undo" data-action="unqueue" '
                     f'data-slug="{_esc(row.get("from"))}">Cancel</button></td></tr>')
     return (
-        f'<section><h2>Queued for tonight ({len(reds) + len(cur)})</h2>'
+        f'<section id="pending"><h2>Queued for tonight ({len(reds) + len(cur)})</h2>'
         f'<p class="muted">Nothing here has changed the site yet. Redirect '
         f'decisions apply at the 00:00 UTC build. Rows marked '
         f'<span class="fl">git</span> are configuration and need '
@@ -2454,7 +2524,7 @@ def _redirect_manage_section(inv: dict, store: dict, q: str = "") -> str:
             f'<td class="num">{f["watchers"] or ""}</td>'
             f'<td class="small muted">{_esc(f["since"])}</td></tr>')
     if not rows:
-        return (f'<section><h2>Redirects and tombstones</h2>'
+        return (f'<section id="redirects"><h2>Redirects and tombstones</h2>'
                 f'<p class="muted">'
                 f'{f"No redirect or tombstone matches {_esc(q)}." if q else "None yet."}'
                 f'</p></section>')
@@ -2601,10 +2671,26 @@ REVIEW_JS = """
   var DEFAULT_WHEN = 'Nothing changes on the site until tonight\\u2019s 00:00 UTC ' +
                      'build. You can still change your mind.';
 
-  // `why` completes the sentence "<n> rows ...". Each caller computes a
-  // different `risky` for a different reason, and one shared phrase ("the least
-  // safe") named the rows without ever naming the hazard, so the dialog warned
-  // about a backwards fold in words that could not say which way was backwards.
+  // `why` is [singular, plural], for the same reason PHRASE above is written
+  // out per action: a warning assembled from a subject and an "s" produced
+  // "2 rows differs from its base", and the sentence a reviewer reads before
+  // committing 62 rows is the wrong place to be approximately right.
+  //
+  // The subject agrees with the risky count, except when every row is risky, in
+  // which case it names the whole batch: "Both rows differ from their base"
+  // beats "2 rows differ" directly under a list of exactly those 2 rows.
+  function warnPhrase(risky, n, why) {
+    var plural = risky.length !== 1;
+    var text = (why || ['needs a second look', 'need a second look'])[plural ? 1 : 0];
+    var subject;
+    if (risky.length === n) {
+      subject = n === 1 ? 'This row ' : (n === 2 ? 'Both rows ' : 'All ' + n + ' rows ');
+    } else {
+      subject = risky.length + (plural ? ' rows ' : ' row ');
+    }
+    return subject + text;
+  }
+
   function confirmBulk(action, rows, risky, why, done) {
     var n = rows.length;
     var label = phrase(action, n);
@@ -2617,11 +2703,11 @@ REVIEW_JS = """
         return '<li>' + esc(r.slug || (r.base + ' vs ' + r.other)) +
           (r.target ? ' &rarr; ' + esc(r.target) : '') + '</li>';
       }).join('') + (n > 5 ? '<li>and ' + (n - 5) + ' more</li>' : '') + '</ul>' +
-      (risky.length ? '<p class="warn">' +
-        (risky.length === 1 ? '1 row ' : risky.length + ' rows ') +
-        esc(why || 'in this batch needs a second look') + ': ' +
-        esc(risky.slice(0, 3).join(', ')) +
-        (risky.length > 3 ? ', and ' + (risky.length - 3) + ' more' : '') +
+      (risky.length ? '<p class="warn">' + esc(warnPhrase(risky, n, why)) +
+        // Re-listing every row in red under the same rows in black reads as a
+        // second, worse problem. Name them only when they are a subset.
+        (risky.length === n ? '' : ': ' + esc(risky.slice(0, 3).join(', ')) +
+          (risky.length > 3 ? ', and ' + (risky.length - 3) + ' more' : '')) +
         '.</p>' : '') +
       '<div class="when">' + (WHEN[action] || DEFAULT_WHEN) + '</div>' +
       (needType ? '<p>More than ' + BULK + ' rows. Type <strong>' + n +
@@ -2747,9 +2833,11 @@ REVIEW_JS = """
         var risky = rows.filter(function (r) {
           return /-(potted|tree|trees|fruit|nut|pome|stone|dwf|tm|pbr)(-|$)/.test(r.target);
         }).map(function (r) { return r.slug + ' \\u2192 ' + r.target; });
-        submit(action, rows, risky,
-               'points at a target that still carries listing noise, so the ' +
-               'redirect lands on a page that is itself a rename candidate');
+        submit(action, rows, risky, [
+          'points at a target that still carries listing noise, so the ' +
+          'redirect lands on a page that is itself a rename candidate',
+          'point at targets that still carry listing noise, so the redirects ' +
+          'land on pages that are themselves rename candidates']);
       });
     });
   }
@@ -2791,8 +2879,9 @@ REVIEW_JS = """
         return Number(document.querySelector('tr[data-slug="' + r.slug +
           '"] td.num').textContent) > 1;
       }).map(function (r) { return r.slug + ' (several nurseries)'; });
-      submit('alias', rows, risky,
-             'covers more than one nursery, so several listings move at once');
+      submit('alias', rows, risky, [
+        'covers more than one nursery, so several listings move at once',
+        'cover more than one nursery, so several listings move at once']);
     });
   }
 
@@ -2868,9 +2957,11 @@ REVIEW_JS = """
           }).map(function (tr) {
             return tr.querySelector('.nm').value.replace('|', ' \\u2192 ');
           });
-          submit('alias', rows, risky,
-                 'folds a page carried by MORE nurseries into one carried by ' +
-                 'fewer, retiring the better established URL');
+          submit('alias', rows, risky, [
+            'folds a page carried by MORE nurseries into one carried by fewer, ' +
+            'retiring the better established URL',
+            'fold a page carried by MORE nurseries into one carried by fewer, ' +
+            'retiring the better established URL']);
         } else {
           submit('distinct', chosenDistinct().map(function (tr) {
             return {base: tr.getAttribute('data-a'),
@@ -2943,9 +3034,11 @@ REVIEW_JS = """
             return tr.getAttribute('data-other') + ' \\u2192 ' +
                    tr.getAttribute('data-base');
           });
-          submit('alias', rows, risky,
-                 'differs from its base by more than listing noise, so it may ' +
-                 'be a different plant (avocado-hass-lamb is Lamb Hass)');
+          submit('alias', rows, risky, [
+            'differs from its base by more than listing noise, so it may be a ' +
+            'different plant (avocado-hass-lamb is Lamb Hass)',
+            'differ from their base by more than listing noise, so they may be ' +
+            'different plants (avocado-hass-lamb is Lamb Hass)']);
         } else {
           submit('distinct', tickedBy('.dis').map(function (tr) {
             return {base: tr.getAttribute('data-base'),
@@ -2953,6 +3046,47 @@ REVIEW_JS = """
           }), []);
         }
       });
+    });
+  }
+
+  // -- panels -----------------------------------------------------------------
+  // Collapsed by default, and the page remembers what you left open, because
+  // the section you are working is the same one tomorrow. A filter overrides
+  // both: you asked for those rows, so they are shown.
+  var PKEY = 'treestock.review.panels';
+  var openSet = {};
+  try { openSet = JSON.parse(localStorage.getItem(PKEY) || '{}') || {}; }
+  catch (e) { openSet = {}; }
+
+  var panels = Array.prototype.slice.call(
+    document.querySelectorAll('section[id] > details.panel'));
+  panels.forEach(function (d) {
+    var id = d.parentElement.id;
+    if (!window.QFILTER && Object.prototype.hasOwnProperty.call(openSet, id)) {
+      d.open = !!openSet[id];
+    }
+    d.addEventListener('toggle', function () {
+      openSet[id] = d.open;
+      try { localStorage.setItem(PKEY, JSON.stringify(openSet)); } catch (e) {}
+    });
+  });
+
+  // A jump link to a collapsed panel would scroll to a closed heading, which
+  // reads as a broken link. Open it on the way.
+  window.addEventListener('hashchange', openFromHash);
+  function openFromHash() {
+    var el = document.getElementById((location.hash || '').slice(1));
+    var d = el && el.querySelector(':scope > details.panel');
+    if (d) { d.open = true; el.scrollIntoView(); }
+  }
+  if (location.hash) openFromHash();
+
+  var expand = document.getElementById('expandall');
+  if (expand) {
+    expand.addEventListener('click', function () {
+      var anyClosed = panels.some(function (d) { return !d.open; });
+      panels.forEach(function (d) { d.open = anyClosed; });
+      expand.textContent = anyClosed ? 'Close all' : 'Open all';
     });
   }
 
@@ -3005,22 +3139,31 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
     # Already in variety_overrides.json, so already decided even though the
     # build has not run yet. Same treatment as the pending queue.
     committed = (v.get("overrides") or {}).get("alias") or {}
+    # (section html, open by default). Only the pending queue starts open: it is
+    # four rows, it is the state of decisions already made, and it is the one
+    # thing worth seeing without asking. A filter is an ask, so it opens
+    # everything that matched it.
+    sections = [
+        (_pending_section(store), True),
+        (_redirect_manage_section(inv, store, q), bool(q)),
+        (_alias_queue_section(inv, store, q, committed), bool(q)),
+        (_near_miss_section(v.get("near_misses") or [],
+                            v.get("near_miss_tiers") or {}, inv, store, q,
+                            committed), bool(q)),
+        (_sibling_review_section(v.get("siblings") or [], tiers, inv, q, store,
+                                 committed), bool(q)),
+        (_variety_overrides_section(v.get("overrides") or {}), False),
+    ]
+    panels = [_collapsible(html, open_) for html, open_ in sections if html]
     parts = [
         f'<p class="muted">{v.get("index_size", 0)} variety pages in the '
         f'canonical index. <a href="/admin/varieties">Back to the inventory</a>.</p>',
         _filter_box(q),
         _variety_alarm(v),
-        _pending_section(store),
-        _redirect_manage_section(inv, store, q),
-        _alias_queue_section(inv, store, q, committed),
-        _near_miss_section(v.get("near_misses") or [],
-                           v.get("near_miss_tiers") or {}, inv, store, q,
-                           committed),
-        _sibling_review_section(v.get("siblings") or [], tiers, inv, q, store,
-                                committed),
-        _variety_overrides_section(v.get("overrides") or {}),
+        _panel_nav(panels),
+        *[html for html, _, _ in panels],
         f'<script>window.CSRF={json.dumps(model.get("csrf") or "")};'
-        f'{REVIEW_JS}</script>',
+        f'window.QFILTER={json.dumps(bool(q))};{REVIEW_JS}</script>',
     ]
     return render_page(
         title="treestock admin — variety review",

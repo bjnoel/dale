@@ -17,6 +17,7 @@ Run from repo root with:
     python3 -m unittest discover tests/
 """
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -514,6 +515,36 @@ class NearMissTests(unittest.TestCase):
         self.assertNotIn("retires", label)
         self.assertIn("a-long-slug-here (3)", label)
 
+    def test_no_css_escape_was_eaten_by_python(self):
+        """`content:"\\25B8"` in a plain Python string is an OCTAL escape, not a
+        CSS one: Python turns \\25 into \\x15 and leaves "B8", so the disclosure
+        triangle shipped as a control character followed by the letters B8. CSS
+        escapes in these blocks need doubling, which the older rules in the same
+        file already do. A control character is invisible in a diff and in a
+        code review, so it is asserted here instead."""
+        for name in ("REVIEW_CSS", "INVENTORY_CSS"):
+            css = getattr(admin_view, name)
+            bad = [c for c in css if ord(c) < 32 and c not in "\n\t"]
+            self.assertEqual(bad, [], f"{name} has control characters: "
+                                      f"{[hex(ord(c)) for c in bad]}")
+
+    def test_every_risk_warning_has_a_plural(self):
+        """"2 rows differs from its base" reached the confirm dialog because the
+        warning was one string written for the singular. The sentence a reviewer
+        reads before committing 62 rows is the wrong place to be approximately
+        right, so each caller supplies [singular, plural] and this fails if one
+        goes back to a bare string."""
+        js = admin_view.REVIEW_JS
+        # Lookbehind skips `function submit(action, rows, risky, why)` itself.
+        calls = re.findall(
+            r"(?<!function )submit\(\s*(?:'[a-z-]+'|action)\s*,\s*rows\s*,"
+            r"\s*risky\s*,\s*(.)", js)
+        self.assertTrue(calls, "no risky submit() calls found; did they move?")
+        for opener in calls:
+            self.assertEqual(opener, "[",
+                             "a `why` must be [singular, plural], not a string")
+        self.assertIn("why || ['needs a second look'", js)
+
     def test_an_even_fold_is_not_flagged(self):
         """One nursery each way is a real choice, not a mistake, and warning on
         it would train the reader past the warning that matters."""
@@ -540,7 +571,7 @@ class QueuedRowRenderingTests(WriteHarness):
     that markup: the only durable feedback was in a section several screens up.
     """
 
-    def render(self):
+    def render(self, q=""):
         inv = admin_view.load_variety_inventory(self.data)
         # Both members must be live pages in the ledger or the section renders
         # no fold options at all. One queued alias should resolve this row and
@@ -559,7 +590,40 @@ class QueuedRowRenderingTests(WriteHarness):
             "inventory": inv,
             "decisions": self.store(),
             "csrf": "x",
+            "q": q,
         })
+
+    def test_every_section_collapses_and_is_a_jump_target(self):
+        """The redirect table is 205 rows and 109KB and sits above everything
+        with a verb on it, so working the queues meant scrolling past every
+        tombstone on the site. _collapsible is a regex over markup the builders
+        produce; a section that stops matching would pass through expanded and
+        silently undo this, so the wrapping is asserted rather than assumed."""
+        html = self.render()
+        sections = re.findall(r'<section([^>]*)>(.{0,80})', html, re.S)
+        self.assertTrue(sections)
+        for attrs, head in sections:
+            self.assertIn("id=", attrs, f"section with no id: {head!r}")
+            self.assertIn("<details class=\"panel\"", head,
+                          f"section not collapsible: {attrs!r}")
+        for sid in ("pending", "redirects", "nearmiss", "siblings"):
+            self.assertIn(f'href="#{sid}"', html, f"{sid} missing from the nav")
+
+    def test_only_the_pending_queue_starts_open(self):
+        """Everything else is long, and which one matters changes by the day."""
+        html = self.render()
+        opened = re.findall(r'<section id="([^"]+)"><details class="panel" open>',
+                            html)
+        self.assertEqual(opened, ["pending"])
+
+    def test_a_filter_opens_what_it_matched(self):
+        """Typing a slug into the filter is asking to see those rows, not to be
+        handed six collapsed headings."""
+        html = self.render(q="avocado")
+        opened = set(re.findall(
+            r'<section id="([^"]+)"><details class="panel" open>', html))
+        self.assertIn("redirects", opened)
+        self.assertIn("siblings", opened)
 
     def test_an_unfolded_sibling_row_offers_both_answers(self):
         html = self.render()
