@@ -190,6 +190,35 @@ and no sibling offer. Since a reviewer converting a redirect to a tombstone is e
 section enables, and the pre-merge parser is the only other place that species could be
 recovered from, `species` and `variety` are now carried through the proposal onto the entry.
 
+## 3b. What writing the examples out found
+
+Worked through on real data 2026-08-17, at Benedict's request. Three findings, none of which the
+abstract description surfaced.
+
+**Ten live pages have a truncated heading.** `apple-pink-lady-pome` renders
+`Buy Apple - Pink Lady [pome Trees in Australia` as both `<title>` and `<h1>`, live and indexed.
+Also `apple-red-delicious-pome`, `apricot-tilton-stone`, `hazelnut-lewis-nut`,
+`hazelnut-walliss-pride-size-nuts`, `peach-orion-stone`, `plum-cose-golden-drop-stone`,
+`plum-donsworth-stone`, `quince-champion-pome`, `quince-smyrna-pome`. Every one shadows a clean
+page that already exists (`apple-pink-lady`, `quince-smyrna`, and so on). `e780eec` fixed the
+emptied-bracket case; this is an *unclosed* bracket surviving the cleaner. Each is an alias
+candidate AND a parser bug, and the parser fix is the one that stops the next ten.
+
+**Four R1 proposals point at those broken pages.** The tool flags them (`target_live` is true but
+the target slug is noisy), and they should be retargeted onto the clean slug before approval:
+`apple-pink-lady-pome-fruit`, `apple-red-delicious-pome-fruit`, `apricot-tilton-stone-fruit`,
+`almond-dwf-self-pollinating`.
+
+**One proposal is a taxonomy error a redirect cannot fix.** `blackberry-jam-fruit` ->
+`blackberry-jam`, from the title "Blackberry Jam Fruit". That plant is *Randia formosa*, its own
+species, not a blackberry cultivar called "Jam". Both slugs are wrong; the fix is a species
+record, as with the canistel fix. Nothing in slug logic can find this, which is the argument for
+the review queue existing at all.
+
+**A gap in the tombstone.** `decide_night` records `see_also` when products split across several
+successors, but `render_tombstone` never displays it. The reader is told the variety is gone and
+not where its listings went. Worth closing when the review page is built.
+
 ## 4. Decisions have to stick
 
 The single change that makes the review page worth opening twice.
