@@ -11657,3 +11657,81 @@ nothing, and a test asserts the rendered page contains no form and no POST. The 
 in section 6 (`_extract_cf_token` falls back to the `CF_Authorization` cookie, so a
 cookie-authenticated POST is forgeable cross-origin) is real and unfixed, and it is the
 first thing DAL-284 has to deal with.
+
+---
+
+## DEC-298 — 2026-08-17 — The admin page can change something, and still cannot break anything
+
+**Status:** Shipped and live. DAL-284 and DAL-285. `/admin/varieties/review` has four
+verbs; `/admin/varieties` stays read only.
+
+### What was actually verified, because the plan said not to assume it
+
+Section 6 said to check Cloudflare's `SameSite` on `CF_Authorization` rather than trust the
+mitigation, "including this description of it". An unauthenticated request to the
+Access-protected path answers:
+
+```
+set-cookie: CF_AppSession=...; Expires=...; Path=/; Secure; HttpOnly
+```
+
+**No `SameSite` attribute at all.** (The login host's own `CF_Session` is explicitly
+`SameSite=none`.) `CF_Authorization` cannot be observed without completing the login, but
+it is issued by the same flow on the same host. A cookie with no `SameSite` is Lax *by
+browser default*, which is a property of the visitor's browser rather than anything the
+origin can enforce, and Chrome's Lax-by-default still permits a cross-site POST within two
+minutes of the cookie being set.
+
+So the honest conclusion is that SameSite is defence in depth here and cannot be the
+control. Three layers that do not depend on the browser, each independently sufficient:
+`Origin` must equal the site (a missing one is refused, not waved through); `Content-Type`
+must be JSON, which makes a cross-origin attempt preflighted, and the endpoint answers no
+preflight; and an HMAC token bound to the JWT subject, which another origin cannot read off
+the page. Its secret is separate from `UNSUBSCRIBE_SECRET`, because one key signing two
+kinds of token means a bug in either mints the other. All six refusals were probed against
+the running service after deploy.
+
+### The design decision that mattered more than the security one
+
+**The UI cannot write the ledger, and that is not caution, it is arithmetic.** Both builders
+load the ledger, mutate it and write the whole file back, so a web write at 00:00:30 is gone
+by 00:05. `deploy.sh` rsyncs `variety_overrides.json`, so a web write to that is gone within
+the hour. Queueing an intent is the only shape that survives either.
+
+That indirection turns out to be the feature. It is what makes "nothing changes until the
+00:00 UTC build" a true sentence rather than a reassuring one, which is the strongest safety
+property available and is now what the confirmation dialogs lead with. The nightly re-tests
+every condition instead of trusting the file, exactly as `--seed-reviewed` does: a slug that
+came back to life beats a week-old opinion, and a target that is not a page tonight keeps
+the decision for tomorrow rather than pointing a live URL at a 404.
+
+### A live slug is refused, loudly
+
+The single most important refusal. `canonical_cultivar` recomputes a live slug from the
+nursery's product title every run, so a redirect set against one is undone the same night,
+and a reviewer allowed to set it would watch it revert and conclude the page is broken. The
+error says so and names the alias path. The rule table that enforces it is also rendered
+onto each row, so the UI cannot offer an action the server will refuse: a button that 409s
+is a button that teaches you to distrust the page.
+
+That guard caught a real bug during testing. The first version let you type a target into a
+tombstone row and offered "Apply targets" on it.
+
+### Found while building
+
+**50 pairs of slugs are identical once the hyphens come out** (`apple-2-way-gala-red-fuji`
+vs `apple-2way-gala-red-fuji`, `almond-...-paper-shell` vs `...-papershell`). Prefix
+matching structurally cannot see these, so the sibling queue never has. The plan estimated
+one. Unlike a sibling pair there is no judgement to make: one plant, spelled two ways, twice
+on the site. They get their own section.
+
+### The sibling queue can now be worked down
+
+498 pairs regenerating identically every night with nowhere to record "I looked, these are
+different plants". A persisted dismissal is the only thing that makes it finite; tiering
+reaches 23 of the 498, so it is a convenience on top, not the fix, exactly as measured.
+Rendered 100 at a time because nobody adjudicates 498 in one sitting, and a page that asks
+them to is how it stayed at 498.
+
+`run-all-scrapers.sh` passes `--decisions`. Without it every click reaches nothing, which is
+the trap `--seed-reviewed` was in, so a test asserts the shell script calls it.
