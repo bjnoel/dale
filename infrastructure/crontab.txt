@@ -52,3 +52,10 @@
 # Record the server config into the repo (DAL-281). Mondays 04:20 UTC:
 # off the top of the hour so it does not race the hourly dale-runner push.
 20 4 * * 1 /opt/dale/autonomous/snapshot-server-config.sh >> /opt/dale/autonomous/logs/cron.log 2>&1
+
+# Monthly maintenance (DEC-290, DAL-282). Times are UTC; 18:30 Sun = 02:30 Mon AWST.
+# The "first Monday" guard is in the script, not cron: cron cannot express it
+# without the day-of-month/day-of-week OR trap. Runbook: docs/server-maintenance.md
+0 1 * * 6 /usr/bin/python3 /opt/dale/autonomous/monthly_maintenance.py --announce >> /opt/dale/autonomous/logs/maintenance.log 2>&1
+30 18 * * 0 /usr/bin/python3 /opt/dale/autonomous/monthly_maintenance.py --run >> /opt/dale/autonomous/logs/maintenance.log 2>&1
+@reboot sleep 120 && /usr/bin/python3 /opt/dale/autonomous/monthly_maintenance.py --verify >> /opt/dale/autonomous/logs/maintenance.log 2>&1
