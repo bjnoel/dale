@@ -15,6 +15,7 @@ Rendered by subscribe_server.py at GET /admin, behind Cloudflare Access. The
 page is view-only: it never writes anything.
 """
 
+import hashlib
 import html
 import json
 import re
@@ -23,6 +24,7 @@ from collections import Counter
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from stocklib import admin_decisions as decisions
 from stocklib.page_ledger import (FAMILY_VARIETY, LEDGER_DIRNAME, LIVE,
                                   REDIRECT, RETIRED, TOMBSTONE, ledger_path)
 from stocklib.scrape_health import HEALTH_DIRNAME, read_records
@@ -464,13 +466,46 @@ def load_admin_data(data_dir: Path = DATA_DIR) -> dict:
     model["needs_review"] = load_needs_review(data_dir)
     model["nurseries"] = load_nursery_data(data_dir)
     model["business"] = load_business_data(data_dir)
-    model["varieties"] = load_variety_curation(data_dir, watches_rows)
+    decided = decisions.load_decisions(decisions.decisions_path(data_dir))
+    model["decisions"] = decided
+    model["varieties"] = load_variety_curation(data_dir, watches_rows, decided)
     watch_counts = Counter(row[1] for row in watches_rows if row[1])
     model["inventory"] = load_variety_inventory(data_dir, watch_counts)
     return model
 
 
-def load_variety_curation(data_dir: Path, watches_rows) -> dict:
+# How many sibling pairs to put in front of a reviewer at once. 498 rows is not
+# a sitting's work, and a page that renders all of them is a page that says "do
+# all of this", which is how the queue stayed at 498 in the first place.
+SIBLING_BATCH = 100
+
+_TIER_ORDER = ("noise", "judgement")
+
+_TIER_LABEL = {
+    "noise": "listing noise only",
+    "judgement": "needs judgement",
+}
+
+
+def sibling_tier(base: str, other: str) -> str:
+    """How much thought this pair needs.
+
+    `other` always starts with `base + "-"`, so the tokens beyond the base are
+    the whole difference between them. If every one of those is listing noise
+    the parser already strips elsewhere, the pair is almost certainly one plant.
+    Anything else needs someone who knows the plants: `avocado-hass-lamb` is
+    Lamb Hass and `abiu-e4-pointed` may well be a different fruit.
+    """
+    extra = other[len(base) + 1:]
+    tokens = {t for t in extra.split("-") if t}
+    if tokens and tokens <= NOISE_SLUG_TOKENS:
+        return "noise"
+    if _AGE_IN_SLUG_RE.fullmatch(extra):
+        return "noise"
+    return "judgement"
+
+
+def load_variety_curation(data_dir: Path, watches_rows, decided: dict = None) -> dict:
     """The variety review queue, built WITHOUT importing cultivar_parsing.
 
     That import is deliberately kept out of the server (it is heavy, and it
@@ -509,17 +544,47 @@ def load_variety_curation(data_dir: Path, watches_rows) -> dict:
     for row in watches_rows:
         watch_counts[row[1]] = watch_counts.get(row[1], 0) + 1
 
+    # Pairs a human has already looked at and called two different plants. The
+    # single change that turns this queue from a wall into a backlog: 319 groups
+    # regenerated identically every night, so opening it twice was the same work
+    # twice. DAL-285.
+    dismissed = decisions.dismissed_pairs(decided or {})
+
     slugs = sorted(index)
     siblings = []
+    tier_counts = Counter()
     for base in slugs:
         longer = [s for s in slugs if s != base and s.startswith(base + "-")]
-        if longer:
+        kids = []
+        for s in sorted(longer):
+            if decisions.sibling_key(base, s) in dismissed:
+                tier_counts["dismissed"] += 1
+                continue
+            tier = sibling_tier(base, s)
+            tier_counts[tier] += 1
+            kids.append({"slug": s, "watchers": watch_counts.get(s, 0),
+                         "tier": tier})
+        if kids:
+            # Obvious ones first, exactly as the plan orders them, while being
+            # honest that this only reaches about a tenth of the queue: 48 of
+            # 493 differ by listing noise alone. Sorting is a convenience on top
+            # of the dismissals, not a substitute for them.
+            kids.sort(key=lambda k: (_TIER_ORDER.index(k["tier"]), k["slug"]))
             siblings.append({
                 "base": base,
                 "base_watchers": watch_counts.get(base, 0),
-                "siblings": [{"slug": s, "watchers": watch_counts.get(s, 0)}
-                             for s in sorted(longer)],
+                "tier": kids[0]["tier"],
+                "siblings": kids,
             })
+    siblings.sort(key=lambda g: (_TIER_ORDER.index(g["tier"]), g["base"]))
+
+    # Hyphenation collisions: two slugs that are the same string once the
+    # hyphens come out. Not a prefix relationship, so the sibling scan cannot
+    # see them, and they are always the same plant twice.
+    by_letters = {}
+    for s in slugs:
+        by_letters.setdefault(s.replace("-", ""), []).append(s)
+    spelling = sorted([v for v in by_letters.values() if len(v) > 1])
 
     # Watched slugs with no page. The rollout tracks this number and requires
     # it not to grow: each one is an alert whose link 404s.
@@ -536,6 +601,8 @@ def load_variety_curation(data_dir: Path, watches_rows) -> dict:
         "index_size": len(index),
         "overrides": overrides,
         "siblings": siblings,
+        "tiers": dict(tier_counts),
+        "spelling": spelling,
         "orphan_watches": orphan_watches,
         "denied_but_watched": denied_but_watched,
     }
@@ -828,6 +895,207 @@ def build_varieties_payload(model: dict) -> dict:
         "updated": model.get("updated", ""),
         "rows": rows,
     }
+
+
+# ---------------------------------------------------------------------------
+# Writes (DAL-284 / DAL-285)
+#
+# Everything here records an INTENT for tonight's build. Nothing writes the
+# ledger, the pages, or variety_overrides.json, and that is not squeamishness:
+# both builders rewrite the whole ledger file every night, so a web write at
+# 00:00:30 is gone by 00:05, and deploy.sh rsyncs the override file, so a web
+# write to that is gone within the hour. Queueing is the only shape that
+# survives, and it is also what makes "nothing changes until the 00:00 UTC
+# build" a true sentence rather than a reassuring one.
+# ---------------------------------------------------------------------------
+
+ADMIN_DECIDE_PATH = "/admin/varieties/decide"
+
+# Above this, the UI makes you type the count. Section 6 of the plan: the cost
+# of a gesture should track what the gesture can break.
+BULK_CONFIRM_THRESHOLD = 10
+
+
+class DecisionRefused(Exception):
+    """A decision the server will not record, because the reviewer was looking
+    at something that has since changed. Answered as 409, never merged."""
+
+
+def row_stamp(entry: dict) -> str:
+    """Short hash of the fields a redirect decision depends on.
+
+    Rendered into the page next to each row and echoed back on submit. If the
+    nightly moved the row in between, the stamps differ and the write is
+    refused with a re-read rather than applied to a row that no longer says what
+    the reviewer read. Two tabs open on the same queue is the common case, not
+    the exotic one.
+    """
+    entry = entry or {}
+    basis = f'{entry.get("state") or ""}|{entry.get("redirect_to") or ""}'
+    return hashlib.sha256(basis.encode()).hexdigest()[:12]
+
+
+# action -> (needs a target, states the row may currently be in)
+#
+# The state list is the real guard. A live slug is absent from every one of
+# them, and that is section 3a in one table: a live slug's name is recomputed
+# from the nursery's product title every night, so pointing it anywhere from a
+# browser would be undone before morning. The alias path exists for that, and
+# the lifecycle then writes the redirect by itself two nights later.
+REDIRECT_ACTION_RULES = {
+    decisions.RETARGET: (True, (REDIRECT,)),
+    decisions.TO_TOMBSTONE: (False, (REDIRECT, RETIRED)),
+    decisions.TO_REDIRECT: (True, (TOMBSTONE, RETIRED)),
+}
+
+
+def apply_decisions(payload: dict, by: str, data_dir: Path = DATA_DIR) -> dict:
+    """Validate a batch of decisions and append them to the decisions file.
+
+    Raises DecisionRefused for anything the reviewer could not have meant: a
+    stale stamp, an action against a state it cannot apply to, a target that is
+    not a live page, a self-referential alias. The batch is all-or-nothing, so a
+    bulk approve either lands whole or does not land, and nobody has to work out
+    which half of 126 rows went through.
+    """
+    action = str(payload.get("action") or "")
+    rows = payload.get("rows")
+    if not isinstance(rows, list) or not rows:
+        raise DecisionRefused("no rows")
+    if len(rows) > 500:
+        raise DecisionRefused("too many rows in one batch")
+
+    data_dir = Path(data_dir)
+    inv = load_variety_inventory(data_dir)
+    if not inv.get("present"):
+        raise DecisionRefused("no page ledger to decide against")
+    facts = {f["slug"]: f for f in inv["facts"]}
+    live_slugs = {s for s, f in facts.items() if f["state"] == LIVE}
+
+    store = decisions.load_decisions(decisions.decisions_path(data_dir))
+
+    if action in REDIRECT_ACTION_RULES:
+        applied = _decide_redirects(action, rows, facts, live_slugs, store, by)
+    elif action == "unqueue-redirect":
+        # Cancelling before the build is the reason the queue is visible at all.
+        # No validation beyond the slug: removing an intent can only ever result
+        # in less change, so there is nothing here to guard against.
+        applied = 0
+        for row in rows:
+            if (store.get("redirects") or {}).pop(str((row or {}).get("slug") or ""),
+                                                  None):
+                applied += 1
+    elif action in ("distinct", "undistinct"):
+        applied = _decide_siblings(action, rows, store, by)
+    elif action in (decisions.ALIAS, decisions.DENY, "unqueue"):
+        applied = _decide_curation(action, rows, facts, live_slugs, store, by)
+    else:
+        raise DecisionRefused(f"unknown action {action!r}")
+
+    decisions.save_decisions(decisions.decisions_path(data_dir), store)
+    return {
+        "ok": True,
+        "action": action,
+        "applied": applied,
+        "effective": "tonight's 00:00 UTC build",
+        "pending": {
+            "redirects": len(store.get("redirects") or {}),
+            "siblings": len(store.get("siblings") or {}),
+            "curation": len(store.get("curation_pending") or []),
+        },
+    }
+
+
+def _decide_redirects(action, rows, facts, live_slugs, store, by) -> int:
+    needs_target, allowed_states = REDIRECT_ACTION_RULES[action]
+    for row in rows:
+        slug = str((row or {}).get("slug") or "")
+        entry = facts.get(slug)
+        if not entry:
+            raise DecisionRefused(f"{slug or '(blank)'}: not in the ledger")
+        if entry["state"] == LIVE:
+            raise DecisionRefused(
+                f"{slug} is live. A live slug's name is recomputed from the "
+                f"nursery title every night, so a redirect set here would be "
+                f"undone by morning. Queue an alias instead.")
+        if entry["state"] not in allowed_states:
+            raise DecisionRefused(
+                f"{slug} is {entry['state']}, so {action} does not apply to it")
+        stamp = str((row or {}).get("stamp") or "")
+        current = row_stamp({"state": entry["state"],
+                             "redirect_to": entry["redirect_to"]})
+        if stamp != current:
+            raise DecisionRefused(
+                f"{slug} changed since the page was loaded. Reload and look "
+                f"again rather than applying what you read a moment ago.")
+        target = str((row or {}).get("target") or "").strip()
+        if needs_target:
+            if target not in live_slugs:
+                raise DecisionRefused(
+                    f"{slug}: {target or '(blank)'} is not a live page, so "
+                    f"pointing at it would send readers to a 404")
+            if target == slug:
+                raise DecisionRefused(f"{slug}: cannot point at itself")
+
+    for row in rows:
+        decisions.record_redirect(store, str(row["slug"]), action,
+                                  target=str(row.get("target") or ""), by=by)
+    return len(rows)
+
+
+def _decide_siblings(action, rows, store, by) -> int:
+    pairs = []
+    for row in rows:
+        base = str((row or {}).get("base") or "")
+        other = str((row or {}).get("other") or "")
+        if not base or not other or base == other:
+            raise DecisionRefused("a sibling decision needs two distinct slugs")
+        pairs.append((base, other))
+    for base, other in pairs:
+        if action == "distinct":
+            decisions.dismiss_sibling(store, base, other, by=by)
+        else:
+            decisions.restore_sibling(store, base, other)
+    return len(pairs)
+
+
+def _decide_curation(action, rows, facts, live_slugs, store, by) -> int:
+    for row in rows:
+        slug = str((row or {}).get("slug") or "")
+        if action == "unqueue":
+            if not slug:
+                raise DecisionRefused("unqueue needs a slug")
+            continue
+        if slug not in facts:
+            raise DecisionRefused(f"{slug or '(blank)'}: not in the ledger")
+        if action == decisions.ALIAS:
+            target = str((row or {}).get("target") or "").strip()
+            if target not in live_slugs:
+                raise DecisionRefused(
+                    f"{slug}: {target or '(blank)'} is not a live page")
+            if target == slug:
+                raise DecisionRefused(f"{slug}: an alias to itself is a cycle")
+            # A -> B where B is itself queued to move to C would land two
+            # aliases that disagree. canonical_cultivar applies the map once,
+            # with no chain resolution, so B would keep pointing at C and A
+            # would stop at B.
+            queued = {r["from"]: r.get("to") for r in
+                      (store.get("curation_pending") or [])
+                      if r.get("kind") == decisions.ALIAS}
+            if target in queued:
+                raise DecisionRefused(
+                    f"{slug} -> {target}, but {target} is already queued to "
+                    f"move to {queued[target]}. Aliases are applied once, not "
+                    f"chained, so point this at {queued[target]} instead.")
+
+    for row in rows:
+        slug = str(row["slug"])
+        if action == "unqueue":
+            decisions.drop_curation(store, slug)
+        else:
+            decisions.queue_curation(store, action, slug,
+                                     target=str(row.get("target") or ""), by=by)
+    return len(rows)
 
 
 # ---------------------------------------------------------------------------
@@ -1575,74 +1843,587 @@ def _variety_overrides_section(overrides: dict) -> str:
         f'</div></div></section>')
 
 
-def _sibling_review_section(siblings) -> str:
-    """The queue that needs a person.
+def _spelling_section(groups) -> str:
+    """Slugs that are the same string once the hyphens come out.
+
+    The sibling scan is prefix matching, so it structurally cannot see these:
+    `paper-shell` is not a prefix of `papershell`. Unlike a sibling pair, there
+    is nothing to adjudicate. One plant, spelled two ways, twice on the site.
+    """
+    if not groups:
+        return ""
+    rows = "".join(
+        f'<tr><td>{_esc(" / ".join(g))}</td></tr>' for g in groups)
+    return (
+        f'<section><h2>Same slug, different hyphens ({len(groups)})</h2>'
+        f'<p class="muted">Identical once the hyphens are removed. Prefix '
+        f'matching cannot find these, and there is no judgement to make: they '
+        f'are one plant spelled two ways. Alias one onto the other above.</p>'
+        f'<table class="mini"><tbody>{rows}</tbody></table></section>')
+
+
+def _sibling_review_section(siblings, tiers=None) -> str:
+    """The queue that needs a person, and now remembers being worked.
 
     Deliberately NOT auto-folded. avocado-hass-lamb is Lamb Hass, a different
     cultivar; guava-thai-pink, orange-valencia-delta and
     finger-lime-green-sapphire are all real. Prefix matching finds candidates;
     only someone who knows the plants can adjudicate them.
+
+    What changed in DAL-285 is that "these are different plants" is now a thing
+    you can record. Before, 319 groups regenerated identically every night with
+    nowhere to put that, so the queue could never be worked down and nobody
+    opened it. Tiering is on top of that, and it is worth being honest about how
+    little it does: 48 of 493 lines differ by listing noise alone. The other 445
+    need someone who knows the plants, and most of them are probably correct.
     """
+    tiers = tiers or {}
+    dismissed = tiers.get("dismissed", 0)
     if not siblings:
-        return ('<section><h2>Sibling review queue</h2>'
-                '<p class="muted">Nothing to adjudicate.</p></section>')
+        return (f'<section><h2>Sibling review queue</h2>'
+                f'<p class="muted">Nothing left to adjudicate. {dismissed} pair(s) '
+                f'marked distinct.</p></section>')
     rows = []
+    total = 0
     for group in siblings:
-        kids = ", ".join(
-            f'{_esc(s["slug"])}{" (" + str(s["watchers"]) + " watching)" if s["watchers"] else ""}'
-            for s in group["siblings"])
-        base_w = (f' ({group["base_watchers"]} watching)'
+        base_w = (f' <span class="small muted">({group["base_watchers"]} watching)</span>'
                   if group["base_watchers"] else "")
-        rows.append(f'<tr><td>{_esc(group["base"])}{base_w}</td><td>{kids}</td></tr>')
-    # Copy-pasteable starting point for the alias map. Every line is a
-    # SUGGESTION to accept or delete, never something applied on its own.
-    suggestion = ",\n".join(
-        f'    {json.dumps(s["slug"])}: {json.dumps(group["base"])}'
-        for group in siblings for s in group["siblings"])
+        for s in group["siblings"]:
+            total += 1
+            if len(rows) >= SIBLING_BATCH:
+                continue
+            watch = (f' <span class="small muted">({s["watchers"]} watching)</span>'
+                     if s["watchers"] else "")
+            rows.append(
+                f'<tr data-base="{_esc(group["base"])}" data-other="{_esc(s["slug"])}">'
+                f'<td>{_esc(group["base"])}{base_w}</td>'
+                f'<td>{_esc(s["slug"])}{watch}</td>'
+                f'<td><span class="fl">{_esc(_TIER_LABEL.get(s["tier"], s["tier"]))}</span></td>'
+                f'<td><label class="pick"><input type="checkbox" class="dis"> '
+                f'different plants</label></td></tr>')
+    counts = " · ".join(f'{tiers.get(t, 0)} {_TIER_LABEL[t]}' for t in _TIER_ORDER)
+    more = ""
+    if total > len(rows):
+        more = (f'<p class="small muted">Showing the first {len(rows)} of {total}, '
+                f'easiest first. Marking a pair distinct removes it permanently, '
+                f'so the next {len(rows)} arrive on reload. Nobody adjudicates '
+                f'{total} pairs in one sitting, and pretending otherwise is how '
+                f'the queue stayed at {total}.</p>')
     return (
-        f'<section><h2>Sibling review queue ({len(siblings)} base slugs)</h2>'
-        f'<p class="muted">Longer slugs sharing a base. Some are the same '
-        f'cultivar fragmented across listings; some are genuinely different '
-        f'plants (avocado-hass-lamb is Lamb Hass). A human decides, which is '
-        f'why nothing here is applied automatically.</p>'
-        f'<table class="mini"><thead><tr><th>Base</th><th>Longer siblings</th>'
-        f'</tr></thead><tbody>{"".join(rows)}</tbody></table>'
-        f'<h3>Starting point for the alias map</h3>'
-        f'<p class="muted">Paste into variety_overrides.json and DELETE every '
-        f'line that names a different plant. Then run check_watched_slugs.py '
-        f'--baseline 2: the number of watched slugs with no page must not grow, '
-        f'which is how a folded slug with a live watcher shows up before a '
-        f'subscriber finds a 404. Do NOT run migrate_variety_watch_slugs.py; it '
-        f're-parses stored titles that are now canonical display titles and will '
-        f'move a live watch onto a slug that has no page.</p>'
-        f'<pre class="code">"alias": {{\n{_esc(suggestion)}\n}}</pre></section>')
+        f'<section id="siblings"><h2>Sibling review queue ({total} pairs)</h2>'
+        f'<p class="muted">{counts}'
+        f'{f" · {dismissed} already marked distinct" if dismissed else ""}. '
+        f'Longer slugs sharing a base. Some are one cultivar fragmented across '
+        f'listings; some are genuinely different plants (avocado-hass-lamb is '
+        f'Lamb Hass). Marking a pair distinct removes it from this queue for '
+        f'good, which is the only thing that makes the queue finite. To fold one '
+        f'INTO the other, queue an alias in the section above.</p>'
+        f'<div class="bulkbar">'
+        f'<button type="button" data-action="distinct">Mark ticked as distinct</button>'
+        f'<span class="small muted" id="ssel">none ticked</span></div>'
+        f'<div class="tscroll"><table class="mini vt"><thead><tr><th>Base</th>'
+        f'<th>Sibling</th><th>Tier</th><th></th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody></table></div>{more}</section>')
+
+
+REVIEW_CSS = """
+  .bulkbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    margin:0 0 10px; }
+  .bulkbar button { font:inherit; font-size:0.82rem; padding:7px 12px;
+    border:1px solid #065f46; border-radius:8px; background:#065f46; color:#fff;
+    cursor:pointer; }
+  .bulkbar button:disabled { background:#e5e7eb; border-color:#e5e7eb;
+    color:#9ca3af; cursor:not-allowed; }
+  input.rt, input.al { font:inherit; font-size:0.8rem; padding:4px 6px;
+    border:1px solid #d1d5db; border-radius:6px; width:100%; min-width:160px; }
+  input.rt.dirty, input.al.dirty { border-color:#065f46; background:#ecfdf5; }
+  label.pick { white-space:nowrap; font-size:0.78rem; cursor:pointer; }
+  button.undo { font:inherit; font-size:0.75rem; padding:3px 8px;
+    border:1px solid #d1d5db; border-radius:6px; background:#fff; cursor:pointer; }
+  dialog.confirm { border:1px solid #e5e7eb; border-radius:12px; padding:20px;
+    max-width:460px; font-size:0.88rem; }
+  dialog.confirm::backdrop { background:rgba(17,24,39,0.4); }
+  dialog.confirm h3 { margin:0 0 10px; font-size:1rem; }
+  dialog.confirm ul { margin:8px 0; padding-left:18px; font-size:0.82rem; }
+  dialog.confirm .when { background:#ecfdf5; border-radius:8px; padding:8px 10px;
+    color:#065f46; margin:10px 0; }
+  dialog.confirm input { font:inherit; padding:6px 8px; border:1px solid #d1d5db;
+    border-radius:6px; width:90px; }
+  dialog.confirm .acts { display:flex; gap:8px; justify-content:flex-end;
+    margin-top:14px; }
+  dialog.confirm button { font:inherit; font-size:0.85rem; padding:7px 12px;
+    border-radius:8px; cursor:pointer; }
+  dialog.confirm button.go { background:#065f46; color:#fff; border:1px solid #065f46; }
+  dialog.confirm button.no { background:#fff; color:#374151; border:1px solid #d1d5db; }
+  #flash { position:sticky; top:0; z-index:5; padding:10px 12px; border-radius:8px;
+    margin:0 0 12px; font-size:0.85rem; display:none; }
+  #flash.ok { display:block; background:#d1fae5; color:#065f46; }
+  #flash.bad { display:block; background:#fee2e2; color:#991b1b; }
+"""
+
+
+def _pending_section(store: dict) -> str:
+    """What is queued for tonight, and therefore still changeable.
+
+    First block on the page on purpose. The safety property this whole design
+    leans on is that a decision waits for the 00:00 UTC build, and a promise you
+    cannot see the state of is not one anybody trusts twice.
+    """
+    reds = store.get("redirects") or {}
+    sibs = store.get("siblings") or {}
+    cur = store.get("curation_pending") or []
+    if not (reds or cur):
+        return (f'<section><h2>Queued for tonight</h2><p class="muted">Nothing '
+                f'queued. {len(sibs)} sibling pair(s) dismissed as distinct.'
+                f'</p></section>')
+    rows = []
+    for slug, d in sorted(reds.items()):
+        what = (f'{d.get("action")} &rarr; {_esc(d.get("target"))}'
+                if d.get("target") else _esc(d.get("action")))
+        rows.append(f'<tr><td>{_esc(slug)}</td><td>{what}</td>'
+                    f'<td class="small muted">{_esc(d.get("at", "")[:16])}</td>'
+                    f'<td><button type="button" class="undo" data-action="undo-redirect" '
+                    f'data-slug="{_esc(slug)}">Cancel</button></td></tr>')
+    for row in cur:
+        what = (f'alias &rarr; {_esc(row.get("to"))}'
+                if row.get("kind") == "alias" else "deny")
+        rows.append(f'<tr><td>{_esc(row.get("from"))}</td>'
+                    f'<td>{what} <span class="fl">git</span></td>'
+                    f'<td class="small muted">{_esc(row.get("at", "")[:16])}</td>'
+                    f'<td><button type="button" class="undo" data-action="unqueue" '
+                    f'data-slug="{_esc(row.get("from"))}">Cancel</button></td></tr>')
+    return (
+        f'<section><h2>Queued for tonight ({len(reds) + len(cur)})</h2>'
+        f'<p class="muted">Nothing here has changed the site yet. Redirect '
+        f'decisions apply at the 00:00 UTC build. Rows marked '
+        f'<span class="fl">git</span> are configuration and need '
+        f'<code>promote_curation.py</code> to turn them into a commit, so they '
+        f'take a deploy as well as a build.</p>'
+        f'<table class="mini"><thead><tr><th>Slug</th><th>Decision</th>'
+        f'<th>Queued</th><th></th></tr></thead><tbody>{"".join(rows)}</tbody>'
+        f'</table></section>')
+
+
+def _redirect_manage_section(inv: dict, store: dict) -> str:
+    """The 137 redirects and 68 tombstones, with the two verbs that apply.
+
+    A live page is deliberately absent from this table. It cannot be redirected
+    from here and must not look as though it can: its slug is recomputed from
+    the nursery's product title every night, so a redirect written against it
+    would be gone by morning. The alias queue below is the path for those, and
+    the lifecycle then emits the redirect on its own two nights later.
+    """
+    if not inv.get("present"):
+        return ""
+    queued = set((store.get("redirects") or {}))
+    rows = []
+    for f in inv["facts"]:
+        if f["state"] not in (REDIRECT, TOMBSTONE, RETIRED):
+            continue
+        stamp = row_stamp({"state": f["state"], "redirect_to": f["redirect_to"]})
+        pending = ' <span class="fl">queued</span>' if f["slug"] in queued else ""
+        target = _esc(f["redirect_to"]) if f["redirect_to"] else ""
+        see_also = ""
+        if f["state"] == TOMBSTONE and f["see_also"]:
+            # decide_night records where a split page's products went and
+            # render_tombstone never showed it, so the reader was told a variety
+            # was gone and not where its listings went. Here it is at least
+            # visible to the person who can act on it.
+            see_also = (f'<div class="small muted">products went to '
+                        f'{_esc(", ".join(f["see_also"]))}</div>')
+        # Which verbs this row can take, computed from the same table the server
+        # validates against. Rendered into the row so the UI cannot offer an
+        # action the server will refuse: a button that 409s is a button that
+        # taught the reviewer to distrust the page.
+        applicable = " ".join(
+            a for a, (_, states) in REDIRECT_ACTION_RULES.items()
+            if f["state"] in states)
+        rows.append(
+            f'<tr data-slug="{_esc(f["slug"])}" data-stamp="{stamp}" '
+            f'data-state="{f["state"]}" data-actions="{applicable}">'
+            f'<td><label class="pick"><input type="checkbox" class="sel"> '
+            f'{_variety_link(f["slug"], f["slug"])}</label>{pending}{see_also}</td>'
+            f'<td class="vstate {f["state"]}">{f["state"]}</td>'
+            f'<td><input type="text" class="rt" value="{target}" '
+            f'placeholder="target slug" spellcheck="false"></td>'
+            f'<td class="num">{f["watchers"] or ""}</td>'
+            f'<td class="small muted">{_esc(f["since"])}</td></tr>')
+    if not rows:
+        return ('<section><h2>Redirects and tombstones</h2>'
+                '<p class="muted">None yet.</p></section>')
+    return (
+        f'<section id="redirects"><h2>Redirects and tombstones ({len(rows)})</h2>'
+        f'<p class="muted">Tick the rows, set a target where one is needed, then '
+        f'pick a verb. Each verb only applies to some states, and it will say so '
+        f'rather than send something the build would refuse: you cannot retarget '
+        f'a tombstone, because it has no target. A target must be a live page; '
+        f'pointing at anything else sends readers to a 404. Live pages are not '
+        f'listed here at all, see the alias queue below for those.</p>'
+        f'<div class="bulkbar">'
+        f'<button type="button" data-action="retarget">Repoint</button>'
+        f'<button type="button" data-action="tombstone">Convert to tombstone</button>'
+        f'<button type="button" data-action="redirect">Convert to redirect</button>'
+        f'<span class="small muted" id="rsel">none ticked</span></div>'
+        f'<div class="tscroll"><table class="mini vt"><thead><tr><th>Slug</th>'
+        f'<th>State</th><th>Target</th><th class="num">Watch</th><th>Since</th>'
+        f'</tr></thead><tbody>{"".join(rows)}</tbody></table></div></section>')
+
+
+def _alias_queue_section(inv: dict, store: dict) -> str:
+    """Live pages whose slug is wrong, and the only verb that can fix one.
+
+    62 of these shadow a clean page that already exists, which is two indexed
+    pages competing for one search term. An alias is configuration rather than
+    operational state, so this queues a commit rather than making a change:
+    `canonical_cultivar` applies the override map, every surface inherits it,
+    and `deploy.sh` rsyncs the file, so a browser writing it on the server would
+    be overwritten within the hour.
+    """
+    if not inv.get("present"):
+        return ""
+    queued = {r.get("from") for r in (store.get("curation_pending") or [])}
+    rows = []
+    for f in inv["facts"]:
+        if not f["flags"].get("noisy"):
+            continue
+        twin = f.get("clean_twin") or ""
+        pending = ' <span class="fl">queued</span>' if f["slug"] in queued else ""
+        rows.append(
+            f'<tr data-slug="{_esc(f["slug"])}">'
+            f'<td>{_variety_link(f["slug"], f["slug"])}{pending}'
+            f'<div class="small muted">noise: {_esc(", ".join(f["noise"]))}</div></td>'
+            f'<td><input type="text" class="al" value="{_esc(twin)}" '
+            f'placeholder="alias target" spellcheck="false"></td>'
+            f'<td class="num">{f["nurseries"]}</td>'
+            f'<td class="num">{f["watchers"] or ""}</td></tr>')
+    if not rows:
+        return ""
+    shadowing = inv.get("shadowing", 0)
+    return (
+        f'<section id="aliases"><h2>Live slugs carrying listing noise '
+        f'({len(rows)})</h2>'
+        f'<p class="muted">{shadowing} of these shadow a clean page that '
+        f'already exists, pre-filled below. Queueing an alias does not change '
+        f'anything tonight: it lands in <code>variety_overrides.json</code> as '
+        f'a commit, and then the products move under the target on the next '
+        f'build and the lifecycle writes the redirect itself two nights after '
+        f'that. Blank the target to skip a row.</p>'
+        f'<div class="bulkbar">'
+        f'<button type="button" data-action="alias">Queue aliases</button>'
+        f'<span class="small muted" id="asel">no rows filled</span></div>'
+        f'<div class="tscroll"><table class="mini vt"><thead><tr><th>Slug</th>'
+        f'<th>Alias to</th><th class="num">Nurseries</th><th class="num">Watch</th>'
+        f'</tr></thead><tbody>{"".join(rows)}</tbody></table></div></section>')
+
+
+# Bulk confirmation, section 6 of the plan, in three layers because a modal on
+# its own is a thing people learn to click through.
+#
+#   1. Friction scaled to the count. Over ten rows and you type the number, so
+#      the hand cannot finish the action without the eye reading the count.
+#   2. The dialog says what changes, names the least-safe rows, and the button
+#      restates the action. Never "OK", never "are you sure".
+#   3. It says when it becomes real, because it does not become real now. That
+#      window is the strongest safety property in the whole design and it
+#      belongs in front of the reviewer, not in a docstring.
+#
+# Rejecting is a decision too, so cancelling a queued row gets the same dialog
+# rather than being treated as the harmless direction.
+REVIEW_JS = """
+(function () {
+  var URL = '/admin/varieties/decide';
+  var BULK = 10;
+  var flash = document.createElement('div');
+  flash.id = 'flash';
+  document.querySelector('main').prepend(flash);
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c];
+    });
+  }
+  function say(msg, bad) {
+    flash.className = bad ? 'bad' : 'ok';
+    flash.textContent = msg;
+    flash.scrollIntoView({block: 'nearest'});
+  }
+
+  // Written out per action rather than assembled from a verb, a noun and an
+  // "s". Three of these do not pluralise by suffix ("Convert 3 page to a
+  // tombstones"), and the button label is the last thing between a reviewer and
+  // 62 rows, so it is the wrong place to be approximately right.
+  var PHRASE = {
+    retarget: ['Repoint 1 redirect', 'Repoint {n} redirects'],
+    tombstone: ['Convert 1 page to a tombstone', 'Convert {n} pages to tombstones'],
+    redirect: ['Convert 1 page to a redirect', 'Convert {n} pages to redirects'],
+    alias: ['Queue 1 alias', 'Queue {n} aliases'],
+    distinct: ['Mark 1 pair distinct', 'Mark {n} pairs distinct'],
+    'unqueue-redirect': ['Cancel 1 queued decision', 'Cancel {n} queued decisions'],
+    unqueue: ['Cancel 1 queued alias', 'Cancel {n} queued aliases']
+  };
+
+  function phrase(action, n) {
+    var pair = PHRASE[action] || ['Apply 1 change', 'Apply {n} changes'];
+    return (n === 1 ? pair[0] : pair[1]).replace('{n}', n);
+  }
+
+  // What the dialog leads with. An alias is not a redirect and must not read
+  // like one: it changes parsing everywhere and lands in git.
+  var WHEN = {
+    alias: 'Queues a commit to variety_overrides.json. Nothing changes until ' +
+           'promote_curation.py runs and deploys, then the products move on the ' +
+           'next build and the redirect appears two nights after that.',
+    distinct: 'Takes effect on this page immediately. It only hides the pair ' +
+              'from the queue; it changes nothing about the site.'
+  };
+  var DEFAULT_WHEN = 'Nothing changes on the site until tonight\\u2019s 00:00 UTC ' +
+                     'build. You can still change your mind.';
+
+  function confirmBulk(action, rows, risky, done) {
+    var n = rows.length;
+    var label = phrase(action, n);
+    var dlg = document.createElement('dialog');
+    dlg.className = 'confirm';
+    var needType = n > BULK;
+    dlg.innerHTML =
+      '<h3>' + esc(label) + '</h3>' +
+      '<ul>' + rows.slice(0, 5).map(function (r) {
+        return '<li>' + esc(r.slug || (r.base + ' vs ' + r.other)) +
+          (r.target ? ' &rarr; ' + esc(r.target) : '') + '</li>';
+      }).join('') + (n > 5 ? '<li>and ' + (n - 5) + ' more</li>' : '') + '</ul>' +
+      (risky.length ? '<p class="warn">' + risky.length +
+        ' of these are the least safe: ' + esc(risky.slice(0, 3).join(', ')) +
+        '.</p>' : '') +
+      '<div class="when">' + (WHEN[action] || DEFAULT_WHEN) + '</div>' +
+      (needType ? '<p>More than ' + BULK + ' rows. Type <strong>' + n +
+        '</strong> to confirm: <input id="cnt" inputmode="numeric" ' +
+        'autocomplete="off"></p>' : '') +
+      '<div class="acts"><button class="no" value="cancel">Back</button>' +
+      '<button class="go" value="go">' + esc(label) + '</button></div>';
+    document.body.appendChild(dlg);
+    var go = dlg.querySelector('button.go');
+    var cnt = dlg.querySelector('#cnt');
+    if (needType) {
+      go.disabled = true;
+      cnt.addEventListener('input', function () {
+        go.disabled = cnt.value.trim() !== String(n);
+      });
+    }
+    dlg.querySelector('button.no').addEventListener('click', function () {
+      dlg.close(); dlg.remove();
+    });
+    go.addEventListener('click', function () {
+      dlg.close(); dlg.remove(); done();
+    });
+    dlg.showModal();
+    if (needType) cnt.focus();
+  }
+
+  function post(action, rows) {
+    return fetch(URL, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({csrf: window.CSRF, action: action, rows: rows})
+    }).then(function (r) {
+      return r.json().then(function (j) { return {status: r.status, body: j}; });
+    });
+  }
+
+  function submit(action, rows, risky) {
+    if (!rows.length) { say('Nothing selected.', true); return; }
+    confirmBulk(action, rows, risky || [], function () {
+      post(action, rows).then(function (res) {
+        if (res.status === 200) {
+          say(res.body.applied + ' recorded, effective ' + res.body.effective +
+              '. Reloading.');
+          setTimeout(function () { location.reload(); }, 900);
+        } else if (res.status === 409) {
+          say('Refused: ' + res.body.error, true);
+        } else {
+          say('Failed (' + res.status + '): ' + (res.body.error || ''), true);
+        }
+      }).catch(function (e) { say('Network error: ' + e.message, true); });
+    });
+  }
+
+  // -- redirects and tombstones ---------------------------------------------
+  var rsec = document.getElementById('redirects');
+  if (rsec) {
+    var rrows = Array.prototype.slice.call(rsec.querySelectorAll('tbody tr'));
+    var rsel = document.getElementById('rsel');
+    function tickedR() {
+      return rrows.filter(function (tr) { return tr.querySelector('.sel').checked; });
+    }
+    function refreshR() {
+      var n = tickedR().length;
+      rsel.textContent = n ? n + ' ticked' : 'none ticked';
+    }
+    rrows.forEach(function (tr) {
+      tr.querySelector('.sel').addEventListener('change', refreshR);
+      var input = tr.querySelector('.rt');
+      var was = input.value;
+      input.addEventListener('input', function () {
+        input.classList.toggle('dirty', input.value.trim() !== was);
+        // Editing a target is intent. Ticking the row for them saves the second
+        // gesture without ever selecting a row they did not touch.
+        if (input.value.trim() !== was) tr.querySelector('.sel').checked = true;
+        refreshR();
+      });
+    });
+    rsec.querySelectorAll('.bulkbar button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var action = btn.getAttribute('data-action');
+        var chosen = tickedR();
+        if (!chosen.length) { say('Tick the rows you mean first.', true); return; }
+        // Refuse here rather than let the server 409. Same rule table, rendered
+        // onto the row: a tombstone has no target, so "Repoint" does not apply
+        // to it and saying so beats sending it and explaining afterwards.
+        var wrong = chosen.filter(function (tr) {
+          return tr.getAttribute('data-actions').split(' ').indexOf(action) === -1;
+        });
+        if (wrong.length) {
+          say(wrong.length + ' ticked row' + (wrong.length === 1 ? ' is' : 's are') +
+              ' the wrong state for that (' +
+              wrong.slice(0, 3).map(function (tr) {
+                return tr.getAttribute('data-slug') + ' is ' +
+                       tr.getAttribute('data-state');
+              }).join(', ') + ').', true);
+          return;
+        }
+        var rows = chosen.map(function (tr) {
+          return {
+            slug: tr.getAttribute('data-slug'),
+            stamp: tr.getAttribute('data-stamp'),
+            target: tr.querySelector('.rt').value.trim()
+          };
+        });
+        // Least safe: a target that is itself still carrying listing noise, so
+        // the redirect would land on a page that is itself a rename candidate.
+        var risky = rows.filter(function (r) {
+          return /-(potted|tree|trees|fruit|nut|pome|stone|dwf|tm|pbr)(-|$)/.test(r.target);
+        }).map(function (r) { return r.slug + ' \\u2192 ' + r.target; });
+        submit(action, rows, risky);
+      });
+    });
+  }
+
+  // -- alias queue -----------------------------------------------------------
+  var asec = document.getElementById('aliases');
+  if (asec) {
+    var arows = Array.prototype.slice.call(asec.querySelectorAll('tbody tr'));
+    var asel = document.getElementById('asel');
+    function filled() {
+      return arows.filter(function (tr) {
+        return tr.querySelector('.al').value.trim();
+      });
+    }
+    function refreshA() {
+      var n = filled().length;
+      asel.textContent = n ? n + ' row' + (n === 1 ? '' : 's') + ' filled'
+                           : 'no rows filled';
+    }
+    arows.forEach(function (tr) {
+      var input = tr.querySelector('.al');
+      input.addEventListener('input', function () {
+        input.classList.toggle('dirty', !!input.value.trim());
+        refreshA();
+      });
+      if (input.value.trim()) input.classList.add('dirty');
+    });
+    refreshA();
+    asec.querySelector('.bulkbar button').addEventListener('click', function () {
+      var rows = filled().map(function (tr) {
+        return {slug: tr.getAttribute('data-slug'),
+                target: tr.querySelector('.al').value.trim()};
+      });
+      var risky = rows.filter(function (r) {
+        return Number(document.querySelector('tr[data-slug="' + r.slug +
+          '"] td.num').textContent) > 1;
+      }).map(function (r) { return r.slug + ' (several nurseries)'; });
+      submit('alias', rows, risky);
+    });
+  }
+
+  // -- sibling dismissals -----------------------------------------------------
+  var ssec = document.getElementById('siblings');
+  if (ssec) {
+    var srows = Array.prototype.slice.call(ssec.querySelectorAll('tbody tr'));
+    var ssel = document.getElementById('ssel');
+    function ticked() {
+      return srows.filter(function (tr) { return tr.querySelector('.dis').checked; });
+    }
+    srows.forEach(function (tr) {
+      tr.querySelector('.dis').addEventListener('change', function () {
+        var n = ticked().length;
+        ssel.textContent = n ? n + ' ticked' : 'none ticked';
+      });
+    });
+    ssec.querySelector('.bulkbar button').addEventListener('click', function () {
+      var rows = ticked().map(function (tr) {
+        return {base: tr.getAttribute('data-base'),
+                other: tr.getAttribute('data-other')};
+      });
+      submit('distinct', rows, []);
+    });
+  }
+
+  // -- cancelling something already queued ------------------------------------
+  document.querySelectorAll('button.undo').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var action = btn.getAttribute('data-action');
+      var slug = btn.getAttribute('data-slug');
+      submit(action === 'undo-redirect' ? 'unqueue-redirect' : 'unqueue',
+             [{slug: slug}], []);
+    });
+  });
+}());
+"""
 
 
 def render_variety_review_html(model: dict, generated_at: str = None) -> str:
     """/admin/varieties/review — everything that needs a person.
 
-    The three blocks that used to be /admin/varieties, moved here unchanged when
-    that page became the inventory (DAL-283). Two different jobs: the inventory
-    answers "what are my variety pages" and asks nothing, this one is the queue.
+    Split off /admin/varieties in DAL-283 so the inventory could answer "what
+    are my variety pages" without asking anything; DAL-284 and DAL-285 gave this
+    page the verbs. Four of them, and no more: retarget a redirect, convert
+    between redirect and tombstone, mark a sibling pair distinct, queue an alias.
+
+    Two of those look alike and are not, which section 6 of the plan calls the
+    blast-radius rule. Retargeting a redirect changes one URL tonight. Queueing
+    an alias changes what the parser does on every surface, lands in git, and
+    takes two nights to finish. They are in separate sections, worded
+    differently, and the alias one says so.
     """
-    _, subtitle = _subtitle(generated_at)
+    stamp, _ = _subtitle(generated_at)
+    # NOT "View only": this is the one admin page that changes things, and a
+    # header that says otherwise is the wrong thing to read just above a button
+    # marked "Convert to tombstone".
+    subtitle = (f'Decisions apply at the 00:00 UTC build · generated '
+                f'{_esc(stamp)}')
     v = model.get("varieties") or {}
+    inv = model.get("inventory") or {}
+    store = model.get("decisions") or {}
+    tiers = v.get("tiers") or {}
     parts = [
         f'<p class="muted">{v.get("index_size", 0)} variety pages in the '
         f'canonical index. <a href="/admin/varieties">Back to the inventory</a>.</p>',
         _variety_alarm(v),
+        _pending_section(store),
+        _redirect_manage_section(inv, store),
+        _alias_queue_section(inv, store),
+        _spelling_section(v.get("spelling") or []),
+        _sibling_review_section(v.get("siblings") or [], tiers),
         _variety_overrides_section(v.get("overrides") or {}),
-        _sibling_review_section(v.get("siblings") or []),
+        f'<script>window.CSRF={json.dumps(model.get("csrf") or "")};'
+        f'{REVIEW_JS}</script>',
     ]
     return render_page(
         title="treestock admin — variety review",
         heading="treestock admin · variety review",
         subtitle=subtitle,
         content="\n".join(p for p in parts if p),
-        extra_css=(
-            "  pre.code { background:#f8fafc; border:1px solid #e2e8f0; "
-            "border-radius:6px; padding:12px; overflow-x:auto; font-size:0.78rem; }\n"
-            "  .warn { color:#b91c1c; }\n"),
+        extra_css=INVENTORY_CSS + REVIEW_CSS,
         nav=render_nav("/admin/varieties/review"),
     )
 

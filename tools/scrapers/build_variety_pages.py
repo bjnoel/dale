@@ -649,6 +649,89 @@ def seed_reviewed(ledger: PageLedger, path: Path, today: str,
     return redirected, tombstoned, skipped
 
 
+def apply_decided_redirects(ledger: PageLedger, path: Path, today: str,
+                            written_slugs: set[str]) -> tuple[int, list[str]]:
+    """Adopt the redirect decisions a reviewer made in /admin/varieties/review.
+
+    The UI cannot write the ledger: this function rewrites the whole file every
+    night, so anything the web server put in it would be gone by morning. It
+    queues intents instead and this is where they land, which is also what makes
+    the confirmation dialog's promise true. Nothing a click does reaches the
+    site until this runs.
+
+    Every condition is re-tested rather than trusted, exactly as `seed_reviewed`
+    does, and for the same reason: a decision is a snapshot of one moment, and
+    by the time it applies the slug may have come back to life or the target may
+    have stopped being a page. Either would turn a tidy-up into an outage at a
+    URL that was working.
+
+    Consumed decisions are removed and logged to `applied`, so a decision
+    applies once. Leaving them in would mean tonight's intent silently reverting
+    a correction someone makes next week.
+    """
+    from stocklib import admin_decisions as ad
+
+    path = Path(path)
+    store = ad.load_decisions(path)
+    pending = store.get("redirects") or {}
+    if not pending:
+        return 0, []
+
+    applied, skipped, consumed = 0, [], []
+    for slug, decision in sorted(pending.items()):
+        action = decision.get("action")
+        target = decision.get("target") or ""
+        entry = ledger.pages.get(slug)
+        if not entry:
+            skipped.append(f"{slug}: no longer in the ledger")
+            consumed.append(slug)
+            continue
+        if slug in written_slugs or entry.get("state") == LIVE:
+            # It came back. A generated slug always wins, and a reviewer's
+            # week-old opinion must not delete a page that is working tonight.
+            skipped.append(f"{slug}: live again, decision dropped")
+            consumed.append(slug)
+            continue
+        if action in (ad.RETARGET, ad.TO_REDIRECT):
+            if target not in written_slugs:
+                # Kept, not consumed: the target may simply be out of stock
+                # tonight, and tomorrow the same decision may be fine.
+                skipped.append(f"{slug}: target {target} is not a page tonight")
+                continue
+            entry["state"] = REDIRECT
+            entry["redirect_to"] = target
+            entry["retired_reason"] = None
+            entry["see_also"] = []
+        elif action == ad.TO_TOMBSTONE:
+            entry["state"] = TOMBSTONE
+            entry["redirect_to"] = None
+            entry["retired_reason"] = "reviewed: no successor"
+        else:
+            skipped.append(f"{slug}: unknown action {action!r}")
+            consumed.append(slug)
+            continue
+        entry["since"] = today
+        ledger.note(slug, f"reviewer {action}", today,
+                    target=target or None, by=decision.get("by"))
+        applied += 1
+        consumed.append(slug)
+
+    if consumed:
+        # Re-read immediately before writing and remove only what we consumed,
+        # so a decision made while this build was running survives. The window
+        # is not closed, just made small; the build runs at 00:00 UTC and the
+        # loser is one decision that can be made again.
+        fresh = ad.load_decisions(path)
+        log = fresh.setdefault("applied", [])
+        for slug in consumed:
+            row = (fresh.get("redirects") or {}).pop(slug, None)
+            if row:
+                log.append({**row, "slug": slug, "applied": today})
+        fresh["applied"] = log[-500:]
+        ad.save_decisions(path, fresh)
+    return applied, skipped
+
+
 def run_lifecycle(ledger: PageLedger, args, data_dir: Path, variety_dir: Path,
                   today: str, written_slugs: set[str],
                   url_to_slug: dict[str, str], valid_species_slugs: set[str],
@@ -678,6 +761,19 @@ def run_lifecycle(ledger: PageLedger, args, data_dir: Path, variety_dir: Path,
         if redirected or tombstoned or skipped:
             print(f"Seeded {redirected} approved redirect(s) and {tombstoned} "
                   f"tombstone(s) from {args.seed_reviewed}")
+        for reason in skipped[:10]:
+            print(f"  Skipped {reason}")
+        if len(skipped) > 10:
+            print(f"  ... and {len(skipped) - 10} more skipped")
+
+    if args.decisions:
+        # Same position and the same reason as seed_reviewed above: a slug given
+        # a settled state here is skipped by decide_night rather than read as an
+        # absence and classified all over again.
+        applied, skipped = apply_decided_redirects(
+            ledger, args.decisions, today, written_slugs)
+        if applied or skipped:
+            print(f"Applied {applied} reviewer decision(s) from {args.decisions}")
         for reason in skipped[:10]:
             print(f"  Skipped {reason}")
         if len(skipped) > 10:
@@ -772,6 +868,11 @@ def parse_args(argv=None):
                              "recover_merged_slugs.py proposal file: renames "
                              "become redirect stubs, retired slugs become "
                              "tombstones. Only rows marked approved:true apply")
+    parser.add_argument("--decisions", type=Path, default=None,
+                        help="apply the redirect decisions a reviewer queued in "
+                             "/admin/varieties/review (variety-decisions.json). "
+                             "Every condition is re-tested against tonight's "
+                             "build; a slug that came back to life wins")
     parser.add_argument("--health-dir", type=Path, default=None,
                         help="scraper-health records, for the untrusted-nursery "
                              "gate (defaults to the DALE_DATA_DIR location)")

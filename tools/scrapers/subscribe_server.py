@@ -26,6 +26,7 @@ import re
 import sqlite3
 import subprocess
 import sys
+import time
 from datetime import datetime, timedelta
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
@@ -323,17 +324,20 @@ def _extract_cf_token(headers) -> str:
     return ""
 
 
-def verify_cf_access(headers) -> bool:
-    """Validate the Cloudflare Access JWT.
+def cf_access_claims(headers) -> dict | None:
+    """Validate the Cloudflare Access JWT and return its claims, or None.
 
     CF Access authenticates at the edge, but the origin is publicly reachable, so
     a direct-to-origin request would bypass it. Validating the signed
-    Cf-Access-Jwt-Assertion here closes that hole. Fails closed (returns False)
+    Cf-Access-Jwt-Assertion here closes that hole. Fails closed (returns None)
     on any missing config, missing token, or verification error.
+
+    Returns the claims rather than a bool because the admin write path needs the
+    subject: a CSRF token bound to nobody is a CSRF token anybody can mint.
     """
     if jwt is None:
         print("CF Access check failed: PyJWT not installed", file=sys.stderr)
-        return False
+        return None
     team_domain = _normalize_cf_team_domain(_read_app_env("CF_ACCESS_TEAM_DOMAIN"))
     aud = _read_app_env("CF_ACCESS_AUD")
     if not team_domain or not aud:
@@ -341,23 +345,142 @@ def verify_cf_access(headers) -> bool:
             "CF Access check failed: CF_ACCESS_TEAM_DOMAIN/CF_ACCESS_AUD not set in app.env",
             file=sys.stderr,
         )
-        return False
+        return None
     token = _extract_cf_token(headers)
     if not token:
-        return False
+        return None
     try:
         signing_key = _get_cf_jwks_client(team_domain).get_signing_key_from_jwt(token)
-        jwt.decode(
+        return jwt.decode(
             token,
             signing_key.key,
             algorithms=["RS256"],
             audience=aud,
             issuer=team_domain,
         )
-        return True
     except Exception as e:
         print(f"CF Access verification failed: {e}", file=sys.stderr)
+        return None
+
+
+def verify_cf_access(headers) -> bool:
+    """Boolean form, for the read-only pages that only need the gate."""
+    return cf_access_claims(headers) is not None
+
+
+def cf_access_subject(headers) -> str:
+    """Who the verified JWT says this is. '' when unauthenticated."""
+    claims = cf_access_claims(headers) or {}
+    return str(claims.get("email") or claims.get("sub") or "")
+
+
+# ---------------------------------------------------------------------------
+# CSRF for the admin write path (DAL-284)
+#
+# Authentication was never the gap. `cf_access_claims` verifies an RS256
+# signature against Cloudflare's JWKS, checks audience and issuer, and fails
+# closed. The gap is that `_extract_cf_token` falls back to the
+# `CF_Authorization` cookie, and a cookie rides along on a cross-site request
+# whether or not the user meant to send one.
+#
+# MEASURED 2026-08-17, because the plan says verify rather than assume: an
+# unauthenticated hit on https://treestock.com.au/admin/varieties comes back with
+#
+#     set-cookie: CF_AppSession=...; Expires=...; Path=/; Secure; HttpOnly
+#
+# with NO SameSite attribute at all (the login host's own CF_Session is
+# explicitly SameSite=none). A cookie with no SameSite is Lax *by browser
+# default*, which is a property of the visitor's browser and not something this
+# server can know or enforce, and Chrome's Lax-by-default still permits a
+# cross-site POST within two minutes of the cookie being set. `CF_Authorization`
+# itself cannot be observed without completing the login, but it is issued by
+# the same flow on the same host.
+#
+# So SameSite is defence in depth here, not the control. Three independent
+# layers that do not depend on the browser's default:
+#
+#   1. Origin must equal the site. Browsers always send it on POST.
+#   2. Content-Type must be application/json, which makes a cross-origin attempt
+#      a preflighted request rather than a "simple" one. We answer no preflight
+#      for a foreign origin, so it never reaches the handler.
+#   3. A token bound to the JWT subject, rendered into the page and echoed back.
+#      Another origin cannot read the page, so it cannot obtain the token.
+#
+# Any one of the three failing still leaves two.
+# ---------------------------------------------------------------------------
+
+ADMIN_CSRF_TTL_SECONDS = 8 * 3600
+_ADMIN_SECRET_KEY = "ADMIN_CSRF_SECRET"
+
+
+def _admin_csrf_secret(create: bool = True) -> str:
+    """A stable secret in app.env, generated once.
+
+    Separate from UNSUBSCRIBE_SECRET on purpose. One secret signing two kinds of
+    token means a bug in either lets you mint the other, and these two protect
+    completely different things.
+    """
+    existing = _read_app_env(_ADMIN_SECRET_KEY)
+    if existing:
+        return existing
+    if not create:
+        return ""
+    import secrets as _secrets
+    secret = _secrets.token_hex(32)
+    try:
+        APP_ENV.parent.mkdir(parents=True, exist_ok=True)
+        with open(APP_ENV, "a") as f:
+            f.write(f"{_ADMIN_SECRET_KEY}={secret}\n")
+    except OSError as e:
+        print(f"Could not persist {_ADMIN_SECRET_KEY}: {e}", file=sys.stderr)
+        return ""
+    print(f"Generated new {_ADMIN_SECRET_KEY} in {APP_ENV}")
+    return secret
+
+
+def admin_csrf_token(subject: str, now: int = None, secret: str = None) -> str:
+    """`<issued>.<hmac>`, bound to the authenticated subject."""
+    secret = _admin_csrf_secret() if secret is None else secret
+    if not secret or not subject:
+        return ""
+    issued = int(time.time() if now is None else now)
+    mac = hmac.new(secret.encode(), f"{subject}|{issued}".encode(),
+                   hashlib.sha256).hexdigest()
+    return f"{issued}.{mac}"
+
+
+def verify_admin_csrf(token: str, subject: str, now: int = None,
+                      secret: str = None) -> bool:
+    """Constant-time check of a token against this subject, within the TTL."""
+    secret = _admin_csrf_secret(create=False) if secret is None else secret
+    if not secret or not subject or not token or "." not in token:
         return False
+    issued_raw, _, mac = token.partition(".")
+    try:
+        issued = int(issued_raw)
+    except ValueError:
+        return False
+    current = int(time.time() if now is None else now)
+    # A future-dated token is a forged one, allowing a small skew for a clock
+    # that moved between render and submit.
+    if issued > current + 60 or current - issued > ADMIN_CSRF_TTL_SECONDS:
+        return False
+    expected = hmac.new(secret.encode(), f"{subject}|{issued}".encode(),
+                        hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected, mac)
+
+
+def admin_post_origin_ok(headers) -> bool:
+    """Layer 1. The request has to say it came from us.
+
+    A missing Origin is refused rather than waved through. Every browser sends
+    it on POST, so the only things it excludes are non-browser clients, and a
+    non-browser client can use the header too.
+    """
+    if headers.get("Origin", "") != ALLOWED_ORIGIN:
+        return False
+    fetch_site = headers.get("Sec-Fetch-Site", "")
+    return fetch_site in ("", "same-origin")
 
 
 class SubscribeHandler(BaseHTTPRequestHandler):
@@ -375,12 +498,19 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         # or it would normalise to "" and fall through to the admin lookup.
         admin_path = parsed.path.rstrip("/") if parsed.path != "/" else "/"
         if admin_path in admin_view.ADMIN_RENDERERS:
-            if not verify_cf_access(self.headers):
+            claims = cf_access_claims(self.headers)
+            if claims is None:
                 self.send_html(403, "<h2>403 Forbidden</h2><p>This page is gated by Cloudflare Access.</p>")
                 return
             try:
                 render = admin_view.ADMIN_RENDERERS[admin_path]
-                page = render(admin_view.load_admin_data())
+                model = admin_view.load_admin_data()
+                # The review page's buttons echo this back. Minted per render and
+                # bound to whoever the JWT says is here, so it cannot be reused
+                # from another origin or by another account.
+                model["csrf"] = admin_csrf_token(
+                    str(claims.get("email") or claims.get("sub") or ""))
+                page = render(model)
             except Exception as e:
                 print(f"Admin view render error: {e}", file=sys.stderr)
                 self.send_html(500, "<h2>500</h2><p>Could not build the admin view.</p>")
@@ -604,6 +734,13 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         # Handled before the allowlist below because it needs the raw body.
         if path in ("/resend-inbound", "/api/resend-inbound"):
             self._handle_resend_inbound()
+            return
+
+        # The admin write path. Before the allowlist because it has its own,
+        # much stricter gate; adding it to the public allowlist would be one
+        # edit away from a public write endpoint.
+        if path == admin_view.ADMIN_DECIDE_PATH:
+            self._handle_admin_decide()
             return
 
         if path not in (
@@ -1083,6 +1220,16 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         self.send_json(202, {"message": "Check your email to confirm your subscription", "email": email})
 
     def do_OPTIONS(self):
+        # The admin write answers no preflight at all. Today ALLOWED_ORIGIN is a
+        # single host, so the generic answer below would already fail to match a
+        # foreign origin and the browser would block the request. Saying no
+        # explicitly means a later change that adds a second allowed origin for
+        # the public widgets cannot quietly open the admin write with it.
+        if self.path.split("?")[0] == admin_view.ADMIN_DECIDE_PATH:
+            self.send_response(403)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", ALLOWED_ORIGIN)
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -1751,6 +1898,71 @@ document.getElementById('varietyWatches').addEventListener('click', function(e) 
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(encoded)
+
+    def _handle_admin_decide(self):
+        """POST /admin/varieties/decide. The only write in the admin surface.
+
+        Gate order is deliberate, cheapest and most-conclusive first, and every
+        rejection is silent about why beyond a status code. See the CSRF block
+        at the top of this module for what each layer is worth and, more to the
+        point, for what was actually measured about SameSite rather than assumed.
+
+        This writes an intent file. Nothing here touches the ledger, the pages,
+        or the override file, so the worst outcome of a bug reaching this
+        handler is a queued decision that tonight's build refuses.
+        """
+        # 1. Origin, and no CORS answer for anyone else.
+        if not admin_post_origin_ok(self.headers):
+            self.send_admin_json({"error": "bad origin"}, status=403)
+            return
+        # 2. JSON only, so a cross-origin attempt is preflighted rather than
+        #    "simple", and we answer no preflight for a foreign origin.
+        if not self.headers.get("Content-Type", "").startswith("application/json"):
+            self.send_admin_json({"error": "expected application/json"}, status=415)
+            return
+        # 3. The Access JWT itself, fail-closed as everywhere else.
+        claims = cf_access_claims(self.headers)
+        if claims is None:
+            self.send_admin_json({"error": "forbidden"}, status=403)
+            return
+        subject = str(claims.get("email") or claims.get("sub") or "")
+
+        try:
+            content_length = int(self.headers.get("Content-Length", 0) or 0)
+        except ValueError:
+            self.send_admin_json({"error": "invalid Content-Length"}, status=400)
+            return
+        if content_length > MAX_BODY_BYTES:
+            self.send_admin_json({"error": "payload too large"}, status=413)
+            return
+        try:
+            payload = json.loads(self.rfile.read(content_length).decode())
+            if not isinstance(payload, dict):
+                raise ValueError("not an object")
+        except (UnicodeDecodeError, json.JSONDecodeError, ValueError):
+            self.send_admin_json({"error": "invalid body"}, status=400)
+            return
+
+        # 4. The token, bound to this subject.
+        if not verify_admin_csrf(str(payload.get("csrf") or ""), subject):
+            self.send_admin_json({"error": "stale or missing token, reload"},
+                                 status=403)
+            return
+
+        try:
+            result = admin_view.apply_decisions(payload, by=subject)
+        except admin_view.DecisionRefused as e:
+            # A refusal is the system working: a stale stamp means the row moved
+            # under the reviewer, and merging blind is how you retarget a
+            # redirect that stopped being one.
+            self.send_admin_json({"error": str(e)}, status=409)
+            return
+        except Exception as e:
+            print(f"Admin decide error: {e}", file=sys.stderr)
+            self.send_admin_json({"error": "could not record the decision"},
+                                 status=500)
+            return
+        self.send_admin_json(result)
 
     def send_admin_json(self, data: dict, status: int = 200):
         """Admin data payload: compact, never cached, never cross-origin.

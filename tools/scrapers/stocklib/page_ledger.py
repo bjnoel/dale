@@ -494,6 +494,13 @@ def _atomic_write(path: Path, data: bytes) -> None:
         raise
 
 
+# Public name for the all-or-nothing write above. `admin_decisions` writes a
+# file the nightly reads, and a half-written one would be read as "no decisions"
+# on exactly the night the decisions mattered, so it needs the same guarantee
+# rather than its own copy of it.
+atomic_write = _atomic_write
+
+
 def write_page(path: Path | str, html: str | bytes) -> bool:
     """Write a page atomically, skipping the write when the bytes are unchanged.
 

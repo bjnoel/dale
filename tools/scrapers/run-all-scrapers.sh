@@ -242,10 +242,14 @@ echo "$LOG_PREFIX Rare finds page complete."
 # and is the ONLY thing that makes an approval reach the site. Rows without an
 # explicit approved:true are ignored, so pointing at the file is not the same as
 # publishing it, and a missing file is a warning rather than a failed build.
+# --decisions is the same contract for the buttons on /admin/varieties/review:
+# the UI queues an intent, this is where it becomes a page, and without this
+# flag every click in that screen reaches nothing at all.
 echo "$LOG_PREFIX Building variety pages..."
 python3 "$SCRIPT_DIR/build_variety_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" \
     --ledger "$PROJECT_DIR/data/page-ledger/variety.json" --allow-delete \
-    --seed-reviewed "$PROJECT_DIR/data/variety-redirect-proposals.json" 2>&1 || echo "$LOG_PREFIX WARNING: Variety page build failed (non-fatal)"
+    --seed-reviewed "$PROJECT_DIR/data/variety-redirect-proposals.json" \
+    --decisions "$PROJECT_DIR/data/variety-decisions.json" 2>&1 || echo "$LOG_PREFIX WARNING: Variety page build failed (non-fatal)"
 echo "$LOG_PREFIX Variety pages complete."
 
 # Build companion planting guide (SEO content)
