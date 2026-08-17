@@ -686,6 +686,29 @@ class NightlyApplicationTests(unittest.TestCase):
         self.assertIn("--decisions", build[:600])
         self.assertIn("variety-decisions.json", build[:600])
 
+    def test_the_promoter_wrapper_actually_promotes(self):
+        """Third instance of the same trap, after --seed-reviewed and
+        --decisions: a wrapper that runs promote_curation.py without --execute
+        dry-runs forever, printing what it would do to a log nobody reads,
+        while the review UI shows the fold as queued and it never lands."""
+        sh = (REPO_ROOT / "tools" / "autonomous" / "promote-curation.sh").read_text()
+        # Comments stripped first. The header explains what promote_curation.py
+        # does, so matching the first mention of it tests the prose.
+        code = "\n".join(ln for ln in sh.splitlines()
+                         if not ln.lstrip().startswith("#"))
+        call = code[code.index("promote_curation.py"):]
+        self.assertIn("--execute", call[:400])
+        self.assertIn("--push", call[:400])
+        # It must deploy too: the build reads the rsynced copy under
+        # /opt/dale/scrapers, not the commit in /opt/dale/repo.
+        self.assertIn("deploy.sh", sh)
+
+    def test_the_promoter_wrapper_is_deployed_executable(self):
+        """It lands via deploy.sh's rsync like every other autonomous script,
+        and cron cannot run what is not +x."""
+        deploy = (REPO_ROOT / "tools" / "deploy.sh").read_text()
+        self.assertIn("chmod +x /opt/dale/autonomous/promote-curation.sh", deploy)
+
     def test_the_flag_exists_on_the_builder(self):
         self.assertIn("--decisions",
                       (SCRAPERS / "build_variety_pages.py").read_text())

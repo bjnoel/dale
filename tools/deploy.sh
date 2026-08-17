@@ -91,6 +91,7 @@ chmod +x /opt/dale/autonomous/merge-nursery-inbound.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/snapshot-server-config.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/weekly_backup.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/loop-runner.sh 2>/dev/null
+chmod +x /opt/dale/autonomous/promote-curation.sh 2>/dev/null
 
 # Publish the nursery relationship register to the data dir so the /admin page
 # can render it (DAL-80). The repo copy stays the source of truth: git history is
