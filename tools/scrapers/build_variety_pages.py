@@ -473,7 +473,8 @@ def retired_check(slug: str, entry: dict) -> str | None:
     return "no longer resolves to a variety page (taxonomy gate or a deny)"
 
 
-def seed_from_availability(ledger: PageLedger, data_dir: Path, today: str) -> int:
+def seed_from_availability(ledger: PageLedger, data_dir: Path, today: str,
+                           on_disk: set[str]) -> int:
     """Backdate ledger entries from the per-nursery availability history.
 
     Night one with an empty ledger would otherwise hold every page below the
@@ -515,6 +516,14 @@ def seed_from_availability(ledger: PageLedger, data_dir: Path, today: str) -> in
 
     seeded = 0
     for slug, agg in history.items():
+        # PageLedger.seed's contract is a page that already exists. Re-parsing
+        # history under today's parser also yields slugs that were never a URL,
+        # and seeding one as live would have the nightly find it absent, run the
+        # exit guard and tombstone it into existence somewhere nobody ever
+        # linked. Recovering real dead URLs is task R1, from a verified mapping
+        # that emits redirects.
+        if slug not in on_disk:
+            continue
         entry = ledger.pages.get(slug)
         # Only bootstrap: an entry with real history of its own is the better
         # record, and overwriting it with re-parsed archaeology would lose the
@@ -550,7 +559,11 @@ def run_lifecycle(ledger: PageLedger, args, data_dir: Path, variety_dir: Path,
     always wins.
     """
     if args.seed:
-        print(f"Seeded {seed_from_availability(ledger, data_dir, today)} "
+        # Runs after tonight's pages are written, so this is tonight's output
+        # plus any page an earlier night left behind: every slug that is
+        # genuinely a page right now, which is exactly what may be seeded.
+        on_disk = {p.stem for p in variety_dir.glob("*.html") if p.stem != "index"}
+        print(f"Seeded {seed_from_availability(ledger, data_dir, today, on_disk)} "
               f"ledger entries from availability history")
 
     untrusted = untrusted_nurseries(today, args.health_dir)

@@ -331,10 +331,13 @@ class TestSeedFromAvailability(unittest.TestCase):
     Caught by the dry run on 2026-08-17, which seeded 1 entry out of 2,570.
     """
 
-    def _seed(self, products: dict) -> tuple[int, dict]:
+    def _seed(self, products: dict, on_disk: set[str] | None = None) -> tuple[int, dict]:
         import build_variety_pages as bvp
         from stocklib.page_ledger import PageLedger
 
+        if on_disk is None:
+            on_disk = {s for s in (bvp.slug_for_title(r.get("title") or "")
+                                   for r in products.values()) if s}
         with tempfile.TemporaryDirectory() as tmp:
             nursery = Path(tmp) / "nursery-stock" / "daleys"
             nursery.mkdir(parents=True)
@@ -344,7 +347,7 @@ class TestSeedFromAvailability(unittest.TestCase):
             }))
             ledger = PageLedger.load(Path(tmp) / "variety.json", FAMILY_VARIETY,
                                      log=lambda *a, **k: None)
-            seeded = bvp.seed_from_availability(ledger, nursery.parent, TODAY)
+            seeded = bvp.seed_from_availability(ledger, nursery.parent, TODAY, on_disk)
         return seeded, ledger.pages
 
     def test_seeds_from_the_title_field_not_the_key(self):
@@ -392,6 +395,40 @@ class TestSeedFromAvailability(unittest.TestCase):
         self.assertEqual(entry["first_seen"], "2026-03-05")
         self.assertEqual(entry["live_days"], 3)
         self.assertEqual(entry["in_stock_days"], 2)
+
+    def test_history_without_a_page_on_disk_is_not_seeded(self):
+        """PageLedger.seed's contract is a page that already exists.
+
+        Availability history is re-parsed under today's parser, so it also
+        yields slugs that were never a URL: a title that parsed differently in
+        May, or a multi-graft listing today's parser splits. Seeding those as
+        live would have the nightly find them absent, run the exit guard, and
+        tombstone them into existence at URLs nobody ever linked or indexed,
+        which is the reverse of the point. On 2026-08-17 that was 641 entries
+        against 2,570 real pages.
+
+        Recovering genuinely dead URLs is task R1, and it works from a verified
+        old-slug to new-slug mapping that emits redirects, not from whatever
+        archaeology re-parses into.
+        """
+        products = {
+            "https://daleys.com.au/pecan-mahan/|sku:pm-1": {
+                "title": "Pecan - Mahan (B)", "first_seen": "2026-03-05",
+                "days": {"2026-03-05": {"a": True}},
+            },
+            "https://daleys.com.au/apple-3-way/|sku:x": {
+                "title": "Apple 3-Way Gala Pink Lady Red Fuji",
+                "first_seen": "2026-03-05",
+                "days": {"2026-03-05": {"a": True}},
+            },
+        }
+        import build_variety_pages as bvp
+        kept = bvp.slug_for_title("Pecan - Mahan (B)")
+
+        seeded, pages = self._seed(products, on_disk={kept})
+
+        self.assertEqual(seeded, 1, "only the slug with a page may be seeded")
+        self.assertEqual(set(pages), {kept})
 
 
 if __name__ == "__main__":
