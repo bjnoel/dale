@@ -814,8 +814,8 @@ class TargetSuggestionTests(unittest.TestCase):
 
     def test_the_compact_option_form_is_used(self):
         """`<option>slug` with the end tag omitted, which HTML5 allows and every
-        browser reads as the option's value. The attribute form renders the same
-        list for 118KB instead of 72KB, on a page that is already 189KB."""
+        browser reads as the option's value. Measured on the live ledger, the
+        attribute form renders the same 112 lists for 125KB instead of 79KB."""
         html, _ = self.lists()
         self.assertIn("<option>banana-nathan", html)
         self.assertNotIn('<option value=', html)
@@ -860,7 +860,7 @@ class TargetSuggestionTests(unittest.TestCase):
                           "mango-bamberoo": "mango-bambaroo"})
 
     def test_the_datalists_come_after_the_sections(self):
-        """72KB the browser parses before the first heading is 72KB in front of
+        """79KB the browser parses before the first heading is 79KB in front of
         everything the page is for. A datalist is referenced by id and never
         rendered, so its position is free."""
         html = self.render()

@@ -2455,8 +2455,8 @@ def _target_lists(inv: dict, store: dict, committed: dict) -> tuple:
 
     `<option>slug` with the end tag omitted, which HTML5 allows and every
     browser reads as the option's value. The attribute form
-    `<option value="slug"></option>` renders the same list for 118KB instead of
-    72KB, and this page is already 189KB.
+    `<option value="slug"></option>` renders the same 112 lists for 125KB
+    instead of 79KB, measured on the live ledger.
     """
     blocked = set(_pending_aliases(store))
     blocked |= set(committed or {})
@@ -3353,8 +3353,8 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
         _panel_nav(panels),
         *[html for html, _, _ in panels],
         # After the sections, because a datalist is referenced by id and never
-        # rendered, so its position is free and 72KB above the first heading is
-        # 72KB the browser parses before anything is on screen.
+        # rendered, so its position is free and 79KB above the first heading is
+        # 79KB the browser parses before anything is on screen.
         datalists,
         f'<script>window.CSRF={json.dumps(model.get("csrf") or "")};'
         f'window.QFILTER={json.dumps(bool(q))};'
