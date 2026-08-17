@@ -217,6 +217,35 @@ def render_seasonality_banner(seasonality: dict) -> str:
 
 
 
+def visible_products(data: dict) -> list:
+    """The products of a snapshot that belong on a page.
+
+    Every other builder drops non-plant junk before rendering it
+    (build_species_pages, build_variety_pages, build_location_pages,
+    build_compare_pages, build_bare_root_page, build_species_state_pages,
+    build_species_trends, daily_digest, send_variety_alerts). This module did
+    not, and it went unnoticed until Guildford Garden Centre loaded an Eden
+    Seeds vegetable range in August 2026. The WooCommerce Store API returns
+    newest first and the scraper preserves that order, so the twenty most
+    recent in-stock products were seed packets, and the "In Stock Now" panel of
+    a fruit tree site showed nineteen of them plus one blueberry. Emma at
+    Guildford found it on her own page before we did (DEC-301).
+    """
+    return [p for p in data.get("products", []) if is_real_product(p.get("title", ""))]
+
+
+def visible_counts(data: dict) -> tuple:
+    """(in_stock, total) counted after filtering. Returns what a page may claim.
+
+    The snapshot's own `in_stock_count` and `product_count` are pre-filter and
+    must never be rendered. Both the profile page and the index card call this,
+    so the two cannot report different totals for the same nursery, which they
+    did for as long as it took to write this function.
+    """
+    products = visible_products(data)
+    return sum(1 for p in products if p.get("any_available")), len(products)
+
+
 def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total_nurseries: int = len(SHIPPING_MAP)) -> str:
     meta = NURSERY_META.get(nursery_key, {})
     name = NURSERY_NAMES.get(nursery_key, data.get("nursery_name", nursery_key))
@@ -229,21 +258,8 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     local_label = delivery_label(nursery_key)
     wa = ships_to_wa(nursery_key)
 
-    # Every other builder drops non-plant junk before it reaches a page
-    # (build_species_pages, build_variety_pages, build_location_pages,
-    # build_compare_pages, daily_digest, send_variety_alerts). This one did not.
-    # Guildford loaded an Eden Seeds vegetable range in August 2026; the store
-    # API returns newest first, so 19 of the 20 "In Stock Now" slots went to
-    # carrot and cabbage seed packets on a fruit tree site. Emma at Guildford
-    # spotted it on her own page before we did.
-    #
-    # Filter once here and derive every count below from what survives, so the
-    # headline counts, the species breakdown and the product list cannot
-    # disagree with each other. The snapshot's own in_stock_count/product_count
-    # are pre-filter and must not be trusted for display.
-    products = [p for p in data.get("products", []) if is_real_product(p.get("title", ""))]
-    in_stock_count = sum(1 for p in products if p.get("any_available"))
-    total_count = len(products)
+    products = visible_products(data)
+    in_stock_count, total_count = visible_counts(data)
 
     if not seasonality_banner and total_count > 0 and (in_stock_count / total_count) < 0.15:
         pct_str = f"{round(in_stock_count / total_count * 100)}%"
@@ -478,8 +494,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
         ships = sorted(SHIPPING_MAP.get(key, []))
         local_lbl = delivery_label(key)
         wa = ships_to_wa(key)
-        in_stock = data.get("in_stock_count", 0)
-        total = data.get("product_count", len(data.get("products", [])))
+        in_stock, total = visible_counts(data)
         location = data.get("location", "Australia")
 
         restrict = "" if local_lbl else restriction_warning(key)
@@ -557,8 +572,7 @@ def main():
         page = build_nursery_page(key, data, species_lookup, total_nurseries=len(nurseries_data))
         out = nursery_dir / f"{key}.html"
         out.write_text(page)
-        in_stock = data.get("in_stock_count", 0)
-        total = data.get("product_count", len(data.get("products", [])))
+        in_stock, total = visible_counts(data)
         print(f"  {name}: {in_stock} in stock / {total} total → {out}")
 
     index = build_index_page(nurseries_data, species_lookup, today)

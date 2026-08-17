@@ -24,7 +24,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 sys.path.insert(0, str(SCRAPERS))
 
-from build_nursery_pages import build_nursery_page  # noqa: E402
+from build_nursery_pages import (  # noqa: E402
+    build_index_page,
+    build_nursery_page,
+    visible_counts,
+)
 
 
 def product(title, available=True, price=12.0, url="https://example.com/p"):
@@ -111,6 +115,46 @@ class NurseryPageJunkFilterTests(unittest.TestCase):
             "guildford", snapshot([product(t) for t in SEED_PACKETS]), {}
         )
         self.assertIn(">0</div><div class=\"label\">Products Tracked<", html)
+
+
+class IndexAgreesWithProfileTests(unittest.TestCase):
+    """The first fix corrected the profile page and left the index card reading
+    the snapshot's pre-filter totals, so /nursery/ and /nursery/guildford.html
+    disagreed about the same nursery. Both now go through visible_counts()."""
+
+    def setUp(self):
+        self.data = snapshot(
+            [product(t) for t in SEED_PACKETS] + [product(t) for t in TREES]
+        )
+
+    def test_index_card_shows_filtered_counts(self):
+        html = build_index_page({"guildford": self.data}, {}, "2026-08-17")
+        self.assertIn("<strong>5</strong> in stock · 5 tracked", html)
+
+    def test_index_card_does_not_show_the_snapshot_totals(self):
+        html = build_index_page({"guildford": self.data}, {}, "2026-08-17")
+        self.assertNotIn("<strong>10</strong> in stock", html)
+
+    def test_the_two_pages_report_the_same_numbers(self):
+        in_stock, total = visible_counts(self.data)
+        index = build_index_page({"guildford": self.data}, {}, "2026-08-17")
+        profile = build_nursery_page("guildford", self.data, {})
+        self.assertIn(f"<strong>{in_stock}</strong> in stock · {total} tracked", index)
+        self.assertIn(f">{in_stock}</div><div class=\"label\">In Stock<", profile)
+        self.assertIn(f">{total}</div><div class=\"label\">Products Tracked<", profile)
+
+
+class VisibleCountsTests(unittest.TestCase):
+    def test_ignores_the_snapshots_own_counts_entirely(self):
+        data = snapshot([product(t) for t in TREES],
+                        in_stock_count=999, product_count=999)
+        self.assertEqual(visible_counts(data), (5, 5))
+
+    def test_empty_snapshot(self):
+        self.assertEqual(visible_counts({"products": []}), (0, 0))
+
+    def test_missing_products_key(self):
+        self.assertEqual(visible_counts({}), (0, 0))
 
 
 if __name__ == "__main__":

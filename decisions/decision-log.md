@@ -12050,3 +12050,24 @@ truncated result as a real one:
 
 The eventual numbers came from the server's own snapshot, which is both the truthful source
 (it is what the site actually serves) and the one that costs Emma's server nothing.
+
+### Appended same day: the fix was half a fix
+
+Deploying the above left `/nursery/` and `/nursery/guildford.html` disagreeing about the
+same nursery. `build_index_page` renders its own card (`<n> in stock · <n> tracked`) and was
+still reading `data["in_stock_count"]` / `data["product_count"]`, so the index said 278/924
+while the page it linked to said 225/859. Filtering one surface and not the other is worse
+than filtering neither, because the contradiction is visible to a reader who clicks.
+
+Both now go through two small shared helpers, `visible_products()` and `visible_counts()`,
+rather than each deciding for itself what a page may claim. The console line the builder
+prints per nursery was reading the pre-filter counts too, and is on the same helper now: it
+was the tell, and it was reporting `64 in stock / 65 total` for St Clements while the page
+said 63/64.
+
+Six more tests, including one that asserts the index card and the profile page report the
+same two numbers for the same snapshot. Full suite 2961 green.
+
+The general lesson is the one DEC-296 already paid for in a different currency: when a value
+is derived in more than one place, fixing the derivation at one call site creates a
+disagreement rather than removing an error. Find the other call sites first.
