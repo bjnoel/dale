@@ -260,6 +260,10 @@ class CurationQueueTests(unittest.TestCase):
     def setUp(self):
         import promote_curation
         self.pc = promote_curation
+        self.tmp = tempfile.TemporaryDirectory()
+
+    def tearDown(self):
+        self.tmp.cleanup()
 
     def test_an_alias_chain_never_reaches_the_file(self):
         current = {"deny": [], "alias": {"b": "c"}}
@@ -294,6 +298,67 @@ class CurationQueueTests(unittest.TestCase):
         self.assertEqual(list(new["alias"]), ["a", "z"])
         self.assertEqual(new["deny"], ["junk"])
         self.assertEqual(len(applied), 3)
+
+    def test_promotion_keeps_the_parts_of_the_file_it_does_not_own(self):
+        """The first --execute would have deleted the 29-line _readme block:
+        how alias and deny interact, the instruction to check watch counts
+        before aliasing, and "Do NOT run migrate_variety_watch_slugs.py", which
+        is what stops live watches being moved onto pages that do not exist.
+        Silently, in a commit whose message said it added four aliases.
+
+        Nothing caught it because the alias map was empty, so the destructive
+        path had never run in production."""
+        path = Path(self.tmp.name) / "overrides.json"
+        path.write_text(json.dumps({
+            "_readme": ["do not run migrate_variety_watch_slugs.py"],
+            "_schema_note": "keep me too",
+            "deny": ["apple-mint"], "alias": {}}))
+        current = self.pc.load_overrides(path)
+        new, applied, _ = self.pc.merge(
+            current, [{"kind": "alias", "from": "a", "to": "b"}])
+        out = json.loads(self.pc.render(new))
+        self.assertEqual(out["_readme"],
+                         ["do not run migrate_variety_watch_slugs.py"])
+        self.assertEqual(out["_schema_note"], "keep me too")
+        self.assertEqual(out["deny"], ["apple-mint"])
+        self.assertEqual(out["alias"], {"a": "b"})
+
+    def test_a_row_the_file_already_satisfies_leaves_the_queue(self):
+        """A push that failed after the commit left the queue full of rows the
+        file already satisfied. Every later run skipped them as
+        already-aliased, found nothing to apply, and returned without clearing,
+        so the review UI showed "folded into X" forever with no run able to
+        undo it. Automating promotion would have made that reachable nightly."""
+        decisions = Path(self.tmp.name) / "variety-decisions.json"
+        store = ad.empty()
+        ad.queue_curation(store, ad.ALIAS, "a", target="b", by="b@bjnoel.com")
+        ad.queue_curation(store, ad.DENY, "c", by="b@bjnoel.com")
+        ad.save_decisions(decisions, store)
+
+        overrides = {"deny": ["c"], "alias": {"a": "b"}}
+        _, applied, skipped = self.pc.merge(overrides,
+                                            store["curation_pending"])
+        self.assertEqual(applied, [])
+        satisfied = {r.get("from") for r, why in skipped
+                     if why in self.pc.SATISFIED}
+        self.assertEqual(satisfied, {"a", "c"})
+
+        self.assertEqual(self.pc.clear_queue(decisions, satisfied), 2)
+        self.assertEqual(ad.load_decisions(decisions)["curation_pending"], [])
+
+    def test_clearing_spares_a_row_queued_while_the_suite_ran(self):
+        decisions = Path(self.tmp.name) / "variety-decisions.json"
+        store = ad.empty()
+        ad.queue_curation(store, ad.ALIAS, "a", target="b")
+        ad.save_decisions(decisions, store)
+        later = ad.load_decisions(decisions)
+        ad.queue_curation(later, ad.ALIAS, "late", target="b")
+        ad.save_decisions(decisions, later)
+
+        self.pc.clear_queue(decisions, {"a"})
+        self.assertEqual([r["from"] for r in
+                          ad.load_decisions(decisions)["curation_pending"]],
+                         ["late"])
 
     def test_the_commit_message_names_who_approved(self):
         msg = self.pc.commit_message([
@@ -476,6 +541,30 @@ class QueuedRowRenderingTests(WriteHarness):
         # what made a landed decision look like an untouched row.
         self.assertNotIn('class="fold"', html)
         self.assertNotIn('class="dis"', html)
+
+    def test_a_committed_alias_still_reads_as_answered(self):
+        """Between promote_curation.py and the 00:00 build the queue is empty
+        and the slug is still in the canonical index, so the row used to come
+        back as an unanswered question with "leave" selected. Folding it again
+        there is a no-op the promoter skips, which is how rows got stranded."""
+        html = admin_view.render_variety_review_html({
+            "varieties": {"index_size": 4,
+                          "near_misses": [{"a": "avocado-hass",
+                                           "b": "avocado-hass-potted",
+                                           "tier": "letter"}],
+                          "near_miss_tiers": {"letter": 1}, "siblings": [],
+                          "tiers": {},
+                          "overrides": {"deny": [],
+                                        "alias": {"avocado-hass-potted":
+                                                  "avocado-hass"}}},
+            "inventory": admin_view.load_variety_inventory(self.data),
+            "decisions": self.store(), "csrf": "x"})
+        self.assertIn("aliased to", html)
+        self.assertIn("applies at the next build", html)
+        self.assertNotIn('class="nm"', html)
+        # No Cancel: it is in git, and a button that cannot do what it says is
+        # worse than no button.
+        self.assertNotIn("undo-alias", html)
 
     def test_a_folded_near_miss_row_drops_its_select(self):
         self.apply("alias", [{"slug": "avocado-hass-potted",

@@ -2008,7 +2008,8 @@ def _fold_option(slug: str, target: str, facts: dict) -> str:
             f'{_esc(slug)} ({n}) &rarr; {_esc(target)} ({m})</option>')
 
 
-def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str:
+def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "",
+                       committed: dict = None) -> str:
     """Slugs a hyphen or one edit apart, and the verb that folds one in.
 
     This section is DAL-286 and it exists because of four mango pages. Bambaroo
@@ -2031,6 +2032,7 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str
     facts = {f["slug"]: f for f in (inv.get("facts") or [])}
     live = {s for s, f in facts.items() if f["state"] == LIVE}
     pending = _pending_aliases(store)
+    committed = committed or {}
     rows = []
     for p in pairs:
         a, b = p["a"], p["b"]
@@ -2046,7 +2048,7 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str
             opts += _fold_option(b, a, facts)
         if not opts:
             continue
-        folded = _folded_cell(pending, a, b)
+        folded = _folded_cell(pending, committed, a, b)
         verbs = (f'<td colspan="2">{folded}</td>' if folded else
                  f'<td><select class="nm"><option value="">leave</option>{opts}'
                  f'</select>'
@@ -2088,7 +2090,7 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str
 
 
 def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
-                            store: dict = None) -> str:
+                            store: dict = None, committed: dict = None) -> str:
     """The queue that needs a person, and now remembers being worked.
 
     Deliberately NOT auto-folded. avocado-hass-lamb is Lamb Hass, a different
@@ -2119,6 +2121,7 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
     live = {f["slug"] for f in ((inv or {}).get("facts") or [])
             if f["state"] == LIVE}
     pending = _pending_aliases(store or {})
+    committed = committed or {}
     if not siblings:
         return (f'<section><h2>Sibling review queue</h2>'
                 f'<p class="muted">Nothing left to adjudicate. {dismissed} pair(s) '
@@ -2138,7 +2141,7 @@ def _sibling_review_section(siblings, tiers=None, inv: dict = None, q: str = "",
                 continue
             watch = (f' <span class="small muted">({s["watchers"]} watching)</span>'
                      if s["watchers"] else "")
-            folded = _folded_cell(pending, s["slug"], group["base"])
+            folded = _folded_cell(pending, committed, s["slug"], group["base"])
             if folded:
                 verbs = f'<td colspan="2">{folded}</td>'
             else:
@@ -2285,8 +2288,20 @@ def _pending_aliases(store: dict) -> dict:
             if r.get("kind") == decisions.ALIAS and r.get("from")}
 
 
-def _folded_cell(pending: dict, *slugs) -> str:
-    """What a row shows once a fold is queued against it, or "".
+def _folded_cell(pending: dict, committed: dict, *slugs) -> str:
+    """What a row shows once a fold is queued or committed against it, or "".
+
+    Two sources, because a decision passes through two states and the row must
+    look answered in both. `pending` is the browser queue, undoable with a
+    click. `committed` is `variety_overrides.json` after promote_curation.py,
+    undoable only with a git revert, and live from the next build.
+
+    Without the second source there is a window between promotion and the 00:00
+    build where the queue is cleared, the slug is still in the canonical index,
+    and the pair renders as an unanswered question with "leave" selected. Fold
+    it again there and promote skips it as already-aliased, which used to strand
+    the row in the queue permanently. Automating promotion would have made that
+    window a nightly event rather than a rare one.
 
     A queued row has to stop looking like an open question. It kept rendering
     the same select, reset to "leave", with both directions still on offer and a
@@ -2305,6 +2320,14 @@ def _folded_cell(pending: dict, *slugs) -> str:
                     f'<strong>{_esc(pending[s])}</strong></span> '
                     f'<button type="button" class="undo" data-action="undo-alias" '
                     f'data-slug="{_esc(s)}">Cancel</button>')
+    for s in slugs:
+        if s in committed:
+            # No Cancel: this one is in git, and a button that cannot do what it
+            # says is worse than no button.
+            return (f'<span class="done">aliased to '
+                    f'<strong>{_esc(committed[s])}</strong></span> '
+                    f'<span class="small muted">committed, applies at the next '
+                    f'build</span>')
     return ""
 
 
@@ -2422,7 +2445,8 @@ def _redirect_manage_section(inv: dict, store: dict, q: str = "") -> str:
         f'</tr></thead><tbody>{"".join(rows)}</tbody></table></div></section>')
 
 
-def _alias_queue_section(inv: dict, store: dict, q: str = "") -> str:
+def _alias_queue_section(inv: dict, store: dict, q: str = "",
+                         committed: dict = None) -> str:
     """Live pages whose slug is wrong, and the only verb that can fix one.
 
     62 of these shadow a clean page that already exists, which is two indexed
@@ -2435,6 +2459,7 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "") -> str:
     if not inv.get("present"):
         return ""
     pending = _pending_aliases(store)
+    committed = committed or {}
     rows = []
     noisy = 0
     for f in inv["facts"]:
@@ -2448,7 +2473,7 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "") -> str:
         # rather than re-offering the question with a pill beside it. Here the
         # input was worse than a reset select, because it kept the prefilled
         # twin and so looked exactly like a row nobody had touched.
-        folded = _folded_cell(pending, f["slug"])
+        folded = _folded_cell(pending, committed, f["slug"])
         cell = (folded or
                 f'<input type="text" class="al" value="{_esc(twin)}" '
                 f'placeholder="alias target" spellcheck="false">')
@@ -2917,6 +2942,9 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
     store = model.get("decisions") or {}
     tiers = v.get("tiers") or {}
     q = str(model.get("q") or "").strip().lower()
+    # Already in variety_overrides.json, so already decided even though the
+    # build has not run yet. Same treatment as the pending queue.
+    committed = (v.get("overrides") or {}).get("alias") or {}
     parts = [
         f'<p class="muted">{v.get("index_size", 0)} variety pages in the '
         f'canonical index. <a href="/admin/varieties">Back to the inventory</a>.</p>',
@@ -2924,10 +2952,12 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
         _variety_alarm(v),
         _pending_section(store),
         _redirect_manage_section(inv, store, q),
-        _alias_queue_section(inv, store, q),
+        _alias_queue_section(inv, store, q, committed),
         _near_miss_section(v.get("near_misses") or [],
-                           v.get("near_miss_tiers") or {}, inv, store, q),
-        _sibling_review_section(v.get("siblings") or [], tiers, inv, q, store),
+                           v.get("near_miss_tiers") or {}, inv, store, q,
+                           committed),
+        _sibling_review_section(v.get("siblings") or [], tiers, inv, q, store,
+                                committed),
         _variety_overrides_section(v.get("overrides") or {}),
         f'<script>window.CSRF={json.dumps(model.get("csrf") or "")};'
         f'{REVIEW_JS}</script>',
