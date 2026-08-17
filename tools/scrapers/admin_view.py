@@ -626,6 +626,28 @@ def near_miss_pairs(slugs, dismissed=frozenset()) -> list:
     return pairs
 
 
+def load_overrides() -> dict:
+    """variety_overrides.json as the page and the endpoint both need it.
+
+    One reader, because the alias map is now consulted in two places that must
+    agree: the review page renders it as "curation in force", and
+    `_decide_curation` refuses a new alias that would chain onto one of these.
+    A second, subtly different loader is how that check would drift out of
+    step with what is actually in the file.
+    """
+    out = {"deny": [], "alias": {}, "error": ""}
+    ov_file = Path(__file__).parent / "variety_overrides.json"
+    if not ov_file.exists():
+        return out
+    try:
+        raw = json.loads(ov_file.read_text())
+        out["deny"] = sorted(raw.get("deny") or [])
+        out["alias"] = {str(k): str(v) for k, v in (raw.get("alias") or {}).items()}
+    except (json.JSONDecodeError, OSError, AttributeError) as e:
+        out["error"] = str(e)
+    return out
+
+
 def load_variety_curation(data_dir: Path, watches_rows, decided: dict = None) -> dict:
     """The variety review queue, built WITHOUT importing cultivar_parsing.
 
@@ -651,15 +673,7 @@ def load_variety_curation(data_dir: Path, watches_rows, decided: dict = None) ->
         except (json.JSONDecodeError, OSError):
             index = {}
 
-    overrides = {"deny": [], "alias": {}, "error": ""}
-    ov_file = Path(__file__).parent / "variety_overrides.json"
-    if ov_file.exists():
-        try:
-            raw = json.loads(ov_file.read_text())
-            overrides["deny"] = sorted(raw.get("deny") or [])
-            overrides["alias"] = dict(raw.get("alias") or {})
-        except (json.JSONDecodeError, OSError) as e:
-            overrides["error"] = str(e)
+    overrides = load_overrides()
 
     watch_counts = {}
     for row in watches_rows:
@@ -1108,7 +1122,10 @@ def apply_decisions(payload: dict, by: str, data_dir: Path = DATA_DIR) -> dict:
     elif action in ("distinct", "undistinct"):
         applied = _decide_siblings(action, rows, store, by)
     elif action in (decisions.ALIAS, decisions.DENY, "unqueue"):
-        applied = _decide_curation(action, rows, facts, live_slugs, store, by)
+        # Read here rather than inside the validator so the one dependency on a
+        # file outside data_dir is visible at the top of the write path.
+        applied = _decide_curation(action, rows, facts, live_slugs, store, by,
+                                   load_overrides().get("alias") or {})
     else:
         raise DecisionRefused(f"unknown action {action!r}")
 
@@ -1179,7 +1196,8 @@ def _decide_siblings(action, rows, store, by) -> int:
     return len(pairs)
 
 
-def _decide_curation(action, rows, facts, live_slugs, store, by) -> int:
+def _decide_curation(action, rows, facts, live_slugs, store, by,
+                     committed: dict = None) -> int:
     # Everything already queued, plus everything this batch would add. Checking
     # only the stored queue was enough while aliases arrived one row at a time
     # from the noise section. The sibling and near-miss sections submit whole
@@ -1191,6 +1209,15 @@ def _decide_curation(action, rows, facts, live_slugs, store, by) -> int:
     queued = {r["from"]: r.get("to") for r in
               (store.get("curation_pending") or [])
               if r.get("kind") == decisions.ALIAS}
+    # Aliases that have already been promoted into variety_overrides.json are
+    # the same chain hazard and were not checked at all until DAL-286: the guard
+    # only ever looked at the queue, so the hazard vanished from view the moment
+    # promote_curation.py ran. `mango-bambaroo-kp -> mango-bambaroo` is committed
+    # tonight, and tomorrow `mango-bambaroo-kp-x -> mango-bambaroo-kp` would have
+    # been accepted, leaving the -x products on a slug the build no longer
+    # produces. The file is the record of decisions already made, so it belongs
+    # in the same check as the ones not made yet.
+    committed = committed or {}
     # Separate from `queued`, because re-deciding a slug that is ALREADY queued
     # is legitimate and the second answer wins, exactly as record_redirect
     # documents. Naming a slug twice in ONE batch is not a correction: the rows
@@ -1221,11 +1248,24 @@ def _decide_curation(action, rows, facts, live_slugs, store, by) -> int:
             # with no chain resolution, so B would keep pointing at C and A
             # would stop at B. Both directions, because the chain is just as
             # broken when the new row is the one being pointed AT.
+            if target in committed:
+                raise DecisionRefused(
+                    f"{slug} -> {target}, but {target} is already aliased to "
+                    f"{committed[target]} in variety_overrides.json. Aliases "
+                    f"are applied once, not chained, so point this at "
+                    f"{committed[target]} instead.")
             if target in queued:
                 raise DecisionRefused(
                     f"{slug} -> {target}, but {target} is already queued to "
                     f"move to {queued[target]}. Aliases are applied once, not "
                     f"chained, so point this at {queued[target]} instead.")
+            landed = [k for k, v in committed.items() if v == slug]
+            if landed:
+                raise DecisionRefused(
+                    f"{slug} -> {target}, but {landed[0]} is already aliased "
+                    f"to {slug}. Aliases are applied once, not chained, so "
+                    f"repoint {landed[0]} at {target} in "
+                    f"variety_overrides.json in the same commit.")
             pointed_at = [k for k, v in queued.items() if v == slug]
             if pointed_at:
                 raise DecisionRefused(
@@ -2233,6 +2273,11 @@ REVIEW_CSS = """
   input.rt, input.al { font:inherit; font-size:0.8rem; padding:4px 6px;
     border:1px solid #d1d5db; border-radius:6px; width:100%; min-width:160px; }
   input.rt.dirty, input.al.dirty { border-color:#065f46; background:#ecfdf5; }
+  input.rt.bad, input.al.bad { border-color:#b91c1c; background:#fef2f2; }
+  input.rt.warn, input.al.warn { border-color:#b45309; background:#fffbeb; }
+  span.tstat { display:none; font-size:0.72rem; margin-top:3px; }
+  span.tstat.on { display:block; color:#b91c1c; }
+  span.tstat.on.warn { color:#b45309; }
   /* An explicit width, not 100% and not auto. A <select> is sized by its widest
      option, so auto let one long slug pair set the width of the whole table;
      100% collapsed it to a bare chevron, because a percentage width inside an
@@ -2382,6 +2427,60 @@ def _filter_note(q: str, shown: int, total: int) -> str:
             f'{shown} of {total}.</p>')
 
 
+def _target_lists(inv: dict, store: dict, committed: dict) -> tuple:
+    """Suggestion lists of the slugs a target field may legitimately name.
+
+    Returns `(html, {species: datalist id})`.
+
+    Two of the four verbs take a target typed by hand, and until now the field
+    was a blank box over a namespace of 2,562 live slugs. Typing is not the cost;
+    knowing what exists is. `banana-tree-musa-nathan` carries the noise token
+    `tree`, so the clean twin is computed as `banana-musa-nathan`, which is not
+    live, so nothing was pre-filled. The right target is `banana-nathan`, which
+    is live, which no queue on the page names, and which the reviewer had to
+    already know. Six more of the 42 live Banana slugs are in the same shape
+    (`banana-tree-blue-java`, `-cavendish`, `-goldfinger`, ...).
+
+    Scoped per species rather than one list of everything, because an alias
+    across species is almost always a mistake and the suggestions should not
+    imply otherwise. Every species with a live page gets a list, including the
+    ones with no row on this page: that costs 7KB and makes the client-side
+    check exact, so "not a live variety page" can be stated rather than hedged.
+
+    Two exclusions, both of which the endpoint would refuse anyway:
+
+    - Slugs queued to fold somewhere else. Aliases apply once with no chain
+      resolution, so pointing at one strands the products.
+    - Slugs already aliased in `variety_overrides.json`, for the same reason.
+
+    `<option>slug` with the end tag omitted, which HTML5 allows and every
+    browser reads as the option's value. The attribute form
+    `<option value="slug"></option>` renders the same list for 118KB instead of
+    72KB, and this page is already 189KB.
+    """
+    blocked = set(_pending_aliases(store))
+    blocked |= set(committed or {})
+    by_species = {}
+    for f in (inv.get("facts") or []):
+        if f["state"] != LIVE or f["slug"] in blocked or not f["species"]:
+            continue
+        by_species.setdefault(f["species"], []).append(f["slug"])
+    ids, parts = {}, []
+    for species in sorted(by_species):
+        sid = "dl-" + _slugify(species)
+        ids[species] = sid
+        opts = "".join(f"<option>{_esc(s)}" for s in sorted(by_species[species]))
+        parts.append(f'<datalist id="{sid}" data-species="{_esc(species)}">'
+                     f'{opts}</datalist>')
+    return "".join(parts), ids
+
+
+def _target_attrs(species: str, lists: dict) -> str:
+    """`list=` for the input and `data-species` for the row's error message."""
+    sid = (lists or {}).get(species or "")
+    return f' list="{_esc(sid)}"' if sid else ""
+
+
 def _pending_aliases(store: dict) -> dict:
     """slug -> target for every alias already queued."""
     return {r.get("from"): r.get("to")
@@ -2475,7 +2574,8 @@ def _pending_section(store: dict) -> str:
         f'</table></section>')
 
 
-def _redirect_manage_section(inv: dict, store: dict, q: str = "") -> str:
+def _redirect_manage_section(inv: dict, store: dict, q: str = "",
+                             lists: dict = None) -> str:
     """The 137 redirects and 68 tombstones, with the two verbs that apply.
 
     A live page is deliberately absent from this table. It cannot be redirected
@@ -2515,12 +2615,15 @@ def _redirect_manage_section(inv: dict, store: dict, q: str = "") -> str:
             if f["state"] in states)
         rows.append(
             f'<tr data-slug="{_esc(f["slug"])}" data-stamp="{stamp}" '
+            f'data-species="{_esc(f["species"])}" '
             f'data-state="{f["state"]}" data-actions="{applicable}">'
             f'<td><label class="pick"><input type="checkbox" class="sel"> '
             f'{_variety_link(f["slug"], f["slug"])}</label>{pending}{see_also}</td>'
             f'<td class="vstate {f["state"]}">{f["state"]}</td>'
             f'<td><input type="text" class="rt" value="{target}" '
-            f'placeholder="target slug" spellcheck="false"></td>'
+            f'placeholder="target slug" spellcheck="false"'
+            f'{_target_attrs(f["species"], lists)}>'
+            f'<span class="tstat"></span></td>'
             f'<td class="num">{f["watchers"] or ""}</td>'
             f'<td class="small muted">{_esc(f["since"])}</td></tr>')
     if not rows:
@@ -2548,7 +2651,7 @@ def _redirect_manage_section(inv: dict, store: dict, q: str = "") -> str:
 
 
 def _alias_queue_section(inv: dict, store: dict, q: str = "",
-                         committed: dict = None) -> str:
+                         committed: dict = None, lists: dict = None) -> str:
     """Live pages whose slug is wrong, and the only verb that can fix one.
 
     62 of these shadow a clean page that already exists, which is two indexed
@@ -2578,9 +2681,12 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "",
         folded = _folded_cell(pending, committed, f["slug"])
         cell = (folded or
                 f'<input type="text" class="al" value="{_esc(twin)}" '
-                f'placeholder="alias target" spellcheck="false">')
+                f'placeholder="alias target" spellcheck="false"'
+                f'{_target_attrs(f["species"], lists)}>'
+                f'<span class="tstat"></span>')
         rows.append(
-            f'<tr data-slug="{_esc(f["slug"])}"'
+            f'<tr data-slug="{_esc(f["slug"])}" '
+            f'data-species="{_esc(f["species"])}"'
             f'{" class=\"done\"" if folded else ""}>'
             f'<td>{_variety_link(f["slug"], f["slug"])}'
             f'<div class="small muted">noise: {_esc(", ".join(f["noise"]))}</div></td>'
@@ -2595,7 +2701,11 @@ def _alias_queue_section(inv: dict, store: dict, q: str = "",
         f'({len(rows)})</h2>'
         f'{_filter_note(q, len(rows), noisy)}'
         f'<p class="muted">{shadowing} of these shadow a clean page that '
-        f'already exists, pre-filled below. Queueing an alias does not change '
+        f'already exists, pre-filled below. For the rest, the target field '
+        f'offers the live pages of the same species, so the answer can be '
+        f'picked rather than recalled, and anything it cannot accept says so '
+        f'under the field before you click. Queueing an '
+        f'alias does not change '
         f'anything tonight: it lands in <code>variety_overrides.json</code> as '
         f'a commit, and then the products move under the target on the next '
         f'build and the lifecycle writes the redirect itself two nights after '
@@ -2777,6 +2887,70 @@ REVIEW_JS = """
     });
   }
 
+  // -- target fields ----------------------------------------------------------
+  // The datalists are the only copy of the live slug list on the page, so the
+  // check reads them back rather than shipping a second one. slug -> species,
+  // which is all four verdicts need.
+  var LIVE = {};
+  Array.prototype.forEach.call(
+    document.querySelectorAll('datalist[data-species]'), function (dl) {
+      var sp = dl.getAttribute('data-species');
+      Array.prototype.forEach.call(dl.options, function (o) { LIVE[o.value] = sp; });
+    });
+  var FOLDING = window.FOLDING || {};
+
+  // ['', ''] when the value is fine, else [severity, why]. 'bad' blocks the
+  // batch; 'warn' does not, because a target in another species is legal and
+  // occasionally right, and a page that refuses a correct value is one you
+  // learn to work around.
+  function targetProblem(tr, value) {
+    var v = String(value || '').trim();
+    if (!v) return ['', ''];
+    var slug = tr.getAttribute('data-slug') || '';
+    var species = tr.getAttribute('data-species') || '';
+    if (v === slug) return ['bad', 'points at itself'];
+    if (FOLDING[v]) return ['bad', v + ' is already folding into ' + FOLDING[v] +
+      ', and an alias applies once rather than chaining'];
+    if (!LIVE[v]) return ['bad', 'not a live variety page'];
+    if (species && LIVE[v] !== species) {
+      return ['warn', 'a ' + LIVE[v] + ' page, not ' + species];
+    }
+    return ['', ''];
+  }
+
+  function checkTarget(input) {
+    var tr = input.closest('tr');
+    if (!tr) return '';
+    var out = targetProblem(tr, input.value);
+    var note = input.parentNode.querySelector('.tstat');
+    input.classList.remove('bad', 'warn');
+    if (out[0]) input.classList.add(out[0]);
+    if (note) {
+      note.textContent = out[1];
+      note.className = 'tstat' + (out[0] ? ' on' : '') +
+                       (out[0] === 'warn' ? ' warn' : '');
+    }
+    return out[0];
+  }
+
+  // Rows the endpoint would refuse, named. A 409 that arrives after the confirm
+  // dialog has been read and agreed to is the wrong end of the interaction to
+  // find a typo at, and the batch is all-or-nothing, so one bad row takes the
+  // other sixty with it.
+  function badTargets(trs, cls) {
+    return trs.filter(function (tr) {
+      var input = tr.querySelector(cls);
+      return input && checkTarget(input) === 'bad';
+    }).map(function (tr) { return tr.getAttribute('data-slug'); });
+  }
+
+  function refuse(bad) {
+    say(bad.length + ' row' + (bad.length === 1 ? '' : 's') +
+        ' cannot go: ' + bad.slice(0, 3).join(', ') +
+        (bad.length > 3 ? ', and ' + (bad.length - 3) + ' more' : '') +
+        '. The reason is under each field.', true);
+  }
+
   // -- redirects and tombstones ---------------------------------------------
   var rsec = document.getElementById('redirects');
   if (rsec) {
@@ -2798,8 +2972,12 @@ REVIEW_JS = """
         // Editing a target is intent. Ticking the row for them saves the second
         // gesture without ever selecting a row they did not touch.
         if (input.value.trim() !== was) tr.querySelector('.sel').checked = true;
+        checkTarget(input);
         refreshR();
       });
+      // Once at load, because 137 of these were typed by earlier code and a
+      // target can stop being live without anyone touching the field.
+      if (input.value.trim()) checkTarget(input);
     });
     rsec.querySelectorAll('.bulkbar button').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -2820,6 +2998,12 @@ REVIEW_JS = """
                        tr.getAttribute('data-state');
               }).join(', ') + ').', true);
           return;
+        }
+        // Only the verbs that carry a target. Converting to a tombstone clears
+        // one, so a stale value in the box is not a reason to stop.
+        if (action === 'retarget' || action === 'redirect') {
+          var badR = badTargets(chosen, '.rt');
+          if (badR.length) { refuse(badR); return; }
         }
         var rows = chosen.map(function (tr) {
           return {
@@ -2865,12 +3049,15 @@ REVIEW_JS = """
       if (!input) return;
       input.addEventListener('input', function () {
         input.classList.toggle('dirty', !!input.value.trim());
+        checkTarget(input);
         refreshA();
       });
-      if (input.value.trim()) input.classList.add('dirty');
+      if (input.value.trim()) { input.classList.add('dirty'); checkTarget(input); }
     });
     refreshA();
     asec.querySelector('.bulkbar button').addEventListener('click', function () {
+      var badA = badTargets(filled(), '.al');
+      if (badA.length) { refuse(badA); return; }
       var rows = filled().map(function (tr) {
         return {slug: tr.getAttribute('data-slug'),
                 target: tr.querySelector('.al').value.trim()};
@@ -3139,14 +3326,17 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
     # Already in variety_overrides.json, so already decided even though the
     # build has not run yet. Same treatment as the pending queue.
     committed = (v.get("overrides") or {}).get("alias") or {}
+    # Live slugs a target field may name, one list per species. Built once and
+    # shared by both sections that take a typed target.
+    datalists, lists = _target_lists(inv, store, committed)
     # (section html, open by default). Only the pending queue starts open: it is
     # four rows, it is the state of decisions already made, and it is the one
     # thing worth seeing without asking. A filter is an ask, so it opens
     # everything that matched it.
     sections = [
         (_pending_section(store), True),
-        (_redirect_manage_section(inv, store, q), bool(q)),
-        (_alias_queue_section(inv, store, q, committed), bool(q)),
+        (_redirect_manage_section(inv, store, q, lists), bool(q)),
+        (_alias_queue_section(inv, store, q, committed, lists), bool(q)),
         (_near_miss_section(v.get("near_misses") or [],
                             v.get("near_miss_tiers") or {}, inv, store, q,
                             committed), bool(q)),
@@ -3162,8 +3352,16 @@ def render_variety_review_html(model: dict, generated_at: str = None) -> str:
         _variety_alarm(v),
         _panel_nav(panels),
         *[html for html, _, _ in panels],
+        # After the sections, because a datalist is referenced by id and never
+        # rendered, so its position is free and 72KB above the first heading is
+        # 72KB the browser parses before anything is on screen.
+        datalists,
         f'<script>window.CSRF={json.dumps(model.get("csrf") or "")};'
-        f'window.QFILTER={json.dumps(bool(q))};{REVIEW_JS}</script>',
+        f'window.QFILTER={json.dumps(bool(q))};'
+        # Both halves of the chain rule, so a target field can name the slug it
+        # collides with instead of saying "not a live page" about one that is.
+        f'window.FOLDING={json.dumps(dict(committed, **_pending_aliases(store)))};'
+        f'{REVIEW_JS}</script>',
     ]
     return render_page(
         title="treestock admin — variety review",

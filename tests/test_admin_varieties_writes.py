@@ -78,6 +78,19 @@ class WriteHarness(unittest.TestCase):
     def store(self):
         return ad.load_decisions(ad.decisions_path(self.data))
 
+    def with_overrides(self, alias):
+        """Pretend variety_overrides.json already carries these aliases.
+
+        That file sits beside the code rather than in data_dir, so the write
+        path reads it directly. Patching the loader keeps these tests off the
+        live curation file, which has four real aliases in it and would make
+        them pass or fail depending on what was folded last week.
+        """
+        real = admin_view.load_overrides
+        admin_view.load_overrides = lambda: {"deny": [], "alias": dict(alias),
+                                             "error": ""}
+        self.addCleanup(setattr, admin_view, "load_overrides", real)
+
 
 class RefusalTests(WriteHarness):
     def test_a_live_slug_cannot_be_redirected_and_the_error_says_why(self):
@@ -209,6 +222,43 @@ class RefusalTests(WriteHarness):
             {r["from"]: r["to"] for r in self.store()["curation_pending"]},
             {"avocado-hass-potted": "avocado-hass",
              "avocado-hass-type-a": "avocado-hass"})
+
+    def test_an_alias_onto_an_already_committed_alias_is_refused(self):
+        """The chain guard only ever read the queue, so the hazard vanished from
+        view the moment promote_curation.py ran. `mango-bambaroo-kp ->
+        mango-bambaroo` lands in the file tonight; a fold onto
+        `mango-bambaroo-kp` tomorrow would have been accepted, and
+        canonical_cultivar applies the map once, so those products would sit on
+        a slug the build no longer produces."""
+        self.with_overrides({"avocado-hass-potted": "avocado-hass"})
+        with self.assertRaises(admin_view.DecisionRefused) as cm:
+            self.apply("alias", [{"slug": "avocado-hass-type-a",
+                                  "target": "avocado-hass-potted"}])
+        msg = str(cm.exception)
+        self.assertIn("already aliased", msg)
+        self.assertIn("variety_overrides.json", msg)
+        # Naming the slug to use instead is the whole value of the refusal.
+        self.assertIn("point this at avocado-hass ", msg)
+        self.assertEqual(self.store()["curation_pending"], [])
+
+    def test_a_committed_alias_pointing_at_this_slug_is_refused(self):
+        """The other direction. A -> B in the file, then B -> C, and A is left
+        on a page that has moved."""
+        self.with_overrides({"avocado-hass-type-a": "avocado-hass-potted"})
+        with self.assertRaises(admin_view.DecisionRefused) as cm:
+            self.apply("alias", [{"slug": "avocado-hass-potted",
+                                  "target": "avocado-hass"}])
+        self.assertIn("avocado-hass-type-a", str(cm.exception))
+        self.assertEqual(self.store()["curation_pending"], [])
+
+    def test_an_unrelated_committed_alias_does_not_block_anything(self):
+        """The file grows a row every time something is folded, so a guard that
+        was even slightly too wide would make the queue harder to empty the more
+        of it had been emptied."""
+        self.with_overrides({"apple-2-way-gala": "apple-2way-gala"})
+        res = self.apply("alias", [{"slug": "avocado-hass-potted",
+                                    "target": "avocado-hass"}])
+        self.assertEqual(res["applied"], 1)
 
     def test_a_batch_is_all_or_nothing(self):
         """Half of 126 rows landing is worse than none: nobody can tell which
@@ -680,6 +730,166 @@ class QueuedRowRenderingTests(WriteHarness):
         html = self.render()
         self.assertIn('data-action="undo-alias" data-slug="avocado-hass-potted"',
                       html)
+
+
+SUGGEST_PAGES = {
+    # The real shape, from live data. `banana-tree-musa-nathan` carries the
+    # noise token `tree`, so clean_twin computes `banana-musa-nathan`, which is
+    # not live, so the field came up blank. The page it should point at is
+    # `banana-nathan`, which is live and which no queue on the page names.
+    "banana-tree-musa-nathan": entry(
+        species="Banana", species_slug="banana",
+        rows=[{"nursery_key": "daleys", "available": True}]),
+    "banana-nathan": entry(species="Banana", species_slug="banana",
+                           rows=[{"nursery_key": "exotica", "available": True}]),
+    "banana-cavendish": entry(species="Banana", species_slug="banana"),
+    "banana-old": entry(species="Banana", species_slug="banana",
+                        state="tombstone"),
+    "banana-moved": entry(species="Banana", species_slug="banana",
+                          state="redirect", redirect_to="banana-nathan"),
+    "mango-bambaroo": entry(species="Mango", species_slug="mango"),
+    "mango-bamberoo": entry(species="Mango", species_slug="mango"),
+}
+
+
+class TargetSuggestionTests(unittest.TestCase):
+    """What a target field may legitimately name, offered rather than recalled.
+
+    Two of the four verbs take a slug typed by hand over a namespace of 2,562
+    live pages. Typing is not the cost; knowing what is there is. 58 of the 120
+    noisy rows have no clean twin to pre-fill, and `banana-tree-musa-nathan` is
+    one of them: the right answer is `banana-nathan`, one of 42 live Banana
+    slugs, and nothing on the page said so.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.data = Path(self.tmp.name)
+        led = self.data / "page-ledger"
+        led.mkdir()
+        (led / "variety.json").write_text(json.dumps(
+            {"schema": 1, "family": "variety", "updated": "2026-08-17",
+             "pages": SUGGEST_PAGES}))
+        self.inv = admin_view.load_variety_inventory(self.data)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def lists(self, store=None, committed=None):
+        return admin_view._target_lists(self.inv, store or {}, committed or {})
+
+    def options(self, html, sid):
+        got = re.search(r'<datalist id="%s"[^>]*>(.*?)</datalist>' % sid, html,
+                        re.S)
+        return re.findall(r"<option>([^<]+)", got.group(1)) if got else None
+
+    def test_one_list_per_species_of_that_species_live_slugs(self):
+        html, ids = self.lists()
+        self.assertEqual(ids, {"Banana": "dl-banana", "Mango": "dl-mango"})
+        self.assertEqual(self.options(html, "dl-banana"),
+                         ["banana-cavendish", "banana-nathan",
+                          "banana-tree-musa-nathan"])
+        self.assertEqual(self.options(html, "dl-mango"),
+                         ["mango-bambaroo", "mango-bamberoo"])
+
+    def test_only_live_pages_are_offered(self):
+        """A target that is a tombstone or another redirect serves a 404 or a
+        hop. The endpoint refuses both, so the list must not contain them."""
+        html, _ = self.lists()
+        for slug in ("banana-old", "banana-moved"):
+            self.assertNotIn(slug, html)
+
+    def test_a_slug_already_folding_is_not_offered_from_either_source(self):
+        """Both are guaranteed refusals: an alias applies once with no chain
+        resolution, so pointing at one strands the products. Queued and
+        committed are the same hazard, and the queued one is the likelier
+        mistake, because it is the row you just filled in above."""
+        html, _ = self.lists(
+            store={"curation_pending": [{"kind": "alias", "from": "banana-nathan",
+                                         "to": "banana-cavendish"}]},
+            committed={"mango-bamberoo": "mango-bambaroo"})
+        self.assertEqual(self.options(html, "dl-banana"),
+                         ["banana-cavendish", "banana-tree-musa-nathan"])
+        self.assertEqual(self.options(html, "dl-mango"), ["mango-bambaroo"])
+
+    def test_the_compact_option_form_is_used(self):
+        """`<option>slug` with the end tag omitted, which HTML5 allows and every
+        browser reads as the option's value. The attribute form renders the same
+        list for 118KB instead of 72KB, on a page that is already 189KB."""
+        html, _ = self.lists()
+        self.assertIn("<option>banana-nathan", html)
+        self.assertNotIn('<option value=', html)
+        self.assertNotIn("</option>", html)
+
+    def test_both_target_fields_point_at_their_own_species_list(self):
+        html = self.render()
+        # The alias row, which is the one that had nothing to offer.
+        self.assertRegex(html, r'class="al"[^>]*list="dl-banana"')
+        self.assertIn('data-species="Banana"', html)
+        # And the redirect row, which takes a target too.
+        self.assertRegex(html, r'class="rt"[^>]*list="dl-banana"')
+
+    def test_a_species_with_no_list_still_renders_a_plain_field(self):
+        """`_target_attrs` returns "" rather than list="", which would point the
+        input at no element and, in some browsers, at nothing at all."""
+        self.assertEqual(admin_view._target_attrs("Durian", {"Banana": "dl-x"}),
+                         "")
+        self.assertEqual(admin_view._target_attrs("", {}), "")
+
+    def render(self, store=None, committed=None):
+        return admin_view.render_variety_review_html({
+            "varieties": {"index_size": 7, "near_misses": [], "siblings": [],
+                          "near_miss_tiers": {}, "tiers": {},
+                          "overrides": {"deny": [], "alias": committed or {}}},
+            "inventory": self.inv,
+            "decisions": store or {},
+            "csrf": "x",
+        })
+
+    def test_the_page_ships_the_folding_map_so_a_chain_can_be_named(self):
+        """Without it the check can only say "not a live page" about a slug that
+        is live, which is the kind of wrong that gets a page ignored."""
+        html = self.render(
+            store={"curation_pending": [{"kind": "alias", "from": "banana-nathan",
+                                         "to": "banana-cavendish"}]},
+            committed={"mango-bamberoo": "mango-bambaroo"})
+        got = re.search(r"window\.FOLDING=(\{.*?\});", html)
+        self.assertIsNotNone(got, "FOLDING missing; the chain message cannot work")
+        self.assertEqual(json.loads(got.group(1)),
+                         {"banana-nathan": "banana-cavendish",
+                          "mango-bamberoo": "mango-bambaroo"})
+
+    def test_the_datalists_come_after_the_sections(self):
+        """72KB the browser parses before the first heading is 72KB in front of
+        everything the page is for. A datalist is referenced by id and never
+        rendered, so its position is free."""
+        html = self.render()
+        self.assertLess(html.rindex("</section>"), html.index("<datalist"))
+
+    def test_a_refused_target_is_named_before_the_batch_is_sent(self):
+        """The batch is all-or-nothing, so one typo takes the other sixty with
+        it, and a 409 arrives after the confirm dialog has been read and agreed
+        to. Four verdicts, and only three of them stop the batch: a target in
+        another species is legal and occasionally right."""
+        js = admin_view.REVIEW_JS
+        for phrase in ("points at itself", "not a live variety page",
+                       "already folding into", "rather than chaining"):
+            self.assertIn(phrase, js, f"{phrase!r} missing from the check")
+        # Cross-species warns, never blocks.
+        self.assertRegex(js, r"return \['warn', 'a ' \+ LIVE\[v\]")
+        # Both sections gate on it.
+        self.assertIn("badTargets(filled(), '.al')", js)
+        self.assertIn("badTargets(chosen, '.rt')", js)
+        # Converting to a tombstone clears the target, so a stale box is not a
+        # reason to stop.
+        self.assertIn("action === 'retarget' || action === 'redirect'", js)
+
+    def test_the_check_reads_the_datalists_rather_than_a_second_copy(self):
+        """Two lists of live slugs on one page is two lists that can disagree,
+        and the one the browser suggests from would not be the one the check
+        validates against."""
+        js = admin_view.REVIEW_JS
+        self.assertIn("querySelectorAll('datalist[data-species]')", js)
 
 
 class NightlyApplicationTests(unittest.TestCase):
