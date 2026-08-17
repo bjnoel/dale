@@ -54,7 +54,7 @@ estimates.
 | Slugs still carrying listing noise (`-potted`, `-pome`, `-tm`, `-dwf`) | **92** |
 | Sibling groups / suggested alias lines | 319 / 493 |
 | ...of those lines, noise-only / spelling variant / real judgement | 48 / 1 / 445 |
-| Dead URLs recovered by task R1, awaiting approval | **126 renames, 68 retired** |
+| Dead URLs recovered by task R1 (applied 2026-08-17) | **126 redirects, 68 tombstones** |
 
 Two of those are findings in their own right. **59% of the catalogue is one nursery selling
 one product**, which is worth knowing before deciding what the site is for. And **685 pages
