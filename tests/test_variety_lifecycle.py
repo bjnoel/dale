@@ -431,7 +431,7 @@ class TestSeedFromAvailability(unittest.TestCase):
         self.assertEqual(set(pages), {kept})
 
 
-class TestSeedRedirects(unittest.TestCase):
+class TestSeedReviewed(unittest.TestCase):
     """Task R1's apply step, and the reason it re-checks everything.
 
     The proposal file is a snapshot of one evening. Between proposing and
@@ -451,9 +451,9 @@ class TestSeedRedirects(unittest.TestCase):
             ledger = PageLedger.load(Path(tmp) / "variety.json", FAMILY_VARIETY,
                                      log=lambda *a, **k: None)
             ledger.pages.update(pages or {})
-            applied, skipped = bvp.seed_redirects(
+            redirected, tombstoned, skipped = bvp.seed_reviewed(
                 ledger, path, TODAY, set(written_slugs))
-        return applied, skipped, ledger.pages
+        return redirected, tombstoned, skipped, ledger.pages
 
     @staticmethod
     def _rename(slug="avocado-hass-type-a", target="avocado-hass", **over):
@@ -471,7 +471,7 @@ class TestSeedRedirects(unittest.TestCase):
         no siblings. By then the pre-merge parser is the only other place the
         species could come from, so it is seeded now or not at all.
         """
-        _, _, pages = self._apply([self._rename()], {"avocado-hass"})
+        *_, pages = self._apply([self._rename()], {"avocado-hass"})
         entry = pages["avocado-hass-type-a"]
         self.assertEqual(entry["species"], "Avocado")
         self.assertEqual(entry["variety"], "Hass Type A")
@@ -481,14 +481,14 @@ class TestSeedRedirects(unittest.TestCase):
         proposal = self._rename()
         del proposal["species"]
         del proposal["variety"]
-        applied, _, pages = self._apply([proposal], {"avocado-hass"})
-        self.assertEqual(applied, 1)
+        redirected, _, _, pages = self._apply([proposal], {"avocado-hass"})
+        self.assertEqual(redirected, 1)
         self.assertEqual(pages["avocado-hass-type-a"]["state"], REDIRECT)
 
     def test_an_approved_rename_becomes_a_redirect_entry(self):
-        applied, _, pages = self._apply([self._rename()], {"avocado-hass"})
+        redirected, _, _, pages = self._apply([self._rename()], {"avocado-hass"})
 
-        self.assertEqual(applied, 1)
+        self.assertEqual(redirected, 1)
         entry = pages["avocado-hass-type-a"]
         self.assertEqual(entry["state"], REDIRECT)
         self.assertEqual(entry["redirect_to"], "avocado-hass")
@@ -503,16 +503,16 @@ class TestSeedRedirects(unittest.TestCase):
         """
         proposal = self._rename()
         del proposal["approved"]
-        applied, _, pages = self._apply([proposal], {"avocado-hass"})
-        self.assertEqual(applied, 0)
+        redirected, _, _, pages = self._apply([proposal], {"avocado-hass"})
+        self.assertEqual(redirected, 0)
         self.assertEqual(pages, {})
 
     def test_an_explicitly_rejected_proposal_is_not_applied(self):
-        applied, _, _ = self._apply(
+        redirected, tombstoned, *_ = self._apply(
             [self._rename(approved=False)], {"avocado-hass"})
-        self.assertEqual(applied, 0)
+        self.assertEqual((redirected, tombstoned), (0, 0))
 
-    def test_only_renames_apply_even_when_approved(self):
+    def test_only_renames_become_redirects_even_when_approved(self):
         """A split has no single successor and a retired slug has none at all.
 
         Approving the row cannot conjure one, so neither may become a redirect
@@ -520,9 +520,72 @@ class TestSeedRedirects(unittest.TestCase):
         """
         for verdict in ("split", "retired"):
             with self.subTest(verdict=verdict):
-                applied, _, _ = self._apply(
+                redirected, *_ = self._apply(
                     [self._rename(verdict=verdict)], {"avocado-hass"})
-                self.assertEqual(applied, 0)
+                self.assertEqual(redirected, 0)
+
+    @staticmethod
+    def _retired(slug="kiwifruit-male", **over):
+        proposal = {"slug": slug, "verdict": "retired", "target": None,
+                    "title": "Kiwifruit - Male", "species": "Kiwifruit",
+                    "variety": "Male", "approved": True,
+                    "history": {"first_seen": "2026-03-05",
+                                "last_seen": "2026-08-16",
+                                "live_days": 160, "in_stock_days": 40,
+                                "last_in_stock": "2026-07-02"}}
+        proposal.update(over)
+        return proposal
+
+    def test_an_approved_retired_slug_becomes_a_tombstone(self):
+        """It was never a cultivar, so there is nothing to redirect to.
+
+        A tombstone keeps the URL and is honest about it. A redirect would
+        assert a successor that does not exist.
+        """
+        redirected, tombstoned, _, pages = self._apply([self._retired()], set())
+        self.assertEqual((redirected, tombstoned), (0, 1))
+        entry = pages["kiwifruit-male"]
+        self.assertEqual(entry["state"], TOMBSTONE)
+        self.assertIsNone(entry.get("redirect_to"))
+
+    def test_the_tombstone_gets_the_dates_it_needs_to_say_anything(self):
+        """Both of a tombstone's factual sentences need dates.
+
+        last_stock_sentence needs last_in_stock, tracking_sentence needs the
+        first/last span, and each degrades to silence without them. Seeded with
+        no history the page renders as a generic "no longer listed", which is
+        the one outcome a tombstone exists to avoid.
+        """
+        *_, pages = self._apply([self._retired()], set())
+        entry = pages["kiwifruit-male"]
+        self.assertEqual(entry["first_seen"], "2026-03-05")
+        self.assertEqual(entry["last_seen"], "2026-08-16")
+        self.assertEqual(entry["last_in_stock"], "2026-07-02")
+        self.assertEqual(entry["live_days"], 160)
+        self.assertEqual(entry["species"], "Kiwifruit",
+                         "without a species it can offer no siblings")
+
+    def test_a_retired_slug_with_no_history_still_applies(self):
+        """Missing dates cost it two sentences, not the page."""
+        redirected, tombstoned, _, pages = self._apply(
+            [self._retired(history={})], set())
+        self.assertEqual((redirected, tombstoned), (0, 1))
+        self.assertEqual(pages["kiwifruit-male"]["state"], TOMBSTONE)
+
+    def test_an_unapproved_retired_slug_is_inert(self):
+        proposal = self._retired()
+        del proposal["approved"]
+        redirected, tombstoned, _, pages = self._apply([proposal], set())
+        self.assertEqual((redirected, tombstoned), (0, 0))
+        self.assertEqual(pages, {})
+
+    def test_a_retired_slug_the_parser_generates_again_is_skipped(self):
+        """The taxonomy changed its mind before the file was applied."""
+        redirected, tombstoned, skipped, pages = self._apply(
+            [self._retired()], {"kiwifruit-male"})
+        self.assertEqual((redirected, tombstoned), (0, 0))
+        self.assertIn("still a live page", skipped[0])
+        self.assertEqual(pages, {})
 
     def test_a_slug_generated_tonight_is_never_redirected(self):
         """The parser started producing it again while the file sat unapplied.
@@ -530,29 +593,29 @@ class TestSeedRedirects(unittest.TestCase):
         Redirecting it would take a live page with content and replace it with a
         stub pointing somewhere else.
         """
-        applied, skipped, pages = self._apply(
+        redirected, _, skipped, pages = self._apply(
             [self._rename()], {"avocado-hass", "avocado-hass-type-a"})
-        self.assertEqual(applied, 0)
+        self.assertEqual(redirected, 0)
         self.assertEqual(pages, {})
         self.assertIn("still a live page", skipped[0])
 
     def test_a_target_that_is_not_a_page_tonight_is_skipped(self):
         """Otherwise the stub swaps a 404 for a 404 and spends the authority."""
-        applied, skipped, _ = self._apply([self._rename()], {"something-else"})
-        self.assertEqual(applied, 0)
+        redirected, _, skipped, _ = self._apply([self._rename()], {"something-else"})
+        self.assertEqual(redirected, 0)
         self.assertIn("is not a page tonight", skipped[0])
 
     def test_a_slug_live_in_the_ledger_is_skipped(self):
-        applied, skipped, _ = self._apply(
+        redirected, _, skipped, _ = self._apply(
             [self._rename()], {"avocado-hass"},
             pages={"avocado-hass-type-a": {"state": LIVE}})
-        self.assertEqual(applied, 0)
+        self.assertEqual(redirected, 0)
         self.assertIn("live in the ledger", skipped[0])
 
     def test_a_slug_pointing_at_itself_is_skipped(self):
-        applied, skipped, _ = self._apply(
+        redirected, _, skipped, _ = self._apply(
             [self._rename(target="avocado-hass-type-a")], {"avocado-hass-type-a"})
-        self.assertEqual(applied, 0)
+        self.assertEqual(redirected, 0)
 
     def test_an_unreadable_proposal_file_is_a_warning_not_a_crash(self):
         """The nightly must not fail closed on a bad hand-edit of this file."""
@@ -562,9 +625,9 @@ class TestSeedRedirects(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             ledger = PageLedger.load(Path(tmp) / "variety.json", FAMILY_VARIETY,
                                      log=lambda *a, **k: None)
-            applied, skipped = bvp.seed_redirects(
+            result = bvp.seed_reviewed(
                 ledger, Path(tmp) / "nope.json", TODAY, set())
-        self.assertEqual((applied, skipped), (0, []))
+        self.assertEqual(result, (0, 0, []))
 
 
 if __name__ == "__main__":

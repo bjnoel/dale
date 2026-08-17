@@ -546,56 +546,80 @@ def seed_from_availability(ledger: PageLedger, data_dir: Path, today: str,
     return seeded
 
 
-def seed_redirects(ledger: PageLedger, path: Path, today: str,
-                   written_slugs: set[str]) -> tuple[int, list[str]]:
-    """Adopt an approved old-slug -> new-slug mapping as redirect entries.
+def seed_reviewed(ledger: PageLedger, path: Path, today: str,
+                  written_slugs: set[str]) -> tuple[int, int, list[str]]:
+    """Adopt the approved rows of a recover_merged_slugs.py proposal file.
 
-    Task R1's apply step. recover_merged_slugs.py proposes, a human approves,
-    and this turns the survivors into ledger entries so the stubs render through
-    the same path a nightly rename uses. One renderer, one code path.
+    Task R1's apply step. The tool proposes, a human approves, and this turns
+    the survivors into ledger entries so they render through the same paths a
+    nightly rename or tombstone uses. One renderer, one code path, no
+    hand-written HTML.
 
-    Every condition the proposal file asserts is re-tested here against tonight's
-    build, and skipped rather than trusted. A proposal is a snapshot of one
-    evening; by the time it is applied the parser may have started generating the
-    old slug again, or the target may have stopped being a page, and either would
-    turn a recovery into an outage at a URL that was working.
+    Two verdicts are applied, and they are not interchangeable:
+
+      rename   a single successor carries the products. Becomes a REDIRECT, and
+               the authority goes with it.
+      retired  nothing carries them; the slug was never a cultivar. Becomes a
+               TOMBSTONE, which keeps the URL and says so honestly. A redirect
+               here would assert a successor that does not exist.
+
+    Every condition the file asserts is re-tested against tonight's build rather
+    than trusted. A proposal is a snapshot of one evening; by the time it is
+    applied the parser may have started generating the old slug again, or the
+    target may have stopped being a page, and either would turn a recovery into
+    an outage at a URL that was working.
     """
     try:
         proposals = json.loads(Path(path).read_text()).get("proposals") or []
     except (OSError, json.JSONDecodeError) as e:
-        print(f"  WARNING: unreadable redirect proposals {path}: {e}")
-        return 0, []
+        print(f"  WARNING: unreadable proposals {path}: {e}")
+        return 0, 0, []
 
-    applied, skipped = 0, []
+    redirected, tombstoned, skipped = 0, 0, []
     for p in proposals:
-        slug, target = p.get("slug"), p.get("target")
+        slug, verdict = p.get("slug"), p.get("verdict")
         # `approved` absent means nobody has looked at it. Only an explicit True
         # applies, so a freshly generated proposal file is inert until reviewed.
-        if p.get("verdict") != "rename" or p.get("approved") is not True:
+        if p.get("approved") is not True or verdict not in ("rename", "retired"):
             continue
-        if not slug or not target or slug == target:
-            skipped.append(f"{slug}: no usable target")
+        if not slug:
             continue
         if slug in written_slugs:
             skipped.append(f"{slug}: generated tonight, still a live page")
             continue
-        if target not in written_slugs:
-            skipped.append(f"{slug}: target {target} is not a page tonight")
-            continue
         if (ledger.pages.get(slug) or {}).get("state") == LIVE:
             skipped.append(f"{slug}: live in the ledger")
             continue
-        # species/variety are not needed to render a stub, which shows only the
-        # two titles. They are seeded because a reviewer may later decide this
-        # should have been a tombstone, and a tombstone without a species has no
-        # breadcrumb and can offer no siblings. Recovering it after the fact
-        # would mean running the pre-merge parser again.
-        ledger.seed(slug, today=today, state=REDIRECT, redirect_to=target,
-                    since=today, title=p.get("title") or slug,
-                    species=p.get("species") or None,
-                    variety=p.get("variety") or None)
-        applied += 1
-    return applied, skipped
+
+        # species/variety are carried for both verdicts. A stub shows only the
+        # two titles and needs neither, but a tombstone without a species draws
+        # no breadcrumb and can offer no siblings, and a reviewer can move a row
+        # between the two verdicts.
+        common = dict(today=today, since=today,
+                      title=p.get("title") or slug,
+                      species=p.get("species") or None,
+                      variety=p.get("variety") or None)
+
+        if verdict == "rename":
+            target = p.get("target")
+            if not target or slug == target:
+                skipped.append(f"{slug}: no usable target")
+                continue
+            if target not in written_slugs:
+                skipped.append(f"{slug}: target {target} is not a page tonight")
+                continue
+            ledger.seed(slug, state=REDIRECT, redirect_to=target, **common)
+            redirected += 1
+            continue
+
+        # A tombstone is the page that has to say something true about itself,
+        # so it gets the day history the stub had no use for. Without dates,
+        # both factual sentences collapse and it renders as a generic "no
+        # longer listed".
+        ledger.seed(slug, state=TOMBSTONE, **common,
+                    **{k: v for k, v in (p.get("history") or {}).items()})
+        tombstoned += 1
+    return redirected, tombstoned, skipped
 
 
 def run_lifecycle(ledger: PageLedger, args, data_dir: Path, variety_dir: Path,
@@ -618,12 +642,15 @@ def run_lifecycle(ledger: PageLedger, args, data_dir: Path, variety_dir: Path,
         print(f"Seeded {seed_from_availability(ledger, data_dir, today, on_disk)} "
               f"ledger entries from availability history")
 
-    if args.seed_redirects:
-        # Before decide_night, so a slug adopted here is already a redirect when
-        # the guards run and is skipped rather than classified as an absence.
-        applied, skipped = seed_redirects(
-            ledger, args.seed_redirects, today, written_slugs)
-        print(f"Seeded {applied} approved redirect(s) from {args.seed_redirects}")
+    if args.seed_reviewed:
+        # Before decide_night, so a slug adopted here already has a settled
+        # state when the guards run and is skipped rather than read as an
+        # absence.
+        redirected, tombstoned, skipped = seed_reviewed(
+            ledger, args.seed_reviewed, today, written_slugs)
+        if redirected or tombstoned or skipped:
+            print(f"Seeded {redirected} approved redirect(s) and {tombstoned} "
+                  f"tombstone(s) from {args.seed_reviewed}")
         for reason in skipped[:10]:
             print(f"  Skipped {reason}")
         if len(skipped) > 10:
@@ -713,11 +740,11 @@ def parse_args(argv=None):
     parser.add_argument("--seed", action="store_true",
                         help="backdate ledger entries from availability.json. "
                              "For bootstrapping an empty ledger")
-    parser.add_argument("--seed-redirects", type=Path, default=None,
-                        help="adopt approved renames from a "
-                             "recover_merged_slugs.py proposal file, so dead "
-                             "URLs emit redirect stubs. Only entries marked "
-                             "approved:true are applied")
+    parser.add_argument("--seed-reviewed", type=Path, default=None,
+                        help="adopt the approved rows of a "
+                             "recover_merged_slugs.py proposal file: renames "
+                             "become redirect stubs, retired slugs become "
+                             "tombstones. Only rows marked approved:true apply")
     parser.add_argument("--health-dir", type=Path, default=None,
                         help="scraper-health records, for the untrusted-nursery "
                              "gate (defaults to the DALE_DATA_DIR location)")

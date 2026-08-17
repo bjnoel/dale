@@ -51,6 +51,7 @@ import sys
 import tempfile
 from collections import Counter
 from pathlib import Path
+from typing import Iterable
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -209,6 +210,59 @@ def classify(titles: list[str], new_slug_for) -> dict:
             "unmapped_titles": unmapped}
 
 
+def availability_by_title(data_dir: Path) -> dict[str, dict]:
+    """Per-title day history from the availability files.
+
+    Keyed by the scraped title, deliberately, because the slug is the thing in
+    dispute: these titles produced one slug under the old parser and a different
+    one under the new, so history recorded against either would be history
+    recorded against an opinion. The title is what both agree on.
+
+    Used to give a recovered page its dates. A tombstone that cannot say when it
+    was last in stock, or over what window it was tracked, drops both of its
+    factual sentences and becomes a generic "no longer listed".
+    """
+    history: dict[str, dict] = {}
+    for nursery_dir in sorted(p for p in Path(data_dir).iterdir() if p.is_dir()):
+        avail = nursery_dir / "availability.json"
+        if not avail.exists():
+            continue
+        try:
+            data = json.loads(avail.read_text())
+        except (OSError, json.JSONDecodeError):
+            continue
+        for record in (data.get("products") or {}).values():
+            title = (record.get("title") or "").strip()
+            if not title:
+                continue
+            agg = history.setdefault(title, {"days": set(), "in_stock": set()})
+            for day, entry in (record.get("days") or {}).items():
+                agg["days"].add(day)
+                if entry.get("a"):
+                    agg["in_stock"].add(day)
+    return history
+
+
+def dates_for(titles: Iterable[str], history: dict[str, dict]) -> dict:
+    """Union the day history of every title that fed one dead slug."""
+    days: set[str] = set()
+    in_stock: set[str] = set()
+    for title in titles:
+        agg = history.get(title)
+        if agg:
+            days |= agg["days"]
+            in_stock |= agg["in_stock"]
+    if not days:
+        return {}
+    return {
+        "first_seen": min(days),
+        "last_seen": max(days),
+        "live_days": len(days),
+        "in_stock_days": len(in_stock),
+        "last_in_stock": max(in_stock) if in_stock else None,
+    }
+
+
 def watch_counts(db_path: Path) -> dict[str, int]:
     """Watchers per slug, so a dead URL someone subscribed to is never silent.
 
@@ -229,7 +283,8 @@ def watch_counts(db_path: Path) -> dict[str, int]:
 
 
 def build_proposals(old_groups: dict, new_groups: dict, live_slugs: set[str],
-                    new_slug_for, watchers: dict[str, int]) -> list[dict]:
+                    new_slug_for, watchers: dict[str, int],
+                    history: dict[str, dict] | None = None) -> list[dict]:
     """One proposal per slug the parser change stopped generating.
 
     `live_slugs` is today's canonical index: a slug still in it is still a page,
@@ -264,6 +319,10 @@ def build_proposals(old_groups: dict, new_groups: dict, live_slugs: set[str],
             "sample_titles": sorted(set(titles))[:5],
             "watchers": watchers.get(slug, 0),
             "target_title": (new_groups.get(target) or {}).get("title") if target else None,
+            # Only a tombstone displays these, but a retired verdict can be
+            # changed to a rename in review and back, so every proposal carries
+            # them rather than only the ones that look like they need them.
+            "history": dates_for(titles, history or {}),
         })
     return proposals
 
@@ -359,7 +418,8 @@ def main() -> int:
         proposals = build_proposals(
             old_groups, new_groups, live_slugs,
             lambda t: slug_for_title(new_parser, t),
-            watch_counts(args.watches))
+            watch_counts(args.watches),
+            availability_by_title(args.data_dir))
 
     summary = summarise(proposals)
     print(f"\n{summary['total']} slug(s) stopped being generated:")
