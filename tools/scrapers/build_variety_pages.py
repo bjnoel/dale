@@ -546,6 +546,51 @@ def seed_from_availability(ledger: PageLedger, data_dir: Path, today: str,
     return seeded
 
 
+def seed_redirects(ledger: PageLedger, path: Path, today: str,
+                   written_slugs: set[str]) -> tuple[int, list[str]]:
+    """Adopt an approved old-slug -> new-slug mapping as redirect entries.
+
+    Task R1's apply step. recover_merged_slugs.py proposes, a human approves,
+    and this turns the survivors into ledger entries so the stubs render through
+    the same path a nightly rename uses. One renderer, one code path.
+
+    Every condition the proposal file asserts is re-tested here against tonight's
+    build, and skipped rather than trusted. A proposal is a snapshot of one
+    evening; by the time it is applied the parser may have started generating the
+    old slug again, or the target may have stopped being a page, and either would
+    turn a recovery into an outage at a URL that was working.
+    """
+    try:
+        proposals = json.loads(Path(path).read_text()).get("proposals") or []
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"  WARNING: unreadable redirect proposals {path}: {e}")
+        return 0, []
+
+    applied, skipped = 0, []
+    for p in proposals:
+        slug, target = p.get("slug"), p.get("target")
+        # `approved` absent means nobody has looked at it. Only an explicit True
+        # applies, so a freshly generated proposal file is inert until reviewed.
+        if p.get("verdict") != "rename" or p.get("approved") is not True:
+            continue
+        if not slug or not target or slug == target:
+            skipped.append(f"{slug}: no usable target")
+            continue
+        if slug in written_slugs:
+            skipped.append(f"{slug}: generated tonight, still a live page")
+            continue
+        if target not in written_slugs:
+            skipped.append(f"{slug}: target {target} is not a page tonight")
+            continue
+        if (ledger.pages.get(slug) or {}).get("state") == LIVE:
+            skipped.append(f"{slug}: live in the ledger")
+            continue
+        ledger.seed(slug, today=today, state=REDIRECT, redirect_to=target,
+                    since=today, title=p.get("title") or slug)
+        applied += 1
+    return applied, skipped
+
+
 def run_lifecycle(ledger: PageLedger, args, data_dir: Path, variety_dir: Path,
                   today: str, written_slugs: set[str],
                   url_to_slug: dict[str, str], valid_species_slugs: set[str],
@@ -565,6 +610,17 @@ def run_lifecycle(ledger: PageLedger, args, data_dir: Path, variety_dir: Path,
         on_disk = {p.stem for p in variety_dir.glob("*.html") if p.stem != "index"}
         print(f"Seeded {seed_from_availability(ledger, data_dir, today, on_disk)} "
               f"ledger entries from availability history")
+
+    if args.seed_redirects:
+        # Before decide_night, so a slug adopted here is already a redirect when
+        # the guards run and is skipped rather than classified as an absence.
+        applied, skipped = seed_redirects(
+            ledger, args.seed_redirects, today, written_slugs)
+        print(f"Seeded {applied} approved redirect(s) from {args.seed_redirects}")
+        for reason in skipped[:10]:
+            print(f"  Skipped {reason}")
+        if len(skipped) > 10:
+            print(f"  ... and {len(skipped) - 10} more skipped")
 
     untrusted = untrusted_nurseries(today, args.health_dir)
     if untrusted:
@@ -650,6 +706,11 @@ def parse_args(argv=None):
     parser.add_argument("--seed", action="store_true",
                         help="backdate ledger entries from availability.json. "
                              "For bootstrapping an empty ledger")
+    parser.add_argument("--seed-redirects", type=Path, default=None,
+                        help="adopt approved renames from a "
+                             "recover_merged_slugs.py proposal file, so dead "
+                             "URLs emit redirect stubs. Only entries marked "
+                             "approved:true are applied")
     parser.add_argument("--health-dir", type=Path, default=None,
                         help="scraper-health records, for the untrusted-nursery "
                              "gate (defaults to the DALE_DATA_DIR location)")

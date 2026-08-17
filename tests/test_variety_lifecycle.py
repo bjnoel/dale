@@ -431,5 +431,118 @@ class TestSeedFromAvailability(unittest.TestCase):
         self.assertEqual(set(pages), {kept})
 
 
+class TestSeedRedirects(unittest.TestCase):
+    """Task R1's apply step, and the reason it re-checks everything.
+
+    The proposal file is a snapshot of one evening. Between proposing and
+    applying, the parser can start generating the old slug again and the target
+    can stop being a page, and both turn a URL recovery into an outage at a URL
+    that was working. So the conditions are re-tested against tonight's build
+    rather than read back out of the file that asserted them.
+    """
+
+    def _apply(self, proposals, written_slugs, pages=None):
+        import build_variety_pages as bvp
+        from stocklib.page_ledger import PageLedger
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "proposals.json"
+            path.write_text(json.dumps({"proposals": proposals}))
+            ledger = PageLedger.load(Path(tmp) / "variety.json", FAMILY_VARIETY,
+                                     log=lambda *a, **k: None)
+            ledger.pages.update(pages or {})
+            applied, skipped = bvp.seed_redirects(
+                ledger, path, TODAY, set(written_slugs))
+        return applied, skipped, ledger.pages
+
+    @staticmethod
+    def _rename(slug="avocado-hass-type-a", target="avocado-hass", **over):
+        proposal = {"slug": slug, "target": target, "verdict": "rename",
+                    "title": "Avocado - Hass Type A", "approved": True}
+        proposal.update(over)
+        return proposal
+
+    def test_an_approved_rename_becomes_a_redirect_entry(self):
+        applied, _, pages = self._apply([self._rename()], {"avocado-hass"})
+
+        self.assertEqual(applied, 1)
+        entry = pages["avocado-hass-type-a"]
+        self.assertEqual(entry["state"], REDIRECT)
+        self.assertEqual(entry["redirect_to"], "avocado-hass")
+        self.assertEqual(entry["title"], "Avocado - Hass Type A",
+                         "the stub says what the OLD url was called")
+
+    def test_an_unreviewed_proposal_is_inert(self):
+        """A freshly generated file has no `approved` key at all.
+
+        Defaulting it to applied would mean generating proposals was itself the
+        act of publishing them, and the whole point is that a person decides.
+        """
+        proposal = self._rename()
+        del proposal["approved"]
+        applied, _, pages = self._apply([proposal], {"avocado-hass"})
+        self.assertEqual(applied, 0)
+        self.assertEqual(pages, {})
+
+    def test_an_explicitly_rejected_proposal_is_not_applied(self):
+        applied, _, _ = self._apply(
+            [self._rename(approved=False)], {"avocado-hass"})
+        self.assertEqual(applied, 0)
+
+    def test_only_renames_apply_even_when_approved(self):
+        """A split has no single successor and a retired slug has none at all.
+
+        Approving the row cannot conjure one, so neither may become a redirect
+        however the file is edited.
+        """
+        for verdict in ("split", "retired"):
+            with self.subTest(verdict=verdict):
+                applied, _, _ = self._apply(
+                    [self._rename(verdict=verdict)], {"avocado-hass"})
+                self.assertEqual(applied, 0)
+
+    def test_a_slug_generated_tonight_is_never_redirected(self):
+        """The parser started producing it again while the file sat unapplied.
+
+        Redirecting it would take a live page with content and replace it with a
+        stub pointing somewhere else.
+        """
+        applied, skipped, pages = self._apply(
+            [self._rename()], {"avocado-hass", "avocado-hass-type-a"})
+        self.assertEqual(applied, 0)
+        self.assertEqual(pages, {})
+        self.assertIn("still a live page", skipped[0])
+
+    def test_a_target_that_is_not_a_page_tonight_is_skipped(self):
+        """Otherwise the stub swaps a 404 for a 404 and spends the authority."""
+        applied, skipped, _ = self._apply([self._rename()], {"something-else"})
+        self.assertEqual(applied, 0)
+        self.assertIn("is not a page tonight", skipped[0])
+
+    def test_a_slug_live_in_the_ledger_is_skipped(self):
+        applied, skipped, _ = self._apply(
+            [self._rename()], {"avocado-hass"},
+            pages={"avocado-hass-type-a": {"state": LIVE}})
+        self.assertEqual(applied, 0)
+        self.assertIn("live in the ledger", skipped[0])
+
+    def test_a_slug_pointing_at_itself_is_skipped(self):
+        applied, skipped, _ = self._apply(
+            [self._rename(target="avocado-hass-type-a")], {"avocado-hass-type-a"})
+        self.assertEqual(applied, 0)
+
+    def test_an_unreadable_proposal_file_is_a_warning_not_a_crash(self):
+        """The nightly must not fail closed on a bad hand-edit of this file."""
+        import build_variety_pages as bvp
+        from stocklib.page_ledger import PageLedger
+
+        with tempfile.TemporaryDirectory() as tmp:
+            ledger = PageLedger.load(Path(tmp) / "variety.json", FAMILY_VARIETY,
+                                     log=lambda *a, **k: None)
+            applied, skipped = bvp.seed_redirects(
+                ledger, Path(tmp) / "nope.json", TODAY, set())
+        self.assertEqual((applied, skipped), (0, []))
+
+
 if __name__ == "__main__":
     unittest.main()
