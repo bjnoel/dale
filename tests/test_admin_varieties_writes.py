@@ -389,26 +389,36 @@ class NearMissTests(unittest.TestCase):
         self.assertEqual([(p["a"], p["b"]) for p in left],
                          [("mango-bambaroo", "mango-bamberoo")])
 
-    def test_the_backwards_direction_says_so_in_the_dropdown(self):
+    def test_the_backwards_direction_is_flagged(self):
         """Both directions carried their nursery counts and that was not enough:
         `apple-2way-gala-red-delicious (3) -> apple-2-way-gala-red-delicious (1)`
         got picked, retiring a page with three nurseries and 150 live days for
-        one with one nursery and 49. Two numbers side by side are a comparison
-        the reader has to make; the dropdown now states the conclusion."""
+        one with one nursery and 49."""
         facts = {"apple-2way-gala-red-delicious": {"nurseries": 3},
                  "apple-2-way-gala-red-delicious": {"nurseries": 1}}
         backwards = admin_view._fold_option("apple-2way-gala-red-delicious",
                                             "apple-2-way-gala-red-delicious", facts)
         forwards = admin_view._fold_option("apple-2-way-gala-red-delicious",
                                            "apple-2way-gala-red-delicious", facts)
-        self.assertIn("retires the bigger page", backwards)
-        self.assertNotIn("retires the bigger page", forwards)
+        self.assertIn('data-warn="1"', backwards)
+        self.assertNotIn("data-warn", forwards)
+
+    def test_the_warning_is_not_text_inside_the_option(self):
+        """A <select> is sized by its widest option. Spelling the warning out
+        inline widened every dropdown by 25 characters, which squeezed the pair
+        column until slugs wrapped one hyphen at a time and pushed the last
+        column off the screen."""
+        facts = {"a-long-slug-here": {"nurseries": 3}, "b": {"nurseries": 1}}
+        opt = admin_view._fold_option("a-long-slug-here", "b", facts)
+        label = opt.split(">", 1)[1]
+        self.assertNotIn("retires", label)
+        self.assertIn("a-long-slug-here (3)", label)
 
     def test_an_even_fold_is_not_flagged(self):
         """One nursery each way is a real choice, not a mistake, and warning on
         it would train the reader past the warning that matters."""
         facts = {"a": {"nurseries": 1}, "b": {"nurseries": 1}}
-        self.assertNotIn("retires", admin_view._fold_option("a", "b", facts))
+        self.assertNotIn("data-warn", admin_view._fold_option("a", "b", facts))
 
     def test_pairs_from_different_species_are_never_compared(self):
         """The bucketing is an optimisation and must not change the answer: an

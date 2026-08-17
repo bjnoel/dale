@@ -1993,12 +1993,19 @@ def _fold_option(slug: str, target: str, facts: dict) -> str:
     It says "retires" rather than "loses" because nothing is lost: every product
     moves onto the target. What goes is the URL, and the established URL is the
     one worth keeping.
+
+    The warning is a `data-warn` flag, NOT text in the option. A `<select>` is
+    sized by its widest option, so spelling the warning out inline widened every
+    dropdown by 25 characters, which squeezed the pair column until the slugs
+    wrapped one hyphen at a time and pushed the last column off the screen. The
+    text belongs beside the select, where JS shows it on the direction it
+    applies to, and where it is legible without opening the dropdown at all.
     """
     n = (facts.get(slug) or {}).get("nurseries", 0)
     m = (facts.get(target) or {}).get("nurseries", 0)
-    warn = " · retires the bigger page" if n > m else ""
-    return (f'<option value="{_esc(slug)}|{_esc(target)}">'
-            f'{_esc(slug)} ({n}) &rarr; {_esc(target)} ({m}){warn}</option>')
+    return (f'<option value="{_esc(slug)}|{_esc(target)}"'
+            f'{" data-warn=\"1\"" if n > m else ""}>'
+            f'{_esc(slug)} ({n}) &rarr; {_esc(target)} ({m})</option>')
 
 
 def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str:
@@ -2042,14 +2049,17 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "") -> str
         folded = _folded_cell(pending, a, b)
         verbs = (f'<td colspan="2">{folded}</td>' if folded else
                  f'<td><select class="nm"><option value="">leave</option>{opts}'
-                 f'</select></td>'
+                 f'</select>'
+                 f'<span class="foldwarn">retires the bigger page</span></td>'
                  f'<td><label class="pick"><input type="checkbox" class="nmd"> '
                  f'different plants</label></td>')
+        # One slug per line. Run together in a single cell they wrapped mid-slug
+        # and the pair read as five fragments and the word "vs".
         rows.append(
             f'<tr data-a="{_esc(a)}" data-b="{_esc(b)}"'
             f'{" class=\"done\"" if folded else ""}>'
-            f'<td>{_variety_link(a, a)} <span class="muted">vs</span> '
-            f'{_variety_link(b, b)}</td>'
+            f'<td class="pair"><div>{_variety_link(a, a)}</div>'
+            f'<div><span class="muted">vs</span> {_variety_link(b, b)}</div></td>'
             f'<td><span class="fl">{_esc(_NEAR_MISS_LABEL.get(p["tier"], p["tier"]))}'
             f'</span></td>{verbs}</tr>')
     if not rows:
@@ -2188,9 +2198,23 @@ REVIEW_CSS = """
   input.rt, input.al { font:inherit; font-size:0.8rem; padding:4px 6px;
     border:1px solid #d1d5db; border-radius:6px; width:100%; min-width:160px; }
   input.rt.dirty, input.al.dirty { border-color:#065f46; background:#ecfdf5; }
-  select.nm { font:inherit; font-size:0.78rem; padding:4px 6px; max-width:100%;
+  /* An explicit width, not 100% and not auto. A <select> is sized by its widest
+     option, so auto let one long slug pair set the width of the whole table;
+     100% collapsed it to a bare chevron, because a percentage width inside an
+     auto-layout table contributes no preferred width to its column. A fixed
+     width gives the column something to be, and the closed control clips while
+     the open dropdown still shows every option in full. */
+  select.nm { font:inherit; font-size:0.78rem; padding:4px 6px;
+    width:300px; max-width:100%;
     border:1px solid #d1d5db; border-radius:6px; background:#fff; }
   select.nm.dirty { border-color:#065f46; background:#ecfdf5; }
+  /* The pair column collapses to nothing if the cells beside it want width,
+     and a crushed cell breaks a slug at every hyphen. A floor on it keeps the
+     slugs readable; .tscroll already handles the overflow that causes. */
+  td.pair { min-width:22ch; }
+  td.pair div { margin:1px 0; }
+  span.foldwarn { display:none; font-size:0.72rem; color:#b91c1c; margin-top:3px; }
+  span.foldwarn.on { display:block; }
   tr.done { background:#f0fdf4; }
   tr.done td { color:#4b5563; }
   span.done { font-size:0.8rem; color:#065f46; }
@@ -2736,11 +2760,18 @@ REVIEW_JS = """
       if (!sel || !dis) return;
       // The two answers contradict each other. Letting both be set and picking
       // one at submit time would apply an answer nobody gave.
+      var warn = tr.querySelector('.foldwarn');
+      function syncWarn() {
+        var opt = sel.options[sel.selectedIndex];
+        if (warn) warn.classList.toggle('on', !!(opt && opt.dataset.warn));
+      }
       sel.addEventListener('change', function () {
         if (sel.value) dis.checked = false;
         sel.classList.toggle('dirty', !!sel.value);
+        syncWarn();
         refreshN();
       });
+      syncWarn();
       dis.addEventListener('change', function () {
         if (dis.checked) { sel.value = ''; sel.classList.remove('dirty'); }
         refreshN();
@@ -2756,11 +2787,12 @@ REVIEW_JS = """
           });
           // Least safe: folding a page carried by several nurseries into one
           // carried by fewer. Legal, survives every guard, and usually backwards.
+          // The same flag the dropdown warning reads, rather than parsing the
+          // counts back out of the label a second time.
           var risky = chosenFolds().filter(function (tr) {
             var t = tr.querySelector('.nm');
-            var txt = t.options[t.selectedIndex].textContent;
-            var n = txt.match(/\\((\\d+)\\)[^(]*\\((\\d+)\\)/);
-            return n && Number(n[1]) > Number(n[2]);
+            var opt = t.options[t.selectedIndex];
+            return !!(opt && opt.dataset.warn);
           }).map(function (tr) {
             return tr.querySelector('.nm').value.replace('|', ' \\u2192 ');
           });
