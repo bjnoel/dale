@@ -30,23 +30,26 @@
     "Entries the parser already handles were taken back out: a list that names",
     "slugs which cannot occur reads like curation is happening when it is not."
   ],
-
+  "alias": {
+    "almond-self-pollinating-paper-shell": "almond-self-pollinating-papershell",
+    "apple-2-way-gala-red-delicious": "apple-2way-gala-red-delicious",
+    "apple-2-way-gala-red-fuji": "apple-2way-gala-red-fuji",
+    "mango-bamberoo": "mango-bambaroo"
+  },
   "deny": [
     "apple-mint",
     "grapefruit-mint",
-    "orange-turmeric",
-    "peach-palm",
     "jackfruit-daleys-special-deals",
-    "miracle-fruit-tropical",
-    "sapodilla-tropical",
-    "wampee-tropical",
-    "wax-jambu-tropical",
-    "kiwifruit-male",
+    "jujube-thornless",
     "kiwifruit-female",
     "kiwifruit-fruit-male",
+    "kiwifruit-male",
     "lemon-thornless",
-    "jujube-thornless"
-  ],
-
-  "alias": {}
+    "miracle-fruit-tropical",
+    "orange-turmeric",
+    "peach-palm",
+    "sapodilla-tropical",
+    "wampee-tropical",
+    "wax-jambu-tropical"
+  ]
 }
