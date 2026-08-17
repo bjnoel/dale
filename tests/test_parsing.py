@@ -788,3 +788,73 @@ class NeverACultivarTails(unittest.TestCase):
     def test_brackets_with_real_content_are_untouched(self):
         self.assertEqual(cp.product_variety_slug("Apple - Pink Lady"), "apple-pink-lady")
         self.assertEqual(cp.product_variety_slug("Avocado 'Hass'"), "avocado-hass")
+
+
+class SquareBracketCategoryTags(unittest.TestCase):
+    """Nurseries tag listings with a category in square brackets.
+
+    _strip_noise_parens only ever matched ROUND parens, so "[pome fruit]" was
+    never recognised as a group. "fruit" then went as a loose noise word and the
+    opening bracket survived every stage, because the final strip() only reaches
+    the ends of the string. Eleven live pages were serving a heading like
+    "Buy Apple - Pink Lady [pome Trees in Australia", each one shadowing the
+    clean page that already existed.
+    """
+
+    def test_the_category_tag_is_dropped_and_the_slug_is_clean(self):
+        for title, slug in [
+            ("Apple pink Lady [pome fruit]", "apple-pink-lady"),
+            ("Apple red delicious [pome fruit]", "apple-red-delicious"),
+            ("Peach Orion [stone fruit]", "peach-orion"),
+            ("Quince Champion [pome fruit]", "quince-champion"),
+            ("Hazelnut Lewis [nut]", "hazelnut-lewis"),
+        ]:
+            with self.subTest(title=title):
+                self.assertEqual(cp.product_variety_slug(title), slug)
+
+    def test_a_space_inside_the_bracket_does_not_change_the_answer(self):
+        """The difference that made this hard to see.
+
+        "[stone fruit]" parsed correctly while "[stone fruit ]" did not. The
+        relaxed pass splits on whitespace, so the lone "]" became its own token
+        and was discarded, leaving an unmatched "[" that no group rule could
+        match. The category tag then reached the slug as a bare "stone".
+        """
+        self.assertEqual(cp.product_variety_slug("Apricot Tilton [stone fruit]"),
+                         "apricot-tilton")
+        self.assertEqual(cp.product_variety_slug("Apricot Tilton [stone fruit ]"),
+                         "apricot-tilton")
+        self.assertEqual(cp.product_variety_slug("Quince Smyrna [pome fruit ]"),
+                         "quince-smyrna")
+
+    def test_no_bracket_ever_survives_into_a_title(self):
+        """Including an unclosed one, which no group rule can catch."""
+        for title in ["Apple Foo [pome fruit", "Apple Foo pome fruit]",
+                      "Apple Foo [pome fruit]", "Apple Foo (pome fruit)"]:
+            with self.subTest(title=title):
+                parsed = cp.parse_cultivar(title)
+                self.assertIsNotNone(parsed)
+                self.assertNotRegex("".join(parsed), r"[\[\](){}]")
+
+    def test_a_bracket_carrying_a_real_qualifier_is_unwrapped_not_deleted(self):
+        """Same rule round parens have always had: only pure noise is dropped."""
+        self.assertEqual(cp.product_variety_slug("Avocado - Shepard [Type B]"),
+                         cp.product_variety_slug("Avocado - Shepard (Type B)"))
+
+    def test_the_round_bracket_behaviour_is_unchanged(self):
+        self.assertEqual(cp.product_variety_slug("Dwarf Apricot Tilton (stone fruit) (Bare rooted)"),
+                         "apricot-tilton")
+        self.assertEqual(cp.product_variety_slug("Apple - Gravenstein [Bear rooted]"),
+                         "apple-gravenstein")
+
+
+class TightenBrackets(unittest.TestCase):
+    def test_it_closes_up_padding_inside_a_bracket(self):
+        self.assertEqual(cp._tighten_brackets("Apricot Tilton [stone fruit ]"),
+                         "Apricot Tilton [stone fruit]")
+        self.assertEqual(cp._tighten_brackets("Quince [ pome fruit ]"),
+                         "Quince [pome fruit]")
+
+    def test_it_leaves_spacing_outside_brackets_alone(self):
+        self.assertEqual(cp._tighten_brackets("Apple  Pink Lady"), "Apple  Pink Lady")
+        self.assertEqual(cp._tighten_brackets("Apple (Anna) Dwarf"), "Apple (Anna) Dwarf")

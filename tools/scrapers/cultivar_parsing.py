@@ -415,8 +415,16 @@ _NOISE_PAREN_WORDS = frozenset({
     'advanced', 'size', 'orchard', 'tubestock', 'tube', 'stock', 'pot', 'pots',
     'restricted', 'to', 'se', 'south', 'east',
     'small', 'medium', 'large', 'low', 'chill',
-    'stone', 'fruit',                       # "(stone fruit)" category tag
+    # Category tags a nursery appends to the listing: "(stone fruit)",
+    # "[pome fruit]", "[nut]". Only ever consulted inside a bracket, so a
+    # cultivar genuinely called Nut or Stone is unaffected.
+    'stone', 'fruit', 'pome', 'nut', 'nuts',
 })
+
+# Matched bracket groups, one alternative per pair so "(foo]" cannot match as a
+# group. Square brackets are as common as round ones in these titles and carry
+# exactly the same content.
+_BRACKET_GROUP_RE = re.compile(r'\(([^)]*)\)|\[([^\]]*)\]|\{([^}]*)\}')
 
 # --- Displayable type labels (DEC-177) ------------------------------------
 # Form / rootstock / propagation tokens a shopper cares about when telling two
@@ -554,16 +562,23 @@ _NEVER_A_CULTIVAR = frozenset({
 
 
 def _strip_noise_parens(s: str) -> str:
-    """Delete parenthetical groups whose inner text is pure listing noise
-    (e.g. "(grafted)", "(QLD ONLY)"); unwrap groups carrying a real qualifier
-    (e.g. "(Imperial)" -> "Imperial")."""
+    """Delete bracketed groups whose inner text is pure listing noise
+    (e.g. "(grafted)", "[pome fruit]"); unwrap groups carrying a real qualifier
+    (e.g. "(Imperial)" -> "Imperial").
+
+    Square brackets get the same treatment as round ones. They used not to, and
+    a title like "Apple pink Lady [pome fruit]" cleaned to "Pink Lady [pome":
+    the group was never recognised, "fruit" was stripped as a loose word, and
+    the trailing bracket went with the final strip() leaving the opening one
+    behind. 10 live pages carried a heading like that.
+    """
     def repl(m: "re.Match[str]") -> str:
-        inner = m.group(1)
+        inner = next(g for g in m.groups() if g is not None)
         words = [w.lower().strip('.,') for w in re.findall(r'[A-Za-z]+', inner)]
         if words and all(w in _NOISE_PAREN_WORDS for w in words):
             return ' '
         return ' ' + inner + ' '
-    return re.sub(r'\(([^)]*)\)', repl, s)
+    return _BRACKET_GROUP_RE.sub(repl, s)
 
 
 def _clean_part(text: str, *, strip_sizeform: bool) -> str:
@@ -573,7 +588,11 @@ def _clean_part(text: str, *, strip_sizeform: bool) -> str:
     strict parser only splits on the FIRST dash)."""
     s = _strip_noise_parens(text)
     s = re.sub(r'[®™*]', ' ', s)            # trademark marks + **PICKUP** stars
-    s = s.replace('(', ' ').replace(')', ' ')
+    # Any bracket still standing here is unmatched, so no group rule could have
+    # caught it. Neutralise the character itself rather than trusting the final
+    # strip(), which only reaches the ends of the string: that is how "[pome"
+    # survived into a live <h1>.
+    s = re.sub(r'[()\[\]{}]', ' ', s)
     s = re.sub(r'[:;]', ' ', s)                       # "Blue Java: RESTRICTED..."
     s = s.replace('_', ' ')                           # "Navel_17cm" -> "Navel 17cm"
     s = re.sub(r'\s*[–—]\s*', ' ', s)       # embedded en/em-dash -> space
@@ -625,6 +644,22 @@ def _clean_cultivar_parts(species: str, variety: str) -> tuple[str, str] | None:
     return (sp, var)
 
 
+_LOOSE_BRACKET_RE = re.compile(r'([(\[{])\s+|\s+([)\]}])')
+
+
+def _tighten_brackets(title: str) -> str:
+    """Close up whitespace just inside a bracket, before anything splits on space.
+
+    Purely cosmetic to the reader and load-bearing for the parser: the relaxed
+    pass tokenises on whitespace, so "Apricot Tilton [stone fruit ]" loses its
+    closing bracket as a lone token and the group rule downstream then has
+    nothing to match. The category tag survives as a bare "stone" and reaches
+    the slug. Its twin without the inner space parsed correctly, which is what
+    made the difference so hard to see.
+    """
+    return _LOOSE_BRACKET_RE.sub(lambda m: m.group(1) or m.group(2), title)
+
+
 def parse_cultivar(title: str) -> tuple[str, str] | None:
     """Return (species, variety) or None if the title doesn't express a cultivar.
 
@@ -638,6 +673,7 @@ def parse_cultivar(title: str) -> tuple[str, str] | None:
     the pre-dash segment, e.g. "Dwarf Apple 'Anna' - Medium") also falls through
     to the relaxed pass instead of failing outright.
     """
+    title = _tighten_brackets(title)
     r = _strict_parse(title)
     cleaned = _clean_cultivar_parts(*r) if r else None
     if cleaned is None:
