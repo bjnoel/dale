@@ -301,11 +301,25 @@ def build_tombstone_page(slug: str, entry: dict, valid_species_slugs: set[str],
 
     blurb_html = render_blurb(slug, species_slug) if has_description(slug, species_slug) else ""
 
-    meta_desc = (
-        f"{title} is not currently listed by any Australian nursery we track. "
-        f"See its last known price and availability, and get an alert when it "
-        f"comes back into stock."
-    )
+    # A page retired by curation is not coming back: the slug was denied or left
+    # the taxonomy, so it can never be generated again and no alert for it can
+    # ever fire. Offering the watch form there is a promise the pipeline cannot
+    # keep, which is the DEC-294 failure shape the tombstone exists to avoid,
+    # arrived at from the other direction. Send the reader to the species
+    # instead, where the plant actually is.
+    curation_retired = bool(entry.get("retired_reason"))
+
+    if curation_retired:
+        meta_desc = (
+            f"{title} is no longer tracked as a separate variety on "
+            f"treestock.com.au. See the {species} varieties we do track."
+        )
+    else:
+        meta_desc = (
+            f"{title} is not currently listed by any Australian nursery we track. "
+            f"See its last known price and availability, and get an alert when it "
+            f"comes back into stock."
+        )
     head = render_head(
         title=f"Buy {title} Trees in Australia, Prices & Availability | treestock.com.au",
         description=meta_desc,
@@ -340,6 +354,13 @@ def build_tombstone_page(slug: str, entry: dict, valid_species_slugs: set[str],
         tombstone_html=render_tombstone(
             f"{variety} {species}".strip() or title, entry, cta_html=cta_html),
         product_view=product_view,
+        watch_enabled=not curation_retired,
+        no_watch_html=(
+            f'''<div id="watchSection" class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
+    <h3 class="font-semibold text-gray-900 mb-1">Looking for {species}?</h3>
+    <p class="text-sm text-gray-600">We track {species} by cultivar. '''
+            f'''<a href="{species_href}" class="underline text-green-700">See every {species} variety we list &rarr;</a></p>
+  </div>''' if curation_retired and species_href else ""),
         watch_heading=f"Tell me when {variety} {species} is back",
         watch_body=(
             f"No nursery we track is listing {variety} {species} at the moment. "

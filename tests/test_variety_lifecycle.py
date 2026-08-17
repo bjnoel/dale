@@ -216,6 +216,59 @@ class TombstoneRunTest(unittest.TestCase):
         self.assertNotIn("—", self.html)
 
 
+class CurationTombstoneRunTest(unittest.TestCase):
+    """A page retired by curation must not offer an alert it can never send.
+
+    The slug was denied or left the taxonomy, so it can never be generated
+    again and send_variety_alerts can never match it. A watch form there takes
+    an email and promises a notification that no code path can produce, which
+    is the DEC-294 failure the tombstone exists to prevent, reached from the
+    other side.
+    """
+
+    def setUp(self):
+        entry = gone_entry(retired_reason="not a distinct variety")
+        self.run = BuilderRun(pages={"pecan-mahan-b": entry})
+        # The species link only renders when the species page really exists,
+        # which the builder checks. Without this the block degrades to nothing
+        # and the test would pass by not looking.
+        (self.run.out / "species").mkdir(parents=True, exist_ok=True)
+        (self.run.out / "species" / "pecan.html").write_text("<html></html>")
+        self.run.run()
+        self.addCleanup(self.run.close)
+        self.html = self.run.page("pecan-mahan-b").read_text()
+
+    def test_it_is_still_a_tombstone_and_still_a_page(self):
+        self.assertEqual(
+            self.run.ledger()["pages"]["pecan-mahan-b"]["state"], TOMBSTONE)
+        self.assertIn('content="tombstone"', self.html)
+
+    def test_it_carries_no_watch_form(self):
+        self.assertNotIn('id="watchForm"', self.html)
+        self.assertNotIn("/api/watch-variety", self.html)
+
+    def test_it_does_not_claim_the_plant_is_unavailable(self):
+        self.assertIn("We no longer track", self.html)
+        self.assertNotIn("No nursery we track is currently listing", self.html)
+        self.assertNotIn("is back in stock", self.html)
+
+    def test_it_sends_the_reader_to_the_species_instead(self):
+        self.assertIn("Looking for Pecan?", self.html)
+        self.assertIn("/species/pecan.html", self.html)
+
+    def test_the_slug_still_reaches_the_canonical_title_map(self):
+        """No form means no submit to 404, but the map is also what the alert
+        sender and the admin view read, so dropping it would hide the page."""
+        self.assertIn("pecan-mahan-b", self.run.index())
+
+    def test_it_stops_promising_the_listing_will_come_back(self):
+        self.assertNotIn("will appear here again as soon as one lists it", self.html)
+        self.assertIn("no longer track", self.html)
+
+    def test_no_em_dashes(self):
+        self.assertNotIn("\u2014", self.html)
+
+
 class ResurrectionTest(unittest.TestCase):
     def test_a_tombstoned_slug_that_comes_back_is_overwritten_by_the_real_page(self):
         run = BuilderRun(pages={

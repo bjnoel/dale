@@ -54,6 +54,7 @@
   <!-- Per-variety restock alert. Species-page Alerts links land on this anchor;
        the sticky-header clearance is the global scroll-padding-top rule in
        tailwind-input.css. -->
+{% if watch_enabled | default(true) %}
   <div id="watchSection" class="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-6">
     <h3 class="font-semibold text-gray-900 mb-1">
       {{ watch_heading }}
@@ -74,6 +75,9 @@
     </form>
     <div id="watchMsg" class="mt-2 text-sm hidden"></div>
   </div>
+{% else %}
+  {{ no_watch_html|safe }}
+{% endif %}
 
   <!-- Email signup (hidden while DIGEST_SIGNUP_ENABLED is off) -->
   {% if digest_signup %}
@@ -109,8 +113,13 @@
     <h3 class="font-medium text-gray-700 mb-2">About {{ title }}</h3>
 {% if tombstone_html %}
     <p>
+{% if watch_enabled | default(true) %}
       We check every Australian nursery we track for <strong>{{ title }}</strong> each night.
       Prices and availability will appear here again as soon as one lists it.
+{% else %}
+      We no longer track <strong>{{ title }}</strong> as a variety of its own. The listings
+      behind it are still sold, under the names below.
+{% endif %}
     </p>
 {% else %}
     <p>
@@ -170,6 +179,7 @@ document.getElementById('subscribeForm').addEventListener('submit', function(e) 
 });
 {% endif %}
 
+{% if watch_enabled | default(true) %}
 document.getElementById('watchForm').addEventListener('submit', function(e) {
   e.preventDefault();
   var email = document.getElementById('watchEmail').value.trim();
@@ -199,6 +209,7 @@ document.getElementById('watchForm').addEventListener('submit', function(e) {
     msg.style.display = 'block';
   });
 });
+{% endif %}
 
 // Species-page Alerts links land on #watchSection: put the cursor in the email
 // field so the alert is one keystroke away. preventScroll keeps the section
