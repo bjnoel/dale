@@ -579,6 +579,34 @@ class TestSeedReviewed(unittest.TestCase):
         self.assertEqual((redirected, tombstoned), (0, 0))
         self.assertEqual(pages, {})
 
+    def test_a_curation_tombstone_does_not_claim_the_plant_is_unavailable(self):
+        """The contradiction this seeding would otherwise put on 68 pages.
+
+        These slugs ended because we stopped calling them a distinct variety,
+        not because stock ran out: several nurseries still list Male Kiwifruit.
+        "No nursery we track is currently listing Male Kiwifruit", printed above
+        "It was last in stock on 17 August 2026", is both false and visibly
+        self-contradicting.
+        """
+        from stocklib.tombstone import headline_sentence, render_tombstone
+
+        *_, pages = self._apply([self._retired()], set())
+        entry = pages["kiwifruit-male"]
+        self.assertEqual(entry["retired_reason"], "not a distinct variety")
+
+        html = render_tombstone("Male Kiwifruit", entry)
+        self.assertIn("We no longer track Male Kiwifruit as a separate variety.", html)
+        self.assertNotIn("No nursery we track is currently listing", html)
+        self.assertNotIn("It was last in stock", html)
+        self.assertIn("We tracked it", html, "the past-tense sentence stays true")
+
+    def test_a_page_that_really_went_out_of_stock_keeps_the_stock_wording(self):
+        from stocklib.tombstone import render_tombstone
+
+        html = render_tombstone("Mahan (B) Pecan", gone_entry())
+        self.assertIn("No nursery we track is currently listing Mahan (B) Pecan.", html)
+        self.assertIn("It was last in stock on", html)
+
     def test_a_retired_slug_the_parser_generates_again_is_skipped(self):
         """The taxonomy changed its mind before the file was applied."""
         redirected, tombstoned, skipped, pages = self._apply(

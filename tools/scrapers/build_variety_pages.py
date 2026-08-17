@@ -616,7 +616,13 @@ def seed_reviewed(ledger: PageLedger, path: Path, today: str,
         # so it gets the day history the stub had no use for. Without dates,
         # both factual sentences collapse and it renders as a generic "no
         # longer listed".
+        #
+        # retired_reason is what stops it claiming the wrong thing. These pages
+        # ended because the slug was never a distinct variety, not because the
+        # plant went out of stock, and the products behind them are usually
+        # still for sale under another name.
         ledger.seed(slug, state=TOMBSTONE, **common,
+                    retired_reason="not a distinct variety",
                     **{k: v for k, v in (p.get("history") or {}).items()})
         tombstoned += 1
     return redirected, tombstoned, skipped

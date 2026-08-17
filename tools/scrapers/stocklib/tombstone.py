@@ -122,6 +122,20 @@ def tracking_sentence(entry: dict) -> str:
     return sentence + "."
 
 
+def headline_sentence(name: str, entry: dict) -> str:
+    """Why this page is a dead end, in the reader's terms.
+
+    Two different things end a page and only one of them is about stock. A page
+    can end because nobody lists the plant any more, or because we decided the
+    slug was never a distinct variety (a deny, or the taxonomy gate). Saying
+    "no nursery is currently listing Male Kiwifruit" for the second is simply
+    false: several nurseries list it, we just stopped calling it a cultivar.
+    """
+    if entry.get("retired_reason"):
+        return f"We no longer track {name} as a separate variety."
+    return f"No nursery we track is currently listing {name}."
+
+
 def render_tombstone(name: str, entry: dict, *, cta_html: str = "") -> str:
     """The shared tombstone block for either family.
 
@@ -130,10 +144,16 @@ def render_tombstone(name: str, entry: dict, *, cta_html: str = "") -> str:
     variety leaves it empty because the page's existing watch form already sits
     below and posts to a working endpoint, combo fills it with links.
     """
+    # A page retired by curation has no meaningful "last in stock": its products
+    # are usually still for sale under another name, so the date would sit
+    # directly under a headline saying the opposite. The tracking sentence is
+    # past tense and stays true either way.
+    last_stock = "" if entry.get("retired_reason") else last_stock_sentence(entry)
     return render_template(
         "tombstone_block.html.j2",
         name=name,
-        last_stock=last_stock_sentence(entry),
+        headline=headline_sentence(name, entry),
+        last_stock=last_stock,
         tracking=tracking_sentence(entry),
         cta_html=cta_html,
     )
