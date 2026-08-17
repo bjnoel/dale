@@ -12115,3 +12115,47 @@ Nothing a nursery tells us about how they sell is evidence about what our pipeli
 `pear-nijiseiki-20th-century-nashi.html` and `pear-nijisseiki-nashi.html` are both live for the
 same cultivar, one carrying a single-s misspelling. That is exactly what DEC-300's
 `/admin/varieties/review` fold queue exists for. Not fixed here, flagged for that queue.
+
+### Addendum, same day: what automating the promoter turned up
+
+Benedict asked whether he has to run `promote_curation.py` by hand every time he folds a
+variety. Working out the answer found three bugs in it, all in code that had never executed:
+the alias map was empty in production, so `--execute` had never run.
+
+**1. The first promotion would have deleted the file's own instructions.** `load_overrides`
+returned exactly `{"deny": ..., "alias": ...}`, `merge` built a fresh two-key dict, and
+`render` dumps what it is handed. The 29-line `_readme` in `variety_overrides.json` would
+have gone with it: how alias and deny interact, the instruction to check watch counts before
+aliasing, and "Do NOT run `migrate_variety_watch_slugs.py`", which is the one instruction
+protecting live watches from being moved onto pages that do not exist. Silently, in a commit
+whose message said it added four aliases.
+
+**2. A failed push stranded the queue permanently.** It returned 1 after the commit without
+clearing. Every later run skipped the rows as already-aliased, found nothing to apply, and
+returned 0 without clearing either, so the UI showed "folded into X" forever.
+
+**3. The window between promotion and the build.** The queue is cleared, the slug is still in
+the canonical index until 00:00, so the pair rendered as an unanswered question. Folding it
+again lands in (2).
+
+(2) and (3) are the "it doesn't look folded" complaint again, and both become nightly the
+moment promotion runs on a schedule. Fixing them was the precondition for automating, not a
+follow-up to it.
+
+**The schedule.** 23:30 UTC, deploying itself rather than leaving that to `dale-runner.sh`,
+which runs `deploy.sh` at :00, the same minute the scrape starts. The build reads
+`/opt/dale/scrapers/variety_overrides.json`, so losing that race lands the commit and has the
+build ignore it for a day.
+
+    any time    fold on the review page, Cancel still works
+    23:30 UTC   promote, run the suite, commit, push, deploy
+    00:00 UTC   the build moves the products
+    +2 nights   the ledger emits the redirect on its own
+
+The half hour after 23:30 is the only window where undoing needs a git revert.
+
+A wrapper that called `promote_curation.py` without `--execute` would dry-run forever while
+the UI showed the fold as queued. That is the third time this shape has appeared, after
+`--seed-reviewed` and `--decisions`, so it has a test.
+
+**First promotion, run today:** 4 aliases, `_readme` and all 14 deny entries intact.
