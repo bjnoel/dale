@@ -1286,8 +1286,12 @@ def _sibling_review_section(siblings) -> str:
         f'</tr></thead><tbody>{"".join(rows)}</tbody></table>'
         f'<h3>Starting point for the alias map</h3>'
         f'<p class="muted">Paste into variety_overrides.json and DELETE every '
-        f'line that names a different plant. Run migrate_variety_watch_slugs.py '
-        f'after, or watchers on the old slug stop hearing anything.</p>'
+        f'line that names a different plant. Then run check_watched_slugs.py '
+        f'--baseline 2: the number of watched slugs with no page must not grow, '
+        f'which is how a folded slug with a live watcher shows up before a '
+        f'subscriber finds a 404. Do NOT run migrate_variety_watch_slugs.py; it '
+        f're-parses stored titles that are now canonical display titles and will '
+        f'move a live watch onto a slug that has no page.</p>'
         f'<pre class="code">"alias": {{\n{_esc(suggestion)}\n}}</pre></section>')
 
 
