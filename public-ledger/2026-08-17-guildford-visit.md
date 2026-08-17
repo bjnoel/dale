@@ -21,16 +21,26 @@ objective.
 
 ## What she told us that we could not have found by scraping
 
-**The bare root trade mostly does not happen on the website.** Guildford orders bare root
-stock in around June. It goes first to a pre-registration list. Anything not collected
-within two weeks is released to the general public, and whatever still does not sell gets
-potted up and sold on as potted stock. The majority of bare root sales are pre-ordered and
-gone before they are ever listed online.
+**Most bare root stock is spoken for before the public sees it.** Guildford orders bare root
+in around June. It goes first to a pre-registration list. Anything not collected within two
+weeks is released to the general public, and whatever still does not sell gets potted up and
+sold on as potted stock. Where pre-order demand is strong they try to order well above it,
+but supply does not always allow.
 
-This is a real limit on what treestock can see, and it is a limit we did not know we had.
-Our bare root coverage of Guildford is not a sample of their bare root trade; it is the
-remainder after the trade has happened. Where pre-order demand is strong they try to order
-well above it, but supply does not always allow.
+The important detail is what this looks like from outside. Those lines *are* on their
+website. They simply never show as anything but out of stock, because they are pre-sold
+before the public listing ever means anything.
+
+That is the opposite of a blind spot. We hold 161 Guildford bare root lines, 102 of them
+out of stock, and they are exactly the ones collectors chase: Cox's Orange Pippin, Angelina
+Burdett, Coe's Golden Drop, Nijisseiki, the Minnie Royal / Royal Crimson cherry multigrafts.
+Every one has a variety page carrying a notify-me.
+
+So a collector who wants an Angelina Burdett has two independent places to wait: Guildford's
+own registration list, and ours. Neither depends on the other, and ours works across every
+nursery we track rather than one. Being a second notification surface for stock a nursery
+cannot list as available is a genuinely useful thing to be, and it is the obvious thing to
+offer nurseries commercially later.
 
 **Some absences are decisions, not stock-outs.** They deliberately do not import certain
 deciduous stock that is too susceptible to pests. Shot hole borer is the live problem in
@@ -44,6 +54,10 @@ availability data high quality, which is useful to know about a dataset we depen
 
 **She may be able to give us the stock listings directly**, instead of us scraping. Format
 and cadence are not yet specified. That is now the open follow-up.
+
+What we will not be asking for is the registration list itself. It is a spreadsheet with
+thousands of rows and it is not going to be shared, which is fine: the demand signal we
+actually need is the one our own notify-me captures generate.
 
 ## The part where she found our bug
 
@@ -101,7 +115,9 @@ not a control we can rely on twenty-six more times.
 ## Next
 
 Reply to Emma, thank her for the hour, and take up the stock feed offer: what format they
-can export, how often it refreshes, and whether it can include the bare root pre-order
-lines that never reach the website. That last question is the interesting one, because if
-the answer is yes, treestock would be able to see a part of the trade that is currently
-invisible to it everywhere, not just at Guildford.
+can export and how often it refreshes.
+
+Worth telling her, too, that we already carry her out-of-stock bare root lines with a
+notify-me on each. Her pre-registration list is not the only place a collector can put their
+hand up, and a nursery having a second queue it does not have to run itself is the beginning
+of the commercial conversation rather than a favour we are asking for.

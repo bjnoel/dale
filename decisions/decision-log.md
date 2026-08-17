@@ -12071,3 +12071,47 @@ same two numbers for the same snapshot. Full suite 2961 green.
 The general lesson is the one DEC-296 already paid for in a different currency: when a value
 is derived in more than one place, fixing the derivation at one call site creates a
 disagreement rather than removing an error. Find the other call sites first.
+
+### Correction, same day: the bare root finding was wrong, and wrong in the pessimistic direction
+
+The section above recorded that Guildford's bare root trade "structurally cannot" be seen by
+treestock because the stock is pre-sold before it is listed. Benedict corrected it: the items
+**do** appear on their website, they just only ever show as out of stock.
+
+Checked against the 2026-08-17 snapshot, he is right, and it is not marginal:
+
+```
+guildford visible products: 859
+titled 'bare root':         161
+  in stock:                  59
+  OUT of stock:             102
+```
+
+The out-of-stock 102 are precisely the lines worth waiting for: Cox's Orange Pippin, Angelina
+Burdett, Coe's Golden Drop, Nashi Nijisseiki, Mulberry Black English, and the Minnie Royal /
+Royal Crimson cherry multigrafts at $119.99. Spot-checked end to end on
+`/variety/plum-angelina-burdett.html`: the page exists, names Guildford, says out of stock,
+and carries a working "Notify me" capture.
+
+So the capability I described as absent is already shipped and already pointed at exactly the
+right stock. **A collector chasing an Angelina Burdett has two independent queues to join,
+Guildford's registration list and ours**, and ours spans 27 nurseries rather than one. Benedict's
+read is that this is the thing to sell nurseries later: a waitlist they do not have to
+operate. That reframes out-of-stock coverage from a gap in the dataset into the product.
+
+Also recorded: **do not ask Emma for registration volumes.** Thousands of rows in a
+spreadsheet, and she will not share them. The register action has been rewritten to drop that
+question, which I had put in it.
+
+**Why I got it wrong.** Emma's account was about the *commercial* flow, that most bare root
+never reaches a public sale. I mapped "does not reach the public" onto "does not reach our
+scraper" without checking, and our scraper had 161 of them at the time I wrote it down. The
+snapshot was one command away and I did not run it, because the sentence was about a business
+process rather than a number and so did not feel like a claim that needed checking. It was.
+Nothing a nursery tells us about how they sell is evidence about what our pipeline holds.
+
+### An unrelated near-duplicate, found while checking this
+
+`pear-nijiseiki-20th-century-nashi.html` and `pear-nijisseiki-nashi.html` are both live for the
+same cultivar, one carrying a single-s misspelling. That is exactly what DEC-300's
+`/admin/varieties/review` fold queue exists for. Not fixed here, flagged for that queue.
