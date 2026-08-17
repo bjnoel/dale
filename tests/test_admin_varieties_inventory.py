@@ -206,9 +206,14 @@ class PayloadTests(unittest.TestCase):
         """The one rule this page has. The ledger is 3.1MB and
         /variety/index.html is already 1.4MB; the compact form measured 148KB
         for 2,767 real pages, so a per-page budget of 100 bytes has headroom
-        and still fails loudly if someone inlines the rows."""
-        size = len(json.dumps(self.payload, separators=(",", ":")))
-        self.assertLess(size / max(len(self.payload["rows"]), 1), 100)
+        and still fails loudly if someone puts a ledger entry in a row.
+
+        Measured over `rows` alone, not the whole payload: the species list and
+        the flag metadata are fixed overhead that a small fixture would let
+        dominate, and fixed overhead is not the thing that scales."""
+        rows = self.payload["rows"]
+        per_row = len(json.dumps(rows, separators=(",", ":"))) / max(len(rows), 1)
+        self.assertLess(per_row, 100)
 
 
 class RenderTests(unittest.TestCase):

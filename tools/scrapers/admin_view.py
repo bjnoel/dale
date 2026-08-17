@@ -631,17 +631,21 @@ def _entry_facts(slug: str, entry: dict, watchers: int = 0) -> dict:
 # so a count is never a dead end: clicking it lists the pages it counted.
 ATTENTION_QUEUES = (
     ("absent", "absent tonight",
-     "Not generated tonight. Tombstoned after 2 nights."),
+     "Tonight's build did not generate it. One more absent night and it "
+     "tombstones."),
     ("never", "never in stock",
-     "Live page, no buyable product has ever appeared on it."),
+     "Nothing on this page has been buyable on any night since it was created. "
+     "Not the same as sold out today: it has never sold at all."),
     ("oos", "out of stock now",
-     "Has sold before, nothing available today."),
+     "Has had stock before, has none today. Normal for a seasonal line."),
     ("single", "single-product",
-     "One product at one nursery. The page is that nursery's listing."),
+     "One product at one nursery is the whole page. If that nursery delists "
+     "it, there is nothing left on it."),
     ("noisy", "noisy slug",
-     "Slug still carries listing noise the parser should have stripped."),
+     "The slug still carries listing noise the title parser should have "
+     "stripped (-potted, -tree, -dwf, an age)."),
     ("lonely", "only variety",
-     "The sole live page for its species."),
+     "The sole live page for its species, so the species page has one row."),
 )
 
 
@@ -820,6 +824,7 @@ def build_varieties_payload(model: dict) -> dict:
         "states": list(PAYLOAD_STATES),
         "flags": list(PAYLOAD_FLAGS),
         "flagLabels": [label for _, label, _ in ATTENTION_QUEUES],
+        "flagNotes": [note for _, _, note in ATTENTION_QUEUES],
         "updated": model.get("updated", ""),
         "rows": rows,
     }
@@ -1668,20 +1673,34 @@ def _inventory_states(inv: dict) -> str:
 
 
 def _inventory_attention(inv: dict) -> str:
-    """The six queues, each a filter rather than a number to admire."""
-    tiles = []
+    """The six queues, each a filter rather than a number to admire.
+
+    The definitions are spelled out on the page rather than left to a hover
+    tooltip: the same words appear as one-word pills on every row, hover does
+    not exist on a phone, and a label whose meaning you have to guess is worse
+    than no label.
+    """
+    tiles, defs = [], []
     for q in inv.get("attention") or []:
         tiles.append(
             f'<button type="button" class="qtile" data-flag="{_esc(q["key"])}" '
             f'title="{_esc(q["note"])}">'
             f'<span class="qnum">{q["count"]:,}</span>'
             f'<span class="qlabel">{_esc(q["label"])}</span></button>')
+        defs.append(f'<dt><span class="fl">{_esc(q["key"])}</span> '
+                    f'{_esc(q["label"])}</dt><dd>{_esc(q["note"])}</dd>')
     return (
         f'<section><h2>Attention</h2>'
         f'<div class="qtiles">{"".join(tiles)}</div>'
         f'<p class="small muted">Click a tile to list the pages it counted. '
         f'Nothing here is an error on its own: 59% of the catalogue being one '
         f'nursery selling one product is a fact about the market, not a bug.</p>'
+        f'<details class="legend"><summary>What these mean</summary>'
+        f'<dl>{"".join(defs)}</dl>'
+        f'<p class="small muted">The same words appear as pills on each row. '
+        f'A page can carry several: one nursery listing that has never sold is '
+        f'both <span class="fl">single</span> and <span class="fl">never</span>.'
+        f'</p></details>'
         f'</section>')
 
 
@@ -1788,6 +1807,11 @@ INVENTORY_CSS = """
   .fl { display:inline-block; margin-left:4px; padding:1px 6px; border-radius:999px;
     font-size:0.68rem; background:#fef3c7; color:#92400e; }
   .twin { font-size:0.72rem; color:#92400e; margin-top:2px; }
+  details.legend { margin-top:10px; }
+  details.legend summary { cursor:pointer; font-size:0.82rem; color:#065f46; }
+  details.legend dl { margin:8px 0 0; font-size:0.82rem; }
+  details.legend dt { margin-top:8px; font-weight:600; }
+  details.legend dd { margin:2px 0 0 0; color:#6b7280; }
   .warn { color:#b91c1c; }
   code { background:#f3f4f6; padding:1px 4px; border-radius:4px; }
 """
@@ -1830,7 +1854,10 @@ INVENTORY_JS = """
     var out = '';
     data.flags.forEach(function (name, i) {
       if (name === 'oos' || name === 'lonely') return;   // shown by the columns
-      if (bits & (1 << i)) out += '<span class="fl">' + esc(name) + '</span>';
+      if (bits & (1 << i)) {
+        out += '<span class="fl" title="' + esc(data.flagNotes[i] || '') + '">' +
+          esc(name) + '</span>';
+      }
     });
     return out;
   }
