@@ -2037,7 +2037,7 @@ def _variety_overrides_section(overrides: dict) -> str:
         f'</div></div></section>')
 
 
-def _fold_option(slug: str, target: str, facts: dict) -> str:
+def _fold_option(slug: str, target: str, facts: dict, auto: bool = False) -> str:
     """One direction of a fold, labelled with what it costs.
 
     The nursery counts are the whole decision, and counts alone were not enough.
@@ -2062,8 +2062,101 @@ def _fold_option(slug: str, target: str, facts: dict) -> str:
     n = (facts.get(slug) or {}).get("nurseries", 0)
     m = (facts.get(target) or {}).get("nurseries", 0)
     return (f'<option value="{_esc(slug)}|{_esc(target)}"'
-            f'{" data-warn=\"1\"" if n > m else ""}>'
+            f'{" data-warn=\"1\"" if n > m else ""}'
+            f'{" data-auto=\"1\"" if auto else ""}>'
             f'{_esc(slug)} ({n}) &rarr; {_esc(target)} ({m})</option>')
+
+
+# Tiers where "one plant, spelled twice" holds often enough that a machine may
+# pick the direction. `code` is deliberately absent: `near_miss_tier` sorts a
+# pair into it precisely because a digit moved, and that is where the pairs you
+# must NOT fold cluster. On the live index the five code-tier pairs with a
+# smaller and a bigger side are macadamia 814/816, macadamia 842/849, pomelo
+# K13/K15, abiu Z4/E4 and apple-way/apple-2way. Four of those five are two
+# different selections and only the last is one plant, so a button that swept
+# the tier in would be wrong four times out of five. Five rows is a minute of
+# reading; four bad aliases is a git revert and a rebuild.
+_AUTO_FOLD_TIERS = ("hyphen", "letter")
+
+
+def auto_fold_picks(pairs, facts: dict, live, pending: dict = None,
+                    committed: dict = None) -> dict:
+    """(a, b) -> (slug, target) for every pair the "smaller into bigger" button
+    may pre-select, which is fewer pairs than have a smaller side.
+
+    Direction is the easy half: fold the slug carried by FEWER nurseries into
+    the one carried by more, because what a fold spends is the URL and the
+    established URL is the one worth keeping. That is the rule Benedict said he
+    would pick nearly every time, and on the live index it answers 88 of the 125
+    pairs on the page.
+
+    The hard half is which pairs the rule may be applied to at all, and there
+    are three exclusions, each of which is a batch the endpoint would refuse or
+    a decision it would accept and should not:
+
+    - Ties. `apple-cox-s-orange-pippin` and `apple-coxs-orange-pippin` are one
+      nursery each, so there is no smaller side and no direction to pick. 37 of
+      the 125 pairs are ties, they are mostly hyphen pairs, and they are exactly
+      the ones where the reviewer knows something the counts do not.
+    - Codes, per `_AUTO_FOLD_TIERS` above.
+    - Anything that would put one slug at two destinations, or build a chain.
+      `mango-choc-anan` is one letter from `mango-choc-anon` AND one from
+      `mango-chok-anan`, both at two nurseries, so the rule fires twice for the
+      same slug with different answers. `_decide_curation` refuses the whole
+      batch on that, all-or-nothing, so a single such pair would take the other
+      eighty rows down with it. Chains (folding into a slug that is itself
+      folding, or away from one something else points at) are refused for the
+      same reason and are checked against what is already queued and already in
+      variety_overrides.json, not only against this batch. What counts as a
+      chain is asymmetric and the first version of this had it wrong in the
+      strict direction: two slugs folding INTO one page is a merge and is fine,
+      so `quince-smyrna-potted -> quince-smyrna` being queued must not stop
+      `quince-smyrma -> quince-smyrna`. It is only a chain when something
+      already points at the slug being moved, as `fig-tree-deanne -> fig-deanne`
+      does to `fig-deanne -> fig-deanna`. Reading it as symmetric cost three
+      correct picks and kept three wrong ones out for the wrong reason.
+
+    Returns picks only. Nothing here queues anything: the button ticks
+    dropdowns, the reviewer still reads the confirm dialog, and the fold still
+    takes two nights.
+    """
+    live = set(live or ())
+    pending = pending or {}
+    committed = committed or {}
+    picks = {}
+    for p in pairs:
+        if p["tier"] not in _AUTO_FOLD_TIERS:
+            continue
+        a, b = p["a"], p["b"]
+        na = (facts.get(a) or {}).get("nurseries", 0)
+        nb = (facts.get(b) or {}).get("nurseries", 0)
+        if na == nb:
+            continue
+        slug, target = (a, b) if na < nb else (b, a)
+        if target not in live:
+            # The endpoint refuses an alias to a page that is not live, so the
+            # section renders no option for that direction either.
+            continue
+        picks[(a, b)] = (slug, target)
+
+    # Both halves of every chain check need the finished set, so they run as a
+    # second pass rather than inside the loop above. A pick dropped here stays
+    # on the page as an ordinary unanswered row.
+    known = dict(committed)
+    known.update(pending)
+    sources = Counter(s for s, _ in picks.values())
+    targets = {t for _, t in picks.values()}
+    pointed_at = set(known.values())
+    for key, (slug, target) in list(picks.items()):
+        if sources[slug] > 1:
+            del picks[key]                       # two destinations for one slug
+        elif slug in targets or target in sources:
+            del picks[key]                       # a chain inside this batch
+        elif target in known or slug in known:
+            del picks[key]                       # a chain onto a decided slug
+        elif slug in pointed_at:
+            del picks[key]                       # a chain onto a decided slug
+    return picks
 
 
 def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "",
@@ -2091,7 +2184,12 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "",
     live = {s for s, f in facts.items() if f["state"] == LIVE}
     pending = _pending_aliases(store)
     committed = committed or {}
-    rows = []
+    # Computed over ALL pairs, never over the filtered rows. The duplicate and
+    # chain checks are questions about the whole page, and a search box that
+    # narrowed the input would let `mango-choc-anan` look unambiguous because
+    # its other half was filtered out of view.
+    picks = auto_fold_picks(pairs, facts, live, pending, committed)
+    rows, auto = [], 0
     for p in pairs:
         a, b = p["a"], p["b"]
         if not _matches(q, a, b):
@@ -2099,14 +2197,17 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "",
         # An alias target must be a live page; the endpoint refuses anything
         # else. Offer only the directions it would accept rather than render a
         # control whose job is to produce a 409.
+        pick = picks.get((a, b))
         opts = ""
         if b in live:
-            opts += _fold_option(a, b, facts)
+            opts += _fold_option(a, b, facts, auto=(pick == (a, b)))
         if a in live:
-            opts += _fold_option(b, a, facts)
+            opts += _fold_option(b, a, facts, auto=(pick == (b, a)))
         if not opts:
             continue
         folded = _folded_cell(pending, committed, a, b)
+        if pick and not folded:
+            auto += 1
         verbs = (f'<td colspan="2">{folded}</td>' if folded else
                  f'<td><select class="nm"><option value="">leave</option>{opts}'
                  f'</select>'
@@ -2126,6 +2227,25 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "",
         return ""
     counts = " · ".join(f'{tiers.get(t, 0)} {_NEAR_MISS_LABEL[t]}'
                         for t in _NEAR_MISS_TIER_ORDER if tiers.get(t))
+    # The count is on the button because the button is the only place a reviewer
+    # can see what it is about to touch before touching it. "Point the smaller
+    # at the bigger" with no number is a question; with 81 on it, it is an
+    # offer.
+    auto_btn = (f'<button type="button" data-action="auto-fold" '
+                f'data-count="{auto}">Point smaller at bigger '
+                f'({auto})</button>' if auto else "")
+    # Says what it skips, in the same paragraph as the rule it applies, because
+    # "81" against "125 pairs" is a subtraction the reader would otherwise have
+    # to do and then guess at.
+    auto_note = (f'<strong>Point smaller at bigger</strong> pre-selects the '
+                 f'fold on the {auto} pairs where one side is carried by fewer '
+                 f'nurseries than the other. It skips the ones where both '
+                 f'sides are level, and it skips the digit tier entirely, so '
+                 f'the pairs most likely to be two selections stay on the page '
+                 f'for you. It only fills the dropdowns: nothing is queued '
+                 f'until you press Fold chosen, and a spelling that is really '
+                 f'two cultivars (<code>pear-nashi-hosui</code>) is still '
+                 f'yours to spot.' if auto else "")
     return (
         f'<section id="nearmiss"><h2>Near-miss slugs ({len(rows)} pairs)</h2>'
         f'{_filter_note(q, len(rows), len(pairs))}'
@@ -2137,10 +2257,12 @@ def _near_miss_section(pairs, tiers, inv: dict, store: dict, q: str = "",
         f'are different cultivars, and so are <code>pear-nashi-hosui</code> and '
         f'<code>pear-nashi-kosui</code> despite being one letter apart. Folding '
         f'queues an alias and takes two nights; marking a pair distinct hides '
-        f'it here for good and changes nothing on the site.</p>'
+        f'it here for good and changes nothing on the site. '
+        f'{auto_note}</p>'
         f'<div class="bulkbar">'
         f'<button type="button" data-action="alias">Fold chosen</button>'
         f'<button type="button" data-action="distinct">Mark chosen distinct</button>'
+        f'{auto_btn}'
         f'<span class="small muted" id="nsel">nothing chosen</span></div>'
         f'<div class="tscroll"><table class="mini vt"><thead><tr><th>Pair</th>'
         f'<th>Tier</th><th>Fold</th><th></th></tr></thead>'
@@ -3209,9 +3331,50 @@ REVIEW_JS = """
         refreshN();
       });
     });
+    // -- point smaller at bigger ---------------------------------------------
+    // Which row gets which direction is decided in Python and marked on the one
+    // option to choose, so this reads a flag rather than re-deriving the rule
+    // from the counts in the labels. Two implementations of "smaller into
+    // bigger" is one more than can be kept honest, and only the Python one is
+    // under test.
+    //
+    // It does not touch a row you have already answered, in either direction: a
+    // ticked "different plants" is a decision, and so is a direction you chose
+    // by hand, including the backwards one. A bulk button that overwrote either
+    // would be undoing work rather than saving it.
+    function autoRows() {
+      return nrows.filter(function (tr) {
+        var sel = tr.querySelector('.nm'), dis = tr.querySelector('.nmd');
+        return sel && dis && !sel.value && !dis.checked &&
+               sel.querySelector('option[data-auto]');
+      });
+    }
+    var nauto = nsec.querySelector('.bulkbar button[data-action="auto-fold"]');
+    if (nauto) {
+      nauto.addEventListener('click', function () {
+        var rows = autoRows();
+        var skipped = Number(nauto.getAttribute('data-count')) - rows.length;
+        rows.forEach(function (tr) {
+          var sel = tr.querySelector('.nm');
+          sel.value = sel.querySelector('option[data-auto]').value;
+          // The change handler paints the dirty state and the warning, and it
+          // does not fire on a value set from script.
+          sel.dispatchEvent(new Event('change'));
+        });
+        refreshN();
+        say(rows.length + ' pair' + (rows.length === 1 ? '' : 's') +
+            ' pointed at the bigger page' +
+            (skipped > 0 ? ', ' + skipped + ' left as you had ' +
+                           (skipped === 1 ? 'it' : 'them') : '') +
+            '. Read them, then press Fold chosen. Nothing is queued yet.');
+      });
+    }
     nsec.querySelectorAll('.bulkbar button').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var action = btn.getAttribute('data-action');
+        if (action === 'auto-fold') {
+          return;                       // handled above
+        }
         if (action === 'alias') {
           var rows = chosenFolds().map(function (tr) {
             var parts = tr.querySelector('.nm').value.split('|');

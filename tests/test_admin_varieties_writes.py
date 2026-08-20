@@ -611,6 +611,217 @@ class NearMissTests(unittest.TestCase):
                            "tier": "letter"}])
 
 
+class AutoFoldPickTests(unittest.TestCase):
+    """"Point smaller at bigger": one click for the direction Benedict said he
+    picks nearly every time, and the three things it must refuse to pick.
+
+    125 pairs at two clicks each is the job this replaces. On the live index it
+    answers 78 of them and leaves 47, and every one of the 47 is left for a
+    reason a person has to settle: 37 are level on nurseries, 10 have a digit
+    in them, and the rest would build a chain or ask for two destinations.
+    """
+
+    FACTS = {
+        # Two nurseries against one: a direction exists.
+        "mango-bambaroo": {"nurseries": 5, "state": admin_view.LIVE},
+        "mango-bamberoo": {"nurseries": 1, "state": admin_view.LIVE},
+        # Level: no smaller side.
+        "apple-johnathan": {"nurseries": 1, "state": admin_view.LIVE},
+        "apple-jonathan": {"nurseries": 1, "state": admin_view.LIVE},
+        # A code tier with a perfectly clear smaller side, which is the trap.
+        "macadamia-814": {"nurseries": 1, "state": admin_view.LIVE},
+        "macadamia-816": {"nurseries": 2, "state": admin_view.LIVE},
+    }
+
+    def picks(self, pairs, facts=None, pending=None, committed=None):
+        facts = facts or self.FACTS
+        live = {s for s, f in facts.items() if f["state"] == admin_view.LIVE}
+        return admin_view.auto_fold_picks(pairs, facts, live, pending, committed)
+
+    def test_the_smaller_page_folds_into_the_bigger_one(self):
+        """The whole point. A fold spends the URL, and the URL carried by five
+        nurseries is the one worth keeping."""
+        picks = self.picks([{"a": "mango-bambaroo", "b": "mango-bamberoo",
+                             "tier": "letter"}])
+        self.assertEqual(picks, {("mango-bambaroo", "mango-bamberoo"):
+                                 ("mango-bamberoo", "mango-bambaroo")})
+
+    def test_a_level_pair_is_left_alone(self):
+        """`apple-johnathan` and `apple-jonathan` at one nursery each is a real
+        choice, not an obvious one, and the counts have nothing to say about it.
+        37 of the 125 live pairs are level, mostly hyphen pairs."""
+        self.assertEqual(self.picks([{"a": "apple-johnathan",
+                                      "b": "apple-jonathan",
+                                      "tier": "letter"}]), {})
+
+    def test_the_code_tier_is_never_picked(self):
+        """`near_miss_tier` files a pair as `code` precisely because a digit
+        moved, and that tier is where the pairs you must not fold cluster.
+        macadamia 814 and 816 are different cultivars and the counts say fold
+        one into the other, so the tier is excluded before the counts are
+        consulted at all. Four of the five live code pairs with a smaller side
+        are two selections; only apple-way/apple-2way is one plant."""
+        self.assertEqual(self.picks([{"a": "macadamia-814", "b": "macadamia-816",
+                                      "tier": "code"}]), {})
+
+    def test_a_slug_wanted_in_two_places_is_picked_in_neither(self):
+        """`mango-choc-anan` is one letter from `mango-choc-anon` AND one from
+        `mango-chok-anan`, both at two nurseries, so the rule fires twice for
+        one slug with different answers. _decide_curation refuses the whole
+        batch on that, all-or-nothing, so leaving both in would take the other
+        seventy-six rows down with them."""
+        facts = dict(self.FACTS, **{
+            "mango-choc-anan": {"nurseries": 1, "state": admin_view.LIVE},
+            "mango-choc-anon": {"nurseries": 2, "state": admin_view.LIVE},
+            "mango-chok-anan": {"nurseries": 2, "state": admin_view.LIVE}})
+        picks = self.picks([{"a": "mango-choc-anan", "b": "mango-choc-anon",
+                             "tier": "letter"},
+                            {"a": "mango-choc-anan", "b": "mango-chok-anan",
+                             "tier": "letter"}], facts)
+        self.assertEqual(picks, {})
+
+    def test_a_chain_inside_one_batch_is_not_picked(self):
+        """A -> B and B -> C land two aliases that disagree, because
+        canonical_cultivar applies the map once with no chain resolution."""
+        facts = {"a-one": {"nurseries": 1, "state": admin_view.LIVE},
+                 "a-two": {"nurseries": 2, "state": admin_view.LIVE},
+                 "a-three": {"nurseries": 3, "state": admin_view.LIVE}}
+        picks = self.picks([{"a": "a-one", "b": "a-two", "tier": "letter"},
+                            {"a": "a-two", "b": "a-three", "tier": "letter"}],
+                           facts)
+        self.assertEqual(picks, {})
+
+    def test_a_chain_onto_an_already_queued_alias_is_not_picked(self):
+        """`fig-tree-deanne -> fig-deanne` is queued from the noise section, so
+        picking `fig-deanne -> fig-deanna` would leave the fig-tree products on
+        a slug the build stops producing. The endpoint refuses it; the button
+        must not offer it."""
+        facts = {"fig-deanne": {"nurseries": 2, "state": admin_view.LIVE},
+                 "fig-deanna": {"nurseries": 3, "state": admin_view.LIVE}}
+        pairs = [{"a": "fig-deanna", "b": "fig-deanne", "tier": "letter"}]
+        self.assertEqual(self.picks(pairs, facts), pairs and
+                         {("fig-deanna", "fig-deanne"): ("fig-deanne", "fig-deanna")})
+        self.assertEqual(
+            self.picks(pairs, facts, pending={"fig-tree-deanne": "fig-deanne"}), {})
+
+    def test_two_slugs_folding_into_one_page_is_a_merge_and_is_allowed(self):
+        """The mirror of the test above, and the one the first version got
+        wrong. `quince-smyrna-potted -> quince-smyrna` is queued, and that says
+        nothing about `quince-smyrma -> quince-smyrna`: both point AT the same
+        page, which is a merge and exactly what this queue is for. Reading the
+        chain check as symmetric dropped three correct picks on the live index
+        for a hazard that was not there."""
+        facts = {"quince-smyrma": {"nurseries": 1, "state": admin_view.LIVE},
+                 "quince-smyrna": {"nurseries": 7, "state": admin_view.LIVE}}
+        picks = self.picks([{"a": "quince-smyrma", "b": "quince-smyrna",
+                             "tier": "letter"}], facts,
+                           pending={"quince-smyrna-potted": "quince-smyrna"})
+        self.assertEqual(picks, {("quince-smyrma", "quince-smyrna"):
+                                 ("quince-smyrma", "quince-smyrna")})
+
+    def test_a_retired_target_is_not_picked(self):
+        """An alias target must be a live page. The section renders no option
+        for that direction, so a pick naming it would mark an option that is
+        not there."""
+        facts = {"pear-x": {"nurseries": 1, "state": admin_view.LIVE},
+                 "pear-y": {"nurseries": 4, "state": "redirect"}}
+        self.assertEqual(self.picks([{"a": "pear-x", "b": "pear-y",
+                                      "tier": "letter"}], facts), {})
+
+    def test_the_marked_option_is_the_one_the_rule_chose(self):
+        """The rule lives in Python and the browser reads a flag, because two
+        implementations of "smaller into bigger" is one more than can be kept
+        honest and only this one is under test."""
+        facts = {"mango-bambaroo": {"nurseries": 5}, "mango-bamberoo": {"nurseries": 1}}
+        good = admin_view._fold_option("mango-bamberoo", "mango-bambaroo",
+                                       facts, auto=True)
+        bad = admin_view._fold_option("mango-bambaroo", "mango-bamberoo", facts)
+        self.assertIn('data-auto="1"', good)
+        self.assertNotIn("data-warn", good)
+        self.assertNotIn("data-auto", bad)
+        self.assertIn('data-warn="1"', bad)
+
+    def test_the_pick_is_never_the_flagged_direction(self):
+        """`data-warn` and `data-auto` are opposite readings of the same two
+        numbers, so an option carrying both would be the page warning about its
+        own suggestion."""
+        facts = {"a-slug": {"nurseries": 1, "state": admin_view.LIVE},
+                 "b-slug": {"nurseries": 9, "state": admin_view.LIVE}}
+        live = {"a-slug", "b-slug"}
+        pairs = [{"a": "a-slug", "b": "b-slug", "tier": "hyphen"}]
+        for (a, b), (slug, target) in admin_view.auto_fold_picks(
+                pairs, facts, live).items():
+            opt = admin_view._fold_option(slug, target, facts, auto=True)
+            self.assertNotIn("data-warn", opt)
+
+    def test_the_button_carries_the_count_it_will_touch(self):
+        """"Point smaller at bigger" with no number is a question. The count is
+        the only thing between a reviewer and seventy-eight pre-filled
+        dropdowns, and it is rendered from the same pass that marks them."""
+        facts = [{"slug": "mango-bambaroo", "species": "mango", "nurseries": 5,
+                  "state": admin_view.LIVE, "redirect_to": ""},
+                 {"slug": "mango-bamberoo", "species": "mango", "nurseries": 1,
+                  "state": admin_view.LIVE, "redirect_to": ""},
+                 {"slug": "macadamia-814", "species": "macadamia", "nurseries": 1,
+                  "state": admin_view.LIVE, "redirect_to": ""},
+                 {"slug": "macadamia-816", "species": "macadamia", "nurseries": 2,
+                  "state": admin_view.LIVE, "redirect_to": ""}]
+        html = admin_view._near_miss_section(
+            [{"a": "mango-bambaroo", "b": "mango-bamberoo", "tier": "letter"},
+             {"a": "macadamia-814", "b": "macadamia-816", "tier": "code"}],
+            {"letter": 1, "code": 1}, {"facts": facts}, {})
+        self.assertIn('data-action="auto-fold" data-count="1"', html)
+        self.assertIn("Point smaller at bigger (1)", html)
+        self.assertEqual(html.count('data-auto="1"'), 1)
+
+    def test_the_button_is_absent_when_it_would_pick_nothing(self):
+        """A queue of nothing but level pairs and codes is a queue this button
+        has no answer for, and a button labelled (0) is one you press once."""
+        facts = [{"slug": "macadamia-814", "species": "macadamia", "nurseries": 1,
+                  "state": admin_view.LIVE, "redirect_to": ""},
+                 {"slug": "macadamia-816", "species": "macadamia", "nurseries": 2,
+                  "state": admin_view.LIVE, "redirect_to": ""}]
+        html = admin_view._near_miss_section(
+            [{"a": "macadamia-814", "b": "macadamia-816", "tier": "code"}],
+            {"code": 1}, {"facts": facts}, {})
+        self.assertNotIn("auto-fold", html)
+
+    def test_filtering_the_page_cannot_make_a_pair_look_unambiguous(self):
+        """The duplicate check is a question about the whole page. Searching
+        "choc-anon" hides the other half of `mango-choc-anan` from view, and if
+        the picks were computed over the filtered rows the survivor would read
+        as the only destination and get pre-filled."""
+        facts = [{"slug": "mango-choc-anan", "species": "mango", "nurseries": 1,
+                  "state": admin_view.LIVE, "redirect_to": ""},
+                 {"slug": "mango-choc-anon", "species": "mango", "nurseries": 2,
+                  "state": admin_view.LIVE, "redirect_to": ""},
+                 {"slug": "mango-chok-anan", "species": "mango", "nurseries": 2,
+                  "state": admin_view.LIVE, "redirect_to": ""}]
+        pairs = [{"a": "mango-choc-anan", "b": "mango-choc-anon", "tier": "letter"},
+                 {"a": "mango-choc-anan", "b": "mango-chok-anan", "tier": "letter"}]
+        html = admin_view._near_miss_section(pairs, {"letter": 2},
+                                             {"facts": facts}, {}, q="choc-anon")
+        self.assertIn("mango-choc-anon", html)
+        self.assertNotIn('data-auto="1"', html)
+        self.assertNotIn("auto-fold", html)
+
+    def test_the_handler_leaves_an_answered_row_alone(self):
+        """A ticked "different plants" is a decision and so is a hand-picked
+        direction, including a backwards one. A bulk button that overwrote
+        either would be undoing work rather than saving it."""
+        js = admin_view.REVIEW_JS
+        self.assertIn("!sel.value && !dis.checked", js)
+        self.assertIn("option[data-auto]", js)
+
+    def test_the_handler_fires_change_so_the_row_repaints(self):
+        """Setting `.value` from script does not fire `change`, and everything
+        that makes a chosen row look chosen (the dirty class, the "retires the
+        bigger page" warning, the count in the bulk bar) hangs off that
+        listener. Without this the page filled seventy-eight dropdowns and
+        still said "nothing chosen"."""
+        self.assertIn("sel.dispatchEvent(new Event('change'))", admin_view.REVIEW_JS)
+
+
 class QueuedRowRenderingTests(WriteHarness):
     """A row whose fold is already queued must not re-offer the question.
 
