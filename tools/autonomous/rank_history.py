@@ -49,7 +49,30 @@ from appstore_rank import LIMIT, TERMS  # noqa: E402  the shared term set
 from playstore_rank import OUR_PACKAGE, saturated  # noqa: E402  Play's window rule, not re-derived
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DEFAULT_CSV = os.path.join(REPO_ROOT, "data", "treesmith-rank-history.csv")
+CSV_NAME = "treesmith-rank-history.csv"
+
+
+def series_path():
+    """Where the series lives, for callers that have no opinion.
+
+    Not simply repo-relative, because the two callers run from different copies
+    of this file. The capture wrapper runs from /opt/dale/repo/tools/autonomous,
+    where repo-relative is right. `treesmith_analytics.py` runs from the rsynced
+    /opt/dale/autonomous, where repo-relative resolves to /opt/data and the
+    series would look missing -- and a digest that reports a missing series as
+    "no movement" is the exact failure mode this section exists to avoid.
+
+    DALE_REPO matches snapshot-server-config.sh; /opt/dale/repo matches
+    notify.py and uptime_monitor.py.
+    """
+    candidates = [
+        os.path.join(REPO_ROOT, "data", CSV_NAME),
+        os.path.join(os.environ.get("DALE_REPO", "/opt/dale/repo"), "data", CSV_NAME),
+    ]
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return candidate
+    return candidates[0]
 
 APPSTORE = "appstore"
 PLAY = "play"
@@ -132,6 +155,15 @@ def normalise_captured_at(value):
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=datetime.timezone.utc)
     return dt.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def age_days(captured_at, now=None):
+    """Whole days between a capture and now. Used to tell stale from quiet."""
+    then = datetime.datetime.strptime(
+        normalise_captured_at(captured_at), "%Y-%m-%dT%H:%M:%SZ"
+    ).replace(tzinfo=datetime.timezone.utc)
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    return (now - then).days
 
 
 # ── Records ──────────────────────────────────────────────────────────────────
@@ -662,7 +694,7 @@ def main(argv=None):
     # top-level option has to be typed before the subcommand, and every caller
     # here (wrapper script, tests, Benedict) writes it after.
     common = argparse.ArgumentParser(add_help=False)
-    common.add_argument("--csv", default=DEFAULT_CSV, help="series path")
+    common.add_argument("--csv", default=series_path(), help="series path")
 
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd")

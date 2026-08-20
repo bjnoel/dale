@@ -558,6 +558,62 @@ def m_revenuecat(_host=None, _key=None):
     return summary
 
 
+# How long a series may go without a capture before the digest says so rather
+# than reporting a quiet week. The capture runs weekly, so 10 days is one missed
+# run plus slack.
+RANK_STALE_DAYS = 10
+
+
+def m_rank(_host=None, _key=None):
+    """Store keyword rank movement, from the append-only series (DAL-257).
+
+    Same "external system" shape as m_revenuecat: underscore-defaulted args and
+    a deferred import, so a missing series surfaces through run_metric as an
+    error on the section rather than killing the whole digest at import time.
+
+    Movement, not 36 numbers. The first attempt at this was a pair of JSON files
+    someone had to remember to diff by hand, and nobody did.
+    """
+    sys.path.insert(0, SCRIPT_DIR)
+    import rank_history  # noqa: E402 - sibling module
+
+    path = rank_history.series_path()
+    records = rank_history.read(path)
+    if not records:
+        raise FileNotFoundError(f"no rank series at {path}")
+
+    out = {"path": path, "stores": {}, "stale": False, "age_days": None}
+    # The WORST store, not the best: if Play kept capturing and iOS stopped six
+    # weeks ago, a min() here would report the series as healthy and iOS's dead
+    # numbers would render as this week's news.
+    oldest = None
+    for store in rank_history.STORES:
+        result = rank_history.diff(records, store)
+        if result is None:
+            continue
+        age = rank_history.age_days(result["curr"])
+        for bucket in ("moved", "entered", "dropped"):
+            for item in result[bucket]:
+                item["line"] = rank_history.describe(item)
+        out["stores"][store] = {
+            "prev": result["prev"],
+            "curr": result["curr"],
+            "age_days": age,
+            "moved": result["moved"],
+            "entered": result["entered"],
+            "dropped": result["dropped"],
+            "flat_n": result["flat_n"],
+            "still_absent_n": result["still_absent_n"],
+            "unmeasured_n": len(result["unmeasured"]),
+        }
+        oldest = age if oldest is None else max(oldest, age)
+
+    out["age_days"] = oldest
+    # A stopped capture must read as "no capture", never as "no movement".
+    out["stale"] = oldest is None or oldest > RANK_STALE_DAYS
+    return out
+
+
 def m_purchase_reconciliation(host, key):
     """Cross-check `paywall_result` purchase outcomes against `purchase_succeeded`.
 
@@ -641,6 +697,31 @@ def m_backup(host, key):
 GREEN = "#2e7d32"
 RED = "#c62828"
 GREY = "#888"
+
+
+STORE_LABELS = {"appstore": "iOS", "play": "Play"}
+RANK_LIST_LIMIT = 5  # per bucket per store. The digest reports movement, and a
+                     # 36-line table is a table nobody reads.
+
+
+def _esc(text):
+    """Escape text we did not write.
+
+    Competitor app names come straight from the stores and are the only strings
+    in this digest with no author here. "Case Tracker for USCIS & NVC" is real.
+    """
+    return (str(text).replace("&", "&amp;")
+            .replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def _stamp(captured_at):
+    """`2026-08-13T01:56:00Z` -> `2026-08-13 01:56Z`.
+
+    Minutes, not just the date: the Play baseline and the Play day-0 capture are
+    the same date 59 minutes apart, and rendering both as "2026-08-13" would
+    read as a bug.
+    """
+    return captured_at[:16].replace("T", " ") + "Z"
 
 
 def _delta_str(delta):
@@ -741,6 +822,69 @@ def render(metrics):
             kv("  Counting people, not device ids", "no events recorded", GREY)
     else:
         err("Identity", idm["error"])
+
+    # Search rank. After Growth because a rank move is upstream of an install,
+    # and before Activation, which is about what people do once they arrive.
+    #
+    # metrics.get, not metrics[...]: the revenue tests hand-build a metrics dict
+    # without this key and a direct index would KeyError all of them.
+    rk = metrics.get("rank")
+    if rk:
+        section("Search rank (ASO)")
+
+        def rank_line(s, color=None):
+            line(f"    {s}")
+            c = f"color:{color};" if color else ""
+            html(f'<div style="font-family:monospace;font-size:12px;'
+                 f'margin-left:12px;{c}">{_esc(s)}</div>')
+
+        if not rk["ok"]:
+            err("Search rank", rk["error"])
+        else:
+            d = rk["data"]
+            if d["stale"]:
+                # A stopped capture must read as "no capture", never as a quiet
+                # week. Nothing below this line is this week's news.
+                age = d["age_days"]
+                when = "never" if age is None else f"{age} days ago"
+                kv("!! NO CAPTURE", f"oldest store capture is {when}; the weekly "
+                                    f"job may have stopped. Anything below is "
+                                    f"older news.", RED)
+            for store, s in d["stores"].items():
+                label = STORE_LABELS.get(store, store)
+                if s["prev"] is None:
+                    stale_note = ("" if s["age_days"] <= RANK_STALE_DAYS
+                                  else f" ({s['age_days']} days old)")
+                    kv(label, f"first capture {_stamp(s['curr'])}{stale_note}, "
+                              f"nothing to compare yet",
+                       GREY if s["age_days"] <= RANK_STALE_DAYS else RED)
+                    continue
+                fresh = s["age_days"] <= RANK_STALE_DAYS
+                kv(label,
+                   f"{_stamp(s['prev'])} -> {_stamp(s['curr'])}"
+                   + ("" if fresh else f"  ({s['age_days']} days old)"),
+                   None if fresh else RED)
+                movement = 0
+                for title, key, color in (("dropped", "dropped", RED),
+                                          ("entered", "entered", GREEN),
+                                          ("moved", "moved", None)):
+                    items = s[key]
+                    movement += len(items)
+                    for item in items[:RANK_LIST_LIMIT]:
+                        c = color
+                        if key == "moved":
+                            c = RED if item["delta"] > 0 else GREEN
+                        rank_line(item["line"], c)
+                    if len(items) > RANK_LIST_LIMIT:
+                        rank_line(f"...and {len(items) - RANK_LIST_LIMIT} more "
+                                  f"{title}", GREY)
+                if not movement:
+                    rank_line("no term moved beyond the noise band", GREY)
+                counts = (f"{s['flat_n']} flat, {s['still_absent_n']} still absent")
+                if s["unmeasured_n"]:
+                    # DEC-249: these did not move, they were never read.
+                    counts += f", {s['unmeasured_n']} NOT MEASURED"
+                rank_line(counts, RED if s["unmeasured_n"] else GREY)
 
     # Activation
     section("Activation")
@@ -1011,6 +1155,7 @@ def main():
         "paywall": run_metric(m_paywall, host, key),
         "purchases": run_metric(m_purchases, host, key),
         "revenuecat": run_metric(m_revenuecat),
+        "rank": run_metric(m_rank),
         "reconciliation": run_metric(m_purchase_reconciliation, host, key),
         "retention": run_metric(m_retention, host, key),
         "top_screens": run_metric(m_top_screens, host, key),
