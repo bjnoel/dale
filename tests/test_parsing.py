@@ -663,26 +663,83 @@ class VocabularyScopedOrnamentalGate(unittest.TestCase):
 class BidirectionalDash(unittest.TestCase):
     """"A - B" is not always species-then-variety."""
 
-    def test_a_category_on_the_left_no_longer_swallows_the_species(self):
-        """Two layers, and they do different jobs.
+    def test_a_group_heading_on_the_left_yields_no_cultivar_at_all(self):
+        """Nurseries that sort their catalogue alphabetically lead with the
+        grouping word, so "Tropical - Sapodilla" is a heading and a species,
+        not a species and a variety.
 
-        The parser's job is species attribution: "Tropical - Sapodilla" used to
-        parse as species "Tropical", which the taxonomy gate then dropped
-        whole, so the listing existed nowhere. It now resolves to Sapodilla.
-
-        "Tropical" is still a rubbish VARIETY name, and that is curation's job:
-        the shipped override file denies these, so no page and no alert button.
-        Both layers are asserted here so neither can be removed on the belief
-        that the other covers it.
+        This used to flip to (Sapodilla, Tropical) and rely on the deny list to
+        suppress the page. That was wrong twice over: it needed hand curation
+        for a shape the parser can recognise, and deny is blind to word order,
+        so switching off All Season Plants WA's heading also switched off
+        Daleys' real "Sapodilla - Tropical" cultivar.
         """
-        for title, slug in (("Tropical - Sapodilla", "sapodilla-tropical"),
-                            ("Tropical - Wampee", "wampee-tropical")):
+        for title in ("Tropical - Sapodilla", "Tropical - Wampee",
+                      "Tropical - Wax Jambu", "Daleys Special Deals - Jakfruit"):
             with self.subTest(title=title):
-                parsed = cp.parse_cultivar(title)
-                self.assertIsNotNone(parsed)
-                self.assertEqual(cp.canonicalize_species(parsed[0])[0].lower(),
-                                 slug.rsplit("-", 1)[0].replace("-", " "))
-                # ...and curation removes the page.
+                self.assertIsNone(cp.parse_cultivar(title))
+                self.assertIsNone(cp.product_variety_slug(title))
+
+    def test_a_reversed_compound_name_is_not_a_cultivar_of_its_own_tail(self):
+        """The dangerous half. In each of these the LEFT word is the head noun
+        of a compound common name, so the plant is a different species and
+        flipping files it under a fruit it is not: peach palm is not a peach,
+        lemon aspen is not a lemon, apple mint is not an apple.
+
+        Left unfixed that walks a herb or a palm straight through the DEC-195
+        taxonomy gate wearing a fruit species name. lemon-aspen, pineapple-sage
+        and orange-apple-cactus were all live /variety/ pages built this way.
+        """
+        for title in ("Palm - Peach", "Aspen - Lemon", "Mint - Apple",
+                      "Mint - Grapefruit", "Sage - Pineapple",
+                      "Turmeric - Orange", "Apple Cactus - Orange"):
+            with self.subTest(title=title):
+                self.assertIsNone(cp.product_variety_slug(title))
+
+    def test_refusing_is_authoritative_and_not_re_minted_by_the_relaxed_pass(self):
+        """The relaxed pass finds the species anywhere and reads the words on
+        the other side as the variety, which is right for "Akane Apple" and
+        wrong for "Aspen - Lemon" in exactly the same shape. The dash is the
+        only thing that separates them and only the strict pass sees it, so the
+        refusal has to stop the parse rather than fall through."""
+        self.assertIsNone(cp.parse_cultivar("Aspen - Lemon"))
+        self.assertEqual(cp.parse_cultivar("Akane Apple (medium)"), ("Apple", "Akane"))
+
+    def test_the_species_bucket_does_not_depend_on_this_branch(self):
+        """Refusing costs no stock attribution: species grouping is
+        stocklib.species_match's job, and it reads these titles correctly on
+        its own. Verified live 2026-08-20, All Season Plants WA's three
+        "Tropical - ..." listings are on the sapodilla, wampee and wax jambu
+        species pages while having no variety page."""
+        from stocklib.species_match import match_species, load_species_lookup
+        lookup = load_species_lookup()
+        for title, species in (("Tropical - Sapodilla", "Sapodilla"),
+                               ("Tropical - Wampee", "Wampee"),
+                               ("Tropical - Wax Jambu", "Wax Jambu")):
+            with self.subTest(title=title):
+                self.assertIsNone(cp.product_variety_slug(title))
+                self.assertEqual(match_species(title, lookup)["cn"], species)
+
+    def test_the_same_two_words_the_other_way_round_is_a_real_cultivar(self):
+        """Daleys' "Sapodilla - Tropical" is a Singapore selection sold beside
+        Krasuey, Sawo Manila, BKD110 and Prolific, and Benedict has bought one.
+        Word order is the whole difference, so both directions are pinned here
+        together or the next deny entry silently takes this page out again."""
+        self.assertEqual(cp.product_variety_slug("Sapodilla - Tropical"),
+                         "sapodilla-tropical")
+        self.assertEqual(cp.product_variety_slug("Sapodilla - Tropical (Large)"),
+                         "sapodilla-tropical")
+        self.assertNotIn("sapodilla-tropical", cp.load_variety_overrides()["deny"])
+
+    def test_the_deny_entries_that_still_guard_a_normal_order_listing_stay(self):
+        """Refusing the reversed shape does NOT make these unreachable: a plain
+        "Peach Palm" or "Apple Mint" listing still parses that way, so removing
+        them with the sapodilla one would have opened the hole it closed."""
+        for title, slug in (("Peach Palm", "peach-palm"),
+                            ("Apple Mint", "apple-mint"),
+                            ("Orange Turmeric", "orange-turmeric")):
+            with self.subTest(title=title):
+                self.assertEqual(cp.slugify(" ".join(cp.parse_cultivar(title))), slug)
                 self.assertIn(slug, cp.load_variety_overrides()["deny"])
                 self.assertIsNone(cp.product_variety_slug(title))
 

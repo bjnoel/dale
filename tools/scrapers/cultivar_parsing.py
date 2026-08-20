@@ -677,9 +677,60 @@ def parse_cultivar(title: str) -> tuple[str, str] | None:
     r = _strict_parse(title)
     cleaned = _clean_cultivar_parts(*r) if r else None
     if cleaned is None:
+        # A group-prefix title is REFUSED, not merely unparsed. The relaxed
+        # pass finds the species anywhere and takes the words on the other
+        # side as the variety, which is right for "Akane Apple" and wrong for
+        # "Aspen - Lemon" in exactly the same shape. The dash is what tells
+        # them apart, and only the strict pass can see it.
+        m = re.match(r'^(.+?)\s*[-\u2013\u2014]\s+(.+)$', title.strip())
+        if m and _is_group_prefix(m.group(1).strip(), m.group(2).strip()):
+            return None
         r = _relaxed_parse(title)
         cleaned = _clean_cultivar_parts(*r) if r else None
     return cleaned
+
+
+def _is_group_prefix(left: str, right: str) -> bool:
+    """True when "left - right" is a catalogue GROUP followed by a qualifier.
+
+    Nurseries that sort their catalogue alphabetically put the grouping word
+    first, so the left side of the dash is the heading and the right side
+    narrows it. That is the same shape as "Species - Variety", and the two are
+    told apart by one thing: whether the left side is a species we track.
+
+        Sapodilla - Tropical        left resolves  -> species then variety
+        Tropical - Sapodilla        left does not  -> group then species
+
+    Both orders are live today (Daleys and All Season Plants WA respectively)
+    and they mean different things. Reading the second as a variety used to
+    mint "Tropical" as a sapodilla cultivar, which collided with the real
+    Daleys cultivar of that name and had to be suppressed by hand in
+    variety_overrides.json.
+
+    Refusing is the whole answer, because the right side is a qualifier and
+    never a cultivar of the left side. Two ways that goes wrong if we flip:
+
+      - the left side is a catalogue section, so the variety is nonsense
+        ("Tropical - Wampee", "Daleys Special Deals - Jakfruit");
+      - the left side is the tail of a compound common name, so the plant is
+        a DIFFERENT species and the flip files it under a fruit it is not
+        ("Palm - Peach" is peach palm, "Aspen - Lemon" is lemon aspen,
+        "Mint - Apple" is apple mint, "Sage - Pineapple" is pineapple sage).
+
+    The second kind is the dangerous one: it walks a herb or an ornamental
+    straight through the DEC-195 taxonomy gate wearing a fruit species name.
+
+    Nothing is lost by refusing. Species attribution comes from
+    stocklib.species_match, not from here, so these products still count as
+    stock under whatever species that matcher picks.
+
+    The right side must be a species AND NOTHING ELSE (empty leftover).
+    Without that, "Mandevilla - Peach Sunrise" matches, because "Peach
+    Sunrise" hits the taxonomy on its leading word and leaves "Sunrise" over.
+    That slug is grandfathered and has live watchers.
+    """
+    r = canonicalize_species(right)
+    return canonicalize_species(left) is None and r is not None and not r[1]
 
 
 def _strict_parse(title: str) -> tuple[str, str] | None:
@@ -710,25 +761,13 @@ def _strict_parse(title: str) -> tuple[str, str] | None:
         m = re.match(r'^(.+?)\s*[-\u2013\u2014]\s*(.+)$', s)
         if m:
             species, variety = m.group(1).strip(), m.group(2).strip()
-            # "A - B" is not always species-then-variety. "Tropical - Sapodilla"
-            # is a CATEGORY then a species, and taking the left side as the
-            # species made it "Tropical", which the taxonomy gate then dropped
-            # entirely. Try the reverse orientation, but ONLY when the left
-            # side does not resolve and the right side does, so a title whose
-            # left side is a real species is never re-read.
+            # "A - B" is not always species-then-variety. When the left side
+            # is a catalogue heading rather than a species the title expresses
+            # no cultivar at all, so refuse it. See _is_group_prefix.
             # "Sapodilla Grafted - Krasuey" is untouched: its left side
             # resolves.
-            #
-            # The right side must be a species AND NOTHING ELSE (empty
-            # leftover). Without that, "Mandevilla - Peach Sunrise" flips,
-            # because "Peach Sunrise" matches the taxonomy on its leading word
-            # and leaves "Sunrise" over. That slug is grandfathered and has
-            # live watchers, so the loose version broke the one group this
-            # whole branch exists to protect.
-            right = canonicalize_species(variety)
-            if (canonicalize_species(species) is None
-                    and right is not None and not right[1]):
-                species, variety = variety, species
+            if _is_group_prefix(species, variety):
+                return None
     else:
         # Pipe separator, but only when the left side is a known species
         m = re.match(r'^(.+?)\s*\|\s*(.+)$', s)

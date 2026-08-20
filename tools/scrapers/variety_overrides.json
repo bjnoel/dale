@@ -28,7 +28,18 @@
     "",
     "Every deny entry below removes something that exists in live stock today.",
     "Entries the parser already handles were taken back out: a list that names",
-    "slugs which cannot occur reads like curation is happening when it is not."
+    "slugs which cannot occur reads like curation is happening when it is not.",
+    "",
+    "DENY IS BLIND TO WORD ORDER, so check both before adding one. A slug is",
+    "reached from every title shape that produces it, and two nurseries can",
+    "mean different things by the same two words. sapodilla-tropical was denied",
+    "for All Season Plants WA's \"Tropical - Sapodilla\" (a catalogue heading),",
+    "which also switched off Daleys' \"Sapodilla - Tropical\", a real Singapore",
+    "cultivar Benedict has bought. The group-prefix shape is now refused in",
+    "cultivar_parsing._is_group_prefix, so the deny was removed rather than",
+    "kept. Entries like peach-palm and apple-mint STAY: the reversed titles no",
+    "longer reach them, but a plain \"Peach Palm\" or \"Apple Mint\" listing",
+    "still would."
   ],
   "alias": {
     "almond-self-pollinating-paper-shell": "almond-self-pollinating-papershell",
@@ -55,7 +66,6 @@
     "miracle-fruit-tropical",
     "orange-turmeric",
     "peach-palm",
-    "sapodilla-tropical",
     "wampee-tropical",
     "wax-jambu-tropical"
   ]
