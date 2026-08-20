@@ -12682,3 +12682,100 @@ page that served Hetzner a different layout would have made every Sunday capture
 wrong.
 
 Only the Apple Search Ads signup genuinely needed a human, asked as DAL-286.
+
+## DEC-307 — 2026-08-20 — A rank is a position, not an audience
+
+**Context:** DEC-306 built the instrument that scores where TreeSmith sits in App
+Store search results after the rename. It cannot say whether anybody was looking.
+Both halves of DEC-247's theory need measuring, and the second half needs a
+denominator: how many impressions arrived, and what share of them came through App
+Store search rather than browse. If browse supplies most of our impressions then
+keyword rank is not our lever however well we rank, and the whole ASO programme is
+being scored on the wrong number.
+
+**Decision:** pull the App Store Discovery and Engagement report from the App Store
+Connect Analytics API weekly, aggregate impressions by `Source Type`, split on the
+iOS rename date, append to a series in `/opt/dale/data`, and render it in the Monday
+digest immediately below the rank section.
+
+**There is no per-search-term report, and the search stops here.** A
+ONE_TIME_SNAPSHOT request exposes 156 report types and the entire
+`APP_STORE_ENGAGEMENT` category is exactly five: Discovery and Engagement (Standard
+and Detailed), Web Preview Engagement (Standard and Detailed), and Retention
+Messaging. Enumerated against the live API and re-confirmed by the module's own
+`--list-reports`. Third-party claims that Apple's July 2026 per-search-term metrics
+are API-exportable refer to the App Store Connect web UI. `Source Type` is as close
+as the API gets. Written down so the next session does not spend an hour looking.
+
+**Three states must never render as a number**, and each of them would have:
+
+| state | means | must never read as |
+|---|---|---|
+| no instances | Apple has not generated the snapshot | zero impressions |
+| the trailing 3 days | Apple has not finished counting | a decline |
+| no complete post-rename day | too early to score the rename | a result |
+
+The first is not hypothetical: as of today the instances list is empty, which is the
+normal 24-48h state. `list_instances` raises `NotReady` rather than returning `[]`,
+because every caller is about to sum something and an empty sum is zero. Summed as
+zero it would say the rename killed our impressions. Same lineage as DEC-249.
+
+**Apple publishes the completeness lag twice and not identically.** The Analytics
+reports API help page says a day is complete two days after the reporting date; the
+Discovery and Engagement report's own page says "Completeness: Within three days".
+Three satisfies both, and it matches the observed consequence: the first complete
+post-rename day (2026-08-20) becomes readable on 2026-08-23, which is when a
+post-rename window first exists at all.
+
+**2026-08-19 belongs to neither window.** 1.0.10 went live at 13:13 UTC, so the day
+is part one listing and part the other. Assigning it to either side would flatter or
+damn the rename by accident, so it is excluded from both totals and reported on its
+own line.
+
+**The ONE_TIME_SNAPSHOT will stop, and a frozen series looks like a stable one.**
+Apple's ONGOING access type "generates reports on a recurring basis"; ONE_TIME_SNAPSHOT
+returns all historical data once and then stops. The account has exactly one request
+and it is the snapshot, so the weekly job would eventually re-read the same frozen
+instance forever. The digest reports the age of the newest pull and renders "NO PULL"
+in red past 10 days. Creating an ONGOING request is a POST against Benedict's Apple
+account and has not been done here; when it exists, `ASC_REQUEST_ID` is the only
+change, because the report is found by name.
+
+**Report ids are request-scoped and are never hardcoded.** `r15-<request-uuid>` is
+valid only for the request that made it. Config carries the REQUEST id and the report
+NAME; the id is rediscovered every run. A hardcoded id works right up until a second
+request exists and then reads a report that does not.
+
+**Apple's own guidance is to use Standard, not Detailed.** `Source Type` is in both;
+Detailed's unique fields are Page Title, Source Info and Campaign, none of which this
+reads, and Detailed carries extra privacy measures that could suppress rows at 43
+MAU. Detailed is the default because it is the report the existing request was built
+around, and switching is one line in the env file. Flagged rather than silently
+overridden.
+
+**The series is not committed, unlike the rank series.** They are different kinds of
+artefact. `data/treesmith-rank-history.csv` records iTunes search results that no API
+will hand back. This is a cache of a report Apple holds back to 2024-01-01 and will
+regenerate on request. Committing it would leave `/opt/dale/repo` dirty every week
+and break the next autonomous pull, in exchange for a recovery path we already have.
+It lives in `/opt/dale/data`, which `weekly_backup.sh` covers, and needs no
+commit-and-push wrapper at all.
+
+**A renamed column must not default to zero.** `resolve_columns` matches leniently on
+case and spacing and raises naming the header it actually received. `row.get("Counts", 0)`
+would turn a renamed column into a clean-looking series of zeroes, which is the
+failure this business shipped once already with a renamed PostHog event.
+
+**No key material and no key ids in anything committed.** The repo is public and
+`config_scan.py` aborts the weekly snapshot on a single literal credential. Config is
+entirely environment-driven behind `/opt/dale/secrets/appstoreconnect.env`, following
+`posthog.env` and `revenuecat.env`, with a test as the standing check.
+
+**`infrastructure/crontab.txt` was not touched**, for the same reason as DEC-306. The
+line is handed to Benedict alongside the rank one so both go in with a single
+`crontab -e`.
+
+**Verification:** the credential chain, report discovery by name and the NOT READY
+path all confirmed live against the API today. Full suite 3,261 passing, 1 skipped.
+Committed locally, nothing pushed and nothing deployed. Nothing downstream can be
+checked until Apple generates the instance, expected 2026-08-21 or 2026-08-22.
