@@ -50,6 +50,21 @@ GSC_LAG_DAYS = 3
 # before this are the "before" arm; the split is stored, not guessed at read time.
 CHANGE_DATE = "2026-08-20"
 
+# How many of the most recent pre-change readings form the comparison band.
+#
+# NOT the whole history, and this is the difference between a measurement and a
+# decoration. The 2026-08-20 backfill showed the series is strongly
+# non-stationary: contested share was 0.00% every week through May, first moved
+# on 2026-06-08, and reached ~2% by August. That is not noise, it is the growing
+# guides and variety descriptions landing 2026-06-01 to 06-12 and lifting species
+# pages into SERPs the compare pages already held.
+#
+# Over all 16 backfilled weeks the 7d band is -0.94% to 3.50%. A lower bound
+# below zero cannot be crossed, so no drop of any size could ever have been
+# flagged and the check would have reported "normal" forever. Over the most
+# recent 8 it is 1.01% to 3.49%, which a real drop can leave.
+BAND_READINGS = 8
+
 FIELDS = [
     "captured_at", "window_days", "start", "end",
     "total_queries", "contested_queries", "contested_share",
@@ -188,7 +203,10 @@ def summarise(series, window):
     """
     rows = sorted((r for r in series if int(r["window_days"]) == window),
                   key=lambda r: r["end"])
-    before = [float(r["contested_share"]) for r in rows if r["end"] < CHANGE_DATE]
+    # Only the most recent BAND_READINGS before the change: the series trends,
+    # so the full history describes 2026-05 rather than the state we changed.
+    before = [float(r["contested_share"]) for r in rows
+              if r["end"] < CHANGE_DATE][-BAND_READINGS:]
     after = [r for r in rows if r["end"] >= CHANGE_DATE]
     if not after or len(before) < 3:
         return None
@@ -202,6 +220,7 @@ def summarise(series, window):
     return {
         "window": window, "end": latest["end"], "share": share,
         "before_mean": mean, "before_sd": sd, "outside": outside,
+        "band_low": max(0.0, mean - 2 * sd), "band_high": mean + 2 * sd,
         "direction": "down" if share < mean else "up",
         "n_before": len(before),
         "species_better": int(latest["species_better"]),
@@ -210,7 +229,8 @@ def summarise(series, window):
 
 
 def describe(s):
-    band = f"pre-change {s['before_mean'] * 100:.2f}% +/- {s['before_sd'] * 100:.2f} (n={s['n_before']})"
+    band = (f"pre-change band {s['band_low'] * 100:.2f}% to {s['band_high'] * 100:.2f}% "
+            f"(last {s['n_before']} readings before the change)")
     verdict = (f"OUTSIDE the band, {s['direction']}" if s["outside"]
                else "inside normal week-to-week variation")
     return (f"[{s['window']}d to {s['end']}] contested share {s['share'] * 100:.2f}%, "

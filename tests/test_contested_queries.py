@@ -164,6 +164,25 @@ class SummariseTests(unittest.TestCase):
         self.assertEqual(s["direction"], "down")
         self.assertIn("OUTSIDE the band", cq.describe(s))
 
+    def test_the_band_ignores_history_older_than_the_state_we_changed(self):
+        """The series trends hard: 0.00% every week through May, ~2% by August.
+
+        Averaging all of it describes 2026-05 rather than what we changed, and
+        the 2026-08-20 backfill made that concrete: over 16 weeks the 7d band is
+        -0.94% to 3.50%, a lower bound no drop can cross. The check would have
+        reported "normal" forever.
+        """
+        old = [0.0] * 8                       # the dead months
+        recent = [0.021, 0.019, 0.023, 0.018, 0.033, 0.032, 0.018, 0.016]
+        s = cq.summarise(self._series(old + recent, [0.005]), 7)
+        self.assertEqual(s["n_before"], cq.BAND_READINGS)
+        self.assertGreater(s["band_low"], 0.0, "a band that starts at zero can never flag a drop")
+        self.assertTrue(s["outside"], "a drop to a third of the recent level was not flagged")
+
+    def test_the_band_never_reports_a_negative_share(self):
+        s = cq.summarise(self._series([0.01, 0.03, 0.005, 0.04], [0.02]), 7)
+        self.assertGreaterEqual(s["band_low"], 0.0)
+
     def test_a_flat_before_arm_cannot_manufacture_a_result(self):
         # Zero spread would make any difference "significant" on a naive test.
         s = cq.summarise(self._series([0.05, 0.05, 0.05], [0.05]), 7)
