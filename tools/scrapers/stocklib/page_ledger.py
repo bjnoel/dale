@@ -65,11 +65,18 @@ STATES = (LIVE, TOMBSTONE, REDIRECT, RETIRED)
 
 FAMILY_VARIETY = "variety"
 FAMILY_SPECIES_STATE = "species-state"
+# Compare pages differ from the other two families in one way that matters to
+# the state machine: they always have a guaranteed-live parent. Every enabled
+# species has a /species/<slug>.html page (122 of 122 on 2026-08-20), so a
+# compare page that stops being generated has an obvious successor and its
+# terminal state is REDIRECT, never TOMBSTONE. build_compare_pages.py makes
+# that substitution; decide_night stays family-agnostic.
+FAMILY_COMPARE = "compare"
 
 # Last-known rows kept per page, for the tombstone table. A variety page lists
 # one cultivar at a handful of nurseries; a combo page lists up to 60 products
 # spanning many cultivars, matching that page's own render cap.
-ROW_CAP = {FAMILY_VARIETY: 12, FAMILY_SPECIES_STATE: 60}
+ROW_CAP = {FAMILY_VARIETY: 12, FAMILY_SPECIES_STATE: 60, FAMILY_COMPARE: 60}
 DEFAULT_ROW_CAP = 12
 
 # Fields a row may carry. Anything else the builder holds is not the ledger's

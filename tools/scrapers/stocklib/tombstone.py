@@ -208,7 +208,8 @@ def stub_head_extras(target_url: str) -> str:
 
 def render_stub(*, head: str, header: str, footer: str, title: str,
                 target_title: str, target_href: str,
-                content_max_width: str = "max-w-3xl") -> str:
+                content_max_width: str = "max-w-3xl",
+                heading: str | None = None, lede: str | None = None) -> str:
     """A redirect stub: 200, meta refresh, and a visible link.
 
     The visible link is not decoration. A stub returns 200, so anyone with meta
@@ -223,11 +224,18 @@ def render_stub(*, head: str, header: str, footer: str, title: str,
     "is this a 404" now says fine. If Search Console still shows the old URLs
     after 60 days, escalate to real 301s.
     """
+    # heading/lede default to the variety wording this stub was written for,
+    # byte for byte, so the variety goldens are unaffected. A compare page
+    # redirects for a different reason (too few nurseries left to compare, not
+    # a rename) and saying "we track this variety under a single name now"
+    # there would be false. Copy is a parameter; the shape is not.
     return render_template(
         "redirect_stub.html.j2",
         head=head, header=header, footer=footer,
         title=title, target_title=target_title, target_href=target_href,
         content_max_width=content_max_width,
+        heading=heading or f"{title} is now listed as {target_title}",
+        lede=lede or "We track this variety under a single name now. Taking you there.",
     )
 
 
