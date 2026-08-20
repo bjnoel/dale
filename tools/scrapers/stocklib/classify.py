@@ -38,6 +38,7 @@ title).
 from __future__ import annotations
 
 import re
+from functools import lru_cache
 
 from .taxonomy import ENABLED_CATEGORIES
 
@@ -55,7 +56,15 @@ TRUE_JUNK = frozenset({
     "insect killer", "insecticide", "irrigation", "label", "labels",
     "mushroom kit", "naturalure", "neem oil", "orchard kit", "osmocote",
     "pest spray", "plant food", "plant label", "planter bag", "poss-off",
-    "postage",
+    # "postage" was removed 2026-08-20. Every one of its 13 live matches was a
+    # real fruit tree: heaven-on-earth suffixes citrus titles with "QLD
+    # POSTAGE ONLY" as a shipping note, so the keyword had a 100%
+    # false-positive rate and cost us 13 citrus trees (Blood Orange Cara Cara,
+    # two Finger Limes, Imperial Mandarin, Key Lime, Meyer Lemon, Lemonade,
+    # Kaffir Lime, Tahitian Lime, Ponkan Mandarin, two Pomelos, Tangelo
+    # Minneola). Word boundaries do NOT save it, because "postage" is a whole
+    # word there. "shipping", "delivery", "delivery charge" and "freight" stay
+    # and still catch an actual postage line item.
     "potting mix", "powerfeed", "pruning", "resource book", "richgro",
     "rubber hook", "saucer", "searles", "searles liquid", "seasol",
     "seaweed", "seaweed solution", "secateur", "secateurs", "sharp shooter",
@@ -63,7 +72,12 @@ TRUE_JUNK = frozenset({
     "starter kit", "support", "terracotta", "ticket", "tools",
     "dwarfing tool", "tree guard",
     "tree sealant", "tree stake",
-    "tree tube", "weed killer", "white oil", "wire", "workshop",
+    # "wire" removed 2026-08-20 for the same reason: 4 live matches, 4 real
+    # plants (Barbed Wire Grass, Wire Netting Bush x2, Wire Vine), 0 junk.
+    # They are ornamentals, so the per-nursery fruit filter is what actually
+    # keeps them off the site; the junk gate was taking the credit for a
+    # decision it was getting right by accident.
+    "tree tube", "weed killer", "white oil", "workshop",
     "worm castings", "yates",
 })
 
@@ -120,10 +134,56 @@ NON_PLANT_KEYWORDS = derived_non_plant_keywords()
 _SEED_RE = re.compile(r"\bseeds?\b")
 
 
+@lru_cache(maxsize=8)
+def _keyword_pattern(keywords: frozenset[str]) -> re.Pattern:
+    """One alternation regex per keyword set, matched on word boundaries with
+    an optional trailing plural.
+
+    The boundaries are the point. Plain substring matching junked real plants
+    whose names merely contain a keyword, and the precedent was already in the
+    tree: bare "tool" was removed once because it ate Daleys' "Strawberry -
+    Toolangi Choice". That fix was never generalised, so the same class of
+    casualty was still live on 2026-08-20:
+
+        Grevillea 'Ellabella' - Large            "ellabella" contains "label"
+        Peperomia Red Stem (Peperomia glabella)  "glabella"  contains "label"
+        Black Locust Frisia (Robinia pseudoacacia)  contains "acacia"
+        Jack Pine (Pinus banksiana)                 contains "banksia"
+        Flax Lily Seaspray (Dianella revoluta)      contains "spray"
+
+    The optional plural is NOT decoration. Without it, making the match
+    word-aware would have leaked seven real junk products back onto the site,
+    because the keywords are singular and the products are not: "bonsai bag"
+    stops matching "Bonsai Bags 15 litre", "grow bag" stops matching "Woven
+    Planter Grow Bags", "planter bag" stops matching "Planter Bags - 4 Litre
+    x 25". Measured on the live catalogue, word-aware alone freed 12 titles of
+    which 7 were genuine junk; word-aware plus the plural frees exactly the 5
+    real plants above and nothing else.
+
+    Multi-word entries stay phrase matches, which falls out of the same
+    pattern: "gift card" and "potting mix" match as written.
+    """
+    alternation = "|".join(re.escape(kw) for kw in sorted(keywords, key=len, reverse=True))
+    return re.compile(r"(?<!\w)(?:" + alternation + r")s?(?!\w)")
+
+
+def matches_keyword(title: str, keywords) -> bool:
+    """True if the title contains any of `keywords` as a whole word or phrase.
+
+    Shared by both junk-filtering sites. build-dashboard.py inlined its own
+    `any(kw in title_lower for kw in ...)` and never called is_real_product at
+    all, so fixing only this module left the homepage dropping the same
+    products. It takes the keyword set as an argument because the two sites
+    legitimately use different sets: the dashboard exempts native keywords
+    (DEC-200 P1.5) and the variety/species/compare surfaces do not.
+    """
+    return bool(_keyword_pattern(frozenset(keywords)).search(title.lower()))
+
+
 def is_junk_keyword(title: str) -> bool:
-    """True if the title contains a non-plant junk keyword (substring match)."""
-    tl = title.lower()
-    return any(kw in tl for kw in NON_PLANT_KEYWORDS)
+    """True if the title contains a non-plant junk keyword (whole word or
+    phrase, not a substring)."""
+    return matches_keyword(title, NON_PLANT_KEYWORDS)
 
 
 def is_seed_packet(title: str) -> bool:

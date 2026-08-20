@@ -213,6 +213,31 @@ Blood Orange Fruit Tree Cara Cara (Already Fruiting) QLD POSTAGE ONLY
 The precedent is in memory: bare `tool` was removed once because it ate Toolangi
 strawberry. The same fix was never generalised.
 
+**Correction, measured 2026-08-20 while implementing 1.3.** Three of the four
+casualties above are not substring matches at all, and word-awareness does not fix them:
+`spray` in `Sea Spray`, `wire` in `Wire Vine` and `postage` in `QLD POSTAGE ONLY` are all
+whole words. Only `Ellabella` was a true substring casualty. The real breakdown, over
+14,751 distinct live titles:
+
+- **Word-awareness frees exactly 5 titles**, all ornamentals that the per-nursery fruit
+  filter drops anyway: `Grevillea 'Ellabella'` and `Peperomia glabella` (`label`),
+  `Robinia pseudoacacia` (`acacia`), `Pinus banksiana` (`banksia`), `Dianella` cv
+  `Seaspray` (`spray`).
+- **The plural is load-bearing and was not in the plan.** Word-awareness alone frees 12
+  titles, of which **7 are genuine junk** that would have leaked onto the site, because
+  the keywords are singular and the products are not: `bonsai bag` stops matching
+  `Bonsai Bags 15 litre`, `grow bag` stops matching `Woven Planter Grow Bags`. The
+  predicate therefore matches an optional trailing `s`, which brings the count back to 5.
+- **The real fruit recovery in 1.3 came from auditing the keywords, not from the match
+  mode.** `postage` had a **100% false-positive rate**: all 13 live matches were real
+  citrus at heaven-on-earth, which suffixes titles with `QLD POSTAGE ONLY` as a shipping
+  note. Removing it recovers 13 trees, more than 1.1 did. `wire` was 4-for-4 false
+  positives too (Barbed Wire Grass, Wire Netting Bush x2, Wire Vine) and was removed,
+  though all four are ornamentals so nothing new reaches the site. `spray` stays: it has
+  four genuine junk matches and its false positives are ornamentals.
+
+So 1.3 is two fixes, not one, and the more valuable half is the keyword audit.
+
 ### 2f. Daleys changed data source today and tripled
 
 ```

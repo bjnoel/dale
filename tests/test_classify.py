@@ -146,5 +146,126 @@ class SeedPacketTest(unittest.TestCase):
         self.assertFalse(is_real_product("Chilli Seeds Packet"))
 
 
+
+class WordAwareJunkTest(unittest.TestCase):
+    """1.3: junk keywords matched as substrings, junking real plants whose
+    names merely contain one. Precedent: bare "tool" was removed once because
+    it ate "Strawberry - Toolangi Choice"; the fix was never generalised.
+    Every title below was live on 2026-08-20.
+    """
+
+    def test_substring_casualties_are_kept(self):
+        for title in ("Grevillea 'Ellabella' - Large",              # label
+                      "Peperomia Red Stem (Peperomia glabella)",    # label
+                      "Black Locust Frisia (Robinia pseudoacacia)", # acacia
+                      "Jack Pine (Pinus banksiana)",                # banksia
+                      "Flax Lily Seaspray (Dianella revoluta)"):    # spray
+            with self.subTest(title=title):
+                self.assertTrue(is_real_product(title))
+
+    def test_toolangi_still_safe(self):
+        self.assertTrue(is_real_product("Strawberry - Toolangi Choice"))
+
+    def test_plural_junk_still_junked(self):
+        """The optional plural is load-bearing. Word boundaries alone would
+        have leaked these seven back onto the site, because the keywords are
+        singular and the products are not.
+        """
+        for title in ("Bonsai Bags 15 litre", "Bonsai Bags 75 litre",
+                      "Planter Bags - 4 Litre x 25", "Woven Planter Grow Bags",
+                      "Grow Bag With Handles 45 Litre"):
+            with self.subTest(title=title):
+                self.assertFalse(is_real_product(title))
+
+    def test_multi_word_entries_stay_phrase_matches(self):
+        for title in ("$100 Gift Card", "Good Earth Premium Potting Mix",
+                      "Exclusion Net - 6m x 6m", "Mushroom Kit - Blue Oyster",
+                      "Grafting Tape - Parafilm"):
+            with self.subTest(title=title):
+                self.assertFalse(is_real_product(title))
+
+    def test_ordinary_junk_unaffected(self):
+        for title in ("Irrigation 12mm connector", "Grafting Workshop",
+                      "1L Searles Ecofend", "Bug Beater - Natural Pyrethrum Spray 1L",
+                      "Biochar (1L)", "Dinofert Organic Complete Fertilizer"):
+            with self.subTest(title=title):
+                self.assertFalse(is_real_product(title))
+
+
+class PostageKeywordTest(unittest.TestCase):
+    """"postage" had a 100% false-positive rate on the live catalogue: all 13
+    matches were real citrus trees at heaven-on-earth, which suffixes titles
+    with "QLD POSTAGE ONLY" as a shipping note.
+
+    Word boundaries do NOT fix this one, because "postage" is a whole word
+    there. That is the point of pinning it separately: 1.3's word-awareness
+    and 1.3's keyword removal are two different fixes for two different bugs,
+    and the audit doc originally attributed all four of its casualties to the
+    first.
+    """
+
+    def test_qld_postage_only_citrus_recovered(self):
+        for title in (
+            "Blood Orange Fruit Tree Cara Cara (Already Fruiting) QLD POSTAGE ONLY",
+            "Finger Lime Tree Jali Red MARCOT (QLD POSTAGE ONLY)",
+            "Imperial Mandarin (Already Fruiting) QLD POSTAGE ONLY",
+            "Key Lime Tree (Already Fruiting) QLD POSTAGE ONLY",
+            "Lemon Tree Meyer (Already Fruiting) QLD POSTAGE ONLY",
+            "Lime Tree KAFFIR Already Fruiting (QLD POSTAGE ONLY)",
+            "Pink Pomelo Fruit Tree (Already Fruiting) QLD POSTAGE ONLY",
+            "Tangelo Minneola Tree (Already Fruiting) QLD POSTAGE ONLY",
+        ):
+            with self.subTest(title=title):
+                self.assertTrue(is_real_product(title))
+
+    def test_actual_shipping_line_items_still_junked(self):
+        """The keywords that earn their place stay."""
+        for title in ("Same Day Delivery", "Shipping", "Freight Charge",
+                      "Delivery Charge"):
+            with self.subTest(title=title):
+                self.assertFalse(is_real_product(title))
+
+    def test_sea_spray_and_wire_vine_are_not_fixed_by_word_awareness(self):
+        """Honest record of what 1.3 does NOT do. The audit listed these as
+        substring casualties, but "spray" and "wire" are whole words in them.
+
+        "spray" stays in TRUE_JUNK: it has four genuine junk matches (White
+        Oil Spray, Bug Beater, Ecofend) and its false positives are
+        ornamentals that the per-nursery fruit filter drops anyway.
+        "wire" was removed, because all four of its live matches were real
+        plants, but they are ornamentals so nothing new reaches the site.
+        """
+        self.assertFalse(is_real_product("Grevillea 'Sea Spray'"))
+        self.assertTrue(is_real_product("Wire Vine (Muehlenbeckia complexa)"))
+
+
+class DashboardJunkSiteTest(unittest.TestCase):
+    """The second junk site. build-dashboard.py:474 inlined its own substring
+    test over its own keyword set and never called is_real_product, so fixing
+    classify.py alone left the homepage dropping the same products.
+    """
+
+    def test_dashboard_uses_the_shared_predicate(self):
+        import importlib
+        dashboard = importlib.import_module("build-dashboard")
+        from stocklib.classify import matches_keyword
+        self.assertIs(dashboard.matches_keyword, matches_keyword)
+
+    def test_dashboard_keyword_set_is_word_aware_too(self):
+        import importlib
+        dashboard = importlib.import_module("build-dashboard")
+        from stocklib.classify import matches_keyword
+        kws = dashboard.DASHBOARD_JUNK_KEYWORDS
+        # freed by word-awareness on the dashboard path specifically
+        self.assertFalse(matches_keyword("Grevillea 'Ellabella' - Large", kws))
+        self.assertFalse(matches_keyword("Peperomia Red Stem (Peperomia glabella)", kws))
+        # recovered by the postage removal, on the dashboard path
+        self.assertFalse(matches_keyword(
+            "Lemon Tree Meyer (Already Fruiting) QLD POSTAGE ONLY", kws))
+        # still junk, including the plural
+        self.assertTrue(matches_keyword("Bonsai Bags 15 litre", kws))
+        self.assertTrue(matches_keyword("$100 Gift Card", kws))
+
+
 if __name__ == "__main__":
     unittest.main()

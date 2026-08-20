@@ -18,7 +18,8 @@ from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_header, render_footer, render_treesmith_promo, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
-from stocklib.classify import CATEGORY_KEYWORDS, TRUE_JUNK, is_seed_packet
+from stocklib.classify import (CATEGORY_KEYWORDS, TRUE_JUNK, is_seed_packet,
+                                matches_keyword)
 from stocklib.taxonomy import enabled_species, load_species
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.category_ui import category_keys, CATEGORY_BADGE_CSS
@@ -470,8 +471,13 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 continue
 
             # Skip items matching non-plant keywords in title (shared list;
-            # natives deliberately exempt, see DASHBOARD_JUNK_KEYWORDS)
-            if any(kw in title_lower for kw in DASHBOARD_JUNK_KEYWORDS):
+            # natives deliberately exempt, see DASHBOARD_JUNK_KEYWORDS).
+            # This line inlined its own substring test and never called
+            # is_real_product at all, so the homepage kept dropping products
+            # that classify.py had already been fixed for. matches_keyword is
+            # the shared word-aware predicate; the keyword SET still differs
+            # between the two sites, which is why it is an argument.
+            if matches_keyword(title, DASHBOARD_JUNK_KEYWORDS):
                 continue
 
             # Skip seed packets (not nursery-grown trees/plants)
