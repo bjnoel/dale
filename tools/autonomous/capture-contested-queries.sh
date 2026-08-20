@@ -48,16 +48,26 @@ log "$(echo "$OUT" | tr '\n' ' ')"
 
 # Only commit when the series actually grew. Re-running on the same day appends
 # nothing (append() dedupes on window+end) and should stay silent.
-if git diff --quiet -- "$CSV_REL"; then
+#
+# Staged first, and the emptiness test is against the INDEX, not the worktree.
+# `git diff --quiet -- <path>` reports an untracked file as unchanged, so on the
+# first ever run this said "series unchanged" about a file it had just created
+# and the series would never have been committed at all. Caught by running the
+# wrapper by hand on 2026-08-20, when the backfilled CSV was still untracked.
+#
+# `git add -- <path>` and `git commit -- <path>` are both pathspec-limited on
+# purpose: three writers share this checkout, and a bare `git commit` would
+# sweep whatever another session happened to have staged.
+git add -- "$CSV_REL"
+if git diff --cached --quiet -- "$CSV_REL"; then
     log "series unchanged; nothing committed"
 else
-    ROWS=$(git diff --numstat -- "$CSV_REL" | awk '{print $1}')
-    git add "$CSV_REL"
+    ROWS=$(git diff --cached --numstat -- "$CSV_REL" | awk '{print $1}')
     if git commit -q -m "data: contested-query reading $(date -u +%Y-%m-%d)
 
 $ROWS row(s) appended to $CSV_REL.
 
-Automated by capture-contested-queries.sh (DEC-309, DAL-287)."; then
+Automated by capture-contested-queries.sh (DEC-309, DAL-287)." -- "$CSV_REL"; then
         # Three writers push to origin/main, so a rejection is routine. A commit
         # left local breaks the next autonomous session's pull.
         source "$REPO/tools/autonomous/git_sync.sh"
