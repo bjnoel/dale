@@ -288,6 +288,56 @@ against the include list, exactly as `docs/scraper-coverage-audit.md` section 4 
 at build time rather than scrape time. The 15 unconfigured nurseries default to open and
 are not at risk of dropping fruit.
 
+**1.2 findings, measured 2026-08-20.** Only **three** of the twelve configured
+entries are restrictive at all: `ladybird` (tags), `daleys` (categories) and
+`forever-seeds` (title_include). The other nine are `mode: "all"` and cannot drop
+anything, and the 15 unconfigured nurseries default open. So the audit surface was three
+nurseries, not twelve.
+
+`daleys`, 1,998 live products, 785 dropped:
+
+```
+X  602  ''                            no category at all  -> see below, this is 1.5
+X   76  'Ornamental Native & Exotic'  correctly out of scope
+X   45  'Gardening Accessories'       correctly junk
+X   36  'Rainforest Trees'            deliberately left out, see the Fig landmine
+X   20  'Farm and Forestry Trees'     correctly out of scope
+X    5  'Specials'                    FIXED, a real fruit tree was hiding here
+X    1  'Trees and Plants/.../Palm Trees'
+```
+
+- **`Specials` is a merchandising bucket, not a taxonomy one, and it replaces the
+  product's real category rather than adding to it.** A fruit tree put on special
+  therefore dropped off treestock entirely, which is backwards: a discounted rare fruit
+  tree is the most interesting event we have, and it is what feeds the price-drop alerts.
+  Live it held `Papaya - Broad Leaf` (resolves to Papaya) alongside a gift voucher, an
+  End Stop Terminator and a River Red Gum. The junk gate already drops all three, so the
+  bucket is safe to include and leans on the gate downstream by design. Fixed.
+
+- **`Rainforest Trees` is deliberately NOT included, and the reason is 1.6a's bug class
+  wearing a different hat.** The bucket looks in scope: Blue Quandong, Candle Nut, Native
+  Ginger, Brown Tamarind. It also holds `Fig - Small Leaved` and `Fig - White`, which are
+  rainforest shade figs (*Ficus obliqua*, *Ficus virens*), and `match_title` resolves both
+  to **Fig**. Including the bucket mints them as edible-fig cultivars on `/variety/fig`.
+  Revisit only behind an ornamental guard on the `species_match` path.
+
+- **The 602 empty-category rows are a registry gap, not a filter gap, and this reorders
+  the value of 1.5.** The CSV feed carries no category column, so
+  `csv_feed_scraper.CategoryResolver` falls back to the frozen url map the HTML scraper
+  left behind, then to our own species taxonomy, then gives up. 514 of the 602 survive
+  `is_real_product`, and among them are `Achacha`, `Ambarella`, `Amla`, `Bael`,
+  `African Breadfruit` and `Alupag`, all of which `match_title` returns `None` for. So
+  **1.5 is a retention lever for daleys, not only a classification one**: each registry
+  record added makes the resolver return `Fruit and Nut Trees` and the product appears.
+  Admitting `""` here instead would let in Agapanthus, Aspen, African daisy and nine gift
+  vouchers.
+
+`forever-seeds`, 82 live products, 36 pass. Everything it drops that is also a real
+product is a herb (spearmint, oregano, patchouli, Mexican sawtooth coriander). Out of
+scope for a fruit site and Phase 2's question, not Phase 1's. Note the inconsistency
+recorded rather than fixed: `daleys` includes `Herbs, Spices & Perennial Vegetables`
+while `forever-seeds` excludes herbs. Phase 2 should settle which is right.
+
 **1.3 Make junk matching word-aware, in both places that do it.** Token boundaries rather
 than substrings. Keep the multi-word entries (`gift card`, `potting mix`) as phrase
 matches. Two call sites, and fixing one is not enough:

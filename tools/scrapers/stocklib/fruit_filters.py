@@ -41,7 +41,26 @@ FRUIT_FILTERS = {
             "Fruit and Nut Trees", "Fruit Trees/",
             "Bush Food Plants",
             "Herbs, Spices & Perennial Vegetables",
+            # "Specials" is a merchandising bucket, not a taxonomy one, and it
+            # REPLACES the product's real category rather than adding to it.
+            # So a fruit tree put on special used to vanish from treestock,
+            # which is exactly backwards: a discounted rare fruit tree is the
+            # most interesting event we have and it is what feeds the
+            # price-drop alerts. Mixed bucket by nature, so it leans on the
+            # junk gate downstream rather than on this filter.
+            "Specials",
         ],
+        # Deliberately NOT included, see tests/test_fruit_filters.py:
+        #   "Rainforest Trees"  holds "Fig - Small Leaved" and "Fig - White",
+        #                       rainforest shade figs that species_match
+        #                       resolves to Fig. Including them mints bogus
+        #                       cultivars on /variety/fig. Needs an ornamental
+        #                       guard on that path first (1.6a's bug class).
+        #   ""                  602 live rows with no category, because the CSV
+        #                       feed carries no category column. The fix is to
+        #                       grow fruit_species.json so csv_feed_scraper's
+        #                       CategoryResolver can resolve them (1.5), not to
+        #                       admit every uncategorised row here.
     },
     "primal-fruits": {
         "mode": "all",

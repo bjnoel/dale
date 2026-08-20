@@ -117,6 +117,107 @@ class FruitFiltersTest(unittest.TestCase):
             {"title": "Pecan Riverside", "tags": ["Nut Trees"]},
             "ladybird"))
 
+    # --- 1.2: build-time audit of the other configured filters -------------
+    # Of the 12 configured nurseries only three are restrictive (ladybird
+    # tags, daleys categories, forever-seeds title_include); the other nine
+    # are mode "all" and cannot drop anything. Measured against live
+    # snapshots on 2026-08-20.
+
+    def test_daleys_specials_is_a_merchandising_bucket_not_a_category(self):
+        """Daleys' "Specials" REPLACES the taxonomy category rather than
+        adding to it, so a fruit tree put on special dropped off treestock
+        entirely. That is backwards: a discounted rare fruit tree is the most
+        interesting event we have, and it is what feeds the price-drop alerts.
+
+        Live on 2026-08-20 the bucket held 5 products, one of them a real
+        tree ("Papaya - Broad Leaf", which resolves to Papaya).
+        """
+        self.assertTrue(is_fruit_product(
+            {"title": "Papaya - Broad Leaf", "category": "Specials"}, "daleys"))
+
+    def test_daleys_specials_junk_still_dropped_downstream(self):
+        """Specials is a mixed bucket, so it leans on the junk gate rather
+        than on the category filter. The other four live members must not
+        reach the site.
+        """
+        import daily_digest
+        for title in ("$50 Gift Voucher by Email",
+                      "End Stop Terminator 12mm",
+                      "Eucalyptus - River Red Gum"):
+            with self.subTest(title=title):
+                self.assertFalse(daily_digest._digest_product_filter(
+                    {"title": title, "category": "Specials"}, "daleys"))
+        self.assertTrue(daily_digest._digest_product_filter(
+            {"title": "Papaya - Broad Leaf", "category": "Specials"}, "daleys"))
+
+    def test_daleys_rainforest_trees_stays_excluded(self):
+        """Deliberately NOT included, and the reason is a landmine.
+
+        "Rainforest Trees" holds 36 products including Blue Quandong, Candle
+        Nut and Native Ginger, which look in scope. It also holds
+        "Fig - Small Leaved" and "Fig - White", rainforest shade figs
+        (Ficus obliqua, Ficus virens) that species_match resolves to **Fig**.
+        Including the bucket would mint them as edible-fig cultivars on
+        /variety/fig. Same bug class as the ornamental crabapple in 1.6a:
+        an ornamental whose common name contains a fruit species name.
+
+        Revisit only behind an ornamental guard on the species_match path.
+        """
+        for title in ("Fig - Small Leaved", "Fig - White", "Blue Quandong",
+                      "Native Ginger", "Bleeding Heart", "Red Cedar"):
+            with self.subTest(title=title):
+                self.assertFalse(is_fruit_product(
+                    {"title": title, "category": "Rainforest Trees"}, "daleys"))
+
+    def test_daleys_out_of_scope_buckets_stay_excluded(self):
+        """The remaining dropped vocabulary is correctly dropped."""
+        for cat in ("Ornamental Native & Exotic", "Gardening Accessories",
+                    "Farm and Forestry Trees",
+                    "Trees and Plants/Shade and Ornamental Trees/Palm Trees"):
+            with self.subTest(cat=cat):
+                self.assertFalse(is_fruit_product(
+                    {"title": "Whatever", "category": cat}, "daleys"))
+
+    def test_daleys_empty_category_is_the_registry_gap_not_a_filter_gap(self):
+        """602 of the 1,998 live daleys rows carry an empty category, because
+        the CSV feed has no category column and csv_feed_scraper's
+        CategoryResolver could not resolve them: not in the frozen url map
+        the HTML scraper left behind, and no species record to match on.
+
+        The fix is NOT to include "" here (that would admit gift vouchers,
+        Agapanthus and Aspen along with the fruit). It is to grow
+        fruit_species.json, which makes the resolver return "Fruit and Nut
+        Trees" for them. Recorded as a test so the intent survives: adding
+        Achacha, Ambarella, Amla, Bael and African Breadfruit to the registry
+        is a RETENTION fix for daleys, not only a classification one.
+        """
+        self.assertFalse(is_fruit_product(
+            {"title": "Achacha", "category": ""}, "daleys"))
+        self.assertFalse(is_fruit_product(
+            {"title": "$100 Gift Voucher - By Email", "category": ""}, "daleys"))
+
+    def test_forever_seeds_whitelist_drops_only_herbs(self):
+        """forever-seeds is the third restrictive filter. Live: 82 products,
+        36 pass. Everything it drops that is also a real product is a herb
+        (spearmint, oregano, patchouli, sawtooth coriander), which is out of
+        scope for a fruit site and is Phase 2's question, not Phase 1's.
+        """
+        for title in ("SPEARMINT HERB (Mentha spicata) Organic Plant",
+                      "OREGANO (Origanum vulgare) Organic Herb Plant"):
+            with self.subTest(title=title):
+                self.assertFalse(is_fruit_product({"title": title},
+                                                  "forever-seeds"))
+
+    def test_only_three_nurseries_have_a_restrictive_filter(self):
+        """The other nine configured entries are mode "all" and the 15
+        unconfigured nurseries default open, so neither can drop fruit. If a
+        fourth restrictive entry is added, audit it the way 1.1/1.2 did
+        before this test is updated.
+        """
+        restrictive = sorted(k for k, v in FRUIT_FILTERS.items()
+                             if v.get("mode") != "all")
+        self.assertEqual(restrictive, ["daleys", "forever-seeds", "ladybird"])
+
 
 if __name__ == "__main__":
     unittest.main()
