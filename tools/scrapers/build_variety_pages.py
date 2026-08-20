@@ -567,6 +567,34 @@ def seed_from_availability(ledger: PageLedger, data_dir: Path, today: str,
     return seeded
 
 
+def _adopted_since(existing: dict, state: str, today: str, **identity) -> str:
+    """The date a page ENTERED `state`, which is not today if it is already in it.
+
+    `seed()` reuses the stored entry and overwrites every field it is handed, and
+    `seed_reviewed` runs against every approved row on every build: an adopted
+    slug is not live and is not written tonight, so neither skip above fires and
+    the row is re-adopted nightly. Passing `since=today` unconditionally
+    therefore restamped every proposal-derived redirect and tombstone to the
+    current date, permanently. All 194 of task R1's rows read "since today"
+    every morning, and the `since` column on the /admin redirect table, which is
+    the only thing that reads the field, could not tell you how long anything
+    had been retired. `first_seen` escaped only because `seed()` is never handed
+    it as a field.
+
+    Re-adoption is not re-entry, but a changed decision is. A reviewer
+    repointing a rename at a different target, or moving a row between the two
+    verdicts, has made a new decision and that gets today's date: `identity`
+    carries whatever distinguishes one adoption from another for this state, so
+    "still the same answer" and "the same slug, a different answer" do not
+    collapse into each other.
+    """
+    if existing.get("state") != state:
+        return today
+    if any(existing.get(key) != value for key, value in identity.items()):
+        return today
+    return existing.get("since") or today
+
+
 def seed_reviewed(ledger: PageLedger, path: Path, today: str,
                   written_slugs: set[str]) -> tuple[int, int, list[str]]:
     """Adopt the approved rows of a recover_merged_slugs.py proposal file.
@@ -616,10 +644,14 @@ def seed_reviewed(ledger: PageLedger, path: Path, today: str,
         # two titles and needs neither, but a tombstone without a species draws
         # no breadcrumb and can offer no siblings, and a reviewer can move a row
         # between the two verdicts.
-        common = dict(today=today, since=today,
+        common = dict(today=today,
                       title=p.get("title") or slug,
                       species=p.get("species") or None,
                       variety=p.get("variety") or None)
+        # Read BEFORE seed() mutates it in place. `since` is the one field here
+        # that is a fact about the past rather than a restatement of the
+        # proposal, so it is the one field that has to survive re-adoption.
+        existing = dict(ledger.pages.get(slug) or {})
 
         if verdict == "rename":
             target = p.get("target")
@@ -629,7 +661,9 @@ def seed_reviewed(ledger: PageLedger, path: Path, today: str,
             if target not in written_slugs:
                 skipped.append(f"{slug}: target {target} is not a page tonight")
                 continue
-            ledger.seed(slug, state=REDIRECT, redirect_to=target, **common)
+            ledger.seed(slug, state=REDIRECT, redirect_to=target, **common,
+                        since=_adopted_since(existing, REDIRECT, today,
+                                             redirect_to=target))
             redirected += 1
             continue
 
@@ -644,6 +678,8 @@ def seed_reviewed(ledger: PageLedger, path: Path, today: str,
         # still for sale under another name.
         ledger.seed(slug, state=TOMBSTONE, **common,
                     retired_reason="not a distinct variety",
+                    since=_adopted_since(existing, TOMBSTONE, today,
+                                         retired_reason="not a distinct variety"),
                     **{k: v for k, v in (p.get("history") or {}).items()})
         tombstoned += 1
     return redirected, tombstoned, skipped

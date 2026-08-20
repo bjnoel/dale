@@ -698,6 +698,59 @@ class TestSeedReviewed(unittest.TestCase):
             [self._rename(target="avocado-hass-type-a")], {"avocado-hass-type-a"})
         self.assertEqual(redirected, 0)
 
+    def test_since_survives_being_re_adopted_every_night(self):
+        """`seed_reviewed` runs against every approved row on every build, and an
+        adopted slug is neither live nor written tonight, so it is re-adopted
+        nightly. Passing `since=today` each time restamped all 194 of task R1's
+        rows to the current date permanently, and the /admin column that reads
+        the field could not say how long anything had been retired."""
+        pages = {"avocado-hass-type-a": {
+            "state": REDIRECT, "redirect_to": "avocado-hass",
+            "since": "2026-08-17", "first_seen": "2026-08-17"}}
+        _, _, _, out = self._apply([self._rename()], ["avocado-hass"], pages)
+        self.assertEqual(out["avocado-hass-type-a"]["since"], "2026-08-17")
+
+    def test_the_first_adoption_still_stamps_today(self):
+        """The date has to start somewhere, and a slug arriving in a terminal
+        state tonight entered it tonight."""
+        _, _, _, out = self._apply([self._rename()], ["avocado-hass"])
+        self.assertEqual(out["avocado-hass-type-a"]["since"], TODAY)
+
+    def test_repointing_a_rename_is_a_new_decision_and_moves_the_date(self):
+        """Re-adoption is not re-entry, but a changed answer is. A reviewer who
+        sends a slug somewhere else has decided something today, and dating that
+        to the old target's adoption would hide when it happened."""
+        pages = {"avocado-hass-type-a": {
+            "state": REDIRECT, "redirect_to": "avocado-shepard",
+            "since": "2026-08-17"}}
+        _, _, _, out = self._apply([self._rename()], ["avocado-hass"], pages)
+        self.assertEqual(out["avocado-hass-type-a"]["since"], TODAY)
+
+    def test_a_tombstone_keeps_its_own_date_too(self):
+        """68 of R1's 194 rows are tombstones, and the history spread in beside
+        them carries first_seen and last_in_stock but never `since`."""
+        pages = {"acerola-barbados": {
+            "state": TOMBSTONE, "retired_reason": "not a distinct variety",
+            "since": "2026-08-17"}}
+        proposal = {"slug": "acerola-barbados", "verdict": "retired",
+                    "title": "Acerola", "species": "Acerola", "approved": True,
+                    "history": {"first_seen": "2026-03-05"}}
+        _, _, _, out = self._apply([proposal], [], pages)
+        self.assertEqual(out["acerola-barbados"]["since"], "2026-08-17")
+        self.assertEqual(out["acerola-barbados"]["first_seen"], "2026-03-05")
+
+    def test_a_live_page_turning_into_a_redirect_dates_from_tonight(self):
+        """The guard against being too clever: preserving `since` must key on
+        the state actually matching, not on the entry merely existing."""
+        pages = {"avocado-hass-type-a": {"state": LIVE, "since": "2026-03-05"}}
+        # A live slug is refused outright by seed_reviewed, so drive the same
+        # question through a state that is terminal but different.
+        pages["avocado-hass-type-a"] = {"state": TOMBSTONE,
+                                        "retired_reason": "out of stock",
+                                        "since": "2026-03-05"}
+        _, _, _, out = self._apply([self._rename()], ["avocado-hass"], pages)
+        self.assertEqual(out["avocado-hass-type-a"]["since"], TODAY)
+
     def test_an_unreadable_proposal_file_is_a_warning_not_a_crash(self):
         """The nightly must not fail closed on a bad hand-edit of this file."""
         import build_variety_pages as bvp
