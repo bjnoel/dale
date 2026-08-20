@@ -12420,3 +12420,75 @@ nothing to anyone.
 
 **Tests:** 2,996 passing. Live dry run against the new config: 5,617 -> 177 products, 29 in
 stock, no missing prices, no ornamentals through the filter.
+
+## DEC-304 — 2026-08-20 — The feed said out of stock, our own page said buy it now
+
+**Decision:** Daleys now reads Correy's custom CSV feed instead of scraping
+Plant-List.php, and pre-order became a third display state rather than a lie in
+either direction. Shipped and live.
+
+**What was actually wrong.** Plant-List.php only lists what is in stock, so 47% of
+Daleys' catalogue was structurally invisible: 1,998 product groups in the feed against
+646 scraped. And `available = stock_count > 0` was reading their nursery-floor
+inventory rather than what a customer can buy. On the live site that morning: **57 SKUs
+listed in stock that cannot be bought** (we claimed 3,243 units across them, 432 on one
+Lomandra line, and 20 were live), and **154 products marked plainly in stock that are
+pre-orders** with a one to six month wait.
+
+**The thing that decided the design.** Both naive availability mappings are wrong.
+Calling a pre-order "in stock" was the defect; calling it "out of stock" would be a new
+one, because you can order it today and just wait. So `available` stays True and the
+wait rides in a new `availability_state`, rendered as a third badge and as distinct
+alert wording. That also kept the blast radius small: the only availability movement is
+the 57 dropping out, under `detect_stock_surges`' 20%-and-10 threshold.
+
+**Measured before building, against the live snapshot of the same morning.** Prices
+agree on 793/793 shared SKUs. 636/646 product URLs and 790/1,075 variant keys survive,
+so price and stock history carries across the switch; 275 of the 285 orphans are the
+title-keyed variants that never had a SKU and were always the fragile branch. Only 14
+of 2,857 newly visible SKUs are purchasable, because we already saw everything in
+stock, so the transition was never a mass-alert event. The dry run confirmed it: two
+restocks, both already alerted hours earlier by the nightly.
+
+**Three traps, all of which would have failed quietly.**
+
+- **`qty` is not the authority.** SKU 1045 is the sole row in 3,650 where qty (40)
+  contradicts availability, and also the only row spelled `OutOfStock` rather than
+  `out of stock`. A parser matching the lowercase spelling puts it back in stock.
+- **The feed has no category column, and that is load-bearing.**
+  `stocklib.fruit_filters` gates daleys on category prefixes, so an empty category
+  drops every Daleys product from the homepage, digest, history and alerts with **no
+  alarm anywhere**: `validate_snapshot` does not check category and the dashboard's
+  1,000-product floor is met by the other nurseries. Measured: 457 pass today, 0 pass
+  with an empty category. Hence a frozen url -> category map plus a species fallback.
+  Asked Correy for the column; the resolver prefers it the day it appears.
+- **The feed's `name` carries pot and height**, and `cultivar_parsing` reads "60-70cm"
+  as the cultivar token "60", minting `sapodilla-krasuey-60` as a separate watchable
+  variety. The feed gives pot and height as their own columns, so stripping them
+  sidesteps the parser bug: 885 clean slugs instead of 1,598, **no parser change and no
+  `recover_merged_slugs.py` migration**.
+
+**Record everything, gate at render** (Benedict's call). The feed is a live view with no
+history, two fetches minutes apart differing only by qty decrements, so a row we decline
+to record today is unrecoverable. All 1,998 groups are stored; the 857 ornamental and
+native groups never resolve a category and so never render (DEC-227 holds). I had put
+`is_real_product` in the scraper, which no other scraper does; removing it restored URL
+match from 557 to 636 and key survival from 693 to 790. `build_nursery_pages` was the
+one surface gating on `is_real_product` alone, where 695 of them would have appeared, so
+it now uses the shared `digest_product_filter` (the other half of DEC-301).
+
+**The point of all this is watchability.** 15 varieties people actively watch, 20
+watchers between them, were invisible because we only saw Daleys stock while it was in
+stock. Sapodilla Krasuey has 2 watchers and is the variety Correy is holding for
+Benedict; its page listed only Ross Creek and now lists Daleys at $99, out of stock and
+watchable. When Correy opens the pre-purchase listing, that row flips to Pre-order and
+the alert fires.
+
+**Live now:** Daleys 457 -> 1,211 products on the homepage, 154 pre-order badges, 2,693
+variety pages, 2,773 canonical titles. Smoke tests pass, watched-slug baseline held at 2.
+
+**Cost:** $0. Descriptions and images (1.8MB of 2.0MB/day) go to an overwritten
+`catalogue.json` rather than 365 dated copies.
+
+**Not done:** `daleys_scraper.py` stays until the feed runs clean for a week. Backlog is
+20/15 so no ticket; noted for DAL-248.

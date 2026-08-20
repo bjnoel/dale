@@ -76,10 +76,22 @@
           "by": "benedict",
           "summary": "Re: Your nursery is on treestock.com.au",
           "evidence": "resend:c4131b70-e155-491b-b362-12e79a0ba793"
+        },
+        {
+          "date": "2026-08-20",
+          "direction": "in",
+          "channel": "email",
+          "by": "correy",
+          "summary": "Delivered the custom CSV feed (feeds/treestock-<token>.php, 3650 variants / 1998 groups, 4-state availability, qty, botanical name, pot, height, method). Reserved a Krasuey for Benedict, order 6665631, held for the next WA window. Asked if CSV format is okay. Feed is now our Daleys source (DEC-304).",
+          "evidence": "Email pasted by Benedict 2026-08-20"
         }
       ],
-      "open_action": null,
-      "notes": "Meta feed URL is obscured (feeds/meta-products-<token>.php), treat as semi-private: fetch it, never publish it. Verified 2026-08-15: feed 'out of stock' includes PreSale items (SKU 5642 almond is PreSale on-page, in-stock 18 on Plant-List, out of stock in feed), so the binary feed alone would drop the winter catalogue pre-orders; the custom 4-state feed is the one to take."
+      "open_action": {
+        "owner": "benedict",
+        "what": "Send the drafted reply (deliverables/daleys-reply-2026-08-20.txt): CSV is fine, asks for a category column (blocks nothing now but the frozen map goes stale), a ready-date for the two pre-order states, the sku 1045 OutOfStock/qty-40 inconsistency, and flags sku 2103 'Test (DoNotBuy01)' on their Plant-List.",
+        "since": "2026-08-20"
+      },
+      "notes": "Meta feed URL is obscured (feeds/meta-products-<token>.php), treat as semi-private: fetch it, never publish it. Verified 2026-08-15: feed 'out of stock' includes PreSale items (SKU 5642 almond is PreSale on-page, in-stock 18 on Plant-List, out of stock in feed), so the binary feed alone would drop the winter catalogue pre-orders; the custom 4-state feed is the one to take. Custom feed live as our source from 2026-08-20 (DEC-304): treat the URL as semi-private, it lives in /opt/dale/secrets/feeds.env and is never committed. The feed has NO category column, which fruit_filters needs for daleys; a frozen url->category map covers the 636 products the HTML scraper last saw and species matching covers the rest, so the ask for a category column matters as their catalogue moves on."
     },
     {
       "key": "ross-creek",
