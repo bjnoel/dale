@@ -12304,3 +12304,119 @@ distinctly. On live data: 120 rows, 120 ticks, 62 pre-filled.
 The general shape is worth keeping: **a control that fills something in for you has to look
 different from the same control after you have filled it in.** This is the second time in two
 days it has bitten this page, after a folded row that kept re-offering its own select.
+
+---
+
+## DEC-303 — 2026-08-20 — Garden Express did not block us, it changed shops
+
+**Decision:** Move the Garden Express config from `woocommerce_scraper.py` to
+`shopify_scraper.py`, filtered on the ten fruit `product_type`s plus eleven rescued handles.
+
+Benedict: "garden-express seems to have shut down our feed endpoint, is there another one?"
+
+Yes, and the reason is better news than a block. Every category call had been returning
+HTTP 400 since the 2026-08-18 run:
+
+```
+HTTP 400 fetching https://www.gardenexpress.com.au/wp-json/wc/store/v1/products
+                 ?per_page=100&page=1&category=fruit-nut-trees
+```
+
+The response headers say what happened:
+
+```
+location: https://gardenexpress.com.au/wp-json/...
+x-redirect-reason: canonical_host_redirection
+powered-by: Shopify
+server-timing: ... pageType;desc="404"
+```
+
+They migrated the whole store from WooCommerce to Shopify somewhere between 2026-08-17 00:17
+and 2026-08-18 00:00. Nothing was shut off in our direction: `/products.json` is open, returns
+5,617 products, and needs no key. We already have a Shopify scraper, so this is a config move
+rather than new code.
+
+### The filter, and the two things it nearly lost
+
+`shopify_scraper.py` filters the whole catalogue by `product_type`, so the question is which
+types are fruit. Ten of them are, and they reproduce the store's own fruit collections almost
+exactly: 166 of the 168 products the collections hold, with no product in a listed type that
+the collections miss.
+
+The two the type filter drops on its own are the interesting ones:
+
+| Product | `product_type` | Why it is stranded |
+|---|---|---|
+| Lemon Meyer | *(empty string)* | The only real fruit in 5,617 products with no type at all |
+| Olive Correggiola | `Other Produce Plants` | Filed with the shallots and the garlic |
+
+Meyer is one of the most-searched citrus we track. It would have vanished with no error
+anywhere, which is DEC-207/209 exactly: an include-filter fails silently and reads as
+"nursery has no Meyer lemon".
+
+Auditing outward from there, `Other Produce Plants` and `Edible Produce` are mixed bins.
+Neither can be included wholesale (between them: shallots, garlic, potato onions, Jerusalem
+artichokes, rhubarb, asparagus, wasabi, horseradish, yacon, six rosemaries and a bay tree),
+but between them they also hold nine real fruit: three more olives, a dragon fruit, a feijoa,
+a Chilean guava, a dwarf mulberry, a pink strawberry, and this one:
+
+```
+'Fruiting Vines'  Passionfruit Non Grafted Black      <- in scope by type
+'Edible Produce'  Passionfruit Grafted Black          <- stranded
+```
+
+Five of the six passionfruit are typed `Fruiting Vines`. The sixth, the grafted black, the one
+collectors actually want, is not. So the eleven strays are rescued by handle, hand-verified.
+Tasmanian pepper bush is left out on purpose (DEC-227), as are the herbs and the vegetables.
+
+### What changes on the site
+
+| | Old Woo config | New Shopify config |
+|---|---|---|
+| Products | 103 | 177 |
+| In stock | 0 (2026-08-17) | 29 |
+| Berries, currants, blueberries, raspberries | none | 46 |
+| Lemon Meyer | present | present, by explicit rescue |
+
+The berries are not a Shopify gain. The old config listed `fruiting-vines` and four tree
+categories and simply had no berry category, so we had been missing them the whole time.
+
+### Availability history does not survive, and should not be faked
+
+The tracker keys on product URL, and both halves of the URL changed:
+
+```
+https://www.gardenexpress.com.au/product/lemon-meyer-140mm/|v:Default   106 keys, 143 days
+https://gardenexpress.com.au/products/lemon-meyer                       new
+```
+
+The handles differ too, so a remap would be guesswork per product, and a guess dressed as a
+decision is what DEC-302's addendum was about two days ago. The old keys stay where they are:
+`availability_tracker.py` only appends to keys it sees, so they freeze rather than reading as
+a mass sell-out. Garden Express price history restarts from today.
+
+### The monitoring was already right
+
+Worth recording, because the instinct was to check whether an alarm had been missed. It had
+not. Benedict got an email each of the three nights, escalating on its own:
+
+| Night | Alert |
+|---|---|
+| 2026-08-18 | `zero_products - 0 products today, 103 yesterday` |
+| 2026-08-19 | `failed - HTTP 400 .../category=fruit-trees-2025` |
+| 2026-08-20 | `failure_streak - ok=false for the last 3 days` |
+
+And no snapshot was written on any of them, so no downstream job saw an empty shelf. That is
+the DEC-293 guard doing its job. Three dark nights was the correct behaviour, not a second bug.
+
+### One subscriber email will fire, and it is a true one
+
+Tomorrow's run compares against the last snapshot we actually observed, which is 2026-08-17
+with 103 products and nothing in stock. Of the 86 watched varieties, five fall in the new
+scope and exactly one is in stock: `apple-sweet-cheeks`, one watcher. That is a real restock,
+so it should send. The gap-fallback in `snapshot_path_for_date` is deliberately unbounded for
+this reason (DEC-293), and it means the other 74 newly-scoped products, all sold out, say
+nothing to anyone.
+
+**Tests:** 2,996 passing. Live dry run against the new config: 5,617 -> 177 products, 29 in
+stock, no missing prices, no ornamentals through the filter.
