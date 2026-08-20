@@ -419,6 +419,49 @@ Adding a record improves the parser as a side effect (memory:
 **check active watches before and after each batch** and run
 `check_watched_slugs.py --baseline 2`.
 
+**First batch done: 12 records, 49 live titles recovered, 0 lost, 0 re-filed.** Achacha
+10, Loganberry 7, Youngberry 7, Boysenberry 5, Lau Lau 4, Kwai Muk 4, Bignay 3, Tayberry
+3, Lawtonberry 2, Nam Nam 2, and one each of Breadfruit and African Breadfruit.
+
+Watch safety was checked before the batch, not after: the live DB holds **87 distinct
+watched slugs, 109 watches, 2 unresolved** (`avocado-pollinating-duo-bacon-and-hass`,
+`plum-zwetschge`), which is the `--baseline 2` the plan quotes. **None of the 87 relates
+to any species in this batch**, so no watcher's slug can move under them.
+
+Three corrections to the plan's own list, all found by measuring it:
+
+- **`Garcinia` must NOT be a species record. It is a genus.** 17 live titles span at
+  least nine species (humilis/achacha, madruno, macrophylla, paniculata, gardneriana,
+  cambogia, dulcis, warrenii, hombroniana) plus two mangosteens. One record would collapse
+  all of them into a single bucket, which is precisely the mis-filing 1.6a exists to stop.
+  Achacha is added under its own name instead (with `Achachairu` as a synonym); the other
+  Garcinias stay unclassified until someone adds them individually.
+- **`Breadfruit` is a homonym trap, so both breadfruits went in together.** `African
+  Breadfruit` is *Treculia africana*, a different genus from *Artocarpus altilis*. Adding
+  only `Breadfruit` would have swept the African one into it via the any-position
+  fallback. With both records present the matcher's longest-leading-match rule resolves
+  each correctly.
+- **`Grumichama` was already registered** (21 live titles, and it has a growing guide).
+  The plan's list was stale. Pinned so it is not re-added.
+
+A fourth finding, from writing the tests rather than the records: primal-fruits'
+`Achachairu (Garcinia humilis)` **begins with a zero-width space**, so `_leading_candidate`
+read `\u200bachachairu` as the first word and the title matched nothing at all. One live
+title, but stripping zero-width and BOM-class characters is a normalisation rather than a
+guess, so `species_match` now does it.
+
+**This is also the retention lever 1.2 identified.** Re-running `csv_feed_scraper`'s
+`CategoryResolver` over the 602 uncategorised daleys rows, 7 now resolve to `Fruit and Nut
+Trees` and would be kept rather than dropped: Achacha, Achacha - Grafted, African
+Breadfruit, Breadfruit, Kwai Muk - Richmond, Tayberry and Berry - Youngberry Thornless.
+The remaining 595 need more registry records, which is the rest of this backlog.
+
+**Deploy hazard, concrete.** `blueberry-legacy` (2 watchers), `blueberry-ob1` (5) and
+`blueberry-burst` (1) are live watches, and 1.6b just made `Legacy Blueberries - 50mm
+pots` and `blueberries "blueberry Burst"` resolve to Blueberry for the first time. On the
+first nightly after this lands those read as new stock. Baseline the affected nurseries
+before the run, per the email-safety section.
+
 **1.6 Fix the formatting misses in `species_match`, per form, never positionally.** The
 target is `stocklib/species_match.py`, not `cultivar_parsing.py` (see 2c).
 

@@ -442,5 +442,96 @@ class DerivedLookupKeyTest(unittest.TestCase):
         self.assertEqual(self._cn("Blueberry 'Biloxi'"), "Blueberry")
 
 
+
+class RegistryBatchTest(unittest.TestCase):
+    """1.5, first batch: 12 species records for fruit that had live stock and
+    no registry entry. Berries first, then rare tropicals, per the plan.
+    Counts are live titles on 2026-08-20.
+    """
+
+    def setUp(self):
+        self.lookup = load_species_lookup()
+
+    def _cn(self, title):
+        m = match_title(title, self.lookup)
+        return m.get("cn") if m else None
+
+    def test_rubus_hybrid_berries(self):
+        for title, want in (("Tayberry", "Tayberry"),
+                            ("Tayberry 2L", "Tayberry"),
+                            ("Berry - Boysenberry", "Boysenberry"),
+                            ("Boysenberry Fresh Potted", "Boysenberry"),
+                            ("Youngberry Rubus Spp Bare Root", "Youngberry"),
+                            ("Berry - Loganberry Thornless", "Loganberry"),
+                            ("Lawtonberry - Cane", "Lawtonberry")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), want)
+
+    def test_rare_tropicals(self):
+        for title, want in (("Achacha", "Achacha"),
+                            ("Achacha Grafted", "Achacha"),
+                            ("Kwai Muk - Richmond", "Kwai Muk"),
+                            ("Bignay (Antidesma bunius)", "Bignay"),
+                            ("Nam Nam Tree  ( Cynometra Cauliflora )", "Nam Nam"),
+                            ("Giant Lau Lau (syzygium megacarpa) - Medium", "Lau Lau")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), want)
+
+    def test_achacha_synonyms(self):
+        """primal-fruits and ladybird both sell it under the Bolivian name."""
+        self.assertEqual(self._cn("Achacha -Garcinia humilis"), "Achacha")
+        self.assertEqual(self._cn("Achachairu"), "Achacha")
+        self.assertEqual(self._cn("\u200bAchachair\u00fa (Garcinia humilis)"), "Achacha")
+
+    def test_both_breadfruits_added_together_on_purpose(self):
+        """"African Breadfruit" is Treculia africana, a different genus from
+        Artocarpus altilis. Adding only "Breadfruit" would have swept the
+        African one into it through the any-position fallback. Adding both
+        lets the longest LEADING match win, which is the matcher's own rule.
+        """
+        self.assertEqual(self._cn("Breadfruit"), "Breadfruit")
+        self.assertEqual(self._cn("African Breadfruit"), "African Breadfruit")
+
+    def test_garcinia_is_deliberately_not_a_species_record(self):
+        """The plan listed "Garcinia" as a batch member. It is a GENUS: 17 live
+        titles span at least nine species (humilis/achacha, madruno,
+        macrophylla, paniculata, gardneriana, cambogia, dulcis, warrenii,
+        hombroniana) plus two mangosteens. One record would collapse all of
+        them into one bucket, which is the mis-filing 1.6a exists to stop.
+        Achacha is added by its own name instead; the rest stay unclassified
+        until someone adds them individually.
+        """
+        for title in ("Garcinia Madruno", "Garcinia Macrophylla",
+                      "Garcinia Gardneriana", "Garcinia paniculata (tropical fruit)",
+                      'Garcinia cambogia "Red"', "Garcinia warrenii"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+
+    def test_grumichama_was_already_registered(self):
+        """Also on the plan's list, but it has had a record (and a growing
+        guide) for some time. Pinned so the stale entry is not re-added.
+        """
+        self.assertEqual(self._cn("Grumichama - Black"), "Grumichama")
+
+    def test_new_records_carry_the_required_fields(self):
+        import json as _json
+        from pathlib import Path as _Path
+        recs = _json.loads((_Path(__file__).resolve().parent.parent
+                            / "tools" / "scrapers" / "fruit_species.json").read_text())
+        by_name = {r["common_name"]: r for r in recs}
+        for name in ("Tayberry", "Boysenberry", "Youngberry", "Loganberry",
+                     "Lawtonberry", "Achacha", "Kwai Muk", "Bignay", "Nam Nam",
+                     "Lau Lau", "Breadfruit", "African Breadfruit"):
+            with self.subTest(name=name):
+                r = by_name[name]
+                for field in ("common_name", "latin_name", "slug", "region",
+                              "synonyms"):
+                    self.assertIn(field, r)
+                self.assertTrue(r["slug"] and " " not in r["slug"])
+        # slugs stay unique across the whole registry
+        slugs = [r["slug"] for r in recs]
+        self.assertEqual(len(slugs), len(set(slugs)))
+
+
 if __name__ == "__main__":
     unittest.main()

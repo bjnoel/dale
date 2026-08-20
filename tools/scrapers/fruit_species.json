@@ -1210,5 +1210,94 @@
     ],
     "category": "bush_tucker",
     "description": "Burdekin plum (Pleiogynium timorense) is a handsome coastal tree of tropical and subtropical Queensland that bears dark purple, plum-like fruit. The fruit is very astringent when picked and is traditionally softened by storing it for several days until it sweetens, after which the thin flesh is eaten fresh or made into jam. It is a hardy, attractive shade and street tree for frost-free warm climates, tolerating coastal conditions and a range of soils in full sun. It is slow to moderate growing and long-lived. Fruit ripens in the cooler months and is also taken by birds and flying foxes."
+  },
+  {
+    "common_name": "Tayberry",
+    "latin_name": "Rubus fruticosus x Rubus idaeus",
+    "slug": "tayberry",
+    "region": "Cultivated hybrid",
+    "synonyms": []
+  },
+  {
+    "common_name": "Boysenberry",
+    "latin_name": "Rubus ursinus x Rubus idaeus",
+    "slug": "boysenberry",
+    "region": "Cultivated hybrid",
+    "synonyms": []
+  },
+  {
+    "common_name": "Youngberry",
+    "latin_name": "Rubus caesius x Rubus idaeus",
+    "slug": "youngberry",
+    "region": "Cultivated hybrid",
+    "synonyms": []
+  },
+  {
+    "common_name": "Loganberry",
+    "latin_name": "Rubus x loganobaccus",
+    "slug": "loganberry",
+    "region": "Cultivated hybrid",
+    "synonyms": []
+  },
+  {
+    "common_name": "Lawtonberry",
+    "latin_name": "Rubus fruticosus",
+    "slug": "lawtonberry",
+    "region": "North America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Achacha",
+    "latin_name": "Garcinia humilis",
+    "slug": "achacha",
+    "region": "South America",
+    "synonyms": [
+      "Achachairu",
+      "Achachairú"
+    ]
+  },
+  {
+    "common_name": "Kwai Muk",
+    "latin_name": "Artocarpus hypargyreus",
+    "slug": "kwai-muk",
+    "region": "South China",
+    "synonyms": []
+  },
+  {
+    "common_name": "Bignay",
+    "latin_name": "Antidesma bunius",
+    "slug": "bignay",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Nam Nam",
+    "latin_name": "Cynometra cauliflora",
+    "slug": "nam-nam",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Lau Lau",
+    "latin_name": "Syzygium megacarpum",
+    "slug": "lau-lau",
+    "region": "Southeast Asia",
+    "synonyms": [
+      "Giant Lau Lau"
+    ]
+  },
+  {
+    "common_name": "Breadfruit",
+    "latin_name": "Artocarpus altilis",
+    "slug": "breadfruit",
+    "region": "Southeast Asia/Pacific",
+    "synonyms": []
+  },
+  {
+    "common_name": "African Breadfruit",
+    "latin_name": "Treculia africana",
+    "slug": "african-breadfruit",
+    "region": "Tropical Africa",
+    "synonyms": []
   }
 ]

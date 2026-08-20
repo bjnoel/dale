@@ -45,6 +45,20 @@ _PREFIXES = ["dwarf ", "semi-dwarf ", "semi dwarf ", "miniature ", "standard ",
              "grafted ", "advanced ", "bare root ", "bare-root "]
 
 
+# Zero-width and BOM-class characters. A nursery's CMS occasionally leaves one
+# at the front of a title, where it is invisible to everyone except the word
+# splitter: primal-fruits' "\u200bAchachairu (Garcinia humilis)" starts with a
+# zero-width space, so _leading_candidate saw "\u200bachachairu" as the first
+# word and the product matched nothing at all. One live title on 2026-08-20,
+# but stripping them is a normalisation rather than a guess: the character is
+# invisible and means nothing in a product title.
+_INVISIBLE_RE = re.compile(r"[\u200b\u200c\u200d\u2060\ufeff\xa0]")
+
+
+def _strip_invisible(title: str) -> str:
+    return _INVISIBLE_RE.sub(" ", title).strip()
+
+
 def _cleaned(title: str) -> tuple[str, str]:
     """(lowercase, original-case) title with the first matching prefix stripped."""
     title_lower = title.lower()
@@ -235,6 +249,7 @@ def load_species_lookup() -> dict:
 
 def match_title(title: str, lookup: dict):
     """Match a product title to a lookup entry (values returned as-is)."""
+    title = _strip_invisible(title)
     pairs = [(title.lower(), title), _cleaned(title)]
     for t_lower, _ in pairs:
         candidate = _leading_candidate(t_lower, lookup)
@@ -253,6 +268,7 @@ def match_title(title: str, lookup: dict):
 
 def match_species(title: str, lookup: dict) -> dict | None:
     """match_title on the compressed-entry lookup, plus cultivar extraction."""
+    title = _strip_invisible(title)
     pairs = [(title.lower(), title), _cleaned(title)]
 
     for t_lower, t_orig in pairs:
