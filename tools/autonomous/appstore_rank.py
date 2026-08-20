@@ -23,10 +23,12 @@ Usage:
     python3 appstore_rank.py                    # AU and US, table to stdout
     python3 appstore_rank.py --country US
     python3 appstore_rank.py --json
+    python3 appstore_rank.py --csv data/treesmith-rank-history.csv
 """
 
 import argparse
 import json
+import os
 import sys
 import time
 import urllib.parse
@@ -262,6 +264,12 @@ def main(argv=None):
     )
     ap.add_argument("--json", action="store_true", help="emit raw rows as JSON")
     ap.add_argument("--term", action="append", help="measure only these terms")
+    ap.add_argument("--csv", help="also append this run to the rank history series")
+    ap.add_argument(
+        "--captured-at",
+        help="ISO8601 UTC stamp for the series rows (default: now). Pass the "
+             "same value to both readers so one run is one capture.",
+    )
     args = ap.parse_args(argv)
 
     countries = args.country or ["AU", "US"]
@@ -278,6 +286,17 @@ def main(argv=None):
         print(json.dumps(rows_by_country, indent=2))
     else:
         print(render(rows_by_country))
+
+    if args.csv:
+        # Confirmation goes to stderr so stdout stays pipeable, matching --save
+        # on the Play reader.
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import rank_history  # noqa: E402 - sibling module
+
+        stamp, n = rank_history.record_run(
+            args.csv, "appstore", rows_by_country, args.captured_at
+        )
+        print(f"\nAppended {n} rows to {args.csv} at {stamp}", file=sys.stderr)
     return 0
 
 

@@ -29,6 +29,7 @@ Usage:
     python3 playstore_rank.py --country AU
     python3 playstore_rank.py --json
     python3 playstore_rank.py --save data/treesmith-play-rank-baseline.json
+    python3 playstore_rank.py --csv data/treesmith-rank-history.csv
 """
 
 import argparse
@@ -204,6 +205,12 @@ def main(argv=None):
     ap.add_argument("--json", action="store_true", help="emit raw rows as JSON")
     ap.add_argument("--term", action="append", help="measure only these terms")
     ap.add_argument("--save", help="also write raw rows as JSON to this path")
+    ap.add_argument("--csv", help="also append this run to the rank history series")
+    ap.add_argument(
+        "--captured-at",
+        help="ISO8601 UTC stamp for the series rows (default: now). Pass the "
+             "same value to both readers so one run is one capture.",
+    )
     args = ap.parse_args(argv)
 
     countries = args.country or ["AU", "US"]
@@ -225,6 +232,14 @@ def main(argv=None):
         with open(args.save, "w", encoding="utf-8") as fh:
             json.dump(rows_by_country, fh, indent=2)
         print(f"\nSaved raw rows to {args.save}", file=sys.stderr)
+
+    if args.csv:
+        import rank_history  # noqa: E402 - sibling module, path set at import
+
+        stamp, n = rank_history.record_run(
+            args.csv, "play", rows_by_country, args.captured_at
+        )
+        print(f"\nAppended {n} rows to {args.csv} at {stamp}", file=sys.stderr)
     return 0
 
 

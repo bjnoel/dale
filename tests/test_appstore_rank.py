@@ -13,8 +13,13 @@ shipped once each, aimed at the one code path that scores ASO decisions:
    to keep being printed.
 """
 
+import contextlib
+import csv
 import importlib.util
+import io
+import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -148,6 +153,75 @@ class TestTermSet(unittest.TestCase):
     def test_requests_apples_maximum_page_size(self):
         """limit=200 is what turns 'not in top 50' into a real rank (DEC-255)."""
         self.assertEqual(ar.LIMIT, 200)
+
+
+class TestSeriesFlag(unittest.TestCase):
+    """--csv is purely additive: it appends rows and changes nothing else.
+
+    measure() is replaced rather than its `searcher` argument, because main()
+    calls measure() with the default seam bound at definition time -- patching
+    ar.search would leave the default pointing at the real iTunes API and the
+    test would quietly go to the network.
+    """
+
+    def _run(self, argv, rows):
+        original, ar.measure = ar.measure, lambda country, terms=None: [
+            dict(r, country=country) for r in rows
+        ]
+        out = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                ar.main(argv)
+        finally:
+            ar.measure = original
+        return out.getvalue()
+
+    RANKED = [{"group": "brand", "term": "treesmith", "result_count": 41,
+               "rank": 1, "name_match_top5": 0.2,
+               "top3": [{"name": "TreeSmith: Fruit Tree Tracker", "ratings": 0}]}]
+
+    def test_appends_one_row_per_term_and_country(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "series.csv")
+            self._run(["--country", "AU", "--country", "US", "--csv", path,
+                       "--captured-at", "2026-08-20T02:00:00Z"], self.RANKED)
+            with open(path, newline="", encoding="utf-8") as fh:
+                rows = list(csv.DictReader(fh))
+        self.assertEqual(len(rows), 2)
+        self.assertEqual({r["country"] for r in rows}, {"AU", "US"})
+        self.assertEqual({r["store"] for r in rows}, {"appstore"})
+        self.assertEqual({r["captured_at"] for r in rows}, {"2026-08-20T02:00:00Z"})
+        self.assertEqual(rows[0]["rank"], "1")
+        self.assertEqual(rows[0]["status"], "ranked")
+
+    def test_an_apple_absence_below_the_limit_is_written_as_proven(self):
+        # Apple has no truncation concept, but a blank column would let a future
+        # capped window read as proof of absence. 174 < LIMIT, so it is proven.
+        absent = [dict(self.RANKED[0], rank=None, result_count=174)]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "series.csv")
+            self._run(["--country", "AU", "--csv", path], absent)
+            with open(path, newline="", encoding="utf-8") as fh:
+                row = list(csv.DictReader(fh))[0]
+        self.assertEqual(row["status"], "absent")
+        self.assertEqual(row["truncated"], "false")
+        self.assertEqual(row["rank"], "")
+
+    def test_the_table_still_prints(self):
+        # The confirmation goes to stderr precisely so stdout stays pipeable.
+        with tempfile.TemporaryDirectory() as tmp:
+            out = self._run(["--country", "AU", "--csv",
+                             os.path.join(tmp, "series.csv")], self.RANKED)
+        self.assertIn("Treesmith App Store keyword rank", out)
+        self.assertNotIn("Appended", out)
+
+    def test_a_bad_timestamp_is_refused_rather_than_written(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "series.csv")
+            with self.assertRaises(ValueError):
+                self._run(["--country", "AU", "--csv", path,
+                           "--captured-at", "yesterday"], self.RANKED)
+            self.assertFalse(os.path.exists(path))
 
 
 if __name__ == "__main__":

@@ -12,9 +12,14 @@ to #31 would read as unchanged-and-absent instead of as a loss, and DAL-257
 would score the name-field theory on a measurement that cannot see the move.
 """
 
+import contextlib
+import csv
 import importlib.util
+import io
+import os
 import re
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -171,6 +176,68 @@ class TestRender(unittest.TestCase):
         self.assertIn("US", out)
         self.assertIn("ERR", out)
         self.assertIn("!! ERRORS", out)
+
+
+class TestSeriesFlag(unittest.TestCase):
+    """--csv is purely additive, and it must carry Play's window semantics.
+
+    measure() is replaced rather than its `fetcher` argument: main() calls
+    measure() with the default seam, which was bound at definition time, so
+    patching pr.fetch would leave the test talking to the real Play search page.
+    """
+
+    def _run(self, argv, rows):
+        original, pr.measure = pr.measure, lambda country, terms=None: [
+            dict(r, country=country) for r in rows
+        ]
+        out = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                pr.main(argv)
+        finally:
+            pr.measure = original
+        return out.getvalue()
+
+    def _row(self, packages):
+        rows = [{
+            "group": "brand", "term": "treesmith",
+            "result_count": len(packages),
+            "truncated": pr.saturated(len(packages)),
+            "rank": pr.rank_of(packages),
+            "top3": packages[:3],
+        }]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "series.csv")
+            self._run(["--country", "AU", "--csv", path,
+                       "--captured-at", "2026-08-20T02:00:00Z"], rows)
+            with open(path, newline="", encoding="utf-8") as fh:
+                return list(csv.DictReader(fh))[0]
+
+    def test_a_ranked_row_lands_as_ranked(self):
+        row = self._row([pr.OUR_PACKAGE] + [f"pkg.{i}" for i in range(5)])
+        self.assertEqual(row["store"], "play")
+        self.assertEqual(row["captured_at"], "2026-08-20T02:00:00Z")
+        self.assertEqual(row["rank"], "1")
+        self.assertEqual(row["status"], "ranked")
+        self.assertEqual(row["top3_1"], pr.OUR_PACKAGE)
+
+    def test_absence_in_a_full_window_is_not_written_as_proven(self):
+        # 30 results and no us: we may be at 31. The series must say so.
+        row = self._row([f"pkg.{i}" for i in range(pr.WINDOW)])
+        self.assertEqual(row["rank"], "")
+        self.assertEqual(row["status"], "absent_window_capped")
+        self.assertEqual(row["truncated"], "true")
+
+    def test_absence_below_the_window_is_written_as_proven(self):
+        row = self._row([f"pkg.{i}" for i in range(12)])
+        self.assertEqual(row["rank"], "")
+        self.assertEqual(row["status"], "absent")
+        self.assertEqual(row["truncated"], "false")
+
+    def test_the_two_absences_do_not_write_the_same_row(self):
+        capped = self._row([f"pkg.{i}" for i in range(pr.WINDOW)])
+        proven = self._row([f"pkg.{i}" for i in range(12)])
+        self.assertNotEqual(capped["status"], proven["status"])
 
 
 if __name__ == "__main__":
