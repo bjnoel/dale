@@ -12779,3 +12779,86 @@ line is handed to Benedict alongside the rank one so both go in with a single
 path all confirmed live against the API today. Full suite 3,261 passing, 1 skipped.
 Committed locally, nothing pushed and nothing deployed. Nothing downstream can be
 checked until Apple generates the instance, expected 2026-08-21 or 2026-08-22.
+
+---
+
+## DEC-307 — 2026-08-20 — The gate existed, it just was not standing where the accident happens
+
+**Context:** landing DAL-257 I ran `git add -A` from the repo root. It swept 13
+untracked files belonging to other people's work into my commit, one of which was
+`tools/scripts/shopify-upload.py` carrying a live Shopify Admin API token as a
+hardcoded fallback. GitHub push protection refused the push. I backed the commit
+out, restaged the four files that were mine, and pushed clean. The token never
+reached origin, and secret scanning over the full history reports zero alerts.
+
+**This is the second time, with the same file.** DEC-277 records `git add -A tools/`
+sweeping `tools/scrapers/CLAUDE.md` and `tools/scripts/shopify-upload.py` into an
+unrelated commit on 2026-08-11, and concludes: *"Broad `add` across a directory
+somebody else is also working in is not safe."* That lesson was written into the
+decision log, which is not a file anyone reads before typing `git add`. It did not
+survive nine days. The first time a human caught it in review; the second time
+nothing local caught it at all.
+
+**So the fix is mechanical, not documentary.** A rule that only holds when
+somebody remembers it is not a rule.
+
+**What was missing was placement, not detection.** `config_scan.py` already exists,
+is already tested, and already fails closed for the weekly server-config snapshot.
+Fed the offending line it blocks correctly. It simply never ran anywhere near a
+commit. So `precommit_secret_scan.py` runs that same scanner over **staged blobs**
+(not working files: those differ whenever something is staged and then edited, and
+the staged bytes are what a commit publishes), wired via `.githooks/pre-commit` and
+`core.hooksPath`. No second implementation; a test fails if the patterns are
+restated there, the same way `test_no_forking.py` guards stocklib.
+
+**Two additions to the shared scanner, both strictly additive.**
+
+`VENDOR_TOKEN` matches tokens that identify themselves (`shpat_`, `ghp_`, `xoxb-`,
+`sk_live_`, `sk-ant-`, `AIza`, `re_`, with length floors). These need no context,
+which matters because the token here sat in a **default argument** rather than an
+assignment value, so the existing name-and-literal heuristic reached it only by
+accident of line shape. It also closes the dict-literal shape
+(`{"X-Shopify-Access-Token": "shpat_..."}`), which was missed outright.
+
+`scan_text(..., style=)` separates two domains that genuinely differ. In a
+Caddyfile, `basicauth_password hunter2` **is** the credential. In Python,
+`TOKEN = os.environ.get("SHOPIFY_ADMIN_API")` is a reference and is the correct way
+to write it. Blocking that would cry wolf at the exact line we want people to
+write, and config_scan's own docstring already says a gate that cries wolf gets
+switched off within a month. `config` stays the default so the snapshot gate is
+untouched; its 21 existing tests still pass.
+
+**GitHub secret scanning and push protection are now enabled** on the repo. Both
+read `disabled` before this, and the push was blocked only by the default
+high-confidence protection public repos get for free. Server-side, so it covers
+every clone and every agent regardless of local git config. History scan: 0 alerts.
+
+**The token was relocated, not destroyed.** Shopify shows a custom app's Admin API
+token once, so deleting the only copy could have lost it. It now lives in the
+repo's gitignored `.env`, and the script fails loudly when it is unset instead of
+falling back to a literal. It was never published, so rotation is optional and
+Benedict's call.
+
+**A second bug, found by causing it.** `shopify-upload.py` had no
+`if __name__ == "__main__"` guard, so *importing* it ran the upload. Verifying
+where the token came from imported it twice and created 15 duplicate products on
+the Leeming dev store. All 15 deleted by id; the store is back to its 12
+pre-existing 2026-03-15 products. The upload is now inside a guarded `main()`.
+Importing a module must never cost 11 API writes.
+
+**And a third, found the same way.** The first `main()` printed a Finding field
+that does not exist. The commit was still blocked, because a crashing hook exits
+non-zero, but it blocked with a traceback. A hook that looks broken is a hook
+somebody bypasses with `--no-verify`, so the reporting path is now tested on its
+output rather than on its findings, including that it never prints the value.
+
+**Not done:** `tools/scripts/` is NOT gitignored, and should not be. Most of it is
+tracked; blanket-ignoring a mostly-tracked directory would hide real work.
+`shopify-upload.py` is now safe to track and probably should be, but it is paused
+Leeming work with a `~/Desktop` path in it, so that is Benedict's call.
+
+**Verified:** full suite 3,280 passing, 1 skipped. The accident reproduced
+end-to-end in a scratch repo and the commit is refused, naming file and line and
+never echoing the value.
+
+**Cost:** $0.

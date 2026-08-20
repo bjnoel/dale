@@ -48,6 +48,43 @@ class BlocksRealSecrets(unittest.TestCase):
     def test_literal_bearer_token_is_blocked(self):
         self.assertBlocked("header Authorization Bearer sk_live_abcdef0123456789xyz")
 
+    def test_vendor_tokens_are_blocked_wherever_they_appear(self):
+        """Tokens that identify themselves need no surrounding context.
+
+        The 2026-08-20 incident was a Shopify token sitting in a DEFAULT
+        ARGUMENT, which is not an assignment value, so the name-and-literal
+        heuristic reached it only by accident of line shape. These do not
+        depend on that.
+        """
+        shpat = "shpat_" + "0f1e2d3c4b5a69788796a5b4c3d2e1f0"
+        self.assertBlocked('TOKEN = os.environ.get("SHOPIFY_ADMIN_API", "%s")' % shpat)
+        self.assertBlocked('headers = {"X-Shopify-Access-Token": "%s"}' % shpat)
+        self.assertBlocked("curl -H 'X-Token: %s' https://example.com" % shpat)
+        self.assertBlocked("ghp_" + "0123456789abcdef0123456789abcdef0123")
+        self.assertBlocked("xoxb-" + "12345678901-abcdefghijkl")
+
+    def test_source_style_does_not_cry_wolf_at_a_reference(self):
+        """The correct way to write it must not be blocked.
+
+        `TOKEN = os.environ.get(...)` is a reference, not a credential. In a
+        config file a bare value IS the credential, so the two styles differ.
+        """
+        line = 'TOKEN = os.environ.get("SHOPIFY_ADMIN_API")'
+        self.assertEqual(config_scan.scan_text(line, style="source"), [])
+        # Same line judged as config still blocks: a Caddyfile value is literal.
+        self.assertTrue(config_scan.scan_text(line, style="config"))
+
+    def test_source_style_still_catches_a_real_credential(self):
+        shpat = "shpat_" + "0f1e2d3c4b5a69788796a5b4c3d2e1f0"
+        self.assertTrue(config_scan.scan_text('T = "%s"' % shpat, style="source"))
+        self.assertTrue(config_scan.scan_text("-----BEGIN PRIVATE KEY-----", style="source"))
+        self.assertTrue(config_scan.scan_text("aws_access_key_id = AKIAIOSFODNN7EXAMPLE",
+                                     style="source"))
+
+    def test_config_remains_the_default_style(self):
+        # The snapshot gate calls scan_text with no style and must not weaken.
+        self.assertTrue(config_scan.scan_text("POSTGRES_PASSWORD=hunter2"))
+
     def test_value_with_a_hash_is_not_truncated_into_looking_safe(self):
         # Naive "strip everything after #" would leave an empty value here and
         # wave a real password through.
@@ -63,6 +100,13 @@ class AllowsThingsWeLegitimatelyTrack(unittest.TestCase):
     def assertClean(self, text):
         findings = config_scan.scan_text(text)
         self.assertEqual(findings, [], f"false positive: {[f.describe() for f in findings]}")
+
+    def test_a_word_that_merely_starts_like_a_token_is_not_blocked(self):
+        # re_ and sk_ are short. Without a length floor they would fire on
+        # ordinary code and the gate would be switched off within a month.
+        self.assertClean("re_match = re.compile(r'x')")
+        self.assertClean("sk_live_url = build_url()")
+        self.assertClean("ghp_count = 3")
 
     def test_variable_reference_is_clean(self):
         self.assertClean("      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}")

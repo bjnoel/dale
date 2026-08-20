@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Run the repo's own secret scanner over staged content before every commit.
+# Enable in a fresh clone with:  git config core.hooksPath .githooks
+exec python3 "$(git rev-parse --show-toplevel)/tools/autonomous/precommit_secret_scan.py"
