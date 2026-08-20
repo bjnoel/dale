@@ -12492,3 +12492,86 @@ variety pages, 2,773 canonical titles. Smoke tests pass, watched-slug baseline h
 
 **Not done:** `daleys_scraper.py` stays until the feed runs clean for a week. Backlog is
 20/15 so no ticket; noted for DAL-248.
+
+---
+
+## DEC-305 — 2026-08-20 — Two nurseries, the same two words, opposite meanings
+
+**Context:** Benedict, reading the curation in force on `/admin/varieties/review`,
+asked why `sapodilla-tropical` was in the denied bucket: Tropical is a sapodilla
+he has bought. He was also unsure about `wax-jambu-tropical`.
+
+He was right, and the deny entry had been suppressing a real cultivar since it
+was seeded on 2026-08-16 (commit 11e83c0).
+
+**What the evidence said.** Two nurseries write the same two words in opposite
+orders and mean different things:
+
+| Nursery | Title | What it means |
+|---|---|---|
+| Daleys | `Sapodilla - Tropical` | a real Singapore cultivar. URL `sapodilla-tropical-tree.htm`, description "A Singapore variety to 4m tall", sold beside Krasuey, Sawo Manila, BKD110, Prolific, Seedling |
+| All Season Plants WA | `Tropical - Sapodilla` | a catalogue heading. 10 of its 35 products start `Tropical - `, and the other nine are plain species names (Acerola Cherry, Cacao, Hog Plum, Honey Drop Mangosteen, Lemon Drop Mangosteen, Miracle Berry, Star Gooseberry, Wampee, Wax Jambu) |
+
+`parse_cultivar` collapsed both to `(Sapodilla, Tropical)`, so a deny entry added
+for the second necessarily switched off the first. **Deny is keyed on the slug
+and cannot see word order, which makes it the wrong tool for this shape.**
+
+**The bigger finding.** The reversal branch this deny was mopping up after fires
+on 28 of 20,591 live titles, in 12 distinct shapes, and exactly one of them
+(`Lapins - Cherry`, Ross Creek) is a genuine variety-then-species title. The rest
+are a catalogue heading, or worse, the tail of a compound common name where the
+plant is a different species entirely. Five were live `/variety/` pages:
+
+- `lemon-aspen` from Daleys `Aspen - Lemon` — lemon aspen is *Acronychia acidula*
+- `pineapple-sage` from `Sage - Pineapple` — *Salvia elegans*, a herb
+- `orange-apple-cactus` from `Apple Cactus - Orange`
+- `elderberry-berry` from `Berry - Elderberry`
+- `mandarin-scion-wood-plum` from `Scion Wood Plum - Satsuma`, which is a PLUM
+- plus `cherry-potted-lapins`, a junk twin of the real `cherry-lapins`
+
+That second kind is the dangerous one: it walks a herb or a palm straight through
+the DEC-195 taxonomy gate wearing a fruit species name. Three of these pages were
+created on 2026-08-20 by the new Daleys catalogue feed, so this was fresh damage.
+
+**Decision:** Fix it in the parser, not the deny list. `_is_group_prefix` refuses
+the `heading - species` shape outright, and `parse_cultivar` does not let the
+relaxed pass re-mint it (the relaxed pass reads `Akane Apple` correctly by
+finding the species anywhere and taking the other side; that is the same shape as
+`Aspen - Lemon` and it cannot tell them apart, so only the strict pass, which
+sees the dash, can decide).
+
+Refusing costs no stock attribution. Species bucketing is
+`stocklib.species_match`, a different module with different tolerances, and it
+reads these titles correctly on its own: verified live, All Season Plants WA's
+three `Tropical - ...` listings are on the sapodilla, wampee and wax jambu
+species pages today and stay there.
+
+**Only `sapodilla-tropical` came out of the deny list.** The other residue
+entries still guard a normal-order listing: `Peach Palm` and `Apple Mint` parse
+that way with no dash to refuse, so removing `peach-palm` and `apple-mint` would
+have reopened the hole this closes. `kiwifruit-fruit-male` is unreachable in
+today's data but for a data reason, not a structural one, so it stays too.
+
+**On wax jambu:** the deny was CORRECT and is now moot. The only title producing
+`wax-jambu-tropical` was the All Season Plants WA heading; every other nursery
+names wax jambu by colour form (Pink, Red, White, Purple, Green). There is no
+Tropical wax jambu. The entry stays as a guard against a normal-order listing.
+
+**Verification:** swept all 19,475 unique (nursery, title) pairs through both
+parsers. 11 titles change slug and every one is wrong today. No watchers on any
+affected slug (`variety_watches.db`). Full suite 3,067 passing, 1 skipped.
+
+**What happens at the 00:00 UTC build:** `sapodilla-tropical` appears as a new
+page from Daleys' two listings. `elderberry-berry`, `orange-apple-cactus` and
+`mandarin-scion-wood-plum` are unlinked (live_days=1, under the entry guard, so
+404 rather than tombstone) before they were ever indexed. `cherry-potted-lapins`
+retires after 2 absent nights. No ad-hoc rebuild was run: the ledger guards count
+BUILDER RUNS, not calendar days, so a manual build would have advanced every
+page's counters and could retire a mid-exit-guard page a night early.
+
+**Still open:** `lemon-aspen` and `pineapple-sage` stay live, because other
+nurseries list them in normal order (`Lemon Aspen Plant`, `Pineapple Sage`) and
+neither species is in `fruit_species.json`, so `_find_species_anywhere` matches
+the leading word. That is a different mechanism and a wider class: any compound
+common name whose first word is a tracked species. A deny entry for each is safe
+and is Benedict's call.
