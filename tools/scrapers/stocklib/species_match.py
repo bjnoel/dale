@@ -77,6 +77,62 @@ def _fallback_candidate(t_lower: str, lookup: dict) -> str | None:
     return None
 
 
+# --- Ornamental relatives (1.6a) ----------------------------------------
+#
+# match_title happily matches a species name mid-title, so the ornamental
+# cousins of our fruit species were being filed as the fruit itself. Live on
+# 2026-08-20 that was ~60 products: 26 "Flowering Cherry/Peach/Plum/Apricot/
+# Almond/Quince/Nectarine", 15 "Ornamental Pear/Grape/Plum", 3 crabapples,
+# and 5 more where the qualifier trails the species name.
+#
+# This is not a new policy call. /variety/ already keeps them apart:
+# cultivar_parsing.parse_cultivar reads "Ornamental Pear - Bradford" as the
+# species "Ornamental Pear", which the DEC-195 taxonomy gate then rejects
+# because no such record exists. species_match was the only consumer
+# collapsing them into Pear, so the two disagreed. This aligns them.
+#
+# Deliberately NOT reusing cultivar_parsing._ORNAMENTAL_WORDS: that vocabulary
+# names ornamental GENERA (hibiscus, grevillea) to stop the relaxed parser
+# reading a fruit-as-colour word as the species. This is a different failure,
+# ornamental FORMS of the fruit genus itself, and the two lists should not be
+# merged casually for the same reason the two parsers are not.
+
+# Unambiguous in any position. Verified against all 14,751 live titles: every
+# title carrying one of these is a true ornamental, including the five where
+# the word trails the species ("Grape - Ornamental", "Pomegranate - Ornamental",
+# "Pineapple - Mini Ornamental", "Olive | Bambalina Dwarf Ornamental",
+# "Weeping Mulberry - Ornamental - Chaparral").
+_ORNAMENTAL_ANYWHERE = ("ornamental", "crab apple", "crabapple")
+
+# Only ornamental when it QUALIFIES the species, i.e. appears before it.
+# "Flowering Cherry - Mt Fuji" is an ornamental Prunus; "Strawberry - Red
+# Flowering" is a strawberry that happens to have red flowers, and it is the
+# single live counter-example that makes the position test necessary.
+_ORNAMENTAL_QUALIFIER = ("flowering",)
+
+# "weeping" is deliberately absent. It is genuinely mixed on live data:
+# "Weeping Cherry Cheals", "Weeping Pear pendula" and "Weeping Fig (Ficus
+# benjamina)" are ornamentals, but "Star apple Weeping Grafted",
+# "Mulberry - Weeping" and "Weeping Mulberry 'White'" are fruiting trees.
+# There is no positional or vocabulary rule that separates them, so excluding
+# it would cost real fruit. Left alone until someone has better evidence.
+
+
+def _is_ornamental_relative(t_lower: str, candidate: str) -> bool:
+    """True if the title names an ornamental relative rather than the fruit."""
+    for word in _ORNAMENTAL_ANYWHERE:
+        if re.search(r"(?<!\w)" + re.escape(word) + r"s?(?!\w)", t_lower):
+            return True
+    species_idx = t_lower.find(candidate)
+    if species_idx < 0:
+        return False
+    for word in _ORNAMENTAL_QUALIFIER:
+        m = re.search(r"(?<!\w)" + re.escape(word) + r"(?!\w)", t_lower)
+        if m and m.start() < species_idx:
+            return True
+    return False
+
+
 def build_species_lookup(species_list: list[dict] | None = None) -> dict:
     """Lowercase common_name/synonym -> the FULL species record."""
     if species_list is None:
@@ -122,10 +178,14 @@ def match_title(title: str, lookup: dict):
     for t_lower, _ in pairs:
         candidate = _leading_candidate(t_lower, lookup)
         if candidate:
+            if _is_ornamental_relative(t_lower, candidate):
+                return None
             return lookup[candidate]
     for t_lower, _ in pairs:
         candidate = _fallback_candidate(t_lower, lookup)
         if candidate:
+            if _is_ornamental_relative(t_lower, candidate):
+                return None
             return lookup[candidate]
     return None
 
@@ -137,6 +197,8 @@ def match_species(title: str, lookup: dict) -> dict | None:
     for t_lower, t_orig in pairs:
         candidate = _leading_candidate(t_lower, lookup)
         if candidate:
+            if _is_ornamental_relative(t_lower, candidate):
+                return None
             result = dict(lookup[candidate])
             # Extract cultivar: everything after the matched common name
             matched = lookup[candidate]["cn"]
@@ -161,6 +223,8 @@ def match_species(title: str, lookup: dict) -> dict | None:
     for t_lower, t_orig in pairs:
         candidate = _fallback_candidate(t_lower, lookup)
         if candidate:
+            if _is_ornamental_relative(t_lower, candidate):
+                return None
             result = dict(lookup[candidate])
             # Cultivar is the part BEFORE the species name
             matched = lookup[candidate]["cn"]

@@ -218,5 +218,105 @@ class MatchTitleTest(unittest.TestCase):
         self.assertIs(build_species_trends.build_lookup, build_species_lookup)
 
 
+
+class OrnamentalRelativeTest(unittest.TestCase):
+    """1.6a. match_title matches a species name mid-title, so the ornamental
+    cousins of our fruit species were filed as the fruit itself. Measured on
+    the live catalogue 2026-08-20: 60 titles across 14 species.
+
+    /variety/ already kept them apart (parse_cultivar reads "Ornamental Pear -
+    Bradford" as the species "Ornamental Pear", which the DEC-195 gate then
+    rejects), so this aligns the two consumers rather than deciding anything
+    new. Every title below was live.
+    """
+
+    def setUp(self):
+        self.lookup = load_species_lookup()
+
+    def _cn(self, title):
+        m = match_title(title, self.lookup)
+        return m.get("cn") if m else None
+
+    def test_crabapple_both_forms(self):
+        """The plan's starting case. The singular was ALREADY mis-filed as
+        Apple; the plural escaped only because "apples" is not a lookup key,
+        which is luck that 1.6b's plural work is about to take away. Both
+        directions pinned, deliberately.
+        """
+        for title in ("Crab Apple Charlottae (Flowering tree)",
+                      "Crab Apples Charlottae (Flowering tree)",
+                      "Crab apple Ioensis Plena",
+                      "Crab Apple 'Tom Matthews' (Malus spp.) 300mm pot PICK UP ONLY",
+                      "Crab Apple Tree (Malus spp.) - Advanced PICK UP ONLY"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+
+    def test_real_apples_unaffected(self):
+        self.assertEqual(self._cn("Apple Pink Lady"), "Apple")
+        self.assertEqual(self._cn("Apple - Granny Smith"), "Apple")
+
+    def test_flowering_prunus_and_quince(self):
+        for title in ("Flowering Cherry - Mt Fuji",
+                      "Flowering Cherry Kanzan (Prunus serrulata)",
+                      "Dwarf Flowering Cherry - Kojo No Mai",
+                      "Yoshino Flowering Cherry yedoensis (Prunus x)",
+                      "Flowering Peach - Alboplena",
+                      "Super Dwarf Flowering Peach 'White' (Prunus Persica)",
+                      "Pink Roseoplena flowering peach [Bare rooted]",
+                      "Flowering Plum Blireana",
+                      "Flowering Purple-Leafed Plum (Prunus cerasifera Nigra)",
+                      "Flowering Apricot Bush Form Pink (Prunus mume)",
+                      "Flowering Almond Double pink (Bare rooted)",
+                      "Super Dwarf Flowering Nectarine 'Pink'",
+                      "Flowering Quince Nivalis (Chaenomeles speciosa)"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+
+    def test_flowering_after_the_species_is_not_ornamental(self):
+        """The single live counter-example, and the reason "flowering" is
+        positional while "ornamental" is not. A red-flowering strawberry is
+        still a strawberry.
+        """
+        self.assertEqual(self._cn("Strawberry - Red Flowering"), "Strawberry")
+
+    def test_ornamental_in_any_position(self):
+        """Verified against all 14,751 live titles: no title carrying
+        "ornamental" is a fruiting variety, including the five where the word
+        trails the species name.
+        """
+        for title in ("Ornamental Pear - Bradford",
+                      "Ornamental Pear 'Capital' (Pyrus calleryana)",
+                      "Ornamental Grape Vine",
+                      "Ornamental Plum - Nigra",
+                      "Grape - Ornamental",
+                      "Pomegranate - Ornamental",
+                      "Pineapple - Mini Ornamental",
+                      "Olive | Bambalina Dwarf Ornamental",
+                      "Weeping Mulberry - Ornamental - Chaparral"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+
+    def test_weeping_is_deliberately_not_a_qualifier(self):
+        """"weeping" is genuinely mixed on live data and no positional or
+        vocabulary rule separates it, so adding it would cost real fruit.
+        These three are fruiting trees and must keep matching.
+        """
+        self.assertEqual(self._cn("Star apple Weeping Grafted"), "Star Apple")
+        self.assertEqual(self._cn("Mulberry - Weeping"), "Mulberry")
+        self.assertEqual(self._cn("Weeping Mulberry 'White' (PICKUP ONLY)"), "Mulberry")
+
+    def test_guard_applies_to_match_species_too(self):
+        """Two functions, two copies of the leading/fallback cascade. Guarding
+        only match_title would leave the dashboard and nursery pages, which
+        call match_species, still bucketing ornamentals as fruit.
+        """
+        self.assertIsNone(match_species("Ornamental Pear - Bradford", self.lookup))
+        self.assertIsNone(match_species("Flowering Cherry - Mt Fuji", self.lookup))
+        self.assertIsNone(match_species("Crab apple Ioensis Plena", self.lookup))
+        real = match_species("Apple Pink Lady", self.lookup)
+        self.assertEqual(real["cn"], "Apple")
+        self.assertEqual(real["cv"], "Pink Lady")
+
+
 if __name__ == "__main__":
     unittest.main()

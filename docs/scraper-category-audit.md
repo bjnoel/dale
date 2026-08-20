@@ -431,6 +431,43 @@ there files Ladybird's chillies as lemon, cherry and pineapple cultivars.
 1. **Fix the crabapple first.** `Crab Apple Charlottae (Flowering tree)` already resolves
    to Apple (2c). Add `crab apple` / `crabapple` as an explicit non-fruit exclusion on
    this path before touching anything else, and pin it.
+
+   **Done, and it was 20x bigger than one crabapple.** Measured over all 14,751 live
+   titles, `match_title` was filing **60 ornamentals as fruit species**: 16 Cherry, 11
+   Peach, 11 Pear, 4 Plum, 4 Grape, 3 Apple, and 2 each of Almond, Apricot and Quince,
+   plus Olive, Pineapple, Pomegranate, Nectarine and Mulberry. `Ornamental Pear
+   'Bradford'` was counted as a Pear on `/species/pear`.
+
+   This turned out **not** to be a new policy call. `/variety/` already keeps them apart:
+   `parse_cultivar` reads `Ornamental Pear - Bradford` as the species `Ornamental Pear`,
+   which the DEC-195 taxonomy gate rejects for having no record. `species_match` was the
+   only consumer collapsing them into the fruit, so the two disagreed. The fix aligns them.
+
+   Three rules, each with a live counter-example that shapes it:
+
+   - `ornamental` rejects **in any position**. No live title carrying it is a fruiting
+     variety, including the five where it trails the species (`Grape - Ornamental`,
+     `Pomegranate - Ornamental`, `Pineapple - Mini Ornamental`, `Olive | Bambalina Dwarf
+     Ornamental`, `Weeping Mulberry - Ornamental`).
+   - `flowering` rejects **only before the species name**. `Flowering Cherry - Mt Fuji`
+     is an ornamental Prunus; `Strawberry - Red Flowering` is a strawberry with red
+     flowers, and it is the one live case that makes the position test necessary.
+   - `weeping` is **deliberately excluded**. It is genuinely mixed and no rule separates
+     it: `Weeping Cherry Cheals`, `Weeping Pear pendula` and `Weeping Fig (Ficus
+     benjamina)` are ornamentals, but `Star apple Weeping Grafted`, `Mulberry - Weeping`
+     and `Weeping Mulberry 'White'` are fruiting trees. Excluding it would cost real fruit.
+
+   Deliberately not reusing `cultivar_parsing._ORNAMENTAL_WORDS`: that vocabulary names
+   ornamental *genera* (hibiscus, grevillea) to stop the relaxed parser reading a
+   fruit-as-colour word as the species. This is ornamental *forms of the fruit genus
+   itself*, a different failure, and the two should not be merged for the same reason the
+   two parsers are not.
+
+   Net effect: 60 titles move from a fruit species to unclassified. **No species page
+   empties** (largest fall is Cherry, 270 to 254) and nothing is re-filed to a different
+   species. Note this pushes the unclassified count UP, which is the opposite direction
+   to the rest of Phase 1: read that rise as ornamentals leaving the fruit buckets, not
+   as a filter widened without the registry catching up.
 2. **Then one-word compounds** (`fingerlime`). Narrow and safe: an explicit extra lookup
    key per affected registry name.
 3. **Then plurals, as explicit keys and NOT a stemmer.** A blanket plural stemmer would
