@@ -68,6 +68,55 @@ class FruitFiltersTest(unittest.TestCase):
             {"title": "Apple Pink Lady", "product_type": "Fruit and Nut Trees"},
             "daleys"))
 
+    def test_ladybird_nut_trees_are_fruit(self):
+        """Ladybird files nuts under its own top-level 'Nut Trees' tag, which
+        the include list left out, so 14 real trees were dropped nightly. Live
+        titles from ladybird/latest.json on 2026-08-20.
+        """
+        for title in ("Walnut 'English'",
+                      "Pecan Wichita (B) (PICK UP ONLY)",
+                      "Advanced Almond Self Pollinating",
+                      "Hazelnut Seedling (Corylus avellana)",
+                      "Corkscrew Hazel Contorta (Corylus avellana)",
+                      "Kaffir Plum",
+                      "Diploglottis australis - Large Leaved Tamarind (Tucker Bush\u2122)"):
+            with self.subTest(title=title):
+                self.assertTrue(is_fruit_product(
+                    {"title": title, "tags": ["Nut Trees"]}, "ladybird"))
+
+    def test_ladybird_nut_trees_counter_case_sour_cherry(self):
+        """Ladybird files 'Sour Cherry Morello' under Nut Trees. Store taxonomy
+        is a strong signal, not an authoritative one: we want the tree either
+        way, and the categorize ladder (not the tag) decides what it is.
+        """
+        self.assertTrue(is_fruit_product(
+            {"title": "Sour Cherry Morello (Prunus cerasus)", "tags": ["Nut Trees"]},
+            "ladybird"))
+
+    def test_ladybird_ornamentals_still_excluded_after_widening(self):
+        """The widening is one tag, not a general loosening. Ladybird's other
+        top-level tags carry 5,300 ornamentals and must stay out.
+        """
+        for tag in ("Flowering Plants", "Natives", "Indoor Plants", "Roses",
+                    "Cacti & Succulents", "Palms & Tropical Plants", "Proteas"):
+            with self.subTest(tag=tag):
+                self.assertFalse(is_fruit_product(
+                    {"title": "Rose Iceberg", "tags": [tag]}, "ladybird"))
+
+    def test_ladybird_nut_trees_fertiliser_still_junked(self):
+        """'Organic Plant Food Pellets' carries the Nut Trees tag among eleven
+        others, so widening the filter let a bag of fertiliser through. The
+        junk gate has to catch up with the filter, or kept rises for the wrong
+        reason.
+        """
+        import daily_digest
+        self.assertFalse(daily_digest._digest_product_filter(
+            {"title": "Organic Plant Food Pellets", "tags": ["Nut Trees"]},
+            "ladybird"))
+        self.assertTrue(daily_digest._digest_product_filter(
+            {"title": "Pecan Riverside", "tags": ["Nut Trees"]},
+            "ladybird"))
+
 
 if __name__ == "__main__":
     unittest.main()

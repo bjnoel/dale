@@ -20,7 +20,14 @@ If a nursery has useful categorization, only include products matching these.
 FRUIT_FILTERS = {
     "ladybird": {
         "mode": "tags",
-        "include_tags": ["Fruit Trees & Edibles"],  # products with this tag prefix
+        # Products with this tag prefix. "Nut Trees" is a second top-level tag,
+        # not a child of "Fruit Trees & Edibles", so leaving it out dropped 14
+        # real trees nightly: 7 pecans, English walnut, almond, hazelnut,
+        # corkscrew hazel, sour cherry and kaffir plum. Same bug class as
+        # DEC-207, one layer further down: that audit checked scrape-time
+        # include-filters and passed ladybird as "no filter", never looking at
+        # this build-time one.
+        "include_tags": ["Fruit Trees & Edibles", "Nut Trees"],
     },
     "ross-creek": {
         "mode": "all",  # all products are fruit/plant related
