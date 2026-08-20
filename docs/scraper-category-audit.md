@@ -409,6 +409,44 @@ Two notes that shrink the work: `send_species_alerts.py` has been unwired from t
 pipeline since 2026-04-19, and `recover_merged_slugs.py` is an offline proposal generator.
 Both still need the decision, neither is on the nightly path.
 
+**Status: the regex half is DONE, the architecture half is DEFERRED, and they are two
+different pieces of work.**
+
+Done. `_SEED_RE` is tightened so `seed` used as a propagation method, a trait, or part of
+a plant's own name no longer reads as a packet. Measured against all 106 live titles that
+match the old bare `\bseeds?\b`: exactly **6 are recovered** and the other 100 stay
+packets (guildford 56, forever-seeds 42, four elsewhere).
+
+```
+Lychee Lin San Sue (Small Seed)                     a real tree; small-seed is a
+                                                    PRIZED lychee trait
+Pomegranate Shepards Special Organic -60-80cm
+  (Option For Seed Grown Also)                      a real tree
+Grass Tree seed grown (Xanthorrhoea latifolia)      ornamental, dropped elsewhere
+Seed of Heaven                                      a plant (Aframomum)
+Seed of Heaven - Aframomum sp uganda
+Seed of Paradise Ginger
+```
+
+**Deferred, deliberately: splitting the seed test out of `is_real_product` and carrying a
+per-product seed flag through the 13 consumers.** Three reasons, in order of weight:
+
+1. **Its purpose is a Phase 2 decision, not a Phase 1 one.** The plan's own instruction
+   for the split is to "pin each surface with a test asserting seeds stay out of it", so
+   on completion **nothing becomes visible anywhere**. The change only pays off if seeds
+   later become a category, and Benedict's standing call is to *pick the next category by
+   search demand before building for it*. DEC-227 is the precedent: bush tucker shipped on
+   coverage, failed on demand. Building the seed plumbing now pre-commits a design before
+   the evidence that would justify it.
+2. **It is materially larger than the work list implied.** Thirteen modules call
+   `is_real_product`, and the plan requires a decision plus a test per consumer. That is a
+   change to a shared gate every builder and both alert senders depend on.
+3. **It has no measurable Phase 1 outcome.** The other seven units each moved a number.
+   This one moves none by design, so there is nothing to verify it against.
+
+The regex fix, by contrast, is squarely Phase 1: it recovers real fruit that was being
+deleted, and it is independent of whatever Phase 2 decides about seeds as a category.
+
 **1.5 Grow the species registry.** ~500 titles are fruit with no record. This is DAL-192's
 scope, which is no longer in the backlog. Batch by count: berries first (Tayberry,
 Boysenberry, Youngberry, Loganberry, Lawtonberry all appear), then rare tropicals

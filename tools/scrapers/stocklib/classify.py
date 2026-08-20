@@ -133,6 +133,33 @@ NON_PLANT_KEYWORDS = derived_non_plant_keywords()
 
 _SEED_RE = re.compile(r"\bseeds?\b")
 
+# "seed" in a title does not always mean the product IS seed. It is also used
+# to say how a plant was raised, to name a trait, or as part of the plant's own
+# name, and the bare \bseeds?\b test deleted all three. Live casualties on
+# 2026-08-20, six of them:
+#
+#   Lychee Lin San Sue (Small Seed)      a real tree. Small-seed is a PRIZED
+#                                        lychee trait, which is why it is in
+#                                        the title at all.
+#   Pomegranate Shepards Special Organic -60-80cm (Option For Seed Grown Also)
+#                                        a real tree, with a seed-grown option
+#   Grass Tree seed grown (Xanthorrhoea latifolia)
+#   Seed of Heaven                       a plant (Aframomum)
+#   Seed of Heaven - Aframomum sp uganda
+#   Seed of Paradise Ginger
+#
+# Verified against all 106 live titles that match _SEED_RE: this keeps exactly
+# those six and leaves the other 100 (guildford 56, forever-seeds 42, and four
+# others) classified as packets.
+_NOT_A_SEED_PACKET_RE = re.compile(
+    r"\bseed[\s-]*grown\b"
+    r"|\bgrown\s+from\s+seed\b"
+    r"|\bfrom\s+seed\b"
+    r"|\bseed[\s-]*raised\b"
+    r"|\b(?:small|large|big|no)\s+seed\b"
+    r"|\bseed\s+of\b"
+)
+
 
 @lru_cache(maxsize=8)
 def _keyword_pattern(keywords: frozenset[str]) -> re.Pattern:
@@ -187,10 +214,20 @@ def is_junk_keyword(title: str) -> bool:
 
 
 def is_seed_packet(title: str) -> bool:
-    """True if the title is a seed packet (not a nursery-grown tree). 'seedling'
-    and 'seedless' are explicitly NOT seed packets."""
+    """True if the title is a seed packet (not a nursery-grown tree).
+
+    'seedling' and 'seedless' are explicitly NOT seed packets, and neither is
+    a title that only uses the word to describe how a plant was raised
+    ("Seed Grown Mango"), to name a trait ("Lychee ... (Small Seed)"), or as
+    part of the plant's own name ("Seed of Heaven"). See
+    _NOT_A_SEED_PACKET_RE.
+    """
     tl = title.lower()
-    return bool(_SEED_RE.search(tl)) and "seedling" not in tl and "seedless" not in tl
+    if not _SEED_RE.search(tl):
+        return False
+    if "seedling" in tl or "seedless" in tl:
+        return False
+    return not _NOT_A_SEED_PACKET_RE.search(tl)
 
 
 def is_real_product(title: str) -> bool:

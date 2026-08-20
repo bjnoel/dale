@@ -267,5 +267,61 @@ class DashboardJunkSiteTest(unittest.TestCase):
         self.assertTrue(matches_keyword("$100 Gift Card", kws))
 
 
+
+class SeedDescriptorTest(unittest.TestCase):
+    """1.4, first half. `\\bseeds?\\b` deleted any title containing the word,
+    including titles where "seed" describes how a plant was raised, names a
+    trait, or is part of the plant's own name. Six live casualties on
+    2026-08-20; the other 100 seed-matching titles are genuine packets and are
+    unaffected.
+
+    The second half of 1.4 (splitting the seed test out of is_real_product and
+    carrying a per-product seed flag through 13 consumers) is NOT done here.
+    See docs/scraper-category-audit.md.
+    """
+
+    def test_seed_as_a_trait_is_not_a_packet(self):
+        """Small-seed is a prized lychee trait, which is why it is in the
+        title at all."""
+        self.assertFalse(is_seed_packet("Lychee Lin San Sue (Small Seed)"))
+        self.assertTrue(is_real_product("Lychee Lin San Sue (Small Seed)"))
+
+    def test_seed_as_propagation_method_is_not_a_packet(self):
+        for title in ("Seed Grown Mango",
+                      "Grass Tree seed grown (Xanthorrhoea latifolia)",
+                      "Pomegranate Shepards Special Organic -60-80cm "
+                      "(Option For Seed Grown Also)",
+                      "Custard Apple grown from seed",
+                      "Mango seed-raised"):
+            with self.subTest(title=title):
+                self.assertFalse(is_seed_packet(title))
+                self.assertTrue(is_real_product(title))
+
+    def test_seed_in_the_plants_own_name_is_not_a_packet(self):
+        for title in ("Seed of Heaven",
+                      "Seed of Heaven - Aframomum sp uganda",
+                      "Seed of Paradise Ginger"):
+            with self.subTest(title=title):
+                self.assertFalse(is_seed_packet(title))
+
+    def test_real_seed_packets_are_still_packets(self):
+        """100 live titles, the bulk of them guildford and forever-seeds."""
+        for title in ("CHESTNUT TREE ( Castana Sativa ) Seed",
+                      "BLACKBERRY  ( Rubus x Species) Seed",
+                      "CURRANT RED ( Ribes Rubrum )  Seeds",
+                      "Basil Seeds", "Apple Seeds", "Tomato Seed Packet",
+                      "FINGER LIME - NATIVE AUSTRALIAN CITRUS CAVIAR "
+                      "(Citrus Australiasica) Seed \" RICKS RED \""):
+            with self.subTest(title=title):
+                self.assertTrue(is_seed_packet(title))
+                self.assertFalse(is_real_product(title))
+
+    def test_seedling_and_seedless_still_exempt(self):
+        for title in ("Mango Seedling", "Watermelon Seedless",
+                      "Hazelnut Seedling (Corylus avellana)"):
+            with self.subTest(title=title):
+                self.assertFalse(is_seed_packet(title))
+
+
 if __name__ == "__main__":
     unittest.main()
