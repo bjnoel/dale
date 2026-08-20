@@ -139,32 +139,44 @@ the zero was believed. So the digest section reports the age of the newest captu
 "NO CAPTURE" in red past 10 days, and takes the **worst** store rather than the best, because
 a live Play would otherwise mask a dead iOS.
 
-## What is left for Benedict
+## What was left for Benedict, and what actually was
 
-One thing, and it is deliberately not automated. `infrastructure/crontab.txt` is a recording
-of the server's crontab, captured back into the repo every Monday. Editing it changes nothing
-on the box and would fake an install. So the cron line is handed over rather than committed:
+Two things were written up as his. On review only one of them really was.
+
+**The cron line: Dale installed it.** There is a standing instruction that Dale has sudo on
+the Hetzner box and should not ask Benedict to do things it can do itself, and installing a
+crontab line is squarely that. The plan said "hand it over" and the plan was wrong.
 
 ```
 40 21 * * 0 /opt/dale/repo/tools/autonomous/capture-treesmith-rank.sh >> /opt/dale/autonomous/logs/treesmith_rank.log 2>&1
 ```
 
-Sundays 21:40 UTC, 2h20m ahead of the Monday digest, off the top of the hour so it does not
-race the hourly push. The Monday snapshot will record it back into the repo once it is in.
+Installed against the live crontab with a backup taken first
+(`/opt/dale/crontab.backup.20260820T064819Z`), 62 lines to 66, and the diff is additions
+only with all six existing jobs still present. First run is Sunday 2026-08-23 21:40 UTC,
+2h20m ahead of the Monday digest.
 
-Also drafted and deliberately not sent yet, because it references a path that is not real
-until this merges and deploys: a question about opening a free Apple Search Ads account.
-Whether the rename was a *good* trade cannot be scored without search volume, and neither
-store exposes that free via API. Apple Search Ads shows the Search Popularity index with no
-ad spend, and an account signup needs a legal person.
+What was **not** done, and stays not done: `infrastructure/crontab.txt` is still untouched.
+It is a recording captured server-to-repo on Mondays at 04:20 UTC, so editing it would fake
+an install. The Monday snapshot will pick the real line up on its own, which is the whole
+point of it being a recording.
 
-```bash
-python3 tools/autonomous/linear_update.py ask \
-  "Open a free Apple Search Ads account for keyword volume, and install the rank cron line?" \
-  --description "Two small things only you can do. (1) Apple Search Ads is free and needs no ad spend to show the Search Popularity index. Without volume we can see that fruit tree journal went 129 to 13, but not whether anyone searches it. (2) One crontab -e line, in tools/autonomous/capture-treesmith-rank.sh's header, to start the weekly capture." \
-  --research "Terms that matter: graft tracker, grafting tracker, fruit tree, fruit tree tracker, fruit tree journal, fruit tree care. The rename cost AU its graft tracker and grafting tracker crowns (both #1, now 11 and 12) and bought fruit tree tracker #2, fruit tree journal #13 and fruit tree #36. Whether that is a good trade depends entirely on relative volume, which neither store exposes free via API. crontab.txt is a recording (snapshot-server-config.sh, Mondays 04:20 UTC), so committing the line would fake an install." \
-  --labels "Track A"
-```
+Two things were checked on the box rather than assumed:
+
+- `series_path()` resolves to `/opt/dale/repo/data/treesmith-rank-history.csv` from **both**
+  copies of the code, including the rsynced `/opt/dale/autonomous` one where a repo-relative
+  default would have pointed at `/opt/data` and reported the series as missing.
+- The stores answer a datacentre IP the same way they answer a laptop. Play AU
+  "fruit tree tracker" reads #1/30 and iOS AU reads #2/154 from the VPS, matching the local
+  capture exactly. A Play search page that served Hetzner a different layout would have made
+  every Sunday capture quietly wrong.
+
+**The Apple Search Ads account is genuinely his**, because it is an account signup. Asked as
+DAL-286. Whether the rename was a *good* trade cannot be scored without search volume: we can
+see that iOS US "fruit tree journal" went 129 to 13, but not whether anyone searches it.
+Apple Search Ads shows a Search Popularity index free and with no ad spend, the iTunes Search
+API we already use returns rankings but no volume, Play exposes nothing comparable, and the
+third-party tools start around USD 79/mo.
 
 ## Files
 

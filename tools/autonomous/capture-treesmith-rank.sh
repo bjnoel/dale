@@ -6,14 +6,15 @@
 # went to waste. This runs them weekly and commits what they measured; the
 # Monday digest reads the series and reports what moved.
 #
-# NOT installed by this repo. `infrastructure/crontab.txt` is a recording,
-# captured server-to-repo by snapshot-server-config.sh on Mondays at 04:20 UTC.
-# Editing it changes nothing on the box and would fake an install. Benedict
-# installs the line below with `crontab -e`, and the Monday snapshot records it
-# back into the repo afterwards:
+# INSTALLED in the live crontab 2026-08-20, first run Sunday 2026-08-23 21:40 UTC:
 #
-#   # TreeSmith ASO rank capture -- Sundays 21:40 UTC (05:40 AWST Monday)
 #   40 21 * * 0 /opt/dale/repo/tools/autonomous/capture-treesmith-rank.sh >> /opt/dale/autonomous/logs/treesmith_rank.log 2>&1
+#
+# Installed by editing the crontab on the box, NOT by editing
+# `infrastructure/crontab.txt`. That file is a recording, captured
+# server-to-repo by snapshot-server-config.sh on Mondays at 04:20 UTC, so
+# editing it changes nothing on the box and would fake an install. The Monday
+# snapshot picks the real line up on its own.
 #
 # Weekly, because the signal moves over weeks and daily would be noise. Sundays,
 # 2h20m ahead of treesmith_analytics.py at Monday 00:00, with margin for a ~5

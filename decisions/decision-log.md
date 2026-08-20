@@ -12663,3 +12663,22 @@ real CSV parser. Pinned by a test rather than fixed by mangling the data.
 
 **Verification:** 360 rows across 4 captures; backfill re-run is a no-op; full suite
 3,147 passing, 1 skipped. Committed locally, nothing pushed and nothing deployed.
+
+**Update, same day, after landing:** the cron line was **installed by Dale**, not handed
+to Benedict. The plan said hand it over; that was wrong against the standing instruction
+that Dale has sudo on the Hetzner box and should not ask Benedict to do things it can do
+itself. Installed against the live crontab with a backup first
+(`/opt/dale/crontab.backup.20260820T064819Z`), 62 lines to 66, diff additions only, all
+six existing jobs intact. First run Sunday 2026-08-23 21:40 UTC.
+`infrastructure/crontab.txt` remains untouched and the Monday 04:20 snapshot will record
+the real line on its own.
+
+Two things were verified on the box rather than assumed. `series_path()` resolves to
+`/opt/dale/repo/data/treesmith-rank-history.csv` from both copies of the code, including
+the rsynced `/opt/dale/autonomous` one where a repo-relative default would have pointed at
+`/opt/data`; and the stores answer a datacentre IP identically to a laptop (Play AU
+"fruit tree tracker" #1/30, iOS AU #2/154, both matching the local capture). A Play search
+page that served Hetzner a different layout would have made every Sunday capture quietly
+wrong.
+
+Only the Apple Search Ads signup genuinely needed a human, asked as DAL-286.

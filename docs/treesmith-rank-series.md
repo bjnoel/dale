@@ -256,7 +256,7 @@ plus an entry.
 - The script rejects unknown argv rather than ignoring it; no new flag is added, so nothing to
   update there.
 
-## Task 4 — the cron line (handed over, not installed)
+## Task 4 — the cron line (installed 2026-08-20)
 
 `infrastructure/crontab.txt` is a **recording**, captured server-to-repo by
 `snapshot-server-config.sh` Mondays 04:20 UTC. Editing it changes nothing on the box and would
@@ -269,7 +269,11 @@ repo once Benedict has genuinely installed it.
 `tools/autonomous/git_sync.sh`. A push failure alerts through `notify.py` with the manual fix, the
 way the register merge and the config snapshot both do.
 
-Line for Benedict to install with `crontab -e`:
+**Installed 2026-08-20**, first run Sunday 2026-08-23. The plan said hand this to Benedict;
+that was wrong against a standing instruction that Dale has sudo on the box and should not ask
+him to do things it can do itself. Only the Apple Search Ads signup genuinely needs a human.
+Installed against the live crontab (backup at `/opt/dale/crontab.backup.20260820T064819Z`,
+62 lines to 66, diff is additions only). `infrastructure/crontab.txt` was still not touched:
 
 ```
 # TreeSmith ASO rank capture -- Sundays 21:40 UTC (05:40 AWST Monday), ahead of the Monday 00:00 digest
