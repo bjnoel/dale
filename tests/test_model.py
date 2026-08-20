@@ -81,10 +81,19 @@ class NormalizeFlatDialectTest(unittest.TestCase):
 class ValidateSnapshotTest(unittest.TestCase):
     def _good(self):
         return {"nursery": "n", "nursery_name": "N", "scraped_at": "t",
+                "source": "shopify",
                 "products": [{"title": "Mango", "url": "https://m", "any_available": True, "min_price": 10}]}
 
     def test_good_snapshot_has_no_problems(self):
         self.assertEqual(validate_snapshot(self._good()), [])
+
+    def test_missing_source(self):
+        """The envelope must say which scraper produced it. Daleys switched
+        from the HTML plant_list scraper to a CSV supplier feed on 2026-08-20
+        and tripled its catalogue, and nothing in the data recorded the swap.
+        """
+        s = self._good(); del s["source"]
+        self.assertIn("missing 'source' key", validate_snapshot(s))
 
     def test_missing_nursery(self):
         s = self._good(); del s["nursery"]

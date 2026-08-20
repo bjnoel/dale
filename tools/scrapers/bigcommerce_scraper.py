@@ -433,6 +433,7 @@ def save_snapshot(products):
         "nursery": NURSERY_KEY,
         "nursery_name": NURSERY_NAME,
         "scraped_at": datetime.now().isoformat(),
+        "source": "bigcommerce",
         "product_count": len(products),
         "in_stock_count": sum(1 for p in products if p["any_available"]),
         "out_of_stock_count": sum(1 for p in products if not p["any_available"]),
@@ -455,7 +456,7 @@ def save_snapshot(products):
 
 if __name__ == "__main__":
     dry_run = "--dry-run" in sys.argv
-    health = ScrapeHealth(NURSERY_KEY) if not dry_run else None
+    health = ScrapeHealth(NURSERY_KEY, source="bigcommerce") if not dry_run else None
     try:
         products = scrape(dry_run=dry_run, health=health)
         if products:

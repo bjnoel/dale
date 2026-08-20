@@ -2,6 +2,7 @@
   "nursery": "primal-fruits",
   "nursery_name": "Primal Fruits Perth",
   "scraped_at": "2026-03-05T05:00:00",
+  "source": "ecwid",
   "product_count": 8,
   "in_stock_count": 8,
   "products": [
@@ -11,7 +12,12 @@
       "title": "Avocado - Reed",
       "url": "https://primalfruits.com.au/p/avocado-reed",
       "variants": [
-        {"title": "Pot", "price": 40.00, "available": true, "sku": "PF-AV-R"}
+        {
+          "title": "Pot",
+          "price": 40.0,
+          "available": true,
+          "sku": "PF-AV-R"
+        }
       ],
       "min_price": 40.0,
       "max_price": 40.0,
@@ -23,7 +29,12 @@
       "title": "Avocado - Hass",
       "url": "https://primalfruits.com.au/p/avocado-hass",
       "variants": [
-        {"title": "Pot", "price": 42.00, "available": true, "sku": "PF-AV-H"}
+        {
+          "title": "Pot",
+          "price": 42.0,
+          "available": true,
+          "sku": "PF-AV-H"
+        }
       ],
       "min_price": 42.0,
       "max_price": 42.0,
@@ -35,7 +46,12 @@
       "title": "Black Sapote - Mossman",
       "url": "https://primalfruits.com.au/p/black-sapote-mossman",
       "variants": [
-        {"title": "Pot", "price": 44.00, "available": true, "sku": "PF-BS-M"}
+        {
+          "title": "Pot",
+          "price": 44.0,
+          "available": true,
+          "sku": "PF-BS-M"
+        }
       ],
       "min_price": 44.0,
       "max_price": 44.0,
@@ -47,7 +63,12 @@
       "title": "Dwarf Apple - Dorsett Golden",
       "url": "https://primalfruits.com.au/p/apple-dorsett-golden",
       "variants": [
-        {"title": "Pot", "price": 36.00, "available": true, "sku": "PF-AP-DG"}
+        {
+          "title": "Pot",
+          "price": 36.0,
+          "available": true,
+          "sku": "PF-AP-DG"
+        }
       ],
       "min_price": 36.0,
       "max_price": 36.0,
@@ -59,7 +80,12 @@
       "title": "Banana - Cavendish",
       "url": "https://primalfruits.com.au/p/banana-cavendish",
       "variants": [
-        {"title": "Pot", "price": 22.00, "available": true, "sku": "PF-BAN-C"}
+        {
+          "title": "Pot",
+          "price": 22.0,
+          "available": true,
+          "sku": "PF-BAN-C"
+        }
       ],
       "min_price": 22.0,
       "max_price": 22.0,
@@ -71,7 +97,12 @@
       "title": "Fig - Black Genoa",
       "url": "https://primalfruits.com.au/p/fig-black-genoa",
       "variants": [
-        {"title": "Pot", "price": 35.00, "available": true, "sku": "PF-FIG-BG"}
+        {
+          "title": "Pot",
+          "price": 35.0,
+          "available": true,
+          "sku": "PF-FIG-BG"
+        }
       ],
       "min_price": 35.0,
       "max_price": 35.0,
@@ -83,7 +114,12 @@
       "title": "Warrigal Greens",
       "url": "https://primalfruits.com.au/p/warrigal-greens",
       "variants": [
-        {"title": "Pot", "price": 12.00, "available": true, "sku": "PF-WG"}
+        {
+          "title": "Pot",
+          "price": 12.0,
+          "available": true,
+          "sku": "PF-WG"
+        }
       ],
       "min_price": 12.0,
       "max_price": 12.0,
@@ -95,7 +131,12 @@
       "title": "Sea Purslane",
       "url": "https://primalfruits.com.au/p/sea-purslane",
       "variants": [
-        {"title": "Pot", "price": 11.00, "available": true, "sku": "PF-SP"}
+        {
+          "title": "Pot",
+          "price": 11.0,
+          "available": true,
+          "sku": "PF-SP"
+        }
       ],
       "min_price": 11.0,
       "max_price": 11.0,

@@ -354,6 +354,7 @@ def save_snapshot(nursery_key, products, config):
         "nursery": nursery_key,
         "nursery_name": config["name"],
         "scraped_at": datetime.now().isoformat(),
+        "source": "shopify",
         "product_count": len(normalized),
         "in_stock_count": sum(1 for p in normalized if p["any_available"]),
         "out_of_stock_count": sum(1 for p in normalized if not p["any_available"]),
@@ -420,7 +421,7 @@ def main():
         targets = NURSERIES
 
     for key, config in targets.items():
-        health = ScrapeHealth(key)
+        health = ScrapeHealth(key, source="shopify")
         try:
             products = scrape_shopify(key, config, health)
             normalized = []

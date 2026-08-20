@@ -289,6 +289,7 @@ def save_snapshot(nursery_key, products, config):
         "nursery_name": config["name"],
         "location": config.get("location", ""),
         "scraped_at": datetime.now().isoformat(),
+        "source": "wix",
         "product_count": len(products),
         "in_stock_count": len(in_stock),
         "out_of_stock_count": len(out_of_stock),
@@ -337,7 +338,7 @@ def main():
         targets = NURSERIES
 
     for key, config in targets.items():
-        health = ScrapeHealth(key)
+        health = ScrapeHealth(key, source="wix")
         try:
             products = scrape_wix(key, config, health)
             if products:

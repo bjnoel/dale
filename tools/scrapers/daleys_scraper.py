@@ -443,6 +443,7 @@ def save_snapshot(products, pre_purchase_products):
         "nursery": "daleys",
         "nursery_name": "Daleys Fruit Tree Nursery",
         "scraped_at": datetime.now().isoformat(),
+        "source": "plant_list",
         "product_count": len(all_products),
         "in_stock_count": in_stock,
         "out_of_stock_count": out_of_stock,
@@ -556,7 +557,7 @@ def main():
 
     products = []
     pre_purchase_products = []
-    health = ScrapeHealth("daleys")
+    health = ScrapeHealth("daleys", source="plant_list")
 
     try:
         if do_plant_list:

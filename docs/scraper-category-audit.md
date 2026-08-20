@@ -566,6 +566,36 @@ should not. Correcting the target:
 - `detect_scrape_anomalies.py` does not mention `source` at all today. The source-change
   check is new code there.
 
+**Done, with one design change.** The field goes on **seven** writers, not six:
+`daleys_scraper.py` also writes its own envelope and was missed by the plan's list. Values
+are the platform name (`shopify`, `woocommerce`, `bigcommerce`, `ecwid`, `wix`), plus
+`feed` for `csv_feed_scraper` and `plant_list` for the Daleys HTML scraper, matching the
+per-product values Daleys already wrote.
+
+`detect_anomalies` reads health records rather than snapshots, so `source` had to reach
+those too. It is taken by the **`ScrapeHealth` constructor rather than by `finish()`**:
+every scraper calls `finish(ok=False)` from at least one except branch, and a failure
+record that cannot say which scraper was running is the one you most want to read. One
+edit per scraper instead of nineteen, and the failure paths are covered for free.
+
+Two conditions, and the second is deliberately blunt:
+
+- **`source_change`** fires when today's source differs from yesterday's. Skipped when
+  either side is missing, so the deploy that adds the field does not email about all 27
+  nurseries at once, and skipped when today's run failed.
+- **`count_swing`** fires at a doubling or halving (`COUNT_SWING_RATIO = 2.0`), **not** at
+  `detect_stock_surges.py`'s +/-20%. That job already owns ordinary stock movement and
+  emails on it; a second alarm at the same sensitivity would double-send on every seasonal
+  restock, which is the noise this plan is trying to avoid. Zero-product days are left to
+  the existing `zero_products` condition.
+
+Replayed against 2f, the Daleys swap now reports
+`plant_list -> feed (647 -> 1998 products)` and `647 -> 1998 products (+209%)`.
+
+`model.validate_snapshot` now requires the key. It stays pure validation and emits
+nothing. A static test also scans every `*_scraper.py` for both the envelope field and the
+`ScrapeHealth(source=...)` tag, so a new scraper cannot ship without them.
+
 ---
 
 ### Phase 2: pick the category on evidence (runs in parallel)

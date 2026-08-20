@@ -309,7 +309,7 @@ def save_snapshot(nursery_key: str, config: dict, products: list[dict],
 def scrape(nursery_key: str, config: dict) -> bool:
     """Fetch, parse and save one nursery's feed. Returns True on success."""
     print(f"\n{config['name']} ({nursery_key})")
-    health = ScrapeHealth(nursery_key)
+    health = ScrapeHealth(nursery_key, source="feed")
 
     url = os.environ.get(config["url_env"], "").strip()
     if not url:

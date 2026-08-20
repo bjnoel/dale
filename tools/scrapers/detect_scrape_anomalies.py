@@ -8,6 +8,8 @@ stocklib.scrape_health) and alerts Benedict when something needs a look:
   - a nursery returned 0 products where yesterday it had some
   - any 403/429 (we are being blocked or rate-limited)
   - a nursery has failed 3 days running
+  - a nursery changed data SOURCE overnight (DEC-207 follow-up, see below)
+  - a nursery's product count more than doubled or halved in one night
 
 Runs in run-all-scrapers.sh after the smoke test. Idempotent: a send marker
 prevents duplicate emails when the pipeline is re-run on the same day (same
@@ -29,6 +31,21 @@ from stocklib.scrape_health import latest_by_nursery, read_records
 
 STREAK_DAYS = 3
 
+# A source change means the scraper feeding a nursery was swapped: Daleys went
+# from the HTML plant_list scraper (647 products) to a CSV supplier feed (1,998)
+# on 2026-08-20, out of band, three hours after the nightly had already written
+# a snapshot and sent the day's digest and alerts against the old numbers.
+# Nothing noticed. The swap also tripled the catalogue and re-minted variety
+# pages, so it is worth an email on its own.
+#
+# COUNT_SWING_RATIO is deliberately blunt (a doubling or a halving) rather than
+# matched to detect_stock_surges.py's +/-20%. That job already owns ordinary
+# stock movement and emails on it; a second alarm at the same sensitivity would
+# double-send on every seasonal restock, which is exactly the noise that trains
+# an alarm to be ignored. This one is for structural events: a source swap, a
+# truncated run, a catalogue that vanished. The Daleys swap was +209%.
+COUNT_SWING_RATIO = 2.0
+
 SENDS_LOG_FILE = Path(os.environ.get("DALE_DATA_DIR", "/opt/dale/data")) / "scrape_anomaly_sends.json"
 
 from stocklib.mailer import load_sends_log, save_sends_log
@@ -38,6 +55,8 @@ CONDITION_LABELS = {
     "zero_products": "Zero products",
     "blocked": "Blocked (403/429)",
     "failure_streak": f"Failed {STREAK_DAYS} days running",
+    "source_change": "Data source changed",
+    "count_swing": "Product count swing",
 }
 
 
@@ -79,6 +98,33 @@ def detect_anomalies(days):
                 "detail": f"{n403}x HTTP 403, {n429}x HTTP 429",
             })
 
+        # Source swap and structural count swings. Both compare against
+        # yesterday's LAST record for the nursery, and both are skipped when
+        # today's run failed: a failed run already has its own anomaly and its
+        # product count is not evidence of anything.
+        if y and not failed:
+            today_source = rec.get("source")
+            prior_source = y.get("source")
+            if today_source and prior_source and today_source != prior_source:
+                anomalies.append({
+                    "nursery": nursery,
+                    "type": "source_change",
+                    "detail": f"{prior_source} -> {today_source} "
+                              f"({y.get('products', 0)} -> {rec.get('products', 0)} products)",
+                })
+
+            prior_count = y.get("products", 0)
+            today_count = rec.get("products", 0)
+            if prior_count > 0 and today_count > 0:
+                ratio = today_count / prior_count
+                if ratio >= COUNT_SWING_RATIO or ratio <= 1 / COUNT_SWING_RATIO:
+                    anomalies.append({
+                        "nursery": nursery,
+                        "type": "count_swing",
+                        "detail": f"{prior_count} -> {today_count} products "
+                                  f"({(ratio - 1) * 100:+.0f}%)",
+                    })
+
         if failed and len(per_day) >= STREAK_DAYS:
             prior = [per_day[n].get(nursery) for n in range(1, STREAK_DAYS)]
             if all(p is not None and not p.get("ok", False) for p in prior):
@@ -118,7 +164,8 @@ def build_email(anomalies, today):
 </table>
 <p style="font-size:0.85em;color:#888;margin-top:16px">
 Conditions: failed run, zero products where yesterday had stock, any 403/429,
-{STREAK_DAYS}-day failure streak. Health grid: treestock.com.au/admin.</p>"""
+{STREAK_DAYS}-day failure streak, data source change, product count swing beyond
+{COUNT_SWING_RATIO:g}x. Health grid: treestock.com.au/admin.</p>"""
 
     text = f"Scrape Health Alert -- {today}\n\n" + "\n".join(rows_text)
     subject = f"Scrape health: {len(anomalies)} anomalies -- {today}"

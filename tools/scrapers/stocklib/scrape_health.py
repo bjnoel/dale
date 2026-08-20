@@ -140,9 +140,16 @@ class ScrapeHealth:
     concurrently), and call finish() exactly once at the end -- on the
     failure path too, so failures leave a record instead of a gap."""
 
-    def __init__(self, nursery: str, health_dir: Path | str | None = None):
+    def __init__(self, nursery: str, health_dir: Path | str | None = None,
+                 source: str | None = None):
         self.nursery = nursery
         self.health_dir = health_dir
+        # Which scraper produced this run ("shopify", "feed", "plant_list", ...).
+        # Taken at construction rather than at finish() so the FAILURE paths
+        # carry it too: every scraper calls finish(ok=False) from at least one
+        # except branch, and a failure record that cannot say which scraper was
+        # running is the one you most want to read.
+        self.source = source
         self.http_403 = 0
         self.http_429 = 0
         self.error: str | None = None
@@ -181,6 +188,8 @@ class ScrapeHealth:
             "http_429": self.http_429,
             "error": self.error,
         }
+        if self.source:
+            record["source"] = self.source
         try:
             append_record(record, self.health_dir)
         except OSError as e:

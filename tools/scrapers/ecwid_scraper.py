@@ -312,6 +312,7 @@ def save_snapshot(nursery_key, products, config):
         "nursery_name": config["name"],
         "location": config.get("location", ""),
         "scraped_at": datetime.now().isoformat(),
+        "source": "ecwid",
         "product_count": len(products),
         "in_stock_count": len(in_stock),
         "out_of_stock_count": len(out_of_stock),
@@ -360,7 +361,7 @@ def main():
         targets = NURSERIES
 
     for key, config in targets.items():
-        health = ScrapeHealth(key)
+        health = ScrapeHealth(key, source="ecwid")
         try:
             products = scrape_ecwid(key, config, health)
             if products:

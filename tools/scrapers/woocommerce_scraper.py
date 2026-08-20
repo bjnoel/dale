@@ -341,6 +341,7 @@ def save_snapshot(nursery_key, products, config):
         "nursery_name": config["name"],
         "location": config.get("location", ""),
         "scraped_at": datetime.now().isoformat(),
+        "source": "woocommerce",
         "product_count": len(normalized),
         "in_stock_count": in_stock,
         "out_of_stock_count": len(normalized) - in_stock,
@@ -378,7 +379,7 @@ def main():
         targets = NURSERIES
 
     for key, config in targets.items():
-        health = ScrapeHealth(key)
+        health = ScrapeHealth(key, source="woocommerce")
         try:
             products = scrape_woocommerce(key, config, health)
             snapshot = save_snapshot(key, products, config) if products else None

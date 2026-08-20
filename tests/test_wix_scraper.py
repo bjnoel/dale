@@ -114,7 +114,8 @@ class ExtractProductFixtureTest(unittest.TestCase):
         for prod in products:
             prod["nursery"] = "heaven-on-earth"
             prod["nursery_name"] = "Heaven On Earth Fruit Trees"
-        snapshot = {"nursery": "heaven-on-earth", "products": products}
+        snapshot = {"nursery": "heaven-on-earth", "source": "wix",
+                    "products": products}
         self.assertEqual(validate_snapshot(snapshot), [])
 
 

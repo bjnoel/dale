@@ -2,6 +2,7 @@
   "nursery": "daleys",
   "nursery_name": "Daleys Fruit Trees",
   "scraped_at": "2026-03-05T03:12:48",
+  "source": "feed",
   "product_count": 10,
   "in_stock_count": 9,
   "products": [
@@ -12,8 +13,18 @@
       "url": "https://daleysfruit.com.au/p/avocado-hass",
       "category": "Fruit and Nut Trees",
       "variants": [
-        {"title": "Large", "price": 46.95, "available": true, "sku": "D-AV-L"},
-        {"title": "Medium", "price": 34.95, "available": true, "sku": "D-AV-M"}
+        {
+          "title": "Large",
+          "price": 46.95,
+          "available": true,
+          "sku": "D-AV-L"
+        },
+        {
+          "title": "Medium",
+          "price": 34.95,
+          "available": true,
+          "sku": "D-AV-M"
+        }
       ],
       "min_price": 34.95,
       "max_price": 46.95,
@@ -26,7 +37,12 @@
       "url": "https://daleysfruit.com.au/p/mango-kp",
       "category": "Fruit and Nut Trees",
       "variants": [
-        {"title": "Standard", "price": 29.95, "available": true, "sku": "D-MG-KP"}
+        {
+          "title": "Standard",
+          "price": 29.95,
+          "available": true,
+          "sku": "D-MG-KP"
+        }
       ],
       "min_price": 29.95,
       "max_price": 29.95,
@@ -39,7 +55,12 @@
       "url": "https://daleysfruit.com.au/p/apple-pink-lady",
       "category": "Fruit and Nut Trees",
       "variants": [
-        {"title": "Dwarf", "price": 39.95, "available": false, "sku": "D-AP-PL"}
+        {
+          "title": "Dwarf",
+          "price": 39.95,
+          "available": false,
+          "sku": "D-AP-PL"
+        }
       ],
       "min_price": 39.95,
       "max_price": 39.95,
@@ -52,7 +73,12 @@
       "url": "https://daleysfruit.com.au/p/lychee",
       "category": "Fruit and Nut Trees",
       "variants": [
-        {"title": "Standard", "price": 49.95, "available": true, "sku": "D-LY"}
+        {
+          "title": "Standard",
+          "price": 49.95,
+          "available": true,
+          "sku": "D-LY"
+        }
       ],
       "min_price": 49.95,
       "max_price": 49.95,
@@ -65,7 +91,12 @@
       "url": "https://daleysfruit.com.au/p/black-sapote-mossman",
       "category": "Fruit and Nut Trees",
       "variants": [
-        {"title": "5L", "price": 39.95, "available": true, "sku": "D-BS-M5"}
+        {
+          "title": "5L",
+          "price": 39.95,
+          "available": true,
+          "sku": "D-BS-M5"
+        }
       ],
       "min_price": 39.95,
       "max_price": 39.95,
@@ -78,10 +109,15 @@
       "url": "https://daleysfruit.com.au/p/apple-dorsett-golden",
       "category": "Fruit and Nut Trees",
       "variants": [
-        {"title": "Bare Root", "price": 32.00, "available": true, "sku": "D-AP-DG"}
+        {
+          "title": "Bare Root",
+          "price": 32.0,
+          "available": true,
+          "sku": "D-AP-DG"
+        }
       ],
-      "min_price": 32.00,
-      "max_price": 32.00,
+      "min_price": 32.0,
+      "max_price": 32.0,
       "any_available": true
     },
     {
@@ -91,10 +127,15 @@
       "url": "https://daleysfruit.com.au/p/banana-dwarf-cavendish",
       "category": "Fruit and Nut Trees",
       "variants": [
-        {"title": "Pot", "price": 25.00, "available": true, "sku": "D-BAN-DC"}
+        {
+          "title": "Pot",
+          "price": 25.0,
+          "available": true,
+          "sku": "D-BAN-DC"
+        }
       ],
-      "min_price": 25.00,
-      "max_price": 25.00,
+      "min_price": 25.0,
+      "max_price": 25.0,
       "any_available": true
     },
     {
@@ -104,7 +145,12 @@
       "url": "https://daleysfruit.com.au/p/fertiliser",
       "category": "Garden Care",
       "variants": [
-        {"title": "5kg", "price": 24.95, "available": true, "sku": "D-FERT"}
+        {
+          "title": "5kg",
+          "price": 24.95,
+          "available": true,
+          "sku": "D-FERT"
+        }
       ],
       "min_price": 24.95,
       "max_price": 24.95,
@@ -117,7 +163,12 @@
       "url": "https://daleysfruit.com.au/p/mountain-pepper",
       "category": "Bush Food Plants",
       "variants": [
-        {"title": "Tube", "price": 14.95, "available": true, "sku": "D-BT-MP"}
+        {
+          "title": "Tube",
+          "price": 14.95,
+          "available": true,
+          "sku": "D-BT-MP"
+        }
       ],
       "min_price": 14.95,
       "max_price": 14.95,
@@ -130,7 +181,12 @@
       "url": "https://daleysfruit.com.au/p/native-gardenia",
       "category": "Bush Food Plants",
       "variants": [
-        {"title": "Tube", "price": 16.95, "available": true, "sku": "D-BT-NG"}
+        {
+          "title": "Tube",
+          "price": 16.95,
+          "available": true,
+          "sku": "D-BT-NG"
+        }
       ],
       "min_price": 16.95,
       "max_price": 16.95,

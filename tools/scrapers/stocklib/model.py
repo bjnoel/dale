@@ -140,6 +140,14 @@ def validate_snapshot(raw: dict) -> list[str]:
     problems: list[str] = []
     if not raw.get("nursery"):
         problems.append("missing 'nursery' key")
+    # Which scraper produced this snapshot. Required so a source swap is
+    # visible in the data rather than only in whoever remembers making it:
+    # Daleys moved from the HTML plant_list scraper to a CSV supplier feed on
+    # 2026-08-20 and tripled, and the envelope had no way to say so. This
+    # module is pure validation and writes nothing, so it can require the
+    # field but never emit it; the seven scrapers each set their own.
+    if not raw.get("source"):
+        problems.append("missing 'source' key")
     if "products" not in raw:
         problems.append("missing 'products' key")
         return problems
@@ -164,6 +172,10 @@ def validate_snapshot(raw: dict) -> list[str]:
 
 def validate_and_warn(raw: dict, source: str = "", stream=sys.stderr) -> list[str]:
     """Validate a snapshot and print any problems to stderr. Warn-only; never raises.
+
+    NOTE: this `source` argument is a display tag for the WARN prefix and has
+    nothing to do with the snapshot's own "source" field (the scraper that
+    produced it). Unfortunate collision; the tag came first.
 
     Call this at the scraper write boundary so a malformed snapshot is logged
     (and visible in the cron log) without failing the pipeline.
