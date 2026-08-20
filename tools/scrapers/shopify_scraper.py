@@ -129,6 +129,52 @@ NURSERIES = {
         "domain": "stclementscitrus.com.au",
         "location": "High Wycombe, WA",
     },
+    "garden-express": {
+        # Australia's largest online nursery (5,600+ products, mostly ornamental
+        # bulbs/perennials). Migrated WooCommerce -> Shopify between the
+        # 2026-08-17 and 2026-08-18 scrapes; the old wc/store/v1 category feed
+        # now 400s on every call. Ships nationwide incl. WA/NT/TAS (quarantine
+        # surcharge). Mostly bare-root seasonal (June-Sep).
+        #
+        # Fruit is filed cleanly under these ten product_types, which reproduce
+        # the store's own fruit collections exactly (166 of 168 products; the
+        # collections carry no product the types miss). The generic "Trees -
+        # Ornamental" and "Flowering Trees" types are excluded on purpose: they
+        # are ~120 ornamentals, several named after fruit (flowering peach/plum).
+        #
+        # "Other Produce Plants" and "Edible Produce" are NOT included as types:
+        # between them they hold the store's shallots, garlic, rhubarb,
+        # asparagus, wasabi, horseradish and rosemary. The real fruit stranded in
+        # those two types is rescued by handle below (DEC-209).
+        "name": "Garden Express",
+        "domain": "gardenexpress.com.au",
+        "location": "VIC",
+        "product_types": [
+            "Trees - Stone Fruit", "Trees - Citrus", "Trees - Apples & Pears",
+            "Trees - Other Fruit", "Trees - Mini Fruit", "Trees - Nut",
+            "Berries & Currants", "Blueberries", "Raspberries",
+            "Fruiting Vines",
+        ],
+        # Hand-verified rescue of fruit the type filter alone drops:
+        #  - lemon-meyer carries an EMPTY product_type (the only real fruit in
+        #    the store that does; the other blank-typed items are ornamentals,
+        #    a herb and the gift card).
+        #  - the olives, dragon fruit and Correggiola sit in "Other Produce
+        #    Plants" alongside the vegetables.
+        #  - the rest sit in "Edible Produce" alongside the herbs. Note
+        #    Passionfruit *Grafted* Black is typed "Edible Produce" while the
+        #    five other passionfruit, including Non Grafted Black, are typed
+        #    "Fruiting Vines".
+        # Bush tucker (Tasmanian pepper bush) is deliberately not rescued
+        # (DEC-227), nor are the herbs, rhubarb or root vegetables.
+        "fruit_handles": [
+            "lemon-meyer",
+            "olive-correggiola", "olive-manzanillo", "dwarf-olive-garden-harvest",
+            "olive-verdale-collection", "dragon-fruit-guatemala-red",
+            "strawberry-roman-pink", "feijoa-pineapple-guava-68mm",
+            "chilean-guava", "mulberry-dwarf", "passionfruit-grafted-black",
+        ],
+    },
     "the-heritage-nursery": {
         # Full-service Canberra garden centre (~1,500 SKUs: ornamentals, natives,
         # giftware, pots, chemicals). Fruit is filed cleanly under these four

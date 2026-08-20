@@ -64,24 +64,9 @@ NURSERIES = {
             "walnut-trees", "hazel-nuts", "pomegranate-trees", "blackberry-plants",
         ],
     },
-    "garden-express": {
-        # Australia's largest online nursery (6,200+ products total, mostly non-fruit).
-        # Use category_api mode to fetch only the fruit/nut categories — avoids paginating 60+ pages.
-        # Ships nationwide incl. WA/NT/TAS (quarantine surcharge applies).
-        # Mostly bare-root seasonal (June-Sep); only citrus in stock March.
-        "name": "Garden Express",
-        "domain": "www.gardenexpress.com.au",
-        "location": "VIC",
-        "category_api": True,
-        "fruit_categories": [
-            "fruit-nut-trees",
-            "trees-stone-fruit",
-            "trees-apples-pears",
-            "trees-avocados",
-            "fruiting-vines",
-            "fruit-trees-2025",
-        ],
-    },
+    # Garden Express moved from WooCommerce to Shopify between the 2026-08-17 and
+    # 2026-08-18 scrapes; every wc/store/v1 category call now 400s. Its config
+    # lives in shopify_scraper.py. Do not re-add it here.
     "plantnet": {
         # PlantNet (retail arm of Balhannah Nurseries, est. 1887, SA).
         # Ships to WA via their Olea Nurseries partner in Manjimup WA.
