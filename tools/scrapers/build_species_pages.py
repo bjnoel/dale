@@ -30,6 +30,7 @@ import growing_guides
 import rootstock_guides
 from stocklib.variety_descriptions import has_description, render_excerpt
 from build_species_trends import build_species_trends, make_sparkline, trend_direction
+from build_compare_pages import MIN_NURSERIES as COMPARE_MIN_NURSERIES
 
 # How many described in-stock varieties a species page surfaces as excerpts.
 NOTABLE_VARIETIES_MAX = 5
@@ -429,7 +430,7 @@ def compute_state_links(species_slug: str, products: list[dict]) -> dict[str, st
 
 def build_species_page(species: dict, products: list[dict], slug_to_name: dict[str, str] | None = None,
                        rarity: dict | None = None, trend_summary: dict | None = None,
-                       varieties: list[dict] | None = None) -> str:
+                       varieties: list[dict] | None = None, has_compare_page: bool = False) -> str:
     """Generate HTML for a single species page."""
     name = species["common_name"]
     latin = species["latin_name"]
@@ -667,11 +668,17 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
     else:
         meta_description = (
             f"{in_stock_count} {name} varieties in stock across {nursery_count} "
-            f"Australian nurseries.{price_desc} Compare availability and shipping options. Updated daily."
+            f"Australian nurseries.{price_desc} Check availability and shipping options. Updated daily."
         )
 
     head = render_head(
-        title=f"{name} Trees for Sale Australia, Compare Prices | treestock.com.au",
+        # NOTE: this title deliberately does NOT say "Compare Prices". That phrase
+        # collided head-on with /compare/<slug>-prices.html ("<Name> Tree Price
+        # Comparison Australia") and Google alternated between the two pages on 414
+        # queries across 27 species, parking both mid-page instead of ranking one.
+        # The species page owns "<name> trees for sale"; the compare page owns price
+        # comparison. Do not reintroduce comparison wording here.
+        title=f"{name} Trees for Sale Australia | treestock.com.au",
         description=meta_description,
         canonical_url=f"https://treestock.com.au/species/{slug}.html",
         extra_head=growing_guides.faq_jsonld(slug) if growing_guides.has_guide(slug) else "",
@@ -681,7 +688,9 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
             name=f"{name} Tree",
             url=f"https://treestock.com.au/species/{slug}.html",
             products=products,
-            description=f"Compare {name} tree prices and availability across {nursery_count} Australian nurseries.",
+            description=f"{in_stock_count} {name} tree {'variety' if in_stock_count == 1 else 'varieties'} "
+                        f"in stock across {nursery_count} Australian {'nursery' if nursery_count == 1 else 'nurseries'}, "
+                        f"with availability and shipping by state.",
             include_offers=False,  # species pages aggregate many cultivars: summary only
         ),
     )
@@ -693,6 +702,15 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         f'<span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{price_range} AUD</span>'
         if price_range else ''
     )
+    # Reciprocal link to the compare page. /compare/<slug>-prices.html has always
+    # linked back here, but nothing pointed the other way, so internal link equity
+    # flowed only one direction between two pages already competing for the same
+    # queries. Rendered under the Where-to-buy table, where the intent matches.
+    compare_link_html = (
+        f'<p class="mt-3 text-sm"><a href="/compare/{slug}-prices.html" '
+        f'class="text-green-700 hover:underline">Compare {name} tree prices side by side '
+        f'across {nursery_count} nurseries</a></p>'
+    ) if has_compare_page else ''
     description_html = build_species_description(species)
     treesmith_promo = render_treesmith_promo("species")
     variety_cta = (
@@ -730,6 +748,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         when_to_buy_html=when_to_buy_html, description_html=description_html,
         state_links_html=state_links_html, related_species_html=related_species_html,
         variety_cta=variety_cta, treesmith_promo=treesmith_promo,
+        compare_link_html=compare_link_html,
         watch_script=watch_script, nursery_view=nursery_view, product_view=product_view,
         variety_view=variety_view, notable_view=notable_view,
     )
@@ -926,7 +945,8 @@ def main():
 
         html = build_species_page(species, prods, slug_to_name, rarity=rarity,
                                   trend_summary=trend_summaries.get(slug),
-                                  varieties=varieties_by_species.get(slug, []))
+                                  varieties=varieties_by_species.get(slug, []),
+                                  has_compare_page=len(nurseries) >= COMPARE_MIN_NURSERIES)
         out_file = species_dir / f"{slug}.html"
         out_file.write_text(html)
         generated += 1

@@ -12902,3 +12902,32 @@ end-to-end in a scratch repo and the commit is refused, naming file and line and
 never echoing the value.
 
 **Cost:** $0.
+
+## DEC-309 — 2026-08-20 — Two of our own pages were bidding against each other, and we wrote the collision ourselves
+
+**Decided by:** Dale, at Benedict's direction ("what does fixing the cannibalisation look like" -> "yes").
+
+**Context:** The Ahrefs category research (same day) found `apple tree` at 3,300 searches/month, KD 1, with treestock at position 18 and four of the eight page-one results being nurseries we scrape. Digging into why, 90 days of GSC showed the problem was not only external competition. 414 queries across 27 species return BOTH `/species/<slug>.html` and `/compare/<slug>-prices.html`, and Google alternates between them. Worked example, `pecan tree`: species page 63 impressions at position 21.6, compare page 70 impressions at 14.5. Those contested queries convert at 1.57%, below both parents (`/species/` 1.71% at position 16.4, `/compare/` 2.27% at position 10.5). On 8 of the top 16 contested species (apple, plum, hazelnut, apricot, kumquat, coconut, strawberry, walnut) neither page reaches the top 15.
+
+**The collision was self-inflicted, at three levels:**
+
+1. The species `<title>` read `"<Name> Trees for Sale Australia, Compare Prices"`. It was bidding for the compare page's own keyword. The compare page's title is `"<Name> Tree Price Comparison Australia"`.
+2. Both pages emitted a schema.org `Product` named `"<Name> Tree"` against two different URLs, with near word-for-word descriptions ("Compare <Name> tree prices ... across N Australian nurseries").
+3. `/compare/<slug>-prices.html` linked to `/species/<slug>.html`, but never the reverse. Internal link equity ran one way between two pages already competing.
+
+**Decision: differentiate, do not consolidate. Not yet.** Three reversible edits, no redirects:
+
+- Species title drops `, Compare Prices`. Species page owns "<name> trees for sale", compare page owns price comparison.
+- Species meta description drops "Compare availability and shipping options" for "Check availability ...".
+- Compare page's `Product` entity renamed to `"<Name> Tree Price Comparison"`, and the species page's schema description rewritten to describe stock and shipping rather than price comparison.
+- Species page gains a reciprocal link to its compare page, rendered under the Where-to-buy table where the intent matches.
+
+**Why not consolidate:** the obvious move is a blanket 301 in one direction, and there is no direction that is right. The winner differs by species: compare wins mulberry (13.2 vs 19.6) and pecan (13.5 vs 23.6); species wins mandarin (12.9 vs 18.9) and persimmon (14.8 vs 20.0). A blanket redirect helps one set and costs the other. Worse, the data contains an anomaly we cannot yet explain: `/compare/pecan-prices.html` is 45KB with no `<h2>` at all and no growing guide, and it beats the 87KB species page that has an FAQ, sources and further reading. Redirecting into a mechanism we do not understand is how you lose the pages that work. Differentiate, measure the same 414 queries in 4 weeks, then decide per species with evidence.
+
+**Drift guard:** `tests/test_species_compare_cannibalisation.py`. Verified failing (4 of 5) against the pre-fix code before passing. The reciprocal link is asserted as an invariant, not on a hand-picked species: a species page links to its compare page if and only if that compare page was built. `build_species_pages` runs before `build_compare_pages` in `run-all-scrapers.sh` and so cannot check the file, it imports `MIN_NURSERIES` from the compare builder rather than restating the threshold. If that threshold moves, the test fails instead of shipping broken links. One assertion was caught passing vacuously during review (Mango takes the "Track <variety> and more" meta branch, which never carried the colliding wording) and was re-pointed at Fig, which takes the plain branch.
+
+**Also settled the same day, and worth recording because it was the anxious question:** the per-variety descriptions (1,153 varieties, 125,296 words, DEC-178) were not wasted. All 105 files shipped 2026-06-08 to 2026-06-12, a single 5-day window, and 2,529 variety pages never got one, so there is a control group. Within species, holding season and demand constant, described pages went 40 -> 120 clicks (+200%) while undescribed pages in the same species went 76 -> 70 (-8%). The described pages started with roughly HALF the control's clicks, which kills the selection-bias objection. `/variety/` is now the site's best-converting section (3.09% CTR) despite its worst average position (28.7); the mechanism is coverage, not snippets (19.2 impressions/page vs 5.5, while CTR is actually lower). The 55 growing guides (186,042 words) shipped the same fortnight but every ranking `/species/` page got one, so n=0 control and their +278% is not attributable.
+
+**Next:** DAL-289 re-measures the 414 contested queries after 28 days.
+
+---

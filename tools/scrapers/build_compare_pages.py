@@ -185,7 +185,11 @@ def build_compare_page(species: dict, products: list[dict]) -> str:
         og_title=f"{name} Tree Prices Compared Across {total_nurseries} Australian Nurseries",
         og_description=f"{'From ' + price_range_str if price_range_str else str(len(in_stock)) + ' varieties in stock'} across {nursery_count} nurseries. Compare prices and availability at treestock.com.au",
         jsonld=product_offer_jsonld(
-            name=f"{name} Tree",
+            # Distinct from the species page's Product entity, which is the plain
+            # "<Name> Tree". Both pages used to emit that same name against two URLs,
+            # which is a duplicate-entity signal on top of the title collision. This
+            # node describes what THIS page is: the cross-nursery price comparison.
+            name=f"{name} Tree Price Comparison",
             url=f"{SITE_URL}/compare/{slug}-prices.html",
             products=products,
             description=f"Compare {name} ({latin}) tree prices across {total_nurseries} Australian nurseries.",
