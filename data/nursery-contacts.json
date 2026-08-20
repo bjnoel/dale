@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-08-17",
+  "updated": "2026-08-20",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -68,6 +68,14 @@
           "by": "correy",
           "summary": "Correy answered the crawl question with a better option: their Meta product feed (CSV, refreshed 2h, 1,998 products / 3,649 variants incl. out of stock, binary in/out only) and an OFFER of a custom feed in any format with 4-state availability (In Stock / Catalogue Pre Order / Pre Purchase / Out of Stock), stock numbers, botanical name, specs. Group URL = strip skuNN- from link. Will create Krasuey pre-purchases Friday.",
           "evidence": "Email pasted by Benedict 2026-08-15"
+        },
+        {
+          "date": "2026-08-20",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Re: Your nursery is on treestock.com.au",
+          "evidence": "resend:c4131b70-e155-491b-b362-12e79a0ba793"
         }
       ],
       "open_action": null,
