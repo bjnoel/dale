@@ -66,9 +66,15 @@ echo "$LOG_PREFIX Starting nursery stock scrape..."
 echo "$LOG_PREFIX Scraping Shopify nurseries..."
 run_scraper "Shopify" "$SCRIPT_DIR/shopify_scraper.py"
 
-# Daleys (custom scraper)
-echo "$LOG_PREFIX Scraping Daleys..."
-run_scraper "Daleys" "$SCRIPT_DIR/daleys_scraper.py"
+# Daleys (supplier CSV feed, replaced the Plant-List.php scrape 2026-08-20).
+# The feed URL is semi-private (obscured path, noindex) so it lives in the
+# secrets dir and is never committed. Without it the scraper fails loudly rather
+# than writing a short snapshot.
+echo "$LOG_PREFIX Scraping Daleys (feed)..."
+if [ -f "$PROJECT_DIR/secrets/feeds.env" ]; then
+    set -a; . "$PROJECT_DIR/secrets/feeds.env"; set +a
+fi
+run_scraper "Daleys" "$SCRIPT_DIR/csv_feed_scraper.py"
 
 # Ecwid nurseries (Primal Fruits)
 echo "$LOG_PREFIX Scraping Ecwid nurseries..."

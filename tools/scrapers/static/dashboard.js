@@ -376,9 +376,14 @@ function render() {
 
   container.innerHTML = showing.map(p => {
     const price = p.p ? ('$' + p.p.toFixed(2)) : '';
-    const stockBadge = p.a
-      ? `<span class="stock-badge in-stock">${p.s ? p.s + ' left' : 'In stock'}</span>`
-      : '<span class="stock-badge out-stock">Out of stock</span>';
+    // Three states, not two. p.pre means orderable now, ships later, so it must
+    // not read as "In stock" (the buyer turns up expecting a plant) nor as
+    // "Out of stock" (they give up on something they could have ordered).
+    const stockBadge = p.pre
+      ? '<span class="stock-badge pre-order">Pre-order</span>'
+      : p.a
+        ? `<span class="stock-badge in-stock">${p.s ? p.s + ' left' : 'In stock'}</span>`
+        : '<span class="stock-badge out-stock">Out of stock</span>';
     // Show shipping restriction warnings for WA/NT/TAS (skip for local-delivery nurseries)
     const localArea = LOCAL_ONLY[p.nk];
     const nShips = SHIPS_TO[p.nk] || [];

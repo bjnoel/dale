@@ -15,7 +15,7 @@ from pathlib import Path
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label, restriction_warning
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
-from stocklib.classify import is_real_product
+from stocklib.fruit_filters import digest_product_filter
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.utm import outbound
 
@@ -230,8 +230,19 @@ def visible_products(data: dict) -> list:
     recent in-stock products were seed packets, and the "In Stock Now" panel of
     a fruit tree site showed nineteen of them plus one blueberry. Emma at
     Guildford found it on her own page before we did (DEC-301).
+
+    The junk filter alone was still not the same gate the others apply: they
+    also run the nursery's own categorisation through is_fruit_product, and this
+    module did not. That gap was invisible while Daleys' scraper could only see
+    Plant-List.php, because everything it could see was already fruit. The CSV
+    feed records the full catalogue including 857 ornamental and native groups
+    (wattles, banksias, jacaranda, callistemon), of which 695 pass
+    is_real_product and would have rendered here and nowhere else on the site.
+    Recording them is deliberate (the feed carries no history, so an unrecorded
+    row is unrecoverable); rendering them is not (DEC-227).
     """
-    return [p for p in data.get("products", []) if is_real_product(p.get("title", ""))]
+    return [p for p in data.get("products", [])
+            if digest_product_filter(p, data.get("nursery", ""))]
 
 
 def visible_counts(data: dict) -> tuple:

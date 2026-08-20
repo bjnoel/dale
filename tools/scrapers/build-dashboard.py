@@ -537,6 +537,15 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "sale": bool(on_sale),
                 "cat": p.get("product_type", p.get("category", "")),
             }
+            # Pre-order is a third display state, not a second boolean. A
+            # supplier feed can say a plant is purchasable today with a wait of
+            # months (Daleys' PreSale/PreOrder), and both of the boolean answers
+            # are wrong: "in stock" was the defect we fixed, "out of stock"
+            # would send a buyer away from something they can actually order.
+            # Emitted only when true, because data.js carries every product.
+            if p.get("preorder"):
+                product_data["pre"] = True
+
             _vs = product_variety_slug(title)
             if _vs and not any(kw in title_lower for kw in _VARIETY_PAGE_DENY):
                 # Slug only. "vt" (the raw listing title) used to ride along so
@@ -741,6 +750,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
     extra_style = """\
   .stock-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 9999px; }
+  .pre-order { background: #ede9fe; color: #5b21b6; }
   .restrict-badge { background: #fee2e2; color: #991b1b; font-size: 0.65rem; }
   .local-badge { background: #fef3c7; color: #92400e; font-size: 0.65rem; }
   .sale-badge { background: #fee2e2; color: #991b1b; }

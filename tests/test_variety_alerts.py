@@ -414,5 +414,44 @@ class SubjectLineTests(unittest.TestCase):
         self.assertEqual(alerts.subject_safe("Mango - R2E2"), "Mango - R2E2")
 
 
+class PreOrderWordingTests(unittest.TestCase):
+    """A pre-order is available (you can order it) but not in stock (it ships
+    in one to six months). Telling a watcher it "is now available" sends them
+    to a listing that cannot fill their order today, which is the same class of
+    wrong answer as the defect the Daleys feed switch fixed."""
+
+    def test_all_preorder_listings(self):
+        self.assertTrue(alerts.all_preorder([{"preorder": True}, {"preorder": True}]))
+
+    def test_a_single_real_listing_beats_the_preorders(self):
+        """Mixed means something is genuinely available, so keep the plain wording."""
+        self.assertFalse(alerts.all_preorder([{"preorder": True}, {"preorder": False}]))
+
+    def test_nurseries_that_do_not_report_the_state_read_as_not_preorder(self):
+        """Every non-feed snapshot lacks the key; it must not flip the wording."""
+        self.assertFalse(alerts.all_preorder([{"title": "Mango - R2E2"}]))
+
+    def test_empty_is_not_preorder(self):
+        self.assertFalse(alerts.all_preorder([]))
+
+    def test_email_body_says_pre_order_not_available(self):
+        html = alerts.build_variety_alert_email(
+            "Sapodilla - Krasuey", "sapodilla-krasuey",
+            [{"preorder": True, "nursery_name": "Daleys Fruit Tree Nursery",
+              "title": "Sapodilla - Krasuey", "url": "https://x/", "price": 99.0}],
+            alerts.RESTOCK)
+        self.assertIn("open for pre-order", html)
+        self.assertNotIn("is now available", html)
+
+    def test_email_body_keeps_plain_wording_for_a_real_restock(self):
+        html = alerts.build_variety_alert_email(
+            "Sapodilla - Krasuey", "sapodilla-krasuey",
+            [{"nursery_name": "Daleys Fruit Tree Nursery",
+              "title": "Sapodilla - Krasuey", "url": "https://x/", "price": 99.0}],
+            alerts.RESTOCK)
+        self.assertIn("is now available", html)
+        self.assertNotIn("open for pre-order", html)
+
+
 if __name__ == "__main__":
     unittest.main()

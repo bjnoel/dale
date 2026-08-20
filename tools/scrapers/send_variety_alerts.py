@@ -181,6 +181,23 @@ def in_stock_by_variety_slug(products: list[dict]) -> dict[str, list[dict]]:
     return by_slug
 
 
+def all_preorder(products: list[dict]) -> bool:
+    """True when every listing behind an alert is a pre-order.
+
+    Pre-orders count as available, because you really can order one today, and
+    that is what makes an out-of-stock to pre-order transition worth alerting on
+    at all (DEC-282). But "is now available" would promise a watcher a plant
+    that is one to six months away, and they would click through expecting to
+    buy it. So the wording has to know the difference.
+
+    Mixed results keep the plain wording on purpose: if one nursery is shipping
+    today and another is taking pre-orders, something genuinely is available.
+    Nurseries whose snapshots carry no `preorder` key read as False, so this is
+    inert everywhere except the feeds that report the state.
+    """
+    return bool(products) and all(p.get("preorder") for p in products)
+
+
 def load_watches() -> list[dict]:
     """Load all watches from SQLite DB."""
     if not VARIETY_WATCHES_DB.exists():
@@ -414,6 +431,11 @@ def build_variety_alert_email(variety_title: str, variety_slug: str,
         heading = f"{icon} {safe_title} just dropped in price"
         subhead = ("A variety you're watching is cheaper than it was yesterday. "
                    "Your alert covers both price drops and restocks.")
+    elif all_preorder(products):
+        heading = f"{icon} {safe_title} is open for pre-order"
+        subhead = ("The variety you're watching can be ordered now, but it is "
+                   "not ready to ship yet. Check the nursery's listing for the "
+                   "expected wait. Your alert covers restocks and price drops.")
     else:
         heading = f"{icon} {safe_title} is now available!"
         subhead = ("The variety you're watching has come back into stock. "
@@ -666,6 +688,8 @@ def main():
         icon = ALERT_ICON.get(alert_type, ALERT_ICON[RESTOCK])
         if alert_type == PRICE_DROP:
             subject = f"{icon} {subject_title} just dropped in price -- treestock.com.au"
+        elif all_preorder(products):
+            subject = f"{icon} {subject_title} is open for pre-order -- treestock.com.au"
         else:
             subject = f"{icon} {subject_title} is now available -- treestock.com.au"
         email_html = build_variety_alert_email(variety_title, slug, products, alert_type)

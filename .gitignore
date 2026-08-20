@@ -39,3 +39,6 @@ rarity_scores.json
 # Secrets
 state/secrets/
 tools/autonomous/logs/
+
+# Feed catalogue: descriptions and image URLs, overwritten each run, not history
+data/nursery-stock/*/catalogue.json

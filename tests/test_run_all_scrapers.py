@@ -29,7 +29,7 @@ SCRIPT_SRC = REPO_ROOT / "tools" / "scrapers" / "run-all-scrapers.sh"
 
 SCRAPERS = [
     "shopify_scraper.py",
-    "daleys_scraper.py",
+    "csv_feed_scraper.py",
     "ecwid_scraper.py",
     "wix_scraper.py",
     "woocommerce_scraper.py",
