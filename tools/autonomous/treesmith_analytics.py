@@ -614,6 +614,47 @@ def m_rank(_host=None, _key=None):
     return out
 
 
+# The source series is pulled weekly, so 10 days is one missed run plus slack.
+# Same number as RANK_STALE_DAYS and deliberately a separate constant: the two
+# jobs can stop independently, and sharing the name would invite someone to
+# "fix" one cadence by changing the other.
+SOURCES_STALE_DAYS = 10
+
+
+def m_appstore_sources(_host=None, _key=None):
+    """Where App Store impressions come from: search vs browse.
+
+    The denominator for the rank section above it. A rank is a position in a
+    list; this is whether anybody was looking at the list. If browse supplies
+    most of our impressions then keyword rank is not our lever, however well we
+    rank, and that conclusion should arrive in the same email as the ranks.
+
+    Reads the CSV series, never the App Store Connect API: the digest must not
+    block on Apple, must not need PyJWT or the .p8 on this code path, and must
+    not turn a credential problem at 00:00 Monday into a missing digest.
+    """
+    sys.path.insert(0, SCRIPT_DIR)
+    import appstore_sources  # noqa: E402 - sibling module
+
+    path = appstore_sources.series_path()
+    records = appstore_sources.read(path)
+    if not records:
+        # Not zero traffic. Apple takes 24-48h to generate a snapshot and a
+        # ONE_TIME_SNAPSHOT stops producing instances afterwards, so an absent
+        # series is a normal early state and a stopped job later on. Either way
+        # it is an absence of measurement (DEC-249), so it is raised.
+        raise FileNotFoundError(f"no App Store source series at {path}")
+
+    split = appstore_sources.split_on_rename(records)
+    age = appstore_sources.series_age_days(records)
+    return {
+        "path": path,
+        "split": split,
+        "age_days": age,
+        "stale": age is None or age > SOURCES_STALE_DAYS,
+    }
+
+
 def m_purchase_reconciliation(host, key):
     """Cross-check `paywall_result` purchase outcomes against `purchase_succeeded`.
 
@@ -702,6 +743,18 @@ GREY = "#888"
 STORE_LABELS = {"appstore": "iOS", "play": "Play"}
 RANK_LIST_LIMIT = 5  # per bucket per store. The digest reports movement, and a
                      # 36-line table is a table nobody reads.
+
+
+SOURCES_LIST_LIMIT = 4   # source types per window. Apple defines seven and the
+                         # tail is App Clip / Notification / Unavailable noise.
+# Kept as prose rather than importing INCOMPLETE_TAIL_DAYS, so rendering the
+# digest never needs the puller module to be importable.
+SOURCES_TAIL_NOTE = "3 days"
+
+
+def _pct_or_na(value):
+    """A share of no impressions is undefined, not 0%."""
+    return "n/a" if value is None else f"{value}%"
 
 
 def _esc(text):
@@ -885,6 +938,92 @@ def render(metrics):
                     # DEC-249: these did not move, they were never read.
                     counts += f", {s['unmeasured_n']} NOT MEASURED"
                 rank_line(counts, RED if s["unmeasured_n"] else GREY)
+
+    # App Store discovery. Immediately after the ranks, because it is the
+    # denominator for them: the rank section says where we sit in the list, and
+    # this says whether the list is where our impressions come from.
+    #
+    # metrics.get for the same reason as rank: the revenue tests build a
+    # metrics dict without this key.
+    src = metrics.get("sources")
+    if src:
+        section("App Store discovery (search vs browse)")
+
+        def src_line(s, color=None):
+            line(f"    {s}")
+            c = f"color:{color};" if color else ""
+            html(f'<div style="font-family:monospace;font-size:12px;'
+                 f'margin-left:12px;{c}">{_esc(s)}</div>')
+
+        if not src["ok"]:
+            err("App Store discovery", src["error"])
+        else:
+            d = src["data"]
+            sp = d["split"]
+            if d["stale"]:
+                age = d["age_days"]
+                when = "never" if age is None else f"{age} days ago"
+                kv("!! NO PULL", f"the App Store Connect series was last "
+                                 f"written {when}; the weekly job may have "
+                                 f"stopped, or the ONE_TIME_SNAPSHOT has "
+                                 f"stopped producing instances. Figures below "
+                                 f"are older news.", RED)
+
+            def window_lines(w):
+                total = w["impressions"]
+                ordered = sorted(w["by_source"].items(),
+                                 key=lambda kv_: (-kv_[1]["impressions"], kv_[0]))
+                for source, m in ordered[:SOURCES_LIST_LIMIT]:
+                    share = (f"{m['impressions'] / total * 100:.1f}%"
+                             if total else "n/a")
+                    src_line(f"{source:<20} {m['impressions']:>8,} impressions "
+                             f"({share})")
+
+            kv("Data through", f"{sp['last_complete_date']} "
+                               f"(the last {SOURCES_TAIL_NOTE} excluded as "
+                               f"incomplete, so this is never a drop)", GREY)
+
+            if not sp["has_post_window"]:
+                # Presented as a baseline, deliberately without a comparison.
+                # A handful of partial post-rename days against months of
+                # pre-rename data would render as a result and be read as one.
+                kv("No post-rename window yet",
+                   f"the iOS listing changed {sp['rename_date']} and no later "
+                   f"day is complete. Below is the PRE-RENAME BASELINE, not a "
+                   f"result.", GREY)
+                w = sp["pre"]
+                if w["day_count"]:
+                    kv("Search share of impressions",
+                       f"{_pct_or_na(w['search_share'])} across "
+                       f"{w['day_count']} days "
+                       f"({w['days'][0]} to {w['days'][-1]})")
+                    window_lines(w)
+                else:
+                    kv("Baseline", "no complete days in the series yet", GREY)
+            else:
+                pre, post = sp["pre"], sp["post"]
+                pre_share, post_share = pre["search_share"], post["search_share"]
+                if pre_share is not None and post_share is not None:
+                    delta = post_share - pre_share
+                    # Green when search grew: search share is the metric the
+                    # rename was supposed to move.
+                    color = GREEN if delta >= 0 else RED
+                    kv("Search share of impressions",
+                       f"{pre_share}% -> {post_share}% ({delta:+.1f} points)",
+                       color)
+                else:
+                    kv("Search share of impressions",
+                       f"{_pct_or_na(pre_share)} -> {_pct_or_na(post_share)}")
+                kv("Impressions (pre / post)",
+                   f"{pre['impressions']:,} over {pre['day_count']}d  ->  "
+                   f"{post['impressions']:,} over {post['day_count']}d")
+                window_lines(post)
+
+            if sp["boundary"]["day_count"]:
+                src_line(f"{sp['rename_date']} is part one listing and part the "
+                         f"other; its "
+                         f"{sp['boundary']['impressions']:,} impressions are in "
+                         f"neither window.", GREY)
 
     # Activation
     section("Activation")
@@ -1156,6 +1295,7 @@ def main():
         "purchases": run_metric(m_purchases, host, key),
         "revenuecat": run_metric(m_revenuecat),
         "rank": run_metric(m_rank),
+        "sources": run_metric(m_appstore_sources),
         "reconciliation": run_metric(m_purchase_reconciliation, host, key),
         "retention": run_metric(m_retention, host, key),
         "top_screens": run_metric(m_top_screens, host, key),

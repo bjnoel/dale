@@ -42,3 +42,8 @@ tools/autonomous/logs/
 
 # Feed catalogue: descriptions and image URLs, overwritten each run, not history
 data/nursery-stock/*/catalogue.json
+
+# App Store Connect source series: a cache of a report Apple will hand us
+# again on request (history back to 2024-01-01), written to /opt/dale/data on
+# the box. Never committed, so a local run cannot dirty the working tree.
+data/treesmith-appstore-sources.csv

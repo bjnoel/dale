@@ -13,3 +13,8 @@ jinja2>=3.1            # autoescaping page templates (stocklib/templates.py)
 requests>=2.28         # nursery scrapers (HTTP)
 google-api-python-client>=2.0   # Google Search Console analytics (gsc_analysis.py)
 google-auth>=2.0                # service-account auth for the GSC client
+
+# App Store Connect analytics puller (tools/autonomous/appstore_sources.py).
+# On the VPS install with apt (PEP 668), NOT pip: sudo apt install python3-jwt
+pyjwt>=2.8             # ES256 JWT for the App Store Connect API
+cryptography>=41       # ES256 signing behind PyJWT (apt: python3-cryptography)
