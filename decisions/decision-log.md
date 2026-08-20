@@ -12960,3 +12960,62 @@ deleting a live URL is the page-lifecycle machinery's job (redirect or tombstone
 and that is a separate decision. Flagged to Benedict.
 
 ---
+
+## DEC-310 — 2026-08-20 — Benedict waived the backlog cap, so the work got done instead of queued
+
+**Decided by:** Benedict, explicitly: "Even though backlog is full I give permission to carry out
+all the tickets to get this achieved."
+
+**Supersedes the "no ticket exists" finding in DEC-309a.** Two tickets now exist, created through
+the Linear API because `linear_update.py create` still refuses at 20/15 and has no override flag.
+The exception is recorded on the tickets themselves rather than left silent:
+
+- **DAL-287** re-measure the 414 contested queries, due 2026-09-17. This is the DEC-309 follow-up
+  that DEC-309a wrongly called DAL-289.
+- **DAL-288** confirm the first compare-page redirect landed, due 2026-08-22.
+
+**The orphan is fixed, and it was a bigger bug than one page.** DEC-309a flagged
+`/compare/chinese-bayberry-prices.html` serving 2026-08-11 prices at position 9.5. The cause is
+that `build_compare_pages.py` has never removed a page it stops writing: it writes the species
+that clear `MIN_NURSERIES` and has no opinion about the rest. That is the same failure
+`build_species_state_pages.py` had before the page ledger, so it got the same mechanism rather
+than a second one (commit `01dae97`): `FAMILY_COMPARE`, `observe()` per written page,
+`decide_night` for the guards.
+
+**One design difference, and it drives everything.** A compare page is the only family with a
+guaranteed-live parent: every enabled species has a `/species/<slug>.html` (122 of 122 verified),
+so its terminal state is **REDIRECT to that page, never TOMBSTONE**. `decide_night` stays
+family-agnostic and the builder does the substitution, refusing to redirect when the species page
+is not actually on disk.
+
+**Deliberately wired without `--allow-delete`,** unlike the other two families. A seeded page
+carries `live_days` 0, so the below-entry-guard branch would have **deleted** every pre-existing
+orphan on its third night instead of redirecting it, and the orphan this was written for ranks at
+position 9.5. Nothing in this family is ever unlinked. `render_stub`'s copy became a parameter
+because "is now listed as" is rename wording and nothing was renamed here; the defaults reproduce
+the variety strings byte for byte, so the goldens never moved.
+
+**One hand edit, recorded rather than hidden:** `seed_from_disk` can only read a file's mtime,
+which for an orphan is the night it *stopped*, so chinese-bayberry seeded with
+`first_seen == last_seen == 2026-08-11` and would have sat below the entry guard forever. It was
+reseeded with its real dates (first_seen 2026-06-18, the day primal-fruits became the third
+nursery listing it; live_days 54), with a note in the ledger's review list. `absent_nights` was
+NOT touched: that is the exit guard's own counter, and hand-setting it is hand-editing the state
+machine.
+
+**Not rushed on purpose.** The exit guard counts builder runs, not calendar days. Running the
+builder twice by hand today would have burned both nights in one afternoon, which is exactly the
+mistake recorded against the variety rollout. The redirect lands on the 2026-08-22 nightly. The
+page has been stale nine days; two more nights is the cheaper error.
+
+**Known limit, written down rather than designed around:** a compare page orphaned before it
+accumulates 7 nights of ledger history is held rather than redirected, and stays stale. For a page
+created and abandoned inside a week that is the entry guard working. If it bites a real page, the
+fix is to seed real dates, not to loosen the guard.
+
+**Tests:** `tests/test_compare_page_lifecycle.py`, 8 cases, including that the builder is inert
+without `--ledger`, that it never redirects to a species page that is not there, that a page
+coming back overwrites its own stub, and that the stub does not use the variety rename wording.
+Full suite 3,296 pass.
+
+---
