@@ -225,9 +225,44 @@ the hour**, so it does not race the hourly `dale-runner` push at `0 * * * *` —
 config snapshot sits at 04:20 and the rank capture at 21:40. Absolute path under `/opt/dale`, UTC,
 its own log under `/opt/dale/autonomous/logs/`, matching the existing conventions.
 
-It sits one hour after the DAL-257 rank capture at Sundays 21:40, which is the right order: the
-rank capture measures where we sit, this measures whether anybody was looking, and the Monday digest
-renders them as adjacent sections.
+It sits one hour after the DAL-257 rank capture, which is **already installed** on the box at
+Sundays 21:40 UTC (verified 2026-08-20). That is the right order: the rank capture measures where we
+sit, this measures whether anybody was looking, and the Monday digest at 00:00 renders them as
+adjacent sections.
+
+### Dependencies — checked, nothing to install
+
+Verified on the box on 2026-08-20, against the interpreter cron actually invokes:
+
+```
+$ /usr/bin/python3 -c "import jwt, cryptography; print(jwt.__version__, cryptography.__version__)"
+2.7.0 41.0.7
+```
+
+Both already present, so there is no install step. If that ever changes, install with **apt, not
+pip**: the VPS is an externally-managed environment (PEP 668) and `requirements.txt` says so.
+
+```
+sudo apt install python3-jwt python3-cryptography
+```
+
+`requests` is not needed. Every module in `tools/autonomous/` uses `urllib`, and this one does too.
+
+### The one thing Benedict has to do by hand
+
+The `.p8` exists only on Benedict's Mac and cannot be re-downloaded from Apple once created, so it
+is copied by hand rather than by any script here:
+
+```
+scp ~/.appstoreconnect/private_keys/API_TreeSmith_Analytics_AuthKey_<KEYID>.p8 \
+    dale-server:/opt/dale/secrets/appstoreconnect.p8
+ssh dale-server 'chmod 600 /opt/dale/secrets/appstoreconnect.p8 && \
+                 chown dale:dale /opt/dale/secrets/appstoreconnect.p8'
+```
+
+`dale` is the cron user, and every other file in `/opt/dale/secrets/` is `dale:dale` mode 600.
+Then the env file beside it, same mode, with the real values in place of the placeholders. The key
+id and issuer id are deliberately not written down in this repo.
 
 ## Files
 

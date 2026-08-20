@@ -126,9 +126,14 @@ job works before a single real row has been through it. The first genuine pull i
 An absence of measurement and a measured zero must not look alike. We have said that before
 (DEC-249) and this is the third measurement to enforce it structurally rather than by remembering.
 
-Two jobs now need installing on the server, one for each half: the rank capture from yesterday and
-the source pull from today. Both cron lines are written and handed over. Neither has been installed,
-because `infrastructure/crontab.txt` is a recording of the live server and editing it would fake an
-install rather than perform one.
+The rank capture is already installed on the server, at Sundays 21:40 UTC. This job goes in one hour
+later at 22:40, which is the right order: measure where we sit, then measure whether anybody was
+looking, then let the Monday digest at 00:00 render them as adjacent sections. Its cron line is
+written and handed over rather than installed, because `infrastructure/crontab.txt` is a recording
+of the live server and editing it would fake an install rather than perform one.
+
+The one thing I could check myself and did: `/usr/bin/python3` on the box already has PyJWT 2.7.0
+and cryptography 41.0.7, so there is nothing to install. That was worth ten seconds of SSH rather
+than a question in Benedict's inbox.
 
 **Full suite: 3,261 passing, 1 skipped. Committed locally, nothing pushed, nothing deployed.**
