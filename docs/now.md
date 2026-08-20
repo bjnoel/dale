@@ -1,7 +1,0 @@
-Still at eBooks, taken over Lead product of our mobile apps, have just released Android version (https://play.google.com/store/apps/details?id=com.ebooks.reader.app) and iOS will be in the next week or two. AI has changed how we work significantly, willing to take on larger unknown projects with confidence. Migrated from SaaS Couchbase Capella offering to self-hosted on AWS, using claude and terraform to migrate safely. Finding that all those tasks that never get done are finally starting to get done with AI's help.
-
-Personally, very interested in rare fruits and grafting at the moment, focusing on Annona species and sapodilla as I find them delicious. Trying to amass a large unique collection of both but I'm still at the learning stage.
-
-Working to develop a CEO/co-CEO (Dale) to make my projects get finished and come to life, first project he build was a nursery tracker - it's hard to get certain fruit trees into WA and often nurseries only supply them at limited times of the year. I want to know who gets them in stock.
-
-Only an amateur at rock climbing but has been put on hold as I tore a ligament in my middle finger last October and is taking ages to heal after being in a splint for close to 3 months. Keeping busy/active with rucking, gym work and I tried out paddleball and really enjoyed it.
