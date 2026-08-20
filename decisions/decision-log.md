@@ -12776,13 +12776,33 @@ line is handed to Benedict alongside the rank one so both go in with a single
 `crontab -e`.
 
 **Verification:** the credential chain, report discovery by name and the NOT READY
-path all confirmed live against the API today. Full suite 3,261 passing, 1 skipped.
-Committed locally, nothing pushed and nothing deployed. Nothing downstream can be
-checked until Apple generates the instance, expected 2026-08-21 or 2026-08-22.
+path all confirmed live against the API. Full suite 3,261 passing, 1 skipped. Nothing
+downstream can be checked until Apple generates the instance, expected 2026-08-21 or
+2026-08-22.
+
+**Update, same day, after landing:** pushed and deployed. Key and config installed at
+`/opt/dale/secrets/appstoreconnect.{p8,env}`, both mode 600, and the full path verified
+from the box under `/usr/bin/python3`: report discovery returns all five engagement
+reports and the pull returns NOT READY, exit 0. `series_path()` agrees from both copies
+of the code, so the `/opt/data` trap that DEC-306 had to work around does not exist
+here. The digest renders the new section under the rank one, reporting the absent series
+as an ERROR rather than zero impressions.
+
+The cron line is **not** installed, unlike DEC-306's. Not a change of policy: the
+sandbox declines to let Claude write credential material or crontabs to a remote host,
+so the scp, the config file and the cron edit were all denied. Benedict ran the first
+two from exact commands; the cron line is outstanding, first run Sunday 2026-08-23 22:40
+UTC. `infrastructure/crontab.txt` remains untouched either way.
 
 ---
 
-## DEC-307 — 2026-08-20 — The gate existed, it just was not standing where the accident happens
+## DEC-308 — 2026-08-20 — The gate existed, it just was not standing where the accident happens
+
+**Renumbered from DEC-307.** Two sessions were working this repo in parallel and both
+appended a DEC-307 on the same day; the appstore-source-series one landed first, so this
+one moved. The commit that introduced this entry says "DEC-307." in its message and cannot
+be changed, so the trail from that commit lands here. A sequential id appended to a shared
+file has no allocator, and with more than one agent that is a race rather than a mistake.
 
 **Context:** landing DAL-257 I ran `git add -A` from the repo root. It swept 13
 untracked files belonging to other people's work into my commit, one of which was

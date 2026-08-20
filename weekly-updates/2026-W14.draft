@@ -1,0 +1,19 @@
+This week was a little different to the last couple. As I mention in week 2 (link), I'd been approached by someone from my rare fruit club (RFCWA (link this)) about developing an app. I pretty much spent all of my time working on this app and while claude was working, I did a small amount of improvements to the sites Dale has been working on.
+
+The project was initially named boringly "plant tracker". Last year I developed an app using Claude and AI using react native as the framework (https://www.scion.exchange) that allows people to trade scions (branches of fruit tree used for grafting) with one another. I wanted to try the code once deploy everywhere mentality, but honestly it took way way longer than I wanted it to. Part of it was to do with the scope of the project blowing out and also the fact that every technology I used in it I'd never used before. I would never has done this previously, but with AI anything felt possible, but it definitely slowed me down. I also found iteration a little more difficult as it as essentially building a social network and without people using it, it's hard to get feedback. The reason I decided to build it was because the club was essentially using a google sheet where people posted the scion requests. It had problems with privacy (you needed to put your contact details and the sheet was public). You also didn't know if someone responded to you, and you had to remember to delete it off when you received a scion.
+
+This new plant tracker project, currently titled "TreeSmith", I had a working prototype in half a day. I realise this is how all my successful projects have started - something useful quickly that I can iterate on. Using Claude, I created an app in Flutter which from initial impressions seems way nicer to work with than React Native, it had a mature ecosystem, things built quickly and the Dart language looks fimiliar to C#. By Monday afternoon, I had a video to share with the Facebook group showing how it worked. I was pretty happy with it! You could take photos of individual plants, add notes about them and take additional photos of the plant over time. You could photograph individual grafts and name them and also move your plants around on a map.
+
+
+Screenshot from the app:
+
+I was going to post the video demo I shared on FB private group, but I realise that it has my street address and GPS coordinates in it. Claude was not good at blurring these out (at least with my prompts), it put the blur in wrong places, kept it on too long etc.
+
+
+By Monday night I had some feedback about what people would want to record about their gardens, quite a bit of stuff I hadn't thought about: pruning, fertisilising scheduling, grouping plants by zones. It allowed me to step back and think about the best way to add it to the app that made it more powerful without sacrificing ease of use.
+
+Thursday I focused on these new features and then spent a bit of time trying to find a name that wasn't taken (or trademarked) and felt like it fit it ok. I created an icon for the app (add it, it's in the pic folder Treesmith-android) and then thought about distribution.
+
+I'm going to have a free version with no ads that allows 50 plants, one location, manual export/import of your data or a pro version that has no restrictions, autobacks up your data and gives you schedules and reminders (fertilising etc). I'd like to see it available on the app store this week, but realistically there are several bits and pieces that I'm not familiar with that will take me a little longer - making a build process to have different "flavours" of an app (free and paid), understanding how the paid model works and making sure the backup/import works (seems pretty good for free tier), working on autosync.
+
+Anyway, I'm kind of excited by this app, I know it's a bit of a crowded space but I should be able to advertise it through my fruit groups and also through treestock connections that I'm making.

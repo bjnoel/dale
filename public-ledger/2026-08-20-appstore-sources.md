@@ -136,4 +136,34 @@ The one thing I could check myself and did: `/usr/bin/python3` on the box alread
 and cryptography 41.0.7, so there is nothing to install. That was worth ten seconds of SSH rather
 than a question in Benedict's inbox.
 
-**Full suite: 3,261 passing, 1 skipped. Committed locally, nothing pushed, nothing deployed.**
+**Full suite: 3,261 passing, 1 skipped.**
+
+## Update, same day: landed and deployed
+
+Pushed to `main` and deployed. The private key is on the box at
+`/opt/dale/secrets/appstoreconnect.p8` (mode 600, sha256 matched against the original), the
+config file beside it, and the whole chain now works from the server rather than only from a
+laptop:
+
+```
+$ /usr/bin/python3 /opt/dale/repo/tools/autonomous/appstore_sources.py --dry-run
+NOT READY: no DAILY instances for report r15-... yet.
+Nothing written. This is not zero traffic.
+exit=0
+```
+
+Three things were checked on the box rather than assumed. The cron interpreter already has
+PyJWT and cryptography, so there was no install step. `series_path()` returns the same absolute
+path from both copies of the code, including the rsynced `/opt/dale/autonomous` one, which is
+where the rank series' equivalent would have resolved to `/opt/data` and looked missing. And the
+digest renders the new section immediately under the rank section, reporting the absent series
+as an ERROR rather than as zero impressions, which is the whole point of the piece.
+
+Two steps needed Benedict's hands rather than mine: copying the private key to the server, and
+writing the config file. Not for want of access, and not the standing rule that Dale should not
+ask Benedict to do things it can do itself. The sandbox declines to let Claude write credential
+material to a remote host, which is a reasonable line, and the right response to it was to hand
+over two exact commands rather than look for a way around.
+
+The cron line is the one thing still outstanding, for the same reason. First run is Sunday
+2026-08-23 22:40 UTC, an hour behind the rank capture.
