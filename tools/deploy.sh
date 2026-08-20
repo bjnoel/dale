@@ -89,6 +89,7 @@ chmod +x /opt/dale/autonomous/check-weekly-update.py 2>/dev/null
 chmod +x /opt/dale/autonomous/treesmith_analytics.py 2>/dev/null
 chmod +x /opt/dale/autonomous/merge-nursery-inbound.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/snapshot-server-config.sh 2>/dev/null
+chmod +x /opt/dale/autonomous/capture-treesmith-rank.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/weekly_backup.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/loop-runner.sh 2>/dev/null
 chmod +x /opt/dale/autonomous/promote-curation.sh 2>/dev/null
