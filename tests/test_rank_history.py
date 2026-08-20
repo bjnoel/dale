@@ -339,6 +339,252 @@ class TestBackfill(unittest.TestCase):
         )
 
 
+class TestAttribution(unittest.TestCase):
+    """Whether somebody took the slot, or we simply left it.
+
+    Two different business facts, and the whole reason the top3 columns exist.
+    Built from the real iOS AU `graft tracker` baseline: the two apps sitting
+    behind us there are a peptide tracker and a blood-sugar tracker, so our fall
+    from 1 to 11 is not a competitor beating us.
+    """
+
+    US_AND_TWO = ["TreeSmith: Plant Graft Tracker",
+                  "Peptide Tracker - PeptideKit",
+                  "Blood Sugar Tracker-AI Health"]
+
+    def _rec(self, top3, **kw):
+        rec = dict(
+            captured_at=STAMP, store="appstore", country="AU",
+            group="niche_tracker", term="graft tracker", rank=1,
+            result_count=184, truncated=False, status=rh.RANKED,
+            name_match_top5=0.2, error="",
+            top3_1=top3[0] if len(top3) > 0 else "",
+            top3_2=top3[1] if len(top3) > 1 else "",
+            top3_3=top3[2] if len(top3) > 2 else "",
+        )
+        rec.update(kw)
+        return rec
+
+    def test_backfill_from_below_is_vacated_not_displaced(self):
+        # We drop out of a 3-slot window, the two behind us shift up, and rank 4
+        # backfills slot 3. A newcomer ALWAYS appears here, so a bare set
+        # difference would call every vacancy a displacement.
+        prev = self._rec(self.US_AND_TWO)
+        curr = self._rec(["Peptide Tracker - PeptideKit",
+                          "Blood Sugar Tracker-AI Health",
+                          "Some App From Rank Four"])
+        kind, names = rh.attribute(prev, curr)
+        self.assertEqual(kind, rh.VACATED)
+        self.assertEqual(names, [])
+
+    def test_a_newcomer_above_a_survivor_is_a_displacement(self):
+        prev = self._rec(self.US_AND_TWO)
+        curr = self._rec(["Fruit Tree Tracker - Grove",
+                          "Peptide Tracker - PeptideKit",
+                          "Blood Sugar Tracker-AI Health"])
+        kind, names = rh.attribute(prev, curr)
+        self.assertEqual(kind, rh.DISPLACED)
+        self.assertEqual(names, ["Fruit Tree Tracker - Grove"])
+
+    def test_no_survivor_is_a_turned_over_result_set(self):
+        prev = self._rec(self.US_AND_TWO)
+        curr = self._rec(["Totally Other A", "Totally Other B", "Totally Other C"])
+        kind, _ = rh.attribute(prev, curr)
+        self.assertEqual(kind, rh.TURNED_OVER)
+
+    def test_our_own_rename_is_not_a_competitor(self):
+        # Apple's top3 identifier is the app NAME, and the name is the thing
+        # that just changed. Without this, our old name leaving and our new name
+        # arriving reads as us displacing ourselves.
+        prev = self._rec(self.US_AND_TWO)
+        curr = self._rec(["TreeSmith: Fruit Tree Tracker",
+                          "Peptide Tracker - PeptideKit",
+                          "Blood Sugar Tracker-AI Health"])
+        kind, names = rh.attribute(prev, curr)
+        self.assertEqual(kind, rh.VACATED)
+        self.assertNotIn("TreeSmith: Fruit Tree Tracker", names)
+
+    def test_our_play_package_is_recognised_too(self):
+        self.assertTrue(rh.is_ours(rh.OUR_PACKAGE))
+        self.assertTrue(rh.is_ours("TreeSmith: Plant Graft Tracker"))
+        self.assertFalse(rh.is_ours("Fruit Tree Tracker - Grove"))
+
+
+class TestDiffBuckets(unittest.TestCase):
+    def _capture(self, stamp, rows, store="play"):
+        return rh.to_records(store, {"AU": rows}, stamp)
+
+    def _diff(self, before, after, **kw):
+        return rh.diff_captures(
+            self._capture(STAMP, before),
+            self._capture("2026-08-20T02:00:00Z", after),
+            **kw,
+        )
+
+    def test_drift_inside_the_band_is_flat(self):
+        # Two runs 20 minutes apart already disagreed by one position.
+        out = self._diff([play_row(rank=7)], [play_row(rank=10)])
+        self.assertEqual(out["flat_n"], 1)
+        self.assertEqual(out["moved"], [])
+
+    def test_one_position_past_the_band_is_a_move(self):
+        out = self._diff([play_row(rank=7)], [play_row(rank=11)])
+        self.assertEqual(out["flat_n"], 0)
+        self.assertEqual(len(out["moved"]), 1)
+        self.assertEqual(out["moved"][0]["delta"], 4)
+
+    def test_delta_is_positive_when_the_position_gets_worse(self):
+        out = self._diff([play_row(rank=1)], [play_row(rank=11)])
+        self.assertEqual(out["moved"][0]["delta"], 10)
+        self.assertIn("down 10", rh.describe(out["moved"][0]))
+
+    def test_entering_from_a_proven_absence_says_so(self):
+        out = self._diff(
+            [play_row(rank=None, result_count=12, truncated=False)],
+            [play_row(rank=36)],
+        )
+        self.assertEqual(len(out["entered"]), 1)
+        self.assertTrue(out["entered"][0]["absence_proven"])
+        self.assertIn("entered at 36 from absent", rh.describe(out["entered"][0]))
+
+    def test_entering_from_a_capped_window_never_claims_proof(self):
+        # Identical arrow, different finding: we may have been at 31 all along.
+        # Collapsing this into "newly entered" is precisely the DEC-255 error.
+        out = self._diff([play_row(rank=None)], [play_row(rank=1)])
+        self.assertFalse(out["entered"][0]["absence_proven"])
+        self.assertIn("never proven", rh.describe(out["entered"][0]))
+
+    def test_the_two_entry_kinds_do_not_render_alike(self):
+        proven = self._diff(
+            [play_row(rank=None, result_count=12, truncated=False)],
+            [play_row(rank=1)])["entered"][0]
+        capped = self._diff([play_row(rank=None)], [play_row(rank=1)])["entered"][0]
+        self.assertNotEqual(rh.describe(proven), rh.describe(capped))
+
+    def test_a_drop_is_listed_however_small(self):
+        # Crossing the ranked/absent boundary is an event, not drift, so the
+        # noise band must not swallow it.
+        out = self._diff([play_row(rank=29)], [play_row(rank=None)])
+        self.assertEqual(len(out["dropped"]), 1)
+        self.assertEqual(out["flat_n"], 0)
+
+    def test_absent_both_times_is_counted_not_reported_as_movement(self):
+        out = self._diff([play_row(rank=None)], [play_row(rank=None)])
+        self.assertEqual(out["still_absent_n"], 1)
+        self.assertEqual(out["dropped"], [])
+        self.assertEqual(out["entered"], [])
+
+    def test_an_error_on_either_side_is_never_movement(self):
+        # DEC-249: a term that failed to fetch has not moved. Folding it into
+        # `dropped` would invent a loss out of a timeout.
+        boom = {"group": "brand", "term": "fruit tree tracker", "country": "AU",
+                "error": "TimeoutError: upstream timed out"}
+        out = self._diff([play_row(rank=7)], [boom])
+        self.assertEqual(out["dropped"], [])
+        self.assertEqual(out["moved"], [])
+        self.assertEqual(len(out["unmeasured"]), 1)
+        self.assertIn("error", out["unmeasured"][0]["reason"])
+
+    def test_a_regrouped_term_is_not_a_drop_and_an_entry(self):
+        # The group is our own label in TERMS, not a store fact. Moving a term
+        # between groups must not read as it falling off the store.
+        out = self._diff(
+            [play_row(rank=7, group="niche_tracker")],
+            [play_row(rank=7, group="subject")],
+        )
+        self.assertEqual(out["dropped"], [])
+        self.assertEqual(out["entered"], [])
+        self.assertEqual(out["unmeasured"], [])
+        self.assertEqual(out["flat_n"], 1)
+
+    def test_a_term_missing_from_one_capture_is_unmeasured_not_dropped(self):
+        # A partial re-run (--term) must not read as 35 apps falling off Play.
+        out = self._diff(
+            [play_row(term="fruit tree tracker", rank=7),
+             play_row(term="orchard tracker", rank=9)],
+            [play_row(term="fruit tree tracker", rank=7)],
+        )
+        self.assertEqual(out["dropped"], [])
+        self.assertEqual(len(out["unmeasured"]), 1)
+        self.assertEqual(out["unmeasured"][0]["term"], "orchard tracker")
+
+    def test_buckets_and_counts_account_for_every_term(self):
+        before = [play_row(term=t, rank=r) for t, r in
+                  [("fruit tree tracker", 7), ("orchard tracker", 9),
+                   ("tree tracker", None), ("graft tracker", 1)]]
+        after = [play_row(term=t, rank=r) for t, r in
+                 [("fruit tree tracker", 7), ("orchard tracker", 29),
+                  ("tree tracker", None), ("graft tracker", None)]]
+        out = self._diff(before, after)
+        total = (len(out["moved"]) + len(out["entered"]) + len(out["dropped"])
+                 + out["flat_n"] + out["still_absent_n"] + len(out["unmeasured"]))
+        self.assertEqual(total, 4)
+
+    def test_biggest_movement_is_listed_first(self):
+        before = [play_row(term="fruit tree tracker", rank=1),
+                  play_row(term="orchard tracker", rank=2)]
+        after = [play_row(term="fruit tree tracker", rank=9),
+                 play_row(term="orchard tracker", rank=30)]
+        out = self._diff(before, after)
+        self.assertEqual(out["moved"][0]["term"], "orchard tracker")
+
+    def test_a_downward_move_carries_attribution(self):
+        out = self._diff([play_row(rank=1)], [play_row(rank=11)])
+        self.assertIsNotNone(out["moved"][0]["attribution"])
+
+    def test_an_upward_move_does_not_pretend_to_explain_itself(self):
+        out = self._diff([play_row(rank=11)], [play_row(rank=1)])
+        self.assertIsNone(out["moved"][0]["attribution"])
+
+
+class TestCaptureSelectionIsPerStore(unittest.TestCase):
+    """iOS and Play were baselined 5 minutes apart and Play has a third capture.
+
+    A global "last two" would compare Apple against Play and report the
+    difference between two shops as a week of movement.
+    """
+
+    def test_play_compares_against_the_play_baseline_not_the_apple_one(self):
+        with TempCSV() as path:
+            rh.backfill(path, write=True)
+            records = rh.read(path)
+        out = rh.diff(records, "play")
+        self.assertEqual(out["prev"], "2026-08-13T01:56:00Z")
+        self.assertEqual(out["curr"], "2026-08-13T02:55:00Z")
+        # The Apple baseline sits between the two in wall-clock order.
+        self.assertLess(out["prev"], "2026-08-13T02:01:00Z")
+        self.assertGreater(out["curr"], "2026-08-13T02:01:00Z")
+
+    def test_a_store_with_one_capture_reports_nothing_rather_than_guessing(self):
+        with TempCSV() as path:
+            rh.backfill(path, write=True)
+            out = rh.diff(rh.read(path), "appstore")
+        self.assertIsNone(out["prev"])
+        self.assertEqual(out["moved"], [])
+        self.assertIn("nothing to compare", rh.render_diff(out))
+
+    def test_the_recorded_dal_257_predictions_are_reproduced(self):
+        # DAL-257 recorded these before the rename so they could not be moved
+        # afterwards: Play AU "fruit tree tracker" improves from #26/30, and
+        # Play US improves from absent-in-30.
+        with TempCSV() as path:
+            rh.backfill(path, write=True)
+            out = rh.diff(rh.read(path), "play")
+        moved = {(i["country"], i["term"]): i for i in out["moved"]}
+        entered = {(i["country"], i["term"]): i for i in out["entered"]}
+        au = moved[("AU", "fruit tree tracker")]
+        self.assertEqual((au["prev_rank"], au["curr_rank"]), (26, 1))
+        us = entered[("US", "fruit tree tracker")]
+        self.assertEqual(us["curr_rank"], 1)
+        self.assertFalse(us["absence_proven"])  # it was a capped window
+
+    def test_an_unknown_against_stamp_is_refused(self):
+        with TempCSV() as path:
+            rh.backfill(path, write=True)
+            with self.assertRaises(ValueError):
+                rh.diff(rh.read(path), "play", against="2026-01-01T00:00:00Z")
+
+
 class TestSharedTermSet(unittest.TestCase):
     """The same anti-fork guard the two readers carry, extended to this module.
 

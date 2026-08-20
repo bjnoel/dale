@@ -32,6 +32,8 @@ Usage:
     python3 rank_history.py captures
     python3 rank_history.py backfill            # dry run
     python3 rank_history.py backfill --write
+    python3 rank_history.py diff
+    python3 rank_history.py diff --store play --against 2026-08-13T01:56:00Z
 """
 
 import argparse
@@ -44,7 +46,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from appstore_rank import LIMIT, TERMS  # noqa: E402  the shared term set
-from playstore_rank import saturated  # noqa: E402  Play's window rule, not re-derived
+from playstore_rank import OUR_PACKAGE, saturated  # noqa: E402  Play's window rule, not re-derived
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DEFAULT_CSV = os.path.join(REPO_ROOT, "data", "treesmith-rank-history.csv")
@@ -304,6 +306,273 @@ def captures(records, store=None):
     return sorted(stamps, reverse=True)
 
 
+# ── Diff ─────────────────────────────────────────────────────────────────────
+
+NOISE = 3  # positions. Two runs 20 minutes apart already disagreed by one, and
+           # the 2026-08-06 ledger measured 8 positions of drift in 7 days with
+           # the listing untouched. Anything inside the band is not movement.
+
+ABSENT_STATUSES = (ABSENT, ABSENT_CAPPED)
+
+VACATED = "vacated"
+DISPLACED = "displaced"
+TURNED_OVER = "turned over"
+
+
+def is_ours(identifier):
+    """Whether a top3 identifier is us.
+
+    Apple's identifier is the app NAME, and the app name is the thing that just
+    changed. Without this, "TreeSmith: Plant Graft Tracker" leaving the top 3 and
+    "TreeSmith: Fruit Tree Tracker" arriving reads as a competitor displacing us
+    with ourselves. Play's identifier is the package id and is stable.
+    """
+    ident = (identifier or "").strip().lower()
+    return ident == OUR_PACKAGE or ident.startswith("treesmith")
+
+
+def _top3(rec):
+    return [v for v in (rec["top3_1"], rec["top3_2"], rec["top3_3"]) if v]
+
+
+def attribute(prev, curr):
+    """Why we lost ground: did somebody take the slot, or did we leave it?
+
+    This is what the top3 columns exist for, and the two cases are different
+    business facts. iOS AU `graft tracker` fell 1 -> 11 and the two apps that
+    moved up behind us are a peptide tracker and a blood-sugar tracker; nobody
+    beat us, we simply stopped matching the term. A real competitor arriving
+    (Grove, DEC-237) would be a different finding entirely.
+
+    Read positionally rather than as a set difference. When we drop out of a
+    3-slot window, whatever was at rank 4 backfills slot 3, so a newcomer always
+    appears -- a bare `curr_top3 - prev_top3` would call every vacancy a
+    displacement. What separates the two is WHERE the newcomer landed:
+
+        vacated      every newcomer sits below every survivor: the field shifted
+                     up into the slot we left and the tail backfilled
+        displaced    a newcomer landed above a survivor: it jumped the queue
+        turned over  no survivor at all: the result set re-indexed wholesale and
+                     neither reading is about us
+
+    Returns `(kind, names)`.
+    """
+    before = [a for a in _top3(prev) if not is_ours(a)]
+    after = [a for a in _top3(curr) if not is_ours(a)]
+
+    survivors = [a for a in after if a in before]
+    newcomers = [a for a in after if a not in before]
+
+    if not survivors:
+        return TURNED_OVER, newcomers
+    if not newcomers:
+        return VACATED, []
+
+    last_survivor = max(after.index(a) for a in survivors)
+    jumpers = [a for a in newcomers if after.index(a) < last_survivor]
+    if jumpers:
+        return DISPLACED, jumpers
+    return VACATED, []
+
+
+def _movement(prev, curr, kind):
+    """One row of a bucket, carrying enough to render without the records."""
+    item = {
+        "store": curr["store"],
+        "country": curr["country"],
+        "group": curr["group"],
+        "term": curr["term"],
+        "prev_rank": prev["rank"],
+        "curr_rank": curr["rank"],
+        "prev_status": prev["status"],
+        "curr_status": curr["status"],
+        "delta": None,
+        "attribution": None,
+        "attributed_to": [],
+        # DEC-255: an absence Play could not prove is not the same finding as
+        # one it could, and the difference has to survive into the report.
+        "absence_proven": None,
+    }
+    if prev["rank"] is not None and curr["rank"] is not None:
+        # Positive is worse: a bigger number is a lower position.
+        item["delta"] = curr["rank"] - prev["rank"]
+    if kind == "dropped":
+        item["absence_proven"] = curr["status"] == ABSENT
+    elif kind == "entered":
+        item["absence_proven"] = prev["status"] == ABSENT
+    if kind == "dropped" or (item["delta"] or 0) > 0:
+        item["attribution"], item["attributed_to"] = attribute(prev, curr)
+    return item
+
+
+def diff_captures(prev_records, curr_records, noise=NOISE):
+    """Compare two captures. The function the digest imports.
+
+    Joins on (store, country, term). Deliberately not on `group`: the group is
+    our own label from TERMS, not a store fact, so moving a term between groups
+    would otherwise render as that term dropping off the store and a new one
+    arriving. A term measured in only one of the two captures is `unmeasured`,
+    never a drop -- a partial re-run must not read as 36 apps falling off.
+    """
+    def index(records):
+        return {(r["store"], r["country"], r["term"]): r for r in records}
+
+    prev_idx, curr_idx = index(prev_records), index(curr_records)
+
+    out = {
+        "moved": [],
+        "entered": [],
+        "dropped": [],
+        "flat_n": 0,
+        "still_absent_n": 0,
+        "unmeasured": [],
+    }
+
+    for key in sorted(set(prev_idx) | set(curr_idx)):
+        prev, curr = prev_idx.get(key), curr_idx.get(key)
+        store, country, term = key
+
+        if prev is None or curr is None:
+            side = "the older capture" if prev is None else "the newer capture"
+            known = prev or curr
+            out["unmeasured"].append({
+                "store": store, "country": country, "group": known["group"],
+                "term": term, "reason": f"not measured in {side}",
+            })
+            continue
+
+        # DEC-249: a term that failed to fetch has not moved. It is never folded
+        # into a bucket, because a zero and an absence of measurement must not
+        # look alike -- and here the absence would render as a drop.
+        if prev["status"] == ERROR or curr["status"] == ERROR:
+            which = [n for n, r in (("older", prev), ("newer", curr))
+                     if r["status"] == ERROR]
+            out["unmeasured"].append({
+                "store": store, "country": country, "group": curr["group"],
+                "term": term,
+                "reason": f"error in the {' and '.join(which)} capture",
+                "error": (curr if curr["status"] == ERROR else prev)["error"],
+            })
+            continue
+
+        prev_ranked = prev["status"] == RANKED
+        curr_ranked = curr["status"] == RANKED
+
+        if prev_ranked and curr_ranked:
+            item = _movement(prev, curr, "moved")
+            if abs(item["delta"]) > noise:
+                out["moved"].append(item)
+            else:
+                out["flat_n"] += 1
+        elif not prev_ranked and curr_ranked:
+            out["entered"].append(_movement(prev, curr, "entered"))
+        elif prev_ranked and not curr_ranked:
+            out["dropped"].append(_movement(prev, curr, "dropped"))
+        else:
+            # Absent both times. Not movement, but counted so the buckets and
+            # the term count reconcile and nothing goes missing in silence.
+            out["still_absent_n"] += 1
+
+    # Biggest first in each bucket: the top of a list is what gets read.
+    out["moved"].sort(key=lambda i: (-abs(i["delta"]), i["country"], i["term"]))
+    out["entered"].sort(key=lambda i: (i["curr_rank"], i["country"], i["term"]))
+    out["dropped"].sort(key=lambda i: (i["prev_rank"], i["country"], i["term"]))
+    out["unmeasured"].sort(key=lambda i: (i["country"], i["term"]))
+    return out
+
+
+def diff(records, store, against=None, noise=NOISE):
+    """Diff the two most recent captures FOR ONE STORE.
+
+    Per store, not globally: iOS and Play were baselined five minutes apart and
+    Play carries an extra day-0 capture, so a global "last two" would compare
+    Apple against Play and report the difference between two shops as movement.
+    """
+    stamps = captures(records, store)
+    if not stamps:
+        return None
+    curr_stamp = stamps[0]
+    prev_stamp = against or (stamps[1] if len(stamps) > 1 else None)
+    if prev_stamp is None:
+        return {"store": store, "prev": None, "curr": curr_stamp,
+                "moved": [], "entered": [], "dropped": [], "flat_n": 0,
+                "still_absent_n": 0, "unmeasured": []}
+    if prev_stamp not in stamps:
+        raise ValueError(
+            f"no {store} capture at {prev_stamp}; have {', '.join(stamps)}"
+        )
+
+    def rows(stamp):
+        return [r for r in records
+                if r["store"] == store and r["captured_at"] == stamp]
+
+    result = diff_captures(rows(prev_stamp), rows(curr_stamp), noise=noise)
+    result["store"] = store
+    result["prev"] = prev_stamp
+    result["curr"] = curr_stamp
+    return result
+
+
+def describe(item):
+    """One human-readable line for a movement. Shared by the CLI and the digest."""
+    where = f"{item['country']} {item['term']}"
+    if item["curr_rank"] is None:
+        proven = "absent" if item["absence_proven"] else "outside a capped window"
+        tail = "" if item["absence_proven"] else ", absence not proven"
+        note = ""
+        if item["attribution"] == VACATED:
+            note = "  vacated, nobody took the slot"
+        elif item["attribution"] == DISPLACED:
+            note = f"  displaced by {', '.join(item['attributed_to'])}"
+        elif item["attribution"] == TURNED_OVER:
+            note = "  result set turned over"
+        return f"{where}: {item['prev_rank']} -> {proven}{tail}{note}"
+    if item["prev_rank"] is None:
+        prior = ("absent" if item["absence_proven"]
+                 else "previously outside a capped window, absence was never proven")
+        return f"{where}: entered at {item['curr_rank']} from {prior}"
+    direction = "down" if item["delta"] > 0 else "up"
+    note = ""
+    if item["attribution"] == DISPLACED:
+        note = f"  displaced by {', '.join(item['attributed_to'])}"
+    elif item["attribution"] == VACATED:
+        note = "  vacated, nobody took the slot"
+    elif item["attribution"] == TURNED_OVER:
+        note = "  result set turned over"
+    return (f"{where}: {item['prev_rank']} -> {item['curr_rank']} "
+            f"({direction} {abs(item['delta'])}){note}")
+
+
+def render_diff(result, noise=NOISE):
+    """Plain-text diff for the CLI."""
+    if result is None:
+        return "No captures."
+    lines = [f"{result['store']}: {result['prev'] or '(no earlier capture)'}"
+             f" -> {result['curr']}", "=" * 72]
+    if result["prev"] is None:
+        lines.append("Only one capture for this store; nothing to compare yet.")
+        return "\n".join(lines)
+    for title, key in (("Moved", "moved"), ("Entered", "entered"),
+                       ("Dropped", "dropped")):
+        items = result[key]
+        lines.append("")
+        lines.append(f"{title} ({len(items)})")
+        if not items:
+            lines.append("  none")
+        for item in items:
+            lines.append(f"  {describe(item)}")
+    lines.append("")
+    lines.append(f"Flat within +/-{noise}: {result['flat_n']}   "
+                 f"still absent: {result['still_absent_n']}")
+    if result["unmeasured"]:
+        lines.append("")
+        lines.append(f"!! NOT MEASURED ({len(result['unmeasured'])}) "
+                     "- these have not moved, they were never read:")
+        for item in result["unmeasured"]:
+            lines.append(f"   {item['country']} {item['term']}: {item['reason']}")
+    return "\n".join(lines)
+
+
 # ── Backfill ─────────────────────────────────────────────────────────────────
 
 def backfill_records(root=REPO_ROOT):
@@ -349,6 +618,28 @@ def _cmd_captures(args):
     return 0
 
 
+def _cmd_diff(args):
+    records = read(args.csv)
+    if not records:
+        print(f"No series at {args.csv}", file=sys.stderr)
+        return 1
+    stores = [args.store] if args.store else list(STORES)
+    for i, store in enumerate(stores):
+        try:
+            result = diff(records, store, against=args.against, noise=args.noise)
+        except ValueError as exc:
+            # A mistyped --against is a typo, not a stack trace.
+            print(str(exc), file=sys.stderr)
+            return 1
+        if result is None:
+            print(f"{store}: no captures", file=sys.stderr)
+            continue
+        if i:
+            print()
+        print(render_diff(result, noise=args.noise))
+    return 0
+
+
 def _cmd_backfill(args):
     pending = backfill(args.csv, write=args.write)
     if not pending:
@@ -383,11 +674,21 @@ def main(argv=None):
                         help="add the three pre-series 2026-08-13 captures")
     bf.add_argument("--write", action="store_true", help="actually append (default: dry run)")
 
+    df = sub.add_parser("diff", parents=[common],
+                        help="compare the two most recent captures, per store")
+    df.add_argument("--store", choices=STORES, help="one store (default: both)")
+    df.add_argument("--against", help="compare against this captured_at instead "
+                                      "of the second-newest")
+    df.add_argument("--noise", type=int, default=NOISE,
+                    help=f"positions of drift to treat as flat (default {NOISE})")
+
     args = ap.parse_args(argv)
     if args.cmd == "captures":
         return _cmd_captures(args)
     if args.cmd == "backfill":
         return _cmd_backfill(args)
+    if args.cmd == "diff":
+        return _cmd_diff(args)
     ap.print_help()
     return 2
 
