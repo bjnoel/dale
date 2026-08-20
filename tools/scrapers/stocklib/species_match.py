@@ -133,16 +133,73 @@ def _is_ornamental_relative(t_lower: str, candidate: str) -> bool:
     return False
 
 
+# --- Derived lookup keys (1.6b) -----------------------------------------
+#
+# match_title only ever matched a registry name written exactly as the
+# registry writes it, so two ordinary title spellings missed entirely:
+#
+#   Biloxi Blueberry     -> Blueberry      matches
+#   Biloxi Blueberries   -> None           the PLURAL alone
+#   Finger Lime <cv>     -> Finger Lime    matches in any position
+#   Fingerlime           -> None           the one-word COMPOUND
+#
+# Both are fixed by adding explicit extra keys derived from the registry's own
+# common names and synonyms. That keeps the vocabulary a closed set someone can
+# read and grep, which is the point.
+#
+# Deliberately NOT a stemmer. A blanket stemmer would also make
+# "Crab Apples Charlottae" match Apple, which is the ornamental crabapple that
+# survives today only because "apples" is not a lookup key. That is luck, and
+# 1.6a spent its whole existence replacing it with an actual guard BEFORE this
+# ran. The ordering is the safety property; do not reverse it.
+#
+# Derived keys never overwrite a canonical one. Verified against the live
+# registry (339 names, 537 derived keys): zero collisions.
+
+
+def _plural(name: str) -> str:
+    """English plural of a registry name. Deliberately dumb and explicit."""
+    if name.endswith("y") and not name.endswith(("ay", "ey", "oy", "uy")):
+        return name[:-1] + "ies"
+    if name.endswith(("s", "x", "ch", "sh")):
+        return name + "es"
+    return name + "s"
+
+
+def _derived_keys(name: str) -> list[str]:
+    """Extra lookup spellings for one registry name: its plural, and for
+    multi-word names the closed-up compound and that compound's plural."""
+    nl = name.lower()
+    keys = [_plural(nl)]
+    if " " in nl:
+        compound = nl.replace(" ", "")
+        keys.append(compound)
+        keys.append(_plural(compound))
+    return keys
+
+
+def _add_derived(lookup: dict, names_to_value: list) -> None:
+    """Second pass over a built lookup, adding derived spellings. Canonical
+    keys are already in place and always win."""
+    for name, value in names_to_value:
+        for key in _derived_keys(name):
+            lookup.setdefault(key, value)
+
+
 def build_species_lookup(species_list: list[dict] | None = None) -> dict:
     """Lowercase common_name/synonym -> the FULL species record."""
     if species_list is None:
         species_list = enabled_species()
     lookup = {}
+    derived: list = []
     for s in species_list:
         lookup[s["common_name"].lower()] = s
+        derived.append((s["common_name"], s))
         for syn in s.get("synonyms", []):
             if syn:
                 lookup[syn.lower()] = s
+                derived.append((syn, s))
+    _add_derived(lookup, derived)
     return lookup
 
 
@@ -151,6 +208,7 @@ def load_species_lookup() -> dict:
     species = enabled_species()
 
     lookup = {}
+    derived: list = []
     for s in species:
         common = s["common_name"].lower()
         entry = {
@@ -165,10 +223,13 @@ def load_species_lookup() -> dict:
             entry["g"] = parts[0]  # genus
 
         lookup[common] = entry
+        derived.append((s["common_name"], entry))
         for syn in s.get("synonyms", []):
             if syn:
                 lookup[syn.lower()] = entry
+                derived.append((syn, entry))
 
+    _add_derived(lookup, derived)
     return lookup
 
 

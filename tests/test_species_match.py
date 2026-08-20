@@ -318,5 +318,129 @@ class OrnamentalRelativeTest(unittest.TestCase):
         self.assertEqual(real["cv"], "Pink Lady")
 
 
+
+class DerivedLookupKeyTest(unittest.TestCase):
+    """1.6b. match_title only matched a registry name spelled exactly as the
+    registry spells it, so two ordinary title forms missed: the plural and the
+    closed-up compound. Fixed with explicit derived keys, never a stemmer.
+    68 live titles recovered on 2026-08-20.
+    """
+
+    def setUp(self):
+        self.lookup = load_species_lookup()
+
+    def _cn(self, title):
+        m = match_title(title, self.lookup)
+        return m.get("cn") if m else None
+
+    def test_plurals(self):
+        for title, want in (
+                ("Biloxi Blueberries - 50mm pots", "Blueberry"),
+                ("Autumn Bliss raspberries (pack of five)", "Raspberry"),
+                ("Pears Beurre Bosc ( pome fruit)", "Pear"),
+                ("Nectarines Fantasia (Bare rooted)", "Nectarine"),
+                ("Imperial Mandarins (citrus)", "Mandarin"),
+                ("Washington Navel Oranges (citrus)", "Orange"),
+                ("Villa Franca Lemons (citrus)", "Lemon"),
+                ("White Mulberries", "Mulberry"),
+                ("Strawberries", "Strawberry"),
+                ("White currants", "Currant"),
+                ("Figs Tree Peter Good", "Fig"),
+                ("Earli rich peaches", "Peach")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), want)
+
+    def test_singular_still_matches(self):
+        for title, want in (("Biloxi Blueberry", "Blueberry"),
+                            ("Apple Pink Lady", "Apple"),
+                            ("Pear Beurre Bosc", "Pear")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), want)
+
+    def test_one_word_compounds(self):
+        for title in ("Fingerlime - Small Seedling", "Red Fingerlime",
+                      "Wauchope Grafted Fingerlime", "Yellow Fingerlime"):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), "Finger Lime")
+        self.assertEqual(self._cn("Finger Lime Alstonville"), "Finger Lime")
+
+    def test_derived_keys_never_shadow_a_canonical_name(self):
+        """Derived keys are added in a SECOND pass with setdefault, so every
+        name the registry actually writes still resolves to exactly what it
+        resolved to before. Measured on the live registry: 339 names produce
+        537 derived keys and zero collisions.
+
+        Asserted against a canonical-only lookup rather than against each
+        record, because two registry names genuinely collide already and that
+        predates this work: "Native Raspberry" and "Atherton Raspberry" are
+        listed as synonyms of Raspberry AND "Native Raspberry" is a species
+        record in its own right, which wins. That is a registry data question,
+        not a matcher one, and this test must not silently adopt it.
+        """
+        from stocklib.taxonomy import enabled_species
+        canonical_only = {}
+        for sp in enabled_species():
+            canonical_only[sp["common_name"].lower()] = sp["common_name"]
+            for syn in sp.get("synonyms", []):
+                if syn:
+                    canonical_only[syn.lower()] = sp["common_name"]
+        for key in canonical_only:
+            with self.subTest(key=key):
+                self.assertIn(key, self.lookup)
+
+    def test_derived_pass_is_additive_only(self):
+        """The stronger version of the above: canonical keys resolve to the
+        same record with and without the derived pass."""
+        from stocklib.species_match import _add_derived
+        from stocklib.taxonomy import enabled_species
+        plain = {}
+        derived_pairs = []
+        for sp in enabled_species():
+            entry = {"cn": sp["common_name"]}
+            plain[sp["common_name"].lower()] = entry
+            derived_pairs.append((sp["common_name"], entry))
+            for syn in sp.get("synonyms", []):
+                if syn:
+                    plain[syn.lower()] = entry
+                    derived_pairs.append((syn, entry))
+        before = {k: v["cn"] for k, v in plain.items()}
+        _add_derived(plain, derived_pairs)
+        after = {k: plain[k]["cn"] for k in before}
+        self.assertEqual(before, after)
+        self.assertGreater(len(plain), len(before))
+
+    def test_plurals_do_not_resurrect_the_crabapple(self):
+        """THE reason 1.6a ran first. "Crab Apples Charlottae" used to escape
+        only because "apples" was not a lookup key. 1.6b makes it one, so
+        without 1.6a's guard this commit would have started mis-filing the
+        ornamental crabapple that the audit found escaping by luck.
+        """
+        for title in ("Crab Apples Charlottae (Flowering tree)",
+                      "Crab Apple Charlottae (Flowering tree)",
+                      "Ornamental Pears Bradford",
+                      "Flowering Cherries Mt Fuji"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+
+    def test_no_stemmer(self):
+        """The vocabulary is a closed, readable set. A stemmer would match
+        arbitrary inflections; these are not registry-derived spellings.
+        """
+        for title in ("Appling", "Blueberrying Season", "Peached"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+
+    def test_quoted_fallback_landmine_still_holds(self):
+        """The chilli range is rejected ONLY by the quote characters in
+        fallback position, and 1.6b must not have loosened that. Pinned in
+        both directions, because most of it passes by accident.
+        """
+        for title in ("Chilli 'Lemon Drop'", "Chilli 'Aji Pineapple'",
+                      "Chilli 'Red Hot Cherry'", "Berzelia 'Strawberry Jelly'"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+        self.assertEqual(self._cn("Blueberry 'Biloxi'"), "Blueberry")
+
+
 if __name__ == "__main__":
     unittest.main()

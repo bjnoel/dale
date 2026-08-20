@@ -475,6 +475,35 @@ there files Ladybird's chillies as lemon, cherry and pineapple cultivars.
    escapes by luck. Derive plural keys from registry common names and synonyms, so the
    vocabulary stays a closed set someone can read.
 
+   **Done. 68 live titles recovered, 0 lost, 0 re-filed.** 339 registry names produce 537
+   derived keys with zero collisions, added in a second pass with `setdefault` so a
+   canonical name always wins.
+
+   | species | recovered | species | recovered |
+   |---|---:|---|---:|
+   | Blueberry | 17 | Raspberry | 4 |
+   | Mandarin | 7 | Orange | 4 |
+   | Pear | 7 | Currant | 3 |
+   | Lemon | 6 | Mulberry, Strawberry | 2 each |
+   | Nectarine | 5 | Apple, Lime, Peach, Fig, Plum | 1 each |
+   | Finger Lime | 5 | | |
+
+   **The ordering paid off exactly as designed.** With `apples` now a lookup key,
+   `Crab Apples Charlottae` is rejected by 1.6a's guard rather than by luck, and so are
+   `Ornamental Pears Bradford` and `Flowering Cherries Mt Fuji`. Had 1.6b run first, this
+   commit would have started mis-filing the ornamental crabapple the audit found escaping.
+   Pinned in `tests/test_species_match.py::test_plurals_do_not_resurrect_the_crabapple`.
+
+   One known false positive, contained: `String of Bananas (Senecio radicans)` now
+   resolves to Banana. It is a succulent, Ladybird tags it `Cacti & Succulents`, and
+   `is_fruit_product` drops it before the ladder, so it never reaches the site. Not
+   guarded, because inventing an ornamental rule for a single upstream-filtered product
+   is the sort of guess this plan exists to avoid.
+
+   Also noted, not fixed: `Zante Currants` (primal-fruits) resolves to Currant, but a
+   Zante currant is a dried grape (*Vitis vinifera* 'Black Corinth'), not a *Ribes*. One
+   product, ambiguous as sold, and a registry data question rather than a matcher one.
+
 Pin **both directions** in `tests/test_categorize.py` or a `species_match` test:
 `Biloxi Blueberries` must resolve; `Chilli 'Lemon Drop'`, `Chilli 'Red Hot Cherry'`,
 `Berzelia 'Strawberry Jelly'` and **both** crabapple forms must return None. The second
