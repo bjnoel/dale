@@ -266,9 +266,21 @@ exec bit.)
 wrapper's commit-and-push, alongside the three baselines that are already committed here. The repo
 is public (`bjnoel/dale`), so the admin worker can fetch it at
 `https://raw.githubusercontent.com/bjnoel/dale/main/data/treesmith-rank-history.csv` with no
-credential and no new endpoint. Stable header, append-only, one row per term per capture — the
-worker's `panels/googleplay.js` already parses CSV, so this is the shape it expects. No worker
-changes in this task.
+credential and no new endpoint. Stable header, append-only, one row per term per capture. No
+worker changes in this task.
+
+**Verified 2026-08-20.** The repo is public and raw.githubusercontent serves it unauthenticated:
+`data/nursery-contacts.json` returns HTTP 200 / 31,598 bytes with no credential. The series URL
+itself is a 404 until this branch merges, which is the expected before-state and the only part
+that cannot be checked from the branch.
+
+**One thing the worker must not copy from itself.** `panels/googleplay.js` parses its Play install
+CSVs with a naive `line.split(',')`, and its own comment says that is fine *for those files*. It is
+not fine for this one. Apple's top3 identifier is the app name, and app names contain commas:
+`Journey - Diary, Journal` is in our real iOS top 3 today, so the file genuinely carries
+RFC-quoted cells. A naive split shifts every column after that name and reads a competitor's name
+as a rank. Whatever renders this series needs a real CSV parser. Pinned by
+`tests/test_rank_history.py::TestAppendOnly::test_a_comma_inside_an_app_name_survives`.
 
 ## Files
 

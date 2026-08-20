@@ -243,6 +243,26 @@ class TestAppendOnly(unittest.TestCase):
             after = Path(path).read_text(encoding="utf-8")
         self.assertTrue(after.startswith(first))
 
+    def test_a_comma_inside_an_app_name_survives(self):
+        # "Journey - Diary, Journal" is really in our iOS top 3, so the file
+        # genuinely contains quoted cells. Anything reading this artefact needs
+        # a real CSV parser; a naive line.split(",") shifts every column after
+        # the name and silently reads a competitor as a rank.
+        records = rh.to_records(
+            "appstore",
+            {"AU": [apple_row(top3=[{"name": "Journey - Diary, Journal",
+                                     "ratings": 12},
+                                    {"name": 'He said "hi"', "ratings": 0}])]},
+            STAMP,
+        )
+        with TempCSV() as path:
+            rh.append(path, records)
+            raw = Path(path).read_text(encoding="utf-8")
+            back = rh.read(path)
+        self.assertEqual(back[0]["top3_1"], "Journey - Diary, Journal")
+        self.assertEqual(back[0]["top3_2"], 'He said "hi"')
+        self.assertIn('"Journey - Diary, Journal"', raw)
+
     def test_missing_series_reads_as_empty_not_an_error(self):
         with TempCSV() as path:
             self.assertEqual(rh.read(path), [])
