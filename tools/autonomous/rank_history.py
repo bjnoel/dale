@@ -350,6 +350,26 @@ VACATED = "vacated"
 DISPLACED = "displaced"
 TURNED_OVER = "turned over"
 
+# The fruit-tree apps we actually compete with (DEC-237), matched as lowercase
+# fragments against the store identifier.
+#
+# A list of KNOWN rivals rather than a computed relevance score, because no
+# keyword rule separates the two cases. Apple fuzzy-matches graft to craft, so
+# the apps backfilling our vacated terms are reading trackers, peptide trackers
+# and Minecraft clones -- and "Fruit Tree Tracker - Grove" has no "graft" in its
+# name either, so scoring newcomers on overlap with the query would file the one
+# real rival alongside the noise.
+#
+# Being off this list never hides an arrival: a newcomer we do not track is
+# still named in the output, as evidence rather than as a cause.
+COMPETITORS = (
+    "fruit tree tracker",   # Fruit Tree Tracker - Grove, launched 2026-06-28
+    "fruitforest",          # FruitForest: Orchard Mapping
+    "trees diary",
+    "rootstock: seed",      # Rootstock: Seed & Plant Log, launched 2026-07-17
+    "seed & plant log",
+)
+
 
 def is_ours(identifier):
     """Whether a top3 identifier is us.
@@ -363,31 +383,48 @@ def is_ours(identifier):
     return ident == OUR_PACKAGE or ident.startswith("treesmith")
 
 
+def is_competitor(identifier):
+    """Whether an identifier is a fruit-tree app we track (DEC-237).
+
+    Never us: our own name is now "TreeSmith: Fruit Tree Tracker", which carries
+    the very fragment that identifies Grove.
+    """
+    if is_ours(identifier):
+        return False
+    ident = (identifier or "").strip().lower()
+    return any(fragment in ident for fragment in COMPETITORS)
+
+
 def _top3(rec):
     return [v for v in (rec["top3_1"], rec["top3_2"], rec["top3_3"]) if v]
 
 
 def attribute(prev, curr):
-    """Why we lost ground: did somebody take the slot, or did we leave it?
+    """Why we lost ground: did a rival take the slot, or did we leave it?
 
     This is what the top3 columns exist for, and the two cases are different
-    business facts. iOS AU `graft tracker` fell 1 -> 11 and the two apps that
-    moved up behind us are a peptide tracker and a blood-sugar tracker; nobody
-    beat us, we simply stopped matching the term. A real competitor arriving
-    (Grove, DEC-237) would be a different finding entirely.
+    business facts.
 
-    Read positionally rather than as a set difference. When we drop out of a
-    3-slot window, whatever was at rank 4 backfills slot 3, so a newcomer always
-    appears -- a bare `curr_top3 - prev_top3` would call every vacancy a
-    displacement. What separates the two is WHERE the newcomer landed:
+    Read on WHO arrived, not on how the positions shuffled. When we drop out of
+    a 3-slot window whatever sat at rank 4 backfills slot 3, so a newcomer
+    always appears and a positional rule calls every vacancy a displacement.
+    Real data: iOS AU `graft tracker` fell 1 -> 11 and the arrivals were
+    "StoryGraph: Reading Tracker" and "Peptide Tracker Log & Reminder". Nobody
+    beat us there; we stopped matching the term and generic tracker apps filled
+    the hole. Saying a competitor took it would be false.
 
-        vacated      every newcomer sits below every survivor: the field shifted
-                     up into the slot we left and the tail backfilled
-        displaced    a newcomer landed above a survivor: it jumped the queue
+    On the same capture AU `fruit tree care` fell 81 -> 125 and the arrival was
+    "Fruit Tree Tracker - Grove". That IS a rival, and it is a different finding
+    that must not render identically.
+
+        vacated      survivors remain and no tracked rival arrived
+        displaced    a tracked rival arrived
         turned over  no survivor at all: the result set re-indexed wholesale and
                      neither reading is about us
 
-    Returns `(kind, names)`.
+    Returns `(kind, names)`. On `vacated` the names are the untracked arrivals,
+    reported as evidence rather than as a cause, so a rival we have not heard of
+    yet is never hidden -- only labelled differently.
     """
     before = [a for a in _top3(prev) if not is_ours(a)]
     after = [a for a in _top3(curr) if not is_ours(a)]
@@ -397,14 +434,11 @@ def attribute(prev, curr):
 
     if not survivors:
         return TURNED_OVER, newcomers
-    if not newcomers:
-        return VACATED, []
 
-    last_survivor = max(after.index(a) for a in survivors)
-    jumpers = [a for a in newcomers if after.index(a) < last_survivor]
-    if jumpers:
-        return DISPLACED, jumpers
-    return VACATED, []
+    rivals = [a for a in newcomers if is_competitor(a)]
+    if rivals:
+        return DISPLACED, rivals
+    return VACATED, newcomers
 
 
 def _movement(prev, curr, kind):
@@ -435,6 +469,13 @@ def _movement(prev, curr, kind):
     if kind == "dropped" or (item["delta"] or 0) > 0:
         item["attribution"], item["attributed_to"] = attribute(prev, curr)
     return item
+
+
+def _significance(item):
+    """How much a move matters: the ratio between the two positions."""
+    lo = min(item["prev_rank"], item["curr_rank"])
+    hi = max(item["prev_rank"], item["curr_rank"])
+    return hi / lo if lo else 0
 
 
 def diff_captures(prev_records, curr_records, noise=NOISE):
@@ -505,8 +546,18 @@ def diff_captures(prev_records, curr_records, noise=NOISE):
             # the term count reconcile and nothing goes missing in silence.
             out["still_absent_n"] += 1
 
-    # Biggest first in each bucket: the top of a list is what gets read.
-    out["moved"].sort(key=lambda i: (-abs(i["delta"]), i["country"], i["term"]))
+    # Biggest first in each bucket: the top of a list is what gets read, and the
+    # digest shows only the first five.
+    #
+    # "Biggest" for a move is the RATIO, not the raw number of places. Absolute
+    # delta sorts a 55-place shuffle at rank 117 above losing the #1 slot, and
+    # on the first real capture it did exactly that: `graft tracker` 1 -> 11 and
+    # `grafting tracker` 1 -> 12 both fell below the fold while `harvest tracker`
+    # 117 -> 62 made the top five. A rank is a position in a list people scan
+    # from the top, so tenth place is ten times worse than first and 62nd is not
+    # meaningfully better than 117th.
+    out["moved"].sort(key=lambda i: (-_significance(i), -abs(i["delta"]),
+                                     i["country"], i["term"]))
     out["entered"].sort(key=lambda i: (i["curr_rank"], i["country"], i["term"]))
     out["dropped"].sort(key=lambda i: (i["prev_rank"], i["country"], i["term"]))
     out["unmeasured"].sort(key=lambda i: (i["country"], i["term"]))
@@ -545,34 +596,37 @@ def diff(records, store, against=None, noise=NOISE):
     return result
 
 
+def _note(item):
+    """The attribution clause, naming who arrived either way."""
+    kind, names = item["attribution"], item["attributed_to"]
+    if kind == DISPLACED:
+        return f"  displaced by {', '.join(names)}"
+    if kind == TURNED_OVER:
+        return "  result set turned over" + (
+            f" (now {', '.join(names)})" if names else "")
+    if kind == VACATED:
+        if names:
+            # Named, not blamed: a rival we do not track yet must still be
+            # visible to whoever reads this.
+            return f"  vacated, no tracked rival took it (arrivals: {', '.join(names)})"
+        return "  vacated, nobody took the slot"
+    return ""
+
+
 def describe(item):
     """One human-readable line for a movement. Shared by the CLI and the digest."""
     where = f"{item['country']} {item['term']}"
     if item["curr_rank"] is None:
         proven = "absent" if item["absence_proven"] else "outside a capped window"
         tail = "" if item["absence_proven"] else ", absence not proven"
-        note = ""
-        if item["attribution"] == VACATED:
-            note = "  vacated, nobody took the slot"
-        elif item["attribution"] == DISPLACED:
-            note = f"  displaced by {', '.join(item['attributed_to'])}"
-        elif item["attribution"] == TURNED_OVER:
-            note = "  result set turned over"
-        return f"{where}: {item['prev_rank']} -> {proven}{tail}{note}"
+        return f"{where}: {item['prev_rank']} -> {proven}{tail}{_note(item)}"
     if item["prev_rank"] is None:
         prior = ("absent" if item["absence_proven"]
                  else "previously outside a capped window, absence was never proven")
         return f"{where}: entered at {item['curr_rank']} from {prior}"
     direction = "down" if item["delta"] > 0 else "up"
-    note = ""
-    if item["attribution"] == DISPLACED:
-        note = f"  displaced by {', '.join(item['attributed_to'])}"
-    elif item["attribution"] == VACATED:
-        note = "  vacated, nobody took the slot"
-    elif item["attribution"] == TURNED_OVER:
-        note = "  result set turned over"
     return (f"{where}: {item['prev_rank']} -> {item['curr_rank']} "
-            f"({direction} {abs(item['delta'])}){note}")
+            f"({direction} {abs(item['delta'])}){_note(item)}")
 
 
 def render_diff(result, noise=NOISE):

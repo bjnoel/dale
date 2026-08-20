@@ -12575,3 +12575,91 @@ neither species is in `fruit_species.json`, so `_find_species_anywhere` matches
 the leading word. That is a different mechanism and a wider class: any compound
 common name whose first word is a tracked species. A deny entry for each is safe
 and is Benedict's call.
+
+---
+
+## DEC-306 — 2026-08-20 — A rank reading nobody diffs is not a measurement
+
+**Context:** DAL-257 asked for a hand-run re-measure of 36 store keyword terms four
+weeks after the rename. Both rank readers already existed and both worked. Nothing
+scheduled them, nothing accumulated their output, and nothing pushed a result at
+Benedict. Every comparison to date was a person running two scripts and diffing two
+JSON files by eye, and the 2026-08-13 pre-rename baseline nearly went to waste
+because there was no series for it to be the start of.
+
+**Decision:** build the instrument instead of taking the reading. An append-only CSV
+(`data/treesmith-rank-history.csv`), a diff, a weekly capture wrapper, and a section
+in the Monday TreeSmith digest. The re-measure DAL-257 asked for then happens every
+week without anyone remembering to do it.
+
+**A CSV cell cannot be absent, only empty.** Both readers enforce DEC-249
+structurally: an errored row carries `error` and has no `rank` key at all, so a
+failed lookup can never be read as "we do not rank for this". Flattening to a file
+forces the states to be named, so `status` carries four values: `ranked`, `absent`
+(proven, the store ran out of results before the cap), `absent_window_capped`
+(DEC-255, Play stopped at 30 and we may be at 31), and `error` (nothing was
+measured, which is not a zero). Every one of Play's 10 day-0 entries came from a
+capped window, so collapsing the middle two would have overclaimed on all ten.
+
+**`captured_at` is a full timestamp, not a date.** The Play baseline and the Play
+day-0 capture are the same store, the same date and the same 36 terms, 59 minutes
+apart. A date-only key would have let day 0 overwrite the baseline and destroy the
+most informative pair in the dataset.
+
+**The plan's attribution rule was wrong and the live capture proved it.** The plan
+said a drop with no newcomers in the top 3 is "vacated" and one with a newcomer is
+"displaced". That rule cannot fire: dropping out of a 3-slot window always lets
+whatever sat at rank 4 backfill slot 3, so a newcomer always appears and every
+vacancy would read as a displacement. A positional variant (did the newcomer land
+above a survivor?) fails too. The real iOS AU `graft tracker` row:
+
+```
+before  TreeSmith: Plant Graft Tracker | Peptide Tracker - PeptideKit | Blood Sugar Tracker-AI Health
+after   StoryGraph: Reading Tracker    | Peptide Tracker - PeptideKit | Peptide Tracker Log & Reminder
+```
+
+What separates the cases is **who arrived**, not how the positions shuffled, and it
+cannot be computed from keyword overlap either: "Fruit Tree Tracker - Grove" carries
+no "graft" and is the one genuine rival in the set. So `attribute()` checks arrivals
+against the DEC-237 rival list. An untracked arrival is still named in the output as
+evidence rather than as a cause, so a rival we have not heard of yet is labelled
+differently but never hidden.
+
+The distinction earns its keep on the first capture. AU `graft tracker` fell 1 to 11
+with a reading tracker and a peptide tracker moving in (Apple fuzzy-matches graft to
+craft). AU `fruit tree care` fell 81 to 125 and the arrival was Grove. Those are
+different business facts.
+
+**What the first diff found, and what it does not settle.** All three of DAL-257's
+recorded predictions are met: Play AU `fruit tree tracker` 26 to 1, Play US
+absent-in-30 to 1, Apple AU `fruit tree tracker` 7 to 2. iOS AU also traded both
+graft crowns (1 to 11 and 1 to 12) for `fruit tree journal` 129 to 13 and `fruit
+tree` absent to 36.
+
+But iOS US **kept** `graft tracker` at #1, and both storefronts now display the same
+name, because the submission carried the en-US localisation deletion alongside the
+rename. Before it, the US name contained no "Graft" and still held #1. So the name
+is not sufficient on its own, and DEC-247's conclusion is incomplete rather than
+wrong. It is also probably too early to say: Play's own timeline shows `graft
+tracker` still at #1 an hour after its rename and gone seven days later, and the iOS
+capture is one day old. **The loss arrives gradually, and iOS has not finished
+paying.** Not scoring the trade yet is the whole reason for building a series.
+
+**A stopped capture must not look like a quiet week.** Both produce "nothing moved",
+and we have shipped that failure before. The digest reports the age of the newest
+capture, renders "NO CAPTURE" in red past 10 days, and aggregates the **worst** store
+rather than the best, so a live Play cannot mask a dead iOS.
+
+**`infrastructure/crontab.txt` was not touched.** It is a recording captured
+server-to-repo on Mondays at 04:20 UTC. Editing it changes nothing on the box and
+would fake an install, so the cron line is handed to Benedict in the wrapper's header
+and the Monday snapshot will record it back once he has installed it.
+
+**One thing the publish step found.** The admin worker's `panels/googleplay.js`
+parses its own CSVs with a naive `line.split(',')`. That is not safe for this file:
+Apple's top3 identifier is the app name, and "Journey - Diary, Journal" is in our
+real iOS top 3, so the series carries RFC-quoted cells. Whatever renders it needs a
+real CSV parser. Pinned by a test rather than fixed by mangling the data.
+
+**Verification:** 360 rows across 4 captures; backfill re-run is a no-op; full suite
+3,147 passing, 1 skipped. Committed locally, nothing pushed and nothing deployed.

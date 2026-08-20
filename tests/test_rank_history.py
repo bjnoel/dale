@@ -360,12 +360,14 @@ class TestBackfill(unittest.TestCase):
 
 
 class TestAttribution(unittest.TestCase):
-    """Whether somebody took the slot, or we simply left it.
+    """Whether a rival took the slot, or we simply left it.
 
     Two different business facts, and the whole reason the top3 columns exist.
-    Built from the real iOS AU `graft tracker` baseline: the two apps sitting
-    behind us there are a peptide tracker and a blood-sugar tracker, so our fall
-    from 1 to 11 is not a competitor beating us.
+    Built from the real iOS AU `graft tracker` capture: we fell 1 -> 11 and the
+    apps that arrived were a reading tracker and a peptide tracker. Nobody beat
+    us; we stopped matching the term and Apple's graft/craft fuzzy match filled
+    the hole. On the same capture AU `fruit tree care` fell 81 -> 125 and the
+    arrival was Fruit Tree Tracker - Grove, which is a rival (DEC-237).
     """
 
     US_AND_TWO = ["TreeSmith: Plant Graft Tracker",
@@ -385,26 +387,62 @@ class TestAttribution(unittest.TestCase):
         rec.update(kw)
         return rec
 
-    def test_backfill_from_below_is_vacated_not_displaced(self):
-        # We drop out of a 3-slot window, the two behind us shift up, and rank 4
-        # backfills slot 3. A newcomer ALWAYS appears here, so a bare set
-        # difference would call every vacancy a displacement.
+    def test_the_real_graft_tracker_fall_is_vacated_not_displaced(self):
+        # Verbatim from the 2026-08-20 capture. A positional rule calls this a
+        # displacement, because dropping out of a 3-slot window always lets
+        # something backfill slot 3.
+        prev = self._rec(self.US_AND_TWO)
+        curr = self._rec(["StoryGraph: Reading Tracker",
+                          "Peptide Tracker - PeptideKit",
+                          "Peptide Tracker Log & Reminder"])
+        kind, names = rh.attribute(prev, curr)
+        self.assertEqual(kind, rh.VACATED)
+        # Named, not blamed: an arrival is still evidence.
+        self.assertIn("StoryGraph: Reading Tracker", names)
+
+    def test_a_tracked_rival_arriving_is_a_displacement(self):
         prev = self._rec(self.US_AND_TWO)
         curr = self._rec(["Peptide Tracker - PeptideKit",
                           "Blood Sugar Tracker-AI Health",
-                          "Some App From Rank Four"])
-        kind, names = rh.attribute(prev, curr)
-        self.assertEqual(kind, rh.VACATED)
-        self.assertEqual(names, [])
-
-    def test_a_newcomer_above_a_survivor_is_a_displacement(self):
-        prev = self._rec(self.US_AND_TWO)
-        curr = self._rec(["Fruit Tree Tracker - Grove",
-                          "Peptide Tracker - PeptideKit",
-                          "Blood Sugar Tracker-AI Health"])
+                          "Fruit Tree Tracker - Grove"])
         kind, names = rh.attribute(prev, curr)
         self.assertEqual(kind, rh.DISPLACED)
         self.assertEqual(names, ["Fruit Tree Tracker - Grove"])
+
+    def test_the_two_readings_never_render_alike(self):
+        prev = self._rec(self.US_AND_TWO)
+        backfill = self._rec(["Peptide Tracker - PeptideKit",
+                              "Blood Sugar Tracker-AI Health",
+                              "StoryGraph: Reading Tracker"])
+        rival = self._rec(["Peptide Tracker - PeptideKit",
+                           "Blood Sugar Tracker-AI Health",
+                           "Fruit Tree Tracker - Grove"])
+        item = {"country": "AU", "term": "graft tracker", "prev_rank": 1,
+                "curr_rank": 11, "delta": 10, "absence_proven": None}
+        a = dict(item); a["attribution"], a["attributed_to"] = rh.attribute(prev, backfill)
+        b = dict(item); b["attribution"], b["attributed_to"] = rh.attribute(prev, rival)
+        self.assertNotEqual(rh.describe(a), rh.describe(b))
+        self.assertIn("vacated", rh.describe(a))
+        self.assertIn("displaced by Fruit Tree Tracker - Grove", rh.describe(b))
+
+    def test_an_untracked_arrival_is_still_named(self):
+        # The list of rivals will go stale. It must never hide who showed up.
+        prev = self._rec(self.US_AND_TWO)
+        curr = self._rec(["Peptide Tracker - PeptideKit",
+                          "Blood Sugar Tracker-AI Health",
+                          "Some Brand New Orchard App"])
+        item = {"country": "AU", "term": "graft tracker", "prev_rank": 1,
+                "curr_rank": 11, "delta": 10, "absence_proven": None}
+        item["attribution"], item["attributed_to"] = rh.attribute(prev, curr)
+        self.assertIn("Some Brand New Orchard App", rh.describe(item))
+
+    def test_nothing_arriving_at_all_says_nobody_took_the_slot(self):
+        prev = self._rec(self.US_AND_TWO)
+        curr = self._rec(["Peptide Tracker - PeptideKit",
+                          "Blood Sugar Tracker-AI Health"])
+        kind, names = rh.attribute(prev, curr)
+        self.assertEqual(kind, rh.VACATED)
+        self.assertEqual(names, [])
 
     def test_no_survivor_is_a_turned_over_result_set(self):
         prev = self._rec(self.US_AND_TWO)
@@ -413,18 +451,27 @@ class TestAttribution(unittest.TestCase):
         self.assertEqual(kind, rh.TURNED_OVER)
 
     def test_our_own_rename_is_not_a_competitor(self):
-        # Apple's top3 identifier is the app NAME, and the name is the thing
-        # that just changed. Without this, our old name leaving and our new name
-        # arriving reads as us displacing ourselves.
+        # Apple's top3 identifier is the app NAME, the name is the thing that
+        # just changed, and our new name literally contains the fragment that
+        # identifies Grove. Without both guards we displace ourselves.
+        self.assertFalse(rh.is_competitor("TreeSmith: Fruit Tree Tracker"))
         prev = self._rec(self.US_AND_TWO)
         curr = self._rec(["TreeSmith: Fruit Tree Tracker",
                           "Peptide Tracker - PeptideKit",
                           "Blood Sugar Tracker-AI Health"])
         kind, names = rh.attribute(prev, curr)
         self.assertEqual(kind, rh.VACATED)
-        self.assertNotIn("TreeSmith: Fruit Tree Tracker", names)
+        self.assertEqual(names, [])
 
-    def test_our_play_package_is_recognised_too(self):
+    def test_the_tracked_rivals_are_the_ones_dec_237_names(self):
+        for rival in ("Fruit Tree Tracker - Grove", "FruitForest: Orchard Mapping",
+                      "Trees Diary", "Rootstock: Seed & Plant Log"):
+            self.assertTrue(rh.is_competitor(rival), rival)
+        for bystander in ("StoryGraph: Reading Tracker", "Peptide Tracker - PeptideKit",
+                          "Kawaii World - Craft and Build", "Blossom - Plant Care Guide"):
+            self.assertFalse(rh.is_competitor(bystander), bystander)
+
+    def test_our_play_package_is_recognised_as_us(self):
         self.assertTrue(rh.is_ours(rh.OUR_PACKAGE))
         self.assertTrue(rh.is_ours("TreeSmith: Plant Graft Tracker"))
         self.assertFalse(rh.is_ours("Fruit Tree Tracker - Grove"))
@@ -540,11 +587,24 @@ class TestDiffBuckets(unittest.TestCase):
                  + out["flat_n"] + out["still_absent_n"] + len(out["unmeasured"]))
         self.assertEqual(total, 4)
 
-    def test_biggest_movement_is_listed_first(self):
-        before = [play_row(term="fruit tree tracker", rank=1),
-                  play_row(term="orchard tracker", rank=2)]
-        after = [play_row(term="fruit tree tracker", rank=9),
-                 play_row(term="orchard tracker", rank=30)]
+    def test_losing_the_top_slot_outranks_a_bigger_shuffle_further_down(self):
+        # Both are real rows from the 2026-08-20 iOS capture. Sorting on raw
+        # places put the 55-place shuffle in the digest's top five and pushed
+        # losing the #1 slot below the fold.
+        before = [play_row(term="graft tracker", rank=1),
+                  play_row(term="harvest tracker", rank=117)]
+        after = [play_row(term="graft tracker", rank=11),
+                 play_row(term="harvest tracker", rank=62)]
+        out = self._diff(before, after)
+        self.assertEqual(out["moved"][0]["term"], "graft tracker")
+        self.assertGreater(abs(out["moved"][1]["delta"]),
+                           abs(out["moved"][0]["delta"]))
+
+    def test_equal_ratios_fall_back_to_the_bigger_move(self):
+        before = [play_row(term="graft tracker", rank=1),
+                  play_row(term="orchard tracker", rank=10)]
+        after = [play_row(term="graft tracker", rank=5),
+                 play_row(term="orchard tracker", rank=50)]
         out = self._diff(before, after)
         self.assertEqual(out["moved"][0]["term"], "orchard tracker")
 

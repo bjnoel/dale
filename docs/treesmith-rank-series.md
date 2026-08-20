@@ -58,20 +58,39 @@ top3 = ['TreeSmith: Plant Graft Tracker', 'Peptide Tracker - PeptideKit', 'Blood
 US is the same story with different neighbours: `['TreeSmith', 'StoryGraph: Reading Tracker',
 'Case Tracker for USCIS & NVC']`.
 
-The two apps behind us are a peptide tracker and a blood-sugar tracker. When we fall to 11, those
-two shift up. `newcomers = curr_top3 - prev_top3` is empty, `held` is non-empty, so the diff must
-say **vacated** — we stopped matching the term — and must *not* say a competitor beat us. This is
-the finding the whole `top3` column exists to support.
+The two apps behind us are a peptide tracker and a blood-sugar tracker. The diff must say
+**vacated** — we stopped matching the term — and must *not* say a competitor beat us. This is the
+finding the whole `top3` column exists to support.
+
+**Corrected 2026-08-20, against the live capture.** The rule written here was
+`newcomers = curr_top3 - prev_top3 is empty`, and it cannot fire. Dropping out of a 3-slot window
+always lets whatever sat at rank 4 backfill slot 3, so a newcomer always appears and every vacancy
+would read as a displacement. The real capture:
+
+```
+before: ['TreeSmith: Plant Graft Tracker', 'Peptide Tracker - PeptideKit', 'Blood Sugar Tracker-AI Health']
+after : ['StoryGraph: Reading Tracker',    'Peptide Tracker - PeptideKit', 'Peptide Tracker Log & Reminder']
+```
+
+Two arrivals, one survivor. A positional rule (is the newcomer above a survivor?) also says
+displaced. What actually separates the cases is **who arrived**, so `attribute()` checks the
+arrivals against the DEC-237 rival list. Untracked arrivals are still named in the output, as
+evidence rather than as a cause, so a rival we have not heard of yet is labelled differently but
+never hidden.
 
 ### 2. A drop where a real competitor arrives
 
-Same shape, opposite classification: if `curr_top3` were `['Fruit Tree Tracker - Grove',
-'Peptide Tracker - PeptideKit', ...]` — one newcomer, the rest holding station — the diff says
-**displaced by Fruit Tree Tracker - Grove**. Grove is a real competitor (DEC-237) and that is a
-different business fact from example 1, which is why the two must not render identically.
+Same shape, opposite classification: `curr_top3` containing `Fruit Tree Tracker - Grove` — a real
+competitor (DEC-237) — says **displaced by Fruit Tree Tracker - Grove**. That is a different
+business fact from example 1, which is why the two must not render identically.
 
-Third case, both empty: none of `prev_top3` survives. Label **result set turned over** — the term
-re-indexed wholesale and neither reading is about us.
+Note that Grove's name carries no "graft", so keyword overlap with the query cannot be the
+discriminator either. This one is not hypothetical any more: on the 2026-08-20 capture AU
+`fruit tree care` fell 81 -> 125 and Grove is the arrival.
+
+Third case, no survivors at all: none of `prev_top3` remains. Label **result set turned over** —
+the term re-indexed wholesale and neither reading is about us. Play AU `grafting tracker` is
+exactly this, having gone from rank 1 to an AirTag-detector result set in seven days.
 
 ### 3. Entry from a *proven* absence — iOS AU `fruit tree`, absent -> 36
 
@@ -196,13 +215,22 @@ Joins on `(store, country, group, term)` and classifies into four buckets, each 
 
 | bucket | rule | sort |
 |---|---|---|
-| `moved` | both `ranked`, `abs(delta) > noise` | `abs(delta)` desc |
+| `moved` | both `ranked`, `abs(delta) > noise` | position **ratio** desc, `abs(delta)` as tie-break |
 | `entered` | prev absent/capped -> now `ranked` | new rank asc |
 | `dropped` | prev `ranked` -> now absent/capped | prev rank asc |
 | `flat` | both `ranked`, `abs(delta) <= noise` | counted, not listed |
 
+**Corrected 2026-08-20:** `moved` was specified as `abs(delta)` desc, and on the first real
+capture that put `harvest tracker` 117 -> 62 in the digest's top five while `graft tracker`
+1 -> 11 and `grafting tracker` 1 -> 12 fell below the fold. A rank is a position in a list people
+scan from the top, so tenth is ten times worse than first and 62nd is not meaningfully better than
+117th. Sorted on the ratio between the two positions instead, with `abs(delta)` as the tie-break.
+
 Rows where either side is `status=error` go to a separate `unmeasured` list and are **never**
-folded into a movement — a term that failed to fetch has not moved.
+folded into a movement — a term that failed to fetch has not moved. So is a term measured in only
+one of the two captures: the join is on `(store, country, term)`, deliberately not on `group`,
+because the group is our own label in `TERMS` and regrouping a term would otherwise read as a drop
+plus an entry.
 
 `dropped` and `moved`-downward rows carry the example-1/2 attribution computed from `top3_*`:
 `vacated` (no newcomers), `displaced by <names>` (newcomers + survivors), `result set turned over`
