@@ -12877,6 +12877,18 @@ tracked; blanket-ignoring a mostly-tracked directory would hide real work.
 `shopify-upload.py` is now safe to track and probably should be, but it is paused
 Leeming work with a `~/Desktop` path in it, so that is Benedict's call.
 
+**It happened a third time before this entry was even committed, in the opposite
+direction.** While this renumber sat uncommitted in the working tree, the parallel
+session ran its own broad `add` and swept it into `c37f4fb` along with eleven other
+untracked files. No harm done, and it even carried the cleaned `shopify-upload.py`
+onto main, which is where it should be. But note what it means: my uncommitted edit
+was published under somebody else's commit message, and neither of us knew.
+
+That is the honest limit of the gate above. **It only knows about credentials.** It
+will wave through somebody else's half-finished work every time, because there is
+nothing secret about it. Staging by explicit path remains the practice; the hook is
+a backstop for the one failure mode that cannot be undone by a revert.
+
 **Verified:** full suite 3,280 passing, 1 skipped. The accident reproduced
 end-to-end in a scratch repo and the commit is refused, naming file and line and
 never echoing the value.
