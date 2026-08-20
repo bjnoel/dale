@@ -12931,3 +12931,32 @@ never echoing the value.
 **Next:** DAL-289 re-measures the 414 contested queries after 28 days.
 
 ---
+
+## DEC-309a — 2026-08-20 — Correction to DEC-309: the re-measure ticket does not exist
+
+DEC-309 closes with "**Next:** DAL-289 re-measures the 414 contested queries after 28 days."
+That ticket was never created and DAL-289 is not a real identifier. `linear_update.py create`
+refused it:
+
+    BLOCKED: backlog is full (20/15).
+
+The cap is Benedict's (2026-08-06) and has no override. Per CLAUDE.md the correct response is
+not to reword, split or wait, so no ticket was opened and none of the 20 was cancelled to make
+room. Nothing in the current backlog is the same work, so there was no ticket to say "this beats
+you" on either.
+
+**Where this actually lands:** the re-measure is due around 2026-09-17. Most of the backlog was
+created 2026-07-30, so the Monday expiry sweep clears untouched proposals from 2026-08-31, well
+before then. The slot is very likely to exist by the time the measurement is due. What is missing
+is a durable reminder, and this log entry is it: **re-run the contested-query count against the
+DEC-309 baseline (414 queries, 5,751 impressions, 1.57% combined CTR) after 2026-09-17.**
+
+**Also found, not fixed:** `build_compare_pages.py` never deletes a page it stops generating.
+`/compare/chinese-bayberry-prices.html` is live and was last written 2026-08-11, so a price
+comparison page has been serving nine-day-old prices since that species dropped below
+MIN_NURSERIES. Found by the DEC-309 iff-invariant, which holds in the golden fixture but cannot
+see stale files in production (116 species pages link, 117 compare files exist). Not fixed here:
+deleting a live URL is the page-lifecycle machinery's job (redirect or tombstone, not a delete),
+and that is a separate decision. Flagged to Benedict.
+
+---
