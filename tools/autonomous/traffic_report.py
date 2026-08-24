@@ -46,12 +46,19 @@ GSC_OAUTH_CREDENTIALS_PATH = "/opt/dale/secrets/gsc-oauth-credentials.json"
 GSC_SCOPES = ["https://www.googleapis.com/auth/webmasters.readonly"]
 
 # Sites the service account cannot see, which must go through Benedict's personal
-# OAuth token instead. Verified 2026-08-24 by listing both credentials: the
-# service account has 8 properties and treesmith.app is not one of them, while
-# the OAuth token owns it. A site in GSC_SITES but missing from here does not
-# error visibly, it returns no rows and the digest prints zero clicks as if that
-# were the measurement. tests/test_traffic_report_sites.py guards the pairing.
-GSC_OAUTH_SITES = {"sc-domain:treesmith.app"}
+# OAuth token instead. Empty since 2026-08-24: treesmith.app was the last entry
+# and Benedict granted the service account Full on the property that afternoon,
+# confirmed by both credentials returning the same 15 days / 2 clicks / 119
+# impressions. The escape hatch stays because the failure it exists for is real
+# and still visible: beestock.com.au sits at siteUnverifiedUser to this day.
+GSC_OAUTH_SITES = set()
+
+# Permission levels that can actually read search analytics. Anything else, or a
+# property missing from the credential's list entirely, 403s on the analytics
+# query. gsc_query catches every exception and returns [], and the caller turns
+# [] into zeros, so the 403 lands in the cron log while the report and the admin
+# snapshot record 0 clicks with nothing next to them saying why.
+GSC_READABLE_PERMISSIONS = {"siteOwner", "siteFullUser", "siteRestrictedUser"}
 
 
 # --- Plausible helpers ---
@@ -235,6 +242,45 @@ def gsc_query(service, site_url, start_date, end_date, dimensions,
     return rows
 
 
+def warn_on_unreadable_sites(service, sites, label):
+    """Say on stderr which properties this credential cannot actually read.
+
+    Querying a property you lack access to 403s, but gsc_query catches it and
+    returns [], which the caller records as 0 clicks. So the diagnosis ends up
+    as a wall of HttpError in the cron log while the number that gets published
+    is an ordinary-looking zero. Checked live 2026-08-24 against beestock.com.au
+    (siteUnverifiedUser) and a made-up domain: both produced 403s and both still
+    wrote a 0/0 row. This names the problem in plain words before the traffic
+    calls run, and the caller stamps the permission level onto each row so a
+    zero in the JSON is attributable without going back to the log.
+
+    Returns {site_url: permission_level} for the sites checked.
+    """
+    try:
+        entries = service.sites().list().execute().get("siteEntry", [])
+    except Exception as e:
+        print(f"GSC ({label}): site list failed, cannot check access: {e}", file=sys.stderr)
+        return {}
+
+    levels = {e.get("siteUrl"): e.get("permissionLevel") for e in entries}
+    for site_url in sites:
+        level = levels.get(site_url)
+        if level is None:
+            print(
+                f"GSC ({label}): {site_url} is not on this credential's property "
+                f"list at all. A zero from it is an access problem, not traffic.",
+                file=sys.stderr,
+            )
+        elif level not in GSC_READABLE_PERMISSIONS:
+            print(
+                f"GSC ({label}): {site_url} has permission {level}, which cannot "
+                f"read search analytics. A zero from it is an access problem, not "
+                f"traffic.",
+                file=sys.stderr,
+            )
+    return levels
+
+
 def collect_gsc_stats(sites):
     """Collect GSC stats for all sites, with period comparison for query changes."""
     try:
@@ -250,6 +296,16 @@ def collect_gsc_stats(sites):
             oauth_service = get_gsc_service(use_oauth=True)
         except Exception as e:
             print(f"GSC OAuth not configured: {e}", file=sys.stderr)
+
+    # Check access before reading anything, so an empty result is attributable.
+    sa_sites = [s for s in sites if s not in GSC_OAUTH_SITES]
+    permissions = warn_on_unreadable_sites(service, sa_sites, "service account")
+    if oauth_service:
+        permissions.update(
+            warn_on_unreadable_sites(
+                oauth_service, [s for s in sites if s in GSC_OAUTH_SITES], "oauth"
+            )
+        )
 
     now = datetime.now(timezone.utc).date()
     lag = timedelta(days=3)
@@ -269,12 +325,13 @@ def collect_gsc_stats(sites):
     results = []
     for site_url in sites:
         domain = site_url.replace("sc-domain:", "")
-        stat = {"site": domain, "gsc_site": site_url}
+        stat = {"site": domain, "gsc_site": site_url,
+                "permission": permissions.get(site_url)}
 
         # Use OAuth service for sites that need it. If OAuth is required but
         # unavailable, skip the site rather than falling back to the service
-        # account: it has no access, so it would return no rows and we would
-        # publish "0 clicks" as a measurement instead of an outage.
+        # account: it has no access, so every query would 403 into an empty list
+        # and we would publish "0 clicks" as a measurement instead of an outage.
         if site_url in GSC_OAUTH_SITES:
             if not oauth_service:
                 print(
