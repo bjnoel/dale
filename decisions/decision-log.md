@@ -13214,3 +13214,157 @@ not an observed one. `seed_from_disk` returned a plausible answer for every page
 and the wrong answer for every page, because an mtime answers "when was this
 file last written", not "how long has this page existed" — and for a nightly
 builder those two are never the same number.
+
+## DEC-314 — 2026-08-24 — treestock did not tell a buyer what they could not buy
+
+**Context:** Benedict reported four things from the live site. Three turned out to be
+the same failure wearing different clothes, and verifying them turned up a fifth he
+had not asked about. All numbers below are measured against live data on 2026-08-24
+(9,150 products in `data.js`; 117 watches / 104 watchers in `variety_watches.db`).
+
+### 1. A price of zero meant "not published", and we printed it as nothing
+
+PlantNet is the retail arm of a wholesale breeder, so 79 of its 110 fruit-tree SKUs
+are "find a stockist" and its WooCommerce API returns `price: "0"` with
+`is_in_stock: true`. `"0"` is a **string**, so `if price_raw` let it through as the
+real price $0.00; then `0.0` is falsy, so `build-dashboard.py` wrote `null` and
+`dashboard.js` rendered an empty cell. 121 of 9,150 products, 97 in stock. Rayners
+Orchard has the same shape on 38 of 399.
+
+Every other surface already printed **POA** for this (`build_nursery_pages`,
+`build_bare_root_page`, `build_rare_finds`, the alert emails). The homepage was the
+only one that printed nothing.
+
+The row also offered "Alert me if the price drops", which `changes.py` skips (falsy
+price) and `qualifying_drop()` refuses (`old_price <= 0`). An unfireable promise on
+97 live rows. Now hidden on in-stock priceless rows; out-of-stock ones keep it,
+because restock still fires for those.
+
+**Nothing was watching.** `validate_snapshot` accepts 0.0 as a non-negative price and
+`detect_scrape_anomalies` had no price rule at all. Every scraper now records how many
+products carry a usable price, and a halving day over day is an anomaly. **Honest
+limit, pinned by a test:** a delta rule would never have caught PlantNet, which has
+been mostly priceless since it was added. A birth defect has no delta. An absolute
+threshold was rejected because it would fire nightly forever for a legitimately-POA
+nursery, which is how an alarm gets trained into background noise.
+
+### 2. The state pages ranked by price, so the dearest nursery owned every one
+
+`# Sort by price descending (interesting/rare plants tend to cost more)` was an
+honest guess that turned out to measure which nursery prices highest.
+
+| page | before | after |
+|---|---|---|
+| WA | Perth Mobile **53/60**, $349-$1,400, 3 nurseries | top nursery **10/60**, $12-$880, 9 nurseries |
+| QLD | Ladybird **37/60**, $200-$530, 4 nurseries | **10/60**, $12-$200, 12 nurseries |
+| NSW | Ladybird **37/60**, identical to QLD in all 60 | **10/60**, 12 nurseries |
+| VIC | Ladybird **37/60**, 57/60 shared with QLD | **10/60**, 12 nurseries |
+
+Nothing under $199.95 appeared on any eastern page, so the cheap and the interesting
+were both invisible. Now ranked by how few state-reaching nurseries stock the
+cultivar, plus the `hard_to_find` flag from `rarity_scores.json`. Both signals were
+already on disk, and the per-species counter was already computed in that very
+function for the species chips.
+
+**KNOWN LIMIT, not fixed: QLD and NSW are still identical in all 60 rows.** That is
+the shipping data, not the sort. All 18 nurseries reaching QLD also reach NSW and
+vice versa, so the candidate set is byte-identical and any deterministic order gives
+the same page. The plan claimed the new ordering would differentiate them; that was
+wrong, inferred from a WA-vs-QLD comparison and over-generalised. Differentiating
+those two is a DEC-309-shaped content decision, not a sort key.
+
+**Deliberately no recency bonus.** The only per-product "newly listed" field is
+Shopify's `created_at`, so scoring on it would quietly rank Shopify nurseries above
+WooCommerce ones. The unbiased source (`first_seen` in `availability.json`) is
+server-only and absent from the golden fixture, so it would ship untested.
+
+The per-species state pages had the same sort, but the caps are the wrong tool there
+(1 of 106 exceeds 60 products; worst nursery share 43%, not 88%). A single-species
+table is a price comparison, so those now sort in stock first, cheapest first, title,
+matching `build_compare_pages.py` which had it right already.
+
+### 3. "Pickup only, Ellenbrook", and the class of bug it belongs to
+
+A suburb no record supports, typed into `STATE_NURSERY_NOTES` on 2026-03-16 with no
+source. The registry, the scraper config and the nursery page all say Perth, the
+nursery's own site names no suburb, and it has never been contacted. The delivery half
+of every note is now **derived** from `delivery_label()`, so a hand-typed claim has one
+fewer place to hide. That also un-silenced three nurseries: Perth Mobile, St Clements
+and Garden Express had no note at all despite being metro-only, WA-only and surcharged.
+
+Underneath it, a nursery's town was decided by its shop software. `/nursery/daleys.html`
+said "Australia" for a nursery in Kyogle NSW because Woo/Ecwid/Wix write `location` into
+their snapshots, Shopify carries the string but never emits it, and the Daleys CSV feed
+has no such key. `location` moved onto the `Nursery` record beside `name` and `ships_to`.
+25 strings lifted from the scraper configs; Daleys (Kyogle NSW) and Heritage Fruit Trees
+(Beaufort VIC) sourced and verified today.
+
+### 4. Alerts did not know where the subscriber lived
+
+`registry.nursery_ships_to()` has existed all along and the daily digest calls it six
+times. `send_variety_alerts`, `send_species_alerts` and `send_watch_notice_email`
+called it **zero** times between them. Of the 36 watched varieties in stock on
+2026-08-24, **21 (58%) could not be bought from WA at all.**
+
+Benedict: *"they should never be emailed unless they can genuinely buy it from WA."*
+The state filter is applied to the **trigger**, not just the email, because only one
+of the two failures is fixed by filtering the email:
+
+- **False alert.** A WA watcher of `avocado-pinkerton` is told "back in stock" and sent
+  to Ross Creek Tropicals, which cannot ship to WA.
+- **Silent miss, the worse one.** `avocado-shepard` is in stock at Fruitopia and
+  Ladybird, neither of which ships WA, so yesterday's global count is 2. When Guildford
+  in Perth lists one it goes 2 -> 3. It never touches 0, so the old test never fires and
+  the Perth watcher is never told. Their own count is 0 -> 1. This is the exact case
+  `docs/now.md` says the site exists to solve.
+
+Verified by dry-running against a copy of the live DB: with five watchers moved to WA,
+2 of their 6 alerts for the day disappear (Apple - Gravenstein, Avocado - Shepard), the
+other 4 still send, and no other watcher's mail changes.
+
+Perth-local nurseries count as WA-reachable (Benedict's call: most of the WA rare-fruit
+community is Perth metro and a Guildford pickup is a real option). The email labels
+them, so a Broome reader learns it there rather than at checkout.
+
+**Capture design is deliberately lopsided.** The digest signup HAS a state dropdown and
+took 12 signups in five months; the email-only watch pill took 104. So the pill gains no
+field. It forwards the state the visitor already picked in the homepage filter, the
+notice email leads with the reason to bother, and the manage page asks properly. State
+lives on the person in `watcher_prefs`, not as a column on `watches`, which would let one
+person's two watches disagree. Absent reads as ALL, so all 104 existing watchers saw no
+change: confirmed live, `watcher_prefs` has 0 rows and tonight's mail is identical.
+
+Saved through an `update_watch_state` **action** on `/api/subscribe`, not a new endpoint.
+A one-click "set my state to WA" link would convert better and was rejected: mail
+scanners prefetch links, and eight state links means whichever the scanner hit last wins.
+DEC-294 already hit that trap, which is why unwatch is a confirm page.
+
+**KNOWN LIMIT, stated in the code:** shipping is modelled per nursery, never per product.
+Heaven On Earth's citrus is QLD-only and two All Rare Herbs products are stricter than
+their nursery record. Those still slip through.
+
+### 5. Not reported: the restriction badge suppressed itself
+
+`restricted.length > 0 && restricted.length < 3` meant a nursery excluded from **all
+three** quarantine states showed **no warning at all**, so the most restricted nurseries
+were the only silent ones. A badge rendered for 4 of 27 nurseries and was hidden on 12
+covering **5,086 of 9,150 products (56%)**: Ladybird 1,923, Ross Creek 1,098, Fruitopia
+633, Aus Nurseries 459, PlantNet 110, and 7 more. That is why the PlantNet row in
+Benedict's screenshot carried no warning while the row above it said "No WA/TAS".
+`registry.restriction_warning()` never had the cap, so only the JS had drifted. It landed
+2026-03-16, in the same commit as the Ellenbrook string.
+
+### Verification
+
+3,438 tests green (was 3,341). Six commits. Every claim above re-checked against a copy
+of the live snapshots and the live watch DB before landing, then against the live site
+after: `/nursery/daleys.html` now reads Kyogle NSW, the WA page shows 60 rows across 9
+nurseries at $11.90-$880, the reported row reads "PlantNet · In stock · No WA/NT/TAS ·
+POA" with no alert control, `watcher_prefs` exists on the server with 0 rows, and
+`smoke_test.py` passes 8 of 8.
+
+**Lesson:** four separate reports, one root cause. Every one of them was a place where
+the site knew something about reachability and did not say it: the badge suppressed on
+the nurseries that most needed it, the alerts never asked where you lived, the state
+pages sorted by a price proxy, and a nursery's town depended on its checkout software.
+The registry had the answer for all four and three of them never called it.
