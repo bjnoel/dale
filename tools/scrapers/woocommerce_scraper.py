@@ -291,16 +291,36 @@ def _scrape_by_category(nursery_key, config, domain, fruit_cats, health=None):
     return all_products
 
 
+def parse_store_price(raw_value, minor_unit=2):
+    """Convert a WooCommerce Store API price to dollars, or None if unpublished.
+
+    Two traps live here. The API returns prices as STRINGS in minor units, so
+    "0" is truthy and a naive `if raw_value` guard lets it straight through as
+    the real price $0.00. And a zero is never a real price for nursery stock --
+    it means the store publishes no price for that product. PlantNet is the
+    reason this matters: it is the retail arm of a wholesale breeder, and 79 of
+    its 110 fruit-tree SKUs are "find a stockist" rather than buy-online, so it
+    reports price "0" while reporting is_in_stock true.
+
+    Returning None (not 0.0) is what lets every downstream surface print POA
+    instead of a blank cell, and stops send_variety_alerts offering a
+    price-drop alert that qualifying_drop() would refuse to fire.
+    """
+    if raw_value is None or raw_value == "":
+        return None
+    try:
+        price = float(raw_value) / (10 ** minor_unit)
+    except (TypeError, ValueError):
+        return None
+    return price if price > 0 else None
+
+
 def normalize_product(raw, nursery_key, config):
     """Normalize a WooCommerce product."""
     # Price is in cents (minor units)
     prices = raw.get("prices", {})
-    price_raw = prices.get("price")
     minor_unit = prices.get("currency_minor_unit", 2)
-    price = float(price_raw) / (10 ** minor_unit) if price_raw else None
-
-    regular_raw = prices.get("regular_price")
-    regular_price = float(regular_raw) / (10 ** minor_unit) if regular_raw else None
+    price = parse_store_price(prices.get("price"), minor_unit)
 
     on_sale = raw.get("on_sale", False)
     available = raw.get("is_in_stock", False)

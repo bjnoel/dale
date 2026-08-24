@@ -65,7 +65,7 @@ class InlineSvgSizingTests(unittest.TestCase):
         latent version-skew bug like the one above."""
         css = BUILD_DASHBOARD.read_text()
         for cls in ("watch-icon", "watch-wrap", "notify-link", "watch-form",
-                    "watch-email", "watch-go", "watch-msg"):
+                    "watch-email", "watch-go", "watch-msg", "price-poa"):
             with self.subTest(cls=cls):
                 self.assertIn(f".{cls}", css)
 

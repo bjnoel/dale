@@ -534,7 +534,11 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
                 "t": title,
                 "n": p.get("nursery_name", nursery_name),
                 "nk": p.get("nursery", nursery_name),
-                "p": round(min_price, 2) if min_price else None,
+                # `> 0` not truthiness: a scraper that could not read a price
+                # must reach the browser as null so the row renders POA, and a
+                # zero must never be shown as a real $0.00 price. See
+                # woocommerce_scraper.parse_store_price for the PlantNet case.
+                "p": round(min_price, 2) if min_price is not None and min_price > 0 else None,
                 "a": bool(available),
                 "s": stock_count,
                 # Affiliate ref applied here, not in dashboard.js: the JS appends
@@ -762,6 +766,7 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
   .sale-badge { background: #fee2e2; color: #991b1b; }
   .new-badge { background: #dbeafe; color: #1e40af; }
   .back-badge { background: #d1fae5; color: #065f46; font-weight: 600; }
+  .price-poa { color: #6b7280; font-weight: 500; font-size: 0.8rem; }
   .price-down { color: #047857; font-weight: 600; }
   .price-up { color: #b91c1c; }
   .in-stock { background: #d1fae5; color: #065f46; }

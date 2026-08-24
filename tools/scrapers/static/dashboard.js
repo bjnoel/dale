@@ -375,7 +375,16 @@ function render() {
   }
 
   container.innerHTML = showing.map(p => {
-    const price = p.p ? ('$' + p.p.toFixed(2)) : '';
+    // A missing price is a fact about the nursery, not an empty cell. Some
+    // stores publish no price online (PlantNet is the retail arm of a wholesale
+    // breeder: 79 of its 110 fruit-tree SKUs are "find a stockist"), and the
+    // row used to render blank, which reads as a rendering bug. POA is what
+    // build_nursery_pages, build_bare_root_page, build_rare_finds and the alert
+    // emails already print for the same case.
+    const hasPrice = typeof p.p === 'number' && p.p > 0;
+    const price = hasPrice
+      ? ('$' + p.p.toFixed(2))
+      : '<span class="price-poa" title="This nursery does not publish a price online">POA</span>';
     // Three states, not two. p.pre means orderable now, ships later, so it must
     // not read as "In stock" (the buyer turns up expecting a plant) nor as
     // "Out of stock" (they give up on something they could have ordered).
@@ -389,10 +398,16 @@ function render() {
     const nShips = SHIPS_TO[p.nk] || [];
     const restricted = ['WA','NT','TAS'].filter(s => !nShips.includes(s));
     const _st = stateFilter.value;
+    // No `restricted.length < 3` clause. It used to be there, and it meant a
+    // nursery that reaches NONE of WA/NT/TAS showed no warning at all -- the
+    // most restricted nurseries were the only silent ones. On 2026-08-24 that
+    // hid the warning on 5,086 of 9,150 products across 12 nurseries (Ladybird,
+    // Ross Creek, Fruitopia, Aus Nurseries, PlantNet and 7 more), leaving a
+    // badge on just 4 of 27. A WA buyer should learn that here, not at checkout.
     const shipsBadge = localArea ? ''
       : (_st && !nShips.includes(_st))
         ? `<span class="stock-badge restrict-badge">No ${_st}</span>`
-        : (restricted.length > 0 && restricted.length < 3 && !_st)
+        : (restricted.length > 0 && !_st)
           ? `<span class="stock-badge restrict-badge">No ${restricted.join('/')}</span>`
           : '';
     const localBadge = localArea ? `<span class="stock-badge local-badge">${localArea} only</span>` : '';
@@ -424,8 +439,17 @@ function render() {
     // Per-variety alert control. On EVERY row that names a cultivar, not just
     // out-of-stock ones: an in-stock item is exactly what you want a price-drop
     // alert on, and until now there was no way to ask for one.
+    //
+    // One exception, added 2026-08-24: an IN-STOCK row with no published price
+    // gets no control, because neither trigger can fire for it. Restock needs
+    // the variety to hit zero (it has not, it is in stock) and price-drop is
+    // refused twice over -- stocklib/changes.py skips a falsy price, and
+    // send_variety_alerts.qualifying_drop() returns False on old_price <= 0.
+    // The row was offering "Alert me if the price drops" on 97 live products
+    // that could never receive one. Out-of-stock priceless rows keep the
+    // control, because restock still fires for those.
     let notifyLink = '';
-    if (p.vs) {
+    if (p.vs && (hasPrice || !p.a)) {
       // Inline SVG rather than emoji here: the pill inherits currentColor, so
       // the glyph stays on-brand and crisp at any zoom, and mail-client
       // rendering (the reason the emails use emoji) is not a constraint on a
