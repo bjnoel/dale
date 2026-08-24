@@ -13019,3 +13019,54 @@ coming back overwrites its own stub, and that the stub does not use the variety 
 Full suite 3,296 pass.
 
 ---
+
+
+## DEC-308 — 2026-08-24 — Search is 99% of it, and the report that said so was the wrong report
+
+**Context:** DEC-307's job ran for the first time on 2026-08-23 and produced figures that
+looked wrong: 517 impressions, 100% App Store search, zero browse, zero taps, 60 rows.
+
+**What it found, once the right report was pulled:** **App Store search supplies 99.1% of
+TreeSmith's App Store impressions.** App Store browse supplies 19 impressions across 108
+days. The question DEC-307 existed to answer is answered, and it answers in favour of the
+ASO programme: keyword rank is our lever, because there is no other surface.
+
+**The Detailed report was showing 23% of our traffic.** Same request, same day:
+
+```
+              rows  impressions  browse  Tap rows  territories
+  Detailed      60          517       0         0            7
+  Standard   1,569        2,225      22        85          110
+```
+
+Detailed also hid all 50 `Get` taps, the one engagement that becomes revenue. Its extra
+privacy measures are applied per row and at 43 MAU there are not enough rows to survive
+them. `DEFAULT_REPORT_NAME` is now Standard.
+
+DEC-307 recorded this exact risk, quoting Apple's own "download the standard report unless
+you need to analyze the unique fields", noted that we read none of those fields, and
+defaulted to Detailed anyway because that was what the brief named. Writing a risk down is
+not mitigating it. The correction cost one live run; had the ONGOING request been created
+first and a month of Detailed data accumulated, it would have cost a month.
+
+**The switch would have been silent and permanent.** `new_rows` skips any day already
+marked complete, because Apple does not restate a final day. That is true and it assumes
+the SOURCE cannot change. Every historical day would have kept its understated figure while
+new days came from Standard. The series now carries a `report` column and a differing
+report always re-records. Pinned by a test using the real 517-vs-2,225 numbers.
+
+**Two windows of different lengths are not a comparison.** The digest rendered "2,065 over
+108d -> 84 over 1d", which reads as 19/day to 84/day, a 4.4x jump. The pre-rename window
+reaches back to the app's first impression through months when the app was near-silent. The
+28 days before the rename average 36.2/day and already range 25 to 71, so one day at 84 is a
+new high by 13. The section now prints both pre-rename rates and refuses to call a
+sub-7-day window a trend. Same failure class as the three the module already guards, in a
+place the design had not looked: not an absent measurement rendering as zero, but a present
+measurement rendering as the wrong magnitude.
+
+**What the rename did:** still unknown. One complete post-rename day. Ask in a week.
+
+**Verification:** full suite 3,314 passing, 1 skipped. Pushed and deployed; the box re-pulled
+under Standard (161 rows, 2026-04-25 to 2026-08-20) and the Detailed series is parked as
+`treesmith-appstore-sources.detailed.csv.bak` rather than deleted, since it is the evidence
+for the comparison above.

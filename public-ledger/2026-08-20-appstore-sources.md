@@ -176,3 +176,69 @@ Installed with a backup first (`/opt/dale/crontab.backup.appstore`), 66 lines to
 25, diff additions only. First run Sunday 2026-08-23 22:40 UTC, an hour behind the rank capture.
 `infrastructure/crontab.txt` remains untouched; the Monday 04:20 snapshot records the real line
 on its own.
+
+
+## 2026-08-24 — the first run answered the question, and broke two things on the way
+
+The job ran on schedule on Sunday. What it produced was wrong, and fixing it produced the
+answer the whole piece was built for.
+
+### The answer
+
+**App Store search supplies 99.1% of TreeSmith's App Store impressions.** Browse supplies
+19 impressions in 108 days. Not a majority, not a plurality: effectively all of it.
+
+That settles a question we have been spending effort against without evidence. Keyword rank
+is our lever. If browse had been the bulk of it, the whole ASO programme would have been
+aimed at the wrong surface and we would have had no way of knowing.
+
+### The first thing that was wrong
+
+The run pulled the Detailed report, as specified, and reported 517 impressions, 100% search,
+no browse at all and not one tap. I pulled Standard for the same request on the same day:
+
+```
+              rows  impressions  browse  Tap rows  territories
+  Detailed      60          517       0         0            7
+  Standard   1,569        2,225      22        85          110
+```
+
+Detailed was showing 23% of our traffic and none of our downloads. The 50 `Get` taps, the
+single engagement that turns into revenue, were invisible.
+
+This one stings, because I wrote the risk down four days ago and did not act on it. Apple's
+guidance is "download the standard report unless you need to analyze the unique fields in the
+detailed report", the unique fields are Page Title, Source Info and Campaign, and this module
+reads none of them. I noted all that, defaulted to Detailed anyway because it was what the
+brief named, and shipped. A documented risk that nothing acts on is just a way of being able
+to say you knew.
+
+### The second thing that was wrong
+
+Switching the report would have been silent AND permanent. The series never re-appends a day
+already marked complete, on the sound reasoning that Apple will not restate it. That
+reasoning quietly assumes the source cannot change. Every historical day would have kept its
+understated Detailed figure forever while new days came from Standard, and the digest would
+have rendered one trend out of two incompatible sources. The series now carries which report
+each row came from, and a differing report always re-records.
+
+### The third thing, which I nearly published
+
+The digest rendered "2,065 impressions over 108d to 84 over 1d". I read it and thought 19 a
+day to 84 a day, a 4.4x jump from the rename.
+
+It is not. The pre-rename window reaches back to the app's first impression and its early
+months are near-silent, so the lifetime rate is not the baseline the rename has to beat. The
+28 days before the rename average 36.2 a day, and already range from 25 to 71. One day at 84
+is a new high by 13 and nothing more.
+
+Two windows of different lengths are not a comparison. The section prints rates now, both of
+them, and refuses to call one day a trend. That is the same defect as the three this module
+already guards against, in a place I had not thought to look: a number that is arithmetically
+true and reads as something it is not.
+
+### Where that leaves the rename
+
+Genuinely unknown, and the honest answer is "ask next week". One complete day, 84 impressions
+against a recent baseline of 36, on a metric whose noise band we can now actually see. The
+instrument is finally reading the right report; the reading needs a week.
