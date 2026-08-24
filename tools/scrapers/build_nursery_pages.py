@@ -16,6 +16,7 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
 from stocklib.fruit_filters import digest_product_filter
+from stocklib.snapshots import is_stale
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.utm import outbound
 
@@ -84,6 +85,16 @@ NURSERY_META = {
     "heritage-fruit-trees": {
         "url": "https://www.heritagefruittrees.com.au",
         "tags": ["heritage varieties", "heirloom", "temperate fruit", "apples", "pears", "plums"],
+        # Their own holding page, 2026-08-24: "Online plant sales for 2026 have
+        # finished". Every URL serves HTTP 503. Without this the generic banner
+        # would say only that we cannot reach them, which reads like our fault.
+        "dormant_note": (
+            "Heritage Fruit Trees has closed online sales for 2026 and their store is "
+            "currently offline. The stock below is the last we recorded and is kept for "
+            "reference, not as current availability. They are running an on-farm clearance "
+            "at Beaufort, VIC from Saturday 29 August 2026. We expect their catalogue back "
+            "for the 2027 bare-root season."
+        ),
         "description": "Heritage Fruit Trees is a Victorian specialist nursery carrying one of Australia's largest collections of heritage and heirloom temperate fruit trees. Based in Beaufort, VIC, they stock hundreds of apple, pear, plum, cherry, quince, and nut tree varieties including many rare cultivars unavailable elsewhere. Does not ship to WA, NT, or TAS.",
     },
     "perth-mobile-nursery": {
@@ -217,6 +228,33 @@ def render_seasonality_banner(seasonality: dict) -> str:
 
 
 
+def render_dormancy_banner(meta: dict, name: str, scraped_at_fmt: str) -> str:
+    """Said on a page whose stock we can no longer vouch for.
+
+    A seasonal nursery closing its store between seasons is normal and it is not
+    a scraper fault, but until this existed the page could not tell the reader
+    either way: it went on rendering "128 In Stock" with live prices against a
+    store that served HTTP 503 on every URL, and the only hint was a "Data
+    updated daily" line directly above a date that had stopped moving. That is
+    precisely the trust treestock exists to earn.
+
+    `dormant_note` carries the reason where we actually know it, from the
+    nursery's own site. Without one this still says the true and useful thing:
+    the number below is a record, not an offer.
+    """
+    note = meta.get("dormant_note") or (
+        f"We have not been able to reach {name} since {scraped_at_fmt}, so the stock "
+        "below is the last we recorded rather than current availability. We keep "
+        "checking weekly and this page updates as soon as they are back."
+    )
+    return (
+        '<div class="border rounded-lg p-4 mb-6 text-sm bg-amber-50 border-amber-200 text-amber-900">'
+        '<p class="font-semibold mb-1">Closed for the season</p>'
+        f'<p>{note}</p>'
+        '</div>'
+    )
+
+
 def visible_products(data: dict) -> list:
     """The products of a snapshot that belong on a page.
 
@@ -257,7 +295,9 @@ def visible_counts(data: dict) -> tuple:
     return sum(1 for p in products if p.get("any_available")), len(products)
 
 
-def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total_nurseries: int = len(SHIPPING_MAP)) -> str:
+def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
+                       total_nurseries: int = len(SHIPPING_MAP),
+                       today: str | None = None) -> str:
     meta = NURSERY_META.get(nursery_key, {})
     name = NURSERY_NAMES.get(nursery_key, data.get("nursery_name", nursery_key))
     location = data.get("location", "Australia")
@@ -304,6 +344,19 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
             scraped_at_fmt = scraped_at
     else:
         scraped_at_fmt = "recently"
+
+    # Dormancy overrides both stock banners. "Low stock period" is the wrong
+    # story for a store that has shut, and telling a reader to "check back
+    # later" is worse than saying nothing. The labels move with it so the page
+    # cannot contradict its own banner two lines further down.
+    dormant = is_stale(scraped_at, today)
+    if dormant:
+        seasonality_banner = render_dormancy_banner(meta, name, scraped_at_fmt)
+    stock_stat_label = "Last In Stock" if dormant else "In Stock"
+    stock_panel_heading = "Last Recorded In Stock" if dormant else "In Stock Now"
+    freshness_line = (f"Stock checks paused. Last checked: {scraped_at_fmt}."
+                      if dormant else
+                      f"Data updated daily. Last checked: {scraped_at_fmt}.")
 
     restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold ml-2">{restrict}</span>' if restrict else ''
     tag_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded mr-1 mb-1 whitespace-nowrap">{t}</span>' for t in tags)
@@ -379,7 +432,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
   </div>
 
   <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-    <div class="stat-card"><div class="number">{in_stock_count}</div><div class="label">In Stock</div></div>
+    <div class="stat-card"><div class="number">{in_stock_count}</div><div class="label">{stock_stat_label}</div></div>
     <div class="stat-card"><div class="number">{total_count}</div><div class="label">Products Tracked</div></div>
     <div class="stat-card"><div class="number">{species_count}</div><div class="label">Species</div></div>
     <div class="stat-card"><div class="number">{len(ships)}</div><div class="label">States</div></div>
@@ -413,7 +466,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
 
     <div class="border border-gray-200 rounded-lg">
       <div class="flex justify-between items-center px-4 py-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-        <span class="font-semibold text-sm">In Stock Now</span>
+        <span class="font-semibold text-sm">{stock_panel_heading}</span>
         <a href="/?nursery={nursery_key}" class="text-xs px-2 py-1 border border-green-600 text-green-700 rounded hover:bg-green-50">View all on dashboard →</a>
       </div>
       <div class="scrollable-table">
@@ -433,7 +486,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict, total
     </div>
   </div>
 
-  <p class="text-xs text-gray-400 mt-4">Data updated daily. Last checked: {scraped_at_fmt}.</p>
+  <p class="text-xs text-gray-400 mt-4">{freshness_line}</p>
 
   <!-- Subscribe CTA -->
   <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-sm">
@@ -510,6 +563,13 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
 
         restrict = "" if local_lbl else restriction_warning(key)
         restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold">{restrict}</span>' if restrict else ''
+        # Same call as the profile page. A card promising stock that the page
+        # behind it labels as closed is the contradiction worth avoiding here.
+        dormant = is_stale(data.get("scraped_at"), today)
+        dormant_badge = ('<p class="mb-2"><span class="text-xs px-2 py-0.5 bg-amber-100 '
+                         'text-amber-800 rounded-full font-semibold">Closed for the season</span></p>'
+                         if dormant else '')
+        stock_word = "last in stock" if dormant else "in stock"
         tag_badges = " ".join(f'<span class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded">{t}</span>' for t in tags[:3])
         ship_str = ", ".join(ships)
 
@@ -523,8 +583,9 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
           {restrict_badge}
         </div>
         <p class="text-xs text-gray-500 mb-2">📍 {location}</p>
+        {dormant_badge}
         <div class="mb-2 flex flex-wrap gap-1">{tag_badges}</div>
-        <p class="text-xs text-gray-500 mb-1"><strong>{in_stock}</strong> in stock · {total} tracked</p>
+        <p class="text-xs text-gray-500 mb-1"><strong>{in_stock}</strong> {stock_word} · {total} tracked</p>
         <p class="text-xs text-gray-500 mb-0">{'Delivers to: ' + local_lbl if local_lbl else 'Ships to: ' + ship_str}</p>
       </div>
       <div class="px-4 pb-4">
@@ -580,7 +641,8 @@ def main():
 
     for key, data in nurseries_data.items():
         name = NURSERY_NAMES.get(key, data.get("nursery_name", key))
-        page = build_nursery_page(key, data, species_lookup, total_nurseries=len(nurseries_data))
+        page = build_nursery_page(key, data, species_lookup,
+                                  total_nurseries=len(nurseries_data), today=today)
         out = nursery_dir / f"{key}.html"
         out.write_text(page)
         in_stock, total = visible_counts(data)

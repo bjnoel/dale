@@ -143,5 +143,144 @@ class NoPhantomRestockTest(unittest.TestCase):
         self.assertTrue(self.restocks("2026-08-14", "2026-08-13"))
 
 
+def write_health(health_dir: Path, day: str, records):
+    """One scraper-health JSONL line per nursery for a day."""
+    health_dir.mkdir(parents=True, exist_ok=True)
+    with open(health_dir / f"{day}.jsonl", "a") as fh:
+        for nursery, ok, products in records:
+            fh.write(json.dumps({"nursery": nursery, "ok": ok,
+                                 "products": products, "ts": f"{day}T00:30:00"}) + "\n")
+
+
+class DistrustedSnapshotTest(unittest.TestCase):
+    """The second shape of the same bug: a scrape that SUCCEEDS but truncated.
+
+    snapshot_path_for_date's original fix covered the nursery that failed to
+    report. It did not cover Heritage Fruit Trees on 2026-08-15, which reported
+    fine while republishing 210 of its 375 products and deleting every
+    out-of-stock line rather than marking it. untrusted_nurseries() caught that
+    the same night and the page ledger acted on it; the alert path never asked.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.nursery = Path(self.tmp.name) / "heritage-fruit-trees"
+        self.nursery.mkdir(parents=True)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def distrust(self, *days):
+        bad = set(days)
+        return lambda day: day in bad
+
+    def test_distrusted_day_falls_back_to_last_trusted_snapshot(self):
+        write_snapshot(self.nursery, "2026-08-11", ["Apple Bramley's Seedling"])
+        write_snapshot(self.nursery, "2026-08-15", ["Apple Bramley's Seedling"])
+        got = snapshot_path_for_date(self.nursery, "2026-08-15", today="2026-08-16",
+                                     distrusted=self.distrust("2026-08-15"))
+        self.assertEqual(got.name, "2026-08-11.json")
+
+    def test_walks_back_past_consecutive_distrusted_days(self):
+        for day in ("2026-08-11", "2026-08-15", "2026-08-16"):
+            write_snapshot(self.nursery, day, ["Apple Bramley's Seedling"])
+        got = snapshot_path_for_date(self.nursery, "2026-08-16", today="2026-08-17",
+                                     distrusted=self.distrust("2026-08-15", "2026-08-16"))
+        self.assertEqual(got.name, "2026-08-11.json")
+
+    def test_distrusted_today_does_not_fall_through_to_latest_json(self):
+        """latest.json is written by the last good scrape, so on a distrusted
+        day it is the very data being distrusted."""
+        write_snapshot(self.nursery, "2026-08-11", ["Apple Bramley's Seedling"])
+        (self.nursery / "latest.json").write_text(json.dumps({"products": []}))
+        got = snapshot_path_for_date(self.nursery, "2026-08-16", today="2026-08-16",
+                                     distrusted=self.distrust("2026-08-16"))
+        self.assertEqual(got.name, "2026-08-11.json")
+
+    def test_no_trusted_history_returns_none(self):
+        write_snapshot(self.nursery, "2026-08-15", ["Apple Bramley's Seedling"])
+        self.assertIsNone(
+            snapshot_path_for_date(self.nursery, "2026-08-15", today="2026-08-16",
+                                   distrusted=self.distrust("2026-08-15")))
+
+    def test_default_trusts_everything(self):
+        """Absent the argument this module must behave exactly as before."""
+        write_snapshot(self.nursery, "2026-08-15", ["Apple Bramley's Seedling"])
+        got = snapshot_path_for_date(self.nursery, "2026-08-15", today="2026-08-16")
+        self.assertEqual(got.name, "2026-08-15.json")
+
+
+class PurgedCatalogueTest(unittest.TestCase):
+    """End to end, reproducing 2026-08-15 through the alert script's own loader."""
+
+    def setUp(self):
+        import importlib.util
+        repo = Path(__file__).resolve().parent.parent
+        path = repo / "tools" / "scrapers" / "send_variety_alerts.py"
+        spec = importlib.util.spec_from_file_location("sva_purge_mod", path)
+        self.sva = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.sva)
+
+        self.tmp = tempfile.TemporaryDirectory()
+        root = Path(self.tmp.name)
+        self.data = root / "nursery-stock"
+        self.health = root / "scraper-health"
+        self.data.mkdir(parents=True)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def restocks(self, today_date, yesterday_date):
+        today = self.sva.load_nursery_data(self.data, today_date)
+        yesterday = self.sva.load_nursery_data(self.data, yesterday_date)
+        t = self.sva.in_stock_by_variety_slug(today)
+        y = self.sva.in_stock_by_variety_slug(yesterday)
+        return {s for s in t if len(t[s]) > 0 and len(y.get(s, [])) == 0}
+
+    def seed_heritage(self):
+        """375 products with Bramley's out of stock, then a 210-product
+        republish with everything marked available."""
+        h = self.data / "heritage-fruit-trees"
+        h.mkdir(parents=True)
+        wide = {"nursery_name": "Heritage Fruit Trees", "products": (
+            [{"title": "Apple Bramley's Seedling", "url": "https://x/b",
+              "any_available": False, "min_price": 25.0}]
+            + [{"title": f"Apple Filler {i}", "url": f"https://x/{i}",
+                "any_available": False, "min_price": 25.0} for i in range(374)])}
+        (h / "2026-08-11.json").write_text(json.dumps(wide))
+        narrow = {"nursery_name": "Heritage Fruit Trees", "products": (
+            [{"title": "Apple Bramley's Seedling", "url": "https://x/b",
+              "any_available": True, "min_price": 25.0}]
+            + [{"title": f"Apple Filler {i}", "url": f"https://x/{i}",
+                "any_available": True, "min_price": 25.0} for i in range(209)])}
+        (h / "2026-08-15.json").write_text(json.dumps(narrow))
+        for day in ("2026-08-08", "2026-08-09", "2026-08-10", "2026-08-11"):
+            write_health(self.health, day, [("heritage-fruit-trees", True, 375)])
+
+    def test_purged_catalogue_does_not_fabricate_a_restock(self):
+        """The live failure. Bramley's was never restocked: the store simply
+        stopped publishing out-of-stock lines."""
+        self.seed_heritage()
+        write_health(self.health, "2026-08-15", [("heritage-fruit-trees", True, 210)])
+        self.assertEqual(self.restocks("2026-08-15", "2026-08-14"), set())
+
+    def test_same_data_without_the_health_signal_still_fires(self):
+        """Pins that the health record is what does the work here, so this test
+        fails if the guard is ever disconnected rather than passing vacuously."""
+        self.seed_heritage()
+        write_health(self.health, "2026-08-15", [("heritage-fruit-trees", True, 375)])
+        self.assertIn("apple-bramley-s", self.restocks("2026-08-15", "2026-08-14"))
+
+    def test_trusted_nursery_restock_still_fires(self):
+        """The guard must only ever suppress, never invent or over-reach."""
+        lb = self.data / "ladybird"
+        lb.mkdir(parents=True)
+        write_snapshot(lb, "2026-08-15", ["Tamarillo Red"])
+        (lb / "2026-08-14.json").write_text(json.dumps({"products": []}))
+        for day in ("2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15"):
+            write_health(self.health, day, [("ladybird", True, 7000)])
+        self.assertIn("tamarillo-red", self.restocks("2026-08-15", "2026-08-14"))
+
+
 if __name__ == "__main__":
     unittest.main()

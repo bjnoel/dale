@@ -13070,3 +13070,74 @@ measurement rendering as the wrong magnitude.
 under Standard (161 rows, 2026-04-25 to 2026-08-20) and the Detailed series is parked as
 `treesmith-appstore-sources.detailed.csv.bak` rather than deleted, since it is the evidence
 for the comparison above.
+
+## DEC-311 — 2026-08-24 — The guard was already right, the alert path just never asked it
+
+**Context:** Benedict noticed the Heritage Fruit Trees scraper firing and their site looking
+shut for the year. It is shut. Their holding page reads "Online plant sales for 2026 have
+finished" and every URL, sitemap included, serves HTTP 503.
+
+**What actually happened, from the snapshots:**
+
+```
+  08-11        375 products   174 in   201 out   ok
+  08-12..14      0 products     0       0        HTTP 503 /beurre-bosc-pear/
+  08-15        210 products   210 in     0 out   ok
+  08-23        128 products   128 in     0 out   ok
+  08-24          0 products     0       0        HTTP 503 /ixl-almond/
+```
+
+The tell is `out_of_stock` hitting exactly 0 on 08-15 and staying there for nine days. That
+is not a nursery whose whole catalogue became available, it is a store that stopped
+publishing unavailable lines and started deleting them. 166 handles vanished between 08-11
+and 08-15, 153 of them out of stock beforehand. The 210 to 128 drain after that is real:
+nothing lost on any day is present on the last.
+
+**The bug.** `untrusted_nurseries()` flagged heritage-fruit-trees on 08-15 (210 against a
+366 median is under the 0.60 truncation ratio). The page ledger consults that, so nothing
+got mass-tombstoned. `send_variety_alerts.py` does not consult it. 48 kept products flipped
+out-of-stock to in-stock in one hop and were taken at face value; one reached a subscriber:
+
+```
+  (44, 'treestock@coreyobryan.com', 'apple-bramley-s', '2026-08-15', 'restock')
+```
+
+Bramley's was genuinely unavailable everywhere on 08-14, so the trigger was correct on its
+inputs. The inputs were wrong, and its product page now 503s. Replaying 08-15 against real
+snapshots: 41 restock candidates before the fix, 12 after, Bramley's among the 29
+suppressed, and zero newly fired. The two that legitimately emailed that day
+(`tamarillo-red`, `pomegranate-gulosha-azerbaijani`) both survive.
+
+Same bug class as the DEC-293 snapshot-gap trap, one layer up: that one covered the nursery
+that failed to report, this one is the nursery that reports successfully with a catalogue
+we should not believe. `snapshot_path_for_date` now takes a `distrusted` predicate and walks
+back to the last snapshot we actually trust, which is the existing "a failed scrape has not
+emptied its shelves" rule applied to a scrape that did not fail.
+
+**Backoff, and why five and not three.** `bigcommerce_scraper.py` has no retry and no
+backoff, so it walked its whole known catalogue into the 503 wall nightly, 357s on 08-24.
+Left alone until the 2027 season that is tens of thousands of pointless requests at a
+nursery Benedict has a relationship with, and scraping has cost us goodwill before (DEC-198).
+After five consecutive failures a nursery drops to one probe a week. Five, not three, because
+the only real outage we can measure is 08-12 to 08-14: three straight 503s that recovered on
+the 15th, so a threshold of three would have slept through its own recovery. A skipped day
+writes no health record, which `untrusted_nurseries()` already reads as "do not believe this
+nursery today", and one good probe resets the streak. Nothing to un-flip by hand.
+
+**The page was the worst of it.** `build-dashboard.py` has no staleness check at all, so
+/nursery/heritage-fruit-trees.html advertised "128 In Stock" with live prices and a working
+product table against a dead store, its only hint a "Data updated daily" line sitting
+directly above a date that had stopped moving. It would have said that for six months. A
+snapshot three days stale now flips the profile page and the index card to a "Closed for the
+season" banner with the labels moved to match, so the page cannot contradict itself. Heritage
+carries the reason off their own site, including the 29 August on-farm clearance, because the
+generic "we cannot reach them" reads like our fault when it is not.
+
+**Not done:** dormant nurseries still count toward homepage and search in-stock figures.
+That is the larger change and stays a ticket. `send_species_alerts.py` has the same blind
+loader but is not invoked by the pipeline (see project_species_watch_removed), so it was left
+alone rather than touched for symmetry.
+
+**Verification:** full suite 3,341 tests, 1 pre-existing unrelated failure (a duplicate
+DEC-308 committed earlier today by another session). The alert fix was confirmed
+failing-then-passing by disconnecting the guard.

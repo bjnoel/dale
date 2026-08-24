@@ -27,7 +27,8 @@ from datetime import datetime, date
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
-from stocklib.scrape_health import ScrapeHealth
+from stocklib.scrape_health import (ScrapeHealth, consecutive_failures,
+                                    last_success_day, should_probe)
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent / "data")) / "nursery-stock"
 NURSERY_KEY = "heritage-fruit-trees"
@@ -456,6 +457,29 @@ def save_snapshot(products):
 
 if __name__ == "__main__":
     dry_run = "--dry-run" in sys.argv
+    force = "--force" in sys.argv
+    today = date.today().isoformat()
+
+    # A closed store is not a broken scraper. Heritage shut online sales for
+    # 2026 on 2026-08-24 and every URL, sitemap included, now serves HTTP 503.
+    # There is no retry or backoff below, so a nightly run walks the whole
+    # known catalogue into that wall: the 08-24 run spent 357s doing exactly
+    # that. Left alone until the 2027 season that is tens of thousands of
+    # pointless requests at a nursery Benedict has a relationship with, and
+    # scraping has cost us goodwill before (Beewise, DEC-198).
+    #
+    # Skipping writes no health record, which untrusted_nurseries() already
+    # reads as "do not believe this nursery's absences today", so the ledger
+    # and the alerts stay protected. Exit 0, not 1: this is a decision, not a
+    # failure, and it must not count against run-all-scrapers.sh's 3-of-6 floor.
+    if not dry_run and not force and not should_probe(NURSERY_KEY, today):
+        streak = consecutive_failures(NURSERY_KEY, today)
+        last_ok = last_success_day(NURSERY_KEY, today) or "never"
+        print(f"{NURSERY_NAME} looks dormant: {streak} failed runs in a row, "
+              f"last good scrape {last_ok}. Probing weekly (Mondays); "
+              f"skipping today. Use --force to override.")
+        sys.exit(0)
+
     health = ScrapeHealth(NURSERY_KEY, source="bigcommerce") if not dry_run else None
     try:
         products = scrape(dry_run=dry_run, health=health)

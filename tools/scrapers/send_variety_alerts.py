@@ -113,6 +113,7 @@ TREESMITH_PROMO = (
 
 from stocklib.classify import is_real_product
 from stocklib.snapshots import snapshot_path_for_date
+from stocklib.scrape_health import HEALTH_DIRNAME, untrusted_nurseries
 from stocklib.utm import outbound
 from stocklib import changes as _changes
 from stocklib.fruit_filters import digest_product_filter
@@ -123,17 +124,47 @@ from stocklib.email_footer import watch_urls
 from cultivar_parsing import slugify, parse_cultivar, product_variety_slug  # noqa: E402
 
 
+def distrust_lookup(data_dir: Path):
+    """(day -> set of nursery keys) whose snapshot for that day must not be read.
+
+    Memoised per day: untrusted_nurseries() reads a week of health records per
+    call, and every nursery in the walk below asks about the same handful of
+    days. Health records living beside the snapshots is the production layout
+    (/opt/dale/data/{nursery-stock,scraper-health}) and keeps this working
+    against a temp tree in tests. No health data at all yields an empty set, so
+    this is inert rather than paranoid where there is nothing to judge.
+    """
+    health_dir = data_dir.parent / HEALTH_DIRNAME
+    cache: dict[str, set[str]] = {}
+
+    def untrusted_on(day: str) -> set[str]:
+        if day not in cache:
+            try:
+                cache[day] = untrusted_nurseries(day, health_dir)
+            except (OSError, ValueError):
+                cache[day] = set()
+        return cache[day]
+
+    return untrusted_on
+
+
 def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
     """Load products from a specific date's snapshots."""
     products = []
     today = date.today().isoformat()
+    untrusted_on = distrust_lookup(data_dir)
     for nursery_dir in sorted(data_dir.iterdir()):
         if not nursery_dir.is_dir():
             continue
         # A missing snapshot means the nursery did not report, not that it sold
         # out. Skipping it here made every watched variety on the other side of
-        # the comparison look like a restock (DEC-293).
-        source = snapshot_path_for_date(nursery_dir, target_date, today)
+        # the comparison look like a restock (DEC-293). `distrusted` extends the
+        # same rule to a scrape that succeeded while reporting a catalogue the
+        # health guard has already flagged, which is how Heritage's 2026-08-15
+        # republish sent a phantom Bramley's Seedling restock to a subscriber.
+        source = snapshot_path_for_date(
+            nursery_dir, target_date, today,
+            distrusted=lambda day, key=nursery_dir.name: key in untrusted_on(day))
         if source is None:
             continue
         try:

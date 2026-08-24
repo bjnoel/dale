@@ -76,7 +76,10 @@ def snapshot(products, **overrides):
 class NurseryPageJunkFilterTests(unittest.TestCase):
     def setUp(self):
         self.products = [product(t) for t in SEED_PACKETS] + [product(t) for t in TREES]
-        self.html = build_nursery_page("guildford", snapshot(self.products), {})
+        # Pinned to the fixture's own scrape date: without it these drift into
+        # the dormant-nursery labels as wall-clock time passes the staleness cut.
+        self.html = build_nursery_page("guildford", snapshot(self.products), {},
+                                       today="2026-08-17")
 
     def test_seed_packets_never_reach_the_page(self):
         for title in SEED_PACKETS:
@@ -138,10 +141,82 @@ class IndexAgreesWithProfileTests(unittest.TestCase):
     def test_the_two_pages_report_the_same_numbers(self):
         in_stock, total = visible_counts(self.data)
         index = build_index_page({"guildford": self.data}, {}, "2026-08-17")
-        profile = build_nursery_page("guildford", self.data, {})
+        profile = build_nursery_page("guildford", self.data, {}, today="2026-08-17")
         self.assertIn(f"<strong>{in_stock}</strong> in stock · {total} tracked", index)
         self.assertIn(f">{in_stock}</div><div class=\"label\">In Stock<", profile)
         self.assertIn(f">{total}</div><div class=\"label\">Products Tracked<", profile)
+
+
+class DormantNurseryTests(unittest.TestCase):
+    """Heritage Fruit Trees closed online sales for 2026 on 2026-08-24 and every
+    URL now serves HTTP 503. Until this existed the page went on rendering
+    "128 In Stock" with live prices and a working-looking product table, its
+    only hint a "Data updated daily" line sitting directly above a date that had
+    stopped moving. A stock tracker that cannot say "this is a record, not an
+    offer" is worse than no tracker."""
+
+    def setUp(self):
+        self.data = snapshot([product(t) for t in TREES],
+                             nursery_name="Heritage Fruit Trees",
+                             scraped_at="2026-08-23T00:26:29")
+
+    def page(self, today):
+        return build_nursery_page("heritage-fruit-trees", self.data, {}, today=today)
+
+    def test_fresh_snapshot_keeps_the_live_wording(self):
+        html = self.page("2026-08-24")
+        self.assertIn('<div class="label">In Stock<', html)
+        self.assertIn("In Stock Now", html)
+        self.assertIn("Data updated daily. Last checked:", html)
+        self.assertNotIn("Closed for the season", html)
+
+    def test_stale_snapshot_says_closed_for_the_season(self):
+        html = self.page("2026-08-30")
+        self.assertIn("Closed for the season", html)
+
+    def test_stale_page_never_claims_current_stock(self):
+        """The banner alone is not enough: the labels around it have to move
+        too, or the page contradicts itself two lines further down."""
+        html = self.page("2026-08-30")
+        self.assertIn('<div class="label">Last In Stock<', html)
+        self.assertIn("Last Recorded In Stock", html)
+        self.assertIn("Stock checks paused. Last checked:", html)
+        self.assertNotIn("Data updated daily. Last checked:", html)
+
+    def test_known_reason_beats_the_generic_wording(self):
+        """We read the reason off their own holding page, so say it. The
+        generic line ("we cannot reach them") reads like our fault."""
+        html = self.page("2026-08-30")
+        self.assertIn("closed online sales for 2026", html)
+        self.assertIn("on-farm clearance", html)
+        self.assertNotIn("We have not been able to reach", html)
+
+    def test_unknown_reason_falls_back_to_the_generic_wording(self):
+        data = snapshot([product(t) for t in TREES],
+                        scraped_at="2026-08-23T00:26:29")
+        html = build_nursery_page("guildford", data, {}, today="2026-08-30")
+        self.assertIn("Closed for the season", html)
+        self.assertIn("We have not been able to reach Guildford Garden Centre", html)
+
+    def test_dormancy_outranks_the_low_stock_banner(self):
+        """"Only 0% of tracked products are in stock, check back later" is the
+        wrong and more alarming story for a nursery that has simply shut."""
+        data = snapshot([product(t, available=False) for t in TREES],
+                        scraped_at="2026-08-23T00:26:29")
+        html = build_nursery_page("heritage-fruit-trees", data, {}, today="2026-08-30")
+        self.assertIn("Closed for the season", html)
+        self.assertNotIn("Low stock period", html)
+
+    def test_index_card_agrees_with_the_profile_page(self):
+        index = build_index_page({"heritage-fruit-trees": self.data}, {}, "2026-08-30")
+        self.assertIn("Closed for the season", index)
+        self.assertIn("last in stock", index)
+        self.assertNotIn("</strong> in stock", index)
+
+    def test_fresh_index_card_is_unchanged(self):
+        index = build_index_page({"heritage-fruit-trees": self.data}, {}, "2026-08-24")
+        self.assertIn("</strong> in stock", index)
+        self.assertNotIn("Closed for the season", index)
 
 
 class VisibleCountsTests(unittest.TestCase):

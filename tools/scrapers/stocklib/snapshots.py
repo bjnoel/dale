@@ -19,7 +19,7 @@ boundary and future typed consumers; this serves the existing builders.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
@@ -39,7 +39,8 @@ def snapshot_path(nursery_dir: Path, today: str | None = None) -> Path | None:
 
 
 def snapshot_path_for_date(nursery_dir: Path, target_date: str,
-                           today: str | None = None) -> Path | None:
+                           today: str | None = None, *,
+                           distrusted=None) -> Path | None:
     """How a nursery looked on `target_date`, for day-to-day comparisons.
 
     Exact dated snapshot if we have one. For today, latest.json is at least as
@@ -60,21 +61,41 @@ def snapshot_path_for_date(nursery_dir: Path, target_date: str,
     saw it, which is a real answer, where treating the gap as zero stock is a
     fabricated one. Returns None only when a nursery has no history at or
     before the date, where no claim about stock can honestly be made.
-    """
-    snap = nursery_dir / f"{target_date}.json"
-    if snap.exists():
-        return snap
 
-    today = today or _today_utc()
-    if target_date == today:
-        fallback = nursery_dir / "latest.json"
-        if fallback.exists():
-            return fallback
+    `distrusted` is an optional callable (day -> bool) for this nursery. A day
+    it rejects is treated exactly like a missing snapshot and skipped over, so
+    the walk-back lands on the last state we actually believe. That covers the
+    failure this function's original fix did not: a scrape that *succeeds* while
+    reporting a catalogue we should not trust. On 2026-08-15 Heritage Fruit
+    Trees came back from three days of 503s having republished only its
+    available stock, 210 products where there had been 375, and every
+    out-of-stock line simply deleted rather than marked. 48 kept products
+    flipped out-of-stock to in-stock in one hop and one of them, Bramley's
+    Seedling Apple, went out to a real subscriber as a restock. The nursery was
+    already in untrusted_nurseries() that night. The ledger asked; this path did
+    not. Pass stocklib.scrape_health.untrusted_nurseries through here so it does.
+    """
+    def trusted(day: str) -> bool:
+        return distrusted is None or not distrusted(day)
+
+    if trusted(target_date):
+        snap = nursery_dir / f"{target_date}.json"
+        if snap.exists():
+            return snap
+
+        today = today or _today_utc()
+        if target_date == today:
+            fallback = nursery_dir / "latest.json"
+            if fallback.exists():
+                return fallback
 
     prior = sorted(
         p for p in nursery_dir.glob("????-??-??.json") if p.stem <= target_date
     )
-    return prior[-1] if prior else None
+    for path in reversed(prior):
+        if trusted(path.stem):
+            return path
+    return None
 
 
 def iter_nursery_snapshots(data_dir, today: str | None = None) -> Iterator[tuple[str, dict]]:
@@ -113,3 +134,37 @@ def variant_min_price(product: dict, *, prefer_available: bool = False) -> float
             return min(avail)
     prices = [float(v["price"]) for v in variants if v.get("price")]
     return min(prices) if prices else None
+
+
+# A nursery is scraped nightly, so a snapshot this old means the scrape has been
+# failing for days rather than having one bad night. Three days is deliberately
+# short: the point is to stop a page claiming live stock it cannot vouch for,
+# and being a day or two early about that costs nothing but a cautious label.
+STALE_AFTER_DAYS = 3
+
+
+def snapshot_age_days(scraped_at: str | None, today: str | None = None) -> int | None:
+    """Whole days between a snapshot's `scraped_at` and `today`. None if unreadable.
+
+    None means "cannot tell", and every caller must treat that as fresh rather
+    than stale: a page that hides its stock because it could not parse a
+    timestamp is worse than one that shows it.
+    """
+    if not scraped_at:
+        return None
+    try:
+        stamp = datetime.fromisoformat(str(scraped_at).replace("Z", "+00:00")).date()
+    except ValueError:
+        return None
+    today = today or _today_utc()
+    try:
+        return (date.fromisoformat(today) - stamp).days
+    except ValueError:
+        return None
+
+
+def is_stale(scraped_at: str | None, today: str | None = None, *,
+             after: int = STALE_AFTER_DAYS) -> bool:
+    """True when a snapshot is old enough that its stock must not be called current."""
+    age = snapshot_age_days(scraped_at, today)
+    return age is not None and age >= after

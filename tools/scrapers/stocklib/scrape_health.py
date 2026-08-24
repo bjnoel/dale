@@ -195,3 +195,87 @@ class ScrapeHealth:
         except OSError as e:
             print(f"  WARNING: could not write scrape-health record: {e}")
         return record
+
+
+# --- Dormancy -------------------------------------------------------------
+#
+# untrusted_nurseries() answers "should I believe tonight's absences". This
+# answers the slower question: has this nursery gone dark for good, for now?
+#
+# A seasonal bare-root nursery closes its store between seasons. Heritage Fruit
+# Trees shut online sales for 2026 on 2026-08-24 ("Online plant sales for 2026
+# have finished") and will be a wall of HTTP 503 until the 2027 season. The
+# scraper has no retry or backoff, so it walked ~240 product URLs into that wall
+# every night, and would have kept doing it for six months. Scraping a closed
+# store thousands of times is wasteful and it is rude to a nursery we have a
+# relationship with; scraping already cost goodwill once (Beewise, DEC-198).
+#
+# So: after DORMANT_AFTER_FAILURES consecutive failed runs, drop to one probe a
+# week. Self-healing in both directions. No record is written on a skipped day,
+# which untrusted_nurseries() already reads as "do not believe this nursery's
+# absences today", and the moment a probe succeeds the streak resets to 0 and
+# nightly scraping resumes on its own. Nothing to un-flip by hand.
+#
+# Five, not three, because of the only real outage we can measure. Heritage
+# 503ed on 08-12, 08-13 and 08-14 2026 and came back on the 15th: a threshold of
+# three would have declared that recoverable blip dormant and then sat out the
+# recovery until the next Monday. The cost of waiting is two more nights of
+# wasted requests; the cost of going early is losing days of a live catalogue.
+DORMANT_AFTER_FAILURES = 5
+PROBE_WEEKDAY = 0  # Monday
+DORMANCY_LOOKBACK_DAYS = 400
+
+
+def consecutive_failures(nursery: str, day: str,
+                         health_dir: Path | str | None = None, *,
+                         lookback: int = DORMANCY_LOOKBACK_DAYS) -> int:
+    """How many of this nursery's most recent runs failed, walking back from `day`.
+
+    Days carrying no record for the nursery are skipped rather than counted:
+    a skipped probe is an absence of evidence, not a failure. That is what lets
+    the streak survive the weekly-probe regime it triggers, instead of decaying
+    to zero on the six days a week nothing runs.
+    """
+    day_date = date.fromisoformat(day)
+    streak = 0
+    for back in range(0, lookback + 1):
+        rec = latest_by_nursery(read_records(
+            (day_date - timedelta(days=back)).isoformat(), health_dir)).get(nursery)
+        if rec is None:
+            continue
+        if rec.get("ok"):
+            return streak
+        streak += 1
+    return streak
+
+
+def is_dormant(nursery: str, day: str, health_dir: Path | str | None = None, *,
+               after: int = DORMANT_AFTER_FAILURES) -> bool:
+    """True when the nursery has failed `after` runs in a row and is presumed shut."""
+    return consecutive_failures(nursery, day, health_dir) >= after
+
+
+def should_probe(nursery: str, day: str, health_dir: Path | str | None = None, *,
+                 after: int = DORMANT_AFTER_FAILURES,
+                 weekday: int = PROBE_WEEKDAY) -> bool:
+    """Whether to actually run this nursery's scrape on `day`.
+
+    Always true until a nursery is dormant, so a nursery having one bad night
+    (or three) is never quietly dropped to weekly without having earned it.
+    """
+    if not is_dormant(nursery, day, health_dir, after=after):
+        return True
+    return date.fromisoformat(day).weekday() == weekday
+
+
+def last_success_day(nursery: str, day: str,
+                     health_dir: Path | str | None = None, *,
+                     lookback: int = DORMANCY_LOOKBACK_DAYS) -> str | None:
+    """The most recent day at or before `day` whose run succeeded, else None."""
+    day_date = date.fromisoformat(day)
+    for back in range(0, lookback + 1):
+        d = (day_date - timedelta(days=back)).isoformat()
+        rec = latest_by_nursery(read_records(d, health_dir)).get(nursery)
+        if rec is not None and rec.get("ok"):
+            return d
+    return None
