@@ -16,7 +16,7 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
 from stocklib.fruit_filters import digest_product_filter
-from stocklib.snapshots import is_stale
+from stocklib.snapshots import STALE_AFTER_DAYS, snapshot_age_days
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.utm import outbound
 
@@ -228,6 +228,26 @@ def render_seasonality_banner(seasonality: dict) -> str:
 
 
 
+def is_dormant_nursery(meta: dict, scraped_at: str | None, today: str | None) -> bool:
+    """Whether this nursery's stock must be shown as a record, not an offer.
+
+    Two ways in, because they answer different questions. Without a
+    `dormant_note` we are only inferring from a snapshot that has stopped
+    moving, so we wait STALE_AFTER_DAYS before saying anything: one failed night
+    is not a closure and calling it one is worse than a day of silence.
+
+    With a `dormant_note` we are not inferring. Someone read the closure off the
+    nursery's own site, so the only question left is whether they are back yet,
+    and a successful scrape today answers that. A same-day snapshot clears the
+    banner on its own the moment their store starts answering again, which is
+    what keeps a hand-written note from outliving the fact it records.
+    """
+    age = snapshot_age_days(scraped_at, today)
+    if age is None:
+        return False
+    return age >= (1 if meta.get("dormant_note") else STALE_AFTER_DAYS)
+
+
 def render_dormancy_banner(meta: dict, name: str, scraped_at_fmt: str) -> str:
     """Said on a page whose stock we can no longer vouch for.
 
@@ -349,7 +369,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
     # story for a store that has shut, and telling a reader to "check back
     # later" is worse than saying nothing. The labels move with it so the page
     # cannot contradict its own banner two lines further down.
-    dormant = is_stale(scraped_at, today)
+    dormant = is_dormant_nursery(meta, scraped_at, today)
     if dormant:
         seasonality_banner = render_dormancy_banner(meta, name, scraped_at_fmt)
     stock_stat_label = "Last In Stock" if dormant else "In Stock"
@@ -565,7 +585,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
         restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold">{restrict}</span>' if restrict else ''
         # Same call as the profile page. A card promising stock that the page
         # behind it labels as closed is the contradiction worth avoiding here.
-        dormant = is_stale(data.get("scraped_at"), today)
+        dormant = is_dormant_nursery(meta, data.get("scraped_at"), today)
         dormant_badge = ('<p class="mb-2"><span class="text-xs px-2 py-0.5 bg-amber-100 '
                          'text-amber-800 rounded-full font-semibold">Closed for the season</span></p>'
                          if dormant else '')

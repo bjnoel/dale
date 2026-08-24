@@ -163,16 +163,34 @@ class DormantNurseryTests(unittest.TestCase):
     def page(self, today):
         return build_nursery_page("heritage-fruit-trees", self.data, {}, today=today)
 
-    def test_fresh_snapshot_keeps_the_live_wording(self):
-        html = self.page("2026-08-24")
+    def test_a_successful_scrape_today_keeps_the_live_wording(self):
+        """The self-clearing half. Heritage carries a hand-written closure note;
+        a same-day snapshot means their store answered, so the note must not
+        outlive the fact it records."""
+        html = self.page("2026-08-23")
         self.assertIn('<div class="label">In Stock<', html)
         self.assertIn("In Stock Now", html)
         self.assertIn("Data updated daily. Last checked:", html)
         self.assertNotIn("Closed for the season", html)
 
+    def test_declared_closure_shows_as_soon_as_a_scrape_stops_succeeding(self):
+        """We read this closure off their own site, so there is nothing left to
+        infer and no reason to sit on it for three days."""
+        self.assertIn("Closed for the season", self.page("2026-08-24"))
+
     def test_stale_snapshot_says_closed_for_the_season(self):
         html = self.page("2026-08-30")
         self.assertIn("Closed for the season", html)
+
+    def test_undeclared_nursery_waits_out_the_staleness_window(self):
+        """Without a note we are only inferring from a snapshot that stopped
+        moving, and one failed night is not a closure."""
+        data = snapshot([product(t) for t in TREES],
+                        scraped_at="2026-08-23T00:26:29")
+        self.assertNotIn("Closed for the season",
+                         build_nursery_page("guildford", data, {}, today="2026-08-24"))
+        self.assertIn("Closed for the season",
+                      build_nursery_page("guildford", data, {}, today="2026-08-26"))
 
     def test_stale_page_never_claims_current_stock(self):
         """The banner alone is not enough: the labels around it have to move
@@ -213,8 +231,8 @@ class DormantNurseryTests(unittest.TestCase):
         self.assertIn("last in stock", index)
         self.assertNotIn("</strong> in stock", index)
 
-    def test_fresh_index_card_is_unchanged(self):
-        index = build_index_page({"heritage-fruit-trees": self.data}, {}, "2026-08-24")
+    def test_index_card_clears_when_they_are_scraped_again(self):
+        index = build_index_page({"heritage-fruit-trees": self.data}, {}, "2026-08-23")
         self.assertIn("</strong> in stock", index)
         self.assertNotIn("Closed for the season", index)
 
