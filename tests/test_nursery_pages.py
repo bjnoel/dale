@@ -225,6 +225,20 @@ class DormantNurseryTests(unittest.TestCase):
         self.assertIn("Closed for the season", html)
         self.assertNotIn("Low stock period", html)
 
+    def test_no_stray_daily_or_in_stock_claims_survive(self):
+        """Everything on the page has to agree with the banner, including the
+        small print. A page that says checks are paused and then offers daily
+        monitoring three paragraphs later has not really said anything."""
+        html = self.page("2026-08-30")
+        self.assertNotIn("other nurseries daily", html)
+        self.assertIn("weekly while they are closed", html)
+        self.assertNotIn("Showing top 20 in-stock products", html)
+
+    def test_live_page_keeps_the_original_small_print(self):
+        html = self.page("2026-08-23")
+        self.assertIn("other nurseries daily", html)
+        self.assertNotIn("weekly while they are closed", html)
+
     def test_index_card_agrees_with_the_profile_page(self):
         index = build_index_page({"heritage-fruit-trees": self.data}, {}, "2026-08-30")
         self.assertIn("Closed for the season", index)

@@ -377,6 +377,13 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
     freshness_line = (f"Stock checks paused. Last checked: {scraped_at_fmt}."
                       if dormant else
                       f"Data updated daily. Last checked: {scraped_at_fmt}.")
+    top20_caption = ("Showing the top 20 products from that last check"
+                     if dormant else "Showing top 20 in-stock products")
+    # The alert offer is the most useful thing on a closed nursery's page, so it
+    # stays. Its cadence claim does not survive the backoff, though, and "daily"
+    # on the one page that just said checks are paused is the sort of small lie
+    # that costs more than the sentence is worth.
+    monitor_cadence = "weekly while they are closed" if dormant else "daily"
 
     restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold ml-2">{restrict}</span>' if restrict else ''
     tag_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded mr-1 mb-1 whitespace-nowrap">{t}</span>' for t in tags)
@@ -502,7 +509,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
           </tbody>
         </table>
       </div>
-      {'<div class="px-4 py-2 border-t border-gray-200 text-xs text-gray-500">Showing top 20 in-stock products. <a href="/?nursery=' + nursery_key + '" class="text-green-700 hover:underline">See all →</a></div>' if has_more_products else ''}
+      {'<div class="px-4 py-2 border-t border-gray-200 text-xs text-gray-500">' + top20_caption + '. <a href="/?nursery=' + nursery_key + '" class="text-green-700 hover:underline">See all →</a></div>' if has_more_products else ''}
     </div>
   </div>
 
@@ -511,7 +518,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
   <!-- Subscribe CTA -->
   <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-sm">
     <p class="font-medium text-green-800 mb-1">Get restock alerts for {name}</p>
-    <p class="text-gray-600 mb-3">We monitor {name} and {nursery_count_minus_one} other nurseries daily. Free email when varieties restock or prices drop.</p>
+    <p class="text-gray-600 mb-3">We monitor {name} and {nursery_count_minus_one} other nurseries {monitor_cadence}. Free email when varieties restock or prices drop.</p>
     <form id="nurserySubForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
       <input type="email" id="nurserySubEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
