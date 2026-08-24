@@ -54,6 +54,7 @@ NAV_ITEMS = [
         ("Fruit Tree Pollination", "/fruit-tree-pollination-guide.html"),
         ("Rootstock Guide", "/rootstock.html"),
     ]),
+    ("My alerts", "/manage.html"),
     ("Insights", [
         ("Digest", "/digest.html"),
         ("History", "/history.html"),
@@ -187,9 +188,11 @@ def render_footer(max_width: str = CONTENT_MAX_WIDTH, extra_text: str = "") -> s
         '<a href="/compare/nurseries.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare Nurseries</a>'
         ' &middot; '
         '<a href="/treesmith.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Treesmith app</a>'
-        ' &middot; '
-        '<a href="/manage.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Manage email alerts</a>'
     )
+    # "My alerts" is in NAV_ITEMS now, and render_footer iterates the same
+    # list, so leaving it here too would print it twice in the footer. It was
+    # footer-only until 2026-08-24, which is a strange place for the one page a
+    # subscriber ever needs to find.
 
     extra = ""
     if extra_text:

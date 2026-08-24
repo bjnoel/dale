@@ -79,6 +79,20 @@ WATCH_NOTICE_RATE_LIMIT_SECONDS = 3600
 
 # Every POST this server accepts is a handful of fields. 8KB is far above any
 # real payload and far below anything worth parsing from a stranger.
+# One list, because there were four copies of it and this adds a fifth caller.
+VALID_STATES = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
+
+# Every POST route this server answers. Named so a test can assert a new
+# action landed on an existing path: a genuinely new endpoint also needs a
+# Caddy allowlist entry, and forgetting that ships a 404 to real people.
+ALLOWED_POST_PATHS = (
+    "/subscribe", "/api/subscribe",
+    "/watch-variety", "/api/watch-variety",
+    "/unwatch-variety", "/api/unwatch-variety",
+    "/wishlist", "/api/wishlist",
+    "/request-manage-link", "/api/request-manage-link",
+)
+
 MAX_BODY_BYTES = 8192
 
 # Bounds the blast radius of one forged address. Not spoofable, unlike the IP.
@@ -144,6 +158,17 @@ def init_variety_watches_db():
         -- "DELETE WHERE ts < ?" is the pruning the JSON files do not get.
         -- Rows are deleted once they leave the window, so this holds at most
         -- an hour of addresses.
+        -- State lives on the PERSON, not the watch. A column on `watches`
+        -- would let one person's two watches disagree about where they live,
+        -- and the alert sender asks the question once per address. Absent or
+        -- 'ALL' means no filtering, which is what all 104 pre-existing
+        -- watchers read as, so adding this changes nobody's mail until they
+        -- set a state.
+        CREATE TABLE IF NOT EXISTS watcher_prefs (
+            email      TEXT PRIMARY KEY,
+            state      TEXT NOT NULL DEFAULT 'ALL',
+            updated_at TEXT NOT NULL
+        );
         CREATE TABLE IF NOT EXISTS watch_attempts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             ip TEXT NOT NULL,
@@ -573,8 +598,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
 
         if parsed.path in ("/confirm", "/api/confirm"):
             state = params.get("state", "ALL").upper().strip()
-            valid_states = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
-            if state not in valid_states:
+            if state not in VALID_STATES:
                 state = "ALL"
 
             if not email or not token:
@@ -748,13 +772,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             self._handle_admin_decide()
             return
 
-        if path not in (
-            "/subscribe", "/api/subscribe",
-            "/watch-variety", "/api/watch-variety",
-            "/unwatch-variety", "/api/unwatch-variety",
-            "/wishlist", "/api/wishlist",
-            "/request-manage-link", "/api/request-manage-link",
-        ):
+        if path not in ALLOWED_POST_PATHS:
             self.send_error(404)
             return
 
@@ -919,9 +937,27 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                                  f"{MAX_WATCHES_PER_ADDRESS} varieties, which "
                                  f"is the limit."})
                     return
+            # Optional state, sent by dashboard.js when the visitor has already
+            # picked one in the homepage state filter. Deliberately NOT a field
+            # on the watch form: the digest signup has a state dropdown and took
+            # 12 signups in five months, the email-only watch pill took 104, and
+            # the one-tap flow is the thing that works. This costs the visitor
+            # nothing and only fires when they have already told us.
+            # Never downgrades an existing preference to ALL.
+            watch_state = str(data.get("state") or "").upper()
+            if watch_state and watch_state not in VALID_STATES:
+                watch_state = ""
+
             added_at = datetime.now().isoformat()
             try:
                 con = sqlite3.connect(VARIETY_WATCHES_DB)
+                if watch_state and watch_state != "ALL":
+                    con.execute(
+                        "INSERT INTO watcher_prefs (email, state, updated_at) VALUES (?, ?, ?) "
+                        "ON CONFLICT(email) DO UPDATE SET state=excluded.state, "
+                        "updated_at=excluded.updated_at",
+                        (email, watch_state, added_at),
+                    )
                 cur = con.execute(
                     "INSERT OR IGNORE INTO watches (email, variety_slug, species_slug, variety_title, added_at) "
                     "VALUES (?, ?, ?, ?, ?)",
@@ -1073,6 +1109,26 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 self.send_html(200, "<h2>Not found</h2><p>That email wasn't in our subscriber list.</p>")
             return
 
+        # Set the state used to filter variety alerts. Separate action from
+        # update_preferences because that one edits subscribers.json and 404s
+        # for an address that is not a digest subscriber -- which is 98 of the
+        # 104 watchers. Same path and same token, so no new endpoint and no
+        # Caddy allowlist entry.
+        if action == "update_watch_state":
+            if not verify_unsubscribe_token(email, token):
+                self.send_json(403, {"error": "Invalid token"})
+                return
+            is_json = self.headers.get("Content-Type", "").startswith("application/json")
+            new_state = (data.get("state", "") if is_json
+                         else params.get("state", [""])[0]).upper().strip()
+            if new_state not in VALID_STATES:
+                self.send_json(400, {"error": f"Invalid state. Must be one of: {', '.join(sorted(VALID_STATES))}"})
+                return
+            self._set_watch_state(email, new_state)
+            print(f"Watch state updated: {email} -> {new_state}")
+            self.send_json(200, {"message": "Alert state updated", "state": new_state})
+            return
+
         # Handle preferences update
         if action == "update_preferences":
             if not verify_unsubscribe_token(email, token):
@@ -1090,9 +1146,8 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 raw_plant_categories = params.get("plant_categories")
                 raw_frequency = params.get("frequency", [None])[0]
 
-            valid_states = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
-            if new_state not in valid_states:
-                self.send_json(400, {"error": f"Invalid state. Must be one of: {', '.join(sorted(valid_states))}"})
+            if new_state not in VALID_STATES:
+                self.send_json(400, {"error": f"Invalid state. Must be one of: {', '.join(sorted(VALID_STATES))}"})
                 return
 
             # Normalise categories: must be a list when provided.
@@ -1159,6 +1214,10 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 self.send_json(404, {"error": "Subscriber not found"})
                 return
             save_subscribers(subscribers)
+            # 6 of the 104 watchers are also digest subscribers. If one of them
+            # sets a state here, their variety alerts should honour it too
+            # rather than quietly disagreeing with their digest.
+            self._set_watch_state(email, new_state)
             log_extras = []
             if new_categories is not None:
                 log_extras.append(f"categories={','.join(new_categories) or '(none)'}")
@@ -1188,8 +1247,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             sub_state = data.get("state", "ALL").upper().strip()
         else:
             sub_state = params.get("state", ["ALL"])[0].upper().strip()
-        valid_states = {"ALL", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"}
-        if sub_state not in valid_states:
+        if sub_state not in VALID_STATES:
             sub_state = "ALL"
 
         # Check for existing pending entry (don't spam confirmation emails)
@@ -1297,6 +1355,36 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             # per-address cap is untouched by this.
             print(f"Warning: watch rate-limit check failed ({e}); allowing")
             return False
+
+    def _set_watch_state(self, email: str, state: str) -> None:
+        """Record the state used to filter this address's variety alerts.
+
+        'ALL' is stored rather than deleted so the manage page can show that
+        the choice was made deliberately, and so a later read cannot mistake
+        "chose everywhere" for "never asked".
+        """
+        try:
+            con = sqlite3.connect(VARIETY_WATCHES_DB)
+            con.execute(
+                "INSERT INTO watcher_prefs (email, state, updated_at) VALUES (?, ?, ?) "
+                "ON CONFLICT(email) DO UPDATE SET state=excluded.state, "
+                "updated_at=excluded.updated_at",
+                (email, state, datetime.now().isoformat()),
+            )
+            con.commit()
+            con.close()
+        except sqlite3.Error as e:
+            print(f"WARNING: could not save watch state for {email}: {e}")
+
+    def _get_watch_state(self, email: str) -> str:
+        try:
+            con = sqlite3.connect(VARIETY_WATCHES_DB)
+            row = con.execute("SELECT state FROM watcher_prefs WHERE email = ?",
+                              (email,)).fetchone()
+            con.close()
+            return row[0] if row else "ALL"
+        except sqlite3.Error:
+            return "ALL"
 
     def _watch_count(self, email: str) -> int:
         try:
@@ -1576,15 +1664,40 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
 
     def send_watch_only_page(self, email: str, token: str):
         """Manage page for an address that holds variety watches but is not a
-        digest subscriber. No state/category/frequency controls, because none
-        of them apply: the only thing this person receives is variety alerts."""
+        digest subscriber. No category or frequency controls, because neither
+        applies: the only thing this person receives is variety alerts. State
+        DOES apply, and this is where we ask for it -- not on the watch form,
+        which stays one tap."""
+        current_state = self._get_watch_state(email)
+        options = "".join(
+            f'<option value="{st}"{" selected" if st == current_state else ""}>'
+            f'{"Anywhere in Australia" if st == "ALL" else st}</option>'
+            for st in ["ALL"] + sorted(VALID_STATES - {"ALL"})
+        )
         body = f"""
 <h2 style="color:#065f46;margin:0 0 8px">Your variety alerts</h2>
 <p style="color:#6b7280;font-size:0.9rem;margin:0 0 24px">{html.escape(email)}</p>
 
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 16px;margin:0 0 24px">
+  <label for="watchState" style="display:block;font-weight:600;color:#065f46;margin:0 0 6px">
+    Where do you want to buy?
+  </label>
+  <p style="color:#6b7280;font-size:0.85rem;margin:0 0 10px">
+    Pick your state and we will only email you about stock you can actually
+    get delivered there. Leave it on Anywhere to hear about every nursery.
+  </p>
+  <select id="watchState" style="padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:0.9rem">
+    {options}
+  </select>
+  <button id="saveState" style="background:#15803d;border:none;color:white;padding:8px 16px;border-radius:8px;font-size:0.85rem;cursor:pointer;margin-left:8px">
+    Save
+  </button>
+  <p id="stateMsg" style="font-size:0.85rem;min-height:1.2em;margin:8px 0 0"></p>
+</div>
+
 <p style="color:#6b7280;font-size:0.85rem;margin:0 0 8px">
   We email you when one of these comes back in stock, or drops in price, at any
-  nursery we track. Nothing else.
+  nursery we track that can reach you. Nothing else.
 </p>
 <div id="varietyWatches" style="margin:0 0 24px">
 {self._variety_watch_rows(email)}
@@ -1600,6 +1713,36 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
   <a href="https://treestock.com.au" style="color:#6b7280">treestock.com.au</a>
 </p>
 <script>
+document.getElementById('saveState').addEventListener('click', async function() {{
+  const msg = document.getElementById('stateMsg');
+  const btn = this;
+  btn.disabled = true;
+  try {{
+    const resp = await fetch('/api/subscribe', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{
+        email: {json.dumps(email)}, token: {json.dumps(token)},
+        action: 'update_watch_state',
+        state: document.getElementById('watchState').value
+      }})
+    }});
+    const data = await resp.json().catch(function() {{ return {{}}; }});
+    if (resp.ok) {{
+      msg.style.color = '#065f46';
+      msg.textContent = data.state === 'ALL'
+        ? 'Saved. You will hear about every nursery we track.'
+        : 'Saved. We will only email you about stock you can get in ' + data.state + '.';
+    }} else {{
+      msg.style.color = '#dc2626';
+      msg.textContent = data.error || 'Could not save that.';
+    }}
+  }} catch (err) {{
+    msg.style.color = '#dc2626';
+    msg.textContent = 'Network error.';
+  }}
+  btn.disabled = false;
+}});
 async function removeVariety(slug) {{
   try {{
     const resp = await fetch('/api/unwatch-variety', {{

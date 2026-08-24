@@ -283,6 +283,12 @@ async function submitWatch(wrap, email) {
         email: email,
         variety_slug: slug,
         species_slug: wrap.dataset.sp || '',
+        // The state they already chose in the filter, if they chose one. Free
+        // signal, no extra field: alerts can then skip nurseries that cannot
+        // deliver to them. Deliberately not a form field -- the digest signup
+        // has a state dropdown and took 12 signups in five months, this
+        // one-tap pill took 104. Blank means "no preference", never a downgrade.
+        state: stateFilter.value || '',
         // Honeypot: hidden, off the tab order, never filled by a person.
         website: (wrap.querySelector('.watch-hp') || {}).value || ''
       })

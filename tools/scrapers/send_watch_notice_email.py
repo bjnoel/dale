@@ -145,9 +145,18 @@ def build_html(email: str, token: str, watches: list[tuple[str, str]],
       </tbody>
     </table>
 
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 14px;margin:20px 0 0">
+      <p style="margin:0;color:#374151;font-size:0.85em">
+        &#128205; <strong>Only want stock you can actually get?</strong>
+        Tell us your state and we will skip nurseries that cannot deliver
+        there. Right now more than half the varieties people watch cannot be
+        bought in WA at all.
+      </p>
+    </div>
+
     <div style="margin-top:20px">
       <a href="{_html.escape(manage_url, quote=True)}" style="display:inline-block;background:#15803d;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;font-size:0.9em;font-weight:500">
-        See all my alerts
+        Set my state and see my alerts
       </a>
     </div>
 
