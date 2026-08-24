@@ -4,11 +4,24 @@ Send per-variety alerts to subscribers watching specific cultivars.
 
 Two triggers, compared against yesterday's data:
 
-  restock     the variety had 0 in-stock listings anywhere yesterday and has
-              at least one today. Deliberately measured at VARIETY level across
-              all nurseries, not per variant: a collector cares that the thing
-              is buyable somewhere, not that one nursery's Large flipped while
-              its Small was available the whole time.
+  restock     the variety had 0 in-stock listings yesterday and has at least
+              one today, among the nurseries THAT WATCHER CAN ACTUALLY BUY
+              FROM. Measured at VARIETY level, not per variant: a collector
+              cares that the thing is buyable, not that one nursery's Large
+              flipped while its Small was available the whole time.
+
+              The state filter is part of the TRIGGER, not just the email, and
+              that is the whole point. Filtering only the email would stop the
+              dead-link sends but leave the worse failure in place: on
+              2026-08-24, 21 of the 36 watched varieties then in stock (58%)
+              could not be bought from WA at all. avocado-shepard was in stock
+              at Fruitopia and Ladybird, neither of which ships WA, so the
+              global count was 2. If Guildford in Perth listed one, it would go
+              2 -> 3 and never touch 0, and a Perth watcher would never be
+              told. Their count is 0 -> 1, so they are.
+
+              A watcher with no state set reads as ALL, which is exactly the
+              old behaviour, so the 104 existing watchers see no change.
 
   price drop  a single variant of a watched variety fell by at least
               MIN_DROP_PCT and MIN_DROP_ABS while staying in stock. Measured at
@@ -113,6 +126,7 @@ TREESMITH_PROMO = (
 
 from stocklib.classify import is_real_product
 from stocklib.snapshots import snapshot_path_for_date
+from stocklib.registry import delivery_label, nursery_caveat_for_state, nursery_ships_to
 from stocklib.scrape_health import HEALTH_DIRNAME, untrusted_nurseries
 from stocklib.utm import outbound
 from stocklib import changes as _changes
@@ -199,6 +213,43 @@ def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
     return products
 
 
+ANY_STATE = "ALL"
+
+
+def reachable(nursery_key: str, state: str) -> bool:
+    """Can someone in `state` actually buy from this nursery?
+
+    Local-delivery and pickup-only nurseries count as reachable within their
+    own state (Benedict's call, 2026-08-24): most of the WA rare-fruit
+    community is Perth metro, and a Guildford pickup is a real option. The
+    email says which they are, via delivery_label(), so a Broome reader is not
+    misled -- see build_variety_alert_email.
+
+    KNOWN LIMIT: shipping is modelled per nursery, never per product. Heaven On
+    Earth's citrus is QLD-only and two All Rare Herbs products are stricter
+    than their nursery record; registry.py says so at both records. Those still
+    slip through.
+    """
+    if not state or state == ANY_STATE:
+        return True
+    return nursery_ships_to(nursery_key, state)
+
+
+def listings_for_state(listings: list[dict], state: str) -> list[dict]:
+    """The subset of a variety's listings that `state` can buy from."""
+    return [p for p in listings if reachable(p["nursery_key"], state)]
+
+
+def watchers_by_state(watchers: list[dict]) -> dict[str, list[dict]]:
+    """Group a variety's watchers by state, so the 0 -> >0 test runs once per
+    distinct state rather than once per person. At most 9 states against 92
+    watched slugs, so the extra passes are free."""
+    grouped: dict[str, list[dict]] = {}
+    for w in watchers:
+        grouped.setdefault(w.get("state") or ANY_STATE, []).append(w)
+    return grouped
+
+
 def in_stock_by_variety_slug(products: list[dict]) -> dict[str, list[dict]]:
     """Return {variety_slug: [in-stock products]} for all cultivar-named products."""
     by_slug: dict[str, list[dict]] = {}
@@ -235,7 +286,15 @@ def load_watches() -> list[dict]:
         return []
     con = sqlite3.connect(VARIETY_WATCHES_DB)
     con.row_factory = sqlite3.Row
-    rows = con.execute("SELECT email, variety_slug, species_slug, variety_title FROM watches").fetchall()
+    ensure_schema(con)
+    # LEFT JOIN: state lives on the person, not the watch, and most watchers
+    # have never set one. A NULL reads as ALL, i.e. today's behaviour.
+    rows = con.execute("""
+        SELECT w.email, w.variety_slug, w.species_slug, w.variety_title,
+               COALESCE(p.state, ?) AS state
+        FROM watches w
+        LEFT JOIN watcher_prefs p ON p.email = w.email
+    """, (ANY_STATE,)).fetchall()
     con.close()
     return [dict(r) for r in rows]
 
@@ -283,18 +342,33 @@ def subject_safe(title: str) -> str:
 
 
 def ensure_schema(con: sqlite3.Connection) -> None:
-    """Add the alert_type column to `sends` if this DB predates price alerts.
+    """Add the alert_type column to `sends` if this DB predates price alerts,
+    and create watcher_prefs if it predates state-aware alerts.
 
-    Named alert_type and not `trigger`: TRIGGER is a SQLite keyword and would
-    need quoting at every use site. Existing rows are all restocks, which is
-    what the DEFAULT backfills them to.
+    alert_type is named that and not `trigger`: TRIGGER is a SQLite keyword and
+    would need quoting at every use site. Existing rows are all restocks, which
+    is what the DEFAULT backfills them to.
+
+    watcher_prefs is keyed on email, not on a watch: state belongs to the
+    person, and a column on `watches` would let one person's two watches
+    disagree about where they live. Created here as well as in
+    subscribe_server.init_variety_watches_db() because the sender can run
+    against a DB the current server has never opened, and load_watches() LEFT
+    JOINs it.
     """
     cols = {r[1] for r in con.execute("PRAGMA table_info(sends)")}
     if "alert_type" not in cols:
         con.execute(
             f"ALTER TABLE sends ADD COLUMN alert_type TEXT NOT NULL DEFAULT '{RESTOCK}'"
         )
-        con.commit()
+    con.execute("""
+        CREATE TABLE IF NOT EXISTS watcher_prefs (
+            email      TEXT PRIMARY KEY,
+            state      TEXT NOT NULL DEFAULT 'ALL',
+            updated_at TEXT NOT NULL
+        )
+    """)
+    con.commit()
 
 
 def last_sent_map() -> dict[tuple[str, str, str], str]:
@@ -425,7 +499,8 @@ def _nursery_display_name(data_dir: Path, nursery_key: str) -> str:
 
 def build_variety_alert_email(variety_title: str, variety_slug: str,
                               products: list[dict],
-                              alert_type: str = RESTOCK) -> str:
+                              alert_type: str = RESTOCK,
+                              state: str = ANY_STATE) -> str:
     """Build HTML email body for a per-variety restock or price-drop alert.
 
     Everything interpolated into the HTML here is escaped. The variety title is
@@ -433,6 +508,13 @@ def build_variety_alert_email(variety_title: str, variety_slug: str,
     watcher of the slug), but nursery listing titles get the same treatment:
     an unescaped `&` or `<` in a product name is a rendering bug even when
     nobody is being hostile.
+
+    `products` is already filtered to what `state` can buy (see reachable()),
+    so this only has to LABEL the caveats: local-delivery and pickup-only
+    nurseries count as reachable within their own state, and a reader in Broome
+    should not have to reach the checkout to discover that Guildford is Perth
+    metro. Same for Daleys' seasonal WA window and Garden Express's quarantine
+    surcharge, which come from registry.STATE_SHIPPING_NOTES.
     """
     safe_title = _html.escape(variety_title)
     rows = ""
@@ -448,12 +530,22 @@ def build_variety_alert_email(variety_title: str, variety_slug: str,
                 f'${old:.2f}</span>'
             )
         utm_url = outbound(p["url"], "email", campaign="variety-alert")
+        # .get, not []: a missing nursery_key must cost a caveat line, never an
+        # email send. Both producers set it, but this is the last step before
+        # a real message goes out.
+        nkey = p.get("nursery_key", "")
+        note = (nursery_caveat_for_state(nkey, state) if state != ANY_STATE
+                else delivery_label(nkey))
+        note_html = (
+            f'<br><span style="color:#b45309;font-size:0.9em">{_html.escape(note)}</span>'
+            if note else ""
+        )
         rows += f"""
       <tr>
         <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6">
           <a href="{_html.escape(utm_url, quote=True)}" style="color:#15803d;text-decoration:none">{_html.escape(p['title'])}</a>
         </td>
-        <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:0.875em">{_html.escape(p['nursery_name'])}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:0.875em">{_html.escape(p['nursery_name'])}{note_html}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6;font-weight:600">{price_str}</td>
       </tr>"""
 
@@ -636,44 +728,57 @@ def main():
     today_by_variety = in_stock_by_variety_slug(today_products)
     yesterday_by_variety = in_stock_by_variety_slug(yesterday_products)
 
-    # Find restocks: variety going from 0 -> >0 anywhere. Variety level on
-    # purpose: see the module docstring.
+    # Find restocks: variety going from 0 -> >0 among the nurseries a given
+    # watcher can buy from. Once per (slug, state), not once per person.
+    # An alert therefore carries a state, and its products are already the
+    # filtered set, so nothing downstream has to re-filter.
     alerts = []
-    restocked_slugs = set()
+    restocked: set[tuple[str, str]] = set()
     for slug in watched_slugs:
-        today_count = len(today_by_variety.get(slug, []))
-        yesterday_count = len(yesterday_by_variety.get(slug, []))
-        if today_count > 0 and yesterday_count == 0:
-            variety_title = display_title(slug, watchers)
-            restocked_slugs.add(slug)
-            alerts.append({
-                "slug": slug,
-                "alert_type": RESTOCK,
-                "variety_title": variety_title,
-                "products": today_by_variety[slug],
-                "watchers": watchers[slug],
-            })
-            print(f"  RESTOCK: {variety_title} -- {today_count} listing(s) now in stock (was 0)")
+        for state, state_watchers in watchers_by_state(watchers[slug]).items():
+            today_listings = listings_for_state(today_by_variety.get(slug, []), state)
+            yesterday_count = len(listings_for_state(yesterday_by_variety.get(slug, []), state))
+            if today_listings and yesterday_count == 0:
+                variety_title = display_title(slug, watchers)
+                restocked.add((slug, state))
+                alerts.append({
+                    "slug": slug,
+                    "state": state,
+                    "alert_type": RESTOCK,
+                    "variety_title": variety_title,
+                    "products": today_listings,
+                    "watchers": state_watchers,
+                })
+                where = "" if state == ANY_STATE else f" [{state}]"
+                print(f"  RESTOCK{where}: {variety_title} -- "
+                      f"{len(today_listings)} listing(s) now in stock (was 0)")
 
     # Find price drops on watched varieties, variant level (treestock rule 3).
     # A variety that just restocked is skipped: the restock email already
     # carries the old price, so a second email would be the same news twice.
     print("Checking watched varieties for price drops...")
     for slug, dropped in price_drops_by_variety(data_dir, target_date, watched_slugs).items():
-        if slug in restocked_slugs:
-            print(f"  (price drop on {slug} folded into its restock alert)")
-            continue
-        variety_title = display_title(slug, watchers)
-        alerts.append({
-            "slug": slug,
-            "alert_type": PRICE_DROP,
-            "variety_title": variety_title,
-            "products": dropped,
-            "watchers": watchers[slug],
-        })
-        cheapest = min(dropped, key=lambda d: d["price"])
-        print(f"  PRICE DROP: {variety_title} -- ${cheapest['old_price']:.2f} "
-              f"-> ${cheapest['price']:.2f} at {cheapest['nursery_name']}")
+        for state, state_watchers in watchers_by_state(watchers[slug]).items():
+            if (slug, state) in restocked:
+                print(f"  (price drop on {slug} [{state}] folded into its restock alert)")
+                continue
+            # A drop at a nursery this watcher cannot buy from is not news.
+            state_dropped = listings_for_state(dropped, state)
+            if not state_dropped:
+                continue
+            variety_title = display_title(slug, watchers)
+            alerts.append({
+                "slug": slug,
+                "state": state,
+                "alert_type": PRICE_DROP,
+                "variety_title": variety_title,
+                "products": state_dropped,
+                "watchers": state_watchers,
+            })
+            cheapest = min(state_dropped, key=lambda d: d["price"])
+            where = "" if state == ANY_STATE else f" [{state}]"
+            print(f"  PRICE DROP{where}: {variety_title} -- ${cheapest['old_price']:.2f} "
+                  f"-> ${cheapest['price']:.2f} at {cheapest['nursery_name']}")
 
     if not alerts:
         print("No variety restocks or price drops detected. No alerts to send.")
@@ -723,7 +828,8 @@ def main():
             subject = f"{icon} {subject_title} is open for pre-order -- treestock.com.au"
         else:
             subject = f"{icon} {subject_title} is now available -- treestock.com.au"
-        email_html = build_variety_alert_email(variety_title, slug, products, alert_type)
+        email_html = build_variety_alert_email(variety_title, slug, products,
+                                               alert_type, a.get("state", ANY_STATE))
 
         print(f"\n  Sending '{variety_title}' {alert_type} alert to {len(recipients)} watcher(s)...")
         for w in recipients:

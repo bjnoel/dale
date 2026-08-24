@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from cultivar_parsing import product_variety_slug
-from shipping import SHIPPING_MAP, NURSERY_NAMES, delivery_label
+from shipping import SHIPPING_MAP, NURSERY_NAMES, nursery_note_for_state
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
@@ -118,58 +118,18 @@ STATE_GROWING_GUIDE = {
   </section>""",
 }
 
-# Per-state, per-nursery notes that a machine cannot derive: seasonal windows,
-# despatch cadences, surcharges. The DELIVERY half is NOT written here, it comes
-# from delivery_label() in the registry (see nursery_note below).
-#
-# It used to all be hand-written, and that is how "pickup only, Ellenbrook"
-# ended up on the WA page: typed into this dict on 2026-03-16 with no source,
-# contradicted by every other record (the registry, the scraper config and the
-# nursery page all say Perth), and never confirmed with the nursery, which has
-# never been contacted. Their own site names no suburb at all. Anything that can
-# be derived is now derived, so a hand-typed claim has one fewer place to hide.
-STATE_NURSERY_NOTES = {
-    "WA": {
-        "daleys": "seasonal window + extra fee",
-        "fruit-salad-trees": "ships 1st Tuesday/month",
-        "diggers": "ships nationwide",
-        "garden-express": "quarantine surcharge",
-    },
-    "QLD": {
-        "diggers": "ships nationwide",
-        "fruit-salad-trees": "ships nationwide",
-        "daleys": "ships nationwide",
-        "ross-creek": "QLD-based",
-        "ladybird": "QLD-based",
-        "fruitopia": "QLD-based",
-    },
-    "NSW": {
-        "diggers": "ships nationwide",
-        "fruit-salad-trees": "ships nationwide",
-        "daleys": "NSW-based",
-        "ausnurseries": "NSW-based",
-        "fruit-tree-cottage": "QLD-based",
-    },
-    "VIC": {
-        "diggers": "VIC-based, ships nationwide",
-        "fruit-salad-trees": "ships nationwide",
-        "daleys": "ships nationwide",
-        "heritage-fruit-trees": "VIC-based",
-        "fruit-tree-cottage": "ships nationwide",
-    },
-}
+# Per-state nursery notes now live in stocklib.registry.STATE_SHIPPING_NOTES,
+# because the variety alert emails need exactly the same thing and
+# tests/test_no_forking.py exists to stop a second copy appearing. The delivery
+# half is derived from delivery_label() rather than typed: that is how
+# "pickup only, Ellenbrook" survived here for five months, a suburb no record
+# supports, contradicted by the registry, the scraper config and the nursery's
+# own site, on a nursery that has never been contacted.
 
 
 def nursery_note(state: str, key: str) -> str:
-    """The note shown beside a nursery on a state page.
-
-    Delivery limits come from the registry so they cannot drift or go missing.
-    Before this, Perth Mobile Nursery, St Clements and Garden Express showed no
-    note at all on the WA page despite being metro-delivery-only, WA-only and
-    surcharged respectively, while All Season Plants showed an invented suburb.
-    """
-    parts = [p for p in (delivery_label(key), STATE_NURSERY_NOTES.get(state, {}).get(key, "")) if p]
-    return ", ".join(parts)
+    """The note shown beside a nursery on a state page."""
+    return nursery_note_for_state(key, state)
 
 # Cross-state links per state
 CROSS_LINKS = {

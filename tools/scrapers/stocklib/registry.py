@@ -198,6 +198,74 @@ def delivery_label(nursery_key: str) -> str:
     return f"{local['area']} only" if local else ""
 
 
+# Per-state notes a machine cannot derive from ships_to. Split in two because
+# the two surfaces want different things: a state page can happily say
+# "ships nationwide" as reassurance, but an alert email renders these as an
+# amber caveat line, and "ships nationwide" styled as a warning is silly.
+#
+# CAVEATS are real limits or costs the buyer should know before clicking.
+STATE_SHIPPING_CAVEATS: dict[str, dict[str, str]] = {
+    "WA": {
+        "daleys": "seasonal window + extra fee",
+        "fruit-salad-trees": "ships 1st Tuesday/month",
+        "garden-express": "quarantine surcharge",
+    },
+    "NT": {
+        "garden-express": "quarantine surcharge",
+    },
+    "TAS": {
+        "garden-express": "quarantine surcharge",
+        "fruit-salad-trees": "ships 1st Tuesday/month",
+    },
+}
+
+# FLAVOUR is orientation for a state page, never a warning.
+STATE_NURSERY_FLAVOUR: dict[str, dict[str, str]] = {
+    "WA": {
+        "diggers": "ships nationwide",
+    },
+    "QLD": {
+        "diggers": "ships nationwide",
+        "fruit-salad-trees": "ships nationwide",
+        "daleys": "ships nationwide",
+        "ross-creek": "QLD-based",
+        "ladybird": "QLD-based",
+        "fruitopia": "QLD-based",
+    },
+    "NSW": {
+        "diggers": "ships nationwide",
+        "fruit-salad-trees": "ships nationwide",
+        "daleys": "NSW-based",
+        "ausnurseries": "NSW-based",
+        "fruit-tree-cottage": "QLD-based",
+    },
+    "VIC": {
+        "diggers": "VIC-based, ships nationwide",
+        "fruit-salad-trees": "ships nationwide",
+        "daleys": "ships nationwide",
+        "heritage-fruit-trees": "VIC-based",
+        "fruit-tree-cottage": "ships nationwide",
+    },
+}
+
+
+def nursery_caveat_for_state(nursery_key: str, state: str) -> str:
+    """What a buyer in `state` should know BEFORE clicking through, e.g.
+    'Perth metro only' or 'seasonal window + extra fee'. Empty when there is
+    nothing to warn about. This is the one the alert emails use."""
+    parts = [p for p in (delivery_label(nursery_key),
+                         STATE_SHIPPING_CAVEATS.get(state, {}).get(nursery_key, "")) if p]
+    return ", ".join(parts)
+
+
+def nursery_note_for_state(nursery_key: str, state: str) -> str:
+    """The caveat, plus orientation flavour. Used on the state pages, which
+    have room for 'ships nationwide' and benefit from saying it."""
+    parts = [p for p in (nursery_caveat_for_state(nursery_key, state),
+                         STATE_NURSERY_FLAVOUR.get(state, {}).get(nursery_key, "")) if p]
+    return ", ".join(parts)
+
+
 def nursery_location(nursery_key: str, fallback: str = "Australia") -> str:
     """Return a nursery's town/suburb and state, e.g. 'Kyogle, NSW'.
 

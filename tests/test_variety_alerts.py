@@ -455,3 +455,164 @@ class PreOrderWordingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StateReachabilityTests(unittest.TestCase):
+    """Which nurseries a watcher in a given state can actually buy from.
+
+    Benedict's call (2026-08-24): local delivery and pickup within the
+    watcher's own state count as reachable, because most of the WA rare-fruit
+    community is Perth metro and a Guildford pickup is a real option. The email
+    labels them so a Broome reader is not misled.
+    """
+
+    def test_no_state_reaches_everything(self):
+        for state in ("", None, alerts.ANY_STATE):
+            with self.subTest(state=state):
+                self.assertTrue(alerts.reachable("ross-creek", state))
+
+    def test_a_qld_only_nursery_is_unreachable_from_wa(self):
+        self.assertFalse(alerts.reachable("ross-creek", "WA"))
+        self.assertFalse(alerts.reachable("ladybird", "WA"))
+        self.assertFalse(alerts.reachable("fruitopia", "WA"))
+
+    def test_the_statewide_shippers_reach_wa(self):
+        """Benedict asked to confirm this explicitly."""
+        for key in ("daleys", "diggers", "garden-express", "fruit-salad-trees"):
+            with self.subTest(nursery=key):
+                self.assertTrue(alerts.reachable(key, "WA"))
+
+    def test_perth_local_nurseries_count_as_wa(self):
+        for key in ("guildford", "primal-fruits", "perth-mobile-nursery",
+                    "all-season-plants-wa", "st-clements-citrus"):
+            with self.subTest(nursery=key):
+                self.assertTrue(alerts.reachable(key, "WA"))
+
+    def test_an_unknown_nursery_is_not_assumed_reachable(self):
+        self.assertFalse(alerts.reachable("no-such-nursery", "WA"))
+
+    def test_listings_are_filtered_not_reordered(self):
+        listings = [{"nursery_key": "daleys"}, {"nursery_key": "ross-creek"},
+                    {"nursery_key": "guildford"}]
+        self.assertEqual(alerts.listings_for_state(listings, "WA"),
+                         [{"nursery_key": "daleys"}, {"nursery_key": "guildford"}])
+        self.assertEqual(alerts.listings_for_state(listings, alerts.ANY_STATE), listings)
+
+    def test_watchers_group_by_state_with_null_as_all(self):
+        grouped = alerts.watchers_by_state([
+            {"email": "a@x", "state": "WA"},
+            {"email": "b@x", "state": None},
+            {"email": "c@x", "state": "WA"},
+            {"email": "d@x"},
+        ])
+        self.assertEqual(sorted(grouped), [alerts.ANY_STATE, "WA"])
+        self.assertEqual(len(grouped["WA"]), 2)
+        self.assertEqual(len(grouped[alerts.ANY_STATE]), 2)
+
+
+class StateAwareTriggerTests(unittest.TestCase):
+    """The two failure modes this replaces, both measured live on 2026-08-24
+    when 21 of 36 watched-and-in-stock varieties were unbuyable from WA."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.db = Path(self.tmp.name) / "variety_watches.db"
+        _make_db(self.db)
+        self._orig = alerts.VARIETY_WATCHES_DB
+        alerts.VARIETY_WATCHES_DB = self.db
+
+    def tearDown(self):
+        alerts.VARIETY_WATCHES_DB = self._orig
+        self.tmp.cleanup()
+
+    def _watch(self, email, slug, state=None):
+        con = sqlite3.connect(self.db)
+        alerts.ensure_schema(con)
+        con.execute("INSERT OR IGNORE INTO watches "
+                    "(email, variety_slug, species_slug, variety_title, added_at) "
+                    "VALUES (?,?,?,?,?)", (email, slug, "avocado", slug, "2026-08-01"))
+        if state:
+            con.execute("INSERT INTO watcher_prefs (email, state, updated_at) "
+                        "VALUES (?,?,?)", (email, state, "2026-08-01"))
+        con.commit()
+        con.close()
+
+    def test_state_is_read_onto_the_watch(self):
+        self._watch("perth@example.com", "avocado-shepard", "WA")
+        self._watch("anywhere@example.com", "avocado-shepard")
+        by_email = {w["email"]: w["state"] for w in alerts.load_watches()}
+        self.assertEqual(by_email["perth@example.com"], "WA")
+        self.assertEqual(by_email["anywhere@example.com"], alerts.ANY_STATE)
+
+    def test_watcher_prefs_is_created_on_a_db_that_predates_it(self):
+        """The live DB has never had this table. load_watches LEFT JOINs it."""
+        con = sqlite3.connect(self.db)
+        con.execute("DROP TABLE IF EXISTS watcher_prefs")
+        con.commit()
+        con.close()
+        self._watch("a@example.com", "avocado-hass")
+        self.assertEqual(alerts.load_watches()[0]["state"], alerts.ANY_STATE)
+
+    # --- the two failure modes, as data ---------------------------------
+
+    QLD_ONLY = [{"nursery_key": "fruitopia", "nursery_name": "Fruitopia"},
+                {"nursery_key": "ladybird", "nursery_name": "Ladybird"}]
+    PERTH = [{"nursery_key": "guildford", "nursery_name": "Guildford"}]
+
+    def test_false_alert_a_wa_watcher_sees_no_restock_from_a_qld_only_nursery(self):
+        """avocado-pinkerton: emailed "back in stock" at Ross Creek, which
+        cannot ship to WA. A dead link."""
+        self.assertEqual(alerts.listings_for_state(self.QLD_ONLY, "WA"), [])
+
+    def test_silent_miss_a_wa_arrival_fires_even_though_the_global_count_never_hits_zero(self):
+        """The worse one, and the reason state filters the TRIGGER.
+
+        avocado-shepard was in stock at Fruitopia and Ladybird, neither of
+        which ships WA. Yesterday's global count was 2. When Guildford in Perth
+        lists one it goes 2 -> 3, never 0, so the old global test never fired
+        and a Perth watcher was never told.
+        """
+        yesterday = self.QLD_ONLY
+        today = self.QLD_ONLY + self.PERTH
+
+        # Globally there is no restock: 2 -> 3, never zero.
+        self.assertGreater(len(alerts.listings_for_state(yesterday, alerts.ANY_STATE)), 0)
+        self.assertGreater(len(alerts.listings_for_state(today, alerts.ANY_STATE)), 0)
+
+        # For WA it is exactly the 0 -> 1 the alert exists for.
+        self.assertEqual(len(alerts.listings_for_state(yesterday, "WA")), 0)
+        self.assertEqual(len(alerts.listings_for_state(today, "WA")), 1)
+
+    # --- the email ------------------------------------------------------
+
+    def test_the_email_labels_a_perth_metro_nursery(self):
+        html = alerts.build_variety_alert_email(
+            "Avocado - Shepard", "avocado-shepard",
+            [{"nursery_key": "guildford", "nursery_name": "Guildford Garden Centre",
+              "title": "Avocado Shepard", "url": "https://x/", "price": 89.0}],
+            alerts.RESTOCK, "WA")
+        self.assertIn("Perth metro only", html)
+
+    def test_the_email_carries_the_per_state_shipping_caveat(self):
+        html = alerts.build_variety_alert_email(
+            "Avocado - Hass", "avocado-hass",
+            [{"nursery_key": "daleys", "nursery_name": "Daleys",
+              "title": "Avocado Hass", "url": "https://x/", "price": 49.0}],
+            alerts.RESTOCK, "WA")
+        self.assertIn("seasonal window", html)
+
+    def test_an_unrestricted_shipper_gets_no_caveat_line(self):
+        html = alerts.build_variety_alert_email(
+            "Avocado - Hass", "avocado-hass",
+            [{"nursery_key": "ross-creek", "nursery_name": "Ross Creek",
+              "title": "Avocado Hass", "url": "https://x/", "price": 49.0}],
+            alerts.RESTOCK, "QLD")
+        self.assertNotIn("#b45309", html)
+
+    def test_a_missing_nursery_key_costs_a_caveat_not_the_email(self):
+        html = alerts.build_variety_alert_email(
+            "Avocado - Hass", "avocado-hass",
+            [{"nursery_name": "Somewhere", "title": "Avocado Hass",
+              "url": "https://x/", "price": 49.0}],
+            alerts.RESTOCK, "WA")
+        self.assertIn("Avocado Hass", html)
