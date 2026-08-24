@@ -124,8 +124,26 @@ class TestPostRenameWindow(unittest.TestCase):
             pulled_at="2026-08-27T22:40:00Z")
         text, html = ta.render(base_metrics(sources=sources_metric(split)))
         self.assertIn("40.0% -> 75.0% (+35.0 points)", text)
-        self.assertIn("Impressions (pre / post)", text)
         self.assertIn(ta.GREEN, html)
+        # Rates, never the two totals side by side: the windows are never the
+        # same length and the pre-rename one reaches back through months when
+        # the app was near-silent. On real data the lifetime rate was 19.1/day
+        # against 36.2/day for the 28 days before the rename, so quoting the
+        # lifetime figure alone understated the baseline by nearly half.
+        self.assertIn("Impressions/day", text)
+        self.assertIn("lifetime", text)
+        self.assertIn("before", text)
+        self.assertNotIn("Impressions (pre / post)", text)
+
+    def test_a_short_post_window_is_labelled_not_a_trend(self):
+        split = asrc.split_on_rename(
+            series(("2026-08-10", asrc.SOURCE_SEARCH, 40),
+                   ("2026-08-21", asrc.SOURCE_SEARCH, 400)),
+            pulled_at="2026-08-27T22:40:00Z")
+        text, _ = ta.render(base_metrics(sources=sources_metric(split)))
+        # A 10x jump on ONE day must not read as a result.
+        self.assertIn("Not a trend yet", text)
+        self.assertIn("1 complete post-rename day", text)
 
     def test_a_fall_in_search_share_is_coloured_red(self):
         split = asrc.split_on_rename(

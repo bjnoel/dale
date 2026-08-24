@@ -158,6 +158,14 @@ RENAME_DATE = "2026-08-19"
 # is when a post-rename window first exists at all.
 INCOMPLETE_TAIL_DAYS = 3
 
+# The pre-rename window runs back to the app's first impression, and its early
+# months are near-silent: the full 108-day pre-rename mean is 19.1 impressions a
+# day, while the last 28 days before the rename average 45. Reporting the
+# lifetime rate next to a post-rename rate overstates any change by more than
+# double, purely because of what the old window contains. So a trailing window
+# is carried alongside it as the comparable baseline.
+RECENT_BASELINE_DAYS = 28
+
 # Apple's Event values for this report. Everything else is counted into
 # `unknown_events` and reported, never silently dropped.
 EVENT_IMPRESSION = "Impression"
@@ -805,6 +813,11 @@ def _accumulate(records):
     window["days"] = sorted(window["days"])
     window["day_count"] = len(window["days"])
     window["search_share"] = _search_share(window)
+    # Per DAY, not per window. Windows either side of the rename are never the
+    # same length -- on the first readable day it is 108 against 1 -- so the
+    # totals are not comparable and only the rate is.
+    window["per_day"] = (round(window["impressions"] / window["day_count"], 1)
+                         if window["day_count"] else None)
     return window
 
 
@@ -830,8 +843,9 @@ def split_on_rename(records, rename_date=RENAME_DATE, pulled_at=None,
     cutoff = last_complete_date(stamp, tail)
     boundary = _as_date(rename_date)
 
-    pre, post, boundary_rows = [], [], []
+    pre, post, boundary_rows, pre_recent = [], [], [], []
     excluded = set()
+    recent_from = boundary - datetime.timedelta(days=RECENT_BASELINE_DAYS)
     for record in view.values():
         date = _as_date(record["date"])
         if date > cutoff:
@@ -839,6 +853,8 @@ def split_on_rename(records, rename_date=RENAME_DATE, pulled_at=None,
             continue
         if date < boundary:
             pre.append(record)
+            if date >= recent_from:
+                pre_recent.append(record)
         elif date == boundary:
             boundary_rows.append(record)
         else:
@@ -850,9 +866,11 @@ def split_on_rename(records, rename_date=RENAME_DATE, pulled_at=None,
         "last_complete_date": cutoff.isoformat(),
         "excluded_incomplete": sorted(excluded),
         "pre": _accumulate(pre),
+        "pre_recent": _accumulate(pre_recent),
         "post": _accumulate(post),
         "boundary": _accumulate(boundary_rows),
         "has_post_window": bool(post),
+        "recent_baseline_days": RECENT_BASELINE_DAYS,
         "latest_date": max((r["date"] for r in view.values()), default=None),
     }
     return result
@@ -992,7 +1010,20 @@ def render(split, meta=None, anomalies=None):
             lines.append(f"Search share {pre_share}% -> {post_share}% "
                          f"({post_share - pre_share:+.1f} points) across "
                          f"{split['post']['day_count']} complete post-rename days")
-            lines.append("")
+        # Rates, and BOTH pre-rename rates. The lifetime one is the honest
+        # denominator for "how big is this app"; the trailing one is the only
+        # fair thing to compare a handful of post-rename days against.
+        recent = split["pre_recent"]
+        lines.append(
+            f"Impressions/day  {split['pre']['per_day']} lifetime "
+            f"({split['pre']['day_count']}d)  ·  {recent['per_day']} over the "
+            f"{split['recent_baseline_days']}d before the rename  ->  "
+            f"{split['post']['per_day']} ({split['post']['day_count']}d)")
+        if split["post"]["day_count"] < 7:
+            lines.append(f"  {split['post']['day_count']} post-rename day(s) is "
+                         f"not a trend. Daily impressions in the 28 days before "
+                         f"the rename already ranged widely; wait for a full week.")
+        lines.append("")
 
     if split["boundary"]["day_count"]:
         b = split["boundary"]

@@ -1014,9 +1014,25 @@ def render(metrics):
                 else:
                     kv("Search share of impressions",
                        f"{_pct_or_na(pre_share)} -> {_pct_or_na(post_share)}")
-                kv("Impressions (pre / post)",
-                   f"{pre['impressions']:,} over {pre['day_count']}d  ->  "
-                   f"{post['impressions']:,} over {post['day_count']}d")
+                # Rates, never the two totals side by side. The windows are
+                # never the same length -- on the first readable day it is 108
+                # against 1 -- and the pre-rename window reaches back through
+                # months when the app was near-silent, so its lifetime rate
+                # understates the real baseline by more than half. Both are
+                # printed: the lifetime one for scale, the trailing one as the
+                # only fair thing to compare a few post-rename days against.
+                recent = sp.get("pre_recent") or {}
+                kv("Impressions/day",
+                   f"{pre['per_day']} lifetime ({pre['day_count']}d)  ·  "
+                   f"{recent.get('per_day')} over the "
+                   f"{sp.get('recent_baseline_days', 28)}d before  ->  "
+                   f"{post['per_day']} ({post['day_count']}d)")
+                if post["day_count"] < 7:
+                    kv("  Not a trend yet",
+                       f"{post['day_count']} complete post-rename day(s). "
+                       f"Daily impressions already ranged widely before the "
+                       f"rename, so wait for a full week before reading this.",
+                       GREY)
                 window_lines(post)
 
             if sp["boundary"]["day_count"]:
