@@ -536,8 +536,16 @@ def build_combo_page(
     # Other states that have this species (for cross-links)
     other_states = [s for s in ["WA", "QLD", "NSW", "VIC"] if s != state]
 
-    # Build product rows (limit to 60, sorted by price desc)
-    sorted_products = sorted(products, key=lambda x: x["price"] or 0, reverse=True)[:60]
+    # In stock first, then cheapest first, then title. Every row here is the
+    # same species, so this table is a price comparison and the reader wants the
+    # affordable end at the top. It used to sort price DESCENDING, which led
+    # with the dearest tree on the page and pushed an unpriced (POA) row to the
+    # top of the list as well, since `x["price"] or 0` sorts None as zero.
+    # Same key as build_compare_pages.py:167, which had it right already.
+    sorted_products = sorted(
+        products,
+        key=lambda x: (not x.get("available", True), x["price"] or 9999, x["title"]),
+    )[:60]
 
     product_view = []
     for p in sorted_products:
@@ -915,7 +923,10 @@ def main():
                         "price": p["price"],
                         "available": p["available"],
                         "url": p["url"],
-                    } for p in sorted(prods, key=lambda p: -(p["price"] or 0))],
+                    } for p in sorted(
+                        prods,
+                        key=lambda p: (not p["available"], p["price"] or 9999, p["title"]),
+                    )],
                     title=f"{prods[0]['species']['common_name']} trees in "
                           f"{STATE_FULL_NAMES[state]}",
                     species=prods[0]["species"]["common_name"],

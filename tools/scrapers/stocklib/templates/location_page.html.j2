@@ -15,7 +15,7 @@
 
 {% endif %}  <!-- Nursery summary -->
   <section class="mb-8">
-    <h2 class="text-lg font-semibold mb-3">Nurseries that ship to {{ state_name }}</h2>
+    <h2 class="text-lg font-semibold mb-3">Nurseries you can buy from in {{ state_name }}</h2>
     <div class="overflow-x-auto">
       <table class="w-full text-left">
         <thead>
@@ -42,7 +42,7 @@
 
   <!-- In-stock products -->
   <section class="mb-8">
-    <h2 class="text-lg font-semibold mb-3">In stock now, ships to {{ state_abbr }} (top {{ shown_count }} by price)</h2>
+    <h2 class="text-lg font-semibold mb-3">In stock now in {{ state_abbr }} ({{ shown_count }} picks, rarest first)</h2>
     <div class="overflow-x-auto">
       <table class="w-full text-left">
         <thead>

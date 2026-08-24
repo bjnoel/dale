@@ -15,11 +15,12 @@ Usage:
 import json
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from shipping import SHIPPING_MAP, NURSERY_NAMES
+from cultivar_parsing import product_variety_slug
+from shipping import SHIPPING_MAP, NURSERY_NAMES, delivery_label
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
@@ -117,15 +118,22 @@ STATE_GROWING_GUIDE = {
   </section>""",
 }
 
-# Per-state, per-nursery special notes
+# Per-state, per-nursery notes that a machine cannot derive: seasonal windows,
+# despatch cadences, surcharges. The DELIVERY half is NOT written here, it comes
+# from delivery_label() in the registry (see nursery_note below).
+#
+# It used to all be hand-written, and that is how "pickup only, Ellenbrook"
+# ended up on the WA page: typed into this dict on 2026-03-16 with no source,
+# contradicted by every other record (the registry, the scraper config and the
+# nursery page all say Perth), and never confirmed with the nursery, which has
+# never been contacted. Their own site names no suburb at all. Anything that can
+# be derived is now derived, so a hand-typed claim has one fewer place to hide.
 STATE_NURSERY_NOTES = {
     "WA": {
         "daleys": "seasonal window + extra fee",
-        "guildford": "Perth metro only",
         "fruit-salad-trees": "ships 1st Tuesday/month",
         "diggers": "ships nationwide",
-        "primal-fruits": "WA-based",
-        "all-season-plants-wa": "pickup only, Ellenbrook",
+        "garden-express": "quarantine surcharge",
     },
     "QLD": {
         "diggers": "ships nationwide",
@@ -150,6 +158,18 @@ STATE_NURSERY_NOTES = {
         "fruit-tree-cottage": "ships nationwide",
     },
 }
+
+
+def nursery_note(state: str, key: str) -> str:
+    """The note shown beside a nursery on a state page.
+
+    Delivery limits come from the registry so they cannot drift or go missing.
+    Before this, Perth Mobile Nursery, St Clements and Garden Express showed no
+    note at all on the WA page despite being metro-delivery-only, WA-only and
+    surcharged respectively, while All Season Plants showed an invented suburb.
+    """
+    parts = [p for p in (delivery_label(key), STATE_NURSERY_NOTES.get(state, {}).get(key, "")) if p]
+    return ", ".join(parts)
 
 # Cross-state links per state
 CROSS_LINKS = {
@@ -230,7 +250,7 @@ def get_nursery_stats(products: list[dict], state: str) -> list[dict]:
         total = len(prods)
         if total == 0:
             continue
-        note = STATE_NURSERY_NOTES.get(state, {}).get(key, "")
+        note = nursery_note(state, key)
         stats.append({
             "key": key,
             "name": NURSERY_NAMES.get(key, key),
@@ -244,9 +264,137 @@ def get_nursery_stats(products: list[dict], state: str) -> list[dict]:
     return stats
 
 
-def build_page(state: str, products: list[dict], species_lookup: dict, today_str: str, output_dir: Path = None) -> str:
+SHOWCASE_SIZE = 60
+MAX_PER_NURSERY = 10
+MAX_PER_SPECIES = 3
+
+# Weights. Scarcity dominates on purpose: on a state page the question is "what
+# can I get here that is hard to get", and the number of state-reaching
+# nurseries carrying a cultivar answers it directly from data we already have.
+SCARCITY_WEIGHT = 40.0
+HARD_TO_FIND_BONUS = 25.0
+
+RARITY_SCORES_FILE = Path("/opt/dale/data/rarity_scores.json")
+
+
+def load_rarity_scores() -> dict:
+    """Species rarity written by build_species_pages.compute_rarity_scores.
+
+    Missing file is not an error: these pages must still build on a machine
+    that has never run the species builder, and compute_rarity_scores itself
+    degrades the same way when a nursery has no availability history.
+    """
+    try:
+        with open(RARITY_SCORES_FILE) as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+def _showcase_species_slug(title: str, species_lookup: dict) -> str:
+    sp = match_title(title, species_lookup)
+    if not sp:
+        return ""
+    return sp["common_name"].lower().replace(" ", "-").replace("'", "")
+
+
+def showcase_scores(products: list[dict], species_lookup: dict,
+                    rarity_scores: dict) -> dict[int, float]:
+    """Score each product by how hard it is to get in THIS state.
+
+    Replaces a straight price-descending sort, whose comment read "interesting
+    and rare plants tend to cost more". They do not reliably, and using price as
+    the proxy handed the page to whichever nursery prices highest. Measured on
+    2026-08-24: Perth Mobile Nursery held 53 of 60 rows on the WA page with
+    everything between $349 and $1,400, and Ladybird held 37 of 60 on QLD, NSW
+    and VIC, which made the QLD and NSW tables identical to each other in all 60
+    rows. Nothing under $199.95 appeared on any eastern page.
+
+    Two signals, both already on disk:
+
+      scarcity     how few state-reaching nurseries stock this cultivar. A
+                   cultivar one nursery has is the thing worth surfacing; one
+                   that six have is a commodity. Keyed on the variety slug so
+                   pot sizes of the same cultivar do not read as separate finds,
+                   and falls back to the title when a title names no cultivar.
+      hard_to_find the species-level flag from rarity_scores.json, itself built
+                   from months of availability history (60% nursery scarcity,
+                   40% time out of stock).
+
+    Deliberately NOT included: a recency bonus. The only per-product "newly
+    listed" field in the snapshots is Shopify's created_at, so scoring on it
+    would quietly rank Shopify nurseries above WooCommerce ones. The unbiased
+    source is first_seen in availability.json, which is server-only and absent
+    from the golden fixture, so it would ship untested. Left for a follow-up.
+    """
+    keys = {}
+    nurseries_per_key: dict[str, set] = defaultdict(set)
+    for i, p in enumerate(products):
+        key = product_variety_slug(p["title"]) or p["title"].strip().lower()
+        keys[i] = key
+        nurseries_per_key[key].add(p["nursery_key"])
+
+    scores = {}
+    for i, p in enumerate(products):
+        score = SCARCITY_WEIGHT / len(nurseries_per_key[keys[i]])
+        slug = _showcase_species_slug(p["title"], species_lookup)
+        if rarity_scores.get(slug, {}).get("hard_to_find"):
+            score += HARD_TO_FIND_BONUS
+        scores[i] = score
+    return scores
+
+
+def pick_showcase(products: list[dict], species_lookup: dict,
+                  rarity_scores: dict, size: int = SHOWCASE_SIZE) -> list[dict]:
+    """Take the top `size` products, capped per nursery and per species.
+
+    The caps are what stop one catalogue owning the page. Without the species
+    cap the same prototype put five Daleys lilly pillies in the top ten, which
+    is a different monopoly with the same effect on the reader.
+    """
+    scores = showcase_scores(products, species_lookup, rarity_scores)
+    order = sorted(range(len(products)),
+                   key=lambda i: (-scores[i], products[i]["title"]))
+
+    species_of = {i: _showcase_species_slug(p["title"], species_lookup)
+                  for i, p in enumerate(products)}
+
+    # The caps stop one catalogue crowding OUT the others. Where there are no
+    # others they have nothing to protect, so they lift to whatever the material
+    # can support rather than shrinking the page: a state served by only three
+    # nurseries would otherwise show 30 rows while 60 good products sat unshown.
+    # On the real data this never binds (WA has 9 nurseries and ~106 species in
+    # stock, so 10 and 3 already allow 90 and 318 rows); it only decides what a
+    # thin state page does.
+    n_nurseries = len({p["nursery_key"] for p in products}) or 1
+    n_species = len({s for s in species_of.values() if s}) or 1
+    nursery_cap = max(MAX_PER_NURSERY, -(-size // n_nurseries))
+    species_cap = max(MAX_PER_SPECIES, -(-size // n_species))
+
+    per_nursery: Counter = Counter()
+    per_species: Counter = Counter()
+    shown = []
+    for i in order:
+        p = products[i]
+        sp = species_of[i]
+        if per_nursery[p["nursery_key"]] >= nursery_cap:
+            continue
+        if sp and per_species[sp] >= species_cap:
+            continue
+        per_nursery[p["nursery_key"]] += 1
+        if sp:
+            per_species[sp] += 1
+        shown.append(p)
+        if len(shown) == size:
+            break
+    return shown
+
+
+def build_page(state: str, products: list[dict], species_lookup: dict, today_str: str,
+               output_dir: Path = None, rarity_scores: dict | None = None) -> str:
     state_name = STATE_NAMES[state]
     state_abbr = state
+    rarity_scores = rarity_scores or {}
     intro = STATE_INTROS[state]
     info_box = STATE_INFO_BOX.get(state)
 
@@ -270,14 +418,10 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
             continue
         state_products.append(p)
 
-    # Sort by price descending (interesting/rare plants tend to cost more)
-    state_products.sort(key=lambda x: x["price"] or 0, reverse=True)
-
-    shown = state_products[:60]
+    shown = pick_showcase(state_products, species_lookup, rarity_scores)
     shown_count = len(shown)
 
     # Species combo links: count in-stock products per species for this state, build links
-    from collections import Counter
     species_counts: Counter = Counter()
     species_names: dict[str, str] = {}
     for p in state_products:
@@ -339,7 +483,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
         {
             "url": outbound(p["url"], "location-page"),
             "title": p["title"],
-            "price_str": f"${p['price']:.2f}" if p["price"] else "N/A",
+            "price_str": f"${p['price']:.2f}" if p["price"] else "POA",
             "nursery_name": p["nursery_name"],
         }
         for p in shown
@@ -379,9 +523,17 @@ def main():
     products = load_all_products(data_dir)
     print(f"  {len(products)} products loaded")
 
+    # Resolve rarity_scores.json relative to data_dir so the golden fixture is
+    # used in tests rather than the live server path (same trick as
+    # build_rare_finds.py and build-dashboard.py).
+    global RARITY_SCORES_FILE
+    RARITY_SCORES_FILE = data_dir.parent / "rarity_scores.json"
+    rarity_scores = load_rarity_scores()
+    print(f"  {len(rarity_scores)} species rarity scores loaded")
+
     for state in STATES:
         print(f"\nBuilding {state} page...")
-        html = build_page(state, products, species_lookup, today, output_dir)
+        html = build_page(state, products, species_lookup, today, output_dir, rarity_scores)
         out_file = output_dir / f"buy-fruit-trees-{state.lower()}.html"
         out_file.write_text(html)
 
