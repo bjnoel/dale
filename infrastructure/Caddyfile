@@ -1,4 +1,4 @@
-treestock.com.au, www.treestock.com.au {
+treestock.com.au {
     handle /api/subscribe {
         uri strip_prefix /api
         reverse_proxy localhost:8099
@@ -112,7 +112,8 @@ beestock.com.au, www.beestock.com.au {
     }
 }
 
-stock.scion.exchange, leafscan.com.au, www.leafscan.com.au {
+stock.scion.exchange, leafscan.com.au, www.leafscan.com.au,
+www.treestock.com.au {
     redir https://treestock.com.au{uri} permanent
 }
 

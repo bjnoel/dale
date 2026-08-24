@@ -59,3 +59,13 @@
 0 1 * * 6 /usr/bin/python3 /opt/dale/autonomous/monthly_maintenance.py --announce >> /opt/dale/autonomous/logs/maintenance.log 2>&1
 30 18 * * 0 /usr/bin/python3 /opt/dale/autonomous/monthly_maintenance.py --run >> /opt/dale/autonomous/logs/maintenance.log 2>&1
 @reboot sleep 120 && /usr/bin/python3 /opt/dale/autonomous/monthly_maintenance.py --verify >> /opt/dale/autonomous/logs/maintenance.log 2>&1
+30 23 * * * /opt/dale/autonomous/promote-curation.sh >> /opt/dale/autonomous/logs/promote-curation.log 2>&1
+
+# TreeSmith ASO rank capture (DAL-257) -- Sundays 21:40 UTC (05:40 AWST Monday),
+# 2h20m ahead of the Monday 00:00 digest. Minute 40 so it does not race the hourly push.
+40 21 * * 0 /opt/dale/repo/tools/autonomous/capture-treesmith-rank.sh >> /opt/dale/autonomous/logs/treesmith_rank.log 2>&1
+
+# TreeSmith App Store source split (DEC-307) -- Sundays 22:40 UTC (06:40 AWST Monday),
+# one hour behind the rank capture and ahead of the Monday 00:00 digest.
+40 22 * * 0 /usr/bin/python3 /opt/dale/repo/tools/autonomous/appstore_sources.py >> /opt/dale/autonomous/logs/appstore_sources.log 2>&1
+40 20 * * 4 /opt/dale/repo/tools/autonomous/capture-contested-queries.sh >> /opt/dale/autonomous/logs/contested_queries.log 2>&1
