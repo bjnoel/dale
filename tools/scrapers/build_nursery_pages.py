@@ -12,7 +12,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label, restriction_warning
+from shipping import (SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label,
+                      nursery_location, restriction_warning)
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
 from stocklib.fruit_filters import digest_product_filter
@@ -320,7 +321,9 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
                        today: str | None = None) -> str:
     meta = NURSERY_META.get(nursery_key, {})
     name = NURSERY_NAMES.get(nursery_key, data.get("nursery_name", nursery_key))
-    location = data.get("location", "Australia")
+    # Registry first: the snapshot only carries a location for the three
+    # scraper dialects that happen to write one. See nursery_location().
+    location = nursery_location(nursery_key, data.get("location") or "Australia")
     url = meta.get("url", "")
     tags = meta.get("tags", [])
     description = meta.get("description", "")
@@ -586,7 +589,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
         local_lbl = delivery_label(key)
         wa = ships_to_wa(key)
         in_stock, total = visible_counts(data)
-        location = data.get("location", "Australia")
+        location = nursery_location(key, data.get("location") or "Australia")
 
         restrict = "" if local_lbl else restriction_warning(key)
         restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold">{restrict}</span>' if restrict else ''

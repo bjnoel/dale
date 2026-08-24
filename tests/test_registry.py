@@ -138,5 +138,46 @@ class ShippingShimTest(unittest.TestCase):
         self.assertIs(shipping.SHIPPING_MAP, registry.SHIPPING_MAP)
 
 
+class NurseryLocationTests(unittest.TestCase):
+    """Location is a fact about the nursery, not about its shop software.
+
+    Before 2026-08-24 it was a per-scraper config key. The WooCommerce, Ecwid
+    and Wix scrapers wrote it into their snapshots; the Shopify one carried the
+    string but never emitted it, and the Daleys CSV feed had no such key. So
+    /nursery/daleys.html and /nursery/ross-creek.html both showed "Australia"
+    while /nursery/guildford.html showed "Guildford, WA".
+    """
+
+    def test_every_tracked_nursery_has_a_location(self):
+        missing = [n.key for n in registry.NURSERIES if not n.location]
+        self.assertEqual(missing, [], "a nursery with no location renders as "
+                                      "the generic 'Australia' fallback")
+
+    def test_the_two_the_scraper_configs_never_carried(self):
+        # Sourced 2026-08-24: daleysfruit.com.au/contact.html gives
+        # "36 Daley's Lane, Geneva via Kyogle NSW 2474"; Heritage Fruit Trees
+        # is 297 Back Raglan Road, Beaufort VIC 3373.
+        self.assertEqual(registry.nursery_location("daleys"), "Kyogle, NSW")
+        self.assertEqual(registry.nursery_location("heritage-fruit-trees"), "Beaufort, VIC")
+
+    def test_the_shopify_nurseries_that_used_to_read_australia(self):
+        self.assertEqual(registry.nursery_location("ross-creek"), "Gympie, QLD")
+        self.assertEqual(registry.nursery_location("all-season-plants-wa"), "Perth, WA")
+
+    def test_an_unknown_key_falls_back_rather_than_raising(self):
+        self.assertEqual(registry.nursery_location("no-such-nursery"), "Australia")
+        self.assertEqual(registry.nursery_location("no-such-nursery", "Unknown"), "Unknown")
+
+    def test_all_rare_herbs_stays_australia_because_they_asked(self):
+        """The nursery asked to be listed as 'Australia' (2026-07-27) after
+        changing hands and moving from Mapleton QLD. Not a missing value."""
+        self.assertEqual(registry.nursery_location("all-rare-herbs"), "Australia")
+
+    def test_no_location_claims_a_suburb_the_note_contradicts(self):
+        """'pickup only, Ellenbrook' was hand-written into build_location_pages
+        in March 2026 with no source, and every other record said Perth."""
+        self.assertNotIn("Ellenbrook", "".join(n.location for n in registry.NURSERIES))
+
+
 if __name__ == "__main__":
     unittest.main()

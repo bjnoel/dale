@@ -30,6 +30,7 @@ class Nursery:
     name: str
     ships_to: tuple[str, ...]                 # state codes this nursery ships to
     local_delivery: dict | None = None        # {"area": ..., "state": ...} or None
+    location: str = ""                        # town/suburb + state, for display
     note: str = ""                            # provenance / shipping caveats
 
 
@@ -38,103 +39,129 @@ class Nursery:
 NURSERIES: list[Nursery] = [
     Nursery("daleys", "Daleys Fruit Trees",
             ("NSW", "VIC", "QLD", "SA", "WA", "ACT"),
+            location="Kyogle, NSW",
             note="WA: seasonal window + extra fee"),
     Nursery("ross-creek", "Ross Creek Tropicals",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
+            location="Gympie, QLD",
             note="Verified 2026-06-15: ships QLD/NSW/VIC/SA/ACT (homepage banner). "
                  "No WA/NT/TAS ($10 refund fee on those)."),
     Nursery("ladybird", "Ladybird Nursery",
             ("NSW", "VIC", "QLD", "ACT"),
+            location="Kallangur, QLD",
             note="Confirmed 2026-03-16: QLD/NSW/VIC/ACT only (not WA/NT/TAS)"),
     Nursery("fruitopia", "Fruitopia",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
+            location="Brisbane/Gold Coast, QLD",
             note="QLD-based. Verified 2026-06-15 (per-product policy): ships "
                  "QLD/NSW/ACT/VIC/SA, not WA/TAS/NT."),
     Nursery("primal-fruits", "Primal Fruits Perth",
             ("WA",),
             local_delivery={"area": "Perth metro", "state": "WA"},
+            location="Parkwood, WA",
             note="WA-based, local only"),
     Nursery("guildford", "Guildford Garden Centre",
             ("WA",),
             local_delivery={"area": "Perth metro", "state": "WA"},
+            location="Guildford, WA",
             note="WA-based, Perth metro"),
     Nursery("fruit-salad-trees", "Fruit Salad Trees",
             ("NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"),
+            location="Emmaville, NSW",
             note="WA+TAS: 1st Tue/month"),
     Nursery("diggers", "The Diggers Club",
             ("NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"),
+            location="Dromana, VIC",
             note="Ships nationwide"),
     Nursery("all-season-plants-wa", "All Season Plants WA",
             ("WA",),
             local_delivery={"area": "Perth (pickup)", "state": "WA"},
+            location="Perth, WA",
             note="WA-based, pickup only (Perth)"),
     Nursery("ausnurseries", "Aus Nurseries",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
+            location="Australia",
             note="Does not ship to WA, NT, or TAS"),
     Nursery("fruit-tree-cottage", "Fruit Tree Cottage",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
+            location="Forest Glen, QLD",
             note="Does not ship to WA, NT, or TAS"),
     Nursery("heritage-fruit-trees", "Heritage Fruit Trees",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
+            location="Beaufort, VIC",
             note="VIC-based. No WA/TAS: accreditation discontinued (Mar 2026)."),
     Nursery("perth-mobile-nursery", "Perth Mobile Nursery",
             ("WA",),
             local_delivery={"area": "Perth metro", "state": "WA"},
+            location="Perth, WA",
             note="WA-based, Perth metro delivery only"),
     Nursery("yalca-fruit-trees", "Yalca Fruit Trees",
             ("NSW", "VIC", "QLD", "ACT"),
+            location="Yalca, VIC",
             note="Does not ship to WA, SA, NT, or TAS (SA excluded per policy, "
                  "verified 2026-06-15). Seasonal: late June to Sep 15 only."),
     Nursery("forever-seeds", "Forever Seeds",
             ("NSW", "VIC", "QLD", "SA", "NT", "ACT"),
+            location="NSW",
             note="NSW-based. Plants/bulbs not sent to WA or TAS (seeds ship "
                  "anywhere). NT served. Verified 2026-06-15."),
     Nursery("garden-express", "Garden Express",
             ("NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"),
+            location="VIC",
             note="Ships nationwide; quarantine surcharge for WA/NT/TAS."),
     Nursery("plantnet", "PlantNet",
             ("NSW", "VIC", "QLD", "ACT"),
+            location="Balhannah, SA",
             note="Online shop does not ship to NT/TAS/SA/WA (state plant quarantine, "
                  "verified 2026-06-15). TAS/WA buyers directed to retail stockists."),
     Nursery("fruit-tree-lane", "Fruit Tree Lane",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
+            location="Helidon, QLD",
             note="QLD-based (Helidon). Does not ship to WA, NT, or TAS (quarantine)."),
     Nursery("engalls", "Engall's Nursery",
             ("NSW", "VIC", "QLD", "ACT"),
+            location="Dural, NSW",
             note="NSW-based (Dural). Does not ship to WA, NT, TAS. SA paused "
                  "(Red Imported Fire Ants emergency order, verified 2026-06-15; "
                  "bulk-only via SA stockist)."),
     Nursery("rayners", "Rayners Orchard",
             ("VIC",),
             local_delivery={"area": "Victoria", "state": "VIC"},
+            location="Yarra Valley, VIC",
             note="VIC-based (Yarra Valley). Delivers within Victoria only; interstate only for bulk orders (50+)."),
     Nursery("garden-world", "Garden World",
             ("VIC",),
             local_delivery={"area": "Melbourne metro", "state": "VIC"},
+            location="Braeside, VIC",
             note="VIC-based (Braeside). Melbourne metro delivery (in-house vans) + in-store pickup; no interstate (no WA/NT/TAS)."),
     Nursery("diacos", "Diaco's Garden Nursery",
             ("VIC",),
             local_delivery={"area": "Melbourne metro", "state": "VIC"},
+            location="Heatherton, VIC",
             note="VIC-based (Heatherton + other Melbourne stores). Melbourne metro delivery + in-store pickup; no interstate (no WA/NT/TAS)."),
     Nursery("wild-garden-organics", "Wild Garden Organics",
             ("QLD", "NSW", "VIC", "SA", "ACT"),
+            location="QLD",
             note="QLD-based (Ecwid). Rare grafted tropicals. No WA/NT/TAS via "
                  "standard checkout (biosecurity; ships there on request for "
                  "~$300+). Free shipping over $170. Verified 2026-06-20."),
     Nursery("st-clements-citrus", "St Clements Citrus",
             ("WA",),
             local_delivery={"area": "WA", "state": "WA"},
+            location="High Wycombe, WA",
             note="High Wycombe, Perth WA (Shopify). Rare-citrus specialist (yuzu, "
                  "Buddha's hand, blood lime, citron). Posts WA-wide only (citrus "
                  "interstate quarantine); postage included in price. Verified 2026-06-20."),
     Nursery("the-heritage-nursery", "The Heritage Nursery",
             ("ACT",),
             local_delivery={"area": "ACT + Queanbeyan", "state": "ACT"},
+            location="Yarralumla, ACT",
             note="Canberra garden centre (Shopify). Local delivery (ACT + "
                  "Queanbeyan, from $90) + click-and-collect only; no interstate "
                  "post. Distinct from Heritage Fruit Trees (VIC). Verified 2026-06-20."),
     Nursery("heaven-on-earth", "Heaven On Earth Fruit Trees",
             ("QLD", "NSW", "VIC", "SA", "NT", "ACT"),
+            location="Far North QLD",
             note="Far North QLD (Wix). Rare-tropical specialist (abiu, mamey "
                  "sapote, soursop, miracle fruit, durian). Ships AU-wide except "
                  "WA/TAS; NT included (per postage page). Citrus is QLD-only "
@@ -142,6 +169,7 @@ NURSERIES: list[Nursery] = [
                  "ONLY', not modelled at nursery level). Verified 2026-06-20."),
     Nursery("all-rare-herbs", "All Rare Herbs",
             ("QLD", "NSW", "VIC", "SA", "ACT"),
+            location="Australia",
             note="Online only, location not published (WooCommerce). Changed "
                  "hands and moved from Mapleton QLD during 2025-26; the nursery "
                  "asked us to list it as 'Australia' (2026-07-27). Herb "
@@ -168,6 +196,22 @@ def delivery_label(nursery_key: str) -> str:
     """Return 'Perth metro only' for local nurseries, or '' for statewide shippers."""
     local = LOCAL_DELIVERY.get(nursery_key)
     return f"{local['area']} only" if local else ""
+
+
+def nursery_location(nursery_key: str, fallback: str = "Australia") -> str:
+    """Return a nursery's town/suburb and state, e.g. 'Kyogle, NSW'.
+
+    Lives here rather than in the scrapers because a nursery's location is a
+    fact about the nursery, not about the e-commerce platform it happens to
+    run. It used to be a per-scraper config key that only the WooCommerce,
+    Ecwid and Wix scrapers wrote into their snapshots; the Shopify one carried
+    the string but never emitted it, and the Daleys CSV feed had no such key at
+    all. So /nursery/daleys.html and /nursery/ross-creek.html both displayed
+    "Australia" while /nursery/guildford.html displayed "Guildford, WA" --
+    decided entirely by shop software.
+    """
+    nursery = _BY_KEY.get(nursery_key)
+    return (nursery.location if nursery and nursery.location else fallback)
 
 
 def nursery_ships_to(nursery_key: str, state: str) -> bool:

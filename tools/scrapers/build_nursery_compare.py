@@ -15,7 +15,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning, LOCAL_DELIVERY, delivery_label
+from shipping import (SHIPPING_MAP, NURSERY_NAMES, restriction_warning, LOCAL_DELIVERY,
+                      delivery_label, nursery_location)
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
@@ -61,7 +62,7 @@ def build_compare_page(nurseries_data: dict, species_lookup: dict, today: str) -
         products = data.get("products", [])
         species_count = count_species(products, species_lookup)
         restrict = restriction_warning(key)
-        location = data.get("location", "Australia")
+        location = nursery_location(key, data.get("location") or "Australia")
         pct = round(100 * in_stock / total) if total else 0
 
         rows.append({
