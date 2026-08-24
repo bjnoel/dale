@@ -19,32 +19,39 @@ from datetime import datetime, timedelta, timezone
 
 SECRETS_DIR = "/opt/dale/secrets"
 
+# beestock.com.au (discontinued 2026-07-23, DEC-230) and walkthrough.au (paused
+# 2026-04-27) were dropped 2026-08-24 at Benedict's request: neither is being
+# worked on, so their rows were four numbers a week nobody could act on.
+# treesmith.app took their place as the Track A web companion.
 PLAUSIBLE_SITES = [
     "treestock.com.au",
+    "treesmith.app",
     "vergeside.com.au",
     "bjnoel.com",
-    "beestock.com.au",
     "mushroom.guide",
-    "walkthrough.au",
 ]
 
 GSC_SITES = [
     "sc-domain:treestock.com.au",
+    "sc-domain:treesmith.app",
     "sc-domain:vergeside.com.au",
     "sc-domain:bjnoel.com",
     "sc-domain:mushroom.guide",
-    "sc-domain:walkthrough.au",
     "sc-domain:scion.exchange",
     "sc-domain:wanatca.org.au",
-    "sc-domain:beestock.com.au",
 ]
 
 GSC_CREDENTIALS_PATH = "/opt/dale/secrets/gsc-credentials.json"
 GSC_OAUTH_CREDENTIALS_PATH = "/opt/dale/secrets/gsc-oauth-credentials.json"
 GSC_SCOPES = ["https://www.googleapis.com/auth/webmasters.readonly"]
 
-# beestock requires personal OAuth token (service account is unverified for this site)
-GSC_OAUTH_SITES = {"sc-domain:beestock.com.au"}
+# Sites the service account cannot see, which must go through Benedict's personal
+# OAuth token instead. Verified 2026-08-24 by listing both credentials: the
+# service account has 8 properties and treesmith.app is not one of them, while
+# the OAuth token owns it. A site in GSC_SITES but missing from here does not
+# error visibly, it returns no rows and the digest prints zero clicks as if that
+# were the measurement. tests/test_traffic_report_sites.py guards the pairing.
+GSC_OAUTH_SITES = {"sc-domain:treesmith.app"}
 
 
 # --- Plausible helpers ---
@@ -264,8 +271,23 @@ def collect_gsc_stats(sites):
         domain = site_url.replace("sc-domain:", "")
         stat = {"site": domain, "gsc_site": site_url}
 
-        # Use OAuth service for sites that need it
-        svc = oauth_service if (site_url in GSC_OAUTH_SITES and oauth_service) else service
+        # Use OAuth service for sites that need it. If OAuth is required but
+        # unavailable, skip the site rather than falling back to the service
+        # account: it has no access, so it would return no rows and we would
+        # publish "0 clicks" as a measurement instead of an outage.
+        if site_url in GSC_OAUTH_SITES:
+            if not oauth_service:
+                print(
+                    f"Skipping {site_url}: needs the OAuth token and it is not "
+                    f"available. This is not zero traffic.",
+                    file=sys.stderr,
+                )
+                stat["error"] = "oauth_unavailable"
+                results.append(stat)
+                continue
+            svc = oauth_service
+        else:
+            svc = service
 
         # 14-day totals
         date_rows = gsc_query(svc, site_url, full_start, full_end, ["date"])
