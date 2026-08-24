@@ -8,7 +8,7 @@ Usage:
     python3 gsc_analysis.py
     python3 gsc_analysis.py --output /opt/dale/data/gsc_report.json
     python3 gsc_analysis.py --days 30
-    python3 gsc_analysis.py --inspect           # Also run URL inspection (requires OAuth creds)
+    python3 gsc_analysis.py --inspect           # Also run URL inspection
     python3 gsc_analysis.py --inspect-only      # Run only URL inspection
 """
 
@@ -22,13 +22,15 @@ from collections import defaultdict
 
 import requests
 from google.oauth2 import service_account
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from stocklib.gsc_auth import (  # noqa: E402
+    gsc_credentials, auth_headers, refresh_credentials,
+)
+
 CREDENTIALS_PATH = "/opt/dale/secrets/gsc-credentials.json"
-OAUTH_CREDS_PATH = "/opt/dale/secrets/gsc-oauth-credentials.json"
 SITE_URL = "sc-domain:treestock.com.au"
 SITE_BASE = "https://treestock.com.au"
 DASHBOARD_DIR = "/opt/dale/dashboard"
@@ -43,34 +45,9 @@ def get_service():
     return build("searchconsole", "v1", credentials=creds)
 
 
-def get_oauth_credentials():
-    """Load OAuth credentials with refresh token (from gsc_submit.py pattern)."""
-    with open(OAUTH_CREDS_PATH) as f:
-        creds_data = json.load(f)
-    with open(CREDENTIALS_PATH) as f:
-        sa_data = json.load(f)
-    project_id = sa_data["project_id"]
-
-    creds = Credentials(
-        token=None,
-        refresh_token=creds_data["refresh_token"],
-        client_id=creds_data["client_id"],
-        client_secret=creds_data["client_secret"],
-        token_uri="https://oauth2.googleapis.com/token",
-        scopes=["https://www.googleapis.com/auth/webmasters"],
-        quota_project_id=project_id,
-    )
-    creds.refresh(Request())
-    return creds, project_id
-
-
-def inspect_url(creds, project_id, page_url):
+def inspect_url(creds, page_url):
     """Call URL Inspection API for a single URL. Returns dict with verdict/coverage/crawled."""
-    headers = {
-        "Authorization": f"Bearer {creds.token}",
-        "x-goog-user-project": project_id,
-        "Content-Type": "application/json",
-    }
+    headers = auth_headers(creds, {"Content-Type": "application/json"})
     body = {"inspectionUrl": page_url, "siteUrl": SITE_URL}
     try:
         resp = requests.post(INSPECTION_API, json=body, headers=headers, timeout=15)
@@ -269,14 +246,14 @@ def run_url_inspection(urls=None, top_gsc_pages=None, delay_seconds=0.5):
     Inspect a list of URLs via GSC URL Inspection API.
     Returns list of inspection results plus alert list.
     """
-    if not os.path.exists(OAUTH_CREDS_PATH):
-        print("  SKIP: OAuth credentials not found at", OAUTH_CREDS_PATH)
+    if not os.path.exists(CREDENTIALS_PATH):
+        print("  SKIP: service account credentials not found at", CREDENTIALS_PATH)
         return None
 
     try:
-        creds, project_id = get_oauth_credentials()
+        creds = gsc_credentials()
     except Exception as e:
-        print(f"  ERROR: Could not load OAuth credentials: {e}")
+        print(f"  ERROR: Could not load service account credentials: {e}")
         return None
 
     if urls is None:
@@ -289,7 +266,7 @@ def run_url_inspection(urls=None, top_gsc_pages=None, delay_seconds=0.5):
     verdict_counts = defaultdict(int)
 
     for i, url in enumerate(urls):
-        result = inspect_url(creds, project_id, url)
+        result = inspect_url(creds, url)
         results.append(result)
         verdict = result["verdict"]
         coverage = result["coverage"]
@@ -313,7 +290,7 @@ def run_url_inspection(urls=None, top_gsc_pages=None, delay_seconds=0.5):
         # Refresh token periodically and throttle
         if (i + 1) % 20 == 0:
             try:
-                creds.refresh(Request())
+                refresh_credentials(creds)
             except Exception:
                 pass
         if delay_seconds > 0:

@@ -43,6 +43,12 @@ GUARDS = [
     (re.compile(r"^GRADE_BADGE\s*[:=]"), "stocklib/evidence.py"),
     (re.compile(r"^def nursery_coverage\b"), "stocklib/coverage.py"),
     (re.compile(r"^def usable_dates\b"), "stocklib/coverage.py"),
+    # Search Console credentials. gsc_analysis.py built its own by copying
+    # gsc_submit.py ("from gsc_submit.py pattern" was in its docstring), and
+    # both then had to be found and changed together to get off Benedict's
+    # personal token. One builder, or it happens again.
+    (re.compile(r"^def gsc_credentials\b"), "stocklib/gsc_auth.py"),
+    (re.compile(r"^def auth_headers\b"), "stocklib/gsc_auth.py"),
     (re.compile(r"^RETRYABLE_HTTP\s*[:=]"), "stocklib/retry.py"),
     (re.compile(r"^def request_with_retry\b"), "stocklib/retry.py"),
     (re.compile(r"^def backoff_delay\b"), "stocklib/retry.py"),

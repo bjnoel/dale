@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 GSC Sitemap and URL submission for treestock.com.au
-Uses OAuth credentials with refresh token (no interactive auth needed).
 
 Usage:
     python3 gsc_submit.py                          # Submit/refresh sitemap
@@ -10,59 +9,31 @@ Usage:
     python3 gsc_submit.py --bulk-check             # Check all new content pages
     python3 gsc_submit.py --bulk-check --urls-file FILE  # Check URLs from file (one per line)
 
-Authentication: gsc-oauth-credentials.json (has refresh_token, no interactive auth needed)
-Quota project: dale-490702 (required for GSC API calls)
+Authentication: the service account, via stocklib.gsc_auth. Sitemap submission
+needs the write scope; the inspection reads do not.
 """
 
 import argparse
 import json
 import os
+import sys
 import time
 import requests
 from urllib.parse import quote
 
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from stocklib.gsc_auth import gsc_credentials, auth_headers  # noqa: E402
 
-OAUTH_CREDS_PATH = "/opt/dale/secrets/gsc-oauth-credentials.json"
-SA_CREDS_PATH = "/opt/dale/secrets/gsc-credentials.json"
 SITE_URL = "sc-domain:treestock.com.au"
 SITEMAP_URL = "https://treestock.com.au/sitemap.xml"
 WEBMASTERS_BASE = "https://www.googleapis.com/webmasters/v3"
 
 
-def get_credentials():
-    with open(OAUTH_CREDS_PATH) as f:
-        creds_data = json.load(f)
-    with open(SA_CREDS_PATH) as f:
-        sa_data = json.load(f)
-    project_id = sa_data["project_id"]
-
-    creds = Credentials(
-        token=None,
-        refresh_token=creds_data["refresh_token"],
-        client_id=creds_data["client_id"],
-        client_secret=creds_data["client_secret"],
-        token_uri="https://oauth2.googleapis.com/token",
-        scopes=["https://www.googleapis.com/auth/webmasters"],
-        quota_project_id=project_id,
-    )
-    creds.refresh(Request())
-    return creds, project_id
-
-
-def make_headers(creds, project_id):
-    return {
-        "Authorization": f"Bearer {creds.token}",
-        "x-goog-user-project": project_id,
-    }
-
-
-def submit_sitemap(creds, project_id, sitemap_url=SITEMAP_URL):
+def submit_sitemap(creds, sitemap_url=SITEMAP_URL):
     site_enc = quote(SITE_URL, safe="")
     sitemap_enc = quote(sitemap_url, safe="")
     url = f"{WEBMASTERS_BASE}/sites/{site_enc}/sitemaps/{sitemap_enc}"
-    resp = requests.put(url, headers=make_headers(creds, project_id))
+    resp = requests.put(url, headers=auth_headers(creds))
     if resp.status_code == 204:
         print(f"Sitemap submitted: {sitemap_url}")
     else:
@@ -70,10 +41,10 @@ def submit_sitemap(creds, project_id, sitemap_url=SITEMAP_URL):
     return resp.status_code == 204
 
 
-def list_sitemaps(creds, project_id):
+def list_sitemaps(creds):
     site_enc = quote(SITE_URL, safe="")
     url = f"{WEBMASTERS_BASE}/sites/{site_enc}/sitemaps"
-    resp = requests.get(url, headers=make_headers(creds, project_id))
+    resp = requests.get(url, headers=auth_headers(creds))
     if resp.status_code == 200:
         data = resp.json()
         sitemaps = data.get("sitemap", [])
@@ -89,14 +60,14 @@ def list_sitemaps(creds, project_id):
         print(f"Error {resp.status_code}: {resp.text[:300]}")
 
 
-def check_url(creds, project_id, page_url, verbose=True):
+def check_url(creds, page_url, verbose=True):
     """Use URL Inspection API to check indexing status of a URL."""
     url = "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect"
     body = {
         "inspectionUrl": page_url,
         "siteUrl": SITE_URL,
     }
-    headers = {**make_headers(creds, project_id), "Content-Type": "application/json"}
+    headers = auth_headers(creds, {"Content-Type": "application/json"})
     resp = requests.post(url, json=body, headers=headers)
     if resp.status_code == 200:
         data = resp.json()
@@ -154,7 +125,7 @@ NEW_CONTENT_PAGES_FALLBACK = [
 ]
 
 
-def bulk_check_urls(creds, project_id, urls, delay=0.5):
+def bulk_check_urls(creds, urls, delay=0.5):
     """Check indexing status of multiple URLs, return summary."""
     results = []
     indexed = []
@@ -165,7 +136,7 @@ def bulk_check_urls(creds, project_id, urls, delay=0.5):
     print()
 
     for i, url in enumerate(urls, 1):
-        result = check_url(creds, project_id, url, verbose=False)
+        result = check_url(creds, url, verbose=False)
         results.append(result)
 
         verdict = result["verdict"]
@@ -213,13 +184,13 @@ def main():
     parser.add_argument("--sitemap", metavar="URL", default=SITEMAP_URL, help="Sitemap URL to submit")
     args = parser.parse_args()
 
-    creds, project_id = get_credentials()
+    creds = gsc_credentials(write=True)
 
     if args.list:
         print("Submitted sitemaps:")
-        list_sitemaps(creds, project_id)
+        list_sitemaps(creds)
     elif args.check_url:
-        check_url(creds, project_id, args.check_url)
+        check_url(creds, args.check_url)
     elif args.bulk_check:
         if args.urls_file:
             with open(args.urls_file) as f:
@@ -227,9 +198,9 @@ def main():
         else:
             urls = discover_new_content_pages()
             print(f"Discovered {len(urls)} content pages from {DASHBOARD_DIR}")
-        bulk_check_urls(creds, project_id, urls)
+        bulk_check_urls(creds, urls)
     else:
-        submit_sitemap(creds, project_id, args.sitemap)
+        submit_sitemap(creds, args.sitemap)
 
 
 if __name__ == "__main__":

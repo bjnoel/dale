@@ -42,16 +42,15 @@ GSC_SITES = [
 ]
 
 GSC_CREDENTIALS_PATH = "/opt/dale/secrets/gsc-credentials.json"
-GSC_OAUTH_CREDENTIALS_PATH = "/opt/dale/secrets/gsc-oauth-credentials.json"
 GSC_SCOPES = ["https://www.googleapis.com/auth/webmasters.readonly"]
 
-# Sites the service account cannot see, which must go through Benedict's personal
-# OAuth token instead. Empty since 2026-08-24: treesmith.app was the last entry
-# and Benedict granted the service account Full on the property that afternoon,
-# confirmed by both credentials returning the same 15 days / 2 clicks / 119
-# impressions. The escape hatch stays because the failure it exists for is real
-# and still visible: beestock.com.au sits at siteUnverifiedUser to this day.
-GSC_OAUTH_SITES = set()
+# Benedict's personal OAuth token used to serve the properties the service
+# account could not see. It served exactly one, treesmith.app, until he granted
+# the service account Full on it (2026-08-24, both credentials then returning
+# the same 15 days / 2 clicks / 119 impressions). The token is being revoked, so
+# the second code path went with it. What the fallback was really for was
+# diagnosis, and warn_on_unreadable_sites does that better: it names the
+# unreadable property instead of quietly routing around it.
 
 # Permission levels that can actually read search analytics. Anything else, or a
 # property missing from the credential's list entirely, 403s on the analytics
@@ -177,19 +176,12 @@ def collect_plausible_stats(sites):
 
 # --- GSC helpers ---
 
-def get_gsc_service(use_oauth=False):
+def get_gsc_service():
     from googleapiclient.discovery import build
-    if use_oauth:
-        from google.oauth2.credentials import Credentials as UserCredentials
-        with open(GSC_OAUTH_CREDENTIALS_PATH) as f:
-            token_data = json.load(f)
-        creds = UserCredentials.from_authorized_user_info(token_data)
-        creds = creds.with_quota_project("dale-490702")
-    else:
-        from google.oauth2 import service_account
-        creds = service_account.Credentials.from_service_account_file(
-            GSC_CREDENTIALS_PATH, scopes=GSC_SCOPES
-        )
+    from google.oauth2 import service_account
+    creds = service_account.Credentials.from_service_account_file(
+        GSC_CREDENTIALS_PATH, scopes=GSC_SCOPES
+    )
     return build("searchconsole", "v1", credentials=creds)
 
 
@@ -289,23 +281,8 @@ def collect_gsc_stats(sites):
         print(f"GSC not configured: {e}", file=sys.stderr)
         return []
 
-    # Build OAuth service for sites that need it
-    oauth_service = None
-    if GSC_OAUTH_SITES & set(sites):
-        try:
-            oauth_service = get_gsc_service(use_oauth=True)
-        except Exception as e:
-            print(f"GSC OAuth not configured: {e}", file=sys.stderr)
-
     # Check access before reading anything, so an empty result is attributable.
-    sa_sites = [s for s in sites if s not in GSC_OAUTH_SITES]
-    permissions = warn_on_unreadable_sites(service, sa_sites, "service account")
-    if oauth_service:
-        permissions.update(
-            warn_on_unreadable_sites(
-                oauth_service, [s for s in sites if s in GSC_OAUTH_SITES], "oauth"
-            )
-        )
+    permissions = warn_on_unreadable_sites(service, sites, "service account")
 
     now = datetime.now(timezone.utc).date()
     lag = timedelta(days=3)
@@ -328,26 +305,8 @@ def collect_gsc_stats(sites):
         stat = {"site": domain, "gsc_site": site_url,
                 "permission": permissions.get(site_url)}
 
-        # Use OAuth service for sites that need it. If OAuth is required but
-        # unavailable, skip the site rather than falling back to the service
-        # account: it has no access, so every query would 403 into an empty list
-        # and we would publish "0 clicks" as a measurement instead of an outage.
-        if site_url in GSC_OAUTH_SITES:
-            if not oauth_service:
-                print(
-                    f"Skipping {site_url}: needs the OAuth token and it is not "
-                    f"available. This is not zero traffic.",
-                    file=sys.stderr,
-                )
-                stat["error"] = "oauth_unavailable"
-                results.append(stat)
-                continue
-            svc = oauth_service
-        else:
-            svc = service
-
         # 14-day totals
-        date_rows = gsc_query(svc, site_url, full_start, full_end, ["date"])
+        date_rows = gsc_query(service, site_url, full_start, full_end, ["date"])
         if not date_rows:
             stat["totals"] = {"clicks": 0, "impressions": 0, "avg_position": 0}
             stat["new_queries"] = []
@@ -368,11 +327,11 @@ def collect_gsc_stats(sites):
         }
 
         # Period A queries
-        a_rows = gsc_query(svc, site_url, str(a_start), str(a_end), ["query"])
+        a_rows = gsc_query(service, site_url, str(a_start), str(a_end), ["query"])
         a_queries = {r["keys"][0]: r for r in a_rows}
 
         # Period B queries
-        b_rows = gsc_query(svc, site_url, str(b_start), str(b_end), ["query"])
+        b_rows = gsc_query(service, site_url, str(b_start), str(b_end), ["query"])
         b_queries = {r["keys"][0]: r for r in b_rows}
 
         # New queries: in A but not in B, sorted by impressions

@@ -66,14 +66,6 @@ class TrafficReportSitesTest(unittest.TestCase):
     def setUpClass(cls):
         cls.tr = load("traffic_report", "traffic_report.py")
 
-    def test_oauth_sites_are_actually_queried(self):
-        """A site flagged as OAuth-only but never queried is dead config."""
-        self.assertTrue(
-            set(self.tr.GSC_OAUTH_SITES) <= set(self.tr.GSC_SITES),
-            "GSC_OAUTH_SITES lists a property that GSC_SITES never queries: "
-            f"{set(self.tr.GSC_OAUTH_SITES) - set(self.tr.GSC_SITES)}",
-        )
-
     def test_unreadable_permission_warns_instead_of_reporting_zero(self):
         """siteUnverifiedUser must reach stderr, not the digest as 0 clicks."""
         service = _FakeService({
@@ -127,7 +119,6 @@ class TrafficReportSitesTest(unittest.TestCase):
                 f"{domain} is discontinued or paused, do not report its traffic",
             )
             self.assertNotIn(f"sc-domain:{domain}", self.tr.GSC_SITES)
-            self.assertNotIn(f"sc-domain:{domain}", self.tr.GSC_OAUTH_SITES)
 
 
 if __name__ == "__main__":
