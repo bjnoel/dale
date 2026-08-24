@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-08-13",
-  "session_count": 119,
+  "last_updated": "2026-08-24",
+  "session_count": 120,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -701,6 +701,17 @@
         "value_today": "104 visitors/mo x 0.28 outbound clicks/visitor (DEC-249) x 6.8c (DEC-248) is about A$2/mo. The argument is the trajectory (13 -> 104) and that it is the only non-Google source growing. Facebook went 420/6mo to 22/30d.",
         "dale_cannot_fix": "Our Cloudflare token is refused on bot_management, settings, firewall/rules and rulesets for zone 87880cb83388c52cf86b0a7037845cb3. Note CLOUDFLARE_ZONE_ID_TREESTOCK in secrets is correct; the token scope is the limit.",
         "options_for_benedict": "(a) turn the AI block off on both zones and let robots.txt carry the policy, honest cost being that robots.txt is voluntary and Bytespider is known not to honour it; or (b) keep enforcement but block only the training UAs. DAL-246 assigned to him."
+      },
+      "compare_page_lifecycle": {
+        "decision": "DEC-309 (found), DEC-313 (rollout verified 2026-08-24, DAL-288)",
+        "what": "build_compare_pages never removed a page it stopped writing. Chinese Bayberry dropped below MIN_NURSERIES around 2026-08-11 and its /compare/ page stayed live serving that day's prices at position 9.5, with no internal link to it. Now handled by the shared page ledger (FAMILY_COMPARE); terminal state is REDIRECT, never TOMBSTONE, because every enabled species has a live /species/ page.",
+        "first_redirect": "/compare/chinese-bayberry-prices.html became a stub on the 2026-08-22 nightly. Verified 2026-08-24: 200, meta refresh + canonical to /species/chinese-bayberry.html, heading 'Chinese Bayberry price comparison has moved', out of sitemaps/compare.xml. No other page changed state.",
+        "ledger": "data/page-ledger/compare.json: 117 pages, 116 live, 1 redirect, skipped_nights 0.",
+        "seed_defect_found_and_fixed": "seed_from_disk can only read a file mtime, which for a nightly-rewritten page is last night, so all 116 live pages seeded first_seen 2026-08-20 / live_days 4 and EVERY compare page sat below ENTRY_GUARD_LIVE_DAYS (7). Because live_days only advances on a night the page is written, a page orphaning inside that window would have frozen and stayed live and stale forever, silently. Backfilled from 173 days of nursery snapshots by tools/scrapers/reseed_compare_ledger.py; 115 of 116 now clear the guard.",
+        "method_validated": "The replay independently reconstructs chinese-bayberry's first qualifying day as 2026-06-18, identical to the date set by hand from the primal-fruits listing, and its 117 ever-qualified species match the 117 ledger entries in both directions. Re-running the committed script reports 0 pages to correct.",
+        "still_held_deliberately": "quandong: 6 qualifying days across a 112-day span, below MIN_NURSERIES for most of its life. That is the flapping page the entry guard exists for; holding it is correct.",
+        "at_the_threshold": "9 species list at exactly MIN_NURSERIES=3 (2026-08-24): cherry-of-the-rio-grande, kakadu-plum, lau-lau, lawtonberry, native-river-mint, native-thyme, quandong, ruby-saltbush, saltbush. One delisting from orphaning.",
+        "known_gap": "Nothing surfaces a held page: plan.held prints to the nightly's stdout, which nobody reads. Not ticketed, backlog is over cap."
       }
     },
     "b_experiment_beestock": {

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-08-13",
-  "last_session": 119,
+  "last_updated": "2026-08-24",
+  "last_session": 120,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1930,6 +1930,27 @@
       ],
       "tickets_proposed": [],
       "notes": "DEC-282. Rewrote DAL-237 from a title describing finished work to the verified defect underneath it (a completed sale logged as a dismissal), re-verified at HEAD, routed to Benedict. Fixed the fourth silent-zero: nursery_crm report --period 90d asserted 0 clicks from a 400. Cancelled DAL-220 and DAL-227 as refuted by DEC-241/DEC-239/DEC-268; moved the \"no price published anywhere\" finding to DAL-239. Backlog 24 -> 22.",
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 12,
+        "treesmith_downloads": 432,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "treestock_outbound_clicks_30d": 1548
+      }
+    },
+    {
+      "session": 120,
+      "date": "2026-08-24",
+      "categories_worked": [
+        "treestock:data_quality",
+        "treestock:seo"
+      ],
+      "tickets_completed": [
+        "DAL-288"
+      ],
+      "tickets_proposed": [],
+      "notes": "DEC-313. Verified the compare-page ledger's first redirect: all four checks pass (stub 200 with meta refresh + canonical, correct wording, 116 live / 1 redirect, out of sitemaps/compare.xml, nothing else moved). The rollout judgement found the real defect: seed_from_disk read file mtimes, so all 116 live pages carried first_seen 2026-08-20 / live_days 4 and every compare page on the site sat below ENTRY_GUARD_LIVE_DAYS, where an orphan freezes and stays stale forever. Backfilled from 173 days of snapshots with a committed, re-runnable replay validated against the one date previously derived by hand. Also renumbered the duplicate DEC-308 that DEC-311 had recorded as pre-existing; suite green at 3,351. Backlog over cap, so no tickets proposed.",
       "metric_snapshot": {
         "revenue_monthly": 35.15,
         "subscribers": 12,

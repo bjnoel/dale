@@ -13021,7 +13021,12 @@ Full suite 3,296 pass.
 ---
 
 
-## DEC-308 — 2026-08-24 — Search is 99% of it, and the report that said so was the wrong report
+## DEC-312 — 2026-08-24 — Search is 99% of it, and the report that said so was the wrong report
+
+*(Renumbered from DEC-308 on 2026-08-24. Two sessions appended on the same day and
+both took 308; the earlier one, 2026-08-20's "The gate existed, it just was not
+standing where the accident happens", keeps the number. Nothing outside the log
+cited this entry.)*
 
 **Context:** DEC-307's job ran for the first time on 2026-08-23 and produced figures that
 looked wrong: 517 impressions, 100% App Store search, zero browse, zero taps, 60 rows.
@@ -13141,3 +13146,71 @@ alone rather than touched for symmetry.
 **Verification:** full suite 3,341 tests, 1 pre-existing unrelated failure (a duplicate
 DEC-308 committed earlier today by another session). The alert fix was confirmed
 failing-then-passing by disconnecting the guard.
+
+## DEC-313 — 2026-08-24 — The redirect worked, and the seed under it had put every other page in the same trap
+
+**Context:** DAL-288 asked for four checks on the compare-page ledger's first
+redirect, and a judgement on the rollout. All four pass.
+
+1. `/compare/chinese-bayberry-prices.html` returns 200, carries
+   `<meta http-equiv="refresh" content="0; url=.../species/chinese-bayberry.html">`
+   and a canonical to the same URL, and the heading reads "Chinese Bayberry price
+   comparison has moved". Not the variety-rename wording.
+2. `data/page-ledger/compare.json`: 117 pages, 116 `live`, 1 `redirect`,
+   `absent_nights` 2, `since` 2026-08-22. `skipped_nights` 0.
+3. Nothing else moved. Every other entry still carries `since` 2026-08-20, its
+   seed date, and chinese-bayberry is the only slug with `absent_nights` above 0.
+4. `sitemaps/compare.xml` has 117 `<loc>`, none of them chinese-bayberry. The
+   119 files on disk are those 117, the stub, and `index.html`.
+
+**The judgement is where the value was.** The ticket's own KNOWN LIMIT said a
+page orphaned before it has `ENTRY_GUARD_LIVE_DAYS` (7) of ledger history is
+held rather than redirected, and that "if it turns out to bite real pages, the
+fix is to seed real dates, not to loosen the guard". It bit all of them.
+
+`seed_from_disk` can only read a file's mtime, and for a page the builder
+rewrites every night the mtime is last night. So all 116 live pages seeded with
+`first_seen 2026-08-20` and were sitting at `live_days 4`, span 4: **every
+compare page on the site was below the entry guard**, not just genuinely new
+ones. Worse than a four-night wait, because `live_days` only advances on a night
+the page is written. A page orphaning on 2026-08-25 would freeze at 4 and be
+held forever, live and stale, which is the exact defect the ledger was built to
+fix. Nine species sit at exactly MIN_NURSERIES today
+(cherry-of-the-rio-grande, kakadu-plum, lau-lau, lawtonberry, native-river-mint,
+native-thyme, quandong, ruby-saltbush, saltbush), one delisting from orphaning.
+Nothing surfaces a held page: `plan.held` prints to the nightly's stdout.
+
+**Fixed by seeding real dates, per the prescription.** `PageLedger.seed`'s
+docstring always said it backdates "from availability history"; the compare
+family took the filesystem shortcut. A compare page qualifies on a night when
+>= 3 distinct nurseries list the species at all, in stock or not, which is a
+pure function of the daily snapshots, so 173 days of `data/nursery-stock/` were
+replayed to get each page's real first qualifying day and real count of
+qualifying days. 116 live entries corrected. `last_seen` was not touched (it is
+a real observation) and the redirect entry was not touched (terminal, no guard
+reads it). Now 115 of 116 clear the entry guard.
+
+**The method was validated before it was trusted.** The replay reconstructs
+chinese-bayberry's first qualifying day as 2026-06-18 — the identical date set
+by hand on 2026-08-20 from the primal-fruits listing, arrived at independently.
+The set of species that ever qualified is 117, matching the 117 ledger entries
+exactly in both directions. `tools/scrapers/reseed_compare_ledger.py` is the
+replay, committed, read-only by default: re-running it now reports 0 pages to
+correct, so the committed script reproduces the backfill exactly rather than the
+backfill being an unauditable hand edit.
+
+**One page is legitimately still below the guard: quandong**, 6 qualifying days
+across a 112-day span. It has been below MIN_NURSERIES nearly its whole life.
+That is the flapping page the entry guard exists for, and holding it is right:
+it dips and returns within days, and returning rewrites it with fresh data. The
+harm case was chinese-bayberry, stale for 11 days at position 9.5.
+
+**Also fixed:** the duplicate DEC-308 that DEC-311 recorded as pre-existing. The
+2026-08-24 entry is renumbered DEC-312; the 2026-08-20 entry keeps 308. Nothing
+outside the log cited it. Full suite 3,351 tests, green.
+
+**Lesson:** a guard is only as good as the dates it reads, and a seeded date is
+not an observed one. `seed_from_disk` returned a plausible answer for every page
+and the wrong answer for every page, because an mtime answers "when was this
+file last written", not "how long has this page existed" — and for a nightly
+builder those two are never the same number.
