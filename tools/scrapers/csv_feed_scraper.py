@@ -45,7 +45,7 @@ from pathlib import Path
 
 from stocklib.model import validate_and_warn
 from stocklib.retry import request_with_retry
-from stocklib.scrape_health import ScrapeHealth
+from stocklib.scrape_health import count_priced, ScrapeHealth
 from stocklib.species_match import load_species_lookup, match_title
 from stocklib.taxonomy import enabled_species
 
@@ -341,7 +341,8 @@ def scrape(nursery_key: str, config: dict) -> bool:
     preorder = sum(1 for p in products if p["preorder"])
     print(f"  {len(products)} products, {in_stock} buyable ({preorder} pre-order)")
     save_snapshot(nursery_key, config, products, catalogue)
-    health.finish(products=len(products), in_stock=in_stock)
+    health.finish(products=len(products), in_stock=in_stock,
+                  priced=count_priced(products))
     return True
 
 

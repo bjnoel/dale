@@ -28,7 +28,7 @@ from pathlib import Path
 
 from stocklib.model import validate_and_warn
 from stocklib.scrape_health import (ScrapeHealth, consecutive_failures,
-                                    last_success_day, should_probe)
+                                    count_priced, last_success_day, should_probe)
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent / "data")) / "nursery-stock"
 NURSERY_KEY = "heritage-fruit-trees"
@@ -492,7 +492,8 @@ if __name__ == "__main__":
         raise
     if products:
         health.finish(products=len(products),
-                      in_stock=sum(1 for p in products if p["any_available"]))
+                      in_stock=sum(1 for p in products if p["any_available"]),
+                      priced=count_priced(products))
     elif not dry_run:
         health.finish(ok=False)
         print("\nNo products scraped. Check for blocking or site structure changes.")

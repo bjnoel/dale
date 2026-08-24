@@ -38,7 +38,7 @@ from datetime import datetime, date
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
-from stocklib.scrape_health import ScrapeHealth
+from stocklib.scrape_health import count_priced, ScrapeHealth
 
 NURSERIES = {
     "heaven-on-earth": {
@@ -348,7 +348,8 @@ def main():
             health.finish(ok=False)
             raise
         health.finish(products=len(products),
-                      in_stock=sum(1 for p in products if p["available"]))
+                      in_stock=sum(1 for p in products if p["available"]),
+                      priced=count_priced(products))
         print()
 
 

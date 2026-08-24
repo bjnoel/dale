@@ -46,6 +46,22 @@ STREAK_DAYS = 3
 # truncated run, a catalogue that vanished. The Daleys swap was +209%.
 COUNT_SWING_RATIO = 2.0
 
+# A nursery can be scraped perfectly and still stop yielding prices. PlantNet
+# reported price "0" on 79 of its 110 SKUs and nothing anywhere noticed: the
+# snapshot validated (0.0 is a non-negative price), the product count was
+# normal, and the only symptom was a blank cell on the homepage that Benedict
+# happened to see. So the share of products carrying a usable price is now
+# recorded per run and a collapse in it is an anomaly.
+#
+# HONEST LIMIT: this is a day-over-day rule, so it catches a nursery that LOSES
+# its prices. It would NOT have caught PlantNet, which has been mostly priceless
+# since the day it was added. There is no delta to see in a birth defect. What
+# closes that gap is the priced figure being visible per nursery in the health
+# grid, not another alarm: an absolute threshold would fire nightly and forever
+# for a nursery that is legitimately POA, which is how an alarm gets ignored.
+PRICED_SHARE_DROP = 0.5
+MIN_PRODUCTS_FOR_PRICED_CHECK = 20
+
 SENDS_LOG_FILE = Path(os.environ.get("DALE_DATA_DIR", "/opt/dale/data")) / "scrape_anomaly_sends.json"
 
 from stocklib.mailer import load_sends_log, save_sends_log
@@ -57,6 +73,7 @@ CONDITION_LABELS = {
     "failure_streak": f"Failed {STREAK_DAYS} days running",
     "source_change": "Data source changed",
     "count_swing": "Product count swing",
+    "priced_collapse": "Prices stopped being read",
 }
 
 
@@ -112,6 +129,23 @@ def detect_anomalies(days):
                     "detail": f"{prior_source} -> {today_source} "
                               f"({y.get('products', 0)} -> {rec.get('products', 0)} products)",
                 })
+
+            # Priced share collapse. Guarded on both days carrying the field
+            # (it is optional, and old records predate it) and on a catalogue
+            # big enough for a share to mean anything.
+            t_n, y_n = rec.get("products", 0), y.get("products", 0)
+            t_priced, y_priced = rec.get("priced"), y.get("priced")
+            if (t_priced is not None and y_priced is not None
+                    and t_n >= MIN_PRODUCTS_FOR_PRICED_CHECK
+                    and y_n >= MIN_PRODUCTS_FOR_PRICED_CHECK):
+                t_share, y_share = t_priced / t_n, y_priced / y_n
+                if y_share > 0 and t_share <= y_share * PRICED_SHARE_DROP:
+                    anomalies.append({
+                        "nursery": nursery,
+                        "type": "priced_collapse",
+                        "detail": f"{y_share:.0%} -> {t_share:.0%} of products priced "
+                                  f"({y_priced}/{y_n} -> {t_priced}/{t_n})",
+                    })
 
             prior_count = y.get("products", 0)
             today_count = rec.get("products", 0)

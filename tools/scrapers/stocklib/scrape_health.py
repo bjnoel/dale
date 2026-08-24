@@ -39,6 +39,33 @@ TRUNCATION_RATIO = 0.60
 MIN_HISTORY_DAYS = 3
 
 
+def count_priced(products) -> int:
+    """How many of these products carry a usable price.
+
+    Recorded alongside the product count because a nursery can be scraped
+    perfectly and still yield no prices, and nothing noticed. PlantNet reported
+    price "0" on 79 of its 110 SKUs (it is a wholesale breeder's retail arm, so
+    most of its catalogue is "find a stockist"); that became $0.00, then null,
+    then a blank cell on the homepage, and no validator or alarm saw it:
+    model.validate_snapshot accepts 0.0 as a non-negative price and
+    detect_scrape_anomalies had no price rule at all.
+
+    Handles both snapshot dialects: min_price (Shopify/Woo/Wix/BigCommerce/CSV)
+    and the flat price key (Ecwid).
+    """
+    n = 0
+    for p in products or ():
+        price = p.get("min_price")
+        if price is None:
+            price = p.get("price")
+        try:
+            if price is not None and float(price) > 0:
+                n += 1
+        except (TypeError, ValueError):
+            continue
+    return n
+
+
 def default_health_dir() -> Path:
     """data/scraper-health under DALE_DATA_DIR (or the repo data dir),
     resolved at call time so tests can set the env var."""
@@ -171,10 +198,13 @@ class ScrapeHealth:
             self.error = str(message)
 
     def finish(self, products: int = 0, in_stock: int = 0,
-               ok: bool | None = None) -> dict:
+               ok: bool | None = None, priced: int | None = None) -> dict:
         """Write the record. ok defaults to: errors are tolerable as long as
         we still got products; zero products with an error means the run
-        failed. Pass ok=False explicitly on a crash path."""
+        failed. Pass ok=False explicitly on a crash path.
+
+        `priced` is the count of products carrying a usable price, from
+        count_priced(). Optional so a failure path need not supply it."""
         if ok is None:
             ok = products > 0 or self.error is None
         record = {
@@ -188,6 +218,8 @@ class ScrapeHealth:
             "http_429": self.http_429,
             "error": self.error,
         }
+        if priced is not None:
+            record["priced"] = int(priced)
         if self.source:
             record["source"] = self.source
         try:

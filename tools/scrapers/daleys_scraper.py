@@ -27,7 +27,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
-from stocklib.scrape_health import ScrapeHealth
+from stocklib.scrape_health import count_priced, ScrapeHealth
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock" / "daleys"
 BASE_URL = "https://www.daleysfruit.com.au"
@@ -594,7 +594,8 @@ def main():
 
     if snapshot:
         health.finish(products=snapshot["product_count"],
-                      in_stock=snapshot["in_stock_count"])
+                      in_stock=snapshot["in_stock_count"],
+                      priced=count_priced(snapshot["products"]))
         print_summary(products, pre_purchase_products)
     else:
         health.finish(ok=False)

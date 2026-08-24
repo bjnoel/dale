@@ -22,7 +22,7 @@ from html import unescape
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
-from stocklib.scrape_health import ScrapeHealth
+from stocklib.scrape_health import count_priced, ScrapeHealth
 
 NURSERIES = {
     "guildford": {
@@ -409,7 +409,8 @@ def main():
             raise
         if snapshot:
             health.finish(products=snapshot["product_count"],
-                          in_stock=snapshot["in_stock_count"])
+                          in_stock=snapshot["in_stock_count"],
+                          priced=count_priced(snapshot["products"]))
         else:
             health.finish()
         print()

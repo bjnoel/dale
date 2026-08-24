@@ -18,19 +18,20 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tools" / "scrapers"))
 
 from detect_scrape_anomalies import (  # noqa: E402
-    COUNT_SWING_RATIO, STREAK_DAYS, build_email, detect_anomalies,
-    latest_by_nursery, main,
+    COUNT_SWING_RATIO, MIN_PRODUCTS_FOR_PRICED_CHECK, PRICED_SHARE_DROP,
+    STREAK_DAYS, build_email, detect_anomalies, latest_by_nursery, main,
 )
-from stocklib.scrape_health import append_record  # noqa: E402
+from stocklib.scrape_health import append_record, count_priced  # noqa: E402
 
 
 def rec(nursery, ok=True, products=100, in_stock=80, http_403=0, http_429=0,
-        error=None, source=None):
+        error=None, source=None, priced=None):
     return {
         "ts": "2026-06-11T01:00:00", "nursery": nursery, "ok": ok,
         "products": products, "in_stock": in_stock, "duration_s": 1.0,
         "http_403": http_403, "http_429": http_429, "error": error,
         **({"source": source} if source else {}),
+        **({"priced": priced} if priced is not None else {}),
     }
 
 
@@ -327,6 +328,80 @@ class EveryScraperDeclaresItsSourceTest(unittest.TestCase):
                 self.assertIn("source=", text,
                               f"{f.name} builds a ScrapeHealth without a source=, "
                               f"so its health records cannot report a swap")
+
+
+class CountPricedTest(unittest.TestCase):
+    """A price of zero is 'not published', never $0.00. See
+    woocommerce_scraper.parse_store_price for why that distinction exists."""
+
+    def test_counts_both_snapshot_dialects(self):
+        # min_price is Shopify/Woo/Wix/BigCommerce/CSV; price is Ecwid's flat one.
+        self.assertEqual(count_priced([{"min_price": 48.0}, {"price": 12.5}]), 2)
+
+    def test_zero_and_none_do_not_count(self):
+        self.assertEqual(count_priced([{"min_price": 0.0}, {"min_price": None},
+                                       {"price": 0}, {}]), 0)
+
+    def test_garbage_does_not_raise(self):
+        self.assertEqual(count_priced([{"min_price": "POA"}, {"min_price": 30}]), 1)
+
+    def test_empty_and_none_are_zero(self):
+        self.assertEqual(count_priced([]), 0)
+        self.assertEqual(count_priced(None), 0)
+
+
+class PricedCollapseTest(unittest.TestCase):
+    """A nursery can be scraped perfectly and stop yielding prices.
+
+    Nothing caught PlantNet reporting price "0" on 79 of 110 SKUs: the snapshot
+    validated (0.0 is a non-negative price), the product count was normal, and
+    the only symptom was a blank cell on the homepage.
+    """
+
+    def test_a_nursery_losing_its_prices_alarms(self):
+        today = [rec("plantnet", products=110, priced=31, source="woocommerce")]
+        yesterday = [rec("plantnet", products=110, priced=110, source="woocommerce")]
+        found = detect_anomalies([today, yesterday, yesterday])
+        hits = [a for a in found if a["type"] == "priced_collapse"]
+        self.assertEqual(len(hits), 1)
+        self.assertIn("100% -> 28%", hits[0]["detail"])
+
+    def test_a_stable_priceless_nursery_is_silent(self):
+        """The honest limit, pinned so nobody 'fixes' it into a nightly nag.
+        A birth defect has no delta. PlantNet has been mostly priceless since
+        the day it was added, so this rule would never have caught it; the
+        priced figure being visible per nursery is what closes that gap."""
+        day = [rec("plantnet", products=110, priced=31, source="woocommerce")]
+        kinds = {a["type"] for a in detect_anomalies([day, day, day])}
+        self.assertNotIn("priced_collapse", kinds)
+
+    def test_ordinary_movement_is_silent(self):
+        today = [rec("guildford", products=900, priced=880, source="woocommerce")]
+        yesterday = [rec("guildford", products=900, priced=900, source="woocommerce")]
+        kinds = {a["type"] for a in detect_anomalies([today, yesterday, yesterday])}
+        self.assertNotIn("priced_collapse", kinds)
+
+    def test_a_small_catalogue_is_not_judged_on_a_share(self):
+        n = MIN_PRODUCTS_FOR_PRICED_CHECK - 1
+        today = [rec("tiny", products=n, priced=0, source="shopify")]
+        yesterday = [rec("tiny", products=n, priced=n, source="shopify")]
+        kinds = {a["type"] for a in detect_anomalies([today, yesterday, yesterday])}
+        self.assertNotIn("priced_collapse", kinds)
+
+    def test_records_without_the_field_are_skipped_not_crashed(self):
+        """priced is optional, and every record written before this existed
+        lacks it."""
+        today = [rec("daleys", products=1998, source="feed")]
+        yesterday = [rec("daleys", products=1998, source="feed")]
+        kinds = {a["type"] for a in detect_anomalies([today, yesterday, yesterday])}
+        self.assertNotIn("priced_collapse", kinds)
+
+    def test_threshold_is_the_named_constant(self):
+        n = 200
+        today = [rec("x", products=n, priced=int(n * PRICED_SHARE_DROP) - 1, source="shopify")]
+        yesterday = [rec("x", products=n, priced=n, source="shopify")]
+        kinds = {a["type"] for a in detect_anomalies([today, yesterday, yesterday])}
+        self.assertIn("priced_collapse", kinds)
 
 
 if __name__ == "__main__":

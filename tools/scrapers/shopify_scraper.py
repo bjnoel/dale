@@ -21,7 +21,7 @@ from pathlib import Path
 
 from stocklib.model import validate_and_warn
 from stocklib.retry import request_with_retry
-from stocklib.scrape_health import ScrapeHealth
+from stocklib.scrape_health import count_priced, ScrapeHealth
 
 # Nursery configurations
 NURSERIES = {
@@ -433,7 +433,8 @@ def main():
             health.finish(ok=False)
             raise
         health.finish(products=len(normalized),
-                      in_stock=sum(1 for p in normalized if p["any_available"]))
+                      in_stock=sum(1 for p in normalized if p["any_available"]),
+                      priced=count_priced(normalized))
         print()
         if len(targets) > 1:
             time.sleep(NURSERY_DELAY)
