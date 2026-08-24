@@ -53,16 +53,19 @@ Five things this deliberately does NOT do
    request exists. Config carries the REQUEST id and the report NAME, and the
    id is rediscovered on every run.
 
-A note on Standard vs Detailed
-------------------------------
-`Source Type` appears in BOTH the Standard and Detailed reports; the fields
-unique to Detailed are Page Title, Source Info and Campaign, none of which we
-read. Apple's own guidance is "Download the standard report unless you need to
-analyze the unique fields in the detailed report", because Detailed carries
-extra privacy measures, and at TreeSmith's volume those could suppress rows we
-need. Detailed is the default here because that is the report the existing
-request was built around; switching is one line in appstoreconnect.env, and
-`--list-reports` prints the ids to switch to.
+Standard, not Detailed, and that is a measurement not a preference
+------------------------------------------------------------------
+The first live run pulled Detailed and reported 517 impressions, 100% of them
+from App Store search, no browse at all and not one tap. Pulling Standard for
+the same request on the same day returned 2,225 impressions, 22 of them browse,
+and 85 tap rows including 50 `Get`. Detailed was showing 23% of our traffic and
+none of our downloads.
+
+Apple's guidance says "download the standard report unless you need to analyze
+the unique fields in the detailed report". Those fields are Page Title, Source
+Info and Campaign, and this module reads none of them. Detailed's extra privacy
+measures are applied per row; at 43 MAU there are not enough rows to survive
+them. `--list-reports` prints the ids if this ever needs switching back.
 
 Config, all from the environment. No credential appears in this file.
 --------------------------------------------------------------------
@@ -108,7 +111,21 @@ SECRETS_DIR = "/opt/dale/secrets"
 SECRETS_FILE = "appstoreconnect.env"
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-DEFAULT_REPORT_NAME = "App Store Discovery and Engagement Detailed"
+# Standard, not Detailed, and this was measured rather than assumed (2026-08-23).
+# Apple's guidance is "download the standard report unless you need to analyze the
+# unique fields in the detailed report", and at TreeSmith's volume the difference is
+# not cosmetic. Same request, same day, same 3.5 months:
+#
+#              rows  impressions  browse  Tap rows  territories
+#   Detailed     60          517       0         0            7
+#   Standard  1,569        2,225      22        85          110
+#
+# Detailed showed 23% of our impressions, no App Store browse at all, and none of the
+# 50 `Get` taps -- the download button, the one engagement that matters. Its extra
+# privacy measures are applied per row, and at our row counts they take nearly
+# everything. The fields unique to Detailed (Page Title, Source Info, Campaign) are
+# ones this module never reads.
+DEFAULT_REPORT_NAME = "App Store Discovery and Engagement Standard"
 DEFAULT_GRANULARITY = "DAILY"
 ENGAGEMENT_CATEGORY = "APP_STORE_ENGAGEMENT"
 
@@ -186,6 +203,13 @@ CSV_COLUMNS = [
     "taps",
     "taps_unique",
     "complete",
+    # Which report the row came from. Appended 2026-08-23 after the Detailed ->
+    # Standard switch, because without it the switch was silent and permanent:
+    # `new_rows` skips any day already marked complete, so every historical day
+    # would have kept its understated Detailed figures forever while new days
+    # came from Standard, and the series would have rendered one trend out of
+    # two incompatible sources.
+    "report",
 ]
 _INT_COLUMNS = ("impressions", "impressions_unique", "page_views",
                 "page_views_unique", "taps", "taps_unique")
@@ -574,7 +598,8 @@ def is_complete(date, pulled_at, tail=INCOMPLETE_TAIL_DAYS):
     return _as_date(date) <= last_complete_date(pulled_at, tail)
 
 
-def to_records(totals, pulled_at, tail=INCOMPLETE_TAIL_DAYS):
+def to_records(totals, pulled_at, tail=INCOMPLETE_TAIL_DAYS,
+               report=DEFAULT_REPORT_NAME):
     """Turn an aggregate into series records, stamping completeness per day."""
     stamp = normalise_pulled_at(pulled_at)
     cutoff = last_complete_date(stamp, tail)
@@ -585,6 +610,7 @@ def to_records(totals, pulled_at, tail=INCOMPLETE_TAIL_DAYS):
             "date": date,
             "source_type": source,
             "complete": _as_date(date) <= cutoff,
+            "report": report,
         }
         record.update({name: metrics.get(name, 0) for name in _METRIC_COLUMNS})
         records.append(record)
@@ -729,6 +755,11 @@ def new_rows(existing, candidates):
     for record in candidates:
         held = view.get((record["date"], record["source_type"]))
         if held is None:
+            out.append(record)
+            continue
+        if held.get("report") != record.get("report"):
+            # Different report, so different numbers for the same day. This is
+            # the one case where a "complete" day must be re-recorded.
             out.append(record)
             continue
         if held["complete"]:
@@ -1029,7 +1060,7 @@ def main(argv=None):
         return 1
 
     pulled_at = normalise_pulled_at(args.pulled_at) if args.pulled_at else now_iso()
-    candidates = to_records(totals, pulled_at)
+    candidates = to_records(totals, pulled_at, report=config["ASC_REPORT_NAME"])
     existing = read(path)
     fresh = new_rows(existing, candidates)
 

@@ -53,12 +53,14 @@ def report(*rows):
 
 
 def record(date, source, impressions=0, page_views=0, taps=0,
-           pulled_at="2026-08-23T22:40:00Z", complete=True):
+           pulled_at="2026-08-23T22:40:00Z", complete=True,
+           report=asrc.DEFAULT_REPORT_NAME):
     return {
         "pulled_at": pulled_at, "date": date, "source_type": source,
         "impressions": impressions, "impressions_unique": impressions,
         "page_views": page_views, "page_views_unique": page_views,
         "taps": taps, "taps_unique": taps, "complete": complete,
+        "report": report,
     }
 
 
@@ -372,6 +374,33 @@ class TestSeries(unittest.TestCase):
                              pulled_at="2026-08-24T22:40:00Z", complete=False)]
         self.assertEqual(asrc.new_rows(existing, candidates), [])
 
+    def test_switching_report_re_records_even_a_complete_day(self):
+        """The Detailed -> Standard switch, which was silent before this column.
+
+        Detailed reported 517 impressions for a period Standard reported 2,225
+        for. Without this, every day already marked complete would have kept the
+        understated figure forever while new days came from the other report,
+        and the series would have rendered one trend out of two sources.
+        """
+        existing = [record("2026-08-10", asrc.SOURCE_SEARCH, impressions=517,
+                           report="App Store Discovery and Engagement Detailed")]
+        candidates = [record("2026-08-10", asrc.SOURCE_SEARCH, impressions=2225,
+                             pulled_at="2026-08-30T22:40:00Z",
+                             report="App Store Discovery and Engagement Standard")]
+        fresh = asrc.new_rows(existing, candidates)
+        self.assertEqual(len(fresh), 1)
+        self.assertEqual(fresh[0]["impressions"], 2225)
+        # And the newer pull is what the digest reads.
+        view = asrc.latest_view(existing + fresh)
+        self.assertEqual(view[("2026-08-10", asrc.SOURCE_SEARCH)]["impressions"], 2225)
+
+    def test_the_default_report_is_standard_not_detailed(self):
+        # Measured 2026-08-23: Detailed returned 517 impressions, 0 browse and 0
+        # taps where Standard returned 2,225, 22 and 85. Detailed's per-row
+        # privacy measures take nearly everything at our volume.
+        self.assertIn("Standard", asrc.DEFAULT_REPORT_NAME)
+        self.assertNotIn("Detailed", asrc.DEFAULT_REPORT_NAME)
+
     def test_a_changed_incomplete_day_IS_appended(self):
         existing = [record("2026-08-22", asrc.SOURCE_SEARCH, impressions=5,
                            complete=False)]
@@ -401,7 +430,7 @@ class TestReportDiscovery(unittest.TestCase):
         return getter
 
     def test_resolves_the_report_name_to_a_request_scoped_id(self):
-        getter = self._getter(["App Store Discovery and Engagement Standard",
+        getter = self._getter(["App Store Discovery and Engagement Detailed",
                                asrc.DEFAULT_REPORT_NAME])
         self.assertEqual(
             asrc.find_report("tok", "req", asrc.DEFAULT_REPORT_NAME, getter=getter),
