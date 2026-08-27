@@ -16,12 +16,12 @@ import os
 import sys
 import time
 import urllib.request
-import urllib.error
 from datetime import datetime, date
 from html import unescape
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
+from stocklib.retry import request_with_retry
 from stocklib.scrape_health import count_priced, ScrapeHealth
 
 NURSERIES = {
@@ -169,24 +169,32 @@ USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 REQUEST_DELAY = 1.5
 
 
-def fetch_json(url, health=None):
-    """Fetch JSON from URL."""
+def fetch_json(url, health=None, *, _opener=None, _sleep=time.sleep):
+    """Fetch JSON from URL with proper headers, retrying transient 429/503/509s
+    and timeouts (stocklib.retry). ``_opener``/``_sleep`` are test seams.
+
+    This used to be a private copy of the fetch with no retry at all, which is
+    why a single transient blip cost a whole nursery-day: engalls 509 in 0.88s
+    (2026-08-26), plantnet 503 in 1.62s (08-21), rayners 429 in 1.31s (08-27).
+    All three are in RETRYABLE_HTTP and none of them was retried, because the
+    shared helper was never wired in here. The copy reproduced retry.py's log
+    lines and health calls exactly, so the logs looked identical to a scraper
+    that had tried.
+    """
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT,
         "Accept": "application/json",
     })
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return json.loads(resp.read().decode())
-    except urllib.error.HTTPError as e:
-        print(f"  HTTP {e.code} fetching {url}")
-        if health:
-            health.note_http_error(e.code, url)
+    raw = request_with_retry(req, timeout=30, health=health,
+                             _opener=_opener, _sleep=_sleep)
+    if raw is None:
         return None
-    except Exception as e:
-        print(f"  Error fetching {url}: {e}")
+    try:
+        return json.loads(raw.decode())
+    except json.JSONDecodeError as e:
+        print(f"  JSON decode error from {url}: {e}")
         if health:
-            health.note_error(str(e))
+            health.note_error(f"json decode: {e}")
         return None
 
 

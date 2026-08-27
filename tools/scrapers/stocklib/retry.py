@@ -5,7 +5,7 @@ the 2026-07-19 Shopify-wide 503 blip took out 10 nursery snapshots in one run:
 every Shopify store 503'd once at the same moment and the scrapers had no
 retry, so a transient platform hiccup became a missing snapshot day.
 
-Retries HTTP 429/503 and read/connect timeouts with exponential backoff,
+Retries HTTP 429/503/509 and read/connect timeouts with exponential backoff,
 honouring a seconds-form Retry-After header. Import from here; do not copy
 these into a scraper (tests/test_no_forking.py guards the constants).
 """
@@ -14,7 +14,12 @@ import time
 import urllib.error
 import urllib.request
 
-RETRYABLE_HTTP = {429, 503}
+# 509 (Bandwidth Limit Exceeded) is not in any RFC; it is what Apache/LiteSpeed
+# and cPanel emit when a shared-hosting account hits its bandwidth or
+# concurrent-connection cap. Added 2026-08-27 after Engall's returned it once
+# (2026-08-26) and served 200 in 1.45s the next morning: transient by
+# construction, and the exact class this module exists to absorb.
+RETRYABLE_HTTP = {429, 503, 509}
 MAX_RETRIES = 3        # extra attempts after the first try
 BACKOFF_BASE = 2.0     # seconds; doubles each retry
 BACKOFF_CAP = 30.0     # never wait longer than this between retries
@@ -60,7 +65,7 @@ def request_with_retry(req, timeout=20, health=None, *, _opener=None, _sleep=tim
     """Send a urllib Request, retrying transient failures, and return the raw
     response bytes (or None once retries are exhausted / on a fatal error).
 
-    Retries HTTP 429/503 and timeouts up to MAX_RETRIES times with exponential
+    Retries HTTP 429/503/509 and timeouts up to MAX_RETRIES times with exponential
     backoff (honouring Retry-After). ``_opener``/``_sleep`` are injection seams
     for tests."""
     opener = _opener or urllib.request.urlopen

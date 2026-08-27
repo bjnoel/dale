@@ -37,8 +37,39 @@ from datetime import date
 from pathlib import Path
 
 
+def snapshot_day(scrape: dict):
+    """The date the snapshot was actually taken, from its own `scraped_at`.
+
+    Returns an ISO date string, or None when the snapshot cannot say. Every
+    scraper that writes a snapshot writes `scraped_at` (bigcommerce, csv_feed,
+    daleys, ecwid, shopify, wix, woocommerce), so None means something is wrong
+    rather than merely old, and the caller treats it as such.
+    """
+    raw = scrape.get("scraped_at")
+    if not isinstance(raw, str) or len(raw) < 10:
+        return None
+    day = raw[:10]
+    try:
+        date.fromisoformat(day)
+    except ValueError:
+        return None
+    return day
+
+
 def update_nursery(nursery_dir: Path):
-    """Update availability history for a single nursery."""
+    """Update availability history for a single nursery.
+
+    Skips a nursery whose latest.json is not from today. A failed scrape does
+    not overwrite latest.json, so without this guard yesterday's stock enters
+    the history stamped with today's date, prices included: 52 such days and
+    24,567 such rows accumulated between 2026-03 and 2026-08-27, and one of
+    them put a wrong sentence on a live tombstone (Cox's Orange Pippin claimed
+    a 20 August last-seen when Garden Express was last reachable on the 17th).
+
+    The date comes from the snapshot rather than from the clock deliberately.
+    `date.today()` answers "when is this script running", which is not the
+    question; `scraped_at` answers "when was this observed", which is.
+    """
     latest_file = nursery_dir / "latest.json"
     avail_file = nursery_dir / "availability.json"
 
@@ -49,8 +80,19 @@ def update_nursery(nursery_dir: Path):
     with open(latest_file) as f:
         scrape = json.load(f)
 
-    today = date.today().isoformat()
     nursery_key = nursery_dir.name
+    today = date.today().isoformat()
+    day = snapshot_day(scrape)
+
+    # Fail closed. Losing a day of history is recoverable; fabricating one is
+    # not, because nothing downstream can tell the two apart afterwards.
+    if day is None:
+        print(f"  {nursery_key}: SKIPPED, snapshot has no usable scraped_at")
+        return
+    if day != today:
+        print(f"  {nursery_key}: SKIPPED, latest.json is from {day}, not {today} "
+              f"(scrape failed tonight; not recording it as today's stock)")
+        return
 
     # Load or create availability history
     if avail_file.exists():
@@ -115,7 +157,7 @@ def update_nursery(nursery_dir: Path):
             if product_key not in history["products"]:
                 history["products"][product_key] = {
                     "title": display_title,
-                    "first_seen": today,
+                    "first_seen": day,
                     "days": {},
                 }
                 new += 1
@@ -135,7 +177,7 @@ def update_nursery(nursery_dir: Path):
                 else:
                     day_entry["p"] = round(price, 2)
 
-            prod["days"][today] = day_entry
+            prod["days"][day] = day_entry
             updated += 1
 
     # Save
