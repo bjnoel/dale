@@ -440,7 +440,12 @@
       "preferred_channel": "contact_form",
       "status": "not_contacted",
       "touches": [],
-      "open_action": null,
+      "open_action": {
+        "owner": "dale",
+        "what": "Category leakage on /nursery/ausnurseries.html: 16 of 459 listings are ornamentals, not fruit. Nine flowering dogwoods, sugar maple, weeping willow, flowering peach/almond/apricot. Touch 1 (2026-08-27) admits this to them and promises a clean-up, so it is now a commitment. Same class as docs/scraper-category-audit.md, a filter tweak not a page bug.",
+        "since": "2026-08-27",
+        "keep_open": true
+      },
       "notes": ""
     },
     {
