@@ -81,13 +81,26 @@ FRUIT_FILTERS = {
         #                       32 groups of 15cm grafting sticks at $9.75,
         #                       named by cultivar ("Scion Wood Apple - Pink
         #                       Lady"). species_match resolves them to Apple,
-        #                       Cherry, Wampee and so on, so before the feed
-        #                       carried categories they sat on the species and
-        #                       state pages as the cheapest listing for their
-        #                       fruit, undercutting real trees 3-5x. They mint
-        #                       no variety slug, so the damage was confined to
-        #                       price rank, which is precisely where it hurts
-        #                       (DEC-314: those pages rank by price).
+        #                       Cherry, Wampee and so on, so they read as the
+        #                       cheapest listing for their fruit, undercutting
+        #                       real trees 3-5x. They mint no variety slug, so
+        #                       the damage is confined to price rank, which is
+        #                       precisely where it hurts (DEC-314: those pages
+        #                       rank by price).
+        #
+        #                       NOTE this rule only reaches the homepage.
+        #                       build_species_pages, build_variety_pages and
+        #                       build_species_state_pages apply
+        #                       stocklib.classify.is_real_product and NEVER
+        #                       is_fruit_product, so 459 Daleys products (109
+        #                       in stock) are live on those pages while absent
+        #                       from search, all 32 scion wood among them.
+        #                       "Scion Wood Apple - Red Delicious $9.75 In
+        #                       stock" is the second row of the cheapest table
+        #                       on /species/apple.html as of 2026-08-27. Fixing
+        #                       that is a separate change with its own blast
+        #                       radius; do not assume this filter covers a page
+        #                       without checking that the builder imports it.
         #   ""                  Was 602 live rows before the feed carried a
         #                       category column. Now 0. The alarm if that ever
         #                       regresses is csv_feed_scraper's

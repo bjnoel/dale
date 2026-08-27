@@ -13424,13 +13424,13 @@ would read as an overnight mass delisting.
 The 95 products that left on the 25th matter more than the 231 that arrived, and
 none of this was noticed at the time:
 
-- **32 scion wood groups stopped being fruit trees.** $9.75 for a 15cm grafting
-  stick, named by cultivar ("Scion Wood Apple - Pink Lady"), which `species_match`
-  resolves to Apple, Cherry, Wampee. While the species fallback filed them as
-  "Fruit and Nut Trees" they sat on the species and state pages as **the cheapest
-  listing for their fruit**, undercutting real trees 3-5x on pages that rank by
-  price (DEC-314). They mint no variety slug, so /variety never saw them; price
-  rank was the whole of the damage, and price rank is what those pages are for.
+- **32 scion wood groups stopped being fruit trees, on the homepage.** $9.75 for a
+  15cm grafting stick, named by cultivar ("Scion Wood Apple - Pink Lady"), which
+  `species_match` resolves to Apple, Cherry, Wampee, so it reads as **the cheapest
+  listing for its fruit**, undercutting real trees 3-5x on pages that rank by price
+  (DEC-314). They mint no variety slug, so /variety never minted a cultivar for
+  them; price rank is the whole of the damage, and price rank is what those pages
+  are for. **See 1c: only the homepage was fixed.**
 - **26 rainforest ornamentals** stopped leaking the same way. Excluding
   `Rainforest Trees` has been deliberate since it was found to hold Ficus obliqua
   and virens, which resolve to Fig. The species fallback had been admitting them
@@ -13440,6 +13440,40 @@ Nine bush-tucker-ish items Daleys file under `Trees and Plants` also left (Bolwa
 Native Mulberry, Aniseed Myrtle, Red Bauple Nut). That is correct: the rule is defer
 to the nursery's own taxonomy, and they file 63 groups under
 `Fruit Trees/Bush foods Australia` which stay.
+
+### 1c. The filter only reaches the homepage, which this entry originally got wrong
+
+Checking the live pages afterwards, to hand Benedict links to eyeball, showed the
+scion wood **still on `/species/apple.html`**: "Scion Wood Apple - Red Delicious,
+Daleys, $9.75, In stock", second row of the cheapest table. It is not a stale build.
+`build-dashboard.py` is the **only** builder that calls `is_fruit_product`.
+`build_species_pages.py`, `build_variety_pages.py` and
+`build_species_state_pages.py` apply `stocklib.classify.is_real_product` and nothing
+else, so a nursery's own categorisation has never gated them.
+
+Measured on the 2026-08-27 Daleys snapshot:
+
+| gate | products |
+|---|---|
+| junk gate only (species / variety / state pages) | 1,825 |
+| junk gate + fruit filter (homepage) | 1,366 |
+| **live on species pages, absent from search** | **459 (109 in stock)** |
+
+The gap is 68 ornamental exotics, 119 rainforest trees, 32 scion wood, 28 hedge
+plants, 20 back issues of the Australian Rare Fruit Review, and irrigation fittings:
+a Universal Tap Adapter at $3.95 and a Double Tap Outlet at $4.95 are both live and
+in stock on fruit pages right now.
+
+This is a real defect and it is **older and wider** than anything in this entry, so
+it is not being folded in here. `is_fruit_product` reaching only one of four builders
+is the same drift that `fruit_filters` was created to end (two hand-synced copies,
+one missing 10 of 12 nurseries), one layer out: not a forked copy this time, an
+un-imported one. Raise it as its own ticket with its own blast-radius measurement,
+because it removes products from live SEO pages across every nursery, not just
+Daleys.
+
+Smaller instance of the same shape, noticed alongside: Primal Fruits is `mode: all`,
+and "White Shahtoot Mulberry -Scion" at $10.00 is on the homepage as a mulberry tree.
 
 The column is now load-bearing and fails silently, so `min_feed_category_share`
 (0.90) warns through `ScrapeHealth` if it ever thins out. The frozen

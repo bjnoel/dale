@@ -239,9 +239,9 @@ class CategoryTest(unittest.TestCase):
     def test_scion_wood_is_not_a_fruit_tree(self):
         """$9.75 of 15cm grafting stick that species_match resolves to Apple.
         Before the feed carried categories the species fallback filed all 32 as
-        "Fruit and Nut Trees", so they sat on /species/apple as the cheapest
-        listing for the fruit, undercutting real trees 3-5x on pages that rank
-        by price (DEC-314)."""
+        "Fruit and Nut Trees", so they were the cheapest apple in search too.
+        The category keeps them off the homepage; /species/apple.html applies
+        only is_real_product and still lists them (DEC-314 ranks by price)."""
         products, _ = _products()
         scion = products["Scion Wood Apple - Pink Lady"]
         self.assertEqual(scion["category"],

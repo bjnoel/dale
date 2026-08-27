@@ -222,14 +222,16 @@ class FruitFiltersTest(unittest.TestCase):
 
     def test_daleys_scion_wood_is_not_a_fruit_tree(self):
         """32 groups of 15cm grafting stick at $9.75, named by cultivar.
-        species_match resolves "Scion Wood Apple - Pink Lady" to Apple, so
-        while the species fallback was filing them as fruit they sat on the
-        species and state pages as the cheapest listing for their fruit,
-        undercutting real trees 3-5x on pages that rank by price (DEC-314).
+        species_match resolves "Scion Wood Apple - Pink Lady" to Apple, so they
+        read as the cheapest listing for their fruit, undercutting real trees
+        3-5x on pages that rank by price (DEC-314).
 
-        They mint no variety slug (product_variety_slug returns None), so the
-        damage never reached /variety. Price rank was the whole of it, and
-        price rank is what those pages are for.
+        This rule only reaches the homepage. build_species_pages,
+        build_variety_pages and build_species_state_pages apply is_real_product
+        and never is_fruit_product, so the scion wood is still live there:
+        "Scion Wood Apple - Red Delicious $9.75 In stock" was the second row of
+        /species/apple.html on 2026-08-27. Asserting this here does NOT make
+        those pages correct.
         """
         for title in ("Scion Wood Apple - Pink Lady",
                       "Scion Wood Cherry - Stella",
