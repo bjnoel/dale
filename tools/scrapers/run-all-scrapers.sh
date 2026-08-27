@@ -19,7 +19,7 @@ LOG_PREFIX="[$(date '+%Y-%m-%d %H:%M:%S')]"
 # most of them down at once is us (our network, our IP blocked, a shared
 # dependency), and then yesterday's published site is more truthful than one
 # rebuilt from mostly-stale data.
-SCRAPER_COUNT=6
+SCRAPER_COUNT=7
 MAX_SCRAPER_FAILURES=3
 
 # The alarm must not sit downstream of the failure it exists to report.
@@ -91,6 +91,10 @@ run_scraper "WooCommerce" "$SCRIPT_DIR/woocommerce_scraper.py"
 # BigCommerce nurseries (Heritage Fruit Trees)
 echo "$LOG_PREFIX Scraping BigCommerce nurseries..."
 run_scraper "BigCommerce" "$SCRIPT_DIR/bigcommerce_scraper.py"
+
+# Squarespace nurseries (Perry's Fruit & Nut, our first South Australian one)
+echo "$LOG_PREFIX Scraping Squarespace nurseries..."
+run_scraper "Squarespace" "$SCRIPT_DIR/squarespace_scraper.py"
 
 echo "$LOG_PREFIX Scrape complete."
 

@@ -178,6 +178,20 @@ NURSERIES: list[Nursery] = [
                  "excluded by the nursery directly, Benedict 2026-07-23). A few "
                  "products are stricter (some also exclude SA, two are "
                  "QLD-only), per-product rules not modelled at nursery level."),
+    Nursery("perrys", "Perry's Fruit & Nut Nursery",
+            ("SA",),
+            local_delivery={"area": "Adelaide (pickup)", "state": "SA"},
+            location="McLaren Flat, SA",
+            note="Added 2026-08-27, our first South Australian nursery. SA-only "
+                 "is the CONSERVATIVE reading, not a verified policy: the site "
+                 "publishes no shipping, postage or delivery page anywhere "
+                 "(checked /shop, /contact, /our-story, /q-and-a), lists shop "
+                 "hours Wed-Sun 10-4, tells buyers to 'verify stock before "
+                 "travelling', and describes itself as providing Adelaide with "
+                 "fruit trees. Reads as an in-store nursery with an online "
+                 "catalogue. Erring SA-only never tells an eastern-states buyer "
+                 "something is purchasable when it is not; widen it only once "
+                 "Benedict has asked them."),
 ]
 
 _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}

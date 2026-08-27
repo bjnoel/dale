@@ -13965,3 +13965,65 @@ deleted. Question opened on the ONGOING request.
 **Lesson:** "blocked on Benedict" is a claim about our own tooling as often as about his time.
 Before parking a ticket on him for 28 days, check whether the credential we already hold
 reaches further than the one function we wrote against it.
+
+---
+
+## DEC-322 — Perry's Fruit & Nut: our first South Australian nursery, and what it is worth
+**Date:** 2026-08-27
+**Tickets:** DAL-255 (partial: 1 of 2-4 SA nurseries)
+**Authority:** Dale autonomous (code, $0), at Benedict's direct request
+
+**Added.** Perry's Fruit & Nut Nursery, McLaren Flat SA, trading since 1978. 95 products
+tracked, 71 in stock, prices $16 to $300 (median $75). It is the 27th nursery and the first
+in South Australia, so SA goes from zero state pages to a set of them.
+
+**A seventh platform scraper, because Squarespace was not one of the six.** DAL-255 costed
+this as "reusing a platform scraper" and there was none to reuse. It turned out cheap anyway:
+Squarespace serves any collection as JSON at `?format=json`, so the whole catalogue including
+variants, cents-precision prices, SKUs and stock counts arrives in one request with no HTML
+parsing. `squarespace_scraper.py` is 19 tests and no new dependency.
+
+**Three things that would each have shipped a wrong number.**
+
+1. **Product-level price is 0 on every multi-variant product.** Perry's "Lemon" reads
+   `priceCents: 0` while its three pot sizes are $72, $110 and $220. Reading the product level
+   would have put a $0.00 lemon tree on the homepage, the same shape as DEC-314's POA "0".
+   Price is read at the variant level only, which is the house rule anyway.
+2. **Pagination clamps instead of ending.** `offset` is a plain index, but past the end of the
+   collection Squarespace re-serves the last product forever: offset 98, 99 and 100 all return
+   "White Sapote". A loop-until-empty pager never terminates against this store. The pager
+   dedupes on item id and stops when a page contributes nothing new.
+3. **`unlimited: true` means "stock not tracked", not "in stock".** 59 of Perry's 107 variants
+   carry it, and `qtyInStock` reads 0 on every one of them. Treating that 0 as sold out would
+   have marked 55% of the catalogue dead on day one.
+
+**The honest valuation, which is lower than the ticket assumed.** Perry's catalogue is
+*species*-level, not variety-level: "Apple $75", "Cherry $75", "Plum $75", with empty product
+bodies. Exactly one product (Mulberry) uses variety as its option; the rest use pot size or
+rootstock. Our ranking engine is the per-variety and per-species guide layer, and Perry's feeds
+almost nothing into it. What it does deliver is SA state pages, which is what DAL-255 actually
+wanted, and a real second data point on SA pricing.
+
+Related: 55% of the store reports no stock quantity, so those products read "in stock" every
+day forever. A restock alert can never fire for them and their availability history is not
+evidence. `untracked_variant_count` is written into every snapshot so this stays visible
+rather than being rediscovered later.
+
+**Shipping is unverified, and we list them SA-only on purpose.** The site publishes no
+shipping, postage or delivery page anywhere (/shop, /contact, /our-story, /q-and-a all
+checked). It lists shop hours Wed-Sun 10-4, tells buyers to "verify stock before travelling",
+and describes itself as providing Adelaide with fruit trees. That reads as an in-store nursery
+with an online catalogue. SA-only is the conservative direction: it can under-sell a real
+mail-order service, but it can never tell a Sydney buyer a tree is purchasable when it is not.
+Touch 1 should ask them directly. They publish no email address, only a phone number and an
+enquiry form, so the BCC self-logging trick cannot capture that first touch.
+
+**Also skipped:** Perry's sells its own jujube crop beside its jujube trees. "FRESH Jujube
+fruit" (5kg box) and "Dried Jujube Fruit" (350g-2kg packets) both pass `is_real_product`,
+because a jujube is a real fruit. They are excluded by a per-store title pattern rather than by
+widening the shared keyword filter, which "dried" and "fresh" are too blunt to survive across
+26 other nurseries.
+
+**Lesson:** "reuse a platform scraper" was wrong about the cost and right about the outcome.
+The check that mattered was not whether we had a Squarespace scraper but what the store's
+catalogue is shaped like, and that is the check the ticket did not make.

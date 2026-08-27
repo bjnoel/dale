@@ -34,6 +34,7 @@ SCRAPERS = [
     "wix_scraper.py",
     "woocommerce_scraper.py",
     "bigcommerce_scraper.py",
+    "squarespace_scraper.py",
 ]
 
 # A stub `python3` that logs the .py it was asked to run and fails the ones
@@ -134,7 +135,7 @@ class RunAllScrapersTest(unittest.TestCase):
                           f"{step} did not run after one scraper failed")
 
     def test_every_other_scraper_still_runs_after_one_fails(self):
-        """A failure in the first scraper must not skip the other five."""
+        """A failure in the first scraper must not skip the other six."""
         _, invoked = self.run_script(fail_scripts=["shopify_scraper.py"])
         for s in SCRAPERS:
             self.assertIn(s, invoked, f"{s} was skipped")

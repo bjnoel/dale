@@ -50,6 +50,11 @@ EXPECTED_SHIPPING = {
     "st-clements-citrus": ["WA"],
     "the-heritage-nursery": ["ACT"],
     "all-rare-herbs": ["QLD", "NSW", "VIC", "SA", "ACT"],
+    # Added after the refactor, so not part of the original oracle. Kept in the
+    # same dict because the test's job is now twofold: prove the refactor
+    # changed nothing, and make any later edit to an existing nursery's states
+    # a deliberate two-file change rather than a one-line slip.
+    "perrys": ["SA"],
 }
 
 EXPECTED_NAMES = {
@@ -79,6 +84,7 @@ EXPECTED_NAMES = {
     "st-clements-citrus": "St Clements Citrus",
     "the-heritage-nursery": "The Heritage Nursery",
     "all-rare-herbs": "All Rare Herbs",
+    "perrys": "Perry's Fruit & Nut Nursery",
 }
 
 EXPECTED_LOCAL = {
@@ -91,6 +97,7 @@ EXPECTED_LOCAL = {
     "diacos": {"area": "Melbourne metro", "state": "VIC"},
     "st-clements-citrus": {"area": "WA", "state": "WA"},
     "the-heritage-nursery": {"area": "ACT + Queanbeyan", "state": "ACT"},
+    "perrys": {"area": "Adelaide (pickup)", "state": "SA"},
 }
 
 

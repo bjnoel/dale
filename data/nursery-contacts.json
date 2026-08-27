@@ -701,6 +701,20 @@
       "touches": [],
       "open_action": null,
       "notes": ""
+    },
+    {
+      "key": "perrys",
+      "name": "Perry's Fruit & Nut Nursery",
+      "domain": "perrysfruitnursery.com.au",
+      "contact_name": null,
+      "email": null,
+      "phone": "(08) 8383 0268",
+      "contact_form": "https://perrysfruitnursery.com.au/contact",
+      "preferred_channel": "contact_form",
+      "status": "not_contacted",
+      "touches": [],
+      "open_action": null,
+      "notes": "Added 2026-08-27, our first South Australian nursery (DAL-255). 139 McLaren Flat Road, McLaren Flat SA 5171; open Wed-Sun 10-4. Squarespace, 95 tracked products. No email address is published anywhere on the site, only a phone number and an enquiry form, so preferred_channel is the form and the BCC self-logging trick cannot capture a first touch here. Trading since 1978 (Chris and Diana Perry). Open question for touch 1: do they post trees interstate at all? The site never says, and we list them SA-only until they tell us otherwise."
     }
   ]
 }
