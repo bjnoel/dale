@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
           "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
@@ -256,7 +256,7 @@
           "android_installs": 287,
           "android_buyers": 0,
           "android_proceeds_usd": 0.0,
-          "ios_installs": 129,
+          "ios_installs": "129 was WRONG (RevenueCat). Apple says 51 first-time downloads lifetime to 2026-08-20 (DEC-321). RevenueCat inflated iOS by 2.5x, Android by ~6x. See appstore_funnel_2026_08_27.",
           "ios_buyers": 3,
           "ios_proceeds_usd": 52.55,
           "ios_rate_pct": 2.33,
@@ -311,13 +311,13 @@
         "decision": "DEC-276 / DAL-234 (2026-08-10). Source: RevenueCat 432 customer records (last_seen_country x last_seen_platform), not the 49-device PostHog July slice DEC-256 used.",
         "installs_by_country_platform": {
           "AU": {
-            "ios": 58,
+            "ios": "58 was WRONG (RevenueCat). Apple: 22 first-time downloads (DEC-321).",
             "android": 36,
             "total": 94,
             "ios_share_pct": 61.7
           },
           "US": {
-            "ios": 66,
+            "ios": "66 was WRONG (RevenueCat). Apple: 17 first-time downloads (DEC-321).",
             "android": 247,
             "total": 313,
             "ios_share_pct": 21.1
@@ -338,7 +338,7 @@
           "android": "AU 25.8% (8/31) vs US 1.4% (3/217), p < 0.0001",
           "controlled": "Excludes 19 AU records that are pre-release builds (0.x) or predate the 2026-04-24 public listing, i.e. Benedict and the WA testers. The effect got LARGER after exclusion and holds on each platform independently."
         },
-        "value_per_install": "94 AU installs -> 1 buyer (~1.1%); 313 US installs -> 1 buyer (~0.3%). An AU install looks worth ~3x a US install, on n=2 buyers. Do not overstate it.",
+        "value_per_install": "SUPERSEDED by appstore_funnel_2026_08_27.territory_funnel, which measures the same thing at the store instead of on RevenueCat's inflated counts. Direction held: AU converts far better than US (11.2% vs 2.1% impression-to-download). Magnitude was understated, not over.",
         "does_not_reach_the_target": "At ~19c per AU install, $100/mo needs ~530 AU installs/month against the ~14 we get. The Australian community is our best-quality audience and the only one Benedict can reach; it is not a revenue plan.",
         "channels": "Four need no research and Benedict already has standing: WA Rare Fruit Club, Oz Rare Fruit Australia (Tom at Ross Creek admins it), Rare Fruit SA, WAAS newsletter. Facebook group sizes are NOT obtainable from this server (login wall) and must not be invented.",
         "open_action": "DAL-171's WA Rare Fruit Club post has been drafted since April and never sent. DAL-171 was marked Done when the post was DRAFTED. DAL-234 is with Benedict."
@@ -372,6 +372,73 @@
         "fix_part_1": "Fire the purchase events from inside EntitlementService.purchasePackage rather than the widget callback, and give cancelled its own outcome value. Small, no privacy implications, Benedict commits it.",
         "fix_part_2": "Push the PostHog distinct id to RevenueCat as a subscriber attribute at configure time so anonymous buyers are attributable. Benedict's privacy call, deliberately separate.",
         "consequence": "Every paywall dismissal rate we have quoted is an upper bound, and PostHog purchase counts are a lower bound. RevenueCat remains the source of truth for money."
+      },
+      "appstore_funnel_2026_08_27": {
+        "source": "App Store Connect Analytics API, App Downloads Standard (r3) + App Store Discovery and Engagement Standard (r14) + App Store Purchases Standard (r12). Pulled 2026-08-27 by Dale. DEC-321 / DAL-256 / DAL-290.",
+        "period": "2026-04-25 to 2026-08-20 (118 days). The request is a ONE_TIME_SNAPSHOT, so this data is FROZEN at 2026-08-20 and will not advance.",
+        "impressions": 2225,
+        "impressions_per_day": 18.9,
+        "product_page_views": 103,
+        "get_taps": 61,
+        "first_time_downloads": 51,
+        "redownloads": 4,
+        "purchases": 3,
+        "sales_usd": 77.3,
+        "proceeds_usd": 52.37,
+        "impression_to_download_pct": 2.3,
+        "download_to_purchase_pct": 5.9,
+        "verdict": "NOT a listing failure and NOT a paywall failure. Impression-to-download of 2.3% sits inside Apple's normal band, and 3 of 51 downloads buying a A$39.99 one-time IAP is 5.9%, well above the 1-3% mobile norm. The binding constraint is VOLUME: 18.9 impressions a day. DAL-256 offered three failures and the answer is the first one, discovery, with the other two cleared.",
+        "page_view_ratio_caveat": "103 page views against 51 downloads looks like a broken funnel but is not. 27 of the 51 downloads carry Page Type 'No page': the user tapped Get in the search results list and never opened the product page. Do not compute a page-view-to-download rate from these two columns.",
+        "downloads_by_source": {
+          "App Store search": 32,
+          "App referrer": 10,
+          "Web referrer": 4,
+          "App Store browse": 3,
+          "Unavailable": 2
+        },
+        "territory_funnel": {
+          "AU": {
+            "impressions": 196,
+            "first_time_downloads": 22,
+            "impression_to_download_pct": 11.2,
+            "buyers": 1
+          },
+          "US": {
+            "impressions": 827,
+            "first_time_downloads": 17,
+            "impression_to_download_pct": 2.1,
+            "buyers": 1
+          },
+          "note": "An AU impression converts to a download 5x better than a US one, and AU is only 8.8% of our impressions. This is the same signal as value_per_install but measured at the store rather than inferred from inflated install counts."
+        },
+        "buyers": [
+          {
+            "date": "2026-06-26",
+            "territory": "PK",
+            "source": "App Store search",
+            "page_type": "No page",
+            "download_date": "2026-06-26",
+            "sales_usd": 24.76
+          },
+          {
+            "date": "2026-07-06",
+            "territory": "AU",
+            "source": "App referrer",
+            "page_type": "Store sheet",
+            "download_date": "2026-07-06",
+            "sales_usd": 27.55
+          },
+          {
+            "date": "2026-07-23",
+            "territory": "US",
+            "source": "App referrer",
+            "page_type": "Product page",
+            "download_date": "2026-07-23",
+            "sales_usd": 24.99
+          }
+        ],
+        "anomaly_same_day": "All 3 buyers purchased on their download date. Zero of the other 48 iOS downloads have ever converted, on any later day. The paywall converts at first run or never, so retention work and reminder-to-upgrade work have no evidence behind them yet.",
+        "anomaly_app_referrer": "App referrer supplied 10 of 51 downloads (20%) but 2 of 3 sales (67%). Small n, but it is the only source over-indexing on revenue and it is the one treestock feeds."
       }
     },
     "a_paused_walkthrough": {
@@ -745,15 +812,15 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done \u2014 hello@walkthrough.au via Fastmail",
-    "blog": "deployed \u2014 walkthrough.au live",
+    "email": "done — hello@walkthrough.au via Fastmail",
+    "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
+    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
     "deploy_gap": "There is NO deploy cron (DEC-253). `crontab -l` has the Monday Treesmith digest and the nightly Treesmith drip only. tools/deploy.sh runs from the autonomous session startup hook (18:00-21:00 UTC), so a commit made after the last session of the night sits in git, tested and green, while cron keeps running the stale copy in /opt/dale/autonomous/. Same family as DAL-263 (deploy.sh never restarts subscribe-server). After changing ANYTHING cron executes: diff the repo copy against the deployed copy, run tools/deploy.sh, and verify.",
     "reporting_integrity": "DEC-255 / DAL-261 (2026-07-30): audited every external API reader. Fixed 5 defects. traffic_report.py read 200 of 1,703 GSC query rows and computed a SET DIFFERENCE from the slice, so 9 of the 10 'new queries' in Benedict's daily email were queries we already ranked for and position movers showed 11 of a true 392. resend_report.py kept an unpaginated copy of fetch_emails (the DEC-250 bug in the sibling file): 100 emails became 1,838. resend_report.py also counted delivery as last_event=='delivered', but last_event is the FURTHEST state reached, so every opened/clicked email counted as undelivered and the delivery rate FELL as engagement ROSE (52.5% reported against a true 100% delivered, 0 bounced). daily-digest.py's engagement stamp took one page of 50 issues, and that gates whether Dale strikes (DEC-226), so an unseen signal read as absence. nursery_crm.outbound_clicks ran off a 40-page cap silently and now warns PARTIAL. Audited clean: plausible_stats.py (honest top-N), linear_poller.py, linear_update.py archive-stale, gsc_analysis.py, resend_engagement.py, treesmith_analytics.py, uptime_monitor.py. Guard is tests/test_api_pagination.py, which drives each real fetcher against a saturated first page.",
     "email_reply_path": "DEC-257 CORRECTION to Q46. treestock.com.au's APEX already has Fastmail MX (in1/in2-smtp.messagingengine.com) and has received email the whole time. The defect is narrower and entirely ours: we send From alerts@mail.treestock.com.au, a SUBDOMAIN with no MX, and stocklib/mailer.py:112 sets no Reply-To at all, so replies are addressed somewhere that cannot receive them. Fix is ONE LINE pointing Reply-To at an apex address (DAL-243), not a new service and not a DNS change. Do NOT add MX to the sending subdomain. The same mailbox answers DAL-80's BCC ask via a Fastmail alias + an IMAP-scoped app password (revocable, cannot send); imap.fastmail.com:993 is reachable from this server, verified. Cloudflare Email Routing considered and rejected: MX change on a live domain, a Worker, and a token scope we do not hold, to duplicate a mailbox we already own."

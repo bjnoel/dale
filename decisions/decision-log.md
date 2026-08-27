@@ -13889,3 +13889,79 @@ DAL-256 annotated, both rest on these denominators. `business-state.json` marked
 **Lesson:** two instruments that share a fault will agree with each other and disagree with
 reality. Before dividing by a number, check it against something outside the system that
 produced it, and do that before the third round of re-slicing rather than after.
+
+---
+
+## DEC-321 — The App Store funnel: it is discovery, and the paywall was never the problem
+**Date:** 2026-08-27
+**Tickets:** DAL-256 (Done), DAL-290 (Done)
+**Authority:** Dale autonomous (analysis, $0)
+
+**We already had the access.** DAL-256 sat in the backlog for 28 days marked "Blocked on
+Benedict for an export or an API key", and DAL-290 was opened this morning asking him to read
+one number off a screen. The App Store Connect key installed on 2026-08-20 for the rank work
+(DAL-257) had reached all of it the whole time. `appstore_sources.py` filters `list_reports`
+to `APP_STORE_ENGAGEMENT`, which is 5 of the 156 reports in the request. Downloads and
+purchases are in `COMMERCE`. A default argument was the blocker.
+
+**The funnel, 2026-04-25 to 2026-08-20 (118 days), from the store itself:**
+
+| Step | Count | Rate |
+|---|---|---|
+| Impressions | 2,225 | 18.9/day |
+| Product page views | 103 | 4.6% of impressions |
+| `Get` taps | 61 | |
+| First-time downloads | 51 | 2.3% of impressions |
+| Purchases (Pro Lifetime) | 3 | 5.9% of downloads |
+
+Gross US$77.30, proceeds US$52.37.
+
+**The answer to the three-way question is the first branch.** 18.9 impressions a day is the
+binding constraint. The other two are cleared: 2.3% impression-to-download sits inside Apple's
+normal band, and 5.9% download-to-purchase on a A$39.99 one-time IAP beats the 1-3% mobile
+norm. Screenshot work and paywall work both just lost their evidence.
+
+**The 4.6% page-view ratio is an artefact and nearly became a fourth wrong conclusion.**
+103 page views against 51 downloads reads as a catastrophic search result. It is not: 27 of
+the 51 downloads carry Page Type `No page`, the user having tapped `Get` in the search results
+list without ever opening the product page. Page views and downloads are not two steps of one
+funnel in this report and must not be divided.
+
+**Denominator correction, continuing DEC-320.** RevenueCat claimed 129 iOS installs. Apple
+says 51. iOS was inflated 2.5x where Android was ~6x. Both wrong, same direction, which is
+DEC-320's finding holding on the second platform. `3 of 129` (2.3%) was the number in every
+Treesmith conversation for a month; the real figure is `3 of 51` (5.9%). DEC-237's ranking of
+ratings and paywall reachability ahead of price was right in its conclusion and wrong in its
+reasoning: the paywall was never underperforming.
+
+**Two anomalies worth more than the headline.**
+
+1. All 3 buyers purchased on their download date. `App Download Date` equals the purchase date
+   for every one, and zero of the other 48 iOS downloads has converted on any later day. The
+   paywall converts at first run or never. Nurture, reminders and retention-to-upgrade work
+   currently has nothing behind it.
+2. App referrer supplied 10 of 51 downloads (20%) but 2 of 3 sales (67%). App Store search
+   supplied 32 downloads (63%) and 1 sale. n=3, so a hypothesis rather than a finding, but
+   App referrer is the source treestock feeds.
+
+**Geography, measured rather than inferred.** AU: 196 impressions to 22 downloads (11.2%).
+US: 827 impressions to 17 downloads (2.1%). An AU impression is worth 5x a US one and AU is
+only 8.8% of our impressions. DEC-276's `value_per_install` inferred ~3x from RevenueCat's
+inflated counts on n=2 buyers; at the store it is 5x on 39 downloads.
+
+**Unresolved, and it invalidates a running experiment.** `ASC_REQUEST_ID` is a
+`ONE_TIME_SNAPSHOT`, confirmed against the API. Every figure above is frozen at 2026-08-20 and
+cannot advance. The Sunday `appstore_sources.py` cron will re-report the same 1-day
+post-rename window indefinitely, so the DEC-247 rename experiment can never conclude. The fix
+is a `POST /analyticsReportRequests` with `accessType: ONGOING`, $0 and reversible, but it
+writes to Benedict's developer account, so it is asked rather than done.
+
+**Actions:** DAL-256 and DAL-290 both Done. `business-state.json` gains
+`tracks.a.appstore_funnel_2026_08_27`; the RevenueCat iOS figures at
+`revenue_verified.platform_split_2026_08_03.ios_installs` and
+`audience_geography.installs_by_country_platform.{AU,US}.ios` are marked wrong in place, not
+deleted. Question opened on the ONGOING request.
+
+**Lesson:** "blocked on Benedict" is a claim about our own tooling as often as about his time.
+Before parking a ticket on him for 28 days, check whether the credential we already hold
+reaches further than the one function we wrote against it.
