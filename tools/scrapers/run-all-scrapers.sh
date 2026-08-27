@@ -347,6 +347,13 @@ if [ "$(date +%u)" = "7" ]; then
     echo "$LOG_PREFIX Weekly digest send complete."
 fi
 
+# Check nobody has silently fallen out of the send loop (DAL-262). Runs AFTER
+# both senders on purpose: it reads their send logs, so running it earlier would
+# always judge them one night stale.
+echo "$LOG_PREFIX Checking subscriber delivery..."
+python3 "$SCRIPT_DIR/detect_silent_subscribers.py" 2>&1 || echo "$LOG_PREFIX WARNING: Subscriber delivery check failed (non-fatal)"
+echo "$LOG_PREFIX Subscriber delivery check complete."
+
 # Send per-variety restock alerts to watchers
 # (Species-level alerts deprecated 2026-04-19: trigger condition was too strict
 # to ever fire in practice, and only variety watches are meaningful.)
