@@ -167,7 +167,11 @@ def cmd_report(reg, args):
     print(f"{len(rows)} nurseries. {total} outbound clicks sent in the last "
           f"{args.period}. {uncontacted} of those ({pct(uncontacted, total)}) went to "
           f"nurseries we have never spoken to.\n")
-    print("| Nursery | Clicks | Buyers | Status | Last touch | Contact | Outstanding |")
+    # "People", not "Buyers". This column is Plausible `visitors` on the
+    # outbound-click goal: how many distinct people clicked through, not how
+    # many bought anything. Daleys reads 324 here against the 4 actual sales
+    # Correy reported for the same window.
+    print("| Nursery | Clicks | People | Status | Last touch | Contact | Outstanding |")
     print("|---|---:|---:|---|---|---|---|")
     for cl, vis, n in rows:
         lt = last_touch(n)
