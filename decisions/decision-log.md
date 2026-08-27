@@ -4,6 +4,57 @@
 
 ---
 
+## DEC-317 — 2026-08-27 — the AI-crawler block that never existed (DAL-246)
+
+**Decided by:** Dale, with Benedict widening the Cloudflare token mid-session.
+
+**Context:** DAL-246 had sat in Todo since 2026-08-06 carrying a measured finding: Cloudflare was 403ing every AI crawler on treestock.com.au and treesmith.app, including the answer bots that send our referrals, while our own robots.txt returned 200 telling them they were welcome. The ask was one dashboard toggle from Benedict. Benedict opened the AI Crawl Control page, saw every relevant toggle already off, and asked why it was blocked when it did not seem to be.
+
+**The finding: it was never blocked.** Verified three independent ways.
+
+1. **Dashboard.** Block Crawler is OFF for OAI-SearchBot, ChatGPT-User, Applebot, Googlebot, BingBot. Only TikTok Spider is ON.
+2. **WAF ruleset, read directly** once Benedict added Zone WAF Read. The zone has exactly one custom firewall rule, last updated 2026-05-18 (the DAL-188 date): a `managed_challenge` on `ip.src.country in {CN, HK, SG, VN}`. No user-agent matching anywhere. A custom rule is ruled out by inspection rather than inferred from a response body.
+3. **Zone analytics via GraphQL** (`httpRequestsAdaptiveGroups`), 24h to 07:30 UTC:
+
+```
+Crawler                  2xx     403      MB
+------------------------------------------------
+Amazonbot                  2    1037    3.24
+bingbot                  531       0    5.35
+OAI-SearchBot            322       6    3.60
+Googlebot                159       0    3.53
+Applebot                  84       0    0.60
+ChatGPT-User              61       4    0.72
+Claude-SearchBot          26       0    0.03
+ClaudeBot                  8       0    0.02
+Bytespider                 0      10    0.05
+GPTBot / PerplexityBot / CCBot / meta-externalagent
+                           0       1  each  0.00
+```
+
+OAI-SearchBot pulls more successful requests and more bytes than Googlebot. The channel is wide open and always was.
+
+**Every 403 in that table was Dale's own curl.** Cloudflare verifies AI crawler identity by source IP; a request from a Perth laptop claiming to be OAI-SearchBot is a spoof and gets AI Crawl Control's configured block response, the bare 25-byte `Your request was blocked.`. The falsifiable check: 3 marked `ChatGPT-User` probes fired at 07:22:34 UTC, predicted the counter would move 1 -> 4, and it read 4. OAI-SearchBot read 6 against 6 probes. GPTBot, PerplexityBot, CCBot and meta-externalagent each read exactly 1 blocked and 0 allowed: one curl each, no real visits at all.
+
+**Why the 2026-08-06 measurement fooled itself.** It anticipated this exact objection and dismissed it: "a spoofed Googlebot from this datacentre IP gets 200, so this is not Cloudflare's verified-bot spoof protection catching my test." The control was the flaw. Googlebot is a Search Engine Crawler, outside AI Crawl Control's scope entirely, so it says nothing about how AI crawler user agents are handled. The one view that would have caught it, the allowed/bytes columns, sat behind a dashboard the token could not read.
+
+**Lesson.** A 403 to a request you cannot authenticate as the thing it claims to be is not evidence about how the real thing is treated. Both this and DEC-316 are the same failure in different clothes: output that looks exactly like the output of the thing you fear. When the only instrument available cannot distinguish the two hypotheses, that is a reason to withhold the conclusion, not to pick the alarming one and route it to Benedict as a decision card.
+
+**Token widened (Benedict, this session).** Zone WAF Read and Zone Analytics Read added. `bot_management` and `firewall/rules` remain refused and do not matter: the rulesets endpoint gives the rules and AI Crawl Control has no REST surface at all, only the GraphQL dataset above. Cloudflare's AI Crawl Control docs cover the dashboard UI only, which is why an hour of endpoint guessing returned `aiaudit.api.error.not_found` on paths that do not exist.
+
+**Found in passing, not chased:**
+- **Amazonbot is blocked 1,037 times a day**, five times TikTok Spider's volume and the largest block source on the zone. Consistent with `ai-train=no`, so probably correct, but it is the real shape of enforcement here and it was invisible in the dashboard's top rows.
+- **ClaudeBot got 8 x 200** despite robots.txt disallowing it. Small enough to be robots.txt fetches themselves. The one place stated policy and observed behaviour may not line up.
+- **5,964 x 504** against user agent `nginx-ssl early hints`, the largest single line in the dataset. A Cloudflare internal probe timing out against our origin, not user traffic, but 5,964 gateway timeouts a day is worth someone's attention.
+
+**What survives.** The finding underneath the wrong diagnosis is intact and better supported: chatgpt.com went 13 -> 15 -> 19 -> 104 referrals/month and is treestock's biggest non-search referrer, and that happens because OpenAI crawls us properly, not in spite of a block. Roughly A$2/month today, so the argument is trajectory. That is a growth question, not a plumbing one, and it needs its own ticket.
+
+**Not done, deliberately.** No follow-up ticket opened. Item 3 of DAL-246's original scope was never executed: ask ChatGPT real buying questions and check whether treestock is cited and whether the prices it quotes are current. Until that is measured there is nothing honest to propose.
+
+**DAL-246 closed Done**, description rewritten to lead with the correction so nobody reads the old premise as fact.
+
+---
+
 ## DEC-224 — 2026-07-06 — Revenue session: Treesmith CTA added to weekly digest (DAL-180)
 
 **Decided by:** Dale (autonomous session). Required by revenue alarm (102 days, $0).
