@@ -13545,3 +13545,112 @@ diff is new-code against new-code and cannot fire on the change itself.
 `build_species_state_pages.py` was deliberately NOT rebuilt by hand: it runs with
 `--ledger --allow-delete`, and an ad-hoc run advances a lifecycle absence counter
 off a mid-day state. It picks the change up on tonight's normal run.
+
+---
+
+## DEC-316 — 2026-08-27 — a failed scrape wrote yesterday's stock into the history as today's
+
+**Context:** Benedict reported the engalls scraper failing. Engall's itself was a
+one-night HTTP 509 on 2026-08-26 that recovered on its own the next night with
+identical counts (70 products, 43 in stock, 3.0s). The DEC-293 guards worked
+correctly on the night: the anomaly email went out, the nursery was marked
+untrusted, the dashboard carried the last good snapshot, and no false restock
+alerts fired. Investigating why it failed at all found two defects underneath it
+and one wrong sentence already published because of them.
+
+### 1. The WooCommerce scraper never retried anything
+
+`woocommerce_scraper.fetch_json` was a private copy of the fetch with no retry.
+It reproduced `stocklib.retry`'s log lines and health calls exactly, so the scrape
+log looked identical to a scraper that had tried and given up. The durations in
+`data/scraper-health` were the only tell:
+
+```
+2026-08-21  plantnet  HTTP 503  1.62s     <- 503 was already retryable
+2026-08-26  engalls   HTTP 509  0.88s
+2026-08-27  rayners   HTTP 429  1.31s     <- 429 was already retryable
+```
+
+`BACKOFF_BASE` alone is 2.0s, so none of those was retried. Two of the three codes
+had been on the retryable list since the 2026-07-19 Shopify blip; the scraper just
+never asked. Compare the paths that do use the helper: ladybird 33.23s, heritage
+1093.49s. Now wired through `request_with_retry`, and 509 (LiteSpeed and cPanel
+bandwidth cap, in no RFC) added to `RETRYABLE_HTTP`.
+
+### 2. `availability_tracker` stamped the clock, not the observation
+
+`update_nursery()` read `latest.json` unconditionally and stamped `date.today()`.
+A failed scrape does not overwrite `latest.json`, so yesterday's stock entered the
+permanent history as today's observation, prices included, and the run announced it:
+
+```
+2026-08-26  engalls: failed - HTTP 509 ...
+2026-08-26  Engall's Nursery: 70 updated, 0 new, 144 days tracked
+```
+
+70 rows written on a night nothing was fetched. Across the dataset: **52 such
+nursery-days and 24,567 such rows** since March, 1.04% of 2,365,530. 36 were
+explained by a logged scrape failure; the other 16 predate health logging (starts
+2026-06-11) and were proved the same bug another way, because primal-fruits has an
+11-day hole from 2026-05-19 to 05-29 with no snapshots and **891 of 891** rows
+inside it match 2026-05-18 exactly, none differing.
+
+The day now comes from the snapshot's own `scraped_at`. `date.today()` answers
+"when is this script running", which was never the question.
+
+### 3. One tombstone was already publishing a fabricated date
+
+Live on `/variety/apple-coxs-orange-pippin.html`:
+
+> We tracked it at 1 nursery between 24 March and 20 August 2026, in stock on 0 of
+> those 143 days.
+
+Garden Express's last successful snapshot is 2026-08-17; the 18th, 19th and 20th
+are the Shopify-migration 400s. **Tombstones freeze and live pages self-heal
+nightly**, which is the whole risk: a live page carrying a bad date corrects itself
+the next night, a tombstone keeps it forever.
+
+**Why clean it up, given nothing measurably broke.** Recomputing all 122 species
+rarity scores with and without the fabricated days gives **0 hard_to_find badge
+flips** and a largest score move of 0.526 points against a threshold of 65. The
+scores were never the argument. The dataset is the moat, Phase 4 sells it as price
+history, and a row we did not observe is not a thing we can sell.
+
+**Rebuild, not delete.** `backfill_availability.py` reconstructs purely from the
+dated snapshots, so fabricated days drop out by construction rather than by a
+delete script somebody has to trust, and the result is a pure function of the raw
+record. Verified safe first: 0 products existed only on fabricated days and 0 had
+their `first_seen` on one. It also **recovered 47 nursery-days that were real and
+never recorded**, chiefly 2026-08-12, when 26 nurseries scraped cleanly and the
+availability stage did not run. Net: 2,368,964 rows, zero days without a snapshot.
+Cost was one row: a Federation Daisy seen once on 2026-08-20, an ornamental the
+current filters exclude.
+
+**The repair tool had its own bug.** `backfill_availability` treated every `*.json`
+that was not `latest.json` or `availability.json` as a dated snapshot, so
+`daleys/catalogue.json` (products keyed by id, not a list) raised `AttributeError`
+part-way through the real run, after three nurseries had been written. A partial
+rebuild is the one outcome a repair tool must not have. It now matches on the date
+form of the filename.
+
+**Rejected: marking rows instead of deleting them.** A `"c": true` carried flag
+preserves what we believed at the time and makes every consumer opt in to honesty.
+The two consumers that exist today would have kept counting the rows until each was
+changed. Deleting makes honest the default for code nobody has written yet.
+
+**Noted and deliberately not fixed:** the price filter says "only record price if it
+changed from most recent entry" but compares against the most recent *day*, not the
+most recent *recorded price*. Since most days omit `p`, `last_price` is None every
+other day and it re-records: Thorny Mandarin carries a price on 73 of 144 days for a
+price that has been 65.0 every time. Nothing reads `p` as a change signal (price
+drops use `daily_digest`'s variant compare, rule 3), so it is a storage quirk, not a
+correctness bug, and it does not belong in the same change as a data migration.
+
+**Still open:** `bigcommerce_scraper` and `daleys_scraper` also fetch with raw
+`urlopen` and no retry. Same class, not touched here.
+
+**Lesson:** the reported failure was fine and the thing underneath it was not. Both
+defects were invisible for the same reason: each produced output that looked exactly
+like the correct output. The woo scraper logged like a scraper that had retried, and
+the tracker logged "70 updated" on a night it fetched nothing. A log line that reads
+the same whether the work happened or not is not evidence that it did.

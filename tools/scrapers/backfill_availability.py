@@ -1,22 +1,34 @@
 #!/usr/bin/env python3
 """
 Backfill availability history from existing dated snapshot files.
-Run once to populate history from all YYYY-MM-DD.json files.
+Rebuilds from all YYYY-MM-DD.json files, so the result is a pure function of
+the snapshots on disk: every day in the history is a day we actually fetched.
+
+That property is what makes this the repair tool for a contaminated history
+(2026-08-27), not just a one-off bootstrap. It is also why the file filter
+below has to be a date match rather than a blocklist.
 """
 
 import json
+import re
 import sys
 from pathlib import Path
+
+# A snapshot is named for the day it captures. Anything else in the directory
+# is a different kind of file with a different shape: daleys/catalogue.json
+# (products keyed by id, not a list) made the old name != "latest.json" and
+# name != "availability.json" filter raise AttributeError mid-rebuild, after
+# three nurseries had already been written.
+SNAPSHOT_NAME = re.compile(r"^\d{4}-\d{2}-\d{2}\.json$")
 
 
 def backfill_nursery(nursery_dir: Path):
     """Backfill availability from all dated snapshots."""
     avail_file = nursery_dir / "availability.json"
 
-    # Find all dated snapshots (not latest.json)
     snapshots = sorted(
         f for f in nursery_dir.glob("*.json")
-        if f.name != "latest.json" and f.name != "availability.json"
+        if SNAPSHOT_NAME.match(f.name)
     )
 
     if not snapshots:

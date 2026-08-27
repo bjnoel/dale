@@ -83,24 +83,46 @@ is noted and left alone rather than fixed alongside a data migration.
 
 ## Work list
 
-1. **Add 509 to `RETRYABLE_HTTP`**, with a regression test that a 509 is retried and a
-   non-retryable code is not.
-2. **Freshness guard in `availability_tracker.py`**: skip a nursery whose `latest.json`
-   is not dated today, and say so in the run output rather than silently. Regression
-   test covering the stale case, the fresh case, and a snapshot with no date field.
-3. **Rebuild the 27 availability files from the dated snapshots** on the server, using
-   `backfill_availability.py`, which reconstructs purely from snapshots so orphan days
-   drop out by construction rather than by a delete script. Verify row counts against
-   the numbers above before and after. Backups: `/opt/dale/backups/data-2026-W*.tar.gz`
-   are weekly and `availability.json` is cumulative, so W34 holds everything to 23 Aug.
-4. **Correct the `apple-coxs-orange-pippin` ledger entry** to `last_seen 2026-08-17` /
-   `live_days 139`, and rebuild the tombstone so the published sentence matches.
+All four done 2026-08-27. Logged as DEC-316.
+
+1. **DONE, and bigger than written.** Adding 509 to `RETRYABLE_HTTP` would not have
+   saved Engall's on its own: `woocommerce_scraper.fetch_json` was a private copy of
+   the fetch that never called the shared helper, so it retried nothing at all. The
+   failure durations prove it (plantnet 503 in 1.62s, engalls 509 in 0.88s, rayners
+   429 in 1.31s, against a 2.0s first backoff), and two of those three codes were
+   already retryable. Wired through `request_with_retry` and added 509.
+   `bigcommerce_scraper` and `daleys_scraper` have the same shape and are NOT fixed
+   here.
+2. **DONE.** The day now comes from the snapshot's own `scraped_at` rather than from
+   `date.today()`, and anything that is not today's is skipped and reported. Fails
+   closed when `scraped_at` is missing or unparseable.
+3. **DONE.** Rebuilt all 27 files. Result: **2,368,964 rows, zero days without a
+   snapshot.** Removed the 53 fabricated days and recovered **47 real days that had
+   never been recorded**, chiefly 2026-08-12, when 26 nurseries scraped cleanly and
+   the availability stage did not run. Cost one row (a Federation Daisy, ornamental,
+   seen once on 2026-08-20). Pre-rebuild copies in
+   `/opt/dale/backups/availability-pre-rebuild-2026-08-27/`.
+   `backfill_availability.py` had to be fixed first: it treated every `*.json` as a
+   dated snapshot and died on `daleys/catalogue.json` after writing three nurseries.
+4. **DONE, with a wider check than planned.** Re-derived all 334 frozen ledger entries
+   from the rebuilt history rather than hand-editing one. Six disagreed; two are
+   tombstones and were corrected (`apple-coxs-orange-pippin` to 23 March / 17 August /
+   141 days, not the 139 estimated above, because the slug aggregates several titles
+   and picked up recovered days; `mulberry-black-classic` 166 to 165 days).
+   The other four are redirects, which publish no dated copy, and whose differences
+   come from re-parsing titles under today's slug parser, the archaeology
+   `build_variety_pages` explicitly warns against writing back. Left alone.
+   The pages themselves re-render on the next nightly, which re-renders every
+   tombstone by design. Not forced mid-day: `absent_nights` increments per run, so an
+   extra run would count today twice for every page mid-exit-guard.
 
 ## Done means
 
 - `python3 -m unittest discover tests/` passes.
 - A 509 retries; a stale `latest.json` does not enter the history.
 - No availability day exists without a corresponding dated snapshot, for every nursery.
-- `/variety/apple-coxs-orange-pippin.html` reads "between 24 March and 17 August 2026,
-  in stock on 0 of those 139 days".
+- `/variety/apple-coxs-orange-pippin.html` reads "between 23 March and 17 August 2026,
+  in stock on 0 of those 141 days" (re-derived from the rebuilt history, which both
+  removed fabricated days and recovered real ones; the 139 guessed above counted only
+  one product's rows, and the slug aggregates several titles).
 - Decision logged in `decisions/decision-log.md` and a public-ledger entry written.
