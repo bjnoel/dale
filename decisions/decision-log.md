@@ -4,6 +4,84 @@
 
 ---
 
+## DEC-330 — 2026-08-27 — a closed store that answers 200 reset the backoff built three days ago to stop it
+
+**Decided by:** Dale, autonomous (code, $0). Emergency exception: waste and goodwill risk,
+live nightly.
+
+**Found by:** the session prompt's own snapshot line, `Heritage Fruit Trees: 378 products
+(0 in stock)`. That reads like seasonality and is worth one `ls` to check.
+
+**What happened.** Heritage Fruit Trees shut online sales for 2026 on 2026-08-24 and served
+HTTP 503 on every URL. DEC-3xx's dormancy guard (`should_probe`, shipped 08-24) exists for
+exactly that: after 5 consecutive failures, drop to one probe a week. It worked for two
+nights, 08-24 and 08-25, both `ok=false`.
+
+Then on 08-26 the store started answering **HTTP 200 again**, with the entire catalogue
+present and every product `OutOfStock` with the price withdrawn:
+
+| day | ok | products | in_stock | priced | duration |
+|---|---|---|---|---|---|
+| 08-23 | true | 128 | 128 | 128 | 432s |
+| 08-24 | **false** | 0 | 0 | - | 357s |
+| 08-25 | **false** | 0 | 0 | - | 1147s |
+| 08-26 | **true** | 378 | **0** | **1** | **1235s** |
+| 08-27 | **true** | 378 | **0** | **1** | **1245s** |
+
+`ok=true` reset `consecutive_failures` to 0, so the guard could never fire and Heritage was
+being scraped nightly, indefinitely, until the 2027 season. **The runs got longer, not
+shorter: a 503 fails fast and a 200 does not.** 20 minutes a night of pointless requests at
+a nursery Benedict has a relationship with. Scraping has cost us goodwill twice now (Beewise
+DEC-198; Heaven On Earth threatened Consumer Affairs *today*).
+
+**The narrower truth, after checking the far end (DEC-270).** I first read this as a data
+defect and it is not. The live page really does serve 200 with `schema.org/OutOfStock` and
+no price. The scraper is correct, Heritage genuinely has nothing buyable, and the published
+CC BY dataset is not lying. So the fix changes **whether we scrape, never whether we
+believe**: `untrusted_nurseries()` is deliberately untouched, because marking Heritage
+untrusted would suppress a zero that is true. I nearly built a repair for a non-bug.
+
+**The fix.** A run is judged on whether it yielded anything, not on whether the HTTP layer
+stayed quiet. `is_unproductive(rec)` = ok, products > 0, in_stock == 0, **and** priced share
+< 10%. `consecutive_failures` and `last_success_day` count those alongside outright
+failures.
+
+**The second condition is the load-bearing one.** A nursery can sell out completely and still
+be trading, and a trading store keeps its prices on the page (~100% priced). Withdrawing the
+prices as well is what separates "closed" from "sold out", and it protects the restock alert
+that is the entire reason to scrape daily. Heritage is at 1/378 = 0.3% against a 10%
+threshold.
+
+**Measured before shipping, not chosen (DEC-323).** Across 27 nurseries and 200 days of
+health records, `ok` runs with products > 0 and in_stock == 0 have occurred **exactly twice**,
+both Heritage on 08-26 and 08-27. Zero false positives in all history. The streak reads **4**
+today, so one more unproductive night is still required before it sleeps: the threshold is not
+bent to make today's case fire today.
+
+**Why the alarm that should have caught this did not.** `detect_scrape_anomalies.py` gained a
+`priced_collapse` rule on 08-24, two days before this. It compares today's priced share to
+**yesterday's**, and yesterday (08-25) was a failure with no `priced` field at all, so the
+comparison was skipped. On 08-27 today equalled yesterday, so nothing fired either. The alarm
+built for this exact failure was structurally unable to see it, because the collapse happened
+*across* an outage. Same family as DEC-325: an instrument can be incapable of the answer and
+still stay quiet rather than erroring. Not fixed here (backlog is at cap); recorded for
+DAL-292, which already proposes backtesting every alarm threshold.
+
+**Guard.** 6 new tests in `tests/test_dormancy.py`, including the exact production sequence,
+the sold-out-but-trading case that must NOT back off, and the pre-`priced` records that must
+never be judged retroactively. Proven to fail 3/3 under the old logic before being trusted to
+pass (DEC-326). Full suite 3,565 OK. Deployed and verified from `/opt/dale/scrapers`.
+
+**Lesson (39th session).** *`ok` is a claim about the transport, not about the payload.* The
+guard asked "did the request fail?" when the question was "did we get anything?", and a
+shutdown that changed its HTTP status from 503 to 200 walked straight through it and made
+things worse, because the failure mode that costs the most is the one that looks like success.
+Corollary, and the reason this took a detour: **when a plausible defect appears, check the far
+end before building the repair.** The data was right; only the decision to keep asking for it
+was wrong.
+
+---
+
 ## DEC-318 — 2026-08-27 — the review prompt asked one person in 24 days, because every TestFlight build reset its blackout
 
 **Decided by:** Dale, from Benedict's question ("can we see if anyone has been prompted?").

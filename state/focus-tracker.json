@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-08-27",
-  "last_session": 126,
+  "last_session": 127,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2082,6 +2082,25 @@
         "rendered_session_state_bytes": 58056,
         "nursery_open_actions_on_benedict": 3
       }
+    },
+    {
+      "session": 127,
+      "date": "2026-08-27",
+      "categories_worked": [
+        "infrastructure"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 12,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "rendered_session_state_bytes": 58056,
+        "nursery_open_actions_on_benedict": 3
+      },
+      "notes": "DEC-330. Emergency exception, not a queued ticket. The session prompt's own snapshot line ('Heritage Fruit Trees: 378 products (0 in stock)') read like seasonality and was not. Heritage shut for 2026 on 08-24 and 503ed for two nights, which the dormancy guard shipped that same day handled. From 08-26 it answered HTTP 200 again with the whole catalogue OutOfStock and unpriced (378/0/1), so ok=true reset consecutive_failures to 0 and we were crawling a closed store ~20 min a night, indefinitely, at a nursery Benedict has a relationship with. Runs got LONGER not shorter because a 503 fails fast and a 200 does not. Fixed by judging a run on what it yielded (is_unproductive) rather than on whether the transport stayed quiet. Checked the far end first and it is NOT a data defect: the live page really serves 200 with schema.org/OutOfStock and no price, so the zero is true and untrusted_nurseries() was deliberately untouched. Base rate measured before shipping: 2 occurrences in 27 nurseries x 200 days, both Heritage this week. Streak is 4 of 5 today, so the threshold was not bent to fire on the case in front of me. Also found the priced_collapse alarm shipped 08-24 for this exact failure could not see it (compares to yesterday; yesterday was a failure with no priced field) and posted that to DAL-292. Deliberately did NOT work treestock:data_quality per the stale-approach prompt. DAL-248 left with Benedict and its Dale label removed: the draft it waits on now exists and the register's open_action points at it."
     }
   ],
   "override": null

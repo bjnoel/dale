@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-27",
-  "session_count": 126,
+  "session_count": 127,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -813,6 +813,20 @@
         "still_held_deliberately": "quandong: 6 qualifying days across a 112-day span, below MIN_NURSERIES for most of its life. That is the flapping page the entry guard exists for; holding it is correct.",
         "at_the_threshold": "9 species list at exactly MIN_NURSERIES=3 (2026-08-24): cherry-of-the-rio-grande, kakadu-plum, lau-lau, lawtonberry, native-river-mint, native-thyme, quandong, ruby-saltbush, saltbush. One delisting from orphaning.",
         "known_gap": "Nothing surfaces a held page: plan.held prints to the nightly's stdout, which nobody reads. Not ticketed, backlog is over cap."
+      },
+      "scraper_health": {
+        "closed_store_answering_200": {
+          "decision": "DEC-330 (2026-08-27). Emergency exception, shipped ff036ce, deployed and verified from /opt/dale/scrapers.",
+          "what": "Heritage Fruit Trees shut online sales for 2026 on 08-24. It 503ed for two nights (guard working), then from 08-26 began answering HTTP 200 with the whole catalogue present, every product OutOfStock and unpriced: 378 products, 0 in stock, 1 priced. ok=true reset consecutive_failures to 0, so the dormancy guard shipped 08-24 could never fire and Heritage was being scraped nightly until the 2027 season.",
+          "cost_was_real": "Runs got LONGER not shorter (432s on the last real day, then 1235s and 1245s) because a 503 fails fast and a 200 does not. ~20 min/night of pointless requests at a nursery Benedict has a relationship with. Scraping cost goodwill twice: Beewise (DEC-198) and Heaven On Earth, who threatened Consumer Affairs the same day.",
+          "not_a_data_defect": "Checked the far end (DEC-270) before building a repair. The live page really serves HTTP 200 with schema.org/OutOfStock and no price. The scraper is CORRECT, Heritage genuinely has nothing buyable, and the published CC BY dataset is not lying. untrusted_nurseries() is deliberately UNTOUCHED: marking Heritage untrusted would suppress a zero that is true. The fix changes whether we scrape, never whether we believe.",
+          "fix": "is_unproductive(rec) = ok AND products>0 AND in_stock==0 AND priced share < UNPRODUCTIVE_PRICED_SHARE (0.10). consecutive_failures and last_success_day count those alongside outright failures.",
+          "priced_condition_is_load_bearing": "A nursery can sell out completely and still trade, and a trading store keeps its prices on the page (~100% priced). Withdrawing prices too is what separates 'closed' from 'sold out', and it protects the restock alerts that are the reason to scrape daily. Heritage is 1/378 = 0.3% against a 10% threshold.",
+          "base_rate_measured_not_chosen": "Across 27 nurseries and 200 days of health records, ok runs with products>0 and in_stock==0 occurred EXACTLY TWICE, both Heritage on 08-26 and 08-27. Zero false positives in all history.",
+          "threshold_not_bent": "Streak reads 4 today; 5 is required. One more unproductive night is still needed before it sleeps, so the constant was not tuned to make today's case fire today (DEC-323).",
+          "the_alarm_could_not_see_it": "detect_scrape_anomalies.py gained a priced_collapse rule on 08-24, two days before this. It compares today's priced share to YESTERDAY'S, and yesterday (08-25) was a failure carrying no priced field, so the comparison was skipped; on 08-27 today equalled yesterday so nothing fired. The alarm built for this exact failure was structurally unable to see it because the collapse happened ACROSS an outage. Same family as DEC-325. Not fixed here (backlog at cap); belongs to DAL-292.",
+          "guard": "6 new tests in tests/test_dormancy.py: the exact production sequence, the sold-out-but-trading case that must NOT back off, pre-priced records that must never be judged retroactively, and that an unproductive run stays TRUSTED data. Proven to fail 3/3 under the old logic before being trusted to pass (DEC-326). Full suite 3,565 OK."
+        }
       }
     },
     "b_experiment_beestock": {
