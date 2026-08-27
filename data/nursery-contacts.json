@@ -406,8 +406,8 @@
       "email": null,
       "phone": "0435 779 553",
       "contact_form": null,
-      "preferred_channel": "phone",
-      "status": "unreachable",
+      "preferred_channel": "instagram",
+      "status": "contacted",
       "touches": [
         {
           "date": "2026-03-31",
@@ -416,13 +416,17 @@
           "by": "benedict",
           "summary": "Touch 1 attempted to info@fruitopianursery.com.au and BOUNCED. Fastmail rejected by fruitopianursery-com-au.mail.protection.outlook.com: 451 4.4.4 'Mail received as unauthenticated, incoming to a recipient domain configured in a hosted tenant which has no mail-enabled subscriptions'. The domain is claimed in a Microsoft 365 tenant with no Exchange licences, so it has no mailboxes at all. Not contact: they never received it.",
           "evidence": "Bounce report pasted by Benedict 2026-08-27"
+        },
+        {
+          "date": "2026-08-27",
+          "direction": "out",
+          "channel": "instagram",
+          "by": "benedict",
+          "summary": "Touch 1 delivered by Instagram DM to @fruitopianursery, after email proved impossible (see the 2026-03-31 bounce). Goodwill intro, no pitch: what treestock is, that we sent them 90 clicks from 75 people in 30d, that the March email bounced and why, and one question, whether 522 of their 639 listings really are out of stock or whether we are reading their availability wrong.",
+          "evidence": "Benedict confirmed sent, session 2026-08-27"
         }
       ],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Fruitopia cannot be emailed, the domain has no mailboxes. Ring 0435 779 553 or DM @fruitopianursery instead. 90 clicks/30d, our second-biggest never-contacted destination.",
-        "since": "2026-08-27"
-      },
+      "open_action": null,
       "notes": "No mailbox exists on fruitopianursery.com.au (see the 2026-03-31 bounce). Their Shopify store has no contact page either: sitemap_pages_1.xml lists only /pages/swym-share-wishlist and /pages/win. Live channels are phone 0435 779 553 (published on their own homepage), Facebook /fruitopianursery and Instagram @fruitopianursery. Directory sites (Cylex, ZoomInfo) still echo the dead info@ address and a stale Virginia 4014 address; their own site says Woodridge 4114."
     },
     {

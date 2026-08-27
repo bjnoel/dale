@@ -112,6 +112,18 @@ class TestValidate(unittest.TestCase):
         """
         self.assertEqual([], crm.validate(self.base(status="unreachable")))
 
+    def test_unreachable_does_not_auto_promote_on_an_outbound_touch(self):
+        """A bounce is itself an outbound touch, so promoting on direction
+        alone would relabel every bounce as `contacted`. Leaving `unreachable`
+        is a judgement about whether the channel worked, and must be explicit.
+        """
+        n = {"key": "x", "name": "X", "domain": "x.com.au",
+             "status": "unreachable", "touches": [], "open_action": None}
+        crm.apply_touch(n, {"date": "2026-08-27", "direction": "out",
+                            "channel": "email", "by": "benedict",
+                            "summary": "bounced", "evidence": "e1"})
+        self.assertEqual("unreachable", n["status"])
+
     def test_unreachable_is_distinct_from_contacted(self):
         """The distinction is the whole point: `contacted` means they got it
         and stayed silent, which earns a follow-up. `unreachable` means the

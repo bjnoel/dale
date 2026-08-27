@@ -253,6 +253,14 @@ def apply_touch(n, touch):
         n["status"] = "warm"
     elif touch["direction"] == "out" and n["status"] == "not_contacted":
         n["status"] = "contacted"
+    # `unreachable` deliberately does NOT auto-promote on an outbound touch,
+    # and it is the one status that requires an explicit `set --status` to
+    # leave. The reason is that a bounce IS an outbound touch: Fruitopia's
+    # 2026-03-31 record is one. Promoting on direction alone would relabel
+    # every bounce as `contacted`, which is the exact lie this status exists to
+    # prevent. Whether a channel actually worked is a judgement the tool cannot
+    # make from the touch, so it stays with whoever sent it. Benedict's
+    # 2026-08-27 Instagram DM landed, so Fruitopia was moved by hand.
 
     # An outbound touch discharges the open action, because in every case so far
     # the action IS the outbound touch ("send touch 1.5 to Correy"). Without
