@@ -13815,3 +13815,77 @@ remain.
 rule working, not failing. The failure mode to avoid is concluding from one hostile reply
 that goodwill outreach is a mistake; five other nurseries got the same email the same day
 and none objected.
+
+---
+
+## DEC-320: Play Console says tens, we have been saying hundreds. Every Treesmith install denominator is wrong (2026-08-27)
+
+**Decision:** treat RevenueCat and PostHog install counts as unvalidated until reconciled
+against the store, and withdraw every conclusion that divides by them.
+
+Benedict ran the two DAL-277 checks in Play Console.
+
+**Check 1 came back clean.** `app.treesmith.pro.lifetime` has 1 active purchase option and
+`app.treesmith.cloudbackup.annual` has 1 active base plan, both last updated 4 May 2026.
+`app.treesmith.pro.annual` is absent, correctly, since it was retired in July 2026. There is
+no inactive-product revenue hole and there never was one.
+
+**Check 2 did not.** Installed audience, 30 Jul to 23 Aug, all countries: 26 to 32 devices,
+latest ~29. Against RevenueCat's 287 Android customers and PostHog's 217 distinct Android
+`person_id`.
+
+| | quoted | store |
+|---|---|---|
+| Android installs | 287 | ~29 current, <= 49 lifetime |
+| Android conversion | 0 of 287 | 0 of <= 49 |
+| Android is 69% of users | 287 of 416 | unknown, iOS unverified |
+
+At 1-2% conversion on 40 installs the expected number of sales is 0.4 to 0.8. **Zero was the
+modal outcome all along.** "46 reached the paywall and none bought" is 46 paywall views
+against at most 49 lifetime installs, and that ratio should have been the tell on its own.
+
+**The methodological failure, which is the point of this entry.** DAL-277's research said
+PostHog "independently agrees on the shape" with RevenueCat. It cannot. Both count anonymous
+IDs, so a duplicate-identity fault inflates both by the same factor and they agree loudest
+exactly when they are both wrong. That agreement was presented as corroboration. This is
+DEC-317 recurring one month later: a reading that looks the same whether the bad thing is
+happening or not is not evidence. The version spread used to rule out CI noise
+(1.0.9 x56, 1.0.7 x39 and so on) fails identically, because duplicate IDs from real users
+distribute across versions in exactly the shape of a real staged rollout.
+
+The store was the only independent instrument available and its answer, `10+`, was already
+sitting in `business-state.json` as `android_downloads_bucket` while the file also carried
+`installs_all_time: 290` fourteen lines earlier. We had the contradiction on disk and read
+it as the store lagging.
+
+**This is the fourth correction to the same number, and the first to check its magnitude.**
+DEC-252 measured it, DEC-254 corrected what it was divided by, DEC-276 corrected how it was
+segmented, and DEC-320 finds the number itself was never real. Three rounds of re-slicing a
+quantity nobody had validated against an external source.
+
+**A second anomaly the check surfaced.** Play shows Android skewing Australian, roughly
+17-20 of 29 devices, with the US at ~7. DEC-276 has installs at 61% US. The geography
+disagrees as well as the magnitude, and it disagrees in the direction that suggests the
+surplus RevenueCat records are US-weighted rather than spread evenly. Not explained.
+
+**Cause not established, and one hypothesis already falsified.** The obvious candidate was a
+non-persisting anonymous ID. `entitlement_service.dart:228-269` configures
+`PurchasesConfiguration(apiKey)` with no explicit `appUserID`, the correct anonymous setup,
+and `init()` is guarded by `if (_initialized) return;`. No per-launch regeneration. What
+remains untested: reinstalls and "clear app data" minting fresh anon IDs that never decay out
+of a cumulative customer count, and the plain category error of reading "RevenueCat customers"
+as "installs" in the first place.
+
+**The part that may be good news.** iOS is 129 RevenueCat installs and 3 buyers from the same
+pipeline. If it inflates by a similar factor, real installs are ~18 and 3 buyers is ~17%
+conversion, which is a working paywall on a tiny base rather than a broken one. That inverts
+DEC-237's "43 MAU, 0 sales is statistically expected at any price" and its ranking of ratings
+and paywall reachability ahead of price. DAL-290 asks Benedict for the one number that settles
+it.
+
+**Actions:** DAL-277 Done. DAL-290 opened (App Store Connect lifetime downloads). DAL-276 and
+DAL-256 annotated, both rest on these denominators. `business-state.json` marked, not deleted.
+
+**Lesson:** two instruments that share a fault will agree with each other and disagree with
+reality. Before dividing by a number, check it against something outside the system that
+produced it, and do that before the third round of re-slicing rather than after.

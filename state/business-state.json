@@ -38,7 +38,7 @@
         "verified": "2026-07-30 (DAL-225)",
         "ios_ratings": 0,
         "android_ratings": 0,
-        "android_downloads_bucket": "10+ (Google's bucket for 10-49 installs)",
+        "android_downloads_bucket": "10+ (Google's bucket for 10-49 installs). CONFIRMED ACCURATE 2026-08-27 (DEC-320): Play Console installed audience is 26-32 devices, consistent with this bucket. This field was right and installs_all_time was wrong.",
         "note": "0 ratings on both stores, so Apple displays no star rating at all. DEC-237 treats this as the binding constraint on conversion, ahead of the price level."
       },
       "pricing_analysis": "DEC-237 / DAL-225 (2026-07-30): $39.99 one-time is ~1 year of a category subscription (Grove $39.99/yr, Croppa $36/yr, FruitForest $49.99/yr, Planta $69.99/yr) and Planter sells lifetime at exactly $39.99, so the level is defensible. Do NOT cut the price: at 43 MAU, 0 sales is the expected result at any price (43 x 2% = 0.9), and a 30-plant free tier means almost nobody sees the paywall. Revisit price only once paywall views clear ~200/month.",
@@ -134,6 +134,7 @@
       "posthog_product_analytics": {
         "measured": "2026-07-30 (DEC-252, DAL-242). PostHog project 166160, all-time, first query in 126 days. Aggregate server-side: a raw row fetch returned exactly 100 rows against a true count of 243 (the DAL-261 truncation pattern).",
         "installs_all_time": 290,
+        "SUPERSEDED_BY_DEC_320": "installs_all_time IS NOT AN INSTALL COUNT. Play Console (2026-08-27, DAL-277) reports 26-32 Android devices with the app installed and a public bucket capping lifetime Android downloads at 49, against RevenueCat 287 / PostHog 217 for the same platform. RevenueCat customers and PostHog person_ids are anonymous IDs, not devices, and both inflate together so their agreement proves nothing. Do NOT divide anything by 290, 416, 287 or 129. iOS is unverified pending DAL-290. See DEC-320.",
         "opened_all_time": 288,
         "onboarding_started": 85,
         "onboarding_completed": 49,
