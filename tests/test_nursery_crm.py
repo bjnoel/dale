@@ -92,6 +92,33 @@ class TestValidate(unittest.TestCase):
     def test_rejects_warm_status_with_no_touches(self):
         self.assertTrue(crm.validate(self.base(status="warm")))
 
+    def test_accepts_unreachable_with_a_bounced_touch(self):
+        """Fruitopia: touch 1 was sent 2026-03-31 and hard bounced.
+
+        Their domain is claimed in a Microsoft 365 tenant with no Exchange
+        licences, so it has no mailboxes at all. The touch is real and must be
+        recorded so nobody retries the same dead address, but they never
+        received it, so `contacted` would be a lie.
+        """
+        t = [{"date": "2026-03-31", "direction": "out"}]
+        self.assertEqual([], crm.validate(
+            self.base(status="unreachable", touches=t)))
+
+    def test_accepts_unreachable_with_no_touches(self):
+        """Garden World: no address was ever found, so nothing was ever sent.
+
+        Same conclusion as Fruitopia (email is not a channel here), reached
+        without a touch to record.
+        """
+        self.assertEqual([], crm.validate(self.base(status="unreachable")))
+
+    def test_unreachable_is_distinct_from_contacted(self):
+        """The distinction is the whole point: `contacted` means they got it
+        and stayed silent, which earns a follow-up. `unreachable` means the
+        message never landed, which earns a different channel."""
+        self.assertIn("unreachable", crm.VALID_STATUSES)
+        self.assertIn("contacted", crm.VALID_STATUSES)
+
     def test_rejects_unparseable_touch_date(self):
         t = [{"date": "last March", "direction": "out"}]
         self.assertTrue(crm.validate(self.base(status="contacted", touches=t)))

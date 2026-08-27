@@ -5,6 +5,7 @@
   "statuses": {
     "not_contacted": "No recorded outreach.",
     "contacted": "Touch 1 sent, no reply recorded.",
+    "unreachable": "Outreach attempted or attempted-and-impossible, but the channel does not work: the address bounced, or no contact route could be found. NOT the same as 'contacted', which means they received it and did not reply. Needs a different channel, not a follow-up email.",
     "warm": "Replied and engaged.",
     "courtesy": "Replied, but not a growth prospect. Maintain relationship only.",
     "personal": "Benedict has a personal relationship. Handle offline, not by cold email."
@@ -402,14 +403,27 @@
       "name": "Fruitopia",
       "domain": "fruitopianursery.com.au",
       "contact_name": null,
-      "email": "info@fruitopianursery.com.au",
+      "email": null,
       "phone": "0435 779 553",
       "contact_form": null,
-      "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
-      "open_action": null,
-      "notes": ""
+      "preferred_channel": "phone",
+      "status": "unreachable",
+      "touches": [
+        {
+          "date": "2026-03-31",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Touch 1 attempted to info@fruitopianursery.com.au and BOUNCED. Fastmail rejected by fruitopianursery-com-au.mail.protection.outlook.com: 451 4.4.4 'Mail received as unauthenticated, incoming to a recipient domain configured in a hosted tenant which has no mail-enabled subscriptions'. The domain is claimed in a Microsoft 365 tenant with no Exchange licences, so it has no mailboxes at all. Not contact: they never received it.",
+          "evidence": "Bounce report pasted by Benedict 2026-08-27"
+        }
+      ],
+      "open_action": {
+        "owner": "benedict",
+        "what": "Fruitopia cannot be emailed, the domain has no mailboxes. Ring 0435 779 553 or DM @fruitopianursery instead. 90 clicks/30d, our second-biggest never-contacted destination.",
+        "since": "2026-08-27"
+      },
+      "notes": "No mailbox exists on fruitopianursery.com.au (see the 2026-03-31 bounce). Their Shopify store has no contact page either: sitemap_pages_1.xml lists only /pages/swym-share-wishlist and /pages/win. Live channels are phone 0435 779 553 (published on their own homepage), Facebook /fruitopianursery and Instagram @fruitopianursery. Directory sites (Cylex, ZoomInfo) still echo the dead info@ address and a stale Virginia 4014 address; their own site says Woodridge 4114."
     },
     {
       "key": "ausnurseries",
@@ -504,7 +518,7 @@
       "phone": null,
       "contact_form": null,
       "preferred_channel": "unknown",
-      "status": "not_contacted",
+      "status": "unreachable",
       "touches": [],
       "open_action": {
         "owner": "dale",
@@ -602,14 +616,14 @@
       "name": "St Clements Citrus",
       "domain": "stclementscitrus.com.au",
       "contact_name": null,
-      "email": "sales@stclementcitrus.com.au",
+      "email": "sales@stclementscitrus.com.au",
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
       "status": "not_contacted",
       "touches": [],
       "open_action": null,
-      "notes": "Their published address is sales@stclementcitrus.com.au, singular 'clement', which does not match their stclementscitrus.com.au domain. Read off their own contact page 2026-07-30; worth confirming before a first send."
+      "notes": "Register held sales@stclementcitrus.com.au (missing the s in Clements), which is undeliverable: stclementcitrus.com.au has no MX and no A record. The real domain stclementscitrus.com.au has Google MX. Corrected 2026-08-27 before it was ever used."
     },
     {
       "key": "the-heritage-nursery",
@@ -620,7 +634,7 @@
       "phone": null,
       "contact_form": null,
       "preferred_channel": "unknown",
-      "status": "not_contacted",
+      "status": "unreachable",
       "touches": [],
       "open_action": {
         "owner": "dale",

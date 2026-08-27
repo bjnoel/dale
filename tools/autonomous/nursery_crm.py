@@ -29,7 +29,8 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 REGISTER_PATH = os.path.join(REPO, "data", "nursery-contacts.json")
 SITE_ID = "treestock.com.au"
 OUTBOUND_GOAL = "Outbound Link: Click"
-VALID_STATUSES = {"not_contacted", "contacted", "warm", "courtesy", "personal"}
+VALID_STATUSES = {"not_contacted", "contacted", "unreachable", "warm",
+                  "courtesy", "personal"}
 VALID_DIRECTIONS = {"out", "in"}
 
 
@@ -162,7 +163,11 @@ def cmd_report(reg, args):
     rows.sort(key=lambda r: (-r[0], r[2]["name"]))
 
     total = sum(r[0] for r in rows)
-    uncontacted = sum(r[0] for r in rows if r[2]["status"] == "not_contacted")
+    # `unreachable` counts as never spoken to, because it is: the message
+    # bounced or there was no route to send one. Excluding it would shrink the
+    # headline by hiding the nurseries hardest to reach.
+    no_relationship = {"not_contacted", "unreachable"}
+    uncontacted = sum(r[0] for r in rows if r[2]["status"] in no_relationship)
     print(f"# Nursery relationship register ({args.period} referrals)\n")
     print(f"{len(rows)} nurseries. {total} outbound clicks sent in the last "
           f"{args.period}. {uncontacted} of those ({pct(uncontacted, total)}) went to "
@@ -404,6 +409,9 @@ def validate(reg):
                 problems.append(w + f"unparseable touch date {t.get('date')!r}")
         if touches and n["status"] == "not_contacted":
             problems.append(w + "has touches but status is not_contacted")
+        # `unreachable` is deliberately allowed both with and without touches.
+        # Fruitopia has one (a bounce); Garden World has none, because there was
+        # never an address to try. Both are "email is not a channel here".
         if not touches and n["status"] in {"contacted", "warm", "courtesy"}:
             problems.append(w + f"status {n['status']} but no recorded touches")
         act = n.get("open_action")
