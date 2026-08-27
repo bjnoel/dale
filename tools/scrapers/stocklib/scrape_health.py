@@ -257,11 +257,60 @@ DORMANT_AFTER_FAILURES = 5
 PROBE_WEEKDAY = 0  # Monday
 DORMANCY_LOOKBACK_DAYS = 400
 
+# A closed store does not have to 503 at you. On 2026-08-26 Heritage started
+# answering HTTP 200 again with its whole catalogue intact and every single
+# product reading OutOfStock with the price withdrawn: 378 products, 0 in
+# stock, 1 priced. That is a success by every measure the recorder had, so the
+# streak above reset to 0 and nightly scraping resumed against a store that
+# had not reopened. The runs got LONGER, not shorter (432s on the last real
+# day, then 1235s and 1245s), because 503s fail fast and 200s do not.
+#
+# So a run is judged on whether it yielded anything, not on whether the HTTP
+# layer stayed quiet. Both conditions are required, and the second is the load
+# bearing one: a nursery that is genuinely sold out but still trading keeps its
+# prices on the page, so it reads ~100% priced and is never called unproductive.
+# Withdrawing the prices as well is what distinguishes "closed" from "sold out",
+# and it protects the restock alerts that are the point of scraping daily.
+#
+# Measured base rate before shipping: across 27 nurseries and 200 days of health
+# records, `ok` runs with products > 0 and in_stock == 0 happened exactly twice,
+# both of them Heritage on 08-26 and 08-27. No healthy nursery has ever been in
+# this state, and Heritage sits at 0.3% priced against a 10% threshold.
+UNPRODUCTIVE_PRICED_SHARE = 0.10
+
+
+def is_unproductive(rec: dict, *,
+                    priced_share: float = UNPRODUCTIVE_PRICED_SHARE) -> bool:
+    """True when a run succeeded but returned a catalogue with nothing to sell.
+
+    Everything out of stock AND the prices withdrawn. Either alone is normal:
+    a nursery can sell out and keep trading, and some feeds price lazily. A
+    store showing hundreds of products, none buyable and none priced, is shut
+    whatever its status code says.
+
+    Records written before `priced` was recorded cannot be judged and are
+    treated as productive, so this can never retroactively rewrite history.
+    """
+    if not rec.get("ok"):
+        return False
+    products = int(rec.get("products") or 0)
+    if products <= 0 or int(rec.get("in_stock") or 0) > 0:
+        return False
+    priced = rec.get("priced")
+    if priced is None:
+        return False
+    return int(priced) / products < priced_share
+
 
 def consecutive_failures(nursery: str, day: str,
                          health_dir: Path | str | None = None, *,
                          lookback: int = DORMANCY_LOOKBACK_DAYS) -> int:
-    """How many of this nursery's most recent runs failed, walking back from `day`.
+    """How many of this nursery's most recent runs yielded nothing, from `day` back.
+
+    Counts failed runs and runs that succeeded into an empty catalogue
+    (`is_unproductive`) as the same thing, because for the question this answers
+    -- is it worth scraping tonight -- they are. A store that answers 200 with
+    nothing buyable and nothing priced costs more per night than one that 503s.
 
     Days carrying no record for the nursery are skipped rather than counted:
     a skipped probe is an absence of evidence, not a failure. That is what lets
@@ -275,7 +324,7 @@ def consecutive_failures(nursery: str, day: str,
             (day_date - timedelta(days=back)).isoformat(), health_dir)).get(nursery)
         if rec is None:
             continue
-        if rec.get("ok"):
+        if rec.get("ok") and not is_unproductive(rec):
             return streak
         streak += 1
     return streak
@@ -303,11 +352,15 @@ def should_probe(nursery: str, day: str, health_dir: Path | str | None = None, *
 def last_success_day(nursery: str, day: str,
                      health_dir: Path | str | None = None, *,
                      lookback: int = DORMANCY_LOOKBACK_DAYS) -> str | None:
-    """The most recent day at or before `day` whose run succeeded, else None."""
+    """The most recent day at or before `day` that yielded a real catalogue, else None.
+
+    Same bar as `consecutive_failures`, so the skip message cannot report a
+    "last good scrape" of last night while skipping the nursery as dormant.
+    """
     day_date = date.fromisoformat(day)
     for back in range(0, lookback + 1):
         d = (day_date - timedelta(days=back)).isoformat()
         rec = latest_by_nursery(read_records(d, health_dir)).get(nursery)
-        if rec is not None and rec.get("ok"):
+        if rec is not None and rec.get("ok") and not is_unproductive(rec):
             return d
     return None

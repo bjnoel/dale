@@ -20,7 +20,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "scrapers"))
 
 from stocklib.scrape_health import (consecutive_failures, is_dormant,
-                                    last_success_day, should_probe)
+                                    last_success_day, should_probe,
+                                    untrusted_nurseries)
 from stocklib.snapshots import is_stale, snapshot_age_days
 
 MONDAY = "2026-08-31"
@@ -35,10 +36,21 @@ class DormancyTest(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def record(self, day, ok, nursery="heritage-fruit-trees", products=0):
+    def record(self, day, ok, nursery="heritage-fruit-trees", products=0,
+               in_stock=None, priced=None):
+        rec = {"nursery": nursery, "ok": ok, "products": products,
+               "ts": f"{day}T00:30:00"}
+        if in_stock is not None:
+            rec["in_stock"] = in_stock
+        if priced is not None:
+            rec["priced"] = priced
         with open(self.health / f"{day}.jsonl", "a") as fh:
-            fh.write(json.dumps({"nursery": nursery, "ok": ok,
-                                 "products": products, "ts": f"{day}T00:30:00"}) + "\n")
+            fh.write(json.dumps(rec) + "\n")
+
+    def shut_but_answering(self, *days):
+        """The 2026-08-26 shape: HTTP 200, whole catalogue, nothing to sell."""
+        for d in days:
+            self.record(d, True, products=378, in_stock=0, priced=1)
 
     def fail_run(self, *days):
         for d in days:
@@ -95,6 +107,88 @@ class DormancyTest(unittest.TestCase):
         self.assertEqual(
             last_success_day("heritage-fruit-trees", "2026-08-25", self.health), "2026-08-23")
         self.assertIsNone(last_success_day("ladybird", "2026-08-25", self.health))
+
+
+class ShutButAnsweringTest(unittest.TestCase):
+    """A closed store does not have to 503 at you.
+
+    On 2026-08-26 Heritage started answering HTTP 200 again with all 378
+    products present, every one OutOfStock and unpriced. That is `ok=true`, so
+    the failure streak reset and nightly scraping resumed against a store that
+    had not reopened -- and the runs got LONGER (432s, then 1235s and 1245s),
+    because a 503 fails fast and a 200 does not. Verified against the live site
+    before these were written: it really does serve 200 with
+    schema.org/OutOfStock and no price.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.health = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    record = DormancyTest.record
+    fail_run = DormancyTest.fail_run
+    shut_but_answering = DormancyTest.shut_but_answering
+
+    def test_the_real_event_would_have_scraped_forever(self):
+        """The exact production sequence. Before this rule the streak read 0 on
+        08-27 and Heritage was scraped nightly until the 2027 season."""
+        self.record("2026-08-23", True, products=128, in_stock=128, priced=128)
+        self.fail_run("2026-08-24", "2026-08-25")
+        self.shut_but_answering("2026-08-26", "2026-08-27")
+        self.assertEqual(
+            consecutive_failures("heritage-fruit-trees", "2026-08-27", self.health), 4)
+        # Four, not five: one more unproductive night is required. The threshold
+        # is not bent to make the case in front of us fire today.
+        self.assertFalse(is_dormant("heritage-fruit-trees", "2026-08-27", self.health))
+        self.shut_but_answering("2026-08-28")
+        self.assertTrue(is_dormant("heritage-fruit-trees", "2026-08-28", self.health))
+
+    def test_last_good_day_is_not_last_night(self):
+        """The skip message must not claim a good scrape it is skipping over."""
+        self.record("2026-08-23", True, products=128, in_stock=128, priced=128)
+        self.fail_run("2026-08-24", "2026-08-25")
+        self.shut_but_answering("2026-08-26", "2026-08-27")
+        self.assertEqual(
+            last_success_day("heritage-fruit-trees", "2026-08-27", self.health),
+            "2026-08-23")
+
+    def test_sold_out_but_still_trading_stays_nightly(self):
+        """The load-bearing distinction. A nursery can sell out completely and
+        still be open, and it keeps its prices on the page. Backing off there
+        would cost us the restock alert that is the reason to scrape daily."""
+        for d in ("2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28"):
+            self.record(d, True, products=378, in_stock=0, priced=370)
+        self.assertEqual(
+            consecutive_failures("heritage-fruit-trees", "2026-08-28", self.health), 0)
+        self.assertFalse(is_dormant("heritage-fruit-trees", "2026-08-28", self.health))
+
+    def test_reopening_resumes_nightly_by_itself(self):
+        self.fail_run("2026-08-24", "2026-08-25")
+        self.shut_but_answering("2026-08-26", "2026-08-27", "2026-08-28")
+        self.assertTrue(is_dormant("heritage-fruit-trees", "2026-08-28", self.health))
+        self.record(MONDAY, True, products=380, in_stock=210, priced=375)
+        self.assertEqual(
+            consecutive_failures("heritage-fruit-trees", MONDAY, self.health), 0)
+        self.assertTrue(should_probe("heritage-fruit-trees", TUESDAY, self.health))
+
+    def test_records_without_a_priced_field_are_never_judged(self):
+        """`priced` postdates most of the health log. Absent evidence must not
+        retroactively rewrite six months of history into dormancy."""
+        for d in ("2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28"):
+            self.record(d, True, products=378, in_stock=0)
+        self.assertEqual(
+            consecutive_failures("heritage-fruit-trees", "2026-08-28", self.health), 0)
+
+    def test_an_unproductive_run_is_still_trusted_data(self):
+        """Heritage really is out of stock, so its zero is true and must keep
+        reaching the site. Dormancy answers 'scrape it tonight?', not
+        'believe it?'. Conflating them would delist a real catalogue."""
+        self.shut_but_answering("2026-08-27")
+        self.assertNotIn("heritage-fruit-trees",
+                         untrusted_nurseries("2026-08-27", self.health))
 
 
 class SnapshotStalenessTest(unittest.TestCase):
