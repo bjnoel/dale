@@ -43,6 +43,7 @@ import urllib.request
 from datetime import date, datetime
 from pathlib import Path
 
+from stocklib.availability import PURCHASABLE_STATES, roll_up
 from stocklib.model import validate_and_warn
 from stocklib.retry import request_with_retry
 from stocklib.scrape_health import count_priced, ScrapeHealth
@@ -52,17 +53,26 @@ from stocklib.taxonomy import enabled_species
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
 USER_AGENT = "treestock.com.au feed reader (+https://treestock.com.au; ben@treestock.com.au)"
 
-# Availability vocabulary. Daleys' feed mixes schema.org CamelCase with
-# Meta/Google Shopping lowercase; 2,900 rows say "out of stock" and exactly one
-# says "OutOfStock" (sku 1045), so both spellings are mapped rather than
-# assumed away. Raised with Correy 2026-08-20.
+# Availability vocabulary. The feed used to mix schema.org CamelCase with
+# Meta/Google Shopping lowercase: 2,900 rows said "out of stock" and exactly
+# one said "OutOfStock" (sku 1045). We flagged the odd row out; Correy went the
+# other way and normalised all 2,942 to schema.org "OutOfStock" on 2026-08-27,
+# which is the right call and would have broken a parser that had matched only
+# the lowercase spelling. Both stay mapped: snapshots written before that date
+# are still read back by stocklib.changes, and the mapping is what makes the
+# change a non-event rather than a silent 2,942-row restock.
 #
-# Deliberately NOT derived from `qty`: sku 1045 is the sole row in 3,650 where
-# qty (40) contradicts availability, so availability is the authority and qty
-# is advisory.
+# PreSale and PreOrder are separate states, not synonyms (Correy, 2026-08-27):
+# PreSale is a 1-2 month seasonal catalogue, PreOrder is a 1-6 month wait on a
+# graft or cutting that has struck. See stocklib.availability for the copy.
+#
+# Deliberately NOT derived from `qty`: 2 rows of 3,650 have a healthy qty and
+# say OutOfStock (sku 1045 Jaboticaba qty 40, sku 3939 Blueberry qty 36), so
+# availability is the authority and qty is advisory. It was 1 row on 2026-08-20
+# and 2 on 2026-08-27, so it is a recurring state at Daleys' end, not a typo.
 DALEYS_AVAILABILITY = {
     "instock": "instock",
-    "presale": "preorder",
+    "presale": "presale",
     "preorder": "preorder",
     "out of stock": "outofstock",
     "outofstock": "outofstock",
@@ -79,11 +89,15 @@ FEEDS = {
         # leaves 454 of 1,998 groups disagreeing on their own group URL.
         # Stripping the prefix wherever it appears leaves 0.
         "group_url_re": r"/sku\d+-",
-        # Frozen url -> category, captured from the last HTML snapshot. The feed
-        # has no category column and stocklib.fruit_filters gates daleys on
-        # category prefixes, so with no category every Daleys product silently
-        # fails is_fruit_product and vanishes from the site with no alarm.
+        # The feed grew a `category` column on 2026-08-27 (Correy: "I have made
+        # this update with category as the last one in the list"), and it now
+        # covers 1,998 of 1,998 groups. The frozen url -> category map below is
+        # demoted to a fallback rather than deleted: fruit_filters gates daleys
+        # on category prefixes, so a feed that silently stops emitting the
+        # column would drop every Daleys product off the site with no alarm.
+        # `min_feed_category_share` is the alarm for exactly that.
         "category_map": "daleys_category_map.json",
+        "min_feed_category_share": 0.90,
         # A feed truncated mid-file still parses as valid CSV. The old scraper
         # would overwrite latest.json from a single product, and every guard in
         # the system only catches a catalogue shrinking relative to its own
@@ -140,17 +154,24 @@ def _price(raw: str) -> float | None:
 
 
 class CategoryResolver:
-    """Resolve a product category, which the feed does not carry.
+    """Resolve a product category.
 
-    Order matters. The feed's own column wins if it ever gains one (asked for
-    2026-08-20), then the frozen map of what the HTML scraper last saw, then
-    our own species taxonomy. Anything unresolved gets no category, which is
-    how ornamentals and natives stay recorded in the snapshot but off the site
-    (DEC-227): the gate is is_fruit_product at render time, not this scraper.
+    Order matters. The feed's own column wins (Daleys added one 2026-08-27),
+    then the frozen map of what the HTML scraper last saw, then our own species
+    taxonomy. Anything unresolved gets no category, which is how ornamentals
+    and natives stay recorded in the snapshot but off the site (DEC-227): the
+    gate is is_fruit_product at render time, not this scraper.
+
+    `counts` records which rung each product came off, because the fallbacks
+    are the ones that go quietly wrong. The species rung in particular is a
+    guess: before the feed carried categories it filed 30 scion-wood cuttings
+    and 26 rainforest ornamentals as "Fruit and Nut Trees", which put $9.75
+    sticks on /species/apple next to real trees.
     """
 
     def __init__(self, config: dict):
         self.frozen = {}
+        self.counts = {"feed": 0, "frozen": 0, "species": 0, "none": 0}
         name = config.get("category_map")
         if name:
             path = Path(__file__).parent / name
@@ -162,17 +183,28 @@ class CategoryResolver:
 
     def resolve(self, feed_category: str, url: str, title: str) -> str:
         if feed_category.strip():
+            self.counts["feed"] += 1
             return feed_category.strip()
         mapped = self.frozen.get(url)
         if mapped:
+            self.counts["frozen"] += 1
             return mapped
         match = match_title(title, self._lookup)
         if match and match.get("cn", "").lower() in self._enabled:
+            self.counts["species"] += 1
             return "Fruit and Nut Trees"
+        self.counts["none"] += 1
         return ""
 
+    @property
+    def feed_share(self) -> float:
+        """Share of products categorised by the feed's own column."""
+        total = sum(self.counts.values())
+        return self.counts["feed"] / total if total else 0.0
 
-def extract_products(rows: list[dict], config: dict) -> tuple[list[dict], dict]:
+
+def extract_products(rows: list[dict], config: dict,
+                     resolver: "CategoryResolver | None" = None) -> tuple[list[dict], dict]:
     """Group feed rows into products. Returns (products, catalogue).
 
     `catalogue` holds the per-product static fields (description, images) that
@@ -181,7 +213,9 @@ def extract_products(rows: list[dict], config: dict) -> tuple[list[dict], dict]:
     """
     availability = config["availability"]
     group_re = re.compile(config["group_url_re"])
-    resolver = CategoryResolver(config)
+    # Passed in by scrape() so it can read `resolver.counts` afterwards without
+    # widening this function's return tuple.
+    resolver = resolver or CategoryResolver(config)
 
     groups: dict[str, dict] = {}
     catalogue: dict[str, dict] = {}
@@ -201,7 +235,7 @@ def extract_products(rows: list[dict], config: dict) -> tuple[list[dict], dict]:
         # Pre-orders are purchasable, so `available` stays True and the wait is
         # carried by availability_state. Reporting them as unavailable would
         # replace one wrong answer with another.
-        purchasable = state in ("instock", "preorder")
+        purchasable = state in PURCHASABLE_STATES
 
         variant = {
             "title": variant_title(pot, height),
@@ -256,8 +290,13 @@ def extract_products(rows: list[dict], config: dict) -> tuple[list[dict], dict]:
         product["max_price"] = max(pool) if pool else None
         product["any_available"] = any(v["available"] for v in product["variants"])
         product["total_stock"] = sum(v["stock_count"] for v in product["variants"])
-        product["preorder"] = any(v["availability_state"] == "preorder"
-                                  for v in product["variants"])
+        # `wait_state` names WHICH wait ("presale" 1-2 months vs "preorder"
+        # 1-6); `preorder` stays a plain bool because build-dashboard, the
+        # digest and send_variety_alerts have all read it as one since
+        # 2026-08-20 and snapshots on disk carry it that way.
+        product["wait_state"] = roll_up(v["availability_state"]
+                                        for v in product["variants"])
+        product["preorder"] = product["wait_state"] is not None
         products.append(product)
 
     products.sort(key=lambda p: p["title"])
@@ -285,6 +324,9 @@ def save_snapshot(nursery_key: str, config: dict, products: list[dict],
         "out_of_stock_count": len(products) - len(in_stock),
         "variant_count": sum(len(p["variants"]) for p in products),
         "preorder_count": sum(1 for p in products if p["preorder"]),
+        "presale_count": sum(1 for p in products if p["wait_state"] == "presale"),
+        "graft_preorder_count": sum(1 for p in products
+                                    if p["wait_state"] == "preorder"),
         "products": products,
     }
     validate_and_warn(snapshot, nursery_key)
@@ -326,7 +368,28 @@ def scrape(nursery_key: str, config: dict) -> bool:
 
     rows = parse_feed(text)
     print(f"  Parsed {len(rows)} feed rows")
-    products, catalogue = extract_products(rows, config)
+    resolver = CategoryResolver(config)
+    products, catalogue = extract_products(rows, config, resolver)
+
+    # The feed's category column is what keeps Daleys on the site at all: with
+    # no category, fruit_filters' prefix gate drops every product and nothing
+    # else in the pipeline notices, because a nursery going to zero on ONE day
+    # trips no history-relative guard. Warn rather than fail, so a partial
+    # regression still publishes the catalogue with the frozen map behind it.
+    floor_share = config.get("min_feed_category_share")
+    if floor_share is not None and resolver.feed_share < floor_share:
+        message = (f"only {resolver.feed_share:.0%} of products carry a feed "
+                   f"category (floor {floor_share:.0%}); falling back to "
+                   f"{resolver.counts['frozen']} frozen and "
+                   f"{resolver.counts['species']} species-matched, "
+                   f"{resolver.counts['none']} uncategorised")
+        print(f"  WARNING: {message}", file=sys.stderr)
+        health.note_error(message)
+    else:
+        print(f"  Categories: {resolver.counts['feed']} from the feed, "
+              f"{resolver.counts['frozen']} frozen, "
+              f"{resolver.counts['species']} species-matched, "
+              f"{resolver.counts['none']} none")
 
     floor = config.get("min_groups", 0)
     if len(products) < floor:
@@ -338,8 +401,10 @@ def scrape(nursery_key: str, config: dict) -> bool:
         return False
 
     in_stock = sum(1 for p in products if p["any_available"])
-    preorder = sum(1 for p in products if p["preorder"])
-    print(f"  {len(products)} products, {in_stock} buyable ({preorder} pre-order)")
+    presale = sum(1 for p in products if p["wait_state"] == "presale")
+    graft = sum(1 for p in products if p["wait_state"] == "preorder")
+    print(f"  {len(products)} products, {in_stock} buyable "
+          f"({presale} pre-sale 1-2mo, {graft} pre-order 1-6mo)")
     save_snapshot(nursery_key, config, products, catalogue)
     health.finish(products=len(products), in_stock=in_stock,
                   priced=count_priced(products))

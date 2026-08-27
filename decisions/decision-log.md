@@ -13368,3 +13368,121 @@ the site knew something about reachability and did not say it: the badge suppres
 the nurseries that most needed it, the alerts never asked where you lived, the state
 pages sorted by a price proxy, and a nursery's town depended on its checkout software.
 The registry had the answer for all four and three of them never called it.
+
+---
+
+## DEC-315 — 2026-08-27 — Correy answered three questions and the answers rewrote how their stock ranks
+
+**Context:** Benedict's 2026-08-20 reply to Correy at Daleys asked for three things:
+a category column, a ready-date for the two pre-order states, and a look at a row
+where `qty` contradicted `availability`. Correy answered all three in one email on
+2026-08-27, re-sent the feed URL unchanged, and added the schema.org reasoning we
+had not asked for:
+
+> Yes I have made this update with category as the last one in the list.
+> PreSale is 1-2 months catalogue. Eg Spring Catalogue, Bare Root Catalogue.
+> PreOrder is 1-6 months. when a plant is potted up after a successful graft or
+> "cutting take"
+> "out of stock" I have changed them all to OutOfStock. The schema was meant to be
+> https://schema.org/OutOfStock
+
+All numbers below are measured against the live feed pulled 2026-08-27
+(3,650 rows, 1,998 product groups).
+
+### 1. The category column exposed what the fallbacks had been guessing
+
+The feed carries `category` on 1,998 of 1,998 groups. `CategoryResolver` already
+preferred the feed's own column, so adopting it was free. What was not free is that
+the vocabulary changed at the same time: breadcrumb paths
+(`Fruit Trees/Tropical Fruit Trees/Sapodilla`) where the HTML scraper had read
+Plant-List headings (`Fruit and Nut Trees`). `FRUIT_FILTERS["daleys"]` half-covered
+it, and the half it missed was a **third** spelling, `Plant List/Fruit and Nut
+Trees`, worth 15 products, 4 of them buyable and squarely the collector stock the
+site exists for: Chinese Red Bayberry, Kaffir Plum, an OkeeDokee nectarine and a
+Navelina orange.
+
+Both vocabularies stay in the prefix list. Snapshots written before today carry the
+old spellings and `stocklib.changes` reads them back to diff, so pruning them would
+read as an overnight mass delisting.
+
+Net on the site: **1,207 -> 1,366 products.** The 95 that left matter more than the
+231 that arrived:
+
+- **32 scion wood groups stopped being fruit trees.** $9.75 for a 15cm grafting
+  stick, named by cultivar ("Scion Wood Apple - Pink Lady"), which `species_match`
+  resolves to Apple, Cherry, Wampee. While the species fallback filed them as
+  "Fruit and Nut Trees" they sat on the species and state pages as **the cheapest
+  listing for their fruit**, undercutting real trees 3-5x on pages that rank by
+  price (DEC-314). They mint no variety slug, so /variety never saw them; price
+  rank was the whole of the damage, and price rank is what those pages are for.
+- **26 rainforest ornamentals** stopped leaking the same way. Excluding
+  `Rainforest Trees` has been deliberate since it was found to hold Ficus obliqua
+  and virens, which resolve to Fig. The species fallback had been admitting them
+  anyway, under a category string of its own invention.
+
+Nine bush-tucker-ish items Daleys file under `Trees and Plants` also left (Bolwarra,
+Native Mulberry, Aniseed Myrtle, Red Bauple Nut). That is correct: the rule is defer
+to the nursery's own taxonomy, and they file 63 groups under
+`Fruit Trees/Bush foods Australia` which stay.
+
+The column is now load-bearing and fails silently, so `min_feed_category_share`
+(0.90) warns through `ScrapeHealth` if it ever thins out. The frozen
+`daleys_category_map.json` is demoted to the fallback behind it, not deleted.
+
+### 2. PreSale and PreOrder were a 10x difference reported as one badge
+
+We were mapping both to `preorder` and rendering one "Pre-order" chip. Someone
+waiting on a grafted sapodilla was told the same thing as someone waiting on a
+bare-root apple. They are now separate states carrying Correy's own windows, and
+the copy lives in one place (`stocklib/availability.py`) because three consumers
+need it: the dashboard badge, the alert email, and the scraper's own mapping.
+
+Product-level `wait_state` **rolls up to the longer wait** when variants disagree
+(Blueberry - Climax is PreSale in 0.75L and PreOrder in 2L). Under-promising is the
+failure that costs a nursery relationship, not the other way round.
+
+Live: 167 presale and 17 preorder groups, 149 of which reach the site and now quote
+a real number instead of a vague chip.
+
+### 3. Chasing that, the pre-order alert wording turned out to be dead code
+
+`all_preorder()` reads `preorder` off the product dicts an alert carries. Those
+dicts are built by `load_nursery_data()`, which lists its keys explicitly and never
+included that one, so `all(p.get("preorder") ...)` has been False on **every alert
+ever sent**. A watcher whose variety opened for pre-order was told it "is now
+available" and clicked through to a plant up to six months away, which is the exact
+failure the wording was added to prevent.
+
+The unit tests could not catch it: they hand `build_variety_alert_email` a dict
+shape the pipeline never produces. The new regression test starts from a snapshot
+on disk, which is the only shape that exists in production. And the copy no longer
+says "check the nursery's listing for the expected wait", because we now know it.
+
+### 4. The OutOfStock normalisation was a near miss
+
+Correy changed all 2,942 rows to the schema.org casing. `DALEYS_AVAILABILITY` had
+mapped both spellings since 2026-08-20, specifically because one row disagreed with
+the other 2,900, so this landed as a non-event. Had we normalised to the majority
+spelling instead of mapping both, the whole catalogue would have read as back in
+stock overnight and fired restock alerts across every watched variety at Daleys.
+Mapping both spellings is why nothing happened. Both stay mapped.
+
+### 5. Still open
+
+`qty` contradicts `availability` on 2 rows now (sku 1045 Jaboticaba qty 40, sku 3939
+Sunshine Blue qty 36), up from 1 last week. Availability stays the authority and qty
+stays advisory. Asked again, non-blocking; drafted in
+`deliverables/daleys-reply-2026-08-27.txt`. The sku 2103 "Test (DoNotBuy01)" we
+flagged is gone.
+
+**Decision:** Adopt the feed's category column as the primary source, teach
+`fruit_filters` all three of its vocabularies, split the two waiting states with the
+lead times Correy gave, and carry the pre-order state through to the alert path so
+the wording that was written for it can finally fire.
+
+**Blast radius checked before shipping:** only 15 of the 231 newly-included products
+are buyable today, all species-level oddities (Amla, Betel Nut, Candle Nut, herbs and
+perennial vegetables) that mint no variety slug, so no watched cultivar goes 0 -> >0
+on the filter change alone. Run `send_variety_alerts.py` in preview on the first
+night regardless: a filter change is exactly the shape that manufactures a phantom
+restock (DEC-293).

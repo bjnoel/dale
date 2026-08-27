@@ -132,6 +132,7 @@ from stocklib.utm import outbound
 from stocklib import changes as _changes
 from stocklib.fruit_filters import digest_product_filter
 from stocklib.variety_index import DEFAULT_INDEX_PATH, get_variety_index
+from stocklib.availability import email_phrase, roll_up
 from stocklib.email_footer import watch_urls
 
 
@@ -209,6 +210,16 @@ def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
                 "nursery_name": nursery_name,
                 "price": round(float(min_price), 2) if min_price else None,
                 "available": bool(available),
+                # Carried through so all_preorder() can see it. It could not
+                # before: this trimmed dict was the only shape that ever
+                # reached it, `preorder` was never one of the keys, so
+                # `all(p.get("preorder") ...)` was False on every alert ever
+                # sent and the pre-order wording added in DEC-282 has never
+                # once rendered. A watcher whose variety opened for pre-order
+                # got "is now available!" and clicked through to a plant up to
+                # six months away.
+                "preorder": bool(p.get("preorder")),
+                "wait_state": p.get("wait_state"),
             })
     return products
 
@@ -278,6 +289,16 @@ def all_preorder(products: list[dict]) -> bool:
     inert everywhere except the feeds that report the state.
     """
     return bool(products) and all(p.get("preorder") for p in products)
+
+
+def preorder_wait(products: list[dict]) -> str:
+    """The wait to quote for an all-pre-order alert.
+
+    Longest wins. Quoting one to two months on an alert whose listings include
+    a six-month graft is a promise the nursery has not made, and the person
+    reading it has already been waiting long enough to have set a watch.
+    """
+    return email_phrase(roll_up(p.get("wait_state") for p in products))
 
 
 def load_watches() -> list[dict]:
@@ -556,9 +577,13 @@ def build_variety_alert_email(variety_title: str, variety_slug: str,
                    "Your alert covers both price drops and restocks.")
     elif all_preorder(products):
         heading = f"{icon} {safe_title} is open for pre-order"
-        subhead = ("The variety you're watching can be ordered now, but it is "
-                   "not ready to ship yet. Check the nursery's listing for the "
-                   "expected wait. Your alert covers restocks and price drops.")
+        # We used to send them off to find the wait themselves. Daleys publish
+        # it (1-2 months from a seasonal catalogue, 1-6 once a graft has
+        # struck), so say it here: the whole point of the alert is that the
+        # reader does not have to go and look.
+        subhead = (f"The variety you're watching can be ordered now, but it is "
+                   f"{preorder_wait(products)}. Your alert covers restocks and "
+                   f"price drops.")
     else:
         heading = f"{icon} {safe_title} is now available!"
         subhead = ("The variety you're watching has come back into stock. "

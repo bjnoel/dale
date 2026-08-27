@@ -18,6 +18,13 @@ const HARD_TO_FIND = new Set(_DATA.hard_to_find);
 // Per-species category list (e.g. {"finger-lime":["fruit","bush_tucker"]}) for the
 // result-row category badge and the Fruit / Bush Tucker filter.
 const SPECIES_CATS = _DATA.species_cats || {};
+// Wait-state badge text + tooltip, keyed "presale" / "preorder", built from
+// stocklib.availability. Absent on a page rebuilt from an older builder, in
+// which case p.pre is the legacy `true` and WAIT_BADGE falls back below.
+const WAIT = _DATA.wait || {};
+// Hoisted out of the empty-results branch: the result rows need it too,
+// for the pre-order tooltip that goes into an HTML attribute.
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const CAT_BADGE = { fruit: ['Fruit', 'cat-badge-fruit'], bush_tucker: ['Bush Tucker', 'cat-badge-bush'] };
 const SLUG_TO_NAME = {};
 Object.values(SPECIES_SLUGS).forEach(v => { SLUG_TO_NAME[v.slug] = v.name; });
@@ -358,7 +365,6 @@ function render() {
   if (showing.length === 0) {
     const q = searchInput.value.trim();
     if (q) {
-      const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
       const slug = q.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
       container.innerHTML =
         '<div class="py-10 px-4">' +
@@ -394,8 +400,16 @@ function render() {
     // Three states, not two. p.pre means orderable now, ships later, so it must
     // not read as "In stock" (the buyer turns up expecting a plant) nor as
     // "Out of stock" (they give up on something they could have ordered).
+    //
+    // And the wait itself is the number the buyer actually wants. Daleys'
+    // PreSale is a seasonal catalogue at one to two months; their PreOrder is
+    // a graft that has struck and could be six. p.pre carries which, and is
+    // the legacy boolean `true` on any row from a snapshot taken before
+    // 2026-08-27, so the lookup falls back to the old wording rather than
+    // rendering "undefined" at the top of the results list.
+    const wait = WAIT[p.pre];
     const stockBadge = p.pre
-      ? '<span class="stock-badge pre-order">Pre-order</span>'
+      ? `<span class="stock-badge pre-order"${wait ? ` title="${esc(wait.w)}"` : ''}>${wait ? esc(wait.b) : 'Pre-order'}</span>`
       : p.a
         ? `<span class="stock-badge in-stock">${p.s ? p.s + ' left' : 'In stock'}</span>`
         : '<span class="stock-badge out-stock">Out of stock</span>';

@@ -5,15 +5,22 @@ Plant-List.php. The switch fixes two live defects and creates several new ways
 to get it wrong, so these tests pin the ones that were measured against the real
 feed and would fail silently:
 
-  - Availability is four-state in two vocabularies. 2,900 rows say
-    "out of stock" and exactly one says "OutOfStock" (sku 1045). A parser
-    matching only the lowercase spelling puts that row back in stock.
-  - `qty` is NOT the authority. Sku 1045 is the sole row in 3,650 where qty (40)
-    contradicts availability, so mapping from qty rather than availability
-    reintroduces the bug from the other direction.
+  - Availability is four-state in two vocabularies. Both spellings of out of
+    stock must stay mapped: the feed was 2,900 lowercase "out of stock" and one
+    "OutOfStock" (sku 1045) on 2026-08-20, and Correy normalised all 2,942 to
+    schema.org "OutOfStock" on 2026-08-27. A parser that had matched only the
+    lowercase form would have read the whole catalogue as back in stock
+    overnight, and snapshots in both spellings are still on disk.
+  - `qty` is NOT the authority. 2 rows of 3,650 carry a healthy qty and say
+    OutOfStock (sku 1045 qty 40, sku 3939 qty 36), so mapping from qty rather
+    than availability reintroduces the bug from the other direction.
   - Pre-orders stay `available: True`. Calling them in stock was the original
     defect; calling them out of stock would be a new one, because you can buy
     them today and just wait.
+  - PreSale and PreOrder are DIFFERENT waits, not synonyms: 1-2 months from a
+    seasonal catalogue against 1-6 months once a graft or cutting has struck
+    (Correy, 2026-08-27). Collapsing them tells someone waiting on a grafted
+    sapodilla the same thing as someone waiting on a bare-root apple.
   - The product title must lose its "<pot> <height>" suffix, or
     cultivar_parsing reads "60-70cm" as the cultivar token "60" and mints
     sapodilla-krasuey-60 as a separate watchable variety.
@@ -22,6 +29,10 @@ feed and would fail silently:
     454 of 1,998 groups disagreeing with themselves.
   - An empty category makes stocklib.fruit_filters drop every Daleys product
     from the site with no alarm anywhere, so the resolution chain is load-bearing.
+  - The feed grew a category column on 2026-08-27 and it changed vocabulary at
+    the same time, from Plant-List headings to breadcrumb paths. The filter has
+    to speak both, and the third spelling ("Plant List/Fruit and Nut Trees")
+    was worth 15 products on its own.
   - A truncated feed still parses as valid CSV, so the product floor is the only
     thing standing between a bad fetch and an overwritten snapshot.
 
@@ -91,13 +102,24 @@ class AvailabilityTest(unittest.TestCase):
         self.assertEqual(jabo["stock_count"], 40)
         self.assertFalse(jabo["available"])
 
-    def test_presale_and_preorder_are_purchasable_but_flagged(self):
+    def test_presale_and_preorder_are_both_purchasable(self):
         products, _ = _products()
         ginkgo = products["Ginkgo - Grafted Female"]["variants"][0]
         shower = products["Golden Shower"]["variants"][0]
         for variant in (ginkgo, shower):
             self.assertTrue(variant["available"])
-            self.assertEqual(variant["availability_state"], "preorder")
+
+    def test_presale_and_preorder_are_not_the_same_state(self):
+        """Correy, 2026-08-27: PreSale is a 1-2 month catalogue, PreOrder is a
+        1-6 month wait on a graft. They used to both map to "preorder", which
+        is a 10x difference in wait reported as one badge."""
+        products, _ = _products()
+        self.assertEqual(
+            products["Golden Shower"]["variants"][0]["availability_state"],
+            "presale")
+        self.assertEqual(
+            products["Ginkgo - Grafted Female"]["variants"][0]["availability_state"],
+            "preorder")
 
     def test_instock_is_instock(self):
         products, _ = _products()
@@ -119,6 +141,25 @@ class AvailabilityTest(unittest.TestCase):
         products, _ = _products()
         self.assertTrue(products["Ginkgo - Grafted Female"]["preorder"])
         self.assertFalse(products["Sapodilla - Krasuey"]["preorder"])
+
+    def test_wait_state_names_which_wait(self):
+        products, _ = _products()
+        self.assertEqual(products["Golden Shower"]["wait_state"], "presale")
+        self.assertEqual(products["Ginkgo - Grafted Female"]["wait_state"], "preorder")
+        self.assertIsNone(products["Sapodilla - Krasuey"]["wait_state"])
+
+    def test_mixed_waits_roll_up_to_the_longer_one(self):
+        """Blueberry - Climax is PreSale in 0.75L and PreOrder in 2L. Quoting
+        one to two months would under-promise on the 2L, and a buyer who took
+        that number is the one who complains to the nursery."""
+        products, _ = _products()
+        self.assertEqual(products["Blueberry - Climax"]["wait_state"], "preorder")
+
+    def test_preorder_bool_still_true_for_a_presale_only_product(self):
+        """Everything downstream read `preorder` as "is there a wait" before
+        wait_state existed, and snapshots on disk carry it that way."""
+        products, _ = _products()
+        self.assertTrue(products["Golden Shower"]["preorder"])
 
 
 class GroupUrlTest(unittest.TestCase):
@@ -169,10 +210,12 @@ class CategoryTest(unittest.TestCase):
         products, _ = cfs.extract_products(rows, CONFIG)
         self.assertEqual(products[0]["category"], "Fruit and Nut Trees")
 
-    def test_species_fallback_categorises_a_product_the_frozen_map_lacks(self):
+    def test_a_row_the_feed_left_blank_still_resolves(self):
+        """Jambolan Plum carries no feed category. The frozen map catches it,
+        and the point of keeping that map after 2026-08-27 is exactly this: a
+        row the feed forgets must not silently leave the site."""
         products, _ = _products()
-        # Jambolan Plum is a fruit; it must end up renderable.
-        self.assertTrue(products["Jambolan Plum"]["category"])
+        self.assertEqual(products["Jambolan Plum"]["category"], "Fruit and Nut Trees")
         self.assertTrue(is_fruit_product(products["Jambolan Plum"], "daleys"))
 
     def test_ornamentals_are_recorded_but_not_renderable(self):
@@ -180,8 +223,52 @@ class CategoryTest(unittest.TestCase):
         the snapshot and stays off the site."""
         products, _ = _products()
         jacaranda = products["Jacaranda Purple"]
-        self.assertEqual(jacaranda["category"], "")
+        self.assertEqual(jacaranda["category"],
+                         "Trees and Plants/Shade and Ornamental Trees/Exotic")
         self.assertFalse(is_fruit_product(jacaranda, "daleys"))
+
+    def test_plant_list_spelling_of_fruit_and_nut_trees_is_renderable(self):
+        """The feed's third spelling for the same bucket. Missing it dropped 15
+        products, 4 of them buyable, including this Navelina orange."""
+        products, _ = _products()
+        orange = products["Orange - Navelina"]
+        self.assertEqual(orange["category"], "Plant List/Fruit and Nut Trees")
+        self.assertTrue(is_fruit_product(orange, "daleys"))
+
+    def test_scion_wood_is_not_a_fruit_tree(self):
+        """$9.75 of 15cm grafting stick that species_match resolves to Apple.
+        Before the feed carried categories the species fallback filed all 32 as
+        "Fruit and Nut Trees", so they sat on /species/apple as the cheapest
+        listing for the fruit, undercutting real trees 3-5x on pages that rank
+        by price (DEC-314)."""
+        products, _ = _products()
+        scion = products["Scion Wood Apple - Pink Lady"]
+        self.assertEqual(scion["category"],
+                         "Gardening Tools - Accessories/Scion Wood")
+        self.assertFalse(is_fruit_product(scion, "daleys"))
+
+    def test_resolver_reports_where_each_category_came_from(self):
+        """The fallbacks are the rungs that go quietly wrong, so the scrape has
+        to be able to alarm on how far down it had to reach."""
+        with open(FIXTURE, encoding="utf-8-sig") as f:
+            rows = cfs.parse_feed(f.read())
+        resolver = cfs.CategoryResolver(CONFIG)
+        cfs.extract_products(rows, CONFIG, resolver)
+        # Counted per product group, not per row: Krasuey and Blueberry each
+        # have two variants under one group.
+        self.assertEqual(resolver.counts,
+                         {"feed": 11, "frozen": 1, "species": 0, "none": 0})
+        self.assertGreater(resolver.feed_share, 0.9)
+
+    def test_a_feed_that_stops_sending_categories_drops_below_the_floor(self):
+        """The regression the alarm exists for: no category means every Daleys
+        product fails the prefix gate, and a nursery going to zero on one day
+        trips no history-relative guard anywhere else in the pipeline."""
+        with open(FIXTURE, encoding="utf-8-sig") as f:
+            rows = [dict(r, category="") for r in cfs.parse_feed(f.read())]
+        resolver = cfs.CategoryResolver(CONFIG)
+        cfs.extract_products(rows, CONFIG, resolver)
+        self.assertLess(resolver.feed_share, CONFIG["min_feed_category_share"])
 
 
 class CatalogueSplitTest(unittest.TestCase):

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-08-20",
+  "updated": "2026-08-27",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -84,14 +84,22 @@
           "by": "correy",
           "summary": "Delivered the custom CSV feed (feeds/treestock-<token>.php, 3650 variants / 1998 groups, 4-state availability, qty, botanical name, pot, height, method). Reserved a Krasuey for Benedict, order 6665631, held for the next WA window. Asked if CSV format is okay. Feed is now our Daleys source (DEC-304).",
           "evidence": "Email pasted by Benedict 2026-08-20"
+        },
+        {
+          "date": "2026-08-27",
+          "direction": "in",
+          "channel": "email",
+          "by": "correy",
+          "summary": "Correy answered all three asks in one go: category column added as the last column (now on 1998/1998 groups, breadcrumb paths like 'Fruit Trees/Tropical Fruit Trees/Sapodilla'), PreSale defined as a 1-2 month seasonal catalogue and PreOrder as 1-6 months once a graft or cutting has struck, and all 2942 out-of-stock rows normalised to schema.org OutOfStock. Re-sent the feed URL. Did not address the qty/availability rows (now 2, was 1); the sku 2103 test product is gone from the feed.",
+          "evidence": "Email pasted by Benedict 2026-08-27"
         }
       ],
       "open_action": {
         "owner": "benedict",
-        "what": "Send the drafted reply (deliverables/daleys-reply-2026-08-20.txt): CSV is fine, asks for a category column (blocks nothing now but the frozen map goes stale), a ready-date for the two pre-order states, the sku 1045 OutOfStock/qty-40 inconsistency, and flags sku 2103 'Test (DoNotBuy01)' on their Plant-List.",
-        "since": "2026-08-20"
+        "what": "Send the drafted reply (deliverables/daleys-reply-2026-08-27.txt): thanks for the category column and what it fixed (32 scion wood rows were ranking as the cheapest apples/cherries on our species pages), what the PreSale/PreOrder split bought us (149 listings now quote a real wait), and the only open item, the 2 rows where qty contradicts OutOfStock (sku 1045 qty 40, sku 3939 qty 36). Nothing is blocked on it. BCC nursery@veliamsal.resend.app to self-log.",
+        "since": "2026-08-27"
       },
-      "notes": "Meta feed URL is obscured (feeds/meta-products-<token>.php), treat as semi-private: fetch it, never publish it. Verified 2026-08-15: feed 'out of stock' includes PreSale items (SKU 5642 almond is PreSale on-page, in-stock 18 on Plant-List, out of stock in feed), so the binary feed alone would drop the winter catalogue pre-orders; the custom 4-state feed is the one to take. Custom feed live as our source from 2026-08-20 (DEC-304): treat the URL as semi-private, it lives in /opt/dale/secrets/feeds.env and is never committed. The feed has NO category column, which fruit_filters needs for daleys; a frozen url->category map covers the 636 products the HTML scraper last saw and species matching covers the rest, so the ask for a category column matters as their catalogue moves on."
+      "notes": "Meta feed URL is obscured (feeds/meta-products-<token>.php), treat as semi-private: fetch it, never publish it. Verified 2026-08-15: feed 'out of stock' includes PreSale items (SKU 5642 almond is PreSale on-page, in-stock 18 on Plant-List, out of stock in feed), so the binary feed alone would drop the winter catalogue pre-orders; the custom 4-state feed is the one to take. Custom feed live as our source from 2026-08-20 (DEC-304): treat the URL as semi-private, it lives in /opt/dale/secrets/feeds.env and is never committed. Correy re-sent the same URL on 2026-08-27, unchanged. Feed now HAS a category column (added 2026-08-27, last column, 1998/1998 groups), so the frozen daleys_category_map.json is demoted to a fallback rather than load-bearing. Its vocabulary is breadcrumb paths ('Fruit Trees/Tropical Fruit Trees/Sapodilla'), not the Plant-List headings, and fruit_filters had to learn a third spelling ('Plant List/Fruit and Nut Trees'). PreSale and PreOrder are DIFFERENT waits, not synonyms: 1-2 months from a seasonal catalogue vs 1-6 months once a graft or cutting has struck. Two rows carry a healthy qty while saying OutOfStock (sku 1045 qty 40, sku 3939 qty 36); availability is the authority, qty is advisory."
     },
     {
       "key": "ross-creek",

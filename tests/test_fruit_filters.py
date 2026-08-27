@@ -179,22 +179,75 @@ class FruitFiltersTest(unittest.TestCase):
                     {"title": "Whatever", "category": cat}, "daleys"))
 
     def test_daleys_empty_category_is_the_registry_gap_not_a_filter_gap(self):
-        """602 of the 1,998 live daleys rows carry an empty category, because
-        the CSV feed has no category column and csv_feed_scraper's
-        CategoryResolver could not resolve them: not in the frozen url map
-        the HTML scraper left behind, and no species record to match on.
+        """Was 602 of the 1,998 live daleys rows before Correy added a category
+        column on 2026-08-27; now 0. The rule stays anyway.
 
-        The fix is NOT to include "" here (that would admit gift vouchers,
-        Agapanthus and Aspen along with the fruit). It is to grow
-        fruit_species.json, which makes the resolver return "Fruit and Nut
-        Trees" for them. Recorded as a test so the intent survives: adding
-        Achacha, Ambarella, Amla, Bael and African Breadfruit to the registry
-        is a RETENTION fix for daleys, not only a classification one.
+        The fix was never to include "" here (that would admit gift vouchers,
+        Agapanthus and Aspen along with the fruit), and the cost of having
+        leaned on the guessing fallbacks instead is now measurable: they filed
+        32 scion-wood cuttings and 26 rainforest ornamentals as "Fruit and Nut
+        Trees". If the column ever disappears, the alarm is
+        csv_feed_scraper's min_feed_category_share, not a loosened rule here.
         """
         self.assertFalse(is_fruit_product(
             {"title": "Achacha", "category": ""}, "daleys"))
         self.assertFalse(is_fruit_product(
             {"title": "$100 Gift Voucher - By Email", "category": ""}, "daleys"))
+
+    def test_daleys_speaks_the_feeds_plant_list_vocabulary(self):
+        """The feed spells the same three buckets a third way. Leaving
+        "Plant List/" out cost 15 products, 4 of them buyable and squarely the
+        collector stock the site exists for."""
+        for title, cat in (
+            ("Orange - Navelina", "Plant List/Fruit and Nut Trees"),
+            ("Kaffir Plum", "Plant List/Fruit and Nut Trees"),
+            ("Nectarine - OkeeDokee cv Mesembrine", "Plant List/Fruit and Nut Trees"),
+            ("Wongai Plum", "Plant List/Bush Food Plants"),
+            ("Cacao", "Plant List/Herbs, Spices & Perennial Vegetables"),
+        ):
+            with self.subTest(cat=cat):
+                self.assertTrue(is_fruit_product(
+                    {"title": title, "category": cat}, "daleys"))
+
+    def test_daleys_plant_list_still_drops_what_is_not_fruit(self):
+        """"Plant List/" is not a blanket pass: it is a prefix on the same
+        three buckets, and its other children are correctly out of scope."""
+        for cat in ("Plant List/Gardening Accessories",
+                    "Plant List/Ornamental Plants Australia",
+                    "Plant List/Farm Trees"):
+            with self.subTest(cat=cat):
+                self.assertFalse(is_fruit_product(
+                    {"title": "Whatever", "category": cat}, "daleys"))
+
+    def test_daleys_scion_wood_is_not_a_fruit_tree(self):
+        """32 groups of 15cm grafting stick at $9.75, named by cultivar.
+        species_match resolves "Scion Wood Apple - Pink Lady" to Apple, so
+        while the species fallback was filing them as fruit they sat on the
+        species and state pages as the cheapest listing for their fruit,
+        undercutting real trees 3-5x on pages that rank by price (DEC-314).
+
+        They mint no variety slug (product_variety_slug returns None), so the
+        damage never reached /variety. Price rank was the whole of it, and
+        price rank is what those pages are for.
+        """
+        for title in ("Scion Wood Apple - Pink Lady",
+                      "Scion Wood Cherry - Stella",
+                      "Scion Wood Wampee - Guy Sam"):
+            with self.subTest(title=title):
+                self.assertFalse(is_fruit_product(
+                    {"title": title,
+                     "category": "Gardening Tools - Accessories/Scion Wood"},
+                    "daleys"))
+
+    def test_daleys_feed_rainforest_paths_stay_excluded(self):
+        """Same landmine as the bare "Rainforest Trees" heading above, in the
+        breadcrumb vocabulary the feed uses since 2026-08-27."""
+        for cat in ("Trees and Plants/Rainforest Trees/Secondary/Mature",
+                    "Trees and Plants/Rainforest Trees/Understorey Plants",
+                    "Trees and Plants/Rainforest Trees/Pioneer Plants"):
+            with self.subTest(cat=cat):
+                self.assertFalse(is_fruit_product(
+                    {"title": "Fig - Small Leaved", "category": cat}, "daleys"))
 
     def test_forever_seeds_whitelist_drops_only_herbs(self):
         """forever-seeds is the third restrictive filter. Live: 82 products,

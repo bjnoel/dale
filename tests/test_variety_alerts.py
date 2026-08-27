@@ -452,6 +452,86 @@ class PreOrderWordingTests(unittest.TestCase):
         self.assertIn("is now available", html)
         self.assertNotIn("open for pre-order", html)
 
+    def test_the_email_quotes_the_wait_instead_of_sending_them_to_look(self):
+        """Daleys publish the two waits, so the alert says which one it is.
+        1-2 months from a seasonal catalogue, 1-6 once a graft has struck."""
+        def body(wait_state):
+            return alerts.build_variety_alert_email(
+                "Blueberry - Climax", "blueberry-climax",
+                [{"preorder": True, "wait_state": wait_state,
+                  "nursery_name": "Daleys Fruit Tree Nursery",
+                  "title": "Blueberry - Climax", "url": "https://x/",
+                  "price": 19.9}],
+                alerts.RESTOCK)
+
+        self.assertIn("ready in one to two months", body("presale"))
+        self.assertIn("ready in one to six months", body("preorder"))
+        # A nursery that reports a wait with no name keeps the old wording
+        # rather than inventing a number we were never given.
+        self.assertIn("not ready to ship yet", body(None))
+
+    def test_the_longer_wait_wins_when_listings_disagree(self):
+        self.assertEqual(
+            alerts.preorder_wait([{"wait_state": "presale"},
+                                  {"wait_state": "preorder"}]),
+            "ready in one to six months")
+
+
+class PreOrderReachesTheWordingTests(unittest.TestCase):
+    """The wording above was dead code for its whole life.
+
+    all_preorder() reads `preorder` off the product dicts an alert carries, and
+    those dicts are built by load_nursery_data(), which listed its keys
+    explicitly and never included that one. So `all(p.get("preorder") ...)` was
+    False on every alert ever sent, and a watcher whose variety opened for
+    pre-order was told it "is now available" and clicked through to a plant up
+    to six months away.
+
+    The unit tests above could not catch it: they hand build_variety_alert_email
+    a dict shape the pipeline never actually produces. This one starts from a
+    snapshot on disk, which is the only shape that exists in production.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.data = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _snapshot(self, day: str, wait_state: str | None):
+        day_dir = self.data / "daleys" / f"{day}.json"
+        day_dir.parent.mkdir(parents=True, exist_ok=True)
+        product = {
+            "title": "Blueberry - Climax",
+            "url": "https://daleys.example/blueberry-climax",
+            "category": "Fruit Trees/Berries Vines and Climbers/Blueberry",
+            "any_available": True,
+            "min_price": 19.90,
+            "variants": [{"sku": "687", "title": "2L", "price": 19.90,
+                          "available": True}],
+        }
+        if wait_state:
+            product["preorder"] = True
+            product["wait_state"] = wait_state
+        day_dir.write_text(json.dumps({
+            "nursery_name": "Daleys Fruit Trees", "products": [product]}))
+
+    def test_load_nursery_data_carries_the_preorder_state_through(self):
+        self._snapshot("2026-08-27", "preorder")
+        loaded = alerts.load_nursery_data(self.data, "2026-08-27")
+        self.assertEqual(len(loaded), 1)
+        self.assertTrue(loaded[0]["preorder"])
+        self.assertEqual(loaded[0]["wait_state"], "preorder")
+        self.assertTrue(alerts.all_preorder(loaded))
+
+    def test_a_plain_in_stock_listing_still_reads_as_not_preorder(self):
+        self._snapshot("2026-08-27", None)
+        loaded = alerts.load_nursery_data(self.data, "2026-08-27")
+        self.assertFalse(loaded[0]["preorder"])
+        self.assertIsNone(loaded[0]["wait_state"])
+        self.assertFalse(alerts.all_preorder(loaded))
+
 
 if __name__ == "__main__":
     unittest.main()

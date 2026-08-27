@@ -25,6 +25,7 @@ from stocklib.species_match import load_species_lookup, match_species
 from stocklib.category_ui import category_keys, CATEGORY_BADGE_CSS
 from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.utm import affiliate
+from stocklib.availability import client_table as wait_table
 # Reuse the variety builder's non-plant denylist so we never emit a variety
 # slug (vs) for a product it would refuse to build a /variety/ page for
 # (e.g. "Yates Apple": "yates" is a chemical brand in that list). Keeping a
@@ -553,8 +554,16 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             # are wrong: "in stock" was the defect we fixed, "out of stock"
             # would send a buyer away from something they can actually order.
             # Emitted only when true, because data.js carries every product.
+            #
+            # The value is now WHICH wait ("presale" 1-2 months, "preorder" 1-6
+            # months once a graft has struck), not just that there is one. The
+            # two are ~10x apart in practice and a buyer choosing between a
+            # nursery that ships next month and one that ships in autumn cannot
+            # tell from a single "Pre-order" chip. Snapshots written before
+            # 2026-08-27 carry `preorder: true` with no wait_state; those emit
+            # the bare `true` and dashboard.js falls back to the old label.
             if p.get("preorder"):
-                product_data["pre"] = True
+                product_data["pre"] = p.get("wait_state") or True
 
             _vs = product_variety_slug(title)
             if _vs and not any(kw in title_lower for kw in _VARIETY_PAGE_DENY):
@@ -744,6 +753,11 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         "products": products, "nurseries": nurseries,
         "species_slugs": species_slugs, "hard_to_find": sorted(hard_to_find_slugs),
         "species_cats": species_cats,
+        # Badge text and tooltip per wait state, sent once rather than repeated
+        # on each of the ~190 pre-order products, and sourced from
+        # stocklib.availability so the wording cannot drift from the alert
+        # email that uses the same facts.
+        "wait": wait_table(),
     }, separators=(",", ":"))
     data_js = "window.__DATA=JSON.parse(" + json.dumps(dashboard_data_json) + ");"
     cache_v = datetime.now(timezone.utc).strftime("%Y%m%d")
