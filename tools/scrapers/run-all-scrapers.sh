@@ -286,6 +286,15 @@ echo "$LOG_PREFIX Building bare-root season page..."
 python3 "$SCRIPT_DIR/build_bare_root_page.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Bare-root page build failed (non-fatal)"
 echo "$LOG_PREFIX Bare-root season page complete."
 
+# Build the shipping-reachability dataset page (DAL-254). This is the one page
+# on the site built to be CITED rather than to convert: it publishes what every
+# tracked nursery x every day since March says about which species each state
+# can actually buy. It also writes /shipping-reachability.json, which is the
+# half a machine links to.
+echo "$LOG_PREFIX Building shipping reachability dataset..."
+python3 "$SCRIPT_DIR/build_shipping_reachability.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Shipping reachability build failed (non-fatal)"
+echo "$LOG_PREFIX Shipping reachability dataset complete."
+
 # Build rootstock and grafting guide (SEO content, curated per-species JSON layer)
 echo "$LOG_PREFIX Building rootstock guide..."
 python3 "$SCRIPT_DIR/build_rootstock_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Rootstock guide build failed (non-fatal)"

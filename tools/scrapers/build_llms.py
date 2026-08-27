@@ -41,6 +41,11 @@ GUIDES = [
      "Peach, plum and apple rootstock types with vigour, soil and disease traits, an apple dwarfing guide, where to buy rootstock in Australia, WA quarantine, and growing your own from seed and cuttings."),
     ("/buy-fruit-trees-wa.html", "Buy Fruit Trees by State",
      "State guides with quarantine and shipping notes (WA, QLD, NSW, VIC)."),
+    ("/fruit-tree-shipping-by-state.html", "Fruit Tree Shipping Reachability by Australian State",
+     "Open dataset (CC BY 4.0), rebuilt nightly: which fruit and bush tucker species could actually be bought "
+     "and shipped to each state, measured daily since 2026-03-05 across every tracked nursery. Includes the "
+     "species never once buyable in Tasmania, a full species-by-state matrix, and the method. Machine-readable "
+     "JSON at /shipping-reachability.json."),
 ]
 
 BROWSE = [

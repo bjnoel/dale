@@ -56,6 +56,7 @@ NAV_ITEMS = [
     ]),
     ("My alerts", "/manage.html"),
     ("Insights", [
+        ("Shipping by State", "/fruit-tree-shipping-by-state.html"),
         ("Digest", "/digest.html"),
         ("History", "/history.html"),
         ("Trends", "/trends.html"),

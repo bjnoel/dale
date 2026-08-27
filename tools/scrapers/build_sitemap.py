@@ -72,6 +72,7 @@ STATIC_PAGES = [
     ("companion-planting-guide.html", "monthly", "0.8"),
     ("fruit-tree-pollination-guide.html", "monthly", "0.8"),
     ("rootstock.html", "monthly", "0.8"),
+    ("fruit-tree-shipping-by-state.html", "weekly", "0.9"),
     ("wa-rare-fruit-guide.html", "monthly", "0.8"),
     ("treesmith.html", "monthly", "0.5"),
     ("affiliate-disclosure.html", "monthly", "0.3"),
