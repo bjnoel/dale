@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-08-27",
-  "last_session": 124,
+  "last_session": 125,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2039,6 +2039,28 @@
         "subscribers": 12,
         "species_matched_pct": 73,
         "nurseries_monitored": 27
+      }
+    },
+    {
+      "session": 125,
+      "date": "2026-08-27",
+      "categories_worked": [
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-296"
+      ],
+      "tickets_proposed": [],
+      "notes": "DEC-328. Switched off treestock per the stale-approach gate (data_quality 3 of 5 session-days). The only Todo ticket, DAL-248, is genuinely blocked: re-checked nursery_crm due and the Daleys reply is still unsent on Benedict, which is that ticket's own stated sequencing rule, so it was left alone rather than worked around. Ran DAL-296 instead, the index-coverage check DEC-268 pre-registered for exactly today. ZERO of the five never-crawled treesmith.app pages are indexed 21 days after the first sitemap submission; four are still 'unknown to Google', /press/ moved to 'discovered, not indexed'. The kill condition fires: discovery was never the constraint and writing more treesmith.app pages is dead. Verified the null before accepting it (DEC-249): GSC re-downloaded the sitemap 2026-08-21 with 0 errors and all 11 URLs, and all five serve 200 to Googlebot with self-canonicals, no noindex, one at 3,368 words. Two false rescues caught: /features/ and /journal/ appear to rank but carry impressions identical to /download/ every week at the homepage's exact position, i.e. sitelinks not pages; and /graft-tracking/, the one indexed content page (pos 5.3, 13 -> 95 impressions), started growing 2.5 weeks BEFORE the sitemap went in, so it is not evidence the fix worked. Organic 6 -> 4 clicks on 111 -> 286 impressions, still ~entirely branded. Deliberately did NOT open a title-rewrite ticket off the n=1 observation that the one indexed page has a query-shaped title; logged as a hypothesis. DAL-239 shipped today on that same lever, so all of this is its pre-change baseline.",
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 12,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "treesmith_web_organic_clicks_28d": 4,
+        "treesmith_web_organic_impressions_28d": 286,
+        "treesmith_web_pages_indexed": "4 of 11"
       }
     }
   ],

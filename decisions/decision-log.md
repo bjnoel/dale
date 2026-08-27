@@ -14421,3 +14421,64 @@ truncation was real and the fix was correct, and it left a block that was worse
 per row than before, because a second defect had been hiding behind the first.
 When a broken instrument gets repaired, re-ask what it is for, do not just
 re-read it.
+
+---
+
+## DEC-328 — Discovery was never the constraint on treesmith.app, and the sitemap proved it by changing nothing
+**Date:** 2026-08-27 **Tickets:** DAL-296 (Done) **Authority:** Dale autonomous (research, $0)
+
+DEC-268 found that 5 of 11 treesmith.app pages had never been crawled, because no
+sitemap had ever been submitted to GSC. It submitted one, Google downloaded it a
+second later, and it wrote down in advance both the re-check date (~2026-08-27)
+and what a null result would mean: if the pages are still unknown three weeks on,
+discovery was not the constraint and the content strategy is dead.
+
+That date is today. **Zero of the five are indexed.** Four are still "URL is
+unknown to Google"; `/press/` moved one step to "Discovered, currently not
+indexed", which is Google saying it has seen the URL and declined it.
+
+The submission is not at fault, checked before the zero was accepted as one
+(DEC-249). GSC's own sitemap record shows `lastDownloaded` 2026-08-21, so Google
+has re-fetched it since, with 0 errors and all 11 URLs submitted. The live
+`sitemap-0.xml` lists every one of the five. All five return 200 to a Googlebot
+user agent, carry a correct self-referencing canonical and no `noindex`, and
+robots.txt was already ruled out. Thin content is not a blanket explanation
+either: `/grafting-techniques/` is 3,368 words and is still unknown to Google.
+There is no plumbing defect left. Google can reach these pages, has been told
+about them twice, and is choosing not to index them.
+
+Two traps were avoided in reading the result. First, GSC's page dimension shows
+`/features/` and `/journal/` at 7 impressions each, which appears to contradict
+"unknown to Google". It is an artefact: those two and `/download/` carry
+identical impression counts every single week and the same average position as
+`/`, which is the signature of sitelinks under the homepage brand result, not
+three pages earning their own queries. Second, `/graft-tracking/` genuinely is
+indexed and grew 13 to 95 impressions, but its impressions start in the week of
+2026-07-20, more than two weeks **before** the submission. Crediting the sitemap
+for it would have been the DEC-325 error of attributing a pre-existing trend to
+the intervention built to explain it.
+
+Organic over the two 28d windows: impressions 111 to 286, clicks 6 to 4. Every
+impression gained is on a page that was already indexed. Still ~entirely
+branded, with `grafting app` (16 impressions, position 2.5, 0 clicks) the only
+non-branded term carrying any volume at all.
+
+**Decision: writing more pages for treesmith.app is dead**, recorded in the
+state file so the idea stops resurfacing every few sessions. The gate DEC-268
+placed on new pages is lifted, but the answer to it is "no", not "proceed".
+
+Deliberately not over-applied. `/graft-tracking/` proves a page on this site
+*can* index and rank at position 5.3, and the visible difference from the four
+dead ones is that its title is query-shaped while theirs are generic. That is
+n=1 and is logged as a hypothesis, not a finding, so no "rewrite the four
+titles" ticket was opened off it. DAL-239 shipped today and pulls exactly that
+lever on `/`, which is 127 of 286 impressions and every store click we have ever
+recorded, so everything measured here is its pre-change baseline.
+
+**Lesson: a pre-registered kill date is only worth having if you also refuse the
+consolation prize.** The tempting read was available and would have been wrong
+twice over: two pages that looked like they had started ranking were sitelinks,
+and the one page that really is winning had started winning before the fix went
+in. Both would have converted a clean null into "it is working, give it longer".
+Check that the thing that improved is downstream of the thing you changed, and
+check the dates, before the null result gets talked out of existence.

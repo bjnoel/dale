@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-27",
-  "session_count": 124,
+  "session_count": 125,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -92,6 +92,21 @@
           "honest_ceiling": "43 store clicks life-to-date against RevenueCat's 416 installs is ~10%, and a click is not an install. treesmith.app is not where our users come from; store search and browse are, which is why DAL-177 still outranks this site for attention.",
           "do_not": "Do NOT write another treesmith.app content page yet: the existing five have never been crawled. Re-check index coverage ~2026-08-27. If they are STILL unknown to Google after a submitted sitemap, discovery is not the problem and the content strategy is dead on those terms.",
           "next": "DAL-239 is now the highest-value treesmith.app ticket: / carries 82 of 111 impressions and is the only page producing a store click. Also noted, not actioned: the store links on / carry no campaign token (so ASC and Play Console cannot attribute these 21 clicks) and point at the /us/ storefront, which per DEC-262 is the un-optimised localisation."
+        },
+        "do_not_write_more_pages": "DEC-328: SETTLED. The five pages Google had never crawled are still not indexed three weeks after a clean, re-downloaded sitemap submission. More pages is not the lever. Do NOT propose new treesmith.app content pages.",
+        "index_coverage_recheck_2026_08_27": {
+          "decision": "DEC-328 / DAL-296 (Done). The re-check DEC-268 pre-registered for this date.",
+          "verdict": "DISCOVERY WAS NOT THE CONSTRAINT. The kill condition fires: writing more pages for treesmith.app is DEAD. The gate DEC-268 placed on new pages is lifted, but the answer to it is 'no', not 'proceed'.",
+          "result": "Zero of the five never-crawled pages are indexed 21 days after the first sitemap submission. /features/, /grafting-techniques/, /journal/ and /journal/why-keep-a-plant-log/ are still 'URL is unknown to Google'. /press/ moved one step to 'Discovered, currently not indexed', which is Google saying it has seen the URL and declined it.",
+          "submission_is_not_at_fault": "Checked before accepting the zero (DEC-249). GSC sitemap record: lastSubmitted 2026-08-06T05:04:29Z, lastDownloaded 2026-08-21T16:45:36Z so Google has re-fetched it since, errors 0, warnings 0, submitted 11. The live sitemap-0.xml contains all 11 URLs including all five.",
+          "no_technical_defect": "All five return HTTP 200 to a Googlebot user agent, carry a correct self-referencing canonical, and have no noindex. robots.txt was already ruled out by DEC-268. /grafting-techniques/ is 3,368 words, so thin content is not a blanket explanation. Google can reach these pages, has been told about them twice, and is choosing not to index them. No plumbing defect is left to fix.",
+          "trap_1_sitelink_artefact": "GSC's page dimension shows /features/ and /journal/ at 7 impressions each over 28d, apparently contradicting 'unknown to Google'. It is an artefact: /download/, /features/ and /journal/ carry IDENTICAL impression counts every week (3/3/3 then 4/4/4) and the same average position as / (7.6). That is the signature of sitelinks under the homepage brand result, not three pages independently earning queries. Do NOT quote those 7 impressions as page performance.",
+          "trap_2_graft_tracking_predates_the_fix": "/graft-tracking/ IS indexed, ranks position 5.3, and grew 13 -> 95 impressions across the two 28d windows, making it the site's second largest impression source. It is NOT evidence the sitemap worked: its impressions start in the week of 2026-07-20 (3), then 07-27 (25), 08-03 (14), all BEFORE the 2026-08-06 submission.",
+          "organic_28d": "Clicks 6 -> 4, impressions 111 -> 286 across the two 28d windows. Every impression gained is on a page that was already indexed (/ 59 -> 127, /graft-tracking/ 13 -> 95). Still ~entirely branded.",
+          "queries_28d": "treesmith 48 impr / 1 click, tree smith 19 / 0, grafting app 16 impr / 0 clicks / pos 2.5, nesmith treesmith 1, treesmith tree service 1. 'grafting app' is the only non-branded term carrying any volume at all, and 16 impressions is too thin to build on (DEC-327).",
+          "reporting_lag_caveat": "The week of 2026-08-24 looks like a collapse in weekly data. It is GSC's 2-3 day reporting lag on a partial week, not a decline.",
+          "hypothesis_not_a_finding": "The one indexed content page has a query-shaped title ('Graft Tracking App') while the four dead ones are generic ('Features', 'Journal', 'Press', 'Grafting Techniques'). n=1. NOT claimed as a finding, and no title-rewrite ticket was opened off it.",
+          "this_is_dal_239s_baseline": "DAL-239 shipped 2026-08-27 and retargets /'s title and meta on exactly that lever. Every figure here is its PRE-change baseline. / carries 127 of 286 impressions and every store click we have ever recorded."
         }
       },
       "funnel_from_treestock": {
