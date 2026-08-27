@@ -4,6 +4,60 @@
 
 ---
 
+## DEC-318 — 2026-08-27 — the review prompt asked one person in 24 days, because every TestFlight build reset its blackout
+
+**Decided by:** Dale, from Benedict's question ("can we see if anyone has been prompted?").
+
+**Context:** the passive review prompt (DAL-230, DEC-268) shipped enabled and has been
+live on real devices since 2026-08-03. Nobody had looked at what it did.
+
+**What PostHog says, all time:**
+
+| event | count | people |
+|---|---|---|
+| `review_prompt_suppressed` | 126 | 48 |
+| `review_prompt_requested` | **1** | **1** |
+
+The one ask: 2026-08-26 23:51 UTC, iOS, 1.0.10+62, `moment=plants`,
+`ask_count_in_window=1`. The same device emitted `asked_recently` twice the next day,
+so the 120-day cooldown works. The feature is correct end to end and never gets to run.
+
+**Suppression reasons:** `recent_version_change` 81 (48 people), `suppressed_after_failure`
+29 (2), `recent_restore` 14 (1), `asked_recently` 2 (1). Not one `too_few_active_days`,
+`recent_install`, `no_qualifying_moment` or `store_review_unavailable`. Gate 6 sits above
+all of them, so the "has this person actually invested?" test has been reached once ever.
+
+**The defect.** `ReviewPromptCoordinator._packageInfoVersion` stamps
+`'${info.version}+${info.buildNumber}'`, so 1.0.10+61 to 1.0.10+62 is a version change and
+restarts a 3-day blackout. Builds in the wild: 55 (07-28), 56 (07-30), 57 and 58 (08-03),
+59 and 60 (08-10), 61 (08-16), 62 (08-17). Median gap about 3 days against a 3-day
+blackout, each device restarting its own clock the day it takes the update. The one person
+asked is the case that proves it: build 62 on 08-21, blackout to 08-24, asked 08-26. The
+first stretch in the series where a device sat on one build longer than the blackout.
+
+**Proposed, not shipped:** return `info.version` alone. Flutter code is Benedict's, so the
+one-line patch is on DAL-230 rather than committed. One-off cost: every existing device has
+`1.0.10+62` stored and serves one last 3-day blackout after the change.
+
+**On the ratings half of DAL-230.** Neither store reports back. `requestReview()` and Play
+In-App Review both return void; we are never told whether the sheet appeared or whether
+anyone rated, which is why the coordinator stamps the ask before the call. Aggregate only:
+`userRatingCount` reads 0 with 0 average on AU, US and GB (1.0.10, released 08-19), and the
+Play listing shows no star rating at 50+ installs. Per-review visibility, if wanted, is App
+Store Connect `customerReviews` (or the free per-storefront RSS feed) and Play Developer
+`reviews.list`.
+
+**Instrument limit, stated rather than glossed:** analytics opt-outs send no events but are
+still eligible to be asked (deliberate, `analyticsOptInProvider` is not in the gate), so 1
+ask is a floor. 48 people appear against 75 app-openers since 08-03; most of that gap is
+devices still on build 55 and earlier, which never carried the feature.
+
+**Lesson:** a suppression gate that fires on our release cadence rather than on the user
+looks identical to a gate that is working. 126 events, a healthy-looking distribution, and
+the feature had never once reached the question it exists to ask.
+
+---
+
 ## DEC-317 — 2026-08-27 — the AI-crawler block that never existed (DAL-246)
 
 **Decided by:** Dale, with Benedict widening the Cloudflare token mid-session.
