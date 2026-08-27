@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated": "2026-08-27",
-  "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened.",
+  "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
     "contacted": "Touch 1 sent, no reply recorded.",
@@ -539,29 +539,6 @@
       ],
       "open_action": null,
       "notes": "9th largest referral destination in the last 30 days and we have no contact route recorded."
-    },
-    {
-      "key": "heaven-on-earth",
-      "name": "Heaven On Earth Fruit Trees",
-      "domain": "heavenonearthfruittrees.com.au",
-      "contact_name": null,
-      "email": "heavenonearthfruittrees@outlook.com",
-      "phone": null,
-      "contact_form": null,
-      "preferred_channel": "email",
-      "status": "contacted",
-      "touches": [
-        {
-          "date": "2026-08-27",
-          "direction": "out",
-          "channel": "email",
-          "by": "benedict",
-          "summary": "Touch 1 goodwill intro, no pitch: what treestock is, that we sent them 49 clicks from 42 people in 30d, a link to their own page /nursery/heaven-on-earth.html, that we read 128 of their listings with 48 in stock, and the question of whether anything looks wrong. Not captured by the BCC loop, hand-logged on Benedict's confirmation.",
-          "evidence": "Benedict confirmed sent, session 2026-08-27 (no BCC capture)"
-        }
-      ],
-      "open_action": null,
-      "notes": "Rare tropical specialist, added 2026 via DAL-206."
     },
     {
       "key": "garden-world",

@@ -153,11 +153,6 @@ NURSERY_META = {
         "tags": ["fruit trees", "garden centre", "ACT"],
         "description": "The Heritage Nursery is a Canberra garden centre in Yarralumla carrying fruit trees alongside a general garden range. Local delivery covers the ACT and Queanbeyan, plus click-and-collect. No interstate shipping. Not to be confused with Heritage Fruit Trees in Victoria.",
     },
-    "heaven-on-earth": {
-        "url": "https://www.heavenonearthfruittrees.com.au",
-        "tags": ["rare tropicals", "abiu", "durian", "QLD"],
-        "description": "Heaven On Earth Fruit Trees is a Far North Queensland nursery specialising in rare tropical fruit: abiu, mamey sapote, soursop, miracle fruit, durian and more. Ships Australia-wide except WA and TAS. Citrus is QLD-delivery only (flagged per product).",
-    },
     "all-rare-herbs": {
         "url": "https://allrareherbs.com.au",
         "tags": ["rare fruit", "miracle fruit", "vanilla", "coffee", "mail order"],

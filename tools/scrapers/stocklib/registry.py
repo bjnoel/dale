@@ -159,14 +159,13 @@ NURSERIES: list[Nursery] = [
             note="Canberra garden centre (Shopify). Local delivery (ACT + "
                  "Queanbeyan, from $90) + click-and-collect only; no interstate "
                  "post. Distinct from Heritage Fruit Trees (VIC). Verified 2026-06-20."),
-    Nursery("heaven-on-earth", "Heaven On Earth Fruit Trees",
-            ("QLD", "NSW", "VIC", "SA", "NT", "ACT"),
-            location="Far North QLD",
-            note="Far North QLD (Wix). Rare-tropical specialist (abiu, mamey "
-                 "sapote, soursop, miracle fruit, durian). Ships AU-wide except "
-                 "WA/TAS; NT included (per postage page). Citrus is QLD-only "
-                 "(per-product rule, flagged in product names as 'QLD POSTAGE "
-                 "ONLY', not modelled at nursery level). Verified 2026-06-20."),
+    # REMOVED 2026-08-27 at the nursery's request, DO NOT RE-ADD.
+    # Heaven On Earth Fruit Trees replied to our touch-1 email the same day
+    # demanding removal and threatening to report us to Consumer Affairs. We
+    # honour opt-outs immediately and unconditionally, exactly as with Beewise
+    # (DEC-198), without arguing the legal point. Their key is also in
+    # state/ticket-blocklist.json so no future session can propose re-adding
+    # them. Only their explicit written permission reverses this.
     Nursery("all-rare-herbs", "All Rare Herbs",
             ("QLD", "NSW", "VIC", "SA", "ACT"),
             location="Australia",

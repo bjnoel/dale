@@ -2,24 +2,67 @@
   "description": "Patterns that block autonomous ticket creation. linear_update.py create refuses if any pattern (case-insensitive) appears in the title or description. Benedict maintains this list. To remove a block, delete the entry.",
   "blocks": [
     {
-      "patterns": ["tass1", "tass 1"],
+      "patterns": [
+        "tass1",
+        "tass 1"
+      ],
       "reason": "Benedict is handling Tass1 Trees outreach offline. 6+ tickets cancelled since March (DAL-33, 40, 56, 83, 117, 136, 134). Do not propose any new Tass1 Trees work, including outreach, demo assets, demo stores, visits, or analysis, unless Benedict explicitly asks.",
       "added": "2026-04-19"
     },
     {
-      "patterns": ["leeming fruit", "leeming-fruit", "leeming_fruit"],
+      "patterns": [
+        "leeming fruit",
+        "leeming-fruit",
+        "leeming_fruit"
+      ],
       "reason": "Leeming Fruit Trees is deferred. Tri replied 'looks good' but is busy. Benedict owns the next touch and will revisit in person. Do not propose any new Leeming outreach, demo work, or follow-up tickets unless Benedict explicitly asks.",
       "added": "2026-04-19"
     },
     {
-      "patterns": ["walkthrough", "perth smb", "perth small business", "perth audit", "perth retail prospect", "wembley cycles", "pbr plumbing", "work of art picture", "eastern music school", "como total body", "como salon"],
+      "patterns": [
+        "walkthrough",
+        "perth smb",
+        "perth small business",
+        "perth audit",
+        "perth retail prospect",
+        "wembley cycles",
+        "pbr plumbing",
+        "work of art picture",
+        "eastern music school",
+        "como total body",
+        "como salon"
+      ],
       "reason": "Walkthrough (Perth AI Efficiency Audits) is paused as of 2026-04-27 (DEC-104). Track A pivoted to Treesmith. 9 walkthrough Backlog tickets cancelled (DAL-119, 147, 152, 153, 158, 160, 162, 164, 168). Do not propose any new walkthrough outreach, prospect research, audit assets, payment links, or pipeline work, including for any specific Perth SMB prospect (Wembley Cycles, PBR Plumbing, Work of Art Picture Framing, Eastern Music School, Como Total Body Salon, etc). The site (walkthrough.au), prospect briefs, and email infrastructure stay intact for archival but no autonomous effort. If walkthrough ever revives, Benedict will edit this entry out explicitly.",
       "added": "2026-04-27"
     },
     {
-      "patterns": ["beestock", "beekeep", "bee dashboard", "bee-dashboard", "bee_dashboard", "bee scraper", "bee-scraper", "bee_scraper", "bee-subscribe", "bee_subscribe", "bee_subscribers", "apiary", "apiarist"],
+      "patterns": [
+        "beestock",
+        "beekeep",
+        "bee dashboard",
+        "bee-dashboard",
+        "bee_dashboard",
+        "bee scraper",
+        "bee-scraper",
+        "bee_scraper",
+        "bee-subscribe",
+        "bee_subscribe",
+        "bee_subscribers",
+        "apiary",
+        "apiarist"
+      ],
       "reason": "beestock.com.au is discontinued as of 2026-07-23 (DEC-230) and frozen static: bee scraper cron disabled, bee-subscribe-server stopped and disabled, subscribe/unsubscribe routes return 410, and all 176 pages carry a 'no longer updated' banner. 3 remaining Backlog tickets cancelled 2026-07-30 (DAL-150, 157, 186) on top of the 6 cancelled at freeze time. Do not propose any new beestock tickets: no features, category work, SEO content, subscriber growth, retailer research, price alerts, or the bee/ de-fork. Do not 'fix' the disabled cron, the stopped service, the 410 routes, or the stale pages; they are deliberate. Scraping bee retailers already cost goodwill once (Beewise, DEC-198). Pages stay online as an archive until the domain decision at renewal. If beestock ever revives, Benedict will edit this entry out explicitly.",
       "added": "2026-07-30"
+    },
+    {
+      "patterns": [
+        "heaven on earth",
+        "heaven-on-earth",
+        "heaven_on_earth",
+        "heavenonearth"
+      ],
+      "reason": "Heaven On Earth Fruit Trees demanded removal from treestock on 2026-08-27, replying to our touch-1 email with a threat to report us to Consumer Affairs. Honoured immediately and unconditionally, the same way Beewise was (DEC-198): removed from stocklib/registry.py, wix_scraper.py and build_nursery_pages.py, their nursery page tombstoned, their snapshot history archived off the build path, and their contact record deleted. Do NOT propose re-adding them, re-scraping heavenonearthfruittrees.com.au, or any outreach to them. Do not 'fix' the empty wix_scraper NURSERIES dict; it is deliberate. Only their explicit written permission reverses this, and that is Benedict's call, not Dale's.",
+      "added": "2026-08-27"
     }
   ]
 }

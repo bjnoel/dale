@@ -1,66 +1,66 @@
 {
   "avocado": {
-    "score": 55.6,
+    "score": 55.4,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 2
   },
   "mango": {
-    "score": 75.6,
+    "score": 75.4,
     "hard_to_find": true,
     "avg_availability": 0.5,
     "nursery_count": 2
   },
   "apple": {
-    "score": 63.3,
+    "score": 63.1,
     "hard_to_find": false,
     "avg_availability": 0.75,
     "nursery_count": 3
   },
   "lychee": {
-    "score": 55.6,
+    "score": 55.4,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 2
   },
   "black-sapote": {
-    "score": 53.3,
+    "score": 53.1,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 3
   },
   "banana": {
-    "score": 55.6,
+    "score": 55.4,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 2
   },
   "mountain-pepper": {
-    "score": 57.8,
+    "score": 57.7,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 1
   },
   "fig": {
-    "score": 57.8,
+    "score": 57.7,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 1
   },
   "warrigal-greens": {
-    "score": 57.8,
+    "score": 57.7,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 1
   },
   "longan": {
-    "score": 57.8,
+    "score": 57.7,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 1
   },
   "riberry": {
-    "score": 57.8,
+    "score": 57.7,
     "hard_to_find": false,
     "avg_availability": 1.0,
     "nursery_count": 1

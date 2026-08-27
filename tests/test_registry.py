@@ -49,7 +49,6 @@ EXPECTED_SHIPPING = {
     "wild-garden-organics": ["QLD", "NSW", "VIC", "SA", "ACT"],
     "st-clements-citrus": ["WA"],
     "the-heritage-nursery": ["ACT"],
-    "heaven-on-earth": ["QLD", "NSW", "VIC", "SA", "NT", "ACT"],
     "all-rare-herbs": ["QLD", "NSW", "VIC", "SA", "ACT"],
 }
 
@@ -79,7 +78,6 @@ EXPECTED_NAMES = {
     "wild-garden-organics": "Wild Garden Organics",
     "st-clements-citrus": "St Clements Citrus",
     "the-heritage-nursery": "The Heritage Nursery",
-    "heaven-on-earth": "Heaven On Earth Fruit Trees",
     "all-rare-herbs": "All Rare Herbs",
 }
 

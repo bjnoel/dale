@@ -40,17 +40,13 @@ from pathlib import Path
 from stocklib.model import validate_and_warn
 from stocklib.scrape_health import count_priced, ScrapeHealth
 
-NURSERIES = {
-    "heaven-on-earth": {
-        # Far North QLD rare-tropical specialist (abiu, mamey sapote, soursop,
-        # miracle fruit, durian). Ships AU-wide except WA/TAS; citrus QLD-only
-        # (per-product rule, flagged in product names as "QLD POSTAGE ONLY").
-        "name": "Heaven On Earth Fruit Trees",
-        "domain": "www.heavenonearthfruittrees.com.au",
-        "location": "Far North QLD",
-        "delay": 1.5,
-    },
-}
+# Empty on purpose. Heaven On Earth Fruit Trees was the only Wix nursery and
+# was REMOVED 2026-08-27 at their own request (see registry.py). DO NOT re-add
+# them or scrape heavenonearthfruittrees.com.au without their explicit written
+# permission. This scraper now runs as a clean no-op, kept for the next Wix
+# nursery, the same shape the Magento bee scraper was left in after Beewise
+# opted out (DEC-198).
+NURSERIES = {}
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
