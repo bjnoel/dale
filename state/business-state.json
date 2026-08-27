@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-27",
-  "session_count": 125,
+  "session_count": 126,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -110,12 +110,7 @@
         }
       },
       "funnel_from_treestock": {
-        "audit": "DAL-218: /treesmith.html took 12 unique visitors/month out of treestock's 2,865 (0.4%).",
-        "fixed_2026_07_30": "DEC-239 / DAL-219 + DAL-222. The homepage (225 visitors/mo, the top page) had NO Treesmith CTA: the promo block was wired into six page builders but never build-dashboard.py. Now renders as the last block inside <main>, after the subscribe box and its highlights, on the homepage and category landing pages. /treesmith.html now uses Apple's and Google's official badge artwork (served locally from /treesmith/, trademark attribution added) instead of plain text buttons, and links the /au/ storefront instead of /us/.",
-        "instrumentation": "Every promo surface tags a distinct utm_content: homepage, landing, species, variety, rootstock. DAL-218 could only see an undifferentiated total. Re-measure in ~4 weeks: DAL-241.",
-        "expectation": "Deliberately modest. The homepage block removes a zero rather than being a growth lever, and the badge CTR gain is capped by the page receiving 12 visitors/month. Per DEC-239 the binding constraint is upstream of the funnel, not in it.",
         "drip_email": "DEC-240 / DAL-173: tools/scrapers/send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once only (data/treesmith_intro_sends.json). Nightly cron at 23:30 UTC. It is a logged no-op until /opt/dale/data/treesmith-intro-enabled exists: Benedict approves the copy first (proof-of-concept sent to him 2026-07-30). DRIP_START_DATE 2026-07-30 excludes the 13 existing subscribers, who belong to the separate one-time broadcast DAL-221. utm_content=intro_email on the landing link.",
-        "measured_2026_07_30": "DEC-241 / DAL-241. The bottom of the funnel, never measured before: over 6 months treestock produced 1,516 outbound clicks, of which 3 went to treesmith.app and 0 to either app store. In the last 30 days: 14 visitors reached /treesmith.html, 1 clicked apps.apple.com, 0 clicked play.google.com, against 639 visitors who clicked through to a nursery. DAL-218 measured the TOP of the funnel (/treesmith.html pageviews); the outbound goal measures the bottom and says the pass-through is ~0%. Adding CTAs upstream multiplies by zero. Cause is audience intent, not CTA placement: treestock visitors are mid-errand buyers, not app shoppers.",
         "status": "DEMOTED from strategy to decoration (DEC-241). The cross-promo stays because it is honest and free, but no new treestock->Treesmith funnel tickets until DAL-241's August re-measure shows whether ANY surface produces a store click. If it is still 0-1, stop.",
         "remeasured_2026_08_27": {
           "decision": "DEC-325 / DAL-241 (Done). The scheduled 4-week re-measure after DEC-239's tagging.",
@@ -155,27 +150,12 @@
         "status_2026_08_10": "DAL-177 CLOSED (DEC-274). Taken: the description accuracy fix and the en-US localisation deletion, both staged against 1.0.10. NOT taken: the rename (still an open yes/no from Benedict, and the only item with a measurable expected effect), the subtitle change, the keyword field and the promotional text. DAL-257's re-measure clock has NOT started, because it is premised on the rename."
       },
       "store_listing_accuracy_defect": {
-        "found": "2026-07-30 (DEC-247)",
         "status": "RESOLVED AND GUARDED 2026-08-27 (DEC-326). All four storefronts verified correct: iOS AU, iOS US, Play AU, Play US. Play was the unverified one and is also correct. Do NOT re-fix these.",
-        "detail": "Both live store descriptions read 'Pro: unlimited plants, multiple locations, cloud backup, bulk operations and CSV import.' Cloud backup is NOT included in Pro. lib/features/pro/screens/paywall_screen.dart:627-633 lists it as an add-on that Pro unlocks the ability to buy, sold separately at A$9.99/year on top of A$39.99 Pro.",
-        "ios": "Corrected FREE OR PRO block pasted into the en-AU description against version 1.0.10, plus the EULA link. Ships when 1.0.10 is released. Verified 2026-08-10 at close: the live listing is still 1.0.9 and still carries the error.",
-        "play": "RESOLVED. Verified live 2026-08-27 by store_listing_check.py: Play AU and Play US both read 'Free: up to 30 plants, one location...' and 'Cloud Backup is an optional yearly subscription that requires Pro'. The old 'Pro includes cloud backup' line is gone.",
         "alarm_shipped": {
           "decision": "DEC-326 / DAL-278 (Done)",
           "script": "tools/autonomous/store_listing_check.py (--json, --store, --country). Report only, never edits a listing.",
           "runs": "m_store_listing in treesmith_analytics.py, Mondays 00:00 UTC. Green one-liner when clean, red per-failure lines naming storefront/rule/evidence.",
           "ground_truth": "freePlantLimit and freeLocationLimit parsed live from entitlement_provider.dart:104-105 on every run, NOT a snapshot of the text.",
-          "rules": [
-            "free_plant_limit: the number the listing promises equals the number we enforce",
-            "pro_is_one_time: Pro described as a one-time purchase, not a subscription",
-            "pro_excludes_cloud_backup: no Pro feature list names cloud backup (the DEC-247 defect)",
-            "cloud_backup_described: present, called a subscription, and stated to require Pro",
-            "divergence: the storefronts do not disagree with each other on the free limit (the DEC-262 defect)"
-          ],
-          "why_not_a_diff": "A snapshot diff fires on every marketing reword, gets muted inside a month, then misses the change that matters. Design test: changing freePlantLimit to 15 makes today's CORRECT copy fail, while a reword that stays true stays silent. Both are tests.",
-          "proven_to_fail": "DEC-265: a failed capability is loud, a failed limit is silent, so no rule was accepted until it failed on text really served by a store. Covered: the real DEC-262 US sentence ('Track up to 50 plants ... all free'), the real DEC-247 Pro sentence, a deleted cloud-backup line, a deleted 'requires Pro', a renamed Flutter constant (raises, does not silently check nothing), and a deleted free-tier sentence (FAILS rather than passes, DEC-249). An unreadable storefront is reported as unreadable, never green.",
-          "tests": "tests/test_store_listing_check.py, 16 tests. Full suite 3,546 OK.",
-          "play_extraction": "Anchored on data-g-id=\"description\", the attribute Play marks the block with, not the minified class name which rotates.",
           "not_in_scope_flagged": "The Play SHORT description still reads 'Graft, scion & garden journal for collectors' while the app is named 'Fruit Tree Tracker'. Nothing in it is untrue so the accuracy alarm correctly does not fire. ASO question for DAL-257, not a defect."
         }
       },
@@ -197,29 +177,6 @@
         "onboarding_completed": 49,
         "people_ever_added_a_plant": 18,
         "people_reached_paywall": 76,
-        "activation_is_the_constraint": "SUPERSEDED BY DEC-254, DO NOT USE. The 6% and 97% figures here divide by weeks the plant_added event did not exist and lean on plant_count_snapshot, a dead event from builds 13-40. Corrected: ~10% all-time, ~27% for the July cohort. See activation_correction_2026_07_30.",
-        "paywall_is_reachable_after_all": "76 of 290 people (26%) have seen the paywall, 73 got to a result. DEC-237's claim that the 30-plant free tier means almost nobody sees it is WRONG. paywall_result by trigger, all 148: manual 57 dismissed + 8 purchased; cloud_backup 39 dismissed + 5 purchased + 2 restored + 2 failed; reminders 19 dismissed; location_limit 11 dismissed; plant_limit 2 dismissed; bulk_ops 2 dismissed. The plant limit is 1.4% of paywall results, the least-used door.",
-        "free_tier_cut_is_dead": "DAL-224 (30 to 15 plants) recommended for cancellation. Three people have ever exceeded 15 plants and two have exceeded 30, so the cut would move exactly one person from under the cap to over it.",
-        "review_prompt_is_built_not_blocked": "DAL-230 is not a decision. lib/features/review/ has the eligibility gate, coordinator, suppression signals, Settings row, analytics and tests, with kReviewPromptEnabled = true (c7a8db1, 2026-07-30). It is unshipped: released build 52, feature in build 56. PostHog has zero review_prompt_requested and zero review_prompt_suppressed events, which confirms it. Needs a store submission. Expect single-digit asks per month: gate 8 needs 2 distinct active days and only ~8% of the base reaches that.",
-        "possible_revenue": "UNCONFIRMED AND IMPORTANT. purchase_succeeded (which carries an environment property, unlike paywall_result) has three all-time events: 2026-07-01 cloud backup annual A$9.99 SANDBOX; 2026-07-06 app.treesmith.pro.lifetime A$39.99 PRODUCTION; 2026-07-23 app.treesmith.pro.lifetime US$24.99 PRODUCTION. Three distinct person ids, none the sandbox one; the July 23 buyer is on a US storefront and used the app across 5 later days. If real that is ~A$66 net of Apple's 15% small business rate and the first revenue this business has produced. revenue_monthly deliberately LEFT AT 0 pending Benedict checking App Store Connect (DAL-264): client-side telemetry is not a receipt.",
-        "why_it_was_invisible": "FIXED 2026-07-30 (DEC-253 / DAL-266, commit 0bd7368, deployed). treesmith_analytics.py reported paywall purchases over a rolling 7 days with no cumulative line, so each purchase appeared in exactly one Monday digest and then aged out permanently. The 23 July sale was STILL inside the window when the fix shipped and would have dropped out of the very next digest.",
-        "digest_fix_2026_07_30": {
-          "decision": "DEC-253 / DAL-266",
-          "correction_to_dec_252": "DEC-252 said paywall_result does not carry `environment` at all. It DOES, on the 3 events since 2026-07-01, and it correctly flagged the sandbox one. The UNTAGGED events are the OLDER ones. Environment tagging began 2026-07-01.",
-          "second_defect_found": "The digest counted production with coalesce(environment,'production'), i.e. it treated 'unknown' as 'real money'. There are 13 purchase-shaped paywall_result events from 2026-04-30 to 2026-05-18 with NO environment tag (6 lifetime_purchased, 4 cloud_backup_sub_purchased, 3 restored, across 8 distinct ids, the launch/TestFlight period). On any window longer than 7 days the old code would have reported 12 PRODUCTION SALES THAT MAY NEVER HAVE HAPPENED. Now bucketed 'untagged' and never counted as revenue, and deliberately NOT reclassified as sandbox: we do not know what they were.",
-          "what_shipped": "Money now read from purchase_succeeded (the only event carrying price + currency + environment together); paywall_result reports reach only (views, dismissals). Every purchase figure reported ALL-TIME as well as weekly, so a sale cannot age out. Non-production buckets are still PRINTED rather than silently dropped. Reconciliation check between paywall_result and purchase_succeeded warns in red on divergence (they agree, 3 and 3 since 01-07). --help added, and an unrecognised arg now exits 2 instead of falling through to the email path (that sent an unscheduled digest during DEC-252). 8 regression tests pinning RENDERED TEXT, per DEC-251's lesson.",
-          "live_output_verified": "Paywall views 7d 14, dismissed 12. Purchases this week (production) 1 = USD 24.99. Purchases ALL TIME (production) 2 = AUD 39.99 + USD 24.99. Excluded: sandbox (AUD) 1 all time, not counted as revenue.",
-          "still_open": "revenue_monthly stays 0. Q48 / DAL-264 unchanged: client-side telemetry is not a receipt. NOTE the app ships purchases_flutter, so RevenueCat's dashboard answers DAL-264 faster than App Store Connect and separates sandbox from production directly. Dale holds no RevenueCat credential (DAL-267)."
-        },
-        "weekly_cohort_2026_07_30": {
-          "source": "treesmith_analytics.py --dry-run, live, 7d to 2026-07-30. Small numbers, one week, NO conclusion drawn. Logged so DAL-265 starts from data rather than from a summary.",
-          "installs_7d": "25 (+92% WoW)",
-          "active_7d_28d": "29 / 61",
-          "activation_7d": "4 of 25 added a plant = 16%, against 18 of 290 = 6% all time. The recent cohort activates better.",
-          "onboarding_completion_7d": "7 of 10 = 70%",
-          "retention": "0 of 13 returned on 2+ days (8-14d cohort)",
-          "biggest_funnel_drop": "opened -> onboarded, lost 18 of 25 = 72%"
-        },
         "activation_correction_2026_07_30": {
           "decision": "DEC-254 / DAL-265",
           "supersedes": "the activation_is_the_constraint block below, which is left in place but is WRONG",
@@ -231,44 +188,6 @@
           "contamination_check": "July activators span builds 44-56 and US/UA/IN/AU storefronts. Internal builds 53-56 activate at 3/15, no better than public 9/33.",
           "real_open_question": "RETENTION, not activation: 1 of 15 in the 8-14 day cohort returned on 2+ days.",
           "fix_shipped": "137442d. m_activation clips the all-time cohort to the day plant_added first appears, prints that date, and reports excluded devices as 'unknown not zero'. 7 render-text regression tests."
-        },
-        "unit_economics_2026_07_31": {
-          "decision": "DEC-256 / DAL-234",
-          "method": "Period-matched. purchase_succeeded does not exist before 2026-07-01, so the denominator is installs since that date, not all-time. Dividing 2 purchases by 290 all-time installs would repeat the DEC-254 error exactly.",
-          "installs_since_2026_07_01": 49,
-          "production_purchases_same_window": 2,
-          "install_to_purchase_rate_pct": 4.1,
-          "wilson_95_ci_pct": [
-            1.1,
-            13.7
-          ],
-          "net_per_install_aud": 1.32,
-          "installs_per_month_for_cash_burn_a8_20": 6,
-          "installs_per_month_for_full_cost_a162": 123,
-          "caveats": "n=2. The whole calculation rests on Q48 / DAL-264 being confirmed; these are client-side events, not receipts. At the CI low end (1.1%) the full operating cost needs 445 installs/month against July's 49, so this is not established, only bounded away from zero.",
-          "standing_metric": "DAL-271 proposes putting this in the weekly digest with its interval, so it stops being recomputed by hand."
-        },
-        "storefront_geography_2026_07_31": {
-          "finding": "61% of July installs are US, not Australian. US 30, AU 9, IN 4, then CH/UA/MA/BD/IT/KR 1 each, of 49 distinct devices.",
-          "implication": "Every ASO measurement we have ever taken (DEC-247, 36 terms) is on the AU store, and DAL-177's rename and DAL-257's re-measure are both scored against AU ranks. We have never looked at our rank in the storefront that supplies most of our users. DAL-270.",
-          "also": "DAL-234's premise (Australian rare fruit community channels) targets 18% of installs. Still worth doing because it is the only segment Benedict can influence, but it is not where the users are.",
-          "SUPERSEDED_BY_DEC_276": "The '61% US / 18% AU' headline here is WRONG for every purpose it was used for. It blends iOS and Android, and Android is 69% of installs and 0% of revenue. Corrected in DEC-276 from RevenueCat's 432 customer records: on iOS, the only platform that has ever sold, AU is 43% of installs (58 of 134). Do not quote the 18% again."
-        },
-        "install_trend_2026_07_31": {
-          "weekly_distinct_devices": {
-            "2026-06-28": 13,
-            "2026-07-05": 8,
-            "2026-07-12": 1,
-            "2026-07-19": 19,
-            "2026-07-26": 17
-          },
-          "monthly_distinct_devices": {
-            "2026-04": 15,
-            "2026-05": 160,
-            "2026-06": 71,
-            "2026-07": 49
-          },
-          "note": "The '+92% WoW' in the 2026-07-30 digest was a rebound off a floor of ONE install in the week of 07-12, not growth. May's 160 was launch attention and has not recurred."
         },
         "reporting_accuracy_2026_08_03": {
           "decision": "DEC-259 / DAL-265, on Benedict's direct report that the numbers did not match what he could see in his own app",
@@ -336,12 +255,8 @@
         "no_new_sales_since": "Re-swept 2026-08-10: still 3 production purchases, US$52.55 proceeds all time, MRR US$0. Nothing has sold since 2026-07-23, 18 days."
       },
       "storefront_localisation_defect": {
-        "found": "2026-08-06 (DEC-262 / DAL-270)",
         "status": "RESOLVED 2026-08-10 (DEC-274) by collapsing to a single localisation. Takes effect when 1.0.10 is released.",
-        "primary_language": "English (Australia). NOT en-US, contrary to what DAL-177's 2026-08-06 comment said. Confirmed in App Store Connect and verified via fallback: JP/DE/FR/BR/MX all serve the en-AU listing. GB/CA/NZ/IE/SG do too but are inconclusive alone, being British-English-family storefronts that could match on language rather than fall back to primary.",
         "resolution": "en-US localisation DELETED. The primary cannot be deleted, so collapsing to one listing meant deleting en-US, which was also the one carrying both defects. en-AU now serves every storefront.",
-        "free_tier_misstatement": "RESOLVED by deletion. The US description said 'Track up to 50 plants ... all free' against entitlement_provider.dart:104 freePlantLimit = 30.",
-        "side_effect": "The US storefront inherits the en-AU app name, so the field DEC-247 found is the only one that ranks stops being empty of keywords on the storefront supplying 61% of installs. Free by-product of the cleanup, not the goal. This is a real ASO event but it is NOT the rename DAL-257 was written to test.",
         "repo_guard": "deploy.sh:454 in treesmith-app now reads ios_locales=(en-AU), commit 1acaee3. It was hardcoded (en-US en-AU) and rewrote release notes into both dirs every deploy; with --release the Fastfile sets skip_metadata:false so deliver would have re-created the deleted localisation. ios/fastlane/metadata/ is gitignored, so the directory was never tracked and git rm would have failed. The Android en-US changelog path is deliberately untouched."
       },
       "aso_rank_measurement": {
@@ -651,7 +566,15 @@
         "outstanding_on_benedict": "All three nurseries that replied (Daleys, Ross Creek, Heritage) have had an unanswered follow-up action since 2026-04-25, 96 days. Ross Creek's Tom admins the Oz Rare Fruit Australia Facebook group.",
         "open_question": "ANSWERED 2026-08-03. Benedict wants to BCC an address Dale can read, which then updates the register. Needs no new infrastructure: see email_infrastructure.fastmail_finding. DAL-273, gated on a Fastmail alias + IMAP app password from him.",
         "why_not_a_crm": "EspoCRM/Twenty would fit the box (2.4 GB RAM free) but buy a login page to patch, a DB to back up and a Leads/Opportunities schema for 27 rows and one user. Offered on DAL-80 if Benedict still wants it.",
-        "viewing": "DEC-257 / DAL-80: the register now renders on https://treestock.com.au/admin, above the subscriber tables, behind the Cloudflare Access gate. Per nursery: status, contact route, last touch + days elapsed, open action with owner and age, and a collapsible full touch history. Sorted by oldest open action first, then never-contacted, NOT alphabetically. deploy.sh publishes data/nursery-contacts.json to /opt/dale/data so the repo copy stays the audit log. Referral click counts are DELIBERATELY absent from the page: they are read live from Plausible by nursery_crm.py report and a rendered copy would be staleable. 27 nurseries, 7 open actions, 22 never contacted as at 2026-08-03; 6 of the 7 open actions are Benedict's."
+        "viewing": "DEC-257 / DAL-80: the register now renders on https://treestock.com.au/admin, above the subscriber tables, behind the Cloudflare Access gate. Per nursery: status, contact route, last touch + days elapsed, open action with owner and age, and a collapsible full touch history. Sorted by oldest open action first, then never-contacted, NOT alphabetically. deploy.sh publishes data/nursery-contacts.json to /opt/dale/data so the repo copy stays the audit log. Referral click counts are DELIBERATELY absent from the page: they are read live from Plausible by nursery_crm.py report and a rendered copy would be staleable. 27 nurseries, 7 open actions, 22 never contacted as at 2026-08-03; 6 of the 7 open actions are Benedict's.",
+        "queue_integrity": {
+          "decision": "DEC-329 (2026-08-27). Found while checking whether DAL-248 was still blocked.",
+          "what": "The Daleys open_action told Benedict to send deliverables/daleys-reply-2026-08-27.txt. The file was never written: not on disk, not in git, not in any Linear comment. DEC-315 section 5 cites the same path. The top item in his queue could not be actioned and DAL-248 sat blocked behind it.",
+          "why_it_happened": "Two conventions disagree. CLAUDE.md says deliverables go in Linear, not git; the register's convention is a file path. A path written under the first rule can never exist.",
+          "fixed": "Draft written and posted to DAL-248; the action now links to that comment. nursery_crm.validate() fails an open_action naming a repo path that is not on disk, proven against the Daleys text verbatim. Scoped to open_action: historical touch evidence legitimately names superseded artefacts (ross-creek has one) and failing on those would bury the live failure in noise.",
+          "facts_reverified_not_copied": "Feed pulled fresh: still exactly 2 contradicting rows (sku 1045 Jaboticaba qty 40, sku 3939 Sunshine Blue qty 36, both OutOfStock) and 2,949 rows now in the schema.org casing with zero left in the old one. /species/almond.html still ranks the $9.75 scion wood first of 54 listings, with Daleys' own $59.00 Papershell tree seven rows below it.",
+          "comparison_changed": "The register said to cite $9.75 against a $44.99 Papershell. That $44.99 is Guildford's. Quoting a competitor's price at Correy buys nothing when his own $59.00 tree of the identical cultivar is on the same page, and it breaks the DAL-289 rule that a nursery's numbers are not passed to its competitors."
+        }
       },
       "seo": {
         "measured": "2026-07-30 (DAL-235, DEC-243), 28d to 2026-07-27, GSC",
@@ -821,13 +744,8 @@
         }
       },
       "lead_magnet_wa_guide": {
-        "measured": "2026-07-30 (DEC-249)",
-        "defect": "/wa-rare-fruit-guide.html was live for 51 days with NO Plausible script, so it recorded 0 pageviews for its entire life. The zero was an absence of measurement, not a traffic figure. DAL-176's premise that it 'lifts subscribe conversion' was never observable.",
-        "second_defect": "The file existed only in /opt/dale/dashboard/, not in git and not produced by any builder. A clean rebuild of the web root would have deleted it silently.",
-        "accuracy_defect": "It told WA buyers that PlantNet and Heritage Fruit Trees could ship to them. Per shipping.py neither does. It omitted The Diggers Club and Garden Express (which do) and St Clements Citrus from the WA nursery list.",
         "wa_shipping_truth": "9 of 27 nurseries reach a WA address: WA-based = All Season Plants WA, Guildford Garden Centre, Perth Mobile Nursery, Primal Fruits Perth, St Clements Citrus; interstate = Daleys, The Diggers Club, Fruit Salad Trees, Garden Express.",
         "fixed": "Moved to tools/scrapers/static/wa-rare-fruit-guide.html (deploy.sh owns it, git tracks it). Plausible script added, shipping list corrected, St Clements Citrus added, DEC-246 reachability finding folded in. Live at the next 00:00 UTC deploy.",
-        "next": "DAL-176 (national version) parked in Todo for 30 days until the WA guide has real pageview data. DAL-259 proposes a test that blocks shipping an uninstrumented sitemap page again.",
         "guard_shipped": "DEC-323 / DAL-259 (2026-08-27): tests/test_static_page_instrumentation.py. Sitemap-listed pages in tools/scrapers/static/ must carry data.bjnoel.com/js/script; every other static .html must be declared TOKEN_BEARING (manage.html, stop-watching.html: HMAC tokens in the URL, must NOT be tracked) or NOT_PUBLIC (advertise.html, helena.html) with a reason. Matched on the script SRC, not the bare hostname: treestock_layout.py also emits preconnect and dns-prefetch hints carrying data.bjnoel.com that record nothing, so a hostname grep would pass a page with hints and no script. Checked failing-then-passing both directions. Does NOT cover a page hand-written straight into /opt/dale/dashboard/, which is outside git."
       },
       "subscriber_engagement": {

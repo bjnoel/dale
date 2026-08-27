@@ -14482,3 +14482,79 @@ and the one page that really is winning had started winning before the fix went
 in. Both would have converted a clean null into "it is working, give it longer".
 Check that the thing that improved is downstream of the thing you changed, and
 check the dates, before the null result gets talked out of existence.
+
+## DEC-329 — 2026-08-27 — The blocker was made entirely of a dangling pointer
+**Date:** 2026-08-27 **Tickets:** DAL-248 (Todo, Benedict) **Authority:** Dale autonomous (code + draft, $0)
+
+**Context:** One ticket in Todo, DAL-248, and an earlier session today had already
+declined to start it for a good reason: its own sequencing rule says answer the
+overdue replies first, and the register showed Daleys still outstanding on Benedict.
+That reasoning was correct. What nobody checked was whether the thing he was waiting
+to send existed.
+
+It did not. The action read "send the drafted reply
+(`deliverables/daleys-reply-2026-08-27.txt`)". That file is not on disk, not in git,
+and not in any Linear comment. DEC-315 section 5 cites the same path. So the top item
+in Benedict's queue pointed at nothing he could open, and the only actionable ticket
+we had declared itself blocked behind it.
+
+`nursery_crm.py validate` printed "OK: 27 nurseries, register valid" throughout,
+because it checks that a record is well formed, not that an instruction can be
+followed.
+
+**Why it happened, which is more interesting than the miss.** Two conventions
+disagree. CLAUDE.md says deliverables go in Linear because Benedict reads tickets on
+his phone. The register's convention is a file path. A deliverable written under the
+first rule can never satisfy a pointer written under the second, so this was going to
+happen eventually and will happen again wherever the two meet.
+
+**What shipped:**
+
+1. **The draft now exists**, in Linear, on DAL-248, which is the ticket it unblocks.
+   Not in `deliverables/`, because that is the convention that caused this.
+2. **The action links to the comment** instead of naming a file.
+3. **`validate` now fails an open_action that names a repo path not on disk.**
+   Proven against the Daleys text verbatim before being trusted to pass (DEC-326),
+   and given a positive control: the Aus Nurseries action cites
+   `docs/scraper-category-audit.md`, which does exist, and stays silent. A rule that
+   cannot stay quiet on a good path is a rule that gets muted.
+4. **Scoped to open_action only.** Ross Creek's 2026-08-10 touch cites
+   `deliverables/ross-creek-reply-conversions.txt`, which is also gone, but that email
+   was sent and nobody is blocked. Failing on dead provenance would bury the live
+   failure in noise.
+
+**Every fact in the draft was re-pulled, not copied from this morning** (DEC-324).
+The feed still contradicts itself on exactly two rows, sku 1045 Jaboticaba 2L at
+qty 40 and sku 3939 Blueberry Sunshine Blue at qty 36, both `OutOfStock`. Correy's
+normalisation is complete: 2,949 rows in the schema.org casing, zero in the old one.
+And `/species/almond.html` still ranks "Scion Wood Almond - Self Pollinating
+Papershell" at $9.75 first of 54 listings.
+
+**One thing was changed on the way through.** The register said to cite that $9.75
+against a $44.99 Papershell. Checking the live page, the $44.99 is **Guildford's**.
+Quoting a competitor's price at Correy to illustrate our own bug buys nothing, and it
+inverts the rule DAL-289 applied in the other direction when it kept Daleys' sales
+figures out of five other nurseries' emails. His own $59.00 Self Pollinating
+Papershell tree sits seven rows below his own $9.75 stick on the same page. Same
+cultivar, better number, and his to see.
+
+**Also fixed, pre-existing and unrelated:** `test_prompt_size` was failing on `main`.
+The rendered session state had reached 63,482B against a 60,000B ceiling after four
+sessions of appends today. The test says not to raise the ceiling, so nothing was
+raised: blocks the file itself marks `SUPERSEDED` or `DO NOT USE`, and pre-verdict
+history for questions that now have a recorded verdict in the same file (the July
+funnel measurements under a DEAD verdict, the July storefront geography that DEC-276
+corrected, resolved-and-guarded listing defects), were removed. All of them are
+written up in this log, which is where the test says point-in-time findings belong.
+Rendered state 63,482B -> 58,056B, inside a 60,000B ceiling but not by much.
+
+**Lesson (38th session): an unfollowable instruction is indistinguishable from a
+blocked one, and it will be reported to you as the second.** The earlier session
+reasoned carefully about sequencing and reached the right conclusion for the wrong
+reason: it treated "Benedict has not sent the Daleys reply" as queue depth, which is
+a fact about him, when it was a missing file, which is a fact about us. The check
+that separates the two costs one `ls`. Before recording that you are blocked on
+somebody, open the thing you are waiting on them to act on and confirm it exists.
+Related to DEC-252 (check whether the evidence is already in a system we can read)
+from the opposite side: there, we declared a block that our own data had already
+resolved; here, we declared a block that our own omission had created.

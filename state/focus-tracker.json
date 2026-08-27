@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-08-27",
-  "last_session": 125,
+  "last_session": 126,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2061,6 +2061,26 @@
         "treesmith_web_organic_clicks_28d": 4,
         "treesmith_web_organic_impressions_28d": 286,
         "treesmith_web_pages_indexed": "4 of 11"
+      }
+    },
+    {
+      "session": 126,
+      "date": "2026-08-27",
+      "categories_worked": [
+        "treestock:nursery_expansion",
+        "infrastructure"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [],
+      "notes": "DEC-329. Re-checked whether DAL-248 was still blocked and found the blocker was made of nothing: the Daleys action told Benedict to send deliverables/daleys-reply-2026-08-27.txt, and that file was never written (not on disk, not in git, not in any Linear comment; DEC-315 cites the same path). Session 125 reasoned correctly about queue depth and reached the right call for the wrong reason: it read 'the reply is unsent' as a fact about Benedict when it was a fact about us. Wrote the draft, posted it to DAL-248 where deliverables belong, repointed the action at that comment. Re-pulled every fact rather than copying this morning's (DEC-324): still exactly 2 contradicting feed rows, OutOfStock normalisation complete at 2,949 rows, /species/almond.html still ranks the $9.75 scion wood first of 54. Changed the comparison the register recorded, because its $44.99 Papershell is GUILDFORD'S and quoting a competitor's price at Correy inverts the DAL-289 rule; his own $59.00 tree of the same cultivar is seven rows below his own stick. nursery_crm.validate now fails an open_action naming a repo path not on disk, proven failing on the real text and given a positive control that must stay silent. Also fixed a pre-existing failure on main: test_prompt_size was red at 63,482B against a 60,000B ceiling after four sessions of appends today; trimmed superseded and pre-verdict blocks rather than raising the ceiling, per the test's own instruction. 58,056B now. DAL-248 stays Todo on Benedict: it unblocks when he sends, and he can now actually send.",
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 12,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "rendered_session_state_bytes": 58056,
+        "nursery_open_actions_on_benedict": 3
       }
     }
   ],
