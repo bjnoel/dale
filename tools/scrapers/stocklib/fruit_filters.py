@@ -45,9 +45,12 @@ FRUIT_FILTERS = {
         # dropping the old spellings would read as a mass delisting overnight.
         #
         # "Plant List/..." is the feed's own third spelling for the same three
-        # buckets, and leaving it out cost 15 products, 4 of them buyable and
-        # squarely the collector stock the site exists for: Chinese Red
-        # Bayberry, Kaffir Plum, OkeeDokee nectarine and a Navelina orange.
+        # buckets, and leaving it out cost 23 products: 5 buyable (Chinese Red
+        # Bayberry, Kaffir Plum, OkeeDokee nectarine, Navelina orange, Carolina
+        # Reaper) and 18 out of stock but watchable, which is the half that
+        # matters more (Yuzu, Yellow Mangosteen grafted, Dwarf Macadamia A16,
+        # Abiu Z4, Dorrigo Blood plum, Carambola B10). A variety absent from the
+        # filtered set cannot restock, so a watch on it can never fire.
         "include_prefixes": [
             "Fruit and Nut Trees", "Fruit Trees/",
             "Plant List/Fruit and Nut Trees",

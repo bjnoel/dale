@@ -29,10 +29,11 @@ feed and would fail silently:
     454 of 1,998 groups disagreeing with themselves.
   - An empty category makes stocklib.fruit_filters drop every Daleys product
     from the site with no alarm anywhere, so the resolution chain is load-bearing.
-  - The feed grew a category column on 2026-08-27 and it changed vocabulary at
-    the same time, from Plant-List headings to breadcrumb paths. The filter has
-    to speak both, and the third spelling ("Plant List/Fruit and Nut Trees")
-    was worth 15 products on its own.
+  - The feed grew a category column in the 2026-08-25 refresh (confirmed by
+    Correy 2026-08-27) and it changed vocabulary at the same time, from
+    Plant-List headings to breadcrumb paths. The filter has to speak both, and
+    the third spelling ("Plant List/Fruit and Nut Trees") was worth 23 products
+    on its own.
   - A truncated feed still parses as valid CSV, so the product floor is the only
     thing standing between a bad fetch and an overwritten snapshot.
 
@@ -228,8 +229,8 @@ class CategoryTest(unittest.TestCase):
         self.assertFalse(is_fruit_product(jacaranda, "daleys"))
 
     def test_plant_list_spelling_of_fruit_and_nut_trees_is_renderable(self):
-        """The feed's third spelling for the same bucket. Missing it dropped 15
-        products, 4 of them buyable, including this Navelina orange."""
+        """The feed's third spelling for the same bucket. Missing it dropped 23
+        products, 5 of them buyable, including this Navelina orange."""
         products, _ = _products()
         orange = products["Orange - Navelina"]
         self.assertEqual(orange["category"], "Plant List/Fruit and Nut Trees")

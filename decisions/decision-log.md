@@ -13389,24 +13389,40 @@ had not asked for:
 All numbers below are measured against the live feed pulled 2026-08-27
 (3,650 rows, 1,998 product groups).
 
-### 1. The category column exposed what the fallbacks had been guessing
+### 1. The category column had already landed, silently, two days before the email
 
-The feed carries `category` on 1,998 of 1,998 groups. `CategoryResolver` already
-preferred the feed's own column, so adopting it was free. What was not free is that
-the vocabulary changed at the same time: breadcrumb paths
-(`Fruit Trees/Tropical Fruit Trees/Sapodilla`) where the HTML scraper had read
-Plant-List headings (`Fruit and Nut Trees`). `FRUIT_FILTERS["daleys"]` half-covered
-it, and the half it missed was a **third** spelling, `Plant List/Fruit and Nut
-Trees`, worth 15 products, 4 of them buyable and squarely the collector stock the
-site exists for: Chinese Red Bayberry, Kaffir Plum, an OkeeDokee nectarine and a
-Navelina orange.
+Correy's email is dated 2026-08-27. The column appeared in the **2026-08-25**
+refresh, and `CategoryResolver` already preferred the feed's own column, so it took
+effect the night it appeared with nothing announcing it. Snapshots on disk:
 
-Both vocabularies stay in the prefix list. Snapshots written before today carry the
-old spellings and `stocklib.changes` reads them back to diff, so pruning them would
-read as an overnight mass delisting.
+| snapshot | categories | on site |
+|---|---|---|
+| 2026-08-24 | 603 blank, 1,384 Plant-List headings, 11 paths | 1,207 |
+| 2026-08-25 | 1,986 breadcrumb paths, 12 headings | 1,343 |
 
-Net on the site: **1,207 -> 1,366 products.** The 95 that left matter more than the
-231 that arrived:
+That 1,207 -> 1,343 is Correy's change, not ours. Worth recording as its own fact:
+a supplier can alter what our site shows overnight, in the right direction, and
+nothing on our side reports it. The first draft of this entry credited the whole
+1,207 -> 1,366 move to today's work, which was wrong.
+
+**What today's change actually adds is +23**, 1,343 -> 1,366. The vocabulary shifted
+to breadcrumb paths (`Fruit Trees/Tropical Fruit Trees/Sapodilla`) where the HTML
+scraper had read Plant-List headings (`Fruit and Nut Trees`), and
+`FRUIT_FILTERS["daleys"]` half-covered it. The half it missed was a **third**
+spelling, `Plant List/...`: 5 buyable (Chinese Red Bayberry, Kaffir Plum, an
+OkeeDokee nectarine, a Navelina orange, a Carolina Reaper) and 18 out of stock but
+watchable, which is the half that matters more. A variety absent from the filtered
+set cannot restock, so a watch on Yuzu, Yellow Mangosteen, Dwarf Macadamia A16,
+Abiu Z4, Dorrigo Blood plum or Carambola B10 could never have fired.
+
+Both vocabularies stay in the prefix list. Snapshots written before 2026-08-25 carry
+the old spellings and `stocklib.changes` reads them back to diff, so pruning them
+would read as an overnight mass delisting.
+
+### 1b. What the column fixed on 2026-08-25, found while verifying the above
+
+The 95 products that left on the 25th matter more than the 231 that arrived, and
+none of this was noticed at the time:
 
 - **32 scion wood groups stopped being fruit trees.** $9.75 for a 15cm grafting
   stick, named by cultivar ("Scion Wood Apple - Pink Lady"), which `species_match`
@@ -13480,9 +13496,18 @@ flagged is gone.
 lead times Correy gave, and carry the pre-order state through to the alert path so
 the wording that was written for it can finally fire.
 
-**Blast radius checked before shipping:** only 15 of the 231 newly-included products
-are buyable today, all species-level oddities (Amla, Betel Nut, Candle Nut, herbs and
-perennial vegetables) that mint no variety slug, so no watched cultivar goes 0 -> >0
-on the filter change alone. Run `send_variety_alerts.py` in preview on the first
-night regardless: a filter change is exactly the shape that manufactures a phantom
-restock (DEC-293).
+**Blast radius checked before shipping, then verified after.** A filter change is
+exactly the shape that manufactures a phantom restock (DEC-293), so
+`send_variety_alerts.py --dry-run --date 2026-08-27` was run against the regenerated
+snapshot, comparing new-code 08-27 against old-code 08-26: the worst-case boundary.
+It found one restock, the Papaya - Broad Leaf already sent at 00:00 UTC, correctly
+skipped by the same-day cooldown. **Zero phantom restocks.**
+
+Today's snapshot was deliberately regenerated with the new code rather than left for
+tonight, because today's alert run had already completed at 00:00 UTC. That puts the
+filter delta on a day boundary whose alerts are spent, so tonight's 08-28 vs 08-27
+diff is new-code against new-code and cannot fire on the change itself.
+
+`build_species_state_pages.py` was deliberately NOT rebuilt by hand: it runs with
+`--ledger --allow-delete`, and an ad-hoc run advances a lifecycle absence counter
+off a mid-day state. It picks the change up on tonight's normal run.

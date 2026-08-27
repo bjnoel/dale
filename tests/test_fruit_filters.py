@@ -196,8 +196,9 @@ class FruitFiltersTest(unittest.TestCase):
 
     def test_daleys_speaks_the_feeds_plant_list_vocabulary(self):
         """The feed spells the same three buckets a third way. Leaving
-        "Plant List/" out cost 15 products, 4 of them buyable and squarely the
-        collector stock the site exists for."""
+        "Plant List/" out cost 23 products: 5 buyable, and 18 out of stock but
+        watchable, which is the half that matters more. A variety absent from
+        the filtered set cannot restock, so a watch on it can never fire."""
         for title, cat in (
             ("Orange - Navelina", "Plant List/Fruit and Nut Trees"),
             ("Kaffir Plum", "Plant List/Fruit and Nut Trees"),

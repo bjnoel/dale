@@ -89,9 +89,12 @@ FEEDS = {
         # leaves 454 of 1,998 groups disagreeing on their own group URL.
         # Stripping the prefix wherever it appears leaves 0.
         "group_url_re": r"/sku\d+-",
-        # The feed grew a `category` column on 2026-08-27 (Correy: "I have made
-        # this update with category as the last one in the list"), and it now
-        # covers 1,998 of 1,998 groups. The frozen url -> category map below is
+        # The feed grew a `category` column in the 2026-08-25 refresh, which
+        # Correy confirmed on 2026-08-27 ("I have made this update with category
+        # as the last one in the list"). It covers 1,998 of 1,998 groups. Note
+        # the two dates: the resolver already preferred the feed's own column,
+        # so the change took effect the night it appeared and nothing announced
+        # it. A silent improvement is still a silent change of behaviour. The frozen url -> category map below is
         # demoted to a fallback rather than deleted: fruit_filters gates daleys
         # on category prefixes, so a feed that silently stops emitting the
         # column would drop every Daleys product off the site with no alarm.
