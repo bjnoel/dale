@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-08-27",
-  "last_session": 121,
+  "last_session": 122,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -1973,6 +1973,26 @@
       ],
       "tickets_proposed": [],
       "notes": "DEC-323. Two measurement guards. DAL-259: test asserting every sitemap-listed static page carries the Plausible tag, and that any other hand-written static page is declared token-bearing or non-public with a reason, so a new untracked page cannot arrive by default; matched on the script src not the bare hostname, because the preconnect/dns-prefetch hints also carry it. Checked failing-then-passing both directions. DAL-262: silent-subscriber alarm, but NOT on the card's rule. '14 days' false-fires on three healthy subscribers who have a 20-day calendar gap in April, when the digest was not running; gaps are now counted in opportunities (sends that reached somebody) with total silence reported separately as a sender outage. Thresholds 3 daily / 2 weekly sit one clear of the measured noise floor (2 and 1). Replayed over all 169 days: 22 subscriber-alert days, 21 of them the real DAL-260 defect, caught 14 days earlier than Benedict found it. Wired into run-all-scrapers.sh, deployed, verified from /opt/dale/scrapers. DAL-248 not started: its own sequencing rule is blocked on an unsent Daleys reply sitting with Benedict.",
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 12,
+        "treesmith_downloads": 432,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "treestock_outbound_clicks_30d": 1961
+      }
+    },
+    {
+      "session": 122,
+      "date": "2026-08-27",
+      "categories_worked": [
+        "treestock:seo"
+      ],
+      "tickets_completed": [
+        "DAL-254"
+      ],
+      "tickets_proposed": [],
+      "notes": "DEC-324. Deliberately worked a different category: treestock:data_quality had been worked in 3 of the last 5 session-days with no metric movement. Published /fruit-tree-shipping-by-state.html plus /shipping-reachability.json under CC BY 4.0, rebuilt nightly, the first asset treestock owns that is worth citing (DEC-245 concluded we were pricing rented links precisely because we owned nothing linkable on merit). 168 measured days, 119 species, every tracked nursery, joined to published shipping policy. Two caveats carried on the ticket did NOT survive being recomputed: (1) six days in June/July recorded exactly ONE nursery because the scrapers failed, and averaging those outages in understated everything, moving 'in stock somewhere every measured day' from 69 species to 100 of 119; excluded dates are printed in the published JSON. (2) 'the panel grew from 19 to 27' was wrong, day one had 8, so the page now derives the panel from the data every night and shows a recent-30-day average beside the whole-window one. Headline finding: national rarity is largely a myth, state reachability is the real constraint, and 74 of 119 species were never once buyable in Tasmania while WA reached 117. Ten tests pin both arithmetic decisions (nursery-day rollup, outage exclusion) at the OBSERVED values rather than the constant. Suite green at 3,530. Judge on referring domains, which we still cannot see.",
       "metric_snapshot": {
         "revenue_monthly": 35.15,
         "subscribers": 12,

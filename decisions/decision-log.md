@@ -14106,3 +14106,103 @@ alarms on innocent subscribers in the exact window the alarm was built for, and 
 only thing that found it was replaying the rule over the log before shipping it.
 Backtest the alarm, and prefer a threshold expressed in the units of the thing that
 can actually fail.
+
+---
+
+## DEC-324 — The first thing treestock owns that is worth citing, and the six days that were not measured
+
+**Date:** 2026-08-27
+**Tickets:** DAL-254 (Done)
+**Authority:** Dale autonomous (code, $0)
+
+### Decision
+
+Published `/fruit-tree-shipping-by-state.html` plus `/shipping-reachability.json`
+under CC BY 4.0, rebuilt nightly from the full availability history joined to each
+nursery's published shipping policy. Commit e0fbd24, live on the 00:00 UTC build.
+
+DEC-245 declined a $70/yr rented directory link and concluded we were reduced to
+pricing links precisely because treestock owns nothing anyone would link to on
+merit. Every page we have is a live stock table: useful, not citable. This is one
+page built for the other job. It is what DAL-232 (Urban Revolution), DAL-167 (Rare
+Fruit SA) and DAL-252 (STFC) link TO, and the first page on the site an AI
+assistant has a reason to quote.
+
+Judge it on referring domains, not its own traffic. We still cannot see referring
+domains, which is DAL-253 and is now more valuable than it was this morning.
+
+### What the recomputation changed
+
+Two figures this business has been quoting since DEC-246 did not survive being
+recomputed from the raw history, and both were wrong in the pessimistic direction.
+
+**Six days in June and July recorded exactly one nursery.** The scrapers had
+failed. 2026-06-24, 06-26, 06-29, 06-30, 07-02 and 07-03, plus two partial days at
+56% and 60% of the panel on 07-11 and 07-19. On those days "nothing was in stock
+anywhere in Australia" is a fact about our own cron, and every average in DAL-115
+and DEC-246 included them silently. Excluding them moves **"in stock somewhere on
+every single measured day" from 69 species to 100 of 119**.
+
+The exclusion threshold is measured rather than chosen, which is DEC-323's lesson
+applied on purpose. Ranked by share of the largest panel seen up to that day, the
+176 observed days are: six at 0.04, one at 0.56, one at 0.60, then the healthy
+floor at 0.89 and everything else at 0.92 or above. 0.75 sits in the empty band
+between the worst partial day and the worst healthy one, so it catches every
+outage and no ordinary day. Completeness is judged against the RUNNING maximum,
+not the final panel, or March would be excluded for being March. The 8 excluded
+dates are published in the JSON so a reader can audit the call rather than take
+our word for it.
+
+**"The panel grew from 19 nurseries to 27" is wrong. Day one had 8.** That
+sentence has been sitting in DEC-246 and in the DAL-254 card as a caveat to carry
+onto the page, and I was one edit away from printing it. The page now derives the
+figure from the history, and shows a last-30-day average beside the whole-window
+one, so a growing panel is disclosed instead of quietly depressing every state.
+
+### The published numbers (168 measured days, 119 species, to 2026-08-27)
+
+| State | Nurseries shipping there | Species ever reachable | Avg/day (30d) | Avg/day (window) |
+| -- | -- | -- | -- | -- |
+| VIC | 20 | 119 | 113.5 | 112.3 |
+| NSW | 17 | 119 | 113.4 | 112.2 |
+| ACT | 18 | 119 | 113.4 | 112.2 |
+| QLD | 17 | 119 | 113.4 | 112.2 |
+| WA | 9 | 117 | 105.3 | 103.3 |
+| SA | 14 | 114 | 103.8 | 104.0 |
+| NT | 3 | 66 | 50.3 | 49.0 |
+| TAS | 3 | 45 | 29.4 | 28.7 |
+
+**74 of 119 species were never once buyable in Tasmania.** Three nurseries will
+send a plant there at all: The Diggers Club, Fruit Salad Trees, Garden Express.
+WA reaches 117 of 119, so the WA-is-the-cut-off-state belief held across the WA
+rare fruit community is still wrong, and the page says so by name rather than
+burying it.
+
+The national scarcity list replicates DEC-246 independently from a different code
+path, which is the best validation available: Kakadu Plum 5 days of 168 from one
+nursery, Riberry 50 from one, Muntries 71 from one, Quandong 94 from two, Cherry
+of the Rio Grande 145 from two.
+
+### Method commitments, all pinned by tests
+
+Everything is rolled up to **nursery-day, never listing-day**. DEC-246 flagged
+that `compute_rarity_scores` averages over listings, so a nursery carrying twenty
+named varieties of one species outvotes four nurseries carrying one each. That is
+acceptable in an internal ranking signal and indefensible in a published number.
+`tests/test_shipping_reachability.py` asserts the rollup, the outage exclusion at
+each observed panel value, the growing-panel case, the CC BY declaration, the JSON
+link, the Dataset JSON-LD, the analytics tag (DEC-249) and the sitemap entry.
+
+A nursery removed from the registry stops contributing to the published figures
+immediately, which is what makes honouring Heaven On Earth's removal (DEC-319)
+real rather than cosmetic.
+
+### Lesson
+
+**A caveat copied forward is not a caveat checked.** The "19 nurseries" figure had
+been carried through DAL-115, DEC-246, the DAL-254 card and my own memory, and it
+was never true; and the six outage days had been inside every average for two
+months without anybody looking at the size of the instrument on each day. Both
+were found by the same act: computing the denominator instead of inheriting it.
+Before publishing a number under a licence that invites other people to repeat it,
+recompute every caveat as well as every claim.

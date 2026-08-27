@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-27",
-  "session_count": 121,
+  "session_count": 122,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -714,7 +714,36 @@
           "compute_rarity_scores in build_species_pages.py averages availability across LISTINGS, so a nursery with many variety SKUs outvotes several nurseries with one each. DEC-246 rolls up to nursery-day level instead. Use the nursery-day roll-up for any public claim.",
           "No South Australian nursery is tracked at all (DAL-255)."
         ],
-        "linkable_asset": "DEC-245 recorded that treestock had nothing citable and was therefore pricing rented links. This dataset is the first citable thing the business has produced. DAL-254 proposes publishing it as a page for the free link targets to point at."
+        "linkable_asset": "DEC-245 recorded that treestock had nothing citable and was therefore pricing rented links. This dataset is the first citable thing the business has produced. DAL-254 proposes publishing it as a page for the free link targets to point at.",
+        "linkable_asset_published": {
+          "decision": "DEC-324 / DAL-254 (2026-08-27). SHIPPED, commit e0fbd24, live on the 00:00 UTC build.",
+          "page": "https://treestock.com.au/fruit-tree-shipping-by-state.html",
+          "data": "https://treestock.com.au/shipping-reachability.json (CC BY 4.0, rebuilt nightly)",
+          "builder": "tools/scrapers/build_shipping_reachability.py, wired into run-all-scrapers.sh, sitemap, llms.txt and the Insights nav",
+          "why": "DEC-245 concluded treestock was pricing rented links only because it owned nothing citable. This is the asset DAL-232 (Urban Revolution), DAL-167 (Rare Fruit SA) and DAL-252 (STFC) link TO. Judge on referring domains (needs DAL-253), not its own traffic.",
+          "outage_days_excluded": "SIX days recorded exactly ONE nursery (2026-06-24, 06-26, 06-29, 06-30, 07-02, 07-03) plus two partial days at 56% and 60% (07-11, 07-19). Scraper failures, not empty nurseries. DAL-115 and DEC-246 averaged them in. Excluding them moves 'in stock somewhere on every measured day' from 69 species to 100 of 119. Threshold 0.75 of the running-max panel is MEASURED: observed days are six at 0.04, one at 0.56, one at 0.60, then the healthy floor at 0.89. Excluded dates are published in the JSON.",
+          "panel_correction": "DEC-246's 'grew from 19 nurseries to 27' is WRONG. Day one (2026-03-05) had 8; today 25 report. The page derives this nightly instead of restating it, and shows a last-30-day average beside the whole-window one.",
+          "measured_2026_08_27": {
+            "window": "2026-03-05 to 2026-08-27, 176 days of which 168 measurable",
+            "species": 119,
+            "saturated_all_days": "100 of 119 in stock somewhere in Australia on EVERY measured day",
+            "by_state_nurseries_ever_avg30d_avgwindow": {
+              "VIC": "20 / 119 / 113.5 / 112.3",
+              "NSW": "17 / 119 / 113.4 / 112.2",
+              "ACT": "18 / 119 / 113.4 / 112.2",
+              "QLD": "17 / 119 / 113.4 / 112.2",
+              "WA": "9 / 117 / 105.3 / 103.3",
+              "SA": "14 / 114 / 103.8 / 104.0",
+              "NT": "3 / 66 / 50.3 / 49.0",
+              "TAS": "3 / 45 / 29.4 / 28.7"
+            },
+            "headline": "74 of 119 species were never once buyable in Tasmania. Only Diggers, Fruit Salad Trees and Garden Express ship there at all.",
+            "wa_correction_holds": "WA reaches 117 of 119. The WA-is-cut-off belief is still wrong and the page says so by name.",
+            "scarcity_replicates_dec246": "Kakadu Plum 5/168 from 1 nursery, Riberry 50/168 from 1, Muntries 71/168 from 1, Quandong 94/168 from 2, Cherry of the Rio Grande 145/168 from 2. Independent code path, same answer."
+          },
+          "method": "Rolled up to NURSERY-day, never listing-day (DEC-246's warning about compute_rarity_scores). A nursery removed from the registry stops contributing immediately, which is what makes DEC-319's Heaven On Earth removal real rather than cosmetic.",
+          "guard": "tests/test_shipping_reachability.py pins the rollup, the outage exclusion at each observed panel value, the growing-panel case, the CC BY declaration, the JSON link, the Dataset JSON-LD, the analytics tag and the sitemap entry."
+        }
       },
       "lead_magnet_wa_guide": {
         "measured": "2026-07-30 (DEC-249)",
