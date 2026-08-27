@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-27",
-  "session_count": 123,
+  "session_count": 124,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -714,6 +714,24 @@
           "no_backfill": "Region data starts 2026-08-13. Nothing before that date carries a region. DAL-249's state choice gets a usable sample a few weeks out; do not read the first days as representative.",
           "verification": "Front-door test per DEC-270, not an in-process lookup. Three pageviews through /api/event with X-Forwarded-For 58.7.0.1, 1.128.0.1, 144.6.1.1 on walkthrough.au returned visit:region AU-NT, AU-QLD, AU-NSW, matching the database exactly, and visit:city 2073124 (Darwin) and 2147714 (Sydney). Real traffic confirmed separately: treestock.com.au showed AU-QLD visitors within four minutes of the restart.",
           "test_artefacts": "Two deliberate artefacts on walkthrough.au, the only zero-traffic site on the instance: /dal-251-geoip-test (2026-08-06, DEC-270) and /dal-251-maxmind-test (2026-08-13, 3 views). Both kept rather than removed with a hand-written ALTER TABLE DELETE on the events table, which is the larger risk."
+        },
+        "query_movement_thresholds": {
+          "decision": "DEC-327 / DAL-268 (2026-08-27). The consequence ticket after DAL-261 fixed the truncation.",
+          "finding": "The daily email's 'position movers' block was noise, and the truncation fix made that visible rather than causing it. Old rule: moved 5+ spots, NO impression floor, sorted by size of move, top 10. ~316 qualifying rows/week, 45% of them queries that vanished from GSC entirely the next week, 31% held. Of the rows actually PRINTED the median had 1 impression and 98% had <=2 in both weeks.",
+          "why_structural": "Sorting by size of move selects the extreme tail, and the extreme tail of a position distribution is wherever the data is thinnest. The block was guaranteed to print the least reliable rows available.",
+          "noise_floor_measured": "Median absolute week-over-week position swing by min impressions across both weeks, 8 windows 2026-06-30..2026-08-24: 1-2 impr n=4192 median 4.0 p90 26.0 and 45% move >=5; 3-9 n=1186 median 2.2 p90 12.9; 10-29 n=231 median 1.4 p90 8.7; 30+ n=15 median 0.5. At 1-2 impressions the MEDIAN query moves 4 spots doing nothing.",
+          "the_broken_dial_was_the_floor_not_the_spots": "Backtested on whether the move was still there a week later. No floor + 15 spots = 131 rows/wk, 50% vanished, 27% held (WORSE than the old rule). Floor 5 + 5 spots = 27 rows/wk, 2% vanished, 54% held. Floor 5 + 10 spots = 10 rows/wk, 2% vanished, 51% held. Raising the spot threshold alone made it worse; the floor did all the work.",
+          "shipped": "MOVER_MIN_IMPRESSIONS = 5 (in BOTH weeks), MOVER_MIN_SPOTS = 10 (one clear of the 10-29 band p90 of 8.7), NEW_QUERY_MIN_IMPRESSIONS = 5, and movers sorted by impressions not by change. tools/autonomous/traffic_report.py, deployed.",
+          "new_query_threshold": "At >=3 impressions: 123 rows/wk, 52% gone the following week, 4% ever earned a click. At >=5: 23 rows/wk, 76% persist, 10% earned a click.",
+          "live_output_verified": "Same evening: buy olive tree 37->21, olive trees for sale near me 34->20, lime trees for sale 7->20, plum trees for sale 12->23, macadamia trees for sale 60->23. Commercial intent, 10-22 impressions each. Independently surfaced the same olive and macadamia stories the page-level pass found.",
+          "guard": "tests/test_traffic_report_query_movement.py, 9 tests. Proven to FAIL before trusted to pass (DEC-326): reverted to the old rule and 4 of 9 fail. Full suite 3,555 OK."
+        },
+        "earning_page_drift_check": {
+          "decision": "DEC-327 / DAL-268 part 2 (2026-08-27). 8 weekly windows, page dimension, paginated.",
+          "verdict": "No drift. First 3 weeks vs last 3: species+state clicks 359 -> 653 (+82%) on impressions 12,211 -> 22,595 (+85%); species clicks 263 -> 480 (+83%) on impressions 17,134 -> 24,409 (+42%). 46 gainers vs 20 losers among earning pages with >=3 clicks in the first window.",
+          "average_position_is_mix_dependent_do_not_use_it": "Ranking pages by change in average position named /species/macadamia.html (+17 spots), /species/cacao.html (+16) and /species/mangosteen.html (+12) as the worst drops. ALL THREE GAINED CLICKS (4->8, 1->2, 1->6). Impressions tripled or quadrupled, expanding into broader queries they rank badly for, which drags an impression-weighted average down while the page earns more. Same family as DEC-255: a metric that looks worse when the thing gets better. Judge earning pages on CLICKS.",
+          "one_genuine_loss": "/buy-olive-trees-western-australia.html: 43 -> 22 clicks on RISING impressions (940 -> 1,146), position 23.5 -> 26.2. Our largest single earning-page decline. NOT diagnosed: the GSC query dimension cannot explain it (all 'olive' queries together show clicks 8 -> 13) because query-dimension coverage is ~27% of impressions. Recorded as an observation, not a cause. Not ticketed: backlog at 14/15 and DEC-243 closed the title/meta lever, which is the only thing to reach for without a diagnosis.",
+          "weekly_totals_8wk": "clicks by week 2026-06-30 onward: 45, 46, 41, 65, 64, 68, 81, 107. The 2026-07-14..07-20 window returned 4,335 distinct queries against a typical 1,700-2,600, on 6,905 impressions and the LOWEST clicks of the eight weeks."
         }
       },
       "outreach_clubs": {

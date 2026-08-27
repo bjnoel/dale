@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-08-27",
-  "last_session": 123,
+  "last_session": 124,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2022,6 +2022,23 @@
         "expenses_monthly": 7.0,
         "treestock_outbound_clicks_30d": 2044,
         "treestock_to_store_clicks_30d": 0
+      }
+    },
+    {
+      "session": 124,
+      "date": "2026-08-27",
+      "categories_worked": [
+        "treestock:seo"
+      ],
+      "tickets_completed": [
+        "DAL-268"
+      ],
+      "tickets_proposed": [],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 12,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27
       }
     }
   ],

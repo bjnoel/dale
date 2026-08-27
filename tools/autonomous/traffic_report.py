@@ -188,6 +188,35 @@ def get_gsc_service():
 GSC_PAGE_SIZE = 25000
 GSC_MAX_PAGES = 40
 
+# Thresholds for the "new queries" and "position movers" blocks in the daily
+# email. These are MEASURED, not chosen (DEC-327, DAL-268). Backtested over 8
+# consecutive 7-day treestock windows (2026-06-30..2026-08-24), scoring each
+# candidate rule on whether the thing it reported was still there a week later.
+#
+# The old rule was "moved 5+ spots", with no impression floor at all. That
+# produced ~316 qualifying rows a week, of which 45% were queries that vanished
+# entirely the next week and only 31% held their new position. 98% of the rows
+# it actually printed had <= 2 impressions in both weeks, because it sorted by
+# size of move and the biggest moves live in the thinnest data: at 1-2
+# impressions the MEDIAN week-over-week position swing is 4.0 spots and 45% of
+# all queries clear 5, so the threshold sat below the noise floor of the
+# population that dominated the list.
+#
+# The dial that was broken was the impression floor, not the spot count.
+# Raising the spot threshold to 15 with no floor barely moved the hold rate
+# (31% -> 27%); adding a floor of 5 took it to ~51% and dropped the "vanished
+# next week" rate from 45% to 2%. Hold rate plateaus around 50-55% above a
+# floor of 3, so a floor of 5 with 10 spots is one clear of the 10-29
+# impression band's p90 drift (8.7 spots) and yields ~10 rows a week, which is
+# what the block prints anyway.
+MOVER_MIN_IMPRESSIONS = 5   # in BOTH weeks
+MOVER_MIN_SPOTS = 10
+
+# Same treatment for new queries. At >= 3 impressions, 123 rows a week, 48%
+# never seen again and 4% ever earned a click. At >= 5 it is 23 rows a week,
+# 76% still present the next week and 10% earned a click.
+NEW_QUERY_MIN_IMPRESSIONS = 5
+
 
 def gsc_query(service, site_url, start_date, end_date, dimensions,
               page_size=GSC_PAGE_SIZE, max_pages=GSC_MAX_PAGES):
@@ -337,7 +366,7 @@ def collect_gsc_stats(sites):
         # New queries: in A but not in B, sorted by impressions
         new_queries = []
         for q, r in sorted(a_queries.items(), key=lambda x: x[1]["impressions"], reverse=True):
-            if q not in b_queries and r["impressions"] >= 3:
+            if q not in b_queries and r["impressions"] >= NEW_QUERY_MIN_IMPRESSIONS:
                 new_queries.append({
                     "query": q,
                     "position": round(r["position"], 1),
@@ -346,14 +375,17 @@ def collect_gsc_stats(sites):
                 })
         stat["new_queries"] = new_queries[:10]
 
-        # Position movers: in both periods, position changed 5+ spots
+        # Position movers, thresholds measured rather than chosen: see DEC-327.
         movers = []
         for q in a_queries:
             if q in b_queries:
+                if min(a_queries[q]["impressions"],
+                       b_queries[q]["impressions"]) < MOVER_MIN_IMPRESSIONS:
+                    continue
                 pos_a = a_queries[q]["position"]
                 pos_b = b_queries[q]["position"]
                 diff = pos_b - pos_a  # positive = improved (lower position is better)
-                if abs(diff) >= 5:
+                if abs(diff) >= MOVER_MIN_SPOTS:
                     movers.append({
                         "query": q,
                         "old_position": round(pos_b, 0),
@@ -361,8 +393,9 @@ def collect_gsc_stats(sites):
                         "change": round(diff, 0),
                         "impressions": int(a_queries[q]["impressions"]),
                     })
-        # Sort: biggest improvements first, then biggest drops
-        movers.sort(key=lambda x: x["change"], reverse=True)
+        # Sort by impressions, not by size of move. Sorting by change picks the
+        # extreme tail of a noisy distribution, which is where the noise lives.
+        movers.sort(key=lambda x: x["impressions"], reverse=True)
         stat["position_movers"] = movers[:10]
 
         results.append(stat)

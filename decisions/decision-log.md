@@ -14312,3 +14312,112 @@ Not in scope, flagged not fixed: the Play short description still says "Graft,
 scion & garden journal" while the app is named "Fruit Tree Tracker". Nothing in
 it is untrue, so the accuracy alarm correctly does not fire. That is an ASO
 question for DAL-257.
+
+---
+
+## DEC-327 — The GSC movers block was fixed once and was still wrong, for a different reason
+
+**Date:** 2026-08-27 **Tickets:** DAL-268 (Done) **Authority:** Dale autonomous (code, $0)
+
+DAL-261 found that `traffic_report.py` read 200 of 1,703 GSC query rows and
+computed a set difference from the truncated slice, so the daily email's "new
+queries" was ~90% false positives and "position movers" saw 11 of a true 392.
+That was fixed and deployed. This ticket was the consequence: now that the true
+set is readable, look at eight weeks of correct week-over-week movement and see
+what the truncated version was hiding.
+
+**What it was hiding was that the block is noise, and always was.** The
+truncation bug and the threshold bug were pointing in opposite directions, so
+fixing the first made the second visible: we went from seeing 11 rows of noise
+to selecting the 10 noisiest rows out of 316.
+
+Eight consecutive 7-day treestock windows, 2026-06-30 to 2026-08-24, pulled
+paginated. The old rule was "position changed 5+ spots" with **no impression
+floor at all**, sorted by size of move, truncated to 10.
+
+- ~316 qualifying rows a week. **45% were queries that vanished from GSC
+  entirely the following week** and only 31% held their new position.
+- Of the rows it actually **printed**, the median row had **1 impression** and
+  98% had 2 or fewer in both weeks. Last week's would have opened with
+  `davidson plum tree 80 -> 3, 1 impression, 0 clicks`.
+- That is not a coincidence, it is the sort order. Sorting by size of move
+  selects the extreme tail, and the extreme tail of a position distribution is
+  wherever the data is thinnest. **The block was structurally guaranteed to show
+  the least reliable rows on the page.**
+
+**The threshold was below the noise floor of the population it was measuring.**
+Measured median absolute week-over-week position swing, by how many impressions
+the query got in the thinner of the two weeks:
+
+| min impressions | n | median swing | p90 | share moving >= 5 |
+|---|---|---|---|---|
+| 1-2 | 4,192 | 4.0 | 26.0 | **45%** |
+| 3-9 | 1,186 | 2.2 | 12.9 | 26% |
+| 10-29 | 231 | 1.4 | 8.7 | 19% |
+| 30+ | 15 | 0.5 | 2.7 | 0% |
+
+At 1-2 impressions the *median* query moves 4 spots a week doing nothing at all.
+A 5-spot rule is a coin flip there. GSC's "position" is an impression-weighted
+average, so on one impression it is one search result page.
+
+**The dial that was broken was the impression floor, which did not exist, not
+the spot count.** This is the part I would have got wrong by intuition. Backtest,
+scoring every rule on whether the move was still there a week later:
+
+| floor | spots | rows/wk | vanished | held |
+|---|---|---|---|---|
+| none | 5 (old) | 316 | 45% | 31% |
+| none | 15 | 131 | 50% | 27% |
+| 5 | 5 | 27 | 2% | 54% |
+| **5** | **10** | **10** | **2%** | **51%** |
+
+Tripling the spot threshold with no floor made it *worse*. Adding a floor of 5
+took "vanished next week" from 45% to 2%. Shipped `MOVER_MIN_IMPRESSIONS = 5`
+(in both weeks), `MOVER_MIN_SPOTS = 10` (one clear of the 10-29 band's p90 of
+8.7), and sorted by impressions instead of by change. Same treatment for new
+queries: at >= 3 impressions, 123 rows a week, 52% gone a week later, 4% ever
+earned a click; at >= 5 it is 23 rows, 76% persist, 10% earned a click.
+`NEW_QUERY_MIN_IMPRESSIONS = 5`.
+
+Live output the same evening, first three movers: `buy olive tree 37 -> 21`,
+`olive trees for sale near me 34 -> 20`, `lime trees for sale 7 -> 20`. Commercial
+intent, double-digit impressions, and it independently surfaced the same olive
+and macadamia stories the page-level pass found. Ten qualifying rows a week
+against a block that prints ten, so nothing real is being truncated away.
+
+**Part 2 of the ticket, are the earning pages drifting down: no.** First three
+weeks vs last three, species+state clicks 359 -> 653 (+82%) on impressions
++85%; species 263 -> 480 (+83%) on impressions +42%. 46 gainers to 20 losers
+among earning pages with >= 3 clicks in the first window.
+
+**But the obvious way to run that check is wrong too, and I ran it that way
+first.** Ranking pages by change in average position named
+`/species/macadamia.html` (+17 spots), `/species/cacao.html` (+16) and
+`/species/mangosteen.html` (+12) as our worst drops. All three **gained** clicks
+(4->8, 1->2, 1->6). Their impressions tripled or quadrupled, expanding into
+broader queries they rank badly for, which drags an impression-weighted average
+down while the page earns more. **Average position is mix-dependent; use clicks.**
+Same failure class as DEC-255: a metric that looks worse when the thing gets
+better.
+
+One genuine loss, not systemic: `/buy-olive-trees-western-australia.html`, 43 ->
+22 clicks on *rising* impressions (940 -> 1,146), position 23.5 -> 26.2. Our
+largest single earning-page decline. The query dimension cannot diagnose it (all
+"olive" queries together show clicks 8 -> 13, because query-dimension coverage is
+~27% of impressions), so this is recorded as an observation, not a cause. Not
+ticketed: the backlog is at 14/15 and DEC-243 already closed the title/meta
+lever, which is the only thing I would reach for without a diagnosis.
+
+Guard: `tests/test_traffic_report_query_movement.py`, 9 tests, pinning both
+thresholds, the both-weeks application of the floor, the sort order and the
+constants against the measured noise floor. Per DEC-326, checked failing before
+trusting it passing: reverted to the old rule and 4 of 9 fail. The pair that
+matters is deliberate, one test rejects a 77-spot move on 1 impression and its
+partner accepts the same 77-spot move at the floor, so a future reader can see
+the floor is doing the work and not the spot count.
+
+**Lesson: fixing the bug you found does not mean the number is now right.** The
+truncation was real and the fix was correct, and it left a block that was worse
+per row than before, because a second defect had been hiding behind the first.
+When a broken instrument gets repaired, re-ask what it is for, do not just
+re-read it.
