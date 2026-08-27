@@ -438,8 +438,17 @@
       "phone": null,
       "contact_form": "https://ausnurseries.com/pages/contact",
       "preferred_channel": "contact_form",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-08-27",
+          "direction": "out",
+          "channel": "contact form",
+          "by": "benedict",
+          "summary": "Touch 1 via their contact form at ausnurseries.com/pages/contact. Goodwill intro, no pitch: what treestock is, that we sent them 96 clicks from 77 people in 30d (our biggest never-contacted destination), a link to /nursery/ausnurseries.html, and an up-front admission that 16 of their 459 listings are ornamentals we mis-filtered as fruit. A form cannot be BCC'd, so hand-logged on Benedict's confirmation.",
+          "evidence": "Benedict confirmed submitted, session 2026-08-27"
+        }
+      ],
       "open_action": {
         "owner": "dale",
         "what": "Category leakage on /nursery/ausnurseries.html: 16 of 459 listings are ornamentals, not fruit. Nine flowering dogwoods, sugar maple, weeping willow, flowering peach/almond/apricot. Touch 1 (2026-08-27) admits this to them and promises a clean-up, so it is now a commitment. Same class as docs/scraper-category-audit.md, a filter tweak not a page bug.",
@@ -540,8 +549,17 @@
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-08-27",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Touch 1 goodwill intro, no pitch: what treestock is, that we sent them 49 clicks from 42 people in 30d, a link to their own page /nursery/heaven-on-earth.html, that we read 128 of their listings with 48 in stock, and the question of whether anything looks wrong. Not captured by the BCC loop, hand-logged on Benedict's confirmation.",
+          "evidence": "Benedict confirmed sent, session 2026-08-27 (no BCC capture)"
+        }
+      ],
       "open_action": null,
       "notes": "Rare tropical specialist, added 2026 via DAL-206."
     },
