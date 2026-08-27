@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-08-27",
-  "session_count": 122,
+  "session_count": 123,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -101,7 +101,31 @@
         "expectation": "Deliberately modest. The homepage block removes a zero rather than being a growth lever, and the badge CTR gain is capped by the page receiving 12 visitors/month. Per DEC-239 the binding constraint is upstream of the funnel, not in it.",
         "drip_email": "DEC-240 / DAL-173: tools/scrapers/send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once only (data/treesmith_intro_sends.json). Nightly cron at 23:30 UTC. It is a logged no-op until /opt/dale/data/treesmith-intro-enabled exists: Benedict approves the copy first (proof-of-concept sent to him 2026-07-30). DRIP_START_DATE 2026-07-30 excludes the 13 existing subscribers, who belong to the separate one-time broadcast DAL-221. utm_content=intro_email on the landing link.",
         "measured_2026_07_30": "DEC-241 / DAL-241. The bottom of the funnel, never measured before: over 6 months treestock produced 1,516 outbound clicks, of which 3 went to treesmith.app and 0 to either app store. In the last 30 days: 14 visitors reached /treesmith.html, 1 clicked apps.apple.com, 0 clicked play.google.com, against 639 visitors who clicked through to a nursery. DAL-218 measured the TOP of the funnel (/treesmith.html pageviews); the outbound goal measures the bottom and says the pass-through is ~0%. Adding CTAs upstream multiplies by zero. Cause is audience intent, not CTA placement: treestock visitors are mid-errand buyers, not app shoppers.",
-        "status": "DEMOTED from strategy to decoration (DEC-241). The cross-promo stays because it is honest and free, but no new treestock->Treesmith funnel tickets until DAL-241's August re-measure shows whether ANY surface produces a store click. If it is still 0-1, stop."
+        "status": "DEMOTED from strategy to decoration (DEC-241). The cross-promo stays because it is honest and free, but no new treestock->Treesmith funnel tickets until DAL-241's August re-measure shows whether ANY surface produces a store click. If it is still 0-1, stop.",
+        "remeasured_2026_08_27": {
+          "decision": "DEC-325 / DAL-241 (Done). The scheduled 4-week re-measure after DEC-239's tagging.",
+          "verdict": "DEAD on the exit test this ticket set for itself. Cross-promo is decoration, not a monetisation path.",
+          "outbound_clicks_30d_sitewide": 2044,
+          "visitors_reaching_treesmith_html_30d": 9,
+          "clicks_to_apps_apple_com_30d": 0,
+          "clicks_to_play_google_com_30d": 0,
+          "clicks_life_to_date_6mo": "3,132 outbound clicks total; 1 ever to the App Store, 0 to Play, 6 to treesmith.app.",
+          "traffic_grew_while_store_clicks_fell": "Outbound clicks 1,245 -> 2,044 (+64%) over the window; store clicks 1 -> 0.",
+          "zero_was_verified_not_assumed": "DEC-249 check run before calling it a zero: the utm_content tags are live and correct in the deployed web root on all five surfaces (homepage/species/variety/landing/rootstock), /treesmith.html carries script.outbound-links.js, and both store badges are genuine <a href> links to apps.apple.com and play.google.com. A click would have been recorded.",
+          "the_tag_could_never_have_worked": "visit:utm_content is a SESSION-ENTRY dimension. Plausible fixes acquisition attributes when a session starts and does not update them on an internal navigation. Of 9 visitors to /treesmith.html, exactly 1 carried a utm_content, and that one's entry page WAS /treesmith.html (arrived from outside). The other 8 clicked a tagged promo block mid-session and Plausible recorded no tag. A UTM parameter on an internal link is inert: a tag only works on something that STARTS a session.",
+          "entry_page_substitute": {
+            "note": "visit:entry_page for sessions that viewed /treesmith.html, 30d. n=9, direction only, and entry page is not the page the CTA was clicked on.",
+            "species+state": 3,
+            "species": 3,
+            "variety": 2,
+            "treesmith_html_direct": 1,
+            "homepage": 0,
+            "category_landing": 0,
+            "implication": "The two surfaces DAL-219 added (homepage, landing) are the two showing zero, and the homepage is the site's largest page. DEC-239 called it 'removes a zero'. It did not."
+          },
+          "sources_of_the_9": "Google 5, Bing 2, chatgpt.com 1, treestock 1.",
+          "consequence": "CLAUDE.md Track B phase 3 still called this the 'New primary monetisation path' three sessions after DEC-241 demoted it. Corrected 2026-08-27 with the numbers and an explicit instruction not to propose funnel, CTA-placement or /treesmith.html conversion work. DAL-220 and DAL-227 stay cancelled: both sit either side of a step measured at 0% pass-through over 3,132 clicks."
+        }
       },
       "blocked_on_benedict": "RESOLVED 2026-07-30 (DEC-252). DAL-242 closed: neither lever needed the decision it asked for. Review prompts (DAL-230) are built and enabled, waiting on a store submission, not on Benedict deciding. The free tier cut (DAL-224) is measurably pointless and recommended for cancellation. The one open item is DAL-264, a lookup rather than a decision: confirm in App Store Connect whether the two production purchases are real.",
       "aso_recommendation_pending": {
@@ -117,10 +141,28 @@
       },
       "store_listing_accuracy_defect": {
         "found": "2026-07-30 (DEC-247)",
-        "status": "iOS FIXED but NOT YET LIVE (2026-08-10, DEC-274). Play STILL LIVE AND WRONG.",
+        "status": "RESOLVED AND GUARDED 2026-08-27 (DEC-326). All four storefronts verified correct: iOS AU, iOS US, Play AU, Play US. Play was the unverified one and is also correct. Do NOT re-fix these.",
         "detail": "Both live store descriptions read 'Pro: unlimited plants, multiple locations, cloud backup, bulk operations and CSV import.' Cloud backup is NOT included in Pro. lib/features/pro/screens/paywall_screen.dart:627-633 lists it as an add-on that Pro unlocks the ability to buy, sold separately at A$9.99/year on top of A$39.99 Pro.",
         "ios": "Corrected FREE OR PRO block pasted into the en-AU description against version 1.0.10, plus the EULA link. Ships when 1.0.10 is released. Verified 2026-08-10 at close: the live listing is still 1.0.9 and still carries the error.",
-        "play": "OUTSTANDING. Short and long description both still say cloud backup is a Pro feature. store-listing-google-play.txt in the app repo is stale and carries it too. Different console, separate paste, no ticket (backlog at 29 vs cap 15)."
+        "play": "RESOLVED. Verified live 2026-08-27 by store_listing_check.py: Play AU and Play US both read 'Free: up to 30 plants, one location...' and 'Cloud Backup is an optional yearly subscription that requires Pro'. The old 'Pro includes cloud backup' line is gone.",
+        "alarm_shipped": {
+          "decision": "DEC-326 / DAL-278 (Done)",
+          "script": "tools/autonomous/store_listing_check.py (--json, --store, --country). Report only, never edits a listing.",
+          "runs": "m_store_listing in treesmith_analytics.py, Mondays 00:00 UTC. Green one-liner when clean, red per-failure lines naming storefront/rule/evidence.",
+          "ground_truth": "freePlantLimit and freeLocationLimit parsed live from entitlement_provider.dart:104-105 on every run, NOT a snapshot of the text.",
+          "rules": [
+            "free_plant_limit: the number the listing promises equals the number we enforce",
+            "pro_is_one_time: Pro described as a one-time purchase, not a subscription",
+            "pro_excludes_cloud_backup: no Pro feature list names cloud backup (the DEC-247 defect)",
+            "cloud_backup_described: present, called a subscription, and stated to require Pro",
+            "divergence: the storefronts do not disagree with each other on the free limit (the DEC-262 defect)"
+          ],
+          "why_not_a_diff": "A snapshot diff fires on every marketing reword, gets muted inside a month, then misses the change that matters. Design test: changing freePlantLimit to 15 makes today's CORRECT copy fail, while a reword that stays true stays silent. Both are tests.",
+          "proven_to_fail": "DEC-265: a failed capability is loud, a failed limit is silent, so no rule was accepted until it failed on text really served by a store. Covered: the real DEC-262 US sentence ('Track up to 50 plants ... all free'), the real DEC-247 Pro sentence, a deleted cloud-backup line, a deleted 'requires Pro', a renamed Flutter constant (raises, does not silently check nothing), and a deleted free-tier sentence (FAILS rather than passes, DEC-249). An unreadable storefront is reported as unreadable, never green.",
+          "tests": "tests/test_store_listing_check.py, 16 tests. Full suite 3,546 OK.",
+          "play_extraction": "Anchored on data-g-id=\"description\", the attribute Play marks the block with, not the minified class name which rotates.",
+          "not_in_scope_flagged": "The Play SHORT description still reads 'Graft, scion & garden journal for collectors' while the app is named 'Fruit Tree Tracker'. Nothing in it is untrue so the accuracy alarm correctly does not fire. ASO question for DAL-257, not a defect."
+        }
       },
       "live_listing_verified_2026_07_30": {
         "ios_name": "TreeSmith: Plant Graft Tracker (30/30)",

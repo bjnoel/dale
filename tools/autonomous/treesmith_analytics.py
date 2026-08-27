@@ -655,6 +655,22 @@ def m_appstore_sources(_host=None, _key=None):
     }
 
 
+def m_store_listing(_host=None, _key=None):
+    """Does the live store copy still describe the app we actually ship?
+
+    The listing is the conversion surface: DEC-261 found all three buyers
+    purchased on install day, so the decision is made from the store page and
+    the first run, before the product is experienced. The copy has been wrong
+    twice (DEC-247, DEC-262) and both times a human found it by reading the
+    page. Rules live in store_listing_check, which asserts against the Flutter
+    source rather than against a snapshot of yesterday's text.
+    """
+    sys.path.insert(0, SCRIPT_DIR)
+    import store_listing_check  # noqa: E402 - sibling module
+
+    return store_listing_check.check()
+
+
 def m_purchase_reconciliation(host, key):
     """Cross-check `paywall_result` purchase outcomes against `purchase_succeeded`.
 
@@ -1041,6 +1057,35 @@ def render(metrics):
                          f"{sp['boundary']['impressions']:,} impressions are in "
                          f"neither window.", GREY)
 
+    # Store listing accuracy. Sits with discovery rather than with the product
+    # sections because it is part of the same surface: the ranks say where we
+    # appear, discovery says whether anyone looked, and this says whether what
+    # they read when they got there was true.
+    sl = metrics.get("store_listing")
+    if sl:
+        section("Store listing accuracy")
+        if not sl["ok"]:
+            err("Store listing", sl["error"])
+        else:
+            d = sl["data"]
+            lim = d["limits"]
+            if d["ok"]:
+                kv("All storefronts match the app",
+                   f"{len(d['listings'])} checked against "
+                   f"freePlantLimit={lim['freePlantLimit']}, "
+                   f"freeLocationLimit={lim['freeLocationLimit']}", GREEN)
+            else:
+                for entry, finding in d["failures"]:
+                    kv(f"!! {entry['store']}/{entry['country']} "
+                       f"{finding['rule']}", finding["detail"], RED)
+                if d["divergence"]:
+                    kv("!! storefronts diverge", d["divergence"], RED)
+                for entry in d["unreadable"]:
+                    # Not a pass. DEC-249: an absence of measurement and a
+                    # clean result must not look alike.
+                    kv(f"?? {entry['store']}/{entry['country']} unreadable",
+                       entry["error"], RED)
+
     # Activation
     section("Activation")
     pl = metrics["plants"]
@@ -1312,6 +1357,7 @@ def main():
         "revenuecat": run_metric(m_revenuecat),
         "rank": run_metric(m_rank),
         "sources": run_metric(m_appstore_sources),
+        "store_listing": run_metric(m_store_listing),
         "reconciliation": run_metric(m_purchase_reconciliation, host, key),
         "retention": run_metric(m_retention, host, key),
         "top_screens": run_metric(m_top_screens, host, key),

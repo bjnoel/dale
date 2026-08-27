@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-08-27",
-  "last_session": 122,
+  "last_session": 123,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2000,6 +2000,28 @@
         "nurseries_monitored": 27,
         "expenses_monthly": 7.0,
         "treestock_outbound_clicks_30d": 1961
+      }
+    },
+    {
+      "session": 123,
+      "date": "2026-08-27",
+      "categories_worked": [
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-241",
+        "DAL-278"
+      ],
+      "tickets_proposed": [],
+      "notes": "DEC-325 + DEC-326. Switched off treestock per the stale-approach gate (data_quality worked 3 of 5 session-days). DAL-241: the scheduled 4-week re-measure of the treestock->Treesmith funnel came due today and the funnel FAILED the exit test it wrote for itself. 30d: 2,044 outbound clicks sitewide, 9 visitors to /treesmith.html, ZERO to either app store; 6mo: 3,132 clicks, 1 ever to the App Store. Traffic grew 64% over the window while store clicks went 1 -> 0. Verified the tags were live, the page instrumented and the badges real hrefs before calling it a zero (DEC-249). Second and more transferable finding: DEC-239's utm_content tagging COULD NEVER have produced the per-surface split, because visit:utm_content is a session-ENTRY dimension and Plausible does not update acquisition attributes on an internal navigation. 1 of 9 visitors carried a tag and that one had entered on /treesmith.html from outside. A tag only works on something that starts a session. Entry-page substitute puts homepage and category landing, the two surfaces DAL-219 added, at zero. CLAUDE.md still called this the 'New primary monetisation path' three sessions after DEC-241 demoted it; corrected with the numbers. DAL-278: shipped store_listing_check.py, which asserts the live copy on all four storefronts against entitlement_provider.dart rather than against a text snapshot, wired into the Monday Treesmith digest. All four storefronts are CORRECT today, including Play which was the unverified one, so this is a guard not a repair. Because an all-green alarm is the easiest kind to get wrong (DEC-265), every rule was proven to fail on text really served by a store: the DEC-262 '50 free plants' sentence, the DEC-247 'Pro: ... cloud backup' sentence, and deletions, which fail rather than pass. Corrected the stale CLAUDE.md warning that both listings are still wrong, which would have had the next session re-fixing a correct listing. 16 new tests, suite 3,546 OK.",
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 12,
+        "treesmith_downloads": 432,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "treestock_outbound_clicks_30d": 2044,
+        "treestock_to_store_clicks_30d": 0
       }
     }
   ],

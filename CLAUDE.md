@@ -74,10 +74,15 @@ Benedict is embedded in the WA rare fruit community and attends meets in person.
 
 **Phases:**
 1. Monitor key nurseries (Daleys, Ross Creek Tropicals, Heritage Fruit Trees, Exotica,
-   Heaven on Earth, Ladybird, etc.). Track stock, prices, availability. (Live since 2026-03-05.)
+   Ladybird, etc.). Track stock, prices, availability. (Live since 2026-03-05.)
 2. Free alerts for the community to build audience. (Live: variety + species alerts.)
-3. Cross-promote Treesmith on the site to convert tracking-curious collectors into Pro
-   subscribers. **New primary monetisation path.**
+3. ~~Cross-promote Treesmith on the site to convert tracking-curious collectors into Pro
+   subscribers.~~ **DEAD, measured twice (DEC-241, DEC-325).** Over 6 months treestock
+   sent 3,132 outbound clicks and **1** of them reached an app store. In the 30 days to
+   2026-08-27, with every promo surface live and tagged, it was **0** while total outbound
+   clicks grew 64%. The blocks stay (they cost nothing and are honest) but they are
+   decoration, not a monetisation path. Do NOT propose new treestock->Treesmith funnel
+   work, CTA placement, or /treesmith.html conversion tickets.
 4. Optional later: paid tier on treestock itself for power users (price history, trend
    data, seasonal patterns).
 
@@ -359,7 +364,10 @@ Full rationale and the measured before/after in `docs/ticket-format.md`.
   2026-07-30, same on both stores). Do not cut the price to chase the first sale:
   at 43 MAU, 0 sales is the statistically expected result at any price. Ratings
   (0 on both stores) and paywall reachability (30 free plants vs a 5-10 competitor
-  norm) both rank ahead of price. See DEC-237. **Both live store descriptions still say
-  Pro includes cloud backup** (wrong, DEC-247). Fix is drafted on DAL-177 and is
-  Benedict's to paste; check whether it has been pasted before writing any store copy.
+  norm) both rank ahead of price. See DEC-237. The DEC-247 defect (both listings saying
+  Pro includes cloud backup) and the DEC-262 one ("up to 50 plants" free against a real
+  limit of 30) are **both fixed and verified live on iOS AU/US and Play AU/US, 2026-08-27**.
+  Do not "re-fix" them. `tools/autonomous/store_listing_check.py` now asserts the live
+  copy against `entitlement_provider.dart` every Monday in the Treesmith digest, so ask
+  it rather than reading the listings by hand.
 - The competition for Track B is... nobody. That's the point.

@@ -14206,3 +14206,109 @@ months without anybody looking at the size of the instrument on each day. Both
 were found by the same act: computing the denominator instead of inheriting it.
 Before publishing a number under a licence that invites other people to repeat it,
 recompute every caveat as well as every claim.
+
+---
+
+## DEC-325 — The cross-promo funnel is dead on its own test, and the tag we built to measure it could never have worked
+
+**Date:** 2026-08-27 **Tickets:** DAL-241 (Done) **Authority:** Dale autonomous (analysis, $0)
+
+DEC-239 tagged all five treestock->Treesmith promo surfaces with a distinct
+`utm_content` on 2026-07-30, and DAL-241 set the re-measure for ~2026-08-27.
+That date is today. Two findings, and the second is the more useful one.
+
+**1. The funnel is dead on the exit test this ticket wrote for itself.**
+
+30 days to 2026-08-27: treestock produced **2,044 outbound clicks**, **9**
+visitors reached /treesmith.html, and **0** clicks went to either app store.
+Life to date over 6 months: 3,132 outbound clicks, **1** ever to the App Store,
+0 to Play. My own comment on 2026-07-30 set the condition: "if the store-click
+count is still 0 or 1 at the end of August, the cross-promo is decoration".
+Total outbound clicks grew 64% over the window while store clicks went 1 -> 0.
+
+Checked before calling it a zero (DEC-249): the tags are live and correct in the
+deployed web root on all five surfaces, /treesmith.html carries the outbound
+script, and both badges are genuine `<a href>` links to apps.apple.com and
+play.google.com. A click would have been recorded. There were none.
+
+**2. The instrumentation could never have produced the per-surface split.**
+
+`visit:utm_content` is a session-entry dimension. Plausible fixes acquisition
+attributes when a session starts and does not update them on an internal
+navigation. Of the 9 visitors to /treesmith.html, exactly 1 carried a
+`utm_content` — and that one's entry page *was* /treesmith.html, i.e. it arrived
+at the tagged URL from outside. The other 8 clicked a tagged promo block
+mid-session and Plausible recorded no tag at all.
+
+So a UTM parameter on an internal link is inert. The lesson generalises past
+this ticket: **a tag only works on something that starts a session.** DEC-239
+spent effort building a measurement that was structurally incapable of the
+answer, and nobody noticed for four weeks because the output was a plausible
+small number rather than an error.
+
+`visit:entry_page` is the available substitute. Of the 9 sessions: species+state
+3, species 3, variety 2, direct 1, **homepage 0, category landing 0**. Entry page
+is not the page the CTA was clicked on and n=9, so direction only — but the two
+surfaces DAL-219 added are the two showing zero, and the homepage is the site's
+largest page. DEC-239 called that change "removes a zero". It did not.
+
+**Consequence.** CLAUDE.md's Track B phase 3 still called this the "New primary
+monetisation path" three sessions after DEC-241 demoted it. Corrected in this
+commit, with the numbers and an explicit instruction not to propose funnel, CTA
+placement or /treesmith.html conversion work. DAL-220 and DAL-227 stay cancelled:
+both sit either side of a step measured at 0% pass-through over 3,132 clicks.
+
+The blocks stay. They cost nothing, they are honest, and they are below the
+results. They are decoration and the strategy documents now say so.
+
+---
+
+## DEC-326 — An alarm for the store listing, built while the listing is right
+
+**Date:** 2026-08-27 **Tickets:** DAL-278 (Done) **Authority:** Dale autonomous (code, $0)
+
+The Treesmith store description has been wrong twice and right once. DEC-247:
+both listings said Pro included cloud backup, when Cloud Backup is a separate
+auto-renewing yearly subscription requiring Pro. DEC-262: the US listing
+advertised "up to 50 plants ... all free" against a `freePlantLimit` of 30, for
+about four months. Every one of those transitions, in both directions, was found
+by a human reading the page by hand.
+
+**All four storefronts are correct today.** iOS AU, iOS US, Play AU and Play US
+all pass. Play was the one we could not vouch for going in, and it turns out to
+have been fixed too. So this shipped as a guard rather than a repair, which is
+the right time to build one and the hardest time to be motivated to.
+
+`tools/autonomous/store_listing_check.py` fetches the live description per
+storefront and asserts five rules against ground truth parsed out of
+`entitlement_provider.dart` on each run. Deliberately **not** a snapshot diff: a
+diff fires on every marketing reword, gets muted inside a month, and then misses
+the change that matters. The design test is that changing `freePlantLimit` to 15
+makes today's correct copy fail, while rewording the copy without changing its
+meaning stays silent. Both are tests.
+
+Wired into the Monday Treesmith digest as `m_store_listing`. Report only; every
+store field is Benedict's to paste.
+
+**The clean sheet is the reason to be suspicious, not to relax** (DEC-265: a
+failed capability is loud, a failed limit is silent). No rule was accepted until
+it had been shown to fail on text that was really live on a store: the actual
+DEC-262 US sentence, the actual DEC-247 Pro sentence, a deleted cloud-backup
+line, and a deleted free-tier sentence. That last one is DEC-249 again — a
+missing claim fails rather than passes, and an unreadable storefront is reported
+as unreadable, never counted as green.
+
+Rule 5 checks the storefronts against **each other**. DEC-262's defect was that
+AU and US were different listings and only one was maintained, so a per-store
+check that only ever ran on AU would have reported all clear throughout.
+
+CLAUDE.md carried "Both live store descriptions still say Pro includes cloud
+backup" as a standing instruction. That is now false everywhere and would have
+sent the next session to re-fix a correct listing. Corrected in the same commit:
+**the artefact that states a fact has to be the artefact that checks it**
+(DEC-278), and here the checker now exists, so the prose points at it.
+
+Not in scope, flagged not fixed: the Play short description still says "Graft,
+scion & garden journal" while the app is named "Fruit Tree Tracker". Nothing in
+it is untrue, so the accuracy alarm correctly does not fire. That is an ASO
+question for DAL-257.
