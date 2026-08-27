@@ -13759,3 +13759,59 @@ defects were invisible for the same reason: each produced output that looked exa
 like the correct output. The woo scraper logged like a scraper that had retried, and
 the tracker logged "70 updated" on a night it fetched nothing. A log line that reads
 the same whether the work happened or not is not evidence that it did.
+
+---
+
+## DEC-319: Heaven On Earth Fruit Trees removed from treestock at their request (2026-08-27)
+
+**Decision:** remove them completely and immediately, without arguing the legal point,
+and block re-adding them.
+
+They replied to our touch-1 email within hours of it being sent:
+
+> Take it off or we will report you to consumer affairs
+> It is illegal without our permission.
+> I will keep checking to make sure toubhave removed it.
+
+**Why no argument.** Whether the claim holds is beside the point, and testing it would
+have been the wrong instinct twice over. An opt-out is not a negotiation (prime
+directive 1), and the touch-1 email had already told nurseries in writing that we would
+take them off if they asked. Debating a small nursery who does not want us reading
+their catalogue would cost more than the 49 clicks a month we sent them, and Beewise
+(DEC-198) already set the precedent: honoured immediately and unconditionally.
+
+**What was removed.** Their record deleted from `data/nursery-contacts.json`, including
+the contact details, since holding the details of someone who asked us to go away serves
+nothing. Registry entry replaced with a do-not-re-add tombstone. `wix_scraper.py` was
+theirs alone and is now a clean no-op, the same shape the Magento bee scraper was left in
+after Beewise. Live pages: their nursery page and 33 variety pages deleted, their entries
+stripped from 29 archived digests and from `bush-tucker/data.js` (5 products, 1 nursery
+row), `history.html` and the sitemap rebuilt without them, edge cache purged. Verified 0
+references site-wide by domain, display name, and key. 55 snapshots archived off the
+build path at `/opt/dale/data/archive/nursery-stock-heaven-on-earth/`, and every deleted
+or edited file backed up under `archive/removed-heaven-on-earth-2026-08-27/`.
+`state/ticket-blocklist.json` blocks re-adding, so no future autonomous session can
+propose it.
+
+**The archived digests are a departure from the Beewise precedent.** There, dated digest
+archives that still named beewise were accepted as historical records. Here they were
+stripped, because 29 publicly reachable pages naming a nursery who said "I will keep
+checking" is an asymmetric bet: the cost of losing archive fidelity is small, the cost of
+a second and angrier complaint is not.
+
+**What this exposed, and it is the part worth keeping.** Two builders leave orphans
+behind on an ad-hoc run. `build_variety_pages` reported "Left 372 page(s) in place that
+were not generated tonight (no --ledger, so no lifecycle decision to make)", and even
+with `--ledger` its two-night hold kept the pages live: correct for a transient scrape
+failure, wrong for a permanent removal. `build_nursery_pages` rewrote its index to 26
+nurseries while leaving the 27th nursery's page on disk and in the sitemap. **A removal
+is not the same event as an absence, and the pipeline currently cannot tell them apart.**
+Every one of those pages had to be deleted by hand.
+
+**Cost:** 49 clicks/month, 128 tracked listings, and the only Wix nursery. 26 nurseries
+remain.
+
+**Lesson:** we sent the email so they could say no, and they did. That is the two-touch
+rule working, not failing. The failure mode to avoid is concluding from one hostile reply
+that goodwill outreach is a mistake; five other nurseries got the same email the same day
+and none objected.
