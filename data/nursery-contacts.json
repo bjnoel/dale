@@ -457,8 +457,17 @@
       "phone": "(03) 5984 7900",
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-08-27",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Diggers listings on treestock.com.au",
+          "evidence": "resend:965f6434-eb54-4646-9c33-b85c1c0eb595"
+        }
+      ],
       "open_action": null,
       "notes": "Largest heritage seed company in Australia. Busy comms team, keep any message very short."
     },
@@ -471,8 +480,17 @@
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-08-27",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Your nursery is on treestock.com.au",
+          "evidence": "resend:57f40911-dc01-454b-adcd-91f698827030"
+        }
+      ],
       "open_action": null,
       "notes": ""
     },
@@ -499,8 +517,17 @@
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-08-27",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Your nursery is on treestock.com.au",
+          "evidence": "resend:cabf12ed-d1f8-4301-8ab6-df5c02e02983"
+        }
+      ],
       "open_action": null,
       "notes": "9th largest referral destination in the last 30 days and we have no contact route recorded."
     },
