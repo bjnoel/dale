@@ -427,7 +427,33 @@ def validate(reg):
             problems.append(w + f"action owner {act.get('owner')!r} is not dale or benedict")
         if act and "keep_open" in act and not isinstance(act["keep_open"], bool):
             problems.append(w + f"keep_open {act['keep_open']!r} is not a bool")
+        for path in unfollowable_paths(act.get("what", "") if act else ""):
+            problems.append(w + f"action points at {path!r}, which does not exist")
     return problems
+
+
+# Deliverables live in Linear, not git (CLAUDE.md), so an action telling
+# somebody to open a repo file is usually telling them to open nothing. This
+# fired for real: the Daleys action read "send the drafted reply
+# (deliverables/daleys-reply-2026-08-27.txt)" and that file was never written,
+# which stalled the top of Benedict's queue and blocked DAL-248 behind it.
+#
+# Scoped to open_action only. Historical touch evidence legitimately names
+# artefacts since superseded or deleted, and failing on those would make
+# `validate` noisy enough to get ignored.
+ACTION_PATH_PREFIXES = ("deliverables/", "docs/", "state/", "data/", "tools/")
+
+
+def unfollowable_paths(text, repo=REPO):
+    """Repo-relative paths named by an action that are not on disk."""
+    missing = []
+    for token in str(text).replace("(", " ").replace(")", " ").split():
+        token = token.strip(".,;:'\"`")
+        if "/" not in token or not token.startswith(ACTION_PATH_PREFIXES):
+            continue
+        if not os.path.exists(os.path.join(repo, token)):
+            missing.append(token)
+    return missing
 
 
 def cmd_validate(reg, args):

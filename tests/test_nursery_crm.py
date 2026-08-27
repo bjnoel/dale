@@ -144,6 +144,46 @@ class TestValidate(unittest.TestCase):
         reg["nurseries"].append(copy.deepcopy(reg["nurseries"][0]))
         self.assertIn("duplicate nursery keys", crm.validate(reg))
 
+    def test_rejects_an_action_pointing_at_a_file_that_does_not_exist(self):
+        """The real case, verbatim.
+
+        The Daleys action told Benedict to send `deliverables/daleys-reply-
+        2026-08-27.txt`. That file was never written, so the top item in his
+        queue could not be actioned, and DAL-248 sat blocked behind it. The
+        register called itself valid throughout.
+        """
+        act = {"owner": "benedict", "since": "2026-08-27",
+               "what": "Send the drafted reply "
+                       "(deliverables/daleys-reply-2026-08-27.txt, rewritten "
+                       "2026-08-27 after checking the live pages)."}
+        problems = crm.validate(self.base(open_action=act))
+        self.assertTrue(any("does not exist" in p for p in problems))
+
+    def test_accepts_an_action_naming_a_file_that_does_exist(self):
+        """The Aus Nurseries action cites docs/scraper-category-audit.md and is
+        followable. A rule that cannot stay silent on a good path is a rule
+        that gets muted."""
+        act = {"owner": "dale", "since": "2026-08-27",
+               "what": "Same class as docs/scraper-category-audit.md, "
+                       "a filter tweak not a page bug."}
+        self.assertEqual([], crm.validate(self.base(open_action=act)))
+
+    def test_accepts_an_action_pointing_at_a_linear_comment(self):
+        """The fix was to reference the deliverable where deliverables live."""
+        act = {"owner": "benedict", "since": "2026-08-27",
+               "what": "Send the drafted reply. The draft is the code block in "
+                       "https://linear.app/biomassive/issue/DAL-248#comment-cb22cab3"}
+        self.assertEqual([], crm.validate(self.base(open_action=act)))
+
+    def test_historical_touch_evidence_is_not_checked(self):
+        """Ross Creek's 2026-08-10 touch cites a draft file that no longer
+        exists. The email was sent, so nobody is blocked, and failing on dead
+        provenance would bury the live failure above in noise."""
+        t = [{"date": "2026-08-10", "direction": "out",
+              "evidence": "deliverables/ross-creek-reply-conversions.txt"}]
+        self.assertEqual([], crm.validate(
+            self.base(status="warm", touches=t)))
+
 
 class TestLogging(unittest.TestCase):
     def setUp(self):
