@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-08-24",
-  "session_count": 120,
+  "last_updated": "2026-08-27",
+  "session_count": 121,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
           "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
@@ -496,7 +496,7 @@
       "in_stock": 5595,
       "species_matched_pct": 73,
       "taxonomy_source": "scion-exchange fruit_species (164 species)",
-      "subscribers": 13,
+      "subscribers": 12,
       "revenue_total": 0,
       "category_expansion": {
         "status": "pilot-live",
@@ -723,7 +723,8 @@
         "accuracy_defect": "It told WA buyers that PlantNet and Heritage Fruit Trees could ship to them. Per shipping.py neither does. It omitted The Diggers Club and Garden Express (which do) and St Clements Citrus from the WA nursery list.",
         "wa_shipping_truth": "9 of 27 nurseries reach a WA address: WA-based = All Season Plants WA, Guildford Garden Centre, Perth Mobile Nursery, Primal Fruits Perth, St Clements Citrus; interstate = Daleys, The Diggers Club, Fruit Salad Trees, Garden Express.",
         "fixed": "Moved to tools/scrapers/static/wa-rare-fruit-guide.html (deploy.sh owns it, git tracks it). Plausible script added, shipping list corrected, St Clements Citrus added, DEC-246 reachability finding folded in. Live at the next 00:00 UTC deploy.",
-        "next": "DAL-176 (national version) parked in Todo for 30 days until the WA guide has real pageview data. DAL-259 proposes a test that blocks shipping an uninstrumented sitemap page again."
+        "next": "DAL-176 (national version) parked in Todo for 30 days until the WA guide has real pageview data. DAL-259 proposes a test that blocks shipping an uninstrumented sitemap page again.",
+        "guard_shipped": "DEC-323 / DAL-259 (2026-08-27): tests/test_static_page_instrumentation.py. Sitemap-listed pages in tools/scrapers/static/ must carry data.bjnoel.com/js/script; every other static .html must be declared TOKEN_BEARING (manage.html, stop-watching.html: HMAC tokens in the URL, must NOT be tracked) or NOT_PUBLIC (advertise.html, helena.html) with a reason. Matched on the script SRC, not the bare hostname: treestock_layout.py also emits preconnect and dns-prefetch hints carrying data.bjnoel.com that record nothing, so a hostname grep would pass a page with hints and no script. Checked failing-then-passing both directions. Does NOT cover a page hand-written straight into /opt/dale/dashboard/, which is outside git."
       },
       "subscriber_engagement": {
         "measured": "2026-07-30 (DAL-231, DEC-250), 90d to 2026-07-30, Resend, PAGINATED",
@@ -745,7 +746,17 @@
           "outstanding": "RESOLVED 2026-08-03 (DEC-257). Benedict answered yes on DAL-260. Both records restored to ['fruit'] with a restore timestamp and reason stamped on each, and verified against a live send_digest.py dry run which now names them both. They receive from the 2026-08-04 send. No backfill and no apology email: neither subscriber asked us anything and an email explaining that our software had been dropping them invites an unsubscribe. Offered to Benedict as his call. The root cause of how they reached [] remains UNKNOWN and was not guessed at; request logs had rotated away.",
           "deploy_gap_found": "tools/deploy.sh rsyncs the code but never restarts subscribe-server, so any subscribe_server.py change sits on disk with no effect until a manual restart. Done by hand this session; raised as DAL-263."
         },
-        "delivery_rate_correction": "DEC-255: 100% delivered, 0 bounced over 90 days (775 emails). The 52.5% the weekly report printed on 2026-07-30 was a classification bug, not a deliverability problem. resend_engagement.py always classified correctly, so DEC-250's 43.2% open rate stands."
+        "delivery_rate_correction": "DEC-255: 100% delivered, 0 bounced over 90 days (775 emails). The 52.5% the weekly report printed on 2026-07-30 was a classification bug, not a deliverability problem. resend_engagement.py always classified correctly, so DEC-250's 43.2% open rate stands.",
+        "delivery_alarm": {
+          "decision": "DEC-323 / DAL-262 (2026-08-27). Shipped, wired into run-all-scrapers.sh, deployed and verified from /opt/dale/scrapers.",
+          "script": "tools/scrapers/detect_silent_subscribers.py (--dry-run, --force). Report only, no auto-repair.",
+          "the_cards_rule_was_wrong": "The ticket proposed 'no digest in 14 days'. That false-fires: helenaspring17, sebewa and b@bjnoel all have a 20-day CALENDAR gap 2026-03-31 to 2026-04-20, because the digest was not running at all. A calendar threshold cannot separate 'this person was skipped' from 'nobody was sent anything'.",
+          "what_shipped_instead": "Gaps counted in OPPORTUNITIES: send-log entries on which somebody, anybody, was mailed. Total list silence is a separate finding (sender outage, LIST_SILENT_DAYS=7) and suppresses per-subscriber findings for that channel.",
+          "thresholds_are_measured_not_chosen": "Worst gap for a healthy subscriber in all history is 2 daily and 1 weekly, so MISSED_THRESHOLD is 3 daily / 2 weekly, one clear of the observed noise floor. NEVER_THRESHOLD 3/2 for a subscriber who has never received one.",
+          "backtest": "Replayed over all 169 days of log, rebuilding subscribers and both send logs as at each day: 22 subscriber-alert days, 21 of them muffinmotzy@gmail.com (the real DAL-260 defect, fires 2026-07-20, 14 days before Benedict found it by hand), 1 helenaspring17 (genuinely skipped for her first 3 sends, March). 25 outage days correctly attributed to the sender, where a 14-day calendar rule would have named 3-4 innocent subscribers.",
+          "honest_limit": "A digest is also legitimately skipped when nothing matches a subscriber's state and category filters, and the sender does not record WHY it skipped. The alarm says 'go and look', not 'this is broken'. Stated in the alert email itself.",
+          "state_today": "12 active subscribers, all receiving. Alarm silent."
+        }
       },
       "seasonal_email_plan": {
         "decision": "DEC-250 / DAL-231",
@@ -812,15 +823,15 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done — hello@walkthrough.au via Fastmail",
-    "blog": "deployed — walkthrough.au live",
+    "email": "done \u2014 hello@walkthrough.au via Fastmail",
+    "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
+    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
     "deploy_gap": "There is NO deploy cron (DEC-253). `crontab -l` has the Monday Treesmith digest and the nightly Treesmith drip only. tools/deploy.sh runs from the autonomous session startup hook (18:00-21:00 UTC), so a commit made after the last session of the night sits in git, tested and green, while cron keeps running the stale copy in /opt/dale/autonomous/. Same family as DAL-263 (deploy.sh never restarts subscribe-server). After changing ANYTHING cron executes: diff the repo copy against the deployed copy, run tools/deploy.sh, and verify.",
     "reporting_integrity": "DEC-255 / DAL-261 (2026-07-30): audited every external API reader. Fixed 5 defects. traffic_report.py read 200 of 1,703 GSC query rows and computed a SET DIFFERENCE from the slice, so 9 of the 10 'new queries' in Benedict's daily email were queries we already ranked for and position movers showed 11 of a true 392. resend_report.py kept an unpaginated copy of fetch_emails (the DEC-250 bug in the sibling file): 100 emails became 1,838. resend_report.py also counted delivery as last_event=='delivered', but last_event is the FURTHEST state reached, so every opened/clicked email counted as undelivered and the delivery rate FELL as engagement ROSE (52.5% reported against a true 100% delivered, 0 bounced). daily-digest.py's engagement stamp took one page of 50 issues, and that gates whether Dale strikes (DEC-226), so an unseen signal read as absence. nursery_crm.outbound_clicks ran off a 40-page cap silently and now warns PARTIAL. Audited clean: plausible_stats.py (honest top-N), linear_poller.py, linear_update.py archive-stale, gsc_analysis.py, resend_engagement.py, treesmith_analytics.py, uptime_monitor.py. Guard is tests/test_api_pagination.py, which drives each real fetcher against a saturated first page.",
     "email_reply_path": "DEC-257 CORRECTION to Q46. treestock.com.au's APEX already has Fastmail MX (in1/in2-smtp.messagingengine.com) and has received email the whole time. The defect is narrower and entirely ours: we send From alerts@mail.treestock.com.au, a SUBDOMAIN with no MX, and stocklib/mailer.py:112 sets no Reply-To at all, so replies are addressed somewhere that cannot receive them. Fix is ONE LINE pointing Reply-To at an apex address (DAL-243), not a new service and not a DNS change. Do NOT add MX to the sending subdomain. The same mailbox answers DAL-80's BCC ask via a Fastmail alias + an IMAP-scoped app password (revocable, cannot send); imap.fastmail.com:993 is reachable from this server, verified. Cloudflare Email Routing considered and rejected: MX change on a live domain, a Worker, and a token scope we do not hold, to duplicate a mailbox we already own."

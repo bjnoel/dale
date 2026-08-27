@@ -14027,3 +14027,82 @@ widening the shared keyword filter, which "dried" and "fresh" are too blunt to s
 **Lesson:** "reuse a platform scraper" was wrong about the cost and right about the outcome.
 The check that mattered was not whether we had a Squarespace scraper but what the store's
 catalogue is shaped like, and that is the check the ticket did not make.
+
+## DEC-323 — Two alarms, and the threshold the ticket asked for was the wrong one
+**Date:** 2026-08-27 **Tickets:** DAL-259 (Done), DAL-262 (Done) **Authority:** Dale autonomous (code, $0)
+
+Both tickets in this session are the same shape: a defect that was found by a human
+reading a file, ticketed as "make sure that cannot happen unnoticed again". Neither
+adds a visitor or a dollar. They protect the numbers the rest of the decisions are
+made from, which is the family DEC-249 opened and DEC-255, DEC-259 and DEC-282 all
+belong to.
+
+**DAL-259, the instrumentation guard.** `/wa-rare-fruit-guide.html` was live for 51
+days with no Plausible script, reported 0 pageviews for its entire life, and DAL-176
+cited it as a page that lifts conversion. Pages built through `treestock_layout.py`
+get the tag injected; the files in `tools/scrapers/static/` are the only public pages
+where it is typed by hand, so that is where the test sits.
+`tests/test_static_page_instrumentation.py` asserts three things: sitemap-listed
+static pages carry the tag; every other static page is declared either TOKEN_BEARING
+(`manage.html`, `stop-watching.html`, whose URLs carry HMAC tokens and must NOT be
+sent to analytics) or NOT_PUBLIC, with a reason; and the token-bearing pair really do
+lack the tag and stay out of the sitemap.
+
+The second assertion is the one that catches the next occurrence. The first only
+guards a page we already fixed. A new hand-written page cannot arrive untracked by
+default, it has to be tagged or explained.
+
+One detail worth keeping: the match is on `data.bjnoel.com/js/script`, not the bare
+hostname. `treestock_layout.py` also emits a preconnect and a dns-prefetch hint that
+both carry `data.bjnoel.com` and neither records anything, so a hostname-only grep
+would have passed a page carrying only the hints. Same trap as DEC-273's test that
+grepped for a bare string and found the navigation. Checked failing-then-passing in
+both directions rather than asserted green.
+
+**DAL-262, and the number in the card was wrong.** The ticket proposed "alert when
+any subscriber whose frequency is not off has received no digest in 14 days". Run
+against the real send log, that rule false-fires: helenaspring17, sebewa and
+b@bjnoel all have a 20-day calendar gap between 2026-03-31 and 2026-04-20. Nothing
+was wrong with any of them. The digest was not running.
+
+A calendar threshold cannot separate "this person was skipped" from "nobody was sent
+anything", and those are different faults with different owners. So the gap is
+counted in **opportunities**: send-log entries on which somebody, anybody, was
+mailed. On that measure the worst gap any healthy subscriber has ever had is 2 daily
+and 1 weekly, so the thresholds (3 and 2) sit one clear of a measured noise floor
+instead of at a round number. Total list silence is reported separately, as a sender
+outage, and suppresses the per-subscriber findings for that channel.
+
+Replayed over all 169 days of log, rebuilding the subscriber list and both send logs
+as they stood each day: 22 subscriber-alert days, **21 of them muffinmotzy@gmail.com**,
+the real DAL-260 defect. It fires on 2026-07-20, 14 days before Benedict found it by
+hand, and keeps firing. One other alert day (helenaspring17, genuinely skipped for
+her first 3 sends in March). 25 outage days, correctly attributed to the sender,
+where the 14-day rule would have named 3 or 4 innocent subscribers instead.
+
+Two rules, because they have different shapes. "Stopped" needs a last-received to
+count back from and the DAL-260 case had none, so "never received one, through N
+sends since signup" is separate. Report only, no auto-repair: resubscribing somebody
+is customer-facing, which is why DAL-260's data fix went to Benedict.
+
+Honest limit, printed in the alert itself: a digest is also legitimately skipped when
+nothing matches a subscriber's state and category filters, and the sender does not
+record why it skipped. The alarm says "go and look", not "this is broken".
+
+Wired into `run-all-scrapers.sh` after both senders (it reads their logs, so running
+it earlier would always judge them one night stale), deployed, and verified running
+from `/opt/dale/scrapers`, not just from the repo (DEC-264).
+
+**DAL-248 not started, deliberately.** Its own sequencing rule is "answer the
+100-day-old replies first", and the register still shows the Daleys reply drafted
+today and unsent, on Benedict. Ross Creek's next touch is parked to 2026-11-10 at
+Tom's request. Drafting the ask now adds two emails to a queue behind an email
+already in that queue, and his queue depth is the bottleneck, not our drafting.
+
+**Lesson (32nd session): the threshold in the ticket is a guess until it is run
+against history.** Both cards were written by me, weeks ago, with a plausible number
+in them. One of the two numbers was wrong in a way that would have produced false
+alarms on innocent subscribers in the exact window the alarm was built for, and the
+only thing that found it was replaying the rule over the log before shipping it.
+Backtest the alarm, and prefer a threshold expressed in the units of the thing that
+can actually fail.
