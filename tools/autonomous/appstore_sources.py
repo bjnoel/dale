@@ -876,8 +876,49 @@ def split_on_rename(records, rename_date=RENAME_DATE, pulled_at=None,
     return result
 
 
+def newest_complete_date(records):
+    """The newest day the series can actually report on, or None.
+
+    Deliberately not `max(date)`: the trailing incomplete days are excluded
+    from every window, so a series whose only new rows are incomplete has not
+    grown in any way a reader of those windows can see.
+    """
+    dates = [r["date"] for r in records if r.get("complete")]
+    return max(dates) if dates else None
+
+
+def data_age_days(records, now=None):
+    """Whole days since the newest COMPLETE day in the series.
+
+    `series_age_days` answers "did the job run". This answers "did the job
+    bring anything back", and 2026-08-30 is why both are needed. That pull ran,
+    succeeded, printed "Data through 2026-08-27" and appended 0 of 161 rows:
+    Apple's ONE_TIME_SNAPSHOT had stopped producing instances, so every
+    candidate was a re-observation of a day already recorded as complete and
+    `new_rows` correctly dropped all of them.
+
+    The newest day we actually held stayed at 2026-08-20. The post-rename
+    window therefore sat at one single day for eleven days while the digest
+    presented its search share as that week's result, and the pull-age check
+    said nothing, because `pulled_at` only advances when a row lands.
+
+    That near-miss is the point: had even one restatement row landed, pull age
+    would have reset to 0 and a permanently frozen series would never have been
+    reported at all.
+    """
+    newest = newest_complete_date(records)
+    if newest is None:
+        return None
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    return (now.date() - _as_date(newest)).days
+
+
 def series_age_days(records, now=None):
-    """Whole days since the newest pull. Tells a stopped job from a quiet week."""
+    """Whole days since the newest pull. Tells a stopped job from a quiet week.
+
+    Says nothing about whether the pull brought back new days; see
+    `data_age_days` for that.
+    """
     if not records:
         return None
     newest = max(r["pulled_at"] for r in records)

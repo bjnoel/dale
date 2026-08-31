@@ -52,9 +52,13 @@ def series(*rows, pulled_at="2026-08-27T22:40:00Z"):
     return out
 
 
-def sources_metric(split, stale=False, age_days=1):
+def sources_metric(split, stale=False, age_days=1, stale_reason=None,
+                   data_age_days=4, newest_complete_date=None):
     return {"ok": True, "data": {"path": "/opt/dale/data/x.csv", "split": split,
-                                 "age_days": age_days, "stale": stale}}
+                                 "age_days": age_days, "stale": stale,
+                                 "stale_reason": stale_reason,
+                                 "data_age_days": data_age_days,
+                                 "newest_complete_date": newest_complete_date}}
 
 
 class TestSectionIsOptional(unittest.TestCase):
@@ -91,6 +95,60 @@ class TestStaleness(unittest.TestCase):
             pulled_at="2026-08-27T22:40:00Z")
         text, _ = ta.render(base_metrics(sources=sources_metric(split)))
         self.assertNotIn("NO PULL", text)
+
+    def test_a_running_pull_with_a_frozen_report_is_not_called_no_pull(self):
+        """2026-08-30: the job ran and appended 0 of 161 rows.
+
+        Calling that "NO PULL" would send Benedict to the crontab, which is
+        working. The fix is a new App Store Connect report request, so the two
+        failures have to read differently.
+        """
+        split = asrc.split_on_rename(
+            series(("2026-08-10", asrc.SOURCE_SEARCH, 40),
+                   ("2026-08-20", asrc.SOURCE_SEARCH, 81)),
+            pulled_at="2026-08-23T22:40:00Z")
+        text, html = ta.render(base_metrics(sources=sources_metric(
+            split, stale=True, stale_reason="data", age_days=1,
+            data_age_days=11, newest_complete_date="2026-08-20")))
+        self.assertIn("SERIES FROZEN", text)
+        self.assertNotIn("NO PULL", text)
+        self.assertIn("2026-08-20", text)
+        self.assertIn("11 days ago", text)
+        self.assertIn("Nothing here is this week's news", text)
+        self.assertIn(ta.RED, html)
+
+    def test_a_stopped_job_still_reads_as_no_pull_not_as_frozen(self):
+        split = asrc.split_on_rename(
+            series(("2026-08-10", asrc.SOURCE_SEARCH, 40)),
+            pulled_at="2026-08-27T22:40:00Z")
+        text, _ = ta.render(base_metrics(sources=sources_metric(
+            split, stale=True, stale_reason="pull", age_days=38,
+            data_age_days=41)))
+        self.assertIn("NO PULL", text)
+        self.assertNotIn("SERIES FROZEN", text)
+
+    def test_a_series_behind_its_own_cutoff_says_where_it_actually_stops(self):
+        """"Data through" is arithmetic: pull date minus Apple's tail.
+
+        When the report stops advancing it keeps reading like a current date
+        while the windows below it stand still, which is precisely how one
+        frozen day was presented as a week's search share.
+        """
+        split = asrc.split_on_rename(
+            series(("2026-08-10", asrc.SOURCE_SEARCH, 40)),
+            pulled_at="2026-08-27T22:40:00Z")
+        text, _ = ta.render(base_metrics(sources=sources_metric(
+            split, newest_complete_date="2026-08-20")))
+        self.assertIn("Newest day actually held", text)
+        self.assertIn("2026-08-20", text)
+
+    def test_an_up_to_date_series_does_not_print_the_extra_line(self):
+        split = asrc.split_on_rename(
+            series(("2026-08-10", asrc.SOURCE_SEARCH, 40)),
+            pulled_at="2026-08-27T22:40:00Z")
+        text, _ = ta.render(base_metrics(sources=sources_metric(
+            split, newest_complete_date=split["last_complete_date"])))
+        self.assertNotIn("Newest day actually held", text)
 
 
 class TestNoPostRenameWindow(unittest.TestCase):

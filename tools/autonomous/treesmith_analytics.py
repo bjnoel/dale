@@ -620,6 +620,25 @@ def m_rank(_host=None, _key=None):
 # "fix" one cadence by changing the other.
 SOURCES_STALE_DAYS = 10
 
+# The pull can run, succeed, and still bring back nothing new. Apple's
+# ONE_TIME_SNAPSHOT stops producing instances, so every candidate row becomes a
+# re-observation of a day already recorded as complete and `new_rows` correctly
+# appends none of them. On 2026-08-30 that is exactly what happened: the job
+# ran, reported "Data through 2026-08-27", and appended 0 of 161 rows.
+#
+# SOURCES_STALE_DAYS could not see it, because `pulled_at` only advances when a
+# row lands. It would have caught this one a week late and only by luck: had a
+# single restatement row landed, pull age would have reset to 0 and a
+# permanently frozen series would have read as healthy forever.
+#
+# So the newest COMPLETE DAY is checked as well as the newest pull. A healthy
+# cadence puts it 4 days back at digest time (Sunday 22:40 pull, minus Apple's
+# 3-day tail, read Monday 00:00); one missed week puts it at 11. 10 therefore
+# stays quiet on a good week and speaks up the first week the reportable window
+# fails to grow, which is the week the reader needs it: a window that has not
+# moved is not this week's news, however current the pull timestamp looks.
+SOURCES_DATA_STALE_DAYS = 10
+
 
 def m_appstore_sources(_host=None, _key=None):
     """Where App Store impressions come from: search vs browse.
@@ -647,11 +666,22 @@ def m_appstore_sources(_host=None, _key=None):
 
     split = appstore_sources.split_on_rename(records)
     age = appstore_sources.series_age_days(records)
+    data_age = appstore_sources.data_age_days(records)
+
+    # Two independent failures, detected and reported apart because they need
+    # different fixes: a stopped job is cron or credentials, a frozen series is
+    # a new App Store Connect report request. Pull staleness is checked first
+    # so a job that is not running is never described as a frozen report.
+    pull_stale = age is None or age > SOURCES_STALE_DAYS
+    data_stale = data_age is None or data_age > SOURCES_DATA_STALE_DAYS
     return {
         "path": path,
         "split": split,
         "age_days": age,
-        "stale": age is None or age > SOURCES_STALE_DAYS,
+        "data_age_days": data_age,
+        "newest_complete_date": appstore_sources.newest_complete_date(records),
+        "stale": pull_stale or data_stale,
+        "stale_reason": "pull" if pull_stale else ("data" if data_stale else None),
     }
 
 
@@ -976,7 +1006,21 @@ def render(metrics):
         else:
             d = src["data"]
             sp = d["split"]
-            if d["stale"]:
+            if d["stale"] and d.get("stale_reason") == "data":
+                # The job is running. Apple has simply stopped advancing the
+                # report, so the windows below are the same windows as last
+                # week and the week before. Named separately from NO PULL
+                # because the fix is a new report request, not a cron repair.
+                age = d.get("data_age_days")
+                when = "never" if age is None else f"{age} days ago"
+                newest = d.get("newest_complete_date") or "no complete day"
+                kv("!! SERIES FROZEN",
+                   f"the weekly pull is still running, but the newest complete "
+                   f"day in the series is {newest} ({when}). Apple's "
+                   f"ONE_TIME_SNAPSHOT has stopped producing instances, so the "
+                   f"windows below have not grown since. Nothing here is this "
+                   f"week's news.", RED)
+            elif d["stale"]:
                 age = d["age_days"]
                 when = "never" if age is None else f"{age} days ago"
                 kv("!! NO PULL", f"the App Store Connect series was last "
@@ -998,6 +1042,16 @@ def render(metrics):
             kv("Data through", f"{sp['last_complete_date']} "
                                f"(the last {SOURCES_TAIL_NOTE} excluded as "
                                f"incomplete, so this is never a drop)", GREY)
+            # The line above is arithmetic: pull date minus Apple's tail. It is
+            # what Apple SHOULD have given us, not what we hold. They agree on a
+            # healthy week and diverge the moment the report stops advancing, so
+            # a divergence is printed rather than left for the reader to infer
+            # from a post window that quietly never grows.
+            newest = d.get("newest_complete_date")
+            if newest and newest != sp["last_complete_date"]:
+                kv("  Newest day actually held",
+                   f"{newest}; the series is behind its own cutoff, so the "
+                   f"windows below stop here", RED)
 
             if not sp["has_post_window"]:
                 # Presented as a baseline, deliberately without a comparison.

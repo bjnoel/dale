@@ -416,6 +416,46 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(asrc.series_age_days(records, now=now), 13)
         self.assertIsNone(asrc.series_age_days([]))
 
+    def test_a_running_pull_that_brings_back_nothing_reads_as_frozen(self):
+        """The 2026-08-30 case, as data.
+
+        The pull ran that day, succeeded, and appended 0 of 161 rows because
+        Apple's ONE_TIME_SNAPSHOT had stopped producing instances. Pull age is
+        therefore young and the series is nonetheless eleven days stale. The
+        two ages must disagree here or the digest cannot tell the reader which
+        of the two things broke.
+        """
+        import datetime
+        records = [record("2026-08-20", asrc.SOURCE_SEARCH,
+                          pulled_at="2026-08-30T22:40:00Z")]
+        now = datetime.datetime(2026, 8, 31, tzinfo=datetime.timezone.utc)
+        # Pull age is 0: 22:40 Sunday to 00:00 Monday is not a whole day. The
+        # digest that reads this is 11 days behind the data it is reporting on.
+        self.assertEqual(asrc.series_age_days(records, now=now), 0)
+        self.assertEqual(asrc.data_age_days(records, now=now), 11)
+
+    def test_data_age_ignores_the_incomplete_tail(self):
+        """An incomplete day is in no window, so it is not growth.
+
+        Without this the frozen case hides again the moment Apple hands back a
+        partial day: the newest date advances, the reportable window does not.
+        """
+        import datetime
+        records = [record("2026-08-20", asrc.SOURCE_SEARCH, complete=True),
+                   record("2026-08-29", asrc.SOURCE_SEARCH, complete=False)]
+        now = datetime.datetime(2026, 8, 31, tzinfo=datetime.timezone.utc)
+        self.assertEqual(asrc.newest_complete_date(records), "2026-08-20")
+        self.assertEqual(asrc.data_age_days(records, now=now), 11)
+
+    def test_a_healthy_weekly_cadence_is_not_stale(self):
+        """Sunday 22:40 pull, Apple's 3-day tail, read Monday 00:00: 4 days."""
+        import datetime
+        records = [record("2026-08-27", asrc.SOURCE_SEARCH,
+                          pulled_at="2026-08-30T22:40:00Z")]
+        now = datetime.datetime(2026, 8, 31, tzinfo=datetime.timezone.utc)
+        self.assertEqual(asrc.data_age_days(records, now=now), 4)
+        self.assertIsNone(asrc.data_age_days([]))
+
 
 class TestReportDiscovery(unittest.TestCase):
     """Report ids are request-scoped, so the name is the stable handle."""
