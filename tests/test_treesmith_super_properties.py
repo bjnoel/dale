@@ -68,6 +68,19 @@ def query_strings(path):
             and id(n) not in docstrings]
 
 
+N = len(ta.SUPER_PROPERTIES)
+
+
+def coverage_row(events, people, covered_events, covered_people):
+    """One row shaped like the coverage query's result.
+
+    Columns: total events, total people, then one event count per super
+    property, then one people count per super property.
+    """
+    n = len(ta.SUPER_PROPERTIES)
+    return ([events, people] + [covered_events] * n + [covered_people] * n)
+
+
 class PersonScopedReadTest(unittest.TestCase):
     """The failure that would report every Pro user as not-Pro."""
 
@@ -110,7 +123,7 @@ class PersonScopedReadTest(unittest.TestCase):
             captured.append(query)
             if "JSONHas" in query and "count() AS events_7d" in query:
                 # Coverage probe: report full coverage so the splits run.
-                return [[100, 10] + [100] * len(ta.SUPER_PROPERTIES) + [10]]
+                return [coverage_row(100, 10, 100, 10)]
             return [["true", 7, 70], ["false", 3, 30]]
 
         ta.hogql = fake
@@ -128,10 +141,13 @@ class PersonScopedReadTest(unittest.TestCase):
 class CoverageGateTest(unittest.TestCase):
     """An absent property is unknown, never false."""
 
-    def _coverage(self, covered_counts, events=1000):
+    def _coverage(self, covered_events, events=1000, people=50,
+                  covered_people=None):
+        if covered_people is None:
+            covered_people = covered_events
         real = ta.hogql
         ta.hogql = lambda h, k, q: [
-            [events, 50] + covered_counts + [0]]
+            [events, people] + covered_events + covered_people]
         try:
             return ta.m_super_property_coverage("h", "k")
         finally:
@@ -139,15 +155,19 @@ class CoverageGateTest(unittest.TestCase):
 
     def test_no_event_carrying_the_properties_reports_any_false(self):
         """The state on 2026-08-31: declared, shipped to nobody yet."""
-        cov = self._coverage([0] * len(ta.SUPER_PROPERTIES))
+        cov = self._coverage([0] * N)
         self.assertFalse(cov["any"])
         self.assertEqual(cov["by_property"]["is_pro"]["events"], 0)
 
     def test_partial_coverage_is_reported_as_a_percentage(self):
         """Both builds in the field is the normal state during a rollout."""
-        cov = self._coverage([400] * len(ta.SUPER_PROPERTIES), events=1000)
+        cov = self._coverage([400] * N, events=1000, people=50,
+                             covered_people=[20] * N)
         self.assertTrue(cov["any"])
         self.assertEqual(cov["by_property"]["is_pro"]["pct"], 40)
+        self.assertEqual(cov["by_property"]["is_pro"]["people_pct"], 40)
+        # Events and people agree, which is what a build rollout looks like.
+        self.assertIsNone(cov["skew"])
 
     def test_segments_returns_no_splits_when_nothing_carries_them(self):
         """Five empty distributions would read as five findings.
@@ -157,7 +177,7 @@ class CoverageGateTest(unittest.TestCase):
         prints nothing at all.
         """
         real = ta.hogql
-        ta.hogql = lambda h, k, q: [[1000, 50] + [0] * len(ta.SUPER_PROPERTIES) + [0]]
+        ta.hogql = lambda h, k, q: [coverage_row(1000, 50, 0, 0)]
         try:
             data = ta.m_segments("h", "k")
         finally:
@@ -171,7 +191,7 @@ class CoverageGateTest(unittest.TestCase):
         def fake(host, key, query):
             if "count() AS events_7d" in query:
                 # 1000 events this week, only 100 carry the properties.
-                return [[1000, 50] + [100] * len(ta.SUPER_PROPERTIES) + [50]]
+                return [coverage_row(1000, 50, 100, 5)]
             return [["true", 3, 30], ["false", 7, 70]]
 
         ta.hogql = fake
@@ -191,7 +211,7 @@ class CoverageGateTest(unittest.TestCase):
         def fake(host, key, query):
             captured.append(query)
             if "count() AS events_7d" in query:
-                return [[100, 10] + [100] * len(ta.SUPER_PROPERTIES) + [10]]
+                return [coverage_row(100, 10, 100, 10)]
             return [["true", 1, 1]]
 
         ta.hogql = fake
@@ -244,6 +264,83 @@ class RenderTest(unittest.TestCase):
                 {"value": "false", "people": 16, "events": 400, "pct": 100}]}}})
         self.assertIn("40%", text)
         self.assertIn("not", text.lower())
+
+
+class AnonymousCoverageTest(unittest.TestCase):
+    """Coverage that reaches events but not people.
+
+    The super properties exist to segment anonymous users, who are 85% of the
+    people and a minority of the events: in the 28 days to 2026-08-31 the app
+    had 71 anonymous people generating 2,382 events against 13 signed-in
+    people generating 3,590. Properties that attached only once somebody
+    signed in would therefore cover about 60% of events, which reads as an
+    ordinary mid-rollout number, while missing 85% of the population.
+
+    The event figure alone cannot tell that apart from a half-finished
+    rollout. The gap between the two figures can.
+    """
+
+    def _cov(self, ev_pct, people_pct):
+        real = ta.hogql
+        ta.hogql = lambda h, k, q: [
+            coverage_row(1000, 100, ev_pct * 10, people_pct)]
+        try:
+            return ta.m_super_property_coverage("h", "k")
+        finally:
+            ta.hogql = real
+
+    def test_a_normal_rollout_reports_no_skew(self):
+        """Events and people move together as people update."""
+        self.assertIsNone(self._cov(40, 38)["skew"])
+
+    def test_signed_in_only_properties_are_caught(self):
+        """The 60%-of-events, 15%-of-people signature."""
+        skew = self._cov(60, 15)["skew"]
+        self.assertIsNotNone(skew)
+        self.assertEqual(skew["events_pct"], 60)
+        self.assertEqual(skew["people_pct"], 15)
+        self.assertEqual(skew["gap"], 45)
+
+    def test_full_coverage_reports_no_skew(self):
+        self.assertIsNone(self._cov(100, 100)["skew"])
+
+    def test_no_coverage_at_all_is_not_reported_as_skew(self):
+        """Nothing has arrived yet. That is the awaiting state, not a skew."""
+        self.assertIsNone(self._cov(0, 0)["skew"])
+
+    def test_the_skew_is_rendered_in_red_and_names_the_cause(self):
+        from test_treesmith_new_events import base_metrics  # noqa: E402
+        m = base_metrics()
+        m["segments"] = {"ok": True, "data": {
+            "coverage": {"events_7d": 1000, "people_7d": 100,
+                         "covered_people": 15, "any": True,
+                         "by_property": {p: {"events": 600, "pct": 60,
+                                             "people": 15, "people_pct": 15}
+                                         for p in ta.SUPER_PROPERTIES},
+                         "skew": {"events_pct": 60, "people_pct": 15,
+                                  "gap": 45}},
+            "splits": {}}}
+        text, html = ta.render(m)
+        self.assertIn("60% of events but only 15% of people", text)
+        self.assertIn("signed-in", text)
+        start = html.index("skewed toward heavy users")
+        self.assertIn(f"color:{ta.RED}", html[max(0, start - 400):start + 200])
+
+    def test_people_coverage_is_reported_beside_event_coverage(self):
+        """Neither number is shown alone, so the gap is always visible."""
+        from test_treesmith_new_events import base_metrics  # noqa: E402
+        m = base_metrics()
+        m["segments"] = {"ok": True, "data": {
+            "coverage": {"events_7d": 1000, "people_7d": 100,
+                         "covered_people": 38, "any": True,
+                         "by_property": {p: {"events": 400, "pct": 40,
+                                             "people": 38, "people_pct": 38}
+                                         for p in ta.SUPER_PROPERTIES},
+                         "skew": None},
+            "splits": {}}}
+        text, _ = ta.render(m)
+        self.assertIn("40% of this week's 1,000 events", text)
+        self.assertIn("38% of its 100 people", text)
 
 
 if __name__ == "__main__":

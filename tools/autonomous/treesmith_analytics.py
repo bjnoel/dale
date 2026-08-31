@@ -1016,38 +1016,84 @@ def m_super_property_coverage(host, key):
     predates the instrument. Coverage is what tells those apart, so every
     denominator below is drawn from events that carry the property rather than
     from all events.
+
+    Coverage is measured BOTH by event and by person, and the gap between them
+    is the finding. During an ordinary build rollout the two track each other,
+    because the share of events carrying the property is roughly the share of
+    people who have updated. They come apart when coverage correlates with
+    something about the USER instead of with the build, and the case that
+    matters is the properties attaching only once somebody signs in.
+
+    That failure is invisible in the event figure alone. In the 28 days to
+    2026-08-31 the app had 84 people: 13 signed in generating 3,590 events, and
+    71 anonymous generating 2,382. Properties that needed a session would have
+    reported 60% of events covered, which reads as an unremarkable mid-rollout
+    number, while 85% of the people were missing entirely. Signed-in users are
+    the heavy users, so weighting by event hides exactly the population the
+    super properties exist to reach.
     """
-    covered = ", ".join(
-        f"countIf(JSONHas(properties, '{p}')) AS cov_{p}"
+    covered_events = ", ".join(
+        f"countIf(JSONHas(properties, '{p}')) AS ev_{p}"
+        for p in SUPER_PROPERTIES)
+    covered_people = ", ".join(
+        f"count(DISTINCT if(JSONHas(properties, '{p}'), person_id, NULL)) "
+        f"AS pe_{p}"
         for p in SUPER_PROPERTIES)
     rows = hogql(host, key, f"""
         SELECT count() AS events_7d,
                count(DISTINCT person_id) AS people_7d,
-               {covered},
-               count(DISTINCT if(JSONHas(properties, 'is_pro'),
-                                 person_id, NULL)) AS covered_people
+               {covered_events},
+               {covered_people}
         FROM events
         WHERE timestamp >= now() - INTERVAL 7 DAY
     """)
     if not rows:
         return {"events_7d": 0, "people_7d": 0, "by_property": {},
-                "covered_people": 0, "any": False}
+                "any": False, "skew": None}
     row = rows[0]
     events_7d, people_7d = row[0], row[1]
+    n_props = len(SUPER_PROPERTIES)
     by_property = {}
     for i, prop in enumerate(SUPER_PROPERTIES):
-        n = row[2 + i]
+        ev = row[2 + i]
+        pe = row[2 + n_props + i]
         by_property[prop] = {
-            "events": n,
-            "pct": round(n / events_7d * 100) if events_7d else None,
+            "events": ev,
+            "pct": round(ev / events_7d * 100) if events_7d else None,
+            "people": pe,
+            "people_pct": round(pe / people_7d * 100) if people_7d else None,
         }
     return {
         "events_7d": events_7d,
         "people_7d": people_7d,
-        "covered_people": row[-1],
+        "covered_people": by_property["is_pro"]["people"],
         "by_property": by_property,
         "any": any(v["events"] for v in by_property.values()),
+        "skew": _coverage_skew(by_property["is_pro"]),
     }
+
+
+# How far event coverage may run ahead of people coverage before the gap is
+# reported as a finding rather than as rollout noise.
+#
+# A build rollout moves both together. Heavier users do update slightly sooner,
+# so a few points of positive skew is ordinary. 20 points is not: that is the
+# signature of coverage attached to a user attribute, and the attribute to
+# suspect first is having a session, because signed-in users generate several
+# times the events of anonymous ones (276 per person against 34, 28d to
+# 2026-08-31).
+COVERAGE_SKEW_POINTS = 20
+
+
+def _coverage_skew(entry):
+    """Report event-vs-people coverage divergence, or None when they agree."""
+    ev, pe = entry.get("pct"), entry.get("people_pct")
+    if ev is None or pe is None or not ev:
+        return None
+    gap = ev - pe
+    if gap < COVERAGE_SKEW_POINTS:
+        return None
+    return {"events_pct": ev, "people_pct": pe, "gap": gap}
 
 
 # Segments worth a line in a weekly email. The full SUPER_PROPERTIES tuple is
@@ -1646,15 +1692,32 @@ def render(metrics):
     if sg and sg["ok"] and sg["data"]["coverage"]["any"]:
         d = sg["data"]
         cov = d["coverage"]
-        pct = cov["by_property"].get("is_pro", {}).get("pct")
+        entry = cov["by_property"].get("is_pro", {})
+        pct, people_pct = entry.get("pct"), entry.get("people_pct")
         if pct is not None and pct < 95:
             # The splits below describe the covered slice only. Saying so
             # matters most when coverage is partial, which is precisely the
             # period when the old and new builds are both in the field.
             kv("  Segment coverage",
-               f"{pct}% of this week's {cov['events_7d']:,} events carry the "
+               f"{pct}% of this week's {cov['events_7d']:,} events and "
+               f"{people_pct}% of its {cov['people_7d']} people carry the "
                f"super properties; the splits below describe that slice, not "
                f"all traffic", GREY)
+        skew = cov.get("skew")
+        if skew:
+            # The two figures coming apart is the finding, not the level of
+            # either. A build rollout moves both together; a gap this wide
+            # means coverage tracks the user rather than the release, and the
+            # attribute to suspect first is having a session. Reported in red
+            # because the event figure on its own reads as an ordinary
+            # mid-rollout number while most PEOPLE are missing.
+            kv("  !! coverage is skewed toward heavy users",
+               f"{skew['events_pct']}% of events but only "
+               f"{skew['people_pct']}% of people ({skew['gap']} points apart). "
+               f"That is what super properties attaching only to signed-in "
+               f"users looks like: they are 15% of people and 60% of events. "
+               f"Anonymous users are the population these exist to reach.",
+               RED)
         for prop, split in d["splits"].items():
             if not split["rows"]:
                 continue
