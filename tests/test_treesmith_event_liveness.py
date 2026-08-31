@@ -124,6 +124,7 @@ class LivenessRenderTest(unittest.TestCase):
         "silent": [{"event": "onboarding_completed",
                     "last_seen": "2026-07-30", "days_ago": 11,
                     "all_time": 152}],
+        "awaiting": [],
         "never_seen": [],
     }
 
@@ -140,7 +141,8 @@ class LivenessRenderTest(unittest.TestCase):
 
     def test_all_live_renders_no_liveness_section_at_all(self):
         """This runs every week. Silence when healthy or it becomes wallpaper."""
-        text, html = _render(liveness={"silent": [], "never_seen": []})
+        text, html = _render(liveness={"silent": [], "awaiting": [],
+                                       "never_seen": []})
         self.assertNotIn("Event liveness", text)
         self.assertNotIn("Event liveness", html)
 
@@ -148,7 +150,9 @@ class LivenessRenderTest(unittest.TestCase):
         """A typo and a rename both yield zero, and need different fixes."""
         text, _ = _render(liveness={
             "silent": [],
-            "never_seen": ["welcom_screen_shown"],
+            "awaiting": [],
+            "never_seen": [{"event": "welcom_screen_shown",
+                            "declared": None, "days_waiting": None}],
         })
         self.assertIn("welcom_screen_shown", text)
         self.assertIn("never", text.lower())
@@ -212,16 +216,27 @@ class LivenessClassifierTest(unittest.TestCase):
         self.assertEqual(self._classify(rows)["silent"], [])
 
     def test_an_event_absent_from_the_result_set_is_never_seen(self):
+        """An undeclared event that never arrives is a defect, not a rollout.
+
+        The missing name is chosen from the events NOT in
+        AWAITING_FIRST_EVENT. One that is awaiting its first event is
+        deliberately routed to the grace bucket instead, which is the
+        distinction AwaitingFirstEventTest covers.
+        """
+        established = [n for n in ta.EVENTS.values()
+                       if n not in ta.AWAITING_FIRST_EVENT]
+        missing = established[-1]
         rows = [[name, "2026-08-09", 500, 50]
-                for name in list(ta.EVENTS.values())[:-1]]
-        missing = list(ta.EVENTS.values())[-1]
-        self.assertEqual(self._classify(rows)["never_seen"], [missing])
+                for name in ta.EVENTS.values() if name != missing]
+        self.assertEqual([n["event"] for n in self._classify(rows)["never_seen"]],
+                         [missing])
 
     def test_all_healthy_reports_nothing(self):
         rows = [[name, "2026-08-09", 500, 50] for name in ta.EVENTS.values()]
         data = self._classify(rows)
         self.assertEqual(data["silent"], [])
         self.assertEqual(data["never_seen"], [])
+        self.assertEqual(data["awaiting"], [])
 
 
 class UninstrumentedFunnelStepTest(unittest.TestCase):
@@ -233,11 +248,38 @@ class UninstrumentedFunnelStepTest(unittest.TestCase):
     the phantom "lost 100%" callout one row down rather than removing it.
     """
 
-    STEPS = [("opened", 22, True), ("onboarded", 15, True),
-             ("plant_added", 10, True), ("activity_logged", 0, False)]
+    # 4-tuples: the event name lets the render tell a step that was never
+    # wired up from one that is declared and awaiting a release. `note_edited`
+    # stands in for a genuinely uninstrumented step because every real funnel
+    # event is now either live or in AWAITING_FIRST_EVENT.
+    STEPS = [("opened", 22, True, "Application Opened"),
+             ("onboarded", 15, True, "welcome_screen_completed"),
+             ("plant_added", 10, True, "plant_added"),
+             ("activity_logged", 0, False, "note_edited")]
 
     def test_uninstrumented_step_is_labelled_not_reported_as_zero(self):
         text, _ = _render(funnel={"steps": self.STEPS, "biggest_drop": None})
+        self.assertIn("not instrumented", text)
+
+    def test_a_step_awaiting_rollout_is_not_called_uninstrumented(self):
+        """Declared-and-not-yet-arrived is a release state, not a defect.
+
+        `activity_logged` was genuinely never wired up for months and the
+        render was right to say so in red. It is now declared, so until the
+        build lands the same zero means something different and must not be
+        reported as the app failing to instrument itself.
+        """
+        steps = self.STEPS[:3] + [("activity_logged", 0, False,
+                                   "activity_logged")]
+        text, _ = _render(funnel={"steps": steps, "biggest_drop": None})
+        self.assertIn("awaiting rollout", text)
+        self.assertNotIn("not instrumented", text)
+
+    def test_a_three_tuple_step_still_renders(self):
+        """The render must survive a half-deployed pair of files."""
+        text, _ = _render(funnel={
+            "steps": [("opened", 5, True), ("onboarded", 0, False)],
+            "biggest_drop": None})
         self.assertIn("not instrumented", text)
 
     def test_the_drop_into_an_uninstrumented_step_is_not_reported(self):
@@ -250,7 +292,8 @@ class UninstrumentedFunnelStepTest(unittest.TestCase):
         # Biggest ABSOLUTE drop among measurable steps: 22 -> 15 loses 7,
         # 15 -> 10 loses 5. The uninstrumented step is not scored at all.
         self.assertEqual(data["biggest_drop"], ("opened", "onboarded", 7, 32))
-        self.assertEqual(data["steps"][-1], ("activity_logged", 0, False))
+        self.assertEqual(data["steps"][-1],
+                         ("activity_logged", 0, False, "activity_logged"))
         self.assertNotIn("activity_logged", data["biggest_drop"])
 
     def test_drops_between_instrumented_steps_still_reported(self):
@@ -261,7 +304,8 @@ class UninstrumentedFunnelStepTest(unittest.TestCase):
     def test_a_genuine_zero_on_an_instrumented_step_still_counts(self):
         """all_time > 0 means the event works, so 0 this week is real."""
         data = self._funnel([(22, 1893), (15, 38), (10, 204), (0, 60)])
-        self.assertEqual(data["steps"][-1], ("activity_logged", 0, True))
+        self.assertEqual(data["steps"][-1],
+                         ("activity_logged", 0, True, "activity_logged"))
         self.assertEqual(data["biggest_drop"][:2],
                          ("plant_added", "activity_logged"))
 

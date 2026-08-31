@@ -69,7 +69,123 @@ EVENTS = {
     "paywall_shown": "paywall_shown",
     "paywall_result": "paywall_result",
     "purchase_succeeded": "purchase_succeeded",
+    # Reminders. `reminder_created` is the only legitimate denominator for
+    # anything reminder-shaped; see REMINDER_DELIVERY_NOTE.
+    "reminder_created": "reminder_created",
+    "reminder_notification_tapped": "reminder_notification_tapped",
+    "reminder_sweep": "reminder_sweep",
+    # Content and structure.
+    "graft_added": "graft_added",
+    "zone_added": "zone_added",
+    "photo_deleted": "photo_deleted",
+    "plants_bulk_edited": "plants_bulk_edited",
+    # Data portability. `data_imported` is the first instrument that can see a
+    # plant arriving by any route other than the plant form, which is the blind
+    # spot m_plants has been reporting as a percentage since DAL-265.
+    "data_exported": "data_exported",
+    "data_imported": "data_imported",
 }
+
+# Events the app declares that have not reached PostHog yet, and the date we
+# started expecting each one.
+#
+# This is a third liveness state and it exists because the other two both lie
+# about a freshly shipped event. `silent` needs history it does not have.
+# `never_seen` is technically true but renders as "Typo in EVENTS, or an event
+# that never shipped", in red, which is a false alarm every week until the
+# build reaches users. Ten of those at once is how the liveness section stops
+# being read, and that section is the one this digest cannot afford to lose.
+#
+# Suppressing them instead is the DEC-249 error pointing the other way: an
+# absence of measurement would render identically to a clean result. So the
+# wait is bounded. Within AWAITING_GRACE_DAYS the digest says "awaiting, N days
+# in" in grey; past it the event escalates to a real red alarm, because an
+# event declared six weeks ago that has still never fired is not a slow
+# rollout, it is a capture that was never wired up or a name that does not
+# match what the app sends.
+#
+# When an event starts arriving it needs no edit here: m_event_liveness keys on
+# what the data actually holds, so a live event drops out of this state by
+# itself. Delete the row when you next touch this file.
+#
+# 2026-08-31 is the day the events were declared. On that date the live builds
+# were 1.0.11 (62/63/64) and none of these had ever fired.
+AWAITING_FIRST_EVENT = {
+    "reminder_created": "2026-08-31",
+    "reminder_notification_tapped": "2026-08-31",
+    "reminder_sweep": "2026-08-31",
+    "graft_added": "2026-08-31",
+    "zone_added": "2026-08-31",
+    "photo_deleted": "2026-08-31",
+    "plants_bulk_edited": "2026-08-31",
+    "data_exported": "2026-08-31",
+    "data_imported": "2026-08-31",
+    # Declared in the app since June and never once fired: the app defined
+    # captureActivityLogged and no code path called it, which m_funnel has been
+    # rendering as "not instrumented" rather than blaming on users. It is
+    # reported live as of 2026-08-31, so it is on the same clock as the rest.
+    "activity_logged": "2026-08-31",
+}
+
+# How long an event may stay unseen after being declared before its absence is
+# an alarm rather than a rollout.
+#
+# Sized from observed update behaviour, not from taste: on 2026-08-31 the data
+# still carried 1.0.9 events from 2026-08-28, two builds and roughly six weeks
+# after 1.0.10 shipped. A grace shorter than the tail of an update cycle would
+# fire on every release. 42 days clears that tail and still catches a capture
+# that was never wired up inside the same quarter.
+AWAITING_GRACE_DAYS = 42
+
+# Retired event names, mapped to what replaced them.
+#
+# NOT in EVENTS: these are supposed to be dead, so liveness must never report
+# them as SILENT. They are kept because any funnel whose window reaches back
+# into July has to union both names to be correct. In the real data
+# `onboarding_started` ran 2026-06-08 to 2026-07-30 (148 events) while
+# `welcome_screen_shown` began 2026-07-02 (101 events), so the two overlap for
+# four weeks: a window covering July sees part of the population under each
+# name, and reading either one alone undercounts.
+#
+# The union is over DISTINCT people, never a sum of counts. During the overlap
+# one person who updated mid-window sends both names and would otherwise be
+# counted twice.
+RETIRED_ALIASES = {
+    "welcome_screen_shown": ["onboarding_started"],
+    "welcome_screen_completed": ["onboarding_completed"],
+}
+
+# The last day a retired onboarding name appears in the data. A window that
+# starts after this needs no union, and saying so keeps the union from being
+# quietly widened into a permanent double-count.
+ALIAS_CUTOFF_DATE = "2026-07-30"
+
+# Properties now attached to EVERY event, including events from users who have
+# never signed in.
+#
+# They are EVENT properties, not person properties. Segment with
+# `properties.is_pro`; `person.properties.is_pro` is a different store that
+# these never reach, and it fails by returning NULL for everyone rather than by
+# erroring, so a segment built on it reads as "nobody is Pro" instead of as a
+# broken query. test_treesmith_super_properties.py fails the build on the
+# person-scoped form for exactly that reason.
+SUPER_PROPERTIES = (
+    "is_pro",
+    "has_cloud_backup",
+    "is_sandbox",
+    "plant_count_bucket",
+    "location_count_bucket",
+    "activity_count_bucket",
+    "days_since_install_bucket",
+)
+
+# No event in the historical data carries any of these: on 2026-08-31 the check
+# returned 0 across all 15,401 events ever recorded. So a super property is
+# absent for two entirely different reasons, and they must not be added
+# together: the user is not Pro, or the event predates the build that attaches
+# the property at all. Every segment below therefore reports coverage first and
+# takes its denominator from events that carry the property, never from all
+# events. An absent property is "unknown", never "false" (DEC-317).
 
 # How many events a name must have carried historically before its silence is
 # worth reporting. Low-volume events have quiet weeks all the time; a rename
@@ -237,13 +353,24 @@ def m_event_liveness(host, key):
     the old build stopped sending it on 2026-07-30, and for the eleven days after
     that the digest reported a 100%-converting funnel step as a total collapse.
 
-    Two failure modes, deliberately reported apart because they need different
+    Three states, deliberately reported apart because they need different
     fixes:
 
       silent      the name has real history and nothing recent. Renamed, or the
                   code path that fired it was removed.
-      never_seen  the name has never appeared at all. A typo in EVENTS, or an
-                  event we planned and never shipped.
+      awaiting    the name is in AWAITING_FIRST_EVENT, has never appeared, and
+                  was declared less than AWAITING_GRACE_DAYS ago. A build on its
+                  way to users, not a defect. Reported in grey with the age, so
+                  it is visible without being an alarm.
+      never_seen  the name has never appeared and is either undeclared or past
+                  its grace. A typo in EVENTS, a capture that was never wired
+                  up, or an event we planned and never shipped.
+
+    The middle state is the one that keeps this section readable. Ten events
+    were declared at once on 2026-08-31 while the live builds were 1.0.11 and
+    none of them had ever fired; without `awaiting` every one of them would
+    have rendered as a red defect every Monday until the next release reached
+    users, and a section that cries wolf ten times is a section nobody reads.
 
     Anything below MIN_HISTORY is left alone; a low-volume event having a quiet
     week is ordinary and warning about it would train the reader to skip this
@@ -273,8 +400,29 @@ def m_event_liveness(host, key):
                 "all_time": all_time,
             })
     silent.sort(key=lambda s: s["all_time"], reverse=True)
-    return {"silent": silent,
-            "never_seen": [n for n in names if n not in seen]}
+
+    # An event that HAS arrived is live regardless of what AWAITING_FIRST_EVENT
+    # still says, so `seen` is checked before the declaration is. That way a
+    # stale row in the dict cannot suppress a real silence later: once an event
+    # has history it is scored by the silent rule above like any other.
+    awaiting, never_seen = [], []
+    for name in names:
+        if name in seen:
+            continue
+        declared = AWAITING_FIRST_EVENT.get(name)
+        waited = _days_since(declared) if declared else None
+        if declared and waited is not None and waited <= AWAITING_GRACE_DAYS:
+            awaiting.append({"event": name, "declared": declared,
+                             "days_waiting": waited,
+                             "grace_days": AWAITING_GRACE_DAYS})
+        else:
+            # Past grace, or never declared at all. Both are defects, but they
+            # read differently, so the overdue ones carry their age.
+            never_seen.append({"event": name, "declared": declared,
+                               "days_waiting": waited})
+    awaiting.sort(key=lambda a: a["event"])
+    never_seen.sort(key=lambda n: n["event"])
+    return {"silent": silent, "awaiting": awaiting, "never_seen": never_seen}
 
 
 def _days_since(date_str):
@@ -306,6 +454,19 @@ def m_plants(host, key):
     The gap between the two is reported deliberately. It is the size of the
     blind spot, and it is what Benedict noticed from the other side by having
     more plants in his own app than the digest said existed in total.
+
+    `data_imported` (2026-08-31) narrows that gap without closing it. It
+    carries `plants_imported`, so plants arriving by file import are now
+    counted rather than merely inferred. Restore-from-backup still announces
+    nothing, so the residual is the honest remainder: plants we hold no
+    explanation for, rather than the whole non-form population.
+
+    `plant_count_snapshot` is legacy and only old builds send it (245 events,
+    2 of them in the week to 2026-08-31). It is read here only as one input to
+    a max(), which is safe because a max cannot be dragged down by a shrinking
+    sender. It must never become a denominator or a trend: that series is
+    decaying as users update, and a decaying instrument reads as a decaying
+    business.
     """
     rows = hogql(host, key, """
         WITH per_person AS (
@@ -327,11 +488,21 @@ def m_plants(host, key):
     observed = scalar(hogql(host, key, """
         SELECT count() FROM events WHERE event = 'plant_added'
     """))
-    unobserved = max(plants - observed, 0)
+    # Plants that arrived by file import. Counted alongside form adds as
+    # "explained", never added to the high-water total: high_water already
+    # includes them, this only says how they got there.
+    imported = scalar(hogql(host, key, f"""
+        SELECT sum({_num('plants_imported')}) FROM events
+        WHERE event = 'data_imported'
+    """)) or 0
+    explained = observed + imported
+    unobserved = max(plants - explained, 0)
     return {
         "owners": owners,
         "plants": plants,
         "observed_adds": observed,
+        "imported_adds": imported,
+        "explained": explained,
         "unobserved": unobserved,
         "unobserved_pct": (round(unobserved / plants * 100) if plants else None),
     }
@@ -398,18 +569,27 @@ def m_activation(host, key):
 def m_onboarding(host, key):
     """First-run screen starts vs completes in the last 7 days.
 
-    Reads the welcome-screen events, NOT the retired onboarding_* pair. See
-    EVENTS for what happened when this queried the old names.
+    Reads the welcome-screen events, NOT the retired onboarding_* pair alone.
+    See EVENTS for what happened when this queried only the old names.
+
+    Both names are unioned via RETIRED_ALIASES even though a 7-day window can
+    no longer reach the retired ones (they stopped 2026-07-30). The union costs
+    nothing today and means this stays correct if the window is ever widened,
+    which is the change that would silently halve the number. People, not
+    events: the two names overlapped 2026-07-02 to 2026-07-30 and anyone who
+    updated inside that window sends both.
     """
-    started_event = EVENTS["welcome_shown"]
-    completed_event = EVENTS["welcome_completed"]
+    started_names = event_names(EVENTS["welcome_shown"])
+    completed_names = event_names(EVENTS["welcome_completed"])
     rows = hogql(host, key, f"""
         SELECT
-          countIf(event = '{started_event}') AS started,
-          countIf(event = '{completed_event}') AS completed
+          count(DISTINCT if(event IN ({_in_list(started_names)}),
+                            person_id, NULL)) AS started,
+          count(DISTINCT if(event IN ({_in_list(completed_names)}),
+                            person_id, NULL)) AS completed
         FROM events
         WHERE timestamp >= now() - INTERVAL 7 DAY
-          AND event IN ('{started_event}', '{completed_event}')
+          AND event IN ({_in_list(started_names + completed_names)})
     """)
     started = rows[0][0] if rows else 0
     completed = rows[0][1] if rows else 0
@@ -430,11 +610,15 @@ def m_funnel(host, key):
     ]
     counts = []
     for label, event in steps:
+        # Unioned over every name the step has been sent under, so a funnel
+        # whose window reaches back before ALIAS_CUTOFF_DATE does not lose the
+        # half of the population that was still on the old build. DISTINCT
+        # person_id makes the four-week overlap safe to union.
         rows = hogql(host, key, f"""
             SELECT count(DISTINCT if(timestamp >= now() - INTERVAL 7 DAY,
                                      person_id, NULL)) AS people_7d,
                    count() AS all_time
-            FROM events WHERE event = '{event}'
+            FROM events WHERE event IN ({_in_list(event_names(event))})
         """)
         people_7d = rows[0][0] if rows else 0
         all_time = rows[0][1] if rows else 0
@@ -444,13 +628,13 @@ def m_funnel(host, key):
         # while the digest blamed the users. Carry whether the step is
         # measurable at all, so the render and the drop calculation can both
         # refuse to treat "not instrumented" as "nobody did it".
-        counts.append((label, people_7d, all_time > 0))
+        counts.append((label, people_7d, all_time > 0, event))
 
     # Biggest absolute drop between consecutive INSTRUMENTED steps. A step we
     # cannot see is skipped rather than scored: a 100% drop into an event that
     # has never existed is a fact about our telemetry, not about the funnel,
     # and printing it in red trains the reader to ignore the line that matters.
-    measurable = [(label, n) for label, n, ok in counts if ok]
+    measurable = [(label, n) for label, n, ok, _event in counts if ok]
     biggest = None
     for i in range(1, len(measurable)):
         prev_label, prev_n = measurable[i - 1]
@@ -779,6 +963,476 @@ def m_backup(host, key):
     return {"completed": completed, "failed": failed_rows}
 
 
+# ── New-event metrics (2026-08-31 instrumentation) ──────────────────────────
+
+def _num(name):
+    """HogQL fragment reading a numeric property.
+
+    The SDK sends some of these as JSON numbers and some as quoted strings
+    depending on the call site, and `toInt` on the wrong one is NULL, which
+    then sums to NULL and renders as a blank rather than as an error. Extract
+    raw, strip quotes, coerce. Zero for a missing property is correct here:
+    every caller sums counts, and an event that omits the field contributes
+    nothing.
+    """
+    return f"toIntOrZero(replaceAll(JSONExtractRaw(properties, '{name}'), '\"', ''))"
+
+
+def _bool_true(name):
+    """HogQL fragment that is true only when a boolean property is literally true.
+
+    Deliberately not `!= 'false'`: a missing property is unknown, not false.
+    """
+    return f"toString(properties.{name}) = 'true'"
+
+
+def event_names(primary):
+    """Every name an event has been sent under, newest first.
+
+    A window that reaches back before ALIAS_CUTOFF_DATE sees part of the
+    population under the retired name and part under the current one, so
+    reading either alone undercounts. Callers must aggregate over
+    `count(DISTINCT person_id)`, never a sum of per-name counts: the two names
+    overlapped for four weeks and one person who updated mid-window sends both.
+    """
+    return [primary] + RETIRED_ALIASES.get(primary, [])
+
+
+def _in_list(names):
+    return ", ".join("'%s'" % n for n in names)
+
+
+def m_super_property_coverage(host, key):
+    """Can we segment at all yet, and on how much of the traffic?
+
+    This is to the segment section what m_event_liveness is to the digest: it
+    is read before the splits below it, because a split of nothing renders
+    exactly like a split of a population that is uniformly one value.
+
+    The super properties attach to every event from the build that introduces
+    them and to no event before it. On 2026-08-31 that was zero of 15,401
+    events. So an absent `is_pro` means one of two unrelated things, and adding
+    them together is the DEC-317 error: the user is not Pro, or the event
+    predates the instrument. Coverage is what tells those apart, so every
+    denominator below is drawn from events that carry the property rather than
+    from all events.
+    """
+    covered = ", ".join(
+        f"countIf(JSONHas(properties, '{p}')) AS cov_{p}"
+        for p in SUPER_PROPERTIES)
+    rows = hogql(host, key, f"""
+        SELECT count() AS events_7d,
+               count(DISTINCT person_id) AS people_7d,
+               {covered},
+               count(DISTINCT if(JSONHas(properties, 'is_pro'),
+                                 person_id, NULL)) AS covered_people
+        FROM events
+        WHERE timestamp >= now() - INTERVAL 7 DAY
+    """)
+    if not rows:
+        return {"events_7d": 0, "people_7d": 0, "by_property": {},
+                "covered_people": 0, "any": False}
+    row = rows[0]
+    events_7d, people_7d = row[0], row[1]
+    by_property = {}
+    for i, prop in enumerate(SUPER_PROPERTIES):
+        n = row[2 + i]
+        by_property[prop] = {
+            "events": n,
+            "pct": round(n / events_7d * 100) if events_7d else None,
+        }
+    return {
+        "events_7d": events_7d,
+        "people_7d": people_7d,
+        "covered_people": row[-1],
+        "by_property": by_property,
+        "any": any(v["events"] for v in by_property.values()),
+    }
+
+
+# Segments worth a line in a weekly email. The full SUPER_PROPERTIES tuple is
+# checked for coverage above; only these are broken out, because seven
+# distributions is a table nobody reads and the other three are better read as
+# filters on a specific question than as a weekly split.
+SEGMENT_PROPERTIES = ("is_pro", "has_cloud_backup", "is_sandbox",
+                      "plant_count_bucket", "days_since_install_bucket")
+
+
+def m_segments(host, key):
+    """Who this week's active people are, split by the super properties.
+
+    Segments on `properties.X`. NOT `person.properties.X`: these are event
+    properties, they never reach the person store, and a person-scoped read
+    returns NULL for everybody rather than erroring. That failure is invisible
+    -- it renders as "no Pro users" rather than as a broken query -- which is
+    why test_treesmith_super_properties.py fails the build on the person form.
+
+    The point of these being event properties is that they cover anonymous
+    users too, which is most of ours: 43 MAU against 28 lifetime auth_completed
+    events. A person-property segment would have been blind to nearly all of
+    them.
+    """
+    coverage = m_super_property_coverage(host, key)
+    if not coverage["any"]:
+        # No event carries them yet. Return the coverage alone: printing five
+        # empty distributions would read as five findings about a flat
+        # population rather than as an instrument that has not landed.
+        return {"coverage": coverage, "splits": {}}
+
+    splits = {}
+    for prop in SEGMENT_PROPERTIES:
+        rows = hogql(host, key, f"""
+            SELECT coalesce(toString(properties.{prop}), '(null)') AS value,
+                   count(DISTINCT person_id) AS people,
+                   count() AS events
+            FROM events
+            WHERE timestamp >= now() - INTERVAL 7 DAY
+              AND JSONHas(properties, '{prop}')
+            GROUP BY value
+            ORDER BY people DESC, value
+        """)
+        total_people = sum(r[1] for r in rows)
+        splits[prop] = {
+            "rows": [{"value": r[0], "people": r[1], "events": r[2],
+                      "pct": (round(r[1] / total_people * 100)
+                              if total_people else None)}
+                     for r in rows],
+            "people": total_people,
+        }
+    return {"coverage": coverage, "splits": splits}
+
+
+# Why this digest has no notification delivery rate, stated once and rendered
+# into the email so the absence is visible rather than looking like an
+# oversight somebody should fix.
+#
+# The app is only ever woken by a tap. It cannot observe a notification being
+# delivered, shown, or swiped away, so the denominator for a delivery rate does
+# not exist on the device and never will. Dividing taps by anything and calling
+# it delivery would be inventing the denominator.
+#
+# What can be measured honestly: `reminder_created` with `schedule_status` says
+# what we asked the OS to do (and `blocker` says why it refused), and
+# `reminder_sweep.left_due` counts reminders that were due and still sitting
+# there at the next cold start, which is the closest thing to an ignored
+# reminder that the device can actually see.
+REMINDER_DELIVERY_NOTE = (
+    "No delivery rate: the app is only woken by a tap, so a notification that "
+    "was delivered and ignored is indistinguishable from one never delivered. "
+    "left_due below is the ignored-proxy."
+)
+
+
+def m_reminders(host, key):
+    """Reminders: what we scheduled, what the OS blocked, what got tapped.
+
+    Three events, three different questions, and the digest keeps them apart:
+
+      reminder_created   what the app asked for, and whether the OS accepted.
+                         The only legitimate denominator here.
+      reminder_sweep     one per cold start, so it is a sample of app launches
+                         and not of reminders. `left_due` is the ignored-proxy.
+      ..._tapped         the only thing the device can observe about delivery.
+
+    See REMINDER_DELIVERY_NOTE for the rate that is deliberately absent.
+    """
+    created = hogql(host, key, """
+        SELECT coalesce(toString(properties.schedule_status), '(unset)') AS status,
+               coalesce(toString(properties.blocker), '') AS blocker,
+               coalesce(toString(properties.activity_type), '(unset)') AS activity_type,
+               count() AS n,
+               count(DISTINCT person_id) AS people
+        FROM events
+        WHERE event = 'reminder_created'
+          AND timestamp >= now() - INTERVAL 7 DAY
+        GROUP BY status, blocker, activity_type
+        ORDER BY n DESC
+    """)
+    tapped = hogql(host, key, """
+        SELECT coalesce(toString(properties.launch), '(unset)') AS launch,
+               coalesce(toString(properties.activity_type), '(unset)') AS activity_type,
+               count() AS n,
+               count(DISTINCT person_id) AS people
+        FROM events
+        WHERE event = 'reminder_notification_tapped'
+          AND timestamp >= now() - INTERVAL 7 DAY
+        GROUP BY launch, activity_type
+        ORDER BY n DESC
+    """)
+    sweeps = hogql(host, key, f"""
+        SELECT count() AS sweeps,
+               count(DISTINCT person_id) AS people,
+               sum({_num('active')}) AS active,
+               sum({_num('already_pending')}) AS already_pending,
+               sum({_num('scheduled')}) AS scheduled,
+               sum({_num('blocked')}) AS blocked,
+               sum({_num('failed')}) AS failed,
+               sum({_num('left_due')}) AS left_due,
+               countIf({_num('left_due')} > 0) AS sweeps_with_due
+        FROM events
+        WHERE event = 'reminder_sweep'
+          AND timestamp >= now() - INTERVAL 7 DAY
+    """)
+
+    # All-time, so the render can tell "never arrived" from "quiet week".
+    # Hiding a section on a 7-day zero would hide a reminder feature that has
+    # been live for months and simply had a slow week, which is a real reading.
+    ever = hogql(host, key, """
+        SELECT count() FROM events
+        WHERE event IN ('reminder_created', 'reminder_notification_tapped',
+                        'reminder_sweep')
+    """)
+
+    created_total = sum(r[3] for r in created)
+    scheduled_ok = sum(r[3] for r in created if r[0] == "scheduled")
+    blocked_rows = [{"status": r[0], "blocker": r[1] or "(none given)",
+                     "n": r[3], "people": r[4]}
+                    for r in created if r[0] != "scheduled"]
+    taps_total = sum(r[2] for r in tapped)
+    s = sweeps[0] if sweeps else [0] * 9
+    sweep = {
+        "sweeps": s[0], "people": s[1], "active": s[2],
+        "already_pending": s[3], "scheduled": s[4], "blocked": s[5],
+        "failed": s[6], "left_due": s[7], "sweeps_with_due": s[8],
+    }
+    return {
+        "all_time": scalar(ever),
+        "created_total": created_total,
+        "scheduled_ok": scheduled_ok,
+        "by_status": [{"status": r[0], "blocker": r[1],
+                       "activity_type": r[2], "n": r[3], "people": r[4]}
+                      for r in created],
+        "blocked": blocked_rows,
+        "taps_total": taps_total,
+        "by_launch": [{"launch": r[0], "activity_type": r[1],
+                       "n": r[2], "people": r[3]} for r in tapped],
+        "cold_taps": sum(r[2] for r in tapped if r[0] == "cold"),
+        "warm_taps": sum(r[2] for r in tapped if r[0] == "warm"),
+        # Taps per SCHEDULED reminder. Not a delivery rate and not per
+        # notification: a repeating reminder is created once and fires many
+        # times, so this can legitimately exceed 100% and must never be read as
+        # a share of notifications. It is here because reminder_created is the
+        # only denominator the instrument actually supports.
+        "taps_per_scheduled": (round(taps_total / scheduled_ok * 100)
+                               if scheduled_ok else None),
+        "sweep": sweep,
+    }
+
+
+def m_feature_usage(host, key):
+    """The content and structure events, 7 days and all time.
+
+    All time as well as weekly for the same reason the purchase section carries
+    it (DEC-252): these are low-volume events, and a feature used three times
+    in six months looks identical to one never shipped if the only window is
+    seven days long.
+    """
+    names = ("graft_added", "zone_added", "photo_deleted",
+             "plants_bulk_edited", "activity_logged")
+    totals = hogql(host, key, f"""
+        SELECT event,
+               count() AS all_time,
+               countIf(timestamp >= now() - INTERVAL 7 DAY) AS n_7d,
+               count(DISTINCT if(timestamp >= now() - INTERVAL 7 DAY,
+                                 person_id, NULL)) AS people_7d
+        FROM events
+        WHERE event IN ({_in_list(names)})
+        GROUP BY event
+    """)
+    by_event = {r[0]: {"all_time": r[1], "n_7d": r[2], "people_7d": r[3]}
+                for r in totals}
+    for n in names:
+        by_event.setdefault(n, {"all_time": 0, "n_7d": 0, "people_7d": 0})
+
+    grafts = hogql(host, key, f"""
+        SELECT coalesce(toString(properties.type_family), '(unset)') AS type_family,
+               coalesce(toString(properties.source), '(unset)') AS source,
+               countIf({_bool_true('has_type')}) AS with_type,
+               count() AS n
+        FROM events
+        WHERE event = 'graft_added'
+          AND timestamp >= now() - INTERVAL 7 DAY
+        GROUP BY type_family, source
+        ORDER BY n DESC
+    """)
+    activities = hogql(host, key, f"""
+        SELECT coalesce(toString(properties.activity_type), '(unset)') AS activity_type,
+               count() AS n,
+               countIf({_bool_true('created_reminder')}) AS created_reminder,
+               countIf({_bool_true('has_notes')}) AS with_notes
+        FROM events
+        WHERE event = 'activity_logged'
+          AND timestamp >= now() - INTERVAL 7 DAY
+        GROUP BY activity_type
+        ORDER BY n DESC
+    """)
+    bulk = hogql(host, key, f"""
+        SELECT coalesce(toString(properties.operation), '(unset)') AS operation,
+               coalesce(toString(properties.to_status), '') AS to_status,
+               count() AS n,
+               sum({_num('count')}) AS plants
+        FROM events
+        WHERE event = 'plants_bulk_edited'
+          AND timestamp >= now() - INTERVAL 7 DAY
+        GROUP BY operation, to_status
+        ORDER BY plants DESC
+    """)
+    photos = hogql(host, key, f"""
+        SELECT coalesce(toString(properties.category), '(unset)') AS category,
+               count() AS n,
+               countIf({_bool_true('was_last_photo')}) AS was_last,
+               countIf({_bool_true('has_graft_link')}) AS graft_linked
+        FROM events
+        WHERE event = 'photo_deleted'
+          AND timestamp >= now() - INTERVAL 7 DAY
+        GROUP BY category
+        ORDER BY n DESC
+    """)
+    return {
+        "by_event": by_event,
+        "grafts": [{"type_family": r[0], "source": r[1],
+                    "with_type": r[2], "n": r[3]} for r in grafts],
+        "activities": [{"activity_type": r[0], "n": r[1],
+                        "created_reminder": r[2], "with_notes": r[3]}
+                       for r in activities],
+        "bulk": [{"operation": r[0], "to_status": r[1], "n": r[2],
+                  "plants": r[3]} for r in bulk],
+        "photos": [{"category": r[0], "n": r[1], "was_last": r[2],
+                    "graft_linked": r[3]} for r in photos],
+    }
+
+
+def m_data_portability(host, key):
+    """Exports and imports, 7 days and all time.
+
+    `data_imported` is the reason this section is worth its space. m_plants has
+    reported an unobservable share of the plant population since DAL-265,
+    because `plant_added` fires only from the plant form and a plant arriving
+    by import or restore announced nothing. `plants_imported` is the first
+    instrument that can see that route, so the blind spot stops being a number
+    we can only estimate. It does NOT close it: restore-from-backup is still
+    unobserved, so the gap shrinks rather than disappearing.
+
+    `replaced_existing` is reported separately and never added to the imported
+    total: a replacing import overwrites a library rather than adding to it, so
+    summing the two counts the same plants twice.
+    """
+    rows = hogql(host, key, f"""
+        SELECT event,
+               coalesce(toString(properties.format), '(unset)') AS format,
+               count() AS all_time,
+               countIf(timestamp >= now() - INTERVAL 7 DAY) AS n_7d,
+               count(DISTINCT person_id) AS people,
+               sumIf({_num('plants_exported')},
+                     timestamp >= now() - INTERVAL 7 DAY) AS plants_exported_7d,
+               sumIf({_num('plants_imported')},
+                     timestamp >= now() - INTERVAL 7 DAY) AS plants_imported_7d,
+               sumIf({_num('rows_imported')},
+                     timestamp >= now() - INTERVAL 7 DAY) AS rows_imported_7d,
+               sum({_num('plants_imported')}) AS plants_imported_all,
+               countIf({_bool_true('replaced_existing')}) AS replaced
+        FROM events
+        WHERE event IN ('data_exported', 'data_imported')
+        GROUP BY event, format
+        ORDER BY event, all_time DESC
+    """)
+    exports = [r for r in rows if r[0] == "data_exported"]
+    imports = [r for r in rows if r[0] == "data_imported"]
+
+    def pack(rs):
+        return [{"format": r[1], "all_time": r[2], "n_7d": r[3],
+                 "people": r[4], "plants_exported_7d": r[5],
+                 "plants_imported_7d": r[6], "rows_imported_7d": r[7],
+                 "plants_imported_all": r[8], "replaced": r[9]} for r in rs]
+
+    # Rows that did not become plants. A CSV with 400 rows that imports 12
+    # plants is a parser or a column-mapping problem, and it is invisible in
+    # either number on its own.
+    rows_in = sum(r[7] for r in imports)
+    plants_in = sum(r[6] for r in imports)
+    return {
+        "exports": pack(exports),
+        "imports": pack(imports),
+        "exports_7d": sum(r[3] for r in exports),
+        "imports_7d": sum(r[3] for r in imports),
+        "plants_imported_7d": plants_in,
+        "rows_imported_7d": rows_in,
+        "plants_imported_all": sum(r[8] for r in imports),
+        "replaced_existing": sum(r[9] for r in imports),
+        "unconverted_rows": max(rows_in - plants_in, 0),
+        "row_conversion_pct": (round(plants_in / rows_in * 100)
+                               if rows_in else None),
+    }
+
+
+def m_locations(host, key):
+    """Locations per person, and the ceiling that makes it unreadable until now.
+
+    `location_added` fired from one of the app's three location-creation paths,
+    so `location_count_after` has a hard historical maximum of 1: on 2026-08-31
+    every one of the 77 events ever recorded carried exactly 1, with no other
+    value present. That is not a population where nobody has two locations. It
+    is an instrument that could not count past one.
+
+    So the fix produces a step change in any trend that spans it, and that step
+    is an artefact of measurement, not a change in behaviour. Rather than
+    hardcode a fix date that will drift out of step with the build that
+    actually ships it, the boundary is DERIVED: the first day the data contains
+    a value above 1 is the first day the other two paths were reporting. Before
+    that day the series is clipped and reported as a ceiling; after it, the two
+    windows are reported apart and never joined into one trend.
+
+    The limitation is stated rather than hidden: if the fix ships and no user
+    ever creates a second location, no value above 1 appears and this keeps
+    reporting a ceiling. That reads as "still cannot tell", which is the honest
+    answer, and the awaiting-events section above says whether the build has
+    landed at all.
+    """
+    rows = hogql(host, key, f"""
+        SELECT count() AS adds,
+               count(DISTINCT person_id) AS people,
+               max({_num('location_count_after')}) AS max_after,
+               countIf({_num('location_count_after')} > 1) AS above_one,
+               toString(min(toDate(timestamp))) AS first_seen,
+               toString(minIf(toDate(timestamp),
+                              {_num('location_count_after')} > 1)) AS first_multi
+        FROM events
+        WHERE event = 'location_added'
+    """)
+    if not rows or not rows[0][0]:
+        return {"adds": 0, "people": 0, "max_after": 0, "capped": True,
+                "boundary": None, "pre": None, "post": None}
+    adds, people, max_after, above_one, first_seen, first_multi = rows[0]
+    capped = max_after <= 1
+    boundary = None if capped else first_multi
+
+    out = {"adds": adds, "people": people, "max_after": max_after,
+           "above_one": above_one, "first_seen": first_seen,
+           "capped": capped, "boundary": boundary, "pre": None, "post": None}
+    if capped:
+        return out
+
+    # Past the boundary the two windows are reported side by side and never
+    # concatenated: joining them draws a line that steps up on the day the
+    # instrument was fixed and invites the reader to explain a measurement
+    # change as user behaviour.
+    split = hogql(host, key, f"""
+        SELECT toDate(timestamp) >= toDate('{boundary}') AS post,
+               count() AS adds,
+               count(DISTINCT person_id) AS people,
+               max({_num('location_count_after')}) AS max_after,
+               round(avg({_num('location_count_after')}), 2) AS avg_after
+        FROM events
+        WHERE event = 'location_added'
+        GROUP BY post
+    """)
+    for is_post, n, ppl, mx, avg in split:
+        bucket = {"adds": n, "people": ppl, "max_after": mx, "avg_after": avg}
+        out["post" if is_post else "pre"] = bucket
+    return out
+
+
+
 # ── Rendering ────────────────────────────────────────────────────────────────
 
 GREEN = "#2e7d32"
@@ -789,6 +1443,29 @@ GREY = "#888"
 STORE_LABELS = {"appstore": "iOS", "play": "Play"}
 RANK_LIST_LIMIT = 5  # per bucket per store. The digest reports movement, and a
                      # 36-line table is a table nobody reads.
+
+
+SEGMENT_VALUE_LIMIT = 4  # values per super property. A bucket property with a
+                         # long tail is a distribution, and a weekly email is
+                         # not where a distribution gets read.
+FEATURE_LIST_LIMIT = 5   # breakdown rows per feature event.
+
+
+def _hidden_while_awaiting(names, ever_seen):
+    """Should a section be omitted entirely rather than rendered as zeros?
+
+    Only when it has NEVER had data and every event feeding it is still inside
+    its declared grace. That is not a silent suppression: every name here is in
+    EVENTS, and m_event_liveness reports each one above, in grey while it is
+    awaiting and in red the moment it is overdue. So the absence is stated
+    once, in the section built for stating absences, instead of as four blocks
+    of zeros that would be identical whether the build had landed or not.
+
+    A quiet WEEK never triggers this: `ever_seen` is an all-time count, so a
+    live feature with a slow week still renders its zeros, which is a real
+    reading and belongs in the email.
+    """
+    return not ever_seen and all(n in AWAITING_FIRST_EVENT for n in names)
 
 
 SOURCES_LIST_LIMIT = 4   # source types per window. Apple defines seven and the
@@ -874,7 +1551,8 @@ def render(metrics):
     lv = metrics.get("liveness")
     if lv and lv["ok"]:
         d = lv["data"]
-        if d["silent"] or d["never_seen"]:
+        awaiting = d.get("awaiting") or []
+        if d["silent"] or d["never_seen"] or awaiting:
             section("Event liveness")
             for s in d["silent"]:
                 ago = ("" if s["days_ago"] is None
@@ -883,10 +1561,43 @@ def render(metrics):
                    f"SILENT. Last seen {s['last_seen']}{ago}, "
                    f"{s['all_time']} events historically. Renamed or dropped? "
                    f"Any metric reading it is showing zero.", RED)
-            for name in d["never_seen"]:
-                kv(name,
-                   "never seen. Typo in EVENTS, or an event that never shipped.",
-                   RED)
+            for entry in d["never_seen"]:
+                # Tolerate the old list-of-strings shape so a half-deployed
+                # pair of files reports the event rather than raising.
+                name = entry["event"] if isinstance(entry, dict) else entry
+                waited = entry.get("days_waiting") if isinstance(entry, dict) else None
+                if waited is not None:
+                    kv(name,
+                       f"declared {waited}d ago and STILL never seen (grace was "
+                       f"{AWAITING_GRACE_DAYS}d). The capture was never wired "
+                       f"up, or the name does not match what the app sends.",
+                       RED)
+                else:
+                    kv(name,
+                       "never seen. Typo in EVENTS, or an event that never "
+                       "shipped.", RED)
+            # Grey, and last: this is a rollout in progress, not a defect. It
+            # is printed rather than hidden so that "the build has not landed
+            # yet" and "we forgot to instrument it" are never the same silence.
+            #
+            # Collapsed to one line per declaration date rather than one per
+            # event. Ten events were declared together on 2026-08-31, and ten
+            # copies of the same 40-word sentence is the wallpaper this whole
+            # section exists to avoid: the reader who scrolls past it is the
+            # reader who will also scroll past a real SILENT warning next to
+            # it. The names still appear in full, which is what makes the line
+            # actionable.
+            by_date = {}
+            for a in awaiting:
+                by_date.setdefault((a["declared"], a["days_waiting"],
+                                    a["grace_days"]), []).append(a["event"])
+            for (declared, waited, grace), evs in sorted(by_date.items()):
+                kv(f"Awaiting first event ({len(evs)})",
+                   f"declared {declared}, none seen yet ({waited}d of {grace}d "
+                   f"grace): " + ", ".join(sorted(evs)), GREY)
+                kv("  ", "declared in the app and not yet arrived. Any metric "
+                         "reading these is empty because of the rollout, not "
+                         "the users.", GREY)
     elif lv and not lv["ok"]:
         # An errored liveness check is itself a blind spot, so say so rather
         # than letting the section's silence read as "all events healthy".
@@ -921,6 +1632,41 @@ def render(metrics):
             kv("  Counting people, not device ids", "no events recorded", GREY)
     else:
         err("Identity", idm["error"])
+
+    # Who those people are. Inside Growth rather than in a section of its own,
+    # because a headline count of 32 active people means something different
+    # depending on how many of them are sandbox installs and how many are us.
+    #
+    # Renders nothing until the super properties actually arrive. That absence
+    # is not hidden: every name in EVENTS is reported by the liveness section
+    # above, as `awaiting` while the build rolls out and in red once it is
+    # overdue, so there is exactly one place that says "not yet" and it is not
+    # five empty distributions here.
+    sg = metrics.get("segments")
+    if sg and sg["ok"] and sg["data"]["coverage"]["any"]:
+        d = sg["data"]
+        cov = d["coverage"]
+        pct = cov["by_property"].get("is_pro", {}).get("pct")
+        if pct is not None and pct < 95:
+            # The splits below describe the covered slice only. Saying so
+            # matters most when coverage is partial, which is precisely the
+            # period when the old and new builds are both in the field.
+            kv("  Segment coverage",
+               f"{pct}% of this week's {cov['events_7d']:,} events carry the "
+               f"super properties; the splits below describe that slice, not "
+               f"all traffic", GREY)
+        for prop, split in d["splits"].items():
+            if not split["rows"]:
+                continue
+            shown = ", ".join(
+                f"{r['value']} {r['people']} ({r['pct']}%)"
+                for r in split["rows"][:SEGMENT_VALUE_LIMIT])
+            more = len(split["rows"]) - SEGMENT_VALUE_LIMIT
+            if more > 0:
+                shown += f", +{more} more"
+            kv(f"  {prop}", shown)
+    elif sg and not sg["ok"]:
+        err("Segments", sg["error"])
 
     # Search rank. After Growth because a rank move is upstream of an install,
     # and before Activation, which is about what people do once they arrive.
@@ -1147,13 +1893,49 @@ def render(metrics):
         d = pl["data"]
         kv("Plants held (high water)",
            f"{d['plants']} across {d['owners']} people")
+        if d.get("imported_adds"):
+            kv("  Arrived by import",
+               f"{d['imported_adds']} plants (data_imported.plants_imported), "
+               f"a route plant_added has never been able to see", GREEN)
         if d["unobserved"]:
+            explained = d.get("explained", d["observed_adds"])
             kv("  Never seen being added",
                f"{d['unobserved']} of {d['plants']} = {d['unobserved_pct']}% "
-               f"(plant_added fires only from the plant form, "
-               f"not on import or restore)", RED)
+               f"({explained} explained: plant_added fires only from the plant "
+               f"form, data_imported covers file import, and restore-from-"
+               f"backup still announces nothing)", RED)
     else:
         err("Plants", pl["error"])
+    lo = metrics.get("locations")
+    if lo and lo["ok"]:
+        d = lo["data"]
+        if d["adds"] and d["capped"]:
+            # Not "our users have one location". The event fired from one of
+            # three creation paths, so 1 is the largest number it could ever
+            # have reported. Stated as a property of the instrument, because
+            # read as a property of users it is an argument against building
+            # multi-location features.
+            kv("Locations per person",
+               f"UNREADABLE. All {d['adds']} location_added events report "
+               f"exactly 1, because the event fired from 1 of 3 creation "
+               f"paths. This is the instrument's ceiling, not a fact about "
+               f"users. Do not trend it.", RED)
+        elif d["adds"]:
+            pre, post = d.get("pre") or {}, d.get("post") or {}
+            kv("Locations per person",
+               f"ceiling lifted {d['boundary']}: "
+               f"max {pre.get('max_after', 1)} before -> "
+               f"{post.get('max_after')} after "
+               f"(avg {post.get('avg_after')} across {post.get('adds', 0)} "
+               f"adds)")
+            kv("  Step change at the fix is an artefact",
+               f"the two windows are shown apart deliberately. Any series "
+               f"joining them steps up on {d['boundary']} because the other "
+               f"two creation paths started reporting, not because anyone "
+               f"added a location.", GREY)
+    elif lo and not lo["ok"]:
+        err("Locations", lo["error"])
+
     ac = metrics["activation"]
     if ac["ok"]:
         d = ac["data"]
@@ -1189,9 +1971,21 @@ def render(metrics):
     section("Activation funnel (7d, distinct people)")
     fn = metrics["funnel"]
     if fn["ok"]:
-        for label, n, instrumented in fn["data"]["steps"]:
+        for step in fn["data"]["steps"]:
+            # 4-tuples carry the event name so an uninstrumented step can say
+            # WHICH kind of uninstrumented it is. Older 3-tuples still render.
+            label, n, instrumented = step[0], step[1], step[2]
+            event = step[3] if len(step) > 3 else None
             if instrumented:
                 kv(label, str(n))
+            elif event in AWAITING_FIRST_EVENT:
+                # Declared and on its way. Reported grey, not red, and
+                # explicitly not as a user behaviour: this step is empty
+                # because the build has not landed, and calling that a
+                # conversion failure is how DEC-251's phantom drop happened.
+                kv(label, f"awaiting rollout (declared "
+                          f"{AWAITING_FIRST_EVENT[event]}, not yet arrived). "
+                          f"Not a user behaviour.", GREY)
             else:
                 kv(label, "not instrumented (the app has never sent this "
                           "event, so this is not a user behaviour)", RED)
@@ -1348,6 +2142,122 @@ def render(metrics):
     else:
         err("Retention", rt["error"])
 
+    # Reminders. Directly after retention because that is what they are for:
+    # a reminder is the app's only way to start a session it did not already
+    # have, so it belongs next to the number it is supposed to move.
+    rm = metrics.get("reminders")
+    if rm and rm["ok"] and not _hidden_while_awaiting(
+            ("reminder_created", "reminder_notification_tapped",
+             "reminder_sweep"), rm["data"].get("all_time")):
+        section("Reminders (7d)")
+        d = rm["data"]
+        kv("Reminders created", f"{d['created_total']} "
+                                f"({d['scheduled_ok']} accepted by the OS)",
+           GREEN if d["scheduled_ok"] else GREY)
+        for b in d["blocked"][:FEATURE_LIST_LIMIT]:
+            # A blocked reminder is a reminder the user asked for and will
+            # never get. It is a product failure, not a usage statistic.
+            kv(f"  !! {b['status']}",
+               f"{b['n']} across {b['people']} people, blocker="
+               f"{b['blocker']}", RED)
+        kv("Notification taps", f"{d['taps_total']} "
+                                f"({d['cold_taps']} cold, {d['warm_taps']} warm)")
+        if d["taps_per_scheduled"] is not None:
+            kv("  Taps per scheduled reminder", f"{d['taps_per_scheduled']}%")
+            kv("  ", "not a share of notifications: a repeating reminder is "
+                     "created once and fires many times, so this can exceed "
+                     "100%. The app cannot see deliveries, so this is not "
+                     "one.", GREY)
+        sw = d["sweep"]
+        if sw["sweeps"]:
+            kv("Cold-start sweeps", f"{sw['sweeps']} across {sw['people']} people")
+            kv("  left due (ignored-proxy)", str(sw["left_due"]),
+               RED if sw["left_due"] else GREY)
+            kv("  scheduled / already pending",
+               f"{sw['scheduled']} / {sw['already_pending']}", GREY)
+            if sw["blocked"] or sw["failed"]:
+                kv("  !! blocked / failed",
+                   f"{sw['blocked']} / {sw['failed']}", RED)
+        kv("  ", REMINDER_DELIVERY_NOTE, GREY)
+    elif rm and not rm["ok"]:
+        section("Reminders (7d)")
+        err("Reminders", rm["error"])
+
+    # Feature usage.
+    fu = metrics.get("feature_usage")
+    if fu and fu["ok"]:
+        d = fu["data"]
+        names = tuple(d["by_event"].keys())
+        ever = sum(v["all_time"] for v in d["by_event"].values())
+        if not _hidden_while_awaiting(names, ever):
+            section("Feature usage (7d, all time)")
+            for name, v in sorted(d["by_event"].items()):
+                kv(name, f"{v['n_7d']} this week across {v['people_7d']} "
+                         f"people  ·  {v['all_time']} all time",
+                   GREEN if v["n_7d"] else GREY)
+            for g in d["grafts"][:FEATURE_LIST_LIMIT]:
+                kv(f"  graft {g['type_family']} / {g['source']}",
+                   f"{g['n']} ({g['with_type']} with a specific type)")
+            for a in d["activities"][:FEATURE_LIST_LIMIT]:
+                kv(f"  activity {a['activity_type']}",
+                   f"{a['n']} ({a['created_reminder']} created a reminder, "
+                   f"{a['with_notes']} with notes)")
+            for b in d["bulk"][:FEATURE_LIST_LIMIT]:
+                label = b["operation"] + (f" -> {b['to_status']}"
+                                          if b["to_status"] else "")
+                kv(f"  bulk {label}",
+                   f"{b['n']} operations over {b['plants']} plants")
+            for p in d["photos"][:FEATURE_LIST_LIMIT]:
+                # was_last_photo is the one worth a second look: deleting the
+                # last photo of a plant leaves a record with nothing to show.
+                kv(f"  photo deleted ({p['category']})",
+                   f"{p['n']} ({p['was_last']} were the plant's last photo, "
+                   f"{p['graft_linked']} linked to a graft)",
+                   RED if p["was_last"] else None)
+    elif fu and not fu["ok"]:
+        section("Feature usage (7d, all time)")
+        err("Feature usage", fu["error"])
+
+    # Data portability.
+    dp = metrics.get("data_portability")
+    if dp and dp["ok"]:
+        d = dp["data"]
+        ever = sum(r["all_time"] for r in d["exports"] + d["imports"])
+        if not _hidden_while_awaiting(("data_exported", "data_imported"), ever):
+            section("Data portability (7d)")
+            kv("Exports", str(d["exports_7d"]))
+            for r in d["exports"][:FEATURE_LIST_LIMIT]:
+                kv(f"  {r['format']}",
+                   f"{r['n_7d']} this week ({r['plants_exported_7d']} plants) "
+                   f"·  {r['all_time']} all time")
+            kv("Imports", f"{d['imports_7d']} "
+                          f"({d['plants_imported_7d']} plants this week, "
+                          f"{d['plants_imported_all']} all time)",
+               GREEN if d["imports_7d"] else GREY)
+            for r in d["imports"][:FEATURE_LIST_LIMIT]:
+                kv(f"  {r['format']}",
+                   f"{r['n_7d']} this week ({r['plants_imported_7d']} plants "
+                   f"from {r['rows_imported_7d']} rows) ·  {r['all_time']} "
+                   f"all time")
+            if d["unconverted_rows"]:
+                # Rows that did not become plants. A 400-row CSV that yields 12
+                # plants is a parser or column-mapping failure, and it is
+                # invisible in either number on its own.
+                kv("  !! rows that became nothing",
+                   f"{d['unconverted_rows']} of {d['rows_imported_7d']} rows "
+                   f"({d['row_conversion_pct']}% converted). A column mapping "
+                   f"or parser problem, seen from the user's side as a broken "
+                   f"import.", RED)
+            if d["replaced_existing"]:
+                kv("  replaced an existing library",
+                   f"{d['replaced_existing']} imports (counted apart: a "
+                   f"replacing import overwrites rather than adds, so summing "
+                   f"it with the rest would count the same plants twice)",
+                   GREY)
+    elif dp and not dp["ok"]:
+        section("Data portability (7d)")
+        err("Data portability", dp["error"])
+
     # Top screens
     section("Top screens (7d)")
     ts = metrics["top_screens"]
@@ -1402,7 +2312,9 @@ def main():
         "installs": run_metric(m_installs, host, key),
         "active": run_metric(m_active, host, key),
         "identity": run_metric(m_identity, host, key),
+        "segments": run_metric(m_segments, host, key),
         "plants": run_metric(m_plants, host, key),
+        "locations": run_metric(m_locations, host, key),
         "activation": run_metric(m_activation, host, key),
         "onboarding": run_metric(m_onboarding, host, key),
         "funnel": run_metric(m_funnel, host, key),
@@ -1414,6 +2326,9 @@ def main():
         "store_listing": run_metric(m_store_listing),
         "reconciliation": run_metric(m_purchase_reconciliation, host, key),
         "retention": run_metric(m_retention, host, key),
+        "reminders": run_metric(m_reminders, host, key),
+        "feature_usage": run_metric(m_feature_usage, host, key),
+        "data_portability": run_metric(m_data_portability, host, key),
         "top_screens": run_metric(m_top_screens, host, key),
         "backup": run_metric(m_backup, host, key),
     }

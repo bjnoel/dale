@@ -135,7 +135,11 @@ class TestPlantsHeldVersusPlantsObserved(unittest.TestCase):
                               "unobserved_pct": 43})
         self.assertIn("126 of 291 = 43%", out)
         self.assertIn("plant_added fires only from the plant form", out)
-        self.assertIn("import or restore", out)
+        # The two other routes a plant can arrive by, named separately since
+        # 2026-08-31: file import became observable via data_imported, and
+        # restore-from-backup did not.
+        self.assertIn("import", out)
+        self.assertIn("restore", out)
 
     def test_silent_when_the_two_agree(self):
         """No warning to ignore on the week the instrumentation is complete."""
