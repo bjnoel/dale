@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-08-27",
+  "updated": "2026-09-03",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -407,7 +407,7 @@
       "phone": "0435 779 553",
       "contact_form": null,
       "preferred_channel": "instagram",
-      "status": "contacted",
+      "status": "warm",
       "touches": [
         {
           "date": "2026-03-31",
@@ -424,6 +424,14 @@
           "by": "benedict",
           "summary": "Touch 1 delivered by Instagram DM to @fruitopianursery, after email proved impossible (see the 2026-03-31 bounce). Goodwill intro, no pitch: what treestock is, that we sent them 90 clicks from 75 people in 30d, that the March email bounced and why, and one question, whether 522 of their 639 listings really are out of stock or whether we are reading their availability wrong.",
           "evidence": "Benedict confirmed sent, session 2026-08-27"
+        },
+        {
+          "date": "2026-08-27",
+          "direction": "in",
+          "channel": "instagram",
+          "by": "benedict",
+          "summary": "Replied to the 2026-08-27 Instagram DM, same day: \"Sure looks good 👍\". First contact ever made with Fruitopia after the March email bounced. It is an acknowledgement, not an answer: it does not address the question we asked, whether 522 of their 639 listings really are out of stock or whether we are reading their availability wrong. Treat the availability question as still open.",
+          "evidence": "Instagram DM reply, reported by Benedict 2026-09-03"
         }
       ],
       "open_action": null,
