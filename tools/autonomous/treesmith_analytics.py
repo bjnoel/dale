@@ -1520,6 +1520,8 @@ def m_data_portability(host, key):
                      timestamp >= now() - INTERVAL 7 DAY) AS plants_imported_7d,
                sumIf({_num('rows_imported')},
                      timestamp >= now() - INTERVAL 7 DAY) AS rows_imported_7d,
+               sumIf({_num('rows_failed')},
+                     timestamp >= now() - INTERVAL 7 DAY) AS rows_failed_7d,
                sum({_num('plants_imported')}) AS plants_imported_all,
                countIf({_bool_true('replaced_existing')}) AS replaced
         FROM events
@@ -1534,13 +1536,17 @@ def m_data_portability(host, key):
         return [{"format": r[1], "all_time": r[2], "n_7d": r[3],
                  "people": r[4], "plants_exported_7d": r[5],
                  "plants_imported_7d": r[6], "rows_imported_7d": r[7],
-                 "plants_imported_all": r[8], "replaced": r[9]} for r in rs]
+                 "rows_failed_7d": r[8], "plants_imported_all": r[9],
+                 "replaced": r[10]} for r in rs]
 
-    # Rows that did not become plants. A CSV with 400 rows that imports 12
-    # plants is a parser or a column-mapping problem, and it is invisible in
-    # either number on its own.
-    rows_in = sum(r[7] for r in imports)
-    plants_in = sum(r[6] for r in imports)
+    # `rows_imported` counts rows that SUCCEEDED, not rows read. That is why
+    # `rows_failed` had to be added to the event (2026-09-03): without it a
+    # wholly failed import and an import that never ran are the same reading,
+    # which is exactly how a 71-row failure went unexplained. Subtracting
+    # successes from successes, as this once did, could only ever yield zero.
+    rows_in = sum(r["rows_imported_7d"] for r in pack(imports))
+    rows_failed = sum(r["rows_failed_7d"] for r in pack(imports))
+    plants_in = sum(r["plants_imported_7d"] for r in pack(imports))
     return {
         "exports": pack(exports),
         "imports": pack(imports),
@@ -1550,9 +1556,10 @@ def m_data_portability(host, key):
         "rows_imported_7d": rows_in,
         "plants_imported_all": sum(r[8] for r in imports),
         "replaced_existing": sum(r[9] for r in imports),
-        "unconverted_rows": max(rows_in - plants_in, 0),
-        "row_conversion_pct": (round(plants_in / rows_in * 100)
-                               if rows_in else None),
+        "rows_failed_7d": rows_failed,
+        "attempted_7d": rows_in + rows_failed,
+        "success_pct": (round(rows_in / (rows_in + rows_failed) * 100)
+                        if (rows_in + rows_failed) else None),
     }
 
 
@@ -2484,15 +2491,15 @@ def render(metrics):
                    f"{r['n_7d']} this week ({r['plants_imported_7d']} plants "
                    f"from {r['rows_imported_7d']} rows) ·  {r['all_time']} "
                    f"all time")
-            if d["unconverted_rows"]:
-                # Rows that did not become plants. A 400-row CSV that yields 12
-                # plants is a parser or column-mapping failure, and it is
-                # invisible in either number on its own.
-                kv("  !! rows that became nothing",
-                   f"{d['unconverted_rows']} of {d['rows_imported_7d']} rows "
-                   f"({d['row_conversion_pct']}% converted). A column mapping "
-                   f"or parser problem, seen from the user's side as a broken "
-                   f"import.", RED)
+            if d.get("rows_failed_7d"):
+                # A failed row is a row the user watched not arrive. The
+                # 2026-09-03 case was 71 of 71, reported to them as the bare
+                # word "failed" with no reason attached.
+                kv("  !! rows that failed to import",
+                   f"{d['rows_failed_7d']} of {d['attempted_7d']} attempted "
+                   f"({d['success_pct']}% succeeded). Check the import "
+                   f"messages: a constraint clash and a parser problem look "
+                   f"identical from this number alone.", RED)
             if d["replaced_existing"]:
                 kv("  replaced an existing library",
                    f"{d['replaced_existing']} imports (counted apart: a "

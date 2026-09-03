@@ -530,28 +530,42 @@ class DataPortabilityTest(unittest.TestCase):
         m["data_portability"] = {"ok": True, "data": data}
         return ta.render(m)
 
+    # The real 2026-09-03 shape: 70 rows in on the first attempt, then a
+    # retry in which all 71 failed.
     BASE = {
         "exports": [{"format": "csv", "all_time": 9, "n_7d": 2, "people": 2,
-                     "plants_exported_7d": 80, "plants_imported_7d": 0,
-                     "rows_imported_7d": 0, "plants_imported_all": 0,
-                     "replaced": 0}],
-        "imports": [{"format": "csv", "all_time": 5, "n_7d": 1, "people": 1,
-                     "plants_exported_7d": 0, "plants_imported_7d": 12,
-                     "rows_imported_7d": 400, "plants_imported_all": 60,
-                     "replaced": 1}],
-        "exports_7d": 2, "imports_7d": 1, "plants_imported_7d": 12,
-        "rows_imported_7d": 400, "plants_imported_all": 60,
-        "replaced_existing": 1, "unconverted_rows": 388,
-        "row_conversion_pct": 3,
+                     "plants_exported_7d": 71, "plants_imported_7d": 0,
+                     "rows_imported_7d": 0, "rows_failed_7d": 0,
+                     "plants_imported_all": 0, "replaced": 0}],
+        "imports": [{"format": "csv", "all_time": 5, "n_7d": 3, "people": 1,
+                     "plants_exported_7d": 0, "plants_imported_7d": 70,
+                     "rows_imported_7d": 70, "rows_failed_7d": 71,
+                     "plants_imported_all": 70, "replaced": 1}],
+        "exports_7d": 2, "imports_7d": 3, "plants_imported_7d": 70,
+        "rows_imported_7d": 70, "plants_imported_all": 70,
+        "replaced_existing": 1, "rows_failed_7d": 71,
+        "attempted_7d": 141, "success_pct": 50,
     }
 
-    def test_rows_that_became_nothing_are_flagged(self):
-        """400 rows in, 12 plants out is a broken import, not light usage."""
+    def test_failed_rows_are_flagged(self):
+        """A failed row is one the user watched not arrive."""
         text, html = self._render(self.BASE)
-        self.assertIn("388", text)
-        self.assertIn("3%", text)
-        start = html.index("became nothing")
+        self.assertIn("71 of 141 attempted", text)
+        self.assertIn("50%", text)
+        start = html.index("failed to import")
         self.assertIn(f"color:{ta.RED}", html[max(0, start - 400):start + 200])
+
+    def test_a_wholly_failed_import_is_not_silent(self):
+        """The defect this property exists for.
+
+        rows_imported counts SUCCESSES, so before rows_failed existed an
+        import in which every row failed reported 0 and was indistinguishable
+        from an import that never ran.
+        """
+        wiped = dict(self.BASE, plants_imported_7d=0, rows_imported_7d=0,
+                     rows_failed_7d=71, attempted_7d=71, success_pct=0)
+        text, _ = self._render(wiped)
+        self.assertIn("71 of 71 attempted", text)
 
     def test_replacing_imports_are_counted_apart(self):
         """A replacing import overwrites; summing would double-count plants."""
@@ -560,19 +574,21 @@ class DataPortabilityTest(unittest.TestCase):
         self.assertIn("count the same plants twice", text)
 
     def test_a_clean_import_raises_nothing(self):
-        clean = dict(self.BASE, unconverted_rows=0, row_conversion_pct=100,
-                     replaced_existing=0)
+        clean = dict(self.BASE, rows_failed_7d=0, attempted_7d=70,
+                     success_pct=100, replaced_existing=0)
         text, _ = self._render(clean)
-        self.assertNotIn("became nothing", text)
+        self.assertNotIn("failed to import", text)
 
-    def test_conversion_is_none_rather_than_zero_when_no_rows_were_read(self):
+    def test_success_rate_is_none_rather_than_zero_when_nothing_was_tried(self):
+        """No imports at all is not a 0% success rate."""
         real = ta.hogql
         ta.hogql = lambda h, k, q: []
         try:
             d = ta.m_data_portability("h", "k")
         finally:
             ta.hogql = real
-        self.assertIsNone(d["row_conversion_pct"])
+        self.assertIsNone(d["success_pct"])
+        self.assertEqual(d["rows_failed_7d"], 0)
 
 
 class DigestStillRendersTest(unittest.TestCase):
