@@ -40,6 +40,24 @@ CHECKS = [
         # Server only handles POST; GET to /subscribe returns 404 (working as designed)
         "expected_status": [200, 400, 404, 405],
     },
+    # --- Cloudflare Workers static sites (migrated off Netlify 2026-09-03) ---
+    # These are served by Worker *routes* over DNS records that still name a
+    # dead Netlify origin. That means two silent failure modes neither a build
+    # nor a deploy can catch:
+    #   1. a route deleted  -> traffic falls through to dead Netlify (503)
+    #   2. a record un-proxied (grey cloud) -> bypasses Cloudflare entirely (503)
+    # Both look fine from the repo. Only an external check sees them, which is
+    # why every hostname is listed separately rather than one per site: apex and
+    # www have independent routes and fail independently.
+    {"name": "ausforums.bjnoel.com", "url": "https://ausforums.bjnoel.com", "id": "ausforums"},
+    {"name": "www.bjnoel.com", "url": "https://www.bjnoel.com", "id": "bjnoel_www"},
+    {"name": "bjnoel.com (apex)", "url": "https://bjnoel.com", "id": "bjnoel_apex"},
+    {"name": "www.mushroom.guide", "url": "https://www.mushroom.guide", "id": "mushroom_www"},
+    {"name": "mushroom.guide (apex)", "url": "https://mushroom.guide", "id": "mushroom_apex"},
+    {"name": "www.wanatca.org.au", "url": "https://www.wanatca.org.au", "id": "wanatca_www"},
+    {"name": "wanatca.org.au (apex)", "url": "https://wanatca.org.au", "id": "wanatca_apex"},
+    {"name": "www.zombal.com", "url": "https://www.zombal.com", "id": "zombal_www"},
+    {"name": "zombal.com (apex)", "url": "https://zombal.com", "id": "zombal_apex"},
 ]
 
 TIMEOUT = 15  # seconds
