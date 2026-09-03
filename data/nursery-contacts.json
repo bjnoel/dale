@@ -422,20 +422,20 @@
           "direction": "out",
           "channel": "instagram",
           "by": "benedict",
-          "summary": "Touch 1 delivered by Instagram DM to @fruitopianursery, after email proved impossible (see the 2026-03-31 bounce). DISPUTED: Benedict corrected this summary on 2026-09-03. The original text claimed the DM led with a clicks stat (90 clicks from 75 people in 30d) and asked whether 522 of their 639 listings were genuinely out of stock. Benedict says what he actually sent was a permission-and-accuracy message: that we read their public listings, how many we read, that we never asked permission and would rather ask late than not at all, an explicit offer to remove them on request, and 'Does what we're showing look right to you?'. The listing counts he quoted (213 listings, 115 in stock) are Fruit Tree Cottage's exact figures for 2026-08-27, not Fruitopia's (639 and 117 that day, 656 and 142 now), so which numbers reached Fruitopia is unresolved. See notes.",
-          "evidence": "Benedict confirmed sent, session 2026-08-27; wording corrected by Benedict 2026-09-03"
+          "summary": "Touch 1 delivered by Instagram DM to @fruitopianursery, after email proved impossible (see the 2026-03-31 bounce). Goodwill intro, no pitch: what treestock is, that we sent them 90 clicks from 75 people in 30d, that the March email bounced and why, and one question, whether 522 of their 639 listings really are out of stock or whether we are reading their availability wrong. A correction to this summary was raised on 2026-09-03 and WITHDRAWN the same day: the message quoted against it turned out to be the Fruit Tree Cottage email, whose 213/115 counts are that nursery's, not Fruitopia's. The exact DM text is not held anywhere, so this summary rests on the sending session's record, not on a transcript.",
+          "evidence": "Benedict confirmed sent, session 2026-08-27"
         },
         {
           "date": "2026-08-27",
           "direction": "in",
           "channel": "instagram",
           "by": "benedict",
-          "summary": "Replied to the Instagram DM the same day: \"Sure looks good 👍\". First contact ever made with Fruitopia; the March email never reached a human. This is an ANSWER, not a bare acknowledgement: the DM asked whether our listing of them looks right and offered to remove them if they would rather we did not, and the reply is affirmative on the first and declines the second. Treat it as consent to keep listing Fruitopia, given on 2026-08-27, and as their sign-off on our stock figures being broadly right. Consent is only as good as the numbers they were shown; see notes on the unresolved 213-vs-639 discrepancy.",
+          "summary": "Replied to the Instagram DM the same day: \"Sure looks good 👍\". First contact ever made with Fruitopia; the March email never reached a human. A positive reply that raises no objection to being listed, but do NOT file it as explicit consent: the permission-and-removal wording (\"if you'd prefer we didn't, say so and I'll take you off\") is confirmed only for the Fruit Tree Cottage email, not for this DM. It also does not answer the out-of-stock question the DM asked. That question is now MOOT: resolved by our own spot-check on 2026-09-03, not by them.",
           "evidence": "Instagram DM reply, reported by Benedict 2026-09-03"
         }
       ],
       "open_action": null,
-      "notes": "No mailbox exists on fruitopianursery.com.au (see the 2026-03-31 bounce). Their Shopify store has no contact page either: sitemap_pages_1.xml lists only /pages/swym-share-wishlist and /pages/win. Live channels are phone 0435 779 553 (published on their own homepage), Facebook /fruitopianursery and Instagram @fruitopianursery. Directory sites (Cylex, ZoomInfo) still echo the dead info@ address and a stale Virginia 4014 address; their own site says Woodridge 4114. CONSENT: Fruitopia were asked on 2026-08-27 whether they wanted to be listed at all and said our listing looks good, declining the offer of removal. That is the consent record for scraping and listing them. UNRESOLVED: the message Benedict quotes as the one he sent describes '213 listings, 115 currently in stock', which are Fruit Tree Cottage's exact counts for 2026-08-27. Fruitopia was 639 and 117 that day. If Fruitopia were shown 213, they consented to a description of a catalogue a third the size of the one we publish, and should be told the real figure."
+      "notes": "No mailbox exists on fruitopianursery.com.au (see the 2026-03-31 bounce). Their Shopify store has no contact page either: sitemap_pages_1.xml lists only /pages/swym-share-wishlist and /pages/win. Live channels are phone 0435 779 553 (published on their own homepage), Facebook /fruitopianursery and Instagram @fruitopianursery. Directory sites (Cylex, ZoomInfo) still echo the dead info@ address and a stale Virginia 4014 address; their own site says Woodridge 4114. CONSENT: Fruitopia were asked on 2026-08-27 whether they wanted to be listed at all and said our listing looks good, declining the offer of removal. That is the consent record for scraping and listing them. UNRESOLVED: the message Benedict quotes as the one he sent describes '213 listings, 115 currently in stock', which are Fruit Tree Cottage's exact counts for 2026-08-27. Fruitopia was 639 and 117 that day. If Fruitopia were shown 213, they consented to a description of a catalogue a third the size of the one we publish, and should be told the real figure. AVAILABILITY VERIFIED 2026-09-03: 16 products sampled from the latest snapshot, 8 we mark in stock and 8 we mark out, each re-fetched live from /products/<handle>.js. 16/16 agreed. The ~78% out-of-stock figure is real and is normal for the peer group (in-stock share: Fruitopia 22%, Ladybird 26%, Guildford 26%, Daleys 32%, Ross Creek 35%), and it has been recovering into spring (100 in stock on 08-20, 117 on 08-27, 142 on 09-03). Do not spend a nursery touch asking them to confirm this. NOTE the wrong instrument: /products/<handle>.json omits variant `available` entirely, so it reads None for everything and reports 0 in stock for the whole catalogue. Use the .js AJAX endpoint."
     },
     {
       "key": "ausnurseries",
@@ -504,11 +504,14 @@
           "direction": "out",
           "channel": "email",
           "by": "benedict",
-          "summary": "Your nursery is on treestock.com.au",
+          "summary": "Subject \"Your nursery is on treestock.com.au\". Body, supplied by Benedict 2026-09-03: we read their public listings, 213 of them with 115 currently in stock; that we had not asked permission for any of it and would rather ask late than not at all; an explicit offer to remove them on request; and \"Does what we're showing look right to you?\". The 213/115 counts match this nursery's snapshot for 2026-08-27 exactly. No reply recorded.",
           "evidence": "resend:57f40911-dc01-454b-adcd-91f698827030"
         }
       ],
-      "open_action": null,
+      "open_action": {
+        "what": "No reply to the 2026-08-27 permission email; decide whether to follow up",
+        "owner": "benedict"
+      },
       "notes": ""
     },
     {
