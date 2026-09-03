@@ -58,6 +58,8 @@ CHECKS = [
     {"name": "wanatca.org.au (apex)", "url": "https://wanatca.org.au", "id": "wanatca_apex"},
     {"name": "www.zombal.com", "url": "https://www.zombal.com", "id": "zombal_www"},
     {"name": "zombal.com (apex)", "url": "https://zombal.com", "id": "zombal_apex"},
+    # Only the trees subdomain is ours; the apex and www are Shopify.
+    {"name": "trees.beefriends.shop", "url": "https://trees.beefriends.shop", "id": "trees_beefriends"},
 ]
 
 TIMEOUT = 15  # seconds
