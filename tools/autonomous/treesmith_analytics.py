@@ -1176,6 +1176,13 @@ def _coverage_skew(entry):
 # checked for coverage above; only these are broken out, because seven
 # distributions is a table nobody reads and the other three are better read as
 # filters on a specific question than as a weekly split.
+# `is_sandbox` measures a SANDBOX PURCHASE, not a test install. Verified in
+# the Flutter source 2026-09-03: `EntitlementSnapshot.fromCustomerInfo` reads
+# the flag off whichever entitlement is active and falls back to
+# `active?.isSandbox ?? false`, so somebody who owns nothing reports `false`
+# whether they are on TestFlight or the public build. Do not read a low
+# `is_sandbox` share as "few testers"; tester traffic is separated by build
+# number, not by this.
 SEGMENT_PROPERTIES = ("pro_source", "cloud_backup_source", "is_sandbox",
                       "plant_count_bucket", "days_since_install_bucket")
 
