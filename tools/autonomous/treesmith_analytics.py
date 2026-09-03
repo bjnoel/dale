@@ -170,13 +170,60 @@ ALIAS_CUTOFF_DATE = "2026-07-30"
 # broken query. test_treesmith_super_properties.py fails the build on the
 # person-scoped form for exactly that reason.
 SUPER_PROPERTIES = (
-    "is_pro",
-    "has_cloud_backup",
+    "pro_source",
+    "cloud_backup_source",
     "is_sandbox",
     "plant_count_bucket",
     "location_count_bucket",
     "activity_count_bucket",
     "days_since_install_bucket",
+)
+
+# `pro_source` and `cloud_backup_source` replace the booleans `is_pro` and
+# `has_cloud_backup`, which were never sent even once, so there is no mixed
+# dataset to reconcile and no reason to read both spellings.
+#
+# The booleans could not answer the question their name asked. They were set
+# from the RevenueCat snapshot alone, while the app's feature gates read
+# RevenueCat OR a server-side comp grant (the gardening-club allowlist). A
+# comped member therefore passed every Pro gate, created reminders and bulk
+# edits, and sent every event stamped `is_pro: false`. The gate and the label
+# disagreed, and the label is what every segment here is built on.
+#
+# Three values, ordered by precedence to match isProProvider:
+#   paid   a RevenueCat entitlement. The revenue answer.
+#   comp   no purchase, but a live comp grant. Full Pro experience, no money.
+#   none   neither. The only value that means "sees the paywall".
+#
+# `paid` wins over `comp` because somebody who paid and was later comped is
+# still a customer. The old boolean is recoverable as (pro_source == 'paid'),
+# so nothing is lost by dropping it.
+PRO_SOURCES = ("paid", "comp", "none")
+
+# The property coverage and skew are reported against when several are equally
+# covered. It is a tie-break and a label, NOT a fixed probe: coverage is read
+# from whichever property is best covered.
+#
+# Reading a fixed one is what the first version did, and real data broke it
+# within three days. Build 65 shipped on 2026-08-31 sending the old `is_pro`
+# spelling; this file had already moved to `pro_source`, so the fixed probe
+# read 0% while `is_sandbox` and the buckets sat at 7%, and the digest printed
+# "0% coverage" directly above four populated splits. A section that
+# contradicts itself in the same breath is worse than one that is merely
+# wrong.
+COVERAGE_PROBE = "pro_source"
+
+# Events the app only lets a Pro user reach. Verified against the Flutter
+# source 2026-09-03: `reminder_section.dart` renders "Pro feature" instead of
+# the toggle, and `plant_list_screen._startSelection` shows the paywall.
+#
+# `reminder_sweep` is deliberately NOT here. It runs from `_reconcileReminders`
+# on the cold-boot path in main.dart, ahead of any entitlement check, so a free
+# user with no reminders still emits one with its counters at zero.
+PRO_GATED_EVENTS = (
+    "reminder_created",
+    "reminder_notification_tapped",
+    "plants_bulk_edited",
 )
 
 # No event in the historical data carries any of these: on 2026-08-31 the check
@@ -1063,14 +1110,43 @@ def m_super_property_coverage(host, key):
             "people": pe,
             "people_pct": round(pe / people_7d * 100) if people_7d else None,
         }
+    # Read from the BEST covered property rather than a named one, so a
+    # property being renamed or failing to compute cannot zero the headline
+    # while its siblings are plainly arriving. COVERAGE_PROBE breaks ties so
+    # the label is stable on an ordinary week.
+    probe = max(by_property,
+                key=lambda p: (by_property[p]["events"], p == COVERAGE_PROBE))
+    best = by_property[probe]
     return {
         "events_7d": events_7d,
         "people_7d": people_7d,
-        "covered_people": by_property["is_pro"]["people"],
+        "probe": probe,
+        "covered_people": best["people"],
         "by_property": by_property,
         "any": any(v["events"] for v in by_property.values()),
-        "skew": _coverage_skew(by_property["is_pro"]),
+        "skew": _coverage_skew(best),
+        "spread": _coverage_spread(by_property),
     }
+
+
+def _coverage_spread(by_property):
+    """Do the super properties disagree with each other about coverage?
+
+    They are registered in a single loop over one map, so every event carrying
+    one should carry all of them. Verified in the live data: all 95 events from
+    build 65 carry all seven. A spread therefore is not rollout noise, it means
+    one of them is spelled differently from what this file expects, or its
+    value failed to compute and was dropped.
+
+    That is the single most likely defect during a property rename, and it is
+    invisible in any one property's number.
+    """
+    counts = {p: v["events"] for p, v in by_property.items()}
+    hi, lo = max(counts.values()), min(counts.values())
+    if not hi or hi == lo:
+        return None
+    return {"high": hi, "low": lo,
+            "behind": sorted(p for p, n in counts.items() if n < hi)}
 
 
 # How far event coverage may run ahead of people coverage before the gap is
@@ -1100,7 +1176,7 @@ def _coverage_skew(entry):
 # checked for coverage above; only these are broken out, because seven
 # distributions is a table nobody reads and the other three are better read as
 # filters on a specific question than as a weekly split.
-SEGMENT_PROPERTIES = ("is_pro", "has_cloud_backup", "is_sandbox",
+SEGMENT_PROPERTIES = ("pro_source", "cloud_backup_source", "is_sandbox",
                       "plant_count_bucket", "days_since_install_bucket")
 
 
@@ -1146,6 +1222,68 @@ def m_segments(host, key):
             "people": total_people,
         }
     return {"coverage": coverage, "splits": splits}
+
+
+def m_entitlement_integrity(host, key):
+    """Did anybody reach a Pro-only feature without Pro?
+
+    This check exists because `pro_source` makes it possible for the first
+    time. A Pro-gated event carrying `pro_source = none` is a contradiction on
+    its face: the app would not have shown that person the control. Exactly one
+    of two things is wrong, and both matter.
+
+      The gate leaked.   Somebody used a paid feature without paying, which is
+                         a revenue bug.
+      The label is wrong. The stamp disagrees with what the app actually did,
+                         which is the DEC-317 failure in a new place: every
+                         segment built on it would be quietly misfiled.
+
+    The digest cannot tell those apart and does not try. It reports the
+    contradiction and names both readings, because either one is worth an
+    interruption and guessing between them would make the wrong one invisible.
+
+    `comp` is reported alongside, not as a problem but as the answer to a
+    question we could not previously ask at all: how many people hold Pro
+    without having paid. Before this property the comped population was
+    invisible in analytics, filed indistinguishably among free users.
+    """
+    rows = hogql(host, key, f"""
+        SELECT event,
+               coalesce(toString(properties.pro_source), '(absent)') AS pro_source,
+               count() AS n,
+               count(DISTINCT person_id) AS people
+        FROM events
+        WHERE event IN ({_in_list(PRO_GATED_EVENTS)})
+          AND timestamp >= now() - INTERVAL 7 DAY
+        GROUP BY event, pro_source
+        ORDER BY n DESC
+    """)
+    by_source = {}
+    contradictions = []
+    for event, source, n, people in rows:
+        by_source[source] = by_source.get(source, 0) + n
+        if source == "none":
+            contradictions.append({"event": event, "n": n, "people": people})
+
+    # Who holds Pro at all, paid or comped, across everything this week. The
+    # denominator the comp question needs.
+    holders = hogql(host, key, """
+        SELECT coalesce(toString(properties.pro_source), '(absent)') AS pro_source,
+               count(DISTINCT person_id) AS people
+        FROM events
+        WHERE timestamp >= now() - INTERVAL 7 DAY
+          AND JSONHas(properties, 'pro_source')
+        GROUP BY pro_source
+    """)
+    people_by_source = {r[0]: r[1] for r in holders}
+    return {
+        "contradictions": contradictions,
+        "gated_by_source": by_source,
+        "people_by_source": people_by_source,
+        "paid": people_by_source.get("paid", 0),
+        "comped": people_by_source.get("comp", 0),
+        "measurable": bool(people_by_source),
+    }
 
 
 # Why this digest has no notification delivery rate, stated once and rendered
@@ -1692,7 +1830,7 @@ def render(metrics):
     if sg and sg["ok"] and sg["data"]["coverage"]["any"]:
         d = sg["data"]
         cov = d["coverage"]
-        entry = cov["by_property"].get("is_pro", {})
+        entry = cov["by_property"].get(cov.get("probe", COVERAGE_PROBE), {})
         pct, people_pct = entry.get("pct"), entry.get("people_pct")
         if pct is not None and pct < 95:
             # The splits below describe the covered slice only. Saying so
@@ -1703,6 +1841,16 @@ def render(metrics):
                f"{people_pct}% of its {cov['people_7d']} people carry the "
                f"super properties; the splits below describe that slice, not "
                f"all traffic", GREY)
+        spread = cov.get("spread")
+        if spread:
+            # One loop registers all of them, so they cannot legitimately
+            # disagree. Named before the splits because it says which of the
+            # numbers below are reading a property the app is not sending.
+            kv("  !! super properties disagree",
+               f"best covered has {spread['high']} events, worst has "
+               f"{spread['low']}. Behind: {', '.join(spread['behind'])}. They "
+               f"are registered together, so this is a spelling mismatch or a "
+               f"value that failed to compute, not a partial rollout.", RED)
         skew = cov.get("skew")
         if skew:
             # The two figures coming apart is the finding, not the level of
@@ -1730,6 +1878,33 @@ def render(metrics):
             kv(f"  {prop}", shown)
     elif sg and not sg["ok"]:
         err("Segments", sg["error"])
+
+    # Who holds Pro, and whether anybody reached it without holding it.
+    # Sits with the segments because it reads the same property, and above
+    # the funnel because a contradiction here invalidates any split below.
+    ei = metrics.get("entitlement")
+    if ei and ei["ok"] and ei["data"]["measurable"]:
+        d = ei["data"]
+        kv("  Pro access",
+           f"{d['paid']} paid, {d['comped']} comped",
+           GREEN if d["paid"] else GREY)
+        if d["comped"]:
+            # Not a problem, an answer. Before pro_source these people were
+            # filed among free users and could not be counted at all.
+            kv("  ",
+               f"comped users pass every Pro gate and pay nothing, so they "
+               f"belong in neither the paid nor the paywall-eligible "
+               f"population. Excluded from both by reading pro_source rather "
+               f"than a boolean.", GREY)
+        for c in d["contradictions"]:
+            kv(f"  !! {c['event']} with pro_source=none",
+               f"{c['n']} events from {c['people']} people reached a Pro-only "
+               f"feature without Pro. Either the gate leaked (a revenue bug) "
+               f"or the stamp disagrees with what the app did (every segment "
+               f"below is misfiled). Both are worth chasing; this cannot tell "
+               f"them apart.", RED)
+    elif ei and not ei["ok"]:
+        err("Entitlement integrity", ei["error"])
 
     # Search rank. After Growth because a rank move is upstream of an install,
     # and before Activation, which is about what people do once they arrive.
@@ -2376,6 +2551,7 @@ def main():
         "active": run_metric(m_active, host, key),
         "identity": run_metric(m_identity, host, key),
         "segments": run_metric(m_segments, host, key),
+        "entitlement": run_metric(m_entitlement_integrity, host, key),
         "plants": run_metric(m_plants, host, key),
         "locations": run_metric(m_locations, host, key),
         "activation": run_metric(m_activation, host, key),

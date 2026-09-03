@@ -606,3 +606,122 @@ class DigestStillRendersTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ProSourceTest(unittest.TestCase):
+    """`pro_source` replaces the `is_pro` boolean that could not answer its own
+    question.
+
+    The boolean read the RevenueCat snapshot alone. The app's feature gates
+    read RevenueCat OR a server comp grant, so a comped gardening-club member
+    passed every Pro gate and sent every event stamped `is_pro: false`. The
+    gate and the label disagreed, and the label is what every segment is built
+    on. Verified in the Flutter source 2026-09-03: `entitlementUserContext`
+    reads `EntitlementSnapshot`, which `EntitlementService` builds from
+    RevenueCat and which has no knowledge of comp at all.
+
+    Replacing rather than adding is safe because the boolean was never sent
+    once: 0 events carried it across all 15,401 recorded. There is no mixed
+    dataset to reconcile.
+    """
+
+    def test_the_retired_booleans_are_gone(self):
+        """Keeping both spellings would reproduce the ambiguity being fixed."""
+        self.assertNotIn("is_pro", ta.SUPER_PROPERTIES)
+        self.assertNotIn("has_cloud_backup", ta.SUPER_PROPERTIES)
+
+    def test_pro_source_is_registered_and_segmented(self):
+        self.assertIn("pro_source", ta.SUPER_PROPERTIES)
+        self.assertIn("pro_source", ta.SEGMENT_PROPERTIES)
+        self.assertIn("cloud_backup_source", ta.SUPER_PROPERTIES)
+
+    def test_paid_outranks_comp(self):
+        """Someone who paid and was later comped is still a customer."""
+        self.assertLess(ta.PRO_SOURCES.index("paid"),
+                        ta.PRO_SOURCES.index("comp"))
+
+    def test_the_sweep_is_not_treated_as_pro_gated(self):
+        """It runs on the cold-boot path, ahead of any entitlement check.
+
+        Listing it would make every free user's boot sweep look like a gate
+        leak, which is the false alarm that would get this check ignored.
+        """
+        self.assertNotIn("reminder_sweep", ta.PRO_GATED_EVENTS)
+        for gated in ("reminder_created", "plants_bulk_edited"):
+            self.assertIn(gated, ta.PRO_GATED_EVENTS)
+
+
+class EntitlementIntegrityTest(unittest.TestCase):
+    """A Pro-only event from a non-Pro user is a contradiction, not a metric."""
+
+    def _metric(self, gated_rows, holder_rows):
+        real = ta.hogql
+
+        def fake(h, k, q):
+            return holder_rows if "JSONHas(properties, 'pro_source')" in q \
+                else gated_rows
+
+        ta.hogql = fake
+        try:
+            return ta.m_entitlement_integrity("h", "k")
+        finally:
+            ta.hogql = real
+
+    def test_nothing_shipped_yet_is_not_measurable(self):
+        """Zero comps and 'we cannot see comps' must not look alike."""
+        d = self._metric([], [])
+        self.assertFalse(d["measurable"])
+
+    def test_comped_users_are_counted_once_the_property_exists(self):
+        d = self._metric([], [["paid", 3], ["comp", 11], ["none", 70]])
+        self.assertTrue(d["measurable"])
+        self.assertEqual(d["paid"], 3)
+        self.assertEqual(d["comped"], 11)
+
+    def test_a_pro_gated_event_without_pro_is_flagged(self):
+        d = self._metric(
+            [["reminder_created", "none", 4, 2],
+             ["reminder_created", "paid", 20, 3]],
+            [["paid", 3], ["none", 70]])
+        self.assertEqual([c["event"] for c in d["contradictions"]],
+                         ["reminder_created"])
+        self.assertEqual(d["contradictions"][0]["people"], 2)
+
+    def test_comp_on_a_pro_gated_event_is_not_a_contradiction(self):
+        """A comped user reaching a Pro feature is the system working."""
+        d = self._metric([["plants_bulk_edited", "comp", 6, 1]],
+                         [["comp", 1]])
+        self.assertEqual(d["contradictions"], [])
+
+    def test_the_render_names_both_readings_without_choosing(self):
+        """Gate leak and mislabelled stamp need different fixes.
+
+        The digest cannot distinguish them, so it must not appear to. Picking
+        one would make the other invisible, which is how DEC-317 happened.
+        """
+        m = base_metrics()
+        m["entitlement"] = {"ok": True, "data": {
+            "contradictions": [{"event": "reminder_created", "n": 4,
+                                "people": 2}],
+            "gated_by_source": {"none": 4}, "people_by_source": {"none": 70},
+            "paid": 0, "comped": 0, "measurable": True}}
+        text, html = ta.render(m)
+        self.assertIn("gate leaked", text)
+        self.assertIn("stamp disagrees", text)
+        start = html.index("pro_source=none")
+        self.assertIn(f"color:{ta.RED}", html[max(0, start - 500):start + 200])
+
+    def test_nothing_renders_before_the_property_ships(self):
+        m = base_metrics()
+        m["entitlement"] = {"ok": True, "data": {
+            "contradictions": [], "gated_by_source": {},
+            "people_by_source": {}, "paid": 0, "comped": 0,
+            "measurable": False}}
+        text, _ = ta.render(m)
+        self.assertNotIn("Pro access", text)
+
+    def test_a_failed_check_is_reported(self):
+        m = base_metrics()
+        m["entitlement"] = {"ok": False, "error": "HTTP 503"}
+        text, _ = ta.render(m)
+        self.assertIn("503", text)
