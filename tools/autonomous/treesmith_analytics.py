@@ -1310,7 +1310,7 @@ def m_entitlement_integrity(host, key):
 REMINDER_DELIVERY_NOTE = (
     "No delivery rate: the app is only woken by a tap, so a notification that "
     "was delivered and ignored is indistinguishable from one never delivered. "
-    "left_due below is the ignored-proxy."
+    "The `left due` figure in Reminders is the ignored-proxy."
 )
 
 
@@ -2680,8 +2680,9 @@ def render(metrics):
         ordered = ([a for a in alerts if a[0] == TRUST]
                    + [a for a in alerts if a[0] != TRUST])
         s_line("")
-        s_line(f"NEEDS ATTENTION ({len(alerts)})")
-        s_line("-" * 24)
+        heading = f"NEEDS ATTENTION ({len(alerts)})"
+        s_line(heading)
+        s_line("-" * len(heading))
         s_html(f'<h3 style="margin:16px 0 4px 0;font-size:14px;color:{RED};">'
                f'Needs attention ({len(alerts)})</h3>')
         shown_tier = None
@@ -2702,7 +2703,6 @@ def render(metrics):
                    f'<b>{_esc(label)}</b> '
                    f'<span style="color:#888;">&mdash; {_esc(where)}</span>'
                    f'</div>')
-        s_line("")
         s_line("  Detail against each figure below.")
         s_html('<div style="font-size:11px;color:#888;margin-top:4px;">'
                'Detail against each figure below.</div>')
