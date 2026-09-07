@@ -597,6 +597,11 @@ class TestOngoingRequestCreation(unittest.TestCase):
                                   {"accessType": "ONE_TIME_SNAPSHOT"}}]))
         self.assertIsNone(found)
 
-    def test_the_lookup_filters_by_app(self):
+    def test_the_lookup_reads_through_the_app_relationship(self):
+        """A collection GET on /analyticsReportRequests is a 403 naming
+        CREATE, DELETE and GET_INSTANCE as the only allowed operations, and
+        that 403 reads as a bad credential rather than as a wrong URL."""
         asrc.find_ongoing_request("tok", self.APP, getter=self._getter([]))
-        self.assertIn(f"filter[app]={self.APP}", self.seen)
+        self.assertEqual(
+            self.seen, f"/apps/{self.APP}/analyticsReportRequests?limit=200")
+        self.assertNotIn("filter[app]", self.seen)

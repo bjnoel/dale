@@ -364,8 +364,31 @@ def api_post(path, token, payload, timeout=60):
             "User-Agent": "dale-appstore-sources/1.0",
         },
     )
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return json.load(resp)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.load(resp)
+    except urllib.error.HTTPError as exc:
+        raise _with_apple_detail(exc) from exc
+
+
+def _with_apple_detail(exc):
+    """Re-raise an HTTPError with Apple's own explanation attached.
+
+    `HTTP Error 403: Forbidden` is not actionable. The body says which
+    operation the resource actually allows, which is the whole answer.
+    """
+    try:
+        body = json.loads(exc.read().decode("utf-8"))
+    except Exception:  # noqa: BLE001 - a body we cannot parse is not the story
+        return exc
+    detail = "; ".join(
+        f"{e.get('title', '')}: {e.get('detail', '')}".strip(": ")
+        for e in body.get("errors", [])
+    )
+    if not detail:
+        return exc
+    return urllib.error.HTTPError(exc.url, exc.code,
+                                  f"{exc.reason} ({detail})", exc.hdrs, None)
 
 
 def find_ongoing_request(token, app_id, getter=api_get):
@@ -374,9 +397,15 @@ def find_ongoing_request(token, app_id, getter=api_get):
     Apple allows one ONGOING request per app, so creating a second returns a
     409. Checking first turns "already done" into a normal outcome instead of
     an error somebody has to interpret.
+
+    Read through the app relationship, not `/analyticsReportRequests?filter`.
+    Apple answers a collection GET on that resource with a 403 naming the
+    allowed operations as CREATE, DELETE and GET_INSTANCE only, so the filter
+    form fails in a way that looks like a credential problem rather than a
+    wrong URL.
     """
-    for req in api_get_all(f"/analyticsReportRequests?filter[app]={app_id}"
-                           f"&limit=200", token, getter=getter):
+    for req in api_get_all(f"/apps/{app_id}/analyticsReportRequests?limit=200",
+                           token, getter=getter):
         if (req.get("attributes") or {}).get("accessType") == ONGOING_ACCESS:
             return req
     return None
