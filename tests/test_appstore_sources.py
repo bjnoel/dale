@@ -535,3 +535,68 @@ class TestConfig(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestOngoingRequestCreation(unittest.TestCase):
+    """The DEC-321 fix: a ONE_TIME_SNAPSHOT re-reports one frozen window.
+
+    The failure being pinned is not "creation errored". It is creating a
+    SECOND ONGOING request on a re-run, which Apple rejects with a 409 and
+    which would read to the operator as the setup step being broken.
+    """
+
+    APP = "6761506742"
+
+    def _getter(self, requests):
+        def getter(path, token):
+            self.seen = path
+            return {"data": requests}
+        return getter
+
+    def test_creates_an_ongoing_request_when_the_app_has_none(self):
+        posted = {}
+
+        def poster(path, token, payload):
+            posted["path"] = path
+            posted["payload"] = payload
+            return {"data": {"id": "new-id",
+                             "attributes": {"accessType": "ONGOING"}}}
+
+        request, created = asrc.create_ongoing_request(
+            "tok", self.APP, poster=poster,
+            getter=self._getter([{"id": "old",
+                                  "attributes":
+                                      {"accessType": "ONE_TIME_SNAPSHOT"}}]))
+        self.assertTrue(created)
+        self.assertEqual(request["id"], "new-id")
+        self.assertEqual(posted["path"], "/analyticsReportRequests")
+        data = posted["payload"]["data"]
+        self.assertEqual(data["attributes"]["accessType"], "ONGOING")
+        self.assertEqual(data["relationships"]["app"]["data"]["id"], self.APP)
+
+    def test_an_existing_ongoing_request_is_reused_never_duplicated(self):
+        def poster(*a, **kw):  # pragma: no cover - must not be reached
+            self.fail("posted a second ONGOING request; Apple returns 409")
+
+        request, created = asrc.create_ongoing_request(
+            "tok", self.APP, poster=poster,
+            getter=self._getter([
+                {"id": "old", "attributes":
+                    {"accessType": "ONE_TIME_SNAPSHOT"}},
+                {"id": "live", "attributes": {"accessType": "ONGOING"}},
+            ]))
+        self.assertFalse(created)
+        self.assertEqual(request["id"], "live")
+
+    def test_a_one_time_snapshot_alone_does_not_count_as_ongoing(self):
+        """The exact state DEC-321 was stuck in: a request exists, but the
+        wrong kind. Treating "has a request" as done is what froze the data."""
+        found = asrc.find_ongoing_request(
+            "tok", self.APP,
+            getter=self._getter([{"id": "old", "attributes":
+                                  {"accessType": "ONE_TIME_SNAPSHOT"}}]))
+        self.assertIsNone(found)
+
+    def test_the_lookup_filters_by_app(self):
+        asrc.find_ongoing_request("tok", self.APP, getter=self._getter([]))
+        self.assertIn(f"filter[app]={self.APP}", self.seen)

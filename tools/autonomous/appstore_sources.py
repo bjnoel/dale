@@ -107,6 +107,8 @@ import urllib.parse
 import urllib.request
 
 API_ROOT = "https://api.appstoreconnect.apple.com/v1"
+ONGOING_ACCESS = "ONGOING"
+ONE_TIME_ACCESS = "ONE_TIME_SNAPSHOT"
 SECRETS_DIR = "/opt/dale/secrets"
 SECRETS_FILE = "appstoreconnect.env"
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -343,6 +345,67 @@ def api_get(path, token, timeout=60):
     )
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return json.load(resp)
+
+
+def api_post(path, token, payload, timeout=60):
+    """One authenticated POST against the App Store Connect API.
+
+    Separate from [api_get] rather than a flag on it because everything else
+    in this module is a read. A write wants its own name at the call site.
+    """
+    url = path if path.startswith("http") else f"{API_ROOT}{path}"
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        method="POST",
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+            "User-Agent": "dale-appstore-sources/1.0",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return json.load(resp)
+
+
+def find_ongoing_request(token, app_id, getter=api_get):
+    """Return the app's existing ONGOING request, or None.
+
+    Apple allows one ONGOING request per app, so creating a second returns a
+    409. Checking first turns "already done" into a normal outcome instead of
+    an error somebody has to interpret.
+    """
+    for req in api_get_all(f"/analyticsReportRequests?filter[app]={app_id}"
+                           f"&limit=200", token, getter=getter):
+        if (req.get("attributes") or {}).get("accessType") == ONGOING_ACCESS:
+            return req
+    return None
+
+
+def create_ongoing_request(token, app_id, poster=api_post, getter=api_get):
+    """Create the ONGOING analytics report request for `app_id`.
+
+    Returns (request, created). `created` is False when one already existed,
+    because re-running this must be safe: the ONE_TIME_SNAPSHOT this replaces
+    (DEC-321) went unnoticed for weeks precisely because nobody could re-run
+    the setup step to check it.
+
+    Apple takes 24-48h to produce the first instance. Until then `pull` raises
+    NotReady, which main() already reports as normal rather than as failure.
+    """
+    existing = find_ongoing_request(token, app_id, getter=getter)
+    if existing:
+        return existing, False
+    payload = {
+        "data": {
+            "type": "analyticsReportRequests",
+            "attributes": {"accessType": ONGOING_ACCESS},
+            "relationships": {
+                "app": {"data": {"type": "apps", "id": str(app_id)}},
+            },
+        },
+    }
+    return poster("/analyticsReportRequests", token, payload)["data"], True
 
 
 def api_get_all(path, token, getter=api_get):
@@ -1101,6 +1164,10 @@ def main(argv=None):
                         help="print the report ids in the configured request")
     parser.add_argument("--rename-date", default=RENAME_DATE,
                         help=f"listing change date (default {RENAME_DATE})")
+    parser.add_argument("--create-ongoing-request", metavar="APP_ID",
+                        help="create the app's ONGOING analytics report "
+                             "request and print the id to put in "
+                             "ASC_REQUEST_ID. Safe to re-run.")
     args = parser.parse_args(argv)
 
     try:
@@ -1111,6 +1178,24 @@ def main(argv=None):
 
     token = mint_token(config["ASC_KEY_ID"], config["ASC_ISSUER_ID"],
                        config["ASC_PRIVATE_KEY_PATH"])
+
+    if args.create_ongoing_request:
+        try:
+            request, created = create_ongoing_request(
+                token, args.create_ongoing_request)
+        except (urllib.error.HTTPError, urllib.error.URLError) as exc:
+            print(f"could not create the request: {exc}", file=sys.stderr)
+            return 1
+        verb = "created" if created else "already exists"
+        print(f"{verb}: {request['id']}")
+        print(f"attributes: {request.get('attributes')}")
+        if created:
+            print("")
+            print("Set ASC_REQUEST_ID to that id in "
+                  "/opt/dale/secrets/appstoreconnect.env.")
+            print("Apple takes 24-48h to produce the first instance; until "
+                  "then the pull reports NOT READY, which is normal.")
+        return 0
 
     if args.list_reports:
         for report in list_reports(token, config["ASC_REQUEST_ID"]):
