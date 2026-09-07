@@ -1704,8 +1704,64 @@ def _delta_str(delta):
     return f"{delta:+d}%"
 
 
+def _headline(metrics):
+    """The four figures the week turns on, as (label, value, sub, colour).
+
+    Deliberately short. A summary that lists everything is the digest again,
+    and the complaint this answers is that nothing in it was ranked. Each row
+    reads from the same metric the section below prints, so the two cannot
+    disagree; a metric that failed drops its row rather than showing a zero.
+    """
+    rows = []
+
+    g = metrics.get("installs") or {}
+    if g.get("ok"):
+        d = g["data"]
+        delta = d.get("delta")
+        rows.append((
+            "New installs (7d)", str(d["this_week"]),
+            "" if delta is None else f"{_delta_str(delta)} WoW",
+            GREEN if (delta or 0) >= 0 else RED,
+        ))
+
+    # The funnel's worst step, not the funnel. Which step loses the most
+    # people is the one decision this report exists to inform.
+    fn = metrics.get("funnel") or {}
+    if fn.get("ok") and fn["data"].get("biggest_drop"):
+        a, b, lost, pct = fn["data"]["biggest_drop"]
+        rows.append(("Biggest funnel drop", f"{pct}%",
+                     f"{a} -> {b}, lost {lost}", RED))
+
+    # Weekly from our telemetry, all-time from the receipt. Shown together so
+    # a zero week cannot read as no revenue ever, which is the whole reason
+    # the all-time counts exist (DEC-260).
+    pu = metrics.get("purchases") or {}
+    rc = metrics.get("revenuecat") or {}
+    if pu.get("ok") and rc.get("ok"):
+        n_7d = sum(b["n_7d"] for b in pu["data"]["production"])
+        n_all = rc["data"]["production_n"]
+        rows.append(("Purchases (7d / all time)", f"{n_7d} / {n_all}",
+                     "receipt-validated all time",
+                     GREEN if n_7d else GREY))
+
+    if rc.get("ok"):
+        proceeds = rc["data"]["production_proceeds_usd"]
+        rows.append(("Revenue all time", f"US${proceeds:.2f}",
+                     "proceeds after store cut and tax",
+                     GREEN if proceeds else GREY))
+
+    return rows
+
+
 def render(metrics):
-    """Return (text, html) for the digest from the metrics dict."""
+    """Return (text, html) for the digest from the metrics dict.
+
+    Ordered summary-first since 2026-09-07. The sections below are unchanged
+    and complete; what moved is that the alerts and the four figures that
+    rank the week are re-listed at the top, and the permanent instrument
+    caveats are collected into a footer. Reading only the top block is now a
+    supported way to read this email.
+    """
     t = []  # text lines
     h = []  # html parts
 
@@ -1725,11 +1781,46 @@ def render(metrics):
          'PostHog figures are our own client-side telemetry and are '
          'directional. Only environment=production counts as revenue.</p>')
 
+    # Where the summary gets spliced in once the sections below have run. The
+    # summary is built FROM the sections rather than alongside them, because a
+    # hand-maintained top block is a second place for a number to be wrong.
+    summary_at = (len(t), len(h))
+
+    # Alerts are collected as they are emitted and re-listed at the top. The
+    # digest had twelve possible `!!` sites scattered through ten
+    # sections, so answering "is anything wrong this week" meant reading all
+    # of it. Two tiers, because the two demand different things of the reader:
+    #   TRUST   - a figure below is stale, missing or self-contradictory.
+    #             Nothing downstream of it can be acted on.
+    #   PRODUCT - something happened to real users. Actionable on its own.
+    TRUST, PRODUCT = "trust", "product"
+    alerts = []
+    notes = []
+    current_section = [""]
+
     def section(title):
+        current_section[0] = title
         line("")
         line(title)
         line("-" * len(title))
         html(f'<h3 style="margin:16px 0 4px 0;font-size:14px;">{title}</h3>')
+
+    def alert(label, detail, tier=PRODUCT):
+        """Emit an alert inline AND record it for the summary block."""
+        alerts.append((tier, current_section[0], label, detail))
+        kv(f"  !! {label}", detail, RED)
+
+    def note(text):
+        """A permanent caveat about the instrument, not this week's news.
+
+        These say the same thing every week (a reminder delivery rate cannot
+        exist, locations-per-person is unreadable, an awaited event is empty
+        by rollout). Inline they are indistinguishable from a finding, and
+        they are most of the reading. Collected into a footer instead, still
+        one click away rather than deleted: DEC-249's rule is that an absence
+        of measurement must never look like a clean result.
+        """
+        notes.append((current_section[0], text))
 
     def kv(label, value, color=None):
         line(f"  {label:<26} {value}")
@@ -1793,9 +1884,9 @@ def render(metrics):
                 kv(f"Awaiting first event ({len(evs)})",
                    f"declared {declared}, none seen yet ({waited}d of {grace}d "
                    f"grace): " + ", ".join(sorted(evs)), GREY)
-                kv("  ", "declared in the app and not yet arrived. Any metric "
-                         "reading these is empty because of the rollout, not "
-                         "the users.", GREY)
+                note("An awaited event is empty because the build has not "
+                     "reached users, not because nobody does the thing. Any "
+                     "metric reading one is empty by rollout.")
     elif lv and not lv["ok"]:
         # An errored liveness check is itself a blind spot, so say so rather
         # than letting the section's silence read as "all events healthy".
@@ -1823,9 +1914,11 @@ def render(metrics):
         d = idm["data"]
         if d["persons"]:
             kv("  Counting people, not device ids",
-               f"{d['persons']} people across {d['ids']} ids "
-               f"({d['phantom']} phantom, id-count runs "
-               f"+{d['inflation_pct']}%)", GREY)
+               f"{d['persons']} people across {d['ids']} ids", GREY)
+            note(f"Device ids run +{d['inflation_pct']}% above people "
+                 f"({d['phantom']} phantom this week). Never divide anything "
+                 f"by an id count; RevenueCat's install counts have the same "
+                 f"fault and read several times too high (DEC-320).")
         else:
             kv("  Counting people, not device ids", "no events recorded", GREY)
     else:
@@ -1860,11 +1953,12 @@ def render(metrics):
             # One loop registers all of them, so they cannot legitimately
             # disagree. Named before the splits because it says which of the
             # numbers below are reading a property the app is not sending.
-            kv("  !! super properties disagree",
-               f"best covered has {spread['high']} events, worst has "
-               f"{spread['low']}. Behind: {', '.join(spread['behind'])}. They "
-               f"are registered together, so this is a spelling mismatch or a "
-               f"value that failed to compute, not a partial rollout.", RED)
+            alert("super properties disagree",
+                  f"best covered has {spread['high']} events, worst has "
+                  f"{spread['low']}. Behind: {', '.join(spread['behind'])}. "
+                  f"They are registered together, so this is a spelling "
+                  f"mismatch or a value that failed to compute, not a partial "
+                  f"rollout.", TRUST)
         skew = cov.get("skew")
         if skew:
             # The two figures coming apart is the finding, not the level of
@@ -1873,13 +1967,13 @@ def render(metrics):
             # attribute to suspect first is having a session. Reported in red
             # because the event figure on its own reads as an ordinary
             # mid-rollout number while most PEOPLE are missing.
-            kv("  !! coverage is skewed toward heavy users",
-               f"{skew['events_pct']}% of events but only "
-               f"{skew['people_pct']}% of people ({skew['gap']} points apart). "
-               f"That is what super properties attaching only to signed-in "
-               f"users looks like: they are 15% of people and 60% of events. "
-               f"Anonymous users are the population these exist to reach.",
-               RED)
+            alert("coverage is skewed toward heavy users",
+                  f"{skew['events_pct']}% of events but only "
+                  f"{skew['people_pct']}% of people ({skew['gap']} points "
+                  f"apart). That is what super properties attaching only to "
+                  f"signed-in users looks like: they are 15% of people and "
+                  f"60% of events. Anonymous users are the population these "
+                  f"exist to reach.", TRUST)
         for prop, split in d["splits"].items():
             if not split["rows"]:
                 continue
@@ -1911,12 +2005,12 @@ def render(metrics):
                f"population. Excluded from both by reading pro_source rather "
                f"than a boolean.", GREY)
         for c in d["contradictions"]:
-            kv(f"  !! {c['event']} with pro_source=none",
-               f"{c['n']} events from {c['people']} people reached a Pro-only "
-               f"feature without Pro. Either the gate leaked (a revenue bug) "
-               f"or the stamp disagrees with what the app did (every segment "
-               f"below is misfiled). Both are worth chasing; this cannot tell "
-               f"them apart.", RED)
+            alert(f"{c['event']} with pro_source=none",
+                  f"{c['n']} events from {c['people']} people reached a "
+                  f"Pro-only feature without Pro. Either the gate leaked (a "
+                  f"revenue bug) or the stamp disagrees with what the app did "
+                  f"(every segment below is misfiled). Both are worth "
+                  f"chasing; this cannot tell them apart.", TRUST)
     elif ei and not ei["ok"]:
         err("Entitlement integrity", ei["error"])
 
@@ -1944,9 +2038,9 @@ def render(metrics):
                 # week. Nothing below this line is this week's news.
                 age = d["age_days"]
                 when = "never" if age is None else f"{age} days ago"
-                kv("!! NO CAPTURE", f"oldest store capture is {when}; the weekly "
-                                    f"job may have stopped. Anything below is "
-                                    f"older news.", RED)
+                alert("NO CAPTURE", f"oldest store capture is {when}; the "
+                                    f"weekly job may have stopped. Anything "
+                                    f"below is older news.", TRUST)
             for store, s in d["stores"].items():
                 label = STORE_LABELS.get(store, store)
                 if s["prev"] is None:
@@ -2012,20 +2106,20 @@ def render(metrics):
                 age = d.get("data_age_days")
                 when = "never" if age is None else f"{age} days ago"
                 newest = d.get("newest_complete_date") or "no complete day"
-                kv("!! SERIES FROZEN",
-                   f"the weekly pull is still running, but the newest complete "
-                   f"day in the series is {newest} ({when}). Apple's "
-                   f"ONE_TIME_SNAPSHOT has stopped producing instances, so the "
-                   f"windows below have not grown since. Nothing here is this "
-                   f"week's news.", RED)
+                alert("SERIES FROZEN",
+                      f"the weekly pull is still running, but the newest "
+                      f"complete day in the series is {newest} ({when}). "
+                      f"Apple's ONE_TIME_SNAPSHOT has stopped producing "
+                      f"instances, so the windows below have not grown since. "
+                      f"Nothing here is this week's news.", TRUST)
             elif d["stale"]:
                 age = d["age_days"]
                 when = "never" if age is None else f"{age} days ago"
-                kv("!! NO PULL", f"the App Store Connect series was last "
+                alert("NO PULL", f"the App Store Connect series was last "
                                  f"written {when}; the weekly job may have "
                                  f"stopped, or the ONE_TIME_SNAPSHOT has "
                                  f"stopped producing instances. Figures below "
-                                 f"are older news.", RED)
+                                 f"are older news.", TRUST)
 
             def window_lines(w):
                 total = w["impressions"]
@@ -2104,10 +2198,10 @@ def render(metrics):
                 window_lines(post)
 
             if sp["boundary"]["day_count"]:
-                src_line(f"{sp['rename_date']} is part one listing and part the "
-                         f"other; its "
-                         f"{sp['boundary']['impressions']:,} impressions are in "
-                         f"neither window.", GREY)
+                note(f"{sp['rename_date']} is part one listing and part "
+                     f"the other; its "
+                     f"{sp['boundary']['impressions']:,} impressions are in "
+                     f"neither window.")
 
     # Store listing accuracy. Sits with discovery rather than with the product
     # sections because it is part of the same surface: the ranks say where we
@@ -2128,10 +2222,10 @@ def render(metrics):
                    f"freeLocationLimit={lim['freeLocationLimit']}", GREEN)
             else:
                 for entry, finding in d["failures"]:
-                    kv(f"!! {entry['store']}/{entry['country']} "
-                       f"{finding['rule']}", finding["detail"], RED)
+                    alert(f"{entry['store']}/{entry['country']} "
+                          f"{finding['rule']}", finding["detail"], PRODUCT)
                 if d["divergence"]:
-                    kv("!! storefronts diverge", d["divergence"], RED)
+                    alert("storefronts diverge", d["divergence"], PRODUCT)
                 for entry in d["unreadable"]:
                     # Not a pass. DEC-249: an absence of measurement and a
                     # clean result must not look alike.
@@ -2180,11 +2274,11 @@ def render(metrics):
                f"{post.get('max_after')} after "
                f"(avg {post.get('avg_after')} across {post.get('adds', 0)} "
                f"adds)")
-            kv("  Step change at the fix is an artefact",
-               f"the two windows are shown apart deliberately. Any series "
-               f"joining them steps up on {d['boundary']} because the other "
-               f"two creation paths started reporting, not because anyone "
-               f"added a location.", GREY)
+            note(f"Locations: the step change at the fix is an artefact. "
+                 f"The two windows are shown apart deliberately, because any "
+                 f"series joining them steps up on {d['boundary']} when the "
+                 f"other two creation paths started reporting, not because "
+                 f"anyone added a location.")
     elif lo and not lo["ok"]:
         err("Locations", lo["error"])
 
@@ -2207,8 +2301,9 @@ def render(metrics):
                all_color)
             excluded = d.get("excluded_pre_coverage") or 0
             if excluded:
-                kv("  Excluded (installed before plant_added existed)",
-                   f"{excluded} people, activation unknown not zero", GREY)
+                note(f"{excluded} people installed before plant_added "
+                     f"existed and are excluded from the all-time rate: "
+                     f"activation unknown not zero.")
     else:
         err("Activation", ac["error"])
     ob = metrics["onboarding"]
@@ -2323,9 +2418,7 @@ def render(metrics):
                 msg = (f"RevenueCat has {n} paid purchases, PostHog "
                        f"purchase_succeeded has {ph_n}. The receipt wins; "
                        f"our own telemetry is missing {n - ph_n}.")
-                line(f"  !! {msg}")
-                html(f'<div style="margin-top:6px;color:{RED};'
-                     f'font-size:13px;">{msg}</div>')
+                alert("purchase counts disagree", msg, TRUST)
     else:
         err("RevenueCat", rcm["error"])
 
@@ -2376,9 +2469,7 @@ def render(metrics):
                    f"since 2026-07-01 but purchase_succeeded reports "
                    f"{d['via_purchase']}. One of them is dropping events, so "
                    f"treat the revenue line above as incomplete.")
-            line(f"  !! {msg}")
-            html(f'<div style="margin-top:6px;color:{RED};font-weight:bold;'
-                 f'font-size:13px;">Purchase events disagree: {msg}</div>')
+            alert("purchase events disagree", msg, TRUST)
     else:
         err("Reconciliation", rc["error"])
 
@@ -2409,17 +2500,17 @@ def render(metrics):
         for b in d["blocked"][:FEATURE_LIST_LIMIT]:
             # A blocked reminder is a reminder the user asked for and will
             # never get. It is a product failure, not a usage statistic.
-            kv(f"  !! {b['status']}",
-               f"{b['n']} across {b['people']} people, blocker="
-               f"{b['blocker']}", RED)
+            alert(f"reminders {b['status']}",
+                  f"{b['n']} across {b['people']} people, blocker="
+                  f"{b['blocker']}. A blocked reminder is one the user asked "
+                  f"for and will never get.", PRODUCT)
         kv("Notification taps", f"{d['taps_total']} "
                                 f"({d['cold_taps']} cold, {d['warm_taps']} warm)")
         if d["taps_per_scheduled"] is not None:
             kv("  Taps per scheduled reminder", f"{d['taps_per_scheduled']}%")
-            kv("  ", "not a share of notifications: a repeating reminder is "
-                     "created once and fires many times, so this can exceed "
-                     "100%. The app cannot see deliveries, so this is not "
-                     "one.", GREY)
+            note("Taps per scheduled reminder is not a share of "
+                 "notifications: a repeating reminder is created once and "
+                 "fires many times, so it can exceed 100%.")
         sw = d["sweep"]
         if sw["sweeps"]:
             kv("Cold-start sweeps", f"{sw['sweeps']} across {sw['people']} people")
@@ -2428,9 +2519,9 @@ def render(metrics):
             kv("  scheduled / already pending",
                f"{sw['scheduled']} / {sw['already_pending']}", GREY)
             if sw["blocked"] or sw["failed"]:
-                kv("  !! blocked / failed",
-                   f"{sw['blocked']} / {sw['failed']}", RED)
-        kv("  ", REMINDER_DELIVERY_NOTE, GREY)
+                alert("reminders blocked / failed at cold start",
+                      f"{sw['blocked']} / {sw['failed']}", PRODUCT)
+        note(REMINDER_DELIVERY_NOTE)
     elif rm and not rm["ok"]:
         section("Reminders (7d)")
         err("Reminders", rm["error"])
@@ -2495,11 +2586,11 @@ def render(metrics):
                 # A failed row is a row the user watched not arrive. The
                 # 2026-09-03 case was 71 of 71, reported to them as the bare
                 # word "failed" with no reason attached.
-                kv("  !! rows that failed to import",
-                   f"{d['rows_failed_7d']} of {d['attempted_7d']} attempted "
-                   f"({d['success_pct']}% succeeded). Check the import "
-                   f"messages: a constraint clash and a parser problem look "
-                   f"identical from this number alone.", RED)
+                alert("rows that failed to import",
+                      f"{d['rows_failed_7d']} of {d['attempted_7d']} attempted "
+                      f"({d['success_pct']}% succeeded). Check the import "
+                      f"messages: a constraint clash and a parser problem look "
+                      f"identical from this number alone.", PRODUCT)
             if d["replaced_existing"]:
                 kv("  replaced an existing library",
                    f"{d['replaced_existing']} imports (counted apart: a "
@@ -2534,8 +2625,98 @@ def render(metrics):
     else:
         err("Backup", bk["error"])
 
+    # ── Notes footer ────────────────────────────────────────────────────
+    # Collapsed in HTML, last in text. Available, never in the way.
+    if notes:
+        line("")
+        line("How to read this (permanent caveats, not this week's news)")
+        line("-" * 58)
+        for where, text_ in notes:
+            line(f"  [{where}] {text_}")
+        html('<details style="margin-top:20px;">'
+             '<summary style="cursor:pointer;color:#888;font-size:12px;">'
+             f'How to read this ({len(notes)} permanent caveats, not this '
+             'week&#39;s news)</summary>'
+             '<div style="margin-top:8px;">')
+        for where, text_ in notes:
+            html(f'<div style="color:#888;font-size:12px;margin-bottom:6px;">'
+                 f'<b>{_esc(where)}.</b> {_esc(text_)}</div>')
+        html('</div></details>')
+
     html('<p style="color:#888;font-size:11px;margin-top:16px;">'
          'Generated by dale/treesmith_analytics.py from PostHog (EU).</p>')
+
+    # ── Summary, spliced above everything ───────────────────────────────
+    # Built last and inserted first, so every figure in it is the one the
+    # section below actually printed rather than a second computation of it.
+    st, sh = [], []
+
+    def s_line(x=""):
+        st.append(x)
+
+    def s_html(x):
+        sh.append(x)
+
+    headline = _headline(metrics)
+    if headline:
+        s_line("THIS WEEK")
+        s_line("-" * 9)
+        s_html('<h3 style="margin:4px 0 6px 0;font-size:14px;">'
+               'This week</h3>')
+        s_html('<table style="border-collapse:collapse;font-size:13px;'
+               'width:100%;max-width:520px;">')
+        for label, value, sub_, colour in headline:
+            s_line(f"  {label:<26} {value}" + (f"   ({sub_})" if sub_ else ""))
+            s_html(f'<tr><td style="padding:3px 12px 3px 0;color:#555;">'
+                   f'{_esc(label)}</td>'
+                   f'<td style="padding:3px 12px 3px 0;font-weight:bold;'
+                   f'font-size:15px;color:{colour};white-space:nowrap;">'
+                   f'{_esc(value)}</td>'
+                   f'<td style="padding:3px 0;color:#888;">'
+                   f'{_esc(sub_ or "")}</td></tr>')
+        s_html('</table>')
+
+    if alerts:
+        ordered = ([a for a in alerts if a[0] == TRUST]
+                   + [a for a in alerts if a[0] != TRUST])
+        s_line("")
+        s_line(f"NEEDS ATTENTION ({len(alerts)})")
+        s_line("-" * 24)
+        s_html(f'<h3 style="margin:16px 0 4px 0;font-size:14px;color:{RED};">'
+               f'Needs attention ({len(alerts)})</h3>')
+        shown_tier = None
+        for tier, where, label, detail in ordered:
+            if tier != shown_tier:
+                shown_tier = tier
+                caption = (
+                    "Trust these numbers less until fixed"
+                    if tier == TRUST else
+                    "Something happened to real users")
+                s_line(f"  {caption}:")
+                s_html(f'<div style="font-size:11px;color:#888;'
+                       f'margin:8px 0 2px 0;text-transform:uppercase;'
+                       f'letter-spacing:.04em;">{caption}</div>')
+            s_line(f"    - {label}  [{where}]")
+            s_html(f'<div style="font-size:13px;margin-bottom:3px;">'
+                   f'<span style="color:{RED};">&#9679;</span> '
+                   f'<b>{_esc(label)}</b> '
+                   f'<span style="color:#888;">&mdash; {_esc(where)}</span>'
+                   f'</div>')
+        s_line("")
+        s_line("  Detail against each figure below.")
+        s_html('<div style="font-size:11px;color:#888;margin-top:4px;">'
+               'Detail against each figure below.</div>')
+    elif metrics:
+        s_line("")
+        s_line("NEEDS ATTENTION: nothing flagged this week.")
+        s_html(f'<div style="font-size:13px;color:{GREEN};margin-top:12px;">'
+               f'Nothing flagged this week.</div>')
+
+    if st:
+        st.append("")
+        i_t, i_h = summary_at
+        t[i_t:i_t] = st
+        h[i_h:i_h] = sh
 
     text = "\n".join(t)
     html_doc = ('<div style="font-family:-apple-system,Segoe UI,Roboto,'
