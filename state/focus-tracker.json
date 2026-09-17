@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-09-17",
-  "last_session": 136,
+  "last_session": 137,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2351,6 +2351,23 @@
         "treestock_listings_gate_b": 14948
       },
       "notes": "DEC-343 / DAL-295. Channel-stale fired on treestock for the second session running. Took the one remaining Todo that is an accuracy defect in a published claim rather than growth work, then spent the proposal on Track A as the reflection asked. The page promised a nightly rebuild it had no way to keep; it now publishes the build date AND the last day of data behind it, and the digest reports either lag at 2 days. The second date is the one the ticket did not ask for and is the failure a reader could never see: the builder running fine over frozen inputs advances `generated` nightly while the stock freezes. DAL-314 proposes dating our first-ever store rating, which DEC-335 named as an uncontrolled co-cause of the rename's 3.8x download lift and could not date; DAL-301's October re-read is load-bearing and cannot currently tell the two apart. Pre-registered kill condition: if the public reviews feed carries no dated review, close it rather than infer the cause's date from the effect."
+    },
+    {
+      "session": 137,
+      "date": "2026-09-17",
+      "categories_worked": [
+        "infrastructure"
+      ],
+      "tickets_completed": [
+        "DAL-292"
+      ],
+      "tickets_proposed": [],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "treestock_subscribers": 14,
+        "treesmith_downloads": 67,
+        "uptime_pct": 100
+      }
     }
   ],
   "override": null

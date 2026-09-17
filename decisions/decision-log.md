@@ -15636,3 +15636,66 @@ to let the number stop moving where a reader can see it stop.
 
 Commit 3fdc8b4. 6 new tests in `tests/test_pipeline_health.py`; suite 3,744, 1
 known failure (DAL-306). Deployed, live page rebuilt, edge cache purged.
+
+## DEC-344 — 2026-09-17 — The six worst nights on record sent the smallest emails, because the alarm only counts nurseries that answered
+**Date:** 2026-09-17 · **Ticket:** DAL-292 (Done) · **Track:** B (treestock) · **Authority:** Dale autonomous (alarm tuning, $0)
+
+DAL-292 asked why the scrape health alarm emailed on 4 nights in 5. Replayed over
+all 99 nights of health records we hold (2026-06-11 to 2026-09-17) the real rate is
+**33 of 99 nights, 37% before the retune**. The burst in the card was a burst, not a rate.
+
+**The finding is not the rate, it is which nights were loud.** Every rule in
+`detect_scrape_anomalies.py` loops over the nurseries that WROTE a health record, so a
+nursery that never ran is examined by nothing. On the six total outages DEC-324 found
+(2026-06-24, 06-26, 06-29, 06-30, 07-02, 07-03) only **2 of 25 nurseries got far enough
+to report anything**, so each night raised **one or two** anomalies. A routine night
+raises one to three. The anomaly-count distribution over 99 nights is 62 clean, 13x1,
+15x2, 7x3, then 21 and 23 — and the 21 and 23 are the two PARTIAL outages, where most
+nurseries ran and failed loudly. So the ranking by email size was: partial outage
+(21-23 rows) >> routine (1-3) >= total outage (1-2). **The worst possible state of the
+system produced the smallest email.** Six complete collapses passed through as quiet
+nights and nobody acted on any of them, exactly as the ticket suspected, but not for
+the reason it proposed: no threshold was too sensitive, the denominator was missing.
+
+**Shipped.** `PANEL_COVERAGE_FLOOR = 0.75` against the nurseries we expected to run
+(registered, not dormant per DEC-330, seen within 14 days so a newly added nursery
+grace-periods in rather than firing it). Coverage over 99 nights is cleanly bimodal:
+every healthy night 0.81 or above, every outage night 0.07, so **any threshold from
+0.60 to 0.80 scores identically** (6 of 6 outages, zero others) and 0.75 sits in the
+middle of the dead zone. A panel anomaly leads the email and the SUBJECT LINE, because
+counting rows cannot express severity when the failure mode suppresses rows.
+
+**Two noise cuts, each measured rather than chosen.** (1) `zero_products` fired 36
+times and **all 36 were on a nursery already reported failed the same night**; it has
+never once fired independently, because a failed run has no products by definition.
+Suppressed when the run failed, kept for the ok-but-empty case it was written for.
+(2) `count_swing` fired 9 times and **8 were four V-shaped pairs** (ladybird
+7022->750->7035, garden-world 220->25->220, ladybird 7059->1250->7071, fruitopia
+638->250->638). The drop is worth an email; "it is back" is not. A swing that returns
+the count to within the alarm's own swing band of the night before last is now
+suppressed. The one structural swing in the whole record, daleys 647->1998 on
+2026-08-20, is not a restoration and survives.
+
+Result: rows 108 -> 74 (-31%), rows that were a second row about an already-failed
+nursery 44% -> 16%, and the residue is `blocked` (says why it failed) and
+`failure_streak` (says it is day 3) — both escalations that carry information, so
+left alone.
+
+**Reported, not fixed: two rules have never fired in 99 nights.** `source_change` was
+written for the Daleys feed swap of 2026-08-20 and **could not see it**: `source` was
+`None` on both sides and only began being written on 08-21, the day after. It is armed
+now (27 of 27 records carry it) but has never been validated against a real event.
+`priced_collapse` shipped 08-24 and has 24 nights of life. Recording an enum sitting at
+exactly zero in a working system rather than declaring it healthy or broken.
+
+**Also confirmed from the DAL-292 thread and left alone:** the day-over-day rules do
+skip across a broken yesterday, which is real, but the panel banner now covers the
+case that actually cost us (a collapse spanning an outage) and adding a fifth
+sensitivity to a set that already emails a third of nights would be the wrong way.
+
+`tools/scrapers/backtest_scrape_anomalies.py` is committed so the retune is
+re-derivable rather than asserted (DEC-313), scores itself against the six labelled
+nights, and exits 1 if any stops alarming. 12 tests in
+`tests/test_scrape_anomaly_thresholds.py`, 2 proven to fail under the old rules. Full
+suite 3,756 tests, 1 known failure (DAL-306). Deployed and verified byte-identical
+from /opt/dale/scrapers; tonight's run is clean.

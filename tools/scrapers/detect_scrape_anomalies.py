@@ -10,6 +10,7 @@ stocklib.scrape_health) and alerts Benedict when something needs a look:
   - a nursery has failed 3 days running
   - a nursery changed data SOURCE overnight (DEC-207 follow-up, see below)
   - a nursery's product count more than doubled or halved in one night
+  - most of the panel did not run at all (DAL-292, see PANEL_COVERAGE_FLOOR)
 
 Runs in run-all-scrapers.sh after the smoke test. Idempotent: a send marker
 prevents duplicate emails when the pipeline is re-run on the same day (same
@@ -27,9 +28,34 @@ import sys
 from datetime import date, timedelta
 from pathlib import Path
 
-from stocklib.scrape_health import latest_by_nursery, read_records
+from stocklib.registry import NURSERIES
+from stocklib.scrape_health import is_dormant, latest_by_nursery, read_records
 
 STREAK_DAYS = 3
+
+# PANEL COVERAGE (DAL-292). Every other rule in this file loops over the
+# nurseries that WROTE a health record, so a nursery that never ran is not
+# examined by any of them. Backtested over 99 nights of records, the six total
+# outages of 2026-06-24..07-03 (DEC-324) each produced ONE OR TWO anomalies,
+# because only 2 of 27 nurseries got far enough to report anything. A routine
+# night produces one to three. So the worst nights in the dataset sent a
+# SMALLER email than the ordinary ones, and six complete collapses read as
+# quiet. An absence and a zero looked identical again (DEC-339).
+#
+# Coverage is measured against the nurseries we actually expected to run:
+# registered, not dormant (DEC-330 already owns "shut, stop scraping nightly"),
+# and seen at least once recently, so a newly added nursery grace-periods in
+# rather than firing this on its first night.
+#
+# The floor is measured, not chosen. Over those 99 nights coverage is bimodal:
+# every healthy night sits at 0.81 or above (0.81 is the June era when five
+# nurseries had not been instrumented yet; from 2026-06-21 on it is 0.93+),
+# and every outage night sits at 0.07. Anything from 0.60 to 0.80 scores
+# identically: 6 of 6 outages caught, nothing else. 0.75 sits in the middle of
+# that dead zone, one clear step below the worst healthy night, same discipline
+# as DEC-323's subscriber thresholds.
+PANEL_COVERAGE_FLOOR = 0.75
+PANEL_RECENT_DAYS = 14
 
 # A source change means the scraper feeding a nursery was swapped: Daleys went
 # from the HTML plant_list scraper (647 products) to a CSV supplier feed (1,998)
@@ -74,7 +100,70 @@ CONDITION_LABELS = {
     "source_change": "Data source changed",
     "count_swing": "Product count swing",
     "priced_collapse": "Prices stopped being read",
+    "panel_coverage": "Most of the panel did not run",
 }
+
+
+def expected_panel(day, days, health_dir=None):
+    """The nurseries that should have written a health record on `day`.
+
+    Registered, not dormant, and seen at least once in the recent window. The
+    recency test is what stops a newly added nursery (or a newly instrumented
+    one) reading as a missing one. It looks back PANEL_RECENT_DAYS rather than
+    a night or two so that a multi-night outage cannot quietly redefine the
+    panel down to whoever survived it, which is the shape that let a closed
+    store reset the dormancy backoff in DEC-330.
+    """
+    seen = set()
+    for n in range(1, PANEL_RECENT_DAYS + 1):
+        prior = (date.fromisoformat(day) - timedelta(days=n)).isoformat()
+        seen.update(latest_by_nursery(read_records(prior, health_dir)))
+    seen.update(latest_by_nursery(days[0] if days else []))
+    return [
+        n.key for n in NURSERIES
+        if n.key in seen and not is_dormant(n.key, day, health_dir)
+    ]
+
+
+def detect_panel_coverage(day, days, health_dir=None):
+    """A run-level anomaly: most of the panel never reported. None when fine."""
+    expected = expected_panel(day, days, health_dir)
+    if not expected:
+        return None
+    ran = latest_by_nursery(days[0] if days else [])
+    present = [k for k in expected if k in ran]
+    coverage = len(present) / len(expected)
+    if coverage >= PANEL_COVERAGE_FLOOR:
+        return None
+    missing = sorted(set(expected) - set(present))
+    return {
+        "nursery": "(whole panel)",
+        "type": "panel_coverage",
+        "detail": f"only {len(present)} of {len(expected)} nurseries ran "
+                  f"({coverage:.0%}); {len(missing)} never reported",
+        "coverage": coverage,
+        "missing": missing,
+    }
+
+
+def _is_restoration(nursery, today_count, per_day):
+    """True when today's count returns to the level of the night before last.
+
+    "Within the swing band of two nights ago" deliberately reuses
+    COUNT_SWING_RATIO rather than picking a second number by eye: the thing
+    being asked is whether today and the pre-dip day would have counted as the
+    same level under this alarm's own definition of a level.
+    """
+    if len(per_day) < 3:
+        return False
+    before = per_day[2].get(nursery)
+    if not before or not before.get("ok", False):
+        return False
+    prior2 = before.get("products", 0)
+    if prior2 <= 0:
+        return False
+    back = today_count / prior2
+    return 1 / COUNT_SWING_RATIO < back < COUNT_SWING_RATIO
 
 
 def detect_anomalies(days):
@@ -98,8 +187,15 @@ def detect_anomalies(days):
                 "detail": rec.get("error") or "no error message recorded",
             })
 
+        # Zero products is only news when the run SUCCEEDED and still came back
+        # empty. A failed run has no products by definition, so firing this
+        # alongside "failed" is a second row saying the same thing about the
+        # same nursery. Backtested over 99 nights (DAL-292): all 36 of these
+        # ever raised were on a nursery already reported failed the same night,
+        # and it has never once fired independently. The rule is kept for the
+        # ok-but-empty case it was written for, which stays uncovered otherwise.
         y = yesterday_latest.get(nursery)
-        if rec.get("products", 0) == 0 and y and y.get("products", 0) > 0:
+        if not failed and rec.get("products", 0) == 0 and y and y.get("products", 0) > 0:
             anomalies.append({
                 "nursery": nursery,
                 "type": "zero_products",
@@ -151,7 +247,17 @@ def detect_anomalies(days):
             today_count = rec.get("products", 0)
             if prior_count > 0 and today_count > 0:
                 ratio = today_count / prior_count
-                if ratio >= COUNT_SWING_RATIO or ratio <= 1 / COUNT_SWING_RATIO:
+                # A swing that puts the count back where it was the night
+                # BEFORE last is a recovery, not an event. Backtested over 99
+                # nights (DAL-292), 8 of the 9 count swings ever raised were
+                # four V-shaped pairs: ladybird 7022 -> 750 -> 7035,
+                # garden-world 220 -> 25 -> 220, ladybird 7059 -> 1250 -> 7071,
+                # fruitopia 638 -> 250 -> 638. Each truncated run was worth an
+                # email; none of the four "it is back" rows was. The one
+                # structural swing in the whole record, daleys 647 -> 1998 on
+                # 2026-08-20, is not a restoration and survives this.
+                swung = ratio >= COUNT_SWING_RATIO or ratio <= 1 / COUNT_SWING_RATIO
+                if swung and not _is_restoration(nursery, today_count, per_day):
                     anomalies.append({
                         "nursery": nursery,
                         "type": "count_swing",
@@ -172,7 +278,27 @@ def detect_anomalies(days):
 
 
 def build_email(anomalies, today):
-    """Build (subject, html, text) for the alert email."""
+    """Build (subject, html, text) for the alert email.
+
+    A panel-coverage anomaly leads, in the subject line as well as the body.
+    Counting rows cannot express severity here: the six worst nights on record
+    raised one or two rows each because almost nothing ran, so "3 anomalies"
+    and "2 anomalies" were the wrong way round (DAL-292).
+    """
+    panel = next((a for a in anomalies if a["type"] == "panel_coverage"), None)
+    banner_html = banner_text = ""
+    if panel:
+        missing = ", ".join(panel["missing"][:12])
+        if len(panel["missing"]) > 12:
+            missing += f", +{len(panel['missing']) - 12} more"
+        banner_html = (
+            f'<p style="padding:10px;background:#c62828;color:#fff;font-weight:bold">'
+            f'Panel outage: {panel["detail"]}.</p>'
+            f'<p style="font-size:0.85em;color:#555">Did not report: {missing}</p>'
+        )
+        banner_text = (f"PANEL OUTAGE: {panel['detail']}.\n"
+                       f"Did not report: {missing}\n\n")
+
     rows_html = ""
     rows_text = []
     for a in anomalies:
@@ -187,6 +313,7 @@ def build_email(anomalies, today):
         rows_text.append(f"  {a['nursery']}: {label} - {a['detail']}")
 
     html = f"""<h2>Scrape Health Alert &mdash; {today}</h2>
+{banner_html}
 <p>{len(anomalies)} anomaly/ies in last night's scrape:</p>
 <table style="font-family:monospace;font-size:13px;border-collapse:collapse;width:100%">
 <tr style="border-bottom:2px solid #ddd;font-weight:bold">
@@ -201,8 +328,12 @@ Conditions: failed run, zero products where yesterday had stock, any 403/429,
 {STREAK_DAYS}-day failure streak, data source change, product count swing beyond
 {COUNT_SWING_RATIO:g}x. Health grid: treestock.com.au/admin.</p>"""
 
-    text = f"Scrape Health Alert -- {today}\n\n" + "\n".join(rows_text)
-    subject = f"Scrape health: {len(anomalies)} anomalies -- {today}"
+    text = f"Scrape Health Alert -- {today}\n\n" + banner_text + "\n".join(rows_text)
+    if panel:
+        subject = (f"Scrape health: PANEL OUTAGE, {panel['coverage']:.0%} of "
+                   f"nurseries ran -- {today}")
+    else:
+        subject = f"Scrape health: {len(anomalies)} anomalies -- {today}"
     return subject, html, text
 
 
@@ -230,6 +361,9 @@ def main(argv=None):
         return 0
 
     anomalies = detect_anomalies(days)
+    panel = detect_panel_coverage(today.isoformat(), days, health_dir)
+    if panel:
+        anomalies.insert(0, panel)
     if not anomalies:
         print(f"Scrape health: {len(latest_by_nursery(days[0]))} nurseries, no anomalies.")
         return 0
