@@ -952,11 +952,26 @@ def split_on_rename(records, rename_date=RENAME_DATE, pulled_at=None,
         else:
             post.append(record)
 
+    # Days inside the post-rename span that the series simply does not hold.
+    # A hole and a day of no traffic render identically once the rows are
+    # summed, and this window is the one the rename is judged on, so name it.
+    # Counted from our first post-rename day, not from the rename itself, so a
+    # window we have not started observing yet does not read as loss.
+    held = {_as_date(r["date"]) for r in post}
+    missing = []
+    if held:
+        day = min(held)
+        while day <= cutoff:
+            if day not in held:
+                missing.append(day.isoformat())
+            day += datetime.timedelta(days=1)
+
     result = {
         "pulled_at": stamp,
         "rename_date": rename_date,
         "last_complete_date": cutoff.isoformat(),
         "excluded_incomplete": sorted(excluded),
+        "post_missing_days": missing,
         "pre": _accumulate(pre),
         "pre_recent": _accumulate(pre_recent),
         "post": _accumulate(post),
@@ -1024,7 +1039,7 @@ def series_age_days(records, now=None):
 # ── The pull ─────────────────────────────────────────────────────────────────
 
 def pull(config, token=None, getter=api_get, fetcher=fetch_segment):
-    """Fetch every segment of the newest instance and aggregate it.
+    """Fetch every instance Apple still holds and aggregate them.
 
     Returns `(totals, anomalies, meta)`. Raises NotReady when Apple has not
     generated an instance, which is the caller's cue to say "not ready", not
@@ -1038,40 +1053,67 @@ def pull(config, token=None, getter=api_get, fetcher=fetch_segment):
     instances = list_instances(token, report_id, config["ASC_GRANULARITY"],
                                getter=getter)
 
-    # The newest instance carries the report; older ones are earlier renderings
-    # of the same request. Segments WITHIN the instance are all read, because
-    # that is where Apple puts corrections and late-arriving events.
-    instance = instances[0]
-    urls = segment_urls(token, instance["id"], getter=getter)
-    if not urls:
-        raise NotReady(
-            f"instance {instance['id']} has no segments yet "
-            f"(processing date {instance['processing_date']}). Not zero traffic."
-        )
-
+    # Apple's instances are a ROLLING WINDOW, not successive renderings of one
+    # report. Each DAILY instance covers the three days ending the day before
+    # its processing date, so consecutive instances overlap by two days and the
+    # span advances daily. Reading only the newest one therefore tolerates
+    # missing at most two nights: miss a third and those days fall out of the
+    # window, nothing will ever hand them back, and the series keeps a hole
+    # that is indistinguishable from days with no traffic. So read every
+    # instance Apple still holds, oldest first, and let a newer instance
+    # REPLACE an older one for any day the two share. Replace, not sum: the
+    # overlap is the same day observed twice, and summing would treble it.
     totals = {}
     anomalies = {"unknown_events": {}, "unknown_sources": {}}
     rows_read = 0
-    for url in urls:
-        columns, rows = parse_tsv(fetcher(url))
-        rows_read += len(rows)
-        part, part_anomalies = aggregate_sources(columns, rows)
-        for key, metrics in part.items():
-            bucket = totals.setdefault(key, {name: 0 for name in _METRIC_COLUMNS})
-            for name in _METRIC_COLUMNS:
-                bucket[name] += metrics[name]
-        for kind in anomalies:
-            for name, count in part_anomalies[kind].items():
-                anomalies[kind][name] = anomalies[kind].get(name, 0) + count
+    segments_read = 0
+    instances_read = 0
+    newest_read = None
+    for instance in sorted(instances, key=lambda i: i["processing_date"] or ""):
+        urls = segment_urls(token, instance["id"], getter=getter)
+        if not urls:
+            # An instance whose segments have not landed yet. Skipping it is
+            # only safe because we raise below when NONE of them produced any.
+            continue
+        # Segments WITHIN an instance are all read and summed, because that is
+        # where Apple puts corrections and late-arriving events.
+        instance_totals = {}
+        for url in urls:
+            columns, rows = parse_tsv(fetcher(url))
+            rows_read += len(rows)
+            part, part_anomalies = aggregate_sources(columns, rows)
+            for key, metrics in part.items():
+                bucket = instance_totals.setdefault(
+                    key, {name: 0 for name in _METRIC_COLUMNS})
+                for name in _METRIC_COLUMNS:
+                    bucket[name] += metrics[name]
+            for kind in anomalies:
+                for name, count in part_anomalies[kind].items():
+                    anomalies[kind][name] = anomalies[kind].get(name, 0) + count
+        segments_read += len(urls)
+        instances_read += 1
+        newest_read = instance
+        covered = {date for date, _source in instance_totals}
+        totals = {key: value for key, value in totals.items()
+                  if key[0] not in covered}
+        totals.update(instance_totals)
+
+    if not instances_read:
+        raise NotReady(
+            f"none of the {len(instances)} instance(s) of report {report_id} "
+            f"have segments yet (newest processing date "
+            f"{instances[0]['processing_date']}). Not zero traffic."
+        )
 
     meta = {
         "report_id": report_id,
         "report_name": config["ASC_REPORT_NAME"],
         "granularity": config["ASC_GRANULARITY"],
-        "instance_id": instance["id"],
-        "processing_date": instance["processing_date"],
+        "instance_id": newest_read["id"],
+        "processing_date": newest_read["processing_date"],
         "instances_available": len(instances),
-        "segments": len(urls),
+        "instances_read": instances_read,
+        "segments": segments_read,
         "rows_read": rows_read,
     }
     return totals, anomalies, meta
@@ -1156,6 +1198,11 @@ def render(split, meta=None, anomalies=None):
             lines.append(f"  {split['post']['day_count']} post-rename day(s) is "
                          f"not a trend. Daily impressions in the 28 days before "
                          f"the rename already ranged widely; wait for a full week.")
+        missing = split.get("post_missing_days") or []
+        if missing:
+            lines.append(f"  {len(missing)} day(s) inside the post-rename span are "
+                         f"MISSING from the series, not zero: {missing[0]} to "
+                         f"{missing[-1]}. The rate above is over the days we hold.")
         lines.append("")
 
     if split["boundary"]["day_count"]:

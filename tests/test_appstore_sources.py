@@ -605,3 +605,149 @@ class TestOngoingRequestCreation(unittest.TestCase):
         self.assertEqual(
             self.seen, f"/apps/{self.APP}/analyticsReportRequests?limit=200")
         self.assertNotIn("filter[app]", self.seen)
+
+
+# ── 9. Instances are a rolling window, not one report ────────────────────────
+
+class TestInstancesAreARollingWindow(unittest.TestCase):
+    """Apple's DAILY instances each cover the three days ending the day before
+    their processing date, so they overlap by two days and advance daily.
+
+    Reading only the newest one (what `pull` did until 2026-09-17) survives at
+    most two missed nights. The third missed night drops days out of the window
+    permanently, and the hole they leave in the series is indistinguishable
+    from days on which nobody looked at the listing. That is how
+    2026-09-05..09-09 went missing while the ONGOING request was healthy.
+    """
+
+    SEGMENTS = {
+        # processing date -> the three days it carries
+        "2026-09-08": {"i-08": ["2026-09-05", "2026-09-06", "2026-09-07"]},
+        "2026-09-09": {"i-09": ["2026-09-06", "2026-09-07", "2026-09-08"]},
+        "2026-09-10": {"i-10": ["2026-09-07", "2026-09-08", "2026-09-09"]},
+    }
+
+    def _api(self):
+        instances = [
+            {"id": f"i-{pd[-2:]}",
+             "attributes": {"granularity": "DAILY", "processingDate": pd}}
+            for pd in sorted(self.SEGMENTS, reverse=True)
+        ]
+
+        def getter(url, token):
+            if "/reports" in url:
+                return {"data": [{
+                    "id": "r14-abc",
+                    "attributes": {"name": asrc.DEFAULT_REPORT_NAME,
+                                   "category": "APP_STORE_ENGAGEMENT"},
+                }], "links": {}}
+            if "/instances" in url:
+                return {"data": instances, "links": {}}
+            if "/segments" in url:
+                instance_id = url.split("/")[2]
+                return {"data": [{"attributes": {"url": f"seg://{instance_id}"}}],
+                        "links": {}}
+            raise AssertionError(f"unexpected URL {url}")
+
+        def fetcher(url, **kwargs):
+            instance_id = url.split("://")[1]
+            days = next(days for by_id in self.SEGMENTS.values()
+                        for iid, days in by_id.items() if iid == instance_id)
+            # 10 impressions on every day the instance covers.
+            return report(*[tsv_row(day, "Impression", asrc.SOURCE_SEARCH, 10)
+                            for day in days])
+
+        return getter, fetcher
+
+    def _pull(self):
+        getter, fetcher = self._api()
+        config = {"ASC_REQUEST_ID": "req",
+                  "ASC_REPORT_NAME": asrc.DEFAULT_REPORT_NAME,
+                  "ASC_GRANULARITY": "DAILY"}
+        return asrc.pull(config, token="tok", getter=getter, fetcher=fetcher)
+
+    def test_days_only_an_older_instance_carries_are_recovered(self):
+        """The decisive one. 2026-09-05 and 09-06 exist ONLY in the oldest
+        instance. Reading the newest alone loses them with no error."""
+        totals, _anomalies, _meta = self._pull()
+        days = {date for date, _source in totals}
+        self.assertEqual(
+            days,
+            {"2026-09-05", "2026-09-06", "2026-09-07",
+             "2026-09-08", "2026-09-09"},
+        )
+
+    def test_an_overlapping_day_is_replaced_not_summed(self):
+        """2026-09-07 appears in all three instances. Summed it reads 30
+        impressions on a day that had 10, which would be worse than the hole
+        it was meant to fix."""
+        totals, _anomalies, _meta = self._pull()
+        self.assertEqual(totals[("2026-09-07", asrc.SOURCE_SEARCH)]["impressions"], 10)
+        self.assertEqual(totals[("2026-09-06", asrc.SOURCE_SEARCH)]["impressions"], 10)
+
+    def test_the_newest_rendering_of_a_shared_day_wins(self):
+        """Apple restates recent days upward as late events land, so for a day
+        two instances both carry, the later instance is the truer one."""
+        self.SEGMENTS = {
+            "2026-09-08": {"i-08": ["2026-09-07"]},
+            "2026-09-09": {"i-09": ["2026-09-07"]},
+        }
+
+        def fetcher(url, **kwargs):
+            instance_id = url.split("://")[1]
+            counts = 10 if instance_id == "i-08" else 17
+            return report(tsv_row("2026-09-07", "Impression",
+                                  asrc.SOURCE_SEARCH, counts))
+
+        getter, _ = self._api()
+        totals, _anomalies, _meta = asrc.pull(
+            {"ASC_REQUEST_ID": "req",
+             "ASC_REPORT_NAME": asrc.DEFAULT_REPORT_NAME,
+             "ASC_GRANULARITY": "DAILY"},
+            token="tok", getter=getter, fetcher=fetcher)
+        self.assertEqual(
+            totals[("2026-09-07", asrc.SOURCE_SEARCH)]["impressions"], 17)
+
+    def test_every_instance_is_read_not_just_the_newest(self):
+        _totals, _anomalies, meta = self._pull()
+        self.assertEqual(meta["instances_read"], 3)
+        self.assertEqual(meta["instances_available"], 3)
+
+    def test_meta_still_names_the_newest_instance_read(self):
+        _totals, _anomalies, meta = self._pull()
+        self.assertEqual(meta["processing_date"], "2026-09-10")
+
+
+class TestAHoleIsNotAQuietDay(unittest.TestCase):
+    """A day the series does not hold and a day nobody looked at the listing
+    render identically once the rows are summed. The post-rename span is the
+    one the DEC-247 rename is judged on, so a hole in it gets named."""
+
+    def _split(self, dates):
+        records = [record(d, asrc.SOURCE_SEARCH, impressions=10,
+                          pulled_at="2026-09-17T04:00:00Z") for d in dates]
+        return asrc.split_on_rename(records, rename_date="2026-08-19",
+                                    pulled_at="2026-09-17T04:00:00Z")
+
+    def test_a_gap_inside_the_post_window_is_reported(self):
+        split = self._split(["2026-08-20", "2026-09-05", "2026-09-06"])
+        self.assertIn("2026-08-21", split["post_missing_days"])
+        self.assertIn("2026-09-04", split["post_missing_days"])
+        self.assertEqual(len(split["post_missing_days"]), 15 + 8)
+
+    def test_a_contiguous_window_reports_no_gap(self):
+        split = self._split(["2026-09-10", "2026-09-11", "2026-09-12",
+                             "2026-09-13", "2026-09-14"])
+        self.assertEqual(split["post_missing_days"], [])
+
+    def test_days_before_we_started_observing_are_not_called_missing(self):
+        """Counted from our first post-rename day, so a window we have simply
+        not reached yet does not read as data loss."""
+        split = self._split(["2026-09-13", "2026-09-14"])
+        self.assertEqual(split["post_missing_days"], [])
+
+    def test_the_gap_is_named_in_the_rendered_report(self):
+        split = self._split(["2026-08-20", "2026-09-05", "2026-09-06"])
+        text = asrc.render(split)
+        self.assertIn("MISSING from the series, not zero", text)
+        self.assertIn("2026-08-21", text)
