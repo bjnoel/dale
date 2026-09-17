@@ -519,7 +519,12 @@ class TestDiffBuckets(unittest.TestCase):
         # Collapsing this into "newly entered" is precisely the DEC-255 error.
         out = self._diff([play_row(rank=None)], [play_row(rank=1)])
         self.assertFalse(out["entered"][0]["absence_proven"])
-        self.assertIn("never proven", rh.describe(out["entered"][0]))
+        line = rh.describe(out["entered"][0])
+        # The wording changed on 2026-09-17 ("absence not proven" described the
+        # instrument, not the result) but the claim it must not make did not:
+        # an unproven absence may never render as a flat "from absent".
+        self.assertIn("results we could see", line)
+        self.assertNotIn("from absent", line)
 
     def test_the_two_entry_kinds_do_not_render_alike(self):
         proven = self._diff(

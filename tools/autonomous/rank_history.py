@@ -607,8 +607,11 @@ def _note(item):
     if kind == VACATED:
         if names:
             # Named, not blamed: a rival we do not track yet must still be
-            # visible to whoever reads this.
-            return f"  vacated, no tracked rival took it (arrivals: {', '.join(names)})"
+            # visible to whoever reads this. The names are store identifiers
+            # because that is all the ranking API returns for a newcomer.
+            return (f"  vacated, no rival we track took the slot"
+                    f" (new arrivals, not known competitors:"
+                    f" {', '.join(names)})")
         return "  vacated, nobody took the slot"
     return ""
 
@@ -617,12 +620,16 @@ def describe(item):
     """One human-readable line for a movement. Shared by the CLI and the digest."""
     where = f"{item['country']} {item['term']}"
     if item["curr_rank"] is None:
-        proven = "absent" if item["absence_proven"] else "outside a capped window"
-        tail = "" if item["absence_proven"] else ", absence not proven"
-        return f"{where}: {item['prev_rank']} -> {proven}{tail}{_note(item)}"
+        # "outside a capped window, absence not proven" described the
+        # instrument, not the result (Benedict, 2026-09-17). The store returned
+        # a truncated result set, so all we know is that we are past the end of
+        # it. Say that, in the order a reader needs it.
+        proven = ("absent" if item["absence_proven"]
+                  else "no longer in the results we can see")
+        return f"{where}: {item['prev_rank']} -> {proven}{_note(item)}"
     if item["prev_rank"] is None:
         prior = ("absent" if item["absence_proven"]
-                 else "previously outside a capped window, absence was never proven")
+                 else "not in the results we could see")
         return f"{where}: entered at {item['curr_rank']} from {prior}"
     direction = "down" if item["delta"] > 0 else "up"
     return (f"{where}: {item['prev_rank']} -> {item['curr_rank']} "

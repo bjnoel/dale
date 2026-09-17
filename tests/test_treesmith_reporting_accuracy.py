@@ -98,9 +98,18 @@ class TestPeopleNotDeviceIds(unittest.TestCase):
     def test_render_shows_the_gap_between_ids_and_people(self):
         out = _render(identity={"ids": 348, "persons": 297, "phantom": 51,
                                 "inflation_pct": 17})
-        self.assertIn("297 people across 348 ids", out)
+        self.assertIn("297 people, on 348 device ids", out)
         self.assertIn("51 phantom", out)
         self.assertIn("+17%", out)
+
+    def test_the_lifetime_people_count_says_it_is_lifetime(self):
+        """It sits directly under "Active people (7d / 28d)". Unlabelled, a
+        lifetime 297 against an active 35 reads as a contradiction rather than
+        as a different question (Benedict, 2026-09-17)."""
+        out = _render(identity={"ids": 348, "persons": 297, "phantom": 51,
+                                "inflation_pct": 17})
+        self.assertIn("People ever seen (all time)", out)
+        self.assertIn("does not compare with the 7d/28d active counts", out)
 
     def test_no_events_says_so_rather_than_reporting_zero_drift(self):
         """An empty project is not a project with perfectly clean identities."""

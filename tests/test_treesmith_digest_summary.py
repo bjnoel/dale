@@ -147,8 +147,19 @@ class TestNotesAreCollectedNotDeleted(unittest.TestCase):
         self.assertIn("activation unknown not zero", html)
 
     def test_no_notes_means_no_footer(self):
-        _, html = ta.render(base_metrics())
+        # base_metrics() now carries a plants block, and the plants line has a
+        # standing caveat of its own, so the no-notes case has to be built by
+        # taking that section away rather than by rendering the default.
+        m = base_metrics()
+        m["plants"] = {"ok": False, "error": "not under test"}
+        _, html = ta.render(m)
         self.assertNotIn("<details", html)
+
+    def test_the_footer_count_is_singular_for_one_caveat(self):
+        m = base_metrics()
+        _, html = ta.render(m)
+        self.assertIn("1 permanent caveat,", html)
+        self.assertNotIn("1 permanent caveats", html)
 
 
 if __name__ == "__main__":

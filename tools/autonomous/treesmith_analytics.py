@@ -213,6 +213,14 @@ PRO_SOURCES = ("paid", "comp", "none")
 # wrong.
 COVERAGE_PROBE = "pro_source"
 
+# The month `purchase_succeeded` began being sent. RevenueCat holds receipts
+# from before it, and our telemetry structurally cannot. Any purchase older
+# than this is a PERMANENTLY explained gap between the two, not a dropped
+# event, and must never be alerted on: it fired every week as a red "trust
+# these numbers less" item that no amount of work could ever clear
+# (Benedict, 2026-09-17).
+PURCHASE_EVENT_START_MONTH = "2026-07"
+
 # Events the app only lets a Pro user reach. Verified against the Flutter
 # source 2026-09-03: `reminder_section.dart` renders "Pro feature" instead of
 # the toggle, and `plant_list_screen._startSelection` shows the paywall.
@@ -535,6 +543,10 @@ def m_plants(host, key):
     observed = scalar(hogql(host, key, """
         SELECT count() FROM events WHERE event = 'plant_added'
     """))
+    observed_7d = scalar(hogql(host, key, """
+        SELECT count() FROM events
+        WHERE event = 'plant_added' AND timestamp >= now() - INTERVAL 7 DAY
+    """))
     # Plants that arrived by file import. Counted alongside form adds as
     # "explained", never added to the high-water total: high_water already
     # includes them, this only says how they got there.
@@ -548,6 +560,7 @@ def m_plants(host, key):
         "owners": owners,
         "plants": plants,
         "observed_adds": observed,
+        "observed_adds_7d": observed_7d,
         "imported_adds": imported,
         "explained": explained,
         "unobserved": unobserved,
@@ -994,12 +1007,25 @@ def m_top_screens(host, key):
 
 
 def m_backup(host, key):
-    """Backup completed vs failed (last 7 days), failures grouped by reason."""
-    completed = scalar(hogql(host, key, """
-        SELECT count() FROM events
-        WHERE event = 'backup_completed'
-          AND timestamp >= now() - INTERVAL 7 DAY
-    """))
+    """Backup completed vs failed, failures grouped by reason.
+
+    All time as well as 7 days, and with a people count beside it. Cloud
+    backup is the only recurring product we sell, so "how many backups ran"
+    is not the question: "how many people it ran for" is. Those two numbers
+    have been an order of magnitude apart since the feature shipped, and a
+    backup count alone reads as adoption when it is one person's phone
+    backing up nightly.
+    """
+    rows = hogql(host, key, """
+        SELECT count() AS all_time,
+               countIf(timestamp >= now() - INTERVAL 7 DAY) AS n_7d,
+               count(DISTINCT person_id) AS people,
+               count(DISTINCT if(timestamp >= now() - INTERVAL 7 DAY,
+                                 person_id, NULL)) AS people_7d
+        FROM events WHERE event = 'backup_completed'
+    """)
+    all_time, completed, people, people_7d = (
+        rows[0] if rows else (0, 0, 0, 0))
     failed_rows = hogql(host, key, """
         SELECT coalesce(properties.reason, 'unknown') AS reason, count()
         FROM events
@@ -1007,7 +1033,9 @@ def m_backup(host, key):
           AND timestamp >= now() - INTERVAL 7 DAY
         GROUP BY reason ORDER BY count() DESC
     """)
-    return {"completed": completed, "failed": failed_rows}
+    return {"completed": completed, "failed": failed_rows,
+            "completed_all_time": all_time,
+            "people": people, "people_7d": people_7d}
 
 
 # ── New-event metrics (2026-08-31 instrumentation) ──────────────────────────
@@ -1648,6 +1676,42 @@ SEGMENT_VALUE_LIMIT = 4  # values per super property. A bucket property with a
                          # not where a distribution gets read.
 FEATURE_LIST_LIMIT = 5   # breakdown rows per feature event.
 
+# The super properties are named for the code that sends them. The email is
+# read by a person, so it gets the English (Benedict, 2026-09-17: the raw
+# `plant_count_bucket  0 11 (44%), 2_5 5 (20%)` form was unparseable).
+SEGMENT_LABELS = {
+    "pro_source": "How they got Pro",
+    "cloud_backup_source": "How they got cloud backup",
+    "is_sandbox": "Sandbox / TestFlight install",
+    "plant_count_bucket": "Plants per person",
+    "days_since_install_bucket": "Days since install",
+}
+
+# Bucket values are wire format: `2_5` is "2 to 5", `100_plus` is "100 or
+# more". Rendered, never renamed at the source: the app sends these strings
+# and changing them there would break every historical comparison.
+_BUCKET_LABELS = {
+    "none": "not at all",
+    "(null)": "unknown",
+    "(absent)": "not reported",
+    "true": "yes",
+    "false": "no",
+}
+
+
+def _bucket_label(value):
+    """Turn a wire-format bucket value into something readable."""
+    v = str(value)
+    if v in _BUCKET_LABELS:
+        return _BUCKET_LABELS[v]
+    if v.endswith("_plus"):
+        return v[:-len("_plus")] + "+"
+    if "_" in v:
+        lo, _, hi = v.partition("_")
+        if lo.isdigit() and hi.isdigit():
+            return f"{lo}-{hi}"
+    return v
+
 
 def _hidden_while_awaiting(names, ever_seen):
     """Should a section be omitted entirely rather than rendered as zeros?
@@ -1705,12 +1769,21 @@ def _delta_str(delta):
 
 
 def _headline(metrics):
-    """The four figures the week turns on, as (label, value, sub, colour).
+    """The figures the week turns on, as (label, value, sub, colour).
 
     Deliberately short. A summary that lists everything is the digest again,
     and the complaint this answers is that nothing in it was ranked. Each row
     reads from the same metric the section below prints, so the two cannot
     disagree; a metric that failed drops its row rather than showing a zero.
+
+    Three of these are the things users DID: plants added, activities logged,
+    backups run. Benedict asked for them at the top (2026-09-17) and he was
+    right to: every other figure here is an audience or a money number, and a
+    week could read fine on both while nobody actually used the app.
+
+    Each of the three is 7d AND all time, in the format the purchase row
+    already uses. These are low-volume events; seven days alone cannot tell a
+    quiet week from a feature nobody has ever touched.
     """
     rows = []
 
@@ -1731,6 +1804,38 @@ def _headline(metrics):
         a, b, lost, pct = fn["data"]["biggest_drop"]
         rows.append(("Biggest funnel drop", f"{pct}%",
                      f"{a} -> {b}, lost {lost}", RED))
+
+    # What users actually did. Counts of the act, not of the people: "plants
+    # added" is a question about plants. The people figure is in the section
+    # below for the two where it changes the reading.
+    pl = metrics.get("plants") or {}
+    if pl.get("ok"):
+        d = pl["data"]
+        wk, all_time = d.get("observed_adds_7d", 0), d.get("observed_adds", 0)
+        rows.append(("Plants added (7d / all time)", f"{wk} / {all_time}",
+                     "typed into the plant form; imports counted separately",
+                     GREEN if wk else GREY))
+
+    fu = metrics.get("feature_usage") or {}
+    if fu.get("ok"):
+        a = fu["data"]["by_event"].get("activity_logged") or {}
+        wk, all_time = a.get("n_7d", 0), a.get("all_time", 0)
+        rows.append(("Activities logged (7d / all time)",
+                     f"{wk} / {all_time}",
+                     f"{a.get('people_7d', 0)} people this week",
+                     GREEN if wk else GREY))
+
+    bk = metrics.get("backup") or {}
+    if bk.get("ok"):
+        d = bk["data"]
+        wk, all_time = d.get("completed", 0), d.get("completed_all_time", 0)
+        people = d.get("people", 0)
+        # People, not backups, and said on the row itself. One phone backing
+        # up nightly produces a healthy-looking count on its own.
+        rows.append(("Cloud backups (7d / all time)", f"{wk} / {all_time}",
+                     f"across {people} "
+                     f"{'person' if people == 1 else 'people'} all time",
+                     GREEN if wk else GREY))
 
     # Weekly from our telemetry, all-time from the receipt. Shown together so
     # a zero week cannot read as no revenue ever, which is the whole reason
@@ -1913,14 +2018,21 @@ def render(metrics):
     if idm["ok"]:
         d = idm["data"]
         if d["persons"]:
-            kv("  Counting people, not device ids",
-               f"{d['persons']} people across {d['ids']} ids", GREY)
-            note(f"Device ids run +{d['inflation_pct']}% above people "
-                 f"({d['phantom']} phantom this week). Never divide anything "
-                 f"by an id count; RevenueCat's install counts have the same "
-                 f"fault and read several times too high (DEC-320).")
+            # Labelled ALL TIME on the row. This sat directly under the 7d/28d
+            # active line with no window on it, so a lifetime population of 432
+            # read as a contradiction of "35 active people" rather than as a
+            # different question (Benedict, 2026-09-17).
+            kv("People ever seen (all time)",
+               f"{d['persons']} people, on {d['ids']} device ids", GREY)
+            note(f"\"People ever seen\" is the lifetime total and does not "
+                 f"compare with the 7d/28d active counts above it. Device ids "
+                 f"run +{d['inflation_pct']}% above people ({d['phantom']} "
+                 f"phantom ids) because one person reinstalling or restoring "
+                 f"gets a fresh id each time. Never divide anything by an id "
+                 f"count; RevenueCat's install counts have the same fault and "
+                 f"read several times too high (DEC-320).")
         else:
-            kv("  Counting people, not device ids", "no events recorded", GREY)
+            kv("People ever seen (all time)", "no events recorded", GREY)
     else:
         err("Identity", idm["error"])
 
@@ -1943,11 +2055,29 @@ def render(metrics):
             # The splits below describe the covered slice only. Saying so
             # matters most when coverage is partial, which is precisely the
             # period when the old and new builds are both in the field.
-            kv("  Segment coverage",
-               f"{pct}% of this week's {cov['events_7d']:,} events and "
-               f"{people_pct}% of its {cov['people_7d']} people carry the "
-               f"super properties; the splits below describe that slice, not "
-               f"all traffic", GREY)
+            # One short sentence with the number that matters, and the
+            # caveat moved into the footer. The old single line carried two
+            # percentages, two denominators and a semicolon clause, and was
+            # the specific line Benedict called unparseable (2026-09-17).
+            if people_pct is None:
+                # Older coverage payloads carry the event percentage only.
+                # Say what we have rather than computing a person count we
+                # cannot support.
+                kv("  Splits below cover",
+                   f"{pct}% of this week's {cov['events_7d']:,} events, "
+                   f"not all traffic", GREY)
+            else:
+                seen = round(cov['people_7d'] * people_pct / 100)
+                kv("  Splits below cover",
+                   f"{seen} of {cov['people_7d']} active people "
+                   f"({people_pct}%)", GREY)
+            note(f"The segment splits in Growth describe only the "
+                 f"{pct}% of this week's {cov['events_7d']:,} events"
+                 + (f" ({people_pct}% of its {cov['people_7d']} people)"
+                    if people_pct is not None else "")
+                 + f" whose app is new enough to send the super properties. "
+                   f"They are not percentages of all users, and the counts "
+                   f"beside them are floors.")
         spread = cov.get("spread")
         if spread:
             # One loop registers all of them, so they cannot legitimately
@@ -1978,12 +2108,12 @@ def render(metrics):
             if not split["rows"]:
                 continue
             shown = ", ".join(
-                f"{r['value']} {r['people']} ({r['pct']}%)"
+                f"{_bucket_label(r['value'])} {r['people']} ({r['pct']}%)"
                 for r in split["rows"][:SEGMENT_VALUE_LIMIT])
             more = len(split["rows"]) - SEGMENT_VALUE_LIMIT
             if more > 0:
                 shown += f", +{more} more"
-            kv(f"  {prop}", shown)
+            kv(f"  {SEGMENT_LABELS.get(prop, prop)}", shown)
     elif sg and not sg["ok"]:
         err("Segments", sg["error"])
 
@@ -1993,17 +2123,27 @@ def render(metrics):
     ei = metrics.get("entitlement")
     if ei and ei["ok"] and ei["data"]["measurable"]:
         d = ei["data"]
-        kv("  Pro access",
+        kv("  Pro access (seen this week)",
            f"{d['paid']} paid, {d['comped']} comped",
            GREEN if d["paid"] else GREY)
         if d["comped"]:
-            # Not a problem, an answer. Before pro_source these people were
-            # filed among free users and could not be counted at all.
-            kv("  ",
-               f"comped users pass every Pro gate and pay nothing, so they "
-               f"belong in neither the paid nor the paywall-eligible "
-               f"population. Excluded from both by reading pro_source rather "
-               f"than a boolean.", GREY)
+            # Was an orphan continuation line with a blank label, which
+            # rendered as a paragraph floating under the figure. It is a
+            # standing explanation, so it belongs in the footer with the
+            # others (Benedict, 2026-09-17).
+            #
+            # And it is a FLOOR, said plainly. Comp is granted server-side and
+            # the app can only read it for a signed-in user, so the true
+            # comped population cannot be counted from telemetry at all.
+            note("\"Pro access\" counts people SEEN THIS WEEK whose app sent "
+                 "the property, not the whole Pro population. The comped "
+                 "figure in particular is a floor and a low one: a comp grant "
+                 "lives in Supabase and the app can only read it once the "
+                 "user signs in, which few do. Comped users pass every Pro "
+                 "gate and pay nothing, so they belong in neither the paid "
+                 "nor the paywall-eligible population, and reading pro_source "
+                 "rather than a boolean is what keeps them out of both. For "
+                 "the real comp count, query Supabase, not this email.")
         for c in d["contradictions"]:
             alert(f"{c['event']} with pro_source=none",
                   f"{c['n']} events from {c['people']} people reached a "
@@ -2134,6 +2274,14 @@ def render(metrics):
             kv("Data through", f"{sp['last_complete_date']} "
                                f"(the last {SOURCES_TAIL_NOTE} excluded as "
                                f"incomplete, so this is never a drop)", GREY)
+            note("An App Store \"impression\" is our listing appearing in "
+                 "front of someone. Apple says whether it came from a SEARCH "
+                 "(they typed something) or from BROWSE (they were looking at "
+                 "a chart or a category page). \"Found by searching\" is the "
+                 "share that came from search. High is normal for a small "
+                 "app: nobody browses their way to us. It matters because "
+                 "search share is the number the app rename was meant to "
+                 "move, so it is the scoreboard for that change.")
             # The line above is arithmetic: pull date minus Apple's tail. It is
             # what Apple SHOULD have given us, not what we hold. They agree on a
             # healthy week and diverge the moment the report stops advancing, so
@@ -2155,7 +2303,7 @@ def render(metrics):
                    f"result.", GREY)
                 w = sp["pre"]
                 if w["day_count"]:
-                    kv("Search share of impressions",
+                    kv("Found by searching, not browsing",
                        f"{_pct_or_na(w['search_share'])} across "
                        f"{w['day_count']} days "
                        f"({w['days'][0]} to {w['days'][-1]})")
@@ -2170,11 +2318,11 @@ def render(metrics):
                     # Green when search grew: search share is the metric the
                     # rename was supposed to move.
                     color = GREEN if delta >= 0 else RED
-                    kv("Search share of impressions",
+                    kv("Found by searching, not browsing",
                        f"{pre_share}% -> {post_share}% ({delta:+.1f} points)",
                        color)
                 else:
-                    kv("Search share of impressions",
+                    kv("Found by searching, not browsing",
                        f"{_pct_or_na(pre_share)} -> {_pct_or_na(post_share)}")
                 # Rates, never the two totals side by side. The windows are
                 # never the same length -- on the first readable day it is 108
@@ -2237,8 +2385,17 @@ def render(metrics):
     pl = metrics["plants"]
     if pl["ok"]:
         d = pl["data"]
-        kv("Plants held (high water)",
-           f"{d['plants']} across {d['owners']} people")
+        # "high water" was jargon for the method, not a description of the
+        # number (Benedict, 2026-09-17). The number is a floor on how many
+        # plants people currently hold, so the label says that.
+        kv("Plants in people's libraries",
+           f"at least {d['plants']} across {d['owners']} people")
+        note("\"Plants in people's libraries\" is a floor, not a count. The "
+             "app never reports a library size directly, so this takes the "
+             "largest plant count each person's phone has ever mentioned and "
+             "adds those up. Someone who deletes plants still counts at their "
+             "peak, and someone who has never triggered an event carrying a "
+             "count is missing entirely.")
         if d.get("imported_adds"):
             kv("  Arrived by import",
                f"{d['imported_adds']} plants (data_imported.plants_imported), "
@@ -2414,11 +2571,27 @@ def render(metrics):
         pu_chk = metrics["purchases"]
         if pu_chk["ok"]:
             ph_n = sum(b["n_all"] for b in pu_chk["data"]["production"])
-            if ph_n != n:
+            # Purchases older than the event itself are an explained gap, not
+            # a dropped event. Subtract them before judging the remainder.
+            pre = sum(v["n"] for k, v in (d.get("by_month") or {}).items()
+                      if k < PURCHASE_EVENT_START_MONTH)
+            unexplained = n - ph_n - pre
+            if unexplained > 0:
                 msg = (f"RevenueCat has {n} paid purchases, PostHog "
-                       f"purchase_succeeded has {ph_n}. The receipt wins; "
-                       f"our own telemetry is missing {n - ph_n}.")
+                       f"purchase_succeeded has {ph_n}. Of the "
+                       f"{n - ph_n} missing, {pre} predate the event and are "
+                       f"expected; {unexplained} are not explained. The "
+                       f"receipt wins.")
                 alert("purchase counts disagree", msg, TRUST)
+            elif n != ph_n:
+                # Reported, but as arithmetic rather than as a fault. DEC-249
+                # is about absence not looking clean; it is not a licence to
+                # paint a fully explained difference red forever.
+                kv("  RevenueCat vs our telemetry",
+                   f"{n} receipts vs {ph_n} events. The {pre} missing all "
+                   f"predate {PURCHASE_EVENT_START_MONTH}, when "
+                   f"purchase_succeeded began sending. Fully explained, "
+                   f"nothing to fix.", GREY)
     else:
         err("RevenueCat", rcm["error"])
 
@@ -2626,16 +2799,35 @@ def render(metrics):
         err("Backup", bk["error"])
 
     # ── Notes footer ────────────────────────────────────────────────────
+    # What a "disagree" is, added once, only when one has fired. Several of
+    # these run every week and the word arrives with no explanation of what
+    # kind of thing it is (Benedict, 2026-09-17).
+    if any(tier == TRUST and "disagree" in label
+           for tier, _sec, label, _detail in alerts):
+        notes.append(("Cross-checks", (
+            "A \"disagree\" is not a business problem, it is two instruments "
+            "measuring the same thing and returning different answers. We "
+            "check the store receipt against our own app telemetry, and the "
+            "app's paywall events against its purchase events, on purpose: "
+            "when they match, the number is trustworthy; when they do not, "
+            "one of them is dropping events and any figure built on it is "
+            "suspect. To resolve one, find which instrument is missing the "
+            "event and fix that instrument. The receipt always wins on "
+            "money.")))
+
     # Collapsed in HTML, last in text. Available, never in the way.
     if notes:
         line("")
-        line("How to read this (permanent caveats, not this week's news)")
-        line("-" * 58)
+        heading = ("How to read this (permanent caveats, not this week's "
+                   "news)")
+        line(heading)
+        line("-" * len(heading))
         for where, text_ in notes:
             line(f"  [{where}] {text_}")
         html('<details style="margin-top:20px;">'
              '<summary style="cursor:pointer;color:#888;font-size:12px;">'
-             f'How to read this ({len(notes)} permanent caveats, not this '
+             f'How to read this ({len(notes)} permanent '
+             f'{"caveat" if len(notes) == 1 else "caveats"}, not this '
              'week&#39;s news)</summary>'
              '<div style="margin-top:8px;">')
         for where, text_ in notes:

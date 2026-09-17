@@ -237,11 +237,22 @@ class RenderTests(unittest.TestCase):
         self.assertIn("Excluded: sandbox", text)
         self.assertIn("not counted as revenue", text)
 
-    def test_warns_when_posthog_has_fewer_sales_than_revenuecat(self):
-        text, html = ta.render(digest_metrics(LIVE, 2))
-        self.assertIn("RevenueCat has 3 paid purchases", text)
-        self.assertIn("telemetry is missing 1", text)
-        self.assertIn("telemetry is missing 1", html)
+    def test_a_gap_explained_by_the_event_start_date_is_not_an_alert(self):
+        """LIVE's missing sale is the 2026-06 one, and `purchase_succeeded`
+        did not exist then. That gap can never close, so painting it red every
+        week asked Benedict to fix something unfixable (2026-09-17)."""
+        text, _ = ta.render(digest_metrics(LIVE, 2))
+        self.assertIn("RevenueCat vs our telemetry", text)
+        self.assertIn("Fully explained, nothing to fix", text)
+        self.assertNotIn("!! purchase counts disagree", text)
+
+    def test_a_gap_the_event_start_date_cannot_explain_still_alerts(self):
+        """The check must keep working. Two missing against one pre-event
+        month leaves one genuinely dropped event, and that is a real fault."""
+        text, html = ta.render(digest_metrics(LIVE, 1))
+        self.assertIn("purchase counts disagree", text)
+        self.assertIn("1 are not explained", text)
+        self.assertIn("1 are not explained", html)
 
     def test_no_warning_when_the_two_sources_agree(self):
         text, _ = ta.render(digest_metrics(LIVE, 3))

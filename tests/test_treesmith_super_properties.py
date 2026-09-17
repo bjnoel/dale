@@ -240,7 +240,7 @@ class RenderTest(unittest.TestCase):
                          "by_property": {p: {"events": 0, "pct": 0}
                                          for p in ta.SUPER_PROPERTIES}},
             "splits": {}})
-        self.assertNotIn(ta.COVERAGE_PROBE, text)
+        self.assertNotIn(ta.SEGMENT_LABELS[ta.COVERAGE_PROBE], text)
 
     def test_splits_render_once_the_properties_arrive(self):
         text, _ = self._render({
@@ -251,8 +251,28 @@ class RenderTest(unittest.TestCase):
             "splits": {ta.COVERAGE_PROBE: {"people": 40, "rows": [
                 {"value": "none", "people": 37, "events": 900, "pct": 93},
                 {"value": "paid", "people": 3, "events": 100, "pct": 8}]}}})
-        self.assertIn(ta.COVERAGE_PROBE, text)
+        self.assertIn(ta.SEGMENT_LABELS[ta.COVERAGE_PROBE], text)
         self.assertIn("93%", text)
+
+    def test_bucket_values_are_rendered_in_english_not_wire_format(self):
+        """`plant_count_bucket  0 11 (44%), 2_5 5 (20%), 100_plus 2 (8%)` was
+        the line Benedict could not parse (2026-09-17). The app keeps sending
+        the wire values; only the email changes."""
+        text, _ = self._render({
+            "coverage": {"events_7d": 1000, "people_7d": 40,
+                         "covered_people": 40, "any": True,
+                         "by_property": {p: {"events": 1000, "pct": 100}
+                                         for p in ta.SUPER_PROPERTIES}},
+            "splits": {"plant_count_bucket": {"people": 18, "rows": [
+                {"value": "0", "people": 11, "events": 100, "pct": 61},
+                {"value": "2_5", "people": 5, "events": 40, "pct": 28},
+                {"value": "100_plus", "people": 2, "events": 20, "pct": 11}]}}})
+        self.assertIn("Plants per person", text)
+        self.assertIn("2-5 5", text)
+        self.assertIn("100+ 2", text)
+        self.assertNotIn("2_5", text)
+        self.assertNotIn("100_plus", text)
+        self.assertNotIn("plant_count_bucket", text)
 
     def test_partial_coverage_is_stated_next_to_the_splits(self):
         """A split of 40% of traffic must not read as a split of all of it."""
