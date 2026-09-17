@@ -49,6 +49,9 @@ class PipelineHealthTest(unittest.TestCase):
         self.dashboard = self.root / "dashboard"
         (self.data / "scraper-health").mkdir(parents=True)
         self.dashboard.mkdir()
+        # Healthy by default so the pre-existing cases keep testing what they
+        # were written to test. The DAL-295 cases below override it.
+        self.write_dataset()
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -56,6 +59,14 @@ class PipelineHealthTest(unittest.TestCase):
     def write_health(self, records, day="2026-08-13"):
         p = self.data / "scraper-health" / f"{day}.jsonl"
         p.write_text("".join(json.dumps(r) + "\n" for r in records))
+
+    def write_dataset(self, generated="2026-08-13", last_day="2026-08-13"):
+        """The published CC BY artefact. Only the two dates matter here."""
+        p = self.dashboard / "shipping-reachability.json"
+        p.write_text(json.dumps({
+            "generated": generated,
+            "window": {"first_day": "2026-03-05", "last_day": last_day, "days": 160},
+        }))
 
     def write_index(self, age_hours):
         p = self.dashboard / "index.html"
@@ -210,6 +221,74 @@ class PipelineHealthTest(unittest.TestCase):
             "2026-08-13", pipeline=h)
         self.assertIn("treestock healthy", html)
         self.assertGreater(html.index("treestock healthy"), html.index("Waiting on you"))
+
+    # --- DAL-295: is the published CC BY dataset as fresh as it claims? -----
+    # build_shipping_reachability.py is wired non-fatal into the nightly, so a
+    # dead builder leaves the previous page and JSON in place, still served and
+    # still cited under CC BY, with nothing raised anywhere.
+    #
+    # Two lags, and the second is the one no reader can see: if the builder runs
+    # happily over frozen snapshots, `generated` advances every night while the
+    # stock behind it does not, so the page reads as rebuilt today and is not.
+
+    def healthy_run(self):
+        self.write_health([health_record("n1")])
+        self.write_index(age_hours=21)
+
+    def test_a_dead_builder_is_reported(self):
+        self.healthy_run()
+        self.write_dataset(generated="2026-08-05", last_day="2026-08-05")
+        h = self.check()
+        self.assertFalse(h["ok"])
+        joined = " ".join(h["problems"])
+        self.assertIn("2026-08-05", joined)
+        self.assertIn("8 days ago", joined)
+
+    def test_a_build_over_frozen_inputs_is_reported(self):
+        """The mode the page itself cannot show: fresh build date, stale data."""
+        self.healthy_run()
+        self.write_dataset(generated="2026-08-13", last_day="2026-08-06")
+        h = self.check()
+        self.assertFalse(h["ok"])
+        joined = " ".join(h["problems"])
+        self.assertIn("frozen inputs", joined)
+        self.assertIn("7 days earlier", joined)
+
+    def test_one_missed_night_is_not_an_alarm(self):
+        """DEC-323: a threshold at the noise floor is one nobody reads. A single
+        missed build is real and survivable, so 2 days is the floor."""
+        self.healthy_run()
+        self.write_dataset(generated="2026-08-11", last_day="2026-08-11")
+        h = self.check()
+        self.assertTrue(h["ok"], h["problems"])
+
+    def test_a_missing_dataset_is_reported_not_skipped(self):
+        """An absent file and a fresh file must not look the same (DEC-339)."""
+        self.healthy_run()
+        (self.dashboard / "shipping-reachability.json").unlink()
+        h = self.check()
+        self.assertFalse(h["ok"])
+        self.assertIn("unreadable", " ".join(h["problems"]))
+
+    def test_a_stale_dataset_is_a_problem_not_a_subject_line(self):
+        """The site can be publishing perfectly with this one builder dead.
+        That is worth reporting and is not the business being off the air."""
+        self.healthy_run()
+        self.write_dataset(generated="2026-08-01", last_day="2026-08-01")
+        h = self.check()
+        self.assertEqual(h["critical"], [])
+        self.assertIsNone(h["headline"])
+
+    def test_the_healthy_line_names_the_date_it_checked(self):
+        """A check that only speaks when broken cannot be told from one that
+        has stopped running."""
+        self.healthy_run()
+        h = self.check()
+        self.assertTrue(h["ok"], h["problems"])
+        self.assertIn("dataset built 2026-08-13", digest._pipeline_html(h))
+        self.assertIn("dataset built 2026-08-13", "\n".join(digest._pipeline_text(h)))
+
+
 
 
 if __name__ == "__main__":

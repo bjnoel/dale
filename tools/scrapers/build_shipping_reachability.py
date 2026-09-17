@@ -489,6 +489,10 @@ def render_method(result: dict) -> str:
     some nurseries, which is a different purchase from a grafted tree.</li>
     <li><strong>This is the nurseries we track, not every nursery in Australia.</strong> A species absent here
     may be available from a small grower, a club sale or a private seller.</li>
+    <li><strong>How fresh this copy is.</strong> This page was built on {result['generated']} from nursery data
+    collected up to {window['last_day']}. Those are two different dates on purpose: the first says when the
+    numbers were computed, the second says how recent the stock behind them is. If they drift apart, or fall
+    behind today, something in our collection has stopped and the page is telling you so.</li>
   </ul>
 </section>
 """
@@ -512,8 +516,12 @@ def render_citation(result: dict) -> str:
   </div>
   <p class="text-gray-700 mb-0">The full dataset behind this page, including the per-species and per-state
   breakdowns, is available as machine-readable JSON:
-  <a href="/{DATA_SLUG}" class="text-green-700 hover:underline font-medium">{DATA_URL}</a>. It is rebuilt every
-  night. Questions or corrections: <a href="mailto:ben@treestock.com.au" class="text-green-700 hover:underline">ben@treestock.com.au</a>.</p>
+  <a href="/{DATA_SLUG}" class="text-green-700 hover:underline font-medium">{DATA_URL}</a>. It carries its own
+  <code>generated</code> date and the first and last day of the window it covers, so you can check how fresh a
+  copy is instead of taking our word for it. <strong>This build ran on {result['generated']}, over data
+  collected up to {window['last_day']}.</strong> We rebuild nightly, and when a build does not run the dates
+  above stop moving rather than the page pretending otherwise.
+  Questions or corrections: <a href="mailto:ben@treestock.com.au" class="text-green-700 hover:underline">ben@treestock.com.au</a>.</p>
 </section>
 """
 
@@ -588,7 +596,7 @@ def build_page(result: dict) -> str:
         '<h1 class="text-2xl font-bold text-green-900 mb-2">Which fruit trees can actually be shipped to your state?</h1>',
         f'<p class="text-gray-600 text-sm mb-6">A free, citable dataset measured daily across '
         f'{result["nurseries_tracked"]} Australian nurseries since {window["first_day"]}. '
-        f'Updated {result["generated"]}.</p>',
+        f'Built {result["generated"]}, from nursery data collected up to {window["last_day"]}.</p>',
         render_headline(result),
         render_state_table(result),
         render_tasmania(result),

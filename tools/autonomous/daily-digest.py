@@ -430,6 +430,70 @@ def get_nursery_actions(data_dir, today=None):
 STALE_PUBLISH_HOURS = 30
 DASHBOARD_DIR = "/opt/dale/dashboard"
 
+# The one published artefact we invite other people to reuse (DAL-254): CC BY 4.0,
+# raw JSON beside the page, cited by whoever picks it up. Its builder is wired
+# non-fatal into run-all-scrapers.sh, which is correct (one dead builder must not
+# take the site down) and has a consequence: a failed build leaves the previous
+# file in place, still being served, still being cited.
+#
+# 2 days rather than 1 because one missed night is real and survivable, and an
+# alarm set at the noise floor is one nobody reads (DEC-323).
+DATASET_SLUG = "shipping-reachability.json"
+DATASET_STALE_DAYS = 2
+
+
+def get_dataset_freshness(dashboard_dir=DASHBOARD_DIR, today=None):
+    """Is the published shipping-reachability dataset as fresh as it claims?
+
+    Two independent lags, because they fail for different reasons and only one
+    of them is visible from the file's own `generated` date:
+
+      build lag  = today - generated. The builder did not run.
+      data lag   = generated - window.last_day. The builder ran fine over stale
+                   inputs, so `generated` advances every night while the stock
+                   behind it is frozen. This is the worse of the two: the page
+                   reads as rebuilt today and is not.
+
+    Returns {"problems": [...], "generated": str|None}. Report only. `generated`
+    is returned even when healthy so the digest can print the date it checked:
+    a check that only ever speaks when something is broken is a check you cannot
+    tell is still running (DEC-339).
+    """
+    path = os.path.join(dashboard_dir, DATASET_SLUG)
+    try:
+        with open(path) as f:
+            data = json.load(f)
+    except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
+        return {"problems": [
+            f"Published dataset {DATASET_SLUG} unreadable: {e}. "
+            "The page invites reuse under CC BY and cannot be checked."], "generated": None}
+
+    try:
+        generated = datetime.strptime(data["generated"], "%Y-%m-%d").date()
+        last_day = datetime.strptime(data["window"]["last_day"], "%Y-%m-%d").date()
+    except (KeyError, TypeError, ValueError) as e:
+        return {"problems": [
+            f"Published dataset {DATASET_SLUG} has no readable dates: {e}."], "generated": None}
+
+    today = today or datetime.now(timezone.utc).date()
+    problems = []
+
+    build_lag = (today - generated).days
+    if build_lag > DATASET_STALE_DAYS:
+        problems.append(
+            f"Shipping-reachability dataset last built {data['generated']} "
+            f"({build_lag} days ago). The nightly builder has stopped and the "
+            "published CC BY page is serving old numbers.")
+
+    data_lag = (generated - last_day).days
+    if data_lag > DATASET_STALE_DAYS:
+        problems.append(
+            f"Shipping-reachability dataset was built {data['generated']} but "
+            f"its newest nursery data is {data['window']['last_day']} "
+            f"({data_lag} days earlier). The build is running over frozen inputs.")
+
+    return {"problems": problems, "generated": data["generated"]}
+
 
 def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
     """Is the treestock publishing pipeline actually alive?
@@ -519,6 +583,13 @@ def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
         health["critical"].append(f"Published site unreadable at {index_path}: {e}")
         health["headline"] = "treestock not publishing"
 
+    # A problem, not critical. index.html can be publishing perfectly while this
+    # one non-fatal builder is dead, so the check above cannot see it, and a
+    # dataset going stale is not the business being off the air.
+    dataset = get_dataset_freshness(dashboard_dir, now.date())
+    health["dataset_generated"] = dataset["generated"]
+    health["problems"].extend(dataset["problems"])
+
     # Critical items are problems too; they just also escape into the subject.
     health["problems"] = health["critical"] + health["problems"]
     health["ok"] = not health["problems"]
@@ -531,9 +602,11 @@ def _pipeline_html(health):
     if health["ok"]:
         age = health["published_age_hours"]
         age_txt = f", published {age:.0f}h ago" if age is not None else ""
+        gen = health.get("dataset_generated")
+        gen_txt = f", dataset built {gen}" if gen else ""
         return ("<h3>Pipeline</h3>"
                 f"<p style='color:#2e7d32'>treestock healthy: "
-                f"{health['nurseries_ok']} nurseries scraped{age_txt}.</p>")
+                f"{health['nurseries_ok']} nurseries scraped{age_txt}{gen_txt}.</p>")
 
     items = "".join(f"<li>{p}</li>" for p in health["problems"])
     return (
@@ -548,7 +621,10 @@ def _pipeline_text(health):
     if health["ok"]:
         age = health["published_age_hours"]
         age_txt = f", published {age:.0f}h ago" if age is not None else ""
-        lines.append(f"  treestock healthy: {health['nurseries_ok']} nurseries scraped{age_txt}.")
+        gen = health.get("dataset_generated")
+        gen_txt = f", dataset built {gen}" if gen else ""
+        lines.append(
+            f"  treestock healthy: {health['nurseries_ok']} nurseries scraped{age_txt}{gen_txt}.")
     else:
         lines.append("  BROKEN:")
         for p in health["problems"]:
