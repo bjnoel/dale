@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-09-17",
-  "last_session": 129,
+  "last_session": 130,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2146,6 +2146,31 @@
         "appstore_download_days_held": 75
       },
       "notes": "DEC-334. Switched off treestock:data_quality again per the stale-approach prompt. Apple's r3 (App Downloads) and r12 (App Store Purchases) sat in the same request as the discovery report we already read and nothing had ever read them, so every install number we quote came from RevenueCat, which opens a customer per SDK init, or PostHog, which counts people it has seen. Neither is an install. Built appstore_downloads.py and verified it BEFORE believing it: against the frozen snapshot it reproduces DEC-321 exactly (51 first-time downloads, 4 redownloads, AU 22/US 17; 3 purchases, US$77.30, US$52.37, AU/PK/US). Rather than fork the reader, appstore_sources grew a SeriesSchema so the restatement rule DEC-332 was paid for has ONE implementation across three report shapes; its 57 tests pass unchanged. Three things I would have got wrong by assuming: r3's window is TWO days not r14's three (measured across all nine instances), so the pull is cron'd daily, since weekly leaves three days of slack and repeats DEC-332 on one missed Sunday; r12 has ZERO instances on the ongoing request and had to raise NotReady, because 'no instances' and 'no sales' render identically and DEC-333's 4th sale falls inside exactly that span; and a quiet day is not a missing day, since at ~1 install/day 63 of 75 days held legitimately carry no row and calling them missing manufactures a data-loss scare. Apple 67 lifetime iOS first-time downloads vs RevenueCat's ~134 records re-confirms the ~2x inflation. Per DEC-326 both load-bearing rules were proven to FAIL before being trusted. Also: test_prompt_size was already failing on entry (61,545B vs a 60,000B ceiling) and its docstring forbids raising the number, so four superseded point-in-time findings were cut out of business-state.json. Also moved the discovery pull (appstore_sources) from weekly to daily for the same reason, since weekly against ~10 days of coverage is the same fragility."
+    },
+    {
+      "session": 130,
+      "date": "2026-09-17",
+      "categories_worked": [
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-257"
+      ],
+      "tickets_proposed": [
+        "DAL-302",
+        "DAL-303"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 14,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "appstore_first_time_downloads_lifetime": 67,
+        "appstore_downloads_per_day_post_rename": 1.73,
+        "appstore_downloads_per_day_pre_rename_28d": 0.46
+      },
+      "notes": "DEC-335. Third consecutive session off treestock:data_quality per the stale-approach prompt. Scored DAL-257's pre-registered four-week rename re-measure on both stores. Play's control held and fruit tree tracker holds #1 on 7 consecutive weekly captures; Apple's move is larger but has no control and is reported, not scored. Apple's own download counts went 0.46 -> 1.73 first-time downloads/day (p=1.9e-06) with the lift in App Store search, so the rank win reached the money-bearing funnel and conversion improved as well as exposure. Kill condition did not fire; ASO confirmed and spent, gap to $100/mo went 11x -> 5x. Retracted this ticket's own day-0 claim that the rename's predicted cost did not appear: it appeared at the next capture. Also corrected DEC-268's review-prompt reading (wrong constant, and review_prompt_requested is no longer 0) -> DAL-302."
     }
   ],
   "override": null
