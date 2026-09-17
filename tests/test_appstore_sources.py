@@ -606,6 +606,86 @@ class TestOngoingRequestCreation(unittest.TestCase):
             self.seen, f"/apps/{self.APP}/analyticsReportRequests?limit=200")
         self.assertNotIn("filter[app]", self.seen)
 
+    def test_a_snapshot_refresh_never_reuses_the_stale_snapshot(self):
+        """DEC-339. A snapshot is a dated dump, and the only reason to ask for
+        another is that the one we hold stops before the days we need. Reusing
+        it would return the exact request that is already too old, and report
+        success."""
+        posted = {}
+
+        def poster(path, token, payload):
+            posted["payload"] = payload
+            return {"data": {"id": "fresh",
+                             "attributes": {"accessType": "ONE_TIME_SNAPSHOT"}}}
+
+        request, created = asrc.create_snapshot_request(
+            "tok", self.APP, poster=poster,
+            getter=self._getter([{"id": "stale", "attributes":
+                                  {"accessType": "ONE_TIME_SNAPSHOT"}}]))
+        self.assertTrue(created)
+        self.assertEqual(request["id"], "fresh")
+        self.assertEqual(
+            posted["payload"]["data"]["attributes"]["accessType"],
+            "ONE_TIME_SNAPSHOT")
+
+
+# ── 8b. An empty report is two different facts ───────────────────────────────
+
+class TestExplainSilence(unittest.TestCase):
+    """DEC-339. `list_instances` refuses to read zero instances as zero events,
+    which is right, and leaves "Apple stopped" indistinguishable from "nothing
+    happened". The siblings in the same request settle it: they share a
+    credential and a generation schedule and differ only in the events counted.
+    """
+
+    PURCHASES = "App Store Purchases Standard"
+
+    def test_a_live_sibling_proves_the_silence_is_absence_of_events(self):
+        liveness = [
+            {"name": "App Downloads Standard", "report_id": "r3",
+             "instances": 9, "first": "2026-09-08", "last": "2026-09-16"},
+            {"name": self.PURCHASES, "report_id": "r12",
+             "instances": 0, "first": None, "last": None},
+        ]
+        said = asrc.explain_silence(self.PURCHASES, liveness)
+        self.assertIn("request is alive", said)
+        self.assertIn("2026-09-08..2026-09-16", said)
+
+    def test_no_live_sibling_means_nothing_is_known_about_any_day(self):
+        liveness = [
+            {"name": "App Downloads Standard", "report_id": "r3",
+             "instances": 0, "first": None, "last": None},
+            {"name": self.PURCHASES, "report_id": "r12",
+             "instances": 0, "first": None, "last": None},
+        ]
+        said = asrc.explain_silence(self.PURCHASES, liveness)
+        self.assertIn("not producing", said)
+        self.assertNotIn("request is alive", said)
+
+    def test_a_missing_report_is_a_grant_problem_not_an_empty_one(self):
+        """Never granted and granted-but-empty have opposite fixes, so they
+        must not render the same."""
+        liveness = [{"name": "App Downloads Standard", "report_id": "r3",
+                     "instances": 9, "first": "2026-09-08",
+                     "last": "2026-09-16"}]
+        said = asrc.explain_silence(self.PURCHASES, liveness)
+        self.assertIn("missing grant", said)
+
+    def test_liveness_never_raises_on_an_empty_report(self):
+        """request_liveness must swallow NotReady: emptiness is the finding it
+        is being asked about, so raising on it answers nothing."""
+        def getter(path, token):
+            if "/reports" in path:
+                return {"data": [
+                    {"id": "r12", "attributes": {
+                        "name": self.PURCHASES, "category": "COMMERCE"}}]}
+            return {"data": []}
+
+        rows = asrc.request_liveness("tok", "req", category="COMMERCE",
+                                     getter=getter)
+        self.assertEqual(rows[0]["instances"], 0)
+        self.assertIsNone(rows[0]["last"])
+
 
 # ── 9. Instances are a rolling window, not one report ────────────────────────
 

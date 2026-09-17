@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-09-17",
-  "session_count": 131,
+  "session_count": 132,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -343,7 +343,8 @@
           "download_to_purchase_pct": 5.9
         },
         "verdict": "NOT a listing failure and NOT a paywall failure. Impression-to-download of 2.3% is inside Apple's normal band and 3 of 51 downloads buying a A$39.99 one-time IAP is 5.9%, well above the 1-3% mobile norm. The binding constraint is VOLUME: 18.9 impressions a day.",
-        "page_view_ratio_caveat": "103 page views against 51 downloads is not a broken funnel. 27 of the 51 downloads carry Page Type 'No page': the user tapped Get in the search results and never opened the product page. Do not compute a page-view-to-download rate from those two columns."
+        "page_view_ratio_caveat": "103 page views against 51 downloads is not a broken funnel. 27 of the 51 downloads carry Page Type 'No page': the user tapped Get in the search results and never opened the product page. Do not compute a page-view-to-download rate from those two columns.",
+        "period": "2026-04-25 to 2026-08-20 (118 days). Was a ONE_TIME_SNAPSHOT frozen at 2026-08-20; an ONGOING request replaced it 2026-09-07 (DAL-291) and the series advances again. See appstore_discovery_series for what is held."
       },
       "appstore_discovery_series": {
         "decision": "DEC-332 / DAL-291 (2026-09-17). Emergency exception, commit ac68a0f.",
@@ -375,10 +376,18 @@
         "held_now": "75 days, 2026-04-30 to 2026-09-14. 67 lifetime first-time downloads, 4 redownloads, 2 restores, 149 updates. First-time by territory AU 29, US 22, then a long single-digit tail. By source: App Store search 42, App referrer 13, Web referrer 6, App Store browse 3, Unavailable 3.",
         "rate": "0.45 first-time downloads/day over the 113 pre-gap days (51/113); 1.78/day over the 9 observed days 2026-09-06..09-14 (16 downloads). ~4x, but CONFOUNDED and not a verdict: the rename and the 1.0.11 release (2026-09-13) both land inside that window and its two biggest days (5 and 4) ARE the release days. n=9 days.",
         "r3_window_is_2_days_not_3": "MEASURED across all 9 live instances: each r3 DAILY instance carries exactly [processing_date-2, processing_date-1]. Narrower than r14's 3-day window (DEC-332), so the downloads series is MORE fragile to a missed pull than discovery is. pull_gaps() detects unobserved stretches from pulled_at spacing against that width and the render names them.",
-        "r12_has_no_ongoing_instances": "App Store Purchases Standard has ZERO instances at ANY granularity on the ongoing request as of 2026-09-17. The reader raises NotReady and writes nothing. 'No instances' and 'no sales' would otherwise render identically and only one of them is a fact about the business. Two tests guard this. Purchase history comes from the frozen snapshot only, for now.",
+        "r12_has_no_ongoing_instances": "SUPERSEDED BY DEC-339 / DAL-300 (2026-09-17). r12 is NOT broken and was never ungranted. Apple emits an instance only for a report with events in the window, and we have had ZERO App Store purchases since the ongoing request began 2026-09-06 (RevenueCat: newest production sale 2026-08-23; 28d overview US$24 gross, MRR 0, active subs 0). The control was inside the same request: r10/r11 Pre-Orders and r224-r227 Subscription reports also have 0 instances on BOTH requests, and those are products we have never sold. r12 has 1 instance on the SNAPSHOT, whose span contained 3 purchases. Every empty report is a product with no events. Do NOT re-open this as a broken-report ticket.",
         "lost_span": "2026-08-21 to 2026-09-05 is UNOBTAINABLE for downloads, the same handover hole that cost discovery 2026-08-21..09-04 (DEC-332). The render prints it as a PULL GAP rather than averaging over it. 47 other days carry no row and ARE real zeroes: at ~1 download a day a quiet day is ordinary, so no_row_days and pull_gaps are deliberately different concepts.",
         "revenuecat_inflation_reconfirmed": "Apple: 67 lifetime iOS first-time downloads. RevenueCat: ~134 iOS customer records. RevenueCat opens a customer per SDK init, so it roughly DOUBLES the install count. Apple is the source of truth for installs; RevenueCat stays the source of truth for money.",
-        "guards": "tests/test_appstore_downloads.py, 20 tests. Per DEC-326 the two rules that matter were each proven to FAIL before being trusted: reverting the instance merge to summing breaks the overlapping-day test (6 != 3), and disabling the NotReady guard breaks the no-instances test."
+        "guards": "tests/test_appstore_downloads.py, 20 tests. Per DEC-326 the two rules that matter were each proven to FAIL before being trusted: reverting the instance merge to summing breaks the overlapping-day test (6 != 3), and disabling the NotReady guard breaks the no-instances test.",
+        "empty_report_diagnosis": {
+          "decision": "DEC-339 / DAL-300 (2026-09-17)",
+          "defect": "r12's silence was indistinguishable from a real outage BY CONSTRUCTION. list_instances correctly refuses to read zero instances as zero sales, and the consequence was a blank nobody could interpret. At ~1 sale/month against a 2-day rolling window, one missed cron night permanently loses a sale day and would render exactly like today's healthy screen. The guard that stops a false zero also hid a true outage.",
+          "shipped": "src.request_liveness(token, request_id, category) and src.explain_silence(report_name, liveness) in appstore_sources.py, wired into appstore_downloads.py's NotReady path and verified against the live API. When a report is empty the reader asks its SIBLINGS in the same request: same credential, same request, same generation schedule, differing only in the events counted. A live sibling proves the request is alive AND dates the window Apple has actually covered.",
+          "three_distinct_outcomes": "(1) no live sibling -> the request is not producing and nothing is known about any day. (2) a live sibling -> the silence is absence of events inside a NAMED span, and says nothing about days outside it. (3) report absent from the request -> a MISSING GRANT, a different fix, which must not render the same as an empty one.",
+          "snapshot_refresh_is_a_question": "Apple allows ONE ONE_TIME_SNAPSHOT per app; create returns HTTP 409 'You already have such an entity'. Refreshing means DELETING the frozen 2026-08-20 snapshot, which is the DEC-321 verification baseline. Irreversible on Benedict's account, so asked as DAL-307 rather than done. appstore_sources.py --create-snapshot-request is built and tested and waiting on the answer. Payoff if yes: recovers the 16 lost download days inside DEC-335's rename window (which DEC-332 showed was a BIASED hole, not a neutral one) and puts the 2026-08-23 sale into Apple's own record.",
+          "guards": "5 new tests in tests/test_appstore_sources.py (TestExplainSilence plus the snapshot refresh case); 2 proven FAILING under the old behaviour before being trusted to pass (DEC-326). create_snapshot_request NEVER reuses an existing snapshot, because reuse would hand back the exact request that is already too old and report success; the ONGOING path still reuses, because there it is a singleton and a second create is a 409. One create_request() carries both, so the difference is named once rather than implied by two copies."
+        }
       },
       "review_prompt_gate_diagnosis_2026_09_17": {
         "decision": "DEC-337 / DAL-302 (Done, closed on its own pre-registered kill condition). No code change proposed.",

@@ -591,10 +591,21 @@ def main(argv=None):
                 config, profile["name"], profile["required"],
                 profile["aggregate"], token=token, request_id=args.request_id)
         except src.NotReady as exc:
-            # The one failure that must never render as a number.
-            notes.append(f"{which.upper()}: NOT READY -- {exc}")
+            # The one failure that must never render as a number. But "Apple
+            # stopped producing" and "nothing happened" are both empty, and
+            # only the first is a problem, so ask the siblings which it is
+            # (DEC-339) rather than leaving a blank for somebody to guess at.
+            notes.append(f"{which.upper()}: NO INSTANCES -- {exc}")
             notes.append(f"  Nothing written to {path}. This is NOT zero "
                          f"{which}.")
+            try:
+                liveness = src.request_liveness(
+                    token, args.request_id or config["ASC_REQUEST_ID"],
+                    category=COMMERCE_CATEGORY)
+                notes.append("  " + src.explain_silence(profile["name"],
+                                                        liveness))
+            except (urllib.error.HTTPError, urllib.error.URLError) as diag:
+                notes.append(f"  could not check sibling reports: {diag}")
             continue
         except (urllib.error.HTTPError, urllib.error.URLError) as exc:
             print(f"App Store Connect API failed on {which}: {exc}",

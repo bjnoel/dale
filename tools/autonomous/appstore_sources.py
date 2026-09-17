@@ -432,12 +432,17 @@ def _with_apple_detail(exc):
                                   f"{exc.reason} ({detail})", exc.hdrs, None)
 
 
-def find_ongoing_request(token, app_id, getter=api_get):
-    """Return the app's existing ONGOING request, or None.
+def find_request(token, app_id, access=ONGOING_ACCESS, getter=api_get):
+    """Return the app's newest request of `access` type, or None.
 
     Apple allows one ONGOING request per app, so creating a second returns a
     409. Checking first turns "already done" into a normal outcome instead of
     an error somebody has to interpret.
+
+    ONE_TIME_SNAPSHOT is different: several may coexist, and a new one is how
+    history that fell out of the ongoing report's rolling window is recovered
+    (DEC-339). Newest wins, because an older snapshot is by definition the one
+    that stops sooner.
 
     Read through the app relationship, not `/analyticsReportRequests?filter`.
     Apple answers a collection GET on that resource with a 403 naming the
@@ -445,37 +450,69 @@ def find_ongoing_request(token, app_id, getter=api_get):
     form fails in a way that looks like a credential problem rather than a
     wrong URL.
     """
-    for req in api_get_all(f"/apps/{app_id}/analyticsReportRequests?limit=200",
-                           token, getter=getter):
-        if (req.get("attributes") or {}).get("accessType") == ONGOING_ACCESS:
-            return req
-    return None
+    matches = [req for req in
+               api_get_all(f"/apps/{app_id}/analyticsReportRequests?limit=200",
+                           token, getter=getter)
+               if (req.get("attributes") or {}).get("accessType") == access]
+    if not matches:
+        return None
+    return matches[-1]
 
 
-def create_ongoing_request(token, app_id, poster=api_post, getter=api_get):
-    """Create the ONGOING analytics report request for `app_id`.
+def find_ongoing_request(token, app_id, getter=api_get):
+    """Return the app's existing ONGOING request, or None."""
+    return find_request(token, app_id, access=ONGOING_ACCESS, getter=getter)
 
-    Returns (request, created). `created` is False when one already existed,
-    because re-running this must be safe: the ONE_TIME_SNAPSHOT this replaces
-    (DEC-321) went unnoticed for weeks precisely because nobody could re-run
-    the setup step to check it.
+
+def create_request(token, app_id, access=ONGOING_ACCESS, poster=api_post,
+                   getter=api_get, reuse_existing=True):
+    """Create an analytics report request of `access` type for `app_id`.
+
+    Returns (request, created). `created` is False when an existing one was
+    reused, because re-running this must be safe: the ONE_TIME_SNAPSHOT this
+    replaced (DEC-321) went unnoticed for weeks precisely because nobody could
+    re-run the setup step to check it.
+
+    `reuse_existing` is the whole difference between the two access types. An
+    ONGOING request is a singleton and re-creating it is an error, so reuse is
+    right. A ONE_TIME_SNAPSHOT is a *dated dump*: reusing the old one is the
+    failure mode, not the safe path, since the reason to ask for another is
+    always that the first one stops before the days you need.
 
     Apple takes 24-48h to produce the first instance. Until then `pull` raises
     NotReady, which main() already reports as normal rather than as failure.
     """
-    existing = find_ongoing_request(token, app_id, getter=getter)
-    if existing:
-        return existing, False
+    if reuse_existing:
+        existing = find_request(token, app_id, access=access, getter=getter)
+        if existing:
+            return existing, False
     payload = {
         "data": {
             "type": "analyticsReportRequests",
-            "attributes": {"accessType": ONGOING_ACCESS},
+            "attributes": {"accessType": access},
             "relationships": {
                 "app": {"data": {"type": "apps", "id": str(app_id)}},
             },
         },
     }
     return poster("/analyticsReportRequests", token, payload)["data"], True
+
+
+def create_ongoing_request(token, app_id, poster=api_post, getter=api_get):
+    """Create the app's singleton ONGOING analytics report request."""
+    return create_request(token, app_id, access=ONGOING_ACCESS, poster=poster,
+                          getter=getter, reuse_existing=True)
+
+
+def create_snapshot_request(token, app_id, poster=api_post, getter=api_get):
+    """Create a fresh ONE_TIME_SNAPSHOT request covering history to today.
+
+    This is the only way to reach a day that has fallen out of the ongoing
+    report's rolling window (2 days for r3, 3 for r14). Always creates a new
+    one; see `create_request` for why reuse would defeat the purpose.
+    """
+    return create_request(token, app_id, access=ONE_TIME_ACCESS, poster=poster,
+                          getter=getter, reuse_existing=False)
 
 
 def api_get_all(path, token, getter=api_get):
@@ -585,6 +622,75 @@ def list_instances(token, report_id, granularity=DEFAULT_GRANULARITY,
     ]
     instances.sort(key=lambda i: i["processing_date"] or "", reverse=True)
     return instances
+
+
+def request_liveness(token, request_id, category=ENGAGEMENT_CATEGORY,
+                     granularity=DEFAULT_GRANULARITY, getter=api_get):
+    """Instance counts and date spans for every report in one request.
+
+    This exists to answer the question an empty instance list cannot answer on
+    its own (DEC-339). `list_instances` correctly refuses to read zero
+    instances as zero events, but "Apple is not producing this report" and
+    "nothing happened worth reporting" are then indistinguishable, and they
+    have opposite consequences.
+
+    The siblings settle it. Every report lives in the same request, under the
+    same credential, with the same generation schedule, so a sibling carrying
+    instances proves the request is alive and dates the window Apple has
+    actually covered. Only the events differ.
+
+    Returns a list of {name, report_id, instances, first, last}, most
+    instances first. Never raises NotReady: emptiness is the finding here.
+    """
+    out = []
+    for report in list_reports(token, request_id, category=category,
+                               getter=getter):
+        try:
+            instances = list_instances(token, report["id"],
+                                       granularity=granularity, getter=getter)
+        except NotReady:
+            instances = []
+        dates = sorted(i["processing_date"] for i in instances
+                       if i["processing_date"])
+        out.append({
+            "name": report["name"],
+            "report_id": report["id"],
+            "instances": len(instances),
+            "first": dates[0] if dates else None,
+            "last": dates[-1] if dates else None,
+        })
+    out.sort(key=lambda r: (-r["instances"], r["name"]))
+    return out
+
+
+def explain_silence(report_name, liveness):
+    """Turn an empty instance list into a statement about which fact it is.
+
+    `liveness` is `request_liveness` output for the same request. Three
+    outcomes, and the difference between them is the whole point:
+
+      * no sibling has instances  -> the request is not producing anything.
+        Not ready, stopped, or misconfigured. Nothing is known about any day.
+      * siblings have instances   -> the request is alive over a dated window,
+        and this report is empty because no event of its kind occurred inside
+        that window. Still says nothing about days outside it.
+      * the report is not present -> it was never granted, which is a
+        different failure from being empty and must not read the same.
+    """
+    live = [r for r in liveness if r["instances"]]
+    named = [r for r in liveness if r["name"] == report_name]
+    if not named:
+        return (f"{report_name!r} is not among the reports in this request. "
+                f"That is a missing grant, not an empty report.")
+    if not live:
+        return ("No report in this request has any instance, so the request "
+                "itself is not producing. Nothing is known about any day.")
+    witness = live[0]
+    return (f"The request is alive: {witness['name']!r} has "
+            f"{witness['instances']} instance(s) covering "
+            f"{witness['first']}..{witness['last']}. So {report_name!r} is "
+            f"empty because no such event occurred in that window, NOT "
+            f"because Apple stopped. This says nothing about days outside it.")
 
 
 def segment_urls(token, instance_id, getter=api_get):
@@ -1292,6 +1398,11 @@ def main(argv=None):
                         help="create the app's ONGOING analytics report "
                              "request and print the id to put in "
                              "ASC_REQUEST_ID. Safe to re-run.")
+    parser.add_argument("--create-snapshot-request", metavar="APP_ID",
+                        help="create a NEW ONE_TIME_SNAPSHOT request covering "
+                             "history up to today, to recover days that fell "
+                             "out of the ongoing rolling window. Creates one "
+                             "every time it is run.")
     args = parser.parse_args(argv)
 
     try:
@@ -1303,17 +1414,27 @@ def main(argv=None):
     token = mint_token(config["ASC_KEY_ID"], config["ASC_ISSUER_ID"],
                        config["ASC_PRIVATE_KEY_PATH"])
 
-    if args.create_ongoing_request:
+    if args.create_ongoing_request or args.create_snapshot_request:
+        snapshot = bool(args.create_snapshot_request)
+        app_id = args.create_snapshot_request or args.create_ongoing_request
+        maker = create_snapshot_request if snapshot else create_ongoing_request
         try:
-            request, created = create_ongoing_request(
-                token, args.create_ongoing_request)
+            request, created = maker(token, app_id)
         except (urllib.error.HTTPError, urllib.error.URLError) as exc:
             print(f"could not create the request: {exc}", file=sys.stderr)
             return 1
         verb = "created" if created else "already exists"
         print(f"{verb}: {request['id']}")
         print(f"attributes: {request.get('attributes')}")
-        if created:
+        if created and snapshot:
+            print("")
+            print("Do NOT put a snapshot id in ASC_REQUEST_ID. Read it once "
+                  "with:")
+            print(f"  appstore_downloads.py --request-id {request['id']} "
+                  f"--final")
+            print("Apple takes 24-48h to produce the instance; until then the "
+                  "pull reports NOT READY, which is normal.")
+        elif created:
             print("")
             print("Set ASC_REQUEST_ID to that id in "
                   "/opt/dale/secrets/appstoreconnect.env.")

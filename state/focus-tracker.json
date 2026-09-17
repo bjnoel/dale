@@ -2222,6 +2222,31 @@
         "ios_ratings": 1
       },
       "notes": "DEC-337. Fourth consecutive session off treestock:data_quality. DAL-302 closed on its own pre-registered kill condition: gate 6 (recent_version_change) is not the binding gate, it is first in an ordered chain and absorbs every new install because recordAppVersion stamps at install time. 101 of 131 suppressed people have exactly one lifetime active day; too_few_active_days and recent_install have NEVER fired in 384 events. 209 of 276 suppressions would have been refused by a lower gate anyway; 5 of the 6 people ever asked are in the suppressed set, so the blackout defers rather than blocks. The alternative constant (kReviewMinActiveDays 2->1) would open a pool of 4 people. No code change proposed; offered Benedict an optional behaviour-neutral gate reorder. Proposed DAL-304: read Play's own install numbers, since DEC-335's Play rank win to #1 in two countries is currently unmeasurable."
+    },
+    {
+      "session": 132,
+      "date": "2026-09-17",
+      "categories_worked": [
+        "treesmith:growth",
+        "infrastructure"
+      ],
+      "tickets_completed": [
+        "DAL-300"
+      ],
+      "tickets_proposed": [
+        "DAL-307"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 14,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "appstore_first_time_downloads_lifetime": 67,
+        "appstore_downloads_per_day_post_rename": 1.73,
+        "ios_ratings": 1
+      },
+      "notes": "DEC-339. Channel-stale reflection fired on treestock, so this session went to Track A. DAL-300's premise was wrong: r12 App Store Purchases is not broken, it is empty because we have had zero App Store sales since the ongoing request began 2026-09-06. The control was in the same request (pre-order and subscription reports are equally empty and are products we have never sold). Shipped request_liveness/explain_silence so an empty report says WHICH fact it is. Snapshot refresh needs a delete and is DAL-307, a question, not an action."
     }
   ],
   "override": null

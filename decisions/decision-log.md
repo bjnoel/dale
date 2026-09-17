@@ -15208,3 +15208,73 @@ re-ask what each of its conditions was actually testing, not whether it still ru
 **the cheapest place to find a duplicate-content problem is before you build the pages.** Probing
 ACT against NSW took one script and killed 49 pages that would otherwise have needed discovering
 in Search Console months later.
+
+---
+
+## DEC-339 — 2026-09-17 — The purchase report is not broken, it is empty, and those are different facts
+
+**Date:** 2026-09-17 **Ticket:** DAL-300 (Done) **Authority:** Dale autonomous (code + measurement, $0)
+
+**DAL-300's premise was wrong, and the way it was wrong is the finding.** The ticket said App
+Store Purchases (r12) "has stopped producing instances, so purchase history is frozen at
+2026-08-20". It has not stopped. **Apple emits an instance only for a report that has events in
+the window**, and we have had zero App Store purchases since the ongoing request began.
+
+**The control was sitting inside the same request the whole time.** Instance counts across all ten
+COMMERCE reports, both requests, read today: `r3 App Downloads Standard` 9 DAILY instances on the
+ongoing request covering 2026-09-08..09-16. `r12 App Store Purchases Standard` 1 instance on the
+snapshot (whose span contained 3 purchases) and 0 on the ongoing. `r10`/`r11` App Store Pre-Orders
+0 on both. `r224`-`r227` Subscription Event and State 0 on both. The pattern is exact: **every
+report with zero instances is a product we have never sold**, plus r12 on a window that happens to
+contain no sale. Pre-orders we have never taken; subscriptions have never sold outside sandbox
+(MRR US$0). Nothing is stopped, nothing is ungranted.
+
+**Verified against a party with no incentive and no bug (DEC-260), not assumed.** RevenueCat swept
+today: newest production purchase is 2026-08-23T02:21Z, US, App Store, US$17.49 proceeds, which is
+DEC-333's 4th sale. Nothing since. The 28-day overview agrees independently: US$24 gross, MRR 0,
+active subscriptions 0, active trials 0. So the ongoing window from 2026-09-06 genuinely contains
+zero purchases and r12's silence is correct behaviour.
+
+**The defect this exposes is worse than the one reported.** r12's silence is indistinguishable
+from a real outage *by construction*. `list_instances` refuses to read zero instances as zero
+sales, which is right (DEC-334), and the consequence is a blank nobody can interpret. At roughly
+one sale a month against a **2-day rolling instance window**, one missed cron night permanently
+loses a sale day from Apple's record, and it would render exactly like today's correct, healthy
+screen. The guard that stops us reporting a false zero also stops us noticing a true outage.
+
+**Shipped: `request_liveness()` and `explain_silence()` in `appstore_sources.py`.** When a report
+has no instances the reader now asks its siblings in the same request. They share a credential, a
+request and a generation schedule, and differ only in the events counted, so a live sibling both
+proves the request is alive and dates the window Apple has actually covered. Three outcomes,
+deliberately distinct: no live sibling means the request is not producing and nothing is known
+about any day; a live sibling localises the silence to absence of events inside a named span, and
+says nothing about days outside it; a report absent from the request is a **missing grant**, which
+has a different fix and must not read the same as an empty one. Wired into
+`appstore_downloads.py`'s NotReady path, verified against the live API.
+
+**Not done, and asked instead (DAL-307).** The 2026-08-23 sale sits in the 2026-08-21..09-05
+handover hole, so Apple still cannot see it. The fix is a fresh ONE_TIME_SNAPSHOT, which reaches
+365 days back and would also recover the 16 lost **download** days inside DEC-335's rename window.
+**Apple allows one snapshot per app: the create returns HTTP 409 "You already have such an
+entity".** Refreshing means deleting the frozen snapshot that is our DEC-321 verification
+baseline. That is irreversible on Benedict's account, so it is a question, not an action.
+`--create-snapshot-request` is built and tested and waiting on the answer.
+
+**Guards: 5 new tests, 2 proven failing under the old behaviour before being trusted to pass
+(DEC-326).** `create_snapshot_request` never reuses an existing snapshot, because reuse would hand
+back the exact request that is already too old and report success; the ONGOING path keeps reusing,
+because there it is a singleton and a second create is a 409. That difference is the only thing
+separating the two, and it is now named in one place rather than implied by two copies
+(DEC-334's "reuse the rule, not the reader").
+
+**Lesson (45th session): an empty result is not one fact, it is at least three, and the code that
+refuses to guess must still be made to say which.** DEC-334 was paid for the rule that a report
+with no instances must never be written down as a zero, and that rule held perfectly: nothing
+wrong was ever recorded. But it converted an ambiguity into a blank and stopped there, so the next
+session read the blank as an outage, wrote a ticket asserting Apple had broken, and would have
+spent an hour re-requesting a report that was working. **The discriminator was free and adjacent:
+nine sibling reports in the same request, under the same credential, differing only in what they
+count.** Before believing a silence, check whether anything that would have had to be silent with
+it is still talking. Sub-lesson: **the reports that were empty were exactly the products we have
+never sold**, so the evidence that the system was healthy was the same evidence that the business
+is not, and reading one as the other cost a ticket.
