@@ -70,6 +70,16 @@
       "note": "Store-validated proceeds net of Apple commission and tax, per RevenueCat (DAL-267 read-only key). USD because RevenueCat reports proceeds in USD; the AUD payout is only knowable from App Store Connect payment reports and has not been reconciled. Booked 2026-08-10 on Benedict's approval (Q49)."
     },
     {
+      "date": "2026-08-23",
+      "type": "revenue",
+      "category": "treesmith_pro",
+      "description": "Treesmith Pro (one-time) \u2014 App Store, United States (iPad)",
+      "amount": 17.49,
+      "currency": "USD",
+      "recurring": false,
+      "note": "Store-validated proceeds net of Apple commission and tax, per RevenueCat (US$24.99 gross, store_purchase_identifier 140003831496000). New iPad install on build 1.0.10, the first build carrying the 'Fruit Tree Tracker' name; bought 7 minutes after install. The first sale after either store rename. Missed because the last sweep (2026-08-10) predates it. App Store source unknown: 2026-08-23 falls in the 08-21..09-04 hole no App Store Connect instance covers (DEC-332). Booked 2026-09-17 on Benedict's approval."
+    },
+    {
       "date": "2026-08-31",
       "type": "revenue",
       "category": "treestock_affiliate",
@@ -82,7 +92,7 @@
   ],
   "summary": {
     "total_revenue": 32.89,
-    "total_revenue_usd": 52.55,
+    "total_revenue_usd": 70.04,
     "total_expenses": -28.1,
     "net": 4.79,
     "monthly_burn": 8.2,

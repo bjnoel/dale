@@ -38,6 +38,7 @@ reported all-time as well as weekly, so a sale cannot age out of the digest.
 import datetime
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -286,8 +287,45 @@ def load_posthog_credentials():
 
 # ── HogQL ──────────────────────────────────────────────────────────────────
 
-def hogql(host, key, query):
-    """Run a HogQL query; return list-of-rows. Raises on HTTP error."""
+# Google Play pre-launch report devices. They install every release, tap
+# through the app for a few minutes (paywall included) and never return: 187
+# OnePlus8Pro "people" between 2026-04-25 and 2026-09-03, on every version from
+# 1.0.1 to 1.0.11, none seen on a second day, none with a geoip city. They were
+# 54 of 100 Android people since 2026-07-09 and most of its paywall views, and
+# the likeliest cause of the DEC-320 Android install inflation.
+# coalesce() matters: a bare `!=` on a NULL model is NULL, which would drop
+# every event that lacks the property rather than keep it.
+ROBOT_DEVICE_MODELS = ("OnePlus8Pro",)
+ROBOT_DEVICE_MODEL_PREFIXES = ("sdk_gphone",)
+
+
+def robot_filter():
+    """The HogQL condition that keeps an event: true for humans."""
+    model = "coalesce(properties.$device_model, '')"
+    parts = [f"{model} != '{m}'" for m in ROBOT_DEVICE_MODELS]
+    parts += [f"{model} NOT LIKE '{p}%'" for p in ROBOT_DEVICE_MODEL_PREFIXES]
+    return " AND ".join(parts)
+
+
+def exclude_robots(query):
+    """Add a PREWHERE robot filter after every `FROM events`.
+
+    PREWHERE rather than WHERE because it composes with whatever WHERE, GROUP BY
+    or closing bracket follows, without having to find where an existing
+    condition ends. One insertion point covers all 35 metric queries, so a new
+    metric cannot forget it.
+    """
+    return re.sub(r"\bFROM events\b(?!\s+PREWHERE)",
+                  f"FROM events PREWHERE {robot_filter()}", query)
+
+
+def hogql(host, key, query, include_robots=False):
+    """Run a HogQL query; return list-of-rows. Raises on HTTP error.
+
+    Pre-launch robots are excluded unless `include_robots` is set.
+    """
+    if not include_robots:
+        query = exclude_robots(query)
     body = json.dumps({"query": {"kind": "HogQLQuery", "query": query}})
     req = urllib.request.Request(
         f"{host}/api/projects/{PROJECT_ID}/query/",

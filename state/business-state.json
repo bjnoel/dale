@@ -208,12 +208,13 @@
       "revenue_verified": {
         "decision": "DEC-260 / DAL-265 (2026-08-03). Q48 ANSWERED: the purchases are real.",
         "source": "RevenueCat v2, project-scoped read-only key at /opt/dale/secrets/revenuecat.env. Read by tools/autonomous/revenuecat.py.",
-        "production_purchases_all_time": 3,
-        "proceeds_usd_all_time": 52.55,
-        "gross_usd_all_time": 77.58,
+        "production_purchases_all_time": 4,
+        "proceeds_usd_all_time": 70.04,
+        "gross_usd_all_time": 102.57,
         "by_month_proceeds_usd": {
           "2026-06": 17.4,
-          "2026-07": 35.15
+          "2026-07": 35.15,
+          "2026-08": 17.49
         },
         "buyer_countries": [
           "AU",
@@ -252,7 +253,7 @@
           "caveat": "n=3. Stated as the strongest signal we have about WHEN the decision is made, not as an established rate."
         },
         "install_count_divergence": "RevenueCat 416 customers vs PostHog 297 people (+40%). Neither is authoritative: RevenueCat opens a customer per SDK init, PostHog merges aliased ids onto a person. The digest now prints the gap rather than picking one and quietly dividing by it. Retention cross-check: RevenueCat says 11% of iOS and 5% of Android are ever seen on a later day; 272 of 287 Android and 111 of 129 iOS are never seen again 60s after first launch.",
-        "no_new_sales_since": "Re-swept 2026-08-10: still 3 production purchases, US$52.55 proceeds all time, MRR US$0. Nothing has sold since 2026-07-23, 18 days."
+        "latest_sweep": "Re-swept 2026-09-17: 4 production purchases, US$70.04 proceeds, US$102.57 gross, MRR US$0. The 4th (2026-08-23, US, iPad, build 1.0.10) is the first sale after either rename and was missed until now. Still 0 Android and 0 Cloud Backup sales."
       },
       "storefront_localisation_defect": {
         "status": "RESOLVED 2026-08-10 (DEC-274) by collapsing to a single localisation. Takes effect when 1.0.10 is released.",

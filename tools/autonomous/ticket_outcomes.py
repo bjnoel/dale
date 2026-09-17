@@ -223,7 +223,7 @@ def read_treesmith_downloads(end_date):
             SELECT count() FROM firsts
             WHERE first_seen >= toDateTime('{start} 00:00:00')
               AND first_seen <  toDateTime('{end} 23:59:59')
-        """)
+        """, include_robots=True)  # baselines stamped before the robot filter must stay comparable
     except Exception as e:  # noqa: BLE001 - any transport failure is unavailable
         raise MetricUnavailable(f"PostHog query failed: {str(e)[:150]}")
 

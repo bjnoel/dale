@@ -14757,3 +14757,56 @@ Full suite 3,686 OK.
 **Family.** Same shape as DEC-330 (`ok` is a claim about the transport, not the payload)
 and DEC-249 (a zero and an absence of measurement look identical). New this time: the
 absence was *biased*, not merely missing.
+
+---
+
+## DEC-333 — 2026-09-17 — The rename did not stop sales, and half of Android was robots
+
+**Date:** 2026-09-17 **Authority:** Benedict asked for the review and approved booking the sale and filtering the robots. Code is Dale autonomous.
+
+**Context.** Benedict's hypothesis: sales came from graft and fruit-tree searches, there
+have been none since the rename, but more people are downloading. He asked for the data
+before any listing copy. Periods were split into equal halves around each store's rename:
+Play 07-09..08-12 vs 08-13..09-16 (35 days each), iOS 07-21..08-18 vs 08-19..09-16 (29 each).
+
+**Finding 1: there was a sale after the rename.** RevenueCat now holds 4 production Pro
+purchases, not 3. The 4th is 2026-08-23 02:21 UTC, US, an iPad on build 1.0.10 (the first
+build under the new name), bought 7 minutes after install. The last sweep was 2026-08-10, so
+nothing had looked. iOS sales per equal window: 1 before, 1 after. Android and Cloud Backup:
+0 ever. Booked to `financials/ledger.json`, US$17.49 proceeds.
+
+**Finding 2: the graft-search story does not fit the receipts.** App Store Connect sources
+the three earlier buyers as search (PK, 06-26) and App referrer twice (AU 07-06, US 07-23).
+The one search buyer most likely saw the old en-US listing, which carried no "graft" at all
+(DEC-278); the only buyer who could have seen "Plant Graft Tracker" arrived by referral.
+
+**Finding 3: 187 Android "people" are Google Play pre-launch robots.** `$device_model`
+OnePlus8Pro, 2026-04-25..09-03, on every version 1.0.1..1.0.11, none seen on a second day, no
+geoip city; plus `sdk_gphone*` emulators. 54 of 100 Android people since 07-09 and 22 of 28
+Android paywall viewers in the pre-rename window. This is the likeliest cause of the DEC-320
+inflation, which DEC-320 left unexplained. Human Android new users: 18 before, 34 after; Play
+Console's own "31 device acquisitions / 28d" agrees.
+
+**Change.** `treesmith_analytics.hogql()` adds a `PREWHERE` robot filter after every
+`FROM events`, so all 35 digest queries get it and a new one cannot forget. PREWHERE because
+it composes with any following WHERE or GROUP BY without parsing where a condition ends.
+`coalesce()` on the model, since a bare `!=` on NULL would drop every iOS event. Live check:
+432 people become 236, and every metric in a full dry run still returns.
+`ticket_outcomes.read_treesmith_downloads` opts out with `include_robots=True`, because
+baselines stamped with robots in them must stay comparable to their 28-day re-reads.
+Tests: `tests/test_treesmith_robot_filter.py`, failing before the change.
+
+**Growth, measured.** Human new users roughly doubled on both stores (iOS 19 -> 39, Android
+18 -> 34), and 28-day actives too (iOS 24 -> 47, Android 21 -> 39). App Store first-time
+downloads 0.45/day -> 1.7/day on the 13 post-rename days Apple still holds. Search is 98-99%
+of impressions either side.
+
+**Verdict on sales: cannot tell.** At the pre-rename 3 of 48 downloads, ~49 post-rename
+downloads predict ~3 sales; seeing 1 or fewer has about a 1-in-5 chance with nothing
+changed. Android vs iOS: 0 of 20 human paywall viewers vs 2 of 28; both buyers landing on
+iOS by chance is 34%. DAL-237's telemetry defect (a cancel fires nothing, a sale can log as
+a dismissal) means PostHog cannot yet distinguish "Android users will not pay" from
+"Android billing fails".
+
+**Rank note.** iOS AU `graft tracker` fell 1 -> 11 on 08-20 and was back at #1 by 09-13.
+Graft terms are lost only on Play (1 -> >30 in both storefronts).
