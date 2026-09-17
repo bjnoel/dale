@@ -339,9 +339,11 @@ Full rationale and the measured before/after in `docs/ticket-format.md`.
 - Revenue quality: recurring > one-time, retained > churned.
 - The competition for Track A (Treesmith) is NO LONGER just generic plant-tracker
   apps. Verified 2026-07-30 (DAL-225, DEC-237): fruit-tree-specific competitors now
-  exist and two launched after us. Fruit Tree Tracker: Grove (2026-06-28) tracks
-  species, variety, rootstock, age, pollinators and harvest, and already outranks us
-  on "fruit tree tracker". Rootstock: Seed & Plant Log (2026-07-17) does seed
+  exist and two launched after us. Fruit Tree Tracker: Grove (2026-06-28) competes
+  for our SEARCH TERMS, not our use case: Benedict installed it (2026-09-17) and it is
+  a ~100MB app that needs sign-in before use, costs A$29-58/yr, and tracks garden
+  beds rather than individual trees, grafts or scions. After our rename we rank above
+  it on "fruit tree tracker" everywhere except iOS US (DAL-238 cancelled). Rootstock: Seed & Plant Log (2026-07-17) does seed
   provenance and crosses. FruitForest (2023) does orchard GPS mapping. Trees Diary
   (2015) does per-tree multi-year profiles for $1.99. All of them are on 0 ratings.
   Our differentiator is still graft tracking, scion sources, activity logs, and a
