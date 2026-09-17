@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-09-17",
-  "last_session": 132,
+  "last_session": 133,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2247,6 +2247,29 @@
         "ios_ratings": 1
       },
       "notes": "DEC-339. Channel-stale reflection fired on treestock, so this session went to Track A. DAL-300's premise was wrong: r12 App Store Purchases is not broken, it is empty because we have had zero App Store sales since the ongoing request began 2026-09-06. The control was in the same request (pre-order and subscription reports are equally empty and are products we have never sold). Shipped request_liveness/explain_silence so an empty report says WHICH fact it is. Snapshot refresh needs a delete and is DAL-307, a question, not an action."
+    },
+    {
+      "session": 133,
+      "date": "2026-09-17",
+      "categories_worked": [
+        "treesmith:growth",
+        "revenue:monetisation"
+      ],
+      "tickets_completed": [],
+      "tickets_proposed": [
+        "DAL-309"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 14,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "appstore_first_time_downloads_lifetime": 70,
+        "appstore_downloads_per_day_post_rename": 1.9,
+        "ios_ratings": 1
+      },
+      "notes": "DEC-340 / DAL-276, analysed and handed to Benedict (Todo, his call), not closed by Dale. Channel-stale reflection fired on treestock again, so Track A. Three findings: cloud_backup paywall reach is 23 PEOPLE not 48 events; the ticket's own diagnostic (did reachers hold Pro?) is unanswerable, pro_source null on 18 of 23, though it started populating in September; and the iOS conversion rate we have quoted for six weeks (2.3%) divides real sales by RevenueCat's measured-inflated install count. Correct rate on Apple's own downloads is 4.0-5.9%, so the $100/mo gap is ~2x not 5x. Recurring is still ~1,200 subscribers away and lag=0 means nobody has ever made a second purchase decision."
     }
   ],
   "override": null

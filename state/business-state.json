@@ -212,7 +212,7 @@
           "ios_installs": "129 was WRONG (RevenueCat). Apple says 51 first-time downloads lifetime to 2026-08-20 (DEC-321). RevenueCat inflated iOS by 2.5x, Android by ~6x. See appstore_funnel_2026_08_27.",
           "ios_buyers": 3,
           "ios_proceeds_usd": 52.55,
-          "ios_rate_pct": 2.33,
+          "ios_rate_pct": "2.33 was WRONG and must not be quoted (corrected by DEC-340, 2026-09-17). It divided real App Store sales by RevenueCat's iOS customer count, which DEC-334 measured to be ~2x Apple's real install count. On Apple's own App Downloads report the rate is 3 of 51 first-time downloads = 5.9% (Wilson 2.0-15.9%) over the clean window 2026-04-25..08-20, and 4.0-5.9% all time because the 4th sale falls inside the 16-day handover hole.",
           "blended_rate_pct": 0.72,
           "posthog_agrees": "PostHog $os: Android 217 people, iOS 80. Same direction, ~70% Android, from an independent system.",
           "android_is_not_broken": "Play Store billing is PROVEN WORKING: two play_store SANDBOX purchases validated through RevenueCat on 2026-05-10. Android's zero is genuine demand, not a misconfigured integration. Do NOT open a 'fix Android billing' ticket.",
@@ -274,7 +274,7 @@
             "Seasonality: AU spring would lift AU, but not US by the same 3.8x in northern autumn. Weak evidence against, not proof.",
             "Play's rank win is UNMEASURABLE in downloads (Play Console is Benedict's, RevenueCat inflates Android ~6x, Android has produced US$0 across 4 sales). Play gave the clean rank experiment, Apple the money-bearing funnel. Neither store could answer this alone."
           ],
-          "the_gap_went_from_11x_to_5x": "DEC-261's arithmetic is unchanged: ~2.3% iOS conversion at ~US$17.50 proceeds means $100/mo needs ~250 iOS installs/month. At 1.73/day we are at ~52/month, up from ~14. Our single best lever, fully spent, closed less than half the gap.",
+          "the_gap_went_from_11x_to_5x": "SUPERSEDED THE SAME DAY by DEC-340. This said '~2.3% iOS conversion means $100/mo needs ~250 iOS installs/month', which is the wrong-denominator rate. Corrected: at 4.0-5.9% the requirement is 97-143 iOS installs/month against our post-rename ~58/month, so the gap is ~1.7x to ~2.5x, not 5x. The rename's effect on downloads is unchanged; only the revenue arithmetic downstream of it moves.",
           "series_not_a_diff": "data/treesmith-rank-history.csv now holds 8 Play and 7 Apple weekly captures (cron 40 21 * * 0). The two-point diff DAL-257 originally specified would have shown the graft loss with no idea it took a week to arrive, and would never have shown #1 holding for five weeks rather than five hours."
         }
       },
@@ -302,7 +302,7 @@
           }
         },
         "headline": "On iOS, the only platform that has ever produced revenue, AU is 43% of installs. DEC-256's '18% AU' blended in Android, which is 69% of installs and 0% of revenue.",
-        "compounding_effect": "Australians install on iOS (62%), Americans install on Android (21% iOS). So the average AU install lands on the platform converting at 2.3% and the average US install lands on the one converting at 0.0%.",
+        "compounding_effect": "Australians install on iOS (62%), Americans install on Android (21% iOS). So the average AU install lands on the platform that converts (~5.9%, DEC-340) and the average US install lands on the one converting at 0.0%. The platform asymmetry is the point; the old '2.3%' figure quoted here was the pre-DEC-340 wrong-denominator rate.",
         "not_a_launch_artefact": "iOS AU share by month: Apr 42%, May 46%, Jun 37%, Jul 32%, Aug 40%.",
         "retention_au_vs_us": {
           "bar": "seen again on a day later than install; weakest available bar, applied identically to both",
@@ -403,6 +403,19 @@
         "offered_not_ticketed": "Move gate 6 below gates 7 and 8 in evaluateReviewPromptEligibility. All three paths return suppressed, so the outcome is IDENTICAL for every user and only the reason string changes. ~3 lines plus test expectations, buys back two dead reason codes. Benedict's call, his repo; did not earn a backlog slot because his queue depth is the bottleneck (DEC-248).",
         "constants_for_the_record": "kReviewVersionChangeBlackout 3d (gate 6), kReviewMinTimeSinceInstall 3d (gate 7), kReviewMinActiveDays 2 (gate 8), kReviewAskCooldown 120d, kReviewMaxAsksPerWindow 2 per 365d, kReviewSuppressionWindow 14d (the FAILURE blackout, gate 4, not the version one).",
         "ratings": "1 rating on AU and 1 on US as of 2026-09-17, the first this app has ever had against 0 at every previous check. 6 people asked. Do NOT quote 33% as a conversion rate; n is far too small."
+      },
+      "recurring_revenue_verdict_2026_09_17": {
+        "decision": "DEC-340 / DAL-276 (2026-09-17). Analysis Dale autonomous; the goal change itself is Benedict's call and is with him.",
+        "question": "Can Cloud Backup ever carry the '$100/month recurring' goal, or does the goal need a different product?",
+        "cloud_backup_reach_is_23_people_not_48": "The ticket and DEC-252 said 48 people reached the cloud_backup paywall. 48 was an EVENT count. On person_id (the DEC-259 rule) it is 23 people across 52 events. Full trigger table, all time: manual 95/58, cloud_backup 52/23, reminders 12/11, location_limit 7/4, bulk_ops 3/2, plant_limit 3/2. Zero production sales to 23 people in 4.5 months carries close to no information.",
+        "the_ticket_s_own_diagnostic_is_unanswerable": "The plan was to split the cloud_backup reachers by whether they already held Pro, separating 'priced out by the A$50 first-year gate' from 'did not want it'. pro_source is NULL on 45 of 52 events (18 of 23 people) because the property was added later. Of the 7 that carry it: 5 events / 5 people 'none', 2 events / 1 person 'paid'. That is a sample of five and is NOT a finding.",
+        "cloud_backup_has_genuinely_never_sold": "Checked before reporting the apparent contradiction. PostHog holds 5 cloud_backup_sub_purchased outcomes across 3 people (2026-05-11, 05-14, 05-18, 07-01). entitlement_service.dart:636 sets that outcome from the package actually bought, so they are real cloud-backup purchases, but all sit in the May internal-testing era or carry environment=sandbox. RevenueCat's sweep returns 9 purchases whose 5 sandbox rows total US$136.56 proceeds EXACTLY, matching the known sandbox set, and none of them is the cloud backup product. MRR US$0 and 0 active subscriptions stand.",
+        "the_conversion_rate_was_2x_too_low": "DEC-261's 2.3% (3 buyers / 129 RevenueCat iOS customer records) was repeated by everything since, including DEC-335 written the same morning as this correction. DEC-334 had already measured that RevenueCat opens a customer per SDK init and roughly DOUBLES Apple's install count. We kept the numerator from Apple's side and the denominator from RevenueCat's.",
+        "corrected_rate": "3 of 51 Apple first-time downloads 2026-04-25..08-20 = 5.9% (Wilson 2.0-15.9%). The 4th sale, 2026-08-23, falls inside the 16-day handover hole where we hold no downloads, so the all-time rate is a RANGE of 4.0-5.9%, not a number. Not a sampling disagreement (the CIs overlap); the old denominator is measured-wrong.",
+        "corrected_100_per_month_arithmetic": "At ~US$17.50 proceeds, $100/mo is 5.7 sales/month. At 2.3% that needed 248 iOS installs/mo (4.3x our rate); at 4.0% it needs 143 (2.5x); at 5.9% it needs 97 (1.7x). Current post-rename rate is 19 first-time downloads over 10 covered days = ~1.9/day = ~58/month. THE GAP ON TOTAL REVENUE IS ~2x, NOT 5x AND NOT 11x. Error bars are wide: n=4 sales.",
+        "recurring_is_not_within_an_order_of_magnitude": "Cloud Backup at A$9.99/yr needs ~1,200 subscribers for $100/mo against 0. It requires Pro first, so it is inherently a SECOND decision, and all four buyers bought on the day they installed (lag 0,0,0,0). Nobody has ever made a second decision about this app.",
+        "recommendation_with_benedict": "Retarget CLAUDE.md at $100/mo TOTAL revenue rather than recurring, because the one-time product is ~2x away on a lever we have just proven moves (DEC-335) and the recurring one is 1,200 subscribers away. Alternatives offered: bundle Cloud Backup into the Pro flow as a day-0 decision (his app commit, and not worth running at 23 people reached), or keep the goal as written and accept it is unreachable. DAL-276 is Todo assigned to Benedict.",
+        "do_not_quote": "Do NOT quote 2.3% iOS conversion, '~250 iOS installs/month', or an 11x/5x gap again. Do NOT say 48 people wanted cloud backup. Do NOT open a 'fix cloud backup billing' ticket: it is configured, live on both stores, and has simply never been bought."
       }
     },
     "a_paused_walkthrough": {

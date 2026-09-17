@@ -15278,3 +15278,112 @@ count.** Before believing a silence, check whether anything that would have had 
 it is still talking. Sub-lesson: **the reports that were empty were exactly the products we have
 never sold**, so the evidence that the system was healthy was the same evidence that the business
 is not, and reading one as the other cost a ticket.
+
+---
+
+## DEC-340 — 2026-09-17 — The recurring goal has no product behind it, and the one-time gap is half what we said
+
+**Date:** 2026-09-17 **Ticket:** DAL-276 (Todo, with Benedict) **Authority:** Dale autonomous for the
+measurement ($0). Retargeting the goal is a business-direction change and is Benedict's call.
+
+### The question
+
+CLAUDE.md's stated target is "$100/month **recurring**". The only auto-renewing product Treesmith
+sells is Cloud Backup (A$9.99/yr, requires Pro first), and it has never sold in production. DAL-276
+asked whether that product can ever carry the goal.
+
+### Three findings, two of which correct numbers this ticket was built on
+
+**1. It is 23 people, not 48, and the diagnostic I promised cannot be run.**
+
+This ticket and DEC-252 both said 48 people reached the cloud_backup paywall and none bought. 48 was
+an **event** count. Re-counted on `person_id`, which is the DEC-259 rule and which I had to apply to
+this ticket's own headline number: cloud_backup is **52 events across 23 people**. Full table, all
+time: manual 95/58, cloud_backup 52/23, reminders 12/11, location_limit 7/4, bulk_ops 3/2,
+plant_limit 3/2. Zero production sales to 23 people over 4.5 months carries close to no information
+either way.
+
+The plan was to split those people by whether they already held Pro, which separates "priced out by
+the A$50 first-year gate" from "did not want it" and points at two different fixes. **`pro_source` is
+null on 45 of the 52 events (18 of the 23 people)** because the property was added later. Of the 7
+that carry it: 5 events / 5 people `none`, 2 events / 1 person `paid`. That is a sample of five and
+is not a finding. The question stays open and is not answerable from data we hold.
+
+**2. Cloud Backup really has never sold, and the apparent contradiction reconciles.**
+
+PostHog holds 5 `cloud_backup_sub_purchased` outcomes across 3 people (2026-05-11, 05-14, 05-18,
+07-01), which reads at first glance as production sales RevenueCat is missing. Checked the far end
+before reporting it: `entitlement_service.dart:636` sets that outcome from the package actually
+bought, not from the trigger, so they are genuine cloud-backup purchases. All four dates sit in the
+May internal-testing era or carry `environment: sandbox` outright. RevenueCat's sweep today returns
+9 purchases whose 5 sandbox rows total **US$136.56 proceeds exactly**, matching the known sandbox
+set, and **none of them is the cloud backup product**. MRR US$0, 0 active subscriptions, 0 trials
+stands. This is not a billing or plumbing defect and must not be ticketed as one.
+
+**3. The iOS conversion rate we have quoted for six weeks is ~2x too low.**
+
+DEC-261 put it at **2.3%** (3 buyers / 129 RevenueCat iOS customer records). Everything since has
+repeated that, including DEC-335, written this same morning. DEC-334 had already measured that
+**RevenueCat opens a customer per SDK init and roughly doubles Apple's real install count** (Apple 67
+lifetime first-time downloads against RevenueCat's ~134). We kept the numerator from Apple's side of
+the world and the denominator from RevenueCat's.
+
+On Apple's own App Downloads report, now pulled nightly:
+
+- **51** first-time downloads 2026-04-25..2026-08-20, containing **3** of our 4 sales
+- **3 / 51 = 5.9%**, Wilson 2.0-15.9%
+- the 4th sale (2026-08-23) lands **inside the 16-day handover hole** where we hold no downloads at
+  all, so the all-time rate is a range: **4.0% to 5.9%** depending on what those days held
+
+The two confidence intervals overlap, so this is not a sampling disagreement. It is that 2.3%
+divides by a count we have since measured to be inflated, so it was never the right number. The
+corrected figure was already sitting in the same state file: DEC-321's funnel block records
+"3 of 51 downloads buying a A$39.99 one-time IAP is 5.9%".
+
+### What that does to the target
+
+At ~US$17.50 proceeds, US$100/mo is 5.7 sales/month.
+
+| assumed iOS conversion | iOS installs/mo needed | gap vs our current ~58/mo |
+|---|---|---|
+| 2.3% (what we have been quoting) | 248 | 4.3x |
+| 4.0% (pessimistic) | 143 | **2.5x** |
+| 5.9% (measured, clean window) | 97 | **1.7x** |
+
+Current rate is 19 first-time downloads over the 10 covered days since the rename, ~1.9/day, about
+**58/month**, up from ~14/month pre-rename. **The gap on total revenue is roughly 2x, not 5x and not
+11x.** Stated with its error bars: n = 4 sales, and 5.9% runs 2.0-15.9%, so "2x" could honestly be 1x
+or 5x. What is not uncertain is the direction of the old error.
+
+For **recurring** revenue the picture is unchanged and bleak. Cloud Backup needs ~1,200 subscribers
+for $100/mo against 0. It requires Pro first, so it is inherently a *second* decision, and all four
+buyers bought on the day they installed (lag 0, 0, 0, 0). Nobody has ever made a second decision
+about this app.
+
+### Decision
+
+Recommended to Benedict, and it is his call because it changes CLAUDE.md and the direction of the
+business: **retarget the goal at $100/mo total revenue and stop measuring against recurring.** That
+is not lowering the bar, it is pointing it at the product that can reach it, on a lever (App Store
+search) DEC-335 has just proven moves. Alternatives offered: bundle Cloud Backup into the Pro flow
+so it becomes a day-0 decision, which is the only change consistent with lag=0 but is his app commit
+and is not worth running at 23 people reached; or keep the goal as written and accept it is
+unreachable. DAL-276 is Todo, assigned to him.
+
+The 2.3% correction was applied to `business-state.json` regardless of which option he picks, since
+it is wrong independently of the decision.
+
+### Lesson
+
+**A rate is a ratio of two systems, and fixing one of them does not fix the ratio.** DEC-334 measured
+that RevenueCat roughly doubles Apple's install count and recorded it correctly. What it did not do
+was go back and re-divide the numbers already computed on the old denominator, so 2.3% survived
+DEC-334 by six weeks and was quoted again in DEC-335 hours before this session. The corrected 5.9%
+was in the same file the whole time, in the DEC-321 block, disagreeing with the DEC-261 block, and
+nothing compares two findings to each other. **When you correct an input, list what was computed
+from it.** Sub-lesson, and the third time this year: **check whether the count is of events or of
+people before building a strategy on it** — this ticket's premise, its title and my own memory all
+said 48 people wanted cloud backup, and it was 23. Sub-lesson 2: the diagnostic that would have
+decided the ticket (did the reachers hold Pro?) was unanswerable because the property is null on 78%
+of the events, and **an unanswerable question should be reported as unanswerable, not resolved on the
+22% that happen to carry the field**.
