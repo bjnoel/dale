@@ -15497,3 +15497,101 @@ with the thing you are trying to agree with.** Days-listed is defensible in isol
 shipped a second contradiction between two files published by the same site on the same night. The
 only reason it was caught is that agreement was asserted over all 119 species instead of the one the
 test fixture covered.
+
+---
+
+## DEC-342 — 2026-09-17 — Ornamental cultivars were rendering as fruit stock, and species pages carry 3x what the nursery pages do
+
+**Ticket:** DAL-298 · **Track:** B (treestock) · **Authority:** Dale autonomous (accuracy defect + a written promise)
+
+### Why this, on a day the reflection said treestock growth is stale
+
+All four approved Todo tickets are Track B. DAL-298 is the one that is not growth work: its own card
+puts the expected traffic effect at ~zero. It is a commitment made in writing to Aus Nurseries in the
+touch-1 email of 2026-08-27 ("I'll clean those up"), plus a defect in a public claim. Sixteen
+ornamentals sat on `/nursery/ausnurseries.html` under the heading "fruit and nut trees": nine
+flowering dogwoods, a sugar maple, a weeping willow, flowering peach, almond and apricot.
+
+### Measure first, as the ticket required
+
+The falsification criterion was pre-registered: **if the all-nursery count is large (~200+), stop and
+escalate it as a strategy question rather than silently deleting rows.** Swept the 11 candidate
+keywords against every title in every snapshot we hold, not just today's, so a seasonal listing could
+not slip past.
+
+| | before | removed | after |
+|---|---|---|---|
+| Gate A — nursery pages, homepage, digest, alerts | 9,534 | **26** | 9,508 |
+| Gate B — species, variety, state, compare pages | 15,023 | **75** | 14,948 |
+
+Comfortably under the threshold, so the promise-keeping framing held.
+
+### The finding the ticket did not ask for
+
+**There are two gates, and the weaker one is the one facing search.**
+
+- `digest_product_filter` = `is_real_product(title) AND is_fruit_product(product, nursery)`. Nursery
+  pages, homepage, daily digest and variety alerts use it.
+- `build_species_pages`, `build_variety_pages`, `build_species_state_pages` and `build_compare_pages`
+  call `is_real_product` **only**. They have never called `is_fruit_product`, so the per-nursery fruit
+  filter cannot protect them.
+
+That is why Gate B carries 75 against Gate A's 26, and why **49 of the 75 are at Ladybird and Daleys,
+whose per-nursery filters do catch them on their own nursery page**. Proof it is not theoretical: a
+"Japanese Maple dissectum Lemon Lime Lace (Acer palmatum)" resolves through `species_match` to the
+**lime** species and sat on `/species/lime.html` across 68 snapshots (2026-03-05 to 2026-05-11) until
+Ladybird delisted it. The `daleys` rainforest-fig note in `fruit_filters.py` says that path "needs an
+ornamental guard first". This is that guard.
+
+### The fix is data, not code
+
+Ten entries added to `CATEGORY_KEYWORDS` in `stocklib/classify.py`, tagged `ornamental`. Because
+`derived_non_plant_keywords()` unions `TRUE_JUNK` with every keyword whose category is not in
+`ENABLED_CATEGORIES` (`("fruit",)`), one dict entry reaches both gates at once **and reverses itself
+automatically** if "ornamental" ever becomes an enabled category. Putting them in `TRUE_JUNK` instead
+would have made them unreachable forever; they are real plants, just not our subject.
+
+**Phrases, never the bare genus, and that is the whole design.** "dogwood" alone would block Cornus
+kousa, a genuine if obscure rare fruit. "apricot", "cherry", "peach", "plum" and "almond" obviously
+cannot be blocked at all. "maple" alone would eat cultivar names. All 142 historical matches are
+ornamentals and **zero real fruit listings are lost**. The case that proves the split works:
+Ladybird's "Ume (Prunus mume)" survives while "Pink Flowering Apricot (Prunus mume)" — the *same
+species* — is filtered, because the blossom cultivar names itself and the edible does not.
+
+Deliberately left alone as ambiguous edibles: ginkgo, Camellia sinensis, juniper berry, rosella,
+viburnum, calabash. Each is eaten or drunk and none was part of what we promised.
+
+One judgement call worth naming: **sugar maple is a syrup tree**, so it is edible-adjacent. Under
+`ENABLED_CATEGORIES = ("fruit",)` it is not fruit, it was on the list Aus Nurseries would have read as
+fruit trees, and the category tag means it returns the day we decide otherwise.
+
+### Found on the way past
+
+`"potash"` added to `TRUE_JUNK`. "Liquid Potash Organic by Katek" was live on the Ross Creek page: a
+fertiliser that names neither "fertiliser" nor any other word already in the set, so it rendered as
+stock on a fruit tree page. One live match, zero false positives across every title we hold.
+
+### Verification
+
+`tests/test_classify.py::OrnamentalGuardTests` pins **both directions** — 14 cultivars that must be
+filtered and 12 edibles that must survive — because widening this filter and narrowing it have each
+cost real listings before (DEC-195's variety gate dropped rare exotics; the "tool" keyword ate
+Toolangi strawberries). A third test asserts the keywords are tagged `ornamental` and are absent from
+`TRUE_JUNK`, so the reversibility property cannot be quietly removed.
+
+Full suite 3,738 tests, only the known DAL-306 failure, zero golden changes. Deployed, rebuilt,
+purged. Aus Nurseries 460 -> **447** listings, 191 in stock, exactly the 13 in today's snapshot. Live
+`curl` of the page returns **0** hits for dogwood, sugar maple or weeping willow. The promise is kept
+on the live site, not in the repo.
+
+### Lesson
+
+**A filter protects the surface it is wired to, not the subject it is about.** `is_fruit_product` has
+existed for months and is genuinely good; it simply is not called by the four builders that generate
+most of our indexed pages, so "we filter non-fruit" was true of the pages a nursery owner reads and
+false of the pages Google reads. Nobody had ever counted the same defect on both paths, and the answer
+was 3x worse on the one we do not look at.
+
+Sub-lesson: **the per-nursery config recorded a belief, not a measurement.** `"ausnurseries": {"mode":
+"all"}` carried the comment "Dedicated fruit/nut tree nursery". They sell willows. A mode that trusts
+a whole catalogue is a claim about a third party that ages without telling you.

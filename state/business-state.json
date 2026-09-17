@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-09-17",
-  "session_count": 134,
+  "session_count": 135,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -808,6 +808,11 @@
           "the_alarm_could_not_see_it": "detect_scrape_anomalies.py gained a priced_collapse rule on 08-24, two days before this. It compares today's priced share to YESTERDAY'S, and yesterday (08-25) was a failure carrying no priced field, so the comparison was skipped; on 08-27 today equalled yesterday so nothing fired. The alarm built for this exact failure was structurally unable to see it because the collapse happened ACROSS an outage. Same family as DEC-325. Not fixed here (backlog at cap); belongs to DAL-292.",
           "guard": "6 new tests in tests/test_dormancy.py: the exact production sequence, the sold-out-but-trading case that must NOT back off, pre-priced records that must never be judged retroactively, and that an unproductive run stays TRUSTED data. Proven to fail 3/3 under the old logic before being trusted to pass (DEC-326). Full suite 3,565 OK."
         }
+      },
+      "product_filter": {
+        "decision": "DEC-342 / DAL-298",
+        "finding": "TWO filter gates and the weaker one faces search. digest_product_filter (is_real_product AND is_fruit_product) guards nursery pages/homepage/digest/alerts; species, variety, state and compare builders call is_real_product ONLY and never is_fruit_product. Ornamental leakage: 26 on gate A, 75 on gate B, 49 of the 75 at Ladybird and Daleys whose per-nursery filters DO catch them on their own page. A Japanese maple resolved to the LIME species and sat on /species/lime.html for 68 snapshots.",
+        "fix": "10 PHRASE keywords tagged 'ornamental' in stocklib.classify.CATEGORY_KEYWORDS + 'potash' in TRUE_JUNK. Never a bare genus: 'dogwood' would block Cornus kousa, 'maple' would eat cultivars. The category tag reverses automatically if 'ornamental' ever joins ENABLED_CATEGORIES; TRUE_JUNK would make them unreachable forever. Swept every title ever held: 142 matches, all ornamental, ZERO real fruit lost. Ume (Prunus mume) survives while Pink Flowering Apricot (same species) does not. Aus Nurseries 460 -> 447, promised in the 2026-08-27 touch-1 email, kept."
       }
     },
     "b_experiment_beestock": {

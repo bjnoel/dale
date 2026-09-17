@@ -65,6 +65,12 @@ TRUE_JUNK = frozenset({
     # Minneola). Word boundaries do NOT save it, because "postage" is a whole
     # word there. "shipping", "delivery", "delivery charge" and "freight" stay
     # and still catch an actual postage line item.
+    # "potash" found live on the Ross Creek page while measuring DAL-298:
+    # "Liquid Potash Organic by Katek" is a fertiliser that names neither
+    # "fertiliser" nor any other word already in this set, so it rendered as
+    # stock on a fruit tree page. One live match, zero false positives across
+    # every title we hold.
+    "potash",
     "potting mix", "powerfeed", "pruning", "resource book", "richgro",
     "rubber hook", "saucer", "searles", "searles liquid", "seasol",
     "seaweed", "seaweed solution", "secateur", "secateurs", "sharp shooter",
@@ -114,6 +120,40 @@ CATEGORY_KEYWORDS: dict[str, str] = {
     "white cedar": "native",
     "cordyline": "ornamental",
     "ornamental": "ornamental",
+    # Ornamental cultivars of trees whose species IS a fruit, plus four
+    # unambiguous non-fruit landscape trees. Added 2026-09-17 (DAL-298) after
+    # promising Aus Nurseries we would clean the leakage on their page.
+    #
+    # These are PHRASES, never the bare genus, and that is the whole design.
+    # "dogwood" alone would block Cornus kousa, a real if obscure rare fruit;
+    # "apricot"/"cherry"/"peach"/"plum" obviously cannot be blocked at all;
+    # and "maple" alone would eat cultivar names. Swept against every title
+    # in every snapshot we hold (142 matches): all 142 are ornamentals, and
+    # exactly zero real fruit listings are lost. Ladybird's "Ume (Prunus
+    # mume)" survives, which is the case that matters, because ume is a
+    # genuine edible and its blossom cultivars are sold as "Flowering
+    # Apricot" of the same species.
+    #
+    # The single "false positive" in the sweep is the argument FOR the guard:
+    # "Japanese Maple dissectum Lemon Lime Lace (Acer palmatum)" resolves to
+    # the LIME species, so a maple sat on /species/lime.html across 68
+    # snapshots (2026-03-05 to 2026-05-11) until Ladybird delisted it. Species
+    # and variety pages apply is_real_product and never is_fruit_product, so
+    # the per-nursery filter could not have caught it. That path carries 75 of
+    # these today against 26 on the nursery pages, and 49 of the 75 are at
+    # Ladybird and Daleys, whose per-nursery filters DO catch them elsewhere.
+    # This is the ornamental guard the daleys rainforest-fig note in
+    # fruit_filters.py says that path has been waiting on.
+    "flowering almond": "ornamental",
+    "flowering apricot": "ornamental",
+    "flowering cherry": "ornamental",
+    "flowering dogwood": "ornamental",
+    "flowering peach": "ornamental",
+    "flowering plum": "ornamental",
+    "jacaranda": "ornamental",
+    "japanese maple": "ornamental",
+    "sugar maple": "ornamental",
+    "weeping willow": "ornamental",
     "asparagus": "vegetable",
 }
 

@@ -323,5 +323,88 @@ class SeedDescriptorTest(unittest.TestCase):
                 self.assertFalse(is_seed_packet(title))
 
 
+class OrnamentalGuardTests(unittest.TestCase):
+    """DAL-298. Ornamental cultivars of fruit species were rendering as fruit.
+
+    Both halves are pinned deliberately. Widening this filter and narrowing it
+    have each cost us real listings before (DEC-195 dropped rare exotics; the
+    'tool' keyword ate Toolangi strawberries), so the cultivars we chose to
+    exclude and the edibles we chose to keep are equally load-bearing.
+    """
+
+    ORNAMENTALS = (
+        # Aus Nurseries, the page we promised to clean on 2026-08-27.
+        "Chinensis flowering dogwood (Bare rooted)",
+        "Wolf Eyes Variegated Flowering White flowering dogwood tree (Bare rooted)",
+        "Flowering Almond Double pink (Bare rooted)",
+        "Lilian Burrows Pink flowering Peach Blossom tree (Bare rooted)",
+        "Sugar Maple (Bare rooted)",
+        "Weeping Willow tree (Bare rooted)",
+        # The same leakage at five other nurseries.
+        "Flowering Cherry - Mt Fuji",
+        "Flowering Plum Blireana",
+        "Pink Flowering Apricot (Prunus mume)",
+        "Jacaranda Grafted - Variegated",
+        "Weeping Willow - Salix babylonica 140mm",
+        "Japanese Maple Bloodgood (Acer palmatum) 400mm Pick Up Only",
+        # The one that proves the guard belongs here and not in the
+        # per-nursery fruit filter: species_match resolves this maple to LIME,
+        # and species/variety pages never call is_fruit_product. It sat on
+        # /species/lime.html across 68 snapshots (2026-03-05 to 2026-05-11)
+        # before Ladybird delisted it. Not live today; pinned so that the next
+        # one cannot repeat it.
+        "Japanese Maple dissectum Lemon Lime Lace (Acer palmatum)",
+        # Found on the Ross Creek page while counting the leakage.
+        "Liquid Potash Organic by Katek",
+    )
+
+    EDIBLES_THAT_MUST_SURVIVE = (
+        # Ume is a genuine edible whose blossom cultivars are sold as
+        # "Flowering Apricot" of the very same species. The phrase keyword
+        # splits them; a bare "apricot" or "prunus mume" would not.
+        "Ume (Prunus mume)",
+        # Bare genus words we deliberately did NOT add. Cornus kousa is a real
+        # rare fruit, and the rest are the fruit these ornamentals share a
+        # name with.
+        "Cornus kousa (Japanese Strawberry Tree)",
+        "Cherry - Royal Rainier (4L 60-70cm)",
+        "Peach Golden Queen Dwarf Prunus Persica Bare Root",
+        "Plum Green Gage Dwarf Prunus Domestica Bare Root",
+        "Almond Nonpareil (Prunus dulcis)",
+        "Apricot Moorpark Dwarf Prunus Armeniaca Bare Root",
+        # Edible-but-not-fruit plants left alone on purpose: each is eaten or
+        # drunk, and none was part of what we promised Aus Nurseries.
+        "Ginkgo - Grafted Female",
+        "Tea Plant (Camellia sinensis) - Large",
+        "Juniper Berry (Juniperus communis)",
+        "Rosella Plant (Hibiscus sabdariffa)",
+    )
+
+    def test_ornamental_cultivars_are_filtered(self):
+        for title in self.ORNAMENTALS:
+            with self.subTest(title=title):
+                self.assertFalse(is_real_product(title))
+
+    def test_real_fruit_with_similar_names_survives(self):
+        for title in self.EDIBLES_THAT_MUST_SURVIVE:
+            with self.subTest(title=title):
+                self.assertTrue(is_real_product(title))
+
+    def test_ornamental_keywords_are_tagged_ornamental_not_junk(self):
+        """They are real plants, so they must ride CATEGORY_KEYWORDS and drop
+        out automatically if 'ornamental' ever joins ENABLED_CATEGORIES. Put
+        into TRUE_JUNK instead, they would be unreachable forever."""
+        for kw in ("flowering dogwood", "jacaranda", "japanese maple",
+                   "sugar maple", "weeping willow", "flowering peach",
+                   "flowering plum", "flowering cherry", "flowering almond",
+                   "flowering apricot"):
+            with self.subTest(kw=kw):
+                self.assertEqual(CATEGORY_KEYWORDS.get(kw), "ornamental")
+                self.assertNotIn(kw, TRUE_JUNK)
+                self.assertIn(kw, NON_PLANT_KEYWORDS)
+                self.assertNotIn(
+                    kw, derived_non_plant_keywords(("fruit", "ornamental")))
+
+
 if __name__ == "__main__":
     unittest.main()
