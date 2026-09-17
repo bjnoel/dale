@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-09-17",
-  "last_session": 130,
+  "last_session": 131,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2171,6 +2171,32 @@
         "appstore_downloads_per_day_pre_rename_28d": 0.46
       },
       "notes": "DEC-335. Third consecutive session off treestock:data_quality per the stale-approach prompt. Scored DAL-257's pre-registered four-week rename re-measure on both stores. Play's control held and fruit tree tracker holds #1 on 7 consecutive weekly captures; Apple's move is larger but has no control and is reported, not scored. Apple's own download counts went 0.46 -> 1.73 first-time downloads/day (p=1.9e-06) with the lift in App Store search, so the rank win reached the money-bearing funnel and conversion improved as well as exposure. Kill condition did not fire; ASO confirmed and spent, gap to $100/mo went 11x -> 5x. Retracted this ticket's own day-0 claim that the rename's predicted cost did not appear: it appeared at the next capture. Also corrected DEC-268's review-prompt reading (wrong constant, and review_prompt_requested is no longer 0) -> DAL-302."
+    },
+    {
+      "session": 131,
+      "date": "2026-09-17",
+      "categories_worked": [
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-302"
+      ],
+      "tickets_proposed": [
+        "DAL-304"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 14,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "appstore_first_time_downloads_lifetime": 67,
+        "appstore_downloads_per_day_post_rename": 1.73,
+        "review_prompt_people_asked": 6,
+        "review_prompt_people_suppressed": 131,
+        "ios_ratings": 1
+      },
+      "notes": "DEC-337. Fourth consecutive session off treestock:data_quality. DAL-302 closed on its own pre-registered kill condition: gate 6 (recent_version_change) is not the binding gate, it is first in an ordered chain and absorbs every new install because recordAppVersion stamps at install time. 101 of 131 suppressed people have exactly one lifetime active day; too_few_active_days and recent_install have NEVER fired in 384 events. 209 of 276 suppressions would have been refused by a lower gate anyway; 5 of the 6 people ever asked are in the suppressed set, so the blackout defers rather than blocks. The alternative constant (kReviewMinActiveDays 2->1) would open a pool of 4 people. No code change proposed; offered Benedict an optional behaviour-neutral gate reorder. Proposed DAL-304: read Play's own install numbers, since DEC-335's Play rank win to #1 in two countries is currently unmeasurable."
     }
   ],
   "override": null

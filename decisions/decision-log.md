@@ -15061,3 +15061,65 @@ nothing, so the 28-day outcome grade would only have scored September's spring g
 **Family.** DEC-317 (a reading that looks the same either way is not evidence): "both pages
 appeared at least once" rises with impression volume and with Google's burst days whether or
 not the pages are competing. The split's evenness is the instrument that could tell.
+
+---
+
+## DEC-337 — 2026-09-17 — The review prompt's most-fired suppression reason is an artefact of gate order, and nothing needs changing
+
+**Date:** 2026-09-17 **Ticket:** DAL-302 (Done) **Authority:** Dale autonomous (measurement, $0)
+
+DAL-302 asked why `recent_version_change` blocked 131 people when the blackout is only 3 days,
+and to propose the one constant change. The answer is that there is no constant to change, and
+the ticket's own pre-registered kill condition says so.
+
+**The kill condition fires.** DAL-302 wrote: "If the 131 suppressed people turn out to be mostly
+single-session installs who would never have reached gate 8 (`kReviewMinActiveDays = 2`) anyway,
+then gate 6 is not the binding gate and this ticket should be closed without a code change."
+**101 of the 131 (77%) have exactly one lifetime active day.**
+
+**The mechanism is gate ORDER, not the blackout.** `evaluateReviewPromptEligibility` runs the
+version blackout at gate 6, above install age (gate 7, also 3 days) and active days (gate 8).
+`recordAppVersion` (`review_prompt_prefs.dart:116-129`) deliberately treats the first launch that
+records a version as a change, and documents it. So on a fresh install `version_changed_at ==
+install_time`, and gates 6 and 7 are the same 3-day condition in that order. Gate 6 always wins.
+
+**Proof, across all 384 suppression events ever recorded:** `too_few_active_days` and
+`recent_install` have **never fired once**. They are unreachable as ordered. Reasons: version
+change 276/131 people, after failure 44/2, asked recently 34/6, recent restore 17/1, no qualifying
+moment 13/9. The label `recent_version_change` is not reporting releases, it is absorbing every new
+install and taking the blame for two gates below it. Same family as DEC-249 and DEC-325: an
+instrument returning a plausible number it is structurally incapable of getting right.
+
+**Per-ask classification of all 276 suppressions**, against each person's own event history:
+209 (76%) would have been refused by gate 7 or 8 anyway; 67 asks across 20 people would have
+cleared both; of those 67, 43 the user returned inside the window, 12 after it, and **12 asks
+across 11 people were permanently lost** (never seen again).
+
+**The leading hypothesis was mostly wrong.** The rare-opener theory (re-stamps on each update,
+never banks 3 clear days) holds for 6 of the 20, and all six are our thinnest users, 1 event-day
+per version. The other 14 banked a 3-clear-day window. Stronger still: **5 of the 6 people ever
+asked are in the suppressed set.** They hit `recent_version_change` first and were asked later.
+The blackout defers, it does not block.
+
+**The other candidate constant also fails on measurement.** Relaxing `kReviewMinActiveDays` 2 -> 1
+opens a pool of **four people in six weeks** (joining the gate population against
+`plant_count_after`, DEC-259 ground truth: 1 active day and >=3 plants = 4 people; >=2 active days
+and >=3 plants = 10). That is DAL-224's shape exactly, "would move exactly one person". Not worth a
+submission.
+
+**What is actually binding is retention, gated three times over by design** (install age >=3d,
+version blackout >=3d, active days >=2, all of which mean "came back later"). 77% of people who
+reach this code never open the app on a second day. Not a constant, and DEC-261 already put
+retention downstream of revenue, so not a revenue lever either. The prompt is working as designed:
+6 asked, 2 ratings, the first this app has ever had.
+
+**Offered to Benedict, not ticketed:** move gate 6 below gates 7 and 8. All three return
+suppressed, so the outcome is identical for every user and only the reason string changes. ~3 lines
+plus test expectations, buys back two dead reason codes. His call; his repo; his queue is the
+bottleneck (DEC-248), so it did not earn a backlog slot.
+
+**Lesson (43rd session): a gate that fires first gets the credit for every gate beneath it.** The
+count at the top of an ordered chain measures its POSITION, not its strictness. Two reason codes
+sat at zero for the feature's whole life and nobody noticed, because the one above them was
+plausible enough to explain. Before treating "the reason most events carry" as a finding, check
+whether the reasons below it are reachable at all.
