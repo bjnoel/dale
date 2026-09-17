@@ -7,6 +7,18 @@
 # was backfilled from GSC history on 2026-08-20 so the spread of this number is
 # known before the change is judged.
 #
+# RETIRED 2026-09-17 (DEC-336, Benedict's call). The verdict it existed for is
+# in: the pages did not split, and consolidation was declined. The line below
+# has been removed from the live crontab. Left running, it would have emailed
+# every week, because the post-change level sits permanently above the
+# pre-change band and nobody is going to act on that. Nothing is lost:
+# `contested_queries.py backfill` rebuilds the series from GSC history.
+#
+# If you revive it, read DEC-336 first. The raw share is inflated by GSC burst
+# days (2-6x the usual query/page rows, median position ~50, ~1.2 impressions a
+# row: 2026-06-13, 07-13..15, 08-10, 09-07..11). Cap positions at 20 or drop
+# those days, or the alarm is reporting Google's traffic, not our pages.
+#
 # INSTALLED in the live crontab 2026-08-20, first run Thursday 2026-08-27 20:40 UTC:
 #
 #   40 20 * * 4 /opt/dale/repo/tools/autonomous/capture-contested-queries.sh >> /opt/dale/autonomous/logs/contested_queries.log 2>&1

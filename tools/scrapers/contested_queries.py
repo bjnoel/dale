@@ -21,6 +21,17 @@ raw count. Total query volume swings with the season (bare root runs late June
 to August, which is exactly the pre-change window), and a raw count would move
 with it whether or not anything we did mattered.
 
+Two limits the share does NOT handle, found at the DAL-287 verdict (DEC-336):
+
+- **GSC burst days.** Some days report 2-6x the usual query/page rows at a
+  median position near 50 and ~1.2 impressions a row. Both pages turn up at
+  once on those deep results pages, so the share jumps: the 7d reading to
+  2026-09-14 was 6.28% raw and 2.77% with positions capped at 20.
+- **"Both appeared once" is not "Google cannot choose".** One stray impression
+  at position 40 makes a query contested. The evenness of the split (the weaker
+  page's share of impressions) is the better instrument; it read 23.1% before
+  the change and 22.8% after.
+
 Usage:
     contested_queries.py record [--windows 7,28] [--end YYYY-MM-DD]
     contested_queries.py backfill --weeks 16

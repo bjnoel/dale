@@ -14974,3 +14974,90 @@ measurement weekly instead of measuring it once.** The two-point diff this ticke
 specified would have compared 08-13 to 09-17 and reported the graft loss with no idea it took
 a week to arrive, and would never have shown that #1 held for five weeks rather than five hours.
 A series beats a before and an after, and it costs one cron line.
+
+---
+
+## DEC-336 — 2026-09-17 — The species and compare pages did not split, and consolidating them was declined anyway
+
+**Date:** 2026-09-17 **Authority:** Benedict: "1. close 2. off" (close DAL-287 without
+consolidating; retire the weekly alarm). The measurement was Dale autonomous.
+
+**Context.** DAL-287 re-measured the DEC-309 differentiation (shipped 2026-08-20) 28 days on.
+Its pre-committed rule: "Split cleanly = done. Still tangled = consolidate per species on the
+position data." Method: GSC query x page, pulled one day at a time for 2026-05-20..09-14 (75,519
+rows) so windows could be cut freely. Matched 24-day arms, PRE 07-27..08-19 and POST
+08-21..09-13, with GSC burst days removed (below).
+
+**The baseline reproduces, except for clicks.** 90 days to 08-17: 414 queries, 5,753
+impressions (DEC-309 said 5,751). Clicks now read 84, not 64, because GSC was still filling in
+the last days on 08-20. The like-for-like baseline CTR is 1.46%, not 1.57%.
+
+**Finding 1: the pages did not split, and the tangle grew.** 7-day contested share, raw (what
+the weekly alarm read) and capped at position 20:
+
+| 7d to | raw | pos <= 20 |
+|---|---|---|
+| 08-10 (pre) | 1.94% | 1.55% (16 queries) |
+| 08-17 (pre) | 2.10% | 1.42% (18) |
+| 08-24 | 2.51% | 2.24% (34) |
+| 08-31 | 2.44% | 2.08% (34) |
+| 09-07 | 4.22% | 2.55% (49) |
+| 09-14 | 6.28% | 2.77% (86) |
+| pre band (last 8) | 1.01-3.49% | 0.99-2.18% |
+
+Arms, burst days removed: contested 123 -> 261, share 2.53% -> 4.16%, species+compare clicks on
+them 22 -> 31, CTR 1.83% -> 1.19%. **The evenness of the split did not move**: the weaker page
+took 23.1% of a contested query's impressions before and 22.8% after, so Google did not start
+choosing one page. Fixed panel of 311 queries (contested 05-20..07-26, overlapping neither arm):
+both pages 64 -> 76, species only 24 -> 35, compare only 59 -> 57.
+
+**Finding 2: the raw alarm was mostly reporting Google, not us.** Burst days (2026-06-13..16,
+06-30, 07-13..15, 08-10, 09-07..11) carry 2-6x the usual query/page rows (09-08: 6,356 against
+~1,000) at a median position of ~50 and ~1.2 impressions a row. Both pages surface together on
+those deep result pages. The 09-10 alarm email ("OUTSIDE the band, up") and tonight's would-be
+6.28% were largely this. Capped at position 20 the rise is still real, just smaller.
+
+**Finding 3: the likely driver started before the change.** No compare page was built after
+June (all 117 in the ledger have `first_seen` <= 2026-06). Yet compare URLs with any impression
+went 17, 19, 26 in the weeks of 07-27, 08-03, 08-10 (all pre-change), 26 in the week it shipped,
+then 32 and 36; compare impressions per day 52, 48, 82 before, 105 in the change week, 113 and
+173 after. The species-to-compare link may have
+sped that up, but the climb was already under way, so the rise cannot be pinned on DEC-309. Same
+shape as DEC-328: something that began before the fix is easy to credit to it.
+
+**Worked examples** (impressions, clicks, position; PRE -> POST):
+- `mulberry trees for sale`: species alone, 44i 1c @6.4 -> split 16i @10.1 / 16i @10.4, 0 clicks. Worse.
+- `jackfruit tree for sale`: species alone, 22i 2c @7.7 -> 17i @10.5 / 19i @11.4, 0 clicks. Worse.
+- `mulberry tree for sale`: 23i @11.3 / 59i 1c @11.2 -> 21i 1c @8.5 / 58i 1c @8.6. Both climbed.
+- `pecan tree` (DEC-309's example): 23i @28.1 / 29i @14.6 -> 27i @17.9 / 26i @15.5. Still split, 0 clicks.
+- `kumquat tree for sale`: compare alone 29i @10.3 -> compare 83i @8.6 plus species 2i @40.5.
+  Counted as contested; the compare page plainly owns it. That is the instrument's noise.
+
+**Decision: close without consolidating, against the ticket's own rule.**
+1. The position data points the wrong way. On shared queries the compare page ranks better for
+   most species, and 8 of the 10 species present in both arms kept their winner: compare for
+   mulberry, pecan, apple, jaboticaba, sapodilla and plum; species for mandarin and jackfruit.
+   Persimmon and apricot flipped to compare. "Consolidate on position" therefore means
+   301-ing species pages into compare pages, which DEC-309 rejected: species pages earn
+   several times the clicks (5.0-5.6/day vs 0.9-2.3/day post-change) and carry the growing
+   guides.
+2. The stake is small. Contested queries brought 31 species+compare clicks in 24 days, about
+   1.3 a day against 15-21 a day site-wide.
+3. Both page types gained clicks anyway: species 3.3, 2.1, 3.7 a day in the three pre weeks,
+   3.4 in the change week, 5.0 and 5.6 in the two clean post weeks.
+
+The one lever left, if this is ever reopened: both pages carry the same full "all products"
+table (on mulberry, most of both pages). That shared table, not the titles, is the likeliest
+reason Google treats them as interchangeable for "X trees for sale".
+
+**Change.** Weekly cron `capture-contested-queries.sh` removed from the live crontab (backup
+of the old crontab at `/tmp/crontab-before-dal287.txt` on the box). It had no action left to
+trigger and would have emailed every week, since post-change readings sit above the
+pre-change band. The script stays, with a RETIRED header naming the burst-day trap;
+`contested_queries.py backfill` rebuilds the series on demand. Final reading (7d and 28d to
+09-14) appended to `data/contested-queries.csv`. DAL-287's trailer changed to prose: it ships
+nothing, so the 28-day outcome grade would only have scored September's spring growth.
+
+**Family.** DEC-317 (a reading that looks the same either way is not evidence): "both pages
+appeared at least once" rises with impression volume and with Google's burst days whether or
+not the pages are competing. The split's evenness is the instrument that could tell.
