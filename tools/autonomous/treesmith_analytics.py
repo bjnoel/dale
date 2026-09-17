@@ -2857,8 +2857,12 @@ def render(metrics):
                'This week</h3>')
         s_html('<table style="border-collapse:collapse;font-size:13px;'
                'width:100%;max-width:520px;">')
+        # Width from the longest label actually present, not a constant. The
+        # usage rows added on 2026-09-17 are longer than the old four and a
+        # fixed 26 left the text column ragged.
+        w = max(len(label) for label, _v, _s, _c in headline)
         for label, value, sub_, colour in headline:
-            s_line(f"  {label:<26} {value}" + (f"   ({sub_})" if sub_ else ""))
+            s_line(f"  {label:<{w}} {value}" + (f"   ({sub_})" if sub_ else ""))
             s_html(f'<tr><td style="padding:3px 12px 3px 0;color:#555;">'
                    f'{_esc(label)}</td>'
                    f'<td style="padding:3px 12px 3px 0;font-weight:bold;'
