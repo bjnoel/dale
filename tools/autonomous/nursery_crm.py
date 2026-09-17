@@ -30,7 +30,7 @@ REGISTER_PATH = os.path.join(REPO, "data", "nursery-contacts.json")
 SITE_ID = "treestock.com.au"
 OUTBOUND_GOAL = "Outbound Link: Click"
 VALID_STATUSES = {"not_contacted", "contacted", "unreachable", "warm",
-                  "courtesy", "personal"}
+                  "courtesy", "personal", "cold"}
 VALID_DIRECTIONS = {"out", "in"}
 
 
@@ -249,10 +249,12 @@ def apply_touch(n, touch):
 
     n.setdefault("touches", []).append(touch)
     n["touches"].sort(key=lambda t: t["date"])
-    if touch["direction"] == "in" and n["status"] == "contacted":
+    if touch["direction"] == "in" and n["status"] in {"contacted", "cold"}:
         n["status"] = "warm"
-    elif touch["direction"] == "out" and n["status"] == "not_contacted":
+    elif touch["direction"] == "out" and n["status"] in {"not_contacted", "cold"}:
         n["status"] = "contacted"
+    # `cold` is a decision not to chase, so it only lasts until somebody acts
+    # against it: a reply re-warms the nursery, and sending anything is chasing.
     # `unreachable` deliberately does NOT auto-promote on an outbound touch,
     # and it is the one status that requires an explicit `set --status` to
     # leave. The reason is that a bounce IS an outbound touch: Fruitopia's
@@ -420,7 +422,7 @@ def validate(reg):
         # `unreachable` is deliberately allowed both with and without touches.
         # Fruitopia has one (a bounce); Garden World has none, because there was
         # never an address to try. Both are "email is not a channel here".
-        if not touches and n["status"] in {"contacted", "warm", "courtesy"}:
+        if not touches and n["status"] in {"contacted", "warm", "courtesy", "cold"}:
             problems.append(w + f"status {n['status']} but no recorded touches")
         act = n.get("open_action")
         if act and act.get("owner") not in {"dale", "benedict"}:

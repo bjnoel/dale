@@ -131,6 +131,39 @@ class TestValidate(unittest.TestCase):
         self.assertIn("unreachable", crm.VALID_STATUSES)
         self.assertIn("contacted", crm.VALID_STATUSES)
 
+    def cold(self, touches):
+        return {"key": "x", "name": "X", "domain": "x.com.au", "status": "cold",
+                "touches": touches, "open_action": None}
+
+    def test_accepts_cold_after_silence(self):
+        """Fruit Tree Cottage: the 2026-08-27 permission email got no reply,
+        and on 2026-09-17 Benedict closed them as cold. `contacted` would
+        invite a follow-up he has decided not to send."""
+        t = [{"date": "2026-08-27", "direction": "out"}]
+        self.assertEqual([], crm.validate(self.base(status="cold", touches=t)))
+
+    def test_rejects_cold_with_no_touches(self):
+        """Nothing can go cold that was never tried. That is `not_contacted`."""
+        self.assertTrue(crm.validate(self.base(status="cold")))
+
+    def test_a_reply_rewarms_a_cold_nursery(self):
+        """Guildford: Emma engaged, then went quiet after the visit. If she
+        replies, the status must stop saying we have given up on her."""
+        n = self.cold([{"date": "2026-08-17", "direction": "out"}])
+        crm.apply_touch(n, {"date": "2026-10-01", "direction": "in",
+                            "channel": "sms", "by": "emma",
+                            "summary": "replied", "evidence": "e1"})
+        self.assertEqual("warm", n["status"])
+
+    def test_chasing_a_cold_nursery_reopens_it_as_contacted(self):
+        """`cold` means we are not chasing. Sending something again is
+        chasing, so the status must say a reply is now awaited."""
+        n = self.cold([{"date": "2026-08-27", "direction": "out"}])
+        crm.apply_touch(n, {"date": "2026-10-01", "direction": "out",
+                            "channel": "email", "by": "benedict",
+                            "summary": "follow-up", "evidence": "e2"})
+        self.assertEqual("contacted", n["status"])
+
     def test_rejects_unparseable_touch_date(self):
         t = [{"date": "last March", "direction": "out"}]
         self.assertTrue(crm.validate(self.base(status="contacted", touches=t)))

@@ -68,16 +68,26 @@
       "currency": "USD",
       "recurring": false,
       "note": "Store-validated proceeds net of Apple commission and tax, per RevenueCat (DAL-267 read-only key). USD because RevenueCat reports proceeds in USD; the AUD payout is only knowable from App Store Connect payment reports and has not been reconciled. Booked 2026-08-10 on Benedict's approval (Q49)."
+    },
+    {
+      "date": "2026-08-31",
+      "type": "revenue",
+      "category": "treestock_affiliate",
+      "description": "Primal Fruits referral commission (Primal Club, GoAffPro), order AZYX0",
+      "amount": 32.89,
+      "currency": "AUD",
+      "recurring": false,
+      "note": "5% of a A$657.80 order. Amount is from the GoAffPro sale notification Benedict forwarded on 2026-08-31; on 2026-09-17 he confirmed commission has been received. Payout date, and whether any other referral sales exist, not yet reconciled against the GoAffPro dashboard. The first treestock revenue in this ledger."
     }
   ],
   "summary": {
-    "total_revenue": 0.0,
+    "total_revenue": 32.89,
     "total_revenue_usd": 52.55,
     "total_expenses": -28.1,
-    "net": -28.1,
+    "net": 4.79,
     "monthly_burn": 8.2,
     "runway_start_date": "2026-03-05",
     "runway_months": 6,
-    "note": "Revenue and expenses are in DIFFERENT currencies and are deliberately not combined. Expenses are AUD (ledger currency). All revenue to date is USD store proceeds as reported by RevenueCat, so total_revenue (AUD) is 0 and net excludes revenue. No FX rate has been applied because inventing one would make the receipt less true, not more; reconcile against App Store Connect payment reports when available. Benedict funds ~$100 USD/month for Claude API separately. Hetzner ~$7 AUD/mo + $1.20 backups."
+    "note": "Revenue and expenses are kept per currency and never combined across currencies. total_revenue and net are AUD (ledger currency) and include the one AUD receipt so far, the Primal Fruits referral commission. Treesmith store proceeds are USD as reported by RevenueCat and stay in total_revenue_usd only. No FX rate has been applied because inventing one would make the receipt less true, not more; reconcile against App Store Connect payment reports when available. Benedict funds ~$100 USD/month for Claude API separately. Hetzner ~$7 AUD/mo + $1.20 backups. net is NOT a P&L and its sign means nothing: total_expenses counts each recurring expense once, while the VPS and its backups have run about six months (roughly A$50 so far, not the A$8.20 counted here)."
   }
 }

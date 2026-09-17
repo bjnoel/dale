@@ -14636,3 +14636,42 @@ somebody, open the thing you are waiting on them to act on and confirm it exists
 Related to DEC-252 (check whether the evidence is already in a system we can read)
 from the opposite side: there, we declared a block that our own data had already
 resolved; here, we declared a block that our own omission had created.
+
+---
+
+## DEC-331 — 2026-09-17 — "cold" is a decision, so the register now has a word for it
+
+**Decided by:** Benedict (the three closes), Dale (the new status). $0.
+
+**Context.** Benedict's waiting-on-you list carried three nursery actions he had
+already dealt with or decided against:
+
+| Nursery | Action on his list | What had actually happened |
+|---|---|---|
+| Primal Fruits | Join the Primal Club affiliate program | Joined 2026-08-10. A real sale landed 2026-08-31: order AZYX0, A$657.80, A$32.89 commission (5%). The action carried `keep_open: true`, correctly, so only a person could close it. |
+| Guildford | Reply to Emma, take up the stock feed offer | He thanked her by SMS after the visit. She never replied. |
+| Fruit Tree Cottage | Decide whether to follow up | No reply to the 2026-08-27 permission email. |
+
+He asked for the last two to be closed "as cold atm".
+
+**The register had no word for that.** `contacted` means a follow-up is due, and
+`warm` means engaged. Clearing the action and leaving either status would have
+invited the next session to propose the chase Benedict had just declined.
+
+**Decision.** Added a seventh status, `cold`: tried, went quiet, not chasing for
+now. It only lasts until somebody acts against it. A reply moves it to `warm`, and
+any outbound touch moves it to `contacted`, because sending something is chasing.
+`validate` refuses `cold` with no touches (that is `not_contacted`). Four tests,
+three of which failed before the change.
+
+**Recorded along the way.**
+- Guildford's SMS has no known send date. It is dated to the 2026-08-17 visit as a
+  stand-in and says so. The stock feed ask and the "top-20 is fixed" news were
+  never sent, and the notes now say that, so a reopened thread starts with them.
+- A$32.89 booked to `financials/ledger.json`, the first treestock revenue there.
+  The summary's `net` became +4.79, which means nothing: `total_expenses` counts
+  each recurring bill once, and the VPS has run six months. The note now says so.
+- **Now reachable:** `read_revenue_monthly` refuses a 28-day window that holds both
+  AUD and USD revenue rather than invent an FX rate. The first AUD commission that
+  lands within 28 days of a USD Treesmith sale will make any `revenue_monthly`
+  verdict read "unavailable". That is the designed behaviour, not a bug.

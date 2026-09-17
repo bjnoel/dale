@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-09-03",
+  "updated": "2026-09-17",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -8,7 +8,8 @@
     "unreachable": "Outreach attempted or attempted-and-impossible, but the channel does not work: the address bounced, or no contact route could be found. NOT the same as 'contacted', which means they received it and did not reply. Needs a different channel, not a follow-up email.",
     "warm": "Replied and engaged.",
     "courtesy": "Replied, but not a growth prospect. Maintain relationship only.",
-    "personal": "Benedict has a personal relationship. Handle offline, not by cold email."
+    "personal": "Benedict has a personal relationship. Handle offline, not by cold email.",
+    "cold": "Tried, went quiet, and Benedict decided not to chase for now. Unlike 'contacted', this does NOT earn a follow-up. A reply moves it to 'warm'; any new outbound touch moves it to 'contacted'."
   },
   "nurseries": [
     {
@@ -312,13 +313,8 @@
       "preferred_channel": "whatsapp",
       "status": "personal",
       "touches": [],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Join the Primal Club affiliate program (GoAffPro, free, self-serve). The only self-serve affiliate program among all 27 nurseries (DEC-241).",
-        "since": "2026-07-30",
-        "keep_open": true
-      },
-      "notes": "Benedict knows Cyrus personally, WhatsApp direct. Do not cold-email. Parkwood, Perth, local pickup."
+      "open_action": null,
+      "notes": "Benedict knows Cyrus personally, WhatsApp direct. Do not cold-email. Parkwood, Perth, local pickup.\n\nAFFILIATE: joined Primal Club (GoAffPro) 2026-08-10. Attribution proven 2026-08-31 by a real sale: order AZYX0, A$657.80, commission A$32.89 (GoAffPro notification forwarded by Benedict). Benedict confirmed commission received 2026-09-17, which closed the signup action."
     },
     {
       "key": "ladybird",
@@ -356,7 +352,7 @@
       "phone": "(08) 9279 8645",
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "warm",
+      "status": "cold",
       "touches": [
         {
           "date": "2026-03-30",
@@ -389,14 +385,18 @@
           "by": "benedict",
           "summary": "In-person visit, about an hour with Emma at the garden centre. No pitch, nothing commercial. She knows who Benedict is now and likes the idea of the site. Flagged that our nursery page shows only seed packets in its top 20. Confirmed the delivery boundary on their site is accurate. Explained the bare root pre-order model. Offered a possible way to get their stock listings without scraping.",
           "evidence": "Benedict's visit notes, 2026-08-17"
+        },
+        {
+          "date": "2026-08-17",
+          "direction": "out",
+          "channel": "sms",
+          "by": "benedict",
+          "summary": "Thank-you SMS to Emma for the visit. Send date not recorded, so this is dated to the visit as a stand-in. No reply as of 2026-09-17. Benedict described it as a thank-you only, so the stock feed ask and the top-20 fix from the cleared action are assumed NOT sent.",
+          "evidence": "Benedict, session 2026-09-17"
         }
       ],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Reply to Emma thanking her for the hour, and take up her offer of a direct stock feed: ask what format they can export (CSV or XML) and how often it refreshes. Also tell her the top-20 on her nursery page is fixed, and that we carry her out-of-stock bare root lines with a notify-me on each, so her pre-registration list is not the only place a collector can wait. Do not ask for registration volumes. Dale to draft.",
-        "since": "2026-08-17"
-      },
-      "notes": "WA, Perth metro delivery only; Emma confirmed 2026-08-17 that the boundary published on their site is accurate. In person visitable from Perth (Guildford, ~20 min from CBD). Contact is Emma. 859 products tracked, 225 in stock at 2026-08-17 (post DEC-301 filter). 127 clicks / 119 visitors in the 90d to 2026-08-13. Geo is unverifiable (DEC-270 free geo DB returns empty region/city), so do NOT describe those visitors as local. Touch 1 (2026-03-30) was buried, not ignored; Emma said so herself on 2026-08-13. Mondays before 2.30pm are quietest.\n\nBARE ROOT MODEL (Emma, 2026-08-17 visit; corrected by Benedict same day). They order bare root stock in around June. It goes first to a pre-registration list, then anything uncollected after 2 weeks is released to the general public, and whatever still does not sell is potted up and sold on as potted stock. Most bare root is spoken for before the public ever gets a chance at it.\n\nCrucially, those lines DO appear on their website, they just only ever show as out of stock. So we hold them: 161 bare root lines at 2026-08-17, 102 of them out of stock, including Cox's Orange Pippin, Angelina Burdett, Coe's Golden Drop, Nijisseiki and the Minnie Royal/Royal Crimson cherry multigrafts. This is a feature, not a gap. Our variety pages give a collector a second place to be notified from, independent of Guildford's own registration list, and that notification surface is the thing to upsell to nurseries later.\n\nDo NOT ask Emma for registration volumes. They live in a spreadsheet with thousands of rows and she is not going to share them.\n\nThey deliberately do not import some deciduous stock that is too susceptible to pests, shot hole borer being the live Perth problem. It does not generally affect fruit trees, but it does affect much of the deciduous range they would otherwise bring in. Absence of a variety at Guildford is sometimes a policy decision, not a stock-out.\n\nStock levels are kept deliberately accurate: an online-vs-shop conflict causes real problems when the last plant sells twice. Treat Guildford availability data as high quality.\n\nEmma may be able to supply stock listings directly instead of us scraping. Not yet specified as to format or cadence."
+      "open_action": null,
+      "notes": "WA, Perth metro delivery only; Emma confirmed 2026-08-17 that the boundary published on their site is accurate. In person visitable from Perth (Guildford, ~20 min from CBD). Contact is Emma. 859 products tracked, 225 in stock at 2026-08-17 (post DEC-301 filter). 127 clicks / 119 visitors in the 90d to 2026-08-13. Geo is unverifiable (DEC-270 free geo DB returns empty region/city), so do NOT describe those visitors as local. Touch 1 (2026-03-30) was buried, not ignored; Emma said so herself on 2026-08-13. Mondays before 2.30pm are quietest.\n\nBARE ROOT MODEL (Emma, 2026-08-17 visit; corrected by Benedict same day). They order bare root stock in around June. It goes first to a pre-registration list, then anything uncollected after 2 weeks is released to the general public, and whatever still does not sell is potted up and sold on as potted stock. Most bare root is spoken for before the public ever gets a chance at it.\n\nCrucially, those lines DO appear on their website, they just only ever show as out of stock. So we hold them: 161 bare root lines at 2026-08-17, 102 of them out of stock, including Cox's Orange Pippin, Angelina Burdett, Coe's Golden Drop, Nijisseiki and the Minnie Royal/Royal Crimson cherry multigrafts. This is a feature, not a gap. Our variety pages give a collector a second place to be notified from, independent of Guildford's own registration list, and that notification surface is the thing to upsell to nurseries later.\n\nDo NOT ask Emma for registration volumes. They live in a spreadsheet with thousands of rows and she is not going to share them.\n\nThey deliberately do not import some deciduous stock that is too susceptible to pests, shot hole borer being the live Perth problem. It does not generally affect fruit trees, but it does affect much of the deciduous range they would otherwise bring in. Absence of a variety at Guildford is sometimes a policy decision, not a stock-out.\n\nStock levels are kept deliberately accurate: an online-vs-shop conflict causes real problems when the last plant sells twice. Treat Guildford availability data as high quality.\n\nEmma may be able to supply stock listings directly instead of us scraping. Not yet specified as to format or cadence.\n\nCOLD 2026-09-17 (Benedict): Emma never replied to the thank-you SMS after the visit. Not chasing for now. Two things from the cleared action were never sent: (1) taking up her offer of a direct stock feed (which format, CSV or XML, and how often it refreshes), and (2) telling her the top-20 on her nursery page is fixed. If this reopens, those are the substance, not another thank-you."
     },
     {
       "key": "fruitopia",
@@ -497,7 +497,7 @@
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "contacted",
+      "status": "cold",
       "touches": [
         {
           "date": "2026-08-27",
@@ -508,11 +508,8 @@
           "evidence": "resend:57f40911-dc01-454b-adcd-91f698827030"
         }
       ],
-      "open_action": {
-        "what": "No reply to the 2026-08-27 permission email; decide whether to follow up",
-        "owner": "benedict"
-      },
-      "notes": ""
+      "open_action": null,
+      "notes": "COLD 2026-09-17 (Benedict): no reply to the 2026-08-27 permission email, not following up for now. Silence is neither consent nor refusal. We still list them, and the removal offer in that email stands if they ever answer."
     },
     {
       "key": "fruit-salad-trees",
