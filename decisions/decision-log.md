@@ -14898,3 +14898,79 @@ a day would have fixed one of the two copies. Parameterising the schema cost an 
 means DEC-332's lesson is stored once. Sub-lesson: **measure the thing you are about to
 assume is the same.** r14's window is three days and r3's is two, the two reports live in the
 same request, and nothing announces the difference.
+
+---
+
+## DEC-335 — 2026-09-17 — The rename worked, on a control, and the downloads followed the rank
+
+**Date:** 2026-09-17 **Ticket:** DAL-257 (Done) **Authority:** Dale autonomous (measurement, $0)
+
+**The decision being scored.** DAL-279 renamed the app from `TreeSmith: Plant Graft Tracker`
+to `TreeSmith: Fruit Tree Tracker` on the strength of DEC-247, which inferred from a
+cross-section of the AU store that the app NAME is the field Apple ranks for a 0-rating app.
+DAL-257 was written in August to falsify that, with predictions, a control group, and a kill
+condition recorded before the change shipped: if "fruit tree tracker" did not improve, the
+name-field theory was wrong and ASO would stop being a lever we spend sessions on.
+
+Play went live 2026-08-13, Apple 2026-08-19. Both four-week dates have passed.
+
+**The result. The kill condition does not fire.**
+
+On Play, which is the clean test because only the title changed there, AU "fruit tree tracker"
+went #26 to #1 and US went absent to #1, and both have held #1 on seven consecutive weekly
+captures over five weeks. The control held: the three orchard-only terms, whose Play text we
+deliberately left alone, were absent at baseline and are absent now, with two single-capture
+flickers at the bottom of a 30-result window and nothing else.
+
+On Apple the move is larger and broader (20 of 36 terms up, 12 entered from absent, AU "fruit
+tree tracker" #7 to #2) and is deliberately not scored, because Apple's submission carried the
+name, the subtitle and the en-US deletion at once and the orchard terms are therefore not a
+control there.
+
+**The half that matters: the rank win reached the download counter.** Apple's own App Downloads
+report, first-time downloads only, excluding the 15 days DEC-332 lost:
+
+| | impressions/day | downloads/day | impression -> download |
+|---|---|---|---|
+| 28 days before the rename | 36.2 | 0.46 | 1.28% |
+| 11 observed days after | 59.5 | 1.73 | 2.90% |
+
+Poisson one-sided p = 1.9e-06 against the pre-rename rate. The lift sits in App Store search
+(0.26 to 1.18/day, and search rose as a share of downloads, 60% to 68%), which is the only
+channel downstream of a keyword change. Both territories moved by the same factor, which cuts
+against the en-US deletion, a US-only change, being the cause. There was no pre-existing ramp
+in downloads: May 15, June 12, July 13, August 10, four flat months, then a step on the
+rename date. Downloads grew 3.8x while impressions grew 1.6x, so **conversion improved, not
+just exposure** — more of the people who saw us installed.
+
+**What is not claimed.** n is 19 downloads. 1.0.11 shipped 2026-09-13 and the two largest days
+are the release day and the day after; strip them and the effect survives at p = 0.011 rather
+than 1.9e-06, which is why DAL-301's 2026-10-15 re-read is now load-bearing rather than
+housekeeping. Both storefronts also gained their first-ever rating inside the window, on an
+unknown date, and DEC-237 called ratings the binding constraint. Play's rank win is
+unmeasurable in downloads because Play Console is Benedict's and RevenueCat inflates Android
+~6x.
+
+**Strategic consequence, stated so nobody has to reach for it later.** This does not rescue the
+target, it shortens the gap. DEC-261's arithmetic still holds: ~2.3% iOS conversion at ~US$17.50
+proceeds means $100/mo needs ~250 iOS installs a month. At 1.73/day we are at ~52. **The gap
+went from ~11x to ~5x on our single best lever, now fully spent.** ASO is confirmed and is not,
+by itself, a path to $100/mo.
+
+**A retraction, which is the other reason to write this down.** This ticket's own day-0 comment
+said in bold that the predicted cost of the rename "did not appear" and that "the trade-off this
+rename was sold on does not exist on Play", because we held #1 on graft tracker and grafting
+tracker the same afternoon the title changed. From the very next capture and every week since,
+both terms are out of the top 30 on both Play storefronts. We held them on day 0 because Play
+had swapped the title and not yet re-indexed the descriptions.
+
+**Lesson (43rd). A day-0 reading of a store measures the field you changed, not the re-index it
+triggers.** The instrument was working, the window was wrong, and the wrong window returned the
+flattering half of the answer — the gain had landed and the cost had not. It is the same shape
+as DEC-332, where the days a fault happened to keep were the busy ones, and the same shape as
+DEC-328, where a page that started ranking before the fix shipped nearly rescued a dead
+hypothesis. Sub-lesson: **the only reason this was catchable is that something scheduled the
+measurement weekly instead of measuring it once.** The two-point diff this ticket originally
+specified would have compared 08-13 to 09-17 and reported the graft loss with no idea it took
+a week to arrive, and would never have shown that #1 held for five weeks rather than five hours.
+A series beats a before and an after, and it costs one cron line.

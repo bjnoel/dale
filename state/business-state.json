@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-09-17",
-  "session_count": 128,
+  "session_count": 129,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -245,7 +245,38 @@
           "au_vs_us": "fruit tree tracker 5/6, orchard tracker 5/6, tree tracker 9/54, graft tracker 1/1, citrus tracker 17/34, seedling tracker 12/40, propagation tracker 30/63, fruit tree journal 32/83, harvest tracker 97/none, treesmith 1/1. Median rank roughly doubles on US.",
           "attribution_NOT_established": "The obvious story (the missing 'Tracker' in the US name causes the gap) fails its own control: terms with no 'tracker' in them are also worse on US, 8 of 11, median 32 vs 83. This data cannot separate 'un-optimised listing' from 'more competitive store'. The listing defect is verified; its share of the rank gap is not."
         },
-        "rank_noise_floor": "AU ranks drift up to 8 positions in 7 days with NO change to name, subtitle, keywords or build. Measured against DEC-247's 2026-07-30 baseline: orchard tracker 3->5, tree tracker 5->9, fruit tree tracker 7->5, bonsai 22->18, citrus 25->17, propagation 35->30, fruit tree journal 40->32. Mean absolute drift 3.3, max 8. Terms where we sit at #1 do not move. DAL-257's pre-recorded prediction ('fruit tree tracker #7 -> top 3') is INSIDE this band and the term is already #5 with no rename shipped, so on its current design that ticket cannot distinguish the rename working from Apple reshuffling. Score the whole 36-term set on US, and re-baseline immediately before submission."
+        "rank_noise_floor": "AU ranks drift up to 8 positions in 7 days with NO change to name, subtitle, keywords or build. Measured against DEC-247's 2026-07-30 baseline: orchard tracker 3->5, tree tracker 5->9, fruit tree tracker 7->5, bonsai 22->18, citrus 25->17, propagation 35->30, fruit tree journal 40->32. Mean absolute drift 3.3, max 8. Terms where we sit at #1 do not move. DAL-257's pre-recorded prediction ('fruit tree tracker #7 -> top 3') is INSIDE this band and the term is already #5 with no rename shipped, so on its current design that ticket cannot distinguish the rename working from Apple reshuffling. Score the whole 36-term set on US, and re-baseline immediately before submission.",
+        "rename_verdict_2026_09_17": {
+          "decision": "DEC-335 / DAL-257 (Done). The pre-registered four-week re-measure. Play clock 2026-08-13, Apple 2026-08-19; both dates passed.",
+          "verdict": "THE NAME-FIELD THEORY SURVIVES ITS KILL CONDITION. Do not re-open it. ASO is confirmed as a lever on Apple, aimed at <niche> tracker compounds, and is NOT by itself a path to $100/mo.",
+          "play_is_the_scored_test": "Only the title changed on Play, and the control held: the three orchard-only terms were absent at baseline and are absent now across all 8 captures, with two single-capture flickers at the bottom of a 30-result window (orchard tracker AU #29 on 09-06, backyard orchard AU #23 on 09-17) and nothing else.",
+          "play_fruit_tree_tracker": "AU #26 -> #1, US absent -> #1, HELD AT #1 ON SEVEN CONSECUTIVE WEEKLY CAPTURES over five weeks. Not the day-0 fresh-listing effect the design warned about. Both pre-registered Play predictions met.",
+          "apple_reported_not_scored": "AU fruit tree tracker #7 -> #2 (the pre-registered top 3, met), US #4 -> #2. Across the 36-term block 24 moved, 20 up, 12 entered from absent, 1 dropped. NOT scored: Apple's submission carried name + subtitle (garden -> orchard) + en-US deletion at once, so the orchard terms are not a control on Apple.",
+          "the_predicted_cost_appeared_late_RETRACTION": "The day-0 comment on DAL-257 said in bold that the rename's predicted cost 'did not appear' and 'the trade-off this rename was sold on does not exist on Play'. THAT IS RETRACTED. graft tracker and grafting tracker were #1 on both Play storefronts on day 0 and are out of the top 30 on every capture from 2026-08-20 onward. Play had swapped the title and not yet re-indexed the descriptions. Apple did the OPPOSITE and held both at #1 throughout, because the iOS description still carries graft: the two stores weight name vs description differently.",
+          "downloads_followed": {
+            "source": "Apple's own App Downloads Standard report (DEC-334), first-time downloads only, excluding the 15 days lost to the DEC-332 handover hole",
+            "impressions_per_day_pre28d": 36.2,
+            "impressions_per_day_post11d": 59.5,
+            "downloads_per_day_pre28d": 0.46,
+            "downloads_per_day_post11d": 1.73,
+            "impression_to_download_pre_pct": 1.28,
+            "impression_to_download_post_pct": 2.9,
+            "poisson_one_sided_p": "1.9e-06 (expected 5.1 at the pre-rename rate, observed 19)",
+            "the_lift_is_in_search": "App Store search 0.26 -> 1.18 downloads/day (4.5x) and search rose as a SHARE of downloads too, 60% -> 68%. That is the only channel downstream of a keyword change. App referrer and web referrer moved by 3 and 2 downloads total.",
+            "both_territories_equally": "AU 0.19 -> 0.73/day, US 0.14 -> 0.55/day, both ~3.8x. The en-US deletion is US-only and predicts a US-specific lift; there is not one, so the collapse to one localisation is not what carries this.",
+            "no_pre_existing_ramp": "Monthly first-time downloads May 15, Jun 12, Jul 13, Aug 10 (20 observed days), then Sep 16 over 9 observed days. Four flat months then a step on the rename date (DEC-328: check the start date).",
+            "conversion_improved_not_just_exposure": "Downloads grew 3.8x while impressions grew 1.6x. More of the people who saw us installed. Strongest single line in the readout."
+          },
+          "not_claimed": [
+            "n = 19 downloads.",
+            "1.0.11 shipped 2026-09-13 and the two biggest days are the release day and the one after. Strip them: 10 downloads in 9 days vs 4.2 expected, p = 0.011, effect survives but weakens. DAL-301's 2026-10-15 re-read is now LOAD-BEARING, not housekeeping.",
+            "Both storefronts gained their first-ever rating inside the window, date unknown. DEC-237 called ratings the binding constraint, so this is an uncontrolled co-cause.",
+            "Seasonality: AU spring would lift AU, but not US by the same 3.8x in northern autumn. Weak evidence against, not proof.",
+            "Play's rank win is UNMEASURABLE in downloads (Play Console is Benedict's, RevenueCat inflates Android ~6x, Android has produced US$0 across 4 sales). Play gave the clean rank experiment, Apple the money-bearing funnel. Neither store could answer this alone."
+          ],
+          "the_gap_went_from_11x_to_5x": "DEC-261's arithmetic is unchanged: ~2.3% iOS conversion at ~US$17.50 proceeds means $100/mo needs ~250 iOS installs/month. At 1.73/day we are at ~52/month, up from ~14. Our single best lever, fully spent, closed less than half the gap.",
+          "series_not_a_diff": "data/treesmith-rank-history.csv now holds 8 Play and 7 Apple weekly captures (cron 40 21 * * 0). The two-point diff DAL-257 originally specified would have shown the graft loss with no idea it took a week to arrive, and would never have shown #1 holding for five weeks rather than five hours."
+        }
       },
       "review_prompt_status_2026_08_06": "SUPERSEDED, see DEC-268 / DAL-230. Durable facts: the review gate executes and is wired correctly; it has never fired publicly because kReviewSuppressionWindow (review_prompt_prefs.dart:61) blacks it out for 14 days after any version change and we ship more often than fortnightly. Correct behaviour, not a bug. Needed a public submission; 1.0.11 shipped 2026-09-13 and we now hold 1 rating on AU and US, the first ever.",
       "audience_geography": {
