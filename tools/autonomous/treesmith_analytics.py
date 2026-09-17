@@ -1387,7 +1387,11 @@ def m_reminders(host, key):
                sum({_num('blocked')}) AS blocked,
                sum({_num('failed')}) AS failed,
                sum({_num('left_due')}) AS left_due,
-               countIf({_num('left_due')} > 0) AS sweeps_with_due
+               countIf({_num('left_due')} > 0) AS sweeps_with_due,
+               count(DISTINCT if({_num('blocked')} > 0, person_id, NULL))
+                 AS people_blocked,
+               count(DISTINCT if({_num('failed')} > 0, person_id, NULL))
+                 AS people_failed
         FROM events
         WHERE event = 'reminder_sweep'
           AND timestamp >= now() - INTERVAL 7 DAY
@@ -1408,11 +1412,16 @@ def m_reminders(host, key):
                      "n": r[3], "people": r[4]}
                     for r in created if r[0] != "scheduled"]
     taps_total = sum(r[2] for r in tapped)
-    s = sweeps[0] if sweeps else [0] * 9
+    s = sweeps[0] if sweeps else [0] * 11
     sweep = {
         "sweeps": s[0], "people": s[1], "active": s[2],
         "already_pending": s[3], "scheduled": s[4], "blocked": s[5],
         "failed": s[6], "left_due": s[7], "sweeps_with_due": s[8],
+        # How many PEOPLE, not how many reminders. "2 blocked" is a different
+        # finding depending on whether it is one person's phone with
+        # notifications switched off or two separate users losing one each.
+        "people_blocked": s[9] if len(s) > 9 else 0,
+        "people_failed": s[10] if len(s) > 10 else 0,
     }
     return {
         "all_time": scalar(ever),
@@ -1986,12 +1995,22 @@ def render(metrics):
                 by_date.setdefault((a["declared"], a["days_waiting"],
                                     a["grace_days"]), []).append(a["event"])
             for (declared, waited, grace), evs in sorted(by_date.items()):
-                kv(f"Awaiting first event ({len(evs)})",
-                   f"declared {declared}, none seen yet ({waited}d of {grace}d "
-                   f"grace): " + ", ".join(sorted(evs)), GREY)
-                note("An awaited event is empty because the build has not "
-                     "reached users, not because nobody does the thing. Any "
-                     "metric reading one is empty by rollout.")
+                # "Awaiting first event (2) declared 2026-08-31, none seen yet
+                # (17d of 42d grace)" was four pieces of jargon in a row and
+                # gave no clue whether it needed doing anything about
+                # (Benedict, 2026-09-17). It does not, and the line now says
+                # so on its face.
+                kv(f"Not measured yet ({len(evs)})",
+                   f"we started counting these on {declared} and none has "
+                   f"happened yet. Normal until people update the app: "
+                   f"{waited} days in, we start worrying at {grace}. "
+                   f"Nothing to do. "
+                   + ", ".join(sorted(evs)), GREY)
+                note("\"Not measured yet\" means the app version that "
+                     "reports these has not reached users yet, NOT that "
+                     "nobody does the thing. Anywhere else in this email that "
+                     "one of these reads zero, the zero is about the rollout "
+                     "and not about your users.")
     elif lv and not lv["ok"]:
         # An errored liveness check is itself a blind spot, so say so rather
         # than letting the section's silence read as "all events healthy".
@@ -2686,14 +2705,34 @@ def render(metrics):
                  "fires many times, so it can exceed 100%.")
         sw = d["sweep"]
         if sw["sweeps"]:
-            kv("Cold-start sweeps", f"{sw['sweeps']} across {sw['people']} people")
-            kv("  left due (ignored-proxy)", str(sw["left_due"]),
+            # Every label here used to name the mechanism. "Cold-start sweeps",
+            # "left due (ignored-proxy)" and a bare "0 / 18" told the reader
+            # nothing about what happened to anybody (Benedict, 2026-09-17).
+            kv("Reminder checks when the app opened",
+               f"{sw['sweeps']} checks across {sw['people']} people")
+            kv("  Already set, nothing to do", str(sw["already_pending"]), GREY)
+            kv("  Newly set during the check", str(sw["scheduled"]), GREY)
+            kv("  Past due and still not done",
+               str(sw["left_due"]),
                RED if sw["left_due"] else GREY)
-            kv("  scheduled / already pending",
-               f"{sw['scheduled']} / {sw['already_pending']}", GREY)
             if sw["blocked"] or sw["failed"]:
-                alert("reminders blocked / failed at cold start",
-                      f"{sw['blocked']} / {sw['failed']}", PRODUCT)
+                # Was two bare numbers with a slash between them. Say what
+                # each is, how many people it hit, and what it costs the user.
+                parts = []
+                if sw["blocked"]:
+                    parts.append(
+                        f"{sw['blocked']} blocked by the phone (almost always "
+                        f"notifications switched off for TreeSmith), "
+                        f"affecting {sw['people_blocked']} "
+                        f"{'person' if sw['people_blocked'] == 1 else 'people'}")
+                if sw["failed"]:
+                    parts.append(
+                        f"{sw['failed']} failed for another reason, affecting "
+                        f"{sw['people_failed']} "
+                        f"{'person' if sw['people_failed'] == 1 else 'people'}")
+                alert("some reminders could not be set when the app opened",
+                      "; ".join(parts) + ". Those reminders will not go off.",
+                      PRODUCT)
         note(REMINDER_DELIVERY_NOTE)
     elif rm and not rm["ok"]:
         section("Reminders (7d)")

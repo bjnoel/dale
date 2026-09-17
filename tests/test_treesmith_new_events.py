@@ -198,7 +198,7 @@ class AwaitingRenderTest(unittest.TestCase):
     def test_awaiting_is_grey_not_red(self):
         """Red here would train the reader to skip a section that must be read."""
         _, html = self._render(awaiting=self._awaiting("graft_added"))
-        start = html.index("Awaiting first event")
+        start = html.index("Not measured yet")
         self.assertIn(f"color:{ta.GREY}", html[start:start + 800])
         self.assertNotIn(f"color:{ta.RED}", html[start:start + 800])
 
@@ -206,9 +206,16 @@ class AwaitingRenderTest(unittest.TestCase):
         """Ten copies of the same sentence is the wallpaper this avoids."""
         names = sorted(ta.AWAITING_FIRST_EVENT)
         text, _ = self._render(awaiting=self._awaiting(*names))
-        self.assertEqual(text.count("declared 2026-08-31, none seen yet"), 1)
+        self.assertEqual(text.count("we started counting these on 2026-08-31"), 1)
         for n in names:
             self.assertIn(n, text)
+
+    def test_the_awaiting_line_says_it_needs_no_action(self):
+        """It is the first thing in the email and it is not a problem. Left
+        unsaid, it reads as one (Benedict, 2026-09-17)."""
+        text, _ = self._render(awaiting=self._awaiting("graft_added"))
+        self.assertIn("Nothing to do", text)
+        self.assertNotIn("grace)", text)
 
     def test_an_overdue_event_says_how_long_it_has_been_overdue(self):
         text, html = self._render(never_seen=[{
