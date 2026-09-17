@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-09-17",
-  "session_count": 132,
+  "session_count": 134,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
           "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
@@ -686,68 +686,43 @@
         "orchard_of_flavours": "Dropped. Non-AU domain, topical relevance only."
       },
       "availability_history": {
-        "measured": "2026-07-30 (DAL-115, DEC-246)",
-        "window": "2026-03-05 to 2026-07-30, 142 days, 27 nurseries, 108 species, one check per day",
-        "national_saturation": "92 of 108 species were in stock somewhere in Australia on all 142 days. National rarity is largely resolved; the April 2026 rarity list is stale (White Sapote, its headline 'rarest', is now available every day from 8 nurseries).",
-        "hardest_to_find": {
-          "kakadu-plum": "3 nurseries, in stock somewhere on 5 of 142 days",
-          "riberry": "1 nursery, 117 days with none, longest gap 115 days",
-          "muntries": "3 nurseries, 71 days with none",
-          "quandong": "3 nurseries, 60 days with none",
-          "cherry-of-the-rio-grande": "3 nurseries, 24 days with none",
-          "chinese-bayberry": "3 nurseries, avg 1.27 stockists in stock/day",
-          "babaco": "4 nurseries, avg 1.94 stockists in stock/day"
+        "measured": "2026-09-17 (DEC-341/DAL-293); dataset DEC-324/DAL-254",
+        "window": "189 measurable days of 197, 8 excluded as scraper outages, 27 nurseries, 119 species",
+        "published": "/fruit-tree-shipping-by-state.html + /shipping-reachability.json, CC BY 4.0, rebuilt nightly",
+        "national_saturation": "100 of 119 species in stock somewhere every measured day. National rarity is largely resolved; the finding is STATE reachability, not species.",
+        "state_reachability_30d_avg_species_per_day": {
+          "VIC": 113.5,
+          "NSW": 113.4,
+          "ACT": 113.4,
+          "QLD": 113.4,
+          "WA": 105.3,
+          "SA": 103.8,
+          "NT": 50.3,
+          "TAS": 29.4
         },
-        "state_reachability": {
-          "note": "Species reachable at all / average species in stock on a given day, counting only nurseries whose published policy covers the state.",
-          "VIC": "21 nurseries, 107 of 108, 101.2/day",
-          "NSW": "18 nurseries, 107, 101.1/day",
-          "ACT": "19 nurseries, 107, 101.1/day",
-          "QLD": "18 nurseries, 107, 101.1/day",
-          "SA": "14 nurseries, 102, 94.2/day",
-          "WA": "9 nurseries, 105, 93.6/day",
-          "NT": "4 nurseries, 65, 49.2/day",
-          "TAS": "3 nurseries, 35 of 108, 27.5/day. 73 species were never once buyable in Tasmania across the window."
+        "wa_correction": "WA is NOT the cut-off state despite what the WA rare fruit community assumes; quarantine costs it ~7% of breadth and it reached 117 of 119 species. TAS has the problem WA thinks it has: 74 of 119 never once buyable there.",
+        "hard_to_find_badge": {
+          "badged": 8,
+          "was": 45,
+          "fixed": "2026-09-17, DEC-341. The availability half averaged over LISTINGS, so one nursery's twenty dead variety SKUs outvoted four nurseries carrying one each. 37 species lost the badge; 24 of them had been in stock somewhere every one of the 189 measured days while the site called them hard to find.",
+          "species": [
+            "african-breadfruit",
+            "breadfruit",
+            "sea-celery",
+            "kakadu-plum",
+            "riberry",
+            "muntries",
+            "ruby-saltbush",
+            "quandong"
+          ],
+          "guarantee": "badge and the CC BY dataset now share one rollup and one denominator; agreement asserted over all 119 species by tests/test_rarity_scores.py",
+          "do_not": "do not move HARD_TO_FIND_SCORE (65) to change the badge count; nursery scarcity alone caps at 60, so the threshold is what keeps the claim honest"
         },
-        "wa_correction": "WA is NOT the cut-off state, despite what the WA rare fruit community assumes. 9 shipping nurseries but 105 of 108 species reachable and 93.6 in stock on an average day against VIC's 101.2. Quarantine costs WA about 7% of breadth, concentrated in a few species (Muntries never, Kakadu Plum 5 days, Cherry of the Rio Grande and Chinese Bayberry ~25% of days, Quince ~50%). Tasmania has the problem WA thinks it has.",
         "method_caveats": [
-          "Nursery count grew 19 to 27 during the window, so early days undercount.",
-          "Shipping is each nursery's stated policy, not a test order.",
-          "Bare-root seasonality is not scarcity: Walnut 1.9 to 4.7 stockists March to July, Currant 2.6 to 7.9, Hazelnut 2.5 to 6.0, Apple 10.8 to 16.8. Excluded from the hardest-to-find list for that reason.",
-          "Some listings are seed packets, not trees (why Goji Berry is excluded despite a low score).",
-          "compute_rarity_scores in build_species_pages.py averages availability across LISTINGS, so a nursery with many variety SKUs outvotes several nurseries with one each. DEC-246 rolls up to nursery-day level instead. Use the nursery-day roll-up for any public claim.",
-          "No South Australian nursery is tracked at all (DAL-255)."
-        ],
-        "linkable_asset": "DEC-245 recorded that treestock had nothing citable and was therefore pricing rented links. This dataset is the first citable thing the business has produced. DAL-254 proposes publishing it as a page for the free link targets to point at.",
-        "linkable_asset_published": {
-          "decision": "DEC-324 / DAL-254 (2026-08-27). SHIPPED, commit e0fbd24, live on the 00:00 UTC build.",
-          "page": "https://treestock.com.au/fruit-tree-shipping-by-state.html",
-          "data": "https://treestock.com.au/shipping-reachability.json (CC BY 4.0, rebuilt nightly)",
-          "builder": "tools/scrapers/build_shipping_reachability.py, wired into run-all-scrapers.sh, sitemap, llms.txt and the Insights nav",
-          "why": "DEC-245 concluded treestock was pricing rented links only because it owned nothing citable. This is the asset DAL-232 (Urban Revolution), DAL-167 (Rare Fruit SA) and DAL-252 (STFC) link TO. Judge on referring domains (needs DAL-253), not its own traffic.",
-          "outage_days_excluded": "SIX days recorded exactly ONE nursery (2026-06-24, 06-26, 06-29, 06-30, 07-02, 07-03) plus two partial days at 56% and 60% (07-11, 07-19). Scraper failures, not empty nurseries. DAL-115 and DEC-246 averaged them in. Excluding them moves 'in stock somewhere on every measured day' from 69 species to 100 of 119. Threshold 0.75 of the running-max panel is MEASURED: observed days are six at 0.04, one at 0.56, one at 0.60, then the healthy floor at 0.89. Excluded dates are published in the JSON.",
-          "panel_correction": "DEC-246's 'grew from 19 nurseries to 27' is WRONG. Day one (2026-03-05) had 8; today 25 report. The page derives this nightly instead of restating it, and shows a last-30-day average beside the whole-window one.",
-          "measured_2026_08_27": {
-            "window": "2026-03-05 to 2026-08-27, 176 days of which 168 measurable",
-            "species": 119,
-            "saturated_all_days": "100 of 119 in stock somewhere in Australia on EVERY measured day",
-            "by_state_nurseries_ever_avg30d_avgwindow": {
-              "VIC": "20 / 119 / 113.5 / 112.3",
-              "NSW": "17 / 119 / 113.4 / 112.2",
-              "ACT": "18 / 119 / 113.4 / 112.2",
-              "QLD": "17 / 119 / 113.4 / 112.2",
-              "WA": "9 / 117 / 105.3 / 103.3",
-              "SA": "14 / 114 / 103.8 / 104.0",
-              "NT": "3 / 66 / 50.3 / 49.0",
-              "TAS": "3 / 45 / 29.4 / 28.7"
-            },
-            "headline": "74 of 119 species were never once buyable in Tasmania. Only Diggers, Fruit Salad Trees and Garden Express ship there at all.",
-            "wa_correction_holds": "WA reaches 117 of 119. The WA-is-cut-off belief is still wrong and the page says so by name.",
-            "scarcity_replicates_dec246": "Kakadu Plum 5/168 from 1 nursery, Riberry 50/168 from 1, Muntries 71/168 from 1, Quandong 94/168 from 2, Cherry of the Rio Grande 145/168 from 2. Independent code path, same answer."
-          },
-          "method": "Rolled up to NURSERY-day, never listing-day (DEC-246's warning about compute_rarity_scores). A nursery removed from the registry stops contributing immediately, which is what makes DEC-319's Heaven On Earth removal real rather than cosmetic.",
-          "guard": "tests/test_shipping_reachability.py pins the rollup, the outage exclusion at each observed panel value, the growing-panel case, the CC BY declaration, the JSON link, the Dataset JSON-LD, the analytics tag and the sitemap entry."
-        }
+          "availability.json records NO day entry for a delisted product: absence != out of stock.",
+          "Bare-root seasonality is not scarcity; some listings are seed packets, not trees.",
+          "The panel grew from 8 on day one to 27, so early days undercount. The old '19 to 27' claim was wrong and was repeated internally for two months."
+        ]
       },
       "lead_magnet_wa_guide": {
         "wa_shipping_truth": "9 of 27 nurseries reach a WA address: WA-based = All Season Plants WA, Guildford Garden Centre, Perth Mobile Nursery, Primal Fruits Perth, St Clements Citrus; interstate = Daleys, The Diggers Club, Fruit Salad Trees, Garden Express.",
@@ -865,15 +840,15 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done — hello@walkthrough.au via Fastmail",
-    "blog": "deployed — walkthrough.au live",
+    "email": "done \u2014 hello@walkthrough.au via Fastmail",
+    "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
+    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
     "deploy_gap": "There is NO deploy cron (DEC-253). `crontab -l` has the Monday Treesmith digest and the nightly Treesmith drip only. tools/deploy.sh runs from the autonomous session startup hook (18:00-21:00 UTC), so a commit made after the last session of the night sits in git, tested and green, while cron keeps running the stale copy in /opt/dale/autonomous/. Same family as DAL-263 (deploy.sh never restarts subscribe-server). After changing ANYTHING cron executes: diff the repo copy against the deployed copy, run tools/deploy.sh, and verify.",
     "reporting_integrity": "DEC-255 / DAL-261 (2026-07-30): audited every external API reader. Fixed 5 defects. traffic_report.py read 200 of 1,703 GSC query rows and computed a SET DIFFERENCE from the slice, so 9 of the 10 'new queries' in Benedict's daily email were queries we already ranked for and position movers showed 11 of a true 392. resend_report.py kept an unpaginated copy of fetch_emails (the DEC-250 bug in the sibling file): 100 emails became 1,838. resend_report.py also counted delivery as last_event=='delivered', but last_event is the FURTHEST state reached, so every opened/clicked email counted as undelivered and the delivery rate FELL as engagement ROSE (52.5% reported against a true 100% delivered, 0 bounced). daily-digest.py's engagement stamp took one page of 50 issues, and that gates whether Dale strikes (DEC-226), so an unseen signal read as absence. nursery_crm.outbound_clicks ran off a 40-page cap silently and now warns PARTIAL. Audited clean: plausible_stats.py (honest top-N), linear_poller.py, linear_update.py archive-stale, gsc_analysis.py, resend_engagement.py, treesmith_analytics.py, uptime_monitor.py. Guard is tests/test_api_pagination.py, which drives each real fetcher against a saturated first page.",
     "email_reply_path": "DEC-257 CORRECTION to Q46. treestock.com.au's APEX already has Fastmail MX (in1/in2-smtp.messagingengine.com) and has received email the whole time. The defect is narrower and entirely ours: we send From alerts@mail.treestock.com.au, a SUBDOMAIN with no MX, and stocklib/mailer.py:112 sets no Reply-To at all, so replies are addressed somewhere that cannot receive them. Fix is ONE LINE pointing Reply-To at an apex address (DAL-243), not a new service and not a DNS change. Do NOT add MX to the sending subdomain. The same mailbox answers DAL-80's BCC ask via a Fastmail alias + an IMAP-scoped app password (revocable, cannot send); imap.fastmail.com:993 is reachable from this server, verified. Cloudflare Email Routing considered and rejected: MX change on a live domain, a Worker, and a token scope we do not hold, to duplicate a mailbox we already own."
