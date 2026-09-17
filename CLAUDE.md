@@ -344,7 +344,10 @@ Full rationale and the measured before/after in `docs/ticket-format.md`.
   a ~100MB app that needs sign-in before use, costs A$29-58/yr, and tracks garden
   beds rather than individual trees, grafts or scions. After our rename we rank above
   it on "fruit tree tracker" everywhere except iOS US (DAL-238 cancelled). Rootstock: Seed & Plant Log (2026-07-17) does seed
-  provenance and crosses. FruitForest (2023) does orchard GPS mapping. Trees Diary
+  provenance and crosses. FruitForest (2023) is the closest to us but basic (Benedict installed it
+  2026-09-17): needs sign-in, hits the Pro gate quickly, pins a tree at your current
+  GPS spot with no way to move it, and "grafted" is one dropdown value with no
+  rootstock, scion source or graft records. Trees Diary
   (2015) does per-tree multi-year profiles for $1.99. All of them are on 0 ratings.
   Our differentiator is still graft tracking, scion sources, activity logs, and a
   built-in audience via treestock, but the moat is narrowing. Do not assert we are
