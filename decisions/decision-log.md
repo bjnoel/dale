@@ -15387,3 +15387,113 @@ said 48 people wanted cloud backup, and it was 23. Sub-lesson 2: the diagnostic 
 decided the ticket (did the reachers hold Pro?) was unanswerable because the property is null on 78%
 of the events, and **an unanswerable question should be reported as unanswerable, not resolved on the
 22% that happen to carry the field**.
+
+---
+
+## DEC-341 — 2026-09-17 — The "hard to find" badge was measuring SKU thinness, and it badged 45 species of which 37 were buyable every day
+
+**Ticket:** DAL-293 · **Track:** B (treestock) · **Authority:** Dale autonomous (defect in a public claim)
+
+### The claim we were making
+
+`compute_rarity_scores` in `build_species_pages.py` writes `hard_to_find`, which renders as an amber
+"Hard to find" / "Very rare" pill on `/rare.html`, in the homepage stock table (via `data.js`), on the
+species pages and as a ranking boost in the state buy-page showcases. It is a statement to a visitor
+about whether they can get the plant.
+
+Its availability half averaged over **listings**. So a nursery carrying twenty named varieties of one
+species, nineteen of them permanently out of stock, outvoted four nurseries carrying one each. A
+species read as scarce because whoever stocks it keeps thin SKUs. DEC-246 called this out in April as
+"fine as an internal ranking signal, wrong in a published number", and did not notice it had been a
+published number the whole time.
+
+### What it actually did, measured
+
+Old rule against new, over 197 days of history (189 measurable, 8 excluded as scraper outages):
+
+| | badged |
+|---|---|
+| old, listing-day | **45** |
+| new, nursery-day | **8** |
+| lost | 37 |
+| gained | 0 |
+
+**24 of the 37 were in stock somewhere in Australia on literally every one of the 189 measured days**
+while the live site called them hard to find. The worst of them:
+
+| species | nurseries | in stock | old score |
+|---|---|---|---|
+| White Sapote | 7 | 100% of days | 79.4 (one point off "Very rare") |
+| Rambutan | 5 | 100% | 75.5 |
+| Custard Apple | 10 | 100% | 68.9 |
+| Loganberry | 10 | 86.2% | 71.5 |
+| Tamarillo | 11 | 94.7% | 66.2 |
+
+White Sapote is the same species DEC-246 flagged as the stale headline of the April "hardest to find"
+list. It has been buyable from eight nurseries every day since, and we kept badging it for five months.
+
+The 8 that survive are the ones the CC BY dataset independently calls scarce: African Breadfruit,
+Breadfruit and Sea Celery (0.0 availability), Kakadu Plum (0.026), Riberry (0.382), Muntries (0.376),
+Ruby Saltbush (0.471), Quandong (0.608).
+
+### What shipped
+
+- The availability half is now a **nursery-day rollup imported from `build_shipping_reachability`**,
+  not reimplemented, so the badge and the CC BY file at `/shipping-reachability.json` cannot drift.
+  That was DAL-293's actual ask.
+- **Outage days excluded** (DEC-324's `complete_days`, `PANEL_COMPLETENESS = 0.75`). A failed cron is
+  not a fact about Australian nurseries.
+- **`MIN_OBSERVED_DAYS = 30`**, a new observability guard. Nothing today is within 155 days of it, so
+  it is not tuned to make today come out right (DEC-323); it exists so a species added to the taxonomy
+  next month does not read as "in stock on 0 of 189 days" and get badged VERY RARE on its first night.
+- **`HARD_TO_FIND_SCORE` left at 65 on purpose.** Nursery scarcity alone caps at 60, so under the new
+  rollup nothing can badge without genuinely being unbuyable on a real share of days. Moving it to
+  keep the badge count up would be widening the claim to fit the page, which the ticket ruled out.
+- `load_stock_history` now returns a fourth value, `listed`, so "listed every day and never in stock"
+  is distinguishable from "never tracked" (DEC-339).
+- `tests/test_rarity_scores.py`, 9 tests. The discriminating one is built to the exact shape that
+  produced the false badges (one nursery, nineteen dead SKUs, one live one) and was **proven to fail
+  under the old rule first** (DEC-326): old gives availability 0.05, score 93.6, "Very rare"; new
+  gives 1.0 and no badge, on a species buyable on every single day.
+
+### The near-miss
+
+The first version divided by days the species was **listed** somewhere rather than every measured day.
+That reads as more careful and is not. It put riberry on **186 days here against 189 in the CC BY
+file**: one fact, two published numbers, which is the precise defect the ticket exists to remove. A
+day on which no nursery listed the species is a day nobody could buy one and belongs in the
+denominator. Corrected before shipping; the two files now agree on `days_in_stock` and `days_observed`
+for **all 119 species, zero disagreements**, and a regression test pins the delisted-window case.
+
+Days-listed did not disappear, it moved to the job it actually does: it is the input to the
+observability guard, which is a question about what we have watched, not about what we divide by.
+
+### Side effect worth naming
+
+`/rare.html` now renders **zero** badges. None of its 31 curated exotic species are scarce by the
+honest measure; the scarce ones are bush tucker. That is the answer, not a bug, and per the ticket it
+is reported rather than papered over. The page's own copy ("rare and exotic", "unusual species") is a
+curatorial claim and stays.
+
+### Also fixed on the way past
+
+`build_species_pages.py` is the only **writer** of `rarity_scores.json`, and the golden fixture copy of
+that file is an **input** to the location, dashboard and rare_finds golden cases. Running the species
+golden case rewrote the committed fixture, so those cases' results depended on test ordering and a
+suite run left the repo dirty. Added `--rarity-out`, pointed the golden case at its temp dir. Same
+trap the `{LEDGER}` argument was already documented as avoiding, one file over.
+
+### Lesson
+
+**A number can be right for the thing it was built for and wrong for the thing it is wired to.** The
+listing-day average was a reasonable internal sort key. Nobody changed it; somebody rendered it. The
+defect was introduced by the `<span class="rare-badge">` that published it, and that line is nowhere
+near the arithmetic. **When you find an internal metric, grep for its consumers before you judge
+whether it is good enough** — DEC-246 recorded "wrong in a published number" in April and did not run
+that grep, so the fix waited five months behind its own diagnosis.
+
+Sub-lesson: **the version of a fix that looks more careful is not automatically the one that agrees
+with the thing you are trying to agree with.** Days-listed is defensible in isolation and would have
+shipped a second contradiction between two files published by the same site on the same night. The
+only reason it was caught is that agreement was asserted over all 119 species instead of the one the
+test fixture covered.

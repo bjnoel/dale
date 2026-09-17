@@ -135,59 +135,92 @@ def load_nursery_products(data_dir: Path) -> list[dict]:
     return products
 
 
+#: Days a species must have been on somebody's shelf before we will call it hard
+#: to find in public. Nothing today is near it (every tracked species has 185+
+#: days of listing history against a 189-day measurable window), so it is not
+#: tuned to make today's answer come out (DEC-323). It exists for the species
+#: added to the taxonomy next month, which would otherwise read as "never in
+#: stock" across the whole window on a week of history and get badged VERY RARE
+#: on its first night.
+MIN_OBSERVED_DAYS = 30
+
+#: Score at or above which the public "hard to find" badge is shown. Left at the
+#: value it has always had ON PURPOSE. Nursery scarcity alone caps out at 60, so
+#: under the nursery-day rollup nothing can be badged without actually being
+#: unbuyable on a real share of days, which is what the badge says. Raising or
+#: lowering it to keep the old badge count would be widening the claim to fit
+#: the page, which DAL-293 explicitly ruled out.
+HARD_TO_FIND_SCORE = 65
+
+
 def compute_rarity_scores(data_dir: Path, by_species: dict, lookup: dict) -> dict[str, dict]:
     """Compute rarity scores for each species using availability history.
 
     Score formula (0 = common, 100 = extremely rare):
       60% weight: nursery scarcity (fewer nurseries carry it = rarer)
-      40% weight: availability scarcity (out-of-stock more often = rarer)
+      40% weight: availability scarcity (unbuyable more often = rarer)
 
-    Returns dict of {slug: {"score", "hard_to_find", "avg_availability", "nursery_count"}}
+    The availability half is a NURSERY-DAY rollup: the share of measured days on
+    which the species was in stock at no tracked nursery at all. It used to be a
+    listing-day average, which meant one nursery carrying twenty named varieties
+    of a species outvoted four nurseries carrying one each, so a species could
+    read as scarce purely because the nurseries stocking it keep thin SKUs.
+
+    DEC-246 called that "fine as an internal ranking signal, wrong in a published
+    number" and it has been a published number the whole time: `hard_to_find`
+    renders as a public "hard to find" badge on /rare.html, on the homepage and
+    on the state buy pages. Measured 2026-09-17, it badged 45 species, and 37 of
+    them were in stock somewhere in Australia on essentially every measured day
+    (24 of them on literally every one). See DEC-341 / DAL-293.
+
+    The rollup is imported from build_shipping_reachability, not reimplemented,
+    so the badge and the CC BY dataset published at /shipping-reachability.json
+    cannot drift apart. That is the entire point of the change.
+
+    Returns dict of {slug: {"score", "hard_to_find", "avg_availability",
+    "nursery_count", "days_in_stock", "days_observed", "days_listed"}}.
+    `days_in_stock` / `days_observed` are the same two numbers the dataset
+    publishes as `days_in_stock_somewhere` / `days_tracked`, by construction.
     """
+    from build_shipping_reachability import complete_days, load_stock_history
+
     total_nurseries = len(SHIPPING_MAP)
 
-    # Aggregate availability per species: list of (in_stock_days, total_days)
-    species_avail: dict[str, list] = defaultdict(list)
-
-    for nursery_dir in sorted(data_dir.iterdir()):
-        if not nursery_dir.is_dir():
-            continue
-        avail_file = nursery_dir / "availability.json"
-        if not avail_file.exists():
-            continue
-        try:
-            with open(avail_file) as f:
-                avail_data = json.load(f)
-        except Exception:
-            continue
-
-        for prod_data in avail_data.get("products", {}).values():
-            title = prod_data.get("title", "")
-            if not title:
-                continue
-            species = match_title(title, lookup)
-            if not species:
-                continue
-            days = prod_data.get("days", {})
-            if not days:
-                continue
-            in_stock_days = sum(1 for d in days.values() if d.get("a", False))
-            species_avail[species["slug"]].append((in_stock_days, len(days)))
+    stock, all_days, reporting, listed = load_stock_history(data_dir, lookup)
+    # Days the scrapers actually covered. A day the cron failed is not a day on
+    # which nothing was in stock in Australia (DEC-324); averaging it in makes
+    # every species look rarer than it is.
+    measured, _excluded = complete_days(all_days, reporting)
+    measured_set = set(measured)
 
     scores = {}
     for slug, entry in by_species.items():
         prods = entry["products"]
         nursery_count = len({p["nursery_key"] for p in prods})
 
-        # Average availability from historical data
-        if species_avail.get(slug):
-            total_in = sum(x[0] for x in species_avail[slug])
-            total_days = sum(x[1] for x in species_avail[slug])
-            avg_avail = total_in / total_days if total_days > 0 else 0.5
+        # Denominator is every measured day, which is exactly what the published
+        # dataset divides by (`days_tracked`). A day on which no nursery listed
+        # the species at all is a day nobody could buy one, so it belongs in the
+        # denominator. Using days-listed instead looks defensible and is not: it
+        # put riberry on 186 days here against 189 in the CC BY file, which is
+        # the two-published-numbers-disagree defect this whole change exists to
+        # remove.
+        in_stock_days = sum(1 for day in measured if stock.get(slug, {}).get(day))
+
+        # Whether we have watched the species long enough to say anything in
+        # public is a SEPARATE question from what we divide by, and it is the
+        # one listed-days actually answers.
+        days_listed = len(listed.get(slug, set()) & measured_set)
+
+        if days_listed >= MIN_OBSERVED_DAYS and measured:
+            avg_avail = in_stock_days / len(measured)
+            judgeable = True
         else:
-            # No history — fall back to current stock ratio
-            in_stock = sum(1 for p in prods if p["available"])
-            avg_avail = in_stock / len(prods) if prods else 0.5
+            # Too little history to make a claim about. Score it as common
+            # rather than guessing; an unbadged rare plant is a missed badge,
+            # a badged common plant is a false statement to a visitor.
+            avg_avail = 1.0
+            judgeable = False
 
         nursery_score = 1.0 - min(nursery_count / total_nurseries, 1.0)
         avail_score = 1.0 - avg_avail
@@ -195,9 +228,12 @@ def compute_rarity_scores(data_dir: Path, by_species: dict, lookup: dict) -> dic
 
         scores[slug] = {
             "score": rarity_score,
-            "hard_to_find": rarity_score >= 65,
+            "hard_to_find": judgeable and rarity_score >= HARD_TO_FIND_SCORE,
             "avg_availability": round(avg_avail, 3),
             "nursery_count": nursery_count,
+            "days_in_stock": in_stock_days,
+            "days_observed": len(measured),
+            "days_listed": days_listed,
         }
     return scores
 
@@ -812,12 +848,23 @@ def build_species_index(species_data: list[dict], trend_data: dict | None = None
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("Usage: build_species_pages.py <data-dir> <output-dir>")
+    argv = sys.argv[1:]
+    # Where to write rarity_scores.json. Defaults beside the data dir, which is where
+    # four other builders read it from. The golden harness overrides it: this builder
+    # is the only WRITER of a file the location/dashboard/rare cases READ, so without
+    # an override one test run rewrites the committed fixture under the other cases.
+    rarity_out = None
+    if "--rarity-out" in argv:
+        i = argv.index("--rarity-out")
+        rarity_out = Path(argv[i + 1])
+        del argv[i:i + 2]
+
+    if len(argv) < 2:
+        print("Usage: build_species_pages.py <data-dir> <output-dir> [--rarity-out PATH]")
         sys.exit(1)
 
-    data_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2])
+    data_dir = Path(argv[0])
+    output_dir = Path(argv[1])
 
     if not data_dir.exists():
         print(f"Error: {data_dir} does not exist", file=sys.stderr)
@@ -870,7 +917,7 @@ def main():
     print(f"  {hard_to_find_count} species marked 'Hard to find'")
 
     # Save rarity scores for use by other build scripts (e.g. build_rare_finds.py)
-    rarity_scores_file = data_dir.parent / "rarity_scores.json"
+    rarity_scores_file = rarity_out or data_dir.parent / "rarity_scores.json"
     with open(rarity_scores_file, "w") as f:
         json.dump(rarity_scores, f, indent=2)
     print(f"  Saved rarity scores to {rarity_scores_file}")

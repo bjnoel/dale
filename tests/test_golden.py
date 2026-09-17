@@ -89,9 +89,13 @@ GOLDEN_CASES = [
         "outputs": ["trends.html"],
     },
     {
+        # --rarity-out keeps rarity_scores.json inside the temp dir. This builder
+        # WRITES the file the location, dashboard and rare_finds cases READ from the
+        # fixture, so without it a species_pages run rewrites the committed fixture
+        # and those cases' results depend on test ordering (same trap as {LEDGER}).
         "name": "species_pages",
         "script": "build_species_pages.py",
-        "args": ["{DATA}", "{OUT}"],
+        "args": ["{DATA}", "{OUT}", "--rarity-out", "{OUT}/rarity_scores.json"],
         "outputs": ["species/*.html"],
     },
     {

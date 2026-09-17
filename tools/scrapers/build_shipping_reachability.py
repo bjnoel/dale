@@ -67,19 +67,27 @@ STATES = [
 ]
 
 
-def load_stock_history(data_dir: Path, lookup: dict) -> tuple[dict, list[str], dict]:
-    """Return ({species_slug: {day: {nursery_key, ...}}}, sorted days, {day: n_nurseries}).
+def load_stock_history(data_dir: Path, lookup: dict) -> tuple[dict, list[str], dict, dict]:
+    """Return (stock, sorted days, {day: n_nurseries}, listed).
 
-    The inner value is a SET OF NURSERIES, which is the whole point: it is what
-    makes the published numbers nursery-day rollups rather than listing counts.
+    ``stock`` is ``{species_slug: {day: {nursery_key, ...}}}`` and the inner
+    value is a SET OF NURSERIES, which is the whole point: it is what makes the
+    published numbers nursery-day rollups rather than listing counts.
 
     The third return value is the size of the measuring instrument on each day,
     and it is not optional. The panel started at a handful of nurseries and grew
     to the full set, so a whole-window average understates every state. The page
     has to be able to say so, and to say so from the data rather than from a
     number somebody wrote down once.
+
+    ``listed`` is ``{species_slug: {day, ...}}``: the days on which the species
+    was on somebody's shelf at all, in stock or not. ``stock`` alone cannot tell
+    "listed every day, never once in stock" from "never tracked at all", and
+    those are opposite facts (DEC-339). Anything that turns availability into a
+    public claim needs the denominator, not just the numerator.
     """
     stock: dict[str, dict[str, set]] = defaultdict(lambda: defaultdict(set))
+    listed: dict[str, set] = defaultdict(set)
     reporting: dict[str, set] = defaultdict(set)
     days: set[str] = set()
 
@@ -110,10 +118,11 @@ def load_stock_history(data_dir: Path, lookup: dict) -> tuple[dict, list[str], d
             for day, record in product.get("days", {}).items():
                 days.add(day)
                 reporting[day].add(key)
+                listed[slug].add(day)
                 if record.get("a"):
                     stock[slug][day].add(key)
 
-    return stock, sorted(days), {d: len(v) for d, v in reporting.items()}
+    return stock, sorted(days), {d: len(v) for d, v in reporting.items()}, dict(listed)
 
 
 #: Days at the end of the window over which the headline average is taken. The
@@ -613,7 +622,7 @@ def main():
 
     species = enabled_species()
     lookup = build_species_lookup(species)
-    stock, days, reporting = load_stock_history(data_dir, lookup)
+    stock, days, reporting, _listed = load_stock_history(data_dir, lookup)
     if not days:
         print("No availability history found; nothing to build.")
         sys.exit(1)
