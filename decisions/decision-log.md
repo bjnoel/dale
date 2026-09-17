@@ -14675,3 +14675,15 @@ three of which failed before the change.
   AUD and USD revenue rather than invent an FX rate. The first AUD commission that
   lands within 28 days of a USD Treesmith sale will make any `revenue_monthly`
   verdict read "unavailable". That is the designed behaviour, not a bug.
+
+**Correction, same day.** The Guildford bullet above is wrong. Benedict supplied the
+SMS text: sent 2026-08-20, and it told Emma the website already gives us everything,
+so no feed is needed. It asked two different things instead: whether an out-of-stock
+line is coming back or dropped, and how many are left when one is in stock. Checked
+against their live Store API (1,900 products): no fruit tree on the site tracks a
+quantity (45 of 45 in-stock trees have stock management off), so the second is not a
+switch and should not be re-asked. The first is mostly answerable from our own
+history: 139 of 167 bare root lines showed in stock at some point this winter, which
+also contradicts the register note that those lines "only ever show as out of
+stock". Guildford stays `cold`, with a Dale-owned note not to draft anything before
+May 2027. Primal is confirmed as a single order.
